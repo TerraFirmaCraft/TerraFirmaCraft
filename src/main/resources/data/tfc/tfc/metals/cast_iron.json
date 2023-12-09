@@ -7,6 +7,9 @@
   "ingots": {
     "tag": "forge:ingots/cast_iron"
   },
+  "double_ingots": {
+    "tag": "forge:double_ingots/cast_iron"
+  },
   "sheets": {
     "tag": "forge:sheets/cast_iron"
   }

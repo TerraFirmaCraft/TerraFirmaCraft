@@ -5,6 +5,7 @@
     "min_radius": 3,
     "max_radius": 10,
     "height": 3,
+    "integrity": 0.9,
     "states": [
       {
         "replace": "tfc:rock/raw/granite",

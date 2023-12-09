@@ -6,24 +6,14 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)サラダ$() は、最大 5 つの $(thing)果物$()、$(thing)野菜$()、または $(thing)調理済みの肉$() を $(thing)ボウル$() で調理した食事です。 サラダは、$(thing)ボウル$() で表示できる特別なサラダGUIで作成されます。"
+      "text": "$(thing)Salads$() are a meal prepared in a $(thing)Bowl$() from up to five $(thing)Fruits$(), $(thing)Vegetables$(), or $(thing)Cooked Meats$().$(br2)Salads are one of the simplest meals to make, and just require a $(l:mechanics/bowls)Bowl$(). First, hold the $(thing)Bowl$() and press $(item)$(k:key.use)$() while holding $(item)$(k:key.sneak)$(). This will open the salad screen."
     },
     {
-      "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/bowl_4",
-      "text": "ボウルは、粘土をナッピング・焼成して作られます。"
-    },
-    {
-      "type": "patchouli:text",
-      "text": "サラダGUIは、ボウルを手に持って$(item)$(k:key.sneak)$()を押しながら$(item)$(k:key.use)$()を押すと開きます。 サラダGUIを開いたら使用する食品を追加します。 準備ができたら、右側のスロットからサラダを取り出します。$(br2)サラダの $(l:getting_started/food_and_water)栄養素$()、水分、および腹持ちは、合計 75% です。 サラダを作ると腐敗を回復できます。"
-    },
-    {
-      "type": "patchouli:image",
-      "images": [
-        "tfc:textures/gui/book/gui/salad.png"
-      ],
-      "text": "サラダGUI。",
-      "border": false
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:salads",
+      "title": "",
+      "link_recipes": false,
+      "text": "Up to five ingredients can be added in the top slots. $(thing)Bowls$() can be added in the left bottom slot. When you are done, the salad can be taken out from the right bottom slot."
     }
   ],
   "read_by_default": true,
@@ -32,8 +22,6 @@
     "tfc:food/dairy_salad": 0,
     "tfc:food/vegetables_salad": 0,
     "tfc:food/protein_salad": 0,
-    "tfc:food/grain_salad": 0,
-    "tfc:ceramic/unfired_bowl": 1,
-    "tfc:ceramic/bowl": 1
+    "tfc:food/grain_salad": 0
   }
 }

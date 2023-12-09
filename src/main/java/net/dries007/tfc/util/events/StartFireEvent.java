@@ -6,13 +6,8 @@
 
 package net.dries007.tfc.util.events;
 
-import java.util.function.Predicate;
-
-import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
 
-import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -30,73 +25,66 @@ import net.minecraftforge.eventbus.api.Event;
 import net.dries007.tfc.util.InteractionManager;
 
 /**
- * This event is used for lighting fires or optionally light-able blocks. This event should alwyas be cancelled if it was handled by the event listener
- * The default behavior, FireResult.IF_FAILED, places a fire block when the event is not canceled. This can be set to ALWAYS and NEVER, which either guarantee or ban a fire block from placing.
- *
- * For things like flint and steel that don't require special mechanics, this event logic is handled for you in
- * {@link InteractionManager#registerDefaultInteractions()}. Adding items to the tag #starts_fires_with_items or #starts_fires_with_durability
- * will emulate this behavior (and allow TFC devices to be lit by your item)
- *
- * Note that the parameters of this event are the same as those expected by an item use, ie that the position, state, and direction
- * reflect what would happen if a block was clicked on. Direction refers to the face that was clicked.
+ * This event is used for lighting things with fire. It can be cancelled to handle lighting of an external device or source.
+ * <p>
+ * When the strength of the event is {@link #isStrong()}, if it is <strong>not</strong> cancelled, a fire block will be created. If this was cancelled, the {@link TFCAdvancements#LIT} will be triggered.
+ * <p>
+ * For simple devices that create fires either by right-clicking (like flint and steel) or by consuming (like fire charges), they can be added to the tags
+ * {@code #tfc:starts_fires_with_durability} or {@code #tfc:starts_fires_with_items} and this event will be fired from {@link InteractionManager} automatically.
  */
 @Cancelable
 public final class StartFireEvent extends Event
 {
     public static boolean startFire(Level level, BlockPos pos, BlockState state, Direction direction, @Nullable Player player, ItemStack stack)
     {
-        return startFire(level, pos, state, direction, player, stack, FireResult.IF_FAILED, FireStrength.STRONG);
+        return startFire(level, pos, state, direction, player, stack, FireStrength.STRONG);
     }
 
-    public static boolean startFire(Level level, BlockPos pos, BlockState state, Direction direction, @Nullable Player player, ItemStack stack, FireResult result)
+    public static boolean startFire(Level level, BlockPos pos, BlockState state, Direction direction, @Nullable Player player, ItemStack stack, FireStrength strength)
     {
-        return startFire(level, pos, state, direction, player, stack, result, FireStrength.STRONG);
-    }
-
-    public static boolean startFire(Level level, BlockPos pos, BlockState state, Direction direction, @Nullable Player player, ItemStack stack, FireResult fireResult, FireStrength strength)
-    {
-        final StartFireEvent event = new StartFireEvent(level, pos, state, direction, player, stack, fireResult, strength);
+        final StartFireEvent event = new StartFireEvent(level, pos, state, direction, player, stack, strength);
         final boolean cancelled = MinecraftForge.EVENT_BUS.post(event);
-        boolean actionPerformed = false;
-        if (cancelled)
+
+        if (cancelled && player instanceof ServerPlayer serverPlayer)
         {
-            if (player instanceof ServerPlayer serverPlayer)
-            {
-                TFCAdvancements.LIT.trigger(serverPlayer, state);
-            }
-            actionPerformed = true;
+            TFCAdvancements.LIT.trigger(serverPlayer, state);
         }
-        if (event.fireResult.predicate.test(event))
+
+        if (!cancelled && event.isStrong())
         {
-            // this is a special case where we are placing inside a non full block, so we should destroy that block.
-            if (Helpers.isBlock(state, TFCTags.Blocks.LIT_BY_DROPPED_TORCH))
-            {
-                level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-            }
-            else
+            // If the block we are targeting is a non-solid block, we delete the block and replace it with fire
+            // Otherwise with solid blocks, we place fire on the face we were targeting
+            if (state.isCollisionShapeFullBlock(level, pos))
             {
                 pos = pos.relative(direction);
             }
+            else
+            {
+                final BlockState stateAt = level.getBlockState(pos);
+                if (stateAt.isFlammable(level, pos, direction) && (stateAt.canBeReplaced() || stateAt.getCollisionShape(level, pos).isEmpty()))
+                {
+                    level.destroyBlock(pos, false);
+                }
+            }
+
             if (BaseFireBlock.canBePlacedAt(level, pos, direction))
             {
                 level.setBlock(pos, BaseFireBlock.getState(level, pos), 11);
-                actionPerformed = true;
+                return true;
             }
         }
-        return actionPerformed;
+        return cancelled;
     }
 
     private final Level world;
     private final BlockPos pos;
     private final BlockState state;
     private final Direction direction;
-    @Nullable
-    private final Player player;
+    private final @Nullable Player player;
     private final ItemStack stack;
     private final FireStrength strength;
-    private FireResult fireResult;
 
-    private StartFireEvent(Level world, BlockPos pos, BlockState state, Direction direction, @Nullable Player player, ItemStack stack, FireResult result, FireStrength strength)
+    private StartFireEvent(Level world, BlockPos pos, BlockState state, Direction direction, @Nullable Player player, ItemStack stack, FireStrength strength)
     {
         this.world = world;
         this.pos = pos;
@@ -104,7 +92,6 @@ public final class StartFireEvent extends Event
         this.direction = direction;
         this.player = player;
         this.stack = stack;
-        this.fireResult = result;
         this.strength = strength;
     }
 
@@ -139,33 +126,12 @@ public final class StartFireEvent extends Event
         return stack;
     }
 
-    public FireResult getFireResult()
-    {
-        return fireResult;
-    }
-
-    public void setFireResult(FireResult result)
-    {
-        this.fireResult = result;
-    }
-
+    /**
+     * @return If the fire starting was <strong>strong</strong>, and is likely to cause destructive behavior like lighting fires.
+     */
     public boolean isStrong()
     {
         return strength == FireStrength.STRONG;
-    }
-
-    public enum FireResult
-    {
-        ALWAYS(event -> true),
-        NEVER(event -> false),
-        IF_FAILED(event -> !event.isCanceled());
-
-        private final Predicate<StartFireEvent> predicate;
-
-        FireResult(Predicate<StartFireEvent> predicate)
-        {
-            this.predicate = predicate;
-        }
     }
 
     public enum FireStrength
@@ -181,7 +147,7 @@ public final class StartFireEvent extends Event
          * 1. The fire starting may have been secondary behavior or a side effect (i.e. easy to misclick).
          * 2. Destructive fire starting behaviors should <strong>not</strong> be attempted.
          */
-        WEAK;
+        WEAK
         // More granularity may be added if needed
     }
 }

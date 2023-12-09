@@ -41,24 +41,24 @@ public class SetLookTarget
     public static BehaviorControl<LivingEntity> create(float distance, UniformInt interval, Predicate<LivingEntity> predicate)
     {
         float f = distance * distance;
-        SetEntityLookTargetSometimes.Ticker setentitylooktargetsometimes$ticker = new SetEntityLookTargetSometimes.Ticker(interval);
+        SetEntityLookTargetSometimes.Ticker setLookTargetTicker = new SetEntityLookTargetSometimes.Ticker(interval);
         return BehaviorBuilder.create((instance) -> instance.group(
             instance.absent(MemoryModuleType.LOOK_TARGET), instance.present(MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES))
             .apply(instance, (posTracker, nearVisible) -> (server, entity, time) -> {
-            Optional<LivingEntity> optional = instance.get(nearVisible).findClosest(predicate.and((e) -> e.distanceToSqr(entity) <= f));
-            if (optional.isEmpty())
-            {
-                return false;
-            }
-            else if (!setentitylooktargetsometimes$ticker.tickDownAndCheck(server.random))
-            {
-                return false;
-            }
-            else
-            {
-                posTracker.set(new EntityTracker(optional.get(), true));
-                return true;
-            }
-        }));
+                Optional<LivingEntity> optional = instance.get(nearVisible).findClosest(predicate.and((e) -> e.distanceToSqr(entity) <= f));
+                if (optional.isEmpty())
+                {
+                    return false;
+                }
+                else if (!setLookTargetTicker.tickDownAndCheck(server.random))
+                {
+                    return false;
+                }
+                else
+                {
+                    posTracker.set(new EntityTracker(optional.get(), true));
+                    return true;
+                }
+            }));
     }
 }

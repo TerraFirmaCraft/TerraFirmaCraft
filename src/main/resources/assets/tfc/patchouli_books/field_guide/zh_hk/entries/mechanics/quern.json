@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)手推磨$()是一種能將物品研磨成粉末或染料等材料的工具。手推磨由$(thing)底座$()和$(thing)磨盤$()兩個部分構成。"
+      "text": "The $(thing)Quern$() is a device for grinding items. It can make powders, dyes, and some other items. It is assembled from a $(thing)Base$() and $(thing)Handstone$().$(br2)The Quern can also be connected to a $(l:mechanics/mechanical_power#quern)Mechanical Power$() network."
     },
     {
       "type": "patchouli:crafting",
@@ -63,7 +63,7 @@
     {
       "type": "tfc:quern_recipe",
       "recipe": "tfc:quern/emerald",
-      "text": "$(l:the_world/waterways#gemstones)寶石$()也可以磨成粉末。"
+      "text": "$(thing)Gems$() can also be ground into powder."
     },
     {
       "type": "tfc:quern_recipe",

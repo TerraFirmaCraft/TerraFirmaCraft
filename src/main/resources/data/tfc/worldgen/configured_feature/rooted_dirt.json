@@ -1,0 +1,44 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:soil_disc",
+  "config": {
+    "min_radius": 4,
+    "max_radius": 6,
+    "height": 2,
+    "integrity": 0.8,
+    "states": [
+      {
+        "replace": "tfc:grass/silt",
+        "with": "tfc:rooted_dirt/silt"
+      },
+      {
+        "replace": "tfc:dirt/silt",
+        "with": "tfc:rooted_dirt/silt"
+      },
+      {
+        "replace": "tfc:grass/loam",
+        "with": "tfc:rooted_dirt/loam"
+      },
+      {
+        "replace": "tfc:dirt/loam",
+        "with": "tfc:rooted_dirt/loam"
+      },
+      {
+        "replace": "tfc:grass/sandy_loam",
+        "with": "tfc:rooted_dirt/sandy_loam"
+      },
+      {
+        "replace": "tfc:dirt/sandy_loam",
+        "with": "tfc:rooted_dirt/sandy_loam"
+      },
+      {
+        "replace": "tfc:grass/silty_loam",
+        "with": "tfc:rooted_dirt/silty_loam"
+      },
+      {
+        "replace": "tfc:dirt/silty_loam",
+        "with": "tfc:rooted_dirt/silty_loam"
+      }
+    ]
+  }
+}

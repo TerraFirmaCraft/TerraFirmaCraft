@@ -25,13 +25,17 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import com.mojang.serialization.Dynamic;
+
 import net.dries007.tfc.client.TFCSounds;
+
 import net.minecraft.world.entity.AnimationState;
+
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.ai.PredicateMoveControl;
 import net.dries007.tfc.common.entities.ai.TFCClimberNavigation;
 import net.dries007.tfc.common.entities.ai.prey.PestAi;
 import net.dries007.tfc.util.Helpers;
+
 import org.jetbrains.annotations.Nullable;
 
 public class Pest extends Prey
@@ -156,7 +160,7 @@ public class Pest extends Prey
         {
             setClimbing(horizontalCollision);
         }
-        if (tickCount > 20 * 60 * 3 && random.nextInt(500) == 0)
+        if (tickCount > 20 * 60 * 3 && random.nextInt(500) == 0 && !isPersistenceRequired())
         {
             discard();
         }
@@ -171,7 +175,7 @@ public class Pest extends Prey
     @Override
     public boolean removeWhenFarAway(double distance)
     {
-        return true;
+        return !isPersistenceRequired();
     }
 
     @Override

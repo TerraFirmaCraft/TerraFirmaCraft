@@ -6,8 +6,5 @@
   "specific_heat_capacity": 0.00857,
   "ingots": {
     "tag": "forge:ingots/high_carbon_red_steel"
-  },
-  "sheets": {
-    "tag": "forge:sheets/high_carbon_red_steel"
   }
 }

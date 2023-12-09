@@ -42,6 +42,10 @@
     "tfc:jar/plum_unsealed",
     "tfc:jar/red_apple",
     "tfc:jar/red_apple_unsealed",
+    "tfc:jar/pumpkin_chunks",
+    "tfc:jar/pumpkin_chunks_unsealed",
+    "tfc:jar/melon_slice",
+    "tfc:jar/melon_slice_unsealed",
     "tfc:empty_jar",
     "tfc:empty_jar_with_lid"
   ]

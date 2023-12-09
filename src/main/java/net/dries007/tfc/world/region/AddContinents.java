@@ -26,7 +26,7 @@ public enum AddContinents implements RegionTask
                 if (otherCell.x() == context.regionCell.x() && otherCell.y() == context.regionCell.y())
                 {
                     final Region.Point point = context.region.atInit(gridX, gridZ);
-                    final float continent = context.generator().continentNoise.noise(gridX, gridZ);
+                    final double continent = context.generator().continentNoise.noise(gridX, gridZ);
 
                     if (continent > 4.4)
                     {

@@ -20,8 +20,7 @@ public enum Fish
     LARGEMOUTH_BASS(0x619c57, 0x9c7f57),
     RAINBOW_TROUT(0xc928c7, 0xc97a0a),
     SALMON(10489616, 951412),
-    SMALLMOUTH_BASS(0x9c7f57, 0x619c57)
-    ;
+    SMALLMOUTH_BASS(0x9c7f57, 0x619c57);
 
     private final String serializedName;
     private final int color1;

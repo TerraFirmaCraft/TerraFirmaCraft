@@ -2,7 +2,6 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "tfc:large_raw_hide",
-    "tfc:large_sheepskin_hide"
+    "tfc:large_raw_hide"
   ]
 }

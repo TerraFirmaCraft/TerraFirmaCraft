@@ -38,13 +38,14 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 
 /**
  * An extension of {@link BlockBehaviour.Properties} to allow setting properties in a constructor that normally require an override.
- *
+ * <p>
  * BlockEntity related overrides occur only when the block implements {@link EntityBlockExtension}
  * This means that vanilla blocks often need explicit overrides to use the interface, due to already overriding the default methods.
  * For an example, see {@link TFCChestBlock#newBlockEntity(BlockPos, BlockState)}
- *
+ * <p>
  * Some block related overrides are provided in {@link IForgeBlockExtension}
  */
+@SuppressWarnings("unused") // Provide all vanilla property bouncers, but we don't use all of them
 public class ExtendedProperties
 {
     public static ExtendedProperties of(BlockBehaviour.Properties properties)
@@ -54,11 +55,6 @@ public class ExtendedProperties
 
     public static ExtendedProperties of(BlockBehaviour block) { return of(BlockBehaviour.Properties.copy(block)); }
 
-    // this constructor is the most problematic
-    // any usages of this have to be replaced with ones specifying a color
-    // the form will be Properties.of().mapColor(color); as the Material param is removed
-    // the refactor otherwise will be quite easy as MaterialColor must be find and replaced to MapColor
-    // also any usages of materials need to be refactored to work with block properties but that goes without saying
     public static ExtendedProperties of() { return of(BlockBehaviour.Properties.of()); }
     public static ExtendedProperties of(DyeColor color) { return of(BlockBehaviour.Properties.of().mapColor(color)); }
     public static ExtendedProperties of(MapColor materialColor) { return of(BlockBehaviour.Properties.of().mapColor(materialColor)); }
@@ -215,12 +211,13 @@ public class ExtendedProperties
     public ExtendedProperties ignitedByLava() { properties.ignitedByLava(); return this; }
     public ExtendedProperties liquid() { properties.liquid(); return this; }
     public ExtendedProperties forceSolidOn() { properties.forceSolidOn(); return this; }
-//    public ExtendedProperties forceSolidOff() { properties.forceSolidOff(); return this; }
+    @SuppressWarnings("deprecation") public ExtendedProperties forceSolidOff() { properties.forceSolidOff(); return this; }
     public ExtendedProperties pushReaction(PushReaction reaction) { properties.pushReaction(reaction); return this; }
     public ExtendedProperties offsetType(BlockBehaviour.OffsetType type) { properties.offsetType(type); return this; }
     public ExtendedProperties noParticlesOnBreak() { properties.noParticlesOnBreak(); return this; }
     public ExtendedProperties requiredFeatures(FeatureFlag... flags) { properties.requiredFeatures(flags); return this; }
     public ExtendedProperties instrument(NoteBlockInstrument inst) { properties.instrument(inst); return this; }
+    public ExtendedProperties defaultInstrument() { return instrument(NoteBlockInstrument.HARP); }
     public ExtendedProperties replaceable() { properties.replaceable(); return this; }
 
     // Internal methods
@@ -233,7 +230,7 @@ public class ExtendedProperties
 
     @Nullable
     @SuppressWarnings("unchecked")
-    <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> givenType)
+    <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockEntityType<T> givenType)
     {
         assert blockEntityType != null;
         if (givenType == blockEntityType.get())

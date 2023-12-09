@@ -10,8 +10,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import mezz.jei.api.gui.ingredient.IRecipeSlotView;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -25,7 +27,6 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 
-import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
@@ -50,13 +51,15 @@ public class HeatingRecipeCategory extends BaseRecipeCategory<HeatingRecipe>
         inputSlot.setBackground(slot, -1,-1);
 
         final List<ItemStack> outputItems = Arrays.stream(recipe.getIngredient().getItems())
-            .map(stack -> recipe.assemble(new ItemStackInventory(stack), registryAccess()))
+            .map(stack -> recipe.assembleStacked(new ItemStackInventory(stack), Integer.MAX_VALUE, 1f))
             .toList();
         final FluidStack resultFluid = recipe.getDisplayOutputFluid();
 
         if (!outputItems.isEmpty() && !outputItems.stream().allMatch(ItemStack::isEmpty))
         {
             outputSlot.addItemStacks(outputItems);
+            if (recipe.getChance() < 1f)
+                outputSlot.addTooltipCallback((slot, tooltip) -> tooltip.add(1, Component.translatable("tfc.tooltip.chance", String.format("%.0f", recipe.getChance() * 100f)).withStyle(ChatFormatting.ITALIC)));
         }
 
         if (!resultFluid.isEmpty())

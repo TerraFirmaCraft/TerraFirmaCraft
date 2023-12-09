@@ -6,10 +6,12 @@
 
 package net.dries007.tfc.common.blockentities;
 
+import java.util.Locale;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.MenuProvider;
@@ -28,6 +30,8 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.devices.FirepitBlock;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.items.Powder;
+import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IntArrayBuilder;
@@ -36,6 +40,8 @@ import net.dries007.tfc.util.calendar.ICalendarTickable;
 public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiable & INBTSerializable<CompoundTag>> extends TickableInventoryBlockEntity<C> implements ICalendarTickable, MenuProvider
 {
     public static final int SLOT_FUEL_CONSUME = 0; // where fuel is taken by the firepit
+    public static final int SLOT_FUEL_2 = 1;
+    public static final int SLOT_FUEL_3 = 2;
     public static final int SLOT_FUEL_INPUT = 3; // where fuel is inserted into the firepit (0-3 are all fuel slots)
 
     public static void convertTo(LevelAccessor level, BlockPos pos, BlockState state, AbstractFirepitBlockEntity<?> firepit, Block newBlock)
@@ -46,7 +52,9 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
         firepit.ejectMainInventory();
         NonNullList<ItemStack> saved = Helpers.extractAllItems(firepit.inventory);
 
-        level.setBlock(pos, newBlock.defaultBlockState().setValue(FirepitBlock.LIT, state.getValue(FirepitBlock.LIT)), 3);
+        final BlockState newState = Helpers.copyProperties(newBlock.defaultBlockState(), state);
+        level.setBlock(pos, newState, 3);
+        Helpers.playPlaceSound(level, pos, newState);
 
         final BlockEntity newEntity = level.getBlockEntity(pos);
         if (newEntity instanceof AbstractFirepitBlockEntity<?> newFirepit)
@@ -80,6 +88,8 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
             if (firepit.burnTicks > 0)
             {
                 firepit.burnTicks -= firepit.airTicks > 0 || isRaining ? 2 : 1; // Fuel burns twice as fast using bellows, or in the rain
+                if (firepit.burnTicks <= 0)
+                    firepit.markForSync();
             }
             if (firepit.burnTicks <= 0 && !firepit.consumeFuel())
             {
@@ -89,6 +99,8 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
         if (firepit.airTicks > 0)
         {
             firepit.airTicks--;
+            if (firepit.airTicks <= 0)
+                firepit.markForSync();
         }
         if (firepit.temperature > 0 || firepit.burnTemperature > 0)
         {
@@ -102,6 +114,21 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
         }
     }
 
+    public static void clientTick(Level level, BlockPos pos, BlockState state, AbstractFirepitBlockEntity<?> firepit)
+    {
+        if (state.getValue(FirepitBlock.LIT))
+        {
+            if (firepit.burnTicks > 0)
+            {
+                firepit.burnTicks -= firepit.airTicks > 0 || level.isRainingAt(pos) ? 2 : 1;
+            }
+        }
+        if (firepit.airTicks > 0)
+        {
+            firepit.airTicks--;
+        }
+    }
+
     protected final ContainerData syncableData;
 
     protected boolean needsSlotUpdate = false; // set when fuel needs to be cascaded
@@ -112,6 +139,8 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
     protected float temperature; // current actual temperature
     private long lastPlayerTick = Integer.MIN_VALUE;
     private float dirtiness = 0f; // represents the dirtiness of the fire as handled by the fuel added
+    private int lastMaxBurnTicks = Integer.MAX_VALUE;
+    private int ash = 0;
 
     public AbstractFirepitBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, InventoryFactory<C> inventoryFactory, Component defaultName)
     {
@@ -133,6 +162,8 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
         burnTemperature = nbt.getFloat("burnTemperature");
         lastPlayerTick = nbt.getLong("lastPlayerTick");
         dirtiness = nbt.getFloat("dirtiness");
+        lastMaxBurnTicks = nbt.getInt("lastMaxBurnTicks");
+        ash = nbt.getInt("ash");
 
         needsRecipeUpdate = true;
 
@@ -148,6 +179,8 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
         nbt.putFloat("burnTemperature", burnTemperature);
         nbt.putLong("lastPlayerTick", lastPlayerTick);
         nbt.putFloat("dirtiness", dirtiness);
+        nbt.putInt("lastMaxBurnTicks", lastMaxBurnTicks);
+        nbt.putInt("ash", ash);
         super.saveAdditional(nbt);
     }
 
@@ -157,6 +190,7 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
         super.setAndUpdateSlots(slot);
         needsSlotUpdate = true;
         updateCachedRecipe();
+        markForSync();
     }
 
     @Override
@@ -300,6 +334,7 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
      */
     protected boolean consumeFuel()
     {
+        assert level != null;
         final ItemStack fuelStack = inventory.getStackInSlot(SLOT_FUEL_CONSUME);
         if (!fuelStack.isEmpty())
         {
@@ -310,8 +345,13 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
             if (fuel != null)
             {
                 burnTicks += fuel.getDuration();
+                lastMaxBurnTicks = fuel.getDuration();
                 burnTemperature = fuel.getTemperature();
                 dirtiness += 1f - fuel.getPurity();
+            }
+            if (level.random.nextFloat() < 0.5f)
+            {
+                addAsh(1);
             }
             markForSync();
         }
@@ -349,6 +389,84 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
                 lowestOpenSlot++;
             }
         }
+        markForSync();
         needsSlotUpdate = false;
+    }
+
+    public BurnStage getBurnStage(int slot)
+    {
+        if (burnTemperature < 1f || temperature < 1f)
+            return slot < SLOT_FUEL_3 ? BurnStage.COLD : BurnStage.FRESH;
+        final float pctFromFirepitTemp = Math.min(1f, temperature / burnTemperature);
+        if (pctFromFirepitTemp < 0.1f)
+            return slot < SLOT_FUEL_3 ? BurnStage.COLD : BurnStage.FRESH;
+        float lastMaxBurnTicks = this.lastMaxBurnTicks < 1f ? 1500f : this.lastMaxBurnTicks;
+        final float pctFromBurnTicks = Math.min(1f, (float) burnTicks / lastMaxBurnTicks);
+        if (slot == SLOT_FUEL_CONSUME)
+        {
+            return BurnStage.HEAT_STAGES[Math.round(pctFromFirepitTemp * 3)];
+        }
+        if (slot == SLOT_FUEL_2)
+        {
+            return BurnStage.HEAT_STAGES[Math.round(2 * pctFromFirepitTemp + pctFromBurnTicks)];
+        }
+        if (slot == SLOT_FUEL_3)
+        {
+            return BurnStage.HEAT_STAGES[Math.round(pctFromFirepitTemp + 2 * pctFromBurnTicks)];
+        }
+        if (slot == SLOT_FUEL_INPUT)
+        {
+            return BurnStage.HEAT_STAGES[Math.round(3 * pctFromBurnTicks)];
+        }
+        return BurnStage.FRESH;
+    }
+
+    public int getAsh()
+    {
+        return ash;
+    }
+
+    public void setAsh(int ash)
+    {
+        this.ash = ash;
+    }
+
+    public void addAsh(int ash)
+    {
+        this.ash = Math.min(8, ash);
+    }
+
+    @Override
+    public void ejectInventory()
+    {
+        assert level != null;
+        super.ejectInventory();
+        if (ash > 0)
+        {
+            Helpers.spawnItem(level, worldPosition, new ItemStack(TFCItems.POWDERS.get(Powder.WOOD_ASH).get(), ash));
+        }
+    }
+
+    public enum BurnStage
+    {
+        FRESH,
+        DRIED,
+        RED,
+        WHITE,
+        COLD;
+
+        private final ResourceLocation[] modelLocations = {
+            Helpers.identifier("block/firepit_log_1_" + name().toLowerCase(Locale.ROOT)),
+            Helpers.identifier("block/firepit_log_2_" + name().toLowerCase(Locale.ROOT)),
+            Helpers.identifier("block/firepit_log_3_" + name().toLowerCase(Locale.ROOT)),
+            Helpers.identifier("block/firepit_log_4_" + name().toLowerCase(Locale.ROOT))
+        };
+
+        public ResourceLocation getModel(int slot)
+        {
+            return modelLocations[slot];
+        }
+
+        private static final BurnStage[] HEAT_STAGES = {FRESH, DRIED, RED, WHITE};
     }
 }

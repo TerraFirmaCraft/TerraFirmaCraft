@@ -7,46 +7,68 @@
 package net.dries007.tfc.common.recipes.ingredients;
 
 import java.util.Collection;
-import java.util.function.Predicate;
-
-import com.google.gson.JsonObject;
+import java.util.List;
+import java.util.stream.Stream;
+import com.google.gson.JsonElement;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.registries.ForgeRegistries;
 
-/**
- * This is a simple predicate wrapper for block states.
- * It can compare a single or multiple blocks, or a tag.
- */
-public interface BlockIngredient extends Predicate<BlockState>
+import net.dries007.tfc.util.Helpers;
+
+public record BlockIngredient(List<IngredientType.Entry<Block>> entries) implements IngredientType<Block>
 {
-    /**
-     * Test if the specified block state is accepted by the ingredient
-     */
-    @Override
-    boolean test(BlockState state);
+    private static final Factory<Block, BlockIngredient> FACTORY = new Factory<>("block", ForgeRegistries.BLOCKS, BlockTag::new, BlockIngredient::new);
 
-    /**
-     * Return a list of all possible blocks that can be accepted by the ingredient.
-     * This is mostly for populating visual lists of recipes and does not obey the exact nature of the ingredient.
-     */
-    Collection<Block> getValidBlocks();
-
-    BlockIngredient.Serializer<?> serializer();
-
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    default void toNetwork(FriendlyByteBuf buffer)
+    public static BlockIngredient fromJson(JsonElement json)
     {
-        buffer.writeResourceLocation(BlockIngredients.getId(serializer()));
-        ((BlockIngredient.Serializer) serializer()).toNetwork(buffer, this);
+        return IngredientType.fromJson(json, FACTORY);
     }
 
-    interface Serializer<T extends BlockIngredient>
+    public static BlockIngredient fromNetwork(FriendlyByteBuf buffer)
     {
-        T fromJson(JsonObject json);
+        return IngredientType.fromNetwork(buffer, FACTORY);
+    }
 
-        T fromNetwork(FriendlyByteBuf buffer);
+    /**
+     * @return Overload for {@link #test(Object)} which takes a {@link BlockState} for convenience, even though the underlying ingredient will never be state-specific.
+     */
+    public boolean test(BlockState state)
+    {
+        return test(state.getBlock());
+    }
 
-        void toNetwork(FriendlyByteBuf buffer, T ingredient);
+    @Override
+    public JsonElement toJson()
+    {
+        return IngredientType.toJson(this, FACTORY);
+    }
+
+    @Override
+    public void toNetwork(FriendlyByteBuf buffer)
+    {
+        IngredientType.toNetwork(buffer, this, FACTORY);
+    }
+
+    public Collection<Block> blocks()
+    {
+        return all().toList();
+    }
+
+    public record BlockTag(TagKey<Block> tag) implements TagEntry<Block>
+    {
+        @Override
+        public Stream<Block> stream()
+        {
+            return Helpers.streamAllTagValues(tag, ForgeRegistries.BLOCKS);
+        }
+
+        @Override
+        public boolean test(Block block)
+        {
+            return Helpers.isBlock(block, tag);
+        }
     }
 }

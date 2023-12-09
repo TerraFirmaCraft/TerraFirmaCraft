@@ -33,6 +33,9 @@ public enum Food
     PEACH(false, false, true),
     PLUM(false, false, true),
     RED_APPLE(false, false, true),
+    // Misc Fruit
+    PUMPKIN_CHUNKS(false, false, true),
+    MELON_SLICE(false, false, true),
     // Grains
     BARLEY,
     BARLEY_GRAIN,
@@ -111,6 +114,7 @@ public enum Food
     PHEASANT(true, false),
     GROUSE(true, false),
     TURKEY(true, false),
+    PEAFOWL(true, false),
     VENISON(true, false),
     WOLF(true, false),
     RABBIT(true, false),
@@ -142,6 +146,7 @@ public enum Food
     COOKED_HORSE_MEAT(true, false),
     COOKED_PHEASANT(true, false),
     COOKED_TURKEY(true, false),
+    COOKED_PEAFOWL(true, false),
     COOKED_GROUSE(true, false),
     COOKED_VENISON(true, false),
     COOKED_WOLF(true, false),

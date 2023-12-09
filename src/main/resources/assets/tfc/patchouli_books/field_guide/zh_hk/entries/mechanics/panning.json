@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)淘金$()是一種通過在河流和其他水道中搜索來獲得某些原生礦粒的方法。$(br2)淘金需要先在湖泊或河牀底部的砂礫堆中找到一些$(l:the_world/waterways#ore_deposits)礦石沉積物$()。$(br2)除此之外，你還需要一個淘金盤。"
+      "text": "$(thing)Panning$() is a method of obtaining small pieces of certain native ores by searching in rivers and other waterways.$(br2)Panning makes use of $(thing)Ore Deposits$() which are found in gravel patches in the bottom of lakes and rivers.$(br2)In order to get started panning, you will need an empty pan."
     },
     {
       "type": "tfc:knapping_recipe",

@@ -23,6 +23,7 @@
     "tfc:food/pheasant",
     "tfc:food/grouse",
     "tfc:food/turkey",
+    "tfc:food/peafowl",
     "tfc:food/venison",
     "tfc:food/wolf",
     "tfc:food/rabbit",
@@ -31,7 +32,6 @@
     "tfc:food/quail",
     "tfc:food/chevon",
     "tfc:food/gran_feline",
-    "tfc:food/camelidae",
-    "tfc:food/cooked_turtle"
+    "tfc:food/camelidae"
   ]
 }

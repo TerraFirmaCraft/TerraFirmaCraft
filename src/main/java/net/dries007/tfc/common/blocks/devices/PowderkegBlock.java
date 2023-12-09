@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blocks.devices;
 
 
-import java.util.Random;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -25,6 +24,10 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
@@ -36,6 +39,8 @@ public class PowderkegBlock extends SealableDeviceBlock
 {
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
+    private static final VoxelShape SHAPE = box(1, 0, 1, 15, 16, 15);
+    private static final VoxelShape SHAPE_UNSEALED = Shapes.join(SHAPE, box(2, 1, 2, 14, 16, 14), BooleanOp.ONLY_FIRST);
     private static final int[] IMAGE_TOOLTIP = {4, 3, 0, PowderkegBlockEntity.SLOTS - 1};
 
     public static void toggleSeal(Level level, BlockPos pos, BlockState state)
@@ -141,4 +146,11 @@ public class PowderkegBlock extends SealableDeviceBlock
             level.getBlockEntity(pos, TFCBlockEntities.POWDERKEG.get()).ifPresent(keg -> keg.setLit(true, null));
         }
     }
+
+    @Override
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    {
+        return state.getValue(SEALED) ? SHAPE : SHAPE_UNSEALED;
+    }
+
 }

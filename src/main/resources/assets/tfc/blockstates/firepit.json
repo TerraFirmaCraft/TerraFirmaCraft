@@ -1,11 +1,19 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "lit=true": {
+    "lit=true,axis=x": {
       "model": "tfc:block/firepit_lit"
     },
-    "lit=false": {
+    "lit=true,axis=z": {
+      "model": "tfc:block/firepit_lit",
+      "y": 90
+    },
+    "lit=false,axis=x": {
       "model": "tfc:block/firepit_unlit"
+    },
+    "lit=false,axis=z": {
+      "model": "tfc:block/firepit_unlit",
+      "y": 90
     }
   }
 }

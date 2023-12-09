@@ -7,6 +7,9 @@
   "ingots": {
     "tag": "forge:ingots/bismuth"
   },
+  "double_ingots": {
+    "tag": "forge:double_ingots/bismuth"
+  },
   "sheets": {
     "tag": "forge:sheets/bismuth"
   }

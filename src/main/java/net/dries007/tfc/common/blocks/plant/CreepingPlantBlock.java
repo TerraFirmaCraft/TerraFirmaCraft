@@ -10,6 +10,8 @@ import java.util.Map;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -30,6 +32,7 @@ import org.jetbrains.annotations.NotNull;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.registry.RegistryPlant;
 
@@ -92,6 +95,27 @@ public abstract class CreepingPlantBlock extends PlantBlock implements Direction
     }
 
     @Override
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
+    {
+        super.randomTick(state, level, pos, random);
+        if (PlantRegrowth.canSpread(level, random))
+        {
+            Direction direction = Direction.getRandom(random);
+            if (direction == Direction.DOWN)
+                direction = Direction.UP;
+            final BlockPos newPos = random.nextFloat() < 0.2f ? pos.relative(direction).above() : pos.relative(direction);
+            if (level.getBlockState(newPos).isAir())
+            {
+                final BlockState newState = updateStateFromSides(level, newPos, state);
+                if (!newState.isAir())
+                {
+                    level.setBlockAndUpdate(newPos, newState);
+                }
+            }
+        }
+    }
+
+    @Override
     public BlockState updateShape(BlockState state, Direction direction, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
         state = state.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction), canCreepOn(facingState));
@@ -141,14 +165,15 @@ public abstract class CreepingPlantBlock extends PlantBlock implements Direction
         super.createBlockStateDefinition(builder.add(UP, DOWN, NORTH, SOUTH, EAST, WEST));
     }
 
-    private BlockState updateStateFromSides(LevelAccessor level, BlockPos pos, BlockState state)
+    public static BlockState updateStateFromSides(LevelAccessor level, BlockPos pos, BlockState state)
     {
+        final CreepingPlantBlock block = (CreepingPlantBlock) state.getBlock();
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         boolean hasEarth = false;
         for (Direction direction : UPDATE_SHAPE_ORDER)
         {
             mutablePos.setWithOffset(pos, direction);
-            boolean ground = canCreepOn(level.getBlockState(mutablePos));
+            boolean ground = block.canCreepOn(level.getBlockState(mutablePos));
 
             state = state.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction), ground);
             hasEarth |= ground;

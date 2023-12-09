@@ -32,6 +32,7 @@ import net.minecraftforge.network.NetworkHooks;
 import net.dries007.tfc.common.blockentities.TFCChestBlockEntity;
 import net.dries007.tfc.common.container.RestrictedChestContainer;
 import net.dries007.tfc.common.container.TFCContainerTypes;
+
 import org.jetbrains.annotations.Nullable;
 
 public class TFCMinecartChest extends MinecartChest

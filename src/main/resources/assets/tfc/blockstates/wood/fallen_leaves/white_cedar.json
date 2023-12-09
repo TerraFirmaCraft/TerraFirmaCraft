@@ -1,22 +1,29 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "": [
-      {
-        "model": "tfc:block/wood/fallen_leaves/white_cedar",
-        "y": 90
-      },
-      {
-        "model": "tfc:block/wood/fallen_leaves/white_cedar"
-      },
-      {
-        "model": "tfc:block/wood/fallen_leaves/white_cedar",
-        "y": 180
-      },
-      {
-        "model": "tfc:block/wood/fallen_leaves/white_cedar",
-        "y": 270
-      }
-    ]
+    "layers=1": {
+      "model": "tfc:block/wood/fallen_leaves/white_cedar_height2"
+    },
+    "layers=2": {
+      "model": "tfc:block/wood/fallen_leaves/white_cedar_height4"
+    },
+    "layers=3": {
+      "model": "tfc:block/wood/fallen_leaves/white_cedar_height6"
+    },
+    "layers=4": {
+      "model": "tfc:block/wood/fallen_leaves/white_cedar_height8"
+    },
+    "layers=5": {
+      "model": "tfc:block/wood/fallen_leaves/white_cedar_height10"
+    },
+    "layers=6": {
+      "model": "tfc:block/wood/fallen_leaves/white_cedar_height12"
+    },
+    "layers=7": {
+      "model": "tfc:block/wood/fallen_leaves/white_cedar_height14"
+    },
+    "layers=8": {
+      "model": "tfc:block/wood/leaves/white_cedar"
+    }
   }
 }

@@ -6,190 +6,60 @@
 
 package net.dries007.tfc.common.recipes.ingredients;
 
-import java.util.*;
-import java.util.function.Predicate;
+import java.util.Collection;
+import java.util.List;
 import java.util.stream.Stream;
-
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.JsonHelpers;
 
-/**
- * An ingredient for a single fluid.
- * Used in conjunction with recipes that primarily accept {@link Fluid}s.
- */
-public final class FluidIngredient implements Predicate<Fluid>
+public record FluidIngredient(List<IngredientType.Entry<Fluid>> entries) implements IngredientType<Fluid>
 {
-    public static FluidIngredient of(Fluid... fluids)
-    {
-        return new FluidIngredient(Arrays.stream(fluids).map(FluidEntry::new));
-    }
-
-    public static FluidIngredient of(TagKey<Fluid> tag)
-    {
-        return new FluidIngredient(Stream.of(new TagEntry(tag)));
-    }
-
-    public static FluidIngredient of(FluidIngredient... others)
-    {
-        return new FluidIngredient(Arrays.stream(others).flatMap(e -> e.entries.stream()));
-    }
+    private static final Factory<Fluid, FluidIngredient> FACTORY = new Factory<>("fluid", ForgeRegistries.FLUIDS, FluidTag::new, FluidIngredient::new);
 
     public static FluidIngredient fromJson(JsonElement json)
     {
-        if (json.isJsonPrimitive())
-        {
-            return new FluidIngredient(Collections.singletonList(new FluidEntry(JsonHelpers.getRegistryEntry(json, ForgeRegistries.FLUIDS))));
-        }
-        if (json.isJsonObject())
-        {
-            final JsonObject obj = json.getAsJsonObject();
-            if (obj.has("fluid") && obj.has("tag"))
-            {
-                throw new JsonParseException("Fluid ingredient cannot have both 'fluid' and 'tag' entries");
-            }
-            if (obj.has("fluid"))
-            {
-                return FluidIngredient.of(JsonHelpers.getRegistryEntry(obj, "fluid", ForgeRegistries.FLUIDS));
-            }
-            else if (obj.has("tag"))
-            {
-                return FluidIngredient.of(JsonHelpers.getTag(obj, "tag", Registries.FLUID));
-            }
-            else
-            {
-                throw new JsonParseException("Fluid ingredient must have one of 'fluid' or 'tag' entries");
-            }
-        }
-        final JsonArray array = JsonHelpers.convertToJsonArray(json, "fluid ingredient");
-        final List<FluidIngredient> entries = new ArrayList<>();
-        for (JsonElement element : array)
-        {
-            entries.add(FluidIngredient.fromJson(element));
-        }
-        return new FluidIngredient(entries.stream().flatMap(e -> e.entries.stream()));
+        return IngredientType.fromJson(json, FACTORY);
     }
 
     public static FluidIngredient fromNetwork(FriendlyByteBuf buffer)
     {
-        return new FluidIngredient(Helpers.decodeAll(buffer, new ArrayList<>(), Entry::fromNetwork));
+        return IngredientType.fromNetwork(buffer, FACTORY);
     }
 
-    public static void toNetwork(FriendlyByteBuf buffer, FluidIngredient ingredient)
+    public Collection<Fluid> fluids()
     {
-        Helpers.encodeAll(buffer, ingredient.entries, Entry::toNetwork);
-    }
-
-    private final List<Entry> entries;
-
-    private FluidIngredient(Stream<Entry> entries)
-    {
-        this(entries.toList());
-    }
-
-    private FluidIngredient(List<Entry> entries)
-    {
-        this.entries = entries;
+        return all().toList();
     }
 
     @Override
-    public boolean test(Fluid fluid)
+    public JsonElement toJson()
     {
-        for (Entry entry : entries)
-        {
-            if (entry.test(fluid))
-            {
-                return true;
-            }
-        }
-        return false;
+        return IngredientType.toJson(this, FACTORY);
     }
 
+    @Override
     public void toNetwork(FriendlyByteBuf buffer)
     {
-        Helpers.encodeAll(buffer, entries, Entry::toNetwork);
+        IngredientType.toNetwork(buffer, this, FACTORY);
     }
 
-    public Collection<Fluid> getMatchingFluids()
-    {
-        return entries.stream().flatMap(Entry::fluids).toList();
-    }
-
-    private interface Entry extends Predicate<Fluid>
-    {
-        static Entry fromNetwork(FriendlyByteBuf buffer)
-        {
-            final byte id = buffer.readByte();
-            if (id == 0)
-            {
-                final Fluid fluid = buffer.readRegistryIdUnsafe(ForgeRegistries.FLUIDS);
-                return new FluidEntry(fluid);
-            }
-            else if (id == 1)
-            {
-                final TagKey<Fluid> tag = TagKey.create(Registries.FLUID, buffer.readResourceLocation());
-                return new TagEntry(tag);
-            }
-            throw new IllegalArgumentException("Illegal id: " + id);
-        }
-
-        void toNetwork(FriendlyByteBuf buffer);
-
-        Stream<Fluid> fluids();
-    }
-
-    private record FluidEntry(Fluid fluid) implements Entry
+    public record FluidTag(TagKey<Fluid> tag) implements TagEntry<Fluid>
     {
         @Override
-        public boolean test(Fluid fluid)
+        public Stream<Fluid> stream()
         {
-            return this.fluid == fluid;
+            return Helpers.streamAllTagValues(tag, ForgeRegistries.FLUIDS);
         }
 
-        @Override
-        public void toNetwork(FriendlyByteBuf buffer)
-        {
-            buffer.writeByte(0);
-            buffer.writeRegistryIdUnsafe(ForgeRegistries.FLUIDS, fluid);
-        }
-
-        @Override
-        public Stream<Fluid> fluids()
-        {
-            return Stream.of(fluid);
-        }
-    }
-
-    private record TagEntry(TagKey<Fluid> tag) implements Entry
-    {
         @Override
         public boolean test(Fluid fluid)
         {
             return Helpers.isFluid(fluid, tag);
-        }
-
-        @Override
-        public void toNetwork(FriendlyByteBuf buffer)
-        {
-            buffer.writeByte(1);
-            buffer.writeResourceLocation(tag.location());
-        }
-
-        @Override
-        public Stream<Fluid> fluids()
-        {
-            return Helpers.getAllTagValues(tag, ForgeRegistries.FLUIDS).stream();
         }
     }
 }

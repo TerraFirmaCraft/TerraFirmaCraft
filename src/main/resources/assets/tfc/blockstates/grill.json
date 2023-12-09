@@ -2,24 +2,58 @@
   "__comment__": "This file was automatically created by mcresources",
   "multipart": [
     {
+      "when": {
+        "axis": "x"
+      },
       "apply": {
         "model": "tfc:block/firepit_grill"
       }
     },
     {
       "when": {
-        "lit": true
+        "axis": "z"
       },
       "apply": {
-        "model": "tfc:block/firepit_lit"
+        "model": "tfc:block/firepit_grill",
+        "y": 90
       }
     },
     {
       "when": {
-        "lit": false
+        "lit": true,
+        "axis": "x"
+      },
+      "apply": {
+        "model": "tfc:block/firepit_lit_low"
+      }
+    },
+    {
+      "when": {
+        "lit": true,
+        "axis": "z"
+      },
+      "apply": {
+        "model": "tfc:block/firepit_lit_low",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "lit": false,
+        "axis": "x"
       },
       "apply": {
         "model": "tfc:block/firepit_unlit"
+      }
+    },
+    {
+      "when": {
+        "lit": false,
+        "axis": "z"
+      },
+      "apply": {
+        "model": "tfc:block/firepit_unlit",
+        "y": 90
       }
     }
   ]

@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Млин$() - це пристрій для подрібнення предметів. Борошно, порошки, барвники, тощо, можна отримати за його допомогою. Складається він ц двох частин - $(thing)верхнього$() та $(thing)нижньогого жорен$()."
+      "text": "The $(thing)Quern$() is a device for grinding items. It can make powders, dyes, and some other items. It is assembled from a $(thing)Base$() and $(thing)Handstone$().$(br2)The Quern can also be connected to a $(l:mechanics/mechanical_power#quern)Mechanical Power$() network."
     },
     {
       "type": "patchouli:crafting",
@@ -31,7 +31,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/quern_add_item.png"
       ],
-      "text": "Використовуй $(item)$(k:key.use)$() на верхній частині (де отвір), аби додати предмети, що треба подрібнити, до млина.",
+      "text": "Використовуй $(item)$(k:key.use)$() на верхній частині (де отвір), аби додати предмети, що треба подрібнити.",
       "border": true
     },
     {
@@ -63,7 +63,7 @@
     {
       "type": "tfc:quern_recipe",
       "recipe": "tfc:quern/emerald",
-      "text": "$(l:the_world/waterways#gemstones)Дорогоцінне каміння$() можна подрібнити у порошок."
+      "text": "$(thing)Gems$() can also be ground into powder."
     },
     {
       "type": "tfc:quern_recipe",

@@ -1,0 +1,101 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:cluster_vein",
+  "config": {
+    "rarity": 45,
+    "density": 0.4,
+    "min_y": 10,
+    "max_y": 90,
+    "size": 20,
+    "random_name": "surface_hematite",
+    "blocks": [
+      {
+        "replace": [
+          "tfc:rock/raw/rhyolite"
+        ],
+        "with": [
+          {
+            "weight": 35,
+            "block": "tfc:ore/poor_hematite/rhyolite"
+          },
+          {
+            "weight": 40,
+            "block": "tfc:ore/normal_hematite/rhyolite"
+          },
+          {
+            "weight": 25,
+            "block": "tfc:ore/rich_hematite/rhyolite"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/basalt"
+        ],
+        "with": [
+          {
+            "weight": 35,
+            "block": "tfc:ore/poor_hematite/basalt"
+          },
+          {
+            "weight": 40,
+            "block": "tfc:ore/normal_hematite/basalt"
+          },
+          {
+            "weight": 25,
+            "block": "tfc:ore/rich_hematite/basalt"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/andesite"
+        ],
+        "with": [
+          {
+            "weight": 35,
+            "block": "tfc:ore/poor_hematite/andesite"
+          },
+          {
+            "weight": 40,
+            "block": "tfc:ore/normal_hematite/andesite"
+          },
+          {
+            "weight": 25,
+            "block": "tfc:ore/rich_hematite/andesite"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/dacite"
+        ],
+        "with": [
+          {
+            "weight": 35,
+            "block": "tfc:ore/poor_hematite/dacite"
+          },
+          {
+            "weight": 40,
+            "block": "tfc:ore/normal_hematite/dacite"
+          },
+          {
+            "weight": 25,
+            "block": "tfc:ore/rich_hematite/dacite"
+          }
+        ]
+      }
+    ],
+    "indicator": {
+      "rarity": 24,
+      "depth": 35,
+      "underground_rarity": 1,
+      "underground_count": 0,
+      "blocks": [
+        {
+          "block": "tfc:ore/small_hematite"
+        }
+      ]
+    }
+  }
+}

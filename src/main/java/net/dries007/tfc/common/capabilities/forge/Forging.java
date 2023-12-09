@@ -146,6 +146,13 @@ public final class Forging implements ICapabilityProvider
         save();
     }
 
+    public void addStep(@Nullable ForgeStep step, int amount)
+    {
+        steps.addStep(step);
+        work += amount;
+        save();
+    }
+
     /**
      * This will clear the current recipe, if the item has not been additionally worked.
      * Used when removing an item from an anvil, as it makes the item stackable again - despite the fact we <strong>must</strong> persist the recipe on the item stack, even if it has not been worked.

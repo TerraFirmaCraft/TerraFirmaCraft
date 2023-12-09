@@ -31,7 +31,7 @@
             },
             {
               "type": "minecraft:item",
-              "name": "tfc:gem/sapphire",
+              "name": "tfc:ore/sapphire",
               "conditions": [
                 {
                   "condition": "minecraft:random_chance",

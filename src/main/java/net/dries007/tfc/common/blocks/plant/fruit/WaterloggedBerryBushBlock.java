@@ -6,10 +6,12 @@
 
 package net.dries007.tfc.common.blocks.plant.fruit;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -19,10 +21,13 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
@@ -39,6 +44,25 @@ public class WaterloggedBerryBushBlock extends StationaryBerryBushBlock implemen
     }
 
     @Override
+    public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, List<Component> text, boolean isDebug)
+    {
+        final BlockPos sourcePos = pos.below();
+        final ClimateRange range = climateRange.get();
+
+        if (state.getValue(getFluidProperty()).getFluid() == Fluids.EMPTY)
+        {
+            text.add(Component.translatable("tfc.tooltip.berry_bush.not_underwater"));
+        }
+        text.add(FarmlandBlock.getTemperatureTooltip(level, sourcePos, range, false));
+    }
+
+    @Override
+    protected int getHydration(LevelAccessor level, BlockPos pos, BlockState state)
+    {
+        return state.getValue(FLUID).getFluid() != Fluids.EMPTY ? 100 : 0;
+    }
+
+    @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         super.createBlockStateDefinition(builder.add(getFluidProperty()));
@@ -52,9 +76,12 @@ public class WaterloggedBerryBushBlock extends StationaryBerryBushBlock implemen
     }
 
     @Override
+    @Nullable
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
-        return defaultBlockState().setValue(getFluidProperty(), getFluidProperty().keyForOrEmpty(context.getLevel().getFluidState(context.getClickedPos()).getType()));
+        BlockState state = defaultBlockState();
+        state = FluidHelpers.fillWithFluid(state, context.getLevel().getFluidState(context.getClickedPos()).getType());
+        return state;
     }
 
     @Override

@@ -22,6 +22,8 @@
     "tfc:wild_crop/sugarcane",
     "tfc:wild_crop/tomato",
     "tfc:wild_crop/jute",
-    "tfc:wild_crop/papyrus"
+    "tfc:wild_crop/papyrus",
+    "tfc:wild_crop/red_bell_pepper",
+    "tfc:wild_crop/yellow_bell_pepper"
   ]
 }

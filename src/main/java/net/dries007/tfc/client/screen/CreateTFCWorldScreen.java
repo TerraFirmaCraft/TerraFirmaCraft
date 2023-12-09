@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.client.screen;
 
+import java.util.Set;
 import net.minecraft.client.OptionInstance;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.GuiGraphics;
@@ -19,7 +20,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 
 import net.dries007.tfc.world.ChunkGeneratorExtension;
-import net.dries007.tfc.world.settings.RockLayerSettings;
 import net.dries007.tfc.world.settings.Settings;
 
 @SuppressWarnings("NotNullFieldNotInitialized")
@@ -83,15 +83,7 @@ public class CreateTFCWorldScreen extends Screen
         assert minecraft != null;
 
         final ChunkGenerator generator = context.selectedDimensions().overworld();
-        final Settings settings;
-        if (generator instanceof ChunkGeneratorExtension extension)
-        {
-            settings = extension.settings();
-        }
-        else
-        {
-            settings = new Settings();
-        }
+        final Settings settings = ((ChunkGeneratorExtension) generator).settings();
 
         options = new OptionsList(minecraft, width, height, 32, height - 32, 25);
 
@@ -131,7 +123,7 @@ public class CreateTFCWorldScreen extends Screen
         final ChunkGenerator generator = context.selectedDimensions().overworld();
         if (generator instanceof ChunkGeneratorExtension extension)
         {
-            extension.applySettings(new Settings(
+            extension.applySettings(old -> new Settings(
                 flatBedrock.get(),
                 spawnDistance.get(),
                 spawnCenterX.get(),
@@ -140,7 +132,7 @@ public class CreateTFCWorldScreen extends Screen
                 (float) (temperatureConstant.get() * 2.0 - 1.0),
                 0.49 < rainfallConstant.get() && rainfallConstant.get() < 0.51 ? rainfallScale.get() : 0,
                 (float) (rainfallConstant.get() * 2.0 - 1.0),
-                RockLayerSettings.getDefault(),
+                old.rockLayerSettings(),
                 continentalness.get().floatValue()
             ));
         }

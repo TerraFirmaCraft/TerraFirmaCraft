@@ -26,9 +26,9 @@ public class GlassworkingComponent extends InputOutputComponent<GlassworkingReci
     @Override
     public void render(GuiGraphics graphics, IComponentRenderContext context, float partialTicks, int mouseX, int mouseY)
     {
-        if (recipe == null)
-            return;
         super.render(graphics, context, partialTicks, mouseX, mouseY);
+
+        if (recipe == null) return;
 
         final Font font = Minecraft.getInstance().font;
         int idx = 0;

@@ -1,0 +1,44 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:cluster_vein",
+  "config": {
+    "rarity": 20,
+    "density": 0.6,
+    "min_y": -80,
+    "max_y": 0,
+    "size": 30,
+    "random_name": "gabbro_garnierite",
+    "blocks": [
+      {
+        "replace": [
+          "tfc:rock/raw/gabbro"
+        ],
+        "with": [
+          {
+            "weight": 15,
+            "block": "tfc:ore/poor_garnierite/gabbro"
+          },
+          {
+            "weight": 25,
+            "block": "tfc:ore/normal_garnierite/gabbro"
+          },
+          {
+            "weight": 60,
+            "block": "tfc:ore/rich_garnierite/gabbro"
+          }
+        ]
+      }
+    ],
+    "indicator": {
+      "rarity": 0,
+      "depth": 35,
+      "underground_rarity": 1,
+      "underground_count": 7,
+      "blocks": [
+        {
+          "block": "tfc:ore/small_garnierite"
+        }
+      ]
+    }
+  }
+}

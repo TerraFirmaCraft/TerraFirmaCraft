@@ -6,9 +6,9 @@
 
 package net.dries007.tfc.util;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.decoration.PaintingVariant;
 import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import net.dries007.tfc.TerraFirmaCraft;
@@ -16,7 +16,7 @@ import net.dries007.tfc.TerraFirmaCraft;
 @SuppressWarnings("unused")
 public class TFCPaintings
 {
-    public static final DeferredRegister<PaintingVariant> PAINTING_TYPES = DeferredRegister.create(ForgeRegistries.PAINTING_VARIANTS, TerraFirmaCraft.MOD_ID);
+    public static final DeferredRegister<PaintingVariant> PAINTING_TYPES = DeferredRegister.create(Registries.PAINTING_VARIANT, TerraFirmaCraft.MOD_ID);
 
     public static final RegistryObject<PaintingVariant> GOLDEN_FIELD = register("golden_field", 16, 16);
     public static final RegistryObject<PaintingVariant> HOT_SPRING = register("hot_spring", 32, 32);

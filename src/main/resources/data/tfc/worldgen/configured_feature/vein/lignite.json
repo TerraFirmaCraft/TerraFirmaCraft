@@ -1,16 +1,16 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:cluster_vein",
+  "type": "tfc:disc_vein",
   "config": {
-    "rarity": 90,
-    "min_y": {
-      "absolute": -48
-    },
-    "max_y": {
-      "absolute": 100
-    },
-    "size": 10,
-    "density": 0.6,
+    "rarity": 160,
+    "density": 0.85,
+    "min_y": -20,
+    "max_y": -8,
+    "project": true,
+    "project_offset": true,
+    "size": 40,
+    "height": 2,
+    "random_name": "lignite",
     "blocks": [
       {
         "replace": [
@@ -82,7 +82,6 @@
           }
         ]
       }
-    ],
-    "random_name": "lignite"
+    ]
   }
 }

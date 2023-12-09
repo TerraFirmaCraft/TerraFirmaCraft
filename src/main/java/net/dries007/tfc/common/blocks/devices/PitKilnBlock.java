@@ -87,7 +87,7 @@ public class PitKilnBlock extends DeviceBlock
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder.add(STAGE));
+        builder.add(STAGE);
     }
 
     @Override

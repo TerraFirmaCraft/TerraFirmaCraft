@@ -11,7 +11,12 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/fire_clay",
-      "text": "Вогнетривка глина виготовляється з $(l:the_world/ores_and_minerals#kaolinite)каолініта$() та $(l:the_world/ores_and_minerals#graphite)графіта$(), перетертих у порошок на $(l:mechanics/quern)млині$()."
+      "text": "Fire clay is made from $(l:the_world/ores_and_minerals#graphite)graphite$() powder, crushed in a $(l:mechanics/quern)quern$(), as well as $(l:the_world/ores_and_minerals#kaolinite)kaolinite$() powder"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/kaolin_clay",
+      "text": "Kaolinite powder is made by heating $(l:the_world/ores_and_minerals#kaolinite)Kaolin Clay$(). However, the process is not perfect, and only 20%% of clay will form powder!"
     },
     {
       "type": "tfc:knapping_recipe",
@@ -28,7 +33,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:fire_clay_knapping/fire_ingot_mold",
-      "text": "$(thing)Fire Ingot Molds$() are a stronger type of $(l:getting_started/pottery#mold)Ingot Mold$() that has just a 1 in 100 chance of breaking, compared to 1 in 10 for a regular ingot mold."
+      "text": "$(thing)Вогнетривка форма злитку$() є міцнішим варіантом $(l:getting_started/pottery#mold)форми для злитку$(), що має лише 1 із 100 шансів зламатись, порівняно з 1 із 10 для звичайної форми."
     }
   ],
   "read_by_default": true

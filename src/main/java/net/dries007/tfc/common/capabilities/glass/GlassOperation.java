@@ -15,12 +15,12 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.blocks.Gem;
 import net.dries007.tfc.common.blocks.rock.Ore;
+import net.dries007.tfc.common.capabilities.heat.Heat;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.items.GlassworkingItem;
 import net.dries007.tfc.common.items.Powder;
@@ -94,9 +94,9 @@ public enum GlassOperation
         {
             return player.getLookAngle().y < -0.95 ? STRETCH : BLOW;
         }
-        if (stack.getItem() instanceof GlassworkingItem item)
+        if (stack.getItem() instanceof IGlassworkingTool tool)
         {
-            return item.getOperation();
+            return tool.getOperation();
         }
         return null;
     }
@@ -118,8 +118,6 @@ public enum GlassOperation
         {
             return true;
         }
-        return stack.getCapability(HeatCapability.CAPABILITY).map(cap -> {
-            return cap.getTemperature() > 480f;
-        }).orElse(false);
+        return stack.getCapability(HeatCapability.CAPABILITY).map(cap -> cap.getTemperature() > Heat.FAINT_RED.getMin()).orElse(false);
     }
 }

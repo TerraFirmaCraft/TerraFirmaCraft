@@ -54,9 +54,9 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
     protected final Supplier<? extends Block> dead;
     protected final Supplier<? extends Item> seeds;
     protected final Supplier<ClimateRange> climateRange;
+    protected final int maxAge;
 
     private final ExtendedProperties extendedProperties;
-    private final int maxAge;
 
     protected CropBlock(ExtendedProperties properties, int maxAge, Supplier<? extends Block> dead, Supplier<? extends Item> seeds, FarmlandBlockEntity.NutrientType primaryNutrient, Supplier<ClimateRange> climateRange)
     {

@@ -6,24 +6,14 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Салат$() - це страва, що виготовляється з п'яти (максимум) інгредієнтів. Це можуть бути   $(thing)фрукти$(), $(thing)овочі$(), та $(thing)приготоване м'ясо$(). Змішуються салати у салатниці, виготовленій з керамічної $(thing)миски$()."
+      "text": "$(thing)Salads$() are a meal prepared in a $(thing)Bowl$() from up to five $(thing)Fruits$(), $(thing)Vegetables$(), or $(thing)Cooked Meats$().$(br2)Salads are one of the simplest meals to make, and just require a $(l:mechanics/bowls)Bowl$(). First, hold the $(thing)Bowl$() and press $(item)$(k:key.use)$() while holding $(item)$(k:key.sneak)$(). This will open the salad screen."
     },
     {
-      "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/bowl_4",
-      "text": "Керамічні миски виготовляють шляхом ліплення з глини та випалу її у ямі."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "Екран салату відкривається натисканням $(item)$(k:key.use)$(), утримуючи $(item)$(k:key.sneak)$(). Додавай дозволені продукти. Як салат буде готовий, то візьми його з правого слоту.$(br2)The $(l:getting_started/food_and_water)Поживність$(), вода та насиченість салату становлять 75% від загальної кількості всіх поживних речовин його інгредієнтів. Коли салат готується, термін придатності продуктів відновлюється."
-    },
-    {
-      "type": "patchouli:image",
-      "images": [
-        "tfc:textures/gui/book/gui/salad.png"
-      ],
-      "text": "Інтерфейс виготовлення салату.",
-      "border": false
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:salads",
+      "title": "",
+      "link_recipes": false,
+      "text": "Up to five ingredients can be added in the top slots. $(thing)Bowls$() can be added in the left bottom slot. When you are done, the salad can be taken out from the right bottom slot."
     }
   ],
   "read_by_default": true,
@@ -32,8 +22,6 @@
     "tfc:food/dairy_salad": 0,
     "tfc:food/vegetables_salad": 0,
     "tfc:food/protein_salad": 0,
-    "tfc:food/grain_salad": 0,
-    "tfc:ceramic/unfired_bowl": 1,
-    "tfc:ceramic/bowl": 1
+    "tfc:food/grain_salad": 0
   }
 }

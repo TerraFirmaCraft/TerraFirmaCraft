@@ -97,7 +97,7 @@ public final class JsonHelpers extends GsonHelper
         return CraftingBookCategory.CODEC.byName(getAsString(json, "category", null), CraftingBookCategory.MISC);
     }
 
-    public static <T> Supplier<T> getReference(JsonObject json, String key, DataManager<T> manager)
+    public static <T> DataManager.Reference<T> getReference(JsonObject json, String key, DataManager<T> manager)
     {
         return manager.getReference(new ResourceLocation(getAsString(json, key)));
     }

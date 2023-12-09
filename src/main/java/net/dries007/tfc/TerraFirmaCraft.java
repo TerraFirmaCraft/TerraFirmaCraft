@@ -51,10 +51,10 @@ import net.dries007.tfc.common.entities.Faunas;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.entities.ai.TFCBrain;
 import net.dries007.tfc.common.fluids.TFCFluids;
+import net.dries007.tfc.common.items.PropickItem;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.TFCRecipeSerializers;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
-import net.dries007.tfc.common.recipes.ingredients.BlockIngredients;
 import net.dries007.tfc.common.recipes.ingredients.TFCIngredients;
 import net.dries007.tfc.common.recipes.outputs.ItemStackModifiers;
 import net.dries007.tfc.compat.jade.JadeIntegration;
@@ -116,7 +116,6 @@ public final class TerraFirmaCraft
         TFCBlocks.BLOCKS.register(bus);
         TFCItems.ITEMS.register(bus);
         TFCContainerTypes.CONTAINERS.register(bus);
-        TFCCommands.ARGUMENT_TYPES.register(bus);
         TFCEntities.ENTITIES.register(bus);
         TFCFluids.FLUID_TYPES.register(bus);
         TFCFluids.FLUIDS.register(bus);
@@ -126,7 +125,9 @@ public final class TerraFirmaCraft
         TFCParticles.PARTICLE_TYPES.register(bus);
         TFCBlockEntities.BLOCK_ENTITIES.register(bus);
         TFCCreativeTabs.CREATIVE_TABS.register(bus);
-        TFCLoot.registerAll(bus);
+        TFCLoot.CONDITIONS.register(bus);
+        TFCLoot.NUMBER_PROVIDERS.register(bus);
+        TFCLoot.LOOT_FUNCTIONS.register(bus);
 
         TFCBlockPredicates.BLOCK_PREDICATES.register(bus);
         TFCPlacements.PLACEMENT_MODIFIERS.register(bus);
@@ -136,7 +137,11 @@ public final class TerraFirmaCraft
         RegionBiomeSource.BIOME_SOURCE.register(bus);
         TFCStateProviders.BLOCK_STATE_PROVIDERS.register(bus);
         TFCEffects.EFFECTS.register(bus);
-        TFCBrain.registerAll(bus);
+        TFCBrain.ACTIVITIES.register(bus);
+        TFCBrain.MEMORY_TYPES.register(bus);
+        TFCBrain.SCHEDULES.register(bus);
+        TFCBrain.SENSOR_TYPES.register(bus);
+        TFCBrain.POI_TYPES.register(bus);
         TFCPaintings.PAINTING_TYPES.register(bus);
 
         TFCConfig.init();
@@ -158,10 +163,10 @@ public final class TerraFirmaCraft
     {
         LOGGER.info("TFC Common Setup");
 
+        PropickItem.registerDefaultRepresentativeBlocks();
         InteractionManager.registerDefaultInteractions();
         TFCRecipeTypes.registerPotRecipeOutputTypes();
         RockSettings.registerDefaultRocks();
-        BlockIngredients.registerBlockIngredientTypes();
         ItemStackModifiers.registerItemStackModifierTypes();
         ServerCalendar.overrideDoDaylightCycleCallback();
 
@@ -178,6 +183,7 @@ public final class TerraFirmaCraft
             CauldronInteractions.registerCauldronInteractions();
             TFCAdvancements.registerTriggers();
             TFCBlocks.registerFlowerPotFlowers();
+            TFCBlocks.editBlockRequiredTools();
             TFCItems.editItemMaxDamage();
         }).exceptionally(e -> {
             // MinecraftForge#8255 I swear to god. Nuke parallel mod loading from the face of the earth

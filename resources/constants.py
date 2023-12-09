@@ -8,6 +8,7 @@ class Rock(NamedTuple):
     category: str
     sand: str
 
+
 class MetalItem(NamedTuple):
     type: str
     smelt_amount: int
@@ -16,6 +17,7 @@ class MetalItem(NamedTuple):
     mold: bool
     durability: bool
 
+
 class Ore(NamedTuple):
     metal: Optional[str]
     graded: bool
@@ -23,28 +25,80 @@ class Ore(NamedTuple):
     tag: str
     dye_color: Optional[str] = None
 
+
 class OreGrade(NamedTuple):
-    weight: int
     grind_amount: int
 
+
 class Vein(NamedTuple):
-    ore: str
-    type: str
+    ore: str  # The name of the ore (as found in ORES)
+    vein_type: str  # Either 'cluster', 'pipe' or 'disc'
     rarity: int
     size: int
     min_y: int
     max_y: int
     density: float
-    poor: float
-    normal: float
-    rich: float
-    rocks: List[str]
-    spoiler_ore: str
-    spoiler_rarity: int
-    spoiler_rocks: List[str]
-    biomes: Optional[str]
-    height: Optional[int]
+    grade: tuple[int, int, int]  # (poor, normal, rich) weights
+    rocks: tuple[str, ...]  # Rock, or rock categories
+    biomes: str | None
+    height: int
+    radius: int
     deposits: bool
+    indicator_rarity: int  # Above-ground indicators
+    underground_rarity: int  # Underground indicators
+    underground_count: int
+    project: bool | None  # Project to surface
+    project_offset: bool | None  # Project offset
+    near_lava: bool | None
+
+    @staticmethod
+    def new(
+        ore: str,
+        rarity: int,
+        size: int,
+        min_y: int,
+        max_y: int,
+        density: float,
+        rocks: tuple[str, ...],
+
+        vein_type: str = 'cluster',
+        grade: tuple[int, int, int] = (),
+        biomes: str = None,
+        height: int = 2,  # For disc type veins, `size` is the width
+        radius: int = 5,  # For pipe type veins, `size` is the height
+        deposits: bool = False,
+        indicator: int = 12,  # Indicator rarity
+        deep_indicator: tuple[int, int] = (1, 0),  # Pair of (rarity, count) for underground indicators
+        project: str | bool = None,  # Projects to surface. Either True or 'offset'
+        near_lava: bool | None = None,
+    ):
+        assert 0 < density < 1
+        assert isinstance(rocks, tuple), 'Forgot the trailing comma in a single element tuple: %s' % repr(rocks)
+        assert vein_type in ('cluster', 'disc', 'pipe')
+        assert project is None or project is True or project == 'offset'
+
+        underground_rarity, underground_count = deep_indicator
+        return Vein(ore, 'tfc:%s_vein' % vein_type, rarity, size, min_y, max_y, density, grade, rocks, biomes, height, radius, deposits, indicator, underground_rarity, underground_count, None if project is None else True, None if project != 'offset' else True, near_lava)
+
+    def config(self) -> dict[str, Any]:
+        cfg = {
+            'rarity': self.rarity,
+            'density': self.density,
+            'min_y': self.min_y,
+            'max_y': self.max_y,
+            'project': self.project,
+            'project_offset': self.project_offset,
+            'biomes': self.biomes,
+            'near_lava': self.near_lava,
+        }
+        if self.vein_type == 'tfc:cluster_vein':
+            cfg.update(size=self.size)
+        elif self.vein_type == 'tfc:pipe_vein':
+            cfg.update(min_skew=5, max_skew=13, min_slant=0, max_slant=2, sign=0, height=self.size, radius=self.radius)
+        else:
+            cfg.update(size=self.size, height=self.height)
+        return cfg
+
 
 class Plant(NamedTuple):
     clay: bool
@@ -55,9 +109,11 @@ class Plant(NamedTuple):
     type: str
     worldgen: bool = True
 
+
 class Wood(NamedTuple):
     temp: float
     duration: int
+
 
 class Berry(NamedTuple):
     min_temp: float
@@ -68,11 +124,13 @@ class Berry(NamedTuple):
     min_forest: str
     max_forest: str
 
+
 class Fruit(NamedTuple):
     min_temp: float
     max_temp: float
     min_rain: float
     max_rain: float
+
 
 class Crop(NamedTuple):
     type: str
@@ -87,9 +145,10 @@ class Crop(NamedTuple):
     min_forest: Optional[str]
     max_forest: Optional[str]
 
+
 class Metal(NamedTuple):
     tier: int
-    types: Set[str]
+    types: Set[str]  # One of 'part', 'tool', 'armor', 'utility'
     heat_capacity_base: float  # Do not access directly, use one of specific or ingot heat capacity.
     melt_temperature: float
     melt_metal: Optional[str]
@@ -257,7 +316,6 @@ ORES: Dict[str, Ore] = {
     'tetrahedrite': Ore('copper', True, 'copper', 'copper', 'gray'),
     'bituminous_coal': Ore(None, False, 'copper', 'coal'),
     'lignite': Ore(None, False, 'copper', 'coal'),
-    'kaolinite': Ore(None, False, 'copper', 'kaolinite'),
     'gypsum': Ore(None, False, 'copper', 'gypsum'),
     'graphite': Ore(None, False, 'copper', 'graphite'),
     'sulfur': Ore(None, False, 'copper', 'sulfur'),
@@ -278,84 +336,93 @@ ORES: Dict[str, Ore] = {
     'topaz': Ore(None, False, 'steel', 'topaz')  # Mohs: 8
 }
 ORE_GRADES: Dict[str, OreGrade] = {
-    'normal': OreGrade(50, 5),
-    'poor': OreGrade(30, 3),
-    'rich': OreGrade(20, 7)
+    'normal': OreGrade(5),
+    'poor': OreGrade(3),
+    'rich': OreGrade(7)
 }
 DEFAULT_FORGE_ORE_TAGS: Tuple[str, ...] = ('coal', 'diamond', 'emerald', 'gold', 'iron', 'lapis', 'netherite_scrap', 'quartz', 'redstone')
 
+POOR = 70, 25, 5  # = 1550
+NORMAL = 35, 40, 25  # = 2400
+RICH = 15, 25, 60  # = 2550
 
-def vein(ore: str, vein_type: str, rarity: int, size: int, min_y: int, max_y: int, density: float, poor: float, normal: float, rich: float, rocks: List[str], spoiler_ore: Optional[str] = None, spoiler_rarity: int = 0, spoiler_rocks: List[str] = None, biomes: str = None, height: int = 2, deposits: bool = False):
-    # Factory method to allow default values
-    return Vein(ore, vein_type, rarity, size, min_y, max_y, density, poor, normal, rich, rocks, spoiler_ore, spoiler_rarity, spoiler_rocks, biomes, height, deposits)
+ORE_VEINS: dict[str, Vein] = {
+    # Copper
+    # Native - only in IE, only surface, and common to compensate for the y-level getting cut off.
+    # Malachite + Tetrahedrite - Sed + MM, can spawn in larger deposits, hence more common. Tetrahedrite also spawns at high altitude MM
+    # All copper have high indicator rarity because it's necessary early on
+    'surface_native_copper': Vein.new('native_copper', 24, 20, 40, 130, 0.25, ('igneous_extrusive',), grade=POOR, deposits=True, indicator=14),
+    'surface_malachite': Vein.new('malachite', 32, 20, 40, 130, 0.25, ('marble', 'limestone', 'chalk', 'dolomite'), grade=POOR, indicator=14),
+    'surface_tetrahedrite': Vein.new('tetrahedrite', 7, 20, 90, 170, 0.25, ('metamorphic',), grade=POOR, indicator=8),
 
+    'normal_malachite': Vein.new('malachite', 45, 30, -30, 70, 0.5, ('marble', 'limestone', 'chalk', 'dolomite'), grade=NORMAL, indicator=25),
+    'normal_tetrahedrite': Vein.new('tetrahedrite', 40, 30, -30, 70, 0.5, ('metamorphic',), grade=NORMAL, indicator=25),
 
-def preset_vein(ore: str, vein_type: str, rocks: List[str], spoiler_ore: Optional[str] = None, spoiler_rarity: int = 0, spoiler_rocks: List[str] = None, biomes: str = None, height: int = 0, preset: Tuple[int, int, int, int, int, int, int, int] = None, deposits: bool = False):
-    assert preset is not None
-    return Vein(ore, vein_type, preset[0], preset[1], preset[2], preset[3], preset[4], preset[5], preset[6], preset[7], rocks, spoiler_ore, spoiler_rarity, spoiler_rocks, biomes, height, deposits)
+    # Native Gold - IE and II at all y levels, larger deeper
+    'normal_native_gold': Vein.new('native_gold', 90, 15, 0, 70, 0.25, ('igneous_extrusive', 'igneous_intrusive'), grade=NORMAL, indicator=40),
+    'rich_native_gold': Vein.new('native_gold', 50, 40, -80, 20, 0.5, ('igneous_intrusive',), grade=RICH, indicator=0, deep_indicator=(1, 4)),
 
+    # In the same area as native gold deposits, pyrite veins - vast majority pyrite, but some native gold - basically troll veins
+    'fake_native_gold': Vein.new('pyrite', 16, 15, -50, 70, 0.35, ('igneous_extrusive', 'igneous_intrusive'), indicator=0),
 
-# Default parameters for common ore veins
-# rarity, size, min_y, max_y, density, poor, normal, rich
-POOR_METAL_ORE = (80, 15, 0, 100, 40, 40, 30, 10)
-NORMAL_METAL_ORE = (60, 20, -32, 75, 60, 20, 50, 30)
-DEEP_METAL_ORE = (100, 30, -64, 30, 70, 10, 30, 60)
-SURFACE_METAL_ORE = (20, 15, 60, 210, 50, 60, 30, 10)
+    # Silver - black bronze (T2 with gold), or for black steel. Rare and small in uplift mountains via high II or plentiful near bottom of world
+    'surface_native_silver': Vein.new('native_silver', 15, 10, 90, 180, 0.2, ('granite', 'diorite'), grade=POOR),
+    'normal_native_silver': Vein.new('native_silver', 25, 25, -80, 20, 0.6, ('granite', 'diorite', 'gneiss', 'schist'), grade=RICH, indicator=0, deep_indicator=(1, 9)),
 
-POOR_S_METAL_ORE = (100, 12, 0, 100, 40, 60, 30, 10)
-NORMAL_S_METAL_ORE = (70, 15, -32, 60, 60, 20, 50, 30)
-DEEP_S_METAL_ORE = (110, 25, -64, 30, 70, 10, 30, 60)
+    # Tin - bronze T2, rare situation (II uplift mountain) but common and rich.
+    'surface_cassiterite': Vein.new('cassiterite', 5, 15, 80, 180, 0.4, ('igneous_intrusive',), grade=NORMAL, deposits=True),
 
-DEEP_MINERAL_ORE = (90, 10, -48, 100, 60, 0, 0, 0)
-HIGH_MINERAL_ORE = (90, 10, 0, 210, 60, 0, 0, 0)
+    # Bismuth - bronze T2 surface via Sed, deep and rich via II
+    'surface_bismuthinite': Vein.new('bismuthinite', 32, 20, 40, 130, 0.3, ('sedimentary',), grade=POOR, indicator=14),
+    'normal_bismuthinite': Vein.new('bismuthinite', 45, 40, -80, 20, 0.6, ('igneous_intrusive',), grade=RICH, indicator=0, deep_indicator=(1, 4)),
 
-ORE_VEINS: Dict[str, Vein] = {
-    'normal_native_copper': preset_vein('native_copper', 'cluster', ['igneous_extrusive'], preset=NORMAL_METAL_ORE),
-    'surface_native_copper': preset_vein('native_copper', 'cluster', ['igneous_extrusive'], preset=SURFACE_METAL_ORE, deposits=True),
-    'normal_native_gold': preset_vein('native_gold', 'cluster', ['igneous_extrusive', 'igneous_intrusive'], 'pyrite', 20, ['igneous_extrusive', 'igneous_intrusive'], preset=NORMAL_S_METAL_ORE),
-    'deep_native_gold': preset_vein('native_gold', 'cluster', ['igneous_extrusive', 'igneous_intrusive'], 'pyrite', 10, ['igneous_extrusive', 'igneous_intrusive'], preset=DEEP_S_METAL_ORE),
-    'normal_native_silver': preset_vein('native_silver', 'cluster', ['granite', 'gneiss'], preset=NORMAL_METAL_ORE),
-    'poor_native_silver': preset_vein('native_silver', 'cluster', ['granite', 'metamorphic'], preset=POOR_METAL_ORE),
-    'normal_hematite': preset_vein('hematite', 'cluster', ['igneous_extrusive'], preset=NORMAL_METAL_ORE),
-    'deep_hematite': preset_vein('hematite', 'cluster', ['igneous_extrusive'], preset=DEEP_METAL_ORE),
-    'normal_cassiterite': preset_vein('cassiterite', 'cluster', ['igneous_intrusive'], 'topaz', 10, ['granite'], preset=NORMAL_METAL_ORE),
-    'surface_cassiterite': preset_vein('cassiterite', 'cluster', ['igneous_intrusive'], 'topaz', 20, ['granite'], preset=SURFACE_METAL_ORE, deposits=True),
-    'normal_bismuthinite': preset_vein('bismuthinite', 'cluster', ['igneous_intrusive', 'sedimentary'], preset=NORMAL_METAL_ORE),
-    'surface_bismuthinite': preset_vein('bismuthinite', 'cluster', ['igneous_intrusive', 'sedimentary'], preset=SURFACE_METAL_ORE),
-    'normal_garnierite': preset_vein('garnierite', 'cluster', ['gabbro'], preset=NORMAL_S_METAL_ORE),
-    'poor_garnierite': preset_vein('garnierite', 'cluster', ['igneous_intrusive'], preset=POOR_S_METAL_ORE),
-    'normal_malachite': preset_vein('malachite', 'cluster', ['marble', 'limestone'], 'gypsum', 10, ['limestone'], preset=NORMAL_METAL_ORE),
-    'poor_malachite': preset_vein('malachite', 'cluster', ['marble', 'limestone', 'phyllite', 'chalk', 'dolomite'], 'gypsum', 20, ['limestone'], preset=POOR_METAL_ORE),
-    'normal_magnetite': preset_vein('magnetite', 'cluster', ['sedimentary'], preset=NORMAL_METAL_ORE),
-    'deep_magnetite': preset_vein('magnetite', 'cluster', ['sedimentary'], preset=DEEP_METAL_ORE),
-    'normal_limonite': preset_vein('limonite', 'cluster', ['sedimentary'], 'ruby', 20, ['limestone', 'shale'], preset=NORMAL_METAL_ORE),
-    'deep_limonite': preset_vein('limonite', 'cluster', ['sedimentary'], 'ruby', 10, ['limestone', 'shale'], preset=DEEP_METAL_ORE),
-    'normal_sphalerite': preset_vein('sphalerite', 'cluster', ['metamorphic'], preset=NORMAL_METAL_ORE),
-    'surface_sphalerite': preset_vein('sphalerite', 'cluster', ['metamorphic'], preset=SURFACE_METAL_ORE),
-    'normal_tetrahedrite': preset_vein('tetrahedrite', 'cluster', ['metamorphic'], preset=NORMAL_METAL_ORE),
-    'surface_tetrahedrite': preset_vein('tetrahedrite', 'cluster', ['metamorphic'], preset=SURFACE_METAL_ORE),
+    # Zinc - bronze T2, requires different source from bismuth, surface via IE, or deep via II
+    'surface_sphalerite': Vein.new('sphalerite', 30, 20, 40, 130, 0.3, ('igneous_extrusive',), grade=POOR),
+    'normal_sphalerite': Vein.new('sphalerite', 45, 40, -80, 20, 0.6, ('igneous_intrusive',), grade=RICH, indicator=0, deep_indicator=(1, 5)),
 
-    'bituminous_coal': preset_vein('bituminous_coal', 'cluster', ['sedimentary'], preset=HIGH_MINERAL_ORE),
-    'lignite': preset_vein('lignite', 'cluster', ['sedimentary'], preset=DEEP_MINERAL_ORE),
-    'kaolinite': preset_vein('kaolinite', 'cluster', ['sedimentary'], preset=HIGH_MINERAL_ORE),
-    'graphite': preset_vein('graphite', 'cluster', ['gneiss', 'marble', 'quartzite', 'schist'], preset=DEEP_MINERAL_ORE),
-    'cinnabar': preset_vein('cinnabar', 'cluster', ['igneous_extrusive', 'quartzite', 'shale'], 'opal', 10, ['quartzite'], preset=DEEP_MINERAL_ORE),
-    'cryolite': preset_vein('cryolite', 'cluster', ['granite'], preset=DEEP_MINERAL_ORE),
-    'saltpeter': preset_vein('saltpeter', 'cluster', ['sedimentary'], 'gypsum', 20, ['limestone'], preset=DEEP_MINERAL_ORE),
-    'sulfur': preset_vein('sulfur', 'cluster', ['igneous_extrusive'], 'gypsum', 20, ['rhyolite'], preset=HIGH_MINERAL_ORE),
-    'sylvite': preset_vein('sylvite', 'cluster', ['shale', 'claystone', 'chert'], preset=HIGH_MINERAL_ORE),
-    'borax': preset_vein('borax', 'cluster', ['claystone', 'limestone', 'shale'], preset=HIGH_MINERAL_ORE),
-    'gypsum': vein('gypsum', 'disc', 120, 20, 30, 90, 60, 0, 0, 0, ['metamorphic']),
-    'lapis_lazuli': preset_vein('lapis_lazuli', 'cluster', ['limestone', 'marble'], preset=DEEP_MINERAL_ORE),
-    'halite': vein('halite', 'disc', 120, 30, 30, 90, 80, 0, 0, 0, ['sedimentary']),
-    'diamond': vein('diamond', 'pipe', 60, 60, -64, 100, 40, 0, 0, 0, ['gabbro']),
-    'emerald': vein('emerald', 'pipe', 80, 60, -64, 100, 40, 0, 0, 0, ['igneous_intrusive']),
-    'volcanic_sulfur': vein('sulfur', 'disc', 25, 14, 80, 180, 40, 0, 0, 0, ['igneous_extrusive', 'igneous_intrusive'], biomes='#tfc:is_volcanic', height=6),
-    'amethyst': vein('amethyst', 'disc', 14, 8, 40, 60, 20, 0, 0, 0, ['sedimentary', 'metamorphic'], biomes='#tfc:is_river', height=4),
-    'opal': vein('opal', 'disc', 14, 8, 40, 60, 20, 0, 0, 0, ['sedimentary', 'igneous_extrusive'], biomes='#tfc:is_river', height=4)
+    # Iron - both surface via IE and Sed. IE has one, Sed has two, so the two are higher rarity
+    'surface_hematite': Vein.new('hematite', 45, 20, 10, 90, 0.4, ('igneous_extrusive',), grade=NORMAL, indicator=24),
+    'surface_magnetite': Vein.new('magnetite', 90, 20, 10, 90, 0.4, ('sedimentary',), grade=NORMAL, indicator=24),
+    'surface_limonite': Vein.new('limonite', 90, 20, 10, 90, 0.4, ('sedimentary',), grade=NORMAL, indicator=24),
+
+    # Nickel - only deep spawning II. Extra veins in gabbro
+    'normal_garnierite': Vein.new('garnierite', 25, 18, -80, 0, 0.3, ('igneous_intrusive',), grade=NORMAL),
+    'gabbro_garnierite': Vein.new('garnierite', 20, 30, -80, 0, 0.6, ('gabbro',), grade=RICH, indicator=0, deep_indicator=(1, 7)),
+
+    # Graphite - for steel, found in low MM. Along with Kao, which is high altitude sed (via clay deposits)
+    'graphite': Vein.new('graphite', 20, 20, -30, 60, 0.4, ('gneiss', 'marble', 'quartzite', 'schist')),
+
+    # Coal, spawns roughly based on IRL grade (lignite -> bituminous -> anthracite), big flat discs
+    'lignite': Vein.new('lignite', 160, 40, -20, -8, 0.85, ('sedimentary',), vein_type='disc', height=2, project='offset'),
+    'bituminous_coal': Vein.new('bituminous_coal', 210, 50, -35, -12, 0.9, ('sedimentary',), vein_type='disc', height=3, project='offset'),
+
+    # Sulfur spawns near lava level in any low-level rock, common, but small veins
+    'sulfur': Vein.new('sulfur', 4, 18, -64, -45, 0.25, ('igneous_intrusive', 'metamorphic'), vein_type='disc', height=5, near_lava=True),
+
+    # Redstone: Cryolite is deep II, cinnabar is deep MM, both are common enough within these rocks but rare to find
+    'cryolite': Vein.new('cryolite', 16, 18, -70, -10, 0.7, ('granite', 'diorite')),
+    'cinnabar': Vein.new('cinnabar', 14, 18, -70, 10, 0.6, ('quartzite', 'phyllite', 'gneiss', 'schist')),
+
+    # Misc minerals - all spawning in discs, mostly in sedimentary rock. Rare, but all will spawn together
+    # Gypsum is decorative, so more common, and Borax is sad, so more common (but smaller)
+    # Veins that spawn in all sedimentary are rarer than those that don't
+    'saltpeter': Vein.new('saltpeter', 110, 35, 40, 100, 0.4, ('sedimentary',), vein_type='disc', height=5),
+    'sylvite': Vein.new('sylvite', 60, 35, 40, 100, 0.35, ('shale', 'claystone', 'chert'), vein_type='disc', height=5),
+    'borax': Vein.new('borax', 40, 23, 40, 100, 0.2, ('claystone', 'limestone', 'shale'), vein_type='disc', height=3),
+    'gypsum': Vein.new('gypsum', 70, 25, 40, 100, 0.3, ('sedimentary',), vein_type='disc', height=5),
+    'halite': Vein.new('halite', 110, 35, -45, -12, 0.85, ('sedimentary',), vein_type='disc', height=4, project='offset'),
+
+    # Gems - these are all fairly specific but since we don't have a gameplay need for gems they can be a bit niche
+    'lapis_lazuli': Vein.new('lapis_lazuli', 30, 30, -20, 80, 0.12, ('limestone', 'marble')),
+
+    'diamond': Vein.new('diamond', 30, 60, -64, 100, 0.15, ('gabbro',), vein_type='pipe', radius=5),
+    'emerald': Vein.new('emerald', 80, 60, -64, 100, 0.15, ('igneous_intrusive',), vein_type='pipe', radius=5),
+
+    'amethyst': Vein.new('amethyst', 25, 8, 40, 60, 0.2, ('sedimentary', 'metamorphic'), vein_type='disc', biomes='#tfc:is_river', height=4),
+    'opal': Vein.new('opal', 25, 8, 40, 60, 0.2, ('sedimentary', 'igneous_extrusive'), vein_type='disc', biomes='#tfc:is_river', height=4),
 }
 
-ALL_MINERALS = ('bituminous_coal', 'lignite', 'kaolinite', 'graphite', 'cinnabar', 'cryolite', 'saltpeter', 'sulfur', 'sylvite', 'borax', 'gypsum', 'lapis_lazuli', 'halite', 'diamond', 'emerald', 'sulfur', 'amethyst', 'opal')
+ALL_MINERALS = ('bituminous_coal', 'lignite', 'graphite', 'cinnabar', 'cryolite', 'saltpeter', 'sulfur', 'sylvite', 'borax', 'gypsum', 'lapis_lazuli', 'halite', 'diamond', 'emerald', 'sulfur', 'amethyst', 'opal')
 
 DEPOSIT_RARES: Dict[str, str] = {
     'granite': 'topaz',
@@ -364,7 +431,7 @@ DEPOSIT_RARES: Dict[str, str] = {
     'shale': 'borax',
     'claystone': 'amethyst',
     'limestone': 'lapis_lazuli',
-    'conglomerate':'lignite',
+    'conglomerate': 'lignite',
     'dolomite': 'amethyst',
     'chert': 'ruby',
     'chalk': 'sapphire',
@@ -388,6 +455,7 @@ SAND_BLOCK_TYPES = ('brown', 'white', 'black', 'red', 'yellow', 'green', 'pink')
 SANDSTONE_BLOCK_TYPES = ('raw', 'smooth', 'cut')
 SOIL_BLOCK_TYPES = ('dirt', 'grass', 'grass_path', 'clay', 'clay_grass', 'farmland', 'rooted_dirt', 'mud', 'mud_bricks', 'drying_bricks', 'muddy_roots')
 SOIL_BLOCK_VARIANTS = ('silt', 'loam', 'sandy_loam', 'silty_loam')
+KAOLIN_CLAY_TYPES = ('red', 'pink', 'white')
 SOIL_BLOCK_TAGS: Dict[str, List[str]] = {
     'grass': ['grass'],
     'dirt': ['dirt'],
@@ -457,6 +525,8 @@ CROPS: Dict[str, Crop] = {
     'tomato': Crop('double_stick', 8, 'potassium', 0, 36, 120, 390, 30, 95, 'normal', None),
     'jute': Crop('double', 6, 'potassium', 5, 37, 100, 410, 25, 100, None, None),
     'papyrus': Crop('double', 6, 'potassium', 19, 37, 310, 500, 70, 100, None, None),
+    'red_bell_pepper': Crop('pickable', 7, 'potassium', 16, 30, 190, 400, 25, 60, None, None),
+    'yellow_bell_pepper': Crop('pickable', 7, 'potassium', 16, 30, 190, 400, 25, 60, None, None),
 }
 
 PLANTS: Dict[str, Plant] = {
@@ -507,12 +577,15 @@ PLANTS: Dict[str, Plant] = {
     'green_algae': Plant(False, -20, 30, 215, 450, 'floating_fresh'),
     'gutweed': Plant(False, -2.1, 19.3, 100, 500, 'water'),
     'heliconia': Plant(False, 15.7, 40, 320, 500, 'standard'),
+    'heather': Plant(False, -2.1, 8.6, 180, 380, 'standard'),
     'hibiscus': Plant(False, 12.1, 24.6, 260, 450, 'tall_plant'),
+    'ivy': Plant(False, -4, 14, 90, 450, 'creeping'),
     'kangaroo_paw': Plant(False, 15.7, 40, 100, 300, 'standard'),
     'king_fern': Plant(False, 19.3, 40, 350, 500, 'tall_plant'),
     'labrador_tea': Plant(False, -12.9, 3.2, 200, 380, 'standard'),
     'lady_fern': Plant(False, -5.7, 10.4, 200, 500, 'standard'),
     'licorice_fern': Plant(False, 5, 12.1, 300, 400, 'epiphyte'),
+    'artists_conk': Plant(False, -12, 21, 150, 420, 'epiphyte'),
     'lily_of_the_valley': Plant(False, -11.1, 15.7, 180, 415, 'standard'),
     'lilac': Plant(False, -5.7, 8.6, 150, 300, 'tall_plant'),
     'lotus': Plant(False, -0.4, 19.3, 0, 500, 'floating_fresh'),
@@ -521,6 +594,7 @@ PLANTS: Dict[str, Plant] = {
     'meads_milkweed': Plant(False, -5.7, 5, 130, 380, 'standard'),
     'milfoil': Plant(False, -9.3, 22.9, 250, 500, 'water_fresh'),
     'morning_glory': Plant(False, -14, 19, 300, 500, 'creeping'),
+    'philodendron': Plant(False, 16, 30, 380, 500, 'creeping'),
     'moss': Plant(False, -10, 30, 250, 450, 'creeping'),
     'nasturtium': Plant(False, 8.6, 22.9, 150, 380, 'standard'),
     'ostrich_fern': Plant(False, -9.3, 8.6, 290, 470, 'tall_plant'),
@@ -590,6 +664,7 @@ FLOWERPOT_CROSS_PLANTS = {
     'goldenrod': 'goldenrod_2',
     'grape_hyacinth': 'grape_hyacinth_1',
     'heliconia': 'heliconia_0',
+    'heather': 'potted',
     'houstonia': 'houstonia_1',
     'kangaroo_paw': 'item',
     'labrador_tea': 'labrador_tea_4',
@@ -629,7 +704,7 @@ FLOWERPOT_CROSS_PLANTS = {
 SIMPLE_TALL_PLANTS = {
     'foxglove': 5
 }
-MISC_POTTED_PLANTS = ['barrel_cactus', 'morning_glory', 'moss', 'reindeer_lichen', 'rose', 'toquilla_palm', 'tree_fern', 'sea_palm']
+MISC_POTTED_PLANTS = ['barrel_cactus', 'morning_glory', 'moss', 'reindeer_lichen', 'rose', 'toquilla_palm', 'tree_fern', 'sea_palm', 'philodendron']
 
 SIMPLE_STAGE_PLANTS: Dict[str, int] = {
     'allium': 8,
@@ -666,8 +741,8 @@ SIMPLE_STAGE_PLANTS: Dict[str, int] = {
 MODEL_PLANTS: List[str] = ['arundo', 'arundo_plant', 'athyrium_fern', 'dry_phragmite', 'dry_phragmite_plant', 'hanging_vines', 'hanging_vines_plant', 'spanish_moss', 'spanish_moss_plant', 'lady_fern', 'laminaria', 'liana', 'liana_plant', 'milfoil', 'sago', 'sword_fern', 'tree_fern', 'tree_fern_plant', 'winged_kelp', 'winged_kelp_plant', 'sea_palm']
 SEAGRASS: List[str] = ['star_grass', 'manatee_grass', 'eel_grass', 'turtle_grass', 'coontail']
 
-UNIQUE_PLANTS: List[str] = ['hanging_vines_plant', 'hanging_vines', 'spanish_moss', 'spanish_moss_plant', 'liana_plant', 'liana', 'tree_fern_plant', 'tree_fern', 'arundo_plant', 'arundo', 'dry_phragmite', 'dry_phragmite_plant', 'winged_kelp_plant', 'winged_kelp', 'leafy_kelp_plant', 'leafy_kelp', 'giant_kelp_plant', 'giant_kelp_flower', 'ivy', 'jungle_vines', 'saguaro', 'saguaro_plant']
-BROWN_COMPOST_PLANTS: List[str] = ['hanging_vines', 'spanish_moss', 'liana', 'tree_fern', 'arundo', 'dry_phragmite', 'ivy', 'jungle_vines']
+UNIQUE_PLANTS: List[str] = ['hanging_vines_plant', 'hanging_vines', 'spanish_moss', 'spanish_moss_plant', 'liana_plant', 'liana', 'tree_fern_plant', 'tree_fern', 'arundo_plant', 'arundo', 'dry_phragmite', 'dry_phragmite_plant', 'winged_kelp_plant', 'winged_kelp', 'leafy_kelp_plant', 'leafy_kelp', 'giant_kelp_plant', 'giant_kelp_flower', 'jungle_vines', 'saguaro', 'saguaro_plant']
+BROWN_COMPOST_PLANTS: List[str] = ['hanging_vines', 'spanish_moss', 'liana', 'tree_fern', 'arundo', 'dry_phragmite', 'jungle_vines']
 SEAWEED: List[str] = ['sago', 'gutweed', 'laminaria', 'milfoil']
 CORALS: List[str] = ['tube', 'brain', 'bubble', 'fire', 'horn']
 CORAL_BLOCKS: List[str] = ['dead_coral', 'dead_coral', 'dead_coral_fan', 'coral_fan', 'dead_coral_wall_fan', 'coral_wall_fan']
@@ -681,7 +756,7 @@ PLANT_COLORS: Dict[str, List[str]] = {
     'lime': ['moss'],
     'pink': ['foxglove', 'sacred_datura', 'tulip_pink', 'snapdragon_pink', 'hibiscus', 'lotus', 'maiden_pink'],
     'light_gray': ['yucca'],
-    'purple': ['allium', 'black_orchid', 'perovskia', 'blue_ginger', 'pickerelweed'],
+    'purple': ['allium', 'black_orchid', 'perovskia', 'blue_ginger', 'pickerelweed', 'heather'],
     'blue': ['blue_orchid', 'grape_hyacinth'],
     'brown': ['field_horsetail', 'sargassum'],
     'green': ['barrel_cactus', 'reindeer_lichen'],
@@ -737,7 +812,7 @@ DISC_COLORS = {
 
 SIMPLE_BLOCKS = ('peat', 'aggregate', 'fire_bricks', 'fire_clay_block')
 SIMPLE_ITEMS = ('alabaster_brick', 'blank_disc', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'empty_jar', 'empty_jar_with_lid', 'fire_clay', 'goat_horn', 'gem_saw', 'glow_arrow', 'glue', 'hematitic_glass_batch', 'jacks', 'jar_lid',
-                'jute', 'jute_fiber', 'jute_net', 'lamp_glass', 'lens', 'mortar', 'olive_paste', 'olivine_glass_batch', 'paddle', 'papyrus', 'papyrus_strip', 'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'silica_glass_batch', 'silk_cloth', 'soaked_papyrus_strip', 'soot', 'spindle',
+                'jute', 'jute_fiber', 'jute_net', 'kaolin_clay', 'lamp_glass', 'lens', 'mortar', 'olive_paste', 'olivine_glass_batch', 'paddle', 'papyrus', 'papyrus_strip', 'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'silica_glass_batch', 'silk_cloth', 'soaked_papyrus_strip', 'soot', 'spindle',
                 'stick_bunch', 'stick_bundle', 'straw', 'unrefined_paper', 'volcanic_glass_batch', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
 GENERIC_POWDERS = {
     'charcoal': 'black',
@@ -757,7 +832,7 @@ VANILLA_TOOL_MATERIALS = ('netherite', 'diamond', 'iron', 'stone', 'wooden', 'go
 SHORE_DECORATORS = ('driftwood', 'clam', 'mollusk', 'mussel', 'seaweed', 'sticks_shore', 'guano')
 FOREST_DECORATORS = ('sticks_forest', 'pinecone', 'salt_lick', 'dead_grass', 'humus', 'rotten_flesh')
 OCEAN_PLANT_TYPES = ('grass_water', 'floating', 'water', 'emergent', 'tall_water')
-MISC_PLANT_FEATURES = ('hanging_vines', 'hanging_vines_cave', 'spanish_moss', 'ivy', 'saguaro_patch', 'jungle_vines', 'liana', 'moss_cover_patch', 'reindeer_lichen_cover_patch', 'morning_glory_cover_patch', 'tree_fern', 'arundo')
+MISC_PLANT_FEATURES = ('hanging_vines', 'hanging_vines_cave', 'spanish_moss', 'saguaro_patch', 'jungle_vines', 'liana', 'moss_cover', 'reindeer_lichen_cover', 'morning_glory_cover', 'philodendron_cover', 'tree_fern', 'arundo')
 SURFACE_GRASS_FEATURES = ('fountain_', 'orchard_', 'rye', 'scutch_', 'timothy_', 'brome', 'blue', 'raddia_')
 UNDERGROUND_FEATURES = ('cave_column', 'cave_spike', 'large_cave_spike', 'water_spring', 'lava_spring', 'calcite', 'mega_calcite', 'icicle', 'underground_loose_rocks', 'underground_guano_patch')
 
@@ -789,25 +864,27 @@ FRUITS: Dict[str, Fruit] = {
     'plum': Fruit(15, 31, 250, 400),
     'red_apple': Fruit(1, 25, 100, 280)
 }
+JAR_FRUITS: List[str] = [*BERRIES.keys(), *FRUITS.keys(), 'pumpkin_chunks', 'melon_slice']
 NORMAL_FRUIT_TREES: List[str] = [k for k in FRUITS.keys() if k != 'banana']
 
 SIMPLE_FRESHWATER_FISH = ('bluegill', 'crappie', 'lake_trout', 'largemouth_bass', 'rainbow_trout', 'salmon', 'smallmouth_bass',)
 
 GRAINS = ('barley', 'maize', 'oat', 'rice', 'rye', 'wheat')
 GRAIN_SUFFIXES = ('', '_grain', '_flour', '_dough', '_bread', '_bread_sandwich', '_bread_jam_sandwich')
-MISC_FOODS = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_pepper', 'onion', 'potato', 'red_bell_pepper', 'soybean', 'squash', 'tomato', 'yellow_bell_pepper', 'cheese', 'cooked_egg', 'boiled_egg', 'fresh_seaweed', 'dried_seaweed', 'dried_kelp', 'cattail_root', 'taro_root', 'sugarcane', 'cooked_rice')
-MEATS = ('beef', 'pork', 'chicken', 'quail', 'mutton', 'bear', 'horse_meat', 'pheasant', 'turkey', 'grouse', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'tropical_fish', 'turtle', 'calamari', 'shellfish', *SIMPLE_FRESHWATER_FISH, 'frog_legs')
+MISC_FOODS = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_pepper', 'onion', 'potato', 'red_bell_pepper', 'soybean', 'squash', 'tomato', 'yellow_bell_pepper', 'cheese', 'cooked_egg', 'boiled_egg', 'fresh_seaweed', 'dried_seaweed', 'dried_kelp', 'cattail_root', 'taro_root', 'sugarcane', 'cooked_rice', 'pumpkin_chunks', 'melon_slice')
+MEATS = ('beef', 'pork', 'chicken', 'quail', 'mutton', 'bear', 'horse_meat', 'pheasant', 'turkey', 'peafowl', 'grouse', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'tropical_fish', 'turtle', 'calamari', 'shellfish', *SIMPLE_FRESHWATER_FISH, 'frog_legs')
 NUTRIENTS = ('grain', 'fruit', 'vegetables', 'protein', 'dairy')
 
-SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'manatee', 'penguin', 'frog', 'turtle', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail', 'rabbit', 'fox', 'boar', 'donkey', 'mule', 'horse', 'deer', 'moose', 'boar', 'rat', 'cat', 'dog', 'wolf', 'panda', 'grouse', 'pheasant', 'turkey', 'ocelot', 'direwolf', *SIMPLE_FRESHWATER_FISH)
+SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'manatee', 'penguin', 'frog', 'turtle', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail', 'rabbit', 'fox', 'boar', 'donkey', 'mule', 'horse', 'deer', 'moose', 'boar', 'rat', 'cat', 'dog', 'wolf', 'panda', 'grouse', 'pheasant', 'turkey', 'ocelot', 'direwolf', 'hyena', 'tiger', 'bongo', 'caribou', 'gazelle', 'wildebeest', 'peafowl', *SIMPLE_FRESHWATER_FISH)
 BUCKETABLE_FISH = ('cod', 'pufferfish', 'tropical_fish', 'jellyfish', *SIMPLE_FRESHWATER_FISH)
-LAND_PREDATORS = ('polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'wolf', 'direwolf', 'ocelot')
+LAND_PREDATORS = ('polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'wolf', 'direwolf', 'ocelot', 'tiger', 'hyena')
 OCEAN_PREDATORS = ('dolphin', 'orca')
 OCEAN_PREY = ('isopod', 'lobster', 'crayfish', 'cod', 'tropical_fish', 'horseshoe_crab', *SIMPLE_FRESHWATER_FISH)
 LIVESTOCK = ('pig', 'cow', 'goat', 'yak', 'alpaca', 'sheep', 'musk_ox', 'chicken', 'duck', 'quail', 'horse', 'mule', 'donkey')
-LAND_PREY = ('rabbit', 'fox', 'boar', 'turtle', 'penguin', 'frog', 'deer', 'panda', 'moose', 'grouse', 'pheasant', 'turkey', 'ocelot')
+LAND_PREY = ('rabbit', 'fox', 'turtle', 'penguin', 'frog', 'deer', 'bongo', 'panda', 'grouse', 'pheasant', 'turkey', 'ocelot', 'caribou', 'gazelle', 'peafowl')
+LAND_NEUTRALS = ('boar', 'moose', 'wildebeest')
 
-BLOCK_ENTITIES = ('log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter', 'nest_box', 'bloomery', 'bloom', 'anvil', 'ingot_pile', 'sheet_pile', 'blast_furnace', 'large_vessel', 'powderkeg', 'powder_bowl', 'hot_poured_glass', 'glass_basin')
+BLOCK_ENTITIES = ('log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter', 'nest_box', 'bloomery', 'bloom', 'anvil', 'ingot_pile', 'sheet_pile', 'blast_furnace', 'large_vessel', 'powderkeg', 'bowl', 'hot_poured_glass', 'glass_basin', 'axle', 'hand_wheel')
 TANNIN_WOOD_TYPES = ('oak', 'birch', 'chestnut', 'douglas_fir', 'hickory', 'maple', 'sequoia')
 
 def spawner(entity: str, weight: int = 1, min_count: int = 1, max_count: int = 4) -> Dict[str, Any]:
@@ -873,16 +950,23 @@ LAND_CREATURES: Dict[str, Dict[str, Any]] = {
     'black_bear': spawner('tfc:black_bear', min_count=1, max_count=1, weight=2),
     'lion': spawner('tfc:lion', min_count=1, max_count=3, weight=2),
     'sabertooth': spawner('tfc:sabertooth', min_count=1, max_count=1, weight=2),
+    'tiger': spawner('tfc:tiger', min_count=1, max_count=1, weight=2),
     'rabbit': spawner('tfc:rabbit', min_count=1, max_count=4, weight=3),
     'fox': spawner('tfc:fox', min_count=1, max_count=1),
     'panda': spawner('tfc:panda', min_count=3, max_count=5),
     'boar': spawner('tfc:boar', min_count=1, max_count=2, weight=2),
-    'deer': spawner('tfc:deer', min_count=2, max_count=4, weight=3),
+    'wildebeest': spawner('tfc:wildebeest', min_count=1, max_count=2, weight=2),
     'moose': spawner('tfc:moose', min_count=1, max_count=1),
+    'bongo': spawner('tfc:bongo', min_count=2, max_count=4, weight=3),
+    'caribou': spawner('tfc:caribou', min_count=2, max_count=4, weight=3),
+    'deer': spawner('tfc:deer', min_count=2, max_count=4, weight=3),
+    'gazelle': spawner('tfc:gazelle', min_count=2, max_count=4, weight=3),
     'grouse': spawner('tfc:grouse', min_count=2, max_count=4),
     'pheasant': spawner('tfc:pheasant', min_count=2, max_count=4),
     'turkey': spawner('tfc:turkey', min_count=2, max_count=4),
+    'peafowl': spawner('tfc:peafowl', min_count=2, max_count=4),
     'wolf': spawner('tfc:wolf', min_count=6, max_count=9),
+    'hyena': spawner('tfc:hyena', min_count=5, max_count=9),
     'direwolf': spawner('tfc:direwolf', min_count=3, max_count=7),
     'donkey': spawner('tfc:donkey', min_count=1, max_count=3),
     'horse': spawner('tfc:horse', min_count=1, max_count=3),
@@ -898,7 +982,7 @@ VANILLA_MONSTERS: Dict[str, Dict[str, Any]] = {
     'slime': spawner('minecraft:slime', weight=100, min_count=4, max_count=4),
 }
 
-DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet', 'campfire', 'bucket', 'composter', 'tinted_glass', 'glass_pane', 'enchanting_table', 'bowl', 'blaze_rod', 'bone_meal', 'flower_pot', 'painting', 'torch', 'soul_torch', 'sticky_piston', 'clock', 'compass', 'white_wool_from_string', 'hay_block', 'anvil', 'wheat', 'lapis_lazuli', 'leather_horse_armor', 'map', 'furnace', 'jack_o_lantern', 'melon_seeds', 'melon', 'pumpkin_pie', 'chest', 'barrel', 'trapped_chest', 'bricks', 'bookshelf', 'crafting_table', 'lectern', 'chest_minecart', 'rail', 'beetroot_soup', 'mushroom_stew', 'rabbit_stew_from_red_mushroom', 'rabbit_stew_from_brown_mushroom', 'suspicious_stew', 'scaffolding', 'bow', 'glass_bottle', 'fletching_table', 'shield', 'lightning_rod', 'fishing_rod', 'iron_door', 'iron_trapdoor', 'spyglass', 'slime_ball', 'smoker', 'soul_campfire')
+DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet', 'campfire', 'bucket', 'composter', 'tinted_glass', 'glass_pane', 'enchanting_table', 'bowl', 'blaze_rod', 'bone_meal', 'flower_pot', 'painting', 'torch', 'soul_torch', 'sticky_piston', 'clock', 'compass', 'white_wool_from_string', 'hay_block', 'anvil', 'wheat', 'lapis_lazuli', 'leather_horse_armor', 'map', 'furnace', 'jack_o_lantern', 'melon_seeds', 'melon', 'pumpkin_pie', 'chest', 'barrel', 'trapped_chest', 'bricks', 'bookshelf', 'crafting_table', 'lectern', 'chest_minecart', 'rail', 'beetroot_soup', 'mushroom_stew', 'rabbit_stew_from_red_mushroom', 'rabbit_stew_from_brown_mushroom', 'suspicious_stew', 'scaffolding', 'bow', 'glass_bottle', 'fletching_table', 'shield', 'lightning_rod', 'fishing_rod', 'iron_door', 'iron_trapdoor', 'spyglass', 'slime_ball', 'smoker', 'soul_campfire', 'loom')
 ARMOR_SECTIONS = ('chestplate', 'leggings', 'boots', 'helmet')
 TFC_ARMOR_SECTIONS = ('helmet', 'chestplate', 'greaves', 'boots')
 VANILLA_ARMOR_TYPES = ('leather', 'golden', 'iron', 'diamond', 'netherite')
@@ -906,7 +990,7 @@ VANILLA_TOOLS = ('sword', 'shovel', 'pickaxe', 'axe', 'hoe')
 MOB_ARMOR_METALS = ('copper', 'bronze', 'black_bronze', 'bismuth_bronze', 'wrought_iron')
 MOB_TOOLS = ('axe', 'sword', 'javelin', 'mace', 'scythe')
 STONE_MOB_TOOLS = ('axe', 'javelin')
-TFC_BIOMES = ('badlands', 'inverted_badlands', 'canyons', 'low_canyons', 'plains', 'plateau', 'hills', 'rolling_hills', 'lake', 'lowlands', 'mountains', 'volcanic_mountains', 'old_mountains', 'oceanic_mountains', 'volcanic_oceanic_mountains', 'ocean', 'ocean_reef', 'deep_ocean', 'deep_ocean_trench', 'river', 'shore', 'tidal_shore', 'mountain_river', 'volcanic_mountain_river', 'old_mountain_river', 'oceanic_mountain_river', 'volcanic_oceanic_mountain_river', 'mountain_lake', 'volcanic_mountain_lake', 'old_mountain_lake', 'oceanic_mountain_lake', 'volcanic_oceanic_mountain_lake', 'plateau_lake')
+TFC_BIOMES = ('badlands', 'inverted_badlands', 'canyons', 'low_canyons', 'plains', 'plateau', 'hills', 'rolling_hills', 'lake', 'lowlands', 'salt_marsh', 'mountains', 'volcanic_mountains', 'old_mountains', 'oceanic_mountains', 'volcanic_oceanic_mountains', 'ocean', 'ocean_reef', 'deep_ocean', 'deep_ocean_trench', 'river', 'shore', 'tidal_shore', 'mountain_river', 'volcanic_mountain_river', 'old_mountain_river', 'oceanic_mountain_river', 'volcanic_oceanic_mountain_river', 'mountain_lake', 'volcanic_mountain_lake', 'old_mountain_lake', 'oceanic_mountain_lake', 'volcanic_oceanic_mountain_lake', 'plateau_lake')
 PAINTINGS = ('golden_field', 'hot_spring', 'lake', 'supports', 'volcano')
 VANILLA_TRIMS = ('coast', 'sentry', 'dune', 'wild', 'ward', 'eye', 'vex', 'tide', 'snout', 'rib', 'spire', 'wayfinder', 'shaper', 'silence', 'raiser', 'host')
 
@@ -1029,36 +1113,71 @@ DEFAULT_LANG = {
     'subtitles.entity.tfc.sabertooth.ambient': 'Sabertooth calls',
     'subtitles.entity.tfc.sabertooth.hurt': 'Sabertooth yowls',
     'subtitles.entity.tfc.sabertooth.sleep': 'Sabertooth snores',
+    'subtitles.entity.tfc.tiger.death': 'Tiger dies',
+    'subtitles.entity.tfc.tiger.attack': 'Tiger roars',
+    'subtitles.entity.tfc.tiger.ambient': 'Tiger chuffs',
+    'subtitles.entity.tfc.tiger.hurt': 'Tiger yowls',
+    'subtitles.entity.tfc.tiger.sleep': 'Tiger snores',
+    'subtitles.entity.tfc.bongo.death': 'Bongo dies',
+    'subtitles.entity.tfc.bongo.ambient': 'Bongo brays',
+    'subtitles.entity.tfc.bongo.hurt': 'Bongo yelps',
+    'subtitles.entity.tfc.caribou.death': 'Caribou dies',
+    'subtitles.entity.tfc.caribou.ambient': 'Caribou brays',
+    'subtitles.entity.tfc.caribou.hurt': 'Caribou yelps',
     'subtitles.entity.tfc.deer.death': 'Deer dies',
     'subtitles.entity.tfc.deer.ambient': 'Deer brays',
     'subtitles.entity.tfc.deer.hurt': 'Deer yelps',
-    'subtitles.entity.tfc.deer.step': 'Deer walks',
+    'subtitles.entity.tfc.gazelle.death': 'Gazelle dies',
+    'subtitles.entity.tfc.gazelle.ambient': 'Gazelle brays',
+    'subtitles.entity.tfc.gazelle.hurt': 'Gazelle yelps',
     'subtitles.entity.tfc.moose.death': 'Moose dies',
     'subtitles.entity.tfc.moose.ambient': 'Moose brays',
     'subtitles.entity.tfc.moose.hurt': 'Moose yelps',
-    'subtitles.entity.tfc.moose.step': 'Moose walks',
+    'subtitles.entity.tfc.moose.attack': 'Moose groans',
+    'subtitles.entity.tfc.boar.death': 'Boar dies',
+    'subtitles.entity.tfc.boar.ambient': 'Boar oinks',
+    'subtitles.entity.tfc.boar.hurt': 'Boar squeals',
+    'subtitles.entity.tfc.boar.attack': 'Boar grunts',
+    'subtitles.entity.tfc.wildbeest.death': 'Wildebeest dies',
+    'subtitles.entity.tfc.wildebeest.ambient': 'Wildebeest grunts',
+    'subtitles.entity.tfc.wildebeest.hurt': 'Wildebeest yelps',
+    'subtitles.entity.tfc.wildebeest.attack': 'Wildebeest rams',
     'subtitles.entity.tfc.grouse.death': 'Grouse dies',
     'subtitles.entity.tfc.grouse.ambient': 'Grouse calls',
     'subtitles.entity.tfc.grouse.hurt': 'Grouse squeals',
-    'subtitles.entity.tfc.grouse.step': 'Grouse walks',
     'subtitles.entity.tfc.pheasant.chick.ambient': 'Chick chirps',
     'subtitles.entity.tfc.pheasant.hurt': 'Pheasant crows',
     'subtitles.entity.tfc.pheasant.death': 'Pheasant dies',
     'subtitles.entity.tfc.pheasant.ambient': 'Pheasant calls',
-    'subtitles.entity.tfc.pheasant.step': 'Pheasant walks',
     'subtitles.entity.tfc.turkey.death': 'Turkey dies',
     'subtitles.entity.tfc.turkey.ambient': 'Turkey gobbles',
     'subtitles.entity.tfc.turkey.hurt': 'Turkey yelps',
-    'subtitles.entity.tfc.turkey.step': 'Turkey walks',
+    'subtitles.entity.tfc.peafowl.death': 'Peacock dies',
+    'subtitles.entity.tfc.peafowl.ambient': 'Peacock crows',
+    'subtitles.entity.tfc.peafowl.hurt': 'Peacock yelps',
     'subtitles.entity.tfc.rat.death': 'Rat dies',
     'subtitles.entity.tfc.rat.ambient': 'Rat squeaks',
     'subtitles.entity.tfc.rat.hurt': 'Rat squeals',
-    'subtitles.entity.tfc.rat.step': 'Rat patters',
     'subtitles.entity.tfc.rooster.cry': 'Rooster calls',
-    **dict(('subtitles.entity.tfc.%s.ambient' % fish, '%s splashes' % fish) for fish in (*SIMPLE_FRESHWATER_FISH, 'manatee', 'jellyfish')),
-    **dict(('subtitles.entity.tfc.%s.flop' % fish, '%s flops' % fish) for fish in (*SIMPLE_FRESHWATER_FISH, 'manatee', 'jellyfish')),
-    **dict(('subtitles.entity.tfc.%s.death' % fish, '%s dies' % fish) for fish in (*SIMPLE_FRESHWATER_FISH, 'manatee', 'jellyfish')),
-    **dict(('subtitles.entity.tfc.%s.hurt' % fish, '%s hurts' % fish) for fish in (*SIMPLE_FRESHWATER_FISH, 'manatee', 'jellyfish')),
+    'subtitles.entity.tfc.dog.ambient': 'Dog Barks',
+    'subtitles.entity.tfc.dog.hurt': 'Dog Yelps',
+    'subtitles.entity.tfc.dog.death': 'Dog Dies',
+    'subtitles.entity.tfc.dog.attack': 'Dog Bites',
+    'subtitles.entity.tfc.dog.sleep': 'Dog Snores',
+    'subtitles.entity.tfc.tfc_wolf.ambient': 'Wolf barks',
+    'subtitles.entity.tfc.tfc_wolf.hurt': 'Wolf yelps',
+    'subtitles.entity.tfc.tfc_wolf.death': 'Wolf dies',
+    'subtitles.entity.tfc.tfc_wolf.attack': 'Wolf bites',
+    'subtitles.entity.tfc.tfc_wolf.sleep': 'Wolf snores',
+    'subtitles.entity.tfc.hyena.ambient': 'Hyena laughs',
+    'subtitles.entity.tfc.hyena.hurt': 'Hyena yelps',
+    'subtitles.entity.tfc.hyena.death': 'Hyena dies',
+    'subtitles.entity.tfc.hyena.attack': 'Hyena bites',
+    'subtitles.entity.tfc.hyena.sleep': 'Hyena snores',
+    **dict(('subtitles.entity.tfc.%s.ambient' % fish, '%s splashes' % fish.title().replace('_', ' ')) for fish in (*SIMPLE_FRESHWATER_FISH, 'manatee', 'jellyfish')),
+    **dict(('subtitles.entity.tfc.%s.flop' % fish, '%s flops' % fish.title().replace('_', ' ')) for fish in (*SIMPLE_FRESHWATER_FISH, 'manatee', 'jellyfish')),
+    **dict(('subtitles.entity.tfc.%s.death' % fish, '%s dies' % fish.title().replace('_', ' ')) for fish in (*SIMPLE_FRESHWATER_FISH, 'manatee', 'jellyfish')),
+    **dict(('subtitles.entity.tfc.%s.hurt' % fish, '%s hurts' % fish.title().replace('_', ' ')) for fish in (*SIMPLE_FRESHWATER_FISH, 'manatee', 'jellyfish')),
     'subtitles.generic.tfc.dirt_slide': 'Soil landslides',
     'subtitles.generic.tfc.rock_slide_long': 'Rock collapses',
     'subtitles.generic.tfc.rock_slide_long_fake': 'Rock creaks',
@@ -1095,17 +1214,10 @@ DEFAULT_LANG = {
     'tfc.tooltip.calendar_day': 'Day : %s',
     'tfc.tooltip.calendar_birthday': '%s\'s Birthday!',
     'tfc.tooltip.calendar_date': 'Date : %s',
-    'tfc.tooltip.climate_plate_tectonics_classification': 'Region: %s',
     'tfc.tooltip.climate_koppen_climate_classification': 'Climate: %s',
-    'tfc.tooltip.climate_average_temperature': 'Avg. Temp: %s\u00b0C',
+    'tfc.tooltip.climate_average_temperature': 'Avg. Temp: %s',
     'tfc.tooltip.climate_annual_rainfall': 'Annual Rainfall: %smm',
-    'tfc.tooltip.climate_current_temp': 'Current Temp: %s\u00b0C',
-    'tfc.tooltip.f3_rainfall': 'Rainfall: %s',
-    'tfc.tooltip.f3_average_temperature': 'Avg. Temp: %s\u00b0C',
-    'tfc.tooltip.f3_temperature': 'Actual. Temp: %s\u00b0C',
-    'tfc.tooltip.f3_forest_type': 'Forest Type: ',
-    'tfc.tooltip.f3_forest_properties': 'Forest Density = %s, Weirdness = %s',
-    'tfc.tooltip.f3_invalid_chunk_data': 'Invalid Chunk Data',
+    'tfc.tooltip.climate_current_temp': 'Current Temp: %s',
     'tfc.tooltip.food_expiry_date': 'Expires on: %s',
     'tfc.tooltip.food_expiry_left': 'Expires in: %s',
     'tfc.tooltip.food_expiry_date_and_left': 'Expires on: %s (in %s)',
@@ -1174,6 +1286,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.fruit_tree.growing': 'This block could grow under the right conditions.',
     'tfc.tooltip.fruit_tree.sapling_wrong_month': 'Wrong season to grow a tree.',
     'tfc.tooltip.fruit_tree.sapling_splice': 'May be spliced',
+    'tfc.tooltip.berry_bush.not_underwater': 'Must be underwater to grow!',
     'tfc.tooltip.fertilizer.nitrogen': '§b(N) Nitrogen: §r%s%%',
     'tfc.tooltip.fertilizer.phosphorus': '§6(P) Phosphorus: §r%s%%',
     'tfc.tooltip.fertilizer.potassium': '§d(K) Potassium: §r%s%%',
@@ -1181,6 +1294,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.unseal_barrel': 'Unseal',
     'tfc.tooltip.while_sealed': 'While sealed',
     'tfc.tooltip.while_sealed_description': 'While the barrel is sealed and the required fluid is present',
+    'tfc.tooltip.windmill_not_enough_space': 'There is not enough space to place a windmill here!',
     'tfc.tooltip.anvil_is_too_low_tier_to_weld': 'The Anvil is not a high enough tier to weld that!',
     'tfc.tooltip.anvil_is_too_low_tier_to_work': 'The Anvil is not a high enough tier to work that!',
     'tfc.tooltip.not_hot_enough_to_weld': 'Not hot enough to weld!',
@@ -1207,9 +1321,9 @@ DEFAULT_LANG = {
     'tfc.tooltip.animal.cannot_pluck_old_or_sick': 'This animal is too worn out to be plucked.',
     'tfc.tooltip.scribing_table.missing_ink': 'Ink is missing!',
     'tfc.tooltip.scribing_table.invalid_ink': 'Item isn\'t ink!',
-    'tfc.tooltip.deals_damage.slashing': '§7Deals §fSlashing§r Damage',
-    'tfc.tooltip.deals_damage.piercing': '§7Deals §fPiercing§r Damage',
-    'tfc.tooltip.deals_damage.crushing': '§7Deals §fCrushing§r Damage',
+    'tfc.tooltip.deals_damage.slashing': '§7Deals §fSlashing§7 Damage',
+    'tfc.tooltip.deals_damage.piercing': '§7Deals §fPiercing§7 Damage',
+    'tfc.tooltip.deals_damage.crushing': '§7Deals §fCrushing§7 Damage',
     'tfc.tooltip.resists_damage': '§7Resistances: §fSlashing§r %s, §fPiercing§r %s, §fCrushing§r %s',
     'tfc.tooltip.immune_to_damage': 'Immune',
     'tfc.tooltip.pot_boiling': 'Boiling!',
@@ -1222,7 +1336,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.powderkeg.disabled': 'Powderkegs are disabled on this server!',
     'tfc.tooltip.glass.title': 'Glass Operations:',
     'tfc.tooltip.glass.not_hot_enough': 'The glass is not hot enough to manipulate.',
-    'tfc.tooltip.glass.tool_description': 'Performs %s during Glassworking',
+    'tfc.tooltip.glass.tool_description': '§7Performs §f%s',
     'tfc.tooltip.glass.silica': 'Silica Glass',
     'tfc.tooltip.glass.hematitic': 'Hematitic Glass',
     'tfc.tooltip.glass.olivine': 'Olivine Glass',
@@ -1230,6 +1344,10 @@ DEFAULT_LANG = {
     'tfc.tooltip.sealed': 'Sealed',
     'tfc.tooltip.unsealed': 'Unsealed',
     'tfc.tooltip.legend': 'Legend',
+    'tfc.tooltip.chance': '%s%% chance',
+    'tfc.tooltip.wind_speed': '%s km/h, %s%% %s, %s%% %s',
+    'tfc.tooltip.javelin.thrown_damage': '%s Thrown Damage',
+    'tfc.tooltip.rotation.angular_velocity': 'Rotating at \u03c9=%s rad/s',
     **dict(('trim_material.tfc.%s' % mat, lang('%s material', mat)) for mat in TRIM_MATERIALS),
 
     'tfc.jade.sealed_date': 'Sealed Date: %s',
@@ -1243,7 +1361,6 @@ DEFAULT_LANG = {
     'tfc.jade.burn_forever': 'Will burn indefinitely',
     'tfc.jade.time_left': 'Time left: %s',
     'tfc.jade.ready_to_grow': 'Ready to Grow',
-    'tfc.jade.air_ticks': '%s added air ticks remaining',
     'tfc.jade.animal_wear': 'Wear & Tear: %s',
     'tfc.jade.familiarity': 'Familiarity: %s',
     'tfc.jade.adulthood_progress': 'Becomes adult in %s',
@@ -1305,6 +1422,15 @@ DEFAULT_LANG = {
     'config.jade.plugin_tfc.loom': 'Loom',
     'config.jade.plugin_tfc.sheet_pile': 'Sheet Pile',
     'config.jade.plugin_tfc.ingot_pile': 'Ingot Pile',
+    'config.jade.plugin_tfc.axle': 'Axle',
+    'config.jade.plugin_tfc.encased_axle': 'Encased Axle',
+    'config.jade.plugin_tfc.clutch': 'Clutch',
+    'config.jade.plugin_tfc.hand_wheel': 'Hand Wheel',
+    'config.jade.plugin_tfc.gearbox': 'Gearbox',
+    'config.jade.plugin_tfc.crankshaft': 'Crankshaft',
+    'config.jade.plugin_tfc.quern': 'Quern',
+    'config.jade.plugin_tfc.water_wheel': 'Water Wheel',
+    'config.jade.plugin_tfc.windmill': 'Windmill',
 
     'config.jade.plugin_tfc.animal': 'Animal',
     'config.jade.plugin_tfc.frog': 'Frog',
@@ -1415,6 +1541,7 @@ DEFAULT_LANG = {
     'entity.tfc.panther': 'Panther',
     'entity.tfc.lion': 'Lion',
     'entity.tfc.sabertooth': 'Sabertooth',
+    'entity.tfc.tiger': 'Tiger',
     'entity.tfc.falling_block': 'Falling Block',
     'entity.tfc.fishing_bobber': 'Fishing Bobber',
     'entity.tfc.chest_minecart': 'Chest Minecart',
@@ -1437,12 +1564,19 @@ DEFAULT_LANG = {
     'entity.tfc.fox': 'Fox',
     'entity.tfc.panda': 'Panda',
     'entity.tfc.boar': 'Boar',
+    'entity.tfc.wildebeest': 'Wildebeest',
     'entity.tfc.ocelot': 'Ocelot',
+    'entity.tfc.bongo': 'Bongo',
+    'entity.tfc.caribou': 'Caribou',
     'entity.tfc.deer': 'Deer',
+    'entity.tfc.gazelle': 'Gazelle',
     'entity.tfc.moose': 'Moose',
     'entity.tfc.grouse': 'Grouse',
     'entity.tfc.pheasant': 'Pheasant',
     'entity.tfc.turkey': 'Turkey',
+    'entity.tfc.peafowl': 'Peafowl',
+    'entity.tfc.peafowl.male': 'Peacock',
+    'entity.tfc.peafowl.female': 'Peahen',
     'entity.tfc.rat': 'Rat',
     'entity.tfc.cat': 'Cat',
     'entity.tfc.cat.female': 'Female Cat',
@@ -1451,6 +1585,7 @@ DEFAULT_LANG = {
     'entity.tfc.dog.male': 'Male Dog',
     'entity.tfc.dog.female': 'Female Dog',
     'entity.tfc.wolf': 'Wolf',
+    'entity.tfc.hyena': 'Hyena',
     'entity.tfc.direwolf': 'Direwolf',
     'entity.tfc.mule': 'Mule',
     'entity.tfc.mule.male': 'Mule',
@@ -1472,19 +1607,7 @@ DEFAULT_LANG = {
     **lang_enum('day', ('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday')),
     **lang_enum('foresttype', ('sparse', 'old_growth', 'normal', 'edge', 'none')),
     **lang_enum('koppenclimateclassification', ('arctic', 'tundra', 'humid_subarctic', 'subarctic', 'cold_desert', 'hot_desert', 'temperate', 'subtropical', 'humid_subtropical', 'humid_oceanic', 'humid_subtropical', 'tropical_savanna', 'tropical_rainforest')),
-    **dict(('tfc.enum.platetectonicsclassification.%s' % k, v) for k, v in {
-        'oceanic': 'Oceanic',
-        'continental_low': 'Low Altitude Continental',
-        'continental_mid': 'Mid Altitude Continental',
-        'continental_high': 'High Altitude Continental',
-        'ocean_ocean_diverging': 'Mid-Ocean Ridge',
-        'ocean_ocean_converging': 'Oceanic Subduction',
-        'ocean_continent_diverging': 'Continental Subduction',
-        'ocean_continent_converging': 'Continental Subduction',
-        'continent_continent_diverging': 'Continental Rift',
-        'continent_continent_converging': 'Orogenic Belt',
-        'continental_shelf': 'Continental Shelf'
-    }.items()),
+    **lang_enum('direction', ('north', 'south', 'east', 'west', 'down', 'up')),
     'tfc.enum.season.january': 'Winter',
     'tfc.enum.season.february': 'Late Winter',
     'tfc.enum.season.march': 'Early Spring',
@@ -1592,6 +1715,14 @@ DEFAULT_LANG = {
     'tfc.enum.rockcategory.igneous_extrusive': 'Igneous Extrusive',
     'tfc.enum.rockcategory.sedimentary': 'Sedimentary',
     'tfc.enum.rockcategory.metamorphic': 'Metamorphic',
+    'tfc.enum.rockdisplaycategory.mafic_igneous_intrusive': 'Mafic Igneous Intrusive',
+    'tfc.enum.rockdisplaycategory.intermediate_igneous_intrusive': 'Igneous Intrusive',
+    'tfc.enum.rockdisplaycategory.felsic_igneous_intrusive': 'Felsic Igneous Intrusive',
+    'tfc.enum.rockdisplaycategory.mafic_igneous_extrusive': 'Igneous Extrusive',
+    'tfc.enum.rockdisplaycategory.intermediate_igneous_extrusive': 'Igneous Extrusive',
+    'tfc.enum.rockdisplaycategory.felsic_igneous_extrusive': 'Igneous Extrusive',
+    'tfc.enum.rockdisplaycategory.sedimentary': 'Sedimentary',
+    'tfc.enum.rockdisplaycategory.metamorphic': 'Metamorphic',
 
     'tfc.thatch_bed.use_no_sleep_no_spawn': 'This bed is too uncomfortable to sleep in.',
     'tfc.thatch_bed.use_sleep_no_spawn': 'This bed does not allow you to set your spawn.',

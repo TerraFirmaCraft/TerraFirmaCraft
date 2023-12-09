@@ -211,16 +211,12 @@ public class SluiceBlockEntity extends TickableInventoryBlockEntity<ItemStackHan
         final Fluid input = inputState.getType();
         final Fluid output = level.getFluidState(getWaterOutputPos()).getType();
 
-        final State state = isFluidValid(output) ? State.OUTPUT_ONLY : State.NONE;
-        if (inputState.hasProperty(FlowingFluid.LEVEL) && inputState.getValue(FlowingFluid.LEVEL) == 1)
-        {
-            if (state == State.OUTPUT_ONLY && output.isSame(input))
-            {
-                return State.BOTH;
-            }
-            return State.INPUT_ONLY;
-        }
-        return state;
+        final boolean isInputValid = isFluidValid(input) && inputState.hasProperty(FlowingFluid.LEVEL) && inputState.getValue(FlowingFluid.LEVEL) == 1;
+        final boolean isOutputValid = isFluidValid(output);
+
+        return isInputValid ?
+            (isOutputValid && output.isSame(input) ? State.BOTH : State.INPUT_ONLY) :
+            (isOutputValid ? State.OUTPUT_ONLY : State.NONE);
     }
 
     public boolean isFluidValid(Fluid fluid)

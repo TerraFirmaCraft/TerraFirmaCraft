@@ -15,7 +15,6 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
-import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.PlacedItemBlockEntity;
 import net.dries007.tfc.common.capabilities.Capabilities;
 
@@ -26,8 +25,7 @@ public class PlacedItemBlockEntityRenderer<T extends PlacedItemBlockEntity> impl
     {
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         placedItem.getCapability(Capabilities.ITEM).ifPresent(cap -> {
-            float timeD = RenderHelpers.itemTimeRotation();
-            poseStack.translate(0.25D, 0.25D, 0.25D);
+            poseStack.translate(0.25D, 0.0625D, 0.25D);
             if (placedItem.holdingLargeItem())
             {
                 ItemStack stack = cap.getStackInSlot(0);
@@ -35,7 +33,8 @@ public class PlacedItemBlockEntityRenderer<T extends PlacedItemBlockEntity> impl
                 {
                     poseStack.pushPose();
                     poseStack.translate(0.25D, 0, 0.25D);
-                    poseStack.mulPose(Axis.YP.rotationDegrees(90F));
+                    poseStack.mulPose(Axis.XP.rotationDegrees(90f));
+                    poseStack.mulPose(Axis.ZP.rotationDegrees(placedItem.getRotations(PlacedItemBlockEntity.SLOT_LARGE_ITEM)));
                     itemRenderer.renderStatic(stack, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer, placedItem.getLevel(), 0);
                     poseStack.popPose();
                 }
@@ -49,11 +48,18 @@ public class PlacedItemBlockEntityRenderer<T extends PlacedItemBlockEntity> impl
                     if (stack.isEmpty()) continue;
                     poseStack.pushPose();
                     poseStack.translate((i % 2 == 0 ? 1 : 0), 0, (i < 2 ? 1 : 0));
-                    poseStack.mulPose(Axis.YP.rotationDegrees(timeD));
+                    poseStack.mulPose(Axis.XP.rotationDegrees(90f));
+                    poseStack.mulPose(Axis.ZP.rotationDegrees(placedItem.getRotations(i)));
                     itemRenderer.renderStatic(stack, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer, placedItem.getLevel(), 0);
                     poseStack.popPose();
                 }
             }
         });
+    }
+
+    @Override
+    public int getViewDistance()
+    {
+        return 24;
     }
 }

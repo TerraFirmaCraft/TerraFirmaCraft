@@ -12,7 +12,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.FluidState;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.TFCLightBlock;
@@ -59,7 +58,7 @@ public interface IGlow
     }
 
     @SuppressWarnings("deprecation") // hasChunkAt
-    default void tick()
+    default void tickGlow()
     {
         Entity entity = getEntity();
         if (entity.tickCount % getLightUpdateInterval() == 0)

@@ -46,11 +46,11 @@ import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
-
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.VisibleForTesting;
 
 import net.dries007.tfc.common.TFCArmorMaterials;
 import net.dries007.tfc.common.TFCTags;
@@ -63,6 +63,7 @@ import net.dries007.tfc.common.blocks.devices.AnvilBlock;
 import net.dries007.tfc.common.blocks.devices.LampBlock;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.items.ChiselItem;
+import net.dries007.tfc.common.items.HammerItem;
 import net.dries007.tfc.common.items.IngotItem;
 import net.dries007.tfc.common.items.JavelinItem;
 import net.dries007.tfc.common.items.LampBlockItem;
@@ -81,7 +82,7 @@ public final class Metal
     public static final ResourceLocation UNKNOWN_ID = Helpers.identifier("unknown");
     public static final ResourceLocation WROUGHT_IRON_ID = Helpers.identifier("wrought_iron");
 
-    public static final DataManager<Metal> MANAGER = new DataManager<>(Helpers.identifier("metals"), "metal", Metal::new, Metal::new, Metal::encode, Packet::new);
+    public static final DataManager<Metal> MANAGER = new DataManager<>(Helpers.identifier("metals"), "metal", Metal::fromJson, Metal::fromNetwork, Metal::encode, Packet::new);
 
     private static final Map<Fluid, Metal> METAL_FLUIDS = new HashMap<>();
 
@@ -114,7 +115,7 @@ public final class Metal
     {
         for (Metal metal : MANAGER.getValues())
         {
-            if (metal.isIngot(stack))
+            if (metal.isIngot(stack) || metal.isDoubleIngot(stack))
             {
                 return metal;
             }
@@ -148,6 +149,34 @@ public final class Metal
         }
     }
 
+    private static Metal fromJson(ResourceLocation id, JsonObject json)
+    {
+        final int tier = JsonHelpers.getAsInt(json, "tier", 0);
+        final Fluid fluid = JsonHelpers.getRegistryEntry(json, "fluid", ForgeRegistries.FLUIDS);
+        final float specificHeatCapacity = JsonHelpers.getAsFloat(json, "specific_heat_capacity");
+        final float meltTemperature = JsonHelpers.getAsFloat(json, "melt_temperature");
+
+        final Ingredient ingots = json.has("ingots") ? Ingredient.fromJson(JsonHelpers.get(json, "ingots")) : null;
+        final Ingredient doubleIngots = json.has("double_ingots") ? Ingredient.fromJson(JsonHelpers.get(json, "double_ingots")) : null;
+        final Ingredient sheets = json.has("sheets") ? Ingredient.fromJson(JsonHelpers.get(json, "sheets")) : null;
+
+        return new Metal(id, tier, fluid, meltTemperature, specificHeatCapacity, ingots, doubleIngots, sheets);
+    }
+
+    private static Metal fromNetwork(ResourceLocation id, FriendlyByteBuf buffer)
+    {
+        final int tier = buffer.readVarInt();
+        final Fluid fluid = buffer.readRegistryIdUnsafe(ForgeRegistries.FLUIDS);
+        final float meltTemperature = buffer.readFloat();
+        final float specificHeatCapacity = buffer.readFloat();
+
+        final Ingredient ingots = Helpers.decodeNullable(buffer, Ingredient::fromNetwork);
+        final Ingredient doubleIngots = Helpers.decodeNullable(buffer, Ingredient::fromNetwork);
+        final Ingredient sheets = Helpers.decodeNullable(buffer, Ingredient::fromNetwork);
+
+        return new Metal(id, tier, fluid, meltTemperature, specificHeatCapacity, ingots, doubleIngots, sheets);
+    }
+
     private final int tier;
     private final Fluid fluid;
     private final float meltTemperature;
@@ -158,57 +187,32 @@ public final class Metal
     private final ResourceLocation softTextureId;
     private final String translationKey;
 
-    private final Ingredient ingots, sheets;
-
-    public Metal(ResourceLocation id, JsonObject json)
-    {
-        this.id = id;
-        this.textureId = new ResourceLocation(id.getNamespace(), "block/metal/block/" + id.getPath());
-        this.softTextureId = new ResourceLocation(id.getNamespace(), "block/metal/smooth/" + id.getPath());
-
-        this.tier = JsonHelpers.getAsInt(json, "tier", 0);
-        this.fluid = JsonHelpers.getRegistryEntry(json, "fluid", ForgeRegistries.FLUIDS);
-        this.specificHeatCapacity = JsonHelpers.getAsFloat(json, "specific_heat_capacity");
-        this.meltTemperature = JsonHelpers.getAsFloat(json, "melt_temperature");
-        this.translationKey = "metal." + id.getNamespace() + "." + id.getPath();
-
-        this.ingots = Ingredient.fromJson(JsonHelpers.get(json, "ingots"));
-        this.sheets = Ingredient.fromJson(JsonHelpers.get(json, "sheets"));
-    }
-
-    public Metal(ResourceLocation id, FriendlyByteBuf buffer)
-    {
-        this.id = id;
-        this.textureId = new ResourceLocation(id.getNamespace(), "block/metal/block/" + id.getPath());
-        this.softTextureId = new ResourceLocation(id.getNamespace(), "block/metal/smooth/" + id.getPath());
-
-        this.tier = buffer.readVarInt();
-        this.fluid = buffer.readRegistryIdUnsafe(ForgeRegistries.FLUIDS);
-        this.meltTemperature = buffer.readFloat();
-        this.specificHeatCapacity = buffer.readFloat();
-        this.translationKey = buffer.readUtf();
-
-        this.ingots = Ingredient.fromNetwork(buffer);
-        this.sheets = Ingredient.fromNetwork(buffer);
-    }
+    @Nullable
+    private final Ingredient ingots, doubleIngots, sheets;
 
     /**
-     * <strong>Not for general purpose use!</strong> Explicitly creates unregistered metals outside of the system, which are able to act as rendering stubs.
+     * <strong>Not for general purpose use!</strong> Explicitly creates unregistered metals outside the system, which are able to act as rendering stubs.
      */
     public Metal(ResourceLocation id)
     {
+        this(id, 0, Fluids.EMPTY, 0, 0, Ingredient.EMPTY, Ingredient.EMPTY, Ingredient.EMPTY);
+    }
+
+    private Metal(ResourceLocation id, int tier, Fluid fluid, float meltTemperature, float specificHeatCapacity, @Nullable Ingredient ingots, @Nullable Ingredient doubleIngots, @Nullable Ingredient sheets)
+    {
         this.id = id;
-        this.textureId = new ResourceLocation(id.getNamespace(), "block/metal/full_soft_" + id.getPath());
-        this.softTextureId = new ResourceLocation(id.getNamespace(), "block/metal/full_soft_" + id.getPath());
+        this.textureId = new ResourceLocation(id.getNamespace(), "block/metal/block/" + id.getPath());
+        this.softTextureId = new ResourceLocation(id.getNamespace(), "block/metal/smooth/" + id.getPath());
 
-        this.tier = 0;
-        this.fluid = Fluids.EMPTY;
-        this.meltTemperature = 0;
-        this.specificHeatCapacity = 0;
-        this.translationKey = "";
+        this.tier = tier;
+        this.fluid = fluid;
+        this.meltTemperature = meltTemperature;
+        this.specificHeatCapacity = specificHeatCapacity;
+        this.translationKey = "metal." + id.getNamespace() + "." + id.getPath();
 
-        this.ingots = Ingredient.EMPTY;
-        this.sheets = Ingredient.EMPTY;
+        this.ingots = ingots;
+        this.doubleIngots = doubleIngots;
+        this.sheets = sheets;
     }
 
     public void encode(FriendlyByteBuf buffer)
@@ -217,10 +221,10 @@ public final class Metal
         buffer.writeRegistryIdUnsafe(ForgeRegistries.FLUIDS, fluid);
         buffer.writeFloat(meltTemperature);
         buffer.writeFloat(specificHeatCapacity);
-        buffer.writeUtf(translationKey);
 
-        ingots.toNetwork(buffer);
-        sheets.toNetwork(buffer);
+        Helpers.encodeNullable(ingots, buffer, Ingredient::toNetwork);
+        Helpers.encodeNullable(doubleIngots, buffer, Ingredient::toNetwork);
+        Helpers.encodeNullable(sheets, buffer, Ingredient::toNetwork);
     }
 
     public ResourceLocation getId()
@@ -282,19 +286,35 @@ public final class Metal
 
     public boolean isIngot(ItemStack stack)
     {
-        return ingots.test(stack);
+        return ingots != null && ingots.test(stack);
     }
 
+    public boolean isDoubleIngot(ItemStack stack)
+    {
+        return doubleIngots != null && doubleIngots.test(stack);
+    }
+
+    public boolean isSheet(ItemStack stack)
+    {
+        return sheets != null && sheets.test(stack);
+    }
+
+    @Nullable
+    @VisibleForTesting
     public Ingredient getIngotIngredient()
     {
         return ingots;
     }
 
-    public boolean isSheet(ItemStack stack)
+    @Nullable
+    @VisibleForTesting
+    public Ingredient getDoubleIngotIngredient()
     {
-        return sheets.test(stack);
+        return doubleIngots;
     }
 
+    @Nullable
+    @VisibleForTesting
     public Ingredient getSheetIngredient()
     {
         return sheets;
@@ -553,11 +573,11 @@ public final class Metal
         HOE_HEAD(Type.TOOL, true),
         CHISEL(Type.TOOL, metal -> new ChiselItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(0.27f, metal.toolTier()), -1.5F, properties(metal))),
         CHISEL_HEAD(Type.TOOL, true),
-        HAMMER(Type.TOOL, metal -> new ToolItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(1f, metal.toolTier()), -3, TFCTags.Blocks.MINEABLE_WITH_HAMMER, properties(metal))),
+        HAMMER(Type.TOOL, metal -> new HammerItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(1f, metal.toolTier()), -3, properties(metal), metal.getSerializedName())),
         HAMMER_HEAD(Type.TOOL, true),
         SAW(Type.TOOL, metal -> new AxeItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(0.5f, metal.toolTier()), -3, properties(metal))),
         SAW_BLADE(Type.TOOL, true),
-        JAVELIN(Type.TOOL, metal -> new JavelinItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(1f, metal.toolTier()), -2.2F, properties(metal), metal.getSerializedName())),
+        JAVELIN(Type.TOOL, metal -> new JavelinItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(0.7f, metal.toolTier()), 1.5f * metal.toolTier().getAttackDamageBonus(), -2.6F, properties(metal), metal.getSerializedName())),
         JAVELIN_HEAD(Type.TOOL, true),
         SWORD(Type.TOOL, metal -> new SwordItem(metal.toolTier(), (int) ToolItem.calculateVanillaAttackDamage(1f, metal.toolTier()), -2.4F, properties(metal))),
         SWORD_BLADE(Type.TOOL, true),

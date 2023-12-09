@@ -78,7 +78,7 @@ public final class Units
         return quart >> (GRID_BITS - QUART_BITS);
     }
 
-    public static float quartToGridExact(float quart)
+    public static double quartToGridExact(double quart)
     {
         return quart / GRID_WIDTH_IN_QUART;
     }
@@ -88,7 +88,7 @@ public final class Units
         return grid << (GRID_BITS - QUART_BITS);
     }
 
-    public static float blockToGridExact(float block)
+    public static double blockToGridExact(double block)
     {
         return block / GRID_WIDTH_IN_BLOCK;
     }
@@ -96,5 +96,10 @@ public final class Units
     public static int blockToGrid(int block)
     {
         return block >> GRID_BITS;
+    }
+
+    public static int index(int x, int z)
+    {
+        return (x & 15) | ((z & 15) << 4);
     }
 }

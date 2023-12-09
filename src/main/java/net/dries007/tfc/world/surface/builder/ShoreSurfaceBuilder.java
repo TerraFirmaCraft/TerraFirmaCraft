@@ -26,7 +26,7 @@ public class ShoreSurfaceBuilder implements SurfaceBuilder
     @Override
     public void buildSurface(SurfaceBuilderContext context, int startY, int endY)
     {
-        float variantNoiseValue = variantNoise.noise(context.pos().getX(), context.pos().getZ());
+        final float variantNoiseValue = (float) variantNoise.noise(context.pos().getX(), context.pos().getZ());
         if (variantNoiseValue > 0.6f)
         {
             NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY, SurfaceStates.RARE_SHORE_SAND, SurfaceStates.RARE_SHORE_SAND, SurfaceStates.RARE_SHORE_SANDSTONE);

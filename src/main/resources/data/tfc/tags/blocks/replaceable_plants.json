@@ -46,12 +46,15 @@
     "tfc:plant/green_algae",
     "tfc:plant/gutweed",
     "tfc:plant/heliconia",
+    "tfc:plant/heather",
     "tfc:plant/hibiscus",
+    "tfc:plant/ivy",
     "tfc:plant/kangaroo_paw",
     "tfc:plant/king_fern",
     "tfc:plant/labrador_tea",
     "tfc:plant/lady_fern",
     "tfc:plant/licorice_fern",
+    "tfc:plant/artists_conk",
     "tfc:plant/lily_of_the_valley",
     "tfc:plant/lilac",
     "tfc:plant/lotus",
@@ -59,6 +62,7 @@
     "tfc:plant/meads_milkweed",
     "tfc:plant/milfoil",
     "tfc:plant/morning_glory",
+    "tfc:plant/philodendron",
     "tfc:plant/moss",
     "tfc:plant/nasturtium",
     "tfc:plant/ostrich_fern",
@@ -103,7 +107,6 @@
     "tfc:plant/water_lily",
     "tfc:plant/water_taro",
     "tfc:plant/yucca",
-    "tfc:plant/ivy",
     "tfc:plant/jungle_vines"
   ]
 }

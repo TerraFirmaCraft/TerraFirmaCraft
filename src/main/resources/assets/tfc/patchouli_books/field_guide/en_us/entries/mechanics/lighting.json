@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)1. $(l:mechanics/lighting#torches)Torches$()$(li)2. $(l:mechanics/lighting#candles)Candles$()$(li)3. $(l:mechanics/lighting#jack_o_lanterns)Jack 'o Lanterns$()",
+      "text": "$(br) 1. $(l:mechanics/lighting#torches)Torches$()$(br) 2. $(l:mechanics/lighting#candles)Candles$()$(br) 3. $(l:mechanics/lighting#jack_o_lanterns)Jack 'o Lanterns$()",
       "title": "Table of Contents"
     },
     {

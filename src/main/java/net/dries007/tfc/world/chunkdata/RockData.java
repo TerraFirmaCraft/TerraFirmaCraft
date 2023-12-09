@@ -6,53 +6,34 @@
 
 package net.dries007.tfc.world.chunkdata;
 
-import java.util.List;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.ChunkPos;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.world.settings.RockLayerSettings;
+import net.dries007.tfc.world.region.Units;
 import net.dries007.tfc.world.settings.RockSettings;
-
-import static net.dries007.tfc.world.TFCChunkGenerator.*;
 
 public class RockData
 {
-    private static final int SIZE = 16 * 16;
-
-    private static int index(int x, int z)
-    {
-        return (x & 15) | ((z & 15) << 4);
-    }
-
-    private final RockSettings[] bottomLayer;
-    private final RockSettings[] middleLayer;
-    private final RockSettings[] topLayer;
-    private final int[] rockLayerHeight;
-
+    private final @Nullable ChunkDataGenerator generator;
     private int @Nullable [] surfaceHeight;
+    private @Nullable ChunkRockDataCache cache;
 
-    public RockData(RockSettings[] bottomLayer, RockSettings[] middleLayer, RockSettings[] topLayer, int[] rockLayerHeight)
+    public RockData(@Nullable ChunkDataGenerator generator)
     {
-        this.bottomLayer = bottomLayer;
-        this.middleLayer = middleLayer;
-        this.topLayer = topLayer;
-        this.rockLayerHeight = rockLayerHeight;
+        this.generator = generator;
         this.surfaceHeight = null;
+        this.cache = null;
     }
 
-    public RockData(CompoundTag nbt, RockLayerSettings settings)
+    /**
+     * Initializes the rock data's {@link ChunkRockDataCache}. This means that future queries into {@link #getRock(BlockPos)} or {@link #getRock(int, int, int)} will populate and re-use the cache for noise.
+     * <strong>N.B.</strong> Only use if this is used to query many positions in the chunk, otherwise the cost of populating the cache on the first few queries will be worse than with no cache.
+     * @param pos The current chunk position.
+     */
+    public void useCache(ChunkPos pos)
     {
-        this.bottomLayer = new RockSettings[SIZE];
-        this.middleLayer = new RockSettings[SIZE];
-        this.topLayer = new RockSettings[SIZE];
-
-        read(bottomLayer, nbt.getIntArray("bottomLayer"), settings);
-        read(middleLayer, nbt.getIntArray("middleLayer"), settings);
-        read(topLayer, nbt.getIntArray("topLayer"), settings);
-
-        rockLayerHeight = nbt.getIntArray("height");
-        surfaceHeight = nbt.contains("surfaceHeight") ? nbt.getIntArray("surfaceHeight") : null;
+        this.cache = new ChunkRockDataCache(pos);
     }
 
     public RockSettings getRock(BlockPos pos)
@@ -62,71 +43,18 @@ public class RockData
 
     public RockSettings getRock(int x, int y, int z)
     {
+        assert generator != null && surfaceHeight != null;
+        return generator.generateRock(x, y, z, surfaceHeight[Units.index(x, z)], cache);
+    }
+
+    public int[] getSurfaceHeight()
+    {
         assert surfaceHeight != null;
-
-        final int i = index(x, z);
-        final int sh = surfaceHeight[i];
-        final int rh = rockLayerHeight[i];
-        if (y > (int) (SEA_LEVEL_Y + 46 - 0.2 * sh + rh)) // todo: un-hardcode these, keep a sea level reference held by the rock data instance.
-        {
-            return topLayer[i];
-        }
-        else if (y > (int) (SEA_LEVEL_Y - 34 - 0.2 * sh + rh))
-        {
-            return middleLayer[i];
-        }
-        else
-        {
-            return bottomLayer[i];
-        }
+        return surfaceHeight;
     }
 
-    public RockSettings getBottomRock(int x, int z)
+    public void setSurfaceHeight(int[] surfaceHeight)
     {
-        return bottomLayer[index(x, z)];
-    }
-
-    public void setSurfaceHeight(int[] surfaceHeightMap)
-    {
-        this.surfaceHeight = surfaceHeightMap;
-    }
-
-    public CompoundTag write(RockLayerSettings settings)
-    {
-        final CompoundTag nbt = new CompoundTag();
-
-        // Record the raw byte values
-        nbt.putIntArray("bottomLayer", write(bottomLayer, settings));
-        nbt.putIntArray("middleLayer", write(middleLayer, settings));
-        nbt.putIntArray("topLayer", write(topLayer, settings));
-
-        nbt.putIntArray("height", rockLayerHeight);
-        if (surfaceHeight != null)
-        {
-            nbt.putIntArray("surfaceHeight", surfaceHeight);
-        }
-        return nbt;
-    }
-
-    private int[] write(RockSettings[] layer, RockLayerSettings settings)
-    {
-        final int[] array = new int[SIZE];
-        final List<RockSettings> palette = settings.getRocks();
-        for (int i = 0; i < array.length; i++)
-        {
-            array[i] = palette.indexOf(layer[i]); // indexOf() is O(n) but should be fast enough for our purposes, this isn't called that often
-        }
-        return array;
-    }
-
-    private void read(RockSettings[] layer, int[] data, RockLayerSettings settings)
-    {
-        assert data.length == SIZE;
-
-        final List<RockSettings> palette = settings.getRocks();
-        for (int i = 0; i < data.length; i++)
-        {
-            layer[i] = palette.get(data[i]);
-        }
+        this.surfaceHeight = surfaceHeight;
     }
 }

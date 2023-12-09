@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.util;
 
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -46,10 +45,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.WorldGenRegion;
-import net.minecraft.server.packs.FilePackResources;
-import net.minecraft.server.packs.PackType;
-import net.minecraft.server.packs.repository.Pack;
-import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
@@ -110,11 +105,9 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.util.thread.EffectiveSide;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -125,10 +118,10 @@ import net.minecraftforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.ISlowEntities;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
@@ -148,7 +141,7 @@ import static net.dries007.tfc.TerraFirmaCraft.*;
 public final class Helpers
 {
     public static final Direction[] DIRECTIONS = Direction.values();
-    public static final Direction[] DIRECTIONS_NOT_DOWN = Arrays.stream(DIRECTIONS).filter(d -> d != Direction.DOWN).toArray(Direction[]::new);
+    public static final Direction[] DIRECTIONS_NOT_DOWN = new Direction[] { Direction.UP, Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST };
     public static final DyeColor[] DYE_COLORS = DyeColor.values();
 
     /**
@@ -311,8 +304,56 @@ public final class Helpers
         return ItemProtectedAccessor.invokeGetPlayerPOVHitResult(level, player, mode);
     }
 
-    public static void slowEntityInBlock(Entity entity, float factor, int fallDamageReduction)
+    /**
+     * Reimplementation of {@link Entity#checkInsideBlocks()} which applies custom movement slowing affects. This is for two reasons:
+     * <ul>
+     *     <li>The existing movement slow affects via block do not work, as they affect vertical movement (jumping, falling) in ways we dislike.</li>
+     *     <li>Applying these effects within {@link Block#entityInside(BlockState, Level, BlockPos, Entity)} applies them multiplicatively, for each block intersecting, which is undesirable.</li>
+     * </ul>
+     * This looks for slowing effects defined by the {@link ISlowEntities}
+     */
+    @SuppressWarnings("deprecation")
+    public static void slowEntityInsideBlocks(Entity entity)
     {
+        final Level level = entity.level();
+        final AABB box = entity.getBoundingBox();
+        final BlockPos minPos = BlockPos.containing(box.minX + 1.0E-7D, box.minY + 1.0E-7D, box.minZ + 1.0E-7D);
+        final BlockPos maxPos = BlockPos.containing(box.maxX - 1.0E-7D, box.maxY - 1.0E-7D, box.maxZ - 1.0E-7D);
+
+        float factor = ISlowEntities.NO_SLOW;
+
+        if (level.hasChunksAt(minPos, maxPos))
+        {
+            final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
+            for (int x = minPos.getX(); x <= maxPos.getX(); ++x)
+            {
+                for (int y = minPos.getY(); y <= maxPos.getY(); ++y)
+                {
+                    for (int z = minPos.getZ(); z <= maxPos.getZ(); ++z)
+                    {
+                        cursor.set(x, y, z);
+
+                        final BlockState state = level.getBlockState(cursor);
+
+                        if (state.getBlock() instanceof ISlowEntities slow)
+                        {
+                            factor = Math.min(factor, slow.slowEntityFactor(state));
+                        }
+                    }
+                }
+            }
+        }
+
+        // Only apply the effect based on the worst slow factor
+        if (factor < ISlowEntities.NO_SLOW)
+        {
+            slowEntityInBlock(entity, factor);
+        }
+    }
+
+    private static void slowEntityInBlock(Entity entity, float factor)
+    {
+        final float fallDamageReduction = 5;
         final Vec3 motion = entity.getDeltaMovement();
 
         // Affect falling very slightly, and don't affect jumping
@@ -927,12 +968,12 @@ public final class Helpers
         level.playSound(null, pos, sound, SoundSource.BLOCKS, 1.0F + rand.nextFloat(), rand.nextFloat() + 0.7F + 0.3F);
     }
 
-    public static void playPlaceSound(Level level, BlockPos pos, BlockState state)
+    public static void playPlaceSound(LevelAccessor level, BlockPos pos, BlockState state)
     {
         playPlaceSound(level, pos, state.getSoundType(level, pos, null));
     }
 
-    public static void playPlaceSound(Level level, BlockPos pos, SoundType st)
+    public static void playPlaceSound(LevelAccessor level, BlockPos pos, SoundType st)
     {
         level.playSound(null, pos, st.getPlaceSound(), SoundSource.BLOCKS, (st.getVolume() + 1.0F) / 2.0F, st.getPitch() * 0.8F);
     }
@@ -1147,6 +1188,11 @@ public final class Helpers
         return min + (max - min) * delta;
     }
 
+    public static double lerp(double delta, double min, double max)
+    {
+        return min + (max - min) * delta;
+    }
+
     /**
      * Linearly interpolates between four values on a unit square.
      */
@@ -1154,6 +1200,13 @@ public final class Helpers
     {
         final float value0 = lerp(delta1, value00, value01);
         final float value1 = lerp(delta1, value10, value11);
+        return lerp(delta0, value0, value1);
+    }
+
+    public static double lerp4(double value00, double value01, double value10, double value11, double delta0, double delta1)
+    {
+        final double value0 = lerp(delta1, value00, value01);
+        final double value1 = lerp(delta1, value10, value11);
         return lerp(delta0, value0, value1);
     }
 
@@ -1207,14 +1260,14 @@ public final class Helpers
     /**
      * @return A random float, uniformly distributed in the range [min, max).
      */
-    public static float uniform(Random random, float min, float max)
+    public static float uniform(RandomSource random, float min, float max)
     {
         return random.nextFloat() * (max - min) + min;
     }
 
-    public static float uniform(RandomSource random, float min, float max)
+    public static double uniform(RandomSource random, double min, double max)
     {
-        return random.nextFloat() * (max - min) + min;
+        return random.nextDouble() * (max - min) + min;
     }
 
     /**
@@ -1239,6 +1292,11 @@ public final class Helpers
     public static float triangle(RandomSource random, float delta)
     {
         return (random.nextFloat() - random.nextFloat()) * delta;
+    }
+
+    public static double triangle(RandomSource random, double delta)
+    {
+        return (random.nextDouble() - random.nextDouble()) * delta;
     }
 
     public static float easeInOutCubic(float x)

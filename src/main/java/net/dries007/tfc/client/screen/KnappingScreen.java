@@ -81,6 +81,7 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
                 addRenderableWidget(new KnappingButton(x + 5 * y, bx, by, 16, 16, buttonLocation, menu.getKnappingType().clickSound(), this::spawnParticles));
             }
         }
+        menu.setRequiresReset(true);
     }
 
     private void spawnParticles(Button button)

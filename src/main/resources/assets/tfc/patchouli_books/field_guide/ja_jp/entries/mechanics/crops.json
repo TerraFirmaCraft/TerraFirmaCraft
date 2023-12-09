@@ -34,634 +34,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "好物の栄養素を与えると作物の成長が早くなり、収穫時の作物の収量が向上します。 つまり、より多くの栄養素を消費した作物は、収穫したときより多くの食物を落とすことになります。 栄養素を与えると、他の栄養素を少量補充する効果もあります。"
-    },
-    {
-      "type": "tfc:table",
-      "strings": [
-        {
-          "text": "Crop",
-          "bold": true
-        },
-        {
-          "text": "Nutr.",
-          "bold": true
-        },
-        {
-          "text": "Min °C",
-          "bold": true
-        },
-        {
-          "text": "Max °C",
-          "bold": true
-        },
-        {
-          "text": "Min mm",
-          "bold": true
-        },
-        {
-          "text": "Max mm",
-          "bold": true
-        },
-        {
-          "text": "Min %",
-          "bold": true
-        },
-        {
-          "text": "Max %",
-          "bold": true
-        },
-        {
-          "text": "Barley",
-          "bold": true
-        },
-        {
-          "text": "N"
-        },
-        {
-          "text": "-8"
-        },
-        {
-          "text": "26"
-        },
-        {
-          "text": "70"
-        },
-        {
-          "text": "310"
-        },
-        {
-          "text": "18"
-        },
-        {
-          "text": "75"
-        },
-        {
-          "text": "Oat",
-          "bold": true
-        },
-        {
-          "text": "P"
-        },
-        {
-          "text": "3"
-        },
-        {
-          "text": "40"
-        },
-        {
-          "text": "140"
-        },
-        {
-          "text": "400"
-        },
-        {
-          "text": "35"
-        },
-        {
-          "text": "100"
-        },
-        {
-          "text": "Rye",
-          "bold": true
-        },
-        {
-          "text": "P"
-        },
-        {
-          "text": "-11"
-        },
-        {
-          "text": "30"
-        },
-        {
-          "text": "100"
-        },
-        {
-          "text": "350"
-        },
-        {
-          "text": "25"
-        },
-        {
-          "text": "85"
-        },
-        {
-          "text": "Maize",
-          "bold": true
-        },
-        {
-          "text": "P"
-        },
-        {
-          "text": "13"
-        },
-        {
-          "text": "40"
-        },
-        {
-          "text": "300"
-        },
-        {
-          "text": "500"
-        },
-        {
-          "text": "75"
-        },
-        {
-          "text": "100"
-        },
-        {
-          "text": "Wheat",
-          "bold": true
-        },
-        {
-          "text": "P"
-        },
-        {
-          "text": "-4"
-        },
-        {
-          "text": "35"
-        },
-        {
-          "text": "100"
-        },
-        {
-          "text": "400"
-        },
-        {
-          "text": "25"
-        },
-        {
-          "text": "100"
-        },
-        {
-          "text": "Rice",
-          "bold": true
-        },
-        {
-          "text": "P"
-        },
-        {
-          "text": "15"
-        },
-        {
-          "text": "30"
-        },
-        {
-          "text": "100"
-        },
-        {
-          "text": "500"
-        },
-        {
-          "text": "25"
-        },
-        {
-          "text": "100"
-        },
-        {
-          "text": "Beet",
-          "bold": true
-        },
-        {
-          "text": "K"
-        },
-        {
-          "text": "-5"
-        },
-        {
-          "text": "20"
-        },
-        {
-          "text": "70"
-        },
-        {
-          "text": "300"
-        },
-        {
-          "text": "18"
-        },
-        {
-          "text": "85"
-        },
-        {
-          "text": "Cabbage",
-          "bold": true
-        },
-        {
-          "text": "N"
-        },
-        {
-          "text": "-10"
-        },
-        {
-          "text": "27"
-        },
-        {
-          "text": "60"
-        },
-        {
-          "text": "280"
-        },
-        {
-          "text": "15"
-        },
-        {
-          "text": "65"
-        },
-        {
-          "text": "Carrot",
-          "bold": true
-        },
-        {
-          "text": "K"
-        },
-        {
-          "text": "3"
-        },
-        {
-          "text": "30"
-        },
-        {
-          "text": "100"
-        },
-        {
-          "text": "400"
-        },
-        {
-          "text": "25"
-        },
-        {
-          "text": "100"
-        },
-        {
-          "text": "Garlic",
-          "bold": true
-        },
-        {
-          "text": "N"
-        },
-        {
-          "text": "-20"
-        },
-        {
-          "text": "18"
-        },
-        {
-          "text": "60"
-        },
-        {
-          "text": "310"
-        },
-        {
-          "text": "15"
-        },
-        {
-          "text": "75"
-        },
-        {
-          "text": "Green Bean",
-          "bold": true
-        },
-        {
-          "text": "N"
-        },
-        {
-          "text": "2"
-        },
-        {
-          "text": "35"
-        },
-        {
-          "text": "150"
-        },
-        {
-          "text": "410"
-        },
-        {
-          "text": "38"
-        },
-        {
-          "text": "100"
-        },
-        {
-          "text": "Melon",
-          "bold": true
-        },
-        {
-          "text": "P"
-        },
-        {
-          "text": "5"
-        },
-        {
-          "text": "37"
-        },
-        {
-          "text": "200"
-        },
-        {
-          "text": "500"
-        },
-        {
-          "text": "75"
-        },
-        {
-          "text": "100"
-        }
-      ],
-      "text": "",
-      "title": "Crop Requirements",
-      "legend": [],
-      "columns": "7",
-      "first_column_width": "45",
-      "column_width": "27",
-      "row_height": "10",
-      "left_buffer": "2",
-      "top_buffer": "12",
-      "draw_background": "False"
-    },
-    {
-      "type": "patchouli:empty",
-      "draw_filler": false
-    },
-    {
-      "type": "tfc:table",
-      "strings": [
-        {
-          "text": "Crop",
-          "bold": true
-        },
-        {
-          "text": "Nutr.",
-          "bold": true
-        },
-        {
-          "text": "Min °C",
-          "bold": true
-        },
-        {
-          "text": "Max °C",
-          "bold": true
-        },
-        {
-          "text": "Min mm",
-          "bold": true
-        },
-        {
-          "text": "Max mm",
-          "bold": true
-        },
-        {
-          "text": "Min %",
-          "bold": true
-        },
-        {
-          "text": "Max %",
-          "bold": true
-        },
-        {
-          "text": "Potato",
-          "bold": true
-        },
-        {
-          "text": "K"
-        },
-        {
-          "text": "-1"
-        },
-        {
-          "text": "37"
-        },
-        {
-          "text": "200"
-        },
-        {
-          "text": "410"
-        },
-        {
-          "text": "50"
-        },
-        {
-          "text": "100"
-        },
-        {
-          "text": "Pumpkin",
-          "bold": true
-        },
-        {
-          "text": "P"
-        },
-        {
-          "text": "0"
-        },
-        {
-          "text": "30"
-        },
-        {
-          "text": "120"
-        },
-        {
-          "text": "390"
-        },
-        {
-          "text": "30"
-        },
-        {
-          "text": "80"
-        },
-        {
-          "text": "Onion",
-          "bold": true
-        },
-        {
-          "text": "N"
-        },
-        {
-          "text": "0"
-        },
-        {
-          "text": "30"
-        },
-        {
-          "text": "100"
-        },
-        {
-          "text": "390"
-        },
-        {
-          "text": "25"
-        },
-        {
-          "text": "90"
-        },
-        {
-          "text": "Soybean",
-          "bold": true
-        },
-        {
-          "text": "N"
-        },
-        {
-          "text": "8"
-        },
-        {
-          "text": "30"
-        },
-        {
-          "text": "160"
-        },
-        {
-          "text": "410"
-        },
-        {
-          "text": "40"
-        },
-        {
-          "text": "100"
-        },
-        {
-          "text": "Squash",
-          "bold": true
-        },
-        {
-          "text": "K"
-        },
-        {
-          "text": "5"
-        },
-        {
-          "text": "33"
-        },
-        {
-          "text": "90"
-        },
-        {
-          "text": "390"
-        },
-        {
-          "text": "23"
-        },
-        {
-          "text": "95"
-        },
-        {
-          "text": "Sugarcane",
-          "bold": true
-        },
-        {
-          "text": "K"
-        },
-        {
-          "text": "12"
-        },
-        {
-          "text": "38"
-        },
-        {
-          "text": "160"
-        },
-        {
-          "text": "500"
-        },
-        {
-          "text": "40"
-        },
-        {
-          "text": "100"
-        },
-        {
-          "text": "Tomato",
-          "bold": true
-        },
-        {
-          "text": "K"
-        },
-        {
-          "text": "0"
-        },
-        {
-          "text": "36"
-        },
-        {
-          "text": "120"
-        },
-        {
-          "text": "390"
-        },
-        {
-          "text": "30"
-        },
-        {
-          "text": "95"
-        },
-        {
-          "text": "Jute",
-          "bold": true
-        },
-        {
-          "text": "K"
-        },
-        {
-          "text": "5"
-        },
-        {
-          "text": "37"
-        },
-        {
-          "text": "100"
-        },
-        {
-          "text": "410"
-        },
-        {
-          "text": "25"
-        },
-        {
-          "text": "100"
-        },
-        {
-          "text": "Papyrus",
-          "bold": true
-        },
-        {
-          "text": "K"
-        },
-        {
-          "text": "19"
-        },
-        {
-          "text": "37"
-        },
-        {
-          "text": "310"
-        },
-        {
-          "text": "500"
-        },
-        {
-          "text": "70"
-        },
-        {
-          "text": "100"
-        }
-      ],
-      "text": "$(br)Rainfall is only needed to find wild crops. Growing crops only requires proper hydration.",
-      "title": "Crop Requirements",
-      "legend": [],
-      "columns": "7",
-      "first_column_width": "45",
-      "column_width": "27",
-      "row_height": "10",
-      "left_buffer": "2",
-      "top_buffer": "12",
-      "draw_background": "False"
-    },
-    {
-      "type": "patchouli:empty",
-      "draw_filler": false
+      "text": "Consuming its favorite nutrient causes a crop to grow faster, and improves the yield of the crop at harvest time. That means that crops that consumed more nutrients drop more food when broken! Consuming a nutrient also has the effect of replenishing the other nutrients around it a small amount.$(br2)The next several pages list all the crops present in TFC"
     },
     {
       "type": "patchouli:text",
@@ -2620,6 +1993,268 @@
     },
     {
       "type": "patchouli:text",
+      "anchor": "red_bell_pepper",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 16 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 25 - 60 %$(br)$(bold)Nutrient$(): Potassium$(br2)Red Bell Peppers are a pickable crop. When they are near mature, they can be harvested with $(item)$(k:key.use)$() to obtain Green Bell Peppers. Harvesting with $(item)$(k:key.use)$() allows the plant to grow more peppers in the future rather than destroying the plant.",
+      "title": "Red Bell Peppers"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/red_bell_pepper[age=0]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/red_bell_pepper[age=1]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/red_bell_pepper[age=2]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/red_bell_pepper[age=3]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/red_bell_pepper[age=4]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/red_bell_pepper[age=5]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/red_bell_pepper[age=6]",
+            "Y": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "yellow_bell_pepper",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 16 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 25 - 60 %$(br)$(bold)Nutrient$(): Potassium$(br2)Yellow Bell Peppers are a pickable crop. When they are near mature, they can be harvested with $(item)$(k:key.use)$() to obtain Green Bell Peppers. Harvesting with $(item)$(k:key.use)$() allows the plant to grow more peppers in the future rather than destroying the plant.",
+      "title": "Yellow Bell Peppers"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/yellow_bell_pepper[age=0]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/yellow_bell_pepper[age=1]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/yellow_bell_pepper[age=2]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/yellow_bell_pepper[age=3]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/yellow_bell_pepper[age=4]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/yellow_bell_pepper[age=5]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/yellow_bell_pepper[age=6]",
+            "Y": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
       "anchor": "onion",
       "text": "$(bold)$(l:the_world/climate#temperature)温度$(): 0 - 30 °C$(br)$(bold)$(l:mechanics/hydration)水分量$(): 25 - 90 %$(br)$(bold)栄養素$(): 窒素$(br2)タマネギは単一ブロック作物です。 タマネギの種は農地に植えることができ、製品として $(thing)タマネギ$() と $(thing)タマネギの種$() が生産されます。",
       "title": "タマネギ"
@@ -3667,32 +3302,34 @@
   ],
   "read_by_default": true,
   "extra_recipe_mappings": {
-    "tfc:seeds/barley": 10,
-    "tfc:food/barley": 10,
-    "tfc:seeds/oat": 12,
-    "tfc:food/oat": 12,
-    "tfc:seeds/rye": 14,
-    "tfc:food/rye": 14,
-    "tfc:seeds/maize": 16,
-    "tfc:food/maize": 16,
-    "tfc:seeds/wheat": 18,
-    "tfc:food/wheat": 18,
-    "tfc:seeds/rice": 20,
-    "tfc:food/rice": 20,
-    "tfc:seeds/beet": 22,
-    "tfc:food/beet": 22,
-    "tfc:seeds/cabbage": 24,
-    "tfc:food/cabbage": 24,
-    "tfc:seeds/carrot": 26,
-    "tfc:food/carrot": 26,
-    "tfc:seeds/garlic": 28,
-    "tfc:food/garlic": 28,
-    "tfc:seeds/green_bean": 30,
-    "tfc:food/green_bean": 30,
-    "tfc:seeds/potato": 32,
-    "tfc:food/potato": 32,
-    "tfc:seeds/pumpkin": 34,
-    "tfc:seeds/melon": 36,
+    "tfc:seeds/barley": 6,
+    "tfc:food/barley": 6,
+    "tfc:seeds/oat": 8,
+    "tfc:food/oat": 8,
+    "tfc:seeds/rye": 10,
+    "tfc:food/rye": 10,
+    "tfc:seeds/maize": 12,
+    "tfc:food/maize": 12,
+    "tfc:seeds/wheat": 14,
+    "tfc:food/wheat": 14,
+    "tfc:seeds/rice": 16,
+    "tfc:food/rice": 16,
+    "tfc:seeds/beet": 18,
+    "tfc:food/beet": 18,
+    "tfc:seeds/cabbage": 20,
+    "tfc:food/cabbage": 20,
+    "tfc:seeds/carrot": 22,
+    "tfc:food/carrot": 22,
+    "tfc:seeds/garlic": 24,
+    "tfc:food/garlic": 24,
+    "tfc:seeds/green_bean": 26,
+    "tfc:food/green_bean": 26,
+    "tfc:seeds/potato": 28,
+    "tfc:food/potato": 28,
+    "tfc:seeds/pumpkin": 30,
+    "tfc:seeds/melon": 32,
+    "tfc:seeds/red_bell_pepper": 34,
+    "tfc:seeds/yellow_bell_pepper": 36,
     "tfc:seeds/onion": 38,
     "tfc:food/onion": 38,
     "tfc:seeds/soybean": 40,

@@ -1,7 +1,8 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "block/leaves",
+  "parent": "tfc:block/tinted_column",
   "textures": {
-    "all": "tfc:block/wood/leaves/mangrove"
+    "side": "tfc:block/wood/leaves/mangrove",
+    "end": "tfc:block/wood/leaves/mangrove_top"
   }
 }

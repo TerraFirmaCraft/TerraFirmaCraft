@@ -8,6 +8,8 @@ package net.dries007.tfc.common.blocks.crop;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -77,7 +79,29 @@ public class WildDoubleCropBlock extends WildCropBlock
     public WildDoubleCropBlock(ExtendedProperties properties)
     {
         super(properties);
-        registerDefaultState(getStateDefinition().any().setValue(PART, DoubleCropBlock.Part.BOTTOM));
+        registerDefaultState(getStateDefinition().any().setValue(PART, DoubleCropBlock.Part.BOTTOM).setValue(MATURE, false));
+    }
+
+    @Override
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
+    {
+        super.randomTick(state, level, pos, random);
+        if (state.getValue(PART) == DoubleCropBlock.Part.TOP)
+        {
+            final BlockState below = level.getBlockState(pos.below());
+            if (below.getBlock() == this && below.getValue(MATURE) != isMature(level))
+            {
+                level.setBlockAndUpdate(pos.below(), below.cycle(MATURE));
+            }
+        }
+        else
+        {
+            final BlockState above = level.getBlockState(pos.above());
+            if (above.getBlock() == this && above.getValue(MATURE) != isMature(level))
+            {
+                level.setBlockAndUpdate(pos.above(), above.cycle(MATURE));
+            }
+        }
     }
 
     @Override
@@ -144,7 +168,8 @@ public class WildDoubleCropBlock extends WildCropBlock
 
     public void placeTwoHalves(LevelAccessor level, BlockPos pos, int flags)
     {
-        level.setBlock(pos, defaultBlockState().setValue(PART, DoubleCropBlock.Part.BOTTOM), flags);
-        level.setBlock(pos.above(), defaultBlockState().setValue(PART, DoubleCropBlock.Part.TOP), flags);
+        final boolean mature = isMature(level);
+        level.setBlock(pos, defaultBlockState().setValue(PART, DoubleCropBlock.Part.BOTTOM).setValue(MATURE, mature), flags);
+        level.setBlock(pos.above(), defaultBlockState().setValue(PART, DoubleCropBlock.Part.TOP).setValue(MATURE, mature), flags);
     }
 }

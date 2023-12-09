@@ -9,9 +9,12 @@ from mcresources.type_definitions import JsonObject, ResourceLocation, ResourceI
 from constants import ROCK_CATEGORIES, ALLOYS, lang
 from i18n import I18n
 
-NON_TEXT_FIRST_PAGE = 'NON_TEXT_FIRST_PAGE'
-PAGE_BREAK = 'PAGE_BREAK'
-EMPTY_LAST_PAGE = 'EMPTY_LAST_PAGE'
+NON_TEXT_FIRST_PAGE = 'non_text_first_page'
+PAGE_BREAK = 'page_break'
+EMPTY_LAST_PAGE = 'empty_last_page'
+TABLE_PAGE = 'table'
+TABLE_PAGE_SMALL = 'table_small'
+TABLE_KEYS = {'strings': '#strings', 'columns': '#columns', 'first_column_width': '#first_column_width', 'column_width': '#column_width', 'row_height': '#row_height', 'left_buffer': '#left_buffer', 'top_buffer': '#top_buffer', 'title': '#title', 'legend': '#legend', 'draw_background': '#draw_background'}
 
 
 class Component(NamedTuple):
@@ -26,6 +29,7 @@ class SubstitutionStr(NamedTuple):
     params: Tuple[Any, ...]
 
     def __str__(self) -> str: return self.value
+
 
 def defer(text_contents: str, *params) -> SubstitutionStr:
     return SubstitutionStr(text_contents, params)
@@ -184,6 +188,10 @@ class Book:
                 elif p.type == EMPTY_LAST_PAGE:
                     allow_empty_last_page = True
                     assert j == len(pages) - 1, 'An empty_last_page() was used but it was not the last page?\n  at: %s' % str(e.name)
+                elif p.type == TABLE_PAGE or p.type == TABLE_PAGE_SMALL:
+                    assert len(real_pages) % 2 == 0, 'A table() requires that it starts on a new page!'
+                    real_pages.append(p)
+                    real_pages.append(blank())  # Tables take up two pages
                 else:
                     real_pages.append(p)
 
@@ -392,12 +400,15 @@ def multiblock(title: TranslatableStr = '', text_content: TranslatableStr = '', 
 def empty() -> Page:
     return page('patchouli:empty', {})
 
-def empty_blank() -> Page:
+
+def blank() -> Page:
     return page('patchouli:empty', {'draw_filler': False})
+
 
 # ==============
 # TFC Page Types
 # ==============
+
 
 def multimultiblock(text_content: TranslatableStr, *pages) -> Page:
     return page('multimultiblock', {'text': text_content, 'multiblocks': [p.data['multiblock'] if 'multiblock' in p.data else p.data['multiblock_id'] for p in pages]}, custom=True, translation_keys=('text',))
@@ -450,7 +461,8 @@ def empty_last_page() -> Page:
 def recipe_page(recipe_type: str, recipe: str, text_content: TranslatableStr) -> Page:
     return page(recipe_type, {'recipe': recipe, 'text': text_content}, custom=True, translation_keys=('text',))
 
-def table(strings: List[str | Dict], text_content: TranslatableStr, title: TranslatableStr, keywords: Dict[str, Any], legend: List[Dict[str, Any]], columns: int, first_column_width: int, column_width: int, row_height: int, left_buffer: int, top_buffer: int, draw_background: bool = True) -> Page:
+
+def table(strings: List[str | Dict], text_content: TranslatableStr, title: TranslatableStr, keywords: Dict[str, Any], legend: List[Dict[str, Any]], columns: int, first_column_width: int, column_width: int, row_height: int, left_buffer: int, top_buffer: int, draw_background: bool = True, small: bool = False) -> Page:
     fixed_strings = []
     for string in strings:
         fixed_str = string
@@ -462,7 +474,20 @@ def table(strings: List[str | Dict], text_content: TranslatableStr, title: Trans
             fixed_strings.append({'text': fixed_str})
         else:
             fixed_strings.append(fixed_str)
-    return page('table', {'strings': fixed_strings, 'text': text_content, 'title': title, 'legend': legend, 'columns': str(columns), 'first_column_width': str(first_column_width), 'column_width': str(column_width), 'row_height': str(row_height), 'left_buffer': str(left_buffer), 'top_buffer': str(top_buffer), 'draw_background': str(draw_background)}, custom=True, translation_keys=('text', 'title'))
+    return page(TABLE_PAGE_SMALL if small else TABLE_PAGE, {
+        'strings': fixed_strings,
+        'text': text_content,
+        'title': title,
+        'legend': legend,
+        'columns': columns,
+        'first_column_width': first_column_width,
+        'column_width': column_width,
+        'row_height': row_height,
+        'left_buffer': left_buffer,
+        'top_buffer': top_buffer,
+        'draw_background': draw_background
+    }, custom=True, translation_keys=('text', 'title'))
+
 
 def page(page_type: str, page_data: JsonObject, custom: bool = False, translation_keys: Tuple[str, ...] = ()) -> Page:
     return Page(page_type, page_data, custom, None, [], translation_keys)

@@ -6,86 +6,70 @@
 
 package net.dries007.tfc.common.blocks;
 
-import java.util.Random;
 import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BubbleColumnBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.phys.Vec3;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.util.Helpers;
 
 public class TFCBubbleColumnBlock extends BubbleColumnBlock
 {
-    public static void updateColumnForFluid(LevelAccessor level, BlockPos pos, BlockState state, Fluid fluid)
+    /**
+     * Like {@link BubbleColumnBlock#updateColumn(LevelAccessor, BlockPos, BlockState)} but will take into account the fluid type.
+     */
+    public static void updateColumnForFluid(LevelAccessor level, BlockPos pos)
     {
-        updateColumnForFluid(level, pos, level.getBlockState(pos), state, fluid);
-    }
+        final BlockPos abovePos = pos.above();
+        final BlockState aboveState = level.getBlockState(abovePos);
+        final BlockPos.MutableBlockPos cursor = abovePos.mutable();
 
-    public static void updateColumnForFluid(LevelAccessor level, BlockPos pos, BlockState aboveState, BlockState belowState, Fluid fluid)
-    {
-        if (fluid.isSame(Fluids.EMPTY))
+        BlockState beforeState = aboveState;
+        while (canExistIn(beforeState))
         {
-            return;
-        }
-        if (canExistIn(aboveState, fluid))
-        {
-            BlockState blockstate = getColumnState(belowState, fluid);
-            level.setBlock(pos, blockstate, 2);
-            BlockPos.MutableBlockPos mutable = pos.mutable().move(Direction.UP);
-
-            while (canExistIn(level.getBlockState(mutable), fluid))
+            if (!level.setBlock(cursor, getColumnState(beforeState), Block.UPDATE_CLIENTS))
             {
-                if (!level.setBlock(mutable, blockstate, 2))
-                {
-                    return;
-                }
-
-                mutable.move(Direction.UP);
+                return;
             }
 
+            cursor.move(Direction.UP);
+            beforeState = level.getBlockState(cursor);
         }
+
     }
 
-    private static BlockState getColumnState(BlockState state, Fluid fluid)
+    public static boolean canExistIn(BlockState state)
     {
-        BlockState toPlace = fluid.isSame(Fluids.WATER) ? TFCBlocks.FRESHWATER_BUBBLE_COLUMN.get().defaultBlockState() : TFCBlocks.SALTWATER_BUBBLE_COLUMN.get().defaultBlockState();
-        if (state.getBlock() instanceof BubbleColumnBlock)
-        {
-            return state;
-        }
-        else if (Helpers.isBlock(state, TFCTags.Blocks.CREATES_DOWNWARD_BUBBLES))
-        {
-            return toPlace.setValue(DRAG_DOWN, true);
-        }
-        else if (Helpers.isBlock(state, TFCTags.Blocks.CREATES_UPWARD_BUBBLES))
-        {
-            return toPlace.setValue(DRAG_DOWN, false);
-        }
-        return fluid.defaultFluidState().createLegacyBlock();
+        return state.getBlock() instanceof TFCBubbleColumnBlock
+            || (FluidHelpers.isAirOrEmptyFluid(state) && canExistIn(state.getFluidState().getType()));
     }
 
-    private static boolean canExistIn(BlockState state, Fluid fluid)
+    public static boolean canExistIn(Fluid fluid)
     {
-        return state.getBlock() instanceof BubbleColumnBlock || state.getFluidState().getType().isSame(fluid) && state.getFluidState().getAmount() >= 8 && state.getFluidState().isSource();
+        return fluid == Fluids.WATER.getSource() || fluid == TFCFluids.SALT_WATER.getSource();
     }
 
-    private static final double MAX_DOWN_SPEED = -0.1; // vanilla: -0.3
-    private static final double MAX_UP_SPEED = 0.3; // vanilla: 0.7
+    public static BlockState getColumnState(BlockState state)
+    {
+        return (state.getFluidState().getType() == Fluids.WATER.getSource() ? TFCBlocks.FRESHWATER_BUBBLE_COLUMN.get() : TFCBlocks.SALTWATER_BUBBLE_COLUMN.get()).defaultBlockState();
+    }
 
     private final Supplier<? extends Fluid> fluid;
 
@@ -98,50 +82,17 @@ public class TFCBubbleColumnBlock extends BubbleColumnBlock
     @Override
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
     {
-        if (Helpers.isEntity(entity, TFCTags.Entities.BUBBLE_COLUMN_IMMUNE))
+        // Override to add the entity immune check for all our aquatic animals, who want to ignore these
+        if (!Helpers.isEntity(entity, TFCTags.Entities.BUBBLE_COLUMN_IMMUNE))
         {
-            return;
+            super.entityInside(state, level, pos, entity);
         }
-        final BlockState aboveState = level.getBlockState(pos.above());
-        if (aboveState.isAir())
-        {
-            modifyEntityMovement(entity, state.getValue(DRAG_DOWN), true);
-            if (level instanceof ServerLevel serverLevel)
-            {
-                for (int i = 0; i < 2; ++i)
-                {
-                    serverLevel.sendParticles(ParticleTypes.SPLASH, (double) pos.getX() + level.random.nextDouble(), pos.getY() + 1, (double) pos.getZ() + level.random.nextDouble(), 1, 0.0D, 0.0D, 0.0D, 1.0D);
-                    serverLevel.sendParticles(ParticleTypes.BUBBLE, (double) pos.getX() + level.random.nextDouble(), pos.getY() + 1, (double) pos.getZ() + level.random.nextDouble(), 1, 0.0D, 0.01D, 0.0D, 0.2D);
-                }
-            }
-        }
-        else
-        {
-            modifyEntityMovement(entity, state.getValue(DRAG_DOWN), false);
-        }
-
     }
 
-    /**
-     * Combo of {@link Entity#onInsideBubbleColumn(boolean)} and {@link Entity#onAboveBubbleCol(boolean)}
-     */
-    private void modifyEntityMovement(Entity entity, boolean dragDown, boolean above)
+    @Override
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
     {
-        final Vec3 movement = entity.getDeltaMovement();
-        double dy;
-        if (dragDown)
-        {
-            dy = Math.max(above ? -0.9 : MAX_DOWN_SPEED, movement.y - 0.03);
-        }
-        else
-        {
-            dy = above ? Math.min(1.8D, movement.y + 0.1D) : Math.min(MAX_UP_SPEED, movement.y + 0.06D);
-        }
-        entity.setDeltaMovement(movement.x, dy, movement.z);
-        if (!above)
-        {
-            entity.resetFallDistance();
-        }
+        updateColumnForFluid(level, pos);
     }
 
     @Override
@@ -151,27 +102,43 @@ public class TFCBubbleColumnBlock extends BubbleColumnBlock
     }
 
     @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random)
+    {
+        // Our bubble columns have particles which rise, but current which falls down
+        // This just causes us to animate as if we were vanilla 'up' bubble column
+        super.animateTick(state.setValue(DRAG_DOWN, false), level, pos, random);
+    }
+
+    @Override
     public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos pos, BlockPos facingPos)
     {
-        level.scheduleTick(pos, getFluid(), getFluid().getTickDelay(level));
-        if (!state.canSurvive(level, pos) || facing == Direction.DOWN || facing == Direction.UP && !(facingState.getBlock() instanceof BubbleColumnBlock) && canExistIn(facingState, getFluid()))
+        // Modified from the vanilla one in order to use the fluid, not just water
+        // Otherwise is identical
+        final Fluid fluid = getFluid();
+
+        level.scheduleTick(pos, fluid, fluid.getTickDelay(level));
+        if (!state.canSurvive(level, pos) ||
+            facing == Direction.DOWN ||
+            (facing == Direction.UP && !(facingState.getBlock() instanceof TFCBubbleColumnBlock) && canExistIn(facingState)))
         {
             level.scheduleTick(pos, this, 5);
         }
 
-        return super.updateShape(state, facing, facingState, level, pos, facingPos);
+        return state; // Don't call into the vanilla logic
     }
 
     @Override
-    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
-        updateColumnForFluid(level, pos, state, level.getBlockState(pos.below()), getFluid());
+        final BlockState below = level.getBlockState(pos.below());
+        return below.getBlock() instanceof TFCBubbleColumnBlock
+            || below.getBlock() instanceof TFCMagmaBlock;
     }
 
     @Override
     public ItemStack pickupBlock(LevelAccessor level, BlockPos pos, BlockState state)
     {
-        level.setBlock(pos, Blocks.AIR.defaultBlockState(), 11);
+        level.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL_IMMEDIATE);
         return new ItemStack(getFluid().getBucket());
     }
 

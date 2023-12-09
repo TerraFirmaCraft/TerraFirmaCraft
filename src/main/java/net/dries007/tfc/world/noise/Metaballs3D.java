@@ -19,7 +19,7 @@ public class Metaballs3D
 
     private final Ball[] balls;
 
-    public Metaballs3D(RandomSource random, int minBalls, int maxBalls, float minSize, float maxSize, float radius)
+    public Metaballs3D(RandomSource random, int minBalls, int maxBalls, double minSize, double maxSize, double radius)
     {
         final int ballCount = Helpers.uniform(random, minBalls, maxBalls);
         final int negativeBallCount = minSize < 0 ? (int) (ballCount * (-minSize / (maxSize - minSize))) : 0;
@@ -35,9 +35,9 @@ public class Metaballs3D
         }
     }
 
-    public boolean inside(float x, float y, float z)
+    public boolean inside(double x, double y, double z)
     {
-        float f = 0;
+        double f = 0;
         for (Ball ball : balls)
         {
             f += ball.weight * Math.abs(ball.weight) / ((x - ball.x) * (x - ball.x) + (y - ball.y) * (y - ball.y) + (z - ball.z) * (z - ball.z));
@@ -49,5 +49,5 @@ public class Metaballs3D
         return false;
     }
 
-    record Ball(float x, float y, float z, float weight) {}
+    record Ball(double x, double y, double z, double weight) {}
 }

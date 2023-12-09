@@ -43,6 +43,8 @@ import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateModel;
 import net.dries007.tfc.util.collections.BufferedList;
 import net.dries007.tfc.util.loot.TFCLoot;
+import net.dries007.tfc.util.rotation.RotationNetworkManager;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -59,6 +61,8 @@ public class WorldTracker implements ICapabilitySerializable<CompoundTag>
     private final ClimateModel defaultClimateModel = new BiomeBasedClimateModel();
     @Nullable private ClimateModel climateModel;
 
+    private final RotationNetworkManager rotationManager;
+
     private long rainStartTick, rainEndTick;
     private float rainIntensity;
 
@@ -71,6 +75,7 @@ public class WorldTracker implements ICapabilitySerializable<CompoundTag>
         this.landslideTicks = new BufferedList<>();
         this.isolatedPositions = new BufferedList<>();
         this.collapsesInProgress = new ArrayList<>();
+        this.rotationManager = new RotationNetworkManager();
     }
 
     public void addLandslidePos(BlockPos pos)
@@ -143,6 +148,11 @@ public class WorldTracker implements ICapabilitySerializable<CompoundTag>
     public boolean isRaining(long tick, float rainfall)
     {
         return exactRainfallIntensity(tick) > Mth.clampedMap(rainfall, ClimateModel.MINIMUM_RAINFALL, ClimateModel.MAXIMUM_RAINFALL, 1, 0);
+    }
+
+    public RotationNetworkManager getRotationManager()
+    {
+        return rotationManager;
     }
 
     public void tick(ServerLevel level)

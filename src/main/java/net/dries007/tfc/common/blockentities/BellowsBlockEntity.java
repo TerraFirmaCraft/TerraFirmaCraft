@@ -13,18 +13,23 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.common.blockentities.rotation.CrankshaftBlockEntity;
 import net.dries007.tfc.common.blocks.devices.BellowsBlock;
 import net.dries007.tfc.common.blocks.devices.IBellowsConsumer;
+import net.dries007.tfc.util.rotation.Rotation;
 
 public class BellowsBlockEntity extends TFCBlockEntity
 {
@@ -32,14 +37,30 @@ public class BellowsBlockEntity extends TFCBlockEntity
     public static final int BELLOWS_AIR = 200;
     public static final int MAX_DEVICE_AIR_TICKS = 600;
 
+    public static final float MIN_EXTENSION = 0.125f;
+    public static final float MAX_EXTENSION = 0.625f;
+
     public static void tickBoth(Level level, BlockPos pos, BlockState state, BellowsBlockEntity bellows)
     {
-        if (bellows.justPushed)
+        final @Nullable Rotation networkRotation = bellows.getCrankRotation();
+        final float extension = bellows.getExtensionLength(1f);
+        if (extension > MAX_EXTENSION - 0.05f && !bellows.justPushed && bellows.lastPushed + 20 < level.getGameTime() && networkRotation != null)
+        {
+            bellows.doPush();
+
+            // Calculate a 'last pushed' time based on how fast the bellows is currently being operated,
+            // which we can infer from the speed (assuming it does not speed up or slow down significantly
+            // This prevents really slow moving bellows from triggering this push twice
+            bellows.justPushed = true;
+            bellows.lastPushed = level.getGameTime() - 20 + Math.max(20, (int) (0.8f * Mth.TWO_PI / networkRotation.speed()));
+        }
+        else if (bellows.justPushed)
         {
             bellows.justPushed = false;
             bellows.afterPush();
         }
-        if (level.getGameTime() - bellows.lastPushed > 20)
+
+        if (extension >= MAX_EXTENSION)
         {
             return;
         }
@@ -62,9 +83,32 @@ public class BellowsBlockEntity extends TFCBlockEntity
     private long lastPushed = 0L;
     private boolean justPushed = false;
 
+    public BellowsBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
+    {
+        super(type, pos, state);
+    }
+
     public BellowsBlockEntity(BlockPos pos, BlockState state)
     {
-        super(TFCBlockEntities.BELLOWS.get(), pos, state);
+        this(TFCBlockEntities.BELLOWS.get(), pos, state);
+    }
+
+    public boolean isConnectedToNetwork()
+    {
+        return getCrankRotation() != null;
+    }
+
+    @Nullable
+    public Rotation getCrankRotation()
+    {
+        final CrankshaftBlockEntity crank = getCrankBlockEntity();
+        return crank == null ? null : crank.getRotationNode().rotation();
+    }
+
+    @Nullable
+    public CrankshaftBlockEntity getCrankBlockEntity()
+    {
+        return level == null ? null : CrankshaftBlockEntity.getCrankShaftAt(level, worldPosition, getBlockState().getValue(BellowsBlock.FACING).getOpposite());
     }
 
     @Override
@@ -83,37 +127,57 @@ public class BellowsBlockEntity extends TFCBlockEntity
         justPushed = tag.getBoolean("justPushed");
     }
 
-    public float getExtensionLength()
+    public float getExtensionLength(float partialTick)
     {
         if (level == null)
         {
-            return 0.125f;
+            return MIN_EXTENSION;
         }
+
+        // If connected to a rotating crankshaft, we infer an extension length from the length of the shaft extension.
+        // The shaft compresses the extension length by the length the shaft has extended
+        final CrankshaftBlockEntity entity = getCrankBlockEntity();
+        if (entity != null)
+        {
+            return Mth.clamp(MIN_EXTENSION + entity.getExtensionLength(partialTick), MIN_EXTENSION, MAX_EXTENSION);
+        }
+
+        // Otherwise, we fall back to the last pushed time, indicating the player is controlling this block
         final int time = (int) (level.getGameTime() - lastPushed);
         if (time < 10)
         {
-            return time * 0.05f + 0.125f;
+            return time * 0.05f + MIN_EXTENSION;
         }
         else if (time < 20)
         {
-            return (20 - time) * 0.05f + 0.125f;
+            return (20 - time) * 0.05f + MIN_EXTENSION;
         }
-        return 0.125f;
+        return MIN_EXTENSION;
     }
 
     public InteractionResult onRightClick()
     {
         assert level != null;
 
-        if (level.getGameTime() - lastPushed < 20)
+        if (level.getGameTime() - lastPushed < 20 || isConnectedToNetwork())
         {
             return InteractionResult.PASS;
         }
+        doPush();
+
+        // Return success in both cases because we want the player's arm to swing, because they 'tried'
+        return InteractionResult.SUCCESS;
+    }
+
+    private void doPush()
+    {
+        assert level != null;
+
         if (level.isClientSide)
         {
             // Run the effects on server just after we successfully push, as this will reset the lastPushed and justPushed flags
             // Those will be synced to client, and as soon as it receives them, it will run afterPush() through it's tick() method
-            return InteractionResult.SUCCESS;
+            return;
         }
 
         // We can push EITHER if there are no receivers (and we're just pushing air into empty space), OR if there are receivers willing to receive air.
@@ -146,8 +210,6 @@ public class BellowsBlockEntity extends TFCBlockEntity
             markForSync();
             afterPush();
         }
-        // Return success in both cases because we want the player's arm to swing, because they 'tried'
-        return InteractionResult.SUCCESS;
     }
 
     /**

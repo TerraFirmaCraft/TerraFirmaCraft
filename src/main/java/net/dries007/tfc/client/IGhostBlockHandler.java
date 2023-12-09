@@ -6,18 +6,12 @@
 
 package net.dries007.tfc.client;
 
-import java.util.Arrays;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraftforge.client.model.data.ModelData;
+import net.minecraft.util.Mth;
+import net.minecraftforge.client.model.pipeline.VertexConsumerWrapper;
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.BlockModelShaper;
-import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
@@ -26,10 +20,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
-import net.minecraftforge.client.ForgeHooksClient;
-
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
+/**
+ * Todo: this doesn't work yet for multipart baked models because they do crap with render types that is wrong.
+ */
 public interface IGhostBlockHandler
 {
     /**
@@ -37,35 +32,10 @@ public interface IGhostBlockHandler
      */
     default boolean draw(Level level, Player player, BlockState lookState, BlockPos lookPos, Vec3 location, Direction lookDirection, PoseStack stack, MultiBufferSource buffer, ItemStack item)
     {
-        BlockState state = getStateToDraw(level, player, lookState, lookDirection, lookPos, location.x - lookPos.getX(), location.y - lookPos.getY(), location.z - lookPos.getZ(), item);
-        if (state == null) return false;
+        final BlockState state = getStateToDraw(level, player, lookState, lookDirection, lookPos, location.x - lookPos.getX(), location.y - lookPos.getY(), location.z - lookPos.getZ(), item);
+        if (state == null || !level.isClientSide) return false;
 
-        Minecraft mc = Minecraft.getInstance();
-        BlockModelShaper shaper = mc.getBlockRenderer().getBlockModelShaper();
-        BakedModel model = shaper.getBlockModel(state);
-        if (model == shaper.getModelManager().getMissingModel()) return false;
-
-        VertexConsumer consumer = buffer.getBuffer(RenderType.translucent());
-
-        stack.pushPose();
-        final Vec3 camera = mc.gameRenderer.getMainCamera().getPosition();
-        stack.translate(-camera.x, -camera.y, -camera.z);
-        stack.translate(lookPos.getX(), lookPos.getY(), lookPos.getZ());
-        if (shouldGrowSlightly())
-        {
-            stack.translate(-0.005F, -0.005F, -0.005F);
-            stack.scale(1.01F, 1.01F, 1.01F);
-        }
-        final PoseStack.Pose pose = stack.last();
-
-        Arrays.stream(ClientHelpers.DIRECTIONS_AND_NULL)
-            .flatMap(dir -> model.getQuads(state, dir, level.random, ModelData.EMPTY, RenderType.translucent()).stream())
-            .forEach(quad -> consumer.putBulkData(pose, quad, 1.0F, 1.0F, 1.0F, LevelRenderer.getLightColor(level, state, lookPos), OverlayTexture.NO_OVERLAY));
-
-        ((MultiBufferSource.BufferSource) buffer).endBatch(RenderType.translucent());
-
-        stack.popPose();
-        return true;
+        return RenderHelpers.renderGhostBlock(level, state, lookPos, stack, buffer, shouldGrowSlightly(), Mth.floor(alpha() * 255));
     }
 
     /**
@@ -97,4 +67,21 @@ public interface IGhostBlockHandler
      */
     @Nullable
     BlockState getStateToDraw(Level level, Player player, BlockState lookState, Direction direction, BlockPos pos, double x, double y, double z, ItemStack item);
+
+    class ForcedAlphaVertexConsumer extends VertexConsumerWrapper
+    {
+        private final int alpha;
+
+        public ForcedAlphaVertexConsumer(VertexConsumer wrapped, int alpha)
+        {
+            super(wrapped);
+            this.alpha = alpha;
+        }
+
+        @Override
+        public VertexConsumer color(int r, int g, int b, int a)
+        {
+            return parent.color(r, g, b, (a * this.alpha) / 0xFF);
+        }
+    }
 }

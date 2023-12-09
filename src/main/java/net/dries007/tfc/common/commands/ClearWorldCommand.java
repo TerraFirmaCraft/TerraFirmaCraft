@@ -9,6 +9,7 @@ package net.dries007.tfc.common.commands;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -26,7 +27,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.server.command.EnumArgument;
 
 import com.mojang.brigadier.Command;
@@ -35,7 +35,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
-import net.dries007.tfc.world.feature.vein.VeinConfig;
+import net.dries007.tfc.world.feature.vein.IVeinConfig;
 import net.dries007.tfc.world.feature.vein.VeinFeature;
 
 public final class ClearWorldCommand
@@ -106,9 +106,9 @@ public final class ClearWorldCommand
             final Set<Block> blocks = Stream.of(
                 Stream.of(Rock.BlockType.RAW, Rock.BlockType.HARDENED, Rock.BlockType.GRAVEL)
                     .flatMap(t -> TFCBlocks.ROCK_BLOCKS.values().stream().map(map -> map.get(t).get())),
-                TFCBlocks.SOIL.get(SoilBlockType.DIRT).values().stream().map(RegistryObject::get),
-                TFCBlocks.SOIL.get(SoilBlockType.GRASS).values().stream().map(RegistryObject::get),
-                TFCBlocks.SAND.values().stream().map(RegistryObject::get)
+                TFCBlocks.SOIL.get(SoilBlockType.DIRT).values().stream().map(Supplier::get),
+                TFCBlocks.SOIL.get(SoilBlockType.GRASS).values().stream().map(Supplier::get),
+                TFCBlocks.SAND.values().stream().map(Supplier::get)
             ).flatMap(t -> t).collect(Collectors.toSet());
             return state -> blocks.contains(state.getBlock());
         }),
@@ -116,7 +116,11 @@ public final class ClearWorldCommand
             final Registry<ConfiguredFeature<?, ?>> registry = server.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE);
             Set<Block> blocks = registry.stream()
                 .filter(feature -> feature.feature() instanceof VeinFeature<?, ?>)
-                .flatMap(feature -> ((VeinConfig) feature.config()).getOreStates().stream())
+                .flatMap(feature -> ((IVeinConfig) feature.config()).config()
+                    .states()
+                    .values()
+                    .stream()
+                    .flatMap(weighted -> weighted.values().stream()))
                 .map(BlockBehaviour.BlockStateBase::getBlock)
                 .collect(Collectors.toSet());
             return state -> !blocks.contains(state.getBlock());

@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)맷돌$()은 아이템을 가는 장치입니다. 맷돌로는 가루와 그 외의 아이템들 몇몇을 만들 수 있습니다. 맷돌은 $(thing)받침대$()와 $(thing)윗돌$()로 구성됩니다."
+      "text": "The $(thing)Quern$() is a device for grinding items. It can make powders, dyes, and some other items. It is assembled from a $(thing)Base$() and $(thing)Handstone$().$(br2)The Quern can also be connected to a $(l:mechanics/mechanical_power#quern)Mechanical Power$() network."
     },
     {
       "type": "patchouli:crafting",
@@ -63,7 +63,7 @@
     {
       "type": "tfc:quern_recipe",
       "recipe": "tfc:quern/emerald",
-      "text": "$(l:the_world/waterways#gemstones)보석들$() 역시 가루로 갈립니다."
+      "text": "$(thing)Gems$() can also be ground into powder."
     },
     {
       "type": "tfc:quern_recipe",

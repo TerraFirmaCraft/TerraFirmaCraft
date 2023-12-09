@@ -7,6 +7,9 @@
   "ingots": {
     "tag": "forge:ingots/bronze"
   },
+  "double_ingots": {
+    "tag": "forge:double_ingots/bronze"
+  },
   "sheets": {
     "tag": "forge:sheets/bronze"
   }

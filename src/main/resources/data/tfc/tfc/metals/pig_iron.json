@@ -6,8 +6,5 @@
   "specific_heat_capacity": 0.00857,
   "ingots": {
     "tag": "forge:ingots/pig_iron"
-  },
-  "sheets": {
-    "tag": "forge:sheets/pig_iron"
   }
 }

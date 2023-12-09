@@ -21,6 +21,8 @@
     "tfc:jar/orange",
     "tfc:jar/peach",
     "tfc:jar/plum",
-    "tfc:jar/red_apple"
+    "tfc:jar/red_apple",
+    "tfc:jar/pumpkin_chunks",
+    "tfc:jar/melon_slice"
   ]
 }

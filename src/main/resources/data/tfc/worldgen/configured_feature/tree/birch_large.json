@@ -3,14 +3,14 @@
   "type": "tfc:random_tree",
   "config": {
     "structures": [
-      "tfc:birch/1",
-      "tfc:birch/2",
-      "tfc:birch/3",
-      "tfc:birch/4",
-      "tfc:birch/5",
-      "tfc:birch/6"
+      "tfc:birch_large/1",
+      "tfc:birch_large/2",
+      "tfc:birch_large/3",
+      "tfc:birch_large/4",
+      "tfc:birch_large/5",
+      "tfc:birch_large/6"
     ],
-    "radius": "_large",
+    "radius": 1,
     "placement": {
       "width": 1,
       "height": 10

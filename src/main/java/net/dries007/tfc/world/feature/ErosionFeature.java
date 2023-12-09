@@ -87,7 +87,7 @@ public class ErosionFeature extends Feature<NoneFeatureConfiguration>
                                 {
                                     // More than one block to collapse, so we can support instead
                                     mutablePos.setY(y + 1);
-                                    setBlock(level, chunk, mutablePos, rockData.getRock(x, y + 1, z).hardened().defaultBlockState());
+                                    setBlock(level, chunk, mutablePos, rockData.getRock(chunkX + x, y + 1, chunkZ + z).hardened().defaultBlockState());
                                 }
                                 else
                                 {
@@ -107,7 +107,7 @@ public class ErosionFeature extends Feature<NoneFeatureConfiguration>
                                     {
                                         // Otherwise, we have to support the block, and the only way we can is by placing stone.
                                         mutablePos.setY(y + 1);
-                                        setBlock(level, chunk, mutablePos, rockData.getRock(x, y + 1, z).hardened().defaultBlockState());
+                                        setBlock(level, chunk, mutablePos, rockData.getRock(chunkX + x, y + 1, chunkZ + z).hardened().defaultBlockState());
                                     }
                                 }
                             }

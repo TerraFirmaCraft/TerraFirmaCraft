@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -148,17 +147,24 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
                         Direction test = Direction.Plane.HORIZONTAL.getRandomDirection(random);
                         if (directions.contains(test))
                         {
-                            mutablePos.setWithOffset(pos, test);
-                            if (canGrowInto(level, mutablePos))
+                            if (couldBranchInDirection(level, pos, mutablePos, test))
                             {
-                                mutablePos.move(0, -1, 0);
-                                if (canGrowInto(level, mutablePos))
+                                boolean doubleBranch = false;
+                                if (random.nextBoolean())
                                 {
-                                    mutablePos.move(0, 1, 0);
-                                    if (allNeighborsEmpty(level, mutablePos, test.getOpposite()))
+                                    mutablePos.move(test, 1);
+                                    if (couldBranchInDirection(level, pos, mutablePos, test))
                                     {
+                                        mutablePos.move(test, -1);
+                                        placeBody(level, mutablePos, stage);
+                                        mutablePos.move(test, 1);
                                         placeGrownFlower(level, mutablePos, stage + 1, state.getValue(SAPLINGS), cyclesLeft - 1, natural);
+                                        doubleBranch = true;
                                     }
+                                }
+                                if (!doubleBranch)
+                                {
+                                    placeGrownFlower(level, mutablePos, stage + 1, state.getValue(SAPLINGS), cyclesLeft - 1, natural);
                                 }
                             }
                             directions.remove(test);
@@ -174,6 +180,22 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
             }
         }
     }
+
+    private static boolean couldBranchInDirection(ServerLevel level, BlockPos pos, BlockPos.MutableBlockPos mutablePos, Direction test)
+    {
+        mutablePos.setWithOffset(pos, test);
+        if (canGrowInto(level, mutablePos))
+        {
+            mutablePos.move(0, -1, 0);
+            if (canGrowInto(level, mutablePos))
+            {
+                mutablePos.move(0, 1, 0);
+                return allNeighborsEmpty(level, mutablePos, test.getOpposite());
+            }
+        }
+        return false;
+    }
+
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)

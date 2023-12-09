@@ -20,6 +20,7 @@ import net.dries007.tfc.common.blocks.devices.TFCComposterBlock;
 import net.dries007.tfc.common.blocks.plant.ITallPlant;
 import net.dries007.tfc.common.blocks.plant.fruit.Lifecycle;
 import net.dries007.tfc.common.blocks.rock.RockSpikeBlock;
+import net.dries007.tfc.common.blocks.rotation.CrankshaftBlock;
 import net.dries007.tfc.common.blocks.wood.BranchDirection;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.TFCFluids;
@@ -30,9 +31,7 @@ import net.dries007.tfc.world.river.Flow;
  */
 public class TFCBlockStateProperties
 {
-    public static final IntegerProperty DISTANCE_7 = BlockStateProperties.DISTANCE;
     public static final IntegerProperty DISTANCE_9 = IntegerProperty.create("distance", 1, 9);
-
 
     public static final FluidProperty WATER = FluidProperty.create("fluid", Stream.of(Fluids.EMPTY, Fluids.WATER, TFCFluids.SALT_WATER));
     public static final FluidProperty ALL_WATER = FluidProperty.create("fluid", Stream.of(Fluids.EMPTY, Fluids.WATER, TFCFluids.SALT_WATER, TFCFluids.SPRING_WATER));
@@ -42,6 +41,8 @@ public class TFCBlockStateProperties
 
     public static final IntegerProperty COUNT_1_3 = IntegerProperty.create("count", 1, 3);
     public static final IntegerProperty COUNT_1_4 = IntegerProperty.create("count", 1, 4);
+    public static final IntegerProperty COUNT_1_5 = IntegerProperty.create("count", 1, 5);
+    public static final IntegerProperty COUNT_1_36 = IntegerProperty.create("count", 1, 36);
     public static final IntegerProperty COUNT_1_64 = IntegerProperty.create("count", 1, 64);
 
     public static final IntegerProperty LAYERS_4 = IntegerProperty.create("layers", 1, 4);
@@ -74,6 +75,7 @@ public class TFCBlockStateProperties
     public static final EnumProperty<DoubleCropBlock.Part> DOUBLE_CROP_PART = EnumProperty.create("part", DoubleCropBlock.Part.class);
     public static final EnumProperty<ITallPlant.Part> TALL_PLANT_PART = EnumProperty.create("part", ITallPlant.Part.class);
     public static final EnumProperty<RockSpikeBlock.Part> ROCK_SPIKE_PART = EnumProperty.create("part", RockSpikeBlock.Part.class);
+    public static final EnumProperty<CrankshaftBlock.Part> CRANKSHAFT_PART = EnumProperty.create("part", CrankshaftBlock.Part.class);
     public static final EnumProperty<Lifecycle> LIFECYCLE = EnumProperty.create("lifecycle", Lifecycle.class);
     public static final EnumProperty<TFCComposterBlock.CompostType> COMPOST_TYPE = EnumProperty.create("type", TFCComposterBlock.CompostType.class);
     public static final EnumProperty<BranchDirection> BRANCH_DIRECTION = EnumProperty.create("branch_direction", BranchDirection.class);
@@ -92,6 +94,8 @@ public class TFCBlockStateProperties
     public static final BooleanProperty POWERED = BooleanProperty.create("powered");
     public static final BooleanProperty WAXED = BooleanProperty.create("waxed");
     public static final BooleanProperty FLAT = BooleanProperty.create("flat");
+    public static final BooleanProperty ROTATING = BooleanProperty.create("rotating");
+    public static final BooleanProperty HAS_WHEEL = BooleanProperty.create("has_wheel");
 
     // for placed items
     public static final BooleanProperty ITEM_0 = BooleanProperty.create("item_0");

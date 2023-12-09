@@ -23,7 +23,7 @@ public class SoilDiscFeature extends Feature<SoilDiscConfig>
     @Override
     public boolean place(FeaturePlaceContext<SoilDiscConfig> context)
     {
-        final WorldGenLevel world = context.level();
+        final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
         final var random = context.random();
         final SoilDiscConfig config = context.config();
@@ -42,14 +42,17 @@ public class SoilDiscFeature extends Feature<SoilDiscConfig>
                 {
                     for (int y = pos.getY() - config.getHeight(); y <= pos.getY() + config.getHeight(); ++y)
                     {
-                        mutablePos.set(x, y, z);
-
-                        final BlockState stateAt = world.getBlockState(mutablePos);
-                        final BlockState stateReplacement = config.getState(stateAt);
-                        if (stateReplacement != null)
+                        if (random.nextFloat() < config.integrity())
                         {
-                            world.setBlock(mutablePos, stateReplacement, 2);
-                            placed = true;
+                            mutablePos.set(x, y, z);
+
+                            final BlockState stateAt = level.getBlockState(mutablePos);
+                            final BlockState stateReplacement = config.getState(stateAt);
+                            if (stateReplacement != null)
+                            {
+                                level.setBlock(mutablePos, stateReplacement, 2);
+                                placed = true;
+                            }
                         }
                     }
                 }

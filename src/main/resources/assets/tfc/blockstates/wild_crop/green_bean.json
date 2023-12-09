@@ -1,11 +1,17 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "part=top": {
+    "part=top,mature=true": {
       "model": "tfc:block/wild_crop/green_bean_top"
     },
-    "part=bottom": {
+    "part=top,mature=false": {
+      "model": "tfc:block/dead_crop/green_bean_top"
+    },
+    "part=bottom,mature=true": {
       "model": "tfc:block/wild_crop/green_bean_bottom"
+    },
+    "part=bottom,mature=false": {
+      "model": "tfc:block/dead_crop/green_bean_bottom"
     }
   }
 }

@@ -1,0 +1,158 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:cluster_vein",
+  "config": {
+    "rarity": 90,
+    "density": 0.4,
+    "min_y": 10,
+    "max_y": 90,
+    "size": 20,
+    "random_name": "surface_magnetite",
+    "blocks": [
+      {
+        "replace": [
+          "tfc:rock/raw/shale"
+        ],
+        "with": [
+          {
+            "weight": 35,
+            "block": "tfc:ore/poor_magnetite/shale"
+          },
+          {
+            "weight": 40,
+            "block": "tfc:ore/normal_magnetite/shale"
+          },
+          {
+            "weight": 25,
+            "block": "tfc:ore/rich_magnetite/shale"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/claystone"
+        ],
+        "with": [
+          {
+            "weight": 35,
+            "block": "tfc:ore/poor_magnetite/claystone"
+          },
+          {
+            "weight": 40,
+            "block": "tfc:ore/normal_magnetite/claystone"
+          },
+          {
+            "weight": 25,
+            "block": "tfc:ore/rich_magnetite/claystone"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/limestone"
+        ],
+        "with": [
+          {
+            "weight": 35,
+            "block": "tfc:ore/poor_magnetite/limestone"
+          },
+          {
+            "weight": 40,
+            "block": "tfc:ore/normal_magnetite/limestone"
+          },
+          {
+            "weight": 25,
+            "block": "tfc:ore/rich_magnetite/limestone"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/conglomerate"
+        ],
+        "with": [
+          {
+            "weight": 35,
+            "block": "tfc:ore/poor_magnetite/conglomerate"
+          },
+          {
+            "weight": 40,
+            "block": "tfc:ore/normal_magnetite/conglomerate"
+          },
+          {
+            "weight": 25,
+            "block": "tfc:ore/rich_magnetite/conglomerate"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/dolomite"
+        ],
+        "with": [
+          {
+            "weight": 35,
+            "block": "tfc:ore/poor_magnetite/dolomite"
+          },
+          {
+            "weight": 40,
+            "block": "tfc:ore/normal_magnetite/dolomite"
+          },
+          {
+            "weight": 25,
+            "block": "tfc:ore/rich_magnetite/dolomite"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/chert"
+        ],
+        "with": [
+          {
+            "weight": 35,
+            "block": "tfc:ore/poor_magnetite/chert"
+          },
+          {
+            "weight": 40,
+            "block": "tfc:ore/normal_magnetite/chert"
+          },
+          {
+            "weight": 25,
+            "block": "tfc:ore/rich_magnetite/chert"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/chalk"
+        ],
+        "with": [
+          {
+            "weight": 35,
+            "block": "tfc:ore/poor_magnetite/chalk"
+          },
+          {
+            "weight": 40,
+            "block": "tfc:ore/normal_magnetite/chalk"
+          },
+          {
+            "weight": 25,
+            "block": "tfc:ore/rich_magnetite/chalk"
+          }
+        ]
+      }
+    ],
+    "indicator": {
+      "rarity": 24,
+      "depth": 35,
+      "underground_rarity": 1,
+      "underground_count": 0,
+      "blocks": [
+        {
+          "block": "tfc:ore/small_magnetite"
+        }
+      ]
+    }
+  }
+}

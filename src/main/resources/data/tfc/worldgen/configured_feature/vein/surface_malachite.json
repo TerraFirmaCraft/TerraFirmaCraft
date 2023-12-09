@@ -1,0 +1,101 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:cluster_vein",
+  "config": {
+    "rarity": 32,
+    "density": 0.25,
+    "min_y": 40,
+    "max_y": 130,
+    "size": 20,
+    "random_name": "surface_malachite",
+    "blocks": [
+      {
+        "replace": [
+          "tfc:rock/raw/marble"
+        ],
+        "with": [
+          {
+            "weight": 70,
+            "block": "tfc:ore/poor_malachite/marble"
+          },
+          {
+            "weight": 25,
+            "block": "tfc:ore/normal_malachite/marble"
+          },
+          {
+            "weight": 5,
+            "block": "tfc:ore/rich_malachite/marble"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/limestone"
+        ],
+        "with": [
+          {
+            "weight": 70,
+            "block": "tfc:ore/poor_malachite/limestone"
+          },
+          {
+            "weight": 25,
+            "block": "tfc:ore/normal_malachite/limestone"
+          },
+          {
+            "weight": 5,
+            "block": "tfc:ore/rich_malachite/limestone"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/chalk"
+        ],
+        "with": [
+          {
+            "weight": 70,
+            "block": "tfc:ore/poor_malachite/chalk"
+          },
+          {
+            "weight": 25,
+            "block": "tfc:ore/normal_malachite/chalk"
+          },
+          {
+            "weight": 5,
+            "block": "tfc:ore/rich_malachite/chalk"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/dolomite"
+        ],
+        "with": [
+          {
+            "weight": 70,
+            "block": "tfc:ore/poor_malachite/dolomite"
+          },
+          {
+            "weight": 25,
+            "block": "tfc:ore/normal_malachite/dolomite"
+          },
+          {
+            "weight": 5,
+            "block": "tfc:ore/rich_malachite/dolomite"
+          }
+        ]
+      }
+    ],
+    "indicator": {
+      "rarity": 14,
+      "depth": 35,
+      "underground_rarity": 1,
+      "underground_count": 0,
+      "blocks": [
+        {
+          "block": "tfc:ore/small_malachite"
+        }
+      ]
+    }
+  }
+}

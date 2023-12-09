@@ -9,6 +9,7 @@ package net.dries007.tfc.common.blockentities;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -20,6 +21,7 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.recipes.ScrapingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
+import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -63,11 +65,17 @@ public class ScrapingBlockEntity extends InventoryBlockEntity<ItemStackHandler>
                 final ScrapingRecipe recipe = getRecipe(currentItem);
                 if (recipe != null)
                 {
+                    final ItemStack extraDrop = recipe.getExtraDrop().getSingleStack(currentItem);
+                    if (!extraDrop.isEmpty())
+                    {
+                        Helpers.spawnItem(level, worldPosition, extraDrop);
+                    }
                     inventory.setStackInSlot(0, recipe.assemble(new ItemStackInventory(currentItem), level.registryAccess()));
                 }
             }
             markForBlockUpdate();
         }
+        level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
     }
 
     public boolean dye(DyeColor color)

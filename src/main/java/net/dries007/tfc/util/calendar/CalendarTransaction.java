@@ -11,7 +11,7 @@ package net.dries007.tfc.util.calendar;
  * Example usage:
  * <pre>
  *     try (CalendarTransaction tr = Calendars.SERVER.transaction()) {
- *         tr.add(); // Adds 8000 ticks to the calendar.
+ *         tr.add(8000); // Adds 8000 ticks to the calendar.
  *         foo(); // Do an action as if it was performed in the future (or past)
  *     }
  * </pre>

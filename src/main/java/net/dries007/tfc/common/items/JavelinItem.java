@@ -6,9 +6,12 @@
 
 package net.dries007.tfc.common.items;
 
+import java.util.List;
 import java.util.function.Consumer;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -20,6 +23,7 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -27,6 +31,7 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.common.util.NonNullLazy;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.render.blockentity.JavelinItemRenderer;
@@ -39,15 +44,17 @@ import net.dries007.tfc.util.Helpers;
 public class JavelinItem extends SwordItem
 {
     private final ResourceLocation textureLocation;
+    private final float thrownDamage;
 
-    public JavelinItem(Tier tier, float attackDamage, float attackSpeed, Properties properties, String name)
+    public JavelinItem(Tier tier, float attackDamage, float thrownDamage, float attackSpeed, Properties properties, String name)
     {
-        this(tier, (int) attackDamage, attackSpeed, properties, Helpers.identifier("textures/entity/projectiles/" + name + "_javelin.png"));
+        this(tier, (int) attackDamage, thrownDamage, attackSpeed, properties, Helpers.identifier("textures/entity/projectiles/" + name + "_javelin.png"));
     }
 
-    public JavelinItem(Tier tier, float attackDamage, float attackSpeed, Properties properties, ResourceLocation name)
+    public JavelinItem(Tier tier, float attackDamage, float thrownDamage, float attackSpeed, Properties properties, ResourceLocation name)
     {
         super(tier, (int) attackDamage, attackSpeed, properties);
+        this.thrownDamage = thrownDamage;
         this.textureLocation = name;
     }
 
@@ -117,6 +124,12 @@ public class JavelinItem extends SwordItem
     }
 
     @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag advanced)
+    {
+        tooltip.add(Component.translatable("tfc.tooltip.javelin.thrown_damage", String.format("%.0f", getThrownDamage())).withStyle(ChatFormatting.DARK_GREEN));
+    }
+
+    @Override
     public boolean canPerformAction(ItemStack stack, ToolAction toolAction)
     {
         return super.canPerformAction(stack, toolAction) && toolAction != ToolActions.SWORD_SWEEP;
@@ -138,5 +151,10 @@ public class JavelinItem extends SwordItem
     public ResourceLocation getTextureLocation()
     {
         return textureLocation;
+    }
+
+    public float getThrownDamage()
+    {
+        return thrownDamage;
     }
 }

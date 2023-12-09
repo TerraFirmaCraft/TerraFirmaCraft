@@ -3,33 +3,20 @@
   "feature": "tfc:plant/reindeer_lichen_cover",
   "placement": [
     {
+      "type": "tfc:climate",
+      "min_temperature": -22.4,
+      "max_temperature": -12.4,
+      "min_rainfall": 220,
+      "max_rainfall": 310,
+      "min_forest": "normal",
+      "fuzzy": true
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
       "type": "minecraft:heightmap",
       "heightmap": "WORLD_SURFACE_WG"
-    },
-    {
-      "type": "block_predicate_filter",
-      "predicate": {
-        "type": "tfc:air_or_empty_fluid"
-      }
-    },
-    {
-      "type": "block_predicate_filter",
-      "predicate": {
-        "type": "would_survive",
-        "state": {
-          "Name": "tfc:plant/reindeer_lichen",
-          "Properties": {
-            "age": "1",
-            "stage": "1",
-            "up": "false",
-            "down": "true",
-            "north": "false",
-            "east": "false",
-            "west": "false",
-            "south": "false"
-          }
-        }
-      }
     }
   ]
 }

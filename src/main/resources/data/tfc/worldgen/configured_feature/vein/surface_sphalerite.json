@@ -2,139 +2,100 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:cluster_vein",
   "config": {
-    "rarity": 20,
-    "min_y": {
-      "absolute": 60
-    },
-    "max_y": {
-      "absolute": 210
-    },
-    "size": 15,
-    "density": 0.5,
+    "rarity": 30,
+    "density": 0.3,
+    "min_y": 40,
+    "max_y": 130,
+    "size": 20,
+    "random_name": "surface_sphalerite",
     "blocks": [
       {
         "replace": [
-          "tfc:rock/raw/quartzite"
+          "tfc:rock/raw/rhyolite"
         ],
         "with": [
           {
-            "weight": 60,
-            "block": "tfc:ore/poor_sphalerite/quartzite"
+            "weight": 70,
+            "block": "tfc:ore/poor_sphalerite/rhyolite"
           },
           {
-            "weight": 30,
-            "block": "tfc:ore/normal_sphalerite/quartzite"
+            "weight": 25,
+            "block": "tfc:ore/normal_sphalerite/rhyolite"
           },
           {
-            "weight": 10,
-            "block": "tfc:ore/rich_sphalerite/quartzite"
+            "weight": 5,
+            "block": "tfc:ore/rich_sphalerite/rhyolite"
           }
         ]
       },
       {
         "replace": [
-          "tfc:rock/raw/slate"
+          "tfc:rock/raw/basalt"
         ],
         "with": [
           {
-            "weight": 60,
-            "block": "tfc:ore/poor_sphalerite/slate"
+            "weight": 70,
+            "block": "tfc:ore/poor_sphalerite/basalt"
           },
           {
-            "weight": 30,
-            "block": "tfc:ore/normal_sphalerite/slate"
+            "weight": 25,
+            "block": "tfc:ore/normal_sphalerite/basalt"
           },
           {
-            "weight": 10,
-            "block": "tfc:ore/rich_sphalerite/slate"
+            "weight": 5,
+            "block": "tfc:ore/rich_sphalerite/basalt"
           }
         ]
       },
       {
         "replace": [
-          "tfc:rock/raw/phyllite"
+          "tfc:rock/raw/andesite"
         ],
         "with": [
           {
-            "weight": 60,
-            "block": "tfc:ore/poor_sphalerite/phyllite"
+            "weight": 70,
+            "block": "tfc:ore/poor_sphalerite/andesite"
           },
           {
-            "weight": 30,
-            "block": "tfc:ore/normal_sphalerite/phyllite"
+            "weight": 25,
+            "block": "tfc:ore/normal_sphalerite/andesite"
           },
           {
-            "weight": 10,
-            "block": "tfc:ore/rich_sphalerite/phyllite"
+            "weight": 5,
+            "block": "tfc:ore/rich_sphalerite/andesite"
           }
         ]
       },
       {
         "replace": [
-          "tfc:rock/raw/schist"
+          "tfc:rock/raw/dacite"
         ],
         "with": [
           {
-            "weight": 60,
-            "block": "tfc:ore/poor_sphalerite/schist"
+            "weight": 70,
+            "block": "tfc:ore/poor_sphalerite/dacite"
           },
           {
-            "weight": 30,
-            "block": "tfc:ore/normal_sphalerite/schist"
+            "weight": 25,
+            "block": "tfc:ore/normal_sphalerite/dacite"
           },
           {
-            "weight": 10,
-            "block": "tfc:ore/rich_sphalerite/schist"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/gneiss"
-        ],
-        "with": [
-          {
-            "weight": 60,
-            "block": "tfc:ore/poor_sphalerite/gneiss"
-          },
-          {
-            "weight": 30,
-            "block": "tfc:ore/normal_sphalerite/gneiss"
-          },
-          {
-            "weight": 10,
-            "block": "tfc:ore/rich_sphalerite/gneiss"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/marble"
-        ],
-        "with": [
-          {
-            "weight": 60,
-            "block": "tfc:ore/poor_sphalerite/marble"
-          },
-          {
-            "weight": 30,
-            "block": "tfc:ore/normal_sphalerite/marble"
-          },
-          {
-            "weight": 10,
-            "block": "tfc:ore/rich_sphalerite/marble"
+            "weight": 5,
+            "block": "tfc:ore/rich_sphalerite/dacite"
           }
         ]
       }
     ],
     "indicator": {
       "rarity": 12,
+      "depth": 35,
+      "underground_rarity": 1,
+      "underground_count": 0,
       "blocks": [
         {
           "block": "tfc:ore/small_sphalerite"
         }
       ]
-    },
-    "random_name": "surface_sphalerite"
+    }
   }
 }

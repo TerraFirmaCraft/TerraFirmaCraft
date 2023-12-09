@@ -20,6 +20,7 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import org.joml.Vector3f;
 
+import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.aquatic.AquaticCritter;
 
 
@@ -74,7 +75,7 @@ public class LobsterModel extends HierarchicalAnimatedModel<AquaticCritter>
     }
 
     public static final AnimationDefinition SWIM = AnimationDefinition.Builder.withLength(0.45F).looping()
-        .addAnimation("body", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.0F, KeyframeAnimations.degreeVec(-170F, 0F, -180F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.125F, KeyframeAnimations.degreeVec(-180F, 0F, -180F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.45F, KeyframeAnimations.degreeVec(-170F, 0F, -180F), AnimationChannel.Interpolations.LINEAR)))
+        .addAnimation("body", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.0F, KeyframeAnimations.degreeVec(10F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.125F, KeyframeAnimations.degreeVec(20F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.45F, KeyframeAnimations.degreeVec(10F, 0F, 0F), AnimationChannel.Interpolations.LINEAR)))
         .addAnimation("tail1", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.0F, KeyframeAnimations.degreeVec(-30F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.0417F, KeyframeAnimations.degreeVec(-60F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.125F, KeyframeAnimations.degreeVec(-60F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.45F, KeyframeAnimations.degreeVec(-30F, 0F, 0F), AnimationChannel.Interpolations.LINEAR)))
         .addAnimation("tail2", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.0F, KeyframeAnimations.degreeVec(-50F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.0833F, KeyframeAnimations.degreeVec(-80F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.125F, KeyframeAnimations.degreeVec(-80F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.45F, KeyframeAnimations.degreeVec(-50F, 0F, 0F), AnimationChannel.Interpolations.LINEAR)))
         .addAnimation("tail3", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0.0F, KeyframeAnimations.degreeVec(-47.5F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.125F, KeyframeAnimations.degreeVec(-77.5F, 0F, 0F), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.45F, KeyframeAnimations.degreeVec(-47.5F, 0F, 0F), AnimationChannel.Interpolations.LINEAR)))
@@ -92,6 +93,8 @@ public class LobsterModel extends HierarchicalAnimatedModel<AquaticCritter>
     private final ModelPart armRight;
     private final ModelPart clawTopLeft;
     private final ModelPart clawTopRight;
+    private final ModelPart legsRight;
+    private final ModelPart legsLeft;
 
     public LobsterModel(ModelPart root)
     {
@@ -106,26 +109,34 @@ public class LobsterModel extends HierarchicalAnimatedModel<AquaticCritter>
         this.armRight = body.getChild("armRight");
         this.clawTopLeft = armLeft.getChild("clawLeft").getChild("clawTopLeft");
         this.clawTopRight = armRight.getChild("clawRight").getChild("clawTopRight");
+        this.legsRight = body.getChild("legsRight");
+        this.legsLeft = body.getChild("legsRight");
     }
 
     @Override
     public void setupAnim(AquaticCritter entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
     {
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        if (entity.isInWaterOrBubble())
+        if (!entity.onGround())
         {
+            body.yRot = (float) Math.PI;
             this.animateWalk(SWIM, limbSwing, limbSwingAmount, 1f, 2.5f);
         }
         else
         {
             float oscillation = 0.2F * Mth.cos(0.2F * ageInTicks);
             armLeft.xRot = oscillation;
-            armRight.xRot = -1 * oscillation;
+            armRight.xRot = oscillation * -1F;
             tail1.xRot = oscillation * 0.5F;
             rightAntenna.zRot = oscillation * 0.1F;
             leftAntenna.zRot = oscillation * -0.1F;
             clawTopLeft.xRot = oscillation * 0.1F;
             clawTopRight.xRot = oscillation * -0.1F;
+            if (EntityHelpers.isMovingInWater(entity))
+            {
+                legsRight.xRot = oscillation * 0.15F;
+                legsLeft.xRot = oscillation * -0.15F;
+            }
         }
     }
 

@@ -1,0 +1,22 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:plant/ivy_cover",
+  "placement": [
+    {
+      "type": "tfc:climate",
+      "min_temperature": -6.4,
+      "max_temperature": -2.4,
+      "min_rainfall": 180,
+      "max_rainfall": 250,
+      "min_forest": "normal",
+      "fuzzy": true
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "WORLD_SURFACE_WG"
+    }
+  ]
+}

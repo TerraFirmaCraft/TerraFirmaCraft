@@ -113,7 +113,7 @@ public final class BiomeNoise
             .clamped(0, 1);
 
         final Noise2D lerpMapped = (x, z) -> {
-            float in = base.noise(x, z);
+            double in = base.noise(x, z);
             return Mth.lerp(lerp.noise(x, z), in, sharpHillsMap(in));
         };
 
@@ -127,10 +127,10 @@ public final class BiomeNoise
             .scaled(-0.75f, 0.7f, SEA_LEVEL_Y - 3, SEA_LEVEL_Y + 28);
     }
 
-    public static float sharpHillsMap(float in)
+    public static double sharpHillsMap(double in)
     {
-        final float in0 = 1.0f, in1 = 0.67f, in2 = 0.15f, in3 = -0.15f, in4 = -0.67f, in5 = -1.0f;
-        final float out0 = 1.0f, out1 = 0.7f, out2 = 0.5f, out3 = -0.5f, out4 = -0.7f, out5 = -1.0f;
+        final double in0 = 1.0f, in1 = 0.67f, in2 = 0.15f, in3 = -0.15f, in4 = -0.67f, in5 = -1.0f;
+        final double out0 = 1.0f, out1 = 0.7f, out2 = 0.5f, out3 = -0.5f, out4 = -0.7f, out5 = -1.0f;
 
         if (in > in1)
             return Mth.map(in, in1, in0, out1, out0);
@@ -175,7 +175,7 @@ public final class BiomeNoise
                 .ridged() // Ridges are applied after octaves as it creates less directional artifacts this way
             )
             .map(x -> {
-                final float x0 = 0.125f * (x + 1) * (x + 1) * (x + 1); // Power scaled, flattens most areas but maximizes peaks
+                final double x0 = 0.125f * (x + 1) * (x + 1) * (x + 1); // Power scaled, flattens most areas but maximizes peaks
                 return SEA_LEVEL_Y + baseHeight + scaleHeight * x0; // Scale the entire thing to mountain ranges
             });
 
@@ -185,13 +185,13 @@ public final class BiomeNoise
         final Noise2D cliffHeightNoise = new OpenSimplex2D(seed + 3).octaves(2).spread(0.01f).scaled(140 - 20, 140 + 20);
 
         return (x, z) -> {
-            float height = baseNoise.noise(x, z);
+            double height = baseNoise.noise(x, z);
             if (height > 120) // Only sample each cliff noise layer if the base noise could be influenced by it
             {
-                final float cliffHeight = cliffHeightNoise.noise(x, z) - height;
+                final double cliffHeight = cliffHeightNoise.noise(x, z) - height;
                 if (cliffHeight < 0)
                 {
-                    final float mappedCliffHeight = Mth.clampedMap(cliffHeight, 0, -1, 0, 1);
+                    final double mappedCliffHeight = Mth.clampedMap(cliffHeight, 0, -1, 0, 1);
                     height += mappedCliffHeight * cliffNoise.noise(x, z);
                 }
             }
@@ -258,13 +258,13 @@ public final class BiomeNoise
 
         return new BiomeNoiseSampler()
         {
-            private float surfaceHeight, center, height;
+            private double surfaceHeight, center, height;
 
             @Override
             public void setColumn(int x, int z)
             {
-                float h0 = Mth.clamp((0.7f - blobsNoise.noise(x, z)) * (1 / 0.3f), 0, 1);
-                float h1 = depthNoise.noise(x, z);
+                double h0 = Mth.clamp((0.7f - blobsNoise.noise(x, z)) * (1 / 0.3f), 0, 1);
+                double h1 = depthNoise.noise(x, z);
 
                 surfaceHeight = heightNoise.noise(x, z);
                 center = centerNoise.noise(x, z);
@@ -280,7 +280,7 @@ public final class BiomeNoise
             @Override
             public double noise(int y)
             {
-                float delta = Math.abs(center - y);
+                double delta = Math.abs(center - y);
                 return Mth.clamp(0.4f + 0.05f * (height - delta), 0, 1);
             }
         };

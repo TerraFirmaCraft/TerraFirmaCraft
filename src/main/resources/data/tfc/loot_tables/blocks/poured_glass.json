@@ -8,15 +8,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:poured_glass",
-          "conditions": [
-            {
-              "condition": "minecraft:match_tool",
-              "predicate": {
-                "tag": "tfc:cuts_glass"
-              }
-            }
-          ]
+          "name": "minecraft:glass_pane"
         }
       ],
       "conditions": [

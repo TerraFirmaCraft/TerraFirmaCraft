@@ -9,8 +9,12 @@
     "tfc:groundcover/mussel",
     "tfc:groundcover/sea_urchin",
     "tfc:rock/loose/limestone",
+    "tfc:rock/mossy_loose/limestone",
     "tfc:rock/loose/dolomite",
+    "tfc:rock/mossy_loose/dolomite",
     "tfc:rock/loose/chalk",
-    "tfc:rock/loose/marble"
+    "tfc:rock/mossy_loose/chalk",
+    "tfc:rock/loose/marble",
+    "tfc:rock/mossy_loose/marble"
   ]
 }

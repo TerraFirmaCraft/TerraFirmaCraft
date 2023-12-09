@@ -39,7 +39,7 @@ public class Dog extends TamableMammal
         if (isAlive())
         {
             this.interestedAngleO = this.interestedAngle;
-            interestedAngle += 0.4f * (isInterested() ?  (1f - interestedAngle) : (0f - interestedAngle));
+            interestedAngle += 0.4f * (isInterested() ? (1f - interestedAngle) : (0f - interestedAngle));
         }
     }
 

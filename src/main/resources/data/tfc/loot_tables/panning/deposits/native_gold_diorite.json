@@ -31,7 +31,7 @@
             },
             {
               "type": "minecraft:item",
-              "name": "tfc:gem/emerald",
+              "name": "tfc:ore/emerald",
               "conditions": [
                 {
                   "condition": "minecraft:random_chance",

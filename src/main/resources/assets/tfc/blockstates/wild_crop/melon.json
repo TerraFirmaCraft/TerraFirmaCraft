@@ -2,13 +2,25 @@
   "__comment__": "This file was automatically created by mcresources",
   "multipart": [
     {
+      "when": {
+        "mature": true
+      },
       "apply": {
         "model": "tfc:block/wild_crop/melon"
       }
     },
     {
       "when": {
-        "east": true
+        "mature": false
+      },
+      "apply": {
+        "model": "tfc:block/dead_crop/melon"
+      }
+    },
+    {
+      "when": {
+        "east": true,
+        "mature": true
       },
       "apply": {
         "model": "tfc:block/wild_crop/melon_side",
@@ -17,7 +29,8 @@
     },
     {
       "when": {
-        "north": true
+        "north": true,
+        "mature": true
       },
       "apply": {
         "model": "tfc:block/wild_crop/melon_side"
@@ -25,7 +38,8 @@
     },
     {
       "when": {
-        "south": true
+        "south": true,
+        "mature": true
       },
       "apply": {
         "model": "tfc:block/wild_crop/melon_side",
@@ -34,10 +48,50 @@
     },
     {
       "when": {
-        "west": true
+        "west": true,
+        "mature": true
       },
       "apply": {
         "model": "tfc:block/wild_crop/melon_side",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "east": true,
+        "mature": false
+      },
+      "apply": {
+        "model": "tfc:block/dead_crop/melon_side",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "north": true,
+        "mature": false
+      },
+      "apply": {
+        "model": "tfc:block/dead_crop/melon_side"
+      }
+    },
+    {
+      "when": {
+        "south": true,
+        "mature": false
+      },
+      "apply": {
+        "model": "tfc:block/dead_crop/melon_side",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "west": true,
+        "mature": false
+      },
+      "apply": {
+        "model": "tfc:block/dead_crop/melon_side",
         "y": 270
       }
     }

@@ -46,7 +46,9 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.particle.TFCParticles;
+
 import net.minecraft.world.entity.AnimationState;
+
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.ai.PredicateMoveControl;
 import net.dries007.tfc.common.entities.ai.TFCBrain;
@@ -194,26 +196,22 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
         {
             switch (command)
             {
-                case RELAX ->
-                {
+                case RELAX -> {
                     setSitting(false);
                     setSleeping(false);
                 }
-                case SIT ->
-                {
+                case SIT -> {
                     setSitting(true);
                     setSleeping(false);
                     getBrain().setMemory(TFCBrain.SIT_TIME.get(), Calendars.SERVER.getTicks());
                     getBrain().eraseMemory(MemoryModuleType.WALK_TARGET);
                     getBrain().eraseMemory(MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE);
                 }
-                case HOME ->
-                {
+                case HOME -> {
                     getBrain().setMemory(MemoryModuleType.HOME, GlobalPos.of(level().dimension(), player.blockPosition()));
                     command = Command.RELAX; // 'home' isn't a constant state, it defaults to relax after doing its thing
                 }
-                case FOLLOW, HUNT ->
-                {
+                case FOLLOW, HUNT -> {
                     setSitting(false);
                     setSleeping(false);
                     getBrain().eraseMemory(TFCBrain.SIT_TIME.get());

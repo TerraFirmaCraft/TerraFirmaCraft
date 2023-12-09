@@ -8,10 +8,8 @@ package net.dries007.tfc.common.blocks;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -21,15 +19,14 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.Helpers;
-import org.jetbrains.annotations.Nullable;
 
-public class ThatchBlock extends Block implements IForgeBlockExtension, IFluidLoggable
+public class ThatchBlock extends Block implements IForgeBlockExtension, IFluidLoggable, ISlowEntities, IBlockRain
 {
     public static final FluidProperty FLUID = TFCBlockStateProperties.WATER;
 
@@ -56,17 +53,6 @@ public class ThatchBlock extends Block implements IForgeBlockExtension, IFluidLo
     public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return Shapes.empty();
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
-    {
-        // Avoid applying overly slow effects while in water as well
-        if (state.getValue(getFluidProperty()).getFluid() == Fluids.EMPTY)
-        {
-            Helpers.slowEntityInBlock(entity, TFCConfig.SERVER.thatchMovementMultiplier.get().floatValue(), 5);
-        }
     }
 
     @Override
@@ -102,6 +88,13 @@ public class ThatchBlock extends Block implements IForgeBlockExtension, IFluidLo
     public FluidProperty getFluidProperty()
     {
         return FLUID;
+    }
+
+    @Override
+    public float slowEntityFactor(BlockState state)
+    {
+        // Avoid applying overly slow effects while in water as well
+        return state.getValue(getFluidProperty()).getFluid() == Fluids.EMPTY ? TFCConfig.SERVER.thatchMovementMultiplier.get().floatValue() : NO_SLOW;
     }
 
     @Override

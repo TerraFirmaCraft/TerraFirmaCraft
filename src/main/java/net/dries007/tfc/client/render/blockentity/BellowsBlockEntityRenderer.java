@@ -80,7 +80,7 @@ public class BellowsBlockEntityRenderer implements BlockEntityRenderer<BellowsBl
         final TextureAtlasSprite sideSprite = atlas.apply(SIDE_TEXTURE);
 
         final VertexConsumer buffer = bufferSource.getBuffer(RenderType.cutout());
-        final float width = 1 - bellows.getExtensionLength();
+        final float width = 1 - bellows.getExtensionLength(partialTicks);
 
         poseStack.translate(0.5d, 0, 0.5d);
         poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - 90.0F * meta));

@@ -1,8 +1,53 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "": {
-      "model": "tfc:block/rock/hardened/dacite"
-    }
+    "axis=x": [
+      {
+        "model": "tfc:block/rock/raw/dacite",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "tfc:block/rock/raw/dacite_mirrored",
+        "x": 90,
+        "y": 90
+      }
+    ],
+    "axis=y": [
+      {
+        "model": "tfc:block/rock/raw/dacite"
+      },
+      {
+        "model": "tfc:block/rock/raw/dacite_mirrored"
+      },
+      {
+        "model": "tfc:block/rock/raw/dacite",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/rock/raw/dacite_mirrored",
+        "y": 180
+      }
+    ],
+    "axis=z": [
+      {
+        "model": "tfc:block/rock/raw/dacite",
+        "x": 90
+      },
+      {
+        "model": "tfc:block/rock/raw/dacite_mirrored",
+        "x": 90
+      },
+      {
+        "model": "tfc:block/rock/raw/dacite",
+        "x": 90,
+        "y": 180
+      },
+      {
+        "model": "tfc:block/rock/raw/dacite_mirrored",
+        "x": 90,
+        "y": 180
+      }
+    ]
   }
 }

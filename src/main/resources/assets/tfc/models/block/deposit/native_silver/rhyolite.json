@@ -3,7 +3,6 @@
   "parent": "tfc:block/ore",
   "textures": {
     "all": "tfc:block/rock/gravel/rhyolite",
-    "particle": "tfc:block/rock/gravel/rhyolite",
     "overlay": "tfc:block/deposit/native_silver"
   }
 }

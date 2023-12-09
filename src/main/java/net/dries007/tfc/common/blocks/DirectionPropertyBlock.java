@@ -10,8 +10,7 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import com.google.common.collect.BiMap;
-import com.google.common.collect.ImmutableBiMap;
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
@@ -22,6 +21,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Implementing this interface in a {@link Block} class is a sufficient condition for said block to have all the below properties.
@@ -36,25 +36,31 @@ public interface DirectionPropertyBlock
     BooleanProperty SOUTH = BlockStateProperties.SOUTH;
     BooleanProperty WEST = BlockStateProperties.WEST;
 
-    BiMap<Direction, BooleanProperty> PROPERTY_BY_DIRECTION = ImmutableBiMap.<Direction, BooleanProperty>builder()
-        .put(Direction.UP, BlockStateProperties.UP)
-        .put(Direction.DOWN, BlockStateProperties.DOWN)
-        .put(Direction.NORTH, BlockStateProperties.NORTH)
-        .put(Direction.SOUTH, BlockStateProperties.SOUTH)
-        .put(Direction.EAST, BlockStateProperties.EAST)
-        .put(Direction.WEST, BlockStateProperties.WEST)
+    ImmutableMap<BooleanProperty, Direction> TO_DIRECTION = ImmutableMap.<BooleanProperty, Direction>builder()
+        .put(BlockStateProperties.DOWN, Direction.DOWN)
+        .put(BlockStateProperties.UP, Direction.UP)
+        .put(BlockStateProperties.NORTH, Direction.NORTH)
+        .put(BlockStateProperties.SOUTH, Direction.SOUTH)
+        .put(BlockStateProperties.WEST, Direction.WEST)
+        .put(BlockStateProperties.EAST, Direction.EAST)
         .build();
 
-    BooleanProperty[] PROPERTIES = new BooleanProperty[] {NORTH, SOUTH, EAST, WEST, UP, DOWN};
+    /**
+     * Matches order declared in {@link Direction} so we can use {@link Enum#ordinal()} to access.
+     */
+    BooleanProperty[] PROPERTIES = new BooleanProperty[] {DOWN, UP, NORTH, SOUTH, WEST, EAST};
 
+    @NotNull
     static BooleanProperty getProperty(Direction direction)
     {
-        return PROPERTY_BY_DIRECTION.get(direction);
+        return PROPERTIES[direction.ordinal()];
     }
 
+    @NotNull
+    @SuppressWarnings("ConstantConditions")
     static Direction getDirection(BooleanProperty property)
     {
-        return PROPERTY_BY_DIRECTION.inverse().get(property);
+        return TO_DIRECTION.get(property);
     }
 
     static BlockState setAllDirections(BlockState state, boolean value)

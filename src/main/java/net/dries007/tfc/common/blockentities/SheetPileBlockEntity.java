@@ -35,9 +35,9 @@ public class SheetPileBlockEntity extends TFCBlockEntity
     private static final BooleanProperty MIRROR = SheetPileBlock.MIRROR;
 
     /**
-     * Sheet piles use a seperate rotation + mirror block state property to map their states (up, down, left, etc.) to an index.
+     * Sheet piles use a separate rotation + mirror block state property to map their states (up, down, left, etc.) to an index.
      * We do this as we want to be able to mirror and rotate the block (which only provide a state, not a block entity).
-     * So, this method takes the state and a requested direction, and converts it to a index into the (un-rotated) {@code stacks} array.
+     * So, this method takes the state and a requested direction, and converts it to an index into the (un-rotated) {@code stacks} array.
      * <p>
      * A mirror of {@code Mirror.NONE} and a rotation of {@code Direction.NORTH} is considered the reference frame of no-rotation, i.e. where the {@code stacks} is indexed by direction ordinal.
      */

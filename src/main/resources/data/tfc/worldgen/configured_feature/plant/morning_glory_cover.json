@@ -1,43 +1,10 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:simple_block",
+  "type": "tfc:creeping_plant",
   "config": {
-    "to_place": {
-      "seed": 2345,
-      "noise": {
-        "firstOctave": -3,
-        "amplitudes": [
-          1.0
-        ]
-      },
-      "scale": 1.0,
-      "states": [
-        {
-          "Name": "tfc:plant/morning_glory",
-          "Properties": {
-            "age": "1",
-            "stage": "1",
-            "up": "false",
-            "down": "true",
-            "north": "false",
-            "east": "false",
-            "west": "false",
-            "south": "false"
-          }
-        }
-      ],
-      "variety": [
-        1,
-        1
-      ],
-      "slow_noise": {
-        "firstOctave": -10,
-        "amplitudes": [
-          1.0
-        ]
-      },
-      "slow_scale": 1.0,
-      "type": "minecraft:dual_noise_provider"
-    }
+    "block": "tfc:plant/morning_glory",
+    "height": 7,
+    "radius": 4,
+    "integrity": 0.95
   }
 }

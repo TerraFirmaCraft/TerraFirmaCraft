@@ -1,5 +1,3 @@
-import com.matthewprenger.cursegradle.CurseProject
-import com.matthewprenger.cursegradle.CurseRelation
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
@@ -7,7 +5,6 @@ plugins {
     java
     idea
     id("org.cadixdev.licenser") version "0.6.1"
-    id("com.matthewprenger.cursegradle") version "1.4.0"
     id("net.minecraftforge.gradle") version "[6.0,6.2)"
     id("org.parchmentmc.librarian.forgegradle") version "1.+"
     id("org.spongepowered.mixin") version "0.7.+"
@@ -111,6 +108,12 @@ dependencies {
     // Cyanide
     // runtimeOnly(fg.deobf("curse.maven:cyanide-forge-541676:4584675"))
 
+    // Misc
+    //runtimeOnly(fg.deobf("curse.maven:konkrete-410295:4583492")) // Dep. for Panorama
+    //runtimeOnly(fg.deobf("curse.maven:panoramica-426082:4019292"))
+    //runtimeOnly(fg.deobf("curse.maven:embeddium-908741:4819807"))
+    //runtimeOnly(fg.deobf("curse.maven:rubidium-574856:4767529"))
+
     // JUnit
     // There is not a testImplementation-like configuration, AFAIK, that is available at minecraft runtime, so we use minecraftLibrary
     minecraftLibrary("org.junit.jupiter:junit-jupiter-api:5.9.2")
@@ -177,26 +180,6 @@ license {
 mixin {
     add(sourceSets.main.get(), "$modId.refmap.json")
     add(sourceSets.test.get(), "$modId.refmap.json")
-}
-
-curseforge {
-    apiKey = System.getenv("CURSEFORGE_API_KEY") ?: "nope"
-
-    project(closureOf<CurseProject> {
-        id = "302973"
-        changelog = "[Changelog ${version}](https://github.com/TerraFirmaCraft/TerraFirmaCraft/releases/tag/v${project.version})"
-        changelogType = "markdown"
-
-        releaseType = if (project.version.toString().contains("beta")) "beta" else if (project.version.toString().contains("alpha")) "alpha" else "release"
-        addGameVersion(minecraftVersion)
-
-        mainArtifact(tasks.jar.get())
-
-        relations(closureOf<CurseRelation> {
-            requiredDependency("patchouli")
-            optionalDependency("jei")
-        })
-    })
 }
 
 tasks {

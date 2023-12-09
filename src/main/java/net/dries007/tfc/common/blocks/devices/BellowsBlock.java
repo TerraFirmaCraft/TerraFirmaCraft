@@ -33,12 +33,10 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.blockentities.BellowsBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
-import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
-import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.util.Helpers;
 
-public class BellowsBlock extends DeviceBlock implements IForgeBlockExtension, EntityBlockExtension
+public class BellowsBlock extends DeviceBlock
 {
     private static VoxelShape createShapeFor(Direction direction, float extension)
     {
@@ -85,7 +83,7 @@ public class BellowsBlock extends DeviceBlock implements IForgeBlockExtension, E
     {
         final Direction direction = state.getValue(FACING);
         return level.getBlockEntity(pos, TFCBlockEntities.BELLOWS.get()).map(bellows -> {
-            final float ext = 1f - bellows.getExtensionLength();
+            final float ext = 1f - bellows.getExtensionLength(1f);
             return ext == 0.875f ? COMPLETE_SHAPES[direction.get2DDataValue()] : createShapeFor(direction, ext);
         }).orElse(COMPLETE_SHAPES[direction.get2DDataValue()]);
     }

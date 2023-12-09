@@ -38,9 +38,9 @@ public class ChunkBaseBlockSource
         cachedFluidStates[index(localX, localZ)] = biome.isSalty() ? saltWater : freshWater;
     }
 
-    public BlockState getBaseBlock(int x, int y, int z)
+    public BlockState getBaseBlock(int blockX, int blockY, int blockZ)
     {
-        return rockData.getRock(x & 15, y, z & 15).raw().defaultBlockState();
+        return rockData.getRock(blockX, blockY, blockZ).raw().defaultBlockState();
     }
 
     public BlockState modifyFluid(BlockState fluidOrAir, int x, int z)

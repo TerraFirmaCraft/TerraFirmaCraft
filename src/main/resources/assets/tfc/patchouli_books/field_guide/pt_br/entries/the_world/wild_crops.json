@@ -20,7 +20,7 @@
           ]
         ],
         "mapping": {
-          "X": "tfc:wild_crop/wheat"
+          "X": "tfc:wild_crop/wheat[mature=true]"
         }
       },
       "name": "Wild Wheat",
@@ -29,7 +29,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Existem muitos tipos diferentes de culturas selvagens - todas as culturas que podem ser cultivadas têm uma variante selvagem que pode ser encontrada no mundo em algum lugar. Veja a lista de $(l:mechanics/crops)Plantações$() Para todas as diferentes culturas que podem ser cultivadas. As culturas selvagens serão parecidas com seus colegas cultivados, mas estão mais escondidos dentro da grama. As culturas selvagens aparecerão em climas perto de onde a própria colheita pode ser cultivada; portanto, se estiver procurando uma colheita específica, olhe no clima onde a colheita pode ser cultivada."
+      "text": "Every $(l:mechanics/crops)crop$() that can be cultivated can also be found in the wild. Wild crops will look similar to their cultivated counterparts, but are more hidden within the grass. Wild crops are only mature from June to October. Otherwise, they appear dead until the next Summer."
     },
     {
       "type": "tfc:multimultiblock",
@@ -316,10 +316,288 @@
           }
         }
       ]
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Wild crops will spawn in climates near where the crop itself can be cultivated, so if looking for a specific crop, look in the climate where the crop can be cultivated. However, unlike $(l:mechanics/crops)Crops$() that the player has planted, wild crops do not require $(l:mechanics/hydration)Hydration$(). Instead, they are found in areas depending on the average $()Temperature$() and $()Rainfall$().",
+      "title": "Finding Wild Crops"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The next pages show a table of the environments where wild crops can be found."
+    },
+    {
+      "type": "tfc:table",
+      "strings": [
+        {
+          "text": "Crop",
+          "bold": true
+        },
+        {
+          "text": "Temperature (°C)",
+          "bold": true
+        },
+        {
+          "text": "Rainfall (mm)",
+          "bold": true
+        },
+        {
+          "text": "Barley"
+        },
+        {
+          "text": " -8 - 26"
+        },
+        {
+          "text": " 70 - 310"
+        },
+        {
+          "text": "Oat"
+        },
+        {
+          "text": "  3 - 40"
+        },
+        {
+          "text": "140 - 400"
+        },
+        {
+          "text": "Rye"
+        },
+        {
+          "text": "-11 - 30"
+        },
+        {
+          "text": "100 - 350"
+        },
+        {
+          "text": "Maize"
+        },
+        {
+          "text": " 13 - 40"
+        },
+        {
+          "text": "300 - 500"
+        },
+        {
+          "text": "Wheat"
+        },
+        {
+          "text": " -4 - 35"
+        },
+        {
+          "text": "100 - 400"
+        },
+        {
+          "text": "Rice"
+        },
+        {
+          "text": " 15 - 30"
+        },
+        {
+          "text": "100 - 500"
+        },
+        {
+          "text": "Beet"
+        },
+        {
+          "text": " -5 - 20"
+        },
+        {
+          "text": " 70 - 300"
+        },
+        {
+          "text": "Cabbage"
+        },
+        {
+          "text": "-10 - 27"
+        },
+        {
+          "text": " 60 - 280"
+        },
+        {
+          "text": "Carrot"
+        },
+        {
+          "text": "  3 - 30"
+        },
+        {
+          "text": "100 - 400"
+        },
+        {
+          "text": "Garlic"
+        },
+        {
+          "text": "-20 - 18"
+        },
+        {
+          "text": " 60 - 310"
+        },
+        {
+          "text": "Green Bean"
+        },
+        {
+          "text": "  2 - 35"
+        },
+        {
+          "text": "150 - 410"
+        },
+        {
+          "text": "Melon"
+        },
+        {
+          "text": "  5 - 37"
+        },
+        {
+          "text": "200 - 500"
+        }
+      ],
+      "text": "",
+      "title": "Wild Crop Requirements",
+      "legend": [],
+      "columns": 2,
+      "first_column_width": 80,
+      "column_width": 70,
+      "row_height": 10,
+      "left_buffer": 2,
+      "top_buffer": 12,
+      "draw_background": false
+    },
+    {
+      "type": "patchouli:empty",
+      "draw_filler": false
+    },
+    {
+      "type": "tfc:table",
+      "strings": [
+        {
+          "text": "Crop",
+          "bold": true
+        },
+        {
+          "text": "Temperature (°C)",
+          "bold": true
+        },
+        {
+          "text": "Rainfall (mm)",
+          "bold": true
+        },
+        {
+          "text": "Potato"
+        },
+        {
+          "text": " -1 - 37"
+        },
+        {
+          "text": "200 - 410"
+        },
+        {
+          "text": "Pumpkin"
+        },
+        {
+          "text": "  0 - 30"
+        },
+        {
+          "text": "120 - 390"
+        },
+        {
+          "text": "Onion"
+        },
+        {
+          "text": "  0 - 30"
+        },
+        {
+          "text": "100 - 390"
+        },
+        {
+          "text": "Soybean"
+        },
+        {
+          "text": "  8 - 30"
+        },
+        {
+          "text": "160 - 410"
+        },
+        {
+          "text": "Squash"
+        },
+        {
+          "text": "  5 - 33"
+        },
+        {
+          "text": " 90 - 390"
+        },
+        {
+          "text": "Sugarcane"
+        },
+        {
+          "text": " 12 - 38"
+        },
+        {
+          "text": "160 - 500"
+        },
+        {
+          "text": "Tomato"
+        },
+        {
+          "text": "  0 - 36"
+        },
+        {
+          "text": "120 - 390"
+        },
+        {
+          "text": "Jute"
+        },
+        {
+          "text": "  5 - 37"
+        },
+        {
+          "text": "100 - 410"
+        },
+        {
+          "text": "Papyrus"
+        },
+        {
+          "text": " 19 - 37"
+        },
+        {
+          "text": "310 - 500"
+        },
+        {
+          "text": "Red Bell Pepper"
+        },
+        {
+          "text": " 16 - 30"
+        },
+        {
+          "text": "190 - 400"
+        },
+        {
+          "text": "Yellow Bell Pepper"
+        },
+        {
+          "text": " 16 - 30"
+        },
+        {
+          "text": "190 - 400"
+        }
+      ],
+      "text": "",
+      "title": "Wild Crop Requirements",
+      "legend": [],
+      "columns": 2,
+      "first_column_width": 80,
+      "column_width": 70,
+      "row_height": 10,
+      "left_buffer": 2,
+      "top_buffer": 12,
+      "draw_background": false
+    },
+    {
+      "type": "patchouli:empty",
+      "draw_filler": false
     }
   ],
   "read_by_default": true,
-  "sortnum": 6,
+  "sortnum": 4,
   "extra_recipe_mappings": {
     "tag:tfc:wild_crops": 0
   }

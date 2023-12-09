@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)堰$() は、$(l:the_world/waterways#ore_deposits)堆積物$() を処理するために使用されるブロックで、$(l:mechanics/panning)パンニング$() と同じ機能をもちます。得られるものはパンニングより多いです。"
+      "text": "The $(thing)Sluice$() is a device that is used to process $(thing)Ore Deposits$(), producing the same results that $(l:mechanics/panning)Panning$() does, with different probabilities."
     },
     {
       "type": "patchouli:crafting",

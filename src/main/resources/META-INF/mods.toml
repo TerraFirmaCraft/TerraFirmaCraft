@@ -14,12 +14,12 @@ issueTrackerURL = "https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues"
     description = '''TerraFirmaCraft - The Next Generation'''
 
 # Dependencies
-#[[dependencies.tfc]]
-#    modId = "patchouli"
-#    mandatory = false
-#    versionRange = "[1.18.2-67,)"
-#    ordering = "NONE"
-#    side = "BOTH"
+[[dependencies.tfc]]
+    modId = "patchouli"
+    mandatory = true
+    versionRange = "[1.20.1-81-FORGE,)"
+    ordering = "NONE"
+    side = "BOTH"
 
 [[dependencies.tfc]]
     modId = "jei"
@@ -31,14 +31,19 @@ issueTrackerURL = "https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues"
 [[dependencies.tfc]]
     modId = "forge"
     mandatory = true
-    versionRange = "[47.0.19,)"
+    # Forge crashes on [47.1.36, 47.2.6) due to issue #9774
+    # Forge also fails to spawn entities on at least [47.1.6, 47.1.30) due to issue #9788
+    # NeoForge crashes on [47.1.51, ) due to issue #256 (as far as I'm aware, not fixed in 1.20.1). It's also unlikely they release a 47.2.x version.
+    # We build against 47.1.3, which is the 'last known stable' version of Forge before the fork
+    # So the version range here is restricted to only known versions where there are no issues.
+    versionRange = "[47.1.3,47.1.6),[47.2.6,)"
     ordering = "AFTER"
     side = "BOTH"
 
 [[dependencies.tfc]]
     modId = "minecraft"
     mandatory = true
-    versionRange = "[1.20.1,)"
+    versionRange = "[1.20.1,1.20.2)"
     ordering = "AFTER"
     side = "BOTH"
 

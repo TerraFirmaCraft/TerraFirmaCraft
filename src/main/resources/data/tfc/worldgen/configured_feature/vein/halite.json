@@ -2,15 +2,15 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:disc_vein",
   "config": {
-    "rarity": 120,
-    "min_y": {
-      "absolute": 30
-    },
-    "max_y": {
-      "absolute": 90
-    },
-    "size": 30,
-    "density": 0.8,
+    "rarity": 110,
+    "density": 0.85,
+    "min_y": -45,
+    "max_y": -12,
+    "project": true,
+    "project_offset": true,
+    "size": 35,
+    "height": 4,
+    "random_name": "halite",
     "blocks": [
       {
         "replace": [
@@ -82,8 +82,6 @@
           }
         ]
       }
-    ],
-    "random_name": "halite",
-    "height": 2
+    ]
   }
 }

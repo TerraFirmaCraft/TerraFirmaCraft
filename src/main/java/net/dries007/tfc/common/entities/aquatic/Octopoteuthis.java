@@ -26,8 +26,10 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ITeleporter;
 
 import com.mojang.datafixers.util.Pair;
+
 import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.entities.IGlow;
+
 import org.jetbrains.annotations.Nullable;
 
 public class Octopoteuthis extends TFCSquid implements IGlow
@@ -95,10 +97,10 @@ public class Octopoteuthis extends TFCSquid implements IGlow
     }
 
     @Override
-    public void tick()
+    public void tickGlow()
     {
         super.tick();
-        IGlow.super.tick();
+        IGlow.super.tickGlow();
     }
 
     @Override

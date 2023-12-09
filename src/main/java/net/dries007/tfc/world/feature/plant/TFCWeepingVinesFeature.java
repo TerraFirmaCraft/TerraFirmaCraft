@@ -46,6 +46,7 @@ public class TFCWeepingVinesFeature extends Feature<ColumnPlantConfig>
         super(codec);
     }
 
+    @Override
     public boolean place(FeaturePlaceContext<ColumnPlantConfig> context)
     {
         final WorldGenLevel level = context.level();

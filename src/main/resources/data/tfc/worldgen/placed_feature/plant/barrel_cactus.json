@@ -25,6 +25,9 @@
           }
         }
       }
+    },
+    {
+      "type": "tfc:no_solid_neighbors"
     }
   ]
 }

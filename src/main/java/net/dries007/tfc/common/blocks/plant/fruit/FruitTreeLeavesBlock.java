@@ -8,10 +8,10 @@ package net.dries007.tfc.common.blocks.plant.fruit;
 
 import java.util.List;
 import java.util.function.Supplier;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.ParticleUtils;
@@ -49,9 +49,6 @@ import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.calendar.Calendars;
-import net.dries007.tfc.util.calendar.ICalendar;
-import net.dries007.tfc.util.calendar.Season;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateRange;
 
@@ -110,9 +107,20 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
             final BlockState belowState = level.getBlockState(pos.below());
             if (belowState.isAir())
             {
-                ParticleUtils.spawnParticleBelow(level, pos, random, new BlockParticleOption(TFCParticles.FALLING_LEAF.get(), state));
+                final BlockState aboveState = level.getBlockState(pos.above());
+                ParticleOptions particle;
+                if (Helpers.isBlock(aboveState, TFCTags.Blocks.SNOW) && random.nextBoolean())
+                {
+                    particle = TFCParticles.SNOWFLAKE.get();
+                }
+                else
+                {
+                    particle = new BlockParticleOption(TFCParticles.FALLING_LEAF.get(), state);
+                }
+                ParticleUtils.spawnParticleBelow(level, pos, random, particle);
             }
         }
+        TFCLeavesBlock.dripRainwater(level, pos, random);
     }
 
     @Override
@@ -162,7 +170,7 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
     @Override
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
     {
-        TFCLeavesBlock.onEntityInside(state, level, pos, entity);
+        TFCLeavesBlock.onEntityInside(level, entity);
     }
 
     @Override

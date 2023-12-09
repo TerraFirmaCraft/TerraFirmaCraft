@@ -1,0 +1,18 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X  ",
+    "XX ",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:metal/block/bismuth"
+    }
+  },
+  "result": {
+    "item": "tfc:metal/block/bismuth_stairs",
+    "count": 8
+  }
+}

@@ -26,7 +26,7 @@ public class LowlandsSurfaceBuilder implements SurfaceBuilder
     @Override
     public void buildSurface(SurfaceBuilderContext context, int startY, int endY)
     {
-        final float noise = surfaceMaterialNoise.noise(context.pos().getX(), context.pos().getZ()) * 0.9f + context.random().nextFloat() * 0.1f;
+        final float noise = (float) surfaceMaterialNoise.noise(context.pos().getX(), context.pos().getZ()) * 0.9f + context.random().nextFloat() * 0.1f;
         NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY, noise < 0f ? SurfaceStates.GRASS : SurfaceStates.MUD, SurfaceStates.MUD, SurfaceStates.SANDSTONE_OR_GRAVEL, noise > 0 ? SurfaceStates.SAND_OR_GRAVEL : SurfaceStates.MUD, SurfaceStates.SANDSTONE_OR_GRAVEL);
     }
 }

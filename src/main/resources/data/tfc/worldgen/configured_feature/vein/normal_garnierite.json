@@ -2,31 +2,66 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:cluster_vein",
   "config": {
-    "rarity": 70,
-    "min_y": {
-      "absolute": -32
-    },
-    "max_y": {
-      "absolute": 60
-    },
-    "size": 15,
-    "density": 0.6,
+    "rarity": 25,
+    "density": 0.3,
+    "min_y": -80,
+    "max_y": 0,
+    "size": 18,
+    "random_name": "normal_garnierite",
     "blocks": [
+      {
+        "replace": [
+          "tfc:rock/raw/granite"
+        ],
+        "with": [
+          {
+            "weight": 35,
+            "block": "tfc:ore/poor_garnierite/granite"
+          },
+          {
+            "weight": 40,
+            "block": "tfc:ore/normal_garnierite/granite"
+          },
+          {
+            "weight": 25,
+            "block": "tfc:ore/rich_garnierite/granite"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/diorite"
+        ],
+        "with": [
+          {
+            "weight": 35,
+            "block": "tfc:ore/poor_garnierite/diorite"
+          },
+          {
+            "weight": 40,
+            "block": "tfc:ore/normal_garnierite/diorite"
+          },
+          {
+            "weight": 25,
+            "block": "tfc:ore/rich_garnierite/diorite"
+          }
+        ]
+      },
       {
         "replace": [
           "tfc:rock/raw/gabbro"
         ],
         "with": [
           {
-            "weight": 20,
+            "weight": 35,
             "block": "tfc:ore/poor_garnierite/gabbro"
           },
           {
-            "weight": 50,
+            "weight": 40,
             "block": "tfc:ore/normal_garnierite/gabbro"
           },
           {
-            "weight": 30,
+            "weight": 25,
             "block": "tfc:ore/rich_garnierite/gabbro"
           }
         ]
@@ -34,12 +69,14 @@
     ],
     "indicator": {
       "rarity": 12,
+      "depth": 35,
+      "underground_rarity": 1,
+      "underground_count": 0,
       "blocks": [
         {
           "block": "tfc:ore/small_garnierite"
         }
       ]
-    },
-    "random_name": "normal_garnierite"
+    }
   }
 }

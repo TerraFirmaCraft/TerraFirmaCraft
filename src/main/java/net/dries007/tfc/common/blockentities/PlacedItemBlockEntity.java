@@ -71,6 +71,7 @@ public class PlacedItemBlockEntity extends InventoryBlockEntity<ItemStackHandler
     public static final int SLOT_LARGE_ITEM = 0;
     private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.placed_item");
     public boolean isHoldingLargeItem;
+    private final float[] rotations = new float[] {0f, 0f, 0f, 0f};
 
     public PlacedItemBlockEntity(BlockPos pos, BlockState state)
     {
@@ -154,6 +155,7 @@ public class PlacedItemBlockEntity extends InventoryBlockEntity<ItemStackHandler
                     input = stack.split(1);
                 }
                 inventory.setStackInSlot(slot, input);
+                rotations[slot] = Math.round(player.getYRot() / 15f) * 15f;
                 updateBlock();
                 return true;
             }
@@ -175,11 +177,17 @@ public class PlacedItemBlockEntity extends InventoryBlockEntity<ItemStackHandler
                 }
                 inventory.setStackInSlot(SLOT_LARGE_ITEM, input);
                 isHoldingLargeItem = true;
+                rotations[SLOT_LARGE_ITEM] = Math.round(player.getYRot() / 15f) * 15f;
                 updateBlock();
                 return true;
             }
         }
         return false;
+    }
+
+    public float getRotations(int slot)
+    {
+        return rotations[slot];
     }
 
     public ItemStack getCloneItemStack(BlockState state, BlockHitResult hit)
@@ -196,6 +204,10 @@ public class PlacedItemBlockEntity extends InventoryBlockEntity<ItemStackHandler
     public void loadAdditional(CompoundTag nbt)
     {
         isHoldingLargeItem = nbt.getBoolean("isHoldingLargeItem");
+        rotations[0] = nbt.getFloat("rotation1");
+        rotations[1] = nbt.getFloat("rotation2");
+        rotations[2] = nbt.getFloat("rotation3");
+        rotations[3] = nbt.getFloat("rotation4");
         super.loadAdditional(nbt);
     }
 
@@ -203,6 +215,10 @@ public class PlacedItemBlockEntity extends InventoryBlockEntity<ItemStackHandler
     public void saveAdditional(CompoundTag nbt)
     {
         nbt.putBoolean("isHoldingLargeItem", isHoldingLargeItem);
+        nbt.putFloat("rotation1", rotations[0]);
+        nbt.putFloat("rotation2", rotations[1]);
+        nbt.putFloat("rotation3", rotations[2]);
+        nbt.putFloat("rotation4", rotations[3]);
         super.saveAdditional(nbt);
     }
 

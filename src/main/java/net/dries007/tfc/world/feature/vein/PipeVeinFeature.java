@@ -15,7 +15,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
 import net.dries007.tfc.util.Helpers;
 
-public class PipeVeinFeature extends VeinFeature<PipeVeinConfig, PipeVeinFeature.PipeVein>
+public class PipeVeinFeature extends VeinFeature<PipeVeinConfig, PipeVeinFeature.Vein>
 {
     public PipeVeinFeature(Codec<PipeVeinConfig> codec)
     {
@@ -23,52 +23,40 @@ public class PipeVeinFeature extends VeinFeature<PipeVeinConfig, PipeVeinFeature
     }
 
     @Override
-    protected float getChanceToGenerate(int x, int y, int z, PipeVein vein, PipeVeinConfig config)
+    protected float getChanceToGenerate(int x, int y, int z, Vein vein, PipeVeinConfig config)
     {
-        final double yScaled = (double) y / config.getSize();
+        final double yScaled = (double) y / config.height();
         x += vein.skew * vein.skewX * yScaled;
         z += vein.skew * vein.skewZ * yScaled;
 
         final double yFactor = (double) vein.sign * yScaled + 0.5D;
-        final double trueRadius = config.getRadius() * (1 - yFactor) + (config.getRadius() - vein.slant) * yFactor;
-        if (Math.abs(y) < config.getSize() && (x * x) + (z * z) < trueRadius * trueRadius)
+        final double trueRadius = config.radius() * (1 - yFactor) + (config.radius() - vein.slant) * yFactor;
+        if (Math.abs(y) < config.height() && (x * x) + (z * z) < trueRadius * trueRadius)
         {
-            return config.getDensity();
+            return config.config().density();
         }
         return 0;
     }
 
     @Override
-    protected PipeVein createVein(WorldGenerationContext context, int chunkX, int chunkZ, RandomSource random, PipeVeinConfig config)
+    protected Vein createVein(WorldGenerationContext context, int chunkX, int chunkZ, RandomSource random, PipeVeinConfig config)
     {
-        return new PipeVein(defaultPos(context, chunkX, chunkZ, random, config), random, config);
+        final float angle = random.nextFloat() * (float) Math.PI * 2;
+        return new Vein(
+            defaultPos(chunkX, chunkZ, random, config),
+            config.sign() < random.nextFloat() ? 1 : -1,
+            Mth.cos(angle), Mth.sin(angle),
+            Helpers.uniform(random, config.minSkew(), 1 + config.maxSkew()),
+            Helpers.uniform(random, config.minSlant(), 1 + config.maxSlant()));
     }
 
     @Override
-    protected BoundingBox getBoundingBox(PipeVeinConfig config, PipeVein vein)
+    protected BoundingBox getBoundingBox(PipeVeinConfig config, Vein vein)
     {
-        int radius = config.getRadius();
-        int skew = vein.skew;
-        return new BoundingBox(-radius - skew, -config.getSize(), -radius - skew, radius + skew, config.getSize(), radius + skew);
+        final int radius = config.radius();
+        final int skew = vein.skew;
+        return new BoundingBox(-radius - skew, -config.height(), -radius - skew, radius + skew, config.height(), radius + skew);
     }
 
-    static class PipeVein extends Vein
-    {
-        final int sign;
-        final float skewX;
-        final float skewZ;
-        final int skew;
-        final int slant;
-
-        PipeVein(BlockPos pos, RandomSource random, PipeVeinConfig config)
-        {
-            super(pos);
-            this.sign = config.getSign() < random.nextFloat() ? 1 : -1; // if 0: always \/ if 1: always /\
-            float angle = random.nextFloat() * (float) Math.PI * 2;
-            this.skewX = Mth.cos(angle);
-            this.skewZ = Mth.sin(angle);
-            this.skew = Helpers.uniform(random, config.getMinSkew(), 1 + config.getMaxSkew());
-            this.slant = Helpers.uniform(random, config.getMinSlant(), 1 + config.getMaxSlant());
-        }
-    }
+    record Vein(BlockPos pos, int sign, float skewX, float skewZ, int skew, int slant) implements IVein {}
 }

@@ -2,15 +2,12 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:cluster_vein",
   "config": {
-    "rarity": 90,
-    "min_y": {
-      "absolute": -48
-    },
-    "max_y": {
-      "absolute": 100
-    },
-    "size": 10,
-    "density": 0.6,
+    "rarity": 16,
+    "density": 0.7,
+    "min_y": -70,
+    "max_y": -10,
+    "size": 18,
+    "random_name": "cryolite",
     "blocks": [
       {
         "replace": [
@@ -21,8 +18,17 @@
             "block": "tfc:ore/cryolite/granite"
           }
         ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/diorite"
+        ],
+        "with": [
+          {
+            "block": "tfc:ore/cryolite/diorite"
+          }
+        ]
       }
-    ],
-    "random_name": "cryolite"
+    ]
   }
 }

@@ -70,6 +70,7 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
 
     private final BiFunction<ResourceLocation, JsonObject, T> factory;
     private final Map<ResourceLocation, Reference<T>> references;
+    private final Object referencesLock = new Object();
 
     public DataManager(ResourceLocation domain, String typeName, BiFunction<ResourceLocation, JsonObject, T> factory)
     {
@@ -115,27 +116,20 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
     }
 
     /**
-     * @return A reference to an element of this data manager, by id. This can be used to reference an element before the data itself is loaded. Once the data is loaded, this will throw an error if it was not provided, and can be safely unboxed after the fact.
+     * Returns a reference to an element of this data manager, by id.
+     * <p>
+     * This can be used to reference an element before the data itself is loaded. Once the data is loaded, this will throw an error if it was not provided, and can be safely unboxed after the fact.
+     * <p>
+     * This method can be called concurrently from i.e. recipe loading.
      */
     public Reference<T> getReference(ResourceLocation id)
     {
-        return references.computeIfAbsent(id, key -> new Reference<>());
-    }
-
-    public ResourceLocation getIdOrThrow(T type)
-    {
-        final ResourceLocation id = getId(type);
-        if (id == null)
+        final Reference<T> ref;
+        synchronized(referencesLock)
         {
-            throw new IllegalArgumentException("No id for " + typeName + ": " + type);
+            ref = references.computeIfAbsent(id, key -> new Reference<>(key, types.get(key)));
         }
-        return id;
-    }
-
-    @Nullable
-    public ResourceLocation getId(T type)
-    {
-        return types.inverse().get(type);
+        return ref;
     }
 
     public Set<T> getValues()
@@ -221,35 +215,43 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
 
     private void updateReferences()
     {
-        final List<ResourceLocation> unboundReferences = new ArrayList<>();
-        for (Map.Entry<ResourceLocation, Reference<T>> entry : references.entrySet())
+        synchronized (referencesLock)
         {
-            final T value = get(entry.getKey());
-            if (value == null)
+            final List<ResourceLocation> unboundReferences = new ArrayList<>();
+            for (Map.Entry<ResourceLocation, Reference<T>> entry : references.entrySet())
             {
-                unboundReferences.add(entry.getKey());
+                final T value = get(entry.getKey());
+                if (value == null)
+                {
+                    unboundReferences.add(entry.getKey());
+                }
+
+                // Always update the reference
+                entry.getValue().value = Optional.ofNullable(value);
             }
-            else
+
+            if (!unboundReferences.isEmpty())
             {
-                entry.getValue().value = Optional.of(value);
+                LOGGER.error("There were {} '{}' that were used but not defined: {}", unboundReferences.size(), typeName, unboundReferences);
+                SelfTests.reportExternalError();
             }
-        }
-
-        references.clear();
-
-        if (!unboundReferences.isEmpty())
-        {    LOGGER.error("There were {} '{}' that were used but not defined: {}", unboundReferences.size(), typeName, unboundReferences);
-            SelfTests.reportExternalError();
         }
     }
 
-    private static class Reference<T> implements Supplier<T>
+    public static class Reference<T> implements Supplier<T>
     {
+        private final ResourceLocation id;
         private Optional<T> value;
 
-        Reference()
+        Reference(ResourceLocation id, @Nullable T value)
         {
-            value = Optional.empty();
+            this.id = id;
+            this.value = Optional.ofNullable(value);
+        }
+
+        public ResourceLocation id()
+        {
+            return id;
         }
 
         @Override

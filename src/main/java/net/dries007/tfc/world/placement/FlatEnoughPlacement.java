@@ -21,7 +21,7 @@ import net.dries007.tfc.world.Codecs;
 
 public class FlatEnoughPlacement extends PlacementModifier
 {
-    public static final Codec<FlatEnoughPlacement> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+    public static final Codec<FlatEnoughPlacement> PLACEMENT_CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.floatRange(0, 1).optionalFieldOf("flatness", 0.5f).forGetter(c -> c.flatness),
         Codecs.POSITIVE_INT.optionalFieldOf("radius", 2).forGetter(c -> c.radius),
         Codecs.POSITIVE_INT.optionalFieldOf("max_depth", 4).forGetter(c -> c.maxDepth)

@@ -8,8 +8,10 @@ package net.dries007.tfc.drawing;
 
 import java.awt.Color;
 import java.util.Locale;
+import java.util.Random;
 import java.util.function.DoubleFunction;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -18,11 +20,13 @@ import net.dries007.tfc.TestHelper;
 import net.dries007.tfc.world.layer.TFCLayers;
 import net.dries007.tfc.world.layer.framework.Area;
 import net.dries007.tfc.world.layer.framework.AreaFactory;
+import net.dries007.tfc.world.region.ChooseRocks;
 import net.dries007.tfc.world.region.Region;
 import net.dries007.tfc.world.region.RegionGenerator;
 import net.dries007.tfc.world.region.RegionPartition;
 import net.dries007.tfc.world.region.RiverEdge;
 import net.dries007.tfc.world.river.MidpointFractal;
+import net.dries007.tfc.world.settings.Settings;
 
 import static net.dries007.tfc.world.layer.TFCLayers.*;
 
@@ -49,20 +53,13 @@ public class RegionGeneratorTest extends TestHelper
     @Test
     public void testStitchedRegions()
     {
-        final long seed = seed();
-        final RegionGenerator rn = new RegionGenerator(seed);
-
-        drawStitchedRegion(rn, RegionGenerator.Task.ADD_CONTINENTS);
-        testBiomesAtScale();
+        drawStitchedRegion(newRegionGenerator(), RegionGenerator.Task.CHOOSE_ROCKS);
     }
 
     @Test
     public void testSingleRegion()
     {
-        final long seed = seed();
-        final RegionGenerator rn = new RegionGenerator(seed);
-
-        rn.visualizeRegion(0, 0, (task, region) -> {
+        newRegionGenerator().visualizeRegion(0, 0, (task, region) -> {
             final String taskName = taskName("", task);
             final Artist.Pixel<Color> pixel = drawRegion(task, region);
 
@@ -78,10 +75,10 @@ public class RegionGeneratorTest extends TestHelper
 
                         for (RiverEdge edge : region.rivers())
                         {
-                            final int dx = Math.round(((edge.drain().x() + size) * square) + half);
-                            final int dz = Math.round(((edge.drain().y() + size) * square) + half);
-                            final int sx = Math.round(((edge.source().x() + size) * square) + half);
-                            final int sz = Math.round(((edge.source().y() + size) * square) + half);
+                            final int dx = (int) Math.round(((edge.drain().x() + size) * square) + half);
+                            final int dz = (int) Math.round(((edge.drain().y() + size) * square) + half);
+                            final int sx = (int) Math.round(((edge.source().x() + size) * square) + half);
+                            final int sz = (int) Math.round(((edge.source().y() + size) * square) + half);
 
                             g.drawLine(dx, dz, sx, sz);
                         }
@@ -102,10 +99,7 @@ public class RegionGeneratorTest extends TestHelper
     @Test
     public void testDrawingRiversFromPartition()
     {
-        final long seed = seed();
-        final RegionGenerator rn = new RegionGenerator(seed);
-
-        drawRegionWithRivers(rn, RegionGenerator.Task.CHOOSE_BIOMES);
+        drawRegionWithRivers(newRegionGenerator(), RegionGenerator.Task.CHOOSE_BIOMES);
     }
 
     @Test
@@ -116,12 +110,10 @@ public class RegionGeneratorTest extends TestHelper
             return Artist.Pixel.coerceInt(area::get);
         });
 
-        final long seed = seed();
-        final RegionGenerator generator = new RegionGenerator(seed);
-        final AreaFactory biomeLayer = TFCLayers.createRegionBiomeLayer(generator, seed);
+        final RegionGenerator generator = newRegionGenerator();
+        final AreaFactory biomeLayer = TFCLayers.createRegionBiomeLayer(generator, generator.seed());
 
         artist.color(RegionGeneratorTest::biomeColor);
-
         artist.dimensionsSized(1000).draw("biomes_4km", biomeLayer);
         artist.dimensions(4000).size(1000).draw("biomes_16km", biomeLayer);
     }
@@ -180,6 +172,18 @@ public class RegionGeneratorTest extends TestHelper
             if (task == RegionGenerator.Task.CHOOSE_BIOMES)
             {
                 return biomeColor(point.biome);
+            }
+            if (task == RegionGenerator.Task.CHOOSE_ROCKS)
+            {
+                final double value = new Random(point.rock >> 2).nextDouble();
+                return switch (point.rock & 0b11)
+                    {
+                        case ChooseRocks.OCEAN -> blue.apply(value);
+                        case ChooseRocks.LAND -> green.apply(value);
+                        case ChooseRocks.VOLCANIC -> new Color(200, (int) (100 * value), 100);
+                        case ChooseRocks.UPLIFT -> new Color(180, (int) (180 * value), 200);
+                        default -> throw new RuntimeException("value: " + point.rock);
+                    };
             }
             if (!point.land())
             {
@@ -245,5 +249,10 @@ public class RegionGeneratorTest extends TestHelper
         if (biome == PLAINS) return new Color(100, 200, 100);
 
         return Color.BLACK;
+    }
+
+    private RegionGenerator newRegionGenerator()
+    {
+        return new RegionGenerator(new Settings(false, 0, 0, 0, 20_000, 0, 20_000, 0, null, 0.5f), new XoroshiroRandomSource(seed()));
     }
 }

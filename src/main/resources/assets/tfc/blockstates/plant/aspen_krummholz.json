@@ -1,0 +1,214 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "multipart": [
+    {
+      "when": {
+        "tip": true,
+        "snowy": false
+      },
+      "apply": [
+        {
+          "model": "tfc:block/plant/krummholz/aspen_1_tip"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_1_tip",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_2_tip"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_2_tip",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_3_tip"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_3_tip",
+          "y": 90
+        }
+      ]
+    },
+    {
+      "when": {
+        "tip": true,
+        "snowy": true
+      },
+      "apply": [
+        {
+          "model": "tfc:block/plant/krummholz/aspen_1_tip_snowy"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_1_tip_snowy",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_2_tip_snowy"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_2_tip_snowy",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_3_tip_snowy"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_3_tip_snowy",
+          "y": 90
+        }
+      ]
+    },
+    {
+      "when": {
+        "tip": false,
+        "snowy": false
+      },
+      "apply": [
+        {
+          "model": "tfc:block/plant/krummholz/aspen_1"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_1",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_2"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_2",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_3"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_3",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_4"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_4",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_5"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_5",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_6"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_6",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_7"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_7",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_8"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_8",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_9"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_9",
+          "y": 90
+        }
+      ]
+    },
+    {
+      "when": {
+        "tip": false,
+        "snowy": true
+      },
+      "apply": [
+        {
+          "model": "tfc:block/plant/krummholz/aspen_1_snowy"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_1_snowy",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_2_snowy"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_2_snowy",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_3_snowy"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_3_snowy",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_4_snowy"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_4_snowy",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_5_snowy"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_5_snowy",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_6_snowy"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_6_snowy",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_7_snowy"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_7_snowy",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_8_snowy"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_8_snowy",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_9_snowy"
+        },
+        {
+          "model": "tfc:block/plant/krummholz/aspen_9_snowy",
+          "y": 90
+        }
+      ]
+    },
+    {
+      "when": {
+        "snowy": true,
+        "bottom": true
+      },
+      "apply": {
+        "model": "minecraft:block/snow_height2"
+      }
+    }
+  ]
+}

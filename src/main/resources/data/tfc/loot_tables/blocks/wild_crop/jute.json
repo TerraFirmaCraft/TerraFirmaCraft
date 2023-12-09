@@ -14,7 +14,8 @@
               "condition": "minecraft:block_state_property",
               "block": "tfc:wild_crop/jute",
               "properties": {
-                "part": "bottom"
+                "part": "bottom",
+                "mature": "true"
               }
             }
           ],

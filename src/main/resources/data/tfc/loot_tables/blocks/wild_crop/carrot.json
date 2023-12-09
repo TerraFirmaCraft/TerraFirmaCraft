@@ -9,6 +9,15 @@
         {
           "type": "minecraft:item",
           "name": "tfc:food/carrot",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "tfc:wild_crop/carrot",
+              "properties": {
+                "mature": "true"
+              }
+            }
+          ],
           "functions": [
             {
               "function": "minecraft:set_count",

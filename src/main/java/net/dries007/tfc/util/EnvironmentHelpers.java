@@ -32,6 +32,7 @@ import net.dries007.tfc.common.blocks.IcePileBlock;
 import net.dries007.tfc.common.blocks.SnowPileBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.ThinSpikeBlock;
+import net.dries007.tfc.common.blocks.plant.KrummholzBlock;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.climate.Climate;
@@ -181,6 +182,10 @@ public final class EnvironmentHelpers
                     // This slowly reduces massive excess amounts of snow, if they're present, but doesn't actually start melting snow a lot when we're still below freezing.
                     SnowPileBlock.removePileOrSnow(level, surfacePos, state, temperature > 0f ? expectedLayers : expectedLayers + 2);
                 }
+                else if (state.getBlock() instanceof KrummholzBlock)
+                {
+                    KrummholzBlock.updateFreezingInColumn(level, surfacePos, false);
+                }
             }
         }
     }
@@ -229,6 +234,10 @@ public final class EnvironmentHelpers
         {
             SnowPileBlock.placeSnowPile(level, pos, state, false);
             return true;
+        }
+        else if (state.getBlock() instanceof KrummholzBlock)
+        {
+            KrummholzBlock.updateFreezingInColumn(level, pos, true);
         }
         else if (state.isAir() && Blocks.SNOW.defaultBlockState().canSurvive(level, pos))
         {

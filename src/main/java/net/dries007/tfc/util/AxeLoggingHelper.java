@@ -90,17 +90,17 @@ public class AxeLoggingHelper
         return logs;
     }
 
-    private static boolean isLoggingAxe(ItemStack stack)
+    public static boolean isLoggingAxe(ItemStack stack)
     {
         return Helpers.isItem(stack.getItem(), TFCTags.Items.AXES_THAT_LOG);
     }
 
-    private static boolean isLoggingBlock(BlockState state)
+    public static boolean isLoggingBlock(BlockState state)
     {
-        return Helpers.isBlock(state.getBlock(), TFCTags.Blocks.LOGS_THAT_LOG) && state.hasProperty(BRANCH_DIRECTION);
+        return Helpers.isBlock(state.getBlock(), TFCTags.Blocks.LOGS_THAT_LOG) && state.hasProperty(BRANCH_DIRECTION) && state.getValue(BRANCH_DIRECTION).natural();
     }
 
-    private static boolean isLoggingTrunk(BlockState state)
+    public static boolean isLoggingTrunk(BlockState state)
     {
         return isLoggingBlock(state) && state.getValue(BRANCH_DIRECTION).trunk();
     }
@@ -108,7 +108,7 @@ public class AxeLoggingHelper
     /**
      * @return {@code true} if the log at {@code pos} and {@code state} is a trunk block, and is connected in an adjacent direction to at least one other trunk.
      */
-    private static boolean isPartOfLargerTrunk(LevelAccessor level, BlockPos pos, BlockState state)
+    public static boolean isPartOfLargerTrunk(LevelAccessor level, BlockPos pos, BlockState state)
     {
         return switch (state.getValue(BRANCH_DIRECTION))
         {

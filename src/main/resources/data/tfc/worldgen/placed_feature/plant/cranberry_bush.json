@@ -4,18 +4,21 @@
   "placement": [
     {
       "type": "minecraft:heightmap",
-      "heightmap": "WORLD_SURFACE_WG"
+      "heightmap": "OCEAN_FLOOR_WG"
     },
     {
       "type": "block_predicate_filter",
       "predicate": {
-        "type": "tfc:replaceable"
+        "type": "matching_blocks",
+        "blocks": [
+          "minecraft:water"
+        ]
       }
     },
     {
       "type": "block_predicate_filter",
       "predicate": {
-        "type": "would_survive",
+        "type": "tfc:would_survive_with_fluid",
         "state": {
           "Name": "tfc:plant/cranberry_bush",
           "Properties": {

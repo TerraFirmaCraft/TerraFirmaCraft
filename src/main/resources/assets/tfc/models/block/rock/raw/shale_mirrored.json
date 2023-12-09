@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "minecraft:block/cube_column_mirrored",
+  "textures": {
+    "side": "tfc:block/rock/raw/shale",
+    "end": "tfc:block/rock/raw/shale_top"
+  }
+}

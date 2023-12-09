@@ -55,7 +55,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)蓝钢$()可以用来制造工具和$(l:mechanics/armor)盔甲$()，还可以制造$(thing)蓝钢桶$()。蓝钢桶是一种强大的桶，可以搬运岩浆源和熔融的金属。蓝钢桶也是用于合成游戏中最强大的物品的素材之一……$(thing)原版桶$()！"
+      "text": "$(thing)Blue Steel$() can be used to create tools and $(l:mechanics/armor)Armor$(), and a $(thing)Blue Steel Bucket$(), which can be used to transport 1000 mB of both liquid fluids, and $(6)Lava$()."
     },
     {
       "type": "patchouli:text",
@@ -77,7 +77,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)红钢$()可以用来制造工具和$(l:mechanics/armor)盔甲$()，还可以制造$(thing)红钢桶$()。蓝钢桶是一种强大的桶，可以搬运水源和和其他液体源。红钢桶也是用于合成游戏中最强大的物品的素材之一……$(thing)原版桶$()！"
+      "text": "$(thing)Red Steel$() can be used to create tools and $(l:mechanics/armor)Armor$(), and a $(thing)Red Steel Bucket$(), which can be used to transport 1000 mB of both liquid fluids, and $(6)Lava$()"
     }
   ],
   "read_by_default": true,

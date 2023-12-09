@@ -15,8 +15,8 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
@@ -55,6 +55,32 @@ import net.dries007.tfc.util.Helpers;
 public final class FluidHelpers
 {
     public static final int BUCKET_VOLUME = 1000;
+
+    public static boolean canFluidExtinguishFire(Fluid fluid)
+    {
+        return fluid != Fluids.EMPTY && fluid.getFluidType().getTemperature() < 400; // 400 K ~ 127 C, reasonable heuristic
+    }
+
+    /**
+     * See Issues:
+     * <ul>
+     *     <li><a href="https://github.com/MinecraftForge/MinecraftForge/issues/9052">Minecraft Forge#9052</a></li>
+     *     <li><a href="https://github.com/MinecraftForge/MinecraftForge/issues/8897">Minecraft Forge#8897</a></li>
+     * </ul>
+     * In lack of any real support for making fluids behave like water, we hack around some of the {@link net.minecraft.world.entity.Entity} fluid checks to treat salt water and spring water, both of which exist in the world as water.
+     */
+    public static boolean isInWaterLikeFluid(Entity entity)
+    {
+        return entity.isInFluidType((fluidType, value) -> fluidType == TFCFluids.SALT_WATER.type().get() || fluidType == TFCFluids.SPRING_WATER.type().get());
+    }
+
+    /**
+     * @see #isInWaterLikeFluid(Entity)
+     */
+    public static boolean isEyeInWaterLikeFluid(Entity entity)
+    {
+        return entity.isEyeInFluidType(TFCFluids.SALT_WATER.type().get()) || entity.isEyeInFluidType(TFCFluids.SALT_WATER.type().get());
+    }
 
 
     public static boolean transferBetweenWorldAndItem(ItemStack originalStack, Level level, BlockHitResult target, Player player, InteractionHand hand, boolean allowPlacingAnyLiquidBlocks, boolean allowPlacingSourceBlocks, boolean allowInfiniteSourceFilling)
@@ -363,7 +389,7 @@ public final class FluidHelpers
             final BlockPos relativePos = hit.getBlockPos().relative(hit.getDirection());
             return emptyFluidFrom(handler, level, relativePos, level.getBlockState(relativePos), null, allowPlacingSourceBlocks);
         }
-        else if (level.dimensionType().ultraWarm() && Helpers.isFluid(fluid, FluidTags.WATER))
+        else if (fluid.getFluidType().isVaporizedOnPlacement(level, pos, simulatedDrained))
         {
             // Don't allow placing water type fluids in ultrawarm dimensions
             handler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
@@ -445,7 +471,7 @@ public final class FluidHelpers
     /**
      * Checks if a block state is empty other than a provided fluid
      *
-     * @return true if the provided state is a source block of it's current fluid
+     * @return true if the provided state is a source block of its current fluid
      */
     public static boolean isAirOrEmptyFluid(BlockState state)
     {
@@ -463,10 +489,22 @@ public final class FluidHelpers
     @Nullable
     public static BlockState fillWithFluid(BlockState state, Fluid fluid)
     {
-        // If the state is already filled. Also handles cases where a block is unable to be filled and we're filling with empty fluid
+        // If the state is already filled. Also handles cases where a block is unable to be filled, and we're filling with empty fluid
         if (state.getFluidState().getType() == fluid)
         {
             return state;
+        }
+
+        // We can fill air with a fluid source block
+        if (state.isAir())
+        {
+            return fluid.defaultFluidState().createLegacyBlock();
+        }
+
+        // And we can fill a flowing fluid block of the same fluid with a source
+        if (fluid instanceof FlowingFluid flowing && flowing.isSame(state.getFluidState().getType()))
+        {
+            return fluid.defaultFluidState().createLegacyBlock();
         }
 
         final Block block = state.getBlock();
@@ -562,6 +600,7 @@ public final class FluidHelpers
      * @return The fluid state that should exist at that position
      * @see FlowingFluid#getNewLiquid(Level, BlockPos, BlockState)
      */
+    @SuppressWarnings("deprecation")
     public static FluidState getNewFluidWithMixing(FlowingFluid self, Level level, BlockPos pos, BlockState blockStateIn, boolean canConvertToSource, int dropOff)
     {
         int maxAdjacentFluidAmount = 0; // The maximum height of fluids flowing into this block from the sides

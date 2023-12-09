@@ -10,6 +10,7 @@ import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -33,17 +34,19 @@ public class TFCSaplingBlock extends SaplingBlock implements IForgeBlockExtensio
 {
     private final ExtendedProperties properties;
     private final Supplier<Integer> daysToGrow;
+    private final boolean sand;
 
-    public TFCSaplingBlock(TFCTreeGrower tree, ExtendedProperties properties, int days)
-    {
-        this(tree, properties, () -> days);
-    }
-
-    public TFCSaplingBlock(TFCTreeGrower tree, ExtendedProperties properties, Supplier<Integer> days)
+    public TFCSaplingBlock(TFCTreeGrower tree, ExtendedProperties properties, Supplier<Integer> days, boolean sand)
     {
         super(tree, properties.properties());
         this.properties = properties;
         this.daysToGrow = days;
+        this.sand = sand;
+    }
+
+    public boolean isSand()
+    {
+        return sand;
     }
 
     @Override
@@ -82,6 +85,8 @@ public class TFCSaplingBlock extends SaplingBlock implements IForgeBlockExtensio
     @Override
     protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos)
     {
+        if (sand && Helpers.isBlock(state, BlockTags.SAND))
+            return true;
         return super.mayPlaceOn(state, level, pos) || Helpers.isBlock(state.getBlock(), TFCTags.Blocks.BUSH_PLANTABLE_ON);
     }
 

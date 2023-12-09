@@ -18,7 +18,7 @@ import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 
 public class OnTopPlacement extends PlacementModifier
 {
-    public static final Codec<OnTopPlacement> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+    public static final Codec<OnTopPlacement> PLACEMENT_CODEC = RecordCodecBuilder.create(instance -> instance.group(
         BlockPredicate.CODEC.fieldOf("predicate").forGetter(c -> c.predicate)
     ).apply(instance, OnTopPlacement::new));
 

@@ -15,7 +15,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -24,6 +23,7 @@ import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.events.StartFireEvent;
 import net.dries007.tfc.util.loot.TFCLoot;
@@ -40,7 +40,7 @@ public class TorchItem extends StandingAndWallBlockItem
     {
         final Level level = context.getLevel();
         final BlockPos pos = context.getClickedPos();
-        if (StartFireEvent.startFire(level, pos, level.getBlockState(pos), context.getClickedFace(), context.getPlayer(), context.getItemInHand(), StartFireEvent.FireResult.NEVER, StartFireEvent.FireStrength.WEAK))
+        if (StartFireEvent.startFire(level, pos, level.getBlockState(pos), context.getClickedFace(), context.getPlayer(), context.getItemInHand(), StartFireEvent.FireStrength.WEAK))
         {
             return InteractionResult.SUCCESS;
         }
@@ -53,7 +53,8 @@ public class TorchItem extends StandingAndWallBlockItem
         final Level level = itemEntity.level();
         final BlockPos pos = itemEntity.blockPosition();
         final BlockState stateAt = level.getBlockState(pos);
-        if (Helpers.isFluid(stateAt.getFluidState(), FluidTags.WATER))
+
+        if (FluidHelpers.canFluidExtinguishFire(stateAt.getFluidState().getType()))
         {
             final int amount = stack.getCount() > 5 ? 1 + level.random.nextInt(5) : stack.getCount();
             if (level instanceof ServerLevel serverLevel)
@@ -84,7 +85,7 @@ public class TorchItem extends StandingAndWallBlockItem
         {
             if (itemEntity.getAge() > ageRequirement && level.random.nextFloat() < 0.01f && !level.isClientSide())
             {
-                StartFireEvent.startFire(level, isNotInBlock ? downPos : pos, checkState, Direction.UP, null, ItemStack.EMPTY, StartFireEvent.FireResult.IF_FAILED, StartFireEvent.FireStrength.STRONG);
+                StartFireEvent.startFire(level, isNotInBlock ? downPos : pos, checkState, Direction.UP, null, ItemStack.EMPTY, StartFireEvent.FireStrength.STRONG);
                 itemEntity.kill();
                 return true;
             }

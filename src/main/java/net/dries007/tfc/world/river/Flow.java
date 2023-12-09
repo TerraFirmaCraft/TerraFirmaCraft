@@ -44,9 +44,9 @@ public enum Flow implements StringRepresentable
     /**
      * @return The closest flow to the polar coordinate angle, between [-pi, pi].
      */
-    public static Flow fromAngle(float angle)
+    public static Flow fromAngle(double angle)
     {
-        int ordinal = Math.round(8 * (angle / Mth.PI));
+        int ordinal = (int) Math.round(8 * (angle / Mth.PI));
         if (ordinal < 0)
         {
             ordinal += MODULUS;

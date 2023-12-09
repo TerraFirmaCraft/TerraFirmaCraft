@@ -40,8 +40,8 @@ public interface BiomeSourceExtension
         if (biome.hasRivers())
         {
             final RegionPartition.Point partitionPoint = getPartition(QuartPos.toBlock(quartX), QuartPos.toBlock(quartZ));
-            final float exactGridX = Units.quartToGridExact(quartX);
-            final float exactGridZ = Units.quartToGridExact(quartZ);
+            final double exactGridX = Units.quartToGridExact(quartX);
+            final double exactGridZ = Units.quartToGridExact(quartZ);
 
             for (RiverEdge edge : partitionPoint.rivers())
             {

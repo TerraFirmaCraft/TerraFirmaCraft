@@ -189,8 +189,8 @@ public enum AddRiversAndLakes implements RegionTask
         @Nullable
         private Region.Point vertex2Point(River.Vertex vertex)
         {
-            final int gridX = Math.round(vertex.x());
-            final int gridZ = Math.round(vertex.y());
+            final int gridX = (int) Math.round(vertex.x());
+            final int gridZ = (int) Math.round(vertex.y());
             return region.maybeAt(gridX, gridZ);
         }
     }

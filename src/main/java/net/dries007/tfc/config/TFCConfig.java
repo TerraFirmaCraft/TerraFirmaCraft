@@ -22,15 +22,15 @@ import net.dries007.tfc.util.Helpers;
  */
 public final class TFCConfig
 {
-    public static final CommonConfig COMMON = register(ModConfig.Type.COMMON, CommonConfig::new).getKey();
-    public static final ClientConfig CLIENT = register(ModConfig.Type.CLIENT, ClientConfig::new).getKey();
+    public static final CommonConfig COMMON = register(ModConfig.Type.COMMON, CommonConfig::new, "common").getKey();
+    public static final ClientConfig CLIENT = register(ModConfig.Type.CLIENT, ClientConfig::new, "client").getKey();
     public static final ServerConfig SERVER;
 
     private static final ForgeConfigSpec SERVER_SPEC;
 
     static
     {
-        final Pair<ServerConfig, ForgeConfigSpec> pair = register(ModConfig.Type.SERVER, ServerConfig::new);
+        final Pair<ServerConfig, ForgeConfigSpec> pair = register(ModConfig.Type.SERVER, ServerConfig::new, "server");
 
         SERVER = pair.getKey();
         SERVER_SPEC = pair.getRight();
@@ -43,9 +43,9 @@ public final class TFCConfig
         return SERVER_SPEC.isLoaded();
     }
 
-    private static <C> Pair<C, ForgeConfigSpec> register(ModConfig.Type type, Function<ForgeConfigSpec.Builder, C> factory)
+    private static <C> Pair<C, ForgeConfigSpec> register(ModConfig.Type type, Function<ConfigBuilder, C> factory, String prefix)
     {
-        final Pair<C, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(factory);
+        final Pair<C, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(builder -> factory.apply(new ConfigBuilder(builder, prefix)));
         if (!Helpers.BOOTSTRAP_ENVIRONMENT) ModLoadingContext.get().registerConfig(type, specPair.getRight());
         return specPair;
     }

@@ -17,6 +17,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -24,6 +25,7 @@ import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.blockentities.*;
+import net.dries007.tfc.common.blockentities.rotation.RotatingBlockEntity;
 import net.dries007.tfc.common.blocks.BloomBlock;
 import net.dries007.tfc.common.blocks.TFCCandleBlock;
 import net.dries007.tfc.common.blocks.TFCCandleCakeBlock;
@@ -33,6 +35,15 @@ import net.dries007.tfc.common.blocks.crop.CropBlock;
 import net.dries007.tfc.common.blocks.crop.DecayingBlock;
 import net.dries007.tfc.common.blocks.devices.*;
 import net.dries007.tfc.common.blocks.plant.fruit.*;
+import net.dries007.tfc.common.blocks.rotation.AbstractShaftAxleBlock;
+import net.dries007.tfc.common.blocks.rotation.AxleBlock;
+import net.dries007.tfc.common.blocks.rotation.ClutchBlock;
+import net.dries007.tfc.common.blocks.rotation.CrankshaftBlock;
+import net.dries007.tfc.common.blocks.rotation.EncasedAxleBlock;
+import net.dries007.tfc.common.blocks.rotation.GearBoxBlock;
+import net.dries007.tfc.common.blocks.rotation.HandWheelBlock;
+import net.dries007.tfc.common.blocks.rotation.WaterWheelBlock;
+import net.dries007.tfc.common.blocks.rotation.WindmillBlock;
 import net.dries007.tfc.common.blocks.soil.HoeOverlayBlock;
 import net.dries007.tfc.common.blocks.wood.TFCLoomBlock;
 import net.dries007.tfc.common.blocks.wood.TFCSaplingBlock;
@@ -41,6 +52,8 @@ import net.dries007.tfc.common.capabilities.egg.EggCapability;
 import net.dries007.tfc.common.capabilities.egg.IEgg;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.items.Powder;
+import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.BarrelRecipe;
 import net.dries007.tfc.common.recipes.BloomeryRecipe;
 import net.dries007.tfc.common.recipes.LoomRecipe;
@@ -50,6 +63,7 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.LampFuel;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.util.rotation.Rotation;
 
 /**
  * Common tooltips that can be displayed for various block entities via external sources.
@@ -86,7 +100,27 @@ public final class BlockEntityTooltips
         callback.register("loom", LOOM, TFCLoomBlock.class);
         callback.register("sheet_pile", SHEET_PILE, SheetPileBlock.class);
         callback.register("ingot_pile", INGOT_PILE, IngotPileBlock.class);
+        callback.register("axle", ROTATING, AbstractShaftAxleBlock.class);
+        callback.register("encased_axle", ROTATING, EncasedAxleBlock.class);
+        callback.register("clutch", ROTATING, ClutchBlock.class);
+        callback.register("hand_wheel", ROTATING, HandWheelBlock.class);
+        callback.register("gearbox", ROTATING, GearBoxBlock.class);
+        callback.register("crankshaft", ROTATING, CrankshaftBlock.class);
+        callback.register("quern", ROTATING, QuernBlock.class);
+        callback.register("water_wheel", ROTATING, WaterWheelBlock.class);
+        callback.register("windmill", ROTATING, WindmillBlock.class);
     }
+
+    public static final BlockEntityTooltip ROTATING = (level, state, pos, entity, tooltip) -> {
+        if (entity instanceof RotatingBlockEntity rotating)
+        {
+            final Rotation rotation = rotating.getRotationNode().rotation();
+            if (rotation != null && rotation.speed() > 0)
+            {
+                tooltip.accept(Component.translatable("tfc.tooltip.rotation.angular_velocity", String.format("%.2f", rotation.speed() * 20f)));
+            }
+        }
+    };
 
     public static final BlockEntityTooltip INGOT_PILE = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof IngotPileBlockEntity pile)
@@ -125,15 +159,13 @@ public final class BlockEntityTooltips
     public static final BlockEntityTooltip BELLOWS = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof BellowsBlockEntity bellows)
         {
-            int pushTicks = bellows.getTicksSincePushed();
-            if (pushTicks < 20 && pushTicks > 0)
+            final int step = Mth.clamp((int) Mth.map(
+                bellows.getExtensionLength(0f),
+                BellowsBlockEntity.MIN_EXTENSION, BellowsBlockEntity.MAX_EXTENSION,
+                0, 10), 0, 10);
+            if (step > 0)
             {
-                if (pushTicks > 10)
-                {
-                    pushTicks = 20 - pushTicks;
-                }
-
-                tooltip.accept(Component.translatable("tfc.jade.bellows_" + pushTicks));
+                tooltip.accept(Component.translatable("tfc.jade.bellows_" + step));
             }
         }
     };
@@ -231,6 +263,10 @@ public final class BlockEntityTooltips
             if (state.hasProperty(FirepitBlock.SMOKE_LEVEL))
             {
                 tooltip.accept(Component.translatable("tfc.jade.smoke_level", state.getValue(FirepitBlock.SMOKE_LEVEL)));
+            }
+            if (firepit.getAsh() > 0)
+            {
+                itemWithCount(tooltip, new ItemStack(TFCItems.POWDERS.get(Powder.WOOD_ASH).get(), firepit.getAsh()));
             }
             if (firepit instanceof PotBlockEntity pot)
             {

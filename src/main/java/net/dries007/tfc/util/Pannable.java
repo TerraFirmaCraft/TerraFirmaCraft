@@ -23,7 +23,7 @@ import net.dries007.tfc.util.collections.IndirectHashCollection;
 public class Pannable extends BlockDefinition
 {
     public static final DataManager<Pannable> MANAGER = new DataManager<>(Helpers.identifier("panning"), "panning", Pannable::new, Pannable::new, Pannable::encode, Pannable.Packet::new);
-    public static final IndirectHashCollection<Block, Pannable> CACHE = IndirectHashCollection.create(s -> s.ingredient.getValidBlocks(), MANAGER::getValues);
+    public static final IndirectHashCollection<Block, Pannable> CACHE = IndirectHashCollection.create(s -> s.ingredient.blocks(), MANAGER::getValues);
 
     @Nullable
     public static Pannable get(BlockState state)

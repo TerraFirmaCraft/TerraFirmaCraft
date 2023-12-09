@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "name": "高度な加工",
-  "description": "最初のツルハシを作るところから赤・青鋼にたどり着くまでの高度な加工を知れる項目です。",
+  "description": "Advanced sections of the tech tree, from the first pickaxe, all the way to colored steel.$(br2)$(br)$(bold)Note:$() you can search entries simply by starting to type anywhere!",
   "icon": "tfc:metal/axe/red_steel",
   "sortnum": 2
 }

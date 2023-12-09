@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blocks.devices;
 
 import java.util.Map;
-import java.util.Random;
 import java.util.function.Predicate;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
@@ -72,7 +71,7 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
 
     public static void removeSheet(Level level, BlockPos pos, BlockState state, Direction face, @Nullable Player player, boolean doDrops)
     {
-        final BlockState newState = state.setValue(PROPERTY_BY_DIRECTION.get(face), false);
+        final BlockState newState = state.setValue(DirectionPropertyBlock.getProperty(face), false);
 
         level.playSound(null, pos, SoundEvents.METAL_BREAK, SoundSource.BLOCKS, 0.7f, 0.9f + 0.2f * level.getRandom().nextFloat());
         if (doDrops && (player == null || !player.isCreative()))
@@ -97,7 +96,7 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
 
     public static void addSheet(LevelAccessor level, BlockPos pos, BlockState state, Direction face, ItemStack stack)
     {
-        final BlockState newState = state.setValue(PROPERTY_BY_DIRECTION.get(face), true);
+        final BlockState newState = state.setValue(DirectionPropertyBlock.getProperty(face), true);
 
         level.setBlock(pos, newState, Block.UPDATE_CLIENTS);
         level.getBlockEntity(pos, TFCBlockEntities.SHEET_PILE.get()).ifPresent(pile -> pile.addSheet(face, stack));
@@ -197,7 +196,7 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
     {
         for (Direction direction : Helpers.DIRECTIONS)
         {
-            if (state.getValue(PROPERTY_BY_DIRECTION.get(direction)))
+            if (state.getValue(DirectionPropertyBlock.getProperty(direction)))
             {
                 final BlockPos adjacentPos = pos.relative(direction);
                 final BlockState adjacentState = level.getBlockState(adjacentPos);
@@ -216,7 +215,7 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
     {
         for (Direction direction : Helpers.DIRECTIONS)
         {
-            if (state.getValue(PROPERTY_BY_DIRECTION.get(direction)))
+            if (state.getValue(DirectionPropertyBlock.getProperty(direction)))
             {
                 final BlockPos adjacentPos = pos.relative(direction);
                 final BlockState adjacentState = level.getBlockState(adjacentPos);
@@ -277,7 +276,7 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
         {
             for (Direction direction : Helpers.DIRECTIONS)
             {
-                if (state.getValue(PROPERTY_BY_DIRECTION.get(direction)))
+                if (state.getValue(DirectionPropertyBlock.getProperty(direction)))
                 {
                     popResourceFromFace(level, pos, direction, pile.removeSheet(direction));
                 }

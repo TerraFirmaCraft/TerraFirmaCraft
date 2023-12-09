@@ -9,6 +9,15 @@
         {
           "type": "minecraft:item",
           "name": "tfc:food/onion",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "tfc:wild_crop/onion",
+              "properties": {
+                "mature": "true"
+              }
+            }
+          ],
           "functions": [
             {
               "function": "minecraft:set_count",

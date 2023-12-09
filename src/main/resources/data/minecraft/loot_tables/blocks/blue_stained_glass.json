@@ -8,33 +8,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:blue_stained_glass",
-          "conditions": [
-            {
-              "condition": "minecraft:any_of",
-              "terms": [
-                {
-                  "condition": "minecraft:match_tool",
-                  "predicate": {
-                    "tag": "tfc:cuts_glass"
-                  }
-                },
-                {
-                  "condition": "minecraft:match_tool",
-                  "predicate": {
-                    "enchantments": [
-                      {
-                        "enchantment": "minecraft:silk_touch",
-                        "levels": {
-                          "min": 1
-                        }
-                      }
-                    ]
-                  }
-                }
-              ]
-            }
-          ]
+          "name": "minecraft:blue_stained_glass"
         }
       ],
       "conditions": [
