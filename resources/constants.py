@@ -1347,6 +1347,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.chance': '%s%% chance',
     'tfc.tooltip.wind_speed': '%s km/h, %s%% %s, %s%% %s',
     'tfc.tooltip.javelin.thrown_damage': '%s Thrown Damage',
+    'tfc.tooltip.rotation.angular_velocity': 'Rotating at \u03c9=%s rad/s',
     **dict(('trim_material.tfc.%s' % mat, lang('%s material', mat)) for mat in TRIM_MATERIALS),
 
     'tfc.jade.sealed_date': 'Sealed Date: %s',
@@ -1421,6 +1422,15 @@ DEFAULT_LANG = {
     'config.jade.plugin_tfc.loom': 'Loom',
     'config.jade.plugin_tfc.sheet_pile': 'Sheet Pile',
     'config.jade.plugin_tfc.ingot_pile': 'Ingot Pile',
+    'config.jade.plugin_tfc.axle': 'Axle',
+    'config.jade.plugin_tfc.encased_axle': 'Encased Axle',
+    'config.jade.plugin_tfc.clutch': 'Clutch',
+    'config.jade.plugin_tfc.hand_wheel': 'Hand Wheel',
+    'config.jade.plugin_tfc.gearbox': 'Gearbox',
+    'config.jade.plugin_tfc.crankshaft': 'Crankshaft',
+    'config.jade.plugin_tfc.quern': 'Quern',
+    'config.jade.plugin_tfc.water_wheel': 'Water Wheel',
+    'config.jade.plugin_tfc.windmill': 'Windmill',
 
     'config.jade.plugin_tfc.animal': 'Animal',
     'config.jade.plugin_tfc.frog': 'Frog',
