@@ -964,7 +964,7 @@ def generate(rm: ResourceManager):
                    'name': 'tfc:rock/loose/%s' % rock,
                    'conditions': [loot_tables.random_chance(0.5)],  # 25% chance
                 }, {
-                   'name': 'tfc:gem/%s' % rare if rare in GEMS else 'tfc:ore/%s' % rare,
+                   'name': 'tfc:ore/%s' % rare,
                    'conditions': [loot_tables.random_chance(0.04)],  # 1% chance
                 })], path=path, loot_type=loot_type)
 

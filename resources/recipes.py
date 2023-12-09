@@ -180,7 +180,7 @@ def generate(rm: ResourceManager):
 
     damage_shapeless(rm, 'crafting/wood/palm_mosaic', ('tfc:wood/planks/palm', 'tfc:wood/planks/palm', 'tfc:wood/planks/palm', 'tfc:wood/planks/palm', '#tfc:saws'), '4 tfc:wood/planks/palm_mosaic').with_advancement('tfc:wood/planks/palm')
     rm.crafting_shaped('crafting/wood/palm_mosaic_slab', ['XXX'], {'X': 'tfc:wood/planks/palm_mosaic'}, '6 tfc:wood/planks/palm_mosaic_slab').with_advancement('tfc:wood/planks/palm_mosaic')
-    rm.crafting_shaped('crafting/wood/palm_mosaic_stairs', ['XXX'], {'X': 'tfc:wood/planks/palm_mosaic'}, '8 tfc:wood/planks/palm_mosaic_stairs').with_advancement('tfc:wood/planks/palm_mosaic')
+    rm.crafting_shaped('crafting/wood/palm_mosaic_stairs', ['X  ', 'XX ', 'XXX'], {'X': 'tfc:wood/planks/palm_mosaic'}, '8 tfc:wood/planks/palm_mosaic_stairs').with_advancement('tfc:wood/planks/palm_mosaic')
     damage_shapeless(rm, 'crafting/wood/palm_mosaic_stairs_undo', ('tfc:wood/planks/palm_mosaic_stairs', '#tfc:saws'), (3, 'tfc:wood/lumber/palm')).with_advancement('tfc:wood/planks/palm_mosaic_stairs')
     damage_shapeless(rm, 'crafting/wood/palm_mosaic_slab_undo', ('tfc:wood/planks/palm_mosaic_slab', '#tfc:saws'), (2, 'tfc:wood/lumber/palm')).with_advancement('tfc:wood/planks/palm_mosaic_stairs')
 
@@ -663,6 +663,7 @@ def generate(rm: ResourceManager):
         quern_recipe(rm, ore, 'tfc:ore/%s' % ore, 'tfc:powder/%s' % ore, count=4)
     for gem in GEMS:
         quern_recipe(rm, gem, 'tfc:ore/%s' % gem, 'tfc:powder/%s' % gem, count=4)
+        quern_recipe(rm, gem + '_cut', 'tfc:gem/%s' % gem, 'tfc:powder/%s' % gem, count=4)
 
     for color, plants in PLANT_COLORS.items():
         for plant in plants:

@@ -935,33 +935,6 @@
     },
     {
       "type": "patchouli:spotlight",
-      "anchor": "lapis_lazuli",
-      "item": "tfc:ore/lapis_lazuli",
-      "title": "Lapis Lazuli",
-      "link_recipes": false,
-      "text": "Lapis Lazuli is a decorative $(thing)Mineral$() which can be used to make $(thing)Dye$(). It can be found in large, but sparse veins in $(thing)Limestone$() and $(thing)Marble$(), between y=-20 and y=80."
-    },
-    {
-      "type": "patchouli:multiblock",
-      "multiblock": {
-        "pattern": [
-          [
-            "X"
-          ],
-          [
-            "0"
-          ]
-        ],
-        "mapping": {
-          "X": "tfc:ore/lapis_lazuli/marble"
-        }
-      },
-      "name": "",
-      "text": "Lapis Lazuli in Marble.",
-      "enable_visualize": false
-    },
-    {
-      "type": "patchouli:spotlight",
       "anchor": "gypsum",
       "item": "tfc:ore/gypsum",
       "title": "Gesso",
@@ -1067,6 +1040,87 @@
       "name": "",
       "text": "Kimberlite em Gabbro.",
       "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "lapis_lazuli",
+      "item": "tfc:ore/lapis_lazuli",
+      "title": "Lapis Lazuli",
+      "link_recipes": false,
+      "text": "Lapis Lazuli is a decorative $(thing)Mineral$() which can be used to make $(thing)Dye$(). It can be found in large, but sparse veins in $(thing)Limestone$() and $(thing)Marble$(), between y=-20 and y=80."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/lapis_lazuli/marble"
+        }
+      },
+      "name": "",
+      "text": "Lapis Lazuli in Marble.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "amethyst",
+      "item": "tfc:ore/amethyst",
+      "title": "Amethyst",
+      "link_recipes": false,
+      "text": "Amethyst is a decorative $(thing)Mineral$() which can be used to make $(thing)Dye$() and $(l:mechanics/glassworking)Glass$(). It can be found in $(thing)Sedimentary) and $(thing)Metamorphic$() rock beneath rivers above y=40."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/amethyst/marble"
+        }
+      },
+      "name": "",
+      "text": "Amethyst in Marble.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "opal",
+      "item": "tfc:ore/opal",
+      "title": "Opal",
+      "link_recipes": false,
+      "text": "Opal is a decorative $(thing)Mineral$() which can be used to make $(thing)Dye$(). It can be found in $(thing)Sedimentary) and $(thing)Igneous Extrusive$() rock beneath rivers above y=40."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/amethyst/basalt"
+        }
+      },
+      "name": "",
+      "text": "Opal in Basalt.",
+      "enable_visualize": false
     }
   ],
   "read_by_default": true,
@@ -1129,10 +1183,12 @@
     "tfc:ore/sulfur": 40,
     "tfc:ore/sylvite": 42,
     "tfc:ore/borax": 44,
-    "tfc:ore/lapis_lazuli": 46,
-    "tfc:ore/gypsum": 48,
-    "tfc:ore/halite": 50,
-    "tfc:ore/emerald": 52,
-    "tfc:ore/diamond": 54
+    "tfc:ore/gypsum": 46,
+    "tfc:ore/halite": 48,
+    "tfc:ore/emerald": 50,
+    "tfc:ore/diamond": 52,
+    "tfc:ore/lapis_lazuli": 54,
+    "tfc:ore/amethyst": 56,
+    "tfc:ore/opal": 58
   }
 }

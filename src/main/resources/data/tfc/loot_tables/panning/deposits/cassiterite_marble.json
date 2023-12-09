@@ -31,7 +31,7 @@
             },
             {
               "type": "minecraft:item",
-              "name": "tfc:gem/lapis_lazuli",
+              "name": "tfc:ore/lapis_lazuli",
               "conditions": [
                 {
                   "condition": "minecraft:random_chance",
