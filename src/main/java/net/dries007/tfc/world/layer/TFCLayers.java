@@ -21,7 +21,6 @@ import net.dries007.tfc.world.layer.framework.TypedAreaFactory;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 import net.dries007.tfc.world.region.Region;
 import net.dries007.tfc.world.region.RegionGenerator;
-import net.dries007.tfc.world.region.Units;
 
 public class TFCLayers
 {
@@ -156,7 +155,7 @@ public class TFCLayers
         AreaFactory layer;
 
         layer = RegionRockLayer.INSTANCE.apply(regionLayer); // Grid scale (128x)
-        for (int i = 0; i < Units.GRID_BITS - 1; i++)
+        for (int i = 0; i < generator.getRockLayerScale(); i++)
         {
             layer = ZoomLayer.NORMAL.apply(seed, layer);
         }

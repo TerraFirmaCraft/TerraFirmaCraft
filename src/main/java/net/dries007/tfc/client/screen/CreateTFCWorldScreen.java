@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.client.screen;
 
-import java.util.Set;
 import net.minecraft.client.OptionInstance;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.GuiGraphics;
@@ -43,7 +42,15 @@ public class CreateTFCWorldScreen extends Screen
 
     private static OptionInstance<Integer> kmOption(String caption, int min, int max, int defaultValue)
     {
-        return new OptionInstance<>(caption, OptionInstance.cachedConstantTooltip(Component.translatable(caption + ".tooltip")), (text, value) -> Options.genericValueLabel(text, Component.translatable("tfc.settings.km", String.format("%.1f", value / 1000.0))), new OptionInstance.IntRange(min, max), defaultValue, value -> {});
+        return new OptionInstance<>(caption, OptionInstance.cachedConstantTooltip(Component.translatable(caption + ".tooltip")),
+            (text, value) -> Options.genericValueLabel(text, Component.translatable("tfc.settings.km", String.format("%.1f", value / 1000.0))), new OptionInstance.IntRange(min, max), defaultValue, value -> {});
+    }
+
+    private static OptionInstance<Integer> scaleOption(String caption, int min, int max, int defaultValue)
+    {
+        return new OptionInstance<>(caption, OptionInstance.cachedConstantTooltip(Component.translatable(caption + ".tooltip")),
+            (text, value) -> Options.genericValueLabel(text, Component.translatable("tfc.settings.scale", value)),
+            new OptionInstance.IntRange(min, max), defaultValue, value -> {});
     }
 
     private final CreateWorldScreen parent;
@@ -51,7 +58,7 @@ public class CreateTFCWorldScreen extends Screen
 
     private OptionsList options;
     private OptionInstance<Boolean> flatBedrock;
-    private OptionInstance<Integer> spawnDistance, spawnCenterX, spawnCenterZ, temperatureScale, rainfallScale;
+    private OptionInstance<Integer> spawnDistance, spawnCenterX, spawnCenterZ, temperatureScale, rainfallScale, rockLayerScale;
     private OptionInstance<Double> temperatureConstant, rainfallConstant, continentalness;
 
     public CreateTFCWorldScreen(CreateWorldScreen parent, WorldCreationContext context)
@@ -106,6 +113,9 @@ public class CreateTFCWorldScreen extends Screen
         options.addBig(
             continentalness = pctOption("tfc.create_world.continentalness", settings.continentalness())
         );
+        options.addBig( // min max match 1.18 range comment
+            rockLayerScale = scaleOption("tfc.create_world.rocklayerscale", 0, 32, settings.rockLayerScale())
+        );
 
         addWidget(options);
 
@@ -133,7 +143,8 @@ public class CreateTFCWorldScreen extends Screen
                 0.49 < rainfallConstant.get() && rainfallConstant.get() < 0.51 ? rainfallScale.get() : 0,
                 (float) (rainfallConstant.get() * 2.0 - 1.0),
                 old.rockLayerSettings(),
-                continentalness.get().floatValue()
+                continentalness.get().floatValue(),
+                rockLayerScale.get()
             ));
         }
     }

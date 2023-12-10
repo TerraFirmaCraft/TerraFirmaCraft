@@ -56,6 +56,8 @@ public class RegionGenerator
 
     private final Cellular2D cellNoise;
 
+    private final Integer rockLayerScale;
+
     public RegionGenerator(Settings settings, RandomSource random)
     {
         this.seed = random.nextLong();
@@ -93,11 +95,16 @@ public class RegionGenerator
 
         biomeArea = ThreadLocal.withInitial(biomeAreaFactory);
         rockArea = ThreadLocal.withInitial(rockAreaFactory);
+        this.rockLayerScale = settings.rockLayerScale();
     }
 
     public long seed()
     {
         return seed;
+    }
+
+    public Integer getRockLayerScale() {
+        return rockLayerScale;
     }
 
     public RegionPartition.Point getOrCreatePartitionPoint(int gridX, int gridZ)
