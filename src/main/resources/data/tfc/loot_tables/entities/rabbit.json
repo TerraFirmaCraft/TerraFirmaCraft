@@ -8,7 +8,12 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:food/rabbit"
+          "name": "tfc:food/rabbit",
+          "conditions": [
+            {
+              "condition": "tfc:not_predated"
+            }
+          ]
         }
       ]
     },

@@ -286,7 +286,6 @@ public class TFCTags
         public static final TagKey<EntityType<?>> HUNTED_BY_LAND_PREDATORS = create("hunted_by_land_predators");
         public static final TagKey<EntityType<?>> OCEAN_PREDATORS = create("ocean_predators");
         public static final TagKey<EntityType<?>> HUNTED_BY_OCEAN_PREDATORS = create("hunted_by_ocean_predators");
-        public static final TagKey<EntityType<?>> HUNTED_BY_FRESHWATER_PREDATORS = create("hunted_by_freshwater_predators");
         public static final TagKey<EntityType<?>> VANILLA_MONSTERS = create("vanilla_monsters");
         public static final TagKey<EntityType<?>> DEALS_SLASHING_DAMAGE = create("deals_slashing_damage");
         public static final TagKey<EntityType<?>> DEALS_PIERCING_DAMAGE = create("deals_piercing_damage");
