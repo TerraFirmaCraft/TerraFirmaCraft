@@ -57,7 +57,6 @@ import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.BarrelRecipe;
 import net.dries007.tfc.common.recipes.BloomeryRecipe;
 import net.dries007.tfc.common.recipes.LoomRecipe;
-import net.dries007.tfc.common.recipes.SealedBarrelRecipe;
 import net.dries007.tfc.common.recipes.SoupPotRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.LampFuel;
@@ -141,15 +140,16 @@ public final class BlockEntityTooltips
         {
             if (state.getValue(BarrelBlock.SEALED))
             {
-                BarrelRecipe recipe = barrel.getRecipe();
-                if (recipe != null)
+                final long tickLeft = barrel.getRemainingTicks();
+                if (tickLeft > 0)
                 {
-                    tooltip.accept(recipe.getTranslationComponent());
-                    // this is the translation key used in the barrel class, if that changes we should change it in barrel screen too.
-                    tooltip.accept(Component.translatable("tfc.jade.sealed_date", ICalendar.getTimeAndDate(Calendars.get(level).ticksToCalendarTicks(barrel.getSealedTick()), Calendars.get(level).getCalendarDaysInMonth())));
-                    if (recipe instanceof SealedBarrelRecipe sealedRecipe)
+                    BarrelRecipe recipe = barrel.getRecipe();
+                    if (recipe != null)
                     {
-                        timeLeft(level, tooltip, sealedRecipe.getDuration() - (Calendars.get(level).getTicks() - barrel.getRecipeTick()));
+                        tooltip.accept(recipe.getTranslationComponent());
+                        // this is the translation key used in the barrel class, if that changes we should change it in barrel screen too.
+                        tooltip.accept(Component.translatable("tfc.jade.sealed_date", ICalendar.getTimeAndDate(Calendars.get(level).ticksToCalendarTicks(barrel.getSealedTick()), Calendars.get(level).getCalendarDaysInMonth())));
+                        timeLeft(level, tooltip, tickLeft);
                     }
                 }
             }
