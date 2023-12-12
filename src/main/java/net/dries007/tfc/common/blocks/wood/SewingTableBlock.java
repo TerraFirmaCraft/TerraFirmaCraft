@@ -74,6 +74,6 @@ public class SewingTableBlock extends HorizontalDirectionalBlock implements IFor
     @SuppressWarnings("deprecation")
     public MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos)
     {
-        return new SimpleMenuProvider((windowId, inv, player) -> new SewingTableContainer(inv, windowId, ContainerLevelAccess.create(level, pos)), CONTAINER_TITLE);
+        return new SimpleMenuProvider((windowId, inv, player) -> SewingTableContainer.create(inv, windowId, ContainerLevelAccess.create(level, pos)), CONTAINER_TITLE);
     }
 }
