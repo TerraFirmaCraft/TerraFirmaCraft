@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:quern",
+  "ingredient": {
+    "item": "tfc:gem/emerald"
+  },
+  "result": {
+    "item": "tfc:powder/emerald",
+    "count": 4
+  }
+}

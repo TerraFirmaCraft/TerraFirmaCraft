@@ -46,7 +46,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('pit_kiln_logs', 'tfc:stick_bundle', '#minecraft:logs')
     rm.item_tag('firepit_logs', '#minecraft:logs')
     rm.item_tag('waxes_scraping_surface', 'tfc:glue', 'minecraft:honeycomb')
-    rm.item_tag('scrapable', 'tfc:large_soaked_hide', 'tfc:medium_soaked_hide', 'tfc:small_soaked_hide', 'tfc:unrefined_paper')
+    rm.item_tag('scrapable', *['tfc:%s_%s_hide' % (size, hide) for size in ('small', 'medium', 'large') for hide in ('soaked', 'sheepskin')], 'tfc:unrefined_paper')
     rm.item_tag('glassworking_tools', 'tfc:paddle', 'tfc:jacks', 'tfc:gem_saw')
     rm.item_tag('usable_on_tool_rack', 'tfc:firestarter', 'minecraft:bow', 'minecraft:crossbow', 'minecraft:flint_and_steel', 'minecraft:spyglass', 'minecraft:brush', 'tfc:spindle', '#tfc:all_blowpipes', '#tfc:glassworking_tools')
     rm.item_tag('usable_in_powder_keg', 'minecraft:gunpowder')
@@ -71,7 +71,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('axes_that_log', '#tfc:axes')
     rm.item_tag('extinguisher', '#tfc:shovels')
     rm.item_tag('inefficient_logging_axes', *['tfc:stone/axe/%s' % cat for cat in ROCK_CATEGORIES])
-    rm.item_tag('thatch_bed_hides', 'tfc:large_raw_hide', 'tfc:large_sheepskin_hide')
+    rm.item_tag('thatch_bed_hides', 'tfc:large_raw_hide')
     rm.item_tag('small_fishing_bait', 'tfc:food/shellfish', '#tfc:seeds')
     rm.item_tag('large_fishing_bait', 'tfc:food/cod', 'tfc:food/salmon', 'tfc:food/tropical_fish', 'tfc:food/bluegill')
     rm.item_tag('holds_small_fishing_bait', *['tfc:metal/fishing_rod/%s' % metal for metal, data in METALS.items() if 'tool' in data.types])
@@ -263,6 +263,7 @@ def generate(rm: ResourceManager):
         rm.block_and_item_tag('%s_logs' % wood, item('log'), item('wood'), item('stripped_log'), item('stripped_wood'))
         rm.block_tag('support_beams', item('vertical_support'), item('horizontal_support'))
 
+        rm.block_and_item_tag('minecraft:saplings', item('sapling'))
         rm.block_and_item_tag('minecraft:wooden_buttons', plank('button'))
         rm.block_and_item_tag('minecraft:wooden_fences', plank('fence'), plank('log_fence'))
         rm.block_and_item_tag('minecraft:wooden_doors', plank('door'))
@@ -290,6 +291,12 @@ def generate(rm: ResourceManager):
 
         if wood in TANNIN_WOOD_TYPES:
             rm.item_tag('makes_tannin', item('log'), item('wood'))
+    for fruit in FRUITS.keys():
+        rm.block_and_item_tag('minecraft:saplings', 'tfc:plant/%s_sapling' % fruit)
+        if fruit != 'banana':
+            rm.block_and_item_tag('minecraft:leaves', 'tfc:plant/%s_leaves' % fruit)
+            rm.block_and_item_tag('fruit_tree_leaves', 'tfc:plant/%s_leaves' % fruit)
+            rm.block_tag('fruit_tree_branch', 'tfc:plant/%s_branch' % fruit, 'tfc:plant/%s_growing_branch' % fruit)
 
     for category in ROCK_CATEGORIES:  # Rock (Category) Tools
         for tool in ROCK_CATEGORY_ITEMS:

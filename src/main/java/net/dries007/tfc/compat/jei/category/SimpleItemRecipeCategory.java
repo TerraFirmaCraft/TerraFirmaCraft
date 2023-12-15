@@ -57,7 +57,10 @@ public abstract class SimpleItemRecipeCategory<T extends SimpleItemRecipe> exten
         outputSlot.addItemStacks(collapse(inputList, recipe.getResult()));
         outputSlot.setBackground(slot, -1, -1);
 
-        builder.createFocusLink(inputSlot, outputSlot);
+        if (!addItemsToOutputSlot(recipe, outputSlot, inputList))
+        {
+            builder.createFocusLink(inputSlot, outputSlot);
+        }
     }
 
     @Override
@@ -65,6 +68,11 @@ public abstract class SimpleItemRecipeCategory<T extends SimpleItemRecipe> exten
     {
         arrow.draw(stack, getToolTag() == null ? 36 : 48, 5);
         arrowAnimated.draw(stack, getToolTag() == null ? 36 : 48, 5);
+    }
+
+    protected boolean addItemsToOutputSlot(T recipe, IRecipeSlotBuilder output, List<ItemStack> inputs)
+    {
+        return false;
     }
 
     @Nullable

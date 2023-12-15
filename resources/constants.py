@@ -992,7 +992,7 @@ VANILLA_MONSTERS: Dict[str, Dict[str, Any]] = {
     'slime': spawner('minecraft:slime', weight=100, min_count=4, max_count=4),
 }
 
-DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet', 'campfire', 'bucket', 'composter', 'tinted_glass', 'glass_pane', 'enchanting_table', 'bowl', 'blaze_rod', 'bone_meal', 'flower_pot', 'painting', 'torch', 'soul_torch', 'sticky_piston', 'clock', 'compass', 'white_wool_from_string', 'hay_block', 'anvil', 'wheat', 'lapis_lazuli', 'leather_horse_armor', 'map', 'furnace', 'jack_o_lantern', 'melon_seeds', 'melon', 'pumpkin_pie', 'chest', 'barrel', 'trapped_chest', 'bricks', 'bookshelf', 'crafting_table', 'lectern', 'chest_minecart', 'rail', 'beetroot_soup', 'mushroom_stew', 'rabbit_stew_from_red_mushroom', 'rabbit_stew_from_brown_mushroom', 'suspicious_stew', 'scaffolding', 'bow', 'glass_bottle', 'fletching_table', 'shield', 'lightning_rod', 'fishing_rod', 'iron_door', 'iron_trapdoor', 'spyglass', 'slime_ball', 'smoker', 'soul_campfire')
+DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet', 'campfire', 'bucket', 'composter', 'tinted_glass', 'glass_pane', 'enchanting_table', 'bowl', 'blaze_rod', 'bone_meal', 'flower_pot', 'painting', 'torch', 'soul_torch', 'sticky_piston', 'clock', 'compass', 'white_wool_from_string', 'hay_block', 'anvil', 'wheat', 'lapis_lazuli', 'leather_horse_armor', 'map', 'furnace', 'jack_o_lantern', 'melon_seeds', 'melon', 'pumpkin_pie', 'chest', 'barrel', 'trapped_chest', 'bricks', 'bookshelf', 'crafting_table', 'lectern', 'chest_minecart', 'rail', 'beetroot_soup', 'mushroom_stew', 'rabbit_stew_from_red_mushroom', 'rabbit_stew_from_brown_mushroom', 'suspicious_stew', 'scaffolding', 'bow', 'glass_bottle', 'fletching_table', 'shield', 'lightning_rod', 'fishing_rod', 'iron_door', 'iron_trapdoor', 'spyglass', 'slime_ball', 'smoker', 'soul_campfire', 'loom')
 ARMOR_SECTIONS = ('chestplate', 'leggings', 'boots', 'helmet')
 TFC_ARMOR_SECTIONS = ('helmet', 'chestplate', 'greaves', 'boots')
 VANILLA_ARMOR_TYPES = ('leather', 'golden', 'iron', 'diamond', 'netherite')
@@ -1301,6 +1301,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.fruit_tree.growing': 'This block could grow under the right conditions.',
     'tfc.tooltip.fruit_tree.sapling_wrong_month': 'Wrong season to grow a tree.',
     'tfc.tooltip.fruit_tree.sapling_splice': 'May be spliced',
+    'tfc.tooltip.berry_bush.not_underwater': 'Must be underwater to grow!',
     'tfc.tooltip.fertilizer.nitrogen': '§b(N) Nitrogen: §r%s%%',
     'tfc.tooltip.fertilizer.phosphorus': '§6(P) Phosphorus: §r%s%%',
     'tfc.tooltip.fertilizer.potassium': '§d(K) Potassium: §r%s%%',
@@ -1361,6 +1362,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.chance': '%s%% chance',
     'tfc.tooltip.wind_speed': '%s km/h, %s%% %s, %s%% %s',
     'tfc.tooltip.javelin.thrown_damage': '%s Thrown Damage',
+    'tfc.tooltip.rotation.angular_velocity': 'Rotating at \u03c9=%s rad/s',
     **dict(('trim_material.tfc.%s' % mat, lang('%s material', mat)) for mat in TRIM_MATERIALS),
 
     'tfc.jade.sealed_date': 'Sealed Date: %s',
@@ -1435,6 +1437,15 @@ DEFAULT_LANG = {
     'config.jade.plugin_tfc.loom': 'Loom',
     'config.jade.plugin_tfc.sheet_pile': 'Sheet Pile',
     'config.jade.plugin_tfc.ingot_pile': 'Ingot Pile',
+    'config.jade.plugin_tfc.axle': 'Axle',
+    'config.jade.plugin_tfc.encased_axle': 'Encased Axle',
+    'config.jade.plugin_tfc.clutch': 'Clutch',
+    'config.jade.plugin_tfc.hand_wheel': 'Hand Wheel',
+    'config.jade.plugin_tfc.gearbox': 'Gearbox',
+    'config.jade.plugin_tfc.crankshaft': 'Crankshaft',
+    'config.jade.plugin_tfc.quern': 'Quern',
+    'config.jade.plugin_tfc.water_wheel': 'Water Wheel',
+    'config.jade.plugin_tfc.windmill': 'Windmill',
 
     'config.jade.plugin_tfc.animal': 'Animal',
     'config.jade.plugin_tfc.frog': 'Frog',

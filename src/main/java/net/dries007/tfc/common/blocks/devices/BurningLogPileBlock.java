@@ -36,22 +36,27 @@ import net.dries007.tfc.util.Helpers;
 
 public class BurningLogPileBlock extends BaseEntityBlock implements IForgeBlockExtension, EntityBlockExtension
 {
-    public static void tryLightLogPile(Level level, BlockPos pos)
+    public static void lightLogPile(Level level, BlockPos pos)
     {
-        LogPileBlockEntity pile = level.getBlockEntity(pos, TFCBlockEntities.LOG_PILE.get()).orElse(null);
-        if (pile != null)
+        if (level.getBlockEntity(pos) instanceof LogPileBlockEntity pile)
         {
-            int logs = pile.logCount();
-            pile.clearContent(); // avoid dumping when onRemove is called
+            final int logs = pile.logCount();
+            pile.clearContent();
             level.setBlockAndUpdate(pos, TFCBlocks.BURNING_LOG_PILE.get().defaultBlockState());
             Helpers.playSound(level, pos, SoundEvents.BLAZE_SHOOT);
-
-            BurningLogPileBlockEntity burningPile = level.getBlockEntity(pos, TFCBlockEntities.BURNING_LOG_PILE.get()).orElse(null);
-            if (burningPile != null)
+            if (level.getBlockEntity(pos) instanceof BurningLogPileBlockEntity burningPile)
             {
                 burningPile.light(logs);
                 tryLightNearby(level, pos);
             }
+        }
+    }
+
+    public static void tryLightLogPile(Level level, BlockPos pos)
+    {
+        if (level.getBlockEntity(pos) instanceof LogPileBlockEntity)
+        {
+            level.scheduleTick(pos, level.getBlockState(pos).getBlock(), TICK_DELAY);
         }
     }
 
@@ -64,34 +69,37 @@ public class BurningLogPileBlock extends BaseEntityBlock implements IForgeBlockE
         return !offsetState.isFlammable(level, pos, side) && offsetState.isFaceSturdy(level, pos, side);
     }
 
-    private static void tryLightNearby(Level world, BlockPos pos)
+    private static void tryLightNearby(Level level, BlockPos pos)
     {
-        if (world.isClientSide()) return;
+        if (level.isClientSide()) return;
+        final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
         for (Direction side : Helpers.DIRECTIONS)
         {
-            final BlockPos offsetPos = pos.relative(side);
-            final BlockState offsetState = world.getBlockState(offsetPos);
-            if (isValidCoverBlock(offsetState, world, offsetPos, side.getOpposite()))
+            cursor.setWithOffset(pos, side);
+            final BlockState offsetState = level.getBlockState(cursor);
+            if (isValidCoverBlock(offsetState, level, cursor, side.getOpposite()))
             {
                 if (Helpers.isBlock(offsetState, TFCBlocks.LOG_PILE.get()))
                 {
-                    tryLightLogPile(world, offsetPos);
+                    tryLightLogPile(level, cursor);
                 }
             }
             else if (offsetState.isAir())
             {
                 // If we can, try and spawn fire in the offset position - but don't delete anything in the process
-                world.setBlockAndUpdate(offsetPos, Blocks.FIRE.defaultBlockState());
+                level.setBlockAndUpdate(cursor, Blocks.FIRE.defaultBlockState());
             }
-            else if (world.random.nextInt(7) == 0)
+            else if (level.random.nextInt(7) == 0)
             {
                 // If we can't spawn fire directly above, but we don't have a valid cover, then this block is invalid, but it can't spawn fire and let it burn itself away
                 // So, we have a low chance of replacing this block, with fire.
-                world.setBlockAndUpdate(pos, Blocks.FIRE.defaultBlockState());
+                level.setBlockAndUpdate(pos, Blocks.FIRE.defaultBlockState());
                 return;
             }
         }
     }
+
+    private static final int TICK_DELAY = 30;
 
     private final ExtendedProperties properties;
 
@@ -109,7 +117,7 @@ public class BurningLogPileBlock extends BaseEntityBlock implements IForgeBlockE
 
     @Override
     @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         tryLightNearby(level, pos);
     }
@@ -117,16 +125,16 @@ public class BurningLogPileBlock extends BaseEntityBlock implements IForgeBlockE
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand)
     {
-        double x = pos.getX() + rand.nextFloat();
-        double y = pos.getY() + 1;
-        double z = pos.getZ() + rand.nextFloat();
-        level.addParticle(ParticleTypes.SMOKE, x, y, z, 0f, 0.1f + 0.1f * rand.nextFloat(), 0f);
-        if (rand.nextInt(12) == 0)
+        if (level.getBlockState(pos.above(2)).canBeReplaced())
         {
-            level.playLocalSound(x, y, z, SoundEvents.CAMPFIRE_CRACKLE, SoundSource.BLOCKS, 0.5F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.6F, false);
-        }
-        for (int i = 0; i < rand.nextInt(3); i++)
-        {
+            double x = pos.getX() + rand.nextFloat();
+            double y = pos.getY() + 1.125;
+            double z = pos.getZ() + rand.nextFloat();
+            level.addParticle(ParticleTypes.SMOKE, x, y, z, 0f, 0.1f + 0.1f * rand.nextFloat(), 0f);
+            if (rand.nextInt(12) == 0)
+            {
+                level.playLocalSound(x, y, z, SoundEvents.CAMPFIRE_CRACKLE, SoundSource.BLOCKS, 0.5F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.6F, false);
+            }
             level.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, x, y, z, (0.5F - rand.nextFloat()) / 10, 0.1f + rand.nextFloat() / 8, (0.5F - rand.nextFloat()) / 10);
         }
     }

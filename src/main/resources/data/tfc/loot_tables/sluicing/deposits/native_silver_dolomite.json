@@ -31,7 +31,7 @@
             },
             {
               "type": "minecraft:item",
-              "name": "tfc:gem/amethyst",
+              "name": "tfc:ore/amethyst",
               "conditions": [
                 {
                   "condition": "minecraft:random_chance",

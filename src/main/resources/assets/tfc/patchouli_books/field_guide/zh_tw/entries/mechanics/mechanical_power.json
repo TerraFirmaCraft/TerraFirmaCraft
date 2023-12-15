@@ -67,7 +67,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/oak_encased_axle",
-      "title": "Gear Boxes",
+      "title": "Encased Axles",
       "text": "Axles can also be crafted $(thing)Encased$(). These can either be placed by themselves, or on top of existing axles.$(br2)However, in order to transfer power further, you will need a $(l:mechanics/mechanical_power#gearbox)Gear Box$()"
     },
     {
@@ -152,7 +152,7 @@
   "extra_recipe_mappings": {
     "tag:tfc:water_wheels": 6,
     "tag:tfc:axles": 10,
-    "tag:tfc:gear_boxes": 11,
+    "tag:tfc:gear_boxes": 12,
     "tag:tfc:clutches": 14
   }
 }

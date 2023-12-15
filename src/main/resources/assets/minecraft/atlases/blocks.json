@@ -119,6 +119,11 @@
         "sterling_silver_tfc": "tfc:color_palettes/trims/sterling_silver",
         "bismuth_tfc": "tfc:color_palettes/trims/bismuth"
       }
+    },
+    {
+      "type": "directory",
+      "source": "entity/bell",
+      "prefix": "entity/bell/"
     }
   ]
 }

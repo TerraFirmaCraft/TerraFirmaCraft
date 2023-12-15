@@ -31,7 +31,7 @@
             },
             {
               "type": "minecraft:item",
-              "name": "tfc:gem/ruby",
+              "name": "tfc:ore/ruby",
               "conditions": [
                 {
                   "condition": "minecraft:random_chance",

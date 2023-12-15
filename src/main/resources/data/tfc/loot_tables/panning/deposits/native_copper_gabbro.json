@@ -31,7 +31,7 @@
             },
             {
               "type": "minecraft:item",
-              "name": "tfc:gem/diamond",
+              "name": "tfc:ore/diamond",
               "conditions": [
                 {
                   "condition": "minecraft:random_chance",

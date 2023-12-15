@@ -177,7 +177,7 @@ public final class TFCFluids
             .canConvertToSource(true)
             .canDrown(true)
             .canExtinguish(true)
-            .canHydrate(false)
+            .canHydrate(true)
             .canPushEntity(true)
             .canSwim(true)
             .supportsBoating(true);

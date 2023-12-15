@@ -98,7 +98,7 @@ public abstract class CreepingPlantBlock extends PlantBlock implements Direction
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         super.randomTick(state, level, pos, random);
-        if (random.nextFloat() < TFCConfig.SERVER.plantGrowthChance.get())
+        if (PlantRegrowth.canSpread(level, random))
         {
             Direction direction = Direction.getRandom(random);
             if (direction == Direction.DOWN)

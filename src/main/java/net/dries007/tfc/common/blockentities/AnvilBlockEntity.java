@@ -24,6 +24,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.LazyOptional;
 
@@ -61,7 +62,12 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
 
     public AnvilBlockEntity(BlockPos pos, BlockState state)
     {
-        super(TFCBlockEntities.ANVIL.get(), pos, state, AnvilInventory::new, NAME);
+        this(TFCBlockEntities.ANVIL.get(), pos, state, AnvilInventory::new, NAME);
+    }
+
+    public AnvilBlockEntity(BlockEntityType<? extends AnvilBlockEntity> type, BlockPos pos, BlockState state, InventoryFactory<AnvilInventory> inventoryFactory, Component defaultName)
+    {
+        super(type, pos, state, inventoryFactory, defaultName);
     }
 
     @Nullable

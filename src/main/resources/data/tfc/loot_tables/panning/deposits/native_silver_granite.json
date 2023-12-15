@@ -31,7 +31,7 @@
             },
             {
               "type": "minecraft:item",
-              "name": "tfc:gem/topaz",
+              "name": "tfc:ore/topaz",
               "conditions": [
                 {
                   "condition": "minecraft:random_chance",
