@@ -777,7 +777,7 @@ def generate(rm: ResourceManager):
     rm.entity_tag('minecraft:boats', 'minecraft:boat', 'minecraft:chest_boat', *['tfc:%s/%s' % (v, wood) for wood in WOODS.keys() for v in ('chest_boat', 'boat')])
     rm.entity_tag('bubble_column_immune', *['tfc:%s' % entity for entity in OCEAN_CREATURES.keys()], *['tfc:%s' % entity for entity in UNDERGROUND_WATER_CREATURES.keys()], *['tfc:%s' % entity for entity in OCEAN_AMBIENT.keys()])
     rm.entity_tag('needs_large_fishing_bait', 'tfc:dolphin', 'tfc:orca')
-    rm.entity_tag('land_predators', *['tfc:%s' % entity for entity in LAND_PREDATORS], 'tfc:crocodile')
+    rm.entity_tag('land_predators', *['tfc:%s' % entity for entity in LAND_PREDATORS])
     rm.entity_tag('land_prey', *['tfc:%s' % entity for entity in LAND_PREY], '#tfc:livestock')
     rm.entity_tag('livestock', *['tfc:%s' % entity for entity in LIVESTOCK])
     rm.entity_tag('hunts_land_prey', '#tfc:land_predators', 'minecraft:player', 'tfc:cat', 'tfc:dog')

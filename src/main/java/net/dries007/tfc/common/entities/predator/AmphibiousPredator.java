@@ -4,8 +4,11 @@ import java.util.Optional;
 import com.mojang.serialization.Dynamic;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.Brain;
@@ -14,8 +17,14 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
+import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.AmphibiousNodeEvaluator;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.PathFinder;
@@ -23,17 +32,18 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.fluids.FluidType;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.entities.ai.predator.AmphibiousPredatorAi;
+import net.dries007.tfc.common.entities.aquatic.AquaticMob;
 import net.dries007.tfc.common.entities.aquatic.TrueAmphibiousMoveControl;
 import net.dries007.tfc.common.fluids.TFCFluids;
 
-public class AmphibiousPredator extends Predator
+public class AmphibiousPredator extends Predator implements AquaticMob
 {
-    //TODO: Crocodile Sounds
     public static AmphibiousPredator createCrocodile(EntityType<? extends Predator> type, Level level)
     {
-        return new AmphibiousPredator(type, level, false, TFCSounds.BEAR);
+        return new AmphibiousPredator(type, level, false, TFCSounds.CROCODILE);
     }
 
 
@@ -110,15 +120,9 @@ public class AmphibiousPredator extends Predator
     }
 
     @Override
-    public boolean canSwimInFluidType(FluidType type)
+    public boolean canSpawnIn(Fluid fluid)
     {
-        return type == ForgeMod.WATER_TYPE.get() || type == TFCFluids.SALT_WATER.type().get() || type == TFCFluids.SPRING_WATER.type().get();
-    }
-
-    @Override
-    public boolean canDrownInFluidType(FluidType type)
-    {
-        return !canSwimInFluidType(type);
+        return fluid.isSame(Fluids.WATER);
     }
 
     @Override
@@ -147,5 +151,10 @@ public class AmphibiousPredator extends Predator
         {
             super.travel(movement);
         }
+    }
+
+    @Override
+    public boolean checkSpawnObstruction(LevelReader level) {
+        return level.isUnobstructed(this);
     }
 }

@@ -1549,37 +1549,37 @@
     "subtitle": "subtitles.entity.tfc.crocodile.ambient",
     "sounds": [
       {
-        "name": "tfc:entity/sabertooth/say1",
-        "volume": 0.6
+        "name": "tfc:entity/crocodile/growl1",
+        "volume": 0.8
       },
       {
-        "name": "tfc:entity/sabertooth/say2",
-        "volume": 0.6
+        "name": "tfc:entity/crocodile/growl2",
+        "volume": 0.8
       },
       {
-        "name": "tfc:entity/sabertooth/say3",
-        "volume": 0.6
+        "name": "tfc:entity/crocodile/growl3",
+        "volume": 0.8
       }
     ]
   },
   "entity.crocodile.attack": {
     "subtitle": "subtitles.entity.tfc.crocodile.attack",
     "sounds": [
-      "tfc:entity/sabertooth/attack1",
-      "tfc:entity/sabertooth/attack2"
+      "tfc:entity/crocodile/attack1",
+      "tfc:entity/crocodile/attack2"
     ]
   },
   "entity.crocodile.death": {
     "subtitle": "subtitles.entity.tfc.crocodile.death",
     "sounds": [
-      "tfc:entity/sabertooth/death1"
+      "tfc:entity/crocodile/hiss1"
     ]
   },
   "entity.crocodile.hurt": {
     "subtitle": "subtitles.entity.tfc.crocodile.hurt",
     "sounds": [
-      "tfc:entity/sabertooth/hurt1",
-      "tfc:entity/sabertooth/hurt2"
+      "tfc:entity/crocodile/hiss1",
+      "tfc:entity/crocodile/hiss2"
     ]
   },
   "entity.crocodile.step": {
@@ -1597,7 +1597,8 @@
       {
         "name": "minecraft:entity.fox.sleep",
         "type": "event",
-        "pitch": 0.5
+        "pitch": 0.3,
+        "volume": 0.7
       }
     ]
   },

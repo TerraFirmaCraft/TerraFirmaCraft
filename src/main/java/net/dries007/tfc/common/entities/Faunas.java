@@ -62,7 +62,7 @@ public class Faunas
     public static final FaunaType<FelinePredator> LION = registerAnimal(TFCEntities.LION);
     public static final FaunaType<FelinePredator> SABERTOOTH = registerAnimal(TFCEntities.SABERTOOTH);
     public static final FaunaType<FelinePredator> TIGER = registerAnimal(TFCEntities.TIGER);
-    public static final FaunaType<AmphibiousPredator> CROCODILE = registerAnimal(TFCEntities.CROCODILE);
+    public static final FaunaType<AmphibiousPredator> CROCODILE = registerAmphibiousPredator(TFCEntities.CROCODILE);
     public static final FaunaType<PackPredator> WOLF = registerAnimal(TFCEntities.WOLF);
     public static final FaunaType<PackPredator> HYENA = registerAnimal(TFCEntities.HYENA);
     public static final FaunaType<PackPredator> DIREWOLF = registerAnimal(TFCEntities.DIREWOLF);
@@ -168,6 +168,11 @@ public class Faunas
         return register(entity, SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES);
     }
 
+    private static <E extends Mob> FaunaType<E> registerAmphibiousPredator(RegistryObject<EntityType<E>> entity)
+    {
+        return register(entity, SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES);
+    }
+
     private static <E extends Mob> FaunaType<E> register(RegistryObject<EntityType<E>> entity, SpawnPlacements.Type spawnPlacement, Heightmap.Types heightmapType)
     {
         final Supplier<Fauna> fauna = Fauna.MANAGER.register(entity.getId());
@@ -206,7 +211,6 @@ public class Faunas
             {
                 return false;
             }
-
             return fauna.getMaxBrightness() == -1 || level.getRawBrightness(pos, 0) <= fauna.getMaxBrightness();
         }, SpawnPlacementRegisterEvent.Operation.REPLACE);
     }

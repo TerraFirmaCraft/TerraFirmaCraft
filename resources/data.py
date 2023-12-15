@@ -411,7 +411,7 @@ def generate(rm: ResourceManager):
 
     # Entities
     rm.data(('tfc', 'fauna', 'isopod'), fauna(distance_below_sea_level=20, climate=climate_config(max_temp=14)))
-    rm.data(('tfc', 'fauna', 'crayfish'), fauna(distance_below_sea_level=5, climate=climate_config(min_temp=5, min_rain=125)))
+    rm.data(('tfc', 'fauna', 'crayfish'), fauna(distance_below_sea_level=2, climate=climate_config(min_temp=5, min_rain=125)))
     rm.data(('tfc', 'fauna', 'lobster'), fauna(distance_below_sea_level=1, climate=climate_config(max_temp=21)))
     rm.data(('tfc', 'fauna', 'horseshoe_crab'), fauna(distance_below_sea_level=1, climate=climate_config(min_temp=10, max_temp=21, max_rain=400)))
     rm.data(('tfc', 'fauna', 'cod'), fauna(climate=climate_config(max_temp=18), distance_below_sea_level=5))
@@ -421,6 +421,7 @@ def generate(rm: ResourceManager):
     rm.data(('tfc', 'fauna', 'orca'), fauna(distance_below_sea_level=6, climate=climate_config(max_temp=19, min_rain=100), chance=10))
     rm.data(('tfc', 'fauna', 'dolphin'), fauna(distance_below_sea_level=6, climate=climate_config(min_temp=10, min_rain=200), chance=10))
     rm.data(('tfc', 'fauna', 'manatee'), fauna(distance_below_sea_level=3, climate=climate_config(min_temp=20, min_rain=300), chance=10))
+    rm.data(('tfc', 'fauna', 'crocodile'), fauna(climate=climate_config(min_temp=15), distance_below_sea_level=0))
     rm.data(('tfc', 'fauna', 'bluegill'), fauna(climate=climate_config(min_temp=-10, max_temp=26)))
     rm.data(('tfc', 'fauna', 'crappie'), fauna(climate=climate_config(min_temp=-10, max_temp=26)))
     rm.data(('tfc', 'fauna', 'lake_trout'), fauna(climate=climate_config(max_temp=23, min_rain=250)))
@@ -439,7 +440,6 @@ def generate(rm: ResourceManager):
     rm.data(('tfc', 'fauna', 'lion'), fauna(climate=climate_config(max_forest='edge', min_temp=16, min_rain=50, max_rain=300)))
     rm.data(('tfc', 'fauna', 'sabertooth'), fauna(climate=climate_config(max_temp=0, min_rain=250)))
     rm.data(('tfc', 'fauna', 'tiger'), fauna(climate=climate_config(min_temp=13, min_rain=100, min_forest='edge')))
-    rm.data(('tfc', 'fauna', 'crocodile'), fauna(climate=climate_config(min_temp=15)))
     rm.data(('tfc', 'fauna', 'squid'), fauna(distance_below_sea_level=15))
     rm.data(('tfc', 'fauna', 'octopoteuthis'), fauna(max_brightness=0, distance_below_sea_level=33))
     rm.data(('tfc', 'fauna', 'pig'), fauna(climate=climate_config(min_temp=-10, max_temp=35, min_rain=200, min_forest='edge')))
@@ -458,7 +458,7 @@ def generate(rm: ResourceManager):
     rm.data(('tfc', 'fauna', 'boar'), fauna(climate=climate_config(min_rain=130, max_rain=400, min_temp=-5, max_temp=25, max_forest='normal')))
     rm.data(('tfc', 'fauna', 'wildebeest'), fauna(climate=climate_config(min_rain=90, max_rain=380, min_temp=13, max_forest='edge')))
     rm.data(('tfc', 'fauna', 'ocelot'), fauna(climate=climate_config(min_rain=300, max_rain=500, min_temp=15, max_temp=30, min_forest='edge')))
-    rm.data(('tfc', 'fauna', 'caribou'), fauna(climate=climate_config(min_rain=110, max_rain=500, max_temp=-9, min_forest='edge')))
+    rm.data(('tfc', 'fauna', 'caribou'), fauna(climate=climate_config(min_rain=110, max_rain=500, max_temp=-9)))
     rm.data(('tfc', 'fauna', 'deer'), fauna(climate=climate_config(min_rain=160, max_rain=500, min_temp=-12, max_temp=16, min_forest='edge')))
     rm.data(('tfc', 'fauna', 'gazelle'), fauna(climate=climate_config(min_rain=90, max_rain=380, min_temp=12, max_forest='edge')))
     rm.data(('tfc', 'fauna', 'bongo'), fauna(climate=climate_config(min_rain=230, max_rain=500, min_temp=15, min_forest='edge')))
