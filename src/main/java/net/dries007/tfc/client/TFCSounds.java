@@ -92,6 +92,7 @@ public final class TFCSounds
     public static final EntitySound COUGAR = createEntity("cougar", true, true);
     public static final EntitySound SABERTOOTH = createEntity("sabertooth", true, true);
     public static final EntitySound TIGER = createEntity("tiger", true, true);
+    public static final EntitySound CROCODILE = createEntity("crocodile", true, true);
     public static final EntitySound BEAR = createEntity("bear", true, true);
     public static final EntitySound DEER = createEntity("deer", false, false);
     public static final EntitySound BOAR = createEntity("boar", true, false);

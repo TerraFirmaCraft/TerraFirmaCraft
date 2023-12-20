@@ -3,7 +3,7 @@
   "replace": false,
   "values": [
     "tfc:plant/arrowhead",
-    "tfc:plant/badderlocks",
+    "tfc:plant/cordgrass",
     "tfc:plant/cattail",
     "tfc:plant/marigold",
     "tfc:plant/bur_reed",
@@ -21,6 +21,7 @@
     "tfc:plant/red_algae",
     "tfc:plant/reindeer_lichen",
     "tfc:plant/sargassum",
+    "tfc:plant/sea_lavender",
     "tfc:plant/water_canna",
     "tfc:plant/water_lily",
     "tfc:plant/water_taro"

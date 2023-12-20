@@ -11,7 +11,7 @@
           "name": "minecraft:pufferfish",
           "conditions": [
             {
-              "condition": "tfc:not_predated"
+              "condition": "minecraft:killed_by_player"
             }
           ]
         }

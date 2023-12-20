@@ -30,6 +30,8 @@ import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.registry.RegistryPlant;
+
+import org.apache.logging.log4j.core.tools.picocli.CommandLine;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class TallWaterPlantBlock extends TFCTallGrassBlock implements IFluidLoggable
@@ -74,6 +76,10 @@ public abstract class TallWaterPlantBlock extends TFCTallGrassBlock implements I
         BlockState belowState = level.getBlockState(pos.below());
         if (state.getValue(PART) == Part.LOWER)
         {
+            if (Helpers.isBlock(state, TFCTags.Blocks.HALOPHYTE))
+            {
+                return Helpers.isBlock(belowState, TFCTags.Blocks.HALOPHYTE_PLANTABLE_ON);
+            }
             return Helpers.isBlock(belowState, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON);
         }
         else
@@ -86,6 +92,7 @@ public abstract class TallWaterPlantBlock extends TFCTallGrassBlock implements I
         }
     }
 
+    //Used on player placement, not worldgen
     @Override
     @Nullable
     public BlockState getStateForPlacement(BlockPlaceContext context)
@@ -108,6 +115,7 @@ public abstract class TallWaterPlantBlock extends TFCTallGrassBlock implements I
         super.createBlockStateDefinition(builder.add(getFluidProperty()));
     }
 
+    //Used in worldgen, not on player placement
     @Override
     public void placeTwoHalves(LevelAccessor level, BlockPos pos, int flags, RandomSource random)
     {

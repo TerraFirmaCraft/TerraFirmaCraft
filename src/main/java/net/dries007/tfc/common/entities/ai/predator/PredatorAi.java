@@ -12,6 +12,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.Brain;
@@ -29,6 +30,7 @@ import net.dries007.tfc.common.entities.ai.SetLookTarget;
 import net.dries007.tfc.common.entities.ai.TFCBrain;
 import net.dries007.tfc.common.entities.ai.pet.MoveToTargetSinkIfNotSleeping;
 import net.dries007.tfc.common.entities.predator.Predator;
+import net.dries007.tfc.common.entities.prey.RammingPrey;
 import net.dries007.tfc.util.Helpers;
 
 public class PredatorAi
@@ -40,7 +42,7 @@ public class PredatorAi
         MemoryModuleType.BREED_TARGET, MemoryModuleType.NEAREST_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_PLAYER,
         MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER, MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE,
         MemoryModuleType.PATH, MemoryModuleType.ATTACK_TARGET, MemoryModuleType.ATTACK_COOLING_DOWN,
-        MemoryModuleType.PACIFIED, MemoryModuleType.HOME, MemoryModuleType.HUNTED_RECENTLY
+        MemoryModuleType.PACIFIED, MemoryModuleType.HOME, MemoryModuleType.HUNTED_RECENTLY, TFCBrain.WAKEUP_TICKS.get()
     );
 
     public static final int MAX_WANDER_DISTANCE = 100 * 100;
@@ -87,7 +89,8 @@ public class PredatorAi
         brain.addActivity(Activity.CORE, 0, ImmutableList.of(
             new AggressiveSwim(0.8F),
             new LookAtTargetSink(45, 90),
-            new MoveToTargetSinkIfNotSleeping()
+            new MoveToTargetSinkIfNotSleeping(),
+            new CountDownCooldownTicks(TFCBrain.WAKEUP_TICKS.get())
         ));
     }
 
@@ -97,7 +100,6 @@ public class PredatorAi
             PredatorBehaviors.becomePassiveIf(p -> p.getHealth() < 5f, 200),
             StartAttacking.create(PredatorAi::getAttackTarget),
             SetLookTarget.create(8.0F, UniformInt.of(30, 60)),
-            PredatorBehaviors.findNewHome(),
             BabyFollowAdult.create(UniformInt.of(5, 16), 1.25F), // babies follow any random adult around
             createIdleMovementBehaviors(),
             PredatorBehaviors.tickScheduleAndWake()
@@ -116,9 +118,12 @@ public class PredatorAi
     public static void initRestActivity(Brain<? extends Predator> brain)
     {
         brain.addActivity(Activity.REST, 10, ImmutableList.of(
+            StartAttacking.create(PredatorAi::getDisturbedAttackTarget),
+            PredatorBehaviors.findNewHome(),
             StrollToPoi.create(MemoryModuleType.HOME, 1.2F, 5, MAX_WANDER_DISTANCE),
             PredatorBehaviors.startSleeping(),
-            PredatorBehaviors.tickScheduleAndWake()
+            PredatorBehaviors.tickScheduleAndWake(),
+            PredatorBehaviors.wakeFromDisturbance()
         ));
     }
 
@@ -141,6 +146,11 @@ public class PredatorAi
             StrollToPoi.create(MemoryModuleType.HOME, 0.6F, 2, 5),
             StrollAroundPoi.create(MemoryModuleType.HOME, 0.6F, MAX_WANDER_DISTANCE)
         ));
+    }
+
+    public static Optional<? extends LivingEntity> getDisturbedAttackTarget(Predator predator)
+    {
+        return (predator.getBrain().getMemory(TFCBrain.WAKEUP_TICKS.get()).isPresent()) ? getAttackTarget(predator) : Optional.empty();
     }
 
     public static Optional<? extends LivingEntity> getAttackTarget(Predator predator)

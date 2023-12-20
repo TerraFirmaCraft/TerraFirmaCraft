@@ -99,6 +99,7 @@ import net.dries007.tfc.client.model.entity.JellyfishModel;
 import net.dries007.tfc.client.model.entity.LionModel;
 import net.dries007.tfc.client.model.entity.PeafowlModel;
 import net.dries007.tfc.client.model.entity.TigerModel;
+import net.dries007.tfc.client.model.entity.CrocodileModel;
 import net.dries007.tfc.client.model.entity.LobsterModel;
 import net.dries007.tfc.client.model.entity.ManateeModel;
 import net.dries007.tfc.client.model.entity.MooseModel;
@@ -544,6 +545,7 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.LION.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, LionModel::new, "lion").shadow(0.8f).build());
         event.registerEntityRenderer(TFCEntities.SABERTOOTH.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, SabertoothModel::new, "sabertooth").shadow(0.8f).build());
         event.registerEntityRenderer(TFCEntities.TIGER.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, TigerModel::new, "tiger").shadow(0.8f).build());
+        event.registerEntityRenderer(TFCEntities.CROCODILE.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, CrocodileModel::new, "crocodile").shadow(0.8f).build());
         event.registerEntityRenderer(TFCEntities.WOLF.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, TFCWolfModel::new, "wolf").shadow(0.5f).scale(1.1f).build());
         event.registerEntityRenderer(TFCEntities.HYENA.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, HyenaModel::new, "hyena").shadow(0.5f).scale(1.1f).build());
         event.registerEntityRenderer(TFCEntities.DIREWOLF.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, DirewolfModel::new, "direwolf").shadow(0.9f).build());
@@ -649,6 +651,7 @@ public final class ClientEventHandler
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("lion"), LionModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("sabertooth"), SabertoothModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("tiger"), TigerModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("crocodile"), CrocodileModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("wolf"), TFCWolfModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("hyena"), HyenaModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("direwolf"), DirewolfModel::createBodyLayer);

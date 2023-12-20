@@ -62,6 +62,13 @@
     },
     {
       "type": "patchouli:entity",
+      "entity": "tfc:tiger",
+      "scale": 0.55,
+      "name": "Tiger",
+      "text": "The tiger spawns in forests with an average $(l:the_world/climate#temperature)temperature$() of at least 13°C, and $(l:the_world/climate#rainfall)rainfall$() above 100mm."
+    },
+    {
+      "type": "patchouli:entity",
       "entity": "tfc:sabertooth",
       "scale": 0.6,
       "name": "Sabertooth",
@@ -81,25 +88,53 @@
     },
     {
       "type": "patchouli:entity",
+      "entity": "tfc:hyena",
+      "scale": 0.7,
+      "text": "The hyena spawns at any $(l:the_world/climate#temperature)temperature$() warmer than 15°C, and $(l:the_world/climate#rainfall)rainfall$() between 80 and 380mm. They hunt in packs. They are not tamable."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:crocodile",
+      "scale": 0.7,
+      "name": "Crocodile",
+      "text": "The crocodile spawns near rivers, lakes, and marshes at any $(l:the_world/climate#temperature)temperature$() warmer than 15°C, and at any $(l:the_world/climate#rainfall)rainfall$(). They are nocturnal, and most dangerous in the water."
+    },
+    {
+      "type": "patchouli:entity",
       "entity": "tfc:ocelot",
       "scale": 0.7,
       "text": "The ocelot attacks small animals. It spawns at any $(l:the_world/climate#temperature)temperature$() from 15 to 30°C, and $(l:the_world/climate#rainfall)rainfall$() between 300 and 500mm, in forests. Feeding an ocelot enough times will tame it into a $(l:mechanics/pets)Cat$(). Ocelots can eat raw fish"
     },
     {
-      "type": "patchouli:empty"
-    },
-    {
       "type": "patchouli:text",
-      "anchor": "prey",
-      "text": "$(thing)Presa$() Os animais temem jogadores e predadores. Eles são hábeis em fugir do perigo, mas geralmente não podem revidar. Alguns animais de presa gostam de lanches nas colheitas.",
-      "title": "Presa"
+      "anchor": "ramming_prey",
+      "text": "$(thing)Ramming$() animals occasionally attempt to charge nearby creatures, including the player. Their attacks are powerful, but can be dodged. They will ram more frequently if attacked.",
+      "title": "Ramming"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:boar",
       "scale": 0.7,
       "name": "Javali",
-      "text": "Os javalis aparecem em planícies com $(l:the_world/climate#tempertemperaturarature$() abaixo de 25°C e acima de -5°C, e $(l:the_world/climate#rainfall)chuva$() entre 130 e 400 mm."
+      "text": "O cervo aparece em qualquer $(l:the_world/climate#temperature)temperatura$() abaixo de 25°C e acima -15°C, e $(l:the_world/climate#rainfall)chuva$() entre 130 e 400mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:moose",
+      "scale": 0.7,
+      "text": "O alce gera em qualquer $(l:the_world/climate#temperature)temperatura$() abaixo de 10°C e acima -15°C, e $(l:the_world/climate#rainfall)chuva$() entre 150 e 300 mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:wildebeest",
+      "scale": 0.7,
+      "text": "The wildebeest spawns in open plains at any $(l:the_world/climate#temperature)temperature$() above 13°C, and $(l:the_world/climate#rainfall)rainfall$() between 90 and 380mm."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "prey",
+      "text": "$(thing)Presa$() Os animais temem jogadores e predadores. Eles são hábeis em fugir do perigo, mas geralmente não podem revidar. Alguns animais de presa gostam de lanches nas colheitas.",
+      "title": "Presa"
     },
     {
       "type": "patchouli:entity",
@@ -123,9 +158,23 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "tfc:moose",
+      "entity": "tfc:caribou",
+      "scale": 0.6,
+      "name": "Caribou",
+      "text": "The caribou spawns at any $(l:the_world/climate#temperature)temperature$() below -9°C, and $(l:the_world/climate#rainfall)rainfall$() between 110 and 500mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:gazelle",
       "scale": 0.7,
-      "text": "O alce gera em qualquer $(l:the_world/climate#temperature)temperatura$() abaixo de 10°C e acima -15°C, e $(l:the_world/climate#rainfall)chuva$() entre 150 e 300 mm."
+      "text": "The gazelle spawns in open plains at any $(l:the_world/climate#temperature)temperature$() above 12°C, and $(l:the_world/climate#rainfall)rainfall$() between 90 and 380mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:bongo",
+      "scale": 0.9,
+      "name": "Bongo",
+      "text": "The bongo spawns in forests at any $(l:the_world/climate#temperature)temperature$() above 15°C, and $(l:the_world/climate#rainfall)rainfall$() between 230 and 500mm."
     },
     {
       "type": "patchouli:entity",
@@ -144,6 +193,13 @@
       "entity": "tfc:turkey",
       "scale": 0.7,
       "text": "O peru aparece em qualquer $(l:the_world/climate#temperature)temperatura$() abaixo de 17°C e acima de 0°C, e $(l:the_world/climate#rainfall)chuva$() entre 250 e 450mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:peafowl",
+      "scale": 0.8,
+      "name": "Peafowl",
+      "text": "The peafowl spawns in forests at any $(l:the_world/climate#temperature)temperature$() above 14°C, and $(l:the_world/climate#rainfall)rainfall$() between 190 and 500mm."
     },
     {
       "type": "patchouli:empty"

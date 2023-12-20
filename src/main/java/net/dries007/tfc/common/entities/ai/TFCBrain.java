@@ -53,7 +53,7 @@ public class TFCBrain
     public static final RegistryObject<MemoryModuleType<GlobalPos>> SMELLY_POS = registerMemory("smelly_pos", GlobalPos.CODEC);
     public static final RegistryObject<MemoryModuleType<Long>> SIT_TIME = registerMemory("sit_time", Codec.LONG);
     public static final RegistryObject<MemoryModuleType<PackPredator>> ALPHA = registerMemory("alpha");
-
+    public static final RegistryObject<MemoryModuleType<Integer>> WAKEUP_TICKS = registerMemory("wakeup_ticks", Codec.INT);
 
     public static final RegistryObject<Schedule> DIURNAL = registerSchedule("diurnal");
     public static final RegistryObject<Schedule> NOCTURNAL = registerSchedule("nocturnal");
