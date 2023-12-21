@@ -531,6 +531,11 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         return sealedTick;
     }
 
+    public long getRecipeTick()
+    {
+        return recipeTick;
+    }
+
     // Client-side
     public long getRemainingTicks()
     {
