@@ -1367,7 +1367,7 @@ public final class ForgeEventHandler
 
                 words[i] = word;
             }
-            event.setMessage(Component.translatable("<" + event.getUsername() + "> " + String.join(" ", words)));
+            event.setMessage(Component.literal(String.join(" ", words)));
         }
     }
 

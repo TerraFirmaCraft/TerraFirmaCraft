@@ -364,8 +364,8 @@ def generate(rm: ResourceManager):
     # Drinkables
 
     drinkable(rm, 'fresh_water', ['minecraft:water', 'tfc:river_water'], thirst=10)
-    drinkable(rm, 'salt_water', 'tfc:salt_water', thirst=-1, effects=[{'type': 'tfc:thirst', 'duration': 600, 'chance': 0.25}])
-    drinkable(rm, 'alcohol', '#tfc:alcohols', thirst=10, intoxication=4000)
+    drinkable(rm, 'salt_water', 'tfc:salt_water', thirst=-1, effects=[{'type': 'tfc:thirst', 'duration': 600, 'chance': 0.25}], allow_full=True)
+    drinkable(rm, 'alcohol', '#tfc:alcohols', thirst=10, intoxication=4000, allow_full=True)
     drinkable(rm, 'milk', '#tfc:milks', thirst=10, food={'hunger': 0, 'saturation': 0, 'dairy': 1.0})
     drinkable(rm, 'vinegar', 'tfc:vinegar', thirst=10, effects=[{'type': 'minecraft:nausea', 'duration': 40, 'chance': 0.8}])
 
@@ -683,13 +683,14 @@ def dynamic_food_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier,
         'type': handler_type
     })
 
-def drinkable(rm: ResourceManager, name_parts: utils.ResourceIdentifier, fluid: utils.Json, thirst: Optional[int] = None, intoxication: Optional[int] = None, effects: Optional[utils.Json] = None, food: Optional[utils.Json] = None):
+def drinkable(rm: ResourceManager, name_parts: utils.ResourceIdentifier, fluid: utils.Json, thirst: Optional[int] = None, intoxication: Optional[int] = None, effects: Optional[utils.Json] = None, food: Optional[utils.Json] = None, allow_full: bool = None):
     rm.data(('tfc', 'drinkables', name_parts), {
         'ingredient': fluid_ingredient(fluid),
         'thirst': thirst,
         'intoxication': intoxication,
         'effects': effects,
-        'food': food
+        'food': food,
+        'may_drink_when_full': allow_full,
     })
 
 def damage_type(rm: ResourceManager, name_parts: utils.ResourceIdentifier, message_id: str = None, exhaustion: float = 0.0, scaling: str = 'when_caused_by_living_non_player', effects: str = None, message_type: str = None):

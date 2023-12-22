@@ -8,5 +8,6 @@
       "duration": 600,
       "chance": 0.25
     }
-  ]
+  ],
+  "may_drink_when_full": true
 }
