@@ -3,20 +3,7 @@
   "variants": {
     "": [
       {
-        "model": "tfc:block/dirt/silt",
-        "y": 0
-      },
-      {
-        "model": "tfc:block/dirt/silt",
-        "y": 90
-      },
-      {
-        "model": "tfc:block/dirt/silt",
-        "y": 180
-      },
-      {
-        "model": "tfc:block/dirt/silt",
-        "y": 270
+        "model": "tfc:block/dirt/silt"
       }
     ]
   }

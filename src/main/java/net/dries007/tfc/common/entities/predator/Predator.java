@@ -165,11 +165,16 @@ public class Predator extends WildAnimal
     @Override
     public boolean doHurtTarget(Entity target)
     {
+        return this.doHurtTarget(target, 5);
+    }
+
+    public boolean doHurtTarget(Entity target, int pinChance)
+    {
         boolean hurt = super.doHurtTarget(target);
         level().broadcastEntityEvent(this, (byte) 4);
         playSound(getAttackSound(), 1.0f, getVoicePitch());
 
-        if (hurt && target instanceof Player player && random.nextInt(5) == 0 && player.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE) <= 0)
+        if (pinChance > 0 && hurt && target instanceof Player player && random.nextInt(pinChance) == 0 && player.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE) <= 0)
         {
             pinPlayer(player);
         }

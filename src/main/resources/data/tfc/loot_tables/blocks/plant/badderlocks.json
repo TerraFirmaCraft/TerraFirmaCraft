@@ -15,13 +15,6 @@
               "predicate": {
                 "tag": "tfc:sharp_tools"
               }
-            },
-            {
-              "condition": "minecraft:block_state_property",
-              "block": "tfc:plant/badderlocks",
-              "properties": {
-                "part": "lower"
-              }
             }
           ]
         }

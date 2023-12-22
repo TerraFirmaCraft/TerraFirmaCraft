@@ -9,6 +9,11 @@
         {
           "type": "minecraft:item",
           "name": "tfc:food/pheasant",
+          "conditions": [
+            {
+              "condition": "tfc:not_predated"
+            }
+          ],
           "functions": [
             {
               "function": "minecraft:set_count",

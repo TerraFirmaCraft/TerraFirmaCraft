@@ -1,0 +1,78 @@
+{
+	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
+	"textures": {
+		"base": "tfc:block/plant/cordgrass/cordgrass",
+		"overlay": "tfc:block/plant/cordgrass/cordgrass_overlay_blooming",
+		"particle": "tfc:block/plant/cordgrass/cordgrass"
+	},
+	"elements": [
+		{
+			"name": "tinted",
+			"from": [8, -16, -8],
+			"to": [8, 16, 24],
+			"faces": {
+				"east": {
+					"uv": [0, 0, 16, 16],
+					"texture": "#base"
+				},
+				"west": {
+					"uv": [0, 0, 16, 16],
+					"texture": "#base"
+				}
+			},
+			"rotation": {
+				"origin": [8, 8, 8],
+				"axis": "y",
+				"angle": 45
+			}
+		},
+		{
+			"name": "tinted",
+			"from": [8, -16, -8],
+			"to": [8, 16, 24],
+			"faces": {
+				"east": {
+					"uv": [0, 0, 16, 16],
+					"texture": "#base"
+				},
+				"west": {
+					"uv": [0, 0, 16, 16],
+					"texture": "#base"
+				}
+			},
+			"rotation": {
+				"origin": [8, 8, 8],
+				"axis": "y",
+				"angle": -45
+			}
+		},
+		{
+			"name": "tuft",
+			"from": [8, -16, -8],
+			"to": [8, 16, 24],
+			"faces": {
+				"east": {"uv": [0, 0, 16, 16], "texture": "#overlay"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#overlay"}
+			},
+			"rotation": {
+				"origin": [8, 8, 8],
+				"axis": "y",
+				"angle": -45
+			}
+		},
+		{
+			"name": "tuft",
+			"from": [8, -16, -8],
+			"to": [8, 16, 24],
+			"faces": {
+				"east": {"uv": [0, 0, 16, 16], "texture": "#overlay"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#overlay"}
+			},
+			"rotation": {
+				"origin": [8, 8, 8],
+				"axis": "y",
+				"angle": 45
+			}
+		}
+	]
+}

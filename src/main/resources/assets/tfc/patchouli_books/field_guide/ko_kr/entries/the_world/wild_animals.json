@@ -62,6 +62,13 @@
     },
     {
       "type": "patchouli:entity",
+      "entity": "tfc:tiger",
+      "scale": 0.55,
+      "name": "Tiger",
+      "text": "The tiger spawns in forests with an average $(l:the_world/climate#temperature)temperature$() of at least 13°C, and $(l:the_world/climate#rainfall)rainfall$() above 100mm."
+    },
+    {
+      "type": "patchouli:entity",
       "entity": "tfc:sabertooth",
       "scale": 0.6,
       "name": "§l검치호",
@@ -81,25 +88,53 @@
     },
     {
       "type": "patchouli:entity",
+      "entity": "tfc:hyena",
+      "scale": 0.7,
+      "text": "The hyena spawns at any $(l:the_world/climate#temperature)temperature$() warmer than 15°C, and $(l:the_world/climate#rainfall)rainfall$() between 80 and 380mm. They hunt in packs. They are not tamable."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:crocodile",
+      "scale": 0.7,
+      "name": "Crocodile",
+      "text": "The crocodile spawns near rivers, lakes, and marshes at any $(l:the_world/climate#temperature)temperature$() warmer than 15°C, and at any $(l:the_world/climate#rainfall)rainfall$(). They are nocturnal, and most dangerous in the water."
+    },
+    {
+      "type": "patchouli:entity",
       "entity": "tfc:ocelot",
       "scale": 0.7,
       "text": "The ocelot attacks small animals. It spawns at any $(l:the_world/climate#temperature)temperature$() from 15 to 30°C, and $(l:the_world/climate#rainfall)rainfall$() between 300 and 500mm, in forests. Feeding an ocelot enough times will tame it into a $(l:mechanics/pets)Cat$(). Ocelots can eat raw fish"
     },
     {
-      "type": "patchouli:empty"
-    },
-    {
       "type": "patchouli:text",
-      "anchor": "prey",
-      "text": "$(thing)피식자$() 동물들은 플레이어와 포식자 동물들을 두려워합니다. 그들은 위험을 잘 피하지만, 반격하지는 못합니다. 일부 피식자 동물들은 농작물을 먹는 것을 좋아합니다.",
-      "title": "§l피식자"
+      "anchor": "ramming_prey",
+      "text": "$(thing)Ramming$() animals occasionally attempt to charge nearby creatures, including the player. Their attacks are powerful, but can be dodged. They will ram more frequently if attacked.",
+      "title": "Ramming"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:boar",
       "scale": 0.7,
       "name": "Boar",
-      "text": "The boar spawns in plains with $(l:the_world/climate#temperature)temperature$() below 25°C and above -5°C, and $(l:the_world/climate#rainfall)rainfall$() between 130 and 400mm."
+      "text": "The boar spawns at $(l:the_world/climate#temperature)temperature$() below 25°C and above -5°C, and $(l:the_world/climate#rainfall)rainfall$() between 130 and 400mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:moose",
+      "scale": 0.7,
+      "text": "The moose spawns in forests at $(l:the_world/climate#temperature)temperature$() below 10°C and above -15°C, and $(l:the_world/climate#rainfall)rainfall$() between 150 and 300mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:wildebeest",
+      "scale": 0.7,
+      "text": "The wildebeest spawns in open plains at any $(l:the_world/climate#temperature)temperature$() above 13°C, and $(l:the_world/climate#rainfall)rainfall$() between 90 and 380mm."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "prey",
+      "text": "$(thing)피식자$() 동물들은 플레이어와 포식자 동물들을 두려워합니다. 그들은 위험을 잘 피하지만, 반격하지는 못합니다. 일부 피식자 동물들은 농작물을 먹는 것을 좋아합니다.",
+      "title": "§l피식자"
     },
     {
       "type": "patchouli:entity",
@@ -119,13 +154,27 @@
       "type": "patchouli:entity",
       "entity": "tfc:deer",
       "scale": 0.7,
-      "text": "The deer spawns at any $(l:the_world/climate#temperature)temperature$() below 25°C and above -15°C, and $(l:the_world/climate#rainfall)rainfall$() between 130 and 400mm."
+      "text": "The deer spawns in forests at any $(l:the_world/climate#temperature)temperature$() below 25°C and above -15°C, and $(l:the_world/climate#rainfall)rainfall$() between 130 and 400mm."
     },
     {
       "type": "patchouli:entity",
-      "entity": "tfc:moose",
+      "entity": "tfc:caribou",
+      "scale": 0.6,
+      "name": "Caribou",
+      "text": "The caribou spawns at any $(l:the_world/climate#temperature)temperature$() below -9°C, and $(l:the_world/climate#rainfall)rainfall$() between 110 and 500mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:gazelle",
       "scale": 0.7,
-      "text": "The moose spawns at any $(l:the_world/climate#temperature)temperature$() below 10°C and above -15°C, and $(l:the_world/climate#rainfall)rainfall$() between 150 and 300mm."
+      "text": "The gazelle spawns in open plains at any $(l:the_world/climate#temperature)temperature$() above 12°C, and $(l:the_world/climate#rainfall)rainfall$() between 90 and 380mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:bongo",
+      "scale": 0.9,
+      "name": "Bongo",
+      "text": "The bongo spawns in forests at any $(l:the_world/climate#temperature)temperature$() above 15°C, and $(l:the_world/climate#rainfall)rainfall$() between 230 and 500mm."
     },
     {
       "type": "patchouli:entity",
@@ -143,7 +192,14 @@
       "type": "patchouli:entity",
       "entity": "tfc:turkey",
       "scale": 0.7,
-      "text": "The turkey spawns at any $(l:the_world/climate#temperature)temperature$() below 17°C and above 0°C, and $(l:the_world/climate#rainfall)rainfall$() between 250 and 450mm."
+      "text": "The turkey spawns in forests at any $(l:the_world/climate#temperature)temperature$() below 17°C and above 0°C, and $(l:the_world/climate#rainfall)rainfall$() between 250 and 450mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:peafowl",
+      "scale": 0.8,
+      "name": "Peafowl",
+      "text": "The peafowl spawns in forests at any $(l:the_world/climate#temperature)temperature$() above 14°C, and $(l:the_world/climate#rainfall)rainfall$() between 190 and 500mm."
     },
     {
       "type": "patchouli:empty"

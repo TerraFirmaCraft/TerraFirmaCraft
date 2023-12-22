@@ -157,7 +157,7 @@ public abstract class AmphibiousAnimal extends WildAnimal implements Temptable
     @Override
     public boolean canDrownInFluidType(FluidType type)
     {
-        return type != ForgeMod.WATER_TYPE.get();
+        return !canSwimInFluidType(type);
     }
 
 

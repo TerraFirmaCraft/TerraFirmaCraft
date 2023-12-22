@@ -536,6 +536,24 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         return recipeTick;
     }
 
+    // Client-side
+    public long getRemainingTicks()
+    {
+        assert level != null;
+        if (level.isClientSide)
+        {
+            if (recipe == null)
+            {
+                recipe = level.getRecipeManager().getRecipeFor(TFCRecipeTypes.BARREL_SEALED.get(), inventory, level).orElse(null);
+            }
+            if (recipe != null)
+            {
+                return recipe.getDuration() - (Calendars.get(level).getTicks() - recipeTick);
+            }
+        }
+        return 0;
+    }
+
     public static class BarrelInventory implements DelegateItemHandler, DelegateFluidHandler, INBTSerializable<CompoundTag>, EmptyInventory, FluidTankCallback
     {
         private final BarrelInventoryCallback callback;

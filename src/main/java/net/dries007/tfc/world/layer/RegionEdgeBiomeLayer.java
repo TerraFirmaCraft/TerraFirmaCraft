@@ -30,6 +30,10 @@ public enum RegionEdgeBiomeLayer implements AdjacentTransformLayer
             {
                 return OCEANIC_MOUNTAINS;
             }
+            else if (matcher.test(TFCLayers::isOcean) && matcher.test(i -> i ==LOWLANDS))
+            {
+                return SALT_MARSH;
+            }
         }
 
         if (center == PLATEAU || center == BADLANDS || center == INVERTED_BADLANDS)

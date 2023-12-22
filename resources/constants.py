@@ -552,7 +552,8 @@ PLANTS: Dict[str, Plant] = {
     'anthurium': Plant(False, 13.9, 40, 290, 500, 'standard'),
     'arrowhead': Plant(False, -5.7, 22.9, 180, 500, 'emergent_fresh'),
     'houstonia': Plant(False, -7.5, 12.1, 150, 500, 'standard'),
-    'badderlocks': Plant(False, -12.9, 5, 150, 500, 'emergent'),
+    'badderlocks': Plant(False, -12.9, 5, 150, 500, 'submerged_tall'),
+    'cordgrass': Plant(False, -16.4, 22.9, 50, 500, 'emergent'),
     'barrel_cactus': Plant(False, 6.8, 19.3, 0, 85, 'cactus'),
     'blood_lily': Plant(False, 10.4, 19.3, 200, 500, 'standard'),
     'blue_orchid': Plant(False, 12.1, 40, 250, 390, 'standard'),
@@ -615,6 +616,7 @@ PLANTS: Dict[str, Plant] = {
     'saguaro_fruit': Plant(False, -18, 18, 200, 500, 'cactus_fruit', False),
     'sapphire_tower': Plant(False, 12.1, 22.9, 75, 200, 'tall_plant'),
     'sargassum': Plant(False, -5.7, 17.5, 0, 500, 'floating'),
+    'sea_lavender': Plant(False, -5.7, 13.9, 300, 450, 'emergent'),
     'sea_palm': Plant(False, -18, 20, 10, 450, 'dry', False),
     'guzmania': Plant(False, 21.1, 40, 290, 480, 'epiphyte'),
     'silver_spurflower': Plant(False, 15.7, 24.6, 230, 400, 'standard'),
@@ -875,9 +877,10 @@ MISC_FOODS = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_p
 MEATS = ('beef', 'pork', 'chicken', 'quail', 'mutton', 'bear', 'horse_meat', 'pheasant', 'turkey', 'peafowl', 'grouse', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'tropical_fish', 'turtle', 'calamari', 'shellfish', *SIMPLE_FRESHWATER_FISH, 'frog_legs')
 NUTRIENTS = ('grain', 'fruit', 'vegetables', 'protein', 'dairy')
 
-SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'manatee', 'penguin', 'frog', 'turtle', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail', 'rabbit', 'fox', 'boar', 'donkey', 'mule', 'horse', 'deer', 'moose', 'boar', 'rat', 'cat', 'dog', 'wolf', 'panda', 'grouse', 'pheasant', 'turkey', 'ocelot', 'direwolf', 'hyena', 'tiger', 'bongo', 'caribou', 'gazelle', 'wildebeest', 'peafowl', *SIMPLE_FRESHWATER_FISH)
+SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'manatee', 'penguin', 'frog', 'turtle', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail', 'rabbit', 'fox', 'boar', 'donkey', 'mule', 'horse', 'deer', 'moose', 'boar', 'rat', 'cat', 'dog', 'wolf', 'panda', 'grouse', 'pheasant', 'turkey', 'ocelot', 'direwolf', 'hyena', 'tiger', 'crocodile', 'bongo', 'caribou', 'gazelle', 'wildebeest', 'peafowl', *SIMPLE_FRESHWATER_FISH)
 BUCKETABLE_FISH = ('cod', 'pufferfish', 'tropical_fish', 'jellyfish', *SIMPLE_FRESHWATER_FISH)
-LAND_PREDATORS = ('polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'wolf', 'direwolf', 'ocelot', 'tiger', 'hyena')
+LAND_PREDATORS = ('polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'wolf', 'direwolf', 'ocelot', 'tiger', 'hyena', 'crocodile')
+AMPHIBIOUS_PREDATORS = 'crocodile'
 OCEAN_PREDATORS = ('dolphin', 'orca')
 OCEAN_PREY = ('isopod', 'lobster', 'crayfish', 'cod', 'tropical_fish', 'horseshoe_crab', *SIMPLE_FRESHWATER_FISH)
 LIVESTOCK = ('pig', 'cow', 'goat', 'yak', 'alpaca', 'sheep', 'musk_ox', 'chicken', 'duck', 'quail', 'horse', 'mule', 'donkey')
@@ -895,6 +898,12 @@ def spawner(entity: str, weight: int = 1, min_count: int = 1, max_count: int = 4
         'maxCount': max_count
     }
 
+SALT_MARSH_AMBIENT: Dict[str, Dict[str, Any]] = {
+    'isopod': spawner('tfc:isopod'),
+    'lobster': spawner('tfc:lobster'),
+    'horseshoe_crab': spawner('tfc:horseshoe_crab'),
+    'salmon': spawner('tfc:salmon')
+}
 
 OCEAN_AMBIENT: Dict[str, Dict[str, Any]] = {
     'isopod': spawner('tfc:isopod'),
@@ -935,6 +944,7 @@ SHORE_CREATURES: Dict[str, Dict[str, Any]] = {
 }
 
 LAND_CREATURES: Dict[str, Dict[str, Any]] = {
+    'crocodile': spawner('tfc:crocodile', min_count=1, max_count=1, weight=20),
     'pig': spawner('tfc:pig', min_count=1, max_count=4),
     'cow': spawner('tfc:cow', min_count=1, max_count=4),
     'goat': spawner('tfc:goat', min_count=1, max_count=4),
@@ -1118,6 +1128,11 @@ DEFAULT_LANG = {
     'subtitles.entity.tfc.tiger.ambient': 'Tiger chuffs',
     'subtitles.entity.tfc.tiger.hurt': 'Tiger yowls',
     'subtitles.entity.tfc.tiger.sleep': 'Tiger snores',
+    'subtitles.entity.tfc.crocodile.death': 'Crocodile dies',
+    'subtitles.entity.tfc.crocodile.attack': 'Crocodile roars',
+    'subtitles.entity.tfc.crocodile.ambient': 'Crocodile snorts',
+    'subtitles.entity.tfc.crocodile.hurt': 'Crocodile roars',
+    'subtitles.entity.tfc.crocodile.sleep': 'Crocodile snores',
     'subtitles.entity.tfc.bongo.death': 'Bongo dies',
     'subtitles.entity.tfc.bongo.ambient': 'Bongo brays',
     'subtitles.entity.tfc.bongo.hurt': 'Bongo yelps',
@@ -1543,6 +1558,7 @@ DEFAULT_LANG = {
     'entity.tfc.lion': 'Lion',
     'entity.tfc.sabertooth': 'Sabertooth',
     'entity.tfc.tiger': 'Tiger',
+    'entity.tfc.crocodile': 'Crocodile',
     'entity.tfc.falling_block': 'Falling Block',
     'entity.tfc.fishing_bobber': 'Fishing Bobber',
     'entity.tfc.chest_minecart': 'Chest Minecart',

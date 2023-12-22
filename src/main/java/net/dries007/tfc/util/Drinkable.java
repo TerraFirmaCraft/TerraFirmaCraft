@@ -83,7 +83,7 @@ public class Drinkable extends FluidDefinition
             if (playerData.map(p -> p.getLastDrinkTick() + 10 < Calendars.get(level).getTicks()).orElse(false))
             {
                 final Drinkable drinkable = get(fluid);
-                if (drinkable != null && (thirst < TFCFoodData.MAX_THIRST || drinkable.getThirst() == 0))
+                if (drinkable != null && (thirst < TFCFoodData.MAX_THIRST || drinkable.getThirst() == 0 || drinkable.mayDrinkWhenFull))
                 {
                     if (!level.isClientSide && doDrink)
                     {
@@ -123,6 +123,7 @@ public class Drinkable extends FluidDefinition
     private final int thirst;
     private final int intoxication;
     private final List<Effect> effects;
+    private final boolean mayDrinkWhenFull;
     @Nullable private final FoodData food;
 
     private Drinkable(ResourceLocation id, JsonObject json)
@@ -132,6 +133,7 @@ public class Drinkable extends FluidDefinition
         this.consumeChance = JsonHelpers.getAsFloat(json, "consume_chance", 0);
         this.thirst = JsonHelpers.getAsInt(json, "thirst", 0);
         this.intoxication = JsonHelpers.getAsInt(json, "intoxication", 0);
+        this.mayDrinkWhenFull = JsonHelpers.getAsBoolean(json, "may_drink_when_full", false);
         this.food = json.has("food") ? FoodData.read(json.getAsJsonObject("food")) : null;
 
         final ImmutableList.Builder<Effect> builder = new ImmutableList.Builder<>();
@@ -159,6 +161,7 @@ public class Drinkable extends FluidDefinition
         this.consumeChance = buffer.readFloat();
         this.thirst = buffer.readVarInt();
         this.intoxication = buffer.readVarInt();
+        this.mayDrinkWhenFull = buffer.readBoolean();
         this.food = Helpers.decodeNullable(buffer, FoodData::decode);
 
         this.effects = Helpers.decodeAll(buffer, new ArrayList<>(), Effect::fromNetwork);
@@ -218,6 +221,11 @@ public class Drinkable extends FluidDefinition
         return intoxication;
     }
 
+    public boolean mayDrinkWhenFull()
+    {
+        return mayDrinkWhenFull;
+    }
+
     @Nullable
     public FoodData getFoodStats()
     {
@@ -236,6 +244,7 @@ public class Drinkable extends FluidDefinition
         buffer.writeFloat(consumeChance);
         buffer.writeVarInt(thirst);
         buffer.writeVarInt(intoxication);
+        buffer.writeBoolean(mayDrinkWhenFull);
         Helpers.encodeNullable(food, buffer, FoodData::encode);
 
         Helpers.encodeAll(buffer, effects, Effect::toNetwork);

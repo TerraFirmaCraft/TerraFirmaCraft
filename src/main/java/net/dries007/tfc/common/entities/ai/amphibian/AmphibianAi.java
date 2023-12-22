@@ -101,9 +101,8 @@ public class AmphibianAi
                     Pair.of(RandomStroll.swim(0.5F), 2),
                     Pair.of(RandomStroll.stroll(0.15F, false), 2),
                     Pair.of(SetWalkTargetFromLookTarget.create(AmphibianAi::canSetWalkTargetFromLookTarget, AmphibianAi::getSpeedModifier, 3), 3),
-                    Pair.of(new DoNothing(30, 60), 3)
-                    //This behavior seems to be broken, disabling it for now
-                    //Pair.of(StrollToPoi.create(MemoryModuleType.HOME, 0.15F, 5, 100), 3)
+                    Pair.of(new DoNothing(30, 60), 3),
+                    Pair.of(StrollToPoi.create(MemoryModuleType.HOME, 0.5f, 5, 100), 3)
                 )
             ))
         ));

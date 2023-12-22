@@ -3,6 +3,7 @@
   "replace": false,
   "values": [
     "tfc:penguin",
-    "tfc:polar_bear"
+    "tfc:polar_bear",
+    "tfc:caribou"
   ]
 }

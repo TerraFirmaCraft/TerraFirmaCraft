@@ -21,6 +21,7 @@ public class TFCBlockPredicates
     public static final RegistryObject<BlockPredicateType<AirOrEmptyFluidPredicate>> AIR_OR_EMPTY_FLUID = register("air_or_empty_fluid", () -> AirOrEmptyFluidPredicate.CODEC);
     public static final RegistryObject<BlockPredicateType<WouldSurviveWithFluidPredicate>> WOULD_SURVIVE_WITH_FLUID = register("would_survive_with_fluid", () -> WouldSurviveWithFluidPredicate.CODEC);
     public static final RegistryObject<BlockPredicateType<ReplaceablePredicate>> REPLACEABLE = register("replaceable", () -> ReplaceablePredicate.CODEC);
+    public static final RegistryObject<BlockPredicateType<DryReplaceablePredicate>> DRY_REPLACEABLE = register("dry_replaceable", () -> DryReplaceablePredicate.CODEC);
 
     private static <T extends BlockPredicate> RegistryObject<BlockPredicateType<T>> register(String name, BlockPredicateType<T> codec)
     {

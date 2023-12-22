@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:emergent_plant",
+  "type": "tfc:submerged_tall_plant",
   "config": {
     "block": "tfc:plant/badderlocks"
   }

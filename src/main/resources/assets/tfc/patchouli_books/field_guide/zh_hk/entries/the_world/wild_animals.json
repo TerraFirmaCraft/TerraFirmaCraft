@@ -62,6 +62,13 @@
     },
     {
       "type": "patchouli:entity",
+      "entity": "tfc:tiger",
+      "scale": 0.55,
+      "name": "Tiger",
+      "text": "The tiger spawns in forests with an average $(l:the_world/climate#temperature)temperature$() of at least 13°C, and $(l:the_world/climate#rainfall)rainfall$() above 100mm."
+    },
+    {
+      "type": "patchouli:entity",
       "entity": "tfc:sabertooth",
       "scale": 0.6,
       "name": "劍齒虎",
@@ -81,25 +88,53 @@
     },
     {
       "type": "patchouli:entity",
+      "entity": "tfc:hyena",
+      "scale": 0.7,
+      "text": "The hyena spawns at any $(l:the_world/climate#temperature)temperature$() warmer than 15°C, and $(l:the_world/climate#rainfall)rainfall$() between 80 and 380mm. They hunt in packs. They are not tamable."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:crocodile",
+      "scale": 0.7,
+      "name": "Crocodile",
+      "text": "The crocodile spawns near rivers, lakes, and marshes at any $(l:the_world/climate#temperature)temperature$() warmer than 15°C, and at any $(l:the_world/climate#rainfall)rainfall$(). They are nocturnal, and most dangerous in the water."
+    },
+    {
+      "type": "patchouli:entity",
       "entity": "tfc:ocelot",
       "scale": 0.7,
       "text": "The ocelot attacks small animals. It spawns at any $(l:the_world/climate#temperature)temperature$() from 15 to 30°C, and $(l:the_world/climate#rainfall)rainfall$() between 300 and 500mm, in forests. Feeding an ocelot enough times will tame it into a $(l:mechanics/pets)Cat$(). Ocelots can eat raw fish"
     },
     {
-      "type": "patchouli:empty"
-    },
-    {
       "type": "patchouli:text",
-      "anchor": "prey",
-      "text": "$(thing)獵物$()害怕玩家和捕食者。他們擅長逃離危險，但通常無法反擊。一些獵物喜歡偷吃農作物。",
-      "title": "獵物"
+      "anchor": "ramming_prey",
+      "text": "$(thing)Ramming$() animals occasionally attempt to charge nearby creatures, including the player. Their attacks are powerful, but can be dodged. They will ram more frequently if attacked.",
+      "title": "Ramming"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:boar",
       "scale": 0.7,
       "name": "野豬",
-      "text": "野豬生活在$(l:the_world/climate#temperature)温度$()不高於 25°C，$(l:the_world/climate#rainfall)降雨量$()在 130 到 400mm 的平原上。"
+      "text": "野豬生活在$(l:the_world/climate#temperature)温度$()不高於 25°C，且$(l:the_world/climate#rainfall)降雨量$()在 130 到 400mm 的平原上。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:moose",
+      "scale": 0.7,
+      "text": "麋鹿生活在$(l:the_world/climate#temperature)温度$()在 -15 到 10°C 之間，且$(l:the_world/climate#rainfall)降雨量$()在 150 到 300mm 的任何氣候中。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:wildebeest",
+      "scale": 0.7,
+      "text": "The wildebeest spawns in open plains at any $(l:the_world/climate#temperature)temperature$() above 13°C, and $(l:the_world/climate#rainfall)rainfall$() between 90 and 380mm."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "prey",
+      "text": "$(thing)獵物$()害怕玩家和捕食者。他們擅長逃離危險，但通常無法反擊。一些獵物喜歡偷吃農作物。",
+      "title": "獵物"
     },
     {
       "type": "patchouli:entity",
@@ -123,9 +158,23 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "tfc:moose",
+      "entity": "tfc:caribou",
+      "scale": 0.6,
+      "name": "Caribou",
+      "text": "The caribou spawns at any $(l:the_world/climate#temperature)temperature$() below -9°C, and $(l:the_world/climate#rainfall)rainfall$() between 110 and 500mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:gazelle",
       "scale": 0.7,
-      "text": "麋鹿生活在$(l:the_world/climate#temperature)温度$()在 -15 到 10°C 之間，且$(l:the_world/climate#rainfall)降雨量$()在 150 到 300mm 的任何氣候中。"
+      "text": "The gazelle spawns in open plains at any $(l:the_world/climate#temperature)temperature$() above 12°C, and $(l:the_world/climate#rainfall)rainfall$() between 90 and 380mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:bongo",
+      "scale": 0.9,
+      "name": "Bongo",
+      "text": "The bongo spawns in forests at any $(l:the_world/climate#temperature)temperature$() above 15°C, and $(l:the_world/climate#rainfall)rainfall$() between 230 and 500mm."
     },
     {
       "type": "patchouli:entity",
@@ -144,6 +193,13 @@
       "entity": "tfc:turkey",
       "scale": 0.7,
       "text": "火雞生活在$(l:the_world/climate#temperature)温度$()在 0 到 17°C 之間，且$(l:the_world/climate#rainfall)降雨量$()在 250 到 450mm 的任何氣候中。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:peafowl",
+      "scale": 0.8,
+      "name": "Peafowl",
+      "text": "The peafowl spawns in forests at any $(l:the_world/climate#temperature)temperature$() above 14°C, and $(l:the_world/climate#rainfall)rainfall$() between 190 and 500mm."
     },
     {
       "type": "patchouli:empty"

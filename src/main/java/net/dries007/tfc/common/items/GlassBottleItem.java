@@ -99,7 +99,7 @@ public class GlassBottleItem extends FluidContainerItem
         final Drinkable drinkable = Drinkable.get(handler.getFluidInTank(0).getFluid());
         if (drinkable != null)
         {
-            if (player.getFoodData() instanceof TFCFoodData food && food.getThirst() >= TFCFoodData.MAX_THIRST)
+            if (!drinkable.mayDrinkWhenFull() && player.getFoodData() instanceof TFCFoodData food && food.getThirst() >= TFCFoodData.MAX_THIRST)
             {
                 return InteractionResultHolder.fail(stack);
             }
