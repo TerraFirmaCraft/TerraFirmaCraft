@@ -1,7 +1,8 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "block/cube_all",
+  "parent": "tfc:block/sewing_table",
   "textures": {
-    "all": "tfc:block/wood/planks/palm"
+    "0": "tfc:block/wood/log/palm",
+    "1": "tfc:block/wood/planks/palm"
   }
 }

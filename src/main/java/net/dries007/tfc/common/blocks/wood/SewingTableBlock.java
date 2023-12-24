@@ -10,12 +10,16 @@ import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blocks.ExtendedProperties;
@@ -24,6 +28,11 @@ import net.dries007.tfc.common.container.SewingTableContainer;
 
 public class SewingTableBlock extends HorizontalDirectionalBlock implements IForgeBlockExtension
 {
+    public static final VoxelShape SHAPE = Shapes.or(
+        box(2, 0, 2, 14, 14, 14),
+        box(0, 14, 0, 16, 16, 16)
+    );
+
     private static final Component CONTAINER_TITLE = Component.translatable("tfc.screen.sewing_table");
 
     private final ExtendedProperties properties;
@@ -33,6 +42,13 @@ public class SewingTableBlock extends HorizontalDirectionalBlock implements IFor
         super(properties.properties());
         registerDefaultState(getStateDefinition().any().setValue(FACING, Direction.NORTH));
         this.properties = properties;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    {
+        return SHAPE;
     }
 
     @Override
