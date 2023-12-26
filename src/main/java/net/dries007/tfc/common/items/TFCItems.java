@@ -196,7 +196,7 @@ public final class TFCItems
     public static final RegistryObject<Item> EMPTY_JAR_WITH_LID = register("empty_jar_with_lid", () -> new JarItem(new Item.Properties(), Helpers.identifier("block/jar"), false));
     public static final RegistryObject<Item> JAR_LID = register("jar_lid", () -> new Item(new Item.Properties()));
 
-    public static final RegistryObject<Item> BONE_NEEDLE = register("bone_needle");
+    public static final RegistryObject<Item> BONE_NEEDLE = register("bone_needle", () -> new Item(new Item.Properties().defaultDurability(64)));
     public static final RegistryObject<Item> BLANK_DISC = register("blank_disc");
     public static final RegistryObject<Item> BLUBBER = register("blubber");
     public static final RegistryObject<Item> BRASS_MECHANISMS = register("brass_mechanisms");

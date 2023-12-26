@@ -255,6 +255,7 @@ def generate(rm: ResourceManager):
     rm.crafting_shaped('crafting/white_kaolin_clay', ['XX', 'XX'], {'X': 'tfc:kaolin_clay'}, 'tfc:white_kaolin_clay').with_advancement('tfc:kaolin_clay')
     rm.crafting_shapeless('crafting/pink_kaolin_clay', ('tfc:white_kaolin_clay', 'tfc:powder/hematite'), 'tfc:pink_kaolin_clay').with_advancement('tfc:white_kaolin_clay')
     rm.crafting_shapeless('crafting/red_kaolin_clay', ('tfc:pink_kaolin_clay', 'tfc:powder/hematite'), 'tfc:red_kaolin_clay').with_advancement('tfc:pink_kaolin_clay')
+    damage_shapeless(rm, 'crafting/bone_needle', ('#tfc:knives', 'minecraft:bone'), 'tfc:bone_needle').with_advancement('minecraft:bone')
 
     rm.crafting_shapeless('crafting/silica_glass_batch', ('#tfc:silica_sand', '#tfc:silica_sand', '#tfc:silica_sand', '#tfc:silica_sand', '#tfc:glassworking_potash', 'tfc:powder/lime'), '4 tfc:silica_glass_batch')
     rm.crafting_shapeless('crafting/hematitic_glass_batch', ('#tfc:hematitic_sand', '#tfc:hematitic_sand', '#tfc:hematitic_sand', '#tfc:hematitic_sand', '#tfc:glassworking_potash', 'tfc:powder/lime'), '4 tfc:hematitic_glass_batch')
@@ -559,6 +560,8 @@ def generate(rm: ResourceManager):
 
     for name in DISABLED_VANILLA_RECIPES:
         disable_recipe(rm, 'minecraft:' + name)
+    for name in VANILLA_TRIMS:
+        disable_recipe(rm, 'minecraft:%s_armor_trim_smithing_template' % name)
     for section in ARMOR_SECTIONS:
         for variant in VANILLA_ARMOR_TYPES:
             disable_recipe(rm, 'minecraft:%s_%s' % (variant, section))
@@ -939,6 +942,20 @@ def generate(rm: ResourceManager):
         glass_recipe(rm, 'blue_' + name, ['copper', op], 'tfc:silica_glass_batch', result % 'blue')
         glass_recipe(rm, 'blue_' + name + '_default', [op], 'tfc:volcanic_glass_batch',  result % 'blue')
     glass_recipe(rm, 'tinted_glass_block', ['amethyst', 'basin_pour'], '#tfc:glass_batches_not_tier_1', 'minecraft:tinted_glass')
+
+    # Sewing Recipes
+    sewing_recipe(rm, 'flower_banner_pattern', [
+        0, 0, 1, 1, 1, 1, 1, 0, 0,
+        0, 0, 1, 0, 0, 0, 1, 0, 0,
+        0, 0, 1, 0, 0, 0, 1, 0, 0,
+        0, 0, 1, 0, 0, 0, 1, 0, 0,
+        0, 0, 1, 1, 1, 1, 1, 0, 0,
+    ], [
+        0, 0, 1, 1, 1, 1, 0, 0,
+        0, 0, 1, 0, 0, 1, 0, 0,
+        0, 0, 1, 0, 0, 1, 0, 0,
+        0, 0, 1, 1, 1, 1, 0, 0,
+    ], 'minecraft:flower_banner_pattern')
 
     # Anvil Working Recipes
     metal = '?'
@@ -1365,6 +1382,13 @@ def glass_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, step
     rm.recipe(('glassworking', name_parts), 'tfc:glassworking', {
         'operations': steps,
         'batch': utils.ingredient(batch),
+        'result': utils.item_stack(result)
+    })
+
+def sewing_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, stitches: List[int], squares: List[int], result: str):
+    rm.recipe(('sewing', name_parts), 'tfc:sewing', {
+        'stitches': stitches,
+        'squares': squares,
         'result': utils.item_stack(result)
     })
 

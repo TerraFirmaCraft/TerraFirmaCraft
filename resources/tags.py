@@ -60,6 +60,9 @@ def generate(rm: ResourceManager):
     rm.item_tag('compost_poisons', '#tfc:foods/meats', 'minecraft:bone')
     rm.item_tag('scribing_ink', 'minecraft:black_dye')
     rm.item_tag('powders', 'minecraft:gunpowder', 'minecraft:redstone', 'minecraft:glowstone_dust', 'minecraft:blaze_powder', 'minecraft:sugar')
+    rm.item_tag('sewing_light_cloth', 'tfc:wool_cloth', 'tfc:silk_cloth')
+    rm.item_tag('sewing_dark_cloth', 'tfc:burlap_cloth')
+    rm.item_tag('sewing_needles', 'tfc:bone_needle')
 
     # TFC Tags: Functionality
 

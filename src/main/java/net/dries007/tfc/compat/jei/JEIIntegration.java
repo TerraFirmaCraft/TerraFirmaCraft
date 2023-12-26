@@ -74,6 +74,7 @@ public final class JEIIntegration implements IModPlugin
     public static final RecipeType<ChiselRecipe> CHISEL = type("chisel", ChiselRecipe.class);
     public static final RecipeType<GlassworkingRecipe> GLASSWORKING = type("glassworking", GlassworkingRecipe.class);
     public static final RecipeType<BlastFurnaceRecipe> BLAST_FURNACE = type("blast_furnace", BlastFurnaceRecipe.class);
+    public static final RecipeType<SewingRecipe> SEWING = type("sewing", SewingRecipe.class);
 
     private static final Map<ResourceLocation, RecipeType<KnappingRecipe>> KNAPPING_TYPES = new HashMap<>();
 
@@ -136,7 +137,8 @@ public final class JEIIntegration implements IModPlugin
             new AnvilRecipeCategory(ANVIL, gui),
             new ChiselRecipeCategory(CHISEL, gui),
             new GlassworkingRecipeCategory(GLASSWORKING, gui),
-            new BlastFurnaceRecipeCategory(BLAST_FURNACE, gui)
+            new BlastFurnaceRecipeCategory(BLAST_FURNACE, gui),
+            new SewingRecipeCategory(SEWING, gui)
         );
 
         for (KnappingType knappingType : KnappingType.MANAGER.getValues())
@@ -167,6 +169,7 @@ public final class JEIIntegration implements IModPlugin
         registry.addRecipes(CHISEL, recipes(TFCRecipeTypes.CHISEL.get()));
         registry.addRecipes(GLASSWORKING, recipes(TFCRecipeTypes.GLASSWORKING.get()));
         registry.addRecipes(BLAST_FURNACE, recipes(TFCRecipeTypes.BLAST_FURNACE.get()));
+        registry.addRecipes(SEWING, recipes(TFCRecipeTypes.SEWING.get()));
 
         KNAPPING_TYPES.forEach((id, type) -> registry.addRecipes(type, recipes(TFCRecipeTypes.KNAPPING.get(), r -> r.getKnappingType().getId().toString().replace("_knapping", "").equals(id.toString()))));
     }
@@ -186,6 +189,10 @@ public final class JEIIntegration implements IModPlugin
         registry.addRecipeCatalyst(new ItemStack(TFCItems.VESSEL.get()), ALLOYING);
         registry.addRecipeCatalyst(new ItemStack(TFCBlocks.BLOOMERY.get()), BLOOMERY);
         registry.addRecipeCatalyst(new ItemStack(TFCBlocks.BLAST_FURNACE.get()), BLAST_FURNACE);
+        addRecipeCatalyst(registry, TFCTags.Items.SEWING_NEEDLES, SEWING);
+        addRecipeCatalyst(registry, TFCTags.Items.SEWING_DARK_CLOTH, SEWING);
+        addRecipeCatalyst(registry, TFCTags.Items.SEWING_LIGHT_CLOTH, SEWING);
+        addRecipeCatalyst(registry, Wood.BlockType.SEWING_TABLE, SEWING);
         addRecipeCatalyst(registry, TFCTags.Items.ALL_BLOWPIPES, GLASSWORKING);
         addRecipeCatalyst(registry, TFCTags.Items.TUYERES, BLAST_FURNACE);
 
