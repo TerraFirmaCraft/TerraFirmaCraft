@@ -48,7 +48,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('waxes_scraping_surface', 'tfc:glue', 'minecraft:honeycomb')
     rm.item_tag('scrapable', *['tfc:%s_%s_hide' % (size, hide) for size in ('small', 'medium', 'large') for hide in ('soaked', 'sheepskin')], 'tfc:unrefined_paper')
     rm.item_tag('glassworking_tools', 'tfc:paddle', 'tfc:jacks', 'tfc:gem_saw')
-    rm.item_tag('usable_on_tool_rack', 'tfc:firestarter', 'minecraft:bow', 'minecraft:crossbow', 'minecraft:flint_and_steel', 'minecraft:spyglass', 'minecraft:brush', 'tfc:spindle', '#tfc:all_blowpipes', '#tfc:glassworking_tools')
+    rm.item_tag('usable_on_tool_rack', 'tfc:firestarter', 'minecraft:bow', 'minecraft:crossbow', 'minecraft:flint_and_steel', 'minecraft:spyglass', 'minecraft:brush', 'tfc:spindle', '#tfc:all_blowpipes', '#tfc:glassworking_tools', 'tfc:bone_needle')
     rm.item_tag('usable_in_powder_keg', 'minecraft:gunpowder')
     rm.item_tag('usable_in_bookshelf', '#tfc:books')
     rm.item_tag('compost_greens_low', '#tfc:plants')

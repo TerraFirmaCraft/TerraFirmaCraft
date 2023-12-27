@@ -9,6 +9,7 @@ package net.dries007.tfc.common.container;
 import java.util.List;
 import java.util.function.Predicate;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -52,6 +53,11 @@ public class SewingTableContainer extends Container implements ISlotCallback, Bu
         return Helpers.isItem(item, Tags.Items.STRING);
     }
 
+    private static boolean isNeedle(ItemStack item)
+    {
+        return Helpers.isItem(item, TFCTags.Items.SEWING_NEEDLES);
+    }
+
     public static final int NUM_SLOTS = 5;
     public static final int SLOT_YARN = 0;
     public static final int SLOT_TOOL = 1;
@@ -63,6 +69,7 @@ public class SewingTableContainer extends Container implements ISlotCallback, Bu
     public static final int REMOVE_ID = 2;
     public static final int NEEDLE_ID = 3;
     public static final int PLACE_STITCH_ID = 4;
+    public static final int RECIPE_ID = 5;
     public static final int SQUARES_PER_CLOTH = 8;
     public static final int STITCHES_PER_YARN = 16;
 
@@ -129,14 +136,14 @@ public class SewingTableContainer extends Container implements ISlotCallback, Bu
     public void updateResultItem()
     {
         access.execute((level, pos) -> {
-            level.getRecipeManager().getRecipeFor(TFCRecipeTypes.SEWING.get(), recipeWrapper, level).ifPresent(recipe -> {
+            level.getRecipeManager().getRecipeFor(TFCRecipeTypes.SEWING.get(), recipeWrapper, level).ifPresentOrElse(recipe -> {
                 final ItemStack result = recipe.getResultItem(level.registryAccess());
                 if (result.getItem() != inventory.getStackInSlot(SLOT_RESULT).getItem())
                 {
                     inventory.setStackInSlot(SLOT_RESULT, result);
                     activeMaterialData.set(-1);
                 }
-            });
+            }, () -> inventory.setStackInSlot(SLOT_RESULT, ItemStack.EMPTY));
         });
     }
 
@@ -149,17 +156,13 @@ public class SewingTableContainer extends Container implements ISlotCallback, Bu
         }
         if (slot == SLOT_TOOL)
         {
-            return Helpers.isItem(stack, TFCTags.Items.SEWING_NEEDLES);
+            return isNeedle(stack);
         }
         if (slot == SLOT_INPUT_1 || slot == SLOT_INPUT_2)
         {
-            return !isString(stack) && !Helpers.isItem(stack, TFCTags.Items.SEWING_NEEDLES);
+            return !isString(stack) && !isNeedle(stack);
         }
-        if (slot == SLOT_RESULT)
-        {
-            return false;
-        }
-        return true;
+        return slot != SLOT_RESULT;
     }
 
     @Override
@@ -220,21 +223,28 @@ public class SewingTableContainer extends Container implements ISlotCallback, Bu
                 if (getBurlapCount() <= 0)
                     return;
                 usedBurlap.set(usedBurlap.get() + 1);
+                access.execute((level, pos) -> Helpers.playSound(level, pos, SoundEvents.WOOL_PLACE));
             }
             else if (activeMaterial == WOOL_ID)
             {
                 if (getWoolCount() <= 0)
                     return;
                 usedWool.set(usedWool.get() + 1);
+                access.execute((level, pos) -> Helpers.playSound(level, pos, SoundEvents.WOOL_PLACE));
+            }
+            else
+            {
+                access.execute((level, pos) -> Helpers.playSound(level, pos, SoundEvents.WOOL_BREAK));
             }
             placedMaterialData.set(buttonID - PLACED_SLOTS_OFFSET, activeMaterial == REMOVE_ID ? -1 : activeMaterial);
         }
-        else if (buttonID == PLACE_STITCH_ID && extraNBT != null)
+        else if (buttonID == PLACE_STITCH_ID && extraNBT != null && !inventory.getStackInSlot(SLOT_TOOL).isEmpty())
         {
             if (getYarnCount() <= 0)
                 return;
             usedString.set(usedString.get() + 1);
             stitchData.set(extraNBT.getInt("id"), extraNBT.getInt("stitchType"));
+            access.execute((level, pos) -> Helpers.playSound(level, pos, SoundEvents.WOOL_HIT));
         }
         activeMaterialData.set(activeMaterial);
         updateResultItem();
@@ -281,6 +291,7 @@ public class SewingTableContainer extends Container implements ISlotCallback, Bu
             for (int i = 0; i < MAX_STITCHES; i++)
                 stitchData.set(i, 0);
             Helpers.damageItem(inventory.getStackInSlot(SLOT_TOOL), 1);
+            access.execute((level, pos) -> Helpers.playSound(level, pos, SoundEvents.UI_LOOM_TAKE_RESULT));
         }
     }
 
@@ -327,6 +338,8 @@ public class SewingTableContainer extends Container implements ISlotCallback, Bu
             return false;
         if (isString(item) && usedString.get() > 0)
             return false;
+        if (isNeedle(item) && usedString.get() > 0)
+            return false;
         return true;
     }
 
@@ -345,7 +358,7 @@ public class SewingTableContainer extends Container implements ISlotCallback, Bu
     {
         super.addContainerSlots();
         addSlot(new SewingInputSlot(this, inventory, SLOT_YARN, 8, 83));
-        addSlot(new CallbackSlot(this, inventory, SLOT_TOOL, 26, 83));
+        addSlot(new SewingInputSlot(this, inventory, SLOT_TOOL, 26, 83));
         addSlot(new SewingInputSlot(this, inventory, SLOT_INPUT_1, 62, 83));
         addSlot(new SewingInputSlot(this, inventory, SLOT_INPUT_2, 80, 83));
         addSlot(new CallbackSlot(this, inventory, SLOT_RESULT, 152, 83));
