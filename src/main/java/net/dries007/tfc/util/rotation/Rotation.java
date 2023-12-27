@@ -155,9 +155,22 @@ public interface Rotation
     float speed();
 
     /**
-     * @return The current direction of rotation, using a <strong>right-hand rule</strong>.
+     * Returns using a <strong>left-hand rule</strong>.
+     * Note that if {@link #speed()} is negative, this will be rotating with a <strong>right-hand rule</strong>
+     * <p>
+     * Rule: the thumb is the direction of rotation, and the rotating happens in the direction the fingers curl.
+     *
+     * @return The current direction of rotation.
      */
     Direction direction();
+
+    /**
+     * @return The current direction of rotation, depending on the current speed, to always be oriented in a <strong>left-hand rule</strong>
+     */
+    default Direction positiveDirection()
+    {
+        return speed() < 0 ? direction().getOpposite() : direction();
+    }
 
     interface Tickable extends Rotation
     {

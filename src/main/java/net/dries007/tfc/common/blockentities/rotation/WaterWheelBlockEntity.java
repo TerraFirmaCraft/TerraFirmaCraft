@@ -112,7 +112,7 @@ public class WaterWheelBlockEntity extends TickableBlockEntity implements Rotati
                     {
                         // River water provides flow, if it is in the bottom section of the wheel, otherwise it obstructs flow
                         final Flow flow = state.getValue(RiverWaterBlock.FLOW);
-                        final float flowRate = (float) (axis == Direction.Axis.X ? flow.getVector().z : flow.getVector().x);
+                        final float flowRate = (float) (axis == Direction.Axis.X ? -flow.getVector().z : flow.getVector().x);
 
                         if (dy < 0)
                         {

@@ -44,7 +44,7 @@ public class WaterWheelBlockEntityRenderer implements BlockEntityRenderer<WaterW
 
         if (wheel.getBlockState().getValue(WaterWheelBlock.AXIS) == Direction.Axis.Z)
         {
-            stack.mulPose(Axis.YP.rotationDegrees(90f));
+            stack.mulPose(Axis.YN.rotationDegrees(90f));
         }
 
         model.setupAnim(wheel, partialTick);
