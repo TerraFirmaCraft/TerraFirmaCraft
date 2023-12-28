@@ -6,6 +6,7 @@
 
 package net.dries007.tfc;
 
+import java.util.Objects;
 import com.mojang.logging.LogUtils;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
@@ -60,6 +61,7 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.AbstractCandleBlock;
 import net.minecraft.world.level.block.BambooStalkBlock;
 import net.minecraft.world.level.block.Block;
@@ -177,6 +179,7 @@ import net.dries007.tfc.common.container.BlockEntityContainer;
 import net.dries007.tfc.common.container.Container;
 import net.dries007.tfc.common.container.PestContainer;
 import net.dries007.tfc.common.entities.Fauna;
+import net.dries007.tfc.common.entities.Faunas;
 import net.dries007.tfc.common.entities.misc.HoldingMinecart;
 import net.dries007.tfc.common.entities.predator.Predator;
 import net.dries007.tfc.common.fluids.FluidHelpers;
@@ -1079,6 +1082,15 @@ public final class ForgeEventHandler
                     event.setCanceled(true);
                 }
             }
+            if (!event.isCanceled())
+            {
+                final Fauna fauna = Fauna.EXTERNAL_CACHE.computeIfAbsent(event.getEntity().getType(), type -> Fauna.EXTERNAL_MANAGER.get(Objects.requireNonNull(ForgeRegistries.ENTITY_TYPES.getKey(type))));
+                if (fauna != null && level instanceof ServerLevelAccessor server && !Faunas.testSpawn(fauna, entity.getType(), server, event.getEntity().blockPosition(), event.getLevel().getRandom()))
+                {
+                    event.setSpawnCancelled(true);
+                    event.setCanceled(true);
+                }
+            }
         }
     }
 
@@ -1500,6 +1512,7 @@ public final class ForgeEventHandler
         event.addListener(ItemSizeManager.MANAGER);
         event.addListener(ClimateRange.MANAGER);
         event.addListener(Fauna.MANAGER);
+        event.addListener(Fauna.EXTERNAL_MANAGER);
         event.addListener(HeatCapability.MANAGER);
         event.addListener(FoodCapability.MANAGER);
         event.addListener(EntityDamageResistance.MANAGER);
@@ -1529,6 +1542,8 @@ public final class ForgeEventHandler
         PacketHandler.send(target, Pannable.MANAGER.createSyncPacket());
         PacketHandler.send(target, Sluiceable.MANAGER.createSyncPacket());
         PacketHandler.send(target, Support.MANAGER.createSyncPacket());
+
+        Fauna.EXTERNAL_CACHE.clear();
     }
 
     /**
