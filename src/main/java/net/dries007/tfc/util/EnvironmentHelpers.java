@@ -17,6 +17,7 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
@@ -154,7 +155,7 @@ public final class EnvironmentHelpers
         // Snow only accumulates during rain
         final RandomSource random = level.random;
         final int expectedLayers = (int) getExpectedSnowLayerHeight(temperature);
-        if (temperature < OverworldClimateModel.SNOW_FREEZE_TEMPERATURE && isRainingOrSnowing(level, surfacePos))
+        if (temperature < OverworldClimateModel.SNOW_FREEZE_TEMPERATURE && isRainingOrSnowing(level, surfacePos) && level.getBrightness(LightLayer.BLOCK, surfacePos) < 11)
         {
             if (random.nextInt(TFCConfig.SERVER.snowAccumulateChance.get()) == 0)
             {
