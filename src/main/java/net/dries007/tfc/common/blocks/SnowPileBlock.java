@@ -17,6 +17,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SnowLayerBlock;
@@ -193,7 +194,7 @@ public class SnowPileBlock extends SnowLayerBlock implements IForgeBlockExtensio
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         // Heavily reduced chance, as most snow melting happens through EnvironmentHelpers, this is only really to account for overhangs and hidden snow
-        if (level.getRandom().nextInt(EnvironmentHelpers.SNOW_MELT_RANDOM_TICK_CHANCE) == 0 && Climate.getTemperature(level, pos) > OverworldClimateModel.SNOW_MELT_TEMPERATURE)
+        if ((level.getRandom().nextInt(EnvironmentHelpers.SNOW_MELT_RANDOM_TICK_CHANCE) == 0 && Climate.getTemperature(level, pos) > OverworldClimateModel.SNOW_MELT_TEMPERATURE) || level.getBrightness(LightLayer.BLOCK, pos) > 11)
         {
             removePileOrSnow(level, pos, state);
         }
