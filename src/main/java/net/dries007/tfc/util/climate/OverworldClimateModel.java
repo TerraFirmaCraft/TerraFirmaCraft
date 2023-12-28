@@ -246,7 +246,7 @@ public class OverworldClimateModel implements WorldGenClimateModel
 
                 // Handle snow
                 BlockState stateAt = level.getBlockState(mutablePos);
-                if (snowTemperatureModifier + noise < 0)
+                if (snowTemperatureModifier + noise < 0 && level.getBrightness(LightLayer.BLOCK, mutablePos) <= 11)
                 {
                     // Snow
                     if (stateAt.isAir() && snowState.canSurvive(level, mutablePos))
