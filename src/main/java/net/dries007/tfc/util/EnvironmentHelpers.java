@@ -175,19 +175,28 @@ public final class EnvironmentHelpers
         {
             if (random.nextInt(TFCConfig.SERVER.snowMeltChance.get()) == 0)
             {
-                // Snow melting - both snow and snow piles
-                final BlockState state = level.getBlockState(surfacePos);
-                if (isSnow(state))
+                removeSnowAt(level, surfacePos, temperature, expectedLayers);
+                if (random.nextFloat() < 0.2f)
                 {
-                    // When melting snow, we melt layers at +2 from expected, while the temperature is still below zero
-                    // This slowly reduces massive excess amounts of snow, if they're present, but doesn't actually start melting snow a lot when we're still below freezing.
-                    SnowPileBlock.removePileOrSnow(level, surfacePos, state, temperature > 0f ? expectedLayers : expectedLayers + 2);
-                }
-                else if (state.getBlock() instanceof KrummholzBlock)
-                {
-                    KrummholzBlock.updateFreezingInColumn(level, surfacePos, false);
+                    removeSnowAt(level, surfacePos.relative(Direction.Plane.HORIZONTAL.getRandomDirection(random)), temperature, expectedLayers);
                 }
             }
+        }
+    }
+
+    private static void removeSnowAt(Level level, BlockPos surfacePos, float temperature, int expectedLayers)
+    {
+        // Snow melting - both snow and snow piles
+        final BlockState state = level.getBlockState(surfacePos);
+        if (isSnow(state))
+        {
+            // When melting snow, we melt layers at +2 from expected, while the temperature is still below zero
+            // This slowly reduces massive excess amounts of snow, if they're present, but doesn't actually start melting snow a lot when we're still below freezing.
+            SnowPileBlock.removePileOrSnow(level, surfacePos, state, temperature > 0f ? expectedLayers : expectedLayers + 2);
+        }
+        else if (state.getBlock() instanceof KrummholzBlock)
+        {
+            KrummholzBlock.updateFreezingInColumn(level, surfacePos, false);
         }
     }
 
