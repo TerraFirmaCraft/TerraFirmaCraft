@@ -27,6 +27,9 @@ public class TFCAdvancements
     public static final GenericTrigger EAT_ROTTEN_FOOD = registerGeneric("eat_rotten_food");
     public static final GenericTrigger PERFECTLY_FORGED = registerGeneric("perfectly_forged");
     public static final GenericTrigger FULL_NUTRITION = registerGeneric("full_nutrition");
+    public static final GenericTrigger MAX_WINDMILL = registerGeneric("max_windmill");
+    public static final GenericTrigger BASIN_POUR = registerGeneric("basin_pour");
+    public static final GenericTrigger TABLE_POUR = registerGeneric("table_pour");
 
     public static final EntityActionTrigger HOOKED_ENTITY = registerEntity("hooked_entity");
     public static final EntityActionTrigger FED_ANIMAL = registerEntity("fed_animal");

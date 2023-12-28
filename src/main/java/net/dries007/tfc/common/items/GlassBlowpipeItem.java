@@ -9,6 +9,7 @@ package net.dries007.tfc.common.items;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -35,6 +36,7 @@ import net.dries007.tfc.common.capabilities.glass.GlassWorkData;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.advancements.TFCAdvancements;
 
 public class GlassBlowpipeItem extends BlowpipeItem
 {
@@ -84,6 +86,10 @@ public class GlassBlowpipeItem extends BlowpipeItem
                 {
                     glass.setGlassItem(recipe.getResultItem(level.registryAccess()));
                 }
+                if (player instanceof ServerPlayer server)
+                {
+                    TFCAdvancements.BASIN_POUR.trigger(server);
+                }
                 return true;
             }).orElse(false);
 
@@ -108,6 +114,10 @@ public class GlassBlowpipeItem extends BlowpipeItem
                 if (level.getBlockEntity(pos.above()) instanceof HotPouredGlassBlockEntity glass)
                 {
                     glass.setGlassItem(recipe.getResultItem(level.registryAccess()));
+                }
+                if (player instanceof ServerPlayer server)
+                {
+                    TFCAdvancements.TABLE_POUR.trigger(server);
                 }
                 return true;
             }).orElse(false);

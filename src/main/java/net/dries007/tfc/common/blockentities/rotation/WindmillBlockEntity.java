@@ -125,7 +125,7 @@ public class WindmillBlockEntity extends TickableInventoryBlockEntity<ItemStackH
         };
     }
 
-    public void updateState()
+    public int updateState()
     {
         assert level != null;
         needsStateUpdate = false;
@@ -147,6 +147,7 @@ public class WindmillBlockEntity extends TickableInventoryBlockEntity<ItemStackH
         {
             level.setBlockAndUpdate(worldPosition, getBlockState().setValue(WindmillBlock.COUNT, count));
         }
+        return count;
     }
 
     @Override

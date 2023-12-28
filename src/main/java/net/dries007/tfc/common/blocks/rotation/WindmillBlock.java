@@ -10,6 +10,7 @@ import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -41,6 +42,7 @@ import net.dries007.tfc.common.blocks.devices.DeviceBlock;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.advancements.TFCAdvancements;
 
 public class WindmillBlock extends DeviceBlock implements EntityBlockExtension, ConnectedAxleBlock
 {
@@ -93,7 +95,11 @@ public class WindmillBlock extends DeviceBlock implements EntityBlockExtension, 
                         ItemHandlerHelper.giveItemToPlayer(player, leftover);
                         return InteractionResult.PASS;
                     }
-                    windmill.updateState();
+                    final int newCount = windmill.updateState();
+                    if (newCount == WindmillBlockEntity.SLOTS && player instanceof ServerPlayer server)
+                    {
+                        TFCAdvancements.MAX_WINDMILL.trigger(server);
+                    }
                     return InteractionResult.sidedSuccess(level.isClientSide);
                 }
                 if (count == WindmillBlockEntity.SLOTS || stack.isEmpty())

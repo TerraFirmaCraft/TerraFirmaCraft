@@ -341,6 +341,7 @@ def generate(rm: ResourceManager):
         if 'part' in metal_data.types:
             rm.block_tag('minecraft:stairs', 'tfc:metal/block/%s_stairs' % metal)
             rm.block_tag('minecraft:slabs', 'tfc:metal/block/%s_slab' % metal)
+            rm.block_and_item_tag('metal_plated_blocks', 'tfc:metal/block/%s' % metal)
 
         if 'armor' in metal_data.types:
             rm.item_tag('minecraft:trimmable_armor', *['tfc:metal/%s/%s' % (section, metal) for section in TFC_ARMOR_SECTIONS])
