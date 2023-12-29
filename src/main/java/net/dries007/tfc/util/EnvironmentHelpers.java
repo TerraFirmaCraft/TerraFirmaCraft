@@ -155,7 +155,7 @@ public final class EnvironmentHelpers
         // Snow only accumulates during rain
         final RandomSource random = level.random;
         final int expectedLayers = (int) getExpectedSnowLayerHeight(temperature);
-        if (temperature < OverworldClimateModel.SNOW_FREEZE_TEMPERATURE && isRainingOrSnowing(level, surfacePos) && level.getBrightness(LightLayer.BLOCK, surfacePos) < 11)
+        if (temperature < OverworldClimateModel.SNOW_FREEZE_TEMPERATURE && isRainingOrSnowing(level, surfacePos) && level.getBrightness(LightLayer.BLOCK, surfacePos) <= 11)
         {
             if (random.nextInt(TFCConfig.SERVER.snowAccumulateChance.get()) == 0)
             {
@@ -334,7 +334,7 @@ public final class EnvironmentHelpers
     private static void doIcicles(Level level, BlockPos lcgPos, float temperature)
     {
         final RandomSource random = level.getRandom();
-        if (random.nextInt(16) == 0 && isRainingOrSnowing(level, lcgPos) && temperature < OverworldClimateModel.ICICLE_MAX_FREEZE_TEMPERATURE && temperature > OverworldClimateModel.ICICLE_MIN_FREEZE_TEMPERATURE)
+        if (random.nextInt(16) == 0 && isRainingOrSnowing(level, lcgPos) && level.getBrightness(LightLayer.BLOCK, lcgPos) <= 11 && temperature < OverworldClimateModel.ICICLE_MAX_FREEZE_TEMPERATURE && temperature > OverworldClimateModel.ICICLE_MIN_FREEZE_TEMPERATURE)
         {
             // Place icicles under overhangs
             final BlockPos iciclePos = findIcicleLocation(level, lcgPos, random);

@@ -14,6 +14,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -50,7 +51,7 @@ public class IcicleBlock extends ThinSpikeBlock
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         final float temperature = Climate.getTemperature(level, pos);
-        if (state.getValue(TIP) && state.getValue(FLUID).getFluid() == Fluids.EMPTY && temperature > OverworldClimateModel.ICICLE_MELT_TEMPERATURE && random.nextInt(EnvironmentHelpers.ICICLE_MELT_RANDOM_TICK_CHANCE) == 0)
+        if (state.getValue(TIP) && state.getValue(FLUID).getFluid() == Fluids.EMPTY && temperature > OverworldClimateModel.ICICLE_MELT_TEMPERATURE && (random.nextInt(EnvironmentHelpers.ICICLE_MELT_RANDOM_TICK_CHANCE) == 0 || level.getBrightness(LightLayer.BLOCK, pos) > 11))
         {
             // Melt, shrink the icicle, and possibly fill a fluid handler beneath
             level.removeBlock(pos, false);
