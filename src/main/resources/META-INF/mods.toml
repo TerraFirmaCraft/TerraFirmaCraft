@@ -36,7 +36,7 @@ issueTrackerURL = "https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues"
     # NeoForge crashes on [47.1.51, 47.1.81) due to issue #256, but we can support later versions with the backported fix
     # We build against 47.1.3, which is the 'last known stable' version of Forge before the fork
     # So the version range here is restricted to only known versions where there are no issues.
-    versionRange = "[47.1.3,47.1.6),[47.1.81,),[47.2.6,)"
+    versionRange = "[47.1.3,47.1.6),[47.1.81,47.2.0),[47.2.6,)"
     ordering = "AFTER"
     side = "BOTH"
 
