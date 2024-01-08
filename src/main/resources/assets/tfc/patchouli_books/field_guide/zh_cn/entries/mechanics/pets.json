@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "宠物会把某个特定的玩家认作$(thing)主人$()。要成为宠物的主人，你需要给它喂食直到亲密度提高到15%。宠物只会听从来自主人的命令。$(br2)用染料点击宠物就可以改变它的项圈的颜色。"
+      "text": "Pets recognize a certain player as their $(thing)Owner$(). To become a pet's owner, feed it to raise its familiarity above 15%%. Pets will only obey commands that come from their owner.$(br2)Clicking on a pet with $(l:mechanics/dye)dye$() changes its collar color."
     },
     {
       "type": "patchouli:entity",

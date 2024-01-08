@@ -146,7 +146,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/wattle_stained.png"
       ],
-      "text": "Такий блок можна $(thing)фарбувати$(). Для цього треба використати на блоці барвник",
+      "text": "It can then be $(thing)stained$() by using $(l:mechanics/dye)Dye$() on it.",
       "border": true
     },
     {

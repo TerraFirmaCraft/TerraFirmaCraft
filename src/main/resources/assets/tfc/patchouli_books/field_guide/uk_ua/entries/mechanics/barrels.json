@@ -56,7 +56,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Діжки мають можливість $(thing)фарбувати$() та $(thing)відбілювати$() предмети. Рідина для барвника виготовляються шляхом кип’ятіння одного барвника в $(l:mechanics/pot)казані$(). Більшість кольорових речей, як-от килим, свічки, $(l:mechanics/advanced_building_materials#alabaster)алебастр$() можна пофарбувати, запечатавши їх у діжку з барвником. Пофарбовані речі також можна відбілити, запечатавши їх у діжку з $(thing)лугом$(). Щоб створити луг потрібен $(thing)деревний попіл$(), отриманий з руйнування $(l:getting_started/firepit)багаття$(). Його треба варити у $(l:mechanics/pot)казані$() з водою."
+      "text": "Barrels have the ability to $(l:mechanics/dye)Dye$() and $(l:mechanics/dye#lye)Bleach$() items. Most color-able things, like carpet, candles, and $(l:mechanics/advanced_building_materials#alabaster)Alabaster$() can be dyed by sealing them in a barrel of dye or bleached by sealing them in a barrel of lye. See the dye chapter for more information."
     },
     {
       "type": "patchouli:text",

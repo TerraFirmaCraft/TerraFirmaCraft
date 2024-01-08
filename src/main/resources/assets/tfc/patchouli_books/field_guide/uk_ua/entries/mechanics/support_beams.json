@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Опорні балки",
+  "name": "Support Beams & Collapses",
   "category": "tfc:mechanics",
   "icon": "tfc:wood/support/oak",
   "pages": [
@@ -12,6 +12,14 @@
     {
       "type": "patchouli:text",
       "text": "Обвали можуть відбуватися кожного разу, коли гравець $(thing)видобуває будь-яке необроблене каміння$(), що знаходиться поруч з блоком, що $(thing)не підтримується$(). Проте, коли почався обвал, навіть раніше $(thing)підтримувана$() порода може теж руйнуватись.$(br2)У печері, її дах має $(thing)природну підтримку$(). Також $(thing)підтримується$() будь-який необроблений блок твердим блоком, що не обвалюється. Крім того, $(thing)опорні балки$() підтримують чималу площу."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "When graded $(l:the_world/ores_and_minerals)Ore$() (ore that can be poor, normal, or rich) collapses, it degrades in quality. Rich ore will become normal, normal will become poor, and poor will turn to cobblestone. Mineral ores will turn into cobblestone right away."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Dirt, grass, clay, gravel, cobblestone, and sand are also affected by gravity. However, unlike vanilla gravity blocks, these blocks fall down slopes, and cannot be stacked more than one high without supporting blocks around. $(l:mechanics/sluices)Ore Deposits$() also landslide, but do not degrade in quality."
     },
     {
       "type": "patchouli:crafting",

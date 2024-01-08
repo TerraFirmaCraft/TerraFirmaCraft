@@ -27,7 +27,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "석고 블록은 $(l:mechanics/barrels)통$()에서 아무 색으로 염색할 수 있습니다. 생 석고 블록을 끌의 $(thing)다듬기$() 모드로 $(l:mechanics/chisel)조각$()하여 $(thing)윤나는 석고 블록$()을 만들 수 있습니다. 계단, 반 블록, 담장 역시 만들 수 있습니다.",
+      "text": "Alabaster can be $(l:mechanics/dye)dyed$() in a $(l:mechanics/barrels)Barrel$() of dye into any color. Raw Alabaster blocks can also be $(l:mechanics/chisel)chiseled$() into $(thing)Polished Alabaster$() using the $(thing)Smooth$() chisel mode, or crafted into stairs, slabs, or walls.",
       "title": "§l석고 장식"
     },
     {

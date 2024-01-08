@@ -27,7 +27,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Alabaster pode ser tingido em um $(l:mechanics/barrels)Barrel$() de corante em qualquer cor. Blocos crus alabastro também podem ser $(l:mechanics/chisel)chiseled$() em $(thing)Polished Alabaster$() usando o $(thing)Smooth$() chisel mode, ou criado em escadas, lajes ou paredes.",
+      "text": "Alabaster can be $(l:mechanics/dye)dyed$() in a $(l:mechanics/barrels)Barrel$() of dye into any color. Raw Alabaster blocks can also be $(l:mechanics/chisel)chiseled$() into $(thing)Polished Alabaster$() using the $(thing)Smooth$() chisel mode, or crafted into stairs, slabs, or walls.",
       "title": "Alabaster Decorations"
     },
     {

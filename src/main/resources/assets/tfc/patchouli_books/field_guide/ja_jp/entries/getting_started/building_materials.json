@@ -146,7 +146,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/wattle_stained.png"
       ],
-      "text": "完成したワトルは染料を使用することで$(thing)染色$()できます。",
+      "text": "It can then be $(thing)stained$() by using $(l:mechanics/dye)Dye$() on it.",
       "border": true
     },
     {

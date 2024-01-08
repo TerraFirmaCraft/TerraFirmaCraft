@@ -146,7 +146,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/wattle_stained.png"
       ],
-      "text": "염료를 사용하면 초벽을 $(thing)염색할 수 있습니다$().",
+      "text": "It can then be $(thing)stained$() by using $(l:mechanics/dye)Dye$() on it.",
       "border": true
     },
     {

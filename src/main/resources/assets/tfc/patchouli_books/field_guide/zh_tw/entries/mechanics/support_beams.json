@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "支撐梁",
+  "name": "Support Beams & Collapses",
   "category": "tfc:mechanics",
   "icon": "tfc:wood/support/oak",
   "pages": [
@@ -12,6 +12,14 @@
     {
       "type": "patchouli:text",
       "text": "只要玩家$(thing)挖掘任何未加工岩石$(), 附近的$(thing)未被支撐的未加工岩石$()就可能發生塌方. 一旦塌方發生了, $(thing)有支撐的$()岩石也會開始塌方.$(br2)在天然洞穴頂部的岩石是$(thing)天然被支撐的$(). 如果未加工岩石的下方有一個無法發生塌方的固體方塊(詳見下文), 那麼這$(thing)一個$()岩石方塊也是$(thing)被支撐的$(). 與此不同的是, $(thing)支撐梁$()可以一次支撐一大片區域."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "When graded $(l:the_world/ores_and_minerals)Ore$() (ore that can be poor, normal, or rich) collapses, it degrades in quality. Rich ore will become normal, normal will become poor, and poor will turn to cobblestone. Mineral ores will turn into cobblestone right away."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Dirt, grass, clay, gravel, cobblestone, and sand are also affected by gravity. However, unlike vanilla gravity blocks, these blocks fall down slopes, and cannot be stacked more than one high without supporting blocks around. $(l:mechanics/sluices)Ore Deposits$() also landslide, but do not degrade in quality."
     },
     {
       "type": "patchouli:crafting",

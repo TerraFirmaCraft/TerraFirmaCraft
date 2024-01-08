@@ -27,7 +27,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "アラバスターは $(l:mechanics/barrels)樽$() で染料で任意の色に染めることができます。 生のアラバスター ブロックは、$(thing)滑らかにする$() ノミ モードを使用して $(l:mechanics/chisel)彫刻$() して $(thing)滑らかなアラバスター$() にしたり、階段、ハーフブロック、または壁に加工したりすることもできます 。",
+      "text": "Alabaster can be $(l:mechanics/dye)dyed$() in a $(l:mechanics/barrels)Barrel$() of dye into any color. Raw Alabaster blocks can also be $(l:mechanics/chisel)chiseled$() into $(thing)Polished Alabaster$() using the $(thing)Smooth$() chisel mode, or crafted into stairs, slabs, or walls.",
       "title": "アラバスター装飾"
     },
     {
