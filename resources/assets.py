@@ -774,8 +774,8 @@ def generate(rm: ResourceManager):
             rm.item_tag('stone_tools', 'tfc:stone/%s/%s' % (rock_item, rock))
 
     # Rock Items
-    for rock in ROCKS.keys():
-        rm.item_model(('brick', rock), 'tfc:item/brick/%s' % rock).with_lang(lang('%s brick', rock))
+    for rock, rock_data in ROCKS.items():
+        rm.item_model(('brick', rock), 'tfc:item/brick/%s' % rock).with_lang(lang('%s brick', rock)).with_tag('%s_items' % rock_data.category)
 
     for metal, metal_data in METALS.items():
         # Metal Items

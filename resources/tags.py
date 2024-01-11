@@ -518,6 +518,13 @@ def generate(rm: ResourceManager):
             rm.block_and_item_tag('forge:gravel', 'tfc:deposit/%s/%s' % (ore, rock))
             rm.block_and_item_tag('ore_deposits', 'tfc:deposit/%s/%s' % (ore, rock))
 
+        for block_type in ('raw', 'hardened', 'smooth', 'cobble', 'bricks', 'gravel', 'spike', 'cracked_bricks', 'mossy_bricks', 'mossy_cobble', 'chiseled', 'loose', 'mossy_loose', 'pressure_plate', 'button', 'aqueduct'):
+            rm.item_tag('%s_items' % rock_data.category, 'tfc:rock/%s/%s' % (block_type, rock))
+            if block_type in CUTTABLE_ROCKS:
+                rm.item_tag('%s_items' % rock_data.category, 'tfc:rock/%s/%s_stairs' % (block_type, rock))
+                rm.item_tag('%s_items' % rock_data.category, 'tfc:rock/%s/%s_wall' % (block_type, rock))
+                rm.item_tag('%s_items' % rock_data.category, 'tfc:rock/%s/%s_slab' % (block_type, rock))
+
     # Ore tags
     for ore, data in ORES.items():
         if data.tag not in DEFAULT_FORGE_ORE_TAGS:
