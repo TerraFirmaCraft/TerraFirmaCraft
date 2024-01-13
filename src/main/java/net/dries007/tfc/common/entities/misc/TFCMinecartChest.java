@@ -12,17 +12,14 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SlotAccess;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.vehicle.MinecartChest;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.GameRules;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -33,7 +30,7 @@ import net.dries007.tfc.common.blockentities.TFCChestBlockEntity;
 import net.dries007.tfc.common.container.RestrictedChestContainer;
 import net.dries007.tfc.common.container.TFCContainerTypes;
 
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 public class TFCMinecartChest extends MinecartChest
 {
@@ -79,7 +76,7 @@ public class TFCMinecartChest extends MinecartChest
     protected void addAdditionalSaveData(CompoundTag tag)
     {
         super.addAdditionalSaveData(tag);
-        tag.put("cartItem", (getPickResult() == null ? ItemStack.EMPTY : getPickResult()).save(new CompoundTag()));
+        tag.put("cartItem", getPickResult().save(new CompoundTag()));
         tag.put("chestItem", getChestItem().save(new CompoundTag()));
     }
 
@@ -115,6 +112,7 @@ public class TFCMinecartChest extends MinecartChest
     }
 
     @Override
+    @NotNull
     public ItemStack getPickResult()
     {
         return entityData.get(DATA_CART_ITEM).copy();
@@ -133,30 +131,15 @@ public class TFCMinecartChest extends MinecartChest
     }
 
     @Override
-    public void destroy(DamageSource source)
-    {
-        super.destroy(source);
-        if (level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS))
-        {
-            spawnAtLocation(getChestItem().copy());
-        }
-    }
-
-    @Override
     public boolean hasCustomDisplay()
     {
         return true; // tells vanilla to render getDisplayBlockState
     }
 
-    @Nullable
     @Override
-    public ItemEntity spawnAtLocation(ItemLike item)
+    protected Item getDropItem()
     {
-        if (item == Blocks.CHEST)
-        {
-            return null; // prevents drops in the superclass
-        }
-        return super.spawnAtLocation(item);
+        return getPickResult().getItem();
     }
 
     @Override
