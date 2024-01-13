@@ -10,6 +10,7 @@ import java.util.*;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -87,6 +88,8 @@ public class AxeLoggingHelper
                 }
             }
         }
+
+        logs.sort(Comparator.comparingInt(p -> -p.getY()));
         return logs;
     }
 
