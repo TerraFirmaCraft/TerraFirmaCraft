@@ -57,7 +57,7 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
         final ChunkDataProvider provider = ChunkDataProvider.get(context.chunkGenerator());
         final ChunkData data = provider.get(context.level(), pos);
         final RockSettings rock = data.getRockData().getRock(pos.getX(), 0, pos.getZ());
-        final Block rawBlock = rock.raw();
+        final Block rawBlock = rock.hardened();
         final BlockState rockState = rawBlock.defaultBlockState();
         final BlockState gravelState = rock.gravel().defaultBlockState();
         final Fluid fluid = config.fluidState().getFluidState().getType();
