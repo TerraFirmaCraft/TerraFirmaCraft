@@ -60,6 +60,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('compost_poisons', '#tfc:foods/meats', 'minecraft:bone')
     rm.item_tag('scribing_ink', 'minecraft:black_dye')
     rm.item_tag('powders', 'minecraft:gunpowder', 'minecraft:redstone', 'minecraft:glowstone_dust', 'minecraft:blaze_powder', 'minecraft:sugar')
+    rm.item_tag('foods', 'minecraft:egg')
 
     # TFC Tags: Functionality
 

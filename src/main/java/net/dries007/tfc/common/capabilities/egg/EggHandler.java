@@ -116,7 +116,7 @@ public class EggHandler implements IEgg, DelegateFoodHandler, ICapabilitySeriali
     @Override
     public CompoundTag serializeNBT()
     {
-        return new CompoundTag();
+        return DelegateFoodHandler.super.serializeNBT();
     }
 
     @Override
@@ -139,7 +139,10 @@ public class EggHandler implements IEgg, DelegateFoodHandler, ICapabilitySeriali
     }
 
     @Override
-    public void deserializeNBT(CompoundTag tag) { }
+    public void deserializeNBT(CompoundTag tag)
+    {
+        DelegateFoodHandler.super.deserializeNBT(tag);
+    }
 
     private void load()
     {
