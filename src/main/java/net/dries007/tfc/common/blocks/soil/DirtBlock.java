@@ -75,9 +75,7 @@ public class DirtBlock extends Block implements IDirtBlock
             }
             if (action == ToolActions.HOE_TILL && farmland != null && TFCConfig.SERVER.enableFarmlandCreation.get() && DirtBlock.emptyBlockAbove(context))
             {
-                final BlockState farmlandState = farmland.get().defaultBlockState();
-                HoeItem.changeIntoState(farmlandState).accept(context);
-                return farmlandState;
+                return farmland.get().defaultBlockState();
             }
         }
         return null;

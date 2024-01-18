@@ -194,9 +194,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
             }
             if (action == ToolActions.HOE_TILL && farmland != null && TFCConfig.SERVER.enableFarmlandCreation.get() && HoeItem.onlyIfAirAbove(context))
             {
-                final BlockState farmlandState = farmland.get().defaultBlockState();
-                HoeItem.changeIntoState(farmlandState).accept(context);
-                return farmlandState;
+                return farmland.get().defaultBlockState();
             }
         }
         return null;
