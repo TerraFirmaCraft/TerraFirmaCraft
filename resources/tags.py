@@ -685,11 +685,6 @@ def generate(rm: ResourceManager):
         'tfc:wooden_bowl'
     ])
     rm.block_tag('tfc:mineable_with_sharp_tool', *[
-        *[
-            'tfc:wood/%s/%s' % (variant, wood)
-            for variant in ('leaves', 'sapling', 'fallen_leaves')
-            for wood in WOODS.keys()
-        ],
         *['tfc:plant/%s' % plant for plant in PLANTS.keys()],
         *['tfc:plant/%s' % plant for plant in UNIQUE_PLANTS],
         *['tfc:wild_crop/%s' % plant for plant in CROPS.keys()],
@@ -701,11 +696,11 @@ def generate(rm: ResourceManager):
         'tfc:plant/cranberry_bush',
         'tfc:plant/dead_berry_bush',
         'tfc:plant/dead_cane',
-        *['tfc:plant/%s_leaves' % tree for tree in NORMAL_FRUIT_TREES],
-        *['tfc:plant/%s_sapling' % tree for tree in NORMAL_FRUIT_TREES],
-        'tfc:plant/banana_sapling',
         'tfc:thatch',
-        'tfc:thatch_bed'
+        'tfc:thatch_bed',
+        '#minecraft:leaves',
+        '#tfc:fallen_leaves',
+        '#minecraft:saplings',
     ])
     rm.block_tag('tfc:mineable_with_blunt_tool', *[
         'tfc:wood/%s/%s' % (variant, wood)
