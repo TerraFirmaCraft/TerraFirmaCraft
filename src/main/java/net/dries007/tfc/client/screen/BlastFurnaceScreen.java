@@ -53,7 +53,7 @@ public class BlastFurnaceScreen extends BlockEntityScreen<BlastFurnaceBlockEntit
         renderCapacityLimitedFillMeter(graphics, 124, 22, 206, maximumCapacity, capacity, fuelCount);
 
         // Render temperature indicator
-        final int temperature = (int) (51 * blockEntity.getTemperature() / Heat.maxVisibleTemperature());
+        final int temperature = Heat.scaleTemperatureForGui(blockEntity.getTemperature());
         if (temperature > 0)
         {
             graphics.blit(texture, leftPos + 8, topPos + 76 - Math.min(51, temperature), 176, 0, 15, 5);

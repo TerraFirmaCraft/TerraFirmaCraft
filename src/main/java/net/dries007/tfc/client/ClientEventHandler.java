@@ -51,6 +51,7 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -350,8 +351,8 @@ public final class ClientEventHandler
 
             TFCBlocks.WOODS.values().forEach(map -> ItemProperties.register(map.get(BARREL).get().asItem(), Helpers.identifier("sealed"), (stack, level, entity, unused) -> stack.hasTag() ? 1.0f : 0f));
 
-            ItemProperties.register(TFCItems.BLOWPIPE_WITH_GLASS.get(), Helpers.identifier("heat"), (stack, level, entity, unused) -> stack.getCapability(HeatCapability.CAPABILITY).map(cap -> cap.getTemperature() / Heat.maxVisibleTemperature()).orElse(0f));
-            ItemProperties.register(TFCItems.CERAMIC_BLOWPIPE_WITH_GLASS.get(), Helpers.identifier("heat"), (stack, level, entity, unused) -> stack.getCapability(HeatCapability.CAPABILITY).map(cap -> cap.getTemperature() / Heat.maxVisibleTemperature()).orElse(0f));
+            ItemProperties.register(TFCItems.BLOWPIPE_WITH_GLASS.get(), Helpers.identifier("heat"), (stack, level, entity, unused) -> stack.getCapability(HeatCapability.CAPABILITY).map(cap -> Mth.clamp(cap.getTemperature() / Heat.maxVisibleTemperature(), 0, 1)).orElse(0f));
+            ItemProperties.register(TFCItems.CERAMIC_BLOWPIPE_WITH_GLASS.get(), Helpers.identifier("heat"), (stack, level, entity, unused) -> stack.getCapability(HeatCapability.CAPABILITY).map(cap -> Mth.clamp(cap.getTemperature() / Heat.maxVisibleTemperature(), 0, 1)).orElse(0f));
 
             TFCBlocks.WOODS.forEach((wood, map) -> {
                 HorseChestLayer.registerChest(map.get(CHEST).get().asItem(), Helpers.identifier("textures/entity/chest/horse/" + wood.getSerializedName() + ".png"));

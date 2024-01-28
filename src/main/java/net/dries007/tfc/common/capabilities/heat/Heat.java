@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.capabilities.heat;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.ChatFormatting;
@@ -30,6 +31,22 @@ public enum Heat
 
     private static final Heat[] VALUES = values();
 
+    /**
+     * Scales a given {@code temperature} for a typical GUI display thermometer, which (1) only records temperatures from {@link #WARMING} to {@link #BRILLIANT_WHITE} (even if temperatures may be higher in practice).
+     *
+     * @param temperature The temperature of the device.
+     * @return A value in {@code [0, n]} (pixels), depending on the temperature.
+     */
+    public static int scaleTemperatureForGui(float temperature)
+    {
+        return Mth.clamp((int) (51 * temperature / BRILLIANT_WHITE.getMax()), 0, 51);
+    }
+
+    /**
+     * This is the maximum of the last {@link Heat} value which is <strong>visible</strong>. Visibility means it gets used to display i.e. heat bars on items, temperature thermometers on devices, the heat of a charcoal forge block.
+     * Temperatures are able to exceed this value, but they will stop being visible. It is in theory possible for this enum to get extended, but {@link #BRILLIANT_WHITE} should be left as the max visible temperature unless all other places (excluding tooltips) where visibility is altered, are changed.
+     * @return The maximum visible temperature.
+     */
     public static float maxVisibleTemperature()
     {
         return BRILLIANT_WHITE.getMax();
