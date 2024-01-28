@@ -214,7 +214,7 @@ public final class TFCBlocks
     );
     public static final Map<Rock, Map<OreDeposit, RegistryObject<Block>>> ORE_DEPOSITS = Helpers.mapOfKeys(Rock.class, rock ->
         Helpers.mapOfKeys(OreDeposit.class, ore ->
-            register("deposit/" + ore.name() + "/" + rock.name(), () -> new OreDepositBlock(Block.Properties.of().mapColor(MapColor.STONE).sound(SoundType.GRAVEL).strength(rock.category().hardness(2.0f)), rock, ore)) // Same hardness as gravel
+            register("deposit/" + ore.name() + "/" + rock.name(), () -> new Block(Block.Properties.of().mapColor(MapColor.STONE).sound(SoundType.GRAVEL).strength(rock.category().hardness(2.0f)))) // Same hardness as gravel
         )
     );
 
