@@ -193,13 +193,23 @@ public class ServerCalendar extends Calendar
         final long deltaWorldTime = (level.getDayTime() % ICalendar.TICKS_IN_DAY) - getCalendarDayTime();
         if (deltaWorldTime > TIME_DESYNC_THRESHOLD || deltaWorldTime < -TIME_DESYNC_THRESHOLD)
         {
-            // Players logged on, or we set this true if we prevent the server from stopping
-            // Daylight cycle just sets from the game rule, but if there are no players on (time stopped), it must be false
-            // Then jump either the world or calendar time ahead to catch up.
-            // Hopefully that should fix any issues.
+            // We can recount the number of players online, or if we force this on due to a config change
+            // If there are players online, we read the value of the doDaylightCycle game rule directly
+            // If there are no players online, we force the game rule off, but don't modify our cached / saved value,
+            // as we can only assume that is accurately loaded.
 
             arePlayersLoggedOn = getServer().getPlayerList().getPlayerCount() > 0 || !TFCConfig.SERVER.enableTimeStopWhenServerEmpty.get();
-            doDaylightCycle = arePlayersLoggedOn && getServer().getGameRules().getBoolean(GameRules.RULE_DAYLIGHT);
+
+            if (arePlayersLoggedOn)
+            {
+                doDaylightCycle = getServer().getGameRules().getBoolean(GameRules.RULE_DAYLIGHT);
+            }
+            else
+            {
+                // Don't modify doDaylightCycle, as we assume that was accurate, since we can't guess because TFC will have changed the real value
+                // However, force the rule off in case it got flipped somehow without us noticing it.
+                setDoDaylightCycleWithNoCallback(false);
+            }
 
             if (deltaWorldTime < 0)
             {
@@ -210,7 +220,7 @@ public class ServerCalendar extends Calendar
                 calendarTicks += deltaWorldTime; // World time is ahead, so jump calendar
             }
 
-            LOGGER.warn("Calendar is out of sync - trying to fix: Calendar = {}, Daylight = {}, Sync = {}", arePlayersLoggedOn, doDaylightCycle, deltaWorldTime);
+            LOGGER.warn("Calendar is out of sync - trying to fix: Calendar = {}, Daylight = {} ({}), Sync = {}", arePlayersLoggedOn, getServer().getGameRules().getBoolean(GameRules.RULE_DAYLIGHT), doDaylightCycle, deltaWorldTime);
 
             sendUpdatePacket();
         }
