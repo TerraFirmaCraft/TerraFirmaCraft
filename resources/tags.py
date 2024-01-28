@@ -22,8 +22,6 @@ def generate(rm: ResourceManager):
     rm.item_tag('forge:string', 'tfc:wool_yarn')
     rm.item_tag('forge:shears', '#tfc:shears')
     rm.item_tag('forge:dusts', '#tfc:powders')
-    rm.item_tag('forge:dusts/copper', 'tfc:powder/malachite', 'tfc:powder/tetrahedrite', 'tfc:powder/native_copper')
-    rm.item_tag('forge:dusts/iron', 'tfc:powder/hematite', 'tfc:powder/magnetite', 'tfc:powder/limonite')
 
     # Minecraft Tags
 
