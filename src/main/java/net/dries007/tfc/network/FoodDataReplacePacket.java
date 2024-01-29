@@ -8,7 +8,6 @@ package net.dries007.tfc.network;
 
 
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.network.NetworkEvent;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.capabilities.food.TFCFoodData;
@@ -18,14 +17,12 @@ import net.dries007.tfc.common.capabilities.food.TFCFoodData;
  */
 public class FoodDataReplacePacket
 {
-    void handle(NetworkEvent.Context context)
+    void handle()
     {
-        context.enqueueWork(() -> {
-            final Player player = ClientHelpers.getPlayer();
-            if (player != null)
-            {
-                TFCFoodData.replaceFoodStats(player);
-            }
-        });
+        final Player player = ClientHelpers.getPlayer();
+        if (player != null)
+        {
+            TFCFoodData.replaceFoodStats(player);
+        }
     }
 }

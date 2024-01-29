@@ -9,7 +9,7 @@ package net.dries007.tfc.network;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraftforge.network.NetworkEvent;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.util.Drinkable;
 
@@ -21,18 +21,15 @@ import net.dries007.tfc.util.Drinkable;
  */
 public class PlayerDrinkPacket
 {
-    void handle(NetworkEvent.Context context)
+    void handle(@Nullable ServerPlayer player)
     {
-        context.enqueueWork(() -> {
-            final ServerPlayer player = context.getSender();
-            if (player != null)
+        if (player != null)
+        {
+            final InteractionResult result = Drinkable.attemptDrink(player.level(), player, true);
+            if (result.shouldSwing())
             {
-                final InteractionResult result = Drinkable.attemptDrink(player.level(), player, true);
-                if (result.shouldSwing())
-                {
-                    player.swing(InteractionHand.MAIN_HAND, true);
-                }
+                player.swing(InteractionHand.MAIN_HAND, true);
             }
-        });
+        }
     }
 }

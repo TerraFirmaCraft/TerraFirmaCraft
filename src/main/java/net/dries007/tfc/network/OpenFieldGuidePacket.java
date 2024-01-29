@@ -9,7 +9,7 @@ package net.dries007.tfc.network;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.network.NetworkEvent;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
 
@@ -36,15 +36,12 @@ public class OpenFieldGuidePacket
         buffer.writeVarInt(page);
     }
 
-    void handle(NetworkEvent.Context context)
+    void handle(@Nullable ServerPlayer player)
     {
-        context.enqueueWork(() -> {
-            final ServerPlayer player = context.getSender();
-            if (player != null)
-            {
-                player.doCloseContainer();
-                PatchouliIntegration.openGui(player, id, page);
-            }
-        });
+        if (player != null)
+        {
+            player.doCloseContainer();
+            PatchouliIntegration.openGui(player, id, page);
+        }
     }
 }
