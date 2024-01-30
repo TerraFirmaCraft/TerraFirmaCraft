@@ -150,9 +150,17 @@ public interface Rotation
     }
 
     /**
-     * @return The current rotation speed, in radians per tick.
+     * @return The current rotation speed, in radians per tick. Note that this <strong>can be negative!</strong>
      */
     float speed();
+
+    /**
+     * @return The absolute value of the current rotation speed, in radians per tick.
+     */
+    default float positiveSpeed()
+    {
+        return Mth.abs(speed());
+    }
 
     /**
      * Returns using a <strong>left-hand rule</strong>.

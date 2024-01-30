@@ -254,7 +254,7 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
 
     public float getRotationSpeed()
     {
-        return node.rotation() != null ? node.rotation().speed() : (isGrinding() ? previousRotationSpeed : 0f);
+        return node.rotation() != null ? Mth.abs(node.rotation().speed()) : (isGrinding() ? previousRotationSpeed : 0f);
     }
 
     @Override

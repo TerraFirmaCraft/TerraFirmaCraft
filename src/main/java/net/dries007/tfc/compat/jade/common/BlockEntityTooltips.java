@@ -114,9 +114,9 @@ public final class BlockEntityTooltips
         if (entity instanceof RotatingBlockEntity rotating)
         {
             final Rotation rotation = rotating.getRotationNode().rotation();
-            if (rotation != null && rotation.speed() > 0)
+            if (rotation != null && rotation.speed() != 0)
             {
-                tooltip.accept(Component.translatable("tfc.tooltip.rotation.angular_velocity", String.format("%.2f", rotation.speed() * 20f)));
+                tooltip.accept(Component.translatable("tfc.tooltip.rotation.angular_velocity", String.format("%.2f", Math.abs(rotation.positiveSpeed()) * 20f)));
             }
         }
     };

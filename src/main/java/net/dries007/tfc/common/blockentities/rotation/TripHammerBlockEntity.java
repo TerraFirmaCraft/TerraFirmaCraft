@@ -72,7 +72,7 @@ public class TripHammerBlockEntity extends TickableInventoryBlockEntity<ItemStac
                         Helpers.damageItem(item, 1);
                         anvil.markForSync();
                     }
-                    hammer.cooldownTicks = Mth.abs(Mth.ceil(0.8f * Mth.TWO_PI / rotation.speed()));
+                    hammer.cooldownTicks = Mth.ceil(0.8f * Mth.TWO_PI / rotation.positiveSpeed());
                 }
             }
         }
