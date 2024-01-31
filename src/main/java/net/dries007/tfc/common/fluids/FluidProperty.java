@@ -120,6 +120,18 @@ public class FluidProperty extends Property<FluidProperty.FluidKey>
         return Optional.ofNullable(keysById.get(value));
     }
 
+    @Override
+    public boolean equals(Object o)
+    {
+        return this == o;
+    }
+
+    @Override
+    public int generateHashCode()
+    {
+        return System.identityHashCode(this);
+    }
+
     public static class FluidKey implements Comparable<FluidKey>
     {
         private final ResourceLocation name;
