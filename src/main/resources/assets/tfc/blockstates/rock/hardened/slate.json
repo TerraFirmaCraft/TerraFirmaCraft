@@ -19,14 +19,6 @@
       },
       {
         "model": "tfc:block/rock/raw/slate_mirrored"
-      },
-      {
-        "model": "tfc:block/rock/raw/slate",
-        "y": 180
-      },
-      {
-        "model": "tfc:block/rock/raw/slate_mirrored",
-        "y": 180
       }
     ],
     "axis=z": [
@@ -37,16 +29,6 @@
       {
         "model": "tfc:block/rock/raw/slate_mirrored",
         "x": 90
-      },
-      {
-        "model": "tfc:block/rock/raw/slate",
-        "x": 90,
-        "y": 180
-      },
-      {
-        "model": "tfc:block/rock/raw/slate_mirrored",
-        "x": 90,
-        "y": 180
       }
     ]
   }
