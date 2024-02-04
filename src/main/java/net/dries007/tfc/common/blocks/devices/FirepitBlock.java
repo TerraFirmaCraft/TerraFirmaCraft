@@ -116,7 +116,22 @@ public class FirepitBlock extends BottomSupportedDeviceBlock implements IGhostBl
         }
     }
 
-    public void forcedAnimateTick(BlockState state, Level level, BlockPos pos, RandomSource rand)
+
+    public void forcedAnimateTick(BlockState state, Level level, BlockPos pos, RandomSource random)
+    {
+        if (!state.getValue(LIT)) return;
+        final double x = pos.getX() + 0.5;
+        final double y = pos.getY() + getParticleHeightOffset();
+        final double z = pos.getZ() + 0.5;
+        final int smoke = state.getValue(SMOKE_LEVEL); // 0 -> 4
+        for (int i = 0; i < 1 + random.nextInt(3); i++)
+        {
+            level.addAlwaysVisibleParticle(TFCParticles.SMOKES.get(smoke).get(), x + Helpers.triangle(random) * 0.5f, y + random.nextDouble(), z + Helpers.triangle(random) * 0.5f, 0, 0.07D, 0);
+        }
+    }
+
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random)
     {
         if (!state.getValue(LIT)) return;
         final double x = pos.getX() + 0.5;
@@ -124,26 +139,26 @@ public class FirepitBlock extends BottomSupportedDeviceBlock implements IGhostBl
         final double z = pos.getZ() + 0.5;
         final int smoke = state.getValue(SMOKE_LEVEL); // 0 -> 4
 
-        if (rand.nextInt(10) == 0)
+        if (random.nextInt(10) == 0)
         {
-            level.playLocalSound(x, y, z, SoundEvents.CAMPFIRE_CRACKLE, SoundSource.BLOCKS, 0.5F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.6F, false);
+            level.playLocalSound(x, y, z, SoundEvents.CAMPFIRE_CRACKLE, SoundSource.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.6F, false);
         }
-        for (int i = 0; i < 1 + rand.nextInt(3); i++)
+        for (int i = 0; i < 1 + random.nextInt(3); i++)
         {
-            level.addAlwaysVisibleParticle(TFCParticles.SMOKES.get(smoke).get(), x + Helpers.triangle(rand) * 0.5f, y + rand.nextDouble(), z + Helpers.triangle(rand) * 0.5f, 0, 0.07D, 0);
+            level.addAlwaysVisibleParticle(TFCParticles.SMOKES.get(smoke).get(), x + Helpers.triangle(random) * 0.5f, y + random.nextDouble(), z + Helpers.triangle(random) * 0.5f, 0, 0.07D, 0);
         }
-        for (int i = 0; i < rand.nextInt(4 + smoke); i++)
+        for (int i = 0; i < random.nextInt(4 + smoke); i++)
         {
-            level.addParticle(ParticleTypes.SMOKE, x + Helpers.triangle(rand) * 0.5f, y + rand.nextDouble(), z + Helpers.triangle(rand) * 0.5f, 0, 0.005D, 0);
+            level.addParticle(ParticleTypes.SMOKE, x + Helpers.triangle(random) * 0.5f, y + random.nextDouble(), z + Helpers.triangle(random) * 0.5f, 0, 0.005D, 0);
         }
-        if (rand.nextInt(6 - smoke) == 1)
+        if (random.nextInt(6 - smoke) == 1)
         {
-            level.addParticle(ParticleTypes.LARGE_SMOKE, x + Helpers.triangle(rand) * 0.5f, y + rand.nextDouble(), z + Helpers.triangle(rand) * 0.5f, 0, 0.005D, 0);
+            level.addParticle(ParticleTypes.LARGE_SMOKE, x + Helpers.triangle(random) * 0.5f, y + random.nextDouble(), z + Helpers.triangle(random) * 0.5f, 0, 0.005D, 0);
         }
-        if (rand.nextInt(4) == 0 && level.getBlockEntity(pos) instanceof FirepitBlockEntity firepit && firepit.getAsh() > 0)
+        if (random.nextInt(4) == 0 && level.getBlockEntity(pos) instanceof FirepitBlockEntity firepit && firepit.getAsh() > 0)
         {
             for (int i = 0; i < firepit.getAsh(); i++)
-                level.addParticle(new DustParticleOptions(Vec3.fromRGB24(0xe0cf94).toVector3f(), 1f), x + Helpers.triangle(rand) * 0.5f, y - getParticleHeightOffset() + 0.25, z + Helpers.triangle(rand) * 0.5f, 0, 0, 0);
+                level.addParticle(new DustParticleOptions(Vec3.fromRGB24(0xe0cf94).toVector3f(), 1f), x + Helpers.triangle(random) * 0.5f, y - getParticleHeightOffset() + 0.25, z + Helpers.triangle(random) * 0.5f, 0, 0, 0);
         }
     }
 

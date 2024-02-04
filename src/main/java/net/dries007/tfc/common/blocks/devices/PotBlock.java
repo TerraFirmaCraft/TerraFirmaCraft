@@ -44,20 +44,20 @@ public class PotBlock extends FirepitBlock
     }
 
     @Override
-    public void forcedAnimateTick(BlockState state, Level level, BlockPos pos, RandomSource rand)
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random)
     {
-        super.forcedAnimateTick(state, level, pos, rand);
+        super.animateTick(state, level, pos, random);
         level.getBlockEntity(pos, TFCBlockEntities.POT.get()).ifPresent(pot -> {
             if (!pot.shouldRenderAsBoiling()) return;
             double x = pos.getX() + 0.5;
             double y = pos.getY();
             double z = pos.getZ() + 0.5;
-            for (int i = 0; i < rand.nextInt(5) + 4; i++)
+            for (int i = 0; i < random.nextInt(5) + 4; i++)
             {
-                level.addParticle(TFCParticles.BUBBLE.get(), false, x + rand.nextFloat() * 0.375 - 0.1875, y + 0.625, z + rand.nextFloat() * 0.375 - 0.1875, 0, 0.05D, 0);
+                level.addParticle(TFCParticles.BUBBLE.get(), false, x + random.nextFloat() * 0.375 - 0.1875, y + 0.625, z + random.nextFloat() * 0.375 - 0.1875, 0, 0.05D, 0);
             }
-            level.addParticle(TFCParticles.STEAM.get(), false, x, y + 0.8, z, Helpers.triangle(rand), 0.5, Helpers.triangle(rand));
-            level.playLocalSound(x, y, z, SoundEvents.WATER_AMBIENT, SoundSource.BLOCKS, 1.0F, rand.nextFloat() * 0.7F + 0.4F, false);
+            level.addParticle(TFCParticles.STEAM.get(), false, x, y + 0.8, z, Helpers.triangle(random), 0.5, Helpers.triangle(random));
+            level.playLocalSound(x, y, z, SoundEvents.WATER_AMBIENT, SoundSource.BLOCKS, 1.0F, random.nextFloat() * 0.7F + 0.4F, false);
         });
     }
 
