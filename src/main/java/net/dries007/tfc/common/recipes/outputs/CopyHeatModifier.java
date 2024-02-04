@@ -7,8 +7,10 @@
 package net.dries007.tfc.common.recipes.outputs;
 
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.capabilities.heat.IHeat;
 
 public enum CopyHeatModifier implements ItemStackModifier.SingleInstance<CopyHeatModifier>
 {
@@ -17,7 +19,11 @@ public enum CopyHeatModifier implements ItemStackModifier.SingleInstance<CopyHea
     @Override
     public ItemStack apply(ItemStack stack, ItemStack input)
     {
-        stack.getCapability(HeatCapability.CAPABILITY).ifPresent(outputCap -> input.getCapability(HeatCapability.CAPABILITY).ifPresent(inputCap -> outputCap.setTemperature(inputCap.getTemperature())));
+        final @Nullable IHeat heat = HeatCapability.get(input);
+        if (heat != null)
+        {
+            HeatCapability.setTemperature(stack, heat.getTemperature());
+        }
         return stack;
     }
 

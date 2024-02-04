@@ -114,10 +114,7 @@ public enum GlassOperation
 
     public boolean hasRequiredTemperature(ItemStack stack)
     {
-        if (this == SAW)
-        {
-            return true;
-        }
-        return stack.getCapability(HeatCapability.CAPABILITY).map(cap -> cap.getTemperature() > Heat.FAINT_RED.getMin()).orElse(false);
+        return this == SAW
+            || HeatCapability.getTemperature(stack) > Heat.FAINT_RED.getMin();
     }
 }

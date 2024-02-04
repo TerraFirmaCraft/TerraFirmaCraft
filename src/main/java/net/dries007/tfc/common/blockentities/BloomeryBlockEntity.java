@@ -400,10 +400,10 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
                 final int producedAmount = inputFluid.getAmount() / cachedRecipe.getInputFluid().amount();
 
                 // set the output to just below the melt temp
-                Metal metal = Metal.get(inventory.getFluid().getFluid());
+                final Metal metal = Metal.get(inventory.getFluid().getFluid());
                 if (metal != null)
                 {
-                    result.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.setTemperature(metal.getMeltTemperature() - 1f));
+                    HeatCapability.setTemperature(result, metal.getMeltTemperature() - 1f);
                 }
                 final BlockPos pos = getInternalBlockPos();
                 level.setBlockAndUpdate(pos, TFCBlocks.BLOOM.get().defaultBlockState().setValue(BloomBlock.LAYERS, BloomBlockEntity.TOTAL_LAYERS));

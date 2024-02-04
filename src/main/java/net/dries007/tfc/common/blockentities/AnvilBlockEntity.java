@@ -26,7 +26,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.util.LazyOptional;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.particle.TFCParticles;
@@ -237,8 +236,8 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
                     return InteractionResult.FAIL;
                 }
 
-                final LazyOptional<IHeat> heat = stack.getCapability(HeatCapability.CAPABILITY);
-                if (heat.map(h -> h.getWorkingTemperature() > h.getTemperature()).orElse(false))
+                final @Nullable IHeat heat = HeatCapability.get(stack);
+                if (heat != null && !heat.canWork())
                 {
                     player.displayClientMessage(Component.translatable("tfc.tooltip.not_hot_enough_to_work"), false);
                     return InteractionResult.FAIL;
@@ -270,10 +269,13 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
                 {
                     // Recipe completed, so consume inputs and add outputs
                     final ItemStack outputStack = recipe.assemble(inventory, level.registryAccess());
+                    final @Nullable IHeat outputHeat = HeatCapability.get(outputStack);
 
                     // Always preserve heat of the input
-                    outputStack.getCapability(HeatCapability.CAPABILITY).ifPresent(outputHeat ->
-                        outputHeat.setTemperatureIfWarmer(heat.map(IHeat::getTemperature).orElse(0f)));
+                    if (outputHeat != null)
+                    {
+                        outputHeat.setTemperatureIfWarmer(heat);
+                    }
 
                     // And apply the forging bonus, if the recipe says to do so
                     if (recipe.shouldApplyForgingBonus())
@@ -325,8 +327,8 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
                     return false;
                 }
 
-                final LazyOptional<IHeat> heat = stack.getCapability(HeatCapability.CAPABILITY);
-                if (heat.map(h -> h.getWorkingTemperature() > h.getTemperature()).orElse(false))
+                final @Nullable IHeat heat = HeatCapability.get(stack);
+                if (heat != null && !heat.canWork())
                 {
                     return false;
                 }
@@ -362,10 +364,13 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
                 {
                     // Recipe completed, so consume inputs and add outputs
                     final ItemStack outputStack = recipe.assemble(inventory, level.registryAccess());
+                    final @Nullable IHeat outputHeat = HeatCapability.get(outputStack);
 
                     // Always preserve heat of the input
-                    outputStack.getCapability(HeatCapability.CAPABILITY).ifPresent(outputHeat ->
-                        outputHeat.setTemperatureIfWarmer(heat.map(IHeat::getTemperature).orElse(0f)));
+                    if (outputHeat != null)
+                    {
+                        outputHeat.setTemperatureIfWarmer(heat);
+                    }
 
                     inventory.setStackInSlot(SLOT_INPUT_MAIN, outputStack);
                 }
@@ -412,10 +417,10 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
                 return InteractionResult.FAIL;
             }
 
-            final LazyOptional<IHeat> leftHeat = left.getCapability(HeatCapability.CAPABILITY);
-            final LazyOptional<IHeat> rightHeat = right.getCapability(HeatCapability.CAPABILITY);
+            final @Nullable IHeat leftHeat = HeatCapability.get(left);
+            final @Nullable IHeat rightHeat = HeatCapability.get(right);
 
-            if (leftHeat.map(h -> h.getWeldingTemperature() > h.getTemperature()).orElse(false) || rightHeat.map(h -> h.getWeldingTemperature() > h.getTemperature()).orElse(false))
+            if ((leftHeat != null && !leftHeat.canWeld()) || (rightHeat != null && !rightHeat.canWeld()))
             {
                 player.displayClientMessage(Component.translatable("tfc.tooltip.not_hot_enough_to_weld"), true);
                 return InteractionResult.FAIL;
@@ -428,16 +433,18 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
             }
 
             final ItemStack result = recipe.assemble(inventory, level.registryAccess());
+            final @Nullable IHeat resultHeat = HeatCapability.get(result);
 
             inventory.setStackInSlot(SLOT_INPUT_MAIN, result);
             inventory.setStackInSlot(SLOT_INPUT_SECOND, ItemStack.EMPTY);
             inventory.getStackInSlot(SLOT_CATALYST).shrink(1);
 
             // Always copy heat from inputs since we have two
-            result.getCapability(HeatCapability.CAPABILITY).ifPresent(resultHeat -> resultHeat.setTemperatureIfWarmer(Math.max(
-                leftHeat.map(IHeat::getTemperature).orElse(0f),
-                rightHeat.map(IHeat::getTemperature).orElse(0f)
-            )));
+            if (resultHeat != null)
+            {
+                resultHeat.setTemperatureIfWarmer(leftHeat);
+                resultHeat.setTemperatureIfWarmer(rightHeat);
+            }
 
             markForSync();
             return InteractionResult.SUCCESS;

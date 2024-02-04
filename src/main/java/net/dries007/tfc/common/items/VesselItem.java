@@ -530,7 +530,7 @@ public class VesselItem extends Item
             int count = 0;
             for (ItemStack stack : Helpers.iterate(inventory))
             {
-                final IHeat heat = Helpers.getCapability(stack, HeatCapability.CAPABILITY);
+                final @Nullable IHeat heat = HeatCapability.get(stack);
                 if (heat != null)
                 {
                     count += stack.getCount();

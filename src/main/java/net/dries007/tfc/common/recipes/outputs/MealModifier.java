@@ -71,7 +71,7 @@ public record MealModifier(FoodData baseFood, List<MealPortion> portions) implem
 
                     // Clear any transient data that doesn't display, so we don't create weird stackability issues
                     FoodCapability.setNeverExpires(tooltipItem);
-                    HeatCapability.clearTemperature(tooltipItem);
+                    HeatCapability.setTemperature(tooltipItem, 0);
 
                     itemIngredients.add(tooltipItem);
                 }

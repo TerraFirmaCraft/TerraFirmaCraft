@@ -120,6 +120,7 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import net.dries007.tfc.client.TFCSounds;
@@ -169,6 +170,7 @@ import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
 import net.dries007.tfc.common.capabilities.glass.GlassWorkData;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatDefinition;
+import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
@@ -1104,12 +1106,10 @@ public final class ForgeEventHandler
         if (entity instanceof ItemEntity itemEntity && !level.isClientSide && TFCConfig.SERVER.coolHotItemEntities.get())
         {
             final ItemStack item = itemEntity.getItem();
-            item.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> {
-                if (cap.getTemperature() > 0f)
-                {
-                    itemEntity.lifespan = TFCConfig.SERVER.ticksBeforeItemCool.get();
-                }
-            });
+            if (HeatCapability.isHot(item))
+            {
+                itemEntity.lifespan = TFCConfig.SERVER.ticksBeforeItemCool.get();
+            }
         }
         else if (entity instanceof LightningBolt lightning && !level.isClientSide && !event.isCanceled())
         {
@@ -1191,11 +1191,14 @@ public final class ForgeEventHandler
         if (!TFCConfig.SERVER.coolHotItemEntities.get()) return;
         final ItemEntity entity = event.getEntity();
         if (entity.level().isClientSide) return;
+
         final ServerLevel level = (ServerLevel) entity.level();
         final ItemStack stack = entity.getItem();
         final BlockPos pos = entity.blockPosition();
+        final @Nullable IHeat heat = HeatCapability.get(stack);
 
-        stack.getCapability(HeatCapability.CAPABILITY).ifPresent(heat -> {
+        if (heat != null)
+        {
             final int lifespan = stack.getItem().getEntityLifespan(stack, level);
             if (entity.lifespan >= lifespan)
                 return; // the case where the item has been sitting out for longer than the lifespan. So it should be removed by the game.
@@ -1274,7 +1277,7 @@ public final class ForgeEventHandler
                 event.setExtraLife(lifespan);
             }
             event.setCanceled(true);
-        });
+        }
     }
 
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event)

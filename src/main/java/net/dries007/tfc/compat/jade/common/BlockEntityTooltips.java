@@ -52,6 +52,7 @@ import net.dries007.tfc.common.capabilities.egg.EggCapability;
 import net.dries007.tfc.common.capabilities.egg.IEgg;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.items.Powder;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.BarrelRecipe;
@@ -212,7 +213,11 @@ public final class BlockEntityTooltips
             itemWithCount(tooltip, displayItem);
 
             final List<Component> text = new ArrayList<>();
-            item.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(item, text));
+            final @Nullable IHeat heat = HeatCapability.get(item);
+            if (heat != null)
+            {
+                heat.addTooltipInfo(item, text);
+            }
             text.forEach(tooltip);
         }
     };

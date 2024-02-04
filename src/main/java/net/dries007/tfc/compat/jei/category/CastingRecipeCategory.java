@@ -71,9 +71,9 @@ public class CastingRecipeCategory extends BaseRecipeCategory<CastingRecipe>
     @Override
     public void draw(CastingRecipe recipe, IRecipeSlotsView recipeSlots, GuiGraphics stack, double mouseX, double mouseY)
     {
-        recipeSlots.findSlotByName(INPUT_SLOT).flatMap(IRecipeSlotView::getDisplayedItemStack).ifPresent(filled -> {
-            filled.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.setTemperature(Heat.maxVisibleTemperature()));
-        });
+        recipeSlots.findSlotByName(INPUT_SLOT)
+            .flatMap(IRecipeSlotView::getDisplayedItemStack)
+            .ifPresent(filled -> HeatCapability.setTemperature(filled, Heat.maxVisibleTemperature()));
         arrow.draw(stack, 48, 5);
         arrowAnimated.draw(stack, 48, 5);
     }

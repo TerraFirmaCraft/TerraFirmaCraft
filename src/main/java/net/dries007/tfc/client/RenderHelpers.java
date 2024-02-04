@@ -482,7 +482,7 @@ public final class RenderHelpers
 
     public static int getHeatedBrightness(ItemStack stack, int combinedLight)
     {
-        final float heat = Math.min(stack.getCapability(HeatCapability.CAPABILITY).map(IHeat::getTemperature).orElse(0f) / 400f, 1f);
+        final float heat = Math.min(HeatCapability.getTemperature(stack) / 400f, 1f);
         return Math.max(combinedLight, (int) (heat * LightTexture.FULL_BRIGHT));
     }
 

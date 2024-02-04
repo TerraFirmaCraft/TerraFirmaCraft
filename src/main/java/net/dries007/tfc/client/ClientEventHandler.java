@@ -351,8 +351,8 @@ public final class ClientEventHandler
 
             TFCBlocks.WOODS.values().forEach(map -> ItemProperties.register(map.get(BARREL).get().asItem(), Helpers.identifier("sealed"), (stack, level, entity, unused) -> stack.hasTag() ? 1.0f : 0f));
 
-            ItemProperties.register(TFCItems.BLOWPIPE_WITH_GLASS.get(), Helpers.identifier("heat"), (stack, level, entity, unused) -> stack.getCapability(HeatCapability.CAPABILITY).map(cap -> Mth.clamp(cap.getTemperature() / Heat.maxVisibleTemperature(), 0, 1)).orElse(0f));
-            ItemProperties.register(TFCItems.CERAMIC_BLOWPIPE_WITH_GLASS.get(), Helpers.identifier("heat"), (stack, level, entity, unused) -> stack.getCapability(HeatCapability.CAPABILITY).map(cap -> Mth.clamp(cap.getTemperature() / Heat.maxVisibleTemperature(), 0, 1)).orElse(0f));
+            ItemProperties.register(TFCItems.BLOWPIPE_WITH_GLASS.get(), Helpers.identifier("heat"), (stack, level, entity, unused) -> Mth.clamp(HeatCapability.getTemperature(stack) / Heat.maxVisibleTemperature(), 0, 1));
+            ItemProperties.register(TFCItems.CERAMIC_BLOWPIPE_WITH_GLASS.get(), Helpers.identifier("heat"), (stack, level, entity, unused) -> Mth.clamp(HeatCapability.getTemperature(stack) / Heat.maxVisibleTemperature(), 0, 1));
 
             TFCBlocks.WOODS.forEach((wood, map) -> {
                 HorseChestLayer.registerChest(map.get(CHEST).get().asItem(), Helpers.identifier("textures/entity/chest/horse/" + wood.getSerializedName() + ".png"));

@@ -86,7 +86,8 @@ public class HeatingRecipeCategory extends BaseRecipeCategory<HeatingRecipe>
 
         for (IRecipeSlotView view : recipeSlots.getSlotViews())
         {
-            view.getDisplayedItemStack().ifPresent(stack -> stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.setTemperature(recipe.getTemperature())));
+            view.getDisplayedItemStack()
+                .ifPresent(stack -> HeatCapability.setTemperature(stack, recipe.getTemperature()));
         }
     }
 }

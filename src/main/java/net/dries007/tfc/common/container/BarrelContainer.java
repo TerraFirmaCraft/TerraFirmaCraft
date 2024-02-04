@@ -18,6 +18,8 @@ import net.dries007.tfc.common.blocks.devices.BarrelBlock;
 import net.dries007.tfc.common.blocks.devices.SealableDeviceBlock;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.capabilities.heat.IHeat;
+
 import org.jetbrains.annotations.Nullable;
 
 public class BarrelContainer extends BlockEntityContainer<BarrelBlockEntity> implements ButtonHandlerContainer
@@ -65,8 +67,13 @@ public class BarrelContainer extends BlockEntityContainer<BarrelBlockEntity> imp
     @Override
     protected boolean moveStack(ItemStack stack, int slotIndex)
     {
-        if (blockEntity.getBlockState().getValue(BarrelBlock.SEALED)) return true;
-        final int containerSlot = stack.getCapability(Capabilities.FLUID_ITEM).isPresent() && stack.getCapability(HeatCapability.CAPABILITY).map(cap -> cap.getTemperature() == 0f).orElse(false) ? BarrelBlockEntity.SLOT_FLUID_CONTAINER_IN : BarrelBlockEntity.SLOT_ITEM;
+        if (blockEntity.getBlockState().getValue(BarrelBlock.SEALED))
+        {
+            return true;
+        }
+
+        final @Nullable IHeat heat = HeatCapability.get(stack);
+        final int containerSlot = stack.getCapability(Capabilities.FLUID_ITEM).isPresent() && heat != null && heat.getTemperature() == 0 ? BarrelBlockEntity.SLOT_FLUID_CONTAINER_IN : BarrelBlockEntity.SLOT_ITEM;
 
         return switch (typeOf(slotIndex))
             {

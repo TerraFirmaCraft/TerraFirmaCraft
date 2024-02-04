@@ -25,11 +25,14 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.PitKilnBlock;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
+
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.VisibleForTesting;
 
 public class PitKilnBlockEntity extends PlacedItemBlockEntity
@@ -296,11 +299,12 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
         final float eagerProgress = Mth.clamp(progress * 1.125f, 0, 1); // Reach just above max temperature just before the end
         final float targetTemperature = Mth.lerp(eagerProgress, 0, TFCConfig.SERVER.pitKilnTemperature.get());
 
-        for (int i = 0; i < inventory.getSlots(); i++)
+        for (int slot = 0; slot < inventory.getSlots(); slot++)
         {
-            final ItemStack stack = inventory.getStackInSlot(i);
-            final int slot = i; // the boy genius LexManos has turned me into a functional programmer
-            stack.getCapability(HeatCapability.CAPABILITY).ifPresent(heat -> {
+            final ItemStack stack = inventory.getStackInSlot(slot);
+            final @Nullable IHeat heat = HeatCapability.get(stack);
+            if (heat != null)
+            {
                 heat.setTemperature(targetTemperature); // Heat each individual item
                 final HeatingRecipe recipe = cachedRecipes[slot]; // And transform recipes
                 if (recipe != null && recipe.isValidTemperature(targetTemperature))
@@ -308,7 +312,7 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
                     final ItemStack out = recipe.assemble(new ItemStackInventory(stack), level.registryAccess()); // Liquids are lost
                     inventory.setStackInSlot(slot, out);
                 }
-            });
+            }
         }
     }
 
