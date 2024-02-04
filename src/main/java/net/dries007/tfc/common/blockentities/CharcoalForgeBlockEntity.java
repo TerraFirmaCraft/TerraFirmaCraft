@@ -35,6 +35,7 @@ import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodTraits;
 import net.dries007.tfc.common.capabilities.heat.Heat;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.container.CharcoalForgeContainer;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
@@ -121,17 +122,19 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
 
             HeatCapability.provideHeatTo(level, pos.above(), forge.temperature);
 
-            for (int i = SLOT_INPUT_MIN; i <= SLOT_INPUT_MAX; i++)
+            for (int slot = SLOT_INPUT_MIN; slot <= SLOT_INPUT_MAX; slot++)
             {
-                ItemStack stack = forge.inventory.getStackInSlot(i);
-                int slot = i;
-                stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> {
+                final ItemStack stack = forge.inventory.getStackInSlot(slot);
+                final @Nullable IHeat heat = HeatCapability.get(stack);
+
+                if (heat != null)
+                {
                     // Update temperature of item
-                    HeatCapability.addTemp(cap, forge.temperature);
+                    HeatCapability.addTemp(heat, forge.temperature);
 
                     // Handle possible melting, or conversion (if reach 1599 = pit kiln temperature)
                     forge.handleInputMelting(stack, slot);
-                });
+                }
             }
             forge.markForSync();
         }
@@ -203,8 +206,8 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
                 extinguish(state);
                 for (int i = SLOT_INPUT_MIN; i <= SLOT_INPUT_MAX; i++)
                 {
-                    ItemStack stack = inventory.getStackInSlot(i);
-                    stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.setTemperature(0f));
+                    final ItemStack stack = inventory.getStackInSlot(i);
+                    HeatCapability.setTemperature(stack, 0);
                 }
             }
         }
@@ -298,11 +301,11 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
         }
         else if (slot <= SLOT_INPUT_MAX)
         {
-            return Helpers.mightHaveCapability(stack, HeatCapability.CAPABILITY);
+            return HeatCapability.maybeHas(stack);
         }
         else
         {
-            return Helpers.mightHaveCapability(stack, Capabilities.FLUID_ITEM, HeatCapability.CAPABILITY);
+            return Helpers.mightHaveCapability(stack, Capabilities.FLUID_ITEM) && HeatCapability.maybeHas(stack);
         }
     }
 
@@ -357,29 +360,30 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
     private void handleInputMelting(ItemStack stack, int startIndex)
     {
         assert level != null;
-        HeatingRecipe recipe = cachedRecipes[startIndex - SLOT_INPUT_MIN];
-        stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> {
-            if (recipe != null && recipe.isValidTemperature(cap.getTemperature()))
+
+        final HeatingRecipe recipe = cachedRecipes[startIndex - SLOT_INPUT_MIN];
+        final @Nullable IHeat cap = HeatCapability.get(stack);
+
+        if (cap != null && recipe != null && recipe.isValidTemperature(cap.getTemperature()))
+        {
+            assert level != null;
+
+            // Handle possible metal output
+            final ItemStackInventory inventory = new ItemStackInventory(stack);
+            FluidStack fluidStack = recipe.assembleFluid(inventory);
+            ItemStack outputStack = recipe.assemble(inventory, level.registryAccess());
+            float itemTemperature = cap.getTemperature();
+
+            // Loop through all input slots
+            for (int slot = SLOT_EXTRA_MIN; slot <= SLOT_EXTRA_MAX; slot++)
             {
-                assert level != null;
-
-                // Handle possible metal output
-                final ItemStackInventory inventory = new ItemStackInventory(stack);
-                FluidStack fluidStack = recipe.assembleFluid(inventory);
-                ItemStack outputStack = recipe.assemble(inventory, level.registryAccess());
-                float itemTemperature = cap.getTemperature();
-
-                // Loop through all input slots
-                for (int slot = SLOT_EXTRA_MIN; slot <= SLOT_EXTRA_MAX; slot++)
-                {
-                    fluidStack = Helpers.mergeOutputFluidIntoSlot(this.inventory, fluidStack, itemTemperature, slot);
-                    if (fluidStack.isEmpty()) break;
-                }
-
-                FoodCapability.applyTrait(outputStack, FoodTraits.CHARCOAL_GRILLED);
-                this.inventory.setStackInSlot(startIndex, outputStack);
+                fluidStack = Helpers.mergeOutputFluidIntoSlot(this.inventory, fluidStack, itemTemperature, slot);
+                if (fluidStack.isEmpty()) break;
             }
-        });
+
+            FoodCapability.applyTrait(outputStack, FoodTraits.CHARCOAL_GRILLED);
+            this.inventory.setStackInSlot(startIndex, outputStack);
+        }
     }
 
     private void cascadeFuelSlots()

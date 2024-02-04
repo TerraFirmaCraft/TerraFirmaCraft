@@ -27,10 +27,7 @@ public interface MoldLike extends IFluidHandlerItem, IHeat, EmptyInventory
     @Nullable
     static MoldLike get(ItemStack stack)
     {
-        return stack.getCapability(HeatCapability.CAPABILITY)
-            .resolve()
-            .map(t -> t instanceof MoldLike v ? v : null)
-            .orElse(null);
+        return HeatCapability.get(stack) instanceof MoldLike v ? v : null;
     }
 
     /**

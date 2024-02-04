@@ -37,7 +37,7 @@ public final class HeatCapability
     public static final Capability<IHeatBlock> BLOCK_CAPABILITY = Helpers.capability(new CapabilityToken<>() {});
     public static final ResourceLocation BLOCK_KEY = new ResourceLocation(MOD_ID, "block_heat");
 
-    // For access only to the network serializable portion of a item stack heat capability
+    // For access only to the network serializable portion of an item stack heat capability
     public static final Capability<INetworkHeat> NETWORK_CAPABILITY = Helpers.capability(new CapabilityToken<>() {});
 
     public static final DataManager<HeatDefinition> MANAGER = new DataManager<>(Helpers.identifier("item_heats"), "item heat", HeatDefinition::new, HeatDefinition::new, HeatDefinition::encode, Packet::new);
@@ -51,9 +51,44 @@ public final class HeatCapability
         return Helpers.getCapability(stack, CAPABILITY);
     }
 
+    /**
+     * @return The temperature of a given {@code stack}, or {@code 0} if the item is not heatable.
+     */
+    public static float getTemperature(ItemStack stack)
+    {
+        final @Nullable IHeat heat = get(stack);
+        return heat != null ? heat.getTemperature() : 0;
+    }
+
+    /**
+     * Sets the temperature of a given {@code stack} to {@code temperature}, if the stack has a heat capability.
+     */
+    public static void setTemperature(ItemStack stack, float temperature)
+    {
+        final @Nullable IHeat heat = get(stack);
+        if (heat != null)
+        {
+            heat.setTemperature(temperature);
+        }
+    }
+
     public static boolean has(ItemStack stack)
     {
         return stack.getCapability(CAPABILITY).isPresent();
+    }
+
+    public static boolean maybeHas(ItemStack stack)
+    {
+        return Helpers.mightHaveCapability(stack, CAPABILITY);
+    }
+
+    /**
+     * @return {@code true} if {@code stack} has a heat capability, and is currently hot, i.e. nonzero temperature.
+     */
+    public static boolean isHot(ItemStack stack)
+    {
+        final @Nullable IHeat heat = get(stack);
+        return heat != null && heat.getTemperature() > 0;
     }
 
     @Nullable
@@ -67,18 +102,6 @@ public final class HeatCapability
             }
         }
         return null;
-    }
-
-    /**
-     * Clears any temperature applied to {@code stack}, if present.
-     */
-    public static void clearTemperature(ItemStack stack)
-    {
-        final @Nullable IHeat heat = get(stack);
-        if (heat != null)
-        {
-            heat.setTemperature(0);
-        }
     }
 
     public static float adjustTempTowards(float temp, float target)

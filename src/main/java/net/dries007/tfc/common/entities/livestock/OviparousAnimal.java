@@ -31,9 +31,11 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.MinecraftForge;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.capabilities.egg.EggCapability;
+import net.dries007.tfc.common.capabilities.egg.IEgg;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.Pluckable;
 import net.dries007.tfc.common.entities.ai.livestock.LivestockAi;
@@ -222,11 +224,13 @@ public abstract class OviparousAnimal extends ProducingAnimal implements Pluckab
     @SuppressWarnings("unchecked")
     public ItemStack makeEgg()
     {
-        ItemStack stack = new ItemStack(Items.EGG);
+        final ItemStack stack = new ItemStack(Items.EGG);
         if (isFertilized())
         {
-            stack.getCapability(EggCapability.CAPABILITY).ifPresent(egg -> {
-                OviparousAnimal baby = ((EntityType<OviparousAnimal>) getType()).create(level());
+            final @Nullable IEgg egg = EggCapability.get(stack);
+            if (egg != null)
+            {
+                final OviparousAnimal baby = ((EntityType<OviparousAnimal>) getType()).create(level());
                 if (baby != null)
                 {
                     baby.setGender(Gender.valueOf(random.nextBoolean()));
@@ -234,7 +238,7 @@ public abstract class OviparousAnimal extends ProducingAnimal implements Pluckab
                     baby.setFamiliarity(getFamiliarity() < 0.9F ? getFamiliarity() / 2.0F : getFamiliarity() * 0.9F);
                     egg.setFertilized(baby, Calendars.SERVER.getTotalDays() + hatchDays.get());
                 }
-            });
+            }
         }
         AnimalProductEvent event = new AnimalProductEvent(level(), blockPosition(), null, this, stack, ItemStack.EMPTY, 1);
         if (!MinecraftForge.EVENT_BUS.post(event))

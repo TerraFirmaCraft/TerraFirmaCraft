@@ -33,7 +33,6 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.common.capabilities.food.IFood;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.entities.Temptable;
@@ -201,11 +200,9 @@ public class PackPredator extends Predator implements Temptable
     @Override
     public boolean isFood(ItemStack stack)
     {
-        if (stack.getCapability(FoodCapability.CAPABILITY).filter(IFood::isRotten).isPresent())
-        {
-            return false;
-        }
-        return isTamable() && Helpers.isItem(stack, TFCTags.Items.DOG_FOOD);
+        return !FoodCapability.isRotten(stack)
+            && isTamable()
+            && Helpers.isItem(stack, TFCTags.Items.DOG_FOOD);
     }
 
     @Override

@@ -37,6 +37,7 @@ import net.dries007.tfc.common.capabilities.SimpleFluidHandler;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodTraits;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.capabilities.heat.IHeatBlock;
 import net.dries007.tfc.common.container.CrucibleContainer;
 import net.dries007.tfc.common.fluids.FluidHelpers;
@@ -87,19 +88,19 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
 
         // Input draining
         boolean canFill = crucible.lastFillTicks <= 0;
-        for (int i = SLOT_INPUT_START; i <= SLOT_INPUT_END; i++)
+        for (int slot = SLOT_INPUT_START; slot <= SLOT_INPUT_END; slot++)
         {
-            final int slot = i;
-            final ItemStack inputStack = crucible.inventory.getStackInSlot(i);
+            final ItemStack inputStack = crucible.inventory.getStackInSlot(slot);
             if (!inputStack.isEmpty())
             {
-                inputStack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> {
-
+                final @Nullable IHeat inputHeat = HeatCapability.get(inputStack);
+                if (inputHeat != null)
+                {
                     // Always heat up the item regardless if it is melting or not
-                    HeatCapability.addTemp(cap, crucible.temperature, 2 + crucible.temperature * 0.0025f); // Breaks even at 400 C
+                    HeatCapability.addTemp(inputHeat, crucible.temperature, 2 + crucible.temperature * 0.0025f); // Breaks even at 400 C
 
                     final HeatingRecipe recipe = crucible.cachedRecipes[slot];
-                    if (recipe != null && recipe.isValidTemperature(cap.getTemperature()))
+                    if (recipe != null && recipe.isValidTemperature(inputHeat.getTemperature()))
                     {
                         // Convert input
                         final ItemStackInventory inventory = new ItemStackInventory(inputStack);
@@ -108,28 +109,28 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
 
                         // Output transformations
                         FoodCapability.applyTrait(outputItem, FoodTraits.BURNT_TO_A_CRISP);
-                        outputItem.getCapability(HeatCapability.CAPABILITY).ifPresent(outputCap -> outputCap.setTemperature(crucible.temperature));
+                        HeatCapability.setTemperature(outputItem, crucible.temperature);
 
                         // Add output to crucible
                         crucible.inventory.setStackInSlot(slot, outputItem);
                         crucible.inventory.fill(outputFluid, IFluidHandler.FluidAction.EXECUTE);
                         crucible.markForSync();
                     }
-                });
+                }
             }
 
             if (canFill)
             {
                 // Re-query the input stack, as it may have changed.
                 // Try to handle draining from a mold-like item
-                final ItemStack drainStack = crucible.inventory.getStackInSlot(i);
+                final ItemStack drainStack = crucible.inventory.getStackInSlot(slot);
                 MoldLike mold = MoldLike.get(drainStack);
                 if (mold != null && mold.isMolten())
                 {
                     // Drain contents into the crucible
                     if (FluidHelpers.transferExact(mold, crucible.inventory, 1))
                     {
-                        if (crucible.fastPourTicks >= 0 && crucible.fastPourSlot == i)
+                        if (crucible.fastPourTicks >= 0 && crucible.fastPourSlot == slot)
                         {
                             crucible.fastPourTicks--;
                             crucible.lastFillTicks = TFCConfig.SERVER.crucibleFastPouringRate.get();
@@ -235,11 +236,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        if (slot == SLOT_OUTPUT)
-        {
-            return Helpers.mightHaveCapability(stack, Capabilities.FLUID_ITEM, HeatCapability.CAPABILITY);
-        }
-        return Helpers.mightHaveCapability(stack, HeatCapability.CAPABILITY);
+        return HeatCapability.maybeHas(stack) && (slot != SLOT_OUTPUT || Helpers.mightHaveCapability(stack, Capabilities.FLUID_ITEM));
     }
 
     @Override

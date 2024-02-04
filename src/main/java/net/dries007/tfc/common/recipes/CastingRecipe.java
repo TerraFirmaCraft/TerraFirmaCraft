@@ -22,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.MoldLike;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.util.JsonHelpers;
@@ -84,7 +85,11 @@ public class CastingRecipe implements ISimpleRecipe<MoldLike>
     public ItemStack assemble(MoldLike inventory, @Nullable RegistryAccess registryAccess)
     {
         final ItemStack stack = result.getSingleStack(inventory.getContainer().copy());
-        stack.getCapability(HeatCapability.CAPABILITY).ifPresent(h -> h.setTemperatureIfWarmer(inventory.getTemperature()));
+        final @Nullable IHeat heat = HeatCapability.get(stack);
+        if (heat != null)
+        {
+            heat.setTemperatureIfWarmer(inventory.getTemperature());
+        }
         return stack;
     }
 

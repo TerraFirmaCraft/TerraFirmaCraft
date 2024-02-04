@@ -12,7 +12,7 @@ import net.minecraft.world.level.Level;
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateModel;
-import net.dries007.tfc.util.tracker.WorldTrackerCapability;
+import net.dries007.tfc.util.tracker.WorldTracker;
 
 public record UpdateClimateModelPacket(ClimateModel model)
 {
@@ -34,7 +34,7 @@ public record UpdateClimateModelPacket(ClimateModel model)
         final Level level = ClientHelpers.getLevel();
         if (level != null)
         {
-            level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(c -> c.setClimateModel(model));
+            WorldTracker.get(level).setClimateModel(model);
         }
     }
 }

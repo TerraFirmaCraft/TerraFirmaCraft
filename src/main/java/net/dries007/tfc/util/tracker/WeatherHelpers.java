@@ -64,7 +64,7 @@ public final class WeatherHelpers
                     final long rainEndTick = rainStartTick + rainTime;
                     final float rainIntensity = level.random.nextFloat();
 
-                    level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(tracker -> tracker.setWeatherData(rainStartTick, rainEndTick, rainIntensity));
+                    WorldTracker.get(level).setWeatherData(rainStartTick, rainEndTick, rainIntensity);
                 }
                 else
                 {
@@ -79,6 +79,7 @@ public final class WeatherHelpers
     /**
      * This is a mapped and documented version of {@link ServerLevel#advanceWeatherCycle()}. It's not used, just kept here for reference.
      */
+    @SuppressWarnings("unused")
     private static void advanceWeatherCycleVanillaImplementation(ServerLevel level, ServerLevelData serverLevelData)
     {
         // Called every tick

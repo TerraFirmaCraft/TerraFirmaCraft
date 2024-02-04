@@ -8,12 +8,11 @@ package net.dries007.tfc.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.screen.button.AnvilPlanButton;
 import net.dries007.tfc.client.screen.button.AnvilStepButton;
@@ -62,7 +61,7 @@ public class AnvilScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilContai
         assert level != null;
 
         // Draw rule icons
-        final Forging forging = blockEntity.getMainInputForging();
+        final @Nullable Forging forging = blockEntity.getMainInputForging();
         if (forging != null)
         {
             // Draw the progress indicators
@@ -123,7 +122,7 @@ public class AnvilScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilContai
         super.renderTooltip(graphics, mouseX, mouseY);
 
         final Level level = blockEntity.getLevel();
-        final Forging forging = blockEntity.getMainInputForging();
+        final @Nullable Forging forging = blockEntity.getMainInputForging();
         if (forging != null && level != null)
         {
             final AnvilRecipe recipe = forging.getRecipe(level);

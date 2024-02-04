@@ -19,35 +19,40 @@ import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 
 /**
- * Capability for any food item
- * Allows foods to have nutrients, and also to decay / rot.
- *
- * Important: A lot of these methods take a {@code isClientSide} boolean. This is in order for the internal handlers to query the right calendar instance for the current logical side. DO NOT just use the overloads that pass {@code false} in, especially if you are on client side!
+ * Implementation of food mechanics, including decay (rot) through the creation date system, food traits (modifiers),
+ * and nutrients. This must be provided by any food that can be eaten, as we ignore vanilla food properties in our
+ * overwrite of vanilla's food handler with {@link TFCFoodData}.
+ * <p>
+ * Foods can be added via a {@link FoodDefinition} which is loaded via JSON. TFC then attaches a {@link FoodHandler} as
+ * a capability to each food as required.
  */
 public interface IFood extends INetworkFood
 {
     /**
      * The timestamp that this food was created, used to calculate expiration date.
+     * <p>
      * There are a few special meanings:
-     * - {@link FoodHandler#UNKNOWN_CREATION_DATE} = The food was created at an unknown time. This will be reset whenever possible.
-     * - {@link FoodHandler#ROTTEN_DATE} = The food is currently rotten
-     * - {@link FoodHandler#NEVER_DECAY_DATE} = The food will never decay
+     * <ul>
+     *     <li>{@link FoodHandler#UNKNOWN_CREATION_DATE} = The food was created at an unknown time. This will be reset whenever possible.</li>
+     *     <li>{@link FoodHandler#ROTTEN_DATE} = The food is currently rotten</li>
+     *     <li>{@link FoodHandler#NEVER_DECAY_DATE} = The food will never decay</li>
+     * </ul>
      *
-     * @return the calendar time of creation
+     * @return The tick that this food was created.
      */
     long getCreationDate();
 
     /**
      * Sets the creation date. DO NOT USE TO PRESERVE FOOD! Use {@link FoodTrait} instead
      *
-     * @param creationDate A calendar time
+     * @param creationDate A tick.
      */
     void setCreationDate(long creationDate);
 
     /**
      * Get the date at which this food item will rot
      *
-     * @return a calendar time
+     * @return The tick that this food will rot.
      */
     long getRottenDate();
 
@@ -92,12 +97,26 @@ public interface IFood extends INetworkFood
     void setNonDecaying();
 
     /**
-     * Gets the current list of traits on this food
-     * Can also be used to add traits to the food
+     * Returns a list of all traits applied to the food. The traits present on the food <strong>can be mutated</strong> through this list.
+     * <p>
+     * In general, when applying or removing traits for the purpose of preservation, prefer using the methods in {@link FoodCapability}, as
+     * they will account for updating the creation date accordingly in order to prevent the food from becoming rotten.
      *
-     * @return the traits of the food
+     * @return A list of all traits applied to the food.
+     *
+     * @see #hasTrait(FoodTrait)
+     * @see FoodCapability#applyTrait(IFood, FoodTrait)
+     * @see FoodCapability#removeTrait(IFood, FoodTrait)
      */
     List<FoodTrait> getTraits();
+
+    /**
+     * @return {@code true} if this food has {@code trait}.
+     */
+    default boolean hasTrait(FoodTrait trait)
+    {
+        return getTraits().contains(trait);
+    }
 
     /**
      * Tooltip added to the food item

@@ -62,6 +62,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.server.ServerLifecycleHooks;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.particle.TFCParticles;
@@ -71,11 +72,13 @@ import net.dries007.tfc.common.blockentities.SluiceBlockEntity;
 import net.dries007.tfc.common.blocks.devices.SluiceBlock;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.capabilities.egg.EggCapability;
+import net.dries007.tfc.common.capabilities.egg.IEgg;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.common.capabilities.forge.Forging;
 import net.dries007.tfc.common.capabilities.forge.ForgingBonus;
+import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
 import net.dries007.tfc.common.capabilities.glass.GlassWorkData;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.items.EmptyPanItem;
 import net.dries007.tfc.common.items.PanItem;
@@ -100,7 +103,7 @@ import net.dries007.tfc.util.PhysicalDamageType;
 import net.dries007.tfc.util.Sluiceable;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.climate.Climate;
-import net.dries007.tfc.util.tracker.WorldTrackerCapability;
+import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
@@ -177,7 +180,7 @@ public class ClientForgeEventHandler
                     tooltip.add("[Waiting for chunk data]");
                 }
 
-                mc.level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addDebugTooltip(tooltip));
+                WorldTracker.get(mc.level).addDebugTooltip(tooltip);
 
                 final MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
                 if (server != null && server.overworld().getChunkSource().getGenerator() instanceof ChunkGeneratorExtension ex)
@@ -263,22 +266,31 @@ public class ClientForgeEventHandler
             ItemSizeManager.addTooltipInfo(stack, text);
             PhysicalDamageType.addTooltipInfo(stack, text);
             ForgingBonus.addTooltipInfo(stack, text);
-            Forging.addTooltipInfo(stack, text);
+            ForgingCapability.addTooltipInfo(stack, text);
             GlassWorkData.addTooltipInfo(stack, text);
+            FoodCapability.addTooltipInfo(stack, text);
 
-            stack.getCapability(FoodCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(stack, text));
-            stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(stack, text));
-            stack.getCapability(EggCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(text));
+            final @Nullable IHeat heat = HeatCapability.get(stack);
+            if (heat != null)
+            {
+                heat.addTooltipInfo(stack, text);
+            }
+
+            final @Nullable IEgg egg = EggCapability.get(stack);
+            if (egg != null)
+            {
+                egg.addTooltipInfo(text);
+            }
 
             // Fuel information
             final Fuel fuel = Fuel.get(stack);
             if (fuel != null)
             {
-                final MutableComponent heat = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(fuel.getTemperature());
-                if (heat != null)
+                final MutableComponent heatTooltip = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(fuel.getTemperature());
+                if (heatTooltip != null)
                 {
                     // burns at %s for %s
-                    text.add(Component.translatable("tfc.tooltip.fuel_burns_at", heat, Calendars.CLIENT.getTimeDelta(fuel.getDuration())));
+                    text.add(Component.translatable("tfc.tooltip.fuel_burns_at", heatTooltip, Calendars.CLIENT.getTimeDelta(fuel.getDuration())));
                 }
             }
 
@@ -306,11 +318,11 @@ public class ClientForgeEventHandler
                     final Metal metal = Metal.get(fluid.getFluid());
                     if (metal != null)
                     {
-                        final MutableComponent heat = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(recipe.getTemperature());
-                        if (heat != null)
+                        final MutableComponent heatTooltip = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(recipe.getTemperature());
+                        if (heatTooltip != null)
                         {
                             // %s mB of %s (at %s)
-                            text.add(Component.translatable("tfc.tooltip.item_melts_into", fluid.getAmount() * stack.getCount(), Component.translatable(metal.getTranslationKey()), heat));
+                            text.add(Component.translatable("tfc.tooltip.item_melts_into", fluid.getAmount() * stack.getCount(), Component.translatable(metal.getTranslationKey()), heatTooltip));
                         }
                     }
                 }

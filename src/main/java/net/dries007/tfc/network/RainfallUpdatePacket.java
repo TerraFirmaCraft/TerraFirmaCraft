@@ -10,7 +10,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.client.ClientHelpers;
-import net.dries007.tfc.util.tracker.WorldTrackerCapability;
+import net.dries007.tfc.util.tracker.WorldTracker;
 
 public class RainfallUpdatePacket
 {
@@ -43,7 +43,7 @@ public class RainfallUpdatePacket
         final Level level = ClientHelpers.getLevel();
         if (level != null)
         {
-            level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.setWeatherData(rainStartTick, rainEndTick, rainIntensity));
+            WorldTracker.get(level).setWeatherData(rainStartTick, rainEndTick, rainIntensity);
         }
     }
 }

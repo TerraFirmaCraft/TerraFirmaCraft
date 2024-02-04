@@ -30,7 +30,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
+import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
@@ -45,43 +45,41 @@ public class ChiselRecipe extends SimpleBlockRecipe
      */
     public static Either<BlockState, InteractionResult> computeResult(Player player, BlockState state, BlockHitResult hit, boolean informWhy)
     {
-        ItemStack held = player.getMainHandItem();
+        final ItemStack held = player.getMainHandItem();
         if (Helpers.isItem(held, TFCTags.Items.CHISELS) && Helpers.isItem(player.getOffhandItem(), TFCTags.Items.HAMMERS))
         {
-            BlockPos pos = hit.getBlockPos();
-            return player.getCapability(PlayerDataCapability.CAPABILITY).map(cap -> {
-                final Mode mode = cap.getChiselMode();
-                final ChiselRecipe recipe = ChiselRecipe.getRecipe(state, held, mode);
-                if (recipe == null)
+            final BlockPos pos = hit.getBlockPos();
+            final Mode mode = PlayerData.get(player).getChiselMode();
+            final ChiselRecipe recipe = ChiselRecipe.getRecipe(state, held, mode);
+            if (recipe == null)
+            {
+                if (informWhy) complain(player, "no_recipe");
+                return Either.<BlockState, InteractionResult>right(InteractionResult.PASS);
+            }
+            else
+            {
+                BlockState chiseled = recipe.getBlockCraftingResult(state);
+                chiseled = chiseled.getBlock().getStateForPlacement(new BlockPlaceContext(player, InteractionHand.MAIN_HAND, new ItemStack(chiseled.getBlock()), hit));
+                if (chiseled == null)
                 {
-                    if (informWhy) complain(player, "no_recipe");
-                    return Either.<BlockState, InteractionResult>right(InteractionResult.PASS);
+                    if (informWhy) complain(player, "cannot_place");
+                    return Either.right(InteractionResult.FAIL);
                 }
                 else
                 {
-                    BlockState chiseled = recipe.getBlockCraftingResult(state);
-                    chiseled = chiseled.getBlock().getStateForPlacement(new BlockPlaceContext(player, InteractionHand.MAIN_HAND, new ItemStack(chiseled.getBlock()), hit));
+                    // covers case where a waterlogged block is chiseled and the new block can't take the fluid contained
+                    chiseled = FluidHelpers.fillWithFluid(chiseled, player.level().getFluidState(pos).getType());
                     if (chiseled == null)
                     {
-                        if (informWhy) complain(player, "cannot_place");
-                        return Either.<BlockState, InteractionResult>right(InteractionResult.FAIL);
+                        if (informWhy) complain(player, "bad_fluid");
+                        return Either.right(InteractionResult.FAIL);
                     }
                     else
                     {
-                        // covers case where a waterlogged block is chiseled and the new block can't take the fluid contained
-                        chiseled = FluidHelpers.fillWithFluid(chiseled, player.level().getFluidState(pos).getType());
-                        if (chiseled == null)
-                        {
-                            if (informWhy) complain(player, "bad_fluid");
-                            return Either.<BlockState, InteractionResult>right(InteractionResult.FAIL);
-                        }
-                        else
-                        {
-                            return Either.<BlockState, InteractionResult>left(chiseled);
-                        }
+                        return Either.left(chiseled);
                     }
                 }
-            }).orElse(Either.right(InteractionResult.PASS));
+            }
         }
         return Either.right(InteractionResult.PASS);
     }

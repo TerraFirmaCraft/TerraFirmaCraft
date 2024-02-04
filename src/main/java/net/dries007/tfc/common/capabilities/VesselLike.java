@@ -28,10 +28,7 @@ public interface VesselLike extends MoldLike, IItemHandlerModifiable, IFluidHand
     @Nullable
     static VesselLike get(ItemStack stack)
     {
-        return stack.getCapability(HeatCapability.CAPABILITY)
-            .resolve()
-            .map(t -> t instanceof VesselLike v ? v : null)
-            .orElse(null);
+        return HeatCapability.get(stack) instanceof VesselLike v ? v : null;
     }
 
     /**

@@ -6,16 +6,22 @@
 
 package net.dries007.tfc.common.capabilities;
 
-import java.util.List;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.common.capabilities.heat.IHeat;
 
 public interface DelegateHeatHandler extends IHeat
 {
+    /**
+     * Return the underlying heat implementation of this delegate. This will be used to invoke <strong>all non-default methods</strong> from {@link IHeat}
+     * on the implementor of {@link DelegateHeatHandler}. Any calls to default methods on {@link IHeat} will call the default implementation, and then be
+     * bounced through to the original, underlying implementation.
+     * <p>
+     * Consumers should not call this method, rather, they should directly use {@code this} as and {@link IHeat}.
+     *
+     * @return An {@link IHeat} implementation.
+     */
     IHeat getHeatHandler();
 
     @Override
@@ -28,18 +34,6 @@ public interface DelegateHeatHandler extends IHeat
     default void setTemperature(float temperature)
     {
         getHeatHandler().setTemperature(temperature);
-    }
-
-    @Override
-    default void setTemperatureIfWarmer(float temperature)
-    {
-        getHeatHandler().setTemperatureIfWarmer(temperature);
-    }
-
-    @Override
-    default void addTemperatureFromSourceWithHeatCapacity(float temperature, float heatCapacity)
-    {
-        getHeatHandler().addTemperatureFromSourceWithHeatCapacity(temperature, heatCapacity);
     }
 
     @Override
@@ -58,12 +52,6 @@ public interface DelegateHeatHandler extends IHeat
     default float getWeldingTemperature()
     {
         return getHeatHandler().getWeldingTemperature();
-    }
-
-    @Override
-    default void addTooltipInfo(ItemStack stack, List<Component> text)
-    {
-        getHeatHandler().addTooltipInfo(stack, text);
     }
 
     @Override

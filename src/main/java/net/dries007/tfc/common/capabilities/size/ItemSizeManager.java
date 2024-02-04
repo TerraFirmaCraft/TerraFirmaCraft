@@ -8,20 +8,24 @@ package net.dries007.tfc.common.capabilities.size;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import com.mojang.logging.LogUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.*;
-import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.BucketItem;
+import net.minecraft.world.item.HorseArmorItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TieredItem;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.slf4j.Logger;
 
-import com.mojang.logging.LogUtils;
 import net.dries007.tfc.mixin.accessor.ItemAccessor;
 import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.util.DataManager;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
-import org.slf4j.Logger;
 
 public final class ItemSizeManager
 {
@@ -30,6 +34,11 @@ public final class ItemSizeManager
 
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final List<Item> MODIFIABLE_ITEMS = new ArrayList<>();
+
+    public static final ItemSize TOOL_SIZE = new ItemSize(Size.LARGE, Weight.MEDIUM); // Stored only in chests, stack size should be limited to 1 since it is a tool
+    public static final ItemSize ARMOR_SIZE = new ItemSize(Size.LARGE, Weight.VERY_HEAVY); // Stored only in chests and stack size = 1
+    public static final ItemSize BLOCK_SIZE = new ItemSize(Size.SMALL, Weight.LIGHT); // Fits small vessels and stack size = 32
+    public static final ItemSize DEFAULT_SIZE = new ItemSize(Size.VERY_SMALL, Weight.VERY_LIGHT); // Stored anywhere and stack size = 64
 
     @SuppressWarnings("deprecation")
     public static void setupItemStackSizeOverrides()
@@ -46,6 +55,9 @@ public final class ItemSizeManager
         }
     }
 
+    /**
+     * After a resource reload, updates all modifiable items (best guess) to have item sizes that reflect the {@link IItemSize}
+     */
     public static void applyItemStackSizeOverrides()
     {
         if (MODIFIABLE_ITEMS.isEmpty())
@@ -54,8 +66,6 @@ public final class ItemSizeManager
             setupItemStackSizeOverrides();
         }
 
-        // Edit item stack sizes for all editable items in the game (that we can find)
-        // Do this once, here, for all items, rather than individually in AttachCapabilitiesEvent handlers
         LOGGER.info("Editing item stack sizes: found {} editable of {} total.", MODIFIABLE_ITEMS.size(), ForgeRegistries.ITEMS.getValues().size());
         for (Item item : MODIFIABLE_ITEMS)
         {
@@ -67,7 +77,7 @@ public final class ItemSizeManager
 
     public static void addTooltipInfo(ItemStack stack, List<Component> text)
     {
-        IItemSize size = ItemSizeManager.get(stack);
+        final IItemSize size = get(stack);
         text.add(Component.literal("\u2696 ")
             .append(Helpers.translateEnum(size.getWeight(stack)))
             .append(" \u21F2 ")
@@ -76,7 +86,7 @@ public final class ItemSizeManager
     }
 
     /**
-     * @return an instance describing the size and weight of a given item stack.
+     * @return the {@link IItemSize} for a given {@code stack}.
      */
     public static IItemSize get(ItemStack stack)
     {
@@ -103,19 +113,19 @@ public final class ItemSizeManager
         // Default rules
         if (item instanceof TieredItem || item instanceof BucketItem)
         {
-            return ItemSize.of(Size.LARGE, Weight.MEDIUM); // Stored only in chests, stack size should be limited to 1 since it is a tool
+            return TOOL_SIZE;
         }
         else if (item instanceof ArmorItem || item instanceof HorseArmorItem)
         {
-            return ItemSize.of(Size.LARGE, Weight.VERY_HEAVY); // Stored only in chests and stack size = 1
+            return ARMOR_SIZE;
         }
         else if (item instanceof BlockItem)
         {
-            return ItemSize.of(Size.SMALL, Weight.LIGHT); // Fits small vessels and stack size = 32
+            return BLOCK_SIZE;
         }
         else
         {
-            return ItemSize.of(Size.VERY_SMALL, Weight.VERY_LIGHT); // Stored anywhere and stack size = 64
+            return DEFAULT_SIZE;
         }
     }
 

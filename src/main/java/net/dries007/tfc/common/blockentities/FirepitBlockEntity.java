@@ -21,6 +21,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.PartialItemHandler;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.container.FirepitContainer;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
@@ -65,8 +66,10 @@ public class FirepitBlockEntity extends AbstractFirepitBlockEntity<ItemStackHand
         if (temperature > 0)
         {
             final ItemStack inputStack = inventory.getStackInSlot(SLOT_ITEM_INPUT);
-            inputStack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> {
-                float itemTemp = cap.getTemperature();
+            final @Nullable IHeat cap = HeatCapability.get(inputStack);
+            if (cap != null)
+            {
+                final float itemTemp = cap.getTemperature();
                 HeatCapability.addTemp(cap, temperature);
 
                 if (cachedRecipe != null && cachedRecipe.isValidTemperature(itemTemp))
@@ -81,14 +84,14 @@ public class FirepitBlockEntity extends AbstractFirepitBlockEntity<ItemStackHand
                     mergeOutputStack(recipe.assemble(inventory, level.registryAccess()));
                     mergeOutputFluids(recipe.assembleFluid(inventory), cap.getTemperature());
                 }
-            });
+            }
         }
     }
 
     @Override
     protected void coolInstantly()
     {
-        inventory.getStackInSlot(SLOT_ITEM_INPUT).getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.setTemperature(0f));
+        HeatCapability.setTemperature(inventory.getStackInSlot(SLOT_ITEM_INPUT), 0);
     }
 
     @Override

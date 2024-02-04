@@ -10,6 +10,7 @@ import java.util.List;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
@@ -51,8 +52,25 @@ public interface IHeat extends INetworkHeat
     }
 
     /**
-     * Adjusts the temperature based on adding an external source of heat, with a specific heat capacity. This effectively sets the temperature to a weighted average of the current temperature, and input temperature, weighted by heat capacity.
-     * This should be preferred over
+     * If the {@code other} handler is not {@code null}, this will set the temperature to the maximum of the current temperature,
+     * and the temperature of the other handler.
+     *
+     * @param other Another heat handler
+     */
+    default void setTemperatureIfWarmer(@Nullable IHeat other)
+    {
+        if (other != null)
+        {
+            setTemperatureIfWarmer(other.getTemperature());
+        }
+    }
+
+    /**
+     * Adjusts the temperature based on adding an external source of heat, with a specific heat capacity. This effectively sets the
+     * temperature to a weighted average of the current temperature, and input temperature, weighted by heat capacity.
+     * <p>
+     * This should be preferred over setting the temperature directly i.e. with {@link #setTemperatureIfWarmer(float)}, or
+     * {@link #setTemperature(float)} if a heat transfer is being performed.
      */
     default void addTemperatureFromSourceWithHeatCapacity(float temperature, float heatCapacity)
     {
@@ -76,23 +94,29 @@ public interface IHeat extends INetworkHeat
     float getHeatCapacity();
 
     /**
-     * Gets the temperature at which this item can be worked in forging
-     *
-     * @return temperature at which this item is able to be worked
+     * @return The temperature that this item can be worked at.
      */
-    default float getWorkingTemperature()
+    float getWorkingTemperature();
+
+    /**
+     * @return The temperature that this item can be welded at.
+     */
+    float getWeldingTemperature();
+
+    /**
+     * @return {@code true} if this item is hot enough to work.
+     */
+    default boolean canWork()
     {
-        return 0;
+        return getTemperature() >= getWorkingTemperature();
     }
 
     /**
-     * Gets the temperature at which this item can be welded in forging
-     *
-     * @return temperature at which this item is able to be welded
+     * @return {@code true} if this item is hot enough to weld.
      */
-    default float getWeldingTemperature()
+    default boolean canWeld()
     {
-        return 0;
+        return getTemperature() >= getWeldingTemperature();
     }
 
     /**

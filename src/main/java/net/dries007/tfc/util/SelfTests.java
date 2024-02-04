@@ -435,7 +435,7 @@ public final class SelfTests
     private static boolean validateFoodsAreFoods()
     {
         final List<Item> errors = Helpers.streamAllTagValues(TFCTags.Items.FOODS, ForgeRegistries.ITEMS)
-            .filter(item -> !item.getDefaultInstance().getCapability(FoodCapability.CAPABILITY).isPresent())
+            .filter(item -> !FoodCapability.has(item.getDefaultInstance()))
             .toList();
         return logWarnings("{} items were in the tfc:foods tag but lacked a food definition", errors, LOGGER);
     }

@@ -51,6 +51,8 @@ public interface ClimateModel
     /**
      * Get the average annual rainfall for a given position.
      * Should be <strong>time invariant</strong>.
+     * <p>
+     * <strong>Note:</strong> Cannot be called from a world generation context!
      *
      * @return The average annual rainfall, roughly equivalent to mm/year. Should be in the range [0, 500]
      */

@@ -19,6 +19,7 @@ import net.dries007.tfc.common.capabilities.egg.EggCapability;
 import net.dries007.tfc.common.capabilities.egg.IEgg;
 import net.dries007.tfc.common.capabilities.heat.Heat;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
@@ -39,42 +40,44 @@ public final class BarSystem
             @Override
             public int getBarColor(ItemStack stack)
             {
-                return stack.getCapability(HeatCapability.CAPABILITY).map(cap -> {
-                    if (cap.getTemperature() > 0)
+                final @Nullable IHeat cap = HeatCapability.get(stack);
+                if (cap != null && cap.getTemperature() > 0)
+                {
+                    final Heat heat = Heat.getHeat(cap.getTemperature());
+                    if (heat != null)
                     {
-                        final Heat heat = Heat.getHeat(cap.getTemperature());
-                        if (heat != null)
-                        {
-                            return Objects.requireNonNull(heat.getColor().getColor());
-                        }
+                        return Objects.requireNonNull(heat.getColor().getColor());
                     }
-                    return 0;
-                }).orElse(0);
+                }
+                return 0;
             }
 
             @Override
             public boolean isBarVisible(ItemStack stack)
             {
-                return TFCConfig.CLIENT.displayItemHeatBars.get() && stack.getCapability(HeatCapability.CAPABILITY).map(cap -> cap.getTemperature() > 0).orElse(false);
+                return TFCConfig.CLIENT.displayItemHeatBars.get() && HeatCapability.isHot(stack);
             }
 
             @Override
             public int getBarWidth(ItemStack stack)
             {
-                return stack.getCapability(HeatCapability.CAPABILITY).map(cap -> {
-                    final HeatingRecipe def = HeatingRecipe.getRecipe(stack);
-                    if (def != null)
+                final @Nullable IHeat cap = HeatCapability.get(stack);
+                if (cap != null)
+                {
+                    final HeatingRecipe recipe = HeatingRecipe.getRecipe(stack);
+                    if (recipe != null)
                     {
-                        return Mth.clamp(Math.round(13f * cap.getTemperature() / def.getTemperature()), 1, 13);
+                        return Mth.clamp(Math.round(13f * cap.getTemperature() / recipe.getTemperature()), 1, 13);
                     }
                     return Mth.clamp(Math.round(13f * cap.getTemperature() / Heat.maxVisibleTemperature()), 1, 13);
-                }).orElse(0);
+                }
+                return 0;
             }
 
             @Override
             public ItemStack createDefaultItem(ItemStack stack)
             {
-                stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.setTemperature(0));
+                HeatCapability.setTemperature(stack, 0);
                 return stack;
             }
         });
@@ -89,23 +92,31 @@ public final class BarSystem
             @Override
             public boolean isBarVisible(ItemStack stack)
             {
-                return stack.getCapability(EggCapability.CAPABILITY).map(cap -> cap.getHatchDay() != 0).orElse(false);
+                final @Nullable IEgg egg = EggCapability.get(stack);
+                return egg != null && egg.getHatchDay() != 0;
             }
 
             @Override
             public int getBarWidth(ItemStack stack)
             {
                 final int maxDays = 8;
-                return stack.getCapability(EggCapability.CAPABILITY).map(cap -> {
-                    final int incubationDays = maxDays - Mth.clamp((int) (cap.getHatchDay() - Calendars.CLIENT.getTotalDays()), 0, maxDays);
+                final @Nullable IEgg egg = EggCapability.get(stack);
+                if (egg != null)
+                {
+                    final int incubationDays = maxDays - Mth.clamp((int) (egg.getHatchDay() - Calendars.CLIENT.getTotalDays()), 0, maxDays);
                     return Math.round(13f * incubationDays / maxDays);
-                }).orElse(0);
+                }
+                return 0;
             }
 
             @Override
             public ItemStack createDefaultItem(ItemStack stack)
             {
-                stack.getCapability(EggCapability.CAPABILITY).ifPresent(IEgg::removeFertilization);
+                final @Nullable IEgg egg = EggCapability.get(stack);
+                if (egg != null)
+                {
+                    egg.removeFertilization();
+                }
                 return stack;
             }
         });
