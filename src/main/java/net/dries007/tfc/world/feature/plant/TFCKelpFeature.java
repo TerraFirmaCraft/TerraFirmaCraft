@@ -49,10 +49,14 @@ public class TFCKelpFeature extends Feature<ColumnPlantConfig>
 
             final BlockState state = level.getBlockState(mutablePos);
             final Fluid fluid = state.getFluidState().getType();
+            if (fluid.getFluidType().isAir())
+            {
+                continue;
+            }
             final BlockState bodyState = FluidHelpers.fillWithFluid(config.bodyState(), fluid);
             final BlockState headState = FluidHelpers.fillWithFluid(config.headState(), fluid);
 
-            if (bodyState != null && headState != null && bodyState.canSurvive(level, mutablePos) && FluidHelpers.isAirOrEmptyFluid(state))
+            if (bodyState != null && headState != null && canPlaceBlockAt(level, mutablePos, state))
             {
                 placeColumn(level, rand, mutablePos, Mth.nextInt(rand, config.minHeight(), config.maxHeight()), 17, 25, bodyState, headState);
                 placedAny = true;
@@ -65,9 +69,9 @@ public class TFCKelpFeature extends Feature<ColumnPlantConfig>
     {
         for (int i = 1; i <= height; ++i)
         {
-            if (level.isWaterAt(mutablePos) && body.canSurvive(level, mutablePos))
+            if (canPlaceBlockAt(level, mutablePos, body))
             {
-                if (i == height || !level.isWaterAt(mutablePos.above()))
+                if (i == height || !FluidHelpers.isAirOrEmptyFluid(level.getBlockState(mutablePos.above())))
                 {
                     if (!Helpers.isBlock(level.getBlockState(mutablePos.below()), head.getBlock()))
                     {
@@ -79,5 +83,10 @@ public class TFCKelpFeature extends Feature<ColumnPlantConfig>
             }
             mutablePos.move(Direction.UP);
         }
+    }
+
+    private boolean canPlaceBlockAt(LevelAccessor level, BlockPos pos, BlockState state)
+    {
+        return state.canSurvive(level, pos) && FluidHelpers.isAirOrEmptyFluid(level.getBlockState(pos));
     }
 }

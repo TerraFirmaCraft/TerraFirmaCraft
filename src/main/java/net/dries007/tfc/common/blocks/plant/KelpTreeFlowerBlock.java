@@ -271,7 +271,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
         {
             final BlockState originalState = level.getBlockState(pos);
             setBodyBlockWithFluid(level, pos, fluid);
-            if (growTreeRecursive(level, pos, rand, pos, maxHorizontalDistance, 0, fluid, seaLevel))
+            if (level.getBlockState(pos).canSurvive(level, pos) && growTreeRecursive(level, pos, rand, pos, maxHorizontalDistance, 0, fluid, seaLevel))
             {
                 return true;
             }

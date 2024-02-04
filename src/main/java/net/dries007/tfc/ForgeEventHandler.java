@@ -1239,7 +1239,7 @@ public final class ForgeEventHandler
                         coolAmount = 75f;
                         if (level.random.nextFloat() < 0.1F)
                         {
-                            level.setBlockAndUpdate(belowPos, Blocks.SNOW.defaultBlockState().setValue(SnowLayerBlock.LAYERS, 7));
+                            level.destroyBlock(belowPos, false);
                         }
                     }
                     else if (belowState.getBlock() == Blocks.ICE || belowState.getBlock() == Blocks.FROSTED_ICE)

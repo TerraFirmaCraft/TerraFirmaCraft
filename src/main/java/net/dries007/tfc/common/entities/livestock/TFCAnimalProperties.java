@@ -85,9 +85,15 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal, BrainBreeder
 
     void setLastFamiliarityDecay(long days);
 
-    void setLastFed(long fed);
+    default void setLastFed(long fed)
+    {
+        entityData().set(animalData().lastFed(), fed);
+    }
 
-    long getLastFed();
+    default long getLastFed()
+    {
+        return entityData().get(animalData().lastFed());
+    }
 
     void setMated(long time);
 
@@ -223,6 +229,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal, BrainBreeder
         entityData().define(animalData().fertilized(), false);
         entityData().define(animalData().oldDay(), -1L);
         entityData().define(animalData().geneticSize(), 16);
+        entityData().define(animalData().lastFed(), Long.MIN_VALUE);
     }
 
     default void saveCommonAnimalData(CompoundTag nbt)

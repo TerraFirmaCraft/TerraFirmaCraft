@@ -77,9 +77,9 @@ public class GrillBlock extends FirepitBlock implements IHighlightHandler
     }
 
     @Override
-    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand)
+    public void forcedAnimateTick(BlockState state, Level level, BlockPos pos, RandomSource rand)
     {
-        super.animateTick(state, level, pos, rand);
+        super.forcedAnimateTick(state, level, pos, rand);
         if (state.getValue(LIT))
         {
             if (level.getBlockEntity(pos) instanceof GrillBlockEntity grill)

@@ -116,8 +116,7 @@ public class FirepitBlock extends BottomSupportedDeviceBlock implements IGhostBl
         }
     }
 
-    @Override
-    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand)
+    public void forcedAnimateTick(BlockState state, Level level, BlockPos pos, RandomSource rand)
     {
         if (!state.getValue(LIT)) return;
         final double x = pos.getX() + 0.5;
