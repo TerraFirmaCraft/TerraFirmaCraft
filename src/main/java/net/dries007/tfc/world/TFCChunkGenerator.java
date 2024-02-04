@@ -84,6 +84,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.minecraftforge.registries.DeferredRegister;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.mixin.accessor.ChunkAccessAccessor;
 import net.dries007.tfc.mixin.accessor.ChunkGeneratorAccessor;
@@ -368,7 +369,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     public ChunkHeightFiller createHeightFillerForChunk(ChunkPos pos)
     {
         final Object2DoubleMap<BiomeExtension>[] biomeWeights = sampleBiomes(pos, this::sampleBiomeNoRiver, BiomeExtension::biomeBlendType);
-        return new ChunkHeightFiller(createBiomeSamplersForChunk(), biomeWeights);
+        return new ChunkHeightFiller(createBiomeSamplersForChunk(null), biomeWeights);
     }
 
     @Override
@@ -473,20 +474,9 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
                 {
                     Helpers.seedLargeFeatures(random, baseSeed, featureIndex, decorationIndex);
 
-                    final Supplier<String> featureName = () -> structureFeatures.getResourceKey(feature).map(Object::toString).orElseGet(feature::toString);
-
-                    try
-                    {
-                        level.setCurrentlyGenerating(featureName);
-                        structureFeatureManager.startsForStructure(sectionPos, feature).forEach(start -> start.placeInChunk(level, structureFeatureManager, this, random, getBoundingBoxForStructure(chunk), chunkPos));
-                    }
-                    catch (Exception e)
-                    {
-                        final CrashReport crash = CrashReport.forThrowable(e, "Feature placement");
-                        crash.addCategory("Feature").setDetail("Description", featureName::get);
-                        throw new ReportedException(crash);
-                    }
-
+                    structureFeatureManager
+                        .startsForStructure(sectionPos, feature)
+                        .forEach(start -> start.placeInChunk(level, structureFeatureManager, this, random, getBoundingBoxForStructure(chunk), chunkPos));
                     featureIndex++;
                 }
             }
@@ -514,20 +504,10 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
                 Arrays.sort(sortedIndices);
                 for (int featureIndex : sortedIndices)
                 {
-                    final PlacedFeature feature = step.features().get(featureIndex);
                     Helpers.seedLargeFeatures(random, baseSeed, featureIndex, decorationIndex);
-                    final Supplier<String> featureName = () -> placedFeatures.getResourceKey(feature).map(Object::toString).orElseGet(feature::toString);
-                    try
-                    {
-                        level.setCurrentlyGenerating(featureName);
-                        feature.placeWithBiomeCheck(level, this, random, originPos);
-                    }
-                    catch (Exception e)
-                    {
-                        final CrashReport crash = CrashReport.forThrowable(e, "Feature placement");
-                        crash.addCategory("Feature").setDetail("Description", featureName);
-                        throw new ReportedException(crash);
-                    }
+                    step.features()
+                        .get(featureIndex)
+                        .placeWithBiomeCheck(level, this, random, originPos);
                 }
             }
         }
@@ -542,7 +522,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public void spawnOriginalMobs(WorldGenRegion level)
     {
         if (!this.noiseSettings.value().disableMobGeneration())
@@ -601,7 +580,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
         final Object2DoubleMap<BiomeExtension>[] biomeWeights = sampleBiomes(chunkPos, this::sampleBiomeNoRiver, BiomeExtension::biomeBlendType);
         final ChunkBaseBlockSource baseBlockSource = createBaseBlockSourceForChunk(chunk);
-        final ChunkNoiseFiller filler = new ChunkNoiseFiller((ProtoChunk) chunk, biomeWeights, customBiomeSource, createBiomeSamplersForChunk(), createRiverSamplersForChunk(), noiseSampler, baseBlockSource, settings, getSeaLevel(), Beardifier.forStructuresInChunk(structureFeatureManager, chunkPos));
+        final ChunkNoiseFiller filler = new ChunkNoiseFiller((ProtoChunk) chunk, biomeWeights, customBiomeSource, createBiomeSamplersForChunk(chunk), createRiverSamplersForChunk(), noiseSampler, baseBlockSource, settings, getSeaLevel(), Beardifier.forStructuresInChunk(structureFeatureManager, chunkPos));
 
         return CompletableFuture.supplyAsync(() -> {
             filler.sampleAquiferSurfaceHeight(this::sampleBiomeNoRiver);
@@ -741,7 +720,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         return aquifer;
     }
 
-    private Map<BiomeExtension, BiomeNoiseSampler> createBiomeSamplersForChunk()
+    private Map<BiomeExtension, BiomeNoiseSampler> createBiomeSamplersForChunk(@Nullable ChunkAccess chunk)
     {
         final ImmutableMap.Builder<BiomeExtension, BiomeNoiseSampler> builder = ImmutableMap.builder();
         for (BiomeExtension extension : TFCBiomes.getExtensions())
@@ -749,6 +728,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             final BiomeNoiseSampler sampler = extension.createNoiseSampler(noiseSamplerSeed);
             if (sampler != null)
             {
+                sampler.prepare(this, chunk);
                 builder.put(extension, sampler);
             }
         }
