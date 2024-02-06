@@ -8,6 +8,7 @@ package net.dries007.tfc.world;
 
 import java.util.function.UnaryOperator;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ChunkMap;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.chunk.ChunkAccess;
@@ -56,9 +57,9 @@ public interface ChunkGeneratorExtension
     }
 
     /**
-     * Called from the initialization of {@link net.minecraft.server.level.ChunkMap}, to initialize seed-based properties on any chunk generator implementing {@link ChunkGeneratorExtension}.
+     * Called from the initialization of {@link ChunkMap}, to initialize seed-based properties on any chunk generator implementing {@link ChunkGeneratorExtension}.
      */
-    void initRandomState(ServerLevel level);
+    void initRandomState(ChunkMap chunkMap, ServerLevel level);
 
     default ChunkGenerator self()
     {

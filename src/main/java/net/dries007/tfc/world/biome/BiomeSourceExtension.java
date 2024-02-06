@@ -117,4 +117,9 @@ public interface BiomeSourceExtension
     {
         return (BiomeSource) this;
     }
+
+    default BiomeSourceExtension copy()
+    {
+        return this;
+    }
 }

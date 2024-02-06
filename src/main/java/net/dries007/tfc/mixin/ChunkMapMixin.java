@@ -34,7 +34,7 @@ public abstract class ChunkMapMixin
     {
         if (generator instanceof ChunkGeneratorExtension ex)
         {
-            ex.initRandomState(level);
+            ex.initRandomState((ChunkMap) (Object) this, level);
         }
     }
 }
