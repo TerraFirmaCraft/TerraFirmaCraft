@@ -1189,6 +1189,7 @@ DEFAULT_LANG = {
     'subtitles.entity.tfc.hyena.death': 'Hyena dies',
     'subtitles.entity.tfc.hyena.attack': 'Hyena bites',
     'subtitles.entity.tfc.hyena.sleep': 'Hyena snores',
+    'subtitles.entity.tfc.ramming.impact': 'Ram impacts',
     **dict(('subtitles.entity.tfc.%s.ambient' % fish, '%s splashes' % fish.title().replace('_', ' ')) for fish in (*SIMPLE_FRESHWATER_FISH, 'manatee', 'jellyfish')),
     **dict(('subtitles.entity.tfc.%s.flop' % fish, '%s flops' % fish.title().replace('_', ' ')) for fish in (*SIMPLE_FRESHWATER_FISH, 'manatee', 'jellyfish')),
     **dict(('subtitles.entity.tfc.%s.death' % fish, '%s dies' % fish.title().replace('_', ' ')) for fish in (*SIMPLE_FRESHWATER_FISH, 'manatee', 'jellyfish')),

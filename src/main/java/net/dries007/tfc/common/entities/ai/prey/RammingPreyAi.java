@@ -24,6 +24,7 @@ import net.minecraft.world.entity.schedule.Activity;
 import com.mojang.datafixers.util.Pair;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.entities.ai.FastGateBehavior;
 import net.dries007.tfc.common.entities.ai.SetLookTarget;
 import net.dries007.tfc.common.entities.ai.predator.PredatorAi;
@@ -124,7 +125,7 @@ public class RammingPreyAi
                     return rammingPrey.isMale() ? TIME_BETWEEN_RAMS_MALE : TIME_BETWEEN_RAMS_FEMALE;
                 }, RAM_TARGET_CONDITIONS, 3.0F, (rammingPrey) -> {
                     return rammingPrey.isBaby() ? BABY_RAM_KNOCKBACK_FORCE : ADULT_RAM_KNOCKBACK_FORCE;
-                }, (rammingPrey) -> SoundEvents.GOAT_RAM_IMPACT)
+                }, (rammingPrey) -> TFCSounds.RAMMING_IMPACT.get())
             ),
             Pair.of(1, new PrepareRamNearestTargetTFC<>((rammingPrey) -> {
                 return rammingPrey.isMale() ? TIME_BETWEEN_RAMS_MALE.getMinValue() : TIME_BETWEEN_RAMS_FEMALE.getMinValue();
