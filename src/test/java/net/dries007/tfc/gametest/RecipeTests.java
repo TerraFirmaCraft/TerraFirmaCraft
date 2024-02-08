@@ -28,7 +28,6 @@ import net.dries007.tfc.TestAssertions;
 import net.dries007.tfc.TestHelper;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.IFood;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTransaction;
 import net.dries007.tfc.util.calendar.Calendars;
 
@@ -62,7 +61,7 @@ public class RecipeTests
         {
             // If the output is non-empty and non-rotten, then we should assert that it doesn't become rotten if we jump ahead
             final ItemStack output = getOutputOfRecipe(recipe);
-            final IFood food = Helpers.getCapability(output, FoodCapability.CAPABILITY);
+            final IFood food = FoodCapability.get(output);
             if (!output.isEmpty() && food != null && !food.isRotten())
             {
                 try (CalendarTransaction tr = Calendars.SERVER.transaction())
@@ -70,7 +69,7 @@ public class RecipeTests
                     tr.add(1_000_000_000);
 
                     final ItemStack oldOutput = getOutputOfRecipe(recipe);
-                    final IFood oldFood = Helpers.getCapability(oldOutput, FoodCapability.CAPABILITY);
+                    final IFood oldFood = FoodCapability.get(oldOutput);
 
                     assertNotNull(oldFood);
                     assertFalse(oldFood.isRotten(), "Recipe: " + recipe.getId() + " of type " + recipe.getType() + " and serializer " + ForgeRegistries.RECIPE_SERIALIZERS.getKey(recipe.getSerializer()) + " produced rotten output");

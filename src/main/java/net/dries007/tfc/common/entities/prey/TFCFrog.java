@@ -30,7 +30,6 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.FrogVariant;
 import net.minecraft.world.entity.animal.frog.Frog;
-import net.minecraft.world.entity.animal.frog.FrogAi;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -39,7 +38,6 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.common.capabilities.food.IFood;
 import net.dries007.tfc.common.entities.BrainBreeder;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.TFCEntities;
@@ -150,11 +148,8 @@ public class TFCFrog extends Frog implements Temptable, BrainBreeder
     @Override
     public boolean isFood(ItemStack stack)
     {
-        if (stack.getCapability(FoodCapability.CAPABILITY).filter(IFood::isRotten).isPresent())
-        {
-            return false;
-        }
-        return Helpers.isItem(stack, TFCTags.Items.FROG_FOOD);
+        return !FoodCapability.isRotten(stack)
+            && Helpers.isItem(stack, TFCTags.Items.FROG_FOOD);
     }
 
     @Override

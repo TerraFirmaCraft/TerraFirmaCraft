@@ -8,8 +8,6 @@ package net.dries007.tfc.common.capabilities.food;
 
 import java.util.List;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.ItemStack;
 
 public interface DelegateFoodHandler extends IFood
 {
@@ -79,11 +77,5 @@ public interface DelegateFoodHandler extends IFood
     default boolean isRotten()
     {
         return getFoodHandler().isRotten();
-    }
-
-    @Override
-    default void addTooltipInfo(ItemStack stack, List<Component> text)
-    {
-        getFoodHandler().addTooltipInfo(stack, text);
     }
 }

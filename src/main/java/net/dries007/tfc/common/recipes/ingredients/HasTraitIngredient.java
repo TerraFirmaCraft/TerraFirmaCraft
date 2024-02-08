@@ -9,10 +9,11 @@ package net.dries007.tfc.common.recipes.ingredients;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.crafting.IIngredientSerializer;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodTrait;
-import org.jetbrains.annotations.Nullable;
+import net.dries007.tfc.common.capabilities.food.IFood;
 
 public class HasTraitIngredient extends TraitIngredient
 {
@@ -34,7 +35,7 @@ public class HasTraitIngredient extends TraitIngredient
     @Override
     public boolean test(@Nullable ItemStack stack)
     {
-        return super.test(stack) && stack != null && stack.getCapability(FoodCapability.CAPABILITY).map(f -> f.getTraits().contains(trait)).orElse(false);
+        return super.test(stack) && stack != null && FoodCapability.hasTrait(stack, trait);
     }
 
     @Override
@@ -47,10 +48,13 @@ public class HasTraitIngredient extends TraitIngredient
     @Override
     protected ItemStack testDefaultItem(ItemStack stack)
     {
-        return stack.getCapability(FoodCapability.CAPABILITY).map(food -> {
+        final @Nullable IFood food = FoodCapability.get(stack);
+        if (food != null)
+        {
             food.setNonDecaying();
             food.getTraits().add(trait);
             return stack;
-        }).orElse(null);
+        }
+        return null;
     }
 }

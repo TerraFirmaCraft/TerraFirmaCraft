@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.capabilities.food;
 
-import java.util.Random;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -122,13 +121,17 @@ public class TFCFoodData extends net.minecraft.world.food.FoodData
     @Override
     public void eat(Item maybeFood, ItemStack stack, @Nullable LivingEntity entity)
     {
-        stack.getCapability(FoodCapability.CAPABILITY).ifPresent(this::eat);
+        final @Nullable IFood food = FoodCapability.get(stack);
+        if (food != null)
+        {
+            eat(food);
+        }
     }
 
     /**
      * Called from {@link Player#tick()} on server side only
      *
-     * @param player the player who's food stats this is
+     * @param player the player whose food stats this is
      */
     @Override
     public void tick(Player player)

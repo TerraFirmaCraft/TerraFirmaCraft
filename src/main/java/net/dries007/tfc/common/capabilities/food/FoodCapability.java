@@ -7,8 +7,10 @@
 package net.dries007.tfc.common.capabilities.food;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.function.Supplier;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -62,108 +64,179 @@ public final class FoodCapability
     }
 
     /**
-     * Helper method to handle applying a trait to a food item.
-     * Do NOT just directly apply the trait, as that can lead to strange interactions with decay dates / creation dates
-     * This calculates a creation date that interpolates between no preservation (if the food is rotten), to full preservation (if the food is new)
+     * Applies {@code trait} to {@code food}, and updates the creation date to preserve the decay proportion of the food.
      */
-    public static void applyTrait(IFood instance, FoodTrait trait)
+    public static void applyTrait(IFood food, FoodTrait trait)
     {
-        if (!instance.getTraits().contains(trait))
+        if (!food.hasTrait(trait))
         {
-            if (!instance.isRotten())
+            if (!food.isRotten())
             {
                 // Applied decay DATE modifier = 1 / decay mod
-                instance.setCreationDate(calculateNewCreationDate(instance.getCreationDate(), 1f / trait.getDecayModifier()));
+                food.setCreationDate(calculateNewCreationDate(food.getCreationDate(), 1f / trait.getDecayModifier()));
             }
-            instance.getTraits().add(trait);
+            food.getTraits().add(trait);
         }
     }
 
+    /**
+     * Applies {@code trait} to {@code stack}, and updates the creation date to preserve the decay proportion of the food.
+     */
     public static ItemStack applyTrait(ItemStack stack, FoodTrait trait)
-    {
-        stack.getCapability(FoodCapability.CAPABILITY).ifPresent(food -> applyTrait(food, trait));
-        return stack;
-    }
-
-    /**
-     * Helper method to handle removing a trait to a food item.
-     * Do NOT just directly remove the trait, as that can lead to strange interactions with decay dates / creation dates
-     */
-    public static void removeTrait(IFood instance, FoodTrait trait)
-    {
-        if (instance.getTraits().contains(trait))
-        {
-            if (!instance.isRotten())
-            {
-                // Removed trait = 1 / apply trait
-                instance.setCreationDate(calculateNewCreationDate(instance.getCreationDate(), trait.getDecayModifier()));
-            }
-            instance.getTraits().remove(trait);
-        }
-    }
-
-    public static ItemStack removeTrait(ItemStack stack, FoodTrait trait)
-    {
-        stack.getCapability(FoodCapability.CAPABILITY).ifPresent(food -> removeTrait(food, trait));
-        return stack;
-    }
-
-    /**
-     * Sets the given item stack to rotten, if possible.
-     */
-    public static ItemStack setRotten(ItemStack stack)
-    {
-        stack.getCapability(FoodCapability.CAPABILITY).ifPresent(food -> food.setCreationDate(FoodHandler.ROTTEN_DATE));
-        return stack;
-    }
-
-    public static void setNeverExpires(ItemStack stack)
     {
         final @Nullable IFood food = get(stack);
         if (food != null)
         {
-            food.setCreationDate(FoodHandler.NEVER_DECAY_CREATION_DATE);
+            applyTrait(food, trait);
+        }
+        return stack;
+    }
+
+    /**
+     * Removes {@code trait} from {@code food}, and updates the creation date to preserve the decay proportion of the food.
+     */
+    public static void removeTrait(IFood food, FoodTrait trait)
+    {
+        if (food.hasTrait(trait))
+        {
+            if (!food.isRotten())
+            {
+                // Removed trait = 1 / apply trait
+                food.setCreationDate(calculateNewCreationDate(food.getCreationDate(), trait.getDecayModifier()));
+            }
+            food.getTraits().remove(trait);
         }
     }
 
     /**
-     * This is used to update a stack from an old stack, in the case where a food is created from another
-     * Any method that creates derivative food should call this, as it avoids extending the decay of the item
-     * If called with non food items, nothing happens
+     * Removes {@code trait} from {@code stack}, and updates the creation date to preserve the decay proportion of the food.
+     */
+    public static ItemStack removeTrait(ItemStack stack, FoodTrait trait)
+    {
+        final @Nullable IFood food = get(stack);
+        if (food != null)
+        {
+            removeTrait(food, trait);
+        }
+        return stack;
+    }
+
+    /**
+     * @return {@code true} if the {@code stack} is a food and has {@code trait}.
+     */
+    public static boolean hasTrait(ItemStack stack, FoodTrait trait)
+    {
+        final @Nullable IFood food = get(stack);
+        return food != null && food.hasTrait(trait);
+    }
+
+    /**
+     * @return {@code true} if the {@code stack} is a food and is rotten.
+     */
+    public static boolean isRotten(ItemStack stack)
+    {
+        final @Nullable IFood food = get(stack);
+        return food != null && food.isRotten();
+    }
+
+    public static void addTooltipInfo(ItemStack stack, List<Component> text)
+    {
+        final @Nullable IFood food = get(stack);
+        if (food != null)
+        {
+            food.addTooltipInfo(stack, text);
+        }
+    }
+
+    /**
+     * Sets the creation date of the food directly, if one exists. If trying to apply preservation, prefer using the {@link FoodTrait}
+     * mechanics rather than directly modifying the creation date of foods.
      *
-     * @param oldStack the old stack
-     * @param newStack the new stack
-     * @return the modified stack, for chaining
+     * @param stack An item stack
+     * @param date A creation date
+     * @return The original stack
+     *
+     * @see #setRotten(ItemStack)
+     * @see #setNeverExpires(ItemStack)
+     * @see #updateFoodDecayOnCreate(ItemStack)
+     */
+    public static ItemStack setCreationDate(ItemStack stack, long date)
+    {
+        final @Nullable IFood food = get(stack);
+        if (food != null)
+        {
+            food.setCreationDate(date);
+        }
+        return stack;
+    }
+
+    /**
+     * Sets the given item stack to rotten, by directly setting the creation date to {@link FoodHandler#ROTTEN_DATE}.
+     * @param stack The item stack
+     * @return The original stack
+     */
+    public static ItemStack setRotten(ItemStack stack)
+    {
+        return setCreationDate(stack, FoodHandler.ROTTEN_DATE);
+    }
+
+    /**
+     * Sets the given item stack to never expire, including showing a "Never Expires" tooltip. This is used for items that are
+     * meant to not expire and are player-visible (i.e. golden apples).
+     * @param stack The item stack
+     */
+    public static void setNeverExpires(ItemStack stack)
+    {
+        setCreationDate(stack, FoodHandler.NEVER_DECAY_CREATION_DATE);
+    }
+
+    /**
+     * Sets the creation date of the item to now. This is used when creating new food items from non-food inputs. When creating food from other food,
+     * in general you should use the overloads which take previous item(s) as input, to copy from.
+     *
+     * @see #updateFoodFromPrevious(ItemStack, ItemStack)
+     * @see #updateFoodFromAllPrevious(Collection, ItemStack)
+     */
+    public static ItemStack updateFoodDecayOnCreate(ItemStack stack)
+    {
+        return setCreationDate(stack, getRoundedCreationDate());
+    }
+
+    /**
+     * Sets the creation date of {@code newStack} based on the creation date and decay of {@code oldStack}, and also copies any
+     * {@link FoodTrait}s from the {@code oldStack} to {@code newStack}. This preserves the relative decay between the two items.
      */
     public static ItemStack updateFoodFromPrevious(ItemStack oldStack, ItemStack newStack)
     {
-        oldStack.getCapability(FoodCapability.CAPABILITY).ifPresent(oldFood ->
-            newStack.getCapability(FoodCapability.CAPABILITY).ifPresent(newFood -> {
-                // Copy traits from old stack to new stack
-                newFood.getTraits().addAll(oldFood.getTraits());
-                // Applied trait decay DATE modifier = new / old
-                float decayDelta = newFood.getDecayDateModifier() / oldFood.getDecayDateModifier();
-                newFood.setCreationDate(calculateNewRoundedCreationDate(oldFood.getCreationDate(), decayDelta));
-            }));
+        final @Nullable IFood oldFood = get(oldStack);
+        final @Nullable IFood newFood = get(newStack);
+        if (oldFood != null && newFood != null)
+        {
+            // Copy traits from old stack to new stack
+            newFood.getTraits().addAll(oldFood.getTraits());
 
+            // Applied trait decay DATE modifier = new / old
+            final float decayDelta = newFood.getDecayDateModifier() / oldFood.getDecayDateModifier();
+            newFood.setCreationDate(calculateNewRoundedCreationDate(oldFood.getCreationDate(), decayDelta));
+        }
         return newStack;
     }
 
     /**
-     * Like {@link #updateFoodFromPrevious(ItemStack, ItemStack)}, however this method has two key differences.
-     * First, it updates the food from a collection of previous stacks, not just a single stack.
-     * Second, it only updates the creation date, and takes the oldest of all possible creation dates and averages the decay modifiers. It does not copy traits from any of the old stacks to the new stack.
-     * It should generally only be used in a situation where all the old stacks are of the same type.
+     * Sets the creation date of {@code newStack} based on the creation date and decay of {@code oldStacks}. This will take the average of all
+     * previous decay modifiers and will not copy traits. It generally makes sense to be used when the {@code oldStacks} are all the same type.
      */
     public static ItemStack updateFoodFromAllPrevious(Collection<ItemStack> oldStacks, ItemStack newStack)
     {
-        newStack.getCapability(FoodCapability.CAPABILITY).ifPresent(newFood -> {
+        final @Nullable IFood newFood = get(newStack);
+        if (newFood != null)
+        {
             float decayDateModifier = 0;
             long oldCreationDate = Long.MAX_VALUE;
             int oldFoodCount = 0;
             for (ItemStack oldStack : oldStacks)
             {
-                final IFood oldFood = Helpers.getCapability(oldStack, FoodCapability.CAPABILITY);
+                final IFood oldFood = get(oldStack);
                 if (oldFood != null)
                 {
                     decayDateModifier += oldFood.getDecayDateModifier();
@@ -176,35 +249,23 @@ public final class FoodCapability
                 final float decayDelta = oldFoodCount * newFood.getDecayDateModifier() / decayDateModifier;
                 newFood.setCreationDate(calculateNewCreationDate(oldCreationDate, decayDelta));
             }
-        });
+        }
         return newStack;
-    }
-
-    /**
-     * Call this from any function that is meant to create a new item stack.
-     * In MOST cases, you should use {@link FoodCapability#updateFoodFromPrevious(ItemStack, ItemStack)}, as the decay should transfer from input -> output
-     * This is only for where there is no input. (i.e. on a direct {@code stack.copy()} from non-food inputs
-     *
-     * @param stack the new stack
-     * @return the input stack, for chaining
-     */
-    @SuppressWarnings("unused")
-    public static ItemStack updateFoodDecayOnCreate(ItemStack stack)
-    {
-        stack.getCapability(FoodCapability.CAPABILITY).ifPresent(food -> food.setCreationDate(getRoundedCreationDate()));
-        return stack;
     }
 
 
     public static ItemStack setStackNonDecaying(ItemStack stack)
     {
-        stack.getCapability(FoodCapability.CAPABILITY).ifPresent(IFood::setNonDecaying);
+        final @Nullable IFood food = get(stack);
+        if (food != null)
+        {
+            food.setNonDecaying();
+        }
         return stack;
     }
 
     /**
-     * Creates a box of an item stack, that we want to always not decay.
-     * The reason we can't evaluate this immediately is because the stack may be created at a time when tags (and as a result, capabilities) don't exist yet
+     * Sets a stack to non-decaying in a lazy fashion, which can be used before capabilities are fully loaded.
      */
     public static Supplier<ItemStack> createNonDecayingStack(ItemStack stack)
     {
@@ -249,8 +310,8 @@ public final class FoodCapability
         }
         else if (FoodCapability.areStacksStackableExceptCreationDate(stackToMergeInto, stackToMerge))
         {
-            final IFood mergeIntoFood = stackToMergeInto.getCapability(FoodCapability.CAPABILITY).resolve().orElse(null);
-            final IFood mergeFood = stackToMerge.getCapability(FoodCapability.CAPABILITY).resolve().orElse(null);
+            final @Nullable IFood mergeIntoFood = get(stackToMergeInto);
+            final @Nullable IFood mergeFood = get(stackToMerge);
             if (mergeIntoFood != null && mergeFood != null)
             {
                 mergeIntoFood.setCreationDate(Math.min(mergeIntoFood.getCreationDate(), mergeFood.getCreationDate()));
@@ -265,18 +326,20 @@ public final class FoodCapability
 
     /**
      * This is a nice way of checking if two stacks are stackable, ignoring the creation date: copy both stacks, give them the same creation date, then check compatibility
-     * This will also not stack stacks which have different traits, which is intended
+     * This will also not stack items which have different traits, which is intended
      *
      * @return true if the stacks are otherwise stackable ignoring their creation date
      */
     public static boolean areStacksStackableExceptCreationDate(ItemStack stack1, ItemStack stack2)
     {
         // This is a nice way of checking if two stacks are stackable, ignoring the creation date: copy both stacks, give them the same creation date, then check compatibility
-        // This will also not stack stacks which have different traits, which is intended
+        // This will also not stack items which have different traits, which is intended
         final ItemStack stack1Copy = stack1.copy(), stack2Copy = stack2.copy();
         final long date = Calendars.get().getTicks();
-        stack1Copy.getCapability(FoodCapability.CAPABILITY).ifPresent(food -> food.setCreationDate(date));
-        stack2Copy.getCapability(FoodCapability.CAPABILITY).ifPresent(food -> food.setCreationDate(date));
+
+        setCreationDate(stack1Copy, date);
+        setCreationDate(stack2Copy, date);
+
         return ItemHandlerHelper.canItemStacksStack(stack1Copy, stack2Copy);
     }
 

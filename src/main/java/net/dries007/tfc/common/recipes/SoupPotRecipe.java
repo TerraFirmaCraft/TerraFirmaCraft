@@ -8,7 +8,6 @@ package net.dries007.tfc.common.recipes;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import com.google.gson.JsonObject;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -19,15 +18,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraftforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
+import net.dries007.tfc.common.capabilities.food.DynamicBowlHandler;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodData;
 import net.dries007.tfc.common.capabilities.food.IFood;
 import net.dries007.tfc.common.capabilities.food.Nutrient;
 import net.dries007.tfc.common.fluids.TFCFluids;
-import net.dries007.tfc.common.capabilities.food.DynamicBowlHandler;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
 import net.dries007.tfc.util.Helpers;
@@ -57,8 +57,8 @@ public class SoupPotRecipe extends PotRecipe
         final List<ItemStack> itemIngredients = new ArrayList<>();
         for (int i = PotBlockEntity.SLOT_EXTRA_INPUT_START; i <= PotBlockEntity.SLOT_EXTRA_INPUT_END; i++)
         {
-            ItemStack stack = inventory.getStackInSlot(i);
-            IFood food = stack.getCapability(FoodCapability.CAPABILITY).resolve().orElse(null);
+            final ItemStack stack = inventory.getStackInSlot(i);
+            final @Nullable IFood food = FoodCapability.get(stack);
             if (food != null)
             {
                 itemIngredients.add(stack);
@@ -98,7 +98,7 @@ public class SoupPotRecipe extends PotRecipe
             long created = FoodCapability.getRoundedCreationDate();
 
             soupStack = new ItemStack(TFCItems.SOUPS.get(maxNutrient).get(), servings);
-            final IFood food = soupStack.getCapability(FoodCapability.CAPABILITY).resolve().orElse(null);
+            final @Nullable IFood food = FoodCapability.get(soupStack);
             if (food instanceof DynamicBowlHandler handler)
             {
                 handler.setCreationDate(created);
@@ -130,9 +130,10 @@ public class SoupPotRecipe extends PotRecipe
             if (Helpers.isItem(clickedWith.getItem(), TFCTags.Items.SOUP_BOWLS) && !stack.isEmpty())
             {
                 // set the internal bowl to the one we clicked with
-                stack.getCapability(FoodCapability.CAPABILITY)
-                    .filter(food -> food instanceof DynamicBowlHandler)
-                    .ifPresent(food -> ((DynamicBowlHandler) food).setBowl(clickedWith));
+                if (FoodCapability.get(stack) instanceof DynamicBowlHandler handler)
+                {
+                    handler.setBowl(clickedWith);
+                }
 
                 // take the player's bowl, give a soup
                 clickedWith.shrink(1);

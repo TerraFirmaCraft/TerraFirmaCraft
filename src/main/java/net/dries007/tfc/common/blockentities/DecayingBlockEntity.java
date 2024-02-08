@@ -15,7 +15,6 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.blocks.crop.DecayingBlock;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.common.capabilities.food.IFood;
 
 public class DecayingBlockEntity extends TFCBlockEntity
 {
@@ -56,7 +55,7 @@ public class DecayingBlockEntity extends TFCBlockEntity
 
     public boolean isRotten()
     {
-        return stack.isEmpty() || stack.getCapability(FoodCapability.CAPABILITY).map(IFood::isRotten).orElse(false);
+        return stack.isEmpty() || FoodCapability.isRotten(stack);
     }
 
     public ItemStack getStack()

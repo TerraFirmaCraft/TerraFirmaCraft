@@ -267,8 +267,7 @@ public class ClientForgeEventHandler
             ForgingBonus.addTooltipInfo(stack, text);
             Forging.addTooltipInfo(stack, text);
             GlassWorkData.addTooltipInfo(stack, text);
-
-            stack.getCapability(FoodCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(stack, text));
+            FoodCapability.addTooltipInfo(stack, text);
 
             final @Nullable IHeat heat = HeatCapability.get(stack);
             if (heat != null)

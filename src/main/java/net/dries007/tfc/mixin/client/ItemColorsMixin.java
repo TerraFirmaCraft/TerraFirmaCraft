@@ -22,9 +22,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.common.capabilities.food.IFood;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.Helpers;
 
 @Mixin(ItemColors.class)
 public abstract class ItemColorsMixin
@@ -37,15 +35,11 @@ public abstract class ItemColorsMixin
     @Inject(method = "getColor", at = @At("HEAD"), cancellable = true)
     private void injectColorHandlerForCapabilityItems(ItemStack stack, int tintIndex, CallbackInfoReturnable<Integer> cir)
     {
-        // Only modify if the default color handler would not be used
-        if (!itemColors.containsKey(ForgeRegistries.ITEMS.getDelegateOrThrow(stack.getItem())))
+        // Only modify if the default color handler would not be used, and this is a rotten food
+        if (!itemColors.containsKey(ForgeRegistries.ITEMS.getDelegateOrThrow(stack.getItem())) &&
+            FoodCapability.isRotten(stack))
         {
-            // If so, then if we're a food and rotten, apply our color handler
-            final IFood food = Helpers.getCapability(stack, FoodCapability.CAPABILITY);
-            if (food != null && food.isRotten())
-            {
-                cir.setReturnValue(TFCConfig.CLIENT.foodExpiryOverlayColor.get());
-            }
+            cir.setReturnValue(TFCConfig.CLIENT.foodExpiryOverlayColor.get());
         }
     }
 }

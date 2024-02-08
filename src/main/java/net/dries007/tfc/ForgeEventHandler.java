@@ -129,11 +129,11 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
 import net.dries007.tfc.common.blockentities.BlastFurnaceBlockEntity;
 import net.dries007.tfc.common.blockentities.BloomeryBlockEntity;
+import net.dries007.tfc.common.blockentities.BowlBlockEntity;
 import net.dries007.tfc.common.blockentities.CharcoalForgeBlockEntity;
 import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
 import net.dries007.tfc.common.blockentities.LampBlockEntity;
 import net.dries007.tfc.common.blockentities.PitKilnBlockEntity;
-import net.dries007.tfc.common.blockentities.BowlBlockEntity;
 import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
@@ -1482,10 +1482,11 @@ public final class ForgeEventHandler
 
     public static void onItemUseFinish(LivingEntityUseItemEvent.Finish event)
     {
-        final IFood food = event.getItem().getCapability(FoodCapability.CAPABILITY).resolve().orElse(null);
+        final ItemStack stack = event.getItem();
+        final @Nullable IFood food = FoodCapability.get(stack);
         if (food instanceof DynamicBowlHandler)
         {
-            event.setResultStack(DynamicBowlHandler.onItemUse(event.getItem(), event.getResultStack(), event.getEntity()));
+            event.setResultStack(DynamicBowlHandler.onItemUse(stack, event.getResultStack(), event.getEntity()));
         }
     }
 

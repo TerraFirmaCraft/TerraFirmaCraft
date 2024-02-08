@@ -78,9 +78,10 @@ public class DecayingBlock extends ExtendedBlock implements EntityBlockExtension
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
-        return context.getItemInHand().getCapability(FoodCapability.CAPABILITY).map(cap ->
-            cap.isRotten() ? getRottedBlock().defaultBlockState() : defaultBlockState()
-        ).orElse(defaultBlockState());
+        final @Nullable IFood food = FoodCapability.get(context.getItemInHand());
+        return food != null && food.isRotten()
+            ? getRottedBlock().defaultBlockState()
+            : defaultBlockState();
     }
 
     public Block getRottedBlock()

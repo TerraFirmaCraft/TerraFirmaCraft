@@ -49,9 +49,9 @@ public class StackFoodPacket
                 return;
             }
 
-            Slot targetSlot = menu.getSlot(index);
-            ItemStack targetStack = targetSlot.getItem();
-            IFood targetCap = targetStack.getCapability(FoodCapability.CAPABILITY).resolve().orElse(null);
+            final Slot targetSlot = menu.getSlot(index);
+            final ItemStack targetStack = targetSlot.getItem();
+            final @Nullable IFood targetCap = FoodCapability.get(targetStack);
 
             if (targetCap == null || targetStack.getMaxStackSize() == targetStack.getCount() || targetCap.isRotten())
             {
@@ -66,9 +66,9 @@ public class StackFoodPacket
             Iterator<Slot> slotIterator = stackableSlots.iterator();
             while (remaining > 0 && slotIterator.hasNext())
             {
-                Slot slot = slotIterator.next();
-                ItemStack stack = slot.getItem();
-                IFood cap = stack.getCapability(FoodCapability.CAPABILITY).resolve().orElse(null);
+                final Slot slot = slotIterator.next();
+                final ItemStack stack = slot.getItem();
+                final @Nullable IFood cap = FoodCapability.get(stack);
 
                 if (cap == null || cap.isRotten()) continue;
 
