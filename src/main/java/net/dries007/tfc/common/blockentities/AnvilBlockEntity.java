@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blockentities;
 
 import java.util.Collection;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
@@ -26,13 +25,19 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.devices.Tiered;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
-import net.dries007.tfc.common.capabilities.forge.*;
+import net.dries007.tfc.common.capabilities.forge.ForgeRule;
+import net.dries007.tfc.common.capabilities.forge.ForgeStep;
+import net.dries007.tfc.common.capabilities.forge.Forging;
+import net.dries007.tfc.common.capabilities.forge.ForgingBonus;
+import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.container.AnvilContainer;
@@ -43,9 +48,6 @@ import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.WeldingRecipe;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.AnvilInventory> implements ISlotCallback
 {
@@ -72,10 +74,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
     @Nullable
     public Forging getMainInputForging()
     {
-        return inventory.getStackInSlot(AnvilBlockEntity.SLOT_INPUT_MAIN)
-            .getCapability(ForgingCapability.CAPABILITY)
-            .resolve()
-            .orElse(null);
+        return ForgingCapability.get(inventory.getStackInSlot(AnvilBlockEntity.SLOT_INPUT_MAIN));
     }
 
     /**
@@ -130,7 +129,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
     {
         if (slot == SLOT_INPUT_MAIN)
         {
-            stack.getCapability(ForgingCapability.CAPABILITY).ifPresent(Forging::clearRecipeIfNotWorked);
+            ForgingCapability.clearRecipeIfNotWorked(stack);
         }
     }
 
@@ -171,7 +170,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
         final ItemStack stack = inventory.getStackInSlot(SLOT_INPUT_MAIN);
         if (!stack.isEmpty())
         {
-            stack.getCapability(ForgingCapability.CAPABILITY).ifPresent(Forging::clearRecipeIfNotWorked);
+            ForgingCapability.clearRecipeIfNotWorked(stack);
         }
         super.ejectInventory();
     }
@@ -514,7 +513,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
         public ItemStack extractItem(int slot, int amount, boolean simulate)
         {
             final ItemStack stack = super.extractItem(slot, amount, simulate);
-            stack.getCapability(ForgingCapability.CAPABILITY).ifPresent(Forging::clearRecipeIfNotWorked);
+            ForgingCapability.clearRecipeIfNotWorked(stack);
             return stack;
         }
     }

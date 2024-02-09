@@ -73,8 +73,8 @@ import net.dries007.tfc.common.blocks.devices.SluiceBlock;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.capabilities.egg.EggCapability;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.common.capabilities.forge.Forging;
 import net.dries007.tfc.common.capabilities.forge.ForgingBonus;
+import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
 import net.dries007.tfc.common.capabilities.glass.GlassWorkData;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
@@ -265,7 +265,7 @@ public class ClientForgeEventHandler
             ItemSizeManager.addTooltipInfo(stack, text);
             PhysicalDamageType.addTooltipInfo(stack, text);
             ForgingBonus.addTooltipInfo(stack, text);
-            Forging.addTooltipInfo(stack, text);
+            ForgingCapability.addTooltipInfo(stack, text);
             GlassWorkData.addTooltipInfo(stack, text);
             FoodCapability.addTooltipInfo(stack, text);
 

@@ -6,24 +6,21 @@
 
 package net.dries007.tfc.common.capabilities.forge;
 
-import java.util.List;
-
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.recipes.AnvilRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.util.Helpers;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * A capability instance which is attached to all items, in order to store (cached) and manipulate anvil working/forging data.
@@ -33,17 +30,7 @@ public final class Forging implements ICapabilityProvider
 {
     private static final String KEY = "tfc:forging";
 
-    public static void addTooltipInfo(ItemStack stack, List<Component> tooltips)
-    {
-        stack.getCapability(ForgingCapability.CAPABILITY).ifPresent(cap -> {
-            if (cap.getSteps().any())
-            {
-                tooltips.add(Component.translatable("tfc.tooltip.anvil_has_been_worked"));
-            }
-        });
-    }
-
-    private final LazyOptional<Forging> capability;
+    private final LazyOptional<Forging> capability = LazyOptional.of(() -> this);;
     private final ItemStack stack;
 
     private final ForgeSteps steps;
@@ -54,7 +41,6 @@ public final class Forging implements ICapabilityProvider
 
     public Forging(ItemStack stack)
     {
-        this.capability = LazyOptional.of(() -> this);
         this.stack = stack;
 
         this.work = 0;

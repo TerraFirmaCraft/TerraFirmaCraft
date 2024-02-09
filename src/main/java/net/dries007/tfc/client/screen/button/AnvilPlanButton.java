@@ -68,7 +68,7 @@ public class AnvilPlanButton extends Button
     private AnvilRecipe getRecipe()
     {
         final Level level = anvil.getLevel();
-        final Forging forging = anvil.getMainInputForging();
+        final @Nullable Forging forging = anvil.getMainInputForging();
         if (level != null && forging != null)
         {
             return forging.getRecipe(level);
