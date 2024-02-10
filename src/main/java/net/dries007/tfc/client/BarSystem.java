@@ -92,23 +92,31 @@ public final class BarSystem
             @Override
             public boolean isBarVisible(ItemStack stack)
             {
-                return stack.getCapability(EggCapability.CAPABILITY).map(cap -> cap.getHatchDay() != 0).orElse(false);
+                final @Nullable IEgg egg = EggCapability.get(stack);
+                return egg != null && egg.getHatchDay() != 0;
             }
 
             @Override
             public int getBarWidth(ItemStack stack)
             {
                 final int maxDays = 8;
-                return stack.getCapability(EggCapability.CAPABILITY).map(cap -> {
-                    final int incubationDays = maxDays - Mth.clamp((int) (cap.getHatchDay() - Calendars.CLIENT.getTotalDays()), 0, maxDays);
+                final @Nullable IEgg egg = EggCapability.get(stack);
+                if (egg != null)
+                {
+                    final int incubationDays = maxDays - Mth.clamp((int) (egg.getHatchDay() - Calendars.CLIENT.getTotalDays()), 0, maxDays);
                     return Math.round(13f * incubationDays / maxDays);
-                }).orElse(0);
+                }
+                return 0;
             }
 
             @Override
             public ItemStack createDefaultItem(ItemStack stack)
             {
-                stack.getCapability(EggCapability.CAPABILITY).ifPresent(IEgg::removeFertilization);
+                final @Nullable IEgg egg = EggCapability.get(stack);
+                if (egg != null)
+                {
+                    egg.removeFertilization();
+                }
                 return stack;
             }
         });

@@ -390,11 +390,13 @@ public final class BlockEntityTooltips
             nest.getCapability(Capabilities.ITEM).ifPresent(inventory -> {
                 for (int i = 0; i < inventory.getSlots(); i++)
                 {
-                    ItemStack stack = inventory.getStackInSlot(i);
-                    stack.getCapability(EggCapability.CAPABILITY).filter(IEgg::isFertilized).ifPresent(egg -> {
+                    final ItemStack stack = inventory.getStackInSlot(i);
+                    final @Nullable IEgg egg = EggCapability.get(stack);
+                    if (egg != null)
+                    {
                         text.add(stack.getHoverName());
                         egg.addTooltipInfo(text);
-                    });
+                    }
                 }
             });
             text.forEach(tooltip);

@@ -8,6 +8,8 @@ package net.dries007.tfc.client;
 
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -72,6 +74,7 @@ import net.dries007.tfc.common.blockentities.SluiceBlockEntity;
 import net.dries007.tfc.common.blocks.devices.SluiceBlock;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.capabilities.egg.EggCapability;
+import net.dries007.tfc.common.capabilities.egg.IEgg;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.forge.ForgingBonus;
 import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
@@ -275,7 +278,11 @@ public class ClientForgeEventHandler
                 heat.addTooltipInfo(stack, text);
             }
 
-            stack.getCapability(EggCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(text));
+            final @Nullable IEgg egg = EggCapability.get(stack);
+            if (egg != null)
+            {
+                egg.addTooltipInfo(text);
+            }
 
             // Fuel information
             final Fuel fuel = Fuel.get(stack);
