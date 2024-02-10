@@ -71,7 +71,7 @@ public class TFCKelpFeature extends Feature<ColumnPlantConfig>
         {
             if (canPlaceBlockAt(level, mutablePos, body))
             {
-                if (i == height || !FluidHelpers.isAirOrEmptyFluid(level.getBlockState(mutablePos.above())))
+                if (i == height || !FluidHelpers.isEmptyFluid(level.getBlockState(mutablePos.above())))
                 {
                     if (!Helpers.isBlock(level.getBlockState(mutablePos.below()), head.getBlock()))
                     {
@@ -87,6 +87,6 @@ public class TFCKelpFeature extends Feature<ColumnPlantConfig>
 
     private boolean canPlaceBlockAt(LevelAccessor level, BlockPos pos, BlockState state)
     {
-        return state.canSurvive(level, pos) && FluidHelpers.isAirOrEmptyFluid(level.getBlockState(pos));
+        return state.canSurvive(level, pos) && FluidHelpers.isEmptyFluid(level.getBlockState(pos));
     }
 }
