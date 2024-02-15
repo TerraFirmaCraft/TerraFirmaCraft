@@ -16,8 +16,6 @@ import net.minecraft.world.phys.Vec2;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.tracker.WorldTracker;
-import net.dries007.tfc.util.tracker.WorldTrackerCapability;
-import net.dries007.tfc.world.chunkdata.ChunkData;
 
 /**
  * This stores the climate parameters at the current client player location, for quick lookup in rendering purposes
@@ -55,12 +53,7 @@ public enum ClimateRenderCache
             final float targetRainLevel = level instanceof ClientLevel clientLevel ? clientLevel.rainLevel : 0;
 
             // We can't invoke EnvironmentHelpers.isRainingOrSnowing() either, because it goes through isRaining() -> getRainLevel()
-            float adjustedTargetRainLevel = 0f;
-            final WorldTracker tracker = level.getCapability(WorldTrackerCapability.CAPABILITY).resolve().orElse(null);
-            if (tracker != null)
-            {
-                adjustedTargetRainLevel = tracker.isRaining(level, pos) ? targetRainLevel : 0f;
-            }
+            final float adjustedTargetRainLevel = WorldTracker.get(level).isRaining(level, pos) ? targetRainLevel : 0f;
 
             lastRainLevel = currRainLevel;
             if (currRainLevel < adjustedTargetRainLevel)

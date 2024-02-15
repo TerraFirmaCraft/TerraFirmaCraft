@@ -29,7 +29,6 @@ import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.events.SelectClimateModelEvent;
 import net.dries007.tfc.util.tracker.WorldTracker;
-import net.dries007.tfc.util.tracker.WorldTrackerCapability;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 
@@ -144,7 +143,7 @@ public final class Climate
     {
         final SelectClimateModelEvent event = new SelectClimateModelEvent(level);
         MinecraftForge.EVENT_BUS.post(event);
-        level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(c -> c.setClimateModel(event.getModel()));
+        WorldTracker.get(level).setClimateModel(event.getModel());
         model(level).onWorldLoad(level);
     }
 
@@ -198,8 +197,6 @@ public final class Climate
 
     public static ClimateModel model(Level level)
     {
-        return level.getCapability(WorldTrackerCapability.CAPABILITY)
-            .map(WorldTracker::getClimateModel)
-            .orElse(ClimateModels.BIOME_BASED.get().create());
+        return WorldTracker.get(level).getClimateModel();
     }
 }

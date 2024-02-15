@@ -16,7 +16,6 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.util.tracker.WorldTracker;
-import net.dries007.tfc.util.tracker.WorldTrackerCapability;
 
 
 /**
@@ -26,10 +25,9 @@ import net.dries007.tfc.util.tracker.WorldTrackerCapability;
  */
 public final class RotationNetworkManager implements RotationAccess
 {
-    @Nullable
     public static RotationNetworkManager get(Level level)
     {
-        return level.getCapability(WorldTrackerCapability.CAPABILITY).map(WorldTracker::getRotationManager).orElse(null);
+        return WorldTracker.get(level).getRotationManager();
     }
 
     private final Long2ObjectMap<RotationNetwork> networks;

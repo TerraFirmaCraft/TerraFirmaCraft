@@ -57,7 +57,7 @@ public interface RotatingBlockEntity
 
         final RotationNetworkManager manager = RotationNetworkManager.get(level);
 
-        if (manager != null && !manager.performAction(getRotationNode(), action))
+        if (!manager.performAction(getRotationNode(), action))
         {
             markAsInvalidInNetwork();
             level.scheduleTick(entity.getBlockPos(), entity.getBlockState().getBlock(), DELAY_FOR_INVALID_IN_NETWORK);

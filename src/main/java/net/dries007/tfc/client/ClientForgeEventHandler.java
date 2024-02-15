@@ -8,8 +8,6 @@ package net.dries007.tfc.client;
 
 import java.lang.reflect.Field;
 import java.util.List;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -105,7 +103,7 @@ import net.dries007.tfc.util.PhysicalDamageType;
 import net.dries007.tfc.util.Sluiceable;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.climate.Climate;
-import net.dries007.tfc.util.tracker.WorldTrackerCapability;
+import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
@@ -182,7 +180,7 @@ public class ClientForgeEventHandler
                     tooltip.add("[Waiting for chunk data]");
                 }
 
-                mc.level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addDebugTooltip(tooltip));
+                WorldTracker.get(mc.level).addDebugTooltip(tooltip);
 
                 final MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
                 if (server != null && server.overworld().getChunkSource().getGenerator() instanceof ChunkGeneratorExtension ex)

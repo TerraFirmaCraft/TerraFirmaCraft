@@ -36,7 +36,7 @@ import net.dries007.tfc.util.Support;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.events.CollapseEvent;
 import net.dries007.tfc.util.tracker.Collapse;
-import net.dries007.tfc.util.tracker.WorldTrackerCapability;
+import net.dries007.tfc.util.tracker.WorldTracker;
 
 /**
  * This handles logic relating to block collapses.
@@ -189,7 +189,7 @@ public class CollapseRecipe extends SimpleBlockRecipe
 
         if (!secondaryPositions.isEmpty())
         {
-            level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addCollapseData(new Collapse(centerPos, secondaryPositions, radiusSquared)));
+            WorldTracker.get(level).addCollapseData(new Collapse(centerPos, secondaryPositions, radiusSquared));
         }
 
         return !secondaryPositions.isEmpty();

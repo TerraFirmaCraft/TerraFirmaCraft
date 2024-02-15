@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.util;
 
-import java.util.Random;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -38,7 +37,7 @@ import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.OverworldClimateModel;
-import net.dries007.tfc.util.tracker.WorldTrackerCapability;
+import net.dries007.tfc.util.tracker.WorldTracker;
 
 /**
  * This is a helper class which handles environment effects
@@ -137,9 +136,7 @@ public final class EnvironmentHelpers
 
     public static boolean isRainingOrSnowing(Level level, BlockPos pos)
     {
-        return level.isRaining() && level.getCapability(WorldTrackerCapability.CAPABILITY)
-            .map(cap -> cap.isRaining(level, pos))
-            .orElse(false);
+        return level.isRaining() && WorldTracker.get(level).isRaining(level, pos);
     }
 
     /**

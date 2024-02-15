@@ -535,12 +535,12 @@ public final class ForgeEventHandler
 
             if (Helpers.isBlock(state, TFCTags.Blocks.CAN_LANDSLIDE))
             {
-                world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(pos));
+                WorldTracker.get(world).addLandslidePos(pos);
             }
 
             if (Helpers.isBlock(state, TFCTags.Blocks.BREAKS_WHEN_ISOLATED))
             {
-                world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addIsolatedPos(pos));
+                WorldTracker.get(world).addIsolatedPos(pos);
             }
         }
     }
@@ -567,12 +567,12 @@ public final class ForgeEventHandler
 
                 if (Helpers.isBlock(state, TFCTags.Blocks.CAN_LANDSLIDE))
                 {
-                    level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(pos));
+                    WorldTracker.get(level).addLandslidePos(pos);
                 }
 
                 if (Helpers.isBlock(state.getBlock(), TFCTags.Blocks.BREAKS_WHEN_ISOLATED))
                 {
-                    level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addIsolatedPos(pos));
+                    WorldTracker.get(level).addIsolatedPos(pos);
                 }
             }
         }
@@ -580,9 +580,10 @@ public final class ForgeEventHandler
 
     public static void onExplosionDetonate(ExplosionEvent event)
     {
-        if (!event.getLevel().isClientSide)
+        final Level level = event.getLevel();
+        if (!level.isClientSide)
         {
-            event.getLevel().getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addCollapsePositions(BlockPos.containing(event.getExplosion().getPosition()), event.getExplosion().getToBlow()));
+            WorldTracker.get(level).addCollapsePositions(BlockPos.containing(event.getExplosion().getPosition()), event.getExplosion().getToBlow());
         }
     }
 
@@ -591,7 +592,7 @@ public final class ForgeEventHandler
         if (event.phase == TickEvent.Phase.START && event.level instanceof ServerLevel level)
         {
             WeatherHelpers.preAdvancedWeatherCycle(level);
-            level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.tick(level));
+            WorldTracker.get(level).tick();
         }
     }
 
@@ -1313,8 +1314,8 @@ public final class ForgeEventHandler
         if (player instanceof ServerPlayer serverPlayer)
         {
             TFCFoodData.replaceFoodStats(serverPlayer);
+            WorldTracker.get(serverPlayer.serverLevel()).syncTo(serverPlayer);
 
-            serverPlayer.serverLevel().getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(c -> c.syncTo(serverPlayer));
             serverPlayer.getCapability(PlayerDataCapability.CAPABILITY).ifPresent(PlayerData::sync);
 
             final ClimateModel model = Climate.model(serverPlayer.level());
