@@ -7,7 +7,6 @@
 package net.dries007.tfc.mixin;
 
 import java.util.Collection;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagLoader;
 import org.spongepowered.asm.mixin.Dynamic;
 import org.spongepowered.asm.mixin.Mixin;
@@ -24,7 +23,7 @@ import net.dries007.tfc.util.SelfTests;
 public abstract class TagLoaderMixin
 {
     @Dynamic("Lambda in build(), the ifLeft() which logs an error")
-    @Inject(method = "*(Ljava/util/Collection;)V", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;error(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V", remap = false), require = 0)
+    @Inject(method = "lambda$build$4", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;error(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V", remap = false), require = 0)
     private static void setStateToErrored(Collection<TagLoader.EntryWithSource> tags, CallbackInfo ci)
     {
         SelfTests.reportExternalError();
