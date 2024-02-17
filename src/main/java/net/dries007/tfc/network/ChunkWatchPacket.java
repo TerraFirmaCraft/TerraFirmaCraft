@@ -9,13 +9,11 @@ package net.dries007.tfc.network;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.chunk.ChunkAccess;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 import net.dries007.tfc.world.chunkdata.ForestType;
 import net.dries007.tfc.world.chunkdata.LerpFloatLayer;
 
@@ -26,13 +24,13 @@ public class ChunkWatchPacket
 {
     private final int chunkX;
     private final int chunkZ;
-    @Nullable private final LerpFloatLayer rainfallLayer;
-    @Nullable private final LerpFloatLayer temperatureLayer;
+    private final LerpFloatLayer rainfallLayer;
+    private final LerpFloatLayer temperatureLayer;
     private final ForestType forestType;
     private final float forestWeirdness;
     private final float forestDensity;
 
-    public ChunkWatchPacket(int chunkX, int chunkZ, @Nullable LerpFloatLayer rainfallLayer, @Nullable LerpFloatLayer temperatureLayer, ForestType forestType, float forestDensity, float forestWeirdness)
+    public ChunkWatchPacket(int chunkX, int chunkZ, LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer, ForestType forestType, float forestDensity, float forestWeirdness)
     {
         this.chunkX = chunkX;
         this.chunkZ = chunkZ;
@@ -47,8 +45,8 @@ public class ChunkWatchPacket
     {
         chunkX = buffer.readVarInt();
         chunkZ = buffer.readVarInt();
-        rainfallLayer = Helpers.decodeNullable(buffer, LerpFloatLayer::new);
-        temperatureLayer = Helpers.decodeNullable(buffer, LerpFloatLayer::new);
+        rainfallLayer = new LerpFloatLayer(buffer);
+        temperatureLayer = new LerpFloatLayer(buffer);
         forestType = ForestType.valueOf(buffer.readByte());
         forestDensity = buffer.readFloat();
         forestWeirdness = buffer.readFloat();
@@ -58,8 +56,8 @@ public class ChunkWatchPacket
     {
         buffer.writeVarInt(chunkX);
         buffer.writeVarInt(chunkZ);
-        Helpers.encodeNullable(rainfallLayer, buffer, LerpFloatLayer::encode);
-        Helpers.encodeNullable(temperatureLayer, buffer, LerpFloatLayer::encode);
+        rainfallLayer.encode(buffer);
+        temperatureLayer.encode(buffer);
         buffer.writeByte(forestType.ordinal());
         buffer.writeFloat(forestDensity);
         buffer.writeFloat(forestWeirdness);
@@ -67,19 +65,18 @@ public class ChunkWatchPacket
 
     void handle()
     {
-        ChunkPos pos = new ChunkPos(chunkX, chunkZ);
-        // Update client-side chunk data capability
-        Level world = ClientHelpers.getLevel();
-        if (world != null)
+        final Level level = ClientHelpers.getLevel();
+        final ChunkPos chunkPos = new ChunkPos(chunkX, chunkZ);
+        if (level != null)
         {
-            // First, synchronize the chunk data in the capability and cache.
-            // Then, update the single data instance with the packet data
-            ChunkAccess chunk = world.hasChunk(chunkX, chunkZ) ? world.getChunk(chunkX, chunkZ) : null;
-            ChunkData data = ChunkData.getCapability(chunk)
-                .map(dataIn -> {
-                    ChunkDataCache.CLIENT.update(pos, dataIn);
-                    return dataIn;
-                }).orElseGet(() -> ChunkDataCache.CLIENT.computeIfAbsent(pos, ChunkData::new));
+            ChunkData data = ChunkData.get(level, chunkPos);
+            if (data.status() == ChunkData.Status.INVALID)
+            {
+                // The chunk has not been loaded yet on client, but we have data we need to get to the chunk,
+                // so we store it to be populated later.
+                data = ChunkData.queueClientChunkDataForLoad(chunkPos);
+            }
+
             data.onUpdatePacket(rainfallLayer, temperatureLayer, forestType, forestDensity, forestWeirdness);
         }
     }

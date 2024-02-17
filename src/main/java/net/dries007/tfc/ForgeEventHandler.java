@@ -74,7 +74,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.chunk.ChunkStatus;
-import net.minecraft.world.level.chunk.EmptyLevelChunk;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.ProtoChunk;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -111,7 +110,6 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.level.ChunkDataEvent;
-import net.minecraftforge.event.level.ChunkEvent;
 import net.minecraftforge.event.level.ChunkWatchEvent;
 import net.minecraftforge.event.level.ExplosionEvent;
 import net.minecraftforge.event.level.LevelEvent;
@@ -187,7 +185,6 @@ import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.ChunkAccessAccessor;
 import net.dries007.tfc.mixin.accessor.RecipeManagerAccessor;
-import net.dries007.tfc.network.ChunkUnwatchPacket;
 import net.dries007.tfc.network.EffectExpirePacket;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.PlayerDrinkPacket;
@@ -223,7 +220,7 @@ import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
 import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.ChunkDataCache;
+
 
 public final class ForgeEventHandler
 {
@@ -241,9 +238,6 @@ public final class ForgeEventHandler
         bus.addGenericListener(ItemStack.class, ForgeEventHandler::attachItemCapabilities);
         bus.addGenericListener(Entity.class, ForgeEventHandler::attachEntityCapabilities);
         bus.addListener(ForgeEventHandler::onChunkWatch);
-        bus.addListener(ForgeEventHandler::onChunkUnwatch);
-        bus.addListener(ForgeEventHandler::onChunkLoad);
-        bus.addListener(ForgeEventHandler::onChunkUnload);
         bus.addListener(ForgeEventHandler::onChunkDataSave);
         bus.addListener(ForgeEventHandler::onChunkDataLoad);
         bus.addListener(ForgeEventHandler::registerCommands);
@@ -358,12 +352,10 @@ public final class ForgeEventHandler
             final ChunkPos chunkPos = event.getObject().getPos();
 
             ChunkData data;
-            if (Helpers.isClientSide(level))
+            if (level.isClientSide())
             {
-                // This may happen before or after the chunk is watched and synced to client
-                // Default to using the cache. If later the sync packet arrives it will update the same instance in the chunk capability and cache
-                // We don't want to use getOrEmpty here, as the instance has to be mutable. In addition, we can't just wait for the chunk data to arrive, we have to assign one.
-                data = ChunkDataCache.CLIENT.computeIfAbsent(chunkPos, ChunkData::new);
+                // Retrieve either a new chunk data instance, or a populated instance that has already been synced through an earlier chunk watch packet.
+                data = ChunkData.dequeueClientChunkData(chunkPos);
             }
             else
             {
@@ -427,46 +419,12 @@ public final class ForgeEventHandler
 
     public static void onChunkWatch(ChunkWatchEvent.Watch event)
     {
-        // Send an update packet to the client when watching the chunk
-        ChunkPos pos = event.getPos();
-        ChunkData chunkData = ChunkData.get(event.getLevel(), pos);
-        if (chunkData.status() != ChunkData.Status.EMPTY)
+        // When we watch a chunk, the chunk data should already be generated on server, and have FULL status, (with a TFC chunk generator)
+        // We then sync the data on these chunks to client directly
+        final ChunkData chunkData = ChunkData.get(event.getChunk());
+        if (chunkData.status() == ChunkData.Status.FULL)
         {
             PacketHandler.send(PacketDistributor.PLAYER.with(event::getPlayer), chunkData.getUpdatePacket());
-        }
-        else
-        {
-            // Chunk does not exist yet but it's queue'd for watch. Queue an update packet to be sent on chunk load
-            ChunkDataCache.WATCH_QUEUE.enqueueUnloadedChunk(pos, event.getPlayer());
-        }
-    }
-
-    public static void onChunkUnwatch(ChunkWatchEvent.UnWatch event)
-    {
-        // Send an update packet to the client when un-watching the chunk
-        ChunkPos pos = event.getPos();
-        PacketHandler.send(PacketDistributor.PLAYER.with(event::getPlayer), new ChunkUnwatchPacket(pos));
-        ChunkDataCache.WATCH_QUEUE.dequeueChunk(pos, event.getPlayer());
-    }
-
-    public static void onChunkLoad(ChunkEvent.Load event)
-    {
-        if (!Helpers.isClientSide(event.getLevel()) && !(event.getChunk() instanceof EmptyLevelChunk))
-        {
-            ChunkPos pos = event.getChunk().getPos();
-            ChunkData.getCapability(event.getChunk()).ifPresent(data -> {
-                ChunkDataCache.SERVER.update(pos, data);
-                ChunkDataCache.WATCH_QUEUE.dequeueLoadedChunk(pos, data);
-            });
-        }
-    }
-
-    public static void onChunkUnload(ChunkEvent.Unload event)
-    {
-        // Clear server side chunk data cache
-        if (!Helpers.isClientSide(event.getLevel()) && !(event.getChunk() instanceof EmptyLevelChunk))
-        {
-            ChunkDataCache.SERVER.remove(event.getChunk().getPos());
         }
     }
 
