@@ -13,7 +13,9 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.chunk.ChunkGeneratorStructureState;
 import net.minecraft.world.level.levelgen.Aquifer;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.world.biome.BiomeSourceExtension;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
@@ -25,6 +27,18 @@ import net.dries007.tfc.world.settings.Settings;
  */
 public interface ChunkGeneratorExtension
 {
+    /**
+     * Retrieves the {@link ChunkGeneratorExtension} from a structure generator state, if the underlying generator is present and
+     * is a TFC compatible chunk generator. This is set in {@link #initRandomState(ChunkMap, ServerLevel)} in the individual generator,
+     * by caching it through the {@link net.minecraft.world.level.levelgen.RandomState}.
+     * @param state The chunk generator structure state.
+     * @return The underlying chunk generator.
+     */
+    static @Nullable ChunkGeneratorExtension getFromStructureState(ChunkGeneratorStructureState state)
+    {
+        return ((RandomStateExtension) (Object) state.randomState()).tfc$getChunkGeneratorExtension();
+    }
+
     /**
      * @return The world generator settings.
      */

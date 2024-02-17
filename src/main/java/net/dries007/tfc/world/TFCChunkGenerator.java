@@ -381,6 +381,10 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         this.surfaceManager = new SurfaceManager(seed);
 
         this.customBiomeSource.initRandomState(regionGenerator, biomeLayer);
+        // Update the cached chunk generator extension on the RandomState
+        // This is done here when we initialize this chunk generator, and have ensured we are unique to this state and chunk map
+        // We do this to be able to access the chunk generator through the random state later, i.e. in structure generation
+        ((RandomStateExtension) (Object) ((ChunkMapAccessor) chunkMap).accessor$getRandomState()).tfc$setChunkGeneratorExtension(this);
     }
 
     public ChunkHeightFiller createHeightFillerForChunk(ChunkPos pos)

@@ -76,6 +76,7 @@ import net.dries007.tfc.util.climate.ClimateModels;
 import net.dries007.tfc.util.loot.TFCLoot;
 import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.world.TFCChunkGenerator;
+import net.dries007.tfc.world.TFCStructureHooks;
 import net.dries007.tfc.world.biome.RegionBiomeSource;
 import net.dries007.tfc.world.blockpredicate.TFCBlockPredicates;
 import net.dries007.tfc.world.carver.TFCCarvers;
@@ -136,6 +137,7 @@ public final class TerraFirmaCraft
         TFCChunkGenerator.CHUNK_GENERATOR.register(bus);
         RegionBiomeSource.BIOME_SOURCE.register(bus);
         TFCStateProviders.BLOCK_STATE_PROVIDERS.register(bus);
+        TFCStructureHooks.STRUCTURE_PLACEMENTS.register(bus);
         TFCEffects.EFFECTS.register(bus);
         TFCBrain.ACTIVITIES.register(bus);
         TFCBrain.MEMORY_TYPES.register(bus);

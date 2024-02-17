@@ -8,6 +8,7 @@ package net.dries007.tfc.mixin.accessor;
 
 import net.minecraft.server.level.ChunkMap;
 import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.RandomState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
@@ -16,4 +17,7 @@ public interface ChunkMapAccessor
 {
     @Accessor("generator")
     void accessor$setGenerator(ChunkGenerator generator);
+
+    @Accessor("randomState")
+    RandomState accessor$getRandomState();
 }
