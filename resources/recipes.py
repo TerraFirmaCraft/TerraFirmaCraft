@@ -519,7 +519,7 @@ def generate(rm: ResourceManager):
     brass = METALS['brass']
     heat_recipe(rm, 'raw_bloom', 'tfc:raw_iron_bloom', wrought_iron.melt_temperature, None, '100 tfc:metal/cast_iron')
     heat_recipe(rm, 'refined_bloom', 'tfc:refined_iron_bloom', wrought_iron.melt_temperature, None, '100 tfc:metal/cast_iron')
-    heat_recipe(rm, 'grill', 'tfc:wrought_iron_grill', wrought_iron.melt_temperature, None, '100 tfc:metal/cast_iron')
+    heat_recipe(rm, 'grill', 'tfc:wrought_iron_grill', wrought_iron.melt_temperature, None, '400 tfc:metal/cast_iron')
     heat_recipe(rm, 'iron_door', 'minecraft:iron_door', wrought_iron.melt_temperature, None, '200 tfc:metal/cast_iron')
 
     heat_recipe(rm, 'bronze_bell', 'tfc:bronze_bell', METALS['bronze'].melt_temperature, None, '100 tfc:metal/bronze')
