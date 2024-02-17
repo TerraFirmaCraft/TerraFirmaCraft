@@ -934,6 +934,8 @@ def generate(rm: ResourceManager):
     ]})
     rm.placed_feature('geode', 'tfc:geode', decorate_chance(500), decorate_square(), decorate_range(-48, 32), decorate_biome())
 
+    rm.biome_tag('has_predictable_winds', '#tfc:is_ocean')
+
 
 def configured_placed_feature(rm: ResourceManager, name_parts: ResourceIdentifier, feature: Optional[ResourceIdentifier] = None, config: JsonObject = None, *placements: Json):
     res = utils.resource_location(rm.domain, name_parts)
@@ -1587,6 +1589,8 @@ def biome(rm: ResourceManager, name: str, category: str, atlas_texture: str, bou
         rm.biome_tag('is_lake', name)
     if 'river' in name:
         rm.biome_tag('is_river', name)
+    if 'ocean' in name and 'mountain' not in name:
+        rm.biome_tag('is_ocean', name)
 
     rm.lang('biome.tfc.%s' % name, lang(name))
     rm.data(('atlas', 'tiles', name), {
