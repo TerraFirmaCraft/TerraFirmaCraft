@@ -21,7 +21,7 @@ import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCDamageSources;
-import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
+import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.PlayerAccessor;
 import net.dries007.tfc.network.FoodDataReplacePacket;
@@ -74,7 +74,7 @@ public class TFCFoodData extends net.minecraft.world.food.FoodData
             // Replace, and then read from the cached data on the player capability (will be present if this is initial log-in / read from disk)
             final TFCFoodData newStats = new TFCFoodData(player, foodStats);
             ((PlayerAccessor) player).accessor$setFoodData(newStats);
-            player.getCapability(PlayerDataCapability.CAPABILITY).ifPresent(cap -> cap.writeTo(newStats));
+            PlayerData.get(player).writeTo(newStats);
         }
         // Send the update regardless so the client can perform the same logic
         if (player instanceof ServerPlayer serverPlayer)

@@ -6,10 +6,6 @@
 
 package net.dries007.tfc.common.capabilities.player;
 
-import net.dries007.tfc.common.recipes.ChiselRecipe;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -19,8 +15,11 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.network.PacketDistributor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.food.TFCFoodData;
+import net.dries007.tfc.common.recipes.ChiselRecipe;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.PlayerDataUpdatePacket;
 import net.dries007.tfc.util.calendar.Calendars;
@@ -28,6 +27,17 @@ import net.dries007.tfc.util.calendar.ICalendar;
 
 public class PlayerData implements ICapabilitySerializable<CompoundTag>
 {
+    /**
+     * Returns the {@link PlayerData} for a given {@code player}. This will always be present.
+     * @param player The player to query. Can be either a server or client player, server data will be synced on modification to client.
+     * @return The player data instance.
+     */
+    @SuppressWarnings("deprecation")
+    public static PlayerData get(Player player)
+    {
+        return player.getCapability(PlayerDataCapability.CAPABILITY).orElseThrow(() -> new IllegalStateException("Missing " + PlayerData.class));
+    }
+
     public static final long MAX_INTOXICATED_TICKS = 36 * ICalendar.TICKS_IN_HOUR; // A day and a half. Each drink gives you 4 hours of time
 
     private final Player player;
@@ -45,11 +55,18 @@ public class PlayerData implements ICapabilitySerializable<CompoundTag>
     }
 
     /**
+     * @deprecated Use {@link #getIntoxicatedTicks()} instead.
      * @return The number of remaining ticks the player is intoxicated for
      */
+    @Deprecated
     public long getIntoxicatedTicks(boolean isClientSide)
     {
-        return Math.max(0, intoxicationTick - Calendars.get(isClientSide).getTicks());
+        return getIntoxicatedTicks();
+    }
+
+    public long getIntoxicatedTicks()
+    {
+        return Math.max(0, intoxicationTick - Calendars.get(player.level().isClientSide).getTicks());
     }
 
     /**
@@ -86,6 +103,12 @@ public class PlayerData implements ICapabilitySerializable<CompoundTag>
         return chiselMode;
     }
 
+    public void cycleChiselMode()
+    {
+        chiselMode = chiselMode.next();
+        sync();
+    }
+
     public void setChiselMode(ChiselRecipe.Mode mode)
     {
         chiselMode = mode;
@@ -109,9 +132,10 @@ public class PlayerData implements ICapabilitySerializable<CompoundTag>
 
     @NotNull
     @Override
+    @SuppressWarnings("deprecation")
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {
-        return cap == PlayerDataCapability.CAPABILITY ? capability.cast() : LazyOptional.empty();
+        return PlayerDataCapability.CAPABILITY.orEmpty(cap, capability);
     }
 
     @Override

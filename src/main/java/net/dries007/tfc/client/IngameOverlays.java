@@ -6,13 +6,13 @@
 
 package net.dries007.tfc.client;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.Locale;
-
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -24,23 +24,20 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
-import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import net.minecraftforge.client.gui.overlay.GuiOverlayManager;
-
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
+import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import net.minecraftforge.client.gui.overlay.NamedGuiOverlay;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 
 import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.food.TFCFoodData;
-import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
+import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.entities.livestock.MammalProperties;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.common.entities.misc.TFCFishingHook;
-import net.dries007.tfc.config.HealthDisplayStyle;
 import net.dries007.tfc.config.DisabledExperienceBarStyle;
+import net.dries007.tfc.config.HealthDisplayStyle;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
@@ -231,7 +228,7 @@ public enum IngameOverlays
                 int u = 60;
                 if (Helpers.isItem(player.getItemInHand(InteractionHand.OFF_HAND), TFCTags.Items.HAMMERS))
                 {
-                    u = player.getCapability(PlayerDataCapability.CAPABILITY).map(cap -> cap.getChiselMode().ordinal() * 20).orElse(0);
+                    u = PlayerData.get(player).getChiselMode().ordinal() * 20;
                 }
                 stack.pushPose();
                 graphics.blit(TEXTURE, width / 2 + 100, height - 21, u, 58, 20, 20);

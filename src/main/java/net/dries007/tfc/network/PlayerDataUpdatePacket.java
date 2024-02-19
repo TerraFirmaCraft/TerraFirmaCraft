@@ -10,7 +10,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 
 import net.dries007.tfc.client.ClientHelpers;
-import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
+import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.recipes.ChiselRecipe;
 
 public class PlayerDataUpdatePacket
@@ -46,7 +46,7 @@ public class PlayerDataUpdatePacket
         final Player player = ClientHelpers.getPlayer();
         if (player != null)
         {
-            player.getCapability(PlayerDataCapability.CAPABILITY).ifPresent(p -> p.updateFromPacket(lastDrinkTick, intoxicationTick, mode));
+            PlayerData.get(player).updateFromPacket(lastDrinkTick, intoxicationTick, mode);
         }
     }
 }

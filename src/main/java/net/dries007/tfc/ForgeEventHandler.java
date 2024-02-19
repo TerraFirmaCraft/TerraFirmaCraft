@@ -1273,8 +1273,7 @@ public final class ForgeEventHandler
         {
             TFCFoodData.replaceFoodStats(serverPlayer);
             WorldTracker.get(serverPlayer.serverLevel()).syncTo(serverPlayer);
-
-            serverPlayer.getCapability(PlayerDataCapability.CAPABILITY).ifPresent(PlayerData::sync);
+            PlayerData.get(serverPlayer).sync();
 
             final ClimateModel model = Climate.model(serverPlayer.level());
             PacketHandler.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new UpdateClimateModelPacket(model));
@@ -1284,7 +1283,7 @@ public final class ForgeEventHandler
     public static void onServerChat(ServerChatEvent event)
     {
         // Apply intoxication after six hours
-        final long intoxicatedTicks = event.getPlayer().getCapability(PlayerDataCapability.CAPABILITY).map(p -> p.getIntoxicatedTicks(event.getPlayer().level().isClientSide()) - 6 * ICalendar.TICKS_IN_HOUR).orElse(0L);
+        final long intoxicatedTicks = PlayerData.get(event.getPlayer()).getIntoxicatedTicks() - 6 * ICalendar.TICKS_IN_HOUR;
         if (intoxicatedTicks > 0)
         {
             final float intoxicationChance = Mth.clamp((float) (intoxicatedTicks - 6 * ICalendar.TICKS_IN_HOUR) / PlayerData.MAX_INTOXICATED_TICKS, 0, 0.7f);

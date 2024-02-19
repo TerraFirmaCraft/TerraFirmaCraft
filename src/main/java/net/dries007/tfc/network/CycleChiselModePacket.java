@@ -9,7 +9,7 @@ package net.dries007.tfc.network;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
+import net.dries007.tfc.common.capabilities.player.PlayerData;
 
 public class CycleChiselModePacket
 {
@@ -17,7 +17,7 @@ public class CycleChiselModePacket
     {
         if (player != null)
         {
-            player.getCapability(PlayerDataCapability.CAPABILITY).ifPresent(cap -> cap.setChiselMode(cap.getChiselMode().next()));
+            PlayerData.get(player).cycleChiselMode();
         }
     }
 }
