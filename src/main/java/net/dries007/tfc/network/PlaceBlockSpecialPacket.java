@@ -27,7 +27,7 @@ public class PlaceBlockSpecialPacket
 {
     void handle(@Nullable ServerPlayer player)
     {
-        if (player != null && TFCConfig.SERVER.enablePlacingItems.get())
+        if (player != null && TFCConfig.SERVER.enablePlacingItems.get() && player.mayBuild())
         {
             final Level level = player.level();
             final HitResult rayTrace = player.pick(5.0F, 1.0F, false);
