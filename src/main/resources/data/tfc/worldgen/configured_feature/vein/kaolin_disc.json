@@ -10,6 +10,18 @@
     "density": 1.0,
     "random_name": "kaolin",
     "biomes": "#tfc:kaolin_clay_spawns_in",
+    "indicator": {
+      "depth": 35,
+      "spread": 5,
+      "rarity": 10,
+      "underground_rarity": 1,
+      "underground_count": 0,
+      "blocks": [
+        {
+          "block": "tfc:plant/blood_lily"
+        }
+      ]
+    },
     "blocks": []
   }
 }

@@ -555,7 +555,7 @@ PLANTS: Dict[str, Plant] = {
     'badderlocks': Plant(False, -12.9, 5, 150, 500, 'submerged_tall'),
     'cordgrass': Plant(False, -16.4, 22.9, 50, 500, 'emergent'),
     'barrel_cactus': Plant(False, 6.8, 19.3, 0, 85, 'cactus'),
-    'blood_lily': Plant(False, 10.4, 19.3, 200, 500, 'standard'),
+    'blood_lily': Plant(True, 10.4, 19.3, 200, 500, 'standard'),
     'blue_orchid': Plant(False, 12.1, 40, 250, 390, 'standard'),
     'blue_ginger': Plant(False, 17.5, 26.4, 300, 450, 'standard'),
     'calendula': Plant(False, 6.8, 22.9, 130, 300, 'standard'),
