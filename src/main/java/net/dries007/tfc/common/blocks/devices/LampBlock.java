@@ -42,6 +42,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.blockentities.LampBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
@@ -109,17 +110,22 @@ public class LampBlock extends ExtendedBlock implements EntityBlockExtension
                 lamp.resetCounter();
                 return InteractionResult.sidedSuccess(level.isClientSide);
             }
-            else if (!state.getValue(LIT))
+            else if (stack.copyWithCount(1).getCapability(Capabilities.FLUID_ITEM).isPresent())
             {
-                if (FluidHelpers.transferBetweenBlockEntityAndItem(stack, lamp, player, hand))
+                if (!level.isClientSide && FluidHelpers.transferBetweenBlockEntityAndItem(stack, lamp, player, hand))
                 {
                     lamp.markForSync();
                     if (lamp.getFuel() != null && lamp.getFuel().getBurnRate() == -1 && player instanceof ServerPlayer serverPlayer)
                     {
                         TFCAdvancements.LAVA_LAMP.trigger(serverPlayer);
                     }
-                    return InteractionResult.sidedSuccess(level.isClientSide);
+                    if (lamp.getFuel() == null)
+                    {
+                        level.setBlockAndUpdate(pos, state.setValue(LIT, false));
+                    }
+                    return InteractionResult.SUCCESS;
                 }
+                return InteractionResult.sidedSuccess(level.isClientSide);
             }
             return InteractionResult.PASS;
         }).orElse(InteractionResult.PASS);
