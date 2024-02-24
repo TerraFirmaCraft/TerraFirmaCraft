@@ -119,10 +119,6 @@ public class LampBlock extends ExtendedBlock implements EntityBlockExtension
                     {
                         TFCAdvancements.LAVA_LAMP.trigger(serverPlayer);
                     }
-                    if (lamp.getFuel() == null)
-                    {
-                        level.setBlockAndUpdate(pos, state.setValue(LIT, false));
-                    }
                     return InteractionResult.SUCCESS;
                 }
                 return InteractionResult.sidedSuccess(level.isClientSide);

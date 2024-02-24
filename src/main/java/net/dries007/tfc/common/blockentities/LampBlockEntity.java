@@ -41,6 +41,11 @@ public class LampBlockEntity extends TickCounterBlockEntity implements FluidTank
     @Override
     public void fluidTankChanged()
     {
+        assert level != null;
+        if (!level.isClientSide && tank.isEmpty() && getBlockState().getValue(LampBlock.LIT) && level.getBlockEntity(getBlockPos(), TFCBlockEntities.LAMP.get()).isPresent())
+        {
+            level.setBlockAndUpdate(getBlockPos(), getBlockState().setValue(LampBlock.LIT, false));
+        }
         markForSync();
     }
 
