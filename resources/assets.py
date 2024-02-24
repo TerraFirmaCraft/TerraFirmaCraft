@@ -968,7 +968,7 @@ def generate(rm: ResourceManager):
                    'name': 'tfc:ore/small_%s' % ore,
                    'conditions': [loot_tables.random_chance(chance)],  # 50% chance (for pan)
                 }, {
-                   'name': 'tfc:rock/loose/%s' % rock,
+                   'name': 'tfc:rock/loose/%s' % rock if rock not in ('rhyolite', 'dacite', 'andesite') else 'tfc:groundcover/pumice',
                    'conditions': [loot_tables.random_chance(0.5)],  # 25% chance
                 }, {
                    'name': 'tfc:ore/%s' % rare,

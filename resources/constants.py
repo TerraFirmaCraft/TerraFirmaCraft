@@ -471,7 +471,7 @@ SOIL_BLOCK_TAGS: Dict[str, List[str]] = {
 ORE_DEPOSITS = ('native_copper', 'cassiterite', 'native_silver', 'native_gold')
 GEMS = ('amethyst', 'diamond', 'emerald', 'lapis_lazuli', 'opal', 'pyrite', 'ruby', 'sapphire', 'topaz')
 TRIM_MATERIALS = (*GEMS, 'rose_gold', 'gold', 'silver', 'sterling_silver', 'bismuth')
-MISC_GROUNDCOVER = ('bone', 'clam', 'driftwood', 'mollusk', 'mussel', 'pinecone', 'seaweed', 'stick', 'dead_grass', 'feather', 'flint', 'guano', 'humus', 'rotten_flesh', 'salt_lick', 'sea_urchin')
+MISC_GROUNDCOVER = ('bone', 'clam', 'driftwood', 'mollusk', 'mussel', 'pinecone', 'seaweed', 'stick', 'dead_grass', 'feather', 'flint', 'guano', 'humus', 'rotten_flesh', 'salt_lick', 'sea_urchin', 'pumice')
 COLORS = ('white', 'orange', 'magenta', 'light_blue', 'yellow', 'lime', 'pink', 'gray', 'light_gray', 'cyan', 'purple', 'blue', 'brown', 'green', 'red', 'black')
 SIMPLE_FLUIDS = ('brine', 'curdled_milk', 'limewater', 'lye', 'milk_vinegar', 'olive_oil', 'olive_oil_water', 'tallow', 'tannin', 'vinegar')
 ALCOHOLS = ('beer', 'cider', 'rum', 'sake', 'vodka', 'whiskey', 'corn_whiskey', 'rye_whiskey')
@@ -815,7 +815,7 @@ DISC_COLORS = {
 SIMPLE_BLOCKS = ('peat', 'aggregate', 'fire_bricks', 'fire_clay_block')
 SIMPLE_ITEMS = ('alabaster_brick', 'blank_disc', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'empty_jar', 'empty_jar_with_lid', 'fire_clay', 'goat_horn', 'gem_saw', 'glow_arrow', 'glue', 'hematitic_glass_batch', 'jacks', 'jar_lid',
                 'jute', 'jute_fiber', 'jute_net', 'kaolin_clay', 'lamp_glass', 'lens', 'mortar', 'olive_paste', 'olivine_glass_batch', 'paddle', 'papyrus', 'papyrus_strip', 'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'silica_glass_batch', 'silk_cloth', 'soaked_papyrus_strip', 'soot', 'spindle',
-                'stick_bunch', 'stick_bundle', 'straw', 'unrefined_paper', 'volcanic_glass_batch', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
+                'stick_bunch', 'stick_bundle', 'straw', 'treated_hide', 'unrefined_paper', 'volcanic_glass_batch', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
 GENERIC_POWDERS = {
     'charcoal': 'black',
     'coke': 'black',

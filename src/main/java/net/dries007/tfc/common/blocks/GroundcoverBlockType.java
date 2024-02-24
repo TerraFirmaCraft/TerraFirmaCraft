@@ -32,6 +32,7 @@ public enum GroundcoverBlockType
     MOLLUSK(GroundcoverBlock.SMALL),
     MUSSEL(GroundcoverBlock.SMALL),
     PINECONE(GroundcoverBlock.SMALL),
+    PUMICE(GroundcoverBlock.SMALL),
     ROTTEN_FLESH(GroundcoverBlock.FLAT, () -> Items.ROTTEN_FLESH),
     SALT_LICK(GroundcoverBlock.PIXEL_HIGH, TFCItems.POWDERS.get(Powder.SALT)),
     SEAWEED(GroundcoverBlock.FLAT),

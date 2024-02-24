@@ -686,7 +686,9 @@ def generate(rm: ResourceManager):
                 }
             }
         })
+        damage_shapeless(rm, 'crafting/%s_treated_hide' % size, ('#tfc:hammers', 'tfc:groundcover/pumice', 'tfc:%s_scraped_hide' % size), '%s tfc:treated_hide' % str(i + 1)).with_advancement('tfc:%s_scraped_hide' % size)
 
+    rm.crafting_shapeless('crafting/parchment', ('tfc:treated_hide', not_rotten('#tfc:foods/flour'), not_rotten('minecraft:egg'), 'tfc:powder/lime'), '2 minecraft:paper').with_advancement('tfc:treated_hide')
     scraping_recipe(rm, 'paper', 'tfc:unrefined_paper', 'minecraft:paper', input_texture='tfc:block/unrefined_paper', output_texture='tfc:block/paper')
 
     simple_pot_recipe(rm, 'olive_oil_water', [utils.ingredient('tfc:olive_paste')] * 5, '1000 minecraft:water', '1000 tfc:olive_oil_water', None, 2000, 300)

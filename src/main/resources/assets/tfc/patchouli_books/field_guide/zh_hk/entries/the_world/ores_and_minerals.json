@@ -703,8 +703,8 @@
             ]
           ],
           "mapping": {
-            "X": "tfc:kaolin_clay_grass",
-            "Y": "tfc:plant/blood_lily"
+            "X": "tfc:plant/blood_lily",
+            "Y": "tfc:kaolin_clay_grass"
           }
         },
         {
@@ -720,8 +720,8 @@
             ]
           ],
           "mapping": {
-            "X": "tfc:red_kaolin_clay",
-            "Y": "tfc:plant/blood_lily"
+            "X": "tfc:plant/blood_lily",
+            "Y": "tfc:red_kaolin_clay"
           }
         },
         {
@@ -737,8 +737,8 @@
             ]
           ],
           "mapping": {
-            "X": "tfc:white_kaolin_clay",
-            "Y": "tfc:plant/blood_lily"
+            "X": "tfc:plant/blood_lily",
+            "Y": "tfc:white_kaolin_clay"
           }
         },
         {
@@ -754,8 +754,8 @@
             ]
           ],
           "mapping": {
-            "X": "tfc:pink_kaolin_clay",
-            "Y": "tfc:plant/blood_lily"
+            "X": "tfc:plant/blood_lily",
+            "Y": "tfc:pink_kaolin_clay"
           }
         }
       ]
