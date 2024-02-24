@@ -684,7 +684,7 @@
       "item": "tfc:kaolin_clay",
       "title": "Caulinita",
       "link_recipes": false,
-      "text": "Kaolinite is a soft $(thing)Mineral$() which is used in the construction of $(l:mechanics/fire_clay)Fire Clay$(). It can be found spawning at high altitudes in Plateaus, Old Mountains, and Highlands, at a $(l:the_world/climate#temperature)temperature$() of at least 18°C, with a $(l:the_world/climate#rainfall)rainfall$() of at least 300mm."
+      "text": "Kaolinite is a soft $(thing)Mineral$() which is used in the construction of $(l:mechanics/fire_clay)Fire Clay$(). It can be found spawning at high altitudes in Plateaus, Old Mountains, and Highlands, at a $(l:the_world/climate#temperature)temperature$() of at least 18°C, with a $(l:the_world/climate#rainfall)rainfall$() of at least 300mm. The $(thing)Blood Lily$() flower grows on Kaolin clay."
     },
     {
       "type": "tfc:multimultiblock",
@@ -696,11 +696,15 @@
               "X"
             ],
             [
+              "Y"
+            ],
+            [
               "0"
             ]
           ],
           "mapping": {
-            "X": "tfc:kaolin_clay_grass"
+            "X": "tfc:kaolin_clay_grass",
+            "Y": "tfc:plant/blood_lily"
           }
         },
         {
@@ -709,11 +713,15 @@
               "X"
             ],
             [
+              "Y"
+            ],
+            [
               "0"
             ]
           ],
           "mapping": {
-            "X": "tfc:red_kaolin_clay"
+            "X": "tfc:red_kaolin_clay",
+            "Y": "tfc:plant/blood_lily"
           }
         },
         {
@@ -722,11 +730,15 @@
               "X"
             ],
             [
+              "Y"
+            ],
+            [
               "0"
             ]
           ],
           "mapping": {
-            "X": "tfc:white_kaolin_clay"
+            "X": "tfc:white_kaolin_clay",
+            "Y": "tfc:plant/blood_lily"
           }
         },
         {
@@ -735,11 +747,15 @@
               "X"
             ],
             [
+              "Y"
+            ],
+            [
               "0"
             ]
           ],
           "mapping": {
-            "X": "tfc:pink_kaolin_clay"
+            "X": "tfc:pink_kaolin_clay",
+            "Y": "tfc:plant/blood_lily"
           }
         }
       ]

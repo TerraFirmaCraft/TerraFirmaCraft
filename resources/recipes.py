@@ -556,6 +556,7 @@ def generate(rm: ResourceManager):
         disable_recipe(rm, 'minecraft:%s_stained_glass' % color)
         disable_recipe(rm, 'minecraft:%s_stained_glass_pane' % color)
         disable_recipe(rm, 'minecraft:%s_stained_glass_pane_from_glass_pane' % color)
+        disable_recipe(rm, 'minecraft:%s_bed' % color)
 
     for name in DISABLED_VANILLA_RECIPES:
         disable_recipe(rm, 'minecraft:' + name)
