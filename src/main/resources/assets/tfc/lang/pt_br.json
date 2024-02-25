@@ -523,6 +523,8 @@
   "tfc.create_world.rainfall_constant.tooltip": "The relative constant rainfall of a world.",
   "tfc.create_world.continentalness": "Continentalness",
   "tfc.create_world.continentalness.tooltip": "The proportion of the world that is made up of land rather than water",
+  "tfc.create_world.grass_density": "Grass Density",
+  "tfc.create_world.grass_density.tooltip": "Multiplier that applies to the amount of short and tall grass placed within a chunk.",
   "entity.tfc.bluegill": "Bluegill",
   "entity.tfc.crappie": "Crappie",
   "entity.tfc.lake_trout": "Lake Trout",

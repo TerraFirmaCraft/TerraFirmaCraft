@@ -1511,6 +1511,8 @@ DEFAULT_LANG = {
     'tfc.create_world.rainfall_constant.tooltip': 'The relative constant rainfall of a world.',
     'tfc.create_world.continentalness': 'Continentalness',
     'tfc.create_world.continentalness.tooltip': 'The proportion of the world that is made up of land rather than water',
+    'tfc.create_world.grass_density': 'Grass Density',
+    'tfc.create_world.grass_density.tooltip': 'Multiplier that applies to the amount of short and tall grass placed within a chunk.',
 
     # Entities
     **dict(('entity.tfc.%s' % fish, lang(fish)) for fish in SIMPLE_FRESHWATER_FISH),

@@ -253,6 +253,6 @@ public class RegionGeneratorTest extends TestHelper
 
     private RegionGenerator newRegionGenerator()
     {
-        return new RegionGenerator(new Settings(false, 0, 0, 0, 20_000, 0, 20_000, 0, null, 0.5f), new XoroshiroRandomSource(seed()));
+        return new RegionGenerator(new Settings(false, 0, 0, 0, 20_000, 0, 20_000, 0, null, 0.5f, 0.5f), new XoroshiroRandomSource(seed()));
     }
 }
