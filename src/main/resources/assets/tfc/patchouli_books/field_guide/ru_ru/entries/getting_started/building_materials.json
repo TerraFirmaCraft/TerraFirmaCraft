@@ -1,0 +1,166 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Строительные материалы",
+  "category": "tfc:getting_started",
+  "icon": "tfc:wattle/unstained",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "На ранних этапах игры строительство может быть сложной задачей, поскольку многие прочные строительные блоки требуют металлических инструментов для их получения. Однако, есть несколько строительных блоков, которые можно получить с помощью только каменных инструментов.$(br2)Больше $(l:mechanics/advanced_building_materials)строительных блоков$() доступно с металлическими инструментами."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(br)  1. $(l:getting_started/building_materials#thatch)Соломенная крыша$()$(br)  2. $(l:getting_started/building_materials#mud_bricks)Глиняные кирпичи$()$(br)  3. $(l:getting_started/building_materials#wattle_and_daub)Плетень и глина$()$(br)  4. $(l:getting_started/building_materials#clay_and_peat)Глиняные блоки и торф$()$(br)",
+      "title": "Содержание"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "thatch",
+      "text": "Имея всего лишь $(l:getting_started/introduction#knife)Каменный нож$(), вы можете получить $(thing)Солому$(), разбивая блоки, похожие на растения. Это может быть использовано для создания очень простого строительного материала: $(thing)Соломенная крыша$(). Соломенная крыша - это легкий блок, который не подвержен гравитации, однако игроки и другие сущности могут проходить сквозь него! Его также можно переработать обратно в $(thing)Солому$(), если это необходимо.",
+      "title": "Соломенная крыша"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/thatch",
+      "recipe2": "tfc:crafting/straw"
+    },
+    {
+      "type": "patchouli:crafting",
+      "anchor": "mud_bricks",
+      "recipe": "tfc:crafting/soil/loam_drying_bricks",
+      "title": "Глиняные кирпичи",
+      "text": "$(thing)Глина$() может быть найдена на земле, под реками и озерами, или в пятнах на низких болотистых высотах. С небольшим количеством $(thing)Соломы$(), её можно превратить в $()Мокрые глиняные кирпичи$()."
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "Их можно разместить на земле в сухом месте, и через день они затвердеют в $(thing)Глиняные кирпичи$().",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:drying_bricks/loam[count=4,dried=false]",
+            "Y": "tfc:grass/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:drying_bricks/loam[count=4,dried=true]",
+            "Y": "tfc:grass/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/soil/loam_mud_bricks",
+      "title": " ",
+      "text": "Эти высушенные глиняные кирпичи затем можно собрать в $(thing)Блоки из глиняных кирпичей$(). Их также можно сделать в виде $(thing)Лестниц$(), $(thing)Плит$() или $(thing)Стен$(), если это желательно."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "#tfc:mud_bricks"
+        }
+      },
+      "name": "",
+      "text": "Все различные виды глиняных кирпичей.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "wattle_and_daub",
+      "text": "$(thing)Плетень$() и $(thing)Глина$() - это универсальный строительный и декоративный блок.$(br2)$(thing)Плетень$() можно изготовить и разместить, однако он ломается и позволяет игрокам и мобам проходить сквозь него. Его можно укрепить с помощью $(thing)Глины$(), чтобы сделать его твердым.",
+      "title": "Плетень и глина"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wattle",
+      "text": "Чтобы сделать $(thing)Плетень$() твердым, сначала его нужно сплести, что требует добавления палок к структуре."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/daub",
+      "recipe2": "tfc:crafting/daub_from_mud",
+      "text": ""
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/wattle_weave.png"
+      ],
+      "text": "Для $(thing)плетения$() плетня требуется четыре палки.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "В любое время палки можно добавлять по диагонали, а также сверху и снизу. Держите одну $(thing)Палку$() в руке и $(item)$(k:key.use)$() ее, чтобы добавить палку. Измените часть плетня, к которой вы добавляете палку, выбрав другую сторону поверхности."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/wattle_add_stick.png"
+      ],
+      "text": "Добавление палок к плетню.",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/wattle_add_daub.png"
+      ],
+      "text": "Использование $(thing)Глины$() на $(thing)Сплетенном плетне$() создает твердый блок.",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/wattle_stained.png"
+      ],
+      "text": "Затем его можно $(thing)окрасить$(), используя $(l:mechanics/dye)Краситель$() на нем.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "clay_and_peat",
+      "text": "Глина, добытая из земли, может быть превращена в глиняные блоки. Когда они размещены и снова выкопаны, они превращаются обратно в глину. Несмотря на непривлекательный вид, их легко получить.$(br2)Торф встречается в мире пятнами вдоль водоемов и может быть добыт каменными инструментами. На нем могут расти некоторые растения.$(br2)Однако, торф очень легко воспламеняется.",
+      "title": "Глиняные блоки и торф"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "minecraft:clay",
+      "title": "Глиняные блоки"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 7
+}

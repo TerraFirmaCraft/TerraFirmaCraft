@@ -1,0 +1,1215 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Руды и минералы",
+  "category": "tfc:the_world",
+  "icon": "tfc:ore/normal_hematite",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Руды и минералы в TFC редки - в отличие от Vanilla, руды находятся в огромных, редких, но масштабных жилах, которые требуют некоторых $(l:mechanics/prospecting)поисков$(), чтобы их найти. Разные руды также появляются в разных типах камней и на разных высотах, что означает, что нахождение правильного типа камня на правильной высоте ключевое для поиска нужной вам руды."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Кроме того, некоторые руды $(thing)Имеют класс$(). Блоки руд могут быть бедными, Обычными или богатыми, и разные жилы будут иметь разные концентрации каждого типа блока. Жилы, которые $(thing)богаче$(), более прибыльны.$(br2)На следующих нескольких страницах показаны различные типы руд, как они выглядят и где их найти."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "native_copper",
+      "text": "Самородная медь является рудой $(thing)Меди$(). Она может быть найдена в $(l:the_world/geology#igneous_extrusive)Экструзивных вулканических$() камнях на высотах выше y=40.$(br2)Также она может быть найдена в отложениях в $(thing)реках$(), которые можно $(l:mechanics/panning)просеивать$().",
+      "title": "Самородная медь"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "Руды самородной меди в даците.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_native_copper/dacite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_native_copper/dacite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_native_copper/dacite"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "native_gold",
+      "text": "Самородное золото является рудой $(thing)Золота$(). Оно может быть найдено на высотах ниже y=70, но глубже расположенные жилы крупнее и богаче. Оно может быть найдено в $(l:the_world/geology#igneous_extrusive)Экструзивных вулканических$() и $(l:the_world/geology#igneous_intrusive)Интрузивных вулканических$() камнях.$(br2)Также оно может быть найдено в отложениях в $(thing)реках$(), которые можно $(l:mechanics/panning)просеивать$().",
+      "title": "Самородное золото"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "Руды самородного золота в диорите.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_native_gold/diorite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_native_gold/diorite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_native_gold/diorite"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "native_silver",
+      "text": "Самородное серебро является рудой $(thing)Серебра$(). Маленькие бедные жилы могут быть найдены в $(thing)Граните$() или $(thing)Диорите$() в районах поднятия, выше y=90. Большие и богатые жилы могут быть найдены в $(thing)Граните$(), $(thing)Диорите$(), $(thing)Сланце$(), и $(thing)Гнейсе$() глубоко под землей ниже y=20.$(br2)Также оно может быть найдено в отложениях в $(thing)реках$(), которые можно $(l:mechanics/panning)просеивать$().",
+      "title": "Самородное серебро"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "Руды самородного серебра в граните.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_native_silver/granite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_native_silver/granite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_native_silver/granite"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "tetrahedrite",
+      "text": "Тетраэдрит является рудой $(thing)Меди$(). Он может быть найден на любой высоте, но глубже расположенные жилы часто богаче. Он может быть найден в $(l:the_world/geology#metamorphic)Метаморфических$() камнях.",
+      "title": "Тетраэдрит"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "Руды тетраэдрита в сланце.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_tetrahedrite/schist"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_tetrahedrite/schist"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_tetrahedrite/schist"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "malachite",
+      "text": "Малахит является рудой $(thing)Меди$(). Его можно найти в основном в $(thing)Мраморе$() или $(thing)Известняке$(), $(thing)Мелу$() и $(thing)Доломите$(). Можно найти на большинстве высот, однако более глубокие жилы часто крупнее и богаче.",
+      "title": "Малахит"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "Малахит в мраморе.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_malachite/marble"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_malachite/marble"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_malachite/marble"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "cassiterite",
+      "text": "Касситерит является рудой $(thing)Олова$(). Его можно найти в $(l:the_world/geology#igneous_intrusive)Интрузивных игнебритовых$() породах на большой высоте, выше y=80 в поднятых регионах или в дайках.$(br2)Также его можно найти в отложениях в $(thing)реках$(), которые можно $(l:mechanics/panning)просеивать$().",
+      "title": "Касситерит"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "Руды касситерита в диорите.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_cassiterite/diorite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_cassiterite/diorite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_cassiterite/diorite"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "bismuthinite",
+      "text": "Бисмутинит является рудой $(thing)Висмута$(). Его можно найти в $(l:the_world/geology#sedimentary)Осадочных$() породах у поверхности, или в больших и богатых жилах в $(l:the_world/geology#igneous_intrusive)Интрузивных игнебритовых$() породах глубоко под землей.",
+      "title": "Бисмутинит"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "Руды бисмутинита в сланце.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_bismuthinite/shale"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_bismuthinite/shale"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_bismuthinite/shale"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "garnierite",
+      "text": "Гарниерит является рудой $(thing)Никеля$(). Его можно найти на высотах ниже y=0. В основном он встречается в $(thing)Габбро$() глубоко под землей. Меньшие, более редкие жилы также могут встречаться в любой $(l:the_world/geology#igneous_intrusive)Интрузивной игнебритовой$() породе.",
+      "title": "Гарниерит"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "Руды гарниерита в габбро.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_garnierite/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_garnierite/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_garnierite/gabbro"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "hematite",
+      "text": "Гематит является рудой $(thing)Железа$(). Его можно найти в больших жилах в любых $(l:the_world/geology#igneous_extrusive)Экструзивных игнебритовых$() породах у поверхности.",
+      "title": "Гематит"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "Руды гематита в андезите.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_hematite/andesite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_hematite/andesite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_hematite/andesite"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "magnetite",
+      "text": "Магнетит является рудой $(thing)Железа$(). Его можно найти в больших жилах в любых $(l:the_world/geology#sedimentary)Осадочных$() породах у поверхности.",
+      "title": "Магнетит"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "Руды магнетита в известняке.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_magnetite/limestone"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_magnetite/limestone"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_magnetite/limestone"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "limonite",
+      "text": "Лимонит является рудой $(thing)Железа$(). Его можно найти в больших жилах в любых $(l:the_world/geology#sedimentary)Осадочных$() породах у поверхности.",
+      "title": "Лимонит"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "Руды лимонита в мелу.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_limonite/chalk"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_limonite/chalk"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_limonite/chalk"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "sphalerite",
+      "text": "Сфалерит является рудой $(thing)Цинка$(). Маленькие, бедные жилы можно найти в $(l:the_world/geology#igneous_extrusive)Экструзивных игнебритовых$() породах у поверхности, и большие, богатые жилы можно найти в $(l:the_world/geology#igneous_intrusive)Интрузивных игнебритовых$() породах глубоко под землей.",
+      "title": "Сфалерит"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "Руды сфалерита в кварците.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_sphalerite/quartzite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_sphalerite/quartzite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_sphalerite/quartzite"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "lignite",
+      "item": "tfc:ore/lignite",
+      "title": "Лигнит",
+      "link_recipes": false,
+      "text": "Лигнит - это тип низкосортной $(thing)Угольной$() руды. Его можно найти в очень больших плоских месторождениях у поверхности в $(l:the_world/geology#sedimentary)Осадочных$() породах."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/lignite/dolomite"
+        }
+      },
+      "name": "",
+      "text": "Лигнит в доломите.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "bituminous_coal",
+      "item": "tfc:ore/bituminous_coal",
+      "title": "Битуминозный уголь",
+      "link_recipes": false,
+      "text": "Битуминозный уголь - это тип среднесортной $(thing)Угольной$() руды. Его можно найти в очень больших плоских месторождениях у поверхности в $(l:the_world/geology#sedimentary)Осадочных$() породах."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/bituminous_coal/chert"
+        }
+      },
+      "name": "",
+      "text": "Битуминозный уголь в кремнистом сланце.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "kaolinite",
+      "item": "tfc:kaolin_clay",
+      "title": "Каолинит",
+      "link_recipes": false,
+      "text": "Каолинит - это мягкий $(thing)Минерал$(), который используется в строительстве $(l:mechanics/fire_clay)Огнеупорной глины$(). Его можно найти на больших высотах на плато, старых горах и в высокогорьях, при $(l:the_world/climate#temperature)температуре$() не менее 18°C и $(l:the_world/climate#rainfall)осадках$() не менее 300 мм. Цветок $(thing)Кровавой лилии$() растет на каолиновой глине."
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "Варианты каолиновой глины.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/blood_lily",
+            "Y": "tfc:kaolin_clay_grass"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/blood_lily",
+            "Y": "tfc:red_kaolin_clay"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/blood_lily",
+            "Y": "tfc:white_kaolin_clay"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/blood_lily",
+            "Y": "tfc:pink_kaolin_clay"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "graphite",
+      "item": "tfc:ore/graphite",
+      "title": "Графит",
+      "link_recipes": false,
+      "text": "Графит - это $(thing)Минерал$(), который используется в строительстве $(l:mechanics/fire_clay)Огнеупорной глины$(). Его можно найти в $(thing)Гнейсе$(), $(thing)Мраморе$(), $(thing)Кварците$(), и $(thing)Сланце$() на глубинах ниже y=60."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/graphite/gneiss"
+        }
+      },
+      "name": "",
+      "text": "Графит в гнейсе.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "cinnabar",
+      "item": "tfc:ore/cinnabar",
+      "title": "Киноварь",
+      "link_recipes": false,
+      "text": "Киноварь - это $(thing)Минерал$(), который может быть измельчен в $(l:mechanics/quern)Жернове$(), чтобы получить $(thing)Пыль красного камня$(). Его можно найти в жилах глубоко под землей, в $(thing)Кварците$(), $(thing)Граните$(), $(thing)Филлите$() и $(thing)Сланце$()."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/cinnabar/quartzite"
+        }
+      },
+      "name": "",
+      "text": "Киноварь в кварците.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "cryolite",
+      "item": "tfc:ore/cryolite",
+      "title": "Криолит",
+      "link_recipes": false,
+      "text": "Криолит - это $(thing)Минерал$(), который может быть измельчен в $(l:mechanics/quern)Жернове$(), чтобы получить $(thing)Пыль красного камня$(). Его можно найти в жилах глубоко под землей, в $(thing)Граните$() и $(thing)Диорите$()."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/cryolite/granite"
+        }
+      },
+      "name": "",
+      "text": "Криолит в граните.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "saltpeter",
+      "item": "tfc:ore/saltpeter",
+      "title": "Селитра",
+      "link_recipes": false,
+      "text": "Селитра - это $(thing)Минерал$(), который может быть измельчен в $(l:mechanics/quern)Жернове$(), а затем использован в крафте $(thing)Пороха$(). Ее можно найти в очень больших плоских месторождениях у поверхности в $(l:the_world/geology#sedimentary)Осадочных$() породах."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/saltpeter/shale"
+        }
+      },
+      "name": "",
+      "text": "Селитра в сланце.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "sulfur",
+      "item": "tfc:ore/sulfur",
+      "title": "Сера",
+      "link_recipes": false,
+      "text": "Сера - это $(thing)Минерал$(), который может быть измельчен в $(l:mechanics/quern)Жернове$(), а затем использован в крафте $(thing)Пороха$(). Она находится у уровня лавы глубоко под землей, в редких, но больших и богатых жилах, в любой $(l:the_world/geology#metamorphic)Метаморфической$() или $(l:the_world/geology#igneous_intrusive)Интрузивной игнебритовой$() породе."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/sulfur/gabbro"
+        }
+      },
+      "name": "",
+      "text": "Сера в габбро.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "sylvite",
+      "item": "tfc:ore/sylvite",
+      "title": "Сильвинит",
+      "link_recipes": false,
+      "text": "Сильвинит - это $(thing)Минерал$(), который может быть измельчен в $(l:mechanics/quern)Жернове$(), а затем использован как $(l:mechanics/fertilizers)Удобрение$(). Его можно найти в очень больших плоских месторождениях у поверхности в $(thing)Сланце$(), $(thing)Глинистом камне$() и $(thing)Кремнистом сланце$()."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/sylvite/chert"
+        }
+      },
+      "name": "",
+      "text": "Сильвинит в кремнистом сланце.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "borax",
+      "item": "tfc:ore/borax",
+      "title": "Бура",
+      "link_recipes": false,
+      "text": "Бура - это $(thing)Минерал$(), который может быть измельчен в $(l:mechanics/quern)Жернове$(), чтобы произвести $(l:mechanics/flux)Флюс$(). Ее можно найти в очень больших плоских месторождениях у поверхности в $(thing)Глинистом камне$(), $(thing)Известняке$() и $(thing)Сланце$()."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/borax/shale"
+        }
+      },
+      "name": "",
+      "text": "Бура в сланце.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "gypsum",
+      "item": "tfc:ore/gypsum",
+      "title": "Гипс",
+      "link_recipes": false,
+      "text": "Гипс - это декоративный $(thing)Минерал$(), который может быть использован для изготовления $(l:mechanics/advanced_building_materials#alabaster)Алебастра$(). Его можно найти в очень больших плоских месторождениях у поверхности в $(l:the_world/geology#sedimentary)Осадочных$() породах."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/gypsum/chalk"
+        }
+      },
+      "name": "",
+      "text": "Гипс в мелу.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "halite",
+      "item": "tfc:ore/halite",
+      "title": "Галит",
+      "link_recipes": false,
+      "text": "Галит - это $(thing)Минерал$(), который может быть измельчен в $(l:mechanics/quern)Жернове$(), чтобы сделать $(thing)Соль$(), которая является важным $(l:mechanics/decay#salting)Консервантом$(). Его можно найти в очень больших плоских месторождениях у поверхности в $(l:the_world/geology#sedimentary)Осадочных$() породах."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/halite/chalk"
+        }
+      },
+      "name": "",
+      "text": "Галит в мелу.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "emerald",
+      "item": "tfc:ore/emerald",
+      "title": "Изумруд",
+      "link_recipes": false,
+      "text": "Изумруд - это декоративный $(l:mechanics/gems)Драгоценный камень$(). Он выглядит довольно красиво, возможно, если бы вы могли найти кого-то еще в этом невероятно одиноком мире, вы могли бы торговать им...$(br2)Он появляется в тонких вертикальных рудных формациях, которые могут достигать высоты в сотню блоков. Его можно найти в $(l:the_world/geology#igneous_intrusive)Интрузивных игнебритовых$() породах."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/emerald/diorite"
+        }
+      },
+      "name": "",
+      "text": "Изумруд в диорите.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "diamond",
+      "item": "tfc:ore/diamond",
+      "title": "Кимберлит",
+      "link_recipes": false,
+      "text": "Кимберлит - это декоративный и бесценный $(l:mechanics/gems)Драгоценный камень$(). Он появляется в тонких вертикальных рудных формациях, называемых $(l:https://en.wikipedia.org/wiki/Volcanic_pipe)Кимберлитовыми трубами$(), которые могут достигать высоты в сотню блоков. Его можно найти только в $(thing)Габбро$()."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/diamond/gabbro"
+        }
+      },
+      "name": "",
+      "text": "Кимберлит в габбро.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "lapis_lazuli",
+      "item": "tfc:ore/lapis_lazuli",
+      "title": "Лазурит",
+      "link_recipes": false,
+      "text": "Лазурит - это декоративный $(thing)Минерал$(), который может быть использован для изготовления $(l:mechanics/dye)Синего красителя$(). Его можно найти в больших, но редких жилах в $(thing)Известняке$() и $(thing)Мраморе$(), между y=-20 и y=80."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/lapis_lazuli/marble"
+        }
+      },
+      "name": "",
+      "text": "Лазурит в мраморе.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "amethyst",
+      "item": "tfc:ore/amethyst",
+      "title": "Аметист",
+      "link_recipes": false,
+      "text": "Аметист - это декоративный $(thing)Минерал$(), который может быть использован для изготовления $(l:mechanics/glassworking)Стекла$(). Его можно найти в $(thing)Осадочных) и $(thing)Метаморфических$() породах под реками выше y=40."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/amethyst/marble"
+        }
+      },
+      "name": "",
+      "text": "Аметист в мраморе.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "opal",
+      "item": "tfc:ore/opal",
+      "title": "Опал",
+      "link_recipes": false,
+      "text": "Опал - это декоративный $(thing)Минерал$(). Его можно найти в $(thing)Осадочных) и $(thing)Экструзивных игнебритовых$() породах под реками выше y=40."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/amethyst/basalt"
+        }
+      },
+      "name": "",
+      "text": "Опал в базальте.",
+      "enable_visualize": false
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 1,
+  "extra_recipe_mappings": {
+    "tfc:ore/small_native_copper": 2,
+    "tfc:ore/poor_native_copper": 2,
+    "tfc:ore/normal_native_copper": 2,
+    "tfc:ore/rich_native_copper": 2,
+    "tfc:ore/small_native_gold": 4,
+    "tfc:ore/poor_native_gold": 4,
+    "tfc:ore/normal_native_gold": 4,
+    "tfc:ore/rich_native_gold": 4,
+    "tfc:ore/small_native_silver": 6,
+    "tfc:ore/poor_native_silver": 6,
+    "tfc:ore/normal_native_silver": 6,
+    "tfc:ore/rich_native_silver": 6,
+    "tfc:ore/small_tetrahedrite": 8,
+    "tfc:ore/poor_tetrahedrite": 8,
+    "tfc:ore/normal_tetrahedrite": 8,
+    "tfc:ore/rich_tetrahedrite": 8,
+    "tfc:ore/small_malachite": 10,
+    "tfc:ore/poor_malachite": 10,
+    "tfc:ore/normal_malachite": 10,
+    "tfc:ore/rich_malachite": 10,
+    "tfc:ore/small_cassiterite": 12,
+    "tfc:ore/poor_cassiterite": 12,
+    "tfc:ore/normal_cassiterite": 12,
+    "tfc:ore/rich_cassiterite": 12,
+    "tfc:ore/small_bismuthinite": 14,
+    "tfc:ore/poor_bismuthinite": 14,
+    "tfc:ore/normal_bismuthinite": 14,
+    "tfc:ore/rich_bismuthinite": 14,
+    "tfc:ore/small_garnierite": 16,
+    "tfc:ore/poor_garnierite": 16,
+    "tfc:ore/normal_garnierite": 16,
+    "tfc:ore/rich_garnierite": 16,
+    "tfc:ore/small_hematite": 18,
+    "tfc:ore/poor_hematite": 18,
+    "tfc:ore/normal_hematite": 18,
+    "tfc:ore/rich_hematite": 18,
+    "tfc:ore/small_magnetite": 20,
+    "tfc:ore/poor_magnetite": 20,
+    "tfc:ore/normal_magnetite": 20,
+    "tfc:ore/rich_magnetite": 20,
+    "tfc:ore/small_limonite": 22,
+    "tfc:ore/poor_limonite": 22,
+    "tfc:ore/normal_limonite": 22,
+    "tfc:ore/rich_limonite": 22,
+    "tfc:ore/small_sphalerite": 24,
+    "tfc:ore/poor_sphalerite": 24,
+    "tfc:ore/normal_sphalerite": 24,
+    "tfc:ore/rich_sphalerite": 24,
+    "tfc:ore/lignite": 26,
+    "tfc:ore/bituminous_coal": 28,
+    "tfc:red_kaolin_clay": 30,
+    "tfc:pink_kaolin_clay": 30,
+    "tfc:white_kaolin_clay": 30,
+    "tfc:kaolin_clay_grass": 30,
+    "tfc:kaolin_clay": 30,
+    "tfc:ore/graphite": 32,
+    "tfc:ore/cinnabar": 34,
+    "tfc:ore/cryolite": 36,
+    "tfc:ore/saltpeter": 38,
+    "tfc:ore/sulfur": 40,
+    "tfc:ore/sylvite": 42,
+    "tfc:ore/borax": 44,
+    "tfc:ore/gypsum": 46,
+    "tfc:ore/halite": 48,
+    "tfc:ore/emerald": 50,
+    "tfc:ore/diamond": 52,
+    "tfc:ore/lapis_lazuli": 54,
+    "tfc:ore/amethyst": 56,
+    "tfc:ore/opal": 58
+  }
+}

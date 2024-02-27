@@ -1,0 +1,32 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Молочные продукты",
+  "category": "tfc:mechanics",
+  "icon": "tfc:textures/item/food/cheese.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Молочные продукты$() - это $(l:getting_started/food_and_water#nutrients)Питательное вещество$(), получаемое из молока, произведенного $(l:mechanics/animal_husbandry#dairy_animals)Молочными животными$(). Его можно пить или перерабатывать в $(thing)Сыр$(). Пить можно из кувшина, и это всегда восстанавливает $(l:getting_started/food_and_water#thirst)Жажду$(). Однако, это добавляет к питанию только после употребления пищи. На практике это означает, что пить молоко дважды подряд неэффективно. Перед этим должен быть прием пищи.",
+      "title": "Молочные продукты"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Чтобы начать процесс $(thing)Сыроварения$(), добавьте $(thing)Молоко$() и $(thing)Уксус$() в $(l:mechanics/barrels)Бочку$() в соотношении 9: 1. Это проще всего сделать, наполнив бочку 9 ведрами молока и добавив одно ведро уксуса. Это дает $(thing)Молочный уксус$()."
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "recipe": "tfc:barrel/curdling",
+      "text": "Как только молоко и уксус смешаны, оно свернется, если его запечатать в бочке на восемь часов. Для этого не требуются дополнительные ингредиенты, кроме времени."
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "recipe": "tfc:barrel/cheese",
+      "text": "Затем сыр делается путем повторного запечатывания свернувшегося молока в бочке на восемь часов. Сыр - это долговечный молочный продукт, который может быть использован в некоторых блюдах для добавления молочных продуктов, таких как $(l:mechanics/sandwiches)Бутерброды$()."
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "minecraft:milk_bucket": 0,
+    "tfc:food/cheese": 1
+  }
+}

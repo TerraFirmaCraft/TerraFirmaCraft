@@ -1,0 +1,34 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Земляные печи",
+  "category": "tfc:getting_started",
+  "icon": "tfc:textures/gui/book/icons/pit_kiln.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Земляная печь - это метод начальной игры для $(l:mechanics/heating)нагревания$() предметов. Её можно использовать для $(thing)обжига$() глины в керамику, например. Земляная печь в течение примерно восьми часов будет нагревать своё содержимое до 1400 °C, или $(bold)$(e)$(t: Yellow White)Жёлто-Белый$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Чтобы построить земляную печь, вам понадобится: $(br)$(li)До четырёх предметов для обжига.$(li)Восемь кусков $(thing)Соломы$()$(li)Восемь $(thing)Брёвен$()$(li)Предмет, способный зажигать огонь, например, $(l:getting_started/firepit#firestarter)Разжигатель$(), или $(thing)Факел$().$(br2)$(bold)Примечание: $() Факелы могут зажигать огонь, просто бросив факел на земляную печь и подождав несколько секунд."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Чтобы создать земляную печь: $(br2)$(bold)1.$() Поместите до четырёх предметов в яму размером 1x1 с $(item)$(k:tfc.key.place_block)$().$(br)$(bold)2.$() Используйте восемь $(thing)Соломы$() на земляной печи, пока предметы не будут покрыты.$(br)$(bold)3.$() Используйте восемь $(thing)Брёвен$() на земляной печи, пока она не заполнится.$(br)$(bold)4.$() Подожгите верх земляной печи!$(br2)Земляная печь будет гореть восемь часов, медленно $(l:mechanics/heating)нагревая$() предметы внутри."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/pit_kiln_1.png",
+        "tfc:textures/gui/book/tutorial/pit_kiln_2.png",
+        "tfc:textures/gui/book/tutorial/pit_kiln_3.png",
+        "tfc:textures/gui/book/tutorial/pit_kiln_4.png",
+        "tfc:textures/gui/book/tutorial/pit_kiln_5.png"
+      ],
+      "text": "Учебник: создание земляной печи.",
+      "border": true
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 3
+}

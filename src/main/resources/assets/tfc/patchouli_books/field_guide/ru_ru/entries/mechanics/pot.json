@@ -1,0 +1,74 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Кострище и котелок",
+  "category": "tfc:mechanics",
+  "icon": "tfc:pot",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Котелок$() - это предмет, который можно добавить к кострищу для приготовления новых видов пищи и также производства некоторых других полезных предметов.$(br2)Чтобы создать кострище с котелком, сначала создайте $(l:getting_started/firepit)Кострище$(), затем используйте $(thing)Керамический котелок$() на кострище."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:pot"
+        }
+      },
+      "name": "",
+      "text": "Кострище с прикрепленным котелком.",
+      "enable_visualize": false
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/pot",
+      "text": "Керамический котелок сначала должен быть $(l:getting_started/pottery)Выколочен$() из глины."
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/fired_pot",
+      "text": "Затем его необходимо $(l:mechanics/heating)обжечь$(), чтобы создать $(thing)Керамический котелок$(), который можно использовать на кострище."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Как и кострище, котелок имеет четыре слота для топлива, которые должны быть добавлены в верхний слот, и индикатор температуры. Котелок также содержит пять слотов для предметов и вмещает до $(thing)1000 мБ$() любой жидкости.$(br2)Чтобы что-то приготовить в котелке, сначала нужно добавить жидкость, используя любой контейнер для жидкости, например ведро, на котелок. Затем добавьте предметы и зажгите котелок. Он будет кипеть некоторое время, пока рецепт не будет завершен."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/pot.png"
+      ],
+      "text": "Интерфейс котелка, активно кипящего и готовящего вид супа.",
+      "border": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "soup",
+      "item": "tfc:food/fruit_soup",
+      "title": "Рецепты супов",
+      "link_recipes": false,
+      "text": "Суп готовится из 3-5 $(thing)фруктов$(), $(thing)овощей$() или $(thing)мяса$() в котелке с $(thing)водой$(). Когда рецепт готов, вода в котелке станет красной. Используйте $(item)$(k:key.use)$() с $(l:mechanics/bowls)миской$(), чтобы забрать его. Суп объединяет несколько питательных веществ в одно блюдо."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:bucket/red_dye",
+      "title": "Простые рецепты",
+      "link_recipes": false,
+      "text": "Другие рецепты в котелке превращают предметы и жидкость в котелке во что-то другое. Например, кипячение пяти $(thing)золы$() в $(thing)воде$() делает $(thing)щелок$()."
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:pot": 0,
+    "tfc:ceramic/unfired_pot": 2,
+    "tfc:ceramic/pot": 3
+  }
+}

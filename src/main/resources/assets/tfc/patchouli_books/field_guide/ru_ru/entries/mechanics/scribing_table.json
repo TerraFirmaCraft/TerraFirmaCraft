@@ -1,0 +1,48 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Стол для письма",
+  "category": "tfc:mechanics",
+  "icon": "minecraft:black_dye",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Стол для письма$() используется для переименования предметов. Для переименования предметов требуется $(l:mechanics/dye)Черный краситель$(), который может быть предоставлен как традиционный предмет красителя или как ведро с красящей жидкостью."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:wood/scribing_table/kapok"
+        }
+      },
+      "name": "",
+      "text": "Стол для письма.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wood/birch_scribing_table",
+      "text": "Рецепт крафта стола для письма."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/scribing.png"
+      ],
+      "text": "Экран стола для письма принимает ввод текста в верхней части, входящий предмет слева, краситель по центру. Готовый предмет берется из правого слота.",
+      "border": false
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:tfc:scribing_tables": 2
+  }
+}
