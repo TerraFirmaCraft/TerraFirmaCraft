@@ -262,7 +262,7 @@
       "type": "patchouli:text",
       "anchor": "green_apple",
       "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): 1 - 25 °C$(br)$(bold)$(l:mechanics/hydration)Осадки$(): 110 - 280мм$(br2)Зеленые яблони растут с марта по июль, начинают цвести в августе и сентябре, и приносят плоды в октябре.",
-      "title": "Зеленое яблоневое дерево"
+      "title": "Зеленая яблоня"
     },
     {
       "type": "tfc:multimultiblock",
@@ -1606,7 +1606,7 @@
       "type": "patchouli:text",
       "anchor": "red_apple",
       "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): 1 - 25 °C$(br)$(bold)$(l:mechanics/hydration)Осадки$(): 100 - 280мм$(br2)Красные яблони растут с марта по июль, начинают цветение в августе и сентябре, и приносят плоды в октябре.",
-      "title": "Красное яблоневое дерево"
+      "title": "Красная яблоня"
     },
     {
       "type": "tfc:multimultiblock",
@@ -2802,7 +2802,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Ежемесячные стадии куста брусники.",
+      "text": "Стадии куста брусники по месяцам.",
       "multiblocks": [
         {
           "pattern": [
@@ -2866,7 +2866,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Ежемесячные стадии куста крыжовника.",
+      "text": "Стадии куста крыжовника по месяцам.",
       "multiblocks": [
         {
           "pattern": [
@@ -2930,7 +2930,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Ежемесячные стадии куста черники.",
+      "text": "Стадии куста черники по месяцам.",
       "multiblocks": [
         {
           "pattern": [
@@ -2994,7 +2994,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Ежемесячные стадии куста морошки.",
+      "text": "Стадии куста морошки по месяцам.",
       "multiblocks": [
         {
           "pattern": [
@@ -3058,7 +3058,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Ежемесячные стадии куста клубники.",
+      "text": "Стадии куста клубники по месяцам.",
       "multiblocks": [
         {
           "pattern": [
@@ -3122,7 +3122,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Ежемесячные стадии куста черники зимнего сорта.",
+      "text": "Стадии куста черники зимнего сорта по месяцам.",
       "multiblocks": [
         {
           "pattern": [
@@ -3186,7 +3186,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Ежемесячные стадии куста клюквы.",
+      "text": "Стадии куста клюквы по месяцам.",
       "multiblocks": [
         {
           "pattern": [

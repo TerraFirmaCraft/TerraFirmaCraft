@@ -23,7 +23,7 @@
           "X": "tfc:wild_crop/wheat[mature=true]"
         }
       },
-      "name": "Дикий пшеница",
+      "name": "Дикая пшеница",
       "text": "Пример дикой культуры, в данном случае $(l:mechanics/crops#wheat)Пшеница$().",
       "enable_visualize": false
     },

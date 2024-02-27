@@ -30,14 +30,14 @@
       "entity": "tfc:grizzly_bear",
       "scale": 0.55,
       "name": "Гризли",
-      "text": "Гризли появляется в лесах умеренного климата, с диапазоном $(l:the_world/climate#temperature)температуры$() от -15 до 15°C и не менее 200мм $(l:the_world/climate#rainfall)осадков$()."
+      "text": "Гризли обитает в лесах умеренного климата, с диапазоном $(l:the_world/climate#temperature)температуры$() от -15 до 15°C и не менее 200мм $(l:the_world/climate#rainfall)осадков$()."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:black_bear",
       "scale": 0.55,
       "name": "Черный медведь",
-      "text": "Черный медведь появляется в лесах более теплого, влажного климата, с $(l:the_world/climate#temperature)температурой$() от 5 до 20°C и не менее 250мм $(l:the_world/climate#rainfall)осадков$()."
+      "text": "Черный медведь обитает в лесах более теплого, влажного климата, с $(l:the_world/climate#temperature)температурой$() от 5 до 20°C и не менее 250мм $(l:the_world/climate#rainfall)осадков$()."
     },
     {
       "type": "patchouli:entity",
@@ -65,7 +65,7 @@
       "entity": "tfc:tiger",
       "scale": 0.55,
       "name": "Тигр",
-      "text": "Тигр появляется в лесах со средней $(l:the_world/climate#temperature)температурой$() не менее 13°C и $(l:the_world/climate#rainfall)осадками$() свыше 100мм."
+      "text": "Тигр обитает в лесах со средней $(l:the_world/climate#temperature)температурой$() не менее 13°C и $(l:the_world/climate#rainfall)осадками$() свыше 100мм."
     },
     {
       "type": "patchouli:entity",
@@ -78,32 +78,32 @@
       "type": "patchouli:entity",
       "entity": "tfc:wolf",
       "scale": 0.7,
-      "text": "Волк появляется при любой $(l:the_world/climate#temperature)температуре$() ниже 22°C и $(l:the_world/climate#rainfall)осадках$() между 150 и 420мм. Они охотятся стаями. Кормление волка достаточное количество раз приручит его в $(l:mechanics/pets)Собаку$()."
+      "text": "Волк появляется при любой $(l:the_world/climate#temperature)температуре$() ниже 22°C и $(l:the_world/climate#rainfall)осадках$() от 150 до 420мм. Они охотятся стаями. Кормление волка достаточное количество раз приручит его в $(l:mechanics/pets)Собаку$()."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:direwolf",
       "scale": 0.7,
-      "text": "Дирволф появляется при любой $(l:the_world/climate#temperature)температуре$() ниже точки замерзания и $(l:the_world/climate#rainfall)осадках$() между 150 и 420мм. Они охотятся стаями. Они крупнее обычных волков и не могут быть приручены."
+      "text": "Дирволф появляется при любой $(l:the_world/climate#temperature)температуре$() ниже точки замерзания и $(l:the_world/climate#rainfall)осадках$() от 150 до 420мм. Они охотятся стаями. Они крупнее обычных волков и не могут быть приручены."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:hyena",
       "scale": 0.7,
-      "text": "Гиена появляется при любой $(l:the_world/climate#temperature)температуре$() выше 15°C и $(l:the_world/climate#rainfall)осадках$() между 80 и 380мм. Они охотятся стаями. Они не могут быть приручены."
+      "text": "Гиена появляется при любой $(l:the_world/climate#temperature)температуре$() выше 15°C и $(l:the_world/climate#rainfall)осадках$() от 80 до 380мм. Они охотятся стаями. Они не могут быть приручены."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:crocodile",
       "scale": 0.7,
       "name": "Крокодил",
-      "text": "Крокодил появляется возле рек, озер и болот при любой $(l:the_world/climate#temperature)температуре$() выше 15°C и при любых $(l:the_world/climate#rainfall)осадках$(). Они ночные и наиболее опасны в воде."
+      "text": "Крокодил обитает возле рек, озер и болот при любой $(l:the_world/climate#temperature)температуре$() выше 15°C и при любых $(l:the_world/climate#rainfall)осадках$(). Они ведут ночной образ жизни и наиболее опасны в воде."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:ocelot",
       "scale": 0.7,
-      "text": "Оцелот нападает на мелких животных. Он появляется при любой $(l:the_world/climate#temperature)температуре$() от 15 до 30°C и $(l:the_world/climate#rainfall)осадках$() между 300 и 500мм, в лесах. Кормление оцелота достаточное количество раз приручит его в $(l:mechanics/pets)Кота$(). Оцелоты могут есть сырую рыбу."
+      "text": "Оцелот нападает на мелких животных. Он появляется при любой $(l:the_world/climate#temperature)температуре$() от 15 до 30°C и $(l:the_world/climate#rainfall)осадках$() от 300 до 500мм, в лесах. Кормление оцелота достаточное количество раз приручит его в $(l:mechanics/pets)Кота$(). Оцелоты могут есть сырую рыбу."
     },
     {
       "type": "patchouli:text",
@@ -116,19 +116,19 @@
       "entity": "tfc:boar",
       "scale": 0.7,
       "name": "Кабан",
-      "text": "Кабан появляется при $(l:the_world/climate#temperature)температуре$() ниже 25°C и выше -5°C, и $(l:the_world/climate#rainfall)осадках$() между 130 и 400мм."
+      "text": "Кабан появляется при $(l:the_world/climate#temperature)температуре$() ниже 25°C и выше -5°C, и $(l:the_world/climate#rainfall)осадках$() от 130 до 400мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:moose",
       "scale": 0.7,
-      "text": "Лось появляется в лесах при $(l:the_world/climate#temperature)температуре$() ниже 10°C и выше -15°C, и $(l:the_world/climate#rainfall)осадках$() между 150 и 300мм."
+      "text": "Лось обитает в лесах при $(l:the_world/climate#temperature)температуре$() ниже 10°C и выше -15°C, и $(l:the_world/climate#rainfall)осадках$() от 150 до 300мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:wildebeest",
       "scale": 0.7,
-      "text": "Гну появляется на открытых равнинах при любой $(l:the_world/climate#temperature)температуре$() выше 13°C и $(l:the_world/climate#rainfall)осадках$() между 90 и 380мм."
+      "text": "Гну появляется на открытых равнинах при любой $(l:the_world/climate#temperature)температуре$() выше 13°C и $(l:the_world/climate#rainfall)осадках$() от 90 до 380мм."
     },
     {
       "type": "patchouli:text",
@@ -148,58 +148,58 @@
       "entity": "tfc:fox",
       "scale": 0.7,
       "name": "Лиса",
-      "text": "Лиса любит есть ягоды с кустов. Она может быть найдена в лесах при $(l:the_world/climate#temperature)температуре$() ниже 25°C и $(l:the_world/climate#rainfall)осадках$() между 130 и 400мм."
+      "text": "Лиса любит есть ягоды с кустов. Она может быть найдена в лесах при $(l:the_world/climate#temperature)температуре$() ниже 25°C и $(l:the_world/climate#rainfall)осадках$() от 130 до 400мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:deer",
       "scale": 0.7,
-      "text": "Олень появляется в лесах при любой $(l:the_world/climate#temperature)температуре$() ниже 25°C и выше -15°C, и $(l:the_world/climate#rainfall)осадках$() между 130 и 400мм."
+      "text": "Олень обитает в лесах при любой $(l:the_world/climate#temperature)температуре$() ниже 25°C и выше -15°C, и $(l:the_world/climate#rainfall)осадках$() от 130 до 400мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:caribou",
       "scale": 0.6,
       "name": "Карибу",
-      "text": "Карибу появляется при любой $(l:the_world/climate#temperature)температуре$() ниже -9°C и $(l:the_world/climate#rainfall)осадках$() между 110 и 500мм."
+      "text": "Карибу появляется при любой $(l:the_world/climate#temperature)температуре$() ниже -9°C и $(l:the_world/climate#rainfall)осадках$() от 110 до 500мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:gazelle",
       "scale": 0.7,
-      "text": "Газель появляется на открытых равнинах при любой $(l:the_world/climate#temperature)температуре$() выше 12°C и $(l:the_world/climate#rainfall)осадках$() между 90 и 380мм."
+      "text": "Газель появляется на открытых равнинах при любой $(l:the_world/climate#temperature)температуре$() выше 12°C и $(l:the_world/climate#rainfall)осадках$() от 90 до 380мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:bongo",
       "scale": 0.9,
       "name": "Бонго",
-      "text": "Бонго появляется в лесах при любой $(l:the_world/climate#temperature)температуре$() выше 15°C и $(l:the_world/climate#rainfall)осадках$() между 230 и 500мм."
+      "text": "Бонго обитает в лесах при любой $(l:the_world/climate#temperature)температуре$() выше 15°C и $(l:the_world/climate#rainfall)осадках$() от 230 до 500мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:grouse",
       "scale": 0.7,
-      "text": "Тетерев появляется при любой $(l:the_world/climate#temperature)температуре$() ниже 13°C и выше -12°C, и $(l:the_world/climate#rainfall)осадках$() между 150 и 400мм."
+      "text": "Тетерев появляется при любой $(l:the_world/climate#temperature)температуре$() ниже 13°C и выше -12°C, и $(l:the_world/climate#rainfall)осадках$() от 150 до 400мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:pheasant",
       "scale": 0.7,
-      "text": "Фазан появляется в лесах при любой $(l:the_world/climate#temperature)температуре$() ниже 17°C и выше -5°C, и $(l:the_world/climate#rainfall)осадках$() между 100 и 300мм."
+      "text": "Фазан обитает в лесах при любой $(l:the_world/climate#temperature)температуре$() ниже 17°C и выше -5°C, и $(l:the_world/climate#rainfall)осадках$() от 100 до 300мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:turkey",
       "scale": 0.7,
-      "text": "Индейка появляется в лесах при любой $(l:the_world/climate#temperature)температуре$() ниже 17°C и выше 0°C, и $(l:the_world/climate#rainfall)осадках$() между 250 и 450мм."
+      "text": "Индейка обитает в лесах при любой $(l:the_world/climate#temperature)температуре$() ниже 17°C и выше 0°C, и $(l:the_world/climate#rainfall)осадках$() от 250 до 450мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:peafowl",
       "scale": 0.8,
       "name": "Павлин",
-      "text": "Павлин появляется в лесах при любой $(l:the_world/climate#temperature)температуре$() выше 14°C, и $(l:the_world/climate#rainfall)осадках$() между 190 и 500мм."
+      "text": "Павлин обитает в лесах при любой $(l:the_world/climate#temperature)температуре$() выше 14°C, и $(l:the_world/climate#rainfall)осадках$() от 190 до 500мм."
     },
     {
       "type": "patchouli:empty"
@@ -266,14 +266,14 @@
       "entity": "tfc:salmon",
       "scale": 0.7,
       "name": "Лосось",
-      "text": "Лосось появляется в любой реке или озере с $(l:the_world/climate#temperature)температурой$() не менее -5°C."
+      "text": "Лосось обитает в любой реке или озере с $(l:the_world/climate#temperature)температурой$() не менее -5°C."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:bluegill",
       "scale": 0.7,
       "name": "Синежаберник",
-      "text": "Синежаберники появляются в любой реке или озере с $(l:the_world/climate#temperature)температурой$() не менее -10°C и не более 26°C."
+      "text": "Синежаберники обитают в любой реке или озере с $(l:the_world/climate#temperature)температурой$() не менее -10°C и не более 26°C."
     },
     {
       "type": "patchouli:text",
@@ -286,28 +286,28 @@
       "entity": "tfc:isopod",
       "scale": 0.7,
       "name": "Изопод",
-      "text": "Изоподы появляются в глубоких участках океанов с $(l:the_world/climate#temperature)температурой$() максимум 14°C."
+      "text": "Изоподы обитают в глубоких участках океанов с $(l:the_world/climate#temperature)температурой$() максимум 14°C."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:lobster",
       "scale": 0.7,
       "name": "Лобстер",
-      "text": "Лобстеры появляются в любом океане с $(l:the_world/climate#temperature)температурой$() максимум 21°C."
+      "text": "Лобстеры обитают в любом океане с $(l:the_world/climate#temperature)температурой$() максимум 21°C."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:crayfish",
       "scale": 0.7,
       "name": "Рак",
-      "text": "Раки похожи на лобстеров, но появляются в реках и озерах. Им нужна $(l:the_world/climate#temperature)температура$() не менее 5°C и $(l:the_world/climate#rainfall)осадки$() не менее 125мм."
+      "text": "Раки похожи на лобстеров, но обитают в реках и озерах. Им нужна $(l:the_world/climate#temperature)температура$() не менее 5°C и $(l:the_world/climate#rainfall)осадки$() не менее 125мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:horseshoe_crab",
       "scale": 0.7,
       "name": "Мечехвост",
-      "text": "Мечехвосты появляются в океанах умеренного климата, $(l:the_world/climate#temperature)температура$() между 10 и 21°C и с $(l:the_world/climate#rainfall)осадками$() максимум 400мм."
+      "text": "Мечехвосты обитают в океанах умеренного климата, $(l:the_world/climate#temperature)температура$() от 10 до 21°C и с $(l:the_world/climate#rainfall)осадками$() максимум 400мм."
     },
     {
       "type": "patchouli:text",
