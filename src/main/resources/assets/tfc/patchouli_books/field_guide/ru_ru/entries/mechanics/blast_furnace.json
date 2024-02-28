@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Высокая печь",
+  "name": "Сыродутная печь",
   "category": "tfc:mechanics",
   "icon": "tfc:blast_furnace",
   "pages": [
@@ -11,7 +11,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/blast_furnace",
-      "text": "Создание самой высокой печи требует $(thing)Тигля$(), а также некоторых $(thing)Кованых железных листов$(), которые вам понадобятся."
+      "text": "Создание самой сыродутной печи требует $(thing)Тигля$(), а также нескольких $(thing)Кованых железных листов$(), которые вам понадобятся."
     },
     {
       "type": "patchouli:text",
@@ -20,8 +20,8 @@
     {
       "type": "patchouli:multiblock",
       "multiblock_id": "tfc:blast_furnace",
-      "name": "Высокая печь",
-      "text": "Высокая печь с дымоходом минимальной высоты.",
+      "name": "Сыродутная печь",
+      "text": "Сыродутная печь с дымоходом минимальной высоты.",
       "enable_visualize": true
     },
     {
@@ -41,7 +41,7 @@
       "images": [
         "tfc:textures/gui/book/gui/blast_furnace.png"
       ],
-      "text": "Интерфейс высокой печи",
+      "text": "Интерфейс сыродутной печи",
       "border": false
     },
     {
@@ -52,7 +52,7 @@
       "type": "patchouli:multiblock",
       "multiblock_id": "tfc:full_blast_furnace",
       "name": "",
-      "text": "Высокая печь полного размера с мехом и тиглем, прикрепленными.",
+      "text": "Сыродутная печь полного размера с прикрепленными мехами и тиглем.",
       "enable_visualize": true
     },
     {
