@@ -58,7 +58,7 @@
       "entity": "tfc:lion",
       "scale": 0.55,
       "name": "Лев",
-      "text": "Лев появляется на равнинах со средней $(l:the_world/climate#temperature)тем"
+      "text": "Лев появляется на равнинах со средней $(l:the_world/climate#temperature)температурой$() от 16°C и $(l:the_world/climate#rainfall)осадками$() от 50 до 300мм."
     },
     {
       "type": "patchouli:entity",
