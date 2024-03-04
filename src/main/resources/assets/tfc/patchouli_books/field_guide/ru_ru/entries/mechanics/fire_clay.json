@@ -16,7 +16,7 @@
     {
       "type": "tfc:heat_recipe",
       "recipe": "tfc:heating/kaolin_clay",
-      "text": "Порошок каолинита получают путем нагревания $(l:the_world/ores_and_minerals#kaolinite)Каолиновой глины$(). Однако процесс не идеален, и только 20%% глины превращается в порошок!"
+      "text": "Порошок каолинита получают путем нагревания $(l:the_world/ores_and_minerals#kaolinite)каолиновой глины$(). Однако процесс не идеален, и только 20%% глины превращается в порошок!"
     },
     {
       "type": "tfc:knapping_recipe",

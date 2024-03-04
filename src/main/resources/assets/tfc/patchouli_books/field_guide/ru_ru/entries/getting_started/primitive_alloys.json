@@ -26,9 +26,9 @@
     {
       "type": "patchouli:spotlight",
       "item": "tfc:metal/ingot/bismuth_bronze",
-      "title": "Бисмутовая бронза",
+      "title": "Висмутовая бронза",
       "link_recipes": false,
-      "text": "$(br)$(bold)Требования: $()$(br)$(li)20 - 30 % : $(thing)Цинк$()$(li)50 - 65 %: $(thing)медь$()$(li)10 - 20 % : $(thing)Бисмут$()$(br2)"
+      "text": "$(br)$(bold)Требования: $()$(br)$(li)20 - 30 % : $(thing)Цинк$()$(li)50 - 65 %: $(thing)медь$()$(li)10 - 20 % : $(thing)Висмут$()$(br2)"
     },
     {
       "type": "patchouli:spotlight",

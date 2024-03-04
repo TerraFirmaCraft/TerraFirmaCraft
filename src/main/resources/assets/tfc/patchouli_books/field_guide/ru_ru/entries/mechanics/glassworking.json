@@ -17,7 +17,7 @@
       "type": "tfc:heat_recipe",
       "anchor": "lime",
       "recipe": "tfc:heating/lime",
-      "text": "$(thing)Известь$() - один из ингредиентов, необходимых для изготовления партий стекла. Это порошок, получаемый $(l:mechanics/heating)нагреванием$() $(l:mechanics/flux)Флюса$()."
+      "text": "$(thing)Известь$() - один из ингредиентов, необходимых для изготовления партий стекла. Это порошок, получаемый $(l:mechanics/heating)нагреванием$() $(l:mechanics/flux)флюса$()."
     },
     {
       "type": "tfc:heat_recipe",

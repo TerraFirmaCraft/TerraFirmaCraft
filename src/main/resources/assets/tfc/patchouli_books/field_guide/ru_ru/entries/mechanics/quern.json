@@ -73,7 +73,7 @@
     {
       "type": "tfc:quern_recipe",
       "recipe": "tfc:quern/fluxstone",
-      "text": "$(l:mechanics/flux)Флюс$() также можно получить из жернова."
+      "text": "$(l:mechanics/flux)флюс$() также можно получить из жернова."
     }
   ],
   "read_by_default": true

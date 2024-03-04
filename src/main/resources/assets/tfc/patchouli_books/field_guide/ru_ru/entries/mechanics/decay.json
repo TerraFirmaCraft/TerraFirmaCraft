@@ -57,7 +57,7 @@
     {
       "type": "tfc:quern_recipe",
       "recipe": "tfc:quern/salt",
-      "text": "Один из способов получить соль - это $(l:mechanics/quern)измельчение$() $(l:the_world/ores_and_minerals#halite)Галита$(), который является минералом."
+      "text": "Один из способов получить соль - это $(l:mechanics/quern)измельчение$() $(l:the_world/ores_and_minerals#halite)галита$(), который является минералом."
     },
     {
       "type": "patchouli:multiblock",

@@ -38,7 +38,7 @@
       "type": "tfc:instant_barrel_recipe",
       "anchor": "limewater",
       "recipe": "tfc:barrel/limewater",
-      "text": "$(bold)Известковая вода$() делается путём добавления $(l:mechanics/flux)Флюса$() в бочку с $(thing)Водой$(). Один $(l:mechanics/flux)Флюс$() требуется на каждые $(thing)500 мБ$() $(thing)Воды$(). $(thing)Известковая вода$() используется в $(l:mechanics/leather_making)Изготовлении кожи$(), и используется для изготовления $(thing)Раствора$()."
+      "text": "$(bold)Известковая вода$() делается путём добавления $(l:mechanics/flux)флюса$() в бочку с $(thing)Водой$(). Один $(l:mechanics/flux)флюс$() требуется на каждые $(thing)500 мБ$() $(thing)Воды$(). $(thing)Известковая вода$() используется в $(l:mechanics/leather_making)Изготовлении кожи$(), и используется для изготовления $(thing)Раствора$()."
     },
     {
       "type": "tfc:sealed_barrel_recipe",

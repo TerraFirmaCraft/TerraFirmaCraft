@@ -46,7 +46,7 @@
       "item": "tfc:metal/ingot/weak_blue_steel",
       "title": "Слабая синяя сталь",
       "link_recipes": false,
-      "text": "$(br)$(bold)Требования: $()$(br)$(li)50 - 55 %: $(thing)Черная сталь$()$(li)20 - 25 %: $(thing)Сталь$()$(li)10 - 15 %: $(thing)Бисмутовая бронза$()$(li)10 - 15 %: $(thing)Стерлинговое серебро$()$(br2)"
+      "text": "$(br)$(bold)Требования: $()$(br)$(li)50 - 55 %: $(thing)Черная сталь$()$(li)20 - 25 %: $(thing)Сталь$()$(li)10 - 15 %: $(thing)висмутовая бронза$()$(li)10 - 15 %: $(thing)Стерлинговое серебро$()$(br2)"
     },
     {
       "type": "tfc:welding_recipe",

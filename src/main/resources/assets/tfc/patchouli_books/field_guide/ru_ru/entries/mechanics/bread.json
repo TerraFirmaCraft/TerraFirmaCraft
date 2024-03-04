@@ -22,7 +22,7 @@
     {
       "type": "tfc:quern_recipe",
       "recipe": "tfc:quern/oat_grain",
-      "text": "Затем зерно должно быть перемолото в $(l:mechanics/quern)Жернове$(), чтобы сделать м"
+      "text": "Затем зерно должно быть перемолото в $(l:mechanics/quern)жернове$(), чтобы получить муку."
     },
     {
       "type": "patchouli:crafting",

@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Все 16 стандартных $(thing)Цветов красителей$() можно получить в виде предметов. Большинство цветов и других цветных растений можно измельчить в краситель с помощью $(l:mechanics/quern)Жернова$(). Порошки $(l:the_world/ores_and_minerals)металлических руд$() можно напрямую превратить в краситель. $(l:the_world/ores_and_minerals#graphite)Графит$(), $(l:the_world/ores_and_minerals#kaolinite)Каолинит$(), $(l:the_world/ores_and_minerals#sylvite)Сильвинит$(), $(l:the_world/ores_and_minerals#lapis_lazuli)Лазурит$(), Кокс и порошок угля также можно превратить в краситель."
+      "text": "Все 16 стандартных $(thing)Цветов красителей$() можно получить в виде предметов. Большинство цветов и других цветных растений можно измельчить в краситель с помощью $(l:mechanics/quern)Жернова$(). Порошки $(l:the_world/ores_and_minerals)металлических руд$() можно напрямую превратить в краситель. $(l:the_world/ores_and_minerals#graphite)Графит$(), $(l:the_world/ores_and_minerals#kaolinite)каолинит$(), $(l:the_world/ores_and_minerals#sylvite)Сильвит$(), $(l:the_world/ores_and_minerals#lapis_lazuli)лазурит$(), Кокс и порошок угля также можно превратить в краситель."
     },
     {
       "type": "patchouli:spotlight",
