@@ -21,7 +21,7 @@
     {
       "type": "tfc:welding_recipe",
       "recipe": "tfc:welding/bismuth_bronze_greaves",
-      "text": "Затем $(thing)Лист$() должен быть $(l:mechanics/anvils#welding)Сварен$() с элементом брони для его завершения. Для завершения нагрудников требуется $(thing)Двойной лист$()."
+      "text": "Затем $(thing)Лист$() должен быть $(l:mechanics/anvils#welding)сварен$() с элементом брони для его завершения. Для завершения нагрудников требуется $(thing)Двойной лист$()."
     },
     {
       "type": "patchouli:text",

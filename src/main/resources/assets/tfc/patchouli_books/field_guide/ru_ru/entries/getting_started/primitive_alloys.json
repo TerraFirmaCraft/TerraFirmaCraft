@@ -14,28 +14,28 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Например, чтобы создать 1000 мБ $(thing)Бронзы$() (показано справа), вам потребуется от 880 до 920 мБ $(thing)Меди$(), и от 80 до 120 мБ $(thing)Олова$().$(br2)На следующих трех страницах показаны рецепты трех видов бронзы. Каждый тип бронзы может использоваться для изготовления инструментов, $(l:mechanics/armor)Доспехов$(), и других металлических предметов. Они немного отличаются, поэтому полученные инструменты будут иметь разную прочность, эффективность и урон."
+      "text": "Например, чтобы создать 1000 мБ $(thing)Бронзы$() (показано справа), вам потребуется от 880 до 920 мБ $(thing)меди$(), и от 80 до 120 мБ $(thing)Олова$().$(br2)На следующих трех страницах показаны рецепты трех видов бронзы. Каждый тип бронзы может использоваться для изготовления инструментов, $(l:mechanics/armor)Доспехов$(), и других металлических предметов. Они немного отличаются, поэтому полученные инструменты будут иметь разную прочность, эффективность и урон."
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:metal/ingot/bronze",
       "title": "Бронза",
       "link_recipes": false,
-      "text": "$(br)$(bold)Требования: $()$(br)$(li)88 - 92 %: $(thing)Медь$()$(li)8 - 12 %: $(thing)Олово$()$(br2)"
+      "text": "$(br)$(bold)Требования: $()$(br)$(li)88 - 92 %: $(thing)медь$()$(li)8 - 12 %: $(thing)Олово$()$(br2)"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:metal/ingot/bismuth_bronze",
       "title": "Бисмутовая бронза",
       "link_recipes": false,
-      "text": "$(br)$(bold)Требования: $()$(br)$(li)20 - 30 % : $(thing)Цинк$()$(li)50 - 65 %: $(thing)Медь$()$(li)10 - 20 % : $(thing)Бисмут$()$(br2)"
+      "text": "$(br)$(bold)Требования: $()$(br)$(li)20 - 30 % : $(thing)Цинк$()$(li)50 - 65 %: $(thing)медь$()$(li)10 - 20 % : $(thing)Бисмут$()$(br2)"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:metal/ingot/black_bronze",
       "title": "Чёрная бронза",
       "link_recipes": false,
-      "text": "$(br)$(bold)Требования: $()$(br)$(li)50 - 70 %: $(thing)Медь$()$(li)10 - 25 %: $(thing)Серебро$()$(li)10 - 25 %: $(thing)Золото$()$(br2)"
+      "text": "$(br)$(bold)Требования: $()$(br)$(li)50 - 70 %: $(thing)медь$()$(li)10 - 25 %: $(thing)Серебро$()$(li)10 - 25 %: $(thing)Золото$()$(br2)"
     },
     {
       "type": "patchouli:text",
@@ -48,21 +48,21 @@
       "item": "tfc:metal/ingot/brass",
       "title": "Латунь",
       "link_recipes": false,
-      "text": "$(br)$(bold)Требования:$()$(br)$(li)88 - 92 %: $(thing)Медь$()$(li)8 - 12 %: $(thing)Цинк$()$(br2)"
+      "text": "$(br)$(bold)Требования:$()$(br)$(li)88 - 92 %: $(thing)медь$()$(li)8 - 12 %: $(thing)Цинк$()$(br2)"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:metal/ingot/rose_gold",
       "title": "Розовое золото",
       "link_recipes": false,
-      "text": "$(br)$(bold)Требования: $()$(br)$(li)15 - 30 %: $(thing)Медь$()$(li)70 - 85 %: $(thing)Золото$()$(br2)"
+      "text": "$(br)$(bold)Требования: $()$(br)$(li)15 - 30 %: $(thing)медь$()$(li)70 - 85 %: $(thing)Золото$()$(br2)"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:metal/ingot/sterling_silver",
       "title": "Стерлинговое серебро",
       "link_recipes": false,
-      "text": "$(br)$(bold)Требования: $()$(br)$(li)20 - 40 %: $(thing)Медь$()$(li)60 - 80 %: $(thing)Серебро$()$(br2)"
+      "text": "$(br)$(bold)Требования: $()$(br)$(li)20 - 40 %: $(thing)медь$()$(li)60 - 80 %: $(thing)Серебро$()$(br2)"
     }
   ],
   "read_by_default": true,
