@@ -9,7 +9,6 @@ package net.dries007.tfc.common.blocks.soil;
 import java.util.function.Supplier;
 
 import net.minecraft.core.Direction;
-import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -33,11 +32,6 @@ public class DirtBlock extends Block implements IDirtBlock, IMudBlock
     @Nullable private final Supplier<? extends Block> farmland;
     @Nullable private final Supplier<? extends Block> rooted;
     @Nullable private final Supplier<? extends Block> mud;
-
-    public DirtBlock(Properties properties, Supplier<? extends Block> grass, @Nullable Supplier<? extends Block> path, @Nullable Supplier<? extends Block> farmland)
-    {
-        this(properties, grass, path, farmland, null, null);
-    }
 
     public DirtBlock(Properties properties, Supplier<? extends Block> grass, @Nullable Supplier<? extends Block> path, @Nullable Supplier<? extends Block> farmland, @Nullable Supplier<? extends Block> rooted, @Nullable Supplier<? extends Block> mud)
     {
