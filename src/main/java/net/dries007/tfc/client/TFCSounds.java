@@ -111,6 +111,7 @@ public final class TFCSounds
     public static final Map<Fish, FishSound> FRESHWATER_FISHES = Helpers.mapOfKeys(Fish.class, Fish::makeSound);
 
     public static final RegistryObject<SoundEvent> ROOSTER_CRY = create("entity.rooster.cry");
+    public static final RegistryObject<SoundEvent> RAMMING_IMPACT = create("entity.ramming.impact");
 
     // Random
     public static final RegistryObject<SoundEvent> ROCK_SLIDE_LONG = create("random.rock_slide_long");

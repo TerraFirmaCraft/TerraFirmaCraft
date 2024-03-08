@@ -27,6 +27,8 @@ import snownee.jade.api.TooltipPosition;
 import snownee.jade.api.WailaPlugin;
 import snownee.jade.api.config.IPluginConfig;
 
+import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.compat.jade.common.BlockEntityTooltip;
 import net.dries007.tfc.compat.jade.common.BlockEntityTooltips;
@@ -72,6 +74,14 @@ public class JadeIntegration implements IWailaPlugin
     {
         BlockEntityTooltips.register((name, tooltip, block) -> register(registry, name, tooltip, block));
         EntityTooltips.register((name, tooltip, entity) -> register(registry, name, tooltip, entity));
+
+        registry.addRayTraceCallback((hit, accessor, originalAccessor) -> {
+            if (accessor instanceof BlockAccessor blockAccessor && blockAccessor.getBlock() == TFCBlocks.KAOLIN_CLAY_GRASS.get())
+            {
+                return registry.blockAccessor().from(blockAccessor).blockState(TFCBlocks.SOIL.get(SoilBlockType.GRASS).get(SoilBlockType.Variant.SILT).get().defaultBlockState()).build();
+            }
+            return accessor;
+        });
     }
 
     private void register(IWailaClientRegistration registry, ResourceLocation name, BlockEntityTooltip blockEntityTooltip, Class<? extends Block> block)

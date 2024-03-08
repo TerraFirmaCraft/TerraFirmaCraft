@@ -869,23 +869,20 @@ public final class Helpers
     {
         if (level.getGameRules().getBoolean(GameRules.RULE_DOFIRETICK))
         {
-            final int x = pos.getX();
-            final int y = pos.getY();
-            final int z = pos.getZ();
-            final int radiusSquared = radius * radius;
-            for (BlockPos checkPos : BlockPos.randomBetweenClosed(random, radius * 2, x - radius, y, z - radius, x + radius, y + radius, z + radius))
+            for (int i = 0; i < radius; i++)
             {
-                if (checkPos.distSqr(pos) < radiusSquared && level.isLoaded(checkPos))
+                pos = pos.relative(Direction.Plane.HORIZONTAL.getRandomDirection(random));
+                if (level.getRandom().nextFloat() < 0.25f)
+                    pos = pos.above();
+                final BlockState state = level.getBlockState(pos);
+                if (!state.isAir())
                 {
-                    final BlockState state = level.getBlockState(checkPos);
-                    if (state.isAir())
-                    {
-                        if (hasFlammableNeighbours(level, checkPos))
-                        {
-                            level.setBlockAndUpdate(checkPos, Blocks.FIRE.defaultBlockState());
-                            return;
-                        }
-                    }
+                    return;
+                }
+                if (hasFlammableNeighbours(level, pos))
+                {
+                    level.setBlockAndUpdate(pos, Blocks.FIRE.defaultBlockState());
+                    return;
                 }
             }
         }

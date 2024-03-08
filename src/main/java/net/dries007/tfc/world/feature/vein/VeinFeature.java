@@ -140,7 +140,7 @@ public abstract class VeinFeature<C extends IVeinConfig, V extends IVein> extend
                         if (oreState != null)
                         {
                             level.setBlock(cursor, oreState, 3);
-                            maxVeinY = y;
+                            maxVeinY = y + projectedY;
                         }
                     }
                 }

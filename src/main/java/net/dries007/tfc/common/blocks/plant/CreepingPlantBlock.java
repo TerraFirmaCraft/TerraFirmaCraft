@@ -32,7 +32,6 @@ import org.jetbrains.annotations.NotNull;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
-import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.registry.RegistryPlant;
 
@@ -77,9 +76,9 @@ public abstract class CreepingPlantBlock extends PlantBlock implements Direction
             }
 
             @Override
-            public boolean canCreepOn(BlockState state)
+            public boolean canCreepOn(LevelReader level, BlockPos pos, BlockState state, Direction direction)
             {
-                return Helpers.isBlock(state, TFCTags.Blocks.CREEPING_STONE_PLANTABLE_ON);
+                return Helpers.isBlock(state, TFCTags.Blocks.CREEPING_STONE_PLANTABLE_ON) && super.canCreepOn(level, pos, state, direction);
             }
         };
     }
@@ -118,7 +117,7 @@ public abstract class CreepingPlantBlock extends PlantBlock implements Direction
     @Override
     public BlockState updateShape(BlockState state, Direction direction, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        state = state.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction), canCreepOn(facingState));
+        state = state.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction), canCreepOn(level, facingPos, facingState, direction));
         return isEmpty(state) ? Blocks.AIR.defaultBlockState() : state;
     }
 
@@ -128,7 +127,8 @@ public abstract class CreepingPlantBlock extends PlantBlock implements Direction
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (Direction direction : UPDATE_SHAPE_ORDER)
         {
-            if (canCreepOn(level.getBlockState(mutablePos.setWithOffset(pos, direction))))
+            mutablePos.setWithOffset(pos, direction);
+            if (canCreepOn(level, mutablePos, level.getBlockState(mutablePos), direction))
             {
                 return true;
             }
@@ -173,7 +173,7 @@ public abstract class CreepingPlantBlock extends PlantBlock implements Direction
         for (Direction direction : UPDATE_SHAPE_ORDER)
         {
             mutablePos.setWithOffset(pos, direction);
-            boolean ground = block.canCreepOn(level.getBlockState(mutablePos));
+            boolean ground = block.canCreepOn(level, pos, level.getBlockState(mutablePos), direction);
 
             state = state.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction), ground);
             hasEarth |= ground;
@@ -207,8 +207,8 @@ public abstract class CreepingPlantBlock extends PlantBlock implements Direction
         return DirectionPropertyBlock.mirror(state, mirror);
     }
 
-    public boolean canCreepOn(BlockState state)
+    public boolean canCreepOn(LevelReader level, BlockPos pos, BlockState state, Direction direction)
     {
-        return Helpers.isBlock(state, TFCTags.Blocks.CREEPING_PLANTABLE_ON);
+        return state.isFaceSturdy(level, pos, direction.getOpposite());
     }
 }

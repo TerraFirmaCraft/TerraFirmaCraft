@@ -94,11 +94,18 @@ def generate(rm: ResourceManager):
             if block_type in ('raw', 'hardened'):
                 normal = 'tfc:block/rock/raw/%s' % rock
                 mirror = normal + '_mirrored'
-                block = rm.blockstate(('rock', block_type, rock), variants={
-                    'axis=x': [{'model': normal, 'x': 90, 'y': 90}, {'model': mirror, 'x': 90, 'y': 90}],
-                    'axis=y': [{'model': normal}, {'model': mirror}, {'model': normal, 'y': 180}, {'model': mirror, 'y': 180}],
-                    'axis=z': [{'model': normal, 'x': 90}, {'model': mirror, 'x': 90}, {'model': normal, 'x': 90, 'y': 180}, {'model': mirror, 'x': 90, 'y': 180}],
-                }, use_default_model=False)
+                if rock in ('chalk', 'schist', 'marble', 'phyllite', 'slate', 'chert', 'dolomite'):
+                    block = rm.blockstate(('rock', block_type, rock), variants={
+                        'axis=x': [{'model': normal, 'x': 90, 'y': 90}, {'model': mirror, 'x': 90, 'y': 90}],
+                        'axis=y': [{'model': normal}, {'model': mirror}],
+                        'axis=z': [{'model': normal, 'x': 90}, {'model': mirror, 'x': 90}],
+                    }, use_default_model=False)
+                else:
+                    block = rm.blockstate(('rock', block_type, rock), variants={
+                        'axis=x': [{'model': normal, 'x': 90, 'y': 90}, {'model': mirror, 'x': 90, 'y': 90}],
+                        'axis=y': [{'model': normal}, {'model': mirror}, {'model': normal, 'y': 180}, {'model': mirror, 'y': 180}],
+                        'axis=z': [{'model': normal, 'x': 90}, {'model': mirror, 'x': 90}, {'model': normal, 'x': 90, 'y': 180}, {'model': mirror, 'x': 90, 'y': 180}],
+                    }, use_default_model=False)
                 if rock in ('shale', 'claystone'):
                     if block_type == 'raw':
                         for suffix in ('', '_mirrored'):
@@ -961,7 +968,7 @@ def generate(rm: ResourceManager):
                    'name': 'tfc:ore/small_%s' % ore,
                    'conditions': [loot_tables.random_chance(chance)],  # 50% chance (for pan)
                 }, {
-                   'name': 'tfc:rock/loose/%s' % rock,
+                   'name': 'tfc:rock/loose/%s' % rock if rock not in ('rhyolite', 'dacite', 'andesite') else 'tfc:groundcover/pumice',
                    'conditions': [loot_tables.random_chance(0.5)],  # 25% chance
                 }, {
                    'name': 'tfc:ore/%s' % rare,

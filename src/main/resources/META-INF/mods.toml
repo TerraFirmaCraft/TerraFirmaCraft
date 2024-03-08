@@ -49,4 +49,5 @@ issueTrackerURL = "https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues"
 
 # We do our own biome coloring, see #2279
 [mods."sodium:options"]
-    "mixin.features.fast_biome_colors"=false
+    "mixin.features.fast_biome_colors"=false  # Rubidium
+    "mixin.features.render.world.sky"=false  # Embeddium, probably Sodium as well

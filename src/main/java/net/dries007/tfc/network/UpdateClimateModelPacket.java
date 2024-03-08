@@ -9,8 +9,6 @@ package net.dries007.tfc.network;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.Level;
 
-import net.minecraftforge.network.NetworkEvent;
-
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateModel;
@@ -31,14 +29,12 @@ public record UpdateClimateModelPacket(ClimateModel model)
         model.onSyncToClient(buffer);
     }
 
-    void handle(NetworkEvent.Context context)
+    void handle()
     {
-        context.enqueueWork(() -> {
-            final Level level = ClientHelpers.getLevel();
-            if (level != null)
-            {
-                level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(c -> c.setClimateModel(model));
-            }
-        });
+        final Level level = ClientHelpers.getLevel();
+        if (level != null)
+        {
+            level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(c -> c.setClimateModel(model));
+        }
     }
 }

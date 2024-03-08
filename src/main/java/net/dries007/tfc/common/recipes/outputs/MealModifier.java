@@ -113,10 +113,10 @@ public record MealModifier(FoodData baseFood, List<MealPortion> portions) implem
                 final var data = food.getData();
                 for (Nutrient nutrient : Nutrient.VALUES)
                 {
-                    nutrition[nutrient.ordinal()] += data.nutrient(nutrient) * portion.nutrientModifier;
+                    nutrition[nutrient.ordinal()] += data.nutrient(nutrient) * portion.nutrientModifier * item.getCount();
                 }
-                water += data.water() * portion.waterModifier;
-                saturation += data.saturation() * portion.saturationModifier;
+                water += data.water() * portion.waterModifier * item.getCount();
+                saturation += data.saturation() * portion.saturationModifier * item.getCount();
             }
         }
 

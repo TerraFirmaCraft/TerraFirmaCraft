@@ -15,6 +15,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
 
+import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.ForestType;
@@ -74,7 +75,10 @@ public class DynamicDensityRandomPatchFeature extends Feature<RandomPatchConfigu
         {
             tries = Math.min(tries, 40);
         }
-
+        if (context.chunkGenerator() instanceof TFCChunkGenerator generator)
+        {
+            tries *= generator.settings().grassDensity() * 2f;
+        }
 
         return tries;
     }

@@ -77,9 +77,9 @@ public class GrillBlock extends FirepitBlock implements IHighlightHandler
     }
 
     @Override
-    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand)
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random)
     {
-        super.animateTick(state, level, pos, rand);
+        super.animateTick(state, level, pos, random);
         if (state.getValue(LIT))
         {
             if (level.getBlockEntity(pos) instanceof GrillBlockEntity grill)
@@ -88,12 +88,12 @@ public class GrillBlock extends FirepitBlock implements IHighlightHandler
                 if (inv != null)
                 {
                     SLOT_CENTERS.forEach((slot, vec) -> {
-                        if (!inv.getStackInSlot(slot).isEmpty() && rand.nextFloat() < 0.4f)
+                        if (!inv.getStackInSlot(slot).isEmpty() && random.nextFloat() < 0.4f)
                         {
                             final double x = vec.x + pos.getX();
                             final double y = vec.y + pos.getY();
                             final double z = vec.z + pos.getZ();
-                            level.playLocalSound(x, y, z, SoundEvents.FURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 0.25F, rand.nextFloat() * 0.7F + 0.4F, false);
+                            level.playLocalSound(x, y, z, SoundEvents.FURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 0.25F, random.nextFloat() * 0.7F + 0.4F, false);
                             level.addParticle(ParticleTypes.SMOKE, x, y, z, 0, 0, 0);
                         }
                     });

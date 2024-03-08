@@ -6,18 +6,16 @@
 
 package net.dries007.tfc.network;
 
-import net.minecraft.core.Registry;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import net.dries007.tfc.TerraFirmaCraft;
-
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
+
+import net.dries007.tfc.TerraFirmaCraft;
 
 public final class NetworkRecipeParityCheck
 {

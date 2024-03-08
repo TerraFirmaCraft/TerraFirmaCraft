@@ -28,7 +28,8 @@ public record Settings(
     int rainfallScale,
     float rainfallConstant,
     RockLayerSettings rockLayerSettings,
-    float continentalness)
+    float continentalness,
+    float grassDensity)
 {
     public static final MapCodec<Settings> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
         Codec.BOOL.fieldOf("flat_bedrock").forGetter(c -> c.flatBedrock),
@@ -40,6 +41,7 @@ public record Settings(
         Codec.INT.fieldOf("rainfall_scale").forGetter(c -> c.rainfallScale),
         Codec.FLOAT.optionalFieldOf("rainfall_constant", 0f).forGetter(c -> c.rainfallConstant),
         RockLayerSettings.CODEC.fieldOf("rock_layer_settings").forGetter(c -> c.rockLayerSettings),
-        Codec.FLOAT.fieldOf("continentalness").forGetter(c -> c.continentalness)
+        Codec.FLOAT.fieldOf("continentalness").forGetter(c -> c.continentalness),
+        Codec.FLOAT.optionalFieldOf("grassDensity", 0.5f).forGetter(c -> c.grassDensity)
     ).apply(instance, Settings::new));
 }

@@ -8,8 +8,7 @@ package net.dries007.tfc.network;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.network.NetworkHooks;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.container.TFCContainerProviders;
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
@@ -34,23 +33,20 @@ public class SwitchInventoryTabPacket
         buffer.writeByte(type.ordinal());
     }
 
-    void handle(NetworkEvent.Context context)
+    void handle(@Nullable ServerPlayer player)
     {
-        context.enqueueWork(() -> {
-            final ServerPlayer player = context.getSender();
-            if (player != null)
+        if (player != null)
+        {
+            player.doCloseContainer();
+            switch (type)
             {
-                player.doCloseContainer();
-                switch (type)
-                {
-                    case INVENTORY -> player.containerMenu = player.inventoryMenu;
-                    case CALENDAR -> Helpers.openScreen(player, TFCContainerProviders.CALENDAR);
-                    case NUTRITION -> Helpers.openScreen(player, TFCContainerProviders.NUTRITION);
-                    case CLIMATE -> Helpers.openScreen(player, TFCContainerProviders.CLIMATE);
-                    case BOOK -> PatchouliIntegration.openGui(player);
-                }
+                case INVENTORY -> player.containerMenu = player.inventoryMenu;
+                case CALENDAR -> Helpers.openScreen(player, TFCContainerProviders.CALENDAR);
+                case NUTRITION -> Helpers.openScreen(player, TFCContainerProviders.NUTRITION);
+                case CLIMATE -> Helpers.openScreen(player, TFCContainerProviders.CLIMATE);
+                case BOOK -> PatchouliIntegration.openGui(player);
             }
-        });
+        }
     }
 
     public enum Type

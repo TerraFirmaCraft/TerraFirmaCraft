@@ -7,20 +7,17 @@
 package net.dries007.tfc.network;
 
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.network.NetworkEvent;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 
 public class CycleChiselModePacket
 {
-    void handle(NetworkEvent.Context context)
+    void handle(@Nullable ServerPlayer player)
     {
-        context.enqueueWork(() -> {
-            ServerPlayer player = context.getSender();
-            if (player != null)
-            {
-                player.getCapability(PlayerDataCapability.CAPABILITY).ifPresent(cap -> cap.setChiselMode(cap.getChiselMode().next()));
-            }
-        });
+        if (player != null)
+        {
+            player.getCapability(PlayerDataCapability.CAPABILITY).ifPresent(cap -> cap.setChiselMode(cap.getChiselMode().next()));
+        }
     }
 }

@@ -9,6 +9,7 @@ package net.dries007.tfc.util.climate;
 import java.util.Random;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.LinearCongruentialGenerator;
@@ -18,6 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SnowyDirtBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -27,11 +29,13 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec2;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.IcePileBlock;
 import net.dries007.tfc.common.blocks.SnowPileBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.plant.KrummholzBlock;
 import net.dries007.tfc.common.fluids.TFCFluids;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
@@ -39,6 +43,7 @@ import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.TFCChunkGenerator;
+import net.dries007.tfc.world.biome.BiomeExtension;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
@@ -215,11 +220,33 @@ public class OverworldClimateModel implements WorldGenClimateModel
         if (y < SEA_LEVEL - 6)
             return Vec2.ZERO;
         final Random random = seededRandom(ICalendar.getTotalDays(calendarTime), 129341623413L);
+
+        final Holder<Biome> biome = level.getBiome(pos);
+        if (biome.is(TFCTags.Biomes.HAS_PREDICTABLE_WINDS))
+        {
+            final boolean isDay = level.getDayTime() % 24000 < 12000;
+            final int windScale = TFCConfig.SERVER.oceanWindScale.get();
+            final boolean oddBand = pos.getZ() < 0 ?
+                pos.getZ() % (windScale * 2) < windScale :
+                pos.getZ() % (windScale * 2) > windScale;
+            final float intensity = random.nextFloat() * 0.3f + 0.3f + (0.4f * level.getRainLevel(0f));
+            float angle;
+            if (isDay && oddBand)
+                angle = Mth.PI / 4;
+            else if (isDay)
+                angle = 7 * Mth.PI / 4;
+            else if (oddBand)
+                angle = 5 * Mth.PI / 4;
+            else
+                angle = 3 * Mth.PI / 4;
+            angle += random.nextFloat() * 0.2f - 0.1f;
+            return new Vec2(Mth.cos(angle), Mth.sin(angle)).scale(intensity);
+        }
+
         final float preventFrequentWindyDays = random.nextFloat() < 0.1f ? 1f : random.nextFloat();
         final float intensity = Math.min(0.5f * random.nextFloat() * preventFrequentWindyDays
-            + 0.3f * Mth.clampedMap(y, SEA_LEVEL, SEA_LEVEL + 65, 0f, 1f)
-            + 0.4f * level.getRainLevel(0f)
-            + 0.3f * level.getThunderLevel(0f), 1f);
+            + 0.4f * Mth.clampedMap(y, SEA_LEVEL, SEA_LEVEL + 65, 0f, 1f)
+            + 0.6f * level.getRainLevel(0f), 1f);
         final float angle = random.nextFloat() * Mth.TWO_PI;
         return new Vec2(Mth.cos(angle), Mth.sin(angle)).scale(intensity);
     }

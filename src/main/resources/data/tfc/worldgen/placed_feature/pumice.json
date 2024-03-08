@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "feature": "tfc:plant/blood_lily",
+  "feature": "tfc:pumice",
   "placement": [
     {
       "type": "minecraft:heightmap",
@@ -9,7 +9,7 @@
     {
       "type": "block_predicate_filter",
       "predicate": {
-        "type": "tfc:air_or_empty_fluid"
+        "type": "tfc:replaceable"
       }
     },
     {
@@ -17,10 +17,9 @@
       "predicate": {
         "type": "would_survive",
         "state": {
-          "Name": "tfc:plant/blood_lily",
+          "Name": "tfc:groundcover/pumice",
           "Properties": {
-            "age": "1",
-            "stage": "1"
+            "fluid": "empty"
           }
         }
       }

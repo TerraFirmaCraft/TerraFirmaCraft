@@ -6,17 +6,18 @@
 
 package net.dries007.tfc.network;
 
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.ChunkAccess;
-import net.minecraftforge.network.NetworkEvent;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.world.chunkdata.*;
+import net.dries007.tfc.world.chunkdata.ChunkData;
+import net.dries007.tfc.world.chunkdata.ChunkDataCache;
+import net.dries007.tfc.world.chunkdata.ForestType;
+import net.dries007.tfc.world.chunkdata.LerpFloatLayer;
 
 /**
  * Sent from server -> client on chunk watch, partially syncs chunk data and updates the client cache
@@ -64,24 +65,22 @@ public class ChunkWatchPacket
         buffer.writeFloat(forestWeirdness);
     }
 
-    void handle(NetworkEvent.Context context)
+    void handle()
     {
-        context.enqueueWork(() -> {
-            ChunkPos pos = new ChunkPos(chunkX, chunkZ);
-            // Update client-side chunk data capability
-            Level world = ClientHelpers.getLevel();
-            if (world != null)
-            {
-                // First, synchronize the chunk data in the capability and cache.
-                // Then, update the single data instance with the packet data
-                ChunkAccess chunk = world.hasChunk(chunkX, chunkZ) ? world.getChunk(chunkX, chunkZ) : null;
-                ChunkData data = ChunkData.getCapability(chunk)
-                    .map(dataIn -> {
-                        ChunkDataCache.CLIENT.update(pos, dataIn);
-                        return dataIn;
-                    }).orElseGet(() -> ChunkDataCache.CLIENT.computeIfAbsent(pos, ChunkData::new));
-                data.onUpdatePacket(rainfallLayer, temperatureLayer, forestType, forestDensity, forestWeirdness);
-            }
-        });
+        ChunkPos pos = new ChunkPos(chunkX, chunkZ);
+        // Update client-side chunk data capability
+        Level world = ClientHelpers.getLevel();
+        if (world != null)
+        {
+            // First, synchronize the chunk data in the capability and cache.
+            // Then, update the single data instance with the packet data
+            ChunkAccess chunk = world.hasChunk(chunkX, chunkZ) ? world.getChunk(chunkX, chunkZ) : null;
+            ChunkData data = ChunkData.getCapability(chunk)
+                .map(dataIn -> {
+                    ChunkDataCache.CLIENT.update(pos, dataIn);
+                    return dataIn;
+                }).orElseGet(() -> ChunkDataCache.CLIENT.computeIfAbsent(pos, ChunkData::new));
+            data.onUpdatePacket(rainfallLayer, temperatureLayer, forestType, forestDensity, forestWeirdness);
+        }
     }
 }

@@ -519,7 +519,7 @@ def generate(rm: ResourceManager):
     brass = METALS['brass']
     heat_recipe(rm, 'raw_bloom', 'tfc:raw_iron_bloom', wrought_iron.melt_temperature, None, '100 tfc:metal/cast_iron')
     heat_recipe(rm, 'refined_bloom', 'tfc:refined_iron_bloom', wrought_iron.melt_temperature, None, '100 tfc:metal/cast_iron')
-    heat_recipe(rm, 'grill', 'tfc:wrought_iron_grill', wrought_iron.melt_temperature, None, '100 tfc:metal/cast_iron')
+    heat_recipe(rm, 'grill', 'tfc:wrought_iron_grill', wrought_iron.melt_temperature, None, '400 tfc:metal/cast_iron')
     heat_recipe(rm, 'iron_door', 'minecraft:iron_door', wrought_iron.melt_temperature, None, '200 tfc:metal/cast_iron')
 
     heat_recipe(rm, 'bronze_bell', 'tfc:bronze_bell', METALS['bronze'].melt_temperature, None, '100 tfc:metal/bronze')
@@ -556,6 +556,7 @@ def generate(rm: ResourceManager):
         disable_recipe(rm, 'minecraft:%s_stained_glass' % color)
         disable_recipe(rm, 'minecraft:%s_stained_glass_pane' % color)
         disable_recipe(rm, 'minecraft:%s_stained_glass_pane_from_glass_pane' % color)
+        disable_recipe(rm, 'minecraft:%s_bed' % color)
 
     for name in DISABLED_VANILLA_RECIPES:
         disable_recipe(rm, 'minecraft:' + name)
@@ -685,7 +686,9 @@ def generate(rm: ResourceManager):
                 }
             }
         })
+        damage_shapeless(rm, 'crafting/%s_treated_hide' % size, ('#tfc:hammers', 'tfc:groundcover/pumice', 'tfc:%s_scraped_hide' % size), '%s tfc:treated_hide' % str(i + 1)).with_advancement('tfc:%s_scraped_hide' % size)
 
+    rm.crafting_shapeless('crafting/parchment', ('tfc:treated_hide', not_rotten('#tfc:foods/flour'), not_rotten('minecraft:egg'), 'tfc:powder/lime'), '2 minecraft:paper').with_advancement('tfc:treated_hide')
     scraping_recipe(rm, 'paper', 'tfc:unrefined_paper', 'minecraft:paper', input_texture='tfc:block/unrefined_paper', output_texture='tfc:block/paper')
 
     simple_pot_recipe(rm, 'olive_oil_water', [utils.ingredient('tfc:olive_paste')] * 5, '1000 minecraft:water', '1000 tfc:olive_oil_water', None, 2000, 300)

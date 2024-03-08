@@ -9,11 +9,10 @@ package net.dries007.tfc.network;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.network.NetworkEvent;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.container.ButtonHandlerContainer;
 import net.dries007.tfc.util.Helpers;
-import org.jetbrains.annotations.Nullable;
 
 public class ScreenButtonPacket
 {
@@ -38,14 +37,11 @@ public class ScreenButtonPacket
         Helpers.encodeNullable(extraNBT, buffer, (nbt, buf) -> buf.writeNbt(nbt));
     }
 
-    void handle(NetworkEvent.Context context)
+    void handle(@Nullable ServerPlayer player)
     {
-        context.enqueueWork(() -> {
-            ServerPlayer sender = context.getSender();
-            if (sender != null && sender.containerMenu instanceof ButtonHandlerContainer handler)
-            {
-                handler.onButtonPress(buttonID, extraNBT);
-            }
-        });
+        if (player != null && player.containerMenu instanceof ButtonHandlerContainer handler)
+        {
+            handler.onButtonPress(buttonID, extraNBT);
+        }
     }
 }

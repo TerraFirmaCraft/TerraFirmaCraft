@@ -127,6 +127,10 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
         {
             firepit.airTicks--;
         }
+        if (state.getBlock() instanceof FirepitBlock block && level.random.nextFloat() < 0.11f)
+        {
+            block.forcedAnimateTick(state, level, pos, level.random);
+        }
     }
 
     protected final ContainerData syncableData;

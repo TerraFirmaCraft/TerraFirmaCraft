@@ -67,9 +67,9 @@ public class CharcoalForgeBlock extends DeviceBlock implements IBellowsConsumer
             .matchEachDirection(origin, isValidSide, new Direction[] {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.DOWN}, 1);
     }
 
-    public static boolean isValid(LevelAccessor world, BlockPos pos)
+    public static boolean isValid(LevelAccessor level, BlockPos pos)
     {
-        return FORGE_MULTIBLOCK.test(world, pos);
+        return FORGE_MULTIBLOCK.test(level, pos);
     }
 
     public static boolean isForgeInsulationBlock(BlockState state)
@@ -84,7 +84,7 @@ public class CharcoalForgeBlock extends DeviceBlock implements IBellowsConsumer
     }
 
     @Override
-    public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource rand)
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand)
     {
         if (state.getValue(HEAT) == 0) return;
         double x = pos.getX() + 0.5D;
@@ -93,30 +93,30 @@ public class CharcoalForgeBlock extends DeviceBlock implements IBellowsConsumer
 
         if (rand.nextInt(10) == 0)
         {
-            world.playLocalSound(x, y, z, SoundEvents.FIRE_AMBIENT, SoundSource.BLOCKS, 0.5F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.6F, false);
+            level.playLocalSound(x, y, z, SoundEvents.FIRE_AMBIENT, SoundSource.BLOCKS, 0.5F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.6F, false);
         }
         for (int i = 0; i < 1 + rand.nextInt(2); i++)
         {
-            world.addAlwaysVisibleParticle(ParticleTypes.LARGE_SMOKE, x + Helpers.triangle(rand), y + rand.nextDouble(), z + Helpers.triangle(rand), 0, 0.07D, 0);
+            level.addAlwaysVisibleParticle(ParticleTypes.LARGE_SMOKE, x + Helpers.triangle(rand), y + rand.nextDouble(), z + Helpers.triangle(rand), 0, 0.07D, 0);
         }
         for (int i = 0; i < rand.nextInt(3); i++)
         {
-            world.addParticle(ParticleTypes.SMOKE, x + Helpers.triangle(rand), y + rand.nextDouble(), z + Helpers.triangle(rand), 0, 0.005D, 0);
+            level.addParticle(ParticleTypes.SMOKE, x + Helpers.triangle(rand), y + rand.nextDouble(), z + Helpers.triangle(rand), 0, 0.005D, 0);
         }
         if (rand.nextInt(8) == 1)
         {
-            world.addParticle(ParticleTypes.LAVA, x + Helpers.triangle(rand), y + rand.nextDouble(), z + Helpers.triangle(rand), 0, 0.005D, 0);
+            level.addParticle(ParticleTypes.LAVA, x + Helpers.triangle(rand), y + rand.nextDouble(), z + Helpers.triangle(rand), 0, 0.005D, 0);
         }
     }
 
     @Override
-    public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity)
+    public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity)
     {
-        if (!entity.fireImmune() && entity instanceof LivingEntity && !EnchantmentHelper.hasFrostWalker((LivingEntity) entity) && world.getBlockState(pos).getValue(HEAT) > 0)
+        if (!entity.fireImmune() && entity instanceof LivingEntity && !EnchantmentHelper.hasFrostWalker((LivingEntity) entity) && level.getBlockState(pos).getValue(HEAT) > 0)
         {
             entity.hurt(entity.damageSources().hotFloor(), 1f);
         }
-        super.stepOn(world, pos, state, entity);
+        super.stepOn(level, pos, state, entity);
     }
 
     @Override
@@ -156,7 +156,7 @@ public class CharcoalForgeBlock extends DeviceBlock implements IBellowsConsumer
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return CharcoalPileBlock.SHAPE_BY_LAYER[7];
     }
@@ -169,7 +169,7 @@ public class CharcoalForgeBlock extends DeviceBlock implements IBellowsConsumer
         {
             if (isValid(level, pos))
             {
-                Helpers.fireSpreaderTick(level, pos, rand, 3);
+                Helpers.fireSpreaderTick(level, pos.above(), rand, 3);
             }
             else
             {

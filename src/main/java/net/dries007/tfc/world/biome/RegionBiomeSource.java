@@ -74,6 +74,12 @@ public class RegionBiomeSource extends BiomeSource implements BiomeSourceExtensi
     }
 
     @Override
+    public BiomeSourceExtension copy()
+    {
+        return new RegionBiomeSource(biomeRegistry);
+    }
+
+    @Override
     protected Codec<? extends BiomeSource> codec()
     {
         return CODEC;

@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.client.screen;
 
-import java.util.Set;
 import net.minecraft.client.OptionInstance;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.GuiGraphics;
@@ -52,7 +51,7 @@ public class CreateTFCWorldScreen extends Screen
     private OptionsList options;
     private OptionInstance<Boolean> flatBedrock;
     private OptionInstance<Integer> spawnDistance, spawnCenterX, spawnCenterZ, temperatureScale, rainfallScale;
-    private OptionInstance<Double> temperatureConstant, rainfallConstant, continentalness;
+    private OptionInstance<Double> temperatureConstant, rainfallConstant, continentalness, grassDensity;
 
     public CreateTFCWorldScreen(CreateWorldScreen parent, WorldCreationContext context)
     {
@@ -103,8 +102,9 @@ public class CreateTFCWorldScreen extends Screen
             temperatureConstant = constOption("tfc.create_world.temperature_constant", settings.temperatureConstant()),
             rainfallConstant = constOption("tfc.create_world.rainfall_constant", settings.rainfallConstant())
         );
-        options.addBig(
-            continentalness = pctOption("tfc.create_world.continentalness", settings.continentalness())
+        options.addSmall(
+            continentalness = pctOption("tfc.create_world.continentalness", settings.continentalness()),
+            grassDensity = pctOption("tfc.create_world.grass_density", settings.continentalness())
         );
 
         addWidget(options);
@@ -133,7 +133,8 @@ public class CreateTFCWorldScreen extends Screen
                 0.49 < rainfallConstant.get() && rainfallConstant.get() < 0.51 ? rainfallScale.get() : 0,
                 (float) (rainfallConstant.get() * 2.0 - 1.0),
                 old.rockLayerSettings(),
-                continentalness.get().floatValue()
+                continentalness.get().floatValue(),
+                grassDensity.get().floatValue()
             ));
         }
     }

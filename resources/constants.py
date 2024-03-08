@@ -471,7 +471,7 @@ SOIL_BLOCK_TAGS: Dict[str, List[str]] = {
 ORE_DEPOSITS = ('native_copper', 'cassiterite', 'native_silver', 'native_gold')
 GEMS = ('amethyst', 'diamond', 'emerald', 'lapis_lazuli', 'opal', 'pyrite', 'ruby', 'sapphire', 'topaz')
 TRIM_MATERIALS = (*GEMS, 'rose_gold', 'gold', 'silver', 'sterling_silver', 'bismuth')
-MISC_GROUNDCOVER = ('bone', 'clam', 'driftwood', 'mollusk', 'mussel', 'pinecone', 'seaweed', 'stick', 'dead_grass', 'feather', 'flint', 'guano', 'humus', 'rotten_flesh', 'salt_lick', 'sea_urchin')
+MISC_GROUNDCOVER = ('bone', 'clam', 'driftwood', 'mollusk', 'mussel', 'pinecone', 'seaweed', 'stick', 'dead_grass', 'feather', 'flint', 'guano', 'humus', 'rotten_flesh', 'salt_lick', 'sea_urchin', 'pumice')
 COLORS = ('white', 'orange', 'magenta', 'light_blue', 'yellow', 'lime', 'pink', 'gray', 'light_gray', 'cyan', 'purple', 'blue', 'brown', 'green', 'red', 'black')
 SIMPLE_FLUIDS = ('brine', 'curdled_milk', 'limewater', 'lye', 'milk_vinegar', 'olive_oil', 'olive_oil_water', 'tallow', 'tannin', 'vinegar')
 ALCOHOLS = ('beer', 'cider', 'rum', 'sake', 'vodka', 'whiskey', 'corn_whiskey', 'rye_whiskey')
@@ -555,7 +555,7 @@ PLANTS: Dict[str, Plant] = {
     'badderlocks': Plant(False, -12.9, 5, 150, 500, 'submerged_tall'),
     'cordgrass': Plant(False, -16.4, 22.9, 50, 500, 'emergent'),
     'barrel_cactus': Plant(False, 6.8, 19.3, 0, 85, 'cactus'),
-    'blood_lily': Plant(False, 10.4, 19.3, 200, 500, 'standard'),
+    'blood_lily': Plant(True, 10.4, 19.3, 200, 500, 'standard'),
     'blue_orchid': Plant(False, 12.1, 40, 250, 390, 'standard'),
     'blue_ginger': Plant(False, 17.5, 26.4, 300, 450, 'standard'),
     'calendula': Plant(False, 6.8, 22.9, 130, 300, 'standard'),
@@ -815,7 +815,7 @@ DISC_COLORS = {
 SIMPLE_BLOCKS = ('peat', 'aggregate', 'fire_bricks', 'fire_clay_block')
 SIMPLE_ITEMS = ('alabaster_brick', 'blank_disc', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'empty_jar', 'empty_jar_with_lid', 'fire_clay', 'goat_horn', 'gem_saw', 'glow_arrow', 'glue', 'hematitic_glass_batch', 'jacks', 'jar_lid',
                 'jute', 'jute_fiber', 'jute_net', 'kaolin_clay', 'lamp_glass', 'lens', 'mortar', 'olive_paste', 'olivine_glass_batch', 'paddle', 'papyrus', 'papyrus_strip', 'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'silica_glass_batch', 'silk_cloth', 'soaked_papyrus_strip', 'soot', 'spindle',
-                'stick_bunch', 'stick_bundle', 'straw', 'unrefined_paper', 'volcanic_glass_batch', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
+                'stick_bunch', 'stick_bundle', 'straw', 'treated_hide', 'unrefined_paper', 'volcanic_glass_batch', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
 GENERIC_POWDERS = {
     'charcoal': 'black',
     'coke': 'black',
@@ -992,7 +992,7 @@ VANILLA_MONSTERS: Dict[str, Dict[str, Any]] = {
     'slime': spawner('minecraft:slime', weight=100, min_count=4, max_count=4),
 }
 
-DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet', 'campfire', 'bucket', 'composter', 'tinted_glass', 'glass_pane', 'enchanting_table', 'bowl', 'blaze_rod', 'bone_meal', 'flower_pot', 'painting', 'torch', 'soul_torch', 'sticky_piston', 'clock', 'compass', 'white_wool_from_string', 'hay_block', 'anvil', 'wheat', 'lapis_lazuli', 'leather_horse_armor', 'map', 'furnace', 'jack_o_lantern', 'melon_seeds', 'melon', 'pumpkin_pie', 'chest', 'barrel', 'trapped_chest', 'bricks', 'bookshelf', 'crafting_table', 'lectern', 'chest_minecart', 'rail', 'beetroot_soup', 'mushroom_stew', 'rabbit_stew_from_red_mushroom', 'rabbit_stew_from_brown_mushroom', 'suspicious_stew', 'scaffolding', 'bow', 'glass_bottle', 'fletching_table', 'shield', 'lightning_rod', 'fishing_rod', 'iron_door', 'iron_trapdoor', 'spyglass', 'slime_ball', 'smoker', 'soul_campfire', 'loom')
+DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet', 'campfire', 'bucket', 'composter', 'tinted_glass', 'glass_pane', 'enchanting_table', 'bowl', 'blaze_rod', 'bone_meal', 'flower_pot', 'painting', 'torch', 'soul_torch', 'sticky_piston', 'clock', 'compass', 'white_wool_from_string', 'hay_block', 'anvil', 'wheat', 'lapis_lazuli', 'leather_horse_armor', 'map', 'furnace', 'jack_o_lantern', 'melon_seeds', 'melon', 'pumpkin_pie', 'chest', 'barrel', 'trapped_chest', 'bricks', 'bookshelf', 'crafting_table', 'lectern', 'chest_minecart', 'rail', 'beetroot_soup', 'mushroom_stew', 'rabbit_stew_from_red_mushroom', 'rabbit_stew_from_brown_mushroom', 'suspicious_stew', 'scaffolding', 'bow', 'glass_bottle', 'fletching_table', 'shield', 'lightning_rod', 'fishing_rod', 'iron_door', 'iron_trapdoor', 'spyglass', 'slime_ball', 'smoker', 'soul_campfire', 'loom', 'lantern')
 ARMOR_SECTIONS = ('chestplate', 'leggings', 'boots', 'helmet')
 TFC_ARMOR_SECTIONS = ('helmet', 'chestplate', 'greaves', 'boots')
 VANILLA_ARMOR_TYPES = ('leather', 'golden', 'iron', 'diamond', 'netherite')
@@ -1189,6 +1189,7 @@ DEFAULT_LANG = {
     'subtitles.entity.tfc.hyena.death': 'Hyena dies',
     'subtitles.entity.tfc.hyena.attack': 'Hyena bites',
     'subtitles.entity.tfc.hyena.sleep': 'Hyena snores',
+    'subtitles.entity.tfc.ramming.impact': 'Ram impacts',
     **dict(('subtitles.entity.tfc.%s.ambient' % fish, '%s splashes' % fish.title().replace('_', ' ')) for fish in (*SIMPLE_FRESHWATER_FISH, 'manatee', 'jellyfish')),
     **dict(('subtitles.entity.tfc.%s.flop' % fish, '%s flops' % fish.title().replace('_', ' ')) for fish in (*SIMPLE_FRESHWATER_FISH, 'manatee', 'jellyfish')),
     **dict(('subtitles.entity.tfc.%s.death' % fish, '%s dies' % fish.title().replace('_', ' ')) for fish in (*SIMPLE_FRESHWATER_FISH, 'manatee', 'jellyfish')),
@@ -1510,6 +1511,8 @@ DEFAULT_LANG = {
     'tfc.create_world.rainfall_constant.tooltip': 'The relative constant rainfall of a world.',
     'tfc.create_world.continentalness': 'Continentalness',
     'tfc.create_world.continentalness.tooltip': 'The proportion of the world that is made up of land rather than water',
+    'tfc.create_world.grass_density': 'Grass Density',
+    'tfc.create_world.grass_density.tooltip': 'Multiplier that applies to the amount of short and tall grass placed within a chunk.',
 
     # Entities
     **dict(('entity.tfc.%s' % fish, lang(fish)) for fish in SIMPLE_FRESHWATER_FISH),

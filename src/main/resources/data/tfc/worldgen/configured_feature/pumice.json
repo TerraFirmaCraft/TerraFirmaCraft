@@ -3,15 +3,13 @@
   "type": "minecraft:simple_block",
   "config": {
     "to_place": {
-      "type": "tfc:random_property",
+      "type": "minecraft:simple_state_provider",
       "state": {
-        "Name": "tfc:plant/blood_lily",
+        "Name": "tfc:groundcover/pumice",
         "Properties": {
-          "age": "1",
-          "stage": "1"
+          "fluid": "empty"
         }
-      },
-      "property": "age"
+      }
     }
   }
 }

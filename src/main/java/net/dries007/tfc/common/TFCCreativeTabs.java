@@ -423,6 +423,7 @@ public final class TFCCreativeTabs
         {
             TFCItems.HIDES.get(type).values().forEach(reg -> accept(out, reg));
         }
+        accept(out, TFCItems.TREATED_HIDE);
         out.accept(Items.INK_SAC);
         out.accept(Items.GLOW_INK_SAC);
         accept(out, TFCItems.GLOW_ARROW);
