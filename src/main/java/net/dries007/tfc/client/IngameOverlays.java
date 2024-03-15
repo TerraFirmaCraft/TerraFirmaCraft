@@ -28,6 +28,7 @@ import net.minecraftforge.client.gui.overlay.GuiOverlayManager;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import net.minecraftforge.client.gui.overlay.NamedGuiOverlay;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.TFCTags;
@@ -241,8 +242,7 @@ public enum IngameOverlays
     {
         final PoseStack stack = graphics.pose();
         final Minecraft mc = Minecraft.getInstance();
-        final LocalPlayer localPlayer = mc.player;
-        final Player player = (Player) mc.getCameraEntity();
+        final @Nullable LocalPlayer localPlayer = mc.player;
         final boolean isShowingExperience = TFCConfig.CLIENT.enableExperienceBar.get();
         final boolean isStyleLeftHotbar = (TFCConfig.CLIENT.disabledExperienceBarStyle.get() == DisabledExperienceBarStyle.LEFT_HOTBAR);
         if (localPlayer != null && localPlayer.fishing instanceof TFCFishingHook hook && setup(gui, mc))
@@ -254,7 +254,7 @@ public enum IngameOverlays
             {
                 int barHeight;
                 int uOffset;
-                if (player != null && player.getVehicle() instanceof LivingEntity && TFCConfig.CLIENT.enableHealthBar.get()) // Increase the bar's height if a second health bar is present
+                if (localPlayer.getVehicle() instanceof LivingEntity && TFCConfig.CLIENT.enableHealthBar.get()) // Increase the bar's height if a second health bar is present
                 {
                     barHeight = 42;
                     uOffset = 164;

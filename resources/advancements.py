@@ -82,7 +82,7 @@ def generate(rm: ResourceManager):
     story.advancement('flint_and_steel', icon('minecraft:flint_and_steel'), 'Sea of Flame', 'Craft a Flint and Steel', 'steel_age', inventory_changed('minecraft:flint_and_steel'))
     story.advancement('iron_armor', icon('tfc:metal/chestplate/wrought_iron'), 'Knight in Shining Armor', 'Create a full set of wrought iron armor, a sword, and a shield', 'iron_age', multiple(inventory_changed('tfc:metal/sword/wrought_iron'), inventory_changed('tfc:metal/shield/wrought_iron'), *[inventory_changed('tfc:metal/%s/wrought_iron' % piece) for piece in TFC_ARMOR_SECTIONS]), requirements=[['metal/%s/wrought_iron' % item] for item in ('chestplate', 'helmet', 'greaves', 'boots', 'sword', 'shield')])
     story.advancement('cast_iron', icon('tfc:metal/ingot/cast_iron'), 'I Can\'t Believe it\'s not Wrought!', 'Make a cast iron ingot', 'pit_kiln', inventory_changed('tfc:metal/ingot/cast_iron'))
-    story.advancement('the_future', icon('minecraft:clock'), 'See the Future', 'You\'ve been around a while. Are there computers? Are there cars? Oh, you still farm your own crops? Weird', 'root', generic('tfc:present_day', None), hidden=True)
+    story.advancement('the_future', icon('minecraft:clock'), 'See the Future', 'You\'ve been around a while. Are there computers? Are there cars? Oh, you still farm your own crops? Weird.', 'root', generic('tfc:present_day', None), hidden=True)
     story.advancement('perfectly_forged', icon('tfc:metal/hammer/red_steel'), 'Perfectly Forged', 'Gain the Perfectly Forged bonus on an item', 'metal_anvil', generic('tfc:perfectly_forged', None), frame='challenge')
 
     world = AdvancementCategory(rm, 'world', 'tfc:textures/block/mud/silt.png')

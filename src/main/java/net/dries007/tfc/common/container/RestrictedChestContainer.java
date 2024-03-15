@@ -43,7 +43,6 @@ public class RestrictedChestContainer extends ChestMenu
     {
         super(type, id, inv, container, rows);
         checkContainerSize(container, rows * 9);
-        container.startOpen(inv.player);
 
         allowAddSlot = true;
 
