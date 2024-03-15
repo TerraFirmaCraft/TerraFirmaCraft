@@ -93,7 +93,11 @@ public class IngotPileBlock extends ExtendedBlock implements EntityBlockExtensio
 
             if (level.getBlockEntity(topPos) instanceof IngotPileBlockEntity pile)
             {
-                ItemHandlerHelper.giveItemToPlayer(player, pile.removeIngot());
+                final ItemStack ingot = pile.removeIngot();
+                if (!player.isCreative())
+                {
+                    ItemHandlerHelper.giveItemToPlayer(player, ingot);
+                }
             }
 
             if (topIngots == 1)
@@ -133,12 +137,18 @@ public class IngotPileBlock extends ExtendedBlock implements EntityBlockExtensio
     public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid)
     {
         final boolean canActuallyHarvest = state.canHarvestBlock(level, pos, player);
+
+        // This spawns destruction particles, but does not actually modify the block
+        // Call this before voiding the inventory, so the spawned particles have metals to reference for texture purposes
+        playerWillDestroy(level, pos, state, player);
+
         if (player.isCreative() && canActuallyHarvest && level.getBlockEntity(pos) instanceof IngotPileBlockEntity pile)
         {
-            // void contents
+            // Void contents when broken in creative, right after spawning particles, so the block breaking won't drop contents
             pile.removeAllIngots(ingot -> {});
         }
-        return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
+
+        return level.setBlock(pos, fluid.createLegacyBlock(), level.isClientSide ? 11 : 3);
     }
 
     @Override
