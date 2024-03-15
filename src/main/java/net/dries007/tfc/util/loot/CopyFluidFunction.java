@@ -24,17 +24,11 @@ import org.jetbrains.annotations.Nullable;
 
 public class CopyFluidFunction extends LootItemConditionalFunction
 {
+    /**
+     * Copies the fluid contained in {@code entity} into the {@code stack}. This does not mutate the block entity's content.
+     * @return The {@code stack} but with the fluid contained within the block entity
+     */
     public static ItemStack copyToItem(ItemStack stack, @Nullable BlockEntity entity)
-    {
-        return copy(stack, entity, true);
-    }
-
-    public static ItemStack copyFromItem(ItemStack stack, @Nullable BlockEntity entity)
-    {
-        return copy(stack, entity, false);
-    }
-
-    private static ItemStack copy(ItemStack stack, @Nullable BlockEntity entity, boolean toItem)
     {
         if (entity != null && !stack.isEmpty())
         {
@@ -42,13 +36,27 @@ public class CopyFluidFunction extends LootItemConditionalFunction
             final IFluidHandler blockHandler = Helpers.getCapability(entity, Capabilities.FLUID);
             if (itemHandler != null && blockHandler != null)
             {
-                final IFluidHandler fromHandler = toItem ? blockHandler : itemHandler;
-                final IFluidHandler toHandler = toItem ? itemHandler : blockHandler;
-                toHandler.fill(fromHandler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE);
+                itemHandler.fill(blockHandler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE), IFluidHandler.FluidAction.EXECUTE);
                 return itemHandler.getContainer();
             }
         }
         return stack;
+    }
+
+    /**
+     * Copies the fluid contained in {@code stack} into the {@code entity}. This does not modify the stack, only the block entity.
+     */
+    public static void copyFromItem(ItemStack stack, @Nullable BlockEntity entity)
+    {
+        if (entity != null && !stack.isEmpty())
+        {
+            final IFluidHandlerItem itemHandler = Helpers.getCapability(stack, Capabilities.FLUID_ITEM);
+            final IFluidHandler blockHandler = Helpers.getCapability(entity, Capabilities.FLUID);
+            if (itemHandler != null && blockHandler != null)
+            {
+                blockHandler.fill(itemHandler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE), IFluidHandler.FluidAction.EXECUTE);
+            }
+        }
     }
 
     public CopyFluidFunction(LootItemCondition[] conditions)
