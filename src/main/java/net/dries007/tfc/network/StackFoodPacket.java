@@ -44,12 +44,22 @@ public class StackFoodPacket
     {
         if (player != null)
         {
+            // Only allow stacking food in the inventory - this is the only real way we can ensure that we won't
+            // run into slots that behave weirdly, which can lead to duplication issues or other behavior we can't
+            // easily predict here
             if (!(player.containerMenu instanceof InventoryMenu menu) || index < 0 || index >= menu.slots.size())
             {
                 return;
             }
 
+            // This excludes the inventory crafting output slot - as we won't be able to insert excess / remainder
+            // into that slot, so we can't target it to start. If we target another slot, it won't be included.
             final Slot targetSlot = menu.getSlot(index);
+            if (targetSlot instanceof ResultSlot)
+            {
+                return;
+            }
+
             final ItemStack targetStack = targetSlot.getItem();
             final @Nullable IFood targetCap = FoodCapability.get(targetStack);
 
