@@ -1,0 +1,346 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Дикие животные",
+  "category": "tfc:the_world",
+  "icon": "tfc:medium_raw_hide",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Мир TFC полон животной жизни. Некоторые животные здесь, чтобы помогать, а некоторые чрезвычайно опасны. Этот раздел о диких животных. Для информации о домашнем скоте, животных, которые могут дать вам необходимые предметы, смотрите страницу $(l:mechanics/animal_husbandry)Разведение животных$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Животных можно разделить на несколько разных категорий: $(l:the_world/wild_animals#predators)Хищники$(), $(l:the_world/wild_animals#prey)Жертвы$(), и $(l:the_world/wild_animals#aquatic)Водные$() животные.$(br2)На следующих нескольких страницах будут подробно описаны каждая из этих категорий животных."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "predators",
+      "text": "$(thing)Хищники$() - это животные, которые могут атаковать игрока. Они могут быть $(thing)Ночными$(), охотящимися только ночью, или $(thing)Дневными$(), охотящимися только днем. Хищники могут быть нейтральными или враждебными, в зависимости от того, убили ли они цель недавно. Хищники имеют домашнюю территорию, которую они будут защищать - если вы убежите достаточно далеко, хищник прекратит погоню и вернется домой.",
+      "title": "Хищники"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:polar_bear",
+      "scale": 0.55,
+      "name": "Белый медведь",
+      "text": "Белый медведь появляется только в самых холодных регионах, $(l:the_world/climate#temperature)температура$() максимум 10°C, с $(l:the_world/climate#rainfall)осадками$() не менее 100мм."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:grizzly_bear",
+      "scale": 0.55,
+      "name": "Гризли",
+      "text": "Гризли обитает в лесах умеренного климата, с диапазоном $(l:the_world/climate#temperature)температуры$() от -15 до 15°C и не менее 200мм $(l:the_world/climate#rainfall)осадков$()."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:black_bear",
+      "scale": 0.55,
+      "name": "Черный медведь",
+      "text": "Черный медведь обитает в лесах более теплого, влажного климата, с $(l:the_world/climate#temperature)температурой$() от 5 до 20°C и не менее 250мм $(l:the_world/climate#rainfall)осадков$()."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:cougar",
+      "scale": 0.6,
+      "name": "Пума",
+      "text": "Пума предпочитает умеренный климат, с $(l:the_world/climate#temperature)температурой$() от -10 до 21°C и не менее 150мм $(l:the_world/climate#rainfall)осадков$()."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:panther",
+      "scale": 0.6,
+      "name": "Пантера",
+      "text": "Пантера предпочитает умеренный климат, с $(l:the_world/climate#temperature)температурой$() от -10 до 21°C и не менее 150мм $(l:the_world/climate#rainfall)осадков$()."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:lion",
+      "scale": 0.55,
+      "name": "Лев",
+      "text": "Лев появляется на равнинах со средней $(l:the_world/climate#temperature)температурой$() от 16°C и $(l:the_world/climate#rainfall)осадками$() от 50 до 300мм."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:tiger",
+      "scale": 0.55,
+      "name": "Тигр",
+      "text": "Тигр обитает в лесах со средней $(l:the_world/climate#temperature)температурой$() не менее 13°C и $(l:the_world/climate#rainfall)осадками$() свыше 100мм."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:sabertooth",
+      "scale": 0.6,
+      "name": "Саблезуб",
+      "text": "Саблезуб появляется при любой $(l:the_world/climate#temperature)температуре$() выше 0°C и любых $(l:the_world/climate#rainfall)осадках$() свыше 250мм."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:wolf",
+      "scale": 0.7,
+      "text": "Волк появляется при любой $(l:the_world/climate#temperature)температуре$() ниже 22°C и $(l:the_world/climate#rainfall)осадках$() от 150 до 420мм. Они охотятся стаями. Кормление волка достаточное количество раз приручит его в $(l:mechanics/pets)Собаку$()."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:direwolf",
+      "scale": 0.7,
+      "text": "Дирволф появляется при любой $(l:the_world/climate#temperature)температуре$() ниже точки замерзания и $(l:the_world/climate#rainfall)осадках$() от 150 до 420мм. Они охотятся стаями. Они крупнее обычных волков и не могут быть приручены."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:hyena",
+      "scale": 0.7,
+      "text": "Гиена появляется при любой $(l:the_world/climate#temperature)температуре$() выше 15°C и $(l:the_world/climate#rainfall)осадках$() от 80 до 380мм. Они охотятся стаями. Они не могут быть приручены."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:crocodile",
+      "scale": 0.7,
+      "name": "Крокодил",
+      "text": "Крокодил обитает возле рек, озер и болот при любой $(l:the_world/climate#temperature)температуре$() выше 15°C и при любых $(l:the_world/climate#rainfall)осадках$(). Они ведут ночной образ жизни и наиболее опасны в воде."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:ocelot",
+      "scale": 0.7,
+      "text": "Оцелот нападает на мелких животных. Он появляется при любой $(l:the_world/climate#temperature)температуре$() от 15 до 30°C и $(l:the_world/climate#rainfall)осадках$() от 300 до 500мм, в лесах. Кормление оцелота достаточное количество раз приручит его в $(l:mechanics/pets)Кота$(). Оцелоты могут есть сырую рыбу."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "ramming_prey",
+      "text": "$(thing)Животные-таранщики$() иногда пытаются атаковать ближайших существ, включая игрока. Их атаки мощные, но их можно уклониться. Они будут чаще атаковать, если их атаковать.",
+      "title": "Таранщики"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:boar",
+      "scale": 0.7,
+      "name": "Кабан",
+      "text": "Кабан появляется при $(l:the_world/climate#temperature)температуре$() ниже 25°C и выше -5°C, и $(l:the_world/climate#rainfall)осадках$() от 130 до 400мм."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:moose",
+      "scale": 0.7,
+      "text": "Лось обитает в лесах при $(l:the_world/climate#temperature)температуре$() ниже 10°C и выше -15°C, и $(l:the_world/climate#rainfall)осадках$() от 150 до 300мм."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:wildebeest",
+      "scale": 0.7,
+      "text": "Гну появляется на открытых равнинах при любой $(l:the_world/climate#temperature)температуре$() выше 13°C и $(l:the_world/climate#rainfall)осадках$() от 90 до 380мм."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "prey",
+      "text": "$(thing)Жертвы$() боятся игроков и хищников. Они искусны в бегстве от опасности, но в целом не могут сражаться. Некоторые животные-жертвы любят перекусывать культурами.",
+      "title": "Жертвы"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:rabbit",
+      "scale": 0.7,
+      "name": "Кролик",
+      "text": "Кролик известен тем, что грызет морковь и капусту. Они повсеместно в мире, меняя свой мех в зависимости от климата. Для их появления достаточно всего 15мм $(l:the_world/climate#rainfall)осадков$()."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:fox",
+      "scale": 0.7,
+      "name": "Лиса",
+      "text": "Лиса любит есть ягоды с кустов. Она может быть найдена в лесах при $(l:the_world/climate#temperature)температуре$() ниже 25°C и $(l:the_world/climate#rainfall)осадках$() от 130 до 400мм."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:deer",
+      "scale": 0.7,
+      "text": "Олень обитает в лесах при любой $(l:the_world/climate#temperature)температуре$() ниже 25°C и выше -15°C, и $(l:the_world/climate#rainfall)осадках$() от 130 до 400мм."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:caribou",
+      "scale": 0.6,
+      "name": "Карибу",
+      "text": "Карибу появляется при любой $(l:the_world/climate#temperature)температуре$() ниже -9°C и $(l:the_world/climate#rainfall)осадках$() от 110 до 500мм."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:gazelle",
+      "scale": 0.7,
+      "text": "Газель появляется на открытых равнинах при любой $(l:the_world/climate#temperature)температуре$() выше 12°C и $(l:the_world/climate#rainfall)осадках$() от 90 до 380мм."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:bongo",
+      "scale": 0.9,
+      "name": "Бонго",
+      "text": "Бонго обитает в лесах при любой $(l:the_world/climate#temperature)температуре$() выше 15°C и $(l:the_world/climate#rainfall)осадках$() от 230 до 500мм."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:grouse",
+      "scale": 0.7,
+      "text": "Тетерев появляется при любой $(l:the_world/climate#temperature)температуре$() ниже 13°C и выше -12°C, и $(l:the_world/climate#rainfall)осадках$() от 150 до 400мм."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:pheasant",
+      "scale": 0.7,
+      "text": "Фазан обитает в лесах при любой $(l:the_world/climate#temperature)температуре$() ниже 17°C и выше -5°C, и $(l:the_world/climate#rainfall)осадках$() от 100 до 300мм."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:turkey",
+      "scale": 0.7,
+      "text": "Индейка обитает в лесах при любой $(l:the_world/climate#temperature)температуре$() ниже 17°C и выше 0°C, и $(l:the_world/climate#rainfall)осадках$() от 250 до 450мм."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:peafowl",
+      "scale": 0.8,
+      "name": "Павлин",
+      "text": "Павлин обитает в лесах при любой $(l:the_world/climate#temperature)температуре$() выше 14°C, и $(l:the_world/climate#rainfall)осадках$() от 190 до 500мм."
+    },
+    {
+      "type": "patchouli:empty"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "aquatic",
+      "text": "$(thing)Водные животные$() - это широкая категория, которая охватывает множество различных поведений. Они могут быть $(thing)Береговыми жителями$(), $(thing)Рыбами$(), $(thing)Ракообразными$(), или $(thing)Крупными водными существами$()",
+      "title": "Водные животные"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Береговые животные$() появляются только на морских берегах и проводят часть дня, плавая, а часть - гуляя по пляжу. Они любопытные существа и будут следовать за игроком, но их нельзя приручить."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:penguin",
+      "scale": 0.7,
+      "name": "Пингвин",
+      "text": "Пингвин появляется только на самых холодных пляжах, с $(l:the_world/climate#temperature)температурой$() максимум -14°C и $(l:the_world/climate#rainfall)осадками$() не менее 75мм."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:turtle",
+      "scale": 0.7,
+      "name": "Морская черепаха",
+      "text": "Морская черепаха любит теплую воду. Она появляется при $(l:the_world/climate#temperature)температуре$() не менее 21°C и $(l:the_world/climate#rainfall)осадках$() не менее 250мм."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Рыбы$() - это маленькие существа, плавающие в воде. Большинство из них можно $(l:mechanics/fishing)ловить$(). Некоторые предпочитают океаны, реки или озера.",
+      "title": "Рыбы"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:cod",
+      "scale": 0.7,
+      "name": "Треска",
+      "text": "Треска предпочитает холодные океаны, $(l:the_world/climate#temperature)температура$() максимум 18°C. Их можно ловить."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:pufferfish",
+      "scale": 0.7,
+      "name": "Иглобрюх",
+      "text": "Иглобрюхи живут в любом океане с $(l:the_world/climate#temperature)температурой$() не менее 10°C."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:jellyfish",
+      "scale": 0.7,
+      "name": "Медуза",
+      "text": "Медузы живут в теплых океанах, с $(l:the_world/climate#temperature)температурой$() не менее 18°C."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:tropical_fish",
+      "scale": 0.7,
+      "name": "Тропическая рыба",
+      "text": "Тропические рыбы предпочитают теплые океаны, с $(l:the_world/climate#temperature)температурой$() не менее 18°C."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:salmon",
+      "scale": 0.7,
+      "name": "Лосось",
+      "text": "Лосось обитает в любой реке или озере с $(l:the_world/climate#temperature)температурой$() не менее -5°C."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:bluegill",
+      "scale": 0.7,
+      "name": "Синежаберник",
+      "text": "Синежаберники обитают в любой реке или озере с $(l:the_world/climate#temperature)температурой$() не менее -10°C и не более 26°C."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "shellfish",
+      "text": "$(thing)Ракообразные$() - это маленькие животные, живущие на дне водоемов. Их нельзя ловить, но они дают раковины, которые можно есть или использовать для получения $(l:mechanics/flux)флюса$(). Ракообразные могут быть $(l:mechanics/fishing)приманкой$() для рыб.",
+      "title": "Ракообразные"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:isopod",
+      "scale": 0.7,
+      "name": "Изопод",
+      "text": "Изоподы обитают в глубоких участках океанов с $(l:the_world/climate#temperature)температурой$() максимум 14°C."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:lobster",
+      "scale": 0.7,
+      "name": "Лобстер",
+      "text": "Лобстеры обитают в любом океане с $(l:the_world/climate#temperature)температурой$() максимум 21°C."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:crayfish",
+      "scale": 0.7,
+      "name": "Рак",
+      "text": "Раки похожи на лобстеров, но обитают в реках и озерах. Им нужна $(l:the_world/climate#temperature)температура$() не менее 5°C и $(l:the_world/climate#rainfall)осадки$() не менее 125мм."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:horseshoe_crab",
+      "scale": 0.7,
+      "name": "Мечехвост",
+      "text": "Мечехвосты обитают в океанах умеренного климата, $(l:the_world/climate#temperature)температура$() от 10 до 21°C и с $(l:the_world/climate#rainfall)осадками$() максимум 400мм."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Крупные водные существа$() - это крупные животные, живущие в больших водоемах. Некоторые из них охотятся на рыб. Они дают $(l:mechanics/lamps#tallow)жир$(), который можно использовать в качестве топлива для ламп.",
+      "title": "Крупные водные существа"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:orca",
+      "scale": 0.25,
+      "name": "Косатка",
+      "text": "Косатки живут в глубоких океанах с $(l:the_world/climate#temperature)температурой$() максимум 19°C и $(l:the_world/climate#rainfall)осадками$() не менее 100мм."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:dolphin",
+      "scale": 0.4,
+      "name": "Дельфин",
+      "text": "Дельфины живут в глубоких океанах с $(l:the_world/climate#temperature)температурой$() не менее 10°C и $(l:the_world/climate#rainfall)осадками$() не менее 200мм."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:manatee",
+      "scale": 0.25,
+      "name": "Ламантин",
+      "text": "Ламантины живут в любом теплом озере, с $(l:the_world/climate#temperature)температурой$() не менее 20°C и $(l:the_world/climate#rainfall)осадками$() максимум 300мм."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Кальмар может появляться в любом глубоком океане. Они дают $(thing)Мешки с чернилами$(), и окрашивают в черный цвет любого игрока, который подходит слишком близко. Некоторые говорят, что кальмары в глубоких, неисследованных пещерах обладают странными свойствами.",
+      "title": "Кальмар"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 6
+}

@@ -1,0 +1,42 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Вагонетки",
+  "category": "tfc:mechanics",
+  "icon": "tfc:wood/chest_minecart/kapok",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Вагонетки$() - это средство транспортировки игроков, сущностей и крупных блоков. Блоки, которые обычно $(l:getting_started/size_and_weight#overburdening)перегружают$() игрока, могут быть транспортированы в вагонетках. $(l:mechanics/decay#large_vessels)Большие сосуды$(), $(l:mechanics/barrels)Бочки$(), $(l:mechanics/powderkegs)Пороховые бочки$(), $(l:mechanics/anvils)Наковальни$() и $(l:mechanics/crucible)Тигли$() могут быть добавлены в вагонетки, нажав одновременно $(item)$(k:key.use)$() и $(item)$(k:key.sneak)$(). Использование $(item)$(k:key.sneak)$() с пустой рукой удаляет блок. Рецепты крафта предметов для вагонеток могут быть выполнены либо с $(thing)Железом$(), либо с $(thing)Сталью$(), при этом рецепты на основе стали более продуктивны."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/vanilla/redstone/activator_rail",
+      "recipe2": "tfc:crafting/vanilla/redstone/steel_activator_rail"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/vanilla/redstone/detector_rail",
+      "recipe2": "tfc:crafting/vanilla/redstone/steel_detector_rail"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/vanilla/redstone/minecart",
+      "recipe2": "tfc:crafting/vanilla/redstone/steel_minecart"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/vanilla/redstone/rail",
+      "recipe2": "tfc:crafting/vanilla/redstone/steel_rail"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/vanilla/redstone/powered_rail"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wood/kapok_chest_minecart",
+      "text": "$(thing)Вагонетки с сундуком$() работают так же, как обычные сундуки TFC, в том смысле, что у них только 18 слотов и они не могут содержать очень крупные предметы, такие как бревна."
+    }
+  ],
+  "read_by_default": true
+}

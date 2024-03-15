@@ -1,0 +1,48 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Кострище и гриль",
+  "category": "tfc:mechanics",
+  "icon": "tfc:grill",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Гриль$() - это предмет, который можно добавить к кострищу для более эффективного приготовления пищи. Гриль может готовить сразу пять предметов и также придает этим предметам признак $(thing)Приготовлено на древесине$() при приготовлении пищи, который предоставляет небольшое улучшение срока годности продукта.$(br2)Чтобы создать кострище с грилем, сначала создайте $(l:getting_started/firepit)Кострище$(), затем используйте $(thing)Кованый железный гриль$() на кострище."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:grill"
+        }
+      },
+      "name": "Кострище с грилем",
+      "text": "",
+      "enable_visualize": false
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:anvil/wrought_iron_grill",
+      "text": "Гриль создается путем обработки $(thing)Кованого железного двойного листа$() на $(l:mechanics/anvils)Наковальне$().$(br2)На следующей странице вы можете увидеть интерфейс гриля. Как и кострище, он имеет четыре слота для топлива, которые должны быть добавлены в верхний слот, индикатор температуры и пять слотов для нагрева предметов вместо одного."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/grill.png"
+      ],
+      "text": "Интерфейс гриля.",
+      "border": false
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:wrought_iron_grill": 0
+  }
+}

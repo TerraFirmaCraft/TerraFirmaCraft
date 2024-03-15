@@ -1,0 +1,411 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Стеклянные изделия",
+  "category": "tfc:mechanics",
+  "icon": "minecraft:glass",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Самые простые стеклянные изделия - это $(thing)Стеклянные панели$() и $(thing)Стеклянные блоки$(). Чтобы их создать, вы должны начать с $(l:mechanics/glassworking#blowpipe)Духовой трубки$() с $(thing)Партией стекла$(), а затем выполнить $(thing)Литье$().$(br)$(li)$(bold)Литье на стол$() используется для создания $(thing)Стеклянных панелей$()$(li)$(bold)Литье в бассейн$() используется для создания $(thing)Стеклянных блоков$()"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Стекло также может быть $(thing)окрашено$() перед его заливкой для создания цветного стекла. Цвет зависит от типа партии стекла и любых добавленных порошков.$(br2)Каждый тип $(thing)Партии стекла$() создает стекло разного естественного цвета. $(thing)Силикатные$() партии стекла могут быть окрашены во множество цветов, $(thing)Оливиновое$() и $(thing)Вулканическое$() стекло могут быть окрашены в относительно небольшое количество цветов."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Стеклянные панели$() делаются с помощью $(thing)Литья на стол$(). Стол для литья делается путем размещения до шестнадцати $(thing)Блоков с латунным покрытием$() в непрерывной области.$(br2) 1. Добавьте $(l:mechanics/glassworking)Партию стекла$() в $(thing)Духовую трубку$().$(br) 2. Нагрейте духовую трубку до $(4)$(bold)Слабо красного$().$(br) 3. $()$(item)$(k:key.use)$() $(thing)Духовую трубку$() на верхней части стола.$(br) 4. Наконец $(item)$(k:key.use)$() с $(l:mechanics/glassworking#paddle)Лопаткой$(), чтобы выпрямить стекло.",
+      "title": "Литье на стол"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/glass_panes_1.png",
+        "tfc:textures/gui/book/tutorial/glass_panes_2.png",
+        "tfc:textures/gui/book/tutorial/glass_panes_3.png"
+      ],
+      "text": "После охлаждения стекло можно разбить с помощью $(l:mechanics/glassworking#saw)Алмазной пилы$(), чтобы получить.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Стеклянные блоки$() делаются с помощью $(thing)Литья в бассейн$(). Бассейн делается путем окружения всех сторон воздушного блока, кроме верхней, $(thing)Блоками с латунным покрытием$().$(br2) 1. Добавьте $(l:mechanics/glassworking)Партию стекла$() в $(thing)Духовую трубку$().$(br) 2. Нагрейте духовую трубку до $(4)$(bold)Слабо красного$().$(br) 3. $(item)$(k:key.use)$() $(thing)Духовую трубку$() на верхней части стола.",
+      "title": "Литье в бассейн"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/glass_block_1.png",
+        "tfc:textures/gui/book/tutorial/glass_block_2.png",
+        "tfc:textures/gui/book/tutorial/glass_block_3.png"
+      ],
+      "text": "После охлаждения стекло можно разбить с помощью $(l:mechanics/glassworking#saw)Алмазной пилы$(), чтобы получить.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "coloring",
+      "text": "Стекло имеет естественный цвет на основе типа $(l:mechanics/glassworking)Партии стекла$(), которая была использована. Другие цвета могут быть получены с использованием $(l:mechanics/bowls)Чаши$().$(br2)Для использования, поместите $(l:mechanics/bowls)Чашу$() на землю, затем $(item)$(k:key.use)$() необходимый $(thing)Порошок$(). Перед $(thing)Литьем$(), используйте $(thing)Духовую трубку$() на чаше, чтобы добавить порошок в партию.",
+      "title": "Окрашивание стекла"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(br2)На следующих страницах показаны различные комбинации типов стекла и материалов порошка для создания каждого цвета."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)$(bold)$(7)Белый$(): силикатное или гематитовое стекло + $(thing)сода$()$(li)$(bold)$(0)Черный$(): любое стекло + $(thing)графит$()$(li)$(bold)$(8)Серый$(): любое + $(thing)графит$() + $(thing)сода$()$(li)$(bold)$(7)Светло-Серый$(): любое стекло + $(thing)графит$() + 2x $(thing)сода$()$(li)$(bold)$(5)Пурпурный$(): любое стекло + $(thing)железо$() + $(thing)медь$()$(li)$(bold)$(#964b00)Коричневый$(): любое стекло + $(thing)никель$()$(li)$(bold)$(3)Бирюзовый$(): невулканическое стекло + $(thing)медь$() + $(thing)сапфир$()$(li)$(bold)$(2)Зеленый$(): силикатное или гематитовое стекло + $(thing)железо$()",
+      "title": "Цвета красителей"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)$(bold)$(a)Лайм$(): Силикатное или гематитовое стекло + $(thing)Железо$() + $(thing)Сода$()$(li)$(bold)$(b)Светло-Голубой$(): Силикатное стекло + $(thing)лазурит$()$(li)$(bold)$(1)Синий$(): Силикатное стекло + $(thing)медь$()$(li)$(bold)$(4)Красный$(): Силикатное или гематитовое стекло + $(thing)Олово$()$(li)$(bold)$(6)Желтый$(): Силикатное или гематитовое стекло + $(thing)Серебро$()$(li)$(bold)$(#ef8e38)Оранжевый$(): Силикатное стекло + $(thing)Пирит$()$(li)$(bold)$(5)Маджента$(): Силикатное или гематитовое стекло + $(thing)Рубин$()$(li)$(bold)$(d)Розовый$(): Силикатное стекло + $(thing)Золото$()$(li)$(bold)$(0)Тонированный$(): несиликатное стекло + $(thing)аметист$()"
+    },
+    {
+      "type": "tfc:table_small",
+      "strings": [
+        {
+          "text": ""
+        },
+        {
+          "text": "C"
+        },
+        {
+          "text": "T"
+        },
+        {
+          "fill": "0xff42f2"
+        },
+        {
+          "fill": "0x8af3ff"
+        },
+        {
+          "fill": "0x526cff"
+        },
+        {
+          "fill": "0xe3e3e3"
+        },
+        {
+          "fill": "0xe69407"
+        },
+        {
+          "fill": "0xc738c9"
+        },
+        {
+          "fill": "0xffe81c"
+        },
+        {
+          "fill": "0x48ff1f"
+        },
+        {
+          "fill": "0xe01414"
+        },
+        {
+          "fill": "0x0c9400"
+        },
+        {
+          "fill": "0x188a9e"
+        },
+        {
+          "fill": "0x7d4f00"
+        },
+        {
+          "fill": "0x6e059c"
+        },
+        {
+          "fill": "0x7d7d7d"
+        },
+        {
+          "fill": "0xbdbdbd"
+        },
+        {
+          "fill": "0x000000"
+        },
+        {
+          "text": "Silica"
+        },
+        {
+          "fill": "0x3d42a8"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "text": "Hematitic"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3d42a8"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "text": "Olivine"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0x3d42a8"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "text": "Volcanic"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0x3d42a8"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        }
+      ],
+      "text": "Доступность цветов стекла. 'C' - прозрачный, 'T' - тонированный. Цвета могут быть изготовлены только с определенными партиями стекла.",
+      "title": "Доступность цвета стекла",
+      "legend": [
+        {
+          "text": "Can be Crafted",
+          "color": "0x3eb340"
+        },
+        {
+          "text": "Cannot be Crafted",
+          "color": "0xb33e3e"
+        },
+        {
+          "text": "Default Color",
+          "color": "0x3d42a8"
+        }
+      ],
+      "columns": 18,
+      "first_column_width": 35,
+      "column_width": 10,
+      "row_height": 10,
+      "left_buffer": 5,
+      "top_buffer": 15,
+      "draw_background": true
+    },
+    {
+      "type": "patchouli:empty",
+      "draw_filler": false
+    },
+    {
+      "type": "tfc:glassworking_recipe",
+      "anchor": "lamp_glass",
+      "recipe": "tfc:glassworking/lamp_glass",
+      "text": "$(thing)Стекло для ламп$() является необходимым компонентом для создания $(l:mechanics/lamps)Ламп$()."
+    },
+    {
+      "type": "tfc:glassworking_recipe",
+      "anchor": "jar",
+      "recipe": "tfc:glassworking/jar",
+      "text": "$(l:mechanics/jarring)Банки$() также делаются из дутого стекла, но только из силикатного или гематитового стекла."
+    },
+    {
+      "type": "tfc:glassworking_recipe",
+      "anchor": "glass_bottle",
+      "recipe": "tfc:glassworking/silica_bottle",
+      "text": "$(thing)Стеклянные бутылки$() также могут быть сделаны. Качество стеклянной бутылки зависит от типа используемого стекла."
+    },
+    {
+      "type": "tfc:glassworking_recipe",
+      "recipe": "tfc:glassworking/lens",
+      "text": "$(thing)Линза$() используется для создания подзорной трубы, компасов и датчиков дневного света."
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:tfc:glass_batches": 1,
+    "tag:forge:glass_panes": 2,
+    "tag:forge:glass": 4
+  }
+}

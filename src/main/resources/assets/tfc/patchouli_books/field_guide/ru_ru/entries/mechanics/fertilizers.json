@@ -1,0 +1,50 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Удобрения",
+  "category": "tfc:mechanics",
+  "icon": "tfc:powder/sylvite",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Удобрения используются для добавления питательных веществ к $(l:mechanics/crops)культурам$(). $(item)$(k:key.use)$() с удобрением в руке на некотором $(thing)пашне$() или $(thing)культуре$(), чтобы добавить питательные вещества. Должны появиться частицы, указывающие на то, что удобрение было добавлено.",
+      "title": "Удобрение"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:compost",
+      "link_recipes": false,
+      "text": "Компост является продуктом $(l:mechanics/composter)Компостера$(). $(br)$(li)$(b)Азот: 40$()$(li)$(6)Фосфор: 20$()$(li)$(d)Калий: 40$()"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "minecraft:bone_meal",
+      "link_recipes": false,
+      "text": "Костная мука состоит из измельченных костей. $(br)$(li)$(6)Фосфор: 10$()"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:powder/saltpeter",
+      "link_recipes": false,
+      "text": "Селитра получается из её руды. $(br)$(li)$(b)Азот: 10$()$(li)$(d)Калий: 40$()"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:groundcover/guano",
+      "link_recipes": false,
+      "text": "Гуано находят глубоко под землей и на галечных берегах. $(br)$(li)$(b)Азот: 80$()$(li)$(6)Фосфор: 50$()$(li)$(d)Калий: 10$()"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:powder/wood_ash",
+      "link_recipes": false,
+      "text": "Древесная зола производится путем разрушения костров. Бросание предмета факела в воду также имеет шанс произвести золу. $(br)$(li)$(6)Фосфор: 10$()$(li)$(d)Калий: 30$()"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:powder/sylvite",
+      "link_recipes": false,
+      "text": "Сильвит изготавливается из его руды. $(br)$(li)$(d)Калий: 50$()"
+    }
+  ],
+  "read_by_default": true
+}

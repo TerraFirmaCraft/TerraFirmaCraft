@@ -1,0 +1,82 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Источники света",
+  "category": "tfc:mechanics",
+  "icon": "tfc:candle",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "В TFC существует множество способов получения света. Один из способов — использование $(l:mechanics/lamps)Ламп$(), но они требуют топлива. Некоторые источники света требуют только искры."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(br) 1. $(l:mechanics/lighting#torches)Факелы$()$(br) 2. $(l:mechanics/lighting#candles)Свечи$()$(br) 3. $(l:mechanics/lighting#jack_o_lanterns)Тыквы-фонари$()",
+      "title": "Содержание"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "anchor": "torches",
+      "recipe": "tfc:heating/torch_from_stick",
+      "text": "Факелы можно изготовить, нагревая палки или пучки палок в $(l:getting_started/firepit)Кострище$() или другом нагревательном устройстве."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Факелы горят 3 дня, после чего превращаются в $(thing)Погасшие факелы$(), которые можно зажечь снова, нажав на них факелом или используя инструмент для разжигания огня. На факелы также можно нажимать палками, чтобы зажечь их. Факелы, упавшие в воду, превращаются в $(thing)Древесную золу$() и $(thing)Палки$()."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "anchor": "candles",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:candle[candles=3,lit=true]"
+        }
+      },
+      "name": "Свечи",
+      "text": "Свечи горят 11 дней и их также можно зажечь снова.",
+      "enable_visualize": false
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "recipe": "tfc:barrel/candle",
+      "text": "Свечи можно изготовить, запечатав $(thing)Верёвку$() в $(l:mechanics/barrels)Бочке$() с $(l:mechanics/lamps#tallow)Салом$()."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "anchor": "jack_o_lanterns",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:jack_o_lantern"
+        }
+      },
+      "name": "Тыквы-фонари",
+      "text": "Тыквы-фонари — это освещённая версия $(thing)Вырезанных тыкв$(), и горят они 4,5 дня, прежде чем снова превратиться в вырезанные тыквы.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Вырезанные тыквы$() делаются нажатием $(item)$(k:key.use)$() с $(thing)Ножницами$() или $(thing)Ножом$() на свежую $(l:mechanics/crops#pumpkin)Тыкву$(). Вырезанные тыквы не портятся и их можно носить на голове."
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:candle": 4,
+    "tag:tfc:colored_candles": 4,
+    "tfc:jack_o_lantern": 6
+  }
+}

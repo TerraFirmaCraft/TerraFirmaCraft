@@ -1,0 +1,55 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Хлеб",
+  "category": "tfc:mechanics",
+  "icon": "tfc:textures/item/food/barley_bread.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Хлеб - это обработанная форма различных зерновых культур, таких как $(l:mechanics/crops#barley)Ячмень$(). Сбор зерновой культуры дает сырой, необработанный зерновой предмет, который сам по себе не пригоден для использования. Его необходимо переработать в $(thing)Хлеб$(), который затем можно есть или использовать в $(l:mechanics/sandwiches)Бутербродах$()."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/barley_cutting",
+      "text": "Сначала, срежьте солому с еды с помощью $(thing)Ножа$()."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:food/rye_grain",
+      "link_recipes": false,
+      "text": "Зерна - это самая долговечная стадия процесса, они портятся гораздо медленнее, чем большинство продуктов. Само по себе свежее зерно хранится 10 месяцев и 7 дней. В маленьком сосуде оно хранится 1 год, 9 месяцев и 7 дней."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/oat_grain",
+      "text": "Затем зерно должно быть перемолото в $(l:mechanics/quern)жернове$(), чтобы получить муку."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/dough/barley_dough_1",
+      "text": "Тесто готовится путем добавления ведра $(thing)Свежей воды$() к муке."
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/barley_dough",
+      "text": "Затем тесто можно $(l:mechanics/heating)нагреть$(), чтобы сделать хлеб. На этом этапе его также можно использовать в $(l:mechanics/sandwiches)Бутербродах$()."
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:tfc:sandwich_bread": 0,
+    "tag:tfc:foods/dough": 0,
+    "tfc:food/barley_grain": 0,
+    "tfc:food/maize_grain": 0,
+    "tfc:food/oat_grain": 0,
+    "tfc:food/rice_grain": 0,
+    "tfc:food/rye_grain": 0,
+    "tfc:food/wheat_grain": 0,
+    "tfc:food/barley_flour": 0,
+    "tfc:food/maize_flour": 0,
+    "tfc:food/oat_flour": 0,
+    "tfc:food/rice_flour": 0,
+    "tfc:food/rye_flour": 0,
+    "tfc:food/wheat_flour": 0
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Производство бумаги",
+  "category": "tfc:mechanics",
+  "icon": "tfc:unrefined_paper",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Бумага$() делается либо из обработанных стеблей культуры $(l:mechanics/crops#papyrus)Папируса$(), либо из $(l:mechanics/papermaking#parchment)Животных шкур$(). Бумага полезна для письменных материалов, таких как $(thing)Книги$() и $(thing)Карты$()."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/papyrus_strips",
+      "text": "Сначала папирус нужно нарезать полосками с помощью $(thing)Ножа$()"
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "recipe": "tfc:barrel/soaked_papyrus_strip",
+      "text": "Затем полоски папируса замачиваются в $(l:mechanics/barrels)Бочке$() с $(thing)Водой$()."
+    },
+    {
+      "type": "tfc:loom_recipe",
+      "recipe": "tfc:loom/unrefined_paper",
+      "text": "Затем замоченные полоски папируса сплетаются вместе на ткацком станке, чтобы сделать $(thing)Неочищенную бумагу$(). Наконец, ее нужно положить на бревно и $(l:mechanics/leather_making#scraping)Очистить$(), чтобы получить $(thing)Бумагу$()."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/vanilla/map",
+      "recipe2": "tfc:crafting/vanilla/name_tag"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "minecraft:writable_book",
+      "recipe2": "minecraft:book"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wood/pine_lectern",
+      "recipe2": "tfc:crafting/wood/kapok_bookshelf"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Перелистните на следующую страницу для информации о производстве бумаги методом пергамента."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "parchment",
+      "text": "$(thing)Пергаментная бумага$() начинается с очищенной шкуры. Ознакомьтесь с главой о $(l:mechanics/leather_making)выделке кожи$(), чтобы узнать, как ее сделать. Для пергамента требуется обработка несколькими различными предметами. Сначала нужна $(thing)пемза$(). Пемзу можно найти на земле рядом с $(l:the_world/geology)вулканами$(), или получить $(l:mechanics/sluices)промывкой в желобе$() или $(l:mechanics/panning)промывкой в лотке$() рудных залежах с андезитом, риолитом или дацитом.",
+      "title": "Пергамент"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:groundcover/pumice"
+        }
+      },
+      "name": "Пемза",
+      "text": "Кусок пемзы, положенный на землю.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/large_treated_hide",
+      "text": "Изготовление пемзы, молотка и очищенной шкуры дает куски $(thing)Обработанной шкуры$()."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/parchment",
+      "text": "Обработанная шкура, $(l:mechanics/glassworking#lime)известковый порошок$(), мука и свежее яйцо завершат процесс обработки и дадут готовую бумагу."
+    }
+  ],
+  "read_by_default": true
+}

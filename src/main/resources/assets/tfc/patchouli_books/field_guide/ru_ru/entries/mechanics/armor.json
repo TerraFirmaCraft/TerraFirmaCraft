@@ -1,0 +1,42 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Броня",
+  "category": "tfc:mechanics",
+  "icon": "tfc:metal/chestplate/copper",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Броня$() обеспечивает защиту от атак хищников и монстров. Качество брони зависит от уровня $(thing)Металла$(), с $(l:mechanics/leather_making)Кожей$() в качестве самой слабой и $(l:mechanics/steel)Цветными сталями$() в качестве самой сильной."
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:leather_knapping/chestplate",
+      "text": "Кожаная броня $(thing)Выкраивается$() из $(l:mechanics/leather_making)Кожи$(). Она не долговечна, но обеспечивает неплохую защиту, если у вас полный комплект."
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:anvil/copper_unfinished_helmet",
+      "text": "$(thing)Металлическая броня$() требует нескольких этапов обработки на $(l:mechanics/anvils)Наковальне$(). Сначала должен быть выкован $(thing)незаконченный$() элемент брони. Для этого требуется $(thing)Двойной лист$() металла, за исключением ботинок, для которых требуется один лист."
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:welding/bismuth_bronze_greaves",
+      "text": "Затем $(thing)Лист$() должен быть $(l:mechanics/anvils#welding)сварен$() с элементом брони для его завершения. Для завершения нагрудников требуется $(thing)Двойной лист$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Броня одного и того же уровня, но из разных металлов, может немного отличаться. Эти отличия выражаются в долговечности, а также в $(l:mechanics/damage_types)Сопротивлениях урону$(). По возрастающей долговечности бронзы ранжируются как $(thing)висмутовая бронза$(), обычная $(thing)Бронза$(), а затем $(thing)Черная бронза$(). Для цветных сталей $(thing)Красная сталь$() дольше служит, чем $(thing)Синяя сталь$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Стальная броня также предоставляет преимущества, такие как $(thing)Прочность$() и $(thing)Сопротивление отбрасыванию$(). Обычная $(thing)Сталь$() имеет 1 прочность, $(thing)Черная сталь$() имеет 2 прочности, а $(thing)Цветные стали$() имеют 3 пр"
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "minecraft:leather_helmet": 1,
+    "minecraft:leather_chestplate": 1,
+    "minecraft:leather_leggings": 1,
+    "minecraft:leather_boots": 1
+  }
+}

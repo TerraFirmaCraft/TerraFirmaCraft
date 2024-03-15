@@ -1,0 +1,76 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Примитивные сплавы",
+  "category": "tfc:getting_started",
+  "icon": "tfc:ceramic/ingot_mold{tank:{\"Amount\":100,\"FluidName\":\"tfc:metal/bronze\"}}",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Сплавы$() - это метод смешивания двух или более металлов вместе, чтобы создать новый, более прочный металл. На ранних этапах игры, пока медь является полезным металлом для создания инструментов, следующий уровень металла - это один из трех типов $(thing)Бронзы$(). Сплав состоит из компонентов $(thing)металлов$(), каждый из которых должен удовлетворять определенному процентному соотношению от общего целого."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Один из способов создания сплавов на ранних этапах игры - использование $(thing)Маленького сосуда$(). Процесс очень похож на $(l:getting_started/finding_ores#casting)Литьё$(). Однако, вместо использования только одного металла, поместите достаточное количество кусочков руды в сосуд в правильном соотношении, чтобы сформировать известную смесь сплава."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Например, чтобы создать 1000 мБ $(thing)Бронзы$() (показано справа), вам потребуется от 880 до 920 мБ $(thing)меди$(), и от 80 до 120 мБ $(thing)Олова$().$(br2)На следующих трех страницах показаны рецепты трех видов бронзы. Каждый тип бронзы может использоваться для изготовления инструментов, $(l:mechanics/armor)Доспехов$(), и других металлических предметов. Они немного отличаются, поэтому полученные инструменты будут иметь разную прочность, эффективность и урон."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/ingot/bronze",
+      "title": "Бронза",
+      "link_recipes": false,
+      "text": "$(br)$(bold)Требования: $()$(br)$(li)88 - 92 %: $(thing)медь$()$(li)8 - 12 %: $(thing)Олово$()$(br2)"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/ingot/bismuth_bronze",
+      "title": "Висмутовая бронза",
+      "link_recipes": false,
+      "text": "$(br)$(bold)Требования: $()$(br)$(li)20 - 30 % : $(thing)Цинк$()$(li)50 - 65 %: $(thing)медь$()$(li)10 - 20 % : $(thing)Висмут$()$(br2)"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/ingot/black_bronze",
+      "title": "Чёрная бронза",
+      "link_recipes": false,
+      "text": "$(br)$(bold)Требования: $()$(br)$(li)50 - 70 %: $(thing)медь$()$(li)10 - 25 %: $(thing)Серебро$()$(li)10 - 25 %: $(thing)Золото$()$(br2)"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Другие сплавы не подходят для создания инструментов. Это $(thing)Латунь$(), $(thing)Розовое золото$() и $(thing)Стерлинговое серебро$().$(br2)$(thing)Латунь$() - полезный сплав для всевозможных механизмов, включая $(l:mechanics/mechanical_power)Механическую энергию$().$(br2)$(thing)Розовое золото$() и $(thing)Стерлинговое серебро$() используются для изготовления $(l:mechanics/steel#red_steel)Красной стали$() и $(l:mechanics/steel#blue_steel)Синей стали$().",
+      "title": "Полезные сплавы"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "brass",
+      "item": "tfc:metal/ingot/brass",
+      "title": "Латунь",
+      "link_recipes": false,
+      "text": "$(br)$(bold)Требования:$()$(br)$(li)88 - 92 %: $(thing)медь$()$(li)8 - 12 %: $(thing)Цинк$()$(br2)"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/ingot/rose_gold",
+      "title": "Розовое золото",
+      "link_recipes": false,
+      "text": "$(br)$(bold)Требования: $()$(br)$(li)15 - 30 %: $(thing)медь$()$(li)70 - 85 %: $(thing)Золото$()$(br2)"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/ingot/sterling_silver",
+      "title": "Стерлинговое серебро",
+      "link_recipes": false,
+      "text": "$(br)$(bold)Требования: $()$(br)$(li)20 - 40 %: $(thing)медь$()$(li)60 - 80 %: $(thing)Серебро$()$(br2)"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 5,
+  "extra_recipe_mappings": {
+    "tfc:metal/ingot/bronze": 3,
+    "tfc:metal/ingot/bismuth_bronze": 4,
+    "tfc:metal/ingot/black_bronze": 5,
+    "tfc:metal/ingot/brass": 7
+  }
+}

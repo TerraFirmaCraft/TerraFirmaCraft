@@ -1,0 +1,88 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Лампы",
+  "category": "tfc:mechanics",
+  "icon": "tfc:metal/lamp/bismuth_bronze",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Лампы - это долговременный источник света. Они горят на жидком топливе. Лампы сохраняют своё содержимое топлива при разборке. Используя ведро, $(item)$(k:key.use)$() на лампе, чтобы добавить в неё топливо. Затем её можно зажечь с помощью $(thing)кресала$() или чего-либо, способного поджигать. $(thing)Оливковое масло$() и $(thing)Сало$() являются топливом для ламп. Выстрел из лука по зажжённой лампе может вызвать пожар."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:metal/chain/copper[axis=y]",
+          "Y": "tfc:metal/lamp/copper[hanging=true,lit=true]"
+        }
+      },
+      "name": "Лампы",
+      "text": "Зажжённая лампа, висящая на цепи.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/metal/lamp/bronze",
+      "text": "Лампы куются на $(l:mechanics/anvils)Наковальне$() и изготавливаются с $(l:mechanics/glassworking_applications#lamp_glass)Стеклом для лампы$(), чтобы быть завершёнными."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "anchor": "olives",
+      "recipe": "tfc:quern/olive",
+      "text": "Одним из видов топлива для ламп является $(thing)Оливковое масло$(). Первым шагом в его производстве является изготовление оливковой пасты."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/jute_net",
+      "text": "Вам также понадобится сеть из джута."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Вскипятите $(thing)Оливковую пасту$() с $(thing)Водой$() в $(l:mechanics/pot)Котле$(), чтобы сделать $(thing)Воду с оливковым маслом$(). Запечатайте это в $(l:mechanics/barrels)Бочке$() с вашей $(thing)Сетью из джута$(), чтобы произвести $(thing)Оливковое масло$(). Оливковое масло горит 8 игровых часов на каждую единицу жидкости."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "tallow",
+      "text": "Другим видом топлива для ламп является $(thing)Сало$(). Чтобы сделать его, приготовьте 5 $(thing)Жира$() в $(l:mechanics/pot)Котле$() с водой. Сало горит менее 2 игровых часов на единицу. Его можно использовать для изготовления $(l:mechanics/lighting#сandles)Свечей$()"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:metal/lamp/blue_steel[lit=true]"
+        }
+      },
+      "name": "Лампы на лаве",
+      "text": "Лава будет гореть вечно, но может содержаться только в лампе из $(l:mechanics/steel#blue_steel)Синей стали$().",
+      "enable_visualize": false
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:anvil/black_steel_chain",
+      "text": "$(thing)Цепи$() - отличный способ повесить ваши лампы, и их можно ковать на $(l:mechanics/anvils)Наковальне$()."
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:tfc:lamps": 1
+  }
+}

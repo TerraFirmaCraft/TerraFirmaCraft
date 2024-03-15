@@ -1,0 +1,27 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Салаты",
+  "category": "tfc:mechanics",
+  "icon": "tfc:textures/item/food/protein_salad.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Салаты$() - это блюдо, приготовленное в $(thing)Чаше$() из до пяти $(thing)фруктов$(), $(thing)Овощей$() или $(thing)Приготовленного мяса$().$(br2)Салаты - одно из самых простых блюд для приготовления, требующее только $(l:mechanics/bowls)Чашу$(). Сначала держите $(thing)Чашу$() и нажмите $(item)$(k:key.use)$(), удерживая $(item)$(k:key.sneak)$(). Это откроет экран салата."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:salads",
+      "title": "",
+      "link_recipes": false,
+      "text": "В верхние слоты можно добавить до пяти ингредиентов. $(thing)Чаши$() можно добавить в нижний левый слот. Когда вы закончите, салат можно взять из нижнего правого слота."
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:food/fruit_salad": 0,
+    "tfc:food/dairy_salad": 0,
+    "tfc:food/vegetables_salad": 0,
+    "tfc:food/protein_salad": 0,
+    "tfc:food/grain_salad": 0
+  }
+}

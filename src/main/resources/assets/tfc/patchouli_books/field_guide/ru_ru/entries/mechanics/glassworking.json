@@ -1,0 +1,80 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Стеклоделие",
+  "category": "tfc:mechanics",
+  "icon": "tfc:silica_glass_bottle",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Стеклоделие - это процесс превращения песка в стекло. Для начала вам нужно создать $(thing)Партию стекла$(), существует четыре типа: $(br)$(br) 1. $(thing)Кремнезем$(), из белого песка.$(br) 2. $(thing)Гематитовый$(), из желтого, красного или розового песка.$(br) 3. $(thing)Оливиновый$(), из зеленого или коричневого песка.$(br) 4. $(thing)Вулканический$(), из черного песка."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/silica_glass_batch",
+      "text": "Партии стекла затем можно изготовить, используя один из вышеупомянутых цветов песка, плюс $(l:mechanics/glassworking#lime)Известь$() и тип $(l:mechanics/glassworking#potash)Поташа$()."
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "anchor": "lime",
+      "recipe": "tfc:heating/lime",
+      "text": "$(thing)Известь$() - один из ингредиентов, необходимых для изготовления партий стекла. Это порошок, получаемый $(l:mechanics/heating)нагреванием$() $(l:mechanics/flux)флюса$()."
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "anchor": "potash",
+      "recipe": "tfc:heating/soda_ash_from_seaweed",
+      "text": "Также требуется тип $(thing)Поташа$() или эквивалент для партий стекла. Можно использовать $(thing)Соду$(), которая является порошком, полученным путем нагревания $(thing)Высушенных водорослей$() или $(thing)Ламинарии$(). Также можно использовать $(l:the_world/ores_and_minerals#saltpeter)селитру$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Стеклоделие выполняется, начиная с партии стекла, а затем завершая ряд этапов. Эти этапы могут требовать специфических инструментов: $(br)$(li)$(l:mechanics/glassworking#blowpipe)Духовая трубка$(), для $(thing)Дутья$() и $(thing)Растягивания$()$(li)$(l:mechanics/glassworking#paddle)Лопатка$(), для $(thing)Выравнивания$()$(li)$(l:mechanics/glassworking#jacks)Щипцы$(), для $(thing)Защемления$()$(li)$(l:mechanics/glassworking#saw)Пила для драгоценных камней$(), для $(thing)Пиления$()",
+      "title": "Инструменты торговли"
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "anchor": "blowpipe",
+      "recipe": "tfc:clay_knapping/blowpipe",
+      "text": "Самым важным инструментом является $(thing)Духовая трубка$(). Ее можно $(thing)высечь$() из глины, а затем обжечь в $(thing)Керамическую духовую трубку$()."
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:anvil/blowpipe",
+      "text": "Керамические духовые трубки хрупкие и могут сломаться при использовании. Более прочную духовую трубку можно $(l:mechanics/anvils#working)выковать$() из $(thing)Латунной стержня$() на наковальне."
+    },
+    {
+      "type": "patchouli:crafting",
+      "anchor": "paddle",
+      "recipe": "tfc:crafting/paddle",
+      "text": "Операцию $(thing)Выравнивания$() можно выполнить с помощью $(thing)Лопатки$(), которая изготавливается из дерева."
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "anchor": "jacks",
+      "recipe": "tfc:welding/jacks",
+      "text": "Операцию $(thing)защемления$() можно выполнить с помощью $(thing)щипцов$(), сделанных путем сварки двух латунных стержней вместе."
+    },
+    {
+      "type": "patchouli:crafting",
+      "anchor": "saw",
+      "recipe": "tfc:crafting/gem_saw",
+      "text": "Операцию $(thing)Пиления$() можно выполнить с помощью $(thing)Пилы для драгоценных камней$(). Пила для драгоценных камней также используется для разбивания $(thing)Стеклянных блоков$() и $(thing)Стеклянных панелей$() и их получения."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Сначала, стекло на духовой трубке должно быть нагрето до $(4)$(bold)Слабо красного$(). Затем, держите духовую трубку и удерживайте $(item)$(k:key.use)$(), чтобы выполнить каждый шаг$().$(br2)$(bold)Дуть$()$(br)Используйте $(thing)Духовую трубку$(), стоя прямо.$(br2)$(bold)Растягивать$()$(br)Используйте $(thing)Духовую трубку$(), смотря прямо вниз.",
+      "title": "Как сделать стекло"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Выпрямить$()$(br)Используйте $(thing)Духовую трубку$(), держа $(l:mechanics/glassworking#paddle)Лопатку$() в свободной руке.$(br2)$(bold)Зажать$()$(br)Используйте $(thing)Духовую трубку$(), держа $(l:mechanics/glassworking#jacks)Щипцы$() в свободной руке.$(br2)$(bold)Пилить$()$(br)Используйте $(thing)Духовую трубку$(), держа $(l:mechanics/glassworking#saw)Алмазную пилу$() в свободной руке.$(br2)$(bold)Катать$()$(br)Используйте $(thing)Духовую трубку$() с $(l:mechanics/weaving#wool_cloth)Шерстяной тканью$() в свободной руке."
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:powder/lime": 2,
+    "tfc:powder/soda_ash": 3,
+    "tfc:paddle": 7,
+    "tfc:jacks": 8,
+    "tfc:gem_saw": 9
+  }
+}

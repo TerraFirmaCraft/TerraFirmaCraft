@@ -1,0 +1,240 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Опоры и обвалы",
+  "category": "tfc:mechanics",
+  "icon": "tfc:wood/support/oak",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "В TerraFirmaCraft сырая порода нестабильна и подвержена $(thing)обвалам$(). Многие блоки породы, включая $(thing)сырую породу$(), $(thing)руды$(), $(thing)гладкий камень$() и $(thing)шипы$(), могут обрушиться на вашу голову при определенных обстоятельствах.$(br2)$(thing)Опоры$() могут использоваться для предотвращения обрушений.",
+      "title": "Опоры"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Обвалы могут произойти, когда игрок $(thing)добывает любую сырую породу$(), которая находится рядом со $(thing)неукрепленной сырой породой$(). Однако, как только обвал начался, даже ранее $(thing)укрепленная$() порода может начать обрушиваться.$(br2)Порода на потолке пещер $(thing)поддерживается естественным образом$(). Любая сырая порода с твердым блоком под ней также $(thing)укреплена$(). В качестве альтернативы, $(thing)опоры$() могут поддерживать широкую область сразу."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Когда обрушивается руда $(l:the_world/ores_and_minerals)Руда$() (руда, которая может быть бедной, обычной или богатой), ее качество ухудшается. Богатая руда становится обычной, обычная становится бедной, а бедная превращается в булыжник. Минеральные руды сразу превращаются в булыжник."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Грязь, трава, глина, гравий, булыжник и песок также подвержены гравитации. Однако, в отличие от блоков с гравитацией в ванильной версии, эти блоки падают по склонам и не могут быть уложены выше одного блока без поддерживающих блоков вокруг. $(l:mechanics/sluices)Рудные месторождения$() также могут обрушиваться, но не ухудшают свое качество."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wood/oak_support",
+      "title": "Опоры",
+      "text": "Чтобы начать, $(thing)опоры$() нужно скрафтить с помощью $(thing)пилы$() и любого типа $(thing)бревен$().$(br2)Размещение $(thing)опоры$() поверх блока устанавливает колонну высотой до трех блоков. Под ними должен быть твердый блок, чтобы они оставались стоять."
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "$(thing)Горизонтальные$() балки можно разместить между двумя $(thing)Вертикальными$() балками, которые находятся в пределах пяти блоков, как показано на диаграмме выше.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "   ",
+              "CRD",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ],
+            [
+              "   ",
+              "   ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "R": "air",
+            "C": "air",
+            "D": "air",
+            "V": "air",
+            "W": "air",
+            "0": "tfc:rock/raw/andesite",
+            "G": "tfc:rock/raw/andesite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "CRD",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ],
+            [
+              "   ",
+              "   ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "R": "air",
+            "C": "tfc:wood/vertical_support/oak",
+            "D": "air",
+            "V": "tfc:wood/vertical_support/oak",
+            "W": "air",
+            "0": "tfc:rock/raw/andesite",
+            "G": "tfc:rock/raw/andesite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "CRD",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ],
+            [
+              "   ",
+              "   ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "R": "air",
+            "C": "tfc:wood/vertical_support/oak",
+            "D": "tfc:wood/vertical_support/oak",
+            "V": "tfc:wood/vertical_support/oak",
+            "W": "tfc:wood/vertical_support/oak",
+            "0": "tfc:rock/raw/andesite",
+            "G": "tfc:rock/raw/andesite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "CRD",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ],
+            [
+              "   ",
+              "   ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "R": "tfc:wood/horizontal_support/oak[north=true,south=true]",
+            "C": "tfc:wood/vertical_support/oak[south=true]",
+            "D": "tfc:wood/vertical_support/oak[north=true]",
+            "V": "tfc:wood/vertical_support/oak",
+            "W": "tfc:wood/vertical_support/oak",
+            "0": "tfc:rock/raw/andesite",
+            "G": "tfc:rock/raw/andesite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "CRD",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "   ",
+              "V W",
+              "   "
+            ],
+            [
+              "GGG",
+              "G0G",
+              "GGG"
+            ],
+            [
+              "   ",
+              "   ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "R": "tfc:wood/horizontal_support/oak[north=true,south=true]",
+            "C": "tfc:wood/vertical_support/oak[south=true]",
+            "D": "tfc:wood/vertical_support/oak[north=true]",
+            "V": "tfc:wood/vertical_support/oak",
+            "W": "tfc:wood/vertical_support/oak",
+            "0": "tfc:rock/raw/andesite",
+            "G": "tfc:rock/raw/andesite"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Только $(thing)горизонтальные опоры$() заставляют близлежащие блоки быть $(thing)укрепленными$(). Любой блок в пределах области $(bold)9 x 5 x 9$(), центрированной на горизонтальной опоре, считается $(thing)укрепленным$().$(br2)Помимо поддержки от опор, порода может поддерживаться просто за счет наличия твердого блока под ней, например, больше породы. Однако важно отметить, что $(thing)нетвердые блоки$(), такие как $(thing)ступени$() и $(thing)плиты$(), а также $(thing)гладкий камень$(), $(bold)не$() считаются поддерживающими."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Наконец, важно знать, что $(l:mechanics/chisel)работа долотом$() имеет потенциал вызвать обрушения так же легко, как и добыча, когда это делается на любой $(thing)сырой породе$(), которая может вызвать близлежащее обрушение.$(br2)$(br2)Помните, ребята: практикуйте безопасную добычу!",
+      "title": "Работа долотом"
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:tfc:support_beams": 0
+  }
+}
