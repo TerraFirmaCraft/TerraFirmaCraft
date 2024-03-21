@@ -815,7 +815,7 @@ def generate(rm: ResourceManager):
         alloy_recipe(rm, alloy_name, alloy_name, *alloy_components)
 
     # Bloomery Recipes
-    bloomery_recipe(rm, 'raw_iron_bloom', 'tfc:raw_iron_bloom', '100 tfc:metal/cast_iron', 'minecraft:charcoal', 15000)
+    bloomery_recipe(rm, 'raw_iron_bloom', 'tfc:raw_iron_bloom', '100 tfc:metal/cast_iron', '2 minecraft:charcoal', 15000)
 
     # Blast Furnace Recipes
     blast_furnace_recipe(rm, 'pig_iron', '1 tfc:metal/cast_iron', '1 tfc:metal/pig_iron', '#tfc:flux')
@@ -1289,7 +1289,7 @@ def bloomery_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, r
     rm.recipe(('bloomery', name_parts), 'tfc:bloomery', {
         'result': item_stack_provider(result),
         'fluid': fluid_stack_ingredient(metal),
-        'catalyst': utils.ingredient(catalyst),
+        'catalyst': item_stack_ingredient(catalyst),
         'duration': time
     })
 
