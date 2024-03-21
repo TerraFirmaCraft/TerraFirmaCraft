@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.util.rotation;
 
-public enum NetworkAddAction
+enum NetworkAddAction
 {
     SUCCESS,
     FAIL_CONNECTED_TO_OTHER_NETWORK,

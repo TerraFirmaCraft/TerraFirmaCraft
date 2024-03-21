@@ -420,7 +420,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
         final BiomeManager customBiomeManager = biomeManager.withDifferentSource((x, y, z) -> customBiomeSource.getBiome(x, z));
         final PositionalRandomFactory fork = new XoroshiroRandomSource(seed).forkPositional();
-        final WorldgenRandom random = new WorldgenRandom(new LegacyRandomSource(RandomSupport.generateUniqueSeed()));
         final ChunkPos chunkPos = chunk.getPos();
 
         final ChunkNoiseSamplingSettings settings = createNoiseSamplingSettingsForChunk(chunk);
@@ -446,13 +445,12 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
                 int i = 1;
                 for (Holder<ConfiguredWorldCarver<?>> holder : iterable)
                 {
-                    final long chunkSeed = fork.at(offsetChunkPos.x, i, offsetChunkPos.z).nextLong();
+                    final RandomSource chunkRandom = fork.at(offsetChunkPos.x, i, offsetChunkPos.z);
 
-                    random.setSeed(chunkSeed);
                     final ConfiguredWorldCarver<?> carver = holder.value();
-                    if (carver.isStartChunk(random))
+                    if (carver.isStartChunk(chunkRandom))
                     {
-                        carver.carve(context, chunk, customBiomeManager::getBiome, random, aquifer, offsetChunkPos, carvingMask);
+                        carver.carve(context, chunk, customBiomeManager::getBiome, chunkRandom, aquifer, offsetChunkPos, carvingMask);
                     }
                     i++;
                 }
