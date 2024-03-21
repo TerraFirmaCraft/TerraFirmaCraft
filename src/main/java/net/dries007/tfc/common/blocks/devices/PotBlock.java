@@ -109,7 +109,7 @@ public class PotBlock extends FirepitBlock
     }
 
     @Override
-    protected double getParticleHeightOffset()
+    public double getParticleHeightOffset()
     {
         return 0.8D;
     }
