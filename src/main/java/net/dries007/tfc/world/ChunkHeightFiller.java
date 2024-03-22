@@ -56,17 +56,7 @@ public class ChunkHeightFiller
      */
     protected void prepareColumnBiomeWeights(int localX, int localZ)
     {
-        final int index4X = (localX >> 2) + 1;
-        final int index4Z = (localZ >> 2) + 1;
-
-        final double lerpX = (localX - ((localX >> 2) << 2)) * (1 / 4d);
-        final double lerpZ = (localZ - ((localZ >> 2) << 2)) * (1 / 4d);
-
-        biomeWeights1.clear();
-        TFCChunkGenerator.sampleBiomesCornerContribution(biomeWeights1, sampledBiomeWeights[index4X + index4Z * 7], (1 - lerpX) * (1 - lerpZ));
-        TFCChunkGenerator.sampleBiomesCornerContribution(biomeWeights1, sampledBiomeWeights[(index4X + 1) + index4Z * 7], lerpX * (1 - lerpZ));
-        TFCChunkGenerator.sampleBiomesCornerContribution(biomeWeights1, sampledBiomeWeights[index4X + (index4Z + 1) * 7], (1 - lerpX) * lerpZ);
-        TFCChunkGenerator.sampleBiomesCornerContribution(biomeWeights1, sampledBiomeWeights[(index4X + 1) + (index4Z + 1) * 7], lerpX * lerpZ);
+        ChunkBiomeSampler.sampleBiomesColumn(biomeWeights1, sampledBiomeWeights, localX, localZ);
     }
 
     /**
