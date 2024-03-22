@@ -30,6 +30,7 @@ import net.dries007.tfc.world.biome.BiomeExtension;
 import net.dries007.tfc.world.biome.BiomeSourceExtension;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.noise.ChunkNoiseSamplingSettings;
+import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.NoiseSampler;
 import net.dries007.tfc.world.noise.TrilinearInterpolator;
 import net.dries007.tfc.world.noise.TrilinearInterpolatorList;
@@ -72,7 +73,6 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
     private final int chunkMinX, chunkMinZ; // Min block positions for the chunk
     private final Heightmap oceanFloor, worldSurface;
     private final CarvingMask airCarvingMask; // Only air carving mask is marked
-    private final int seaLevel;
 
     // Rivers
     private final Beardifier beardifier;
@@ -107,9 +107,21 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
     private double cellDeltaX, cellDeltaZ; // Delta within a noise cell
     private int lastCellZ; // Last cell Z, needed due to a quick in noise interpolator
 
-    public ChunkNoiseFiller(ProtoChunk chunk, Object2DoubleMap<BiomeExtension>[] sampledBiomeWeights, BiomeSourceExtension biomeSource, Map<BiomeExtension, BiomeNoiseSampler> biomeNoiseSamplers, Map<RiverBlendType, RiverNoiseSampler> riverNoiseSamplers, NoiseSampler sampler, ChunkBaseBlockSource baseBlockSource, ChunkNoiseSamplingSettings settings, int seaLevel, Beardifier beardifier)
+    public ChunkNoiseFiller(
+        ProtoChunk chunk,
+        Object2DoubleMap<BiomeExtension>[] sampledBiomeWeights,
+        BiomeSourceExtension biomeSource,
+        Map<BiomeExtension, BiomeNoiseSampler> biomeNoiseSamplers,
+        Map<RiverBlendType, RiverNoiseSampler> riverNoiseSamplers,
+        Noise2D shoreSampler,
+        NoiseSampler sampler,
+        ChunkBaseBlockSource baseBlockSource,
+        ChunkNoiseSamplingSettings settings,
+        int seaLevel,
+        Beardifier beardifier
+    )
     {
-        super(sampledBiomeWeights, biomeSource, biomeNoiseSamplers, riverNoiseSamplers);
+        super(sampledBiomeWeights, biomeSource, biomeNoiseSamplers, riverNoiseSamplers, shoreSampler, seaLevel);
 
         this.chunk = chunk;
         this.chunkMinX = chunk.getPos().getMinBlockX();
@@ -117,7 +129,6 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
         this.oceanFloor = chunk.getOrCreateHeightmapUnprimed(Heightmap.Types.OCEAN_FLOOR_WG);
         this.worldSurface = chunk.getOrCreateHeightmapUnprimed(Heightmap.Types.WORLD_SURFACE_WG);
         this.airCarvingMask = chunk.getOrCreateCarvingMask(GenerationStep.Carving.AIR);
-        this.seaLevel = seaLevel;
 
         this.beardifier = beardifier;
         this.mutableDensityFunctionContext = new MutableDensityFunctionContext(new BlockPos.MutableBlockPos());
