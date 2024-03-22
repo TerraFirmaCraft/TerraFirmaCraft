@@ -20,6 +20,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -73,6 +74,7 @@ public class CrankshaftBlockEntityRenderer implements BlockEntityRenderer<Cranks
 
         final VertexConsumer buffer = bufferSource.getBuffer(RenderType.cutout());
         final float rotationAngle = CrankshaftBlockEntity.calculateRealRotationAngle(crankshaft, face, partialTick);
+        final RandomSource random = RandomSource.create();
 
         stack.pushPose();
         stack.translate(0.5f, 0.5f, 0.5f);
@@ -87,7 +89,7 @@ public class CrankshaftBlockEntityRenderer implements BlockEntityRenderer<Cranks
             final ModelBlockRenderer modelRenderer = Minecraft.getInstance().getBlockRenderer().getModelRenderer();
             final BakedModel baked = Minecraft.getInstance().getModelManager().getModel(WHEEL_MODEL);
 
-            modelRenderer.tesselateWithAO(level, baked, crankshaft.getBlockState(), crankshaft.getBlockPos(), stack, buffer, true, level.getRandom(), packedLight, packedOverlay, ModelData.EMPTY, RenderType.cutout());
+            modelRenderer.tesselateWithAO(level, baked, crankshaft.getBlockState(), crankshaft.getBlockPos(), stack, buffer, true, random, packedLight, packedOverlay, ModelData.EMPTY, RenderType.cutout());
 
             // Render an extension of the axle
             final BlockState adjacentAxleState = level.getBlockState(crankshaft.getBlockPos().relative(face.getCounterClockWise()));
