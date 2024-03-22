@@ -38,16 +38,11 @@ public class PotContainer extends BlockEntityContainer<PotBlockEntity>
     {
         return switch (typeOf(slotIndex))
             {
-                case MAIN_INVENTORY, HOTBAR -> {
-                    if (Helpers.isItem(stack, TFCTags.Items.FIREPIT_FUEL))
-                    {
-                        yield !moveItemStackTo(stack, SLOT_FUEL_CONSUME, SLOT_FUEL_INPUT + 1, false);
-                    }
-                    else
-                    {
-                        yield !moveItemStackTo(stack, SLOT_EXTRA_INPUT_START, SLOT_EXTRA_INPUT_END + 1, false);
-                    }
-                }
+                case MAIN_INVENTORY, HOTBAR -> Helpers.isItem(stack, TFCTags.Items.FIREPIT_FUEL)
+                    // Fuel is moved directly to the fuel inventory, always
+                    ? !moveItemStackTo(stack, SLOT_FUEL_CONSUME, SLOT_FUEL_INPUT + 1, false)
+                    // Non-fuel tries to move to the input slots, but only when it is not boiling
+                    : blockEntity.isBoiling() || !moveItemStackTo(stack, SLOT_EXTRA_INPUT_START, SLOT_EXTRA_INPUT_END + 1, false);
                 case CONTAINER -> !moveItemStackTo(stack, containerSlots, slots.size(), false);
             };
     }
