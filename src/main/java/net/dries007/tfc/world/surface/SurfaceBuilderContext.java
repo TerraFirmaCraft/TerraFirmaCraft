@@ -196,6 +196,11 @@ public class SurfaceBuilderContext
         return slope;
     }
 
+    public void setSlope(double slope)
+    {
+        this.slope = slope;
+    }
+
     public boolean isDefaultBlock(BlockState state)
     {
         return defaultBlockStates.contains(state);

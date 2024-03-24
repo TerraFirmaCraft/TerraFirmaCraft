@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
 import java.util.function.Function;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.blocks.SandstoneBlockType;
@@ -98,8 +99,12 @@ public class BadlandsSurfaceBuilder implements SurfaceBuilder
     public void buildSurface(SurfaceBuilderContext context, int startY, int endY)
     {
         final double heightVariation = grassHeightVariationNoise.noise(context.pos().getX(), context.pos().getZ());
-        final float weightVariation = (float) (1f - context.weight()) * 23f;
-        if (inverted ? startY + 5 < heightVariation + weightVariation : startY - 5 > heightVariation - weightVariation)
+        final double weightVariation = (1.0 - context.weight()) * 23.0;
+        final double rainfallVariation = Mth.clampedMap(context.rainfall(), 100, 500, 0, 22);
+
+        if (inverted
+            ? startY + 5 < heightVariation + weightVariation + rainfallVariation
+            : startY - 5 > heightVariation - weightVariation - rainfallVariation)
         {
             NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY, SurfaceStates.GRASS, SurfaceStates.DIRT, SurfaceStates.SANDSTONE_OR_GRAVEL);
         }
