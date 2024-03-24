@@ -25,7 +25,7 @@ public class WaterFlowParticle extends TextureSheetParticle
 {
     private final float particleRandom;
 
-    private WaterFlowParticle(ClientLevel level, double x, double y, double z)
+    public WaterFlowParticle(ClientLevel level, double x, double y, double z)
     {
         super(level, x, y, z);
         this.setSize(0.02F, 0.02F);
