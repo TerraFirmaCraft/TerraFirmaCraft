@@ -21,19 +21,25 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Dirt that doesn't let grass spread to it but can still be interacted on
  */
-public class TFCRootedDirtBlock extends Block
+public class TFCRootedDirtBlock extends Block implements IMudBlock
 {
     private final Supplier<? extends Block> dirt;
+    @Nullable private final Supplier<? extends Block> mud;
 
-    public TFCRootedDirtBlock(Properties properties, Supplier<? extends Block> dirt)
+    public TFCRootedDirtBlock(Properties properties, Supplier<? extends Block> dirt, @Nullable Supplier<? extends Block> mud)
     {
         super(properties);
         this.dirt = dirt;
+        this.mud = mud;
     }
 
     TFCRootedDirtBlock(Properties properties, SoilBlockType dirtType, RegistrySoilVariant variant)
     {
-        this(properties, variant.getBlock(dirtType));
+        this(properties, variant.getBlock(dirtType), variant.getBlock(SoilBlockType.MUD));
+    }
+
+    public BlockState getMud() {
+        return mud.get().defaultBlockState();
     }
 
     @Nullable
