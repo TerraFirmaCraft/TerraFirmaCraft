@@ -44,6 +44,7 @@ public class TFCLoot
     public static final RegistryObject<LootNumberProviderType> ANIMAL_YIELD = numberProvider("animal_yield", new MinMaxProvider.Serializer(AnimalYieldProvider::new));
     public static final RegistryObject<LootItemFunctionType> COPY_FLUID = lootFunction("copy_fluid", new CopyFluidFunction.Serializer());
     public static final RegistryObject<LootItemFunctionType> ROTTEN = lootFunction("rotten", new RottenFunction.Serializer());
+    public static final RegistryObject<LootNumberProviderType> BLOCK_STATE = numberProvider("block_state_property", new BlockStateNumberProvider.Serializer(BlockStateNumberProvider::new));
 
     private static RegistryObject<LootItemFunctionType> lootFunction(String id, Serializer<? extends LootItemFunction> serializer)
     {

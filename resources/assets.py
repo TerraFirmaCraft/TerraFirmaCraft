@@ -1574,7 +1574,7 @@ def generate(rm: ResourceManager):
         for i in range(1, 8):
             rm.block_model(('wood', 'fallen_leaves', '%s_height%s' % (wood, i * 2)), tex, parent='tfc:block/groundcover/fallen_leaves_height%s' % (i * 2))
         rm.item_model(('wood', 'fallen_leaves', wood), 'tfc:item/groundcover/fallen_leaves')
-        block.with_block_loot(*[{'name': 'tfc:wood/fallen_leaves/%s' % wood, 'conditions': [loot_tables.block_state_property('tfc:wood/fallen_leaves/%s[layers=%s]' % (wood, i))], 'functions': [loot_tables.set_count(i)]} for i in range(1, 9)])
+        block.with_block_loot({'name': 'tfc:wood/fallen_leaves/%s' % wood, 'functions': [{'function': 'minecraft:set_count', 'count': {'type': 'tfc:block_state_property', 'block': 'tfc:wood/fallen_leaves/%s' % wood, 'property': 'layers'} }] })
 
         # Krummholz
         if wood in ('pine', 'spruce', 'white_cedar', 'douglas_fir', 'aspen'):
