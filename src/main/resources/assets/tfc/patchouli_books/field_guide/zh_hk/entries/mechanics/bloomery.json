@@ -22,7 +22,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "鍛鐵爐可以容納最多 24 件$(thing)含鐵物品$()和 24 塊$(l:mechanics/charcoal_pit)木炭$()，每層煙囱可以容納各 8 塊。想要加高煙囱，只需要在之前所示基礎上再疊加兩層石頭方塊就可以了。$(br2)要將物品加入鍛鐵爐中，只需要從煙囱頂部將物品丟下即可。若形成了一層灰黑色的熔渣物質就説明成功了。"
+      "text": "The bloomery can contain up to a maximum of 48 $(thing)Inputs$(), with 16 of each item per layer of the chimney. To add layers to the chimney, stack up two more layers of stone blocks.$(br2)To add items to the bloomery, climb up to the top and throw items inside. A tower of grey ore should form."
     },
     {
       "type": "patchouli:image",
@@ -34,7 +34,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "投入鍛鐵爐的木炭和$(thing)含鐵物品$()數量必須相等。要讓鍛鐵爐開始工作，只需要點燃鍛鐵爐門的方塊，再等上大半天的時間即可。等看到鍛鐵爐門方塊不亮了就説明完成了。鍛鐵爐會將之前投入的每 100mB 的鑄鐵轉化為一塊$(thing)方坯塊$()。用鎬反覆挖掘方坯塊就能得到$(thing)生鐵方坯$()。注意：若投入的鐵的數量不是 100mB 的整數倍，多餘的部分會被浪費。"
+      "text": "The bloomery consumes $(thing)2 Charcoal$(), and $(thing)100 mB of Cast Iron$() to produce one $(thing)Bloom$(). After filling the bloomery with a combination of $(thing)Charcoal$() and $(thing)Ore$(), light the bloomery block, and wait 15 hours for the bloomery to smelt. When the bloomery shuts off, it leaves behind a $(thing)Bloom$() block. This contains $(thing)Raw Iron Blooms$() which can be obtained by mining the $(thing)Bloom$() repeatedly with a pickaxe."
     },
     {
       "type": "patchouli:multiblock",
@@ -52,7 +52,7 @@
         }
       },
       "name": "方坯",
-      "text": "一個方坯，充滿了鍛鐵。",
+      "text": "A large $(thing)Bloom$().",
       "enable_visualize": false
     },
     {
@@ -69,10 +69,6 @@
       "type": "patchouli:text",
       "text": "$(li)如果投入鍛鐵爐的物品超出了它的所能處理的數量，它就會從鍛鐵爐門口吐出來。$()$(li)如果要取回投入鍛鐵爐中的物品，不要試圖挖掘塔中的熔融物，直接把鍛鐵爐方塊挖掉即可。$()$(li)方坯只會熔化成鑄鐵，而不是鍛鐵。方坯必須經過錘鍊才能變成鍛鐵！$()",
       "title": "鐵匠的筆記"
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(li)鍛鐵爐只關心投入其中的物品的數量，而不是質量。在鍛鐵爐中燒煉富礦與貧礦會消耗等量的木炭！$()$(li)熔融物很容易將周圍的其他方塊點着，千萬小心！$()"
     }
   ],
   "read_by_default": true,

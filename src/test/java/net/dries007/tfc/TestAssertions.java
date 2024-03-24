@@ -44,9 +44,13 @@ public final class TestAssertions
 
     public static Collection<TestFunction> testGenerator()
     {
+        return testGenerator(StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE).getCallerClass());
+    }
+
+    static Collection<TestFunction> testGenerator(Class<?> clazz)
+    {
         try
         {
-            final Class<?> clazz = StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE).getCallerClass();
             final List<TestFunction> functions = new ArrayList<>();
             final String className = clazz.getSimpleName();
             final Object instance = clazz.getDeclaredConstructor().newInstance();
@@ -60,11 +64,6 @@ public final class TestAssertions
                     final boolean isStatic = Modifier.isStatic(method.getModifiers());
                     final boolean isNoArg = method.getParameterCount() == 0;
                     final Function<GameTestHelper, Object[]> args;
-
-                    if (isStatic)
-                    {
-                        LOGGER.warn("@MyTest method should not be declared static");
-                    }
 
                     if (isNoArg)
                     {
@@ -83,6 +82,7 @@ public final class TestAssertions
                     final Consumer<GameTestHelper> action = helper -> {
                         try
                         {
+                            GameTestAssertions.setHelper(helper);
                             method.invoke(isStatic ? null : instance, args.apply(helper));
                         }
                         catch (InvocationTargetException e)
@@ -103,9 +103,20 @@ public final class TestAssertions
                         }
                     };
 
+                    // N.B. Test Names
+                    // Mojang uses the test name very particularly
+                    // - The test name is checked against the class name, by matching ignoring case with "ClassName."
+                    // - The test name must be parse-able as a ResourceLocation, to be stored in the structure block, which is used
+                    //   for /test runthis to work later
+                    // - It is also used for display purposes
+                    //
+                    // Unfortunately, these requirements lead to very ugly, hard-to-read display names using standard Java naming conventions.
+                    // Avoiding that would require a mixin or multiple to change these behaviors. So for now, we're accepting that /test runthis
+                    // won't work, and taking readable names that also work with /test runall <class name>
                     final Consumer<GameTestHelper> testAction = annotation.unitTest() ? asUnitTest(className, methodName, action) : action;
+                    final String testName = className + "." + methodName;
 
-                    functions.add(new TestFunction("default", className + '.' + methodName, Helpers.identifier(annotation.structure()).toString(), annotation.timeoutTicks(), annotation.setupTicks(), true, testAction));
+                    functions.add(new TestFunction("default", testName, Helpers.identifier(annotation.structure()).toString(), annotation.timeoutTicks(), annotation.setupTicks(), true, testAction));
                 }
             }
             functions.sort(Comparator.comparing(TestFunction::getTestName));

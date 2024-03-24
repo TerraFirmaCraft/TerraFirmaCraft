@@ -6,9 +6,6 @@
 
 package net.dries007.tfc.mixin;
 
-import java.util.Random;
-
-import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EquipmentSlot;

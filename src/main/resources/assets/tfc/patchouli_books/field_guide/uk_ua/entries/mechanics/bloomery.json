@@ -22,7 +22,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Максимально можна завантажити у горно 24 одиниці $(thing)залізної руди$() та 24 одиниці $(l:mechanics/charcoal_pit)деревного вугілля$(), тобто по 8 одиниць кожного елемента на кожен рівень конструкції. Щоб додати рівні до димаря, встанови ще два шари кам’яних блоків.$(br2)Щоб додати предмети в димар горна, треба піднятись наверх і кинути предмети всередину. Має утворитися вежа із сірої руди."
+      "text": "The bloomery can contain up to a maximum of 48 $(thing)Inputs$(), with 16 of each item per layer of the chimney. To add layers to the chimney, stack up two more layers of stone blocks.$(br2)To add items to the bloomery, climb up to the top and throw items inside. A tower of grey ore should form."
     },
     {
       "type": "patchouli:image",
@@ -34,7 +34,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "У горні має бути однакова кількість $(thing)деревного вугілля$() та $(thing)руди$(). Запали горно і почекай більшу частину дня. Коли блок горна згасне, то криця готова. Весь вміст горна зливається у $(thing)блок криці$(). Блок криці містить $(thing)сиру залізну крицю$(), що можна здобути кайлом з горна. Кількість отриманого матеріалу буде кратна 100mB, лишок буде втрачено."
+      "text": "The bloomery consumes $(thing)2 Charcoal$(), and $(thing)100 mB of Cast Iron$() to produce one $(thing)Bloom$(). After filling the bloomery with a combination of $(thing)Charcoal$() and $(thing)Ore$(), light the bloomery block, and wait 15 hours for the bloomery to smelt. When the bloomery shuts off, it leaves behind a $(thing)Bloom$() block. This contains $(thing)Raw Iron Blooms$() which can be obtained by mining the $(thing)Bloom$() repeatedly with a pickaxe."
     },
     {
       "type": "patchouli:multiblock",
@@ -52,7 +52,7 @@
         }
       },
       "name": "Блок криці",
-      "text": "Блок криці у повному розквіті",
+      "text": "A large $(thing)Bloom$().",
       "enable_visualize": false
     },
     {
@@ -69,10 +69,6 @@
       "type": "patchouli:text",
       "text": "$(li)Якщо сиродутне горно виявить, що містить більше предметів, ніж може впоратися, враховуючи розмір димаря, воно спробує виплюнути їх спереду.$()$(li)Щоб дістати свої предмети з холодного горна, не розбивай вежу з розплавлених блоків. Розбий дверцята.$()$(li)Руда плавиться лише в крицю, а не в ковке залізо. Над крицею ще треба попрацювати!$()",
       "title": "Нотатки коваля"
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(li)Горно дбає про кількість кинутих в нього предметів, а не про якість. Використання багатої руди споживає таку ж кількість деревного вугілля, як і бідна руда!$()$(li)Розплавлені блоки легко поширять вогонь на навколишнє середовище! Будь обережний.$()"
     }
   ],
   "read_by_default": true,

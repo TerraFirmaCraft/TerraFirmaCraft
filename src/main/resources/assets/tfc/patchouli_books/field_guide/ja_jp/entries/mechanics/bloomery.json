@@ -22,7 +22,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "塊鉄炉には最大 24 個の $(thing)鉄鉱石$() と 24 個の $(l:mechanics/charcoal_pit)木炭$() を含めることができ、煙突の各層に各アイテムが 8 個ずつ含まれます。 煙突に層を追加するには、ブロックをさらに 2 層積み上げます。$(br2)塊鉄炉にアイテムを追加するには、頂上に登って中にアイテムを投げます。 灰色の鉱石の塔が形成されるはずです。"
+      "text": "The bloomery can contain up to a maximum of 48 $(thing)Inputs$(), with 16 of each item per layer of the chimney. To add layers to the chimney, stack up two more layers of stone blocks.$(br2)To add items to the bloomery, climb up to the top and throw items inside. A tower of grey ore should form."
     },
     {
       "type": "patchouli:image",
@@ -34,7 +34,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "塊鉄炉には同量の $(thing)木炭と鉄鉱石$() が必要です。 塊鉄炉ブロックに火をつけて、ほぼ一日待ちます。 塊鉄炉ブロックが停止したら完了です。 溶けた鉄は 100mB ごとに $(thing)塊鉄ブロック$() に変換されます。 これには $(thing)塊鉄$() が含まれており、つるはしでブルーム ブロックを繰り返し採掘することで入手できます。 100mB 単位に収まらない鉄は失われます。"
+      "text": "The bloomery consumes $(thing)2 Charcoal$(), and $(thing)100 mB of Cast Iron$() to produce one $(thing)Bloom$(). After filling the bloomery with a combination of $(thing)Charcoal$() and $(thing)Ore$(), light the bloomery block, and wait 15 hours for the bloomery to smelt. When the bloomery shuts off, it leaves behind a $(thing)Bloom$() block. This contains $(thing)Raw Iron Blooms$() which can be obtained by mining the $(thing)Bloom$() repeatedly with a pickaxe."
     },
     {
       "type": "patchouli:multiblock",
@@ -52,7 +52,7 @@
         }
       },
       "name": "塊鉄ブロック",
-      "text": "満杯の塊鉄ブロック。",
+      "text": "A large $(thing)Bloom$().",
       "enable_visualize": false
     },
     {
@@ -69,10 +69,6 @@
       "type": "patchouli:text",
       "text": "$(li)塊鉄炉が煙突に基づいて処理できる量を超えるアイテムが含まれている場合、塊鉄炉はそれらを正面から吐き出そうとします。$()$(li)点火していない塊鉄炉からアイテムを取り出すには 、溶けたブロックタワーを壊すのではなく塊鉄ブロックを壊します。$()$(li)塊鉄は錬鉄ではなく鋳鉄として溶けます。 鍛造して錬鉄を作成してください!$()",
       "title": "ヒント"
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(li) 塊鉄炉は投げ込まれるアイテムの質ではなく、量に基づいて機能します。 塊鉄炉で高純度な鉱石を使用すると、低純度なな鉱石と同じ量の木炭が消費されます!$()$(li)溶けたブロックはすぐに近くの可燃性ブロックに燃え移って火事を起こすので注意してください。$()"
     }
   ],
   "read_by_default": true,

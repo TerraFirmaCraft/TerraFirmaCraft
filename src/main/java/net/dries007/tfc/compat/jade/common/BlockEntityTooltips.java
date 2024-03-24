@@ -217,8 +217,7 @@ public final class BlockEntityTooltips
     public static final BlockEntityTooltip BLOOMERY = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof BloomeryBlockEntity bloomery && state.getBlock() instanceof BloomeryBlock)
         {
-            tooltip.accept(Component.translatable("tfc.jade.input_stacks", bloomery.getInputStacks().size()));
-            tooltip.accept(Component.translatable("tfc.jade.catalyst_stacks", bloomery.getCatalystStacks().size()));
+            tooltip.accept(Component.translatable("tfc.jade.input_stacks", bloomery.getInputCount()));
             if (state.getValue(BloomeryBlock.LIT))
             {
                 final long ticksLeft = bloomery.getRemainingTicks();

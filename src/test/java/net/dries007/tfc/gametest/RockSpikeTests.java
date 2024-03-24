@@ -20,76 +20,79 @@ import net.dries007.tfc.TestAssertions;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Rock;
 
+import static net.dries007.tfc.GameTestAssertions.*;
+
 @GameTestHolder
 public class RockSpikeTests
 {
     @GameTestGenerator
     public Collection<TestFunction> generator()
     {
-        return TestAssertions.testGenerator();
+        return testGenerator();
     }
 
     @MyTest(structure = "rock_spike/column")
-    public void testBreakSupportingBelowOfBottomSpike(GameTestHelper helper)
+    public void testBreakSupportingBelowOfBottomSpike()
     {
-        run(helper, 0, ".....123#");
+        run(0, ".....123#");
     }
 
     @MyTest(structure = "rock_spike/column")
-    public void testBreakBaseOfBottomSpike(GameTestHelper helper)
+    public void testBreakBaseOfBottomSpike()
     {
-        run(helper, 1, "#....123#");
+        run(1, "#....123#");
     }
 
     @MyTest(structure = "rock_spike/column")
-    public void testBreakMiddleOfBottomSpike(GameTestHelper helper)
+    public void testBreakMiddleOfBottomSpike()
     {
-        run(helper, 2, "#....123#");
+        run(2, "#....123#");
     }
 
     @MyTest(structure = "rock_spike/column")
-    public void testBreakTipOfBottomSpike(GameTestHelper helper)
+    public void testBreakTipOfBottomSpike()
     {
-        run(helper, 3, "#32..123#");
+        run(3, "#32..123#");
     }
 
     @MyTest(structure = "rock_spike/column")
-    public void testBreakTipOfTopSpike(GameTestHelper helper)
+    public void testBreakTipOfTopSpike()
     {
-        run(helper, 5, "#321..23#");
+        run(5, "#321..23#");
     }
 
     @MyTest(structure = "rock_spike/column")
-    public void testBreakMiddleOfTopSpike(GameTestHelper helper)
+    public void testBreakMiddleOfTopSpike()
     {
-        run(helper, 6, "#......3#");
+        run(6, "#......3#");
     }
 
     @MyTest(structure = "rock_spike/column")
-    public void testBreakBaseOfTopSpike(GameTestHelper helper)
+    public void testBreakBaseOfTopSpike()
     {
-        run(helper, 7, "#.......#");
+        run(7, "#.......#");
     }
 
     @MyTest(structure = "rock_spike/column")
-    public void testBreakSupportingAboveOfTopSpike(GameTestHelper helper)
+    public void testBreakSupportingAboveOfTopSpike()
     {
-        run(helper, 8, "#........");
+        run(8, "#........");
     }
 
     /**
      * @param expectedBlockColumn Expected blocks. '.' = air, '#' = andesite, anything else = spike. Bottom = left = index 0, Top = right.
      */
-    private void run(GameTestHelper helper, int indexToBreak, String expectedBlockColumn)
+    private void run(int indexToBreak, String expectedBlockColumn)
     {
-        helper.destroyBlock(new BlockPos(0, 1 + indexToBreak, 0));
-        helper.succeedWhen(() -> {
+        at(0, 1 + indexToBreak, 0).destroyBlock();
+        succeedWhen(() -> {
             for (int i = 0; i < expectedBlockColumn.length(); i++)
             {
-                final Block block = expectedBlockColumn.charAt(i) == '.' ? Blocks.AIR :
-                    expectedBlockColumn.charAt(i) == '#' ? Blocks.POLISHED_ANDESITE :
-                    TFCBlocks.ROCK_BLOCKS.get(Rock.GRANITE).get(Rock.BlockType.SPIKE).get();
-                helper.assertBlockPresent(block, 0, 1 + i, 0);
+                at(0, 1 + i, 0).is(expectedBlockColumn.charAt(i) == '.'
+                    ? Blocks.AIR
+                    : expectedBlockColumn.charAt(i) == '#'
+                        ? Blocks.POLISHED_ANDESITE
+                        : TFCBlocks.ROCK_BLOCKS.get(Rock.GRANITE).get(Rock.BlockType.SPIKE).get());
             }
         });
     }

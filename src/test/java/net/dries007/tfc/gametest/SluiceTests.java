@@ -8,15 +8,14 @@ package net.dries007.tfc.gametest;
 
 import java.util.Collection;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTestGenerator;
-import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.gametest.framework.TestFunction;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.gametest.GameTestHolder;
 
 import net.dries007.tfc.MyTest;
-import net.dries007.tfc.TestAssertions;
+
+import static net.dries007.tfc.GameTestAssertions.*;
 
 @GameTestHolder
 public class SluiceTests
@@ -24,34 +23,34 @@ public class SluiceTests
     @GameTestGenerator
     public Collection<TestFunction> generator()
     {
-        return TestAssertions.testGenerator();
+        return testGenerator();
     }
 
     @MyTest(structure = "sluice/empty")
-    public void testSluicePlacesWaterBelow(GameTestHelper helper)
+    public void testSluicePlacesWaterBelow()
     {
-        helper.setBlock(1, 3, 1, Blocks.WATER);
-        helper.succeedWhen(() -> helper.assertBlockPresent(Blocks.WATER, 11, 1, 1));
+        at(1, 3, 1).setBlock(Blocks.WATER);
+        succeedWhen(() -> at(11, 1, 1).is(Blocks.WATER));
     }
 
     @MyTest(structure = "sluice/water")
-    public void testSluiceRemovesWaterWhenBottomBroken(GameTestHelper helper)
+    public void testSluiceRemovesWaterWhenBottomBroken()
     {
-        helper.destroyBlock(new BlockPos(10, 2, 1));
-        helper.succeedWhen(() -> helper.assertBlockPresent(Blocks.AIR, 11, 1, 1));
+        at(10, 2, 1).destroyBlock();
+        succeedWhen(() -> at(11, 1, 1).isAir());
     }
 
     @MyTest(structure = "sluice/water")
-    public void testSluiceRemovesWaterWhenTopBroken(GameTestHelper helper)
+    public void testSluiceRemovesWaterWhenTopBroken()
     {
-        helper.destroyBlock(new BlockPos(9, 2, 1));
-        helper.succeedWhen(() -> helper.assertBlockPresent(Blocks.AIR, 11, 1, 1));
+        at(9, 2, 1).destroyBlock();
+        succeedWhen(() -> at(11, 1, 1).isAir());
     }
 
     @MyTest(structure = "sluice/water")
-    public void testSluiceRemovesWaterWhenWaterStopsFlowing(GameTestHelper helper)
+    public void testSluiceRemovesWaterWhenWaterStopsFlowing()
     {
-        helper.setBlock(1, 3, 1, Blocks.POLISHED_ANDESITE);
-        helper.succeedWhen(() -> helper.assertBlockPresent(Blocks.AIR, 11, 1, 1));
+        at(1, 3, 1).setBlock(Blocks.POLISHED_ANDESITE);
+        succeedWhen(() -> at(11, 1, 1).isAir());
     }
 }

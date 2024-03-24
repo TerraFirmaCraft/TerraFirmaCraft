@@ -403,7 +403,7 @@ public class ServerConfig
 
         builder.swap("bloomery");
 
-        bloomeryCapacity = builder.comment("Inventory capacity (in number of items per level of chimney) of the bloomery.").define("bloomeryCapacity", 8, 1, Integer.MAX_VALUE);
+        bloomeryCapacity = builder.comment("Inventory capacity (in number of items per level of chimney) of the bloomery.").define("bloomeryCapacity1", 16, 1, Integer.MAX_VALUE);
         bloomeryMaxChimneyHeight = builder.comment("The maximum number of levels that can be built in a bloomery multiblock, for added capacity.").define("bloomeryMaxChimneyHeight", 3, 1, Integer.MAX_VALUE);
 
         builder.swap("blastFurnace");
