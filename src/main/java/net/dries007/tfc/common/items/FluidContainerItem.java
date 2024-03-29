@@ -9,11 +9,8 @@ package net.dries007.tfc.common.items;
 import java.util.List;
 import java.util.function.Supplier;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -24,14 +21,12 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
-import net.dries007.tfc.common.blocks.soil.IMudBlock;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.ItemStackFluidHandler;
 import net.dries007.tfc.common.fluids.FluidHelpers;
@@ -63,51 +58,17 @@ public class FluidContainerItem extends Item
     {
         final ItemStack stack = player.getItemInHand(hand);
         final BlockHitResult hit = Helpers.rayTracePlayer(level, player, ClipContext.Fluid.SOURCE_ONLY);
-
         if (FluidHelpers.transferBetweenWorldAndItem(stack, level, hit, player, hand, canPlaceLiquidsInWorld, canPlaceSourceBlocks(), false))
         {
             return InteractionResultHolder.success(player.getItemInHand(hand));
         }
 
-        final BlockPos pos = hit.getBlockPos();
+        // Fallback behavior
         final IFluidHandler handler = Helpers.getCapability(stack, Capabilities.FLUID_ITEM);
-
         if (handler == null)
         {
             return InteractionResultHolder.pass(stack);
         }
-
-        // Dirt to mud conversion
-        if (level.getBlockState(pos).getBlock() instanceof IMudBlock dirt)
-        {
-            final int waterRequired = 100;
-            final FluidStack water = new FluidStack(Fluids.WATER, waterRequired);
-
-            if (handler.getFluidInTank(0).containsFluid(water))
-            {
-                level.setBlockAndUpdate(pos, dirt.getMud());
-                handler.drain(waterRequired, IFluidHandler.FluidAction.EXECUTE);
-                FluidHelpers.playTransferSound(level, pos, water, FluidHelpers.Transfer.DRAIN);
-
-                // Particles
-                if (!level.isClientSide)
-                {
-                    for (int i = 0; i < 5; ++i)
-                    {
-                        ((ServerLevel) level).sendParticles(
-                            ParticleTypes.SPLASH,
-                            (double) pos.getX() + level.random.nextDouble(),
-                            (double) pos.getY() + 1,
-                            (double) pos.getZ() + level.random.nextDouble(),
-                            1, 0.0, 0.0, 0.0, 1.0);
-                    }
-                }
-
-                return InteractionResultHolder.success(player.getItemInHand(hand));
-            }
-        }
-
-        // Fallback behavior
         if (handler.getFluidInTank(0).isEmpty())
         {
             return afterFillFailed(handler, level, player, stack, hand);
