@@ -67,14 +67,14 @@ public class BloomBlockEntity extends TFCBlockEntity
     {
         assert level != null;
 
-        BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
+        final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
         BlockPos dropPos = worldPosition;
-        for (Direction d : Direction.Plane.HORIZONTAL)
+        for (Direction direction : Direction.Plane.HORIZONTAL)
         {
-            mutable.setWithOffset(worldPosition, d);
-            if (Helpers.isBlock(level.getBlockState(mutable), TFCBlocks.BLOOMERY.get()))
+            cursor.setWithOffset(worldPosition, direction);
+            if (Helpers.isBlock(level.getBlockState(cursor), TFCBlocks.BLOOMERY.get()))
             {
-                dropPos = mutable.immutable();
+                dropPos = cursor.immutable();
                 break;
             }
         }
@@ -89,7 +89,15 @@ public class BloomBlockEntity extends TFCBlockEntity
     public BlockState getState()
     {
         assert level != null;
-        return count <= 0 ? Blocks.AIR.defaultBlockState() : level.getBlockState(worldPosition).setValue(BloomBlock.LAYERS, (int) Mth.clamp((float) count / maxCount * TOTAL_LAYERS, 1, 8));
+        if (count <= 0)
+        {
+            return Blocks.AIR.defaultBlockState();
+        }
+        final int layers = maxCount <= TOTAL_LAYERS
+            ? count // Must be in [1, TOTAL_LAYERS], so we use the count directly
+            : Mth.clamp(TOTAL_LAYERS * count / maxCount, 1, TOTAL_LAYERS); // Otherwise, scale based on the max count to discrete layers
+
+        return getBlockState().setValue(BloomBlock.LAYERS, layers);
     }
 
     public ItemStack getItem()

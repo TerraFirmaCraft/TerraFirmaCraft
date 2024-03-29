@@ -8,9 +8,7 @@ package net.dries007.tfc.gametest;
 
 import java.util.Collection;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTestGenerator;
-import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.gametest.framework.TestFunction;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
@@ -19,11 +17,12 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.gametest.GameTestHolder;
 
 import net.dries007.tfc.MyTest;
-import net.dries007.tfc.TestAssertions;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import org.jetbrains.annotations.Nullable;
+
+import static net.dries007.tfc.GameTestAssertions.*;
 
 @GameTestHolder
 public class LandslideTests
@@ -31,96 +30,96 @@ public class LandslideTests
     @GameTestGenerator
     public Collection<TestFunction> generator()
     {
-        return TestAssertions.testGenerator();
+        return testGenerator();
     }
 
     @MyTest(structure = "5x5_platform")
-    public void testDirtBreaksTorch(GameTestHelper helper)
+    public void testDirtBreaksTorch()
     {
-        expectBreaksBlock(helper, Blocks.TORCH, Blocks.TORCH);
+        expectBreaksBlock(Blocks.TORCH, Blocks.TORCH);
     }
 
     @MyTest(structure = "5x5_platform")
-    public void testDirtBreaksSlab(GameTestHelper helper)
+    public void testDirtBreaksSlab()
     {
-        expectBreaksBlock(helper, Blocks.ANDESITE_SLAB, Blocks.ANDESITE_SLAB);
+        expectBreaksBlock(Blocks.ANDESITE_SLAB, Blocks.ANDESITE_SLAB);
     }
 
     @MyTest(structure = "5x5_platform")
-    public void testDirtBreaksFarmland(GameTestHelper helper)
+    public void testDirtBreaksFarmland()
     {
-        expectBreaksBlock(helper, Blocks.FARMLAND, Blocks.DIRT);
+        expectBreaksBlock(Blocks.FARMLAND, Blocks.DIRT);
     }
 
     @MyTest(structure = "5x5_platform")
-    public void testDirtBreaksPath(GameTestHelper helper)
+    public void testDirtBreaksPath()
     {
-        expectBreaksBlock(helper, Blocks.DIRT_PATH, Blocks.DIRT);
+        expectBreaksBlock(Blocks.DIRT_PATH, Blocks.DIRT);
     }
 
     @MyTest(structure = "5x5_platform")
-    public void testDirtDoesNotBreakCharcoal(GameTestHelper helper)
+    public void testDirtDoesNotBreakCharcoal()
     {
-        expectPopsOff(helper, TFCBlocks.CHARCOAL_PILE.get());
+        expectPopsOff(TFCBlocks.CHARCOAL_PILE.get());
     }
 
     @MyTest(structure = "5x5_platform")
-    public void testCobbleBreaksCharcoal(GameTestHelper helper)
+    public void testCobbleBreaksCharcoal()
     {
-        expectBreaksBlock(helper, TFCBlocks.ROCK_BLOCKS.get(Rock.GRANITE).get(Rock.BlockType.COBBLE).get(), TFCBlocks.CHARCOAL_PILE.get(), Items.CHARCOAL);
+        expectBreaksBlock(TFCBlocks.ROCK_BLOCKS.get(Rock.GRANITE).get(Rock.BlockType.COBBLE).get(), TFCBlocks.CHARCOAL_PILE.get(), Items.CHARCOAL);
     }
 
     @MyTest(structure = "5x5_platform")
-    public void testDirtDoesNotBreakSoulSand(GameTestHelper helper)
+    public void testDirtDoesNotBreakSoulSand()
     {
-        expectStaysOnTop(helper, Blocks.SOUL_SAND);
+        expectStaysOnTop(Blocks.SOUL_SAND);
     }
 
     @MyTest(structure = "5x5_platform")
-    public void testDirtDoesNotBreakMud(GameTestHelper helper)
+    public void testDirtDoesNotBreakMud()
     {
-        expectStaysOnTop(helper, TFCBlocks.SOIL.get(SoilBlockType.MUD).get(SoilBlockType.Variant.LOAM).get());
+        expectStaysOnTop(TFCBlocks.SOIL.get(SoilBlockType.MUD).get(SoilBlockType.Variant.LOAM).get());
     }
 
 
-    private void expectBreaksBlock(GameTestHelper helper, Block blockToFallOn, ItemLike expectedItem)
+    private void expectBreaksBlock(Block blockToFallOn, ItemLike expectedItem)
     {
-        run(helper, Blocks.DIRT, blockToFallOn, Blocks.DIRT, null, expectedItem);
+        run(Blocks.DIRT, blockToFallOn, Blocks.DIRT, null, expectedItem);
     }
 
-    private void expectBreaksBlock(GameTestHelper helper, Block blockToFall, Block blockToFallOn, ItemLike expectedItem)
+    private void expectBreaksBlock(Block blockToFall, Block blockToFallOn, ItemLike expectedItem)
     {
-        run(helper, blockToFall, blockToFallOn, blockToFall, null, expectedItem);
+        run(blockToFall, blockToFallOn, blockToFall, null, expectedItem);
     }
 
-    private void expectPopsOff(GameTestHelper helper, Block blockToFallOn)
+    private void expectPopsOff(Block blockToFallOn)
     {
-        run(helper, Blocks.DIRT, blockToFallOn, blockToFallOn, null, Blocks.DIRT);
+        run(Blocks.DIRT, blockToFallOn, blockToFallOn, null, Blocks.DIRT);
     }
 
-    private void expectStaysOnTop(GameTestHelper helper, Block blockToFallOn)
+    private void expectStaysOnTop(Block blockToFallOn)
     {
-        run(helper, Blocks.DIRT, blockToFallOn, blockToFallOn, Blocks.DIRT, null);
+        run(Blocks.DIRT, blockToFallOn, blockToFallOn, Blocks.DIRT, null);
     }
 
-    private void run(GameTestHelper helper, Block blockToDrop, Block blockToFallOn, Block expectBottomBlock, @Nullable Block expectBlockAbove, @Nullable ItemLike expectItem)
+    private void run(Block blockToDrop, Block blockToFallOn, Block expectBottomBlock, @Nullable Block expectBlockAbove, @Nullable ItemLike expectItem)
     {
-        helper.setBlock(1, 2, 2, blockToFallOn); // Landing Area
-        helper.setBlock(2, 2, 1, blockToFallOn);
-        helper.setBlock(3, 2, 2, blockToFallOn);
-        helper.setBlock(2, 2, 3, blockToFallOn);
-        helper.setBlock(2, 2, 2, blockToFallOn);
-        helper.setBlock(2, 5, 2, blockToDrop); // Falling Block
-        helper.setBlock(2, 6, 2, Blocks.POLISHED_ANDESITE_SLAB); // Triggers block update, causing the falling block to fall
-        helper.succeedWhen(() -> {
-            helper.assertBlockPresent(expectBottomBlock, 2, 2, 2);
+        at(1, 2, 2).setBlock(blockToFallOn); // Landing Area
+        at(2, 2, 1).setBlock(blockToFallOn);
+        at(3, 2, 2).setBlock(blockToFallOn);
+        at(2, 2, 3).setBlock(blockToFallOn);
+        at(2, 2, 2).setBlock(blockToFallOn);
+        at(2, 5, 2).setBlock(blockToDrop); // Falling Block
+        at(2, 6, 2).setBlock(Blocks.POLISHED_ANDESITE_SLAB); // Triggers block update, causing the falling block to fall
+        succeedWhen(() -> {
+            at(2, 2, 2).is(expectBottomBlock);
             if (expectBlockAbove != null)
             {
-                helper.assertBlockPresent(expectBlockAbove, 2, 3, 2);
+                at(2, 3, 2).is(expectBlockAbove);
             }
             if (expectItem != null)
             {
-                helper.assertItemEntityPresent(expectItem.asItem(), new BlockPos(2, 2, 2), 2);
+                at(2, 2, 2).itemEntityIsPresent(expectItem.asItem(), 2);
             }
         });
     }

@@ -16,7 +16,6 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 
-import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.recipes.BloomeryRecipe;
 import net.dries007.tfc.compat.jei.JEIIntegration;
@@ -35,7 +34,7 @@ public class BloomeryRecipeCategory extends BaseRecipeCategory<BloomeryRecipe>
     public void setRecipe(IRecipeLayoutBuilder builder, BloomeryRecipe recipe, IFocusGroup focuses)
     {
         builder.addSlot(RecipeIngredientRole.INPUT, 6, 5)
-            .addIngredients(recipe.getCatalyst())
+            .addItemStacks(collapse(recipe.getCatalyst()))
             .setBackground(slot, -1, -1);
 
         builder.addSlot(RecipeIngredientRole.INPUT, 26, 5)

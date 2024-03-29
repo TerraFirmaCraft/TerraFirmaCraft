@@ -22,12 +22,21 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.blockentities.BloomBlockEntity;
-import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 
 public class BloomBlock extends ExtendedBlock implements EntityBlockExtension
 {
     public static final IntegerProperty LAYERS = BlockStateProperties.LAYERS;
-    public static final VoxelShape[] SHAPE_BY_LAYER = new VoxelShape[] {Shapes.empty(), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 4.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 10.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 12.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 14.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D)};
+    public static final VoxelShape[] SHAPE_BY_LAYER = {
+        Shapes.empty(),
+        box(0, 0, 0, 16, 2, 16),
+        box(0, 0, 0, 16, 4, 16),
+        box(0, 0, 0, 16, 6, 16),
+        box(0, 0, 0, 16, 8, 16),
+        box(0, 0, 0, 16, 10, 16),
+        box(0, 0, 0, 16, 12, 16),
+        box(0, 0, 0, 16, 14, 16),
+        box(0, 0, 0, 16, 16, 16)
+    };
 
     public BloomBlock(ExtendedProperties properties)
     {
@@ -51,12 +60,17 @@ public class BloomBlock extends ExtendedBlock implements EntityBlockExtension
             return level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
         }
 
-        return level.getBlockEntity(pos, TFCBlockEntities.BLOOM.get()).map(BloomBlockEntity::dropBloom).orElse(true);
+        if (level.getBlockEntity(pos) instanceof BloomBlockEntity bloom)
+        {
+            return bloom.dropBloom();
+        }
+
+        return true;
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return SHAPE_BY_LAYER[state.getValue(LAYERS)];
     }

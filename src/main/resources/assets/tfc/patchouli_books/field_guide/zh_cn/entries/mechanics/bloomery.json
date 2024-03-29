@@ -22,7 +22,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "The bloomery can contain up to a maximum 24 $(thing)Iron Ore$() and 24 $(l:mechanics/charcoal_pit)Charcoal$(), with 8 of each item per layer of the chimney. To add layers to the chimney, stack up two more layers of stone blocks.$(br2)To add items to the bloomery, climb up to the top and throw items inside. A tower of grey ore should form."
+      "text": "The bloomery can contain up to a maximum of 48 $(thing)Inputs$(), with 16 of each item per layer of the chimney. To add layers to the chimney, stack up two more layers of stone blocks.$(br2)To add items to the bloomery, climb up to the top and throw items inside. A tower of grey ore should form."
     },
     {
       "type": "patchouli:image",
@@ -34,7 +34,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "The bloomery must have an equal amount of charcoal and ore $(thing)items$(). Light the bloomery block, and wait most of a day. When the bloomery block shuts off, it is done. Each 100mB of iron that melts in the bloomery is transformed into a $(thing)Bloom Block$(). The bloom block contains $(thing)Raw Iron Blooms$(), which can be obtained by mining the Bloom Block repeatedly with a pickaxe. Any iron that cannot be fit into 100mB increments is lost."
+      "text": "The bloomery consumes $(thing)2 Charcoal$(), and $(thing)100 mB of Cast Iron$() to produce one $(thing)Bloom$(). After filling the bloomery with a combination of $(thing)Charcoal$() and $(thing)Ore$(), light the bloomery block, and wait 15 hours for the bloomery to smelt. When the bloomery shuts off, it leaves behind a $(thing)Bloom$() block. This contains $(thing)Raw Iron Blooms$() which can be obtained by mining the $(thing)Bloom$() repeatedly with a pickaxe."
     },
     {
       "type": "patchouli:multiblock",
@@ -52,7 +52,7 @@
         }
       },
       "name": "方坯",
-      "text": "一个方坯，充满了锻铁。",
+      "text": "A large $(thing)Bloom$().",
       "enable_visualize": false
     },
     {
@@ -69,10 +69,6 @@
       "type": "patchouli:text",
       "text": "$(li)如果投入锻铁炉的物品超出了它的所能处理的数量，它就会从锻铁炉门口吐出来。$()$(li)如果要取回投入锻铁炉中的物品，不要试图挖掘塔中的熔融物，直接把锻铁炉方块挖掉即可。$()$(li)方坯只会熔化成铸铁，而不是锻铁。方坯必须经过锤炼才能变成锻铁！$()",
       "title": "铁匠的笔记"
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(li)锻铁炉只关心投入其中的物品的数量，而不是质量。在锻铁炉中烧炼富矿与贫矿会消耗等量的木炭！$()$(li)熔融物很容易将周围的其他方块点着，千万小心！$()"
     }
   ],
   "read_by_default": true,

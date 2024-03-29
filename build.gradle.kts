@@ -126,7 +126,7 @@ minecraft {
 
     runs {
         all {
-            args("-mixin.config=$modId.mixins.json")
+            //args("-mixin.config=$modId.mixins.json")
 
             property("forge.logging.console.level", "debug")
             property("forge.enabledGameTestNamespaces", modId)
@@ -179,7 +179,6 @@ license {
 
 mixin {
     add(sourceSets.main.get(), "$modId.refmap.json")
-    add(sourceSets.test.get(), "$modId.refmap.json")
 }
 
 tasks {

@@ -61,7 +61,7 @@ public class AlloyRecipe implements ISimpleRecipe<AlloyInventory>
     @Override
     public boolean matches(AlloyInventory wrapper, @Nullable Level level)
     {
-        return wrapper.getAlloy().matches(this);
+        return wrapper.alloy().matches(this);
     }
 
     @Override
