@@ -13,6 +13,9 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
@@ -35,46 +38,63 @@ public interface IMudBlock
 
     /**
      * Transforms this block into mud if the player has the required amount of water in their container
-     * Particles like {@link net.minecraft.world.item.PotionItem}
      */
     default InteractionResult transformToMud(BlockState mud, Level level, BlockPos pos, Player player, InteractionHand hand)
     {
         ItemStack stack = player.getItemInHand(hand);
-        IFluidHandler fluidHandler = Helpers.getCapability(stack, Capabilities.FLUID_ITEM);
-
-        if (fluidHandler == null)
-        {
-            return InteractionResult.PASS;
-        }
-
         final int waterRequired = 100;
         final FluidStack water = new FluidStack(Fluids.WATER, waterRequired);
 
-        if (fluidHandler.getFluidInTank(0).containsFluid(water))
+        if (stack.getItem().equals(Items.WATER_BUCKET))
         {
-            fluidHandler.drain(waterRequired, player.isCreative() ? IFluidHandler.FluidAction.SIMULATE : IFluidHandler.FluidAction.EXECUTE);
-            FluidHelpers.playTransferSound(level, pos, water, FluidHelpers.Transfer.DRAIN);
-            level.setBlockAndUpdate(pos, mud);
+            // Unable to deplete fluid in bucket, ignore interaction
+            return InteractionResult.PASS;
+        }
 
-            // Particles
-            if (!level.isClientSide)
+        if (PotionUtils.getPotion(stack) == Potions.WATER)
+        {
+            if (!player.isCreative())
             {
-                for (int i = 0; i < 5; ++i)
-                {
-                    ((ServerLevel) level).sendParticles(
-                        ParticleTypes.SPLASH,
-                        (double) pos.getX() + level.random.nextDouble(),
-                        (double) pos.getY() + 1,
-                        (double) pos.getZ() + level.random.nextDouble(),
-                        1, 0.0, 0.0, 0.0, 1.0);
-                }
+                player.setItemInHand(hand, new ItemStack(Items.GLASS_BOTTLE));
             }
 
+            setMud(mud, level, pos, water);
             return InteractionResult.SUCCESS;
         }
-        else
+
+        IFluidHandler fluidHandler = Helpers.getCapability(stack, Capabilities.FLUID_ITEM);
+
+        if (fluidHandler != null && fluidHandler.getFluidInTank(0).containsFluid(water))
         {
-            return InteractionResult.PASS;
+            fluidHandler.drain(waterRequired, player.isCreative() ? IFluidHandler.FluidAction.SIMULATE : IFluidHandler.FluidAction.EXECUTE);
+
+            setMud(mud, level, pos, water);
+            return InteractionResult.SUCCESS;
+        }
+
+        return InteractionResult.PASS;
+    }
+
+    /**
+     * Sets the block to mud and plays the appropriate particles and sound
+     * Particles like {@link net.minecraft.world.item.PotionItem}
+     */
+    default void setMud(BlockState mud, Level level, BlockPos pos, FluidStack water) {
+        FluidHelpers.playTransferSound(level, pos, water, FluidHelpers.Transfer.DRAIN);
+        level.setBlockAndUpdate(pos, mud);
+
+        // Particles
+        if (!level.isClientSide)
+        {
+            for (int i = 0; i < 5; ++i)
+            {
+                ((ServerLevel) level).sendParticles(
+                    ParticleTypes.SPLASH,
+                    (double) pos.getX() + level.random.nextDouble(),
+                    (double) pos.getY() + 1,
+                    (double) pos.getZ() + level.random.nextDouble(),
+                    1, 0.0, 0.0, 0.0, 1.0);
+            }
         }
     }
 }
