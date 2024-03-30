@@ -24,6 +24,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
 /**
@@ -41,6 +42,11 @@ public interface IMudBlock
      */
     default InteractionResult transformToMud(BlockState mud, Level level, BlockPos pos, Player player, InteractionHand hand)
     {
+        if (!TFCConfig.SERVER.enableDirtToMudCreation.get())
+        {
+            return InteractionResult.PASS;
+        }
+
         ItemStack stack = player.getItemInHand(hand);
         final int waterRequired = 100;
         final FluidStack water = new FluidStack(Fluids.WATER, waterRequired);

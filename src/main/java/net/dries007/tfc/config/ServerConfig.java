@@ -44,6 +44,8 @@ public class ServerConfig
     public final ForgeConfigSpec.DoubleValue grassSpawningRocksChance;
     // Blocks - Rooted Dirt
     public final ForgeConfigSpec.BooleanValue enableRootedDirtToDirtCreation;
+    // Blocks - Mud
+    public final ForgeConfigSpec.BooleanValue enableDirtToMudCreation;
     // Blocks - Snow
     public final ForgeConfigSpec.BooleanValue enableSnowSlowEntities;
     public final ForgeConfigSpec.IntValue snowAccumulateChance;
@@ -305,6 +307,10 @@ public class ServerConfig
         builder.swap("rootedDirt");
 
         enableRootedDirtToDirtCreation = builder.comment("If TFC rooted dirt blocks are able to be created into dirt blocks using a hoe.").define("enableRootedDirtToDirtCreation", true);
+
+        builder.swap ("mud");
+
+        enableDirtToMudCreation = builder.comment("If TFC dirt blocks are able to be created into mud blocks using a water-filled fluid container.").define("enableDirtToMudCreation", true);
 
         builder.swap("snow");
 
