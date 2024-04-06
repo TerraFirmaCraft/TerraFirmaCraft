@@ -26,15 +26,19 @@ public class ShoreSurfaceBuilder implements SurfaceBuilder
     @Override
     public void buildSurface(SurfaceBuilderContext context, int startY, int endY)
     {
+        // Adjust slope, shores should have high relief carving where they intersect with the landmass
+        final double slope = context.getSlope();
+        context.setSlope(slope * (slope + 0.2));
+
         final float variantNoiseValue = (float) variantNoise.noise(context.pos().getX(), context.pos().getZ());
         if (variantNoiseValue > 0.6f)
         {
-            NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY, SurfaceStates.RARE_SHORE_SAND, SurfaceStates.RARE_SHORE_SAND, SurfaceStates.RARE_SHORE_SANDSTONE);
+            NormalSurfaceBuilder.ROCKY.buildSurface(context, startY, endY, SurfaceStates.RARE_SHORE_SAND, SurfaceStates.RARE_SHORE_SAND, SurfaceStates.RARE_SHORE_SANDSTONE);
         }
         else
         {
             SurfaceState top = context.rainfall() > 400 && variantNoiseValue > 0.4f ? SurfaceStates.SHORE_MUD : SurfaceStates.SHORE_SAND;
-            NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY, top, top, SurfaceStates.SHORE_SANDSTONE);
+            NormalSurfaceBuilder.ROCKY.buildSurface(context, startY, endY, top, top, SurfaceStates.SHORE_SANDSTONE);
         }
     }
 }

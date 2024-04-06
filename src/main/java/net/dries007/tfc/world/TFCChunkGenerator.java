@@ -15,8 +15,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
-import java.util.function.Function;
-import java.util.function.ToIntFunction;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import com.google.common.collect.ImmutableMap;
@@ -26,9 +24,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.ints.IntArraySet;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
-import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArraySet;
-import it.unimi.dsi.fastutil.objects.ObjectIterator;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -88,7 +84,6 @@ import net.dries007.tfc.mixin.accessor.ChunkAccessAccessor;
 import net.dries007.tfc.mixin.accessor.ChunkGeneratorAccessor;
 import net.dries007.tfc.mixin.accessor.ChunkMapAccessor;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.world.biome.BiomeBlendType;
 import net.dries007.tfc.world.biome.BiomeExtension;
 import net.dries007.tfc.world.biome.BiomeSourceExtension;
 import net.dries007.tfc.world.biome.TFCBiomes;
@@ -101,8 +96,9 @@ import net.dries007.tfc.world.layer.TFCLayers;
 import net.dries007.tfc.world.layer.framework.AreaFactory;
 import net.dries007.tfc.world.layer.framework.ConcurrentArea;
 import net.dries007.tfc.world.noise.ChunkNoiseSamplingSettings;
-import net.dries007.tfc.world.noise.Kernel;
+import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.NoiseSampler;
+import net.dries007.tfc.world.noise.OpenSimplex2D;
 import net.dries007.tfc.world.region.RegionGenerator;
 import net.dries007.tfc.world.river.RiverBlendType;
 import net.dries007.tfc.world.river.RiverNoiseSampler;
@@ -123,169 +119,15 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     public static final DeferredRegister<Codec<? extends ChunkGenerator>> CHUNK_GENERATOR = DeferredRegister.create(Registries.CHUNK_GENERATOR, MOD_ID);
     public static final int DECORATION_STEPS = GenerationStep.Decoration.values().length;
     public static final int SEA_LEVEL_Y = 63; // Matches vanilla
-    public static final Kernel KERNEL_9x9 = Kernel.create((x, z) -> 0.0211640211641D * (1 - 0.03125D * (z * z + x * x)), 4);
 
     static
     {
         CHUNK_GENERATOR.register("overworld", () -> CODEC);
     }
 
-    /**
-     * Composes two levels of sampled weights. It takes two maps of two different resolutions, and re-weights the higher resolution one by replacing specific groups of samples with the respective weights from the lower resolution map.
-     * Each element of the higher resolution map is replaced with a proportional average of the same group which is present in the lower resolution map.
-     * This has the effect of blending specific groups at closer distances than others, allowing for both smooth and sharp biome transitions.
-     * <p>
-     * Example:
-     * - Low resolution: 30% Plains, 40% Mountains, 30% Hills, 10% River
-     * - High resolution: 60% Plains, 40% River
-     * - Groups are "River" and "Not River"
-     * - For each element in the high resolution map:
-     * - 60% Plains: Group "Not River", and is replaced with 60% * (30% Plains, 40% Mountains, 30% Hills) / 90%
-     * - 50% River: Group "River", which is replaced with 40% * (10% River) / 10%
-     * - Result: 18% Plains, 24% Mountains, 18% Hills, 40% River
-     */
-    public static <T> void composeSampleWeights(Object2DoubleMap<T> weightMap, Object2DoubleMap<T> groupWeightMap, ToIntFunction<T> groupFunction, int groups)
-    {
-        // First, we need to calculate the maximum weight per group
-        double[] maxWeights = new double[groups];
-        for (Object2DoubleMap.Entry<T> entry : groupWeightMap.object2DoubleEntrySet())
-        {
-            int group = groupFunction.applyAsInt(entry.getKey());
-            if (group != -1)
-            {
-                maxWeights[group] += entry.getDoubleValue();
-            }
-        }
-
-        // Then, we iterate through the smaller weight map and identify the actual weight that needs to be replaced with each group
-        double[] actualWeights = new double[groups];
-        ObjectIterator<Object2DoubleMap.Entry<T>> iterator = weightMap.object2DoubleEntrySet().iterator();
-        while (iterator.hasNext())
-        {
-            Object2DoubleMap.Entry<T> entry = iterator.next();
-            int group = groupFunction.applyAsInt(entry.getKey());
-            if (group != -1)
-            {
-                actualWeights[group] += entry.getDoubleValue();
-                iterator.remove();
-            }
-        }
-
-        // Finally, insert the weights for each group as a portion of the actual weight
-        for (Object2DoubleMap.Entry<T> entry : groupWeightMap.object2DoubleEntrySet())
-        {
-            int group = groupFunction.applyAsInt(entry.getKey());
-            if (group != -1 && actualWeights[group] > 0 && maxWeights[group] > 0)
-            {
-                weightMap.put(entry.getKey(), entry.getDoubleValue() * actualWeights[group] / maxWeights[group]);
-            }
-        }
-    }
-
-    public static <T> void sampleBiomesCornerContribution(Object2DoubleMap<T> accumulator, Object2DoubleMap<T> corner, double t)
-    {
-        if (t > 0)
-        {
-            for (Object2DoubleMap.Entry<T> entry : corner.object2DoubleEntrySet())
-            {
-                accumulator.mergeDouble(entry.getKey(), entry.getDoubleValue() * t, Double::sum);
-            }
-        }
-    }
-
     private static DataResult<BiomeSourceExtension> guardBiomeSource(BiomeSource source)
     {
         return source instanceof BiomeSourceExtension s ? DataResult.success(s) : DataResult.error(() -> "Must be a " + BiomeSourceExtension.class.getSimpleName());
-    }
-
-    /**
-     * @param pos           The target chunk pos.
-     * @param biomeSampler  A sampler for biomes, in block coordinates.
-     * @param groupFunction A function to access a {@link BiomeBlendType} from a {@link Biome}.
-     * @return A 7x7 array of sampled biome weights, at quart pos resolution, where the (0, 0) index aligns to the (-1, -1) quart position relative to the target chunk.
-     */
-    private static <T> Object2DoubleMap<T>[] sampleBiomes(ChunkPos pos, Sampler<T> biomeSampler, Function<T, BiomeBlendType> groupFunction)
-    {
-        // First, sample biomes at chunk distance, in a 4x4 grid centered on the target chunk.
-        // These are used to build the large-scale biome blending radius
-        final Object2DoubleMap<T>[] chunkBiomeWeightArray = newWeightArray(4 * 4);
-        final int chunkX = pos.getMinBlockX(), chunkZ = pos.getMinBlockZ(); // Block coordinates
-        for (int x = 0; x < 4; x++)
-        {
-            for (int z = 0; z < 4; z++)
-            {
-                // x, z = 0, 0 is the -1, -1 chunk relative to chunkX, chunkZ
-                final Object2DoubleMap<T> chunkBiomeWeight = new Object2DoubleOpenHashMap<>();
-                chunkBiomeWeightArray[x | (z << 2)] = chunkBiomeWeight;
-                sampleBiomesAtPositionWithKernel(chunkBiomeWeight, biomeSampler, KERNEL_9x9, 4, chunkX, chunkZ, x - 1, z - 1);
-            }
-        }
-
-        // A 7x7 grid, in quart positions relative to the target chunk, where (1, 1) is the target chunk origin.
-        final Object2DoubleMap<T>[] quartBiomeWeightArray = newWeightArray(7 * 7);
-        final Object2DoubleMap<T> chunkBiomeWeight = new Object2DoubleOpenHashMap<>();
-
-        for (int x = 0; x < 7; x++)
-        {
-            for (int z = 0; z < 7; z++)
-            {
-                // Reset
-                final Object2DoubleMap<T> quartBiomeWeight = new Object2DoubleOpenHashMap<>();
-                chunkBiomeWeight.clear();
-
-                sampleBiomesAtPositionWithKernel(quartBiomeWeight, biomeSampler, KERNEL_9x9, 2, chunkX, chunkZ, x - 1, z - 1);
-
-                // Calculate contribution from the four corners of the 16x16 grid. First, calculate the current grid cell coordinates.
-                final int x1 = chunkX + ((x - 1) << 2); // Block coordinates
-                final int z1 = chunkZ + ((z - 1) << 2);
-
-                final int coordX = x1 >> 4; // Chunk coordinates
-                final int coordZ = z1 >> 4;
-
-                final double lerpX = (x1 - (coordX << 4)) * (1 / 16d); // Deltas, in the range [0, 1)
-                final double lerpZ = (z1 - (coordZ << 4)) * (1 / 16d);
-
-                final int index16X = ((x1 - chunkX) >> 4) + 1; // Index into chunkBiomeWeightArray
-                final int index16Z = ((z1 - chunkZ) >> 4) + 1;
-
-                sampleBiomesCornerContribution(chunkBiomeWeight, chunkBiomeWeightArray[index16X | (index16Z << 2)], (1 - lerpX) * (1 - lerpZ));
-                sampleBiomesCornerContribution(chunkBiomeWeight, chunkBiomeWeightArray[(index16X + 1) | (index16Z << 2)], lerpX * (1 - lerpZ));
-                sampleBiomesCornerContribution(chunkBiomeWeight, chunkBiomeWeightArray[index16X | ((index16Z + 1) << 2)], (1 - lerpX) * lerpZ);
-                sampleBiomesCornerContribution(chunkBiomeWeight, chunkBiomeWeightArray[(index16X + 1) | ((index16Z + 1) << 2)], lerpX * lerpZ);
-
-                // Compose chunk weights -> wide quart weights.
-                composeSampleWeights(quartBiomeWeight, chunkBiomeWeight, biome -> {
-                    final BiomeBlendType group = groupFunction.apply(biome);
-                    return group.ordinal();
-                }, BiomeBlendType.SIZE);
-
-                quartBiomeWeightArray[x + 7 * z] = quartBiomeWeight;
-            }
-        }
-        return quartBiomeWeightArray;
-    }
-
-    private static <T> void sampleBiomesAtPositionWithKernel(Object2DoubleMap<T> weights, Sampler<T> biomeSampler, Kernel kernel, int kernelBits, int chunkX, int chunkZ, int xOffsetInKernelBits, int zOffsetInKernelBits)
-    {
-        final int kernelRadius = kernel.radius();
-        final int kernelWidth = kernel.width();
-        for (int dx = -kernelRadius; dx <= kernelRadius; dx++)
-        {
-            for (int dz = -kernelRadius; dz <= kernelRadius; dz++)
-            {
-                final double weight = kernel.values()[(dx + kernelRadius) + (dz + kernelRadius) * kernelWidth];
-                final int blockX = chunkX + ((xOffsetInKernelBits + dx) << kernelBits); // Block positions
-                final int blockZ = chunkZ + ((zOffsetInKernelBits + dz) << kernelBits);
-                final T biome = biomeSampler.get(blockX, blockZ);
-                weights.mergeDouble(biome, weight, Double::sum);
-            }
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <T> Object2DoubleMap<T>[] newWeightArray(int size)
-    {
-        return (Object2DoubleMap<T>[]) new Object2DoubleMap[size]; // Avoid generic array warnings / errors
     }
 
     // Properties set from codec
@@ -381,6 +223,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         this.surfaceManager = new SurfaceManager(seed);
 
         this.customBiomeSource.initRandomState(regionGenerator, biomeLayer);
+
         // Update the cached chunk generator extension on the RandomState
         // This is done here when we initialize this chunk generator, and have ensured we are unique to this state and chunk map
         // We do this to be able to access the chunk generator through the random state later, i.e. in structure generation
@@ -389,8 +232,8 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
     public ChunkHeightFiller createHeightFillerForChunk(ChunkPos pos)
     {
-        final Object2DoubleMap<BiomeExtension>[] biomeWeights = sampleBiomes(pos, this::sampleBiomeNoRiver, BiomeExtension::biomeBlendType);
-        return new ChunkHeightFiller(createBiomeSamplersForChunk(null), biomeWeights);
+        final Object2DoubleMap<BiomeExtension>[] biomeWeights = ChunkBiomeSampler.sampleBiomes(pos, this::sampleBiomeNoRiver, BiomeExtension::biomeBlendType);
+        return new ChunkHeightFiller(biomeWeights, customBiomeSource, createBiomeSamplersForChunk(null), createRiverSamplersForChunk(), createShoreSamplerForChunk(), getSeaLevel());
     }
 
     @Override
@@ -420,7 +263,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
         final BiomeManager customBiomeManager = biomeManager.withDifferentSource((x, y, z) -> customBiomeSource.getBiome(x, z));
         final PositionalRandomFactory fork = new XoroshiroRandomSource(seed).forkPositional();
-        final WorldgenRandom random = new WorldgenRandom(new LegacyRandomSource(RandomSupport.generateUniqueSeed()));
         final ChunkPos chunkPos = chunk.getPos();
 
         final ChunkNoiseSamplingSettings settings = createNoiseSamplingSettingsForChunk(chunk);
@@ -446,13 +288,12 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
                 int i = 1;
                 for (Holder<ConfiguredWorldCarver<?>> holder : iterable)
                 {
-                    final long chunkSeed = fork.at(offsetChunkPos.x, i, offsetChunkPos.z).nextLong();
+                    final RandomSource chunkRandom = fork.at(offsetChunkPos.x, i, offsetChunkPos.z);
 
-                    random.setSeed(chunkSeed);
                     final ConfiguredWorldCarver<?> carver = holder.value();
-                    if (carver.isStartChunk(random))
+                    if (carver.isStartChunk(chunkRandom))
                     {
-                        carver.carve(context, chunk, customBiomeManager::getBiome, random, aquifer, offsetChunkPos, carvingMask);
+                        carver.carve(context, chunk, customBiomeManager::getBiome, chunkRandom, aquifer, offsetChunkPos, carvingMask);
                     }
                     i++;
                 }
@@ -597,9 +438,9 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             sections.add(section);
         }
 
-        final Object2DoubleMap<BiomeExtension>[] biomeWeights = sampleBiomes(chunkPos, this::sampleBiomeNoRiver, BiomeExtension::biomeBlendType);
+        final Object2DoubleMap<BiomeExtension>[] biomeWeights = ChunkBiomeSampler.sampleBiomes(chunkPos, this::sampleBiomeNoRiver, BiomeExtension::biomeBlendType);
         final ChunkBaseBlockSource baseBlockSource = createBaseBlockSourceForChunk(chunk);
-        final ChunkNoiseFiller filler = new ChunkNoiseFiller((ProtoChunk) chunk, biomeWeights, customBiomeSource, createBiomeSamplersForChunk(chunk), createRiverSamplersForChunk(), noiseSampler, baseBlockSource, settings, getSeaLevel(), Beardifier.forStructuresInChunk(structureFeatureManager, chunkPos));
+        final ChunkNoiseFiller filler = new ChunkNoiseFiller((ProtoChunk) chunk, biomeWeights, customBiomeSource, createBiomeSamplersForChunk(chunk), createRiverSamplersForChunk(), createShoreSamplerForChunk(), noiseSampler, baseBlockSource, settings, getSeaLevel(), Beardifier.forStructuresInChunk(structureFeatureManager, chunkPos));
 
         return CompletableFuture.supplyAsync(() -> {
             filler.sampleAquiferSurfaceHeight(this::sampleBiomeNoRiver);
@@ -644,7 +485,10 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     }
 
     @Override
-    public void addDebugScreenInfo(List<String> list, RandomState state, BlockPos pos) {}
+    public void addDebugScreenInfo(List<String> list, RandomState state, BlockPos pos)
+    {
+        list.add("Shore: " + createShoreSamplerForChunk().noise(pos.getX(), pos.getZ()));
+    }
 
     /**
      * Builds either a single flat layer of bedrock, or natural vanilla bedrock
@@ -762,6 +606,14 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             builder.put(blendType, blendType.createNoiseSampler(noiseSamplerSeed));
         }
         return builder;
+    }
+
+    private Noise2D createShoreSamplerForChunk()
+    {
+        return new OpenSimplex2D(noiseSamplerSeed)
+            .octaves(2)
+            .spread(0.003f)
+            .scaled(-0.1, 1.1);
     }
 
     private TFCChunkGenerator copy()

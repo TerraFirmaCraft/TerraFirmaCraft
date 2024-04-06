@@ -31,7 +31,7 @@ public class FallingLeafParticle extends CherryParticle
     private final float windMoveX;
     private final float windMoveZ;
 
-    protected FallingLeafParticle(ClientLevel level, double x, double y, double z, SpriteSet set, boolean tinted, @Nullable BlockState state)
+    public FallingLeafParticle(ClientLevel level, double x, double y, double z, SpriteSet set, boolean tinted, @Nullable BlockState state)
     {
         super(level, x, y, z, set);
 

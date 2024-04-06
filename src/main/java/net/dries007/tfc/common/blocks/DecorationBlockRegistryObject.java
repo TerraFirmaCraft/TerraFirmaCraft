@@ -6,12 +6,12 @@
 
 package net.dries007.tfc.common.blocks;
 
+import java.util.function.Supplier;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
-import net.minecraftforge.registries.RegistryObject;
 
 /**
- * A triple of {@link RegistryObject}s for slabs, stairs, and walls
+ * A triple of {@link Supplier}s for slabs, stairs, and walls
  */
-public record DecorationBlockRegistryObject(RegistryObject<? extends SlabBlock> slab, RegistryObject<? extends StairBlock> stair, RegistryObject<? extends WallBlock> wall) {}
+public record DecorationBlockRegistryObject(Supplier<? extends SlabBlock> slab, Supplier<? extends StairBlock> stair, Supplier<? extends WallBlock> wall) {}

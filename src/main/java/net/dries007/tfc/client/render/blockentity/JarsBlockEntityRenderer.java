@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.model.data.ModelData;
 
@@ -28,7 +29,12 @@ public class JarsBlockEntityRenderer implements BlockEntityRenderer<JarsBlockEnt
     {
         final var inv = Helpers.getCapability(jars, Capabilities.ITEM);
         if (inv == null || jars.getLevel() == null)
+        {
             return;
+        }
+
+        final RandomSource random = RandomSource.create();
+        final Minecraft mc = Minecraft.getInstance();
         for (int i = 0; i < inv.getSlots(); i++)
         {
             final ItemStack stack = inv.getStackInSlot(i);
@@ -38,10 +44,9 @@ public class JarsBlockEntityRenderer implements BlockEntityRenderer<JarsBlockEnt
 
             if (stack.getItem() instanceof JarItem jarItem)
             {
-                final Minecraft mc = Minecraft.getInstance();
                 final BakedModel baked = mc.getModelManager().getModel(jarItem.getModel());
                 final VertexConsumer buffer = bufferSource.getBuffer(RenderType.translucent());
-                mc.getBlockRenderer().getModelRenderer().tesselateWithAO(jars.getLevel(), baked, jars.getBlockState(), jars.getBlockPos(), poseStack, buffer, true, jars.getLevel().getRandom(), packedLight, packedOverlay, ModelData.EMPTY, RenderType.translucent());
+                mc.getBlockRenderer().getModelRenderer().tesselateWithAO(jars.getLevel(), baked, jars.getBlockState(), jars.getBlockPos(), poseStack, buffer, true, random, packedLight, packedOverlay, ModelData.EMPTY, RenderType.translucent());
             }
 
             poseStack.popPose();

@@ -15,7 +15,7 @@ public class AnimatedParticle extends TextureSheetParticle
 {
     private final SpriteSet sprites;
 
-    protected AnimatedParticle(ClientLevel level, double x, double y, double z, SpriteSet sprites)
+    public AnimatedParticle(ClientLevel level, double x, double y, double z, SpriteSet sprites)
     {
         super(level, x, y, z);
         this.xd = Mth.nextFloat(random, -0.1f, 0.1f);

@@ -13,7 +13,7 @@ import net.minecraft.util.Mth;
 
 public class SparkParticle extends TextureSheetParticle
 {
-    private SparkParticle(ClientLevel level, double x, double y, double z)
+    public SparkParticle(ClientLevel level, double x, double y, double z)
     {
         super(level, x, y, z);
         this.rCol = level.random.nextFloat() * 0.3f + 0.6f;

@@ -14,11 +14,6 @@ import net.dries007.tfc.config.TimeDeltaTooltipStyle;
 import net.dries007.tfc.util.Helpers;
 
 /**
- * An interface for all manner of time based calculations
- *
- * Methods with "calendar" in the name (e.g. getCalendarTicks vs getTicks) are synchronized with the daylight cycle, and current actual date.
- * These times may go backwards, e.g. if the user changes their month length. DO NOT save timestamps with these, use the matching method without "calendar" in the name.
- *
  * @see Calendars
  */
 public interface ICalendar

@@ -143,10 +143,6 @@ public class FirepitBlock extends BottomSupportedDeviceBlock implements IGhostBl
         {
             level.playLocalSound(x, y, z, SoundEvents.CAMPFIRE_CRACKLE, SoundSource.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.6F, false);
         }
-        for (int i = 0; i < 1 + random.nextInt(3); i++)
-        {
-            level.addAlwaysVisibleParticle(TFCParticles.SMOKES.get(smoke).get(), x + Helpers.triangle(random) * 0.5f, y + random.nextDouble(), z + Helpers.triangle(random) * 0.5f, 0, 0.07D, 0);
-        }
         for (int i = 0; i < random.nextInt(4 + smoke); i++)
         {
             level.addParticle(ParticleTypes.SMOKE, x + Helpers.triangle(random) * 0.5f, y + random.nextDouble(), z + Helpers.triangle(random) * 0.5f, 0, 0.005D, 0);
@@ -263,10 +259,8 @@ public class FirepitBlock extends BottomSupportedDeviceBlock implements IGhostBl
         return rot == Rotation.COUNTERCLOCKWISE_90 || rot == Rotation.CLOCKWISE_90 ? state.cycle(AXIS) : state;
     }
 
-
-    protected double getParticleHeightOffset()
+    public double getParticleHeightOffset()
     {
         return 0.35D;
     }
-
 }

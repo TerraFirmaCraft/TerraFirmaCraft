@@ -171,7 +171,7 @@ public class GrillBlock extends FirepitBlock implements IHighlightHandler
     }
 
     @Override
-    protected double getParticleHeightOffset()
+    public double getParticleHeightOffset()
     {
         return 0.8D;
     }

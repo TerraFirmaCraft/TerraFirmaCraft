@@ -14,6 +14,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
@@ -27,6 +28,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
+import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.devices.FirepitBlock;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
@@ -127,9 +129,22 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
         {
             firepit.airTicks--;
         }
-        if (state.getBlock() instanceof FirepitBlock block && level.random.nextFloat() < 0.11f)
+
+        // Modified from CampfireBlockEntity.particleTick
+        final RandomSource random = level.getRandom();
+        final int smoke = state.getValue(FirepitBlock.SMOKE_LEVEL); // 0 -> 4
+
+        if (state.getBlock() instanceof FirepitBlock block &&
+            state.getValue(FirepitBlock.LIT) &&
+            random.nextInt(9 - smoke) == 0)
         {
-            block.forcedAnimateTick(state, level, pos, level.random);
+            final double x = pos.getX() + 0.5;
+            final double y = pos.getY() + block.getParticleHeightOffset();
+            final double z = pos.getZ() + 0.5;
+            for (int i = 0; i < 1 + random.nextInt(3); i++)
+            {
+                level.addAlwaysVisibleParticle(TFCParticles.SMOKES.get(smoke).get(), x + Helpers.triangle(random) * 0.5f, y + random.nextDouble(), z + Helpers.triangle(random) * 0.5f, 0, 0.07D, 0);
+            }
         }
     }
 

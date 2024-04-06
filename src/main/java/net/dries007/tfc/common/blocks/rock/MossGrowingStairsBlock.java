@@ -34,7 +34,7 @@ public class MossGrowingStairsBlock extends StairBlock implements IMossGrowingBl
     @Override
     public void convertToMossy(Level level, BlockPos pos, BlockState state, boolean needsWater)
     {
-        if (!needsWater || FluidHelpers.isSame(level.getFluidState(pos), Fluids.WATER))
+        if (!needsWater || FluidHelpers.isSame(state.getFluidState(), Fluids.WATER))
         {
             level.setBlockAndUpdate(pos, Helpers.copyProperties(mossy.get().defaultBlockState(), state));
         }

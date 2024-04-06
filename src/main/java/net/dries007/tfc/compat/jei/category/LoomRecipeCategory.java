@@ -17,10 +17,8 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 
-import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.LoomRecipe;
-import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
 
 public class LoomRecipeCategory extends BaseRecipeCategory<LoomRecipe>
 {

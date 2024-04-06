@@ -22,7 +22,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Доменная печь может содержать до максимума 24 $(thing)Железной руды$() и 24 $(l:mechanics/charcoal_pit)Древесного угля$(), по 8 каждого предмета на слой дымохода. Чтобы добавить слои к дымоходу, уложите еще два слоя каменных блоков.$(br2)Чтобы добавить предметы в доменную печь, поднимитесь наверх и бросьте предметы внутрь. Должна образоваться башня из серой руды."
+      "text": "The bloomery can contain up to a maximum of 48 $(thing)Inputs$(), with 16 of each item per layer of the chimney. To add layers to the chimney, stack up two more layers of stone blocks.$(br2)To add items to the bloomery, climb up to the top and throw items inside. A tower of grey ore should form."
     },
     {
       "type": "patchouli:image",
@@ -34,7 +34,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Доменная печь должна содержать равное количество угля и руды $(thing)предметов$(). Зажгите блок доменной печи и ждите почти весь день. Когда блок доменной печи выключится, это значит, что процесс завершен. Каждые 100мБ железа, расплавленного в доменной печи, превращаются в $(thing)Блок слитка$(). Блок слитка содержит $(thing)Сырые железные слитки$(), которые можно получить, многократно добывая блок слитка киркой. Любое железо, которое не умещается в 100мБ, теряется."
+      "text": "The bloomery consumes $(thing)2 Charcoal$(), and $(thing)100 mB of Cast Iron$() to produce one $(thing)Bloom$(). After filling the bloomery with a combination of $(thing)Charcoal$() and $(thing)Ore$(), light the bloomery block, and wait 15 hours for the bloomery to smelt. When the bloomery shuts off, it leaves behind a $(thing)Bloom$() block. This contains $(thing)Raw Iron Blooms$() which can be obtained by mining the $(thing)Bloom$() repeatedly with a pickaxe."
     },
     {
       "type": "patchouli:multiblock",
@@ -52,7 +52,7 @@
         }
       },
       "name": "Блок слитка",
-      "text": "Блок слитка в полном расцвете.",
+      "text": "A large $(thing)Bloom$().",
       "enable_visualize": false
     },
     {
@@ -69,10 +69,6 @@
       "type": "patchouli:text",
       "text": "$(li)Если в доменной печи окажется больше предметов, чем она может вместить на основе своего дымохода, она попытается вытолкнуть их наружу.$()$(li)Чтобы забрать свои предметы из незажженной доменной печи, не ломайте башню из расплавленных блоков. Сломайте блок доменной печи.$()$(li)Слитки будут плавиться только в чугун, а не в кованое железо. Их нужно обрабатывать!$()",
       "title": "Заметки кузнеца"
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(li)Доменная печь заботится о количестве брошенных в нее предметов, а не о качестве. Использование богатой руды в доменной печи потребляет такое же количество угля, как и бедной руды!$()$(li)Расплавленные блоки легко распространяют огонь на окружающую среду! Будьте осторожны.$()"
     }
   ],
   "read_by_default": true,

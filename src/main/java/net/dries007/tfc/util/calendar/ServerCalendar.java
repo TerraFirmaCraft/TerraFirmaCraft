@@ -23,7 +23,7 @@ import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.util.ReentrantListener;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
 
-public class ServerCalendar extends Calendar
+public final class ServerCalendar extends Calendar
 {
     public static final int SYNC_INTERVAL = 20; // Number of ticks between sync attempts. This mimics vanilla's time sync
     public static final int TIME_DESYNC_THRESHOLD = 5;

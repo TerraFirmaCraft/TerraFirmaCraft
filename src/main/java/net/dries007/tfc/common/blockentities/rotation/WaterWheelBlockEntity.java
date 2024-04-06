@@ -80,7 +80,7 @@ public class WaterWheelBlockEntity extends TickableBlockEntity implements Rotati
      * Check if the water wheel is obstructed, and calculate the potential flow rate.
      * The flow rate is based on a contributing flow and obstructing flow.
      * <ul>
-     *     <li><strong>Contributing flow can only be provided by flowing river water, in the lower two blocks. The maximum contributing flow is 2 x 5 x 1.0f, with all blocks flowing in the exact correct direction.</strong></li>
+     *     <li><strong>Contributing flow</strong> can only be provided by flowing river water, in the lower two blocks. The maximum contributing flow is 2 x 5 x 1.0f, with all blocks flowing in the exact correct direction.</li>
      *     <li><strong>Obstructing flow</strong> can occur from many source, including stationary water blocks in the way, other water blocks at or above the water wheel's center line, or even flowing river water in the wrong direction.</li>
      * </ul>
      * The net flow is based on all possible contributing flows, less all possible obstructing flows.
