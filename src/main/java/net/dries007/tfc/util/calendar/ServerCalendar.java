@@ -8,6 +8,7 @@ package net.dries007.tfc.util.calendar;
 
 import java.time.LocalDate;
 import java.time.Year;
+import net.minecraft.gametest.framework.GameTestServer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -156,6 +157,13 @@ public final class ServerCalendar extends Calendar
 
         resetTo(CalendarWorldData.get(server.overworld()).getCalendar());
         sendUpdatePacket();
+
+        // In a game test server environment, we want the calendar to progress, in order for some tests to work properly
+        // So, just force it to simulate players logged on
+        if (server instanceof GameTestServer)
+        {
+            setPlayersLoggedOn(true);
+        }
     }
 
     void onServerStop()
