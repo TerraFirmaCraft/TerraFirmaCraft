@@ -1,24 +1,58 @@
+This update brings tweaks to world generation, a reworked bloomery, some fixes and various other minor improvements. Enjoy!
+
 ### Changes
 
-- Made blood lilies an indicator for kaolin clay
-- Made kaolin clay grass appear as silt grass in Jade.
-- Added a process of making parchment from animal hides.
-- Added pumice groundcover rocks.
-- Reworked fire spreading to prevent fire spreading through solid blocks.
-- Reworked wind:
-  - The wind direction in oceans is now largely predictable and based on the z coordinate
-  - The wind in oceans switches directions at night.
-  - Thunder levels are no longer a factor in how strong wind is. This should make storms a bit less severe.
-- Allow pot recipes with no items (#2639)
-- Re-added an API for restricting structure spawning based on climate. Use the `tfc:climate` structure placement to take advantage of this.
-- Allow creeping plants to be placed on any solid surface (#2566)
+- The bloomery has had a significant rework with how it consumes fuel and ore (#2669)
+  - The separate "fuel slots" and "ore slots" are now merged - the bloomery has capacity for **16 items** per layer, up to a maximum of 48
+  - The output of the bloomery is now based on the mix of ore and charcoal. One bloom is produced for every **100 mB of iron, and 2x charcoal**.
+  - The Field Guide has been updated with this new information
+- World generation changes:
+  - Shores found near oceans / beaches are now more varied, and can form rocky cliffs, small ledges, or gradual slopes
+  - The "Inverted Badlands" biome is less common, primarily in high altitude areas, where it blended poorly with higher altitude biomes
+  - Both types of "Badlands" biomes generate less sand, and more grass, in higher rainfall areas
+  - Banana trees being are now much more common (#2652)
+- Moss now will grow on blocks which are contacted on any side by water, not just directly above
+- Added a slider in the world generation customization screen for "grass density", which affects all TFC placed grass features
+- Added an `ru_ru` localization for the Field Guide (#2653)
 
 ### Fixes
-- Fix the melt amount of wrought iron grills being wrong (#2642)
-- Fix an issue that caused problems depending on TFC in a dev environment (#2638)
-- Fix projected disc veins not being compatible with indicators (#2588)
-- Fix being able to place items with 'V' in adventure or spectator mode
-- Re-disable sodium/embeddium's mixins to biome colors (#2279)
-- Fix reused ingredients in meals not combining nutrient values (#2637)
-- Disabled vanilla bed recipe (#2647)
-- Disabled vanilla lantern recipe
+
+- Fix sheet piles generating incorrect particles when tapped, broken, either in the wrong location or with the wrong metal
+- Fix single-count sheet piles dropping as an item when broken in creative mode
+- Fix empty molds not stacking in certain situations when they should (#2651)
+- Fix ingot piles making unknown texture particles when broken
+- Fix ingot pile extract returning an item in creative mode
+- Fix the "stack food" keybind voiding inputs if you hovered over the output slot of the inventory crafting menu
+- Fix issues with interacting with lamps, either filling, draining, or lighting. They should behave much more predictably now (#2649)
+- Fix spectating non-players breaking the experience bar rendering
+- Fix a typo in an advancement description
+- Fix being able to shift-click items into a pot while boiling (#2654)
+- Fix scythe not working in creative mode (#2666)
+- Fix client-side particles behaving in non-random ways when certain situations were present (#2665)
+- Fix river height not being included in structure lookahead - this should prevent structures (i.e. villages) from generating "floating" over rivers
+- Remove (broken) Antique Atlas support (#2664). For more information, please read the [associated commit message](https://github.com/TerraFirmaCraft/TerraFirmaCraft/commit/3d8e09e9f5bc028989ffce485abed12e4af896d3)
+- Fix a slab duplication exploit involving the chisel
+- Fix the highlight boxes for i.e. chisel placement, sluice highlights, not drawing when viewed from certain angles.
+
+### For Pack Makers
+
+This update changes the format of a bloomery recipe in one important but required way. The `catalyst` field of a [Bloomery Recipe](https://terrafirmacraft.github.io/Documentation/1.20.x/data/recipes/#bloomery) has changed from an [Ingredient](https://terrafirmacraft.github.io/Documentation/1.20.x/data/ingredients/) to an [ItemStackIngredient](https://terrafirmacraft.github.io/Documentation/1.20.x/data/common-types/#item-stack-ingredients), in tandem with the reworked behavior described above.
+
+Old:
+
+```json
+  "catalyst": {
+    "item": "minecraft:charcoal"
+  },
+```
+
+New:
+
+```json
+  "catalyst": {
+    "ingredient": {
+      "item": "minecraft:charcoal"
+    },
+    "count": 2
+  },
+```
