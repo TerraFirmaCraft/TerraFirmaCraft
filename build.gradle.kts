@@ -126,7 +126,7 @@ minecraft {
 
     runs {
         all {
-            //args("-mixin.config=$modId.mixins.json")
+            args("-mixin.config=$modId.mixins.json")
 
             property("forge.logging.console.level", "debug")
             property("forge.enabledGameTestNamespaces", modId)
