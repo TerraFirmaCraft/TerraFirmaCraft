@@ -35,7 +35,6 @@ import net.dries007.tfc.common.container.ScribingTableContainer;
 
 public class ScribingTableBlock extends HorizontalDirectionalBlock implements IForgeBlockExtension
 {
-    public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     private static final Component CONTAINER_TITLE = Component.translatable("tfc.screen.scribing_table");
     private static final VoxelShape BASE_SHAPE = Shapes.or(
         // Top

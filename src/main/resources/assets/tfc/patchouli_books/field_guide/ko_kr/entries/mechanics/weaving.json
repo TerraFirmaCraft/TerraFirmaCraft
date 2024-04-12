@@ -52,6 +52,7 @@
     },
     {
       "type": "tfc:loom_recipe",
+      "anchor": "burlap_cloth",
       "recipe": "tfc:loom/burlap_cloth",
       "text": "$(thing)삼베 천$()은 쓰임새가 없지만, $(l:mechanics/crops#jute)황마 섬유$()로 만들 수는 있습니다."
     },

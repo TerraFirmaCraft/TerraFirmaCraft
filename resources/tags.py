@@ -46,7 +46,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('waxes_scraping_surface', 'tfc:glue', 'minecraft:honeycomb')
     rm.item_tag('scrapable', *['tfc:%s_%s_hide' % (size, hide) for size in ('small', 'medium', 'large') for hide in ('soaked', 'sheepskin')], 'tfc:unrefined_paper')
     rm.item_tag('glassworking_tools', 'tfc:paddle', 'tfc:jacks', 'tfc:gem_saw')
-    rm.item_tag('usable_on_tool_rack', 'tfc:firestarter', 'minecraft:bow', 'minecraft:crossbow', 'minecraft:flint_and_steel', 'minecraft:spyglass', 'minecraft:brush', 'tfc:spindle', '#tfc:all_blowpipes', '#tfc:glassworking_tools')
+    rm.item_tag('usable_on_tool_rack', 'tfc:firestarter', 'minecraft:bow', 'minecraft:crossbow', 'minecraft:flint_and_steel', 'minecraft:spyglass', 'minecraft:brush', 'tfc:spindle', '#tfc:all_blowpipes', '#tfc:glassworking_tools', 'tfc:bone_needle')
     rm.item_tag('usable_in_powder_keg', 'minecraft:gunpowder')
     rm.item_tag('usable_in_bookshelf', '#tfc:books')
     rm.item_tag('compost_greens_low', '#tfc:plants')
@@ -58,6 +58,9 @@ def generate(rm: ResourceManager):
     rm.item_tag('compost_poisons', '#tfc:foods/meats', 'minecraft:bone')
     rm.item_tag('scribing_ink', 'minecraft:black_dye')
     rm.item_tag('powders', 'minecraft:gunpowder', 'minecraft:redstone', 'minecraft:glowstone_dust', 'minecraft:blaze_powder', 'minecraft:sugar')
+    rm.item_tag('sewing_light_cloth', 'tfc:wool_cloth', 'tfc:silk_cloth')
+    rm.item_tag('sewing_dark_cloth', 'tfc:burlap_cloth')
+    rm.item_tag('sewing_needles', 'tfc:bone_needle')
     rm.item_tag('foods', 'minecraft:egg')
 
     # TFC Tags: Functionality
@@ -257,6 +260,7 @@ def generate(rm: ResourceManager):
         rm.block_and_item_tag('fallen_leaves', item('fallen_leaves'))
         rm.block_and_item_tag('tool_racks', plank('tool_rack'))
         rm.block_and_item_tag('scribing_tables', item('scribing_table'))
+        rm.block_and_item_tag('sewing_tables', item('sewing_table'))
         rm.block_and_item_tag('jar_shelves', item('jar_shelf'))
         rm.block_and_item_tag('water_wheels', item('water_wheel'))
         rm.block_and_item_tag('%s_logs' % wood, item('log'), item('wood'), item('stripped_log'), item('stripped_wood'))
@@ -661,7 +665,7 @@ def generate(rm: ResourceManager):
     rm.block_tag('minecraft:mineable/axe', *[
         *[
             'tfc:wood/%s/%s' % (variant, wood)
-            for variant in ('log', 'stripped_log', 'wood', 'stripped_wood', 'planks', 'twig', 'vertical_support', 'horizontal_support', 'sluice', 'chest', 'trapped_chest', 'barrel', 'lectern', 'scribing_table', 'jar_shelf', 'axle', 'encased_axle', 'bladed_axle', 'clutch', 'gear_box', 'windmill', 'water_wheel')
+            for variant in ('log', 'stripped_log', 'wood', 'stripped_wood', 'planks', 'twig', 'vertical_support', 'horizontal_support', 'sluice', 'chest', 'trapped_chest', 'barrel', 'lectern', 'scribing_table', 'sewing_table', 'jar_shelf', 'axle', 'encased_axle', 'bladed_axle', 'clutch', 'gear_box', 'windmill', 'water_wheel')
             for wood in WOODS.keys()
         ],
         *[

@@ -146,6 +146,7 @@ def generate(rm: ResourceManager):
     item_size(rm, 'quern', 'tfc:quern', Size.very_large, Weight.very_heavy)
     item_size(rm, 'tool_racks', '#tfc:tool_racks', Size.large, Weight.very_heavy)
     item_size(rm, 'chests', '#forge:chests', Size.large, Weight.light)
+    item_size(rm, 'tables', ['#tfc:scribing_tables', '#tfc:sewing_tables', 'minecraft:loom'], Size.large, Weight.light)
     item_size(rm, 'slabs', '#minecraft:slabs', Size.small, Weight.very_light)
     item_size(rm, 'vessels', '#tfc:vessels', Size.normal, Weight.heavy)
     item_size(rm, 'large_vessels', '#tfc:large_vessels', Size.huge, Weight.heavy)
@@ -762,6 +763,7 @@ def trim_material(rm: ResourceManager, name: str, color: str, ingredient: str, i
         'ingredient': ingredient,
         'item_model_index': item_model_index
     })
+    rm.item_tag('minecraft:trim_materials', ingredient)
 
 def climate_range(rm: ResourceManager, name_parts: utils.ResourceIdentifier, hydration: Tuple[int, int, int] = None, temperature: Tuple[float, float, float] = None):
     data = {}

@@ -1793,6 +1793,10 @@ def generate(rm: ResourceManager):
         }, parent='tfc:block/scribing_table')
         block.with_item_model().with_lang(lang("%s scribing table" % wood)).with_block_loot('tfc:wood/scribing_table/%s' % wood)
 
+        block = rm.blockstate('wood/sewing_table/%s' % wood, variants=four_rotations('tfc:block/wood/sewing_table/%s' % wood, (90, None, 180, 270))).with_item_model()
+        rm.block_model(('wood', 'sewing_table', wood), {'0': 'tfc:block/wood/log/%s' % wood, '1': 'tfc:block/wood/planks/%s' % wood}, 'tfc:block/sewing_table')
+        block.with_lang(lang('%s sewing table', wood)).with_block_loot('tfc:wood/sewing_table/%s' % wood)
+
         block = rm.blockstate('wood/jar_shelf/%s' % wood, variants=four_rotations('tfc:block/wood/jar_shelf/%s' % wood, (90, None, 180, 270)))
         block.with_block_model(textures={'0': 'tfc:block/wood/planks/%s' % wood}, parent='tfc:block/jar_shelf').with_item_model().with_lang(lang('%s jar shelf', wood)).with_block_loot('tfc:wood/jar_shelf/%s' % wood)
 

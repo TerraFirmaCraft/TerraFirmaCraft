@@ -52,6 +52,7 @@
     },
     {
       "type": "tfc:loom_recipe",
+      "anchor": "burlap_cloth",
       "recipe": "tfc:loom/burlap_cloth",
       "text": "$(thing)Burlap Cloth$() does not have a use, but it can be made from $(l:mechanics/crops#jute)Jute Fiber$()."
     },

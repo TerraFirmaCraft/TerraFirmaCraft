@@ -257,6 +257,9 @@ public class TFCTags
         public static final TagKey<Item> SEALED_JARS = create("sealed_jars");
         public static final TagKey<Item> UNSEALED_JARS = create("unsealed_jars");
         public static final TagKey<Item> WINDMILL_BLADES = create("windmill_blades");
+        public static final TagKey<Item> SEWING_DARK_CLOTH = create("sewing_dark_cloth");
+        public static final TagKey<Item> SEWING_LIGHT_CLOTH = create("sewing_light_cloth");
+        public static final TagKey<Item> SEWING_NEEDLES = create("sewing_needles");
 
         public static TagKey<Item> mobEquipmentSlotTag(EquipmentSlot slot)
         {

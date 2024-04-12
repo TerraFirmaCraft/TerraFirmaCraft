@@ -52,6 +52,7 @@
     },
     {
       "type": "tfc:loom_recipe",
+      "anchor": "burlap_cloth",
       "recipe": "tfc:loom/burlap_cloth",
       "text": "$(thing)Мішковина$() не має застосування, але її можна виготовити з $(l:mechanics/crops#jute)джутового волокна$()."
     },

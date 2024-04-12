@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/sewing_table",
+  "textures": {
+    "0": "tfc:block/wood/log/sycamore",
+    "1": "tfc:block/wood/planks/sycamore"
+  }
+}
