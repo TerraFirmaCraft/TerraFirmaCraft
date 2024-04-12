@@ -165,7 +165,7 @@ def generate(rm: ResourceManager):
         rm.crafting_shaped('crafting/wood/%s_barrel' % wood, ['X X', 'X X', 'XXX'], {'X': item('lumber')}, item('barrel')).with_advancement(item('lumber'))
         rm.crafting_shaped('crafting/wood/%s_lectern' % wood, ['XXX', ' Y ', ' X '], {'X': item('lumber'), 'Y': plank('bookshelf')}, item('lectern')).with_advancement(plank('bookshelf'))
         rm.crafting_shaped('crafting/wood/%s_scribing_table' % wood, ['F B', 'XXX', 'Y Y'], {'F': '#forge:feathers', 'B': 'minecraft:black_dye', 'X': plank('slab'), 'Y': item('planks')}, item('scribing_table')).with_advancement(item('planks'))
-        rm.crafting_shaped('crafting/wood/%s_sewing_table' % wood, [' LS', 'XXX', 'Y Y'], {'S': '#forge:shears', 'L': '#foge:leather', 'X': item('planks'), 'Y': item('log')}, item('sewing_table')).with_advancement(item('planks'))
+        rm.crafting_shaped('crafting/wood/%s_sewing_table' % wood, [' LS', 'XXX', 'Y Y'], {'S': '#forge:shears', 'L': '#forge:leather', 'X': item('planks'), 'Y': item('log')}, item('sewing_table')).with_advancement(item('planks'))
         rm.crafting_shaped('crafting/wood/%s_wood' % wood, ['XX', 'XX'], {'X': item('log')}, (3, item('wood'))).with_advancement(item('log'))
         rm.crafting_shapeless('crafting/wood/%s_chest_minecart' % wood, (item('chest'), 'minecraft:minecart'), item('chest_minecart'))
         rm.crafting_shaped('crafting/wood/%s_shelf' % wood, ['XXX', 'Y Y', 'Z Z'], {'X': item('planks'), 'Y': item('lumber'), 'Z': '#forge:rods/wooden'}, (2, item('jar_shelf'))).with_advancement(item('lumber'))
@@ -315,6 +315,7 @@ def generate(rm: ResourceManager):
 
     rm.crafting_shaped('crafting/vanilla/white_banner', ['X ', 'X ', 'Z '], {'X': '#tfc:high_quality_cloth', 'Z': '#forge:rods/wooden'}, 'minecraft:white_banner').with_advancement('#tfc:high_quality_cloth')
     rm.crafting_shaped('crafting/vanilla/loom', ['XX', 'YY'], {'X': '#forge:string', 'Y': '#minecraft:planks'}, 'minecraft:loom').with_advancement('#forge:string')
+    rm.crafting_shaped('crafting/vanilla/smithing_table', ['XX', 'YZ'], {'X': 'minecraft:black_dye', 'Y': '#tfc:workbenches', 'Z': '#forge:sheets/wrought_iron'}, 'minecraft:smithing_table').with_advancement('#forge:sheets/wrought_iron')
     rm.crafting_shaped('crafting/vanilla/shield', ['XYX', 'XXX', ' Z '], {'X': '#tfc:lumber', 'Y': 'tfc:glue', 'Z': '#forge:rods/wooden'}, 'minecraft:shield').with_advancement('#tfc:lumber')
     rm.crafting_shapeless('crafting/vanilla/disc_11', ('tfc:blank_disc', '#tfc:rock_knapping'), 'minecraft:music_disc_11').with_advancement('tfc:blank_disc')
     damage_shapeless(rm, 'crafting/vanilla/crafting_table', ('#tfc:saws', '#tfc:workbenches'), 'minecraft:crafting_table').with_advancement('#tfc:saws')
@@ -1028,6 +1029,198 @@ def generate(rm: ResourceManager):
         1, 0, 0, 0, 0, 0, 0, 1,
         1, 1, 1, 1, 1, 1, 1, 1,
     ], 'minecraft:mojang_banner_pattern')
+    sewing_recipe(rm, 'coast_trim', [
+        0, 0, 0, 0, 0, 1, 0, 1, 0,
+        0, 0, 0, 0, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 1, 0, 1, 0,
+    ], [
+        0, 0, 0, 0, 0, 1, 1, 0,
+        0, 0, 0, 0, 1, 1, 0, 0,
+        0, 0, 0, 0, 1, 1, 0, 0,
+        0, 0, 0, 0, 0, 1, 1, 0,
+    ], 'minecraft:coast_armor_trim_smithing_template')
+    sewing_recipe(rm, 'dune_trim', [
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 0, 0, 0,
+        0, 0, 0, 1, 0, 1, 0, 0, 0,
+        0, 0, 1, 0, 0, 0, 1, 0, 0,
+        0, 1, 0, 0, 0, 0, 0, 1, 0,
+    ], [
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 1, 1, 0, 0, 0,
+      0, 0, 1, 1, 1, 1, 0, 0,
+      0, 1, 1, 1, 1, 1, 1, 0,
+    ], 'minecraft:dune_armor_trim_smithing_template')
+    sewing_recipe(rm, 'eye_trim', [
+        0, 0, 0, 1, 0, 1, 0, 0, 0,
+        0, 0, 1, 0, 0, 0, 1, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 1, 0, 0, 0, 1, 0, 0,
+        0, 0, 0, 1, 0, 1, 0, 0, 0,
+    ], [
+      0, 0, 0, 1, 1, 0, 0, 0,
+      0, 0, 1, 0, 0, 1, 0, 0,
+      0, 0, 1, 0, 0, 1, 0, 0,
+      0, 0, 0, 1, 1, 0, 0, 0,
+    ], 'minecraft:eye_armor_trim_smithing_template')
+    sewing_recipe(rm, 'host_trim', [
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        1, 0, 1, 0, 1, 0, 1, 0, 1,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 1, 1, 0, 0,
+    ], [
+      0, 0, 0, 0, 0, 0, 0, 0,
+      1, 1, 1, 1, 1, 1, 1, 1,
+      0, 0, 0, 0, 0, 1, 0, 0,
+      0, 0, 0, 0, 0, 1, 0, 0,
+    ], 'minecraft:host_armor_trim_smithing_template')
+    sewing_recipe(rm, 'raiser_trim', [
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 1, 1, 1, 1, 1, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        1, 1, 1, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+    ], [
+      0, 0, 0, 0, 0, 1, 1, 1,
+      0, 0, 0, 1, 1, 1, 0, 0,
+      0, 1, 1, 1, 0, 0, 0, 0,
+      1, 1, 0, 0, 0, 0, 0, 0,
+    ], 'minecraft:raiser_armor_trim_smithing_template')
+    sewing_recipe(rm, 'rib_trim', [
+        0, 0, 1, 0, 1, 0, 1, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 1, 0, 1, 0, 1, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 1, 0, 1, 0, 1, 0, 0, 0,
+    ], [
+      0, 0, 1, 0, 1, 0, 1, 0,
+      0, 0, 1, 0, 1, 0, 1, 0,
+      0, 1, 0, 1, 0, 1, 0, 0,
+      0, 1, 0, 1, 0, 1, 0, 0,
+    ], 'minecraft:rib_armor_trim_smithing_template')
+    sewing_recipe(rm, 'sentry_trim', [
+        0, 0, 0, 1, 0, 1, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        1, 0, 1, 1, 0, 1, 1, 0, 1,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 1, 0, 1, 0, 0, 0,
+    ], [
+      0, 0, 0, 1, 1, 0, 0, 0,
+      1, 1, 1, 0, 0, 1, 1, 1,
+      0, 0, 1, 0, 0, 1, 0, 0,
+      0, 0, 0, 1, 1, 0, 0, 0,
+    ], 'minecraft:sentry_armor_trim_smithing_template')
+    sewing_recipe(rm, 'shaper_trim', [
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+    ], [
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+    ], 'minecraft:shaper_armor_trim_smithing_template')
+    sewing_recipe(rm, 'silence_trim', [
+        0, 0, 1, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 1, 0, 1, 1, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 1, 1, 0, 0,
+    ], [
+      0, 0, 1, 0, 0, 0, 0, 0,
+      0, 0, 1, 1, 1, 0, 0, 0,
+      0, 0, 0, 0, 1, 0, 0, 0,
+      0, 0, 0, 0, 1, 1, 0, 0,
+    ], 'minecraft:silence_armor_trim_smithing_template')
+    sewing_recipe(rm, 'snout_trim', [
+        0, 1, 0, 0, 0, 0, 0, 1, 0,
+        1, 0, 1, 0, 0, 0, 1, 0, 1,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        1, 0, 1, 0, 0, 0, 1, 0, 1,
+        0, 1, 0, 0, 0, 0, 0, 1, 0,
+    ], [
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 1, 0, 0, 0, 0, 1, 0,
+      0, 1, 0, 0, 0, 0, 1, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+    ], 'minecraft:snout_armor_trim_smithing_template')
+    sewing_recipe(rm, 'spire_trim', [
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 1, 0, 0, 0, 1, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 1, 1, 0, 1, 1, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+    ], [
+      0, 0, 1, 0, 0, 1, 0, 0,
+      0, 0, 1, 0, 0, 1, 0, 0,
+      0, 0, 1, 0, 0, 1, 0, 0,
+      0, 0, 1, 1, 1, 1, 0, 0,
+    ], 'minecraft:spire_armor_trim_smithing_template')
+    sewing_recipe(rm, 'tide_trim', [
+        0, 1, 0, 1, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 1, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 1, 0, 0,
+        0, 1, 0, 1, 0, 0, 0, 0, 0,
+    ], [
+      0, 1, 1, 1, 0, 0, 0, 0,
+      0, 0, 0, 0, 1, 1, 1, 0,
+      0, 0, 0, 0, 1, 1, 1, 0,
+      0, 1, 1, 1, 0, 0, 0, 0,
+    ], 'minecraft:tide_armor_trim_smithing_template')
+    sewing_recipe(rm, 'vex_trim', [
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        1, 1, 1, 1, 0, 1, 1, 0, 0,
+        0, 0, 0, 0, 0, 0, 1, 0, 0,
+        1, 1, 1, 1, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+    ], [
+      0, 0, 0, 0, 0, 0, 0, 0,
+      1, 1, 1, 0, 0, 1, 0, 0,
+      1, 1, 1, 0, 1, 0, 0, 0,
+      1, 1, 1, 1, 1, 0, 0, 0,
+    ], 'minecraft:vex_armor_trim_smithing_template')
+    sewing_recipe(rm, 'ward_trim', [
+        0, 0, 0, 0, 0, 1, 1, 0, 0,
+        0, 1, 0, 0, 0, 0, 0, 0, 0,
+        0, 1, 0, 0, 0, 1, 1, 0, 0,
+        0, 1, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 1, 1, 0, 0,
+    ], [
+      0, 0, 0, 0, 0, 1, 0, 0,
+      0, 1, 1, 0, 0, 1, 0, 0,
+      0, 1, 1, 0, 0, 1, 0, 0,
+      0, 0, 0, 0, 0, 1, 0, 0,
+    ], 'minecraft:ward_armor_trim_smithing_template')
+    sewing_recipe(rm, 'wayfinder_trim', [
+        0, 1, 0, 0, 0, 0, 0, 0, 0,
+        0, 1, 0, 0, 0, 0, 1, 1, 0,
+        0, 0, 0, 0, 0, 0, 1, 1, 0,
+        0, 0, 1, 0, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 1, 0,
+    ], [
+      0, 1, 0, 0, 0, 1, 1, 0,
+      0, 1, 1, 0, 0, 1, 0, 1,
+      0, 0, 1, 0, 1, 0, 1, 0,
+      0, 0, 1, 1, 0, 0, 0, 1,
+    ], 'minecraft:wayfinder_armor_trim_smithing_template')
+    sewing_recipe(rm, 'wild_trim', [
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        1, 1, 0, 0, 0, 0, 0, 1, 1,
+        0, 0, 0, 1, 1, 1, 0, 0, 0,
+        0, 0, 0, 1, 0, 1, 0, 0, 0,
+        0, 0, 0, 1, 0, 1, 0, 0, 0,
+    ], [
+      1, 1, 0, 0, 0, 0, 1, 1,
+      0, 1, 1, 0, 0, 1, 1, 0,
+      0, 0, 0, 1, 1, 0, 0, 0,
+      0, 0, 0, 1, 1, 0, 0, 0,
+    ], 'minecraft:wild_armor_trim_smithing_template')
 
     # Anvil Working Recipes
     metal = '?'

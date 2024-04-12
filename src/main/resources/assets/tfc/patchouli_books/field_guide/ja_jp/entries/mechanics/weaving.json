@@ -52,6 +52,7 @@
     },
     {
       "type": "tfc:loom_recipe",
+      "anchor": "burlap_cloth",
       "recipe": "tfc:loom/burlap_cloth",
       "text": "$(thing)麻布$() には使い道がありませんが、$(l:mechanics/crops#jute)ジュートの繊維$() から作ることができます。"
     },

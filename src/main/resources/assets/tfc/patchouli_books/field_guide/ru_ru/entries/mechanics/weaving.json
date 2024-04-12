@@ -52,6 +52,7 @@
     },
     {
       "type": "tfc:loom_recipe",
+      "anchor": "burlap_cloth",
       "recipe": "tfc:loom/burlap_cloth",
       "text": "$(thing)Мешковину$() нельзя использовать, но ее можно сделать из $(l:mechanics/crops#jute)Волокна джута$()."
     },

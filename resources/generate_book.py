@@ -771,7 +771,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             image(*['tfc:textures/gui/book/tutorial/loom_%s.png' % stage for stage in ('empty', 'full', 'working', 'done')], text_contents='The stages of the loom working.'),
             loom_recipe('tfc:loom/wool_block', '$(thing)Wool Cloth$() can be re-woven into $(thing)Wool Blocks$(). Wool blocks can be $(l:mechanics/dye)dyed$().').link('minecraft:white_wool'),
             loom_recipe('tfc:loom/silk_cloth', '$(thing)Silk Cloth$() can be made in the loom out of $(thing)String$(). It can be used as a wool cloth substitute in some cases.').link('tfc:silk_cloth'),
-            loom_recipe('tfc:loom/burlap_cloth', '$(thing)Burlap Cloth$() does not have a use, but it can be made from $(l:mechanics/crops#jute)Jute Fiber$().').link('tfc:burlap_cloth'),
+            loom_recipe('tfc:loom/burlap_cloth', '$(thing)Burlap Cloth$() does not have a use, but it can be made from $(l:mechanics/crops#jute)Jute Fiber$().').link('tfc:burlap_cloth').anchor('burlap_cloth'),
             crafting('tfc:crafting/vanilla/color/light_blue_bed', 'tfc:crafting/vanilla/painting'),
         )),
         entry('papermaking', 'Papermaking', 'tfc:unrefined_paper', pages=(
@@ -888,6 +888,23 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             block_spotlight('', 'The scribing table.', 'tfc:wood/scribing_table/kapok'),
             crafting('tfc:crafting/wood/birch_scribing_table', text_contents='The scribing table crafting recipe.').link('#tfc:scribing_tables'),
             image('tfc:textures/gui/book/gui/scribing.png', text_contents='The scribing screen takes text entry at the top, an input on the left, a dye in the center. The output is taken from the right slot.', border=False),
+        )),
+        entry('sewing_table', 'Sewing Table', 'tfc:wood/sewing_table/oak', pages=(
+            text('The $(thing)Sewing Table$() is used to produce banner patterns and smithing templates. It requires $(l:mechanics/weaving#wool_cloth)Wool Cloth$(), $(l:mechanics/weaving#burlap_cloth)Burlap Cloth$(), String or Yarn, as well as a Needle.'),
+            crafting('tfc:crafting/bone_needle', text_contents='A needle for sewing can be made from a bone.'),
+            crafting('tfc:crafting/wood/sewing_table/oak', text_contents='The sewing table can be made from wood, leather, and a pair of shears.'),
+            text('The sewing table\'s inventory is similar to that of a crafting table. If you ever make a mistake, you can simply exit the inventory, and your items will be returned to you. There is a recipe book available in the GUI. Selecting the book opens a menu where you can select a recipe. This places small indicators of what steps to perform on the working surface.'),
+            page_break(),
+            image('tfc:textures/gui/book/gui/sewing_table.png', text_contents='The sewing screen.'),
+            text('The slots on the left are for the string and the needle. The two bottom slots can hold any combination of burlap and wool cloth. The slot on the right will show the result when it is ready to be taken. Taking the result from the result slot completes the craft, and uses the items.'),
+            text('Each cloth item allows placing 8 squares of that material on the sewing surface. Similarly, each yarn item allows placing 16 stitches. When you have selected a recipe, just use the buttons on the top right of the screen to place squares and stitch them together as shown by the guide. Want to remove stitches? Use the red \'X\' button to get rid of squares.'),
+            crafting('tfc:crafting/vanilla/loom', text_contents='The banner loom, for making things with banner patterns, can be crafted to do work with banner patterns.'),
+            text('For information on the use of smithing templates, see the $(l:mechanics/armor_trims)Armor Trims$() chapter.'),
+            empty_last_page()
+        )),
+        entry('armor_trims', 'Armor Trims', 'minecraft:rib_armor_trim_smithing_template', pages=(
+            text('Armor trims are produced with a $(thing)Trim Material$() and a $(l:mechanics/sewing_table)Smithing Template$(). In TFC, all gems, along with Sterling Silver, Gold, Rose Gold, and Bismuth, can be used as trim materials. Armor trims are purely cosmetic.'),
+            crafting('tfc:crafting/vanilla/smithing_table', text_contents='The smithing table can be used to apply armor trims to TFC armor.'),
         )),
         entry('advanced_building_materials', 'Advanced Materials', 'tfc:brick/rhyolite', pages=(
             text('In addition to the primitive $(l:getting_started/building_materials)building materials$() of the stone age, the acquisition of metal tools allows the construction of more advanced building materials'),

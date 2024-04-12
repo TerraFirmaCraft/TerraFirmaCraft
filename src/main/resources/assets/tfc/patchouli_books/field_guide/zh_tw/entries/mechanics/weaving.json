@@ -52,6 +52,7 @@
     },
     {
       "type": "tfc:loom_recipe",
+      "anchor": "burlap_cloth",
       "recipe": "tfc:loom/burlap_cloth",
       "text": "$(l:mechanics/crops#jute)黃麻纖維$()可以織成$(thing)粗麻布$()，但現在看來它還是沒有什麼用的樣子。"
     },

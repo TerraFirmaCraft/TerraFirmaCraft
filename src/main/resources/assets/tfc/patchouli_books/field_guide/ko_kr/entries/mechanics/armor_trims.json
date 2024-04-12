@@ -1,0 +1,18 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Armor Trims",
+  "category": "tfc:mechanics",
+  "icon": "minecraft:rib_armor_trim_smithing_template",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Armor trims are produced with a $(thing)Trim Material$() and a $(l:mechanics/sewing_table)Smithing Template$(). In TFC, all gems, along with Sterling Silver, Gold, Rose Gold, and Bismuth, can be used as trim materials. Armor trims are purely cosmetic."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/vanilla/smithing_table",
+      "text": "The smithing table can be used to apply armor trims to TFC armor."
+    }
+  ],
+  "read_by_default": true
+}
