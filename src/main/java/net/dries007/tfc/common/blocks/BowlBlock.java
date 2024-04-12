@@ -19,6 +19,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.BowlBlockEntity;
@@ -26,6 +27,7 @@ import net.dries007.tfc.common.blocks.devices.DeviceBlock;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodTraits;
+import net.dries007.tfc.common.capabilities.food.IFood;
 import net.dries007.tfc.common.capabilities.glass.GlassOperation;
 import net.dries007.tfc.common.capabilities.glass.GlassWorkData;
 import net.dries007.tfc.common.items.Powder;
@@ -87,8 +89,8 @@ public class BowlBlock extends DeviceBlock
                 }
                 if (Helpers.isItem(held, TFCTags.Items.CAN_BE_SALTED) && Helpers.isItem(current, TFCItems.POWDERS.get(Powder.SALT).get()))
                 {
-                    final var food = Helpers.getCapability(held, FoodCapability.CAPABILITY);
-                    if (food != null && !food.getTraits().contains(FoodTraits.SALTED))
+                    final @Nullable IFood food = FoodCapability.get(held);
+                    if (food != null && !food.hasTrait(FoodTraits.SALTED))
                     {
                         final int toSalt = Math.min(held.getCount(), current.getCount());
                         final ItemStack salted = held.split(toSalt);

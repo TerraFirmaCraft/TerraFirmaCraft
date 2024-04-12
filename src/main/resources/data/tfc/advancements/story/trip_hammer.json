@@ -1,0 +1,39 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:story/brass_mechanisms",
+  "criteria": {
+    "trip_hammer": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:trip_hammer"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:trip_hammer"
+    },
+    "title": {
+      "translate": "tfc.advancements.story.trip_hammer.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.story.trip_hammer.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/rock/mossy_cobble/diorite.png"
+  },
+  "requirements": [
+    [
+      "trip_hammer"
+    ]
+  ]
+}

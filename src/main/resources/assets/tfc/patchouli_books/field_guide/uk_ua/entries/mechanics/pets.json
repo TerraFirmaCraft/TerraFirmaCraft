@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Улюбленці визнають певного гравця своїм $(thing)власником$(). Щоб стати власником свого улюбленця, треба годувати його до підвищення прирученості, вище 15%%. Твій улюбленець буде слухати лише твої команди.$(br2)Клік по улюбленцю, з барвником у руці, змінює колір його нашийника."
+      "text": "Pets recognize a certain player as their $(thing)Owner$(). To become a pet's owner, feed it to raise its familiarity above 15%%. Pets will only obey commands that come from their owner.$(br2)Clicking on a pet with $(l:mechanics/dye)dye$() changes its collar color."
     },
     {
       "type": "patchouli:entity",

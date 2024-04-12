@@ -26,7 +26,6 @@ import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.IFood;
 import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.TFCItems;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTransaction;
 import net.dries007.tfc.util.calendar.Calendars;
 
@@ -46,7 +45,7 @@ public class FoodBehaviorTests
     {
         final ItemStack grainStack = new ItemStack(TFCItems.FOOD.get(Food.WHEAT_FLOUR).get());
         final ItemStack waterStack = new ItemStack(Items.WATER_BUCKET);
-        final IFood grainFood = Helpers.getCapability(grainStack, FoodCapability.CAPABILITY);
+        final IFood grainFood = FoodCapability.get(grainStack);
 
         assertNotNull(grainFood);
         assertFalse(grainFood.isRotten());
@@ -72,7 +71,7 @@ public class FoodBehaviorTests
             assertNotNull(recipe);
 
             final ItemStack doughStack = recipe.assemble(container, ServerLifecycleHooks.getCurrentServer().registryAccess());
-            final IFood doughFood = Helpers.getCapability(doughStack, FoodCapability.CAPABILITY);
+            final IFood doughFood = FoodCapability.get(doughStack);
 
             assertFalse(doughStack.isEmpty());
             assertNotNull(doughFood);
@@ -86,7 +85,7 @@ public class FoodBehaviorTests
         final ItemStack foodStack = new ItemStack(TFCItems.FOOD.get(Food.BANANA).get());
         final ItemStack vesselStack = new ItemStack(TFCItems.VESSEL.get());
         final VesselLike vessel = VesselLike.get(vesselStack);
-        final IFood initialFood = Helpers.getCapability(foodStack, FoodCapability.CAPABILITY);
+        final IFood initialFood = FoodCapability.get(foodStack);
 
         assertNotNull(vessel);
         assertNotNull(initialFood);
@@ -97,7 +96,7 @@ public class FoodBehaviorTests
         assertTrue(excess.isEmpty());
 
         final ItemStack insideFoodStack = vessel.getStackInSlot(0);
-        final IFood insideFood = Helpers.getCapability(insideFoodStack, FoodCapability.CAPABILITY);
+        final IFood insideFood = FoodCapability.get(insideFoodStack);
 
         assertNotNull(insideFood);
 
@@ -106,7 +105,7 @@ public class FoodBehaviorTests
         assertTrue(insideExpiryDate > initialExpiryDate);
 
         final ItemStack afterExtractFoodStack = vessel.extractItem(0, 64, false);
-        final IFood afterExtractFood = Helpers.getCapability(afterExtractFoodStack, FoodCapability.CAPABILITY);
+        final IFood afterExtractFood = FoodCapability.get(afterExtractFoodStack);
 
         assertTrue(vessel.getStackInSlot(0).isEmpty());
         assertNotNull(afterExtractFood);

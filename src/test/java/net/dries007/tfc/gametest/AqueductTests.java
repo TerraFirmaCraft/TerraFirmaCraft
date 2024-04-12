@@ -8,17 +8,17 @@ package net.dries007.tfc.gametest;
 
 import java.util.Collection;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTestGenerator;
-import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.gametest.framework.TestFunction;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.gametest.GameTestHolder;
 
 import net.dries007.tfc.MyTest;
-import net.dries007.tfc.TestAssertions;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+
+import static net.dries007.tfc.GameTestAssertions.*;
+
 
 @GameTestHolder
 public class AqueductTests
@@ -26,151 +26,151 @@ public class AqueductTests
     @GameTestGenerator
     public Collection<TestFunction> generator()
     {
-        return TestAssertions.testGenerator();
+        return testGenerator();
     }
 
     @MyTest(structure = "aqueduct/u_bend_empty", timeoutTicks = 200)
-    public void testAddingWaterInUBend(GameTestHelper helper)
+    public void testAddingWaterInUBend()
     {
-        helper.setBlock(1, 2, 1, Blocks.WATER);
-        helper.succeedWhen(() -> helper.assertBlockPresent(Blocks.WATER, 1, 2, 3));
+        at(1, 2, 1).setBlock(Blocks.WATER);
+        succeedWhen(() -> at(1, 2, 3).is(Blocks.WATER));
     }
 
     @MyTest(structure = "aqueduct/u_bend_water")
-    public void testRemovingWaterInUBend(GameTestHelper helper)
+    public void testRemovingWaterInUBend()
     {
-        helper.setBlock(1, 2, 1, Blocks.POLISHED_ANDESITE); // Clear the water source
-        helper.succeedWhen(() -> helper.assertBlockPresent(Blocks.AIR, 1, 2, 3));
+        at(1, 2, 1).setBlock(Blocks.POLISHED_ANDESITE); // Clear the water source
+        succeedWhen(() -> at(1, 2, 3).isAir());
     }
 
     @MyTest(structure = "aqueduct/u_bend_water")
-    public void testRemovingAqueductInMiddleOfUBend(GameTestHelper helper)
+    public void testRemovingAqueductInMiddleOfUBend()
     {
-        helper.destroyBlock(new BlockPos(3, 2, 2));
-        helper.succeedWhen(() -> {
-            helper.assertBlockPresent(Blocks.AIR, 1, 2, 3);
-            helper.assertBlockState(new BlockPos(3, 2, 2), b -> !b.getFluidState().isSource(), () -> "Breaking an aqueduct should not leave a source block.");
+        at(3, 2, 2).destroyBlock();
+        succeedWhen(() -> {
+            at(1, 2, 3).isAir();
+            at(3, 2, 2).is(state -> !state.getFluidState().isSource(), "Breaking an aqueduct should not leave a source block.");
         });
     }
 
     @MyTest(structure = "aqueduct/cascade_empty")
-    public void testAddingWaterInCascade(GameTestHelper helper)
+    public void testAddingWaterInCascade()
     {
-        helper.setBlock(1, 4, 1, Blocks.WATER);
-        helper.succeedWhen(() -> helper.assertBlockPresent(Blocks.WATER, 7, 2, 1));
+        at(1, 4, 1).setBlock(Blocks.WATER);
+        succeedWhen(() -> at(7, 2, 1).is(Blocks.WATER));
     }
 
     @MyTest(structure = "aqueduct/cascade_water")
-    public void testRemovingWaterInCascade(GameTestHelper helper)
+    public void testRemovingWaterInCascade()
     {
-        helper.setBlock(1, 4, 1, Blocks.POLISHED_ANDESITE); // Clear the water source
-        helper.succeedWhen(() -> helper.assertBlockPresent(Blocks.AIR, 7, 2, 1));
+        at(1, 4, 1).setBlock(Blocks.POLISHED_ANDESITE); // Clear the water source
+        succeedWhen(() -> at(7, 2, 1).isAir());
     }
 
     @MyTest(structure = "aqueduct/line_empty")
-    public void testAddingWaterInLine(GameTestHelper helper)
+    public void testAddingWaterInLine()
     {
-        helper.setBlock(1, 2, 1, Blocks.WATER);
-        helper.succeedWhen(() -> helper.assertBlockPresent(Blocks.WATER, 5, 2, 1));
+        at(1, 2, 1).setBlock(Blocks.WATER);
+        succeedWhen(() -> at(5, 2, 1).is(Blocks.WATER));
     }
 
     @MyTest(structure = "aqueduct/line_water")
-    public void testRemovingAqueductInMiddleOfLine(GameTestHelper helper)
+    public void testRemovingAqueductInMiddleOfLine()
     {
-        helper.setBlock(1, 2, 1, Blocks.POLISHED_ANDESITE); // Clear the water source
-        helper.succeedWhen(() -> helper.assertBlockPresent(Blocks.AIR, 5, 2, 1));
+        at(1, 2, 1).setBlock(Blocks.POLISHED_ANDESITE); // Clear the water source
+        succeedWhen(() -> at(5, 2, 1).isAir());
     }
 
     @MyTest(structure = "aqueduct/line_water")
-    public void testRemovingWaterInMiddleOfLine(GameTestHelper helper)
+    public void testRemovingWaterInMiddleOfLine()
     {
-        helper.destroyBlock(new BlockPos(3, 2, 1));
-        helper.succeedWhen(() -> {
-            helper.assertBlockPresent(Blocks.AIR, 5, 2, 1);
-            helper.assertBlockState(new BlockPos(3, 2, 2), b -> !b.getFluidState().isSource(), () -> "Breaking an aqueduct should not leave a source block.");
+        at(3, 2, 1).destroyBlock();
+        succeedWhen(() -> {
+            at(5, 2, 1).isAir();
+            at(3, 2, 2).is(state -> !state.getFluidState().isSource(), "Breaking an aqueduct should not leave a source block.");
         });
     }
 
     @MyTest(structure = "aqueduct/loops_empty", timeoutTicks = 400)
-    public void testAddingWaterInLoops(GameTestHelper helper)
+    public void testAddingWaterInLoops()
     {
-        helper.setBlock(1, 2, 4, Blocks.WATER);
-        helper.succeedWhen(() -> helper.assertBlockPresent(Blocks.WATER, 1, 2, 2));
+        at(1, 2, 4).setBlock(Blocks.WATER);
+        succeedWhen(() -> at(1, 2, 2).is(Blocks.WATER));
     }
 
     @MyTest(structure = "aqueduct/loops_water")
-    public void testRemovingWaterInLoops(GameTestHelper helper)
+    public void testRemovingWaterInLoops()
     {
-        helper.setBlock(1, 2, 4, Blocks.POLISHED_ANDESITE); // Clear the water source
-        helper.succeedWhen(() -> helper.assertBlockPresent(Blocks.AIR, 1, 2, 2));
+        at(1, 2, 4).setBlock(Blocks.POLISHED_ANDESITE); // Clear the water source
+        succeedWhen(() -> at(1, 2, 2).isAir());
     }
 
     @MyTest(structure = "aqueduct/line_empty")
-    public void testAddingSaltWaterInLine(GameTestHelper helper)
+    public void testAddingSaltWaterInLine()
     {
-        helper.setBlock(1, 2, 1, TFCBlocks.SALT_WATER.get());
-        helper.succeedWhen(() -> helper.assertBlockPresent(TFCBlocks.SALT_WATER.get(), 5, 2, 1));
+        at(1, 2, 1).setBlock(TFCBlocks.SALT_WATER.get());
+        succeedWhen(() -> at(5, 2, 1).is(TFCBlocks.SALT_WATER.get()));
     }
 
     @MyTest(structure = "aqueduct/line_empty")
-    public void testAddingSpringWaterInLine(GameTestHelper helper)
+    public void testAddingSpringWaterInLine()
     {
-        helper.setBlock(1, 2, 1, TFCBlocks.SPRING_WATER.get());
-        helper.succeedWhen(() -> helper.assertBlockPresent(TFCBlocks.SPRING_WATER.get(), 5, 2, 1));
+        at(1, 2, 1).setBlock(TFCBlocks.SPRING_WATER.get());
+        succeedWhen(() -> at(5, 2, 1).is(TFCBlocks.SPRING_WATER.get()));
     }
 
     @MyTest(structure = "aqueduct/corner_empty")
-    public void testFlowingWaterDoesNotFillAqueducts(GameTestHelper helper)
+    public void testFlowingWaterDoesNotFillAqueducts()
     {
-        helper.setBlock(1, 2, 3, Blocks.WATER);
-        helper.runAfterDelay(100, () -> {
-            helper.assertBlockPresent(Blocks.AIR, 3, 2, 3);
-            helper.succeedWhen(() -> helper.assertBlockPresent(Blocks.AIR, 3, 2, 3));
+        at(1, 2, 3).setBlock(Blocks.WATER);
+        runAfterDelay(100, () -> {
+            at(3, 2, 3).isAir();
+            succeed();
         });
     }
 
     @MyTest(structure = "aqueduct/move_with_piston")
-    public void testMovingWithPistonDoesNotLeaveSourceBlocks(GameTestHelper helper)
+    public void testMovingWithPistonDoesNotLeaveSourceBlocks()
     {
-        helper.pullLever(3, 2, 4);
-        helper.succeedWhen(() -> {
-            helper.assertBlockPresent(Blocks.AIR, 1, 2, 1);
-            helper.assertBlockPresent(Blocks.AIR, 3, 2, 1);
+        at(3, 2, 4).pullLever();
+        succeedWhen(() -> {
+            at(1, 2, 1).isAir();
+            at(3, 2, 1).isAir();
         });
     }
 
     @MyTest(structure = "aqueduct/pickup_with_bucket")
-    public void testPickupWithBucketFromEnd(GameTestHelper helper)
+    public void testPickupWithBucketFromEnd()
     {
-        helper.pullLever(6, 3, 0);
-        helper.succeedWhen(() -> helper.assertBlockState(new BlockPos(6, 2, 1), state -> state.getFluidState().is(Fluids.WATER), () -> "Expected water"));
+        at(6, 3, 0).pullLever();
+        succeedWhen(() -> at(6, 2, 1).is(state -> state.getFluidState().is(Fluids.WATER), "Expected water"));
     }
 
     @MyTest(structure = "aqueduct/pickup_with_bucket")
-    public void testPickupWithBucketFromMiddle(GameTestHelper helper)
+    public void testPickupWithBucketFromMiddle()
     {
-        helper.pullLever(3, 3, 0);
-        helper.succeedWhen(() -> helper.assertBlockState(new BlockPos(3, 2, 1), state -> state.getFluidState().is(Fluids.WATER), () -> "Expected water"));
+        at(3, 3, 0).pullLever();
+        succeedWhen(() -> at(3, 2, 1).is(state -> state.getFluidState().is(Fluids.WATER), "Expected water"));
     }
 
     @MyTest(structure = "aqueduct/two_source")
-    public void testAqueductCannotCreateNewSourceBlocks(GameTestHelper helper)
+    public void testAqueductCannotCreateNewSourceBlocks()
     {
-        helper.setBlock(1, 2, 1, Blocks.WATER);
-        helper.setBlock(7, 2, 1, Blocks.WATER);
-        helper.runAfterDelay(80, () -> {
-            helper.assertBlockState(new BlockPos(4, 2, 1), state -> state.getFluidState().is(Fluids.FLOWING_WATER), () -> "Expected a non-source block of water");
-            helper.succeed();
+        at(1, 2, 1).setBlock(Blocks.WATER);
+        at(7, 2, 1).setBlock(Blocks.WATER);
+        runAfterDelay(80, () -> {
+            at(4, 2, 1).is(state -> state.getFluidState().is(Fluids.FLOWING_WATER), "Expected a non-source block of water");
+            succeed();
         });
     }
 
     @MyTest(structure = "aqueduct/place_with_bucket")
-    public void testPlaceWithBucket(GameTestHelper helper)
+    public void testPlaceWithBucket()
     {
-        helper.pullLever(1, 3, 0);
-        helper.runAfterDelay(80, () -> {
-            helper.assertBlockPresent(Blocks.AIR, 4, 2, 1);
-            helper.succeed();
+        at(1, 3, 0).pullLever();
+        runAfterDelay(80, () -> {
+            at(4, 2, 1).isAir();
+            succeed();
         });
     }
 }

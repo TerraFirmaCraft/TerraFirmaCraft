@@ -1,0 +1,46 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Dye",
+  "category": "tfc:mechanics",
+  "icon": "minecraft:red_dye",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "All 16 vanilla $(thing)Dye Colors$() can be obtained as items. Most flowers and other colorful plants can be ground into dye using a $(l:mechanics/quern)Quern$(). Powders of $(l:the_world/ores_and_minerals)metal ores$() can be crafted directly into dye. $(l:the_world/ores_and_minerals#graphite)Graphite$(), $(l:the_world/ores_and_minerals#kaolinite)Kaolinite$(), $(l:the_world/ores_and_minerals#sylvite)Sylvite$(), $(l:the_world/ores_and_minerals#lapis_lazuli)Lapis$(), Coke, and Charcoal powder can be crafted into dye as well."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:bucket/red_dye",
+      "title": "Dye Liquids",
+      "link_recipes": false,
+      "text": "Dyes can also be made into fluids. A dye item and 1000mB of $(item)Water$() boiled in a $(l:mechanics/pot)Pot$() produces the same amount of $(thing)Dye Fluid$(). Dye fluids are used in $(l:mechanics/barrels)Barrels$() to color items."
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "recipe": "tfc:barrel/dye/red_concrete_powder",
+      "text": "Dyeing items in a barrel is cheaper than using items, requiring only 25mB of dyed fluid."
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "recipe": "tfc:barrel/dye/disc_chirp",
+      "text": "Dye fluids can be used to finish $(item)Music Discs$()."
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "recipe": "tfc:barrel/dye/red_leather",
+      "text": "Dye fluids can even dye leather as if it were crafted!"
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "anchor": "lye",
+      "recipe": "tfc:barrel/dye/bleach_concrete_powder",
+      "text": "Five $(item)Wood Ash$() and 1000mB of $(item)Water$() boiled in a $(l:mechanics/pot)Pot$() produces lye. 25mB of Lye removes the color from a colored item."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)$(item)Black Dye$() is used for $(l:mechanics/scribing_table)Scribing Tables$().$(li)$(item)Red Dye$() is used for $(l:mechanics/powderkegs)Powderkegs$(). $(li)Unfired $(l:mechanics/decay#small_vessels)Small Vessels$() and $(l:mechanics/decay#large_vessels)Large Vessels$() can be dyed$().",
+      "title": "Miscellaneous"
+    }
+  ],
+  "read_by_default": true
+}

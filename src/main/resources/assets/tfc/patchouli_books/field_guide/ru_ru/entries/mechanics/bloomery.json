@@ -1,0 +1,80 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Доменная печь",
+  "category": "tfc:mechanics",
+  "icon": "tfc:bloomery",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Доменная печь$() используется для плавки $(thing)Железной руды$() в $(thing)Железные слитки$(), которые могут быть обработаны в $(thing)Кованое железо$(). Железные руды это $(l:the_world/ores_and_minerals#hematite)гематит$(), $(l:the_world/ores_and_minerals#limonite)лимонит$() и $(l:the_world/ores_and_minerals#magnetite)магнетит$(). Эти руды плавятся в $(thing)Чугун$(), а не в $(thing)Кованое железо$(). Все предметы, содержащие железо, плавятся в чугун. Чтобы превратить их в используемое железо, необходима доменная печь. Любой железный предмет может быть использован в доменной печи, включая железные инструменты и чугунные слитки!"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/bloomery",
+      "text": "Доменная печь сделана из 8 $(thing)Бронзовых двойных листов$()."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock_id": "tfc:bloomery",
+      "name": "Доменная печь",
+      "text": "Доменная печь минимального размера. Блок доменной печи открывается и закрывается с помощью $(item)$(k:key.use)$().",
+      "enable_visualize": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The bloomery can contain up to a maximum of 48 $(thing)Inputs$(), with 16 of each item per layer of the chimney. To add layers to the chimney, stack up two more layers of stone blocks.$(br2)To add items to the bloomery, climb up to the top and throw items inside. A tower of grey ore should form."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/bloomery_hole.png"
+      ],
+      "text": "Добавление предметов в доменную печь.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The bloomery consumes $(thing)2 Charcoal$(), and $(thing)100 mB of Cast Iron$() to produce one $(thing)Bloom$(). After filling the bloomery with a combination of $(thing)Charcoal$() and $(thing)Ore$(), light the bloomery block, and wait 15 hours for the bloomery to smelt. When the bloomery shuts off, it leaves behind a $(thing)Bloom$() block. This contains $(thing)Raw Iron Blooms$() which can be obtained by mining the $(thing)Bloom$() repeatedly with a pickaxe."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:bloom[layers=8]"
+        }
+      },
+      "name": "Блок слитка",
+      "text": "A large $(thing)Bloom$().",
+      "enable_visualize": false
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:anvil/refined_iron_bloom",
+      "text": "$(thing)Сырой железный слиток$() должен быть обработан на $(l:mechanics/anvils)наковальне$(), чтобы сделать $(thing)Очищенный железный слиток$()."
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:anvil/wrought_iron_from_bloom",
+      "text": "$(thing)Очищенный железный слиток$() должен быть обработан на $(l:mechanics/anvils)наковальне$(), чтобы сделать $(thing)Кованые железные слитки$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)Если в доменной печи окажется больше предметов, чем она может вместить на основе своего дымохода, она попытается вытолкнуть их наружу.$()$(li)Чтобы забрать свои предметы из незажженной доменной печи, не ломайте башню из расплавленных блоков. Сломайте блок доменной печи.$()$(li)Слитки будут плавиться только в чугун, а не в кованое железо. Их нужно обрабатывать!$()",
+      "title": "Заметки кузнеца"
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:bloom": 6,
+    "tfc:raw_iron_bloom": 7,
+    "tfc:refined_iron_bloom": 8
+  }
+}

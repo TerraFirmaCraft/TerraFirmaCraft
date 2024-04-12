@@ -33,7 +33,7 @@ public class CharcoalForgeScreen extends BlockEntityScreen<CharcoalForgeBlockEnt
     protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY)
     {
         super.renderBg(graphics, partialTicks, mouseX, mouseY);
-        int temp = (int) (51 * blockEntity.getTemperature() / Heat.maxVisibleTemperature());
+        int temp = Heat.scaleTemperatureForGui(blockEntity.getTemperature());
         if (temp > 0)
         {
             graphics.blit(texture, leftPos + 8, topPos + 76 - Math.min(51, temp), 176, 0, 15, 5);

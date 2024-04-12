@@ -50,16 +50,6 @@
 	{
       "when": {
         "part": "lower",
-        "age": "2",
-        "stage": "1"
-      },
-      "apply": {
-        "model": "tfc:block/plant/switchgrass_double_short_0b"
-      }
-    },
-	{
-      "when": {
-        "part": "lower",
         "age": "3"
       },
       "apply": {

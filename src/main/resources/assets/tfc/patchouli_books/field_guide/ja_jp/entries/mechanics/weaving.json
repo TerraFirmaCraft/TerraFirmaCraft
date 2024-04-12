@@ -43,7 +43,7 @@
     {
       "type": "tfc:loom_recipe",
       "recipe": "tfc:loom/wool_block",
-      "text": "$(thing)羊毛の布$() は $(thing)羊毛ブロック$() に編み直すことができます。 羊毛ブロックは染色することができます。"
+      "text": "$(thing)Wool Cloth$() can be re-woven into $(thing)Wool Blocks$(). Wool blocks can be $(l:mechanics/dye)dyed$()."
     },
     {
       "type": "tfc:loom_recipe",

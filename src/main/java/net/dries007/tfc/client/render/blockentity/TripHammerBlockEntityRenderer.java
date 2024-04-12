@@ -55,7 +55,7 @@ public class TripHammerBlockEntityRenderer implements BlockEntityRenderer<TripHa
         stack.mulPose(Axis.YP.rotationDegrees(180f - 90f * state.getValue(TripHammerBlock.FACING).get2DDataValue()));
         stack.translate(-0.5f, -0.5f, -0.5f);
 
-        final float angle = rotation == null ? 0 : hammer.getRealRotationDegrees(rotation, partialTick);
+        final float angle = rotation == null ? 0 : 360f - hammer.getRealRotationDegrees(rotation, partialTick);
         final float pivotStart = 130f;
         final float pivotMiddle = 180f;
         final float pivotEnd = 183f;
@@ -74,7 +74,7 @@ public class TripHammerBlockEntityRenderer implements BlockEntityRenderer<TripHa
         final float pivotY = 14f * px;
         final float pivotZ = 3f * px;
 
-        if (pivotAngle != 0f && rotation.direction() == state.getValue(TripHammerBlock.FACING).getClockWise())
+        if (pivotAngle != 0f && rotation.positiveDirection() == state.getValue(TripHammerBlock.FACING).getClockWise())
         {
             stack.translate(pivotX, pivotY, pivotZ);
 

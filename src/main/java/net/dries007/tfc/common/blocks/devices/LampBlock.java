@@ -75,7 +75,7 @@ public class LampBlock extends ExtendedBlock implements EntityBlockExtension
 
     @Override
     @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         level.getBlockEntity(pos, TFCBlockEntities.LAMP.get()).ifPresent(LampBlockEntity::checkHasRanOut);
     }
@@ -95,34 +95,34 @@ public class LampBlock extends ExtendedBlock implements EntityBlockExtension
 
     @Override
     @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
+    public InteractionResult use(BlockState originalState, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
     {
-        return level.getBlockEntity(pos, TFCBlockEntities.LAMP.get()).map(lamp -> {
-            ItemStack stack = player.getItemInHand(hand);
+        final @Nullable LampBlockEntity lamp = level.getBlockEntity(pos, TFCBlockEntities.LAMP.get()).orElse(null);
+        if (lamp != null)
+        {
+            lamp.checkHasRanOut();
+
+            final BlockState state = level.getBlockState(pos);
+            final ItemStack stack = player.getItemInHand(hand);
             if (stack.isEmpty() && player.isShiftKeyDown() && state.getValue(LIT))
             {
+                // Quench by shift-clicking with an empty hand
                 Helpers.playSound(level, pos, SoundEvents.FIRE_EXTINGUISH);
-                if (!level.isClientSide && !lamp.checkHasRanOut()) // allow player to manually quench the lamp. Lamp fuel is not client accessible.
-                {
-                    level.setBlockAndUpdate(pos, state.setValue(LIT, false));
-                }
+                level.setBlockAndUpdate(pos, state.setValue(LIT, false));
                 lamp.resetCounter();
                 return InteractionResult.sidedSuccess(level.isClientSide);
             }
-            else if (!state.getValue(LIT))
+            else if (FluidHelpers.transferBetweenBlockEntityAndItem(stack, lamp, player, hand))
             {
-                if (FluidHelpers.transferBetweenBlockEntityAndItem(stack, lamp, player, hand))
+                lamp.markForSync();
+                if (lamp.getFuel() != null && lamp.getFuel().getBurnRate() == -1 && player instanceof ServerPlayer serverPlayer)
                 {
-                    lamp.markForSync();
-                    if (lamp.getFuel() != null && lamp.getFuel().getBurnRate() == -1 && player instanceof ServerPlayer serverPlayer)
-                    {
-                        TFCAdvancements.LAVA_LAMP.trigger(serverPlayer);
-                    }
-                    return InteractionResult.sidedSuccess(level.isClientSide);
+                    TFCAdvancements.LAVA_LAMP.trigger(serverPlayer);
                 }
+                return InteractionResult.sidedSuccess(level.isClientSide);
             }
-            return InteractionResult.PASS;
-        }).orElse(InteractionResult.PASS);
+        }
+        return InteractionResult.PASS;
     }
 
     @Override
@@ -170,7 +170,6 @@ public class LampBlock extends ExtendedBlock implements EntityBlockExtension
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public PushReaction getPistonPushReaction(BlockState state)
     {
         return PushReaction.DESTROY;

@@ -1,0 +1,63 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Акведуки",
+  "category": "tfc:mechanics",
+  "icon": "tfc:rock/aqueduct/shale",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Акведуки$() - инструмент, используемый для перемещения $(thing)Воды$(). В отличие от $(l:mechanics/wooden_buckets)Деревянных ведер$(), которые не могут транспортировать источники воды, $(thing)Акведуки$() могут перемещать блоки-источники горизонтально на любое расстояние до их пункта назначения. Их можно использовать для транспортировки любого типа воды, включая $(thing)Пресную воду$(), $(thing)Соленую воду$() и даже $()Воду из горячего источника$()."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/rock/shale_aqueduct",
+      "text": "Один блок акведука можно изготовить из некоторого количества $(l:mechanics/advanced_building_materials#bricks_and_mortar)Кирпича и раствора$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Для использования $(thing)Акведука$() просто соедините их горизонтальным узором и разместите один конец рядом с $(thing)Источником$() или $(thing)Падающей$() водой. После короткого ожидания вода начнет течь по сети акведуков и выйдет на другом конце.$(br2)Обратите внимание, если акведуки убраны, вода перестанет течь, и $(thing)Акведуки$() не создадут постоянных блоков-источников - вся вода исчезнет после удаления акведуков."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "     ",
+            "     ",
+            "  0  ",
+            "     ",
+            "     "
+          ],
+          [
+            "     ",
+            "     ",
+            "     ",
+            "     ",
+            "     "
+          ],
+          [
+            "  B  ",
+            "  B  ",
+            "CADAE",
+            "B   B",
+            "B   B"
+          ]
+        ],
+        "mapping": {
+          "A": "tfc:rock/aqueduct/marble[south=true,north=true,fluid=water]",
+          "B": "tfc:rock/aqueduct/marble[east=true,west=true,fluid=water]",
+          "C": "tfc:rock/aqueduct/marble[east=true,south=true,fluid=water]",
+          "D": "tfc:rock/aqueduct/marble[west=true,north=true,south=true,fluid=water]",
+          "E": "tfc:rock/aqueduct/marble[east=true,north=true,fluid=water]"
+        }
+      },
+      "name": "Сеть акведуков",
+      "text": "",
+      "enable_visualize": false
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:tfc:rock/aqueducts": 0
+  }
+}

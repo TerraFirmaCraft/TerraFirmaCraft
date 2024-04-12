@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.model.data.ModelData;
 
@@ -32,6 +33,7 @@ public class FirepitBlockEntityRenderer<T extends AbstractFirepitBlockEntity<?>>
         if (inv == null || firepit.getLevel() == null)
             return;
         final Minecraft mc = Minecraft.getInstance();
+        final RandomSource random = RandomSource.create();
         for (int i = AbstractFirepitBlockEntity.SLOT_FUEL_CONSUME; i <= AbstractFirepitBlockEntity.SLOT_FUEL_INPUT; i++)
         {
             final ItemStack stack = inv.getStackInSlot(i);
@@ -46,7 +48,7 @@ public class FirepitBlockEntityRenderer<T extends AbstractFirepitBlockEntity<?>>
                 }
                 final BakedModel baked = mc.getModelManager().getModel(firepit.getBurnStage(i).getModel(i));
                 final VertexConsumer buffer = bufferSource.getBuffer(RenderType.solid());
-                mc.getBlockRenderer().getModelRenderer().tesselateWithAO(firepit.getLevel(), baked, firepit.getBlockState(), firepit.getBlockPos(), poseStack, buffer, true, firepit.getLevel().getRandom(), combinedLight, combinedOverlay, ModelData.EMPTY, RenderType.solid());
+                mc.getBlockRenderer().getModelRenderer().tesselateWithAO(firepit.getLevel(), baked, firepit.getBlockState(), firepit.getBlockPos(), poseStack, buffer, true, random, combinedLight, combinedOverlay, ModelData.EMPTY, RenderType.solid());
                 poseStack.popPose();
             }
         }

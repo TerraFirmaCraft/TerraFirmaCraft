@@ -74,7 +74,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.chunk.ChunkStatus;
-import net.minecraft.world.level.chunk.EmptyLevelChunk;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.ProtoChunk;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -111,7 +110,6 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.level.ChunkDataEvent;
-import net.minecraftforge.event.level.ChunkEvent;
 import net.minecraftforge.event.level.ChunkWatchEvent;
 import net.minecraftforge.event.level.ExplosionEvent;
 import net.minecraftforge.event.level.LevelEvent;
@@ -120,6 +118,7 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import net.dries007.tfc.client.TFCSounds;
@@ -128,11 +127,11 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
 import net.dries007.tfc.common.blockentities.BlastFurnaceBlockEntity;
 import net.dries007.tfc.common.blockentities.BloomeryBlockEntity;
+import net.dries007.tfc.common.blockentities.BowlBlockEntity;
 import net.dries007.tfc.common.blockentities.CharcoalForgeBlockEntity;
 import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
 import net.dries007.tfc.common.blockentities.LampBlockEntity;
 import net.dries007.tfc.common.blockentities.PitKilnBlockEntity;
-import net.dries007.tfc.common.blockentities.BowlBlockEntity;
 import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
@@ -169,6 +168,7 @@ import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
 import net.dries007.tfc.common.capabilities.glass.GlassWorkData;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatDefinition;
+import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
@@ -185,7 +185,6 @@ import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.ChunkAccessAccessor;
 import net.dries007.tfc.mixin.accessor.RecipeManagerAccessor;
-import net.dries007.tfc.network.ChunkUnwatchPacket;
 import net.dries007.tfc.network.EffectExpirePacket;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.PlayerDrinkPacket;
@@ -221,7 +220,7 @@ import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
 import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.ChunkDataCache;
+
 
 public final class ForgeEventHandler
 {
@@ -239,9 +238,6 @@ public final class ForgeEventHandler
         bus.addGenericListener(ItemStack.class, ForgeEventHandler::attachItemCapabilities);
         bus.addGenericListener(Entity.class, ForgeEventHandler::attachEntityCapabilities);
         bus.addListener(ForgeEventHandler::onChunkWatch);
-        bus.addListener(ForgeEventHandler::onChunkUnwatch);
-        bus.addListener(ForgeEventHandler::onChunkLoad);
-        bus.addListener(ForgeEventHandler::onChunkUnload);
         bus.addListener(ForgeEventHandler::onChunkDataSave);
         bus.addListener(ForgeEventHandler::onChunkDataLoad);
         bus.addListener(ForgeEventHandler::registerCommands);
@@ -356,12 +352,10 @@ public final class ForgeEventHandler
             final ChunkPos chunkPos = event.getObject().getPos();
 
             ChunkData data;
-            if (Helpers.isClientSide(level))
+            if (level.isClientSide())
             {
-                // This may happen before or after the chunk is watched and synced to client
-                // Default to using the cache. If later the sync packet arrives it will update the same instance in the chunk capability and cache
-                // We don't want to use getOrEmpty here, as the instance has to be mutable. In addition, we can't just wait for the chunk data to arrive, we have to assign one.
-                data = ChunkDataCache.CLIENT.computeIfAbsent(chunkPos, ChunkData::new);
+                // Retrieve either a new chunk data instance, or a populated instance that has already been synced through an earlier chunk watch packet.
+                data = ChunkData.dequeueClientChunkData(chunkPos);
             }
             else
             {
@@ -425,46 +419,12 @@ public final class ForgeEventHandler
 
     public static void onChunkWatch(ChunkWatchEvent.Watch event)
     {
-        // Send an update packet to the client when watching the chunk
-        ChunkPos pos = event.getPos();
-        ChunkData chunkData = ChunkData.get(event.getLevel(), pos);
-        if (chunkData.status() != ChunkData.Status.EMPTY)
+        // When we watch a chunk, the chunk data should already be generated on server, and have FULL status, (with a TFC chunk generator)
+        // We then sync the data on these chunks to client directly
+        final ChunkData chunkData = ChunkData.get(event.getChunk());
+        if (chunkData.status() == ChunkData.Status.FULL)
         {
             PacketHandler.send(PacketDistributor.PLAYER.with(event::getPlayer), chunkData.getUpdatePacket());
-        }
-        else
-        {
-            // Chunk does not exist yet but it's queue'd for watch. Queue an update packet to be sent on chunk load
-            ChunkDataCache.WATCH_QUEUE.enqueueUnloadedChunk(pos, event.getPlayer());
-        }
-    }
-
-    public static void onChunkUnwatch(ChunkWatchEvent.UnWatch event)
-    {
-        // Send an update packet to the client when un-watching the chunk
-        ChunkPos pos = event.getPos();
-        PacketHandler.send(PacketDistributor.PLAYER.with(event::getPlayer), new ChunkUnwatchPacket(pos));
-        ChunkDataCache.WATCH_QUEUE.dequeueChunk(pos, event.getPlayer());
-    }
-
-    public static void onChunkLoad(ChunkEvent.Load event)
-    {
-        if (!Helpers.isClientSide(event.getLevel()) && !(event.getChunk() instanceof EmptyLevelChunk))
-        {
-            ChunkPos pos = event.getChunk().getPos();
-            ChunkData.getCapability(event.getChunk()).ifPresent(data -> {
-                ChunkDataCache.SERVER.update(pos, data);
-                ChunkDataCache.WATCH_QUEUE.dequeueLoadedChunk(pos, data);
-            });
-        }
-    }
-
-    public static void onChunkUnload(ChunkEvent.Unload event)
-    {
-        // Clear server side chunk data cache
-        if (!Helpers.isClientSide(event.getLevel()) && !(event.getChunk() instanceof EmptyLevelChunk))
-        {
-            ChunkDataCache.SERVER.remove(event.getChunk().getPos());
         }
     }
 
@@ -533,12 +493,12 @@ public final class ForgeEventHandler
 
             if (Helpers.isBlock(state, TFCTags.Blocks.CAN_LANDSLIDE))
             {
-                world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(pos));
+                WorldTracker.get(world).addLandslidePos(pos);
             }
 
             if (Helpers.isBlock(state, TFCTags.Blocks.BREAKS_WHEN_ISOLATED))
             {
-                world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addIsolatedPos(pos));
+                WorldTracker.get(world).addIsolatedPos(pos);
             }
         }
     }
@@ -565,12 +525,12 @@ public final class ForgeEventHandler
 
                 if (Helpers.isBlock(state, TFCTags.Blocks.CAN_LANDSLIDE))
                 {
-                    level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(pos));
+                    WorldTracker.get(level).addLandslidePos(pos);
                 }
 
                 if (Helpers.isBlock(state.getBlock(), TFCTags.Blocks.BREAKS_WHEN_ISOLATED))
                 {
-                    level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addIsolatedPos(pos));
+                    WorldTracker.get(level).addIsolatedPos(pos);
                 }
             }
         }
@@ -578,9 +538,10 @@ public final class ForgeEventHandler
 
     public static void onExplosionDetonate(ExplosionEvent event)
     {
-        if (!event.getLevel().isClientSide)
+        final Level level = event.getLevel();
+        if (!level.isClientSide)
         {
-            event.getLevel().getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addCollapsePositions(BlockPos.containing(event.getExplosion().getPosition()), event.getExplosion().getToBlow()));
+            WorldTracker.get(level).addCollapsePositions(BlockPos.containing(event.getExplosion().getPosition()), event.getExplosion().getToBlow());
         }
     }
 
@@ -589,7 +550,7 @@ public final class ForgeEventHandler
         if (event.phase == TickEvent.Phase.START && event.level instanceof ServerLevel level)
         {
             WeatherHelpers.preAdvancedWeatherCycle(level);
-            level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.tick(level));
+            WorldTracker.get(level).tick();
         }
     }
 
@@ -1104,12 +1065,10 @@ public final class ForgeEventHandler
         if (entity instanceof ItemEntity itemEntity && !level.isClientSide && TFCConfig.SERVER.coolHotItemEntities.get())
         {
             final ItemStack item = itemEntity.getItem();
-            item.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> {
-                if (cap.getTemperature() > 0f)
-                {
-                    itemEntity.lifespan = TFCConfig.SERVER.ticksBeforeItemCool.get();
-                }
-            });
+            if (HeatCapability.isHot(item))
+            {
+                itemEntity.lifespan = TFCConfig.SERVER.ticksBeforeItemCool.get();
+            }
         }
         else if (entity instanceof LightningBolt lightning && !level.isClientSide && !event.isCanceled())
         {
@@ -1191,11 +1150,14 @@ public final class ForgeEventHandler
         if (!TFCConfig.SERVER.coolHotItemEntities.get()) return;
         final ItemEntity entity = event.getEntity();
         if (entity.level().isClientSide) return;
+
         final ServerLevel level = (ServerLevel) entity.level();
         final ItemStack stack = entity.getItem();
         final BlockPos pos = entity.blockPosition();
+        final @Nullable IHeat heat = HeatCapability.get(stack);
 
-        stack.getCapability(HeatCapability.CAPABILITY).ifPresent(heat -> {
+        if (heat != null)
+        {
             final int lifespan = stack.getItem().getEntityLifespan(stack, level);
             if (entity.lifespan >= lifespan)
                 return; // the case where the item has been sitting out for longer than the lifespan. So it should be removed by the game.
@@ -1239,7 +1201,7 @@ public final class ForgeEventHandler
                         coolAmount = 75f;
                         if (level.random.nextFloat() < 0.1F)
                         {
-                            level.setBlockAndUpdate(belowPos, Blocks.SNOW.defaultBlockState().setValue(SnowLayerBlock.LAYERS, 7));
+                            level.destroyBlock(belowPos, false);
                         }
                     }
                     else if (belowState.getBlock() == Blocks.ICE || belowState.getBlock() == Blocks.FROSTED_ICE)
@@ -1274,7 +1236,7 @@ public final class ForgeEventHandler
                 event.setExtraLife(lifespan);
             }
             event.setCanceled(true);
-        });
+        }
     }
 
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event)
@@ -1310,9 +1272,8 @@ public final class ForgeEventHandler
         if (player instanceof ServerPlayer serverPlayer)
         {
             TFCFoodData.replaceFoodStats(serverPlayer);
-
-            serverPlayer.serverLevel().getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(c -> c.syncTo(serverPlayer));
-            serverPlayer.getCapability(PlayerDataCapability.CAPABILITY).ifPresent(PlayerData::sync);
+            WorldTracker.get(serverPlayer.serverLevel()).syncTo(serverPlayer);
+            PlayerData.get(serverPlayer).sync();
 
             final ClimateModel model = Climate.model(serverPlayer.level());
             PacketHandler.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new UpdateClimateModelPacket(model));
@@ -1322,7 +1283,7 @@ public final class ForgeEventHandler
     public static void onServerChat(ServerChatEvent event)
     {
         // Apply intoxication after six hours
-        final long intoxicatedTicks = event.getPlayer().getCapability(PlayerDataCapability.CAPABILITY).map(p -> p.getIntoxicatedTicks(event.getPlayer().level().isClientSide()) - 6 * ICalendar.TICKS_IN_HOUR).orElse(0L);
+        final long intoxicatedTicks = PlayerData.get(event.getPlayer()).getIntoxicatedTicks() - 6 * ICalendar.TICKS_IN_HOUR;
         if (intoxicatedTicks > 0)
         {
             final float intoxicationChance = Mth.clamp((float) (intoxicatedTicks - 6 * ICalendar.TICKS_IN_HOUR) / PlayerData.MAX_INTOXICATED_TICKS, 0, 0.7f);
@@ -1479,10 +1440,11 @@ public final class ForgeEventHandler
 
     public static void onItemUseFinish(LivingEntityUseItemEvent.Finish event)
     {
-        final IFood food = event.getItem().getCapability(FoodCapability.CAPABILITY).resolve().orElse(null);
+        final ItemStack stack = event.getItem();
+        final @Nullable IFood food = FoodCapability.get(stack);
         if (food instanceof DynamicBowlHandler)
         {
-            event.setResultStack(DynamicBowlHandler.onItemUse(event.getItem(), event.getResultStack(), event.getEntity()));
+            event.setResultStack(DynamicBowlHandler.onItemUse(stack, event.getResultStack(), event.getEntity()));
         }
     }
 

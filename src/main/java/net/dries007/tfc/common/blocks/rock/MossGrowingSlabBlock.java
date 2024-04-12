@@ -38,7 +38,7 @@ public class MossGrowingSlabBlock extends SlabBlock implements IMossGrowingBlock
         if (state.getValue(TYPE) == SlabType.DOUBLE)
         {
             // Double slabs convert when the block above is fluid
-            if (!needsWater || FluidHelpers.isSame(level.getFluidState(pos.above()), Fluids.WATER))
+            if (!needsWater || isAdjacentToWater(level, pos))
             {
                 level.setBlockAndUpdate(pos, Helpers.copyProperties(mossy.get().defaultBlockState(), state));
             }
@@ -46,7 +46,7 @@ public class MossGrowingSlabBlock extends SlabBlock implements IMossGrowingBlock
         else
         {
             // Single slabs convert only when they are fluid logged
-            if (!needsWater || FluidHelpers.isSame(level.getFluidState(pos), Fluids.WATER))
+            if (!needsWater || FluidHelpers.isSame(state.getFluidState(), Fluids.WATER))
             {
                 level.setBlockAndUpdate(pos, Helpers.copyProperties(mossy.get().defaultBlockState(), state));
             }

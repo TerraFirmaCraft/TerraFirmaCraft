@@ -25,6 +25,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.fluids.FluidStack;
 
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.util.JsonHelpers;
@@ -108,10 +109,14 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
     {
         final ItemStack inputStack = inventory.getStack();
         final ItemStack outputStack = outputItem.getSingleStack(inputStack);
+
         // We always upgrade the heat regardless
-        inputStack.getCapability(HeatCapability.CAPABILITY).ifPresent(oldCap ->
-            outputStack.getCapability(HeatCapability.CAPABILITY).ifPresent(newCap ->
-                newCap.setTemperature(oldCap.getTemperature())));
+        final @Nullable IHeat inputHeat = HeatCapability.get(inputStack);
+        if (inputHeat != null)
+        {
+            HeatCapability.setTemperature(outputStack, inputHeat.getTemperature());
+        }
+
         if (!outputStack.isEmpty() && chance < 1f)
         {
             final Random random = new Random();
@@ -127,10 +132,14 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
     {
         final ItemStack inputStack = inventory.getStack();
         final ItemStack outputStack = outputItem.getSingleStack(inputStack);
+
         // We always upgrade the heat regardless
-        inputStack.getCapability(HeatCapability.CAPABILITY).ifPresent(oldCap ->
-            outputStack.getCapability(HeatCapability.CAPABILITY).ifPresent(newCap ->
-                newCap.setTemperature(oldCap.getTemperature())));
+        final @Nullable IHeat inputHeat = HeatCapability.get(inputStack);
+        if (inputHeat != null)
+        {
+            HeatCapability.setTemperature(outputStack, inputHeat.getTemperature());
+        }
+
         // Set the stack size to the best possible (output count * input count), then limit to stack size / inventory limit
         outputStack.setCount(Math.min(
             outputStack.getCount() * inputStack.getCount(),

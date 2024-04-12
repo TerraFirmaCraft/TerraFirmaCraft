@@ -1,0 +1,84 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:story/blowpipe",
+  "criteria": {
+    "paddle": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:paddle"
+            ]
+          }
+        ]
+      }
+    },
+    "jacks": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:jacks"
+            ]
+          }
+        ]
+      }
+    },
+    "wool_cloth": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:wool_cloth"
+            ]
+          }
+        ]
+      }
+    },
+    "gem_saw": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:gem_saw"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:ceramic_blowpipe"
+    },
+    "title": {
+      "translate": "tfc.advancements.story.glassworking_tools.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.story.glassworking_tools.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/rock/mossy_cobble/diorite.png"
+  },
+  "requirements": [
+    [
+      "paddle"
+    ],
+    [
+      "jacks"
+    ],
+    [
+      "wool_cloth"
+    ],
+    [
+      "gem_saw"
+    ]
+  ]
+}

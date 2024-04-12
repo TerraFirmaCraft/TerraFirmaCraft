@@ -7,7 +7,7 @@
 package net.dries007.tfc.util;
 
 /**
- * Listens to a value - in practice, a {@link net.minecraft.world.level.GameRules} rule - change, and provides mechanisms for updating that value without triggering recursive or reentrant updates.
+ * Listens to a value - in practice, a {@link net.minecraft.world.level.GameRules GameRule} rule change, and provides mechanisms for updating that value without triggering recursive or reentrant updates.
  * <ul>
  *     <li>First, the game rule callback is setup to call {@link #onListenerUpdate()}</li>
  *     <li>This will call the provided {@link #onListenerUpdateCallback}</li>

@@ -10,7 +10,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.client.ClientHelpers;
@@ -41,15 +40,13 @@ public class ProspectedPacket
         buffer.writeByte(result.ordinal());
     }
 
-    void handle(NetworkEvent.Context context)
+    void handle()
     {
-        context.enqueueWork(() -> {
-            final Player player = ClientHelpers.getPlayer();
-            if (player != null)
-            {
-                MinecraftForge.EVENT_BUS.post(new ProspectedEvent(player, result, block));
-                player.displayClientMessage(result.getText(block), TFCConfig.CLIENT.sendProspectResultsToActionbar.get());
-            }
-        });
+        final Player player = ClientHelpers.getPlayer();
+        if (player != null)
+        {
+            MinecraftForge.EVENT_BUS.post(new ProspectedEvent(player, result, block));
+            player.displayClientMessage(result.getText(block), TFCConfig.CLIENT.sendProspectResultsToActionbar.get());
+        }
     }
 }

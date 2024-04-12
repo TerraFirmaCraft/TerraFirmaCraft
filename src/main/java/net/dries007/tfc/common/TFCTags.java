@@ -12,6 +12,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 
@@ -304,6 +305,16 @@ public class TFCTags
         private static TagKey<EntityType<?>> create(String id)
         {
             return TagKey.create(Registries.ENTITY_TYPE, Helpers.identifier(id));
+        }
+    }
+
+    public static class Biomes
+    {
+        public static final TagKey<Biome> HAS_PREDICTABLE_WINDS = create("has_predictable_winds");
+
+        private static TagKey<Biome> create(String id)
+        {
+            return TagKey.create(Registries.BIOME, Helpers.identifier(id));
         }
     }
 }

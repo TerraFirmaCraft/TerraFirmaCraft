@@ -6,19 +6,32 @@
 
 package net.dries007.tfc.common.capabilities.size;
 
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
 
 /**
- * Size and weight data attached to every item via {@link ItemSizeManager}
- * If a specific matching size/weight combination is not defined, it will try and infer ones for each item
- *
- * TFC will also attempt, to the best of it's ability, to mutate individual item's stack size limit to match up to the stack sizes imposed by {@link Weight}.
- * This will NOT be based on the stack, despite the ability for an item's size and/or weight to change based on the stack. For example: large vessels.
+ * Represents a {@link Size} and {@link Weight} that can be attached to items. Item sizes can be sourced from several places, in order:
+ * <ol>
+ *     <li>An {@link Item} that implements {@link IItemSize} directly</li>
+ *     <li>An {@link BlockItem} where the corresponding {@link Block} implements {@link IItemSize} directly</li>
+ *     <li>Any matching {@code item_size} that is loaded from JSON, that matches the given item</li>
+ *     <li>A default size/weight combination based on a very simple heuristic using different classes of items</li>
+ * </ol>
+ * TFC will attempt to override the constant stack size of each item stack, using the value returned by {@link #getDefaultStackSize(ItemStack)}.
+ * Containers are responsible for determining if items can fit in the container by checking the size.
  */
 public interface IItemSize
 {
+    /**
+     * @return the size of this {@code stack}, determining what size containers this item can be placed within.
+     */
     Size getSize(ItemStack stack);
 
+    /**
+     * @return the weight of this {@code stack}, determining the stack size of this item.
+     */
     Weight getWeight(ItemStack stack);
 
     /**

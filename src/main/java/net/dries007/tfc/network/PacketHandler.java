@@ -8,11 +8,12 @@ package net.dries007.tfc.network;
 
 
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.fml.ModList;
-import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
@@ -51,7 +52,6 @@ public final class PacketHandler
     {
         // Server -> Client
         register(ChunkWatchPacket.class, ChunkWatchPacket::encode, ChunkWatchPacket::new, ChunkWatchPacket::handle);
-        register(ChunkUnwatchPacket.class, ChunkUnwatchPacket::encode, ChunkUnwatchPacket::new, ChunkUnwatchPacket::handle);
         register(CalendarUpdatePacket.class, CalendarUpdatePacket::encode, CalendarUpdatePacket::new, CalendarUpdatePacket::handle);
         register(FoodDataReplacePacket.class, FoodDataReplacePacket::new, FoodDataReplacePacket::handle);
         register(FoodDataUpdatePacket.class, FoodDataUpdatePacket::encode, FoodDataUpdatePacket::new, FoodDataUpdatePacket::handle);
@@ -111,19 +111,29 @@ public final class PacketHandler
         registerDataManager(cls, manager, CHANNEL, ID.getAndIncrement());
     }
 
-    private static <T> void register(Class<T> cls, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder, BiConsumer<T, NetworkEvent.Context> handler)
+    private static <T> void register(Class<T> cls, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder, Consumer<T> handler)
+    {
+        register(cls, encoder, decoder, (packet, player) -> handler.accept(packet));
+    }
+
+    private static <T> void register(Class<T> cls, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder, BiConsumer<T, ServerPlayer> handler)
     {
         CHANNEL.registerMessage(ID.getAndIncrement(), cls, encoder, decoder, (packet, context) -> {
             context.get().setPacketHandled(true);
-            handler.accept(packet, context.get());
+            context.get().enqueueWork(() -> handler.accept(packet, context.get().getSender()));
         });
     }
 
-    private static <T> void register(Class<T> cls, Supplier<T> factory, BiConsumer<T, NetworkEvent.Context> handler)
+    private static <T> void register(Class<T> cls, Supplier<T> factory, Consumer<T> handler)
+    {
+        register(cls, factory, (packet, player) -> handler.accept(packet));
+    }
+
+    private static <T> void register(Class<T> cls, Supplier<T> factory, BiConsumer<T, ServerPlayer> handler)
     {
         CHANNEL.registerMessage(ID.getAndIncrement(), cls, (packet, buffer) -> {}, buffer -> factory.get(), (packet, context) -> {
             context.get().setPacketHandled(true);
-            handler.accept(packet, context.get());
+            context.get().enqueueWork(() -> handler.accept(packet, context.get().getSender()));
         });
     }
 }

@@ -10,8 +10,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-
-import net.minecraftforge.network.NetworkEvent;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.entities.livestock.pet.TamableMammal;
 
@@ -38,27 +37,23 @@ public class PetCommandPacket
         buffer.writeVarInt(command);
     }
 
-    void handle(NetworkEvent.Context context)
+    void handle(@Nullable ServerPlayer player)
     {
-        context.enqueueWork(() -> {
-            final ServerPlayer sender = context.getSender();
-            if (sender != null)
+        if (player != null)
+        {
+            Entity entity = player.serverLevel().getEntity(entityId);
+            if (entity instanceof TamableMammal pet)
             {
-                Entity entity = sender.serverLevel().getEntity(entityId);
-                if (entity instanceof TamableMammal pet)
+                final TamableMammal.Command value = TamableMammal.Command.valueOf(command);
+                if (pet.willListenTo(value, false))
                 {
-                    final TamableMammal.Command value = TamableMammal.Command.valueOf(command);
-                    if (pet.willListenTo(value, false))
-                    {
-                        pet.receiveCommand(sender, value);
-                    }
-                    else
-                    {
-                        sender.displayClientMessage(Component.translatable("tfc.pet.will_not_listen"), true);
-                    }
+                    pet.receiveCommand(player, value);
+                }
+                else
+                {
+                    player.displayClientMessage(Component.translatable("tfc.pet.will_not_listen"), true);
                 }
             }
-        });
+        }
     }
-
 }

@@ -56,7 +56,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "大桶还可以用来$(thing)染色$()和$(thing)漂白$()物品。通过在$(l:mechanics/pot)陶锅$()中煮沸单个染料物品就能制成染液。大多数可染色的东西，如地毯、蜡烛和$(l:getting_started/building_materials#alabaster)雪花石膏$()等，都可以通过将它们密封在一桶染液中来染色。已染色的物品也可以通过将它们密封在一桶$(thing)碱液$()中来漂白。碱液是通过在$(l:mechanics/pot)锅$()水中煮沸$(thing)草木灰$()制成的。草木灰可以通过破坏$(l:getting_started/firepit)篝火$()获得。"
+      "text": "Barrels have the ability to $(l:mechanics/dye)Dye$() and $(l:mechanics/dye#lye)Bleach$() items. Most color-able things, like carpet, candles, and $(l:mechanics/advanced_building_materials#alabaster)Alabaster$() can be dyed by sealing them in a barrel of dye or bleached by sealing them in a barrel of lye. See the dye chapter for more information."
     },
     {
       "type": "patchouli:text",

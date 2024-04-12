@@ -8,7 +8,7 @@ package net.dries007.tfc.network;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.network.NetworkEvent;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.container.ScribingTableContainer;
 
@@ -31,14 +31,11 @@ public class ScribingTablePacket
         buffer.writeUtf(name);
     }
 
-    void handle(NetworkEvent.Context context)
+    void handle(@Nullable ServerPlayer player)
     {
-        context.enqueueWork(() -> {
-            ServerPlayer sender = context.getSender();
-            if (sender != null && sender.containerMenu instanceof ScribingTableContainer container)
-            {
-                container.setItemName(name);
-            }
-        });
+        if (player != null && player.containerMenu instanceof ScribingTableContainer container)
+        {
+            container.setItemName(name);
+        }
     }
 }

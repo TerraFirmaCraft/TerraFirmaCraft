@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.blockentities;
 
+import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.config.TFCConfig;
 
 import org.jetbrains.annotations.Nullable;
@@ -72,7 +73,7 @@ public class GrillBlockEntity extends AbstractFirepitBlockEntity<ItemStackHandle
     {
         if (slot >= SLOT_EXTRA_INPUT_START && slot <= SLOT_EXTRA_INPUT_END)
         {
-            return Helpers.mightHaveCapability(stack, HeatCapability.CAPABILITY);
+            return HeatCapability.maybeHas(stack);
         }
         return super.isItemValid(slot, stack);
     }
@@ -84,19 +85,20 @@ public class GrillBlockEntity extends AbstractFirepitBlockEntity<ItemStackHandle
         for (int slot = SLOT_EXTRA_INPUT_START; slot <= SLOT_EXTRA_INPUT_END; slot++)
         {
             final ItemStack inputStack = inventory.getStackInSlot(slot);
-            final int finalSlot = slot;
-            inputStack.getCapability(HeatCapability.CAPABILITY, null).ifPresent(cap -> {
-                HeatCapability.addTemp(cap, temperature);
-                HeatingRecipe recipe = cachedRecipes[finalSlot - SLOT_EXTRA_INPUT_START];
-                if (recipe != null && recipe.isValidTemperature(cap.getTemperature()))
+            final @Nullable IHeat inputHeat = HeatCapability.get(inputStack);
+            if (inputHeat != null)
+            {
+                HeatCapability.addTemp(inputHeat, temperature);
+                HeatingRecipe recipe = cachedRecipes[slot - SLOT_EXTRA_INPUT_START];
+                if (recipe != null && recipe.isValidTemperature(inputHeat.getTemperature()))
                 {
                     ItemStack output = recipe.assemble(new ItemStackInventory(inputStack), level.registryAccess());
                     FoodCapability.applyTrait(output, FoodTraits.WOOD_GRILLED);
                     FoodCapability.updateFoodDecayOnCreate(output);
-                    inventory.setStackInSlot(finalSlot, output);
+                    inventory.setStackInSlot(slot, output);
                     markForSync();
                 }
-            });
+            }
         }
     }
 
@@ -105,7 +107,7 @@ public class GrillBlockEntity extends AbstractFirepitBlockEntity<ItemStackHandle
     {
         for (ItemStack stack : Helpers.iterate(inventory))
         {
-            stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.setTemperature(0));
+            HeatCapability.setTemperature(stack, 0);
         }
     }
 

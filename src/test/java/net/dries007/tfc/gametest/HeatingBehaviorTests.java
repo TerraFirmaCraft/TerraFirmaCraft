@@ -32,9 +32,7 @@ import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
-import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.calendar.CalendarTransaction;
@@ -215,7 +213,7 @@ public class HeatingBehaviorTests
             assertEquals(TFCItems.VESSEL.get(), outputStack.getItem());
             assertEquals(1, outputStack.getCount());
 
-            final IHeat outputHeat = Helpers.getCapability(outputStack, HeatCapability.CAPABILITY);
+            final IHeat outputHeat = HeatCapability.get(outputStack);
 
             assertNotNull(outputHeat);
             assertEquals(1400.0f, outputHeat.getTemperature(), "Pit kiln did not reach expected temperature, got: " + outputHeat.getTemperature());
@@ -295,93 +293,9 @@ public class HeatingBehaviorTests
         assertEquals(4386, ticksRequiredToBeNotWorkable(new ItemStack(TFCItems.METAL_ITEMS.get(Metal.Default.WROUGHT_IRON).get(Metal.ItemType.DOUBLE_INGOT).get())));
     }
 
-    @MyTest(unitTest = true)
-    public String checkBloomeryFuelEfficiencyWithPoorOres(GameTestHelper helper)
-    {
-        return checkBloomeryEfficiency(Ore.Grade.POOR, false, false, 43200, 24 * 15);
-    }
-
-    @MyTest(unitTest = true)
-    public String checkBloomeryFuelEfficiencyWithNormalOres(GameTestHelper helper)
-    {
-        return checkBloomeryEfficiency(Ore.Grade.NORMAL, false, false, 43200, 24 * 25);
-    }
-
-    @MyTest(unitTest = true)
-    public String checkBloomeryFuelEfficiencyWithRichOres(GameTestHelper helper)
-    {
-        return checkBloomeryEfficiency(Ore.Grade.RICH, false, false, 43200, 24 * 35);
-    }
-
-    @MyTest(unitTest = true)
-    public String checkBloomeryFuelEfficiencyWithPoorOresCastingIntoIngotsFirst(GameTestHelper helper)
-    {
-        return checkBloomeryEfficiency(Ore.Grade.POOR, true, false, 9614, 24 * 15);
-    }
-
-    @MyTest(unitTest = true)
-    public String checkBloomeryFuelEfficiencyWithNormalOresCastingIntoIngotsFirst(GameTestHelper helper)
-    {
-        return checkBloomeryEfficiency(Ore.Grade.NORMAL, true, false, 15014, 24 * 25);
-    }
-
-    @MyTest(unitTest = true)
-    public String checkBloomeryFuelEfficiencyWithRichOresCastingIntoIngotsFirst(GameTestHelper helper)
-    {
-        return checkBloomeryEfficiency(Ore.Grade.RICH, true, false, 18614, 24 * 35);
-    }
-
-    @MyTest(unitTest = true)
-    public String checkBloomeryFuelEfficiencyWithPoorOresAndCrucibleCastingIntoIngotsFirst(GameTestHelper helper)
-    {
-        return checkBloomeryEfficiency(Ore.Grade.POOR, true, true, 6905, 24 * 15);
-    }
-
-    @MyTest(unitTest = true)
-    public String checkBloomeryFuelEfficiencyWithNormalOresAndCrucibleCastingIntoIngotsFirst(GameTestHelper helper)
-    {
-        return checkBloomeryEfficiency(Ore.Grade.NORMAL, true, true, 12305, 24 * 25);
-    }
-
-    @MyTest(unitTest = true)
-    public String checkBloomeryFuelEfficiencyWithRichOresAndCrucibleCastingIntoIngotsFirst(GameTestHelper helper)
-    {
-        return checkBloomeryEfficiency(Ore.Grade.RICH, true, true, 15905, 24 * 35);
-    }
-
-    private String checkBloomeryEfficiency(Ore.Grade oreGrade, boolean castIntoIngotsFirst, boolean useCrucible, int expectedFuelTicks, int expectedOreOutput)
-    {
-        final Fuel charcoal = Fuel.get(new ItemStack(Items.CHARCOAL));
-        final ItemStack ore = new ItemStack(TFCItems.GRADED_ORES.get(Ore.HEMATITE).get(oreGrade).get());
-        final HeatingRecipe recipe = HeatingRecipe.getRecipe(ore);
-        final int itemCount = 24; // Full sized bloomery
-
-        assertNotNull(charcoal, "Missing fuel for " + charcoal);
-        assertNotNull(recipe, "Missing heat recipe for " + ore);
-
-        final int oreOutput = itemCount * recipe.assembleFluid(new ItemStackInventory(ore)).getAmount();
-        final int concurrentMelting = useCrucible ? 5 + 9 : 5;
-
-        int fuelTicks;
-        if (castIntoIngotsFirst)
-        {
-            // Condense the input into 100 mB pieces, but using up additional fuel ticks in the process
-            fuelTicks = (oreOutput / 100) * charcoal.getDuration() + itemCount * ticksRequiredToMelt(ore) / concurrentMelting;
-        }
-        else
-        {
-            fuelTicks = itemCount * charcoal.getDuration();
-        }
-
-        assertEquals(expectedFuelTicks, fuelTicks);
-        assertEquals(expectedOreOutput, oreOutput);
-
-        return String.format("grade = %s, castIntoIngotsFirst = %s, useCrucible = %s : fuelTicks = %d, oreOutput = %d, mBofOrePerFuelTick = %.3f", oreGrade, castIntoIngotsFirst, useCrucible, fuelTicks, oreOutput, (float) oreOutput / fuelTicks);
-    }
-
     private void clearTemperature(ItemStack stack)
     {
-        final IHeat heat = Helpers.getCapability(stack, HeatCapability.CAPABILITY);
+        final IHeat heat = HeatCapability.get(stack);
         assertNotNull(heat);
         heat.setTemperature(0);
         assertEquals(0f, heat.getTemperature());
@@ -389,7 +303,7 @@ public class HeatingBehaviorTests
 
     private void checkTicksToHeatInForge(ItemStack stack, int expectedTicks, float targetTemperature)
     {
-        final IHeat heat = Helpers.getCapability(stack, HeatCapability.CAPABILITY);
+        final IHeat heat = HeatCapability.get(stack);
         assertNotNull(heat);
 
         try (CalendarTransaction tr = Calendars.SERVER.transaction())
@@ -485,7 +399,7 @@ public class HeatingBehaviorTests
     {
         // Only works if all the vessel contents are the same (and have the same recipe)
         final ItemStack stack = vesselWithContents(contents);
-        final IHeat heat = Helpers.getCapability(stack, HeatCapability.CAPABILITY);
+        final IHeat heat = HeatCapability.get(stack);
         final HeatingRecipe recipe = HeatingRecipe.getRecipe(contents[0]);
 
         assertNotNull(heat, "Heat missing for stack: " + heat);
@@ -509,7 +423,7 @@ public class HeatingBehaviorTests
 
     private int ticksRequiredToMelt(ItemStack stack)
     {
-        final IHeat heat = Helpers.getCapability(stack, HeatCapability.CAPABILITY);
+        final IHeat heat = HeatCapability.get(stack);
         final HeatingRecipe recipe = HeatingRecipe.getRecipe(stack);
 
         assertNotNull(heat, "Heat missing for stack: " + heat);
@@ -533,7 +447,7 @@ public class HeatingBehaviorTests
 
     private int ticksRequiredToBeNotWorkable(ItemStack stack)
     {
-        final IHeat heat = Helpers.getCapability(stack, HeatCapability.CAPABILITY);
+        final IHeat heat = HeatCapability.get(stack);
         final HeatingRecipe recipe = HeatingRecipe.getRecipe(stack);
 
         assertNotNull(heat, "Heat missing for stack: " + heat);

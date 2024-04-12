@@ -22,8 +22,6 @@ def generate(rm: ResourceManager):
     rm.item_tag('forge:string', 'tfc:wool_yarn')
     rm.item_tag('forge:shears', '#tfc:shears')
     rm.item_tag('forge:dusts', '#tfc:powders')
-    rm.item_tag('forge:dusts/copper', 'tfc:powder/malachite', 'tfc:powder/tetrahedrite', 'tfc:powder/native_copper')
-    rm.item_tag('forge:dusts/iron', 'tfc:powder/hematite', 'tfc:powder/magnetite', 'tfc:powder/limonite')
 
     # Minecraft Tags
 
@@ -63,6 +61,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('sewing_light_cloth', 'tfc:wool_cloth', 'tfc:silk_cloth')
     rm.item_tag('sewing_dark_cloth', 'tfc:burlap_cloth')
     rm.item_tag('sewing_needles', 'tfc:bone_needle')
+    rm.item_tag('foods', 'minecraft:egg')
 
     # TFC Tags: Functionality
 
@@ -345,6 +344,7 @@ def generate(rm: ResourceManager):
         if 'part' in metal_data.types:
             rm.block_tag('minecraft:stairs', 'tfc:metal/block/%s_stairs' % metal)
             rm.block_tag('minecraft:slabs', 'tfc:metal/block/%s_slab' % metal)
+            rm.block_and_item_tag('metal_plated_blocks', 'tfc:metal/block/%s' % metal)
 
         if 'armor' in metal_data.types:
             rm.item_tag('minecraft:trimmable_armor', *['tfc:metal/%s/%s' % (section, metal) for section in TFC_ARMOR_SECTIONS])
@@ -521,6 +521,13 @@ def generate(rm: ResourceManager):
             rm.block_and_item_tag('forge:gravel', 'tfc:deposit/%s/%s' % (ore, rock))
             rm.block_and_item_tag('ore_deposits', 'tfc:deposit/%s/%s' % (ore, rock))
 
+        for block_type in ('raw', 'hardened', 'smooth', 'cobble', 'bricks', 'gravel', 'spike', 'cracked_bricks', 'mossy_bricks', 'mossy_cobble', 'chiseled', 'loose', 'mossy_loose', 'pressure_plate', 'button', 'aqueduct'):
+            rm.item_tag('%s_items' % rock_data.category, 'tfc:rock/%s/%s' % (block_type, rock))
+            if block_type in CUTTABLE_ROCKS:
+                rm.item_tag('%s_items' % rock_data.category, 'tfc:rock/%s/%s_stairs' % (block_type, rock))
+                rm.item_tag('%s_items' % rock_data.category, 'tfc:rock/%s/%s_wall' % (block_type, rock))
+                rm.item_tag('%s_items' % rock_data.category, 'tfc:rock/%s/%s_slab' % (block_type, rock))
+
     # Ore tags
     for ore, data in ORES.items():
         if data.tag not in DEFAULT_FORGE_ORE_TAGS:
@@ -682,11 +689,6 @@ def generate(rm: ResourceManager):
         'tfc:wooden_bowl'
     ])
     rm.block_tag('tfc:mineable_with_sharp_tool', *[
-        *[
-            'tfc:wood/%s/%s' % (variant, wood)
-            for variant in ('leaves', 'sapling', 'fallen_leaves')
-            for wood in WOODS.keys()
-        ],
         *['tfc:plant/%s' % plant for plant in PLANTS.keys()],
         *['tfc:plant/%s' % plant for plant in UNIQUE_PLANTS],
         *['tfc:wild_crop/%s' % plant for plant in CROPS.keys()],
@@ -698,11 +700,11 @@ def generate(rm: ResourceManager):
         'tfc:plant/cranberry_bush',
         'tfc:plant/dead_berry_bush',
         'tfc:plant/dead_cane',
-        *['tfc:plant/%s_leaves' % tree for tree in NORMAL_FRUIT_TREES],
-        *['tfc:plant/%s_sapling' % tree for tree in NORMAL_FRUIT_TREES],
-        'tfc:plant/banana_sapling',
         'tfc:thatch',
-        'tfc:thatch_bed'
+        'tfc:thatch_bed',
+        '#minecraft:leaves',
+        '#tfc:fallen_leaves',
+        '#minecraft:saplings',
     ])
     rm.block_tag('tfc:mineable_with_blunt_tool', *[
         'tfc:wood/%s/%s' % (variant, wood)

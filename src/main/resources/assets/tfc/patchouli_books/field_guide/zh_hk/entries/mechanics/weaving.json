@@ -43,7 +43,7 @@
     {
       "type": "tfc:loom_recipe",
       "recipe": "tfc:loom/wool_block",
-      "text": "$(thing)羊毛布$()可以合成成$(thing)羊毛塊$()。羊毛塊可以染色。"
+      "text": "$(thing)Wool Cloth$() can be re-woven into $(thing)Wool Blocks$(). Wool blocks can be $(l:mechanics/dye)dyed$()."
     },
     {
       "type": "tfc:loom_recipe",

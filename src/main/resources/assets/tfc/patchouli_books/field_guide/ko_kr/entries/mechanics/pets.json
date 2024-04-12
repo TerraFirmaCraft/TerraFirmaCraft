@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "반려동물들은 특정한 플레이어를 자신의 $(thing)주인$()으로 인식합니다. 주인이 되기 위해서는, 친밀도를 15% 이상으로 높여야 합니다. 반려동물들은 주인의 명령만 따릅니다.$(br2)염료로 반려동물을 클릭하면 목줄의 색을 바꿀 수 있습니다."
+      "text": "Pets recognize a certain player as their $(thing)Owner$(). To become a pet's owner, feed it to raise its familiarity above 15%%. Pets will only obey commands that come from their owner.$(br2)Clicking on a pet with $(l:mechanics/dye)dye$() changes its collar color."
     },
     {
       "type": "patchouli:entity",

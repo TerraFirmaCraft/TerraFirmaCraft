@@ -7,8 +7,15 @@
 package net.dries007.tfc.common.blocks.devices;
 
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import com.google.common.collect.ImmutableMap;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleEngine;
+import net.minecraft.client.particle.TerrainParticle;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -23,7 +30,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SoundType;
@@ -38,8 +44,10 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.client.extensions.common.IClientBlockExtensions;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.SheetPileBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
@@ -48,12 +56,12 @@ import net.dries007.tfc.common.blocks.ExtendedBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.Metal;
 
 /**
- * A collection of arbitrary metal sheets in a single block
- * Each side contains it's own sheet, which is identified by the face of the block which the side is on - so the UP property identifies the sheet on the TOP of the sheet pile block.
- * <p>
- * todo: this could use {@link net.dries007.tfc.client.IHighlightHandler} for better viewing of which face is targeted, when placing, or breaking. Is it really necessary though?
+ * A sheet pile is a collection of metal sheets (which can be made from arbitrary metals, and hence items), placed on the side of blocks.
+ * The sheet pile is identified by direction properties, where the UP property indicates that a sheet is present on the UP face of the sheet
+ * block, or placed against the block directly above.
  */
 public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtension, DirectionPropertyBlock
 {
@@ -72,16 +80,17 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
     public static void removeSheet(Level level, BlockPos pos, BlockState state, Direction face, @Nullable Player player, boolean doDrops)
     {
         final BlockState newState = state.setValue(DirectionPropertyBlock.getProperty(face), false);
+        final @Nullable SheetPileBlockEntity pile = level.getBlockEntity(pos, TFCBlockEntities.SHEET_PILE.get()).orElse(null);
+        if (pile != null)
+        {
+            final ItemStack stack = pile.removeSheet(face);
+            if (doDrops && (player == null || !player.isCreative()))
+            {
+                popResourceFromFace(level, pos, face, stack);
+            }
+        }
 
         level.playSound(null, pos, SoundEvents.METAL_BREAK, SoundSource.BLOCKS, 0.7f, 0.9f + 0.2f * level.getRandom().nextFloat());
-        if (doDrops && (player == null || !player.isCreative()))
-        {
-            level.getBlockEntity(pos, TFCBlockEntities.SHEET_PILE.get()).ifPresent(pile ->
-            {
-                final ItemStack stack = pile.removeSheet(face);
-                popResourceFromFace(level, pos, face, stack);
-            });
-        }
 
         if (isEmpty(newState))
         {
@@ -90,7 +99,6 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
         else
         {
             level.setBlock(pos, newState, Block.UPDATE_CLIENTS);
-            level.levelEvent(LevelEvent.PARTICLES_DESTROY_BLOCK, pos, Block.getId(state));
         }
     }
 
@@ -111,7 +119,12 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
     @Nullable
     public static Direction getTargetedFace(Level level, BlockState state, Player player)
     {
-        final BlockHitResult result = Helpers.rayTracePlayer(level, player, ClipContext.Fluid.NONE);
+        return getTargetedFace(state, Helpers.rayTracePlayer(level, player, ClipContext.Fluid.NONE));
+    }
+
+    @Nullable
+    private static Direction getTargetedFace(BlockState state, BlockHitResult result)
+    {
         if (result.getType() == HitResult.Type.BLOCK)
         {
             final Vec3 hit = result.getLocation();
@@ -316,5 +329,87 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
         }
 
         return DirectionPropertyBlock.mirror(state, mirror).setValue(FACING, mirror.mirror(state.getValue(FACING))).cycle(MIRROR);
+    }
+
+    @Override
+    public void initializeClient(Consumer<IClientBlockExtensions> consumer)
+    {
+        consumer.accept(new SheetPileRendering(this));
+    }
+
+    record SheetPileRendering(Block block) implements IClientBlockExtensions
+    {
+        /**
+         * Prevent vanilla particles, and render our own. This fixes two issues:
+         * <ul>
+         *     <li>Particles render based on the combined bounds of the block, not on the targeted face</li>
+         *     <li>Particles render using the first-available texture by face, not the targeted face</li>
+         * </ul>
+         * Both of these are derived from behavior in {@link ParticleEngine#crack(BlockPos, Direction)}, and what this method
+         * is based on, with modifications.
+         * @return {@code true} to prevent vanilla particles from rendering.
+         */
+        @Override
+        public boolean addHitEffects(BlockState state, Level level, HitResult target, ParticleEngine manager)
+        {
+            // All vanilla call paths provide `BlockHitResult`, why doesn't this API?
+            // There's no other way to access the position here, this is terrible...
+            // Also, particle calls require a client level...
+            if (state.getBlock() == block &&
+                !isEmpty(state) &&
+                target instanceof BlockHitResult blockHit &&
+                level instanceof ClientLevel clientLevel)
+            {
+                final BlockPos pos = blockHit.getBlockPos();
+                final @Nullable SheetPileBlockEntity pile = level.getBlockEntity(pos, TFCBlockEntities.SHEET_PILE.get()).orElse(null);
+                if (pile != null)
+                {
+                    final @Nullable Direction targetedFace = getTargetedFace(state, blockHit);
+                    if (targetedFace != null)
+                    {
+                        addHitEffects(clientLevel, pos, state, targetedFace, pile.getOrCacheMetal(targetedFace));
+                    }
+                }
+            }
+            return true;
+        }
+
+        private void addHitEffects(ClientLevel level, BlockPos pos, BlockState state, Direction face, Metal metal)
+        {
+            double x = level.random.nextDouble() * 0.8 + 0.1;
+            double y = level.random.nextDouble() * 0.8 + 0.1;
+            double z = level.random.nextDouble() * 0.8 + 0.1;
+            switch (face)
+            {
+                case DOWN -> y = 0.1;
+                case UP -> y = 0.9;
+                case NORTH -> z = 0.1;
+                case SOUTH -> z = 0.9;
+                case WEST -> x = 0.1;
+                case EAST -> x = 0.9;
+            }
+
+            // Set the sprite directly rather than calling `updateSprite()`, so we pick up the correct particle for the face being hit
+            final TextureAtlasSprite metalSprite = RenderHelpers.blockTexture(metal.getTextureId());
+            final Particle particle = new TerrainParticle(level, pos.getX() + x, pos.getY() + y, pos.getZ() + z, 0, 0, 0, state, pos)
+            {{
+                sprite = metalSprite;
+            }}
+                .setPower(0.2f)
+                .scale(0.6f);
+
+            Minecraft.getInstance().particleEngine.add(particle);
+        }
+
+        /**
+         * Prevent vanilla destruction particles from rendering when a sheet pile is broken. As far as I can tell, there is no practical way, from this
+         * method, that we can identify what sheet is being broken. And without that, we can't ever ensure we render the correct particles outside of
+         * weird edge cases, so I'd rather err on the side of correctness and say "these don't generate particles on break"
+         */
+        @Override
+        public boolean addDestroyEffects(BlockState state, Level level, BlockPos pos, ParticleEngine manager)
+        {
+            return true;
+        }
     }
 }

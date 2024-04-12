@@ -50,6 +50,19 @@ import org.jetbrains.annotations.Nullable;
 
 public class WorldTracker implements ICapabilitySerializable<CompoundTag>
 {
+    /**
+     * Returns the world tracker for a given world. Note that we always expect <strong>every world</strong> to have a tracker attached, and thus this will throw
+     * if the tracker does not exist. The world tracker exists on both client and server worlds, although it may be in various states of valid in client worlds.
+     *
+     * @param level The world to query.
+     * @return The world tracker for this world.
+     */
+    @SuppressWarnings("deprecation")
+    public static WorldTracker get(Level level)
+    {
+        return level.getCapability(WorldTrackerCapability.CAPABILITY).orElseThrow(() -> new IllegalStateException("Missing " + WorldTracker.class.getSimpleName()));
+    }
+
     private final Level level;
     private final Random random;
     private final LazyOptional<WorldTracker> capability;
@@ -155,7 +168,10 @@ public class WorldTracker implements ICapabilitySerializable<CompoundTag>
         return rotationManager;
     }
 
-    public void tick(ServerLevel level)
+    /**
+     * Must only be called from logical server!
+     */
+    public void tick()
     {
         if (!collapsesInProgress.isEmpty() && random.nextInt(10) == 0)
         {
@@ -207,7 +223,7 @@ public class WorldTracker implements ICapabilitySerializable<CompoundTag>
             final BlockState currentState = level.getBlockState(pos);
             if (Helpers.isBlock(currentState.getBlock(), TFCTags.Blocks.BREAKS_WHEN_ISOLATED) && isIsolated(level, pos))
             {
-                Helpers.destroyBlockAndDropBlocksManually(level, pos, ctx -> ctx.withParameter(TFCLoot.ISOLATED, true));
+                Helpers.destroyBlockAndDropBlocksManually((ServerLevel) level, pos, ctx -> ctx.withParameter(TFCLoot.ISOLATED, true));
             }
             isolatedIterator.remove();
         }
@@ -294,6 +310,7 @@ public class WorldTracker implements ICapabilitySerializable<CompoundTag>
 
     @NotNull
     @Override
+    @SuppressWarnings("deprecation")
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {
         return WorldTrackerCapability.CAPABILITY.orEmpty(cap, capability);

@@ -6,13 +6,13 @@
 
 package net.dries007.tfc.client;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.Locale;
-
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -24,23 +24,21 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
-import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import net.minecraftforge.client.gui.overlay.GuiOverlayManager;
-
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
+import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import net.minecraftforge.client.gui.overlay.NamedGuiOverlay;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.food.TFCFoodData;
-import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
+import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.entities.livestock.MammalProperties;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.common.entities.misc.TFCFishingHook;
-import net.dries007.tfc.config.HealthDisplayStyle;
 import net.dries007.tfc.config.DisabledExperienceBarStyle;
+import net.dries007.tfc.config.HealthDisplayStyle;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
@@ -231,7 +229,7 @@ public enum IngameOverlays
                 int u = 60;
                 if (Helpers.isItem(player.getItemInHand(InteractionHand.OFF_HAND), TFCTags.Items.HAMMERS))
                 {
-                    u = player.getCapability(PlayerDataCapability.CAPABILITY).map(cap -> cap.getChiselMode().ordinal() * 20).orElse(0);
+                    u = PlayerData.get(player).getChiselMode().ordinal() * 20;
                 }
                 stack.pushPose();
                 graphics.blit(TEXTURE, width / 2 + 100, height - 21, u, 58, 20, 20);
@@ -244,8 +242,7 @@ public enum IngameOverlays
     {
         final PoseStack stack = graphics.pose();
         final Minecraft mc = Minecraft.getInstance();
-        final LocalPlayer localPlayer = mc.player;
-        final Player player = (Player) mc.getCameraEntity();
+        final @Nullable LocalPlayer localPlayer = mc.player;
         final boolean isShowingExperience = TFCConfig.CLIENT.enableExperienceBar.get();
         final boolean isStyleLeftHotbar = (TFCConfig.CLIENT.disabledExperienceBarStyle.get() == DisabledExperienceBarStyle.LEFT_HOTBAR);
         if (localPlayer != null && localPlayer.fishing instanceof TFCFishingHook hook && setup(gui, mc))
@@ -257,7 +254,7 @@ public enum IngameOverlays
             {
                 int barHeight;
                 int uOffset;
-                if (player != null && player.getVehicle() instanceof LivingEntity && TFCConfig.CLIENT.enableHealthBar.get()) // Increase the bar's height if a second health bar is present
+                if (localPlayer.getVehicle() instanceof LivingEntity && TFCConfig.CLIENT.enableHealthBar.get()) // Increase the bar's height if a second health bar is present
                 {
                     barHeight = 42;
                     uOffset = 164;

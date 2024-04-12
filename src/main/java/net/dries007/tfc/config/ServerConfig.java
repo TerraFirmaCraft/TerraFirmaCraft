@@ -34,6 +34,7 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue enableCalendarSensitiveMoonPhases;
     public final ForgeConfigSpec.BooleanValue enableLightning;
     public final ForgeConfigSpec.BooleanValue enableLightningStrippingLogs;
+    public final ForgeConfigSpec.IntValue oceanWindScale;
 
     // Blocks - Farmland
     public final ForgeConfigSpec.BooleanValue enableFarmlandCreation;
@@ -287,6 +288,7 @@ public class ServerConfig
         enableCalendarSensitiveMoonPhases = builder.comment("Enables TFC setting the moon phase based on the progress of the month. The etymology of the English word 'month' is in fact related to the word 'moon'.").define("enableCalendarSensitiveMoonPhases", true);
         enableLightning = builder.comment("If false, vanilla lightning will not strike.").define("enableLightning", true);
         enableLightningStrippingLogs = builder.comment("If true, lightning has a chance of stripping bark off of trees.").define("enableLightningStrippingLogs", true);
+        oceanWindScale = builder.comment("Every time the z coordinate reaches a multiple of this point, the wind over oceans will switch directions.").define("oceanWindScale", 5000, 128, Integer.MAX_VALUE);
 
         builder.swap("blocks").push("farmland");
 
@@ -401,7 +403,7 @@ public class ServerConfig
 
         builder.swap("bloomery");
 
-        bloomeryCapacity = builder.comment("Inventory capacity (in number of items per level of chimney) of the bloomery.").define("bloomeryCapacity", 8, 1, Integer.MAX_VALUE);
+        bloomeryCapacity = builder.comment("Inventory capacity (in number of items per level of chimney) of the bloomery.").define("bloomeryCapacity1", 16, 1, Integer.MAX_VALUE);
         bloomeryMaxChimneyHeight = builder.comment("The maximum number of levels that can be built in a bloomery multiblock, for added capacity.").define("bloomeryMaxChimneyHeight", 3, 1, Integer.MAX_VALUE);
 
         builder.swap("blastFurnace");

@@ -179,7 +179,6 @@ license {
 
 mixin {
     add(sourceSets.main.get(), "$modId.refmap.json")
-    add(sourceSets.test.get(), "$modId.refmap.json")
 }
 
 tasks {

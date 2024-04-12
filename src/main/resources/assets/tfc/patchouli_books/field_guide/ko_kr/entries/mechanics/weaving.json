@@ -43,7 +43,7 @@
     {
       "type": "tfc:loom_recipe",
       "recipe": "tfc:loom/wool_block",
-      "text": "$(thing)양털 천$()은 다시 $(thing)양털 블록$()으로 직조할 수 있습니다. 양털 블록은 염색될 수 있습니다."
+      "text": "$(thing)Wool Cloth$() can be re-woven into $(thing)Wool Blocks$(). Wool blocks can be $(l:mechanics/dye)dyed$()."
     },
     {
       "type": "tfc:loom_recipe",

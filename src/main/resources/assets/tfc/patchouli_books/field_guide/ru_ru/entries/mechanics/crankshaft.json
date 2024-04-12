@@ -1,0 +1,29 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Коленчатые валы",
+  "category": "tfc:mechanics",
+  "icon": "tfc:crankshaft",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Коленчатый вал$() - это способ преобразования $(l:mechanics/mechanical_power)Вращательной энергии$() в $(thing)Энергию возвратно-Поступательного движения$(). Это может быть полезно для питания таких устройств, как $(l:mechanics/bellows)Мехи$() или $(l:mechanics/pumps)Водяные насосы$().$(br2)$(thing)Коленчатый вал$() состоит из двух частей: основания и вала. Основание должно быть подключено к $(l:mechanics/mechanical_power#axle)Оси$(), и устройства могут быть подключены к концу вала."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock_id": "tfc:crankshaft",
+      "name": "",
+      "text": "$(thing)Коленчатый вал$(), приводимый в действие $(l:mechanics/mechanical_power#axle)Осью$()",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/crankshaft",
+      "text": "Основание можно изготовить из $(l:getting_started/primitive_alloys#brass)Латуни$(). После установки основания к нему можно добавить вал, используя $(thing)Стальной стержень$() на основании. Если рядом с коленчатым валом есть пустое пространство, стержень будет установлен."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Коленчатый вал можно подключить к $(l:mechanics/bellows)Мехам$(), установив их рядом с валом. Тогда они будут автоматически надуваться каждый раз, когда вал выдвигается, а затем втягивается. Когда подключены к коленчатому валу, они не могут быть управляемы вручную.$(br2)Коленчатый вал также можно подключить к $(l:mechanics/pumps)Насосу$(), который может использоваться для транспортировки жидкостей."
+    }
+  ],
+  "read_by_default": true
+}

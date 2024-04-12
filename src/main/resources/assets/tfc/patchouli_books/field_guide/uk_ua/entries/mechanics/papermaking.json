@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Папір виготовляється з обробленого стебла $(l:mechanics/crops#papyrus)папірусу$(). Він використовується для письмових матеріалів, таких як $(thing)книги$() та $(thing)карти$()."
+      "text": "$(thing)Paper$() is either made from the processed stalk of the $(l:mechanics/crops#papyrus)Papyrus$() crop, or from $(l:mechanics/papermaking#parchment)Animal Hides$(). Paper is useful for written materials like $(thing)Books$() and $(thing)Maps$()."
     },
     {
       "type": "patchouli:crafting",
@@ -37,6 +37,45 @@
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/pine_lectern",
       "recipe2": "tfc:crafting/wood/kapok_bookshelf"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Flip to the next page for information on papermaking via the parchment process."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "parchment",
+      "text": "$(thing)Parchment Paper$() starts with a scraped hide. Review the $(l:mechanics/leather_making)leather making chapter$() to learn how to make it. Parchment requires treatment with a few different items. First, $(thing)Pumice$() is needed. Pumice is found on the ground near $(l:the_world/geology)Volcanoes$(), or from $(l:mechanics/sluices)Sluicing$() or $(l:mechanics/panning)Panning$() ore deposits with Andesite, Rhyolite, or Dacite in them.",
+      "title": "Parchment"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:groundcover/pumice"
+        }
+      },
+      "name": "Pumice",
+      "text": "A Pumice rock placed on the ground.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/large_treated_hide",
+      "text": "Crafting pumice, a hammer, and scraped hide gives sections of $(thing)Treated Hide$()."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/parchment",
+      "text": "Treated hide, $(l:mechanics/glassworking#lime)lime powder$(), flour, and a fresh egg will complete the treatment process and yield usable paper."
     }
   ],
   "read_by_default": true

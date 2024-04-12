@@ -125,6 +125,7 @@ import net.dries007.tfc.common.blocks.ISlowEntities;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.capabilities.size.IItemSize;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.capabilities.size.Size;
@@ -869,23 +870,20 @@ public final class Helpers
     {
         if (level.getGameRules().getBoolean(GameRules.RULE_DOFIRETICK))
         {
-            final int x = pos.getX();
-            final int y = pos.getY();
-            final int z = pos.getZ();
-            final int radiusSquared = radius * radius;
-            for (BlockPos checkPos : BlockPos.randomBetweenClosed(random, radius * 2, x - radius, y, z - radius, x + radius, y + radius, z + radius))
+            for (int i = 0; i < radius; i++)
             {
-                if (checkPos.distSqr(pos) < radiusSquared && level.isLoaded(checkPos))
+                pos = pos.relative(Direction.Plane.HORIZONTAL.getRandomDirection(random));
+                if (level.getRandom().nextFloat() < 0.25f)
+                    pos = pos.above();
+                final BlockState state = level.getBlockState(pos);
+                if (!state.isAir())
                 {
-                    final BlockState state = level.getBlockState(checkPos);
-                    if (state.isAir())
-                    {
-                        if (hasFlammableNeighbours(level, checkPos))
-                        {
-                            level.setBlockAndUpdate(checkPos, Blocks.FIRE.defaultBlockState());
-                            return;
-                        }
-                    }
+                    return;
+                }
+                if (hasFlammableNeighbours(level, pos))
+                {
+                    level.setBlockAndUpdate(pos, Blocks.FIRE.defaultBlockState());
+                    return;
                 }
             }
         }
@@ -999,13 +997,17 @@ public final class Helpers
         {
             final ItemStack mergeStack = inventory.getStackInSlot(slot);
             return mergeStack.getCapability(Capabilities.FLUID).map(fluidCap -> {
-                int filled = fluidCap.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
+                final int filled = fluidCap.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
                 if (filled > 0)
                 {
-                    final Metal metal = Objects.requireNonNullElse(Metal.get(fluidStack.getFluid()), Metal.unknown());
-                    final float heatCapacity = metal.getHeatCapacity(filled);
+                    final @Nullable IHeat mergeHeat = HeatCapability.get(mergeStack);
+                    if (mergeHeat != null)
+                    {
+                        final Metal metal = Objects.requireNonNullElse(Metal.get(fluidStack.getFluid()), Metal.unknown());
+                        final float heatCapacity = metal.getHeatCapacity(filled);
 
-                    mergeStack.getCapability(HeatCapability.CAPABILITY).ifPresent(heatCap -> heatCap.addTemperatureFromSourceWithHeatCapacity(temperature, heatCapacity));
+                        mergeHeat.addTemperatureFromSourceWithHeatCapacity(temperature, heatCapacity);
+                    }
                 }
                 final FluidStack remainder = fluidStack.copy();
                 remainder.shrink(filled);

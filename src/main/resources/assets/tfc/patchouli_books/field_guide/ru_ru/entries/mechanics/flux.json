@@ -1,0 +1,21 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Флюс",
+  "category": "tfc:mechanics",
+  "icon": "tfc:powder/flux",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Флюс - это порошок, который требуется для $(l:mechanics/anvils#welding)сварки$() и также используется как катализатор в $(l:mechanics/blast_furnace)Доменной печи$(). Флюс можно получить, измельчив определённые предметы в $(l:mechanics/quern)жернове$().$(br2)Флюс можно получить несколькими способами, один из которых - из $(l:the_world/ores_and_minerals#borax)буры$()."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/fluxstone",
+      "text": "Некоторые породы - $(thing)известняк$(), $(thing)доломит$(), $(thing)мел$() или $(thing)мрамор$() - также могут использоваться как флюс после измельчения в $(l:mechanics/quern)жернове$(). Другие предметы, включая $(thing)щитки$(), $(thing)моллюски$(), $(thing)мягкотелые$() и съедобные остатки $(l:the_world/wild_animals#shellfish)ракообразных$() также могут использоваться для создания флюса."
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:powder/flux": 0
+  }
+}

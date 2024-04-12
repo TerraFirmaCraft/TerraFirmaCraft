@@ -31,14 +31,12 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.food.FoodData;
 import net.dries007.tfc.common.capabilities.food.TFCFoodData;
 import net.dries007.tfc.common.capabilities.player.PlayerData;
-import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.ingredients.FluidIngredient;
 import net.dries007.tfc.network.DataManagerSyncPacket;
@@ -79,8 +77,8 @@ public class Drinkable extends FluidDefinition
             final BlockState state = level.getBlockState(pos);
             final Fluid fluid = state.getFluidState().getType();
             final float thirst = player.getFoodData() instanceof TFCFoodData data ? data.getThirst() : TFCFoodData.MAX_THIRST;
-            final LazyOptional<PlayerData> playerData = player.getCapability(PlayerDataCapability.CAPABILITY);
-            if (playerData.map(p -> p.getLastDrinkTick() + 10 < Calendars.get(level).getTicks()).orElse(false))
+            final PlayerData playerData = PlayerData.get(player);
+            if (playerData.getLastDrinkTick() + 10 < Calendars.get(level).getTicks())
             {
                 final Drinkable drinkable = get(fluid);
                 if (drinkable != null && (thirst < TFCFoodData.MAX_THIRST || drinkable.getThirst() == 0 || drinkable.mayDrinkWhenFull))
@@ -100,11 +98,11 @@ public class Drinkable extends FluidDefinition
         return InteractionResult.PASS;
     }
 
-    private static void doDrink(Level level, Player player, BlockState state, BlockPos pos, LazyOptional<PlayerData> playerData, Drinkable drinkable)
+    private static void doDrink(Level level, Player player, BlockState state, BlockPos pos, PlayerData playerData, Drinkable drinkable)
     {
         assert !level.isClientSide;
 
-        playerData.ifPresent(p -> p.setLastDrinkTick(Calendars.SERVER.getTicks()));
+        playerData.setLastDrinkTick(Calendars.SERVER.getTicks());
         level.playSound(null, pos, SoundEvents.GENERIC_DRINK, SoundSource.PLAYERS, 1.0f, 1.0f);
 
         drinkable.onDrink(player, HAND_DRINK_MB);
@@ -185,7 +183,7 @@ public class Drinkable extends FluidDefinition
 
         if (intoxication > 0)
         {
-            player.getCapability(PlayerDataCapability.CAPABILITY).ifPresent(p -> p.addIntoxicatedTicks((long) (intoxication * multiplier)));
+            PlayerData.get(player).addIntoxicatedTicks((long) (intoxication * multiplier));
         }
 
         if (food != null && player.getFoodData() instanceof TFCFoodData data)

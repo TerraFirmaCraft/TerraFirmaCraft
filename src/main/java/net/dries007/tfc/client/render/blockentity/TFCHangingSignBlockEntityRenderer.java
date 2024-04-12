@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.client.render.blockentity;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -36,12 +37,25 @@ import net.dries007.tfc.util.Metal;
 
 public class TFCHangingSignBlockEntityRenderer extends HangingSignRenderer
 {
-    private static final Map<Block, HangingSignModelData> RENDER_INFO;
+    private static final Map<Block, HangingSignModelData> RENDER_INFO = new HashMap<>();
 
     @Nullable
     public static HangingSignModelData getData(Block block)
     {
         return RENDER_INFO.get(block);
+    }
+
+    public static synchronized void registerData(Block block, HangingSignModelData modelData)
+    {
+        RENDER_INFO.put(block, modelData);
+    }
+
+    /**
+     * Provided as a helper to avoid loading Material early.
+     */
+    public static HangingSignModelData createModelData(ResourceLocation signLocation, ResourceLocation guiLocation)
+    {
+        return new HangingSignModelData(new Material(Sheets.SIGN_SHEET, signLocation), guiLocation);
     }
 
     private static HangingSignModelData createModelData(Metal.Default metal, Supplier<? extends SignBlock> reg)
@@ -50,20 +64,16 @@ public class TFCHangingSignBlockEntityRenderer extends HangingSignRenderer
         final ResourceLocation woodName = new ResourceLocation(type.name());
         final ResourceLocation metalName = Helpers.identifier(metal.getSerializedName());
 
-        return new HangingSignModelData(
-            new Material(Sheets.SIGN_SHEET, new ResourceLocation(woodName.getNamespace(), "entity/signs/hanging/" + metalName.getPath() + "/" + woodName.getPath())),
+        return createModelData(
+            new ResourceLocation(woodName.getNamespace(), "entity/signs/hanging/" + metalName.getPath() + "/" + woodName.getPath()),
             new ResourceLocation(type.name() + ".png").withPrefix("textures/gui/hanging_signs/" + metalName.getPath() + "/")
         );
     }
 
     static
     {
-        final ImmutableMap.Builder<Block, HangingSignModelData> builder = ImmutableMap.builder();
-
-        TFCBlocks.CEILING_HANGING_SIGNS.forEach((wood, map) -> map.forEach((metal, reg) -> builder.put(reg.get(), createModelData(metal, reg))));
-        TFCBlocks.WALL_HANGING_SIGNS.forEach((wood, map) -> map.forEach((metal, reg) -> builder.put(reg.get(), createModelData(metal, reg))));
-
-        RENDER_INFO = builder.build();
+        TFCBlocks.CEILING_HANGING_SIGNS.forEach((wood, map) -> map.forEach((metal, reg) -> RENDER_INFO.put(reg.get(), createModelData(metal, reg))));
+        TFCBlocks.WALL_HANGING_SIGNS.forEach((wood, map) -> map.forEach((metal, reg) -> RENDER_INFO.put(reg.get(), createModelData(metal, reg))));
     }
 
     private final Map<WoodType, HangingSignModel> hangingSignModels;

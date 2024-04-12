@@ -1,0 +1,80 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Жернов",
+  "category": "tfc:mechanics",
+  "icon": "tfc:quern",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Жернов$() - это устройство для измельчения предметов. Он может производить порошки, $(l:mechanics/dye)красители$(), и некоторые другие предметы. Он собирается из $(thing)Основания$() и $(thing)Ручного камня$().$(br2)Жернов также может быть подключен к сети $(l:mechanics/mechanical_power#quern)Механической энергии$()."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/quern",
+      "text": "Основание жернова можно изготовить из трех $(thing)гладкого камня$() и трех блоков любого другого $(thing)Камня$()."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/handstone",
+      "text": "Для работы жернова необходим $(thing)Ручной камень$()."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/quern_empty.png"
+      ],
+      "text": "Наведите на верхнюю часть блока жернова и $(item)$(k:key.use)$(), чтобы поставить ручной камень.",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/quern_add_item.png"
+      ],
+      "text": "Используйте $(item)$(k:key.use)$() на верхней части ручного камня, чтобы добавить предметы.",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/quern_handle.png"
+      ],
+      "text": "Используйте $(item)$(k:key.use)$() на ручке, чтобы вращать ручной камень.",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/quern_result.png"
+      ],
+      "text": "Продукция должна появиться на основании жернова. $(item)$(k:key.use)$() в любом месте основания, чтобы забрать её.",
+      "border": true
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/sulfur",
+      "text": "Жернов используется для изготовления различных $(thing)порошков$() из руд, например, $(thing)серы$()."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/red_dye",
+      "text": "$(l:mechanics/dye)Краситель$() можно получить из различных цветов."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/emerald",
+      "text": "$(thing)Драгоценные камни$() также могут быть измельчены в порошок."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/barley_grain",
+      "text": "$(thing)Мука$() также доступна из жернова."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/fluxstone",
+      "text": "$(l:mechanics/flux)флюс$() также можно получить из жернова."
+    }
+  ],
+  "read_by_default": true
+}

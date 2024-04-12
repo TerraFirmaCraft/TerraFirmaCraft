@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Existem muitos, muitos, $(italimuitasny$() Diferentes tipos de plantas em Terrafirmacraft.$(br2)Diferentes plantas aparecem em diferentes $(l:the_world/climate)Climas$(), E sua aparência pode mudar durante a temporada atual - passando por ciclos de floração e colocando adormecidos ou mudando de cor à medida que a temperatura local muda. Flores coloridas geralmente podem ser esmagadas em um $(l:mechanics/quern)Quern$() para corante."
+      "text": "There are many, many, $(italic)many$() different types of plants in TerraFirmaCraft.$(br2)Different plants appear in different $(l:the_world/climate)Climates$(), and their appearance may change over the current season - going through cycles of flowering and laying dormant, or changing color as the local temperature changes. Colorful flowers can typically be crushed in a $(l:mechanics/quern)Quern$() for $(l:mechanics/dye)Dye$()."
     },
     {
       "type": "patchouli:multiblock",

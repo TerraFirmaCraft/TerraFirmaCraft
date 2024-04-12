@@ -50,12 +50,13 @@ public class HeatableIngredient extends DelegateIngredient
     @Nullable
     protected ItemStack testDefaultItem(ItemStack stack)
     {
-        return stack.getCapability(HeatCapability.CAPABILITY)
-            .map(h -> {
-                h.setTemperature(minTemp);
-                return stack;
-            })
-            .orElse(null);
+        final @Nullable IHeat heat = HeatCapability.get(stack);
+        if (heat != null)
+        {
+            heat.setTemperature(minTemp);
+            return stack;
+        }
+        return null;
     }
 
     @Override
@@ -63,10 +64,8 @@ public class HeatableIngredient extends DelegateIngredient
     {
         if (super.test(stack) && stack != null && !stack.isEmpty())
         {
-            return stack.getCapability(HeatCapability.CAPABILITY)
-                .map(IHeat::getTemperature)
-                .map(temp -> temp > minTemp && temp < maxTemp)
-                .orElse(false);
+            final @Nullable IHeat heat = HeatCapability.get(stack);
+            return heat != null && heat.getTemperature() >= minTemp && heat.getTemperature() <= maxTemp;
         }
         return false;
     }

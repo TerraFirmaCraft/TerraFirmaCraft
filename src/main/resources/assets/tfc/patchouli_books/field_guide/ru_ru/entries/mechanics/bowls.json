@@ -1,0 +1,47 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Чаши",
+  "category": "tfc:mechanics",
+  "icon": "tfc:ceramic/bowl",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Чаши$() - это универсальный инструмент, который может быть использован для создания $(l:mechanics/salad)салатов$(), для приготовления $(l:mechanics/pot)супов$(), для $(l:mechanics/decay#salting)соления$() мяса или для нанесения $(thing)порошка$() на $(l:mechanics/glassworking_applications#coloring)стекло$(), чтобы изменить результирующий цвет стекла.$(br2)Чаши могут быть изготовлены из $(thing)керамики$() путем вылепливания из глины, а затем обжигая."
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/bowl_4",
+      "text": "За одну лепку может быть сделано несколько необожженных чаш."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/vanilla/bowl",
+      "title": "Деревянные чаши",
+      "text": "Чаши также могут быть сделаны из дерева путем их соединения вместе с $(thing)Клеем$().$(br2)$(thing)Клей$() может быть сделан путем замачивания $(thing)Костной муки$() в бочке с $(l:mechanics/barrels#limewater)Известковой водой$()."
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "recipe": "tfc:barrel/glue",
+      "text": "Чаши также могут быть размещены на земле как блоки. Когда они размещены, их можно наполнить любым типом $(thing)Порошка$() - результатом измельчения руд, минералов или драгоценных камней в $(l:mechanics/quern)жернове$()."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:powders",
+      "title": "Порошки",
+      "link_recipes": false,
+      "text": "Чаша для порошка может вместить до 16 данного порошка. Чтобы вставить предметы, $(item)$(k:key.use)$() держа порошок. Чтобы извлечь предметы, $(item)$(k:key.use)$() с пустой рукой.$(br2)$(item)$(k:key.sneak)$() позволяет извлечь все содержимое чаши."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:powder/salt",
+      "link_recipes": false,
+      "text": "Если в чаше есть соль, щелчок по несоленому сырому мясу приведет к его солению. Это то же самое, что и крафт мяса с солью в вашем инвентаре."
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:ceramic/unfired_bowl": 1,
+    "tfc:ceramic/bowl": 1,
+    "minecraft:bowl": 2
+  }
+}

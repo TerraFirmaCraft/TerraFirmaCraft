@@ -61,20 +61,19 @@ public class NestBoxBlockEntity extends TickableInventoryBlockEntity<ItemStackHa
                     bird.stopRiding();
                 }
             }
-            for (int i = 0; i < nest.inventory.getSlots(); i++)
+
+            for (int slot = 0; slot < nest.inventory.getSlots(); slot++)
             {
-                final int slot = i;
-                ItemStack stack = nest.inventory.getStackInSlot(slot);
-                stack.getCapability(EggCapability.CAPABILITY).filter(IEgg::isFertilized).ifPresent(egg -> {
-                    if (egg.getHatchDay() > 0 && egg.getHatchDay() <= Calendars.SERVER.getTotalDays())
-                    {
-                        egg.getEntity(level).ifPresent(entity -> {
-                            entity.moveTo(pos, 0f, 0f);
-                            level.addFreshEntity(entity);
-                        });
-                        nest.inventory.setStackInSlot(slot, ItemStack.EMPTY);
-                    }
-                });
+                final ItemStack stack = nest.inventory.getStackInSlot(slot);
+                final @Nullable IEgg egg = EggCapability.get(stack);
+                if (egg != null && egg.getHatchDay() > 0 && egg.getHatchDay() <= Calendars.SERVER.getTotalDays())
+                {
+                    egg.getEntity(level).ifPresent(entity -> {
+                        entity.moveTo(pos, 0f, 0f);
+                        level.addFreshEntity(entity);
+                    });
+                    nest.inventory.setStackInSlot(slot, ItemStack.EMPTY);
+                }
             }
         }
     }

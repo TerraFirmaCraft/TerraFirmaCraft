@@ -1,0 +1,227 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Примитивные наковальни",
+  "category": "tfc:getting_started",
+  "icon": "tfc:rock/anvil/granite",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Альтернативой прямому литью инструментов на ранних этапах игры, а также требованием для металлов более высокого уровня, является использование $(thing)Наковальни$(). Наковальня - это блок, который может использоваться для двух различных процессов: $(l:mechanics/anvils#working)Обработки$() и $(l:mechanics/anvils#welding)сварки$(). В этой главе будет показано, как получить вашу первую примитивную каменную наковальню."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Сначала вам нужно получить блок $(thing)сырой породы$(), которая является $(thing)вулканической экструзивной$() (риолит, базальт, андезит или дацит) или $(thing)вулканической интрузивной$() (гранит, диорит или габбро). Вы можете найти и использовать выпавший блок в мире, или вы можете $(l:getting_started/primitive_anvils#raw_rock)извлечь его$() из окружающей скалы."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "stone_anvils",
+      "text": "Вам также понадобится любой $(thing)молот$(). Чтобы сделать наковальню, просто щелкните правой кнопкой мыши по $(thing)верхней$() поверхности одного из блоков сырой породы вашим $(thing)молотом$(), и вуаля! Наковальня будет сформирована.$(br2)У наковален есть $(l:mechanics/anvils#tiers)уровни$(). Каменная наковальня - это уровень 0 - самый низкий уровень. Она способна только $(l:mechanics/anvils#welding)сваривать$() слитки первого уровня.",
+      "title": "Каменная наковальня"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "Превращение центрального блока сырой породы в наковальню.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              " 0 "
+            ],
+            [
+              "RRR"
+            ]
+          ],
+          "mapping": {
+            "0": "AIR",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        },
+        "tfc:rock_anvil"
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "raw_rock",
+      "text": "Чтобы получить блок сырой породы без его разрушения на меньшие камни, его нужно $(thing)извлечь$(). Вы должны добыть блоки со всех шести сторон блока сырой породы - как только он будет окружен воздухом со всех сторон - он выпадет в виде предмета, который можно подобрать.",
+      "title": "Получение сырой породы"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "Добыча всех шести сторон куска сырого камня - после завершения центральный блок выпадет в виде предмета.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "   ",
+              " R ",
+              "   "
+            ],
+            [
+              " R ",
+              "RRR",
+              " R "
+            ],
+            [
+              "   ",
+              " 0 ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "0": "tfc:rock/raw/gabbro",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "   ",
+              "   "
+            ],
+            [
+              " R ",
+              "RRR",
+              " R "
+            ],
+            [
+              "   ",
+              " 0 ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "0": "tfc:rock/raw/gabbro",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "   ",
+              "   "
+            ],
+            [
+              "   ",
+              "RRR",
+              " R "
+            ],
+            [
+              "   ",
+              " 0 ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "0": "tfc:rock/raw/gabbro",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "   ",
+              "   "
+            ],
+            [
+              "   ",
+              " RR",
+              " R "
+            ],
+            [
+              "   ",
+              " 0 ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "0": "tfc:rock/raw/gabbro",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "   ",
+              "   "
+            ],
+            [
+              "   ",
+              " RR",
+              "   "
+            ],
+            [
+              "   ",
+              " 0 ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "0": "tfc:rock/raw/gabbro",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "   ",
+              "   "
+            ],
+            [
+              "   ",
+              " R ",
+              "   "
+            ],
+            [
+              "   ",
+              " 0 ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "0": "tfc:rock/raw/gabbro",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "   ",
+              "   "
+            ],
+            [
+              "   ",
+              " R ",
+              "   "
+            ],
+            [
+              "   ",
+              " 0 ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "0": "AIR",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        }
+      ]
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 6,
+  "extra_recipe_mappings": {
+    "tfc:rock/anvil/granite": 0,
+    "tfc:rock/anvil/diorite": 0,
+    "tfc:rock/anvil/gabbro": 0,
+    "tfc:rock/anvil/rhyolite": 0,
+    "tfc:rock/anvil/basalt": 0,
+    "tfc:rock/anvil/andesite": 0,
+    "tfc:rock/anvil/dacite": 0
+  }
+}

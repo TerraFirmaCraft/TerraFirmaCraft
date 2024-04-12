@@ -131,7 +131,7 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
             final float rotationSpeed = quern.getRotationSpeed();
             if (rotationSpeed != 0f && HANDSTONE_AABB.move(pos).contains(entity.position()) && !BASE_AABB.contains(entity.position()))
             {
-                Helpers.rotateEntity(level, entity, HANDSTONE_CENTER.add(pos.getX(), pos.getY(), pos.getZ()), rotationSpeed * Constants.RAD_TO_DEG);
+                Helpers.rotateEntity(level, entity, HANDSTONE_CENTER.add(pos.getX(), pos.getY(), pos.getZ()), -rotationSpeed * Constants.RAD_TO_DEG);
             }
         }
     }

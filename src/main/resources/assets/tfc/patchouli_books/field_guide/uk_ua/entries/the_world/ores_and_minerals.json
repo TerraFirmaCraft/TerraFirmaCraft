@@ -684,7 +684,7 @@
       "item": "tfc:kaolin_clay",
       "title": "Каолініт",
       "link_recipes": false,
-      "text": "Kaolinite is a soft $(thing)Mineral$() which is used in the construction of $(l:mechanics/fire_clay)Fire Clay$(). It can be found spawning at high altitudes in Plateaus, Old Mountains, and Highlands, at a $(l:the_world/climate#temperature)temperature$() of at least 18°C, with a $(l:the_world/climate#rainfall)rainfall$() of at least 300mm."
+      "text": "Kaolinite is a soft $(thing)Mineral$() which is used in the construction of $(l:mechanics/fire_clay)Fire Clay$(). It can be found spawning at high altitudes in Plateaus, Old Mountains, and Highlands, at a $(l:the_world/climate#temperature)temperature$() of at least 18°C, with a $(l:the_world/climate#rainfall)rainfall$() of at least 300mm. The $(thing)Blood Lily$() flower grows on Kaolin clay."
     },
     {
       "type": "tfc:multimultiblock",
@@ -696,11 +696,15 @@
               "X"
             ],
             [
+              "Y"
+            ],
+            [
               "0"
             ]
           ],
           "mapping": {
-            "X": "tfc:kaolin_clay_grass"
+            "X": "tfc:plant/blood_lily",
+            "Y": "tfc:kaolin_clay_grass"
           }
         },
         {
@@ -709,11 +713,15 @@
               "X"
             ],
             [
+              "Y"
+            ],
+            [
               "0"
             ]
           ],
           "mapping": {
-            "X": "tfc:red_kaolin_clay"
+            "X": "tfc:plant/blood_lily",
+            "Y": "tfc:red_kaolin_clay"
           }
         },
         {
@@ -722,11 +730,15 @@
               "X"
             ],
             [
+              "Y"
+            ],
+            [
               "0"
             ]
           ],
           "mapping": {
-            "X": "tfc:white_kaolin_clay"
+            "X": "tfc:plant/blood_lily",
+            "Y": "tfc:white_kaolin_clay"
           }
         },
         {
@@ -735,11 +747,15 @@
               "X"
             ],
             [
+              "Y"
+            ],
+            [
               "0"
             ]
           ],
           "mapping": {
-            "X": "tfc:pink_kaolin_clay"
+            "X": "tfc:plant/blood_lily",
+            "Y": "tfc:pink_kaolin_clay"
           }
         }
       ]
@@ -1047,7 +1063,7 @@
       "item": "tfc:ore/lapis_lazuli",
       "title": "Лазурит",
       "link_recipes": false,
-      "text": "Lapis Lazuli is a decorative $(thing)Mineral$() which can be used to make $(thing)Dye$(). It can be found in large, but sparse veins in $(thing)Limestone$() and $(thing)Marble$(), between y=-20 and y=80."
+      "text": "Lapis Lazuli is a decorative $(thing)Mineral$() which can be used to make $(l:mechanics/dye)Blue Dye$(). It can be found in large, but sparse veins in $(thing)Limestone$() and $(thing)Marble$(), between y=-20 and y=80."
     },
     {
       "type": "patchouli:multiblock",
@@ -1074,7 +1090,7 @@
       "item": "tfc:ore/amethyst",
       "title": "Amethyst",
       "link_recipes": false,
-      "text": "Amethyst is a decorative $(thing)Mineral$() which can be used to make $(thing)Dye$() and $(l:mechanics/glassworking)Glass$(). It can be found in $(thing)Sedimentary) and $(thing)Metamorphic$() rock beneath rivers above y=40."
+      "text": "Amethyst is a decorative $(thing)Mineral$() which can be used to make $(l:mechanics/glassworking)Glass$(). It can be found in $(thing)Sedimentary) and $(thing)Metamorphic$() rock beneath rivers above y=40."
     },
     {
       "type": "patchouli:multiblock",
@@ -1101,7 +1117,7 @@
       "item": "tfc:ore/opal",
       "title": "Opal",
       "link_recipes": false,
-      "text": "Opal is a decorative $(thing)Mineral$() which can be used to make $(thing)Dye$(). It can be found in $(thing)Sedimentary) and $(thing)Igneous Extrusive$() rock beneath rivers above y=40."
+      "text": "Opal is a decorative $(thing)Mineral$(). It can be found in $(thing)Sedimentary) and $(thing)Igneous Extrusive$() rock beneath rivers above y=40."
     },
     {
       "type": "patchouli:multiblock",
@@ -1176,6 +1192,11 @@
     "tfc:ore/rich_sphalerite": 24,
     "tfc:ore/lignite": 26,
     "tfc:ore/bituminous_coal": 28,
+    "tfc:red_kaolin_clay": 30,
+    "tfc:pink_kaolin_clay": 30,
+    "tfc:white_kaolin_clay": 30,
+    "tfc:kaolin_clay_grass": 30,
+    "tfc:kaolin_clay": 30,
     "tfc:ore/graphite": 32,
     "tfc:ore/cinnabar": 34,
     "tfc:ore/cryolite": 36,

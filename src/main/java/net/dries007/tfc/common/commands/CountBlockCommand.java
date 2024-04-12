@@ -25,16 +25,19 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
 public final class CountBlockCommand
 {
-    private static final String DONE = "tfc.commands.countblock.done";
+    private static final String DONE = "tfc.commands.count_block.done";
 
     public static LiteralArgumentBuilder<CommandSourceStack> create(CommandBuildContext cmdContext)
     {
         return Commands.literal("count")
             .requires(source -> source.hasPermission(2))
             .then(Commands.argument("radius", IntegerArgumentType.integer(1, 250))
-                .then(Commands.argument("block", BlockPredicateArgument.blockPredicate(cmdContext)))
-                    .executes(context -> countBlock(context.getSource(), IntegerArgumentType.getInteger(context, "radius"), BlockPredicateArgument.getBlockPredicate(context, "block")
-                    )
+                .then(Commands.argument("block", BlockPredicateArgument.blockPredicate(cmdContext))
+                    .executes(context -> countBlock(
+                        context.getSource(),
+                        IntegerArgumentType.getInteger(context, "radius"),
+                        BlockPredicateArgument.getBlockPredicate(context, "block")
+                    ))
                 )
             );
     }
@@ -44,7 +47,7 @@ public final class CountBlockCommand
         final Level level = source.getLevel();
         final BlockPos center = BlockPos.containing(source.getPosition());
 
-        final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
+        final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
 
         int found = 0;
         for (int x = -radius; x <= radius; x++)
@@ -53,9 +56,8 @@ public final class CountBlockCommand
             {
                 for (int y = level.getMinBuildHeight(); y < level.getMaxBuildHeight(); y++)
                 {
-                    mutablePos.set(center).move(x, 0, z).setY(y);
-                    final BlockState state = level.getBlockState(mutablePos);
-                    if (block.test(new BlockInWorld(level, mutablePos, true)))
+                    cursor.set(center).move(x, 0, z).setY(y);
+                    if (block.test(new BlockInWorld(level, cursor, true)))
                     {
                         found++;
                     }
@@ -63,7 +65,7 @@ public final class CountBlockCommand
             }
         }
         int finalFound = found;
-        source.sendSuccess(() -> Component.translatable(DONE, finalFound, block.toString()), true);
+        source.sendSuccess(() -> Component.translatable(DONE, finalFound), true);
         return Command.SINGLE_SUCCESS;
     }
 }

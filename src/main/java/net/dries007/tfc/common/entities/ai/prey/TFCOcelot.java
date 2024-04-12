@@ -11,7 +11,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
@@ -30,7 +29,6 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.common.capabilities.food.IFood;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.entities.livestock.pet.TFCCat;
@@ -145,11 +143,8 @@ public class TFCOcelot extends Ocelot
     @Override
     public boolean isFood(ItemStack stack)
     {
-        if (stack.getCapability(FoodCapability.CAPABILITY).filter(IFood::isRotten).isPresent())
-        {
-            return false;
-        }
-        return Helpers.isItem(stack, TFCTags.Items.CAT_FOOD);
+        return !FoodCapability.isRotten(stack)
+            && Helpers.isItem(stack, TFCTags.Items.CAT_FOOD);
     }
 
     @Override

@@ -81,7 +81,7 @@ public class RegionGenerator
                 .spread(0.15f)
                 .scaled(-3f, 3f));
 
-        this.rainfallNoise = baseNoise(true, settings.temperatureScale(), settings.temperatureConstant())
+        this.rainfallNoise = baseNoise(true, settings.rainfallScale(), settings.rainfallConstant())
             .scaled(0f, 500f)
             .add(new OpenSimplex2D(random.nextInt())
                 .octaves(2)

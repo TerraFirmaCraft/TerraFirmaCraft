@@ -62,6 +62,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.server.ServerLifecycleHooks;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.particle.TFCParticles;
@@ -71,11 +72,13 @@ import net.dries007.tfc.common.blockentities.SluiceBlockEntity;
 import net.dries007.tfc.common.blocks.devices.SluiceBlock;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.capabilities.egg.EggCapability;
+import net.dries007.tfc.common.capabilities.egg.IEgg;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.common.capabilities.forge.Forging;
 import net.dries007.tfc.common.capabilities.forge.ForgingBonus;
+import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
 import net.dries007.tfc.common.capabilities.glass.GlassWorkData;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.items.EmptyPanItem;
 import net.dries007.tfc.common.items.PanItem;
@@ -100,7 +103,7 @@ import net.dries007.tfc.util.PhysicalDamageType;
 import net.dries007.tfc.util.Sluiceable;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.climate.Climate;
-import net.dries007.tfc.util.tracker.WorldTrackerCapability;
+import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
@@ -177,7 +180,7 @@ public class ClientForgeEventHandler
                     tooltip.add("[Waiting for chunk data]");
                 }
 
-                mc.level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addDebugTooltip(tooltip));
+                WorldTracker.get(mc.level).addDebugTooltip(tooltip);
 
                 final MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
                 if (server != null && server.overworld().getChunkSource().getGenerator() instanceof ChunkGeneratorExtension ex)
@@ -263,22 +266,31 @@ public class ClientForgeEventHandler
             ItemSizeManager.addTooltipInfo(stack, text);
             PhysicalDamageType.addTooltipInfo(stack, text);
             ForgingBonus.addTooltipInfo(stack, text);
-            Forging.addTooltipInfo(stack, text);
+            ForgingCapability.addTooltipInfo(stack, text);
             GlassWorkData.addTooltipInfo(stack, text);
+            FoodCapability.addTooltipInfo(stack, text);
 
-            stack.getCapability(FoodCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(stack, text));
-            stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(stack, text));
-            stack.getCapability(EggCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(text));
+            final @Nullable IHeat heat = HeatCapability.get(stack);
+            if (heat != null)
+            {
+                heat.addTooltipInfo(stack, text);
+            }
+
+            final @Nullable IEgg egg = EggCapability.get(stack);
+            if (egg != null)
+            {
+                egg.addTooltipInfo(text);
+            }
 
             // Fuel information
             final Fuel fuel = Fuel.get(stack);
             if (fuel != null)
             {
-                final MutableComponent heat = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(fuel.getTemperature());
-                if (heat != null)
+                final MutableComponent heatTooltip = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(fuel.getTemperature());
+                if (heatTooltip != null)
                 {
                     // burns at %s for %s
-                    text.add(Component.translatable("tfc.tooltip.fuel_burns_at", heat, Calendars.CLIENT.getTimeDelta(fuel.getDuration())));
+                    text.add(Component.translatable("tfc.tooltip.fuel_burns_at", heatTooltip, Calendars.CLIENT.getTimeDelta(fuel.getDuration())));
                 }
             }
 
@@ -306,11 +318,11 @@ public class ClientForgeEventHandler
                     final Metal metal = Metal.get(fluid.getFluid());
                     if (metal != null)
                     {
-                        final MutableComponent heat = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(recipe.getTemperature());
-                        if (heat != null)
+                        final MutableComponent heatTooltip = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(recipe.getTemperature());
+                        if (heatTooltip != null)
                         {
                             // %s mB of %s (at %s)
-                            text.add(Component.translatable("tfc.tooltip.item_melts_into", fluid.getAmount() * stack.getCount(), Component.translatable(metal.getTranslationKey()), heat));
+                            text.add(Component.translatable("tfc.tooltip.item_melts_into", fluid.getAmount() * stack.getCount(), Component.translatable(metal.getTranslationKey()), heatTooltip));
                         }
                     }
                 }
@@ -474,24 +486,23 @@ public class ClientForgeEventHandler
         final PoseStack poseStack = event.getPoseStack();
         final Entity entity = camera.getEntity();
         final Level level = entity.level();
-        final HitResult baseHit = event.getTarget();
-        final BlockPos pos = BlockPos.containing(baseHit.getLocation());
-        final BlockPos lookingAt = new BlockPos(pos);
+        final BlockHitResult hit = event.getTarget();
+        final BlockPos pos = hit.getBlockPos();
 
-        //noinspection ConstantConditions
-        if (lookingAt != null && entity instanceof Player player && baseHit instanceof BlockHitResult hit)
+        if (entity instanceof Player player)
         {
-            BlockState stateAt = level.getBlockState(lookingAt);
-            Block blockAt = stateAt.getBlock();
+            final BlockState stateAt = level.getBlockState(pos);
+            final Block blockAt = stateAt.getBlock();
 
             ChiselRecipe.computeResult(player, stateAt, hit, false).ifLeft(chiseled -> {
                 IHighlightHandler.drawBox(poseStack, chiseled.getShape(level, pos), event.getMultiBufferSource(), pos, camera.getPosition(), 1f, 0f, 0f, 0.4f);
                 event.setCanceled(true);
             });
+
             if (blockAt instanceof IHighlightHandler handler)
             {
                 // Pass on to custom implementations
-                if (handler.drawHighlight(level, lookingAt, player, hit, poseStack, event.getMultiBufferSource(), camera.getPosition()))
+                if (handler.drawHighlight(level, pos, player, hit, poseStack, event.getMultiBufferSource(), camera.getPosition()))
                 {
                     // Cancel drawing this block's bounding box
                     event.setCanceled(true);
@@ -499,12 +510,12 @@ public class ClientForgeEventHandler
             }
             else if (blockAt instanceof IGhostBlockHandler handler)
             {
-                if (handler.draw(level, player, stateAt, pos, baseHit.getLocation(), hit.getDirection(), event.getPoseStack(), event.getMultiBufferSource(), player.getMainHandItem()))
+                if (handler.draw(level, player, stateAt, pos, hit.getLocation(), hit.getDirection(), event.getPoseStack(), event.getMultiBufferSource(), player.getMainHandItem()))
                 {
                     event.setCanceled(true);
                 }
             }
-            else if (blockAt instanceof SluiceBlock && level.getBlockEntity(lookingAt) instanceof SluiceBlockEntity sluice)
+            else if (blockAt instanceof SluiceBlock && level.getBlockEntity(pos) instanceof SluiceBlockEntity sluice)
             {
                 BlockPos waterPos = sluice.getWaterOutputPos();
                 if (!stateAt.getValue(SluiceBlock.UPPER))
@@ -515,10 +526,12 @@ public class ClientForgeEventHandler
                 {
                     IHighlightHandler.drawBox(poseStack, Shapes.block(), event.getMultiBufferSource(), waterPos, camera.getPosition(), 0f, 0f, 1f, 0.4f);
                 }
-                final BlockState stateAbove = level.getBlockState(lookingAt.above());
+
+                final BlockPos posAbove = pos.above();
+                final BlockState stateAbove = level.getBlockState(posAbove);
                 if (!stateAbove.getFluidState().isEmpty())
                 {
-                    IHighlightHandler.drawBox(poseStack, stateAbove.getFluidState().getShape(level, lookingAt.above()), event.getMultiBufferSource(), lookingAt.above(), camera.getPosition(), 1f, 0f, 0f, 0.4f);
+                    IHighlightHandler.drawBox(poseStack, stateAbove.getFluidState().getShape(level, posAbove), event.getMultiBufferSource(), posAbove, camera.getPosition(), 1f, 0f, 0f, 0.4f);
                 }
             }
         }

@@ -27,7 +27,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Алебастр можна фарбувати у $(l:mechanics/barrels)діжці$() у будь-який колір. Необроблені алебастрові блоки можна $(l:mechanics/chisel)обробити$() до $(thing)полірованого алебастру$() за допомогою $(thing)долота$(), та виготовляти з нього сходи, плити та стіни.",
+      "text": "Alabaster can be $(l:mechanics/dye)dyed$() in a $(l:mechanics/barrels)Barrel$() of dye into any color. Raw Alabaster blocks can also be $(l:mechanics/chisel)chiseled$() into $(thing)Polished Alabaster$() using the $(thing)Smooth$() chisel mode, or crafted into stairs, slabs, or walls.",
       "title": "Алебастрові прикраси"
     },
     {

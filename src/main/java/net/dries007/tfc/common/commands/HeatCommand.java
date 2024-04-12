@@ -16,7 +16,10 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import org.jetbrains.annotations.Nullable;
+
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.capabilities.heat.IHeat;
 
 public final class HeatCommand
 {
@@ -36,11 +39,12 @@ public final class HeatCommand
         final ItemStack stack = player.getMainHandItem();
         if (!stack.isEmpty())
         {
-            stack.getCapability(HeatCapability.CAPABILITY).ifPresent(heat ->
+            final @Nullable IHeat heat = HeatCapability.get(stack);
+            if (heat != null)
             {
                 heat.setTemperature(value);
                 source.sendSuccess(() -> Component.translatable(SET_HEAT, value), true);
-            });
+            }
         }
         return Command.SINGLE_SUCCESS;
     }

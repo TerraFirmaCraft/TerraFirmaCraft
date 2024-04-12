@@ -1,0 +1,18 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Деревянные ведра",
+  "category": "tfc:mechanics",
+  "icon": "tfc:wooden_bucket",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Деревянные ведра$() - это ранний контейнер для жидкостей в игре. Они могут содержать 1000 мБ жидкости. Они могут подбирать любой вид жидкости, используемой в рецептах, таких как в $(l:mechanics/pot)Кастрюле$() или $(l:mechanics/barrels)Бочке$(). Однако, деревянные ведра не могут размещать источники блоков. Выливание их жидкости на землю приводит к появлению небольшого количества жидкости, которая быстро исчезает."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wooden_bucket",
+      "text": "Деревянное ведро сделано из $(thing)Пиломатериалов$()."
+    }
+  ],
+  "read_by_default": true
+}

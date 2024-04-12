@@ -7,9 +7,7 @@
 package net.dries007.tfc.common.entities.livestock;
 
 import java.util.Locale;
-import java.util.Optional;
 import javax.annotation.Nonnull;
-
 import javax.annotation.Nullable;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
@@ -38,15 +36,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.common.capabilities.food.IFood;
 import net.dries007.tfc.common.entities.BrainBreeder;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.GenderedRenderAnimal;
 import net.dries007.tfc.config.animals.AnimalConfig;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.advancements.TFCAdvancements;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
-import net.dries007.tfc.util.advancements.TFCAdvancements;
 
 public interface TFCAnimalProperties extends GenderedRenderAnimal, BrainBreeder
 {
@@ -85,9 +82,15 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal, BrainBreeder
 
     void setLastFamiliarityDecay(long days);
 
-    void setLastFed(long fed);
+    default void setLastFed(long fed)
+    {
+        entityData().set(animalData().lastFed(), fed);
+    }
 
-    long getLastFed();
+    default long getLastFed()
+    {
+        return entityData().get(animalData().lastFed());
+    }
 
     void setMated(long time);
 
@@ -223,6 +226,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal, BrainBreeder
         entityData().define(animalData().fertilized(), false);
         entityData().define(animalData().oldDay(), -1L);
         entityData().define(animalData().geneticSize(), 16);
+        entityData().define(animalData().lastFed(), Long.MIN_VALUE);
     }
 
     default void saveCommonAnimalData(CompoundTag nbt)
@@ -572,15 +576,8 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal, BrainBreeder
 
     default boolean isFood(ItemStack stack)
     {
-        if (!eatsRottenFood())
-        {
-            Optional<Boolean> rot = stack.getCapability(FoodCapability.CAPABILITY).map(IFood::isRotten);
-            if (rot.isPresent() && rot.get())
-            {
-                return false;
-            }
-        }
-        return Helpers.isItem(stack, getFoodTag());
+        return (eatsRottenFood() || !FoodCapability.isRotten(stack))
+            && Helpers.isItem(stack, getFoodTag());
     }
 
     default Component getGenderedTypeName()

@@ -58,9 +58,7 @@ public class DynamicBowlHandler extends FoodHandler.Dynamic
         }
 
         // Pull the bowl out first, before we shrink the stack in super.finishUsingItem()
-        final ItemStack bowl = original.getCapability(FoodCapability.CAPABILITY)
-            .map(cap -> cap instanceof DynamicBowlHandler handler ? handler.getBowl() : ItemStack.EMPTY)
-            .orElse(ItemStack.EMPTY);
+        final ItemStack bowl = FoodCapability.get(original) instanceof DynamicBowlHandler handler ? handler.getBowl() : ItemStack.EMPTY;
 
         if (result.isEmpty())
         {

@@ -8,10 +8,9 @@ package net.dries007.tfc.network;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.network.NetworkEvent;
 
 import net.dries007.tfc.client.ClientHelpers;
-import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
+import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.recipes.ChiselRecipe;
 
 public class PlayerDataUpdatePacket
@@ -42,14 +41,12 @@ public class PlayerDataUpdatePacket
         buffer.writeVarInt(mode.ordinal());
     }
 
-    void handle(NetworkEvent.Context context)
+    void handle()
     {
-        context.enqueueWork(() -> {
-            Player player = ClientHelpers.getPlayer();
-            if (player != null)
-            {
-                player.getCapability(PlayerDataCapability.CAPABILITY).ifPresent(p -> p.updateFromPacket(lastDrinkTick, intoxicationTick, mode));
-            }
-        });
+        final Player player = ClientHelpers.getPlayer();
+        if (player != null)
+        {
+            PlayerData.get(player).updateFromPacket(lastDrinkTick, intoxicationTick, mode);
+        }
     }
 }

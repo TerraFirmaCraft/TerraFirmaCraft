@@ -33,10 +33,10 @@ issueTrackerURL = "https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues"
     mandatory = true
     # Forge crashes on [47.1.36, 47.2.6) due to issue #9774
     # Forge also fails to spawn entities on at least [47.1.6, 47.1.30) due to issue #9788
-    # NeoForge crashes on [47.1.51, ) due to issue #256 (as far as I'm aware, not fixed in 1.20.1). It's also unlikely they release a 47.2.x version.
+    # NeoForge crashes on [47.1.51, 47.1.81) due to issue #256. It's unlikely they release a 47.2.x version, and Forge didn't reach 47.1.81, so any versions [47.1.81,47.2.0) should be strictly NeoForge
     # We build against 47.1.3, which is the 'last known stable' version of Forge before the fork
     # So the version range here is restricted to only known versions where there are no issues.
-    versionRange = "[47.1.3,47.1.6),[47.2.6,)"
+    versionRange = "[47.1.3,47.1.6),[47.1.81,47.2.0),[47.2.6,)"
     ordering = "AFTER"
     side = "BOTH"
 
@@ -49,4 +49,5 @@ issueTrackerURL = "https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues"
 
 # We do our own biome coloring, see #2279
 [mods."sodium:options"]
-    "mixin.features.fast_biome_colors"=false
+    "mixin.features.fast_biome_colors"=false  # Rubidium
+    "mixin.features.render.world.sky"=false  # Embeddium, probably Sodium as well

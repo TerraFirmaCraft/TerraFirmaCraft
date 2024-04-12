@@ -1,8 +1,8 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:random_patch",
+  "type": "tfc:dynamic_random_patch",
   "config": {
-    "tries": 128,
+    "tries": 10,
     "xz_spread": 15,
     "y_spread": 1,
     "feature": "tfc:plant/rose"

@@ -87,6 +87,8 @@ public class AxeLoggingHelper
                 }
             }
         }
+
+        Collections.reverse(logs);
         return logs;
     }
 

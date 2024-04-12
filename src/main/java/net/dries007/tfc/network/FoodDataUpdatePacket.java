@@ -8,7 +8,6 @@ package net.dries007.tfc.network;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.network.NetworkEvent;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.capabilities.food.Nutrient;
@@ -44,14 +43,12 @@ public class FoodDataUpdatePacket
         buffer.writeFloat(thirst);
     }
 
-    void handle(NetworkEvent.Context context)
+    void handle()
     {
-        context.enqueueWork(() -> {
-            final Player player = ClientHelpers.getPlayer();
-            if (player != null && player.getFoodData() instanceof TFCFoodData data)
-            {
-                data.onClientUpdate(nutrients, thirst);
-            }
-        });
+        final Player player = ClientHelpers.getPlayer();
+        if (player != null && player.getFoodData() instanceof TFCFoodData data)
+        {
+            data.onClientUpdate(nutrients, thirst);
+        }
     }
 }

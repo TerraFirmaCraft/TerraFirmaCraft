@@ -29,7 +29,7 @@ public class LeafParticle extends TextureSheetParticle
     private final double xMod = (random.nextFloat() - 0.5f) / 7;
     private final double zMod = (random.nextFloat() - 0.5f) / 7;
 
-    private LeafParticle(ClientLevel level, double x, double y, double z, double motionX, double motionY, double motionZ, boolean tinted)
+    public LeafParticle(ClientLevel level, double x, double y, double z, double motionX, double motionY, double motionZ, boolean tinted)
     {
         super(level, x, y, z);
         lifetime = 60 + random.nextInt(20);

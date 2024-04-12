@@ -1,0 +1,98 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Сталь",
+  "category": "tfc:mechanics",
+  "icon": "tfc:metal/ingot/steel",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Сталь — это продвинутый материал, который можно использовать для создания инструментов и $(l:mechanics/armor)Брони$(), и существует несколько ее разновидностей: $(thing)Сталь$(), $(thing)Черная сталь$(), $(thing)Красная сталь$() и $(thing)Синяя сталь$().$(br2)Чтобы создать сталь, сначала необходимо создать $(thing)Чугун$() в $(l:mechanics/blast_furnace)Высокой печи$(), и отлить его в $(thing)Слитки$()."
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:anvil/high_carbon_steel_ingot",
+      "text": "Слиток $(thing)Чугуна$() может быть обработан на наковальне для создания слитка $(thing)Высокоуглеродистой стали$(), который, в свою очередь, может быть снова обработан для создания слитка $(thing)Сталь$()."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "black_steel",
+      "text": "$(thing)Черная сталь$() является продвинутой формой стали, получаемой из сплава стали и других металлов. Для её создания вам потребуется создать сплав, называемый $(thing)Слабая сталь$(), в $(l:mechanics/crucible)Тигле$().",
+      "title": "Черная сталь"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/ingot/weak_steel",
+      "title": "Слабая сталь",
+      "link_recipes": false,
+      "text": "$(br)$(bold)Требования:$()$(br)$(li)50 - 70 %: $(thing)Сталь$()$(li)15 - 25 %: $(thing)Никель$()$(li)15 - 25 %: $(thing)Черная бронза$()$(br2)Расплавленную $(thing)Слабую сталь$() можно отлить в слитки."
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:welding/high_carbon_black_steel_ingot",
+      "text": "$(thing)Слитки слабой стали$() затем можно сварить с $(thing)Слитками свинцового железа$(), чтобы создать $(thing)Слитки черной стали с высоким углеродным содержанием$(). Наконец, их можно обработать на $(l:mechanics/anvils)Наковальне$(), чтобы создать $(thing)Слитки черной стали$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Черная сталь$() может использоваться для создания инструментов и $(l:mechanics/armor)Брони$(), а также является ключевым ингредиентом в создании $(l:mechanics/steel#blue_steel)Синей стали$() и $(l:mechanics/steel#red_steel)Красной стали$()."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "blue_steel",
+      "text": "$(thing)Синяя сталь$() является одним из двух металлов высшего уровня вместе с $(l:mechanics/steel#red_steel)Красной сталью$(). Подобно $(l:mechanics/steel#black_steel)Черной стали$(), первым шагом является создание сплава $(thing)Слабой синей стали$() в $(l:mechanics/crucible)Тигле$().",
+      "title": "Синяя сталь"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/ingot/weak_blue_steel",
+      "title": "Слабая синяя сталь",
+      "link_recipes": false,
+      "text": "$(br)$(bold)Требования: $()$(br)$(li)50 - 55 %: $(thing)Черная сталь$()$(li)20 - 25 %: $(thing)Сталь$()$(li)10 - 15 %: $(thing)висмутовая бронза$()$(li)10 - 15 %: $(thing)Стерлинговое серебро$()$(br2)"
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:welding/high_carbon_blue_steel_ingot",
+      "text": "$(thing)Слитки слабой синей стали$() можно сварить с $(l:mechanics/steel#black_steel)Слитками черной стали$(), чтобы создать $(thing)Слитки синей стали с высоким углеродным содержанием$(). Наконец, их можно обработать на $(l:mechanics/anvils)Наковальне$(), чтобы создать $(thing)Слитки синей стали$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Синяя сталь$() может использоваться для создания инструментов и $(l:mechanics/armor)Брони$(), а также $(thing)Ведра из синей стали$(), которое может использоваться для транспортировки 1000 мБ как жидких, так и $(6)Лавы$()."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "red_steel",
+      "text": "$(thing)Красная сталь$() является одним из двух металлов высшего уровня вместе с $(l:mechanics/steel#blue_steel)Синей сталью$(). Подобно $(l:mechanics/steel#black_steel)Черной стали$(), первым шагом является создание сплава $(thing)Слабой красной стали$() в $(l:mechanics/crucible)Тигле$().",
+      "title": "Красная сталь"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/ingot/weak_red_steel",
+      "title": "Слабая красная сталь",
+      "link_recipes": false,
+      "text": "$(br)$(bold)Требования: $()$(br)$(li)50 - 55 %: $(thing)Черная сталь$()$(li)20 - 25 %: $(thing)Сталь$()$(li)10 - 15 %: $(thing)Латунь$()$(li)10 - 15 %: $(thing)Розовое золото$()$(br2)"
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:welding/high_carbon_red_steel_ingot",
+      "text": "$(thing)Слитки слабой красной стали$() можно сварить с $(l:mechanics/steel#black_steel)Слитками черной стали$(), чтобы создать $(thing)Слитки красной стали с высоким углеродным содержанием$(). Наконец, их можно обработать на $(l:mechanics/anvils)Наковальне$(), чтобы создать $(thing)Слитки красной стали$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Красная сталь$() может использоваться для создания инструментов и $(l:mechanics/armor)Брони$(), а также $(thing)Ведра из красной стали$(), которое может использоваться для транспортировки 1000 мБ как жидких, так и $(6)Лавы$()."
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:metal/ingot/pig_iron": 1,
+    "tfc:metal/ingot/high_carbon_steel": 1,
+    "tfc:metal/ingot/steel": 1,
+    "tfc:metal/ingot/weak_steel": 3,
+    "tfc:metal/ingot/high_carbon_black_steel": 4,
+    "tfc:metal/ingot/black_steel": 4,
+    "tfc:metal/ingot/weak_blue_steel": 7,
+    "tfc:metal/ingot/high_carbon_blue_steel": 8,
+    "tfc:metal/ingot/blue_steel": 8,
+    "tfc:metal/ingot/weak_red_steel": 11,
+    "tfc:metal/ingot/high_carbon_red_steel": 12,
+    "tfc:metal/ingot/red_steel": 12
+  }
+}

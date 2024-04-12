@@ -136,14 +136,12 @@ public class FirestarterItem extends Item
     @Override
     public InteractionResult useOn(UseOnContext context)
     {
-        Level world = context.getLevel();
-        if (context.getHand() != InteractionHand.MAIN_HAND || world.isClientSide())
-            return InteractionResult.PASS;
-        Player player = context.getPlayer();
-        if (player == null)
-            return InteractionResult.FAIL;
-        player.startUsingItem(InteractionHand.MAIN_HAND);
-        return InteractionResult.SUCCESS;
+        final Player player = context.getPlayer();
+        if (player != null)
+        {
+            player.startUsingItem(context.getHand());
+        }
+        return InteractionResult.CONSUME;
     }
 
     @Override

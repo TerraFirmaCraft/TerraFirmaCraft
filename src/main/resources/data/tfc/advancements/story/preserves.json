@@ -1,0 +1,37 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:story/blowpipe",
+  "criteria": {
+    "foods/preserves": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "tfc:foods/preserves"
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:jar/blueberry"
+    },
+    "title": {
+      "translate": "tfc.advancements.story.preserves.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.story.preserves.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/rock/mossy_cobble/diorite.png"
+  },
+  "requirements": [
+    [
+      "foods/preserves"
+    ]
+  ]
+}

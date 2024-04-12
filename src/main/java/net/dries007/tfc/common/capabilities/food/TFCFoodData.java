@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.capabilities.food;
 
-import java.util.Random;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -22,7 +21,7 @@ import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCDamageSources;
-import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
+import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.PlayerAccessor;
 import net.dries007.tfc.network.FoodDataReplacePacket;
@@ -75,7 +74,7 @@ public class TFCFoodData extends net.minecraft.world.food.FoodData
             // Replace, and then read from the cached data on the player capability (will be present if this is initial log-in / read from disk)
             final TFCFoodData newStats = new TFCFoodData(player, foodStats);
             ((PlayerAccessor) player).accessor$setFoodData(newStats);
-            player.getCapability(PlayerDataCapability.CAPABILITY).ifPresent(cap -> cap.writeTo(newStats));
+            PlayerData.get(player).writeTo(newStats);
         }
         // Send the update regardless so the client can perform the same logic
         if (player instanceof ServerPlayer serverPlayer)
@@ -122,13 +121,17 @@ public class TFCFoodData extends net.minecraft.world.food.FoodData
     @Override
     public void eat(Item maybeFood, ItemStack stack, @Nullable LivingEntity entity)
     {
-        stack.getCapability(FoodCapability.CAPABILITY).ifPresent(this::eat);
+        final @Nullable IFood food = FoodCapability.get(stack);
+        if (food != null)
+        {
+            eat(food);
+        }
     }
 
     /**
      * Called from {@link Player#tick()} on server side only
      *
-     * @param player the player who's food stats this is
+     * @param player the player whose food stats this is
      */
     @Override
     public void tick(Player player)

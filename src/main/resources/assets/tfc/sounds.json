@@ -637,6 +637,15 @@
       "tfc:entity/deer/moose_charge_1"
     ]
   },
+  "entity.ramming.impact": {
+    "subtitle": "subtitles.entity.tfc.ramming.impact",
+    "sounds": [
+      {
+        "name": "minecraft:entity.goat.ram_impact",
+        "type": "event"
+      }
+    ]
+  },
   "entity.wildebeest.ambient": {
     "subtitle": "subtitles.entity.tfc.wildebeest.ambient",
     "sounds": [

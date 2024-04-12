@@ -71,10 +71,10 @@ public class TFCHorse extends Horse implements HorseProperties
     private static final EntityDataAccessor<Boolean> FERTILIZED = SynchedEntityData.defineId(TFCHorse.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Long> OLD_DAY = SynchedEntityData.defineId(TFCHorse.class, EntityHelpers.LONG_SERIALIZER);
     private static final EntityDataAccessor<Integer> GENETIC_SIZE = SynchedEntityData.defineId(TFCHorse.class, EntityDataSerializers.INT);
-    private static final CommonAnimalData ANIMAL_DATA = new CommonAnimalData(GENDER, BIRTHDAY, FAMILIARITY, USES, FERTILIZED, OLD_DAY, GENETIC_SIZE);
+    private static final EntityDataAccessor<Long> LAST_FED = SynchedEntityData.defineId(TFCHorse.class, EntityHelpers.LONG_SERIALIZER);
+    private static final CommonAnimalData ANIMAL_DATA = new CommonAnimalData(GENDER, BIRTHDAY, FAMILIARITY, USES, FERTILIZED, OLD_DAY, GENETIC_SIZE, LAST_FED);
     private static final EntityDataAccessor<Long> PREGNANT_TIME = SynchedEntityData.defineId(TFCHorse.class, EntityHelpers.LONG_SERIALIZER);
 
-    private long lastFed; //Last time(in days) this entity was fed
     private long lastFDecay; //Last time(in days) this entity's familiarity had decayed
     private long matingTime; //The last time(in ticks) this male tried fertilizing females
     @Nullable private CompoundTag genes;
@@ -439,18 +439,6 @@ public class TFCHorse extends Horse implements HorseProperties
     public void setLastFamiliarityDecay(long days)
     {
         lastFDecay = days;
-    }
-
-    @Override
-    public void setLastFed(long fed)
-    {
-        lastFed = fed;
-    }
-
-    @Override
-    public long getLastFed()
-    {
-        return lastFed;
     }
 
     @Override

@@ -107,6 +107,11 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
     {
         if (quern.recipeTimer > 0)
         {
+            if (quern.node.rotation() != null)
+            {
+                quern.previousRotationDirection = quern.node.rotation().direction() == Direction.UP ? 1 : -1;
+                quern.previousRotationSpeed = quern.getRotationSpeed();
+            }
             quern.recipeTimer -= quern.isConnectedToNetwork()
                 ? quern.getRotationSpeed() * NETWORK_RECIPE_PER_SPEED
                 : MANUAL_RECIPE_PER_TICK;
@@ -122,6 +127,8 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
 
     private float recipeTimer;
     private boolean needsStateUpdate = false;
+    private float previousRotationDirection = 1;
+    private float previousRotationSpeed = MANUAL_SPEED;
 
     public QuernBlockEntity(BlockPos pos, BlockState state)
     {
@@ -219,6 +226,8 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
                 recipeTimer = MANUAL_TICKS;
                 level.playSound(null, worldPosition, TFCSounds.QUERN_DRAG.get(), SoundSource.BLOCKS, 1, 1 + ((level.random.nextFloat() - level.random.nextFloat()) / 16));
                 markForSync();
+                previousRotationDirection = 1;
+                previousRotationSpeed = MANUAL_SPEED;
                 return true;
             }
         }
@@ -245,7 +254,7 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
 
     public float getRotationSpeed()
     {
-        return node.rotation() != null ? node.rotation().speed() : (isGrinding() ? MANUAL_SPEED : 0f);
+        return node.rotation() != null ? Mth.abs(node.rotation().speed()) : (isGrinding() ? previousRotationSpeed : 0f);
     }
 
     @Override
@@ -253,7 +262,7 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
     {
         return isConnectedToNetwork()
             ? RotationSinkBlockEntity.super.getRotationAngle(partialTick)
-            : -recipeTimer * MANUAL_SPEED;
+            : -recipeTimer * previousRotationSpeed * previousRotationDirection;
     }
 
     public boolean isConnectedToNetwork()

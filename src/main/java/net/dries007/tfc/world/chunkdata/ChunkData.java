@@ -6,13 +6,14 @@
 
 package net.dries007.tfc.world.chunkdata;
 
+import java.util.Map;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -23,48 +24,73 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.network.ChunkWatchPacket;
+import net.dries007.tfc.world.ChunkGeneratorExtension;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
 
+/**
+ * Additional data which is attached to chunks during world generation and used by various phase of the TFC chunk generator,
+ * and subsequent features. Most of this data is persisted after world generation attached to the {@link LevelChunk}. A shallow
+ * copy is synced to the client.
+ * <p>
+ * In order to query chunk data during world generation, <strong>always</strong> go through {@link ChunkDataProvider}, which can be
+ * accessed through {@link ChunkGeneratorExtension} - either accessed directly, i.e. in feature generation, or through the level.
+ */
 public class ChunkData implements ICapabilitySerializable<CompoundTag>
 {
     public static final ChunkData EMPTY = new ChunkData.Immutable();
-    public static final Capability<ChunkData> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
+
+    /** @deprecated Use the various other methods to query chunk data. */
+    @Deprecated public static final Capability<ChunkData> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
     public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "chunk_data");
 
     private static final float UNKNOWN_RAINFALL = 250;
     private static final float UNKNOWN_TEMPERATURE = 10;
 
+    /**
+     * Returns the chunk data present at this {@code level} and {@code pos}. This cannot be used during world generation, and on client will return a {@link Status#CLIENT} chunk data.
+     * @return the chunk data, or {@link #EMPTY} if the chunk is not loaded, or data is not available (yet).
+     */
     public static ChunkData get(LevelReader level, BlockPos pos)
     {
         return get(level, new ChunkPos(pos));
     }
 
     /**
-     * Called to get chunk data when a world context is available.
+     * Returns the chunk data present at this {@code level} and {@code pos}. This cannot be used during world generation, and on client will return a {@link Status#CLIENT} chunk data.
+     * @return the chunk data, or {@link #EMPTY} if the chunk is not loaded, or data is not available (yet).
      */
     @SuppressWarnings("deprecation")
     public static ChunkData get(LevelReader level, ChunkPos pos)
     {
-        // Query cache first, picking the correct cache for the current logical side
-        ChunkData data = ChunkDataCache.get(level).get(pos);
-        if (data == null)
-        {
-            return getCapability(level.hasChunk(pos.x, pos.z) ? level.getChunk(pos.getWorldPosition()) : null).orElse(ChunkData.EMPTY);
-        }
-        return data;
+        return level.hasChunk(pos.x, pos.z)
+            && level.getChunk(pos.x, pos.z) instanceof LevelChunk levelChunk
+                ? get(levelChunk)
+                : EMPTY;
     }
 
     /**
-     * Helper method, since lazy optionals and instanceof checks together are ugly
+     * Returns the chunk data present at this {@code chunk}. This cannot be used during world generation, and on client will return a {@link Status#CLIENT} chunk data.
+     * @return the chunk data, or {@link #EMPTY} if the chunk is not loaded, or data is not available (yet).
      */
-    public static LazyOptional<ChunkData> getCapability(@Nullable ChunkAccess maybe)
+    public static ChunkData get(LevelChunk chunk)
     {
-        if (maybe instanceof LevelChunk chunk)
-        {
-            return chunk.getCapability(CAPABILITY);
-        }
-        return LazyOptional.empty();
+        return chunk.isEmpty() ? EMPTY : chunk.getCapability(CAPABILITY).orElse(EMPTY);
+    }
+
+    private static final Map<ChunkPos, ChunkData> CLIENT_CHUNK_QUEUE = new Object2ObjectOpenHashMap<>(128);
+
+    public static ChunkData queueClientChunkDataForLoad(ChunkPos pos)
+    {
+        final ChunkData data = new ChunkData(pos);
+        CLIENT_CHUNK_QUEUE.put(pos, data);
+        return data;
+    }
+
+    public static ChunkData dequeueClientChunkData(ChunkPos pos)
+    {
+        final @Nullable ChunkData data = CLIENT_CHUNK_QUEUE.remove(pos);
+        return data == null ? new ChunkData(pos) : data;
     }
 
     private final LazyOptional<ChunkData> capability;
@@ -102,7 +128,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
     }
 
     /**
-     * Note: this method will throw if invoked when {@link #status()} is {@code EMPTY} or {@code CLIENT}
+     * Returns the {@link RockData} for this chunk data. This is only valid on logical server.
      */
     public RockData getRockData()
     {
@@ -187,25 +213,25 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
      */
     public ChunkWatchPacket getUpdatePacket()
     {
+        assert status == Status.FULL;
+        assert rainfallLayer != null && temperatureLayer != null;
+
         return new ChunkWatchPacket(pos.x, pos.z, rainfallLayer, temperatureLayer, forestType, forestDensity, forestWeirdness);
     }
 
     /**
      * Called on client, sets to received data
      */
-    public void onUpdatePacket(@Nullable LerpFloatLayer rainfallLayer, @Nullable LerpFloatLayer temperatureLayer, ForestType forestType, float forestDensity, float forestWeirdness)
+    public void onUpdatePacket(LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer, ForestType forestType, float forestDensity, float forestWeirdness)
     {
+        assert status == Status.EMPTY || status == Status.CLIENT;
+
         this.rainfallLayer = rainfallLayer;
         this.temperatureLayer = temperatureLayer;
         this.forestType = forestType;
         this.forestDensity = forestDensity;
         this.forestWeirdness = forestWeirdness;
-
-        switch (status)
-        {
-            case EMPTY -> this.status = Status.CLIENT;
-            case FULL -> throw new IllegalStateException("ChunkData#onUpdatePacket was called on full data: " + this);
-        }
+        this.status = Status.CLIENT;
     }
 
     @NotNull
@@ -273,7 +299,8 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
         EMPTY, // Default, un-generated chunk data
         CLIENT, // Client-side shallow copy
         PARTIAL, // Partially generated (before fill noise)
-        FULL; // Fully generated chunk data
+        FULL, // Fully generated chunk data
+        INVALID; // Invalid chunk data
 
         private static final Status[] VALUES = values();
 
@@ -301,10 +328,16 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
         public void generateFull(int[] surfaceHeight, int[] aquiferSurfaceHeight) { error(); }
 
         @Override
-        public void onUpdatePacket(@Nullable LerpFloatLayer rainfallLayer, @Nullable LerpFloatLayer temperatureLayer, ForestType forestType, float forestDensity, float forestWeirdness) { error(); }
+        public void onUpdatePacket(LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer, ForestType forestType, float forestDensity, float forestWeirdness) { error(); }
 
         @Override
         public void deserializeNBT(CompoundTag nbt) { error(); }
+
+        @Override
+        public Status status()
+        {
+            return Status.INVALID;
+        }
 
         @Override
         public String toString()

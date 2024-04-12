@@ -80,7 +80,7 @@ public abstract class PotRecipe implements ISimpleRecipe<PotBlockEntity.PotInven
         {
             return false;
         }
-        List<ItemStack> stacks = new ArrayList<>();
+        final List<ItemStack> stacks = new ArrayList<>();
         for (int i = PotBlockEntity.SLOT_EXTRA_INPUT_START; i <= PotBlockEntity.SLOT_EXTRA_INPUT_END; i++)
         {
             ItemStack stack = inventory.getStackInSlot(i);
@@ -89,7 +89,7 @@ public abstract class PotRecipe implements ISimpleRecipe<PotBlockEntity.PotInven
                 stacks.add(stack);
             }
         }
-        return Helpers.perfectMatchExists(stacks, itemIngredients);
+        return (stacks.isEmpty() && itemIngredients.isEmpty()) || Helpers.perfectMatchExists(stacks, itemIngredients);
     }
 
     @Override

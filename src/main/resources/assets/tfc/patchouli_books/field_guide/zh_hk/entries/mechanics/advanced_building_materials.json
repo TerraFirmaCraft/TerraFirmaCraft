@@ -27,7 +27,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "雪花石膏磚塊可以用$(l:mechanics/barrels)桶$()染成任何顏色。普通雪花石膏磚塊也可以使用$(thing)平滑$()模式的$(l:mechanics/chisel)鑿$()雕刻成平滑雪花石膏磚塊，或製作成樓梯、台階、和牆。",
+      "text": "Alabaster can be $(l:mechanics/dye)dyed$() in a $(l:mechanics/barrels)Barrel$() of dye into any color. Raw Alabaster blocks can also be $(l:mechanics/chisel)chiseled$() into $(thing)Polished Alabaster$() using the $(thing)Smooth$() chisel mode, or crafted into stairs, slabs, or walls.",
       "title": "雪花石膏裝飾品"
     },
     {

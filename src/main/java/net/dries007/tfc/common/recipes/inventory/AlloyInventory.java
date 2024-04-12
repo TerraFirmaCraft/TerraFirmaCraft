@@ -8,15 +8,10 @@ package net.dries007.tfc.common.recipes.inventory;
 
 import net.dries007.tfc.util.Alloy;
 
-public class AlloyInventory implements EmptyInventory
+public record AlloyInventory(Alloy alloy) implements EmptyInventory
 {
-    private final Alloy alloy;
-
-    public AlloyInventory(Alloy alloy)
-    {
-        this.alloy = alloy;
-    }
-
+    /** @deprecated Use {@link #alloy()} instead */
+    @Deprecated
     public Alloy getAlloy()
     {
         return alloy;

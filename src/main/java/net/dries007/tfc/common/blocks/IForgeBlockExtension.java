@@ -32,6 +32,12 @@ public interface IForgeBlockExtension extends IForgeBlock
     }
 
     @Override
+    default boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction)
+    {
+        return state.getFlammability(level, pos, direction) > 0;
+    }
+
+    @Override
     default int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face)
     {
         return getExtendedProperties().getFireSpreadSpeed();

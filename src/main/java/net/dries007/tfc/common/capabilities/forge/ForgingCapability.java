@@ -6,14 +6,16 @@
 
 package net.dries007.tfc.common.capabilities.forge;
 
+import java.util.List;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.util.Helpers;
-import org.jetbrains.annotations.Nullable;
 
 public class ForgingCapability
 {
@@ -23,6 +25,24 @@ public class ForgingCapability
     @Nullable
     public static Forging get(ItemStack stack)
     {
-        return stack.getCapability(CAPABILITY).resolve().orElse(null);
+        return Helpers.getCapability(stack, CAPABILITY);
+    }
+
+    public static void addTooltipInfo(ItemStack stack, List<Component> tooltips)
+    {
+        final @Nullable Forging forging = get(stack);
+        if (forging != null && forging.getSteps().any())
+        {
+            tooltips.add(Component.translatable("tfc.tooltip.anvil_has_been_worked"));
+        }
+    }
+
+    public static void clearRecipeIfNotWorked(ItemStack stack)
+    {
+        final @Nullable Forging forging = get(stack);
+        if (forging != null)
+        {
+            forging.clearRecipeIfNotWorked();
+        }
     }
 }

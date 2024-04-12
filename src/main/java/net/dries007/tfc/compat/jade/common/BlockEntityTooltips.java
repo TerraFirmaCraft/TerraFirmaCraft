@@ -10,9 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-
 import javax.annotation.Nullable;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -24,7 +22,26 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
-import net.dries007.tfc.common.blockentities.*;
+import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
+import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
+import net.dries007.tfc.common.blockentities.BellowsBlockEntity;
+import net.dries007.tfc.common.blockentities.BlastFurnaceBlockEntity;
+import net.dries007.tfc.common.blockentities.BloomBlockEntity;
+import net.dries007.tfc.common.blockentities.BloomeryBlockEntity;
+import net.dries007.tfc.common.blockentities.CharcoalForgeBlockEntity;
+import net.dries007.tfc.common.blockentities.ComposterBlockEntity;
+import net.dries007.tfc.common.blockentities.CropBlockEntity;
+import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
+import net.dries007.tfc.common.blockentities.DecayingBlockEntity;
+import net.dries007.tfc.common.blockentities.IngotPileBlockEntity;
+import net.dries007.tfc.common.blockentities.LampBlockEntity;
+import net.dries007.tfc.common.blockentities.LoomBlockEntity;
+import net.dries007.tfc.common.blockentities.NestBoxBlockEntity;
+import net.dries007.tfc.common.blockentities.PitKilnBlockEntity;
+import net.dries007.tfc.common.blockentities.PotBlockEntity;
+import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
+import net.dries007.tfc.common.blockentities.SheetPileBlockEntity;
+import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blockentities.rotation.RotatingBlockEntity;
 import net.dries007.tfc.common.blocks.BloomBlock;
 import net.dries007.tfc.common.blocks.TFCCandleBlock;
@@ -33,10 +50,25 @@ import net.dries007.tfc.common.blocks.TFCTorchBlock;
 import net.dries007.tfc.common.blocks.TFCWallTorchBlock;
 import net.dries007.tfc.common.blocks.crop.CropBlock;
 import net.dries007.tfc.common.blocks.crop.DecayingBlock;
-import net.dries007.tfc.common.blocks.devices.*;
-import net.dries007.tfc.common.blocks.plant.fruit.*;
+import net.dries007.tfc.common.blocks.devices.BarrelBlock;
+import net.dries007.tfc.common.blocks.devices.BellowsBlock;
+import net.dries007.tfc.common.blocks.devices.BlastFurnaceBlock;
+import net.dries007.tfc.common.blocks.devices.BloomeryBlock;
+import net.dries007.tfc.common.blocks.devices.CharcoalForgeBlock;
+import net.dries007.tfc.common.blocks.devices.CrucibleBlock;
+import net.dries007.tfc.common.blocks.devices.DryingBricksBlock;
+import net.dries007.tfc.common.blocks.devices.FirepitBlock;
+import net.dries007.tfc.common.blocks.devices.IngotPileBlock;
+import net.dries007.tfc.common.blocks.devices.JackOLanternBlock;
+import net.dries007.tfc.common.blocks.devices.LampBlock;
+import net.dries007.tfc.common.blocks.devices.NestBoxBlock;
+import net.dries007.tfc.common.blocks.devices.PitKilnBlock;
+import net.dries007.tfc.common.blocks.devices.PowderkegBlock;
+import net.dries007.tfc.common.blocks.devices.QuernBlock;
+import net.dries007.tfc.common.blocks.devices.SheetPileBlock;
+import net.dries007.tfc.common.blocks.devices.TFCComposterBlock;
+import net.dries007.tfc.common.blocks.plant.fruit.FruitTreeSaplingBlock;
 import net.dries007.tfc.common.blocks.rotation.AbstractShaftAxleBlock;
-import net.dries007.tfc.common.blocks.rotation.AxleBlock;
 import net.dries007.tfc.common.blocks.rotation.ClutchBlock;
 import net.dries007.tfc.common.blocks.rotation.CrankshaftBlock;
 import net.dries007.tfc.common.blocks.rotation.EncasedAxleBlock;
@@ -52,6 +84,7 @@ import net.dries007.tfc.common.capabilities.egg.EggCapability;
 import net.dries007.tfc.common.capabilities.egg.IEgg;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.items.Powder;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.BarrelRecipe;
@@ -114,9 +147,9 @@ public final class BlockEntityTooltips
         if (entity instanceof RotatingBlockEntity rotating)
         {
             final Rotation rotation = rotating.getRotationNode().rotation();
-            if (rotation != null && rotation.speed() > 0)
+            if (rotation != null && rotation.speed() != 0)
             {
-                tooltip.accept(Component.translatable("tfc.tooltip.rotation.angular_velocity", String.format("%.2f", rotation.speed() * 20f)));
+                tooltip.accept(Component.translatable("tfc.tooltip.rotation.angular_velocity", String.format("%.2f", Math.abs(rotation.positiveSpeed()) * 20f)));
             }
         }
     };
@@ -184,8 +217,7 @@ public final class BlockEntityTooltips
     public static final BlockEntityTooltip BLOOMERY = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof BloomeryBlockEntity bloomery && state.getBlock() instanceof BloomeryBlock)
         {
-            tooltip.accept(Component.translatable("tfc.jade.input_stacks", bloomery.getInputStacks().size()));
-            tooltip.accept(Component.translatable("tfc.jade.catalyst_stacks", bloomery.getCatalystStacks().size()));
+            tooltip.accept(Component.translatable("tfc.jade.input_stacks", bloomery.getInputCount()));
             if (state.getValue(BloomeryBlock.LIT))
             {
                 final long ticksLeft = bloomery.getRemainingTicks();
@@ -212,7 +244,11 @@ public final class BlockEntityTooltips
             itemWithCount(tooltip, displayItem);
 
             final List<Component> text = new ArrayList<>();
-            item.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(item, text));
+            final @Nullable IHeat heat = HeatCapability.get(item);
+            if (heat != null)
+            {
+                heat.addTooltipInfo(item, text);
+            }
             text.forEach(tooltip);
         }
     };
@@ -281,10 +317,10 @@ public final class BlockEntityTooltips
                     if (pot.getOutput() instanceof SoupPotRecipe.SoupOutput soup)
                     {
                         final ItemStack stack = soup.stack();
-                        itemWithCount(tooltip, stack);
-
                         final List<Component> text = new ArrayList<>();
-                        stack.getCapability(FoodCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(stack, text));
+
+                        itemWithCount(tooltip, stack);
+                        FoodCapability.addTooltipInfo(stack, text);
                         text.forEach(tooltip);
                     }
                 }
@@ -353,11 +389,13 @@ public final class BlockEntityTooltips
             nest.getCapability(Capabilities.ITEM).ifPresent(inventory -> {
                 for (int i = 0; i < inventory.getSlots(); i++)
                 {
-                    ItemStack stack = inventory.getStackInSlot(i);
-                    stack.getCapability(EggCapability.CAPABILITY).filter(IEgg::isFertilized).ifPresent(egg -> {
+                    final ItemStack stack = inventory.getStackInSlot(i);
+                    final @Nullable IEgg egg = EggCapability.get(stack);
+                    if (egg != null)
+                    {
                         text.add(stack.getHoverName());
                         egg.addTooltipInfo(text);
-                    });
+                    }
                 }
             });
             text.forEach(tooltip);
@@ -412,9 +450,10 @@ public final class BlockEntityTooltips
         if (entity instanceof DecayingBlockEntity decaying)
         {
             final ItemStack stack = decaying.getStack();
-            tooltip.accept(stack.getHoverName());
             final List<Component> text = new ArrayList<>();
-            stack.getCapability(FoodCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(stack, text));
+
+            tooltip.accept(stack.getHoverName());
+            FoodCapability.addTooltipInfo(stack, text);
             text.forEach(tooltip);
         }
     };

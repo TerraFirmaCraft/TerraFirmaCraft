@@ -10,7 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.NetworkEvent;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
 
@@ -31,19 +31,16 @@ public class PourFasterPacket
         slot = buffer.readVarInt();
     }
 
-    void handle(NetworkEvent.Context context)
+    void handle(@Nullable ServerPlayer player)
     {
-        context.enqueueWork(() -> {
-            final ServerPlayer sender = context.getSender();
-            if (sender != null)
+        if (player != null)
+        {
+            final Level level = player.level();
+            if (level.isLoaded(pos) && level.getBlockEntity(pos) instanceof CrucibleBlockEntity crucible)
             {
-                final Level level = sender.level();
-                if (level.isLoaded(pos) && level.getBlockEntity(pos) instanceof CrucibleBlockEntity crucible)
-                {
-                    crucible.setFastPouring(slot);
-                }
+                crucible.setFastPouring(slot);
             }
-        });
+        }
     }
 
     void encode(FriendlyByteBuf buffer)

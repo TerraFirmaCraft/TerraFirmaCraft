@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.util;
 
-import java.util.Random;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -17,6 +16,7 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
@@ -37,7 +37,7 @@ import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.OverworldClimateModel;
-import net.dries007.tfc.util.tracker.WorldTrackerCapability;
+import net.dries007.tfc.util.tracker.WorldTracker;
 
 /**
  * This is a helper class which handles environment effects
@@ -136,9 +136,7 @@ public final class EnvironmentHelpers
 
     public static boolean isRainingOrSnowing(Level level, BlockPos pos)
     {
-        return level.isRaining() && level.getCapability(WorldTrackerCapability.CAPABILITY)
-            .map(cap -> cap.isRaining(level, pos))
-            .orElse(false);
+        return level.isRaining() && WorldTracker.get(level).isRaining(level, pos);
     }
 
     /**
@@ -154,7 +152,7 @@ public final class EnvironmentHelpers
         // Snow only accumulates during rain
         final RandomSource random = level.random;
         final int expectedLayers = (int) getExpectedSnowLayerHeight(temperature);
-        if (temperature < OverworldClimateModel.SNOW_FREEZE_TEMPERATURE && isRainingOrSnowing(level, surfacePos))
+        if (temperature < OverworldClimateModel.SNOW_FREEZE_TEMPERATURE && isRainingOrSnowing(level, surfacePos) && level.getBrightness(LightLayer.BLOCK, surfacePos) <= 11)
         {
             if (random.nextInt(TFCConfig.SERVER.snowAccumulateChance.get()) == 0)
             {
@@ -174,19 +172,28 @@ public final class EnvironmentHelpers
         {
             if (random.nextInt(TFCConfig.SERVER.snowMeltChance.get()) == 0)
             {
-                // Snow melting - both snow and snow piles
-                final BlockState state = level.getBlockState(surfacePos);
-                if (isSnow(state))
+                removeSnowAt(level, surfacePos, temperature, expectedLayers);
+                if (random.nextFloat() < 0.2f)
                 {
-                    // When melting snow, we melt layers at +2 from expected, while the temperature is still below zero
-                    // This slowly reduces massive excess amounts of snow, if they're present, but doesn't actually start melting snow a lot when we're still below freezing.
-                    SnowPileBlock.removePileOrSnow(level, surfacePos, state, temperature > 0f ? expectedLayers : expectedLayers + 2);
-                }
-                else if (state.getBlock() instanceof KrummholzBlock)
-                {
-                    KrummholzBlock.updateFreezingInColumn(level, surfacePos, false);
+                    removeSnowAt(level, surfacePos.relative(Direction.Plane.HORIZONTAL.getRandomDirection(random)), temperature, expectedLayers);
                 }
             }
+        }
+    }
+
+    private static void removeSnowAt(Level level, BlockPos surfacePos, float temperature, int expectedLayers)
+    {
+        // Snow melting - both snow and snow piles
+        final BlockState state = level.getBlockState(surfacePos);
+        if (isSnow(state))
+        {
+            // When melting snow, we melt layers at +2 from expected, while the temperature is still below zero
+            // This slowly reduces massive excess amounts of snow, if they're present, but doesn't actually start melting snow a lot when we're still below freezing.
+            SnowPileBlock.removePileOrSnow(level, surfacePos, state, temperature > 0f ? expectedLayers : expectedLayers + 2);
+        }
+        else if (state.getBlock() instanceof KrummholzBlock)
+        {
+            KrummholzBlock.updateFreezingInColumn(level, surfacePos, false);
         }
     }
 
@@ -324,7 +331,7 @@ public final class EnvironmentHelpers
     private static void doIcicles(Level level, BlockPos lcgPos, float temperature)
     {
         final RandomSource random = level.getRandom();
-        if (random.nextInt(16) == 0 && isRainingOrSnowing(level, lcgPos) && temperature < OverworldClimateModel.ICICLE_MAX_FREEZE_TEMPERATURE && temperature > OverworldClimateModel.ICICLE_MIN_FREEZE_TEMPERATURE)
+        if (random.nextInt(16) == 0 && isRainingOrSnowing(level, lcgPos) && level.getBrightness(LightLayer.BLOCK, lcgPos) <= 11 && temperature < OverworldClimateModel.ICICLE_MAX_FREEZE_TEMPERATURE && temperature > OverworldClimateModel.ICICLE_MIN_FREEZE_TEMPERATURE)
         {
             // Place icicles under overhangs
             final BlockPos iciclePos = findIcicleLocation(level, lcgPos, random);

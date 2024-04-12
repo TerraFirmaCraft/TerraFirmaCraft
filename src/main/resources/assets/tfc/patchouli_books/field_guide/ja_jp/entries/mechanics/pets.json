@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "ペットは特定のプレイヤーを $(thing)飼い主$() として認識します。 ペットの飼い主になるには、ペットに餌をあげて親密度を 15% 以上上げます。 ペットは飼い主の命令にのみ従います。$(br2)染料が付いたペットをクリックすると、首輪の色が変わります。"
+      "text": "Pets recognize a certain player as their $(thing)Owner$(). To become a pet's owner, feed it to raise its familiarity above 15%%. Pets will only obey commands that come from their owner.$(br2)Clicking on a pet with $(l:mechanics/dye)dye$() changes its collar color."
     },
     {
       "type": "patchouli:entity",

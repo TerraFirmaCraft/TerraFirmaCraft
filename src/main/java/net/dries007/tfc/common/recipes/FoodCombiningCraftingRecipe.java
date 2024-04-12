@@ -14,6 +14,7 @@ import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.IFood;
@@ -38,7 +39,7 @@ public class FoodCombiningCraftingRecipe extends CustomRecipe implements ISimple
                 notEmptyCount++;
 
                 // All nonempty stacks must be a food
-                if (!stack.getCapability(FoodCapability.CAPABILITY).isPresent())
+                if (!FoodCapability.has(stack))
                 {
                     return false;
                 }
@@ -74,7 +75,7 @@ public class FoodCombiningCraftingRecipe extends CustomRecipe implements ISimple
             if (!stack.isEmpty())
             {
                 // Get the food capability
-                IFood cap = stack.getCapability(FoodCapability.CAPABILITY).resolve().orElse(null);
+                final @Nullable IFood cap = FoodCapability.get(stack);
                 if (cap != null)
                 {
                     // Increment output amount
@@ -98,7 +99,7 @@ public class FoodCombiningCraftingRecipe extends CustomRecipe implements ISimple
         // Update the capability and count of the result
         resultStack.setCount(outputAmount);
         final long date = minCreationDate;
-        resultStack.getCapability(FoodCapability.CAPABILITY).ifPresent(cap -> cap.setCreationDate(date));
+        FoodCapability.setCreationDate(resultStack, date);
         return resultStack;
     }
 

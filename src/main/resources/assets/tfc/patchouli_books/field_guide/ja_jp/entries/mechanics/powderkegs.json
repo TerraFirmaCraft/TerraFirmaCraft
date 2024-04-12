@@ -34,7 +34,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/powderkeg",
-      "text": "火薬庫は、樽の形に赤い染料と紐を加えて作ることができます。"
+      "text": "Powderkegs can be made from adding $(l:mechanics/dye)Red Dye$() and string to the crafting shape of a barrel."
     },
     {
       "type": "patchouli:crafting",

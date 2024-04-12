@@ -43,17 +43,14 @@ public class BananaFeature extends Feature<BlockStateConfiguration>
         mutablePos.set(pos);
         if (Helpers.isBlock(level.getBlockState(mutablePos.below()), TFCTags.Blocks.BUSH_PLANTABLE_ON))
         {
-            if (level.canSeeSky(mutablePos))
+            for (int stage = 0; stage <= 2; stage++)
             {
-                for (int stage = 0; stage <= 2; stage++)
+                final int height = Mth.nextInt(random, 2, 3);
+                for (int k = 1; k < height; k++)
                 {
-                    final int height = Mth.nextInt(random, 2, 3);
-                    for (int k = 1; k < height; k++)
-                    {
-                        setBlock(level, mutablePos, banana.setValue(STAGE, stage).setValue(LIFECYCLE, Lifecycle.HEALTHY));
-                        mutablePos.move(Direction.UP);
-                        if (stage == 2) return true;
-                    }
+                    setBlock(level, mutablePos, banana.setValue(STAGE, stage).setValue(LIFECYCLE, Lifecycle.HEALTHY));
+                    mutablePos.move(Direction.UP);
+                    if (stage == 2) return true;
                 }
             }
         }

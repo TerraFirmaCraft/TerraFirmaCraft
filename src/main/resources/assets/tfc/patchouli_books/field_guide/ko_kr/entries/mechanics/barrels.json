@@ -56,7 +56,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "통에서는 아이템을 $(thing)염색$()하고 $(thing)탈색$()할 수 있습니다. 염료 아이템을 $(l:mechanics/pot)냄비$()에서 끓이면 액체 염료를 만들 수 있습니다. 양탄자, 초, $(l:getting_started/building_materials#alabaster)석고$() 등 거의 모든 색깔 있는 아이템들은 염료가 담긴 통에 밀봉하여 염색할 수 있습니다. 염색된 아이템들은 $(thing)잿물$()이 담긴 통에 밀봉하여 탈색할 수 있습니다. 잿물은 $(l:mechanics/pot)물$()이 담긴 냄비에 $(thing)나뭇재$()를 끓여 만들 수 있습니다. 나뭇재는 $(l:getting_started/firepit)모닥불$()을 부수어 얻을 수 있습니다."
+      "text": "Barrels have the ability to $(l:mechanics/dye)Dye$() and $(l:mechanics/dye#lye)Bleach$() items. Most color-able things, like carpet, candles, and $(l:mechanics/advanced_building_materials#alabaster)Alabaster$() can be dyed by sealing them in a barrel of dye or bleached by sealing them in a barrel of lye. See the dye chapter for more information."
     },
     {
       "type": "patchouli:text",

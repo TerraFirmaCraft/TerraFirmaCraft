@@ -114,12 +114,6 @@ public class EggHandler implements IEgg, DelegateFoodHandler, ICapabilitySeriali
     }
 
     @Override
-    public CompoundTag serializeNBT()
-    {
-        return new CompoundTag();
-    }
-
-    @Override
     public void addTooltipInfo(ItemStack stack, List<Component> text)
     {
         if (!isFertilized())
@@ -137,9 +131,6 @@ public class EggHandler implements IEgg, DelegateFoodHandler, ICapabilitySeriali
         }
         return DelegateFoodHandler.super.getRottenDate();
     }
-
-    @Override
-    public void deserializeNBT(CompoundTag tag) { }
 
     private void load()
     {

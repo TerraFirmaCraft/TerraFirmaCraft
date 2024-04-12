@@ -41,6 +41,7 @@ public class LampBlockEntity extends TickCounterBlockEntity implements FluidTank
     @Override
     public void fluidTankChanged()
     {
+        checkHasRanOut();
         markForSync();
     }
 
@@ -51,27 +52,43 @@ public class LampBlockEntity extends TickCounterBlockEntity implements FluidTank
         return LampFuel.get(tank.getFluid().getFluid(), level.getBlockState(getBlockPos()));
     }
 
-    public boolean checkHasRanOut()
+    /**
+     * Updates the lamp's current fuel value, resetting the counter since it was last updated. This may cause the lamp to
+     * turn off, if it runs out of fuel completely.
+     */
+    public void checkHasRanOut()
     {
         assert level != null;
-        LampFuel fuel = getFuel();
-        boolean ranOut = false;
-        if (fuel != null)
+
+        final BlockState state = getBlockState();
+        if (!state.getValue(LampBlock.LIT))
         {
-            int usage = Mth.floor(getTicksSinceUpdate() / (double) fuel.getBurnRate()); // burn rate is in ticks/mb
-            if (usage >= 1)
+            return;
+        }
+
+        final @Nullable LampFuel fuel = getFuel();
+        if (fuel == null)
+        {
+            // No fuel, so always unlit
+            resetCounter();
+            level.setBlockAndUpdate(worldPosition, state.setValue(LampBlock.LIT, false));
+            return;
+        }
+
+        // Consume an appropriate amount of fuel based on how long the lamp has been since it last updated
+        // N.B. The burn rate is in ticks / mB
+        final int usage = Mth.floor(getTicksSinceUpdate() / (double) fuel.getBurnRate());
+        if (usage >= 1)
+        {
+            resetCounter();
+            markForSync();
+
+            final FluidStack used = tank.drain(usage, IFluidHandler.FluidAction.EXECUTE);
+            if (tank.isEmpty() || used.getAmount() < usage)
             {
-                FluidStack used = tank.drain(usage, IFluidHandler.FluidAction.EXECUTE);
-                if (tank.isEmpty() || used.getAmount() < usage)
-                {
-                    level.setBlockAndUpdate(getBlockPos(), level.getBlockState(getBlockPos()).setValue(LampBlock.LIT, false));
-                    ranOut = true;
-                }
-                resetCounter();
+                level.setBlockAndUpdate(worldPosition, state.setValue(LampBlock.LIT, false));
             }
         }
-        markForSync();
-        return ranOut;
     }
 
     @Override

@@ -15,7 +15,7 @@ import net.minecraft.core.particles.SimpleParticleType;
  */
 public class BubbleParticle extends TextureSheetParticle
 {
-    private BubbleParticle(ClientLevel worldIn, double x, double y, double z, double motionX, double motionY, double motionZ)
+    public BubbleParticle(ClientLevel worldIn, double x, double y, double z, double motionX, double motionY, double motionZ)
     {
         super(worldIn, x, y, z);
         this.setSize(0.02F, 0.02F);

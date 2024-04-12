@@ -45,6 +45,7 @@ import net.dries007.tfc.common.capabilities.DelegateFluidHandler;
 import net.dries007.tfc.common.capabilities.PartialFluidHandler;
 import net.dries007.tfc.common.capabilities.SidedHandler;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.container.BlastFurnaceContainer;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.BlastFurnaceRecipe;
@@ -148,13 +149,14 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
                 final ItemStack catalystStack = catalystIterator.next();
                 final HeatingRecipe inputRecipe = recipeIterator.next();
 
-                inputStack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> {
-
+                final @Nullable IHeat inputHeat = HeatCapability.get(inputStack);
+                if (inputHeat != null)
+                {
                     // Update temperature of item
-                    HeatCapability.addTemp(cap, entity.temperature);
+                    HeatCapability.addTemp(inputHeat, entity.temperature);
 
                     // Handle melting of the input. For now, just append results sequentially to a buffer, which will be added to the blast furnace later.
-                    if (inputRecipe != null && inputRecipe.isValidTemperature(cap.getTemperature()))
+                    if (inputRecipe != null && inputRecipe.isValidTemperature(inputHeat.getTemperature()))
                     {
                         // Only convert fluid output, and append to the buffer
                         final FluidStack fluidStack = inputRecipe.assembleFluid(new ItemStackInventory(inputStack));
@@ -165,7 +167,7 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
                         catalystIterator.remove();
                         recipeIterator.remove();
                     }
-                });
+                }
             }
 
             // Once we're done handling inputs, then we can handle outputs. First, accumulate the result fluids together
@@ -368,7 +370,7 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
             extinguish(getBlockState());
             for (ItemStack stack : inputStacks)
             {
-                stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.setTemperature(0f));
+                HeatCapability.setTemperature(stack, 0);
             }
         }
     }

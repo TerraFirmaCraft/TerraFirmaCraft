@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "§l지지대",
+  "name": "Support Beams & Collapses",
   "category": "tfc:mechanics",
   "icon": "tfc:wood/support/oak",
   "pages": [
@@ -12,6 +12,14 @@
     {
       "type": "patchouli:text",
       "text": "플레이어가 $(thing)지지받지 못한 돌 블록$() 주변의 $(thing)돌 블록을 캘 때$() 돌이 무너질 수도 있습니다. 그러나 일단 돌이 무너지기 시작하면, $(thing)지지받는$() 돌 블록마저도 무너질 수 있습니다.$(br2)동굴 천장의 돌 블록은 $(thing)자연적으로 지지받습니다$(). 무너지지 않는 블록 위에 있는 돌 블록 역시도 $(thing)지지받습니다$(). $(thing)지지대$()는 한 번에 넓은 영역을 지지할 수 있습니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "When graded $(l:the_world/ores_and_minerals)Ore$() (ore that can be poor, normal, or rich) collapses, it degrades in quality. Rich ore will become normal, normal will become poor, and poor will turn to cobblestone. Mineral ores will turn into cobblestone right away."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Dirt, grass, clay, gravel, cobblestone, and sand are also affected by gravity. However, unlike vanilla gravity blocks, these blocks fall down slopes, and cannot be stacked more than one high without supporting blocks around. $(l:mechanics/sluices)Ore Deposits$() also landslide, but do not degrade in quality."
     },
     {
       "type": "patchouli:crafting",

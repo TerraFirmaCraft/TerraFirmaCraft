@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.capabilities.food;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import net.minecraft.ChatFormatting;
@@ -142,7 +141,7 @@ public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
     public float getDecayDateModifier()
     {
         // Decay modifiers are higher = shorter
-        float mod = data.decayModifier() * TFCConfig.SERVER.foodDecayModifier.get().floatValue();
+        float mod = data.decayModifier() * Helpers.getValueOrDefault(TFCConfig.SERVER.foodDecayModifier).floatValue();
         for (FoodTrait trait : foodTraits)
         {
             mod *= trait.getDecayModifier();

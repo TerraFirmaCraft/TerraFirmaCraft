@@ -15,12 +15,9 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 /**
- * This is the central tick tracking mechanism for all of TFC
- * Every server tick, the following statements are executed:
- * 1. ServerTick -> playerTime++
- * 2. ServerWorld#advanceTime -> dayTime++
- * 3. WorldTick -> calendarTime++
- * 4. (Possible) PlayerLoggedInEvent -> can update doDaylightCycle / arePlayersLoggedOn
+ * The shared implementation of {@link ICalendar}.
+ *
+ * @see Calendars
  */
 public class Calendar implements ICalendar
 {

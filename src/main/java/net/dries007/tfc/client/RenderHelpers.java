@@ -43,6 +43,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -482,7 +483,7 @@ public final class RenderHelpers
 
     public static int getHeatedBrightness(ItemStack stack, int combinedLight)
     {
-        final float heat = Math.min(stack.getCapability(HeatCapability.CAPABILITY).map(IHeat::getTemperature).orElse(0f) / 400f, 1f);
+        final float heat = Math.min(HeatCapability.getTemperature(stack) / 400f, 1f);
         return Math.max(combinedLight, (int) (heat * LightTexture.FULL_BRIGHT));
     }
 
@@ -544,8 +545,12 @@ public final class RenderHelpers
         final Minecraft mc = Minecraft.getInstance();
         final BlockModelShaper shaper = mc.getBlockRenderer().getBlockModelShaper();
         final BakedModel model = shaper.getBlockModel(state);
-        if (model == shaper.getModelManager().getMissingModel()) return false;
+        if (model == shaper.getModelManager().getMissingModel())
+        {
+            return false;
+        }
 
+        final RandomSource random = RandomSource.create();
         final RenderType rt = Sheets.translucentCullBlockSheet();
         final VertexConsumer builder = new IGhostBlockHandler.ForcedAlphaVertexConsumer(buffer.getBuffer(rt), alpha);
 
@@ -560,9 +565,9 @@ public final class RenderHelpers
         }
         final BlockRenderDispatcher br = Minecraft.getInstance().getBlockRenderer();
 
-        for (RenderType type : model.getRenderTypes(state, level.random, ModelData.EMPTY))
+        for (RenderType type : model.getRenderTypes(state, random, ModelData.EMPTY))
         {
-            br.renderBatched(state, lookPos, level, stack, builder, false, level.random, ModelData.EMPTY, rt);
+            br.renderBatched(state, lookPos, level, stack, builder, false, random, ModelData.EMPTY, rt);
         }
 
         RenderSystem.enableCull();

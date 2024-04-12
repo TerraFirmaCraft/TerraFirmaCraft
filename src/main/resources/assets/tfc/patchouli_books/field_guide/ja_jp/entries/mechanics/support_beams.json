@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "梁",
+  "name": "Support Beams & Collapses",
   "category": "tfc:mechanics",
   "icon": "tfc:wood/support/oak",
   "pages": [
@@ -12,6 +12,14 @@
     {
       "type": "patchouli:text",
       "text": "プレイヤーが $(thing)補強されていない石$() の近くにある$(thing)石ブロック$() を 採掘すると、崩壊が発生する可能性があります。 ただし、一度崩落が始まると、 $(thing)補強されている$() ブロックでも崩落が始まる可能性があります。$(br2)洞窟の屋根にある岩は $(thing)自然補強$() されています。 岩石の下に崩壊不可能な岩盤があるものも $(thing)補強$() です。 あるいは、$(thing)梁$() を使用すると、一度に広範囲を補強できます。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "When graded $(l:the_world/ores_and_minerals)Ore$() (ore that can be poor, normal, or rich) collapses, it degrades in quality. Rich ore will become normal, normal will become poor, and poor will turn to cobblestone. Mineral ores will turn into cobblestone right away."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Dirt, grass, clay, gravel, cobblestone, and sand are also affected by gravity. However, unlike vanilla gravity blocks, these blocks fall down slopes, and cannot be stacked more than one high without supporting blocks around. $(l:mechanics/sluices)Ore Deposits$() also landslide, but do not degrade in quality."
     },
     {
       "type": "patchouli:crafting",

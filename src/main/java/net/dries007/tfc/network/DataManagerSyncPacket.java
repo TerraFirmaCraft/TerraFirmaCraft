@@ -9,7 +9,6 @@ package net.dries007.tfc.network;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkEvent;

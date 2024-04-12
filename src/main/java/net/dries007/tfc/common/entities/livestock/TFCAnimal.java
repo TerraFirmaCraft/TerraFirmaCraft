@@ -56,11 +56,11 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties, T
     private static final EntityDataAccessor<Boolean> FERTILIZED = SynchedEntityData.defineId(TFCAnimal.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Long> OLD_DAY = SynchedEntityData.defineId(TFCAnimal.class, EntityHelpers.LONG_SERIALIZER);
     private static final EntityDataAccessor<Integer> GENETIC_SIZE = SynchedEntityData.defineId(TFCAnimal.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Long> LAST_FED = SynchedEntityData.defineId(TFCAnimal.class, EntityHelpers.LONG_SERIALIZER);
 
-    private static final CommonAnimalData ANIMAL_DATA = new CommonAnimalData(GENDER, BIRTHDAY, FAMILIARITY, USES, FERTILIZED, OLD_DAY, GENETIC_SIZE);
+    private static final CommonAnimalData ANIMAL_DATA = new CommonAnimalData(GENDER, BIRTHDAY, FAMILIARITY, USES, FERTILIZED, OLD_DAY, GENETIC_SIZE, LAST_FED);
 
     private Age lastAge = Age.CHILD;
-    private long lastFed; //Last time(in days) this entity was fed
     private long lastFDecay; //Last time(in days) this entity's familiarity had decayed
     private long matingTime; //The last time(in ticks) this male tried fertilizing females
     private final Supplier<? extends SoundEvent> ambient;
@@ -231,18 +231,6 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties, T
     public void setLastFamiliarityDecay(long days)
     {
         lastFDecay = days;
-    }
-
-    @Override
-    public void setLastFed(long fed)
-    {
-        lastFed = fed;
-    }
-
-    @Override
-    public long getLastFed()
-    {
-        return lastFed;
     }
 
     @Override

@@ -1,0 +1,175 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Гончарное дело",
+  "category": "tfc:getting_started",
+  "icon": "tfc:ceramic/vessel",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Глина$() - невероятно полезный и универсальный материал, который можно использовать для гончарного дела. Сначала его может быть сложно найти. Глина обычно скрыта травой, но чаще всего находится в двух местах. В районах с годовым $(l:the_world/climate#rainfall)осадками$() не менее 175 мм, глину можно найти повсюду, обычно это место отмечено наличием определённых $(thing)Растений$()."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "   ",
+            " C ",
+            "   "
+          ],
+          [
+            "XXX",
+            "X0X",
+            "XXX"
+          ]
+        ],
+        "mapping": {
+          "0": "tfc:clay_grass/sandy_loam",
+          "X": "tfc:clay_grass/sandy_loam",
+          "C": "#tfc:clay_indicators"
+        }
+      },
+      "name": "Индикаторы глины",
+      "text": "Глина, рядом с одним из растений, которые могут указывать на её присутствие.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Орляк$(), $(thing)канна$(), $(thing)золотарник$(), $(thing)пампасная трава$(), $(thing)перовския$() и $(thing)водная канна$() указывают на наличие глины поблизости. Глину также можно найти в небольших залежах рядом с источниками воды, такими как реки, озёра или пруды.$(br2)Глину можно использовать для лепки, чтобы сформировать новые предметы. Для лепки из глины требуется пять ее кусков в руке. В отличие от камней, если вы сделаете ошибку, вы можете просто закрыть интерфейс лепки, переформировать глину и попробовать снова."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/clay_knapping.png"
+      ],
+      "text": "Интерфейс высекания.",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "vessel",
+      "text": "Маленький сосуд - один из таких предметов. Как и все гончарные изделия, его необходимо $(l:https://en.wikipedia.org/wiki/Pottery)обжигать$(), прежде чем он сможет быть использован. Обжиг - это процесс $(l:mechanics/heating)нагревания$() предмета до точки, когда глина превратится в твёрдый $(thing)Керамический$() материал, который требует нагрева до 1400 °C, или $(e)$(bold)$(t:Yellow White)Жёлто-Белый$().$(br2)Чтобы сделать это на раннем этапе игры, вам понадобится использовать $(l:getting_started/pit_kiln)Земляную печь$().",
+      "title": "Маленький сосуд"
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/vessel",
+      "text": "Лепка глиняного маленького сосуда."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "jug",
+      "text": "Ещё один полезный гончарный предмет - это $(thing)Кувшин$(). Его можно использовать для того, чтобы набирать и $(thing)пить$() жидкости, такие как пресная вода.$(br2)Чтобы использовать его, просто $(item)$(k:key.use)$() кувшин на жидкость в мире. Затем используйте кувшин, чтобы пить из него. Кувшин может вместить $(thing)100 мБ$() жидкости за раз.",
+      "title": "Кувшин"
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/jug",
+      "text": "Лепка глиняного кувшина."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "mold",
+      "text": "Глина также необходима для изготовления $(thing)Форм$(). В формы можно налить расплавленный металл, который в конечном итоге затвердеет в форме формы. Предмет и потенциально форму затем можно извлечь, используя $(item)$(k:key.use)$() на форме.$(br2)Самый простой тип формы - это форма для слитка, справа.",
+      "title": "Формы"
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/ingot_mold",
+      "text": "Лепка глиняной формы для слитка."
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/ingot_mold",
+      "text": "Затем форму нужно обжечь, как и все глиняные предметы, чтобы она стала пригодной к использованию - вероятно, в $(l:getting_started/pit_kiln)Земляной печи$().$(br2)После обжига в неё можно налить расплавленный металл. Как только металл достаточно остынет, его можно извлечь."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:ceramic/ingot_mold{tank:{\"Amount\":100,\"FluidName\":\"tfc:metal/copper\"}}",
+      "title": "Литьё",
+      "link_recipes": false,
+      "text": "На следующих страницах показаны несколько шаблонов высекания для различных инструментов."
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/propick_head_mold",
+      "text": "$(l:mechanics/prospecting#propick)Разведывательная кирка$() - необходимый инструмент для поиска больших количеств руды."
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/pickaxe_head_mold",
+      "text": "$(thing)Кирка$()! Основной инструмент для добычи."
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/saw_blade_mold",
+      "text": "$(thing)Пила$() - инструмент, необходимый для изготовления продвинутых деревянных компонентов, таких как $(thing)верстак$(), а также многих других устройств, таких как $(l:mechanics/support_beams)опоры$()."
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/scythe_blade_mold",
+      "text": "$(thing)Серп$() - инструмент, который может собирать растения и листья на площади 3x3x3!"
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/chisel_head_mold",
+      "text": "$(l:mechanics/chisel)Зубило$() - инструмент, используемый для шлифовки блоков, а также создания большого количества декоративных блоков."
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/axe_head_mold",
+      "text": "$(thing)Топор$() для всех ваших нужд в рубке деревьев. Обратите внимание, что каменные топоры менее эффективны, чем металлические!"
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/hammer_head_mold",
+      "text": "$(thing)Молот$() - необходимый инструмент для создания и работы на $(l:mechanics/anvils)Наковальнях$()."
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/knife_blade_mold",
+      "text": "$(thing)Нож$() можно использовать как оружие или как режущий инструмент для блоков растительного типа."
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/hoe_head_mold",
+      "text": "$(thing)Мотыга$() используется для посадки и ухода за $(l:mechanics/crops)Урожаем$()."
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:clay_knapping/shovel_head_mold",
+      "text": "$(thing)Лопата$() для всех ваших нужд в копании."
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 2,
+  "extra_recipe_mappings": {
+    "minecraft:clay": 0,
+    "tag:tfc:clay_indicators": 2,
+    "tfc:ceramic/unfired_vessel": 4,
+    "tfc:ceramic/vessel": 4,
+    "tfc:ceramic/unfired_jug": 6,
+    "tfc:ceramic/jug": 6,
+    "tfc:ceramic/unfired_ingot_mold": 9,
+    "tfc:ceramic/ingot_mold": 9,
+    "tfc:ceramic/unfired_propick_head_mold": 12,
+    "tfc:ceramic/unfired_pickaxe_head_mold": 13,
+    "tfc:ceramic/pickaxe_head_mold": 13,
+    "tfc:ceramic/unfired_saw_blade_mold": 14,
+    "tfc:ceramic/saw_blade_mold": 14,
+    "tfc:ceramic/unfired_scythe_blade_mold": 15,
+    "tfc:ceramic/scythe_blade_mold": 15,
+    "tfc:ceramic/unfired_chisel_head_mold": 16,
+    "tfc:ceramic/chisel_head_mold": 16,
+    "tfc:ceramic/unfired_axe_head_mold": 17,
+    "tfc:ceramic/axe_head_mold": 17,
+    "tfc:ceramic/unfired_hammer_head_mold": 18,
+    "tfc:ceramic/hammer_head_mold": 18,
+    "tfc:ceramic/unfired_knife_blade_mold": 19,
+    "tfc:ceramic/knife_blade_mold": 19,
+    "tfc:ceramic/unfired_hoe_head_mold": 20,
+    "tfc:ceramic/hoe_head_mold": 20,
+    "tfc:ceramic/unfired_shovel_head_mold": 21,
+    "tfc:ceramic/shovel_head_mold": 21
+  }
+}

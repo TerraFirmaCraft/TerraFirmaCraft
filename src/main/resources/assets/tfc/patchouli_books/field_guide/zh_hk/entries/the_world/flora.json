@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "羣巒傳説中有許多、很多、$(italic)數不勝數$()的自然植物。$(br2)不同的$(l:the_world/climate)氣候$()環境中會生成不同的植物。根據季節和温度的不同，植物會開花或休眠，從而改變外觀。顏色豔麗的花往往都可以在$(l:mechanics/quern)手推磨$()中磨成染料。"
+      "text": "There are many, many, $(italic)many$() different types of plants in TerraFirmaCraft.$(br2)Different plants appear in different $(l:the_world/climate)Climates$(), and their appearance may change over the current season - going through cycles of flowering and laying dormant, or changing color as the local temperature changes. Colorful flowers can typically be crushed in a $(l:mechanics/quern)Quern$() for $(l:mechanics/dye)Dye$()."
     },
     {
       "type": "patchouli:multiblock",

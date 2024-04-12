@@ -391,7 +391,11 @@ public class MoldItem extends Item
             }
             initialized = true;
 
-            tank.readFromNBT(stack.getOrCreateTag().getCompound("tank"));
+            final @Nullable CompoundTag tag = stack.getTagElement("tank");
+            if (tag != null)
+            {
+                tank.readFromNBT(tag);
+            }
             updateHeatCapacity();
         }
 

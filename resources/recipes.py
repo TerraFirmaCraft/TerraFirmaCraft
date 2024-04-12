@@ -87,6 +87,7 @@ def generate(rm: ResourceManager):
         # Other variants
         damage_shapeless(rm, 'crafting/rock/%s_smooth' % rock, (raw, '#tfc:chisels'), smooth).with_advancement(raw)
         damage_shapeless(rm, 'crafting/rock/%s_brick' % rock, (loose, '#tfc:chisels'), brick).with_advancement(loose)
+        damage_shapeless(rm, 'crafting/rock/%s_brick_from_mossy' % rock, (mossy_loose, '#tfc:chisels'), brick).with_advancement(loose)
         damage_shapeless(rm, 'crafting/rock/%s_chiseled' % rock, (bricks, '#tfc:chisels'), chiseled).with_advancement(smooth)
         damage_shapeless(rm, 'crafting/rock/%s_button' % rock, ('#tfc:chisels', brick), 'tfc:rock/button/%s' % rock).with_advancement(brick)
         damage_shapeless(rm, 'crafting/rock/%s_pressure_plate' % rock, ('#tfc:chisels', brick, brick), 'tfc:rock/pressure_plate/%s' % rock).with_advancement(brick)
@@ -96,6 +97,13 @@ def generate(rm: ResourceManager):
         rm.crafting_shaped('crafting/rock/%s_aqueduct' % rock, ['X X', 'MXM'], {'X': brick, 'M': '#tfc:mortar'}, 'tfc:rock/aqueduct/%s' % rock).with_advancement(brick)
 
         damage_shapeless(rm, 'crafting/rock/%s_cracked' % rock, (bricks, '#tfc:hammers'), cracked_bricks).with_advancement(bricks)
+
+        rm.crafting_shapeless('crafting/rock/%s_cobble_stairs_undo' % rock, ('tfc:rock/cobble/%s_stairs' % rock), (3, loose))
+        rm.crafting_shapeless('crafting/rock/%s_mossy_cobble_stairs_undo' % rock, ('tfc:rock/mossy_cobble/%s_stairs' % rock), (3, mossy_loose))
+        rm.crafting_shapeless('crafting/rock/%s_cobble_slab_undo' % rock, ('tfc:rock/cobble/%s_stairs' % rock), (2, loose))
+        rm.crafting_shapeless('crafting/rock/%s_mossy_cobble_slab_undo' % rock, ('tfc:rock/cobble/%s_stairs' % rock), (2, mossy_loose))
+        rm.crafting_shapeless('crafting/rock/%s_cobble_wall_undo' % rock, ('tfc:rock/cobble/%s_stairs' % rock), (4, loose))
+        rm.crafting_shapeless('crafting/rock/%s_mossy_cobble_wall_undo' % rock, ('tfc:rock/cobble/%s_stairs' % rock), (4, mossy_loose))
 
     for metal, metal_data in METALS.items():
         if 'part' in metal_data.types:
@@ -521,7 +529,7 @@ def generate(rm: ResourceManager):
     brass = METALS['brass']
     heat_recipe(rm, 'raw_bloom', 'tfc:raw_iron_bloom', wrought_iron.melt_temperature, None, '100 tfc:metal/cast_iron')
     heat_recipe(rm, 'refined_bloom', 'tfc:refined_iron_bloom', wrought_iron.melt_temperature, None, '100 tfc:metal/cast_iron')
-    heat_recipe(rm, 'grill', 'tfc:wrought_iron_grill', wrought_iron.melt_temperature, None, '100 tfc:metal/cast_iron')
+    heat_recipe(rm, 'grill', 'tfc:wrought_iron_grill', wrought_iron.melt_temperature, None, '400 tfc:metal/cast_iron')
     heat_recipe(rm, 'iron_door', 'minecraft:iron_door', wrought_iron.melt_temperature, None, '200 tfc:metal/cast_iron')
 
     heat_recipe(rm, 'bronze_bell', 'tfc:bronze_bell', METALS['bronze'].melt_temperature, None, '100 tfc:metal/bronze')
@@ -558,6 +566,7 @@ def generate(rm: ResourceManager):
         disable_recipe(rm, 'minecraft:%s_stained_glass' % color)
         disable_recipe(rm, 'minecraft:%s_stained_glass_pane' % color)
         disable_recipe(rm, 'minecraft:%s_stained_glass_pane_from_glass_pane' % color)
+        disable_recipe(rm, 'minecraft:%s_bed' % color)
 
     for name in DISABLED_VANILLA_RECIPES:
         disable_recipe(rm, 'minecraft:' + name)
@@ -689,7 +698,9 @@ def generate(rm: ResourceManager):
                 }
             }
         })
+        damage_shapeless(rm, 'crafting/%s_treated_hide' % size, ('#tfc:hammers', 'tfc:groundcover/pumice', 'tfc:%s_scraped_hide' % size), '%s tfc:treated_hide' % str(i + 1)).with_advancement('tfc:%s_scraped_hide' % size)
 
+    rm.crafting_shapeless('crafting/parchment', ('tfc:treated_hide', not_rotten('#tfc:foods/flour'), not_rotten('minecraft:egg'), 'tfc:powder/lime'), '2 minecraft:paper').with_advancement('tfc:treated_hide')
     scraping_recipe(rm, 'paper', 'tfc:unrefined_paper', 'minecraft:paper', input_texture='tfc:block/unrefined_paper', output_texture='tfc:block/paper')
 
     simple_pot_recipe(rm, 'olive_oil_water', [utils.ingredient('tfc:olive_paste')] * 5, '1000 minecraft:water', '1000 tfc:olive_oil_water', None, 2000, 300)
@@ -816,7 +827,7 @@ def generate(rm: ResourceManager):
         alloy_recipe(rm, alloy_name, alloy_name, *alloy_components)
 
     # Bloomery Recipes
-    bloomery_recipe(rm, 'raw_iron_bloom', 'tfc:raw_iron_bloom', '100 tfc:metal/cast_iron', 'minecraft:charcoal', 15000)
+    bloomery_recipe(rm, 'raw_iron_bloom', 'tfc:raw_iron_bloom', '100 tfc:metal/cast_iron', '2 minecraft:charcoal', 15000)
 
     # Blast Furnace Recipes
     blast_furnace_recipe(rm, 'pig_iron', '1 tfc:metal/cast_iron', '1 tfc:metal/pig_iron', '#tfc:flux')
@@ -1364,7 +1375,7 @@ def bloomery_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, r
     rm.recipe(('bloomery', name_parts), 'tfc:bloomery', {
         'result': item_stack_provider(result),
         'fluid': fluid_stack_ingredient(metal),
-        'catalyst': utils.ingredient(catalyst),
+        'catalyst': item_stack_ingredient(catalyst),
         'duration': time
     })
 

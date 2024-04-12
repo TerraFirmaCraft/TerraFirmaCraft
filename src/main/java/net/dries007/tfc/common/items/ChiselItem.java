@@ -7,7 +7,7 @@
 package net.dries007.tfc.common.items;
 
 import java.util.function.Function;
-
+import com.mojang.datafixers.util.Either;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -19,12 +19,10 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-
 import net.minecraftforge.items.ItemHandlerHelper;
 
-import com.mojang.datafixers.util.Either;
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
+import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.recipes.ChiselRecipe;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
@@ -62,17 +60,16 @@ public class ChiselItem extends ToolItem
                         }
                     }
 
-                    player.getCapability(PlayerDataCapability.CAPABILITY).ifPresent(cap -> {
-                        final ChiselRecipe recipeUsed = ChiselRecipe.getRecipe(state, held, cap.getChiselMode());
-                        if (recipeUsed != null)
+                    final PlayerData cap = PlayerData.get(player);
+                    final ChiselRecipe recipeUsed = ChiselRecipe.getRecipe(state, held, cap.getChiselMode());
+                    if (recipeUsed != null)
+                    {
+                        ItemStack extraDrop = recipeUsed.getExtraDrop(held);
+                        if (!extraDrop.isEmpty())
                         {
-                            ItemStack extraDrop = recipeUsed.getExtraDrop(held);
-                            if (!extraDrop.isEmpty())
-                            {
-                                ItemHandlerHelper.giveItemToPlayer(player, extraDrop);
-                            }
+                            ItemHandlerHelper.giveItemToPlayer(player, extraDrop);
                         }
-                    });
+                    }
                 }
 
                 level.setBlockAndUpdate(pos, resultState);

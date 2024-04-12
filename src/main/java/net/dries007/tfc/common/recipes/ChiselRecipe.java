@@ -10,6 +10,7 @@ import java.util.Locale;
 import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -24,13 +25,16 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
+import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
@@ -45,43 +49,63 @@ public class ChiselRecipe extends SimpleBlockRecipe
      */
     public static Either<BlockState, InteractionResult> computeResult(Player player, BlockState state, BlockHitResult hit, boolean informWhy)
     {
-        ItemStack held = player.getMainHandItem();
+        final ItemStack held = player.getMainHandItem();
         if (Helpers.isItem(held, TFCTags.Items.CHISELS) && Helpers.isItem(player.getOffhandItem(), TFCTags.Items.HAMMERS))
         {
-            BlockPos pos = hit.getBlockPos();
-            return player.getCapability(PlayerDataCapability.CAPABILITY).map(cap -> {
-                final Mode mode = cap.getChiselMode();
-                final ChiselRecipe recipe = ChiselRecipe.getRecipe(state, held, mode);
-                if (recipe == null)
+            final BlockPos pos = hit.getBlockPos();
+            final Mode mode = PlayerData.get(player).getChiselMode();
+            final ChiselRecipe recipe = ChiselRecipe.getRecipe(state, held, mode);
+            if (recipe == null)
+            {
+                if (informWhy) complain(player, "no_recipe");
+                return Either.<BlockState, InteractionResult>right(InteractionResult.PASS);
+            }
+            else
+            {
+                @Nullable BlockState chiseled = recipe.getBlockCraftingResult(state);
+
+                // The block crafting result will be a single, simple block state, unaware of the placement context, however we want the chisel
+                // to meaningfully respond similar to how slab/stair placement naturally works. For this, we have different behavior based on the
+                // mode, which should handle certain edge cases:
+                // 1. SMOOTH
+                //    There should be no contextual placement information
+                // 2. STAIR
+                //    We use `getStateForPlacement`. This is NOT ACCURATE, as the block in question is querying the wrong world position for i.e. the fluid position.
+                //    We can fix this, however, after the fact. Stairs also don't have any issues with placing on top of one another. Just sanity check we are only
+                //    calling this method for `StairBlock`s
+                // 3. SLAB
+                //    Slabs run into an issue where, chiseling adjacent to a slab, with the placement context, infers it to be a double slab (wrong + duplication glitch)
+                //    So, we copy the slab contextual placement and write it correctly - there's no good way to perform this simulation without modifying the world, or having
+                //    a whole simulation world which I do *not* want to do.
+                if (mode == Mode.STAIR && chiseled.getBlock() instanceof StairBlock stair)
                 {
-                    if (informWhy) complain(player, "no_recipe");
-                    return Either.<BlockState, InteractionResult>right(InteractionResult.PASS);
+                    // Use the stair placement state, but fill with fluid after the fact
+                    chiseled = stair.getStateForPlacement(new BlockPlaceContext(player, InteractionHand.MAIN_HAND, new ItemStack(stair), hit));
+                    if (chiseled != null)
+                    {
+                        chiseled = FluidHelpers.fillWithFluid(chiseled, state.getFluidState().getType());
+                    }
                 }
-                else
+                else if (mode == Mode.SLAB && chiseled.getBlock() instanceof SlabBlock && chiseled.hasProperty(SlabBlock.TYPE))
                 {
-                    BlockState chiseled = recipe.getBlockCraftingResult(state);
-                    chiseled = chiseled.getBlock().getStateForPlacement(new BlockPlaceContext(player, InteractionHand.MAIN_HAND, new ItemStack(chiseled.getBlock()), hit));
-                    if (chiseled == null)
-                    {
-                        if (informWhy) complain(player, "cannot_place");
-                        return Either.<BlockState, InteractionResult>right(InteractionResult.FAIL);
-                    }
-                    else
-                    {
-                        // covers case where a waterlogged block is chiseled and the new block can't take the fluid contained
-                        chiseled = FluidHelpers.fillWithFluid(chiseled, player.level().getFluidState(pos).getType());
-                        if (chiseled == null)
-                        {
-                            if (informWhy) complain(player, "bad_fluid");
-                            return Either.<BlockState, InteractionResult>right(InteractionResult.FAIL);
-                        }
-                        else
-                        {
-                            return Either.<BlockState, InteractionResult>left(chiseled);
-                        }
-                    }
+                    // Copied from SlabBlock.getStateForPlacement, but avoids placing double slabs
+                    final Direction hitFace = hit.getDirection();
+                    final SlabType slabType = hitFace != Direction.DOWN && (hitFace == Direction.UP || !(hit.getLocation().y - pos.getY() > 0.5D))
+                        ? SlabType.BOTTOM
+                        : SlabType.TOP;
+
+                    chiseled = chiseled.setValue(SlabBlock.TYPE, slabType);
+                    chiseled = FluidHelpers.fillWithFluid(chiseled, state.getFluidState().getType());
                 }
-            }).orElse(Either.right(InteractionResult.PASS));
+
+                if (chiseled == null)
+                {
+                    if (informWhy) complain(player, "cannot_place");
+                    return Either.right(InteractionResult.FAIL);
+                }
+
+                return Either.left(chiseled);
+            }
         }
         return Either.right(InteractionResult.PASS);
     }

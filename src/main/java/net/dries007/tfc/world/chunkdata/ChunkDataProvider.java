@@ -80,11 +80,8 @@ public final class ChunkDataProvider
     {
         if (chunk instanceof ImposterProtoChunk imposter)
         {
-            // Impostor chunks can be present in adjacent chunks, during later stages such as feature generation
-            // When this occurs, queries to these chunks need to obtain the correct data (which is in the capability on the wrapped chunk), rather than generating new data (which omits parts generated later such as rock surface height)
-            return imposter.getWrapped()
-                .getCapability(ChunkData.CAPABILITY)
-                .orElse(ChunkData.EMPTY);
+            // Imposter chunks need to query the underlying level chunk data, which is stored via capability
+            return ChunkData.get(imposter.getWrapped());
         }
         else if (chunk instanceof ProtoChunk proto)
         {
@@ -102,9 +99,8 @@ public final class ChunkDataProvider
         }
         else if (chunk instanceof LevelChunk levelChunk)
         {
-            // We can query the level chunk's capability...
-            return levelChunk.getCapability(ChunkData.CAPABILITY)
-                .orElse(ChunkData.EMPTY);
+            // Use the level chunk data, although this should generally not happen (when accessing through world gen)
+            return ChunkData.get(levelChunk);
         }
         throw new IllegalStateException("Cannot get chunk data from an unknown chunk: " + chunk.getClass() + " at " + chunk.getPos());
     }

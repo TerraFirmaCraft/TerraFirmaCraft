@@ -58,6 +58,8 @@ public class JarsBlockEntity extends InventoryBlockEntity<ItemStackHandler>
             {
                 final NonNullList<ItemStack> items = Helpers.extractAllItems(inventory);
                 level.setBlockAndUpdate(pos, shelfState);
+                if (!player.isCreative())
+                    held.shrink(1);
                 if (level.getBlockEntity(pos) instanceof JarsBlockEntity shelfBlockEntity)
                 {
                     Helpers.insertAllItems(shelfBlockEntity.inventory, items);

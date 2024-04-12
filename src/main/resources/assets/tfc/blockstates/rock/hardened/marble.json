@@ -19,14 +19,6 @@
       },
       {
         "model": "tfc:block/rock/raw/marble_mirrored"
-      },
-      {
-        "model": "tfc:block/rock/raw/marble",
-        "y": 180
-      },
-      {
-        "model": "tfc:block/rock/raw/marble_mirrored",
-        "y": 180
       }
     ],
     "axis=z": [
@@ -37,16 +29,6 @@
       {
         "model": "tfc:block/rock/raw/marble_mirrored",
         "x": 90
-      },
-      {
-        "model": "tfc:block/rock/raw/marble",
-        "x": 90,
-        "y": 180
-      },
-      {
-        "model": "tfc:block/rock/raw/marble_mirrored",
-        "x": 90,
-        "y": 180
       }
     ]
   }

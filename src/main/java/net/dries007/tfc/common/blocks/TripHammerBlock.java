@@ -62,7 +62,12 @@ public class TripHammerBlock extends DeviceBlock
             final IItemHandler inv = Helpers.getCapability(hammer, Capabilities.ITEM);
             if (inv != null && inv.getStackInSlot(0).isEmpty() && inv.isItemValid(0, held))
             {
-                ItemHandlerHelper.giveItemToPlayer(player, inv.insertItem(0, held.split(1), false));
+                final ItemStack toInsert = held.copyWithCount(1);
+                if (!player.isCreative())
+                {
+                    held.shrink(1);
+                }
+                ItemHandlerHelper.giveItemToPlayer(player, inv.insertItem(0, toInsert, false));
                 hammer.markForSync();
                 return InteractionResult.sidedSuccess(level.isClientSide);
             }

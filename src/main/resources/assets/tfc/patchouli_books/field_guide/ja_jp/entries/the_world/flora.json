@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "TerraFirmaCraft には、$(italic)非常に$() 多くの種類の植物がたくさんあります。$(br2)さまざまな植物がさまざまな $(l:the_world/climate)気候$() に影響されされ、その外観は時間とともに変化する可能性があります。 現在の季節 - 開花と休眠のサイクルを経るか、地域の気温の変化に応じて色が変化します。 色とりどりの花は通常、$(l:mechanics/quern)石臼$() で潰して染料にすることができます。"
+      "text": "There are many, many, $(italic)many$() different types of plants in TerraFirmaCraft.$(br2)Different plants appear in different $(l:the_world/climate)Climates$(), and their appearance may change over the current season - going through cycles of flowering and laying dormant, or changing color as the local temperature changes. Colorful flowers can typically be crushed in a $(l:mechanics/quern)Quern$() for $(l:mechanics/dye)Dye$()."
     },
     {
       "type": "patchouli:multiblock",

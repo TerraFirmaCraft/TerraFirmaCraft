@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "TerraFirmaCraft에는 아주, 아주 $(italic)굉장히$() 다양한 종류의 식물들이 있습니다.$(br2)다양한 $(l:the_world/climate)기후$()마다 다양한 식물들이 나타나며, 식물들의 형태는 계절마다 달라지기도 합니다. 예를 들면 꽃이 피고 지거나, 기온 변화에 따라 색깔이 변할 수도 있습니다. 형형색색의 꽃들은 $(l:mechanics/quern)맷돌$()로 갈아 염료를 만들 수 있습니다."
+      "text": "There are many, many, $(italic)many$() different types of plants in TerraFirmaCraft.$(br2)Different plants appear in different $(l:the_world/climate)Climates$(), and their appearance may change over the current season - going through cycles of flowering and laying dormant, or changing color as the local temperature changes. Colorful flowers can typically be crushed in a $(l:mechanics/quern)Quern$() for $(l:mechanics/dye)Dye$()."
     },
     {
       "type": "patchouli:multiblock",

@@ -21,6 +21,7 @@ import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
 import net.dries007.tfc.common.capabilities.MoldLike;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 
@@ -58,11 +59,15 @@ public class MoldLikeAlloyContainer extends ItemStackContainer implements ISlotC
                     if (filled == 1)
                     {
                         final Metal metal = Objects.requireNonNullElse(Metal.get(drained.getFluid()), Metal.unknown());
+                        final @Nullable IHeat outputHeat = HeatCapability.get(outputStack);
                         final float heatCapacityOf1mB = metal.getHeatCapacity(1);
 
                         // Execute the prior drain, and adjust temperature
                         mold.drain(1, IFluidHandler.FluidAction.EXECUTE);
-                        outputStack.getCapability(HeatCapability.CAPABILITY).ifPresent(outputHeatCap -> outputHeatCap.addTemperatureFromSourceWithHeatCapacity(mold.getTemperature(), heatCapacityOf1mB));
+                        if (outputHeat != null)
+                        {
+                            outputHeat.addTemperatureFromSourceWithHeatCapacity(mold.getTemperature(), heatCapacityOf1mB);
+                        }
                     }
                 }
             });

@@ -1,0 +1,37 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:story/gear_box",
+  "criteria": {
+    "water_wheels": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "tfc:water_wheels"
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:wood/water_wheel/sequoia"
+    },
+    "title": {
+      "translate": "tfc.advancements.story.water_wheel.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.story.water_wheel.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/rock/mossy_cobble/diorite.png"
+  },
+  "requirements": [
+    [
+      "water_wheels"
+    ]
+  ]
+}

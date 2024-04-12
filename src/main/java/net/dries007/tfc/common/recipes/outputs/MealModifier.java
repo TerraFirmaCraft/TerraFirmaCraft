@@ -14,7 +14,6 @@ import java.util.Map;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
@@ -71,7 +70,7 @@ public record MealModifier(FoodData baseFood, List<MealPortion> portions) implem
 
                     // Clear any transient data that doesn't display, so we don't create weird stackability issues
                     FoodCapability.setNeverExpires(tooltipItem);
-                    HeatCapability.clearTemperature(tooltipItem);
+                    HeatCapability.setTemperature(tooltipItem, 0);
 
                     itemIngredients.add(tooltipItem);
                 }
@@ -107,16 +106,16 @@ public record MealModifier(FoodData baseFood, List<MealPortion> portions) implem
         {
             final ItemStack item = entry.getKey();
             final MealPortion portion = entry.getValue();
-            final IFood food = Helpers.getCapability(item, FoodCapability.CAPABILITY);
+            final @Nullable IFood food = FoodCapability.get(item);
             if (food != null)
             {
                 final var data = food.getData();
                 for (Nutrient nutrient : Nutrient.VALUES)
                 {
-                    nutrition[nutrient.ordinal()] += data.nutrient(nutrient) * portion.nutrientModifier;
+                    nutrition[nutrient.ordinal()] += data.nutrient(nutrient) * portion.nutrientModifier * item.getCount();
                 }
-                water += data.water() * portion.waterModifier;
-                saturation += data.saturation() * portion.saturationModifier;
+                water += data.water() * portion.waterModifier * item.getCount();
+                saturation += data.saturation() * portion.saturationModifier * item.getCount();
             }
         }
 
