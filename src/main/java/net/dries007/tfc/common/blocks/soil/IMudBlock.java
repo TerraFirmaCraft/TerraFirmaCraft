@@ -85,7 +85,8 @@ public interface IMudBlock
      * Sets the block to mud and plays the appropriate particles and sound
      * Particles like {@link net.minecraft.world.item.PotionItem}
      */
-    default void setMud(BlockState mud, Level level, BlockPos pos, FluidStack water) {
+    default void setMud(BlockState mud, Level level, BlockPos pos, FluidStack water)
+    {
         FluidHelpers.playTransferSound(level, pos, water, FluidHelpers.Transfer.DRAIN);
         level.setBlockAndUpdate(pos, mud);
 

@@ -65,7 +65,9 @@ public class DirtBlock extends Block implements IDirtBlock, IMudBlock
     {
         return rooted.get().defaultBlockState();
     }
-    public BlockState getMud() {
+
+    public BlockState getMud()
+    {
         return mud.get().defaultBlockState();
     }
 
