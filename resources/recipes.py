@@ -87,6 +87,7 @@ def generate(rm: ResourceManager):
         # Other variants
         damage_shapeless(rm, 'crafting/rock/%s_smooth' % rock, (raw, '#tfc:chisels'), smooth).with_advancement(raw)
         damage_shapeless(rm, 'crafting/rock/%s_brick' % rock, (loose, '#tfc:chisels'), brick).with_advancement(loose)
+        damage_shapeless(rm, 'crafting/rock/%s_brick_from_mossy' % rock, (mossy_loose, '#tfc:chisels'), brick).with_advancement(loose)
         damage_shapeless(rm, 'crafting/rock/%s_chiseled' % rock, (bricks, '#tfc:chisels'), chiseled).with_advancement(smooth)
         damage_shapeless(rm, 'crafting/rock/%s_button' % rock, ('#tfc:chisels', brick), 'tfc:rock/button/%s' % rock).with_advancement(brick)
         damage_shapeless(rm, 'crafting/rock/%s_pressure_plate' % rock, ('#tfc:chisels', brick, brick), 'tfc:rock/pressure_plate/%s' % rock).with_advancement(brick)
@@ -96,6 +97,13 @@ def generate(rm: ResourceManager):
         rm.crafting_shaped('crafting/rock/%s_aqueduct' % rock, ['X X', 'MXM'], {'X': brick, 'M': '#tfc:mortar'}, 'tfc:rock/aqueduct/%s' % rock).with_advancement(brick)
 
         damage_shapeless(rm, 'crafting/rock/%s_cracked' % rock, (bricks, '#tfc:hammers'), cracked_bricks).with_advancement(bricks)
+
+        rm.crafting_shapeless('crafting/rock/%s_cobble_stairs_undo' % rock, ('tfc:rock/cobble/%s_stairs' % rock), (3, loose))
+        rm.crafting_shapeless('crafting/rock/%s_mossy_cobble_stairs_undo' % rock, ('tfc:rock/mossy_cobble/%s_stairs' % rock), (3, mossy_loose))
+        rm.crafting_shapeless('crafting/rock/%s_cobble_slab_undo' % rock, ('tfc:rock/cobble/%s_stairs' % rock), (2, loose))
+        rm.crafting_shapeless('crafting/rock/%s_mossy_cobble_slab_undo' % rock, ('tfc:rock/cobble/%s_stairs' % rock), (2, mossy_loose))
+        rm.crafting_shapeless('crafting/rock/%s_cobble_wall_undo' % rock, ('tfc:rock/cobble/%s_stairs' % rock), (4, loose))
+        rm.crafting_shapeless('crafting/rock/%s_mossy_cobble_wall_undo' % rock, ('tfc:rock/cobble/%s_stairs' % rock), (4, mossy_loose))
 
     for metal, metal_data in METALS.items():
         if 'part' in metal_data.types:
