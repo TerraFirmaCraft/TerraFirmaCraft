@@ -265,6 +265,7 @@ def generate(rm: ResourceManager):
     rm.crafting_shapeless('crafting/pink_kaolin_clay', ('tfc:white_kaolin_clay', 'tfc:powder/hematite'), 'tfc:pink_kaolin_clay').with_advancement('tfc:white_kaolin_clay')
     rm.crafting_shapeless('crafting/red_kaolin_clay', ('tfc:pink_kaolin_clay', 'tfc:powder/hematite'), 'tfc:red_kaolin_clay').with_advancement('tfc:pink_kaolin_clay')
     damage_shapeless(rm, 'crafting/bone_needle', ('#tfc:knives', 'minecraft:bone'), 'tfc:bone_needle').with_advancement('minecraft:bone')
+    rm.crafting_shapeless('crafting/smooth_mud_bricks', ('#tfc:mud_bricks', 'tfc:daub'), 'tfc:smooth_mud_bricks').with_advancement('tfc:daub')
 
     rm.crafting_shapeless('crafting/silica_glass_batch', ('#tfc:silica_sand', '#tfc:silica_sand', '#tfc:silica_sand', '#tfc:silica_sand', '#tfc:glassworking_potash', 'tfc:powder/lime'), '4 tfc:silica_glass_batch')
     rm.crafting_shapeless('crafting/hematitic_glass_batch', ('#tfc:hematitic_sand', '#tfc:hematitic_sand', '#tfc:hematitic_sand', '#tfc:hematitic_sand', '#tfc:glassworking_potash', 'tfc:powder/lime'), '4 tfc:hematitic_glass_batch')

@@ -544,6 +544,7 @@ def generate(rm: ResourceManager):
     mob_loot(rm, 'donkey', 'tfc:food/horse_meat', 4, 18, 'medium', bones=6, livestock=True, not_predated=True)
     mob_loot(rm, 'mule', 'tfc:food/horse_meat', 4, 18, 'medium', bones=6, livestock=True, not_predated=True)
     mob_loot(rm, 'horse', 'tfc:food/horse_meat', 4, 18, 'medium', bones=6, livestock=True, not_predated=True)
+    mob_loot(rm, 'frog', 'tfc:food/frog_legs', 2, 2, bones=2)
     mob_loot(rm, 'minecraft:zombie', 'minecraft:rotten_flesh', 0, 2)  # it drops vanilla stuff we do not want
 
     trim_material(rm, 'amethyst', '#9A5CC6', 'tfc:gem/amethyst', 0)

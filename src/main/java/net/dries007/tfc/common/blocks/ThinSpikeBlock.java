@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.common.blocks;
 
-import java.util.Random;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -35,38 +33,11 @@ import org.jetbrains.annotations.Nullable;
 
 public class ThinSpikeBlock extends Block implements IFluidLoggable
 {
-    public static final VoxelShape PILLAR_SHAPE = Shapes.or(
-        box(9.5, 0, 12.5, 11.5, 16, 14.5),
-        box(8, 0, 1, 11, 16, 4),
-        box(3.5, 0, 1.5, 5.5, 16, 3.5),
-        box(4, 0, 11, 7, 16, 14),
-        box(2.5, 0, 8.5, 4.5, 16, 10.5),
-        box(9.5, 0, 4.5, 11.5, 16, 6.5),
-        box(11, 0, 8, 14, 16, 11),
-        box(4, 0, 4, 8, 16, 8)
-    );
+    public static final VoxelShape PILLAR_SHAPE = box(2, 0, 2, 14, 16, 14);
 
     public static final VoxelShape TIP_SHAPE = Shapes.or(
-        box(5, 4, 12, 6, 8, 13),
-        box(4, 12, 11, 7, 16, 14),
-        box(4.5, 8, 11.5, 6.5, 12, 13.5),
-        box(9, 4, 2, 10, 8, 3),
-        box(8, 12, 1, 11, 16, 4),
-        box(8.5, 8, 1.5, 10.5, 12, 3.5),
-        box(5, 2, 5, 7, 7, 7),
-        box(4, 11, 4, 8, 16, 8),
-        box(4.5, 6, 4.5, 7.5, 11, 7.5),
-        box(12, 5, 9, 13, 9, 10),
-        box(11, 13, 8, 14, 16, 11),
-        box(11.5, 9, 8.5, 13.5, 13, 10.5),
-        box(10, 6, 5, 11, 12, 6),
-        box(9.5, 12, 4.5, 11.5, 16, 6.5),
-        box(3, 10, 9, 4, 14, 10),
-        box(2.5, 14, 8.5, 4.5, 16, 10.5),
-        box(4, 10, 2, 5, 13, 3),
-        box(3.5, 13, 1.5, 5.5, 16, 3.5),
-        box(10, 9, 13, 11, 14, 14),
-        box(9.5, 14, 12.5, 11.5, 16, 14.5)
+        box(2, 5, 2, 14, 16, 14),
+        box(4, 2, 4, 12, 5, 12)
     );
 
     public static final BooleanProperty TIP = TFCBlockStateProperties.TIP;

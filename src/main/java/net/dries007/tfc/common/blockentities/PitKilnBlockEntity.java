@@ -11,6 +11,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.item.ItemStack;
@@ -90,6 +91,7 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
 
     public static void convertPitKilnToPlacedItem(Level level, BlockPos pos)
     {
+        Helpers.playSound(level, pos, SoundEvents.FIRE_EXTINGUISH);
         level.getBlockEntity(pos, TFCBlockEntities.PIT_KILN.get()).ifPresent(pitKiln -> {
             // Remove inventory items
             // This happens here to stop the block dropping its items in onBreakBlock()

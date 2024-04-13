@@ -9,7 +9,6 @@ package net.dries007.tfc.util;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -26,7 +25,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
@@ -38,7 +36,6 @@ import net.dries007.tfc.common.TFCTags;
 
 public class PowderKegExplosion extends Explosion
 {
-
     private final Level level;
     private final double x;
     private final double y;
@@ -49,7 +46,7 @@ public class PowderKegExplosion extends Explosion
 
     public PowderKegExplosion(Level level, @Nullable Entity entity, double x, double y, double z, float size)
     {
-        super(level, entity, x, y, z, size, false, BlockInteraction.DESTROY);
+        super(level, null, x, y, z, size, false, BlockInteraction.DESTROY);
         this.level = level;
         this.size = size;
         this.x = x;

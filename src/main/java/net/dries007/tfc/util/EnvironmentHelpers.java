@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.util;
 
+import java.util.Random;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -377,10 +378,15 @@ public final class EnvironmentHelpers
         }
         if (foundPos != null)
         {
-            final BlockPos searchPos = foundPos.above(ICICLE_MAX_LENGTH);
+            final Random icicleLengthRandom = new Random(pos.asLong());
+            final BlockPos searchPos = foundPos.above(icicleLengthRandom.nextInt(ICICLE_MAX_LENGTH) + 1);
             if (level.isLoaded(searchPos) && Helpers.isBlock(level.getBlockState(searchPos), TFCBlocks.ICICLE.get()))
             {
-                foundPos = null;
+                return null;
+            }
+            if (!level.getBlockState(foundPos.below()).isAir())
+            {
+                return null;
             }
         }
         return foundPos;

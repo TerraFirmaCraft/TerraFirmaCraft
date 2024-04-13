@@ -13,12 +13,15 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.rotation.RotatingBlockEntity;
@@ -30,6 +33,7 @@ import net.dries007.tfc.util.Helpers;
 public class WaterWheelBlock extends ExtendedBlock implements EntityBlockExtension, ConnectedAxleBlock
 {
     public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
+    public static final VoxelShape SHAPE = box(0, 0.125, 0, 16, 15.875, 16);
 
     private final Supplier<? extends AxleBlock> axle;
     private final ResourceLocation textureLocation;
@@ -58,6 +62,13 @@ public class WaterWheelBlock extends ExtendedBlock implements EntityBlockExtensi
     public ResourceLocation getTextureLocation()
     {
         return textureLocation;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    {
+        return SHAPE;
     }
 
     @Override

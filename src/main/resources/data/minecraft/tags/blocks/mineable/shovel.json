@@ -175,6 +175,7 @@
     "tfc:aggregate",
     "tfc:fire_clay_block",
     "tfc:charcoal_pile",
-    "tfc:charcoal_forge"
+    "tfc:charcoal_forge",
+    "tfc:smooth_mud_bricks"
   ]
 }

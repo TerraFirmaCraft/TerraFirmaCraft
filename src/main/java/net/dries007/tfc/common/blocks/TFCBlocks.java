@@ -157,6 +157,7 @@ public final class TFCBlocks
         register(("mud_bricks/" + variant.name() + "_wall"), () -> new WallBlock(Properties.of().mapColor(MapColor.DIRT).strength(2.6f).sound(SoundType.WART_BLOCK)))
     ));
 
+    public static final RegistryObject<Block> SMOOTH_MUD_BRICKS = register("smooth_mud_bricks", () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.DIRT).sound(SoundType.MUD_BRICKS).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(2.6f)));
     public static final RegistryObject<Block> PEAT = register("peat", () -> new Block(Properties.of().mapColor(MapColor.TERRACOTTA_BLACK).strength(3.0F).sound(TFCSounds.PEAT)));
     public static final RegistryObject<Block> PEAT_GRASS = register("peat_grass", () -> new ConnectedGrassBlock(Properties.of().mapColor(MapColor.GRASS).randomTicks().strength(3.0F).sound(TFCSounds.PEAT), PEAT, null, null));
 
