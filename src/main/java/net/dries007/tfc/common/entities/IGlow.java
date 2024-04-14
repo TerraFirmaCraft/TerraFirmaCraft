@@ -9,6 +9,7 @@ package net.dries007.tfc.common.entities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
@@ -95,12 +96,17 @@ public interface IGlow
 
     default void tryRemoveLight()
     {
-        Entity entity = getEntity();
+        final Entity entity = getEntity();
+        final Level level = entity.level();
+        if (!level.isLoaded(entity.blockPosition()))
+        {
+            return;
+        }
         final BlockPos light = getLightPos();
-        BlockState state = entity.level().getBlockState(light);
+        final BlockState state = level.getBlockState(light);
         if (Helpers.isBlock(state, TFCBlocks.LIGHT.get()))
         {
-            entity.level().setBlockAndUpdate(light, state.getFluidState().createLegacyBlock());
+            level.setBlockAndUpdate(light, state.getFluidState().createLegacyBlock());
         }
     }
 }
