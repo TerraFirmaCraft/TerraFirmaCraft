@@ -1483,12 +1483,12 @@ public final class Helpers
 
     public static boolean isEntity(Entity entity, TagKey<EntityType<?>> tag)
     {
-        return checkTag(ForgeRegistries.ENTITY_TYPES, entity.getType(), tag);
+        return isEntity(entity.getType(), tag);
     }
 
     public static boolean isEntity(EntityType<?> entity, TagKey<EntityType<?>> tag)
     {
-        return checkTag(ForgeRegistries.ENTITY_TYPES, entity, tag);
+        return entity.is(tag);
     }
 
     public static boolean isDamageSource(DamageSource source, TagKey<DamageType> tag)

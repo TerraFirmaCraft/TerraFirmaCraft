@@ -30,7 +30,7 @@ public class AvoidPredatorBehavior
                 instance.absent(MemoryModuleType.AVOID_TARGET)
             ).apply(instance, (visible, avoiding) -> {
                 return (level, mob, time) -> instance.get(visible).findClosest(
-                    e -> Helpers.isEntity(e, TFCTags.Entities.HUNTS_LAND_PREY) && extraConditions.test(e)
+                    e -> extraConditions.test(e) && Helpers.isEntity(e, TFCTags.Entities.HUNTS_LAND_PREY)
                 ).map(closest -> {
                     avoiding.set(closest);
                     return true;
