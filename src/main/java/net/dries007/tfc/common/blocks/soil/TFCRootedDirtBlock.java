@@ -44,6 +44,7 @@ public class TFCRootedDirtBlock extends Block implements IMudBlock
         this(properties, variant.getBlock(dirtType), variant.getBlock(SoilBlockType.MUD));
     }
 
+    @Override
     public BlockState getMud()
     {
         return mud.get().defaultBlockState();
