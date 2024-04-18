@@ -378,7 +378,7 @@ public final class EnvironmentHelpers
         }
         if (foundPos != null)
         {
-            final Random icicleLengthRandom = new Random(pos.asLong());
+            final Random icicleLengthRandom = new Random(pos.atY(64).asLong());
             final BlockPos searchPos = foundPos.above(icicleLengthRandom.nextInt(ICICLE_MAX_LENGTH) + 1);
             if (level.isLoaded(searchPos) && Helpers.isBlock(level.getBlockState(searchPos), TFCBlocks.ICICLE.get()))
             {

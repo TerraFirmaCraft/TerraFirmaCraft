@@ -135,13 +135,16 @@ public class TFCSquid extends Squid implements AquaticMob
         var pair = getSizeRangeForSpawning();
         setSize(Mth.nextInt(random, pair.getFirst(), pair.getSecond()), true);
 
-        while (!checkSpawnObstruction(level))
+        if (spawnType == MobSpawnType.NATURAL || spawnType == MobSpawnType.CHUNK_GENERATION)
         {
-            setSize((int) (getSize() * 0.8), true);
-            if (getSize() < pair.getFirst())
+            while (!checkSpawnObstruction(level))
             {
-                discard();
-                return spawn;
+                setSize((int) (getSize() * 0.8), true);
+                if (getSize() < pair.getFirst())
+                {
+                    discard();
+                    return spawn;
+                }
             }
         }
 

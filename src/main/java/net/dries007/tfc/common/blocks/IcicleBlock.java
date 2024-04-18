@@ -10,7 +10,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Block;
@@ -22,6 +25,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
@@ -42,6 +46,23 @@ public class IcicleBlock extends ThinSpikeBlock
     public IcicleBlock(Properties properties)
     {
         super(properties);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void attack(BlockState state, Level level, BlockPos pos, Player player)
+    {
+        if (Helpers.isItem(player.getMainHandItem(), TFCTags.Items.HAMMERS) || Helpers.isItem(player.getMainHandItem(), ItemTags.SWORDS))
+        {
+            level.destroyBlock(pos, true);
+            for (BlockPos testPos : BlockPos.betweenClosed(pos.offset(-2, -2, -2), pos.offset(2, 2, 2)))
+            {
+                if (level.getBlockState(testPos).getBlock() instanceof IcicleBlock)
+                {
+                    level.destroyBlock(testPos, true);
+                }
+            }
+        }
     }
 
     @Override

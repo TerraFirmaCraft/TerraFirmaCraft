@@ -60,7 +60,7 @@ public abstract class SnowLayerBlockMixin extends Block
     {
         playerWillDestroy(level, pos, state, player);
         final int prevLayers = state.getValue(SnowLayerBlock.LAYERS);
-        if (prevLayers > 1)
+        if (prevLayers > 1 && !player.isCreative())
         {
             return level.setBlock(pos, state.setValue(SnowLayerBlock.LAYERS, prevLayers - 1), level.isClientSide ? 11 : 3);
         }

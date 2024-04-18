@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.common.blocks;
 
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.level.block.state.BlockState;
@@ -18,11 +20,36 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 
+import net.dries007.tfc.util.Helpers;
+
 public class SeaIceBlock extends IceBlock
 {
     public SeaIceBlock(Properties properties)
     {
         super(properties);
+    }
+
+    @Override
+    public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, float fallDistance)
+    {
+        if (fallDistance > 5)
+        {
+            melt(state, level, pos);
+            level.addDestroyBlockEffect(pos, state);
+            Helpers.playSound(level, pos, SoundEvents.GLASS_BREAK);
+            for (BlockPos testPos : BlockPos.betweenClosed(pos.offset(-1, 0, -1), pos.offset(1, 0, 1)))
+            {
+                if (level.getBlockState(testPos).getBlock() instanceof SeaIceBlock)
+                {
+                    melt(state, level, testPos);
+                    level.addDestroyBlockEffect(testPos, state);
+                }
+            }
+        }
+        else
+        {
+            super.fallOn(level, state, pos, entity, fallDistance);
+        }
     }
 
     /**

@@ -9,7 +9,9 @@ package net.dries007.tfc.common.blocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -21,6 +23,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -81,7 +84,7 @@ public class ThinSpikeBlock extends Block implements IFluidLoggable
     {
         if (!canSurvive(state, level, pos))
         {
-            level.destroyBlock(pos, false);
+            level.destroyBlock(pos, true);
         }
     }
 
@@ -123,7 +126,18 @@ public class ThinSpikeBlock extends Block implements IFluidLoggable
     {
         if (!canSurvive(state, level, pos))
         {
-            level.destroyBlock(pos, false);
+            level.destroyBlock(pos, true);
+        }
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void onProjectileHit(Level level, BlockState state, BlockHitResult hit, Projectile projectile)
+    {
+        final BlockPos pos = hit.getBlockPos();
+        if (!level.isClientSide && projectile.mayInteract(level, pos) && Helpers.isEntity(projectile, EntityTypeTags.IMPACT_PROJECTILES))
+        {
+            level.destroyBlock(pos, true, projectile);
         }
     }
 

@@ -1,11 +1,10 @@
 {
+  "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "tfc:cat",
-    "tfc:ocelot",
-    "tfc:cougar",
-    "tfc:panther",
-    "tfc:lion",
-    "tfc:sabertooth"
+    "tfc:chicken",
+    "tfc:duck",
+    "tfc:quail",
+    "tfc:ocelot"
   ]
 }

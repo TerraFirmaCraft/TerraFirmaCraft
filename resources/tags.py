@@ -30,6 +30,12 @@ def generate(rm: ResourceManager):
     rm.item_tag('minecraft:fishes', 'tfc:food/cod', 'tfc:food/cooked_cod', 'tfc:food/salmon', 'tfc:food/cooked_salmon', 'tfc:food/tropical_fish', 'tfc:food/cooked_tropical_fish', 'tfc:food/bluegill', 'tfc:food/cooked_bluegill', 'tfc:food/shellfish', 'tfc:food/cooked_shellfish')
     rm.item_tag('minecraft:arrows', 'tfc:glow_arrow')
     rm.item_tag('minecraft:piglin_loved', 'tfc:metal/ingot/gold')
+    rm.item_tag('minecraft:pickaxes', '#tfc:pickaxes')
+    rm.item_tag('minecraft:axes', '#tfc:axes')
+    rm.item_tag('minecraft:shovels', '#tfc:shovels')
+    rm.item_tag('minecraft:hoes', '#tfc:hoes')
+    rm.item_tag('minecraft:swords', '#tfc:swords')
+    rm.item_tag('minecraft:tools', '#tfc:hammers', '#tfc:javelins', '#tfc:knives', '#tfc:chisels', '#tfc:maces', '#tfc:saws', '#tfc:propicks', '#tfc:scythes')
 
     # TFC Tags: Devices
 
@@ -71,7 +77,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('starts_fires_with_items', 'minecraft:fire_charge')
     rm.item_tag('can_be_lit_on_torch', '#forge:rods/wooden')
     rm.item_tag('axes_that_log', '#tfc:axes')
-    rm.item_tag('extinguisher', '#tfc:shovels')
+    rm.item_tag('extinguisher', '#minecraft:shovels')
     rm.item_tag('inefficient_logging_axes', *['tfc:stone/axe/%s' % cat for cat in ROCK_CATEGORIES])
     rm.item_tag('thatch_bed_hides', 'tfc:large_raw_hide')
     rm.item_tag('small_fishing_bait', 'tfc:food/shellfish', '#tfc:seeds')
@@ -166,7 +172,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('skeleton_weapons', *['tfc:metal/javelin/%s' % metal for metal in MOB_ARMOR_METALS], *['tfc:stone/%s/%s' % (tool, stone) for stone in ROCK_CATEGORIES for tool in STONE_MOB_TOOLS], 'minecraft:bow')
     rm.item_tag('disabled_monster_held_items', 'minecraft:iron_sword', 'minecraft:iron_shovel', 'minecraft:fishing_rod', 'minecraft:nautilus_shell')
     rm.item_tag('deals_piercing_damage', '#tfc:javelins', '#tfc:knives')
-    rm.item_tag('deals_slashing_damage', '#tfc:swords', '#tfc:axes', '#tfc:scythes')
+    rm.item_tag('deals_slashing_damage', '#minecraft:swords', '#minecraft:axes', '#tfc:scythes')
     rm.item_tag('deals_crushing_damage', '#tfc:hammers', '#tfc:maces')
 
     # TFC Tags: Foods
@@ -593,7 +599,7 @@ def generate(rm: ResourceManager):
         *['tfc:%s_poured_glass' % color for color in COLORS],
         'minecraft:tinted_glass'
     ])
-    rm.item_tag('tfc:sharp_tools', '#tfc:hoes', '#tfc:knives', '#tfc:scythes')
+    rm.item_tag('tfc:sharp_tools', '#minecraft:hoes', '#tfc:knives', '#tfc:scythes')
 
     rm.block_tag('forge:needs_wood_tool')
     rm.block_tag('forge:needs_netherite_tool')
@@ -808,6 +814,12 @@ def generate(rm: ResourceManager):
     rm.entity_tag('pests', 'tfc:rat')
     rm.entity_tag('hunted_by_cats', '#tfc:small_fish', '#tfc:land_prey', '#tfc:pests', 'minecraft:player')
     rm.entity_tag('hunted_by_dogs', '#tfc:land_prey', '#tfc:land_predators', 'minecraft:player')
+    rm.entity_tag('minecraft:impact_projectiles', 'tfc:thrown_javelin')
+    rm.entity_tag('minecraft:arrows', 'tfc:glow_arrow')
+    rm.entity_tag('minecraft:fall_damage_immune', 'tfc:chicken', 'tfc:duck', 'tfc:quail', 'tfc:ocelot')
+    rm.entity_tag('minecraft:powder_snow_walkable_mobs', 'tfc:fox', 'tfc:polar_bear', 'tfc:penguin')
+    rm.entity_tag('minecraft:freeze_immune_entity_types', 'tfc:polar_bear', 'tfc:penguin')
+    rm.entity_tag('minecraft:dismounts_underwater', 'tfc:horses')
 
     # Other Mod Tags
     # This is for things that are extremely simple for us to fix and hard for other mods to fix, not doing packmakers work for them

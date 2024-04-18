@@ -2,8 +2,8 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "#minecraft:hoes",
-    "#tfc:knives",
-    "#tfc:scythes"
+    "tfc:fox",
+    "tfc:polar_bear",
+    "tfc:penguin"
   ]
 }

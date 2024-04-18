@@ -2,8 +2,8 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "#tfc:swords",
-    "#tfc:axes",
+    "#minecraft:swords",
+    "#minecraft:axes",
     "#tfc:scythes"
   ]
 }

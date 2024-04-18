@@ -48,7 +48,6 @@ import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
-import net.dries007.tfc.common.entities.misc.ThrownJavelin;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
@@ -187,7 +186,7 @@ public class LampBlock extends ExtendedBlock implements EntityBlockExtension
     public void onProjectileHit(Level level, BlockState state, BlockHitResult hit, Projectile projectile)
     {
         BlockPos blockpos = hit.getBlockPos();
-        if (level instanceof ServerLevel serverLevel && projectile.mayInteract(level, blockpos) && (Helpers.isEntity(projectile, EntityTypeTags.ARROWS) || projectile instanceof ThrownJavelin))
+        if (level instanceof ServerLevel serverLevel && projectile.mayInteract(level, blockpos) && Helpers.isEntity(projectile, EntityTypeTags.IMPACT_PROJECTILES))
         {
             serverLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.GLASS.defaultBlockState()), projectile.getX(), projectile.getY(), projectile.getZ(), 10, 0, 0, 0, 0.15f);
             level.destroyBlock(blockpos, true, projectile);

@@ -2,8 +2,13 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "#minecraft:hoes",
+    "#tfc:hammers",
+    "#tfc:javelins",
     "#tfc:knives",
+    "#tfc:chisels",
+    "#tfc:maces",
+    "#tfc:saws",
+    "#tfc:propicks",
     "#tfc:scythes"
   ]
 }
