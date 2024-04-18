@@ -819,7 +819,7 @@ def generate(rm: ResourceManager):
     rm.entity_tag('minecraft:fall_damage_immune', 'tfc:chicken', 'tfc:duck', 'tfc:quail', 'tfc:ocelot')
     rm.entity_tag('minecraft:powder_snow_walkable_mobs', 'tfc:fox', 'tfc:polar_bear', 'tfc:penguin')
     rm.entity_tag('minecraft:freeze_immune_entity_types', 'tfc:polar_bear', 'tfc:penguin')
-    rm.entity_tag('minecraft:dismounts_underwater', 'tfc:horses')
+    rm.entity_tag('minecraft:dismounts_underwater', '#tfc:horses')
 
     # Other Mod Tags
     # This is for things that are extremely simple for us to fix and hard for other mods to fix, not doing packmakers work for them
