@@ -21,6 +21,14 @@
     {
       "type": "patchouli:text",
       "text": "Дорогоцінні камені мають вищі значення $(thing)твердості$(), ніж звичайні руди, тому для їх видобування потрібні інструменти вищої міцності. Цей перелік вкаже необхідний рівень $(thing)кайла$(), для видобутку:$(br)$(li)Аметист: сталь$(li)Діамант: чорна сталь$(li)Смарагд: сталь$(li)Лазурит: ковке залізо$(li)Опал: ковке залізо$(li)Пірит: мідь$(li)Рубін: чорна сталь$(li)Сапфір: чорна сталь$(li)Топаз: сталь"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "To cut a gem, you must craft $(thing)Sandpaper$(). Sandpaper is made from Black Sand, Flux, Glue, and Paper. Crafting an uncut gem with sandpaper cuts the gem."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/sandpaper"
     }
   ],
   "read_by_default": true

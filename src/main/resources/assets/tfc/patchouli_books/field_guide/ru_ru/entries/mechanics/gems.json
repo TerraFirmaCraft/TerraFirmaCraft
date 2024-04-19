@@ -21,6 +21,14 @@
     {
       "type": "patchouli:text",
       "text": "Драгоценные камни имеют более высокие значения $(thing)Твёрдости$(), чем обычная руда, требуя инструменты разной прочности для их добычи. Это подводит итог минимальному уровню $(thing)Кирки$(), необходимому для добычи блока руды драгоценного камня: $(br)$(li)Аметист: Сталь$(li)Алмаз: Чёрная сталь$(li)Изумруд: Сталь$(li)Лазурит: Кованое железо$(li)Опал: Кованое железо$(li)Пирит: Медь$(li)Рубин: Чёрная сталь$(li)Сапфир: Чёрная сталь$(li)Топаз: Сталь"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "To cut a gem, you must craft $(thing)Sandpaper$(). Sandpaper is made from Black Sand, Flux, Glue, and Paper. Crafting an uncut gem with sandpaper cuts the gem."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/sandpaper"
     }
   ],
   "read_by_default": true

@@ -184,7 +184,7 @@ public final class JEIIntegration implements IModPlugin
         registry.addRecipeCatalyst(new ItemStack(TFCBlocks.CERAMIC_BOWL.get()), SOUP_POT);
         registry.addRecipeCatalyst(new ItemStack(Items.BOWL), SOUP_POT);
         registry.addRecipeCatalyst(new ItemStack(TFCItems.POT.get()), JAM_POT);
-        registry.addRecipeCatalyst(new ItemStack(TFCItems.EMPTY_JAR_WITH_LID.get()), JAM_POT);
+        addRecipeCatalyst(registry, TFCTags.Items.EMPTY_JAR_WITH_LID, JAM_POT);
         registry.addRecipeCatalyst(new ItemStack(TFCBlocks.CRUCIBLE.get()), ALLOYING);
         registry.addRecipeCatalyst(new ItemStack(TFCItems.VESSEL.get()), ALLOYING);
         registry.addRecipeCatalyst(new ItemStack(TFCBlocks.BLOOMERY.get()), BLOOMERY);

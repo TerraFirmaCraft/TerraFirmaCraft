@@ -16,7 +16,7 @@ public class CharcoalForgeContainer extends BlockEntityContainer<CharcoalForgeBl
 {
     public static CharcoalForgeContainer create(CharcoalForgeBlockEntity forge, Inventory playerInventory, int windowId)
     {
-        return new CharcoalForgeContainer(forge, windowId).init(playerInventory, 30);
+        return new CharcoalForgeContainer(forge, windowId).init(playerInventory, 20);
     }
 
     private CharcoalForgeContainer(CharcoalForgeBlockEntity forge, int windowId)

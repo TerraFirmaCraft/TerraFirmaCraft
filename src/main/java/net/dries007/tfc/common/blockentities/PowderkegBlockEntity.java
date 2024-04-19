@@ -43,6 +43,7 @@ import org.jetbrains.annotations.Nullable;
 public class PowderkegBlockEntity extends TickableInventoryBlockEntity<PowderkegBlockEntity.PowderkegInventory>
 {
     public static final int SLOTS = 12;
+    public static final int MAX_STRENGTH = 64;
 
     private static final Component NAME = Component.translatable("tfc.block_entity.powderkeg");
 
@@ -72,7 +73,7 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
         {
             count += inventory.getStackInSlot(i).getCount();
         }
-        return Math.min(64, Mth.floor(TFCConfig.SERVER.powderKegStrengthModifier.get() * count / SLOTS));
+        return Math.min(MAX_STRENGTH, Mth.floor(TFCConfig.SERVER.powderKegStrengthModifier.get() * count / SLOTS));
     }
 
     private static void explode(PowderkegBlockEntity powderkeg)
@@ -145,9 +146,9 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
         if (lit)
         {
             Helpers.playSound(level, worldPosition, SoundEvents.TNT_PRIMED);
-            fuse = 80;
+            fuse = TFCConfig.SERVER.powderKegFuseTime.get();
             this.igniter = igniter;
-            if (igniter instanceof ServerPlayer serverPlayer && getStrength(this) >= 64)
+            if (igniter instanceof ServerPlayer serverPlayer && getStrength(this) >= MAX_STRENGTH)
             {
                 TFCAdvancements.FULL_POWDERKEG.trigger(serverPlayer);
             }

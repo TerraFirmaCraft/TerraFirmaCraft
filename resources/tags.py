@@ -52,7 +52,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('waxes_scraping_surface', 'tfc:glue', 'minecraft:honeycomb')
     rm.item_tag('scrapable', *['tfc:%s_%s_hide' % (size, hide) for size in ('small', 'medium', 'large') for hide in ('soaked', 'sheepskin')], 'tfc:unrefined_paper')
     rm.item_tag('glassworking_tools', 'tfc:paddle', 'tfc:jacks', 'tfc:gem_saw')
-    rm.item_tag('usable_on_tool_rack', 'tfc:firestarter', 'minecraft:bow', 'minecraft:crossbow', 'minecraft:flint_and_steel', 'minecraft:spyglass', 'minecraft:brush', 'tfc:spindle', '#tfc:all_blowpipes', '#tfc:glassworking_tools', 'tfc:bone_needle')
+    rm.item_tag('usable_on_tool_rack', 'tfc:firestarter', 'minecraft:bow', 'minecraft:crossbow', 'minecraft:flint_and_steel', 'minecraft:spyglass', 'minecraft:brush', 'tfc:spindle', '#tfc:all_blowpipes', '#tfc:glassworking_tools', 'tfc:bone_needle', 'tfc:sandpaper')
     rm.item_tag('usable_in_powder_keg', 'minecraft:gunpowder')
     rm.item_tag('usable_in_bookshelf', '#tfc:books')
     rm.item_tag('compost_greens_low', '#tfc:plants')
@@ -68,6 +68,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('sewing_dark_cloth', 'tfc:burlap_cloth')
     rm.item_tag('sewing_needles', 'tfc:bone_needle')
     rm.item_tag('foods', 'minecraft:egg')
+    rm.item_tag('empty_jar_with_lid', 'tfc:empty_jar_with_lid')
 
     # TFC Tags: Functionality
 
@@ -441,12 +442,12 @@ def generate(rm: ResourceManager):
     rm.block_tag('single_block_replaceable', 'tfc:groundcover/humus', 'tfc:groundcover/dead_grass', '#tfc:twigs', '#tfc:fallen_leaves')
     rm.block_tag('powder_snow_replaceable', '#minecraft:dirt', '#forge:gravel', '#tfc:grass', 'minecraft:snow')
     rm.block_tag('pet_sits_on', 'tfc:quern', '#forge:chests/wooden', '#minecraft:wool_carpets', '#tfc:fired_large_vessels', '#minecraft:wool')
-    rm.block_tag('creates_downward_bubbles', 'minecraft:soul_sand')
     rm.block_tag('monster_spawns_on', '#minecraft:dirt', '#forge:gravel', '#tfc:grass', '#forge:stone', '#forge:ores', 'minecraft:obsidian')
     rm.block_tag('bottom_support_accepted', 'minecraft:hopper')
     rm.block_tag('glass_pouring_table', 'tfc:metal/block/brass')
     rm.block_tag('glass_basin_blocks', 'tfc:metal/block/brass')
     rm.block_tag('explosion_proof', 'minecraft:barrier', 'minecraft:light', 'minecraft:bedrock', 'minecraft:command_block', 'minecraft:chain_command_block', 'minecraft:repeating_command_block', 'minecraft:end_gateway', 'minecraft:end_portal', 'minecraft:end_portal_frame', 'minecraft:jigsaw', 'minecraft:structure_block')
+    rm.block_tag('powderkeg_breaking_blocks', '#minecraft:dirt', '#forge:gravel', '#tfc:grass', '#forge:stone', '#forge:ores')
 
     # TFC Tags: Types
 
@@ -517,7 +518,6 @@ def generate(rm: ResourceManager):
                 rm.block_tag('rock/ores', 'tfc:ore/%s/%s' % (ore, rock))
 
         if rock_data.category == 'igneous_extrusive' or rock_data.category == 'igneous_intrusive':
-            rm.block_tag('creates_upward_bubbles', block('magma'))
             rm.block_and_item_tag('rock_anvils', 'tfc:rock/anvil/%s' % rock)
 
         if rock in ['chalk', 'dolomite', 'limestone', 'marble']:
@@ -712,6 +712,7 @@ def generate(rm: ResourceManager):
         '#minecraft:leaves',
         '#tfc:fallen_leaves',
         '#minecraft:saplings',
+        'tfc:tree_roots',
     ])
     rm.block_tag('tfc:mineable_with_blunt_tool', *[
         'tfc:wood/%s/%s' % (variant, wood)

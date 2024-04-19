@@ -33,6 +33,7 @@ import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.config.TFCConfig;
 
 public class PowderKegExplosion extends Explosion
 {
@@ -81,12 +82,22 @@ public class PowderKegExplosion extends Explosion
         final ObjectArrayList<Pair<ItemStack, BlockPos>> allDrops = new ObjectArrayList<>();
         Collections.shuffle(affectedBlockPositions, new Random());
 
+        final boolean easyMode = TFCConfig.SERVER.powderKegOnlyBreaksNaturalBlocks.get();
+
         for (BlockPos pos : affectedBlockPositions)
         {
             final BlockState state = level.getBlockState(pos);
 
-            if (Helpers.isBlock(state, TFCTags.Blocks.EXPLOSION_PROOF))
-                continue;
+            if (!easyMode)
+            {
+                if (Helpers.isBlock(state, TFCTags.Blocks.EXPLOSION_PROOF))
+                    continue;
+            }
+            else
+            {
+                if (!Helpers.isBlock(state, TFCTags.Blocks.POWDERKEG_BREAKING_BLOCKS))
+                    continue;
+            }
 
             if (spawnParticles)
             {

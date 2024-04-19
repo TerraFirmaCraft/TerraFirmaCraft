@@ -135,8 +135,10 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue nestBoxEnableAutomation;
     // Blocks - Powder Keg
     public final ForgeConfigSpec.BooleanValue powderKegEnabled;
+    public final ForgeConfigSpec.BooleanValue powderKegOnlyBreaksNaturalBlocks;
     public final ForgeConfigSpec.BooleanValue powderKegEnableAutomation;
     public final ForgeConfigSpec.DoubleValue powderKegStrengthModifier;
+    public final ForgeConfigSpec.IntValue powderKegFuseTime;
     // Blocks - Hot Water
     public final ForgeConfigSpec.DoubleValue hotWaterHealAmount;
     // Blocks - Sapling
@@ -454,8 +456,10 @@ public class ServerConfig
         builder.swap("powderKeg");
 
         powderKegEnabled = builder.comment("If true, powder kegs can be lit and exploded.").define("powderKegEnabled", true);
+        powderKegOnlyBreaksNaturalBlocks = builder.comment("If true, powder kegs will only break stone, ores, gravel, and dirt.").define("powderKegOnlyBreaksNaturalBlocks", false);
         powderKegEnableAutomation = builder.comment("If true, powder kegs will interact with in-world automation such as hoppers on a side-specific basis.").define("powderKegEnableAutomation", true);
         powderKegStrengthModifier = builder.comment("A modifier to the strength of powderkegs when exploding. A max powderkeg explosion is 64, and all explosions are capped to this size no matter the value of the modifier.").define("powderKegStrengthModifier", 1d, 0, 64);
+        powderKegFuseTime = builder.comment("The time in ticks for a powderkeg to defuse. Default is 80 ticks, or 4 seconds.").define("powderKegFuseTime", 80, 1, Integer.MAX_VALUE);
 
         builder.swap("hotWater");
 

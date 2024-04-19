@@ -11,6 +11,7 @@ import java.util.List;
 import com.google.gson.JsonObject;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -30,6 +31,8 @@ import net.dries007.tfc.common.capabilities.food.Nutrient;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
+import net.dries007.tfc.compat.jade.common.BlockEntityTooltip;
+import net.dries007.tfc.compat.jade.common.BlockEntityTooltips;
 import net.dries007.tfc.util.Helpers;
 
 public class SoupPotRecipe extends PotRecipe
@@ -159,6 +162,17 @@ public class SoupPotRecipe extends PotRecipe
         public OutputType getType()
         {
             return SoupPotRecipe.OUTPUT_TYPE;
+        }
+
+        @Override
+        public BlockEntityTooltip getTooltip()
+        {
+            return ((level, state, pos, entity, tooltip) -> {
+                final List<Component> text = new ArrayList<>();
+                BlockEntityTooltips.itemWithCount(tooltip, stack);
+                FoodCapability.addTooltipInfo(stack, text);
+                text.forEach(tooltip);
+            });
         }
     }
 

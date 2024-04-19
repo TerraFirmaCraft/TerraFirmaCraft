@@ -372,6 +372,7 @@ public final class TFCCreativeTabs
         accept(out, TFCItems.FIRESTARTER);
         out.accept(Items.FLINT_AND_STEEL);
         accept(out, TFCItems.SOOT);
+        accept(out, TFCItems.SANDPAPER);
         accept(out, TFCItems.BONE_NEEDLE);
         accept(out, TFCItems.BLANK_DISC);
         accept(out, TFCItems.BRASS_MECHANISMS);

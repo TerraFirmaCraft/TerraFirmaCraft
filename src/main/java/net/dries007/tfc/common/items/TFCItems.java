@@ -224,6 +224,7 @@ public final class TFCItems
     public static final RegistryObject<Item> PURE_POTASSIUM = register("pure_potassium");
     public static final RegistryObject<Item> ROTTEN_COMPOST = register("rotten_compost", () -> new RottenCompostItem(new Item.Properties()));
     public static final RegistryObject<Item> SILK_CLOTH = register("silk_cloth");
+    public static final RegistryObject<Item> SANDPAPER = register("sandpaper", () -> new Item(new Item.Properties().defaultDurability(40)));
     public static final RegistryObject<Item> SOAKED_PAPYRUS_STRIP = register("soaked_papyrus_strip");
     public static final RegistryObject<Item> SOOT = register("soot");
     public static final RegistryObject<Item> SPINDLE = register("spindle", () -> new Item(new Item.Properties().defaultDurability(40)));

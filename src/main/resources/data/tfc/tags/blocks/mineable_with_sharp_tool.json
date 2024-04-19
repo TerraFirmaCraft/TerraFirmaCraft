@@ -227,6 +227,7 @@
     "tfc:thatch_bed",
     "#minecraft:leaves",
     "#tfc:fallen_leaves",
-    "#minecraft:saplings"
+    "#minecraft:saplings",
+    "tfc:tree_roots"
   ]
 }

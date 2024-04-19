@@ -28,8 +28,8 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
-import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
+import net.dries007.tfc.compat.jade.common.BlockEntityTooltip;
 import net.dries007.tfc.util.Helpers;
 
 /**
@@ -236,6 +236,12 @@ public abstract class PotRecipe implements ISimpleRecipe<PotBlockEntity.PotInven
          * Writes implementation specific output data to disk.
          */
         default void write(CompoundTag nbt) {}
+
+        @Nullable
+        default BlockEntityTooltip getTooltip()
+        {
+            return null;
+        }
     }
 
     /**

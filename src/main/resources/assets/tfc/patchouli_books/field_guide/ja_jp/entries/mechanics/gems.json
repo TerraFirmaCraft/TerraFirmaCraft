@@ -21,6 +21,14 @@
     {
       "type": "patchouli:text",
       "text": "宝石は通常の鉱石よりも $(thing)硬度$() 値が高いため、宝石を壊すにはさまざまな強度のツールが必要です。 これは、宝石鉱石ブロックを壊すのに必要な $(thing)ツルハシ$() の最小ティアをまとめたものです:$(br)$(li)アメジスト: 鋼$(li)ダイヤモンド: 黒鋼$(li)エメラルド: 鋼$(li)ラピスラズリ: 錬鉄$(li)オパール: 錬鉄$(li)黄鉄鉱: 銅$(li)ルビー: 黒鋼$(li)サファイア: 黒鋼$(li)トパーズ: 鋼"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "To cut a gem, you must craft $(thing)Sandpaper$(). Sandpaper is made from Black Sand, Flux, Glue, and Paper. Crafting an uncut gem with sandpaper cuts the gem."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/sandpaper"
     }
   ],
   "read_by_default": true

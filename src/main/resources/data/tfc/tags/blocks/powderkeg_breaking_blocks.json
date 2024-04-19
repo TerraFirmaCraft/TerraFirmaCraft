@@ -2,6 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "minecraft:soul_sand"
+    "#minecraft:dirt",
+    "#forge:gravel",
+    "#tfc:grass",
+    "#forge:stone",
+    "#forge:ores"
   ]
 }

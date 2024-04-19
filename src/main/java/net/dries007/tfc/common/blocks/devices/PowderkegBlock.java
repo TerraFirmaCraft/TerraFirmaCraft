@@ -69,7 +69,8 @@ public class PowderkegBlock extends SealableDeviceBlock
     @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
-        return level.getBlockEntity(pos, TFCBlockEntities.POWDERKEG.get()).map(powderkeg -> {
+        if (level.getBlockEntity(pos) instanceof PowderkegBlockEntity powderkeg)
+        {
             final ItemStack stack = player.getItemInHand(hand);
             if (stack.isEmpty() && player.isShiftKeyDown())
             {
@@ -90,8 +91,8 @@ public class PowderkegBlock extends SealableDeviceBlock
                 Helpers.openScreen(serverPlayer, powderkeg, powderkeg.getBlockPos());
                 return InteractionResult.sidedSuccess(level.isClientSide);
             }
-            return InteractionResult.PASS;
-        }).orElse(InteractionResult.PASS);
+        }
+        return InteractionResult.PASS;
     }
 
     @Override

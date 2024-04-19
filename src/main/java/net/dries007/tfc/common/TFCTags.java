@@ -87,8 +87,6 @@ public class TFCTags
         public static final TagKey<Block> WILD_CROP_GROWS_ON = create("wild_crop_grows_on"); // Used for wild crops
         public static final TagKey<Block> FARMLAND = create("farmland"); // Crops that are not wild can grow on this
         public static final TagKey<Block> POWDER_SNOW_REPLACEABLE = create("powder_snow_replaceable"); // on feature gen, can be replaced by powder snow
-        public static final TagKey<Block> CREATES_UPWARD_BUBBLES = create("creates_upward_bubbles"); // bubble columns
-        public static final TagKey<Block> CREATES_DOWNWARD_BUBBLES = create("creates_downward_bubbles");
         public static final TagKey<Block> RABBIT_RAIDABLE = create("rabbit_raidable"); // rabbits will break it
         public static final TagKey<Block> FOX_RAIDABLE = create("fox_raidable"); // foxes will eat the berries. only applies to seasonal plant blocks
         public static final TagKey<Block> SEASONAL_LEAVES = create("seasonal_leaves"); // drops fall leaf particles
@@ -101,6 +99,7 @@ public class TFCTags
         public static final TagKey<Block> GLASS_POURING_TABLE = create("glass_pouring_table");
         public static final TagKey<Block> GLASS_BASIN_BLOCKS = create("glass_basin_blocks");
         public static final TagKey<Block> EXPLOSION_PROOF = create("explosion_proof");
+        public static final TagKey<Block> POWDERKEG_BREAKING_BLOCKS = create("powderkeg_breaking_blocks");
         public static final TagKey<Block> KAOLIN_CLAY_REPLACEABLE = create("kaolin_clay_replaceable");
 
         private static TagKey<Block> create(String id)
@@ -260,6 +259,7 @@ public class TFCTags
         public static final TagKey<Item> SEWING_DARK_CLOTH = create("sewing_dark_cloth");
         public static final TagKey<Item> SEWING_LIGHT_CLOTH = create("sewing_light_cloth");
         public static final TagKey<Item> SEWING_NEEDLES = create("sewing_needles");
+        public static final TagKey<Item> EMPTY_JAR_WITH_LID = create("empty_jar_with_lid");
 
         public static TagKey<Item> mobEquipmentSlotTag(EquipmentSlot slot)
         {

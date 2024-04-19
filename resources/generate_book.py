@@ -1227,8 +1227,10 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
         entry('gems', 'Gems', 'tfc:gem/opal', pages=(
             text('Gems are a kind of mineral that spawns in a variety of different places, such as $(thing)under rivers$() and in $(l:the_world/geology)Volcanoes$(). For information on the precise conditions, see $(l:the_world/ores_and_minerals)the ores and minerals chapter$().'),
             item_spotlight('#tfc:gem_powders', text_contents='Gems can be ground into powder using a $(l:mechanics/quern)Quern$(). Gem powders are particularly useful in $(l:mechanics/glassworking_applications#coloring)Coloring Glass$().'),
-            text('Through $(l:mechanics/sluices)Sluicing$() and $(l:mechanics/panning)Panning$(), $(thing)Cut Gems$() can be obtained. The gem that can be obtained with the sluice is tied to the rock type of the deposit being processed.'),
+            text('Through $(l:mechanics/sluices)Sluicing$() and $(l:mechanics/panning)Panning$(), $(thing)Uncut Gems$() can be obtained. The gem that can be obtained with the sluice is tied to the rock type of the deposit being processed.'),
             text('Gems have higher $(thing)Hardness$() values than regular ore, requiring different strength tools to break them. This summarizes the minimum $(thing)Pickaxe$() tier required to break a gem ore block:$(br)$(li)Amethyst: Steel$(li)Diamond: Black Steel$(li)Emerald: Steel$(li)Lapis Lazuli: Wrought Iron$(li)Opal: Wrought Iron$(li)Pyrite: Copper$(li)Ruby: Black Steel$(li)Sapphire: Black Steel$(li)Topaz: Steel'),
+            text('To cut a gem, you must craft $(thing)Sandpaper$(). Sandpaper is made from Black Sand, Flux, Glue, and Paper. Crafting an uncut gem with sandpaper cuts the gem.'),
+            crafting('tfc:crafting/sandpaper'),
         )),
         entry('lamps', 'Lamps', 'tfc:metal/lamp/bismuth_bronze', pages=(
             text('Lamps are a long term source of light. They burn liquid fuel. Lamps retain their fuel content when broken. Using a bucket, $(item)$(k:key.use)$() on a lamp to add fuel to it. It can then be lit with a $(thing)firestarter$() or anything capable of lighting fires. $(thing)Olive Oil$() and $(thing)Tallow$() are lamp fuels. Shooting a lit lamp with an arrow can cause a fire.'),

@@ -21,6 +21,14 @@
     {
       "type": "patchouli:text",
       "text": "相比于普通的矿石，宝石矿石有更高的$(thing)硬度$()，因此需要特定种类的镐才能挖掘。挖掘不同种类的宝石矿石所需的$(thing)镐$()的等级如下：$(br)$(li)紫水晶；钢镐$(li)钻石：黑钢镐$(li)绿宝石：钢镐$(li)青金石：锻铁镐$(li)蛋白石：锻铁镐$(li)黄铁矿：铜镐$(li)红宝石：黑钢镐$(li)蓝宝石：黑钢镐$(li)黄玉：钢镐"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "To cut a gem, you must craft $(thing)Sandpaper$(). Sandpaper is made from Black Sand, Flux, Glue, and Paper. Crafting an uncut gem with sandpaper cuts the gem."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/sandpaper"
     }
   ],
   "read_by_default": true

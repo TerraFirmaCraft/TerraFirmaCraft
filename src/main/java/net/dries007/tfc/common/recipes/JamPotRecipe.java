@@ -6,11 +6,13 @@
 
 package net.dries007.tfc.common.recipes;
 
+import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.JsonObject;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
@@ -19,10 +21,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraftforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
+import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
+import net.dries007.tfc.compat.jade.common.BlockEntityTooltip;
+import net.dries007.tfc.compat.jade.common.BlockEntityTooltips;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
 
 public class JamPotRecipe extends PotRecipe
@@ -77,7 +85,7 @@ public class JamPotRecipe extends PotRecipe
         @Override
         public InteractionResult onInteract(PotBlockEntity entity, Player player, ItemStack clickedWith)
         {
-            if (clickedWith.getItem() == TFCItems.EMPTY_JAR_WITH_LID.get() && !stack.isEmpty())
+            if (Helpers.isItem(clickedWith, TFCTags.Items.EMPTY_JAR_WITH_LID) && !stack.isEmpty())
             {
                 // take the player's empty jar
                 clickedWith.shrink(1);
@@ -110,6 +118,17 @@ public class JamPotRecipe extends PotRecipe
         public OutputType getType()
         {
             return JamPotRecipe.OUTPUT_TYPE;
+        }
+
+        @Override
+        public BlockEntityTooltip getTooltip()
+        {
+            return ((level, state, pos, entity, tooltip) -> {
+                final List<Component> text = new ArrayList<>();
+                BlockEntityTooltips.itemWithCount(tooltip, stack);
+                FoodCapability.addTooltipInfo(stack, text);
+                text.forEach(tooltip);
+            });
         }
     }
 

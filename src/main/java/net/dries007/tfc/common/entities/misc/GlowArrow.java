@@ -122,7 +122,7 @@ public class GlowArrow extends AbstractArrow implements IGlow
     }
 
     @Override
-    public void tickGlow()
+    public void tick()
     {
         super.tick();
         IGlow.super.tickGlow();

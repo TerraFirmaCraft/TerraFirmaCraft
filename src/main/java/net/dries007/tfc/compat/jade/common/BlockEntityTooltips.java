@@ -90,7 +90,6 @@ import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.BarrelRecipe;
 import net.dries007.tfc.common.recipes.BloomeryRecipe;
 import net.dries007.tfc.common.recipes.LoomRecipe;
-import net.dries007.tfc.common.recipes.SoupPotRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.LampFuel;
 import net.dries007.tfc.util.calendar.Calendars;
@@ -314,14 +313,10 @@ public final class BlockEntityTooltips
                 {
                     tooltip.accept(Component.translatable("tfc.tooltip.pot_finished"));
 
-                    if (pot.getOutput() instanceof SoupPotRecipe.SoupOutput soup)
+                    final BlockEntityTooltip tt = pot.getOutput().getTooltip();
+                    if (tt != null)
                     {
-                        final ItemStack stack = soup.stack();
-                        final List<Component> text = new ArrayList<>();
-
-                        itemWithCount(tooltip, stack);
-                        FoodCapability.addTooltipInfo(stack, text);
-                        text.forEach(tooltip);
+                        tt.display(level, state, pos, entity, tooltip);
                     }
                 }
             }
