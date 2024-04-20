@@ -7,3 +7,5 @@
 - Fix field guide issue (#2678)
 - Fix frog legs not having any food data and being unable to be cooked.
 - Removed a couple unused tag entries.
+- Fix glow arrows not working as expected
+- Prevent using vanilla trim materials (this can be tweaked via datapack if you want, but these will not work on TFC items anyway without an external API)

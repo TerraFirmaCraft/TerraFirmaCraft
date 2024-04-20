@@ -766,7 +766,7 @@ def trim_material(rm: ResourceManager, name: str, color: str, ingredient: str, i
         'ingredient': ingredient,
         'item_model_index': item_model_index
     })
-    rm.item_tag('minecraft:trim_materials', ingredient)
+    rm.item_tag('tfc:trim_materials', ingredient)
 
 def climate_range(rm: ResourceManager, name_parts: utils.ResourceIdentifier, hydration: Tuple[int, int, int] = None, temperature: Tuple[float, float, float] = None):
     data = {}

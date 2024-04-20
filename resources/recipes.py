@@ -273,7 +273,7 @@ def generate(rm: ResourceManager):
     rm.crafting_shapeless('crafting/volcanic_glass_batch', ('#tfc:volcanic_sand', '#tfc:volcanic_sand', '#tfc:volcanic_sand', '#tfc:volcanic_sand', '#tfc:glassworking_potash', 'tfc:powder/lime'), '4 tfc:volcanic_glass_batch')
     rm.crafting_shaped('crafting/paddle', ['XX', 'XX', 'Y '], {'X': '#tfc:lumber', 'Y': '#forge:rods/wooden'}, 'tfc:paddle').with_advancement('#tfc:lumber')
     rm.crafting_shapeless('crafting/gem_saw', ('#forge:rods/brass', '#tfc:gem_powders'), 'tfc:gem_saw').with_advancement('#tfc:gem_powders')
-    rm.crafting_shapeless('crafting/sandpaper', ('minecraft:paper', 'tfc:powder/flux', 'tfc:glue', '#tfc:volcanic_sand'), 'tfc:sandpaper').with_advancement('minecraft:paper')
+    rm.crafting_shapeless('crafting/sandpaper', ('minecraft:paper', 'tfc:powder/flux', 'tfc:glue', '#tfc:volcanic_sand', '#tfc:gem_powders'), 'tfc:sandpaper').with_advancement('minecraft:paper')
     rm.crafting_shapeless('crafting/jar_with_lid', ('tfc:empty_jar', 'tfc:jar_lid'), 'tfc:empty_jar_with_lid').with_advancement('tfc:empty_jar')
     rm.crafting_shapeless('crafting/clean_blowpipe', 'tfc:blowpipe_with_glass', 'tfc:blowpipe').with_advancement('tfc:blowpipe_with_glass')
     rm.crafting_shapeless('crafting/clean_ceramic_blowpipe', 'tfc:ceramic_blowpipe_with_glass', 'tfc:ceramic_blowpipe').with_advancement('tfc:ceramic_blowpipe_with_glass')

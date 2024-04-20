@@ -36,6 +36,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('minecraft:hoes', '#tfc:hoes')
     rm.item_tag('minecraft:swords', '#tfc:swords')
     rm.item_tag('minecraft:tools', '#tfc:hammers', '#tfc:javelins', '#tfc:knives', '#tfc:chisels', '#tfc:maces', '#tfc:saws', '#tfc:propicks', '#tfc:scythes')
+    rm.item_tag('minecraft:trim_materials', '#tfc:trim_materials', replace=True)
 
     # TFC Tags: Devices
 
