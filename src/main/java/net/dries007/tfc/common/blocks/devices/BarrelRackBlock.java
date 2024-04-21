@@ -11,7 +11,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -27,9 +26,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blocks.ExtendedBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
-import net.dries007.tfc.common.items.BarrelBlockItem;
-import net.dries007.tfc.util.BlockItemPlacement;
-import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.common.items.Rackable;
 
 public class BarrelRackBlock extends ExtendedBlock
 {
@@ -43,17 +40,8 @@ public class BarrelRackBlock extends ExtendedBlock
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
         final ItemStack item = player.getItemInHand(hand);
-        if (item.getItem() instanceof BarrelBlockItem blockItem)
+        if (item.getItem() instanceof Rackable rackable && rackable.useOnRack(state, level, pos, player, hand, hit))
         {
-            BlockState barrelState = blockItem.getStateForPlacement(level, pos)
-                .setValue(BarrelBlock.FACING, player.getDirection().getOpposite())
-                .setValue(BarrelBlock.RACK, true)
-                .setValue(BarrelBlock.SEALED, true);
-            barrelState = BlockItemPlacement.updateBlockStateFromTag(pos, level, item, barrelState);
-            level.setBlockAndUpdate(pos, barrelState);
-            BlockItem.updateCustomBlockEntityTag(level, player, pos, item);
-            if (!player.isCreative()) item.shrink(1);
-            Helpers.playPlaceSound(level, pos, state);
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
         return InteractionResult.PASS;
@@ -63,7 +51,7 @@ public class BarrelRackBlock extends ExtendedBlock
     @SuppressWarnings("deprecation")
     public boolean canBeReplaced(BlockState state, BlockPlaceContext context)
     {
-        return context.getItemInHand().getItem() instanceof BarrelBlockItem && BottomSupportedDeviceBlock.canSurvive(context.getLevel(), context.getClickedPos());
+        return context.getItemInHand().getItem() instanceof Rackable && BottomSupportedDeviceBlock.canSurvive(context.getLevel(), context.getClickedPos());
     }
 
     @Override
