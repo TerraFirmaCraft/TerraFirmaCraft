@@ -116,7 +116,7 @@ public class WindmillBlockEntity extends TickableInventoryBlockEntity<ItemStackH
         final Direction.Axis axis = state.getValue(WindmillBlock.AXIS);
 
         this.invalid = false;
-        this.node = new SourceNode(pos, Node.ofAxis(axis), Direction.fromAxisAndDirection(axis, Direction.AxisDirection.POSITIVE), 0f) {
+        this.node = new SourceNode(pos, Node.ofAxis(axis), Direction.fromAxisAndDirection(axis, Direction.AxisDirection.NEGATIVE), 0f) {
             @Override
             public String toString()
             {
