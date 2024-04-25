@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.common.commands;
 
+import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -113,16 +115,14 @@ public final class ClearWorldCommand
             return state -> blocks.contains(state.getBlock());
         }),
         NOT_ORE(server -> {
-            final Registry<ConfiguredFeature<?, ?>> registry = server.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE);
-            Set<Block> blocks = registry.stream()
-                .filter(feature -> feature.feature() instanceof VeinFeature<?, ?>)
-                .flatMap(feature -> ((IVeinConfig) feature.config()).config()
-                    .states()
-                    .values()
-                    .stream()
-                    .flatMap(weighted -> weighted.values().stream()))
-                .map(BlockBehaviour.BlockStateBase::getBlock)
-                .collect(Collectors.toSet());
+            final Set<Block> blocks = Stream.of(
+                TFCBlocks.ORES.values().stream().flatMap(map -> map.values().stream().map(Supplier::get)),
+                TFCBlocks.GRADED_ORES.values().stream()
+                    .flatMap(oreMap -> oreMap.values().stream()
+                        .flatMap(gradeMap -> gradeMap.values().stream().map(Supplier::get))),
+                TFCBlocks.ORE_DEPOSITS.values().stream().flatMap(map -> map.values().stream().map(Supplier::get))
+            ).flatMap(t -> t).collect(Collectors.toSet());
+
             return state -> !blocks.contains(state.getBlock());
         });
 
