@@ -42,7 +42,7 @@ val modVersion: String = System.getenv("VERSION") ?: "0.0.0-indev"
 // Optional dev-env properties
 val mappingsChannel: String = project.findProperty("mappings_channel") as String? ?: "official"
 val mappingsVersion: String = project.findProperty("mappings_version") as String? ?: minecraftVersion
-val minifyResources: Boolean = project.findProperty("minify_resources") as Boolean? ?: false
+val minifyResources: Boolean = project.findProperty("minify_resources") as Boolean? ?: true
 val zipResources: Boolean = project.findProperty("zip_resources") as Boolean? ?: false
 val useAdvancedClassRedef: Boolean = project.findProperty("use_advanced_class_redefinition") as Boolean? ?: false
 
