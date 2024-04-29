@@ -14,7 +14,9 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 public interface BarrelInventory extends IItemHandlerModifiable, IFluidHandler, Container
 {
     /**
-     * Must be mutable to perform recipes despite sealed status
+     * Run an action while forcing the barrel's underlying state to be mutable, despite the sealed status. This should
+     * only be used for updating the outputs on recipe completion, not for interacting with the barrel inventory via
+     * external means - that should respect the sealed state.
      */
     void whileMutable(Runnable action);
 
