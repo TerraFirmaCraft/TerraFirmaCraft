@@ -47,7 +47,7 @@ public class InstantFluidBarrelRecipe extends BarrelRecipe
     }
 
     @Override
-    public boolean matches(BarrelBlockEntity.BarrelInventory container, @Nullable Level level)
+    public boolean matches(BarrelRecipeWrapper container, @Nullable Level level)
     {
         // Must match the input with either the item slot, or fluid IO slot.
         return matches(container.getStackInSlot(BarrelBlockEntity.SLOT_ITEM), container.getFluidInTank(0)) || matches(container.getStackInSlot(BarrelBlockEntity.SLOT_FLUID_CONTAINER_IN), container.getFluidInTank(0));
@@ -63,7 +63,7 @@ public class InstantFluidBarrelRecipe extends BarrelRecipe
     }
 
     @Override
-    public void assembleOutputs(BarrelBlockEntity.BarrelInventory inventory)
+    public void assembleOutputs(BarrelRecipeWrapper inventory)
     {
         // Require the inventory to be mutable, as we use insert/extract methods, but will expect it to be modifiable despite being sealed.
         inventory.whileMutable(() -> {

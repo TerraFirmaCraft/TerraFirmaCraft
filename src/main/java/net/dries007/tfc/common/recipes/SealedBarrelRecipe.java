@@ -37,7 +37,7 @@ public class SealedBarrelRecipe extends BarrelRecipe
     }
 
     @Override
-    public boolean matches(BarrelBlockEntity.BarrelInventory container, @Nullable Level level)
+    public boolean matches(BarrelRecipeWrapper container, @Nullable Level level)
     {
         // Sealed barrel recipes match as long as both ingredients meet the minimum requirements (this is the call to super)
         // However, if the barrel recipe is infinite, it should only match as long as there is more fluid than items
@@ -68,7 +68,7 @@ public class SealedBarrelRecipe extends BarrelRecipe
         return onUnseal;
     }
 
-    public void onSealed(BarrelBlockEntity.BarrelInventory inventory)
+    public void onSealed(BarrelRecipeWrapper inventory)
     {
         if (onSeal != null)
         {
@@ -79,7 +79,7 @@ public class SealedBarrelRecipe extends BarrelRecipe
         }
     }
 
-    public void onUnsealed(BarrelBlockEntity.BarrelInventory inventory)
+    public void onUnsealed(BarrelRecipeWrapper inventory)
     {
         if (onUnseal != null)
         {

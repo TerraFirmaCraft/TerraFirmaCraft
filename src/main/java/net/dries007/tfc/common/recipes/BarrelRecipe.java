@@ -30,7 +30,7 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class BarrelRecipe implements ISimpleRecipe<BarrelBlockEntity.BarrelInventory>
+public abstract class BarrelRecipe implements ISimpleRecipe<BarrelRecipeWrapper>
 {
     private final ResourceLocation id;
 
@@ -50,7 +50,7 @@ public abstract class BarrelRecipe implements ISimpleRecipe<BarrelBlockEntity.Ba
         this.sound = builder.sound;
     }
 
-    public void assembleOutputs(BarrelBlockEntity.BarrelInventory inventory)
+    public void assembleOutputs(BarrelRecipeWrapper inventory)
     {
         // Require the inventory to be mutable, as we use insert/extract methods, but will expect it to be modifiable despite being sealed.
         inventory.whileMutable(() -> {
@@ -129,7 +129,7 @@ public abstract class BarrelRecipe implements ISimpleRecipe<BarrelBlockEntity.Ba
     }
 
     @Override
-    public boolean matches(BarrelBlockEntity.BarrelInventory container, @Nullable Level level)
+    public boolean matches(BarrelRecipeWrapper container, @Nullable Level level)
     {
         return inputItem.test(container.getStackInSlot(BarrelBlockEntity.SLOT_ITEM)) && inputFluid.test(container.getFluidInTank(0));
     }
