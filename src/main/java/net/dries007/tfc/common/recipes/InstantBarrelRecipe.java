@@ -14,6 +14,8 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
+import net.dries007.tfc.common.recipes.inventory.BarrelInventory;
+
 import org.jetbrains.annotations.Nullable;
 
 public class InstantBarrelRecipe extends BarrelRecipe
@@ -24,7 +26,7 @@ public class InstantBarrelRecipe extends BarrelRecipe
     }
 
     @Override
-    public boolean matches(BarrelRecipeWrapper container, @Nullable Level level)
+    public boolean matches(BarrelInventory container, @Nullable Level level)
     {
         // Instant recipes change behavior depending on the fluid content. If the recipe has no input fluid, or has no output fluid, it behaves as normal.
         // Otherwise, it must have enough input items to fully consume all input fluid.

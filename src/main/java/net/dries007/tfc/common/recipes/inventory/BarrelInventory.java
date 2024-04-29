@@ -4,14 +4,14 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.recipes;
+package net.dries007.tfc.common.recipes.inventory;
 
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
-public interface BarrelRecipeWrapper extends IItemHandlerModifiable, IFluidHandler, Container
+public interface BarrelInventory extends IItemHandlerModifiable, IFluidHandler, Container
 {
     /**
      * Must be mutable to perform recipes despite sealed status
