@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blockentities.rotation;
 
 import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.common.items.WindmillBladeItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -38,8 +39,10 @@ public class WindmillBlockEntity extends TickableInventoryBlockEntity<ItemStackH
     public static final int SLOTS = 5;
     public static final float MIN_SPEED = Mth.TWO_PI / (20 * 20);
     public static final float MAX_SPEED = Mth.TWO_PI / (8 * 20);
-
     private static final float LERP_SPEED = MIN_SPEED / (5 * 20);
+
+    // client-only
+    public boolean hasFullIdenticalSet = false;
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, WindmillBlockEntity windmill)
     {
@@ -71,6 +74,8 @@ public class WindmillBlockEntity extends TickableInventoryBlockEntity<ItemStackH
             : Math.max(targetSpeed, currentSpeed - LERP_SPEED);
 
         rotation.setSpeed(nextSpeed);
+
+        windmill.hasFullIdenticalSet = windmill.hasFullIdenticalSet();
     }
 
     public static boolean isObstructedBySolidBlocks(Level level, BlockPos pos, Direction.Axis axis)
@@ -225,13 +230,28 @@ public class WindmillBlockEntity extends TickableInventoryBlockEntity<ItemStackH
 
     public boolean hasFullIdenticalSet()
     {
-        Item item = this.inventory.getStackInSlot(0).getItem();
-        for(int i = 1; i < SLOTS; i++){
-            if (!this.inventory.getStackInSlot(i).is(item))
+        ItemStack stack = inventory.getStackInSlot(0);
+
+        // catch anything that's not a windmill blade
+        for (int i = 1; i < SLOTS; i++)
+        {
+            if (!inventory.getStackInSlot(i).is(TFCTags.Items.ALL_WINDMILL_BLADES))
             {
                 return false;
             }
         }
+
+        WindmillBladeItem item = (WindmillBladeItem) stack.getItem();
+        WindmillBladeItem.BladeModel model = item.getModel();
+
+        for (int i = 1; i < SLOTS; i++)
+        {
+            if(((WindmillBladeItem) inventory.getStackInSlot(i).getItem()).getModel() != model)
+            {
+                return false;
+            }
+        }
+
         return true;
     }
 }

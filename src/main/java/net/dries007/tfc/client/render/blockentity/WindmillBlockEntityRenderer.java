@@ -111,12 +111,13 @@ public class WindmillBlockEntityRenderer implements BlockEntityRenderer<Windmill
                 }
             }
 
-
             stack.pushPose();
 
             bladeModel.setupAnim(windmill, partialTick, offsetAngle * i);
             bladeModel.renderToBuffer(stack, bufferSource.getBuffer(RenderType.entityCutoutNoCull(bladeTexture)), packedLight, packedOverlay, color[0], color[1], color[2], 1f);
-            if(bladeCount == WindmillBlockEntity.SLOTS && windmill.hasFullIdenticalSet()){
+
+            if(bladeCount == WindmillBlockEntity.SLOTS && windmill.hasFullIdenticalSet)
+            {
                 bladeModel.renderWindmillExtras(stack, bufferSource.getBuffer(RenderType.entityCutoutNoCull(bladeTexture)), packedLight, packedOverlay, color[0], color[1], color[2], 1f);
             }
 
