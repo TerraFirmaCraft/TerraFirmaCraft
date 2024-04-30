@@ -113,6 +113,8 @@ public class WindmillBlockEntityRenderer implements BlockEntityRenderer<Windmill
 
             stack.pushPose();
 
+            // nudge to avoid Z-fighting
+            stack.translate(0.0001f*i, 0.0001f*i,0.0001f*i);
             bladeModel.setupAnim(windmill, partialTick, offsetAngle * i);
             bladeModel.renderToBuffer(stack, bufferSource.getBuffer(RenderType.entityCutoutNoCull(bladeTexture)), packedLight, packedOverlay, color[0], color[1], color[2], 1f);
 
