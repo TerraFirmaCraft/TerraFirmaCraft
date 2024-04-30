@@ -38,7 +38,7 @@ public class WindmillBladeRusticModel extends WindmillBladeModel
 
         PartDefinition cube_r1 = main.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(-2, -2).addBox(-0.5F, -1.0F, -97.0F, 1.0F, 2.0F, 98.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.3142F, 0.0F, 0.0F));
 
-        PartDefinition cube_r2 = main.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(-2, -2).addBox(-0.5F, -1.0F, -97.0F, 1.0F, 2.0F, 98.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.3142F, 0.0F, 0.0F));
+        PartDefinition cube_r2 = main.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(-2, -2).addBox(-0.499F, -1.0F, -97.0F, 1.0F, 2.0F, 98.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.3142F, 0.0F, 0.0F));
 
         PartDefinition blade = partdefinition.addOrReplaceChild("blade", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
 
