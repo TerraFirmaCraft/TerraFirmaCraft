@@ -30,15 +30,30 @@ public class WindmillBladeItem extends Item
 
     private final DyeColor color;
 
-    public WindmillBladeItem(Properties properties, DyeColor color)
+    private final BladeModel model;
+
+    public static enum BladeModel
+    {
+        DEFAULT,
+        LATTICE,
+        RUSTIC
+    }
+
+    public WindmillBladeItem(Properties properties, DyeColor color, BladeModel model)
     {
         super(properties);
         this.color = color;
+        this.model = model;
     }
 
     public DyeColor getColor()
     {
         return color;
+    }
+
+    public BladeModel getModel()
+    {
+        return model;
     }
 
     public float[] getTextureColors()

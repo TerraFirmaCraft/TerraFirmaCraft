@@ -10,6 +10,8 @@ import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
+
+import net.dries007.tfc.client.model.entity.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
@@ -689,6 +691,8 @@ public final class ClientEventHandler
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("bell_body"), BellRenderer::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("water_wheel"), WaterWheelModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("windmill_blade"), WindmillBladeModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("windmill_blade_lattice"), WindmillBladeLatticeModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("windmill_blade_rustic"), WindmillBladeRusticModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("horse_chest"), ChestedHorseModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("mule"), ChestedHorseModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("donkey"), ChestedHorseModel::createBodyLayer);

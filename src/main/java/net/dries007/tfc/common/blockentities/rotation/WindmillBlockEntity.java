@@ -6,11 +6,13 @@
 
 package net.dries007.tfc.common.blockentities.rotation;
 
+import net.dries007.tfc.common.items.TFCItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -160,7 +162,7 @@ public class WindmillBlockEntity extends TickableInventoryBlockEntity<ItemStackH
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        return Helpers.isItem(stack, TFCTags.Items.WINDMILL_BLADES);
+        return Helpers.isItem(stack, TFCTags.Items.ALL_WINDMILL_BLADES);
     }
 
     @Override
@@ -219,5 +221,17 @@ public class WindmillBlockEntity extends TickableInventoryBlockEntity<ItemStackH
     public Node getRotationNode()
     {
         return node;
+    }
+
+    public boolean hasFullIdenticalSet()
+    {
+        Item item = this.inventory.getStackInSlot(0).getItem();
+        for(int i = 1; i < SLOTS; i++){
+            if (!this.inventory.getStackInSlot(i).is(item))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }
