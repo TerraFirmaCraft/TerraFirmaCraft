@@ -137,8 +137,10 @@ def generate(rm: ResourceManager):
     rm.item_tag('gear_boxes', *['tfc:wood/gear_box/%s' % w for w in WOODS])
     rm.item_tag('clutches', *['tfc:wood/clutch/%s' % w for w in WOODS])
     rm.item_tag('water_wheels', *['tfc:wood/water_wheel/%s' % w for w in WOODS])
-    rm.item_tag('windmill_blades', 'tfc:windmill_blade', '#tfc:colored_windmill_blades')
+    rm.item_tag('default_windmill_blades', 'tfc:windmill_blade', '#tfc:colored_windmill_blades')
     rm.item_tag('colored_windmill_blades', *['tfc:%s_windmill_blade' % color for color in COLORS if color != 'white'])
+    rm.item_tag('decorated_windmill_blades', 'tfc:rustic_windmill_blade', 'tfc:lattice_windmill_blade')
+    rm.item_tag('all_windmill_blades', '#tfc:default_windmill_blades', '#tfc:decorated_windmill_blades')
 
     # TFC Tags: Entities
 

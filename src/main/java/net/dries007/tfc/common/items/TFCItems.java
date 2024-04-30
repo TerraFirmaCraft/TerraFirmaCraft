@@ -244,10 +244,13 @@ public final class TFCItems
     public static final RegistryObject<Item> EMPTY_PAN = register("pan/empty", () -> new EmptyPanItem(new Item.Properties()));
     public static final RegistryObject<Item> FILLED_PAN = register("pan/filled", () -> new PanItem(new Item.Properties().stacksTo(1)));
 
-    public static final RegistryObject<Item> WINDMILL_BLADE = register("windmill_blade", () -> new WindmillBladeItem(new Item.Properties(), DyeColor.WHITE));
+    public static final RegistryObject<Item> WINDMILL_BLADE = register("windmill_blade", () -> new WindmillBladeItem(new Item.Properties(), DyeColor.WHITE, WindmillBladeItem.BladeModel.DEFAULT));
     public static final Map<DyeColor, RegistryObject<Item>> COLORED_WINDMILL_BLADES = Helpers.mapOfKeys(DyeColor.class, color -> color != DyeColor.WHITE, color ->
-        register(color.getSerializedName() + "_windmill_blade", () -> new WindmillBladeItem(new Item.Properties(), color))
+        register(color.getSerializedName() + "_windmill_blade", () -> new WindmillBladeItem(new Item.Properties(), color, WindmillBladeItem.BladeModel.DEFAULT))
     );
+    public static final RegistryObject<Item> LATTICE_WINDMILL_BLADE = register("lattice_windmill_blade", () -> new WindmillBladeItem(new Item.Properties(), DyeColor.WHITE, WindmillBladeItem.BladeModel.LATTICE));
+    public static final RegistryObject<Item> RUSTIC_WINDMILL_BLADE = register("rustic_windmill_blade", () -> new WindmillBladeItem(new Item.Properties(), DyeColor.WHITE, WindmillBladeItem.BladeModel.RUSTIC));
+
     public static final Map<Fish, RegistryObject<Item>> FRESHWATER_FISH_EGGS = Helpers.mapOfKeys(Fish.class, fish -> registerSpawnEgg(TFCEntities.FRESHWATER_FISH.get(fish), fish.getEggColor1(), fish.getEggColor2()));
 
     public static final RegistryObject<Item> COD_EGG = registerSpawnEgg(TFCEntities.COD, 12691306, 15058059);

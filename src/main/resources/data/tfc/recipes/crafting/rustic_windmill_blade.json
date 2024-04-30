@@ -1,0 +1,20 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " S ",
+    "SWS",
+    " S "
+  ],
+  "key": {
+    "S": {
+      "item": "tfc:burlap_cloth"
+    },
+    "W": {
+      "tag": "tfc:default_windmill_blades"
+    }
+  },
+  "result": {
+    "item": "tfc:rustic_windmill_blade"
+  }
+}
