@@ -246,7 +246,7 @@ public class WindmillBlockEntity extends TickableInventoryBlockEntity<ItemStackH
 
         for (int i = 1; i < SLOTS; i++)
         {
-            if(((WindmillBladeItem) inventory.getStackInSlot(i).getItem()).getModel() != model)
+            if (((WindmillBladeItem) inventory.getStackInSlot(i).getItem()).getModel() != model)
             {
                 return false;
             }

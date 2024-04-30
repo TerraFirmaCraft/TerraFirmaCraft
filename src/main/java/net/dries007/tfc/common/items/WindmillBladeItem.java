@@ -32,13 +32,6 @@ public class WindmillBladeItem extends Item
 
     private final BladeModel model;
 
-    public static enum BladeModel
-    {
-        DEFAULT,
-        LATTICE,
-        RUSTIC
-    }
-
     public WindmillBladeItem(Properties properties, DyeColor color, BladeModel model)
     {
         super(properties);
@@ -97,5 +90,12 @@ public class WindmillBladeItem extends Item
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;
+    }
+
+    public static enum BladeModel
+    {
+        DEFAULT,
+        LATTICE,
+        RUSTIC
     }
 }
