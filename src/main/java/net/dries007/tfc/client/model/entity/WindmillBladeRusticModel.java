@@ -44,15 +44,15 @@ public class WindmillBladeRusticModel extends WindmillBladeModel
 
         PartDefinition blade1 = blade.addOrReplaceChild("blade1", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, 0.0F, 1.0F, -0.3142F, 0.0F, 0.0F));
 
-        PartDefinition cube_r3 = blade1.addOrReplaceChild("cube_r3", CubeListBuilder.create().texOffs(0, 170).addBox(-1.0F, -9.0F, -97.0F, 1.0F, 15.0F, 71.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.096F, 0.0F, 0.3491F));
+        PartDefinition cube_r3 = blade1.addOrReplaceChild("cube_r3", CubeListBuilder.create().texOffs(112, 170).addBox(-1.0F, -9.0F, -97.0F, 1.0F, 15.0F, 71.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.096F, 0.0F, 0.3491F));
 
-        PartDefinition cube_r4 = blade1.addOrReplaceChild("cube_r4", CubeListBuilder.create().texOffs(0, 155).addBox(-1.0F, -5.0F, -97.0F, 1.0F, 15.0F, 71.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.096F, 0.0F, 0.3491F));
+        PartDefinition cube_r4 = blade1.addOrReplaceChild("cube_r4", CubeListBuilder.create().texOffs(1, 155).addBox(-1.0F, -5.0F, -97.0F, 1.0F, 15.0F, 71.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.096F, 0.0F, 0.3491F));
 
         PartDefinition blade2 = blade.addOrReplaceChild("blade2", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.3142F, 0.0F, 0.0F));
 
-        PartDefinition cube_r5 = blade2.addOrReplaceChild("cube_r5", CubeListBuilder.create().texOffs(0, 170).addBox(-1.0F, -9.0F, -97.0F, 1.0F, 15.0F, 71.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 1.0F, 0.096F, 0.0F, 0.3491F));
+        PartDefinition cube_r5 = blade2.addOrReplaceChild("cube_r5", CubeListBuilder.create().texOffs(112, 170).addBox(-1.0F, -9.0F, -97.0F, 1.0F, 15.0F, 71.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 1.0F, 0.096F, 0.0F, 0.3491F));
 
-        PartDefinition cube_r6 = blade2.addOrReplaceChild("cube_r6", CubeListBuilder.create().texOffs(0, 155).addBox(-1.0F, -5.0F, -97.0F, 1.0F, 15.0F, 71.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 1.0F, -0.096F, 0.0F, 0.3491F));
+        PartDefinition cube_r6 = blade2.addOrReplaceChild("cube_r6", CubeListBuilder.create().texOffs(1, 155).addBox(-1.0F, -5.0F, -97.0F, 1.0F, 15.0F, 71.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 1.0F, -0.096F, 0.0F, 0.3491F));
 
         PartDefinition extras = partdefinition.addOrReplaceChild("extras", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
 
