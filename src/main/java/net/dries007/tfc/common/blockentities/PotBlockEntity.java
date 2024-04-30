@@ -63,14 +63,16 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
 
         sidedFluidInventory = new SidedHandler.Builder<>(inventory);
 
-        // Items in top, Fuel and fluid in sides, items and fluid out sides
+        // Items in top, Fuel and fluid in sides, items and fluid out sides, fluid in top
         if (TFCConfig.SERVER.firePitEnableAutomation.get())
         {
             sidedInventory
                 .on(new PartialItemHandler(inventory).insert(SLOT_FUEL_INPUT).extract(4, 5, 6, 7, 8), Direction.Plane.HORIZONTAL)
                 .on(new PartialItemHandler(inventory).insert(4, 5, 6, 7, 8), Direction.UP);
 
-            sidedFluidInventory.on(inventory, Direction.Plane.HORIZONTAL);
+            sidedFluidInventory
+                .on(new PartialFluidHandler(inventory).insert(), Direction.UP)
+                .on(new PartialFluidHandler(inventory).extract(), Direction.Plane.HORIZONTAL);
         }
     }
 

@@ -326,7 +326,7 @@ def generate(rm: ResourceManager):
     rm.crafting_shaped('crafting/vanilla/armor_stand_bulk', ['X', 'Y'], {'X': 'tfc:stick_bunch', 'Y': '#forge:smooth_stone_slab'}, 'minecraft:armor_stand').with_advancement('#forge:smooth_stone_slab')
     rm.crafting_shaped('crafting/vanilla/color/white_bed', ['XXX', 'YYY'], {'X': '#tfc:high_quality_cloth', 'Y': '#tfc:lumber'}, 'minecraft:white_bed').with_advancement('#tfc:high_quality_cloth')
     rm.crafting_shaped('crafting/vanilla/cauldron', ['X X', 'X X', 'XXX'], {'X': '#forge:sheets/wrought_iron'}, 'minecraft:cauldron').with_advancement('#forge:sheets/wrought_iron')
-    rm.crafting_shaped('crafting/vanilla/compass', ['X', 'Y', 'Z'], {'X': 'tfc:lens', 'Y': '#tfc:magnetic_rocks', 'Z': 'minecraft:bowl'}, 'minecraft:compass').with_advancement('#tfc:magnetic_rocks')
+    rm.crafting_shaped('crafting/vanilla/compass', ['X', 'Y', 'Z'], {'X': 'tfc:lens', 'Y': '#tfc:magnetic_rocks', 'Z': '#tfc:bowls'}, 'minecraft:compass').with_advancement('#tfc:magnetic_rocks')
     rm.crafting_shaped('crafting/vanilla/clock', ['RXR', 'XYX', 'RXR'], {'X': '#forge:sheets/gold', 'Y': 'tfc:brass_mechanisms', 'R': '#forge:dusts/redstone'}, 'minecraft:clock').with_advancement('#forge:sheets/gold')
     rm.crafting_shaped('crafting/vanilla/crossbow', ['LIL', 'STS', ' L '], {'L': '#tfc:lumber', 'I': '#forge:rods/wrought_iron', 'S': '#forge:string', 'T': 'minecraft:tripwire_hook'}, 'minecraft:crossbow').with_advancement('#forge:ingots/wrought_iron')
     rm.crafting_shapeless('crafting/vanilla/fire_charge', ('minecraft:gunpowder', 'tfc:firestarter', '#minecraft:coals'), (3, 'minecraft:fire_charge')).with_advancement('minecraft:gunpowder')
@@ -638,7 +638,6 @@ def generate(rm: ResourceManager):
         }
         sandwich_pattern = ['ZX ', 'YYY', ' X ']
         sandwich_ingredients = {'X': not_rotten('tfc:food/%s_bread' % grain), 'Y': not_rotten('#tfc:foods/usable_in_sandwich'), 'Z': '#tfc:knives'}
-        jam_sandwich_pattern = ['ZX ', 'JYY', ' X ']
         jam_sandwich_ingredients = {'X': not_rotten('tfc:food/%s_bread' % grain), 'Y': not_rotten('#tfc:foods/usable_in_jam_sandwich'), 'Z': '#tfc:knives', 'J': '#tfc:foods/preserves'}
         delegate_recipe(rm, 'crafting/%s_sandwich' % grain, 'tfc:damage_inputs_shaped_crafting', {
             'type': 'tfc:advanced_shaped_crafting',
@@ -648,14 +647,16 @@ def generate(rm: ResourceManager):
             'input_row': 0,
             'input_column': 0,
         }).with_advancement('tfc:food/%s_bread' % grain)
-        delegate_recipe(rm, 'crafting/%s_sandwich_with_jam' % grain, 'tfc:damage_inputs_shaped_crafting', {
-            'type': 'tfc:advanced_shaped_crafting',
-            'pattern': jam_sandwich_pattern,
-            'key': utils.item_stack_dict(jam_sandwich_ingredients, ''.join(jam_sandwich_pattern)[0]),
-            'result': item_stack_provider('2 tfc:food/%s_bread_jam_sandwich' % grain, meal=sandwich_modifier),
-            'input_row': 0,
-            'input_column': 0,
-        }).with_advancement('tfc:food/%s_bread' % grain)
+        jam_sandwich_patterns = (['ZX ', 'YJY', ' X '], ['ZX ', 'JYY', ' X '], ['ZX ', 'YYJ', ' X '])
+        for i, pat in enumerate(jam_sandwich_patterns):
+            delegate_recipe(rm, 'crafting/%s_sandwich_with_jam_%s' % (grain, i), 'tfc:damage_inputs_shaped_crafting', {
+                'type': 'tfc:advanced_shaped_crafting',
+                'pattern': pat,
+                'key': utils.item_stack_dict(jam_sandwich_ingredients, ''.join(pat)[0]),
+                'result': item_stack_provider('2 tfc:food/%s_bread_jam_sandwich' % grain, meal=sandwich_modifier),
+                'input_row': 0,
+                'input_column': 0,
+            }).with_advancement('tfc:food/%s_bread' % grain)
 
     for meat in MEATS:
         heat_recipe(rm, meat, not_rotten('tfc:food/%s' % meat), 200, result_item=item_stack_provider('tfc:food/cooked_%s' % meat, copy_food=True))

@@ -265,6 +265,7 @@ public class ServerConfig
     public final ProducingMammalConfig muskOxConfig;
     public final OviparousAnimalConfig duckConfig;
     public final OviparousAnimalConfig quailConfig;
+    public final ForgeConfigSpec.DoubleValue familiarityDecayLimit;
 
     // Below Everything
     public final ForgeConfigSpec.BooleanValue farmlandMakesTheBestRaceTracks;
@@ -681,6 +682,8 @@ public class ServerConfig
         builder.swap("quail");
         quailConfig = OviparousAnimalConfig.build(builder, "quail", 0.35, 22, 48, true, 28000, 0.15, 8);
         builder.pop(3);
+
+        familiarityDecayLimit = builder.comment("Familiarity value above which familiarity no longer will decay. Default is 0.3, or 30%. Setting it to 0 will cause familiarity to never decay.").define("familiarityDecayLimit", 0.3, 0.0, 1.0);
 
         builder.push("weird");
         farmlandMakesTheBestRaceTracks = builder.define("farmlandMakesTheBestRaceTracks", false);

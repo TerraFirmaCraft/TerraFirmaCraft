@@ -231,6 +231,7 @@ public class FirepitBlock extends BottomSupportedDeviceBlock implements IGhostBl
             {
                 ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFCItems.POWDERS.get(Powder.WOOD_ASH).get(), firepit.getAsh()));
                 firepit.setAsh(0);
+                Helpers.playSound(level, pos, SoundEvents.SAND_BREAK);
                 return InteractionResult.sidedSuccess(level.isClientSide);
             }
             else

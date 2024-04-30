@@ -217,7 +217,7 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
         assert level != null;
         final ItemStack inputStack = inventory.getStackInSlot(SLOT_INPUT);
 
-        if (!inputStack.isEmpty())
+        if (!inputStack.isEmpty() && hasHandstone())
         {
             final ItemStackInventory wrapper = new ItemStackInventory(inputStack);
             final QuernRecipe recipe = QuernRecipe.getRecipe(level, wrapper);
@@ -267,7 +267,7 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
 
     public boolean isConnectedToNetwork()
     {
-        return node.rotation() != null;
+        return node.rotation() != null && hasHandstone();
     }
 
     public void setHandstoneFromOutsideWorld()

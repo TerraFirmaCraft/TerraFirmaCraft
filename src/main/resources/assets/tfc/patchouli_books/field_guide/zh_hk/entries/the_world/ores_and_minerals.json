@@ -1090,7 +1090,7 @@
       "item": "tfc:ore/amethyst",
       "title": "Amethyst",
       "link_recipes": false,
-      "text": "Amethyst is a decorative $(thing)Mineral$() which can be used to make $(l:mechanics/glassworking)Glass$(). It can be found in $(thing)Sedimentary) and $(thing)Metamorphic$() rock beneath rivers above y=40."
+      "text": "Amethyst is a decorative $(thing)Mineral$() which can be used to make $(l:mechanics/glassworking)Glass$(). It can be found in $(thing)Sedimentary$() and $(thing)Metamorphic$() rock beneath rivers above y=40."
     },
     {
       "type": "patchouli:multiblock",

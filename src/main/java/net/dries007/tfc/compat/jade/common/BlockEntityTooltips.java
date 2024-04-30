@@ -33,6 +33,7 @@ import net.dries007.tfc.common.blockentities.ComposterBlockEntity;
 import net.dries007.tfc.common.blockentities.CropBlockEntity;
 import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
 import net.dries007.tfc.common.blockentities.DecayingBlockEntity;
+import net.dries007.tfc.common.blockentities.HotPouredGlassBlockEntity;
 import net.dries007.tfc.common.blockentities.IngotPileBlockEntity;
 import net.dries007.tfc.common.blockentities.LampBlockEntity;
 import net.dries007.tfc.common.blockentities.LoomBlockEntity;
@@ -44,6 +45,7 @@ import net.dries007.tfc.common.blockentities.SheetPileBlockEntity;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blockentities.rotation.RotatingBlockEntity;
 import net.dries007.tfc.common.blocks.BloomBlock;
+import net.dries007.tfc.common.blocks.HotPouredGlassBlock;
 import net.dries007.tfc.common.blocks.TFCCandleBlock;
 import net.dries007.tfc.common.blocks.TFCCandleCakeBlock;
 import net.dries007.tfc.common.blocks.TFCTorchBlock;
@@ -140,7 +142,15 @@ public final class BlockEntityTooltips
         callback.register("quern", ROTATING, QuernBlock.class);
         callback.register("water_wheel", ROTATING, WaterWheelBlock.class);
         callback.register("windmill", ROTATING, WindmillBlock.class);
+        callback.register("hot_poured_glass", HOT_POURED_GLASS, HotPouredGlassBlock.class);
     }
+
+    public static final BlockEntityTooltip HOT_POURED_GLASS = (level, state, pos, entity, tooltip) -> {
+        if (state.getBlock() instanceof HotPouredGlassBlock && !state.getValue(HotPouredGlassBlock.FLAT))
+        {
+            tooltip.accept(Component.translatable("tfc.tooltip.glass.flatten_me"));
+        }
+    };
 
     public static final BlockEntityTooltip ROTATING = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof RotatingBlockEntity rotating)

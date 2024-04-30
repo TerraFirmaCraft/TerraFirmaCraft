@@ -224,7 +224,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             block_spotlight('', 'Kimberlite in Gabbro.', 'tfc:ore/%s/%s' % ('diamond', 'gabbro')),
             item_spotlight('tfc:ore/lapis_lazuli', 'Lapis Lazuli', text_contents='Lapis Lazuli is a decorative $(thing)Mineral$() which can be used to make $(l:mechanics/dye)Blue Dye$(). It can be found in large, but sparse veins in $(thing)Limestone$() and $(thing)Marble$(), between y=-20 and y=80.').link('tfc:ore/%s' % 'lapis_lazuli').anchor('lapis_lazuli'),
             block_spotlight('', 'Lapis Lazuli in Marble.', 'tfc:ore/%s/%s' % ('lapis_lazuli', 'marble')),
-            item_spotlight('tfc:ore/amethyst', 'Amethyst', text_contents='Amethyst is a decorative $(thing)Mineral$() which can be used to make $(l:mechanics/glassworking)Glass$(). It can be found in $(thing)Sedimentary) and $(thing)Metamorphic$() rock beneath rivers above y=40.').link('tfc:ore/%s' % 'amethyst').anchor('amethyst'),
+            item_spotlight('tfc:ore/amethyst', 'Amethyst', text_contents='Amethyst is a decorative $(thing)Mineral$() which can be used to make $(l:mechanics/glassworking)Glass$(). It can be found in $(thing)Sedimentary$() and $(thing)Metamorphic$() rock beneath rivers above y=40.').link('tfc:ore/%s' % 'amethyst').anchor('amethyst'),
             block_spotlight('', 'Amethyst in Marble.', 'tfc:ore/%s/%s' % ('amethyst', 'marble')),
             item_spotlight('tfc:ore/opal', 'Opal', text_contents='Opal is a decorative $(thing)Mineral$(). It can be found in $(thing)Sedimentary) and $(thing)Igneous Extrusive$() rock beneath rivers above y=40.').link('tfc:ore/%s' % 'opal').anchor('opal'),
             block_spotlight('', 'Opal in Basalt.', 'tfc:ore/%s/%s' % ('amethyst', 'basalt')),

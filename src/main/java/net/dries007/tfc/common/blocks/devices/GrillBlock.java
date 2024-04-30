@@ -37,6 +37,7 @@ import net.dries007.tfc.common.blockentities.GrillBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.capabilities.Capabilities;
+import net.dries007.tfc.common.items.Powder;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
 
@@ -133,6 +134,13 @@ public class GrillBlock extends FirepitBlock implements IHighlightHandler
                     {
                         TFCDamageSources.grill(player, 1f);
                         Helpers.playSound(level, pos, TFCSounds.ITEM_COOL.get());
+                    }
+                    if (!state.getValue(LIT) && !state.getValue(LIT) && grill.getAsh() > 0)
+                    {
+                        ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFCItems.POWDERS.get(Powder.WOOD_ASH).get(), grill.getAsh()));
+                        grill.setAsh(0);
+                        Helpers.playSound(level, pos, SoundEvents.SAND_BREAK);
+                        return InteractionResult.sidedSuccess(level.isClientSide);
                     }
                     else
                     {

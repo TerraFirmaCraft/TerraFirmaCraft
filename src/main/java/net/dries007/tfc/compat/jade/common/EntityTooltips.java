@@ -31,6 +31,7 @@ import net.dries007.tfc.common.entities.livestock.horse.TFCChestedHorse;
 import net.dries007.tfc.common.entities.livestock.horse.TFCHorse;
 import net.dries007.tfc.common.entities.predator.Predator;
 import net.dries007.tfc.common.fluids.TFCFluids;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Tooltips;
 import net.dries007.tfc.util.calendar.Calendars;
@@ -101,7 +102,7 @@ public final class EntityTooltips
             {
                 familiarityStyle = ChatFormatting.RED;
             }
-            else if (familiarity > 0.3f)
+            else if (familiarity >= TFCConfig.SERVER.familiarityDecayLimit.get())
             {
                 familiarityStyle = ChatFormatting.WHITE;
             }

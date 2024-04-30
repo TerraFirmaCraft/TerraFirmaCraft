@@ -2,6 +2,8 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "#tfc:is_ocean"
+    "#tfc:is_ocean",
+    "tfc:shore",
+    "tfc:tidal_flats"
   ]
 }

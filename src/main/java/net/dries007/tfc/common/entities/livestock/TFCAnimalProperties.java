@@ -34,11 +34,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraftforge.items.ItemHandlerHelper;
 
+import net.dries007.tfc.common.capabilities.food.DynamicBowlHandler;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.entities.BrainBreeder;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.GenderedRenderAnimal;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.config.animals.AnimalConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
@@ -49,7 +52,6 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal, BrainBreeder
 {
     long MATING_COOLDOWN_DEFAULT_TICKS = ICalendar.TICKS_IN_DAY;
     float READY_TO_MATE_FAMILIARITY = 0.3f;
-    float FAMILIARITY_DECAY_LIMIT = 0.3f;
     float[] AGE_SCALES = Util.make(() -> {
         final float[] scales = new float[32];
         for (int i = 0; i < scales.length; i++)
@@ -129,7 +131,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal, BrainBreeder
         if (getLastFamiliarityDecay() > -1 && getLastFamiliarityDecay() + 1 < getCalendar().getTotalDays())
         {
             float familiarity = getFamiliarity();
-            if (familiarity < FAMILIARITY_DECAY_LIMIT)
+            if (familiarity < TFCConfig.SERVER.familiarityDecayLimit.get())
             {
                 familiarity -= 0.02 * (getCalendar().getTotalDays() - getLastFamiliarityDecay());
                 setLastFamiliarityDecay(getCalendar().getTotalDays());
@@ -193,7 +195,20 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal, BrainBreeder
             final long days = getCalendar().getTotalDays();
             setLastFed(days);
             setLastFamiliarityDecay(days); // no decay today
-            if (!player.isCreative()) stack.shrink(1);
+            if (!player.isCreative())
+            {
+                stack.getCapability(FoodCapability.CAPABILITY).ifPresent(cap -> {
+                    if (cap instanceof DynamicBowlHandler bowl)
+                    {
+                        ItemHandlerHelper.giveItemToPlayer(player, bowl.getBowl().copy());
+                    }
+                });
+                if (stack.hasCraftingRemainingItem())
+                {
+                    ItemHandlerHelper.giveItemToPlayer(player, stack.getCraftingRemainingItem());
+                }
+                stack.shrink(1);
+            }
             if (getAgeType() == Age.CHILD || getFamiliarity() < getAdultFamiliarityCap())
             {
                 float familiarity = getFamiliarity() + 0.06f;

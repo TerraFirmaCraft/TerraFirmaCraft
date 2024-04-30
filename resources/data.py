@@ -175,6 +175,7 @@ def generate(rm: ResourceManager):
     item_size(rm, 'signs', '#minecraft:signs', Size.very_small, Weight.heavy)
     item_size(rm, 'hanging_signs', '#minecraft:hanging_signs', Size.very_small, Weight.heavy)
     item_size(rm, 'soups', '#tfc:soups', Size.very_small, Weight.medium)
+    item_size(rm, 'redstone', '#forge:dusts/redstone', Size.very_small, Weight.very_light)
     item_size(rm, 'salads', '#tfc:salads', Size.very_small, Weight.medium)
     item_size(rm, 'buckets', '#tfc:buckets', Size.large, Weight.medium)
     item_size(rm, 'anvils', '#tfc:anvils', Size.huge, Weight.very_heavy)

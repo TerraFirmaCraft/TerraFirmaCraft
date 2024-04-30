@@ -34,6 +34,14 @@ public final class Support
     private static SupportRange RANGE = new SupportRange(0, 0, 0);
 
     /**
+     * Exposed for addons. See comment for {@link Support#RANGE}.
+     */
+    public static SupportRange getSupportCheckRange()
+    {
+        return RANGE;
+    }
+
+    /**
      * Finds all unsupported positions in a large area. It's more efficient than checking each block individually and calling {@link Support#isSupported(BlockGetter, BlockPos)}
      */
     public static Set<BlockPos> findUnsupportedPositions(BlockGetter worldIn, BlockPos from, BlockPos to)

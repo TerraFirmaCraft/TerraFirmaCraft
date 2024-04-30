@@ -1360,6 +1360,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.glass.hematitic': 'Hematitic Glass',
     'tfc.tooltip.glass.olivine': 'Olivine Glass',
     'tfc.tooltip.glass.volcanic': 'Volcanic Glass',
+    'tfc.tooltip.glass.flatten_me': 'Right click with a paddle to flatten',
     'tfc.tooltip.sealed': 'Sealed',
     'tfc.tooltip.unsealed': 'Unsealed',
     'tfc.tooltip.switch_sides': 'Switch Sides',
@@ -1457,6 +1458,7 @@ DEFAULT_LANG = {
     'config.jade.plugin_tfc.quern': 'Quern',
     'config.jade.plugin_tfc.water_wheel': 'Water Wheel',
     'config.jade.plugin_tfc.windmill': 'Windmill',
+    'config.jade.plugin_tfc.hot_poured_glass': 'Hot Poured Glass',
 
     'config.jade.plugin_tfc.animal': 'Animal',
     'config.jade.plugin_tfc.frog': 'Frog',
