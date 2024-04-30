@@ -25,6 +25,7 @@ import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
 import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
+import net.dries007.tfc.common.recipes.inventory.BarrelInventory;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
@@ -47,7 +48,7 @@ public class InstantFluidBarrelRecipe extends BarrelRecipe
     }
 
     @Override
-    public boolean matches(BarrelBlockEntity.BarrelInventory container, @Nullable Level level)
+    public boolean matches(BarrelInventory container, @Nullable Level level)
     {
         // Must match the input with either the item slot, or fluid IO slot.
         return matches(container.getStackInSlot(BarrelBlockEntity.SLOT_ITEM), container.getFluidInTank(0)) || matches(container.getStackInSlot(BarrelBlockEntity.SLOT_FLUID_CONTAINER_IN), container.getFluidInTank(0));
@@ -63,7 +64,7 @@ public class InstantFluidBarrelRecipe extends BarrelRecipe
     }
 
     @Override
-    public void assembleOutputs(BarrelBlockEntity.BarrelInventory inventory)
+    public void assembleOutputs(BarrelInventory inventory)
     {
         // Require the inventory to be mutable, as we use insert/extract methods, but will expect it to be modifiable despite being sealed.
         inventory.whileMutable(() -> {

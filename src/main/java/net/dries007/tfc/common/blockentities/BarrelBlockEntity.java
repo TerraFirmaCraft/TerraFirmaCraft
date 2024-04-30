@@ -197,7 +197,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
 
     public BarrelBlockEntity(BlockPos pos, BlockState state)
     {
-        super(TFCBlockEntities.BARREL.get(), pos, state, BarrelInventory::new, NAME);
+        super(TFCBlockEntities.BARREL.get(), pos, state, BarrelBlockEntity.BarrelInventory::new, NAME);
 
         sidedFluidInventory = new SidedHandler.Builder<>(inventory);
 
@@ -554,7 +554,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         return 0;
     }
 
-    public static class BarrelInventory implements DelegateItemHandler, DelegateFluidHandler, INBTSerializable<CompoundTag>, EmptyInventory, FluidTankCallback
+    public static class BarrelInventory implements DelegateItemHandler, DelegateFluidHandler, INBTSerializable<CompoundTag>, EmptyInventory, FluidTankCallback, net.dries007.tfc.common.recipes.inventory.BarrelInventory
     {
         private final BarrelInventoryCallback callback;
         private final InventoryItemHandler inventory;
@@ -575,6 +575,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
             tank = new InventoryFluidTank(Helpers.getValueOrDefault(TFCConfig.SERVER.barrelCapacity), stack -> Helpers.isFluid(stack.getFluid(), TFCTags.Fluids.USABLE_IN_BARREL), this);
         }
 
+        @Override
         public void whileMutable(Runnable action)
         {
             try
@@ -593,6 +594,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
             return tank.getFluid().isEmpty() && excess.isEmpty() && Helpers.isEmpty(inventory);
         }
 
+        @Override
         public void insertItemWithOverflow(ItemStack stack)
         {
             final ItemStack remainder = inventory.insertItem(SLOT_ITEM, stack, false);
