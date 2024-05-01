@@ -37,6 +37,7 @@ public class TFCRecipeSerializers
     // Complex Recipes
 
     public static final RegistryObject<SimplePotRecipe.Serializer> POT_SIMPLE = register("pot", SimplePotRecipe.Serializer::new);
+    public static final RegistryObject<AdvancedPotRecipe.Serializer> POT_ADVANCED = register("pot_advanced", AdvancedPotRecipe.Serializer::new);
     public static final RegistryObject<SoupPotRecipe.Serializer> POT_SOUP = register("pot_soup", SoupPotRecipe.Serializer::new);
     public static final RegistryObject<JamPotRecipe.Serializer> POT_JAM = register("pot_jam", JamPotRecipe.Serializer::new);
     public static final RegistryObject<KnappingRecipe.Serializer> KNAPPING = register("knapping", KnappingRecipe.Serializer::new);

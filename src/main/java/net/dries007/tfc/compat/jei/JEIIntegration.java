@@ -61,6 +61,7 @@ public final class JEIIntegration implements IModPlugin
     public static final RecipeType<QuernRecipe> QUERN = type("quern", QuernRecipe.class);
     public static final RecipeType<PotRecipe> SOUP_POT = type("soup_pot", PotRecipe.class);
     public static final RecipeType<PotRecipe> SIMPLE_POT = type("simple_pot", PotRecipe.class);
+    public static final RecipeType<PotRecipe> ADVANCED_POT = type("advanced_pot", PotRecipe.class);
     public static final RecipeType<PotRecipe> JAM_POT = type("jam_pot", PotRecipe.class);
     public static final RecipeType<CastingRecipe> CASTING = type("casting", CastingRecipe.class);
     public static final RecipeType<LoomRecipe> LOOM = type("loom", LoomRecipe.class);
@@ -125,6 +126,7 @@ public final class JEIIntegration implements IModPlugin
             new ScrapingRecipeCategory(SCRAPING, gui),
             new SoupPotRecipeCategory(SOUP_POT, gui),
             new SimplePotRecipeCategory(SIMPLE_POT, gui),
+            new AdvancedPotRecipeCategory(ADVANCED_POT, gui),
             new JamPotRecipeCategory(JAM_POT, gui),
             new CastingRecipeCategory(CASTING, gui),
             new LoomRecipeCategory(LOOM, gui),
@@ -156,6 +158,7 @@ public final class JEIIntegration implements IModPlugin
         registry.addRecipes(QUERN, recipes(TFCRecipeTypes.QUERN.get()));
         registry.addRecipes(SOUP_POT, recipes(TFCRecipeTypes.POT.get(), recipe -> recipe.getSerializer() == TFCRecipeSerializers.POT_SOUP.get()));
         registry.addRecipes(SIMPLE_POT, recipes(TFCRecipeTypes.POT.get(), recipe -> recipe.getSerializer() == TFCRecipeSerializers.POT_SIMPLE.get()));
+        registry.addRecipes(ADVANCED_POT, recipes(TFCRecipeTypes.POT.get(), recipe -> recipe.getSerializer() == TFCRecipeSerializers.POT_ADVANCED.get()));
         registry.addRecipes(JAM_POT, recipes(TFCRecipeTypes.POT.get(), recipe -> recipe.getSerializer() == TFCRecipeSerializers.POT_JAM.get()));
         registry.addRecipes(CASTING, recipes(TFCRecipeTypes.CASTING.get()));
         registry.addRecipes(LOOM, recipes(TFCRecipeTypes.LOOM.get()));
@@ -180,6 +183,7 @@ public final class JEIIntegration implements IModPlugin
         registry.addRecipeCatalyst(new ItemStack(TFCBlocks.FIREPIT.get()), HEATING);
         registry.addRecipeCatalyst(new ItemStack(TFCBlocks.QUERN.get()), QUERN);
         registry.addRecipeCatalyst(new ItemStack(TFCItems.POT.get()), SIMPLE_POT);
+        registry.addRecipeCatalyst(new ItemStack(TFCItems.POT.get()), ADVANCED_POT);
         registry.addRecipeCatalyst(new ItemStack(TFCItems.POT.get()), SOUP_POT);
         registry.addRecipeCatalyst(new ItemStack(TFCBlocks.CERAMIC_BOWL.get()), SOUP_POT);
         registry.addRecipeCatalyst(new ItemStack(Items.BOWL), SOUP_POT);
