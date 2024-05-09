@@ -45,13 +45,14 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
 {
     public static final int SLOT_EXTRA_INPUT_START = 4;
     public static final int SLOT_EXTRA_INPUT_END = 8;
+    public static final int PRE_BOIL_TIME = 100;
 
     private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.pot");
 
     private final SidedHandler.Builder<IFluidHandler> sidedFluidInventory;
     @Nullable private PotRecipe.Output output;
     @Nullable private PotRecipe cachedRecipe;
-    private int boilingTicks;
+    private int boilingTicks, preBoilingTicks;
 
     public PotBlockEntity(BlockPos pos, BlockState state)
     {
@@ -59,9 +60,10 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
 
         output = null;
         cachedRecipe = null;
-        boilingTicks = 0;
+        boilingTicks = preBoilingTicks = 0;
 
         sidedFluidInventory = new SidedHandler.Builder<>(inventory);
+        syncableData.add(() -> boilingTicks, value -> boilingTicks = value);
 
         // Items in top, Fuel and fluid in sides, items and fluid out sides, fluid in top
         if (TFCConfig.SERVER.firePitEnableAutomation.get())
@@ -84,6 +86,7 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
             output = PotRecipe.Output.read(nbt.getCompound("output"));
         }
         boilingTicks = nbt.getInt("boilingTicks");
+        preBoilingTicks = nbt.getInt("preBoilingTicks");
         super.loadAdditional(nbt);
     }
 
@@ -95,6 +98,7 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
             nbt.put("output", PotRecipe.Output.write(output));
         }
         nbt.putInt("boilingTicks", boilingTicks);
+        nbt.putInt("preBoilingTicks", preBoilingTicks);
         super.saveAdditional(nbt);
     }
 
@@ -115,11 +119,20 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
     {
         if (isBoiling())
         {
+            if (preBoilingTicks < PRE_BOIL_TIME)
+            {
+                preBoilingTicks++;
+                return;
+            }
             assert cachedRecipe != null;
             if (boilingTicks < cachedRecipe.getDuration())
             {
                 boilingTicks++;
-                if (boilingTicks == 1) markForSync();
+                if (boilingTicks == 1)
+                {
+                    updateCachedRecipe();
+                    markForSync();
+                }
             }
             else
             {
@@ -145,6 +158,7 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
                 // Reset recipe progress
                 cachedRecipe = null;
                 boilingTicks = 0;
+                preBoilingTicks = 0;
                 updateCachedRecipe();
                 markForSync();
             }
@@ -152,6 +166,7 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
         else if (boilingTicks > 0) // catch accidentally not syncing when it dips below temperature
         {
             boilingTicks = 0;
+            preBoilingTicks = 0;
             markForSync();
         }
     }
@@ -196,6 +211,7 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
     protected void coolInstantly()
     {
         boilingTicks = 0;
+        preBoilingTicks = 0;
         markForSync();
     }
 
@@ -212,12 +228,22 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
         return cachedRecipe != null && output == null && cachedRecipe.isHotEnough(temperature);
     }
 
+    public boolean hasRecipeStarted()
+    {
+        return isBoiling() && preBoilingTicks >= PRE_BOIL_TIME;
+    }
+
     /**
      * The amount of info pots actually sync to clients is low. So checking output, cached recipe, etc. won't work.
      */
     public boolean shouldRenderAsBoiling()
     {
         return boilingTicks > 0;
+    }
+
+    public int getBoilingTicks()
+    {
+        return boilingTicks;
     }
 
     public InteractionResult interactWithOutput(Player player, ItemStack stack)
@@ -276,7 +302,7 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
         @Override
         public ItemStack extractItem(int slot, int amount, boolean simulate)
         {
-            return pot.isBoiling() && slot >= SLOT_EXTRA_INPUT_START ? ItemStack.EMPTY : inventory.extractItem(slot, amount, simulate);
+            return pot.hasRecipeStarted() && slot >= SLOT_EXTRA_INPUT_START ? ItemStack.EMPTY : inventory.extractItem(slot, amount, simulate);
         }
 
         @Override

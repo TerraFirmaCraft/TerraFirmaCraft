@@ -148,7 +148,7 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
         }
     }
 
-    protected final ContainerData syncableData;
+    protected final IntArrayBuilder syncableData;
 
     protected boolean needsSlotUpdate = false; // set when fuel needs to be cascaded
     protected boolean needsRecipeUpdate = false; // set when the recipe needs to be re-cached on tick

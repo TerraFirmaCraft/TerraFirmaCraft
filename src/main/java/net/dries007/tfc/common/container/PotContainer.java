@@ -42,7 +42,7 @@ public class PotContainer extends BlockEntityContainer<PotBlockEntity>
                     // Fuel is moved directly to the fuel inventory, always
                     ? !moveItemStackTo(stack, SLOT_FUEL_CONSUME, SLOT_FUEL_INPUT + 1, false)
                     // Non-fuel tries to move to the input slots, but only when it is not boiling
-                    : blockEntity.isBoiling() || !moveItemStackTo(stack, SLOT_EXTRA_INPUT_START, SLOT_EXTRA_INPUT_END + 1, false);
+                    : blockEntity.hasRecipeStarted() || !moveItemStackTo(stack, SLOT_EXTRA_INPUT_START, SLOT_EXTRA_INPUT_END + 1, false);
                 case CONTAINER -> !moveItemStackTo(stack, containerSlots, slots.size(), false);
             };
     }
@@ -55,10 +55,11 @@ public class PotContainer extends BlockEntityContainer<PotBlockEntity>
             {
                 addSlot(new CallbackSlot(blockEntity, handler, i, 8, 70 - 18 * i));
             }
-            for (int i = SLOT_EXTRA_INPUT_START; i <= SLOT_EXTRA_INPUT_END; i++) // Pot input
-            {
-                addSlot(new CallbackSlot(blockEntity, handler, i, 62 + (i - SLOT_EXTRA_INPUT_START) * 18, 20));
-            }
+            addSlot(new CallbackSlot(blockEntity, handler, SLOT_EXTRA_INPUT_START, 65, 23));
+            addSlot(new CallbackSlot(blockEntity, handler, SLOT_EXTRA_INPUT_START + 1, 83, 23));
+            addSlot(new CallbackSlot(blockEntity, handler, SLOT_EXTRA_INPUT_START + 2, 56, 41));
+            addSlot(new CallbackSlot(blockEntity, handler, SLOT_EXTRA_INPUT_START + 3, 74, 41));
+            addSlot(new CallbackSlot(blockEntity, handler, SLOT_EXTRA_INPUT_END, 92, 41));
         });
     }
 }

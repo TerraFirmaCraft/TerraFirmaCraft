@@ -406,6 +406,16 @@ public final class RenderHelpers
         RenderSystem.setShaderColor(r, g, b, a);
     }
 
+    public static void setShaderColor(GuiGraphics graphics, int color)
+    {
+        float a = ((color >> 24) & 0xFF) / 255f;
+        float r = ((color >> 16) & 0xFF) / 255f;
+        float g = ((color >> 8) & 0xFF) / 255f;
+        float b = ((color) & 0xFF) / 255f;
+
+        graphics.setColor(r, g, b, a);
+    }
+
     /**
      * This is the map code in {@link net.minecraft.client.renderer.ItemInHandRenderer}
      */

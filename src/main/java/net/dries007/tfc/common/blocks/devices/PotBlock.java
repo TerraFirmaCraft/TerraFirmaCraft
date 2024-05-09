@@ -90,6 +90,7 @@ public class PotBlock extends FirepitBlock
             }
             else if (!pot.isBoiling() && FluidHelpers.transferBetweenBlockEntityAndItem(stack, pot, player, hand))
             {
+                pot.setAndUpdateSlots(-1);
                 pot.markForSync();
                 return InteractionResult.sidedSuccess(level.isClientSide);
             }
