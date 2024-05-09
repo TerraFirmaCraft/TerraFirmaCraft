@@ -3,8 +3,5 @@
   "ingredient": {
     "item": "tfc:food/potato"
   },
-  "hunger": 4,
-  "saturation": 0.5,
-  "decay_modifier": 0.666,
-  "vegetables": 1.0
+  "heat_capacity": 1.0
 }

@@ -89,6 +89,7 @@ public enum Food
     GREEN_BELL_PEPPER,
     ONION,
     POTATO,
+    BAKED_POTATO,
     RED_BELL_PEPPER,
     SOYBEAN,
     SUGARCANE,

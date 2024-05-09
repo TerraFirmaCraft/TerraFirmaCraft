@@ -1,10 +1,11 @@
 {
   "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:heating",
   "ingredient": {
     "item": "tfc:food/potato"
   },
-  "hunger": 4,
-  "saturation": 0.5,
-  "decay_modifier": 0.666,
-  "vegetables": 1.0
+  "result_item": {
+    "item": "tfc:food/baked_potato"
+  },
+  "temperature": 200
 }
