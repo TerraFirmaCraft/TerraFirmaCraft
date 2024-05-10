@@ -767,7 +767,7 @@ public final class ClientEventHandler
                                 grassColor, reg.get());
         });
         TFCBlocks.POTTED_PLANTS.forEach((plant, reg) -> {
-            if (plant.isBlockTinted())
+            if (plant.isFlowerpotTinted())
                 event.register(grassColor, reg.get());
         });
         TFCBlocks.WOODS.forEach((wood, reg) -> event.register(
