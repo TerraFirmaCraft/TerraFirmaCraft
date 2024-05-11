@@ -755,15 +755,21 @@ public final class ClientEventHandler
         event.register(grassBlockColor, TFCBlocks.PEAT_GRASS.get());
         event.register(grassBlockColor, TFCBlocks.KAOLIN_CLAY_GRASS.get());
 
-        TFCBlocks.PLANTS.forEach((plant, reg) -> event.register(
-            plant.isTallGrass() ?
-                tallGrassColor :
-                plant.isSeasonal() ?
-                    (state, level, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex, 145) :
-                    plant.isFoliage() ?
-                        foliageColor :
-                        grassColor, reg.get()));
-        TFCBlocks.POTTED_PLANTS.forEach((plant, reg) -> event.register(grassColor, reg.get()));
+        TFCBlocks.PLANTS.forEach((plant, reg) -> {
+            if (plant.isBlockTinted())
+                event.register(
+                    plant.isTallGrass() ?
+                        tallGrassColor :
+                        plant.isSeasonal() ?
+                            (state, level, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex, 145) :
+                            plant.isFoliage() ?
+                                foliageColor :
+                                grassColor, reg.get());
+        });
+        TFCBlocks.POTTED_PLANTS.forEach((plant, reg) -> {
+            if (plant.isFlowerpotTinted())
+                event.register(grassColor, reg.get());
+        });
         TFCBlocks.WOODS.forEach((wood, reg) -> event.register(
             wood.isConifer() ?
                 foliageColor :
