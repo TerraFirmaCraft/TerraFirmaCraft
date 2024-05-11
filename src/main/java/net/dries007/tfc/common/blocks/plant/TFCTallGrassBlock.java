@@ -66,7 +66,7 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
         if (PlantRegrowth.canSpread(level, random) && state.getValue(PART) == Part.LOWER)
         {
             final BlockPos newPos = PlantRegrowth.spreadSelf(state, level, pos, random, 2, 2, 4);
-            if (newPos != null && level.getBlockState(newPos.above()).isAir())
+            if (newPos != null && PlantRegrowth.DEFAULT_PLACEMENT_TEST.test(level.getBlockState(newPos.above()), newPos.above()))
             {
                 placeTwoHalves(level, newPos, 2, random);
             }

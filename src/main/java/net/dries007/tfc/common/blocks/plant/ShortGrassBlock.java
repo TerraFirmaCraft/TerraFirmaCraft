@@ -18,10 +18,11 @@ import net.minecraftforge.common.Tags;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.blocks.ISpecialPile;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.registry.RegistryPlant;
 
-public abstract class ShortGrassBlock extends PlantBlock
+public abstract class ShortGrassBlock extends PlantBlock implements ISpecialPile
 {
     protected static final VoxelShape GRASS_SHAPE = box(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
     protected static final VoxelShape SHORTER_GRASS_SHAPE = box(2.0, 0.0, 2.0, 14.0, 8.0, 14.0);
@@ -88,6 +89,13 @@ public abstract class ShortGrassBlock extends PlantBlock
                 case 2 -> SHORT_GRASS_SHAPE;
                 default -> GRASS_SHAPE;
             };
+    }
+
+
+    @Override
+    public BlockState getHiddenState(BlockState internalState, boolean byPlayer)
+    {
+        return internalState.setValue(AGE, 0);
     }
 
     @Override

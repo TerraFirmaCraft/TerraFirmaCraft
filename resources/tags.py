@@ -58,7 +58,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('usable_in_bookshelf', '#tfc:books')
     rm.item_tag('compost_greens_low', '#tfc:plants')
     rm.item_tag('compost_greens', '#tfc:foods/grains')
-    rm.item_tag('compost_greens_high', '#tfc:foods/vegetables', '#tfc:foods/fruits')
+    rm.item_tag('compost_greens_high', '#tfc:foods/vegetables', '#tfc:foods/fruits', 'tfc:groundcover/seaweed')
     rm.item_tag('compost_browns_low', *['tfc:plant/%s' % p for p in BROWN_COMPOST_PLANTS], '#tfc:fallen_leaves', 'minecraft:hanging_roots')
     rm.item_tag('compost_browns', 'tfc:powder/wood_ash', 'tfc:jute')
     rm.item_tag('compost_browns_high', 'tfc:groundcover/humus', 'tfc:groundcover/dead_grass', 'tfc:groundcover/driftwood', 'tfc:groundcover/pinecone', 'minecraft:paper', 'tfc:melon', 'tfc:pumpkin', 'tfc:jute_fiber')
@@ -212,6 +212,7 @@ def generate(rm: ResourceManager):
 
     for crop in CROPS:
         rm.block_and_item_tag('tfc:wild_crops', 'tfc:wild_crop/%s' % crop)
+        rm.block_and_item_tag('tfc:dead_crops', 'tfc:dead_crop/%s' % crop)
         rm.block_tag('crops', 'tfc:crop/%s' % crop)
     for fruit in FRUITS:
         rm.block_and_item_tag('tfc:wild_fruits', 'tfc:plant/%s_sapling' % fruit)
@@ -420,7 +421,7 @@ def generate(rm: ResourceManager):
     rm.block_tag('kelp_branch', 'tfc:plant/giant_kelp_plant')
     rm.block_tag('halophyte', 'tfc:plant/sea_lavender', 'tfc:plant/cordgrass')
     rm.block_tag('snow', 'minecraft:snow', 'minecraft:snow_block', 'tfc:snow_pile')
-    rm.block_tag('can_be_snow_piled', '#tfc:twigs', '#tfc:fallen_leaves', '#tfc:loose_rocks')
+    rm.block_tag('can_be_snow_piled', '#tfc:twigs', '#tfc:fallen_leaves', '#tfc:loose_rocks', '#tfc:wild_crops')
     rm.block_tag('plants', *['tfc:wild_crop/%s' % crop for crop in CROPS.keys()])
     rm.block_and_item_tag('clay_indicators', *['tfc:plant/%s' % plant for plant in ('athyrium_fern', 'canna', 'goldenrod', 'pampas_grass', 'perovskia', 'water_canna')])
     rm.block_tag('tide_pool_blocks', *['tfc:groundcover/%s' % g for g in ('clam', 'mollusk', 'mussel', 'sea_urchin')])

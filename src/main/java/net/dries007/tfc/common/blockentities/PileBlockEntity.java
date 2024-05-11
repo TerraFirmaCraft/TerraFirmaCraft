@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.GroundcoverBlockType;
+import net.dries007.tfc.common.blocks.ISpecialPile;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.crop.WildCropBlock;
 import net.dries007.tfc.util.Helpers;
@@ -43,17 +44,24 @@ public class PileBlockEntity extends TFCBlockEntity
         {
             this.internalState = TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.HUMUS).get().defaultBlockState();
         }
-        else if (internalState.getBlock() instanceof WildCropBlock && internalState.hasProperty(WildCropBlock.MATURE))
+        else if (internalState.getBlock() instanceof ISpecialPile special)
         {
-            this.internalState = internalState.setValue(WildCropBlock.MATURE, false);
+            this.internalState = special.getHiddenState(internalState, byPlayer);
         }
         else
         {
             this.internalState = internalState;
         }
-        this.aboveState = aboveState;
-    }
 
+        if (aboveState != null && aboveState.getBlock() instanceof ISpecialPile special)
+        {
+            this.aboveState = special.getHiddenStateAbove(aboveState, byPlayer);
+        }
+        else
+        {
+            this.aboveState = aboveState;
+        }
+    }
 
     public BlockState getInternalState()
     {

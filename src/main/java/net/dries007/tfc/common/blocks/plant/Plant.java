@@ -23,6 +23,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.Fluids;
 
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 
 import net.dries007.tfc.common.blocks.ExtendedProperties;
@@ -363,7 +364,7 @@ public enum Plant implements RegistryPlant
          */
         private static BlockBehaviour.Properties solid()
         {
-            return Block.Properties.of().instabreak().noOcclusion().sound(SoundType.GRASS).randomTicks();
+            return Block.Properties.of().instabreak().noOcclusion().sound(SoundType.GRASS).randomTicks().pushReaction(PushReaction.DESTROY);
         }
 
         private static BlockBehaviour.Properties nonSolid(Plant plant)
@@ -373,17 +374,17 @@ public enum Plant implements RegistryPlant
 
         private static BlockBehaviour.Properties solidTallPlant()
         {
-            return BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).instabreak().noOcclusion().randomTicks().sound(SoundType.WEEPING_VINES);
+            return BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).instabreak().noOcclusion().randomTicks().sound(SoundType.WEEPING_VINES).pushReaction(PushReaction.DESTROY);
         }
 
         private static BlockBehaviour.Properties nonSolidTallPlant(Plant plant)
         {
-            return solidTallPlant().instabreak().noCollission().speedFactor(plant.speedFactor);
+            return solidTallPlant().instabreak().noCollission().speedFactor(plant.speedFactor).pushReaction(PushReaction.DESTROY);
         }
 
         private static BlockBehaviour.Properties kelp(Plant plant)
         {
-            return BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).noCollission().randomTicks().speedFactor(plant.speedFactor).strength(1.0f).sound(SoundType.WET_GRASS);
+            return BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).noCollission().randomTicks().speedFactor(plant.speedFactor).strength(1.0f).sound(SoundType.WET_GRASS).pushReaction(PushReaction.DESTROY);
         }
 
         private static ExtendedProperties fire(BlockBehaviour.Properties properties)

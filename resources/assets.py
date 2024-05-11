@@ -1077,7 +1077,7 @@ def generate(rm: ResourceManager):
                 'conditions': loot_tables.block_state_property('tfc:dead_crop/%s[mature=false]' % crop)
             }))
 
-            block = rm.block(('wild_crop', crop)).with_lang(lang('Wild %s', crop)).with_tag('can_be_snow_piled')
+            block = rm.block(('wild_crop', crop)).with_lang(lang('Wild %s', crop))
             block.with_block_model(textures={'crop': 'tfc:block/crop/%s_wild' % crop}, parent='tfc:block/wild_crop/crop')
             rm.item_model(('wild_crop', crop), parent='tfc:block/wild_crop/%s' % crop, no_textures=True)
 
@@ -1264,7 +1264,7 @@ def generate(rm: ResourceManager):
             else:
                 rm.block_loot(p, {'name': p, 'conditions': [loot_tables.match_tag('tfc:sharp_tools'), lower_only]})
         else:
-            rm.block_loot(p, {'name': p, 'conditions': [loot_tables.match_tag('tfc:sharp_tools')]})
+            rm.block_loot(p, {'name': p, 'conditions': [loot_tables.any_of(loot_tables.match_tag('tfc:sharp_tools'), loot_tables.match_tag('forge:shears'))]})
     # todo this is a mess
     for plant in ('hanging_vines', 'jungle_vines', 'ivy', 'liana', 'tree_fern', 'arundo', 'spanish_moss'):
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))
