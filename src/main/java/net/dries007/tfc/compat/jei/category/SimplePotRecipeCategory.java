@@ -8,6 +8,7 @@ package net.dries007.tfc.compat.jei.category;
 
 import java.util.List;
 
+import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
@@ -41,8 +42,11 @@ public class SimplePotRecipeCategory extends PotRecipeCategory<PotRecipe>
     public void setRecipe(IRecipeLayoutBuilder builder, PotRecipe potRecipe, IFocusGroup focuses)
     {
         SimplePotRecipe recipe = (SimplePotRecipe) potRecipe;
+
+        final List<Ingredient> ingredients = recipe.getItemIngredients();
+
         int i = 0;
-        for (Ingredient ingredient : recipe.getItemIngredients())
+        for (Ingredient ingredient : ingredients)
         {
             if (!ingredient.isEmpty())
             {
@@ -63,12 +67,13 @@ public class SimplePotRecipeCategory extends PotRecipeCategory<PotRecipe>
         }
 
         int j = 0;
-        for (ItemStack stack : recipe.getOutputStacks())
+        for (ItemStackProvider provider : recipe.getOutputProviders())
         {
-            if (!stack.isEmpty())
+            final List<ItemStack> stacks = collapse(List.of(ingredients.get(j).getItems()), provider);
+            if (!stacks.isEmpty())
             {
                 IRecipeSlotBuilder output = builder.addSlot(RecipeIngredientRole.OUTPUT, OUTPUT_X[j] + 1, OUTPUT_Y[j] + 1);
-                output.addItemStack(stack);
+                output.addItemStacks(stacks);
                 output.setBackground(slot, -1, -1);
                 j++;
             }
