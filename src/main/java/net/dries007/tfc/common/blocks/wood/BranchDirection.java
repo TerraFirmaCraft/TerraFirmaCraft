@@ -125,6 +125,21 @@ public enum BranchDirection implements StringRepresentable
         this.serializedName = name().toLowerCase(Locale.ROOT);
     }
 
+    public int getDx()
+    {
+        return dx;
+    }
+
+    public int getDy()
+    {
+        return dy;
+    }
+
+    public int getDz()
+    {
+        return dz;
+    }
+
     public BranchDirection rotate(Rotation rotation)
     {
         return switch (rotation)
