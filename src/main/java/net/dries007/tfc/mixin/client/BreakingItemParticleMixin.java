@@ -17,13 +17,16 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(BreakingItemParticle.class)
-public abstract class BreakingItemParticleMixin extends TextureSheetParticle {
-    protected BreakingItemParticleMixin(ClientLevel p_108323_, double p_108324_, double p_108325_, double p_108326_) {
-        super(p_108323_, p_108324_, p_108325_, p_108326_);
+public abstract class BreakingItemParticleMixin extends TextureSheetParticle
+{
+    protected BreakingItemParticleMixin(ClientLevel level, double x, double y, double z)
+    {
+        super(level, x, y, z);
     }
 
     @Inject(method = "<init>(Lnet/minecraft/client/multiplayer/ClientLevel;DDDLnet/minecraft/world/item/ItemStack;)V", at = @At("TAIL"))
-    private void inject$constructor(ClientLevel level, double x, double y, double z, ItemStack item, CallbackInfo ci) {
+    private void inject$constructor(ClientLevel level, double x, double y, double z, ItemStack item, CallbackInfo ci)
+    {
         int i = Minecraft.getInstance().getItemColors().getColor(item, 0);
         this.rCol *= (float)(i >> 16 & 255) / 255.0F;
         this.gCol *= (float)(i >> 8 & 255) / 255.0F;
