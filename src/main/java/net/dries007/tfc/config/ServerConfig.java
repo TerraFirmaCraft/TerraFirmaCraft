@@ -64,6 +64,8 @@ public class ServerConfig
     public final ForgeConfigSpec.EnumValue<Size> chestMaximumItemSize;
     // Blocks - Large Vessel
     public final ForgeConfigSpec.BooleanValue largeVesselEnableAutomation;
+    // Blocks - Quern
+    public final ForgeConfigSpec.BooleanValue quernEnableAutomation;
     // Blocks - Torch
     public final ForgeConfigSpec.IntValue torchTicks;
     // Blocks - Torch
@@ -343,6 +345,10 @@ public class ServerConfig
         builder.swap("largeVessel");
 
         largeVesselEnableAutomation = builder.comment("If true, large vessels will interact with in-world automation such as hoppers on a side-specific basis.").define("largeVesselEnableAutomation", true);
+
+        builder.swap("quern");
+
+        quernEnableAutomation = builder.comment("If true, querns will interact with in-world automation such as hoppers on a side-specific basis.").define("quernEnableAutomation", true);
 
         builder.swap("torch");
 

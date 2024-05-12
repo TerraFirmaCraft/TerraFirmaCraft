@@ -7,15 +7,21 @@
 package net.dries007.tfc.compat.jade.common;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import javax.annotation.Nullable;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -238,6 +244,18 @@ public final class BlockEntityTooltips
                         timeLeft(level, tooltip, ticksLeft);
                         tooltip.accept(Component.translatable("tfc.jade.creating", recipe.getResultItem(level.registryAccess()).getHoverName()));
                     }
+                }
+            }
+            if (TFCConfig.CLIENT.enableDebug.get())
+            {
+                final Object2IntMap<Item> items = new Object2IntOpenHashMap<>();
+                for (ItemStack stack : bloomery.getInputStacks())
+                {
+                    items.mergeInt(stack.getItem(), 1, Integer::sum);
+                }
+                for (Map.Entry<Item, Integer> entry : items.object2IntEntrySet())
+                {
+                    itemWithCount(tooltip, new ItemStack(entry.getKey(), entry.getValue()));
                 }
             }
         }

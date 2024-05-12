@@ -212,7 +212,6 @@ def generate(rm: ResourceManager):
 
     for crop in CROPS:
         rm.block_and_item_tag('tfc:wild_crops', 'tfc:wild_crop/%s' % crop)
-        rm.block_and_item_tag('tfc:dead_crops', 'tfc:dead_crop/%s' % crop)
         rm.block_tag('crops', 'tfc:crop/%s' % crop)
     for fruit in FRUITS:
         rm.block_and_item_tag('tfc:wild_fruits', 'tfc:plant/%s_sapling' % fruit)

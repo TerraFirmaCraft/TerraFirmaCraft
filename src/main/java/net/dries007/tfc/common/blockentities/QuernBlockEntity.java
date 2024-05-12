@@ -26,9 +26,11 @@ import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.rotation.RotationSinkBlockEntity;
 import net.dries007.tfc.common.blocks.devices.QuernBlock;
+import net.dries007.tfc.common.capabilities.PartialItemHandler;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.QuernRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.rotation.NetworkAction;
 import net.dries007.tfc.util.rotation.Node;
@@ -142,6 +144,13 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
                 return "Quern[pos=%s]".formatted(pos());
             }
         };
+
+        if (Helpers.getValueOrDefault(TFCConfig.SERVER.quernEnableAutomation))
+        {
+            sidedInventory
+                .on(new PartialItemHandler(inventory).insert(SLOT_INPUT, SLOT_HANDSTONE), Direction.Plane.HORIZONTAL)
+                .on(new PartialItemHandler(inventory).extract(SLOT_OUTPUT), Direction.DOWN);
+        }
     }
 
     public void updateHandstone()
@@ -161,6 +170,7 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
     {
         super.setAndUpdateSlots(slot);
         needsStateUpdate = true;
+        markForSync();
     }
 
     @Override
