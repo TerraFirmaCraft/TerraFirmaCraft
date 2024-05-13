@@ -22,9 +22,6 @@ import net.minecraft.world.phys.Vec3;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
-/**
- * Todo: this doesn't work yet for multipart baked models because they do crap with render types that is wrong.
- */
 public interface IGhostBlockHandler
 {
     /**
