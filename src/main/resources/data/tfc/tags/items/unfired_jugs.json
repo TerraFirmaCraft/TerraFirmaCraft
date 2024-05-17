@@ -1,0 +1,23 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:ceramic/unfired_jug",
+    "tfc:ceramic/white_unfired_jug",
+    "tfc:ceramic/orange_unfired_jug",
+    "tfc:ceramic/magenta_unfired_jug",
+    "tfc:ceramic/light_blue_unfired_jug",
+    "tfc:ceramic/yellow_unfired_jug",
+    "tfc:ceramic/lime_unfired_jug",
+    "tfc:ceramic/pink_unfired_jug",
+    "tfc:ceramic/gray_unfired_jug",
+    "tfc:ceramic/light_gray_unfired_jug",
+    "tfc:ceramic/cyan_unfired_jug",
+    "tfc:ceramic/purple_unfired_jug",
+    "tfc:ceramic/blue_unfired_jug",
+    "tfc:ceramic/brown_unfired_jug",
+    "tfc:ceramic/green_unfired_jug",
+    "tfc:ceramic/red_unfired_jug",
+    "tfc:ceramic/black_unfired_jug"
+  ]
+}

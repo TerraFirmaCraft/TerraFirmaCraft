@@ -54,6 +54,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
@@ -838,6 +839,8 @@ public final class ClientEventHandler
         }
 
         TFCItems.MOLDS.values().forEach(reg -> event.register(new ContainedFluidModel.Colors(), reg.get()));
+        TFCItems.GLAZED_JUGS.values().forEach(reg -> event.register(new ContainedFluidModel.Colors(), reg.get()));
+
         event.register(new ContainedFluidModel.Colors(), TFCItems.WOODEN_BUCKET.get(), TFCItems.BELL_MOLD.get(), TFCItems.FIRE_INGOT_MOLD.get(), TFCItems.JUG.get(), TFCItems.SILICA_GLASS_BOTTLE.get(), TFCItems.HEMATITIC_GLASS_BOTTLE.get(), TFCItems.VOLCANIC_GLASS_BOTTLE.get(), TFCItems.OLIVINE_GLASS_BOTTLE.get());
     }
 

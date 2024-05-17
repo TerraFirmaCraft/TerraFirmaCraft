@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:ceramic/yellow_unfired_jug"
+  },
+  "result_item": {
+    "item": "tfc:ceramic/yellow_glazed_jug"
+  },
+  "temperature": 1399
+}

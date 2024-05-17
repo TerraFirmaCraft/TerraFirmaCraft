@@ -327,6 +327,11 @@ public final class TFCItems
     public static final RegistryObject<Item> UNFIRED_JUG = register("ceramic/unfired_jug");
     public static final RegistryObject<Item> JUG = register("ceramic/jug", () -> new JugItem(new Item.Properties().stacksTo(1), TFCConfig.SERVER.jugCapacity, TFCTags.Fluids.USABLE_IN_JUG));
 
+    public static final Map<DyeColor, RegistryObject<Item>> UNFIRED_JUGS = Helpers.mapOfKeys(DyeColor.class, color ->
+        register("ceramic/" + color + "_unfired_jug"));
+    public static final Map<DyeColor, RegistryObject<Item>> GLAZED_JUGS = Helpers.mapOfKeys(DyeColor.class, color ->
+        register("ceramic/" + color + "_glazed_jug", () -> new JugItem(new Item.Properties().stacksTo(1), TFCConfig.SERVER.jugCapacity, TFCTags.Fluids.USABLE_IN_JUG)));
+
     public static final RegistryObject<Item> UNFIRED_POT = register("ceramic/unfired_pot");
     public static final RegistryObject<Item> POT = register("ceramic/pot");
 

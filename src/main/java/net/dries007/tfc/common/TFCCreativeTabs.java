@@ -459,6 +459,8 @@ public final class TFCCreativeTabs
             accept(out, TFCItems.GLAZED_VESSELS, color);
             accept(out, TFCItems.UNFIRED_GLAZED_LARGE_VESSELS, color);
             accept(out, TFCBlocks.GLAZED_LARGE_VESSELS, color);
+            accept(out, TFCItems.UNFIRED_JUGS, color);
+            accept(out, TFCItems.GLAZED_JUGS, color);
         }
         for (Metal.ItemType type : Metal.ItemType.values())
         {

@@ -4,7 +4,7 @@
   "values": [
     "minecraft:bucket",
     "tfc:wooden_bucket",
-    "tfc:ceramic/jug",
+    "#tfc:fired_jugs",
     "tfc:metal/bucket/red_steel",
     "tfc:metal/bucket/blue_steel",
     "#tfc:glass_bottles"

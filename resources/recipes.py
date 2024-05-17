@@ -558,9 +558,10 @@ def generate(rm: ResourceManager):
         heat_recipe(rm, 'glazed_terracotta_%s' % color, 'minecraft:%s_terracotta' % color, POTTERY_MELT, result_item='minecraft:%s_glazed_terracotta' % color)
         heat_recipe(rm, 'glazed_ceramic_vessel_%s' % color, 'tfc:ceramic/%s_unfired_vessel' % color, POTTERY_MELT, 'tfc:ceramic/%s_glazed_vessel' % color)
         heat_recipe(rm, 'glazed_large_vessel_%s' % color, 'tfc:ceramic/unfired_large_vessel/%s' % color, POTTERY_MELT, 'tfc:ceramic/large_vessel/%s' % color)
-
+        heat_recipe(rm, 'glazed_ceramic_jug_%s' % color, 'tfc:ceramic/%s_unfired_jug' % color, POTTERY_MELT, 'tfc:ceramic/%s_glazed_jug' % color)
         rm.crafting_shapeless('crafting/ceramic/%s_unfired_vessel' % color, ('minecraft:%s_dye' % color, 'tfc:ceramic/unfired_vessel'), 'tfc:ceramic/%s_unfired_vessel' % color).with_advancement('minecraft:%s_dye' % color)
         rm.crafting_shapeless('crafting/ceramic/%s_unfired_large_vessel' % color, ('minecraft:%s_dye' % color, 'tfc:ceramic/unfired_large_vessel'), 'tfc:ceramic/unfired_large_vessel/%s' % color).with_advancement('minecraft:%s_dye' % color)
+        rm.crafting_shapeless('crafting/ceramic/%s_unfired_jug' % color, ('minecraft:%s_dye' % color, 'tfc:ceramic/unfired_jug'), 'tfc:ceramic/%s_unfired_jug' % color).with_advancement('minecraft:%s_dye' % color)
         if color != 'white':
             rm.crafting_shaped('crafting/vanilla/color/%s_bed' % color, ['ZZZ', 'XXX', 'YYY'], {'X': '#tfc:high_quality_cloth', 'Y': '#tfc:lumber', 'Z': 'minecraft:%s_dye' % color}, 'minecraft:%s_bed' % color).with_advancement('#tfc:high_quality_cloth')
         rm.crafting_shapeless('crafting/vanilla/color/%s_concrete_powder' % color, ('minecraft:%s_dye' % color, '#forge:sand', '#forge:sand', '#forge:sand', '#forge:sand', '#forge:gravel', '#forge:gravel', '#forge:gravel', '#forge:gravel'), (8, 'minecraft:%s_concrete_powder' % color))
@@ -897,6 +898,7 @@ def generate(rm: ResourceManager):
         barrel_sealed_recipe(rm, 'dye/%s_shulker' % color, 'Dyeing Shulker %s' % color, 1000, 'minecraft:shulker_box', fluid, 'minecraft:%s_shulker_box' % color)
         barrel_sealed_recipe(rm, 'dye/%s_glazed_vessel' % color, 'Dyeing Unfired Vessel %s' % color, 1000, 'tfc:ceramic/unfired_vessel', fluid, 'tfc:ceramic/%s_unfired_vessel' % color)
         barrel_sealed_recipe(rm, 'dye/%s_glazed_large_vessel' % color, 'Dyeing Unfired Large Vessel %s' % color, 1000, 'tfc:ceramic/unfired_large_vessel', fluid, 'tfc:ceramic/unfired_large_vessel/%s' % color)
+        barrel_sealed_recipe(rm, 'dye/%s_glazed_jug' % color, 'Dyeing Unfired Jug %s' % color, 1000, 'tfc:ceramic/unfired_jug', fluid, 'tfc:ceramic/%s_unfired_jug' % color)
         barrel_sealed_recipe(rm, 'dye/%s_concrete_powder' % color, 'Dyeing Aggregate %s' % color, 1000, 'tfc:aggregate', fluid, 'minecraft:%s_concrete_powder' % color)
         barrel_sealed_recipe(rm, 'dye/%s_candle' % color, 'Dyeing Candle %s' % color, 1000, 'tfc:candle', fluid, 'tfc:candle/%s' % color)
         barrel_sealed_recipe(rm, 'dye/%s_leather' % color, 'Dyeing Leather %s' % color, 1000, leather_items, fluid, output_item=item_stack_provider(copy_input=True, dye_color=color))

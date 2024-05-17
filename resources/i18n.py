@@ -23,7 +23,7 @@ class I18n:
             if validate:
                 raise ValueError('Cannot validate book for lang %s, as resources/lang/%s.json does not exist' % (lang, lang))
             print('Writing default translation for language %s to %s' % (self.lang, self.lang_path))
-            with open(self.lang_path, 'w', encoding='utf-8') as f:
+            with open(self.lang_path, 'w+', encoding='utf-8') as f:
                 f.write('{}\n')
 
         # Read the existing translation
