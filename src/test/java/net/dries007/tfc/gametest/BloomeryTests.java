@@ -99,7 +99,7 @@ public class BloomeryTests
         addItems(0, 48);
         runAfterDelay(50, () -> addItems(0, 16));
         runAfterDelay(100, () -> {
-            at(2, 5, 2).itemEntityIsPresent(oreItem(), 16, 2.0);
+            at(2, 5, 2).itemEntityIsPresent(oreItem(), 48, 2.0);
             succeed();
         });
     }
