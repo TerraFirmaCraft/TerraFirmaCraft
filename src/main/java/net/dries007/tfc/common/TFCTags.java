@@ -210,6 +210,7 @@ public class TFCTags
         public static final TagKey<Item> PENGUIN_FOOD = create("penguin_food");
         public static final TagKey<Item> TURTLE_FOOD = create("turtle_food");
         public static final TagKey<Item> FROG_FOOD = create("frog_food");
+        public static final TagKey<Item> RABBIT_FOOD = create("rabbit_food");
         public static final TagKey<Item> SCRIBING_INK = create("scribing_ink");
         public static final TagKey<Item> SMALL_FISHING_BAIT = create("small_fishing_bait");
         public static final TagKey<Item> LARGE_FISHING_BAIT = create("large_fishing_bait");

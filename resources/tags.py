@@ -161,6 +161,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('musk_ox_food', '#tfc:foods/grains')
     rm.item_tag('cat_food', '#tfc:foods/grains', '#tfc:foods/cooked_meats', '#tfc:foods/dairy', '#minecraft:fishes')
     rm.item_tag('dog_food', '#tfc:foods/grains', '#tfc:foods/meats', 'minecraft:rotten_flesh', '#tfc:foods/vegetables')
+    rm.item_tag('rabbit_food', '#tfc:foods/grains', '#tfc:foods/vegetables')
     rm.item_tag('penguin_food', 'tfc:food/dried_kelp', 'tfc:food/dried_seaweed', '#minecraft:fishes')
     rm.item_tag('turtle_food', 'tfc:food/dried_kelp', 'tfc:food/dried_seaweed')
     rm.item_tag('frog_food', 'tfc:food/dried_kelp', 'tfc:food/dried_seaweed', '#tfc:foods/grains')

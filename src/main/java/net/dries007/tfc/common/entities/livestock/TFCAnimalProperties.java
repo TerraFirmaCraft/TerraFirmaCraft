@@ -10,6 +10,8 @@ import java.util.Locale;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import net.minecraft.Util;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -20,6 +22,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -188,8 +191,16 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal, BrainBreeder
 
     default InteractionResult eatFood(@Nonnull ItemStack stack, InteractionHand hand, Player player)
     {
-        Level level = getEntity().level();
-        getEntity().heal(1f);
+        final LivingEntity entity = getEntity();
+        final Level level = entity.level();
+        final RandomSource random = entity.getRandom();
+
+        for (int i = 0; i < 5; i++)
+        {
+            level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, stack), entity.getX() + 0.5, entity.getEyeY(), entity.getZ(), Helpers.triangle(random, 0.1f), Helpers.triangle(random, 0.1f), Helpers.triangle(random, 0.1f));
+        }
+
+        entity.heal(1f);
         if (!level.isClientSide)
         {
             final long days = getCalendar().getTotalDays();
@@ -219,10 +230,10 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal, BrainBreeder
                 setFamiliarity(familiarity);
                 if (player instanceof ServerPlayer serverPlayer)
                 {
-                    TFCAdvancements.FED_ANIMAL.trigger(serverPlayer, getEntity());
+                    TFCAdvancements.FED_ANIMAL.trigger(serverPlayer, entity);
                 }
             }
-            getEntity().playSound(eatingSound(stack), 1f, 1f);
+            entity.playSound(eatingSound(stack), 1f, 1f);
         }
         return InteractionResult.SUCCESS;
     }
