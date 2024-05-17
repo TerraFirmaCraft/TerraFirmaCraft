@@ -577,7 +577,7 @@ public final class RenderHelpers
 
         for (RenderType type : model.getRenderTypes(state, random, ModelData.EMPTY))
         {
-            br.renderBatched(state, lookPos, level, stack, builder, false, random, ModelData.EMPTY, rt);
+            br.renderBatched(state, lookPos, level, stack, builder, false, random, ModelData.EMPTY, type);
         }
 
         RenderSystem.enableCull();
