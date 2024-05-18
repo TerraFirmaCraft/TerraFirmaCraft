@@ -1132,7 +1132,7 @@ def generate(rm: ResourceManager):
                 'functions': crop_yield(0, (6, 10))
             }, {
                 'name': 'tfc:seeds/%s' % crop,
-                'conditions': loot_tables.block_state_property('tfc:crop/%s[part=bottom]' % crop)
+                'conditions': loot_tables.block_state_property('tfc:crop/%s[part=bottom,part=bottom]' % crop)
             })
 
             block = rm.blockstate(('dead_crop', crop), variants={
@@ -1146,11 +1146,11 @@ def generate(rm: ResourceManager):
 
             block.with_block_loot(loot_tables.alternatives({
                 'name': 'tfc:seeds/%s' % crop,
-                'conditions': loot_tables.block_state_property('tfc:dead_crop/%s[mature=true]' % crop),
+                'conditions': loot_tables.block_state_property('tfc:dead_crop/%s[mature=true,part=bottom]' % crop),
                 'functions': loot_tables.set_count(1, 3)
             }, {
                 'name': 'tfc:seeds/%s' % crop,
-                'conditions': loot_tables.block_state_property('tfc:dead_crop/%s[mature=false]' % crop)
+                'conditions': loot_tables.block_state_property('tfc:dead_crop/%s[mature=false,part=bottom]' % crop)
             }))
 
         elif crop_data.type == 'double_stick':
