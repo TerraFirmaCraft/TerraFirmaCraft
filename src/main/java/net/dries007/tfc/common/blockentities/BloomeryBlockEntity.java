@@ -367,7 +367,7 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
                     foundInputs.add(entity);
                 }
             }
-            if (hasSeenCatalyst && hasSeenInput)
+            if (hasSeenCatalyst && hasSeenInput || (!inputStacks.isEmpty() && (hasSeenCatalyst || hasSeenInput)))
             {
                 // Now, insert as many items individually as we can, up to capacity
                 Helpers.consumeItemsFromEntitiesIndividually(foundInputs, capacity - inputStacks.size(), inputStacks::add);

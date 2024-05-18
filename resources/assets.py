@@ -968,11 +968,15 @@ def generate(rm: ResourceManager):
                    'name': 'tfc:ore/small_%s' % ore,
                    'conditions': [loot_tables.random_chance(chance)],  # 50% chance (for pan)
                 }, {
-                   'name': 'tfc:rock/loose/%s' % rock if rock not in ('rhyolite', 'dacite', 'andesite') else 'tfc:groundcover/pumice',
+                   'name': 'tfc:rock/loose/%s' % rock,
                    'conditions': [loot_tables.random_chance(0.5)],  # 25% chance
+                },
+                {
+                    'name': 'tfc:rock/loose/%s' % rock if rock not in ('rhyolite', 'dacite', 'andesite') else 'tfc:groundcover/pumice',
+                    'conditions': [loot_tables.random_chance(0.25)],  # 6.25% chance... for when its not pumice this just rerolls loose rocks
                 }, {
                    'name': 'tfc:ore/%s' % rare,
-                   'conditions': [loot_tables.random_chance(0.04)],  # 1% chance
+                   'conditions': [loot_tables.random_chance(0.0533)],  # 1% chance
                 })], path=path, loot_type=loot_type)
 
     rm.item_model(('pan', 'filled'), {'particle': 'tfc:item/pan/interior'}, parent='tfc:item/entity_with_transforms').with_lang(lang('Filled Pan'))
@@ -1225,6 +1229,7 @@ def generate(rm: ResourceManager):
     rm.block_model(('crop', 'stick'), {'crop': 'tfc:block/crop/stick_top'}, parent='block/crop')
 
     # Plants
+    shears_or_knife = loot_tables.any_of(loot_tables.match_tag('tfc:sharp_tools'), loot_tables.match_tag('forge:shears'))
     for plant, plant_data in PLANTS.items():
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))
         p = 'tfc:plant/%s' % plant
@@ -1262,9 +1267,9 @@ def generate(rm: ResourceManager):
                     {'name': p, 'conditions': [loot_tables.match_tag('forge:shears'), lower_only]}
                 ))
             else:
-                rm.block_loot(p, {'name': p, 'conditions': [loot_tables.match_tag('tfc:sharp_tools'), lower_only]})
+                rm.block_loot(p, {'name': p, 'conditions': [shears_or_knife, lower_only]})
         else:
-            rm.block_loot(p, {'name': p, 'conditions': [loot_tables.any_of(loot_tables.match_tag('tfc:sharp_tools'), loot_tables.match_tag('forge:shears'))]})
+            rm.block_loot(p, {'name': p, 'conditions': [shears_or_knife]})
     # todo this is a mess
     for plant in ('hanging_vines', 'jungle_vines', 'ivy', 'liana', 'tree_fern', 'arundo', 'spanish_moss'):
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))
@@ -1273,7 +1278,7 @@ def generate(rm: ResourceManager):
         rm.block_loot('tfc:plant/%s' % plant, 'tfc:plant/%s' % plant)
     for plant in ('tree_fern', 'arundo', 'winged_kelp', 'leafy_kelp', 'giant_kelp', 'hanging_vines', 'spanish_moss', 'liana', 'dry_phragmite'):
         rm.lang('block.tfc.plant.%s_plant' % plant, lang(plant))
-    for plant in ('hanging_vines', 'ivy', 'jungle_vines', 'liana', 'spanish_moss'):
+    for plant in ('hanging_vines', 'jungle_vines', 'liana', 'spanish_moss'):
         rm.block_loot('tfc:plant/%s' % plant, {'name': 'tfc:plant/%s' % plant, 'conditions': [loot_tables.match_tag('tfc:sharp_tools')]})
 
     cactus = 'saguaro'
