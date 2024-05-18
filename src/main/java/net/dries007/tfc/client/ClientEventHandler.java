@@ -841,7 +841,7 @@ public final class ClientEventHandler
         TFCItems.MOLDS.values().forEach(reg -> event.register(new ContainedFluidModel.Colors(), reg.get()));
         TFCItems.GLAZED_JUGS.values().forEach(reg -> event.register(new ContainedFluidModel.Colors(), reg.get()));
 
-        event.register(new ContainedFluidModel.Colors(), TFCItems.WOODEN_BUCKET.get(), TFCItems.BELL_MOLD.get(), TFCItems.FIRE_INGOT_MOLD.get(), TFCItems.JUG.get(), TFCItems.SILICA_GLASS_BOTTLE.get(), TFCItems.HEMATITIC_GLASS_BOTTLE.get(), TFCItems.VOLCANIC_GLASS_BOTTLE.get(), TFCItems.OLIVINE_GLASS_BOTTLE.get());
+        event.register(new ContainedFluidModel.Colors(), TFCItems.WOODEN_BUCKET.get(), TFCItems.BELL_MOLD.get(), TFCItems.FIRE_INGOT_MOLD.get(), TFCItems.JUG.get(), TFCItems.SILICA_GLASS_BOTTLE.get(), TFCItems.HEMATITIC_GLASS_BOTTLE.get(), TFCItems.VOLCANIC_GLASS_BOTTLE.get(), TFCItems.OLIVINE_GLASS_BOTTLE.get(), TFCItems.RED_STEEL_BUCKET.get(), TFCItems.BLUE_STEEL_BUCKET.get());
     }
 
     public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event)
