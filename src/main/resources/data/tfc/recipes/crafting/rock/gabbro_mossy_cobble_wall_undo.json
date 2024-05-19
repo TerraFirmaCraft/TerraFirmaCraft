@@ -3,7 +3,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "tfc:rock/cobble/gabbro_stairs"
+      "item": "tfc:rock/mossy_cobble/gabbro_wall"
     }
   ],
   "result": {

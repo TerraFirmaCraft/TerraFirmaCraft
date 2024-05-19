@@ -3,7 +3,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "tfc:rock/cobble/marble_stairs"
+      "item": "tfc:rock/mossy_cobble/marble_wall"
     }
   ],
   "result": {
