@@ -69,9 +69,8 @@ def format_lang(namespace: str, en_us, lang: str, validate: bool):
 def load(namespace: str, lang: str):
     # Check if file exists before loading its JSON
     if not os.path.isfile('./src/main/resources/assets/%s/lang/%s.json' % (namespace, lang)):
-        f = open('./src/main/resources/assets/%s/lang/%s.json' % (namespace, lang), 'w+', encoding='utf-8')
-        f.write('{}')
-        f.close()
+        with open('./src/main/resources/assets/%s/lang/%s.json' % (namespace, lang), 'w+', encoding='utf-8') as f:
+            f.write('{}')
 
     with open('./src/main/resources/assets/%s/lang/%s.json' % (namespace, lang), 'r', encoding='utf-8') as f:
         return json.load(f)
