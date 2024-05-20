@@ -187,7 +187,7 @@ public class RegionGenerator
         return new Context(viewer, regionCell, seed).runTasks().region;
     }
 
-    Cellular2D.Cell sampleCell(int gridX, int gridZ)
+    public Cellular2D.Cell sampleCell(int gridX, int gridZ)
     {
         return cellNoise.cell(gridX, gridZ);
     }
@@ -227,7 +227,7 @@ public class RegionGenerator
         }
     }
 
-    class Context
+    public class Context
     {
         private final BiConsumer<Task, Region> viewer;
         final Cellular2D.Cell regionCell;
@@ -236,7 +236,7 @@ public class RegionGenerator
         final Region region;
         int minX, maxX, minZ, maxZ;
 
-        Context(BiConsumer<Task, Region> viewer, Cellular2D.Cell regionCell, long seed)
+        public Context(BiConsumer<Task, Region> viewer, Cellular2D.Cell regionCell, long seed)
         {
             this.viewer = viewer;
             this.regionCell = regionCell;
@@ -266,7 +266,7 @@ public class RegionGenerator
             viewer.accept(task, region);
         }
 
-        RegionGenerator generator()
+        public RegionGenerator generator()
         {
             return RegionGenerator.this;
         }
