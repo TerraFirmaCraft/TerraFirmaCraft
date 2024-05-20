@@ -236,7 +236,7 @@ public class RegionGenerator
         final Region region;
         int minX, maxX, minZ, maxZ;
 
-        public Context(BiConsumer<Task, Region> viewer, Cellular2D.Cell regionCell, long seed)
+        Context(BiConsumer<Task, Region> viewer, Cellular2D.Cell regionCell, long seed)
         {
             this.viewer = viewer;
             this.regionCell = regionCell;
@@ -269,6 +269,41 @@ public class RegionGenerator
         public RegionGenerator generator()
         {
             return RegionGenerator.this;
+        }
+
+        public Cellular2D.Cell getRegionCell()
+        {
+            return regionCell;
+        }
+
+        public RandomSource getRandom()
+        {
+            return random;
+        }
+
+        public int getMinX()
+        {
+            return minX;
+        }
+
+        public int getMaxX()
+        {
+            return maxX;
+        }
+
+        public int getMinZ()
+        {
+            return minZ;
+        }
+
+        public int getMaxZ()
+        {
+            return maxZ;
+        }
+
+        public Region getRegion()
+        {
+            return region;
         }
     }
 }
