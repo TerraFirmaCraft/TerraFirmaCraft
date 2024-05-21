@@ -72,7 +72,7 @@ In addition, here's some useful things for dev work, and also making standardize
 zh_CN zh_HK zh_TW contributors: Please use opencc to make sure all three languages got properly synced & updated. Thanks! Example:
 
 opencc -i zh_cn.json -o zh_hk.json -c s2hk.json
-opencc -i zh_cn.json -o zh_tw.json -c s2tw.json
+opencc -i zh_cn.json -o zh_tw.json -c s2twp.json
 
 """
 
