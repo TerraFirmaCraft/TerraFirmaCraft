@@ -65,7 +65,7 @@
         "tfc:rock_knapping/knife_head_igneous_extrusive",
         "tfc:rock_knapping/knife_head_igneous_intrusive"
       ],
-      "text": "一把石刀刃，用各種不同的巖石都可以製作。"
+      "text": "一把石刀刃，用各種不同的岩石都可以製作。"
     },
     {
       "type": "patchouli:crafting",

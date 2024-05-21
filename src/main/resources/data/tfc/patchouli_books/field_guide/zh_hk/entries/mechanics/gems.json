@@ -21,7 +21,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "通過$(l:mechanics/sluices)洗礦$()和$(l:mechanics/panning)淘金$()可以獲得$(thing)切制寶石$()。洗礦槽可能獲得的寶石種類取決於所用的原材料的巖石種類。"
+      "text": "通過$(l:mechanics/sluices)洗礦$()和$(l:mechanics/panning)淘金$()可以獲得$(thing)切制寶石$()。洗礦槽可能獲得的寶石種類取決於所用的原材料的岩石種類。"
     },
     {
       "type": "patchouli:text",

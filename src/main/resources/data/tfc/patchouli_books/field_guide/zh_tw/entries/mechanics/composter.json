@@ -1,12 +1,12 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Composter",
+  "name": "堆肥桶",
   "category": "tfc:mechanics",
   "icon": "tfc:textures/gui/book/icons/composter.png",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The composter is an essential tool for making fertilizer. It needs both $(2)Green$() and $(4)Brown$() items to work. Different items contribute more to the amount of compost produced than others. To add an item to it, $(item)$(k:key.use)$(). The items that can be added are described on later pages."
+      "text": "堆肥桶是製造堆肥的基礎工具, 它需要$(2)綠色$()和$(4)棕色$()物品. 不同物品貢獻的堆肥量不一樣. 要向堆肥桶中加入物品, 按$(item)$(k:key.use)$()."
     },
     {
       "type": "patchouli:crafting",
@@ -15,11 +15,11 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Composters operate better in certain conditions. Composters that have a block of snow on top work slightly faster. Composters in regions of less than 150mm or greater than 350mm of rainfall operate much slower, with that effect getting stronger closer to the maximum and minimum rainfall. Also, composters that are touching other composters work slower."
+      "text": "堆肥桶在特定情形下更有效率: 如果堆肥桶頂上有一個雪方塊, 它會稍微更有效率. 在降雨量小於150mm或大於350mm的地區, 堆肥桶的工作會變慢, 這種降水量越極端, 堆肥桶變慢就越明顯. 同時, 如果堆肥桶緊鄰著其他堆肥桶, 它也會工作變慢."
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "The composter at its empty, working, and complete stage.",
+      "text": "空的、正在工作的、以及完成的堆肥桶.",
       "multiblocks": [
         {
           "pattern": [
@@ -64,7 +64,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "The composter takes 12 days to complete in average conditions. When it is ready, it will have a dirt-like color and gray particles will be emitted from the top of it. The compost can then be retrieved with  $(item)$(k:key.use)$() and  $(item)$(k:key.sneak)$() with an empty hand. Adding things like $(c)meat$() and $(c)bones$() to compost spoils it, turning it reddish and causing it to emit gross particles. The rotten compost can be removed in the same way as good compost. When used on a crop, it instantly kills it."
+      "text": "堆肥桶一般需要12天才能完成。當工作完成時，它會呈現出土壤樣的顏色，並從頂部散發灰色粒子。然後可以空手按$(item)$(k:key.use)$()和$(item)$(k:key.sneak)$()來取出堆肥。新增$(c)肉$()和$(c)骨頭$()之類的東西會破壞堆肥，使其變紅，並導致發出噁心的粒子。好的或腐爛的堆肥都可以用相同方法被清除。當腐爛堆肥用於作物時，會立即殺死作物。"
     },
     {
       "type": "patchouli:multiblock",
@@ -81,45 +81,45 @@
           "X": "tfc:composter[stage=8,type=rotten]"
         }
       },
-      "name": "Rotten Compost",
-      "text": "A rotten composter.",
+      "name": "腐爛的堆肥",
+      "text": "一個腐爛的堆肥桶.",
       "enable_visualize": false
     },
     {
       "type": "patchouli:spotlight",
       "item": "tag:tfc:compost_greens_low",
       "link_recipes": false,
-      "text": "有一類$(2)綠色$()物品對堆肥桶貢獻較小, 例如草和類似的植物. 要滿足堆肥桶對綠色物品的需求, 你需要16個這類物品."
+      "text": "有些$(2)綠色$()物品對堆肥進度貢獻較小，例如草和類似的植物。要滿足堆肥桶對綠色物品的需求，你需要 16 個這類物品。"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tag:tfc:compost_greens",
       "link_recipes": false,
-      "text": "有一類$(2)綠色$()物品對堆肥桶貢獻中等, 例如穀物. 要滿足堆肥桶對綠色物品的需求, 你需要8個這類物品."
+      "text": "有些$(2)綠色$()物品對堆肥桶貢獻中等，例如穀物。要滿足堆肥桶對綠色物品的需求，你需要 8 個這類物品。"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tag:tfc:compost_greens_high",
       "link_recipes": false,
-      "text": "有一類$(2)綠色$()物品對堆肥桶貢獻很大, 例如水果和蔬菜. 要滿足堆肥桶對綠色物品的需求, 你需要4個這類物品."
+      "text": "有些$(2)綠色$()物品對堆肥桶貢獻很大，例如水果和蔬菜。要滿足堆肥桶對綠色物品的需求，你需要 4 個這類物品。"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tag:tfc:compost_browns_low",
       "link_recipes": false,
-      "text": "有一類$(4)棕色$()物品對堆肥桶貢獻較小, 例如干蘆葦, 蕨類, 藤蔓, 以及落葉. 要滿足堆肥桶對棕色物品的需求, 你需要16個這類物品."
+      "text": "有些$(4)棕色$()物品對堆肥桶貢獻較小，例如干蘆葦、蕨類、藤蔓、以及落葉。要滿足堆肥桶對棕色物品的需求，你需要 16 個這類物品。"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tag:tfc:compost_browns",
       "link_recipes": false,
-      "text": "有一類$(4)棕色$()物品對堆肥桶貢獻中等, 例如草木灰和黃麻. 要滿足堆肥桶對棕色物品的需求, 你需要8個這類物品."
+      "text": "有些$(4)棕色$()物品對堆肥桶貢獻中等，例如草木灰和黃麻。要滿足堆肥桶對棕色物品的需求，你需要 8 個這類物品。"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tag:tfc:compost_browns_high",
       "link_recipes": false,
-      "text": "有一類$(4)棕色$()物品對堆肥桶貢獻很大, 例如西瓜, 南瓜, 枯萎的灌木, 松果, 以及浮木. 要滿足堆肥桶對棕色物品的需求, 你需要4個這類物品."
+      "text": "有些$(4)棕色$()物品對堆肥桶貢獻很大，例如西瓜、南瓜、枯萎的灌木、松果、以及浮木。要滿足堆肥桶對棕色物品的需求，你需要 4 個這類物品。"
     },
     {
       "type": "patchouli:spotlight",

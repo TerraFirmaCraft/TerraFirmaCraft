@@ -11,7 +11,7 @@
     {
       "type": "tfc:clay_knapping_recipe",
       "recipe": "tfc:clay_knapping/pan",
-      "text": "黏土可以$(l:getting_started/pottery)塑形$()成淘金盤，如上圖所示。"
+      "text": "粘土可以$(l:getting_started/pottery)塑形$()成淘金盤，如上圖所示。"
     },
     {
       "type": "tfc:heat_recipe",
@@ -34,7 +34,7 @@
         }
       },
       "name": "示例",
-      "text": "板巖地貌中的原生金沉積物。",
+      "text": "板岩地貌中的原生金沉積物。",
       "enable_visualize": false
     },
     {
@@ -50,8 +50,8 @@
     },
     {
       "type": "patchouli:text",
-      "text": "淘金有可能得到三種物品：$(thing)礦石$()、$(thing)小石子$()、和$(l:mechanics/gems)寶石$()。概率如下：$(br)$(li)礦石：50%$(li)小石子：25%$(li)寶石：1%$()$(br2)每一種巖石類型會且只會產出其特有的一種寶石。",
-      "title": "產物概率"
+      "text": "淘金可能得到三種產物：$(thing)礦石$()，$(thing)小石子$()，和$(l:mechanics/gems)寶石$()。概率如下：$(br)$(li)礦石：50%%$(li)小石子：25%%$(li)寶石：1%%$()淘金只會得到這種岩石對應的那種特定類型的寶石。",
+      "title": "淘金的產物"
     }
   ],
   "read_by_default": true,

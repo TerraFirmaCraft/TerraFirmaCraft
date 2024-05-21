@@ -50,8 +50,8 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Panning can give three possible products: $(thing)Ore$(), $(thing)Loose Rocks$(), and $(l:mechanics/gems)Gems$(). The probabilities are as follows:$(br)$(li)Ore: 50%%$(li)Loose Rock: 25%%$(li)Gem: 1%%$()Each rock type has a specific gem that it will drop, that is exclusive to that rock type.",
-      "title": "Products of Panning"
+      "text": "淘金可能得到三种产物：$(thing)矿石$()，$(thing)小石子$()，和$(l:mechanics/gems)宝石$()。概率如下：$(br)$(li)矿石：50%%$(li)小石子：25%%$(li)宝石：1%%$()淘金只会得到这种岩石对应的那种特定类型的宝石。",
+      "title": "淘金的产物"
     }
   ],
   "read_by_default": true,

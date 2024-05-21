@@ -59,7 +59,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "The crucible has nine slots where items can be added to be melted, and their liquefied contents will be directly added to the crucible. Molten metal containers such as $(l:getting_started/pottery#mold)Molds$() can also be placed here and they will be slowly drained into the crucible, allowing for precise control over your alloy's content. Holding $(item)$(k:key.sneak)$() while hovering over a draining mold or vessel makes it drain faster. $(br2)Molds or other fluid containers can also be placed in the output slot, and will be slowly filled with the current content of the crucible."
+      "text": "坩埚界面的左下方的 9 个空格是用来放置需要熔化的物品的，其熔融物会直接流入坩埚。诸如$(l:getting_started/pottery#mold)模具$()等容纳液体金属的容器也可以放在左边，其内容物熔化后也会流入坩埚$(br2)，以便精准控制合金的比例。鼠标指向模具或容器时按住$(item)$(k:key.sneak)$()可以使其流入坩埚速度更快。$(br2)右侧的输出槽位则是用于放置接收熔融金属的容器的，坩埚内的合金会将其注满。"
     },
     {
       "type": "patchouli:text",

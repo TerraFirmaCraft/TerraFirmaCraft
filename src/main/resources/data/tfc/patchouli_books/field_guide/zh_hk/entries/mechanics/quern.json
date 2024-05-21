@@ -11,7 +11,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/quern",
-      "text": "合成底座需要三個$(thing)平滑巖石$()以及任意三個$(thing)巖石$()方塊。"
+      "text": "合成底座需要三個$(thing)平滑岩石$()以及任意三個$(thing)岩石$()方塊。"
     },
     {
       "type": "patchouli:crafting",

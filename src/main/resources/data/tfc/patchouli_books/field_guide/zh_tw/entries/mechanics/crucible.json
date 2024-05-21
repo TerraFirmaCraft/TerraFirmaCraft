@@ -11,7 +11,7 @@
     {
       "type": "tfc:fire_clay_knapping_recipe",
       "recipe": "tfc:fire_clay_knapping/crucible",
-      "text": "粘土塑形制作$(thing)未燒製的坩堝$()."
+      "text": "粘土塑形制作$(thing)未燒製的坩堝$()。"
     },
     {
       "type": "tfc:heat_recipe",
@@ -59,7 +59,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "The crucible has nine slots where items can be added to be melted, and their liquefied contents will be directly added to the crucible. Molten metal containers such as $(l:getting_started/pottery#mold)Molds$() can also be placed here and they will be slowly drained into the crucible, allowing for precise control over your alloy's content. Holding $(item)$(k:key.sneak)$() while hovering over a draining mold or vessel makes it drain faster. $(br2)Molds or other fluid containers can also be placed in the output slot, and will be slowly filled with the current content of the crucible."
+      "text": "坩堝介面的左下方的 9 個空格是用來放置需要熔化的物品的，其熔融物會直接流入坩堝。諸如$(l:getting_started/pottery#mold)模具$()等容納液體金屬的容器也可以放在左邊，其內容物熔化後也會流入坩堝$(br2)，以便精準控制合金的比例。滑鼠指向模具或容器時按住$(item)$(k:key.sneak)$()可以使其流入坩堝速度更快。$(br2)右側的輸出槽位則是用於放置接收熔融金屬的容器的，坩堝內的合金會將其注滿。"
     },
     {
       "type": "patchouli:text",

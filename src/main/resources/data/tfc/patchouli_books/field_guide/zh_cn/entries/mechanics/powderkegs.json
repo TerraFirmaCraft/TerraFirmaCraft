@@ -34,7 +34,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/powderkeg",
-      "text": "Powderkegs can be made from adding red dye and string to the crafting shape of a barrel."
+      "text": "在合成大桶时加上火药与红色染料，即可制作火药桶。"
     },
     {
       "type": "patchouli:crafting",
@@ -43,7 +43,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "有两种方式可以制造火药：第一种配方是用$(l:the_world/ores_and_minerals#saltpeter)硝石$()、$(l:the_world/ores_and_minerals#saltpeter)硫磺$()、和$(l:mechanics/charcoal_pit)木炭$()粉混合而成。粉末是在$(l:mechanics/quern)手推磨$()磨制对应矿物而成的。如果你有$(l:the_world/ores_and_minerals#graphite)石墨$()，就可以使用第二钟更高效的合成配方。"
+      "text": "有两种方式可以制造火药：第一种配方是用$(l:the_world/ores_and_minerals#saltpeter)硝石$()、$(l:the_world/ores_and_minerals#saltpeter)硫磺$()、和$(l:mechanics/charcoal_pit)木炭$()粉混合而成。粉末是在$(l:mechanics/quern)手推磨$()磨制对应矿物而成的。如果你有$(l:the_world/ores_and_minerals#graphite)石墨$()，就可以使用第二种更高效的合成配方。"
     }
   ],
   "read_by_default": true

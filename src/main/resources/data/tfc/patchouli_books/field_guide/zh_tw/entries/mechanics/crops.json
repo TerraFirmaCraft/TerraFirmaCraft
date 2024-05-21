@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "In addition to finding wild crops, seeds can also be produced from existing crops. When a fully mature crop dies - either by weather, or leaving it to rot - it will go to seed, dropping more seeds that can be used to grow even more crops next season."
+      "text": "除了尋找野生作物，種子也可以從現有作物中獲得。當一株完全成熟的作物因天氣原因或被遺棄而腐爛死亡時，它會變成種子，掉落更多可以在下個季節用來種植的種子。"
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -20,17 +20,17 @@
         "tfc:rock_knapping/hoe_head_igneous_extrusive",
         "tfc:rock_knapping/hoe_head_igneous_intrusive"
       ],
-      "text": "To get started, a $(thing)Stone Hoe$() can be $(thing)knapped$() as seen above."
+      "text": "要開始耕作，$(thing)石鋤$()可以用以上方式被$(thing)塑形$()."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/stone/hoe_sedimentary",
-      "text": "塑型完畢的鋤頭就可以合成鋤了.$(br2)鋤的作用和傳統Minecraft相同, 右鍵點選泥土方塊就可以把它變成$(thing)耕地$(). 他們也可以把$(thing)纏根泥土$()轉換成$(thing)泥土$()."
+      "text": "用鋤頭和木棍製作鋤。$(br2)鋤和原版一樣，$(item)$(k:key.use)$()點選泥土方塊就能將它們變成$(thing)耕地$()。除此之外，它還可以用來將$(thing)纏根泥土$()轉化為普通$(thing)泥土$()。"
     },
     {
       "type": "patchouli:text",
-      "text": "All crops need to be planted on farmland in order to grow. Some crops have additional requirements such as being waterlogged or requiring a stick to grow on.$(br2)Crops do not need $(thing)nutrients$() to grow, but they certainly help. There are three nutrients: $(b)Nitrogen$(), $(6)Phosphorous$(), and $(d)Potassium$(). Each crop has a favorite nutrient.",
-      "title": "Growing Crops"
+      "text": "所有的農作物都需要種植在耕地上才能生長。有些作物還額外要求放在水中或插一根木棍。$(br2)作物沒有$(thing)營養$()也能生長，但營養物質是很有幫助的。有三種營養物質：$(b)氮$()、$(6)磷$()和$(d)鉀$()。每種作物都有自己喜歡的營養物質。",
+      "title": "生長中的作物"
     },
     {
       "type": "patchouli:text",
@@ -774,7 +774,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "種植水稻種子的方塊必須$(thing)含水$().",
+      "text": "種植水稻種子的方塊必須$(thing)含水$()。",
       "multiblocks": [
         {
           "pattern": [
@@ -1650,7 +1650,7 @@
     {
       "type": "patchouli:text",
       "anchor": "pumpkin",
-      "text": "$(bold)$(l:the_world/climate#temperature)溫度$()：0 - 30 °C$(br)$(bold)$(l:mechanics/hydration)溼度$()：30 - 80 %$(br)$(bold)營養物質$()：磷$(br2)南瓜是一種爬行作物。種植在耕地上時，南瓜梗會在成熟後在相鄰位置放置最多兩顆$(thing)南瓜$()。南瓜梗在入冬前可結果多次。南瓜可以製作成$(l:mechanics/lighting#jack_o_lanterns)南瓜燈$().",
+      "text": "$(bold)$(l:the_world/climate#temperature)溫度$()：0 - 30 °C$(br)$(bold)$(l:mechanics/hydration)溼度$()：30 - 80 %$(br)$(bold)營養物質$()：磷$(br2)南瓜是一種爬行作物。種植在耕地上時，南瓜梗會在成熟後在相鄰位置放置最多兩顆$(thing)南瓜$()。南瓜梗在入冬前可結果多次。南瓜可以製作成$(l:mechanics/lighting#jack_o_lanterns)南瓜燈$()。",
       "title": "南瓜"
     },
     {
@@ -2902,8 +2902,8 @@
     {
       "type": "patchouli:text",
       "anchor": "papyrus",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 19 - 37 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 70 - 100 %$(br)$(bold)Nutrient$(): Potassium$(br2)Papyrus is a two block tall crop. Papyrus seeds can be planted on farmland, will grow two blocks tall, and will produce $(l:mechanics/papermaking)Papyrus$() and $(thing)Papyrus Seeds$() as a product.",
-      "title": "Papyrus"
+      "text": "$(bold)$(l:the_world/climate#temperature)溫度$(): 19 - 37 °C$(br)$(bold)$(l:mechanics/hydration)溼度$(): 70 - 100 %$(br)$(bold)營養物質$(): 鉀$(br2)莎草是一種兩格高的作物。莎草種子可以種植在耕地上，會長成兩格高，並收穫$(l:mechanics/papermaking)莎草$()和$(thing)莎草種子$()。",
+      "title": "莎草"
     },
     {
       "type": "tfc:multimultiblock",

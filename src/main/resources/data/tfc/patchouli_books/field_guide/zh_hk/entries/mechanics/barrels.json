@@ -22,7 +22,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)手持空的大桶點擊水源方塊可以盛裝液體。$()$(li)啟封的大桶會在雨中慢慢地裝滿水。$()$(li)大桶會接住上方融化的冰柱。$()$(li)密封大桶會彈出不在中心空格的物品。$()",
+      "text": "$(li)手持空的大桶點擊水源方塊可以盛裝液體。$()$(li)啓封的大桶會在雨中慢慢地裝滿水。$()$(li)大桶會接住上方融化的冰柱。$()$(li)密封大桶會彈出不在中心空格的物品。$()",
       "title": "用桶小貼士"
     },
     {
@@ -65,7 +65,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/barrel_rack",
-      "text": "橫放的大桶和豎放的大桶功能相同，但不能直接疊加擺放。必須先製作$(thing)大桶櫃$()並用$(item)$(k:key.use)$()放在下面那格木桶上。"
+      "text": "放置在方塊側面的大桶與垂直的大桶功能相同，但在放置時有一些限制。例如，它們必須通過按$(item)$(k:key.use)$()添加一個$(thing)大桶架$()，才能在其上方放置另一個橫向大桶。"
     },
     {
       "type": "patchouli:multiblock",
@@ -86,20 +86,20 @@
           "Y": "tfc:wood/barrel/kapok[facing=north,rack=true,sealed=false]"
         }
       },
-      "name": "橫放大桶",
-      "text": "橫放的大桶的密封狀態會由其上的$(thing)籠頭$()朝向表示 - 籠頭橫過來表示已密封。",
+      "name": "橫向大桶",
+      "text": "橫向桶通過$(thing)龍頭$()顯示其密封狀態。如果龍頭是橫向的，則表示已密封。",
       "enable_visualize": false
     },
     {
       "type": "patchouli:text",
-      "text": "未密封的橫放大桶會自動將其所含液體從籠頭處滴入下方的其他啟封大桶或其他液體容器，前提是籠頭所在的方塊沒有任何其他方塊阻擋。"
+      "text": "未密封的橫向大桶的液體會自動流到龍頭下方的開放式桶（及其他液體容器）中。龍頭延伸到的方塊必須是一個自由空氣方塊，液體才能了流出。"
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/tutorial/barrel_drip.png"
       ],
-      "text": "大桶滴水。",
+      "text": "正在滴水的大桶.",
       "border": true
     }
   ],

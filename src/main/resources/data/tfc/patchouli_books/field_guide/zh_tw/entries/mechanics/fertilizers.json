@@ -6,14 +6,14 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Fertilizers are used to add nutrients to $(l:mechanics/crops)crops$(). $(item)$(k:key.use)$() with a fertilizer in your hand on some $(thing)Farmland$() or a $(thing)Crop$() to add the nutrients. Particles should appear, indicating the fertilizer was added.",
+      "text": "手持堆肥對準$(thing)耕地$()或$(l:mechanics/crops)農作物$()按$(item)$(k:key.use)$()就能使用。出現粒子效果就說明生效了。",
       "title": "施肥"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:compost",
       "link_recipes": false,
-      "text": "Compost is the product of the $(l:mechanics/composter)Composter$(). $(br)$(li)$(b)Nitrogen: 40$()$(li)$(6)Phosphorous: 20$()$(li)$(d)Potassium: 40$()"
+      "text": "堆肥是$(l:mechanics/composter)堆肥桶$()的產物。$(br)$(li)$(b)氮：40$()$(li)$(6)磷：20$()$(li)$(d)：40$()"
     },
     {
       "type": "patchouli:spotlight",
@@ -37,13 +37,13 @@
       "type": "patchouli:spotlight",
       "item": "tfc:powder/wood_ash",
       "link_recipes": false,
-      "text": "Wood ash is produced by breaking firepits. Throwing a torch item into water also has a chance to produce ash. $(br)$(li)$(6)Phosphorous: 10$()$(li)$(d)Potassium: 30$()"
+      "text": "挖掉篝火可以獲得草木灰。將火把丟進水中也可能得到草木灰。$(br)$(li)$(6)$(bold)磷$()：10$()$(li)$(d)$(bold)鉀$()：30$()"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:powder/sylvite",
       "link_recipes": false,
-      "text": "鉀鹽是由它的礦石製成的. $(br)$(li)$(d)鉀: 50$()"
+      "text": "鉀石鹽粉是由它的對應礦石磨成的。$(br)$(li)$(d)$(bold)鉀$()：50$()"
     }
   ],
   "read_by_default": true

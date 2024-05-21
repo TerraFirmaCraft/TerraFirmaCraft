@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)洗礦槽$()是一種用來處理$(l:the_world/waterways#ore_deposits)礦石沉積物$()的設備。洗礦槽產出的物品和$(l:mechanics/panning)淘金$()一樣，但是概率稍有不同。"
+      "text": "$(thing)洗礦槽$() 是一種用來處理$(l:the_world/waterways#ore_deposits)礦石沉積物$()的裝置，產物與$(l:mechanics/panning)淘金$()相同，但概率不同。"
     },
     {
       "type": "patchouli:crafting",
@@ -39,8 +39,8 @@
     },
     {
       "type": "patchouli:text",
-      "text": "洗礦槽會產出三種物品：$(thing)礦石$()、$(thing)小石子$()、和$(l:mechanics/gems)寶石$()。概率如下：$(br)$(li)礦石：55%$(li)小石子：22.5%$(li)寶石：0.9%$()$(br2)每一種巖石類型會且只會產出其特有的一種寶石。",
-      "title": "產物概率"
+      "text": "洗礦可能得到三種產物：$(thing)礦石$()，$(thing)小石子$()，和$(l:mechanics/gems)寶石$()。概率如下：$(br)$(li)礦石：55%%$(li)小石子：22.5%%$(li)寶石：0.9%%$()洗礦只會得到這種岩石對應的那種特定類型的寶石。",
+      "title": "淘金的產物"
     }
   ],
   "read_by_default": true,

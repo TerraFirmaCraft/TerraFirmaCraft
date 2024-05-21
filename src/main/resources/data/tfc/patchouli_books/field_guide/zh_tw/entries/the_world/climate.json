@@ -7,7 +7,7 @@
     {
       "type": "patchouli:text",
       "anchor": "calendar",
-      "text": "在群巒傳說中，氣候和時間都是影響生存的非常重要的要素。首先，我們先來談談$(thing)日曆$()。$(br2)在任何時候，只要開啟物品欄並點選$(thing)日曆$()選項卡就能檢視日曆。這裡會顯示當前的$(thing)季節$()、$(thing)日曆日$()和$(thing)日期$()."
+      "text": "在群巒傳說中，氣候和時間都是影響生存的非常重要的要素。首先，我們先來談談$(thing)日曆$()。$(br2)在任何時候，只要開啟物品欄並點選$(thing)日曆$()選項卡就能檢視日曆。這裡會顯示當前的$(thing)季節$()、$(thing)日曆日$()和$(thing)日期$()。"
     },
     {
       "type": "patchouli:image",
@@ -28,7 +28,7 @@
     {
       "type": "patchouli:text",
       "anchor": "climate",
-      "text": "物品欄介面中的另一個選項卡是$(thing)氣候$()介面。這個頁面會顯示有關當前地理位置的資訊。$(br2)第一行會顯示該地區的$(l:https://zh.wikipedia.org/wiki/%E6%9F%AF%E6%9C%AC%E6%B0%94%E5%80%99%E5%88%86%E7%B1%BB%E6%B3%95)氣候分類$()。$(br2)第二行會顯示$(l:the_world/geology)地質結構$()。$(br2)第三行則會顯示$(thing)年平均溫度$().",
+      "text": "物品欄介面中的另一個選項卡是$(thing)氣候$()介面。這個頁面會顯示有關當前地理位置的資訊。$(br2)第一行會顯示該地區的$(l:https://zh.wikipedia.org/wiki/%E6%9F%AF%E6%9C%AC%E6%B0%94%E5%80%99%E5%88%86%E7%B1%BB%E6%B3%95)氣候分類$()。$(br2)第二行會顯示$(l:the_world/geology)地質結構$()。$(br2)第三行則會顯示$(thing)年平均溫度$()。",
       "title": "氣候"
     },
     {

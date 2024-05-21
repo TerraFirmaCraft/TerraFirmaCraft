@@ -6,12 +6,12 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)鍛鐵爐$()是一種能將$(thing)鐵礦石$()精煉成$(thing)生鐵方坯$()的設備，而生鐵方坯則可以鍛造成$(thing)鍛鐵$()。有幾種不同的天然鐵礦石：$(l:the_world/ores_and_minerals#hematite)赤鐵礦$()、$(l:the_world/ores_and_minerals#limonite)褐鐵礦$()、和$(l:the_world/ores_and_minerals#magnetite)磁鐵礦$()。注意，直接熔化鐵礦石、或其他含鐵的工具和裝備只能得到$(thing)鑄鐵$()，而不是$(thing)鍛鐵$()。要將鑄鐵變成有用的鍛鐵，就必須使用鍛鐵爐。鍛鐵爐可以接受任何含鐵的物品 - 礦石、礦錠、或者是做好的工具都可以。"
+      "text": "$(thing)鍛鐵爐$()是一種用於將$(thing)鐵礦石$()熔鍊成$(thing)生鐵方坯$()的設備。鐵礦石包含$(l:the_world/ores_and_minerals#hematite)赤鐵礦$()、$(l:the_world/ores_and_minerals#limonite)褐鐵礦$()和$(l:the_world/ores_and_minerals#magnetite)磁鐵礦$()。這些礦石會熔化成$(thing)鑄鐵$()（或稱為生鐵）而不是$(thing)鍛鐵$()（或稱為熟鐵、精鐵）。要將它們轉化為可用的鐵，需要使用鍛鐵爐。任何鐵製品都可以在鍛鐵爐中使用，包括鐵製工具和生鐵錠！"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/bloomery",
-      "text": "製作鍛鐵爐需要 8 張$(thing)青銅雙層薄板$()."
+      "text": "鍛鐵爐使用 8 塊$(thing)青銅雙層板$()製成."
     },
     {
       "type": "patchouli:multiblock",
@@ -22,7 +22,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "鍛鐵爐可以容納最多 24 件$(thing)含鐵物品$()和 24 塊$(l:mechanics/charcoal_pit)木炭$()，每層煙囱可以容納各 8 塊。想要加高煙囱，只需要在之前所示基礎上再疊加兩層石頭方塊就可以了。$(br2)要將物品加入鍛鐵爐中，只需要從煙囱頂部將物品丟下即可。若形成了一層灰黑色的熔渣物質就説明成功了。"
+      "text": "最大的鍛鐵爐可以同時在容納 24 塊$(thing)鐵礦石$()和 24 塊$(l:mechanics/charcoal_pit)木炭$()，每層煙囱可以容納礦石木炭各 8 個。可以在最基礎的鍛鐵爐結構上額外搭建兩層煙囱來達到最大容量。$(br2)若要向鍛鐵爐中加入原料，需爬到鍛鐵爐頂部的煙囱並將原料丟進去。這會形成灰色的礦物塔。"
     },
     {
       "type": "patchouli:image",
@@ -34,7 +34,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "投入鍛鐵爐的木炭和$(thing)含鐵物品$()數量必須相等。要讓鍛鐵爐開始工作，只需要點燃鍛鐵爐門的方塊，再等上大半天的時間即可。等看到鍛鐵爐門方塊不亮了就説明完成了。鍛鐵爐會將之前投入的每 100mB 的鑄鐵轉化為一塊$(thing)方坯塊$()。用鎬反覆挖掘方坯塊就能得到$(thing)生鐵方坯$()。注意：若投入的鐵的數量不是 100mB 的整數倍，多餘的部分會被浪費。"
+      "text": "鍛鐵爐中的礦石和木炭的$(thing)物品$()數目必須相等。點燃爐子，然後等待大半天即可。當鍛鐵爐塊熄滅時就表示完成了。在鍛鐵爐中熔化的每 100 mB 鐵礦石都會轉化為一個$(thing)方坯方塊$()。用鎬反覆挖掘$(thing)方坯方塊$()就能獲得$(thing)生鐵方坯$()。不滿100mB的鐵礦物會被浪費。"
     },
     {
       "type": "patchouli:multiblock",

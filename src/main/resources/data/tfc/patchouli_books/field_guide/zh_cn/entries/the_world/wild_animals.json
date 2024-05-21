@@ -77,13 +77,13 @@
       "type": "patchouli:entity",
       "entity": "tfc:direwolf",
       "scale": 0.7,
-      "text": "The direwolf spawns at any $(l:the_world/climate#temperature)temperature$() below freezing, and $(l:the_world/climate#rainfall)rainfall$() between 150 and 420mm. They hunt in packs. They are larger than regular wolves, and are not tamable."
+      "text": "冰原狼会在$(l:the_world/climate#temperature)温度$()冰点以下、$(l:the_world/climate#rainfall)降雨量$()150到420毫米之间的任何地方出现。它们成群狩猎，比普通狼更大，并且无法驯服。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:ocelot",
       "scale": 0.7,
-      "text": "The ocelot attacks small animals. It spawns at any $(l:the_world/climate#temperature)temperature$() from 15 to 30°C, and $(l:the_world/climate#rainfall)rainfall$() between 300 and 500mm, in forests. Feeding an ocelot enough times will tame it into a $(l:mechanics/pets)Cat$(). Ocelots can eat raw fish"
+      "text": "猎豹攻击小动物。它在$(l:the_world/climate#temperature)温度$()15到30°C、$(l:the_world/climate#rainfall)降雨量$()300到500毫米的森林中生成。喂食猎豹足够的次数会驯服它成为$(l:mechanics/pets)猫$()。猎豹可以吃生鱼。"
     },
     {
       "type": "patchouli:empty"

@@ -10,17 +10,17 @@
     },
     {
       "type": "patchouli:text",
-      "text": "首先，你得找到一塊$(thing)天然的$()$(thing)噴出巖$() （流紋巖、玄武巖、安山巖、或英安巖）或$(thing)侵入巖$()（花崗巖、閃長巖、或輝長巖）。你可以直接使用暴露在地表的那些，或者也可以把它們從巖壁上$(l:getting_started/primitive_anvils#raw_rock)採下來$()。"
+      "text": "首先，你得找到一塊$(thing)天然的$()$(thing)噴出巖$() （流紋岩、玄武岩、安山岩、或英安巖）或$(thing)侵入岩$()（花崗岩、閃長巖、或輝長岩）。你可以直接使用暴露在地表的那些，或者也可以把它們從巖壁上$(l:getting_started/primitive_anvils#raw_rock)採下來$()。"
     },
     {
       "type": "patchouli:text",
       "anchor": "stone_anvils",
-      "text": "你還需要一把任意材料製成的$(thing)錘$()。要把巖石變成砧，手持$(thing)錘$()右鍵點擊其$(thing)頂面$()即可。$(br2)砧是有不同$(l:mechanics/anvils#tiers)等級$()的。石砧的等級是 0 - 也就是最低等級。它只能用來$(l:mechanics/anvils#welding)焊接$() 1 級的金屬錠。",
+      "text": "你還需要一把任意材料製成的$(thing)錘$()。要把岩石變成砧，手持$(thing)錘$()右鍵點擊其$(thing)頂面$()即可。$(br2)砧是有不同$(l:mechanics/anvils#tiers)等級$()的。石砧的等級是 0 - 也就是最低等級。它只能用來$(l:mechanics/anvils#welding)焊接$() 1 級的金屬錠。",
       "title": "石砧"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "將中間那塊巖石作為石砧。",
+      "text": "將中間那塊岩石作為石砧。",
       "multiblocks": [
         {
           "pattern": [
@@ -42,7 +42,7 @@
     {
       "type": "patchouli:text",
       "anchor": "raw_rock",
-      "text": "想要獲得一塊天然的巖石，直接用鎬挖是不行的。唯一的方法是將其六面所相鄰的方塊都挖掉，懸空的巖石就會掉落其本體了。",
+      "text": "想要獲得一塊天然的岩石，直接用鎬挖是不行的。唯一的方法是將其六面所相鄰的方塊都挖掉，懸空的岩石就會掉落其本體了。",
       "title": "獲得原石"
     },
     {

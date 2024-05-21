@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "TFC中有很多種產生光的方法. 一種方法是使用$(l:mechanics/lamps)燈$(), 但是它需要燃料. 有一些光源只需要一個火花."
+      "text": "群巒傳說中有很多不同的光源，比如$(l:mechanics/lamps)燈$()，但是點燈需要燃料。其他一些光源則只需要一個火花就能點亮。"
     },
     {
       "type": "patchouli:text",
@@ -17,11 +17,11 @@
       "type": "tfc:heat_recipe",
       "anchor": "torches",
       "recipe": "tfc:heating/torch_from_stick",
-      "text": "要製作火把, 需要用$(l:getting_started/firepit)篝火$()或其他熱源來加熱木棍或木棍堆."
+      "text": "要製作火把，只需要用$(l:getting_started/firepit)篝火$()或其他熱源來加熱木棍或木棍堆。"
     },
     {
       "type": "patchouli:text",
-      "text": "火把可以燃燒3天, 然後變成$(thing)燃盡的火把$(). 可以用火把或起火器$(item)$(k:key.use)$()來重新點燃燃盡的火把."
+      "text": "火把在$(thing)燃盡$()前可以燃燒 3 天。手持另一根火把或起火器並點選$(item)$(k:key.use)$()就能重新點燃燃盡的火把。"
     },
     {
       "type": "patchouli:multiblock",
@@ -40,7 +40,7 @@
         }
       },
       "name": "蠟燭",
-      "text": "蠟燭可以燃燒11天, 並且同樣可以重新點燃.",
+      "text": "蠟燭可以燃燒 11 天, 並且同樣可以重新點燃。",
       "enable_visualize": false
     },
     {
@@ -65,12 +65,12 @@
         }
       },
       "name": "南瓜燈",
-      "text": "南瓜燈是被點亮的$(thing)雕刻過的南瓜$(), 它可以持續發光4.5天, 然後就會變回雕刻過的南瓜.",
+      "text": "點亮$(thing)雕刻過的南瓜$()就可以將其變成南瓜燈，它可以持續發光 4.5 天，然後就會變回雕刻過的南瓜。",
       "enable_visualize": false
     },
     {
       "type": "patchouli:text",
-      "text": "用$(thing)剪刀$()或$(thing)刀$()$(item)$(k:key.use)$()鍵點選新鮮的$(l:mechanics/crops#pumpkin)南瓜$()可以得到$(thing)雕刻過的南瓜$(). 雕刻過的南瓜不會腐敗, 並且可以戴在頭上."
+      "text": "用$(thing)剪刀$()或$(thing)刀$()$(item)$(k:key.use)$()鍵點選新鮮的$(l:mechanics/crops#pumpkin)南瓜$()可以得到$(thing)雕刻過的南瓜$()。雕刻過的南瓜不會腐敗，並且可以戴在頭上。"
     }
   ],
   "read_by_default": true,

@@ -66,8 +66,8 @@
           "X": "tfc:metal/lamp/blue_steel[lit=true]"
         }
       },
-      "name": "熔巖燈",
-      "text": "熔巖燈是一種$(thing)永久光源$()。不過，只有$(l:mechanics/steel#blue_steel)藍鋼$()燈才能盛裝熔巖。",
+      "name": "熔岩燈",
+      "text": "熔岩燈是一種$(thing)永久光源$()。不過，只有$(l:mechanics/steel#blue_steel)藍鋼$()燈才能盛裝熔岩。",
       "enable_visualize": false
     },
     {

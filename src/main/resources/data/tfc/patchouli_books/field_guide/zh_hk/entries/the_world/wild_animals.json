@@ -77,13 +77,13 @@
       "type": "patchouli:entity",
       "entity": "tfc:direwolf",
       "scale": 0.7,
-      "text": "冰原狼生活在$(l:the_world/climate#temperature)氣温$()低於冰點，且$(l:the_world/climate#rainfall)降雨量$()在 150 到 420mm 的地區。冰原狼由集羣狩獵的習性，體型比普通的狼更大，且不可馴服。"
+      "text": "冰原狼會在$(l:the_world/climate#temperature)温度$()冰點以下、$(l:the_world/climate#rainfall)降雨量$()150到420毫米之間的任何地方出現。它們成羣狩獵，比普通狼更大，並且無法馴服。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:ocelot",
       "scale": 0.7,
-      "text": "The ocelot attacks small animals. It spawns at any $(l:the_world/climate#temperature)temperature$() from 15 to 30°C, and $(l:the_world/climate#rainfall)rainfall$() between 300 and 500mm, in forests. Feeding an ocelot enough times will tame it into a $(l:mechanics/pets)Cat$(). Ocelots can eat raw fish"
+      "text": "獵豹攻擊小動物。它在$(l:the_world/climate#temperature)温度$()15到30°C、$(l:the_world/climate#rainfall)降雨量$()300到500毫米的森林中生成。餵食獵豹足夠的次數會馴服它成為$(l:mechanics/pets)貓$()。獵豹可以吃生魚。"
     },
     {
       "type": "patchouli:empty"

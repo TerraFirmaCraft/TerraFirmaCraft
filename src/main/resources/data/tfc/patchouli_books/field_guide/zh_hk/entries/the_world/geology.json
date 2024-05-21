@@ -30,36 +30,36 @@
     },
     {
       "type": "patchouli:text",
-      "text": "這個世界也是由不同類型的$(thing)巖石$()構成的。一塊同質的巖石區域有時會廣達一公里，且根據深度的不同，會有其他兩到三種不同的巖石構成分明的巖石層。不同的巖石類型中包含了不同的$(l:the_world/ores_and_minerals)礦石$()，且大部分礦石只會出現在特定的巖石類型中。若想找到它們，就必須先找到正確的巖石類型。",
-      "title": "巖層"
+      "text": "這個世界也是由不同類型的$(thing)岩石$()構成的。一塊同質的岩石區域有時會廣達一公里，且根據深度的不同，會有其他兩到三種不同的岩石構成分明的岩石層。不同的岩石類型中包含了不同的$(l:the_world/ores_and_minerals)礦石$()，且大部分礦石只會出現在特定的岩石類型中。若想找到它們，就必須先找到正確的岩石類型。",
+      "title": "岩層"
     },
     {
       "type": "patchouli:text",
-      "text": "巖石分為四類：$(thing)沉積巖$()、$(thing)變質巖$()、$(thing)噴出巖$()和$(thing)侵入巖$()。這些類別決定了巖石可能出現的深度。所有不同的巖石類型及其所屬類別的列表可在後面的頁面中找到。"
+      "text": "岩石分為四類：$(thing)沉積岩$()、$(thing)變質岩$()、$(thing)噴出巖$()和$(thing)侵入岩$()。這些類別決定了岩石可能出現的深度。所有不同的岩石類型及其所屬類別的列表可在後面的頁面中找到。"
     },
     {
       "type": "patchouli:text",
       "anchor": "sedimentary",
-      "text": "$(l:https://zh.wikipedia.org/wiki/%E6%B2%89%E7%A7%AF%E5%B2%A9)沉積巖$()是由礦物和有機顆粒的堆積與沉積形成的。它們只會出現在$(thing)中層或高層$()巖層中。它們包括：$(br)$(li)頁巖$(li)粘土巖$(li)石灰巖$(li)礫巖$(li)白雲巖$(li)硅質巖$(li)白堊巖",
-      "title": "沉積巖"
+      "text": "$(l:https://zh.wikipedia.org/wiki/%E6%B2%89%E7%A7%AF%E5%B2%A9)沉積岩$()是由礦物和有機顆粒的堆積與沉積形成的。它們只會出現在$(thing)中層或高層$()岩層中。它們包括：$(br)$(li)頁岩$(li)粘土巖$(li)石灰岩$(li)礫岩$(li)白雲岩$(li)硅質岩$(li)白堊巖",
+      "title": "沉積岩"
     },
     {
       "type": "patchouli:text",
       "anchor": "metamorphic",
-      "text": "$(l:https://zh.wikipedia.org/wiki/%E5%8F%98%E8%B4%A8%E5%B2%A9)變質巖$()是經由變質作用而形成的巖石。它們可以在$(thing)任何高度層$()找到。它們包括：$(br)$(li)石英巖$(li)板巖$(li)千枚巖$(li)片巖$(li)片麻巖$(li)大理巖",
-      "title": "變質巖"
+      "text": "$(l:https://zh.wikipedia.org/wiki/%E5%8F%98%E8%B4%A8%E5%B2%A9)變質岩$()是經由變質作用而形成的岩石。它們可以在$(thing)任何高度層$()找到。它們包括：$(br)$(li)石英岩$(li)板岩$(li)千枚巖$(li)片岩$(li)片麻岩$(li)大理岩",
+      "title": "變質岩"
     },
     {
       "type": "patchouli:text",
       "anchor": "igneous_extrusive",
-      "text": "$(l:https://zh.wikipedia.org/wiki/%E7%81%AB%E6%88%90%E5%B2%A9#%E5%88%86%E7%B1%BB%E6%96%B9%E5%BC%8F)噴出巖$()是由噴出地表的巖漿冷卻形成的。它們只會出現在$(thing)中層或高層$()巖層中。它們包括：$(br)$(li)流紋巖$(li)玄武巖$(li)安山巖$(li)英安巖",
+      "text": "$(l:https://zh.wikipedia.org/wiki/%E7%81%AB%E6%88%90%E5%B2%A9#%E5%88%86%E7%B1%BB%E6%96%B9%E5%BC%8F)噴出巖$()是由噴出地表的岩漿冷卻形成的。它們只會出現在$(thing)中層或高層$()岩層中。它們包括：$(br)$(li)流紋岩$(li)玄武岩$(li)安山岩$(li)英安巖",
       "title": "噴出巖"
     },
     {
       "type": "patchouli:text",
       "anchor": "igneous_intrusive",
-      "text": "$(l:https://zh.wikipedia.org/wiki/%E7%81%AB%E6%88%90%E5%B2%A9#%E5%88%86%E7%B1%BB%E6%96%B9%E5%BC%8F)侵入巖$()是由在地表下冷卻的巖漿形成的。它們只會出現在$(thing)中層或底層$()巖層中。它們包括：$(br)$(li)花崗巖$(li)閃長巖$(li)輝長巖",
-      "title": "侵入巖"
+      "text": "$(l:https://zh.wikipedia.org/wiki/%E7%81%AB%E6%88%90%E5%B2%A9#%E5%88%86%E7%B1%BB%E6%96%B9%E5%BC%8F)侵入岩$()是由在地表下冷卻的岩漿形成的。它們只會出現在$(thing)中層或底層$()岩層中。它們包括：$(br)$(li)花崗岩$(li)閃長巖$(li)輝長岩",
+      "title": "侵入岩"
     }
   ],
   "read_by_default": true,

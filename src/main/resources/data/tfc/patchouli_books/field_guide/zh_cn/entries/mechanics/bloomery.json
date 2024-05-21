@@ -6,12 +6,12 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The $(thing)Bloomery$() is a device used to smelt $(thing)Iron Ore$() into $(thing)Iron Blooms$() which can be worked into $(thing)Wrought Iron$(). The iron ores are $(l:the_world/ores_and_minerals#hematite)Hematite$(), $(l:the_world/ores_and_minerals#limonite)Limonite$(), and $(l:the_world/ores_and_minerals#magnetite)Magnetite$(). These ores melt into $(thing)Cast Iron$() rather than $(thing)Wrought Iron$(). All iron-bearing items melt into Cast Iron. To turn them into usable iron, the bloomery is needed. Any iron item can be used in the bloomery, including iron tools and cast iron ingots!"
+      "text": "$(thing)锻铁炉$()是一种用于将$(thing)铁矿石$()熔炼成$(thing)生铁方坯$()的设备。铁矿石包含$(l:the_world/ores_and_minerals#hematite)赤铁矿$()、$(l:the_world/ores_and_minerals#limonite)褐铁矿$()和$(l:the_world/ores_and_minerals#magnetite)磁铁矿$()。这些矿石会熔化成$(thing)铸铁$()（或称为生铁）而不是$(thing)锻铁$()（或称为熟铁、精铁）。要将它们转化为可用的铁，需要使用锻铁炉。任何铁制品都可以在锻铁炉中使用，包括铁制工具和生铁锭！"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/bloomery",
-      "text": "The bloomery is made from 8 $(thing)Bronze Double Sheets$()."
+      "text": "锻铁炉使用 8 块$(thing)青铜双层板$()制成."
     },
     {
       "type": "patchouli:multiblock",
@@ -22,7 +22,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "The bloomery can contain up to a maximum 24 $(thing)Iron Ore$() and 24 $(l:mechanics/charcoal_pit)Charcoal$(), with 8 of each item per layer of the chimney. To add layers to the chimney, stack up two more layers of stone blocks.$(br2)To add items to the bloomery, climb up to the top and throw items inside. A tower of grey ore should form."
+      "text": "最大的锻铁炉可以同时在容纳 24 块$(thing)铁矿石$()和 24 块$(l:mechanics/charcoal_pit)木炭$()，每层烟囱可以容纳矿石木炭各 8 个。可以在最基础的锻铁炉结构上额外搭建两层烟囱来达到最大容量。$(br2)若要向锻铁炉中加入原料，需爬到锻铁炉顶部的烟囱并将原料丢进去。这会形成灰色的矿物塔。"
     },
     {
       "type": "patchouli:image",
@@ -34,7 +34,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "The bloomery must have an equal amount of charcoal and ore $(thing)items$(). Light the bloomery block, and wait most of a day. When the bloomery block shuts off, it is done. Each 100mB of iron that melts in the bloomery is transformed into a $(thing)Bloom Block$(). The bloom block contains $(thing)Raw Iron Blooms$(), which can be obtained by mining the Bloom Block repeatedly with a pickaxe. Any iron that cannot be fit into 100mB increments is lost."
+      "text": "锻铁炉中的矿石和木炭的$(thing)物品$()数目必须相等。点燃炉子，然后等待大半天即可。当锻铁炉块熄灭时就表示完成了。在锻铁炉中熔化的每 100 mB 铁矿石都会转化为一个$(thing)方坯方块$()。用镐反复挖掘$(thing)方坯方块$()就能获得$(thing)生铁方坯$()。不满100mB的铁矿物会被浪费。"
     },
     {
       "type": "patchouli:multiblock",

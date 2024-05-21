@@ -16,7 +16,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "With a firestarter, it is now possible to make a $(thing)Firepit$(). In order to make one, you will need one $(thing)log$(), three $(thing)sticks$(), and optionally up to five pieces of $(thing)kindling$(). Kindling can be items such as paper products, straw, or pinecones, and will increase the chance of successfully creating a firepit by 10 percent per item used. Throw ($(item)$(k:key.drop)$()) all the items on the ground, on the same block. Then use the firestarter on the block with the items floating above it.",
+      "text": "起火器可以用来制作$(thing)篝火$()。要制作篝火，你需要一根$(thing)原木$()，三根$(thing)木棍$()，以及最多五个可选的$(thing)易燃物$()。易燃物可以是纸制品、稻草或松果等物品，每个易燃物会增加成功率10%。将所有物品扔($(item)$(k:key.drop)$())在地上的同一个方块上。然后对这些方块上的物品使用起火器。",
       "title": "篝火"
     },
     {

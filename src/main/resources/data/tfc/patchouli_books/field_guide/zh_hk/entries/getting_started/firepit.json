@@ -7,7 +7,7 @@
     {
       "type": "patchouli:text",
       "anchor": "firestarter",
-      "text": "$(thing)火$()在文明史上是一項重大的技術進步。想要生火，就必須做一個$(thing)起火器$()。對準需要生火的目標按住$(item)$(k:key.use)$()。片刻之後，會產生煙，然後便有機率成功生火。你可能需要多嘗試幾次才能成功點起火來。"
+      "text": "$(thing)火$()在文明史上是一項重大的技術進步。想要生火，就必須做一個$(thing)起火器$()。對準需要生火的目標按住$(item)$(k:key.use)$()。片刻之後，會產生煙，然後便有幾率成功生火。你可能需要多嘗試幾次才能成功點起火來。"
     },
     {
       "type": "patchouli:crafting",
@@ -16,7 +16,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "With a firestarter, it is now possible to make a $(thing)Firepit$(). In order to make one, you will need one $(thing)log$(), three $(thing)sticks$(), and optionally up to five pieces of $(thing)kindling$(). Kindling can be items such as paper products, straw, or pinecones, and will increase the chance of successfully creating a firepit by 10 percent per item used. Throw ($(item)$(k:key.drop)$()) all the items on the ground, on the same block. Then use the firestarter on the block with the items floating above it.",
+      "text": "起火器可以用來製作$(thing)篝火$()。要製作篝火，你需要一根$(thing)原木$()，三根$(thing)木棍$()，以及最多五個可選的$(thing)易燃物$()。易燃物可以是紙製品、稻草或松果等物品，每個易燃物會增加成功率10%。將所有物品扔($(item)$(k:key.drop)$())在地上的同一個方塊上。然後對這些方塊上的物品使用起火器。",
       "title": "篝火"
     },
     {
