@@ -67,6 +67,13 @@ In addition, here's some useful things for dev work, and also making standardize
 - DO NOT include the book item in your inventory in screenshots! It is unobtainable in survival!
 - For multiple images in the same location, i.e. to show a sort of 'animated' style, use /tp @p x y z pitch yaw to get an exact positioning before taking screenshots.
 
+=== Language Specific Note ===
+
+zh_CN zh_HK zh_TW contributors: Please use opencc to make sure all three languages got properly synced & updated. Thanks! Example:
+
+opencc -i zh_cn.json -o zh_hk.json -c s2hk.json
+opencc -i zh_cn.json -o zh_tw.json -c s2tw.json
+
 """
 
 from argparse import ArgumentParser
