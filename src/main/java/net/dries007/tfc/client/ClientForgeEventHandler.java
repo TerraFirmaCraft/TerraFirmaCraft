@@ -155,7 +155,7 @@ public class ClientForgeEventHandler
                 tooltip.add("");
                 tooltip.add(AQUA + TerraFirmaCraft.MOD_NAME);
                 tooltip.add(Component.translatable("tfc.tooltip.calendar_date", Calendars.CLIENT.getCalendarTimeAndDate()).getString());
-                tooltip.add("Avg: %.1f Actual: %.1f Rain: %.1f".formatted(
+                tooltip.add("Avg: %.3f Actual: %.3f Rain: %.3f".formatted(
                     ClimateRenderCache.INSTANCE.getAverageTemperature(),
                     ClimateRenderCache.INSTANCE.getTemperature(),
                     ClimateRenderCache.INSTANCE.getRainfall()

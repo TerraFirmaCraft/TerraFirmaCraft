@@ -158,7 +158,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
 
     public float getAverageTemp(int x, int z)
     {
-        return temperatureLayer == null ? UNKNOWN_TEMPERATURE : temperatureLayer.getValue((z & 15) / 16f, (x & 15) / 16f);
+        return temperatureLayer == null ? UNKNOWN_TEMPERATURE : temperatureLayer.getValue((x & 15) / 16f, (z & 15) / 16f);
     }
 
     public ForestType getForestType()
