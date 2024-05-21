@@ -203,7 +203,8 @@ public class ClientForgeEventHandler
         final Player player = minecraft.player;
         if (player != null)
         {
-            if (event.getOverlay() == VanillaGuiOverlay.CROSSHAIR.type() && minecraft.screen == null && (Helpers.isItem(player.getMainHandItem().getItem(), TFCTags.Items.HOES)) || Helpers.isItem(player.getOffhandItem().getItem(), TFCTags.Items.HOES) && (!TFCConfig.CLIENT.showHoeOverlaysOnlyWhenShifting.get() && player.isShiftKeyDown()))
+            final boolean holdingHoe = Helpers.isItem(player.getMainHandItem().getItem(), TFCTags.Items.HOES) || Helpers.isItem(player.getOffhandItem().getItem(), TFCTags.Items.HOES);
+            if (event.getOverlay() == VanillaGuiOverlay.CROSSHAIR.type() && minecraft.screen == null && holdingHoe && (!TFCConfig.CLIENT.showHoeOverlaysOnlyWhenShifting.get() || player.isShiftKeyDown()))
             {
                 HoeOverlays.render(minecraft, event.getWindow(), stack);
             }

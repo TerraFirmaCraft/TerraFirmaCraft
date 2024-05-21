@@ -11,10 +11,21 @@
           "name": "tfc:plant/bur_reed",
           "conditions": [
             {
-              "condition": "minecraft:match_tool",
-              "predicate": {
-                "tag": "tfc:sharp_tools"
-              }
+              "condition": "minecraft:any_of",
+              "terms": [
+                {
+                  "condition": "minecraft:match_tool",
+                  "predicate": {
+                    "tag": "tfc:sharp_tools"
+                  }
+                },
+                {
+                  "condition": "minecraft:match_tool",
+                  "predicate": {
+                    "tag": "forge:shears"
+                  }
+                }
+              ]
             },
             {
               "condition": "minecraft:block_state_property",

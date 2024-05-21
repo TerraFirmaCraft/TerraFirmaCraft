@@ -3,6 +3,7 @@
   "replace": false,
   "values": [
     "#tfc:foods/vegetables",
-    "#tfc:foods/fruits"
+    "#tfc:foods/fruits",
+    "tfc:groundcover/seaweed"
   ]
 }

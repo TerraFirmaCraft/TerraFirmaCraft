@@ -88,9 +88,9 @@ public class BloomeryTests
     @MyTest(structure = "bloomery")
     public void testBloomeryDropsSomeContentWhenChimneyLost()
     {
-        addItems(0, 48);
+        addItems(8, 32);
         runAfterDelay(50, () -> at(1, 5, 2).destroyBlock());
-        succeedWhen(() -> at(bloomeryPos).itemEntityIsPresent(oreItem(), 16, 1.0));
+        succeedWhen(() -> at(bloomeryPos).itemEntityIsPresent(Items.CHARCOAL, 8, 1.0));
     }
 
     @MyTest(structure = "bloomery")
@@ -99,7 +99,7 @@ public class BloomeryTests
         addItems(0, 48);
         runAfterDelay(50, () -> addItems(0, 16));
         runAfterDelay(100, () -> {
-            at(2, 5, 2).itemEntityIsPresent(oreItem(), 16, 2.0);
+            at(2, 2, 2).itemEntityIsPresent(oreItem(), 64, 2.0);
             succeed();
         });
     }

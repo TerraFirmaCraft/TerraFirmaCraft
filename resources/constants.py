@@ -874,7 +874,7 @@ SIMPLE_FRESHWATER_FISH = ('bluegill', 'crappie', 'lake_trout', 'largemouth_bass'
 GRAINS = ('barley', 'maize', 'oat', 'rice', 'rye', 'wheat')
 GRAIN_SUFFIXES = ('', '_grain', '_flour', '_dough', '_bread', '_bread_sandwich', '_bread_jam_sandwich')
 MISC_FOODS = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_pepper', 'onion', 'potato', 'baked_potato', 'red_bell_pepper', 'soybean', 'squash', 'tomato', 'yellow_bell_pepper', 'cheese', 'cooked_egg', 'boiled_egg', 'fresh_seaweed', 'dried_seaweed', 'dried_kelp', 'cattail_root', 'taro_root', 'sugarcane', 'cooked_rice', 'pumpkin_chunks', 'melon_slice')
-MEATS = ('beef', 'pork', 'chicken', 'quail', 'mutton', 'bear', 'horse_meat', 'pheasant', 'turkey', 'peafowl', 'grouse', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'tropical_fish', 'turtle', 'calamari', 'shellfish', *SIMPLE_FRESHWATER_FISH, 'frog_legs')
+MEATS = ('beef', 'pork', 'chicken', 'quail', 'mutton', 'bear', 'horse_meat', 'pheasant', 'turkey', 'peafowl', 'grouse', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'tropical_fish', 'turtle', 'calamari', 'shellfish', *SIMPLE_FRESHWATER_FISH, 'frog_legs', 'fox')
 NUTRIENTS = ('grain', 'fruit', 'vegetables', 'protein', 'dairy')
 
 SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'manatee', 'penguin', 'frog', 'turtle', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail', 'rabbit', 'fox', 'boar', 'donkey', 'mule', 'horse', 'deer', 'moose', 'boar', 'rat', 'cat', 'dog', 'wolf', 'panda', 'grouse', 'pheasant', 'turkey', 'ocelot', 'direwolf', 'hyena', 'tiger', 'crocodile', 'bongo', 'caribou', 'gazelle', 'wildebeest', 'peafowl', *SIMPLE_FRESHWATER_FISH)
@@ -1563,6 +1563,8 @@ DEFAULT_LANG = {
     'entity.tfc.yak': 'Yak',
     'entity.tfc.yak.female': 'Female Yak',
     'entity.tfc.yak.male': 'Male Yak',
+    'entity.tfc.rabbit.female': 'Doe Rabbit',
+    'entity.tfc.rabbit.male': 'Buck Rabbit',
     'entity.tfc.polar_bear': 'Polar Bear',
     'entity.tfc.grizzly_bear': 'Grizzly Bear',
     'entity.tfc.black_bear': 'Black Bear',

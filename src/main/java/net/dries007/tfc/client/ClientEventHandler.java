@@ -181,6 +181,7 @@ import net.dries007.tfc.client.render.entity.TFCChestBoatRenderer;
 import net.dries007.tfc.client.render.entity.TFCChestedHorseRenderer;
 import net.dries007.tfc.client.render.entity.TFCFishingHookRenderer;
 import net.dries007.tfc.client.render.entity.TFCHorseRenderer;
+import net.dries007.tfc.client.render.entity.TFCRabbitRenderer;
 import net.dries007.tfc.client.render.entity.TFCSquidRenderer;
 import net.dries007.tfc.client.render.entity.ThrownJavelinRenderer;
 import net.dries007.tfc.client.screen.AnvilPlanScreen;
@@ -564,8 +565,7 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.CHICKEN.get(), ctx -> new OviparousRenderer<>(ctx, new TFCChickenModel(RenderHelpers.bakeSimple(ctx, "chicken")), "chicken", "rooster", "chick"));
         event.registerEntityRenderer(TFCEntities.DUCK.get(), ctx -> new OviparousRenderer<>(ctx, new DuckModel(RenderHelpers.bakeSimple(ctx, "duck")), "duck", "drake", "duckling"));
         event.registerEntityRenderer(TFCEntities.QUAIL.get(), ctx -> new OviparousRenderer<>(ctx, new QuailModel(RenderHelpers.bakeSimple(ctx, "quail")), "quail", "quail_male", "quail_chick"));
-        event.registerEntityRenderer(TFCEntities.RABBIT.get(), RabbitRenderer::new);
-        event.registerEntityRenderer(TFCEntities.RABBIT.get(), RabbitRenderer::new);
+        event.registerEntityRenderer(TFCEntities.RABBIT.get(), TFCRabbitRenderer::new);
         event.registerEntityRenderer(TFCEntities.FOX.get(), FoxRenderer::new);
         event.registerEntityRenderer(TFCEntities.PANDA.get(), PandaRenderer::new);
         event.registerEntityRenderer(TFCEntities.OCELOT.get(), OcelotRenderer::new);
@@ -755,15 +755,21 @@ public final class ClientEventHandler
         event.register(grassBlockColor, TFCBlocks.PEAT_GRASS.get());
         event.register(grassBlockColor, TFCBlocks.KAOLIN_CLAY_GRASS.get());
 
-        TFCBlocks.PLANTS.forEach((plant, reg) -> event.register(
-            plant.isTallGrass() ?
-                tallGrassColor :
-                plant.isSeasonal() ?
-                    (state, level, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex, 145) :
-                    plant.isFoliage() ?
-                        foliageColor :
-                        grassColor, reg.get()));
-        TFCBlocks.POTTED_PLANTS.forEach((plant, reg) -> event.register(grassColor, reg.get()));
+        TFCBlocks.PLANTS.forEach((plant, reg) -> {
+            if (plant.isBlockTinted())
+                event.register(
+                    plant.isTallGrass() ?
+                        tallGrassColor :
+                        plant.isSeasonal() ?
+                            (state, level, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex, 145) :
+                            plant.isFoliage() ?
+                                foliageColor :
+                                grassColor, reg.get());
+        });
+        TFCBlocks.POTTED_PLANTS.forEach((plant, reg) -> {
+            if (plant.isFlowerpotTinted())
+                event.register(grassColor, reg.get());
+        });
         TFCBlocks.WOODS.forEach((wood, reg) -> event.register(
             wood.isConifer() ?
                 foliageColor :

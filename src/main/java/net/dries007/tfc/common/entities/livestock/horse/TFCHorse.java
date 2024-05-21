@@ -504,7 +504,6 @@ public class TFCHorse extends Horse implements HorseProperties
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public float getWalkTargetValue(BlockPos pos, LevelReader level)
     {
         return level.getBlockState(pos.below()).is(TFCTags.Blocks.BUSH_PLANTABLE_ON) ? 10.0F : level.getPathfindingCostFromLightLevels(pos);

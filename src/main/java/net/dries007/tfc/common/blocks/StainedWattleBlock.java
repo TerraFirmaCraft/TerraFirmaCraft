@@ -34,6 +34,7 @@ import net.dries007.tfc.client.IGhostBlockHandler;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.util.Helpers;
 
+import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
 public class StainedWattleBlock extends ExtendedBlock implements IGhostBlockHandler
@@ -214,7 +215,7 @@ public class StainedWattleBlock extends ExtendedBlock implements IGhostBlockHand
         BlockState placeState = removeStateFor(state, hit.getDirection(), location.x - pos.getX(), location.y - pos.getY(), location.z - pos.getZ());
         if (placeState != null)
         {
-            Helpers.spawnItem(level, pos, new ItemStack(Items.STICK));
+            ItemHandlerHelper.giveItemToPlayer(player, Items.STICK.getDefaultInstance());
             Helpers.playSound(level, pos, TFCSounds.WATTLE_WOVEN.get());
             return setState(level, pos, placeState, player, item, 0);
         }

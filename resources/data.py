@@ -275,8 +275,8 @@ def generate(rm: ResourceManager):
     food_item(rm, 'potato', 'tfc:food/potato', Category.vegetable, 4, 0.5, 0, 0.666, veg=1.0)
     food_item(rm, 'baked_potato', 'tfc:food/baked_potato', Category.vegetable, 4, 2, 0, 1.0, veg=1.5)
     food_item(rm, 'red_bell_pepper', 'tfc:food/red_bell_pepper', Category.vegetable, 4, 1, 0, 2.5, veg=1)
-    food_item(rm, 'dried_seaweed', 'tfc:food/dried_seaweed', Category.vegetable, 2, 1, 0, 2.5, veg=0.5)
-    food_item(rm, 'fresh_seaweed', 'tfc:food/fresh_seaweed', Category.other, 2, 1, 0, 2.5)
+    food_item(rm, 'dried_seaweed', 'tfc:food/dried_seaweed', Category.vegetable, 2, 1, 0, 2.0, veg=0.5)
+    food_item(rm, 'fresh_seaweed', 'tfc:food/fresh_seaweed', Category.other, 2, 1, 0, 2.5, veg=0.25)
     food_item(rm, 'dried_kelp', 'tfc:food/dried_kelp', Category.vegetable, 2, 1, 0, 2.5, veg=0.5)
     food_item(rm, 'cattail_root', 'tfc:food/cattail_root', Category.vegetable, 2, 1, 0, 2.5, grain=0.5)
     food_item(rm, 'taro_root', 'tfc:food/taro_root', Category.vegetable, 2, 1, 0, 2.5, grain=0.5)
@@ -319,6 +319,7 @@ def generate(rm: ResourceManager):
     food_item(rm, 'venison', 'tfc:food/venison', Category.meat, 4, 0, 0, 2, protein=1)
     food_item(rm, 'wolf', 'tfc:food/wolf', Category.meat, 4, 0, 0, 3, protein=0.5)
     food_item(rm, 'rabbit', 'tfc:food/rabbit', Category.meat, 4, 0, 0, 3, protein=0.5)
+    food_item(rm, 'fox', 'tfc:food/fox', Category.meat, 4, 0, 0, 3, protein=0.5)
     food_item(rm, 'hyena', 'tfc:food/hyena', Category.meat, 4, 0, 0, 3, protein=0.5)
     food_item(rm, 'duck', 'tfc:food/duck', Category.meat, 4, 0, 0, 3, protein=0.5)
     food_item(rm, 'quail', 'tfc:food/quail', Category.meat, 4, 0, 0, 3, protein=0.5)
@@ -351,6 +352,7 @@ def generate(rm: ResourceManager):
     food_item(rm, 'cooked_venison', 'tfc:food/cooked_venison', Category.cooked_meat, 4, 1, 0, 1.5, protein=2)
     food_item(rm, 'cooked_wolf', 'tfc:food/cooked_wolf', Category.cooked_meat, 4, 1, 0, 2.25, protein=1.5)
     food_item(rm, 'cooked_rabbit', 'tfc:food/cooked_rabbit', Category.cooked_meat, 4, 1, 0, 2.25, protein=1.5)
+    food_item(rm, 'cooked_fox', 'tfc:food/cooked_fox', Category.cooked_meat, 4, 1, 0, 2.25, protein=1.5)
     food_item(rm, 'cooked_hyena', 'tfc:food/cooked_hyena', Category.cooked_meat, 4, 1, 0, 2.25, protein=1.5)
     food_item(rm, 'cooked_duck', 'tfc:food/cooked_duck', Category.cooked_meat, 4, 1, 0, 2.25, protein=1.5)
     food_item(rm, 'cooked_quail', 'tfc:food/cooked_quail', Category.cooked_meat, 4, 1, 0, 2.25, protein=2)
@@ -534,7 +536,7 @@ def generate(rm: ResourceManager):
     mob_loot(rm, 'duck', 'tfc:food/duck', 2, 3, extra_pool={'name': 'minecraft:feather', 'functions': [loot_tables.set_count(4, 10)]}, livestock=True, not_predated=True)
     mob_loot(rm, 'quail', 'tfc:food/quail', 1, 3, extra_pool={'name': 'minecraft:feather', 'functions': [loot_tables.set_count(4, 12)]}, livestock=True, not_predated=True)
     mob_loot(rm, 'rabbit', 'tfc:food/rabbit', hide_size='small', hide_chance=0.5, bones=1, extra_pool={'name': 'minecraft:rabbit_foot', 'conditions': [loot_tables.random_chance(0.1)]}, not_predated=True)
-    mob_loot(rm, 'fox', 'tfc:small_raw_hide', bones=2)
+    mob_loot(rm, 'fox', 'tfc:food/fox', hide_size='small', bones=1)
     mob_loot(rm, 'boar', 'tfc:food/pork', 5, 10, 'small', hide_chance=0.8, bones=3, not_predated=True)
     mob_loot(rm, 'wildebeest', 'tfc:food/beef', 8, 14, 'small', hide_chance=0.8, bones=3, not_predated=True)
     mob_loot(rm, 'bongo', 'tfc:food/venison', 6, 10, 'medium', bones=6, not_predated=True)
@@ -551,6 +553,7 @@ def generate(rm: ResourceManager):
     mob_loot(rm, 'horse', 'tfc:food/horse_meat', 4, 18, 'medium', bones=6, livestock=True, not_predated=True)
     mob_loot(rm, 'frog', 'tfc:food/frog_legs', 2, 2, bones=2)
     mob_loot(rm, 'minecraft:zombie', 'minecraft:rotten_flesh', 0, 2)  # it drops vanilla stuff we do not want
+    mob_loot(rm, 'minecraft:drowned', 'minecraft:rotten_flesh', 0, 2)  # it drops vanilla stuff we do not want
 
     trim_material(rm, 'amethyst', '#9A5CC6', 'tfc:gem/amethyst', 0)
     trim_material(rm, 'diamond', '#6EECD2', 'tfc:gem/diamond', 0.1)

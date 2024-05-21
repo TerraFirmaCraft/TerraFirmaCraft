@@ -155,7 +155,7 @@ public class TFCEntities
     public static final RegistryObject<EntityType<OviparousAnimal>> DUCK = register("duck", EntityType.Builder.of(TFCEntities::makeDuck, MobCategory.CREATURE).sized(0.4F, 0.7F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<OviparousAnimal>> QUAIL = register("quail", EntityType.Builder.of(TFCEntities::makeQuail, MobCategory.CREATURE).sized(0.4F, 0.7F).clientTrackingRange(10));
 
-    public static final RegistryObject<EntityType<TFCRabbit>> RABBIT = register("rabbit", EntityType.Builder.of(TFCRabbit::new, MobCategory.CREATURE).sized(0.4F, 0.5F).clientTrackingRange(8));
+    public static final RegistryObject<EntityType<TFCRabbit>> RABBIT = register("rabbit", EntityType.Builder.of(TFCEntities::makeRabbit, MobCategory.CREATURE).sized(0.4F, 0.5F).clientTrackingRange(8));
     public static final RegistryObject<EntityType<TFCFox>> FOX = register("fox", EntityType.Builder.of(TFCFox::new, MobCategory.CREATURE).sized(0.6F, 0.7F).clientTrackingRange(8));
     public static final RegistryObject<EntityType<TFCPanda>> PANDA = register("panda", EntityType.Builder.of(TFCPanda::new, MobCategory.CREATURE).sized(1.3F, 1.25F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<TFCOcelot>> OCELOT = register("ocelot", EntityType.Builder.of(TFCOcelot::new, MobCategory.CREATURE).sized(0.6F, 0.7F).clientTrackingRange(10));
@@ -380,6 +380,10 @@ public class TFCEntities
         };
     }
 
+    public static TFCRabbit makeRabbit(EntityType<? extends Rabbit> animal, Level level)
+    {
+        return new TFCRabbit(animal, level, TFCConfig.SERVER.rabbitConfig);
+    }
     public static RammingPrey makeBoar(EntityType<? extends RammingPrey> animal, Level level)
     {
         return new RammingPrey(animal, level, TFCSounds.BOAR, 0.1d);

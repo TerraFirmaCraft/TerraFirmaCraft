@@ -17,7 +17,8 @@
                   "condition": "minecraft:block_state_property",
                   "block": "tfc:dead_crop/papyrus",
                   "properties": {
-                    "mature": "true"
+                    "mature": "true",
+                    "part": "bottom"
                   }
                 }
               ],
@@ -40,7 +41,8 @@
                   "condition": "minecraft:block_state_property",
                   "block": "tfc:dead_crop/papyrus",
                   "properties": {
-                    "mature": "false"
+                    "mature": "false",
+                    "part": "bottom"
                   }
                 }
               ]

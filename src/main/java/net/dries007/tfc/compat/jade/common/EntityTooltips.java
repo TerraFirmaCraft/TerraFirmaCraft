@@ -18,6 +18,7 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.entities.misc.TFCFishingHook;
 import net.dries007.tfc.common.entities.prey.TFCFrog;
+import net.dries007.tfc.common.entities.prey.TFCRabbit;
 import net.dries007.tfc.common.entities.prey.WildAnimal;
 import net.dries007.tfc.common.entities.ai.predator.PackPredator;
 import net.dries007.tfc.common.entities.ai.prey.TFCOcelot;
@@ -47,6 +48,7 @@ public final class EntityTooltips
         registry.register("animal", ANIMAL, TFCAnimal.class);
         registry.register("horse", ANIMAL, TFCHorse.class);
         registry.register("chested_horse", ANIMAL, TFCChestedHorse.class);
+        registry.register("rabbit", ANIMAL, TFCRabbit.class);
         registry.register("wild_animal", ANIMAL, WildAnimal.class);
         registry.register("frog", FROG, TFCFrog.class);
         registry.register("squid", SQUID, TFCSquid.class);

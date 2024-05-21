@@ -64,6 +64,8 @@ public class ServerConfig
     public final ForgeConfigSpec.EnumValue<Size> chestMaximumItemSize;
     // Blocks - Large Vessel
     public final ForgeConfigSpec.BooleanValue largeVesselEnableAutomation;
+    // Blocks - Quern
+    public final ForgeConfigSpec.BooleanValue quernEnableAutomation;
     // Blocks - Torch
     public final ForgeConfigSpec.IntValue torchTicks;
     // Blocks - Torch
@@ -256,6 +258,7 @@ public class ServerConfig
     public final MammalConfig horseConfig;
     public final MammalConfig catConfig;
     public final MammalConfig dogConfig;
+    public final MammalConfig rabbitConfig;
     public final ProducingMammalConfig cowConfig;
     public final ProducingMammalConfig alpacaConfig;
     public final OviparousAnimalConfig chickenConfig;
@@ -343,6 +346,10 @@ public class ServerConfig
         builder.swap("largeVessel");
 
         largeVesselEnableAutomation = builder.comment("If true, large vessels will interact with in-world automation such as hoppers on a side-specific basis.").define("largeVesselEnableAutomation", true);
+
+        builder.swap("quern");
+
+        quernEnableAutomation = builder.comment("If true, querns will interact with in-world automation such as hoppers on a side-specific basis.").define("quernEnableAutomation", true);
 
         builder.swap("torch");
 
@@ -654,6 +661,9 @@ public class ServerConfig
 
         builder.swap("dog");
         dogConfig = MammalConfig.build(builder, "dog", 0.35, 50, 60, true, 19, 2);
+
+        builder.swap("rabbit");
+        rabbitConfig = MammalConfig.build(builder, "rabbit", 0.35, 80, 40, true, 19, 6);
 
         builder.swap("cow");
         cowConfig = ProducingMammalConfig.build(builder, "cow", 0.35, 192, 128, true, 58, 2, 24000, 0.15);

@@ -23,13 +23,14 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.blocks.ISpecialPile;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.plant.TFCBushBlock;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.Month;
 
-public class WildCropBlock extends TFCBushBlock
+public class WildCropBlock extends TFCBushBlock implements ISpecialPile
 {
     public static boolean isMature(LevelAccessor level)
     {
@@ -67,6 +68,19 @@ public class WildCropBlock extends TFCBushBlock
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return CropBlock.FULL_SHAPE;
+    }
+
+    @Override
+    public BlockState getHiddenState(BlockState internalState, boolean byPlayer)
+    {
+        return internalState.setValue(MATURE, false);
+    }
+
+    @Override
+    @Nullable
+    public BlockState getHiddenStateAbove(@Nullable BlockState aboveState, boolean byPlayer)
+    {
+        return aboveState != null && aboveState.hasProperty(MATURE) ? aboveState.setValue(MATURE, false) : aboveState;
     }
 
     @Override

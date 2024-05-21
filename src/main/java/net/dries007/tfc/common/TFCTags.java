@@ -210,8 +210,8 @@ public class TFCTags
         public static final TagKey<Item> PENGUIN_FOOD = create("penguin_food");
         public static final TagKey<Item> TURTLE_FOOD = create("turtle_food");
         public static final TagKey<Item> FROG_FOOD = create("frog_food");
+        public static final TagKey<Item> RABBIT_FOOD = create("rabbit_food");
         public static final TagKey<Item> SCRIBING_INK = create("scribing_ink");
-        public static final TagKey<Item> SANDWICH_BREAD = create("sandwich_bread");
         public static final TagKey<Item> SMALL_FISHING_BAIT = create("small_fishing_bait");
         public static final TagKey<Item> LARGE_FISHING_BAIT = create("large_fishing_bait");
         public static final TagKey<Item> HOLDS_SMALL_FISHING_BAIT = create("holds_small_fishing_bait");
@@ -242,7 +242,6 @@ public class TFCTags
         public static final TagKey<Item> CAN_BE_SALTED = create("foods/can_be_salted");
         public static final TagKey<Item> GLASS_BATCHES = create("glass_batches");
         public static final TagKey<Item> BLOWPIPES = create("blowpipes");
-        public static final TagKey<Item> GLASS_BLOWPIPES = create("glass_blowpipes");
         public static final TagKey<Item> ALL_BLOWPIPES = create("all_blowpipes");
         public static final TagKey<Item> SILICA_ITEMS = create("silica_items");
         public static final TagKey<Item> HEMATITIC_ITEMS = create("hematitic_items");

@@ -96,6 +96,9 @@
     },
     {
       "item": "tfc:food/frog_legs"
+    },
+    {
+      "item": "tfc:food/fox"
     }
   ],
   "heat_capacity": 1.0

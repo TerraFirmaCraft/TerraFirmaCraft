@@ -21,7 +21,7 @@
             },
             {
               "type": "minecraft:item",
-              "name": "tfc:groundcover/pumice",
+              "name": "tfc:rock/loose/dacite",
               "conditions": [
                 {
                   "condition": "minecraft:random_chance",
@@ -31,11 +31,21 @@
             },
             {
               "type": "minecraft:item",
+              "name": "tfc:groundcover/pumice",
+              "conditions": [
+                {
+                  "condition": "minecraft:random_chance",
+                  "chance": 0.25
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
               "name": "tfc:ore/pyrite",
               "conditions": [
                 {
                   "condition": "minecraft:random_chance",
-                  "chance": 0.04
+                  "chance": 0.0533
                 }
               ]
             }

@@ -20,6 +20,7 @@ import net.minecraft.world.level.levelgen.WorldgenRandom;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.crop.DeadCropBlock;
 import net.dries007.tfc.common.blocks.rock.LooseRockBlock;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.config.TFCConfig;
@@ -36,6 +37,8 @@ public final class PlantRegrowth
         return random.nextFloat() < TFCConfig.SERVER.plantSpreadChance.get() && Calendars.get(level).getCalendarMonthOfYear().getSeason() != Season.WINTER;
     }
 
+    public static final BiPredicate<BlockState, BlockPos> DEFAULT_PLACEMENT_TEST = (s, p) -> s.isAir() || s.getBlock() instanceof DeadCropBlock;
+
     /**
      * @param selfSpreadRange the max distance the plant will attempt to spread
      * @param radius          the square radius that the plant will check for tagged plants to prevent over-densification
@@ -45,7 +48,7 @@ public final class PlantRegrowth
     @Nullable
     public static BlockPos spreadSelf(BlockState state, ServerLevel level, BlockPos pos, RandomSource random, int selfSpreadRange, int radius, int maxPlants)
     {
-        return spreadSelf(state, level, pos, random, selfSpreadRange, radius, maxPlants, (s, p) -> Helpers.isBlock(s, TFCTags.Blocks.PLANTS), (s, p) -> s.isAir());
+        return spreadSelf(state, level, pos, random, selfSpreadRange, radius, maxPlants, (s, p) -> Helpers.isBlock(s, TFCTags.Blocks.PLANTS), DEFAULT_PLACEMENT_TEST);
     }
 
     @Nullable

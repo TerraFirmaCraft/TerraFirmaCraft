@@ -101,9 +101,9 @@ def generate(rm: ResourceManager):
         rm.crafting_shapeless('crafting/rock/%s_cobble_stairs_undo' % rock, ('tfc:rock/cobble/%s_stairs' % rock), (3, loose))
         rm.crafting_shapeless('crafting/rock/%s_mossy_cobble_stairs_undo' % rock, ('tfc:rock/mossy_cobble/%s_stairs' % rock), (3, mossy_loose))
         rm.crafting_shapeless('crafting/rock/%s_cobble_slab_undo' % rock, ('tfc:rock/cobble/%s_stairs' % rock), (2, loose))
-        rm.crafting_shapeless('crafting/rock/%s_mossy_cobble_slab_undo' % rock, ('tfc:rock/cobble/%s_stairs' % rock), (2, mossy_loose))
+        rm.crafting_shapeless('crafting/rock/%s_mossy_cobble_slab_undo' % rock, ('tfc:rock/mossy_cobble/%s_slab' % rock), (2, mossy_loose))
         rm.crafting_shapeless('crafting/rock/%s_cobble_wall_undo' % rock, ('tfc:rock/cobble/%s_stairs' % rock), (4, loose))
-        rm.crafting_shapeless('crafting/rock/%s_mossy_cobble_wall_undo' % rock, ('tfc:rock/cobble/%s_stairs' % rock), (4, mossy_loose))
+        rm.crafting_shapeless('crafting/rock/%s_mossy_cobble_wall_undo' % rock, ('tfc:rock/mossy_cobble/%s_wall' % rock), (4, mossy_loose))
 
     for metal, metal_data in METALS.items():
         if 'part' in metal_data.types:
@@ -664,8 +664,8 @@ def generate(rm: ResourceManager):
     heat_recipe(rm, 'baked_potato', 'tfc:food/potato', 200, result_item='tfc:food/baked_potato')
     heat_recipe(rm, 'seaweed', 'tfc:food/fresh_seaweed', 200, result_item='tfc:food/dried_seaweed')
     heat_recipe(rm, 'giant_kelp_flower', 'tfc:plant/giant_kelp_flower', 200, result_item='tfc:food/dried_kelp')
-    heat_recipe(rm, 'soda_ash_from_seaweed', not_rotten('tfc:food/dried_seaweed'), 200, result_item='3 tfc:powder/soda_ash')
-    heat_recipe(rm, 'soda_ash_from_kelp', not_rotten('tfc:food/dried_kelp'), 200, result_item='3 tfc:powder/soda_ash')
+    heat_recipe(rm, 'soda_ash_from_seaweed', not_rotten('tfc:food/dried_seaweed'), 500, result_item='3 tfc:powder/soda_ash')
+    heat_recipe(rm, 'soda_ash_from_kelp', not_rotten('tfc:food/dried_kelp'), 500, result_item='3 tfc:powder/soda_ash')
     heat_recipe(rm, 'cooked_egg', 'minecraft:egg', 200, result_item=item_stack_provider('tfc:food/cooked_egg', copy_food=True))
     heat_recipe(rm, 'blowpipe_melting', 'tfc:blowpipe_with_glass', 1500, result_item='tfc:blowpipe')
     heat_recipe(rm, 'ceramic_blowpipe_melting', 'tfc:ceramic_blowpipe_with_glass', 1500, result_item='tfc:ceramic_blowpipe')

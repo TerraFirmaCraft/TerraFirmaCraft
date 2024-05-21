@@ -8,6 +8,16 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "name": "tfc:food/fox"
+        }
+      ]
+    },
+    {
+      "name": "loot_pool",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
           "name": "tfc:small_raw_hide"
         }
       ]
@@ -24,7 +34,7 @@
               "function": "minecraft:set_count",
               "count": {
                 "min": 1,
-                "max": 2,
+                "max": 1,
                 "type": "minecraft:uniform"
               }
             }

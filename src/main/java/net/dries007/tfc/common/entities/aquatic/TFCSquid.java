@@ -90,16 +90,6 @@ public class TFCSquid extends Squid implements AquaticMob
     }
 
     @Override
-    public void refreshDimensions()
-    {
-        final double x = getX();
-        final double y = getY();
-        final double z = getZ();
-        super.refreshDimensions();
-        setPos(x, y, z);
-    }
-
-    @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> data)
     {
         super.onSyncedDataUpdated(data);
@@ -137,7 +127,7 @@ public class TFCSquid extends Squid implements AquaticMob
 
         if (spawnType == MobSpawnType.NATURAL || spawnType == MobSpawnType.CHUNK_GENERATION)
         {
-            while (!checkSpawnObstruction(level))
+            while (level.collidesWithSuffocatingBlock(this, getBoundingBox()))
             {
                 setSize((int) (getSize() * 0.8), true);
                 if (getSize() < pair.getFirst())
