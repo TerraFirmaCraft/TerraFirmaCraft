@@ -19,17 +19,16 @@ public final class RiverEdge
 {
     private static final int MAX_AFFECTING_GRID_DISTANCE = 1 + Mth.ceil(1.5f * AddRiversAndLakes.RIVER_LENGTH);
 
+    public int width;
+
     private final River.Vertex source, drain;
     private final MidpointFractal fractal;
 
     final int minPartX, minPartZ, maxPartX, maxPartZ;
-    int width;
 
     // River-wide drain/source properties
     private boolean sourceEdge; // `true` if this river has a source edge, `false` if it does not.
     private @Nullable RiverEdge drainEdge; // The drain edge of this river
-
-
 
     public RiverEdge(River.Edge edge, RandomSource random)
     {
@@ -79,11 +78,6 @@ public final class RiverEdge
     public MidpointFractal fractal()
     {
         return fractal;
-    }
-
-    public int width()
-    {
-        return width;
     }
 
     public int widthSq()

@@ -43,18 +43,17 @@ public class RegionGenerator
             (x, z) -> triangle(frequency, z);
     }
 
-    final Noise2D continentNoise;
-    final Noise2D temperatureNoise;
-    final Noise2D rainfallNoise;
+    public final Cellular2D cellNoise;
+    public final Noise2D continentNoise;
+    public final Noise2D temperatureNoise;
+    public final Noise2D rainfallNoise;
 
-    final ThreadLocal<Area> biomeArea;
-    final ThreadLocal<Area> rockArea;
+    public final ThreadLocal<Area> biomeArea;
+    public final ThreadLocal<Area> rockArea;
 
     private final long seed;
     private final FastConcurrentCache<Region> cellCache;
     private final FastConcurrentCache<RegionPartition> partitionCache;
-
-    private final Cellular2D cellNoise;
 
     public RegionGenerator(Settings settings, RandomSource random)
     {
@@ -198,6 +197,7 @@ public class RegionGenerator
         createRegion(sampleCell(gridX, gridZ), viewer);
     }
 
+    @VisibleForTesting
     public enum Task
     {
         INIT(c -> {}),
@@ -230,11 +230,12 @@ public class RegionGenerator
     public class Context
     {
         private final BiConsumer<Task, Region> viewer;
-        final Cellular2D.Cell regionCell;
-        final RandomSource random;
 
-        final Region region;
-        int minX, maxX, minZ, maxZ;
+        public final Cellular2D.Cell regionCell;
+        public final RandomSource random;
+
+        public final Region region;
+        public int minX, maxX, minZ, maxZ;
 
         Context(BiConsumer<Task, Region> viewer, Cellular2D.Cell regionCell, long seed)
         {
@@ -269,41 +270,6 @@ public class RegionGenerator
         public RegionGenerator generator()
         {
             return RegionGenerator.this;
-        }
-
-        public Cellular2D.Cell getRegionCell()
-        {
-            return regionCell;
-        }
-
-        public RandomSource getRandom()
-        {
-            return random;
-        }
-
-        public int getMinX()
-        {
-            return minX;
-        }
-
-        public int getMaxX()
-        {
-            return maxX;
-        }
-
-        public int getMinZ()
-        {
-            return minZ;
-        }
-
-        public int getMaxZ()
-        {
-            return maxZ;
-        }
-
-        public Region getRegion()
-        {
-            return region;
         }
     }
 }

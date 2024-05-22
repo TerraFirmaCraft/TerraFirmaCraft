@@ -27,7 +27,7 @@ public final class Region
     private Point[] data;
     private @Nullable List<RiverEdge> rivers;
 
-    public Region(Cellular2D.Cell cell)
+    Region(Cellular2D.Cell cell)
     {
         this.cellX = cell.x();
         this.cellY = cell.y();
@@ -122,7 +122,7 @@ public final class Region
     public int sizeX() { return sizeX; }
     public int sizeZ() { return sizeZ; }
 
-    void setRegionArea(Point[] data, int minX, int minZ, int maxX, int maxZ)
+    public void setRegionArea(Point[] data, int minX, int minZ, int maxX, int maxZ)
     {
         this.data = data;
         this.minX = minX;
@@ -135,7 +135,7 @@ public final class Region
         assert data.length == sizeX * sizeZ : "setRegionArea() data.length = %d != sizeX (%d) * sizeZ (%d)".formatted(data.length, sizeX, sizeZ);
     }
 
-    void setRivers(List<RiverEdge> rivers)
+    public void setRivers(List<RiverEdge> rivers)
     {
         assert this.rivers == null;
         this.rivers = rivers;
