@@ -72,6 +72,11 @@ public class CollapseRecipe extends SimpleBlockRecipe
         final RandomSource random = level.getRandom();
         if (!level.isClientSide() && level.isAreaLoaded(pos, 32))
         {
+
+            // Don't trigger a collapse if mined block is supported
+            if (Support.isSupported(level, pos))
+                return false;
+
             final boolean realCollapse = random.nextFloat() < TFCConfig.SERVER.collapseTriggerChance.get(),
                 fakeCollapse = !realCollapse && random.nextFloat() < TFCConfig.SERVER.collapseFakeTriggerChance.get();
             if (realCollapse || fakeCollapse)
