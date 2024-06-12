@@ -19,6 +19,7 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredientType;
 import mezz.jei.api.ingredients.IIngredientTypeWithSubtypes;
 import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.registration.IGuiHandlerRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
@@ -35,6 +36,14 @@ import net.minecraftforge.registries.RegistryObject;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.ClientHelpers;
+import net.dries007.tfc.client.screen.AnvilScreen;
+import net.dries007.tfc.client.screen.BarrelScreen;
+import net.dries007.tfc.client.screen.CrucibleScreen;
+import net.dries007.tfc.client.screen.FirepitScreen;
+import net.dries007.tfc.client.screen.GrillScreen;
+import net.dries007.tfc.client.screen.KnappingScreen;
+import net.dries007.tfc.client.screen.PotScreen;
+import net.dries007.tfc.client.screen.SewingTableScreen;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.wood.Wood;
@@ -256,6 +265,20 @@ public final class JEIIntegration implements IModPlugin
                 registry.addRecipeCatalyst(item, recipeType);
             }
         }
+    }
+
+    @Override
+    public void registerGuiHandlers(IGuiHandlerRegistration registry)
+    {
+        registry.addRecipeClickArea(KnappingScreen.class, 97, 44, 22, 15, KNAPPING_TYPES.values().toArray(new RecipeType<?>[0]));
+        registry.addRecipeClickArea(AnvilScreen.class, 26, 24, 9, 14, ANVIL, WELDING);
+        registry.addRecipeClickArea(BarrelScreen.class, 92, 21, 9, 14, SEALED_BARREL, INSTANT_BARREL, INSTANT_FLUID_BARREL);
+        registry.addRecipeClickArea(CrucibleScreen.class, 139, 100, 10, 15, ALLOYING);
+        registry.addRecipeClickArea(CrucibleScreen.class, 82, 100, 10, 15, HEATING);
+        registry.addRecipeClickArea(FirepitScreen.class, 79, 46, 18, 10, HEATING);
+        registry.addRecipeClickArea(GrillScreen.class, 61, 37, 18, 10, HEATING);
+        registry.addRecipeClickArea(PotScreen.class, 77, 6, 9, 14, SIMPLE_POT, SOUP_POT, JAM_POT);
+        registry.addRecipeClickArea(SewingTableScreen.class, 125, 84, 22, 15, SEWING);
     }
 
     @Override
