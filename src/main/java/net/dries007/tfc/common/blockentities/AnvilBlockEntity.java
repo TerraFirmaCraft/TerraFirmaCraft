@@ -46,6 +46,7 @@ import net.dries007.tfc.common.container.ISlotCallback;
 import net.dries007.tfc.common.recipes.AnvilRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.WeldingRecipe;
+import net.dries007.tfc.util.DynamicIngredients;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
 
@@ -112,7 +113,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
         return switch (slot)
             {
                 case SLOT_INPUT_MAIN, SLOT_INPUT_SECOND -> true;
-                case SLOT_HAMMER -> Helpers.isItem(stack, TFCTags.Items.HAMMERS);
+                case SLOT_HAMMER -> DynamicIngredients.CAN_ANVIL.matches(stack);
                 case SLOT_CATALYST -> Helpers.isItem(stack, TFCTags.Items.FLUX);
                 default -> false;
             };
@@ -214,7 +215,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
                 hammer = player.getOffhandItem();
                 hammerSlot = InteractionHand.OFF_HAND;
             }
-            if (hammer.isEmpty() || !Helpers.isItem(hammer, TFCTags.Items.HAMMERS))
+            if (hammer.isEmpty() || !DynamicIngredients.CAN_ANVIL.matches(hammer))
             {
                 player.displayClientMessage(Component.translatable("tfc.tooltip.hammer_required_to_work"), false);
                 return InteractionResult.FAIL;

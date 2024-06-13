@@ -22,6 +22,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.util.DynamicIngredients;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
 import net.dries007.tfc.util.registry.RegistryRock;
@@ -48,7 +49,7 @@ public class RockConvertableToAnvilBlock extends RawRockBlock
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
         final ItemStack stack = player.getItemInHand(hand);
-        if (Helpers.isItem(stack, TFCTags.Items.HAMMERS) && !Helpers.isItem(player.getItemInHand(hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND), TFCTags.Items.CHISELS) && hit.getDirection() == Direction.UP && level.getBlockState(pos.above()).isAir())
+        if (DynamicIngredients.CAN_ANVIL.matches(stack) && !Helpers.isItem(player.getItemInHand(hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND), TFCTags.Items.CHISELS) && hit.getDirection() == Direction.UP && level.getBlockState(pos.above()).isAir())
         {
             final BlockState block = anvil.get().defaultBlockState();
             level.setBlockAndUpdate(pos, block);

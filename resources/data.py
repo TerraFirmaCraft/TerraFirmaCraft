@@ -570,6 +570,12 @@ def generate(rm: ResourceManager):
     trim_material(rm, 'rose_gold', '#fcdd86', 'tfc:metal/ingot/rose_gold', 0.95)
     trim_material(rm, 'bismuth', '#8bbbc4', 'tfc:metal/ingot/bismuth', 1)
 
+    dynamic_ingredient(rm, 'can_log', '#tfc:axes_that_log')
+    dynamic_ingredient(rm, 'can_log_badly', '#tfc:inefficient_logging_axes')
+    dynamic_ingredient(rm, 'can_anvil', '#tfc:hammers')
+    dynamic_ingredient(rm, 'can_edit_gearboxes', '#tfc:hammers')
+    dynamic_ingredient(rm, 'can_scrape', '#tfc:knives')
+
 
 def entity_damage_resistance(rm: ResourceManager, name_parts: ResourceIdentifier, entity_tag: str, piercing: int = 0, slashing: int = 0, crushing: int = 0):
     rm.data(('tfc', 'entity_damage_resistances', name_parts), {
@@ -787,6 +793,5 @@ def hydration_from_rainfall(rainfall: float) -> int:
     return int(rainfall) * 60 // 500
 
 
-def block_and_item_tag(rm: ResourceManager, name_parts: utils.ResourceIdentifier, *values: utils.ResourceIdentifier, replace: bool = False):
-    rm.block_tag(name_parts, *values, replace=replace)
-    rm.item_tag(name_parts, *values, replace=replace)
+def dynamic_ingredient(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json):
+    rm.data(('tfc', 'ingredients', name_parts), { 'ingredient': utils.ingredient(ingredient) })

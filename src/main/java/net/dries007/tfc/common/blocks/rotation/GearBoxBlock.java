@@ -23,14 +23,12 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
-import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.rotation.RotatingBlockEntity;
 import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
-import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.DeviceBlock;
-import net.dries007.tfc.common.blocks.wood.Wood;
+import net.dries007.tfc.util.DynamicIngredients;
 import net.dries007.tfc.util.Helpers;
 
 public class GearBoxBlock extends DeviceBlock implements DirectionPropertyBlock, ConnectedAxleBlock
@@ -56,7 +54,7 @@ public class GearBoxBlock extends DeviceBlock implements DirectionPropertyBlock,
     @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
     {
-        if (Helpers.isItem(player.getItemInHand(hand), TFCTags.Items.HAMMERS))
+        if (DynamicIngredients.CAN_EDIT_GEARBOXES.matches(player.getItemInHand(hand)))
         {
             final BooleanProperty property = DirectionPropertyBlock.getProperty(result.getDirection());
             final boolean prev = state.getValue(property);

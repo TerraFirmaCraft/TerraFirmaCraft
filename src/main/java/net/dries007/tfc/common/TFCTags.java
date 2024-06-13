@@ -177,8 +177,6 @@ public class TFCTags
         public static final TagKey<Item> TUYERES = create("tuyeres");
         public static final TagKey<Item> ANY_KNAPPING = create("any_knapping");
         public static final TagKey<Item> ROCK_KNAPPING = create("rock_knapping");
-        public static final TagKey<Item> AXES_THAT_LOG = create("axes_that_log"); // Axes which cut down entire trees
-        public static final TagKey<Item> INEFFICIENT_LOGGING_AXES = create("inefficient_logging_axes"); // Axes which are 60% efficient at destroying logs
         public static final TagKey<Item> COMPOST_GREENS = create("compost_greens");
         public static final TagKey<Item> COMPOST_GREENS_LOW = create("compost_greens_low");
         public static final TagKey<Item> COMPOST_GREENS_HIGH = create("compost_greens_high");

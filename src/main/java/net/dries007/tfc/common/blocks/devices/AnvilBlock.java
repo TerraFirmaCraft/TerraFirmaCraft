@@ -33,11 +33,11 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.items.IItemHandler;
 
 import net.dries007.tfc.client.particle.TFCParticles;
-import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.AnvilBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.capabilities.Capabilities;
+import net.dries007.tfc.util.DynamicIngredients;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 
@@ -77,7 +77,7 @@ public class AnvilBlock extends DeviceBlock implements Tiered
                     }
                 }
             }
-            else if (Helpers.isItem(playerStack, TFCTags.Items.HAMMERS)) // Attempt welding with a hammer in hand
+            else if (DynamicIngredients.CAN_ANVIL.matches(playerStack)) // Attempt welding with a hammer in hand
             {
                 final InteractionResult weldResult = anvil.weld(player);
                 if (weldResult == InteractionResult.SUCCESS)

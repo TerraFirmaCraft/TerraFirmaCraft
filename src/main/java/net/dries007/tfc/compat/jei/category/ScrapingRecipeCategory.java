@@ -8,15 +8,14 @@ package net.dries007.tfc.compat.jei.category;
 
 import java.util.List;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.RecipeType;
-import net.dries007.tfc.common.TFCTags;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.ScrapingRecipe;
+import net.dries007.tfc.util.DynamicIngredients;
 import net.dries007.tfc.util.Metal;
 
 public class ScrapingRecipeCategory extends SimpleItemRecipeCategory<ScrapingRecipe>
@@ -43,8 +42,8 @@ public class ScrapingRecipeCategory extends SimpleItemRecipeCategory<ScrapingRec
     }
 
     @Override
-    protected TagKey<Item> getToolTag()
+    protected Ingredient getTool()
     {
-        return TFCTags.Items.KNIVES;
+        return DynamicIngredients.CAN_SCRAPE.ingredient();
     }
 }

@@ -6,8 +6,11 @@
 
 package net.dries007.tfc.util;
 
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -34,7 +37,7 @@ public class AxeLoggingHelper
 
     public static void doLogging(LevelAccessor level, BlockPos pos, Player player, ItemStack axe)
     {
-        final boolean inefficient = Helpers.isItem(axe, TFCTags.Items.INEFFICIENT_LOGGING_AXES);
+        final boolean inefficient = DynamicIngredients.CAN_LOG_BADLY.matches(axe);
         for (BlockPos log : findLogs(level, pos))
         {
             level.destroyBlock(log, !inefficient || level.getRandom().nextFloat() < 0.6f, player);
@@ -94,7 +97,7 @@ public class AxeLoggingHelper
 
     public static boolean isLoggingAxe(ItemStack stack)
     {
-        return Helpers.isItem(stack.getItem(), TFCTags.Items.AXES_THAT_LOG);
+        return DynamicIngredients.CAN_LOG.matches(stack);
     }
 
     public static boolean isLoggingBlock(BlockState state)
