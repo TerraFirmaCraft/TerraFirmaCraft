@@ -123,7 +123,8 @@ public final class SelfTests
 
     public static void runClientSelfTests()
     {
-        if (Helpers.ASSERTIONS_ENABLED)
+        MinecraftForge.EVENT_BUS.post(new ClientSelfTestEvent()); // For other mods, as this is invoked via a tricky mixin
+        if (Helpers.TEST_ENVIRONMENT)
         {
             final Stopwatch tick = Stopwatch.createStarted();
             throwIfAny(
@@ -131,14 +132,13 @@ public final class SelfTests
                 validateModels(),
                 validateTranslationsAndCreativeTabs()
             );
-            MinecraftForge.EVENT_BUS.post(new ClientSelfTestEvent()); // For other mods, as this is invoked via a tricky mixin
             LOGGER.info("Client self tests passed in {}", tick.stop());
         }
     }
 
     public static void runServerSelfTests()
     {
-        if (Helpers.ASSERTIONS_ENABLED)
+        if (Helpers.TEST_ENVIRONMENT)
         {
             final Stopwatch tick = Stopwatch.createStarted();
             throwIfAny(
@@ -560,5 +560,10 @@ public final class SelfTests
             | logErrors("{} blocks are tagged as minecraft:replaceable while being not replaceable.", shouldNotBeTagged, LOGGER);
     }
 
+    /**
+     * Fired from the entry point where client self tests are invoked in TFC
+     * This is provided for convenience for any addon mods which wish to use this same entrypoint,
+     * but don't want to duplicate the provided mixin.
+     */
     public static class ClientSelfTestEvent extends Event {}
 }
