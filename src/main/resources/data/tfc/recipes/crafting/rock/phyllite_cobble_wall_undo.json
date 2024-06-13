@@ -3,7 +3,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "tfc:rock/cobble/phyllite_stairs"
+      "item": "tfc:rock/cobble/phyllite_wall"
     }
   ],
   "result": {

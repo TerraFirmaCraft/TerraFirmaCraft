@@ -100,9 +100,9 @@ def generate(rm: ResourceManager):
 
         rm.crafting_shapeless('crafting/rock/%s_cobble_stairs_undo' % rock, ('tfc:rock/cobble/%s_stairs' % rock), (3, loose))
         rm.crafting_shapeless('crafting/rock/%s_mossy_cobble_stairs_undo' % rock, ('tfc:rock/mossy_cobble/%s_stairs' % rock), (3, mossy_loose))
-        rm.crafting_shapeless('crafting/rock/%s_cobble_slab_undo' % rock, ('tfc:rock/cobble/%s_stairs' % rock), (2, loose))
+        rm.crafting_shapeless('crafting/rock/%s_cobble_slab_undo' % rock, ('tfc:rock/cobble/%s_slab' % rock), (2, loose))
         rm.crafting_shapeless('crafting/rock/%s_mossy_cobble_slab_undo' % rock, ('tfc:rock/mossy_cobble/%s_slab' % rock), (2, mossy_loose))
-        rm.crafting_shapeless('crafting/rock/%s_cobble_wall_undo' % rock, ('tfc:rock/cobble/%s_stairs' % rock), (4, loose))
+        rm.crafting_shapeless('crafting/rock/%s_cobble_wall_undo' % rock, ('tfc:rock/cobble/%s_wall' % rock), (4, loose))
         rm.crafting_shapeless('crafting/rock/%s_mossy_cobble_wall_undo' % rock, ('tfc:rock/mossy_cobble/%s_wall' % rock), (4, mossy_loose))
 
     for metal, metal_data in METALS.items():
