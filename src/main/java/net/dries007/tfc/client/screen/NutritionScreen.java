@@ -26,11 +26,9 @@ import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.TerraFirmaCraft.*;
-
 public class NutritionScreen extends TFCContainerScreen<Container>
 {
-    public static final ResourceLocation TEXTURE = new ResourceLocation(MOD_ID, "textures/gui/player_nutrition.png");
+    public static final ResourceLocation TEXTURE = Helpers.identifier("textures/gui/player_nutrition.png");
 
     public NutritionScreen(Container container, Inventory playerInventory, Component name)
     {

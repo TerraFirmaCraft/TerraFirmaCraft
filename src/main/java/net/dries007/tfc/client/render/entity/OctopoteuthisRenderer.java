@@ -12,10 +12,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 
 import net.dries007.tfc.common.entities.aquatic.Octopoteuthis;
+import net.dries007.tfc.util.Helpers;
 
 public class OctopoteuthisRenderer extends TFCSquidRenderer<Octopoteuthis>
 {
-    private static final ResourceLocation LOCATION = new ResourceLocation("textures/entity/squid/glow_squid.png");
+    private static final ResourceLocation LOCATION = Helpers.identifierMC("textures/entity/squid/glow_squid.png");
 
     public OctopoteuthisRenderer(EntityRendererProvider.Context ctx, SquidModel<Octopoteuthis> model)
     {

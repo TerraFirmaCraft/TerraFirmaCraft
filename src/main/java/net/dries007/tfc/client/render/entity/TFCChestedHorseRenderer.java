@@ -16,6 +16,7 @@ import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.model.entity.HorseChestLayer;
 import net.dries007.tfc.client.model.entity.TFCChestedHorseModel;
 import net.dries007.tfc.common.entities.livestock.horse.TFCChestedHorse;
+import net.dries007.tfc.util.Helpers;
 
 public class TFCChestedHorseRenderer<T extends TFCChestedHorse> extends AbstractHorseRenderer<T, TFCChestedHorseModel<T>>
 {
@@ -23,7 +24,7 @@ public class TFCChestedHorseRenderer<T extends TFCChestedHorse> extends Abstract
 
     public TFCChestedHorseRenderer(EntityRendererProvider.Context ctx, float scale, ModelLayerLocation layer, String name)
     {
-        this(ctx, scale, layer, new ResourceLocation("textures/entity/horse/" + name + ".png"));
+        this(ctx, scale, layer, Helpers.identifierMC("textures/entity/horse/" + name + ".png"));
     }
 
     public TFCChestedHorseRenderer(EntityRendererProvider.Context ctx, float scale, ModelLayerLocation layer, ResourceLocation texture)

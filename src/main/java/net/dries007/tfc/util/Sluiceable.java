@@ -40,13 +40,13 @@ public class Sluiceable extends ItemDefinition
     public Sluiceable(ResourceLocation id, JsonObject json)
     {
         super(id, json);
-        lootTable = new ResourceLocation(JsonHelpers.getAsString(json, "loot_table"));
+        lootTable = JsonHelpers.getResourceLocation(json, "loot_table");
     }
 
     public Sluiceable(ResourceLocation id, FriendlyByteBuf buffer)
     {
         super(id, Ingredient.fromNetwork(buffer));
-        lootTable = new ResourceLocation(buffer.readUtf());
+        lootTable = buffer.readResourceLocation();
     }
 
     public void encode(FriendlyByteBuf buffer)

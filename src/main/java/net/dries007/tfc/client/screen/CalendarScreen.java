@@ -20,14 +20,13 @@ import net.dries007.tfc.common.container.Container;
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.Month;
 
-import static net.dries007.tfc.TerraFirmaCraft.*;
-
 public class CalendarScreen extends TFCContainerScreen<Container>
 {
-    public static final ResourceLocation BACKGROUND = new ResourceLocation(MOD_ID, "textures/gui/player_calendar.png");
+    public static final ResourceLocation BACKGROUND = Helpers.identifier("textures/gui/player_calendar.png");
 
     public CalendarScreen(Container container, Inventory playerInv, Component name)
     {

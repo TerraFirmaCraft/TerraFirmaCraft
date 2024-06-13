@@ -14,7 +14,6 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.SignBlock;
 import net.minecraft.world.level.block.StandingSignBlock;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
@@ -24,6 +23,7 @@ import net.minecraft.world.level.block.state.properties.WoodType;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.mixin.client.accessor.SignRendererAccessor;
+import net.dries007.tfc.util.Helpers;
 
 public class TFCSignBlockEntityRenderer extends SignRenderer
 {
@@ -46,7 +46,7 @@ public class TFCSignBlockEntityRenderer extends SignRenderer
 
         ImmutableMap.Builder<WoodType, SignModel> modelBuilder = ImmutableMap.builder();
         blocks.forEach(data -> {
-            modelBuilder.put(data.type, new SignModel(context.bakeLayer(new ModelLayerLocation(new ResourceLocation(data.domain, "sign/" + data.name), "main"))));
+            modelBuilder.put(data.type, new SignModel(context.bakeLayer(new ModelLayerLocation(Helpers.resourceLocation(data.domain, "sign/" + data.name), "main"))));
         });
         this.signModels = modelBuilder.build();
     }

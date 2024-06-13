@@ -38,7 +38,6 @@ import net.minecraftforge.client.model.geometry.IGeometryLoader;
 import net.minecraftforge.client.model.geometry.IUnbakedGeometry;
 import net.minecraftforge.client.model.geometry.StandaloneGeometryBakingContext;
 import net.minecraftforge.client.model.geometry.UnbakedGeometryHelper;
-import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -179,7 +178,7 @@ public class ContainedFluidModel implements IUnbakedGeometry<ContainedFluidModel
                     if (!cache.containsKey(name))
                     {
                         ContainedFluidModel unbaked = this.parent.withFluid(fluid);
-                        BakedModel bakedModel = unbaked.bake(owner, baker, Material::sprite, BlockModelRotation.X0_Y0, this, new ResourceLocation("forge:bucket_override"));
+                        BakedModel bakedModel = unbaked.bake(owner, baker, Material::sprite, BlockModelRotation.X0_Y0, this, Helpers.resourceLocation("forge", "bucket_override"));
                         cache.put(name, bakedModel);
                         return bakedModel;
                     }

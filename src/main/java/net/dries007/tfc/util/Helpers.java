@@ -170,11 +170,36 @@ public final class Helpers
     @Nullable private static RecipeManager CACHED_RECIPE_MANAGER = null;
 
     /**
-     * Default {@link ResourceLocation}, except with a TFC namespace
+     * @return A {@link ResourceLocation} with the {@code tfc} namespace.
      */
     public static ResourceLocation identifier(String name)
     {
-        return new ResourceLocation(MOD_ID, name);
+        return resourceLocation(MOD_ID, name);
+    }
+
+    /**
+     * @return A {@link ResourceLocation} with the {@code minecraft} namespace.
+     */
+    public static ResourceLocation identifierMC(String name)
+    {
+        return resourceLocation("minecraft", name);
+    }
+
+    /**
+     * @return A {@link ResourceLocation} with an inferred namespace. If present, the namespace will be used, otherwise
+     * {@code minecraft} will be used.
+     */
+    public static ResourceLocation resourceLocation(String name)
+    {
+        return new ResourceLocation(name);
+    }
+
+    /**
+     * @return A {@link ResourceLocation} with an explicit namespace and path.
+     */
+    public static ResourceLocation resourceLocation(String domain, String path)
+    {
+        return new ResourceLocation(domain, path);
     }
 
     @SuppressWarnings("ConstantConditions")

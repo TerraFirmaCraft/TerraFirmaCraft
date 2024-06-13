@@ -24,9 +24,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.network.ChunkWatchPacket;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.ChunkGeneratorExtension;
-
-import static net.dries007.tfc.TerraFirmaCraft.*;
 
 /**
  * Additional data which is attached to chunks during world generation and used by various phase of the TFC chunk generator,
@@ -42,7 +41,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
 
     /** @deprecated Use the various other methods to query chunk data. */
     @Deprecated public static final Capability<ChunkData> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
-    public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "chunk_data");
+    public static final ResourceLocation KEY = Helpers.identifier("chunk_data");
 
     private static final float UNKNOWN_RAINFALL = 250;
     private static final float UNKNOWN_TEMPERATURE = 10;

@@ -10,13 +10,12 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraftforge.network.NetworkHooks;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.AnvilBlockEntity;
 import net.dries007.tfc.common.recipes.AnvilRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.util.Helpers;
-import org.jetbrains.annotations.Nullable;
 
 public class AnvilPlanContainer extends BlockEntityContainer<AnvilBlockEntity> implements ButtonHandlerContainer
 {
@@ -35,7 +34,7 @@ public class AnvilPlanContainer extends BlockEntityContainer<AnvilBlockEntity> i
     {
         if (extraNBT != null && player != null)
         {
-            final ResourceLocation recipeId = new ResourceLocation(extraNBT.getString("recipe"));
+            final ResourceLocation recipeId = Helpers.resourceLocation(extraNBT.getString("recipe"));
             final AnvilRecipe recipe = Helpers.getRecipes(player.level(), TFCRecipeTypes.ANVIL).get(recipeId);
 
             blockEntity.chooseRecipe(recipe);

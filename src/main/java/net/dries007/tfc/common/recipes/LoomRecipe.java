@@ -11,17 +11,16 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.util.JsonHelpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Note the non-counted ingredient is used for matching, so that we can initialize the recipe with even just a single item.
@@ -102,7 +101,7 @@ public class LoomRecipe extends SimpleItemRecipe
             final ItemStackIngredient ingredient = ItemStackIngredient.fromJson(JsonHelpers.getAsJsonObject(json, "ingredient"));
             final ItemStackProvider stack = ItemStackProvider.fromJson(JsonHelpers.getAsJsonObject(json, "result"));
             final int stepsRequired = JsonHelpers.getAsInt(json, "steps_required");
-            final ResourceLocation inProgressTexture = new ResourceLocation(JsonHelpers.getAsString(json, "in_progress_texture"));
+            final ResourceLocation inProgressTexture = JsonHelpers.getResourceLocation(json, "in_progress_texture");
             return new LoomRecipe(recipeId, ingredient, stack, stepsRequired, inProgressTexture);
         }
 
@@ -113,7 +112,7 @@ public class LoomRecipe extends SimpleItemRecipe
             final ItemStackIngredient ingredient = ItemStackIngredient.fromNetwork(buffer);
             final ItemStackProvider stack = ItemStackProvider.fromNetwork(buffer);
             final int steps = buffer.readVarInt();
-            final ResourceLocation inProgressTexture = new ResourceLocation(buffer.readUtf());
+            final ResourceLocation inProgressTexture = buffer.readResourceLocation();
             return new LoomRecipe(recipeId, ingredient, stack, steps, inProgressTexture);
         }
 

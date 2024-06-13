@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.recipes.outputs;
 
 import java.util.Objects;
-
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.gson.JsonElement;
@@ -95,7 +94,7 @@ public class ItemStackModifiers
 
     private static ItemStackModifier.Serializer<?> getSerializer(String type)
     {
-        final ItemStackModifier.Serializer<?> serializer = REGISTRY.get(new ResourceLocation(type));
+        final ItemStackModifier.Serializer<?> serializer = REGISTRY.get(Helpers.resourceLocation(type));
         if (serializer != null)
         {
             return serializer;

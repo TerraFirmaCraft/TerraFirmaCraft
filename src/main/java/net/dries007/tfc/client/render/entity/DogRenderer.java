@@ -15,10 +15,11 @@ import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.model.entity.DogCollarLayer;
 import net.dries007.tfc.client.model.entity.DogModel;
 import net.dries007.tfc.common.entities.livestock.pet.Dog;
+import net.dries007.tfc.util.Helpers;
 
 public class DogRenderer extends SimpleMobRenderer<Dog, DogModel>
 {
-    private static final ResourceLocation WOLF_TAME_LOCATION = new ResourceLocation("textures/entity/wolf/wolf_tame.png");
+    private static final ResourceLocation WOLF_TAME_LOCATION = Helpers.identifierMC("textures/entity/wolf/wolf_tame.png");
 
     public DogRenderer(EntityRendererProvider.Context ctx)
     {

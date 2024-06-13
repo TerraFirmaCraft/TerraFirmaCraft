@@ -8,11 +8,13 @@ package net.dries007.tfc.util;
 
 import java.util.Arrays;
 import java.util.Locale;
-import java.util.function.Supplier;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.mojang.brigadier.StringReader;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.JsonOps;
 import net.minecraft.commands.arguments.blocks.BlockStateParser;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -30,10 +32,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 
-import com.mojang.brigadier.StringReader;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.JsonOps;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 
 public final class JsonHelpers extends GsonHelper
@@ -50,7 +48,7 @@ public final class JsonHelpers extends GsonHelper
 
     public static <T> T getRegistryEntry(String key, IForgeRegistry<T> registry)
     {
-        final ResourceLocation res = new ResourceLocation(key);
+        final ResourceLocation res = Helpers.resourceLocation(key);
         final T obj = registry.getValue(res);
         if (obj == null || !registry.containsKey(res))
         {
@@ -66,7 +64,7 @@ public final class JsonHelpers extends GsonHelper
 
     public static <T> TagKey<T> getTag(String key, ResourceKey<? extends Registry<T>> registry)
     {
-        final ResourceLocation res = new ResourceLocation(key);
+        final ResourceLocation res = Helpers.resourceLocation(key);
         return TagKey.create(registry, res);
     }
 
@@ -99,7 +97,12 @@ public final class JsonHelpers extends GsonHelper
 
     public static <T> DataManager.Reference<T> getReference(JsonObject json, String key, DataManager<T> manager)
     {
-        return manager.getReference(new ResourceLocation(getAsString(json, key)));
+        return manager.getReference(Helpers.resourceLocation(getAsString(json, key)));
+    }
+
+    public static ResourceLocation getResourceLocation(JsonObject json, String key)
+    {
+        return Helpers.resourceLocation(getAsString(json, key));
     }
 
     public static ItemStack getItemStack(JsonObject json)

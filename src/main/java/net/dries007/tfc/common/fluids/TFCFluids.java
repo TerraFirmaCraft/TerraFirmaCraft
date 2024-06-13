@@ -6,11 +6,10 @@
 
 package net.dries007.tfc.common.fluids;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
-
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
@@ -32,7 +31,7 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.registry.RegistrationHelpers;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.*;
 
 
 @SuppressWarnings("unused")
@@ -44,11 +43,11 @@ public final class TFCFluids
     /**
      * Texture locations for both vanilla and TFC fluid textures
      */
-    public static final ResourceLocation WATER_STILL = new ResourceLocation("block/water_still");
-    public static final ResourceLocation WATER_FLOW = new ResourceLocation("block/water_flow");
-    public static final ResourceLocation WATER_OVERLAY = new ResourceLocation("block/water_overlay");
+    public static final ResourceLocation WATER_STILL = Helpers.identifierMC("block/water_still");
+    public static final ResourceLocation WATER_FLOW = Helpers.identifierMC("block/water_flow");
+    public static final ResourceLocation WATER_OVERLAY = Helpers.identifierMC("block/water_overlay");
     /** @see net.minecraft.client.renderer.ScreenEffectRenderer#UNDERWATER_LOCATION */
-    public static final ResourceLocation UNDERWATER_LOCATION = new ResourceLocation("textures/misc/underwater.png");
+    public static final ResourceLocation UNDERWATER_LOCATION = Helpers.identifierMC("textures/misc/underwater.png");
 
     public static final ResourceLocation MOLTEN_STILL = Helpers.identifier("block/molten_still");
     public static final ResourceLocation MOLTEN_FLOW = Helpers.identifier("block/molten_flow");

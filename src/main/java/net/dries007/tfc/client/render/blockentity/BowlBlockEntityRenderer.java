@@ -42,7 +42,7 @@ public class BowlBlockEntityRenderer implements BlockEntityRenderer<BowlBlockEnt
             String path = key.getPath();
             if (!path.contains("powder/"))
                 path = "powder/" + path;
-            return new ResourceLocation(key.getNamespace(), "block/" + path);
+            return Helpers.resourceLocation(key.getNamespace(), "block/" + path);
         });
 
         final float y = Mth.map(item.getCount(), 0, BowlBlockEntity.MAX_POWDER, 0.5f, 2f);

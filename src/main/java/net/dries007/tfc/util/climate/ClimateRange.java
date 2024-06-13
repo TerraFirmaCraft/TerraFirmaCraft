@@ -9,17 +9,17 @@ package net.dries007.tfc.util.climate;
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 
 import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
 import net.dries007.tfc.util.RegisteredDataManager;
-import org.jetbrains.annotations.NotNull;
 
 public class ClimateRange
 {
     public static final RegisteredDataManager<ClimateRange> MANAGER = new RegisteredDataManager<>(ClimateRange::new, ClimateRange::new, Helpers.identifier("climate_ranges"), "climate range", ClimateRange::new, ClimateRange::encode, Packet::new);
-    public static final ClimateRange NOOP = new ClimateRange(new ResourceLocation("tfc:no_op"));
+    public static final ClimateRange NOOP = new ClimateRange(Helpers.identifier("no_op"));
 
     private final ResourceLocation id;
     private final int minHydration, maxHydration, hydrationWiggleRange; // Hydration = a hybrid of nearby water and rainfall

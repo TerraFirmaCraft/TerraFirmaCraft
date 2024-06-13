@@ -10,7 +10,6 @@ import java.util.Locale;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
@@ -33,16 +32,12 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
-import net.dries007.tfc.common.blocks.ExtendedBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
-import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Metal;
 
 public class CrankshaftBlock extends HorizontalDirectionalBlock implements IForgeBlockExtension, EntityBlockExtension
 {
@@ -55,7 +50,7 @@ public class CrankshaftBlock extends HorizontalDirectionalBlock implements IForg
     ));
 
     private static final VoxelShape[] SHAFT_SHAPES = Helpers.computeHorizontalShapes(dir -> Helpers.rotateShape(dir, 0, 7, 8, 16, 9, 10));
-    private static final TagKey<Item> STEEL_RODS = TagKey.create(Registries.ITEM, new ResourceLocation("forge", "rods/steel"));
+    private static final TagKey<Item> STEEL_RODS = TagKey.create(Registries.ITEM, Helpers.resourceLocation("forge", "rods/steel"));
 
     private final ExtendedProperties properties;
 

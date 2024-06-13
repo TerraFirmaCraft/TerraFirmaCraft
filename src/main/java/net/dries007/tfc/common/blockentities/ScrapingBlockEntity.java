@@ -6,24 +6,23 @@
 
 package net.dries007.tfc.common.blockentities;
 
-import net.minecraft.nbt.Tag;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.level.block.Block;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.ItemStackHandler;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.recipes.ScrapingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.*;
 
 public class ScrapingBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 {
@@ -116,8 +115,8 @@ public class ScrapingBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     {
         super.loadAdditional(nbt);
         positions = nbt.getShort("positions");
-        inputTexture = nbt.contains("inputTexture", Tag.TAG_STRING) ? new ResourceLocation(nbt.getString("inputTexture")) : null;
-        outputTexture = nbt.contains("outputTexture", Tag.TAG_STRING) ? new ResourceLocation(nbt.getString("outputTexture")) : null;
+        inputTexture = nbt.contains("inputTexture", Tag.TAG_STRING) ? Helpers.resourceLocation(nbt.getString("inputTexture")) : null;
+        outputTexture = nbt.contains("outputTexture", Tag.TAG_STRING) ? Helpers.resourceLocation(nbt.getString("outputTexture")) : null;
         color1 = nbt.contains("color1", Tag.TAG_INT) ? DyeColor.byId(nbt.getInt("color1")) : null;
         color2 = nbt.contains("color2", Tag.TAG_INT) ? DyeColor.byId(nbt.getInt("color2")) : null;
     }

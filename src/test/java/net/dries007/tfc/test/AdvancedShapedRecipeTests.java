@@ -23,6 +23,7 @@ import net.dries007.tfc.TestHelper;
 import net.dries007.tfc.common.recipes.AdvancedShapedRecipe;
 import net.dries007.tfc.common.recipes.RecipeHelpers;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
+import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TestAssertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -77,7 +78,7 @@ public class AdvancedShapedRecipeTests extends TestHelper
 
     private AdvancedShapedRecipe exampleRecipe()
     {
-        final ResourceLocation id = new ResourceLocation("recipe");
+        final ResourceLocation id = Helpers.identifierMC("recipe");
         final Ingredient apple = Ingredient.of(Items.APPLE);
         final Ingredient gold = Ingredient.of(Items.GOLD_INGOT);
         final NonNullList<Ingredient> items = NonNullList.of(Ingredient.EMPTY, gold, apple);

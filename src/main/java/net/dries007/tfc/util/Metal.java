@@ -201,8 +201,8 @@ public final class Metal
     private Metal(ResourceLocation id, int tier, Fluid fluid, float meltTemperature, float specificHeatCapacity, @Nullable Ingredient ingots, @Nullable Ingredient doubleIngots, @Nullable Ingredient sheets)
     {
         this.id = id;
-        this.textureId = new ResourceLocation(id.getNamespace(), "block/metal/block/" + id.getPath());
-        this.softTextureId = new ResourceLocation(id.getNamespace(), "block/metal/smooth/" + id.getPath());
+        this.textureId = Helpers.resourceLocation(id.getNamespace(), "block/metal/block/" + id.getPath());
+        this.softTextureId = Helpers.resourceLocation(id.getNamespace(), "block/metal/smooth/" + id.getPath());
 
         this.tier = tier;
         this.fluid = fluid;

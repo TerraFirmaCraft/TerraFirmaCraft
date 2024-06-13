@@ -28,13 +28,12 @@ import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.PotRecipe;
 import net.dries007.tfc.compat.jade.common.BlockEntityTooltip;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Tooltips;
-
-import static net.dries007.tfc.TerraFirmaCraft.*;
 
 public class PotScreen extends BlockEntityScreen<PotBlockEntity, PotContainer>
 {
-    private static final ResourceLocation BACKGROUND = new ResourceLocation(MOD_ID, "textures/gui/fire_pit_cooking_pot.png");
+    private static final ResourceLocation BACKGROUND = Helpers.identifier("textures/gui/fire_pit_cooking_pot.png");
 
     public PotScreen(PotContainer container, Inventory playerInventory, Component name)
     {

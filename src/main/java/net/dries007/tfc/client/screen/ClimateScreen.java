@@ -25,11 +25,9 @@ import net.dries007.tfc.network.SwitchInventoryTabPacket;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.KoppenClimateClassification;
 
-import static net.dries007.tfc.TerraFirmaCraft.*;
-
 public class ClimateScreen extends TFCContainerScreen<Container>
 {
-    public static final ResourceLocation BACKGROUND = new ResourceLocation(MOD_ID, "textures/gui/player_climate.png");
+    public static final ResourceLocation BACKGROUND = Helpers.identifier("textures/gui/player_climate.png");
 
     public ClimateScreen(Container container, Inventory playerInv, Component name)
     {

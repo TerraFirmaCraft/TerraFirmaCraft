@@ -8,20 +8,17 @@ package net.dries007.tfc.common.recipes;
 
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
-import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
@@ -88,8 +85,8 @@ public class ScrapingRecipe extends SimpleItemRecipe
         {
             final Ingredient ingredient = Ingredient.fromJson(JsonHelpers.get(json, "ingredient"));
             final ItemStackProvider result = ItemStackProvider.fromJson(GsonHelper.getAsJsonObject(json, "result"));
-            final ResourceLocation inputTexture = new ResourceLocation(JsonHelpers.getAsString(json, "input_texture"));
-            final ResourceLocation outputTexture = new ResourceLocation(JsonHelpers.getAsString(json, "output_texture"));
+            final ResourceLocation inputTexture = JsonHelpers.getResourceLocation(json, "input_texture");
+            final ResourceLocation outputTexture = JsonHelpers.getResourceLocation(json, "output_texture");
             final ItemStackProvider extraDrop = json.has("extra_drop") ? ItemStackProvider.fromJson(JsonHelpers.getAsJsonObject(json, "extra_drop")) : ItemStackProvider.empty();
             return new ScrapingRecipe(id, ingredient, result, inputTexture, outputTexture, extraDrop);
         }
@@ -100,8 +97,8 @@ public class ScrapingRecipe extends SimpleItemRecipe
         {
             final Ingredient ingredient = Ingredient.fromNetwork(buffer);
             final ItemStackProvider result = ItemStackProvider.fromNetwork(buffer);
-            final ResourceLocation inputTexture = new ResourceLocation(buffer.readUtf());
-            final ResourceLocation outputTexture = new ResourceLocation(buffer.readUtf());
+            final ResourceLocation inputTexture = buffer.readResourceLocation();
+            final ResourceLocation outputTexture = buffer.readResourceLocation();
             final ItemStackProvider extraDrop = ItemStackProvider.fromNetwork(buffer);
             return new ScrapingRecipe(id, ingredient, result, inputTexture, outputTexture, extraDrop);
         }

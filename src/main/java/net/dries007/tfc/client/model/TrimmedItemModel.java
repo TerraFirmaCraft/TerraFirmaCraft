@@ -38,6 +38,7 @@ import net.minecraftforge.client.model.geometry.UnbakedGeometryHelper;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.RenderHelpers;
+import net.dries007.tfc.util.Helpers;
 
 
 public record TrimmedItemModel(@Nullable ArmorTrim trim) implements IUnbakedGeometry<TrimmedItemModel>
@@ -50,7 +51,7 @@ public record TrimmedItemModel(@Nullable ArmorTrim trim) implements IUnbakedGeom
         final TextureAtlasSprite overlaySprite = context.hasMaterial("overlay") ? spriteGetter.apply(context.getMaterial("overlay")) : null;
         final ResourceLocation trimLocation = context.getMaterial("trim").texture();
         final String color = trim != null ? trim.material().get().assetName() : null;
-        final TextureAtlasSprite trimSprite = trim != null ? spriteGetter.apply(new Material(RenderHelpers.BLOCKS_ATLAS, new ResourceLocation(trimLocation + "_" + color))) : null;
+        final TextureAtlasSprite trimSprite = trim != null ? spriteGetter.apply(new Material(RenderHelpers.BLOCKS_ATLAS, trimLocation.withSuffix("_" + color))) : null;
 
         final var itemContext = StandaloneGeometryBakingContext.builder(context).withGui3d(false).withUseBlockLight(false).build(modelLocation);
         final var builder = CompositeModel.Baked.builder(itemContext, baseSprite, new TrimOverrideHandler(overrides, baker, itemContext, this), context.getTransforms());
@@ -115,7 +116,7 @@ public record TrimmedItemModel(@Nullable ArmorTrim trim) implements IUnbakedGeom
                 if (!cache.containsKey(name))
                 {
                     TrimmedItemModel unbaked = new TrimmedItemModel(trim);
-                    BakedModel bakedModel = unbaked.bake(owner, baker, Material::sprite, BlockModelRotation.X0_Y0, this, new ResourceLocation("forge:bucket_override"));
+                    BakedModel bakedModel = unbaked.bake(owner, baker, Material::sprite, BlockModelRotation.X0_Y0, this, Helpers.resourceLocation("forge", "bucket_override"));
                     cache.put(name, bakedModel);
                     return bakedModel;
                 }

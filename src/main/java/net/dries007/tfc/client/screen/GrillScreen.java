@@ -16,12 +16,11 @@ import net.dries007.tfc.common.blockentities.GrillBlockEntity;
 import net.dries007.tfc.common.capabilities.heat.Heat;
 import net.dries007.tfc.common.container.GrillContainer;
 import net.dries007.tfc.config.TFCConfig;
-
-import static net.dries007.tfc.TerraFirmaCraft.*;
+import net.dries007.tfc.util.Helpers;
 
 public class GrillScreen extends BlockEntityScreen<GrillBlockEntity, GrillContainer>
 {
-    private static final ResourceLocation BACKGROUND = new ResourceLocation(MOD_ID, "textures/gui/fire_pit_grill.png");
+    private static final ResourceLocation BACKGROUND = Helpers.identifier("textures/gui/fire_pit_grill.png");
 
     public GrillScreen(GrillContainer container, Inventory playerInventory, Component name)
     {

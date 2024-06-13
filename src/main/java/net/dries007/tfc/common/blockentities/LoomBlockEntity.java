@@ -20,16 +20,16 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.capabilities.PartialItemHandler;
 import net.dries007.tfc.common.recipes.LoomRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.Helpers;
 
-import org.jetbrains.annotations.Nullable;
-
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.*;
 
 public class LoomBlockEntity extends TickableInventoryBlockEntity<ItemStackHandler>
 {
@@ -237,7 +237,7 @@ public class LoomBlockEntity extends TickableInventoryBlockEntity<ItemStackHandl
     public void loadAdditional(CompoundTag tag)
     {
         progress = tag.getInt("progress");
-        lastTexture = tag.contains("lastTexture", Tag.TAG_STRING) ? new ResourceLocation(tag.getString("lastTexture")) : null;
+        lastTexture = tag.contains("lastTexture", Tag.TAG_STRING) ? Helpers.resourceLocation(tag.getString("lastTexture")) : null;
         needsRecipeUpdate = true;
         lastPushed = tag.getLong("lastPushed");
         super.loadAdditional(tag);

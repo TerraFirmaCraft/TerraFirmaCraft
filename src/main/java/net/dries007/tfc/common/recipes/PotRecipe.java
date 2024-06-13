@@ -8,14 +8,12 @@ package net.dries007.tfc.common.recipes;
 
 import java.util.ArrayList;
 import java.util.List;
-import net.minecraft.core.RegistryAccess;
-import org.jetbrains.annotations.Nullable;
-
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -26,6 +24,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
 import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
@@ -158,7 +157,7 @@ public abstract class PotRecipe implements ISimpleRecipe<PotBlockEntity.PotInven
          */
         static Output read(CompoundTag nbt)
         {
-            final OutputType type = OUTPUT_TYPES.getOrDefault(new ResourceLocation(nbt.getString("type")), EMPTY);
+            final OutputType type = OUTPUT_TYPES.getOrDefault(Helpers.resourceLocation(nbt.getString("type")), EMPTY);
             return type.read(nbt);
         }
 

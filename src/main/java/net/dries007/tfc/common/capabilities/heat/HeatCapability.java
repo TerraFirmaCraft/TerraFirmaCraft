@@ -25,17 +25,15 @@ import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
-import static net.dries007.tfc.TerraFirmaCraft.*;
-
 public final class HeatCapability
 {
     // For heat defined on item stacks
     public static final Capability<IHeat> CAPABILITY = Helpers.capability(new CapabilityToken<>() {});
-    public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "item_heat");
+    public static final ResourceLocation KEY = Helpers.identifier("item_heat");
 
     // For heat providers and consumers defined on blocks
     public static final Capability<IHeatBlock> BLOCK_CAPABILITY = Helpers.capability(new CapabilityToken<>() {});
-    public static final ResourceLocation BLOCK_KEY = new ResourceLocation(MOD_ID, "block_heat");
+    public static final ResourceLocation BLOCK_KEY = Helpers.identifier("block_heat");
 
     // For access only to the network serializable portion of an item stack heat capability
     public static final Capability<INetworkHeat> NETWORK_CAPABILITY = Helpers.capability(new CapabilityToken<>() {});

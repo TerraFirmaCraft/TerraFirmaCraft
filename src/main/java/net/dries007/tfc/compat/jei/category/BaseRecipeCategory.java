@@ -29,10 +29,11 @@ import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
 import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.compat.jei.JEIIntegration;
+import net.dries007.tfc.util.Helpers;
 
 public abstract class BaseRecipeCategory<T> implements IRecipeCategory<T>
 {
-    public static final ResourceLocation ICONS = new ResourceLocation(TerraFirmaCraft.MOD_ID, "textures/gui/jei/icons.png");
+    public static final ResourceLocation ICONS = Helpers.identifier("textures/gui/jei/icons.png");
 
     /**
      * Do not call outside the level. Duh.

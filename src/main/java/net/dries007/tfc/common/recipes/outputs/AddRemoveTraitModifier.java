@@ -8,7 +8,6 @@ package net.dries007.tfc.common.recipes.outputs;
 
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
@@ -37,14 +36,14 @@ public record AddRemoveTraitModifier(boolean add, FoodTrait trait) implements It
         @Override
         public AddRemoveTraitModifier fromJson(JsonObject json)
         {
-            final FoodTrait trait = FoodTrait.getTraitOrThrow(new ResourceLocation(JsonHelpers.getAsString(json, "trait")));
+            final FoodTrait trait = FoodTrait.getTraitOrThrow(JsonHelpers.getResourceLocation(json, "trait"));
             return new AddRemoveTraitModifier(add, trait);
         }
 
         @Override
         public AddRemoveTraitModifier fromNetwork(FriendlyByteBuf buffer)
         {
-            final FoodTrait trait = FoodTrait.getTraitOrThrow(new ResourceLocation(buffer.readUtf()));
+            final FoodTrait trait = FoodTrait.getTraitOrThrow(buffer.readResourceLocation());
             return new AddRemoveTraitModifier(add, trait);
         }
 

@@ -15,10 +15,11 @@ import net.minecraft.resources.ResourceLocation;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.entities.livestock.pet.TFCCat;
+import net.dries007.tfc.util.Helpers;
 
 public class TFCCatCollarLayer extends RenderLayer<TFCCat, TFCCatModel>
 {
-    private static final ResourceLocation CAT_COLLAR_LOCATION = new ResourceLocation("textures/entity/cat/cat_collar.png");
+    private static final ResourceLocation CAT_COLLAR_LOCATION = Helpers.identifierMC("textures/entity/cat/cat_collar.png");
     private final TFCCatModel catModel;
 
     public TFCCatCollarLayer(RenderLayerParent<TFCCat, TFCCatModel> renderer, EntityModelSet ctx)

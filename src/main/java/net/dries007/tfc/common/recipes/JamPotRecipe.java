@@ -21,12 +21,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraftforge.items.ItemHandlerHelper;
-import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
 import net.dries007.tfc.compat.jade.common.BlockEntityTooltip;
 import net.dries007.tfc.compat.jade.common.BlockEntityTooltips;
@@ -37,7 +35,7 @@ public class JamPotRecipe extends PotRecipe
 {
     public static final OutputType OUTPUT_TYPE = nbt -> {
         ItemStack stack = ItemStack.of(nbt.getCompound("item"));
-        ResourceLocation texture = new ResourceLocation(nbt.getString("texture"));
+        ResourceLocation texture = Helpers.resourceLocation(nbt.getString("texture"));
         return new JamPotRecipe.JamOutput(stack, texture);
     };
 
@@ -137,7 +135,7 @@ public class JamPotRecipe extends PotRecipe
         @Override
         protected JamPotRecipe fromJson(ResourceLocation recipeId, JsonObject json, List<Ingredient> ingredients, FluidStackIngredient fluidIngredient, int duration, float minTemp)
         {
-            return new JamPotRecipe(recipeId, ingredients, fluidIngredient, duration, minTemp, JsonHelpers.getItemStack(json, "result"), new ResourceLocation(JsonHelpers.getAsString(json, "texture")));
+            return new JamPotRecipe(recipeId, ingredients, fluidIngredient, duration, minTemp, JsonHelpers.getItemStack(json, "result"), JsonHelpers.getResourceLocation(json, "texture"));
         }
 
         @Override
