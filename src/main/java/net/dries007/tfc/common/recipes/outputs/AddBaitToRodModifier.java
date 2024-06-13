@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.recipes.outputs;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.common.items.TFCFishingRodItem;
@@ -18,20 +17,15 @@ public enum AddBaitToRodModifier implements ItemStackModifier.SingleInstance<Add
     INSTANCE;
 
     @Override
-    public ItemStack apply(ItemStack stack, ItemStack input)
+    public ItemStack apply(ItemStack stack, ItemStack primaryInput)
     {
-        CraftingContainer inv = RecipeHelpers.getCraftingContainer();
-        if (inv != null)
+        for (ItemStack input : RecipeHelpers.getCraftingInput())
         {
-            for (int i = 0; i < inv.getContainerSize(); i++)
+            TFCFishingRodItem.BaitType baitType = TFCFishingRodItem.getBaitType(input);
+            if (baitType != TFCFishingRodItem.BaitType.NONE)
             {
-                ItemStack item = inv.getItem(i);
-                TFCFishingRodItem.BaitType baitType = TFCFishingRodItem.getBaitType(item);
-                if (baitType != TFCFishingRodItem.BaitType.NONE)
-                {
-                    stack.getOrCreateTag().put("bait", item.save(new CompoundTag()));
-                    return stack;
-                }
+                stack.getOrCreateTag().put("bait", input.save(new CompoundTag()));
+                return stack;
             }
         }
         return stack;

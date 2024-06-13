@@ -15,7 +15,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -36,22 +35,15 @@ public record MealModifier(FoodData baseFood, List<MealPortion> portions) implem
     @Override
     public ItemStack apply(ItemStack stack, ItemStack input)
     {
-        final CraftingContainer inv = RecipeHelpers.getCraftingContainer();
-        final @Nullable IFood food = FoodCapability.get(stack);
-        if (inv != null && food instanceof FoodHandler.Dynamic dynamic)
+        final @Nullable IFood inputFood = FoodCapability.get(stack);
+        if (!(inputFood instanceof FoodHandler.Dynamic handler))
         {
-            initFoodStats(inv, dynamic);
+            return stack;
         }
-        return stack;
-    }
 
-    private void initFoodStats(CraftingContainer inv, FoodHandler.Dynamic handler)
-    {
         final List<ItemStack> itemIngredients = new ArrayList<>();
-
-        for (int i = 0; i < inv.getContainerSize(); i++)
+        for (final ItemStack item : RecipeHelpers.getCraftingInput())
         {
-            final ItemStack item = inv.getItem(i);
             if (FoodCapability.has(item))
             {
                 boolean alreadyAdded = false;
@@ -75,6 +67,11 @@ public record MealModifier(FoodData baseFood, List<MealPortion> portions) implem
                     itemIngredients.add(tooltipItem);
                 }
             }
+        }
+
+        if (itemIngredients.isEmpty())
+        {
+            return stack;
         }
 
         // Sort, so tooltips appear in consistent order, and also to prevent stackability issues
@@ -123,6 +120,7 @@ public record MealModifier(FoodData baseFood, List<MealPortion> portions) implem
         handler.setFood(FoodData.create(baseFood.hunger(), water, saturation, nutrition, baseFood.decayModifier()));
         handler.setIngredients(itemIngredients);
         handler.setCreationDate(FoodCapability.getRoundedCreationDate());
+        return stack;
     }
 
     @Override

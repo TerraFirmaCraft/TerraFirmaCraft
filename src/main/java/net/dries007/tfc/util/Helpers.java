@@ -586,6 +586,29 @@ public final class Helpers
     }
 
     /**
+     * Iterate through all the slots in a {@code inventory}.
+     */
+    public static Iterable<ItemStack> iterate(Container inventory)
+    {
+        return () -> new Iterator<>()
+        {
+            private int slot = 0;
+
+            @Override
+            public boolean hasNext()
+            {
+                return slot < inventory.getContainerSize();
+            }
+
+            @Override
+            public ItemStack next()
+            {
+                return inventory.getItem(slot++);
+            }
+        };
+    }
+
+    /**
      * Iterate through all slots in an {@code inventory}.
      */
     public static Iterable<ItemStack> iterate(IItemHandler inventory, int startSlotInclusive, int endSlotExclusive)

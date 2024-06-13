@@ -6,10 +6,7 @@
 
 package net.dries007.tfc.common.recipes.outputs;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.minecraft.world.inventory.CraftingContainer;
+import com.google.common.collect.Lists;
 import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
@@ -22,17 +19,7 @@ public enum CopyOldestFoodModifier implements ItemStackModifier.SingleInstance<C
     @Override
     public ItemStack apply(ItemStack stack, ItemStack input)
     {
-        final CraftingContainer container = RecipeHelpers.getCraftingContainer();
-        if (container != null)
-        {
-            final List<ItemStack> stacks = new ArrayList<>();
-            for (int slot = 0; slot < container.getContainerSize(); slot++)
-            {
-                stacks.add(container.getItem(slot));
-            }
-            return FoodCapability.updateFoodFromAllPrevious(stacks, stack);
-        }
-        return stack;
+        return FoodCapability.updateFoodFromAllPrevious(Lists.newArrayList(RecipeHelpers.getCraftingInput()), stack);
     }
 
     @Override

@@ -6,13 +6,10 @@
 
 package net.dries007.tfc.common.recipes.outputs;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.common.capabilities.glass.GlassOperation;
 import net.dries007.tfc.common.capabilities.glass.GlassWorkData;
-import net.dries007.tfc.common.items.TFCFishingRodItem;
 import net.dries007.tfc.common.recipes.RecipeHelpers;
 
 public enum AddPowderModifier implements ItemStackModifier.SingleInstance<AddPowderModifier>
@@ -20,20 +17,15 @@ public enum AddPowderModifier implements ItemStackModifier.SingleInstance<AddPow
     INSTANCE;
 
     @Override
-    public ItemStack apply(ItemStack stack, ItemStack input)
+    public ItemStack apply(ItemStack stack, ItemStack primaryInput)
     {
-        final CraftingContainer inv = RecipeHelpers.getCraftingContainer();
-        if (inv != null)
+        for (ItemStack input : RecipeHelpers.getCraftingInput())
         {
-            for (int i = 0; i < inv.getContainerSize(); i++)
+            final GlassOperation op = GlassOperation.getByPowder(input);
+            if (op != null)
             {
-                final ItemStack item = inv.getItem(i);
-                final GlassOperation op = GlassOperation.getByPowder(item);
-                if (op != null)
-                {
-                    GlassWorkData.apply(stack, op);
-                    return stack;
-                }
+                GlassWorkData.apply(stack, op);
+                return stack;
             }
         }
         return stack;

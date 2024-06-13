@@ -69,7 +69,12 @@ public class SimplePotRecipeCategory extends PotRecipeCategory<PotRecipe>
         int j = 0;
         for (ItemStackProvider provider : recipe.getOutputProviders())
         {
-            final List<ItemStack> stacks = collapse(List.of(ingredients.get(j).getItems()), provider);
+            // Pot recipes can operate either with providers that depend on inputs, which must be 1-1 with ingredients
+            // Otherwise, we default to assuming they operate on empty stacks. See TerraFirmaCraft#2712
+            final List<ItemStack> stacks = provider.dependsOnInput()
+                ? collapse(List.of(ingredients.get(j).getItems()), provider)
+                : collapse(provider);
+
             if (!stacks.isEmpty())
             {
                 IRecipeSlotBuilder output = builder.addSlot(RecipeIngredientRole.OUTPUT, OUTPUT_X[j] + 1, OUTPUT_Y[j] + 1);

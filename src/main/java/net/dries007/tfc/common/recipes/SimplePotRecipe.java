@@ -94,17 +94,25 @@ public class SimplePotRecipe extends PotRecipe
         {
             final FluidStack output = json.has("fluid_output") ? JsonHelpers.getFluidStack(json, "fluid_output") : FluidStack.EMPTY;
             final List<ItemStackProvider> stacks = new ArrayList<>(5);
+
+            boolean anyProvidersDependOnInput = false;
             if (json.has("item_output"))
             {
                 final JsonArray array = json.getAsJsonArray("item_output");
                 for (JsonElement element : array)
                 {
-                    stacks.add(ItemStackProvider.fromJson(element.getAsJsonObject()));
+                    final ItemStackProvider provider = ItemStackProvider.fromJson(element.getAsJsonObject());
+                    stacks.add(provider);
+                    anyProvidersDependOnInput |= provider.dependsOnInput();
                 }
             }
             if (stacks.size() > 5)
             {
                 throw new JsonParseException("Cannot have more than five item stack outputs for pot recipe.");
+            }
+            if (anyProvidersDependOnInput && stacks.size() != ingredients.size())
+            {
+                throw new JsonParseException("At least one output is an ItemStackProvider that depends on the input. This is only allowed if there are (1) equal number of inputs and outputs, and (2) All inputs and outputs are the same");
             }
             return new SimplePotRecipe(recipeId, ingredients, fluidIngredient, duration, minTemp, output, stacks);
         }

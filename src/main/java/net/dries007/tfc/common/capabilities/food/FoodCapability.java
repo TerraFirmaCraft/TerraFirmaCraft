@@ -225,12 +225,19 @@ public final class FoodCapability
     /**
      * Sets the creation date of {@code newStack} based on the creation date and decay of {@code oldStacks}. This will take the average of all
      * previous decay modifiers and will not copy traits. It generally makes sense to be used when the {@code oldStacks} are all the same type.
+     * <p>
+     * If no old stacks are present, this will simply update the food as if it was newly created.
      */
     public static ItemStack updateFoodFromAllPrevious(Collection<ItemStack> oldStacks, ItemStack newStack)
     {
         final @Nullable IFood newFood = get(newStack);
         if (newFood != null)
         {
+            if (oldStacks.isEmpty())
+            {
+                return newStack;
+            }
+
             float decayDateModifier = 0;
             long oldCreationDate = Long.MAX_VALUE;
             int oldFoodCount = 0;

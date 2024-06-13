@@ -51,11 +51,11 @@ public class AdvancedShapedRecipe extends ShapedRecipe
     @Override
     public ItemStack assemble(CraftingContainer inventory, RegistryAccess registryAccess)
     {
-        RecipeHelpers.setCraftingContainer(inventory);
+        RecipeHelpers.setCraftingInput(inventory);
         final int matchSlot = RecipeHelpers.translateMatch(this, inputSlot, inventory);
         final ItemStack inputStack = matchSlot != -1 ? inventory.getItem(matchSlot).copy() : ItemStack.EMPTY;
         final ItemStack result = providerResult.getSingleStack(inputStack);
-        RecipeHelpers.setCraftingContainer(null);
+        RecipeHelpers.clearCraftingInput();
         return result;
     }
 
