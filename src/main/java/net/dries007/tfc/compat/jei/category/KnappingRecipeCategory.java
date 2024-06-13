@@ -23,6 +23,7 @@ import mezz.jei.api.recipe.RecipeType;
 
 import net.dries007.tfc.client.screen.KnappingScreen;
 import net.dries007.tfc.common.recipes.KnappingRecipe;
+import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
 import net.dries007.tfc.compat.jei.JEIIntegration;
 import net.dries007.tfc.util.KnappingType;
 
@@ -99,9 +100,13 @@ public class KnappingRecipeCategory<T extends KnappingRecipe> extends BaseRecipe
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, T recipe, IFocusGroup focuses)
     {
-        final List<ItemStack> inputs = recipe.getIngredient() != null ? Arrays.asList(recipe.getIngredient().getItems()) : collapse(recipe.getKnappingType().inputItem());
+        final ItemStackIngredient inputItem = recipe.getIngredient() != null
+            // If this knapping recipe has an ingredient, we need to apply the count of the type's ingredient to it
+            // See TerraFirmaCraft#2725
+            ? new ItemStackIngredient(recipe.getIngredient(), recipe.getKnappingType().inputItem().count())
+            : recipe.getKnappingType().inputItem();
         final IRecipeSlotBuilder inputSlot = builder.addSlot(RecipeIngredientRole.INPUT, 0, 33);
-        inputSlot.addItemStacks(inputs).setSlotName(INPUT_SLOT_NAME);
+        inputSlot.addItemStacks(collapse(inputItem)).setSlotName(INPUT_SLOT_NAME);
         inputSlot.setBackground(slot, -1, -1);
 
         final IRecipeSlotBuilder outputSlot = builder.addSlot(RecipeIngredientRole.OUTPUT, 137, 33);

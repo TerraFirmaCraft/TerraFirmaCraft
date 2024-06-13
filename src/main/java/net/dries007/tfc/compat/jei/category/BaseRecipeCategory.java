@@ -57,10 +57,17 @@ public abstract class BaseRecipeCategory<T> implements IRecipeCategory<T>
             .toList();
     }
 
+    public static List<ItemStack> collapse(ItemStackProvider output)
+    {
+        return List.of(output.getEmptyStack());
+    }
+
     public static List<ItemStack> collapse(List<ItemStack> inputs, ItemStackProvider output)
     {
         if (inputs.isEmpty())
-            return List.of(output.getStack(ItemStack.EMPTY));
+        {
+            return List.of(output.getEmptyStack());
+        }
         return inputs.stream()
             .map(output::getStack)
             .map(FoodCapability::setStackNonDecaying) // Avoid decaying in JEI views
