@@ -24,6 +24,7 @@ import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.IVanillaCategoryExtensionRegistration;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.Container;
@@ -38,10 +39,13 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.screen.AnvilScreen;
 import net.dries007.tfc.client.screen.BarrelScreen;
+import net.dries007.tfc.client.screen.CalendarScreen;
+import net.dries007.tfc.client.screen.ClimateScreen;
 import net.dries007.tfc.client.screen.CrucibleScreen;
 import net.dries007.tfc.client.screen.FirepitScreen;
 import net.dries007.tfc.client.screen.GrillScreen;
 import net.dries007.tfc.client.screen.KnappingScreen;
+import net.dries007.tfc.client.screen.NutritionScreen;
 import net.dries007.tfc.client.screen.PotScreen;
 import net.dries007.tfc.client.screen.SewingTableScreen;
 import net.dries007.tfc.common.TFCTags;
@@ -279,6 +283,12 @@ public final class JEIIntegration implements IModPlugin
         registry.addRecipeClickArea(GrillScreen.class, 61, 37, 18, 10, HEATING);
         registry.addRecipeClickArea(PotScreen.class, 77, 6, 9, 14, SIMPLE_POT, SOUP_POT, JAM_POT);
         registry.addRecipeClickArea(SewingTableScreen.class, 125, 84, 22, 15, SEWING);
+
+        // Fix inventory tab button overlap
+        registry.addGuiContainerHandler(InventoryScreen.class, new TFCInventoryGuiHandler<>());
+        registry.addGuiContainerHandler(CalendarScreen.class, new TFCInventoryGuiHandler<>());
+        registry.addGuiContainerHandler(ClimateScreen.class, new TFCInventoryGuiHandler<>());
+        registry.addGuiContainerHandler(NutritionScreen.class, new TFCInventoryGuiHandler<>());
     }
 
     @Override
