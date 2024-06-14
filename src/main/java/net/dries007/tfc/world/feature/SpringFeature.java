@@ -16,7 +16,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.SpringConfiguration;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.ChunkGeneratorExtension;
@@ -90,6 +89,6 @@ public class SpringFeature extends Feature<SpringConfiguration>
 
     private static Holder<Block> getHolder(BlockState state)
     {
-        return Helpers.getHolder(ForgeRegistries.BLOCKS, state.getBlock());
+        return state.getBlock().builtInRegistryHolder();
     }
 }

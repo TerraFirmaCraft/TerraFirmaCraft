@@ -6,11 +6,11 @@
 
 package net.dries007.tfc.network;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.items.ProspectResult;
@@ -30,13 +30,13 @@ public class ProspectedPacket
 
     ProspectedPacket(FriendlyByteBuf buffer)
     {
-        this.block = buffer.readRegistryIdUnsafe(ForgeRegistries.BLOCKS);
+        this.block = BuiltInRegistries.BLOCK.byId(buffer.readVarInt());
         this.result = ProspectResult.valueOf(buffer.readByte());
     }
 
     void encode(FriendlyByteBuf buffer)
     {
-        buffer.writeRegistryIdUnsafe(ForgeRegistries.BLOCKS, block);
+        buffer.writeVarInt(BuiltInRegistries.BLOCK.getId(block));
         buffer.writeByte(result.ordinal());
     }
 

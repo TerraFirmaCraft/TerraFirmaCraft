@@ -14,6 +14,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
@@ -31,7 +32,6 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.food.FoodData;
@@ -141,7 +141,7 @@ public class Drinkable extends FluidDefinition
             for (JsonElement e : array)
             {
                 final JsonObject effectJson = JsonHelpers.convertToJsonObject(e, "effect");
-                final MobEffect type = JsonHelpers.getRegistryEntry(effectJson, "type", ForgeRegistries.MOB_EFFECTS);
+                final MobEffect type = JsonHelpers.getRegistryEntry(effectJson, "type", BuiltInRegistries.MOB_EFFECT);
                 final int duration = JsonHelpers.getAsInt(effectJson, "duration", 20);
                 final int amplifier = JsonHelpers.getAsInt(effectJson, "amplifier", 0);
                 final float chance = (float) JsonHelpers.getAsDouble(effectJson, "chance", 1);
@@ -252,7 +252,7 @@ public class Drinkable extends FluidDefinition
     {
         public static Effect fromNetwork(FriendlyByteBuf buffer)
         {
-            final MobEffect type = buffer.readRegistryIdUnsafe(ForgeRegistries.MOB_EFFECTS);
+            final MobEffect type = BuiltInRegistries.MOB_EFFECT.byIdOrThrow(buffer.readVarInt());
             final int duration = buffer.readVarInt();
             final int amplifier = buffer.readVarInt();
             final float chance = buffer.readFloat();
@@ -261,7 +261,7 @@ public class Drinkable extends FluidDefinition
 
         public void toNetwork(FriendlyByteBuf buffer)
         {
-            buffer.writeRegistryIdUnsafe(ForgeRegistries.MOB_EFFECTS, type);
+            buffer.writeVarInt(BuiltInRegistries.MOB_EFFECT.getId(type));
             buffer.writeVarInt(duration);
             buffer.writeVarInt(amplifier);
             buffer.writeFloat(chance);

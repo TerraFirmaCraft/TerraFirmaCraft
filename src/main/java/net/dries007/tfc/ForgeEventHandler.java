@@ -11,6 +11,7 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -117,7 +118,6 @@ import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
@@ -1127,7 +1127,7 @@ public final class ForgeEventHandler
 
         if (entity.getType() == EntityType.SKELETON)
         {
-            entity.setItemSlot(EquipmentSlot.MAINHAND, Helpers.getRandomElement(ForgeRegistries.ITEMS, TFCTags.Items.SKELETON_WEAPONS, entity.level().getRandom()).orElse(Items.BOW).getDefaultInstance());
+            entity.setItemSlot(EquipmentSlot.MAINHAND, Helpers.randomItem(TFCTags.Items.SKELETON_WEAPONS, entity.level().getRandom()).orElse(Items.BOW).getDefaultInstance());
         }
         else if (entity.getType() == EntityType.SKELETON_HORSE && !TFCConfig.SERVER.enableVanillaSkeletonHorseSpawning.get())
         {
@@ -1521,9 +1521,9 @@ public final class ForgeEventHandler
             }
 
             final RecipeManagerAccessor accessor = (RecipeManagerAccessor) manager;
-            for (RecipeType<?> type : ForgeRegistries.RECIPE_TYPES)
+            for (RecipeType<?> type : BuiltInRegistries.RECIPE_TYPE)
             {
-                LOGGER.debug("Loaded {} recipes of type {}", accessor.invoke$byType((RecipeType) type).size(), ForgeRegistries.RECIPE_TYPES.getKey(type));
+                LOGGER.debug("Loaded {} recipes of type {}", accessor.invoke$byType((RecipeType) type).size(), BuiltInRegistries.RECIPE_TYPE.getKey(type));
             }
         }
     }

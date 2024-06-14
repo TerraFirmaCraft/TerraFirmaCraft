@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.recipes;
 
 import com.google.gson.JsonObject;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -18,7 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
 import net.dries007.tfc.common.capabilities.Capabilities;
@@ -30,7 +31,6 @@ import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
-import org.jetbrains.annotations.Nullable;
 
 public class InstantFluidBarrelRecipe extends BarrelRecipe
 {
@@ -144,7 +144,7 @@ public class InstantFluidBarrelRecipe extends BarrelRecipe
             final FluidStackIngredient addedFluid = FluidStackIngredient.fromJson(JsonHelpers.getAsJsonObject(json, "added_fluid"));
 
             final FluidStack outputFluid = JsonHelpers.getFluidStack(json, "output_fluid");
-            final SoundEvent sound = json.has("sound") ? JsonHelpers.getRegistryEntry(json, "sound", ForgeRegistries.SOUND_EVENTS) : SoundEvents.BREWING_STAND_BREW;
+            final SoundEvent sound = json.has("sound") ? JsonHelpers.getRegistryEntry(json, "sound", BuiltInRegistries.SOUND_EVENT) : SoundEvents.BREWING_STAND_BREW;
 
             return new InstantFluidBarrelRecipe(recipeId, new Builder(ItemStackIngredient.EMPTY, primaryFluid, ItemStackProvider.empty(), outputFluid, sound), addedFluid);
         }

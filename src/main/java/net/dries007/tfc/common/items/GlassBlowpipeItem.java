@@ -23,7 +23,6 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.ItemHandlerHelper;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.GlassBasinBlockEntity;
@@ -196,7 +195,7 @@ public class GlassBlowpipeItem extends BlowpipeItem
                 });
             }
             player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
-            Helpers.getAllTagValues(TFCTags.Items.ALL_BLOWPIPES, ForgeRegistries.ITEMS).forEach(item -> player.getCooldowns().addCooldown(item, 80));
+            Helpers.allItems(TFCTags.Items.ALL_BLOWPIPES).forEach(item -> player.getCooldowns().addCooldown(item, 80));
         }
     }
 }

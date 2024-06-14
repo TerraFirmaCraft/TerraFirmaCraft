@@ -29,23 +29,34 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import net.dries007.tfc.common.fluids.FluidHelpers;
 
 public final class JsonHelpers extends GsonHelper
 {
+    /**
+     * @deprecated Use {@link #getRegistryEntry(JsonObject, String, Registry)} instead. Remove in 1.21.
+     */
+    @Deprecated
     public static <T> T getRegistryEntry(JsonObject json, String key, IForgeRegistry<T> registry)
     {
         return getRegistryEntry(GsonHelper.getAsString(json, key), registry);
     }
 
+    /**
+     * @deprecated Use {@link #getRegistryEntry(JsonElement, Registry)} instead. Remove in 1.21.
+     */
+    @Deprecated
     public static <T> T getRegistryEntry(JsonElement json, IForgeRegistry<T> registry)
     {
         return getRegistryEntry(GsonHelper.convertToString(json, "entry"), registry);
     }
 
+    /**
+     * @deprecated Use {@link #getRegistryEntry(String, Registry)} instead. Remove in 1.21.
+     */
+    @Deprecated
     public static <T> T getRegistryEntry(String key, IForgeRegistry<T> registry)
     {
         final ResourceLocation res = Helpers.resourceLocation(key);
@@ -53,6 +64,27 @@ public final class JsonHelpers extends GsonHelper
         if (obj == null || !registry.containsKey(res))
         {
             throw new JsonParseException("Unknown " + registry.getRegistryName().getPath() + ": " + key);
+        }
+        return obj;
+    }
+
+    public static <T> T getRegistryEntry(JsonObject json, String key, Registry<T> registry)
+    {
+        return getRegistryEntry(GsonHelper.getAsString(json, key), registry);
+    }
+
+    public static <T> T getRegistryEntry(JsonElement json, Registry<T> registry)
+    {
+        return getRegistryEntry(GsonHelper.convertToString(json, "entry"), registry);
+    }
+
+    public static <T> T getRegistryEntry(String key, Registry<T> registry)
+    {
+        final ResourceLocation res = Helpers.resourceLocation(key);
+        final T obj = registry.get(res);
+        if (obj == null || !registry.containsKey(res))
+        {
+            throw new JsonParseException("Unknown " + registry.key().location().getPath() + ": " + key);
         }
         return obj;
     }
@@ -132,7 +164,7 @@ public final class JsonHelpers extends GsonHelper
     public static FluidStack getFluidStack(JsonObject json)
     {
         final int amount = GsonHelper.getAsInt(json, "amount", FluidHelpers.BUCKET_VOLUME);
-        final Fluid fluid = getRegistryEntry(json, "fluid", ForgeRegistries.FLUIDS);
+        final Fluid fluid = getRegistryEntry(json, "fluid", BuiltInRegistries.FLUID);
         return new FluidStack(fluid, amount);
     }
 

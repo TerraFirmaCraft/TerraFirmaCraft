@@ -10,17 +10,17 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
 import com.google.gson.JsonElement;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.util.Helpers;
 
 public record BlockIngredient(List<IngredientType.Entry<Block>> entries) implements IngredientType<Block>
 {
-    private static final Factory<Block, BlockIngredient> FACTORY = new Factory<>("block", ForgeRegistries.BLOCKS, BlockTag::new, BlockIngredient::new);
+    private static final Factory<Block, BlockIngredient> FACTORY = new Factory<>("block", BuiltInRegistries.BLOCK, BlockTag::new, BlockIngredient::new);
 
     public static BlockIngredient fromJson(JsonElement json)
     {
@@ -62,7 +62,7 @@ public record BlockIngredient(List<IngredientType.Entry<Block>> entries) impleme
         @Override
         public Stream<Block> stream()
         {
-            return Helpers.streamAllTagValues(tag, ForgeRegistries.BLOCKS);
+            return Helpers.allBlocks(tag);
         }
 
         @Override

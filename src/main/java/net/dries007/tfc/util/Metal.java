@@ -15,6 +15,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import com.google.gson.JsonObject;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -48,7 +49,6 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.VisibleForTesting;
 
@@ -152,7 +152,7 @@ public final class Metal
     private static Metal fromJson(ResourceLocation id, JsonObject json)
     {
         final int tier = JsonHelpers.getAsInt(json, "tier", 0);
-        final Fluid fluid = JsonHelpers.getRegistryEntry(json, "fluid", ForgeRegistries.FLUIDS);
+        final Fluid fluid = JsonHelpers.getRegistryEntry(json, "fluid", BuiltInRegistries.FLUID);
         final float specificHeatCapacity = JsonHelpers.getAsFloat(json, "specific_heat_capacity");
         final float meltTemperature = JsonHelpers.getAsFloat(json, "melt_temperature");
 
@@ -166,7 +166,7 @@ public final class Metal
     private static Metal fromNetwork(ResourceLocation id, FriendlyByteBuf buffer)
     {
         final int tier = buffer.readVarInt();
-        final Fluid fluid = buffer.readRegistryIdUnsafe(ForgeRegistries.FLUIDS);
+        final Fluid fluid = BuiltInRegistries.FLUID.byId(buffer.readVarInt());
         final float meltTemperature = buffer.readFloat();
         final float specificHeatCapacity = buffer.readFloat();
 
@@ -218,7 +218,7 @@ public final class Metal
     public void encode(FriendlyByteBuf buffer)
     {
         buffer.writeVarInt(tier);
-        buffer.writeRegistryIdUnsafe(ForgeRegistries.FLUIDS, fluid);
+        buffer.writeVarInt(BuiltInRegistries.FLUID.getId(fluid));
         buffer.writeFloat(meltTemperature);
         buffer.writeFloat(specificHeatCapacity);
 

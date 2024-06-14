@@ -7,12 +7,12 @@
 package net.dries007.tfc.util;
 
 import com.google.gson.JsonObject;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
@@ -54,7 +54,7 @@ public final class KnappingType
         this.inputItem = ItemStackIngredient.fromJson(JsonHelpers.getAsJsonObject(json, "input"));
 
         this.amountToConsume = json.has("amount_to_consume") ? JsonHelpers.getAsInt(json, "amount_to_consume") : inputItem.count();
-        this.clickSound = JsonHelpers.getRegistryEntry(json, "click_sound", ForgeRegistries.SOUND_EVENTS);
+        this.clickSound = JsonHelpers.getRegistryEntry(json, "click_sound", BuiltInRegistries.SOUND_EVENT);
         this.consumeAfterComplete = JsonHelpers.getAsBoolean(json, "consume_after_complete");
         this.useDisabledTexture = JsonHelpers.getAsBoolean(json, "use_disabled_texture");
         this.spawnsParticles = JsonHelpers.getAsBoolean(json, "spawns_particles");
@@ -69,7 +69,7 @@ public final class KnappingType
         this.inputItem = ItemStackIngredient.fromNetwork(buffer);
 
         this.amountToConsume = buffer.readVarInt();
-        this.clickSound = buffer.readRegistryIdUnsafe(ForgeRegistries.SOUND_EVENTS);
+        this.clickSound = BuiltInRegistries.SOUND_EVENT.byIdOrThrow(buffer.readVarInt());
         this.consumeAfterComplete = buffer.readBoolean();
         this.useDisabledTexture = buffer.readBoolean();
         this.spawnsParticles = buffer.readBoolean();
@@ -122,7 +122,7 @@ public final class KnappingType
         inputItem.toNetwork(buffer);
 
         buffer.writeVarInt(amountToConsume);
-        buffer.writeRegistryIdUnsafe(ForgeRegistries.SOUND_EVENTS, clickSound);
+        buffer.writeVarInt(BuiltInRegistries.SOUND_EVENT.getId(clickSound));
         buffer.writeBoolean(consumeAfterComplete);
         buffer.writeBoolean(useDisabledTexture);
         buffer.writeBoolean(spawnsParticles);

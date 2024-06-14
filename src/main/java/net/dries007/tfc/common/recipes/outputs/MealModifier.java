@@ -14,10 +14,10 @@ import java.util.Map;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
@@ -76,7 +76,7 @@ public record MealModifier(FoodData baseFood, List<MealPortion> portions) implem
 
         // Sort, so tooltips appear in consistent order, and also to prevent stackability issues
         itemIngredients.sort(Comparator.comparing(ItemStack::getCount)
-            .thenComparing(item -> ForgeRegistries.ITEMS.getKey(item.getItem())));
+            .thenComparing(item -> BuiltInRegistries.ITEM.getKey(item.getItem())));
 
         float[] nutrition = baseFood.nutrients();
         float saturation = baseFood.saturation();

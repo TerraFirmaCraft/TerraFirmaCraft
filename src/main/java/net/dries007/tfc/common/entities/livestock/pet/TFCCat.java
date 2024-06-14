@@ -89,9 +89,11 @@ public class TFCCat extends TamableMammal
     public void initCommonAnimalData(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason)
     {
         super.initCommonAnimalData(level, difficulty, reason);
+
         final boolean fullMoon = level.getMoonBrightness() > 0.9F;
-        TagKey<CatVariant> tagkey = fullMoon ? CatVariantTags.FULL_MOON_SPAWNS : CatVariantTags.DEFAULT_SPAWNS;
-        Helpers.getRandomElement(BuiltInRegistries.CAT_VARIANT, tagkey, random).ifPresent(this::setVariant);
+        final TagKey<CatVariant> key = fullMoon ? CatVariantTags.FULL_MOON_SPAWNS : CatVariantTags.DEFAULT_SPAWNS;
+
+        BuiltInRegistries.CAT_VARIANT.getOrCreateTag(key).getRandomElement(random).ifPresent(holder -> this.setVariant(holder.get()));
 
         final ServerLevel serverlevel = level.getLevel();
         if (serverlevel.structureManager().getStructureWithPieceAt(this.blockPosition(), StructureTags.CATS_SPAWN_AS_BLACK).isValid())

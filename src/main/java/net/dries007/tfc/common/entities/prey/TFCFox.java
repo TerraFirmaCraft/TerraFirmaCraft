@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.entities.prey;
 
 import javax.annotation.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -17,17 +16,19 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.animal.Fox;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
-
 import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.plant.fruit.Lifecycle;
@@ -52,7 +53,7 @@ public class TFCFox extends Fox
     {
         if (random.nextFloat() < 0.15f)
         {
-            Helpers.getRandomElement(ForgeRegistries.ITEMS, TFCTags.Items.FOX_SPAWNS_WITH, random).ifPresent(item -> setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(item)));
+            Helpers.randomItem(TFCTags.Items.FOX_SPAWNS_WITH, random).ifPresent(item -> setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(item)));
         }
     }
 

@@ -41,7 +41,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.FogType;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
@@ -60,7 +59,6 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
 
@@ -358,12 +356,12 @@ public class ClientForgeEventHandler
                     text.add(Component.literal(DARK_GRAY + "[Debug] Cap NBT: " + capTag));
                 }
 
-                text.add(Component.literal(DARK_GRAY + "[Debug] Item Tags: " + Helpers.getHolder(ForgeRegistries.ITEMS, stack.getItem()).tags().map(t1 -> "#" + t1.location()).collect(Collectors.joining(", "))));
+                text.add(Component.literal(DARK_GRAY + "[Debug] Item Tags: " + stack.getItem().builtInRegistryHolder().tags().map(t1 -> "#" + t1.location()).collect(Collectors.joining(", "))));
 
                 if (stack.getItem() instanceof BlockItem blockItem)
                 {
                     final Block block = blockItem.getBlock();
-                    text.add(Component.literal(DARK_GRAY + "[Debug] Block Tags: " + Helpers.getHolder(ForgeRegistries.BLOCKS, block).tags().map(t -> "#" + t.location()).collect(Collectors.joining(", "))));
+                    text.add(Component.literal(DARK_GRAY + "[Debug] Block Tags: " + block.builtInRegistryHolder().tags().map(t -> "#" + t.location()).collect(Collectors.joining(", "))));
                 }
             }
         }

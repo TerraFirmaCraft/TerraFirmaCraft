@@ -13,12 +13,12 @@ import com.google.gson.JsonObject;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntComparators;
 import it.unimi.dsi.fastutil.ints.IntList;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.IIngredientSerializer;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class DelegateIngredient extends Ingredient
@@ -133,8 +133,7 @@ public abstract class DelegateIngredient extends Ingredient
      */
     protected ItemStack[] getDefaultItems()
     {
-        return ForgeRegistries.ITEMS.getValues()
-            .stream()
+        return BuiltInRegistries.ITEM.stream()
             .map(item -> {
                 final ItemStack stack = new ItemStack(item);
                 return testDefaultItem(stack);

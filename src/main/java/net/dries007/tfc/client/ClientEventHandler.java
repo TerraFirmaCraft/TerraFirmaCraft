@@ -47,6 +47,7 @@ import net.minecraft.client.renderer.entity.PufferfishRenderer;
 import net.minecraft.client.renderer.entity.SalmonRenderer;
 import net.minecraft.client.renderer.entity.TropicalFishRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.util.Mth;
@@ -67,7 +68,6 @@ import net.minecraftforge.client.model.DynamicFluidContainerModel;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.model.ContainedFluidModel;
@@ -709,7 +709,7 @@ public final class ClientEventHandler
             }
         }
 
-        for (Item item : ForgeRegistries.ITEMS)
+        for (Item item : BuiltInRegistries.ITEM)
         {
             if (item instanceof JarItem jar)
             {
@@ -827,9 +827,9 @@ public final class ClientEventHandler
         event.register(seasonalFoliageColor, TFCBlocks.SPRUCE_KRUMMHOLZ.get().asItem());
         event.register(seasonalFoliageColor, TFCBlocks.ASPEN_KRUMMHOLZ.get().asItem());
 
-        for (Fluid fluid : ForgeRegistries.FLUIDS.getValues())
+        for (Fluid fluid : BuiltInRegistries.FLUID)
         {
-            if (Objects.requireNonNull(ForgeRegistries.FLUIDS.getKey(fluid)).getNamespace().equals(TerraFirmaCraft.MOD_ID))
+            if (Objects.requireNonNull(BuiltInRegistries.FLUID.getKey(fluid)).getNamespace().equals(TerraFirmaCraft.MOD_ID))
             {
                 event.register(new DynamicFluidContainerModel.Colors(), fluid.getBucket());
             }

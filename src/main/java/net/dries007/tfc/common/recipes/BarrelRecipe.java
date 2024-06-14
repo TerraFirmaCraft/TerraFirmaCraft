@@ -9,6 +9,7 @@ package net.dries007.tfc.common.recipes;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -19,7 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
 import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
@@ -29,7 +30,6 @@ import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
-import org.jetbrains.annotations.Nullable;
 
 public abstract class BarrelRecipe implements ISimpleRecipe<BarrelInventory>
 {
@@ -191,7 +191,7 @@ public abstract class BarrelRecipe implements ISimpleRecipe<BarrelInventory>
 
             final ItemStackProvider outputItem = json.has("output_item") ? ItemStackProvider.fromJson(JsonHelpers.getAsJsonObject(json, "output_item")) : ItemStackProvider.empty();
             final FluidStack outputFluid = json.has("output_fluid") ? JsonHelpers.getFluidStack(JsonHelpers.getAsJsonObject(json, "output_fluid")) : FluidStack.EMPTY;
-            final SoundEvent sound = json.has("sound") ? JsonHelpers.getRegistryEntry(json, "sound", ForgeRegistries.SOUND_EVENTS) : SoundEvents.BREWING_STAND_BREW;
+            final SoundEvent sound = json.has("sound") ? JsonHelpers.getRegistryEntry(json, "sound", BuiltInRegistries.SOUND_EVENT) : SoundEvents.BREWING_STAND_BREW;
 
             return new Builder(inputItem, inputFluid, outputItem, outputFluid, sound);
         }
@@ -216,7 +216,7 @@ public abstract class BarrelRecipe implements ISimpleRecipe<BarrelInventory>
         {
             final FluidStackIngredient inputFluid = FluidStackIngredient.fromNetwork(buffer);
             final FluidStack outputFluid = FluidStack.readFromPacket(buffer);
-            final SoundEvent sound = buffer.readRegistryIdUnsafe(ForgeRegistries.SOUND_EVENTS);
+            final SoundEvent sound = BuiltInRegistries.SOUND_EVENT.byIdOrThrow(buffer.readVarInt());
 
             return new Builder(ItemStackIngredient.EMPTY, inputFluid, ItemStackProvider.empty(), outputFluid, sound);
         }
@@ -225,7 +225,7 @@ public abstract class BarrelRecipe implements ISimpleRecipe<BarrelInventory>
         {
             recipe.inputFluid.toNetwork(buffer);
             recipe.outputFluid.writeToPacket(buffer);
-            buffer.writeRegistryIdUnsafe(ForgeRegistries.SOUND_EVENTS, recipe.sound);
+            buffer.writeVarInt(BuiltInRegistries.SOUND_EVENT.getId(recipe.sound));
         }
     }
 }

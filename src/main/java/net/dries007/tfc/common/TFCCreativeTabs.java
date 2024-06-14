@@ -11,6 +11,8 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -23,8 +25,6 @@ import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryObject;
 
 import net.dries007.tfc.TerraFirmaCraft;
@@ -500,7 +500,7 @@ public final class TFCCreativeTabs
         accept(out, TFCItems.JAR_LID);
         accept(out, TFCItems.WINDMILL_BLADE);
         TFCItems.COLORED_WINDMILL_BLADES.values().forEach(blade -> accept(out, blade));
-        consumeOurs(ForgeRegistries.FLUIDS, fluid -> out.accept(fluid.getBucket()));
+        consumeOurs(BuiltInRegistries.FLUID, fluid -> out.accept(fluid.getBucket()));
 
         TFCItems.FRESHWATER_FISH_BUCKETS.values().forEach(reg -> accept(out, reg));
         accept(out, TFCItems.COD_BUCKET);
@@ -508,7 +508,7 @@ public final class TFCCreativeTabs
         accept(out, TFCItems.TROPICAL_FISH_BUCKET);
         accept(out, TFCItems.PUFFERFISH_BUCKET);
 
-        consumeOurs(ForgeRegistries.ENTITY_TYPES, entity -> {
+        consumeOurs(BuiltInRegistries.ENTITY_TYPE, entity -> {
             final var item = ForgeSpawnEggItem.fromEntityType(entity);
             if (item != null)
             {
@@ -670,7 +670,7 @@ public final class TFCCreativeTabs
         out.accept(decoration.wall().get());
     }
 
-    private static <T> void consumeOurs(IForgeRegistry<T> registry, Consumer<T> consumer)
+    private static <T> void consumeOurs(Registry<T> registry, Consumer<T> consumer)
     {
         for (T value : registry)
         {

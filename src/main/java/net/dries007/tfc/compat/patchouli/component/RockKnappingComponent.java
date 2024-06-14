@@ -9,22 +9,20 @@ package net.dries007.tfc.compat.patchouli.component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.UnaryOperator;
-
 import com.google.gson.annotations.SerializedName;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.Nullable;
+import vazkii.patchouli.api.IComponentRenderContext;
+import vazkii.patchouli.api.IVariable;
 
-import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.client.screen.KnappingScreen;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.recipes.KnappingRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.util.Helpers;
-import org.jetbrains.annotations.Nullable;
-import vazkii.patchouli.api.IComponentRenderContext;
-import vazkii.patchouli.api.IVariable;
 
 /**
  * This is a merged knapping component that supports multiple 'similar' recipes
@@ -41,7 +39,7 @@ public class RockKnappingComponent extends CustomComponent
     {
         super.build(componentX, componentY, pageNum);
 
-        final List<Item> allInputs = Helpers.getAllTagValues(TFCTags.Items.ROCK_KNAPPING, ForgeRegistries.ITEMS);
+        final List<Item> allInputs = Helpers.allItems(TFCTags.Items.ROCK_KNAPPING).toList();
         final List<Entry> recipes = new ArrayList<>();
 
         if (resolvedRecipeNames == null) return;

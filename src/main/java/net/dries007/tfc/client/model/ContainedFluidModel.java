@@ -23,6 +23,7 @@ import net.minecraft.client.resources.model.BlockModelRotation;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.ModelState;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -38,7 +39,6 @@ import net.minecraftforge.client.model.geometry.IGeometryLoader;
 import net.minecraftforge.client.model.geometry.IUnbakedGeometry;
 import net.minecraftforge.client.model.geometry.StandaloneGeometryBakingContext;
 import net.minecraftforge.client.model.geometry.UnbakedGeometryHelper;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
@@ -174,7 +174,7 @@ public class ContainedFluidModel implements IUnbakedGeometry<ContainedFluidModel
             return stack.getCapability(Capabilities.FLUID)
                 .map(cap -> {
                     Fluid fluid = cap.getFluidInTank(0).getFluid();
-                    String name = Objects.requireNonNull(ForgeRegistries.FLUIDS.getKey(fluid)).toString();
+                    String name = Objects.requireNonNull(BuiltInRegistries.FLUID.getKey(fluid)).toString();
                     if (!cache.containsKey(name))
                     {
                         ContainedFluidModel unbaked = this.parent.withFluid(fluid);
