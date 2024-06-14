@@ -114,7 +114,7 @@ public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
         }
         if (creationDate == NEVER_DECAY_CREATION_DATE)
         {
-            return NEVER_DECAY_CREATION_DATE;
+            return NEVER_DECAY_DATE;
         }
         final long rottenDate = calculateRottenDate(creationDate);
         if (rottenDate < Calendars.get().getTicks())
