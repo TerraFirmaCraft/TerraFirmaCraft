@@ -168,6 +168,17 @@ minecraft {
 
             arg("--nogui")
         }
+
+        register("data") {
+            workingDirectory(project.file("run/data"))
+            args("--mod", modId, "--all", "--output", file("src/generated/resources/"), "--existing", file("src/main/resources/"))
+        }
+    }
+}
+
+sourceSets.main {
+    resources {
+        srcDir("src/generated/resources/")
     }
 }
 

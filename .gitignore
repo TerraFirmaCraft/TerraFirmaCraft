@@ -47,3 +47,4 @@ __pycache__/
 /.idea/
 /src/main/resources/data_zipped.zip
 /src/main/resources/assets_zipped.zip
+/src/generated/resources/.cache/**

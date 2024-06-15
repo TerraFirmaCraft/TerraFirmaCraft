@@ -61,7 +61,6 @@ import net.minecraft.world.level.levelgen.Aquifer;
 import net.minecraft.world.level.levelgen.Beardifier;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.NoiseSettings;
@@ -218,7 +217,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         final ConcurrentArea<BiomeExtension> biomeLayer = new ConcurrentArea<>(factory, TFCLayers::getFromLayerId);
 
         this.noiseSamplerSeed = seed;
-        this.noiseSampler = new NoiseSampler(noiseSettings.get().noiseSettings(), random.nextLong(), level.registryAccess().lookupOrThrow(Registries.NOISE));
+        this.noiseSampler = new NoiseSampler(random.nextLong(), level.registryAccess().lookupOrThrow(Registries.NOISE), level.registryAccess().lookupOrThrow(Registries.DENSITY_FUNCTION));
         this.chunkDataProvider = new ChunkDataProvider(chunkDataGenerator);
         this.surfaceManager = new SurfaceManager(seed);
 

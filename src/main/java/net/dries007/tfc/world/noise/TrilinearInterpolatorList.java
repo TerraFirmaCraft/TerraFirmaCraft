@@ -8,6 +8,7 @@ package net.dries007.tfc.world.noise;
 
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.world.level.levelgen.DensityFunction;
 
 public record TrilinearInterpolatorList(ChunkNoiseSamplingSettings settings, List<TrilinearInterpolator> interpolators)
 {
@@ -16,9 +17,9 @@ public record TrilinearInterpolatorList(ChunkNoiseSamplingSettings settings, Lis
         return new TrilinearInterpolatorList(settings, new ArrayList<>());
     }
 
-    public TrilinearInterpolator add(TrilinearInterpolator.Source source)
+    public TrilinearInterpolator add(DensityFunction function)
     {
-        final TrilinearInterpolator interpolator = new TrilinearInterpolator(settings, source);
+        final TrilinearInterpolator interpolator = new TrilinearInterpolator(settings, function);
         interpolators.add(interpolator);
         return interpolator;
     }
