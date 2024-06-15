@@ -19,6 +19,7 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredientType;
 import mezz.jei.api.ingredients.IIngredientTypeWithSubtypes;
 import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.recipe.transfer.IRecipeTransferHandlerHelper;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
@@ -103,6 +104,9 @@ import net.dries007.tfc.compat.jei.category.SoupPotRecipeCategory;
 import net.dries007.tfc.compat.jei.category.WeldingRecipeCategory;
 import net.dries007.tfc.compat.jei.extension.AdvancedShapelessExtension;
 import net.dries007.tfc.compat.jei.extension.ExtraProductsExtension;
+import net.dries007.tfc.compat.jei.transfer.AnvilRecipeTransferHandler;
+import net.dries007.tfc.compat.jei.transfer.AnvilRecipeTransferInfo;
+import net.dries007.tfc.compat.jei.transfer.WeldingRecipeTransferInfo;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.KnappingType;
 
@@ -303,6 +307,10 @@ public final class JEIIntegration implements IModPlugin
         registry.addRecipeTransferHandler(FirepitContainer.class, TFCContainerTypes.FIREPIT.get(), HEATING, 4, 1, 7, Inventory.INVENTORY_SIZE);
         registry.addRecipeTransferHandler(GrillContainer.class, TFCContainerTypes.GRILL.get(), HEATING, 4, 5, 9, Inventory.INVENTORY_SIZE);
         registry.addRecipeTransferHandler(CrucibleContainer.class, TFCContainerTypes.CRUCIBLE.get(), HEATING, 0, 9, 10, Inventory.INVENTORY_SIZE);
+        IRecipeTransferHandlerHelper transferHelper = registry.getTransferHelper();
+        // Anvil
+        registry.addRecipeTransferHandler(new WeldingRecipeTransferInfo(transferHelper));
+        registry.addRecipeTransferHandler(new AnvilRecipeTransferHandler<>(transferHelper.createUnregisteredRecipeTransferHandler(new AnvilRecipeTransferInfo(transferHelper))), ANVIL);
     }
 
     @Override
