@@ -58,6 +58,11 @@ public class AnvilScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilContai
         final Level level = blockEntity.getLevel();
         final int guiLeft = getGuiLeft(), guiTop = getGuiTop();
 
+        if (Helpers.isJEIEnabled())
+        {
+            graphics.blit(texture, guiLeft + 26, guiTop + 24, 0, 207, 9, 14);
+        }
+
         assert level != null;
 
         // Draw rule icons
