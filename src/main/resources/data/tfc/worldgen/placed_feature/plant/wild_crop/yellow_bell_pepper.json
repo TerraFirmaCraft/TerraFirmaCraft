@@ -17,8 +17,7 @@
       "predicate": {
         "type": "would_survive",
         "state": {
-          "Name": "tfc:wild_crop/yellow_bell_pepper",
-          "Properties": {}
+          "Name": "tfc:wild_crop/yellow_bell_pepper"
         }
       }
     }

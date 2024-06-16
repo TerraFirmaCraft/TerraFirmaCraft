@@ -5,8 +5,7 @@
     "to_place": {
       "type": "minecraft:simple_state_provider",
       "state": {
-        "Name": "tfc:wild_crop/squash",
-        "Properties": {}
+        "Name": "tfc:wild_crop/squash"
       }
     }
   }

@@ -10,7 +10,7 @@ from constants import *
 
 def generate(rm: ResourceManager):
 
-    rm.data(('worldgen', 'world_preset', 'overworld'), {'dimensions': {
+    rm.world_preset('overworld', {
         'minecraft:overworld': {
             'type': 'minecraft:overworld',
             'generator': {
@@ -52,9 +52,7 @@ def generate(rm: ResourceManager):
                 'settings': 'minecraft:end'
             }
         }
-    }})
-
-    rm.tag('minecraft:normal', 'worldgen/world_preset', 'tfc:overworld')
+    })
 
     # Biome Feature Tags
     # Biomes -> in_biome/<step>/<optional biome>
@@ -110,28 +108,28 @@ def generate(rm: ResourceManager):
     biome(rm, 'hills', 'plains')
     biome(rm, 'rolling_hills', 'plains', boulders=True)
     biome(rm, 'highlands', 'plains', boulders=True, hot_spring_features='empty')
-    biome(rm, 'lake', 'river', spawnable=False)
+    biome(rm, 'lake', 'river')
     biome(rm, 'lowlands', 'swamp', lake_features=False, ocean_features='both')
     biome(rm, 'salt_marsh', 'swamp', lake_features=False, ocean_features='both')
     biome(rm, 'mountains', 'extreme_hills')
     biome(rm, 'volcanic_mountains', 'extreme_hills', volcano_features=True, hot_spring_features=True)
     biome(rm, 'old_mountains', 'extreme_hills', hot_spring_features=True)
     biome(rm, 'oceanic_mountains', 'extreme_hills', ocean_features='both')
-    biome(rm, 'volcanic_oceanic_mountains', 'extreme_hills', spawnable=False, ocean_features='both', volcano_features=True)
-    biome(rm, 'ocean', 'ocean', spawnable=False, ocean_features=True)
-    biome(rm, 'ocean_reef', 'ocean', spawnable=False, ocean_features=True, reef_features=True)
-    biome(rm, 'deep_ocean', 'ocean', spawnable=False, ocean_features=True)
-    biome(rm, 'deep_ocean_trench', 'ocean', spawnable=False, ocean_features=True)
-    biome(rm, 'river', 'river', spawnable=False)
-    biome(rm, 'shore', 'beach', spawnable=False, ocean_features=True)
-    biome(rm, 'tidal_flats', 'beach', spawnable=False, ocean_features=True)
+    biome(rm, 'volcanic_oceanic_mountains', 'extreme_hills', ocean_features='both', volcano_features=True)
+    biome(rm, 'ocean', 'ocean', ocean_features=True)
+    biome(rm, 'ocean_reef', 'ocean', ocean_features=True, reef_features=True)
+    biome(rm, 'deep_ocean', 'ocean', ocean_features=True)
+    biome(rm, 'deep_ocean_trench', 'ocean', ocean_features=True)
+    biome(rm, 'river', 'river')
+    biome(rm, 'shore', 'beach', ocean_features=True)
+    biome(rm, 'tidal_flats', 'beach', ocean_features=True)
 
-    biome(rm, 'mountain_lake', 'extreme_hills', spawnable=False)
-    biome(rm, 'volcanic_mountain_lake', 'extreme_hills', spawnable=False, volcano_features=True)
-    biome(rm, 'old_mountain_lake', 'extreme_hills', spawnable=False)
-    biome(rm, 'oceanic_mountain_lake', 'river', spawnable=False, ocean_features='both')
-    biome(rm, 'volcanic_oceanic_mountain_lake', 'river', spawnable=False, ocean_features='both', volcano_features=True)
-    biome(rm, 'plateau_lake', 'extreme_hills', boulders=True, spawnable=False)
+    biome(rm, 'mountain_lake', 'extreme_hills')
+    biome(rm, 'volcanic_mountain_lake', 'extreme_hills', volcano_features=True)
+    biome(rm, 'old_mountain_lake', 'extreme_hills')
+    biome(rm, 'oceanic_mountain_lake', 'river', ocean_features='both')
+    biome(rm, 'volcanic_oceanic_mountain_lake', 'river', ocean_features='both', volcano_features=True)
+    biome(rm, 'plateau_lake', 'extreme_hills', boulders=True)
 
     # Carvers
     rm.configured_carver('cave', 'tfc:cave', {
@@ -166,7 +164,7 @@ def generate(rm: ResourceManager):
 
     # Configured and Placed Features
 
-    configured_placed_feature(rm, 'surface_grasses', 'tfc:noisy_multiple', {'features': '#tfc:feature/surface_grasses', 'biome_check': False})
+    configured_placed_feature(rm, 'surface_grasses', 'tfc:noisy_multiple', {'features': '#tfc:feature/surface_grasses'})
 
     # Clay Discs
     # []_with_indicator (PF) -> if_then (CF) -> if [] -> then clay_indicator
@@ -207,7 +205,7 @@ def generate(rm: ResourceManager):
     }, decorate_chance(4), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(min_forest='normal', min_rain=100, max_rain=350, fuzzy=True))
 
     # Individual indicator plants are invoked through multiple, which has decorators attached already
-    configured_placed_feature(rm, 'clay_indicator', 'tfc:multiple', {'features': '#tfc:feature/clay_indicators', 'biome_check': False})
+    configured_placed_feature(rm, 'clay_indicator', 'tfc:multiple', {'features': '#tfc:feature/clay_indicators'})
 
     configured_placed_feature(rm, 'tfc:erosion')
     configured_placed_feature(rm, 'tfc:ice_and_snow')
@@ -1483,7 +1481,7 @@ def height_provider(min_y: VerticalAnchor, max_y: VerticalAnchor, height_type: H
     }
 
 
-def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False, spawnable: bool = True, ocean_features: Union[bool, Literal['both']] = False, lake_features: Union[bool, Literal['default']] = 'default', volcano_features: bool = False, reef_features: bool = False, hot_spring_features: Union[bool, Literal['empty']] = False):
+def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False, ocean_features: Union[bool, Literal['both']] = False, lake_features: Union[bool, Literal['default']] = 'default', volcano_features: bool = False, reef_features: bool = False, hot_spring_features: Union[bool, Literal['empty']] = False):
     spawners = {}
     soil_discs = []
     large_features = []
@@ -1596,10 +1594,9 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
         rm.biome_tag('is_ocean', name)
 
     rm.lang('biome.tfc.%s' % name, lang(name))
-    mcresources_biome(rm,
+    rm.biome(
         name_parts=name,
         has_precipitation=True,
-        category=category,
         temperature=0.5,
         downfall=0.5,
         effects={
@@ -1612,7 +1609,6 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
         air_carvers=['tfc:cave', 'tfc:canyon'],
         water_carvers=[],
         features=feature_tags,
-        player_spawn_friendly=spawnable,
         creature_spawn_probability=0.08,
         spawn_costs=costs
     )

@@ -17,8 +17,7 @@
       "predicate": {
         "type": "would_survive",
         "state": {
-          "Name": "tfc:wild_crop/cabbage",
-          "Properties": {}
+          "Name": "tfc:wild_crop/cabbage"
         }
       }
     }
