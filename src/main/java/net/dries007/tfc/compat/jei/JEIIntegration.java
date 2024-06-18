@@ -106,6 +106,8 @@ import net.dries007.tfc.compat.jei.extension.AdvancedShapelessExtension;
 import net.dries007.tfc.compat.jei.extension.ExtraProductsExtension;
 import net.dries007.tfc.compat.jei.transfer.AnvilRecipeTransferHandler;
 import net.dries007.tfc.compat.jei.transfer.AnvilRecipeTransferInfo;
+import net.dries007.tfc.compat.jei.transfer.FluidIgnoringRecipeTransferHandler;
+import net.dries007.tfc.compat.jei.transfer.PotTransferInfo;
 import net.dries007.tfc.compat.jei.transfer.WeldingRecipeTransferInfo;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.KnappingType;
@@ -311,6 +313,11 @@ public final class JEIIntegration implements IModPlugin
         // Anvil
         registry.addRecipeTransferHandler(new WeldingRecipeTransferInfo(transferHelper));
         registry.addRecipeTransferHandler(new AnvilRecipeTransferHandler<>(transferHelper.createUnregisteredRecipeTransferHandler(new AnvilRecipeTransferInfo(transferHelper))), ANVIL);
+
+        // Pot
+        registry.addRecipeTransferHandler(new FluidIgnoringRecipeTransferHandler<>(transferHelper, transferHelper.createUnregisteredRecipeTransferHandler(new PotTransferInfo(transferHelper, SIMPLE_POT))), SIMPLE_POT);
+        registry.addRecipeTransferHandler(new FluidIgnoringRecipeTransferHandler<>(transferHelper, transferHelper.createUnregisteredRecipeTransferHandler(new PotTransferInfo(transferHelper, SOUP_POT))), SOUP_POT);
+        registry.addRecipeTransferHandler(new FluidIgnoringRecipeTransferHandler<>(transferHelper, transferHelper.createUnregisteredRecipeTransferHandler(new PotTransferInfo(transferHelper, JAM_POT))), JAM_POT);
     }
 
     @Override
