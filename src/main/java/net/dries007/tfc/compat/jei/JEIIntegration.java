@@ -106,6 +106,7 @@ import net.dries007.tfc.compat.jei.extension.AdvancedShapelessExtension;
 import net.dries007.tfc.compat.jei.extension.ExtraProductsExtension;
 import net.dries007.tfc.compat.jei.transfer.AnvilRecipeTransferHandler;
 import net.dries007.tfc.compat.jei.transfer.AnvilRecipeTransferInfo;
+import net.dries007.tfc.compat.jei.transfer.BarrelTransferInfo;
 import net.dries007.tfc.compat.jei.transfer.FluidIgnoringRecipeTransferHandler;
 import net.dries007.tfc.compat.jei.transfer.PotTransferInfo;
 import net.dries007.tfc.compat.jei.transfer.WeldingRecipeTransferInfo;
@@ -318,6 +319,9 @@ public final class JEIIntegration implements IModPlugin
         registry.addRecipeTransferHandler(new FluidIgnoringRecipeTransferHandler<>(transferHelper, transferHelper.createUnregisteredRecipeTransferHandler(new PotTransferInfo(transferHelper, SIMPLE_POT))), SIMPLE_POT);
         registry.addRecipeTransferHandler(new FluidIgnoringRecipeTransferHandler<>(transferHelper, transferHelper.createUnregisteredRecipeTransferHandler(new PotTransferInfo(transferHelper, SOUP_POT))), SOUP_POT);
         registry.addRecipeTransferHandler(new FluidIgnoringRecipeTransferHandler<>(transferHelper, transferHelper.createUnregisteredRecipeTransferHandler(new PotTransferInfo(transferHelper, JAM_POT))), JAM_POT);
+
+        // Only sealed barrel recipes, instant barrel recipes are purposefully excluded
+        registry.addRecipeTransferHandler(new FluidIgnoringRecipeTransferHandler<>(transferHelper, transferHelper.createUnregisteredRecipeTransferHandler(new BarrelTransferInfo<>(SEALED_BARREL))), SEALED_BARREL);
     }
 
     @Override
