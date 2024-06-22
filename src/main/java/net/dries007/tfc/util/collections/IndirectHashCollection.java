@@ -6,10 +6,13 @@
 
 package net.dries007.tfc.util.collections;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
-
 import net.minecraft.world.Container;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeManager;
@@ -18,17 +21,20 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.dries007.tfc.util.Helpers;
 
 /**
- * This is a structure which provides O(1), {@link HashMap} access of the wrapped {@code Map<Predicate<V>, R>}
- * It does this by using the "indirect key", or {@code K}. By using two constructs:
- * - The key mapper, a {@code Function<V, K>}.
- * - And the key extractor, a{@code Function<R, Iterable<K>>}.
- * The above must satisfy the following condition:
- * - For any K, V, R, {@code (keyMapper.apply(V) == K) -> (keyExtractor.apply(R).contains(K))}
+ * This is a structure which provides O(1), {@link HashMap} access of the wrapped {@code Map<Predicate<V>, R>} It does this by using
+ * the "indirect key", or {@code K}. By using two constructs:
+ * <ul>
+ *     <li>The key mapper, a {@code Function<V, K>}</li>
+ *     <li>And the key extractor, a{@code Function<R, Iterable<K>>}</li>
+ * </ul>
+ * The above must satisfy the following condition: For any K, V, R, {@code (keyMapper.apply(V) == K) -> (keyExtractor.apply(R).contains(K))}
  * <p>
  * This was benchmarked using VisualVM, with a recipe list of ~1000 recipes (not uncommon), using Landslide Recipes, over >10,000 invocations.
- * - Vanilla's recipe manager query took 847 us / recipe
- * - Using a LRU cache of size 1, delegating to the above took 273 us / recipe
- * - this took 11 us / recipe.
+ * <ul>
+ *     <li>Vanilla's recipe manager query took 847 us / recipe</li>
+ *     <li>Using an LRU cache of size 1, delegating to the above took 273 us / recipe</li>
+ *     <li>This took 11 us / recipe.</li>
+ * </ul>
  */
 public class IndirectHashCollection<K, R>
 {
@@ -56,6 +62,12 @@ public class IndirectHashCollection<K, R>
     {
         DIRECT_CACHES.forEach((cache, values) -> reloadDirectCache((IndirectHashCollection) cache, (Supplier) values));
         RECIPE_CACHES.forEach((cache, type) -> reloadRecipeCache((IndirectHashCollection) cache, manager, (Supplier) type));
+    }
+
+    public static void clearAllCaches()
+    {
+        DIRECT_CACHES.forEach((cache, values) -> cache.clear());
+        RECIPE_CACHES.forEach((cache, type) -> cache.clear());
     }
 
     private static <K, R> void reloadDirectCache(IndirectHashCollection<K, R> cache, Supplier<Collection<R>> values)
@@ -91,5 +103,10 @@ public class IndirectHashCollection<K, R>
                 indirectResultMap.computeIfAbsent(directKey, k -> new ArrayList<>()).add(result);
             }
         });
+    }
+
+    public void clear()
+    {
+        indirectResultMap.clear();
     }
 }
