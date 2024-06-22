@@ -1,7 +1,8 @@
 {
   "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:heating",
   "ingredient": {
-    "tag": "tfc:foods/meats"
+    "item": "minecraft:egg"
   },
-  "heat_capacity": 1.0
+  "temperature": 1050
 }
