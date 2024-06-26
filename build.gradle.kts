@@ -115,6 +115,7 @@ dependencies {
     //runtimeOnly(fg.deobf("curse.maven:create-328085:4835191"))
     //runtimeOnly(fg.deobf("curse.maven:corpse-316582:5157034"))
     //runtimeOnly(fg.deobf("curse.maven:distant-horizons-508933:5390046"))
+    //runtimeOnly(fg.deobf("curse.maven:firmalife-453394:5456804"))
 
     // JUnit
     // There is not a testImplementation-like configuration, AFAIK, that is available at minecraft runtime, so we use minecraftLibrary
