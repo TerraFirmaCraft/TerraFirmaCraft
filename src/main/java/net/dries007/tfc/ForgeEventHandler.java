@@ -220,6 +220,7 @@ import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
 import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.chunkdata.ChunkData;
+import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
 
 
 public final class ForgeEventHandler
@@ -351,7 +352,7 @@ public final class ForgeEventHandler
             final Level level = event.getObject().getLevel();
             final ChunkPos chunkPos = event.getObject().getPos();
 
-            ChunkData data;
+            final ChunkData data;
             if (level.isClientSide())
             {
                 // Retrieve either a new chunk data instance, or a populated instance that has already been synced through an earlier chunk watch packet.
@@ -359,20 +360,15 @@ public final class ForgeEventHandler
             }
             else
             {
-                // Chunk was created on server thread.
-                // We try and promote partial data, if it's available via an identifiable chunk generator.
-                // Otherwise, we fallback to empty data.
-                if (level instanceof ServerLevel serverLevel && serverLevel.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension ex)
-                {
-                    data = ex.chunkDataProvider().promotePartialOrCreate(chunkPos);
-                }
-                else
-                {
-                    data = new ChunkData(chunkPos);
-                }
-
+                // Chunk was created on server thread. This may be for several reasons
+                // - loading from disk (chunk data will be read separately, by chunk serializer), we just need to initialize correctly
+                // - promoting a proto chunk to level chunk (we initialize here, and then copy the proto chunk after)
+                // - other mods may create chunks, in which case we copy data if we have it or skip if we don't
+                data = level instanceof ServerLevel serverLevel && serverLevel.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension ex
+                    ? ex.chunkDataProvider().create(chunkPos)
+                    : new ChunkData(chunkPos);
             }
-            event.addCapability(ChunkData.KEY, data);
+            event.addCapability(ChunkDataCapability.KEY, new ChunkDataCapability(data));
         }
     }
 
