@@ -55,7 +55,7 @@ def generate(rm: ResourceManager):
     # Parented to saw
     story.advancement('barrel', icon('tfc:wood/barrel/acacia'), 'Do a Barrel Roll!', 'Craft a barrel using a saw and lumber', 'saw', inventory_changed('#tfc:barrels'))
     story.advancement('scraped_hide', icon('tfc:large_scraped_hide'), 'Soak and Scrape', 'Soak a hide in limewater and then scrape it', 'barrel', inventory_changed('#tfc:scraped_hides'))
-    story.advancement('leather', icon('minecraft:leather'), 'Genuine Leather', 'Finish preparing the hide by soaking it in watter then tannin', 'scraped_hide', inventory_changed('minecraft:leather'))
+    story.advancement('leather', icon('minecraft:leather'), 'Genuine Leather', 'Finish preparing the hide by soaking it in water then tannin', 'scraped_hide', inventory_changed('minecraft:leather'))
     story.advancement('bellows', icon('tfc:bellows'), 'Blow You Away', 'Make a bellows out of leather', 'leather', inventory_changed('tfc:bellows'))
     story.advancement('papyrus', icon('tfc:papyrus'), 'I\'m a Skeleton With Very High Standards!', 'Locate papyrus', 'barrel', inventory_changed('tfc:papyrus'))
     # Mechanical power advancements parented to copper age
