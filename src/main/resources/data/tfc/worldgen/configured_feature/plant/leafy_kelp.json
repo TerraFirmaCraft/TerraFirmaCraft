@@ -6,7 +6,7 @@
     "head": "tfc:plant/leafy_kelp",
     "tries": 64,
     "radius": 12,
-    "min_height": 14,
-    "max_height": 21
+    "min_height": 7,
+    "max_height": 14
   }
 }
