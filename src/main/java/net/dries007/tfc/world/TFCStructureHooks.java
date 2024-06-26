@@ -79,18 +79,20 @@ public final class TFCStructureHooks
             {
                 return false;
             }
+
             final ChunkGeneratorExtension ex = ChunkGeneratorExtension.getFromStructureState(state);
             if (ex == null)
             {
                 return false;
             }
+
             final ChunkPos chunkPos = new ChunkPos(x, z);
             final int blockX = chunkPos.getMinBlockX();
             final int blockZ = chunkPos.getMinBlockZ();
             final BlockPos pos = new BlockPos(blockX, 0, blockZ);
-            final ChunkData data = ex.chunkDataProvider().get(chunkPos);
-
+            final ChunkData data = ex.chunkDataProvider().createAndGeneratePartial(chunkPos);
             final WorldgenRandom random = new WorldgenRandom(new LegacyRandomSource(0L));
+
             random.setLargeFeatureWithSalt(state.getLevelSeed(), x, z, this.salt());
 
             return settings.climate.isValid(data, pos, random);
