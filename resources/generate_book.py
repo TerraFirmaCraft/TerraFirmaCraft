@@ -859,7 +859,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('$(thing)Jars$() are used to preserve fruit for longer periods of time. Jars start as $(thing)Empty Jars$(), obtained through $(l:mechanics/glassworking_applications#jar)Glassworking$(). Then, a $(thing)Jar Lid$() must be smithed from $(thing)Tin$(). Crafting these together creates an $(thing)Empty Jar With Lid$().'),
             text('In a pot, boil $(thing)Sugar$() with 2-4 pieces of $(thing)Fruit$(). When the recipe is done, $(item)$(k:key.use)$() with the empty jar with lid to create a $(thing)Sealed Jar of Jam$(). The sealed jar will last quite a long time on its own.'),
             crafting('tfc:crafting/unseal_plum_jar', text_contents='Unsealing a jar is done by crafting. The lid is not able to be retrieved. An unsealed jar only lasts for a few days!'),
-            crafting('tfc:crafting/barley_sandwich_with_jam', text_contents='Jam is used for making sandwiches. Jam sandwiches can contain Dairy, Cooked Meats, and Jam. An $(thing)Empty Jar$() is left over.'),
+            crafting('tfc:crafting/barley_sandwich_with_jam_1', text_contents='Jam is used for making sandwiches. Jam sandwiches can contain Dairy, Cooked Meats, and Jam. An $(thing)Empty Jar$() is left over.'),
             text('Jars can be placed on solid surfaces with $(item)$(k:key.use)$(). A block can contain four jars of any kind.'),
             crafting('tfc:crafting/wood/oak_shelf', text_contents='$(thing)Jar Shelves$() can be attached to solid walls. They can be placed directly or by clicking on an existing block of placed jars. The top of the jar shelf counts as a solid surface for placing items, more jars, or other blocks.')
         )),
@@ -892,7 +892,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
         entry('sewing_table', 'Sewing Table', 'tfc:wood/sewing_table/oak', pages=(
             text('The $(thing)Sewing Table$() is used to produce banner patterns and smithing templates. It requires $(l:mechanics/weaving#wool_cloth)Wool Cloth$(), $(l:mechanics/weaving#burlap_cloth)Burlap Cloth$(), String or Yarn, as well as a Needle.'),
             crafting('tfc:crafting/bone_needle', text_contents='A needle for sewing can be made from a bone.'),
-            crafting('tfc:crafting/wood/sewing_table/oak', text_contents='The sewing table can be made from wood, leather, and a pair of shears.'),
+            crafting('tfc:crafting/wood/oak_sewing_table', text_contents='The sewing table can be made from wood, leather, and a pair of shears.'),
             text('The sewing table\'s inventory is similar to that of a crafting table. If you ever make a mistake, you can simply exit the inventory, and your items will be returned to you. There is a recipe book available in the GUI. Selecting the book opens a menu where you can select a recipe. This places small indicators of what steps to perform on the working surface.'),
             page_break(),
             image('tfc:textures/gui/book/gui/sewing_table.png', text_contents='The sewing screen.'),

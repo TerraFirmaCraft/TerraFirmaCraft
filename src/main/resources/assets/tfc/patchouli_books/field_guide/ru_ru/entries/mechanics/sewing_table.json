@@ -15,7 +15,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/wood/sewing_table/oak",
+      "recipe": "tfc:crafting/wood/oak_sewing_table",
       "text": "Швейный стол можно сделать из дерева, кожи и ножниц."
     },
     {
