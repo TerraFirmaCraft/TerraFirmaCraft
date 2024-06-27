@@ -1,22 +1,23 @@
-A small update, with some fixes and updated localization.
+Another small update with some small features and fixes.
 
 ### Changes
 
-- Updated localization for Russian, Polish
+- Added JEI recipe click areas to various TFC menus, which when clicked open the list of recipes in JEI for that device (#2730)
+- Kelp in oceans generates less tall on average, and should reach the surface of the ocean less often
 
 ### Fixes
 
-- Fix temperature interpolation being reversed on a chunk basis, causing the temperature in chunks to be subtly different across chunk borders (< 0.1°C)
-- Fix undo recipes for cobble and mossy cobble slabs and walls (#2726)
-- Fix a duplication exploit involving the Corpse mod (#2676)
-- Fix knapping recipes using an ingredient, with a knapping type requiring >1 item, to display correctly in JEI (#2725)
-- Fix some pot recipes from addons/datapacks not displaying properly in JEI (#2712)
-- Fix some confusing wording in the Bloomery section of the Field Guide
+- Fixed Distant Horizons' distant world generation causing chunk corruption and crashes (#2661)
+- Fixed food added by addons/packs decaying in creative tabs, and JEI views
+- Fixed nutrition not working properly after death:
+  - In peaceful mode, fast passive regeneration not applying
+  - Rotten food never giving adverse effects when eaten
+  - The "Full Nutrition" advancement not triggering
+- Fixed two missing recipes in the Field Guide
+- Fixed a typo in the "Leather" advancement
 
 
-### Technical Fixes
+### Technical Changes
 
-- `ClientSelfTestEvent` now fires regardless of if `-ea` is present
-- Pot recipes that use `ItemStackProvider`s must now obey one of two conditions:
-  - All item stack providers must not depend on the input
-  - There must be an equal number of inputs and providers, and all providers must be identical. This must occur because there is no internal matching from ingredients -> providers, and so any input slot may be matched up to any provider. Output of the recipe is undefined behavior if this rule is not followed.
+TFC's noise caves are now controllable via [Density Functions](https://minecraft.fandom.com/wiki/Density_function). The defaults are located [here](https://github.com/TerraFirmaCraft/TerraFirmaCraft/tree/1.20.x/src/generated/resources/data/tfc/worldgen/density_function), for anyone who wishes to delve into the realm of noise generation.
+
