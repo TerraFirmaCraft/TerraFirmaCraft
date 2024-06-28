@@ -15,12 +15,12 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.forge.ForgingBonus;
 import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.util.JsonHelpers;
-import org.jetbrains.annotations.Nullable;
 
 public class WeldingRecipe implements ISimpleRecipe<WeldingRecipe.Inventory>
 {
@@ -38,6 +38,14 @@ public class WeldingRecipe implements ISimpleRecipe<WeldingRecipe.Inventory>
         this.tier = tier;
         this.output = output;
         this.combineForgingBonus = combineForgingBonus;
+    }
+
+    /**
+     * @return {@code true} if an anvil of {@code anvilTier} can perform this recipe.
+     */
+    public boolean isCorrectTier(int anvilTier)
+    {
+        return anvilTier >= tier;
     }
 
     public int getTier()

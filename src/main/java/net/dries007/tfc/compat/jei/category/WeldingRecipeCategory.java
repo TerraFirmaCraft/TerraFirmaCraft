@@ -41,7 +41,7 @@ public class WeldingRecipeCategory extends BaseRecipeCategory<WeldingRecipe>
             .addIngredients(recipe.getSecondInput())
             .setBackground(slot, -1, -1);
 
-        builder.addSlot(RecipeIngredientRole.CATALYST, 46, 5)
+        builder.addSlot(RecipeIngredientRole.INPUT, 46, 5)
             .addIngredients(Ingredient.of(TFCTags.Items.FLUX))
             .setBackground(slot, -1, -1);
 

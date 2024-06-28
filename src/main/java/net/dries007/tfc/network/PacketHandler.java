@@ -88,6 +88,7 @@ public final class PacketHandler
         register(OpenFieldGuidePacket.class, OpenFieldGuidePacket::encode, OpenFieldGuidePacket::new, OpenFieldGuidePacket::handle);
         register(PetCommandPacket.class, PetCommandPacket::encode, PetCommandPacket::new, PetCommandPacket::handle);
         register(PourFasterPacket.class, PourFasterPacket::encode, PourFasterPacket::new, PourFasterPacket::handle);
+        register(SelectAnvilPlan.class, SelectAnvilPlan::encode, SelectAnvilPlan::new, SelectAnvilPlan::handle);
     }
 
     @SuppressWarnings("unchecked")

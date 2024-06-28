@@ -410,7 +410,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
         final WeldingRecipe recipe = level.getRecipeManager().getRecipeFor(TFCRecipeTypes.WELDING.get(), inventory, level).orElse(null);
         if (recipe != null)
         {
-            if (getTier() < recipe.getTier())
+            if (!recipe.isCorrectTier(getTier()))
             {
                 player.displayClientMessage(Component.translatable("tfc.tooltip.anvil_is_too_low_tier_to_weld"), true);
                 return InteractionResult.FAIL;
