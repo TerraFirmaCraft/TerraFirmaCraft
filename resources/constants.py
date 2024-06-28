@@ -1807,6 +1807,13 @@ DEFAULT_LANG = {
     'tfc.jei.anvil': 'Anvil',
     'tfc.jei.chisel': 'Chisel',
     'tfc.jei.sewing': 'Sewing',
+    'tfc.jei.transfer.error.pot_started': 'Recipe already in progress',
+    'tfc.jei.transfer.error.pot_missing_fluid_and_items': 'Missing Items and Fluid',
+    'tfc.jei.transfer.error.pot_no_fluid': 'No fluid in pot. Expecting %smb of any of the following [%s]',
+    'tfc.jei.transfer.error.pot_wrong_fluid': 'Wrong fluid of type %s',
+    'tfc.jei.transfer.error.pot_not_enough_fluid': 'Not enough fluid, missing %smb of %s',
+    'tfc.jei.transfer.error.anvil_welding_tier_too_low': 'Anvil tier too low to weld that',
+    'tfc.jei.transfer.error.anvil_forging_tier_too_low': 'Anvil tier is too low to work',
 
     'tfc.field_guide.book_name': 'TerraFirmaCraft',
     'tfc.field_guide.book_landing_text': 'Welcome traveller! This book will be the source of all you need to know as you explore the world of TerraFirmaCraft (TFC).'
