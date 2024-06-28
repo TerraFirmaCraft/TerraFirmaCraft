@@ -290,8 +290,8 @@ public final class JEIIntegration implements IModPlugin
         registry.addRecipeClickArea(KnappingScreen.class, 97, 44, 22, 15, KNAPPING_TYPES.values().toArray(new RecipeType<?>[0]));
         registry.addRecipeClickArea(AnvilScreen.class, 26, 24, 9, 14, ANVIL, WELDING);
         registry.addRecipeClickArea(BarrelScreen.class, 92, 21, 9, 14, SEALED_BARREL, INSTANT_BARREL, INSTANT_FLUID_BARREL);
-        registry.addRecipeClickArea(CrucibleScreen.class, 139, 100, 10, 15, ALLOYING);
         registry.addRecipeClickArea(CrucibleScreen.class, 82, 100, 10, 15, HEATING);
+        registry.addRecipeClickArea(CrucibleScreen.class, 139, 100, 10, 15, ALLOYING, CASTING);
         registry.addRecipeClickArea(FirepitScreen.class, 79, 46, 18, 10, HEATING);
         registry.addRecipeClickArea(GrillScreen.class, 61, 37, 18, 10, HEATING);
         registry.addRecipeClickArea(PotScreen.class, 77, 6, 9, 14, SIMPLE_POT, SOUP_POT, JAM_POT);
@@ -311,6 +311,8 @@ public final class JEIIntegration implements IModPlugin
         registry.addRecipeTransferHandler(GrillContainer.class, TFCContainerTypes.GRILL.get(), HEATING, 4, 5, 9, Inventory.INVENTORY_SIZE);
         registry.addRecipeTransferHandler(CrucibleContainer.class, TFCContainerTypes.CRUCIBLE.get(), HEATING, 0, 9, 10, Inventory.INVENTORY_SIZE);
         IRecipeTransferHandlerHelper transferHelper = registry.getTransferHelper();
+        var basicRecipeTransferInfo = transferHelper.createBasicRecipeTransferInfo(CrucibleContainer.class, TFCContainerTypes.CRUCIBLE.get(), CASTING, 9, 1, 10, Inventory.INVENTORY_SIZE);
+        registry.addRecipeTransferHandler(new FluidIgnoringRecipeTransferHandler<>(transferHelper, transferHelper.createUnregisteredRecipeTransferHandler(basicRecipeTransferInfo)), CASTING);
         // Anvil
         registry.addRecipeTransferHandler(new WeldingRecipeTransferInfo(transferHelper));
         registry.addRecipeTransferHandler(new AnvilRecipeTransferHandler<>(transferHelper.createUnregisteredRecipeTransferHandler(new AnvilRecipeTransferInfo(transferHelper))), ANVIL);
