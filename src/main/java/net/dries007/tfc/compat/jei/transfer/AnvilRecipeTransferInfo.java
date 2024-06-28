@@ -34,7 +34,7 @@ public class AnvilRecipeTransferInfo
     @Override
     public boolean canHandle(AnvilContainer container, AnvilRecipe recipe)
     {
-        return container.getBlockEntity().getTier() >= recipe.getMinTier();
+        return recipe.isCorrectTier(container.getBlockEntity().getTier());
     }
 
     @Nullable

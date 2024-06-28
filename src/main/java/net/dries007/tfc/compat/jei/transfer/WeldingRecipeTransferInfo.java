@@ -34,7 +34,7 @@ public class WeldingRecipeTransferInfo
     @Override
     public boolean canHandle(AnvilContainer container, WeldingRecipe recipe)
     {
-        return container.getBlockEntity().getTier() < recipe.getTier();
+        return recipe.isCorrectTier(container.getBlockEntity().getTier());
     }
 
     @Nullable

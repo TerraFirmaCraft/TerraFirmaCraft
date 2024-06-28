@@ -8,7 +8,6 @@ package net.dries007.tfc.common.recipes;
 
 import java.util.Arrays;
 import java.util.List;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
@@ -21,6 +20,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.forge.ForgeRule;
 import net.dries007.tfc.common.capabilities.forge.Forging;
@@ -30,7 +30,6 @@ import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
-import org.jetbrains.annotations.Nullable;
 
 public class AnvilRecipe implements ISimpleRecipe<AnvilRecipe.Inventory>
 {
@@ -85,7 +84,7 @@ public class AnvilRecipe implements ISimpleRecipe<AnvilRecipe.Inventory>
     @Override
     public boolean matches(Inventory inventory, @Nullable Level level)
     {
-        return input.test(inventory.getItem()) && inventory.getTier() >= minTier;
+        return input.test(inventory.getItem()) && isCorrectTier(inventory.getTier());
     }
 
     public boolean checkComplete(Inventory inventory)
@@ -102,6 +101,14 @@ public class AnvilRecipe implements ISimpleRecipe<AnvilRecipe.Inventory>
     public boolean shouldApplyForgingBonus()
     {
         return applyForgingBonus;
+    }
+
+    /**
+     * @return {@code true} if an anvil of {@code anvilTier} can perform this recipe.
+     */
+    public boolean isCorrectTier(int anvilTier)
+    {
+        return anvilTier >= minTier;
     }
 
     public int getMinTier()
