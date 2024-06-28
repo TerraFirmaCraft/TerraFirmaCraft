@@ -42,14 +42,10 @@ public class SelectAnvilPlan
     {
         if (player != null)
         {
-            if (player.containerMenu instanceof AnvilContainer)
+            if (player.containerMenu instanceof AnvilContainer anvilContainer)
             {
                 AnvilRecipe recipe = Helpers.getRecipes(player.level(), TFCRecipeTypes.ANVIL).get(recipeId);
-                InventoryBlockEntity<?> blockEntity = ((BlockEntityContainer<?>) player.containerMenu).getBlockEntity();
-                if (blockEntity instanceof AnvilBlockEntity anvilBlockEntity)
-                {
-                    anvilBlockEntity.chooseRecipe(recipe);
-                }
+                anvilContainer.getBlockEntity().choseRecipe(recipe);
             }
         }
     }

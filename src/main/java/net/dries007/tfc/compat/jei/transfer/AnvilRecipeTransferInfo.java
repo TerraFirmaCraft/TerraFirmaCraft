@@ -75,6 +75,6 @@ public class AnvilRecipeTransferInfo implements IRecipeTransferInfo<AnvilContain
     @Override
     public List<Slot> getInventorySlots(AnvilContainer container, AnvilRecipe recipe)
     {
-        return IntStream.range(4, 4 + Inventory.INVENTORY_SIZE).mapToObj(container::getSlot).collect(Collectors.toList());
+        return IntStream.range(4, 4 + Inventory.INVENTORY_SIZE).mapToObj(container::getSlot).toList();
     }
 }
