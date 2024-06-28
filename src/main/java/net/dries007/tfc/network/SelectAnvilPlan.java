@@ -11,10 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.blockentities.AnvilBlockEntity;
-import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
 import net.dries007.tfc.common.container.AnvilContainer;
-import net.dries007.tfc.common.container.BlockEntityContainer;
 import net.dries007.tfc.common.recipes.AnvilRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.util.Helpers;
@@ -45,7 +42,7 @@ public class SelectAnvilPlan
             if (player.containerMenu instanceof AnvilContainer anvilContainer)
             {
                 AnvilRecipe recipe = Helpers.getRecipes(player.level(), TFCRecipeTypes.ANVIL).get(recipeId);
-                anvilContainer.getBlockEntity().choseRecipe(recipe);
+                anvilContainer.getBlockEntity().chooseRecipe(recipe);
             }
         }
     }
