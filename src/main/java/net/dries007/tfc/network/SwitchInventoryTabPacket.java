@@ -6,26 +6,18 @@
 
 package net.dries007.tfc.network;
 
+import net.dries007.tfc.common.container.TFCContainerProviders;
+import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
+import net.dries007.tfc.util.Helpers;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.container.TFCContainerProviders;
-import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
-import net.dries007.tfc.util.Helpers;
-
-public class SwitchInventoryTabPacket
+public record SwitchInventoryTabPacket(Type type)
 {
-    private final Type type;
-
-    public SwitchInventoryTabPacket(Type type)
-    {
-        this.type = type;
-    }
-
     SwitchInventoryTabPacket(FriendlyByteBuf buffer)
     {
-        this.type = Type.VALUES[buffer.readByte()];
+        this(Type.VALUES[buffer.readByte()]);
     }
 
     void encode(FriendlyByteBuf buffer)

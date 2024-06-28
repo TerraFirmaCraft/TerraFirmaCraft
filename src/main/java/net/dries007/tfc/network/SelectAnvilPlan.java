@@ -16,18 +16,11 @@ import net.dries007.tfc.common.recipes.AnvilRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.util.Helpers;
 
-public class SelectAnvilPlan
+public record SelectAnvilPlan(ResourceLocation recipeId)
 {
-    private final ResourceLocation recipeId;
-
-    public SelectAnvilPlan(AnvilRecipe recipe)
-    {
-        this.recipeId = recipe.getId();
-    }
-
     SelectAnvilPlan(FriendlyByteBuf buffer)
     {
-        this.recipeId = buffer.readResourceLocation();
+        this(buffer.readResourceLocation());
     }
 
     void encode(FriendlyByteBuf buffer)
@@ -37,13 +30,10 @@ public class SelectAnvilPlan
 
     void handle(@Nullable ServerPlayer player)
     {
-        if (player != null)
+        if (player != null && player.containerMenu instanceof AnvilContainer anvilContainer)
         {
-            if (player.containerMenu instanceof AnvilContainer anvilContainer)
-            {
-                AnvilRecipe recipe = Helpers.getRecipes(player.level(), TFCRecipeTypes.ANVIL).get(recipeId);
-                anvilContainer.getBlockEntity().chooseRecipe(recipe);
-            }
+            final @Nullable AnvilRecipe recipe = Helpers.getRecipes(player.level(), TFCRecipeTypes.ANVIL).get(recipeId);
+            anvilContainer.getBlockEntity().chooseRecipe(recipe);
         }
     }
 }

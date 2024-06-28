@@ -6,28 +6,23 @@
 
 package net.dries007.tfc.network;
 
+import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
-
-public class OpenFieldGuidePacket
+public record OpenFieldGuidePacket(
+    ResourceLocation id,
+    int page
+)
 {
-    private final ResourceLocation id;
-    private final int page;
-
-    public OpenFieldGuidePacket(ResourceLocation id, int page)
-    {
-        this.id = id;
-        this.page = page;
-    }
-
     OpenFieldGuidePacket(FriendlyByteBuf buffer)
     {
-        this.id = buffer.readResourceLocation();
-        this.page = buffer.readVarInt();
+        this(
+            buffer.readResourceLocation(),
+            buffer.readVarInt()
+        );
     }
 
     void encode(FriendlyByteBuf buffer)

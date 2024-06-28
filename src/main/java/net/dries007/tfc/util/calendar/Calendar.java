@@ -6,11 +6,10 @@
 
 package net.dries007.tfc.util.calendar;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
-
 import com.mojang.logging.LogUtils;
 import net.dries007.tfc.config.TFCConfig;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
@@ -30,6 +29,11 @@ public class Calendar implements ICalendar
     public Calendar()
     {
         resetToDefault();
+    }
+
+    public Calendar(FriendlyByteBuf buffer)
+    {
+        read(buffer);
     }
 
     @Override

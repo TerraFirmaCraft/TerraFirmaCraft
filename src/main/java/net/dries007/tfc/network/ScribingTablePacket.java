@@ -6,24 +6,16 @@
 
 package net.dries007.tfc.network;
 
+import net.dries007.tfc.common.container.ScribingTableContainer;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.container.ScribingTableContainer;
-
-public class ScribingTablePacket
+public record ScribingTablePacket(String name)
 {
-    private final String name;
-
-    public ScribingTablePacket(String name)
-    {
-        this.name = name;
-    }
-
     ScribingTablePacket(FriendlyByteBuf buffer)
     {
-        name = buffer.readUtf();
+        this(buffer.readUtf());
     }
 
     void encode(FriendlyByteBuf buffer)
