@@ -6,33 +6,24 @@
 
 package net.dries007.tfc.network;
 
-import net.minecraft.network.FriendlyByteBuf;
-
 import net.dries007.tfc.util.calendar.Calendar;
 import net.dries007.tfc.util.calendar.Calendars;
+import net.minecraft.network.FriendlyByteBuf;
 
-public class CalendarUpdatePacket
+public record CalendarUpdatePacket(Calendar calendar)
 {
-    private final Calendar instance;
-
-    public CalendarUpdatePacket(Calendar instance)
-    {
-        this.instance = instance;
-    }
-
     public CalendarUpdatePacket(FriendlyByteBuf buffer)
     {
-        instance = new Calendar();
-        instance.read(buffer);
+        this(new Calendar(buffer));
     }
 
     void encode(FriendlyByteBuf buffer)
     {
-        instance.write(buffer);
+        calendar.write(buffer);
     }
 
     void handle()
     {
-        Calendars.CLIENT.resetTo(instance);
+        Calendars.CLIENT.resetTo(calendar);
     }
 }

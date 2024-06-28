@@ -6,35 +6,30 @@
 
 package net.dries007.tfc.network;
 
+import net.dries007.tfc.client.ClientHelpers;
+import net.dries007.tfc.util.tracker.WorldTracker;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.Level;
 
-import net.dries007.tfc.client.ClientHelpers;
-import net.dries007.tfc.util.tracker.WorldTracker;
-
-public class RainfallUpdatePacket
+public record RainfallUpdatePacket(
+    long rainStartTick,
+    long rainEndTick,
+    float rainIntensity
+)
 {
-    private final long rainStartTick, rainEndTick;
-    private final float rainIntensity;
-
-    public RainfallUpdatePacket(long rainStartTick, long rainEndTick, float rainIntensity)
-    {
-        this.rainStartTick = rainStartTick;
-        this.rainEndTick = rainEndTick;
-        this.rainIntensity = rainIntensity;
-    }
-
     RainfallUpdatePacket(FriendlyByteBuf buffer)
     {
-        this.rainStartTick = buffer.readLong();
-        this.rainEndTick = buffer.readLong();
-        this.rainIntensity = buffer.readFloat();
+        this(
+            buffer.readVarLong(),
+            buffer.readVarLong(),
+            buffer.readFloat()
+        );
     }
 
     void encode(FriendlyByteBuf buffer)
     {
-        buffer.writeLong(rainStartTick);
-        buffer.writeLong(rainEndTick);
+        buffer.writeVarLong(rainStartTick);
+        buffer.writeVarLong(rainEndTick);
         buffer.writeFloat(rainIntensity);
     }
 

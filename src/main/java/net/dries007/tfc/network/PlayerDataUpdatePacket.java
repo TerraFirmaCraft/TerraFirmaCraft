@@ -6,32 +6,25 @@
 
 package net.dries007.tfc.network;
 
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.player.Player;
-
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.recipes.ChiselRecipe;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.player.Player;
 
-public class PlayerDataUpdatePacket
+public record PlayerDataUpdatePacket(
+    long lastDrinkTick,
+    long intoxicationTick,
+    ChiselRecipe.Mode mode
+)
 {
-    private final long lastDrinkTick;
-    private final long intoxicationTick;
-    private final ChiselRecipe.Mode mode;
-
-
-    public PlayerDataUpdatePacket(long lastDrinkTick, long intoxicationTick, ChiselRecipe.Mode mode)
-    {
-        this.lastDrinkTick = lastDrinkTick;
-        this.intoxicationTick = intoxicationTick;
-        this.mode = mode;
-    }
-
     PlayerDataUpdatePacket(FriendlyByteBuf buffer)
     {
-        this.lastDrinkTick = buffer.readVarLong();
-        this.intoxicationTick = buffer.readVarLong();
-        this.mode = ChiselRecipe.Mode.valueOf(buffer.readVarInt());
+        this(
+            buffer.readVarLong(),
+            buffer.readVarLong(),
+            ChiselRecipe.Mode.valueOf(buffer.readVarInt())
+        );
     }
 
     void encode(FriendlyByteBuf buffer)

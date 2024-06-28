@@ -6,42 +6,37 @@
 
 package net.dries007.tfc.network;
 
+import net.dries007.tfc.common.container.ButtonHandlerContainer;
+import net.dries007.tfc.util.Helpers;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.container.ButtonHandlerContainer;
-import net.dries007.tfc.util.Helpers;
-
-public class ScreenButtonPacket
+public record ScreenButtonPacket(
+    int buttonId,
+    @Nullable CompoundTag extraNbt
+)
 {
-    private final int buttonID;
-    @Nullable private final CompoundTag extraNBT;
-
-    public ScreenButtonPacket(int buttonID, @Nullable CompoundTag extraNBT)
-    {
-        this.buttonID = buttonID;
-        this.extraNBT = extraNBT;
-    }
-
     ScreenButtonPacket(FriendlyByteBuf buffer)
     {
-        buttonID = buffer.readVarInt();
-        extraNBT = Helpers.decodeNullable(buffer, FriendlyByteBuf::readNbt);
+        this(
+            buffer.readVarInt(),
+            Helpers.decodeNullable(buffer, FriendlyByteBuf::readNbt)
+        );
     }
 
     void encode(FriendlyByteBuf buffer)
     {
-        buffer.writeVarInt(buttonID);
-        Helpers.encodeNullable(extraNBT, buffer, (nbt, buf) -> buf.writeNbt(nbt));
+        buffer.writeVarInt(buttonId);
+        Helpers.encodeNullable(extraNbt, buffer, (nbt, buf) -> buf.writeNbt(nbt));
     }
 
     void handle(@Nullable ServerPlayer player)
     {
         if (player != null && player.containerMenu instanceof ButtonHandlerContainer handler)
         {
-            handler.onButtonPress(buttonID, extraNBT);
+            handler.onButtonPress(buttonId, extraNbt);
         }
     }
 }

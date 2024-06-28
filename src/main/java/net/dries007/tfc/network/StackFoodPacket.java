@@ -6,10 +6,8 @@
 
 package net.dries007.tfc.network;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
+import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.common.capabilities.food.IFood;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.InventoryMenu;
@@ -18,21 +16,16 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.common.capabilities.food.IFood;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
 
-public class StackFoodPacket
+public record StackFoodPacket(int index)
 {
-    private final int index;
-
-    public StackFoodPacket(int index)
-    {
-        this.index = index;
-    }
-
     StackFoodPacket(FriendlyByteBuf buffer)
     {
-        this.index = buffer.readVarInt();
+        this(buffer.readVarInt());
     }
 
     void encode(FriendlyByteBuf buffer)

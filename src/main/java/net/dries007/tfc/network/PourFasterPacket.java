@@ -6,29 +6,30 @@
 
 package net.dries007.tfc.network;
 
+import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
-
-public class PourFasterPacket
+public record PourFasterPacket(
+    BlockPos pos,
+    int slot
+)
 {
-    private final BlockPos pos;
-    private final int slot;
-
-    public PourFasterPacket(BlockPos pos, int slot)
-    {
-        this.pos = pos;
-        this.slot = slot;
-    }
-
     PourFasterPacket(FriendlyByteBuf buffer)
     {
-        pos = buffer.readBlockPos();
-        slot = buffer.readVarInt();
+        this(
+            buffer.readBlockPos(),
+            buffer.readVarInt()
+        );
+    }
+
+    void encode(FriendlyByteBuf buffer)
+    {
+        buffer.writeBlockPos(pos);
+        buffer.writeVarInt(slot);
     }
 
     void handle(@Nullable ServerPlayer player)
@@ -41,11 +42,5 @@ public class PourFasterPacket
                 crucible.setFastPouring(slot);
             }
         }
-    }
-
-    void encode(FriendlyByteBuf buffer)
-    {
-        buffer.writeBlockPos(pos);
-        buffer.writeVarInt(slot);
     }
 }
