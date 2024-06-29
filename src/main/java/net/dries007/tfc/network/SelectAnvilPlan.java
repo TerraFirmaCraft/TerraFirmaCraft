@@ -18,6 +18,11 @@ import net.dries007.tfc.util.Helpers;
 
 public record SelectAnvilPlan(ResourceLocation recipeId)
 {
+    public SelectAnvilPlan(AnvilRecipe recipe)
+    {
+        this(recipe.getId());
+    }
+
     SelectAnvilPlan(FriendlyByteBuf buffer)
     {
         this(buffer.readResourceLocation());
