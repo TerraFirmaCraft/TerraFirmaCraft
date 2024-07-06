@@ -7,28 +7,31 @@
 package net.dries007.tfc.drawing;
 
 import java.awt.Color;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.function.DoubleFunction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
+import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import net.dries007.tfc.Artist;
 import net.dries007.tfc.TestHelper;
-import net.dries007.tfc.world.layer.TFCLayers;
-import net.dries007.tfc.world.layer.framework.Area;
-import net.dries007.tfc.world.layer.framework.AreaFactory;
 import net.dries007.tfc.world.region.ChooseRocks;
 import net.dries007.tfc.world.region.Region;
 import net.dries007.tfc.world.region.RegionGenerator;
 import net.dries007.tfc.world.region.RegionPartition;
 import net.dries007.tfc.world.region.RiverEdge;
-import net.dries007.tfc.world.river.MidpointFractal;
 import net.dries007.tfc.world.settings.Settings;
 
 import static net.dries007.tfc.world.layer.TFCLayers.*;
+import static net.dries007.tfc.world.region.RegionGenerator.Task.*;
 
 @Disabled
 @SuppressWarnings("SameParameterValue")
@@ -51,107 +54,65 @@ public class RegionGeneratorTest extends TestHelper
         new Color(200, 40, 40));
 
     @Test
-    public void testStitchedRegions()
+    public void testRegionGenerator()
     {
-        drawStitchedRegion(newRegionGenerator(), RegionGenerator.Task.CHOOSE_ROCKS);
+        drawStitchedRegions("", EnumSet.allOf(RegionGenerator.Task.class), 250);
     }
 
-    @Test
-    public void testSingleRegion()
+    private void drawStitchedRegions(String name, Set<RegionGenerator.Task> tasksToDraw, int size)
     {
-        newRegionGenerator().visualizeRegion(0, 0, (task, region) -> {
-            final String taskName = taskName("", task);
-            final Artist.Pixel<Color> pixel = drawRegion(task, region);
-
-            if (task == RegionGenerator.Task.ADD_RIVERS_AND_LAKES)
-            {
-                final int size = 100;
-                final int square = 10;
-                final int half = square / 2;
-                Artist.custom((v, g) -> {
-                        Artist.raw().center(size).size(size * 2 * square).draw(pixel, g);
-
-                        g.setColor(new Color(30, 180, 250));
-
-                        for (RiverEdge edge : region.rivers())
-                        {
-                            final int dx = (int) Math.round(((edge.drain().x() + size) * square) + half);
-                            final int dz = (int) Math.round(((edge.drain().y() + size) * square) + half);
-                            final int sx = (int) Math.round(((edge.source().x() + size) * square) + half);
-                            final int sz = (int) Math.round(((edge.source().y() + size) * square) + half);
-
-                            g.drawLine(dx, dz, sx, sz);
-                        }
-                    })
-                    .center(size)
-                    .size(size * 2 * square)
-                    .draw(taskName);
-            }
-            else
-            {
-                Artist.raw()
-                    .centerSized(100)
-                    .draw(taskName, pixel);
-            }
-        });
-    }
-
-    @Test
-    public void testDrawingRiversFromPartition()
-    {
-        drawRegionWithRivers(newRegionGenerator(), RegionGenerator.Task.CHOOSE_BIOMES);
-    }
-
-    @Test
-    public void testBiomesAtScale()
-    {
-        final Artist.Typed<AreaFactory, Integer> artist = Artist.forMap(factory -> {
-            final Area area = factory.get();
-            return Artist.Pixel.coerceInt(area::get);
-        });
+        record Pos(int x, int z) {}
 
         final RegionGenerator generator = newRegionGenerator();
-        final AreaFactory biomeLayer = TFCLayers.createRegionBiomeLayer(generator, generator.seed());
+        final Set<Pos> points = new HashSet<>();
+        final Map<RegionGenerator.Task, Map<Pos, Color>> drawn = new HashMap<>();
 
-        artist.color(RegionGeneratorTest::biomeColor);
-        artist.dimensionsSized(1000).draw("biomes_4km", biomeLayer);
-        artist.dimensions(4000).size(1000).draw("biomes_16km", biomeLayer);
-    }
+        for (int x = 0; x < size; x++)
+            for (int z = 0; z < size; z++)
+                points.add(new Pos(x, z));
 
-    private void drawRegionWithRivers(RegionGenerator rn, RegionGenerator.Task task)
-    {
-        Artist.raw()
-            .dimensions(100)
-            .size(800)
-            .draw(taskName("_rivers", task), (xi, zi) -> {
-                final int x = (int) xi;
-                final int z = (int) zi;
-                final float xf = (float) xi;
-                final float zf = (float) zi;
-                final RegionPartition.Point point = rn.getOrCreatePartitionPoint(x, z);
-                for (RiverEdge edge : point.rivers())
-                {
-                    final MidpointFractal river = edge.fractal();
-                    if (river.maybeIntersect(xf, zf, 0.1f) && river.intersect(xf, zf, 0.1f))
-                    {
-                        return new Color(100, 210, 250);
-                    }
-                }
-
-                final Region region = rn.getOrCreateRegion(x, z);
-
-                return drawRegion(task, region).apply(x, z);
+        @Nullable Pos pos;
+        while ((pos = points.stream().findFirst().orElse(null)) != null)
+        {
+            generator.visualizeRegion(pos.x, pos.z, (task, region) -> {
+                if (!tasksToDraw.contains(task)) return;
+                final Map<Pos, Color> drawnTask = drawn.computeIfAbsent(task, key -> new HashMap<>());
+                for (int rx = region.minX(); rx <= region.maxX(); rx++)
+                    for (int rz = region.minZ(); rz <= region.maxZ(); rz++)
+                        if (region.at(rx, rz) != null)
+                        {
+                            final Pos at = new Pos(rx, rz);
+                            points.remove(at);
+                            drawnTask.put(at, taskColor(task, region, rx, rz));
+                        }
             });
+        }
+
+        drawn.forEach((task, drawnTask) -> Artist.raw()
+            .dimensions(size)
+            .size(size * (task == ADD_RIVERS_AND_LAKES ? 8 : 1))
+            .draw(taskName(name, task), task == ADD_RIVERS_AND_LAKES
+                ? drawWithRivers(generator, task)
+                : Artist.Pixel.coerceInt((x, z) -> drawnTask.get(new Pos(x, z)))));
     }
 
-    private void drawStitchedRegion(RegionGenerator rn, RegionGenerator.Task task)
+    private Artist.Pixel<Color> drawWithRivers(RegionGenerator generator, RegionGenerator.Task task)
     {
-        Artist.raw()
-            .dimensionsSized(1000)
-            .draw(taskName("_stitched", task), Artist.Pixel.coerceInt((x, y) -> {
-                final Region region = rn.getOrCreateRegion(x, y);
-                return drawRegion(task, region).apply(x, y);
-            }));
+        return (xi, zi) -> {
+            final int x = (int) xi, z = (int) zi;
+            final float xf = (float) xi, zf = (float) zi;
+            final Region region = generator.getOrCreateRegion(x, z);
+            final RegionPartition.Point point = generator.getOrCreatePartitionPoint(x, z);
+            for (RiverEdge edge : point.rivers())
+            {
+                if (edge.fractal().intersect(xf, zf, 0.1f)) // Use a slightly larger distance than is typical, so we draw it more visibly
+                {
+                    return new Color(100, 210, 250);
+                }
+            }
+
+            return taskColor(task, region, x, z);
+        };
     }
 
     private String taskName(String name, RegionGenerator.Task task)
@@ -159,67 +120,70 @@ public class RegionGeneratorTest extends TestHelper
         return "region%s_%02d_%s".formatted(name, task.ordinal(), task.name().toLowerCase(Locale.ROOT));
     }
 
-    private Artist.Pixel<Color> drawRegion(RegionGenerator.Task task, Region region)
+    private Color taskColor(RegionGenerator.Task task, Region region, int x, int y)
     {
-        return Artist.Pixel.coerceInt((x, y) -> {
-            if (!region.isIn(x, y)) return new Color(100, 100, 100);
-            final Region.Point point = region.at(x, y);
-            if (point == null) return new Color(160, 160, 160);
-            if (task == RegionGenerator.Task.ANNOTATE_DISTANCE_TO_CELL_EDGE)
-            {
-                return blue.apply(point.distanceToEdge / 24f);
-            }
-            if (task == RegionGenerator.Task.CHOOSE_BIOMES)
-            {
-                return biomeColor(point.biome);
-            }
-            if (task == RegionGenerator.Task.CHOOSE_ROCKS)
-            {
-                final double value = new Random(point.rock >> 2).nextDouble();
-                return switch (point.rock & 0b11)
-                    {
-                        case ChooseRocks.OCEAN -> blue.apply(value);
-                        case ChooseRocks.LAND -> green.apply(value);
-                        case ChooseRocks.VOLCANIC -> new Color(200, (int) (100 * value), 100);
-                        case ChooseRocks.UPLIFT -> new Color(180, (int) (180 * value), 200);
-                        default -> throw new RuntimeException("value: " + point.rock);
-                    };
-            }
-            if (!point.land())
-            {
-                if (task == RegionGenerator.Task.ANNOTATE_BASE_LAND_HEIGHT)
+        if (!region.isIn(x, y)) return new Color(100, 100, 100);
+        final Region.Point point = region.at(x, y);
+        if (point == null) return new Color(160, 160, 160);
+        if (task == ANNOTATE_DISTANCE_TO_CELL_EDGE)
+        {
+            return blue.apply(point.distanceToEdge / 24f);
+        }
+        if (task == CHOOSE_BIOMES)
+        {
+            return biomeColor(point.biome);
+        }
+        if (task == CHOOSE_ROCKS)
+        {
+            final double value = new Random(point.rock >> 2).nextDouble();
+            return switch (point.rock & 0b11)
                 {
-                    return point.baseOceanDepth < 4 ? new Color(150, 160, 255) :
-                        point.baseOceanDepth < 8 ?
-                            new Color(120, 120, 240) :
-                            new Color(100, 100, 200);
-                }
-                return point.shore() ?
+                    case ChooseRocks.OCEAN -> blue.apply(value);
+                    case ChooseRocks.LAND -> green.apply(value);
+                    case ChooseRocks.VOLCANIC -> new Color(200, (int) (100 * value), 100);
+                    case ChooseRocks.UPLIFT -> new Color(180, (int) (180 * value), 200);
+                    default -> throw new RuntimeException("value: " + point.rock);
+                };
+        }
+        if (task == ADD_CONTINENTS)
+        {
+            return blue.apply(0.5 + 0.5 * region.noise());
+        }
+        if (!point.land())
+        {
+            return switch (task) {
+                case ANNOTATE_BASE_LAND_HEIGHT -> point.baseOceanDepth < 4 ? new Color(150, 160, 255) :
+                    point.baseOceanDepth < 8 ?
+                        new Color(120, 120, 240) :
+                        new Color(100, 100, 200);
+                case ANNOTATE_CLIMATE -> blue.apply(Mth.clampedMap(point.temperature, -35f, 35f, 0f, 0.999f));
+                case ANNOTATE_RAINFALL -> blue.apply(Mth.clampedMap(point.rainfall, 0f, 500f, 0f, 0.999f));
+                default -> point.shore() ?
                     (point.river() ?
                         new Color(150, 160, 255) :
                         new Color(120, 120, 240)) :
                     blue.apply(0.5 + 0.5 * region.noise());
-            }
+            };
+        }
 
-            return switch (task)
-                {
-                    default -> new Color(0, 130, 0);
-                    case ADD_MOUNTAINS -> point.mountain() ?
-                        (point.baseLandHeight <= 2 ?
-                            new Color(240, 110, 50) :
-                            new Color(150, 150, 150)) :
-                        green.apply(point.baseLandHeight / 24f);
-                    case ANNOTATE_DISTANCE_TO_OCEAN -> green.apply(point.distanceToOcean / 20f);
-                    case ADD_RIVERS_AND_LAKES -> point.lake() ? new Color(150, 160, 255) : green.apply(point.baseLandHeight / 24f);
-                    case ANNOTATE_BASE_LAND_HEIGHT -> green.apply(point.baseLandHeight / 24f);
-                    case ANNOTATE_BIOME_ALTITUDE -> green.apply(Mth.clampedMap(point.discreteBiomeAltitude(), 0, 3, 0, 1));
-                    case ANNOTATE_CLIMATE -> temperature.apply(Mth.clampedMap(point.temperature, -35f, 35f, 0f, 0.999f));
-                    case ANNOTATE_RAINFALL -> temperature.apply(Mth.clampedMap(point.rainfall, 0f, 500f, 0f, 0.999f));
-                };
-        });
+        return switch (task)
+            {
+                default -> new Color(0, 130, 0);
+                case ADD_MOUNTAINS -> point.mountain() ?
+                    (point.baseLandHeight <= 2 ?
+                        new Color(240, 110, 50) :
+                        new Color(150, 150, 150)) :
+                    green.apply(point.baseLandHeight / 24f);
+                case ANNOTATE_DISTANCE_TO_OCEAN -> green.apply(point.distanceToOcean / 20f);
+                case ADD_RIVERS_AND_LAKES -> point.lake() ? new Color(150, 160, 255) : green.apply(point.baseLandHeight / 24f);
+                case ANNOTATE_BASE_LAND_HEIGHT -> green.apply(point.baseLandHeight / 24f);
+                case ANNOTATE_BIOME_ALTITUDE -> green.apply(Mth.clampedMap(point.discreteBiomeAltitude(), 0, 3, 0, 1));
+                case ANNOTATE_CLIMATE -> temperature.apply(Mth.clampedMap(point.temperature, -35f, 35f, 0f, 0.999f));
+                case ANNOTATE_RAINFALL -> temperature.apply(Mth.clampedMap(point.rainfall, 0f, 500f, 0f, 0.999f));
+            };
     }
 
-    public static Color biomeColor(int biome)
+    private Color biomeColor(int biome)
     {
         if (biome == OCEAN) return new Color(0, 0, 220);
         if (biome == OCEAN_REEF) return new Color(70, 160, 250);
@@ -253,6 +217,6 @@ public class RegionGeneratorTest extends TestHelper
 
     private RegionGenerator newRegionGenerator()
     {
-        return new RegionGenerator(new Settings(false, 0, 0, 0, 20_000, 0, 20_000, 0, null, 0.5f, 0.5f), new XoroshiroRandomSource(seed()));
+        return new RegionGenerator(new Settings(false, 0, 0, 0, 20_000, 0, 20_000, 0, null, 0.5f, 0.5f), new XoroshiroRandomSource(1798237841231L));
     }
 }
