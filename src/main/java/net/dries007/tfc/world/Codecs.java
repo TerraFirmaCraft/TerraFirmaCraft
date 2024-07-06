@@ -128,7 +128,7 @@ public final class Codecs extends ExtraCodecs
             {
                 inverseMap.computeIfAbsent(entry.getValue(), v -> new ArrayList<>()).add(entry.getKey());
             }
-            return inverseMap.entrySet().stream().map(e -> Pair.of(e.getValue(), e.getKey())).collect(Collectors.toList());
+            return inverseMap.entrySet().stream().map(e -> Pair.of(e.getValue(), e.getKey())).toList();
         });
     }
 
@@ -141,7 +141,7 @@ public final class Codecs extends ExtraCodecs
     {
         return codec.listOf().xmap(
             list -> list.stream().collect(Collectors.toMap(Pair::getFirst, Pair::getSecond)),
-            map -> map.entrySet().stream().map(e -> Pair.of(e.getKey(), e.getValue())).collect(Collectors.toList())
+            map -> map.entrySet().stream().map(e -> Pair.of(e.getKey(), e.getValue())).toList()
         );
     }
 
@@ -166,13 +166,15 @@ public final class Codecs extends ExtraCodecs
      *     <li>For more complex fields, prefer using this over the default method as it helps detect errors</li>
      * </ul>
      */
-    public static <T> StrictOptionalCodec<T> optionalFieldOf(Codec<T> codec, String field)
+    public static <T> MapCodec<Optional<T>> optionalFieldOf(Codec<T> codec, String field)
     {
+        // todo: 1.21, replace with `optionalFieldOf()`
         return new StrictOptionalCodec<>(field, codec);
     }
 
     public static <T> MapCodec<T> optionalFieldOf(Codec<T> codec, String field, T defaultValue)
     {
+        // todo: 1.21, replace with `optionalFieldOf()`
         return optionalFieldOf(codec, field).xmap(
             o -> o.orElse(defaultValue),
             a -> Objects.equals(a, defaultValue) ? Optional.empty() : Optional.of(a)
