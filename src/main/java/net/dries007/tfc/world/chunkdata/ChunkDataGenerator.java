@@ -22,6 +22,8 @@ import net.dries007.tfc.world.settings.RockSettings;
  */
 public interface ChunkDataGenerator
 {
+    /** @deprecated Use {@link LerpFloatLayer#scaled(double, double, double)} */
+    @Deprecated(forRemoval = true)
     static LerpFloatLayer sampleInterpolatedGridLayer(float value00, float value01, float value10, float value11, double deltaX, double deltaZ)
     {
         float delta = 16f / Units.GRID_WIDTH_IN_BLOCK;
