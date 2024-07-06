@@ -1332,6 +1332,10 @@ def generate(rm: ResourceManager):
     welding_recipe(rm, 'jacks', '#forge:rods/brass', '#forge:rods/brass', 'tfc:jacks', brass.tier)
 
 
+def generate_test(rm: ResourceManager):
+    simple_pot_recipe(rm, 'test_boiling_ore', [utils.ingredient('#tfc:small_ore_pieces')] * 5, '1000 minecraft:water', None, [item_stack_provider(copy_input=True, add_heat=300)] * 5, 100)
+
+
 def simple_pot_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredients: Json, fluid: str, output_fluid: str = None, output_items: Json = None, duration: int = 2000, temp: int = 300):
     rm.recipe(('pot', name_parts), 'tfc:pot', {
         'ingredients': ingredients,

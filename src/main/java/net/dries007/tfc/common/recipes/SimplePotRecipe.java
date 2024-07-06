@@ -6,15 +6,12 @@
 
 package net.dries007.tfc.common.recipes;
 
+import java.util.ArrayList;
+import java.util.List;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import net.dries007.tfc.common.blockentities.PotBlockEntity;
-import net.dries007.tfc.common.fluids.FluidHelpers;
-import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
-import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
-import net.dries007.tfc.util.JsonHelpers;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -23,8 +20,10 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
-import java.util.ArrayList;
-import java.util.List;
+import net.dries007.tfc.common.blockentities.PotBlockEntity;
+import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
+import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
+import net.dries007.tfc.util.JsonHelpers;
 
 public class SimplePotRecipe extends PotRecipe
 {
@@ -51,7 +50,14 @@ public class SimplePotRecipe extends PotRecipe
     @Override
     public Output getOutput(PotBlockEntity.PotInventory inventory)
     {
-        return new AdvancedOutput(outputFluid, outputProviders);
+        // Compute the outputs here, before the pot inventory is cleared
+        final List<ItemStack> outputs = new ArrayList<>(5);
+        for (int i = 0; i < Math.min(outputProviders.size(), inventory.getSlots()); i++)
+        {
+            final ItemStack input = inventory.getStackInSlot(PotBlockEntity.SLOT_EXTRA_INPUT_START + i);
+            outputs.add(outputProviders.get(i).getSingleStack(input));
+        }
+        return new SimpleOutput(outputFluid.copy(), outputs);
     }
 
     @Override
@@ -63,18 +69,17 @@ public class SimplePotRecipe extends PotRecipe
     /**
      * Has no persistent output, thus uses the {@link PotRecipe#EMPTY} output type.
      */
-    record AdvancedOutput(FluidStack stack, List<ItemStackProvider> providers) implements Output
+    record SimpleOutput(FluidStack fluidOutput, List<ItemStack> itemOutputs) implements Output
     {
         @Override
         public void onFinish(PotBlockEntity.PotInventory inventory)
         {
-            for (int i = 0; i < Math.min(providers.size(), inventory.getSlots()); i++)
+            // Copy the outputs to the pot inventory
+            for (int i = 0; i < itemOutputs.size(); i++)
             {
-                final ItemStack input = inventory.getStackInSlot(i);
-                inventory.setStackInSlot(i + PotBlockEntity.SLOT_EXTRA_INPUT_START, providers.get(i).getSingleStack(input));
+                inventory.setStackInSlot(PotBlockEntity.SLOT_EXTRA_INPUT_START + i, itemOutputs.get(i));
             }
-            inventory.drain(FluidHelpers.BUCKET_VOLUME, IFluidHandler.FluidAction.EXECUTE);
-            inventory.fill(stack.copy(), IFluidHandler.FluidAction.EXECUTE);
+            inventory.fill(fluidOutput, IFluidHandler.FluidAction.EXECUTE);
         }
     }
 
