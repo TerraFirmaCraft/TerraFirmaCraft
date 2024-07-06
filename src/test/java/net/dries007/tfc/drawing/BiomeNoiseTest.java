@@ -64,4 +64,10 @@ public class BiomeNoiseTest extends TestHelper
     {
         terrain.draw("noise_sharp_hills", BiomeNoise.sharpHills(seed()));
     }
+
+    @Test
+    public void testLakes()
+    {
+        terrain.draw("noise_lakes", BiomeNoise.lake(seed()));
+    }
 }
