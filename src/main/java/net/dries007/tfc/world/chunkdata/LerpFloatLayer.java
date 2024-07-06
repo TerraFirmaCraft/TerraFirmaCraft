@@ -6,41 +6,41 @@
 
 package net.dries007.tfc.world.chunkdata;
 
+import it.unimi.dsi.fastutil.floats.FloatUnaryOperator;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 
 import net.dries007.tfc.util.Helpers;
 
 /**
- * This is a simple linearly interpolated float grid.
- * It records the value at the corner, and interpolates the values between on demand.
+ * This represents an interpolated square of floating point values, which are known at the grid points and interpolated at delta values inbetween
+ * each point. The values are named as `valueXZ`, where `0` and `1` indicate the low or high points on the grid square, respectively.
  */
-public class LerpFloatLayer
-{
-    private final float value00, value01, value10, value11; // valueXZ
+public record LerpFloatLayer(
+    float value00,
+    float value01,
+    float value10,
+    float value11
+) {
 
     public LerpFloatLayer(FriendlyByteBuf buffer)
     {
-        value00 = buffer.readFloat();
-        value01 = buffer.readFloat();
-        value10 = buffer.readFloat();
-        value11 = buffer.readFloat();
+        this(
+            buffer.readFloat(),
+            buffer.readFloat(),
+            buffer.readFloat(),
+            buffer.readFloat()
+        );
     }
 
     public LerpFloatLayer(CompoundTag nbt)
     {
-        value00 = nbt.getFloat("00");
-        value01 = nbt.getFloat("01");
-        value10 = nbt.getFloat("10");
-        value11 = nbt.getFloat("11");
-    }
-
-    public LerpFloatLayer(float value00, float value01, float value10, float value11)
-    {
-        this.value00 = value00;
-        this.value01 = value01;
-        this.value10 = value10;
-        this.value11 = value11;
+        this(
+            nbt.getFloat("00"),
+            nbt.getFloat("01"),
+            nbt.getFloat("10"),
+            nbt.getFloat("11")
+        );
     }
 
     /**
@@ -49,9 +49,42 @@ public class LerpFloatLayer
      * @param deltaX A distance in the X direction.
      * @param deltaZ A distance in the Z direction.
      */
-    public float getValue(float deltaX, float deltaZ)
+    public float getValue(double deltaX, double deltaZ)
     {
-        return Helpers.lerp4(value00, value01, value10, value11, deltaX, deltaZ);
+        return (float) Helpers.lerp4(value00, value01, value10, value11, deltaX, deltaZ);
+    }
+
+    /**
+     * This acts as a function, when given an original layer, and a sub-square within the original grid, returns a new layer
+     * composed of just the sub-square. The sub-square is defined by an origin {@code (originX, originZ)} and a width {@code width}.
+     *
+     * @param originX The origin of the sub-square, in {@code [0, 1]}
+     * @param originZ The origin of the sub-square, in {@code [0, 1]}
+     * @param width   The square width of the sub-square, in {@code [0, 1]}
+     * @return A new {@code LerpFloatLayer} with the modified values.
+     */
+    public LerpFloatLayer scaled(double originX, double originZ, double width)
+    {
+        return new LerpFloatLayer(
+            (float) Helpers.lerp4(value00, value01, value10, value11, originX, originZ),
+            (float) Helpers.lerp4(value00, value01, value10, value11, originX, originZ + width),
+            (float) Helpers.lerp4(value00, value01, value10, value11, originX + width, originZ),
+            (float) Helpers.lerp4(value00, value01, value10, value11, originX + width, originZ + width)
+        );
+    }
+
+    /**
+     * Applies {@code point} to each corner of the layer
+     * @return A new {@code LerpFloatLayer} after the function has been applied
+     */
+    public LerpFloatLayer apply(FloatUnaryOperator point)
+    {
+        return new LerpFloatLayer(
+            point.apply(value00),
+            point.apply(value01),
+            point.apply(value10),
+            point.apply(value11)
+        );
     }
 
     public CompoundTag write()
