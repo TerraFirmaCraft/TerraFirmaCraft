@@ -29,13 +29,11 @@ import net.dries007.tfc.util.calendar.ICalendar;
 public interface IFood extends INetworkFood
 {
     /**
-     * The timestamp that this food was created, used to calculate expiration date.
-     * <p>
-     * There are a few special meanings:
+     * The timestamp that this food was created, used to calculate expiration date. There are a few special meanings:
      * <ul>
      *     <li>{@link FoodHandler#UNKNOWN_CREATION_DATE} = The food was created at an unknown time. This will be reset whenever possible.</li>
-     *     <li>{@link FoodHandler#ROTTEN_DATE} = The food is currently rotten</li>
-     *     <li>{@link FoodHandler#NEVER_DECAY_DATE} = The food will never decay</li>
+     *     <li>{@link FoodHandler#NEVER_DECAY_CREATION_DATE} = The food will never decay</li>
+     *     <li>{@link FoodHandler#ROTTEN_CREATION_DATE} = The food is currently rotten</li>
      * </ul>
      *
      * @return The tick that this food was created.
@@ -50,7 +48,11 @@ public interface IFood extends INetworkFood
     void setCreationDate(long creationDate);
 
     /**
-     * Get the date at which this food item will rot
+     * Get the date at which this food item will rot. There are a few special meanings:
+     * <ul>
+     *     <li>{@link FoodHandler#ROTTEN_DATE} = The food is currently rotten</li>
+     *     <li>{@link FoodHandler#NEVER_DECAY_DATE} = The food will never decay</li>
+     * </ul>
      *
      * @return The tick that this food will rot.
      */
@@ -138,7 +140,7 @@ public interface IFood extends INetworkFood
         else
         {
             final long rottenDate = getRottenDate();
-            if (rottenDate == Long.MAX_VALUE)
+            if (rottenDate == FoodHandler.NEVER_DECAY_DATE)
             {
                 if (!isTransientNonDecaying())
                 {

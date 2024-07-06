@@ -41,8 +41,11 @@ public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
 
     public static final long ROTTEN_DATE = Long.MIN_VALUE;
     public static final long NEVER_DECAY_DATE = Long.MAX_VALUE;
+
+    public static final long ROTTEN_CREATION_DATE = Long.MIN_VALUE;
     public static final long NEVER_DECAY_CREATION_DATE = -2;
     public static final long UNKNOWN_CREATION_DATE = -1;
+
 
     // Stacks created at certain times during loading, we infer to be non-decaying ones.
     private static final AtomicBoolean NON_DECAYING = new AtomicBoolean(true);

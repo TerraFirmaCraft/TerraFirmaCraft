@@ -141,12 +141,13 @@ public abstract class PotRecipe implements ISimpleRecipe<PotBlockEntity.PotInven
     public abstract PotRecipe.Output getOutput(PotBlockEntity.PotInventory inventory);
 
     /**
-     * The output of a pot recipe
-     * This output can be fairly complex, but follows a specific contract:
-     * 1. The output is created, with access to the inventory, populated with the ingredient items (in {@link PotRecipe#getOutput(PotBlockEntity.PotInventory)}
-     * 2. {@link Output#onFinish(PotBlockEntity.PotInventory)} is called, with a completely empty inventory. The output can then add fluids or items back into the pot as necessary
-     * 3. THEN, if {@link Output#isEmpty()} returns true, the output is discarded. Otherwise...
-     * 4. The output is saved to the tile entity. On a right click, {@link Output#onInteract(PotBlockEntity, Player, ItemStack)} is called, and after each call, {@link Output#isEmpty()} will be queried to see if the output is empty. The pot will not resume functionality until the output is empty
+     * The output of a pot recipe. This output can be fairly complex, but follows a specific contract:
+     * <ol>
+     *     <li>The output is created, with access to the inventory, populated with the ingredient items (in {@link PotRecipe#getOutput(PotBlockEntity.PotInventory)})</li>
+     *     <li>{@link Output#onFinish(PotBlockEntity.PotInventory)} is called, with a completely empty inventory. The output can then add fluids or items back into the pot as necessary</li>
+     *     <li>THEN, if {@link Output#isEmpty()} returns true, the output is discarded. Otherwise...</li>
+     *     <li>The output is saved to the tile entity. On a right click, {@link Output#onInteract(PotBlockEntity, Player, ItemStack)} is called, and after each call, {@link Output#isEmpty()} will be queried to see if the output is empty. The pot will not resume functionality until the output is empty</li>
+     * </ol>
      *
      * @see PotBlockEntity#handleCooking()
      */
@@ -210,7 +211,9 @@ public abstract class PotRecipe implements ISimpleRecipe<PotBlockEntity.PotInven
         }
 
         /**
-         * Called with an empty pot inventory immediately after completion, before checking {@link #isEmpty()}. Fills the inventory with immediate outputs from the output.
+         * Called with an empty pot inventory immediately after completion, and after clearing the inventory of the pot, but, before
+         * checking {@link #isEmpty()}. Fills the inventory with immediate outputs from the output. Note that any outputs that depend
+         * on the inventory must be computed <strong>before</strong> this method, in {@link #getOutput(PotBlockEntity.PotInventory)}
          */
         default void onFinish(PotBlockEntity.PotInventory inventory) {}
 
