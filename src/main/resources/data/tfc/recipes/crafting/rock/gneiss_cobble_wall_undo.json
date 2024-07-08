@@ -3,7 +3,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "tfc:rock/cobble/gneiss_stairs"
+      "item": "tfc:rock/cobble/gneiss_wall"
     }
   ],
   "result": {

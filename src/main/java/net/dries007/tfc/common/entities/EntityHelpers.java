@@ -35,7 +35,6 @@ import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.MobBucketItem;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
@@ -87,7 +86,7 @@ public final class EntityHelpers
     public static ChunkData getChunkDataForSpawning(ServerLevelAccessor level, BlockPos pos)
     {
         return level instanceof WorldGenRegion worldGenLevel ?
-            ChunkDataProvider.get(worldGenLevel).get(new ChunkPos(pos)) :
+            ChunkDataProvider.get(worldGenLevel).get(worldGenLevel.getChunk(pos)) :
             ChunkData.get(level, pos);
     }
 

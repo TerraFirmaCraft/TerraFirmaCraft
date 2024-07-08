@@ -347,7 +347,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         recipeName = null;
         if (nbt.contains("recipe", Tag.TAG_STRING))
         {
-            recipeName = new ResourceLocation(nbt.getString("recipe"));
+            recipeName = Helpers.resourceLocation(nbt.getString("recipe"));
             if (level != null)
             {
                 recipe = level.getRecipeManager().byKey(recipeName)

@@ -41,7 +41,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.FogType;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
@@ -60,7 +59,6 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
 
@@ -103,6 +101,7 @@ import net.dries007.tfc.util.PhysicalDamageType;
 import net.dries007.tfc.util.Sluiceable;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.climate.Climate;
+import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.chunkdata.ChunkData;
@@ -358,12 +357,12 @@ public class ClientForgeEventHandler
                     text.add(Component.literal(DARK_GRAY + "[Debug] Cap NBT: " + capTag));
                 }
 
-                text.add(Component.literal(DARK_GRAY + "[Debug] Item Tags: " + Helpers.getHolder(ForgeRegistries.ITEMS, stack.getItem()).tags().map(t1 -> "#" + t1.location()).collect(Collectors.joining(", "))));
+                text.add(Component.literal(DARK_GRAY + "[Debug] Item Tags: " + stack.getItem().builtInRegistryHolder().tags().map(t1 -> "#" + t1.location()).collect(Collectors.joining(", "))));
 
                 if (stack.getItem() instanceof BlockItem blockItem)
                 {
                     final Block block = blockItem.getBlock();
-                    text.add(Component.literal(DARK_GRAY + "[Debug] Block Tags: " + Helpers.getHolder(ForgeRegistries.BLOCKS, block).tags().map(t -> "#" + t.location()).collect(Collectors.joining(", "))));
+                    text.add(Component.literal(DARK_GRAY + "[Debug] Block Tags: " + block.builtInRegistryHolder().tags().map(t -> "#" + t.location()).collect(Collectors.joining(", "))));
                 }
             }
         }
@@ -401,7 +400,13 @@ public class ClientForgeEventHandler
 
     public static void onClientPlayerLoggedOut(ClientPlayerNetworkEvent.LoggingOut event)
     {
-        Calendars.CLIENT.resetToDefault();
+        // This is fired when logging out, but also when a new server is being created, just after resources are loaded. We don't want
+        // to clear caches there, so guard this behind if there was an actual player that was logging out.
+        if (event.getPlayer() != null)
+        {
+            Calendars.CLIENT.resetToDefault();
+            IndirectHashCollection.clearAllCaches();
+        }
     }
 
     public static void onClientTick(TickEvent.ClientTickEvent event)

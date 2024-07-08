@@ -14,7 +14,6 @@ import net.minecraft.world.level.levelgen.presets.WorldPreset;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModList;
@@ -44,7 +43,6 @@ import net.dries007.tfc.common.capabilities.forge.Forging;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.capabilities.heat.IHeatBlock;
 import net.dries007.tfc.common.capabilities.player.PlayerData;
-import net.dries007.tfc.common.commands.TFCCommands;
 import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.Faunas;
@@ -81,6 +79,7 @@ import net.dries007.tfc.world.biome.RegionBiomeSource;
 import net.dries007.tfc.world.blockpredicate.TFCBlockPredicates;
 import net.dries007.tfc.world.carver.TFCCarvers;
 import net.dries007.tfc.world.chunkdata.ChunkData;
+import net.dries007.tfc.world.density.TFCDensityFunctions;
 import net.dries007.tfc.world.feature.TFCFeatures;
 import net.dries007.tfc.world.placement.TFCPlacements;
 import net.dries007.tfc.world.settings.RockSettings;
@@ -110,7 +109,6 @@ public final class TerraFirmaCraft
         bus.addListener(this::registerCapabilities);
         bus.addListener(this::loadComplete);
         bus.addListener(this::onInterModComms);
-        bus.addListener(EventPriority.LOWEST, TFCCreativeTabs::onBuildCreativeTab); // Lowest priority, since we only modify existing items, not add new ones.
         bus.addListener(TFCEntities::onEntityAttributeCreation);
         bus.addListener(Faunas::registerSpawnPlacements);
 
@@ -138,6 +136,7 @@ public final class TerraFirmaCraft
         RegionBiomeSource.BIOME_SOURCE.register(bus);
         TFCStateProviders.BLOCK_STATE_PROVIDERS.register(bus);
         TFCStructureHooks.STRUCTURE_PLACEMENTS.register(bus);
+        TFCDensityFunctions.TYPES.register(bus);
         TFCEffects.EFFECTS.register(bus);
         TFCBrain.ACTIVITIES.register(bus);
         TFCBrain.MEMORY_TYPES.register(bus);

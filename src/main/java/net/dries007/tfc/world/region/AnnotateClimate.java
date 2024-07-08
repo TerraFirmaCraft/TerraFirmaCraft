@@ -17,9 +17,9 @@ public enum AnnotateClimate implements RegionTask
     {
         final Region region = context.region;
 
-        for (int x = region.minX(); x < region.maxX(); x++)
+        for (int x = region.minX(); x <= region.maxX(); x++)
         {
-            for (int z = region.minZ(); z < region.maxZ(); z++)
+            for (int z = region.minZ(); z <= region.maxZ(); z++)
             {
                 final Region.Point point = region.maybeAt(x, z);
                 if (point != null)

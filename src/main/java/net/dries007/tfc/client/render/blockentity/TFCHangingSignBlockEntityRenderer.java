@@ -61,12 +61,12 @@ public class TFCHangingSignBlockEntityRenderer extends HangingSignRenderer
     private static HangingSignModelData createModelData(Metal.Default metal, Supplier<? extends SignBlock> reg)
     {
         final WoodType type = reg.get().type();
-        final ResourceLocation woodName = new ResourceLocation(type.name());
+        final ResourceLocation woodName = Helpers.resourceLocation(type.name());
         final ResourceLocation metalName = Helpers.identifier(metal.getSerializedName());
 
         return createModelData(
-            new ResourceLocation(woodName.getNamespace(), "entity/signs/hanging/" + metalName.getPath() + "/" + woodName.getPath()),
-            new ResourceLocation(type.name() + ".png").withPrefix("textures/gui/hanging_signs/" + metalName.getPath() + "/")
+            Helpers.resourceLocation(woodName.getNamespace(), "entity/signs/hanging/" + metalName.getPath() + "/" + woodName.getPath()),
+            Helpers.resourceLocation(type.name() + ".png").withPrefix("textures/gui/hanging_signs/" + metalName.getPath() + "/")
         );
     }
 
@@ -95,7 +95,7 @@ public class TFCHangingSignBlockEntityRenderer extends HangingSignRenderer
 
         ImmutableMap.Builder<WoodType, HangingSignModel> modelBuilder = ImmutableMap.builder();
         blocks.forEach(data -> {
-            modelBuilder.put(data.type(), new HangingSignModel(context.bakeLayer(new ModelLayerLocation(new ResourceLocation(data.domain(), "hanging_sign/" + data.name()), "main"))));
+            modelBuilder.put(data.type(), new HangingSignModel(context.bakeLayer(new ModelLayerLocation(Helpers.resourceLocation(data.domain(), "hanging_sign/" + data.name()), "main"))));
         });
         this.hangingSignModels = modelBuilder.build();
     }

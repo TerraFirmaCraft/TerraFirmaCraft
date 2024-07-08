@@ -16,9 +16,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import net.minecraft.core.DefaultedRegistry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.tags.TagKey;
-import net.minecraftforge.registries.IForgeRegistry;
 
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
@@ -61,7 +61,7 @@ public interface IngredientType<T> extends Predicate<T>
             }
             else if (obj.has("tag"))
             {
-                final TagKey<T> tag = JsonHelpers.getTag(obj, "tag", factory.registry.getRegistryKey());
+                final TagKey<T> tag = JsonHelpers.getTag(obj, "tag", factory.registry.key());
                 return of(tag, factory);
             }
             else
@@ -129,7 +129,7 @@ public interface IngredientType<T> extends Predicate<T>
             if (entry instanceof IngredientType.ObjEntry<T> objEntry)
             {
                 buf.writeByte(0);
-                buf.writeRegistryIdUnsafe(factory.registry, objEntry.object);
+                buf.writeVarInt(factory.registry.getId(objEntry.object));
             }
             else
             {
@@ -147,12 +147,12 @@ public interface IngredientType<T> extends Predicate<T>
         return factory.factory.apply(Helpers.decodeAll(buffer, new ArrayList<>(), buf -> {
             if (buf.readByte() == 0)
             {
-                final T object = buf.readRegistryIdUnsafe(factory.registry);
+                final T object = factory.registry.byId(buffer.readVarInt());
                 return new ObjEntry<>(object);
             }
             else
             {
-                final TagKey<T> tag = TagKey.create(factory.registry.getRegistryKey(), buf.readResourceLocation());
+                final TagKey<T> tag = TagKey.create(factory.registry.key(), buf.readResourceLocation());
                 return factory.tagEntry.apply(tag);
             }
         }));
@@ -239,7 +239,7 @@ public interface IngredientType<T> extends Predicate<T>
      */
     record Factory<T, I extends IngredientType<T>>(
         String key,
-        IForgeRegistry<T> registry,
+        DefaultedRegistry<T> registry,
         Function<TagKey<T>, Entry<T>> tagEntry,
         Function<List<Entry<T>>, I> factory
     ) {}

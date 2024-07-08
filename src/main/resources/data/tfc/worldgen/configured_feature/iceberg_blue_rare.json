@@ -3,8 +3,7 @@
   "type": "tfc:iceberg",
   "config": {
     "state": {
-      "Name": "minecraft:blue_ice",
-      "Properties": {}
+      "Name": "minecraft:blue_ice"
     }
   }
 }

@@ -19,7 +19,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.GroundcoverBlockType;
@@ -90,7 +89,7 @@ public class TidePoolFeature extends Feature<NoneFeatureConfiguration>
                         toPlace = water;
                         if (random.nextFloat() < 0.15f)
                         {
-                            BlockState groundcover = Helpers.getRandomElement(ForgeRegistries.BLOCKS, TFCTags.Blocks.TIDE_POOL_BLOCKS, random).map(Block::defaultBlockState).orElse(water);
+                            BlockState groundcover = Helpers.randomBlock(TFCTags.Blocks.TIDE_POOL_BLOCKS, random).map(Block::defaultBlockState).orElse(water);
                             groundcover = FluidHelpers.fillWithFluid(groundcover, TFCFluids.SALT_WATER.getSource());
                             if (groundcover != null)
                             {

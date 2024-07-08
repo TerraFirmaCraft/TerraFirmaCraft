@@ -43,7 +43,6 @@ val modVersion: String = System.getenv("VERSION") ?: "0.0.0-indev"
 val mappingsChannel: String = project.findProperty("mappings_channel") as String? ?: "official"
 val mappingsVersion: String = project.findProperty("mappings_version") as String? ?: minecraftVersion
 val minifyResources: Boolean = project.findProperty("minify_resources") as Boolean? ?: true
-val zipResources: Boolean = project.findProperty("zip_resources") as Boolean? ?: false
 val useAdvancedClassRedef: Boolean = project.findProperty("use_advanced_class_redefinition") as Boolean? ?: false
 
 println("Using mappings $mappingsChannel / $mappingsVersion with version $modVersion")
@@ -113,6 +112,10 @@ dependencies {
     //runtimeOnly(fg.deobf("curse.maven:panoramica-426082:4019292"))
     //runtimeOnly(fg.deobf("curse.maven:embeddium-908741:4819807"))
     //runtimeOnly(fg.deobf("curse.maven:rubidium-574856:4767529"))
+    //runtimeOnly(fg.deobf("curse.maven:create-328085:4835191"))
+    //runtimeOnly(fg.deobf("curse.maven:corpse-316582:5157034"))
+    //runtimeOnly(fg.deobf("curse.maven:distant-horizons-508933:5390046"))
+    //runtimeOnly(fg.deobf("curse.maven:firmalife-453394:5456804"))
 
     // JUnit
     // There is not a testImplementation-like configuration, AFAIK, that is available at minecraft runtime, so we use minecraftLibrary
@@ -150,9 +153,6 @@ minecraft {
 
         register("client") {
             workingDirectory(project.file("run/client"))
-            if (zipResources) {
-                property("tfc.zippedResources", "true")
-            }
         }
 
         register("server") {
@@ -166,6 +166,17 @@ minecraft {
 
             arg("--nogui")
         }
+
+        register("data") {
+            workingDirectory(project.file("run/data"))
+            args("--mod", modId, "--all", "--output", file("src/generated/resources/"), "--existing", file("src/main/resources/"))
+        }
+    }
+}
+
+sourceSets.main {
+    resources {
+        srcDir("src/generated/resources/")
     }
 }
 
@@ -191,20 +202,6 @@ tasks {
             }
         }
 
-        if (zipResources) {
-            doLast {
-                val zipStart: Long = System.currentTimeMillis()
-                delete("$projectDir/out/production/resources/assets/")
-                delete("$projectDir/out/production/resources/data/tfc/advancements")
-                delete("$projectDir/out/production/resources/data/tfc/loot_tables")
-                delete("$projectDir/out/production/resources/data/tfc/recipes")
-                delete("$projectDir/out/production/resources/data/tfc/tags")
-                delete("$projectDir/out/production/resources/data/tfc/tfc")
-                delete("$projectDir/out/production/resources/data/tfc/worldgen")
-                delete("$projectDir/out/production/resources/data/minecraft")
-                println("Deleted assets and data files in favor of zipped version. Took ${System.currentTimeMillis() - zipStart} ms")
-            }
-        }
         if (minifyResources) {
             doLast {
                 val jsonMinifyStart: Long = System.currentTimeMillis()

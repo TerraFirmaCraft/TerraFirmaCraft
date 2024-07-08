@@ -58,7 +58,7 @@ public class TFCKelpFeature extends Feature<ColumnPlantConfig>
 
             if (bodyState != null && headState != null && canPlaceBlockAt(level, mutablePos, state))
             {
-                placeColumn(level, rand, mutablePos, Mth.nextInt(rand, config.minHeight(), config.maxHeight()), 17, 25, bodyState, headState);
+                placeColumn(level, rand, mutablePos, Mth.nextInt(rand, config.minHeight(), config.maxHeight()), 22, 25, bodyState, headState);
                 placedAny = true;
             }
         }

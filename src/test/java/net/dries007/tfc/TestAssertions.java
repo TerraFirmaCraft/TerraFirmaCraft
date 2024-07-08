@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import com.mojang.logging.LogUtils;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.gametest.framework.GameTestAssertException;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.gametest.framework.TestFunction;
@@ -28,7 +29,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraftforge.common.crafting.IIngredientSerializer;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import org.junit.jupiter.api.Assertions;
 import org.slf4j.Logger;
@@ -204,7 +204,7 @@ public final class TestAssertions
 
     public static Type wrap(FluidStack stack)
     {
-        return new Named<>(stack, "%d mB of %s".formatted(stack.getAmount(), ForgeRegistries.FLUIDS.getKey(stack.getFluid())));
+        return new Named<>(stack, "%d mB of %s".formatted(stack.getAmount(), BuiltInRegistries.FLUID.getKey(stack.getFluid())));
     }
 
     public static Type wrap(ItemStack stack)
@@ -222,7 +222,7 @@ public final class TestAssertions
     public static Type wrap(Recipe<?> recipe)
     {
         record TRecipe(Class<?> clazz, ResourceLocation id, String group, Type result, List<Type> ingredients) implements Type {}
-        return new Named<>(new TRecipe(recipe.getClass(), recipe.getId(), recipe.getGroup(), wrap(recipe.getResultItem(ServerLifecycleHooks.getCurrentServer().registryAccess())), wrap(recipe.getIngredients(), TestAssertions::wrap)), "[Recipe " + recipe.getId() +  " of type " + recipe.getType() + " and serializer " + ForgeRegistries.RECIPE_SERIALIZERS.getKey(recipe.getSerializer()) + "]");
+        return new Named<>(new TRecipe(recipe.getClass(), recipe.getId(), recipe.getGroup(), wrap(recipe.getResultItem(ServerLifecycleHooks.getCurrentServer().registryAccess())), wrap(recipe.getIngredients(), TestAssertions::wrap)), "[Recipe " + recipe.getId() +  " of type " + recipe.getType() + " and serializer " + BuiltInRegistries.RECIPE_SERIALIZER.getKey(recipe.getSerializer()) + "]");
     }
 
     public static Type wrap(ItemStackProvider provider)

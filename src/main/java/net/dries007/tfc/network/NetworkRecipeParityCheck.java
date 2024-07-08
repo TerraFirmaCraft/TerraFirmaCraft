@@ -8,11 +8,11 @@ package net.dries007.tfc.network;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.TerraFirmaCraft;
@@ -29,7 +29,7 @@ public final class NetworkRecipeParityCheck
         serializer.toNetwork(new FriendlyByteBuf(raw), recipe);
         final int size = raw.readableBytes();
 
-        final ResourceLocation serializerId = ForgeRegistries.RECIPE_SERIALIZERS.getKey(serializer);
+        final ResourceLocation serializerId = BuiltInRegistries.RECIPE_SERIALIZER.getKey(serializer);
         if (serializerId == null)
         {
             throw new IllegalStateException("Missing recipe serializer! No serializer for recipe '" + recipe.getId() + "' of type '" + recipe.getType() + "'");
@@ -52,7 +52,11 @@ public final class NetworkRecipeParityCheck
         final ResourceLocation serializerId = buffer.readResourceLocation();
         final ResourceLocation recipeId = buffer.readResourceLocation();
 
-        final RecipeSerializer<?> serializer = ForgeRegistries.RECIPE_SERIALIZERS.getDelegateOrThrow(serializerId).get();
+        final RecipeSerializer<?> serializer = BuiltInRegistries.RECIPE_SERIALIZER.get(serializerId);
+        if (serializer == null)
+        {
+            throw new IllegalStateException("Invalid recipe serializer name on client with serializer '" + serializerId + "' and recipe '" + recipeId + "'");
+        }
 
         final int before = buffer.readableBytes();
         final Recipe<?> recipe;

@@ -52,9 +52,9 @@ public class AdvancedShapelessRecipe extends ShapelessRecipe
     @Override
     public ItemStack assemble(CraftingContainer inventory, RegistryAccess registryAccess)
     {
-        RecipeHelpers.setCraftingContainer(inventory);
+        RecipeHelpers.setCraftingInput(inventory);
         final ItemStack result = this.result.getSingleStack(getSeed(inventory).copy());
-        RecipeHelpers.setCraftingContainer(null);
+        RecipeHelpers.clearCraftingInput();
         return result;
     }
 

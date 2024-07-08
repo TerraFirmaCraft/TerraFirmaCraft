@@ -11,19 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.Container;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Recipe;
-
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
-
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaTypes;
@@ -32,21 +19,97 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredientType;
 import mezz.jei.api.ingredients.IIngredientTypeWithSubtypes;
 import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.recipe.transfer.IRecipeTransferHandlerHelper;
+import mezz.jei.api.registration.IGuiHandlerRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.registration.IRecipeTransferRegistration;
 import mezz.jei.api.registration.IVanillaCategoryExtensionRegistration;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.registries.RegistryObject;
+
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.ClientHelpers;
+import net.dries007.tfc.client.screen.AnvilScreen;
+import net.dries007.tfc.client.screen.BarrelScreen;
+import net.dries007.tfc.client.screen.CalendarScreen;
+import net.dries007.tfc.client.screen.ClimateScreen;
+import net.dries007.tfc.client.screen.CrucibleScreen;
+import net.dries007.tfc.client.screen.FirepitScreen;
+import net.dries007.tfc.client.screen.GrillScreen;
+import net.dries007.tfc.client.screen.KnappingScreen;
+import net.dries007.tfc.client.screen.NutritionScreen;
+import net.dries007.tfc.client.screen.PotScreen;
+import net.dries007.tfc.client.screen.SewingTableScreen;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.wood.Wood;
+import net.dries007.tfc.common.container.CrucibleContainer;
+import net.dries007.tfc.common.container.FirepitContainer;
+import net.dries007.tfc.common.container.GrillContainer;
+import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.items.TFCItems;
-import net.dries007.tfc.common.recipes.*;
+import net.dries007.tfc.common.recipes.AdvancedShapelessRecipe;
+import net.dries007.tfc.common.recipes.AlloyRecipe;
+import net.dries007.tfc.common.recipes.AnvilRecipe;
+import net.dries007.tfc.common.recipes.BlastFurnaceRecipe;
+import net.dries007.tfc.common.recipes.BloomeryRecipe;
+import net.dries007.tfc.common.recipes.CastingRecipe;
+import net.dries007.tfc.common.recipes.ChiselRecipe;
+import net.dries007.tfc.common.recipes.ExtraProductsCraftingRecipe;
+import net.dries007.tfc.common.recipes.GlassworkingRecipe;
+import net.dries007.tfc.common.recipes.HeatingRecipe;
+import net.dries007.tfc.common.recipes.InstantBarrelRecipe;
+import net.dries007.tfc.common.recipes.InstantFluidBarrelRecipe;
+import net.dries007.tfc.common.recipes.KnappingRecipe;
+import net.dries007.tfc.common.recipes.LoomRecipe;
+import net.dries007.tfc.common.recipes.PotRecipe;
+import net.dries007.tfc.common.recipes.QuernRecipe;
+import net.dries007.tfc.common.recipes.ScrapingRecipe;
+import net.dries007.tfc.common.recipes.SealedBarrelRecipe;
+import net.dries007.tfc.common.recipes.SewingRecipe;
+import net.dries007.tfc.common.recipes.TFCRecipeSerializers;
+import net.dries007.tfc.common.recipes.TFCRecipeTypes;
+import net.dries007.tfc.common.recipes.WeldingRecipe;
 import net.dries007.tfc.common.recipes.ingredients.HeatableIngredient;
-import net.dries007.tfc.compat.jei.category.*;
+import net.dries007.tfc.compat.jei.category.AlloyRecipeCategory;
+import net.dries007.tfc.compat.jei.category.AnvilRecipeCategory;
+import net.dries007.tfc.compat.jei.category.BlastFurnaceRecipeCategory;
+import net.dries007.tfc.compat.jei.category.BloomeryRecipeCategory;
+import net.dries007.tfc.compat.jei.category.CastingRecipeCategory;
+import net.dries007.tfc.compat.jei.category.ChiselRecipeCategory;
+import net.dries007.tfc.compat.jei.category.GlassworkingRecipeCategory;
+import net.dries007.tfc.compat.jei.category.HeatingRecipeCategory;
+import net.dries007.tfc.compat.jei.category.InstantBarrelRecipeCategory;
+import net.dries007.tfc.compat.jei.category.InstantFluidBarrelRecipeCategory;
+import net.dries007.tfc.compat.jei.category.JamPotRecipeCategory;
+import net.dries007.tfc.compat.jei.category.KnappingRecipeCategory;
+import net.dries007.tfc.compat.jei.category.LoomRecipeCategory;
+import net.dries007.tfc.compat.jei.category.QuernRecipeCategory;
+import net.dries007.tfc.compat.jei.category.ScrapingRecipeCategory;
+import net.dries007.tfc.compat.jei.category.SealedBarrelRecipeCategory;
+import net.dries007.tfc.compat.jei.category.SewingRecipeCategory;
+import net.dries007.tfc.compat.jei.category.SimplePotRecipeCategory;
+import net.dries007.tfc.compat.jei.category.SoupPotRecipeCategory;
+import net.dries007.tfc.compat.jei.category.WeldingRecipeCategory;
 import net.dries007.tfc.compat.jei.extension.AdvancedShapelessExtension;
 import net.dries007.tfc.compat.jei.extension.ExtraProductsExtension;
+import net.dries007.tfc.compat.jei.transfer.AnvilRecipeTransferHandler;
+import net.dries007.tfc.compat.jei.transfer.AnvilRecipeTransferInfo;
+import net.dries007.tfc.compat.jei.transfer.BarrelTransferInfo;
+import net.dries007.tfc.compat.jei.transfer.FluidIgnoringRecipeTransferHandler;
+import net.dries007.tfc.compat.jei.transfer.PotTransferInfo;
+import net.dries007.tfc.compat.jei.transfer.WeldingRecipeTransferInfo;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.KnappingType;
 
@@ -100,7 +163,7 @@ public final class JEIIntegration implements IModPlugin
 
     private static void addRecipeCatalyst(IRecipeCatalystRegistration registry, TagKey<Item> tag, RecipeType<?> recipeType)
     {
-        Helpers.getAllTagValues(tag, ForgeRegistries.ITEMS).forEach(item -> registry.addRecipeCatalyst(new ItemStack(item), recipeType));
+        Helpers.allItems(tag).forEach(item -> registry.addRecipeCatalyst(new ItemStack(item), recipeType));
     }
 
     private static void addRecipeCatalyst(IRecipeCatalystRegistration registry, Wood.BlockType wood, RecipeType<?> recipeType)
@@ -219,6 +282,48 @@ public final class JEIIntegration implements IModPlugin
                 registry.addRecipeCatalyst(item, recipeType);
             }
         }
+    }
+
+    @Override
+    public void registerGuiHandlers(IGuiHandlerRegistration registry)
+    {
+        registry.addRecipeClickArea(KnappingScreen.class, 97, 44, 22, 15, KNAPPING_TYPES.values().toArray(new RecipeType<?>[0]));
+        registry.addRecipeClickArea(AnvilScreen.class, 26, 24, 9, 14, ANVIL, WELDING);
+        registry.addRecipeClickArea(BarrelScreen.class, 92, 21, 9, 14, SEALED_BARREL, INSTANT_BARREL, INSTANT_FLUID_BARREL);
+        registry.addRecipeClickArea(CrucibleScreen.class, 82, 100, 10, 15, HEATING);
+        registry.addRecipeClickArea(CrucibleScreen.class, 139, 100, 10, 15, ALLOYING, CASTING);
+        registry.addRecipeClickArea(FirepitScreen.class, 79, 46, 18, 10, HEATING);
+        registry.addRecipeClickArea(GrillScreen.class, 61, 37, 18, 10, HEATING);
+        registry.addRecipeClickArea(PotScreen.class, 77, 6, 9, 14, SIMPLE_POT, SOUP_POT, JAM_POT);
+        registry.addRecipeClickArea(SewingTableScreen.class, 125, 84, 22, 15, SEWING);
+
+        // Fix inventory tab button overlap
+        registry.addGuiContainerHandler(InventoryScreen.class, new TFCInventoryGuiHandler<>());
+        registry.addGuiContainerHandler(CalendarScreen.class, new TFCInventoryGuiHandler<>());
+        registry.addGuiContainerHandler(ClimateScreen.class, new TFCInventoryGuiHandler<>());
+        registry.addGuiContainerHandler(NutritionScreen.class, new TFCInventoryGuiHandler<>());
+    }
+
+    @Override
+    public void registerRecipeTransferHandlers(IRecipeTransferRegistration registry)
+    {
+        registry.addRecipeTransferHandler(FirepitContainer.class, TFCContainerTypes.FIREPIT.get(), HEATING, 4, 1, 7, Inventory.INVENTORY_SIZE);
+        registry.addRecipeTransferHandler(GrillContainer.class, TFCContainerTypes.GRILL.get(), HEATING, 4, 5, 9, Inventory.INVENTORY_SIZE);
+        registry.addRecipeTransferHandler(CrucibleContainer.class, TFCContainerTypes.CRUCIBLE.get(), HEATING, 0, 9, 10, Inventory.INVENTORY_SIZE);
+        IRecipeTransferHandlerHelper transferHelper = registry.getTransferHelper();
+        var basicRecipeTransferInfo = transferHelper.createBasicRecipeTransferInfo(CrucibleContainer.class, TFCContainerTypes.CRUCIBLE.get(), CASTING, 9, 1, 10, Inventory.INVENTORY_SIZE);
+        registry.addRecipeTransferHandler(new FluidIgnoringRecipeTransferHandler<>(transferHelper, transferHelper.createUnregisteredRecipeTransferHandler(basicRecipeTransferInfo)), CASTING);
+        // Anvil
+        registry.addRecipeTransferHandler(new WeldingRecipeTransferInfo(transferHelper));
+        registry.addRecipeTransferHandler(new AnvilRecipeTransferHandler<>(transferHelper.createUnregisteredRecipeTransferHandler(new AnvilRecipeTransferInfo(transferHelper))), ANVIL);
+
+        // Pot
+        registry.addRecipeTransferHandler(new FluidIgnoringRecipeTransferHandler<>(transferHelper, transferHelper.createUnregisteredRecipeTransferHandler(new PotTransferInfo(transferHelper, SIMPLE_POT))), SIMPLE_POT);
+        registry.addRecipeTransferHandler(new FluidIgnoringRecipeTransferHandler<>(transferHelper, transferHelper.createUnregisteredRecipeTransferHandler(new PotTransferInfo(transferHelper, SOUP_POT))), SOUP_POT);
+        registry.addRecipeTransferHandler(new FluidIgnoringRecipeTransferHandler<>(transferHelper, transferHelper.createUnregisteredRecipeTransferHandler(new PotTransferInfo(transferHelper, JAM_POT))), JAM_POT);
+
+        // Only sealed barrel recipes, instant barrel recipes are purposefully excluded
+        registry.addRecipeTransferHandler(new FluidIgnoringRecipeTransferHandler<>(transferHelper, transferHelper.createUnregisteredRecipeTransferHandler(new BarrelTransferInfo<>(SEALED_BARREL))), SEALED_BARREL);
     }
 
     @Override

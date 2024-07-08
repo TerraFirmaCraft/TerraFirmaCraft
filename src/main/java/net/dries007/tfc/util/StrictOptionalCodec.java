@@ -19,6 +19,7 @@ import com.mojang.serialization.RecordBuilder;
  * Optional field that will error if the field is present, but invalid, rather than silently accepting.
  * <p>
  * Borrowed from Cyanide, licensed under MIT, original author explicit permission blah blah I AM the original author heck.
+ * todo: 1.21 remove since this got incorporated into DFU
  */
 public final class StrictOptionalCodec<A> extends MapCodec<Optional<A>>
 {

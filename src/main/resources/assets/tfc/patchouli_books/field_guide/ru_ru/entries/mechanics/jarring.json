@@ -19,7 +19,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/barley_sandwich_with_jam",
+      "recipe": "tfc:crafting/barley_sandwich_with_jam_1",
       "text": "Джем используется для приготовления бутербродов. Бутерброды с джемом могут содержать молочные продукты, Приготовленное мясо и джем. Остается $(thing)Пустая банка$()."
     },
     {

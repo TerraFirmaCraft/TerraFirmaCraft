@@ -29,6 +29,8 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.client.sounds.WeighedSoundEvents;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
@@ -57,7 +59,6 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.loot.LootDataType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
@@ -123,7 +124,8 @@ public final class SelfTests
 
     public static void runClientSelfTests()
     {
-        if (Helpers.ASSERTIONS_ENABLED)
+        MinecraftForge.EVENT_BUS.post(new ClientSelfTestEvent()); // For other mods, as this is invoked via a tricky mixin
+        if (Helpers.TEST_ENVIRONMENT)
         {
             final Stopwatch tick = Stopwatch.createStarted();
             throwIfAny(
@@ -131,14 +133,13 @@ public final class SelfTests
                 validateModels(),
                 validateTranslationsAndCreativeTabs()
             );
-            MinecraftForge.EVENT_BUS.post(new ClientSelfTestEvent()); // For other mods, as this is invoked via a tricky mixin
             LOGGER.info("Client self tests passed in {}", tick.stop());
         }
     }
 
     public static void runServerSelfTests()
     {
-        if (Helpers.ASSERTIONS_ENABLED)
+        if (Helpers.TEST_ENVIRONMENT)
         {
             final Stopwatch tick = Stopwatch.createStarted();
             throwIfAny(
@@ -177,10 +178,25 @@ public final class SelfTests
 
     /**
      * Iterate the values of a registry, filtered by mod ID
+     * @deprecated Use {@link #stream(Registry, String)} instead
      */
+    @Deprecated
     public static <T> Stream<T> stream(IForgeRegistry<T> registry, String modID)
     {
         return registry.getValues().stream()
+            .filter(e -> {
+                final var key = registry.getKey(e);
+                assert key != null;
+                return key.getNamespace().equals(modID);
+            });
+    }
+
+    /**
+     * Iterate the values of a registry, filtered by mod ID
+     */
+    public static <T> Stream<T> stream(Registry<T> registry, String modID)
+    {
+        return registry.stream()
             .filter(e -> {
                 final var key = registry.getKey(e);
                 assert key != null;
@@ -327,7 +343,7 @@ public final class SelfTests
 
     private static boolean validateOwnBlockEntities()
     {
-        return validateBlockEntities(stream(ForgeRegistries.BLOCKS, MOD_ID), LOGGER);
+        return validateBlockEntities(stream(BuiltInRegistries.BLOCK, MOD_ID), LOGGER);
     }
 
     private static boolean validateOwnBlockLootTables()
@@ -336,7 +352,7 @@ public final class SelfTests
             .map(Supplier::get)
             .collect(Collectors.toSet());
         final Set<Class<?>> expectedNoLootTableClasses = ImmutableSet.of(BodyPlantBlock.class, GrowingFruitTreeBranchBlock.class, LiquidBlock.class, BranchingCactusBlock.class, GrowingBranchingCactusBlock.class, PouredGlassBlock.class);
-        return validateBlockLootTables(stream(ForgeRegistries.BLOCKS, MOD_ID)
+        return validateBlockLootTables(stream(BuiltInRegistries.BLOCK, MOD_ID)
             .filter(b -> !expectedNoLootTableBlocks.contains(b)).filter(b -> !expectedNoLootTableClasses.contains(b.getClass())), LOGGER);
     }
 
@@ -348,7 +364,7 @@ public final class SelfTests
             TFCTags.Blocks.MINEABLE_WITH_PROPICK, TFCTags.Blocks.MINEABLE_WITH_HAMMER, TFCTags.Blocks.MINEABLE_WITH_KNIFE, TFCTags.Blocks.MINEABLE_WITH_SCYTHE, TFCTags.Blocks.MINEABLE_WITH_CHISEL
         );
         // All non-fluid, non-exceptional, blocks with hardness > 0, < infinity, should define a tool
-        final List<Block> missingTag = stream(ForgeRegistries.BLOCKS, MOD_ID)
+        final List<Block> missingTag = stream(BuiltInRegistries.BLOCK, MOD_ID)
             .filter(b -> !(b instanceof LiquidBlock)
                 && b.defaultDestroyTime() > 0
                 && !expectedNotMineableBlocks.contains(b)
@@ -360,9 +376,9 @@ public final class SelfTests
 
     private static boolean validateOwnBlockTags()
     {
-        return validateBlocksHaveTag(stream(ForgeRegistries.BLOCKS, MOD_ID).filter(b -> b instanceof WallBlock), BlockTags.WALLS, LOGGER)
-            | validateBlocksHaveTag(stream(ForgeRegistries.BLOCKS, MOD_ID).filter(b -> b instanceof StairBlock), BlockTags.STAIRS, LOGGER)
-            | validateBlocksHaveTag(stream(ForgeRegistries.BLOCKS, MOD_ID).filter(b -> b instanceof SlabBlock), BlockTags.SLABS, LOGGER);
+        return validateBlocksHaveTag(stream(BuiltInRegistries.BLOCK, MOD_ID).filter(b -> b instanceof WallBlock), BlockTags.WALLS, LOGGER)
+            | validateBlocksHaveTag(stream(BuiltInRegistries.BLOCK, MOD_ID).filter(b -> b instanceof StairBlock), BlockTags.STAIRS, LOGGER)
+            | validateBlocksHaveTag(stream(BuiltInRegistries.BLOCK, MOD_ID).filter(b -> b instanceof SlabBlock), BlockTags.SLABS, LOGGER);
     }
 
     /**
@@ -375,10 +391,10 @@ public final class SelfTests
         final BakedModel missingModel = shaper.getModelManager().getMissingModel();
         final TextureAtlasSprite missingParticle = missingModel.getParticleIcon();
 
-        final List<BlockState> missingModelErrors = stream(ForgeRegistries.BLOCKS, MOD_ID)
+        final List<BlockState> missingModelErrors = stream(BuiltInRegistries.BLOCK, MOD_ID)
             .flatMap(states(s -> s.getRenderShape() == RenderShape.MODEL && shaper.getBlockModel(s) == missingModel))
             .toList();
-        final List<BlockState> missingParticleErrors = stream(ForgeRegistries.BLOCKS, MOD_ID)
+        final List<BlockState> missingParticleErrors = stream(BuiltInRegistries.BLOCK, MOD_ID)
             .flatMap(states(s -> !s.isAir() && !(s.getBlock() instanceof IngotPileBlock) && !(s.getBlock() instanceof SheetPileBlock) && !(s.getBlock() instanceof ScrapingBlock) && shaper.getParticleIcon(s) == missingParticle))
             .toList();
 
@@ -404,7 +420,7 @@ public final class SelfTests
         }));
 
         final Set<Class<? extends Block>> blocksWithNoCreativeTabItem = Set.of(SnowPileBlock.class, IcePileBlock.class, BloomBlock.class, MoltenBlock.class, TFCLightBlock.class, RockAnvilBlock.class, PouredGlassBlock.class);
-        final List<Item> missingItems = stream(ForgeRegistries.ITEMS, MOD_ID)
+        final List<Item> missingItems = stream(BuiltInRegistries.ITEM, MOD_ID)
             .filter(item -> !items.contains(item)
                 && (item != TFCItems.FILLED_PAN.get())
                 && !(item instanceof BlockItem bi && blocksWithNoCreativeTabItem.contains(bi.getBlock().getClass()))
@@ -419,7 +435,7 @@ public final class SelfTests
         }
 
         final SoundManager soundManager = Minecraft.getInstance().getSoundManager();
-        ForgeRegistries.SOUND_EVENTS.getKeys().forEach(sound -> Optional.ofNullable(soundManager.getSoundEvent(sound)).map(WeighedSoundEvents::getSubtitle).ifPresent(subtitle -> validateTranslation(LOGGER, missingTranslations, subtitle)));
+        BuiltInRegistries.SOUND_EVENT.forEach(sound -> Optional.ofNullable(soundManager.getSoundEvent(sound.getLocation())).map(WeighedSoundEvents::getSubtitle).ifPresent(subtitle -> validateTranslation(LOGGER, missingTranslations, subtitle)));
 
         for (CreativeModeTab tab : CreativeModeTabs.allTabs())
         {
@@ -434,7 +450,7 @@ public final class SelfTests
 
     private static boolean validateFoodsAreFoods()
     {
-        final List<Item> errors = Helpers.streamAllTagValues(TFCTags.Items.FOODS, ForgeRegistries.ITEMS)
+        final List<Item> errors = Helpers.allItems(TFCTags.Items.FOODS)
             .filter(item -> !FoodCapability.has(item.getDefaultInstance()))
             .toList();
         return logWarnings("{} items were in the tfc:foods tag but lacked a food definition", errors, LOGGER);
@@ -442,7 +458,7 @@ public final class SelfTests
 
     private static boolean validateJugDrinkable()
     {
-        final List<Fluid> errors = Helpers.streamAllTagValues(TFCTags.Fluids.USABLE_IN_JUG, ForgeRegistries.FLUIDS)
+        final List<Fluid> errors = Helpers.allFluids(TFCTags.Fluids.USABLE_IN_JUG)
             .filter(fluid -> Drinkable.get(fluid) == null)
             .toList();
 
@@ -553,12 +569,17 @@ public final class SelfTests
 
     private static boolean validateReplaceableBlocksAreTagged()
     {
-        final TagKey<Block> tag = TagKey.create(Registries.BLOCK, new ResourceLocation("replaceable"));
-        final List<Block> notTagged = ForgeRegistries.BLOCKS.getValues().stream().filter(b -> b.defaultBlockState().canBeReplaced() && !Helpers.isBlock(b, tag) && ForgeRegistries.BLOCKS.getKey(b) != null && !ForgeRegistries.BLOCKS.getKey(b).getNamespace().equals("minecraft")).toList();
-        final List<Block> shouldNotBeTagged = Helpers.streamAllTagValues(tag, ForgeRegistries.BLOCKS).filter(b -> !b.defaultBlockState().canBeReplaced()).toList();
+        final TagKey<Block> tag = TagKey.create(Registries.BLOCK, Helpers.identifierMC("replaceable"));
+        final List<Block> notTagged = BuiltInRegistries.BLOCK.stream().filter(b -> b.defaultBlockState().canBeReplaced() && !Helpers.isBlock(b, tag) && !BuiltInRegistries.BLOCK.getKey(b).getNamespace().equals("minecraft")).toList();
+        final List<Block> shouldNotBeTagged = Helpers.allBlocks(tag).filter(b -> !b.defaultBlockState().canBeReplaced()).toList();
         return logErrors("{} blocks are not tagged as minecraft:replaceable while being replaceable.", notTagged, LOGGER)
             | logErrors("{} blocks are tagged as minecraft:replaceable while being not replaceable.", shouldNotBeTagged, LOGGER);
     }
 
+    /**
+     * Fired from the entry point where client self tests are invoked in TFC
+     * This is provided for convenience for any addon mods which wish to use this same entrypoint,
+     * but don't want to duplicate the provided mixin.
+     */
     public static class ClientSelfTestEvent extends Event {}
 }

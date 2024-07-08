@@ -87,7 +87,7 @@ public class TFCFoodData extends net.minecraft.world.food.FoodData
     {
         if (oldPlayer.getFoodData() instanceof TFCFoodData oldStats)
         {
-            final TFCFoodData newStats = new TFCFoodData(oldPlayer, newPlayer.getFoodData(), oldStats.getNutrition());
+            final TFCFoodData newStats = new TFCFoodData(newPlayer, newPlayer.getFoodData(), oldStats.getNutrition());
             ((PlayerAccessor) newPlayer).accessor$setFoodData(newStats);
         }
     }

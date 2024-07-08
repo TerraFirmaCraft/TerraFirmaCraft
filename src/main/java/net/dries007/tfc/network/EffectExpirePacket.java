@@ -6,33 +6,25 @@
 
 package net.dries007.tfc.network;
 
+import net.dries007.tfc.client.ClientHelpers;
+import net.dries007.tfc.common.TFCEffects;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.registries.ForgeRegistries;
-
-import net.dries007.tfc.client.ClientHelpers;
-import net.dries007.tfc.common.TFCEffects;
 
 // Tracking Issue: https://github.com/MinecraftForge/MinecraftForge/issues/8506
 // Update: Forge does not believe that this is an issue.
-public class EffectExpirePacket
+public record EffectExpirePacket(MobEffect effect)
 {
-    private final MobEffect effect;
-
-    public EffectExpirePacket(MobEffect effect)
-    {
-        this.effect = effect;
-    }
-
     EffectExpirePacket(FriendlyByteBuf buffer)
     {
-        this.effect = buffer.readRegistryIdUnsafe(ForgeRegistries.MOB_EFFECTS);
+        this(BuiltInRegistries.MOB_EFFECT.byIdOrThrow(buffer.readVarInt()));
     }
 
     void encode(FriendlyByteBuf buffer)
     {
-        buffer.writeRegistryIdUnsafe(ForgeRegistries.MOB_EFFECTS, effect);
+        buffer.writeVarInt(BuiltInRegistries.MOB_EFFECT.getId(effect));
     }
 
     void handle()

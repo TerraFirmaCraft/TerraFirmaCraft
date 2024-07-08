@@ -15,7 +15,6 @@ import net.minecraftforge.common.crafting.IIngredientSerializer;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
@@ -57,7 +56,7 @@ public class FluidItemIngredient extends DelegateIngredient
     {
         return fluid.ingredient()
             .all()
-            .flatMap(fluid -> Helpers.streamAllTagValues(TFCTags.Items.FLUID_ITEM_INGREDIENT_EMPTY_CONTAINERS, ForgeRegistries.ITEMS)
+            .flatMap(fluid -> Helpers.allItems(TFCTags.Items.FLUID_ITEM_INGREDIENT_EMPTY_CONTAINERS)
                 .map(item -> {
                     final ItemStack stack = new ItemStack(item);
                     final IFluidHandlerItem fluidHandler = Helpers.getCapability(stack, Capabilities.FLUID_ITEM);

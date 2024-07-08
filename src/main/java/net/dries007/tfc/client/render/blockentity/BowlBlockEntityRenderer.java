@@ -11,11 +11,11 @@ import java.util.Map;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.BowlBlockEntity;
@@ -37,12 +37,11 @@ public class BowlBlockEntityRenderer implements BlockEntityRenderer<BowlBlockEnt
             return;
 
         final ResourceLocation texture = TEXTURES.computeIfAbsent(item.getItem(), i -> {
-            final ResourceLocation key = ForgeRegistries.ITEMS.getKey(item.getItem());
-            assert key != null;
+            final ResourceLocation key = BuiltInRegistries.ITEM.getKey(item.getItem());
             String path = key.getPath();
             if (!path.contains("powder/"))
                 path = "powder/" + path;
-            return new ResourceLocation(key.getNamespace(), "block/" + path);
+            return Helpers.resourceLocation(key.getNamespace(), "block/" + path);
         });
 
         final float y = Mth.map(item.getCount(), 0, BowlBlockEntity.MAX_POWDER, 0.5f, 2f);

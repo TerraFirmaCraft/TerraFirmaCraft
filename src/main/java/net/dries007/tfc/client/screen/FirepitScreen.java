@@ -16,12 +16,11 @@ import net.dries007.tfc.common.blockentities.FirepitBlockEntity;
 import net.dries007.tfc.common.capabilities.heat.Heat;
 import net.dries007.tfc.common.container.FirepitContainer;
 import net.dries007.tfc.config.TFCConfig;
-
-import static net.dries007.tfc.TerraFirmaCraft.*;
+import net.dries007.tfc.util.Helpers;
 
 public class FirepitScreen extends BlockEntityScreen<FirepitBlockEntity, FirepitContainer>
 {
-    private static final ResourceLocation FIREPIT = new ResourceLocation(MOD_ID, "textures/gui/fire_pit.png");
+    private static final ResourceLocation FIREPIT = Helpers.identifier("textures/gui/fire_pit.png");
 
     public FirepitScreen(FirepitContainer container, Inventory playerInventory, Component name)
     {

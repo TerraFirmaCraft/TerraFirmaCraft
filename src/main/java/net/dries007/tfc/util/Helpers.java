@@ -35,6 +35,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -108,11 +109,11 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.util.thread.EffectiveSide;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
@@ -167,14 +168,46 @@ public final class Helpers
     private static final int PRIME_X = 501125321;
     private static final int PRIME_Y = 1136930381;
 
+    private static final boolean JEI = !BOOTSTRAP_ENVIRONMENT && ModList.get().isLoaded("jei");
+
     @Nullable private static RecipeManager CACHED_RECIPE_MANAGER = null;
 
     /**
-     * Default {@link ResourceLocation}, except with a TFC namespace
+     * @return A {@link ResourceLocation} with the {@code tfc} namespace.
      */
     public static ResourceLocation identifier(String name)
     {
-        return new ResourceLocation(MOD_ID, name);
+        return resourceLocation(MOD_ID, name);
+    }
+
+    /**
+     * @return A {@link ResourceLocation} with the {@code minecraft} namespace.
+     */
+    public static ResourceLocation identifierMC(String name)
+    {
+        return resourceLocation("minecraft", name);
+    }
+
+    /**
+     * @return A {@link ResourceLocation} with an inferred namespace. If present, the namespace will be used, otherwise
+     * {@code minecraft} will be used.
+     */
+    public static ResourceLocation resourceLocation(String name)
+    {
+        return new ResourceLocation(name);
+    }
+
+    /**
+     * @return A {@link ResourceLocation} with an explicit namespace and path.
+     */
+    public static ResourceLocation resourceLocation(String domain, String path)
+    {
+        return new ResourceLocation(domain, path);
+    }
+
+    public static boolean isJEIEnabled()
+    {
+        return JEI;
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -524,7 +557,7 @@ public final class Helpers
             {
                 return;
             }
-            Helpers.getRandomElement(ForgeRegistries.ENTITY_TYPES, TFCTags.Entities.PESTS, level.random).ifPresent(type -> {
+            Helpers.randomEntity(TFCTags.Entities.PESTS, level.random).ifPresent(type -> {
                 final Entity entity = type.create(level);
                 if (entity instanceof PathfinderMob mob && level instanceof ServerLevel serverLevel)
                 {
@@ -583,6 +616,29 @@ public final class Helpers
     public static MobEffectInstance getExhausted(boolean visible)
     {
         return new MobEffectInstance(TFCEffects.EXHAUSTED.get(), 25, 0, false, visible);
+    }
+
+    /**
+     * Iterate through all the slots in a {@code inventory}.
+     */
+    public static Iterable<ItemStack> iterate(Container inventory)
+    {
+        return () -> new Iterator<>()
+        {
+            private int slot = 0;
+
+            @Override
+            public boolean hasNext()
+            {
+                return slot < inventory.getContainerSize();
+            }
+
+            @Override
+            public ItemStack next()
+            {
+                return inventory.getItem(slot++);
+            }
+        };
     }
 
     /**
@@ -1129,6 +1185,8 @@ public final class Helpers
         return list.subList(length - n, length);
     }
 
+    /** @deprecated Unused, remove in 1.21 */
+    @Deprecated
     public static <T> void insertBefore(List<? super T> list, T element, T before)
     {
         final int index = list.indexOf(before);
@@ -1140,16 +1198,6 @@ public final class Helpers
         {
             list.add(index, element); // Insert at the target location, shifts the target forwards
         }
-    }
-
-    public static <T> List<T> getAllTagValues(TagKey<T> tag, IForgeRegistry<T> registry)
-    {
-        return streamAllTagValues(tag, registry).toList();
-    }
-
-    public static <T> Stream<T> streamAllTagValues(TagKey<T> tag, IForgeRegistry<T> registry)
-    {
-        return Objects.requireNonNull(registry.tags()).getTag(tag).stream();
     }
 
     /**
@@ -1436,49 +1484,74 @@ public final class Helpers
         return empty || list.isEmpty() ? Optional.empty() : Optional.of(new Tooltips.DeviceImageTooltip(list, width, height));
     }
 
-    public static boolean isItem(ItemStack first, Item second)
+    public static boolean isItem(ItemStack stack, Item item)
     {
-        return first.is(second);
+        return stack.is(item);
     }
 
     public static boolean isItem(ItemStack stack, TagKey<Item> tag)
     {
-        return checkTag(ForgeRegistries.ITEMS, stack.getItem(), tag);
+        return stack.is(tag);
     }
 
     public static boolean isItem(Item item, TagKey<Item> tag)
     {
-        return checkTag(ForgeRegistries.ITEMS, item, tag);
+        return item.builtInRegistryHolder().is(tag);
     }
 
-    public static boolean isBlock(BlockState first, Block second)
+    public static Optional<Item> randomItem(TagKey<Item> tag, RandomSource random)
     {
-        return first.is(second);
+        return getRandomElement(BuiltInRegistries.ITEM, tag, random);
+    }
+
+    public static Stream<Item> allItems(TagKey<Item> tag)
+    {
+        return BuiltInRegistries.ITEM.getOrCreateTag(tag).stream().map(Holder::value);
+    }
+
+    public static boolean isBlock(BlockState block, Block other)
+    {
+        return block.is(other);
     }
 
     public static boolean isBlock(BlockState state, TagKey<Block> tag)
     {
-        return isBlock(state.getBlock(), tag);
+        return state.is(tag);
     }
 
     public static boolean isBlock(Block block, TagKey<Block> tag)
     {
-        return checkTag(ForgeRegistries.BLOCKS, block, tag);
+        return block.builtInRegistryHolder().is(tag);
+    }
+
+    public static Optional<Block> randomBlock(TagKey<Block> tag, RandomSource random)
+    {
+        return getRandomElement(BuiltInRegistries.BLOCK, tag, random);
+    }
+
+    public static Stream<Block> allBlocks(TagKey<Block> tag)
+    {
+        return BuiltInRegistries.BLOCK.getOrCreateTag(tag).stream().map(Holder::value);
     }
 
     public static boolean isFluid(FluidState state, TagKey<Fluid> tag)
     {
-        return checkTag(ForgeRegistries.FLUIDS, state.getType(), tag);
+        return state.is(tag);
     }
 
-    public static boolean isFluid(Fluid first, TagKey<Fluid> second)
+    public static boolean isFluid(Fluid fluid, TagKey<Fluid> tag)
     {
-        return checkTag(ForgeRegistries.FLUIDS, first, second);
+        return fluid.is(tag);
     }
 
-    public static boolean isFluid(FluidState first, Fluid second)
+    public static boolean isFluid(FluidState fluid, Fluid other)
     {
-        return first.is(second);
+        return fluid.is(other);
+    }
+
+    public static Stream<Fluid> allFluids(TagKey<Fluid> tag)
+    {
+        return BuiltInRegistries.FLUID.getOrCreateTag(tag).stream().map(Holder::value);
     }
 
     public static boolean isEntity(Entity entity, TagKey<EntityType<?>> tag)
@@ -1491,29 +1564,83 @@ public final class Helpers
         return entity.is(tag);
     }
 
+    public static Optional<EntityType<?>> randomEntity(TagKey<EntityType<?>> tag, RandomSource random)
+    {
+        return getRandomElement(BuiltInRegistries.ENTITY_TYPE, tag, random);
+    }
+
     public static boolean isDamageSource(DamageSource source, TagKey<DamageType> tag)
     {
         return source.is(tag);
     }
 
+    /**
+     * @deprecated Use builtin registry holders where possible. Remove in 1.21
+     */
+    @Deprecated
     public static <T> Holder<T> getHolder(IForgeRegistry<T> registry, T object)
     {
         return registry.getHolder(object).orElseThrow();
     }
 
+    /**
+     * @deprecated Use one of the overloads for a specific type. Remove in 1.21
+     * @see #isItem(Item, TagKey)
+     * @see #isBlock(Block, TagKey)
+     * @see #isFluid(Fluid, TagKey)
+     * @see #isEntity(Entity, TagKey)
+     */
+    @Deprecated
     public static <T> boolean checkTag(IForgeRegistry<T> registry, T object, TagKey<T> tag)
     {
         return Objects.requireNonNull(registry.tags()).getTag(tag).contains(object);
     }
 
+    /**
+     * @deprecated Use one of the overloads for a specific type. Remove in 1.21
+     * @see #randomItem(TagKey, RandomSource)
+     * @see #randomBlock(TagKey, RandomSource)
+     * @see #randomEntity(TagKey, RandomSource)
+     */
+    @Deprecated
     public static <T> Optional<T> getRandomElement(IForgeRegistry<T> registry, TagKey<T> tag, RandomSource random)
     {
         return Objects.requireNonNull(registry.tags()).getTag(tag).getRandomElement(random);
     }
 
+    /**
+     * @deprecated Use one of the overloads for a specific type. Make {@code private} in 1.21
+     * @see #randomItem(TagKey, RandomSource)
+     * @see #randomBlock(TagKey, RandomSource)
+     * @see #randomEntity(TagKey, RandomSource)
+     */
     public static <T> Optional<T> getRandomElement(Registry<T> registry, TagKey<T> tag, RandomSource random)
     {
         return registry.getTag(tag).flatMap(set -> set.getRandomElement(random)).map(Holder::value);
+    }
+
+    /**
+     * @deprecated Use one of the overloads for a specific type. Remove in 1.21
+     * @see #allItems(TagKey)
+     * @see #allBlocks(TagKey)
+     * @see #allFluids(TagKey)
+     */
+    @Deprecated
+    public static <T> List<T> getAllTagValues(TagKey<T> tag, IForgeRegistry<T> registry)
+    {
+        return streamAllTagValues(tag, registry).toList();
+    }
+
+    /**
+     * @deprecated Use one of the overloads for a specific type. Remove in 1.21
+     * @see #allItems(TagKey)
+     * @see #allBlocks(TagKey)
+     * @see #allFluids(TagKey)
+     */
+    @Deprecated
+    public static <T> Stream<T> streamAllTagValues(TagKey<T> tag, IForgeRegistry<T> registry)
+    {
+        return Objects.requireNonNull(registry.tags()).getTag(tag).stream();
     }
 
     public static double sampleNoiseAndMapToRange(NormalNoise noise, double x, double y, double z, double min, double max)

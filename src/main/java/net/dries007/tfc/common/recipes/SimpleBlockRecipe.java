@@ -7,13 +7,13 @@
 package net.dries007.tfc.common.recipes;
 
 import com.google.gson.JsonObject;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
@@ -100,7 +100,7 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
             final boolean copyInputState = buffer.readBoolean();
             final BlockState state = copyInputState ?
                 Blocks.AIR.defaultBlockState() :
-                buffer.readRegistryIdUnsafe(ForgeRegistries.BLOCKS).defaultBlockState();
+                BuiltInRegistries.BLOCK.byId(buffer.readVarInt()).defaultBlockState();
             return factory.create(recipeId, ingredient, state, copyInputState);
         }
 
@@ -111,7 +111,7 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
             buffer.writeBoolean(recipe.copyInputState);
             if (!recipe.copyInputState)
             {
-                buffer.writeRegistryIdUnsafe(ForgeRegistries.BLOCKS, recipe.outputState.getBlock());
+                buffer.writeVarInt(BuiltInRegistries.BLOCK.getId(recipe.outputState.getBlock()));
             }
         }
 

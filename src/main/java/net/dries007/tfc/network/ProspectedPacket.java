@@ -6,37 +6,32 @@
 
 package net.dries007.tfc.network;
 
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.Block;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.registries.ForgeRegistries;
-
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.items.ProspectResult;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.events.ProspectedEvent;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Block;
+import net.minecraftforge.common.MinecraftForge;
 
-public class ProspectedPacket
+public record ProspectedPacket(
+    Block block,
+    ProspectResult result
+)
 {
-    private final Block block;
-    private final ProspectResult result;
-
-    public ProspectedPacket(Block block, ProspectResult result)
-    {
-        this.block = block;
-        this.result = result;
-    }
-
     ProspectedPacket(FriendlyByteBuf buffer)
     {
-        this.block = buffer.readRegistryIdUnsafe(ForgeRegistries.BLOCKS);
-        this.result = ProspectResult.valueOf(buffer.readByte());
+        this(
+            BuiltInRegistries.BLOCK.byId(buffer.readVarInt()),
+            ProspectResult.valueOf(buffer.readByte())
+        );
     }
 
     void encode(FriendlyByteBuf buffer)
     {
-        buffer.writeRegistryIdUnsafe(ForgeRegistries.BLOCKS, block);
+        buffer.writeVarInt(BuiltInRegistries.BLOCK.getId(block));
         buffer.writeByte(result.ordinal());
     }
 

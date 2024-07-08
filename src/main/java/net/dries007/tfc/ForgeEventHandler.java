@@ -11,6 +11,7 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -117,7 +118,6 @@ import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
@@ -220,6 +220,7 @@ import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
 import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.chunkdata.ChunkData;
+import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
 
 
 public final class ForgeEventHandler
@@ -351,7 +352,7 @@ public final class ForgeEventHandler
             final Level level = event.getObject().getLevel();
             final ChunkPos chunkPos = event.getObject().getPos();
 
-            ChunkData data;
+            final ChunkData data;
             if (level.isClientSide())
             {
                 // Retrieve either a new chunk data instance, or a populated instance that has already been synced through an earlier chunk watch packet.
@@ -359,20 +360,15 @@ public final class ForgeEventHandler
             }
             else
             {
-                // Chunk was created on server thread.
-                // We try and promote partial data, if it's available via an identifiable chunk generator.
-                // Otherwise, we fallback to empty data.
-                if (level instanceof ServerLevel serverLevel && serverLevel.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension ex)
-                {
-                    data = ex.chunkDataProvider().promotePartialOrCreate(chunkPos);
-                }
-                else
-                {
-                    data = new ChunkData(chunkPos);
-                }
-
+                // Chunk was created on server thread. This may be for several reasons
+                // - loading from disk (chunk data will be read separately, by chunk serializer), we just need to initialize correctly
+                // - promoting a proto chunk to level chunk (we initialize here, and then copy the proto chunk after)
+                // - other mods may create chunks, in which case we copy data if we have it or skip if we don't
+                data = level instanceof ServerLevel serverLevel && serverLevel.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension ex
+                    ? ex.chunkDataProvider().create(chunkPos)
+                    : new ChunkData(chunkPos);
             }
-            event.addCapability(ChunkData.KEY, data);
+            event.addCapability(ChunkDataCapability.KEY, new ChunkDataCapability(data));
         }
     }
 
@@ -1127,7 +1123,7 @@ public final class ForgeEventHandler
 
         if (entity.getType() == EntityType.SKELETON)
         {
-            entity.setItemSlot(EquipmentSlot.MAINHAND, Helpers.getRandomElement(ForgeRegistries.ITEMS, TFCTags.Items.SKELETON_WEAPONS, entity.level().getRandom()).orElse(Items.BOW).getDefaultInstance());
+            entity.setItemSlot(EquipmentSlot.MAINHAND, Helpers.randomItem(TFCTags.Items.SKELETON_WEAPONS, entity.level().getRandom()).orElse(Items.BOW).getDefaultInstance());
         }
         else if (entity.getType() == EntityType.SKELETON_HORSE && !TFCConfig.SERVER.enableVanillaSkeletonHorseSpawning.get())
         {
@@ -1521,9 +1517,9 @@ public final class ForgeEventHandler
             }
 
             final RecipeManagerAccessor accessor = (RecipeManagerAccessor) manager;
-            for (RecipeType<?> type : ForgeRegistries.RECIPE_TYPES)
+            for (RecipeType<?> type : BuiltInRegistries.RECIPE_TYPE)
             {
-                LOGGER.debug("Loaded {} recipes of type {}", accessor.invoke$byType((RecipeType) type).size(), ForgeRegistries.RECIPE_TYPES.getKey(type));
+                LOGGER.debug("Loaded {} recipes of type {}", accessor.invoke$byType((RecipeType) type).size(), BuiltInRegistries.RECIPE_TYPE.getKey(type));
             }
         }
     }

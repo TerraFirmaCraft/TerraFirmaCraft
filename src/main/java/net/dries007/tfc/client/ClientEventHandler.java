@@ -44,13 +44,12 @@ import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.renderer.entity.OcelotRenderer;
 import net.minecraft.client.renderer.entity.PandaRenderer;
 import net.minecraft.client.renderer.entity.PufferfishRenderer;
-import net.minecraft.client.renderer.entity.RabbitRenderer;
 import net.minecraft.client.renderer.entity.SalmonRenderer;
 import net.minecraft.client.renderer.entity.TropicalFishRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -69,7 +68,6 @@ import net.minecraftforge.client.model.DynamicFluidContainerModel;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.model.ContainedFluidModel;
@@ -85,6 +83,7 @@ import net.dries007.tfc.client.model.entity.BoarModel;
 import net.dries007.tfc.client.model.entity.BongoModel;
 import net.dries007.tfc.client.model.entity.CaribouModel;
 import net.dries007.tfc.client.model.entity.CougarModel;
+import net.dries007.tfc.client.model.entity.CrocodileModel;
 import net.dries007.tfc.client.model.entity.DeerModel;
 import net.dries007.tfc.client.model.entity.DirewolfModel;
 import net.dries007.tfc.client.model.entity.DogModel;
@@ -98,14 +97,12 @@ import net.dries007.tfc.client.model.entity.IsopodModel;
 import net.dries007.tfc.client.model.entity.JavelinModel;
 import net.dries007.tfc.client.model.entity.JellyfishModel;
 import net.dries007.tfc.client.model.entity.LionModel;
-import net.dries007.tfc.client.model.entity.PeafowlModel;
-import net.dries007.tfc.client.model.entity.TigerModel;
-import net.dries007.tfc.client.model.entity.CrocodileModel;
 import net.dries007.tfc.client.model.entity.LobsterModel;
 import net.dries007.tfc.client.model.entity.ManateeModel;
 import net.dries007.tfc.client.model.entity.MooseModel;
 import net.dries007.tfc.client.model.entity.MuskOxModel;
 import net.dries007.tfc.client.model.entity.OrcaModel;
+import net.dries007.tfc.client.model.entity.PeafowlModel;
 import net.dries007.tfc.client.model.entity.PenguinModel;
 import net.dries007.tfc.client.model.entity.PheasantModel;
 import net.dries007.tfc.client.model.entity.QuailModel;
@@ -118,9 +115,10 @@ import net.dries007.tfc.client.model.entity.TFCPigModel;
 import net.dries007.tfc.client.model.entity.TFCSheepModel;
 import net.dries007.tfc.client.model.entity.TFCTurtleModel;
 import net.dries007.tfc.client.model.entity.TFCWolfModel;
+import net.dries007.tfc.client.model.entity.TigerModel;
 import net.dries007.tfc.client.model.entity.TurkeyModel;
-import net.dries007.tfc.client.model.entity.WildebeestModel;
 import net.dries007.tfc.client.model.entity.WaterWheelModel;
+import net.dries007.tfc.client.model.entity.WildebeestModel;
 import net.dries007.tfc.client.model.entity.WindmillBladeModel;
 import net.dries007.tfc.client.model.entity.YakModel;
 import net.dries007.tfc.client.particle.AnimatedParticle;
@@ -141,21 +139,21 @@ import net.dries007.tfc.client.render.blockentity.AxleBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.BarrelBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.BellowsBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.BladedAxleBlockEntityRenderer;
+import net.dries007.tfc.client.render.blockentity.BowlBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.CharcoalForgeBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.CrankshaftBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.CrucibleBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.FirepitBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.GlassBasinBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.GrillBlockEntityRenderer;
+import net.dries007.tfc.client.render.blockentity.HandWheelBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.HotPouredGlassBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.JarsBlockEntityRenderer;
-import net.dries007.tfc.client.render.blockentity.HandWheelBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.LoomBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.NestBoxBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.PitKilnBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.PlacedItemBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.PotBlockEntityRenderer;
-import net.dries007.tfc.client.render.blockentity.BowlBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.QuernBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.SluiceBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.TFCBellBlockEntityRenderer;
@@ -309,7 +307,7 @@ public final class ClientEventHandler
                     });
 
                     Item shield = TFCItems.METAL_ITEMS.get(metal).get(Metal.ItemType.SHIELD).get();
-                    ItemProperties.register(shield, new ResourceLocation("blocking"), (stack, level, entity, unused) -> {
+                    ItemProperties.register(shield, Helpers.identifierMC("blocking"), (stack, level, entity, unused) -> {
                         if (entity == null)
                         {
                             return 0.0F;
@@ -343,7 +341,7 @@ public final class ClientEventHandler
 
             Stream.of(TFCBlocks.LARGE_VESSEL, TFCBlocks.GLAZED_LARGE_VESSELS.values()).<Supplier<? extends Block>>flatMap(Helpers::flatten).forEach(vessel -> ItemProperties.register(vessel.get().asItem(), Helpers.identifier("sealed"), (stack, level, entity, unused) -> stack.hasTag() ? 1.0f : 0f));
 
-            ItemProperties.register(TFCBlocks.LIGHT.get().asItem(), new ResourceLocation("level"), (stack, level, entity, unused) -> {
+            ItemProperties.register(TFCBlocks.LIGHT.get().asItem(), Helpers.identifierMC("level"), (stack, level, entity, unused) -> {
                 CompoundTag stackTag = stack.getTag();
                 if (stackTag != null && stackTag.contains("level", Tag.TAG_INT))
                 {
@@ -711,7 +709,7 @@ public final class ClientEventHandler
             }
         }
 
-        for (Item item : ForgeRegistries.ITEMS)
+        for (Item item : BuiltInRegistries.ITEM)
         {
             if (item instanceof JarItem jar)
             {
@@ -729,7 +727,7 @@ public final class ClientEventHandler
 
         event.register(CrankshaftBlockEntityRenderer.WHEEL_MODEL);
 
-        TFCConfig.CLIENT.additionalSpecialModels.get().forEach(s -> event.register(new ResourceLocation(s)));
+        TFCConfig.CLIENT.additionalSpecialModels.get().forEach(s -> event.register(Helpers.resourceLocation(s)));
 
     }
 
@@ -829,9 +827,9 @@ public final class ClientEventHandler
         event.register(seasonalFoliageColor, TFCBlocks.SPRUCE_KRUMMHOLZ.get().asItem());
         event.register(seasonalFoliageColor, TFCBlocks.ASPEN_KRUMMHOLZ.get().asItem());
 
-        for (Fluid fluid : ForgeRegistries.FLUIDS.getValues())
+        for (Fluid fluid : BuiltInRegistries.FLUID)
         {
-            if (Objects.requireNonNull(ForgeRegistries.FLUIDS.getKey(fluid)).getNamespace().equals(TerraFirmaCraft.MOD_ID))
+            if (Objects.requireNonNull(BuiltInRegistries.FLUID.getKey(fluid)).getNamespace().equals(TerraFirmaCraft.MOD_ID))
             {
                 event.register(new DynamicFluidContainerModel.Colors(), fluid.getBucket());
             }

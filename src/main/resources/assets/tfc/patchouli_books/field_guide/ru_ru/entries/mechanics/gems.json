@@ -24,7 +24,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "To cut a gem, you must craft $(thing)Sandpaper$(). Sandpaper is made from Black Sand, Flux, Glue, any Gem Powder, and Paper. Crafting an uncut gem with sandpaper cuts the gem."
+      "text": "Чтобы огранить драгоценный камень, вы должны создать $(thing)наждачную бумагу$(). Наждачная бумага изготавливается из черного песка, флюса, клея, любого порошка драгоценного камня и бумаги. Создание необработанного камня с наждачной бумагой огранит камень."
     },
     {
       "type": "patchouli:crafting",

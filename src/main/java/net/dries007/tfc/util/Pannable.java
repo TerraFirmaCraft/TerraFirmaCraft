@@ -49,10 +49,10 @@ public class Pannable extends BlockDefinition
         final List<ResourceLocation> list = new ArrayList<>(array.size());
         for (JsonElement element : array)
         {
-            list.add(new ResourceLocation(element.getAsString()));
+            list.add(Helpers.resourceLocation(element.getAsString()));
         }
         this.modelStages = list.toArray(new ResourceLocation[0]);
-        this.lootTable = new ResourceLocation(JsonHelpers.getAsString(json, "loot_table"));
+        this.lootTable = JsonHelpers.getResourceLocation(json, "loot_table");
     }
 
     public Pannable(ResourceLocation id, FriendlyByteBuf buffer)
@@ -62,9 +62,9 @@ public class Pannable extends BlockDefinition
         this.modelStages = new ResourceLocation[size];
         for (int i = 0; i < size; i++)
         {
-            modelStages[i] = new ResourceLocation(buffer.readUtf());
+            modelStages[i] = buffer.readResourceLocation();
         }
-        this.lootTable = new ResourceLocation(buffer.readUtf());
+        this.lootTable = buffer.readResourceLocation();
     }
 
     @Override

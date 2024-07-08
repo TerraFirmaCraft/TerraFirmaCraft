@@ -8,24 +8,19 @@ package net.dries007.tfc.client.particle;
 
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.world.Codecs;
 
 public class FluidParticleOption implements ParticleOptions
 {
-    public static final DynamicCommandExceptionType ERROR_UNKNOWN_FLUID = new DynamicCommandExceptionType(f -> Component.translatable("tfc.commands.particle.no_fluid", f));
-
     @SuppressWarnings("deprecation")
     public static final ParticleOptions.Deserializer<FluidParticleOption> DESERIALIZER = new Deserializer<>() {
         @Override
@@ -33,19 +28,14 @@ public class FluidParticleOption implements ParticleOptions
         {
             reader.expect(' ');
             final ResourceLocation res = ResourceLocation.read(reader);
-            final Fluid fluid = ForgeRegistries.FLUIDS.getValue(res);
-            if (fluid == null)
-            {
-                throw ERROR_UNKNOWN_FLUID.create(res.toString());
-            }
+            final Fluid fluid = BuiltInRegistries.FLUID.get(res);
             return new FluidParticleOption(type, fluid);
         }
 
         @Override
         public FluidParticleOption fromNetwork(ParticleType<FluidParticleOption> type, FriendlyByteBuf buffer)
         {
-            Fluid fluid = buffer.readRegistryIdUnsafe(ForgeRegistries.FLUIDS);
-            if (fluid == null) fluid = Fluids.WATER;
+            final Fluid fluid = BuiltInRegistries.FLUID.byId(buffer.readVarInt());
             return new FluidParticleOption(type, fluid);
         }
     };
@@ -78,7 +68,7 @@ public class FluidParticleOption implements ParticleOptions
     @Override
     public void writeToNetwork(FriendlyByteBuf buffer)
     {
-        buffer.writeRegistryIdUnsafe(ForgeRegistries.FLUIDS, fluid);
+        buffer.writeVarInt(BuiltInRegistries.FLUID.getId(fluid));
     }
 
     /**
@@ -87,7 +77,7 @@ public class FluidParticleOption implements ParticleOptions
     @Override
     public String writeToString()
     {
-        return ForgeRegistries.PARTICLE_TYPES.getKey(type) + " " + new FluidStack(fluid, 1).getDisplayName();
+        return BuiltInRegistries.PARTICLE_TYPE.getKey(type) + " " + new FluidStack(fluid, 1).getDisplayName();
     }
 
 }

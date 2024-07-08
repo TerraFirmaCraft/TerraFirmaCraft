@@ -6,29 +6,29 @@
 
 package net.dries007.tfc.network;
 
+import net.dries007.tfc.common.entities.livestock.pet.TamableMammal;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.entities.livestock.pet.TamableMammal;
-
-public class PetCommandPacket
+public record PetCommandPacket(
+    int entityId,
+    int command
+)
 {
-    private final int entityId;
-    private final int command;
-
     public PetCommandPacket(Entity entityId, TamableMammal.Command command)
     {
-        this.entityId = entityId.getId();
-        this.command = command.ordinal();
+        this(entityId.getId(), command.ordinal());
     }
 
     PetCommandPacket(FriendlyByteBuf buffer)
     {
-        this.entityId = buffer.readVarInt();
-        this.command = buffer.readVarInt();
+        this(
+            buffer.readVarInt(),
+            buffer.readVarInt()
+        );
     }
 
     void encode(FriendlyByteBuf buffer)

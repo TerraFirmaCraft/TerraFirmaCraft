@@ -199,7 +199,7 @@ public abstract class CustomComponent implements ICustomComponent
     {
         try
         {
-            return Optional.of(new ResourceLocation(variable));
+            return Optional.of(Helpers.resourceLocation(variable));
         }
         catch (ResourceLocationException e)
         {

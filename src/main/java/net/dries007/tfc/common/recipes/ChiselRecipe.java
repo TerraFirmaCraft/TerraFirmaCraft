@@ -11,6 +11,7 @@ import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -30,7 +31,6 @@ import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
@@ -198,7 +198,7 @@ public class ChiselRecipe extends SimpleBlockRecipe
         public ChiselRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
         {
             final BlockIngredient ingredient = BlockIngredient.fromNetwork(buffer);
-            final BlockState state = buffer.readRegistryIdUnsafe(ForgeRegistries.BLOCKS).defaultBlockState();
+            final BlockState state = BuiltInRegistries.BLOCK.byId(buffer.readVarInt()).defaultBlockState();
             final Mode mode = buffer.readEnum(Mode.class);
             final Ingredient itemIngredient = Helpers.decodeNullable(buffer, Ingredient::fromNetwork);
             final ItemStackProvider drop = ItemStackProvider.fromNetwork(buffer);
@@ -209,7 +209,7 @@ public class ChiselRecipe extends SimpleBlockRecipe
         public void toNetwork(FriendlyByteBuf buffer, ChiselRecipe recipe)
         {
             recipe.ingredient.toNetwork(buffer);
-            buffer.writeRegistryIdUnsafe(ForgeRegistries.BLOCKS, recipe.outputState.getBlock());
+            buffer.writeVarInt(BuiltInRegistries.BLOCK.getId(recipe.outputState.getBlock()));
             buffer.writeEnum(recipe.getMode());
             Helpers.encodeNullable(recipe.itemIngredient, buffer, Ingredient::toNetwork);
             recipe.extraDrop.toNetwork(buffer);

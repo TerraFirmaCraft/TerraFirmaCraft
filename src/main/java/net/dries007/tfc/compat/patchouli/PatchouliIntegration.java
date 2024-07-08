@@ -30,8 +30,6 @@ import vazkii.patchouli.api.IStateMatcher;
 import vazkii.patchouli.api.PatchouliAPI;
 
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
-import net.dries007.tfc.common.blockentities.rotation.WaterWheelBlockEntity;
-import net.dries007.tfc.common.blockentities.rotation.WindmillBlockEntity;
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
 import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -61,7 +59,7 @@ public final class PatchouliIntegration
 
     public static ItemStack getFieldGuide(boolean useHotReloadedBook)
     {
-        return PatchouliAPI.get().getBookStack(useHotReloadedBook ? new ResourceLocation("patchouli", "field_guide") : BOOK_ID);
+        return PatchouliAPI.get().getBookStack(useHotReloadedBook ? Helpers.resourceLocation("patchouli", "field_guide") : BOOK_ID);
     }
 
     /**

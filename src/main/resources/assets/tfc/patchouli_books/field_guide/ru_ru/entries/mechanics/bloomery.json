@@ -16,25 +16,25 @@
     {
       "type": "patchouli:multiblock",
       "multiblock_id": "tfc:bloomery",
-      "name": "Доменная печь",
+      "name": "Сыродутный горн",
       "text": "Доменная печь минимального размера. Блок доменной печи открывается и закрывается с помощью $(item)$(k:key.use)$().",
       "enable_visualize": true
     },
     {
       "type": "patchouli:text",
-      "text": "The bloomery can contain up to a maximum of 48 $(thing)Inputs$(), with 16 of each item per layer of the chimney. To add layers to the chimney, stack up two more layers of stone blocks.$(br2)To add items to the bloomery, climb up to the top and throw items inside. A tower of grey ore should form."
+      "text": "Сыродутный горн может содержать до 48 $(thing)входящих предметов$(), с 16 предметами каждого типа на слой трубы. Чтобы добавить слои к трубе, сложите два дополнительных слоя каменных блоков.$(br2)Чтобы добавить предметы в горн, поднимитесь наверх и бросьте предметы внутрь. Должна сформироваться башня из серой руды."
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/tutorial/bloomery_hole.png"
       ],
-      "text": "Добавление предметов в доменную печь.",
+      "text": "Добавление предметов в сыродутный горн.",
       "border": true
     },
     {
       "type": "patchouli:text",
-      "text": "The bloomery consumes $(thing)2 Charcoal$(), and $(thing)100 mB of Cast Iron$() to produce one $(thing)Bloom$(). After filling the bloomery with a combination of $(thing)Charcoal$() and $(thing)Ore$(), light the bloomery block, and wait 15 hours for the bloomery to smelt. When the bloomery shuts off, it leaves behind a $(thing)Bloom$() block. This contains $(thing)Raw Iron Blooms$() which can be obtained by mining the $(thing)Bloom$() repeatedly with a pickaxe."
+      "text": "Сыродутный горн потребляет $(thing)2 угля$() и $(thing)100 мБ чугуна$(), чтобы произвести одну $(thing)крица$(). После заполнения горна комбинацией $(thing)угля$() и $(thing)руды$(), зажгите блок горна и подождите 15 часов, пока руда плавится. Когда горн погаснет, он оставит блок $(thing)крицы$(). Он содержит $(thing)сырую железную крицу$(), которую можно добыть, дробя $(thing)крицу$() киркой."
     },
     {
       "type": "patchouli:multiblock",
@@ -52,7 +52,7 @@
         }
       },
       "name": "Блок слитка",
-      "text": "A large $(thing)Bloom$().",
+      "text": "Большая $(thing)крица$().",
       "enable_visualize": false
     },
     {
@@ -67,7 +67,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)Если в доменной печи окажется больше предметов, чем она может вместить на основе своего дымохода, она попытается вытолкнуть их наружу.$()$(li)Чтобы забрать свои предметы из незажженной доменной печи, не ломайте башню из расплавленных блоков. Сломайте блок доменной печи.$()$(li)Слитки будут плавиться только в чугун, а не в кованое железо. Их нужно обрабатывать!$()",
+      "text": "$(li)Если в сыродутном горне окажется больше предметов, чем он может вместить на основе своего дымохода, он попытается вытолкнуть их наружу.$()$(li)Чтобы забрать свои предметы из незажженного горна, не ломайте башню из расплавленных блоков. Сломайте блок сыродутного горна.$()$(li)Слитки будут плавиться только в чугун, а не в кованое железо. Их нужно обрабатывать!$()",
       "title": "Заметки кузнеца"
     }
   ],

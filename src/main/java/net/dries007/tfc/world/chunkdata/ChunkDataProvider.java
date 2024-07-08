@@ -21,7 +21,6 @@ import net.minecraft.world.level.chunk.ProtoChunk;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.world.ChunkGeneratorExtension;
-import net.dries007.tfc.world.settings.RockLayerSettings;
 
 /**
  * This acts as a bridge between the {@link ChunkGenerator}, TFC's chunk data caches and tracking, and the {@link ChunkDataGenerator}.
@@ -46,7 +45,6 @@ public final class ChunkDataProvider
     private final ChunkDataGenerator generator;
 
     private final Map<ProtoChunk, ChunkData> partialChunkData;
-    private final Map<ChunkPos, ProtoChunk> partialChunkLookup; // Needed in order to find pos -> chunks, as when we promote partial -> full, we don't have access to the protochunk.
 
     public ChunkDataProvider(ChunkDataGenerator generator)
     {
@@ -54,7 +52,6 @@ public final class ChunkDataProvider
 
         // All references to chunks are kept as weak, and thus are removed automatically.
         this.partialChunkData = new MapMaker().weakKeys().concurrencyLevel(4).makeMap();
-        this.partialChunkLookup = new MapMaker().weakValues().concurrencyLevel(4).makeMap();
     }
 
     public ChunkDataGenerator generator()
@@ -86,11 +83,7 @@ public final class ChunkDataProvider
         else if (chunk instanceof ProtoChunk proto)
         {
             // Ensure we only generate data for proto chunks
-            final ChunkData data = partialChunkData.computeIfAbsent(proto, c -> {
-                final ChunkData d = new ChunkData(generator, c.getPos());
-                partialChunkLookup.put(c.getPos(), c);
-                return d;
-            });
+            final ChunkData data = partialChunkData.computeIfAbsent(proto, c -> new ChunkData(generator, c.getPos()));
             if (data.status() == ChunkData.Status.EMPTY)
             {
                 generator.generate(data);
@@ -106,18 +99,20 @@ public final class ChunkDataProvider
     }
 
     /**
-     * Get chunk data, by looking up the position in the partial chunk lookup.
-     * Use {@link #get(ChunkAccess)}, or one of the variants that uses a level if that is available as this may return an {@link ChunkData#EMPTY} instance.
-     * As a result, should <strong>only</strong> be used for read-only access of the chunk data, when a level is not available.
+     * @deprecated Use {@link #get(ChunkAccess)} if you can access a chunk safely, or {@link #createAndGeneratePartial(ChunkPos)} if you cannot,
+     * and be aware of the caveats of doing the latter.
      */
+    @Deprecated(forRemoval = true)
     public ChunkData get(ChunkPos pos)
     {
-        final ChunkAccess chunk = partialChunkLookup.get(pos);
-        if (chunk != null)
-        {
-            return get(chunk);
-        }
-        return ChunkData.EMPTY;
+        return createAndGeneratePartial(pos);
+    }
+
+    public ChunkData createAndGeneratePartial(ChunkPos pos)
+    {
+        final ChunkData data = new ChunkData(generator, pos);
+        generator.generate(data);
+        return data;
     }
 
     /**
@@ -125,11 +120,7 @@ public final class ChunkDataProvider
      */
     public void loadPartial(ProtoChunk chunk, CompoundTag nbt)
     {
-        partialChunkData.computeIfAbsent(chunk, c -> {
-            ChunkData d = new ChunkData(generator, c.getPos());
-            partialChunkLookup.put(c.getPos(), c);
-            return d;
-        }).deserializeNBT(nbt);
+        partialChunkData.computeIfAbsent(chunk, c -> new ChunkData(generator, c.getPos())).deserializeNBT(nbt);
     }
 
     /**
@@ -142,20 +133,13 @@ public final class ChunkDataProvider
         return data == null ? null : data.serializeNBT();
     }
 
-    /**
-     * Promote a partial chunk data instance to a full level chunk, or creates a new instance if none exists.
-     * Removes the partial instance from internal cache.
-     */
-    public ChunkData promotePartialOrCreate(ChunkPos pos)
+    public void promotePartial(ProtoChunk protoChunk, LevelChunk levelChunk)
     {
-        final ProtoChunk partial = partialChunkLookup.remove(pos);
-        final ChunkData partialData = partialChunkData.remove(partial);
-        if (partialData != null)
-        {
-            // Partial data exists, this is usually for a proto chunk.
-            return partialData;
-        }
-        // No partial data, so we initialize a new chunk data. This is for data read from disk, which will then be initialized later.
+        ChunkData.update(levelChunk, partialChunkData.remove(protoChunk));
+    }
+
+    public ChunkData create(ChunkPos pos)
+    {
         return new ChunkData(generator, pos);
     }
 

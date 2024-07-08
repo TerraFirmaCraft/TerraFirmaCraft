@@ -6,23 +6,29 @@
 
 package net.dries007.tfc.world.noise;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.levelgen.DensityFunction;
+import net.minecraft.world.level.levelgen.NoiseChunk;
+
+import net.dries007.tfc.world.MutableDensityFunctionContext;
 
 /**
- * An abstraction for trilinear interpolation.
- * Source coordinates are full resolution but only sampled at values that are divisible by the cell width / cell height.
- * The iteration order here is changed to go:
- * 1) Sample / swap slices (cell x)
- * 2) Select slice y/z (cell y, cell z)
- * 3) Select x/z (local x, local z)
- * 4) Select y (local y)
- *
- * @see net.minecraft.world.level.levelgen.NoiseChunk.NoiseInterpolator
+ * An abstraction for trilinear interpolation. Source coordinates are full resolution but only sampled at values
+ * that are divisible by the cell width / cell height. Loosely based on {@link NoiseChunk.NoiseInterpolator},
+ * although with a modified iteration order:
+ * <ol>
+ *     <li>Sample / swap slices (cell x)</li>
+ *     <li>Select slice y/z (cell y, cell z)</li>
+ *     <li>Select x/z (local x, local z)</li>
+ *     <li>Select y (local y)</li>
+ * </ol>
  */
 public final class TrilinearInterpolator
 {
     private final ChunkNoiseSamplingSettings settings;
-    private final Source source;
+    private final DensityFunction function;
+    private final MutableDensityFunctionContext point;
 
     private double[][] slice0;
     private double[][] slice1;
@@ -30,10 +36,11 @@ public final class TrilinearInterpolator
     private double valueX0Z, valueX1Z;
     private double valueXYZ;
 
-    public TrilinearInterpolator(ChunkNoiseSamplingSettings settings, Source source)
+    public TrilinearInterpolator(ChunkNoiseSamplingSettings settings, DensityFunction function)
     {
         this.settings = settings;
-        this.source = source;
+        this.function = function;
+        this.point = new MutableDensityFunctionContext(new BlockPos.MutableBlockPos());
 
         this.slice0 = allocateSlice(settings.cellCountY(), settings.cellCountXZ());
         this.slice1 = allocateSlice(settings.cellCountY(), settings.cellCountXZ());
@@ -99,7 +106,9 @@ public final class TrilinearInterpolator
             for (int dy = 0; dy < settings.cellCountY() + 1; ++dy)
             {
                 final int cellY = dy + settings.firstCellY();
-                slice[dz][dy] = source.sample(cellX * cellWidth, cellY * cellHeight, cellZ * cellWidth);
+
+                point.cursor().set(cellX * cellWidth, cellY * cellHeight, cellZ * cellWidth);
+                slice[dz][dy] = function.compute(point);
             }
         }
     }
@@ -114,11 +123,5 @@ public final class TrilinearInterpolator
             slice[k] = new double[sizeY];
         }
         return slice;
-    }
-
-    @FunctionalInterface
-    public interface Source
-    {
-        double sample(int x, int y, int z);
     }
 }

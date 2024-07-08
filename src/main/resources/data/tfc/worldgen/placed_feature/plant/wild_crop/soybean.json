@@ -17,8 +17,7 @@
       "predicate": {
         "type": "would_survive",
         "state": {
-          "Name": "tfc:wild_crop/soybean",
-          "Properties": {}
+          "Name": "tfc:wild_crop/soybean"
         }
       }
     }

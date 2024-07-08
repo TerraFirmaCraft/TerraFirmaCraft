@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.recipes;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
@@ -18,32 +19,71 @@ import com.google.gson.JsonSyntaxException;
 import net.minecraft.core.NonNullList;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapedRecipe;
-import net.minecraftforge.common.ForgeConfig;
 
+import net.minecraftforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
+
+import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
+import net.dries007.tfc.util.Helpers;
 
 /**
  * Most of these are copied from {@link net.minecraft.world.item.crafting.ShapedRecipe} and {@link net.minecraft.world.item.crafting.ShapelessRecipe} due to access level concerns
  */
 public final class RecipeHelpers
 {
-    private static final ThreadLocal<CraftingContainer> CRAFTING_CONTAINER = ThreadLocal.withInitial(() -> null);
+    // todo: when porting, we can remove the `CraftingInput` construct here, and just store a `Iterable<ItemStack>`
+    private static final CraftingInput EMPTY = new CraftingInput(null, Collections::emptyIterator);
+    private static final ThreadLocal<CraftingInput> CRAFTING_INPUT = ThreadLocal.withInitial(() -> EMPTY);
 
+    /**
+     * @deprecated Use {@link #clearCraftingInput()} for {@code null} inputs, or {@link #setCraftingInput(CraftingContainer)} otherwise.
+     */
+    @Deprecated
     public static void setCraftingContainer(@Nullable CraftingContainer container)
     {
-        CRAFTING_CONTAINER.set(container);
+        CRAFTING_INPUT.set(container == null ? EMPTY : new CraftingInput(container, Helpers.iterate(container)));
+    }
+
+    public static void clearCraftingInput()
+    {
+        CRAFTING_INPUT.set(EMPTY);
+    }
+
+    public static void setCraftingInput(CraftingContainer container)
+    {
+        CRAFTING_INPUT.set(new CraftingInput(container, Helpers.iterate(container)));
+    }
+
+    public static void setCraftingInput(@Nullable IItemHandler inventory, int startSlotInclusive, int endSlotExclusive)
+    {
+        CRAFTING_INPUT.set(inventory == null ? EMPTY : new CraftingInput(null, Helpers.iterate(inventory, startSlotInclusive, endSlotExclusive)));
     }
 
     /**
-     * @return The crafting container of the player currently crafting an recipe which might need it. Provided by {@link AdvancedShapedRecipe} and {@link AdvancedShapelessRecipe}. Used by {@link net.dries007.tfc.common.recipes.outputs.AddBaitToRodModifier}.
+     * @deprecated Use {@link #getCraftingInput()} instead, which supports more possible recipe types
      */
     @Nullable
+    @Deprecated
     public static CraftingContainer getCraftingContainer()
     {
-        return CRAFTING_CONTAINER.get();
+        return CRAFTING_INPUT.get().container();
     }
+
+    /**
+     * Crafting inputs are any item stacks provided to the input of a crafting operation. This allows {@link ItemStackProvider}s to reference all inputs,
+     * for instance taking the lowest expiry date of all inputs.
+     *
+     * @return An iterator over item stacks which are provided to the input.
+     */
+    public static Iterable<ItemStack> getCraftingInput()
+    {
+        return CRAFTING_INPUT.get().iterator();
+    }
+
+    record CraftingInput(@Nullable CraftingContainer container, Iterable<ItemStack> iterator) {}
 
     public static NonNullList<Ingredient> dissolvePattern(String[] pattern, Map<String, Ingredient> keys, int patternWidth, int patternHeight)
     {

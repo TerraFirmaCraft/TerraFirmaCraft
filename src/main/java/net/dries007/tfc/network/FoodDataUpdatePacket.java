@@ -6,32 +6,33 @@
 
 package net.dries007.tfc.network;
 
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.player.Player;
-
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.capabilities.food.Nutrient;
 import net.dries007.tfc.common.capabilities.food.TFCFoodData;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.player.Player;
 
-public class FoodDataUpdatePacket
+public record FoodDataUpdatePacket(
+    float[] nutrients,
+    float thirst
+)
 {
-    private final float[] nutrients;
-    private final float thirst;
-
-    public FoodDataUpdatePacket(float[] nutrients, float thirst)
+    private static float[] readNutrients(FriendlyByteBuf buffer)
     {
-        this.nutrients = nutrients;
-        this.thirst = thirst;
-    }
-
-    FoodDataUpdatePacket(FriendlyByteBuf buffer)
-    {
-        this.nutrients = new float[Nutrient.TOTAL];
+        float[] nutrients = new float[Nutrient.TOTAL];
         for (int i = 0; i < nutrients.length; i++)
         {
             nutrients[i] = buffer.readFloat();
         }
-        this.thirst = buffer.readFloat();
+        return nutrients;
+    }
+
+    FoodDataUpdatePacket(FriendlyByteBuf buffer)
+    {
+        this(
+            readNutrients(buffer),
+            buffer.readFloat()
+        );
     }
 
     void encode(FriendlyByteBuf buffer)

@@ -16,7 +16,6 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
@@ -115,7 +114,7 @@ public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
         }
         if (creationDate == NEVER_DECAY_CREATION_DATE)
         {
-            return NEVER_DECAY_CREATION_DATE;
+            return NEVER_DECAY_DATE;
         }
         final long rottenDate = calculateRottenDate(creationDate);
         if (rottenDate < Calendars.get().getTicks())
@@ -204,7 +203,7 @@ public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
         ListTag traitList = nbt.getList("traits", Tag.TAG_STRING);
         for (int i = 0; i < traitList.size(); i++)
         {
-            final FoodTrait trait = FoodTrait.getTrait(new ResourceLocation(traitList.getString(i)));
+            final FoodTrait trait = FoodTrait.getTrait(Helpers.resourceLocation(traitList.getString(i)));
             if (trait != null)
             {
                 foodTraits.add(trait);

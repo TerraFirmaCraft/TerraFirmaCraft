@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.mojang.logging.LogUtils;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.BlockItem;
@@ -18,7 +19,6 @@ import net.minecraft.world.item.HorseArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TieredItem;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.slf4j.Logger;
 
 import net.dries007.tfc.mixin.accessor.ItemAccessor;
@@ -44,7 +44,7 @@ public final class ItemSizeManager
     public static void setupItemStackSizeOverrides()
     {
         // Initialize the list of editable items here, as we can't rely on checking their stack size later as it may have been modified
-        for (Item item : ForgeRegistries.ITEMS.getValues())
+        for (Item item : BuiltInRegistries.ITEM)
         {
             // Two checks: item is naturally stackable, and does not *appear* to have stack-specific behavior
             final ItemStack stack = new ItemStack(item);
@@ -66,7 +66,7 @@ public final class ItemSizeManager
             setupItemStackSizeOverrides();
         }
 
-        LOGGER.info("Editing item stack sizes: found {} editable of {} total.", MODIFIABLE_ITEMS.size(), ForgeRegistries.ITEMS.getValues().size());
+        LOGGER.info("Editing item stack sizes: found {} editable of {} total.", MODIFIABLE_ITEMS.size(), BuiltInRegistries.ITEM.size());
         for (Item item : MODIFIABLE_ITEMS)
         {
             final ItemStack stack = new ItemStack(item);

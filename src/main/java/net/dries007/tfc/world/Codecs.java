@@ -49,7 +49,7 @@ public final class Codecs extends ExtraCodecs
     public static final Codec<BlockState> BLOCK_STATE = Codec.either(
         BLOCK.xmap(Block::defaultBlockState, BlockState::getBlock),
         BlockState.CODEC
-    ).xmap(e -> e.map(e1 -> e1, e1 -> e1), Either::right);
+    ).xmap(e -> e.map(e1 -> e1, e1 -> e1), e -> e == e.getBlock().defaultBlockState() ? Either.left(e) : Either.right(e));
 
     /**
      * A codec for a mapping from blocks -> {weighted block states}.

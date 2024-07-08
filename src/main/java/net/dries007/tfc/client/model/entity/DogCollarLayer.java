@@ -13,10 +13,11 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 
 import net.dries007.tfc.common.entities.livestock.pet.Dog;
+import net.dries007.tfc.util.Helpers;
 
 public class DogCollarLayer extends RenderLayer<Dog, DogModel>
 {
-    private static final ResourceLocation WOLF_COLLAR_LOCATION = new ResourceLocation("textures/entity/wolf/wolf_collar.png");
+    private static final ResourceLocation WOLF_COLLAR_LOCATION = Helpers.identifierMC("textures/entity/wolf/wolf_collar.png");
 
     public DogCollarLayer(RenderLayerParent<Dog, DogModel> pRenderer)
     {

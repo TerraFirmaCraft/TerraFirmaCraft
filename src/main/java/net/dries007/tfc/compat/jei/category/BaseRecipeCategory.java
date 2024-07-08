@@ -29,10 +29,11 @@ import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
 import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.compat.jei.JEIIntegration;
+import net.dries007.tfc.util.Helpers;
 
 public abstract class BaseRecipeCategory<T> implements IRecipeCategory<T>
 {
-    public static final ResourceLocation ICONS = new ResourceLocation(TerraFirmaCraft.MOD_ID, "textures/gui/jei/icons.png");
+    public static final ResourceLocation ICONS = Helpers.identifier("textures/gui/jei/icons.png");
 
     /**
      * Do not call outside the level. Duh.
@@ -57,10 +58,17 @@ public abstract class BaseRecipeCategory<T> implements IRecipeCategory<T>
             .toList();
     }
 
+    public static List<ItemStack> collapse(ItemStackProvider output)
+    {
+        return List.of(output.getEmptyStack());
+    }
+
     public static List<ItemStack> collapse(List<ItemStack> inputs, ItemStackProvider output)
     {
         if (inputs.isEmpty())
-            return List.of(output.getStack(ItemStack.EMPTY));
+        {
+            return List.of(output.getEmptyStack());
+        }
         return inputs.stream()
             .map(output::getStack)
             .map(FoodCapability::setStackNonDecaying) // Avoid decaying in JEI views

@@ -16,6 +16,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.material.Fluid;
@@ -35,7 +36,7 @@ public class FluidProperty extends Property<FluidProperty.FluidKey>
             }
             else if (obj instanceof Fluid fluid)
             {
-                return ForgeRegistries.FLUIDS.getKey(fluid);
+                return BuiltInRegistries.FLUID.getKey(fluid);
             }
             else if (obj instanceof RegistryObject<?> reg)
             {
@@ -93,10 +94,10 @@ public class FluidProperty extends Property<FluidProperty.FluidKey>
         {
             return key;
         }
-        key = keysById.get(Objects.requireNonNull(ForgeRegistries.FLUIDS.getKey(fluid)).getPath());
+        key = keysById.get(Objects.requireNonNull(BuiltInRegistries.FLUID.getKey(fluid)).getPath());
         if (key == null)
         {
-            throw new IllegalArgumentException("Tried to get the FluidKey for a fluid [" + ForgeRegistries.FLUIDS.getKey(fluid) + "] which was not present in property " + getName() + " / " + getPossibleValues());
+            throw new IllegalArgumentException("Tried to get the FluidKey for a fluid [" + BuiltInRegistries.FLUID.getKey(fluid) + "] which was not present in property " + getName() + " / " + getPossibleValues());
         }
         keysByFluid.put(fluid, key);
         return key;

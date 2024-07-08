@@ -9,9 +9,9 @@ package net.dries007.tfc.world.feature;
 import java.util.function.Function;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.world.Codecs;
@@ -26,7 +26,7 @@ public record BlockConfig<T extends Block>(T block) implements FeatureConfigurat
             {
                 return DataResult.success(new BlockConfig<>(t));
             }
-            return DataResult.error(() -> onError + ": " + ForgeRegistries.BLOCKS.getKey(block));
+            return DataResult.error(() -> onError + ": " + BuiltInRegistries.BLOCK.getKey(block));
         }, BlockConfig::block);
     }
 }

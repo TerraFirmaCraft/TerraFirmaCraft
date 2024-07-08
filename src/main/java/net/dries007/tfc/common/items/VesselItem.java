@@ -103,7 +103,7 @@ public class VesselItem extends Item
     public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack carried, Slot slot, ClickAction action, Player player, SlotAccess carriedSlot)
     {
         final VesselLike vessel = getInventoryVessel(stack);
-        if (vessel != null && TFCConfig.SERVER.enableSmallVesselInventoryInteraction.get() && !player.isCreative() && action == ClickAction.SECONDARY)
+        if (vessel != null && TFCConfig.SERVER.enableSmallVesselInventoryInteraction.get() && !player.isCreative() && action == ClickAction.SECONDARY && slot.allowModification(player))
         {
             if (!carried.isEmpty())
             {

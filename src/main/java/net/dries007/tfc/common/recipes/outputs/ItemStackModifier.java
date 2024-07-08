@@ -15,12 +15,14 @@ import net.dries007.tfc.common.recipes.RecipeHelpers;
 public interface ItemStackModifier
 {
     /**
-     * Apply the modifier to the stack and input pair.
+     * Apply the modifier to the stack and input pair. This only supports single input -> output relations, for modifiers that
+     * wish to consider all possible inputs, they must use {@link RecipeHelpers#getCraftingInput()}
      *
      * @param stack The current output stack, which is passed between modifiers. A no-op modifier would just return this stack.
      * @param input The provided 'input' stack - do not modify this stack during the modifier.
      * @return The stack, after modification. Modifying the {@code stack} parameter directly without copying is allowed.
-     * @see RecipeHelpers#getCraftingContainer()
+     *
+     * @see RecipeHelpers#getCraftingInput()
      */
     ItemStack apply(ItemStack stack, ItemStack input);
 

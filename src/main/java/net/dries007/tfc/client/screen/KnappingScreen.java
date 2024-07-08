@@ -12,6 +12,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -19,7 +20,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.screen.button.KnappingButton;
@@ -50,9 +50,7 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
 
     public static ResourceLocation getButtonLocation(Item item, boolean disabled)
     {
-        ResourceLocation buttonAssetPath = ForgeRegistries.ITEMS.getKey(item);
-        assert buttonAssetPath != null;
-        return Helpers.identifier("textures/gui/knapping/" + buttonAssetPath.getPath() + (disabled ? "_disabled" : "") + ".png");
+        return Helpers.identifier("textures/gui/knapping/" + BuiltInRegistries.ITEM.getKey(item).getPath() + (disabled ? "_disabled" : "") + ".png");
     }
 
     public KnappingScreen(KnappingContainer container, Inventory inv, Component name)

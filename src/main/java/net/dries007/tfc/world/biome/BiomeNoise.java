@@ -146,7 +146,14 @@ public final class BiomeNoise
 
     public static Noise2D lake(long seed)
     {
-        return new OpenSimplex2D(seed).octaves(4).spread(0.15f).scaled(SEA_LEVEL_Y - 12, SEA_LEVEL_Y - 2);
+        return new OpenSimplex2D(seed).octaves(4).spread(0.15f).scaled(SEA_LEVEL_Y - 12, SEA_LEVEL_Y + 2)
+            .add(new OpenSimplex2D(seed + 1)
+                .octaves(5)
+                .spread(0.1f)
+                .map(val -> val * val * val * val)
+                .scaled(-2, 2)
+                .clamped(0, 2)
+            );
     }
 
     /**

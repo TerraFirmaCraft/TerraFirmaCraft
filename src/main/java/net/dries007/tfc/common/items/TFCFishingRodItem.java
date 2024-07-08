@@ -136,7 +136,7 @@ public class TFCFishingRodItem extends FishingRodItem
     public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack carried, Slot slot, ClickAction action, Player player, SlotAccess carriedSlot)
     {
         final BaitType type = getBaitType(carried);
-        if (type != BaitType.NONE && !player.isCreative() && action == ClickAction.SECONDARY)
+        if (type != BaitType.NONE && !player.isCreative() && action == ClickAction.SECONDARY && slot.allowModification(player))
         {
             if (type == BaitType.SMALL && Helpers.isItem(stack, TFCTags.Items.HOLDS_SMALL_FISHING_BAIT))
             {

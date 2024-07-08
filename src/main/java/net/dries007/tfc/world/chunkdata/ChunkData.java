@@ -9,24 +9,14 @@ package net.dries007.tfc.world.chunkdata;
 import java.util.Map;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.capabilities.CapabilityToken;
-import net.minecraftforge.common.capabilities.ICapabilitySerializable;
-import net.minecraftforge.common.util.LazyOptional;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.network.ChunkWatchPacket;
 import net.dries007.tfc.world.ChunkGeneratorExtension;
-
-import static net.dries007.tfc.TerraFirmaCraft.*;
 
 /**
  * Additional data which is attached to chunks during world generation and used by various phase of the TFC chunk generator,
@@ -36,13 +26,9 @@ import static net.dries007.tfc.TerraFirmaCraft.*;
  * In order to query chunk data during world generation, <strong>always</strong> go through {@link ChunkDataProvider}, which can be
  * accessed through {@link ChunkGeneratorExtension} - either accessed directly, i.e. in feature generation, or through the level.
  */
-public class ChunkData implements ICapabilitySerializable<CompoundTag>
+public class ChunkData
 {
     public static final ChunkData EMPTY = new ChunkData.Immutable();
-
-    /** @deprecated Use the various other methods to query chunk data. */
-    @Deprecated public static final Capability<ChunkData> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
-    public static final ResourceLocation KEY = new ResourceLocation(MOD_ID, "chunk_data");
 
     private static final float UNKNOWN_RAINFALL = 250;
     private static final float UNKNOWN_TEMPERATURE = 10;
@@ -75,7 +61,12 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
      */
     public static ChunkData get(LevelChunk chunk)
     {
-        return chunk.isEmpty() ? EMPTY : chunk.getCapability(CAPABILITY).orElse(EMPTY);
+        return chunk.isEmpty() ? EMPTY : chunk.getCapability(ChunkDataCapability.CAPABILITY).map(ChunkDataCapability::getData).orElse(EMPTY);
+    }
+
+    public static void update(LevelChunk chunk, ChunkData data)
+    {
+        chunk.getCapability(ChunkDataCapability.CAPABILITY).ifPresent(cap -> cap.setData(data));
     }
 
     private static final Map<ChunkPos, ChunkData> CLIENT_CHUNK_QUEUE = new Object2ObjectOpenHashMap<>(128);
@@ -93,7 +84,6 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
         return data == null ? new ChunkData(pos) : data;
     }
 
-    private final LazyOptional<ChunkData> capability;
     @Nullable private final ChunkDataGenerator generator;
     private final ChunkPos pos;
 
@@ -116,7 +106,6 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
     {
         this.generator = generator;
         this.pos = pos;
-        this.capability = LazyOptional.of(() -> this);
         this.status = Status.EMPTY;
         this.rockData = new RockData(generator);
         this.forestType = ForestType.NONE;
@@ -234,14 +223,6 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
         this.status = Status.CLIENT;
     }
 
-    @NotNull
-    @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
-    {
-        return CAPABILITY.orEmpty(cap, capability);
-    }
-
-    @Override
     public CompoundTag serializeNBT()
     {
         final CompoundTag nbt = new CompoundTag();
@@ -267,7 +248,6 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
         return nbt;
     }
 
-    @Override
     public void deserializeNBT(CompoundTag nbt)
     {
         status = Status.valueOf(nbt.getByte("status"));

@@ -21,17 +21,18 @@ import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.entity.animal.horse.Variant;
 
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
+import net.dries007.tfc.util.Helpers;
 
 public class TFCHorseRenderer extends AbstractHorseRenderer<Horse, HorseModel<Horse>>
 {
     private static final Map<Variant, ResourceLocation> LOCATION_BY_VARIANT = Util.make(Maps.newEnumMap(Variant.class), (map) -> {
-        map.put(Variant.WHITE, new ResourceLocation("textures/entity/horse/horse_white.png"));
-        map.put(Variant.CREAMY, new ResourceLocation("textures/entity/horse/horse_creamy.png"));
-        map.put(Variant.CHESTNUT, new ResourceLocation("textures/entity/horse/horse_chestnut.png"));
-        map.put(Variant.BROWN, new ResourceLocation("textures/entity/horse/horse_brown.png"));
-        map.put(Variant.BLACK, new ResourceLocation("textures/entity/horse/horse_black.png"));
-        map.put(Variant.GRAY, new ResourceLocation("textures/entity/horse/horse_gray.png"));
-        map.put(Variant.DARK_BROWN, new ResourceLocation("textures/entity/horse/horse_darkbrown.png"));
+        map.put(Variant.WHITE, Helpers.identifierMC("textures/entity/horse/horse_white.png"));
+        map.put(Variant.CREAMY, Helpers.identifierMC("textures/entity/horse/horse_creamy.png"));
+        map.put(Variant.CHESTNUT, Helpers.identifierMC("textures/entity/horse/horse_chestnut.png"));
+        map.put(Variant.BROWN, Helpers.identifierMC("textures/entity/horse/horse_brown.png"));
+        map.put(Variant.BLACK, Helpers.identifierMC("textures/entity/horse/horse_black.png"));
+        map.put(Variant.GRAY, Helpers.identifierMC("textures/entity/horse/horse_gray.png"));
+        map.put(Variant.DARK_BROWN, Helpers.identifierMC("textures/entity/horse/horse_darkbrown.png"));
     });
 
     public TFCHorseRenderer(EntityRendererProvider.Context context)

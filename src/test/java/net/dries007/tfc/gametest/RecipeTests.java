@@ -9,6 +9,7 @@ package net.dries007.tfc.gametest;
 import java.util.Collection;
 import io.netty.buffer.Unpooled;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.gametest.framework.GameTestGenerator;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.gametest.framework.TestFunction;
@@ -20,7 +21,6 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.gametest.GameTestHolder;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
 import net.dries007.tfc.MyTest;
@@ -50,7 +50,7 @@ public class RecipeTests
         for (CraftingRecipe recipe : helper.getLevel().getRecipeManager().getAllRecipesFor(RecipeType.CRAFTING))
         {
             final CraftingContainer container = TestHelper.mock(3, 3);
-            assertFalse(recipe.matches(container, helper.getLevel()), "Recipe: " + recipe.getId() + " of type " + recipe.getType() + " and serializer " + ForgeRegistries.RECIPE_SERIALIZERS.getKey(recipe.getSerializer()) + " matches an empty grid");
+            assertFalse(recipe.matches(container, helper.getLevel()), "Recipe: " + recipe.getId() + " of type " + recipe.getType() + " and serializer " + BuiltInRegistries.RECIPE_SERIALIZER.getKey(recipe.getSerializer()) + " matches an empty grid");
         }
     }
 
@@ -72,7 +72,7 @@ public class RecipeTests
                     final IFood oldFood = FoodCapability.get(oldOutput);
 
                     assertNotNull(oldFood);
-                    assertFalse(oldFood.isRotten(), "Recipe: " + recipe.getId() + " of type " + recipe.getType() + " and serializer " + ForgeRegistries.RECIPE_SERIALIZERS.getKey(recipe.getSerializer()) + " produced rotten output");
+                    assertFalse(oldFood.isRotten(), "Recipe: " + recipe.getId() + " of type " + recipe.getType() + " and serializer " + BuiltInRegistries.RECIPE_SERIALIZER.getKey(recipe.getSerializer()) + " produced rotten output");
                 }
             }
         }

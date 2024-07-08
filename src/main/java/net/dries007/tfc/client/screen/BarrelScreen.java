@@ -87,6 +87,12 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
     protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY)
     {
         super.renderBg(graphics, partialTicks, mouseX, mouseY);
+
+        if (Helpers.isJEIEnabled())
+        {
+            graphics.blit(texture, getGuiLeft() + 92, getGuiTop() + 21, 227, 0, 9, 14);
+        }
+
         blockEntity.getCapability(Capabilities.FLUID).ifPresent(fluidHandler -> {
             FluidStack fluidStack = fluidHandler.getFluidInTank(0);
             if (!fluidStack.isEmpty())

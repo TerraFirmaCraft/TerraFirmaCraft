@@ -32,6 +32,7 @@ import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.container.PotContainer;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.PotRecipe;
+import net.dries007.tfc.common.recipes.RecipeHelpers;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
 import net.dries007.tfc.config.TFCConfig;
@@ -137,9 +138,14 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
             else
             {
                 // Create output
+                // Set the crafting input, so providers can access all pot recipe inputs
+                RecipeHelpers.setCraftingInput(inventory, SLOT_EXTRA_INPUT_START, SLOT_EXTRA_INPUT_END + 1);
+
                 // Save the recipe here, as setting inventory will call setAndUpdateSlots, which will clear the cached recipe before output is created
                 final PotRecipe recipe = cachedRecipe;
                 final PotRecipe.Output output = recipe.getOutput(inventory);
+
+                RecipeHelpers.clearCraftingInput();
 
                 // Clear inputs
                 inventory.tank.setFluid(FluidStack.EMPTY);

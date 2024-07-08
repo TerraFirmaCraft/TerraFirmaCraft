@@ -173,7 +173,7 @@ public final class Forging implements ICapabilityProvider
 
             steps.read(tag);
 
-            uninitializedRecipe = tag.contains("recipe", Tag.TAG_STRING) ? new ResourceLocation(tag.getString("recipe")) : null;
+            uninitializedRecipe = tag.contains("recipe", Tag.TAG_STRING) ? Helpers.resourceLocation(tag.getString("recipe")) : null;
             recipe = null;
         }
     }
