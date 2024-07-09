@@ -27,7 +27,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.common.blocks.DecorationBlockRegistryObject;
+import net.dries007.tfc.common.blocks.DecorationBlockHolder;
 import net.dries007.tfc.common.blocks.Gem;
 import net.dries007.tfc.common.blocks.OreDeposit;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -651,7 +651,7 @@ public final class TFCCreativeTabs
         out.accept(reg.get());
     }
 
-    private static void accept(CreativeModeTab.Output out, DecorationBlockRegistryObject decoration)
+    private static void accept(CreativeModeTab.Output out, DecorationBlockHolder decoration)
     {
         out.accept(decoration.stair().get());
         out.accept(decoration.slab().get());

@@ -60,7 +60,7 @@ public final class TFCFluids
     /**
      * Fluid instances
      */
-    public static final Map<Metal.Default, FluidRegistryObject<ForgeFlowingFluid>> METALS = Helpers.mapOfKeys(Metal.Default.class, metal -> register(
+    public static final Map<Metal.Default, FluidHolder<ForgeFlowingFluid>> METALS = Helpers.mapOfKeys(Metal.Default.class, metal -> register(
         "metal/" + metal.getSerializedName(),
         properties -> properties
             .block(TFCBlocks.METAL_FLUIDS.get(metal))
@@ -74,7 +74,7 @@ public final class TFCFluids
         MoltenFluid.Flowing::new
     ));
 
-    public static final FluidRegistryObject<ForgeFlowingFluid> SALT_WATER = register(
+    public static final FluidHolder<ForgeFlowingFluid> SALT_WATER = register(
         "salt_water",
         properties -> properties
             .block(TFCBlocks.SALT_WATER)
@@ -89,7 +89,7 @@ public final class TFCFluids
         MixingFluid.Flowing::new
     );
 
-    public static final FluidRegistryObject<ForgeFlowingFluid> SPRING_WATER = register(
+    public static final FluidHolder<ForgeFlowingFluid> SPRING_WATER = register(
         "spring_water",
         properties -> properties
             .block(TFCBlocks.SPRING_WATER)
@@ -103,7 +103,7 @@ public final class TFCFluids
 
     public static final RegistryObject<RiverWaterFluid> RIVER_WATER = FLUIDS.register("river_water", RiverWaterFluid::new);
 
-    public static final Map<SimpleFluid, FluidRegistryObject<ForgeFlowingFluid>> SIMPLE_FLUIDS = Helpers.mapOfKeys(SimpleFluid.class, fluid -> register(
+    public static final Map<SimpleFluid, FluidHolder<ForgeFlowingFluid>> SIMPLE_FLUIDS = Helpers.mapOfKeys(SimpleFluid.class, fluid -> register(
         fluid.getId(),
         properties -> properties
             .block(TFCBlocks.SIMPLE_FLUIDS.get(fluid))
@@ -116,7 +116,7 @@ public final class TFCFluids
         MixingFluid.Flowing::new
     ));
 
-    public static final Map<Alcohol, FluidRegistryObject<ForgeFlowingFluid>> ALCOHOLS = Helpers.mapOfKeys(Alcohol.class, fluid -> register(
+    public static final Map<Alcohol, FluidHolder<ForgeFlowingFluid>> ALCOHOLS = Helpers.mapOfKeys(Alcohol.class, fluid -> register(
         fluid.getId(),
         properties -> properties
             .block(TFCBlocks.ALCOHOLS.get(fluid))
@@ -129,7 +129,7 @@ public final class TFCFluids
         MixingFluid.Flowing::new
     ));
 
-    public static final Map<DyeColor, FluidRegistryObject<ForgeFlowingFluid>> COLORED_FLUIDS = Helpers.mapOfKeys(DyeColor.class, color -> register(
+    public static final Map<DyeColor, FluidHolder<ForgeFlowingFluid>> COLORED_FLUIDS = Helpers.mapOfKeys(DyeColor.class, color -> register(
         color.getName() + "_dye",
         properties -> properties
             .block(TFCBlocks.COLORED_FLUIDS.get(color))
@@ -182,7 +182,7 @@ public final class TFCFluids
             .supportsBoating(true);
     }
 
-    private static <F extends FlowingFluid> FluidRegistryObject<F> register(String name, Consumer<ForgeFlowingFluid.Properties> builder, FluidType.Properties typeProperties, FluidTypeClientProperties clientProperties, Function<ForgeFlowingFluid.Properties, F> sourceFactory, Function<ForgeFlowingFluid.Properties, F> flowingFactory)
+    private static <F extends FlowingFluid> FluidHolder<F> register(String name, Consumer<ForgeFlowingFluid.Properties> builder, FluidType.Properties typeProperties, FluidTypeClientProperties clientProperties, Function<ForgeFlowingFluid.Properties, F> sourceFactory, Function<ForgeFlowingFluid.Properties, F> flowingFactory)
     {
         // Names `metal/foo` to `metal/flowing_foo`
         final int index = name.lastIndexOf('/');

@@ -8,14 +8,17 @@ package net.dries007.tfc.common.fluids;
 
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
-import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 /**
- * A pair of a source and getFlowing fluid, for {@link FlowingFluid}s.
+ * A collection of a {@link FluidType}, along with a source and flowing {@link FlowingFluid}.
  */
-public record FluidRegistryObject<F extends FlowingFluid>(RegistryObject<FluidType> type, RegistryObject<F> flowing, RegistryObject<F> source)
-{
+public record FluidHolder<F extends FlowingFluid>(
+    DeferredHolder<FluidType, FluidType> type,
+    DeferredHolder<FlowingFluid, F> flowing,
+    DeferredHolder<FlowingFluid, F> source
+) {
     public F getFlowing()
     {
         return flowing.get();

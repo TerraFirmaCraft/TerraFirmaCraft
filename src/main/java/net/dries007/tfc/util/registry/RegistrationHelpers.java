@@ -38,7 +38,7 @@ import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
 import net.dries007.tfc.common.container.BlockEntityContainer;
 import net.dries007.tfc.common.container.ItemStackContainer;
 import net.dries007.tfc.common.container.ItemStackContainerProvider;
-import net.dries007.tfc.common.fluids.FluidRegistryObject;
+import net.dries007.tfc.common.fluids.FluidHolder;
 import net.dries007.tfc.util.Metal;
 
 /**
@@ -76,7 +76,7 @@ public final class RegistrationHelpers
     /**
      * Registers a {@link FlowingFluid} and {@link FluidType}, and returns the pair of both flowing and source fluids.
      */
-    public static <F extends FlowingFluid> FluidRegistryObject<F> registerFluid(
+    public static <F extends FlowingFluid> FluidHolder<F> registerFluid(
         DeferredRegister<FluidType> fluidTypes,
         DeferredRegister<Fluid> fluids,
         String typeName,
@@ -103,7 +103,7 @@ public final class RegistrationHelpers
             return lazyProperties;
         }));
 
-        return new FluidRegistryObject<>(fluidType, flowing, source);
+        return new FluidHolder<>(fluidType, flowing, source);
     }
 
     // Block Entities
