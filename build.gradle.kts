@@ -2,33 +2,16 @@ import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
 plugins {
-    java
-    idea
-    id("org.cadixdev.licenser") version "0.6.1"
-    id("net.minecraftforge.gradle") version "[6.0,6.2)"
-    id("org.parchmentmc.librarian.forgegradle") version "1.+"
-    id("org.spongepowered.mixin") version "0.7.+"
+    id("net.neoforged.moddev") version "0.1.126"
+    id("net.neoforged.licenser") version "0.7.2"
 }
 
-// Allows local configuration for a dev environment that importantly, isn't present on a build server.
-// Edit the dev.gradle.kts file and define any of the below properties which use project.findProperty() under extra.apply { }, e.g.
-//
-// extra.apply {
-//     set("minify_resources", false)
-// }
-// Properties that can be configured this way are:
-// - "minify_resources" (to save time in dev)
-// - "mappings_channel", "mappings_version" (for better mappings in dev)
-// - "use_advanced_class_redefinition" (if using the Jetbrains Runtime JDK and want to enable -XX:+AllowEnhancedClassRedefinition for super amazing hotswap)
-File("./dev.gradle.kts").createNewFile()
-apply(from = "dev.gradle.kts")
 
 // Toolchain versions
-val minecraftVersion: String = "1.20.1"
-// Don't bump this unless completely necessary - this is the NeoForge + Forge compatible version
-// In future we probably want to track NeoForge versions, especially post-1.20 breaking change window
-val forgeVersion: String = "47.1.3"
-val mixinVersion: String = "0.8.5"
+val minecraftVersion: String = "1.21"
+val neoForgeVersion: String = "21.0.77-beta"
+val parchmentVersion: String = "2024.07.07"
+val parchmentMinecraftVersion: String = "1.21"
 
 // Dependency versions
 val jeiVersion: String = "15.2.0.21"
@@ -38,29 +21,18 @@ val topVersion: String = "4629624"
 
 val modId: String = "tfc"
 val modVersion: String = System.getenv("VERSION") ?: "0.0.0-indev"
+val modJavaVersion: String = "21"
+val modIsInCI: Boolean = !modVersion.contains("-indev")
 
-// Optional dev-env properties
-val mappingsChannel: String = project.findProperty("mappings_channel") as String? ?: "official"
-val mappingsVersion: String = project.findProperty("mappings_version") as String? ?: minecraftVersion
-val minifyResources: Boolean = project.findProperty("minify_resources") as Boolean? ?: true
-val useAdvancedClassRedef: Boolean = project.findProperty("use_advanced_class_redefinition") as Boolean? ?: false
-
-println("Using mappings $mappingsChannel / $mappingsVersion with version $modVersion")
 
 base {
-    archivesName.set("TerraFirmaCraft-Forge-$minecraftVersion")
+    archivesName.set("TerraFirmaCraft-NeoForge-$minecraftVersion")
     group = "net.dries007.tfc"
     version = modVersion
 }
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
-}
-
-idea {
-    module {
-        excludeDirs.add(file("run"))
-    }
+    toolchain.languageVersion.set(JavaLanguageVersion.of(modJavaVersion))
 }
 
 repositories {
@@ -74,102 +46,68 @@ repositories {
             includeGroup("curse.maven")
         }
     }
-    flatDir {
-        dirs("libs")
-    }
 }
 
 dependencies {
-    minecraft("net.minecraftforge", "forge", version = "$minecraftVersion-$forgeVersion")
-
     // JEI
-    compileOnly(fg.deobf("mezz.jei:jei-$minecraftVersion-forge-api:$jeiVersion"))
-    compileOnly(fg.deobf("mezz.jei:jei-$minecraftVersion-common-api:$jeiVersion"))
-    runtimeOnly(fg.deobf("mezz.jei:jei-$minecraftVersion-forge:$jeiVersion"))
+    //compileOnly(fg.deobf("mezz.jei:jei-$minecraftVersion-forge-api:$jeiVersion"))
+    //compileOnly(fg.deobf("mezz.jei:jei-$minecraftVersion-common-api:$jeiVersion"))
+    //runtimeOnly(fg.deobf("mezz.jei:jei-$minecraftVersion-forge:$jeiVersion"))
 
     // Patchouli
     // We need to compile against the full JAR, not just the API, because we do some egregious hacks.
-    compileOnly(fg.deobf("vazkii.patchouli:Patchouli:$patchouliVersion"))
-    runtimeOnly(fg.deobf("vazkii.patchouli:Patchouli:$patchouliVersion"))
+    //compileOnly(fg.deobf("vazkii.patchouli:Patchouli:$patchouliVersion"))
+    //runtimeOnly(fg.deobf("vazkii.patchouli:Patchouli:$patchouliVersion"))
 
     // Jade / The One Probe
-    compileOnly(fg.deobf("curse.maven:jade-324717:${jadeVersion}"))
-    compileOnly(fg.deobf("curse.maven:top-245211:${topVersion}"))
+    //compileOnly(fg.deobf("curse.maven:jade-324717:${jadeVersion}"))
+    //compileOnly(fg.deobf("curse.maven:top-245211:${topVersion}"))
 
     // Only use Jade at runtime
-    runtimeOnly(fg.deobf("curse.maven:jade-324717:${jadeVersion}"))
+    //runtimeOnly(fg.deobf("curse.maven:jade-324717:${jadeVersion}"))
     // runtimeOnly(fg.deobf("curse.maven:top-245211:${topVersion}"))
-
-    if (System.getProperty("idea.sync.active") != "true") {
-        annotationProcessor("org.spongepowered:mixin:${mixinVersion}:processor")
-    }
-
-    // Cyanide
-    // runtimeOnly(fg.deobf("curse.maven:cyanide-forge-541676:4584675"))
-
-    // Misc
-    //runtimeOnly(fg.deobf("curse.maven:konkrete-410295:4583492")) // Dep. for Panorama
-    //runtimeOnly(fg.deobf("curse.maven:panoramica-426082:4019292"))
-    //runtimeOnly(fg.deobf("curse.maven:embeddium-908741:4819807"))
-    //runtimeOnly(fg.deobf("curse.maven:rubidium-574856:4767529"))
-    //runtimeOnly(fg.deobf("curse.maven:create-328085:4835191"))
-    //runtimeOnly(fg.deobf("curse.maven:corpse-316582:5157034"))
-    //runtimeOnly(fg.deobf("curse.maven:distant-horizons-508933:5390046"))
-    //runtimeOnly(fg.deobf("curse.maven:firmalife-453394:5456804"))
 
     // JUnit
     // There is not a testImplementation-like configuration, AFAIK, that is available at minecraft runtime, so we use minecraftLibrary
-    minecraftLibrary("org.junit.jupiter:junit-jupiter-api:5.9.2")
-    minecraftLibrary("org.junit.jupiter:junit-jupiter-engine:5.9.2")
+    //minecraftLibrary("org.junit.jupiter:junit-jupiter-api:5.9.2")
+    //minecraftLibrary("org.junit.jupiter:junit-jupiter-engine:5.9.2")
 }
 
-minecraft {
-    mappings(mappingsChannel, mappingsVersion)
-    accessTransformer(file("src/main/resources/META-INF/accesstransformer.cfg"))
+neoForge {
+    version.set(neoForgeVersion)
+    addModdingDependenciesTo(sourceSets.test.get())
+    validateAccessTransformers = true
+
+    parchment {
+        minecraftVersion.set(parchmentMinecraftVersion)
+        mappingsVersion.set(parchmentVersion)
+    }
 
     runs {
-        all {
-            args("-mixin.config=$modId.mixins.json")
-
-            property("forge.logging.console.level", "debug")
-            property("forge.enabledGameTestNamespaces", modId)
-
-            property("mixin.env.remapRefMap", "true")
-            property("mixin.env.refMapRemappingFile", "$projectDir/build/createSrgToMcp/output.srg")
-
-            jvmArgs("-ea", "-Xmx4G", "-Xms4G")
-
-            if (useAdvancedClassRedef) {
-                jvmArg("-XX:+AllowEnhancedClassRedefinition")
-            }
-
-            ideaModule("${project.name}.test")
-
-            mods.create(modId) {
-                source(sourceSets.main.get())
-                source(sourceSets.test.get())
-            }
+        configureEach {
+            // Only JBR allows enhanced class redefinition, so ignore the option for any other JDKs
+            jvmArguments.addAll("-XX:+IgnoreUnrecognizedVMOptions", "-XX:+AllowEnhancedClassRedefinition")
         }
-
         register("client") {
-            workingDirectory(project.file("run/client"))
+            client()
+            gameDirectory = file("run/client")
         }
-
         register("server") {
-            workingDirectory(project.file("run/server"))
-
-            arg("--nogui")
+            server()
+            gameDirectory = file("run/server")
+            programArgument("--nogui")
         }
-
-        register("gameTestServer") {
-            workingDirectory(project.file("run/gametest"))
-
-            arg("--nogui")
-        }
-
         register("data") {
-            workingDirectory(project.file("run/data"))
-            args("--mod", modId, "--all", "--output", file("src/generated/resources/"), "--existing", file("src/main/resources/"))
+            data()
+            sourceSet = sourceSets.test
+            programArguments.addAll("--all", "--mod", modId, "--output", file("src/generated/resources").absolutePath, "--existing",  file("src/main/resources").absolutePath)
+        }
+    }
+
+    mods {
+        create(modId) {
+            sourceSet(sourceSets.main.get())
+            sourceSet(sourceSets.test.get())
         }
     }
 }
@@ -188,21 +126,14 @@ license {
     exclude("net/dries007/tfc/world/noise/FastNoiseLite.java") // Fast Noise
 }
 
-mixin {
-    add(sourceSets.main.get(), "$modId.refmap.json")
-}
-
 tasks {
 
     processResources {
-
-        if (modVersion != "0.0.0-indev") {
+        if (modIsInCI) {
             filesMatching("**/book.json") {
                 expand(mapOf("version" to project.version))
             }
-        }
 
-        if (minifyResources) {
             doLast {
                 val jsonMinifyStart: Long = System.currentTimeMillis()
                 var jsonMinified: Long = 0
@@ -239,7 +170,6 @@ tasks {
     jar {
         manifest {
             attributes["Implementation-Version"] = project.version
-            attributes["MixinConfigs"] = "$modId.mixins.json"
         }
     }
 }
