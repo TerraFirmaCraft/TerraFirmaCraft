@@ -28,7 +28,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.SpawnGroupData;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.Animal;
@@ -93,7 +92,7 @@ public class TFCHorse extends Horse implements HorseProperties
         this(type, level, TFCSounds.HORSE, () -> SoundEvents.HORSE_EAT, () -> SoundEvents.HORSE_ANGRY, TFCConfig.SERVER.horseConfig);
     }
 
-    public TFCHorse(EntityType<? extends TFCHorse> type, Level level, TFCSounds.EntitySound sounds, Supplier<? extends SoundEvent> eatSound, Supplier<? extends SoundEvent> angrySound, MammalConfig config)
+    public TFCHorse(EntityType<? extends TFCHorse> type, Level level, TFCSounds.EntityId sounds, Supplier<? extends SoundEvent> eatSound, Supplier<? extends SoundEvent> angrySound, MammalConfig config)
     {
         super(type, level);
         this.matingTime = Calendars.get(level).getTicks();

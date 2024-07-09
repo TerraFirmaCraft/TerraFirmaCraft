@@ -30,7 +30,7 @@ public class WingedPrey extends Prey implements Pluckable
     private float nextFlap = 1f;
     private long lastPlucked = Long.MIN_VALUE;
 
-    public WingedPrey(EntityType<? extends Prey> type, Level level, TFCSounds.EntitySound sounds)
+    public WingedPrey(EntityType<? extends Prey> type, Level level, TFCSounds.EntityId sounds)
     {
         super(type, level, sounds);
     }

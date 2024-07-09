@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.entities.livestock;
 
 import javax.annotation.Nullable;
-
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -29,7 +28,7 @@ public abstract class Mammal extends TFCAnimal implements MammalProperties
     private final MammalConfig config;
     @Nullable private CompoundTag genes = null;
 
-    public Mammal(EntityType<? extends TFCAnimal> animal, Level level, TFCSounds.EntitySound sounds, MammalConfig config)
+    public Mammal(EntityType<? extends TFCAnimal> animal, Level level, TFCSounds.EntityId sounds, MammalConfig config)
     {
         super(animal, level, sounds, config.inner());
         this.config = config;

@@ -29,10 +29,10 @@ import net.dries007.tfc.util.Helpers;
 
 public class FreshwaterFish extends Salmon implements AquaticMob
 {
-    private final TFCSounds.FishSound sound;
+    private final TFCSounds.FishId sound;
     private final Supplier<? extends Item> bucket;
 
-    public FreshwaterFish(EntityType<? extends FreshwaterFish> type, Level level, TFCSounds.FishSound sound, Supplier<? extends Item> bucket)
+    public FreshwaterFish(EntityType<? extends FreshwaterFish> type, Level level, TFCSounds.FishId sound, Supplier<? extends Item> bucket)
     {
         super(type, level);
         this.sound = sound;

@@ -7,8 +7,8 @@
 package net.dries007.tfc.common.entities.livestock;
 
 import java.util.function.Supplier;
+import com.mojang.serialization.Dynamic;
 import javax.annotation.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -21,7 +21,11 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.Animal;
@@ -32,15 +36,12 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 
-import com.mojang.serialization.Dynamic;
-
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
-
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.Temptable;
 import net.dries007.tfc.common.entities.ai.TFCGroundPathNavigation;
 import net.dries007.tfc.common.entities.ai.livestock.LivestockAi;
-import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.entities.ai.prey.PreyAi;
 import net.dries007.tfc.config.animals.AnimalConfig;
 import net.dries007.tfc.util.Helpers;
@@ -69,7 +70,7 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties, T
     private final Supplier<? extends SoundEvent> step;
     private final AnimalConfig config;
 
-    public TFCAnimal(EntityType<? extends Animal> type, Level level, TFCSounds.EntitySound sounds, AnimalConfig config)
+    public TFCAnimal(EntityType<? extends Animal> type, Level level, TFCSounds.EntityId sounds, AnimalConfig config)
     {
         super(type, level);
         getNavigation().setCanFloat(true);

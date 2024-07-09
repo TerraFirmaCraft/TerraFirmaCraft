@@ -6,8 +6,10 @@
 
 package net.dries007.tfc.common.entities.prey;
 
+import com.mojang.serialization.Dynamic;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -16,12 +18,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 
-import com.mojang.serialization.Dynamic;
-
 import net.dries007.tfc.client.TFCSounds;
-
-import net.minecraft.world.entity.AnimationState;
-
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.ai.prey.PreyAi;
 
@@ -39,7 +36,7 @@ public class Prey extends WildAnimal
 
     public final AnimationState walkingAnimation = new AnimationState();
 
-    public Prey(EntityType<? extends WildAnimal> type, Level level, TFCSounds.EntitySound sounds)
+    public Prey(EntityType<? extends WildAnimal> type, Level level, TFCSounds.EntityId sounds)
     {
         super(type, level, sounds);
     }

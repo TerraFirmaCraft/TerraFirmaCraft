@@ -23,6 +23,7 @@ import net.minecraft.world.entity.schedule.Schedule;
 import net.minecraft.world.entity.schedule.ScheduleBuilder;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import net.dries007.tfc.TerraFirmaCraft;
@@ -40,58 +41,58 @@ public class TFCBrain
     public static final DeferredRegister<SensorType<?>> SENSOR_TYPES = DeferredRegister.create(Registries.SENSOR_TYPE, TerraFirmaCraft.MOD_ID);
     public static final DeferredRegister<PoiType> POI_TYPES = DeferredRegister.create(Registries.POINT_OF_INTEREST_TYPE, TerraFirmaCraft.MOD_ID);
 
-    public static final RegistryObject<Activity> HUNT = registerActivity("hunt");
-    public static final RegistryObject<Activity> IDLE_AT_HOME = registerActivity("idle_at_home");
-    public static final RegistryObject<Activity> FOLLOW = registerActivity("follow");
-    public static final RegistryObject<Activity> SIT = registerActivity("sit");
+    public static final DeferredHolder<Activity, Activity> HUNT = registerActivity("hunt");
+    public static final DeferredHolder<Activity, Activity> IDLE_AT_HOME = registerActivity("idle_at_home");
+    public static final DeferredHolder<Activity, Activity> FOLLOW = registerActivity("follow");
+    public static final DeferredHolder<Activity, Activity> SIT = registerActivity("sit");
 
-    public static final RegistryObject<MemoryModuleType<BlockPos>> NEST_BOX_MEMORY = registerMemory("nest");
-    public static final RegistryObject<MemoryModuleType<GlobalPos>> SLEEP_POS = registerMemory("sleep_pos", GlobalPos.CODEC);
-    public static final RegistryObject<MemoryModuleType<GlobalPos>> SMELLY_POS = registerMemory("smelly_pos", GlobalPos.CODEC);
-    public static final RegistryObject<MemoryModuleType<Long>> SIT_TIME = registerMemory("sit_time", Codec.LONG);
-    public static final RegistryObject<MemoryModuleType<PackPredator>> ALPHA = registerMemory("alpha");
-    public static final RegistryObject<MemoryModuleType<Integer>> WAKEUP_TICKS = registerMemory("wakeup_ticks", Codec.INT);
+    public static final DeferredHolder<MemoryModuleType<?>, MemoryModuleType<BlockPos>> NEST_BOX_MEMORY = registerMemory("nest");
+    public static final DeferredHolder<MemoryModuleType<?>, MemoryModuleType<GlobalPos>> SLEEP_POS = registerMemory("sleep_pos", GlobalPos.CODEC);
+    public static final DeferredHolder<MemoryModuleType<?>, MemoryModuleType<GlobalPos>> SMELLY_POS = registerMemory("smelly_pos", GlobalPos.CODEC);
+    public static final DeferredHolder<MemoryModuleType<?>, MemoryModuleType<Long>> SIT_TIME = registerMemory("sit_time", Codec.LONG);
+    public static final DeferredHolder<MemoryModuleType<?>, MemoryModuleType<PackPredator>> ALPHA = registerMemory("alpha");
+    public static final DeferredHolder<MemoryModuleType<?>, MemoryModuleType<Integer>> WAKEUP_TICKS = registerMemory("wakeup_ticks", Codec.INT);
 
-    public static final RegistryObject<Schedule> DIURNAL = registerSchedule("diurnal");
-    public static final RegistryObject<Schedule> NOCTURNAL = registerSchedule("nocturnal");
+    public static final DeferredHolder<Schedule, Schedule> DIURNAL = registerSchedule("diurnal");
+    public static final DeferredHolder<Schedule, Schedule> NOCTURNAL = registerSchedule("nocturnal");
 
-    public static final RegistryObject<SensorType<DelegatingTemptingSensor>> TEMPTATION_SENSOR = registerSensorType("tempt", DelegatingTemptingSensor::new);
-    public static final RegistryObject<SensorType<NearestNestBoxSensor>> NEST_BOX_SENSOR = registerSensorType("nearest_nest_box", NearestNestBoxSensor::new);
-    public static final RegistryObject<SensorType<PackLeaderSensor>> PACK_LEADER_SENSOR = registerSensorType("pack_leader", PackLeaderSensor::new);
+    public static final DeferredHolder<SensorType<?>, SensorType<DelegatingTemptingSensor>> TEMPTATION_SENSOR = registerSensorType("tempt", DelegatingTemptingSensor::new);
+    public static final DeferredHolder<SensorType<?>, SensorType<NearestNestBoxSensor>> NEST_BOX_SENSOR = registerSensorType("nearest_nest_box", NearestNestBoxSensor::new);
+    public static final DeferredHolder<SensorType<?>, SensorType<PackLeaderSensor>> PACK_LEADER_SENSOR = registerSensorType("pack_leader", PackLeaderSensor::new);
 
-    public static final RegistryObject<PoiType> NEST_BOX_POI = registerPoi("nest_box", () -> new PoiType(getBlockStates(TFCBlocks.NEST_BOX.get()), 1, 1));
+    public static final DeferredHolder<PoiType, PoiType> NEST_BOX_POI = registerPoi("nest_box", () -> new PoiType(getBlockStates(TFCBlocks.NEST_BOX.get()), 1, 1));
 
     private static Set<BlockState> getBlockStates(Block block)
     {
         return ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates());
     }
 
-    public static RegistryObject<PoiType> registerPoi(String name, Supplier<PoiType> supplier)
+    public static DeferredHolder<PoiType, PoiType> registerPoi(String name, Supplier<PoiType> supplier)
     {
         return POI_TYPES.register(name, supplier);
     }
 
-    public static <T extends Sensor<?>> RegistryObject<SensorType<T>> registerSensorType(String name, Supplier<T> supplier)
+    public static <T extends Sensor<?>> DeferredHolder<SensorType<?>, SensorType<T>> registerSensorType(String name, Supplier<T> supplier)
     {
         return SENSOR_TYPES.register(name, () -> new SensorType<>(supplier));
     }
 
-    public static RegistryObject<Activity> registerActivity(String name)
+    public static DeferredHolder<Activity, Activity> registerActivity(String name)
     {
         return ACTIVITIES.register(name, () -> new Activity(name));
     }
 
-    public static <T> RegistryObject<MemoryModuleType<T>> registerMemory(String name)
+    public static <T> DeferredHolder<MemoryModuleType<?>, MemoryModuleType<T>> registerMemory(String name)
     {
         return MEMORY_TYPES.register(name, () -> new MemoryModuleType<>(Optional.empty()));
     }
 
-    public static <T> RegistryObject<MemoryModuleType<T>> registerMemory(String name, Codec<T> codec)
+    public static <T> DeferredHolder<MemoryModuleType<?>, MemoryModuleType<T>> registerMemory(String name, Codec<T> codec)
     {
         return MEMORY_TYPES.register(name, () -> new MemoryModuleType<>(Optional.of(codec)));
     }
 
-    public static RegistryObject<Schedule> registerSchedule(String name)
+    public static DeferredHolder<Schedule, Schedule> registerSchedule(String name)
     {
         return SCHEDULES.register(name, Schedule::new);
     }

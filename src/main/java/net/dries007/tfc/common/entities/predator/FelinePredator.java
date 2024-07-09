@@ -10,7 +10,6 @@ package net.dries007.tfc.common.entities.predator;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -21,7 +20,6 @@ import net.minecraft.world.level.Level;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.entities.ai.TFCClimberNavigation;
-import net.dries007.tfc.common.entities.ai.TFCGroundPathNavigation;
 
 public class FelinePredator extends Predator
 {
@@ -51,7 +49,7 @@ public class FelinePredator extends Predator
         return new FelinePredator(type, level, false, 36, 0.8, 1.5, TFCSounds.TIGER);
     }
 
-    public FelinePredator(EntityType<? extends Predator> type, Level level, boolean diurnal, double attackDistanceSquared, double crouchSpeedMod, double sprintSpeedMod, TFCSounds.EntitySound sounds)
+    public FelinePredator(EntityType<? extends Predator> type, Level level, boolean diurnal, double attackDistanceSquared, double crouchSpeedMod, double sprintSpeedMod, TFCSounds.EntityId sounds)
     {
         super(type, level, diurnal, sounds);
 

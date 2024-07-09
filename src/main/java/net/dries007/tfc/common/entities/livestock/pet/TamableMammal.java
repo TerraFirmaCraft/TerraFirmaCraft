@@ -25,6 +25,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -46,9 +47,6 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.particle.TFCParticles;
-
-import net.minecraft.world.entity.AnimationState;
-
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.ai.PredicateMoveControl;
 import net.dries007.tfc.common.entities.ai.TFCBrain;
@@ -84,7 +82,7 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
     private Command command = Command.RELAX; // used to restore the last activity when reloading
     private boolean needsCommandUpdate = false;
 
-    public TamableMammal(EntityType<? extends TFCAnimal> animal, Level level, TFCSounds.EntitySound sounds, MammalConfig config)
+    public TamableMammal(EntityType<? extends TFCAnimal> animal, Level level, TFCSounds.EntityId sounds, MammalConfig config)
     {
         super(animal, level, sounds, config);
         sleeping = sounds.sleep().orElseThrow();

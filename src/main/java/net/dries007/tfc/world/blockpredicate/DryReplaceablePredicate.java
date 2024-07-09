@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.world.blockpredicate;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
@@ -19,7 +19,7 @@ public enum DryReplaceablePredicate implements BlockPredicate
 {
     INSTANCE;
 
-    public static final Codec<DryReplaceablePredicate> CODEC = Codec.unit(INSTANCE);
+    public static final MapCodec<DryReplaceablePredicate> CODEC = MapCodec.unit(INSTANCE);
 
     @Override
     public BlockPredicateType<?> type()

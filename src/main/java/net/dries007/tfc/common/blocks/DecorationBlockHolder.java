@@ -12,6 +12,8 @@ import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
+import net.dries007.tfc.util.registry.RegistryHolder;
+
 /**
  * A triple of {@link DeferredHolder}s for slabs, stairs, and walls
  */
@@ -19,4 +21,12 @@ public record DecorationBlockHolder(
     DeferredHolder<Block, ? extends SlabBlock> slab,
     DeferredHolder<Block, ? extends StairBlock> stair,
     DeferredHolder<Block, ? extends WallBlock> wall
-) {}
+) {
+    public DecorationBlockHolder(
+        RegistryHolder<Block, ? extends SlabBlock> slab,
+        RegistryHolder<Block, ? extends StairBlock> stair,
+        RegistryHolder<Block, ? extends WallBlock> wall)
+    {
+        this(slab.holder(), stair.holder(), wall.holder());
+    }
+}

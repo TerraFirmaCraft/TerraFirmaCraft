@@ -7,7 +7,7 @@
 package net.dries007.tfc.world.biome;
 
 import java.util.stream.Stream;
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
@@ -16,7 +16,6 @@ import net.minecraft.resources.RegistryOps;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.biome.Climate;
-import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.world.layer.framework.ConcurrentArea;
@@ -24,20 +23,12 @@ import net.dries007.tfc.world.region.RegionGenerator;
 import net.dries007.tfc.world.region.RegionPartition;
 import net.dries007.tfc.world.region.Units;
 
-import static net.dries007.tfc.TerraFirmaCraft.*;
-
 @SuppressWarnings("NotNullFieldNotInitialized")
 public class RegionBiomeSource extends BiomeSource implements BiomeSourceExtension
 {
-    public static final DeferredRegister<Codec<? extends BiomeSource>> BIOME_SOURCE = DeferredRegister.create(Registries.BIOME_SOURCE, MOD_ID);
-    public static final Codec<RegionBiomeSource> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+    public static final MapCodec<RegionBiomeSource> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
         RegistryOps.retrieveGetter(Registries.BIOME)
     ).apply(instance, RegionBiomeSource::new));
-
-    static
-    {
-        BIOME_SOURCE.register("overworld", () -> RegionBiomeSource.CODEC);
-    }
 
     private final HolderGetter<Biome> biomeRegistry;
 
@@ -80,7 +71,7 @@ public class RegionBiomeSource extends BiomeSource implements BiomeSourceExtensi
     }
 
     @Override
-    protected Codec<? extends BiomeSource> codec()
+    protected MapCodec<? extends BiomeSource> codec()
     {
         return CODEC;
     }

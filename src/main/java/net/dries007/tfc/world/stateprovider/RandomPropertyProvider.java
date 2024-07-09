@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -22,7 +23,7 @@ import net.dries007.tfc.world.Codecs;
 
 public class RandomPropertyProvider extends BlockStateProvider
 {
-    public static final Codec<RandomPropertyProvider> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+    public static final MapCodec<RandomPropertyProvider> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
         Codecs.BLOCK_STATE.fieldOf("state").forGetter(c -> c.state),
         Codec.STRING.fieldOf("property").forGetter(c -> c.propertyName)
     ).apply(instance, RandomPropertyProvider::new)); // Cannot use .comapFlatMap on dispatch codecs

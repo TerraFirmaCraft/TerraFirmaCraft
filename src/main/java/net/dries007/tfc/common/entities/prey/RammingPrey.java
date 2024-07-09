@@ -6,17 +6,13 @@
 
 package net.dries007.tfc.common.entities.prey;
 
-import java.util.Optional;
 import java.util.function.Supplier;
 import com.google.common.collect.ImmutableList;
-import com.google.errorprone.annotations.NoAllocation;
 import com.mojang.serialization.Dynamic;
 import javax.annotation.Nullable;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -34,7 +30,6 @@ import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.ai.prey.RammingPreyAi;
@@ -84,7 +79,7 @@ public class RammingPrey extends WildAnimal
 
     public final AnimationState walkingAnimation = new AnimationState();
 
-    public RammingPrey(EntityType<? extends RammingPrey> type, Level level, TFCSounds.EntitySound sounds, double rammingReach)
+    public RammingPrey(EntityType<? extends RammingPrey> type, Level level, TFCSounds.EntityId sounds, double rammingReach)
     {
         super(type, level, sounds);
         this.attack = sounds.attack().orElseThrow();

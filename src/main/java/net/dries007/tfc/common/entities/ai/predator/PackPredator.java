@@ -66,7 +66,7 @@ public class PackPredator extends Predator implements Temptable
 
     private final boolean tamable;
 
-    public PackPredator(EntityType<? extends Predator> type, Level level, boolean diurnal, TFCSounds.EntitySound sounds, boolean tamable)
+    public PackPredator(EntityType<? extends Predator> type, Level level, boolean diurnal, TFCSounds.EntityId sounds, boolean tamable)
     {
         super(type, level, diurnal, sounds);
         this.tamable = tamable;

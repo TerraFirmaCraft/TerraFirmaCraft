@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.entities.prey;
 
+import com.mojang.serialization.Dynamic;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -15,7 +16,12 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.AnimationState;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -23,20 +29,14 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-
-import com.mojang.serialization.Dynamic;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
-
-import net.minecraft.world.entity.AnimationState;
-
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.ai.PredicateMoveControl;
 import net.dries007.tfc.common.entities.ai.TFCClimberNavigation;
 import net.dries007.tfc.common.entities.ai.prey.PestAi;
 import net.dries007.tfc.util.Helpers;
-
-import org.jetbrains.annotations.Nullable;
 
 public class Pest extends Prey
 {
@@ -57,7 +57,7 @@ public class Pest extends Prey
 
     private int dragTicks = -1;
 
-    public Pest(EntityType<? extends Prey> type, Level level, TFCSounds.EntitySound sounds)
+    public Pest(EntityType<? extends Prey> type, Level level, TFCSounds.EntityId sounds)
     {
         super(type, level, sounds);
         moveControl = new PredicateMoveControl<>(this, p -> p.dragTicks == -1 || p.dragTicks > DRAG_TIME + EAT_TIME);

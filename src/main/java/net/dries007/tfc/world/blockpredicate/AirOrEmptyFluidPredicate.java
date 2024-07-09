@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.world.blockpredicate;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
@@ -18,7 +18,7 @@ public enum AirOrEmptyFluidPredicate implements BlockPredicate
 {
     INSTANCE;
 
-    public static final Codec<AirOrEmptyFluidPredicate> CODEC = Codec.unit(INSTANCE);
+    public static final MapCodec<AirOrEmptyFluidPredicate> CODEC = MapCodec.unit(INSTANCE);
 
     @Override
     public boolean test(WorldGenLevel level, BlockPos pos)

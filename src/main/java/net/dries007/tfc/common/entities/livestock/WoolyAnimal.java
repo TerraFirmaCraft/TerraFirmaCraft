@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.entities.livestock;
 
 import java.util.List;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -18,21 +17,20 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.IForgeShearable;
 import net.minecraftforge.common.MinecraftForge;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.config.animals.ProducingMammalConfig;
 import net.dries007.tfc.util.events.AnimalProductEvent;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 // some implementation notes for me to come back to and delete later
 // sheep (ie, color-able wooly animals) should extend this and do their own handling rather than all wooly animals secretly having colors
 // eating grass should be a property in TFCAnimal, NOT just sheep. And we need to study how that exactly will work
 public abstract class WoolyAnimal extends ProducingMammal implements IForgeShearable
 {
-    public WoolyAnimal(EntityType<? extends WoolyAnimal> animal, Level level, TFCSounds.EntitySound sounds, ProducingMammalConfig config)
+    public WoolyAnimal(EntityType<? extends WoolyAnimal> animal, Level level, TFCSounds.EntityId sounds, ProducingMammalConfig config)
     {
         super(animal, level, sounds, config);
     }

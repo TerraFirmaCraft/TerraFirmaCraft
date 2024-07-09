@@ -91,7 +91,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
     private final AnimalConfig config;
     private final MammalConfig mammalConfig;
 
-    public TFCChestedHorse(EntityType<? extends TFCChestedHorse> type, Level level, TFCSounds.EntitySound sounds, Supplier<? extends SoundEvent> eatSound, Supplier<? extends SoundEvent> angrySound, MammalConfig config)
+    public TFCChestedHorse(EntityType<? extends TFCChestedHorse> type, Level level, TFCSounds.EntityId sounds, Supplier<? extends SoundEvent> eatSound, Supplier<? extends SoundEvent> angrySound, MammalConfig config)
     {
         super(type, level);
         this.matingTime = Calendars.get(level).getTicks();

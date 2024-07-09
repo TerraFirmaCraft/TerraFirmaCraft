@@ -29,11 +29,11 @@ import net.dries007.tfc.config.animals.ProducingMammalConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.events.AnimalProductEvent;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.*;
 
 public abstract class DairyAnimal extends ProducingMammal
 {
-    public DairyAnimal(EntityType<? extends DairyAnimal> animal, Level level, TFCSounds.EntitySound sounds, ProducingMammalConfig config)
+    public DairyAnimal(EntityType<? extends DairyAnimal> animal, Level level, TFCSounds.EntityId sounds, ProducingMammalConfig config)
     {
         super(animal, level, sounds, config);
     }

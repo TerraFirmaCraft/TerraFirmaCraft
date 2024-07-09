@@ -62,7 +62,7 @@ public abstract class OviparousAnimal extends ProducingAnimal implements Pluckab
     private boolean crowed;
     private final boolean isCrowingBird;
 
-    public OviparousAnimal(EntityType<? extends OviparousAnimal> type, Level level, TFCSounds.EntitySound sounds, OviparousAnimalConfig config, boolean isCrowingBird)
+    public OviparousAnimal(EntityType<? extends OviparousAnimal> type, Level level, TFCSounds.EntityId sounds, OviparousAnimalConfig config, boolean isCrowingBird)
     {
         super(type, level, sounds, config.inner());
         this.isCrowingBird = isCrowingBird;

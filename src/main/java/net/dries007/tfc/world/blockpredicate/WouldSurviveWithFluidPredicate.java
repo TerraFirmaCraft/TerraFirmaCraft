@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.world.blockpredicate;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
@@ -20,7 +20,7 @@ import net.dries007.tfc.world.Codecs;
 
 public record WouldSurviveWithFluidPredicate(Vec3i offset, BlockState state) implements BlockPredicate
 {
-    public static final Codec<WouldSurviveWithFluidPredicate> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+    public static final MapCodec<WouldSurviveWithFluidPredicate> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
         Codecs.optionalFieldOf(Vec3i.offsetCodec(16), "offset", Vec3i.ZERO).forGetter(c -> c.offset),
         BlockState.CODEC.fieldOf("state").forGetter(c -> c.state)
     ).apply(instance, WouldSurviveWithFluidPredicate::new));

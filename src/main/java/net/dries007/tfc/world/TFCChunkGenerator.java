@@ -18,8 +18,8 @@ import java.util.concurrent.Executor;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import com.google.common.collect.ImmutableMap;
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.ints.IntArraySet;
 import it.unimi.dsi.fastutil.ints.IntSet;
@@ -76,7 +76,6 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.mixin.accessor.ChunkAccessAccessor;
@@ -104,25 +103,17 @@ import net.dries007.tfc.world.river.RiverNoiseSampler;
 import net.dries007.tfc.world.settings.Settings;
 import net.dries007.tfc.world.surface.SurfaceManager;
 
-import static net.dries007.tfc.TerraFirmaCraft.*;
-
 @SuppressWarnings("NotNullFieldNotInitialized") // Since we do a separate `init` step
 public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorExtension
 {
-    public static final Codec<TFCChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+    public static final MapCodec<TFCChunkGenerator> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
         BiomeSource.CODEC.comapFlatMap(TFCChunkGenerator::guardBiomeSource, BiomeSourceExtension::self).fieldOf("biome_source").forGetter(c -> c.customBiomeSource),
         NoiseGeneratorSettings.CODEC.fieldOf("settings").forGetter(c -> c.noiseSettings),
         Settings.CODEC.fieldOf("tfc_settings").forGetter(c -> c.settings)
     ).apply(instance, TFCChunkGenerator::new));
 
-    public static final DeferredRegister<Codec<? extends ChunkGenerator>> CHUNK_GENERATOR = DeferredRegister.create(Registries.CHUNK_GENERATOR, MOD_ID);
     public static final int DECORATION_STEPS = GenerationStep.Decoration.values().length;
     public static final int SEA_LEVEL_Y = 63; // Matches vanilla
-
-    static
-    {
-        CHUNK_GENERATOR.register("overworld", () -> CODEC);
-    }
 
     private static DataResult<BiomeSourceExtension> guardBiomeSource(BiomeSource source)
     {
@@ -236,7 +227,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     }
 
     @Override
-    protected Codec<TFCChunkGenerator> codec()
+    protected MapCodec<TFCChunkGenerator> codec()
     {
         return CODEC;
     }

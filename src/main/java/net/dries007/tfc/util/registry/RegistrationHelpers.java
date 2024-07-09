@@ -11,6 +11,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
+import com.google.common.base.Suppliers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
@@ -23,11 +24,10 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.common.extensions.IForgeMenuType;
-import net.minecraftforge.common.util.Lazy;
-import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.fluids.ForgeFlowingFluid;
-import net.minecraftforge.network.IContainerFactory;
+import net.neoforged.neoforge.fluids.BaseFlowingFluid;
+import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.network.IContainerFactory;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.apache.commons.lang3.mutable.Mutable;
 import org.apache.commons.lang3.mutable.MutableObject;
@@ -59,10 +59,10 @@ public final class RegistrationHelpers
     /**
      * Register a {@link Block}, and optionally a {@link BlockItem} based on said block.
      */
-    public static <T extends Block> RegistryObject<T> registerBlock(DeferredRegister<Block> blocks, DeferredRegister<Item> items, String name, Supplier<T> blockSupplier, @Nullable Function<T, ? extends BlockItem> blockItemFactory)
+    public static <T extends Block> DeferredHolder<Block, T> registerBlock(DeferredRegister<Block> blocks, DeferredRegister<Item> items, String name, Supplier<T> blockSupplier, @Nullable Function<T, ? extends BlockItem> blockItemFactory)
     {
         final String actualName = name.toLowerCase(Locale.ROOT);
-        final RegistryObject<T> block = blocks.register(actualName, blockSupplier);
+        final DeferredHolder<Block, T> block = blocks.register(actualName, blockSupplier);
         if (blockItemFactory != null)
         {
             items.register(actualName, () -> blockItemFactory.apply(block.get()));
@@ -81,23 +81,23 @@ public final class RegistrationHelpers
         String typeName,
         String sourceName,
         String flowingName,
-        Consumer<ForgeFlowingFluid.Properties> builder,
+        Consumer<BaseFlowingFluid.Properties> builder,
         Supplier<FluidType> typeFactory,
-        Function<ForgeFlowingFluid.Properties, F> sourceFactory,
-        Function<ForgeFlowingFluid.Properties, F> flowingFactory)
+        Function<BaseFlowingFluid.Properties, F> sourceFactory,
+        Function<BaseFlowingFluid.Properties, F> flowingFactory)
     {
         // The type need a reference to both source and flowing
         // In addition, the properties' builder cannot be invoked statically, as it has hard references to registry objects, which may not be populated based on class load order - it must be invoked at registration time.
         // So, first we prepare the source and flowing registry objects, referring to the properties box (which will be opened during registration, which is ok)
         // Then, we populate the properties box lazily, (since it's a mutable lazy), so the properties inside are only constructed when the box is opened (again, during registration)
-        final Mutable<Lazy<ForgeFlowingFluid.Properties>> typeBox = new MutableObject<>();
-        final RegistryObject<F> source = fluids.register(sourceName, () -> sourceFactory.apply(typeBox.getValue().get()));
-        final RegistryObject<F> flowing = fluids.register(flowingName, () -> flowingFactory.apply(typeBox.getValue().get()));
+        final Mutable<Supplier<BaseFlowingFluid.Properties>> typeBox = new MutableObject<>();
+        final DeferredHolder<Fluid, F> source = fluids.register(sourceName, () -> sourceFactory.apply(typeBox.getValue().get()));
+        final DeferredHolder<Fluid, F> flowing = fluids.register(flowingName, () -> flowingFactory.apply(typeBox.getValue().get()));
 
-        final RegistryObject<FluidType> fluidType = fluidTypes.register(typeName, typeFactory);
+        final DeferredHolder<FluidType, FluidType> fluidType = fluidTypes.register(typeName, typeFactory);
 
-        typeBox.setValue(Lazy.of(() -> {
-            final ForgeFlowingFluid.Properties lazyProperties = new ForgeFlowingFluid.Properties(fluidType, source, flowing);
+        typeBox.setValue(Suppliers.memoize(() -> {
+            final BaseFlowingFluid.Properties lazyProperties = new BaseFlowingFluid.Properties(fluidType, source, flowing);
             builder.accept(lazyProperties);
             return lazyProperties;
         }));
@@ -111,7 +111,7 @@ public final class RegistrationHelpers
      * Registers a {@link BlockEntityType} for a given {@link BlockEntity}
      */
     @SuppressWarnings("ConstantConditions")
-    public static <T extends BlockEntity> RegistryObject<BlockEntityType<T>> register(DeferredRegister<BlockEntityType<?>> blockEntities, String name, BlockEntityType.BlockEntitySupplier<T> factory, Supplier<? extends Block> block)
+    public static <T extends BlockEntity> DeferredHolder<BlockEntityType<?>, BlockEntityType<T>> register(DeferredRegister<BlockEntityType<?>> blockEntities, String name, BlockEntityType.BlockEntitySupplier<T> factory, Supplier<? extends Block> block)
     {
         return blockEntities.register(name, () -> BlockEntityType.Builder.of(factory, block.get()).build(null));
     }
@@ -120,7 +120,7 @@ public final class RegistrationHelpers
      * Registers a {@link BlockEntityType} for a given {@link BlockEntity}
      */
     @SuppressWarnings("ConstantConditions")
-    public static <T extends BlockEntity> RegistryObject<BlockEntityType<T>> register(DeferredRegister<BlockEntityType<?>> blockEntities, String name, BlockEntityType.BlockEntitySupplier<T> factory, Stream<? extends Supplier<? extends Block>> blocks)
+    public static <T extends BlockEntity> DeferredHolder<BlockEntityType<?>, BlockEntityType<T>> register(DeferredRegister<BlockEntityType<?>> blockEntities, String name, BlockEntityType.BlockEntitySupplier<T> factory, Stream<? extends Supplier<? extends Block>> blocks)
     {
         return blockEntities.register(name, () -> BlockEntityType.Builder.of(factory, blocks.map(Supplier::get).toArray(Block[]::new)).build(null));
     }
@@ -130,7 +130,7 @@ public final class RegistrationHelpers
     /**
      * Registers a {@link BlockEntityContainer} for a {@link InventoryBlockEntity}
      */
-    public static <T extends InventoryBlockEntity<?>, C extends BlockEntityContainer<T>> RegistryObject<MenuType<C>> registerBlockEntityContainer(DeferredRegister<MenuType<?>> containers, String name, Supplier<BlockEntityType<T>> type, BlockEntityContainer.Factory<T, C> factory)
+    public static <T extends InventoryBlockEntity<?>, C extends BlockEntityContainer<T>> DeferredHolder<MenuType<?>, MenuType<C>> registerBlockEntityContainer(DeferredRegister<MenuType<?>> containers, String name, Supplier<BlockEntityType<T>> type, BlockEntityContainer.Factory<T, C> factory)
     {
         return registerContainer(containers, name, (windowId, playerInventory, buffer) -> {
             final Level level = playerInventory.player.level();
@@ -144,7 +144,7 @@ public final class RegistrationHelpers
     /**
      * Registers a {@link ItemStackContainer} for a {@link ItemStack}
      */
-    public static <C extends ItemStackContainer> RegistryObject<MenuType<C>> registerItemStackContainer(DeferredRegister<MenuType<?>> containers, String name, ItemStackContainer.Factory<C> factory)
+    public static <C extends ItemStackContainer> DeferredHolder<MenuType<?>, MenuType<C>> registerItemStackContainer(DeferredRegister<MenuType<?>> containers, String name, ItemStackContainer.Factory<C> factory)
     {
         return registerContainer(containers, name, (windowId, playerInventory, buffer) -> {
             final ItemStackContainerProvider.Info info = ItemStackContainerProvider.read(buffer, playerInventory);
@@ -155,7 +155,7 @@ public final class RegistrationHelpers
     /**
      * Registers an {@link AbstractContainerMenu}
      */
-    public static <C extends AbstractContainerMenu> RegistryObject<MenuType<C>> registerContainer(DeferredRegister<MenuType<?>> containers, String name, IContainerFactory<C> factory)
+    public static <C extends AbstractContainerMenu> DeferredHolder<MenuType<?>, MenuType<C>> registerContainer(DeferredRegister<MenuType<?>> containers, String name, IContainerFactory<C> factory)
     {
         return containers.register(name, () -> IForgeMenuType.create(factory));
     }

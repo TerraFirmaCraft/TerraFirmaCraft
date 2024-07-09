@@ -22,12 +22,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ITeleporter;
+import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.TFCEffects;
+import net.dries007.tfc.common.effect.TFCEffects;
 import net.dries007.tfc.common.entities.IGlow;
 import net.dries007.tfc.common.entities.TFCEntities;
-
-import org.jetbrains.annotations.Nullable;
 
 public class GlowArrow extends AbstractArrow implements IGlow
 {

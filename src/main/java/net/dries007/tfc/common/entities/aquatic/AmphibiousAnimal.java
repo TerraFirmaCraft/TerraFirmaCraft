@@ -66,7 +66,7 @@ public abstract class AmphibiousAnimal extends WildAnimal implements Temptable
 
     private static final EntityDataAccessor<Boolean> DATA_PLAYING_DEAD = SynchedEntityData.defineId(AmphibiousAnimal.class, EntityDataSerializers.BOOLEAN);
 
-    public AmphibiousAnimal(EntityType<? extends AmphibiousAnimal> type, Level level, TFCSounds.EntitySound sound)
+    public AmphibiousAnimal(EntityType<? extends AmphibiousAnimal> type, Level level, TFCSounds.EntityId sound)
     {
         super(type, level, sound);
         this.setPathfindingMalus(BlockPathTypes.WALKABLE, 0f);

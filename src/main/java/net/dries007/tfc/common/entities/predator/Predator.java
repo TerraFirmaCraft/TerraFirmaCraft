@@ -8,7 +8,6 @@ package net.dries007.tfc.common.entities.predator;
 
 import java.util.function.Supplier;
 import com.mojang.serialization.Dynamic;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -19,6 +18,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
@@ -35,19 +35,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.particle.TFCParticles;
-import net.dries007.tfc.common.TFCEffects;
-
-import net.minecraft.world.entity.AnimationState;
-
-import net.dries007.tfc.common.entities.EntityHelpers;
-import net.dries007.tfc.common.entities.prey.WildAnimal;
+import net.dries007.tfc.common.effect.TFCEffects;
 import net.dries007.tfc.common.entities.ai.TFCBrain;
 import net.dries007.tfc.common.entities.ai.predator.PredatorAi;
+import net.dries007.tfc.common.entities.prey.WildAnimal;
 
 public class Predator extends WildAnimal
 {
@@ -76,7 +71,7 @@ public class Predator extends WildAnimal
         return new Predator(type, level, true, TFCSounds.BEAR);
     }
 
-    public Predator(EntityType<? extends Predator> type, Level level, boolean diurnal, TFCSounds.EntitySound sounds)
+    public Predator(EntityType<? extends Predator> type, Level level, boolean diurnal, TFCSounds.EntityId sounds)
     {
         super(type, level, sounds);
         this.diurnal = diurnal;

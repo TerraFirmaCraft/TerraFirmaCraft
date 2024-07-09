@@ -31,7 +31,6 @@ import net.dries007.tfc.client.ClientForgeEventHandler;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCCreativeTabs;
-import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.IBellowsConsumer;
@@ -44,6 +43,7 @@ import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.capabilities.heat.IHeatBlock;
 import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.container.TFCContainerTypes;
+import net.dries007.tfc.common.effect.TFCEffects;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.Faunas;
 import net.dries007.tfc.common.entities.TFCEntities;
@@ -73,9 +73,7 @@ import net.dries007.tfc.util.calendar.ServerCalendar;
 import net.dries007.tfc.util.climate.ClimateModels;
 import net.dries007.tfc.util.loot.TFCLoot;
 import net.dries007.tfc.util.tracker.WorldTracker;
-import net.dries007.tfc.world.TFCChunkGenerator;
-import net.dries007.tfc.world.TFCStructureHooks;
-import net.dries007.tfc.world.biome.RegionBiomeSource;
+import net.dries007.tfc.world.TFCWorldGen;
 import net.dries007.tfc.world.blockpredicate.TFCBlockPredicates;
 import net.dries007.tfc.world.carver.TFCCarvers;
 import net.dries007.tfc.world.chunkdata.ChunkData;
@@ -84,6 +82,7 @@ import net.dries007.tfc.world.feature.TFCFeatures;
 import net.dries007.tfc.world.placement.TFCPlacements;
 import net.dries007.tfc.world.settings.RockSettings;
 import net.dries007.tfc.world.stateprovider.TFCStateProviders;
+import net.dries007.tfc.world.structure.TFCStructureHooks;
 
 @Mod(TerraFirmaCraft.MOD_ID)
 public final class TerraFirmaCraft
@@ -132,8 +131,8 @@ public final class TerraFirmaCraft
         TFCPlacements.PLACEMENT_MODIFIERS.register(bus);
         TFCFeatures.FEATURES.register(bus);
         TFCCarvers.CARVERS.register(bus);
-        TFCChunkGenerator.CHUNK_GENERATOR.register(bus);
-        RegionBiomeSource.BIOME_SOURCE.register(bus);
+        TFCWorldGen.CHUNK_GENERATOR.register(bus);
+        TFCWorldGen.BIOME_SOURCE.register(bus);
         TFCStateProviders.BLOCK_STATE_PROVIDERS.register(bus);
         TFCStructureHooks.STRUCTURE_PLACEMENTS.register(bus);
         TFCDensityFunctions.TYPES.register(bus);

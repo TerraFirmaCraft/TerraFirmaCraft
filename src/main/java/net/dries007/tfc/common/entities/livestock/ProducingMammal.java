@@ -25,7 +25,7 @@ public abstract class ProducingMammal extends Mammal
     protected final ForgeConfigSpec.IntValue produceTicks;
     protected final ForgeConfigSpec.DoubleValue produceFamiliarity;
 
-    public ProducingMammal(EntityType<? extends ProducingMammal> animal, Level level, TFCSounds.EntitySound sounds, ProducingMammalConfig config)
+    public ProducingMammal(EntityType<? extends ProducingMammal> animal, Level level, TFCSounds.EntityId sounds, ProducingMammalConfig config)
     {
         super(animal, level, sounds, config.inner());
         this.produceTicks = config.produceTicks();

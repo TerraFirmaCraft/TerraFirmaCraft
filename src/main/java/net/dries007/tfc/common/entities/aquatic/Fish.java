@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.entities.aquatic;
 
 import java.util.Locale;
-
 import net.minecraft.sounds.SoundEvents;
 
 import net.dries007.tfc.client.TFCSounds;
@@ -38,11 +37,11 @@ public enum Fish
         return serializedName;
     }
 
-    public TFCSounds.FishSound makeSound()
+    public TFCSounds.FishId makeSound()
     {
         if (this == SALMON)
         {
-            return new TFCSounds.FishSound(() -> SoundEvents.SALMON_AMBIENT, () -> SoundEvents.SALMON_DEATH, () -> SoundEvents.SALMON_HURT, () -> SoundEvents.SALMON_FLOP);
+            return new TFCSounds.FishId(() -> SoundEvents.SALMON_AMBIENT, () -> SoundEvents.SALMON_DEATH, () -> SoundEvents.SALMON_HURT, () -> SoundEvents.SALMON_FLOP);
         }
         return TFCSounds.createFish(serializedName);
     }

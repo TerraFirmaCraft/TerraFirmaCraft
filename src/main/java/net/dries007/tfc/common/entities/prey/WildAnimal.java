@@ -45,7 +45,7 @@ public class WildAnimal extends AgeableMob implements GenderedRenderAnimal
     protected final Supplier<SoundEvent> hurt;
     protected final Supplier<SoundEvent> step;
 
-    public WildAnimal(EntityType<? extends AgeableMob> type, Level level, TFCSounds.EntitySound sounds)
+    public WildAnimal(EntityType<? extends AgeableMob> type, Level level, TFCSounds.EntityId sounds)
     {
         super(type, level);
         this.ambient = sounds.ambient();
