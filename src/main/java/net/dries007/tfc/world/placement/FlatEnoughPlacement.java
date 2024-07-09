@@ -8,6 +8,7 @@ package net.dries007.tfc.world.placement;
 
 import java.util.stream.Stream;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -21,7 +22,7 @@ import net.dries007.tfc.world.Codecs;
 
 public class FlatEnoughPlacement extends PlacementModifier
 {
-    public static final Codec<FlatEnoughPlacement> PLACEMENT_CODEC = RecordCodecBuilder.create(instance -> instance.group(
+    public static final MapCodec<FlatEnoughPlacement> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
         Codec.floatRange(0, 1).optionalFieldOf("flatness", 0.5f).forGetter(c -> c.flatness),
         Codecs.POSITIVE_INT.optionalFieldOf("radius", 2).forGetter(c -> c.radius),
         Codecs.POSITIVE_INT.optionalFieldOf("max_depth", 4).forGetter(c -> c.maxDepth)

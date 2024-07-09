@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.world.placement;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.biome.Biome;
@@ -19,7 +19,7 @@ import net.dries007.tfc.world.biome.TFCBiomes;
 
 public final class BiomePlacement extends PlacementFilter
 {
-    public static final Codec<BiomePlacement> PLACEMENT_CODEC = Codec.unit(new BiomePlacement());
+    public static final MapCodec<BiomePlacement> CODEC = MapCodec.unit(new BiomePlacement());
 
     @Override
     public PlacementModifierType<?> type()

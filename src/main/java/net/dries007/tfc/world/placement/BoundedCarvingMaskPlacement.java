@@ -7,7 +7,7 @@
 package net.dries007.tfc.world.placement;
 
 import java.util.stream.Stream;
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -26,7 +26,7 @@ import net.dries007.tfc.world.Codecs;
  */
 public class BoundedCarvingMaskPlacement extends PlacementModifier
 {
-    public static final Codec<BoundedCarvingMaskPlacement> PLACEMENT_CODEC = RecordCodecBuilder.create(instance -> instance.group(
+    public static final MapCodec<BoundedCarvingMaskPlacement> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
         Codecs.optionalFieldOf(VerticalAnchor.CODEC, "min_y", VerticalAnchor.bottom()).forGetter(c -> c.minY),
         Codecs.optionalFieldOf(VerticalAnchor.CODEC, "max_y", VerticalAnchor.top()).forGetter(c -> c.maxY),
         GenerationStep.Carving.CODEC.fieldOf("step").forGetter(c -> c.step)

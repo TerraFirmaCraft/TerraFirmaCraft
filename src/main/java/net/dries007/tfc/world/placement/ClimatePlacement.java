@@ -8,6 +8,7 @@ package net.dries007.tfc.world.placement;
 
 import java.util.stream.Stream;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -22,7 +23,7 @@ import net.dries007.tfc.world.chunkdata.ForestType;
 
 public class ClimatePlacement extends PlacementModifier
 {
-    public static final Codec<ClimatePlacement> PLACEMENT_CODEC = RecordCodecBuilder.create(instance -> instance.group(
+    public static final MapCodec<ClimatePlacement> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
         Codec.FLOAT.optionalFieldOf("min_temperature", -Float.MAX_VALUE).forGetter(c -> c.minTemp),
         Codec.FLOAT.optionalFieldOf("max_temperature", Float.MAX_VALUE).forGetter(c -> c.maxTemp),
         Codec.FLOAT.optionalFieldOf("min_rainfall", -Float.MAX_VALUE).forGetter(c -> c.minRainfall),

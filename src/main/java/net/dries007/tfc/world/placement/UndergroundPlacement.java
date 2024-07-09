@@ -7,7 +7,7 @@
 package net.dries007.tfc.world.placement;
 
 import java.util.stream.Stream;
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -17,7 +17,7 @@ import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 
 public class UndergroundPlacement extends PlacementModifier
 {
-    public static final Codec<UndergroundPlacement> PLACEMENT_CODEC = Codec.unit(new UndergroundPlacement());
+    public static final MapCodec<UndergroundPlacement> CODEC = MapCodec.unit(new UndergroundPlacement());
 
     @Override
     public Stream<BlockPos> getPositions(PlacementContext context, RandomSource random, BlockPos pos)

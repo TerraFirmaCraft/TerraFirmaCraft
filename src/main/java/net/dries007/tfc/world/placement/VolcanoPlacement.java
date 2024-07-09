@@ -8,6 +8,7 @@ package net.dries007.tfc.world.placement;
 
 import java.util.stream.Stream;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
@@ -27,7 +28,7 @@ import net.dries007.tfc.world.biome.VolcanoNoise;
 
 public class VolcanoPlacement extends PlacementModifier
 {
-    public static final Codec<VolcanoPlacement> PLACEMENT_CODEC = RecordCodecBuilder.create(instance -> instance.group(
+    public static final MapCodec<VolcanoPlacement> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
         Codec.BOOL.optionalFieldOf("center", false).forGetter(c -> c.center),
         Codecs.UNIT_FLOAT.optionalFieldOf("distance", 0f).forGetter(c -> c.distance)
     ).apply(instance, VolcanoPlacement::new));

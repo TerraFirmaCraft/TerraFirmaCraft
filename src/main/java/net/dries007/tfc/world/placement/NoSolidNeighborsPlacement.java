@@ -7,7 +7,7 @@
 package net.dries007.tfc.world.placement;
 
 import java.util.stream.Stream;
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -22,7 +22,7 @@ import net.dries007.tfc.util.Helpers;
 
 public class NoSolidNeighborsPlacement extends PlacementModifier
 {
-    public static final Codec<NoSolidNeighborsPlacement> PLACEMENT_CODEC = Codec.unit(new NoSolidNeighborsPlacement());
+    public static final MapCodec<NoSolidNeighborsPlacement> CODEC = MapCodec.unit(new NoSolidNeighborsPlacement());
 
     @Override
     public Stream<BlockPos> getPositions(PlacementContext context, RandomSource random, BlockPos pos)
