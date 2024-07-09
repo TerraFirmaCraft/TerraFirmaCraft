@@ -23,7 +23,6 @@ import net.minecraft.world.item.armortrim.ArmorTrim;
 import net.minecraft.world.item.armortrim.TrimMaterials;
 import net.minecraft.world.item.armortrim.TrimPatterns;
 import net.minecraftforge.items.ItemHandlerHelper;
-import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.server.command.EnumArgument;
 
 import net.dries007.tfc.common.items.TFCItems;

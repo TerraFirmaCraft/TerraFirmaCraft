@@ -8,29 +8,45 @@ package net.dries007.tfc.common.entities;
 
 import java.util.Locale;
 import java.util.Map;
-
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.GlowSquid;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.entity.animal.*;
+import net.minecraft.world.entity.animal.AbstractFish;
+import net.minecraft.world.entity.animal.Cow;
+import net.minecraft.world.entity.animal.Dolphin;
+import net.minecraft.world.entity.animal.Pig;
+import net.minecraft.world.entity.animal.Rabbit;
+import net.minecraft.world.entity.animal.Squid;
 import net.minecraft.world.entity.animal.horse.AbstractChestedHorse;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.entities.ai.predator.PackPredator;
 import net.dries007.tfc.common.entities.ai.prey.TFCOcelot;
-import net.dries007.tfc.common.entities.aquatic.*;
+import net.dries007.tfc.common.entities.aquatic.AmphibiousAnimal;
+import net.dries007.tfc.common.entities.aquatic.AquaticCritter;
+import net.dries007.tfc.common.entities.aquatic.Fish;
+import net.dries007.tfc.common.entities.aquatic.FreshwaterFish;
+import net.dries007.tfc.common.entities.aquatic.Jellyfish;
+import net.dries007.tfc.common.entities.aquatic.Manatee;
+import net.dries007.tfc.common.entities.aquatic.Octopoteuthis;
+import net.dries007.tfc.common.entities.aquatic.Penguin;
+import net.dries007.tfc.common.entities.aquatic.TFCCod;
+import net.dries007.tfc.common.entities.aquatic.TFCDolphin;
+import net.dries007.tfc.common.entities.aquatic.TFCPufferfish;
+import net.dries007.tfc.common.entities.aquatic.TFCSquid;
+import net.dries007.tfc.common.entities.aquatic.TFCTropicalFish;
+import net.dries007.tfc.common.entities.aquatic.TFCTurtle;
 import net.dries007.tfc.common.entities.livestock.DairyAnimal;
 import net.dries007.tfc.common.entities.livestock.Mammal;
 import net.dries007.tfc.common.entities.livestock.OviparousAnimal;
@@ -64,7 +80,7 @@ import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.*;
 
 /**
  * For reference, each living entity needs:
