@@ -377,10 +377,10 @@ public class ClientForgeEventHandler
             int guiTop = screen.getGuiTop();
 
             event.addListener(new PlayerInventoryTabButton(guiLeft, guiTop, 176 - 3, 4, 20 + 3, 22, 128 + 20, 0, 1, 3, 0, 0, button -> {}).setRecipeBookCallback(screen));
-            event.addListener(new PlayerInventoryTabButton(guiLeft, guiTop, 176, 27, 20, 22, 128, 0, 1, 3, 32, 0, SwitchInventoryTabPacket.Type.CALENDAR).setRecipeBookCallback(screen));
-            event.addListener(new PlayerInventoryTabButton(guiLeft, guiTop, 176, 50, 20, 22, 128, 0, 1, 3, 64, 0, SwitchInventoryTabPacket.Type.NUTRITION).setRecipeBookCallback(screen));
-            event.addListener(new PlayerInventoryTabButton(guiLeft, guiTop, 176, 73, 20, 22, 128, 0, 1, 3, 96, 0, SwitchInventoryTabPacket.Type.CLIMATE).setRecipeBookCallback(screen));
-            PatchouliIntegration.ifEnabled(() -> event.addListener(new PlayerInventoryTabButton(guiLeft, guiTop, 176, 96, 20, 22, 128, 0, 1, 3, 0, 32, SwitchInventoryTabPacket.Type.BOOK).setRecipeBookCallback(screen)));
+            event.addListener(new PlayerInventoryTabButton(guiLeft, guiTop, 176, 27, 20, 22, 128, 0, 1, 3, 32, 0, SwitchInventoryTabPacket.Tab.CALENDAR).setRecipeBookCallback(screen));
+            event.addListener(new PlayerInventoryTabButton(guiLeft, guiTop, 176, 50, 20, 22, 128, 0, 1, 3, 64, 0, SwitchInventoryTabPacket.Tab.NUTRITION).setRecipeBookCallback(screen));
+            event.addListener(new PlayerInventoryTabButton(guiLeft, guiTop, 176, 73, 20, 22, 128, 0, 1, 3, 96, 0, SwitchInventoryTabPacket.Tab.CLIMATE).setRecipeBookCallback(screen));
+            PatchouliIntegration.ifEnabled(() -> event.addListener(new PlayerInventoryTabButton(guiLeft, guiTop, 176, 96, 20, 22, 128, 0, 1, 3, 0, 32, SwitchInventoryTabPacket.Tab.BOOK).setRecipeBookCallback(screen)));
         }
     }
 
@@ -388,7 +388,7 @@ public class ClientForgeEventHandler
     {
         // We can't send this on client world load, it's too early, as the connection is not setup yet
         // This is the closest point after that which will work
-        PacketHandler.send(PacketDistributor.SERVER.noArg(), new RequestClimateModelPacket());
+        PacketHandler.send(PacketDistributor.SERVER.noArg(), RequestClimateModelPacket.PACKET);
 
         LocalPlayer player = event.getPlayer();
         List<AmbientSoundHandler> handlers = ((LocalPlayerAccessor) player).accessor$getAmbientSoundHandlers();
@@ -462,11 +462,11 @@ public class ClientForgeEventHandler
     {
         if (TFCKeyBindings.PLACE_BLOCK.isDown())
         {
-            PacketHandler.send(PacketDistributor.SERVER.noArg(), new PlaceBlockSpecialPacket());
+            PacketHandler.send(PacketDistributor.SERVER.noArg(), PlaceBlockSpecialPacket.PACKET);
         }
         else if (TFCKeyBindings.CYCLE_CHISEL_MODE.isDown())
         {
-            PacketHandler.send(PacketDistributor.SERVER.noArg(), new CycleChiselModePacket());
+            PacketHandler.send(PacketDistributor.SERVER.noArg(), CycleChiselModePacket.PACKET);
         }
     }
 

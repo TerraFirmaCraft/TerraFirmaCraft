@@ -12,6 +12,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.network.NetworkRegistry;
@@ -39,6 +40,11 @@ import net.dries007.tfc.util.climate.ClimateRange;
 
 public final class PacketHandler
 {
+    public static <T extends CustomPacketPayload> CustomPacketPayload.Type<T> type(String id)
+    {
+        return new CustomPacketPayload.Type<T>(Helpers.identifier(id));
+    }
+
     private static final String VERSION = ModList.get().getModFileById(TerraFirmaCraft.MOD_ID).versionString();
     private static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(Helpers.identifier("network"), () -> VERSION, VERSION::equals, VERSION::equals);
     private static final MutableInt ID = new MutableInt(0);
@@ -88,7 +94,7 @@ public final class PacketHandler
         register(OpenFieldGuidePacket.class, OpenFieldGuidePacket::encode, OpenFieldGuidePacket::new, OpenFieldGuidePacket::handle);
         register(PetCommandPacket.class, PetCommandPacket::encode, PetCommandPacket::new, PetCommandPacket::handle);
         register(PourFasterPacket.class, PourFasterPacket::encode, PourFasterPacket::new, PourFasterPacket::handle);
-        register(SelectAnvilPlan.class, SelectAnvilPlan::encode, SelectAnvilPlan::new, SelectAnvilPlan::handle);
+        register(SelectAnvilPlanPacket.class, SelectAnvilPlanPacket::encode, SelectAnvilPlanPacket::new, SelectAnvilPlanPacket::handle);
     }
 
     @SuppressWarnings("unchecked")

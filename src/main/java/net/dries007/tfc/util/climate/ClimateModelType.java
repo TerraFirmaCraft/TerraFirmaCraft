@@ -8,10 +8,15 @@ package net.dries007.tfc.util.climate;
 
 import java.util.function.Supplier;
 
+import io.netty.buffer.ByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 
-public record ClimateModelType(Supplier<ClimateModel> factory, ResourceLocation id)
-{
+public record ClimateModelType(
+    ResourceLocation id,
+    Supplier<ClimateModel> factory,
+    StreamCodec<ByteBuf, ClimateModel> codec
+) {
     public ClimateModel create()
     {
         return factory.get();

@@ -6,26 +6,32 @@
 
 package net.dries007.tfc.network;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.player.Player;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.effect.TFCEffects;
 
-// Tracking Issue: https://github.com/MinecraftForge/MinecraftForge/issues/8506
-// Update: Forge does not believe that this is an issue.
-public record EffectExpirePacket(MobEffect effect)
+public record EffectExpirePacket(MobEffect effect) implements CustomPacketPayload
 {
-    EffectExpirePacket(FriendlyByteBuf buffer)
-    {
-        this(BuiltInRegistries.MOB_EFFECT.byIdOrThrow(buffer.readVarInt()));
-    }
+    public static final CustomPacketPayload.Type<EffectExpirePacket> TYPE = PacketHandler.type("effect_expire");
+    public static final StreamCodec<RegistryFriendlyByteBuf, EffectExpirePacket> STREAM = StreamCodec.composite(
+        ByteBufCodecs.registry(Registries.MOB_EFFECT), c -> c.effect,
+        EffectExpirePacket::new
+    );
 
-    void encode(FriendlyByteBuf buffer)
+    @Override
+    public Type<? extends CustomPacketPayload> type()
     {
-        buffer.writeVarInt(BuiltInRegistries.MOB_EFFECT.getId(effect));
+        return TYPE;
     }
 
     void handle()
@@ -33,7 +39,7 @@ public record EffectExpirePacket(MobEffect effect)
         if (effect == TFCEffects.PINNED.get())
         {
             final Player player = ClientHelpers.getPlayer();
-            if (player != null && player.hasEffect(TFCEffects.PINNED.get()))
+            if (player != null && player.hasEffect(TFCEffects.PINNED.holder()))
             {
                 player.setForcedPose(null);
             }

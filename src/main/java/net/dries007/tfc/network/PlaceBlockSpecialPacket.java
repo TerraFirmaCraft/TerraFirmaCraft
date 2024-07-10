@@ -8,6 +8,8 @@ package net.dries007.tfc.network;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -23,8 +25,19 @@ import net.dries007.tfc.common.blocks.devices.PlacedItemBlock;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
-public class PlaceBlockSpecialPacket
+public enum PlaceBlockSpecialPacket implements CustomPacketPayload
 {
+    PACKET;
+
+    public static final CustomPacketPayload.Type<PlaceBlockSpecialPacket> TYPE = PacketHandler.type("place_block");
+    public static final StreamCodec<?, PlaceBlockSpecialPacket> STREAM = StreamCodec.unit(PACKET);
+
+    @Override
+    public Type<? extends CustomPacketPayload> type()
+    {
+        return TYPE;
+    }
+
     void handle(@Nullable ServerPlayer player)
     {
         if (player != null && TFCConfig.SERVER.enablePlacingItems.get() && player.mayBuild())

@@ -7,6 +7,8 @@
 package net.dries007.tfc.network;
 
 
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
 
 import net.dries007.tfc.client.ClientHelpers;
@@ -15,8 +17,19 @@ import net.dries007.tfc.common.capabilities.food.TFCFoodData;
 /**
  * A packet that signals to the client it needs to replace the client player's food stats object
  */
-public class FoodDataReplacePacket
+public enum FoodDataReplacePacket implements CustomPacketPayload
 {
+    PACKET;
+
+    public static final CustomPacketPayload.Type<FoodDataReplacePacket> TYPE = PacketHandler.type("replace_food_data");
+    public static final StreamCodec<?, FoodDataReplacePacket> STREAM = StreamCodec.unit(PACKET);
+
+    @Override
+    public Type<? extends CustomPacketPayload> type()
+    {
+        return TYPE;
+    }
+
     void handle()
     {
         final Player player = ClientHelpers.getPlayer();

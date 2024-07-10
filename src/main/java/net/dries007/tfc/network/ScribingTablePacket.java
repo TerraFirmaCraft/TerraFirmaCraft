@@ -7,20 +7,24 @@
 package net.dries007.tfc.network;
 
 import net.dries007.tfc.common.container.ScribingTableContainer;
+
+import io.netty.buffer.ByteBuf;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.Nullable;
 
-public record ScribingTablePacket(String name)
+public record ScribingTablePacket(String name) implements CustomPacketPayload
 {
-    ScribingTablePacket(FriendlyByteBuf buffer)
-    {
-        this(buffer.readUtf());
-    }
+    public static final CustomPacketPayload.Type<ScribingTablePacket> TYPE = PacketHandler.type("scribing_table");
+    public static final StreamCodec<ByteBuf, ScribingTablePacket> STREAM = ByteBufCodecs.STRING_UTF8.map(ScribingTablePacket::new, c -> c.name);
 
-    void encode(FriendlyByteBuf buffer)
+    @Override
+    public Type<? extends CustomPacketPayload> type()
     {
-        buffer.writeUtf(name);
+        return TYPE;
     }
 
     void handle(@Nullable ServerPlayer player)

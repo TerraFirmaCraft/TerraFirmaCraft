@@ -7,7 +7,12 @@
 package net.dries007.tfc.network;
 
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
+
+import io.netty.buffer.ByteBuf;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.Nullable;
@@ -15,20 +20,19 @@ import org.jetbrains.annotations.Nullable;
 public record OpenFieldGuidePacket(
     ResourceLocation id,
     int page
-)
+) implements CustomPacketPayload
 {
-    OpenFieldGuidePacket(FriendlyByteBuf buffer)
-    {
-        this(
-            buffer.readResourceLocation(),
-            buffer.readVarInt()
-        );
-    }
+    public static final CustomPacketPayload.Type<OpenFieldGuidePacket> TYPE = PacketHandler.type("open_field_guide");
+    public static final StreamCodec<ByteBuf, OpenFieldGuidePacket> STREAM = StreamCodec.composite(
+        ResourceLocation.STREAM_CODEC, c -> c.id,
+        ByteBufCodecs.VAR_INT, c -> c.page,
+        OpenFieldGuidePacket::new
+    );
 
-    void encode(FriendlyByteBuf buffer)
+    @Override
+    public Type<? extends CustomPacketPayload> type()
     {
-        buffer.writeResourceLocation(id);
-        buffer.writeVarInt(page);
+        return TYPE;
     }
 
     void handle(@Nullable ServerPlayer player)

@@ -10,29 +10,35 @@ import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.items.ProspectResult;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.events.ProspectedEvent;
+
+import io.netty.buffer.ByteBuf;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.common.MinecraftForge;
+import net.neoforged.neoforge.common.NeoForge;
 
 public record ProspectedPacket(
     Block block,
     ProspectResult result
-)
+) implements CustomPacketPayload
 {
-    ProspectedPacket(FriendlyByteBuf buffer)
-    {
-        this(
-            BuiltInRegistries.BLOCK.byId(buffer.readVarInt()),
-            ProspectResult.valueOf(buffer.readByte())
-        );
-    }
+    public static final CustomPacketPayload.Type<ProspectedPacket> TYPE = PacketHandler.type("prospected");
+    public static final StreamCodec<RegistryFriendlyByteBuf, ProspectedPacket> STREAM = StreamCodec.composite(
+        ByteBufCodecs.registry(Registries.BLOCK), c -> c.block,
+        ProspectResult.STREAM, c -> c.result,
+        ProspectedPacket::new
+    );
 
-    void encode(FriendlyByteBuf buffer)
+    @Override
+    public Type<? extends CustomPacketPayload> type()
     {
-        buffer.writeVarInt(BuiltInRegistries.BLOCK.getId(block));
-        buffer.writeByte(result.ordinal());
+        return TYPE;
     }
 
     void handle()
@@ -40,7 +46,7 @@ public record ProspectedPacket(
         final Player player = ClientHelpers.getPlayer();
         if (player != null)
         {
-            MinecraftForge.EVENT_BUS.post(new ProspectedEvent(player, result, block));
+            NeoForge.EVENT_BUS.post(new ProspectedEvent(player, result, block));
             player.displayClientMessage(result.getText(block), TFCConfig.CLIENT.sendProspectResultsToActionbar.get());
         }
     }

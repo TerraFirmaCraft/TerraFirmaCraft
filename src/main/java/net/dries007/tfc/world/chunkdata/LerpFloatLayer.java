@@ -6,9 +6,12 @@
 
 package net.dries007.tfc.world.chunkdata;
 
+import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.floats.FloatUnaryOperator;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 
 import net.dries007.tfc.util.Helpers;
 
@@ -22,6 +25,13 @@ public record LerpFloatLayer(
     float value10,
     float value11
 ) {
+    public static final StreamCodec<ByteBuf, LerpFloatLayer> STREAM = StreamCodec.composite(
+        ByteBufCodecs.FLOAT, c -> c.value00,
+        ByteBufCodecs.FLOAT, c -> c.value01,
+        ByteBufCodecs.FLOAT, c -> c.value10,
+        ByteBufCodecs.FLOAT, c -> c.value11,
+        LerpFloatLayer::new
+    );
 
     public LerpFloatLayer(FriendlyByteBuf buffer)
     {

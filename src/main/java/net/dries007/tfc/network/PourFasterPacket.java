@@ -7,8 +7,13 @@
 package net.dries007.tfc.network;
 
 import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
+
+import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
@@ -16,20 +21,19 @@ import org.jetbrains.annotations.Nullable;
 public record PourFasterPacket(
     BlockPos pos,
     int slot
-)
+) implements CustomPacketPayload
 {
-    PourFasterPacket(FriendlyByteBuf buffer)
-    {
-        this(
-            buffer.readBlockPos(),
-            buffer.readVarInt()
-        );
-    }
+    public static final CustomPacketPayload.Type<PourFasterPacket> TYPE = PacketHandler.type("pour_faster");
+    public static final StreamCodec<ByteBuf, PourFasterPacket> STREAM = StreamCodec.composite(
+        BlockPos.STREAM_CODEC, c -> c.pos,
+        ByteBufCodecs.VAR_INT, c -> c.slot,
+        PourFasterPacket::new
+    );
 
-    void encode(FriendlyByteBuf buffer)
+    @Override
+    public Type<? extends CustomPacketPayload> type()
     {
-        buffer.writeBlockPos(pos);
-        buffer.writeVarInt(slot);
+        return TYPE;
     }
 
     void handle(@Nullable ServerPlayer player)

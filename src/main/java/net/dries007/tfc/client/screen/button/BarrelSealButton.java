@@ -35,7 +35,7 @@ public class BarrelSealButton extends Button
     @Override
     public void onPress()
     {
-        PacketHandler.send(PacketDistributor.SERVER.noArg(), new ScreenButtonPacket(0, null));
+        PacketHandler.send(PacketDistributor.SERVER.noArg(), new ScreenButtonPacket(0));
         playDownSound(Minecraft.getInstance().getSoundManager());
     }
 

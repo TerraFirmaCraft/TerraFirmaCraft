@@ -47,7 +47,7 @@ public class KnappingButton extends Button
         if (active)
         {
             visible = false;
-            PacketHandler.send(PacketDistributor.SERVER.noArg(), new ScreenButtonPacket(id, null));
+            PacketHandler.send(PacketDistributor.SERVER.noArg(), new ScreenButtonPacket(id));
             playDownSound(Minecraft.getInstance().getSoundManager());
         }
     }

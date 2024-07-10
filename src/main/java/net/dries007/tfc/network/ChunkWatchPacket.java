@@ -10,7 +10,11 @@ import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ForestType;
 import net.dries007.tfc.world.chunkdata.LerpFloatLayer;
-import net.minecraft.network.FriendlyByteBuf;
+
+import io.netty.buffer.ByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 
@@ -18,54 +22,45 @@ import net.minecraft.world.level.Level;
  * Sent from server -> client on chunk watch, partially syncs chunk data and updates the client cache
  */
 public record ChunkWatchPacket(
-    int chunkX,
-    int chunkZ,
-    LerpFloatLayer rainfallLayer,
-    LerpFloatLayer temperatureLayer,
+    ChunkPos pos,
+    LerpFloatLayer rainfall,
+    LerpFloatLayer temperature,
     ForestType forestType,
     float forestWeirdness,
     float forestDensity
-)
+) implements CustomPacketPayload
 {
-    ChunkWatchPacket(FriendlyByteBuf buffer)
-    {
-        this(
-            buffer.readVarInt(),
-            buffer.readVarInt(),
-            new LerpFloatLayer(buffer),
-            new LerpFloatLayer(buffer),
-            ForestType.valueOf(buffer.readByte()),
-            buffer.readFloat(),
-            buffer.readFloat()
-        );
-    }
+    public static final CustomPacketPayload.Type<ChunkWatchPacket> TYPE = PacketHandler.type("chunk_watch");
+    public static final StreamCodec<ByteBuf, ChunkWatchPacket> STREAM = StreamCodec.composite(
+        PacketCodecs.CHUNK_POS, c -> c.pos,
+        LerpFloatLayer.STREAM, c -> c.rainfall,
+        LerpFloatLayer.STREAM, c -> c.temperature,
+        ForestType.STREAM, c -> c.forestType,
+        ByteBufCodecs.FLOAT, c -> c.forestWeirdness,
+        ByteBufCodecs.FLOAT, c -> c.forestDensity,
+        ChunkWatchPacket::new
+    );
 
-    void encode(FriendlyByteBuf buffer)
+    @Override
+    public Type<? extends CustomPacketPayload> type()
     {
-        buffer.writeVarInt(chunkX);
-        buffer.writeVarInt(chunkZ);
-        rainfallLayer.encode(buffer);
-        temperatureLayer.encode(buffer);
-        buffer.writeByte(forestType.ordinal());
-        buffer.writeFloat(forestDensity);
-        buffer.writeFloat(forestWeirdness);
+        return TYPE;
     }
 
     void handle()
     {
         final Level level = ClientHelpers.getLevel();
-        final ChunkPos chunkPos = new ChunkPos(chunkX, chunkZ);
         if (level != null)
         {
-            ChunkData data = ChunkData.get(level, chunkPos);
+            ChunkData data = ChunkData.get(level, pos);
             if (data.status() == ChunkData.Status.INVALID)
             {
                 // The chunk has not been loaded yet on client, but we have data we need to get to the chunk,
                 // so we store it to be populated later.
-                data = ChunkData.queueClientChunkDataForLoad(chunkPos);
+                data = ChunkData.queueClientChunkDataForLoad(pos);
             }
 
-            data.onUpdatePacket(rainfallLayer, temperatureLayer, forestType, forestDensity, forestWeirdness);
+            data.onUpdatePacket(rainfall, temperature, forestType, forestDensity, forestWeirdness);
         }
     }
 }

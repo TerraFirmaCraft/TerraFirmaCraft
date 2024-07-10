@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.recipes.AnvilRecipe;
 import net.dries007.tfc.network.PacketHandler;
-import net.dries007.tfc.network.SelectAnvilPlan;
+import net.dries007.tfc.network.SelectAnvilPlanPacket;
 
 /**
  * Custom transfer handler which selects the anvil plan as part of the transfer process
@@ -46,7 +46,7 @@ public class AnvilRecipeTransferHandler<C extends AbstractContainerMenu>
 
         if (doTransfer)
         {
-            PacketHandler.send(PacketDistributor.SERVER.noArg(), new SelectAnvilPlan(recipe));
+            PacketHandler.send(PacketDistributor.SERVER.noArg(), new SelectAnvilPlanPacket(recipe));
         }
 
         return null;

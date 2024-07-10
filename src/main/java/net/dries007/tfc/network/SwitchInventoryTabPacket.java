@@ -9,20 +9,24 @@ package net.dries007.tfc.network;
 import net.dries007.tfc.common.container.TFCContainerProviders;
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
 import net.dries007.tfc.util.Helpers;
+
+import io.netty.buffer.ByteBuf;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.Nullable;
 
-public record SwitchInventoryTabPacket(Type type)
+public record SwitchInventoryTabPacket(Tab tab) implements CustomPacketPayload
 {
-    SwitchInventoryTabPacket(FriendlyByteBuf buffer)
-    {
-        this(Type.VALUES[buffer.readByte()]);
-    }
+    public static final CustomPacketPayload.Type<SwitchInventoryTabPacket> TYPE = PacketHandler.type("switch_inventory_tab");
+    public static final StreamCodec<ByteBuf, SwitchInventoryTabPacket> STREAM = Tab.STREAM.map(SwitchInventoryTabPacket::new, c -> c.tab);
 
-    void encode(FriendlyByteBuf buffer)
+    @Override
+    public Type<? extends CustomPacketPayload> type()
     {
-        buffer.writeByte(type.ordinal());
+        return TYPE;
     }
 
     void handle(@Nullable ServerPlayer player)
@@ -30,7 +34,7 @@ public record SwitchInventoryTabPacket(Type type)
         if (player != null)
         {
             player.doCloseContainer();
-            switch (type)
+            switch (tab)
             {
                 case INVENTORY -> player.containerMenu = player.inventoryMenu;
                 case CALENDAR -> Helpers.openScreen(player, TFCContainerProviders.CALENDAR);
@@ -41,10 +45,11 @@ public record SwitchInventoryTabPacket(Type type)
         }
     }
 
-    public enum Type
+    public enum Tab
     {
         INVENTORY, CALENDAR, NUTRITION, CLIMATE, BOOK;
 
-        private static final Type[] VALUES = values();
+        public static final Tab[] VALUES = values();
+        public static final StreamCodec<ByteBuf, Tab> STREAM = ByteBufCodecs.BYTE.map(c -> VALUES[c], c -> (byte) c.ordinal());
     }
 }

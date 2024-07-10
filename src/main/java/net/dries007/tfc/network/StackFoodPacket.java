@@ -8,7 +8,12 @@ package net.dries007.tfc.network;
 
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.IFood;
+
+import io.netty.buffer.ByteBuf;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.ResultSlot;
@@ -21,16 +26,15 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-public record StackFoodPacket(int index)
+public record StackFoodPacket(int index) implements CustomPacketPayload
 {
-    StackFoodPacket(FriendlyByteBuf buffer)
-    {
-        this(buffer.readVarInt());
-    }
+    public static final CustomPacketPayload.Type<StackFoodPacket> TYPE = PacketHandler.type("stack_food");
+    public static final StreamCodec<ByteBuf, StackFoodPacket> STREAM = ByteBufCodecs.VAR_INT.map(StackFoodPacket::new, StackFoodPacket::index);
 
-    void encode(FriendlyByteBuf buffer)
+    @Override
+    public Type<? extends CustomPacketPayload> type()
     {
-        buffer.writeVarInt(index);
+        return TYPE;
     }
 
     void handle(@Nullable ServerPlayer player)

@@ -9,29 +9,32 @@ package net.dries007.tfc.network;
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.recipes.ChiselRecipe;
+
+import io.netty.buffer.ByteBuf;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
 
 public record PlayerDataUpdatePacket(
     long lastDrinkTick,
     long intoxicationTick,
     ChiselRecipe.Mode mode
-)
+) implements CustomPacketPayload
 {
-    PlayerDataUpdatePacket(FriendlyByteBuf buffer)
-    {
-        this(
-            buffer.readVarLong(),
-            buffer.readVarLong(),
-            ChiselRecipe.Mode.valueOf(buffer.readVarInt())
-        );
-    }
+    public static final CustomPacketPayload.Type<PlayerDataUpdatePacket> TYPE = PacketHandler.type("player_data");
+    public static final StreamCodec<ByteBuf, PlayerDataUpdatePacket> STREAM = StreamCodec.composite(
+        ByteBufCodecs.VAR_LONG, c -> c.lastDrinkTick,
+        ByteBufCodecs.VAR_LONG, c -> c.intoxicationTick,
+        ChiselRecipe.Mode.STREAM, c -> c.mode,
+        PlayerDataUpdatePacket::new
+    );
 
-    void encode(FriendlyByteBuf buffer)
+    @Override
+    public Type<? extends CustomPacketPayload> type()
     {
-        buffer.writeVarLong(lastDrinkTick);
-        buffer.writeVarLong(intoxicationTick);
-        buffer.writeVarInt(mode.ordinal());
+        return TYPE;
     }
 
     void handle()

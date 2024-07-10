@@ -6,37 +6,54 @@
 
 package net.dries007.tfc.network;
 
+import java.util.Optional;
+
 import net.dries007.tfc.common.container.ButtonHandlerContainer;
 import net.dries007.tfc.util.Helpers;
+
+import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.Nullable;
 
 public record ScreenButtonPacket(
     int buttonId,
-    @Nullable CompoundTag extraNbt
-)
+    Optional<CompoundTag> extraNbt
+) implements CustomPacketPayload
 {
-    ScreenButtonPacket(FriendlyByteBuf buffer)
+    public static final CustomPacketPayload.Type<ScreenButtonPacket> TYPE = PacketHandler.type("screen_button");
+    public static final StreamCodec<ByteBuf, ScreenButtonPacket> STREAM = StreamCodec.composite(
+        ByteBufCodecs.VAR_INT, c -> c.buttonId,
+        ByteBufCodecs.OPTIONAL_COMPOUND_TAG, c -> c.extraNbt,
+        ScreenButtonPacket::new
+    );
+
+    public ScreenButtonPacket(int buttonId)
     {
-        this(
-            buffer.readVarInt(),
-            Helpers.decodeNullable(buffer, FriendlyByteBuf::readNbt)
-        );
+        this(buttonId, Optional.empty());
     }
 
-    void encode(FriendlyByteBuf buffer)
+    public ScreenButtonPacket(int buttonId, CompoundTag extraNbt)
     {
-        buffer.writeVarInt(buttonId);
-        Helpers.encodeNullable(extraNbt, buffer, (nbt, buf) -> buf.writeNbt(nbt));
+        this(buttonId, Optional.of(extraNbt));
+    }
+
+    @Override
+    public Type<? extends CustomPacketPayload> type()
+    {
+        return TYPE;
     }
 
     void handle(@Nullable ServerPlayer player)
     {
         if (player != null && player.containerMenu instanceof ButtonHandlerContainer handler)
         {
-            handler.onButtonPress(buttonId, extraNbt);
+            handler.onButtonPress(buttonId, extraNbt.orElse(null));
         }
     }
 }

@@ -8,6 +8,9 @@ package net.dries007.tfc.world.chunkdata;
 
 import java.util.Locale;
 import com.mojang.serialization.Codec;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.StringRepresentable;
 
 public enum ForestType implements StringRepresentable
@@ -19,6 +22,7 @@ public enum ForestType implements StringRepresentable
     OLD_GROWTH;
 
     public static final Codec<ForestType> CODEC = StringRepresentable.fromEnum(ForestType::values);
+    public static final StreamCodec<ByteBuf, ForestType> STREAM = ByteBufCodecs.BYTE.map(ForestType::valueOf, c -> (byte) c.ordinal());
 
     private static final ForestType[] VALUES = values();
 

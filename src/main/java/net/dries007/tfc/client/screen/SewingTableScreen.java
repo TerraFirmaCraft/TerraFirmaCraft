@@ -120,7 +120,7 @@ public class SewingTableScreen extends TFCContainerScreen<SewingTableContainer>
                     return;
                 }
                 if (menu.getCarried().isEmpty() && !showRecipes)
-                    PacketHandler.send(PacketDistributor.SERVER.noArg(), new ScreenButtonPacket(packetButtonId, null));
+                    PacketHandler.send(PacketDistributor.SERVER.noArg(), new ScreenButtonPacket(packetButtonId));
             }, Component.translatable(translationKey));
             button.setTooltip(Tooltip.create(Component.translatable(translationKey)));
         }
@@ -128,7 +128,7 @@ public class SewingTableScreen extends TFCContainerScreen<SewingTableContainer>
         {
             button = new SilentImageButton(x, y, sizeX, sizeY, u, v, yDiffTex, TEXTURE, 256, 256, btn -> {
                 if (menu.getCarried().isEmpty() && !showRecipes)
-                    PacketHandler.send(PacketDistributor.SERVER.noArg(), new ScreenButtonPacket(packetButtonId, null));
+                    PacketHandler.send(PacketDistributor.SERVER.noArg(), new ScreenButtonPacket(packetButtonId));
             });
         }
         addRenderableWidget(button);

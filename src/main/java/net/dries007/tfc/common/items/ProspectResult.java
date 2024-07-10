@@ -6,9 +6,12 @@
 
 package net.dries007.tfc.common.items;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.Util;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.level.block.Block;
 
 public enum ProspectResult
@@ -22,7 +25,8 @@ public enum ProspectResult
     FOUND("tfc.tooltip.propick.found"),
     NOTHING("tfc.tooltip.propick.nothing");
 
-    private static final ProspectResult[] VALUES = values();
+    public static final ProspectResult[] VALUES = values();
+    public static final StreamCodec<ByteBuf, ProspectResult> STREAM = ByteBufCodecs.BYTE.map(ProspectResult::valueOf, c -> (byte) c.ordinal());
 
     public static ProspectResult valueOf(int i)
     {

@@ -25,7 +25,7 @@ public class AnvilStepButton extends Button
     public AnvilStepButton(ForgeStep step, int guiLeft, int guiTop)
     {
         super(guiLeft + step.buttonX(), guiTop + step.buttonY(), 16, 16, Helpers.translateEnum(step), button -> {
-            PacketHandler.send(PacketDistributor.SERVER.noArg(), new ScreenButtonPacket(step.ordinal(), null));
+            PacketHandler.send(PacketDistributor.SERVER.noArg(), new ScreenButtonPacket(step.ordinal()));
         }, RenderHelpers.NARRATION);
         setTooltip(Tooltip.create(Helpers.translateEnum(step)));
 

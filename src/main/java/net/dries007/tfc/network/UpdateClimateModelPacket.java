@@ -6,7 +6,10 @@
 
 package net.dries007.tfc.network;
 
-import net.minecraft.network.FriendlyByteBuf;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.client.ClientHelpers;
@@ -14,19 +17,18 @@ import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateModel;
 import net.dries007.tfc.util.tracker.WorldTracker;
 
-public record UpdateClimateModelPacket(ClimateModel model)
+public record UpdateClimateModelPacket(ClimateModel model) implements CustomPacketPayload
 {
-    static UpdateClimateModelPacket decode(FriendlyByteBuf buffer)
-    {
-        final ClimateModel model = Climate.create(buffer.readResourceLocation());
-        model.onReceiveOnClient(buffer);
-        return new UpdateClimateModelPacket(model);
-    }
+    public static final CustomPacketPayload.Type<UpdateClimateModelPacket> TYPE = PacketHandler.type("update_climate_model");
+    public static final StreamCodec<ByteBuf, UpdateClimateModelPacket> STREAM = ResourceLocation.STREAM_CODEC.dispatch(
+        c -> c.type().id(),
+        id -> Climate.get(id).codec()
+    ).map(UpdateClimateModelPacket::new, c -> c.model);
 
-    void encode(FriendlyByteBuf buffer)
+    @Override
+    public Type<? extends CustomPacketPayload> type()
     {
-        buffer.writeResourceLocation(Climate.getId(model));
-        model.onSyncToClient(buffer);
+        return TYPE;
     }
 
     void handle()

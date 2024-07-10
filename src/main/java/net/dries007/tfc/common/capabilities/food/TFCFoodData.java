@@ -79,7 +79,7 @@ public class TFCFoodData extends net.minecraft.world.food.FoodData
         // Send the update regardless so the client can perform the same logic
         if (player instanceof ServerPlayer serverPlayer)
         {
-            PacketHandler.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new FoodDataReplacePacket());
+            PacketHandler.send(PacketDistributor.PLAYER.with(() -> serverPlayer), FoodDataReplacePacket.PACKET);
         }
     }
 

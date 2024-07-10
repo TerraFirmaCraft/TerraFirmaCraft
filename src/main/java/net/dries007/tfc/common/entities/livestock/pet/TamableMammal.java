@@ -10,12 +10,15 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Supplier;
 import com.mojang.serialization.Dynamic;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -416,6 +419,7 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
         HUNT(TFCBrain.HUNT); // follow and participate in combat
 
         public static final Command[] VALUES = values();
+        public static final StreamCodec<ByteBuf, Command> STREAM = ByteBufCodecs.BYTE.map(Command::valueOf, c -> (byte) c.ordinal());
 
         public static Command valueOf(int id)
         {

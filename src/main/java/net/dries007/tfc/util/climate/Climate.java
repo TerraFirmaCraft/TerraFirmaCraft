@@ -10,7 +10,9 @@ import java.util.function.Supplier;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.WorldGenRegion;
@@ -50,16 +52,16 @@ public final class Climate
      * The supplier should return a <strong>new instance</strong> each time it is invoked, as it may be used for multiple dimensions.
      * The only exception to this, is if the climate model has no persistent data (such as {@link BiomeBasedClimateModel}.
      */
-    public static synchronized ClimateModelType register(ResourceLocation id, Supplier<ClimateModel> model)
+    public static synchronized ClimateModelType register(ResourceLocation id, Supplier<ClimateModel> model, StreamCodec<ByteBuf, ClimateModel> codec)
     {
-        final ClimateModelType type = new ClimateModelType(model, id);
+        final ClimateModelType type = new ClimateModelType(id, model, codec);
         REGISTRY.put(id, type);
         return type;
     }
 
-    public static ClimateModel create(ResourceLocation id)
+    public static ClimateModelType get(ResourceLocation id)
     {
-        return REGISTRY.getOrDefault(id, ClimateModels.BIOME_BASED.get()).create();
+        return REGISTRY.getOrDefault(id, ClimateModels.BIOME_BASED.get());
     }
 
     public static ResourceLocation getId(ClimateModel model)

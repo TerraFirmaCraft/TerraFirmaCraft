@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.network;
 
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -16,11 +18,20 @@ import net.dries007.tfc.util.Drinkable;
 /**
  * Sent to the server when the player clicks a location that might trigger a drinking.
  * Since the server doesn't know about these naturally, we have to check and sync them ourselves.
- *
- * @see net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickEmpty
  */
-public class PlayerDrinkPacket
+public enum PlayerDrinkPacket implements CustomPacketPayload
 {
+    PACKET;
+
+    public static final CustomPacketPayload.Type<PlayerDrinkPacket> TYPE = PacketHandler.type("player_drink");
+    public static final StreamCodec<?, PlayerDrinkPacket> STREAM = StreamCodec.unit(PACKET);
+
+    @Override
+    public Type<? extends CustomPacketPayload> type()
+    {
+        return TYPE;
+    }
+
     void handle(@Nullable ServerPlayer player)
     {
         if (player != null)

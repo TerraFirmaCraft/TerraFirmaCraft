@@ -7,52 +7,51 @@
 package net.dries007.tfc.network;
 
 import net.dries007.tfc.common.entities.livestock.pet.TamableMammal;
+
+import io.netty.buffer.ByteBuf;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.Nullable;
 
 public record PetCommandPacket(
     int entityId,
-    int command
-)
+    TamableMammal.Command command
+) implements CustomPacketPayload
 {
+    public static final CustomPacketPayload.Type<PetCommandPacket> TYPE = PacketHandler.type("pet_command");
+    public static final StreamCodec<ByteBuf, PetCommandPacket> STREAM = StreamCodec.composite(
+        ByteBufCodecs.VAR_INT, c -> c.entityId,
+        TamableMammal.Command.STREAM, c -> c.command,
+        PetCommandPacket::new
+    );
+
     public PetCommandPacket(Entity entityId, TamableMammal.Command command)
     {
-        this(entityId.getId(), command.ordinal());
+        this(entityId.getId(), command);
     }
 
-    PetCommandPacket(FriendlyByteBuf buffer)
+    @Override
+    public Type<? extends CustomPacketPayload> type()
     {
-        this(
-            buffer.readVarInt(),
-            buffer.readVarInt()
-        );
-    }
-
-    void encode(FriendlyByteBuf buffer)
-    {
-        buffer.writeVarInt(entityId);
-        buffer.writeVarInt(command);
+        return TYPE;
     }
 
     void handle(@Nullable ServerPlayer player)
     {
-        if (player != null)
+        if (player != null && player.serverLevel().getEntity(entityId) instanceof TamableMammal pet)
         {
-            Entity entity = player.serverLevel().getEntity(entityId);
-            if (entity instanceof TamableMammal pet)
+            if (pet.willListenTo(command, false))
             {
-                final TamableMammal.Command value = TamableMammal.Command.valueOf(command);
-                if (pet.willListenTo(value, false))
-                {
-                    pet.receiveCommand(player, value);
-                }
-                else
-                {
-                    player.displayClientMessage(Component.translatable("tfc.pet.will_not_listen"), true);
-                }
+                pet.receiveCommand(player, command);
+            }
+            else
+            {
+                player.displayClientMessage(Component.translatable("tfc.pet.will_not_listen"), true);
             }
         }
     }

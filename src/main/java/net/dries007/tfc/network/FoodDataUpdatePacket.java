@@ -9,39 +9,40 @@ package net.dries007.tfc.network;
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.capabilities.food.Nutrient;
 import net.dries007.tfc.common.capabilities.food.TFCFoodData;
-import net.minecraft.network.FriendlyByteBuf;
+
+import io.netty.buffer.ByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
 
 public record FoodDataUpdatePacket(
     float[] nutrients,
     float thirst
-)
+) implements CustomPacketPayload
 {
-    private static float[] readNutrients(FriendlyByteBuf buffer)
-    {
-        float[] nutrients = new float[Nutrient.TOTAL];
-        for (int i = 0; i < nutrients.length; i++)
-        {
-            nutrients[i] = buffer.readFloat();
-        }
-        return nutrients;
-    }
+    public static final CustomPacketPayload.Type<FoodDataUpdatePacket> TYPE = PacketHandler.type("update_food_data");
+    public static final StreamCodec<ByteBuf, FoodDataUpdatePacket> STREAM = StreamCodec.composite(
+        StreamCodec.of(
+            (buffer, value) -> {
+                for (float t : value)
+                    buffer.writeFloat(t);
+            },
+            buffer -> {
+                final float[] value = new float[Nutrient.TOTAL];
+                for (int i = 0; i < value.length; i++)
+                    value[i] = buffer.readFloat();
+                return value;
+            }
+        ), c -> c.nutrients,
+        ByteBufCodecs.FLOAT, c -> c.thirst,
+        FoodDataUpdatePacket::new
+    );
 
-    FoodDataUpdatePacket(FriendlyByteBuf buffer)
+    @Override
+    public Type<? extends CustomPacketPayload> type()
     {
-        this(
-            readNutrients(buffer),
-            buffer.readFloat()
-        );
-    }
-
-    void encode(FriendlyByteBuf buffer)
-    {
-        for (float nutrient : nutrients)
-        {
-            buffer.writeFloat(nutrient);
-        }
-        buffer.writeFloat(thirst);
+        return TYPE;
     }
 
     void handle()

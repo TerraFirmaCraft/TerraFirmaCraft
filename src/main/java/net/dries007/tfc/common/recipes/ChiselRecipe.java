@@ -9,11 +9,14 @@ package net.dries007.tfc.common.recipes;
 import java.util.Locale;
 import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Either;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.StringRepresentable;
@@ -228,6 +231,7 @@ public class ChiselRecipe extends SimpleBlockRecipe
         }
 
         public static final Mode[] VALUES = values();
+        public static final StreamCodec<ByteBuf, Mode> STREAM = ByteBufCodecs.BYTE.map(Mode::valueOf, c -> (byte) c.ordinal());
 
         @Override
         public String getSerializedName()

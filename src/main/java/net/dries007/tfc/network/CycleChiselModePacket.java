@@ -6,13 +6,26 @@
 
 package net.dries007.tfc.network;
 
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.player.PlayerData;
 
-public class CycleChiselModePacket
+public enum CycleChiselModePacket implements CustomPacketPayload
 {
+    PACKET;
+
+    public static final CustomPacketPayload.Type<CycleChiselModePacket> TYPE = PacketHandler.type("cycle_chisel_mode");
+    public static final StreamCodec<?, CycleChiselModePacket> STREAM = StreamCodec.unit(PACKET);
+
+    @Override
+    public Type<? extends CustomPacketPayload> type()
+    {
+        return TYPE;
+    }
+
     void handle(@Nullable ServerPlayer player)
     {
         if (player != null)

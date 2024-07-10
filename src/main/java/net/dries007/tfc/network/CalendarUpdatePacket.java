@@ -8,18 +8,21 @@ package net.dries007.tfc.network;
 
 import net.dries007.tfc.util.calendar.Calendar;
 import net.dries007.tfc.util.calendar.Calendars;
+
+import io.netty.buffer.ByteBuf;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
-public record CalendarUpdatePacket(Calendar calendar)
+public record CalendarUpdatePacket(Calendar calendar) implements CustomPacketPayload
 {
-    public CalendarUpdatePacket(FriendlyByteBuf buffer)
-    {
-        this(new Calendar(buffer));
-    }
+    public static final CustomPacketPayload.Type<CalendarUpdatePacket> TYPE = PacketHandler.type("calendar_update");
+    public static final StreamCodec<ByteBuf, CalendarUpdatePacket> STREAM = Calendar.STREAM.map(CalendarUpdatePacket::new, CalendarUpdatePacket::calendar);
 
-    void encode(FriendlyByteBuf buffer)
+    @Override
+    public Type<? extends CustomPacketPayload> type()
     {
-        calendar.write(buffer);
+        return TYPE;
     }
 
     void handle()
