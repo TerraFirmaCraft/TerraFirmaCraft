@@ -20,12 +20,12 @@ import net.dries007.tfc.world.Codecs;
 public record HotSpringConfig(Optional<BlockState> wallState, BlockState fluidState, int radius, Optional<FissureConfig.Decoration> decoration, boolean allowUnderwater, Optional<Map<Block, IWeighted<BlockState>>> replacesOnFluidContact) implements FeatureConfiguration
 {
     public static final Codec<HotSpringConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codecs.optionalFieldOf(Codecs.BLOCK_STATE, "wall_state").forGetter(c -> c.wallState),
+        Codecs.BLOCK_STATE.optionalFieldOf("wall_state").forGetter(c -> c.wallState),
         Codecs.BLOCK_STATE.fieldOf("fluid_state").forGetter(c -> c.fluidState),
         Codec.intRange(1, 16).optionalFieldOf("radius", 14).forGetter(c -> c.radius),
-        Codecs.optionalFieldOf(FissureConfig.Decoration.CODEC, "decoration").forGetter(c -> c.decoration),
+        FissureConfig.Decoration.CODEC.optionalFieldOf("decoration").forGetter(c -> c.decoration),
         Codec.BOOL.optionalFieldOf("allow_underwater", false).forGetter(c -> c.allowUnderwater),
-        Codecs.optionalFieldOf(Codecs.BLOCK_TO_WEIGHTED_BLOCKSTATE, "replaces_on_fluid_contact").forGetter(c -> c.replacesOnFluidContact)
+        Codecs.BLOCK_TO_WEIGHTED_BLOCKSTATE.optionalFieldOf("replaces_on_fluid_contact").forGetter(c -> c.replacesOnFluidContact)
     ).apply(instance, HotSpringConfig::new));
 
 }

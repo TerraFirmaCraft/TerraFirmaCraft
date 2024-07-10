@@ -32,9 +32,9 @@ public record RockSettings(Block raw, Block hardened, Block gravel, Block cobble
         Codecs.BLOCK.fieldOf("cobble").forGetter(c -> c.cobble),
         Codecs.BLOCK.fieldOf("sand").forGetter(c -> c.sand),
         Codecs.BLOCK.fieldOf("sandstone").forGetter(c -> c.sandstone),
-        Codecs.optionalFieldOf(Codecs.BLOCK, "spike").forGetter(c -> c.spike),
-        Codecs.optionalFieldOf(Codecs.BLOCK, "loose").forGetter(c -> c.loose),
-        Codecs.optionalFieldOf(Codecs.BLOCK, "mossy_loose").forGetter(c -> c.mossyLoose)
+        Codecs.BLOCK.optionalFieldOf("spike").forGetter(c -> c.spike),
+        Codecs.BLOCK.optionalFieldOf("loose").forGetter(c -> c.loose),
+        Codecs.BLOCK.optionalFieldOf("mossy_loose").forGetter(c -> c.mossyLoose)
     ).apply(instance, RockSettings::new)), PRESETS);
 
     /**

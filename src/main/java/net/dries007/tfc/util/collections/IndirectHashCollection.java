@@ -13,8 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
 
@@ -50,7 +50,7 @@ public class IndirectHashCollection<K, R>
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public static <C extends Container, K, R extends Recipe<C>> IndirectHashCollection<K, R> createForRecipe(Function<R, Iterable<? extends K>> keyExtractor, Supplier<RecipeType<R>> recipeType)
+    public static <C extends RecipeInput, K, R extends Recipe<C>> IndirectHashCollection<K, R> createForRecipe(Function<R, Iterable<? extends K>> keyExtractor, Supplier<RecipeType<R>> recipeType)
     {
         final IndirectHashCollection<K, R> cache = new IndirectHashCollection<>(keyExtractor);
         RECIPE_CACHES.put(cache, (Supplier) recipeType);
@@ -75,7 +75,7 @@ public class IndirectHashCollection<K, R>
         cache.reload(values.get());
     }
 
-    private static <C extends Container, K, R extends Recipe<C>> void reloadRecipeCache(IndirectHashCollection<K, R> cache, RecipeManager manager, Supplier<RecipeType<R>> recipe)
+    private static <C extends RecipeInput, K, R extends Recipe<C>> void reloadRecipeCache(IndirectHashCollection<K, R> cache, RecipeManager manager, Supplier<RecipeType<R>> recipe)
     {
         cache.reload(Helpers.getRecipes(manager, recipe).values());
     }

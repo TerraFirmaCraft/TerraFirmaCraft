@@ -11,7 +11,6 @@ import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.recipes.ChiselRecipe;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -27,7 +26,7 @@ public record PlayerDataUpdatePacket(
     public static final StreamCodec<ByteBuf, PlayerDataUpdatePacket> STREAM = StreamCodec.composite(
         ByteBufCodecs.VAR_LONG, c -> c.lastDrinkTick,
         ByteBufCodecs.VAR_LONG, c -> c.intoxicationTick,
-        ChiselRecipe.Mode.STREAM, c -> c.mode,
+        ChiselRecipe.Mode.STREAM_CODEC, c -> c.mode,
         PlayerDataUpdatePacket::new
     );
 

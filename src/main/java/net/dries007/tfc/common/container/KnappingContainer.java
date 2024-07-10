@@ -18,12 +18,12 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
-import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
+import net.dries007.tfc.common.recipes.inventory.NonEmptyInput;
 import net.dries007.tfc.util.KnappingPattern;
 import net.dries007.tfc.util.KnappingType;
 
 /**
- * Cannot implement {@link EmptyInventory} due to obfuscation conflicts: {@link #stillValid(Player)} is implemented by different SRG methods from both {@link ItemStackContainer} and {@link EmptyInventory}
+ * Cannot implement {@link NonEmptyInput} due to obfuscation conflicts: {@link #stillValid(Player)} is implemented by different SRG methods from both {@link ItemStackContainer} and {@link NonEmptyInput}
  */
 public class KnappingContainer extends ItemStackContainer implements ButtonHandlerContainer, ISlotCallback
 {
@@ -181,5 +181,5 @@ public class KnappingContainer extends ItemStackContainer implements ButtonHandl
     /**
      * see comment on {@link KnappingContainer}
      */
-    public record Query(KnappingContainer container) implements EmptyInventory {}
+    public record Query(KnappingContainer container) implements NonEmptyInput {}
 }

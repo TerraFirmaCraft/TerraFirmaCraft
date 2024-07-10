@@ -6,6 +6,10 @@
 
 package net.dries007.tfc.common.recipes;
 
+import java.util.Optional;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import com.mojang.patchy.BlockedServers;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -13,9 +17,11 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
+import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
 import net.dries007.tfc.util.registry.RegistryHolder;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
@@ -27,9 +33,9 @@ public class TFCRecipeSerializers
 
     // Block Recipes
 
-    public static final Id<CollapseRecipe> COLLAPSE = register("collapse", () -> new SimpleBlockRecipe.Serializer<>(CollapseRecipe::new));
-    public static final Id<LandslideRecipe> LANDSLIDE = register("landslide", () -> new SimpleBlockRecipe.Serializer<>(LandslideRecipe::new));
-    public static final Id<ChiselRecipe> CHISEL = register("chisel", ChiselRecipe.Serializer::new);
+    public static final Id<CollapseRecipe> COLLAPSE = register("collapse", SimpleBlockRecipe.serializer(CollapseRecipe::new));
+    public static final Id<LandslideRecipe> LANDSLIDE = register("landslide", SimpleBlockRecipe.serializer(LandslideRecipe::new));
+    public static final Id<ChiselRecipe> CHISEL = register("chisel", ChiselRecipe.CODEC, ChiselRecipe.STREAM_CODEC);
 
     // Item Recipes
 
@@ -70,22 +76,14 @@ public class TFCRecipeSerializers
     public static final Id<AdvancedShapedRecipe> ADVANCED_SHAPED_CRAFTING = register("advanced_shaped_crafting", AdvancedShapedRecipe.Serializer::new);
     public static final Id<AdvancedShapelessRecipe> ADVANCED_SHAPELESS_CRAFTING = register("advanced_shapeless_crafting", AdvancedShapelessRecipe.Serializer::new);
 
-
     private static <R extends Recipe<?>> Id<R> register(String name, MapCodec<R> codec, StreamCodec<RegistryFriendlyByteBuf, R> stream)
     {
-        return new Id<>(RECIPE_SERIALIZERS.register(name, () -> new RecipeSerializer<>() {
-            @Override
-            public MapCodec<R> codec()
-            {
-                return codec;
-            }
+        return register(name, new RecipeSerializerImpl<>(codec, stream));
+    }
 
-            @Override
-            public StreamCodec<RegistryFriendlyByteBuf, R> streamCodec()
-            {
-                return stream;
-            }
-        }));
+    private static <R extends Recipe<?>> Id<R> register(String name, RecipeSerializer<R> serializer)
+    {
+        return new Id<>(RECIPE_SERIALIZERS.register(name, () -> serializer));
     }
 
     public record Id<T extends Recipe<?>>(DeferredHolder<RecipeSerializer<?>, RecipeSerializer<T>> holder)

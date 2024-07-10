@@ -10,24 +10,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
 import net.minecraft.world.level.material.Fluid;
 
-import net.dries007.tfc.util.StrictOptionalCodec;
 import net.dries007.tfc.util.collections.IWeighted;
 import net.dries007.tfc.util.collections.Weighted;
 
@@ -38,8 +35,8 @@ public final class Codecs extends ExtraCodecs
 {
     public static final Codec<Float> UNIT_FLOAT = Codec.floatRange(0, 1);
 
-    @SuppressWarnings("deprecation") public static final Codec<Block> BLOCK = nonDefaultedRegistryCodec(BuiltInRegistries.BLOCK);
-    @SuppressWarnings("deprecation") public static final Codec<Fluid> FLUID = nonDefaultedRegistryCodec(BuiltInRegistries.FLUID);
+    public static final Codec<Block> BLOCK = nonDefaultedRegistryCodec(BuiltInRegistries.BLOCK);
+    public static final Codec<Fluid> FLUID = nonDefaultedRegistryCodec(BuiltInRegistries.FLUID);
 
     /**
      * A block state which either will accept a simple block state name, or the more complex {"Name": "", "Properties": {}} declaration.
@@ -159,25 +156,4 @@ public final class Codecs extends ExtraCodecs
         );
     }
 
-    /**
-     * Variant of {@link Codec#optionalFieldOf(String)} which will error if the field is present but invalid.
-     * <ul>
-     *     <li>For simple integer valued or other codecs, vanilla's optional is generally fine, but prefer using non-optional codecs where possible, as optional codecs still help to obscure errors i.e. if the field is misnamed in JSON.</li>
-     *     <li>For more complex fields, prefer using this over the default method as it helps detect errors</li>
-     * </ul>
-     */
-    public static <T> MapCodec<Optional<T>> optionalFieldOf(Codec<T> codec, String field)
-    {
-        // todo: 1.21, replace with `optionalFieldOf()`
-        return new StrictOptionalCodec<>(field, codec);
-    }
-
-    public static <T> MapCodec<T> optionalFieldOf(Codec<T> codec, String field, T defaultValue)
-    {
-        // todo: 1.21, replace with `optionalFieldOf()`
-        return optionalFieldOf(codec, field).xmap(
-            o -> o.orElse(defaultValue),
-            a -> Objects.equals(a, defaultValue) ? Optional.empty() : Optional.of(a)
-        );
-    }
 }

@@ -11,14 +11,12 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.StringRepresentable;
 
-import net.dries007.tfc.world.Codecs;
-
 public record TreePlacementConfig(int width, int height, GroundType groundType)
 {
     public static final Codec<TreePlacementConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.INT.fieldOf("width").forGetter(c -> c.width),
         Codec.INT.fieldOf("height").forGetter(c -> c.height),
-        Codecs.optionalFieldOf(GroundType.CODEC, "ground_type", GroundType.NORMAL).forGetter(c -> c.groundType)
+        GroundType.CODEC.optionalFieldOf("ground_type", GroundType.NORMAL).forGetter(c -> c.groundType)
         ).apply(instance, TreePlacementConfig::new));
 
     public boolean mayPlaceInWater()

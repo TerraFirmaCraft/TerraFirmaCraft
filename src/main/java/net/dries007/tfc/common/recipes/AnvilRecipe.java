@@ -25,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.common.capabilities.forge.ForgeRule;
 import net.dries007.tfc.common.capabilities.forge.Forging;
 import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
-import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
+import net.dries007.tfc.common.recipes.inventory.NonEmptyInput;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
@@ -165,7 +165,7 @@ public class AnvilRecipe implements ISimpleRecipe<AnvilRecipe.Inventory>
         return work >= target - leeway && work <= target + leeway;
     }
 
-    public interface Inventory extends EmptyInventory
+    public interface Inventory extends NonEmptyInput
     {
         /**
          * @return the primary input to the anvil recipe

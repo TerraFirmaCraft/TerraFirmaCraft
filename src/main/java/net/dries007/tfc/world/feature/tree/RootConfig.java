@@ -25,6 +25,6 @@ public record RootConfig(Map<Block, IWeighted<BlockState>> blocks, int width, in
         Codecs.POSITIVE_INT.optionalFieldOf("height", 3).forGetter(c -> c.height),
         Codecs.POSITIVE_INT.optionalFieldOf("tries", 5).forGetter(c -> c.tries),
         SpecialRootPlacer.CODEC.optionalFieldOf("special_placer").forGetter(c -> c.specialPlacer),
-        Codecs.optionalFieldOf(Codec.BOOL, "required", false).forGetter(c -> c.required)
+        Codec.BOOL.optionalFieldOf("required", false).forGetter(c -> c.required)
     ).apply(instance, RootConfig::new));
 }

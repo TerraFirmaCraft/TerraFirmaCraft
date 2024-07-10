@@ -7,18 +7,18 @@
 package net.dries007.tfc.common.recipes;
 
 import java.util.Locale;
-import com.google.gson.JsonObject;
+import java.util.Optional;
 import com.mojang.datafixers.util.Either;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -41,12 +41,33 @@ import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
+import net.dries007.tfc.network.PacketCodecs;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.JsonHelpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
+import net.dries007.tfc.world.Codecs;
 
 public class ChiselRecipe extends SimpleBlockRecipe
 {
+    public static final IndirectHashCollection<Block, ChiselRecipe> CACHE = IndirectHashCollection.createForRecipe(recipe -> recipe.getBlockIngredient().blocks(), TFCRecipeTypes.CHISEL);
+
+    public static final MapCodec<ChiselRecipe> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
+        BlockIngredient.CODEC.fieldOf("ingredient").forGetter(c -> c.ingredient),
+        Codecs.BLOCK_STATE.fieldOf("result").forGetter(c -> c.output.orElseThrow()),
+        Mode.CODEC.fieldOf("mode").forGetter(c -> c.mode),
+        Ingredient.CODEC.optionalFieldOf("item_ingredient").forGetter(c -> c.itemIngredient),
+        ItemStackProvider.CODEC.optionalFieldOf("extra_drop").forGetter(c -> c.itemOutput) // todo: rename to `item_output`
+    ).apply(i, ChiselRecipe::new));
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, ChiselRecipe> STREAM_CODEC = StreamCodec.composite(
+        BlockIngredient.STREAM_CODEC, c -> c.ingredient,
+        PacketCodecs.BLOCK_STATE, c -> c.output.orElseThrow(),
+        Mode.STREAM_CODEC, c -> c.mode,
+        ByteBufCodecs.optional(Ingredient.CONTENTS_STREAM_CODEC), c -> c.itemIngredient,
+        ByteBufCodecs.optional(ItemStackProvider.STREAM_CODEC), c -> c.itemOutput,
+        ChiselRecipe::new
+    );
+
+
     /**
      * In a sentence, this method returns "Either" a BlockState, which the caller must handle, or an InteractionResult to be returned
      */
@@ -65,7 +86,7 @@ public class ChiselRecipe extends SimpleBlockRecipe
             }
             else
             {
-                @Nullable BlockState chiseled = recipe.getBlockCraftingResult(state);
+                @Nullable BlockState chiseled = recipe.assembleBlock(state);
 
                 // The block crafting result will be a single, simple block state, unaware of the placement context, however we want the chisel
                 // to meaningfully respond similar to how slab/stair placement naturally works. For this, we have different behavior based on the
@@ -118,8 +139,6 @@ public class ChiselRecipe extends SimpleBlockRecipe
         player.displayClientMessage(Component.translatable("tfc.chisel." + message), true);
     }
 
-    public static final IndirectHashCollection<Block, ChiselRecipe> CACHE = IndirectHashCollection.createForRecipe(recipe -> recipe.getBlockIngredient().blocks(), TFCRecipeTypes.CHISEL);
-
     @Nullable
     public static ChiselRecipe getRecipe(BlockState state, ItemStack held, Mode mode)
     {
@@ -134,16 +153,16 @@ public class ChiselRecipe extends SimpleBlockRecipe
     }
 
     private final Mode mode;
-    @Nullable
-    private final Ingredient itemIngredient;
-    private final ItemStackProvider extraDrop;
+    private final Optional<Ingredient> itemIngredient;
+    private final Optional<ItemStackProvider> itemOutput;
 
-    public ChiselRecipe(ResourceLocation id, BlockIngredient ingredient, BlockState outputState, Mode mode, @Nullable Ingredient itemIngredient, ItemStackProvider extraDrop)
+    public ChiselRecipe(BlockIngredient ingredient, BlockState output, Mode mode, Optional<Ingredient> itemIngredient, Optional<ItemStackProvider> itemOutput)
     {
-        super(id, ingredient, outputState, false);
+        super(ingredient, Optional.of(output));
+
         this.mode = mode;
         this.itemIngredient = itemIngredient;
-        this.extraDrop = extraDrop;
+        this.itemOutput = itemOutput;
     }
 
     @Override
@@ -160,11 +179,9 @@ public class ChiselRecipe extends SimpleBlockRecipe
 
     public boolean matches(BlockState state, ItemStack stack, Mode mode)
     {
-        if (itemIngredient != null && !itemIngredient.test(stack))
-        {
-            return false;
-        }
-        return mode == this.mode && matches(state);
+        return this.mode == mode
+            && matches(state)
+            && (itemIngredient.isEmpty() || itemIngredient.get().test(stack));
     }
 
     public Mode getMode()
@@ -172,51 +189,14 @@ public class ChiselRecipe extends SimpleBlockRecipe
         return mode;
     }
 
-    @Nullable
-    public Ingredient getItemIngredient()
+    public @Nullable Ingredient getItemIngredient()
     {
-        return itemIngredient;
+        return itemIngredient.orElse(null);
     }
 
     public ItemStack getExtraDrop(ItemStack chisel)
     {
-        return extraDrop.getSingleStack(chisel);
-    }
-
-    public static class Serializer extends RecipeSerializerImpl<ChiselRecipe>
-    {
-        @Override
-        public ChiselRecipe fromJson(ResourceLocation recipeId, JsonObject json)
-        {
-            BlockIngredient ingredient = BlockIngredient.fromJson(JsonHelpers.get(json, "ingredient"));
-            BlockState state = JsonHelpers.getBlockState(GsonHelper.getAsString(json, "result"));
-            Mode mode = JsonHelpers.getEnum(json, "mode", Mode.class, Mode.SMOOTH);
-            Ingredient itemIngredient = json.has("item_ingredient") ? Ingredient.fromJson(json.get("item_ingredient")) : null;
-            ItemStackProvider drop = json.has("extra_drop") ? ItemStackProvider.fromJson(JsonHelpers.getAsJsonObject(json, "extra_drop")) : ItemStackProvider.empty();
-            return new ChiselRecipe(recipeId, ingredient, state, mode, itemIngredient, drop);
-        }
-
-        @Nullable
-        @Override
-        public ChiselRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
-        {
-            final BlockIngredient ingredient = BlockIngredient.fromNetwork(buffer);
-            final BlockState state = BuiltInRegistries.BLOCK.byId(buffer.readVarInt()).defaultBlockState();
-            final Mode mode = buffer.readEnum(Mode.class);
-            final Ingredient itemIngredient = Helpers.decodeNullable(buffer, Ingredient::fromNetwork);
-            final ItemStackProvider drop = ItemStackProvider.fromNetwork(buffer);
-            return new ChiselRecipe(recipeId, ingredient, state, mode, itemIngredient, drop);
-        }
-
-        @Override
-        public void toNetwork(FriendlyByteBuf buffer, ChiselRecipe recipe)
-        {
-            recipe.ingredient.toNetwork(buffer);
-            buffer.writeVarInt(BuiltInRegistries.BLOCK.getId(recipe.outputState.getBlock()));
-            buffer.writeEnum(recipe.getMode());
-            Helpers.encodeNullable(recipe.itemIngredient, buffer, Ingredient::toNetwork);
-            recipe.extraDrop.toNetwork(buffer);
-        }
+        return itemOutput.isPresent() ? itemOutput.get().getSingleStack(chisel) : ItemStack.EMPTY;
     }
 
     public enum Mode implements StringRepresentable
@@ -230,8 +210,10 @@ public class ChiselRecipe extends SimpleBlockRecipe
             return i >= 0 && i < VALUES.length ? VALUES[i] : SMOOTH;
         }
 
-        public static final Mode[] VALUES = values();
-        public static final StreamCodec<ByteBuf, Mode> STREAM = ByteBufCodecs.BYTE.map(Mode::valueOf, c -> (byte) c.ordinal());
+        public static final Codec<Mode> CODEC = StringRepresentable.fromValues(Mode::values);
+        public static final StreamCodec<ByteBuf, Mode> STREAM_CODEC = PacketCodecs.forEnum(Mode::values);
+
+        private static final Mode[] VALUES = values();
 
         @Override
         public String getSerializedName()

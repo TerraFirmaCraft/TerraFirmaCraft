@@ -10,7 +10,10 @@ import java.util.function.Supplier;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 
@@ -19,6 +22,9 @@ import net.dries007.tfc.util.JsonHelpers;
 
 public record ItemStackProvider(Supplier<ItemStack> stack, ItemStackModifier[] modifiers)
 {
+    public static final Codec<ItemStackProvider> CODEC;
+    public static final StreamCodec<ByteBuf, ItemStackProvider> STREAM_CODEC;
+
     private static final ItemStackModifier[] NONE = new ItemStackModifier[0];
     private static final ItemStackProvider EMPTY = new ItemStackProvider(ItemStack.EMPTY, NONE);
     private static final ItemStackProvider COPY_INPUT = new ItemStackProvider(ItemStack.EMPTY, new ItemStackModifier[] {CopyInputModifier.INSTANCE});

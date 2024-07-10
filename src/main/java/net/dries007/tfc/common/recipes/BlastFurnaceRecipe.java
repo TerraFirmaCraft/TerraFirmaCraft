@@ -18,7 +18,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.fluids.FluidStack;
 
 import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
-import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
+import net.dries007.tfc.common.recipes.inventory.NonEmptyInput;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
@@ -156,7 +156,7 @@ public class BlastFurnaceRecipe implements ISimpleRecipe<BlastFurnaceRecipe.Inve
         return TFCRecipeTypes.BLAST_FURNACE.get();
     }
 
-    public interface Inventory extends EmptyInventory
+    public interface Inventory extends NonEmptyInput
     {
         FluidStack getFluid();
 

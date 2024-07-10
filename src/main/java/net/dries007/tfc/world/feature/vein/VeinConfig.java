@@ -35,25 +35,28 @@ public record VeinConfig(
     Optional<TagKey<Biome>> biomes,
     boolean nearLava
 ) {
-    public static final MapCodec<VeinConfig> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-        Codecs.BLOCK_TO_WEIGHTED_BLOCKSTATE.fieldOf("blocks").forGetter(c -> c.states),
-        Codecs.optionalFieldOf(Indicator.CODEC, "indicator").forGetter(c -> c.indicator),
-        Codecs.POSITIVE_INT.fieldOf("rarity").forGetter(c -> c.rarity),
-        Codecs.UNIT_FLOAT.fieldOf("density").forGetter(c -> c.density),
-        Codec.INT.fieldOf("min_y").forGetter(c -> c.minY),
-        Codec.INT.fieldOf("max_y").forGetter(c -> c.maxY),
-        Codec.BOOL.optionalFieldOf("project", false).forGetter(c -> c.projectToSurface),
-        Codec.BOOL.optionalFieldOf("project_offset", false).forGetter(c -> c.projectOffset),
-        Codec.either(
-            Codec.STRING,
-            Codec.LONG
-        ).xmap(e -> e.map(
-            VeinConfig::hash,
-            l -> l
-        ), Either::right).fieldOf("random_name").forGetter(c -> c.seed),
-        Codecs.optionalFieldOf(TagKey.hashedCodec(Registries.BIOME), "biomes").forGetter(c -> c.biomes),
-        Codecs.optionalFieldOf(Codec.BOOL, "near_lava", false).forGetter(c -> c.nearLava)
-    ).apply(instance, VeinConfig::new));
+    public static final MapCodec<VeinConfig> CODEC = RecordCodecBuilder.mapCodec(instance -> {
+        Codec<TagKey<Biome>> codec = TagKey.hashedCodec(Registries.BIOME);
+        return instance.group(
+            Codecs.BLOCK_TO_WEIGHTED_BLOCKSTATE.fieldOf("blocks").forGetter(c -> c.states),
+            Indicator.CODEC.optionalFieldOf("indicator").forGetter(c -> c.indicator),
+            Codecs.POSITIVE_INT.fieldOf("rarity").forGetter(c -> c.rarity),
+            Codecs.UNIT_FLOAT.fieldOf("density").forGetter(c -> c.density),
+            Codec.INT.fieldOf("min_y").forGetter(c -> c.minY),
+            Codec.INT.fieldOf("max_y").forGetter(c -> c.maxY),
+            Codec.BOOL.optionalFieldOf("project", false).forGetter(c -> c.projectToSurface),
+            Codec.BOOL.optionalFieldOf("project_offset", false).forGetter(c -> c.projectOffset),
+            Codec.either(
+                Codec.STRING,
+                Codec.LONG
+            ).xmap(e -> e.map(
+                VeinConfig::hash,
+                l -> l
+            ), Either::right).fieldOf("random_name").forGetter(c -> c.seed),
+            codec.optionalFieldOf("biomes").forGetter(c -> c.biomes),
+            Codec.BOOL.optionalFieldOf("near_lava", false).forGetter(c -> c.nearLava)
+        ).apply(instance, VeinConfig::new);
+    });
 
     private static long hash(String name)
     {

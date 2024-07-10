@@ -27,7 +27,7 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.wood.SewingTableBlock;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
-import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
+import net.dries007.tfc.common.recipes.inventory.NonEmptyInput;
 import net.dries007.tfc.util.ArrayContainerData;
 import net.dries007.tfc.util.Helpers;
 
@@ -384,7 +384,7 @@ public class SewingTableContainer extends Container implements ISlotCallback, Bu
     /**
      * Because its a little odd to implement EmptyInventory on a Container
      */
-    public static class RecipeWrapper implements EmptyInventory
+    public static class RecipeWrapper implements NonEmptyInput
     {
         private final SewingTableContainer container;
 

@@ -8,6 +8,7 @@ package net.dries007.tfc.common.recipes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -21,7 +22,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.MinecraftForge;
+import net.neoforged.neoforge.common.NeoForge;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.TerraFirmaCraft;
@@ -29,7 +30,6 @@ import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.misc.TFCFallingBlockEntity;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
-import net.dries007.tfc.common.recipes.inventory.BlockInventory;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Support;
@@ -49,11 +49,11 @@ public class CollapseRecipe extends SimpleBlockRecipe
     public static final IndirectHashCollection<Block, CollapseRecipe> CACHE = IndirectHashCollection.createForRecipe(recipe -> recipe.getBlockIngredient().blocks(), TFCRecipeTypes.COLLAPSE);
 
     @Nullable
-    public static CollapseRecipe getRecipe(Level world, BlockInventory wrapper)
+    public static CollapseRecipe getRecipe(BlockState input)
     {
-        for (CollapseRecipe recipe : CACHE.getAll(wrapper.getState().getBlock()))
+        for (CollapseRecipe recipe : CACHE.getAll(input.getBlock()))
         {
-            if (recipe.matches(wrapper, world))
+            if (recipe.matches(input))
             {
                 return recipe;
             }
@@ -66,7 +66,6 @@ public class CollapseRecipe extends SimpleBlockRecipe
      *
      * @return true if a collapse occurred.
      */
-    @SuppressWarnings("deprecation") // Level.isAreaLoaded
     public static boolean tryTriggerCollapse(Level level, BlockPos pos)
     {
         final RandomSource random = level.getRandom();
@@ -109,7 +108,7 @@ public class CollapseRecipe extends SimpleBlockRecipe
                         fakeCollapseStarts :
                         Helpers.uniqueRandomSample(fakeCollapseStarts, Math.min(12, 3 + random.nextInt(fakeCollapseStarts.size() - 3)), random);
                     // Use startsToDisplay instead of fakeCollapseStarts to match the behavior of real collapses only providing 'effected' blocks
-                    MinecraftForge.EVENT_BUS.post(new CollapseEvent(level, pos, startsToDisplay, 0D, true));
+                    NeoForge.EVENT_BUS.post(new CollapseEvent(level, pos, startsToDisplay, 0D, true));
                     for (BlockPos start : startsToDisplay)
                     {
                         final BlockState fakeStartState = level.getBlockState(start);
@@ -207,8 +206,7 @@ public class CollapseRecipe extends SimpleBlockRecipe
 
     public static boolean collapseBlock(Level level, BlockPos pos, BlockState state, boolean destroyBlockBelow)
     {
-        final BlockInventory wrapper = new BlockInventory(pos, state);
-        final CollapseRecipe recipe = getRecipe(level, wrapper);
+        final CollapseRecipe recipe = getRecipe(state);
         if (recipe != null)
         {
             final BlockPos posBelow = pos.below();
@@ -219,7 +217,7 @@ public class CollapseRecipe extends SimpleBlockRecipe
                 // If this check passes, it means the collapsing block will break the block below during it's collapse, so this extra destruction isn't needed.
                 level.destroyBlock(posBelow, true);
             }
-            final BlockState collapseState = recipe.getBlockCraftingResult(wrapper);
+            final BlockState collapseState = recipe.assembleBlock(state);
             level.setBlockAndUpdate(pos, collapseState); // Required as the falling block entity will replace the block in it's first tick
             level.addFreshEntity(new TFCFallingBlockEntity(level, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, collapseState, 2.0f, 20));
             return true;
@@ -227,9 +225,9 @@ public class CollapseRecipe extends SimpleBlockRecipe
         return false;
     }
 
-    CollapseRecipe(ResourceLocation id, BlockIngredient ingredient, BlockState outputState, boolean copyInputState)
+    CollapseRecipe(BlockIngredient ingredient, Optional<BlockState> output)
     {
-        super(id, ingredient, outputState, copyInputState);
+        super(ingredient, output);
     }
 
     @Override

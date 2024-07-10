@@ -8,7 +8,7 @@ package net.dries007.tfc.common.recipes.inventory;
 
 import net.dries007.tfc.util.Alloy;
 
-public record AlloyInventory(Alloy alloy) implements EmptyInventory
+public record AlloyInventory(Alloy alloy) implements NonEmptyInput
 {
     /** @deprecated Use {@link #alloy()} instead */
     @Deprecated

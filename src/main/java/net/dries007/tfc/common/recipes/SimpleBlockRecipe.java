@@ -6,35 +6,78 @@
 
 package net.dries007.tfc.common.recipes;
 
+import java.util.Optional;
+import java.util.function.BiFunction;
 import com.google.gson.JsonObject;
+import com.mojang.datafixers.util.Either;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
+import net.dries007.tfc.network.PacketCodecs;
 import net.dries007.tfc.util.JsonHelpers;
+import net.dries007.tfc.world.Codecs;
 
 /**
  * Generic class for single block -> block based in-world crafting recipes.
  */
 public abstract class SimpleBlockRecipe implements IBlockRecipe
 {
-    protected final ResourceLocation id;
-    protected final BlockIngredient ingredient;
-    protected final BlockState outputState;
-    protected final boolean copyInputState;
-
-    public SimpleBlockRecipe(ResourceLocation id, BlockIngredient ingredient, BlockState outputState, boolean copyInputState)
+    public static <R extends SimpleBlockRecipe> RecipeSerializer<R> serializer(BiFunction<BlockIngredient, Optional<BlockState>, R> factory)
     {
-        this.id = id;
+        return new RecipeSerializerImpl<>(codec(factory), streamCodec(factory));
+    }
+
+    public static <R extends SimpleBlockRecipe> MapCodec<R> codec(BiFunction<BlockIngredient, Optional<BlockState>, R> factory)
+    {
+        return RecordCodecBuilder.mapCodec(i -> i.group(
+            BlockIngredient.CODEC.fieldOf("ingredient").forGetter(c -> c.ingredient),
+            Codec.mapEither(
+                Codec.BOOL.fieldOf("copy_input"),
+                Codecs.BLOCK_STATE.fieldOf("result")
+            ).<Optional<BlockState>>flatXmap(
+                e -> e.map(
+                    l -> l ? DataResult.success(Optional.empty()) : DataResult.error(() -> "Must specify result if copy_input is false"),
+                    r -> DataResult.success(Optional.of(r))
+                ),
+                e -> DataResult.success(e.isPresent() ? Either.right(e.get()) : Either.left(true))
+            ).forGetter(c -> c.output)
+        ).apply(i, factory));
+    }
+
+    public static <R extends SimpleBlockRecipe> StreamCodec<RegistryFriendlyByteBuf, R> streamCodec(BiFunction<BlockIngredient, Optional<BlockState>, R> factory)
+    {
+        return StreamCodec.composite(
+            BlockIngredient.STREAM_CODEC, c -> c.ingredient,
+            ByteBufCodecs.optional(PacketCodecs.BLOCK_STATE), c -> c.output,
+            factory
+        );
+    }
+
+    protected final BlockIngredient ingredient;
+    protected final Optional<BlockState> output; // If empty, then copy the input state
+
+    protected SimpleBlockRecipe(BlockIngredient ingredient, Optional<BlockState> output)
+    {
         this.ingredient = ingredient;
-        this.outputState = outputState;
-        this.copyInputState = copyInputState;
+        this.output = output;
     }
 
     @Override
@@ -44,80 +87,13 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
     }
 
     @Override
-    public BlockState getBlockCraftingResult(BlockState state)
+    public BlockState assembleBlock(BlockState input)
     {
-        return copyInputState ? state : outputState;
-    }
-
-    @Override
-    public Block getBlockRecipeOutput()
-    {
-        return outputState.getBlock();
-    }
-
-    @Override
-    public ResourceLocation getId()
-    {
-        return id;
+        return output.orElse(input);
     }
 
     public BlockIngredient getBlockIngredient()
     {
         return ingredient;
-    }
-
-    public static class Serializer<R extends SimpleBlockRecipe> extends RecipeSerializerImpl<R>
-    {
-        private final Factory<R> factory;
-
-        public Serializer(Factory<R> factory)
-        {
-            this.factory = factory;
-        }
-
-        @Override
-        public R fromJson(ResourceLocation recipeId, JsonObject json)
-        {
-            BlockIngredient ingredient = BlockIngredient.fromJson(JsonHelpers.get(json, "ingredient"));
-            boolean copyInputState = GsonHelper.getAsBoolean(json, "copy_input", false);
-            BlockState state;
-            if (!copyInputState)
-            {
-                state = JsonHelpers.getBlockState(GsonHelper.getAsString(json, "result"));
-            }
-            else
-            {
-                state = Blocks.AIR.defaultBlockState();
-            }
-            return factory.create(recipeId, ingredient, state, copyInputState);
-        }
-
-        @Nullable
-        @Override
-        public R fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
-        {
-            final BlockIngredient ingredient = BlockIngredient.fromNetwork(buffer);
-            final boolean copyInputState = buffer.readBoolean();
-            final BlockState state = copyInputState ?
-                Blocks.AIR.defaultBlockState() :
-                BuiltInRegistries.BLOCK.byId(buffer.readVarInt()).defaultBlockState();
-            return factory.create(recipeId, ingredient, state, copyInputState);
-        }
-
-        @Override
-        public void toNetwork(FriendlyByteBuf buffer, R recipe)
-        {
-            recipe.ingredient.toNetwork(buffer);
-            buffer.writeBoolean(recipe.copyInputState);
-            if (!recipe.copyInputState)
-            {
-                buffer.writeVarInt(BuiltInRegistries.BLOCK.getId(recipe.outputState.getBlock()));
-            }
-        }
-
-        public interface Factory<R extends SimpleBlockRecipe>
-        {
-            R create(ResourceLocation id, BlockIngredient ingredient, BlockState state, boolean copyInputState);
-        }
     }
 }

@@ -23,15 +23,15 @@ import net.dries007.tfc.world.Codecs;
 public record FissureConfig(Optional<BlockState> wallState, BlockState fluidState, int count, int radius, VerticalAnchor minDepth, int minPieces, int maxPieces, int maxPieceLength, Optional<Decoration> decoration) implements FeatureConfiguration
 {
     public static final Codec<FissureConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codecs.optionalFieldOf(Codecs.BLOCK_STATE, "wall_state").forGetter(c -> c.wallState),
+        Codecs.BLOCK_STATE.optionalFieldOf("wall_state").forGetter(c -> c.wallState),
         Codecs.BLOCK_STATE.fieldOf("fluid_state").forGetter(c -> c.fluidState),
         Codecs.POSITIVE_INT.optionalFieldOf("count", 5).forGetter(c -> c.count),
         Codecs.POSITIVE_INT.optionalFieldOf("radius", 12).forGetter(c -> c.radius),
-        Codecs.optionalFieldOf(VerticalAnchor.CODEC, "min_depth", VerticalAnchor.aboveBottom(16)).forGetter(c -> c.minDepth),
+        VerticalAnchor.CODEC.optionalFieldOf("min_depth", VerticalAnchor.aboveBottom(16)).forGetter(c -> c.minDepth),
         Codecs.POSITIVE_INT.optionalFieldOf("min_pieces", 10).forGetter(c -> c.minPieces),
         Codecs.POSITIVE_INT.optionalFieldOf("max_pieces", 24).forGetter(c -> c.maxPieces),
         Codecs.POSITIVE_INT.optionalFieldOf("max_piece_length", 6).forGetter(c -> c.maxPieceLength),
-        Codecs.optionalFieldOf(Decoration.CODEC, "decoration").forGetter(c -> c.decoration)
+        Decoration.CODEC.optionalFieldOf("decoration").forGetter(c -> c.decoration)
     ).apply(instance, FissureConfig::new));
 
     public record Decoration(Map<Block, IWeighted<BlockState>> states, int rarity, int radius, int count)

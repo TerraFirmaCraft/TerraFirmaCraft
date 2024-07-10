@@ -16,14 +16,14 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.container.ISlotCallback;
-import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
+import net.dries007.tfc.common.recipes.inventory.NonEmptyInput;
 
 /**
  * Interface for capability instances which behave like vessels. Meaning:
  * - They have both fluid, and item inventories.
  * - They can be heated, in both states, and can contain either items, or alloys.
  */
-public interface VesselLike extends MoldLike, IItemHandlerModifiable, IFluidHandlerItem, IHeat, EmptyInventory, ISlotCallback
+public interface VesselLike extends MoldLike, IItemHandlerModifiable, IFluidHandlerItem, IHeat, NonEmptyInput, ISlotCallback
 {
     @Nullable
     static VesselLike get(ItemStack stack)

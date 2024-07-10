@@ -32,7 +32,7 @@ import net.dries007.tfc.common.capabilities.DelegateItemHandler;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
 import net.dries007.tfc.common.capabilities.PartialItemHandler;
 import net.dries007.tfc.common.container.PowderkegContainer;
-import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
+import net.dries007.tfc.common.recipes.inventory.NonEmptyInput;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.PowderKegExplosion;
@@ -161,7 +161,7 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
         markForSync();
     }
 
-    public static class PowderkegInventory implements DelegateItemHandler, INBTSerializable<CompoundTag>, EmptyInventory
+    public static class PowderkegInventory implements DelegateItemHandler, INBTSerializable<CompoundTag>, NonEmptyInput
     {
         private final PowderkegBlockEntity powderkeg;
         private final InventoryItemHandler inventory;

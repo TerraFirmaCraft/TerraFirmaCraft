@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.recipes;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,57 +18,42 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
-import net.dries007.tfc.common.recipes.inventory.BlockInventory;
+import net.dries007.tfc.common.recipes.inventory.BlockInput;
 
 /**
- * A simple {@link net.minecraft.world.item.crafting.Recipe} extension for {@link BlockInventory}
+ * A base implementation of {@link ISimpleRecipe} that takes a {@link BlockInput}
  */
-public interface IBlockRecipe extends ISimpleRecipe<BlockInventory>
+public interface IBlockRecipe extends ISimpleRecipe<BlockInput>
 {
-    @Override
-    default boolean matches(BlockInventory inv, @Nullable Level level)
-    {
-        return matches(inv.getState());
-    }
-
-    @Override
-    default ItemStack getResultItem(RegistryAccess registryAccess)
-    {
-        return new ItemStack(getBlockRecipeOutput());
-    }
-
-    @Override
-    default ItemStack assemble(BlockInventory inventory, RegistryAccess registryAccess)
-    {
-        return new ItemStack(getBlockCraftingResult(inventory).getBlock());
-    }
+    /**
+     * @param input The input to this recipe
+     * @return {@code true} if the input matches the recipe. Use over {@link #matches(BlockInput, Level)} as this is specific to the recipe
+     */
+    boolean matches(BlockState input);
 
     /**
-     * Specific parameter version of {@link net.minecraft.world.item.crafting.Recipe#matches(Container, Level)} for block recipes
+     * @param input The input to this recipe
+     * @return The output of this recipe, given the input. Use over {@link #assemble(BlockInput, HolderLookup.Provider)} as this is specific to the recipe.
      */
-    default boolean matches(BlockState state)
+    BlockState assembleBlock(BlockState input);
+
+    // Vanilla Overrides
+
+    @Override
+    default boolean matches(BlockInput input, @Nullable Level level)
     {
-        return false;
+        return matches(input.state());
     }
 
-    /**
-     * Specific parameter version of {@link Recipe#assemble(Container, RegistryAccess)} for block recipes.
-     */
-    default BlockState getBlockCraftingResult(BlockInventory inventory)
+    @Override
+    default ItemStack assemble(BlockInput input, HolderLookup.Provider registryAccess)
     {
-        return getBlockCraftingResult(inventory.getState());
+        return new ItemStack(assembleBlock(input.state()).getBlock());
     }
 
-    default BlockState getBlockCraftingResult(BlockState state)
+    @Override
+    default ItemStack getResultItem(HolderLookup.Provider registries)
     {
-        return getBlockRecipeOutput().defaultBlockState();
-    }
-
-    /**
-     * Specific parameter version of {@link Recipe#getResultItem(RegistryAccess)} for block recipes.
-     */
-    default Block getBlockRecipeOutput()
-    {
-        return Blocks.AIR;
+        return ItemStack.EMPTY;
     }
 }

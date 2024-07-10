@@ -18,15 +18,14 @@ import net.minecraftforge.fluids.FluidStack;
 
 import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
 import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
-import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
+import net.dries007.tfc.common.recipes.inventory.NonEmptyInput;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
 
 import org.jetbrains.annotations.Nullable;
 
-public class BloomeryRecipe implements ISimpleRecipe<EmptyInventory>
+public class BloomeryRecipe implements ISimpleRecipe<NonEmptyInput>
 {
     private final ResourceLocation id;
     private final FluidStackIngredient inputFluid;
@@ -59,7 +58,7 @@ public class BloomeryRecipe implements ISimpleRecipe<EmptyInventory>
     }
 
     @Override
-    public boolean matches(EmptyInventory inv, Level level)
+    public boolean matches(NonEmptyInput inv, Level level)
     {
         return false;
     }
@@ -119,7 +118,7 @@ public class BloomeryRecipe implements ISimpleRecipe<EmptyInventory>
     }
 
     @Override
-    public ItemStack assemble(EmptyInventory inventory, RegistryAccess registryAccess)
+    public ItemStack assemble(NonEmptyInput inventory, RegistryAccess registryAccess)
     {
         throw new UnsupportedOperationException();
     }

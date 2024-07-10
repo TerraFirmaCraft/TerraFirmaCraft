@@ -8,6 +8,7 @@ package net.dries007.tfc.common.recipes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -70,7 +71,7 @@ public class LandslideRecipe extends SimpleBlockRecipe
                 final LandslideRecipe recipe = getRecipe(state);
                 if (recipe != null)
                 {
-                    final BlockState fallingState = recipe.getBlockCraftingResult(state);
+                    final BlockState fallingState = recipe.assembleBlock(state);
                     if (!fallPos.equals(pos))
                     {
                         level.removeBlock(pos, false); // Remove the original position, which would be the falling block
@@ -156,9 +157,9 @@ public class LandslideRecipe extends SimpleBlockRecipe
         return sideState.isFaceSturdy(world, sidePos, side.getOpposite()) || Helpers.isBlock(sideState, TFCTags.Blocks.SUPPORTS_LANDSLIDE);
     }
 
-    public LandslideRecipe(ResourceLocation id, BlockIngredient ingredient, BlockState outputState, boolean copyInputState)
+    public LandslideRecipe(BlockIngredient ingredient, Optional<BlockState> output)
     {
-        super(id, ingredient, outputState, copyInputState);
+        super(ingredient, output);
     }
 
     @Override

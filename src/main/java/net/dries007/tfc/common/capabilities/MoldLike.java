@@ -12,7 +12,7 @@ import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
-import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
+import net.dries007.tfc.common.recipes.inventory.NonEmptyInput;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -20,9 +20,9 @@ import org.jetbrains.annotations.Nullable;
  * - They have both a internal fluid, and heat capability.
  * - They have an {@link #isMolten()}, which defines if the contents is able to be extracted (and should be checked before trying to extract!)
  *
- * Also extends {@link EmptyInventory} in order to easily use it as a recipe query container.
+ * Also extends {@link NonEmptyInput} in order to easily use it as a recipe query container.
  */
-public interface MoldLike extends IFluidHandlerItem, IHeat, EmptyInventory
+public interface MoldLike extends IFluidHandlerItem, IHeat, NonEmptyInput
 {
     @Nullable
     static MoldLike get(ItemStack stack)

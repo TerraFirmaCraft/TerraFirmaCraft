@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.world.blockpredicate;
 
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
@@ -16,14 +17,16 @@ import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicateType;
 
 import net.dries007.tfc.common.fluids.FluidHelpers;
-import net.dries007.tfc.world.Codecs;
 
 public record WouldSurviveWithFluidPredicate(Vec3i offset, BlockState state) implements BlockPredicate
 {
-    public static final MapCodec<WouldSurviveWithFluidPredicate> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-        Codecs.optionalFieldOf(Vec3i.offsetCodec(16), "offset", Vec3i.ZERO).forGetter(c -> c.offset),
-        BlockState.CODEC.fieldOf("state").forGetter(c -> c.state)
-    ).apply(instance, WouldSurviveWithFluidPredicate::new));
+    public static final MapCodec<WouldSurviveWithFluidPredicate> CODEC = RecordCodecBuilder.mapCodec(instance -> {
+        Codec<Vec3i> codec = Vec3i.offsetCodec(16);
+        return instance.group(
+            codec.optionalFieldOf("offset", Vec3i.ZERO).forGetter(c -> c.offset),
+            BlockState.CODEC.fieldOf("state").forGetter(c -> c.state)
+        ).apply(instance, WouldSurviveWithFluidPredicate::new);
+    });
 
     @Override
     public boolean test(WorldGenLevel level, BlockPos pos)

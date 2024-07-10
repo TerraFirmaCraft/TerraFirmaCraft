@@ -6,18 +6,18 @@
 
 package net.dries007.tfc.common.recipes;
 
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.world.Container;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeInput;
 
 /**
  * A simple set of implementations for {@link Recipe}, that skips some of the more unused methods for non-crafting uses.
  */
-public interface ISimpleRecipe<C extends Container> extends Recipe<C>
+public interface ISimpleRecipe<C extends RecipeInput> extends Recipe<C>
 {
     @Override
-    default ItemStack assemble(C inventory, RegistryAccess registryAccess)
+    default ItemStack assemble(C input, HolderLookup.Provider registryAccess)
     {
         return getResultItem(registryAccess).copy();
     }

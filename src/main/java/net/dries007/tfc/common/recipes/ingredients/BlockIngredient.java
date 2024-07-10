@@ -10,8 +10,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
 import com.google.gson.JsonElement;
+import com.mojang.serialization.Codec;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -20,6 +23,9 @@ import net.dries007.tfc.util.Helpers;
 
 public record BlockIngredient(List<IngredientType.Entry<Block>> entries) implements IngredientType<Block>
 {
+    public static final Codec<BlockIngredient> CODEC;
+    public static final StreamCodec<RegistryFriendlyByteBuf, BlockIngredient> STREAM_CODEC;
+
     private static final Factory<Block, BlockIngredient> FACTORY = new Factory<>("block", BuiltInRegistries.BLOCK, BlockTag::new, BlockIngredient::new);
 
     public static BlockIngredient fromJson(JsonElement json)

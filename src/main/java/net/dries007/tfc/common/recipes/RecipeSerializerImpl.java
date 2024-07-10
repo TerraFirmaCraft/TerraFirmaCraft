@@ -6,13 +6,16 @@
 
 package net.dries007.tfc.common.recipes;
 
+import com.mojang.serialization.MapCodec;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraftforge.common.extensions.IForgeRecipeSerializer;
 
 /**
  * This is simply a convenience class because that extends clause is rather bothersome
  */
-public abstract class RecipeSerializerImpl<R extends Recipe<?>> implements RecipeSerializer<R>, IForgeRecipeSerializer<R>
-{
-}
+public record RecipeSerializerImpl<R extends Recipe<?>>(
+    MapCodec<R> codec,
+    StreamCodec<RegistryFriendlyByteBuf, R> streamCodec
+) implements RecipeSerializer<R> {}
