@@ -12,15 +12,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -35,8 +30,6 @@ import net.dries007.tfc.common.capabilities.food.IFood;
 import net.dries007.tfc.common.capabilities.food.Nutrient;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.recipes.RecipeHelpers;
-import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.JsonHelpers;
 
 public record MealModifier(FoodData baseFood, List<MealPortion> portions) implements ItemStackModifier
 {
@@ -147,7 +140,7 @@ public record MealModifier(FoodData baseFood, List<MealPortion> portions) implem
         }
 
 
-        handler.setFood(FoodData.create(baseFood.hunger(), water, saturation, nutrition, baseFood.decayModifier()));
+        handler.setFood(FoodData.of(baseFood.hunger(), water, saturation, nutrition, baseFood.decayModifier()));
         handler.setIngredients(itemIngredients);
         handler.setCreationDate(FoodCapability.getRoundedCreationDate());
         return stack;

@@ -8,11 +8,13 @@ package net.dries007.tfc.common.capabilities.food;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 import com.mojang.serialization.Codec;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,53 +24,15 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
-public class FoodTrait
+public final class FoodTrait
 {
-    public static final Codec<FoodTrait> CODEC;
-    public static final StreamCodec<RegistryFriendlyByteBuf, FoodTrait> STREAM_CODEC;
+    public static final Codec<FoodTrait> CODEC = FoodTraits.REGISTRY.byNameCodec();
+    public static final StreamCodec<RegistryFriendlyByteBuf, FoodTrait> STREAM_CODEC = ByteBufCodecs.registry(FoodTraits.KEY);
 
-    private static final BiMap<ResourceLocation, FoodTrait> REGISTRY = HashBiMap.create();
+    private final DoubleSupplier decayModifier;
+    private final @Nullable String translationKey;
 
-    /**
-     * Register a food trait.
-     * This method is safe to call during parallel mod loading.
-     */
-    public static synchronized FoodTrait register(ResourceLocation id, FoodTrait trait)
-    {
-        if (REGISTRY.containsKey(id))
-        {
-            throw new IllegalArgumentException("Duplicate key: " + id);
-        }
-        REGISTRY.put(id, trait);
-        return trait;
-    }
-
-    @Nullable
-    public static FoodTrait getTrait(ResourceLocation key)
-    {
-        return REGISTRY.get(key);
-    }
-
-    public static FoodTrait getTraitOrThrow(ResourceLocation key)
-    {
-        return Objects.requireNonNull(getTrait(key), "No food trait named: " + key);
-    }
-
-    public static ResourceLocation getId(FoodTrait trait)
-    {
-        return REGISTRY.inverse().get(trait);
-    }
-
-    private final Supplier<Float> decayModifier;
-    @Nullable private final String translationKey;
-
-    public FoodTrait(float decayModifier, @Nullable String translationKey)
-    {
-        this.decayModifier = () -> decayModifier;
-        this.translationKey = translationKey;
-    }
-
-    public FoodTrait(Supplier<Float> decayModifier, @Nullable String translationKey)
+    public FoodTrait(DoubleSupplier decayModifier, @Nullable String translationKey)
     {
         this.decayModifier = decayModifier;
         this.translationKey = translationKey;
@@ -76,7 +40,7 @@ public class FoodTrait
 
     public float getDecayModifier()
     {
-        return decayModifier.get();
+        return (float) decayModifier.getAsDouble();
     }
 
     /**
@@ -90,7 +54,7 @@ public class FoodTrait
         if (translationKey != null)
         {
             final MutableComponent component = Component.translatable(translationKey);
-            if (decayModifier.get() > 1f)
+            if (decayModifier.getAsDouble() > 1)
             {
                 component.withStyle(ChatFormatting.RED);
             }

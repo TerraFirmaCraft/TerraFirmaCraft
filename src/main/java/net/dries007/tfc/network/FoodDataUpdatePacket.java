@@ -7,6 +7,7 @@
 package net.dries007.tfc.network;
 
 import net.dries007.tfc.client.ClientHelpers;
+import net.dries007.tfc.common.capabilities.food.FoodData;
 import net.dries007.tfc.common.capabilities.food.Nutrient;
 import net.dries007.tfc.common.capabilities.food.TFCFoodData;
 
@@ -23,18 +24,7 @@ public record FoodDataUpdatePacket(
 {
     public static final CustomPacketPayload.Type<FoodDataUpdatePacket> TYPE = PacketHandler.type("update_food_data");
     public static final StreamCodec<ByteBuf, FoodDataUpdatePacket> STREAM = StreamCodec.composite(
-        StreamCodec.of(
-            (buffer, value) -> {
-                for (float t : value)
-                    buffer.writeFloat(t);
-            },
-            buffer -> {
-                final float[] value = new float[Nutrient.TOTAL];
-                for (int i = 0; i < value.length; i++)
-                    value[i] = buffer.readFloat();
-                return value;
-            }
-        ), c -> c.nutrients,
+        FoodData.NUTRITION_STREAM_CODEC, c -> c.nutrients,
         ByteBufCodecs.FLOAT, c -> c.thirst,
         FoodDataUpdatePacket::new
     );

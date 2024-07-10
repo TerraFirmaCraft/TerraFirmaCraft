@@ -206,7 +206,7 @@ public class SaladContainer extends Container implements ISlotCallback
                             handler.setCreationDate(FoodCapability.getRoundedCreationDate());
                             handler.setIngredients(ingredients);
                             handler.setBowl(bowlStack.copy().split(1));
-                            handler.setFood(FoodData.create(4, water, saturation, nutrition, 4.0f));
+                            handler.setFood(FoodData.of(4, water, saturation, nutrition, 4.0f));
                         }
                         inventory.setStackInSlot(SLOT_OUTPUT, salad);
                         return;

@@ -8,6 +8,7 @@ package net.dries007.tfc.common.capabilities.food;
 
 import java.util.Locale;
 
+import com.mojang.serialization.Codec;
 import net.minecraft.ChatFormatting;
 import net.minecraft.util.StringRepresentable;
 
