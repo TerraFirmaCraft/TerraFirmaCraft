@@ -7,16 +7,14 @@
 package net.dries007.tfc.util.registry;
 
 import java.util.function.Supplier;
-
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.MapColor;
 
 import net.dries007.tfc.common.blocks.wood.Wood;
-import net.dries007.tfc.util.calendar.ICalendar;
-import net.dries007.tfc.world.feature.tree.TFCTreeGrower;
 
 /**
  * Interface for use in {@link Wood.BlockType} registration calls.
@@ -27,7 +25,7 @@ public interface RegistryWood extends StringRepresentable
 
     MapColor barkColor();
 
-    TFCTreeGrower tree();
+    TreeGrower tree();
 
     int daysToGrow();
 

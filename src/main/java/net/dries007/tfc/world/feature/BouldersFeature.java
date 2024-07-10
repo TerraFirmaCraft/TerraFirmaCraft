@@ -46,7 +46,7 @@ public class BouldersFeature extends Feature<BoulderConfig>
             Supplier<BlockState> stateSupplier;
             if (states.size() == 1)
             {
-                final BlockState onlyState = states.get(0);
+                final BlockState onlyState = states.getFirst();
                 stateSupplier = () -> onlyState;
             }
             else

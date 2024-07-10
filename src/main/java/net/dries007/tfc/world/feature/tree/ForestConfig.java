@@ -36,7 +36,7 @@ public record ForestConfig(HolderSet<ConfiguredFeature<?, ?>> entries, Map<Fores
     public record Entry(ClimatePlacement climate, Optional<BlockState> bushLog, Optional<BlockState> bushLeaves, Optional<BlockState> fallenLog, Optional<BlockState> fallenLeaves, Optional<IWeighted<BlockState>> groundcover, Holder<ConfiguredFeature<?, ?>> treeFeature, Holder<ConfiguredFeature<?, ?>> deadFeature, Optional<Holder<ConfiguredFeature<?, ?>>> oldGrowthFeature, Optional<Holder<ConfiguredFeature<?, ?>>> krummholz, int oldGrowthChance, int spoilerOldGrowthChance, int fallenChance, int deadChance, boolean floating) implements FeatureConfiguration
     {
         public static final Codec<Entry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            ClimatePlacement.PLACEMENT_CODEC.fieldOf("climate").forGetter(c -> c.climate),
+            ClimatePlacement.CODEC.fieldOf("climate").forGetter(c -> c.climate),
             Codecs.optionalFieldOf(Codecs.BLOCK_STATE, "bush_log").forGetter(c -> c.bushLog),
             Codecs.optionalFieldOf(Codecs.BLOCK_STATE, "bush_leaves").forGetter(c -> c.bushLeaves),
             Codecs.optionalFieldOf(Codecs.BLOCK_STATE, "fallen_log").forGetter(c -> c.fallenLog),

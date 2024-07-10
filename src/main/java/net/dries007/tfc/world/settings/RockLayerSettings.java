@@ -12,13 +12,10 @@ import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
@@ -203,7 +200,7 @@ public final class RockLayerSettings
 
         public RockLayerSettings parse()
         {
-            return RockLayerSettings.processData(this).getOrThrow(false, e -> {});
+            return RockLayerSettings.processData(this).getOrThrow();
         }
     }
 

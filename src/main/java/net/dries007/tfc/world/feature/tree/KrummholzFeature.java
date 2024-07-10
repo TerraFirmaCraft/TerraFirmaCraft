@@ -12,7 +12,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraftforge.common.Tags;
+import net.neoforged.neoforge.common.Tags;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.plant.KrummholzBlock;
@@ -42,9 +42,9 @@ public class KrummholzFeature extends Feature<KrummholzConfig>
         final BlockState below = level.getBlockState(cursor);
         boolean validBlock = Helpers.isBlock(below, TFCTags.Blocks.TREE_GROWS_ON);
         if (config.spawnsOnStone())
-            validBlock |= Helpers.isBlock(below, Tags.Blocks.STONE);
+            validBlock |= Helpers.isBlock(below, Tags.Blocks.STONES);
         if (config.spawnsOnGravel())
-            validBlock |= Helpers.isBlock(below, Tags.Blocks.GRAVEL);
+            validBlock |= Helpers.isBlock(below, Tags.Blocks.GRAVELS);
         if (!validBlock)
             return false;
 

@@ -19,6 +19,7 @@ import net.dries007.tfc.common.blocks.SandstoneBlockType;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.registry.IdHolder;
 import net.dries007.tfc.world.Codecs;
 
 public record RockSettings(Block raw, Block hardened, Block gravel, Block cobble, Block sand, Block sandstone, Optional<Block> spike, Optional<Block> loose, Optional<Block> mossyLoose)
@@ -50,7 +51,7 @@ public record RockSettings(Block raw, Block hardened, Block gravel, Block cobble
         for (Rock rock : Rock.values())
         {
             final ResourceLocation id = Helpers.identifier(rock.getSerializedName());
-            final Map<Rock.BlockType, RegistryObject<Block>> blocks = TFCBlocks.ROCK_BLOCKS.get(rock);
+            final Map<Rock.BlockType, ? extends IdHolder<Block>> blocks = TFCBlocks.ROCK_BLOCKS.get(rock);
 
             register(id, new RockSettings(
                 blocks.get(Rock.BlockType.RAW).get(),

@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blocks.wood;
 
 import java.util.function.Supplier;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
@@ -17,7 +16,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.SaplingBlock;
+import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
@@ -27,8 +28,6 @@ import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
-import net.dries007.tfc.world.feature.tree.TFCTreeGrower;
-import org.jetbrains.annotations.Nullable;
 
 public class TFCSaplingBlock extends SaplingBlock implements IForgeBlockExtension, EntityBlockExtension
 {
@@ -36,7 +35,7 @@ public class TFCSaplingBlock extends SaplingBlock implements IForgeBlockExtensio
     private final Supplier<Integer> daysToGrow;
     private final boolean sand;
 
-    public TFCSaplingBlock(TFCTreeGrower tree, ExtendedProperties properties, Supplier<Integer> days, boolean sand)
+    public TFCSaplingBlock(TreeGrower tree, ExtendedProperties properties, Supplier<Integer> days, boolean sand)
     {
         super(tree, properties.properties());
         this.properties = properties;

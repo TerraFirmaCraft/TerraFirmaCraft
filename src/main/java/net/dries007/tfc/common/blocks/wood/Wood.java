@@ -7,10 +7,13 @@
 package net.dries007.tfc.common.blocks.wood;
 
 import java.util.Locale;
+import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -22,6 +25,7 @@ import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
+import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
@@ -56,7 +60,6 @@ import net.dries007.tfc.common.items.ChestBlockItem;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.registry.RegistryWood;
-import net.dries007.tfc.world.feature.tree.TFCTreeGrower;
 
 /**
  * Default wood types used for block registration calls.
@@ -92,7 +95,7 @@ public enum Wood implements RegistryWood
     private final boolean conifer;
     private final MapColor woodColor;
     private final MapColor barkColor;
-    private final TFCTreeGrower tree;
+    private final TreeGrower tree;
     private final int daysToGrow;
     private final BlockSetType blockSet;
     private final WoodType woodType;
@@ -104,7 +107,12 @@ public enum Wood implements RegistryWood
         this.conifer = conifer;
         this.woodColor = woodColor;
         this.barkColor = barkColor;
-        this.tree = new TFCTreeGrower(Helpers.identifier("tree/" + serializedName), Helpers.identifier("tree/" + serializedName + "_large"));
+        this.tree = new TreeGrower(
+            Helpers.identifier(serializedName).toString(),
+            Optional.empty(),
+            Optional.of(ResourceKey.create(Registries.CONFIGURED_FEATURE, Helpers.identifier("tree/" + serializedName))),
+            Optional.empty()
+        );
         this.daysToGrow = daysToGrow;
         this.autumnIndex = autumnIndex;
         this.blockSet = new BlockSetType(serializedName);
@@ -147,7 +155,7 @@ public enum Wood implements RegistryWood
     }
 
     @Override
-    public TFCTreeGrower tree()
+    public TreeGrower tree()
     {
         return tree;
     }

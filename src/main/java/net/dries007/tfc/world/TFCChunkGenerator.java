@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import com.google.common.collect.ImmutableMap;
@@ -232,8 +231,9 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         return CODEC;
     }
 
+
     @Override
-    public CompletableFuture<ChunkAccess> createBiomes(Executor executor, RandomState state, Blender legacyTerrainBlender, StructureManager structureFeatureManager, ChunkAccess chunk)
+    public CompletableFuture<ChunkAccess> createBiomes(RandomState randomState, Blender blender, StructureManager structureManager, ChunkAccess chunk)
     {
         return CompletableFuture.supplyAsync(() -> {
             chunkDataProvider.get(chunk);
@@ -372,6 +372,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void spawnOriginalMobs(WorldGenRegion level)
     {
         if (!this.noiseSettings.value().disableMobGeneration())
@@ -411,7 +412,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     }
 
     @Override
-    public CompletableFuture<ChunkAccess> fillFromNoise(Executor mainExecutor, Blender oldTerrainBlender, RandomState rawState, StructureManager structureFeatureManager, ChunkAccess chunk)
+    public CompletableFuture<ChunkAccess> fillFromNoise(Blender blender, RandomState randomState, StructureManager structureManager, ChunkAccess chunk)
     {
         // Initialization
         final ChunkNoiseSamplingSettings settings = createNoiseSamplingSettingsForChunk(chunk);
@@ -430,7 +431,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
         final Object2DoubleMap<BiomeExtension>[] biomeWeights = ChunkBiomeSampler.sampleBiomes(chunkPos, this::sampleBiomeNoRiver, BiomeExtension::biomeBlendType);
         final ChunkBaseBlockSource baseBlockSource = createBaseBlockSourceForChunk(chunk);
-        final ChunkNoiseFiller filler = new ChunkNoiseFiller((ProtoChunk) chunk, biomeWeights, customBiomeSource, createBiomeSamplersForChunk(chunk), createRiverSamplersForChunk(), createShoreSamplerForChunk(), noiseSampler, baseBlockSource, settings, getSeaLevel(), Beardifier.forStructuresInChunk(structureFeatureManager, chunkPos));
+        final ChunkNoiseFiller filler = new ChunkNoiseFiller((ProtoChunk) chunk, biomeWeights, customBiomeSource, createBiomeSamplersForChunk(chunk), createRiverSamplersForChunk(), createShoreSamplerForChunk(), noiseSampler, baseBlockSource, settings, getSeaLevel(), Beardifier.forStructuresInChunk(structureManager, chunkPos));
 
         return CompletableFuture.supplyAsync(() -> {
             filler.sampleAquiferSurfaceHeight(this::sampleBiomeNoRiver);
@@ -440,13 +441,12 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
             aquiferCache.set(chunkPos.x, chunkPos.z, filler.aquifer());
 
-            return chunk;
-        }, Util.backgroundExecutor()).whenCompleteAsync((ret, error) -> {
-            // Unlock before surfaces are built, as they use locks directly
             sections.forEach(LevelChunkSection::release);
 
             surfaceManager.buildSurface(actualLevel, chunk, rockLayerSettings(), chunkData, filler.localBiomes(), filler.localBiomesNoRivers(), filler.localBiomeWeights(), filler.createSlopeMap(), random, getSeaLevel(), settings.minY());
-        }, mainExecutor);
+
+            return chunk;
+        }, Util.backgroundExecutor());
     }
 
     @Override
