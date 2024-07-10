@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.common.recipes;
 
-import net.minecraft.core.HolderLookup;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeInput;
 
@@ -16,12 +14,6 @@ import net.minecraft.world.item.crafting.RecipeInput;
  */
 public interface ISimpleRecipe<C extends RecipeInput> extends Recipe<C>
 {
-    @Override
-    default ItemStack assemble(C input, HolderLookup.Provider registryAccess)
-    {
-        return getResultItem(registryAccess).copy();
-    }
-
     @Override
     default boolean canCraftInDimensions(int width, int height)
     {

@@ -6,11 +6,13 @@
 
 package net.dries007.tfc.common.recipes;
 
-import com.google.gson.JsonObject;
-import net.minecraft.network.FriendlyByteBuf;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -19,19 +21,35 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
-import net.dries007.tfc.util.JsonHelpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 public class ScrapingRecipe extends SimpleItemRecipe
 {
     public static final IndirectHashCollection<Item, ScrapingRecipe> CACHE = IndirectHashCollection.createForRecipe(ScrapingRecipe::getValidItems, TFCRecipeTypes.SCRAPING);
 
+    public static final MapCodec<ScrapingRecipe> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
+        Ingredient.CODEC.fieldOf("ingredient").forGetter(c -> c.ingredient),
+        ItemStackProvider.CODEC.fieldOf("result").forGetter(c -> c.result),
+        ResourceLocation.CODEC.fieldOf("input_texture").forGetter(c -> c.inputTexture),
+        ResourceLocation.CODEC.fieldOf("output_texture").forGetter(c -> c.outputTexture),
+        ItemStackProvider.CODEC.optionalFieldOf("extra_drop", ItemStackProvider.empty()).forGetter(c -> c.extraDrop) // todo 1.21: rename to "result_item"
+    ).apply(i, ScrapingRecipe::new));
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, ScrapingRecipe> STREAM_CODEC = StreamCodec.composite(
+        Ingredient.CONTENTS_STREAM_CODEC, c -> c.ingredient,
+        ItemStackProvider.STREAM_CODEC, c -> c.result,
+        ResourceLocation.STREAM_CODEC, c -> c.inputTexture,
+        ResourceLocation.STREAM_CODEC, c -> c.outputTexture,
+        ItemStackProvider.STREAM_CODEC, c -> c.extraDrop,
+        ScrapingRecipe::new
+    );
+
     @Nullable
-    public static ScrapingRecipe getRecipe(Level world, ItemStackInventory wrapper)
+    public static ScrapingRecipe getRecipe(ItemStack stack)
     {
-        for (ScrapingRecipe recipe : CACHE.getAll(wrapper.getStack().getItem()))
+        for (ScrapingRecipe recipe : CACHE.getAll(stack.getItem()))
         {
-            if (recipe.matches(wrapper, world))
+            if (recipe.matches(stack))
             {
                 return recipe;
             }
@@ -43,18 +61,13 @@ public class ScrapingRecipe extends SimpleItemRecipe
     private final ResourceLocation outputTexture;
     private final ItemStackProvider extraDrop;
 
-    public ScrapingRecipe(ResourceLocation id, Ingredient ingredient, ItemStackProvider result, ResourceLocation inputTexture, ResourceLocation outputTexture, ItemStackProvider extraDrop)
+    public ScrapingRecipe(Ingredient ingredient, ItemStackProvider result, ResourceLocation inputTexture, ResourceLocation outputTexture, ItemStackProvider extraDrop)
     {
-        super(id, ingredient, result);
+        super(ingredient, result);
+
         this.inputTexture = inputTexture;
         this.outputTexture = outputTexture;
         this.extraDrop = extraDrop;
-    }
-
-    @Override
-    public RecipeSerializer<?> getSerializer()
-    {
-        return TFCRecipeSerializers.SCRAPING.get();
     }
 
     public ResourceLocation getInputTexture()
@@ -78,39 +91,9 @@ public class ScrapingRecipe extends SimpleItemRecipe
         return TFCRecipeTypes.SCRAPING.get();
     }
 
-    public static class Serializer extends RecipeSerializerImpl<ScrapingRecipe>
+    @Override
+    public RecipeSerializer<?> getSerializer()
     {
-        @Override
-        public ScrapingRecipe fromJson(ResourceLocation id, JsonObject json)
-        {
-            final Ingredient ingredient = Ingredient.fromJson(JsonHelpers.get(json, "ingredient"));
-            final ItemStackProvider result = ItemStackProvider.fromJson(GsonHelper.getAsJsonObject(json, "result"));
-            final ResourceLocation inputTexture = JsonHelpers.getResourceLocation(json, "input_texture");
-            final ResourceLocation outputTexture = JsonHelpers.getResourceLocation(json, "output_texture");
-            final ItemStackProvider extraDrop = json.has("extra_drop") ? ItemStackProvider.fromJson(JsonHelpers.getAsJsonObject(json, "extra_drop")) : ItemStackProvider.empty();
-            return new ScrapingRecipe(id, ingredient, result, inputTexture, outputTexture, extraDrop);
-        }
-
-        @Nullable
-        @Override
-        public ScrapingRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buffer)
-        {
-            final Ingredient ingredient = Ingredient.fromNetwork(buffer);
-            final ItemStackProvider result = ItemStackProvider.fromNetwork(buffer);
-            final ResourceLocation inputTexture = buffer.readResourceLocation();
-            final ResourceLocation outputTexture = buffer.readResourceLocation();
-            final ItemStackProvider extraDrop = ItemStackProvider.fromNetwork(buffer);
-            return new ScrapingRecipe(id, ingredient, result, inputTexture, outputTexture, extraDrop);
-        }
-
-        @Override
-        public void toNetwork(FriendlyByteBuf buffer, ScrapingRecipe recipe)
-        {
-            recipe.getIngredient().toNetwork(buffer);
-            recipe.getResult().toNetwork(buffer);
-            buffer.writeUtf(recipe.getInputTexture().toString());
-            buffer.writeUtf(recipe.getOutputTexture().toString());
-            recipe.getExtraDrop().toNetwork(buffer);
-        }
+        return TFCRecipeSerializers.SCRAPING.get();
     }
 }

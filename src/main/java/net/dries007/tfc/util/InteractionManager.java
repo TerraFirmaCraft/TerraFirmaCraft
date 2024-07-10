@@ -351,7 +351,7 @@ public final class InteractionManager
 
         register(Ingredient.of(TFCTags.Items.SCRAPABLE), false, (stack, context) -> {
             Level level = context.getLevel();
-            ScrapingRecipe recipe = ScrapingRecipe.getRecipe(level, new ItemStackInventory(stack));
+            ScrapingRecipe recipe = ScrapingRecipe.getRecipe(stack);
             if (recipe != null)
             {
                 final BlockPos pos = context.getClickedPos();

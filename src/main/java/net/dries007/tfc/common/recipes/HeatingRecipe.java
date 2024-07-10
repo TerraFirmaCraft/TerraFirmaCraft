@@ -6,15 +6,15 @@
 
 package net.dries007.tfc.common.recipes;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Random;
-import java.util.stream.Collectors;
 
-import com.google.gson.JsonObject;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -22,32 +22,52 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.fluids.FluidStack;
 
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
-import net.dries007.tfc.util.JsonHelpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
+import net.dries007.tfc.world.Codecs;
+
+import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 
-public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
+public class HeatingRecipe implements INoopInputRecipe
 {
-    public static final IndirectHashCollection<Item, HeatingRecipe> CACHE = IndirectHashCollection.createForRecipe(HeatingRecipe::getValidItems, TFCRecipeTypes.HEATING);
+    public static final IndirectHashCollection<Item, HeatingRecipe> CACHE = IndirectHashCollection.createForRecipe(r -> RecipeHelpers.itemKeys(r.ingredient), TFCRecipeTypes.HEATING);
 
-    @Nullable
-    public static HeatingRecipe getRecipe(ItemStack stack)
-    {
-        return getRecipe(new ItemStackInventory(stack));
-    }
+    public static final MapCodec<HeatingRecipe> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
+        Ingredient.CODEC.fieldOf("ingredient").forGetter(c -> c.ingredient),
+        ItemStackProvider.CODEC.optionalFieldOf("result_item", ItemStackProvider.empty()).forGetter(c -> c.outputItem),
+        FluidStack.CODEC.optionalFieldOf("result_fluid", FluidStack.EMPTY).forGetter(c -> c.outputFluid),
+        Codec.FLOAT.fieldOf("temperature").forGetter(c -> c.temperature),
+        Codec.BOOL.optionalFieldOf("use_durability", false).forGetter(c -> c.useDurability),
+        Codecs.UNIT_FLOAT.optionalFieldOf("chance", 1f).forGetter(c -> c.chance)
+    ).apply(i, HeatingRecipe::new));
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, HeatingRecipe> STREAM_CODEC = StreamCodec.composite(
+        Ingredient.CONTENTS_STREAM_CODEC, c -> c.ingredient,
+        ItemStackProvider.STREAM_CODEC, c -> c.outputItem,
+        FluidStack.STREAM_CODEC, c -> c.outputFluid,
+        ByteBufCodecs.FLOAT, c -> c.temperature,
+        ByteBufCodecs.BOOL, c -> c.useDurability,
+        ByteBufCodecs.FLOAT, c -> c.chance,
+        HeatingRecipe::new
+    );
 
     @Nullable
     public static HeatingRecipe getRecipe(ItemStackInventory wrapper)
     {
-        for (HeatingRecipe recipe : CACHE.getAll(wrapper.getStack().getItem()))
+        return getRecipe(wrapper.getStack());
+    }
+
+    @Nullable
+    public static HeatingRecipe getRecipe(ItemStack stack)
+    {
+        for (HeatingRecipe recipe : CACHE.getAll(stack.getItem()))
         {
-            if (recipe.matches(wrapper, null))
+            if (recipe.matches(stack))
             {
                 return recipe;
             }
@@ -55,7 +75,6 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
         return null;
     }
 
-    private final ResourceLocation id;
     private final Ingredient ingredient;
     private final ItemStackProvider outputItem;
     private final FluidStack outputFluid;
@@ -63,9 +82,8 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
     private final boolean useDurability;
     private final float chance;
 
-    public HeatingRecipe(ResourceLocation id, Ingredient ingredient, ItemStackProvider outputItem, FluidStack outputFluid, float temperature, boolean useDurability, float chance)
+    public HeatingRecipe(Ingredient ingredient, ItemStackProvider outputItem, FluidStack outputFluid, float temperature, boolean useDurability, float chance)
     {
-        this.id = id;
         this.ingredient = ingredient;
         this.outputItem = outputItem;
         this.outputFluid = outputFluid;
@@ -74,44 +92,24 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
         this.chance = chance;
     }
 
-    @Override
-    public boolean matches(ItemStackInventory inventory, @Nullable Level level)
+    /**
+     * @return {@code true} if the input matches the recipe
+     */
+    public boolean matches(ItemStack input)
     {
-        return getIngredient().test(inventory.getStack());
+        return ingredient.test(input);
     }
 
-    @Override
-    public ItemStack getResultItem(@Nullable RegistryAccess registryAccess)
+    /**
+     * Returns the item component of the recipe output. Note that {@code input} must be a single count stack. Use
+     * {@link #assembleStacked(ItemStack, int, float)} for outputs operating on stacked inputs.
+     */
+    public ItemStack assembleItem(ItemStack input)
     {
-        return outputItem.getEmptyStack();
-    }
-
-    @Override
-    public ResourceLocation getId()
-    {
-        return id;
-    }
-
-    @Override
-    public RecipeSerializer<?> getSerializer()
-    {
-        return TFCRecipeSerializers.HEATING.get();
-    }
-
-    @Override
-    public RecipeType<?> getType()
-    {
-        return TFCRecipeTypes.HEATING.get();
-    }
-
-    @Override
-    public ItemStack assemble(ItemStackInventory inventory, @Nullable RegistryAccess registryAccess)
-    {
-        final ItemStack inputStack = inventory.getStack();
-        final ItemStack outputStack = outputItem.getSingleStack(inputStack);
+        final ItemStack outputStack = outputItem.getSingleStack(input);
 
         // We always upgrade the heat regardless
-        final @Nullable IHeat inputHeat = HeatCapability.get(inputStack);
+        final @Nullable IHeat inputHeat = HeatCapability.get(input);
         if (inputHeat != null)
         {
             HeatCapability.setTemperature(outputStack, inputHeat.getTemperature());
@@ -126,11 +124,26 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
     }
 
     /**
-     * Implementation of {@link HeatingRecipe#assemble(ItemStackInventory, RegistryAccess)} that respects a stacked input item.
+     * Returns the fluid component of the recipe output. This can be used for both stacked or non-stacked inputs.
      */
-    public ItemStack assembleStacked(ItemStackInventory inventory, int stackSizeCap, float chance)
+    public FluidStack assembleFluid(ItemStackInventory inventory)
     {
         final ItemStack inputStack = inventory.getStack();
+        final FluidStack outputFluid = this.outputFluid.copy();
+        if (useDurability && !outputFluid.isEmpty() && inputStack.getMaxDamage() > 0 && inputStack.isDamageableItem())
+        {
+            outputFluid.setAmount(Mth.floor(outputFluid.getAmount() * (1 - (float) inputStack.getDamageValue() / inputStack.getMaxDamage())));
+        }
+        return outputFluid;
+    }
+
+    /**
+     * A variant of {@link #assembleItem(ItemStack)} which respects a stacked input item.
+     * @param stackSizeCap The slot limit of the output container. This method will return no more than this limit.
+     * @param chance The chance to use for the recipe. Typically, this is {@code recipe.getChance()}, but for display purposes {@code 1f} can be used
+     */
+    public ItemStack assembleStacked(ItemStack inputStack, int stackSizeCap, float chance)
+    {
         final ItemStack outputStack = outputItem.getSingleStack(inputStack);
 
         // We always upgrade the heat regardless
@@ -145,6 +158,7 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
             outputStack.getCount() * inputStack.getCount(),
             Math.min(outputStack.getMaxStackSize(), stackSizeCap)
         ));
+
         // Reduce stack size based on chance output
         if (!outputStack.isEmpty() && chance < 1f)
         {
@@ -162,30 +176,6 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
         return outputStack;
     }
 
-    /**
-     * Assemble the fluid output. Use for recipe completions.
-     * @return A new {@link FluidStack}
-     */
-    public FluidStack assembleFluid(ItemStackInventory inventory)
-    {
-        final ItemStack inputStack = inventory.getStack();
-        final FluidStack outputFluid = this.outputFluid.copy();
-        if (useDurability && !outputFluid.isEmpty() && inputStack.getMaxDamage() > 0 && inputStack.isDamageableItem())
-        {
-            outputFluid.setAmount(Mth.floor(outputFluid.getAmount() * (1 - (float) inputStack.getDamageValue() / inputStack.getMaxDamage())));
-        }
-        return outputFluid;
-    }
-
-    /**
-     * Get the output fluid for display only. Similar function to {@link #getResultItem(RegistryAccess)}
-     * @return An approximation of the output fluid from this recipe.
-     */
-    public FluidStack getDisplayOutputFluid()
-    {
-        return outputFluid;
-    }
-
     public float getTemperature()
     {
         return temperature;
@@ -194,11 +184,6 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
     public boolean isValidTemperature(float temperatureIn)
     {
         return temperatureIn >= temperature;
-    }
-
-    public Collection<Item> getValidItems()
-    {
-        return Arrays.stream(this.getIngredient().getItems()).map(ItemStack::getItem).collect(Collectors.toSet());
     }
 
     public Ingredient getIngredient()
@@ -211,42 +196,26 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
         return chance;
     }
 
-    public static class Serializer extends RecipeSerializerImpl<HeatingRecipe>
+    @Override
+    public ItemStack getResultItem(HolderLookup.Provider registries)
     {
-        @Override
-        public HeatingRecipe fromJson(ResourceLocation recipeId, JsonObject json)
-        {
-            final Ingredient ingredient = Ingredient.fromJson(json.get("ingredient"));
-            final ItemStackProvider outputItem = json.has("result_item") ? ItemStackProvider.fromJson(json.getAsJsonObject("result_item")): ItemStackProvider.empty();
-            final FluidStack outputFluid = json.has("result_fluid") ? JsonHelpers.getFluidStack(json.getAsJsonObject("result_fluid")) : FluidStack.EMPTY;
-            final float temperature = JsonHelpers.getAsFloat(json, "temperature");
-            final boolean useDurability = JsonHelpers.getAsBoolean(json, "use_durability", false);
-            final float chance = JsonHelpers.getAsFloat(json, "chance", 1f);
-            return new HeatingRecipe(recipeId, ingredient, outputItem, outputFluid, temperature, useDurability, chance);
-        }
+        return outputItem.getEmptyStack();
+    }
 
-        @Nullable
-        @Override
-        public HeatingRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
-        {
-            final Ingredient ingredient = Ingredient.fromNetwork(buffer);
-            final ItemStackProvider outputItem = ItemStackProvider.fromNetwork(buffer);
-            final FluidStack outputFluid = buffer.readFluidStack();
-            final float temperature = buffer.readFloat();
-            final boolean useDurability = buffer.readBoolean();
-            final float chance = buffer.readFloat();
-            return new HeatingRecipe(recipeId, ingredient, outputItem, outputFluid, temperature, useDurability, chance);
-        }
+    public FluidStack getDisplayOutputFluid()
+    {
+        return outputFluid;
+    }
 
-        @Override
-        public void toNetwork(FriendlyByteBuf buffer, HeatingRecipe recipe)
-        {
-            recipe.getIngredient().toNetwork(buffer);
-            recipe.outputItem.toNetwork(buffer);
-            buffer.writeFluidStack(recipe.outputFluid);
-            buffer.writeFloat(recipe.temperature);
-            buffer.writeBoolean(recipe.useDurability);
-            buffer.writeFloat(recipe.chance);
-        }
+    @Override
+    public RecipeSerializer<?> getSerializer()
+    {
+        return TFCRecipeSerializers.HEATING.get();
+    }
+
+    @Override
+    public RecipeType<?> getType()
+    {
+        return TFCRecipeTypes.HEATING.get();
     }
 }

@@ -6,42 +6,49 @@
 
 package net.dries007.tfc.common.recipes;
 
-import com.google.gson.JsonObject;
-import net.minecraft.network.FriendlyByteBuf;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
-import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
-import net.dries007.tfc.util.JsonHelpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
-/**
- * Note the non-counted ingredient is used for matching, so that we can initialize the recipe with even just a single item.
- * However, for consistency reasons we now use an {@link ItemStackIngredient} to demonstrate that the count and the ingredient are linked.
- */
-public class LoomRecipe extends SimpleItemRecipe
+public class LoomRecipe implements INoopInputRecipe
 {
-    public static final IndirectHashCollection<Item, LoomRecipe> CACHE = IndirectHashCollection.createForRecipe(LoomRecipe::getValidItems, TFCRecipeTypes.LOOM);
+    public static final IndirectHashCollection<Item, LoomRecipe> CACHE = IndirectHashCollection.createForRecipe(r -> RecipeHelpers.itemKeys(r.ingredient.ingredient()), TFCRecipeTypes.LOOM);
+
+    public static final MapCodec<LoomRecipe> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
+        SizedIngredient.FLAT_CODEC.fieldOf("ingredient").forGetter(c -> c.ingredient),
+        ItemStackProvider.CODEC.fieldOf("result").forGetter(c -> c.result),
+        Codec.INT.fieldOf("steps").forGetter(c -> c.steps),
+        ResourceLocation.CODEC.fieldOf("texture").forGetter(c -> c.inProgressTexture)
+    ).apply(i, LoomRecipe::new));
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, LoomRecipe> STREAM_CODEC = StreamCodec.composite(
+        SizedIngredient.STREAM_CODEC, c -> c.ingredient,
+        ItemStackProvider.STREAM_CODEC, c -> c.result,
+        ByteBufCodecs.VAR_INT, c -> c.steps,
+        ResourceLocation.STREAM_CODEC, c -> c.inProgressTexture,
+        LoomRecipe::new
+    );
 
     @Nullable
-    public static LoomRecipe getRecipe(Level level, ItemStack stack)
+    public static LoomRecipe getRecipe(ItemStack stack)
     {
-        return getRecipe(level, new ItemStackInventory(stack));
-    }
-
-    @Nullable
-    public static LoomRecipe getRecipe(Level level, ItemStackInventory wrapper)
-    {
-        for (LoomRecipe recipe : CACHE.getAll(wrapper.getStack().getItem()))
+        for (LoomRecipe recipe : CACHE.getAll(stack.getItem()))
         {
-            if (recipe.matches(wrapper, level))
+            if (recipe.matches(stack))
             {
                 return recipe;
             }
@@ -49,16 +56,39 @@ public class LoomRecipe extends SimpleItemRecipe
         return null;
     }
 
-    private final ItemStackIngredient ingredient;
-    private final int stepsRequired;
+    private final SizedIngredient ingredient;
+    private final ItemStackProvider result;
+    private final int steps;
     private final ResourceLocation inProgressTexture;
 
-    public LoomRecipe(ResourceLocation id, ItemStackIngredient ingredient, ItemStackProvider result, int stepsRequired, ResourceLocation inProgressTexture)
+    public LoomRecipe(SizedIngredient ingredient, ItemStackProvider result, int steps, ResourceLocation inProgressTexture)
     {
-        super(id, ingredient.ingredient(), result);
         this.ingredient = ingredient;
-        this.stepsRequired = stepsRequired;
+        this.result = result;
+        this.steps = steps;
         this.inProgressTexture = inProgressTexture;
+    }
+
+    /**
+     * @return {@code true} if the recipe matches the {@code input}, without counting the amount
+     */
+    public boolean matches(ItemStack input)
+    {
+        return ingredient.ingredient().test(input);
+    }
+
+    /**
+     * @return The output of this recipe with the provided {@code input}
+     */
+    public ItemStack assemble(ItemStack input)
+    {
+        return result.getSingleStack(input);
+    }
+
+    @Override
+    public ItemStack getResultItem(HolderLookup.Provider registries)
+    {
+        return result.getEmptyStack();
     }
 
     @Override
@@ -73,7 +103,7 @@ public class LoomRecipe extends SimpleItemRecipe
         return TFCRecipeTypes.LOOM.get();
     }
 
-    public ItemStackIngredient getItemStackIngredient()
+    public SizedIngredient getItemStackIngredient()
     {
         return ingredient;
     }
@@ -90,39 +120,12 @@ public class LoomRecipe extends SimpleItemRecipe
 
     public int getStepCount()
     {
-        return stepsRequired;
+        return steps;
     }
 
-    public static class Serializer extends RecipeSerializerImpl<LoomRecipe>
+    @Override
+    public boolean isSpecial()
     {
-        @Override
-        public LoomRecipe fromJson(ResourceLocation recipeId, JsonObject json)
-        {
-            final ItemStackIngredient ingredient = ItemStackIngredient.fromJson(JsonHelpers.getAsJsonObject(json, "ingredient"));
-            final ItemStackProvider stack = ItemStackProvider.fromJson(JsonHelpers.getAsJsonObject(json, "result"));
-            final int stepsRequired = JsonHelpers.getAsInt(json, "steps_required");
-            final ResourceLocation inProgressTexture = JsonHelpers.getResourceLocation(json, "in_progress_texture");
-            return new LoomRecipe(recipeId, ingredient, stack, stepsRequired, inProgressTexture);
-        }
-
-        @Nullable
-        @Override
-        public LoomRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
-        {
-            final ItemStackIngredient ingredient = ItemStackIngredient.fromNetwork(buffer);
-            final ItemStackProvider stack = ItemStackProvider.fromNetwork(buffer);
-            final int steps = buffer.readVarInt();
-            final ResourceLocation inProgressTexture = buffer.readResourceLocation();
-            return new LoomRecipe(recipeId, ingredient, stack, steps, inProgressTexture);
-        }
-
-        @Override
-        public void toNetwork(FriendlyByteBuf buffer, LoomRecipe recipe)
-        {
-            recipe.ingredient.toNetwork(buffer);
-            recipe.result.toNetwork(buffer);
-            buffer.writeVarInt(recipe.stepsRequired);
-            buffer.writeUtf(recipe.inProgressTexture.toString());
-        }
+        return result.dependsOnInput();
     }
 }

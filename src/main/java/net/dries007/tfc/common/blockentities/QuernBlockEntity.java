@@ -229,9 +229,8 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
 
         if (!inputStack.isEmpty() && hasHandstone())
         {
-            final ItemStackInventory wrapper = new ItemStackInventory(inputStack);
-            final QuernRecipe recipe = QuernRecipe.getRecipe(level, wrapper);
-            if (recipe != null && recipe.matches(wrapper, level))
+            final QuernRecipe recipe = QuernRecipe.getRecipe(inputStack);
+            if (recipe != null && recipe.matches(inputStack))
             {
                 recipeTimer = MANUAL_TICKS;
                 level.playSound(null, worldPosition, TFCSounds.QUERN_DRAG.get(), SoundSource.BLOCKS, 1, 1 + ((level.random.nextFloat() - level.random.nextFloat()) / 16));
@@ -291,11 +290,10 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
         final ItemStack inputStack = inventory.getStackInSlot(SLOT_INPUT);
         if (!inputStack.isEmpty())
         {
-            final ItemStackInventory wrapper = new ItemStackInventory(inputStack);
-            final QuernRecipe recipe = QuernRecipe.getRecipe(level, wrapper);
-            if (recipe != null && recipe.matches(wrapper, level))
+            final QuernRecipe recipe = QuernRecipe.getRecipe(inputStack);
+            if (recipe != null && recipe.matches(inputStack))
             {
-                ItemStack outputStack = recipe.assemble(wrapper, level.registryAccess());
+                ItemStack outputStack = recipe.assemble(inputStack);
                 outputStack = Helpers.mergeInsertStack(inventory, SLOT_OUTPUT, outputStack);
                 if (!outputStack.isEmpty() && !level.isClientSide)
                 {

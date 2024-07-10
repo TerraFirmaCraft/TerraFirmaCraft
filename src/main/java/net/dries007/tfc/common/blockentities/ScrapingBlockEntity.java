@@ -158,7 +158,6 @@ public class ScrapingBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     @Nullable
     private ScrapingRecipe getRecipe(ItemStack stack)
     {
-        assert level != null;
-        return ScrapingRecipe.getRecipe(level, new ItemStackInventory(stack));
+        return ScrapingRecipe.getRecipe(stack);
     }
 }

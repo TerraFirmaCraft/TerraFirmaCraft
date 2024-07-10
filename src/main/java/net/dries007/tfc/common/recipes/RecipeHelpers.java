@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.common.recipes;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
@@ -19,6 +21,7 @@ import com.google.gson.JsonSyntaxException;
 import net.minecraft.core.NonNullList;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapedRecipe;
@@ -34,6 +37,11 @@ import net.dries007.tfc.util.Helpers;
  */
 public final class RecipeHelpers
 {
+    public static Collection<Item> itemKeys(Ingredient ingredient)
+    {
+        return Arrays.stream(ingredient.getItems()).map(ItemStack::getItem).toList();
+    }
+
     // todo: when porting, we can remove the `CraftingInput` construct here, and just store a `Iterable<ItemStack>`
     private static final CraftingInput EMPTY = new CraftingInput(null, Collections::emptyIterator);
     private static final ThreadLocal<CraftingInput> CRAFTING_INPUT = ThreadLocal.withInitial(() -> EMPTY);

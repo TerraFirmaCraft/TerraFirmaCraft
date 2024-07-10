@@ -55,7 +55,7 @@ public class ChiselRecipe extends SimpleBlockRecipe
         Codecs.BLOCK_STATE.fieldOf("result").forGetter(c -> c.output.orElseThrow()),
         Mode.CODEC.fieldOf("mode").forGetter(c -> c.mode),
         Ingredient.CODEC.optionalFieldOf("item_ingredient").forGetter(c -> c.itemIngredient),
-        ItemStackProvider.CODEC.optionalFieldOf("extra_drop").forGetter(c -> c.itemOutput) // todo: rename to `item_output`
+        ItemStackProvider.CODEC.optionalFieldOf("extra_drop", ItemStackProvider.empty()).forGetter(c -> c.itemOutput) // todo: rename to `item_output`
     ).apply(i, ChiselRecipe::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ChiselRecipe> STREAM_CODEC = StreamCodec.composite(
@@ -63,7 +63,7 @@ public class ChiselRecipe extends SimpleBlockRecipe
         PacketCodecs.BLOCK_STATE, c -> c.output.orElseThrow(),
         Mode.STREAM_CODEC, c -> c.mode,
         ByteBufCodecs.optional(Ingredient.CONTENTS_STREAM_CODEC), c -> c.itemIngredient,
-        ByteBufCodecs.optional(ItemStackProvider.STREAM_CODEC), c -> c.itemOutput,
+        ItemStackProvider.STREAM_CODEC, c -> c.itemOutput,
         ChiselRecipe::new
     );
 
@@ -154,9 +154,9 @@ public class ChiselRecipe extends SimpleBlockRecipe
 
     private final Mode mode;
     private final Optional<Ingredient> itemIngredient;
-    private final Optional<ItemStackProvider> itemOutput;
+    private final ItemStackProvider itemOutput;
 
-    public ChiselRecipe(BlockIngredient ingredient, BlockState output, Mode mode, Optional<Ingredient> itemIngredient, Optional<ItemStackProvider> itemOutput)
+    public ChiselRecipe(BlockIngredient ingredient, BlockState output, Mode mode, Optional<Ingredient> itemIngredient, ItemStackProvider itemOutput)
     {
         super(ingredient, Optional.of(output));
 
@@ -196,7 +196,7 @@ public class ChiselRecipe extends SimpleBlockRecipe
 
     public ItemStack getExtraDrop(ItemStack chisel)
     {
-        return itemOutput.isPresent() ? itemOutput.get().getSingleStack(chisel) : ItemStack.EMPTY;
+        return itemOutput.getSingleStack(chisel);
     }
 
     public enum Mode implements StringRepresentable

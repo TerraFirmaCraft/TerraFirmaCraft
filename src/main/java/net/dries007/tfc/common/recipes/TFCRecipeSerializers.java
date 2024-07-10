@@ -39,9 +39,9 @@ public class TFCRecipeSerializers
 
     // Item Recipes
 
-    public static final Id<HeatingRecipe> HEATING = register("heating", HeatingRecipe.Serializer::new);
-    public static final Id<QuernRecipe> QUERN = register("quern", () -> new SimpleItemRecipe.Serializer<>(QuernRecipe::new));
-    public static final Id<ScrapingRecipe> SCRAPING = register("scraping", ScrapingRecipe.Serializer::new);
+    public static final Id<HeatingRecipe> HEATING = register("heating", HeatingRecipe.CODEC, HeatingRecipe.STREAM_CODEC);
+    public static final Id<QuernRecipe> QUERN = register("quern", QuernRecipe.CODEC, QuernRecipe.STREAM_CODEC);
+    public static final Id<ScrapingRecipe> SCRAPING = register("scraping", ScrapingRecipe.CODEC, ScrapingRecipe.STREAM_CODEC);
 
     // Complex Recipes
 

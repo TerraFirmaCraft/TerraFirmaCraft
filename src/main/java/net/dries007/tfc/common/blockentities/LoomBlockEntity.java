@@ -216,7 +216,7 @@ public class LoomBlockEntity extends TickableInventoryBlockEntity<ItemStackHandl
             {
                 return false;
             }
-            return LoomRecipe.getRecipe(level, stack) != null;
+            return LoomRecipe.getRecipe(stack) != null;
         }
         return true;
     }
@@ -262,7 +262,7 @@ public class LoomBlockEntity extends TickableInventoryBlockEntity<ItemStackHandl
     private void updateCachedRecipe()
     {
         assert level != null;
-        this.recipe = LoomRecipe.getRecipe(level, inventory.getStackInSlot(SLOT_RECIPE));
+        this.recipe = LoomRecipe.getRecipe(inventory.getStackInSlot(SLOT_RECIPE));
         if (recipe == null && progress > 0)
         {
             progress = 0;

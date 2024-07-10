@@ -7,11 +7,12 @@
 package net.dries007.tfc.common.recipes.inventory;
 
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeInput;
 
 /**
- * A {@link net.minecraftforge.items.wrapper.RecipeWrapper} for single item stacks.
+ * A mutable {@link RecipeInput} for a single stack
  */
-public class ItemStackInventory implements NonEmptyInput
+public class ItemStackInventory implements RecipeInput
 {
     protected ItemStack stack;
 
@@ -33,5 +34,23 @@ public class ItemStackInventory implements NonEmptyInput
     public void setStack(ItemStack stack)
     {
         this.stack = stack;
+    }
+
+    @Override
+    public ItemStack getItem(int index)
+    {
+        return stack;
+    }
+
+    @Override
+    public int size()
+    {
+        return 1;
+    }
+
+    @Override
+    public boolean isEmpty()
+    {
+        return stack.isEmpty();
     }
 }
