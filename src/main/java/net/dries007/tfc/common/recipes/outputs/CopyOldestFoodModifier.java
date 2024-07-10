@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.recipes.RecipeHelpers;
 
-public enum CopyOldestFoodModifier implements ItemStackModifier.SingleInstance<CopyOldestFoodModifier>
+public enum CopyOldestFoodModifier implements ItemStackModifier
 {
     INSTANCE;
 
@@ -23,8 +23,8 @@ public enum CopyOldestFoodModifier implements ItemStackModifier.SingleInstance<C
     }
 
     @Override
-    public CopyOldestFoodModifier instance()
+    public ItemStackModifierType<?> type()
     {
-        return this;
+        return ItemStackModifiers.COPY_OLDEST_FOOD.get();
     }
 }

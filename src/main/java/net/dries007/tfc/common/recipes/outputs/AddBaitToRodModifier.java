@@ -6,13 +6,14 @@
 
 package net.dries007.tfc.common.recipes.outputs;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.common.items.TFCFishingRodItem;
 import net.dries007.tfc.common.recipes.RecipeHelpers;
 
-public enum AddBaitToRodModifier implements ItemStackModifier.SingleInstance<AddBaitToRodModifier>
+public enum AddBaitToRodModifier implements ItemStackModifier
 {
     INSTANCE;
 
@@ -32,8 +33,8 @@ public enum AddBaitToRodModifier implements ItemStackModifier.SingleInstance<Add
     }
 
     @Override
-    public AddBaitToRodModifier instance()
+    public ItemStackModifierType<?> type()
     {
-        return INSTANCE;
+        return ItemStackModifiers.ADD_BAIT_TO_ROD.get();
     }
 }

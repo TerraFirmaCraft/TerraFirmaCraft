@@ -12,7 +12,7 @@ import net.dries007.tfc.common.capabilities.glass.GlassOperation;
 import net.dries007.tfc.common.capabilities.glass.GlassWorkData;
 import net.dries007.tfc.common.recipes.RecipeHelpers;
 
-public enum AddPowderModifier implements ItemStackModifier.SingleInstance<AddPowderModifier>
+public enum AddPowderModifier implements ItemStackModifier
 {
     INSTANCE;
 
@@ -38,8 +38,8 @@ public enum AddPowderModifier implements ItemStackModifier.SingleInstance<AddPow
     }
 
     @Override
-    public AddPowderModifier instance()
+    public ItemStackModifierType<?> type()
     {
-        return INSTANCE;
+        return ItemStackModifiers.ADD_POWDER.get();
     }
 }

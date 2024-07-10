@@ -7,8 +7,11 @@
 package net.dries007.tfc.common.capabilities.food;
 
 import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 
 import net.dries007.tfc.util.JsonHelpers;
 
@@ -22,6 +25,9 @@ import net.dries007.tfc.util.JsonHelpers;
  */
 public record FoodData(int hunger, float water, float saturation, float grain, float fruit, float vegetables, float protein, float dairy, float decayModifier)
 {
+    public static final Codec<FoodData> CODEC;
+    public static final StreamCodec<ByteBuf, FoodData> STREAM_CODEC;
+
     public static final FoodData EMPTY = new FoodData(0, 0, 0, 0, 0, 0, 0, 0, 0);
 
     public static FoodData create(int hunger, float water, float saturation, float[] nutrients, float decayModifier)

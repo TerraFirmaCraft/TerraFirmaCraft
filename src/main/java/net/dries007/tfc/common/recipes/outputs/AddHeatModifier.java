@@ -6,17 +6,26 @@
 
 package net.dries007.tfc.common.recipes.outputs;
 
-import com.google.gson.JsonObject;
-import net.minecraft.network.FriendlyByteBuf;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
-import net.dries007.tfc.util.JsonHelpers;
 
 public record AddHeatModifier(float temperature) implements ItemStackModifier
 {
+    public static final MapCodec<AddHeatModifier> CODEC = Codec.FLOAT.fieldOf("temperature").xmap(AddHeatModifier::new, AddHeatModifier::temperature);
+    public static final StreamCodec<RegistryFriendlyByteBuf, AddHeatModifier> STREAM_CODEC = StreamCodec.composite(
+        ByteBufCodecs.FLOAT, c -> c.temperature,
+        AddHeatModifier::new
+    );
+
     @Override
     public ItemStack apply(ItemStack stack, ItemStack input)
     {
@@ -29,33 +38,8 @@ public record AddHeatModifier(float temperature) implements ItemStackModifier
     }
 
     @Override
-    public Serializer serializer()
+    public ItemStackModifierType<?> type()
     {
-        return Serializer.INSTANCE;
-    }
-
-    public enum Serializer implements ItemStackModifier.Serializer<AddHeatModifier>
-    {
-        INSTANCE;
-
-        @Override
-        public AddHeatModifier fromJson(JsonObject json)
-        {
-            final float temperature = JsonHelpers.getAsFloat(json, "temperature");
-            return new AddHeatModifier(temperature);
-        }
-
-        @Override
-        public AddHeatModifier fromNetwork(FriendlyByteBuf buffer)
-        {
-            final float temperature = buffer.readFloat();
-            return new AddHeatModifier(temperature);
-        }
-
-        @Override
-        public void toNetwork(AddHeatModifier modifier, FriendlyByteBuf buffer)
-        {
-            buffer.writeFloat(modifier.temperature);
-        }
+        return ItemStackModifiers.ADD_HEAT.get();
     }
 }

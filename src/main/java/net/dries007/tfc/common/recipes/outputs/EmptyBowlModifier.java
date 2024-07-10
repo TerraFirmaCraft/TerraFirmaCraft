@@ -12,7 +12,7 @@ import net.minecraft.world.item.Items;
 import net.dries007.tfc.common.capabilities.food.DynamicBowlHandler;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 
-public enum EmptyBowlModifier implements ItemStackModifier.SingleInstance<EmptyBowlModifier>
+public enum EmptyBowlModifier implements ItemStackModifier
 {
     INSTANCE;
 
@@ -34,9 +34,9 @@ public enum EmptyBowlModifier implements ItemStackModifier.SingleInstance<EmptyB
     }
 
     @Override
-    public EmptyBowlModifier instance()
+    public ItemStackModifierType<?> type()
     {
-        return INSTANCE;
+        return ItemStackModifiers.EMPTY_BOWL.get();
     }
 }
 

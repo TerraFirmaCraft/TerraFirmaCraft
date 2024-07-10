@@ -6,13 +6,19 @@
 
 package net.dries007.tfc.common.recipes.outputs;
 
+import java.util.List;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.ShapedRecipe;
@@ -20,14 +26,30 @@ import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.util.JsonHelpers;
 
-public record ItemStackProvider(Supplier<ItemStack> stack, ItemStackModifier[] modifiers)
-{
-    public static final Codec<ItemStackProvider> CODEC;
-    public static final StreamCodec<ByteBuf, ItemStackProvider> STREAM_CODEC;
+public record ItemStackProvider(
+    ItemStack stack,
+    List<ItemStackModifier> modifiers
+) {
+    public static final Codec<ItemStackProvider> CODEC = Codec.either(
+        RecordCodecBuilder.<ItemStackProvider>create(i -> i.group(
+            ItemStack.CODEC.fieldOf("stack").forGetter(c -> c.stack),
+            ItemStackModifier.CODEC.listOf().fieldOf("modifiers").forGetter(c -> c.modifiers)
+        ).apply(i, ItemStackProvider::new)),
+        ItemStack.CODEC
+    ).xmap(
+        e -> e.map(Function.identity(), ItemStackProvider::of),
+        provider -> provider.modifiers.isEmpty() ? Either.right(provider.stack) : Either.left(provider)
+    );
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, ItemStackProvider> STREAM_CODEC = StreamCodec.composite(
+        ItemStack.STREAM_CODEC, c -> c.stack,
+        ItemStackModifier.STREAM_CODEC.apply(ByteBufCodecs.list()), c -> c.modifiers,
+        ItemStackProvider::of
+    );
 
     private static final ItemStackModifier[] NONE = new ItemStackModifier[0];
-    private static final ItemStackProvider EMPTY = new ItemStackProvider(ItemStack.EMPTY, NONE);
-    private static final ItemStackProvider COPY_INPUT = new ItemStackProvider(ItemStack.EMPTY, new ItemStackModifier[] {CopyInputModifier.INSTANCE});
+    private static final ItemStackProvider EMPTY = of(ItemStack.EMPTY);
+    private static final ItemStackProvider COPY_INPUT = of(ItemStack.EMPTY, CopyInputModifier.INSTANCE);
 
     public static ItemStackProvider empty()
     {
@@ -41,60 +63,12 @@ public record ItemStackProvider(Supplier<ItemStack> stack, ItemStackModifier[] m
 
     public static ItemStackProvider of(ItemStack stack, ItemStackModifier... modifiers)
     {
-        return new ItemStackProvider(stack, modifiers);
+        return of(stack, List.of(modifiers));
     }
 
-    public static ItemStackProvider fromJson(JsonObject json)
+    public static ItemStackProvider of(ItemStack stack, List<ItemStackModifier> modifiers)
     {
-        final ItemStack stack;
-        final ItemStackModifier[] modifiers;
-        final boolean hasStack = json.has("stack");
-        final boolean hasMods = json.has("modifiers");
-        if (hasStack || hasMods)
-        {
-            // Provider
-            stack = hasStack ? ShapedRecipe.itemStackFromJson(JsonHelpers.getAsJsonObject(json, "stack")) : ItemStack.EMPTY;
-            if (hasMods)
-            {
-                final JsonArray modifiersJson = JsonHelpers.getAsJsonArray(json, "modifiers");
-                modifiers = new ItemStackModifier[modifiersJson.size()];
-                for (int i = 0; i < modifiers.length; i++)
-                {
-                    modifiers[i] = ItemStackModifiers.fromJson(modifiersJson.get(i));
-                }
-            }
-            else
-            {
-                modifiers = NONE;
-            }
-        }
-        else
-        {
-            stack = ShapedRecipe.itemStackFromJson(json);
-            modifiers = NONE;
-        }
-        return new ItemStackProvider(stack, modifiers);
-    }
-
-    public static ItemStackProvider fromNetwork(FriendlyByteBuf buffer)
-    {
-        final ItemStack stack = buffer.readItem();
-        final int count = buffer.readVarInt();
-        if (count == 0)
-        {
-            return new ItemStackProvider(stack, NONE);
-        }
-        final ItemStackModifier[] modifiers = new ItemStackModifier[count];
-        for (int i = 0; i < count; i++)
-        {
-            modifiers[i] = ItemStackModifiers.fromNetwork(buffer);
-        }
-        return new ItemStackProvider(stack, modifiers);
-    }
-
-    public ItemStackProvider(ItemStack stack, ItemStackModifier[] modifiers)
-    {
-        this(FoodCapability.createNonDecayingStack(stack), modifiers);
+        return new ItemStackProvider(FoodCapability.setStackNonDecaying(stack), modifiers);
     }
 
     /**
@@ -126,7 +100,7 @@ public record ItemStackProvider(Supplier<ItemStack> stack, ItemStackModifier[] m
      */
     public ItemStack getStack(ItemStack input)
     {
-        ItemStack output = stack.get().copy();
+        ItemStack output = stack.copy();
         for (ItemStackModifier modifier : modifiers)
         {
             output = modifier.apply(output, input);
@@ -147,15 +121,5 @@ public record ItemStackProvider(Supplier<ItemStack> stack, ItemStackModifier[] m
             }
         }
         return false;
-    }
-
-    public void toNetwork(FriendlyByteBuf buffer)
-    {
-        buffer.writeItem(stack.get());
-        buffer.writeVarInt(modifiers.length);
-        for (ItemStackModifier modifier : modifiers)
-        {
-            modifier.toNetwork(buffer);
-        }
     }
 }

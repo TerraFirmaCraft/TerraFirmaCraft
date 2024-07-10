@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 
-public enum CopyFoodModifier implements ItemStackModifier.SingleInstance<CopyFoodModifier>
+public enum CopyFoodModifier implements ItemStackModifier
 {
     INSTANCE;
 
@@ -21,8 +21,8 @@ public enum CopyFoodModifier implements ItemStackModifier.SingleInstance<CopyFoo
     }
 
     @Override
-    public CopyFoodModifier instance()
+    public ItemStackModifierType<?> type()
     {
-        return INSTANCE;
+        return ItemStackModifiers.COPY_FOOD.get();
     }
 }

@@ -8,7 +8,7 @@ package net.dries007.tfc.common.recipes.outputs;
 
 import net.minecraft.world.item.ItemStack;
 
-public enum CopyInputModifier implements ItemStackModifier.SingleInstance<CopyInputModifier>
+public enum CopyInputModifier implements ItemStackModifier
 {
     INSTANCE;
 
@@ -19,14 +19,8 @@ public enum CopyInputModifier implements ItemStackModifier.SingleInstance<CopyIn
     }
 
     @Override
-    public boolean dependsOnInput()
+    public ItemStackModifierType<?> type()
     {
-        return true;
-    }
-
-    @Override
-    public CopyInputModifier instance()
-    {
-        return INSTANCE;
+        return ItemStackModifiers.COPY_HEAT.get();
     }
 }

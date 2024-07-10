@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 
-public enum ResetFoodModifier implements ItemStackModifier.SingleInstance<ResetFoodModifier>
+public enum ResetFoodModifier implements ItemStackModifier
 {
     INSTANCE;
 
@@ -21,8 +21,8 @@ public enum ResetFoodModifier implements ItemStackModifier.SingleInstance<ResetF
     }
 
     @Override
-    public ResetFoodModifier instance()
+    public ItemStackModifierType<?> type()
     {
-        return INSTANCE;
+        return ItemStackModifiers.RESET_FOOD.get();
     }
 }

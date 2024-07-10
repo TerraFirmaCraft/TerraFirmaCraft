@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.common.capabilities.forge.ForgingBonus;
 
-public enum CopyForgingBonusModifier implements ItemStackModifier.SingleInstance<CopyForgingBonusModifier>
+public enum CopyForgingBonusModifier implements ItemStackModifier
 {
     INSTANCE;
 
@@ -22,8 +22,8 @@ public enum CopyForgingBonusModifier implements ItemStackModifier.SingleInstance
     }
 
     @Override
-    public CopyForgingBonusModifier instance()
+    public ItemStackModifierType<?> type()
     {
-        return INSTANCE;
+        return ItemStackModifiers.COPY_FORGING_BONUS.get();
     }
 }

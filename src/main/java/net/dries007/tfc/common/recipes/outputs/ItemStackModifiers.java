@@ -6,104 +6,54 @@
 
 package net.dries007.tfc.common.recipes.outputs;
 
-import java.util.Objects;
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import com.mojang.serialization.MapCodec;
+import net.minecraft.core.Registry;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceKey;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.RegistryBuilder;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.JsonHelpers;
+import net.dries007.tfc.util.registry.RegistryHolder;
 
 public class ItemStackModifiers
 {
-    private static final BiMap<ResourceLocation, ItemStackModifier.Serializer<?>> REGISTRY = HashBiMap.create();
+    public static final ResourceKey<Registry<ItemStackModifierType<?>>> KEY = ResourceKey.createRegistryKey(Helpers.identifier("item_stack_modifiers"));
+    public static final Registry<ItemStackModifierType<?>> REGISTRY = new RegistryBuilder<>(KEY).sync(true).create();
 
-    public static void registerItemStackModifierTypes()
+    public static final DeferredRegister<ItemStackModifierType<?>> TYPES = DeferredRegister.create(KEY, TerraFirmaCraft.MOD_ID);
+
+    public static final Id<CopyInputModifier> COPY_INPUT = register("copy_input", CopyInputModifier.INSTANCE);
+    public static final Id<CopyFoodModifier> COPY_FOOD = register("copy_food", CopyFoodModifier.INSTANCE);
+    public static final Id<CopyOldestFoodModifier> COPY_OLDEST_FOOD = register("copy_oldest_food", CopyOldestFoodModifier.INSTANCE);
+    public static final Id<CopyHeatModifier> COPY_HEAT = register("copy_heat", CopyHeatModifier.INSTANCE);
+    public static final Id<CopyForgingBonusModifier> COPY_FORGING_BONUS = register("copy_forging_bonus", CopyForgingBonusModifier.INSTANCE);
+    public static final Id<ResetFoodModifier> RESET_FOOD = register("reset_food", ResetFoodModifier.INSTANCE);
+    public static final Id<EmptyBowlModifier> EMPTY_BOWL = register("empty_bowl", EmptyBowlModifier.INSTANCE);
+    public static final Id<AddBaitToRodModifier> ADD_BAIT_TO_ROD = register("add_bait_to_rod", AddBaitToRodModifier.INSTANCE);
+    public static final Id<AddGlassModifier> ADD_GLASS = register("add_glass", AddGlassModifier.INSTANCE);
+    public static final Id<AddPowderModifier> ADD_POWDER = register("add_powder", AddPowderModifier.INSTANCE);
+
+    public static final Id<AddTraitModifier> ADD_TRAIT = register("add_trait", AddTraitModifier.CODEC, AddTraitModifier.STREAM_CODEC);
+    public static final Id<RemoveTraitModifier> REMOVE_TRAIT = register("remove_trait", RemoveTraitModifier.CODEC, RemoveTraitModifier.STREAM_CODEC);
+    public static final Id<AddHeatModifier> ADD_HEAT = register("add_heat", AddHeatModifier.CODEC, AddHeatModifier.STREAM_CODEC);
+    public static final Id<DyeLeatherModifier> DYE_LEATHER = register("dye_leather", DyeLeatherModifier.CODEC, DyeLeatherModifier.STREAM_CODEC);
+    public static final Id<MealModifier> MEAL = register("meal", MealModifier.CODEC, MealModifier.STREAM_CODEC);
+
+    @SuppressWarnings("unchecked")
+    private static <T extends ItemStackModifier> Id<T> register(String name, T singleInstance)
     {
-        register("copy_input", CopyInputModifier.INSTANCE);
-        register("copy_food", CopyFoodModifier.INSTANCE);
-        register("copy_oldest_food", CopyOldestFoodModifier.INSTANCE);
-        register("copy_heat", CopyHeatModifier.INSTANCE);
-        register("copy_forging_bonus", CopyForgingBonusModifier.INSTANCE);
-        register("reset_food", ResetFoodModifier.INSTANCE);
-        register("empty_bowl", EmptyBowlModifier.INSTANCE);
-        register("add_bait_to_rod", AddBaitToRodModifier.INSTANCE);
-        register("add_glass", AddGlassModifier.INSTANCE);
-        register("add_powder", AddPowderModifier.INSTANCE);
-
-        register("add_trait", AddRemoveTraitModifier.Serializer.ADD);
-        register("remove_trait", AddRemoveTraitModifier.Serializer.REMOVE);
-        register("add_heat", AddHeatModifier.Serializer.INSTANCE);
-        register("dye_leather", DyeLeatherModifier.Serializer.INSTANCE);
-        register("meal", MealModifier.Serializer.INSTANCE);
-
+        return (Id<T>) new Id<>(TYPES.register(name, singleInstance::type));
     }
 
-    /**
-     * Registers a block ingredient serializer
-     * This method is safe to call during parallel mod loading
-     */
-    public static synchronized <V extends ItemStackModifier, T extends ItemStackModifier.Serializer<V>> T register(ResourceLocation key, T serializer)
+    private static <T extends ItemStackModifier> Id<T> register(String name, MapCodec<T> codec, StreamCodec<RegistryFriendlyByteBuf, T> streamCodec)
     {
-        if (REGISTRY.containsKey(key))
-        {
-            throw new IllegalArgumentException("Duplicate key: " + key);
-        }
-        REGISTRY.put(key, serializer);
-        return serializer;
+        return new Id<>(TYPES.register(name, () -> new ItemStackModifierType<>(codec, streamCodec)));
     }
 
-    public static ItemStackModifier fromJson(JsonElement json)
-    {
-        if (json.isJsonPrimitive())
-        {
-            final String type = JsonHelpers.convertToString(json, "modifier");
-            final ItemStackModifier.Serializer<?> serializer = getSerializer(type);
-            if (serializer instanceof ItemStackModifier.SingleInstance<?> factory)
-            {
-                return factory.instance();
-            }
-            throw new JsonParseException("Serializer type: " + type + " cannot be declared inline");
-        }
-        final JsonObject obj = JsonHelpers.convertToJsonObject(json, "modifier");
-        final String type = JsonHelpers.getAsString(obj, "type");
-        final ItemStackModifier.Serializer<?> serializer = getSerializer(type);
-        return serializer.fromJson(obj);
-    }
-
-    public static ItemStackModifier fromNetwork(FriendlyByteBuf buffer)
-    {
-        final ResourceLocation id = buffer.readResourceLocation();
-        final ItemStackModifier.Serializer<?> serializer = byId(id);
-        return serializer.fromNetwork(buffer);
-    }
-
-    public static ItemStackModifier.Serializer<?> byId(ResourceLocation id)
-    {
-        return Objects.requireNonNull(REGISTRY.get(id), () -> "No serializer by id: " + id);
-    }
-
-    public static ResourceLocation getId(ItemStackModifier.Serializer<?> serializer)
-    {
-        return Objects.requireNonNull(REGISTRY.inverse().get(serializer), () -> "Unregistered serializer: " + serializer);
-    }
-
-    private static ItemStackModifier.Serializer<?> getSerializer(String type)
-    {
-        final ItemStackModifier.Serializer<?> serializer = REGISTRY.get(Helpers.resourceLocation(type));
-        if (serializer != null)
-        {
-            return serializer;
-        }
-        throw new JsonParseException("Unknown item stack modifier type: " + type);
-    }
-
-    private static void register(String name, ItemStackModifier.Serializer<?> serializer)
-    {
-        register(Helpers.identifier(name), serializer);
-    }
+    record Id<T extends ItemStackModifier>(DeferredHolder<ItemStackModifierType<?>, ItemStackModifierType<T>> holder)
+        implements RegistryHolder<ItemStackModifierType<?>, ItemStackModifierType<T>> {}
 }

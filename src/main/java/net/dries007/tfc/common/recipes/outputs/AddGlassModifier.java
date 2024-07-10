@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.common.capabilities.glass.GlassWorkData;
 
-public enum AddGlassModifier implements ItemStackModifier.SingleInstance<AddGlassModifier>
+public enum AddGlassModifier implements ItemStackModifier
 {
     INSTANCE;
 
@@ -28,8 +28,8 @@ public enum AddGlassModifier implements ItemStackModifier.SingleInstance<AddGlas
     }
 
     @Override
-    public AddGlassModifier instance()
+    public ItemStackModifierType<?> type()
     {
-        return INSTANCE;
+        return ItemStackModifiers.ADD_GLASS.get();
     }
 }

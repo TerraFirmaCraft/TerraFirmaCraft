@@ -9,13 +9,22 @@ package net.dries007.tfc.common.recipes.outputs;
 import java.util.Collections;
 
 import com.google.gson.JsonObject;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.*;
 
 import net.dries007.tfc.util.JsonHelpers;
 
 public record DyeLeatherModifier(DyeColor color) implements ItemStackModifier
 {
+    public static final MapCodec<DyeLeatherModifier> CODEC = DyeColor.CODEC.fieldOf("color").xmap(DyeLeatherModifier::new, DyeLeatherModifier::color);
+    public static final StreamCodec<RegistryFriendlyByteBuf, DyeLeatherModifier> STREAM_CODEC = StreamCodec.composite(
+        DyeColor.STREAM_CODEC, c -> c.color,
+        DyeLeatherModifier::new
+    );
+
     @Override
     public ItemStack apply(ItemStack stack, ItemStack input)
     {
@@ -23,31 +32,8 @@ public record DyeLeatherModifier(DyeColor color) implements ItemStackModifier
     }
 
     @Override
-    public Serializer serializer()
+    public ItemStackModifierType<?> type()
     {
-        return Serializer.INSTANCE;
-    }
-
-    public enum Serializer implements ItemStackModifier.Serializer<DyeLeatherModifier>
-    {
-        INSTANCE;
-
-        @Override
-        public DyeLeatherModifier fromJson(JsonObject json)
-        {
-            return new DyeLeatherModifier(JsonHelpers.getDyeColor(json, "color"));
-        }
-
-        @Override
-        public DyeLeatherModifier fromNetwork(FriendlyByteBuf buffer)
-        {
-            return new DyeLeatherModifier(buffer.readEnum(DyeColor.class));
-        }
-
-        @Override
-        public void toNetwork(DyeLeatherModifier modifier, FriendlyByteBuf buffer)
-        {
-            buffer.writeEnum(modifier.color);
-        }
+        return ItemStackModifiers.DYE_LEATHER.get();
     }
 }

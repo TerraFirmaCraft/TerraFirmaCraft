@@ -144,6 +144,8 @@ public final class TerraFirmaCraft
         TFCBrain.POI_TYPES.register(bus);
         TFCPaintings.PAINTING_TYPES.register(bus);
 
+        ItemStackModifiers.TYPES.register(bus);
+
         TFCConfig.init();
         PacketHandler.init();
         CalendarEventHandler.init();
@@ -167,7 +169,6 @@ public final class TerraFirmaCraft
         InteractionManager.registerDefaultInteractions();
         TFCRecipeTypes.registerPotRecipeOutputTypes();
         RockSettings.registerDefaultRocks();
-        ItemStackModifiers.registerItemStackModifierTypes();
         ServerCalendar.overrideDoDaylightCycleCallback();
 
         event.enqueueWork(() -> {

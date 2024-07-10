@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
 
-public enum CopyHeatModifier implements ItemStackModifier.SingleInstance<CopyHeatModifier>
+public enum CopyHeatModifier implements ItemStackModifier
 {
     INSTANCE;
 
@@ -28,8 +28,14 @@ public enum CopyHeatModifier implements ItemStackModifier.SingleInstance<CopyHea
     }
 
     @Override
-    public CopyHeatModifier instance()
+    public boolean dependsOnInput()
     {
-        return INSTANCE;
+        return true;
+    }
+
+    @Override
+    public ItemStackModifierType<?> type()
+    {
+        return ItemStackModifiers.COPY_HEAT.get();
     }
 }
