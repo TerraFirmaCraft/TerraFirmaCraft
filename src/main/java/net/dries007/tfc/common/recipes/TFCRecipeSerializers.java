@@ -6,10 +6,6 @@
 
 package net.dries007.tfc.common.recipes;
 
-import java.util.Optional;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import com.mojang.patchy.BlockedServers;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -17,11 +13,9 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
-import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
 import net.dries007.tfc.util.registry.RegistryHolder;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
@@ -31,23 +25,18 @@ public class TFCRecipeSerializers
 {
     public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, MOD_ID);
 
-    // Block Recipes
-
     public static final Id<CollapseRecipe> COLLAPSE = register("collapse", SimpleBlockRecipe.serializer(CollapseRecipe::new));
     public static final Id<LandslideRecipe> LANDSLIDE = register("landslide", SimpleBlockRecipe.serializer(LandslideRecipe::new));
     public static final Id<ChiselRecipe> CHISEL = register("chisel", ChiselRecipe.CODEC, ChiselRecipe.STREAM_CODEC);
-
-    // Item Recipes
 
     public static final Id<HeatingRecipe> HEATING = register("heating", HeatingRecipe.CODEC, HeatingRecipe.STREAM_CODEC);
     public static final Id<QuernRecipe> QUERN = register("quern", QuernRecipe.CODEC, QuernRecipe.STREAM_CODEC);
     public static final Id<ScrapingRecipe> SCRAPING = register("scraping", ScrapingRecipe.CODEC, ScrapingRecipe.STREAM_CODEC);
 
-    // Complex Recipes
+    public static final Id<SimplePotRecipe> POT_SIMPLE = register("pot", SimplePotRecipe.CODEC, SimplePotRecipe.STREAM_CODEC);
+    public static final Id<SoupPotRecipe> POT_SOUP = register("pot_soup", SoupPotRecipe.CODEC, SoupPotRecipe.STREAM_CODEC);
+    public static final Id<JamPotRecipe> POT_JAM = register("pot_jam", JamPotRecipe.CODEC, JamPotRecipe.STREAM_CODEC);
 
-    public static final Id<SimplePotRecipe> POT_SIMPLE = register("pot", SimplePotRecipe.Serializer::new);
-    public static final Id<SoupPotRecipe> POT_SOUP = register("pot_soup", SoupPotRecipe.Serializer::new);
-    public static final Id<JamPotRecipe> POT_JAM = register("pot_jam", JamPotRecipe.Serializer::new);
     public static final Id<KnappingRecipe> KNAPPING = register("knapping", KnappingRecipe.Serializer::new);
     public static final Id<AlloyRecipe> ALLOY = register("alloy", AlloyRecipe.Serializer::new);
     public static final Id<CastingRecipe> CASTING = register("casting", CastingRecipe.Serializer::new);

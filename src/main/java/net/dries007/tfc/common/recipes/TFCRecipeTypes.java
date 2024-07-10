@@ -42,12 +42,6 @@ public class TFCRecipeTypes
     public static final Id<GlassworkingRecipe> GLASSWORKING = register("glassworking");
     public static final Id<SewingRecipe> SEWING = register("sewing");
 
-    public static void registerPotRecipeOutputTypes()
-    {
-        PotRecipe.register(Helpers.identifier("soup"), SoupPotRecipe.OUTPUT_TYPE);
-        PotRecipe.register(Helpers.identifier("jam"), JamPotRecipe.OUTPUT_TYPE);
-    }
-
     private static <R extends Recipe<?>> Id<R> register(String name)
     {
         return new Id<>(RECIPE_TYPES.register(name, () -> new RecipeType<>() {

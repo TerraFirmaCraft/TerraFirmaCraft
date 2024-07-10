@@ -9,10 +9,14 @@ package net.dries007.tfc.common.recipes;
 import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.JsonObject;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
@@ -20,12 +24,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
+import net.dries007.tfc.common.recipes.outputs.PotOutput;
 import net.dries007.tfc.compat.jade.common.BlockEntityTooltip;
 import net.dries007.tfc.compat.jade.common.BlockEntityTooltips;
 import net.dries007.tfc.util.Helpers;
@@ -33,7 +37,20 @@ import net.dries007.tfc.util.JsonHelpers;
 
 public class JamPotRecipe extends PotRecipe
 {
-    public static final OutputType OUTPUT_TYPE = nbt -> {
+    public static final MapCodec<JamPotRecipe> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
+        PotRecipe.CODEC.forGetter(c -> c),
+        ItemStack.CODEC.fieldOf("result").forGetter(c -> c.jarredStack),
+        ResourceLocation.CODEC.fieldOf("texture").forGetter(c -> c.texture)
+    ).apply(i, JamPotRecipe::new));
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, JamPotRecipe> STREAM_CODEC = StreamCodec.composite(
+        PotRecipe.STREAM_CODEC, c -> c,
+        ItemStack.STREAM_CODEC, c -> c.jarredStack,
+        ResourceLocation.STREAM_CODEC, c -> c.texture,
+        JamPotRecipe::new
+    );
+
+    public static final PotOutput.OutputType OUTPUT_TYPE = nbt -> {
         ItemStack stack = ItemStack.of(nbt.getCompound("item"));
         ResourceLocation texture = Helpers.resourceLocation(nbt.getString("texture"));
         return new JamPotRecipe.JamOutput(stack, texture);
@@ -42,9 +59,9 @@ public class JamPotRecipe extends PotRecipe
     private final ItemStack jarredStack;
     private final ResourceLocation texture;
 
-    public JamPotRecipe(ResourceLocation id, List<Ingredient> itemIngredients, FluidStackIngredient fluidIngredient, int duration, float minTemp, ItemStack jarredStack, ResourceLocation texture)
+    public JamPotRecipe(PotRecipe base, ItemStack jarredStack, ResourceLocation texture)
     {
-        super(id, itemIngredients, fluidIngredient, duration, minTemp);
+        super(base);
         this.jarredStack = jarredStack;
         this.texture = texture;
     }
@@ -61,7 +78,7 @@ public class JamPotRecipe extends PotRecipe
     }
 
     @Override
-    public Output getOutput(PotBlockEntity.PotInventory inventory)
+    public PotOutput getOutput(PotBlockEntity.PotInventory inventory)
     {
         return new JamOutput(jarredStack.copy(), texture);
     }
@@ -72,7 +89,7 @@ public class JamPotRecipe extends PotRecipe
         return TFCRecipeSerializers.POT_JAM.get();
     }
 
-    public record JamOutput(ItemStack stack, ResourceLocation texture) implements Output
+    public record JamOutput(ItemStack stack, ResourceLocation texture) implements PotOutput
     {
         @Override
         public boolean isEmpty()
@@ -127,31 +144,6 @@ public class JamPotRecipe extends PotRecipe
                 FoodCapability.addTooltipInfo(stack, text);
                 text.forEach(tooltip);
             });
-        }
-    }
-
-    public static class Serializer extends PotRecipe.Serializer<JamPotRecipe>
-    {
-        @Override
-        protected JamPotRecipe fromJson(ResourceLocation recipeId, JsonObject json, List<Ingredient> ingredients, FluidStackIngredient fluidIngredient, int duration, float minTemp)
-        {
-            return new JamPotRecipe(recipeId, ingredients, fluidIngredient, duration, minTemp, JsonHelpers.getItemStack(json, "result"), JsonHelpers.getResourceLocation(json, "texture"));
-        }
-
-        @Override
-        protected JamPotRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer, List<Ingredient> ingredients, FluidStackIngredient fluidIngredient, int duration, float minTemp)
-        {
-            final ItemStack stack = buffer.readItem();
-            final ResourceLocation texture = buffer.readResourceLocation();
-            return new JamPotRecipe(recipeId, ingredients, fluidIngredient, duration, minTemp, stack, texture);
-        }
-
-        @Override
-        public void toNetwork(FriendlyByteBuf buffer, JamPotRecipe recipe)
-        {
-            super.toNetwork(buffer, recipe);
-            buffer.writeItem(recipe.jarredStack);
-            buffer.writeResourceLocation(recipe.texture);
         }
     }
 }

@@ -67,7 +67,7 @@ public class SimplePotRecipeCategory extends PotRecipeCategory<PotRecipe>
         }
 
         int j = 0;
-        for (ItemStackProvider provider : recipe.getOutputProviders())
+        for (ItemStackProvider provider : recipe.getOutputItems())
         {
             // Pot recipes can operate either with providers that depend on inputs, which must be 1-1 with ingredients
             // Otherwise, we default to assuming they operate on empty stacks. See TerraFirmaCraft#2712

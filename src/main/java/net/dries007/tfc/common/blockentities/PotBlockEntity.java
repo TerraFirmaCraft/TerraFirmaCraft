@@ -35,6 +35,7 @@ import net.dries007.tfc.common.recipes.PotRecipe;
 import net.dries007.tfc.common.recipes.RecipeHelpers;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.inventory.NonEmptyInput;
+import net.dries007.tfc.common.recipes.outputs.PotOutput;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.NotNull;
@@ -51,7 +52,7 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
     private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.pot");
 
     private final SidedHandler.Builder<IFluidHandler> sidedFluidInventory;
-    @Nullable private PotRecipe.Output output;
+    @Nullable private PotOutput output;
     @Nullable private PotRecipe cachedRecipe;
     private int boilingTicks, preBoilingTicks;
 
@@ -84,7 +85,7 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
     {
         if (nbt.contains("output"))
         {
-            output = PotRecipe.Output.read(nbt.getCompound("output"));
+            output = PotOutput.read(nbt.getCompound("output"));
         }
         boilingTicks = nbt.getInt("boilingTicks");
         preBoilingTicks = nbt.getInt("preBoilingTicks");
@@ -96,7 +97,7 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
     {
         if (output != null)
         {
-            nbt.put("output", PotRecipe.Output.write(output));
+            nbt.put("output", PotOutput.write(output));
         }
         nbt.putInt("boilingTicks", boilingTicks);
         nbt.putInt("preBoilingTicks", preBoilingTicks);
@@ -143,7 +144,7 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
 
                 // Save the recipe here, as setting inventory will call setAndUpdateSlots, which will clear the cached recipe before output is created
                 final PotRecipe recipe = cachedRecipe;
-                final PotRecipe.Output output = recipe.getOutput(inventory);
+                final PotOutput output = recipe.getOutput(inventory);
 
                 RecipeHelpers.clearCraftingInput();
 
@@ -268,7 +269,7 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
     }
 
     @Nullable
-    public PotRecipe.Output getOutput()
+    public PotOutput getOutput()
     {
         return output;
     }

@@ -25,7 +25,7 @@ import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.heat.Heat;
 import net.dries007.tfc.common.container.PotContainer;
 import net.dries007.tfc.common.fluids.FluidHelpers;
-import net.dries007.tfc.common.recipes.PotRecipe;
+import net.dries007.tfc.common.recipes.outputs.PotOutput;
 import net.dries007.tfc.compat.jade.common.BlockEntityTooltip;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
@@ -135,7 +135,7 @@ public class PotScreen extends BlockEntityScreen<PotBlockEntity, PotContainer>
             graphics.blit(BACKGROUND, leftPos + 144, topPos + 10 + 20 - vHeight, 193, 16 + 21 - vHeight, 11, vHeight);
         }
         int fluidColor = -1;
-        final PotRecipe.Output output = blockEntity.getOutput();
+        final PotOutput output = blockEntity.getOutput();
         if (output != null && !output.isEmpty())
         {
             if (output.getRenderTexture() != null)

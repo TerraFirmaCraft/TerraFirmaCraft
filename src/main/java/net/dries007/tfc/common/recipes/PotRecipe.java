@@ -8,68 +8,67 @@ package net.dries007.tfc.common.recipes;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
 import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
-import net.dries007.tfc.compat.jade.common.BlockEntityTooltip;
+import net.dries007.tfc.common.recipes.outputs.PotOutput;
 import net.dries007.tfc.util.Helpers;
 
 /**
  * Recipe type for all cooking pot recipes
  */
-public abstract class PotRecipe implements ISimpleRecipe<PotBlockEntity.PotInventory>
+public class PotRecipe implements ISimpleRecipe<PotBlockEntity.PotInventory>
 {
-    private static final BiMap<ResourceLocation, OutputType> OUTPUT_TYPES = HashBiMap.create();
+    public static final MapCodec<PotRecipe> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
+        Ingredient.CODEC.listOf(0, 5).fieldOf("ingredients").forGetter(c -> c.itemIngredients),
+        SizedFluidIngredient.FLAT_CODEC.fieldOf("fluid_ingredient").forGetter(c -> c.fluidIngredient),
+        Codec.INT.fieldOf("duration").forGetter(c -> c.duration),
+        Codec.FLOAT.fieldOf("temperature").forGetter(c -> c.temperature)
+    ).apply(i, PotRecipe::new));
 
-    private static final ResourceLocation EMPTY_ID = Helpers.identifier("empty");
-    private static final Output EMPTY_INSTANCE = new Output() {};
-    private static final OutputType EMPTY = register(EMPTY_ID, nbt -> EMPTY_INSTANCE);
+    public static final StreamCodec<RegistryFriendlyByteBuf, PotRecipe> STREAM_CODEC = StreamCodec.composite(
+        Ingredient.CONTENTS_STREAM_CODEC.apply(ByteBufCodecs.list(5)), c -> c.itemIngredients,
+        SizedFluidIngredient.STREAM_CODEC, c -> c.fluidIngredient,
+        ByteBufCodecs.VAR_INT, c -> c.duration,
+        ByteBufCodecs.FLOAT, c -> c.temperature,
+        PotRecipe::new
+    );
 
-    /**
-     * Register a pot output type.
-     * If a pot recipe uses a custom output, that must persist (and thus be serialized), it needs to be registered here.
-     * This method is safe to call during parallel mod loading.
-     */
-    public static synchronized OutputType register(ResourceLocation id, OutputType outputType)
+    protected final List<Ingredient> itemIngredients;
+    protected final SizedFluidIngredient fluidIngredient;
+    protected final int duration;
+    protected final float temperature;
+
+    protected PotRecipe(PotRecipe base)
     {
-        if (OUTPUT_TYPES.containsKey(id))
-        {
-            throw new IllegalArgumentException("Duplicate key: " + id);
-        }
-        OUTPUT_TYPES.put(id, outputType);
-        return outputType;
+        this(base.itemIngredients, base.fluidIngredient, base.duration, base.temperature);
     }
 
-    protected final ResourceLocation id;
-    protected final List<Ingredient> itemIngredients;
-    protected final FluidStackIngredient fluidIngredient;
-    protected final int duration;
-    protected final float minTemp;
-
-    protected PotRecipe(ResourceLocation id, List<Ingredient> itemIngredients, FluidStackIngredient fluidIngredient, int duration, float minTemp)
+    private PotRecipe(List<Ingredient> itemIngredients, SizedFluidIngredient fluidIngredient, int duration, float temperature)
     {
-        this.id = id;
         this.itemIngredients = itemIngredients;
         this.fluidIngredient = fluidIngredient;
         this.duration = duration;
-        this.minTemp = minTemp;
+        this.temperature = temperature;
     }
 
     @Override
@@ -98,18 +97,12 @@ public abstract class PotRecipe implements ISimpleRecipe<PotBlockEntity.PotInven
     }
 
     @Override
-    public ResourceLocation getId()
-    {
-        return id;
-    }
-
-    @Override
     public RecipeType<?> getType()
     {
         return TFCRecipeTypes.POT.get();
     }
 
-    public FluidStackIngredient getFluidIngredient()
+    public SizedFluidIngredient getFluidIngredient()
     {
         return fluidIngredient;
     }
@@ -124,7 +117,7 @@ public abstract class PotRecipe implements ISimpleRecipe<PotBlockEntity.PotInven
      */
     public boolean isHotEnough(float tempIn)
     {
-        return tempIn > minTemp;
+        return tempIn > temperature;
     }
 
     /**
@@ -138,123 +131,9 @@ public abstract class PotRecipe implements ISimpleRecipe<PotBlockEntity.PotInven
     /**
      * @return The output of the pot recipe.
      */
-    public abstract PotRecipe.Output getOutput(PotBlockEntity.PotInventory inventory);
-
-    /**
-     * The output of a pot recipe. This output can be fairly complex, but follows a specific contract:
-     * <ol>
-     *     <li>The output is created, with access to the inventory, populated with the ingredient items (in {@link PotRecipe#getOutput(PotBlockEntity.PotInventory)})</li>
-     *     <li>{@link Output#onFinish(PotBlockEntity.PotInventory)} is called, with a completely empty inventory. The output can then add fluids or items back into the pot as necessary</li>
-     *     <li>THEN, if {@link Output#isEmpty()} returns true, the output is discarded. Otherwise...</li>
-     *     <li>The output is saved to the tile entity. On a right click, {@link Output#onInteract(PotBlockEntity, Player, ItemStack)} is called, and after each call, {@link Output#isEmpty()} will be queried to see if the output is empty. The pot will not resume functionality until the output is empty</li>
-     * </ol>
-     *
-     * @see PotBlockEntity#handleCooking()
-     */
-    public interface Output
+    public PotOutput getOutput(PotBlockEntity.PotInventory inventory)
     {
-        /**
-         * Read an output from an NBT tag.
-         */
-        static Output read(CompoundTag nbt)
-        {
-            final OutputType type = OUTPUT_TYPES.getOrDefault(Helpers.resourceLocation(nbt.getString("type")), EMPTY);
-            return type.read(nbt);
-        }
-
-        /**
-         * Write an output to a NBT tag.
-         */
-        static CompoundTag write(Output output)
-        {
-            final CompoundTag nbt = new CompoundTag();
-            nbt.putString("type", OUTPUT_TYPES.inverse().getOrDefault(output.getType(), EMPTY_ID).toString());
-            output.write(nbt);
-            return nbt;
-        }
-
-        /**
-         * If there is still something to be extracted from this output. If this returns false at any time the output must be serializable
-         */
-        default boolean isEmpty()
-        {
-            return true;
-        }
-
-        /**
-         * The color of the fluid the pot, while storing this output, should render as inside the pot, despite the pot itself not necessarily being filled with any fluid
-         *
-         * @return an {@code int} color, or -1 for no fluid to be displayed.
-         */
-        default int getFluidColor()
-        {
-            return -1;
-        }
-
-        /**
-         * An alternative to {@link Output#getFluidColor()} that renders a solid texture.
-         *
-         * @return A {@linkplain ResourceLocation} matching a texture.
-         */
-        @Nullable
-        default ResourceLocation getRenderTexture()
-        {
-            return null;
-        }
-
-        /**
-         * @return The y level [0, 1] that the fluid face renders at. The inside of the pot's model extends from 6 to 11 pixels vertically.
-         */
-        default float getFluidYLevel()
-        {
-            return 0.625f;
-        }
-
-        /**
-         * Called with an empty pot inventory immediately after completion, and after clearing the inventory of the pot, but, before
-         * checking {@link #isEmpty()}. Fills the inventory with immediate outputs from the output. Note that any outputs that depend
-         * on the inventory must be computed <strong>before</strong> this method, in {@link #getOutput(PotBlockEntity.PotInventory)}
-         */
-        default void onFinish(PotBlockEntity.PotInventory inventory) {}
-
-        /**
-         * Called when a player interacts with the pot inventory, using the specific item stack, to try and extract output.
-         */
-        default InteractionResult onInteract(PotBlockEntity entity, Player player, ItemStack clickedWith)
-        {
-            return InteractionResult.PASS;
-        }
-
-        /**
-         * Gets the output type of this output, used for serializing the output.
-         * If the output always returns true to {@link #isEmpty()}, then this can be left as {@link PotRecipe#EMPTY}.
-         */
-        default OutputType getType()
-        {
-            return EMPTY;
-        }
-
-        /**
-         * Writes implementation specific output data to disk.
-         */
-        default void write(CompoundTag nbt) {}
-
-        @Nullable
-        default BlockEntityTooltip getTooltip()
-        {
-            return null;
-        }
-    }
-
-    /**
-     * The output type of a pot recipe, handles reading the output back from disk.
-     */
-    public interface OutputType
-    {
-        /**
-         * Read the output from the given tag. The tag should contain the key "type", which will equal the registered ID of this output type.
-         */
-        Output read(CompoundTag nbt);
+        return PotOutput.EMPTY_INSTANCE;
     }
 
     public abstract static class Serializer<R extends PotRecipe> extends RecipeSerializerImpl<R>
@@ -301,7 +180,7 @@ public abstract class PotRecipe implements ISimpleRecipe<PotBlockEntity.PotInven
             }
             recipe.fluidIngredient.toNetwork(buffer);
             buffer.writeVarInt(recipe.duration);
-            buffer.writeFloat(recipe.minTemp);
+            buffer.writeFloat(recipe.temperature);
         }
 
         protected abstract R fromJson(ResourceLocation recipeId, JsonObject json, List<Ingredient> ingredients, FluidStackIngredient fluidIngredient, int duration, float minTemp);

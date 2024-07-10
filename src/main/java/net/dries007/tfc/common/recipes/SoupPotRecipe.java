@@ -8,17 +8,22 @@ package net.dries007.tfc.common.recipes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
@@ -31,13 +36,17 @@ import net.dries007.tfc.common.capabilities.food.Nutrient;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
+import net.dries007.tfc.common.recipes.outputs.PotOutput;
 import net.dries007.tfc.compat.jade.common.BlockEntityTooltip;
 import net.dries007.tfc.compat.jade.common.BlockEntityTooltips;
 import net.dries007.tfc.util.Helpers;
 
 public class SoupPotRecipe extends PotRecipe
 {
-    public static final OutputType OUTPUT_TYPE = nbt -> {
+    public static final MapCodec<SoupPotRecipe> CODEC = PotRecipe.CODEC.xmap(SoupPotRecipe::new, Function.identity());
+    public static final StreamCodec<RegistryFriendlyByteBuf, SoupPotRecipe> STREAM_CODEC = PotRecipe.STREAM_CODEC.map(SoupPotRecipe::new, Function.identity());
+
+    public static final PotOutput.OutputType OUTPUT_TYPE = nbt -> {
         ItemStack stack = ItemStack.of(nbt.getCompound("item"));
         return new SoupOutput(stack);
     };
@@ -45,13 +54,13 @@ public class SoupPotRecipe extends PotRecipe
     public static final int SOUP_HUNGER_VALUE = 4;
     public static final float SOUP_DECAY_MODIFIER = 3.5F;
 
-    public SoupPotRecipe(ResourceLocation id, List<Ingredient> itemIngredients, FluidStackIngredient fluidIngredient, int duration, float minTemp)
+    public SoupPotRecipe(PotRecipe base)
     {
-        super(id, itemIngredients, fluidIngredient, duration, minTemp);
+        super(base);
     }
 
     @Override
-    public Output getOutput(PotBlockEntity.PotInventory inventory)
+    public PotOutput getOutput(PotBlockEntity.PotInventory inventory)
     {
         int ingredientCount = 0;
         float water = 20, saturation = 2;
@@ -119,7 +128,7 @@ public class SoupPotRecipe extends PotRecipe
         return TFCRecipeSerializers.POT_SOUP.get();
     }
 
-    public record SoupOutput(ItemStack stack) implements Output
+    public record SoupOutput(ItemStack stack) implements PotOutput
     {
         @Override
         public boolean isEmpty()
@@ -173,21 +182,6 @@ public class SoupPotRecipe extends PotRecipe
                 FoodCapability.addTooltipInfo(stack, text);
                 text.forEach(tooltip);
             });
-        }
-    }
-
-    public static class Serializer extends PotRecipe.Serializer<SoupPotRecipe>
-    {
-        @Override
-        protected SoupPotRecipe fromJson(ResourceLocation recipeId, JsonObject json, List<Ingredient> ingredients, FluidStackIngredient fluidIngredient, int duration, float minTemp)
-        {
-            return new SoupPotRecipe(recipeId, ingredients, fluidIngredient, duration, minTemp);
-        }
-
-        @Override
-        protected SoupPotRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer, List<Ingredient> ingredients, FluidStackIngredient fluidIngredient, int duration, float minTemp)
-        {
-            return new SoupPotRecipe(recipeId, ingredients, fluidIngredient, duration, minTemp);
         }
     }
 }

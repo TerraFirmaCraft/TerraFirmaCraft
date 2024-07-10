@@ -10,7 +10,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluids;
@@ -20,7 +19,7 @@ import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.fluids.FluidHelpers;
-import net.dries007.tfc.common.recipes.PotRecipe;
+import net.dries007.tfc.common.recipes.outputs.PotOutput;
 
 import static net.dries007.tfc.common.blockentities.PotBlockEntity.*;
 
@@ -32,7 +31,7 @@ public class PotBlockEntityRenderer extends FirepitBlockEntityRenderer<PotBlockE
         super.render(pot, partialTicks, poseStack, buffer, combinedLight, combinedOverlay);
         if (pot.getLevel() == null) return;
 
-        final PotRecipe.Output output = pot.getOutput();
+        final PotOutput output = pot.getOutput();
         if (output != null && output.getRenderTexture() != null)
         {
             RenderHelpers.renderTexturedFace(poseStack, buffer, 0xFFFFFF, 0.3125F, 0.3125F, 0.6875F, 0.6875F, output.getFluidYLevel(), combinedOverlay, combinedLight, output.getRenderTexture(), false);
