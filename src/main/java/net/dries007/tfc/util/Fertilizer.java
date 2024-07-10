@@ -6,62 +6,55 @@
 
 package net.dries007.tfc.util;
 
-import com.google.gson.JsonObject;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
-import net.dries007.tfc.network.DataManagerSyncPacket;
+import net.dries007.tfc.common.recipes.RecipeHelpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
-public class Fertilizer extends ItemDefinition
-{
-    public static final DataManager<Fertilizer> MANAGER = new DataManager<>(Helpers.identifier("fertilizers"), "fertilizer", Fertilizer::new, Fertilizer::new, Fertilizer::encode, Packet::new);
-    public static final IndirectHashCollection<Item, Fertilizer> CACHE = IndirectHashCollection.create(Fertilizer::getValidItems, MANAGER::getValues);
+public record Fertilizer(
+    Ingredient ingredient,
+    float nitrogen,
+    float phosphorus,
+    float potassium
+) {
+    public static final Codec<Fertilizer> CODEC = RecordCodecBuilder.create(i -> i.group(
+        Ingredient.CODEC.fieldOf("ingredient").forGetter(c -> c.ingredient),
+        Codec.FLOAT.optionalFieldOf("nitrogen", 0f).forGetter(c -> c.nitrogen),
+        Codec.FLOAT.optionalFieldOf("phosphorus", 0f).forGetter(c -> c.phosphorus),
+        Codec.FLOAT.optionalFieldOf("potassium", 0f).forGetter(c -> c.potassium)
+    ).apply(i, Fertilizer::new));
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, Fertilizer> STREAM_CODEC = StreamCodec.composite(
+        Ingredient.CONTENTS_STREAM_CODEC, c -> c.ingredient,
+        ByteBufCodecs.FLOAT, c -> c.nitrogen,
+        ByteBufCodecs.FLOAT, c -> c.phosphorus,
+        ByteBufCodecs.FLOAT, c -> c.potassium,
+        Fertilizer::new
+    );
+
+    public static final DataManager<Fertilizer> MANAGER = new DataManager<>(Helpers.identifier("fertilizers"), "fertilizer", CODEC, STREAM_CODEC);
+    public static final IndirectHashCollection<Item, Fertilizer> CACHE = IndirectHashCollection.create(c -> RecipeHelpers.itemKeys(c.ingredient), MANAGER::getValues);
 
     @Nullable
     public static Fertilizer get(ItemStack stack)
     {
         for (Fertilizer def : CACHE.getAll(stack.getItem()))
         {
-            if (def.matches(stack))
+            if (def.ingredient.test(stack))
             {
                 return def;
             }
         }
         return null;
-    }
-
-    private final float nitrogen, phosphorus, potassium;
-
-    private Fertilizer(ResourceLocation id, JsonObject json)
-    {
-        super(id, Ingredient.fromJson(JsonHelpers.get(json, "ingredient")));
-
-        nitrogen = JsonHelpers.getAsFloat(json, "nitrogen", 0);
-        phosphorus = JsonHelpers.getAsFloat(json, "phosphorus", 0);
-        potassium = JsonHelpers.getAsFloat(json, "potassium", 0);
-    }
-
-    private Fertilizer(ResourceLocation id, FriendlyByteBuf buffer)
-    {
-        super(id, Ingredient.fromNetwork(buffer));
-
-        nitrogen = buffer.readFloat();
-        phosphorus = buffer.readFloat();
-        potassium = buffer.readFloat();
-    }
-
-    public void encode(FriendlyByteBuf buffer)
-    {
-        ingredient.toNetwork(buffer);
-        buffer.writeFloat(nitrogen);
-        buffer.writeFloat(phosphorus);
-        buffer.writeFloat(potassium);
     }
 
     public float getNutrient(FarmlandBlockEntity.NutrientType type)
@@ -72,21 +65,4 @@ public class Fertilizer extends ItemDefinition
             case POTASSIUM -> potassium;
         };
     }
-
-    public float getNitrogen()
-    {
-        return nitrogen;
-    }
-
-    public float getPhosphorus()
-    {
-        return phosphorus;
-    }
-
-    public float getPotassium()
-    {
-        return potassium;
-    }
-
-    public static class Packet extends DataManagerSyncPacket<Fertilizer> {}
 }

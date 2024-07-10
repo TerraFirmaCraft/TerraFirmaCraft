@@ -26,7 +26,7 @@ public interface IFarmland
 {
     static void addNutrientParticles(ServerLevel level, BlockPos pos, Fertilizer fertilizer)
     {
-        final float n = fertilizer.getNitrogen(), p = fertilizer.getPhosphorus(), k = fertilizer.getPotassium();
+        final float n = fertilizer.nitrogen(), p = fertilizer.phosphorus(), k = fertilizer.potassium();
         for (int i = 0; i < (int) (n > 0 ? Mth.clamp(n * 10, 1, 5) : 0); i++)
         {
             level.sendParticles(TFCParticles.NITROGEN.get(), pos.getX() + level.random.nextFloat(), pos.getY() + level.random.nextFloat() / 5D, pos.getZ() + level.random.nextFloat(), 0, 0D, 0D, 0D, 1D);
@@ -66,9 +66,9 @@ public interface IFarmland
 
     default void addNutrients(Fertilizer fertilizer, float multiplier)
     {
-        addNutrient(NITROGEN, fertilizer.getNitrogen() * multiplier);
-        addNutrient(PHOSPHOROUS, fertilizer.getPhosphorus() * multiplier);
-        addNutrient(POTASSIUM, fertilizer.getPotassium() * multiplier);
+        addNutrient(NITROGEN, fertilizer.nitrogen() * multiplier);
+        addNutrient(PHOSPHOROUS, fertilizer.phosphorus() * multiplier);
+        addNutrient(POTASSIUM, fertilizer.potassium() * multiplier);
     }
 
 

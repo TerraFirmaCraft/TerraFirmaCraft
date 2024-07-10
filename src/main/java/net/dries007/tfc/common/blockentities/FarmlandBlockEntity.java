@@ -88,9 +88,9 @@ public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland
     public void addNutrients(Fertilizer fertilizer, float multiplier)
     {
         // Override to not send three sync packets
-        setNutrientWithoutSync(NITROGEN, getNutrient(NITROGEN) + (fertilizer.getNitrogen() * multiplier));
-        setNutrientWithoutSync(PHOSPHOROUS, getNutrient(PHOSPHOROUS) + (fertilizer.getPhosphorus() * multiplier));
-        setNutrientWithoutSync(POTASSIUM, getNutrient(POTASSIUM) + (fertilizer.getPotassium() * multiplier));
+        setNutrientWithoutSync(NITROGEN, getNutrient(NITROGEN) + (fertilizer.nitrogen() * multiplier));
+        setNutrientWithoutSync(PHOSPHOROUS, getNutrient(PHOSPHOROUS) + (fertilizer.phosphorus() * multiplier));
+        setNutrientWithoutSync(POTASSIUM, getNutrient(POTASSIUM) + (fertilizer.potassium() * multiplier));
         markForSync();
     }
 

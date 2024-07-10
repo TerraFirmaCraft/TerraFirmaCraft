@@ -297,7 +297,7 @@ public class ClientForgeEventHandler
             final Fertilizer fertilizer = Fertilizer.get(stack);
             if (fertilizer != null)
             {
-                final float n = fertilizer.getNitrogen(), p = fertilizer.getPhosphorus(), k = fertilizer.getPotassium();
+                final float n = fertilizer.nitrogen(), p = fertilizer.phosphorus(), k = fertilizer.potassium();
                 if (n != 0)
                     text.add(Component.translatable("tfc.tooltip.fertilizer.nitrogen", String.format("%.1f", n * 100)));
                 if (p != 0)

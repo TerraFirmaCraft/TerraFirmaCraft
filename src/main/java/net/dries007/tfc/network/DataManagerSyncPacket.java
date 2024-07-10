@@ -6,54 +6,61 @@
 
 package net.dries007.tfc.network;
 
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.network.NetworkEvent;
 
 import net.dries007.tfc.util.DataManager;
+import net.dries007.tfc.util.DataManagers;
 
-public abstract class DataManagerSyncPacket<T>
+public record DataManagerSyncPacket(List<Entry<?>> values) implements CustomPacketPayload
 {
-    private Map<ResourceLocation, T> elements;
+    public static final CustomPacketPayload.Type<DataManagerSyncPacket> TYPE = PacketHandler.type("data_managers");
+    public static final StreamCodec<RegistryFriendlyByteBuf, DataManagerSyncPacket> STREAM_CODEC = ByteBufCodecs.registry(DataManagers.KEY)
+        .<Entry<?>>dispatch(Entry::manager, DataManagerSyncPacket::streamCodec)
+        .apply(ByteBufCodecs.list())
+        .map(DataManagerSyncPacket::new, DataManagerSyncPacket::values);
+
+    private static <T> StreamCodec<RegistryFriendlyByteBuf, Entry<T>> streamCodec(DataManager<T> manager)
+    {
+        return ByteBufCodecs.<RegistryFriendlyByteBuf, ResourceLocation, T, Map<ResourceLocation, T>>map(HashMap::new, ResourceLocation.STREAM_CODEC, manager.streamCodec())
+            .map(e -> new Entry<>(manager, e), e -> e.values);
+    }
 
     public DataManagerSyncPacket()
     {
-        elements = Collections.emptyMap();
+        this(DataManagers.REGISTRY.stream().filter(DataManager::isSynced).<Entry<?>>map(Entry::new).toList());
     }
 
-    public DataManagerSyncPacket<T> with(Map<ResourceLocation, T> elements)
+    @Override
+    public Type<? extends CustomPacketPayload> type()
     {
-        this.elements = elements;
-        return this;
+        return TYPE;
     }
 
-    public void encode(DataManager<T> manager, FriendlyByteBuf buffer)
+    void handle(boolean isMemoryConnection)
     {
-        buffer.writeVarInt(elements.size());
-        for (Map.Entry<ResourceLocation, T> entry : elements.entrySet())
+        for (Entry<?> v : values)
+            v.handle(isMemoryConnection);
+    }
+
+    record Entry<T>(
+        DataManager<T> manager,
+        Map<ResourceLocation, T> values
+    ) {
+        Entry(DataManager<T> manager)
         {
-            buffer.writeResourceLocation(entry.getKey());
-            manager.rawToNetwork(buffer, entry.getValue());
+            this(manager, manager.getElements());
         }
-    }
 
-    public void decode(DataManager<T> manager, FriendlyByteBuf buffer)
-    {
-        this.elements = new HashMap<>();
-        final int size = buffer.readVarInt();
-        for (int i = 0; i < size; i++)
+        void handle(boolean isMemoryConnection)
         {
-            final ResourceLocation id = buffer.readResourceLocation();
-            final T element = manager.rawFromNetwork(id, buffer);
-            elements.put(id, element);
+            manager.onSync(isMemoryConnection, values);
         }
-    }
-
-    public void handle(NetworkEvent.Context context, DataManager<T> manager)
-    {
-        manager.onSync(context, elements);
     }
 }

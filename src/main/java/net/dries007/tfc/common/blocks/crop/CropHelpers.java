@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.blocks.crop;
 
-import java.util.Random;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -185,9 +184,9 @@ public final class CropHelpers
                 {
                     repeat = 1; // By default, we consume 1
                 }
-                if ((fertilizer.getNitrogen() == 0 || farmland.getNutrient(FarmlandBlockEntity.NutrientType.NITROGEN) == 1)
-                    && (fertilizer.getPotassium() == 0 || farmland.getNutrient(FarmlandBlockEntity.NutrientType.POTASSIUM) == 1)
-                    && (fertilizer.getPhosphorus() == 0 || farmland.getNutrient(FarmlandBlockEntity.NutrientType.PHOSPHOROUS) == 1))
+                if ((fertilizer.nitrogen() == 0 || farmland.getNutrient(FarmlandBlockEntity.NutrientType.NITROGEN) == 1)
+                    && (fertilizer.potassium() == 0 || farmland.getNutrient(FarmlandBlockEntity.NutrientType.POTASSIUM) == 1)
+                    && (fertilizer.phosphorus() == 0 || farmland.getNutrient(FarmlandBlockEntity.NutrientType.PHOSPHOROUS) == 1))
                 {
                     // Don't consume any fertilizer, as it won't do anything.
                     return false;

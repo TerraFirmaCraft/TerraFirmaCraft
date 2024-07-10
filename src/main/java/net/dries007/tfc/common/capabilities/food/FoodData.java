@@ -24,6 +24,7 @@ import net.dries007.tfc.util.JsonHelpers;
  * @param hunger Hunger amount. In TFC, it is almost always 4.
  * @param saturation Saturation, only provided by some basic foods and meal bonuses.
  * @param water Water, provided by some foods.
+ * @param intoxication An amount of ticks to register as intoxicated
  * @param nutrients The nutrition values, indexed by {@link Nutrient#ordinal()}
  * @param decayModifier Decay modifier - higher = shorter decay.
  */
@@ -31,6 +32,7 @@ public record FoodData(
     int hunger,
     float water,
     float saturation,
+    int intoxication,
     float[] nutrients,
     float decayModifier
 ) {
@@ -58,25 +60,28 @@ public record FoodData(
         }
     );
 
-    public static final Codec<FoodData> CODEC = RecordCodecBuilder.create(i -> i.group(
-        Codec.INT.fieldOf("hunger").forGetter(c -> c.hunger),
-        Codec.FLOAT.fieldOf("water").forGetter(c -> c.water),
-        Codec.FLOAT.fieldOf("saturation").forGetter(c -> c.saturation),
+    public static final MapCodec<FoodData> MAP_CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
+        Codec.INT.optionalFieldOf("hunger", 0).forGetter(c -> c.hunger),
+        Codec.FLOAT.optionalFieldOf("water", 0f).forGetter(c -> c.water),
+        Codec.FLOAT.optionalFieldOf("saturation", 0f).forGetter(c -> c.saturation),
+        Codec.INT.optionalFieldOf("intoxication", 0).forGetter(c -> c.intoxication),
         NUTRITION_CODEC.forGetter(c -> c.nutrients),
-        Codec.FLOAT.fieldOf("decay_modifier").forGetter(c -> c.decayModifier)
+        Codec.FLOAT.optionalFieldOf("decay_modifier", 0f).forGetter(c -> c.decayModifier)
     ).apply(i, FoodData::new));
+    public static final Codec<FoodData> CODEC = MAP_CODEC.codec();
 
     public static final StreamCodec<ByteBuf, FoodData> STREAM_CODEC = StreamCodec.composite(
         ByteBufCodecs.VAR_INT, c -> c.hunger,
         ByteBufCodecs.FLOAT, c -> c.water,
         ByteBufCodecs.FLOAT, c -> c.saturation,
+        ByteBufCodecs.VAR_INT, c -> c.intoxication,
         NUTRITION_STREAM_CODEC, c -> c.nutrients,
         ByteBufCodecs.FLOAT, c -> c.decayModifier,
         FoodData::new
     );
 
     /** An empty instance of a {@link FoodData} with no values */
-    public static final FoodData EMPTY = new FoodData(0, 0, 0, new float[] {0, 0, 0, 0, 0}, 0);
+    public static final FoodData EMPTY = new FoodData(0, 0, 0, 0, new float[] {0, 0, 0, 0, 0}, 0);
 
     private static RecordCodecBuilder<float[], Float> nutrientCodec(Nutrient nutrient)
     {
@@ -85,14 +90,13 @@ public record FoodData(
 
     public static FoodData of(int hunger, float water, float saturation, float[] nutrients, float decayModifier)
     {
-        return new FoodData(hunger, water, saturation, nutrients, decayModifier);
+        return new FoodData(hunger, water, saturation, 0, nutrients, decayModifier);
     }
 
     public static FoodData decayOnly(float decayModifier)
     {
-        return new FoodData(0, 0, 0, new float[] {0, 0, 0, 0, 0}, decayModifier);
+        return new FoodData(0, 0, 0, 0, new float[] {0, 0, 0, 0, 0}, decayModifier);
     }
-
 
     public float nutrient(Nutrient nutrient)
     {
@@ -104,81 +108,26 @@ public record FoodData(
         return nutrients.clone();
     }
 
-
-    // Old
-
-    public static FoodData decode(FriendlyByteBuf buffer)
-    {
-        final int hunger = buffer.readVarInt();
-        final float saturation = buffer.readFloat();
-        final float water = buffer.readFloat();
-        final float decayModifier = buffer.readFloat();
-
-        final float[] nutrition = new float[Nutrient.TOTAL];
-        for (Nutrient nutrient : Nutrient.VALUES)
-        {
-            nutrition[nutrient.ordinal()] = buffer.readFloat();
-        }
-
-        return FoodData.of(hunger, water, saturation, nutrition, decayModifier);
-    }
-
-    public static FoodData read(JsonObject json)
-    {
-        final int hunger = JsonHelpers.getAsInt(json, "hunger", 4);
-        final float saturation = JsonHelpers.getAsFloat(json, "saturation", 0);
-        final float water = JsonHelpers.getAsFloat(json, "water", 0);
-        final float decayModifier = JsonHelpers.getAsFloat(json, "decay_modifier", 1);
-
-        final float[] nutrition = new float[Nutrient.TOTAL];
-        for (Nutrient nutrient : Nutrient.VALUES)
-        {
-            nutrition[nutrient.ordinal()] = JsonHelpers.getAsFloat(json, nutrient.getSerializedName(), 0);
-        }
-
-        return FoodData.of(hunger, water, saturation, nutrition, decayModifier);
-    }
-
-    public static FoodData read(CompoundTag nbt)
+    /**
+     * @return A new {@link FoodData} with values multiplied by the amount consumed
+     */
+    public FoodData mul(float multiplier)
     {
         return new FoodData(
-            nbt.getInt("food"),
-            nbt.getFloat("water"),
-            nbt.getFloat("sat"),
-            nbt.getFloat("grain"),
-            nbt.getFloat("fruit"),
-            nbt.getFloat("veg"),
-            nbt.getFloat("meat"),
-            nbt.getFloat("dairy"),
-            nbt.getFloat("decay")
+            (int) (hunger * multiplier),
+            water * multiplier,
+            saturation * multiplier,
+            intoxication,
+            mul(nutrients, multiplier),
+            decayModifier
         );
     }
 
-    public CompoundTag write()
+    private static float[] mul(float[] input, float multiplier)
     {
-        final CompoundTag nbt = new CompoundTag();
-        nbt.putInt("food", hunger);
-        nbt.putFloat("sat", saturation);
-        nbt.putFloat("water", water);
-        nbt.putFloat("decay", decayModifier);
-        nbt.putFloat("grain", grain);
-        nbt.putFloat("veg", vegetables);
-        nbt.putFloat("fruit", fruit);
-        nbt.putFloat("meat", protein);
-        nbt.putFloat("dairy", dairy);
-        return nbt;
-    }
-
-    public void encode(FriendlyByteBuf buffer)
-    {
-        buffer.writeVarInt(hunger);
-        buffer.writeFloat(saturation);
-        buffer.writeFloat(water);
-        buffer.writeFloat(decayModifier);
-
-        for (Nutrient nutrient : Nutrient.VALUES)
-        {
-            buffer.writeFloat(nutrient(nutrient));
-        }
+        final float[] output = new float[input.length];
+        for (int i = 0; i < output.length; i++)
+            output[i] = input[i] * multiplier;
+        return output;
     }
 }

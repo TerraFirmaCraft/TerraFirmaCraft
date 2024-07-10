@@ -6,43 +6,36 @@
 
 package net.dries007.tfc.util;
 
-import com.google.gson.JsonObject;
-import net.minecraft.core.Registry;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 
 import org.jetbrains.annotations.Nullable;
 
-public final class EntityDamageResistance extends PhysicalDamageTypeData
-{
-    public static final DataManager<EntityDamageResistance> MANAGER = new DataManager<>(Helpers.identifier("entity_damage_resistances"), "entity_damage_resistances", EntityDamageResistance::new);
+public record EntityDamageResistance(
+    TagKey<EntityType<?>> entity,
+    PhysicalDamageTypeData damages
+) {
+    public static final Codec<EntityDamageResistance> CODEC = RecordCodecBuilder.create(i -> i.group(
+        TagKey.codec(Registries.ENTITY_TYPE).fieldOf("entity").forGetter(c -> c.entity),
+        PhysicalDamageTypeData.CODEC.forGetter(c -> c.damages)
+    ).apply(i, EntityDamageResistance::new));
+
+    public static final DataManager<EntityDamageResistance> MANAGER = new DataManager<>(Helpers.identifier("entity_damage_resistances"), "entity_damage_resistances", CODEC);
 
     @Nullable
     public static EntityDamageResistance get(Entity entity)
     {
         for (EntityDamageResistance resist : MANAGER.getValues())
         {
-            if (resist.matches(entity))
+            if (Helpers.isEntity(entity, resist.entity))
             {
                 return resist;
             }
         }
         return null;
-    }
-
-    private final TagKey<EntityType<?>> entity;
-
-    private EntityDamageResistance(ResourceLocation id, JsonObject json)
-    {
-        super(id, json);
-        this.entity = JsonHelpers.getTag(json, "entity", Registries.ENTITY_TYPE);
-    }
-
-    public boolean matches(Entity entity)
-    {
-        return Helpers.isEntity(entity, this.entity);
     }
 }

@@ -6,17 +6,15 @@
 
 package net.dries007.tfc.util;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import com.google.common.collect.ImmutableList;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
@@ -32,21 +30,55 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.food.FoodData;
 import net.dries007.tfc.common.capabilities.food.TFCFoodData;
 import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.fluids.FluidHelpers;
-import net.dries007.tfc.common.recipes.ingredients.FluidIngredient;
-import net.dries007.tfc.network.DataManagerSyncPacket;
+import net.dries007.tfc.common.recipes.RecipeHelpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
-public class Drinkable extends FluidDefinition
-{
-    public static final DataManager<Drinkable> MANAGER = new DataManager<>(Helpers.identifier("drinkables"), "drinkable", Drinkable::new, Drinkable::new, Drinkable::encode, Packet::new);
-    public static final IndirectHashCollection<Fluid, Drinkable> CACHE = IndirectHashCollection.create(Drinkable::getFluids, MANAGER::getValues);
+public record Drinkable(
+    FluidIngredient ingredient,
+    float consumeChance,
+    boolean mayDrinkWhenFull,
+    FoodData food,
+    List<Effect> effects
+) {
+    public static final Codec<Drinkable> CODEC = RecordCodecBuilder.create(i -> i.group(
+        FluidIngredient.CODEC.fieldOf("ingredient").forGetter(c -> c.ingredient),
+        Codec.FLOAT.optionalFieldOf("consume_chance", 0f).forGetter(c -> c.consumeChance),
+        Codec.BOOL.optionalFieldOf("may_drink_when_full", false).forGetter(c -> c.mayDrinkWhenFull),
+        FoodData.MAP_CODEC.forGetter(c -> c.food),
+        RecordCodecBuilder.<Effect>create(j -> j.group(
+            MobEffect.CODEC.fieldOf("effect").forGetter(c -> c.type),
+            Codec.INT.fieldOf("duration").forGetter(c -> c.duration),
+            Codec.INT.fieldOf("amplifier").forGetter(c -> c.amplifier),
+            Codec.FLOAT.fieldOf("chance").forGetter(c -> c.chance)
+        ).apply(j, Effect::new)).listOf().optionalFieldOf("effects", List.of()).forGetter(c -> c.effects)
+    ).apply(i, Drinkable::new));
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, Drinkable> STREAM_CODEC = StreamCodec.composite(
+        FluidIngredient.STREAM_CODEC, c -> c.ingredient,
+        ByteBufCodecs.FLOAT, c -> c.consumeChance,
+        ByteBufCodecs.BOOL, c -> c.mayDrinkWhenFull,
+        FoodData.STREAM_CODEC, c -> c.food,
+        StreamCodec.composite(
+            ByteBufCodecs.holderRegistry(Registries.MOB_EFFECT), c -> c.type,
+            ByteBufCodecs.VAR_INT, c -> c.duration,
+            ByteBufCodecs.VAR_INT, c -> c.amplifier,
+            ByteBufCodecs.FLOAT, c -> c.chance,
+            Effect::new
+        ).apply(ByteBufCodecs.list()), c -> c.effects,
+        Drinkable::new
+    );
+
+    public static final DataManager<Drinkable> MANAGER = new DataManager<>(Helpers.identifier("drinkables"), "drinkable", CODEC, STREAM_CODEC);
+    public static final IndirectHashCollection<Fluid, Drinkable> CACHE = IndirectHashCollection.create(c -> RecipeHelpers.fluidKeys(c.ingredient), MANAGER::getValues);
 
     /** Amount of mB drank when drinking by hand on a source block */
     private static final int HAND_DRINK_MB = 25;
@@ -56,7 +88,7 @@ public class Drinkable extends FluidDefinition
     {
         for (Drinkable drinkable : CACHE.getAll(fluid))
         {
-            if (drinkable.matches(fluid))
+            if (drinkable.ingredient.test(new FluidStack(fluid, 1)))
             {
                 return drinkable;
             }
@@ -81,7 +113,7 @@ public class Drinkable extends FluidDefinition
             if (playerData.getLastDrinkTick() + 10 < Calendars.get(level).getTicks())
             {
                 final Drinkable drinkable = get(fluid);
-                if (drinkable != null && (thirst < TFCFoodData.MAX_THIRST || drinkable.getThirst() == 0 || drinkable.mayDrinkWhenFull))
+                if (drinkable != null && (thirst < TFCFoodData.MAX_THIRST || drinkable.food.water() == 0 || drinkable.mayDrinkWhenFull))
                 {
                     if (!level.isClientSide && doDrink)
                     {
@@ -107,7 +139,7 @@ public class Drinkable extends FluidDefinition
 
         drinkable.onDrink(player, HAND_DRINK_MB);
 
-        if (drinkable.getConsumeChance() > 0 && drinkable.getConsumeChance() > level.getRandom().nextFloat())
+        if (drinkable.consumeChance > 0 && drinkable.consumeChance > level.getRandom().nextFloat())
         {
             final BlockState emptyState = FluidHelpers.isAirOrEmptyFluid(state) ? Blocks.AIR.defaultBlockState() : FluidHelpers.fillWithFluid(state, Fluids.EMPTY);
             if (emptyState != null)
@@ -117,78 +149,22 @@ public class Drinkable extends FluidDefinition
         }
     }
 
-    private final float consumeChance;
-    private final int thirst;
-    private final int intoxication;
-    private final List<Effect> effects;
-    private final boolean mayDrinkWhenFull;
-    @Nullable private final FoodData food;
-
-    private Drinkable(ResourceLocation id, JsonObject json)
-    {
-        super(id, json);
-
-        this.consumeChance = JsonHelpers.getAsFloat(json, "consume_chance", 0);
-        this.thirst = JsonHelpers.getAsInt(json, "thirst", 0);
-        this.intoxication = JsonHelpers.getAsInt(json, "intoxication", 0);
-        this.mayDrinkWhenFull = JsonHelpers.getAsBoolean(json, "may_drink_when_full", false);
-        this.food = json.has("food") ? FoodData.read(json.getAsJsonObject("food")) : null;
-
-        final ImmutableList.Builder<Effect> builder = new ImmutableList.Builder<>();
-        if (json.has("effects"))
-        {
-            JsonArray array = JsonHelpers.getAsJsonArray(json, "effects");
-            for (JsonElement e : array)
-            {
-                final JsonObject effectJson = JsonHelpers.convertToJsonObject(e, "effect");
-                final MobEffect type = JsonHelpers.getRegistryEntry(effectJson, "type", BuiltInRegistries.MOB_EFFECT);
-                final int duration = JsonHelpers.getAsInt(effectJson, "duration", 20);
-                final int amplifier = JsonHelpers.getAsInt(effectJson, "amplifier", 0);
-                final float chance = (float) JsonHelpers.getAsDouble(effectJson, "chance", 1);
-
-                builder.add(new Effect(type, duration, amplifier, chance));
-            }
-        }
-        this.effects = builder.build();
-    }
-
-    private Drinkable(ResourceLocation id, FriendlyByteBuf buffer)
-    {
-        super(id, FluidIngredient.fromNetwork(buffer));
-
-        this.consumeChance = buffer.readFloat();
-        this.thirst = buffer.readVarInt();
-        this.intoxication = buffer.readVarInt();
-        this.mayDrinkWhenFull = buffer.readBoolean();
-        this.food = Helpers.decodeNullable(buffer, FoodData::decode);
-
-        this.effects = Helpers.decodeAll(buffer, new ArrayList<>(), Effect::fromNetwork);
-    }
-
     /**
+     * Applies effect from drinking a given amoung of {@code mB} of the fluid represented by this drinkable.
      * @param player The player doing the drinking
-     * @param mB     The amount of fluid that is being drank, in mB. This will scale certain effects proportional to the volume. 25mB is a reference for amount drank when right-clicking a fluid source with an open hand, which is also the amount that the drinkable JSON is defined as.
+     * @param mB     The amount of fluid that is being drank, in mB. This will scale certain effects proportional to the volume. 25mB is a reference for amount drank when
+     *               right-clicking a fluid source with an open hand, which is also the amount that the drinkable JSON is defined as.
      */
     public void onDrink(Player player, int mB)
     {
         assert !player.level().isClientSide;
 
-        final float multiplier = mB / 25f;
+        final float multiplier = mB / (float) HAND_DRINK_MB;
         final RandomSource random = player.getRandom();
 
-        if (player.getFoodData() instanceof TFCFoodData foodData)
+        if (player.getFoodData() instanceof TFCFoodData data)
         {
-            foodData.addThirst(thirst * multiplier);
-        }
-
-        if (intoxication > 0)
-        {
-            PlayerData.get(player).addIntoxicatedTicks((long) (intoxication * multiplier));
-        }
-
-        if (food != null && player.getFoodData() instanceof TFCFoodData data)
-        {
-            data.eat(food);
+            data.eat(food.mul(multiplier));
         }
 
         for (Drinkable.Effect effect : effects)
@@ -204,69 +180,5 @@ public class Drinkable extends FluidDefinition
         player.setSprinting(false);
     }
 
-    public float getConsumeChance()
-    {
-        return consumeChance;
-    }
-
-    public int getThirst()
-    {
-        return thirst;
-    }
-
-    public int getIntoxication()
-    {
-        return intoxication;
-    }
-
-    public boolean mayDrinkWhenFull()
-    {
-        return mayDrinkWhenFull;
-    }
-
-    @Nullable
-    public FoodData getFoodStats()
-    {
-        return food;
-    }
-
-    public Collection<Effect> getEffects()
-    {
-        return effects;
-    }
-
-    private void encode(FriendlyByteBuf buffer)
-    {
-        ingredient.toNetwork(buffer);
-
-        buffer.writeFloat(consumeChance);
-        buffer.writeVarInt(thirst);
-        buffer.writeVarInt(intoxication);
-        buffer.writeBoolean(mayDrinkWhenFull);
-        Helpers.encodeNullable(food, buffer, FoodData::encode);
-
-        Helpers.encodeAll(buffer, effects, Effect::toNetwork);
-    }
-
-    public record Effect(MobEffect type, int duration, int amplifier, float chance)
-    {
-        public static Effect fromNetwork(FriendlyByteBuf buffer)
-        {
-            final MobEffect type = BuiltInRegistries.MOB_EFFECT.byIdOrThrow(buffer.readVarInt());
-            final int duration = buffer.readVarInt();
-            final int amplifier = buffer.readVarInt();
-            final float chance = buffer.readFloat();
-            return new Effect(type, duration, amplifier, chance);
-        }
-
-        public void toNetwork(FriendlyByteBuf buffer)
-        {
-            buffer.writeVarInt(BuiltInRegistries.MOB_EFFECT.getId(type));
-            buffer.writeVarInt(duration);
-            buffer.writeVarInt(amplifier);
-            buffer.writeFloat(chance);
-        }
-    }
-
-    public static class Packet extends DataManagerSyncPacket<Drinkable> {}
+    record Effect(Holder<MobEffect> type, int duration, int amplifier, float chance) {}
 }

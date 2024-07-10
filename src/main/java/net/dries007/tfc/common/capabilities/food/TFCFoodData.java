@@ -301,10 +301,20 @@ public class TFCFoodData extends net.minecraft.world.food.FoodData
         }
     }
 
+    /**
+     * Eat a piece of food with the data given by {@code data}. This applies the following effects:
+     * <ul>
+     *     <li>Thirst and intoxication are always used</li>
+     *     <li>If hunger is {@code > 0}, then both hunger and additional saturation is applied</li>
+     *     <li>Nutrition is added if either {@code hunger > 0}, or the last food eaten was non-zero hunger</li>
+     * </ul>
+     * @param data The food data to eat
+     */
     public void eat(FoodData data)
     {
         addThirst(data.water());
         nutritionData.addNutrients(data);
+        PlayerData.get(sourcePlayer).addIntoxicatedTicks(data.intoxication());
 
         if (this.sourcePlayer instanceof ServerPlayer serverPlayer && nutritionData.getAverageNutrition() >= 0.999)
         {

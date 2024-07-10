@@ -7,90 +7,66 @@
 package net.dries007.tfc.util;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
 import java.util.function.Supplier;
-import com.google.common.base.Suppliers;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.mojang.datafixers.util.Either;
 import com.mojang.logging.LogUtils;
-import net.minecraft.network.FriendlyByteBuf;
+import com.mojang.serialization.Codec;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraftforge.common.crafting.CraftingHelper;
-import net.minecraftforge.common.crafting.conditions.ICondition;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.common.conditions.ConditionalOps;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
-import net.dries007.tfc.network.DataManagerSyncPacket;
 
-/**
- * An implementation of a typical json reload manager.
- */
 public class DataManager<T> extends SimpleJsonResourceReloadListener
 {
-    public static final Logger LOGGER = LogUtils.getLogger();
-    public static final Gson GSON = new Gson();
-
-    private static final Map<Class<?>, DataManager<?>> NETWORK_TYPES = new HashMap<>();
-
-    private static <T> void assertUniquePacketTypes(DataManager<?> instance, @Nullable Supplier<? extends DataManagerSyncPacket<T>> networkPacketFactory)
-    {
-        if (Helpers.ASSERTIONS_ENABLED && networkPacketFactory != null)
-        {
-            final Class<?> packetType = networkPacketFactory.get().getClass();
-            final DataManager<?> old = NETWORK_TYPES.put(packetType, instance);
-            if (old != null)
-            {
-                throw new IllegalStateException("Packet class " + packetType.getSimpleName() + " registered for managers for " + old.typeName + " and " + instance.typeName);
-            }
-        }
-    }
+    private static final Logger LOGGER = LogUtils.getLogger();
+    private static final Gson GSON = new Gson();
 
     protected final BiMap<ResourceLocation, T> types;
     protected final String typeName;
 
-    @Nullable protected final BiFunction<ResourceLocation, FriendlyByteBuf, T> networkFactory;
-    @Nullable protected final BiConsumer<T, FriendlyByteBuf> networkEncoder;
-    @Nullable protected final Supplier<? extends DataManagerSyncPacket<T>> networkPacketFactory;
+    protected final Codec<T> codec;
+    protected final @Nullable StreamCodec<RegistryFriendlyByteBuf, T> streamCodec;
 
-    private final BiFunction<ResourceLocation, JsonObject, T> factory;
     private final Map<ResourceLocation, Reference<T>> references;
     private final Object referencesLock = new Object();
 
-    public DataManager(ResourceLocation domain, String typeName, BiFunction<ResourceLocation, JsonObject, T> factory)
+    /**
+     * Create a {@link DataManager} that is not synced to client
+     */
+    public DataManager(ResourceLocation domain, String typeName, Codec<T> codec)
     {
-        this(domain, typeName, factory, null, null, null);
+        this(domain, typeName, codec, null);
     }
 
-    public DataManager(ResourceLocation domain, String typeName, BiFunction<ResourceLocation, JsonObject, T> factory, @Nullable BiFunction<ResourceLocation, FriendlyByteBuf, T> networkFactory, @Nullable BiConsumer<T, FriendlyByteBuf> networkEncoder, @Nullable Supplier<? extends DataManagerSyncPacket<T>> networkPacketFactory)
+    /**
+     * Create a {@link DataManager} that is synced to client
+     */
+    public DataManager(ResourceLocation domain, String typeName, Codec<T> codec, @Nullable StreamCodec<RegistryFriendlyByteBuf, T> streamCodec)
     {
         super(GSON, domain.getNamespace() + "/" + domain.getPath());
 
-        assertUniquePacketTypes(this, networkPacketFactory);
-
-        this.factory = factory;
-        this.references = new HashMap<>();
-        this.networkFactory = networkFactory;
-        this.networkEncoder = networkEncoder;
-        this.networkPacketFactory = networkPacketFactory;
-
         this.types = HashBiMap.create();
         this.typeName = typeName;
+        this.codec = codec;
+        this.streamCodec = streamCodec;
+        this.references = new HashMap<>();
     }
 
     /**
@@ -116,9 +92,8 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
     }
 
     /**
-     * Returns a reference to an element of this data manager, by id.
-     * <p>
-     * This can be used to reference an element before the data itself is loaded. Once the data is loaded, this will throw an error if it was not provided, and can be safely unboxed after the fact.
+     * Returns a reference to an element of this data manager, by id. This can be used to reference an element before the data itself
+     * is loaded. Once the data is loaded, this will throw an error if it was not provided, and can be safely unboxed after the fact.
      * <p>
      * This method can be called concurrently from i.e. recipe loading.
      */
@@ -132,42 +107,29 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
         return ref;
     }
 
+    public Map<ResourceLocation, T> getElements()
+    {
+        return Collections.unmodifiableMap(types);
+    }
+
     public Set<T> getValues()
     {
         return types.values();
     }
 
-    public DataManagerSyncPacket<T> createSyncPacket()
+    public boolean isSynced()
     {
-        return createEmptyPacket().with(types);
+        return streamCodec != null;
     }
 
-    public DataManagerSyncPacket<T> createEmptyPacket()
+    public StreamCodec<RegistryFriendlyByteBuf, T> streamCodec()
     {
-        assert networkPacketFactory != null;
-        return networkPacketFactory.get();
+        return Objects.requireNonNull(streamCodec);
     }
 
-    public T read(ResourceLocation id, JsonObject obj)
+    public void onSync(boolean isMemoryConnection, Map<ResourceLocation, T> elements)
     {
-        return factory.apply(id, obj);
-    }
-
-    public void rawToNetwork(FriendlyByteBuf buffer, T element)
-    {
-        assert networkEncoder != null;
-        networkEncoder.accept(element, buffer);
-    }
-
-    public T rawFromNetwork(ResourceLocation id, FriendlyByteBuf buffer)
-    {
-        assert networkFactory != null;
-        return networkFactory.apply(id, buffer);
-    }
-
-    public void onSync(NetworkEvent.Context context, Map<ResourceLocation, T> elements)
-    {
-        if (context.getNetworkManager().isMemoryConnection())
+        if (isMemoryConnection)
         {
             LOGGER.info("Ignored {}(s) sync from logical server", typeName);
         }
@@ -185,21 +147,14 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
     protected void apply(Map<ResourceLocation, JsonElement> elements, ResourceManager resourceManagerIn, ProfilerFiller profilerIn)
     {
         types.clear();
+
+        final ConditionalOps<JsonElement> ops = makeConditionalOps();
         for (Map.Entry<ResourceLocation, JsonElement> entry : elements.entrySet())
         {
             final ResourceLocation name = entry.getKey();
-            final JsonObject json = GsonHelper.convertToJsonObject(entry.getValue(), typeName);
             try
             {
-                if (CraftingHelper.processConditions(json, "conditions", ICondition.IContext.EMPTY))
-                {
-                    T object = read(name, json);
-                    types.put(name, object);
-                }
-                else
-                {
-                    LOGGER.debug("Skipping loading {} '{}' as it's conditions were not met", typeName, name);
-                }
+                types.put(name, codec.parse(ops, entry.getValue()).getOrThrow(JsonParseException::new));
             }
             catch (IllegalArgumentException | JsonParseException e)
             {

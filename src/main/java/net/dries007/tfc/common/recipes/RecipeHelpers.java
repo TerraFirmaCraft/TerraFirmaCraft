@@ -26,7 +26,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.items.IItemHandler;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
@@ -40,6 +43,11 @@ public final class RecipeHelpers
     public static Collection<Item> itemKeys(Ingredient ingredient)
     {
         return Arrays.stream(ingredient.getItems()).map(ItemStack::getItem).toList();
+    }
+
+    public static Collection<Fluid> fluidKeys(FluidIngredient ingredient)
+    {
+        return Arrays.stream(ingredient.getStacks()).map(FluidStack::getFluid).toList();
     }
 
     // todo: when porting, we can remove the `CraftingInput` construct here, and just store a `Iterable<ItemStack>`

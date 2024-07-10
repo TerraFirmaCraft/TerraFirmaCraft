@@ -6,69 +6,46 @@
 
 package net.dries007.tfc.util;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.stream.Collectors;
-import com.google.gson.JsonObject;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.network.DataManagerSyncPacket;
+import net.dries007.tfc.common.recipes.RecipeHelpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
-public class ItemDamageResistance extends PhysicalDamageTypeData
-{
-    public static final DataManager<ItemDamageResistance> MANAGER = new DataManager<>(Helpers.identifier("item_damage_resistances"), "item_damage_resistances", ItemDamageResistance::new, ItemDamageResistance::new, ItemDamageResistance::encode, Packet::new);
-    public static final IndirectHashCollection<Item, ItemDamageResistance> CACHE = IndirectHashCollection.create(ItemDamageResistance::getValidItems, MANAGER::getValues);
+public record ItemDamageResistance(
+    Ingredient ingredient,
+    PhysicalDamageTypeData damages
+) {
+    public static final Codec<ItemDamageResistance> CODEC = RecordCodecBuilder.create(i -> i.group(
+        Ingredient.CODEC.fieldOf("ingredient").forGetter(c -> c.ingredient),
+        PhysicalDamageTypeData.CODEC.forGetter(c -> c.damages)
+    ).apply(i, ItemDamageResistance::new));
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, ItemDamageResistance> STREAM_CODEC = StreamCodec.composite(
+        Ingredient.CONTENTS_STREAM_CODEC, c -> c.ingredient,
+        PhysicalDamageTypeData.STREAM_CODEC, c -> c.damages,
+        ItemDamageResistance::new
+    );
+
+    public static final DataManager<ItemDamageResistance> MANAGER = new DataManager<>(Helpers.identifier("item_damage_resistances"), "item_damage_resistances", CODEC, STREAM_CODEC);
+    public static final IndirectHashCollection<Item, ItemDamageResistance> CACHE = IndirectHashCollection.create(c -> RecipeHelpers.itemKeys(c.ingredient), MANAGER::getValues);
 
     @Nullable
     public static ItemDamageResistance get(ItemStack item)
     {
         for (ItemDamageResistance resist : CACHE.getAll(item.getItem()))
         {
-            if (resist.matches(item))
+            if (resist.ingredient.test(item))
             {
                 return resist;
             }
         }
         return null;
     }
-
-    private final Ingredient ingredient;
-
-    public ItemDamageResistance(ResourceLocation id, JsonObject json)
-    {
-        super(id, json);
-        this.ingredient = Ingredient.fromJson(json.get("ingredient"));
-    }
-
-    public ItemDamageResistance(ResourceLocation id, FriendlyByteBuf buffer)
-    {
-        super(id, buffer);
-        ingredient = Ingredient.fromNetwork(buffer);
-    }
-
-    @Override
-    public void encode(FriendlyByteBuf buffer)
-    {
-        super.encode(buffer);
-        ingredient.toNetwork(buffer);
-    }
-
-    public boolean matches(ItemStack item)
-    {
-        return ingredient.test(item);
-    }
-
-    public Collection<Item> getValidItems()
-    {
-        return Arrays.stream(ingredient.getItems()).map(ItemStack::getItem).collect(Collectors.toSet());
-    }
-
-    public static class Packet extends DataManagerSyncPacket<ItemDamageResistance> {}
-
 }
