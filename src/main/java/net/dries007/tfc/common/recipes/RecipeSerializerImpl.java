@@ -18,4 +18,10 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 public record RecipeSerializerImpl<R extends Recipe<?>>(
     MapCodec<R> codec,
     StreamCodec<RegistryFriendlyByteBuf, R> streamCodec
-) implements RecipeSerializer<R> {}
+) implements RecipeSerializer<R>
+{
+    public RecipeSerializerImpl(R singleInstance)
+    {
+        this(MapCodec.unit(singleInstance), StreamCodec.unit(singleInstance));
+    }
+}

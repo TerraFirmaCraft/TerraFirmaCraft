@@ -18,7 +18,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.crafting.IShapedRecipe;
 
 import net.dries007.tfc.client.ClientHelpers;
-import net.dries007.tfc.common.recipes.ExtraProductsCraftingRecipe;
 
 public record ExtraProductsExtension(ExtraProductsCraftingRecipe<?> recipe) implements ICraftingCategoryExtension
 {

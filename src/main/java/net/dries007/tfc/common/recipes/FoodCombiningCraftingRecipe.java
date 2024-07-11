@@ -6,11 +6,10 @@
 
 package net.dries007.tfc.common.recipes;
 
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
@@ -19,21 +18,23 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.IFood;
 
-public class FoodCombiningCraftingRecipe extends CustomRecipe implements ISimpleRecipe<CraftingContainer>
+public class FoodCombiningCraftingRecipe extends CustomRecipe
 {
-    public FoodCombiningCraftingRecipe(ResourceLocation id, CraftingBookCategory category)
+    public static final FoodCombiningCraftingRecipe INSTANCE = new FoodCombiningCraftingRecipe();
+
+    private FoodCombiningCraftingRecipe()
     {
-        super(id, category);
+        super(CraftingBookCategory.MISC);
     }
 
     @Override
-    public boolean matches(CraftingContainer inv, Level level)
+    public boolean matches(CraftingInput input, Level level)
     {
         int notEmptyCount = 0;
         ItemStack foodStack = ItemStack.EMPTY;
-        for (int i = 0; i < inv.getContainerSize(); i++)
+        for (int i = 0; i < input.size(); i++)
         {
-            final ItemStack stack = inv.getItem(i);
+            final ItemStack stack = input.getItem(i);
             if (!stack.isEmpty())
             {
                 notEmptyCount++;
@@ -64,14 +65,14 @@ public class FoodCombiningCraftingRecipe extends CustomRecipe implements ISimple
     }
 
     @Override
-    public ItemStack assemble(CraftingContainer inv, RegistryAccess access)
+    public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries)
     {
         ItemStack resultStack = ItemStack.EMPTY;
         int outputAmount = 0;
         long minCreationDate = -1;
-        for (int i = 0; i < inv.getContainerSize(); i++)
+        for (int i = 0; i < input.size(); i++)
         {
-            ItemStack stack = inv.getItem(i);
+            ItemStack stack = input.getItem(i);
             if (!stack.isEmpty())
             {
                 // Get the food capability
@@ -101,6 +102,12 @@ public class FoodCombiningCraftingRecipe extends CustomRecipe implements ISimple
         final long date = minCreationDate;
         FoodCapability.setCreationDate(resultStack, date);
         return resultStack;
+    }
+
+    @Override
+    public boolean canCraftInDimensions(int width, int height)
+    {
+        return true;
     }
 
     @Override

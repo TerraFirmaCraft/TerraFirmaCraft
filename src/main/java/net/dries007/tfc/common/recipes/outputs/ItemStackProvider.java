@@ -8,23 +8,15 @@ package net.dries007.tfc.common.recipes.outputs;
 
 import java.util.List;
 import java.util.function.Function;
-import java.util.function.Supplier;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.ShapedRecipe;
 
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.util.JsonHelpers;
 
 public record ItemStackProvider(
     ItemStack stack,
@@ -32,7 +24,7 @@ public record ItemStackProvider(
 ) {
     public static final Codec<ItemStackProvider> CODEC = Codec.either(
         RecordCodecBuilder.<ItemStackProvider>create(i -> i.group(
-            ItemStack.CODEC.fieldOf("stack").forGetter(c -> c.stack),
+            ItemStack.CODEC.optionalFieldOf("stack", ItemStack.EMPTY).forGetter(c -> c.stack),
             ItemStackModifier.CODEC.listOf().fieldOf("modifiers").forGetter(c -> c.modifiers)
         ).apply(i, ItemStackProvider::new)),
         ItemStack.CODEC
@@ -47,7 +39,6 @@ public record ItemStackProvider(
         ItemStackProvider::of
     );
 
-    private static final ItemStackModifier[] NONE = new ItemStackModifier[0];
     private static final ItemStackProvider EMPTY = of(ItemStack.EMPTY);
     private static final ItemStackProvider COPY_INPUT = of(ItemStack.EMPTY, CopyInputModifier.INSTANCE);
 

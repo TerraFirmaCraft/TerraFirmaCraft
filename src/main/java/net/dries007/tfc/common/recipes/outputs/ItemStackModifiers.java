@@ -36,17 +36,19 @@ public class ItemStackModifiers
     public static final Id<AddBaitToRodModifier> ADD_BAIT_TO_ROD = register("add_bait_to_rod", AddBaitToRodModifier.INSTANCE);
     public static final Id<AddGlassModifier> ADD_GLASS = register("add_glass", AddGlassModifier.INSTANCE);
     public static final Id<AddPowderModifier> ADD_POWDER = register("add_powder", AddPowderModifier.INSTANCE);
+    public static final Id<CraftingRemainderModifier> CRAFTING_REMAINDER = register("crafting_remainder", CraftingRemainderModifier.INSTANCE);
+    public static final Id<DamageCraftingRemainderModifier> DAMAGE_CRAFTING_REMAINDER = register("damage_crafting_remainder", DamageCraftingRemainderModifier.INSTANCE);
 
     public static final Id<AddTraitModifier> ADD_TRAIT = register("add_trait", AddTraitModifier.CODEC, AddTraitModifier.STREAM_CODEC);
     public static final Id<RemoveTraitModifier> REMOVE_TRAIT = register("remove_trait", RemoveTraitModifier.CODEC, RemoveTraitModifier.STREAM_CODEC);
     public static final Id<AddHeatModifier> ADD_HEAT = register("add_heat", AddHeatModifier.CODEC, AddHeatModifier.STREAM_CODEC);
     public static final Id<DyeLeatherModifier> DYE_LEATHER = register("dye_leather", DyeLeatherModifier.CODEC, DyeLeatherModifier.STREAM_CODEC);
     public static final Id<MealModifier> MEAL = register("meal", MealModifier.CODEC, MealModifier.STREAM_CODEC);
+    public static final Id<ExtraProductModifier> EXTRA_PRODUCT = register("extra_products", ExtraProductModifier.CODEC, ExtraProductModifier.STREAM_CODEC);
 
-    @SuppressWarnings("unchecked")
     private static <T extends ItemStackModifier> Id<T> register(String name, T singleInstance)
     {
-        return (Id<T>) new Id<>(TYPES.register(name, singleInstance::type));
+        return new Id<>(TYPES.register(name, () -> new ItemStackModifierType<>(MapCodec.unit(singleInstance), StreamCodec.unit(singleInstance))));
     }
 
     private static <T extends ItemStackModifier> Id<T> register(String name, MapCodec<T> codec, StreamCodec<RegistryFriendlyByteBuf, T> streamCodec)

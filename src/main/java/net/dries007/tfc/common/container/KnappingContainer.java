@@ -14,17 +14,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.recipes.TFCRecipeTypes;
-import net.dries007.tfc.common.recipes.input.NonEmptyInput;
+import net.dries007.tfc.common.recipes.KnappingRecipe;
 import net.dries007.tfc.util.data.KnappingPattern;
 import net.dries007.tfc.util.data.KnappingType;
 
-/**
- * Cannot implement {@link NonEmptyInput} due to obfuscation conflicts: {@link #stillValid(Player)} is implemented by different SRG methods from both {@link ItemStackContainer} and {@link NonEmptyInput}
- */
 public class KnappingContainer extends ItemStackContainer implements ButtonHandlerContainer, ISlotCallback
 {
     public static final int SLOT_OUTPUT = 0;
@@ -38,7 +33,6 @@ public class KnappingContainer extends ItemStackContainer implements ButtonHandl
 
     private final KnappingPattern pattern;
     private final ItemStack originalStack;
-    private final Query query;
 
     private boolean requiresReset;
     private boolean hasBeenModified;
@@ -49,7 +43,6 @@ public class KnappingContainer extends ItemStackContainer implements ButtonHandl
         super(containerType, windowId, playerInv, stack, hand, slot);
 
         this.knappingType = knappingType;
-        this.query = new Query(this);
 
         pattern = new KnappingPattern();
         hasBeenModified = false;
@@ -84,9 +77,10 @@ public class KnappingContainer extends ItemStackContainer implements ButtonHandl
         final Slot slot = slots.get(SLOT_OUTPUT);
         if (player.level() instanceof ServerLevel level)
         {
-            slot.set(level.getRecipeManager().getRecipeFor(TFCRecipeTypes.KNAPPING.get(), query, level)
-                .map(recipe -> recipe.assemble(query, level.registryAccess()))
-                .orElse(ItemStack.EMPTY));
+            final @Nullable KnappingRecipe recipe = KnappingRecipe.get(level, this);
+            slot.set(recipe != null
+                ? recipe.assemble()
+                : ItemStack.EMPTY);
         }
     }
 
@@ -177,9 +171,4 @@ public class KnappingContainer extends ItemStackContainer implements ButtonHandl
             hasConsumedIngredient = true;
         }
     }
-
-    /**
-     * see comment on {@link KnappingContainer}
-     */
-    public record Query(KnappingContainer container) implements NonEmptyInput {}
 }

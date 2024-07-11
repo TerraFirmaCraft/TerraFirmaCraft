@@ -12,7 +12,6 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -53,17 +52,11 @@ public class TFCRecipeSerializers
 
     // Crafting
 
-    public static final Id<DelegateRecipe<?>> DAMAGE_INPUTS_SHAPELESS_CRAFTING = register("damage_inputs_shapeless_crafting", () -> DelegateRecipe.Serializer.shapeless(DamageInputsCraftingRecipe.Shapeless::new));
-    public static final Id<DelegateRecipe<?>> DAMAGE_INPUT_SHAPED_CRAFTING = register("damage_inputs_shaped_crafting", () -> DelegateRecipe.Serializer.shaped(DamageInputsCraftingRecipe.Shaped::new));
-    public static final Id<ExtraProductsCraftingRecipe<?>> EXTRA_PRODUCTS_SHAPELESS_CRAFTING = register("extra_products_shapeless_crafting", () -> ExtraProductsCraftingRecipe.ExtraProductsSerializer.shapeless(ExtraProductsCraftingRecipe.Shapeless::new));
-    public static final Id<ExtraProductsCraftingRecipe<?>> EXTRA_PRODUCTS_SHAPED_CRAFTING = register("extra_products_shaped_crafting", () -> ExtraProductsCraftingRecipe.ExtraProductsSerializer.shaped(ExtraProductsCraftingRecipe.Shaped::new));
-    public static final Id<DelegateRecipe<?>> NO_REMAINDER_SHAPELESS_CRAFTING = register("no_remainder_shapeless_crafting", () -> DelegateRecipe.Serializer.shapeless(NoRemainderCraftingRecipe.Shapeless::new));
-    public static final Id<DelegateRecipe<?>> NO_REMAINDER_SHAPED_CRAFTING = register("no_remainder_shaped_crafting", () -> DelegateRecipe.Serializer.shaped(NoRemainderCraftingRecipe.Shaped::new));
+    public static final Id<FoodCombiningCraftingRecipe> FOOD_COMBINING_CRAFTING = register("food_combining", new RecipeSerializerImpl<>(FoodCombiningCraftingRecipe.INSTANCE));
+    public static final Id<CastingCraftingRecipe> CASTING_CRAFTING = register("casting_crafting", new RecipeSerializerImpl<>(CastingCraftingRecipe.INSTANCE));
 
-    public static final Id<FoodCombiningCraftingRecipe> FOOD_COMBINING_CRAFTING = register("food_combining", () -> new SimpleCraftingRecipeSerializer<>(FoodCombiningCraftingRecipe::new));
-    public static final Id<CastingCraftingRecipe> CASTING_CRAFTING = register("casting_crafting", () -> new SimpleCraftingRecipeSerializer<>(CastingCraftingRecipe::new));
-    public static final Id<AdvancedShapedRecipe> ADVANCED_SHAPED_CRAFTING = register("advanced_shaped_crafting", AdvancedShapedRecipe.Serializer::new);
-    public static final Id<AdvancedShapelessRecipe> ADVANCED_SHAPELESS_CRAFTING = register("advanced_shapeless_crafting", AdvancedShapelessRecipe.Serializer::new);
+    public static final Id<AdvancedShapedRecipe> ADVANCED_SHAPED_CRAFTING = register("advanced_shaped_crafting", AdvancedShapedRecipe.CODEC, AdvancedShapedRecipe.STREAM_CODEC);
+    public static final Id<AdvancedShapelessRecipe> ADVANCED_SHAPELESS_CRAFTING = register("advanced_shapeless_crafting", AdvancedShapelessRecipe.CODEC, AdvancedShapelessRecipe.STREAM_CODEC);
 
     private static <R extends Recipe<?>> Id<R> register(String name, MapCodec<R> codec, StreamCodec<RegistryFriendlyByteBuf, R> stream)
     {

@@ -8,19 +8,19 @@ package net.dries007.tfc.common.recipes.outputs;
 
 import net.minecraft.world.item.ItemStack;
 
-public enum CopyInputModifier implements ItemStackModifier
+public enum CraftingRemainderModifier implements ItemStackModifier
 {
     INSTANCE;
 
     @Override
     public ItemStack apply(ItemStack stack, ItemStack input)
     {
-        return input.copy();
+        return input.hasCraftingRemainingItem() ? input.getCraftingRemainingItem() : ItemStack.EMPTY;
     }
 
     @Override
     public ItemStackModifierType<?> type()
     {
-        return ItemStackModifiers.COPY_INPUT.get();
+        return ItemStackModifiers.CRAFTING_REMAINDER.get();
     }
 }

@@ -6,24 +6,21 @@
 
 package net.dries007.tfc.common.recipes;
 
-import java.util.Map;
-
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
+import java.util.Optional;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
-import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
-import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
-import net.dries007.tfc.util.JsonHelpers;
 
 /**
  * A shaped recipe type which uses {@link ItemStackProvider} as it's output mechanism
@@ -31,104 +28,73 @@ import net.dries007.tfc.util.JsonHelpers;
  */
 public class AdvancedShapedRecipe extends ShapedRecipe
 {
-    private final ItemStackProvider providerResult;
-    private final int inputSlot;
+    public static final MapCodec<AdvancedShapedRecipe> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
+        RecipeSerializer.SHAPED_RECIPE.codec().forGetter(c -> c),
+        ItemStackProvider.CODEC.optionalFieldOf("result_provider").forGetter(c -> c.result),
+        ItemStackProvider.CODEC.optionalFieldOf("remainder").forGetter(c -> c.remainder),
+        Codec.INT.optionalFieldOf("input_row", 0).forGetter(c -> c.inputRow),
+        Codec.INT.optionalFieldOf("input_column", 0).forGetter(c -> c.inputColumn)
+    ).apply(i, AdvancedShapedRecipe::new));
 
-    public AdvancedShapedRecipe(ResourceLocation id, String group, int width, int height, NonNullList<Ingredient> recipeItems, ItemStackProvider result, int inputSlot)
+    public static final StreamCodec<RegistryFriendlyByteBuf, AdvancedShapedRecipe> STREAM_CODEC = StreamCodec.composite(
+        RecipeSerializer.SHAPED_RECIPE.streamCodec(), c -> c,
+        ByteBufCodecs.optional(ItemStackProvider.STREAM_CODEC), c -> c.result,
+        ByteBufCodecs.optional(ItemStackProvider.STREAM_CODEC), c -> c.remainder,
+        ByteBufCodecs.VAR_INT, c -> c.inputRow,
+        ByteBufCodecs.VAR_INT, c -> c.inputColumn,
+        AdvancedShapedRecipe::new
+    );
+
+    private final Optional<ItemStackProvider> result;
+    private final Optional<ItemStackProvider> remainder;
+    private final int inputSlot, inputRow, inputColumn;
+
+    public AdvancedShapedRecipe(ShapedRecipe parent, Optional<ItemStackProvider> result, Optional<ItemStackProvider> remainder, int inputRow, int inputColumn)
     {
-        super(id, group, CraftingBookCategory.MISC, width, height, recipeItems, ItemStack.EMPTY);
+        super(parent.getGroup(), parent.category(), parent.pattern(), RecipeHelpers.getResultUnsafe(parent), parent.showNotification());
 
-        this.providerResult = result;
-        this.inputSlot = inputSlot;
+        this.result = result;
+        this.remainder = remainder;
+        this.inputSlot = RecipeHelpers.dissolveRowColumn(inputRow, inputColumn, parent.pattern().width);
+        this.inputRow = inputRow;
+        this.inputColumn = inputColumn;
     }
 
     @Override
-    public ItemStack getResultItem(RegistryAccess registryAccess)
+    public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries)
     {
-        return providerResult.getEmptyStack();
+        return result.map(result -> {
+            RecipeHelpers.setCraftingInput(input);
+            final int matchSlot = RecipeHelpers.translateMatch(this, inputSlot, input);
+            final ItemStack inputStack = matchSlot != -1 ? input.getItem(matchSlot).copy() : ItemStack.EMPTY;
+            final ItemStack output = result.getSingleStack(inputStack);
+            RecipeHelpers.clearCraftingInput();
+            return output;
+        }).orElseGet(() -> super.assemble(input, registries));
     }
 
     @Override
-    public ItemStack assemble(CraftingContainer inventory, RegistryAccess registryAccess)
+    public ItemStack getResultItem(HolderLookup.Provider registries)
     {
-        RecipeHelpers.setCraftingInput(inventory);
-        final int matchSlot = RecipeHelpers.translateMatch(this, inputSlot, inventory);
-        final ItemStack inputStack = matchSlot != -1 ? inventory.getItem(matchSlot).copy() : ItemStack.EMPTY;
-        final ItemStack result = providerResult.getSingleStack(inputStack);
-        RecipeHelpers.clearCraftingInput();
-        return result;
+        return result.map(ItemStackProvider::getEmptyStack).orElseGet(() -> super.getResultItem(registries));
+    }
+
+    @Override
+    public NonNullList<ItemStack> getRemainingItems(CraftingInput input)
+    {
+        return remainder.map(remainder -> RecipeHelpers.getRemainderItemsWithProvider(input, remainder))
+            .orElseGet(() -> super.getRemainingItems(input));
     }
 
     @Override
     public boolean isSpecial()
     {
-        return providerResult.dependsOnInput();
+        return result.isPresent() && result.get().dependsOnInput();
     }
 
     @Override
     public RecipeSerializer<?> getSerializer()
     {
         return TFCRecipeSerializers.ADVANCED_SHAPED_CRAFTING.get();
-    }
-
-    public static class Serializer extends RecipeSerializerImpl<AdvancedShapedRecipe>
-    {
-        @Override
-        public AdvancedShapedRecipe fromJson(ResourceLocation recipeId, JsonObject json)
-        {
-            final String group = GsonHelper.getAsString(json, "group", "");
-            final Map<String, Ingredient> keys = RecipeHelpers.keyFromJson(GsonHelper.getAsJsonObject(json, "key"));
-            final String[] pattern = RecipeHelpers.shrink(RecipeHelpers.patternFromJson(GsonHelper.getAsJsonArray(json, "pattern")));
-            final int width = pattern[0].length();
-            final int height = pattern.length;
-            final NonNullList<Ingredient> recipeItems = RecipeHelpers.dissolvePattern(pattern, keys, width, height);
-            final ItemStackProvider providerResult = ItemStackProvider.fromJson(JsonHelpers.getAsJsonObject(json, "result"));
-            final int inputRow = JsonHelpers.getAsInt(json, "input_row");
-            final int inputCol = JsonHelpers.getAsInt(json, "input_column");
-            if (inputRow < 0 || inputRow >= width)
-            {
-                throw new JsonParseException("input_row must be in the range [0, width)");
-            }
-            if (inputCol < 0 || inputCol >= height)
-            {
-                throw new JsonParseException("input_column must be in the range [0, height)");
-            }
-            final int inputSlot = RecipeHelpers.dissolveRowColumn(inputRow, inputCol, width);
-            return new AdvancedShapedRecipe(recipeId, group, width, height, recipeItems, providerResult, inputSlot);
-        }
-
-        @Override
-        public AdvancedShapedRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
-        {
-            final int width = buffer.readVarInt();
-            final int height = buffer.readVarInt();
-            final String group = buffer.readUtf();
-            final NonNullList<Ingredient> recipeItems = NonNullList.withSize(width * height, Ingredient.EMPTY);
-
-            for (int k = 0; k < recipeItems.size(); ++k)
-            {
-                recipeItems.set(k, Ingredient.fromNetwork(buffer));
-            }
-
-            final ItemStackProvider provider = ItemStackProvider.fromNetwork(buffer);
-            final int inputSlot = buffer.readVarInt();
-            return new AdvancedShapedRecipe(recipeId, group, width, height, recipeItems, provider, inputSlot);
-        }
-
-        @Override
-        public void toNetwork(FriendlyByteBuf buffer, AdvancedShapedRecipe recipe)
-        {
-            buffer.writeVarInt(recipe.getWidth());
-            buffer.writeVarInt(recipe.getHeight());
-            buffer.writeUtf(recipe.getGroup());
-
-            for (Ingredient ingredient : recipe.getIngredients())
-            {
-                ingredient.toNetwork(buffer);
-            }
-
-            recipe.providerResult.toNetwork(buffer);
-            buffer.writeVarInt(recipe.inputSlot);
-        }
     }
 }

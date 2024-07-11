@@ -17,9 +17,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.container.KnappingContainer;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.data.DataManager;
 import net.dries007.tfc.util.data.KnappingPattern;
 import net.dries007.tfc.util.data.KnappingType;
@@ -40,6 +42,19 @@ public class KnappingRecipe implements INoopInputRecipe
         ItemStack.STREAM_CODEC, c -> c.result,
         KnappingRecipe::new
     );
+
+    @Nullable
+    public static KnappingRecipe get(Level level, KnappingContainer input)
+    {
+        for (KnappingRecipe recipe : Helpers.getRecipes(level, TFCRecipeTypes.KNAPPING).values())
+        {
+            if (recipe.matches(input))
+            {
+                return recipe;
+            }
+        }
+        return null;
+    }
 
     private final DataManager.Reference<KnappingType> knappingType;
     private final KnappingPattern pattern;
@@ -64,6 +79,11 @@ public class KnappingRecipe implements INoopInputRecipe
     public boolean matchesItem(ItemStack stack)
     {
         return ingredient.isEmpty() || ingredient.get().test(stack);
+    }
+
+    public ItemStack assemble()
+    {
+        return result.copy();
     }
 
     public KnappingType getKnappingType()

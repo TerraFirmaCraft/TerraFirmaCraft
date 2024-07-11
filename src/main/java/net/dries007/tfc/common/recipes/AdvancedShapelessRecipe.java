@@ -6,79 +6,93 @@
 
 package net.dries007.tfc.common.recipes;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
+import java.util.Optional;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
-import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
-import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.JsonHelpers;
-import org.jetbrains.annotations.Nullable;
 
 /**
- * A shaped recipe type which uses {@link ItemStackProvider} as it's output mechanism
- * The seed ingredient determines which ItemStack from the inventory will be used to compute the output
- * There is a requirement that an ingredient in the inventory matches the seed ingredient
- * Any number of items may match the seed ingredient, but only the first is used.
+ * An advanced recipe that takes advantage of two additional mechanisms to provide a rich set of behaviors.
+ * <ul>
+ *     <li>It uses an {@link ItemStackProvider} as an output, identifying the input via the {@code primary_ingredient}</li>
+ *     <li>It uses an {@link ItemStackProvider} to compute the remaining items, allowing damaging inputs or other functions</li>
+ * </ul>
  */
 public class AdvancedShapelessRecipe extends ShapelessRecipe
 {
-    protected final ItemStackProvider result;
-    protected final @Nullable Ingredient primaryIngredient;
+    public static final MapCodec<AdvancedShapelessRecipe> CODEC = RecordCodecBuilder.<AdvancedShapelessRecipe>mapCodec(i -> i.group(
+        RecipeSerializer.SHAPELESS_RECIPE.codec().forGetter(c -> c),
+        ItemStackProvider.CODEC.optionalFieldOf("result_provider").forGetter(c -> c.result),
+        ItemStackProvider.CODEC.optionalFieldOf("remainder").forGetter(c -> c.remainder),
+        Ingredient.CODEC.optionalFieldOf("primary_ingredient").forGetter(c -> c.primaryIngredient)
+    ).apply(i, AdvancedShapelessRecipe::new)).validate(recipe -> recipe.result.isPresent() && recipe.primaryIngredient.isEmpty()
+        ? DataResult.error(() -> "If result_provider is present, then primary_ingredient must also be present")
+        : DataResult.success(recipe));
 
-    public AdvancedShapelessRecipe(ResourceLocation id, String group, ItemStackProvider result, NonNullList<Ingredient> ingredients, @Nullable Ingredient primaryIngredient)
+    public static final StreamCodec<RegistryFriendlyByteBuf, AdvancedShapelessRecipe> STREAM_CODEC = StreamCodec.composite(
+        RecipeSerializer.SHAPELESS_RECIPE.streamCodec(), c -> c,
+        ByteBufCodecs.optional(ItemStackProvider.STREAM_CODEC), c -> c.result,
+        ByteBufCodecs.optional(ItemStackProvider.STREAM_CODEC), c -> c.remainder,
+        ByteBufCodecs.optional(Ingredient.CONTENTS_STREAM_CODEC), c -> c.primaryIngredient,
+        AdvancedShapelessRecipe::new
+    );
+
+    private final Optional<ItemStackProvider> result;
+    private final Optional<ItemStackProvider> remainder;
+    private final Optional<Ingredient> primaryIngredient;
+
+    public AdvancedShapelessRecipe(ShapelessRecipe parent, Optional<ItemStackProvider> result, Optional<ItemStackProvider> remainder, Optional<Ingredient> primaryIngredient)
     {
-        super(id, group, CraftingBookCategory.MISC, result.getEmptyStack(), ingredients);
+        super(parent.getGroup(), parent.category(), RecipeHelpers.getResultUnsafe(parent), parent.getIngredients());
+
         this.result = result;
+        this.remainder = remainder;
         this.primaryIngredient = primaryIngredient;
     }
 
     @Override
-    public boolean matches(CraftingContainer inv, Level level)
+    public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries)
     {
-        return super.matches(inv, level) && (primaryIngredient == null || !getSeed(inv).isEmpty());
+        return this.result.map(result -> {
+            RecipeHelpers.setCraftingInput(input);
+            final ItemStack output = result.getSingleStack(getPrimaryInput(input).copy());
+            RecipeHelpers.clearCraftingInput();
+            return output;
+        }).orElseGet(() -> super.assemble(input, registries));
     }
 
     @Override
-    public ItemStack assemble(CraftingContainer inventory, RegistryAccess registryAccess)
+    public ItemStack getResultItem(HolderLookup.Provider registries)
     {
-        RecipeHelpers.setCraftingInput(inventory);
-        final ItemStack result = this.result.getSingleStack(getSeed(inventory).copy());
-        RecipeHelpers.clearCraftingInput();
-        return result;
+        return result.map(ItemStackProvider::getEmptyStack).orElseGet(() -> super.getResultItem(registries));
     }
 
-    public ItemStackProvider getResult()
+    @Override
+    public NonNullList<ItemStack> getRemainingItems(CraftingInput input)
     {
-        return result;
+        return remainder.map(remainder -> RecipeHelpers.getRemainderItemsWithProvider(input, remainder))
+            .orElseGet(() -> super.getRemainingItems(input));
     }
 
-    @Nullable
-    public Ingredient getPrimaryIngredient()
+    private ItemStack getPrimaryInput(CraftingInput input)
     {
-        return primaryIngredient;
-    }
-
-    private ItemStack getSeed(CraftingContainer inv)
-    {
-        if (primaryIngredient == null)
+        final Ingredient primaryInput = primaryIngredient.orElseThrow();
+        for (int i = 0; i < input.size(); i++)
         {
-            return ItemStack.EMPTY;
-        }
-        for (int i = 0; i < inv.getContainerSize(); i++)
-        {
-            ItemStack item = inv.getItem(i);
-            if (primaryIngredient.test(item))
+            final ItemStack item = input.getItem(i);
+            if (primaryInput.test(item))
             {
                 return item;
             }
@@ -89,58 +103,12 @@ public class AdvancedShapelessRecipe extends ShapelessRecipe
     @Override
     public boolean isSpecial()
     {
-        return result.dependsOnInput();
+        return result.isPresent() && result.get().dependsOnInput();
     }
 
     @Override
     public RecipeSerializer<?> getSerializer()
     {
         return TFCRecipeSerializers.ADVANCED_SHAPELESS_CRAFTING.get();
-    }
-
-    public static class Serializer extends RecipeSerializerImpl<AdvancedShapelessRecipe>
-    {
-        @Override
-        public AdvancedShapelessRecipe fromJson(ResourceLocation id, JsonObject json)
-        {
-            final String group = JsonHelpers.getAsString(json, "group", "");
-            final NonNullList<Ingredient> ingredients = RecipeHelpers.itemsFromJson(JsonHelpers.getAsJsonArray(json, "ingredients"));
-            if (ingredients.isEmpty() || ingredients.size() > 3 * 3)
-            {
-                throw new JsonParseException("ingredients should be 1 to 9 ingredients long, it was: " + ingredients.size());
-            }
-            final ItemStackProvider result = ItemStackProvider.fromJson(JsonHelpers.getAsJsonObject(json, "result"));
-            final Ingredient primaryIngredient = json.has("primary_ingredient") ? Ingredient.fromJson(json.get("primary_ingredient")) : null;
-            return new AdvancedShapelessRecipe(id, group, result, ingredients, primaryIngredient);
-        }
-
-        @Nullable
-        @Override
-        public AdvancedShapelessRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buffer)
-        {
-            final String group = buffer.readUtf();
-            final int size = buffer.readVarInt();
-            final NonNullList<Ingredient> ingredients = NonNullList.withSize(size, Ingredient.EMPTY);
-            for (int j = 0; j < ingredients.size(); ++j)
-            {
-                ingredients.set(j, Ingredient.fromNetwork(buffer));
-            }
-            final ItemStackProvider result = ItemStackProvider.fromNetwork(buffer);
-            final Ingredient primaryIngredient = Helpers.decodeNullable(buffer, Ingredient::fromNetwork);
-            return new AdvancedShapelessRecipe(id, group, result, ingredients, primaryIngredient);
-        }
-
-        @Override
-        public void toNetwork(FriendlyByteBuf buffer, AdvancedShapelessRecipe recipe)
-        {
-            buffer.writeUtf(recipe.getGroup());
-            buffer.writeVarInt(recipe.getIngredients().size());
-            for (Ingredient ingredient : recipe.getIngredients())
-            {
-                ingredient.toNetwork(buffer);
-            }
-            recipe.result.toNetwork(buffer);
-            Helpers.encodeNullable(recipe.primaryIngredient, buffer, Ingredient::toNetwork);
-        }
     }
 }

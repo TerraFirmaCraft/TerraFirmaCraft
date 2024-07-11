@@ -6,40 +6,40 @@
 
 package net.dries007.tfc.common.recipes;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.MoldLike;
 
-public class CastingCraftingRecipe extends CustomRecipe implements ISimpleRecipe<CraftingContainer>
+public class CastingCraftingRecipe extends CustomRecipe
 {
-    public CastingCraftingRecipe(ResourceLocation id, CraftingBookCategory category)
+    public static final CastingCraftingRecipe INSTANCE = new CastingCraftingRecipe();
+
+    private CastingCraftingRecipe()
     {
-        super(id, category);
+        super(CraftingBookCategory.MISC);
     }
 
     @Override
-    public boolean matches(CraftingContainer inventory, @Nullable Level level)
+    public boolean matches(CraftingInput input, Level level)
     {
-        final MoldLike mold = getMold(inventory);
+        final MoldLike mold = getMold(input);
         return mold != null && !mold.isMolten() && CastingRecipe.get(mold) != null;
     }
 
     @Override
-    public ItemStack assemble(CraftingContainer inventory, RegistryAccess access)
+    public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries)
     {
-        final MoldLike mold = getMold(inventory);
+        final MoldLike mold = getMold(input);
         if (mold != null)
         {
             final CastingRecipe recipe = CastingRecipe.get(mold);
@@ -52,19 +52,26 @@ public class CastingCraftingRecipe extends CustomRecipe implements ISimpleRecipe
     }
 
     @Override
-    public NonNullList<ItemStack> getRemainingItems(CraftingContainer inv)
+    public boolean canCraftInDimensions(int width, int height)
     {
-        NonNullList<ItemStack> items = NonNullList.withSize(inv.getContainerSize(), ItemStack.EMPTY);
-        for (int i = 0; i < inv.getContainerSize(); i++)
+        return true;
+    }
+
+    @Override
+    public NonNullList<ItemStack> getRemainingItems(CraftingInput input)
+    {
+        NonNullList<ItemStack> items = NonNullList.withSize(input.size(), ItemStack.EMPTY);
+        for (int i = 0; i < input.size(); i++)
         {
-            ItemStack item = inv.getItem(i);
+            ItemStack item = input.getItem(i);
             final MoldLike mold = MoldLike.get(item);
             if (!item.isEmpty() && mold != null)
             {
                 final CastingRecipe recipe = CastingRecipe.get(mold);
                 if (recipe != null)
                 {
-                    final Player player = ForgeHooks.getCraftingPlayer();
+                    final @Nullable Player player = RecipeHelpers.getCraftingPlayer();
+
                     // greater than the break chance == we should keep the item
                     if (player != null && player.getRandom().nextFloat() > recipe.getBreakChance())
                     {
@@ -87,12 +94,12 @@ public class CastingCraftingRecipe extends CustomRecipe implements ISimpleRecipe
      * @return The single mold in the crafting container, if one and only exactly one can be found, paired with its ItemStack, otherwise null.
      */
     @Nullable
-    private MoldLike getMold(CraftingContainer inventory)
+    private MoldLike getMold(CraftingInput input)
     {
         MoldLike mold = null;
-        for (int i = 0; i < inventory.getContainerSize(); i++)
+        for (int i = 0; i < input.size(); i++)
         {
-            ItemStack stack = inventory.getItem(i);
+            ItemStack stack = input.getItem(i);
             if (!stack.isEmpty())
             {
                 if (mold == null)

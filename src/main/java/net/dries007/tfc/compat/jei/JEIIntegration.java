@@ -65,7 +65,6 @@ import net.dries007.tfc.common.recipes.BlastFurnaceRecipe;
 import net.dries007.tfc.common.recipes.BloomeryRecipe;
 import net.dries007.tfc.common.recipes.CastingRecipe;
 import net.dries007.tfc.common.recipes.ChiselRecipe;
-import net.dries007.tfc.common.recipes.ExtraProductsCraftingRecipe;
 import net.dries007.tfc.common.recipes.GlassworkingRecipe;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.InstantBarrelRecipe;
