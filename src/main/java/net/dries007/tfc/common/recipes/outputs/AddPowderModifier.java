@@ -8,8 +8,8 @@ package net.dries007.tfc.common.recipes.outputs;
 
 import net.minecraft.world.item.ItemStack;
 
-import net.dries007.tfc.common.capabilities.glass.GlassOperation;
-import net.dries007.tfc.common.capabilities.glass.GlassWorkData;
+import net.dries007.tfc.common.component.glass.GlassOperation;
+import net.dries007.tfc.common.component.glass.GlassWorking;
 import net.dries007.tfc.common.recipes.RecipeHelpers;
 
 public enum AddPowderModifier implements ItemStackModifier
@@ -24,7 +24,7 @@ public enum AddPowderModifier implements ItemStackModifier
             final GlassOperation op = GlassOperation.getByPowder(input);
             if (op != null)
             {
-                GlassWorkData.apply(stack, op);
+                GlassWorking.apply(stack, op);
                 return stack;
             }
         }

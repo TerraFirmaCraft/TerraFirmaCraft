@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.capabilities.glass;
+package net.dries007.tfc.common.component.glass;
 
 import java.util.List;
 import net.minecraft.network.chat.Component;

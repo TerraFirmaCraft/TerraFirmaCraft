@@ -15,7 +15,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.server.command.EnumArgument;
 
-import net.dries007.tfc.common.capabilities.forge.ForgingBonus;
+import net.dries007.tfc.common.component.forge.ForgingBonus;
 
 public final class ForgeCommand
 {

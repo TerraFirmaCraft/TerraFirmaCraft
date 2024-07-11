@@ -31,8 +31,8 @@ import net.dries007.tfc.common.blockentities.HotPouredGlassBlockEntity;
 import net.dries007.tfc.common.blocks.GlassBasinBlock;
 import net.dries007.tfc.common.blocks.HotPouredGlassBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.capabilities.glass.GlassOperation;
-import net.dries007.tfc.common.capabilities.glass.GlassWorkData;
+import net.dries007.tfc.common.component.glass.GlassOperation;
+import net.dries007.tfc.common.component.glass.GlassWorking;
 import net.dries007.tfc.common.recipes.GlassworkingRecipe;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
@@ -73,7 +73,7 @@ public class GlassBlowpipeItem extends BlowpipeItem
 
             // test on a copy so that if it doesn't work we don't cause irreversible changes
             final ItemStack copy = item.copy();
-            GlassWorkData.apply(copy, GlassOperation.BASIN_POUR);
+            GlassWorking.apply(copy, GlassOperation.BASIN_POUR);
 
             final @Nullable GlassworkingRecipe recipe = GlassworkingRecipe.get(level, copy);
             if (recipe != null)
@@ -105,7 +105,7 @@ public class GlassBlowpipeItem extends BlowpipeItem
 
             // test on a copy so that if it doesn't work we don't cause irreversible changes
             final ItemStack copy = item.copy();
-            GlassWorkData.apply(copy, GlassOperation.TABLE_POUR);
+            GlassWorking.apply(copy, GlassOperation.TABLE_POUR);
 
             final @Nullable GlassworkingRecipe recipe = GlassworkingRecipe.get(level, copy);
             if (recipe != null)
@@ -190,7 +190,7 @@ public class GlassBlowpipeItem extends BlowpipeItem
             final GlassOperation op = GlassOperation.get(otherHand, player);
             if (op != null && stack.getItem() instanceof GlassBlowpipeItem)
             {
-                GlassWorkData.apply(stack, op);
+                GlassWorking.apply(stack, op);
 
                 final Level level = entity.level();
                 final @Nullable GlassworkingRecipe recipe = GlassworkingRecipe.get(level, stack);

@@ -72,12 +72,12 @@ import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.capabilities.egg.EggCapability;
 import net.dries007.tfc.common.capabilities.egg.IEgg;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.common.capabilities.forge.ForgingBonus;
-import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
-import net.dries007.tfc.common.capabilities.glass.GlassWorkData;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
+import net.dries007.tfc.common.component.forge.ForgingBonus;
+import net.dries007.tfc.common.component.forge.ForgingCapability;
+import net.dries007.tfc.common.component.glass.GlassWorking;
 import net.dries007.tfc.common.items.EmptyPanItem;
 import net.dries007.tfc.common.items.PanItem;
 import net.dries007.tfc.common.recipes.ChiselRecipe;
@@ -266,7 +266,7 @@ public class ClientForgeEventHandler
             PhysicalDamageType.addTooltipInfo(stack, text);
             ForgingBonus.addTooltipInfo(stack, text);
             ForgingCapability.addTooltipInfo(stack, text);
-            GlassWorkData.addTooltipInfo(stack, text);
+            GlassWorking.addTooltipInfo(stack, text);
             FoodCapability.addTooltipInfo(stack, text);
 
             final @Nullable IHeat heat = HeatCapability.get(stack);

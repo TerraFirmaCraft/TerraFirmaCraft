@@ -33,13 +33,14 @@ import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.devices.Tiered;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
-import net.dries007.tfc.common.capabilities.forge.ForgeRule;
-import net.dries007.tfc.common.capabilities.forge.ForgeStep;
-import net.dries007.tfc.common.capabilities.forge.Forging;
-import net.dries007.tfc.common.capabilities.forge.ForgingBonus;
-import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
+import net.dries007.tfc.common.component.forge.ForgeRule;
+import net.dries007.tfc.common.component.forge.ForgeStep;
+import net.dries007.tfc.common.component.forge.Forging;
+import net.dries007.tfc.common.component.forge.ForgingBonus;
+import net.dries007.tfc.common.component.forge.ForgingCapability;
+import net.dries007.tfc.common.component.forge.ForgingComponent;
 import net.dries007.tfc.common.container.AnvilContainer;
 import net.dries007.tfc.common.container.AnvilPlanContainer;
 import net.dries007.tfc.common.container.ISlotCallback;
@@ -71,7 +72,6 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
         super(type, pos, state, inventoryFactory, defaultName);
     }
 
-    @Nullable
     public Forging getMainInputForging()
     {
         return ForgingCapability.get(inventory.getStackInSlot(AnvilBlockEntity.SLOT_INPUT_MAIN));
@@ -142,21 +142,19 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
         if (!stack.isEmpty())
         {
             final Forging forge = ForgingCapability.get(stack);
-            if (forge != null)
+
+            AnvilRecipe recipe = forge.view().recipe();
+            if (recipe == null)
             {
-                AnvilRecipe recipe = forge.getRecipe(level);
-                if (recipe == null)
+                // Select a default recipe if we only find a single recipe for this item
+                final Collection<AnvilRecipe> all = AnvilRecipe.getAll(level, stack, getTier());
+                if (all.size() == 1)
                 {
-                    // Select a default recipe if we only find a single recipe for this item
-                    final Collection<AnvilRecipe> all = AnvilRecipe.getAll(level, stack, getTier());
-                    if (all.size() == 1)
+                    // Update the recipe held by the forging item
+                    recipe = all.iterator().next();
+                    if (!level.isClientSide)
                     {
-                        // Update the recipe held by the forging item
-                        recipe = all.iterator().next();
-                        if (!level.isClientSide)
-                        {
-                            forge.setRecipe(recipe, inventory);
-                        }
+                        forge.setRecipe(recipe, inventory);
                     }
                 }
             }
@@ -182,11 +180,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
         final ItemStack stack = inventory.getStackInSlot(SLOT_INPUT_MAIN);
         if (!stack.isEmpty())
         {
-            final Forging forge = ForgingCapability.get(stack);
-            if (forge != null)
-            {
-                forge.setRecipe(recipe, inventory);
-            }
+            ForgingCapability.get(stack).setRecipe(recipe, inventory);
         }
     }
 
@@ -199,104 +193,102 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
 
         final ItemStack stack = inventory.getStackInSlot(SLOT_INPUT_MAIN);
         final Forging forge = ForgingCapability.get(stack);
-        if (forge != null)
+        final ForgingComponent view = forge.view();
+
+        // Check that we have a hammer, either in the anvil or in the player inventory
+        ItemStack hammer = inventory.getStackInSlot(SLOT_HAMMER);
+        @Nullable InteractionHand hammerSlot = null;
+        if (hammer.isEmpty())
         {
-            // Check that we have a hammer, either in the anvil or in the player inventory
-            ItemStack hammer = inventory.getStackInSlot(SLOT_HAMMER);
-            @Nullable InteractionHand hammerSlot = null;
-            if (hammer.isEmpty())
-            {
-                hammer = player.getMainHandItem();
-                hammerSlot = InteractionHand.MAIN_HAND;
-            }
-            if (hammer.isEmpty())
-            {
-                hammer = player.getOffhandItem();
-                hammerSlot = InteractionHand.OFF_HAND;
-            }
-            if (hammer.isEmpty() || !Helpers.isItem(hammer, TFCTags.Items.HAMMERS))
-            {
-                player.displayClientMessage(Component.translatable("tfc.tooltip.hammer_required_to_work"), false);
-                return InteractionResult.FAIL;
-            }
-
-            // Prevent the player from immediately destroying the item by overworking
-            if (!forge.getSteps().any() && forge.getWork() == 0 && step.step() < 0)
-            {
-                return InteractionResult.FAIL;
-            }
-
-            final AnvilRecipe recipe = forge.getRecipe(level);
-            if (recipe != null)
-            {
-                if (!recipe.matches(inventory, level))
-                {
-                    player.displayClientMessage(Component.translatable("tfc.tooltip.anvil_is_too_low_tier_to_work"), false);
-                    return InteractionResult.FAIL;
-                }
-
-                final @Nullable IHeat heat = HeatCapability.get(stack);
-                if (heat != null && !heat.canWork())
-                {
-                    player.displayClientMessage(Component.translatable("tfc.tooltip.not_hot_enough_to_work"), false);
-                    return InteractionResult.FAIL;
-                }
-
-                // Proceed with working
-                forge.addStep(step);
-
-                // Damage the hammer
-                final InteractionHand breakingHand = hammerSlot;
-                hammer.hurtAndBreak(1, player, e -> {
-                    if (breakingHand != null)
-                    {
-                        e.broadcastBreakEvent(breakingHand);
-                    }
-                });
-
-                if (forge.getWork() < 0 || forge.getWork() > ForgeStep.LIMIT)
-                {
-                    // Destroy the input
-                    inventory.setStackInSlot(SLOT_INPUT_MAIN, ItemStack.EMPTY);
-                    level.playSound(null, worldPosition, SoundEvents.ANVIL_DESTROY, SoundSource.PLAYERS, 0.4f, 1.0f);
-                    return InteractionResult.FAIL;
-                }
-                createForgingEffects();
-
-                // Re-check anvil recipe completion
-                if (recipe.checkComplete(inventory))
-                {
-                    // Recipe completed, so consume inputs and add outputs
-                    final ItemStack outputStack = recipe.assemble(inventory, level.registryAccess());
-                    final @Nullable IHeat outputHeat = HeatCapability.get(outputStack);
-
-                    // Always preserve heat of the input
-                    if (outputHeat != null)
-                    {
-                        outputHeat.setTemperatureIfWarmer(heat);
-                    }
-
-                    // And apply the forging bonus, if the recipe says to do so
-                    if (recipe.shouldApplyForgingBonus())
-                    {
-                        final float ratio = (float) forge.getSteps().total() / ForgeRule.calculateOptimalStepsToTarget(recipe.computeTarget(inventory), recipe.getRules());
-                        final ForgingBonus bonus = ForgingBonus.byRatio(ratio);
-                        ForgingBonus.set(outputStack, bonus);
-
-                        if (bonus == ForgingBonus.PERFECTLY_FORGED)
-                        {
-                            TFCAdvancements.PERFECTLY_FORGED.trigger(player);
-                        }
-                    }
-
-                    inventory.setStackInSlot(SLOT_INPUT_MAIN, outputStack);
-                }
-
-                markForSync();
-            }
-            return InteractionResult.SUCCESS;
+            hammer = player.getMainHandItem();
+            hammerSlot = InteractionHand.MAIN_HAND;
         }
-        return InteractionResult.PASS;
+        if (hammer.isEmpty())
+        {
+            hammer = player.getOffhandItem();
+            hammerSlot = InteractionHand.OFF_HAND;
+        }
+        if (hammer.isEmpty() || !Helpers.isItem(hammer, TFCTags.Items.HAMMERS))
+        {
+            player.displayClientMessage(Component.translatable("tfc.tooltip.hammer_required_to_work"), false);
+            return InteractionResult.FAIL;
+        }
+
+        // Prevent the player from immediately destroying the item by overworking
+        if (!view.steps().any() && view.work() == 0 && step.step() < 0)
+        {
+            return InteractionResult.FAIL;
+        }
+
+        final AnvilRecipe recipe = view.recipe();
+        if (recipe != null)
+        {
+            if (!recipe.matches(inventory, level))
+            {
+                player.displayClientMessage(Component.translatable("tfc.tooltip.anvil_is_too_low_tier_to_work"), false);
+                return InteractionResult.FAIL;
+            }
+
+            final @Nullable IHeat heat = HeatCapability.get(stack);
+            if (heat != null && !heat.canWork())
+            {
+                player.displayClientMessage(Component.translatable("tfc.tooltip.not_hot_enough_to_work"), false);
+                return InteractionResult.FAIL;
+            }
+
+            // Proceed with working
+            forge.addStep(step);
+
+            // Damage the hammer
+            final InteractionHand breakingHand = hammerSlot;
+            hammer.hurtAndBreak(1, player, e -> {
+                if (breakingHand != null)
+                {
+                    e.broadcastBreakEvent(breakingHand);
+                }
+            });
+
+            if (view.work() < 0 || view.work() > ForgeStep.LIMIT)
+            {
+                // Destroy the input
+                inventory.setStackInSlot(SLOT_INPUT_MAIN, ItemStack.EMPTY);
+                level.playSound(null, worldPosition, SoundEvents.ANVIL_DESTROY, SoundSource.PLAYERS, 0.4f, 1.0f);
+                return InteractionResult.FAIL;
+            }
+            createForgingEffects();
+
+            // Re-check anvil recipe completion
+            if (recipe.checkComplete(inventory))
+            {
+                // Recipe completed, so consume inputs and add outputs
+                final ItemStack outputStack = recipe.assemble(inventory, level.registryAccess());
+                final @Nullable IHeat outputHeat = HeatCapability.get(outputStack);
+
+                // Always preserve heat of the input
+                if (outputHeat != null)
+                {
+                    outputHeat.setTemperatureIfWarmer(heat);
+                }
+
+                // And apply the forging bonus, if the recipe says to do so
+                if (recipe.shouldApplyForgingBonus())
+                {
+                    final float ratio = (float) forge.view().steps().total() / ForgeRule.calculateOptimalStepsToTarget(recipe.computeTarget(inventory), recipe.getRules());
+                    final ForgingBonus bonus = ForgingBonus.byRatio(ratio);
+                    ForgingBonus.set(outputStack, bonus);
+
+                    if (bonus == ForgingBonus.PERFECT)
+                    {
+                        TFCAdvancements.PERFECTLY_FORGED.trigger(player);
+                    }
+                }
+
+                inventory.setStackInSlot(SLOT_INPUT_MAIN, outputStack);
+            }
+
+            markForSync();
+        }
+        return InteractionResult.SUCCESS;
     }
 
     public boolean workRemotely(ForgeStep step, int movement, boolean forceCompletion)
@@ -310,75 +302,73 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
 
         final ItemStack stack = inventory.getStackInSlot(SLOT_INPUT_MAIN);
         final Forging forge = ForgingCapability.get(stack);
-        if (forge != null)
+        final ForgingComponent view = forge.view();
+
+        // Prevent the player from immediately destroying the item by overworking
+        if (!view.steps().any() && view.work() == 0 && movement < 0)
         {
-            // Prevent the player from immediately destroying the item by overworking
-            if (!forge.getSteps().any() && forge.getWork() == 0 && movement < 0)
+            return false;
+        }
+
+        final AnvilRecipe recipe = view.recipe();
+        if (recipe != null)
+        {
+            if (!recipe.matches(inventory, level))
             {
                 return false;
             }
 
-            final AnvilRecipe recipe = forge.getRecipe(level);
-            if (recipe != null)
+            final @Nullable IHeat heat = HeatCapability.get(stack);
+            if (heat != null && !heat.canWork())
             {
-                if (!recipe.matches(inventory, level))
-                {
-                    return false;
-                }
-
-                final @Nullable IHeat heat = HeatCapability.get(stack);
-                if (heat != null && !heat.canWork())
-                {
-                    return false;
-                }
-
-                // Proceed with working
-                if (forceCompletion)
-                {
-                    final int target = recipe.computeTarget(inventory);
-                    final int cursor = forge.getWork();
-                    if ((movement > 0 && cursor > target) || (movement < 0 && cursor < target))
-                    {
-                        movement = -movement;
-                    }
-                    if ((movement > 0 && cursor + movement > target) || (movement < 0 && cursor + movement < target))
-                    {
-                        movement = target - cursor;
-                    }
-                }
-                forge.addStep(step, movement);
-
-                if (forge.getWork() < 0 || forge.getWork() > ForgeStep.LIMIT)
-                {
-                    // Destroy the input
-                    inventory.setStackInSlot(SLOT_INPUT_MAIN, ItemStack.EMPTY);
-                    level.playSound(null, worldPosition, SoundEvents.ANVIL_DESTROY, SoundSource.PLAYERS, 0.4f, 1.0f);
-                    return true;
-                }
-
-                createForgingEffects();
-
-                // Re-check anvil recipe completion
-                if (recipe.checkComplete(inventory))
-                {
-                    // Recipe completed, so consume inputs and add outputs
-                    final ItemStack outputStack = recipe.assemble(inventory, level.registryAccess());
-                    final @Nullable IHeat outputHeat = HeatCapability.get(outputStack);
-
-                    // Always preserve heat of the input
-                    if (outputHeat != null)
-                    {
-                        outputHeat.setTemperatureIfWarmer(heat);
-                    }
-
-                    inventory.setStackInSlot(SLOT_INPUT_MAIN, outputStack);
-                }
-
-                markForSync();
+                return false;
             }
-            return true;
+
+            // Proceed with working
+            if (forceCompletion)
+            {
+                final int target = recipe.computeTarget(inventory);
+                final int cursor = view.work();
+                if ((movement > 0 && cursor > target) || (movement < 0 && cursor < target))
+                {
+                    movement = -movement;
+                }
+                if ((movement > 0 && cursor + movement > target) || (movement < 0 && cursor + movement < target))
+                {
+                    movement = target - cursor;
+                }
+            }
+            forge.addStep(step, movement);
+
+            if (view.work() < 0 || view.work() > ForgeStep.LIMIT)
+            {
+                // Destroy the input
+                inventory.setStackInSlot(SLOT_INPUT_MAIN, ItemStack.EMPTY);
+                level.playSound(null, worldPosition, SoundEvents.ANVIL_DESTROY, SoundSource.PLAYERS, 0.4f, 1.0f);
+                return true;
+            }
+
+            createForgingEffects();
+
+            // Re-check anvil recipe completion
+            if (recipe.checkComplete(inventory))
+            {
+                // Recipe completed, so consume inputs and add outputs
+                final ItemStack outputStack = recipe.assemble(inventory, level.registryAccess());
+                final @Nullable IHeat outputHeat = HeatCapability.get(outputStack);
+
+                // Always preserve heat of the input
+                if (outputHeat != null)
+                {
+                    outputHeat.setTemperatureIfWarmer(heat);
+                }
+
+                inventory.setStackInSlot(SLOT_INPUT_MAIN, outputStack);
+            }
+
+            markForSync();
         }
-        return false;
+        return true;
     }
 
     private void createForgingEffects()

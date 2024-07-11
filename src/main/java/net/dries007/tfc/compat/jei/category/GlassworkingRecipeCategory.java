@@ -24,7 +24,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.common.blocks.PouredGlassBlock;
-import net.dries007.tfc.common.capabilities.glass.GlassOperation;
+import net.dries007.tfc.common.component.glass.GlassOperation;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.GlassworkingRecipe;
 import net.dries007.tfc.util.Helpers;

@@ -41,7 +41,7 @@ import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.capabilities.food.Nutrient;
-import net.dries007.tfc.common.capabilities.glass.GlassOperation;
+import net.dries007.tfc.common.component.glass.GlassOperation;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.entities.aquatic.Fish;
 import net.dries007.tfc.common.fluids.FluidHelpers;

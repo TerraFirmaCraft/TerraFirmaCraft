@@ -28,8 +28,9 @@ import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodTraits;
 import net.dries007.tfc.common.capabilities.food.IFood;
-import net.dries007.tfc.common.capabilities.glass.GlassOperation;
-import net.dries007.tfc.common.capabilities.glass.GlassWorkData;
+import net.dries007.tfc.common.component.glass.GlassOperation;
+import net.dries007.tfc.common.component.glass.GlassOperations;
+import net.dries007.tfc.common.component.glass.GlassWorking;
 import net.dries007.tfc.common.items.Powder;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
@@ -61,13 +62,13 @@ public class BowlBlock extends DeviceBlock
             {
                 final ItemStack held = player.getItemInHand(hand);
                 final ItemStack current = inv.getStackInSlot(0);
-                final GlassWorkData data = GlassWorkData.get(held);
-                if (data != null && !data.getBatch().isEmpty())
+                final GlassOperations data = GlassWorking.get(held);
+                if (!data.isEmpty())
                 {
                     final GlassOperation op = GlassOperation.getByPowder(current);
                     if (op != null)
                     {
-                        GlassWorkData.apply(held, op);
+                        GlassWorking.apply(held, op);
                         inv.getStackInSlot(0).shrink(1);
                         Helpers.playSound(level, pos, SoundEvents.SAND_PLACE);
                         player.getCooldowns().addCooldown(held.getItem(), 10);

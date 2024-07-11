@@ -15,8 +15,8 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.capabilities.glass.GlassOperation;
-import net.dries007.tfc.common.capabilities.glass.IGlassworkingTool;
+import net.dries007.tfc.common.component.glass.GlassOperation;
+import net.dries007.tfc.common.component.glass.IGlassworkingTool;
 
 public class GemSawItem extends ToolItem implements IGlassworkingTool
 {

@@ -9,12 +9,12 @@ package net.dries007.tfc.test;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-
-import net.dries007.tfc.common.capabilities.forge.ForgeRule;
-import net.dries007.tfc.common.capabilities.forge.ForgeStep;
-import net.dries007.tfc.common.capabilities.forge.ForgeSteps;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import net.dries007.tfc.common.component.forge.ForgeRule;
+import net.dries007.tfc.common.component.forge.ForgeStep;
+import net.dries007.tfc.common.component.forge.MutableForgeSteps;
 
 public class ForgeRuleTests
 {
@@ -77,7 +77,7 @@ public class ForgeRuleTests
 
     private boolean stepsMatch(Tuple3<ForgeStep> step, Tuple3<ForgeRule> rule)
     {
-        final ForgeSteps instance = new ForgeSteps();
+        final MutableForgeSteps instance = new MutableForgeSteps();
         instance.addStep(step.e1);
         instance.addStep(step.e2);
         instance.addStep(step.e3);

@@ -11,16 +11,15 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.NetworkHooks;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.AnvilBlockEntity;
 import net.dries007.tfc.common.capabilities.Capabilities;
-import net.dries007.tfc.common.capabilities.forge.ForgeStep;
-import net.dries007.tfc.common.capabilities.forge.Forging;
-import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
+import net.dries007.tfc.common.component.forge.ForgeStep;
+import net.dries007.tfc.common.component.forge.Forging;
+import net.dries007.tfc.common.component.forge.ForgingCapability;
 import net.dries007.tfc.common.recipes.AnvilRecipe;
 import net.dries007.tfc.util.Helpers;
-import org.jetbrains.annotations.Nullable;
 
 public class AnvilContainer extends BlockEntityContainer<AnvilBlockEntity> implements ButtonHandlerContainer
 {
@@ -90,7 +89,7 @@ public class AnvilContainer extends BlockEntityContainer<AnvilBlockEntity> imple
 
                     if (forge != null && level != null)
                     {
-                        recipe = forge.getRecipe(level);
+                        recipe = forge.getRecipe();
                         target = forge.getWorkTarget();
                         forge.clearRecipeIfNotWorked();
                     }

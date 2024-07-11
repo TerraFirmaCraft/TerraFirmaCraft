@@ -20,7 +20,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
-import net.dries007.tfc.common.capabilities.forge.ForgingBonus;
+import net.dries007.tfc.common.component.forge.ForgingBonus;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 
 public class WeldingRecipe implements ISimpleRecipe<WeldingRecipe.Inventory>

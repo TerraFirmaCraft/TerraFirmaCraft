@@ -39,6 +39,7 @@ import net.dries007.tfc.common.blocks.devices.IBellowsConsumer;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.capabilities.food.FoodHandler;
 import net.dries007.tfc.common.capabilities.food.FoodTraits;
+import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.effect.TFCEffects;
 import net.dries007.tfc.common.entities.EntityHelpers;
@@ -110,6 +111,7 @@ public final class TerraFirmaCraft
         bus.addListener(this::onInterModComms);
         bus.addListener(TFCEntities::onEntityAttributeCreation);
         bus.addListener(Faunas::registerSpawnPlacements);
+        bus.addListener(TFCComponents::onModifyDefaultComponents);
 
         // Core Registries (vanilla)
         TFCBlocks.BLOCKS.register(bus);

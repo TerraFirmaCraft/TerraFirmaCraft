@@ -22,7 +22,7 @@ import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.screen.AnvilScreen;
 import net.dries007.tfc.common.blockentities.AnvilBlockEntity;
 import net.dries007.tfc.common.capabilities.Capabilities;
-import net.dries007.tfc.common.capabilities.forge.Forging;
+import net.dries007.tfc.common.component.forge.Forging;
 import net.dries007.tfc.common.container.AnvilContainer;
 import net.dries007.tfc.common.recipes.AnvilRecipe;
 import net.dries007.tfc.network.PacketHandler;
@@ -71,7 +71,7 @@ public class AnvilPlanButton extends Button
         final @Nullable Forging forging = anvil.getMainInputForging();
         if (level != null && forging != null)
         {
-            return forging.getRecipe(level);
+            return forging.view().recipe();
         }
         return null;
     }

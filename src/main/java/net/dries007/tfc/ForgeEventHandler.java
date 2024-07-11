@@ -149,13 +149,13 @@ import net.dries007.tfc.common.capabilities.food.DynamicBowlHandler;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.IFood;
 import net.dries007.tfc.common.capabilities.food.TFCFoodData;
-import net.dries007.tfc.common.capabilities.forge.ForgingBonus;
-import net.dries007.tfc.common.capabilities.glass.GlassWorkData;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.commands.TFCCommands;
+import net.dries007.tfc.common.component.forge.ForgingBonus;
+import net.dries007.tfc.common.component.glass.GlassWorking;
 import net.dries007.tfc.common.container.BlockEntityContainer;
 import net.dries007.tfc.common.container.Container;
 import net.dries007.tfc.common.container.PestContainer;
@@ -965,7 +965,7 @@ public final class ForgeEventHandler
         if (event.getClickAction() == ClickAction.SECONDARY && pipe.getCount() == 1 && Helpers.isItem(pipe, TFCTags.Items.BLOWPIPES) && Helpers.isItem(batch.getItem(), TFCTags.Items.GLASS_BATCHES))
         {
             final ItemStack newItem = new ItemStack(BlowpipeItem.transform(pipe.getItem()));
-            GlassWorkData.createNewBatch(newItem, batch);
+            GlassWorking.createNewBatch(newItem, batch);
             event.getCarriedSlotAccess().set(newItem);
             event.getSlot().getItem().shrink(1);
             event.setCanceled(true);

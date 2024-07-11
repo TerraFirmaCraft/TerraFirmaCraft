@@ -8,7 +8,7 @@ package net.dries007.tfc.common.recipes.outputs;
 
 import net.minecraft.world.item.ItemStack;
 
-import net.dries007.tfc.common.capabilities.glass.GlassWorkData;
+import net.dries007.tfc.common.component.glass.GlassWorking;
 
 public enum AddGlassModifier implements ItemStackModifier
 {
@@ -17,7 +17,7 @@ public enum AddGlassModifier implements ItemStackModifier
     @Override
     public ItemStack apply(ItemStack stack, ItemStack input)
     {
-        GlassWorkData.createNewBatch(stack, input);
+        GlassWorking.createNewBatch(stack, input);
         return stack;
     }
 

@@ -16,7 +16,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeType;
 import vazkii.patchouli.api.IComponentRenderContext;
 
-import net.dries007.tfc.common.capabilities.glass.GlassOperation;
+import net.dries007.tfc.common.component.glass.GlassOperation;
 import net.dries007.tfc.common.recipes.GlassworkingRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.util.Helpers;

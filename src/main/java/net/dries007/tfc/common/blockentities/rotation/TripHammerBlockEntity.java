@@ -25,7 +25,7 @@ import net.dries007.tfc.common.blockentities.TickableInventoryBlockEntity;
 import net.dries007.tfc.common.blocks.TripHammerBlock;
 import net.dries007.tfc.common.blocks.devices.AnvilBlock;
 import net.dries007.tfc.common.capabilities.Capabilities;
-import net.dries007.tfc.common.capabilities.forge.ForgeStep;
+import net.dries007.tfc.common.component.forge.ForgeStep;
 import net.dries007.tfc.common.items.HammerItem;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.rotation.Rotation;

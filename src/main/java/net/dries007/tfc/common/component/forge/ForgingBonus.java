@@ -4,37 +4,39 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.capabilities.forge;
+package net.dries007.tfc.common.component.forge;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.function.DoubleSupplier;
-
+import com.mojang.serialization.Codec;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.ItemStack;
 
+import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.network.StreamCodecs;
 import net.dries007.tfc.util.Helpers;
 
-public enum ForgingBonus
+public enum ForgingBonus implements StringRepresentable
 {
     NONE(() -> Double.POSITIVE_INFINITY),
-    MODESTLY_FORGED(TFCConfig.SERVER.anvilModestlyForgedThreshold::get),
-    WELL_FORGED(TFCConfig.SERVER.anvilWellForgedThreshold::get),
-    EXPERTLY_FORGED(TFCConfig.SERVER.anvilExpertForgedThreshold::get),
-    PERFECTLY_FORGED(TFCConfig.SERVER.anvilPerfectlyForgedThreshold::get);
+    MODEST(TFCConfig.SERVER.anvilModestlyForgedThreshold::get),
+    WELL(TFCConfig.SERVER.anvilWellForgedThreshold::get),
+    EXPERT(TFCConfig.SERVER.anvilExpertForgedThreshold::get),
+    PERFECT(TFCConfig.SERVER.anvilPerfectlyForgedThreshold::get);
 
-    private static final String KEY = "tfc:forging_bonus";
+    public static final Codec<ForgingBonus> CODEC = StringRepresentable.fromValues(ForgingBonus::values);
+    public static final StreamCodec<ByteBuf, ForgingBonus> STREAM_CODEC = StreamCodecs.forEnum(ForgingBonus::values);
+
+    public static final ForgingBonus DEFAULT = NONE;
     private static final ForgingBonus[] VALUES = values();
-
-    public static ForgingBonus valueOf(int i)
-    {
-        return i < 0 ? VALUES[0] : (i >= VALUES.length ? VALUES[VALUES.length - 1] : VALUES[i]);
-    }
 
     public static ForgingBonus byRatio(float ratio)
     {
@@ -81,12 +83,7 @@ public enum ForgingBonus
      */
     public static ForgingBonus get(ItemStack stack)
     {
-        final CompoundTag tag = stack.getTag();
-        if (tag != null && tag.contains(KEY, Tag.TAG_INT))
-        {
-            return valueOf(tag.getInt(KEY));
-        }
-        return NONE;
+        return stack.getOrDefault(TFCComponents.FORGING_BONUS, DEFAULT);
     }
 
     /**
@@ -94,21 +91,22 @@ public enum ForgingBonus
      */
     public static void set(ItemStack stack, ForgingBonus bonus)
     {
-        if (bonus != NONE)
-        {
-            stack.getOrCreateTag().putInt(KEY, bonus.ordinal());
-        }
-        else
-        {
-            stack.removeTagKey(KEY);
-        }
+        stack.set(TFCComponents.FORGING_BONUS, bonus);
     }
 
+    private final String serializedName;
     private final DoubleSupplier minRatio;
 
     ForgingBonus(DoubleSupplier minRatio)
     {
+        this.serializedName = name().toLowerCase(Locale.ROOT);
         this.minRatio = minRatio;
+    }
+
+    @Override
+    public String getSerializedName()
+    {
+        return serializedName;
     }
 
     public float efficiency()

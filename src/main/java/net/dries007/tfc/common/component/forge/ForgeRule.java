@@ -4,10 +4,11 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.capabilities.forge;
+package net.dries007.tfc.common.component.forge;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.chat.Component;
@@ -18,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.network.StreamCodecs;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.common.capabilities.forge.ForgeStep.*;
+import static net.dries007.tfc.common.component.forge.ForgeStep.*;
 
 public enum ForgeRule implements StringRepresentable
 {
@@ -238,8 +239,9 @@ public enum ForgeRule implements StringRepresentable
             .append(Helpers.translateEnum(order));
     }
 
-    private boolean matches(@Nullable ForgeStep step)
+    private boolean matches(Optional<ForgeStep> optional)
     {
+        final ForgeStep step = optional.orElse(null);
         if (this.type == HIT_LIGHT)
         {
             return step == HIT_LIGHT || step == HIT_MEDIUM || step == HIT_HARD;

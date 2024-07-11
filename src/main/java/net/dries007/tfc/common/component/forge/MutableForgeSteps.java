@@ -4,18 +4,16 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.capabilities.forge;
+package net.dries007.tfc.common.component.forge;
 
 import java.util.Objects;
-
 import net.minecraft.nbt.CompoundTag;
-
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Records the last three steps taken, and also the total number of steps taken since starting working.
  */
-public final class ForgeSteps
+public final class MutableForgeSteps
 {
     @Nullable private ForgeStep first, second, third;
     private int total;
@@ -63,7 +61,7 @@ public final class ForgeSteps
         return tag;
     }
 
-    public ForgeSteps read(CompoundTag nbt)
+    public MutableForgeSteps read(CompoundTag nbt)
     {
         first = ForgeStep.valueOf(nbt.getByte("first"));
         second = ForgeStep.valueOf(nbt.getByte("second"));
@@ -99,7 +97,7 @@ public final class ForgeSteps
     {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        final ForgeSteps that = (ForgeSteps) o;
+        final MutableForgeSteps that = (MutableForgeSteps) o;
         return total == that.total && first == that.first && second == that.second && third == that.third;
     }
 }

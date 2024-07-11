@@ -4,17 +4,24 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.capabilities.forge;
+package net.dries007.tfc.common.component.forge;
 
 import java.util.Arrays;
-
+import java.util.Locale;
+import java.util.Optional;
+import com.mojang.serialization.Codec;
+import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.ints.IntArrayFIFOQueue;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import it.unimi.dsi.fastutil.ints.IntPriorityQueue;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.util.StringRepresentable;
 import org.jetbrains.annotations.Nullable;
 
-public enum ForgeStep
+import net.dries007.tfc.network.StreamCodecs;
+
+public enum ForgeStep implements StringRepresentable
 {
     HIT_LIGHT(-3, 53, 50, 128, 224),
     HIT_MEDIUM(-6, 71, 50, 160, 224),
@@ -26,6 +33,9 @@ public enum ForgeStep
     SHRINK(16, 107, 68, 96, 224);
 
     public static final int LIMIT = 150;
+
+    public static final Codec<ForgeStep> CODEC = StringRepresentable.fromValues(ForgeStep::values);
+    public static final StreamCodec<ByteBuf, Optional<ForgeStep>> STREAM_CODEC = StreamCodecs.forEnumOptional(ForgeStep::values);
 
     public static final ForgeStep[] VALUES = values();
     private static final int[] PATHS;
@@ -76,16 +86,24 @@ public enum ForgeStep
         return target < 0 || target >= PATHS.length ? Integer.MAX_VALUE : PATHS[target];
     }
 
+    private final String serializedName;
     private final int step;
     private final int buttonX, buttonY, iconX, iconY;
 
     ForgeStep(int step, int buttonX, int buttonY, int iconX, int iconY)
     {
+        this.serializedName = name().toLowerCase(Locale.ROOT);
         this.step = step;
         this.buttonX = buttonX;
         this.buttonY = buttonY;
         this.iconX = iconX;
         this.iconY = iconY;
+    }
+
+    @Override
+    public String getSerializedName()
+    {
+        return serializedName;
     }
 
     public int step()

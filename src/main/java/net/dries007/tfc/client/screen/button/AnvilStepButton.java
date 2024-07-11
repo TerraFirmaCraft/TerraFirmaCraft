@@ -13,7 +13,7 @@ import net.minecraftforge.network.PacketDistributor;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.screen.AnvilScreen;
-import net.dries007.tfc.common.capabilities.forge.ForgeStep;
+import net.dries007.tfc.common.component.forge.ForgeStep;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.ScreenButtonPacket;
 import net.dries007.tfc.util.Helpers;

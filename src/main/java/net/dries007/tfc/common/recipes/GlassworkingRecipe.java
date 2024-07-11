@@ -20,8 +20,9 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.capabilities.glass.GlassOperation;
-import net.dries007.tfc.common.capabilities.glass.GlassWorkData;
+import net.dries007.tfc.common.component.glass.GlassOperation;
+import net.dries007.tfc.common.component.glass.GlassOperations;
+import net.dries007.tfc.common.component.glass.GlassWorking;
 import net.dries007.tfc.util.Helpers;
 
 public record GlassworkingRecipe(
@@ -61,13 +62,8 @@ public record GlassworkingRecipe(
      */
     public boolean matches(ItemStack input)
     {
-        final GlassWorkData data = GlassWorkData.get(input);
-        if (data != null)
-        {
-            final List<GlassOperation> steps = data.getOperations().getSteps();
-            return steps.equals(operations) && batchItem.test(data.getBatch());
-        }
-        return false;
+        final GlassOperations data = GlassWorking.get(input);
+        return operations.equals(data.steps()) && batchItem.test(data.batch());
     }
 
     @Override

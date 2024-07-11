@@ -8,15 +8,14 @@ package net.dries007.tfc.test;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
-
-import net.dries007.tfc.TestHelper;
-import net.dries007.tfc.common.capabilities.forge.ForgeRule;
-import net.dries007.tfc.common.capabilities.forge.ForgeStep;
-import net.dries007.tfc.common.capabilities.forge.ForgeSteps;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import net.dries007.tfc.TestHelper;
+import net.dries007.tfc.common.component.forge.ForgeRule;
+import net.dries007.tfc.common.component.forge.ForgeStep;
+import net.dries007.tfc.common.component.forge.MutableForgeSteps;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ForgeStepTests extends TestHelper
 {
@@ -44,7 +43,7 @@ public class ForgeStepTests extends TestHelper
     @Test
     public void testProperties()
     {
-        final ForgeSteps steps = exampleSteps();
+        final MutableForgeSteps steps = exampleSteps();
 
         assertEquals(ForgeStep.SHRINK, steps.last());
         assertEquals(ForgeStep.HIT_HARD, steps.secondLast());
@@ -56,7 +55,7 @@ public class ForgeStepTests extends TestHelper
     @Test
     public void testForgeStepsMatchesRules()
     {
-        final ForgeSteps steps = exampleSteps();
+        final MutableForgeSteps steps = exampleSteps();
 
         assertTrue(ForgeRule.SHRINK_LAST.matches(steps));
         assertTrue(ForgeRule.HIT_SECOND_LAST.matches(steps));
@@ -66,24 +65,24 @@ public class ForgeStepTests extends TestHelper
     @Test
     public void testWriteReadEmpty()
     {
-        final ForgeSteps before = new ForgeSteps();
+        final MutableForgeSteps before = new MutableForgeSteps();
         final CompoundTag tag = before.write(new CompoundTag());
-        final ForgeSteps after = new ForgeSteps().read(tag);
+        final MutableForgeSteps after = new MutableForgeSteps().read(tag);
         assertEquals(before, after);
     }
 
     @Test
     public void testWriteReadExample()
     {
-        final ForgeSteps before = exampleSteps();
+        final MutableForgeSteps before = exampleSteps();
         final CompoundTag tag = before.write(new CompoundTag());
-        final ForgeSteps after = new ForgeSteps().read(tag);
+        final MutableForgeSteps after = new MutableForgeSteps().read(tag);
         assertEquals(before, after);
     }
 
-    private ForgeSteps exampleSteps()
+    private MutableForgeSteps exampleSteps()
     {
-        final ForgeSteps steps = new ForgeSteps();
+        final MutableForgeSteps steps = new MutableForgeSteps();
 
         steps.addStep(ForgeStep.UPSET); // Not included
         steps.addStep(ForgeStep.BEND); // Third Last

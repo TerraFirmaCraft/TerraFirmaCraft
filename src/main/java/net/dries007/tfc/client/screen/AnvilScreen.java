@@ -18,10 +18,11 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.client.screen.button.AnvilPlanButton;
 import net.dries007.tfc.client.screen.button.AnvilStepButton;
 import net.dries007.tfc.common.blockentities.AnvilBlockEntity;
-import net.dries007.tfc.common.capabilities.forge.ForgeRule;
-import net.dries007.tfc.common.capabilities.forge.ForgeStep;
-import net.dries007.tfc.common.capabilities.forge.ForgeSteps;
-import net.dries007.tfc.common.capabilities.forge.Forging;
+import net.dries007.tfc.common.component.forge.ForgeRule;
+import net.dries007.tfc.common.component.forge.ForgeStep;
+import net.dries007.tfc.common.component.forge.ForgeSteps;
+import net.dries007.tfc.common.component.forge.Forging;
+import net.dries007.tfc.common.component.forge.ForgingComponent;
 import net.dries007.tfc.common.container.AnvilContainer;
 import net.dries007.tfc.common.recipes.AnvilRecipe;
 import net.dries007.tfc.util.Helpers;
@@ -70,15 +71,17 @@ public class AnvilScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilContai
         final @Nullable Forging forging = blockEntity.getMainInputForging();
         if (forging != null)
         {
+            final ForgingComponent view = forging.view();
+
             // Draw the progress indicators
-            final int progress = forging.getWork();
+            final int progress = view.work();
             graphics.blit(texture, guiLeft + 13 + progress, guiTop + 100, 176, 0, 5, 5);
 
-            final int target = forging.getWorkTarget();
+            final int target = view.target();
             graphics.blit(texture, guiLeft + 13 + target, guiTop + 94, 181, 0, 5, 5);
 
-            final ForgeSteps steps = forging.getSteps();
-            final AnvilRecipe recipe = forging.getRecipe(level);
+            final ForgeSteps steps = view.steps();
+            final AnvilRecipe recipe = view.recipe();
             if (recipe != null)
             {
                 final List<ForgeRule> rules = recipe.getRules();
@@ -109,7 +112,7 @@ public class AnvilScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilContai
             }
 
             // Draw step icons
-            final ForgeStep[] stepSequence = {steps.last(), steps.secondLast(), steps.thirdLast()};
+            final ForgeStep[] stepSequence = {steps.last().orElse(null), steps.secondLast().orElse(null), steps.thirdLast().orElse(null)};
             for (int i = 0; i < 3; i++)
             {
                 final ForgeStep step = stepSequence[i];
@@ -131,7 +134,7 @@ public class AnvilScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilContai
         final @Nullable Forging forging = blockEntity.getMainInputForging();
         if (forging != null && level != null)
         {
-            final AnvilRecipe recipe = forging.getRecipe(level);
+            final AnvilRecipe recipe = forging.getRecipe();
             if (recipe != null)
             {
                 final List<ForgeRule> rules = recipe.getRules();

@@ -6,22 +6,16 @@
 
 package net.dries007.tfc.mixin;
 
-import java.util.Random;
-
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
-
-import net.dries007.tfc.client.BarSystem;
-import net.dries007.tfc.common.capabilities.forge.ForgingBonus;
-import net.dries007.tfc.common.capabilities.heat.Heat;
-import net.dries007.tfc.common.capabilities.heat.HeatCapability;
-import net.dries007.tfc.common.capabilities.heat.HeatDefinition;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import net.dries007.tfc.client.BarSystem;
+import net.dries007.tfc.common.component.forge.ForgingBonus;
 
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin
