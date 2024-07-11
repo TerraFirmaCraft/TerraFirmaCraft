@@ -23,7 +23,7 @@ import net.dries007.tfc.common.capabilities.MoldLike;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.data.Metal;
 
 public class MoldLikeAlloyContainer extends ItemStackContainer implements ISlotCallback
 {

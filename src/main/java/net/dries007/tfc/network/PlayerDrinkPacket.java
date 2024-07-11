@@ -14,7 +14,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.util.Drinkable;
+import net.dries007.tfc.util.data.Drinkable;
 
 /**
  * Sent to the server when the player clicks a location that might trigger a drinking.

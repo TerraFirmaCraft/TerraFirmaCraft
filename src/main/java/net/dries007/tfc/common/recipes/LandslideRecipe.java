@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -28,8 +27,8 @@ import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Support;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
+import net.dries007.tfc.util.data.Support;
 
 /**
  * This handles all logic for land slides (sideways gravity affected blocks)

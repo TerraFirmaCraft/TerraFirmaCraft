@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.util;
+package net.dries007.tfc.util.data;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 public record Support(

@@ -6,12 +6,13 @@
 
 package net.dries007.tfc.util;
 
+import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.fluids.FluidStack;
 
-import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
+import net.dries007.tfc.util.data.Metal;
 
 /**
  * An un-writable, unmodifiable view of an alloy

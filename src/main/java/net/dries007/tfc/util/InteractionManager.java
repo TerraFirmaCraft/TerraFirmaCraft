@@ -59,6 +59,7 @@ import net.dries007.tfc.common.container.TFCContainerProviders;
 import net.dries007.tfc.common.recipes.ScrapingRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
+import net.dries007.tfc.util.data.KnappingType;
 import net.dries007.tfc.util.events.DouseFireEvent;
 import net.dries007.tfc.util.events.StartFireEvent;
 

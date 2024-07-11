@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.util;
+package net.dries007.tfc.util.data;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -76,6 +76,7 @@ import net.dries007.tfc.common.items.TFCFishingRodItem;
 import net.dries007.tfc.common.items.TFCHoeItem;
 import net.dries007.tfc.common.items.TFCShieldItem;
 import net.dries007.tfc.common.items.ToolItem;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.registry.RegistryMetal;
 import net.dries007.tfc.world.Codecs;
 

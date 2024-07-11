@@ -6,10 +6,12 @@
 
 package net.dries007.tfc.common.blocks.devices;
 
+import net.dries007.tfc.util.data.Metal;
+
 public interface Tiered
 {
     /**
-     * @return the tier of this block. Roughly corresponds to the index in {@link net.dries007.tfc.util.Metal.Tier}, but is typed as an int to allow arbitrary tiers.
+     * @return the tier of this block. Roughly corresponds to the index in {@link Metal.Tier}, but is typed as an int to allow arbitrary tiers.
      */
     int getTier();
 }

@@ -27,7 +27,7 @@ import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.CastingRecipe;
 import net.dries007.tfc.compat.jei.JEIIntegration;
-import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.data.Metal;
 
 public class CastingRecipeCategory extends BaseRecipeCategory<CastingRecipe>
 {

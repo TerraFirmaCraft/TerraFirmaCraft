@@ -17,8 +17,8 @@ import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.MoldLike;
 import net.dries007.tfc.common.container.MoldLikeAlloyContainer;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.Tooltips;
+import net.dries007.tfc.util.data.Metal;
 
 public class MoldLikeAlloyScreen extends TFCContainerScreen<MoldLikeAlloyContainer>
 {

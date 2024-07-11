@@ -25,8 +25,6 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
-import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
-import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.compat.jei.JEIIntegration;
 import net.dries007.tfc.util.Helpers;

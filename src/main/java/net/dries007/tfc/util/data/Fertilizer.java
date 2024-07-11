@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.util;
+package net.dries007.tfc.util.data;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -18,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
 import net.dries007.tfc.common.recipes.RecipeHelpers;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 public record Fertilizer(

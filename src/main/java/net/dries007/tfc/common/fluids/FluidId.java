@@ -6,16 +6,19 @@
 
 package net.dries007.tfc.common.fluids;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.OptionalInt;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.material.Fluid;
 
-import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.data.Metal;
 
 // Merged enum
 public record FluidId(String name, OptionalInt color, Supplier<? extends Fluid> fluid)

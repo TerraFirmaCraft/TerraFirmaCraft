@@ -6,22 +6,20 @@
 
 package net.dries007.tfc.compat.jei.category;
 
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-
-import net.minecraft.client.gui.GuiGraphics;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 
-import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.WeldingRecipe;
-import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.data.Metal;
 
 public class WeldingRecipeCategory extends BaseRecipeCategory<WeldingRecipe>
 {

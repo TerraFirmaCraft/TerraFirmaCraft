@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.items;
 
 import java.util.List;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -20,15 +19,15 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.ItemStackFluidHandler;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.LampFuel;
 import net.dries007.tfc.util.Tooltips;
+import net.dries007.tfc.util.data.LampFuel;
 import net.dries007.tfc.util.loot.CopyFluidFunction;
-import org.jetbrains.annotations.Nullable;
 
 public class LampBlockItem extends BlockItem
 {

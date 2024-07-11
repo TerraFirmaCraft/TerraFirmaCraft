@@ -23,7 +23,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -111,7 +110,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
             final int durationSealed = (int) (Calendars.SERVER.getTicks() - barrel.recipeTick);
             if (!recipe.isInfinite() && durationSealed > recipe.getDuration())
             {
-                if (recipe.matches(barrel.inventory, level))
+                if (recipe.matches(barrel.inventory))
                 {
                     // Recipe completed, so fill outputs
                     recipe.assembleOutputs(barrel.inventory);
@@ -137,10 +136,9 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
             barrel.needsInstantRecipeUpdate = false;
             if (barrel.inventory.excess.isEmpty()) // Excess must be empty for instant recipes to apply
             {
-                final RecipeManager recipeManager = level.getRecipeManager();
                 Optional.<BarrelRecipe>empty() // For type erasure
-                    .or(() -> recipeManager.getRecipeFor(TFCRecipeTypes.BARREL_INSTANT.get(), barrel.inventory, level))
-                    .or(() -> recipeManager.getRecipeFor(TFCRecipeTypes.BARREL_INSTANT_FLUID.get(), barrel.inventory, level))
+                    .or(() -> Optional.ofNullable(BarrelRecipe.get(level, TFCRecipeTypes.BARREL_INSTANT, barrel.inventory))
+                    .or(() -> Optional.ofNullable(BarrelRecipe.get(level, TFCRecipeTypes.BARREL_INSTANT_FLUID, barrel.inventory))
                     .ifPresent(instantRecipe -> {
                         instantRecipe.assembleOutputs(barrel.inventory);
                         if (barrel.soundCooldownTicks == 0)
@@ -294,7 +292,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
                 tr.add(-offset);
 
                 final BarrelRecipe recipe = this.recipe;
-                if (recipe.matches(inventory, null))
+                if (recipe.matches(inventory))
                 {
                     recipe.assembleOutputs(inventory);
                 }
@@ -487,8 +485,8 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         if (inventory.excess.isEmpty())
         {
             // Will only work on a recipe as long as the 'excess' is empty
-            recipe = level.getRecipeManager().getRecipeFor(TFCRecipeTypes.BARREL_SEALED.get(), inventory, level).orElse(null);
-            if (recipe != null && oldRecipe != recipe && (oldRecipe == null || !oldRecipe.getId().equals(recipe.getId())))
+            recipe = BarrelRecipe.get(level, TFCRecipeTypes.BARREL_SEALED, inventory);
+            if (recipe != null && oldRecipe != recipe)
             {
                 // The recipe has changed to a new one, so update the recipe ticks
                 recipeTick = Calendars.get(level).getTicks();
@@ -544,7 +542,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         {
             if (recipe == null)
             {
-                recipe = level.getRecipeManager().getRecipeFor(TFCRecipeTypes.BARREL_SEALED.get(), inventory, level).orElse(null);
+                recipe = BarrelRecipe.get(level, TFCRecipeTypes.BARREL_SEALED, inventory);
             }
             if (recipe != null)
             {

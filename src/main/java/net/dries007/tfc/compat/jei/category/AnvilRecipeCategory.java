@@ -6,10 +6,6 @@
 
 package net.dries007.tfc.compat.jei.category;
 
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.ItemStack;
-
-import net.minecraft.client.gui.GuiGraphics;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -17,12 +13,14 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
 
-import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.recipes.AnvilRecipe;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.data.Metal;
 
 public class AnvilRecipeCategory extends BaseRecipeCategory<AnvilRecipe>
 {

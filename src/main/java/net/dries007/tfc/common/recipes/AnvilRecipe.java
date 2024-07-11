@@ -30,6 +30,7 @@ import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
+import net.dries007.tfc.util.data.Metal;
 
 public class AnvilRecipe implements ISimpleRecipe<AnvilRecipe.Inventory>
 {
@@ -173,7 +174,7 @@ public class AnvilRecipe implements ISimpleRecipe<AnvilRecipe.Inventory>
         ItemStack getItem();
 
         /**
-         * @return The tier ({@link net.dries007.tfc.util.Metal.Tier} of the anvil)
+         * @return The tier ({@link Metal.Tier} of the anvil)
          */
         int getTier();
 

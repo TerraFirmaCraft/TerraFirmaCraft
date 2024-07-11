@@ -6,38 +6,52 @@
 
 package net.dries007.tfc.common.recipes;
 
-import java.util.Arrays;
-import java.util.stream.Collectors;
-import com.google.gson.JsonObject;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.MoldLike;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
-import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
-import net.dries007.tfc.util.JsonHelpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
-public class CastingRecipe implements ISimpleRecipe<MoldLike>
+public class CastingRecipe implements INoopInputRecipe
 {
-    public static final IndirectHashCollection<Item, CastingRecipe> CACHE = IndirectHashCollection.createForRecipe(recipe -> Arrays.stream(recipe.ingredient.getItems()).map(ItemStack::getItem).collect(Collectors.toList()), TFCRecipeTypes.CASTING);
+    public static final MapCodec<CastingRecipe> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
+        Ingredient.CODEC.fieldOf("mold").forGetter(c -> c.ingredient),
+        SizedFluidIngredient.FLAT_CODEC.fieldOf("fluid").forGetter(c -> c.fluidIngredient),
+        ItemStackProvider.CODEC.fieldOf("result").forGetter(c -> c.result),
+        Codec.FLOAT.optionalFieldOf("break_chance", 1f).forGetter(c -> c.breakChance)
+    ).apply(i, CastingRecipe::new));
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, CastingRecipe> STREAM_CODEC = StreamCodec.composite(
+        Ingredient.CONTENTS_STREAM_CODEC, c -> c.ingredient,
+        SizedFluidIngredient.STREAM_CODEC, c -> c.fluidIngredient,
+        ItemStackProvider.STREAM_CODEC, c -> c.result,
+        ByteBufCodecs.FLOAT, c -> c.breakChance,
+        CastingRecipe::new
+    );
+
+    public static final IndirectHashCollection<Item, CastingRecipe> CACHE = IndirectHashCollection.createForRecipe(r -> RecipeHelpers.itemKeys(r.ingredient), TFCRecipeTypes.CASTING);
 
     @Nullable
     public static CastingRecipe get(MoldLike mold)
     {
         for (CastingRecipe recipe : CACHE.getAll(mold.getContainer().getItem()))
         {
-            if (recipe.matches(mold, null))
+            if (recipe.matches(mold))
             {
                 return recipe;
             }
@@ -45,19 +59,40 @@ public class CastingRecipe implements ISimpleRecipe<MoldLike>
         return null;
     }
 
-    private final ResourceLocation id;
     private final Ingredient ingredient;
-    private final FluidStackIngredient fluidIngredient;
+    private final SizedFluidIngredient fluidIngredient;
     private final ItemStackProvider result;
     private final float breakChance;
 
-    public CastingRecipe(ResourceLocation id, Ingredient ingredient, FluidStackIngredient fluidIngredient, ItemStackProvider result, float breakChance)
+    public CastingRecipe(Ingredient ingredient, SizedFluidIngredient fluidIngredient, ItemStackProvider result, float breakChance)
     {
-        this.id = id;
         this.ingredient = ingredient;
         this.fluidIngredient = fluidIngredient;
         this.result = result;
         this.breakChance = breakChance;
+    }
+
+    /**
+     * @return {@code true} if the recipe matches the input, ignoring temperature. The mold must check if the content is solid.
+     */
+    public boolean matches(MoldLike mold)
+    {
+        return ingredient.test(mold.getContainer())
+            && fluidIngredient.test(mold.getFluidInTank(0));
+    }
+
+    /**
+     * Assembles the recipe output, and copies over remaining heat from the mold to the output
+     */
+    public ItemStack assemble(MoldLike mold)
+    {
+        final ItemStack stack = result.getSingleStack(mold.getContainer().copy());
+        final @Nullable IHeat heat = HeatCapability.get(stack);
+        if (heat != null)
+        {
+            heat.setTemperatureIfWarmer(mold.getTemperature());
+        }
+        return stack;
     }
 
     public float getBreakChance()
@@ -70,39 +105,15 @@ public class CastingRecipe implements ISimpleRecipe<MoldLike>
         return ingredient;
     }
 
-    public FluidStackIngredient getFluidIngredient()
+    public SizedFluidIngredient getFluidIngredient()
     {
         return fluidIngredient;
     }
 
     @Override
-    public boolean matches(MoldLike mold, @Nullable Level level)
-    {
-        return ingredient.test(mold.getContainer()) && fluidIngredient.test(mold.getFluidInTank(0));
-    }
-
-    @Override
-    public ItemStack assemble(MoldLike inventory, @Nullable RegistryAccess registryAccess)
-    {
-        final ItemStack stack = result.getSingleStack(inventory.getContainer().copy());
-        final @Nullable IHeat heat = HeatCapability.get(stack);
-        if (heat != null)
-        {
-            heat.setTemperatureIfWarmer(inventory.getTemperature());
-        }
-        return stack;
-    }
-
-    @Override
-    public ItemStack getResultItem(RegistryAccess registryAccess)
+    public ItemStack getResultItem(HolderLookup.Provider registries)
     {
         return result.getEmptyStack();
-    }
-
-    @Override
-    public ResourceLocation getId()
-    {
-        return id;
     }
 
     @Override
@@ -115,38 +126,5 @@ public class CastingRecipe implements ISimpleRecipe<MoldLike>
     public RecipeType<?> getType()
     {
         return TFCRecipeTypes.CASTING.get();
-    }
-
-    public static class Serializer extends RecipeSerializerImpl<CastingRecipe>
-    {
-        @Override
-        public CastingRecipe fromJson(ResourceLocation recipeId, JsonObject json)
-        {
-            final Ingredient ingredient = Ingredient.fromJson(JsonHelpers.get(json, "mold"));
-            final FluidStackIngredient fluidIngredient = FluidStackIngredient.fromJson(JsonHelpers.getAsJsonObject(json, "fluid"));
-            final ItemStackProvider result = ItemStackProvider.fromJson(JsonHelpers.getAsJsonObject(json, "result"));
-            final float breakChance = JsonHelpers.getAsFloat(json, "break_chance");
-            return new CastingRecipe(recipeId, ingredient, fluidIngredient, result, breakChance);
-        }
-
-        @Nullable
-        @Override
-        public CastingRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
-        {
-            final Ingredient ingredient = Ingredient.fromNetwork(buffer);
-            final FluidStackIngredient fluidIngredient = FluidStackIngredient.fromNetwork(buffer);
-            final ItemStackProvider result = ItemStackProvider.fromNetwork(buffer);
-            final float breakChance = buffer.readFloat();
-            return new CastingRecipe(recipeId, ingredient, fluidIngredient, result, breakChance);
-        }
-
-        @Override
-        public void toNetwork(FriendlyByteBuf buffer, CastingRecipe recipe)
-        {
-            recipe.ingredient.toNetwork(buffer);
-            recipe.fluidIngredient.toNetwork(buffer);
-            recipe.result.toNetwork(buffer);
-            buffer.writeFloat(recipe.breakChance);
-        }
     }
 }

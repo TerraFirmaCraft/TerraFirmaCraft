@@ -18,9 +18,9 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.MoldLike;
-import org.jetbrains.annotations.Nullable;
 
 public class CastingCraftingRecipe extends CustomRecipe implements ISimpleRecipe<CraftingContainer>
 {
@@ -45,7 +45,7 @@ public class CastingCraftingRecipe extends CustomRecipe implements ISimpleRecipe
             final CastingRecipe recipe = CastingRecipe.get(mold);
             if (recipe != null)
             {
-                return recipe.assemble(mold, null);
+                return recipe.assemble(mold);
             }
         }
         return ItemStack.EMPTY;

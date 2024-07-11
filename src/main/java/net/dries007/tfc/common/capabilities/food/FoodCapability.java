@@ -24,11 +24,11 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.DataManagerSyncPacket;
-import net.dries007.tfc.util.DataManager;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
+import net.dries007.tfc.util.data.DataManager;
 
 public final class FoodCapability
 {

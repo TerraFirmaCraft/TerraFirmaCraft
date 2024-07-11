@@ -27,7 +27,7 @@ import net.dries007.tfc.client.TFCColors;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.data.Metal;
 import net.dries007.tfc.util.registry.RegistrationHelpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;

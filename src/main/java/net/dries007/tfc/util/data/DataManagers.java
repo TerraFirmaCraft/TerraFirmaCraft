@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.util;
+package net.dries007.tfc.util.data;
 
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -16,6 +16,7 @@ import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.entities.Fauna;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.ClimateRange;
 
 public final class DataManagers
@@ -36,12 +37,12 @@ public final class DataManagers
         register(KnappingType.MANAGER);
         register(Support.MANAGER);
         register(ItemSizeManager.MANAGER);
-
-        register(Pannable.MANAGER);
-        register(Sluiceable.MANAGER);
-        register(LampFuel.MANAGER);
-        register(ClimateRange.MANAGER);
         register(Fauna.MANAGER);
+        register(ClimateRange.MANAGER);
+        register(LampFuel.MANAGER);
+        register(Sluiceable.MANAGER);
+        register(Pannable.MANAGER);
+
         register(HeatCapability.MANAGER);
         register(FoodCapability.MANAGER);
     }

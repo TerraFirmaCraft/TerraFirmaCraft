@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.util;
+package net.dries007.tfc.util.data;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -12,8 +12,10 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-
 import org.jetbrains.annotations.Nullable;
+
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.PhysicalDamageTypeData;
 
 public record EntityDamageResistance(
     TagKey<EntityType<?>> entity,

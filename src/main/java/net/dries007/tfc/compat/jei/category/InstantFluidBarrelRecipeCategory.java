@@ -11,9 +11,9 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
+
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.recipes.InstantFluidBarrelRecipe;
-import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
 import net.dries007.tfc.compat.jei.JEIIntegration;
 
 public class InstantFluidBarrelRecipeCategory extends BarrelRecipeCategory<InstantFluidBarrelRecipe>

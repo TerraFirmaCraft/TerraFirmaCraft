@@ -15,7 +15,7 @@ import net.minecraft.util.Mth;
 
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.blockentities.FarmlandBlockEntity.NutrientType;
-import net.dries007.tfc.util.Fertilizer;
+import net.dries007.tfc.util.data.Fertilizer;
 
 import static net.dries007.tfc.common.blockentities.FarmlandBlockEntity.NutrientType.*;
 

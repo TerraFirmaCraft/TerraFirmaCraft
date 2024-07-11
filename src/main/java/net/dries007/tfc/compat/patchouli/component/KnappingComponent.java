@@ -7,21 +7,19 @@
 package net.dries007.tfc.compat.patchouli.component;
 
 import java.util.Arrays;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
-
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeType;
+import org.jetbrains.annotations.Nullable;
+import vazkii.patchouli.api.IComponentRenderContext;
 
 import net.dries007.tfc.client.screen.KnappingScreen;
 import net.dries007.tfc.common.recipes.KnappingRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
-import net.dries007.tfc.util.KnappingPattern;
-
-import net.minecraft.world.item.crafting.RecipeType;
-import org.jetbrains.annotations.Nullable;
-import vazkii.patchouli.api.IComponentRenderContext;
+import net.dries007.tfc.util.data.KnappingPattern;
 
 public class KnappingComponent extends RecipeComponent<KnappingRecipe>
 {

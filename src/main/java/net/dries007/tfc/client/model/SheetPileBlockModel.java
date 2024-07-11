@@ -22,7 +22,7 @@ import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
 import net.dries007.tfc.common.blocks.devices.SheetPileBlock;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.data.Metal;
 
 public enum SheetPileBlockModel implements SimpleStaticBlockEntityModel<SheetPileBlockModel, SheetPileBlockEntity>
 {

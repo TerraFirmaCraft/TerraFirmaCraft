@@ -26,8 +26,8 @@ import net.dries007.tfc.client.screen.button.KnappingButton;
 import net.dries007.tfc.common.container.KnappingContainer;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.KnappingPattern;
-import net.dries007.tfc.util.KnappingType;
+import net.dries007.tfc.util.data.KnappingPattern;
+import net.dries007.tfc.util.data.KnappingType;
 
 public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
 {

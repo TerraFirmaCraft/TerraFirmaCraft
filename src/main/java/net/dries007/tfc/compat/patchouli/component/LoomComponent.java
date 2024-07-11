@@ -8,17 +8,14 @@ package net.dries007.tfc.compat.patchouli.component;
 
 import java.util.Collections;
 import java.util.List;
-
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
+import vazkii.patchouli.api.IComponentRenderContext;
 
-import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.common.recipes.LoomRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
-import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
-
-import vazkii.patchouli.api.IComponentRenderContext;
 
 public class LoomComponent extends RecipeComponent<LoomRecipe>
 {
@@ -46,7 +43,7 @@ public class LoomComponent extends RecipeComponent<LoomRecipe>
 
         if (recipe == null) return;
 
-        inputItems = unpackItemStackIngredient(new ItemStackIngredient(recipe.getIngredient(), recipe.getInputCount()));
+        inputItems = unpackItemStackIngredient(recipe.getItemStackIngredient());
     }
 
     @Override

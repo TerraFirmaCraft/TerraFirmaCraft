@@ -6,49 +6,93 @@
 
 package net.dries007.tfc.common.recipes;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.FriendlyByteBuf;
+import java.util.Optional;
+import java.util.function.Supplier;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.common.crafting.SizedIngredient;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
-import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
-import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
 import net.dries007.tfc.common.recipes.input.BarrelInventory;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.JsonHelpers;
 
-public abstract class BarrelRecipe implements ISimpleRecipe<BarrelInventory>
+
+public class BarrelRecipe implements INoopInputRecipe
 {
-    private final ResourceLocation id;
+    public static final MapCodec<BarrelRecipe> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
+        SizedIngredient.FLAT_CODEC.optionalFieldOf("input_item").forGetter(c -> c.inputItem),
+        SizedFluidIngredient.FLAT_CODEC.fieldOf("input_fluid").forGetter(c -> c.inputFluid),
+        ItemStackProvider.CODEC.optionalFieldOf("output_item", ItemStackProvider.empty()).forGetter(c -> c.outputItem),
+        FluidStack.CODEC.optionalFieldOf("output_fluid", FluidStack.EMPTY).forGetter(c -> c.outputFluid),
+        SoundEvent.CODEC.optionalFieldOf("sound", Holder.direct(SoundEvents.BREWING_STAND_BREW)).forGetter(c -> c.sound)
+    ).apply(i, BarrelRecipe::new));
 
-    protected final ItemStackIngredient inputItem;
-    protected final FluidStackIngredient inputFluid;
+    public static final StreamCodec<RegistryFriendlyByteBuf, BarrelRecipe> STREAM_CODEC = StreamCodec.composite(
+        ByteBufCodecs.optional(SizedIngredient.STREAM_CODEC), c -> c.inputItem,
+        SizedFluidIngredient.STREAM_CODEC, c -> c.inputFluid,
+        ItemStackProvider.STREAM_CODEC, c -> c.outputItem,
+        FluidStack.STREAM_CODEC, c -> c.outputFluid,
+        ByteBufCodecs.holderRegistry(Registries.SOUND_EVENT), c -> c.sound,
+        BarrelRecipe::new
+    );
+
+    @Nullable
+    public static <B extends BarrelRecipe> B get(Level level, Supplier<RecipeType<B>> type, BarrelInventory input)
+    {
+        for (B recipe : Helpers.getRecipes(level, type).values())
+        {
+            if (recipe.matches(input))
+            {
+                return recipe;
+            }
+        }
+        return null;
+    }
+
+    protected final Optional<SizedIngredient> inputItem;
+    protected final SizedFluidIngredient inputFluid;
     protected final ItemStackProvider outputItem;
     protected final FluidStack outputFluid;
-    protected final SoundEvent sound;
+    protected final Holder<SoundEvent> sound;
 
-    public BarrelRecipe(ResourceLocation id, Builder builder)
+    protected BarrelRecipe(BarrelRecipe parent)
     {
-        this.id = id;
-        this.inputItem = builder.inputItem;
-        this.inputFluid = builder.inputFluid;
-        this.outputItem = builder.outputItem;
-        this.outputFluid = builder.outputFluid;
-        this.sound = builder.sound;
+        this(parent.inputItem, parent.inputFluid, parent.outputItem, parent.outputFluid, parent.sound);
+    }
+
+    protected BarrelRecipe(Optional<SizedIngredient> inputItem, SizedFluidIngredient inputFluid, ItemStackProvider outputItem, FluidStack outputFluid, Holder<SoundEvent> sound)
+    {
+        this.inputItem = inputItem;
+        this.inputFluid = inputFluid;
+        this.outputItem = outputItem;
+        this.outputFluid = outputFluid;
+        this.sound = sound;
+    }
+
+    public boolean matches(BarrelInventory input)
+    {
+        return (inputItem.isEmpty() || inputItem.get().test(input.getStackInSlot(BarrelBlockEntity.SLOT_ITEM)))
+            && inputFluid.test(input.getFluidInTank(0));
     }
 
     public void assembleOutputs(BarrelInventory inventory)
@@ -61,17 +105,13 @@ public abstract class BarrelRecipe implements ISimpleRecipe<BarrelInventory>
 
             // Calculate the multiplier in use for this recipe
             int multiplier;
-            if (inputItem.count() == 0)
+            if (inputItem.isEmpty())
             {
                 multiplier = fluid.getAmount() / inputFluid.amount();
             }
-            else if (inputFluid.amount() == 0)
-            {
-                multiplier = stack.getCount() / inputItem.count();
-            }
             else
             {
-                multiplier = Math.min(fluid.getAmount() / inputFluid.amount(), stack.getCount() / inputItem.count());
+                multiplier = Math.min(fluid.getAmount() / inputFluid.amount(), stack.getCount() / inputItem.get().count());
             }
 
             // Trim multiplier to a maximum fluid capacity of output
@@ -93,7 +133,7 @@ public abstract class BarrelRecipe implements ISimpleRecipe<BarrelInventory>
             {
                 Helpers.consumeInStackSizeIncrements(outputItem, multiplier * outputItem.getCount(), inventory::insertItemWithOverflow);
             }
-            final int remainingItemCount = stack.getCount() - multiplier * inputItem.count();
+            final int remainingItemCount = stack.getCount() - multiplier * inputItem.map(SizedIngredient::count).orElse(0);
             if (remainingItemCount > 0)
             {
                 final ItemStack remainingStack = stack.copy();
@@ -130,26 +170,26 @@ public abstract class BarrelRecipe implements ISimpleRecipe<BarrelInventory>
     }
 
     @Override
-    public boolean matches(BarrelInventory container, @Nullable Level level)
-    {
-        return inputItem.test(container.getStackInSlot(BarrelBlockEntity.SLOT_ITEM)) && inputFluid.test(container.getFluidInTank(0));
-    }
-
-    @Override
-    public ItemStack getResultItem(@Nullable RegistryAccess access)
+    public ItemStack getResultItem(HolderLookup.Provider registries)
     {
         return outputItem.getEmptyStack();
     }
 
     @Override
-    public ResourceLocation getId()
+    public RecipeSerializer<?> getSerializer()
     {
-        return id;
+        throw new UnsupportedOperationException();
     }
 
-    public ItemStackIngredient getInputItem()
+    @Override
+    public RecipeType<?> getType()
     {
-        return inputItem;
+        throw new UnsupportedOperationException();
+    }
+
+    public SizedIngredient getInputItem()
+    {
+        return inputItem.orElseThrow();
     }
 
     public ItemStackProvider getOutputItem()
@@ -157,7 +197,7 @@ public abstract class BarrelRecipe implements ISimpleRecipe<BarrelInventory>
         return outputItem;
     }
 
-    public FluidStackIngredient getInputFluid()
+    public SizedFluidIngredient getInputFluid()
     {
         return inputFluid;
     }
@@ -169,63 +209,11 @@ public abstract class BarrelRecipe implements ISimpleRecipe<BarrelInventory>
 
     public SoundEvent getCompleteSound()
     {
-        return sound;
+        return sound.value();
     }
 
     public MutableComponent getTranslationComponent()
     {
         return Component.translatable("tfc.recipe.barrel." + id.getNamespace() + "." + id.getPath().replace('/', '.'));
-    }
-
-    public record Builder(ItemStackIngredient inputItem, FluidStackIngredient inputFluid, ItemStackProvider outputItem, FluidStack outputFluid, SoundEvent sound)
-    {
-        public static Builder fromJson(JsonObject json)
-        {
-            final ItemStackIngredient inputItem = json.has("input_item") ? ItemStackIngredient.fromJson(JsonHelpers.getAsJsonObject(json, "input_item")) : ItemStackIngredient.EMPTY;
-            final FluidStackIngredient inputFluid = json.has("input_fluid") ? FluidStackIngredient.fromJson(JsonHelpers.getAsJsonObject(json, "input_fluid")) : FluidStackIngredient.EMPTY;
-
-            if (inputItem == ItemStackIngredient.EMPTY && inputFluid == FluidStackIngredient.EMPTY)
-            {
-                throw new JsonParseException("Barrel recipe must have at least one of input_item or input_fluid");
-            }
-
-            final ItemStackProvider outputItem = json.has("output_item") ? ItemStackProvider.fromJson(JsonHelpers.getAsJsonObject(json, "output_item")) : ItemStackProvider.empty();
-            final FluidStack outputFluid = json.has("output_fluid") ? JsonHelpers.getFluidStack(JsonHelpers.getAsJsonObject(json, "output_fluid")) : FluidStack.EMPTY;
-            final SoundEvent sound = json.has("sound") ? JsonHelpers.getRegistryEntry(json, "sound", BuiltInRegistries.SOUND_EVENT) : SoundEvents.BREWING_STAND_BREW;
-
-            return new Builder(inputItem, inputFluid, outputItem, outputFluid, sound);
-        }
-
-        public static Builder fromNetwork(FriendlyByteBuf buffer)
-        {
-            final ItemStackIngredient inputItem = ItemStackIngredient.fromNetwork(buffer);
-            final ItemStackProvider outputItem = ItemStackProvider.fromNetwork(buffer);
-            final Builder builder = fromNetworkFluidsOnly(buffer);
-
-            return new Builder(inputItem, builder.inputFluid, outputItem, builder.outputFluid, builder.sound);
-        }
-
-        public static void toNetwork(BarrelRecipe recipe, FriendlyByteBuf buffer)
-        {
-            recipe.inputItem.toNetwork(buffer);
-            recipe.outputItem.toNetwork(buffer);
-            toNetworkFluidsOnly(recipe, buffer);
-        }
-
-        public static Builder fromNetworkFluidsOnly(FriendlyByteBuf buffer)
-        {
-            final FluidStackIngredient inputFluid = FluidStackIngredient.fromNetwork(buffer);
-            final FluidStack outputFluid = FluidStack.readFromPacket(buffer);
-            final SoundEvent sound = BuiltInRegistries.SOUND_EVENT.byIdOrThrow(buffer.readVarInt());
-
-            return new Builder(ItemStackIngredient.EMPTY, inputFluid, ItemStackProvider.empty(), outputFluid, sound);
-        }
-
-        public static void toNetworkFluidsOnly(BarrelRecipe recipe, FriendlyByteBuf buffer)
-        {
-            recipe.inputFluid.toNetwork(buffer);
-            recipe.outputFluid.writeToPacket(buffer);
-            buffer.writeVarInt(BuiltInRegistries.SOUND_EVENT.getId(recipe.sound));
-        }
     }
 }

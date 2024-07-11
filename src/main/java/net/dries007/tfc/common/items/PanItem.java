@@ -8,26 +8,15 @@ package net.dries007.tfc.common.items;
 
 import java.util.List;
 import java.util.function.Consumer;
-
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.storage.loot.LootParams;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import net.minecraftforge.common.util.NonNullLazy;
-import net.minecraftforge.items.ItemHandlerHelper;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -37,13 +26,21 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.minecraftforge.common.util.NonNullLazy;
+import net.minecraftforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.render.blockentity.PanItemRenderer;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Pannable;
+import net.dries007.tfc.util.data.Pannable;
 
 public class PanItem extends Item
 {
@@ -118,7 +115,7 @@ public class PanItem extends Item
             final Pannable pannable = readPannable(level.holderLookup(Registries.BLOCK), stack);
             if (pannable != null)
             {
-                final var table = level.getServer().getLootData().getLootTable(pannable.getLootTable());
+                final var table = level.getServer().getLootData().getLootTable(pannable.lootTable());
                 final var builder = new LootParams.Builder(serverLevel)
                         .withParameter(LootContextParams.THIS_ENTITY, entity)
                         .withParameter(LootContextParams.ORIGIN, entity.position())

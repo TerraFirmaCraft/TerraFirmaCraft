@@ -30,7 +30,7 @@ import net.dries007.tfc.common.blockentities.NestBoxBlockEntity;
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
 import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
-import net.dries007.tfc.util.KnappingType;
+import net.dries007.tfc.util.data.KnappingType;
 import net.dries007.tfc.util.registry.RegistrationHelpers;
 import net.dries007.tfc.util.registry.RegistryHolder;
 

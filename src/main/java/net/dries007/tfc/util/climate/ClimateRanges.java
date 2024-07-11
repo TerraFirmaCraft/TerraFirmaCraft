@@ -13,9 +13,9 @@ import java.util.function.Supplier;
 import net.dries007.tfc.common.blocks.crop.Crop;
 import net.dries007.tfc.common.blocks.plant.fruit.FruitBlocks;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.RegisteredDataManager;
+import net.dries007.tfc.util.data.DataManager;
 
-public class ClimateRanges
+public final class ClimateRanges
 {
     public static final Supplier<ClimateRange> BANANA_PLANT = register("plant/banana_tree");
     public static final Supplier<ClimateRange> CRANBERRY_BUSH = register("plant/cranberry_bush");
@@ -26,8 +26,8 @@ public class ClimateRanges
 
     public static final Map<Crop, Supplier<ClimateRange>> CROPS = Helpers.mapOfKeys(Crop.class, crop -> register("crop/" + crop.getSerializedName()));
 
-    private static RegisteredDataManager.Entry<ClimateRange> register(String name)
+    private static DataManager.Reference<ClimateRange> register(String name)
     {
-        return ClimateRange.MANAGER.register(Helpers.identifier(name.toLowerCase(Locale.ROOT)));
+        return ClimateRange.MANAGER.getReference(Helpers.identifier(name.toLowerCase(Locale.ROOT)));
     }
 }

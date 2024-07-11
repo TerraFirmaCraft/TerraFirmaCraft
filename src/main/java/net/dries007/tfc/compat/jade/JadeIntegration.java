@@ -7,7 +7,6 @@
 package net.dries007.tfc.compat.jade;
 
 import java.util.List;
-import java.util.Locale;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
@@ -23,7 +22,6 @@ import snownee.jade.api.IEntityComponentProvider;
 import snownee.jade.api.ITooltip;
 import snownee.jade.api.IWailaClientRegistration;
 import snownee.jade.api.IWailaPlugin;
-import snownee.jade.api.TooltipPosition;
 import snownee.jade.api.WailaPlugin;
 import snownee.jade.api.config.IPluginConfig;
 
@@ -34,8 +32,7 @@ import net.dries007.tfc.compat.jade.common.BlockEntityTooltip;
 import net.dries007.tfc.compat.jade.common.BlockEntityTooltips;
 import net.dries007.tfc.compat.jade.common.EntityTooltip;
 import net.dries007.tfc.compat.jade.common.EntityTooltips;
-import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.data.Metal;
 
 @WailaPlugin
 public class JadeIntegration implements IWailaPlugin

@@ -51,10 +51,10 @@ import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.BlastFurnaceRecipe;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IntArrayBuilder;
 import net.dries007.tfc.util.calendar.ICalendarTickable;
+import net.dries007.tfc.util.data.Fuel;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
 

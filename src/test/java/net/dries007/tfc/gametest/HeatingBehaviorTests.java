@@ -34,12 +34,10 @@ import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.calendar.CalendarTransaction;
 import net.dries007.tfc.util.calendar.Calendars;
+import net.dries007.tfc.util.data.Metal;
 
-import static net.dries007.tfc.TestAssertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
 @GameTestHolder

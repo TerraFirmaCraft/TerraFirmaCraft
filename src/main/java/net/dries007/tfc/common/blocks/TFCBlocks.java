@@ -126,7 +126,7 @@ import net.dries007.tfc.common.items.TooltipBlockItem;
 import net.dries007.tfc.mixin.accessor.BlockBehaviourAccessor;
 import net.dries007.tfc.mixin.accessor.BlockStateBaseAccessor;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.data.Metal;
 import net.dries007.tfc.util.registry.RegistrationHelpers;
 import net.dries007.tfc.util.registry.RegistryHolder;
 

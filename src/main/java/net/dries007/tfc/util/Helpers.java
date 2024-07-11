@@ -138,6 +138,7 @@ import net.dries007.tfc.common.entities.prey.Pest;
 import net.dries007.tfc.common.items.TFCShieldItem;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.RecipeManagerAccessor;
+import net.dries007.tfc.util.data.Metal;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
 

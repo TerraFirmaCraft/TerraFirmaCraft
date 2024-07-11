@@ -191,7 +191,7 @@ public class Faunas
 
     private static <E extends Mob> FaunaType<E> register(RegistryObject<EntityType<E>> entity, SpawnPlacements.Type spawnPlacement, Heightmap.Types heightmapType)
     {
-        final Supplier<Fauna> fauna = Fauna.MANAGER.register(entity.getId());
+        final Supplier<Fauna> fauna = Fauna.MANAGER.getReference(entity.getId());
         return new FaunaType<>(entity, fauna, spawnPlacement, heightmapType);
     }
 
@@ -200,7 +200,7 @@ public class Faunas
         event.register(type.entity().get(), type.spawnPlacementType(), type.heightmapType(), (mob, level, heightmap, pos, rand) -> {
             final Fauna fauna = type.fauna().get();
             final ChunkGenerator generator = level.getLevel().getChunkSource().getGenerator();
-            if (rand.nextInt(fauna.getChance()) != 0)
+            if (rand.nextInt(fauna.chance()) != 0)
             {
                 return false;
             }
@@ -211,23 +211,23 @@ public class Faunas
             }
 
             final int seaLevel = generator.getSeaLevel();
-            if (fauna.getDistanceBelowSeaLevel() != -1 && pos.getY() > (seaLevel - fauna.getDistanceBelowSeaLevel()))
+            if (fauna.distanceBelowSeaLevel() != -1 && pos.getY() > (seaLevel - fauna.distanceBelowSeaLevel()))
             {
                 return false;
             }
 
             final ChunkData data = EntityHelpers.getChunkDataForSpawning(level, pos);
-            if (!fauna.getClimate().isValid(data, pos, rand))
+            if (!fauna.climate().isValid(data, pos, rand))
             {
                 return false;
             }
 
             final BlockPos below = pos.below();
-            if (fauna.isSolidGround() && !Helpers.isBlock(level.getBlockState(below), BlockTags.VALID_SPAWN))
+            if (fauna.solidGround() && !Helpers.isBlock(level.getBlockState(below), BlockTags.VALID_SPAWN))
             {
                 return false;
             }
-            return fauna.getMaxBrightness() == -1 || level.getRawBrightness(pos, 0) <= fauna.getMaxBrightness();
+            return fauna.maxBrightness() == -1 || level.getRawBrightness(pos, 0) <= fauna.maxBrightness();
         }, SpawnPlacementRegisterEvent.Operation.REPLACE);
     }
 

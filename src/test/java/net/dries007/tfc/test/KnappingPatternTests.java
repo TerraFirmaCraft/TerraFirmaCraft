@@ -8,11 +8,11 @@ package net.dries007.tfc.test;
 
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-
-import net.dries007.tfc.util.KnappingPattern;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
+
+import net.dries007.tfc.util.data.KnappingPattern;
 
 import static org.junit.jupiter.api.Assertions.*;
 

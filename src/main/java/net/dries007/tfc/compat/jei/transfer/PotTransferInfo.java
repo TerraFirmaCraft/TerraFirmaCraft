@@ -22,7 +22,6 @@ import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.container.PotContainer;
 import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.recipes.PotRecipe;
-import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.common.blockentities.GrillBlockEntity.*;

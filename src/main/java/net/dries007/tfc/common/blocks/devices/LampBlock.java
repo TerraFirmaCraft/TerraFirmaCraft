@@ -114,7 +114,7 @@ public class LampBlock extends ExtendedBlock implements EntityBlockExtension
             else if (FluidHelpers.transferBetweenBlockEntityAndItem(stack, lamp, player, hand))
             {
                 lamp.markForSync();
-                if (lamp.getFuel() != null && lamp.getFuel().getBurnRate() == -1 && player instanceof ServerPlayer serverPlayer)
+                if (lamp.getFuel() != null && lamp.getFuel().burnRate() == -1 && player instanceof ServerPlayer serverPlayer)
                 {
                     TFCAdvancements.LAVA_LAMP.trigger(serverPlayer);
                 }

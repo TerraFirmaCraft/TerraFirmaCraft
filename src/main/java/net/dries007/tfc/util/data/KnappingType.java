@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.util;
+package net.dries007.tfc.util.data;
 
 import java.util.Optional;
 import com.mojang.serialization.Codec;
@@ -21,6 +21,7 @@ import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.network.PacketCodecs;
+import net.dries007.tfc.util.Helpers;
 
 public record KnappingType(
     SizedIngredient inputItem,

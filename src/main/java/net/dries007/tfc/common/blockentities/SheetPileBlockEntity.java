@@ -24,7 +24,7 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 
 import net.dries007.tfc.common.blocks.devices.SheetPileBlock;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.data.Metal;
 
 public class SheetPileBlockEntity extends TFCBlockEntity
 {

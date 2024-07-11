@@ -56,7 +56,7 @@ import net.dries007.tfc.common.blocks.ExtendedBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.data.Metal;
 
 /**
  * A sheet pile is a collection of metal sheets (which can be made from arbitrary metals, and hence items), placed on the side of blocks.

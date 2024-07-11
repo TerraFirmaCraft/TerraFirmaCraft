@@ -43,8 +43,8 @@ import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.HideItemType;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
-import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.SelfTests;
+import net.dries007.tfc.util.data.Metal;
 
 
 @SuppressWarnings("unused")

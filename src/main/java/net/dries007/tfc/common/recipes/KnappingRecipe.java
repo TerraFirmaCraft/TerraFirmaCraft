@@ -7,32 +7,22 @@
 package net.dries007.tfc.common.recipes;
 
 import java.util.Optional;
-import java.util.function.Supplier;
-import com.google.gson.JsonObject;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.ShapedRecipe;
-import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.container.KnappingContainer;
-import net.dries007.tfc.util.DataManager;
-import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.JsonHelpers;
-import net.dries007.tfc.util.KnappingPattern;
-import net.dries007.tfc.util.KnappingType;
+import net.dries007.tfc.util.data.DataManager;
+import net.dries007.tfc.util.data.KnappingPattern;
+import net.dries007.tfc.util.data.KnappingType;
 
 public class KnappingRecipe implements INoopInputRecipe
 {

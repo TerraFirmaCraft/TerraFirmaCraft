@@ -18,7 +18,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-import net.dries007.tfc.util.Pannable;
+import net.dries007.tfc.util.data.Pannable;
 
 public class EmptyPanItem extends Item
 {

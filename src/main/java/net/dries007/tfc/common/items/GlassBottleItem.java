@@ -29,7 +29,7 @@ import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.food.TFCFoodData;
-import net.dries007.tfc.util.Drinkable;
+import net.dries007.tfc.util.data.Drinkable;
 
 public class GlassBottleItem extends FluidContainerItem
 {

@@ -15,8 +15,8 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 
-import net.dries007.tfc.util.DataManager;
-import net.dries007.tfc.util.DataManagers;
+import net.dries007.tfc.util.data.DataManager;
+import net.dries007.tfc.util.data.DataManagers;
 
 public record DataManagerSyncPacket(List<Entry<?>> values) implements CustomPacketPayload
 {

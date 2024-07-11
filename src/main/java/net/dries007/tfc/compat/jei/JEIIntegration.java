@@ -110,7 +110,7 @@ import net.dries007.tfc.compat.jei.transfer.FluidIgnoringRecipeTransferHandler;
 import net.dries007.tfc.compat.jei.transfer.PotTransferInfo;
 import net.dries007.tfc.compat.jei.transfer.WeldingRecipeTransferInfo;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.KnappingType;
+import net.dries007.tfc.util.data.KnappingType;
 
 @JeiPlugin
 public final class JEIIntegration implements IModPlugin

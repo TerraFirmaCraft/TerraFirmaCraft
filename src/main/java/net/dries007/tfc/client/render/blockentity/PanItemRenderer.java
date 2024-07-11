@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.client.render.blockentity;
 
+import java.util.List;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -22,7 +23,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.model.data.ModelData;
 
 import net.dries007.tfc.common.items.PanItem;
-import net.dries007.tfc.util.Pannable;
+import net.dries007.tfc.util.data.Pannable;
 
 public class PanItemRenderer extends BlockEntityWithoutLevelRenderer
 {
@@ -44,12 +45,12 @@ public class PanItemRenderer extends BlockEntityWithoutLevelRenderer
         final LocalPlayer player = mc.player;
         if (pannable != null)
         {
-            final ResourceLocation[] stages = pannable.getModelStages();
-            ResourceLocation location = stages[0];
+            final List<ResourceLocation> stages = pannable.modelStages();
+            ResourceLocation location = stages.getFirst();
             if (player != null && transforms.firstPerson())
             {
                 final int useTicks = player.getTicksUsingItem();
-                location = stages[Mth.clamp(Math.round((float) useTicks / PanItem.USE_TIME * stages.length), 0, stages.length - 1)];
+                location = stages.get(Mth.clamp(Math.round((float) useTicks / PanItem.USE_TIME * stages.size()), 0, stages.size() - 1));
             }
             final BakedModel model = mc.getModelManager().getModel(location);
 

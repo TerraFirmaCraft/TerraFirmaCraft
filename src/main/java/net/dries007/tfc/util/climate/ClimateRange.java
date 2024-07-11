@@ -6,77 +6,47 @@
 
 package net.dries007.tfc.util.climate;
 
-import com.google.gson.JsonObject;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import org.jetbrains.annotations.NotNull;
 
-import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.JsonHelpers;
-import net.dries007.tfc.util.RegisteredDataManager;
+import net.dries007.tfc.util.data.DataManager;
 
-public class ClimateRange
+/**
+ * A range of <strong>hydration</strong> and <strong>temperature</strong> to check for growing plants or crops. This uses hydration
+ * which can be influenced by nearby water, rather than rainfall. This is as such not intended for use in world generation.
+ */
+public record ClimateRange(
+    int minHydration, int maxHydration, int hydrationWiggleRange,
+    float minTemperature, float maxTemperature, float temperatureWiggleRange
+)
 {
-    public static final RegisteredDataManager<ClimateRange> MANAGER = new RegisteredDataManager<>(ClimateRange::new, ClimateRange::new, Helpers.identifier("climate_ranges"), "climate range", ClimateRange::new, ClimateRange::encode, Packet::new);
-    public static final ClimateRange NOOP = new ClimateRange(Helpers.identifier("no_op"));
+    public static final Codec<ClimateRange> CODEC = RecordCodecBuilder.create(i -> i.group(
+        Codec.INT.optionalFieldOf("min_hydration", 0).forGetter(c -> c.minHydration),
+        Codec.INT.optionalFieldOf("max_hydration", 100).forGetter(c -> c.maxHydration),
+        Codec.INT.optionalFieldOf("hydration_wiggle_range", 0).forGetter(c -> c.hydrationWiggleRange),
+        Codec.FLOAT.optionalFieldOf("min_temperature", -100f).forGetter(c -> c.minTemperature),
+        Codec.FLOAT.optionalFieldOf("max_temperature", 100f).forGetter(c -> c.maxTemperature),
+        Codec.FLOAT.optionalFieldOf("temperature_wiggle_range", 0f).forGetter(c -> c.temperatureWiggleRange)
+    ).apply(i, ClimateRange::new));
 
-    private final ResourceLocation id;
-    private final int minHydration, maxHydration, hydrationWiggleRange; // Hydration = a hybrid of nearby water and rainfall
-    private final float minTemperature, maxTemperature, temperatureWiggleRange; // Temperature = in-world temperature
+    public static final StreamCodec<RegistryFriendlyByteBuf, ClimateRange> STREAM_CODEC = StreamCodec.composite(
+        ByteBufCodecs.VAR_INT, c -> c.minHydration,
+        ByteBufCodecs.VAR_INT, c -> c.maxHydration,
+        ByteBufCodecs.VAR_INT, c -> c.hydrationWiggleRange,
+        ByteBufCodecs.FLOAT, c -> c.minTemperature,
+        ByteBufCodecs.FLOAT, c -> c.maxTemperature,
+        ByteBufCodecs.FLOAT, c -> c.temperatureWiggleRange,
+        ClimateRange::new
+    );
 
-    private ClimateRange(ResourceLocation id)
-    {
-        this.id = id;
-        this.minHydration = 0;
-        this.maxHydration = 100;
-        this.hydrationWiggleRange = 0;
-        this.minTemperature = -100;
-        this.maxTemperature = 100;
-        this.temperatureWiggleRange = 0;
-    }
 
-    private ClimateRange(ResourceLocation id, JsonObject json)
-    {
-        this.id = id;
-
-        this.minHydration = JsonHelpers.getAsInt(json, "min_hydration", 0);
-        this.maxHydration = JsonHelpers.getAsInt(json, "max_hydration", 100);
-        this.hydrationWiggleRange = JsonHelpers.getAsInt(json, "hydration_wiggle_range", 0);
-
-        this.minTemperature = JsonHelpers.getAsFloat(json, "min_temperature", -100);
-        this.maxTemperature = JsonHelpers.getAsFloat(json, "max_temperature", 100);
-        this.temperatureWiggleRange = JsonHelpers.getAsFloat(json, "temperature_wiggle_range", 0);
-    }
-
-    private ClimateRange(ResourceLocation id, FriendlyByteBuf buffer)
-    {
-        this.id = id;
-
-        this.minHydration = buffer.readVarInt();
-        this.maxHydration = buffer.readVarInt();
-        this.hydrationWiggleRange = buffer.readVarInt();
-
-        this.minTemperature = buffer.readFloat();
-        this.maxTemperature = buffer.readFloat();
-        this.temperatureWiggleRange = buffer.readFloat();
-    }
-
-    public void encode(FriendlyByteBuf buffer)
-    {
-        buffer.writeVarInt(minHydration);
-        buffer.writeVarInt(maxHydration);
-        buffer.writeVarInt(hydrationWiggleRange);
-
-        buffer.writeFloat(minTemperature);
-        buffer.writeFloat(maxTemperature);
-        buffer.writeFloat(temperatureWiggleRange);
-    }
-
-    public ResourceLocation getId()
-    {
-        return id;
-    }
+    public static final DataManager<ClimateRange> MANAGER = new DataManager<>(Helpers.identifier("climate_ranges"), "climate range", ClimateRange.CODEC, ClimateRange.STREAM_CODEC);
+    public static final ClimateRange NOOP = new ClimateRange(0, 100, 0, -100, 100, 0);
 
     public int getMinHydration(boolean allowWiggle)
     {
@@ -136,6 +106,4 @@ public class ClimateRange
     {
         LOW, VALID, HIGH
     }
-
-    public static class Packet extends DataManagerSyncPacket<RegisteredDataManager.Entry<ClimateRange>> {}
 }

@@ -34,7 +34,7 @@ import net.dries007.tfc.common.blocks.devices.SluiceBlock;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Sluiceable;
+import net.dries007.tfc.util.data.Sluiceable;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
 
@@ -81,7 +81,7 @@ public class SluiceBlockEntity extends TickableInventoryBlockEntity<ItemStackHan
                 {
                     LootParams.Builder params = new LootParams.Builder(serverLevel)
                         .withOptionalParameter(LootContextParams.ORIGIN, new Vec3(pos.getX(), pos.getY(), pos.getZ()));
-                    LootTable table = serverLevel.getServer().getLootData().getLootTable(sluiceable.getLootTable());
+                    LootTable table = serverLevel.getServer().getLootData().getLootTable(sluiceable.lootTable());
                     final List<ItemStack> items = table.getRandomItems(params.create(LootContextParamSets.EMPTY));
                     items.forEach(item -> Helpers.spawnItem(level, Vec3.atCenterOf(sluice.getWaterOutputPos()), item));
                 }

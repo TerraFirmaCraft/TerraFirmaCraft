@@ -33,7 +33,7 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.mixin.client.accessor.SignRendererAccessor;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.data.Metal;
 
 public class TFCHangingSignBlockEntityRenderer extends HangingSignRenderer
 {

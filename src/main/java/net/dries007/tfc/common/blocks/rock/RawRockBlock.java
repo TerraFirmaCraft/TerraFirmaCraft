@@ -21,7 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.recipes.CollapseRecipe;
-import net.dries007.tfc.util.Support;
+import net.dries007.tfc.util.data.Support;
 
 /**
  * This is just a normal block, with indicator particles when it's unsupported.

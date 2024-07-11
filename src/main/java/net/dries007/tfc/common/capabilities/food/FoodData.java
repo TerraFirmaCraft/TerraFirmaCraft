@@ -6,17 +6,13 @@
 
 package net.dries007.tfc.common.capabilities.food;
 
-import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 
-import net.dries007.tfc.util.JsonHelpers;
 
 /**
  * An immutable collection of data about a certain piece of food.

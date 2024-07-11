@@ -47,8 +47,8 @@ import net.dries007.tfc.util.Alloy;
 import net.dries007.tfc.util.AlloyView;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IntArrayBuilder;
-import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.calendar.ICalendarTickable;
+import net.dries007.tfc.util.data.Metal;
 
 public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBlockEntity.CrucibleInventory> implements ICalendarTickable
 {

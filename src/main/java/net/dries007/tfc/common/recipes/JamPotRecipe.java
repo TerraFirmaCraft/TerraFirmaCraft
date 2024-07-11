@@ -8,12 +8,10 @@ package net.dries007.tfc.common.recipes;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.google.gson.JsonObject;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
@@ -22,18 +20,15 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
 import net.dries007.tfc.common.recipes.outputs.PotOutput;
 import net.dries007.tfc.compat.jade.common.BlockEntityTooltip;
 import net.dries007.tfc.compat.jade.common.BlockEntityTooltips;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.JsonHelpers;
 
 public class JamPotRecipe extends PotRecipe
 {

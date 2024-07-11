@@ -23,9 +23,9 @@ import net.minecraft.world.item.crafting.RecipeType;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.util.Alloy;
-import net.dries007.tfc.util.DataManager;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.data.DataManager;
+import net.dries007.tfc.util.data.Metal;
 
 public class AlloyRecipe implements INoopInputRecipe
 {

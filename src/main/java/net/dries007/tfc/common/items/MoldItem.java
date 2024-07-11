@@ -51,8 +51,8 @@ import net.dries007.tfc.common.container.TFCContainerProviders;
 import net.dries007.tfc.common.recipes.CastingRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.Tooltips;
+import net.dries007.tfc.util.data.Metal;
 
 public class MoldItem extends Item
 {
@@ -121,7 +121,7 @@ public class MoldItem extends Item
                     }
                     else
                     {
-                        final ItemStack result = recipe.assemble(mold, level.registryAccess());
+                        final ItemStack result = recipe.assemble(mold);
 
                         // Draining directly from the mold is denied, as the mold is not molten
                         // So, we need to clear the mold specially
@@ -168,7 +168,7 @@ public class MoldItem extends Item
                 final CastingRecipe recipe = CastingRecipe.get(mold);
                 if (recipe != null)
                 {
-                    final ItemStack result = recipe.assemble(mold, player.level().registryAccess());
+                    final ItemStack result = recipe.assemble(mold);
 
                     final boolean noCarry = carried.isEmpty();
                     final boolean stackable = ItemHandlerHelper.canItemStacksStack(result, carried) && result.getCount() + carried.getCount() <= carried.getMaxStackSize();

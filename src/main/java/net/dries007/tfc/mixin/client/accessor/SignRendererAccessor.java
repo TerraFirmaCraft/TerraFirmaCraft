@@ -8,7 +8,6 @@ package net.dries007.tfc.mixin.client.accessor;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.dries007.tfc.util.Metal;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.SignRenderer;

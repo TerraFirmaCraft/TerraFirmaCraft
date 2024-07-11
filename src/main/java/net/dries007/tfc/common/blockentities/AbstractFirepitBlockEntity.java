@@ -34,10 +34,10 @@ import net.dries007.tfc.common.blocks.devices.FirepitBlock;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.items.Powder;
 import net.dries007.tfc.common.items.TFCItems;
-import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IntArrayBuilder;
 import net.dries007.tfc.util.calendar.ICalendarTickable;
+import net.dries007.tfc.util.data.Fuel;
 
 public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiable & INBTSerializable<CompoundTag>> extends TickableInventoryBlockEntity<C> implements ICalendarTickable, MenuProvider
 {

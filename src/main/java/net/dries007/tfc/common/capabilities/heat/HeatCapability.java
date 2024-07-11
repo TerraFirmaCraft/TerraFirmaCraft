@@ -20,10 +20,10 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.DataManagerSyncPacket;
-import net.dries007.tfc.util.DataManager;
-import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
+import net.dries007.tfc.util.data.DataManager;
+import net.dries007.tfc.util.data.Fuel;
 
 public final class HeatCapability
 {

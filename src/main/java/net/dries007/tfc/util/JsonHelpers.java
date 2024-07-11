@@ -32,7 +32,9 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.util.data.DataManager;
 
+@Deprecated // Probably don't need anymore, no need to use directly
 public final class JsonHelpers extends GsonHelper
 {
     /**

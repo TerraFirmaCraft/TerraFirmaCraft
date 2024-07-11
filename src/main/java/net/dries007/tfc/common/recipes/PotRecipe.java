@@ -8,28 +8,20 @@ package net.dries007.tfc.common.recipes;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
-import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
-import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
 import net.dries007.tfc.common.recipes.outputs.PotOutput;
 import net.dries007.tfc.util.Helpers;
 
@@ -134,57 +126,5 @@ public class PotRecipe implements ISimpleRecipe<PotBlockEntity.PotInventory>
     public PotOutput getOutput(PotBlockEntity.PotInventory inventory)
     {
         return PotOutput.EMPTY_INSTANCE;
-    }
-
-    public abstract static class Serializer<R extends PotRecipe> extends RecipeSerializerImpl<R>
-    {
-        @Override
-        public R fromJson(ResourceLocation recipeId, JsonObject json)
-        {
-            final JsonArray array = GsonHelper.getAsJsonArray(json, "ingredients");
-            final List<Ingredient> ingredients = new ArrayList<>();
-            for (JsonElement element : array)
-            {
-                ingredients.add(Ingredient.fromJson(element));
-            }
-
-            final FluidStackIngredient fluidIngredient = FluidStackIngredient.fromJson(GsonHelper.getAsJsonObject(json, "fluid_ingredient"));
-            final int duration = GsonHelper.getAsInt(json, "duration");
-            final float minTemp = GsonHelper.getAsFloat(json, "temperature");
-            return fromJson(recipeId, json, ingredients, fluidIngredient, duration, minTemp);
-        }
-
-        @Nullable
-        @Override
-        public R fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
-        {
-            final int count = buffer.readVarInt();
-            final List<Ingredient> ingredients = new ArrayList<>();
-            for (int i = 0; i < count; i++)
-            {
-                ingredients.add(Ingredient.fromNetwork(buffer));
-            }
-            final FluidStackIngredient fluidIngredient = FluidStackIngredient.fromNetwork(buffer);
-            final int duration = buffer.readVarInt();
-            final float minTemp = buffer.readFloat();
-            return fromNetwork(recipeId, buffer, ingredients, fluidIngredient, duration, minTemp);
-        }
-
-        @Override
-        public void toNetwork(FriendlyByteBuf buffer, R recipe)
-        {
-            buffer.writeVarInt(recipe.itemIngredients.size());
-            for (Ingredient ingredient : recipe.itemIngredients)
-            {
-                ingredient.toNetwork(buffer);
-            }
-            recipe.fluidIngredient.toNetwork(buffer);
-            buffer.writeVarInt(recipe.duration);
-            buffer.writeFloat(recipe.temperature);
-        }
-
-        protected abstract R fromJson(ResourceLocation recipeId, JsonObject json, List<Ingredient> ingredients, FluidStackIngredient fluidIngredient, int duration, float minTemp);
-
-        protected abstract R fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer, List<Ingredient> ingredients, FluidStackIngredient fluidIngredient, int duration, float minTemp);
     }
 }

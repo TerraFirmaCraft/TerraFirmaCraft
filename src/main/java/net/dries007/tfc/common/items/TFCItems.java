@@ -50,7 +50,7 @@ import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.ItemAccessor;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.data.Metal;
 import net.dries007.tfc.util.registry.IdHolder;
 import net.dries007.tfc.util.registry.RegistryHolder;
 

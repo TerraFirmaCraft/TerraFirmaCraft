@@ -35,8 +35,8 @@ import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.MultiBlock;
+import net.dries007.tfc.util.data.Metal;
 
 public class BlastFurnaceBlock extends DeviceBlock implements IBellowsConsumer
 {

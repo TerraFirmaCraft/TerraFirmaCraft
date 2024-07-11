@@ -16,15 +16,15 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blocks.devices.LampBlock;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.FluidTankCallback;
 import net.dries007.tfc.common.capabilities.InventoryFluidTank;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.LampFuel;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import net.dries007.tfc.util.data.LampFuel;
 
 public class LampBlockEntity extends TickCounterBlockEntity implements FluidTankCallback
 {
@@ -77,7 +77,7 @@ public class LampBlockEntity extends TickCounterBlockEntity implements FluidTank
 
         // Consume an appropriate amount of fuel based on how long the lamp has been since it last updated
         // N.B. The burn rate is in ticks / mB
-        final int usage = Mth.floor(getTicksSinceUpdate() / (double) fuel.getBurnRate());
+        final int usage = Mth.floor(getTicksSinceUpdate() / (double) fuel.burnRate());
         if (usage >= 1)
         {
             resetCounter();

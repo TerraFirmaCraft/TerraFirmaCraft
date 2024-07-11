@@ -100,6 +100,8 @@ import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.util.calendar.Day;
 import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.util.climate.KoppenClimateClassification;
+import net.dries007.tfc.util.data.Drinkable;
+import net.dries007.tfc.util.data.Metal;
 import net.dries007.tfc.world.chunkdata.ForestType;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;

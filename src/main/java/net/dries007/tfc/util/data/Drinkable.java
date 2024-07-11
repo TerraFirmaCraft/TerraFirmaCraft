@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.util;
+package net.dries007.tfc.util.data;
 
 import java.util.List;
 import com.mojang.serialization.Codec;
@@ -39,6 +39,7 @@ import net.dries007.tfc.common.capabilities.food.TFCFoodData;
 import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.RecipeHelpers;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 

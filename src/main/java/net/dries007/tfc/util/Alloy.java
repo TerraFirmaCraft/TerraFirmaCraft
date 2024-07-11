@@ -16,6 +16,8 @@ import net.minecraft.world.item.crafting.RecipeManager;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.recipes.AlloyRecipe;
+import net.dries007.tfc.util.data.DataManager;
+import net.dries007.tfc.util.data.Metal;
 
 public class Alloy implements AlloyView
 {

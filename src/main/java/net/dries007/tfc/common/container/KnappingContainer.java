@@ -19,8 +19,8 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.input.NonEmptyInput;
-import net.dries007.tfc.util.KnappingPattern;
-import net.dries007.tfc.util.KnappingType;
+import net.dries007.tfc.util.data.KnappingPattern;
+import net.dries007.tfc.util.data.KnappingType;
 
 /**
  * Cannot implement {@link NonEmptyInput} due to obfuscation conflicts: {@link #stillValid(Player)} is implemented by different SRG methods from both {@link ItemStackContainer} and {@link NonEmptyInput}

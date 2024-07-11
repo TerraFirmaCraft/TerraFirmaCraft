@@ -7,17 +7,6 @@
 package net.dries007.tfc.compat.jei.category;
 
 import java.util.List;
-
-import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.item.ItemStack;
-
-import net.minecraftforge.fluids.FluidStack;
-
-import net.minecraft.client.gui.GuiGraphics;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -25,6 +14,15 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.recipes.SealedBarrelRecipe;
 import net.dries007.tfc.util.calendar.Calendars;
@@ -41,11 +39,11 @@ public class SealedBarrelRecipeCategory extends BarrelRecipeCategory<SealedBarre
     {
         super.setRecipe(builder, recipe, focuses);
 
-        if (recipe.getOnSeal() != null)
+        if (recipe.onSeal() != null)
         {
             // Assumes that input -> onSeal -> onUnseal apply and reverse a transformation, so we only need to show the intermediate, sealed, state.
             final List<ItemStack> inputItem = collapse(recipe.getInputItem());
-            final List<ItemStack> intermediateItem = collapse(inputItem, recipe.getOnSeal());
+            final List<ItemStack> intermediateItem = collapse(inputItem, recipe.onSeal());
             final List<ItemStack> outputItem = collapse(inputItem, recipe.getOutputItem());
 
             final IRecipeSlotBuilder intermediateSlot = builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 76, 5);
@@ -54,7 +52,7 @@ public class SealedBarrelRecipeCategory extends BarrelRecipeCategory<SealedBarre
             intermediateSlot.setBackground(slot, -1, -1);
 
             // Note that the output item might be empty as parsed by the super() call, so we need to re-check it.
-            if ((outputItem.isEmpty() || outputItem.stream().allMatch(ItemStack::isEmpty)) && recipe.getOnUnseal() != null)
+            if ((outputItem.isEmpty() || outputItem.stream().allMatch(ItemStack::isEmpty)) && recipe.onUnseal() != null)
             {
                 // Re-do the output items, but this time collapsing from the intermediate slot
                 if (outputItemSlot == null)
@@ -64,13 +62,13 @@ public class SealedBarrelRecipeCategory extends BarrelRecipeCategory<SealedBarre
                     outputItemSlot = builder.addSlot(RecipeIngredientRole.OUTPUT, outputFluid.isEmpty() ? positions[2] : positions[3], 5);
                 }
 
-                final List<ItemStack> outputFromIntermediate = collapse(intermediateItem, recipe.getOnUnseal());
+                final List<ItemStack> outputFromIntermediate = collapse(intermediateItem, recipe.onUnseal());
                 outputItemSlot.addItemStacks(outputFromIntermediate);
                 outputItemSlot.setBackground(slot, -1, -1);
             }
 
             // Create a link between all item slots if the seal behavior depends on the input
-            if (recipe.getOnSeal().dependsOnInput() && inputItemSlot != null && outputItemSlot != null)
+            if (recipe.onSeal().dependsOnInput() && inputItemSlot != null && outputItemSlot != null)
             {
                 builder.createFocusLink(intermediateSlot, inputItemSlot, outputItemSlot);
             }
@@ -82,7 +80,7 @@ public class SealedBarrelRecipeCategory extends BarrelRecipeCategory<SealedBarre
     {
         super.draw(recipe, recipeSlots, stack, mouseX, mouseY);
 
-        if (recipe.getOnSeal() != null)
+        if (recipe.onSeal() != null)
         {
             arrow.draw(stack, 98, 5);
             arrowAnimated.draw(stack, 98, 5);
@@ -98,12 +96,12 @@ public class SealedBarrelRecipeCategory extends BarrelRecipeCategory<SealedBarre
     @Override
     protected int arrowPosition(SealedBarrelRecipe recipe)
     {
-        return recipe.getOnSeal() != null ? super.arrowPosition(recipe) : 63;
+        return recipe.onSeal() != null ? super.arrowPosition(recipe) : 63;
     }
 
     @Override
     protected int[] slotPositions(SealedBarrelRecipe recipe)
     {
-        return recipe.getOnSeal() != null ? new int[] {6, 26, 125, 96} : new int[] {21, 41, 91, 111};
+        return recipe.onSeal() != null ? new int[] {6, 26, 125, 96} : new int[] {21, 41, 91, 111};
     }
 }

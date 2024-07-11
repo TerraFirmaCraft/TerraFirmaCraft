@@ -7,10 +7,8 @@
 package net.dries007.tfc.compat.jade.common;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
@@ -39,7 +37,6 @@ import net.dries007.tfc.common.blockentities.ComposterBlockEntity;
 import net.dries007.tfc.common.blockentities.CropBlockEntity;
 import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
 import net.dries007.tfc.common.blockentities.DecayingBlockEntity;
-import net.dries007.tfc.common.blockentities.HotPouredGlassBlockEntity;
 import net.dries007.tfc.common.blockentities.IngotPileBlockEntity;
 import net.dries007.tfc.common.blockentities.LampBlockEntity;
 import net.dries007.tfc.common.blockentities.LoomBlockEntity;
@@ -99,9 +96,9 @@ import net.dries007.tfc.common.recipes.BarrelRecipe;
 import net.dries007.tfc.common.recipes.BloomeryRecipe;
 import net.dries007.tfc.common.recipes.LoomRecipe;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.LampFuel;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.util.data.LampFuel;
 import net.dries007.tfc.util.rotation.Rotation;
 
 /**
@@ -377,13 +374,13 @@ public final class BlockEntityTooltips
             final LampFuel fuel = lamp.getFuel();
             if (fuel != null)
             {
-                if (fuel.getBurnRate() != -1)
+                if (fuel.burnRate() != -1)
                 {
-                    tooltip.accept(Component.translatable("tfc.jade.burn_rate", fuel.getBurnRate()));
+                    tooltip.accept(Component.translatable("tfc.jade.burn_rate", fuel.burnRate()));
                 }
                 if (state.getValue(LampBlock.LIT))
                 {
-                    if (fuel.getBurnRate() == -1)
+                    if (fuel.burnRate() == -1)
                     {
                         tooltip.accept(Component.translatable("tfc.jade.burn_forever"));
                     }
@@ -394,7 +391,7 @@ public final class BlockEntityTooltips
                             if (fluid > 0)
                             {
                                 // ticks / mB * mB = ticks
-                                timeLeft(level, tooltip, (long) fluid * fuel.getBurnRate());
+                                timeLeft(level, tooltip, (long) fluid * fuel.burnRate());
                             }
                         });
                     }

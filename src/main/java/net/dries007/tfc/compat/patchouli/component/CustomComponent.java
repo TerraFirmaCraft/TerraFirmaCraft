@@ -8,7 +8,6 @@ package net.dries007.tfc.compat.patchouli.component;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -29,7 +28,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.common.crafting.SizedIngredient;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 import org.slf4j.Logger;
 import vazkii.patchouli.api.IComponentRenderContext;
 import vazkii.patchouli.api.ICustomComponent;
@@ -42,8 +43,6 @@ import vazkii.patchouli.common.multiblock.SerializedMultiblock;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.RenderHelpers;
-import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
-import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
@@ -126,19 +125,14 @@ public abstract class CustomComponent implements ICustomComponent
         }
     }
 
-    protected List<ItemStack> unpackItemStackIngredient(ItemStackIngredient ingredient)
+    protected List<ItemStack> unpackItemStackIngredient(SizedIngredient ingredient)
     {
-        return Arrays.stream(ingredient.ingredient().getItems())
-            .map(stack -> stack.copyWithCount(ingredient.count()))
-            .toList();
+        return List.of(ingredient.getItems());
     }
 
-    protected List<FluidStack> unpackFluidStackIngredient(FluidStackIngredient ingredient)
+    protected List<FluidStack> unpackFluidStackIngredient(SizedFluidIngredient ingredient)
     {
-        return ingredient.ingredient()
-            .all()
-            .map(fluid -> new FluidStack(fluid, ingredient.amount()))
-            .toList();
+        return List.of(ingredient.getFluids());
     }
 
     protected <V, T> Optional<T> asJson(V value, Function<V, T> parse)

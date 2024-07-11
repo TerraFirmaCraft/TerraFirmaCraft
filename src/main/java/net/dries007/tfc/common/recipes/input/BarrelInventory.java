@@ -6,12 +6,11 @@
 
 package net.dries007.tfc.common.recipes.input;
 
-import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.items.IItemHandlerModifiable;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
 
-public interface BarrelInventory extends IItemHandlerModifiable, IFluidHandler, Container
+public interface BarrelInventory extends IItemHandlerModifiable, IFluidHandler, NonEmptyInput
 {
     /**
      * Run an action while forcing the barrel's underlying state to be mutable, despite the sealed status. This should

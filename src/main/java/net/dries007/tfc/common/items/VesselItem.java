@@ -50,8 +50,8 @@ import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Alloy;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.Tooltips;
+import net.dries007.tfc.util.data.Metal;
 
 public class VesselItem extends Item
 {

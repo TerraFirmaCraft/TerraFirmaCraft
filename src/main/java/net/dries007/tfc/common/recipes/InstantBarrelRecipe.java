@@ -6,30 +6,41 @@
 
 package net.dries007.tfc.common.recipes;
 
-import com.google.gson.JsonObject;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import java.util.function.Function;
+import com.mojang.serialization.MapCodec;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
 import net.dries007.tfc.common.recipes.input.BarrelInventory;
 
 public class InstantBarrelRecipe extends BarrelRecipe
 {
-    public InstantBarrelRecipe(ResourceLocation id, Builder builder)
+    public static final MapCodec<InstantBarrelRecipe> CODEC = BarrelRecipe.CODEC.xmap(InstantBarrelRecipe::new, Function.identity());
+    public static final StreamCodec<RegistryFriendlyByteBuf, InstantBarrelRecipe> STREAM_CODEC = BarrelRecipe.STREAM_CODEC.map(InstantBarrelRecipe::new, Function.identity());
+
+    public InstantBarrelRecipe(BarrelRecipe parent)
     {
-        super(id, builder);
+        super(parent);
     }
 
     @Override
-    public boolean matches(BarrelInventory container, @Nullable Level level)
+    public boolean matches(BarrelInventory container)
     {
-        // Instant recipes change behavior depending on the fluid content. If the recipe has no input fluid, or has no output fluid, it behaves as normal.
-        // Otherwise, it must have enough input items to fully consume all input fluid.
-        return super.matches(container, level) && (inputFluid.amount() == 0 || outputFluid.getAmount() == 0 || container.getFluidInTank(0).getAmount() / this.inputFluid.amount() <= container.getStackInSlot(BarrelBlockEntity.SLOT_ITEM).getCount() / this.inputItem.count());
+        return super.matches(container) && moreItemsThanFluid(container);
+    }
+
+    /**
+     * Instant recipes must have more item inputs than fluid in order to be valid. If one of input fluid or input item doesn't exist, this
+     * measure is always true. If there is no output fluid, we can always complete the recipe as the fluid content won't change.
+     */
+    private boolean moreItemsThanFluid(BarrelInventory input)
+    {
+        return inputItem.isEmpty()
+            || outputFluid.isEmpty()
+            || input.getFluidInTank(0).getAmount() / inputFluid.amount() <= input.getStackInSlot(BarrelBlockEntity.SLOT_ITEM).getCount() / inputItem.get().count();
     }
 
     @Override
@@ -42,29 +53,5 @@ public class InstantBarrelRecipe extends BarrelRecipe
     public RecipeType<?> getType()
     {
         return TFCRecipeTypes.BARREL_INSTANT.get();
-    }
-
-    public static class Serializer extends RecipeSerializerImpl<InstantBarrelRecipe>
-    {
-        @Override
-        public InstantBarrelRecipe fromJson(ResourceLocation recipeId, JsonObject json)
-        {
-            final Builder builder = Builder.fromJson(json);
-            return new InstantBarrelRecipe(recipeId, builder);
-        }
-
-        @Nullable
-        @Override
-        public InstantBarrelRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
-        {
-            final Builder builder = Builder.fromNetwork(buffer);
-            return new InstantBarrelRecipe(recipeId, builder);
-        }
-
-        @Override
-        public void toNetwork(FriendlyByteBuf buffer, InstantBarrelRecipe recipe)
-        {
-            Builder.toNetwork(recipe, buffer);
-        }
     }
 }

@@ -23,9 +23,9 @@ import org.slf4j.Logger;
 
 import net.dries007.tfc.common.recipes.RecipeHelpers;
 import net.dries007.tfc.mixin.accessor.ItemAccessor;
-import net.dries007.tfc.util.DataManager;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
+import net.dries007.tfc.util.data.DataManager;
 
 public final class ItemSizeManager
 {

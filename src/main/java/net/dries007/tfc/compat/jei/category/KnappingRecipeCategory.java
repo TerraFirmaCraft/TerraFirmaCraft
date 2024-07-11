@@ -6,12 +6,6 @@
 
 package net.dries007.tfc.compat.jei.category;
 
-import java.util.Arrays;
-import java.util.List;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
-
-import net.minecraft.client.gui.GuiGraphics;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -20,14 +14,14 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.screen.KnappingScreen;
 import net.dries007.tfc.common.recipes.KnappingRecipe;
-import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
 import net.dries007.tfc.compat.jei.JEIIntegration;
-import net.dries007.tfc.util.KnappingType;
-
-import org.jetbrains.annotations.Nullable;
+import net.dries007.tfc.util.data.KnappingType;
 
 public class KnappingRecipeCategory<T extends KnappingRecipe> extends BaseRecipeCategory<T>
 {

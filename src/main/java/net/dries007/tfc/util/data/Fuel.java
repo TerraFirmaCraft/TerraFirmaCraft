@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.util;
+package net.dries007.tfc.util.data;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -14,10 +14,10 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-
-import net.dries007.tfc.network.DataManagerSyncPacket;
-import net.dries007.tfc.util.collections.IndirectHashCollection;
 import org.jetbrains.annotations.Nullable;
+
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 public record Fuel(
     Ingredient ingredient,

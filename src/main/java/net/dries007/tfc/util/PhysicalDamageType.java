@@ -8,7 +8,6 @@ package net.dries007.tfc.util;
 
 import java.util.List;
 import java.util.Locale;
-
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.TagKey;
@@ -19,9 +18,11 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
-import org.jetbrains.annotations.Nullable;
+import net.dries007.tfc.util.data.EntityDamageResistance;
+import net.dries007.tfc.util.data.ItemDamageResistance;
 
 /**
  * Provides a damage type specific resistance calculation.

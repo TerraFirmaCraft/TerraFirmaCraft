@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.util;
+package net.dries007.tfc.util.data;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,6 +36,8 @@ import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.profiling.ProfilerFiller;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
+
+import net.dries007.tfc.util.SelfTests;
 
 
 // todo: add a int ID mechanism, sync int IDs as part of normal sync, and then use int IDs for stream codec references

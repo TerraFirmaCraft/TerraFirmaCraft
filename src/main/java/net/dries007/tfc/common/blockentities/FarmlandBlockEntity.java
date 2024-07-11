@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
-import net.dries007.tfc.util.Fertilizer;
+import net.dries007.tfc.util.data.Fertilizer;
 
 import static net.dries007.tfc.common.blockentities.FarmlandBlockEntity.NutrientType.*;
 

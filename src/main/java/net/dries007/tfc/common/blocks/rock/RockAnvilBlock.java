@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blocks.rock;
 
 import java.util.function.Supplier;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -26,7 +25,7 @@ import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.devices.AnvilBlock;
 import net.dries007.tfc.common.blocks.devices.DeviceBlock;
 import net.dries007.tfc.common.blocks.devices.Tiered;
-import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.data.Metal;
 
 public class RockAnvilBlock extends DeviceBlock implements Tiered
 {

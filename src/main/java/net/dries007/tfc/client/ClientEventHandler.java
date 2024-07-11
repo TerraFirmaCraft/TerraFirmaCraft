@@ -228,8 +228,8 @@ import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.client.accessor.BiomeColorsAccessor;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.Tooltips;
+import net.dries007.tfc.util.data.Metal;
 
 import static net.dries007.tfc.common.blocks.wood.Wood.BlockType.*;
 

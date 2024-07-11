@@ -26,7 +26,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.server.command.EnumArgument;
 
 import net.dries007.tfc.common.items.TFCItems;
-import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.data.Metal;
 
 
 public class AddTrimCommand
