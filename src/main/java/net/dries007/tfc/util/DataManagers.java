@@ -34,8 +34,8 @@ public final class DataManagers
         register(Fuel.MANAGER);
         register(Metal.MANAGER);
         register(KnappingType.MANAGER);
-
         register(Support.MANAGER);
+
         register(Pannable.MANAGER);
         register(Sluiceable.MANAGER);
         register(LampFuel.MANAGER);

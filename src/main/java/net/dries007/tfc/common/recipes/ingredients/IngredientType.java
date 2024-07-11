@@ -28,6 +28,7 @@ import net.dries007.tfc.util.JsonHelpers;
  *
  * @param <T> The object type.
  */
+@Deprecated
 public interface IngredientType<T> extends Predicate<T>
 {
     /**

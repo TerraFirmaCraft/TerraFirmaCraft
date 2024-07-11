@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.recipes.ingredients;
 
 import java.util.function.Predicate;
-
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
@@ -15,6 +14,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 
 import net.dries007.tfc.util.JsonHelpers;
 
+@Deprecated
 public record ItemStackIngredient(Ingredient ingredient, int count) implements Predicate<ItemStack>
 {
     public static final ItemStackIngredient EMPTY = new ItemStackIngredient(Ingredient.EMPTY, 0);

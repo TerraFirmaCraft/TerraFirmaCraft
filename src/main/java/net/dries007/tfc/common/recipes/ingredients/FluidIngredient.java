@@ -17,6 +17,7 @@ import net.minecraft.world.level.material.Fluid;
 
 import net.dries007.tfc.util.Helpers;
 
+@Deprecated
 public record FluidIngredient(List<IngredientType.Entry<Fluid>> entries) implements IngredientType<Fluid>
 {
     private static final Factory<Fluid, FluidIngredient> FACTORY = new Factory<>("fluid", BuiltInRegistries.FLUID, FluidTag::new, FluidIngredient::new);

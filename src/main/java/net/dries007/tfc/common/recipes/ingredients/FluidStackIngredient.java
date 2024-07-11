@@ -22,6 +22,7 @@ import net.dries007.tfc.util.JsonHelpers;
  * An ingredient for a (fluid, amount) pair.
  * Used in conjunction with recipes that accept {@link FluidStack}s.
  */
+@Deprecated
 public record FluidStackIngredient(FluidIngredient ingredient, int amount) implements Predicate<FluidStack>
 {
     public static final FluidStackIngredient EMPTY = new FluidStackIngredient(new FluidIngredient(List.of(new IngredientType.ObjEntry<>(Fluids.EMPTY))), 0);

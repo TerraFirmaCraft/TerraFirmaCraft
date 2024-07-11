@@ -6,55 +6,29 @@
 
 package net.dries007.tfc.common.recipes.ingredients;
 
+import com.mojang.serialization.MapCodec;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.common.crafting.IIngredientSerializer;
-import org.jetbrains.annotations.Nullable;
+import net.neoforged.neoforge.common.crafting.IngredientType;
 
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodTrait;
-import net.dries007.tfc.common.capabilities.food.IFood;
 
-public class HasTraitIngredient extends TraitIngredient
+public record HasTraitIngredient(FoodTrait trait) implements PreciseIngredient
 {
-    public static HasTraitIngredient of(@Nullable Ingredient delegate, FoodTrait trait)
-    {
-        return new HasTraitIngredient(delegate, trait);
-    }
+    public static final MapCodec<HasTraitIngredient> CODEC = FoodTrait.CODEC.fieldOf("trait").xmap(HasTraitIngredient::new, HasTraitIngredient::trait);
+    public static final StreamCodec<RegistryFriendlyByteBuf, HasTraitIngredient> STREAM_CODEC = FoodTrait.STREAM_CODEC.map(HasTraitIngredient::new, HasTraitIngredient::trait);
 
-    public static HasTraitIngredient of(FoodTrait trait)
+    @Override
+    public boolean test(ItemStack stack)
     {
-        return new HasTraitIngredient(null, trait);
-    }
-
-    public HasTraitIngredient(@Nullable Ingredient delegate, FoodTrait trait)
-    {
-        super(delegate, trait);
+        return FoodCapability.hasTrait(stack, trait);
     }
 
     @Override
-    public boolean test(@Nullable ItemStack stack)
+    public IngredientType<?> getType()
     {
-        return super.test(stack) && stack != null && FoodCapability.hasTrait(stack, trait);
-    }
-
-    @Override
-    public IIngredientSerializer<? extends DelegateIngredient> getSerializer()
-    {
-        return TraitSerializer.HAS_TRAIT;
-    }
-
-    @Nullable
-    @Override
-    protected ItemStack testDefaultItem(ItemStack stack)
-    {
-        final @Nullable IFood food = FoodCapability.get(stack);
-        if (food != null)
-        {
-            food.setNonDecaying();
-            food.getTraits().add(trait);
-            return stack;
-        }
-        return null;
+        return TFCIngredients.HAS_TRAIT.get();
     }
 }

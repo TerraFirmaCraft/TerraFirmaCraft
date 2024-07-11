@@ -9,15 +9,13 @@ package net.dries007.tfc.util;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
-import net.dries007.tfc.common.recipes.AlloyRecipe;
-import org.jetbrains.annotations.Nullable;
-
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.item.crafting.RecipeManager;
-
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.crafting.RecipeManager;
+import org.jetbrains.annotations.Nullable;
+
+import net.dries007.tfc.common.recipes.AlloyRecipe;
 import net.dries007.tfc.common.recipes.inventory.AlloyInventory;
 
 public class Alloy implements AlloyView
@@ -128,9 +126,8 @@ public class Alloy implements AlloyView
             }
             else
             {
-                cachedResult = AlloyRecipe.get(recipes, getWrapper())
-                    .map(AlloyRecipe::getResult)
-                    .orElseGet(Metal::unknown);
+                final @Nullable AlloyRecipe recipe = AlloyRecipe.get(recipes, this);
+                cachedResult =  recipe != null ? recipe.getResult() : Metal.unknown();
             }
         }
         if (cachedResult == null)

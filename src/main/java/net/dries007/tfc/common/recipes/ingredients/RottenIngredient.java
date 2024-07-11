@@ -14,22 +14,22 @@ import net.neoforged.neoforge.common.crafting.IngredientType;
 
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 
-public enum NotRottenIngredient implements PreciseIngredient
+public enum RottenIngredient implements PreciseIngredient
 {
     INSTANCE;
 
-    public static final MapCodec<NotRottenIngredient> CODEC = MapCodec.unit(INSTANCE);
-    public static final StreamCodec<ByteBuf, NotRottenIngredient> STREAM_CODEC = StreamCodec.unit(INSTANCE);
+    public static final MapCodec<RottenIngredient> CODEC = MapCodec.unit(INSTANCE);
+    public static final StreamCodec<ByteBuf, RottenIngredient> STREAM_CODEC = StreamCodec.unit(INSTANCE);
 
     @Override
     public boolean test(ItemStack stack)
     {
-        return !FoodCapability.isRotten(stack);
+        return FoodCapability.isRotten(stack);
     }
 
     @Override
     public IngredientType<?> getType()
     {
-        return TFCIngredients.NOT_ROTTEN.get();
+        return TFCIngredients.ROTTEN.get();
     }
 }

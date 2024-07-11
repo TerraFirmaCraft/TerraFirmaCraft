@@ -8,24 +8,42 @@ package net.dries007.tfc.util;
 
 import java.util.HashSet;
 import java.util.Set;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
-import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
-public final class Support
-{
-    public static final DataManager<Support> MANAGER = new DataManager<>(Helpers.identifier("supports"), "support", Support::new, Support::new, Support::encode, Packet::new);
+public record Support(
+    BlockIngredient ingredient,
+    int supportUp,
+    int supportDown,
+    int supportHorizontal
+) {
+    public static final Codec<Support> CODEC = RecordCodecBuilder.create(i -> i.group(
+        BlockIngredient.CODEC.fieldOf("ingredient").forGetter(c -> c.ingredient),
+        Codec.INT.fieldOf("support_up").forGetter(c -> c.supportUp),
+        Codec.INT.fieldOf("support_down").forGetter(c -> c.supportDown),
+        Codec.INT.fieldOf("support_horizontal").forGetter(c -> c.supportHorizontal)
+    ).apply(i, Support::new));
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, Support> STREAM_CODEC = StreamCodec.composite(
+        BlockIngredient.STREAM_CODEC, c -> c.ingredient,
+        ByteBufCodecs.VAR_INT, c -> c.supportUp,
+        ByteBufCodecs.VAR_INT, c -> c.supportDown,
+        ByteBufCodecs.VAR_INT, c -> c.supportHorizontal,
+        Support::new
+    );
+
+    public static final DataManager<Support> MANAGER = new DataManager<>(Helpers.identifier("supports"), "support", CODEC, STREAM_CODEC);
     public static final IndirectHashCollection<Block, Support> CACHE = IndirectHashCollection.create(s -> s.ingredient.blocks(), MANAGER::getValues);
 
     /**
@@ -101,7 +119,7 @@ public final class Support
     {
         for (Support support : CACHE.getAll(state.getBlock()))
         {
-            if (support.matches(state))
+            if (support.ingredient.test(state))
             {
                 return support;
             }
@@ -115,66 +133,12 @@ public final class Support
         int up = 0, down = 0, horizontal = 0;
         for (Support support : MANAGER.getValues())
         {
-            up = Math.max(support.getSupportUp(), up);
-            down = Math.max(support.getSupportDown(), down);
-            horizontal = Math.max(support.getSupportHorizontal(), horizontal);
+            up = Math.max(support.supportUp(), up);
+            down = Math.max(support.supportDown(), down);
+            horizontal = Math.max(support.supportHorizontal(), horizontal);
         }
 
         RANGE = new SupportRange(up, down, horizontal);
-    }
-
-    private final ResourceLocation id;
-    private final BlockIngredient ingredient;
-    private final int supportUp, supportDown, supportHorizontal;
-
-    public Support(ResourceLocation id, JsonObject json)
-    {
-        this.id = id;
-
-        this.ingredient = BlockIngredient.fromJson(JsonHelpers.get(json, "ingredient"));
-        this.supportUp = GsonHelper.getAsInt(json, "support_up", 0);
-        this.supportDown = GsonHelper.getAsInt(json, "support_down", 0);
-        this.supportHorizontal = GsonHelper.getAsInt(json, "support_horizontal", 0);
-
-        if (supportUp < 0 || supportDown < 0 || supportHorizontal < 0)
-        {
-            throw new JsonParseException("Support values must be nonnegative.");
-        }
-    }
-
-    private Support(ResourceLocation id, FriendlyByteBuf buffer)
-    {
-        this.id = id;
-
-        this.ingredient = BlockIngredient.fromNetwork(buffer);
-        this.supportUp = buffer.readVarInt();
-        this.supportDown = buffer.readVarInt();
-        this.supportHorizontal = buffer.readVarInt();
-    }
-
-    public ResourceLocation getId()
-    {
-        return id;
-    }
-
-    public int getSupportUp()
-    {
-        return supportUp;
-    }
-
-    public int getSupportDown()
-    {
-        return supportDown;
-    }
-
-    public int getSupportHorizontal()
-    {
-        return supportHorizontal;
-    }
-
-    public boolean matches(BlockState state)
-    {
-        return ingredient.test(state);
     }
 
     public boolean canSupport(BlockPos supportPos, BlockPos testPos)
@@ -188,16 +152,5 @@ public final class Support
         return BlockPos.betweenClosed(center.offset(-supportHorizontal, -supportDown, -supportHorizontal), center.offset(supportHorizontal, supportUp, supportHorizontal));
     }
 
-    private void encode(FriendlyByteBuf buffer)
-    {
-        ingredient.toNetwork(buffer);
-
-        buffer.writeVarInt(supportUp);
-        buffer.writeVarInt(supportDown);
-        buffer.writeVarInt(supportHorizontal);
-    }
-
     public record SupportRange(int up, int down, int horizontal) {}
-
-    public static class Packet extends DataManagerSyncPacket<Support> {}
 }
