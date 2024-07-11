@@ -35,11 +35,11 @@ public final class DataManagers
         register(Metal.MANAGER);
         register(KnappingType.MANAGER);
         register(Support.MANAGER);
+        register(ItemSizeManager.MANAGER);
 
         register(Pannable.MANAGER);
         register(Sluiceable.MANAGER);
         register(LampFuel.MANAGER);
-        register(ItemSizeManager.MANAGER);
         register(ClimateRange.MANAGER);
         register(Fauna.MANAGER);
         register(HeatCapability.MANAGER);

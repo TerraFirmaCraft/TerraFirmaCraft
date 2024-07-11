@@ -6,28 +6,38 @@
 
 package net.dries007.tfc.common.capabilities.size;
 
-public enum Size
+import java.util.Locale;
+import com.mojang.serialization.Codec;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.util.StringRepresentable;
+
+import net.dries007.tfc.network.PacketCodecs;
+
+public enum Size implements StringRepresentable
 {
-    TINY("tiny"), // Fits in anything
-    VERY_SMALL("very_small"), // Fits in anything
-    SMALL("small"), // Fits in small vessels
-    NORMAL("normal"), // Fits in large vessels
-    LARGE("large"), // Fits in chests, Pit kilns can hold four.
-    VERY_LARGE("very_large"), // Pit kilns can only hold one.
-    HUGE("huge"); // Pit kilns can only hold one. Counts towards overburdened when also very heavy.
+    TINY, // Fits in anything
+    VERY_SMALL, // Fits in anything
+    SMALL, // Fits in small vessels
+    NORMAL, // Fits in large vessels
+    LARGE, // Fits in chests, Pit kilns can hold four.
+    VERY_LARGE, // Pit kilns can only hold one.
+    HUGE; // Pit kilns can only hold one. Counts towards overburdened when also very heavy.
 
-    private static final Size[] VALUES = values();
-
-    public static Size valueOf(int i)
-    {
-        return i >= 0 && i < VALUES.length ? VALUES[i] : NORMAL;
-    }
+    public static final Codec<Size> CODEC = StringRepresentable.fromValues(Size::values);
+    public static final StreamCodec<ByteBuf, Size> STREAM_CODEC = PacketCodecs.forEnum(Size::values);
 
     public final String name;
 
-    Size(String name)
+    Size()
     {
-        this.name = name;
+        this.name = name().toLowerCase(Locale.ROOT);
+    }
+
+    @Override
+    public String getSerializedName()
+    {
+        return name;
     }
 
     public boolean isSmallerThan(Size other)

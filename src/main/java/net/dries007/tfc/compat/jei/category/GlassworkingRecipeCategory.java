@@ -19,7 +19,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -55,7 +54,7 @@ public class GlassworkingRecipeCategory extends BaseRecipeCategory<GlassworkingR
     public void setRecipe(IRecipeLayoutBuilder builder, GlassworkingRecipe recipe, IFocusGroup focuses)
     {
         builder.addSlot(RecipeIngredientRole.INPUT, 6, 5)
-            .addIngredients(recipe.getBatchItem())
+            .addIngredients(recipe.batchItem())
             .setBackground(slot, -1, -1);
 
         ItemStack result = recipe.getResultItem(null);
@@ -68,7 +67,7 @@ public class GlassworkingRecipeCategory extends BaseRecipeCategory<GlassworkingR
             .setBackground(slot, -1, -1);
 
         int idx = 0;
-        for (GlassOperation operation : recipe.getOperations())
+        for (GlassOperation operation : recipe.operations())
         {
             var slot = builder.addSlot(RecipeIngredientRole.CATALYST, idx < 3 ? 6 : 90, 25 * ((idx % 3) + 1))
                 .setBackground(this.slot, -1, -1);
@@ -103,10 +102,10 @@ public class GlassworkingRecipeCategory extends BaseRecipeCategory<GlassworkingR
 
         final Font font = Minecraft.getInstance().font;
         int idx = 0;
-        for (GlassOperation operation : recipe.getOperations())
+        for (GlassOperation operation : recipe.operations())
         {
             final Component text = Component.literal((idx + 1) + ". ").append(Helpers.translateEnum(operation));
-            if (idx + 3 < recipe.getOperations().size())
+            if (idx + 3 < recipe.operations().size())
             {
                 graphics.drawWordWrap(font, text, (idx < 3 ? 6 : 90) + 20, 25 * ((idx % 3) + 1) + 5, idx < 3 ? 55 : 75, Color.BLACK.getRGB());
             }

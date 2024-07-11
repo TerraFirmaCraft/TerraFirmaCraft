@@ -50,7 +50,6 @@ import net.dries007.tfc.common.container.BlastFurnaceContainer;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.BlastFurnaceRecipe;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
-import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.Helpers;
@@ -159,7 +158,7 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
                     if (inputRecipe != null && inputRecipe.isValidTemperature(inputHeat.getTemperature()))
                     {
                         // Only convert fluid output, and append to the buffer
-                        final FluidStack fluidStack = inputRecipe.assembleFluid(new ItemStackInventory(inputStack));
+                        final FluidStack fluidStack = inputRecipe.assembleFluid(inputStack);
                         newInputFluids.add(fluidStack);
 
                         // And then remove this item, it's catalyst, and recipe from the iterators
@@ -654,7 +653,7 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
         }
     }
 
-    static class BlastFurnaceInventory extends ItemStackHandler implements BlastFurnaceRecipe.Inventory, DelegateFluidHandler
+    static class BlastFurnaceInventory extends ItemStackHandler implements DelegateFluidHandler
     {
         private final BlastFurnaceBlockEntity blastFurnace;
 
@@ -665,13 +664,11 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
             blastFurnace = (BlastFurnaceBlockEntity) entity;
         }
 
-        @Override
         public FluidStack getFluid()
         {
             return blastFurnace.inputFluid;
         }
 
-        @Override
         public ItemStack getCatalyst()
         {
             return blastFurnace.catalystStacks.isEmpty() ? ItemStack.EMPTY : blastFurnace.catalystStacks.get(0);

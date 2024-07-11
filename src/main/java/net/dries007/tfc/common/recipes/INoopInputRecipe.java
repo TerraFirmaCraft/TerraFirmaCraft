@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Contract;
 
-import net.dries007.tfc.common.recipes.inventory.NoopInput;
+import net.dries007.tfc.common.recipes.input.NoopInput;
 
 /**
  * A companion interface for {@link NoopInput}, which provides no-op implementations of recipe methods that would typically be

@@ -6,12 +6,17 @@
 
 package net.dries007.tfc.common.capabilities.glass;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.function.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
+import com.mojang.serialization.Codec;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -22,11 +27,11 @@ import net.dries007.tfc.common.blocks.Gem;
 import net.dries007.tfc.common.blocks.rock.Ore;
 import net.dries007.tfc.common.capabilities.heat.Heat;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
-import net.dries007.tfc.common.items.GlassworkingItem;
 import net.dries007.tfc.common.items.Powder;
 import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.network.PacketCodecs;
 
-public enum GlassOperation
+public enum GlassOperation implements StringRepresentable
 {
     // Blowpipe
     BLOW,
@@ -54,6 +59,9 @@ public enum GlassOperation
     TABLE_POUR,
     BASIN_POUR,
     ;
+
+    public static final Codec<GlassOperation> CODEC = StringRepresentable.fromValues(GlassOperation::values);
+    public static final StreamCodec<ByteBuf, GlassOperation> STREAM_CODEC = PacketCodecs.forEnum(GlassOperation::values);
 
     public static final GlassOperation[] VALUES = values();
 
@@ -105,6 +113,19 @@ public enum GlassOperation
     public static GlassOperation getByPowder(ItemStack stack)
     {
         return POWDERS.get().get(stack.getItem());
+    }
+
+    private final String serializedName;
+
+    GlassOperation()
+    {
+        serializedName = name().toLowerCase(Locale.ROOT);
+    }
+
+    @Override
+    public String getSerializedName()
+    {
+        return serializedName;
     }
 
     public SoundEvent getSound()

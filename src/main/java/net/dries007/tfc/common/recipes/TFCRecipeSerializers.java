@@ -40,15 +40,15 @@ public class TFCRecipeSerializers
     public static final Id<KnappingRecipe> KNAPPING = register("knapping", KnappingRecipe.CODEC, KnappingRecipe.STREAM_CODEC);
     public static final Id<AlloyRecipe> ALLOY = register("alloy", AlloyRecipe.CODEC, AlloyRecipe.STREAM_CODEC);
     public static final Id<CastingRecipe> CASTING = register("casting", CastingRecipe.Serializer::new);
-    public static final Id<BloomeryRecipe> BLOOMERY = register("bloomery", BloomeryRecipe.Serializer::new);
+    public static final Id<BloomeryRecipe> BLOOMERY = register("bloomery", BloomeryRecipe.CODEC, BloomeryRecipe.STREAM_CODEC);
     public static final Id<SealedBarrelRecipe> SEALED_BARREL = register("barrel_sealed", SealedBarrelRecipe.Serializer::new);
     public static final Id<InstantBarrelRecipe> INSTANT_BARREL = register("barrel_instant", InstantBarrelRecipe.Serializer::new);
     public static final Id<InstantFluidBarrelRecipe> INSTANT_FLUID_BARREL = register("barrel_instant_fluid", InstantFluidBarrelRecipe.Serializer::new);
     public static final Id<LoomRecipe> LOOM = register("loom", LoomRecipe.CODEC, LoomRecipe.STREAM_CODEC);
     public static final Id<AnvilRecipe> ANVIL = register("anvil", AnvilRecipe.Serializer::new);
     public static final Id<WeldingRecipe> WELDING = register("welding", WeldingRecipe.Serializer::new);
-    public static final Id<BlastFurnaceRecipe> BLAST_FURNACE = register("blast_furnace", BlastFurnaceRecipe.Serializer::new);
-    public static final Id<GlassworkingRecipe> GLASSWORKING = register("glassworking", GlassworkingRecipe.Serializer::new);
+    public static final Id<BlastFurnaceRecipe> BLAST_FURNACE = register("blast_furnace", BlastFurnaceRecipe.CODEC, BlastFurnaceRecipe.STREAM_CODEC);
+    public static final Id<GlassworkingRecipe> GLASSWORKING = register("glassworking", GlassworkingRecipe.CODEC, GlassworkingRecipe.STREAM_CODEC);
     public static final Id<SewingRecipe> SEWING = register("sewing", SewingRecipe.Serializer::new);
 
     // Crafting

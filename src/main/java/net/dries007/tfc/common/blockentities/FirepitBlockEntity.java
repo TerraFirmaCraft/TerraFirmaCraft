@@ -24,7 +24,6 @@ import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.container.FirepitContainer;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
-import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
@@ -75,7 +74,6 @@ public class FirepitBlockEntity extends AbstractFirepitBlockEntity<ItemStackHand
                 if (cachedRecipe != null && cachedRecipe.isValidTemperature(itemTemp))
                 {
                     final HeatingRecipe recipe = cachedRecipe;
-                    final ItemStackInventory inventory = new ItemStackInventory(inputStack);
 
                     // Clear input
                     this.inventory.setStackInSlot(SLOT_ITEM_INPUT, ItemStack.EMPTY);

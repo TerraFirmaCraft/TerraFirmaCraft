@@ -6,17 +6,16 @@
 
 package net.dries007.tfc.common.capabilities;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.items.IItemHandlerModifiable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.container.ISlotCallback;
-import net.dries007.tfc.common.recipes.inventory.NonEmptyInput;
+import net.dries007.tfc.common.recipes.input.NonEmptyInput;
 
 /**
  * Interface for capability instances which behave like vessels. Meaning:

@@ -23,6 +23,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.GlassBasinBlockEntity;
@@ -32,8 +33,7 @@ import net.dries007.tfc.common.blocks.HotPouredGlassBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.capabilities.glass.GlassOperation;
 import net.dries007.tfc.common.capabilities.glass.GlassWorkData;
-import net.dries007.tfc.common.recipes.TFCRecipeTypes;
-import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
+import net.dries007.tfc.common.recipes.GlassworkingRecipe;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
 
@@ -70,61 +70,66 @@ public class GlassBlowpipeItem extends BlowpipeItem
         if (GlassBasinBlock.isValid(level, center) && player != null)
         {
             final ItemStack item = context.getItemInHand();
+
             // test on a copy so that if it doesn't work we don't cause irreversible changes
             final ItemStack copy = item.copy();
             GlassWorkData.apply(copy, GlassOperation.BASIN_POUR);
-            final boolean created = level.getRecipeManager().getRecipeFor(TFCRecipeTypes.GLASSWORKING.get(), new ItemStackInventory(copy), level).map(recipe -> {
+
+            final @Nullable GlassworkingRecipe recipe = GlassworkingRecipe.get(level, copy);
+            if (recipe != null)
+            {
                 if (!GlassOperation.BASIN_POUR.hasRequiredTemperature(copy))
                 {
                     player.displayClientMessage(Component.translatable("tfc.tooltip.glass.not_hot_enough"), true);
-                    return false;
                 }
-                consumeBlowpipe(player, context.getHand(), item);
-                level.setBlockAndUpdate(center, TFCBlocks.GLASS_BASIN.get().defaultBlockState());
-                if (level.getBlockEntity(center) instanceof GlassBasinBlockEntity glass)
+                else
                 {
-                    glass.setGlassItem(recipe.getResultItem(level.registryAccess()));
+                    consumeBlowpipe(player, context.getHand(), item);
+                    level.setBlockAndUpdate(center, TFCBlocks.GLASS_BASIN.get().defaultBlockState());
+                    if (level.getBlockEntity(center) instanceof GlassBasinBlockEntity glass)
+                    {
+                        glass.setGlassItem(recipe.getResultItem(level.registryAccess()));
+                    }
+                    if (player instanceof ServerPlayer server)
+                    {
+                        TFCAdvancements.BASIN_POUR.trigger(server);
+                    }
+                    return InteractionResult.CONSUME;
                 }
-                if (player instanceof ServerPlayer server)
-                {
-                    TFCAdvancements.BASIN_POUR.trigger(server);
-                }
-                return true;
-            }).orElse(false);
-
-            if (created)
-                return InteractionResult.CONSUME;
+            }
         }
 
         if (face == Direction.UP && Helpers.isBlock(state, TFCTags.Blocks.GLASS_POURING_TABLE) && level.getBlockState(pos.above()).isAir() && player != null)
         {
             final ItemStack item = context.getItemInHand();
+
             // test on a copy so that if it doesn't work we don't cause irreversible changes
             final ItemStack copy = item.copy();
             GlassWorkData.apply(copy, GlassOperation.TABLE_POUR);
-            final boolean created = level.getRecipeManager().getRecipeFor(TFCRecipeTypes.GLASSWORKING.get(), new ItemStackInventory(copy), level).map(recipe -> {
+
+            final @Nullable GlassworkingRecipe recipe = GlassworkingRecipe.get(level, copy);
+            if (recipe != null)
+            {
                 if (!GlassOperation.TABLE_POUR.hasRequiredTemperature(copy))
                 {
                     player.displayClientMessage(Component.translatable("tfc.tooltip.glass.not_hot_enough"), true);
-                    return false;
                 }
-                consumeBlowpipe(player, context.getHand(), item);
-                level.setBlockAndUpdate(pos.above(), TFCBlocks.HOT_POURED_GLASS.get().defaultBlockState().setValue(HotPouredGlassBlock.FLAT, false));
-                if (level.getBlockEntity(pos.above()) instanceof HotPouredGlassBlockEntity glass)
+                else
                 {
-                    glass.setGlassItem(recipe.getResultItem(level.registryAccess()));
+                    consumeBlowpipe(player, context.getHand(), item);
+                    level.setBlockAndUpdate(pos.above(), TFCBlocks.HOT_POURED_GLASS.get().defaultBlockState().setValue(HotPouredGlassBlock.FLAT, false));
+                    if (level.getBlockEntity(pos.above()) instanceof HotPouredGlassBlockEntity glass)
+                    {
+                        glass.setGlassItem(recipe.getResultItem(level.registryAccess()));
+                    }
+                    if (player instanceof ServerPlayer server)
+                    {
+                        TFCAdvancements.TABLE_POUR.trigger(server);
+                    }
+                    return InteractionResult.CONSUME;
                 }
-                if (player instanceof ServerPlayer server)
-                {
-                    TFCAdvancements.TABLE_POUR.trigger(server);
-                }
-                return true;
-            }).orElse(false);
-
-            if (created)
-                return InteractionResult.CONSUME;
+            }
         }
-
         return InteractionResult.PASS;
     }
 
@@ -188,11 +193,13 @@ public class GlassBlowpipeItem extends BlowpipeItem
                 GlassWorkData.apply(stack, op);
 
                 final Level level = entity.level();
-                level.getRecipeManager().getRecipeFor(TFCRecipeTypes.GLASSWORKING.get(), new ItemStackInventory(stack), level).ifPresent(recipe -> {
+                final @Nullable GlassworkingRecipe recipe = GlassworkingRecipe.get(level, stack);
+                if (recipe != null)
+                {
                     final boolean broken = consumeBlowpipe(player, player.getUsedItemHand(), stack);
                     ItemHandlerHelper.giveItemToPlayer(player, recipe.getResultItem(level.registryAccess()));
                     level.playSound(null, player.blockPosition(), broken ? SoundEvents.ITEM_BREAK : SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.PLAYERS);
-                });
+                }
             }
             player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
             Helpers.allItems(TFCTags.Items.ALL_BLOWPIPES).forEach(item -> player.getCooldowns().addCooldown(item, 80));

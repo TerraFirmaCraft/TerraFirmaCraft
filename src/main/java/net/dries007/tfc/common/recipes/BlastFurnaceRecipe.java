@@ -6,25 +6,41 @@
 
 package net.dries007.tfc.common.recipes;
 
-import com.google.gson.JsonObject;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
-import net.dries007.tfc.common.recipes.inventory.NonEmptyInput;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.JsonHelpers;
 
-public class BlastFurnaceRecipe implements ISimpleRecipe<BlastFurnaceRecipe.Inventory>
+
+public record BlastFurnaceRecipe(
+    SizedFluidIngredient inputFluid,
+    Ingredient catalyst, FluidStack outputFluid
+) implements INoopInputRecipe
 {
+    public static final MapCodec<BlastFurnaceRecipe> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
+        SizedFluidIngredient.FLAT_CODEC.fieldOf("fluid").forGetter(c -> c.inputFluid),
+        Ingredient.CODEC.fieldOf("catalyst").forGetter(c -> c.catalyst),
+        FluidStack.CODEC.fieldOf("result").forGetter(c -> c.outputFluid)
+    ).apply(i, BlastFurnaceRecipe::new));
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, BlastFurnaceRecipe> STREAM_CODEC = StreamCodec.composite(
+        SizedFluidIngredient.STREAM_CODEC, c -> c.inputFluid,
+        Ingredient.CONTENTS_STREAM_CODEC, c -> c.catalyst,
+        FluidStack.STREAM_CODEC, c -> c.outputFluid,
+        BlastFurnaceRecipe::new
+    );
+
     /**
      * @return A recipe matching a primary input item stack.
      */
@@ -37,7 +53,7 @@ public class BlastFurnaceRecipe implements ISimpleRecipe<BlastFurnaceRecipe.Inve
             final FluidStack moltenFluid = heatRecipe.assembleFluid(stack);
             for (BlastFurnaceRecipe recipe : Helpers.getRecipes(level, TFCRecipeTypes.BLAST_FURNACE).values())
             {
-                if (recipe.inputFluid.ingredient().test(moltenFluid.getFluid()))
+                if (recipe.inputFluid.ingredient().test(moltenFluid))
                 {
                     return recipe;
                 }
@@ -54,46 +70,12 @@ public class BlastFurnaceRecipe implements ISimpleRecipe<BlastFurnaceRecipe.Inve
     {
         for (BlastFurnaceRecipe recipe : Helpers.getRecipes(level, TFCRecipeTypes.BLAST_FURNACE).values())
         {
-            if (recipe.inputFluid.ingredient().test(inputFluid.getFluid()))
+            if (recipe.inputFluid.ingredient().test(inputFluid))
             {
                 return recipe;
             }
         }
         return null;
-    }
-
-    private final ResourceLocation id;
-    private final FluidStackIngredient inputFluid;
-    private final Ingredient catalyst;
-    private final FluidStack outputFluid;
-
-    public BlastFurnaceRecipe(ResourceLocation id, FluidStackIngredient inputFluid, Ingredient catalyst, FluidStack outputFluid)
-    {
-        this.id = id;
-        this.inputFluid = inputFluid;
-        this.catalyst = catalyst;
-        this.outputFluid = outputFluid;
-    }
-
-    public Ingredient getCatalyst()
-    {
-        return catalyst;
-    }
-
-    public FluidStackIngredient getInputFluid()
-    {
-        return inputFluid;
-    }
-
-    public FluidStack getOutputFluid()
-    {
-        return outputFluid;
-    }
-
-    @Override
-    public boolean matches(Inventory inventory, @Nullable Level level)
-    {
-        return inputFluid.test(inventory.getFluid()) && catalyst.test(inventory.getCatalyst());
     }
 
     public boolean matchesInput(ItemStack stack)
@@ -103,7 +85,7 @@ public class BlastFurnaceRecipe implements ISimpleRecipe<BlastFurnaceRecipe.Inve
         {
             // Ignore count, since the blast furnace will aggregate all inputs
             final FluidStack fluid = heat.assembleFluid(stack);
-            return inputFluid.ingredient().test(fluid.getFluid());
+            return inputFluid.ingredient().test(fluid);
         }
         return false;
     }
@@ -130,15 +112,9 @@ public class BlastFurnaceRecipe implements ISimpleRecipe<BlastFurnaceRecipe.Inve
     }
 
     @Override
-    public ItemStack getResultItem(RegistryAccess registryAccess)
+    public ItemStack getResultItem(HolderLookup.Provider registries)
     {
         return ItemStack.EMPTY;
-    }
-
-    @Override
-    public ResourceLocation getId()
-    {
-        return id;
     }
 
     @Override
@@ -151,42 +127,5 @@ public class BlastFurnaceRecipe implements ISimpleRecipe<BlastFurnaceRecipe.Inve
     public RecipeType<?> getType()
     {
         return TFCRecipeTypes.BLAST_FURNACE.get();
-    }
-
-    public interface Inventory extends NonEmptyInput
-    {
-        FluidStack getFluid();
-
-        ItemStack getCatalyst();
-    }
-
-    public static class Serializer extends RecipeSerializerImpl<BlastFurnaceRecipe>
-    {
-        @Override
-        public BlastFurnaceRecipe fromJson(ResourceLocation recipeId, JsonObject json)
-        {
-            final FluidStackIngredient inputFluid = FluidStackIngredient.fromJson(JsonHelpers.getAsJsonObject(json, "fluid"));
-            final Ingredient catalyst = Ingredient.fromJson(JsonHelpers.getAsJsonObject(json, "catalyst"));
-            final FluidStack outputFluid = JsonHelpers.getFluidStack(json, "result");
-            return new BlastFurnaceRecipe(recipeId, inputFluid, catalyst, outputFluid);
-        }
-
-        @Nullable
-        @Override
-        public BlastFurnaceRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
-        {
-            final FluidStackIngredient inputFluid = FluidStackIngredient.fromNetwork(buffer);
-            final Ingredient catalyst = Ingredient.fromNetwork(buffer);
-            final FluidStack outputFluid = FluidStack.readFromPacket(buffer);
-            return new BlastFurnaceRecipe(recipeId, inputFluid, catalyst, outputFluid);
-        }
-
-        @Override
-        public void toNetwork(FriendlyByteBuf buffer, BlastFurnaceRecipe recipe)
-        {
-            recipe.inputFluid.toNetwork(buffer);
-            recipe.catalyst.toNetwork(buffer);
-            recipe.outputFluid.writeToPacket(buffer);
-        }
     }
 }

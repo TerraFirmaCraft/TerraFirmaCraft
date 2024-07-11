@@ -6,28 +6,38 @@
 
 package net.dries007.tfc.common.capabilities.size;
 
-public enum Weight
+import java.util.Locale;
+import com.mojang.serialization.Codec;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.util.StringRepresentable;
+
+import net.dries007.tfc.network.PacketCodecs;
+
+public enum Weight implements StringRepresentable
 {
-    VERY_LIGHT("very_light", 64),
-    LIGHT("light", 32),
-    MEDIUM("medium", 16),
-    HEAVY("heavy", 4),
-    VERY_HEAVY("very_heavy", 1);
+    VERY_LIGHT(64),
+    LIGHT(32),
+    MEDIUM(16),
+    HEAVY(4),
+    VERY_HEAVY(1);
 
-    private static final Weight[] VALUES = values();
-
-    public static Weight valueOf(int i)
-    {
-        return i >= 0 && i < VALUES.length ? VALUES[i] : MEDIUM;
-    }
+    public static final Codec<Weight> CODEC = StringRepresentable.fromValues(Weight::values);
+    public static final StreamCodec<ByteBuf, Weight> STREAM_CODEC = PacketCodecs.forEnum(Weight::values);
 
     public final int stackSize;
     public final String name;
 
-    Weight(String name, int stackSize)
+    Weight(int stackSize)
     {
-        this.name = name;
+        this.name = name().toLowerCase(Locale.ROOT);
         this.stackSize = stackSize;
+    }
+
+    @Override
+    public String getSerializedName()
+    {
+        return name;
     }
 
     public boolean isSmallerThan(Weight other)

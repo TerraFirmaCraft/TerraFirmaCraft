@@ -6,34 +6,47 @@
 
 package net.dries007.tfc.common.recipes;
 
-import com.google.gson.JsonObject;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.Level;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.common.crafting.SizedIngredient;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
-import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
-import net.dries007.tfc.common.recipes.inventory.NonEmptyInput;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
-import net.dries007.tfc.util.JsonHelpers;
 
-public class BloomeryRecipe implements ISimpleRecipe<NonEmptyInput>
+public class BloomeryRecipe implements INoopInputRecipe
 {
-    private final ResourceLocation id;
-    private final FluidStackIngredient inputFluid;
-    private final ItemStackIngredient catalyst;
+    public static final MapCodec<BloomeryRecipe> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
+        SizedFluidIngredient.FLAT_CODEC.fieldOf("fluid").forGetter(c -> c.inputFluid),
+        SizedIngredient.FLAT_CODEC.fieldOf("catalyst").forGetter(c -> c.catalyst),
+        ItemStackProvider.CODEC.fieldOf("result").forGetter(c -> c.result),
+        Codec.INT.fieldOf("duration").forGetter(c -> c.duration)
+    ).apply(i, BloomeryRecipe::new));
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, BloomeryRecipe> STREAM_CODEC = StreamCodec.composite(
+        SizedFluidIngredient.STREAM_CODEC, c -> c.inputFluid,
+        SizedIngredient.STREAM_CODEC, c -> c.catalyst,
+        ItemStackProvider.STREAM_CODEC, c -> c.result,
+        ByteBufCodecs.VAR_INT, c -> c.duration,
+        BloomeryRecipe::new
+    );
+
+    private final SizedFluidIngredient inputFluid;
+    private final SizedIngredient catalyst;
     private final ItemStackProvider result;
     private final int duration;
 
-    public BloomeryRecipe(ResourceLocation id, FluidStackIngredient inputFluid, ItemStackIngredient catalyst, ItemStackProvider result, int duration)
+    public BloomeryRecipe(SizedFluidIngredient inputFluid, SizedIngredient catalyst, ItemStackProvider result, int duration)
     {
-        this.id = id;
         this.inputFluid = inputFluid;
         this.catalyst = catalyst;
         this.result = result;
@@ -45,20 +58,14 @@ public class BloomeryRecipe implements ISimpleRecipe<NonEmptyInput>
         return duration;
     }
 
-    public ItemStackIngredient getCatalyst()
+    public SizedIngredient getCatalyst()
     {
         return catalyst;
     }
 
-    public FluidStackIngredient getInputFluid()
+    public SizedFluidIngredient getInputFluid()
     {
         return inputFluid;
-    }
-
-    @Override
-    public boolean matches(NonEmptyInput inv, Level level)
-    {
-        return false;
     }
 
     /**
@@ -74,7 +81,15 @@ public class BloomeryRecipe implements ISimpleRecipe<NonEmptyInput>
      */
     public boolean matchesInput(FluidStack stack)
     {
-        return inputFluid.ingredient().test(stack.getFluid());
+        return inputFluid.ingredient().test(stack);
+    }
+
+    /**
+     * @return {@code true} if {@code stack} is the correct catalyst for this recipe.
+     */
+    public boolean matchesCatalyst(ItemStack stack)
+    {
+        return catalyst.test(stack);
     }
 
     /**
@@ -95,35 +110,15 @@ public class BloomeryRecipe implements ISimpleRecipe<NonEmptyInput>
         return null;
     }
 
-    /**
-     * @return {@code true} if {@code stack} is the correct catalyst for this recipe.
-     */
-    public boolean matchesCatalyst(ItemStack stack)
-    {
-        return catalyst.test(stack);
-    }
-
     public ItemStack assembleOutput()
     {
         return result.getEmptyStack();
     }
 
     @Override
-    public ItemStack getResultItem(RegistryAccess registryAccess)
+    public ItemStack getResultItem(HolderLookup.Provider registries)
     {
         return result.getEmptyStack();
-    }
-
-    @Override
-    public ItemStack assemble(NonEmptyInput inventory, RegistryAccess registryAccess)
-    {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public ResourceLocation getId()
-    {
-        return id;
     }
 
     @Override
@@ -136,38 +131,5 @@ public class BloomeryRecipe implements ISimpleRecipe<NonEmptyInput>
     public RecipeType<?> getType()
     {
         return TFCRecipeTypes.BLOOMERY.get();
-    }
-
-    public static class Serializer extends RecipeSerializerImpl<BloomeryRecipe>
-    {
-        @Override
-        public BloomeryRecipe fromJson(ResourceLocation recipeId, JsonObject json)
-        {
-            final FluidStackIngredient fluidStack = FluidStackIngredient.fromJson(JsonHelpers.getAsJsonObject(json, "fluid"));
-            final ItemStackIngredient catalyst = ItemStackIngredient.fromJson(JsonHelpers.getAsJsonObject(json, "catalyst"));
-            final ItemStackProvider result = ItemStackProvider.fromJson(JsonHelpers.getAsJsonObject(json, "result"));
-            final int time = JsonHelpers.getAsInt(json, "duration");
-            return new BloomeryRecipe(recipeId, fluidStack, catalyst, result, time);
-        }
-
-        @Nullable
-        @Override
-        public BloomeryRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
-        {
-            final FluidStackIngredient fluidStack = FluidStackIngredient.fromNetwork(buffer);
-            final ItemStackIngredient catalyst = ItemStackIngredient.fromNetwork(buffer);
-            final ItemStackProvider result = ItemStackProvider.fromNetwork(buffer);
-            final int time = buffer.readVarInt();
-            return new BloomeryRecipe(recipeId, fluidStack, catalyst, result, time);
-        }
-
-        @Override
-        public void toNetwork(FriendlyByteBuf buffer, BloomeryRecipe recipe)
-        {
-            recipe.inputFluid.toNetwork(buffer);
-            recipe.catalyst.toNetwork(buffer);
-            recipe.result.toNetwork(buffer);
-            buffer.writeVarInt(recipe.duration);
-        }
     }
 }

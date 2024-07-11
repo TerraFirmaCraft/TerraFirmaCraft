@@ -16,7 +16,6 @@ import net.minecraft.world.item.crafting.RecipeManager;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.recipes.AlloyRecipe;
-import net.dries007.tfc.common.recipes.inventory.AlloyInventory;
 
 public class Alloy implements AlloyView
 {
@@ -43,7 +42,6 @@ public class Alloy implements AlloyView
     private int totalUnits;
     private int maxUnits;
 
-    @Nullable private AlloyInventory wrapper; // Lazy, initialized on demand and cached
     @Nullable private Metal cachedResult;
 
     /**
@@ -281,15 +279,6 @@ public class Alloy implements AlloyView
     private double getExactAmount()
     {
         return metalMap.values().doubleStream().sum();
-    }
-
-    private AlloyInventory getWrapper()
-    {
-        if (wrapper == null)
-        {
-            wrapper = new AlloyInventory(this);
-        }
-        return wrapper;
     }
 
     private boolean matchesExactly(AlloyRecipe recipe)

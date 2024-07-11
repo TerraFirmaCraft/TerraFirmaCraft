@@ -6,13 +6,13 @@
 
 package net.dries007.tfc.common.recipes;
 
-import java.util.ArrayList;
 import java.util.List;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -22,28 +22,46 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.glass.GlassOperation;
 import net.dries007.tfc.common.capabilities.glass.GlassWorkData;
-import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
-import net.dries007.tfc.util.JsonHelpers;
+import net.dries007.tfc.util.Helpers;
 
-public class GlassworkingRecipe implements ISimpleRecipe<ItemStackInventory>
+public record GlassworkingRecipe(
+    List<GlassOperation> operations,
+    Ingredient batchItem,
+    ItemStack resultItem
+) implements INoopInputRecipe
 {
-    private final ResourceLocation id;
-    private final List<GlassOperation> operations;
-    private final Ingredient batchItem;
-    private final ItemStack resultItem;
+    public static final MapCodec<GlassworkingRecipe> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
+        GlassOperation.CODEC.listOf().fieldOf("operations").forGetter(c -> c.operations),
+        Ingredient.CODEC.fieldOf("batch").forGetter(c -> c.batchItem),
+        ItemStack.CODEC.fieldOf("result").forGetter(c -> c.resultItem)
+    ).apply(i, GlassworkingRecipe::new));
 
-    public GlassworkingRecipe(ResourceLocation id, List<GlassOperation> operations, Ingredient batchItem, ItemStack resultItem)
+    public static final StreamCodec<RegistryFriendlyByteBuf, GlassworkingRecipe> STREAM_CODEC = StreamCodec.composite(
+        GlassOperation.STREAM_CODEC.apply(ByteBufCodecs.list()), c -> c.operations,
+        Ingredient.CONTENTS_STREAM_CODEC, c -> c.batchItem,
+        ItemStack.STREAM_CODEC, c -> c.resultItem,
+        GlassworkingRecipe::new
+    );
+
+    @Nullable
+    public static GlassworkingRecipe get(Level level, ItemStack stack)
     {
-        this.id = id;
-        this.operations = operations;
-        this.batchItem = batchItem;
-        this.resultItem = resultItem;
+        for (GlassworkingRecipe recipe : Helpers.getRecipes(level, TFCRecipeTypes.GLASSWORKING).values())
+        {
+            if (recipe.matches(stack))
+            {
+                return recipe;
+            }
+        }
+        return null;
     }
 
-    @Override
-    public boolean matches(ItemStackInventory inv, Level level)
+    /**
+     * @return {@code true} if the recipe matches the input stack
+     */
+    public boolean matches(ItemStack input)
     {
-        final GlassWorkData data = GlassWorkData.get(inv.getStack());
+        final GlassWorkData data = GlassWorkData.get(input);
         if (data != null)
         {
             final List<GlassOperation> steps = data.getOperations().getSteps();
@@ -53,15 +71,9 @@ public class GlassworkingRecipe implements ISimpleRecipe<ItemStackInventory>
     }
 
     @Override
-    public ItemStack getResultItem(@Nullable RegistryAccess access)
+    public ItemStack getResultItem(HolderLookup.Provider registries)
     {
-        return resultItem.copy();
-    }
-
-    @Override
-    public ResourceLocation getId()
-    {
-        return id;
+        return resultItem;
     }
 
     @Override
@@ -74,57 +86,5 @@ public class GlassworkingRecipe implements ISimpleRecipe<ItemStackInventory>
     public RecipeType<?> getType()
     {
         return TFCRecipeTypes.GLASSWORKING.get();
-    }
-
-    public Ingredient getBatchItem()
-    {
-        return batchItem;
-    }
-
-    public List<GlassOperation> getOperations()
-    {
-        return operations;
-    }
-
-    public static class Serializer extends RecipeSerializerImpl<GlassworkingRecipe>
-    {
-        @Override
-        public GlassworkingRecipe fromJson(ResourceLocation id, JsonObject json)
-        {
-            final List<GlassOperation> operations = new ArrayList<>();
-            for (JsonElement element : json.getAsJsonArray("operations"))
-            {
-                operations.add(JsonHelpers.getEnum(element, GlassOperation.class));
-            }
-            final Ingredient batch = Ingredient.fromJson(json.get("batch"));
-            final ItemStack result = JsonHelpers.getItemStack(json, "result");
-            return new GlassworkingRecipe(id, operations, batch, result);
-        }
-
-        @Override
-        public GlassworkingRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buffer)
-        {
-            final int capacity = buffer.readVarInt();
-            final List<GlassOperation> ops = new ArrayList<>(capacity);
-            for (int i = 0; i < capacity; i++)
-            {
-                ops.add(buffer.readEnum(GlassOperation.class));
-            }
-            final Ingredient batch = Ingredient.fromNetwork(buffer);
-            final ItemStack result = buffer.readItem();
-            return new GlassworkingRecipe(id, ops, batch, result);
-        }
-
-        @Override
-        public void toNetwork(FriendlyByteBuf buffer, GlassworkingRecipe recipe)
-        {
-            buffer.writeVarInt(recipe.operations.size());
-            for (GlassOperation op : recipe.operations)
-            {
-                buffer.writeEnum(op);
-            }
-            recipe.batchItem.toNetwork(buffer);
-            buffer.writeItem(recipe.resultItem);
-        }
     }
 }

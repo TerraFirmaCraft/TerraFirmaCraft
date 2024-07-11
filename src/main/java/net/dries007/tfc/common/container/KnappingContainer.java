@@ -18,7 +18,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
-import net.dries007.tfc.common.recipes.inventory.NonEmptyInput;
+import net.dries007.tfc.common.recipes.input.NonEmptyInput;
 import net.dries007.tfc.util.KnappingPattern;
 import net.dries007.tfc.util.KnappingType;
 

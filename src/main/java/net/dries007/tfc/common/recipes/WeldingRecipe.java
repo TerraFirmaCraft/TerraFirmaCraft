@@ -18,7 +18,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.forge.ForgingBonus;
-import net.dries007.tfc.common.recipes.inventory.NonEmptyInput;
+import net.dries007.tfc.common.recipes.input.NonEmptyInput;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.util.JsonHelpers;
 

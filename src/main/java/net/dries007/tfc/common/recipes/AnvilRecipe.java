@@ -25,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.common.capabilities.forge.ForgeRule;
 import net.dries007.tfc.common.capabilities.forge.Forging;
 import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
-import net.dries007.tfc.common.recipes.inventory.NonEmptyInput;
+import net.dries007.tfc.common.recipes.input.NonEmptyInput;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;

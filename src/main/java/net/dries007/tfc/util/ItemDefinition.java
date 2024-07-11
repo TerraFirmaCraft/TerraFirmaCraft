@@ -9,13 +9,13 @@ package net.dries007.tfc.util;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
-
 import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
+@Deprecated
 public class ItemDefinition
 {
     protected final ResourceLocation id;

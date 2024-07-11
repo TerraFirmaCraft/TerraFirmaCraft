@@ -30,16 +30,16 @@ public class BlastFurnaceRecipeCategory extends BaseRecipeCategory<BlastFurnaceR
     public void setRecipe(IRecipeLayoutBuilder builder, BlastFurnaceRecipe recipe, IFocusGroup focuses)
     {
         builder.addSlot(RecipeIngredientRole.INPUT, 6, 5)
-            .addIngredients(recipe.getCatalyst())
+            .addIngredients(recipe.catalyst())
             .setBackground(slot, -1, -1);
 
         builder.addSlot(RecipeIngredientRole.INPUT, 26, 5)
-            .addIngredients(JEIIntegration.FLUID_STACK, collapse(recipe.getInputFluid()))
+            .addIngredients(JEIIntegration.FLUID_STACK, collapse(recipe.inputFluid()))
             .setFluidRenderer(1, false, 16, 16)
             .setBackground(slot, -1, -1);
 
         builder.addSlot(RecipeIngredientRole.OUTPUT, 76, 5)
-            .addIngredient(JEIIntegration.FLUID_STACK, recipe.getOutputFluid())
+            .addIngredient(JEIIntegration.FLUID_STACK, recipe.outputFluid())
             .setFluidRenderer(1, false, 16, 16)
             .setBackground(slot, -1, -1);
     }

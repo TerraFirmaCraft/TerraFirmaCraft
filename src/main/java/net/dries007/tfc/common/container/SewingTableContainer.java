@@ -27,7 +27,7 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.wood.SewingTableBlock;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
-import net.dries007.tfc.common.recipes.inventory.NonEmptyInput;
+import net.dries007.tfc.common.recipes.input.NonEmptyInput;
 import net.dries007.tfc.util.ArrayContainerData;
 import net.dries007.tfc.util.Helpers;
 

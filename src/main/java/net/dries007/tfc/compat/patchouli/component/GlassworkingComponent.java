@@ -32,7 +32,7 @@ public class GlassworkingComponent extends InputOutputComponent<GlassworkingReci
 
         final Font font = Minecraft.getInstance().font;
         int idx = 0;
-        for (GlassOperation operation : recipe.getOperations())
+        for (GlassOperation operation : recipe.operations())
         {
             final Component text = Component.literal((idx + 1) + ". ").append(Helpers.translateEnum(operation)).withStyle(Style.EMPTY.withFont(Minecraft.UNIFORM_FONT));
             graphics.drawString(font, text, 14, 30 + (idx * 9), 0x404040, false);
@@ -49,7 +49,7 @@ public class GlassworkingComponent extends InputOutputComponent<GlassworkingReci
     @Override
     public Ingredient getIngredient(GlassworkingRecipe recipe)
     {
-        return recipe.getBatchItem();
+        return recipe.batchItem();
     }
 
     @Override

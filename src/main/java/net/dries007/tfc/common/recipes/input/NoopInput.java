@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.recipes.inventory;
+package net.dries007.tfc.common.recipes.input;
 
 /**
  * This is a no-op, un-constructible implementation of {@link net.minecraft.world.item.crafting.RecipeInput}. It is used to signify the recipe

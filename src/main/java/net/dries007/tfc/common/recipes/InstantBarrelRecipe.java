@@ -12,11 +12,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
-import net.dries007.tfc.common.recipes.inventory.BarrelInventory;
-
-import org.jetbrains.annotations.Nullable;
+import net.dries007.tfc.common.recipes.input.BarrelInventory;
 
 public class InstantBarrelRecipe extends BarrelRecipe
 {

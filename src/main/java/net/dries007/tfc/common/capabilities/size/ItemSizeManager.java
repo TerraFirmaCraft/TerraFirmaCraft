@@ -12,25 +12,25 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.AnimalArmorItem;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.BucketItem;
-import net.minecraft.world.item.HorseArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TieredItem;
 import org.slf4j.Logger;
 
+import net.dries007.tfc.common.recipes.RecipeHelpers;
 import net.dries007.tfc.mixin.accessor.ItemAccessor;
-import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.util.DataManager;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 public final class ItemSizeManager
 {
-    public static final DataManager<ItemSizeDefinition> MANAGER = new DataManager<>(Helpers.identifier("item_sizes"), "item size", ItemSizeDefinition::new, ItemSizeDefinition::new, ItemSizeDefinition::encode, Packet::new);
-    public static final IndirectHashCollection<Item, ItemSizeDefinition> CACHE = IndirectHashCollection.create(ItemSizeDefinition::getValidItems, MANAGER::getValues);
+    public static final DataManager<ItemSizeDefinition> MANAGER = new DataManager<>(Helpers.identifier("item_sizes"), "item size", ItemSizeDefinition.CODEC, ItemSizeDefinition.STREAM_CODEC);
+    public static final IndirectHashCollection<Item, ItemSizeDefinition> CACHE = IndirectHashCollection.create(r -> RecipeHelpers.itemKeys(r.ingredient()), MANAGER::getValues);
 
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final List<Item> MODIFIABLE_ITEMS = new ArrayList<>();
@@ -40,7 +40,6 @@ public final class ItemSizeManager
     public static final ItemSize BLOCK_SIZE = new ItemSize(Size.SMALL, Weight.LIGHT); // Fits small vessels and stack size = 32
     public static final ItemSize DEFAULT_SIZE = new ItemSize(Size.VERY_SMALL, Weight.VERY_LIGHT); // Stored anywhere and stack size = 64
 
-    @SuppressWarnings("deprecation")
     public static void setupItemStackSizeOverrides()
     {
         // Initialize the list of editable items here, as we can't rely on checking their stack size later as it may have been modified
@@ -104,7 +103,7 @@ public final class ItemSizeManager
         // Definitions
         for (ItemSizeDefinition def : CACHE.getAll(stack.getItem()))
         {
-            if (def.matches(stack))
+            if (def.ingredient().test(stack))
             {
                 return def;
             }
@@ -115,7 +114,7 @@ public final class ItemSizeManager
         {
             return TOOL_SIZE;
         }
-        else if (item instanceof ArmorItem || item instanceof HorseArmorItem)
+        else if (item instanceof ArmorItem || item instanceof AnimalArmorItem)
         {
             return ARMOR_SIZE;
         }
@@ -128,6 +127,4 @@ public final class ItemSizeManager
             return DEFAULT_SIZE;
         }
     }
-
-    public static class Packet extends DataManagerSyncPacket<ItemSizeDefinition> {}
 }

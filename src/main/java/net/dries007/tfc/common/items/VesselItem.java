@@ -47,7 +47,6 @@ import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.container.TFCContainerProviders;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
-import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Alloy;
 import net.dries007.tfc.util.Helpers;
@@ -462,19 +461,17 @@ public class VesselItem extends Item
         private void updateInventoryMelting()
         {
             boolean updatedAlloy = false;
-            final ItemStackInventory inventory = new ItemStackInventory();
             for (int i = 0; i < SLOTS; i++)
             {
                 final ItemStack stack = this.inventory.getStackInSlot(i);
-                inventory.setStack(stack);
                 if (cachedRecipes[i] != null)
                 {
                     final HeatingRecipe recipe = cachedRecipes[i];
                     if (recipe.isValidTemperature(heat.getTemperature()))
                     {
                         // Melt item, add the contents to the alloy. Excess solids are placed into the inventory, more than can fit is voided.
-                        final ItemStack outputStack = recipe.assembleStacked(inventory, getSlotStackLimit(i), recipe.getChance());
-                        final FluidStack outputFluid = recipe.assembleFluid(inventory);
+                        final ItemStack outputStack = recipe.assembleStacked(stack, getSlotStackLimit(i), recipe.getChance());
+                        final FluidStack outputFluid = recipe.assembleFluid(stack);
 
                         if (!outputFluid.isEmpty())
                         {

@@ -7,26 +7,19 @@
 package net.dries007.tfc.util;
 
 import java.util.Optional;
-import com.google.gson.JsonObject;
-import com.mojang.datafixers.util.Function7;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
-import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.network.PacketCodecs;
 
 public record KnappingType(

@@ -6,43 +6,31 @@
 
 package net.dries007.tfc.common.capabilities.size;
 
-import com.google.gson.JsonObject;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
-import net.dries007.tfc.util.ItemDefinition;
-import net.dries007.tfc.util.JsonHelpers;
-
-public class ItemSizeDefinition extends ItemDefinition implements IItemSize
+public record ItemSizeDefinition(
+    Ingredient ingredient,
+    Size size,
+    Weight weight
+) implements IItemSize
 {
-    private final Size size;
-    private final Weight weight;
+    public static final Codec<ItemSizeDefinition> CODEC = RecordCodecBuilder.create(i -> i.group(
+        Ingredient.CODEC.fieldOf("ingredient").forGetter(c -> c.ingredient),
+        Size.CODEC.fieldOf("size").forGetter(c -> c.size),
+        Weight.CODEC.fieldOf("weight").forGetter(c -> c.weight)
+    ).apply(i, ItemSizeDefinition::new));
 
-    public ItemSizeDefinition(ResourceLocation id, JsonObject json)
-    {
-        super(id, json);
-
-        this.size = JsonHelpers.getEnum(json, "size", Size.class, Size.NORMAL);
-        this.weight = JsonHelpers.getEnum(json, "weight", Weight.class, Weight.MEDIUM);
-    }
-
-    public ItemSizeDefinition(ResourceLocation id, FriendlyByteBuf buffer)
-    {
-        super(id, Ingredient.fromNetwork(buffer));
-
-        this.size = Size.valueOf(buffer.readByte());
-        this.weight = Weight.valueOf(buffer.readByte());
-    }
-
-    public void encode(FriendlyByteBuf buffer)
-    {
-        ingredient.toNetwork(buffer);
-
-        buffer.writeByte(size.ordinal());
-        buffer.writeByte(weight.ordinal());
-    }
+    public static final StreamCodec<RegistryFriendlyByteBuf, ItemSizeDefinition> STREAM_CODEC = StreamCodec.composite(
+        Ingredient.CONTENTS_STREAM_CODEC, c -> c.ingredient,
+        Size.STREAM_CODEC, c -> c.size,
+        Weight.STREAM_CODEC, c -> c.weight,
+        ItemSizeDefinition::new
+    );
 
     @Override
     public Size getSize(ItemStack stack)
