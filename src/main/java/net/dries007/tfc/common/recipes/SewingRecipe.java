@@ -6,66 +6,104 @@
 
 package net.dries007.tfc.common.recipes;
 
-import java.util.ArrayList;
-import java.util.List;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.container.SewingTableContainer;
-import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.JsonHelpers;
 
-public class SewingRecipe implements ISimpleRecipe<SewingTableContainer.RecipeWrapper>
+public class SewingRecipe implements ISimpleRecipe<SewingTableContainer.Input>
 {
-    private final ResourceLocation id;
-    private final List<Integer> stitches;
-    private final List<Integer> squares;
+    private static final int MAX_STITCHES = SewingTableContainer.MAX_STITCHES;
+    private static final int MAX_SQUARES = SewingTableContainer.MAX_SQUARES;
+
+    public static final MapCodec<SewingRecipe> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
+        Codec.STRING.comapFlatMap(
+            text -> {
+                if (text.length() != MAX_STITCHES) return DataResult.error(() -> "Must be exactly " + MAX_STITCHES + " stitches");
+
+                long bitset = 0;
+                for (int j = 0; j < MAX_STITCHES; j++)
+                {
+                    bitset |= (text.charAt(j) != ' ' ? (1L << j) : 0);
+                }
+                return DataResult.success(bitset);
+            },
+            bitset -> {
+                final StringBuilder builder = new StringBuilder();
+                for (int j = 0; j < MAX_STITCHES; j++)
+                {
+                    builder.append(bitFind(bitset, j) ? '#' : ' ');
+                }
+                return builder.toString();
+            }
+        ).fieldOf("stitches").forGetter(c -> c.stitches),
+        Codec.STRING.validate(text -> text.length() != MAX_SQUARES
+            ? DataResult.error(() -> "Must be exactly " + MAX_SQUARES + " squares")
+            : DataResult.success(text)
+        ).fieldOf("squares").forGetter(c -> c.squares),
+        ItemStack.CODEC.fieldOf("result").forGetter(c -> c.result)
+    ).apply(i, SewingRecipe::new));
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, SewingRecipe> STREAM_CODEC = StreamCodec.composite(
+        ByteBufCodecs.VAR_LONG, c -> c.stitches,
+        ByteBufCodecs.STRING_UTF8, c -> c.squares,
+        ItemStack.STREAM_CODEC, c -> c.result,
+        SewingRecipe::new
+    );
+
+    private static boolean bitFind(long bitset, int index)
+    {
+        return ((bitset >> index) & 1) == 1;
+    }
+
+    private final long stitches; // A bitset of 45 total stitches, where 0 = false, 1 = true
+    private final String squares; // A string of 32 total squares (characters), where ' ' = none, 'B' = burlap, 'N' = normal
+
     private final ItemStack result;
 
-    public SewingRecipe(ResourceLocation id, List<Integer> stitches, List<Integer> squares, ItemStack result)
+    public SewingRecipe(long stitches, String squares, ItemStack result)
     {
-        this.id = id;
         this.stitches = stitches;
         this.squares = squares;
         this.result = result;
     }
 
-    public List<Integer> getStitches()
+    public boolean getStitch(int index)
     {
-        return stitches;
+        return bitFind(stitches, index);
     }
 
-    public List<Integer> getSquares()
+    public int getSquare(int index)
     {
-        return squares;
-    }
-
-    @Override
-    public boolean matches(SewingTableContainer.RecipeWrapper inventory, Level level)
-    {
-        return inventory.squaresMatch(squares) && inventory.stitchesMatch(stitches);
+        return squares.charAt(index) - '0';
     }
 
     @Override
-    public ItemStack getResultItem(RegistryAccess access)
+    public boolean matches(SewingTableContainer.Input inventory, Level level)
+    {
+        return inventory.squaresMatch(this) && inventory.stitchesMatch(this);
+    }
+
+    @Override
+    public ItemStack assemble(SewingTableContainer.Input input, HolderLookup.Provider registries)
     {
         return result.copy();
     }
 
     @Override
-    public ResourceLocation getId()
+    public ItemStack getResultItem(HolderLookup.Provider registries)
     {
-        return id;
+        return result;
     }
 
     @Override
@@ -79,49 +117,4 @@ public class SewingRecipe implements ISimpleRecipe<SewingTableContainer.RecipeWr
     {
         return TFCRecipeTypes.SEWING.get();
     }
-
-    public static class Serializer extends RecipeSerializerImpl<SewingRecipe>
-    {
-
-        @Override
-        public SewingRecipe fromJson(ResourceLocation id, JsonObject json)
-        {
-            final JsonArray stitchArray = json.getAsJsonArray("stitches");
-            if (stitchArray.size() != SewingTableContainer.MAX_STITCHES)
-                throw new JsonParseException("There must be exactly 45 stitches specified, was " + stitchArray.size());
-            final List<Integer> stitches = new ArrayList<>(SewingTableContainer.MAX_STITCHES);
-            for (JsonElement element : stitchArray)
-            {
-                stitches.add(element.getAsInt());
-            }
-            final JsonArray squareArray = json.getAsJsonArray("squares");
-            if (squareArray.size() != SewingTableContainer.MAX_SQUARES)
-                throw new JsonParseException("There must be exactly 32 squares specified, was " + squareArray.size());
-            final List<Integer> squares = new ArrayList<>(SewingTableContainer.MAX_SQUARES);
-            for (JsonElement element : squareArray)
-            {
-                squares.add(element.getAsInt());
-            }
-            final ItemStack result = JsonHelpers.getItemStack(json, "result");
-            return new SewingRecipe(id, stitches, squares, result);
-        }
-
-        @Override
-        public @Nullable SewingRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buffer)
-        {
-            final List<Integer> stitches = Helpers.decodeAll(buffer, new ArrayList<>(SewingTableContainer.MAX_STITCHES), FriendlyByteBuf::readVarInt);
-            final List<Integer> squares = Helpers.decodeAll(buffer, new ArrayList<>(SewingTableContainer.MAX_SQUARES), FriendlyByteBuf::readVarInt);
-            final ItemStack item = buffer.readItem();
-            return new SewingRecipe(id, stitches, squares, item);
-        }
-
-        @Override
-        public void toNetwork(FriendlyByteBuf buffer, SewingRecipe recipe)
-        {
-            Helpers.encodeAll(buffer, recipe.stitches, (i, buf) -> buf.writeVarInt(i));
-            Helpers.encodeAll(buffer, recipe.squares, (i, buf) -> buf.writeVarInt(i));
-            buffer.writeItem(recipe.result);
-        }
-    }
-
 }

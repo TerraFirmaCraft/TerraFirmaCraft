@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.capabilities.forge;
 
+import java.util.List;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -105,7 +106,7 @@ public final class Forging implements ICapabilityProvider
         return steps;
     }
 
-    public boolean matches(ForgeRule[] rules)
+    public boolean matches(List<ForgeRule> rules)
     {
         for (ForgeRule rule : rules)
         {

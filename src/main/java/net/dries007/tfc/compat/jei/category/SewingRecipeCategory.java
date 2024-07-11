@@ -8,8 +8,6 @@ package net.dries007.tfc.compat.jei.category;
 
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
-import mezz.jei.api.gui.drawable.IDrawableBuilder;
-import mezz.jei.api.gui.drawable.IDrawableStatic;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
@@ -56,7 +54,7 @@ public class SewingRecipeCategory extends BaseRecipeCategory<SewingRecipe>
         sewingBackground.draw(graphics, xPadding, yPadding);
 
         SewingTableScreen.forEachClothSquare((x, y, i) -> {
-            final int material = recipe.getSquares().get(i);
+            final int material = recipe.getSquare(i);
             if (material != -1)
             {
                 if (material == SewingTableContainer.BURLAP_ID)
@@ -71,7 +69,7 @@ public class SewingRecipeCategory extends BaseRecipeCategory<SewingRecipe>
         });
 
         SewingTableScreen.forEachStitch((x, y, i) -> {
-            if (recipe.getStitches().get(i) == 1)
+            if (recipe.getStitch(i))
             {
                 stitch.draw(graphics, x * 12 + 8 + xPadding - 2, y * 12 + 8 + yPadding - 2);
             }

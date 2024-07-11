@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.client.screen;
 
+import java.util.List;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -80,10 +81,10 @@ public class AnvilScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilContai
             final AnvilRecipe recipe = forging.getRecipe(level);
             if (recipe != null)
             {
-                final ForgeRule[] rules = recipe.getRules();
-                for (int i = 0; i < rules.length; i++)
+                final List<ForgeRule> rules = recipe.getRules();
+                for (int i = 0; i < rules.size(); i++)
                 {
-                    final ForgeRule rule = rules[i];
+                    final ForgeRule rule = rules.get(i);
                     if (rule != null)
                     {
                         final int xOffset = i * 19;
@@ -133,10 +134,10 @@ public class AnvilScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilContai
             final AnvilRecipe recipe = forging.getRecipe(level);
             if (recipe != null)
             {
-                final ForgeRule[] rules = recipe.getRules();
-                for (int i = 0; i < rules.length; i++)
+                final List<ForgeRule> rules = recipe.getRules();
+                for (int i = 0; i < rules.size(); i++)
                 {
-                    final ForgeRule rule = rules[i];
+                    final ForgeRule rule = rules.get(i);
                     if (rule != null)
                     {
                         final int xOffset = i * 19;

@@ -6,33 +6,49 @@
 
 package net.dries007.tfc.common.recipes;
 
-import com.google.gson.JsonObject;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.forge.ForgingBonus;
-import net.dries007.tfc.common.recipes.input.NonEmptyInput;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
-import net.dries007.tfc.util.JsonHelpers;
 
 public class WeldingRecipe implements ISimpleRecipe<WeldingRecipe.Inventory>
 {
-    private final ResourceLocation id;
+    public static final MapCodec<WeldingRecipe> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
+        Ingredient.CODEC.fieldOf("first_input").forGetter(c -> c.firstInput),
+        Ingredient.CODEC.fieldOf("second_input").forGetter(c -> c.secondInput),
+        Codec.INT.optionalFieldOf("tier", -1).forGetter(c -> c.tier),
+        ItemStackProvider.CODEC.fieldOf("result").forGetter(c -> c.output),
+        Codec.BOOL.optionalFieldOf("apply_bonus", false).forGetter(c -> c.combineForgingBonus)
+    ).apply(i, WeldingRecipe::new));
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, WeldingRecipe> STREAM_CODEC = StreamCodec.composite(
+        Ingredient.CONTENTS_STREAM_CODEC, c -> c.firstInput,
+        Ingredient.CONTENTS_STREAM_CODEC, c -> c.secondInput,
+        ByteBufCodecs.VAR_INT, c -> c.tier,
+        ItemStackProvider.STREAM_CODEC, c -> c.output,
+        ByteBufCodecs.BOOL, c -> c.combineForgingBonus,
+        WeldingRecipe::new
+    );
+
     private final Ingredient firstInput, secondInput;
     private final int tier;
     private final ItemStackProvider output;
     private final boolean combineForgingBonus;
 
-    public WeldingRecipe(ResourceLocation id, Ingredient firstInput, Ingredient secondInput, int tier, ItemStackProvider output, boolean combineForgingBonus)
+    public WeldingRecipe(Ingredient firstInput, Ingredient secondInput, int tier, ItemStackProvider output, boolean combineForgingBonus)
     {
-        this.id = id;
         this.firstInput = firstInput;
         this.secondInput = secondInput;
         this.tier = tier;
@@ -64,14 +80,15 @@ public class WeldingRecipe implements ISimpleRecipe<WeldingRecipe.Inventory>
         return (firstInput.test(left) && secondInput.test(right)) || (firstInput.test(right) && secondInput.test(left));
     }
 
+
     @Override
-    public ItemStack assemble(Inventory inventory, RegistryAccess registryAccess)
+    public ItemStack assemble(Inventory input, HolderLookup.Provider registries)
     {
-        final ItemStack stack = output.getSingleStack(inventory.getLeft());
+        final ItemStack stack = output.getSingleStack(input.getLeft());
         if (combineForgingBonus)
         {
-            final ForgingBonus left = ForgingBonus.get(inventory.getLeft());
-            final ForgingBonus right = ForgingBonus.get(inventory.getRight());
+            final ForgingBonus left = ForgingBonus.get(input.getLeft());
+            final ForgingBonus right = ForgingBonus.get(input.getRight());
             if (left.ordinal() < right.ordinal())
             {
                 ForgingBonus.set(stack, left);
@@ -85,15 +102,9 @@ public class WeldingRecipe implements ISimpleRecipe<WeldingRecipe.Inventory>
     }
 
     @Override
-    public ItemStack getResultItem(@Nullable RegistryAccess access)
+    public ItemStack getResultItem(HolderLookup.Provider registries)
     {
         return output.getEmptyStack();
-    }
-
-    @Override
-    public ResourceLocation getId()
-    {
-        return id;
     }
 
     @Override
@@ -123,48 +134,24 @@ public class WeldingRecipe implements ISimpleRecipe<WeldingRecipe.Inventory>
         return combineForgingBonus;
     }
 
-    public interface Inventory extends NonEmptyInput
+    public interface Inventory extends RecipeInput
     {
         ItemStack getLeft();
 
         ItemStack getRight();
 
         int getTier();
-    }
 
-    public static class Serializer extends RecipeSerializerImpl<WeldingRecipe>
-    {
         @Override
-        public WeldingRecipe fromJson(ResourceLocation recipeId, JsonObject json)
+        default ItemStack getItem(int index)
         {
-            final Ingredient firstInput = Ingredient.fromJson(JsonHelpers.get(json, "first_input"));
-            final Ingredient secondInput = Ingredient.fromJson(JsonHelpers.get(json, "second_input"));
-            final int tier = JsonHelpers.getAsInt(json, "tier", -1);
-            final ItemStackProvider output = ItemStackProvider.fromJson(JsonHelpers.getAsJsonObject(json, "result"));
-            final boolean combineForging = JsonHelpers.getAsBoolean(json, "combine_forging_bonus", false);
-            return new WeldingRecipe(recipeId, firstInput, secondInput, tier, output, combineForging);
-        }
-
-        @Nullable
-        @Override
-        public WeldingRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
-        {
-            final Ingredient firstInput = Ingredient.fromNetwork(buffer);
-            final Ingredient secondInput = Ingredient.fromNetwork(buffer);
-            final int tier = buffer.readVarInt();
-            final ItemStackProvider output = ItemStackProvider.fromNetwork(buffer);
-            final boolean combineForging = buffer.readBoolean();
-            return new WeldingRecipe(recipeId, firstInput, secondInput, tier, output, combineForging);
+            return index == 0 ? getLeft() : getRight();
         }
 
         @Override
-        public void toNetwork(FriendlyByteBuf buffer, WeldingRecipe recipe)
+        default int size()
         {
-            recipe.firstInput.toNetwork(buffer);
-            recipe.secondInput.toNetwork(buffer);
-            buffer.writeVarInt(recipe.tier);
-            recipe.output.toNetwork(buffer);
-            buffer.writeBoolean(recipe.combineForgingBonus);
+            return 2;
         }
     }
 }

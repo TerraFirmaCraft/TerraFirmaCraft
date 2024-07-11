@@ -29,7 +29,7 @@ public class SealedBarrelRecipe extends BarrelRecipe
         BarrelRecipe.CODEC.forGetter(c -> c),
         Codec.INT.fieldOf("duration").forGetter(c -> c.duration),
         ItemStackProvider.CODEC.optionalFieldOf("on_seal").forGetter(c -> c.onSeal),
-        ItemStackProvider.CODEC.optionalFieldOf("on_unseal").forGetter(c -> c.onUnseal),
+        ItemStackProvider.CODEC.optionalFieldOf("on_unseal").forGetter(c -> c.onUnseal)
     ).apply(i, SealedBarrelRecipe::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, SealedBarrelRecipe> STREAM_CODEC = StreamCodec.composite(

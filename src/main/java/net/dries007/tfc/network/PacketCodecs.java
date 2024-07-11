@@ -8,7 +8,6 @@ package net.dries007.tfc.network;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
-import com.mojang.datafixers.util.Function6;
 import com.mojang.datafixers.util.Function7;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.registries.Registries;
@@ -34,6 +33,7 @@ public interface PacketCodecs
     static <E extends Enum<E>> StreamCodec<ByteBuf, E> forEnum(Supplier<E[]> values)
     {
         final E[] valuesArray = values.get();
+        assert valuesArray.length <= Byte.MAX_VALUE;
         return ByteBufCodecs.BYTE.map(e -> valuesArray[e], e -> (byte) e.ordinal());
     }
 

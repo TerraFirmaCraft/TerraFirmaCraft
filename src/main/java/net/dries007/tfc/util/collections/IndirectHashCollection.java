@@ -10,11 +10,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
 
@@ -38,46 +41,58 @@ import net.dries007.tfc.util.Helpers;
  */
 public class IndirectHashCollection<K, R>
 {
-    private static final Map<IndirectHashCollection<?, ?>, Supplier<Collection<?>>> DIRECT_CACHES = new HashMap<>();
-    private static final Map<IndirectHashCollection<?, ?>, Supplier<RecipeType<?>>> RECIPE_CACHES = new HashMap<>();
+    private static final List<Cache> CACHES = new ArrayList<>();
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    public static <K, R> IndirectHashCollection<K, R> create(Function<R, Iterable<? extends K>> keyExtractor, Supplier<Collection<R>> reloadableCollection)
+    /**
+     * Create a new {@link IndirectHashCollection} that is backed from the provided value supplier. This will manage the cache's overall
+     * lifecycle, including clearing and reloading, as necessary.
+     */
+    public static <K, R> IndirectHashCollection<K, R> create(Function<R, Iterable<? extends K>> keyExtractor, Supplier<Collection<R>> values)
     {
         final IndirectHashCollection<K, R> cache = new IndirectHashCollection<>(keyExtractor);
-        DIRECT_CACHES.put(cache, (Supplier) reloadableCollection);
+        create(new DirectCache<>(cache, values));
         return cache;
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    public static <C extends RecipeInput, K, R extends Recipe<C>> IndirectHashCollection<K, R> createForRecipe(Function<R, Iterable<? extends K>> keyExtractor, Supplier<RecipeType<R>> recipeType)
+    /**
+     * Creates a new {@link IndirectHashCollection} that is backed from the given recipe type. This will manage the cache's overall
+     * lifecycle, including clearing and reloading, as necessary.
+     */
+    public static <K, R extends Recipe<?>> IndirectHashCollection<K, R> createForRecipe(Function<R, Iterable<? extends K>> keyExtractor, Supplier<RecipeType<R>> recipeType)
     {
         final IndirectHashCollection<K, R> cache = new IndirectHashCollection<>(keyExtractor);
-        RECIPE_CACHES.put(cache, (Supplier) recipeType);
+        create(new RecipeCache<>(cache, recipeType));
         return cache;
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    /**
+     * Creates a new bijective ID map between that is backed from the given recipe type. This will manage the cache's overall
+     * lifecycle, including clearing and reloading, as necessary
+     */
+    public static <R extends Recipe<?>> BiMap<ResourceLocation, R> createForRecipeId(Supplier<RecipeType<R>> recipeType)
+    {
+        final BiMap<ResourceLocation, R> cache = HashBiMap.create();
+        create(new RecipeIdCache<>(cache, recipeType));
+        return cache;
+    }
+
+    /**
+     * Adds a cache to the list of all known caches. this is synchronized and thus threadsafe for parallel mod loading or class loading.
+     * @param cache The cache to add
+     */
+    private static synchronized void create(Cache cache)
+    {
+        CACHES.add(cache);
+    }
+
     public static void reloadAllCaches(RecipeManager manager)
     {
-        DIRECT_CACHES.forEach((cache, values) -> reloadDirectCache((IndirectHashCollection) cache, (Supplier) values));
-        RECIPE_CACHES.forEach((cache, type) -> reloadRecipeCache((IndirectHashCollection) cache, manager, (Supplier) type));
+        CACHES.forEach(c -> c.reload(manager));
     }
 
     public static void clearAllCaches()
     {
-        DIRECT_CACHES.forEach((cache, values) -> cache.clear());
-        RECIPE_CACHES.forEach((cache, type) -> cache.clear());
-    }
-
-    private static <K, R> void reloadDirectCache(IndirectHashCollection<K, R> cache, Supplier<Collection<R>> values)
-    {
-        cache.reload(values.get());
-    }
-
-    private static <C extends RecipeInput, K, R extends Recipe<C>> void reloadRecipeCache(IndirectHashCollection<K, R> cache, RecipeManager manager, Supplier<RecipeType<R>> recipe)
-    {
-        cache.reload(Helpers.getRecipes(manager, recipe).values());
+        CACHES.forEach(Cache::clear);
     }
 
     private final Map<K, Collection<R>> indirectResultMap;
@@ -108,5 +123,44 @@ public class IndirectHashCollection<K, R>
     public void clear()
     {
         indirectResultMap.clear();
+    }
+
+
+    /**
+     * An interface representing a cache that is aware of its ability to reload, without requiring an external source
+     * of values. This is also typesafe with each implementation having refined generic types.
+     */
+    interface Cache
+    {
+        void clear();
+        void reload(RecipeManager manager);
+    }
+
+    record DirectCache<K, R>(IndirectHashCollection<K, R> cache, Supplier<Collection<R>> values) implements Cache
+    {
+        @Override public void clear() { cache.clear(); }
+        @Override public void reload(RecipeManager manager) { cache.reload(values.get()); }
+    }
+
+    record RecipeCache<K, R extends Recipe<?>>(IndirectHashCollection<K, R> cache, Supplier<RecipeType<R>> recipeType) implements Cache
+    {
+        @Override public void clear() { cache.clear(); }
+        @Override public void reload(RecipeManager manager) { cache.reload(Helpers.getRecipes(manager, recipeType).values()); }
+    }
+
+    record RecipeIdCache<R extends Recipe<?>>(BiMap<ResourceLocation, R> cache, Supplier<RecipeType<R>> recipeType) implements Cache
+    {
+        @Override
+        public void clear()
+        {
+            cache.clear();
+        }
+
+        @Override
+        public void reload(RecipeManager manager)
+        {
+            cache.clear();
+            cache.putAll(Helpers.getRecipes(manager, recipeType));
+        }
     }
 }

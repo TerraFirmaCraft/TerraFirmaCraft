@@ -44,11 +44,11 @@ public class TFCRecipeSerializers
     public static final Id<InstantBarrelRecipe> INSTANT_BARREL = register("barrel_instant", InstantBarrelRecipe.CODEC, InstantBarrelRecipe.STREAM_CODEC);
     public static final Id<InstantFluidBarrelRecipe> INSTANT_FLUID_BARREL = register("barrel_instant_fluid", InstantFluidBarrelRecipe.CODEC, InstantFluidBarrelRecipe.STREAM_CODEC);
     public static final Id<LoomRecipe> LOOM = register("loom", LoomRecipe.CODEC, LoomRecipe.STREAM_CODEC);
-    public static final Id<AnvilRecipe> ANVIL = register("anvil", AnvilRecipe.Serializer::new);
-    public static final Id<WeldingRecipe> WELDING = register("welding", WeldingRecipe.Serializer::new);
+    public static final Id<AnvilRecipe> ANVIL = register("anvil", AnvilRecipe.CODEC, AnvilRecipe.STREAM_CODEC);
+    public static final Id<WeldingRecipe> WELDING = register("welding", WeldingRecipe.CODEC, WeldingRecipe.STREAM_CODEC);
     public static final Id<BlastFurnaceRecipe> BLAST_FURNACE = register("blast_furnace", BlastFurnaceRecipe.CODEC, BlastFurnaceRecipe.STREAM_CODEC);
     public static final Id<GlassworkingRecipe> GLASSWORKING = register("glassworking", GlassworkingRecipe.CODEC, GlassworkingRecipe.STREAM_CODEC);
-    public static final Id<SewingRecipe> SEWING = register("sewing", SewingRecipe.Serializer::new);
+    public static final Id<SewingRecipe> SEWING = register("sewing", SewingRecipe.CODEC, SewingRecipe.STREAM_CODEC);
 
     // Crafting
 

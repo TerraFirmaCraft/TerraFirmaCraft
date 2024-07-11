@@ -8,6 +8,7 @@ package net.dries007.tfc.common.recipes;
 
 import java.util.Optional;
 import java.util.function.Supplier;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
@@ -44,7 +45,8 @@ public class BarrelRecipe implements INoopInputRecipe
         SizedFluidIngredient.FLAT_CODEC.fieldOf("input_fluid").forGetter(c -> c.inputFluid),
         ItemStackProvider.CODEC.optionalFieldOf("output_item", ItemStackProvider.empty()).forGetter(c -> c.outputItem),
         FluidStack.CODEC.optionalFieldOf("output_fluid", FluidStack.EMPTY).forGetter(c -> c.outputFluid),
-        SoundEvent.CODEC.optionalFieldOf("sound", Holder.direct(SoundEvents.BREWING_STAND_BREW)).forGetter(c -> c.sound)
+        SoundEvent.CODEC.optionalFieldOf("sound", Holder.direct(SoundEvents.BREWING_STAND_BREW)).forGetter(c -> c.sound),
+        Codec.STRING.fieldOf("tooltip").forGetter(c -> c.tooltip)
     ).apply(i, BarrelRecipe::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, BarrelRecipe> STREAM_CODEC = StreamCodec.composite(
@@ -53,6 +55,7 @@ public class BarrelRecipe implements INoopInputRecipe
         ItemStackProvider.STREAM_CODEC, c -> c.outputItem,
         FluidStack.STREAM_CODEC, c -> c.outputFluid,
         ByteBufCodecs.holderRegistry(Registries.SOUND_EVENT), c -> c.sound,
+        ByteBufCodecs.STRING_UTF8, c -> c.tooltip,
         BarrelRecipe::new
     );
 
@@ -74,19 +77,21 @@ public class BarrelRecipe implements INoopInputRecipe
     protected final ItemStackProvider outputItem;
     protected final FluidStack outputFluid;
     protected final Holder<SoundEvent> sound;
+    protected final String tooltip;
 
     protected BarrelRecipe(BarrelRecipe parent)
     {
-        this(parent.inputItem, parent.inputFluid, parent.outputItem, parent.outputFluid, parent.sound);
+        this(parent.inputItem, parent.inputFluid, parent.outputItem, parent.outputFluid, parent.sound, parent.tooltip);
     }
 
-    protected BarrelRecipe(Optional<SizedIngredient> inputItem, SizedFluidIngredient inputFluid, ItemStackProvider outputItem, FluidStack outputFluid, Holder<SoundEvent> sound)
+    protected BarrelRecipe(Optional<SizedIngredient> inputItem, SizedFluidIngredient inputFluid, ItemStackProvider outputItem, FluidStack outputFluid, Holder<SoundEvent> sound, String tooltip)
     {
         this.inputItem = inputItem;
         this.inputFluid = inputFluid;
         this.outputItem = outputItem;
         this.outputFluid = outputFluid;
         this.sound = sound;
+        this.tooltip = tooltip;
     }
 
     public boolean matches(BarrelInventory input)
@@ -118,7 +123,7 @@ public class BarrelRecipe implements INoopInputRecipe
             if (!outputFluid.isEmpty())
             {
                 int capacity = TFCConfig.SERVER.barrelCapacity.get();
-                if (outputFluid.isFluidEqual(fluid))
+                if (FluidStack.isSameFluidSameComponents(outputFluid, fluid))
                 {
                     capacity -= fluid.getAmount();
                 }
@@ -159,7 +164,7 @@ public class BarrelRecipe implements INoopInputRecipe
             else
             {
                 int amount = outputFluid.getAmount() * multiplier;
-                if (outputFluid.isFluidEqual(fluid))
+                if (FluidStack.isSameFluidSameComponents(outputFluid, fluid))
                 {
                     amount = amount + fluid.getAmount();
                 }
@@ -214,6 +219,6 @@ public class BarrelRecipe implements INoopInputRecipe
 
     public MutableComponent getTranslationComponent()
     {
-        return Component.translatable("tfc.recipe.barrel." + id.getNamespace() + "." + id.getPath().replace('/', '.'));
+        return Component.translatable("tfc.recipe.barrel." + tooltip);
     }
 }

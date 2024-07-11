@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.container;
 
-import java.util.List;
 import java.util.function.Predicate;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
@@ -26,6 +25,7 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.wood.SewingTableBlock;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
+import net.dries007.tfc.common.recipes.SewingRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.input.NonEmptyInput;
 import net.dries007.tfc.util.ArrayContainerData;
@@ -89,7 +89,7 @@ public class SewingTableContainer extends Container implements ISlotCallback, Bu
     private final DataSlot usedBurlap = DataSlot.standalone();
     private final DataSlot usedWool = DataSlot.standalone();
     private final DataSlot usedString = DataSlot.standalone();
-    private final RecipeWrapper recipeWrapper = new RecipeWrapper(this);
+    private final Input input = new Input(this);
 
     public SewingTableContainer(Inventory playerInventory, int windowId)
     {
@@ -136,7 +136,7 @@ public class SewingTableContainer extends Container implements ISlotCallback, Bu
     public void updateResultItem()
     {
         access.execute((level, pos) -> {
-            level.getRecipeManager().getRecipeFor(TFCRecipeTypes.SEWING.get(), recipeWrapper, level).ifPresentOrElse(recipe -> {
+            level.getRecipeManager().getRecipeFor(TFCRecipeTypes.SEWING.get(), input, level).ifPresentOrElse(recipe -> {
                 final ItemStack result = recipe.getResultItem(level.registryAccess());
                 if (result.getItem() != inventory.getStackInSlot(SLOT_RESULT).getItem())
                 {
@@ -381,39 +381,29 @@ public class SewingTableContainer extends Container implements ISlotCallback, Bu
         }
     }
 
-    /**
-     * Because its a little odd to implement EmptyInventory on a Container
-     */
-    public static class RecipeWrapper implements NonEmptyInput
+    public record Input(SewingTableContainer container) implements NonEmptyInput
     {
-        private final SewingTableContainer container;
-
-        public RecipeWrapper(SewingTableContainer container)
-        {
-            this.container = container;
-        }
-
-        public boolean stitchesMatch(List<Integer> inputs)
+        public boolean stitchesMatch(SewingRecipe recipe)
         {
             final int[] array = container.stitchData.getArray();
-            if (inputs.size() != array.length)
+            if (array.length != MAX_STITCHES)
                 return false;
             for (int i = 0; i < MAX_STITCHES; i++)
             {
-                if (inputs.get(i) != array[i])
+                if (recipe.getStitch(i) != (array[i] == 1))
                     return false;
             }
             return true;
         }
 
-        public boolean squaresMatch(List<Integer> inputs)
+        public boolean squaresMatch(SewingRecipe recipe)
         {
             final int[] array = container.placedMaterialData.getArray();
-            if (inputs.size() != array.length)
+            if (array.length != MAX_SQUARES)
                 return false;
             for (int i = 0; i < MAX_SQUARES; i++)
             {
-                if (inputs.get(i) != array[i])
+                if (recipe.getSquare(i) != array[i])
                     return false;
             }
             return true;

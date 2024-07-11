@@ -6,16 +6,21 @@
 
 package net.dries007.tfc.common.capabilities.forge;
 
-import net.minecraft.network.FriendlyByteBuf;
+import java.util.List;
+import java.util.Locale;
+import com.mojang.serialization.Codec;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.network.chat.Component;
-
-import net.dries007.tfc.util.Helpers;
-
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.util.StringRepresentable;
 import org.jetbrains.annotations.Nullable;
+
+import net.dries007.tfc.network.PacketCodecs;
+import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.common.capabilities.forge.ForgeStep.*;
 
-public enum ForgeRule
+public enum ForgeRule implements StringRepresentable
 {
     HIT_ANY(Order.ANY, HIT_LIGHT),
     HIT_NOT_LAST(Order.NOT_LAST, HIT_LIGHT),
@@ -48,25 +53,20 @@ public enum ForgeRule
     SHRINK_SECOND_LAST(Order.SECOND_LAST, SHRINK),
     SHRINK_THIRD_LAST(Order.THIRD_LAST, SHRINK);
 
-    private static final ForgeRule[] VALUES = values();
-
-    static
-    {
-        assert VALUES.length < Byte.MAX_VALUE; // ForgeRule is serialized to a single byte
-    }
-
-    @Nullable
-    public static ForgeRule valueOf(int id)
-    {
-        return id >= 0 && id < VALUES.length ? VALUES[id] : null;
-    }
+    public static final Codec<ForgeRule> CODEC = StringRepresentable.fromValues(ForgeRule::values);
+    public static final StreamCodec<ByteBuf, ForgeRule> STREAM_CODEC = PacketCodecs.forEnum(ForgeRule::values);
 
     /**
      * @return {@code true} if a set of {@code rules} is self-consistent, meaning there exists at least one possible solution which satisfies all rules.
      */
     public static boolean isConsistent(ForgeRule... rules)
     {
-        if (rules.length == 0 || rules.length > 3)
+        return isConsistent(List.of(rules));
+    }
+
+    public static boolean isConsistent(List<ForgeRule> rules)
+    {
+        if (rules.isEmpty() || rules.size() > 3)
         {
             return false;
         }
@@ -121,9 +121,10 @@ public enum ForgeRule
     }
 
     /**
-     * Calculates the minimum number of steps to reach a total offset of {@code target} while satisfying the {@code rules}. Assumes the rules are consistent as determined by {@link #isConsistent(ForgeRule[])}
+     * Calculates the minimum number of steps to reach a total offset of {@code target} while satisfying the {@code rules}.
+     * Assumes the rules are consistent as determined by {@link #isConsistent(List)}
      */
-    public static int calculateOptimalStepsToTarget(int target, final ForgeRule... rules)
+    public static int calculateOptimalStepsToTarget(int target, List<ForgeRule> rules)
     {
         final ForgeRule[] lastSteps = {null, null, null};
         for (final ForgeRule rule : rules)
@@ -184,26 +185,23 @@ public enum ForgeRule
         return requiredSteps + minimumSteps;
     }
 
-    public static ForgeRule fromNetwork(FriendlyByteBuf buffer)
-    {
-        final ForgeRule rule = valueOf(buffer.readByte());
-        return rule == null ? HIT_ANY : rule;
-    }
-
+    private final String serializedName;
     private final Order order;
     private final ForgeStep type;
 
     ForgeRule(Order order, ForgeStep type)
     {
+        this.serializedName = name().toLowerCase(Locale.ROOT);
         this.order = order;
         this.type = type;
 
         assert type != HIT_MEDIUM && type != HIT_HARD;
     }
 
-    public void toNetwork(FriendlyByteBuf buffer)
+    @Override
+    public String getSerializedName()
     {
-        buffer.writeByte(ordinal());
+        return serializedName;
     }
 
     public int iconX()
