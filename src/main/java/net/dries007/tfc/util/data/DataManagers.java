@@ -42,7 +42,6 @@ public final class DataManagers
         register(LampFuel.MANAGER);
         register(Sluiceable.MANAGER);
         register(Pannable.MANAGER);
-
         register(HeatCapability.MANAGER);
         register(FoodCapability.MANAGER);
     }

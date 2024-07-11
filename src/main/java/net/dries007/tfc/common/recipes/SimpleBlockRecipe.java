@@ -8,31 +8,19 @@ package net.dries007.tfc.common.recipes;
 
 import java.util.Optional;
 import java.util.function.BiFunction;
-import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
-import net.dries007.tfc.network.PacketCodecs;
-import net.dries007.tfc.util.JsonHelpers;
+import net.dries007.tfc.network.StreamCodecs;
 import net.dries007.tfc.world.Codecs;
 
 /**
@@ -66,7 +54,7 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
     {
         return StreamCodec.composite(
             BlockIngredient.STREAM_CODEC, c -> c.ingredient,
-            ByteBufCodecs.optional(PacketCodecs.BLOCK_STATE), c -> c.output,
+            ByteBufCodecs.optional(StreamCodecs.BLOCK_STATE), c -> c.output,
             factory
         );
     }

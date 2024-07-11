@@ -12,7 +12,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.StringRepresentable;
 
-import net.dries007.tfc.network.PacketCodecs;
+import net.dries007.tfc.network.StreamCodecs;
 
 public enum Weight implements StringRepresentable
 {
@@ -23,7 +23,7 @@ public enum Weight implements StringRepresentable
     VERY_HEAVY(1);
 
     public static final Codec<Weight> CODEC = StringRepresentable.fromValues(Weight::values);
-    public static final StreamCodec<ByteBuf, Weight> STREAM_CODEC = PacketCodecs.forEnum(Weight::values);
+    public static final StreamCodec<ByteBuf, Weight> STREAM_CODEC = StreamCodecs.forEnum(Weight::values);
 
     public final int stackSize;
     public final String name;

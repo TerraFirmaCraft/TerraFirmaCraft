@@ -13,13 +13,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityToken;
-import net.minecraftforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.common.recipes.RecipeHelpers;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.data.DataManager;
@@ -38,8 +35,8 @@ public final class HeatCapability
     // For access only to the network serializable portion of an item stack heat capability
     public static final Capability<INetworkHeat> NETWORK_CAPABILITY = Helpers.capability(new CapabilityToken<>() {});
 
-    public static final DataManager<HeatDefinition> MANAGER = new DataManager<>(Helpers.identifier("item_heats"), "item heat", HeatDefinition::new, HeatDefinition::new, HeatDefinition::encode, Packet::new);
-    public static final IndirectHashCollection<Item, HeatDefinition> CACHE = IndirectHashCollection.create(HeatDefinition::getValidItems, MANAGER::getValues);
+    public static final DataManager<HeatDefinition> MANAGER = new DataManager<>(Helpers.identifier("item_heats"), "item heat", HeatDefinition.CODEC, HeatDefinition.STREAM_CODEC);
+    public static final IndirectHashCollection<Item, HeatDefinition> CACHE = IndirectHashCollection.create(r -> RecipeHelpers.itemKeys(r.ingredient()), MANAGER::getValues);
 
     public static final float POTTERY_HEAT_CAPACITY = 1.2f;
 
@@ -94,7 +91,7 @@ public final class HeatCapability
     {
         for (HeatDefinition def : CACHE.getAll(stack.getItem()))
         {
-            if (def.matches(stack))
+            if (def.ingredient().test(stack))
             {
                 return def;
             }
@@ -285,6 +282,4 @@ public final class HeatCapability
     }
 
     public record Remainder(int burnTicks, float burnTemperature, long ticks) {}
-
-    public static class Packet extends DataManagerSyncPacket<HeatDefinition> {}
 }

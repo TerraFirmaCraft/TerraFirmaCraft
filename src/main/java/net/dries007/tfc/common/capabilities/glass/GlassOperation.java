@@ -29,7 +29,7 @@ import net.dries007.tfc.common.capabilities.heat.Heat;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.items.Powder;
 import net.dries007.tfc.common.items.TFCItems;
-import net.dries007.tfc.network.PacketCodecs;
+import net.dries007.tfc.network.StreamCodecs;
 
 public enum GlassOperation implements StringRepresentable
 {
@@ -61,7 +61,7 @@ public enum GlassOperation implements StringRepresentable
     ;
 
     public static final Codec<GlassOperation> CODEC = StringRepresentable.fromValues(GlassOperation::values);
-    public static final StreamCodec<ByteBuf, GlassOperation> STREAM_CODEC = PacketCodecs.forEnum(GlassOperation::values);
+    public static final StreamCodec<ByteBuf, GlassOperation> STREAM_CODEC = StreamCodecs.forEnum(GlassOperation::values);
 
     public static final GlassOperation[] VALUES = values();
 

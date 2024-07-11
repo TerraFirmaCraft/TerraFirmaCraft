@@ -12,7 +12,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.StringRepresentable;
 
-import net.dries007.tfc.network.PacketCodecs;
+import net.dries007.tfc.network.StreamCodecs;
 
 public enum Size implements StringRepresentable
 {
@@ -25,7 +25,7 @@ public enum Size implements StringRepresentable
     HUGE; // Pit kilns can only hold one. Counts towards overburdened when also very heavy.
 
     public static final Codec<Size> CODEC = StringRepresentable.fromValues(Size::values);
-    public static final StreamCodec<ByteBuf, Size> STREAM_CODEC = PacketCodecs.forEnum(Size::values);
+    public static final StreamCodec<ByteBuf, Size> STREAM_CODEC = StreamCodecs.forEnum(Size::values);
 
     public final String name;
 

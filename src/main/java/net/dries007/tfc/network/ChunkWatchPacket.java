@@ -6,17 +6,17 @@
 
 package net.dries007.tfc.network;
 
-import net.dries007.tfc.client.ClientHelpers;
-import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.ForestType;
-import net.dries007.tfc.world.chunkdata.LerpFloatLayer;
-
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+
+import net.dries007.tfc.client.ClientHelpers;
+import net.dries007.tfc.world.chunkdata.ChunkData;
+import net.dries007.tfc.world.chunkdata.ForestType;
+import net.dries007.tfc.world.chunkdata.LerpFloatLayer;
 
 /**
  * Sent from server -> client on chunk watch, partially syncs chunk data and updates the client cache
@@ -32,7 +32,7 @@ public record ChunkWatchPacket(
 {
     public static final CustomPacketPayload.Type<ChunkWatchPacket> TYPE = PacketHandler.type("chunk_watch");
     public static final StreamCodec<ByteBuf, ChunkWatchPacket> CODEC = StreamCodec.composite(
-        PacketCodecs.CHUNK_POS, c -> c.pos,
+        StreamCodecs.CHUNK_POS, c -> c.pos,
         LerpFloatLayer.STREAM, c -> c.rainfall,
         LerpFloatLayer.STREAM, c -> c.temperature,
         ForestType.STREAM, c -> c.forestType,

@@ -15,7 +15,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.StringRepresentable;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.network.PacketCodecs;
+import net.dries007.tfc.network.StreamCodecs;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.common.capabilities.forge.ForgeStep.*;
@@ -54,7 +54,7 @@ public enum ForgeRule implements StringRepresentable
     SHRINK_THIRD_LAST(Order.THIRD_LAST, SHRINK);
 
     public static final Codec<ForgeRule> CODEC = StringRepresentable.fromValues(ForgeRule::values);
-    public static final StreamCodec<ByteBuf, ForgeRule> STREAM_CODEC = PacketCodecs.forEnum(ForgeRule::values);
+    public static final StreamCodec<ByteBuf, ForgeRule> STREAM_CODEC = StreamCodecs.forEnum(ForgeRule::values);
 
     /**
      * @return {@code true} if a set of {@code rules} is self-consistent, meaning there exists at least one possible solution which satisfies all rules.

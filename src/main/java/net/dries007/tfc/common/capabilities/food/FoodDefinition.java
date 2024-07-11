@@ -6,73 +6,52 @@
 
 package net.dries007.tfc.common.capabilities.food;
 
-import com.google.gson.JsonObject;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
+import java.util.Locale;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.crafting.Ingredient;
 
-import net.dries007.tfc.util.ItemDefinition;
-import net.dries007.tfc.util.JsonHelpers;
+import net.dries007.tfc.network.StreamCodecs;
 
-public class FoodDefinition extends ItemDefinition
+public record FoodDefinition(
+    Ingredient ingredient,
+    FoodData food,
+    HandlerType type
+)
 {
-    public static FoodHandler getHandler(FoodDefinition definition, ItemStack stack)
-    {
-        return switch(definition.handlerType)
-            {
-                case STATIC -> new FoodHandler(definition.getData());
-                case DYNAMIC -> new FoodHandler.Dynamic();
-                case DYNAMIC_BOWL -> new DynamicBowlHandler(stack);
-            };
-    }
+    public static final Codec<FoodDefinition> CODEC = RecordCodecBuilder.create(i -> i.group(
+        Ingredient.CODEC.fieldOf("ingredient").forGetter(c -> c.ingredient),
+        FoodData.MAP_CODEC.forGetter(c -> c.food),
+        StringRepresentable.fromValues(HandlerType::values).fieldOf("type").forGetter(c -> c.type)
+    ).apply(i, FoodDefinition::new));
 
-    private final FoodData data;
-    private final HandlerType handlerType;
+    public static final StreamCodec<RegistryFriendlyByteBuf, FoodDefinition> STREAM_CODEC = StreamCodec.composite(
+        Ingredient.CONTENTS_STREAM_CODEC, c -> c.ingredient,
+        FoodData.STREAM_CODEC, c -> c.food,
+        StreamCodecs.forEnum(HandlerType::values), c -> c.type,
+        FoodDefinition::new
+    );
 
-    public FoodDefinition(ResourceLocation id, JsonObject json)
-    {
-        super(id, json);
-        if (json.has("type"))
-        {
-            handlerType = JsonHelpers.getEnum(json.get("type"), HandlerType.class);
-            data = FoodData.EMPTY;
-        }
-        else
-        {
-            handlerType = HandlerType.STATIC;
-            data = FoodData.read(json);
-        }
-    }
-
-    public FoodDefinition(ResourceLocation id, FriendlyByteBuf buffer)
-    {
-        super(id, Ingredient.fromNetwork(buffer));
-        this.data = FoodData.decode(buffer);
-        this.handlerType = buffer.readEnum(HandlerType.class);
-    }
-
-    public void encode(FriendlyByteBuf buffer)
-    {
-        ingredient.toNetwork(buffer);
-        data.encode(buffer);
-        buffer.writeEnum(handlerType);
-    }
-
-    public FoodData getData()
-    {
-        return data;
-    }
-
-    public HandlerType getHandlerType()
-    {
-        return handlerType;
-    }
-
-    public enum HandlerType
+    enum HandlerType implements StringRepresentable
     {
         STATIC,
         DYNAMIC,
         DYNAMIC_BOWL;
+
+        final String serializedName;
+
+        HandlerType()
+        {
+            this.serializedName = name().toLowerCase(Locale.ROOT);
+        }
+
+        @Override
+        public String getSerializedName()
+        {
+            return serializedName;
+        }
     }
 }

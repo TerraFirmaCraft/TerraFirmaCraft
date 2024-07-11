@@ -14,16 +14,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityToken;
-import net.minecraftforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.common.recipes.RecipeHelpers;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
@@ -36,8 +34,8 @@ public final class FoodCapability
     public static final Capability<INetworkFood> NETWORK_CAPABILITY = Helpers.capability(new CapabilityToken<>() {});
 
     public static final ResourceLocation KEY = Helpers.identifier("food");
-    public static final DataManager<FoodDefinition> MANAGER = new DataManager<>(Helpers.identifier("food_items"), "food", FoodDefinition::new, FoodDefinition::new, FoodDefinition::encode, Packet::new);
-    public static final IndirectHashCollection<Item, FoodDefinition> CACHE = IndirectHashCollection.create(FoodDefinition::getValidItems, MANAGER::getValues);
+    public static final DataManager<FoodDefinition> MANAGER = new DataManager<>(Helpers.identifier("food_items"), "food", FoodDefinition.CODEC, FoodDefinition.STREAM_CODEC);
+    public static final IndirectHashCollection<Item, FoodDefinition> CACHE = IndirectHashCollection.create(r -> RecipeHelpers.itemKeys(r.ingredient()), MANAGER::getValues);
 
     @Nullable
     public static IFood get(ItemStack stack)
@@ -55,7 +53,7 @@ public final class FoodCapability
     {
         for (FoodDefinition def : CACHE.getAll(stack.getItem()))
         {
-            if (def.matches(stack))
+            if (def.ingredient().test(stack))
             {
                 return def;
             }
@@ -282,16 +280,16 @@ public final class FoodCapability
     @SuppressWarnings("ConstantConditions")
     public static void markRecipeOutputsAsNonDecaying(RegistryAccess registryAccess, RecipeManager manager)
     {
-        for (Recipe<?> recipe : manager.getRecipes())
+        for (RecipeHolder<?> recipe : manager.getRecipes())
         {
-            final @Nullable ItemStack stack = recipe.getResultItem(registryAccess);
+            final @Nullable ItemStack stack = recipe.value().getResultItem(registryAccess);
             if (stack != null)
             {
                 setStackNonDecaying(stack);
             }
             else
             {
-                TerraFirmaCraft.LOGGER.warn("Other mod issue: recipe with a null getResultItem(), in recipe {} of class {}", recipe.getId(), recipe.getClass().getName());
+                TerraFirmaCraft.LOGGER.warn("Other mod issue: recipe with a null getResultItem(), in recipe {} of class {}", recipe.id(), recipe.getClass().getName());
             }
         }
     }
@@ -397,6 +395,4 @@ public final class FoodCapability
         // Cf = (1 - p) * T + p * Ci
         return (long) ((1 - p) * Calendars.get().getTicks() + p * ci);
     }
-
-    public static class Packet extends DataManagerSyncPacket<FoodDefinition> {}
 }

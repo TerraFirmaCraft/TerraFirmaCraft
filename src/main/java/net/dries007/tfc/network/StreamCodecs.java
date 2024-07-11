@@ -19,7 +19,13 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
-public interface PacketCodecs
+/**
+ * Additional {@link StreamCodec} implementations
+ *
+ * @see StreamCodec
+ * @see ByteBufCodecs
+ */
+public interface StreamCodecs
 {
     StreamCodec<ByteBuf, ChunkPos> CHUNK_POS = StreamCodec.composite(
         ByteBufCodecs.VAR_INT, c -> c.x,

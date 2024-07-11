@@ -20,7 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.network.PacketCodecs;
+import net.dries007.tfc.network.StreamCodecs;
 import net.dries007.tfc.util.Helpers;
 
 public record KnappingType(
@@ -43,7 +43,7 @@ public record KnappingType(
         ItemStack.CODEC.fieldOf("jei_icon_item").forGetter(c -> c.jeiIconItem)
     ).apply(i, KnappingType::new));
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, KnappingType> STREAM_CODEC = PacketCodecs.composite(
+    public static final StreamCodec<RegistryFriendlyByteBuf, KnappingType> STREAM_CODEC = StreamCodecs.composite(
         SizedIngredient.STREAM_CODEC, c -> c.inputItem,
         ByteBufCodecs.VAR_INT, c -> c.amountToConsume,
         ByteBufCodecs.holderRegistry(Registries.SOUND_EVENT), c -> c.clickSound,

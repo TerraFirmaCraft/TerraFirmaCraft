@@ -41,7 +41,7 @@ import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
-import net.dries007.tfc.network.PacketCodecs;
+import net.dries007.tfc.network.StreamCodecs;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.world.Codecs;
@@ -60,7 +60,7 @@ public class ChiselRecipe extends SimpleBlockRecipe
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ChiselRecipe> STREAM_CODEC = StreamCodec.composite(
         BlockIngredient.STREAM_CODEC, c -> c.ingredient,
-        PacketCodecs.BLOCK_STATE, c -> c.output.orElseThrow(),
+        StreamCodecs.BLOCK_STATE, c -> c.output.orElseThrow(),
         Mode.STREAM_CODEC, c -> c.mode,
         ByteBufCodecs.optional(Ingredient.CONTENTS_STREAM_CODEC), c -> c.itemIngredient,
         ItemStackProvider.STREAM_CODEC, c -> c.itemOutput,
@@ -211,7 +211,7 @@ public class ChiselRecipe extends SimpleBlockRecipe
         }
 
         public static final Codec<Mode> CODEC = StringRepresentable.fromValues(Mode::values);
-        public static final StreamCodec<ByteBuf, Mode> STREAM_CODEC = PacketCodecs.forEnum(Mode::values);
+        public static final StreamCodec<ByteBuf, Mode> STREAM_CODEC = StreamCodecs.forEnum(Mode::values);
 
         private static final Mode[] VALUES = values();
 
