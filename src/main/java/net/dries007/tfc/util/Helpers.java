@@ -100,7 +100,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -116,6 +115,7 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.server.ServerLifecycleHooks;
+import net.neoforged.neoforge.common.ModConfigSpec;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
@@ -329,7 +329,7 @@ public final class Helpers
         return null; // A modder has done a strange ass thing
     }
 
-    public static <T> T getValueOrDefault(ForgeConfigSpec.ConfigValue<T> value)
+    public static <T> T getValueOrDefault(ModConfigSpec.ConfigValue<T> value)
     {
         return TFCConfig.isServerConfigLoaded() ? value.get() : value.getDefault();
     }

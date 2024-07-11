@@ -7,7 +7,10 @@
 package net.dries007.tfc.config;
 
 import java.util.EnumMap;
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
+import net.neoforged.neoforge.common.ModConfigSpec.DoubleValue;
+import net.neoforged.neoforge.common.ModConfigSpec.EnumValue;
+import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 
 import net.dries007.tfc.common.blocks.plant.fruit.FruitBlocks;
 import net.dries007.tfc.common.blocks.wood.Wood;
@@ -22,234 +25,234 @@ import net.dries007.tfc.util.Alloy;
  * - synced, stored per world, can be shipped per instance with default configs
  * - use for the majority of config options, or any that need to be present on both sides
  */
-public class ServerConfig
+public class ServerConfig extends BaseConfig
 {
     // General
-    public final ForgeConfigSpec.BooleanValue enableNetherPortals;
-    public final ForgeConfigSpec.BooleanValue enableForcedTFCGameRules;
-    public final ForgeConfigSpec.BooleanValue enableTimeStopWhenServerEmpty;
-    public final ForgeConfigSpec.BooleanValue enableFireArrowSpreading;
-    public final ForgeConfigSpec.DoubleValue fireStarterChance;
-    public final ForgeConfigSpec.BooleanValue enableInfestations;
-    public final ForgeConfigSpec.BooleanValue enableCalendarSensitiveMoonPhases;
-    public final ForgeConfigSpec.BooleanValue enableLightning;
-    public final ForgeConfigSpec.BooleanValue enableLightningStrippingLogs;
-    public final ForgeConfigSpec.IntValue oceanWindScale;
+    public final BooleanValue enableNetherPortals;
+    public final BooleanValue enableForcedTFCGameRules;
+    public final BooleanValue enableTimeStopWhenServerEmpty;
+    public final BooleanValue enableFireArrowSpreading;
+    public final DoubleValue fireStarterChance;
+    public final BooleanValue enableInfestations;
+    public final BooleanValue enableCalendarSensitiveMoonPhases;
+    public final BooleanValue enableLightning;
+    public final BooleanValue enableLightningStrippingLogs;
+    public final IntValue oceanWindScale;
 
     // Blocks - Farmland
-    public final ForgeConfigSpec.BooleanValue enableFarmlandCreation;
+    public final BooleanValue enableFarmlandCreation;
     // Blocks - Grass Path
-    public final ForgeConfigSpec.BooleanValue enableGrassPathCreation;
+    public final BooleanValue enableGrassPathCreation;
     // Blocks - Grass
-    public final ForgeConfigSpec.DoubleValue grassSpawningRocksChance;
+    public final DoubleValue grassSpawningRocksChance;
     // Blocks - Rooted Dirt
-    public final ForgeConfigSpec.BooleanValue enableRootedDirtToDirtCreation;
+    public final BooleanValue enableRootedDirtToDirtCreation;
     // Blocks - Mud
-    public final ForgeConfigSpec.BooleanValue enableDirtToMudCreation;
+    public final BooleanValue enableDirtToMudCreation;
     // Blocks - Snow
-    public final ForgeConfigSpec.BooleanValue enableSnowSlowEntities;
-    public final ForgeConfigSpec.IntValue snowAccumulateChance;
-    public final ForgeConfigSpec.IntValue snowMeltChance;
+    public final BooleanValue enableSnowSlowEntities;
+    public final IntValue snowAccumulateChance;
+    public final IntValue snowMeltChance;
     // Blocks - Leaves
-    public final ForgeConfigSpec.DoubleValue leavesMovementModifier;
+    public final DoubleValue leavesMovementModifier;
     // Blocks - Plants
-    public final ForgeConfigSpec.DoubleValue plantGrowthChance;
-    public final ForgeConfigSpec.DoubleValue plantLongGrowthChance;
-    public final ForgeConfigSpec.DoubleValue plantSpreadChance;
-    public final ForgeConfigSpec.DoubleValue plantsMovementModifier;
+    public final DoubleValue plantGrowthChance;
+    public final DoubleValue plantLongGrowthChance;
+    public final DoubleValue plantSpreadChance;
+    public final DoubleValue plantsMovementModifier;
     // Blocks - Cobblestone
-    public final ForgeConfigSpec.BooleanValue enableMossyRockSpreading;
-    public final ForgeConfigSpec.IntValue mossyRockSpreadRate;
+    public final BooleanValue enableMossyRockSpreading;
+    public final IntValue mossyRockSpreadRate;
     // Blocks - Chest
-    public final ForgeConfigSpec.EnumValue<Size> chestMaximumItemSize;
+    public final EnumValue<Size> chestMaximumItemSize;
     // Blocks - Large Vessel
-    public final ForgeConfigSpec.BooleanValue largeVesselEnableAutomation;
+    public final BooleanValue largeVesselEnableAutomation;
     // Blocks - Quern
-    public final ForgeConfigSpec.BooleanValue quernEnableAutomation;
+    public final BooleanValue quernEnableAutomation;
     // Blocks - Torch
-    public final ForgeConfigSpec.IntValue torchTicks;
+    public final IntValue torchTicks;
     // Blocks - Torch
-    public final ForgeConfigSpec.IntValue candleTicks;
+    public final IntValue candleTicks;
     // Blocks - Drying Bricks
-    public final ForgeConfigSpec.IntValue mudBricksTicks;
+    public final IntValue mudBricksTicks;
     // Blocks - Charcoal Pit
-    public final ForgeConfigSpec.IntValue charcoalTicks;
+    public final IntValue charcoalTicks;
     // Blocks - Pit Kiln
-    public final ForgeConfigSpec.IntValue pitKilnTicks;
-    public final ForgeConfigSpec.IntValue pitKilnTemperature;
+    public final IntValue pitKilnTicks;
+    public final IntValue pitKilnTemperature;
     // Blocks - Crucible
-    public final ForgeConfigSpec.IntValue crucibleCapacity;
-    public final ForgeConfigSpec.IntValue cruciblePouringRate;
-    public final ForgeConfigSpec.IntValue crucibleFastPouringRate;
-    public final ForgeConfigSpec.BooleanValue crucibleEnableAutomation;
+    public final IntValue crucibleCapacity;
+    public final IntValue cruciblePouringRate;
+    public final IntValue crucibleFastPouringRate;
+    public final BooleanValue crucibleEnableAutomation;
     // Blocks - Anvil
-    public final ForgeConfigSpec.IntValue anvilAcceptableWorkRange;
-    public final ForgeConfigSpec.DoubleValue anvilModestlyForgedThreshold;
-    public final ForgeConfigSpec.DoubleValue anvilWellForgedThreshold;
-    public final ForgeConfigSpec.DoubleValue anvilExpertForgedThreshold;
-    public final ForgeConfigSpec.DoubleValue anvilPerfectlyForgedThreshold;
-    public final ForgeConfigSpec.DoubleValue anvilMaxEfficiencyMultiplier;
-    public final ForgeConfigSpec.DoubleValue anvilMaxDurabilityMultiplier;
-    public final ForgeConfigSpec.DoubleValue anvilMaxDamageMultiplier;
+    public final IntValue anvilAcceptableWorkRange;
+    public final DoubleValue anvilModestlyForgedThreshold;
+    public final DoubleValue anvilWellForgedThreshold;
+    public final DoubleValue anvilExpertForgedThreshold;
+    public final DoubleValue anvilPerfectlyForgedThreshold;
+    public final DoubleValue anvilMaxEfficiencyMultiplier;
+    public final DoubleValue anvilMaxDurabilityMultiplier;
+    public final DoubleValue anvilMaxDamageMultiplier;
     // Blocks - Barrel
-    public final ForgeConfigSpec.IntValue barrelCapacity;
-    public final ForgeConfigSpec.BooleanValue barrelEnableAutomation;
-    public final ForgeConfigSpec.BooleanValue barrelEnableRedstoneSeal;
+    public final IntValue barrelCapacity;
+    public final BooleanValue barrelEnableAutomation;
+    public final BooleanValue barrelEnableRedstoneSeal;
     // Blocks - Large Vessel
-    public final ForgeConfigSpec.BooleanValue largeVesselEnableRedstoneSeal;
+    public final BooleanValue largeVesselEnableRedstoneSeal;
     // Blocks - Composter
-    public final ForgeConfigSpec.IntValue composterTicks;
-    public final ForgeConfigSpec.BooleanValue composterEnableAutomation;
+    public final IntValue composterTicks;
+    public final BooleanValue composterEnableAutomation;
     // Blocks - Sluice
-    public final ForgeConfigSpec.IntValue sluiceTicks;
+    public final IntValue sluiceTicks;
     // Blocks - Lamp
-    public final ForgeConfigSpec.IntValue lampCapacity;
+    public final IntValue lampCapacity;
     // Blocks - Pumpkin
-    public final ForgeConfigSpec.BooleanValue enablePumpkinCarving;
-    public final ForgeConfigSpec.IntValue jackOLanternTicks;
+    public final BooleanValue enablePumpkinCarving;
+    public final IntValue jackOLanternTicks;
     // Blocks - Bloomery
-    public final ForgeConfigSpec.IntValue bloomeryCapacity;
-    public final ForgeConfigSpec.IntValue bloomeryMaxChimneyHeight;
+    public final IntValue bloomeryCapacity;
+    public final IntValue bloomeryMaxChimneyHeight;
     // Blocks - Blast Furnace
-    public final ForgeConfigSpec.IntValue blastFurnaceCapacity;
-    public final ForgeConfigSpec.IntValue blastFurnaceFluidCapacity;
-    public final ForgeConfigSpec.IntValue blastFurnaceFuelConsumptionMultiplier;
-    public final ForgeConfigSpec.IntValue blastFurnaceMaxChimneyHeight;
-    public final ForgeConfigSpec.BooleanValue blastFurnaceEnableAutomation;
+    public final IntValue blastFurnaceCapacity;
+    public final IntValue blastFurnaceFluidCapacity;
+    public final IntValue blastFurnaceFuelConsumptionMultiplier;
+    public final IntValue blastFurnaceMaxChimneyHeight;
+    public final BooleanValue blastFurnaceEnableAutomation;
     // Blocks - Loom
-    public final ForgeConfigSpec.BooleanValue loomEnableAutomation;
+    public final BooleanValue loomEnableAutomation;
     // Blocks - Thatch
-    public final ForgeConfigSpec.DoubleValue thatchMovementMultiplier;
+    public final DoubleValue thatchMovementMultiplier;
     // Blocks - Thatch Bed
-    public final ForgeConfigSpec.BooleanValue enableThatchBedSpawnSetting;
-    public final ForgeConfigSpec.BooleanValue enableThatchBedSleeping;
-    public final ForgeConfigSpec.BooleanValue thatchBedNoSleepInThunderstorms;
+    public final BooleanValue enableThatchBedSpawnSetting;
+    public final BooleanValue enableThatchBedSleeping;
+    public final BooleanValue thatchBedNoSleepInThunderstorms;
     // Blocks - Item Size
-    public final ForgeConfigSpec.EnumValue<Size> maxPlacedItemSize;
-    public final ForgeConfigSpec.EnumValue<Size> maxPlacedLargeItemSize;
-    public final ForgeConfigSpec.BooleanValue enablePlacingItems;
-    public final ForgeConfigSpec.BooleanValue usePlacedItemWhitelist;
+    public final EnumValue<Size> maxPlacedItemSize;
+    public final EnumValue<Size> maxPlacedLargeItemSize;
+    public final BooleanValue enablePlacingItems;
+    public final BooleanValue usePlacedItemWhitelist;
     // Blocks - Leaves
-    public final ForgeConfigSpec.BooleanValue enableLeavesDecaySlowly;
+    public final BooleanValue enableLeavesDecaySlowly;
     // Blocks - Charcoal Forge
-    public final ForgeConfigSpec.BooleanValue charcoalForgeEnableAutomation;
+    public final BooleanValue charcoalForgeEnableAutomation;
     // Blocks - Fire Pit
-    public final ForgeConfigSpec.BooleanValue firePitEnableAutomation;
+    public final BooleanValue firePitEnableAutomation;
     // Blocks - Nest Box
-    public final ForgeConfigSpec.BooleanValue nestBoxEnableAutomation;
+    public final BooleanValue nestBoxEnableAutomation;
     // Blocks - Powder Keg
-    public final ForgeConfigSpec.BooleanValue powderKegEnabled;
-    public final ForgeConfigSpec.BooleanValue powderKegOnlyBreaksNaturalBlocks;
-    public final ForgeConfigSpec.BooleanValue powderKegEnableAutomation;
-    public final ForgeConfigSpec.DoubleValue powderKegStrengthModifier;
-    public final ForgeConfigSpec.IntValue powderKegFuseTime;
+    public final BooleanValue powderKegEnabled;
+    public final BooleanValue powderKegOnlyBreaksNaturalBlocks;
+    public final BooleanValue powderKegEnableAutomation;
+    public final DoubleValue powderKegStrengthModifier;
+    public final IntValue powderKegFuseTime;
     // Blocks - Hot Water
-    public final ForgeConfigSpec.DoubleValue hotWaterHealAmount;
+    public final DoubleValue hotWaterHealAmount;
     // Blocks - Sapling
-    public final ForgeConfigSpec.DoubleValue globalSaplingGrowthModifier;
-    public final ForgeConfigSpec.DoubleValue globalFruitSaplingGrowthModifier;
-    public final EnumMap<Wood, ForgeConfigSpec.IntValue> saplingGrowthDays;
-    public final EnumMap<FruitBlocks.Tree, ForgeConfigSpec.IntValue> fruitSaplingGrowthDays;
-    public final ForgeConfigSpec.IntValue bananaSaplingGrowthDays;
+    public final DoubleValue globalSaplingGrowthModifier;
+    public final DoubleValue globalFruitSaplingGrowthModifier;
+    public final EnumMap<Wood, IntValue> saplingGrowthDays;
+    public final EnumMap<FruitBlocks.Tree, IntValue> fruitSaplingGrowthDays;
+    public final IntValue bananaSaplingGrowthDays;
     // Blocks - Crops
-    public final ForgeConfigSpec.DoubleValue cropGrowthModifier;
-    public final ForgeConfigSpec.DoubleValue cropExpiryModifier;
+    public final DoubleValue cropGrowthModifier;
+    public final DoubleValue cropExpiryModifier;
     // Blocks - Dispenser
-    public final ForgeConfigSpec.BooleanValue dispenserEnableLighting;
+    public final BooleanValue dispenserEnableLighting;
     // Blocks - Powder Bowl
-    public final ForgeConfigSpec.BooleanValue powderBowlEnableAutomation;
+    public final BooleanValue powderBowlEnableAutomation;
 
     // Items - Small Vessel
-    public final ForgeConfigSpec.IntValue smallVesselCapacity;
-    public final ForgeConfigSpec.EnumValue<Size> smallVesselMaximumItemSize;
-    public final ForgeConfigSpec.BooleanValue enableSmallVesselInventoryInteraction;
+    public final IntValue smallVesselCapacity;
+    public final EnumValue<Size> smallVesselMaximumItemSize;
+    public final BooleanValue enableSmallVesselInventoryInteraction;
     // Items - Mold(s)
-    public final ForgeConfigSpec.IntValue moldIngotCapacity;
-    public final ForgeConfigSpec.IntValue moldFireIngotCapacity;
-    public final ForgeConfigSpec.IntValue moldPickaxeHeadCapacity;
-    public final ForgeConfigSpec.IntValue moldPropickHeadCapacity;
-    public final ForgeConfigSpec.IntValue moldAxeHeadCapacity;
-    public final ForgeConfigSpec.IntValue moldShovelHeadCapacity;
-    public final ForgeConfigSpec.IntValue moldHoeHeadCapacity;
-    public final ForgeConfigSpec.IntValue moldChiselHeadCapacity;
-    public final ForgeConfigSpec.IntValue moldHammerHeadCapacity;
-    public final ForgeConfigSpec.IntValue moldSawBladeCapacity;
-    public final ForgeConfigSpec.IntValue moldJavelinHeadCapacity;
-    public final ForgeConfigSpec.IntValue moldSwordBladeCapacity;
-    public final ForgeConfigSpec.IntValue moldMaceHeadCapacity;
-    public final ForgeConfigSpec.IntValue moldKnifeBladeCapacity;
-    public final ForgeConfigSpec.IntValue moldScytheBladeCapacity;
-    public final ForgeConfigSpec.IntValue moldBellCapacity;
+    public final IntValue moldIngotCapacity;
+    public final IntValue moldFireIngotCapacity;
+    public final IntValue moldPickaxeHeadCapacity;
+    public final IntValue moldPropickHeadCapacity;
+    public final IntValue moldAxeHeadCapacity;
+    public final IntValue moldShovelHeadCapacity;
+    public final IntValue moldHoeHeadCapacity;
+    public final IntValue moldChiselHeadCapacity;
+    public final IntValue moldHammerHeadCapacity;
+    public final IntValue moldSawBladeCapacity;
+    public final IntValue moldJavelinHeadCapacity;
+    public final IntValue moldSwordBladeCapacity;
+    public final IntValue moldMaceHeadCapacity;
+    public final IntValue moldKnifeBladeCapacity;
+    public final IntValue moldScytheBladeCapacity;
+    public final IntValue moldBellCapacity;
     // Items - Jug
-    public final ForgeConfigSpec.IntValue jugCapacity;
-    public final ForgeConfigSpec.DoubleValue jugBreakChance;
+    public final IntValue jugCapacity;
+    public final DoubleValue jugBreakChance;
     // Items - Glass Bottle
-    public final ForgeConfigSpec.IntValue silicaGlassBottleCapacity;
-    public final ForgeConfigSpec.DoubleValue silicaGlassBottleBreakChance;
-    public final ForgeConfigSpec.IntValue hematiticGlassBottleCapacity;
-    public final ForgeConfigSpec.DoubleValue hematiticGlassBottleBreakChance;
-    public final ForgeConfigSpec.IntValue volcanicGlassBottleCapacity;
-    public final ForgeConfigSpec.DoubleValue volcanicGlassBottleBreakChance;
-    public final ForgeConfigSpec.IntValue olivineGlassBottleCapacity;
-    public final ForgeConfigSpec.DoubleValue olivineGlassBottleBreakChance;
+    public final IntValue silicaGlassBottleCapacity;
+    public final DoubleValue silicaGlassBottleBreakChance;
+    public final IntValue hematiticGlassBottleCapacity;
+    public final DoubleValue hematiticGlassBottleBreakChance;
+    public final IntValue volcanicGlassBottleCapacity;
+    public final DoubleValue volcanicGlassBottleBreakChance;
+    public final IntValue olivineGlassBottleCapacity;
+    public final DoubleValue olivineGlassBottleBreakChance;
     // Items - Wooden Bucket
-    public final ForgeConfigSpec.IntValue woodenBucketCapacity;
+    public final IntValue woodenBucketCapacity;
     // Mechanics - Heat
-    public final ForgeConfigSpec.DoubleValue deviceHeatingModifier;
-    public final ForgeConfigSpec.DoubleValue itemHeatingModifier;
-    public final ForgeConfigSpec.DoubleValue itemCoolingModifier;
-    public final ForgeConfigSpec.IntValue ticksBeforeItemCool;
-    public final ForgeConfigSpec.BooleanValue coolHotItemEntities;
+    public final DoubleValue deviceHeatingModifier;
+    public final DoubleValue itemHeatingModifier;
+    public final DoubleValue itemCoolingModifier;
+    public final IntValue ticksBeforeItemCool;
+    public final BooleanValue coolHotItemEntities;
     // Mechanics - Collapses
-    public final ForgeConfigSpec.BooleanValue enableBlockCollapsing;
-    public final ForgeConfigSpec.BooleanValue enableExplosionCollapsing;
-    public final ForgeConfigSpec.BooleanValue enableBlockLandslides;
-    public final ForgeConfigSpec.BooleanValue enableChiselsStartCollapses;
-    public final ForgeConfigSpec.DoubleValue collapseTriggerChance;
-    public final ForgeConfigSpec.DoubleValue collapseFakeTriggerChance;
-    public final ForgeConfigSpec.DoubleValue collapsePropagateChance;
-    public final ForgeConfigSpec.DoubleValue collapseExplosionPropagateChance;
-    public final ForgeConfigSpec.IntValue collapseMinRadius;
-    public final ForgeConfigSpec.IntValue collapseRadiusVariance;
+    public final BooleanValue enableBlockCollapsing;
+    public final BooleanValue enableExplosionCollapsing;
+    public final BooleanValue enableBlockLandslides;
+    public final BooleanValue enableChiselsStartCollapses;
+    public final DoubleValue collapseTriggerChance;
+    public final DoubleValue collapseFakeTriggerChance;
+    public final DoubleValue collapsePropagateChance;
+    public final DoubleValue collapseExplosionPropagateChance;
+    public final IntValue collapseMinRadius;
+    public final IntValue collapseRadiusVariance;
     // Mechanics - Player
-    public final ForgeConfigSpec.BooleanValue enablePeacefulDifficultyPassiveRegeneration;
-    public final ForgeConfigSpec.DoubleValue passiveExhaustionModifier;
-    public final ForgeConfigSpec.DoubleValue thirstModifier;
-    public final ForgeConfigSpec.BooleanValue enableThirstOverheating;
-    public final ForgeConfigSpec.DoubleValue thirstGainedFromDrinkingInTheRain;
-    public final ForgeConfigSpec.DoubleValue naturalRegenerationModifier;
-    public final ForgeConfigSpec.IntValue nutritionRotationHungerWindow;
-    public final ForgeConfigSpec.BooleanValue keepNutritionAfterDeath;
-    public final ForgeConfigSpec.IntValue foodDecayStackWindow;
-    public final ForgeConfigSpec.DoubleValue foodDecayModifier;
-    public final ForgeConfigSpec.BooleanValue enableOverburdening;
-    public final ForgeConfigSpec.DoubleValue nutritionMinimumHealthModifier;
-    public final ForgeConfigSpec.DoubleValue nutritionDefaultHealthModifier;
-    public final ForgeConfigSpec.DoubleValue nutritionMaximumHealthModifier;
+    public final BooleanValue enablePeacefulDifficultyPassiveRegeneration;
+    public final DoubleValue passiveExhaustionModifier;
+    public final DoubleValue thirstModifier;
+    public final BooleanValue enableThirstOverheating;
+    public final DoubleValue thirstGainedFromDrinkingInTheRain;
+    public final DoubleValue naturalRegenerationModifier;
+    public final IntValue nutritionRotationHungerWindow;
+    public final BooleanValue keepNutritionAfterDeath;
+    public final IntValue foodDecayStackWindow;
+    public final DoubleValue foodDecayModifier;
+    public final BooleanValue enableOverburdening;
+    public final DoubleValue nutritionMinimumHealthModifier;
+    public final DoubleValue nutritionDefaultHealthModifier;
+    public final DoubleValue nutritionMaximumHealthModifier;
     // Mechanics - Food Traits
-    public final ForgeConfigSpec.DoubleValue traitSaltedModifier;
-    public final ForgeConfigSpec.DoubleValue traitBrinedModifier;
-    public final ForgeConfigSpec.DoubleValue traitPickledModifier;
-    public final ForgeConfigSpec.DoubleValue traitPreservedModifier;
-    public final ForgeConfigSpec.DoubleValue traitVinegarModifier;
-    public final ForgeConfigSpec.DoubleValue traitCharcoalGrilledModifier;
-    public final ForgeConfigSpec.DoubleValue traitWoodGrilledModifier;
-    public final ForgeConfigSpec.DoubleValue traitBurntToACrispModifier;
-    public final ForgeConfigSpec.DoubleValue traitWildModifier;
+    public final DoubleValue traitSaltedModifier;
+    public final DoubleValue traitBrinedModifier;
+    public final DoubleValue traitPickledModifier;
+    public final DoubleValue traitPreservedModifier;
+    public final DoubleValue traitVinegarModifier;
+    public final DoubleValue traitCharcoalGrilledModifier;
+    public final DoubleValue traitWoodGrilledModifier;
+    public final DoubleValue traitBurntToACrispModifier;
+    public final DoubleValue traitWildModifier;
     // Mechanics - Fluids
-    public final ForgeConfigSpec.BooleanValue enableBucketsPlacingSources;
+    public final BooleanValue enableBucketsPlacingSources;
     // Mechanics - Vanilla Changes
-    public final ForgeConfigSpec.BooleanValue enableVanillaBonemeal;
-    public final ForgeConfigSpec.BooleanValue enableVanillaWeatherEffects;
-    public final ForgeConfigSpec.BooleanValue enableVanillaSkeletonHorseSpawning;
-    public final ForgeConfigSpec.BooleanValue enableVanillaMobsSpawningWithEnchantments;
-    public final ForgeConfigSpec.BooleanValue enableVanillaMobsSpawningWithVanillaEquipment;
-    public final ForgeConfigSpec.BooleanValue enableVanillaGolems;
-    public final ForgeConfigSpec.BooleanValue enableVanillaMonsters;
-    public final ForgeConfigSpec.BooleanValue enableVanillaMonstersOnSurface;
-    public final ForgeConfigSpec.BooleanValue enableChickenJockies;
-    public final ForgeConfigSpec.BooleanValue enableVanillaEggThrowing;
-    public final ForgeConfigSpec.BooleanValue enableVanillaDrinkingMilkClearsPotionEffects;
+    public final BooleanValue enableVanillaBonemeal;
+    public final BooleanValue enableVanillaWeatherEffects;
+    public final BooleanValue enableVanillaSkeletonHorseSpawning;
+    public final BooleanValue enableVanillaMobsSpawningWithEnchantments;
+    public final BooleanValue enableVanillaMobsSpawningWithVanillaEquipment;
+    public final BooleanValue enableVanillaGolems;
+    public final BooleanValue enableVanillaMonsters;
+    public final BooleanValue enableVanillaMonstersOnSurface;
+    public final BooleanValue enableChickenJockies;
+    public final BooleanValue enableVanillaEggThrowing;
+    public final BooleanValue enableVanillaDrinkingMilkClearsPotionEffects;
 
     // Animals
     public final MammalConfig pigConfig;
@@ -268,10 +271,10 @@ public class ServerConfig
     public final ProducingMammalConfig muskOxConfig;
     public final OviparousAnimalConfig duckConfig;
     public final OviparousAnimalConfig quailConfig;
-    public final ForgeConfigSpec.DoubleValue familiarityDecayLimit;
+    public final DoubleValue familiarityDecayLimit;
 
     // Below Everything
-    public final ForgeConfigSpec.BooleanValue farmlandMakesTheBestRaceTracks;
+    public final BooleanValue farmlandMakesTheBestRaceTracks;
 
     ServerConfig(ConfigBuilder builder)
     {

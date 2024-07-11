@@ -14,15 +14,16 @@ import net.minecraft.world.level.levelgen.presets.WorldPreset;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.config.ModConfig;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
@@ -60,7 +61,6 @@ import net.dries007.tfc.compat.jade.TheOneProbeIntegration;
 import net.dries007.tfc.compat.patchouli.PatchouliClientEventHandler;
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.util.CauldronInteractions;
 import net.dries007.tfc.util.DispenserBehaviors;
 import net.dries007.tfc.util.Helpers;
@@ -95,14 +95,18 @@ public final class TerraFirmaCraft
 
     private @Nullable Throwable syncLoadError;
 
-    public TerraFirmaCraft()
-    {
+    public TerraFirmaCraft(
+        ModContainer mod,
+        IEventBus bus
+    ) {
         LOGGER.info("Initializing TerraFirmaCraft");
         LOGGER.info("Options: Assertions Enabled = {}, Boostrap = {}, Test = {}, Debug Logging = {}", Helpers.ASSERTIONS_ENABLED, Helpers.BOOTSTRAP_ENVIRONMENT, Helpers.TEST_ENVIRONMENT, LOGGER.isDebugEnabled());
 
-        final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-
         SelfTests.runWorldVersionTest();
+
+        mod.registerConfig(ModConfig.Type.CLIENT, TFCConfig.CLIENT.spec());
+        mod.registerConfig(ModConfig.Type.SERVER, TFCConfig.SERVER.spec());
+        mod.registerConfig(ModConfig.Type.COMMON, TFCConfig.COMMON.spec());
 
         bus.addListener(this::setup);
         bus.addListener(this::registerCapabilities);
@@ -146,7 +150,6 @@ public final class TerraFirmaCraft
 
         ItemStackModifiers.TYPES.register(bus);
 
-        TFCConfig.init();
         CalendarEventHandler.init();
         ForgeEventHandler.init();
 

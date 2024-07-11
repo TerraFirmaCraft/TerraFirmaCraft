@@ -7,49 +7,51 @@
 package net.dries007.tfc.config;
 
 import java.util.List;
-
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
+import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
+import net.neoforged.neoforge.common.ModConfigSpec.EnumValue;
+import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 
 /**
  * Client Config
  * - not synced, only loaded client side
  * - only use for PURELY AESTHETIC options
  */
-public class ClientConfig
+public class ClientConfig extends BaseConfig
 {
     // General
-    public final ForgeConfigSpec.BooleanValue ignoreExperimentalWorldGenWarning;
-    public final ForgeConfigSpec.BooleanValue enableDebug;
+    public final BooleanValue ignoreExperimentalWorldGenWarning;
+    public final BooleanValue enableDebug;
     // Display
-    public final ForgeConfigSpec.BooleanValue enableHungerBar;
-    public final ForgeConfigSpec.BooleanValue enableHealthBar;
-    public final ForgeConfigSpec.BooleanValue enableThirstBar;
-    public final ForgeConfigSpec.BooleanValue enableExperienceBar;
-    public final ForgeConfigSpec.BooleanValue enableInkSplatter;
-    public final ForgeConfigSpec.BooleanValue enableScreenParticles;
-    public final ForgeConfigSpec.BooleanValue enableVanillaTutorialToasts;
-    public final ForgeConfigSpec.IntValue effectHorizontalAdjustment;
-    public final ForgeConfigSpec.EnumValue<HealthDisplayStyle> healthDisplayStyle;
-    public final ForgeConfigSpec.EnumValue<FoodExpiryTooltipStyle> foodExpiryTooltipStyle;
-    public final ForgeConfigSpec.IntValue foodExpiryOverlayColor;
-    public final ForgeConfigSpec.EnumValue<TemperatureDisplayStyle> heatTooltipStyle;
-    public final ForgeConfigSpec.EnumValue<TemperatureDisplayStyle> climateTooltipStyle;
-    public final ForgeConfigSpec.EnumValue<TimeDeltaTooltipStyle> timeDeltaTooltipStyle;
-    public final ForgeConfigSpec.EnumValue<DisabledExperienceBarStyle> disabledExperienceBarStyle;
-    public final ForgeConfigSpec.BooleanValue sendProspectResultsToActionbar;
-    public final ForgeConfigSpec.BooleanValue showHoeOverlaysOnlyWhenShifting;
-    public final ForgeConfigSpec.BooleanValue showHoeOverlaysInInfoMods;
-    public final ForgeConfigSpec.BooleanValue displayFamiliarityAsPercent;
-    public final ForgeConfigSpec.BooleanValue showGuideBookLinksAlways;
-    public final ForgeConfigSpec.BooleanValue showGuideBookTabInInventory;
-    public final ForgeConfigSpec.BooleanValue displayItemContentsAsImages;
-    public final ForgeConfigSpec.BooleanValue displayItemHeatBars;
-    public final ForgeConfigSpec.BooleanValue enableWindParticles;
+    public final BooleanValue enableHungerBar;
+    public final BooleanValue enableHealthBar;
+    public final BooleanValue enableThirstBar;
+    public final BooleanValue enableExperienceBar;
+    public final BooleanValue enableInkSplatter;
+    public final BooleanValue enableScreenParticles;
+    public final BooleanValue enableVanillaTutorialToasts;
+    public final IntValue effectHorizontalAdjustment;
+    public final EnumValue<HealthDisplayStyle> healthDisplayStyle;
+    public final EnumValue<FoodExpiryTooltipStyle> foodExpiryTooltipStyle;
+    public final IntValue foodExpiryOverlayColor;
+    public final EnumValue<TemperatureDisplayStyle> heatTooltipStyle;
+    public final EnumValue<TemperatureDisplayStyle> climateTooltipStyle;
+    public final EnumValue<TimeDeltaTooltipStyle> timeDeltaTooltipStyle;
+    public final EnumValue<DisabledExperienceBarStyle> disabledExperienceBarStyle;
+    public final BooleanValue sendProspectResultsToActionbar;
+    public final BooleanValue showHoeOverlaysOnlyWhenShifting;
+    public final BooleanValue showHoeOverlaysInInfoMods;
+    public final BooleanValue displayFamiliarityAsPercent;
+    public final BooleanValue showGuideBookLinksAlways;
+    public final BooleanValue showGuideBookTabInInventory;
+    public final BooleanValue displayItemContentsAsImages;
+    public final BooleanValue displayItemHeatBars;
+    public final BooleanValue enableWindParticles;
 
     // Compatibility
-    public final ForgeConfigSpec.ConfigValue<List<? extends String>> additionalSpecialModels;
+    public final ConfigValue<List<? extends String>> additionalSpecialModels;
 
     ClientConfig(ConfigBuilder builder)
     {
@@ -135,7 +137,7 @@ public class ClientConfig
         additionalSpecialModels = builder.comment(
             "Registers additional models into forge's special model registry.",
             "For Pack Makers: this is needed if you want your custom item models to render when used for panning (if they are not already used somewhere else and added automatically in that case)"
-        ).define("additionalSpecialModels", List.of(), ResourceLocation::isValidResourceLocation);
+        ).define("additionalSpecialModels", List.of(), name -> ResourceLocation.tryParse(name) != null);
 
         builder.pop();
     }

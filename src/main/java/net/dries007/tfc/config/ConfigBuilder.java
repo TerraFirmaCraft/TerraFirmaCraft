@@ -9,7 +9,12 @@ package net.dries007.tfc.config;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
+import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
+import net.neoforged.neoforge.common.ModConfigSpec.DoubleValue;
+import net.neoforged.neoforge.common.ModConfigSpec.EnumValue;
+import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 
 /**
  * Thin wrapper around the Forge config builder, which fixes some issues that have annoyed me for ages.
@@ -24,11 +29,11 @@ import net.minecraftforge.common.ForgeConfigSpec;
  */
 public class ConfigBuilder
 {
-    private final ForgeConfigSpec.Builder builder;
+    private final ModConfigSpec.Builder builder;
     private final String translationKeyPrefix;
     private boolean emptyLineAdded;
 
-    public ConfigBuilder(ForgeConfigSpec.Builder builder, String translationKeyPrefix)
+    public ConfigBuilder(ModConfigSpec.Builder builder, String translationKeyPrefix)
     {
         this.builder = builder;
         this.translationKeyPrefix = translationKeyPrefix;
@@ -61,14 +66,14 @@ public class ConfigBuilder
         return this;
     }
 
-    public ForgeConfigSpec.BooleanValue define(String path, boolean value) { return begin(path).define(path, value); }
-    public ForgeConfigSpec.IntValue define(String path, int value, int min, int max) { return begin(path).defineInRange(path, value, min, max); }
-    public ForgeConfigSpec.DoubleValue define(String path, double value, double min, double max) { return begin(path).defineInRange(path, value, min, max); }
-    public ForgeConfigSpec.ConfigValue<String> define(String path, String value) { return begin(path).define(path, value); }
-    public <E extends Enum<E>> ForgeConfigSpec.EnumValue<E> define(String path, E value) { return begin(path).defineEnum(path, value); }
-    public ForgeConfigSpec.ConfigValue<List<? extends String>> define(String path, List<? extends String> value, Predicate<String> predicate) { return begin(path).defineListAllowEmpty(path, new ArrayList<>(value), o -> o instanceof String s && predicate.test(s)); }
+    public BooleanValue define(String path, boolean value) { return begin(path).define(path, value); }
+    public IntValue define(String path, int value, int min, int max) { return begin(path).defineInRange(path, value, min, max); }
+    public DoubleValue define(String path, double value, double min, double max) { return begin(path).defineInRange(path, value, min, max); }
+    public ConfigValue<String> define(String path, String value) { return begin(path).define(path, value); }
+    public <E extends Enum<E>> EnumValue<E> define(String path, E value) { return begin(path).defineEnum(path, value); }
+    public ConfigValue<List<? extends String>> define(String path, List<? extends String> value, Predicate<String> predicate) { return begin(path).defineListAllowEmpty(path, new ArrayList<>(value), o -> o instanceof String s && predicate.test(s)); }
 
-    private ForgeConfigSpec.Builder begin(String path)
+    private ModConfigSpec.Builder begin(String path)
     {
         // Since there is no config GUI (yet, circa 1.16), this is still unused
         builder.translation("tfc.config." + translationKeyPrefix + "." + path);

@@ -6,12 +6,16 @@
 
 package net.dries007.tfc.config.animals;
 
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec.DoubleValue;
+import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 
 import net.dries007.tfc.config.ConfigBuilder;
 
-public record ProducingMammalConfig(MammalConfig inner, ForgeConfigSpec.IntValue produceTicks, ForgeConfigSpec.DoubleValue produceFamiliarity)
-{
+public record ProducingMammalConfig(
+    MammalConfig inner,
+    IntValue produceTicks,
+    DoubleValue produceFamiliarity
+) {
     public static ProducingMammalConfig build(ConfigBuilder builder, String name, double familiarityCap, int adulthoodDays, int uses, boolean eatsRottenFood, int gestationDays, int childCount, int produceTicks, double produceFamiliarity)
     {
         return new ProducingMammalConfig(

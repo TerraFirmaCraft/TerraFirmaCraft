@@ -6,12 +6,18 @@
 
 package net.dries007.tfc.config.animals;
 
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
+import net.neoforged.neoforge.common.ModConfigSpec.DoubleValue;
+import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 
 import net.dries007.tfc.config.ConfigBuilder;
 
-public record AnimalConfig(ForgeConfigSpec.DoubleValue familiarityCap, ForgeConfigSpec.IntValue adulthoodDays, ForgeConfigSpec.IntValue uses, ForgeConfigSpec.BooleanValue eatsRottenFood)
-{
+public record AnimalConfig(
+    DoubleValue familiarityCap,
+    IntValue adulthoodDays,
+    IntValue uses,
+    BooleanValue eatsRottenFood
+) {
     public static AnimalConfig build(ConfigBuilder builder, String name, double familiarityCap, int adulthoodDays, int uses, boolean eatsRottenFood)
     {
         return new AnimalConfig(

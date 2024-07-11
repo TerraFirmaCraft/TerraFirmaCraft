@@ -6,12 +6,15 @@
 
 package net.dries007.tfc.config.animals;
 
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 
 import net.dries007.tfc.config.ConfigBuilder;
 
-public record MammalConfig(AnimalConfig inner, ForgeConfigSpec.IntValue gestationDays, ForgeConfigSpec.IntValue childCount)
-{
+public record MammalConfig(
+    AnimalConfig inner,
+    IntValue gestationDays,
+    IntValue childCount
+) {
     public static MammalConfig build(ConfigBuilder builder, String name, double familiarityCap, int adulthoodDays, int uses, boolean eatsRottenFood, int gestationDays, int childCount)
     {
         return new MammalConfig(

@@ -6,12 +6,14 @@
 
 package net.dries007.tfc.config.animals;
 
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 
 import net.dries007.tfc.config.ConfigBuilder;
 
-public record OviparousAnimalConfig(ProducingAnimalConfig inner, ForgeConfigSpec.IntValue hatchDays)
-{
+public record OviparousAnimalConfig(
+    ProducingAnimalConfig inner,
+    IntValue hatchDays
+) {
     public static OviparousAnimalConfig build(ConfigBuilder builder, String name, double familiarityCap, int adulthoodDays, int uses, boolean eatsRottenFood, int produceTicks, double produceFamiliarity, int hatchDays)
     {
         return new OviparousAnimalConfig(

@@ -7,8 +7,10 @@
 package net.dries007.tfc.config;
 
 import com.mojang.logging.LogUtils;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
+import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
+import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 import org.slf4j.Logger;
 
 /**
@@ -16,21 +18,21 @@ import org.slf4j.Logger;
  * - not synced, saved per instance
  * - use for things that are only important server side (i.e. world gen), or make less sense to have per-world.
  */
-public class CommonConfig
+public class CommonConfig extends BaseConfig
 {
     private static final Logger LOGGER = LogUtils.getLogger();
 
     // General
-    public final ForgeConfigSpec.ConfigValue<String> defaultWorldPreset;
+    public final ConfigValue<String> defaultWorldPreset;
 
     // Calendar
-    public final ForgeConfigSpec.IntValue defaultMonthLength;
-    public final ForgeConfigSpec.IntValue defaultCalendarStartDay;
+    public final IntValue defaultMonthLength;
+    public final IntValue defaultCalendarStartDay;
 
     // Debug
-    private final ForgeConfigSpec.BooleanValue enableNetworkDebugging;
+    private final BooleanValue enableNetworkDebugging;
     private boolean hasLoggedNetworkDebugInfoMessage = false;
-    public final ForgeConfigSpec.BooleanValue enableDatapackTests;
+    public final BooleanValue enableDatapackTests;
 
     CommonConfig(ConfigBuilder builder)
     {
