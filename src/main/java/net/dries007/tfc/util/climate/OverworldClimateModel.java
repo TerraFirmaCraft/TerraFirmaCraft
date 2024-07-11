@@ -7,10 +7,13 @@
 package net.dries007.tfc.util.climate;
 
 import java.util.Random;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.LinearCongruentialGenerator;
 import net.minecraft.util.Mth;
@@ -43,7 +46,6 @@ import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.TFCChunkGenerator;
-import net.dries007.tfc.world.biome.BiomeExtension;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
@@ -76,6 +78,13 @@ public class OverworldClimateModel implements WorldGenClimateModel
     public static final float FOGGY_RAINFALL_MINIMUM = 150f;
     public static final float FOGGY_RAINFALL_PEAK = 300f;
 
+
+    public static final StreamCodec<ByteBuf, OverworldClimateModel> STREAM_CODEC = StreamCodec.composite(
+        ByteBufCodecs.VAR_LONG, c -> c.climateSeed,
+        ByteBufCodecs.FLOAT, c -> c.temperatureScale,
+        OverworldClimateModel::new
+    );
+
     public static float getAdjustedAverageTempByElevation(BlockPos pos, ChunkData chunkData)
     {
         return getAdjustedAverageTempByElevation(pos.getY(), chunkData.getAverageTemp(pos));
@@ -97,7 +106,7 @@ public class OverworldClimateModel implements WorldGenClimateModel
     }
 
     @Override
-    public ClimateModelType type()
+    public ClimateModelType<?> type()
     {
         return ClimateModels.OVERWORLD.get();
     }
@@ -121,12 +130,23 @@ public class OverworldClimateModel implements WorldGenClimateModel
         return null;
     }
 
-    private long climateSeed = 0;
-    private float temperatureScale = 20_000f;
+    private long climateSeed;
+    private float temperatureScale;
 
     // For world generation climate
     private Noise2D snowPatchNoise = (x, z) -> 0;
     private Noise2D icePatchNoise = (x, z) -> 0;
+
+    public OverworldClimateModel()
+    {
+        this(0, 20_000f);
+    }
+
+    public OverworldClimateModel(long climateSeed, float temperatureScale)
+    {
+        this.climateSeed = climateSeed;
+        this.temperatureScale = temperatureScale;
+    }
 
     /**
      * Calculates the average monthly temperature for a location and given month.

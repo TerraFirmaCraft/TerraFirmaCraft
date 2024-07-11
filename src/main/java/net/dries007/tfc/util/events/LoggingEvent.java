@@ -10,14 +10,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.eventbus.api.Cancelable;
-import net.minecraftforge.eventbus.api.Event;
+import net.neoforged.bus.api.Event;
+import net.neoforged.bus.api.ICancellableEvent;
 
 /**
  * Fires when a tree is about to be felled by an axe. Cancelling the event causes the block to be broken normally, dropping itself without any side effects.
  */
-@Cancelable
-public final class LoggingEvent extends Event
+public final class LoggingEvent extends Event implements  ICancellableEvent
 {
     private final LevelAccessor level;
     private final BlockPos pos;

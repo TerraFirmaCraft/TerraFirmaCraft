@@ -20,7 +20,6 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
-import net.dries007.tfc.util.Helpers;
 
 public class SimpleMobRenderer<T extends Mob, M extends EntityModel<T>> extends MobRenderer<T, M>
 {
@@ -36,8 +35,8 @@ public class SimpleMobRenderer<T extends Mob, M extends EntityModel<T>> extends 
     {
         super(ctx, model, shadow);
         doesFlop = flop;
-        texture = Helpers.animalTexture(name);
-        babyTexture = hasBabyTexture ? Helpers.animalTexture(name + "_young") : null;
+        texture = RenderHelpers.animalTexture(name);
+        babyTexture = hasBabyTexture ? RenderHelpers.animalTexture(name + "_young") : null;
         this.textureGetter = textureGetter != null ? textureGetter : e -> babyTexture != null && e.isBaby() ? babyTexture : texture;
         this.scale = scale;
         // todo: re-add item in mouth layer when i can figure out how the heck to render it right.

@@ -11,19 +11,20 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.presets.WorldPreset;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
-import net.minecraftforge.fml.InterModComms;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
-import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.InterModComms;
 import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
+import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
+import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.common.NeoForgeMod;
+import net.neoforged.neoforge.registries.NewRegistryEvent;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
@@ -38,11 +39,6 @@ import net.dries007.tfc.common.blocks.devices.IBellowsConsumer;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.capabilities.food.FoodHandler;
 import net.dries007.tfc.common.capabilities.food.FoodTraits;
-import net.dries007.tfc.common.capabilities.food.IFood;
-import net.dries007.tfc.common.capabilities.forge.Forging;
-import net.dries007.tfc.common.capabilities.heat.IHeat;
-import net.dries007.tfc.common.capabilities.heat.IHeatBlock;
-import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.effect.TFCEffects;
 import net.dries007.tfc.common.entities.EntityHelpers;
@@ -54,8 +50,8 @@ import net.dries007.tfc.common.items.PropickItem;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.TFCRecipeSerializers;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
-import net.dries007.tfc.common.recipes.ingredients.TFCIngredients;
 import net.dries007.tfc.common.recipes.outputs.ItemStackModifiers;
+import net.dries007.tfc.common.recipes.outputs.PotOutput;
 import net.dries007.tfc.compat.jade.JadeIntegration;
 import net.dries007.tfc.compat.jade.TheOneProbeIntegration;
 import net.dries007.tfc.compat.patchouli.PatchouliClientEventHandler;
@@ -71,12 +67,11 @@ import net.dries007.tfc.util.advancements.TFCAdvancements;
 import net.dries007.tfc.util.calendar.CalendarEventHandler;
 import net.dries007.tfc.util.calendar.ServerCalendar;
 import net.dries007.tfc.util.climate.ClimateModels;
+import net.dries007.tfc.util.data.DataManagers;
 import net.dries007.tfc.util.loot.TFCLoot;
-import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.world.TFCWorldGen;
 import net.dries007.tfc.world.blockpredicate.TFCBlockPredicates;
 import net.dries007.tfc.world.carver.TFCCarvers;
-import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.density.TFCDensityFunctions;
 import net.dries007.tfc.world.feature.TFCFeatures;
 import net.dries007.tfc.world.placement.TFCPlacements;
@@ -109,12 +104,14 @@ public final class TerraFirmaCraft
         mod.registerConfig(ModConfig.Type.COMMON, TFCConfig.COMMON.spec());
 
         bus.addListener(this::setup);
+        bus.addListener(this::registerRegistries);
         bus.addListener(this::registerCapabilities);
         bus.addListener(this::loadComplete);
         bus.addListener(this::onInterModComms);
         bus.addListener(TFCEntities::onEntityAttributeCreation);
         bus.addListener(Faunas::registerSpawnPlacements);
 
+        // Core Registries (vanilla)
         TFCBlocks.BLOCKS.register(bus);
         TFCItems.ITEMS.register(bus);
         TFCContainerTypes.CONTAINERS.register(bus);
@@ -130,7 +127,15 @@ public final class TerraFirmaCraft
         TFCLoot.CONDITIONS.register(bus);
         TFCLoot.NUMBER_PROVIDERS.register(bus);
         TFCLoot.LOOT_FUNCTIONS.register(bus);
+        TFCEffects.EFFECTS.register(bus);
+        TFCBrain.ACTIVITIES.register(bus);
+        TFCBrain.MEMORY_TYPES.register(bus);
+        TFCBrain.SCHEDULES.register(bus);
+        TFCBrain.SENSOR_TYPES.register(bus);
+        TFCBrain.POI_TYPES.register(bus);
+        TFCPaintings.PAINTING_TYPES.register(bus);
 
+        // World Generation (vanilla)
         TFCBlockPredicates.BLOCK_PREDICATES.register(bus);
         TFCPlacements.PLACEMENT_MODIFIERS.register(bus);
         TFCFeatures.FEATURES.register(bus);
@@ -140,15 +145,13 @@ public final class TerraFirmaCraft
         TFCStateProviders.BLOCK_STATE_PROVIDERS.register(bus);
         TFCStructureHooks.STRUCTURE_PLACEMENTS.register(bus);
         TFCDensityFunctions.TYPES.register(bus);
-        TFCEffects.EFFECTS.register(bus);
-        TFCBrain.ACTIVITIES.register(bus);
-        TFCBrain.MEMORY_TYPES.register(bus);
-        TFCBrain.SCHEDULES.register(bus);
-        TFCBrain.SENSOR_TYPES.register(bus);
-        TFCBrain.POI_TYPES.register(bus);
-        TFCPaintings.PAINTING_TYPES.register(bus);
 
+        // Custom Registries (tfc)
+        FoodTraits.TRAITS.register(bus);
         ItemStackModifiers.TYPES.register(bus);
+        PotOutput.TYPES.register(bus);
+        ClimateModels.TYPES.register(bus);
+        DataManagers.MANAGERS.register(bus);
 
         CalendarEventHandler.init();
         ForgeEventHandler.init();
@@ -160,7 +163,7 @@ public final class TerraFirmaCraft
             PatchouliClientEventHandler.init();
         }
 
-        ForgeMod.enableMilkFluid();
+        NeoForgeMod.enableMilkFluid();
     }
 
     public void setup(FMLCommonSetupEvent event)
@@ -169,14 +172,10 @@ public final class TerraFirmaCraft
 
         PropickItem.registerDefaultRepresentativeBlocks();
         InteractionManager.registerDefaultInteractions();
-        TFCRecipeTypes.registerPotRecipeOutputTypes();
         RockSettings.registerDefaultRocks();
         ServerCalendar.overrideDoDaylightCycleCallback();
 
         event.enqueueWork(() -> {
-            TFCIngredients.registerIngredientTypes();
-            FoodTraits.registerFoodTraits();
-            ClimateModels.registerClimateModels();
             EntityDataSerializers.registerSerializer(EntityHelpers.LONG_SERIALIZER);
             DispenserBehaviors.registerDispenserBehaviors();
             IBellowsConsumer.registerDefaultOffsets();
@@ -202,15 +201,25 @@ public final class TerraFirmaCraft
         }
     }
 
+    public void registerRegistries(NewRegistryEvent event)
+    {
+        event.register(FoodTraits.REGISTRY);
+        event.register(ItemStackModifiers.REGISTRY);
+        event.register(PotOutput.REGISTRY);
+        event.register(ClimateModels.REGISTRY);
+        event.register(DataManagers.REGISTRY);
+    }
+
     public void registerCapabilities(RegisterCapabilitiesEvent event)
     {
-        event.register(IHeat.class);
-        event.register(IHeatBlock.class);
-        event.register(Forging.class);
-        event.register(ChunkData.class);
-        event.register(WorldTracker.class);
-        event.register(IFood.class);
-        event.register(PlayerData.class);
+        // todo: most of these won't be capabilities anymore, probably none
+        // event.register(IHeat.class);
+        // event.register(IHeatBlock.class);
+        // event.register(Forging.class);
+        // event.register(ChunkData.class);
+        // event.register(WorldTracker.class);
+        // event.register(IFood.class);
+        // event.register(PlayerData.class);
     }
 
     public void loadComplete(FMLLoadCompleteEvent event)

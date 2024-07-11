@@ -7,10 +7,8 @@
 package net.dries007.tfc.util.events;
 
 import net.minecraft.server.level.ServerLevel;
-import net.minecraftforge.eventbus.api.Event;
+import net.neoforged.bus.api.Event;
 
-import net.dries007.tfc.util.climate.BiomeBasedClimateModel;
-import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateModel;
 import net.dries007.tfc.util.climate.ClimateModels;
 

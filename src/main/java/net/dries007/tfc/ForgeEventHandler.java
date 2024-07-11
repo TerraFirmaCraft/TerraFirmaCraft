@@ -12,12 +12,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.PlayerRespawnLogic;
-import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -74,14 +71,43 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraft.world.level.chunk.ProtoChunk;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import net.minecraft.world.level.storage.ServerLevelData;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.bus.api.EventPriority;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.AddReloadListenerEvent;
+import net.neoforged.neoforge.event.ItemStackedOnOtherEvent;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.event.ServerChatEvent;
+import net.neoforged.neoforge.event.TagsUpdatedEvent;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
+import net.neoforged.neoforge.event.entity.EntityMountEvent;
+import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
+import net.neoforged.neoforge.event.entity.item.ItemExpireEvent;
+import net.neoforged.neoforge.event.entity.living.AnimalTameEvent;
+import net.neoforged.neoforge.event.entity.living.FinalizeSpawnEvent;
+import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
+import net.neoforged.neoforge.event.entity.living.LivingEvent;
+import net.neoforged.neoforge.event.entity.living.LivingShieldBlockEvent;
+import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
+import net.neoforged.neoforge.event.entity.player.BonemealEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerContainerEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.level.ChunkWatchEvent;
+import net.neoforged.neoforge.event.level.ExplosionEvent;
+import net.neoforged.neoforge.event.level.LevelEvent;
+import net.neoforged.neoforge.event.level.block.CreateFluidSourceEvent;
+import net.neoforged.neoforge.event.level.block.CropGrowEvent;
+import net.neoforged.neoforge.event.tick.LevelTickEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -119,22 +145,15 @@ import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockAnvilBlock;
 import net.dries007.tfc.common.blocks.wood.TFCLecternBlock;
 import net.dries007.tfc.common.capabilities.Capabilities;
-import net.dries007.tfc.common.capabilities.egg.EggCapability;
-import net.dries007.tfc.common.capabilities.egg.EggHandler;
 import net.dries007.tfc.common.capabilities.food.DynamicBowlHandler;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.common.capabilities.food.FoodDefinition;
 import net.dries007.tfc.common.capabilities.food.IFood;
 import net.dries007.tfc.common.capabilities.food.TFCFoodData;
-import net.dries007.tfc.common.capabilities.forge.Forging;
 import net.dries007.tfc.common.capabilities.forge.ForgingBonus;
-import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
 import net.dries007.tfc.common.capabilities.glass.GlassWorkData;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
-import net.dries007.tfc.common.capabilities.heat.HeatDefinition;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.capabilities.player.PlayerData;
-import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.commands.TFCCommands;
 import net.dries007.tfc.common.container.BlockEntityContainer;
@@ -147,7 +166,6 @@ import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.items.BlowpipeItem;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.mixin.accessor.ChunkAccessAccessor;
 import net.dries007.tfc.mixin.accessor.RecipeManagerAccessor;
 import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.network.EffectExpirePacket;
@@ -175,7 +193,6 @@ import net.dries007.tfc.util.events.SelectClimateModelEvent;
 import net.dries007.tfc.util.events.StartFireEvent;
 import net.dries007.tfc.util.tracker.WeatherHelpers;
 import net.dries007.tfc.util.tracker.WorldTracker;
-import net.dries007.tfc.util.tracker.WorldTrackerCapability;
 import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
@@ -188,16 +205,17 @@ public final class ForgeEventHandler
 
     public static void init()
     {
-        final IEventBus bus = MinecraftForge.EVENT_BUS;
+        final IEventBus bus = NeoForge.EVENT_BUS;
 
         bus.addListener(ForgeEventHandler::onCreateWorldSpawn);
-        bus.addGenericListener(LevelChunk.class, ForgeEventHandler::attachChunkCapabilities);
-        bus.addGenericListener(Level.class, ForgeEventHandler::attachWorldCapabilities);
-        bus.addGenericListener(ItemStack.class, ForgeEventHandler::attachItemCapabilities);
-        bus.addGenericListener(Entity.class, ForgeEventHandler::attachEntityCapabilities);
+        // todo 1.21: remove
+        //bus.addGenericListener(LevelChunk.class, ForgeEventHandler::attachChunkCapabilities);
+        //bus.addGenericListener(Level.class, ForgeEventHandler::attachWorldCapabilities);
+        //bus.addGenericListener(ItemStack.class, ForgeEventHandler::attachItemCapabilities);
+        //bus.addGenericListener(Entity.class, ForgeEventHandler::attachEntityCapabilities);
         bus.addListener(ForgeEventHandler::onChunkWatch);
-        bus.addListener(ForgeEventHandler::onChunkDataSave);
-        bus.addListener(ForgeEventHandler::onChunkDataLoad);
+        //bus.addListener(ForgeEventHandler::onChunkDataSave);
+        //bus.addListener(ForgeEventHandler::onChunkDataLoad);
         bus.addListener(ForgeEventHandler::registerCommands);
         bus.addListener(ForgeEventHandler::onBlockBroken);
         bus.addListener(ForgeEventHandler::onBlockPlace);
@@ -301,6 +319,8 @@ public final class ForgeEventHandler
         }
     }
 
+    // todo 1.21: all these are probably not needed, but need to be ported to attachments somehow
+    /*
     public static void attachChunkCapabilities(AttachCapabilitiesEvent<LevelChunk> event)
     {
         final LevelChunk chunk = event.getObject();
@@ -368,7 +388,7 @@ public final class ForgeEventHandler
         {
             event.addCapability(PlayerDataCapability.KEY, new PlayerData(player));
         }
-    }
+    }*/
 
     public static void onChunkWatch(ChunkWatchEvent.Watch event)
     {
@@ -377,7 +397,7 @@ public final class ForgeEventHandler
         final ChunkData chunkData = ChunkData.get(event.getChunk());
         if (chunkData.status() == ChunkData.Status.FULL)
         {
-            PacketHandler.send(PacketDistributor.PLAYER.with(event::getPlayer), chunkData.getUpdatePacket());
+            PacketDistributor.sendToPlayer(event.getPlayer(), chunkData.getUpdatePacket());
         }
     }
 
@@ -386,6 +406,8 @@ public final class ForgeEventHandler
      * - This saves the effort of re-generating the same data for proto chunks
      * - And, due to the late setting of part of chunk data ({@link net.dries007.tfc.world.chunkdata.RockData#setSurfaceHeight(int[])}, avoids that being nullified when saving and reloading during the noise phase of generation
      */
+    // todo 1.21: probably not needed, since they are serialized and saved on proto chunks via attachments
+    /*
     public static void onChunkDataSave(ChunkDataEvent.Save event)
     {
         if (event.getChunk().getStatus().getChunkType() == ChunkStatus.ChunkType.PROTOCHUNK && event.getChunk() instanceof ProtoChunk chunk && ((ServerChunkCache) event.getLevel().getChunkSource()).getGenerator() instanceof ChunkGeneratorExtension ex)
@@ -398,16 +420,13 @@ public final class ForgeEventHandler
         }
     }
 
-    /**
-     * @see #onChunkDataSave(ChunkDataEvent.Save)
-     */
     public static void onChunkDataLoad(ChunkDataEvent.Load event)
     {
         if (event.getChunk().getStatus().getChunkType() == ChunkStatus.ChunkType.PROTOCHUNK && event.getData().contains("tfc_protochunk_data", Tag.TAG_COMPOUND) && event.getChunk() instanceof ProtoChunk chunk && ((ChunkAccessAccessor) chunk).accessor$getLevelHeightAccessor() instanceof ServerLevel level && level.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension generator)
         {
             generator.chunkDataProvider().loadPartial(chunk, event.getData().getCompound("tfc_protochunk_data"));
         }
-    }
+    }*/
 
     public static void registerCommands(RegisterCommandsEvent event)
     {
@@ -430,7 +449,8 @@ public final class ForgeEventHandler
 
         // Chop down a tree
         final ItemStack stack = event.getPlayer().getMainHandItem();
-        if (AxeLoggingHelper.shouldLog(levelAccess, pos, state, stack) && !MinecraftForge.EVENT_BUS.post(new LoggingEvent(levelAccess, pos, state, stack)))
+        if (AxeLoggingHelper.shouldLog(levelAccess, pos, state, stack) &&
+            !NeoForge.EVENT_BUS.post(new LoggingEvent(levelAccess, pos, state, stack)).isCanceled())
         {
             event.setCanceled(true); // Cancel regardless of outcome of logging
             AxeLoggingHelper.doLogging(levelAccess, pos, event.getPlayer(), stack);
@@ -498,9 +518,9 @@ public final class ForgeEventHandler
         }
     }
 
-    public static void onWorldTick(TickEvent.LevelTickEvent event)
+    public static void onWorldTick(LevelTickEvent.Pre event)
     {
-        if (event.phase == TickEvent.Phase.START && event.level instanceof ServerLevel level)
+        if (event.getLevel() instanceof ServerLevel level)
         {
             WeatherHelpers.preAdvancedWeatherCycle(level);
             WorldTracker.get(level).tick();
@@ -560,7 +580,7 @@ public final class ForgeEventHandler
         }
     }
 
-    public static void onFluidCreateSource(BlockEvent.CreateFluidSourceEvent event)
+    public static void onFluidCreateSource(CreateFluidSourceEvent event)
     {
         final LevelReader level = event.getLevel();
         final BlockPos pos = event.getPos();
@@ -828,10 +848,10 @@ public final class ForgeEventHandler
         }
     }
 
-    public static void onPlayerTick(TickEvent.PlayerTickEvent event)
+    public static void onPlayerTick(PlayerTickEvent.Pre event)
     {
         // When facing up in the rain, player slowly recovers thirst.
-        final Player player = event.player;
+        final Player player = event.getEntity();
         final Level level = player.level();
         final float angle = Mth.wrapDegrees(player.getXRot()); // Copied from DebugScreenOverlay, which is the value in F3
         if (angle <= -80 && !level.isClientSide() && level.isRainingAt(player.blockPosition().above()) && player.getFoodData() instanceof TFCFoodData foodData)
@@ -919,7 +939,7 @@ public final class ForgeEventHandler
         event.setAmount(amount);
     }
 
-    public static void onShieldBlock(ShieldBlockEvent event)
+    public static void onShieldBlock(LivingShieldBlockEvent event)
     {
         float damageModifier = 1f;
         final Item useItem = event.getEntity().getUseItem().getItem();
@@ -955,7 +975,7 @@ public final class ForgeEventHandler
     /**
      * This prevents vanilla mobs from spawning either at all or on the surface.
      */
-    public static void onLivingSpawnCheck(MobSpawnEvent.FinalizeSpawn event)
+    public static void onLivingSpawnCheck(FinalizeSpawnEvent event)
     {
         final LivingEntity entity = event.getEntity();
         final LevelAccessor level = event.getLevel();
@@ -1229,7 +1249,7 @@ public final class ForgeEventHandler
             PlayerData.get(serverPlayer).sync();
 
             final ClimateModel model = Climate.model(serverPlayer.level());
-            PacketHandler.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new UpdateClimateModelPacket(model));
+            PacketDistributor.sendToPlayer(serverPlayer, new UpdateClimateModelPacket(model));
         }
     }
 
@@ -1386,12 +1406,12 @@ public final class ForgeEventHandler
             InteractionResult result = Drinkable.attemptDrink(event.getLevel(), event.getEntity(), false);
             if (result == InteractionResult.SUCCESS)
             {
-                PacketHandler.send(PacketDistributor.SERVER.noArg(), new PlayerDrinkPacket());
+                PacketDistributor.sendToServer(PlayerDrinkPacket.PACKET);
             }
         }
     }
 
-    public static void onItemUseFinish(LivingEntityUseItemEvent.Finish event)
+    public static void onItemUseFinish(LivingEntityUseItemEvent event)
     {
         final ItemStack stack = event.getItem();
         final @Nullable IFood food = FoodCapability.get(stack);
@@ -1541,7 +1561,7 @@ public final class ForgeEventHandler
         }
     }
 
-    public static void onCropsGrow(BlockEvent.CropGrowEvent event)
+    public static void onCropsGrow(CropGrowEvent event)
     {
         final BlockState state = event.getState();
         final LevelAccessor level = event.getLevel();

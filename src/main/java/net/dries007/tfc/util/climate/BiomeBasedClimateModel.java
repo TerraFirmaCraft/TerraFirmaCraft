@@ -6,8 +6,9 @@
 
 package net.dries007.tfc.util.climate;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.biome.Biome;
 
@@ -19,9 +20,10 @@ import net.dries007.tfc.mixin.accessor.BiomeAccessor;
 public class BiomeBasedClimateModel implements TimeInvariantClimateModel
 {
     public static final BiomeBasedClimateModel INSTANCE = new BiomeBasedClimateModel();
+    public static final StreamCodec<ByteBuf, BiomeBasedClimateModel> STREAM_CODEC = StreamCodec.unit(INSTANCE);
 
     @Override
-    public ClimateModelType type()
+    public ClimateModelType<?> type()
     {
         return ClimateModels.BIOME_BASED.get();
     }

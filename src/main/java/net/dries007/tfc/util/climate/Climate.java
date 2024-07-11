@@ -7,7 +7,6 @@
 package net.dries007.tfc.util.climate;
 
 import java.util.function.Supplier;
-
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import io.netty.buffer.ByteBuf;
@@ -57,16 +56,6 @@ public final class Climate
         final ClimateModelType type = new ClimateModelType(id, model, codec);
         REGISTRY.put(id, type);
         return type;
-    }
-
-    public static ClimateModelType get(ResourceLocation id)
-    {
-        return REGISTRY.getOrDefault(id, ClimateModels.BIOME_BASED.get());
-    }
-
-    public static ResourceLocation getId(ClimateModel model)
-    {
-        return REGISTRY.inverse().getOrDefault(model.type(), ClimateModels.BIOME_BASED.get().id());
     }
 
     public static float getTemperature(Level level, BlockPos pos, long calendarTick, int daysInMonth)

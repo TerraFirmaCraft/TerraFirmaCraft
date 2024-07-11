@@ -6,13 +6,8 @@
 
 package net.dries007.tfc.util.climate;
 
-import java.util.function.Supplier;
-
-import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -31,10 +26,9 @@ public interface ClimateModel
     float MAXIMUM_RAINFALL = 500f;
 
     /**
-     * The type of this climate model.
-     * Must be registered through {@link Climate#register(ResourceLocation, Supplier)}
+     * The type of this climate model. Must be registered through {@link ClimateModels#REGISTRY}
      */
-    ClimateModelType type();
+    ClimateModelType<?> type();
 
     /**
      * Get the temperature at a given position, and timestamp.

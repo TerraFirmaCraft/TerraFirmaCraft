@@ -14,17 +14,16 @@ import net.minecraft.world.entity.projectile.ThrownPotion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.Cancelable;
-import net.minecraftforge.eventbus.api.Event;
+import net.neoforged.bus.api.Event;
+import net.neoforged.bus.api.ICancellableEvent;
+import net.neoforged.neoforge.common.NeoForge;
 import org.jetbrains.annotations.Nullable;
 
-@Cancelable
-public class DouseFireEvent extends Event
+public class DouseFireEvent extends Event implements ICancellableEvent
 {
     public static boolean douse(Level level, BlockPos pos, @Nullable Player player)
     {
-        return MinecraftForge.EVENT_BUS.post(new DouseFireEvent(level, pos, level.getBlockState(pos), new AABB(pos), player));
+        return NeoForge.EVENT_BUS.post(new DouseFireEvent(level, pos, level.getBlockState(pos), new AABB(pos), player)).isCanceled();
     }
 
     public static void douse(Level level, AABB bounds, @Nullable Player player)
@@ -45,7 +44,7 @@ public class DouseFireEvent extends Event
             }
         }
 
-        BlockPos.betweenClosedStream(bounds).forEach(pos -> MinecraftForge.EVENT_BUS.post(new DouseFireEvent(level, pos, level.getBlockState(pos), bounds, player)));
+        BlockPos.betweenClosedStream(bounds).forEach(pos -> NeoForge.EVENT_BUS.post(new DouseFireEvent(level, pos, level.getBlockState(pos), bounds, player)));
     }
 
     private final Level level;

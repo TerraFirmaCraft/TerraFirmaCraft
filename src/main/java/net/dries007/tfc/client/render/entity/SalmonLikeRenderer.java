@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.entity.SalmonRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.animal.Salmon;
 
-import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.client.RenderHelpers;
 
 public class SalmonLikeRenderer extends SalmonRenderer
 {
@@ -20,7 +20,7 @@ public class SalmonLikeRenderer extends SalmonRenderer
     public SalmonLikeRenderer(EntityRendererProvider.Context context, String name)
     {
         super(context);
-        texture = Helpers.animalTexture(name);
+        texture = RenderHelpers.animalTexture(name);
     }
 
     @Override

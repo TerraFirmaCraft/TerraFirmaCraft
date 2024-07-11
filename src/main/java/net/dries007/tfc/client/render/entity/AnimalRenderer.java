@@ -14,7 +14,6 @@ import net.minecraft.resources.ResourceLocation;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.entities.livestock.TFCAnimal;
-import net.dries007.tfc.util.Helpers;
 
 public class AnimalRenderer<T extends TFCAnimal, M extends EntityModel<T>> extends MobRenderer<T, M>
 {
@@ -29,8 +28,8 @@ public class AnimalRenderer<T extends TFCAnimal, M extends EntityModel<T>> exten
     public AnimalRenderer(EntityRendererProvider.Context ctx, M model, String name, float shadow)
     {
         super(ctx, model, shadow);
-        this.young = Helpers.animalTexture(name + "_young");
-        this.old = Helpers.animalTexture(name + "_old");
+        this.young = RenderHelpers.animalTexture(name + "_young");
+        this.old = RenderHelpers.animalTexture(name + "_old");
     }
 
     @Override

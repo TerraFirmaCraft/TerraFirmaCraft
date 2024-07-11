@@ -7,17 +7,14 @@
 package net.dries007.tfc.util.climate;
 
 import java.util.function.Supplier;
-
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
 
-public record ClimateModelType(
-    ResourceLocation id,
-    Supplier<ClimateModel> factory,
-    StreamCodec<ByteBuf, ClimateModel> codec
+public record ClimateModelType<T extends ClimateModel>(
+    Supplier<T> factory,
+    StreamCodec<ByteBuf, T> codec
 ) {
-    public ClimateModel create()
+    public T create()
     {
         return factory.get();
     }

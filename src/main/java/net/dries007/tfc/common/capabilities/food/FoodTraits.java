@@ -8,6 +8,7 @@ package net.dries007.tfc.common.capabilities.food;
 
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
+import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.RegistryBuilder;
@@ -35,7 +36,7 @@ public class FoodTraits
     public static final DeferredHolder<FoodTrait, FoodTrait> WILD = register("wild", TFCConfig.SERVER.traitWildModifier); // wild pumpkins last a bit longer, just in case you don't see them right away.
 
 
-    private static DeferredHolder<FoodTrait, FoodTrait> register(String name, ForgeConfigSpec.DoubleValue decayModifier)
+    private static DeferredHolder<FoodTrait, FoodTrait> register(String name, ModConfigSpec.DoubleValue decayModifier)
     {
         return TRAITS.register(name, () -> new FoodTrait(() -> decayModifier.get().floatValue(), "tfc.tooltip.food_trait." + name));
     }

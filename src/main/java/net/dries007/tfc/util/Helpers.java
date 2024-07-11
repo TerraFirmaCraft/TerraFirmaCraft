@@ -19,10 +19,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.Callable;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.IntFunction;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -91,7 +89,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
-import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.storage.loot.LootParams;
@@ -100,22 +97,14 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.capabilities.CapabilityToken;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.util.thread.EffectiveSide;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.IItemHandlerModifiable;
-import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.server.ServerLifecycleHooks;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.util.thread.EffectiveSide;
 import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
@@ -131,10 +120,10 @@ import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.capabilities.size.Size;
 import net.dries007.tfc.common.capabilities.size.Weight;
 import net.dries007.tfc.common.effect.TFCEffects;
-import net.dries007.tfc.common.entities.GenderedRenderAnimal;
 import net.dries007.tfc.common.entities.ai.prey.PestAi;
 import net.dries007.tfc.common.entities.prey.Pest;
 import net.dries007.tfc.common.items.TFCShieldItem;
+import net.dries007.tfc.common.recipes.RecipeHelpers;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.RecipeManagerAccessor;
 import net.dries007.tfc.util.data.Metal;
@@ -195,7 +184,7 @@ public final class Helpers
      */
     public static ResourceLocation resourceLocation(String name)
     {
-        return new ResourceLocation(name);
+        return ResourceLocation.parse(name);
     }
 
     /**
@@ -203,7 +192,7 @@ public final class Helpers
      */
     public static ResourceLocation resourceLocation(String domain, String path)
     {
-        return new ResourceLocation(domain, path);
+        return ResourceLocation.fromNamespaceAndPath(domain, path);
     }
 
     public static boolean isJEIEnabled()
@@ -502,10 +491,10 @@ public final class Helpers
 
     public static ItemStack damageCraftingItem(ItemStack stack, int amount)
     {
-        Player player = ForgeHooks.getCraftingPlayer(); // Mods may not set this properly
-        if (player != null)
+        final @Nullable Player player = RecipeHelpers.getCraftingPlayer(); // Mods may not set this properly
+        if (player instanceof ServerPlayer serverPlayer)
         {
-            stack.hurtAndBreak(amount, player, entity -> {});
+            stack.hurtAndBreak(amount, serverPlayer.serverLevel(), serverPlayer, entity -> {});
         }
         else
         {
@@ -611,12 +600,12 @@ public final class Helpers
 
     public static MobEffectInstance getOverburdened(boolean visible)
     {
-        return new MobEffectInstance(TFCEffects.OVERBURDENED.get(), 25, 0, false, visible);
+        return new MobEffectInstance(TFCEffects.OVERBURDENED.holder(), 25, 0, false, visible);
     }
 
     public static MobEffectInstance getExhausted(boolean visible)
     {
-        return new MobEffectInstance(TFCEffects.EXHAUSTED.get(), 25, 0, false, visible);
+        return new MobEffectInstance(TFCEffects.EXHAUSTED.holder(), 25, 0, false, visible);
     }
 
     /**
@@ -1074,68 +1063,6 @@ public final class Helpers
         return FluidStack.EMPTY;
     }
 
-    public static <E> void encodeArray(FriendlyByteBuf buffer, E[] array, BiConsumer<E, FriendlyByteBuf> encoder)
-    {
-        buffer.writeVarInt(array.length);
-        for (E e : array)
-        {
-            encoder.accept(e, buffer);
-        }
-    }
-
-    public static <E> E[] decodeArray(FriendlyByteBuf buffer, IntFunction<E[]> arrayCtor, Function<FriendlyByteBuf, E> decoder)
-    {
-        final int size = buffer.readVarInt();
-        final E[] array = arrayCtor.apply(size);
-        for (int i = 0; i < size; i++)
-        {
-            array[i] = decoder.apply(buffer);
-        }
-        return array;
-    }
-
-    public static <E, C extends Collection<E>> C decodeAll(FriendlyByteBuf buffer, C collection, Function<FriendlyByteBuf, E> decoder)
-    {
-        final int size = buffer.readVarInt();
-        for (int i = 0; i < size; i++)
-        {
-            collection.add(decoder.apply(buffer));
-        }
-        return collection;
-    }
-
-    public static <E, C extends Collection<E>> void encodeAll(FriendlyByteBuf buffer, C collection, BiConsumer<E, FriendlyByteBuf> encoder)
-    {
-        buffer.writeVarInt(collection.size());
-        for (E e : collection)
-        {
-            encoder.accept(e, buffer);
-        }
-    }
-
-    public static <T> void encodeNullable(@Nullable T instance, FriendlyByteBuf buffer, BiConsumer<T, FriendlyByteBuf> encoder)
-    {
-        if (instance != null)
-        {
-            buffer.writeBoolean(true);
-            encoder.accept(instance, buffer);
-        }
-        else
-        {
-            buffer.writeBoolean(false);
-        }
-    }
-
-    @Nullable
-    public static <T> T decodeNullable(FriendlyByteBuf buffer, Function<FriendlyByteBuf, T> decoder)
-    {
-        if (buffer.readBoolean())
-        {
-            return decoder.apply(buffer);
-        }
-        return null;
-    }
-
     /**
      * @see net.minecraft.core.QuartPos#toBlock(int)
      */
@@ -1184,21 +1111,6 @@ public final class Helpers
             Collections.swap(list, i, r.nextInt(i + 1));
         }
         return list.subList(length - n, length);
-    }
-
-    /** @deprecated Unused, remove in 1.21 */
-    @Deprecated
-    public static <T> void insertBefore(List<? super T> list, T element, T before)
-    {
-        final int index = list.indexOf(before);
-        if (index == -1)
-        {
-            list.add(element); // Element not found, so just insert at the end
-        }
-        else
-        {
-            list.add(index, element); // Insert at the target location, shifts the target forwards
-        }
     }
 
     /**
@@ -1440,6 +1352,55 @@ public final class Helpers
     }
 
     /**
+     * Used by {@link Helpers#perfectMatchExists(List, List)}
+     * Computes a symbolic determinant
+     */
+    private static boolean perfectMatchDet(boolean[][] matrices, int size)
+    {
+        // matrix true = nonzero = matches
+        final boolean[] matrix = matrices[size - 1];
+        return switch (size)
+        {
+            case 1 -> matrix[0];
+            case 2 -> (matrix[0] && matrix[3]) || (matrix[1] && matrix[2]);
+            default ->
+            {
+                for (int c = 0; c < size; c++)
+                {
+                    if (matrix[c])
+                    {
+                        perfectMatchSub(matrices, size, c);
+                        if (perfectMatchDet(matrices, size - 1))
+                        {
+                            yield true;
+                        }
+                    }
+                }
+                yield false;
+            }
+        };
+    }
+
+    /**
+     * Used by {@link Helpers#perfectMatchExists(List, List)}
+     * Computes the symbolic minor of a matrix by removing an arbitrary column.
+     */
+    private static void perfectMatchSub(boolean[][] matrices, int size, int dc)
+    {
+        final int subSize = size - 1;
+        final boolean[] matrix = matrices[subSize], sub = matrices[subSize - 1];
+        for (int c = 0; c < subSize; c++)
+        {
+            final int c0 = c + (c >= dc ? 1 : 0);
+            for (int r = 0; r < subSize; r++)
+            {
+                sub[c + subSize * r] = matrix[c0 + size * (r + 1)];
+            }
+        }
+    }
+
+
+    /**
      * Adds a tooltip based on an inventory, listing out the items inside.
      * Modified from {@link net.minecraft.world.level.block.ShulkerBoxBlock#appendHoverText(ItemStack, BlockGetter, List, TooltipFlag)}
      */
@@ -1495,6 +1456,7 @@ public final class Helpers
         return stack.is(tag);
     }
 
+    @SuppressWarnings("deprecation")
     public static boolean isItem(Item item, TagKey<Item> tag)
     {
         return item.builtInRegistryHolder().is(tag);
@@ -1520,6 +1482,7 @@ public final class Helpers
         return state.is(tag);
     }
 
+    @SuppressWarnings("deprecation")
     public static boolean isBlock(Block block, TagKey<Block> tag)
     {
         return block.builtInRegistryHolder().is(tag);
@@ -1540,6 +1503,7 @@ public final class Helpers
         return state.is(tag);
     }
 
+    @SuppressWarnings("deprecation")
     public static boolean isFluid(Fluid fluid, TagKey<Fluid> tag)
     {
         return fluid.is(tag);
@@ -1575,90 +1539,9 @@ public final class Helpers
         return source.is(tag);
     }
 
-    /**
-     * @deprecated Use builtin registry holders where possible. Remove in 1.21
-     */
-    @Deprecated
-    public static <T> Holder<T> getHolder(IForgeRegistry<T> registry, T object)
-    {
-        return registry.getHolder(object).orElseThrow();
-    }
-
-    /**
-     * @deprecated Use one of the overloads for a specific type. Remove in 1.21
-     * @see #isItem(Item, TagKey)
-     * @see #isBlock(Block, TagKey)
-     * @see #isFluid(Fluid, TagKey)
-     * @see #isEntity(Entity, TagKey)
-     */
-    @Deprecated
-    public static <T> boolean checkTag(IForgeRegistry<T> registry, T object, TagKey<T> tag)
-    {
-        return Objects.requireNonNull(registry.tags()).getTag(tag).contains(object);
-    }
-
-    /**
-     * @deprecated Use one of the overloads for a specific type. Remove in 1.21
-     * @see #randomItem(TagKey, RandomSource)
-     * @see #randomBlock(TagKey, RandomSource)
-     * @see #randomEntity(TagKey, RandomSource)
-     */
-    @Deprecated
-    public static <T> Optional<T> getRandomElement(IForgeRegistry<T> registry, TagKey<T> tag, RandomSource random)
-    {
-        return Objects.requireNonNull(registry.tags()).getTag(tag).getRandomElement(random);
-    }
-
-    /**
-     * @deprecated Use one of the overloads for a specific type. Make {@code private} in 1.21
-     * @see #randomItem(TagKey, RandomSource)
-     * @see #randomBlock(TagKey, RandomSource)
-     * @see #randomEntity(TagKey, RandomSource)
-     */
-    public static <T> Optional<T> getRandomElement(Registry<T> registry, TagKey<T> tag, RandomSource random)
+    private static <T> Optional<T> getRandomElement(Registry<T> registry, TagKey<T> tag, RandomSource random)
     {
         return registry.getTag(tag).flatMap(set -> set.getRandomElement(random)).map(Holder::value);
-    }
-
-    /**
-     * @deprecated Use one of the overloads for a specific type. Remove in 1.21
-     * @see #allItems(TagKey)
-     * @see #allBlocks(TagKey)
-     * @see #allFluids(TagKey)
-     */
-    @Deprecated
-    public static <T> List<T> getAllTagValues(TagKey<T> tag, IForgeRegistry<T> registry)
-    {
-        return streamAllTagValues(tag, registry).toList();
-    }
-
-    /**
-     * @deprecated Use one of the overloads for a specific type. Remove in 1.21
-     * @see #allItems(TagKey)
-     * @see #allBlocks(TagKey)
-     * @see #allFluids(TagKey)
-     */
-    @Deprecated
-    public static <T> Stream<T> streamAllTagValues(TagKey<T> tag, IForgeRegistry<T> registry)
-    {
-        return Objects.requireNonNull(registry.tags()).getTag(tag).stream();
-    }
-
-    public static double sampleNoiseAndMapToRange(NormalNoise noise, double x, double y, double z, double min, double max)
-    {
-        return Mth.map(noise.getValue(x, y, z), -1, 1, min, max);
-    }
-
-    public static ResourceLocation animalTexture(String name)
-    {
-        return identifier("textures/entity/animal/" + name + ".png");
-    }
-
-    public static <T> ResourceLocation getGenderedTexture(GenderedRenderAnimal animal, String name)
-    {
-        final ResourceLocation male = Helpers.animalTexture(name + "_male");
-        final ResourceLocation female = Helpers.animalTexture(name + "_female");
-        return animal.displayMaleCharacteristics() ? male : female;
     }
 
     /**
@@ -1690,56 +1573,6 @@ public final class Helpers
         random.setSeed(baseSeed);
         final long seed = (index * random.nextLong() * 203704237L) ^ (decoration * random.nextLong() * 758031792L) ^ baseSeed;
         random.setSeed(seed);
-    }
-
-    /**
-     * Used by {@link Helpers#perfectMatchExists(List, List)}
-     * Computes a symbolic determinant
-     */
-    private static boolean perfectMatchDet(boolean[][] matrices, int size)
-    {
-        // matrix true = nonzero = matches
-        final boolean[] matrix = matrices[size - 1];
-        switch (size)
-        {
-            case 1:
-                return matrix[0];
-            case 2:
-                return (matrix[0] && matrix[3]) || (matrix[1] && matrix[2]);
-            default:
-            {
-                for (int c = 0; c < size; c++)
-                {
-                    if (matrix[c])
-                    {
-                        perfectMatchSub(matrices, size, c);
-                        if (perfectMatchDet(matrices, size - 1))
-                        {
-                            return true;
-                        }
-                    }
-                }
-                return false;
-            }
-        }
-    }
-
-    /**
-     * Used by {@link Helpers#perfectMatchExists(List, List)}
-     * Computes the symbolic minor of a matrix by removing an arbitrary column.
-     */
-    private static void perfectMatchSub(boolean[][] matrices, int size, int dc)
-    {
-        final int subSize = size - 1;
-        final boolean[] matrix = matrices[subSize], sub = matrices[subSize - 1];
-        for (int c = 0; c < subSize; c++)
-        {
-            final int c0 = c + (c >= dc ? 1 : 0);
-            for (int r = 0; r < subSize; r++)
-            {
-                sub[c + subSize * r] = matrix[c0 + size * (r + 1)];
-            }
-        }
     }
 
     @SuppressWarnings("unchecked")

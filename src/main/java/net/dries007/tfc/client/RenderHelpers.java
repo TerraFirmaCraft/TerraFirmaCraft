@@ -12,12 +12,12 @@ import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
-import net.minecraft.client.gui.GuiGraphics;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -46,7 +46,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
@@ -62,7 +61,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.joml.Matrix4f;
 
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
-import net.dries007.tfc.common.capabilities.heat.IHeat;
+import net.dries007.tfc.common.entities.GenderedRenderAnimal;
 import net.dries007.tfc.common.entities.livestock.TFCAnimal;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.util.Helpers;
@@ -654,6 +653,18 @@ public final class RenderHelpers
     public static boolean isInside(int mouseX, int mouseY, int leftX, int topY, int width, int height)
     {
         return mouseX >= leftX && mouseX <= leftX + width && mouseY >= topY && mouseY <= topY + height;
+    }
+
+    public static ResourceLocation animalTexture(String name)
+    {
+        return Helpers.identifier("textures/entity/animal/" + name + ".png");
+    }
+
+    public static <T> ResourceLocation getGenderedTexture(GenderedRenderAnimal animal, String name)
+    {
+        final ResourceLocation male = animalTexture(name + "_male");
+        final ResourceLocation female = animalTexture(name + "_female");
+        return animal.displayMaleCharacteristics() ? male : female;
     }
 
     private static float calculateTilt(float pitch)

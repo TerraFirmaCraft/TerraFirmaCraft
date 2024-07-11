@@ -151,6 +151,6 @@ public class SheetPileBlockEntity extends TFCBlockEntity
                 map.mergeInt(metal, 1, Integer::sum);
             }
         }
-        map.forEach((metal, ct) -> tooltip.accept(Component.literal("" + ct + "x ").append(metal.getDisplayName())));
+        map.forEach((metal, ct) -> tooltip.accept(Component.literal(ct + "x ").append(metal.getDisplayName())));
     }
 }

@@ -6,10 +6,6 @@
 
 package net.dries007.tfc.util.events;
 
-import net.dries007.tfc.util.advancements.TFCAdvancements;
-
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,11 +14,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.Cancelable;
-import net.minecraftforge.eventbus.api.Event;
+import net.neoforged.bus.api.Event;
+import net.neoforged.bus.api.ICancellableEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.util.InteractionManager;
+import net.dries007.tfc.util.advancements.TFCAdvancements;
 
 /**
  * This event is used for lighting things with fire. It can be cancelled to handle lighting of an external device or source.
@@ -32,8 +30,7 @@ import net.dries007.tfc.util.InteractionManager;
  * For simple devices that create fires either by right-clicking (like flint and steel) or by consuming (like fire charges), they can be added to the tags
  * {@code #tfc:starts_fires_with_durability} or {@code #tfc:starts_fires_with_items} and this event will be fired from {@link InteractionManager} automatically.
  */
-@Cancelable
-public final class StartFireEvent extends Event
+public final class StartFireEvent extends Event implements ICancellableEvent
 {
     public static boolean startFire(Level level, BlockPos pos, BlockState state, Direction direction, @Nullable Player player, ItemStack stack)
     {
@@ -43,7 +40,7 @@ public final class StartFireEvent extends Event
     public static boolean startFire(Level level, BlockPos pos, BlockState state, Direction direction, @Nullable Player player, ItemStack stack, FireStrength strength)
     {
         final StartFireEvent event = new StartFireEvent(level, pos, state, direction, player, stack, strength);
-        final boolean cancelled = MinecraftForge.EVENT_BUS.post(event);
+        final boolean cancelled = NeoForge.EVENT_BUS.post(event).isCanceled();
 
         if (cancelled && player instanceof ServerPlayer serverPlayer)
         {
