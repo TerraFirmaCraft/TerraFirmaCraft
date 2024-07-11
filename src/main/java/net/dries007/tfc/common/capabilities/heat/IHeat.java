@@ -13,7 +13,6 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.recipes.HeatingRecipe;
-import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.config.TFCConfig;
 
 /**
@@ -143,9 +142,8 @@ public interface IHeat extends INetworkHeat
             }
 
             // 'DANGER' tooltip is displayed for things that may be lost - defined by an empty item output
-            final ItemStackInventory wrapper = new ItemStackInventory(stack);
-            final HeatingRecipe recipe = HeatingRecipe.getRecipe(wrapper);
-            if (recipe != null && temperature > 0.9 * recipe.getTemperature() && recipe.assemble(wrapper, null).isEmpty())
+            final HeatingRecipe recipe = HeatingRecipe.getRecipe(stack);
+            if (recipe != null && temperature > 0.9 * recipe.getTemperature() && recipe.assembleItem(stack).isEmpty())
             {
                 tooltip.append(Component.translatable("tfc.tooltip.danger"));
             }

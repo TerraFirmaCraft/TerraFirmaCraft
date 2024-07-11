@@ -82,7 +82,6 @@ import net.dries007.tfc.common.items.EmptyPanItem;
 import net.dries007.tfc.common.items.PanItem;
 import net.dries007.tfc.common.recipes.ChiselRecipe;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
-import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.client.accessor.LocalPlayerAccessor;
@@ -307,12 +306,11 @@ public class ClientForgeEventHandler
             }
 
             // Metal content, inferred from a matching heat recipe.
-            final ItemStackInventory inventory = new ItemStackInventory(stack);
-            final HeatingRecipe recipe = HeatingRecipe.getRecipe(inventory);
+            final HeatingRecipe recipe = HeatingRecipe.getRecipe(stack);
             if (recipe != null)
             {
                 // Check what we would get if melted
-                final FluidStack fluid = recipe.assembleFluid(inventory);
+                final FluidStack fluid = recipe.assembleFluid(stack);
                 if (!fluid.isEmpty())
                 {
                     final Metal metal = Metal.get(fluid.getFluid());

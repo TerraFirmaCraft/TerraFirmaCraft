@@ -42,7 +42,6 @@ import net.dries007.tfc.common.capabilities.heat.IHeatBlock;
 import net.dries007.tfc.common.container.CrucibleContainer;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
-import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Alloy;
 import net.dries007.tfc.util.AlloyView;
@@ -103,9 +102,8 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
                     if (recipe != null && recipe.isValidTemperature(inputHeat.getTemperature()))
                     {
                         // Convert input
-                        final ItemStackInventory inventory = new ItemStackInventory(inputStack);
-                        final ItemStack outputItem = recipe.assemble(inventory, level.registryAccess());
-                        final FluidStack outputFluid = recipe.assembleFluid(inventory);
+                        final ItemStack outputItem = recipe.assembleItem(inputStack);
+                        final FluidStack outputFluid = recipe.assembleFluid(inputStack);
 
                         // Output transformations
                         FoodCapability.applyTrait(outputItem, FoodTraits.BURNT_TO_A_CRISP);

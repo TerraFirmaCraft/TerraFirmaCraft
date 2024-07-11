@@ -9,7 +9,6 @@ package net.dries007.tfc.common.blockentities;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -23,6 +22,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.items.ItemStackHandler;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blocks.BloomBlock;
 import net.dries007.tfc.common.blocks.MoltenBlock;
@@ -32,17 +33,13 @@ import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.recipes.BloomeryRecipe;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
-import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTransaction;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendarTickable;
 
-import net.minecraftforge.items.ItemStackHandler;
-import org.jetbrains.annotations.Nullable;
-
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.*;
 
 public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackHandler> implements ICalendarTickable
 {
@@ -320,18 +317,15 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
             assert inputStacks.isEmpty(); // If the cached recipe is null, we must have no inputs
 
             final Collection<BloomeryRecipe> recipes = Helpers.getRecipes(level, TFCRecipeTypes.BLOOMERY).values();
-            final ItemStackInventory inventory = new ItemStackInventory();
 
             loop:
             for (ItemEntity entity : itemEntities)
             {
                 // Optimization: pre-melt each input stack, and only check against the bloomery recipe's fluid input
-                inventory.setStack(entity.getItem());
-
-                final @Nullable HeatingRecipe heat = HeatingRecipe.getRecipe(inventory);
+                final @Nullable HeatingRecipe heat = HeatingRecipe.getRecipe(entity.getItem());
                 if (heat != null)
                 {
-                    final FluidStack fluid = heat.assembleFluid(inventory);
+                    final FluidStack fluid = heat.assembleFluid(entity.getItem());
                     for (BloomeryRecipe recipe : recipes)
                     {
                         if (recipe.matchesInput(fluid))
@@ -465,16 +459,13 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
         cachedRecipe = null;
 
         final Collection<BloomeryRecipe> recipes = Helpers.getRecipes(level, TFCRecipeTypes.BLOOMERY).values();
-        final ItemStackInventory inventory = new ItemStackInventory();
         for (ItemStack stack : inputStacks)
         {
             // Optimization: pre-melt each input stack, and only check against the bloomery recipe's fluid input
-            inventory.setStack(stack);
-
-            final @Nullable HeatingRecipe heat = HeatingRecipe.getRecipe(inventory);
+            final @Nullable HeatingRecipe heat = HeatingRecipe.getRecipe(stack);
             if (heat != null)
             {
-                final FluidStack fluid = heat.assembleFluid(inventory);
+                final FluidStack fluid = heat.assembleFluid(stack);
                 for (BloomeryRecipe recipe : recipes)
                 {
                     if (recipe.matchesInput(fluid))

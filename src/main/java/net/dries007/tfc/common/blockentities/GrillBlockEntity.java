@@ -6,11 +6,6 @@
 
 package net.dries007.tfc.common.blockentities;
 
-import net.dries007.tfc.common.capabilities.heat.IHeat;
-import net.dries007.tfc.config.TFCConfig;
-
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -20,17 +15,19 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.ItemStackHandler;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.PartialItemHandler;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodTraits;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.container.GrillContainer;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
-import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.*;
 
 public class GrillBlockEntity extends AbstractFirepitBlockEntity<ItemStackHandler>
 {
@@ -92,7 +89,7 @@ public class GrillBlockEntity extends AbstractFirepitBlockEntity<ItemStackHandle
                 HeatingRecipe recipe = cachedRecipes[slot - SLOT_EXTRA_INPUT_START];
                 if (recipe != null && recipe.isValidTemperature(inputHeat.getTemperature()))
                 {
-                    ItemStack output = recipe.assemble(new ItemStackInventory(inputStack), level.registryAccess());
+                    ItemStack output = recipe.assembleItem(inputStack);
                     FoodCapability.applyTrait(output, FoodTraits.WOOD_GRILLED);
                     FoodCapability.updateFoodDecayOnCreate(output);
                     inventory.setStackInSlot(slot, output);
@@ -114,11 +111,10 @@ public class GrillBlockEntity extends AbstractFirepitBlockEntity<ItemStackHandle
     @Override
     protected void updateCachedRecipe()
     {
-        assert level != null;
         for (int slot = SLOT_EXTRA_INPUT_START; slot <= SLOT_EXTRA_INPUT_END; slot++)
         {
             final ItemStack stack = inventory.getStackInSlot(slot);
-            cachedRecipes[slot - SLOT_EXTRA_INPUT_START] = stack.isEmpty() ? null : HeatingRecipe.getRecipe(new ItemStackInventory(stack));
+            cachedRecipes[slot - SLOT_EXTRA_INPUT_START] = stack.isEmpty() ? null : HeatingRecipe.getRecipe(stack);
         }
     }
 

@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.recipes;
 
 import java.util.Random;
-
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -21,17 +20,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.fluids.FluidStack;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
-import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.world.Codecs;
-
-import net.neoforged.neoforge.fluids.FluidStack;
-import org.jetbrains.annotations.Nullable;
 
 public class HeatingRecipe implements INoopInputRecipe
 {
@@ -55,12 +51,6 @@ public class HeatingRecipe implements INoopInputRecipe
         ByteBufCodecs.FLOAT, c -> c.chance,
         HeatingRecipe::new
     );
-
-    @Nullable
-    public static HeatingRecipe getRecipe(ItemStackInventory wrapper)
-    {
-        return getRecipe(wrapper.getStack());
-    }
 
     @Nullable
     public static HeatingRecipe getRecipe(ItemStack stack)
@@ -126,9 +116,8 @@ public class HeatingRecipe implements INoopInputRecipe
     /**
      * Returns the fluid component of the recipe output. This can be used for both stacked or non-stacked inputs.
      */
-    public FluidStack assembleFluid(ItemStackInventory inventory)
+    public FluidStack assembleFluid(ItemStack inputStack)
     {
-        final ItemStack inputStack = inventory.getStack();
         final FluidStack outputFluid = this.outputFluid.copy();
         if (useDurability && !outputFluid.isEmpty() && inputStack.getMaxDamage() > 0 && inputStack.isDamageableItem())
         {

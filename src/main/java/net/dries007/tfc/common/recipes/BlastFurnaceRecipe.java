@@ -16,13 +16,12 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.fluids.FluidStack;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
 import net.dries007.tfc.common.recipes.inventory.NonEmptyInput;
-import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
-import org.jetbrains.annotations.Nullable;
 
 public class BlastFurnaceRecipe implements ISimpleRecipe<BlastFurnaceRecipe.Inventory>
 {
@@ -32,11 +31,10 @@ public class BlastFurnaceRecipe implements ISimpleRecipe<BlastFurnaceRecipe.Inve
     @Nullable
     public static BlastFurnaceRecipe get(Level level, ItemStack stack)
     {
-        final ItemStackInventory inventory = new ItemStackInventory(stack);
-        final HeatingRecipe heatRecipe = HeatingRecipe.getRecipe(inventory);
+        final HeatingRecipe heatRecipe = HeatingRecipe.getRecipe(stack);
         if (heatRecipe != null)
         {
-            final FluidStack moltenFluid = heatRecipe.assembleFluid(inventory);
+            final FluidStack moltenFluid = heatRecipe.assembleFluid(stack);
             for (BlastFurnaceRecipe recipe : Helpers.getRecipes(level, TFCRecipeTypes.BLAST_FURNACE).values())
             {
                 if (recipe.inputFluid.ingredient().test(moltenFluid.getFluid()))
@@ -100,12 +98,11 @@ public class BlastFurnaceRecipe implements ISimpleRecipe<BlastFurnaceRecipe.Inve
 
     public boolean matchesInput(ItemStack stack)
     {
-        final ItemStackInventory inventory = new ItemStackInventory(stack);
-        final HeatingRecipe heat = HeatingRecipe.getRecipe(inventory);
+        final HeatingRecipe heat = HeatingRecipe.getRecipe(stack);
         if (heat != null)
         {
             // Ignore count, since the blast furnace will aggregate all inputs
-            final FluidStack fluid = heat.assembleFluid(inventory);
+            final FluidStack fluid = heat.assembleFluid(stack);
             return inputFluid.ingredient().test(fluid.getFluid());
         }
         return false;

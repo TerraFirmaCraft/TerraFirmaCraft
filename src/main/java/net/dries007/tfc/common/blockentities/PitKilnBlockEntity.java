@@ -20,21 +20,18 @@ import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-
 import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.VisibleForTesting;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.PitKilnBlock;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
-import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
-
-import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.VisibleForTesting;
 
 public class PitKilnBlockEntity extends PlacedItemBlockEntity
 {
@@ -311,7 +308,7 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
                 final HeatingRecipe recipe = cachedRecipes[slot]; // And transform recipes
                 if (recipe != null && recipe.isValidTemperature(targetTemperature))
                 {
-                    final ItemStack out = recipe.assemble(new ItemStackInventory(stack), level.registryAccess()); // Liquids are lost
+                    final ItemStack out = recipe.assembleItem(stack); // Liquids are lost
                     inventory.setStackInSlot(slot, out);
                 }
             }
@@ -327,10 +324,9 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
     @VisibleForTesting
     public void updateCache()
     {
-        if (level == null) return;
         for (int i = 0; i < 4; i++)
         {
-            cachedRecipes[i] = HeatingRecipe.getRecipe(new ItemStackInventory(inventory.getStackInSlot(i)));
+            cachedRecipes[i] = HeatingRecipe.getRecipe(inventory.getStackInSlot(i));
         }
     }
 }

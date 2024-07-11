@@ -81,8 +81,8 @@ public class FirepitBlockEntity extends AbstractFirepitBlockEntity<ItemStackHand
                     this.inventory.setStackInSlot(SLOT_ITEM_INPUT, ItemStack.EMPTY);
 
                     // Handle outputs
-                    mergeOutputStack(recipe.assemble(inventory, level.registryAccess()));
-                    mergeOutputFluids(recipe.assembleFluid(inventory), cap.getTemperature());
+                    mergeOutputStack(recipe.assembleItem(inputStack));
+                    mergeOutputFluids(recipe.assembleFluid(inputStack), cap.getTemperature());
                 }
             }
         }
@@ -97,8 +97,7 @@ public class FirepitBlockEntity extends AbstractFirepitBlockEntity<ItemStackHand
     @Override
     protected void updateCachedRecipe()
     {
-        assert level != null;
-        cachedRecipe = HeatingRecipe.getRecipe(new ItemStackInventory(inventory.getStackInSlot(FirepitBlockEntity.SLOT_ITEM_INPUT)));
+        cachedRecipe = HeatingRecipe.getRecipe(inventory.getStackInSlot(FirepitBlockEntity.SLOT_ITEM_INPUT));
     }
 
     /**

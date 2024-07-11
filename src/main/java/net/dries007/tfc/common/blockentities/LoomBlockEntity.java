@@ -25,7 +25,6 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.capabilities.PartialItemHandler;
 import net.dries007.tfc.common.recipes.LoomRecipe;
-import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
@@ -66,7 +65,7 @@ public class LoomBlockEntity extends TickableInventoryBlockEntity<ItemStackHandl
                     if (loom.progress == recipe.getStepCount())
                     {
                         loom.inventory.setStackInSlot(SLOT_RECIPE, ItemStack.EMPTY);
-                        loom.inventory.setStackInSlot(SLOT_OUTPUT, recipe.assemble(new ItemStackInventory(loom.inventory.getStackInSlot(SLOT_RECIPE)), level.registryAccess()));
+                        loom.inventory.setStackInSlot(SLOT_OUTPUT, recipe.assemble(loom.inventory.getStackInSlot(SLOT_RECIPE)));
                     }
                     loom.markForSync();
                 }

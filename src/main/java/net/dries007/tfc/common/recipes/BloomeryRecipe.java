@@ -15,15 +15,13 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.fluids.FluidStack;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
 import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
 import net.dries007.tfc.common.recipes.inventory.NonEmptyInput;
-import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.util.JsonHelpers;
-
-import org.jetbrains.annotations.Nullable;
 
 public class BloomeryRecipe implements ISimpleRecipe<NonEmptyInput>
 {
@@ -84,12 +82,11 @@ public class BloomeryRecipe implements ISimpleRecipe<NonEmptyInput>
      */
     public @Nullable FluidStack consumeInput(ItemStack stack)
     {
-        final ItemStackInventory inventory = new ItemStackInventory(stack);
-        final HeatingRecipe heat = HeatingRecipe.getRecipe(inventory);
+        final HeatingRecipe heat = HeatingRecipe.getRecipe(stack);
         if (heat != null)
         {
             // Don't test amount here, because we just want to know if this stack melts into the correct metal - not how much
-            final FluidStack fluid = heat.assembleFluid(inventory);
+            final FluidStack fluid = heat.assembleFluid(stack);
             if (matchesInput(fluid))
             {
                 return fluid;

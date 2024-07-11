@@ -38,7 +38,6 @@ import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.container.CharcoalForgeContainer;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
-import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.Helpers;
@@ -369,9 +368,8 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
             assert level != null;
 
             // Handle possible metal output
-            final ItemStackInventory inventory = new ItemStackInventory(stack);
-            FluidStack fluidStack = recipe.assembleFluid(inventory);
-            ItemStack outputStack = recipe.assemble(inventory, level.registryAccess());
+            FluidStack fluidStack = recipe.assembleFluid(stack);
+            ItemStack outputStack = recipe.assembleItem(stack);
             float itemTemperature = cap.getTemperature();
 
             // Loop through all input slots
@@ -417,7 +415,7 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
             ItemStack inputStack = inventory.getStackInSlot(i);
             if (!inputStack.isEmpty())
             {
-                cachedRecipes[i - SLOT_INPUT_MIN] = HeatingRecipe.getRecipe(new ItemStackInventory(inputStack));
+                cachedRecipes[i - SLOT_INPUT_MIN] = HeatingRecipe.getRecipe(inputStack);
             }
         }
     }
