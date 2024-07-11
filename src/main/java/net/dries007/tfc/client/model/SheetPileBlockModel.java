@@ -41,7 +41,7 @@ public enum SheetPileBlockModel implements SimpleStaticBlockEntityModel<SheetPil
             if (state.getValue(DirectionPropertyBlock.getProperty(direction))) // The properties are authoritative on which sides should be rendered
             {
                 final Metal metal = pile.getOrCacheMetal(direction);
-                sprite = textureAtlas.apply(metal.getTextureId());
+                sprite = textureAtlas.apply(metal.textureId());
 
                 renderSheet(poseStack, sprite, buffer, direction, packedLight, packedOverlay);
             }

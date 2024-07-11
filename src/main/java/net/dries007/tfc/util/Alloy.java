@@ -13,7 +13,6 @@ import java.util.Set;
 import net.dries007.tfc.common.recipes.AlloyRecipe;
 import org.jetbrains.annotations.Nullable;
 
-import com.google.common.collect.Sets;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.crafting.RecipeManager;
 
@@ -207,7 +206,7 @@ public class Alloy implements AlloyView
         CompoundTag alloys = new CompoundTag();
         for (Object2DoubleMap.Entry<Metal> entry : this.metalMap.object2DoubleEntrySet())
         {
-            alloys.putDouble(entry.getKey().getId().toString(), entry.getDoubleValue());
+            alloys.putDouble(entry.getKey().id().toString(), entry.getDoubleValue());
         }
         nbt.put("contents", alloys);
         return nbt;
@@ -229,7 +228,7 @@ public class Alloy implements AlloyView
         final CompoundTag contents = nbt.getCompound("contents");
         for (Metal metal : Metal.MANAGER.getValues())
         {
-            String key = metal.getId().toString();
+            String key = metal.id().toString();
             if (contents.contains(key))
             {
                 metalMap.put(metal, contents.getDouble(key));

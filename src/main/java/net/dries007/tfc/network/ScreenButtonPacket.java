@@ -9,12 +9,9 @@ package net.dries007.tfc.network;
 import java.util.Optional;
 
 import net.dries007.tfc.common.container.ButtonHandlerContainer;
-import net.dries007.tfc.util.Helpers;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -27,7 +24,7 @@ public record ScreenButtonPacket(
 ) implements CustomPacketPayload
 {
     public static final CustomPacketPayload.Type<ScreenButtonPacket> TYPE = PacketHandler.type("screen_button");
-    public static final StreamCodec<ByteBuf, ScreenButtonPacket> STREAM = StreamCodec.composite(
+    public static final StreamCodec<ByteBuf, ScreenButtonPacket> CODEC = StreamCodec.composite(
         ByteBufCodecs.VAR_INT, c -> c.buttonId,
         ByteBufCodecs.OPTIONAL_COMPOUND_TAG, c -> c.extraNbt,
         ScreenButtonPacket::new

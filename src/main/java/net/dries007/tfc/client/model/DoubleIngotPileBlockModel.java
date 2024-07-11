@@ -35,7 +35,7 @@ public enum DoubleIngotPileBlockModel implements SimpleStaticBlockEntityModel<Do
         for (int i = 0; i < ingots; i++)
         {
             final Metal metal = pile.getOrCacheMetal(i);
-            sprite = textureAtlas.apply(metal.getSoftTextureId());
+            sprite = textureAtlas.apply(metal.softTextureId());
 
             final int layer = (i + 6) / 6;
             final boolean oddLayer = (layer % 2) == 1;

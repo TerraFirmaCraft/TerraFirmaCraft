@@ -360,7 +360,7 @@ public class MoldItem extends Item
             final Metal metal = getContainedMetal();
             if (metal != null)
             {
-                return getTemperature() >= metal.getMeltTemperature();
+                return getTemperature() >= metal.meltTemperature();
             }
             return false;
         }
@@ -408,7 +408,7 @@ public class MoldItem extends Item
             if (!fluid.isEmpty() && metal != null)
             {
                 // Non-empty mold, so add the heat capacity of the vessel with the heat capacity of the content
-                value += metal.getHeatCapacity(fluid.getAmount());
+                value += metal.heatCapacity(fluid.getAmount());
             }
 
             heat.setHeatCapacity(value);

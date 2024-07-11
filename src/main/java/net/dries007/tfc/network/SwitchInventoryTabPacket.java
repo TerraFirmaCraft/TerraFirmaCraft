@@ -11,7 +11,6 @@ import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
 import net.dries007.tfc.util.Helpers;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -21,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 public record SwitchInventoryTabPacket(Tab tab) implements CustomPacketPayload
 {
     public static final CustomPacketPayload.Type<SwitchInventoryTabPacket> TYPE = PacketHandler.type("switch_inventory_tab");
-    public static final StreamCodec<ByteBuf, SwitchInventoryTabPacket> STREAM = Tab.STREAM.map(SwitchInventoryTabPacket::new, c -> c.tab);
+    public static final StreamCodec<ByteBuf, SwitchInventoryTabPacket> CODEC = Tab.STREAM.map(SwitchInventoryTabPacket::new, c -> c.tab);
 
     @Override
     public Type<? extends CustomPacketPayload> type()

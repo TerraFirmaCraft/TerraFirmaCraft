@@ -23,7 +23,7 @@ public record PlayerDataUpdatePacket(
 ) implements CustomPacketPayload
 {
     public static final CustomPacketPayload.Type<PlayerDataUpdatePacket> TYPE = PacketHandler.type("player_data");
-    public static final StreamCodec<ByteBuf, PlayerDataUpdatePacket> STREAM = StreamCodec.composite(
+    public static final StreamCodec<ByteBuf, PlayerDataUpdatePacket> CODEC = StreamCodec.composite(
         ByteBufCodecs.VAR_LONG, c -> c.lastDrinkTick,
         ByteBufCodecs.VAR_LONG, c -> c.intoxicationTick,
         ChiselRecipe.Mode.STREAM_CODEC, c -> c.mode,

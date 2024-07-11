@@ -51,7 +51,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.LingeringPotionItem;
 import net.minecraft.world.item.TieredItem;
-import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.crafting.RecipeManager;
@@ -74,7 +73,6 @@ import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.ProtoChunk;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -83,41 +81,8 @@ import net.minecraft.world.level.storage.ServerLevelData;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.TierSortingRegistry;
-import net.minecraftforge.common.ToolActions;
-import net.minecraftforge.event.AddReloadListenerEvent;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.ItemStackedOnOtherEvent;
-import net.minecraftforge.event.OnDatapackSyncEvent;
-import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.event.ServerChatEvent;
-import net.minecraftforge.event.TagsUpdatedEvent;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.EntityJoinLevelEvent;
-import net.minecraftforge.event.entity.EntityMountEvent;
-import net.minecraftforge.event.entity.ProjectileImpactEvent;
-import net.minecraftforge.event.entity.item.ItemExpireEvent;
-import net.minecraftforge.event.entity.living.AnimalTameEvent;
-import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.living.MobEffectEvent;
-import net.minecraftforge.event.entity.living.MobSpawnEvent;
-import net.minecraftforge.event.entity.living.ShieldBlockEvent;
-import net.minecraftforge.event.entity.player.BonemealEvent;
-import net.minecraftforge.event.entity.player.PlayerContainerEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.level.BlockEvent;
-import net.minecraftforge.event.level.ChunkDataEvent;
-import net.minecraftforge.event.level.ChunkWatchEvent;
-import net.minecraftforge.event.level.ExplosionEvent;
-import net.minecraftforge.event.level.LevelEvent;
-import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.event.OnDatapackSyncEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
@@ -185,13 +150,14 @@ import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.ChunkAccessAccessor;
 import net.dries007.tfc.mixin.accessor.RecipeManagerAccessor;
+import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.network.EffectExpirePacket;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.PlayerDrinkPacket;
 import net.dries007.tfc.network.UpdateClimateModelPacket;
 import net.dries007.tfc.util.AxeLoggingHelper;
+import net.dries007.tfc.util.DataManagers;
 import net.dries007.tfc.util.Drinkable;
-import net.dries007.tfc.util.EntityDamageResistance;
 import net.dries007.tfc.util.Fertilizer;
 import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.Helpers;
@@ -220,7 +186,6 @@ import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
 import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
 
 
 public final class ForgeEventHandler
@@ -1446,47 +1411,20 @@ public final class ForgeEventHandler
 
     public static void addReloadListeners(AddReloadListenerEvent event)
     {
-        event.addListener(Metal.MANAGER);
-        event.addListener(KnappingType.MANAGER);
-        event.addListener(Fuel.MANAGER);
-        event.addListener(Drinkable.MANAGER);
-        event.addListener(Support.MANAGER);
-        event.addListener(Pannable.MANAGER);
-        event.addListener(Sluiceable.MANAGER);
-        event.addListener(LampFuel.MANAGER);
-        event.addListener(Fertilizer.MANAGER);
-        event.addListener(ItemSizeManager.MANAGER);
-        event.addListener(ClimateRange.MANAGER);
-        event.addListener(Fauna.MANAGER);
-        event.addListener(HeatCapability.MANAGER);
-        event.addListener(FoodCapability.MANAGER);
-        event.addListener(EntityDamageResistance.MANAGER);
-        event.addListener(ItemDamageResistance.MANAGER);
-
-        // In addition, we capture the recipe manager here
+        DataManagers.REGISTRY.forEach(event::addListener);
         Helpers.setCachedRecipeManager(event.getServerResources().getRecipeManager());
     }
 
     public static void onDataPackSync(OnDatapackSyncEvent event)
     {
-        // Sync managers
-        final ServerPlayer player = event.getPlayer();
-        final PacketDistributor.PacketTarget target = player == null ? PacketDistributor.ALL.noArg() : PacketDistributor.PLAYER.with(() -> player);
-
-        PacketHandler.send(target, Metal.MANAGER.createSyncPacket());
-        PacketHandler.send(target, KnappingType.MANAGER.createSyncPacket());
-        PacketHandler.send(target, Fuel.MANAGER.createSyncPacket());
-        PacketHandler.send(target, Fertilizer.MANAGER.createSyncPacket());
-        PacketHandler.send(target, ItemDamageResistance.MANAGER.createSyncPacket());
-        PacketHandler.send(target, HeatCapability.MANAGER.createSyncPacket());
-        PacketHandler.send(target, FoodCapability.MANAGER.createSyncPacket());
-        PacketHandler.send(target, ItemSizeManager.MANAGER.createSyncPacket());
-        PacketHandler.send(target, ClimateRange.MANAGER.createSyncPacket());
-        PacketHandler.send(target, Drinkable.MANAGER.createSyncPacket());
-        PacketHandler.send(target, LampFuel.MANAGER.createSyncPacket());
-        PacketHandler.send(target, Pannable.MANAGER.createSyncPacket());
-        PacketHandler.send(target, Sluiceable.MANAGER.createSyncPacket());
-        PacketHandler.send(target, Support.MANAGER.createSyncPacket());
+        if (event.getPlayer() == null)
+        {
+            PacketDistributor.sendToAllPlayers(new DataManagerSyncPacket());
+        }
+        else
+        {
+            PacketDistributor.sendToPlayer(event.getPlayer(), new DataManagerSyncPacket());
+        }
     }
 
     /**

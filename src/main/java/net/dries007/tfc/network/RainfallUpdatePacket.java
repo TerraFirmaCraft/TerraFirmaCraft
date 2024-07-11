@@ -10,7 +10,6 @@ import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.util.tracker.WorldTracker;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -23,7 +22,7 @@ public record RainfallUpdatePacket(
 ) implements CustomPacketPayload
 {
     public static final CustomPacketPayload.Type<RainfallUpdatePacket> TYPE = PacketHandler.type("rainfall_update");
-    public static final StreamCodec<ByteBuf, RainfallUpdatePacket> STREAM = StreamCodec.composite(
+    public static final StreamCodec<ByteBuf, RainfallUpdatePacket> CODEC = StreamCodec.composite(
         ByteBufCodecs.VAR_LONG, c -> c.rainStartTick,
         ByteBufCodecs.VAR_LONG, c -> c.rainEndTick,
         ByteBufCodecs.FLOAT, c -> c.rainIntensity,

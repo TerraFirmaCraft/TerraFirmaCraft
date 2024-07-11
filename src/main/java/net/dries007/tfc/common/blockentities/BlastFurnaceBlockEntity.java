@@ -506,8 +506,8 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
             final Fuel fuel = Fuel.get(fuelStack);
             if (fuel != null)
             {
-                burnTicks += fuel.getDuration();
-                burnTemperature = fuel.getTemperature();
+                burnTicks += fuel.duration();
+                burnTemperature = fuel.temperature();
             }
             markForSync();
         }

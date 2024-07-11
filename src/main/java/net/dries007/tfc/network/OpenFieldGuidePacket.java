@@ -9,7 +9,6 @@ package net.dries007.tfc.network;
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -23,7 +22,7 @@ public record OpenFieldGuidePacket(
 ) implements CustomPacketPayload
 {
     public static final CustomPacketPayload.Type<OpenFieldGuidePacket> TYPE = PacketHandler.type("open_field_guide");
-    public static final StreamCodec<ByteBuf, OpenFieldGuidePacket> STREAM = StreamCodec.composite(
+    public static final StreamCodec<ByteBuf, OpenFieldGuidePacket> CODEC = StreamCodec.composite(
         ResourceLocation.STREAM_CODEC, c -> c.id,
         ByteBufCodecs.VAR_INT, c -> c.page,
         OpenFieldGuidePacket::new

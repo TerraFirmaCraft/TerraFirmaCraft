@@ -40,7 +40,7 @@ public class MoldLikeAlloyScreen extends TFCContainerScreen<MoldLikeAlloyContain
             final Metal metal = Metal.get(fluid.getFluid());
             if (metal != null)
             {
-                drawCenteredLine(stack, Component.translatable(metal.getTranslationKey()), 14);
+                drawCenteredLine(stack, metal.getDisplayName(), 14);
                 drawCenteredLine(stack, Tooltips.fluidUnits(fluid.getAmount()), 23);
 
                 final float temperature = mold.getTemperature();

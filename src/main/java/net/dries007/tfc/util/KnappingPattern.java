@@ -6,54 +6,77 @@
 
 package net.dries007.tfc.util;
 
+import java.util.ArrayList;
+import java.util.List;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.GsonHelper;
 
-public class KnappingPattern
+public final class KnappingPattern
 {
     public static final int MAX_WIDTH = 5;
     public static final int MAX_HEIGHT = 5;
 
-    public static KnappingPattern fromJson(JsonObject json)
+    public static final Codec<KnappingPattern> CODEC = RecordCodecBuilder.<Prototype>create(i -> i.group(
+        Codec.STRING.listOf(1, 5).fieldOf("pattern").forGetter(c -> c.pattern),
+        Codec.BOOL.fieldOf("outside_slot_required").forGetter(c -> c.outsideSlotRequired)
+    ).apply(i, Prototype::new)).comapFlatMap(KnappingPattern::readPattern, KnappingPattern::writePattern);
+
+    public static final StreamCodec<ByteBuf, KnappingPattern> STREAM_CODEC = StreamCodec.composite(
+        ByteBufCodecs.VAR_INT, c -> c.width,
+        ByteBufCodecs.VAR_INT, c -> c.height,
+        ByteBufCodecs.INT, c -> c.data,
+        ByteBufCodecs.BOOL, c -> c.outsideSlotRequired,
+        KnappingPattern::new
+    );
+
+    private static DataResult<KnappingPattern> readPattern(Prototype proto)
     {
-        final JsonArray array = json.getAsJsonArray("pattern");
-        final boolean empty = GsonHelper.getAsBoolean(json, "outside_slot_required", true);
+        final int height = proto.pattern.size();
+        if (height == 0 || height > MAX_HEIGHT) return DataResult.error(() -> "Invalid pattern: must have [1, 5] rows");
 
-        final int height = array.size();
-        if (height > MAX_HEIGHT) throw new JsonSyntaxException("Invalid pattern: too many rows, " + MAX_HEIGHT + " is maximum");
-        if (height == 0) throw new JsonSyntaxException("Invalid pattern: empty pattern not allowed");
+        final int width = proto.pattern.getFirst().length();
+        if (width == 0 || width > MAX_WIDTH) return DataResult.error(() -> "Invalid pattern: must have [1, 5] columns");
 
-        final int width = GsonHelper.convertToString(array.get(0), "pattern[ 0 ]").length();
-        if (width > MAX_WIDTH) throw new JsonSyntaxException("Invalid pattern: too many columns, " + MAX_WIDTH + " is maximum");
-
-        final KnappingPattern pattern = new KnappingPattern(width, height, empty);
+        final KnappingPattern pattern = new KnappingPattern(width, height, proto.outsideSlotRequired);
         for (int r = 0; r < height; ++r)
         {
-            String row = GsonHelper.convertToString(array.get(r), "pattern[" + r + "]");
-            if (r > 0 && width != row.length()) throw new JsonSyntaxException("Invalid pattern: each row must be the same width");
+            String row = proto.pattern.get(r);
+            if (r > 0 && width != row.length()) return DataResult.error(() -> "Invalid pattern: each row must be the same width");
             for (int c = 0; c < width; c++)
             {
                 pattern.set(r * width + c, row.charAt(c) != ' ');
             }
         }
-        return pattern;
+        return DataResult.success(pattern);
     }
 
-    public static KnappingPattern fromNetwork(FriendlyByteBuf buffer)
+    private static Prototype writePattern(KnappingPattern pattern)
     {
-        final int width = buffer.readVarInt();
-        final int height = buffer.readVarInt();
-        final int data = buffer.readInt();
-        final boolean empty = buffer.readBoolean();
-        return new KnappingPattern(width, height, data, empty);
+        final List<String> array = new ArrayList<>();
+        for (int r = 0; r < pattern.height; ++r)
+        {
+            final StringBuilder row = new StringBuilder();
+            for (int c = 0; c < pattern.width; c++)
+            {
+                row.append(pattern.get(r * pattern.width + c) ? '#' : ' ');
+            }
+            array.add(row.toString());
+        }
+        return new Prototype(array, pattern.outsideSlotRequired);
     }
 
     private final int width;
     private final int height;
-    private final boolean empty;
+    private final boolean outsideSlotRequired;
 
     private int data; // on = 1, off = 0
 
@@ -62,17 +85,17 @@ public class KnappingPattern
         this(MAX_WIDTH, MAX_HEIGHT, false);
     }
 
-    public KnappingPattern(int width, int height, boolean empty)
+    public KnappingPattern(int width, int height, boolean outsideSlotRequired)
     {
-        this(width, height, (1 << (width * height)) - 1, empty);
+        this(width, height, (1 << (width * height)) - 1, outsideSlotRequired);
     }
 
-    private KnappingPattern(int width, int height, int data, boolean empty)
+    private KnappingPattern(int width, int height, int data, boolean outsideSlotRequired)
     {
         this.width = width;
         this.height = height;
         this.data = data;
-        this.empty = empty;
+        this.outsideSlotRequired = outsideSlotRequired;
     }
 
     public int getWidth()
@@ -87,7 +110,7 @@ public class KnappingPattern
 
     public boolean isOutsideSlotRequired()
     {
-        return empty;
+        return outsideSlotRequired;
     }
 
     public void setAll(boolean value)
@@ -124,14 +147,6 @@ public class KnappingPattern
         return ((data >> index) & 0b1) == 1;
     }
 
-    public void toNetwork(FriendlyByteBuf buffer)
-    {
-        buffer.writeVarInt(width);
-        buffer.writeVarInt(height);
-        buffer.writeInt(data);
-        buffer.writeBoolean(empty);
-    }
-
     @Override
     public boolean equals(Object other)
     {
@@ -139,7 +154,7 @@ public class KnappingPattern
         if (other instanceof KnappingPattern p)
         {
             final int mask = (1 << (width * height)) - 1;
-            return width == p.width && height == p.height && empty == p.empty && (data & mask) == (p.data & mask);
+            return width == p.width && height == p.height && outsideSlotRequired == p.outsideSlotRequired && (data & mask) == (p.data & mask);
         }
         return false;
     }
@@ -176,7 +191,7 @@ public class KnappingPattern
                 if (x < startX || y < startY || x - startX >= other.width || y - startY >= other.height)
                 {
                     // If the current position in the matrix is outside the pattern, the value should be set by other.empty
-                    if (get(patternIdx) != other.empty)
+                    if (get(patternIdx) != other.outsideSlotRequired)
                     {
                         return false;
                     }
@@ -203,4 +218,6 @@ public class KnappingPattern
         }
         return true;
     }
+
+    record Prototype(List<String> pattern, boolean outsideSlotRequired) {}
 }

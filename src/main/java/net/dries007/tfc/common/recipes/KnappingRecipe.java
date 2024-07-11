@@ -6,10 +6,17 @@
 
 package net.dries007.tfc.common.recipes;
 
+import java.util.Optional;
 import java.util.function.Supplier;
 import com.google.gson.JsonObject;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;
@@ -21,51 +28,74 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.container.KnappingContainer;
+import net.dries007.tfc.util.DataManager;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
 import net.dries007.tfc.util.KnappingPattern;
 import net.dries007.tfc.util.KnappingType;
 
-public class KnappingRecipe implements ISimpleRecipe<KnappingContainer.Query>
+public class KnappingRecipe implements INoopInputRecipe
 {
-    private final ResourceLocation id;
-    private final KnappingPattern pattern;
-    private final ItemStack result;
-    private final @Nullable Ingredient ingredient;
-    private final Supplier<KnappingType> knappingType;
+    public static final MapCodec<KnappingRecipe> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
+        KnappingType.MANAGER.byIdReferenceCodec().fieldOf("knapping_type").forGetter(c -> c.knappingType),
+        KnappingPattern.CODEC.fieldOf("pattern").forGetter(c -> c.pattern),
+        Ingredient.CODEC.optionalFieldOf("ingredient").forGetter(c -> c.ingredient),
+        ItemStack.CODEC.fieldOf("result").forGetter(c -> c.result)
+    ).apply(i, KnappingRecipe::new));
 
-    public KnappingRecipe(ResourceLocation id, KnappingPattern pattern, ItemStack result, @Nullable Ingredient ingredient, Supplier<KnappingType> knappingType)
+    public static final StreamCodec<RegistryFriendlyByteBuf, KnappingRecipe> STREAM_CODEC = StreamCodec.composite(
+        KnappingType.MANAGER.byIdStreamCodec(), c -> c.knappingType,
+        KnappingPattern.STREAM_CODEC, c -> c.pattern,
+        ByteBufCodecs.optional(Ingredient.CONTENTS_STREAM_CODEC), c -> c.ingredient,
+        ItemStack.STREAM_CODEC, c -> c.result,
+        KnappingRecipe::new
+    );
+
+    private final DataManager.Reference<KnappingType> knappingType;
+    private final KnappingPattern pattern;
+    private final Optional<Ingredient> ingredient;
+    private final ItemStack result;
+
+    public KnappingRecipe(DataManager.Reference<KnappingType> knappingType, KnappingPattern pattern, Optional<Ingredient> ingredient, ItemStack result)
     {
-        this.id = id;
-        this.pattern = pattern;
-        this.result = result;
-        this.ingredient = ingredient;
         this.knappingType = knappingType;
+        this.pattern = pattern;
+        this.ingredient = ingredient;
+        this.result = result;
     }
 
-    @Override
-    public boolean matches(KnappingContainer.Query query, Level level)
+    public boolean matches(KnappingContainer input)
     {
-        return query.container().getKnappingType() == knappingType.get()
-            && query.container().getPattern().matches(getPattern())
-            && matchesItem(query.container().getOriginalStack());
+        return input.getKnappingType() == knappingType.get()
+            && input.getPattern().matches(getPattern())
+            && matchesItem(input.getOriginalStack());
     }
 
     public boolean matchesItem(ItemStack stack)
     {
-        return ingredient == null || ingredient.test(stack);
+        return ingredient.isEmpty() || ingredient.get().test(stack);
+    }
+
+    public KnappingType getKnappingType()
+    {
+        return knappingType.get();
+    }
+
+    public KnappingPattern getPattern()
+    {
+        return pattern;
+    }
+
+    @Nullable
+    public Ingredient getIngredient()
+    {
+        return ingredient.orElse(null);
     }
 
     @Override
-    public ItemStack getResultItem(@Nullable RegistryAccess access)
+    public ItemStack getResultItem(HolderLookup.Provider registries)
     {
         return result;
-    }
-
-    @Override
-    public ResourceLocation getId()
-    {
-        return id;
     }
 
     @Override
@@ -78,54 +108,5 @@ public class KnappingRecipe implements ISimpleRecipe<KnappingContainer.Query>
     public RecipeType<?> getType()
     {
         return TFCRecipeTypes.KNAPPING.get();
-    }
-
-    public KnappingPattern getPattern()
-    {
-        return pattern;
-    }
-
-    @Nullable
-    public Ingredient getIngredient()
-    {
-        return ingredient;
-    }
-
-    public KnappingType getKnappingType()
-    {
-        return knappingType.get();
-    }
-
-    public static class Serializer extends RecipeSerializerImpl<KnappingRecipe>
-    {
-        @Override
-        public KnappingRecipe fromJson(ResourceLocation recipeId, JsonObject json)
-        {
-            final Supplier<KnappingType> knappingType = JsonHelpers.getReference(json, "knapping_type", KnappingType.MANAGER);
-            final ItemStack result = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
-            final @Nullable Ingredient ingredient = json.has("ingredient") ? Ingredient.fromJson(json.get("ingredient")) : null;
-            final KnappingPattern pattern = KnappingPattern.fromJson(json);
-            return new KnappingRecipe(recipeId, pattern, result, ingredient, knappingType);
-        }
-
-        @Nullable
-        @Override
-        public KnappingRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
-        {
-            final KnappingPattern pattern = KnappingPattern.fromNetwork(buffer);
-            final ItemStack stack = buffer.readItem();
-            final @Nullable Ingredient ingredient = Helpers.decodeNullable(buffer, Ingredient::fromNetwork);
-            final Supplier<KnappingType> knappingType = KnappingType.MANAGER.getReference(buffer.readResourceLocation());
-            return new KnappingRecipe(recipeId, pattern, stack, ingredient, knappingType);
-        }
-
-        @Override
-        public void toNetwork(FriendlyByteBuf buffer, KnappingRecipe recipe)
-        {
-            recipe.getPattern().toNetwork(buffer);
-            buffer.writeItem(recipe.result);
-            Helpers.encodeNullable(recipe.ingredient, buffer, Ingredient::toNetwork);
-            buffer.writeResourceLocation(recipe.knappingType.get().getId());
-        }
     }
 }

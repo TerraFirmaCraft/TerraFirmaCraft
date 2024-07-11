@@ -286,11 +286,11 @@ public class ClientForgeEventHandler
             final Fuel fuel = Fuel.get(stack);
             if (fuel != null)
             {
-                final MutableComponent heatTooltip = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(fuel.getTemperature());
+                final MutableComponent heatTooltip = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(fuel.temperature());
                 if (heatTooltip != null)
                 {
                     // burns at %s for %s
-                    text.add(Component.translatable("tfc.tooltip.fuel_burns_at", heatTooltip, Calendars.CLIENT.getTimeDelta(fuel.getDuration())));
+                    text.add(Component.translatable("tfc.tooltip.fuel_burns_at", heatTooltip, Calendars.CLIENT.getTimeDelta(fuel.duration())));
                 }
             }
 
@@ -322,7 +322,7 @@ public class ClientForgeEventHandler
                         if (heatTooltip != null)
                         {
                             // %s mB of %s (at %s)
-                            text.add(Component.translatable("tfc.tooltip.item_melts_into", fluid.getAmount() * stack.getCount(), Component.translatable(metal.getTranslationKey()), heatTooltip));
+                            text.add(Component.translatable("tfc.tooltip.item_melts_into", fluid.getAmount() * stack.getCount(), metal.getDisplayName(), heatTooltip));
                         }
                     }
                 }

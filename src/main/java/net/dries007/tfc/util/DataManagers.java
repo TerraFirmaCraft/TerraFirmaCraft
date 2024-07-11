@@ -12,6 +12,11 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.RegistryBuilder;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
+import net.dries007.tfc.common.entities.Fauna;
+import net.dries007.tfc.util.climate.ClimateRange;
 
 public final class DataManagers
 {
@@ -26,6 +31,19 @@ public final class DataManagers
         register(ItemDamageResistance.MANAGER);
         register(Drinkable.MANAGER);
         register(Fertilizer.MANAGER);
+        register(Fuel.MANAGER);
+        register(Metal.MANAGER);
+        register(KnappingType.MANAGER);
+
+        register(Support.MANAGER);
+        register(Pannable.MANAGER);
+        register(Sluiceable.MANAGER);
+        register(LampFuel.MANAGER);
+        register(ItemSizeManager.MANAGER);
+        register(ClimateRange.MANAGER);
+        register(Fauna.MANAGER);
+        register(HeatCapability.MANAGER);
+        register(FoodCapability.MANAGER);
     }
 
     private static void register(DataManager<?> manager)

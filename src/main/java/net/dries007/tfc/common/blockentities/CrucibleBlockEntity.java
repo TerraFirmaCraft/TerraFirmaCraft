@@ -354,7 +354,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         public boolean isMolten()
         {
             assert crucible.level != null;
-            return crucible.temperature > alloy.getResult(crucible.level).getMeltTemperature();
+            return crucible.temperature > alloy.getResult(crucible.level).meltTemperature();
         }
 
         @Override
@@ -422,7 +422,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
                 {
                     crucible.markForSync();
                 }
-                return new FluidStack(result.getFluid(), amount);
+                return new FluidStack(result.fluid(), amount);
             }
             return FluidStack.EMPTY;
         }

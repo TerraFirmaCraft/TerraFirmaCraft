@@ -37,7 +37,7 @@ public class TFCRecipeSerializers
     public static final Id<SoupPotRecipe> POT_SOUP = register("pot_soup", SoupPotRecipe.CODEC, SoupPotRecipe.STREAM_CODEC);
     public static final Id<JamPotRecipe> POT_JAM = register("pot_jam", JamPotRecipe.CODEC, JamPotRecipe.STREAM_CODEC);
 
-    public static final Id<KnappingRecipe> KNAPPING = register("knapping", KnappingRecipe.Serializer::new);
+    public static final Id<KnappingRecipe> KNAPPING = register("knapping", KnappingRecipe.CODEC, KnappingRecipe.STREAM_CODEC);
     public static final Id<AlloyRecipe> ALLOY = register("alloy", AlloyRecipe.Serializer::new);
     public static final Id<CastingRecipe> CASTING = register("casting", CastingRecipe.Serializer::new);
     public static final Id<BloomeryRecipe> BLOOMERY = register("bloomery", BloomeryRecipe.Serializer::new);

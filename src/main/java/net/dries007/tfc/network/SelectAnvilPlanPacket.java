@@ -7,7 +7,6 @@
 package net.dries007.tfc.network;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
@@ -22,7 +21,7 @@ import net.dries007.tfc.util.Helpers;
 public record SelectAnvilPlanPacket(ResourceLocation recipeId) implements CustomPacketPayload
 {
     public static final CustomPacketPayload.Type<SelectAnvilPlanPacket> TYPE = PacketHandler.type("select_anvil_plan");
-    public static final StreamCodec<ByteBuf, SelectAnvilPlanPacket> STREAM = ResourceLocation.STREAM_CODEC.map(SelectAnvilPlanPacket::new, c -> c.recipeId);
+    public static final StreamCodec<ByteBuf, SelectAnvilPlanPacket> CODEC = ResourceLocation.STREAM_CODEC.map(SelectAnvilPlanPacket::new, c -> c.recipeId);
 
     public SelectAnvilPlanPacket(AnvilRecipe recipe)
     {

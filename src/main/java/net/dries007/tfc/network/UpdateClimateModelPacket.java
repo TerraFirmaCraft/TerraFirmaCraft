@@ -20,7 +20,7 @@ import net.dries007.tfc.util.tracker.WorldTracker;
 public record UpdateClimateModelPacket(ClimateModel model) implements CustomPacketPayload
 {
     public static final CustomPacketPayload.Type<UpdateClimateModelPacket> TYPE = PacketHandler.type("update_climate_model");
-    public static final StreamCodec<ByteBuf, UpdateClimateModelPacket> STREAM = ResourceLocation.STREAM_CODEC.dispatch(
+    public static final StreamCodec<ByteBuf, UpdateClimateModelPacket> CODEC = ResourceLocation.STREAM_CODEC.dispatch(
         c -> c.type().id(),
         id -> Climate.get(id).codec()
     ).map(UpdateClimateModelPacket::new, c -> c.model);

@@ -22,19 +22,29 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.mojang.logging.LogUtils;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.JsonOps;
+import com.mojang.serialization.MapCodec;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.neoforged.neoforge.common.conditions.ConditionalOps;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 
+// todo: add a int ID mechanism, sync int IDs as part of normal sync, and then use int IDs for stream codec references
 public class DataManager<T> extends SimpleJsonResourceReloadListener
 {
+    public static final MapCodec<ResourceLocation> ID = ExtraCodecs.retrieveContext(ops ->
+        ops instanceof DataManager.IdAware<?> idAware && idAware.id != null ? DataResult.success(idAware.id) : DataResult.error(() -> "Not ID aware"));
+
+
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final Gson GSON = new Gson();
 
@@ -43,6 +53,9 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
 
     protected final Codec<T> codec;
     protected final @Nullable StreamCodec<RegistryFriendlyByteBuf, T> streamCodec;
+
+    private final Codec<Reference<T>> byIdCodec = ResourceLocation.CODEC.xmap(this::getReference, Reference::id);
+    private final StreamCodec<ByteBuf, Reference<T>> byIdStreamCodec = ResourceLocation.STREAM_CODEC.map(this::getReference, Reference::id);
 
     private final Map<ResourceLocation, Reference<T>> references;
     private final Object referencesLock = new Object();
@@ -122,7 +135,28 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
         return streamCodec != null;
     }
 
-    public StreamCodec<RegistryFriendlyByteBuf, T> streamCodec()
+    /**
+     * @return A codec that can return a reference to an element via an ID, that does not require elements to be loaded
+     */
+    public final Codec<Reference<T>> byIdReferenceCodec()
+    {
+        return byIdCodec;
+    }
+
+    /**
+     * @return A stream codec used to write references to elements to the network
+     * N.B. We just write the element by resource location. This is a bit wasteful, but we would need proper registry ID sync which is difficult to manage
+     */
+    public final StreamCodec<ByteBuf, Reference<T>> byIdStreamCodec()
+    {
+        return byIdStreamCodec;
+    }
+
+    /**
+     * @return The codec used to write individual data manager elements to the network. Should only be used by the initial sync packet!
+     * @throws NullPointerException if {@link #isSynced()} is {@code false}
+     */
+    public final StreamCodec<RegistryFriendlyByteBuf, T> streamCodec()
     {
         return Objects.requireNonNull(streamCodec);
     }
@@ -148,17 +182,18 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
     {
         types.clear();
 
-        final ConditionalOps<JsonElement> ops = makeConditionalOps();
+        final IdAware<JsonElement> ops = new IdAware<>(getRegistryLookup().createSerializationContext(JsonOps.INSTANCE));
         for (Map.Entry<ResourceLocation, JsonElement> entry : elements.entrySet())
         {
-            final ResourceLocation name = entry.getKey();
+            final ResourceLocation id = entry.getKey();
             try
             {
-                types.put(name, codec.parse(ops, entry.getValue()).getOrThrow(JsonParseException::new));
+                ops.id = id;
+                types.put(id, codec.parse(ops, entry.getValue()).getOrThrow(JsonParseException::new));
             }
             catch (IllegalArgumentException | JsonParseException e)
             {
-                LOGGER.error("{} '{}' failed to parse. {}: {}", typeName, name, e.getClass().getSimpleName(), e.getMessage());
+                LOGGER.error("{} '{}' failed to parse. {}: {}", typeName, id, e.getClass().getSimpleName(), e.getMessage());
                 SelfTests.reportExternalError();
             }
         }
@@ -213,6 +248,16 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
         public T get()
         {
             return value.orElseThrow(() -> new IllegalStateException("Referencing value before loaded"));
+        }
+    }
+
+    static class IdAware<T> extends RegistryOps<T>
+    {
+        @Nullable ResourceLocation id = null;
+
+        IdAware(RegistryOps<T> other)
+        {
+            super(other);
         }
     }
 }

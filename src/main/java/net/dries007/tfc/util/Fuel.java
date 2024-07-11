@@ -6,10 +6,11 @@
 
 package net.dries007.tfc.util;
 
-import com.google.gson.JsonObject;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -18,9 +19,28 @@ import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import org.jetbrains.annotations.Nullable;
 
-public final class Fuel extends ItemDefinition
-{
-    public static final DataManager<Fuel> MANAGER = new DataManager<>(Helpers.identifier("fuels"), "fuel", Fuel::new, Fuel::new, Fuel::encode, Packet::new);
+public record Fuel(
+    Ingredient ingredient,
+    int duration,
+    float temperature,
+    float purity
+) {
+    public static final Codec<Fuel> CODEC = RecordCodecBuilder.create(i -> i.group(
+        Ingredient.CODEC.fieldOf("ingredient").forGetter(c -> c.ingredient),
+        Codec.INT.fieldOf("duration").forGetter(c -> c.duration),
+        Codec.FLOAT.fieldOf("temperature").forGetter(c -> c.temperature),
+        Codec.FLOAT.optionalFieldOf("purity", 1f).forGetter(c -> c.purity)
+    ).apply(i, Fuel::new));
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, Fuel> STREAM_CODEC = StreamCodec.composite(
+        Ingredient.CONTENTS_STREAM_CODEC, c -> c.ingredient,
+        ByteBufCodecs.VAR_INT, c -> c.duration,
+        ByteBufCodecs.FLOAT, c -> c.temperature,
+        ByteBufCodecs.FLOAT, c -> c.purity,
+        Fuel::new
+    );
+
+    public static final DataManager<Fuel> MANAGER = new DataManager<>(Helpers.identifier("fuels"), "fuel", CODEC, STREAM_CODEC);
     public static final IndirectHashCollection<Item, Fuel> CACHE = IndirectHashCollection.create(Fuel::getValidItems, MANAGER::getValues);
 
     @Nullable
@@ -28,59 +48,11 @@ public final class Fuel extends ItemDefinition
     {
         for (Fuel def : CACHE.getAll(stack.getItem()))
         {
-            if (def.matches(stack))
+            if (def.ingredient.test(stack))
             {
                 return def;
             }
         }
         return null;
     }
-
-    private final int duration;
-    private final float temperature;
-    private final float purity;
-
-    public Fuel(ResourceLocation id, JsonObject json)
-    {
-        super(id, json);
-
-        this.duration = GsonHelper.getAsInt(json, "duration");
-        this.temperature = GsonHelper.getAsFloat(json, "temperature");
-        this.purity = GsonHelper.getAsFloat(json, "purity", 1f);
-    }
-
-    public Fuel(ResourceLocation id, FriendlyByteBuf buffer)
-    {
-        super(id, Ingredient.fromNetwork(buffer));
-
-        this.duration = buffer.readVarInt();
-        this.temperature = buffer.readFloat();
-        this.purity = buffer.readFloat();
-    }
-
-    public void encode(FriendlyByteBuf buffer)
-    {
-        ingredient.toNetwork(buffer);
-
-        buffer.writeVarInt(duration);
-        buffer.writeFloat(temperature);
-        buffer.writeFloat(purity);
-    }
-
-    public int getDuration()
-    {
-        return duration;
-    }
-
-    public float getTemperature()
-    {
-        return temperature;
-    }
-
-    public float getPurity()
-    {
-        return purity;
-    }
-
-    public static class Packet extends DataManagerSyncPacket<Fuel> {}
 }

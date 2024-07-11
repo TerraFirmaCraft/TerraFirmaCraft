@@ -10,14 +10,13 @@ import net.dries007.tfc.util.calendar.Calendar;
 import net.dries007.tfc.util.calendar.Calendars;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 public record CalendarUpdatePacket(Calendar calendar) implements CustomPacketPayload
 {
     public static final CustomPacketPayload.Type<CalendarUpdatePacket> TYPE = PacketHandler.type("calendar_update");
-    public static final StreamCodec<ByteBuf, CalendarUpdatePacket> STREAM = Calendar.STREAM.map(CalendarUpdatePacket::new, CalendarUpdatePacket::calendar);
+    public static final StreamCodec<ByteBuf, CalendarUpdatePacket> CODEC = Calendar.STREAM.map(CalendarUpdatePacket::new, CalendarUpdatePacket::calendar);
 
     @Override
     public Type<? extends CustomPacketPayload> type()

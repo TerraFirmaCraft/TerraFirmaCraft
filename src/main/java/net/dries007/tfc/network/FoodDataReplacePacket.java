@@ -7,6 +7,7 @@
 package net.dries007.tfc.network;
 
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
@@ -22,7 +23,7 @@ public enum FoodDataReplacePacket implements CustomPacketPayload
     PACKET;
 
     public static final CustomPacketPayload.Type<FoodDataReplacePacket> TYPE = PacketHandler.type("replace_food_data");
-    public static final StreamCodec<?, FoodDataReplacePacket> STREAM = StreamCodec.unit(PACKET);
+    public static final StreamCodec<ByteBuf, FoodDataReplacePacket> CODEC = StreamCodec.unit(PACKET);
 
     @Override
     public Type<? extends CustomPacketPayload> type()

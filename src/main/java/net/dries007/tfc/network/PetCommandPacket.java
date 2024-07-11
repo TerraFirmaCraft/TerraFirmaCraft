@@ -9,7 +9,6 @@ package net.dries007.tfc.network;
 import net.dries007.tfc.common.entities.livestock.pet.TamableMammal;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -24,7 +23,7 @@ public record PetCommandPacket(
 ) implements CustomPacketPayload
 {
     public static final CustomPacketPayload.Type<PetCommandPacket> TYPE = PacketHandler.type("pet_command");
-    public static final StreamCodec<ByteBuf, PetCommandPacket> STREAM = StreamCodec.composite(
+    public static final StreamCodec<ByteBuf, PetCommandPacket> CODEC = StreamCodec.composite(
         ByteBufCodecs.VAR_INT, c -> c.entityId,
         TamableMammal.Command.STREAM, c -> c.command,
         PetCommandPacket::new

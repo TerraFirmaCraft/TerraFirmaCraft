@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.network;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
@@ -24,7 +25,7 @@ public enum PlayerDrinkPacket implements CustomPacketPayload
     PACKET;
 
     public static final CustomPacketPayload.Type<PlayerDrinkPacket> TYPE = PacketHandler.type("player_drink");
-    public static final StreamCodec<?, PlayerDrinkPacket> STREAM = StreamCodec.unit(PACKET);
+    public static final StreamCodec<ByteBuf, PlayerDrinkPacket> CODEC = StreamCodec.unit(PACKET);
 
     @Override
     public Type<? extends CustomPacketPayload> type()

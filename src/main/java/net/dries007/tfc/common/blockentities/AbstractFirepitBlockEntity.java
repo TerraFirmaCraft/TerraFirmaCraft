@@ -363,10 +363,10 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
             Fuel fuel = Fuel.get(fuelStack);
             if (fuel != null)
             {
-                burnTicks += fuel.getDuration();
-                lastMaxBurnTicks = fuel.getDuration();
-                burnTemperature = fuel.getTemperature();
-                dirtiness += 1f - fuel.getPurity();
+                burnTicks += fuel.duration();
+                lastMaxBurnTicks = fuel.duration();
+                burnTemperature = fuel.temperature();
+                dirtiness += 1f - fuel.purity();
             }
             if (level.random.nextFloat() < 0.5f)
             {

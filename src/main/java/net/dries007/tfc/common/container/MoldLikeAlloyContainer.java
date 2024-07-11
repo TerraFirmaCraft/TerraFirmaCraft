@@ -60,7 +60,7 @@ public class MoldLikeAlloyContainer extends ItemStackContainer implements ISlotC
                     {
                         final Metal metal = Objects.requireNonNullElse(Metal.get(drained.getFluid()), Metal.unknown());
                         final @Nullable IHeat outputHeat = HeatCapability.get(outputStack);
-                        final float heatCapacityOf1mB = metal.getHeatCapacity(1);
+                        final float heatCapacityOf1mB = metal.heatCapacity(1);
 
                         // Execute the prior drain, and adjust temperature
                         mold.drain(1, IFluidHandler.FluidAction.EXECUTE);

@@ -146,7 +146,7 @@ public class AlloyRecipe implements ISimpleRecipe<AlloyInventory>
                 buffer.writeDouble(range.min());
                 buffer.writeDouble(range.max());
             });
-            buffer.writeResourceLocation(recipe.result.get().getId());
+            buffer.writeResourceLocation(recipe.result.get().id());
         }
     }
 }

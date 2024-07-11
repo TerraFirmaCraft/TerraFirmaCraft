@@ -288,7 +288,7 @@ public class VesselItem extends Item
                 // Since the temperature here is not cached, we cannot cache the mode, and instead have to calculate it on demand
                 // The alloy result here is cached internally, and the temperature should be quick (since it queries the alloy heat handler)
                 final Metal result = alloy.getResult();
-                return getTemperature() >= result.getMeltTemperature() ? Mode.MOLTEN_ALLOY : Mode.SOLID_ALLOY;
+                return getTemperature() >= result.meltTemperature() ? Mode.MOLTEN_ALLOY : Mode.SOLID_ALLOY;
             }
         }
 
@@ -411,7 +411,7 @@ public class VesselItem extends Item
                 {
                     updateAndSave();
                 }
-                return new FluidStack(result.getFluid(), amount);
+                return new FluidStack(result.fluid(), amount);
             }
             return FluidStack.EMPTY;
         }

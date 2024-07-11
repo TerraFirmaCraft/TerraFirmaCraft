@@ -147,7 +147,6 @@ public final class TerraFirmaCraft
         ItemStackModifiers.TYPES.register(bus);
 
         TFCConfig.init();
-        PacketHandler.init();
         CalendarEventHandler.init();
         ForgeEventHandler.init();
 

@@ -6,21 +6,61 @@
 
 package net.dries007.tfc.util;
 
+import java.util.Optional;
 import com.google.gson.JsonObject;
+import com.mojang.datafixers.util.Function7;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
 import net.dries007.tfc.network.DataManagerSyncPacket;
+import net.dries007.tfc.network.PacketCodecs;
 
-public final class KnappingType
+public record KnappingType(
+    SizedIngredient inputItem,
+    int amountToConsume,
+    Holder<SoundEvent> clickSound,
+    boolean consumeAfterComplete,
+    boolean useDisabledTexture,
+    boolean spawnsParticles,
+    ItemStack jeiIconItem
+)
 {
-    public static final DataManager<KnappingType> MANAGER = new DataManager<>(Helpers.identifier("knapping_types"), "knapping_types", KnappingType::new, KnappingType::new, KnappingType::encode, Packet::new);
+    public static final Codec<KnappingType> CODEC = RecordCodecBuilder.create(i -> i.group(
+        SizedIngredient.FLAT_CODEC.fieldOf("input").forGetter(c -> c.inputItem),
+        Codec.INT.optionalFieldOf("amount_to_consume").forGetter(c -> c.amountToConsume == c.inputItem.count() ? Optional.empty() : Optional.of(c.amountToConsume)),
+        SoundEvent.CODEC.fieldOf("click_sound").forGetter(c -> c.clickSound),
+        Codec.BOOL.fieldOf("consume_after_complete").forGetter(c -> c.consumeAfterComplete),
+        Codec.BOOL.fieldOf("use_disabled_texture").forGetter(c -> c.useDisabledTexture),
+        Codec.BOOL.fieldOf("spawns_particles").forGetter(c -> c.spawnsParticles),
+        ItemStack.CODEC.fieldOf("jei_icon_item").forGetter(c -> c.jeiIconItem)
+    ).apply(i, KnappingType::new));
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, KnappingType> STREAM_CODEC = PacketCodecs.composite(
+        SizedIngredient.STREAM_CODEC, c -> c.inputItem,
+        ByteBufCodecs.VAR_INT, c -> c.amountToConsume,
+        ByteBufCodecs.holderRegistry(Registries.SOUND_EVENT), c -> c.clickSound,
+        ByteBufCodecs.BOOL, c -> c.consumeAfterComplete,
+        ByteBufCodecs.BOOL, c -> c.useDisabledTexture,
+        ByteBufCodecs.BOOL, c -> c.spawnsParticles,
+        ItemStack.STREAM_CODEC, c -> c.jeiIconItem,
+        KnappingType::new
+    );
+
+    public static final DataManager<KnappingType> MANAGER = new DataManager<>(Helpers.identifier("knapping_types"), "knapping_types", CODEC, STREAM_CODEC);
 
     @Nullable
     public static KnappingType get(Player player)
@@ -36,99 +76,8 @@ public final class KnappingType
         return null;
     }
 
-    private final ResourceLocation id;
-
-    private final ItemStackIngredient inputItem;
-    private final int amountToConsume;
-    private final SoundEvent clickSound;
-    private final boolean consumeAfterComplete;
-    private final boolean useDisabledTexture;
-    private final boolean spawnsParticles;
-
-    private final ItemStack jeiIconItem;
-
-    KnappingType(ResourceLocation id, JsonObject json)
+    public KnappingType(SizedIngredient inputItem, Optional<Integer> amountToConsume, Holder<SoundEvent> clickSound, boolean consumeAfterComplete, boolean useDisabledTexture, boolean spawnsParticles, ItemStack jeiIconItem)
     {
-        this.id = id;
-
-        this.inputItem = ItemStackIngredient.fromJson(JsonHelpers.getAsJsonObject(json, "input"));
-
-        this.amountToConsume = json.has("amount_to_consume") ? JsonHelpers.getAsInt(json, "amount_to_consume") : inputItem.count();
-        this.clickSound = JsonHelpers.getRegistryEntry(json, "click_sound", BuiltInRegistries.SOUND_EVENT);
-        this.consumeAfterComplete = JsonHelpers.getAsBoolean(json, "consume_after_complete");
-        this.useDisabledTexture = JsonHelpers.getAsBoolean(json, "use_disabled_texture");
-        this.spawnsParticles = JsonHelpers.getAsBoolean(json, "spawns_particles");
-
-        this.jeiIconItem = JsonHelpers.getItemStack(json, "jei_icon_item");
+        this(inputItem, amountToConsume.orElse(inputItem.count()), clickSound, consumeAfterComplete, useDisabledTexture, spawnsParticles, jeiIconItem);
     }
-
-    KnappingType(ResourceLocation id, FriendlyByteBuf buffer)
-    {
-        this.id = id;
-
-        this.inputItem = ItemStackIngredient.fromNetwork(buffer);
-
-        this.amountToConsume = buffer.readVarInt();
-        this.clickSound = BuiltInRegistries.SOUND_EVENT.byIdOrThrow(buffer.readVarInt());
-        this.consumeAfterComplete = buffer.readBoolean();
-        this.useDisabledTexture = buffer.readBoolean();
-        this.spawnsParticles = buffer.readBoolean();
-
-        this.jeiIconItem = buffer.readItem();
-    }
-
-    public ResourceLocation getId()
-    {
-        return id;
-    }
-
-    public ItemStackIngredient inputItem()
-    {
-        return inputItem;
-    }
-
-    public boolean consumeAfterComplete()
-    {
-        return consumeAfterComplete;
-    }
-
-    public int amountToConsume()
-    {
-        return amountToConsume;
-    }
-
-    public boolean spawnsParticles()
-    {
-        return spawnsParticles;
-    }
-
-    public boolean usesDisabledTexture()
-    {
-        return useDisabledTexture;
-    }
-
-    public SoundEvent clickSound()
-    {
-        return clickSound;
-    }
-
-    public ItemStack jeiIcon()
-    {
-        return jeiIconItem;
-    }
-
-    void encode(FriendlyByteBuf buffer)
-    {
-        inputItem.toNetwork(buffer);
-
-        buffer.writeVarInt(amountToConsume);
-        buffer.writeVarInt(BuiltInRegistries.SOUND_EVENT.getId(clickSound));
-        buffer.writeBoolean(consumeAfterComplete);
-        buffer.writeBoolean(useDisabledTexture);
-        buffer.writeBoolean(spawnsParticles);
-
-        buffer.writeItem(jeiIconItem);
-    }
-
-    public static final class Packet extends DataManagerSyncPacket<KnappingType> {}
 }

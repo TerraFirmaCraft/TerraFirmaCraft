@@ -21,7 +21,7 @@ import net.dries007.tfc.util.DataManagers;
 public record DataManagerSyncPacket(List<Entry<?>> values) implements CustomPacketPayload
 {
     public static final CustomPacketPayload.Type<DataManagerSyncPacket> TYPE = PacketHandler.type("data_managers");
-    public static final StreamCodec<RegistryFriendlyByteBuf, DataManagerSyncPacket> STREAM_CODEC = ByteBufCodecs.registry(DataManagers.KEY)
+    public static final StreamCodec<RegistryFriendlyByteBuf, DataManagerSyncPacket> CODEC = ByteBufCodecs.registry(DataManagers.KEY)
         .<Entry<?>>dispatch(Entry::manager, DataManagerSyncPacket::streamCodec)
         .apply(ByteBufCodecs.list())
         .map(DataManagerSyncPacket::new, DataManagerSyncPacket::values);

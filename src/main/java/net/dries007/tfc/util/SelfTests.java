@@ -161,9 +161,9 @@ public final class SelfTests
             validateJugDrinkable(),
             validateCollapseRecipeTags(manager),
             validateLandslideRecipeTags(manager),
-            validateMetalTagsAreCorrect(Metal::getIngotIngredient, TFCTags.Items.PILEABLE_INGOTS),
-            validateMetalTagsAreCorrect(Metal::getDoubleIngotIngredient, TFCTags.Items.PILEABLE_DOUBLE_INGOTS),
-            validateMetalTagsAreCorrect(Metal::getSheetIngredient, TFCTags.Items.PILEABLE_SHEETS),
+            validateMetalTagsAreCorrect(m -> m.parts().ingots(), TFCTags.Items.PILEABLE_INGOTS),
+            validateMetalTagsAreCorrect(m -> m.parts().doubleIngots(), TFCTags.Items.PILEABLE_DOUBLE_INGOTS),
+            validateMetalTagsAreCorrect(m -> m.parts().sheets(), TFCTags.Items.PILEABLE_SHEETS),
             validatePotFluidUsability(manager),
             validateBarrelFluidUsability(manager),
             validateUniqueBloomeryRecipes(manager),
@@ -485,12 +485,12 @@ public final class SelfTests
         return logErrors("{} blocks were defined in a landslide recipe but lack the tfc:can_landslide tag", errors, LOGGER);
     }
 
-    private static boolean validateMetalTagsAreCorrect(Function<Metal, Ingredient> metalItemType, TagKey<Item> containingTag)
+    private static boolean validateMetalTagsAreCorrect(Function<Metal, Optional<Ingredient>> metalItemType, TagKey<Item> containingTag)
     {
         boolean error = false;
         for (Metal metal : Metal.MANAGER.getValues())
         {
-            final @Nullable Ingredient ingredient = metalItemType.apply(metal);
+            final @Nullable Ingredient ingredient = metalItemType.apply(metal).orElse(null);
             if (ingredient != null)
             {
                 final Set<Item> metalItems = Arrays.stream(ingredient.getItems())
@@ -499,7 +499,7 @@ public final class SelfTests
                     .collect(Collectors.toSet());
 
 
-                error |= logErrors("{} items defined in the tag for the metal " + metal.getId() + " were missing from the #" + containingTag.location() + " tag", metalItems, LOGGER);
+                error |= logErrors("{} items defined in the tag for the metal " + metal.id() + " were missing from the #" + containingTag.location() + " tag", metalItems, LOGGER);
             }
         }
         return error;

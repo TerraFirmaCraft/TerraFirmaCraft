@@ -10,7 +10,6 @@ import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -24,7 +23,7 @@ public record PourFasterPacket(
 ) implements CustomPacketPayload
 {
     public static final CustomPacketPayload.Type<PourFasterPacket> TYPE = PacketHandler.type("pour_faster");
-    public static final StreamCodec<ByteBuf, PourFasterPacket> STREAM = StreamCodec.composite(
+    public static final StreamCodec<ByteBuf, PourFasterPacket> CODEC = StreamCodec.composite(
         BlockPos.STREAM_CODEC, c -> c.pos,
         ByteBufCodecs.VAR_INT, c -> c.slot,
         PourFasterPacket::new

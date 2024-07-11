@@ -260,15 +260,15 @@ public final class HeatCapability
             if (fuel != null)
             {
                 iterator.remove(); // Consume fuel item stack
-                if (fuel.getDuration() > ticks)
+                if (fuel.duration() > ticks)
                 {
-                    burnTicks = (int) (fuel.getDuration() - ticks);
-                    burnTemperature = fuel.getTemperature();
+                    burnTicks = (int) (fuel.duration() - ticks);
+                    burnTemperature = fuel.temperature();
                     return new Remainder(burnTicks, burnTemperature, 0L);
                 }
                 else
                 {
-                    ticks -= fuel.getDuration();
+                    ticks -= fuel.duration();
                 }
             }
         }

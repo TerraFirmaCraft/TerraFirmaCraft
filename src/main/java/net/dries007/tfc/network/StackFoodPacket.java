@@ -10,7 +10,6 @@ import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.IFood;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -29,7 +28,7 @@ import java.util.List;
 public record StackFoodPacket(int index) implements CustomPacketPayload
 {
     public static final CustomPacketPayload.Type<StackFoodPacket> TYPE = PacketHandler.type("stack_food");
-    public static final StreamCodec<ByteBuf, StackFoodPacket> STREAM = ByteBufCodecs.VAR_INT.map(StackFoodPacket::new, StackFoodPacket::index);
+    public static final StreamCodec<ByteBuf, StackFoodPacket> CODEC = ByteBufCodecs.VAR_INT.map(StackFoodPacket::new, StackFoodPacket::index);
 
     @Override
     public Type<? extends CustomPacketPayload> type()

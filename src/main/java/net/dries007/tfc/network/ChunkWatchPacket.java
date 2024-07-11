@@ -31,7 +31,7 @@ public record ChunkWatchPacket(
 ) implements CustomPacketPayload
 {
     public static final CustomPacketPayload.Type<ChunkWatchPacket> TYPE = PacketHandler.type("chunk_watch");
-    public static final StreamCodec<ByteBuf, ChunkWatchPacket> STREAM = StreamCodec.composite(
+    public static final StreamCodec<ByteBuf, ChunkWatchPacket> CODEC = StreamCodec.composite(
         PacketCodecs.CHUNK_POS, c -> c.pos,
         LerpFloatLayer.STREAM, c -> c.rainfall,
         LerpFloatLayer.STREAM, c -> c.temperature,

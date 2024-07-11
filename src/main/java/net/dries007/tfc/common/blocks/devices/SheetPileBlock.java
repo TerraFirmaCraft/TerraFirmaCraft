@@ -390,7 +390,7 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
             }
 
             // Set the sprite directly rather than calling `updateSprite()`, so we pick up the correct particle for the face being hit
-            final TextureAtlasSprite metalSprite = RenderHelpers.blockTexture(metal.getTextureId());
+            final TextureAtlasSprite metalSprite = RenderHelpers.blockTexture(metal.textureId());
             final Particle particle = new TerrainParticle(level, pos.getX() + x, pos.getY() + y, pos.getZ() + z, 0, 0, 0, state, pos)
             {{
                 sprite = metalSprite;

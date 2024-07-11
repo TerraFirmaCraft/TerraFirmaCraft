@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.blocks.devices;
 
-import java.util.Random;
 import java.util.function.BiPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -112,7 +111,7 @@ public class BlastFurnaceBlock extends DeviceBlock implements IBellowsConsumer
     private static boolean isTier3SheetOrHigherInDirection(BlockState state, SheetPileBlockEntity pile, Direction face)
     {
         return state.getValue(DirectionPropertyBlock.getProperty(face))
-            && pile.getOrCacheMetal(face).getTier() >= Metal.Tier.TIER_III.ordinal();
+            && pile.getOrCacheMetal(face).tier() >= Metal.Tier.TIER_III.ordinal();
     }
 
     public BlastFurnaceBlock(ExtendedProperties properties)

@@ -52,12 +52,12 @@ public class AlloyRecipeCategory extends BaseRecipeCategory<AlloyRecipe>
             int x = (iteration % 2 == 0 ? FIRST_COLUMN_X : SECOND_COLUMN_X) + 1;
             int y = positions[Math.floorDiv(iteration, 2)] + 1;
             IRecipeSlotBuilder liquidSlot = builder.addSlot(RecipeIngredientRole.INPUT, x, y);
-            liquidSlot.addIngredient(JEIIntegration.FLUID_STACK, new FluidStack(metal.get().getFluid(), 1000));
+            liquidSlot.addIngredient(JEIIntegration.FLUID_STACK, new FluidStack(metal.get().fluid(), 1000));
             liquidSlot.setBackground(slot, -1, -1);
             iteration++;
         }
 
-        fluidOutput.addIngredient(JEIIntegration.FLUID_STACK, new FluidStack(recipe.getResult().getFluid(), 1000));
+        fluidOutput.addIngredient(JEIIntegration.FLUID_STACK, new FluidStack(recipe.getResult().fluid(), 1000));
         fluidOutput.setBackground(slot, -1, -1);
     }
 

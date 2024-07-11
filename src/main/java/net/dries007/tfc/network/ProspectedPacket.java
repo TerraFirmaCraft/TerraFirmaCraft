@@ -11,10 +11,7 @@ import net.dries007.tfc.common.items.ProspectResult;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.events.ProspectedEvent;
 
-import io.netty.buffer.ByteBuf;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -29,7 +26,7 @@ public record ProspectedPacket(
 ) implements CustomPacketPayload
 {
     public static final CustomPacketPayload.Type<ProspectedPacket> TYPE = PacketHandler.type("prospected");
-    public static final StreamCodec<RegistryFriendlyByteBuf, ProspectedPacket> STREAM = StreamCodec.composite(
+    public static final StreamCodec<RegistryFriendlyByteBuf, ProspectedPacket> CODEC = StreamCodec.composite(
         ByteBufCodecs.registry(Registries.BLOCK), c -> c.block,
         ProspectResult.STREAM, c -> c.result,
         ProspectedPacket::new

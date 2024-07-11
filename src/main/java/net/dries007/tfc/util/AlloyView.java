@@ -56,7 +56,7 @@ public interface AlloyView
      */
     default float getHeatCapacity(float leniency)
     {
-        return getResult().getHeatCapacity(Helpers.lerp(leniency, 1, getAmount()));
+        return getResult().heatCapacity(Helpers.lerp(leniency, 1, getAmount()));
     }
 
     /**
@@ -71,7 +71,7 @@ public interface AlloyView
     {
         if (!isEmpty())
         {
-            return new FluidStack(getResult().getFluid(), getAmount());
+            return new FluidStack(getResult().fluid(), getAmount());
         }
         return FluidStack.EMPTY;
     }

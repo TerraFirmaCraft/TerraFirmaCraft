@@ -10,15 +10,19 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-import com.google.gson.JsonObject;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.FriendlyByteBuf;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
@@ -26,7 +30,6 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.HorseArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PickaxeItem;
@@ -50,7 +53,6 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.VisibleForTesting;
 
 import net.dries007.tfc.common.TFCArmorMaterials;
 import net.dries007.tfc.common.TFCTags;
@@ -74,21 +76,70 @@ import net.dries007.tfc.common.items.TFCFishingRodItem;
 import net.dries007.tfc.common.items.TFCHoeItem;
 import net.dries007.tfc.common.items.TFCShieldItem;
 import net.dries007.tfc.common.items.ToolItem;
-import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.util.registry.RegistryMetal;
+import net.dries007.tfc.world.Codecs;
 
-public final class Metal
-{
+
+/**
+ * @param specificHeatCapacity The Specific Heat Capacity of the metal. Units of Energy / (°C * mB)
+ */
+public record Metal(
+    int tier,
+    Fluid fluid,
+    float meltTemperature,
+    float specificHeatCapacity,
+
+    ResourceLocation id,
+    ResourceLocation textureId,
+    ResourceLocation softTextureId,
+    String translationKey,
+
+    IngredientParts parts
+) {
+    public static final Codec<Metal> CODEC = RecordCodecBuilder.create(i -> i.group(
+        DataManager.ID.forGetter(c -> null),
+        Codec.INT.fieldOf("tier").forGetter(c -> c.tier),
+        Codecs.FLUID.fieldOf("fluid").forGetter(c -> c.fluid),
+        Codec.FLOAT.fieldOf("melt_temperature").forGetter(c -> c.meltTemperature),
+        Codec.FLOAT.fieldOf("specific_heat_capacity").forGetter(c -> c.specificHeatCapacity),
+        RecordCodecBuilder.<IngredientParts>mapCodec(j -> j.group(
+            Ingredient.CODEC.optionalFieldOf("ingots").forGetter(c -> c.ingots),
+            Ingredient.CODEC.optionalFieldOf("double_ingots").forGetter(c -> c.doubleIngots),
+            Ingredient.CODEC.optionalFieldOf("sheets").forGetter(c -> c.sheets)
+        ).apply(j, IngredientParts::new)).forGetter(c -> c.parts)
+    ).apply(i, Metal::new));
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, Metal> STREAM_CODEC = StreamCodec.composite(
+        ResourceLocation.STREAM_CODEC, c -> c.id,
+        ByteBufCodecs.VAR_INT, c -> c.tier,
+        ByteBufCodecs.registry(Registries.FLUID), c -> c.fluid,
+        ByteBufCodecs.FLOAT, c -> c.meltTemperature,
+        ByteBufCodecs.FLOAT, c -> c.specificHeatCapacity,
+        StreamCodec.composite(
+            ByteBufCodecs.optional(Ingredient.CONTENTS_STREAM_CODEC), c -> c.ingots,
+            ByteBufCodecs.optional(Ingredient.CONTENTS_STREAM_CODEC), c -> c.doubleIngots,
+            ByteBufCodecs.optional(Ingredient.CONTENTS_STREAM_CODEC), c -> c.sheets,
+            IngredientParts::new
+        ), c -> c.parts,
+        Metal::new
+    );
+
+    record IngredientParts(
+        Optional<Ingredient> ingots,
+        Optional<Ingredient> doubleIngots,
+        Optional<Ingredient> sheets
+    ) {}
+
     public static final ResourceLocation UNKNOWN_ID = Helpers.identifier("unknown");
     public static final ResourceLocation WROUGHT_IRON_ID = Helpers.identifier("wrought_iron");
 
-    public static final DataManager<Metal> MANAGER = new DataManager<>(Helpers.identifier("metals"), "metal", Metal::fromJson, Metal::fromNetwork, Metal::encode, Packet::new);
+    public static final DataManager<Metal> MANAGER = new DataManager<>(Helpers.identifier("metals"), "metal", CODEC, STREAM_CODEC);
 
     private static final Map<Fluid, Metal> METAL_FLUIDS = new HashMap<>();
 
     /**
      * Reverse lookup for metals attached to fluids.
-     * For the other direction, see {@link Metal#getFluid()}.
+     * For the other direction, see {@link Metal#fluid()}.
      *
      * @param fluid The fluid, can be empty.
      * @return A metal if it exists, and null if it doesn't.
@@ -145,133 +196,36 @@ public final class Metal
         METAL_FLUIDS.clear();
         for (Metal metal : MANAGER.getValues())
         {
-            METAL_FLUIDS.put(metal.getFluid(), metal);
+            METAL_FLUIDS.put(metal.fluid(), metal);
         }
     }
-
-    private static Metal fromJson(ResourceLocation id, JsonObject json)
-    {
-        final int tier = JsonHelpers.getAsInt(json, "tier", 0);
-        final Fluid fluid = JsonHelpers.getRegistryEntry(json, "fluid", BuiltInRegistries.FLUID);
-        final float specificHeatCapacity = JsonHelpers.getAsFloat(json, "specific_heat_capacity");
-        final float meltTemperature = JsonHelpers.getAsFloat(json, "melt_temperature");
-
-        final Ingredient ingots = json.has("ingots") ? Ingredient.fromJson(JsonHelpers.get(json, "ingots")) : null;
-        final Ingredient doubleIngots = json.has("double_ingots") ? Ingredient.fromJson(JsonHelpers.get(json, "double_ingots")) : null;
-        final Ingredient sheets = json.has("sheets") ? Ingredient.fromJson(JsonHelpers.get(json, "sheets")) : null;
-
-        return new Metal(id, tier, fluid, meltTemperature, specificHeatCapacity, ingots, doubleIngots, sheets);
-    }
-
-    private static Metal fromNetwork(ResourceLocation id, FriendlyByteBuf buffer)
-    {
-        final int tier = buffer.readVarInt();
-        final Fluid fluid = BuiltInRegistries.FLUID.byId(buffer.readVarInt());
-        final float meltTemperature = buffer.readFloat();
-        final float specificHeatCapacity = buffer.readFloat();
-
-        final Ingredient ingots = Helpers.decodeNullable(buffer, Ingredient::fromNetwork);
-        final Ingredient doubleIngots = Helpers.decodeNullable(buffer, Ingredient::fromNetwork);
-        final Ingredient sheets = Helpers.decodeNullable(buffer, Ingredient::fromNetwork);
-
-        return new Metal(id, tier, fluid, meltTemperature, specificHeatCapacity, ingots, doubleIngots, sheets);
-    }
-
-    private final int tier;
-    private final Fluid fluid;
-    private final float meltTemperature;
-    private final float specificHeatCapacity;
-
-    private final ResourceLocation id;
-    private final ResourceLocation textureId;
-    private final ResourceLocation softTextureId;
-    private final String translationKey;
-
-    @Nullable
-    private final Ingredient ingots, doubleIngots, sheets;
 
     /**
      * <strong>Not for general purpose use!</strong> Explicitly creates unregistered metals outside the system, which are able to act as rendering stubs.
      */
     public Metal(ResourceLocation id)
     {
-        this(id, 0, Fluids.EMPTY, 0, 0, Ingredient.EMPTY, Ingredient.EMPTY, Ingredient.EMPTY);
+        this(id, 0, Fluids.EMPTY, 0, 0, new IngredientParts(Optional.empty(), Optional.empty(), Optional.empty()));
     }
 
-    private Metal(ResourceLocation id, int tier, Fluid fluid, float meltTemperature, float specificHeatCapacity, @Nullable Ingredient ingots, @Nullable Ingredient doubleIngots, @Nullable Ingredient sheets)
+    public Metal(ResourceLocation id, int tier, Fluid fluid, float meltTemperature, float specificHeatCapacity, IngredientParts parts)
     {
-        this.id = id;
-        this.textureId = Helpers.resourceLocation(id.getNamespace(), "block/metal/block/" + id.getPath());
-        this.softTextureId = Helpers.resourceLocation(id.getNamespace(), "block/metal/smooth/" + id.getPath());
-
-        this.tier = tier;
-        this.fluid = fluid;
-        this.meltTemperature = meltTemperature;
-        this.specificHeatCapacity = specificHeatCapacity;
-        this.translationKey = "metal." + id.getNamespace() + "." + id.getPath();
-
-        this.ingots = ingots;
-        this.doubleIngots = doubleIngots;
-        this.sheets = sheets;
-    }
-
-    public void encode(FriendlyByteBuf buffer)
-    {
-        buffer.writeVarInt(tier);
-        buffer.writeVarInt(BuiltInRegistries.FLUID.getId(fluid));
-        buffer.writeFloat(meltTemperature);
-        buffer.writeFloat(specificHeatCapacity);
-
-        Helpers.encodeNullable(ingots, buffer, Ingredient::toNetwork);
-        Helpers.encodeNullable(doubleIngots, buffer, Ingredient::toNetwork);
-        Helpers.encodeNullable(sheets, buffer, Ingredient::toNetwork);
-    }
-
-    public ResourceLocation getId()
-    {
-        return id;
-    }
-
-    public ResourceLocation getTextureId()
-    {
-        return textureId;
-    }
-
-    public ResourceLocation getSoftTextureId()
-    {
-        return softTextureId;
-    }
-
-    public int getTier()
-    {
-        return tier;
-    }
-
-    public Fluid getFluid()
-    {
-        return fluid;
-    }
-
-    public float getMeltTemperature()
-    {
-        return meltTemperature;
+        this(
+            tier, fluid, meltTemperature, specificHeatCapacity, id,
+            id.withPrefix("block/metal/block/"),
+            id.withPrefix("block/metal/smooth/"),
+            "metal." + id.getNamespace() + "." + id.getPath(),
+            parts
+        );
     }
 
     /**
      * @return The Specific Heat Capacity of the metal. Units of Energy / °C
      * @see IHeat#getHeatCapacity()
      */
-    public float getHeatCapacity(float mB)
+    public float heatCapacity(float mB)
     {
-        return getSpecificHeatCapacity() * mB;
-    }
-
-    /**
-     * @return The Specific Heat Capacity of the metal. Units of Energy / (°C * mB)
-     */
-    public float getSpecificHeatCapacity()
-    {
-        return specificHeatCapacity;
+        return specificHeatCapacity() * mB;
     }
 
     public MutableComponent getDisplayName()
@@ -279,45 +233,19 @@ public final class Metal
         return Component.translatable(translationKey);
     }
 
-    public String getTranslationKey()
-    {
-        return translationKey;
-    }
-
     public boolean isIngot(ItemStack stack)
     {
-        return ingots != null && ingots.test(stack);
+        return parts.ingots.isPresent() && parts.ingots.get().test(stack);
     }
 
     public boolean isDoubleIngot(ItemStack stack)
     {
-        return doubleIngots != null && doubleIngots.test(stack);
+        return parts.ingots.isPresent() && parts.ingots.get().test(stack);
     }
 
     public boolean isSheet(ItemStack stack)
     {
-        return sheets != null && sheets.test(stack);
-    }
-
-    @Nullable
-    @VisibleForTesting
-    public Ingredient getIngotIngredient()
-    {
-        return ingots;
-    }
-
-    @Nullable
-    @VisibleForTesting
-    public Ingredient getDoubleIngotIngredient()
-    {
-        return doubleIngots;
-    }
-
-    @Nullable
-    @VisibleForTesting
-    public Ingredient getSheetIngredient()
-    {
-        return sheets;
+        return parts.sheets.isPresent() && parts.sheets.get().test(stack);
     }
 
     /**
@@ -664,6 +592,4 @@ public final class Metal
             return predicate.test(metal);
         }
     }
-
-    public static class Packet extends DataManagerSyncPacket<Metal> {}
 }

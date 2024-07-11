@@ -74,7 +74,7 @@ public class KnappingComponent extends RecipeComponent<KnappingRecipe>
         if (recipe != null)
         {
             inputs = Arrays.stream(recipe.getKnappingType().inputItem().ingredient().getItems())
-                .filter(stack -> recipe.getIngredient() == null || recipe.getIngredient().test(stack))
+                .filter(stack -> recipe.matchesItem(stack))
                 .toArray(ItemStack[]::new);
         }
     }

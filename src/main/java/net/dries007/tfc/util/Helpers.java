@@ -1061,7 +1061,7 @@ public final class Helpers
                     if (mergeHeat != null)
                     {
                         final Metal metal = Objects.requireNonNullElse(Metal.get(fluidStack.getFluid()), Metal.unknown());
-                        final float heatCapacity = metal.getHeatCapacity(filled);
+                        final float heatCapacity = metal.heatCapacity(filled);
 
                         mergeHeat.addTemperatureFromSourceWithHeatCapacity(temperature, heatCapacity);
                     }

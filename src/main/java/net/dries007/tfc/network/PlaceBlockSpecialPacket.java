@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.network;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.codec.StreamCodec;
@@ -30,7 +31,7 @@ public enum PlaceBlockSpecialPacket implements CustomPacketPayload
     PACKET;
 
     public static final CustomPacketPayload.Type<PlaceBlockSpecialPacket> TYPE = PacketHandler.type("place_block");
-    public static final StreamCodec<?, PlaceBlockSpecialPacket> STREAM = StreamCodec.unit(PACKET);
+    public static final StreamCodec<ByteBuf, PlaceBlockSpecialPacket> CODEC = StreamCodec.unit(PACKET);
 
     @Override
     public Type<? extends CustomPacketPayload> type()
