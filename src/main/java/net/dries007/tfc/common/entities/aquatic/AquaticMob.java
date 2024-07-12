@@ -7,20 +7,20 @@
 package net.dries007.tfc.common.entities.aquatic;
 
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.common.extensions.IForgeLivingEntity;
-import net.minecraftforge.fluids.FluidType;
+import net.neoforged.neoforge.common.NeoForgeMod;
+import net.neoforged.neoforge.common.extensions.ILivingEntityExtension;
+import net.neoforged.neoforge.fluids.FluidType;
 
 import net.dries007.tfc.common.fluids.TFCFluids;
 
-public interface AquaticMob extends IForgeLivingEntity
+public interface AquaticMob extends ILivingEntityExtension
 {
     boolean canSpawnIn(Fluid fluid);
 
     @Override
     default boolean canSwimInFluidType(FluidType type)
     {
-        return type == ForgeMod.WATER_TYPE.get() || type == TFCFluids.SALT_WATER.type().get() || type == TFCFluids.SPRING_WATER.type().get();
+        return type == NeoForgeMod.WATER_TYPE.value() || type == TFCFluids.SALT_WATER.type().get() || type == TFCFluids.SPRING_WATER.type().get();
     }
 
     @Override
@@ -35,7 +35,7 @@ public interface AquaticMob extends IForgeLivingEntity
     @Override
     default boolean isInFluidType(FluidType type)
     {
-        if (!IForgeLivingEntity.super.isInFluidType(type) && type == ForgeMod.WATER_TYPE.get())
+        if (!ILivingEntityExtension.super.isInFluidType(type) && type == NeoForgeMod.WATER_TYPE.value())
         {
             if (isInFluidType(TFCFluids.SALT_WATER.type().get()))
             {
@@ -46,6 +46,6 @@ public interface AquaticMob extends IForgeLivingEntity
                 return true;
             }
         }
-        return IForgeLivingEntity.super.isInFluidType(type);
+        return ILivingEntityExtension.super.isInFluidType(type);
     }
 }

@@ -33,9 +33,7 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.items.ItemHandlerHelper;
-import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.network.NetworkHooks;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 
 import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
@@ -114,10 +112,10 @@ public class HoldingMinecart extends AbstractMinecart
     }
 
     @Override
-    protected void defineSynchedData()
+    protected void defineSynchedData(SynchedEntityData.Builder builder)
     {
-        super.defineSynchedData();
-        entityData.define(DATA_HOLD_ITEM, ItemStack.EMPTY);
+        super.defineSynchedData(builder);
+        builder.define(DATA_HOLD_ITEM, ItemStack.EMPTY);
     }
 
     public ItemStack getHoldItem()

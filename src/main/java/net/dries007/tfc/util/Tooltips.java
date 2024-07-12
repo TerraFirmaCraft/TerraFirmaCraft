@@ -11,7 +11,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 public final class Tooltips
 {
@@ -27,12 +27,12 @@ public final class Tooltips
 
     public static MutableComponent fluidUnitsOf(FluidStack fluid)
     {
-        return Component.translatable("tfc.tooltip.fluid_units_of", fluid.getAmount(), fluid.getDisplayName());
+        return Component.translatable("tfc.tooltip.fluid_units_of", fluid.getAmount(), fluid.getHoverName());
     }
 
     public static MutableComponent fluidUnitsAndCapacityOf(FluidStack fluid, int capacity)
     {
-        return fluidUnitsAndCapacityOf(fluid.getDisplayName(), fluid.getAmount(), capacity);
+        return fluidUnitsAndCapacityOf(fluid.getHoverName(), fluid.getAmount(), capacity);
     }
 
     public static MutableComponent fluidUnitsAndCapacityOf(Component fluid, int amount, int capacity)

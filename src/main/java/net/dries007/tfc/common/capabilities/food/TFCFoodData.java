@@ -17,7 +17,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCDamageSources;
@@ -26,7 +26,6 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.PlayerAccessor;
 import net.dries007.tfc.network.FoodDataReplacePacket;
 import net.dries007.tfc.network.FoodDataUpdatePacket;
-import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
@@ -79,7 +78,7 @@ public class TFCFoodData extends net.minecraft.world.food.FoodData
         // Send the update regardless so the client can perform the same logic
         if (player instanceof ServerPlayer serverPlayer)
         {
-            PacketHandler.send(PacketDistributor.PLAYER.with(() -> serverPlayer), FoodDataReplacePacket.PACKET);
+            PacketDistributor.sendToPlayer(serverPlayer, FoodDataReplacePacket.PACKET);
         }
     }
 
@@ -224,7 +223,7 @@ public class TFCFoodData extends net.minecraft.world.food.FoodData
         // Since this is only called server side, and vanilla has a custom packet for this stuff, we need our own
         if (player instanceof ServerPlayer serverPlayer)
         {
-            PacketHandler.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new FoodDataUpdatePacket(nutritionData.getNutrients(), thirst));
+            PacketDistributor.sendToPlayer(serverPlayer, new FoodDataUpdatePacket(nutritionData.getNutrients(), thirst));
         }
     }
 

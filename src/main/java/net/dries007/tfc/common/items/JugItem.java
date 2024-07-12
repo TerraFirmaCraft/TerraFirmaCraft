@@ -21,11 +21,10 @@ import net.minecraft.world.item.PotionItem;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 import net.dries007.tfc.client.TFCSounds;
-import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.food.TFCFoodData;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.data.Drinkable;

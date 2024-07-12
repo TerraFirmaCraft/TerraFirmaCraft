@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.commands;
 
 import java.util.Map;
+import java.util.function.Supplier;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -22,8 +23,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.armortrim.ArmorTrim;
 import net.minecraft.world.item.armortrim.TrimMaterials;
 import net.minecraft.world.item.armortrim.TrimPatterns;
-import net.minecraftforge.items.ItemHandlerHelper;
-import net.minecraftforge.server.command.EnumArgument;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.server.command.EnumArgument;
 
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.data.Metal;
@@ -56,7 +57,7 @@ public class AddTrimCommand
             source.sendFailure(Component.translatable(FAIL_NOT_ARMOR));
             return 0;
         }
-        final Map<Metal.ItemType, RegistryObject<Item>> map = TFCItems.METAL_ITEMS.get(metal);
+        final Map<Metal.ItemType, ? extends Supplier<Item>> map = TFCItems.METAL_ITEMS.get(metal);
         final ServerPlayer player = source.getPlayerOrException();
 
         for (Metal.ItemType type : new Metal.ItemType[] {Metal.ItemType.HELMET, Metal.ItemType.CHESTPLATE, Metal.ItemType.GREAVES, Metal.ItemType.BOOTS})

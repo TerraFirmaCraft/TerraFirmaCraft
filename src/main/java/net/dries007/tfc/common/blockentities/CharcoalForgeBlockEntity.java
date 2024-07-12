@@ -21,15 +21,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.items.ItemStackHandler;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.CharcoalForgeBlock;
-import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.PartialItemHandler;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodTraits;
@@ -393,7 +392,7 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
             ItemStack stack = inventory.getStackInSlot(i);
             if (!stack.isEmpty())
             {
-                // Move to lowest avail slot
+                // Move to lowest available slot
                 if (i > lowestAvailSlot)
                 {
                     inventory.setStackInSlot(lowestAvailSlot, stack.copy());

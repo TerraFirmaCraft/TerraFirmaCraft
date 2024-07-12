@@ -9,12 +9,11 @@ package net.dries007.tfc.client.screen.button;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.screen.AnvilScreen;
 import net.dries007.tfc.common.component.forge.ForgeStep;
-import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.ScreenButtonPacket;
 import net.dries007.tfc.util.Helpers;
 
@@ -25,7 +24,7 @@ public class AnvilStepButton extends Button
     public AnvilStepButton(ForgeStep step, int guiLeft, int guiTop)
     {
         super(guiLeft + step.buttonX(), guiTop + step.buttonY(), 16, 16, Helpers.translateEnum(step), button -> {
-            PacketHandler.send(PacketDistributor.SERVER.noArg(), new ScreenButtonPacket(step.ordinal()));
+            PacketDistributor.sendToServer(new ScreenButtonPacket(step.ordinal()));
         }, RenderHelpers.NARRATION);
         setTooltip(Tooltip.create(Helpers.translateEnum(step)));
 

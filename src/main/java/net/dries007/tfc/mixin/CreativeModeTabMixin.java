@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.function.Supplier;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforge.neoforged.event.BuildCreativeModeTabContentsEvent;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;

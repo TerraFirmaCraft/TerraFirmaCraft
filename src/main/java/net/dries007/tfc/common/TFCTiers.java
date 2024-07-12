@@ -7,17 +7,15 @@
 package net.dries007.tfc.common;
 
 import java.util.List;
-
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.common.TierSortingRegistry;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.ToolTier;
-import org.jetbrains.annotations.Nullable;
 
 public final class TFCTiers
 {

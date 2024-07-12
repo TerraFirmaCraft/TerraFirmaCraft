@@ -7,15 +7,12 @@
 package net.dries007.tfc.common.recipes.outputs;
 
 import java.util.Collections;
-
-import com.google.gson.JsonObject;
 import com.mojang.serialization.MapCodec;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.world.item.*;
-
-import net.dries007.tfc.util.JsonHelpers;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.DyeItem;
+import net.minecraft.world.item.ItemStack;
 
 public record DyeLeatherModifier(DyeColor color) implements ItemStackModifier
 {

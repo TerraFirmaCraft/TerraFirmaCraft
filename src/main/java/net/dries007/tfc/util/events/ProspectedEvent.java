@@ -8,14 +8,14 @@ package net.dries007.tfc.util.events;
 
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.eventbus.api.Event;
+import net.neoforged.bus.api.Event;
 
 import net.dries007.tfc.common.items.ProspectResult;
 
 /**
  * Fired when a prospecting result is obtained.
  * This event is purely informational, it cannot change the result or displayed information in any way.
- * This event is fired on both sides, on the {@link net.minecraftforge.common.MinecraftForge#EVENT_BUS}
+ * This event is fired on both sides
  */
 public final class ProspectedEvent extends Event
 {

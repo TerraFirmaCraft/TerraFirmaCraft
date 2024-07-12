@@ -12,10 +12,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.SpawnPlacementType;
+import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
+import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 
 import net.dries007.tfc.common.entities.ai.predator.PackPredator;
 import net.dries007.tfc.common.entities.ai.prey.TFCOcelot;
@@ -51,6 +52,7 @@ import net.dries007.tfc.common.entities.prey.TFCPanda;
 import net.dries007.tfc.common.entities.prey.TFCRabbit;
 import net.dries007.tfc.common.entities.prey.WingedPrey;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.registry.IdHolder;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
 public class Faunas
@@ -113,7 +115,7 @@ public class Faunas
     public static final FaunaType<TFCMule> MULE = registerAnimal(TFCEntities.MULE);
     public static final FaunaType<TFCHorse> HORSE = registerAnimal(TFCEntities.HORSE);
 
-    public static void registerSpawnPlacements(SpawnPlacementRegisterEvent event)
+    public static void registerSpawnPlacements(RegisterSpawnPlacementsEvent event)
     {
         FRESHWATER_FISH.values().forEach(fish -> registerSpawnPlacement(event, fish));
         registerSpawnPlacement(event, COD);
@@ -174,28 +176,28 @@ public class Faunas
         registerSpawnPlacement(event, DIREWOLF);
     }
 
-    private static <E extends Mob> FaunaType<E> registerAnimal(RegistryObject<EntityType<E>> entity)
+    private static <E extends Mob> FaunaType<E> registerAnimal(IdHolder<EntityType<E>> entity)
     {
-        return register(entity, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES);
+        return register(entity, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES);
     }
 
-    private static <E extends Mob> FaunaType<E> registerFish(RegistryObject<EntityType<E>> entity)
+    private static <E extends Mob> FaunaType<E> registerFish(IdHolder<EntityType<E>> entity)
     {
-        return register(entity, SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES);
+        return register(entity, SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES);
     }
 
-    private static <E extends Mob> FaunaType<E> registerAmphibiousPredator(RegistryObject<EntityType<E>> entity)
+    private static <E extends Mob> FaunaType<E> registerAmphibiousPredator(IdHolder<EntityType<E>> entity)
     {
-        return register(entity, SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES);
+        return register(entity, SpawnPlacementTypes.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES);
     }
 
-    private static <E extends Mob> FaunaType<E> register(RegistryObject<EntityType<E>> entity, SpawnPlacements.Type spawnPlacement, Heightmap.Types heightmapType)
+    private static <E extends Mob> FaunaType<E> register(IdHolder<EntityType<E>> entity, SpawnPlacementType spawnPlacement, Heightmap.Types heightmapType)
     {
         final Supplier<Fauna> fauna = Fauna.MANAGER.getReference(entity.getId());
         return new FaunaType<>(entity, fauna, spawnPlacement, heightmapType);
     }
 
-    private static <E extends Mob> void registerSpawnPlacement(SpawnPlacementRegisterEvent event, FaunaType<E> type)
+    private static <E extends Mob> void registerSpawnPlacement(RegisterSpawnPlacementsEvent event, FaunaType<E> type)
     {
         event.register(type.entity().get(), type.spawnPlacementType(), type.heightmapType(), (mob, level, heightmap, pos, rand) -> {
             final Fauna fauna = type.fauna().get();
@@ -228,8 +230,13 @@ public class Faunas
                 return false;
             }
             return fauna.maxBrightness() == -1 || level.getRawBrightness(pos, 0) <= fauna.maxBrightness();
-        }, SpawnPlacementRegisterEvent.Operation.REPLACE);
+        }, RegisterSpawnPlacementsEvent.Operation.REPLACE);
     }
 
-    record FaunaType<E extends Mob>(Supplier<EntityType<E>> entity, Supplier<Fauna> fauna, SpawnPlacements.Type spawnPlacementType, Heightmap.Types heightmapType) {}
+    record FaunaType<E extends Mob>(
+        Supplier<EntityType<E>> entity,
+        Supplier<Fauna> fauna,
+        SpawnPlacementType spawnPlacementType,
+        Heightmap.Types heightmapType
+    ) {}
 }

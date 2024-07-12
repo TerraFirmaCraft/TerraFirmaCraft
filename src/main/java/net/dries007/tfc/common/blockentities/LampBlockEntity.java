@@ -7,20 +7,15 @@
 package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blocks.devices.LampBlock;
-import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.FluidTankCallback;
 import net.dries007.tfc.common.capabilities.InventoryFluidTank;
 import net.dries007.tfc.config.TFCConfig;
@@ -29,8 +24,6 @@ import net.dries007.tfc.util.data.LampFuel;
 public class LampBlockEntity extends TickCounterBlockEntity implements FluidTankCallback
 {
     protected FluidTank tank;
-
-    private final LazyOptional<IFluidHandler> holder = LazyOptional.of(() -> tank);
 
     public LampBlockEntity(BlockPos pos, BlockState state)
     {
@@ -103,14 +96,5 @@ public class LampBlockEntity extends TickCounterBlockEntity implements FluidTank
     {
         tag.put("tank", tank.writeToNBT(new CompoundTag()));
         super.saveAdditional(tag);
-    }
-
-    @Override
-    @NotNull
-    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, @Nullable Direction facing)
-    {
-        if (capability == Capabilities.FLUID)
-            return holder.cast();
-        return super.getCapability(capability, facing);
     }
 }

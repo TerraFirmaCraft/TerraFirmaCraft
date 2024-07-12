@@ -11,13 +11,12 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.screen.PowderkegScreen;
 import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
 import net.dries007.tfc.common.blocks.devices.PowderkegBlock;
-import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.ScreenButtonPacket;
 
 public class PowderkegSealButton extends Button
@@ -34,7 +33,7 @@ public class PowderkegSealButton extends Button
     @Override
     public void onPress()
     {
-        PacketHandler.send(PacketDistributor.SERVER.noArg(), new ScreenButtonPacket(0));
+        PacketDistributor.sendToServer(new ScreenButtonPacket(0));
         playDownSound(Minecraft.getInstance().getSoundManager());
     }
 

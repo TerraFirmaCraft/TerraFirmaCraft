@@ -6,14 +6,11 @@
 
 package net.dries007.tfc.common.entities.ai;
 
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.world.entity.animal.AbstractFish;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.fluids.FluidType;
+import net.neoforged.neoforge.common.NeoForgeMod;
 
 public class TFCFishMoveControl extends MoveControl
 {
@@ -31,7 +28,7 @@ public class TFCFishMoveControl extends MoveControl
     @Override
     public void tick()
     {
-        if (fish.isEyeInFluidType(ForgeMod.WATER_TYPE.get()))
+        if (fish.isEyeInFluidType(NeoForgeMod.WATER_TYPE.value()))
         {
             fish.setDeltaMovement(fish.getDeltaMovement().add(0.0D, 0.005D, 0.0D));
         }

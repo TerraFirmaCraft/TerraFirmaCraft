@@ -24,7 +24,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.apache.commons.lang3.function.TriFunction;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.Nullable;
@@ -34,7 +34,6 @@ import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.container.SewingTableContainer;
 import net.dries007.tfc.common.recipes.SewingRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
-import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.ScreenButtonPacket;
 import net.dries007.tfc.util.Helpers;
 
@@ -120,7 +119,9 @@ public class SewingTableScreen extends TFCContainerScreen<SewingTableContainer>
                     return;
                 }
                 if (menu.getCarried().isEmpty() && !showRecipes)
-                    PacketHandler.send(PacketDistributor.SERVER.noArg(), new ScreenButtonPacket(packetButtonId));
+                {
+                    PacketDistributor.sendToServer(new ScreenButtonPacket(packetButtonId));
+                }
             }, Component.translatable(translationKey));
             button.setTooltip(Tooltip.create(Component.translatable(translationKey)));
         }
@@ -128,7 +129,9 @@ public class SewingTableScreen extends TFCContainerScreen<SewingTableContainer>
         {
             button = new SilentImageButton(x, y, sizeX, sizeY, u, v, yDiffTex, TEXTURE, 256, 256, btn -> {
                 if (menu.getCarried().isEmpty() && !showRecipes)
-                    PacketHandler.send(PacketDistributor.SERVER.noArg(), new ScreenButtonPacket(packetButtonId));
+                {
+                    PacketDistributor.sendToServer(new ScreenButtonPacket(packetButtonId));
+                }
             });
         }
         addRenderableWidget(button);
@@ -177,7 +180,7 @@ public class SewingTableScreen extends TFCContainerScreen<SewingTableContainer>
                     final CompoundTag tag = new CompoundTag();
                     tag.putInt("id", i);
                     tag.putInt("stitchType", mat == SewingTableContainer.NEEDLE_ID ? 1 : 0);
-                    PacketHandler.send(PacketDistributor.SERVER.noArg(), new ScreenButtonPacket(SewingTableContainer.PLACE_STITCH_ID, tag));
+                    PacketDistributor.sendToServer(new ScreenButtonPacket(SewingTableContainer.PLACE_STITCH_ID, tag));
                     return true;
                 }
                 return false;

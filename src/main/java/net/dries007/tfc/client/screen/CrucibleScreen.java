@@ -17,7 +17,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.RenderHelpers;
@@ -26,7 +26,6 @@ import net.dries007.tfc.common.capabilities.MoldLike;
 import net.dries007.tfc.common.capabilities.heat.Heat;
 import net.dries007.tfc.common.container.CrucibleContainer;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.PourFasterPacket;
 import net.dries007.tfc.util.AlloyView;
 import net.dries007.tfc.util.Helpers;
@@ -63,7 +62,7 @@ public class CrucibleScreen extends BlockEntityScreen<CrucibleBlockEntity, Cruci
                 final MoldLike mold = MoldLike.get(hoveredSlot.getItem());
                 if (mold != null)
                 {
-                    PacketHandler.send(PacketDistributor.SERVER.noArg(), new PourFasterPacket(blockEntity.getBlockPos(), hoveredSlot.index));
+                    PacketDistributor.sendToServer(new PourFasterPacket(blockEntity.getBlockPos(), hoveredSlot.index));
                     pourFasterDecayTicks = 10;
                 }
             }

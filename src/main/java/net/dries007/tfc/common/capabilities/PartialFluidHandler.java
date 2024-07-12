@@ -6,10 +6,9 @@
 
 package net.dries007.tfc.common.capabilities;
 
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
-
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 
 /**
  * A partially exposed fluid handler, implementing the actual handler part of {@link SidedHandler} for {@link IFluidHandler}s

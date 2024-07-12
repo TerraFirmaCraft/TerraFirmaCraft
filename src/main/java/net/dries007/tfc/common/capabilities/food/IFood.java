@@ -8,6 +8,7 @@ package net.dries007.tfc.common.capabilities.food;
 
 import java.util.List;
 import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
@@ -26,7 +27,7 @@ import net.dries007.tfc.util.calendar.ICalendar;
  * Foods can be added via a {@link FoodDefinition} which is loaded via JSON. TFC then attaches a {@link FoodHandler} as
  * a capability to each food as required.
  */
-public interface IFood extends INetworkFood
+public interface IFood extends INBTSerializable<CompoundTag>
 {
     /**
      * The timestamp that this food was created, used to calculate expiration date. There are a few special meanings:

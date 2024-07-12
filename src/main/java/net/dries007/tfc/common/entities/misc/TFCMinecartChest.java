@@ -23,14 +23,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-
-import net.minecraftforge.network.NetworkHooks;
+import net.neoforge.neoforged.network.NetworkHooks;
+import org.jetbrains.annotations.NotNull;
 
 import net.dries007.tfc.common.blockentities.TFCChestBlockEntity;
 import net.dries007.tfc.common.container.RestrictedChestContainer;
 import net.dries007.tfc.common.container.TFCContainerTypes;
-
-import org.jetbrains.annotations.NotNull;
 
 public class TFCMinecartChest extends MinecartChest
 {

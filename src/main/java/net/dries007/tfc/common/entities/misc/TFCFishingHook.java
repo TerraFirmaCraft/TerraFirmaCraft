@@ -27,8 +27,6 @@ import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.entity.IEntityAdditionalSpawnData;
-import net.minecraftforge.network.NetworkHooks;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.entities.TFCEntities;
@@ -77,10 +75,10 @@ public class TFCFishingHook extends FishingHook implements IEntityAdditionalSpaw
     }
 
     @Override
-    protected void defineSynchedData()
+    protected void defineSynchedData(SynchedEntityData.Builder builder)
     {
-        super.defineSynchedData();
-        entityData.define(BAIT, ItemStack.EMPTY);
+        super.defineSynchedData(builder);
+        builder.define(BAIT, ItemStack.EMPTY);
     }
 
     public void setBait(ItemStack item)

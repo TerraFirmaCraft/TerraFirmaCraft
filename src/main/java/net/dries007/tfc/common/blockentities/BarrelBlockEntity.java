@@ -29,12 +29,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.INBTSerializable;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.items.IItemHandlerModifiable;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -82,8 +79,9 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         // Must run before checkForCalendarUpdate(), as this sets the current recipe.
         if (barrel.recipeName != null)
         {
-            barrel.recipe = level.getRecipeManager().byKey(barrel.recipeName)
-                .map(b -> b instanceof SealedBarrelRecipe r ? r : null)
+            barrel.recipe = level.getRecipeManager()
+                .byKey(barrel.recipeName)
+                .map(b -> b.value() instanceof SealedBarrelRecipe r ? r : null)
                 .orElse(null);
             barrel.recipeName = null;
         }
@@ -220,17 +218,6 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         return BarrelContainer.create(this, player.getInventory(), containerId);
     }
 
-    @NotNull
-    @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
-    {
-        if (cap == Capabilities.FLUID)
-        {
-            return sidedFluidInventory.getSidedHandler(side).cast();
-        }
-        return super.getCapability(cap, side);
-    }
-
     @Override
     public void setAndUpdateSlots(int slot)
     {
@@ -348,8 +335,9 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
             recipeName = Helpers.resourceLocation(nbt.getString("recipe"));
             if (level != null)
             {
-                recipe = level.getRecipeManager().byKey(recipeName)
-                    .map(b -> b instanceof SealedBarrelRecipe r ? r : null)
+                recipe = level.getRecipeManager()
+                    .byKey(recipeName)
+                    .map(b -> b.value() instanceof SealedBarrelRecipe r ? r : null)
                     .orElse(null);
             }
         }
@@ -552,7 +540,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         return 0;
     }
 
-    public static class BarrelInventory implements DelegateItemHandler, DelegateFluidHandler, INBTSerializable<CompoundTag>, NonEmptyInput, FluidTankCallback, net.dries007.tfc.common.recipes.input.BarrelInventory
+    public static class BarrelInventory implements DelegateItemHandler, DelegateFluidHandler, NonEmptyInput, FluidTankCallback, net.dries007.tfc.common.recipes.input.BarrelInventory
     {
         private final BarrelInventoryCallback callback;
         private final InventoryItemHandler inventory;

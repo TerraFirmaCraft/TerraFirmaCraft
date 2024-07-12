@@ -15,10 +15,9 @@ import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import net.dries007.tfc.client.RenderHelpers;
-import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.ScreenButtonPacket;
 
 public class KnappingButton extends Button
@@ -47,7 +46,7 @@ public class KnappingButton extends Button
         if (active)
         {
             visible = false;
-            PacketHandler.send(PacketDistributor.SERVER.noArg(), new ScreenButtonPacket(id));
+            PacketDistributor.sendToServer(new ScreenButtonPacket(id));
             playDownSound(Minecraft.getInstance().getSoundManager());
         }
     }

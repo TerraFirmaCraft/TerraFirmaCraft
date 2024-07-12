@@ -7,13 +7,13 @@
 package net.dries007.tfc.common.items;
 
 import java.util.function.Consumer;
-
+import java.util.function.Supplier;
+import com.google.common.base.Suppliers;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import net.minecraftforge.common.util.NonNullLazy;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 
 import net.dries007.tfc.client.render.blockentity.ChestItemRenderer;
 import net.dries007.tfc.util.Helpers;
@@ -38,7 +38,7 @@ public class ChestBlockItem extends BlockItem
     public void initializeClient(Consumer<IClientItemExtensions> consumer)
     {
         consumer.accept(new IClientItemExtensions() {
-            private final NonNullLazy<ChestItemRenderer> renderer = NonNullLazy.of(() -> new ChestItemRenderer(getBlock()));
+            private final Supplier<ChestItemRenderer> renderer = Suppliers.memoize(() -> new ChestItemRenderer(getBlock()));
 
             @Override
             public BlockEntityWithoutLevelRenderer getCustomRenderer()

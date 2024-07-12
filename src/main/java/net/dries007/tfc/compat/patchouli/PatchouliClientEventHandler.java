@@ -6,24 +6,23 @@
 
 package net.dries007.tfc.compat.patchouli;
 
-import net.minecraft.client.gui.GuiGraphics;
-import org.lwjgl.opengl.GL11;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.event.RenderTooltipEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.network.PacketDistributor;
-
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
-import com.mojang.datafixers.util.Pair;
-import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.network.OpenFieldGuidePacket;
-import net.dries007.tfc.network.PacketHandler;
+import net.neoforge.neoforged.network.PacketDistributor;
+import net.neoforged.neoforge.client.event.RenderTooltipEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import org.lwjgl.opengl.GL11;
 import vazkii.patchouli.client.base.ClientTicker;
 import vazkii.patchouli.client.book.BookEntry;
 import vazkii.patchouli.client.book.gui.GuiBook;
@@ -32,6 +31,10 @@ import vazkii.patchouli.common.book.Book;
 import vazkii.patchouli.common.book.BookRegistry;
 import vazkii.patchouli.common.item.ItemModBook;
 import vazkii.patchouli.common.util.ItemStackUtil;
+
+import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.network.OpenFieldGuidePacket;
+import net.dries007.tfc.network.PacketHandler;
 
 /**
  * This is modified from {@link vazkii.patchouli.client.handler.TooltipHandler}
@@ -45,7 +48,7 @@ public final class PatchouliClientEventHandler
 
     public static void init()
     {
-        MinecraftForge.EVENT_BUS.addListener(PatchouliClientEventHandler::renderBookTooltipWithoutBook);
+        NeoForge.EVENT_BUS.addListener(PatchouliClientEventHandler::renderBookTooltipWithoutBook);
     }
 
     public static void renderBookTooltipWithoutBook(RenderTooltipEvent.Pre event)

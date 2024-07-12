@@ -10,18 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilitySerializable;
-import net.minecraftforge.common.util.LazyOptional;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
@@ -29,7 +23,7 @@ import net.dries007.tfc.util.Tooltips;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 
-public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
+public class FoodHandler implements IFood
 {
     /**
      * Most TFC foods have decay modifiers in the range [1, 4] (high = faster decay)
@@ -56,7 +50,6 @@ public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
     }
 
     protected final List<FoodTrait> foodTraits;
-    private final LazyOptional<IFood> capability;
     protected FoodData data;
     protected long creationDate;
     protected boolean isNonDecaying; // This is intentionally not serialized, as we don't want it to preserve over `ItemStack.copy()` operations
@@ -66,7 +59,6 @@ public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
         this.foodTraits = new ArrayList<>(2);
         this.data = data;
         this.isNonDecaying = FoodHandler.NON_DECAYING.get();
-        this.capability = LazyOptional.of(() -> this);
         this.creationDate = UNKNOWN_CREATION_DATE;
     }
 
@@ -163,17 +155,6 @@ public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
     public List<FoodTrait> getTraits()
     {
         return foodTraits;
-    }
-
-    @NotNull
-    @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
-    {
-        if (cap == FoodCapability.CAPABILITY || cap == FoodCapability.NETWORK_CAPABILITY)
-        {
-            return capability.cast();
-        }
-        return LazyOptional.empty();
     }
 
     @Override

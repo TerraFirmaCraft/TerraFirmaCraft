@@ -14,8 +14,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.common.TFCDamageSources;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
@@ -55,7 +55,7 @@ public interface Pluckable
                 if (properties.getAgeType() == TFCAnimalProperties.Age.ADULT && properties.getUses() < properties.getUsesToElderly())
                 {
                     AnimalProductEvent event = new AnimalProductEvent(level, entity.blockPosition(), player, properties, feather, ItemStack.EMPTY, 1);
-                    if (!MinecraftForge.EVENT_BUS.post(event))
+                    if (!NeoForge.EVENT_BUS.post(event).isCanceled())
                     {
                         TFCDamageSources.pluck(entity, entity.getMaxHealth() * 0.15f, null);
                         properties.addUses(event.getUses());

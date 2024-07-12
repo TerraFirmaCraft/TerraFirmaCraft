@@ -16,9 +16,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.fluids.FluidHelpers;
@@ -55,11 +54,11 @@ public interface IMudBlock
 
         if (fluidHandler != null)
         {
-            final FluidStack simulatedDrained = fluidHandler.drain(waterRequired, FluidAction.SIMULATE);
+            final FluidStack simulatedDrained = fluidHandler.drain(waterRequired, IFluidHandler.FluidAction.SIMULATE);
 
             if (simulatedDrained.containsFluid(water))
             {
-                fluidHandler.drain(waterRequired, FluidAction.EXECUTE);
+                fluidHandler.drain(waterRequired, IFluidHandler.FluidAction.EXECUTE);
                 level.setBlockAndUpdate(pos, mud);
                 FluidHelpers.playTransferSound(level, pos, water, Transfer.DRAIN);
 

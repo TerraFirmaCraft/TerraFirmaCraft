@@ -11,7 +11,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -25,10 +24,10 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.AmphibiousNodeEvaluator;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.PathFinder;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.fluids.FluidType;
+import net.neoforged.neoforge.fluids.FluidType;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.entities.ai.predator.AmphibiousPredatorAi;
@@ -46,8 +45,8 @@ public class AmphibiousPredator extends Predator implements AquaticMob
     public AmphibiousPredator(EntityType<? extends Predator> type, Level level, boolean diurnal, TFCSounds.EntityId sounds)
     {
         super(type, level, diurnal, sounds);
-        this.setPathfindingMalus(BlockPathTypes.WALKABLE, 0f);
-        this.setPathfindingMalus(BlockPathTypes.WATER, 0F);
+        this.setPathfindingMalus(PathType.WALKABLE, 0f);
+        this.setPathfindingMalus(PathType.WATER, 0F);
         moveControl = new TrueAmphibiousMoveControl(this, 85, 10, 0.1F, 0.5F, false);
         lookControl = new SmoothSwimmingLookControl(this, 20);
     }
@@ -105,8 +104,7 @@ public class AmphibiousPredator extends Predator implements AquaticMob
     @Override
     public boolean doHurtTarget(Entity target)
     {
-        boolean hurt = super.doHurtTarget(target, target.isInWaterOrBubble() ? 2 : 0);
-        return hurt;
+        return super.doHurtTarget(target, target.isInWaterOrBubble() ? 2 : 0);
     }
 
     @Override

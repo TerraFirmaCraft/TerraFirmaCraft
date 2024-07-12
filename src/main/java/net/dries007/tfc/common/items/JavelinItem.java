@@ -8,6 +8,8 @@ package net.dries007.tfc.common.items;
 
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
+import com.google.common.base.Suppliers;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
@@ -27,10 +29,9 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import net.minecraftforge.common.ToolAction;
-import net.minecraftforge.common.ToolActions;
-import net.minecraftforge.common.util.NonNullLazy;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.common.ItemAbilities;
+import net.neoforged.neoforge.common.ItemAbility;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
@@ -130,16 +131,16 @@ public class JavelinItem extends SwordItem
     }
 
     @Override
-    public boolean canPerformAction(ItemStack stack, ToolAction toolAction)
+    public boolean canPerformAction(ItemStack stack, ItemAbility toolAction)
     {
-        return super.canPerformAction(stack, toolAction) && toolAction != ToolActions.SWORD_SWEEP;
+        return super.canPerformAction(stack, toolAction) && toolAction != ItemAbilities.SWORD_SWEEP;
     }
 
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer)
     {
         consumer.accept(new IClientItemExtensions() {
-            private final NonNullLazy<JavelinItemRenderer> renderer = NonNullLazy.of(() -> new JavelinItemRenderer(getTextureLocation()));
+            private final Supplier<JavelinItemRenderer> renderer = Suppliers.memoize(() -> new JavelinItemRenderer(getTextureLocation()));
             @Override
             public BlockEntityWithoutLevelRenderer getCustomRenderer()
             {

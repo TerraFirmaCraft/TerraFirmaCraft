@@ -7,11 +7,9 @@
 package net.dries007.tfc.common.fluids;
 
 import java.util.Map;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -19,11 +17,11 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraftforge.fluids.ForgeFlowingFluid;
+import net.neoforged.neoforge.fluids.BaseFlowingFluid;
 
 import net.dries007.tfc.mixin.accessor.FlowingFluidAccessor;
 
-public abstract class MixingFluid extends ForgeFlowingFluid
+public abstract class MixingFluid extends BaseFlowingFluid
 {
     /**
      * @see net.minecraft.world.level.material.FlowingFluid#getCacheKey(BlockPos, BlockPos)

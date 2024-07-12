@@ -18,8 +18,8 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.WaterFluid;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.fluids.FluidType;
+import net.neoforged.neoforge.common.NeoForgeMod;
+import net.neoforged.neoforge.fluids.FluidType;
 
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -49,7 +49,7 @@ public class RiverWaterFluid extends WaterFluid implements FlowingFluidExtension
     @Override
     public FluidType getFluidType()
     {
-        return ForgeMod.WATER_TYPE.get();
+        return NeoForgeMod.WATER_TYPE.value();
     }
 
     /**

@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.entities.misc;
 
 import java.util.List;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -16,8 +15,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.network.NetworkHooks;
-
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.entities.TFCEntities;

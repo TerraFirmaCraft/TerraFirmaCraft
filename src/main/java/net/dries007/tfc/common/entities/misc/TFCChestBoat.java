@@ -23,9 +23,9 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
+import net.neoforge.neoforged.common.capabilities.Capability;
+import net.neoforge.neoforged.common.util.LazyOptional;
+import net.neoforge.neoforged.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
 
 import net.dries007.tfc.common.blockentities.TFCChestBlockEntity;

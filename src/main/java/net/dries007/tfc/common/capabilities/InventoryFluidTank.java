@@ -7,9 +7,8 @@
 package net.dries007.tfc.common.capabilities;
 
 import java.util.function.Predicate;
-
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 
 public class InventoryFluidTank extends FluidTank
 {

@@ -6,12 +6,12 @@
 
 package net.dries007.tfc.client;
 
-import org.lwjgl.glfw.GLFW;
-import net.minecraft.client.KeyMapping;
 import com.mojang.blaze3d.platform.InputConstants;
-import net.minecraftforge.client.settings.KeyConflictContext;
+import net.minecraft.client.KeyMapping;
+import net.neoforged.neoforge.client.settings.KeyConflictContext;
+import org.lwjgl.glfw.GLFW;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_NAME;
+import static net.dries007.tfc.TerraFirmaCraft.*;
 
 public class TFCKeyBindings
 {

@@ -24,6 +24,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
@@ -45,7 +46,6 @@ import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.JsonHelpers;
 import net.dries007.tfc.util.Tooltips;
 
 public abstract class CustomComponent implements ICustomComponent
@@ -208,7 +208,7 @@ public abstract class CustomComponent implements ICustomComponent
         {
             if (variable.unwrap().isJsonPrimitive())
             {
-                return asResourceLocation(JsonHelpers.convertToString(variable.unwrap(), "multiblock id"))
+                return asResourceLocation(GsonHelper.convertToString(variable.unwrap(), "multiblock id"))
                     .flatMap(id -> {
                         final IMultiblock multiblock = PatchouliAPI.get().getMultiblock(id);
                         if (multiblock != null)

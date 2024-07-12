@@ -8,7 +8,6 @@ package net.dries007.tfc.common.items;
 
 import java.util.List;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
@@ -17,16 +16,11 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
-import net.dries007.tfc.common.capabilities.Capabilities;
-import net.dries007.tfc.common.capabilities.ItemStackFluidHandler;
-import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Tooltips;
-import net.dries007.tfc.util.data.LampFuel;
 import net.dries007.tfc.util.loot.CopyFluidFunction;
 
 public class LampBlockItem extends BlockItem
@@ -34,13 +28,6 @@ public class LampBlockItem extends BlockItem
     public LampBlockItem(Block block, Properties properties)
     {
         super(block, properties);
-    }
-
-    @Nullable
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt)
-    {
-        return new ItemStackFluidHandler(stack, fluid -> LampFuel.get(fluid, getBlock().defaultBlockState()) != null, TFCConfig.SERVER.lampCapacity);
     }
 
     @Override

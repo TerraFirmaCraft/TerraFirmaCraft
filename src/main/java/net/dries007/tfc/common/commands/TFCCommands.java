@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.commands;
 
 import java.util.function.Supplier;
+import com.google.common.base.Suppliers;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import net.minecraft.commands.CommandBuildContext;
@@ -14,7 +15,6 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.synchronization.SuggestionProviders;
-import net.minecraftforge.common.util.Lazy;
 
 import net.dries007.tfc.util.Helpers;
 
@@ -29,7 +29,6 @@ public final class TFCCommands
             .then(ClimateUpdateCommand.create())
             .then(HeatCommand.create())
             .then(PlayerCommand.create())
-            .then(TreeCommand.create())
             .then(CountBlockCommand.create(context))
             .then(PropickCommand.create())
             .then(ForgeCommand.create())
@@ -46,6 +45,6 @@ public final class TFCCommands
 
     public static <S extends SharedSuggestionProvider> Supplier<SuggestionProvider<S>> register(String id, SuggestionProvider<SharedSuggestionProvider> provider)
     {
-        return Lazy.of(() -> SuggestionProviders.register(Helpers.identifier(id), provider));
+        return Suppliers.memoize(() -> SuggestionProviders.register(Helpers.identifier(id), provider));
     }
 }

@@ -14,7 +14,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.item.ItemColor;
-import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.inventory.ContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CraftingScreen;
 import net.minecraft.client.model.BoatModel;
@@ -56,18 +55,17 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.ModelEvent;
-import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
-import net.minecraftforge.client.event.RegisterClientTooltipComponentFactoriesEvent;
-import net.minecraftforge.client.event.RegisterColorHandlersEvent;
-import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
-import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
-import net.minecraftforge.client.event.RegisterPresetEditorsEvent;
-import net.minecraftforge.client.model.DynamicFluidContainerModel;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.ModelEvent;
+import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
+import net.neoforged.neoforge.client.event.RegisterClientTooltipComponentFactoriesEvent;
+import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.neoforged.neoforge.client.event.RegisterPresetEditorsEvent;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.model.ContainedFluidModel;
@@ -235,10 +233,8 @@ import static net.dries007.tfc.common.blocks.wood.Wood.BlockType.*;
 
 public final class ClientEventHandler
 {
-    public static void init()
+    public static void init(IEventBus bus)
     {
-        final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-
         bus.addListener(ClientEventHandler::clientSetup);
         bus.addListener(ClientEventHandler::registerModelLoaders);
         bus.addListener(ClientEventHandler::registerSpecialModels);
@@ -258,37 +254,7 @@ public final class ClientEventHandler
     @SuppressWarnings("deprecation")
     public static void clientSetup(FMLClientSetupEvent event)
     {
-        // Screens
         event.enqueueWork(() -> {
-
-            // Not thread-safe
-            MenuScreens.register(TFCContainerTypes.CALENDAR.get(), CalendarScreen::new);
-            MenuScreens.register(TFCContainerTypes.NUTRITION.get(), NutritionScreen::new);
-            MenuScreens.register(TFCContainerTypes.CLIMATE.get(), ClimateScreen::new);
-            MenuScreens.register(TFCContainerTypes.SALAD.get(), SaladScreen::new);
-            MenuScreens.register(TFCContainerTypes.WORKBENCH.get(), CraftingScreen::new);
-
-            MenuScreens.register(TFCContainerTypes.FIREPIT.get(), FirepitScreen::new);
-            MenuScreens.register(TFCContainerTypes.GRILL.get(), GrillScreen::new);
-            MenuScreens.register(TFCContainerTypes.POT.get(), PotScreen::new);
-            MenuScreens.register(TFCContainerTypes.POWDERKEG.get(), PowderkegScreen::new);
-            MenuScreens.register(TFCContainerTypes.CHARCOAL_FORGE.get(), CharcoalForgeScreen::new);
-            MenuScreens.register(TFCContainerTypes.LOG_PILE.get(), LogPileScreen::new);
-            MenuScreens.register(TFCContainerTypes.NEST_BOX.get(), NestBoxScreen::new);
-            MenuScreens.register(TFCContainerTypes.CRUCIBLE.get(), CrucibleScreen::new);
-            MenuScreens.register(TFCContainerTypes.BARREL.get(), BarrelScreen::new);
-            MenuScreens.register(TFCContainerTypes.ANVIL.get(), AnvilScreen::new);
-            MenuScreens.register(TFCContainerTypes.ANVIL_PLAN.get(), AnvilPlanScreen::new);
-            MenuScreens.register(TFCContainerTypes.BLAST_FURNACE.get(), BlastFurnaceScreen::new);
-            MenuScreens.register(TFCContainerTypes.CHEST_9x2.get(), ContainerScreen::new);
-            MenuScreens.register(TFCContainerTypes.CHEST_9x4.get(), ContainerScreen::new);
-
-            MenuScreens.register(TFCContainerTypes.KNAPPING.get(), KnappingScreen::new);
-            MenuScreens.register(TFCContainerTypes.SMALL_VESSEL_INVENTORY.get(), SmallVesselInventoryScreen::new);
-            MenuScreens.register(TFCContainerTypes.MOLD_LIKE_ALLOY.get(), MoldLikeAlloyScreen::new);
-            MenuScreens.register(TFCContainerTypes.LARGE_VESSEL.get(), LargeVesselScreen::new);
-            MenuScreens.register(TFCContainerTypes.SCRIBING_TABLE.get(), ScribingTableScreen::new);
-            MenuScreens.register(TFCContainerTypes.SEWING_TABLE.get(), SewingTableScreen::new);
 
             for (Metal.Default metal : Metal.Default.values())
             {
@@ -489,6 +455,35 @@ public final class ClientEventHandler
         {
             Sheets.addWoodType(wood.getVanillaWoodType());
         }
+    }
+
+    public static void registerMenuScreens(RegisterMenuScreensEvent event)
+    {
+        event.register(TFCContainerTypes.CALENDAR.get(), CalendarScreen::new);
+        event.register(TFCContainerTypes.NUTRITION.get(), NutritionScreen::new);
+        event.register(TFCContainerTypes.CLIMATE.get(), ClimateScreen::new);
+        event.register(TFCContainerTypes.SALAD.get(), SaladScreen::new);
+        event.register(TFCContainerTypes.WORKBENCH.get(), CraftingScreen::new);
+        event.register(TFCContainerTypes.FIREPIT.get(), FirepitScreen::new);
+        event.register(TFCContainerTypes.GRILL.get(), GrillScreen::new);
+        event.register(TFCContainerTypes.POT.get(), PotScreen::new);
+        event.register(TFCContainerTypes.POWDERKEG.get(), PowderkegScreen::new);
+        event.register(TFCContainerTypes.CHARCOAL_FORGE.get(), CharcoalForgeScreen::new);
+        event.register(TFCContainerTypes.LOG_PILE.get(), LogPileScreen::new);
+        event.register(TFCContainerTypes.NEST_BOX.get(), NestBoxScreen::new);
+        event.register(TFCContainerTypes.CRUCIBLE.get(), CrucibleScreen::new);
+        event.register(TFCContainerTypes.BARREL.get(), BarrelScreen::new);
+        event.register(TFCContainerTypes.ANVIL.get(), AnvilScreen::new);
+        event.register(TFCContainerTypes.ANVIL_PLAN.get(), AnvilPlanScreen::new);
+        event.register(TFCContainerTypes.BLAST_FURNACE.get(), BlastFurnaceScreen::new);
+        event.register(TFCContainerTypes.CHEST_9x2.get(), ContainerScreen::new);
+        event.register(TFCContainerTypes.CHEST_9x4.get(), ContainerScreen::new);
+        event.register(TFCContainerTypes.KNAPPING.get(), KnappingScreen::new);
+        event.register(TFCContainerTypes.SMALL_VESSEL_INVENTORY.get(), SmallVesselInventoryScreen::new);
+        event.register(TFCContainerTypes.MOLD_LIKE_ALLOY.get(), MoldLikeAlloyScreen::new);
+        event.register(TFCContainerTypes.LARGE_VESSEL.get(), LargeVesselScreen::new);
+        event.register(TFCContainerTypes.SCRIBING_TABLE.get(), ScribingTableScreen::new);
+        event.register(TFCContainerTypes.SEWING_TABLE.get(), SewingTableScreen::new);
     }
 
     public static void onTooltipFactoryRegistry(RegisterClientTooltipComponentFactoriesEvent event)

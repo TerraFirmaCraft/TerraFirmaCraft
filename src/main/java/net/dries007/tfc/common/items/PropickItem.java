@@ -11,8 +11,8 @@ import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import org.jetbrains.annotations.Nullable;
-
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -30,15 +30,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.network.PacketDistributor;
+import org.jetbrains.annotations.Nullable;
 
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Ore;
-import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.ProspectedPacket;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.events.ProspectedEvent;
@@ -159,8 +157,8 @@ public class PropickItem extends ToolItem
                 }
             }
 
-            MinecraftForge.EVENT_BUS.post(new ProspectedEvent(player, result, found));
-            PacketHandler.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new ProspectedPacket(found, result));
+            NeoForge.EVENT_BUS.post(new ProspectedEvent(player, result, found));
+            PacketDistributor.sendToPlayer(serverPlayer, new ProspectedPacket(found, result));
         }
         return InteractionResult.SUCCESS;
     }

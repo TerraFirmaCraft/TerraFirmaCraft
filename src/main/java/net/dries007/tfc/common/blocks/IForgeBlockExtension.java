@@ -12,16 +12,14 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.PushReaction;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.minecraftforge.common.extensions.IForgeBlock;
-
+import net.minecraft.world.level.pathfinder.PathType;
+import net.neoforged.neoforge.common.extensions.IBlockExtension;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * This implements some of the more annoying methods in {@link IForgeBlock} which would otherwise require implementing across all manner of vanilla subclasses.
+ * This implements some of the more annoying methods in {@link IBlockExtension} which would otherwise require implementing across all manner of vanilla subclasses.
  */
-public interface IForgeBlockExtension extends IForgeBlock
+public interface IForgeBlockExtension extends IBlockExtension
 {
     ExtendedProperties getExtendedProperties();
 
@@ -32,12 +30,6 @@ public interface IForgeBlockExtension extends IForgeBlock
     }
 
     @Override
-    default boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction)
-    {
-        return state.getFlammability(level, pos, direction) > 0;
-    }
-
-    @Override
     default int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face)
     {
         return getExtendedProperties().getFireSpreadSpeed();
@@ -45,10 +37,10 @@ public interface IForgeBlockExtension extends IForgeBlock
 
     @Nullable
     @Override
-    default BlockPathTypes getBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob entity)
+    default PathType getBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob entity)
     {
-        final BlockPathTypes type = getExtendedProperties().getPathType();
-        return type != null ? type : IForgeBlock.super.getBlockPathType(state, level, pos, entity);
+        final PathType type = getExtendedProperties().getPathType();
+        return type != null ? type : IBlockExtension.super.getBlockPathType(state, level, pos, entity);
     }
 
     @Override

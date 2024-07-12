@@ -8,31 +8,23 @@ package net.dries007.tfc.common.capabilities;
 
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-
-import net.dries007.tfc.common.items.VesselItem;
-import net.dries007.tfc.util.Helpers;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
+import net.dries007.tfc.util.Helpers;
 
 /**
  * A {@link IFluidHandler} capability provider implementation for item stacks.
  * Supports a single fluid, up to a constant capacity, with a whitelist of fluids to accept via a tag.
  */
-public class ItemStackFluidHandler implements SimpleFluidHandler, IFluidHandlerItem, ICapabilityProvider
+public class ItemStackFluidHandler implements SimpleFluidHandler, IFluidHandlerItem
 {
-    private final LazyOptional<IFluidHandlerItem> capability;
     private final ItemStack stack;
     private final Predicate<Fluid> allowedFluids;
     protected final Supplier<Integer> capacity;
@@ -47,7 +39,6 @@ public class ItemStackFluidHandler implements SimpleFluidHandler, IFluidHandlerI
 
     public ItemStackFluidHandler(ItemStack stack, Predicate<Fluid> allowedFluids, Supplier<Integer> capacity)
     {
-        this.capability = LazyOptional.of(() -> this);
         this.stack = stack;
         this.allowedFluids = allowedFluids;
         this.capacity = capacity;
@@ -118,21 +109,6 @@ public class ItemStackFluidHandler implements SimpleFluidHandler, IFluidHandlerI
             return result;
         }
         return FluidStack.EMPTY;
-    }
-
-    @NotNull
-    @Override
-    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction direction)
-    {
-        if (stack.getCount() != 1)
-        {
-            return LazyOptional.empty();
-        }
-        if (cap == Capabilities.FLUID || cap == Capabilities.FLUID_ITEM)
-        {
-            return capability.cast();
-        }
-        return LazyOptional.empty();
     }
 
     protected void load()

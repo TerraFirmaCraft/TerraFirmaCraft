@@ -9,16 +9,14 @@ package net.dries007.tfc.common.capabilities;
 import javax.annotation.Nonnull;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.IItemHandlerModifiable;
-import net.minecraftforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 
 import net.dries007.tfc.common.container.ISlotCallback;
 
 
-/**
- * This is a modified version of {@link net.minecraftforge.items.wrapper.InvWrapper}, which has been rewritten to use both {@link net.minecraftforge.items.ItemStackHandler} insert + extract semantics, and {@link ISlotCallback}.
- */
+
 public record InventoryWrapper(Container container, ISlotCallback callback) implements IItemHandlerModifiable
 {
 

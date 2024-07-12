@@ -37,7 +37,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraftforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.common.capabilities.food.DynamicBowlHandler;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
@@ -243,16 +243,16 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal, BrainBreeder
         return SoundEvents.PLAYER_BURP;
     }
 
-    default void registerCommonData()
+    default void registerCommonData(SynchedEntityData.Builder builder)
     {
-        entityData().define(animalData().gender(), true);
-        entityData().define(animalData().birthday(), 0L);
-        entityData().define(animalData().familiarity(), 0f);
-        entityData().define(animalData().uses(), 0);
-        entityData().define(animalData().fertilized(), false);
-        entityData().define(animalData().oldDay(), -1L);
-        entityData().define(animalData().geneticSize(), 16);
-        entityData().define(animalData().lastFed(), Long.MIN_VALUE);
+        builder.define(animalData().gender(), true);
+        builder.define(animalData().birthday(), 0L);
+        builder.define(animalData().familiarity(), 0f);
+        builder.define(animalData().uses(), 0);
+        builder.define(animalData().fertilized(), false);
+        builder.define(animalData().oldDay(), -1L);
+        builder.define(animalData().geneticSize(), 16);
+        builder.define(animalData().lastFed(), Long.MIN_VALUE);
     }
 
     default void saveCommonAnimalData(CompoundTag nbt)

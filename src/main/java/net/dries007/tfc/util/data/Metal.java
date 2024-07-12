@@ -125,7 +125,7 @@ public record Metal(
         Metal::new
     );
 
-    record IngredientParts(
+    public record IngredientParts(
         Optional<Ingredient> ingots,
         Optional<Ingredient> doubleIngots,
         Optional<Ingredient> sheets

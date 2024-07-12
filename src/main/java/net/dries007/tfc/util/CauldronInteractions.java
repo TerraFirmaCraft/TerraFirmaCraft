@@ -23,14 +23,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import org.jetbrains.annotations.NotNull;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.capabilities.SimpleFluidHandler;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.items.TFCItems;
-import org.jetbrains.annotations.NotNull;
 
 public final class CauldronInteractions
 {
@@ -105,7 +105,7 @@ public final class CauldronInteractions
         }
 
         @Override
-        public int fill(FluidStack stack, FluidAction action)
+        public int fill(FluidStack stack, IFluidHandler.FluidAction action)
         {
             if (getFluidInTank(0).isEmpty() && isFluidValid(0, stack) && stack.getAmount() >= FluidHelpers.BUCKET_VOLUME)
             {
@@ -127,7 +127,7 @@ public final class CauldronInteractions
 
         @NotNull
         @Override
-        public FluidStack drain(int maxDrain, FluidAction action)
+        public FluidStack drain(int maxDrain, IFluidHandler.FluidAction action)
         {
             final FluidStack stack = getFluidInTank(0);
             if (!stack.isEmpty() && maxDrain >= FluidHelpers.BUCKET_VOLUME)

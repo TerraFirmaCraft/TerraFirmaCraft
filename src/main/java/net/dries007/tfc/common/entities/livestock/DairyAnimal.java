@@ -16,14 +16,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.NeoForgeMod;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 
 import net.dries007.tfc.client.TFCSounds;
-import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.config.animals.ProducingMammalConfig;
 import net.dries007.tfc.util.Helpers;
@@ -51,7 +50,7 @@ public abstract class DairyAnimal extends ProducingMammal
                 final FluidStack milk = new FluidStack(getMilkFluid(), FluidHelpers.BUCKET_VOLUME);
                 final AnimalProductEvent event = new AnimalProductEvent(level(), blockPosition(), player, this, milk, held, 1);
 
-                if (!MinecraftForge.EVENT_BUS.post(event)) // if the event is NOT cancelled
+                if (!NeoForge.EVENT_BUS.post(event).isCanceled())
                 {
                     final FluidTank sourceFluidHandler = new FluidTank(Integer.MAX_VALUE);
                     sourceFluidHandler.setFluid(event.getFluidProduct());
@@ -111,7 +110,7 @@ public abstract class DairyAnimal extends ProducingMammal
 
     public Fluid getMilkFluid()
     {
-        return ForgeMod.MILK.get();
+        return NeoForgeMod.MILK.get();
     }
 
     @Override

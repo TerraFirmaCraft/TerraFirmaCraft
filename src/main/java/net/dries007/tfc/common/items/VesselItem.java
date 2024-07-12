@@ -9,7 +9,6 @@ package net.dries007.tfc.common.items;
 import java.util.List;
 import java.util.Optional;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -23,17 +22,13 @@ import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.INBTSerializable;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.items.IItemHandlerModifiable;
-import net.minecraftforge.items.ItemStackHandler;
+import net.neoforged.neoforge.common.util.INBTSerializable;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.DelegateHeatHandler;
 import net.dries007.tfc.common.capabilities.DelegateItemHandler;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
@@ -195,23 +190,15 @@ public class VesselItem extends Item
         return super.getTooltipImage(stack);
     }
 
-    @Nullable
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt)
-    {
-        return new VesselCapability(stack);
-    }
-
     @Override
     public int getMaxStackSize(ItemStack stack)
     {
         return 1;
     }
 
-    static class VesselCapability implements VesselLike, ICapabilityProvider, INBTSerializable<CompoundTag>, DelegateItemHandler, DelegateHeatHandler, SimpleFluidHandler
+    static class VesselCapability implements VesselLike, INBTSerializable<CompoundTag>, DelegateItemHandler, DelegateHeatHandler, SimpleFluidHandler
     {
         private final ItemStack stack;
-        private final LazyOptional<VesselCapability> capability;
 
         private final ItemStackHandler inventory;
         private final Alloy alloy;
@@ -225,7 +212,6 @@ public class VesselItem extends Item
         VesselCapability(ItemStack stack)
         {
             this.stack = stack;
-            this.capability = LazyOptional.of(() -> this);
 
             this.inventory = new InventoryItemHandler(this, SLOTS);
             this.capacity = Helpers.getValueOrDefault(TFCConfig.SERVER.smallVesselCapacity);
@@ -338,22 +324,6 @@ public class VesselItem extends Item
         public IItemHandlerModifiable getItemHandler()
         {
             return inventory;
-        }
-
-        @NotNull
-        @Override
-        public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)
-        {
-            if (cap == HeatCapability.NETWORK_CAPABILITY)
-            {
-                return capability.cast();
-            }
-            if (cap == HeatCapability.CAPABILITY || cap == Capabilities.ITEM || cap == Capabilities.FLUID || cap == Capabilities.FLUID_ITEM)
-            {
-                load();
-                return capability.cast();
-            }
-            return LazyOptional.empty();
         }
 
         @NotNull

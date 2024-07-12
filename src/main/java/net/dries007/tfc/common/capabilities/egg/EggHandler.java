@@ -8,8 +8,6 @@ package net.dries007.tfc.common.capabilities.egg;
 
 import java.util.List;
 import java.util.Optional;
-
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -17,22 +15,16 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilitySerializable;
-import net.minecraftforge.common.util.LazyOptional;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.food.DelegateFoodHandler;
-import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodData;
 import net.dries007.tfc.common.capabilities.food.FoodHandler;
 import net.dries007.tfc.common.capabilities.food.IFood;
 
-public class EggHandler implements IEgg, DelegateFoodHandler, ICapabilitySerializable<CompoundTag>
+public class EggHandler implements IEgg, DelegateFoodHandler
 {
-    private final LazyOptional<EggHandler> capability;
     private final ItemStack stack;
     private final FoodHandler foodHandler;
 
@@ -50,7 +42,6 @@ public class EggHandler implements IEgg, DelegateFoodHandler, ICapabilitySeriali
         hatchDay = 0;
         entityTag = null;
         foodHandler = new FoodHandler(FoodData.decayOnly(2f));
-        capability = LazyOptional.of(() -> this);
     }
 
     @Override
@@ -89,22 +80,6 @@ public class EggHandler implements IEgg, DelegateFoodHandler, ICapabilitySeriali
         stack.removeTagKey("entity");
         stack.removeTagKey("fertilized");
         stack.removeTagKey("hatch");
-    }
-
-    @NotNull
-    @Override
-    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)
-    {
-        if (cap == FoodCapability.NETWORK_CAPABILITY)
-        {
-            return capability.cast();
-        }
-        if (cap == EggCapability.CAPABILITY || cap == FoodCapability.CAPABILITY)
-        {
-            load();
-            return capability.cast();
-        }
-        return LazyOptional.empty();
     }
 
     @Override

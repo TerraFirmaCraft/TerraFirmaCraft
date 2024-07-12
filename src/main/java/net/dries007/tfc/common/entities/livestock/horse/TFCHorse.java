@@ -372,11 +372,11 @@ public class TFCHorse extends Horse implements HorseProperties
     }
 
     @Override
-    protected void defineSynchedData()
+    protected void defineSynchedData(SynchedEntityData.Builder builder)
     {
-        super.defineSynchedData();
-        registerCommonData();
-        entityData.define(PREGNANT_TIME, -1L);
+        super.defineSynchedData(builder);
+        registerCommonData(builder);
+        builder.define(PREGNANT_TIME, -1L);
     }
 
     @Override

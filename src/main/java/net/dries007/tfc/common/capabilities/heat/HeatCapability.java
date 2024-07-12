@@ -8,11 +8,11 @@ package net.dries007.tfc.common.capabilities.heat;
 
 import java.util.Iterator;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.recipes.RecipeHelpers;
@@ -24,17 +24,6 @@ import net.dries007.tfc.util.data.Fuel;
 
 public final class HeatCapability
 {
-    // For heat defined on item stacks
-    public static final Capability<IHeat> CAPABILITY = Helpers.capability(new CapabilityToken<>() {});
-    public static final ResourceLocation KEY = Helpers.identifier("item_heat");
-
-    // For heat providers and consumers defined on blocks
-    public static final Capability<IHeatBlock> BLOCK_CAPABILITY = Helpers.capability(new CapabilityToken<>() {});
-    public static final ResourceLocation BLOCK_KEY = Helpers.identifier("block_heat");
-
-    // For access only to the network serializable portion of an item stack heat capability
-    public static final Capability<INetworkHeat> NETWORK_CAPABILITY = Helpers.capability(new CapabilityToken<>() {});
-
     public static final DataManager<HeatDefinition> MANAGER = new DataManager<>(Helpers.identifier("item_heats"), "item heat", HeatDefinition.CODEC, HeatDefinition.STREAM_CODEC);
     public static final IndirectHashCollection<Item, HeatDefinition> CACHE = IndirectHashCollection.create(r -> RecipeHelpers.itemKeys(r.ingredient()), MANAGER::getValues);
 
@@ -43,7 +32,7 @@ public final class HeatCapability
     @Nullable
     public static IHeat get(ItemStack stack)
     {
-        return Helpers.getCapability(stack, CAPABILITY);
+        return null; // todo: 1.21 porting
     }
 
     /**
@@ -69,12 +58,12 @@ public final class HeatCapability
 
     public static boolean has(ItemStack stack)
     {
-        return stack.getCapability(CAPABILITY).isPresent();
+        return false; // todo: 1.21 porting
     }
 
     public static boolean maybeHas(ItemStack stack)
     {
-        return Helpers.mightHaveCapability(stack, CAPABILITY);
+        return false; // todo: 1.21 porting
     }
 
     /**

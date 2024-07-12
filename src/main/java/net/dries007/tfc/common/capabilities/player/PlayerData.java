@@ -6,42 +6,34 @@
 
 package net.dries007.tfc.common.capabilities.player;
 
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilitySerializable;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.network.PacketDistributor;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.food.TFCFoodData;
 import net.dries007.tfc.common.recipes.ChiselRecipe;
-import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.PlayerDataUpdatePacket;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 
-public class PlayerData implements ICapabilitySerializable<CompoundTag>
+public class PlayerData
 {
     /**
      * Returns the {@link PlayerData} for a given {@code player}. This will always be present.
      * @param player The player to query. Can be either a server or client player, server data will be synced on modification to client.
      * @return The player data instance.
      */
-    @SuppressWarnings("deprecation")
     public static PlayerData get(Player player)
     {
-        return player.getCapability(PlayerDataCapability.CAPABILITY).orElseThrow(() -> new IllegalStateException("Missing " + PlayerData.class));
+        throw new IllegalStateException("no player data"); // todo: 1.21 porting
     }
 
     public static final long MAX_INTOXICATED_TICKS = 36 * ICalendar.TICKS_IN_HOUR; // A day and a half. Each drink gives you 4 hours of time
 
     private final Player player;
-    private final LazyOptional<PlayerData> capability;
     @Nullable private CompoundTag delayedFoodNbt;
 
     private long lastDrinkTick;
@@ -51,7 +43,6 @@ public class PlayerData implements ICapabilitySerializable<CompoundTag>
     public PlayerData(Player player)
     {
         this.player = player;
-        this.capability = LazyOptional.of(() -> this);
     }
 
     /**
@@ -119,7 +110,7 @@ public class PlayerData implements ICapabilitySerializable<CompoundTag>
     {
         if (player instanceof final ServerPlayer serverPlayer)
         {
-            PacketHandler.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new PlayerDataUpdatePacket(lastDrinkTick, intoxicationTick, chiselMode));
+            PacketDistributor.sendToPlayer(serverPlayer, new PlayerDataUpdatePacket(lastDrinkTick, intoxicationTick, chiselMode));
         }
     }
 
@@ -128,14 +119,6 @@ public class PlayerData implements ICapabilitySerializable<CompoundTag>
         this.lastDrinkTick = lastDrinkTick;
         this.intoxicationTick = intoxicationTick;
         this.chiselMode = mode;
-    }
-
-    @NotNull
-    @Override
-    @SuppressWarnings("deprecation")
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
-    {
-        return PlayerDataCapability.CAPABILITY.orEmpty(cap, capability);
     }
 
     @Override

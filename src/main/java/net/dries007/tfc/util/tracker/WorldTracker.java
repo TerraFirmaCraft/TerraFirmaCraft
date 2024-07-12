@@ -6,8 +6,14 @@
 
 package net.dries007.tfc.util.tracker;
 
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -21,11 +27,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilitySerializable;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.network.PacketDistributor;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
@@ -33,22 +37,18 @@ import net.dries007.tfc.common.entities.misc.TFCFallingBlockEntity;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.common.recipes.LandslideRecipe;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.RainfallUpdatePacket;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.events.CollapseEvent;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.climate.BiomeBasedClimateModel;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateModel;
 import net.dries007.tfc.util.collections.BufferedList;
+import net.dries007.tfc.util.events.CollapseEvent;
 import net.dries007.tfc.util.loot.TFCLoot;
 import net.dries007.tfc.util.rotation.RotationNetworkManager;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-public class WorldTracker implements ICapabilitySerializable<CompoundTag>
+public final class WorldTracker
 {
     /**
      * Returns the world tracker for a given world. Note that we always expect <strong>every world</strong> to have a tracker attached, and thus this will throw
@@ -60,12 +60,11 @@ public class WorldTracker implements ICapabilitySerializable<CompoundTag>
     @SuppressWarnings("deprecation")
     public static WorldTracker get(Level level)
     {
-        return level.getCapability(WorldTrackerCapability.CAPABILITY).orElseThrow(() -> new IllegalStateException("Missing " + WorldTracker.class.getSimpleName()));
+        throw new IllegalStateException("missing world tracker"); // todo: 1.21 porting
     }
 
     private final Level level;
     private final Random random;
-    private final LazyOptional<WorldTracker> capability;
 
     private final BufferedList<TickEntry> landslideTicks;
     private final BufferedList<BlockPos> isolatedPositions;
@@ -83,7 +82,6 @@ public class WorldTracker implements ICapabilitySerializable<CompoundTag>
     {
         this.level = level;
         this.random = new Random();
-        this.capability = LazyOptional.of(() -> this);
         this.climateModel = null;
         this.landslideTicks = new BufferedList<>();
         this.isolatedPositions = new BufferedList<>();
@@ -104,7 +102,7 @@ public class WorldTracker implements ICapabilitySerializable<CompoundTag>
     public void addCollapseData(Collapse collapse)
     {
         collapsesInProgress.add(collapse);
-        MinecraftForge.EVENT_BUS.post(new CollapseEvent(level, collapse.centerPos, collapse.nextPositions, collapse.radiusSquared, false));
+        NeoForge.EVENT_BUS.post(new CollapseEvent(level, collapse.centerPos, collapse.nextPositions, collapse.radiusSquared, false));
     }
 
     public void setClimateModel(ClimateModel climateModel)
@@ -236,15 +234,15 @@ public class WorldTracker implements ICapabilitySerializable<CompoundTag>
 
     public void sync()
     {
-        if (!level.isClientSide())
+        if (level instanceof ServerLevel serverLevel)
         {
-            PacketHandler.send(PacketDistributor.DIMENSION.with(level::dimension), new RainfallUpdatePacket(rainStartTick, rainEndTick, rainIntensity));
+            PacketDistributor.sendToPlayersInDimension(serverLevel, new RainfallUpdatePacket(rainStartTick, rainEndTick, rainIntensity));
         }
     }
 
     public void syncTo(ServerPlayer player)
     {
-        PacketHandler.send(PacketDistributor.PLAYER.with(() -> player), new RainfallUpdatePacket(rainStartTick, rainEndTick, rainIntensity));
+        PacketDistributor.sendToPlayer(player, new RainfallUpdatePacket(rainStartTick, rainEndTick, rainIntensity));
     }
 
     @Override
@@ -306,14 +304,6 @@ public class WorldTracker implements ICapabilitySerializable<CompoundTag>
             rainEndTick = nbt.getLong("rainEndTick");
             rainIntensity = nbt.getFloat("rainIntensity");
         }
-    }
-
-    @NotNull
-    @Override
-    @SuppressWarnings("deprecation")
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
-    {
-        return WorldTrackerCapability.CAPABILITY.orEmpty(cap, capability);
     }
 
     private float exactRainfallIntensity(long tick)

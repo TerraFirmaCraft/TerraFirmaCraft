@@ -23,7 +23,6 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.ITeleporter;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.effect.TFCEffects;
@@ -46,11 +45,11 @@ public class Octopoteuthis extends TFCSquid implements IGlow
     }
 
     @Override
-    public void defineSynchedData()
+    public void defineSynchedData(SynchedEntityData.Builder builder)
     {
-        super.defineSynchedData();
-        this.entityData.define(DATA_DARK_TICKS_REMAINING, 0);
-        this.entityData.define(DATA_LIGHT_POS, BlockPos.ZERO);
+        super.defineSynchedData(builder);
+        builder.define(DATA_DARK_TICKS_REMAINING, 0);
+        builder.define(DATA_LIGHT_POS, BlockPos.ZERO);
     }
 
     @Override

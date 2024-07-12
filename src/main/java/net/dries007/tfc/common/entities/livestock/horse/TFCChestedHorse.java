@@ -40,9 +40,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-import net.minecraftforge.items.ItemHandlerHelper;
+import net.neoforge.neoforged.common.Tags;
+import net.neoforge.neoforged.fluids.capability.IFluidHandlerItem;
+import net.neoforge.neoforged.items.ItemHandlerHelper;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
@@ -403,12 +403,12 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
     }
 
     @Override
-    protected void defineSynchedData()
+    protected void defineSynchedData(SynchedEntityData.Builder builder)
     {
-        super.defineSynchedData();
-        registerCommonData();
-        entityData.define(PREGNANT_TIME, -1L);
-        entityData.define(CHEST_ITEM, ItemStack.EMPTY);
+        super.defineSynchedData(builder);
+        registerCommonData(builder);
+        builder.define(PREGNANT_TIME, -1L);
+        builder.define(CHEST_ITEM, ItemStack.EMPTY);
     }
 
     @Override

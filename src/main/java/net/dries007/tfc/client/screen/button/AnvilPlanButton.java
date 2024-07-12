@@ -13,8 +13,7 @@ import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.ClientHelpers;
@@ -22,10 +21,8 @@ import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.screen.AnvilScreen;
 import net.dries007.tfc.common.blockentities.AnvilBlockEntity;
 import net.dries007.tfc.common.capabilities.Capabilities;
-import net.dries007.tfc.common.component.forge.Forging;
 import net.dries007.tfc.common.container.AnvilContainer;
 import net.dries007.tfc.common.recipes.AnvilRecipe;
-import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.ScreenButtonPacket;
 
 public class AnvilPlanButton extends Button
@@ -35,7 +32,7 @@ public class AnvilPlanButton extends Button
     public AnvilPlanButton(AnvilBlockEntity anvil, int guiLeft, int guiTop)
     {
         super(guiLeft + 21, guiTop + 40, 18, 18, Component.translatable("tfc.tooltip.anvil_plan"), button -> {
-            PacketHandler.send(PacketDistributor.SERVER.noArg(), new ScreenButtonPacket(AnvilContainer.PLAN_ID));
+            PacketDistributor.sendToServer(new ScreenButtonPacket(AnvilContainer.PLAN_ID));
         }, RenderHelpers.NARRATION);
         setTooltip(Tooltip.create(Component.translatable("tfc.tooltip.anvil_plan")));
 
@@ -67,12 +64,6 @@ public class AnvilPlanButton extends Button
     @Nullable
     private AnvilRecipe getRecipe()
     {
-        final Level level = anvil.getLevel();
-        final @Nullable Forging forging = anvil.getMainInputForging();
-        if (level != null && forging != null)
-        {
-            return forging.view().recipe();
-        }
-        return null;
+        return anvil.getMainInputForging().view().recipe();
     }
 }

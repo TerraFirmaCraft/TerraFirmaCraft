@@ -23,7 +23,7 @@ import net.minecraft.world.level.block.CarvedPumpkinBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.common.Tags;
+import net.neoforge.neoforged.common.Tags;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.DecayingBlockEntity;

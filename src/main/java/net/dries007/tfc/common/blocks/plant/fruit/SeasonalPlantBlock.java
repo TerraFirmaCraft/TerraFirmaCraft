@@ -32,12 +32,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
@@ -181,9 +181,9 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
 
     @Override
     @Nullable
-    public BlockPathTypes getBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob entity)
+    public PathType getBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob entity)
     {
-        return Helpers.isBlock(this, TFCTags.Blocks.THORNY_BUSHES)? BlockPathTypes.DAMAGE_OTHER : BlockPathTypes.OPEN;
+        return Helpers.isBlock(this, TFCTags.Blocks.THORNY_BUSHES) ? PathType.DAMAGE_OTHER : PathType.OPEN;
     }
 
     @Override

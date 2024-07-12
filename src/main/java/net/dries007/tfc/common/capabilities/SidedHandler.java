@@ -6,14 +6,9 @@
 
 package net.dries007.tfc.common.capabilities;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Predicate;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.core.Direction;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.util.Helpers;
 
@@ -25,85 +20,57 @@ public interface SidedHandler<T>
 {
     /**
      * Access the specific handler for a given side.
-     * The side is interpreted to be the same as in {@link net.minecraftforge.common.capabilities.ICapabilityProvider#getCapability(Capability, Direction)}
      */
+    @Nullable
     T getSidedHandler(@Nullable Direction side);
 
-    class Builder<T> implements SidedHandler<LazyOptional<T>>
+    class Builder<T> implements SidedHandler<T>
     {
         private static final int SIDES = Direction.values().length;
 
-        private final LazyOptional<T> internal;
-        private final LazyOptional<T>[] sidedHandlers;
-        private final List<LazyOptional<T>> handlers;
+        private final @Nullable T internal;
+        private final @Nullable T[] sidedHandlers;
 
         @SuppressWarnings("unchecked")
         public Builder(@Nullable T internal)
         {
-            this.internal = internal == null ? LazyOptional.empty() : LazyOptional.of(() -> internal);
-            this.sidedHandlers = (LazyOptional<T>[]) new LazyOptional[SIDES];
-            this.handlers = new ArrayList<>();
-            this.handlers.add(this.internal);
-        }
-
-        public void invalidate()
-        {
-            handlers.forEach(LazyOptional::invalidate);
+            this.internal = internal;
+            this.sidedHandlers = (T[]) new Object[SIDES];
         }
 
         public Builder<T> on(T handler, Predicate<Direction> sides)
         {
-            final LazyOptional<T> optional = LazyOptional.of(() -> handler);
             for (Direction side : Helpers.DIRECTIONS)
             {
                 if (sides.test(side))
                 {
-                    sidedHandlers[side.ordinal()] = optional;
+                    sidedHandlers[side.ordinal()] = handler;
                 }
             }
-            handlers.add(optional);
             return this;
         }
 
         public Builder<T> on(T handler, Direction... sides)
         {
-            final LazyOptional<T> optional = LazyOptional.of(() -> handler);
             for (Direction side : sides)
             {
-                sidedHandlers[side.ordinal()] = optional;
+                sidedHandlers[side.ordinal()] = handler;
             }
-            handlers.add(optional);
             return this;
         }
 
+        @Nullable
         @Override
-        public LazyOptional<T> getSidedHandler(@Nullable Direction side)
+        public T getSidedHandler(@Nullable Direction side)
         {
-            if (side == null)
-            {
-                return internal;
-            }
-            final LazyOptional<T> sided = sidedHandlers[side.ordinal()];
-            return sided == null ? LazyOptional.empty() : sided;
+            return side == null ? internal : sidedHandlers[side.ordinal()];
         }
     }
 
-    class Noop<T> implements SidedHandler<LazyOptional<T>>
+    record Noop<T>(T internal) implements SidedHandler<T>
     {
-        private final LazyOptional<T> internal;
-
-        public Noop(T internal)
-        {
-            this.internal = LazyOptional.of(() -> internal);
-        }
-
-        public void invalidate()
-        {
-            internal.invalidate();
-        }
-
         @Override
-        public LazyOptional<T> getSidedHandler(@Nullable Direction side)
+        public T getSidedHandler(@Nullable Direction side)
         {
             return internal;
         }

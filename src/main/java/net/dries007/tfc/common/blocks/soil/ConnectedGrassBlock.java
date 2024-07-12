@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blocks.soil;
 
 import java.util.Map;
-import java.util.Random;
 import java.util.function.Supplier;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
@@ -28,8 +27,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraftforge.common.ToolAction;
-import net.minecraftforge.common.ToolActions;
+import net.neoforged.neoforge.common.ItemAbilities;
+import net.neoforged.neoforge.common.ItemAbility;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
@@ -184,15 +183,15 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
 
     @Nullable
     @Override
-    public BlockState getToolModifiedState(BlockState state, UseOnContext context, ToolAction action, boolean simulate)
+    public BlockState getToolModifiedState(BlockState state, UseOnContext context, ItemAbility action, boolean simulate)
     {
         if (context.getItemInHand().canPerformAction(action))
         {
-            if (action == ToolActions.SHOVEL_FLATTEN && TFCConfig.SERVER.enableGrassPathCreation.get() && path != null)
+            if (action == ItemAbilities.SHOVEL_FLATTEN && TFCConfig.SERVER.enableGrassPathCreation.get() && path != null)
             {
                 return path.get().defaultBlockState();
             }
-            if (action == ToolActions.HOE_TILL && farmland != null && TFCConfig.SERVER.enableFarmlandCreation.get() && HoeItem.onlyIfAirAbove(context))
+            if (action == ItemAbilities.HOE_TILL && farmland != null && TFCConfig.SERVER.enableFarmlandCreation.get() && HoeItem.onlyIfAirAbove(context))
             {
                 return farmland.get().defaultBlockState();
             }

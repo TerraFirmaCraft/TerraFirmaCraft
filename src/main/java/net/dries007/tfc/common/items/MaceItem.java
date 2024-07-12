@@ -9,8 +9,8 @@ package net.dries007.tfc.common.items;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
-import net.minecraftforge.common.ToolAction;
-import net.minecraftforge.common.ToolActions;
+import net.neoforged.neoforge.common.ItemAbilities;
+import net.neoforged.neoforge.common.ItemAbility;
 
 public class MaceItem extends SwordItem
 {
@@ -20,8 +20,8 @@ public class MaceItem extends SwordItem
     }
 
     @Override
-    public boolean canPerformAction(ItemStack stack, ToolAction toolAction)
+    public boolean canPerformAction(ItemStack stack, ItemAbility toolAction)
     {
-        return super.canPerformAction(stack, toolAction) && toolAction != ToolActions.SWORD_SWEEP;
+        return super.canPerformAction(stack, toolAction) && toolAction != ItemAbilities.SWORD_SWEEP;
     }
 }

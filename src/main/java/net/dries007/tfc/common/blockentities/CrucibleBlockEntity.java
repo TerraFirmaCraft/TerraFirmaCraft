@@ -17,16 +17,12 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.INBTSerializable;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.items.IItemHandlerModifiable;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.DelegateItemHandler;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
 import net.dries007.tfc.common.capabilities.MoldLike;
@@ -296,21 +292,6 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         super.saveAdditional(nbt);
     }
 
-    @NotNull
-    @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
-    {
-        if (cap == Capabilities.FLUID)
-        {
-            return sidedFluidInventory.getSidedHandler(side).cast();
-        }
-        if (cap == HeatCapability.BLOCK_CAPABILITY)
-        {
-            return sidedHeat.getSidedHandler(side).cast();
-        }
-        return super.getCapability(cap, side);
-    }
-
     @Override
     public void setAndUpdateSlots(int slot)
     {
@@ -335,7 +316,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         }
     }
 
-    static class CrucibleInventory implements DelegateItemHandler, SimpleFluidHandler, INBTSerializable<CompoundTag>, IHeatBlock
+    static class CrucibleInventory implements DelegateItemHandler, SimpleFluidHandler, IHeatBlock
     {
         private final CrucibleBlockEntity crucible;
 
@@ -397,7 +378,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         }
 
         @Override
-        public int fill(FluidStack resource, FluidAction action)
+        public int fill(FluidStack resource, IFluidHandler.FluidAction action)
         {
             final Metal metal = Metal.get(resource.getFluid());
             if (metal != null)
@@ -409,7 +390,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
 
         @NotNull
         @Override
-        public FluidStack drain(int maxDrain, FluidAction action)
+        public FluidStack drain(int maxDrain, IFluidHandler.FluidAction action)
         {
             if (isMolten())
             {

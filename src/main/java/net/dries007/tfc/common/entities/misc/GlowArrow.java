@@ -21,7 +21,6 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.ITeleporter;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.effect.TFCEffects;
@@ -90,10 +89,10 @@ public class GlowArrow extends AbstractArrow implements IGlow
 
 
     @Override
-    public void defineSynchedData()
+    public void defineSynchedData(SynchedEntityData.Builder builder)
     {
-        super.defineSynchedData();
-        entityData.define(DATA_LIGHT_POS, BlockPos.ZERO);
+        super.defineSynchedData(builder);
+        builder.define(DATA_LIGHT_POS, BlockPos.ZERO);
     }
 
     @Override

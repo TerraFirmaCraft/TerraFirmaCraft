@@ -28,9 +28,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.common.MinecraftForge;
+import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
+import net.neoforged.neoforge.common.NeoForge;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
@@ -57,7 +56,7 @@ public abstract class OviparousAnimal extends ProducingAnimal implements Pluckab
     public float oFlapSpeed;
     public float flapSpeed;
     private float nextFlap = 1f;
-    private final ForgeConfigSpec.IntValue hatchDays;
+    private final IntValue hatchDays;
     private long lastPlucked = Long.MIN_VALUE;
     private boolean crowed;
     private final boolean isCrowingBird;
@@ -241,7 +240,7 @@ public abstract class OviparousAnimal extends ProducingAnimal implements Pluckab
             }
         }
         AnimalProductEvent event = new AnimalProductEvent(level(), blockPosition(), null, this, stack, ItemStack.EMPTY, 1);
-        if (!MinecraftForge.EVENT_BUS.post(event))
+        if (!NeoForge.EVENT_BUS.post(event).isCanceled())
         {
             addUses(event.getUses());
         }

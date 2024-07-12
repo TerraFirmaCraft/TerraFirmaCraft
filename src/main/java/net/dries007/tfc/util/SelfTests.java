@@ -57,10 +57,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.loot.LootDataType;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.server.ServerLifecycleHooks;
+import net.neoforged.bus.api.Event;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
@@ -96,6 +95,7 @@ import net.dries007.tfc.common.component.forge.ForgingBonus;
 import net.dries007.tfc.common.items.MoldItem;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.BarrelRecipe;
+import net.dries007.tfc.common.recipes.RecipeHelpers;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.util.calendar.Day;
 import net.dries007.tfc.util.calendar.Month;
@@ -126,7 +126,7 @@ public final class SelfTests
 
     public static void runClientSelfTests()
     {
-        MinecraftForge.EVENT_BUS.post(new ClientSelfTestEvent()); // For other mods, as this is invoked via a tricky mixin
+        NeoForge.EVENT_BUS.post(new ClientSelfTestEvent()); // For other mods, as this is invoked via a tricky mixin
         if (Helpers.TEST_ENVIRONMENT)
         {
             final Stopwatch tick = Stopwatch.createStarted();
@@ -177,21 +177,6 @@ public final class SelfTests
     }
 
     // Public Self Test API
-
-    /**
-     * Iterate the values of a registry, filtered by mod ID
-     * @deprecated Use {@link #stream(Registry, String)} instead
-     */
-    @Deprecated
-    public static <T> Stream<T> stream(IForgeRegistry<T> registry, String modID)
-    {
-        return registry.getValues().stream()
-            .filter(e -> {
-                final var key = registry.getKey(e);
-                assert key != null;
-                return key.getNamespace().equals(modID);
-            });
-    }
 
     /**
      * Iterate the values of a registry, filtered by mod ID
@@ -470,7 +455,7 @@ public final class SelfTests
     private static boolean validateCollapseRecipeTags(RecipeManager manager)
     {
         final List<Block> errors = manager.getAllRecipesFor(TFCRecipeTypes.COLLAPSE.get()).stream()
-            .flatMap(recipe -> recipe.getBlockIngredient().all())
+            .flatMap(recipe -> recipe.value().getBlockIngredient().all())
             .filter(block -> !Helpers.isBlock(block, TFCTags.Blocks.CAN_COLLAPSE))
             .toList();
 
@@ -480,7 +465,7 @@ public final class SelfTests
     private static boolean validateLandslideRecipeTags(RecipeManager manager)
     {
         final List<Block> errors = manager.getAllRecipesFor(TFCRecipeTypes.LANDSLIDE.get()).stream()
-            .flatMap(recipe -> recipe.getBlockIngredient().all())
+            .flatMap(recipe -> recipe.value().getBlockIngredient().all())
             .filter(block -> !Helpers.isBlock(block, TFCTags.Blocks.CAN_LANDSLIDE))
             .toList();
 
@@ -510,7 +495,7 @@ public final class SelfTests
     private static boolean validatePotFluidUsability(RecipeManager manager)
     {
         final List<Fluid> errors = manager.getAllRecipesFor(TFCRecipeTypes.POT.get()).stream()
-            .flatMap(recipe -> recipe.getFluidIngredient().ingredient().all())
+            .flatMap(recipe -> RecipeHelpers.stream(recipe.value().getFluidIngredient()))
             .filter(fluid -> !Helpers.isFluid(fluid, TFCTags.Fluids.USABLE_IN_POT))
             .toList();
         return logErrors("{} fluids are listed in pot recieps that are not tagged as tfc:usable_in_pot", errors, LOGGER);
@@ -519,9 +504,9 @@ public final class SelfTests
     private static boolean validateBarrelFluidUsability(RecipeManager manager)
     {
         final List<Fluid> errors = manager.getRecipes().stream()
-            .filter(recipe -> recipe instanceof BarrelRecipe)
-            .map(recipe -> (BarrelRecipe) recipe)
-            .flatMap(recipe -> Stream.concat(recipe.getInputFluid().ingredient().all(), Stream.of(recipe.getOutputFluid().getFluid())))
+            .filter(recipe -> recipe.value() instanceof BarrelRecipe)
+            .map(recipe -> (BarrelRecipe) recipe.value())
+            .flatMap(recipe -> Stream.concat(RecipeHelpers.stream(recipe.getInputFluid()), Stream.of(recipe.getOutputFluid().getFluid())))
             .filter(fluid -> !fluid.isSame(Fluids.EMPTY) && !Helpers.isFluid(fluid, TFCTags.Fluids.USABLE_IN_BARREL))
             .toList();
         return logErrors("{} fluids are listed in barrel recipes that are not tagged as tfc:usable_in_barrel", errors, LOGGER);
@@ -529,18 +514,22 @@ public final class SelfTests
 
     private static boolean validateUniqueBloomeryRecipes(RecipeManager manager)
     {
-        final List<Fluid> errors = manager.getAllRecipesFor(TFCRecipeTypes.BLOOMERY.get()).stream()
-            .flatMap(recipe -> recipe.getInputFluid().ingredient().all())
+        final List<Fluid> errors = manager.getAllRecipesFor(TFCRecipeTypes.BLOOMERY.get())
+            .stream()
+            .flatMap(recipe -> RecipeHelpers.stream(recipe.value().getInputFluid()))
             .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
-            .entrySet().stream().filter(m -> m.getValue() > 1)
-            .map(Map.Entry::getKey).toList();
+            .entrySet()
+            .stream()
+            .filter(m -> m.getValue() > 1)
+            .map(Map.Entry::getKey)
+            .toList();
         return logErrors("{} fluids appeared in multiple bloomery recipes. Currently, every bloomery recipe must have a unique fluid input in order to work", errors, LOGGER);
     }
 
     private static boolean validateUniqueLoomRecipes(RecipeManager manager)
     {
         final List<Item> errors = manager.getAllRecipesFor(TFCRecipeTypes.LOOM.get()).stream()
-            .flatMap(recipe -> Arrays.stream(recipe.getItemStackIngredient().ingredient().getItems()))
+            .flatMap(recipe -> Arrays.stream(recipe.value().getItemStackIngredient().ingredient().getItems()))
             .map(ItemStack::getItem)
             .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
             .entrySet().stream().filter(m -> m.getValue() > 1)
@@ -551,11 +540,10 @@ public final class SelfTests
     private static boolean validateMoldsCanContainCastingIngredients(RecipeManager manager)
     {
         final List<Fluid> errors = manager.getAllRecipesFor(TFCRecipeTypes.CASTING.get()).stream()
-            .flatMap(recipe -> Arrays.stream(recipe.getIngredient().getItems())
-                .filter(stack -> stack.getItem() instanceof MoldItem)
-                .flatMap(stack ->
-                    recipe.getFluidIngredient().ingredient().all().filter(fluid -> !Helpers.isFluid(fluid, ((MoldItem) stack.getItem()).getFluidTag()))
-                )
+            .flatMap(recipe -> RecipeHelpers.stream(recipe.value().getIngredient())
+                .filter(item -> item instanceof MoldItem)
+                .flatMap(item -> RecipeHelpers.stream(recipe.value().getFluidIngredient())
+                    .filter(fluid -> !Helpers.isFluid(fluid, ((MoldItem) item).getFluidTag())))
             ).toList();
 
         return logErrors("{} fluids were found that were given as ingredients in a casting recipe that could not be put into the specified mold. This probably means that you need to add fluids to the tfc:usable_in_tool_head_mold or tfc:usable_in_ingot_mold tag.", errors, LOGGER);
@@ -563,9 +551,11 @@ public final class SelfTests
 
     private static boolean validateHeatingRecipeIngredientsAreHeatable(RecipeManager manager)
     {
-        final List<ItemStack> errors = manager.getAllRecipesFor(TFCRecipeTypes.HEATING.get()).stream()
-            .flatMap(recipe -> Arrays.stream(recipe.getIngredient().getItems()))
-            .filter(stack -> HeatCapability.getDefinition(stack) == null).toList();
+        final List<ItemStack> errors = manager.getAllRecipesFor(TFCRecipeTypes.HEATING.get())
+            .stream()
+            .flatMap(recipe -> Arrays.stream(recipe.value().getIngredient().getItems()))
+            .filter(stack -> HeatCapability.getDefinition(stack) == null)
+            .toList();
         return logErrors("{} items found as ingredients to heating recipes without a heat definition!", errors, LOGGER);
     }
 

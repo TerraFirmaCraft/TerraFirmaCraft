@@ -7,10 +7,9 @@
 package net.dries007.tfc.common.capabilities;
 
 import java.util.Arrays;
-import org.jetbrains.annotations.NotNull;
-
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.IItemHandlerModifiable;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * A partially exposed item handler, implementing the actual handler part of {@link SidedHandler} for {@link net.minecraftforge.items.IItemHandler}s

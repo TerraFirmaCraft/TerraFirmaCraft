@@ -10,18 +10,17 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.PacketDistributor;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.screen.AnvilPlanScreen;
 import net.dries007.tfc.common.recipes.AnvilRecipe;
-import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.ScreenButtonPacket;
 
 public class AnvilPlanSelectButton extends Button
@@ -36,9 +35,13 @@ public class AnvilPlanSelectButton extends Button
         super(x, y, 18, 18, tooltip, button -> {
             if (button.active)
             {
-                final CompoundTag tag = new CompoundTag();
-                tag.putString("recipe", recipe.getId().toString());
-                PacketHandler.send(PacketDistributor.SERVER.noArg(), new ScreenButtonPacket(0, tag));
+                final @Nullable ResourceLocation recipeId = AnvilRecipe.getId(recipe);
+                if (recipeId != null)
+                {
+                    final CompoundTag tag = new CompoundTag();
+                    tag.putString("recipe", recipeId.toString());
+                    PacketDistributor.sendToServer(new ScreenButtonPacket(0, tag));
+                }
             }
         }, RenderHelpers.NARRATION);
         this.component = tooltip;

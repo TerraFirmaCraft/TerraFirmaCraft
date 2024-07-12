@@ -27,7 +27,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.Tags;
+import net.neoforged.neoforge.common.Tags;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.IGhostBlockHandler;
 import net.dries007.tfc.client.TFCSounds;
@@ -36,7 +37,6 @@ import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.util.Helpers;
-import org.jetbrains.annotations.Nullable;
 
 public class WattleBlock extends StainedWattleBlock implements IGhostBlockHandler, IFluidLoggable
 {

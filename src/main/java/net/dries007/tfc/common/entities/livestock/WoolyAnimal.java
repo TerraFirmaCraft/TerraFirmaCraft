@@ -15,8 +15,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.IForgeShearable;
-import net.minecraftforge.common.MinecraftForge;
+import net.neoforged.neoforge.common.NeoForge;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -50,7 +49,7 @@ public abstract class WoolyAnimal extends ProducingMammal implements IForgeShear
 
         // if the event was not cancelled
         AnimalProductEvent event = new AnimalProductEvent(level, pos, player, this, getWoolItem(), item, 1);
-        if (!MinecraftForge.EVENT_BUS.post(event))
+        if (!NeoForge.EVENT_BUS.post(event).isCanceled())
         {
             addUses(event.getUses());
         }

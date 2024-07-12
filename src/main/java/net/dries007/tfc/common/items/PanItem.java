@@ -8,6 +8,8 @@ package net.dries007.tfc.common.items;
 
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
+import com.google.common.base.Suppliers;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
@@ -31,9 +33,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import net.minecraftforge.common.util.NonNullLazy;
-import net.minecraftforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
@@ -147,7 +148,7 @@ public class PanItem extends Item
     public void initializeClient(Consumer<IClientItemExtensions> consumer)
     {
         consumer.accept(new IClientItemExtensions() {
-            private final NonNullLazy<PanItemRenderer> renderer = NonNullLazy.of(PanItemRenderer::new);
+            private final Supplier<PanItemRenderer> renderer = Suppliers.memoize(PanItemRenderer::new);
             @Override
             public BlockEntityWithoutLevelRenderer getCustomRenderer()
             {

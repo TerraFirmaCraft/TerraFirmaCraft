@@ -8,12 +8,11 @@ package net.dries007.tfc.common.capabilities;
 
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -34,7 +33,7 @@ public class DiscreteItemStackFluidHandler extends ItemStackFluidHandler
     }
 
     @Override
-    public int fill(FluidStack fill, FluidAction action)
+    public int fill(FluidStack fill, IFluidHandler.FluidAction action)
     {
         if (fluid.isEmpty() && fill.getAmount() >= capacity.get() && isFluidValid(0, fill))
         {
@@ -51,7 +50,7 @@ public class DiscreteItemStackFluidHandler extends ItemStackFluidHandler
 
     @NotNull
     @Override
-    public FluidStack drain(int maxDrain, FluidAction action)
+    public FluidStack drain(int maxDrain, IFluidHandler.FluidAction action)
     {
         // Like buckets, we avoid draining unless we're asked for at least 1000, to avoid either returning > maxDrain, or losing fluid.
         // The handlers, i.e. in FluidHelpers, are designed to be able to work with this type of restriction and implement the lossy transfers there.

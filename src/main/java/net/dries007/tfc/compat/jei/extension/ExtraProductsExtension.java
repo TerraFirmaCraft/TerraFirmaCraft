@@ -15,7 +15,7 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.category.extensions.vanilla.crafting.ICraftingCategoryExtension;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.crafting.IShapedRecipe;
+import net.neoforge.neoforged.common.crafting.IShapedRecipe;
 
 import net.dries007.tfc.client.ClientHelpers;
 

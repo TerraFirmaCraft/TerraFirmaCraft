@@ -35,20 +35,19 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.common.SoundActions;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-import net.minecraftforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.common.NeoForgeMod;
+import net.neoforged.neoforge.common.SoundActions;
+import net.neoforged.neoforge.event.EventHooks;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.AqueductBlock;
-import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.mixin.accessor.FlowingFluidAccessor;
 import net.dries007.tfc.util.Helpers;
 
@@ -311,7 +310,7 @@ public final class FluidHelpers
                 {
                     queryState = state.getFluidState().createLegacyBlock();
                 }
-                if (ForgeEventFactory.canCreateFluidSource(level, pos, queryState, flowing.canConvertToSource(queryState.getFluidState(), level, pos)))
+                if (EventHooks.canCreateFluidSource(level, pos, queryState))
                 {
                     fluid.setAmount(Integer.MAX_VALUE);
                 }
@@ -456,7 +455,7 @@ public final class FluidHelpers
     public static void playTransferSound(Level level, BlockPos pos, FluidStack stack, Transfer type)
     {
         // Forge doesn't register a sound for milk! Pretend it's water. See MinecraftForge#9316
-        if (stack.getFluid() == ForgeMod.MILK.get())
+        if (stack.getFluid() == NeoForgeMod.MILK.get())
         {
             stack = new FluidStack(Fluids.WATER, stack.getAmount());
         }
@@ -624,7 +623,7 @@ public final class FluidHelpers
             // canPassThroughWall detects if a fluid state has a barrier - e.g. via a stair edge - that would prevent it from connecting to the current block.
             if (offsetFluid.getType() instanceof FlowingFluid && ((FlowingFluidAccessor) self).invoke$canPassThroughWall(direction, level, pos, blockStateIn, offsetPos, offsetState))
             {
-                if (offsetFluid.isSource() && ForgeEventFactory.canCreateFluidSource(level, offsetPos, offsetState, canConvertToSource))
+                if (offsetFluid.isSource() && EventHooks.canCreateFluidSource(level, offsetPos, offsetState))
                 {
                     adjacentSourceBlocks++;
                     adjacentSourceBlocksByFluid.mergeInt((FlowingFluid) offsetFluid.getType(), 1, Integer::sum);

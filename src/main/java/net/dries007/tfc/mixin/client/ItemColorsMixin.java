@@ -13,7 +13,6 @@ import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.core.Holder;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -32,11 +31,12 @@ public abstract class ItemColorsMixin
     /**
      * Inject here as opposed to using the color registry as we want this to function for all rotten foods, not just our items.
      */
+    @SuppressWarnings("deprecation")
     @Inject(method = "getColor", at = @At("HEAD"), cancellable = true)
     private void injectColorHandlerForCapabilityItems(ItemStack stack, int tintIndex, CallbackInfoReturnable<Integer> cir)
     {
         // Only modify if the default color handler would not be used, and this is a rotten food
-        if (!itemColors.containsKey(ForgeRegistries.ITEMS.getDelegateOrThrow(stack.getItem())) &&
+        if (!itemColors.containsKey(stack.getItem().builtInRegistryHolder()) &&
             FoodCapability.isRotten(stack))
         {
             cir.setReturnValue(TFCConfig.CLIENT.foodExpiryOverlayColor.get());

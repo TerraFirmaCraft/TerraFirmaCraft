@@ -160,7 +160,7 @@ public final class TerraFirmaCraft
 
         if (FMLEnvironment.dist == Dist.CLIENT)
         {
-            ClientEventHandler.init();
+            ClientEventHandler.init(bus);
             ClientForgeEventHandler.init();
             PatchouliClientEventHandler.init();
         }

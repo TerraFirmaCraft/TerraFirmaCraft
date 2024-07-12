@@ -6,11 +6,10 @@
 
 package net.dries007.tfc.util.events;
 
+import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.eventbus.api.Event;
-
-import java.util.List;
+import net.neoforged.bus.api.Event;
 
 /**
  * Fired when A real collapse is added to a level's {@link net.dries007.tfc.util.tracker.WorldTracker} or when a fake collapse spawns its particles.
@@ -20,7 +19,6 @@ import java.util.List;
  */
 public class CollapseEvent extends Event
 {
-
     private final Level level;
     private final BlockPos centerPos;
     private final List<BlockPos> nextPositions;

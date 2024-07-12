@@ -14,15 +14,19 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import com.google.common.base.Suppliers;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.common.util.Lazy;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.registries.DeferredHolder;
+
+import net.dries007.tfc.util.registry.IdHolder;
 
 
 public class FluidProperty extends Property<FluidProperty.FluidKey>
@@ -38,7 +42,7 @@ public class FluidProperty extends Property<FluidProperty.FluidKey>
             {
                 return BuiltInRegistries.FLUID.getKey(fluid);
             }
-            else if (obj instanceof RegistryObject<?> reg)
+            else if (obj instanceof IdHolder<?> reg)
             {
                 return reg.getId(); // Registry objects are allowed, we assume they're fluids
             }
@@ -56,7 +60,7 @@ public class FluidProperty extends Property<FluidProperty.FluidKey>
     private final Map<String, FluidKey> keysById;
     private final Map<Fluid, FluidKey> keysByFluid;
     private final List<FluidKey> keysByIndex;
-    private final Lazy<Set<Fluid>> fluids;
+    private final Supplier<Set<Fluid>> fluids;
 
     protected FluidProperty(String name, Stream<ResourceLocation> fluids)
     {
@@ -74,7 +78,7 @@ public class FluidProperty extends Property<FluidProperty.FluidKey>
             keysByIndex.add(key);
         });
 
-        this.fluids = Lazy.of(() -> this.keysByIndex.stream().map(FluidKey::getFluid).collect(Collectors.toSet()));
+        this.fluids = Suppliers.memoize(() -> this.keysByIndex.stream().map(FluidKey::getFluid).collect(Collectors.toSet()));
     }
 
     public boolean canContain(Fluid fluid)
@@ -136,12 +140,12 @@ public class FluidProperty extends Property<FluidProperty.FluidKey>
     public static class FluidKey implements Comparable<FluidKey>
     {
         private final ResourceLocation name;
-        private final RegistryObject<Fluid> fluid;
+        private final DeferredHolder<Fluid, ? extends Fluid> fluid;
 
         private FluidKey(ResourceLocation name)
         {
             this.name = name;
-            this.fluid = RegistryObject.create(name, ForgeRegistries.FLUIDS);
+            this.fluid = DeferredHolder.create(Registries.FLUID, name);
         }
 
         public Fluid getFluid()

@@ -15,11 +15,10 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.entities.livestock.pet.TamableMammal;
-import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.PetCommandPacket;
 import net.dries007.tfc.util.Helpers;
 
@@ -44,7 +43,7 @@ public class PetCommandScreen extends Screen
             {
                 MutableComponent comp = Helpers.translateEnum(command);
                 addRenderableWidget(Button.builder(comp, b -> {
-                    PacketHandler.send(PacketDistributor.SERVER.noArg(), new PetCommandPacket(entity, command));
+                    PacketDistributor.sendToServer(new PetCommandPacket(entity, command));
                     Minecraft.getInstance().setScreen(null);
 
                     final Player player = ClientHelpers.getPlayer();

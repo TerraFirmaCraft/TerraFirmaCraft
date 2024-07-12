@@ -12,15 +12,15 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.Cancelable;
-import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.items.ItemHandlerHelper;
+import net.neoforged.bus.api.Event;
+import net.neoforged.bus.api.ICancellableEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.util.Helpers;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * This event fires when a sheep is sheared or a cow is milked.
@@ -28,14 +28,13 @@ import org.jetbrains.annotations.Nullable;
  * <p>
  * While the 'tool' stack (bucket, shears) is provided, expect that entities can operate it outside this event. You should almost always copy it before modifying it.
  * This event does *not* control if an animal can give products, it is for the sole purpose of modifying / blocking what happens when products are made.
- * If you wish to control that, use {@link net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract}
+ * If you wish to control that, use {@link net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.EntityInteract}
  * <p>
  * The 'uses' parameter indicates how much wear the animal will take from this happening.
  * <p>
  * This event has a {@code product}, which may either be an {@link ItemStack} or {@link FluidStack}, not both. Only the type of product which is non-empty will retain modifications - you cannot make an event fired due to milking a cow drop an item, for example. Doing so will void whatever product this event originally had.
  */
-@Cancelable
-public final class AnimalProductEvent extends Event
+public final class AnimalProductEvent extends Event implements ICancellableEvent
 {
     public static boolean produce(Level level, BlockPos pos, TFCAnimalProperties entity, ItemStack product, ItemStack tool, int uses)
     {
@@ -47,8 +46,8 @@ public final class AnimalProductEvent extends Event
      */
     public static boolean produce(Level level, BlockPos pos, @Nullable Player player, TFCAnimalProperties entity, ItemStack product, ItemStack tool, int uses)
     {
-        AnimalProductEvent event = new AnimalProductEvent(level, pos, player, entity, product, tool, uses);
-        if (!MinecraftForge.EVENT_BUS.post(event))
+        final AnimalProductEvent event = new AnimalProductEvent(level, pos, player, entity, product, tool, uses);
+        if (!NeoForge.EVENT_BUS.post(event).isCanceled())
         {
             // spawning items is server only
             if (!level.isClientSide)

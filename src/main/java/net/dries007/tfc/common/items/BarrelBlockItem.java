@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.items;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.InteractionHand;
@@ -23,13 +22,9 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
 import net.dries007.tfc.common.blockentities.BarrelInventoryCallback;
@@ -99,13 +94,6 @@ public class BarrelBlockItem extends TooltipBlockItem implements Rackable
         return false;
     }
 
-    @Nullable
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt)
-    {
-        return new BarrelItemStackInventory(stack);
-    }
-
     private InteractionResult tryInteractWithFluid(Level level, Player player, InteractionHand hand)
     {
         final ItemStack stack = player.getItemInHand(hand);
@@ -140,16 +128,14 @@ public class BarrelBlockItem extends TooltipBlockItem implements Rackable
         return ((SealableDeviceBlock) getBlock()).getStateForPlacement(level, pos);
     }
 
-    private static class BarrelItemStackInventory implements ICapabilityProvider, DelegateFluidHandler, IFluidHandlerItem, ISlotCallback, FluidTankCallback, BarrelInventoryCallback
+    private static class BarrelItemStackInventory implements DelegateFluidHandler, IFluidHandlerItem, ISlotCallback, FluidTankCallback, BarrelInventoryCallback
     {
-        private final LazyOptional<BarrelItemStackInventory> capability;
         private final ItemStack stack;
         private final BarrelBlockEntity.BarrelInventory inventory;
         private boolean hasActiveRecipe;
 
         BarrelItemStackInventory(ItemStack stack)
         {
-            this.capability = LazyOptional.of(() -> this);
             this.stack = stack;
             this.inventory = new BarrelBlockEntity.BarrelInventory(this);
             this.hasActiveRecipe = false;
@@ -180,17 +166,6 @@ public class BarrelBlockItem extends TooltipBlockItem implements Rackable
         public ItemStack getContainer()
         {
             return stack.copy();
-        }
-
-        @NotNull
-        @Override
-        public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)
-        {
-            if (cap == Capabilities.FLUID_ITEM || cap == Capabilities.FLUID)
-            {
-                return capability.cast();
-            }
-            return LazyOptional.empty();
         }
 
         private void load()

@@ -13,8 +13,8 @@ import mezz.jei.api.recipe.transfer.IRecipeTransferError;
 import mezz.jei.api.recipe.transfer.IRecipeTransferHandlerHelper;
 import mezz.jei.api.recipe.transfer.IRecipeTransferInfo;
 import net.minecraft.network.chat.Component;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.neoforge.neoforged.fluids.FluidStack;
+import net.neoforge.neoforged.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.PotBlockEntity;

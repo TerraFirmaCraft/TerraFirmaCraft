@@ -8,16 +8,13 @@ package net.dries007.tfc.compat.patchouli.component;
 
 import java.util.Collections;
 import java.util.List;
-
-import net.minecraft.world.item.ItemStack;
-
-import net.minecraftforge.fluids.FluidStack;
-
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.fluids.FluidStack;
+import vazkii.patchouli.api.IComponentRenderContext;
+
 import net.dries007.tfc.common.recipes.BarrelRecipe;
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
-
-import vazkii.patchouli.api.IComponentRenderContext;
 
 public abstract class BarrelComponent<T extends BarrelRecipe> extends RecipeComponent<T>
 {

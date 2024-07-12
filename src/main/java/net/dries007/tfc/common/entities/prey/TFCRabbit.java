@@ -43,7 +43,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforge.neoforged.event.ForgeEventFactory;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.EntityHelpers;
@@ -258,11 +258,11 @@ public class TFCRabbit extends Rabbit implements MammalProperties
     }
 
     @Override
-    protected void defineSynchedData()
+    protected void defineSynchedData(SynchedEntityData.Builder builder)
     {
-        super.defineSynchedData();
-        registerCommonData();
-        entityData.define(PREGNANT_TIME, -1L);
+        super.defineSynchedData(builder);
+        registerCommonData(builder);
+        builder.define(PREGNANT_TIME, -1L);
     }
 
     @Override

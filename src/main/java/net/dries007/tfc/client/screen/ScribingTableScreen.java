@@ -18,11 +18,10 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.AnvilMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.lwjgl.glfw.GLFW;
 
 import net.dries007.tfc.common.container.ScribingTableContainer;
-import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.ScribingTablePacket;
 import net.dries007.tfc.util.Helpers;
 
@@ -95,7 +94,7 @@ public class ScribingTableScreen extends ItemCombinerScreen<ScribingTableContain
             }
 
             menu.setItemName(text);
-            PacketHandler.send(PacketDistributor.SERVER.noArg(), new ScribingTablePacket(text));
+            PacketDistributor.sendToServer(new ScribingTablePacket(text));
         }
     }
 

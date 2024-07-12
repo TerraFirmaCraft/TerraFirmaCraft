@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blocks;
 
 import java.util.Arrays;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ItemParticleOption;
@@ -28,14 +27,13 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.Tags;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.IGhostBlockHandler;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.util.Helpers;
-
-import net.minecraftforge.items.ItemHandlerHelper;
-import org.jetbrains.annotations.Nullable;
 
 public class StainedWattleBlock extends ExtendedBlock implements IGhostBlockHandler
 {

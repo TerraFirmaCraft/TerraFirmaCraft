@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.entities.misc;
 
 import java.util.function.Supplier;
-
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.world.InteractionHand;
@@ -18,7 +17,6 @@ import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.NetworkHooks;
 
 import net.dries007.tfc.common.items.ChestBlockItem;
 

@@ -13,14 +13,13 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.GameRules;
-import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.server.ServerLifecycleHooks;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.GameRulesAccessor;
 import net.dries007.tfc.mixin.accessor.GameRulesTypeAccessor;
 import net.dries007.tfc.network.CalendarUpdatePacket;
-import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.util.ReentrantListener;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
 
@@ -254,7 +253,7 @@ public final class ServerCalendar extends Calendar
 
     void sendUpdatePacket()
     {
-        PacketHandler.send(PacketDistributor.ALL.noArg(), new CalendarUpdatePacket(this));
+        PacketDistributor.sendToAllPlayers(new CalendarUpdatePacket(this));
     }
 
     private MinecraftServer getServer()

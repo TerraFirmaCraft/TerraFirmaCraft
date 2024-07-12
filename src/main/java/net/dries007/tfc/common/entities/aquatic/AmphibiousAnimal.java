@@ -24,7 +24,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.Brain;
@@ -41,11 +40,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.pathfinder.AmphibiousNodeEvaluator;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.PathFinder;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.fluids.FluidType;
+import net.neoforged.neoforge.common.NeoForgeMod;
+import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
@@ -69,8 +68,8 @@ public abstract class AmphibiousAnimal extends WildAnimal implements Temptable
     public AmphibiousAnimal(EntityType<? extends AmphibiousAnimal> type, Level level, TFCSounds.EntityId sound)
     {
         super(type, level, sound);
-        this.setPathfindingMalus(BlockPathTypes.WALKABLE, 0f);
-        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+        this.setPathfindingMalus(PathType.WALKABLE, 0f);
+        this.setPathfindingMalus(PathType.WATER, 0.0F);
         moveControl = new AmphibianMoveControl(this);
         lookControl = new SmoothSwimmingLookControl(this, 20);
     }
@@ -99,7 +98,7 @@ public abstract class AmphibiousAnimal extends WildAnimal implements Temptable
     public float getStepHeight()
     {
         final float baseValue = isPlayingDead() ? 0f : 1f;
-        final AttributeInstance attribute = getAttribute(ForgeMod.STEP_HEIGHT_ADDITION.get());
+        final AttributeInstance attribute = getAttribute(NeoForgeMod.STEP_HEIGHT_ADDITION.get());
         if (attribute != null)
         {
             return (float) Math.max(0, baseValue + attribute.getValue());
@@ -162,7 +161,6 @@ public abstract class AmphibiousAnimal extends WildAnimal implements Temptable
         return !canSwimInFluidType(type);
     }
 
-
     @Override
     public void travel(Vec3 movement)
     {
@@ -207,10 +205,10 @@ public abstract class AmphibiousAnimal extends WildAnimal implements Temptable
     }
 
     @Override
-    public void defineSynchedData()
+    public void defineSynchedData(SynchedEntityData.Builder builder)
     {
-        super.defineSynchedData();
-        entityData.define(DATA_PLAYING_DEAD, false);
+        super.defineSynchedData(builder);
+        builder.define(DATA_PLAYING_DEAD, false);
     }
 
     @Override

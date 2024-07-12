@@ -7,11 +7,6 @@
 package net.dries007.tfc.compat.jei.category;
 
 import java.util.List;
-
-import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
-
-import net.minecraft.client.gui.GuiGraphics;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -19,11 +14,15 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.world.item.ItemStack;
+import net.neoforge.neoforged.fluids.FluidStack;
+import org.jetbrains.annotations.Nullable;
+
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.recipes.BarrelRecipe;
 import net.dries007.tfc.compat.jei.JEIIntegration;
-import org.jetbrains.annotations.Nullable;
 
 public class BarrelRecipeCategory<T extends BarrelRecipe> extends BaseRecipeCategory<T>
 {

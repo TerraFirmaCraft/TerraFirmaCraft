@@ -144,10 +144,10 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties, T
     }
 
     @Override
-    protected void defineSynchedData()
+    protected void defineSynchedData(SynchedEntityData.Builder builder)
     {
-        super.defineSynchedData();
-        registerCommonData();
+        super.defineSynchedData(builder);
+        registerCommonData(builder);
     }
 
     @Override

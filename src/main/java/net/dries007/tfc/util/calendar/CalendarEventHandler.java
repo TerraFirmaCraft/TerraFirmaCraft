@@ -7,24 +7,24 @@
 package net.dries007.tfc.util.calendar;
 
 import java.util.List;
-
+import com.mojang.logging.LogUtils;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
-import net.minecraftforge.event.server.ServerStartingEvent;
-import net.minecraftforge.event.server.ServerStoppedEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerWakeUpEvent;
+import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.neoforged.neoforge.event.server.ServerStoppedEvent;
+import net.neoforged.neoforge.event.tick.LevelTickEvent;
+import net.neoforged.neoforge.event.tick.ServerTickEvent;
+import org.slf4j.Logger;
 
-import com.mojang.logging.LogUtils;
 import net.dries007.tfc.common.capabilities.food.TFCFoodData;
 import net.dries007.tfc.config.TFCConfig;
-import org.slf4j.Logger;
 
 /**
  * Event handler for calendar related ticking
@@ -37,7 +37,7 @@ public class CalendarEventHandler
 
     public static void init()
     {
-        final IEventBus bus = MinecraftForge.EVENT_BUS;
+        final IEventBus bus = NeoForge.EVENT_BUS;
 
         bus.addListener(CalendarEventHandler::onServerStart);
         bus.addListener(CalendarEventHandler::onServerStop);
@@ -58,24 +58,14 @@ public class CalendarEventHandler
         Calendars.SERVER.onServerStop();
     }
 
-    /**
-     * Called from LOGICAL SERVER
-     * Responsible for primary time tracking for player time
-     * Synced to client every second
-     *
-     * @param event {@link TickEvent.ServerTickEvent}
-     */
-    public static void onServerTick(TickEvent.ServerTickEvent event)
+    public static void onServerTick(ServerTickEvent.Pre event)
     {
-        if (event.phase == TickEvent.Phase.START)
-        {
-            Calendars.SERVER.onServerTick();
-        }
+        Calendars.SERVER.onServerTick();
     }
 
-    public static void onOverworldTick(TickEvent.LevelTickEvent event)
+    public static void onOverworldTick(LevelTickEvent.Post event)
     {
-        if (event.phase == TickEvent.Phase.END && event.level instanceof ServerLevel level && level.dimension() == Level.OVERWORLD)
+        if (event.getLevel() instanceof ServerLevel level && level.dimension() == Level.OVERWORLD)
         {
             Calendars.SERVER.onOverworldTick(level);
         }

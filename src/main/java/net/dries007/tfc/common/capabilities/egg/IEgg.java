@@ -8,17 +8,14 @@ package net.dries007.tfc.common.capabilities.egg;
 
 import java.util.List;
 import java.util.Optional;
-
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.INBTSerializable;
-
-import net.dries007.tfc.util.calendar.Calendars;
 import org.jetbrains.annotations.NotNull;
 
-public interface IEgg extends INBTSerializable<CompoundTag>
+import net.dries007.tfc.util.calendar.Calendars;
+
+public interface IEgg
 {
     /**
      * @return the day it will hatch, as in ICalendar#getTotalDays

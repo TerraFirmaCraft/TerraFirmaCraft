@@ -43,23 +43,22 @@ import net.minecraft.world.level.material.FogType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
-import net.minecraftforge.client.event.CustomizeGuiOverlayEvent;
-import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.client.event.RenderHandEvent;
-import net.minecraftforge.client.event.RenderHighlightEvent;
-import net.minecraftforge.client.event.ScreenEvent;
-import net.minecraftforge.client.event.ToastAddEvent;
-import net.minecraftforge.client.event.ViewportEvent;
-import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.server.ServerLifecycleHooks;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.client.event.CustomizeGuiOverlayEvent;
+import net.neoforged.neoforge.client.event.InputEvent;
+import net.neoforged.neoforge.client.event.RenderGuiLayerEvent;
+import net.neoforged.neoforge.client.event.RenderHandEvent;
+import net.neoforged.neoforge.client.event.RenderHighlightEvent;
+import net.neoforged.neoforge.client.event.ScreenEvent;
+import net.neoforged.neoforge.client.event.ToastAddEvent;
+import net.neoforged.neoforge.client.event.ViewportEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.TerraFirmaCraft;
@@ -86,7 +85,6 @@ import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.client.accessor.LocalPlayerAccessor;
 import net.dries007.tfc.network.CycleChiselModePacket;
-import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.PlaceBlockSpecialPacket;
 import net.dries007.tfc.network.RequestClimateModelPacket;
 import net.dries007.tfc.network.StackFoodPacket;
@@ -119,7 +117,7 @@ public class ClientForgeEventHandler
 
     public static void init()
     {
-        final IEventBus bus = MinecraftForge.EVENT_BUS;
+        final IEventBus bus = NeoForge.EVENT_BUS;
 
         bus.addListener(ClientForgeEventHandler::onRenderGameOverlayText);
         bus.addListener(ClientForgeEventHandler::onRenderGameOverlayPost);
@@ -193,7 +191,7 @@ public class ClientForgeEventHandler
     /**
      * Render overlays for looking at particular block / item combinations
      */
-    public static void onRenderGameOverlayPost(RenderGuiOverlayEvent.Post event)
+    public static void onRenderGameOverlayPost(RenderGuiLayerEvent.Post event)
     {
         // todo this should probably be a forge ingame gui
         final GuiGraphics stack = event.getGuiGraphics();
@@ -386,7 +384,7 @@ public class ClientForgeEventHandler
     {
         // We can't send this on client world load, it's too early, as the connection is not setup yet
         // This is the closest point after that which will work
-        PacketHandler.send(PacketDistributor.SERVER.noArg(), RequestClimateModelPacket.PACKET);
+        PacketDistributor.sendToServer(RequestClimateModelPacket.PACKET);
 
         LocalPlayer player = event.getPlayer();
         List<AmbientSoundHandler> handlers = ((LocalPlayerAccessor) player).accessor$getAmbientSoundHandlers();
@@ -407,10 +405,10 @@ public class ClientForgeEventHandler
         }
     }
 
-    public static void onClientTick(TickEvent.ClientTickEvent event)
+    public static void onClientTick(ClientTickEvent.Post event)
     {
-        Level world = Minecraft.getInstance().level;
-        if (event.phase == TickEvent.Phase.END && world != null && !Minecraft.getInstance().isPaused())
+        final @Nullable Level level = Minecraft.getInstance().level;
+        if (level != null && !Minecraft.getInstance().isPaused())
         {
             Calendars.CLIENT.onClientTick();
             ClimateRenderCache.INSTANCE.onClientTick();
@@ -460,11 +458,11 @@ public class ClientForgeEventHandler
     {
         if (TFCKeyBindings.PLACE_BLOCK.isDown())
         {
-            PacketHandler.send(PacketDistributor.SERVER.noArg(), PlaceBlockSpecialPacket.PACKET);
+            PacketDistributor.sendToServer(PlaceBlockSpecialPacket.PACKET);
         }
         else if (TFCKeyBindings.CYCLE_CHISEL_MODE.isDown())
         {
-            PacketHandler.send(PacketDistributor.SERVER.noArg(), CycleChiselModePacket.PACKET);
+            PacketDistributor.sendToServer(CycleChiselModePacket.PACKET);
         }
     }
 
@@ -475,7 +473,7 @@ public class ClientForgeEventHandler
             Slot slot = inv.getSlotUnderMouse();
             if (slot != null)
             {
-                PacketHandler.send(PacketDistributor.SERVER.noArg(), new StackFoodPacket(slot.index));
+               PacketDistributor.sendToServer(new StackFoodPacket(slot.index));
             }
         }
     }

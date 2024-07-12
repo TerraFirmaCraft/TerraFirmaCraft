@@ -6,13 +6,7 @@
 
 package net.dries007.tfc.util.climate;
 
-import java.util.function.Supplier;
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.Level;
@@ -21,7 +15,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.phys.Vec2;
-import net.minecraftforge.common.MinecraftForge;
+import net.neoforged.neoforge.common.NeoForge;
 
 import net.dries007.tfc.mixin.accessor.BiomeAccessor;
 import net.dries007.tfc.util.EnvironmentHelpers;
@@ -44,20 +38,6 @@ import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
  */
 public final class Climate
 {
-    private static final BiMap<ResourceLocation, ClimateModelType> REGISTRY = HashBiMap.create();
-
-    /**
-     * Register a new climate model factory.
-     * The supplier should return a <strong>new instance</strong> each time it is invoked, as it may be used for multiple dimensions.
-     * The only exception to this, is if the climate model has no persistent data (such as {@link BiomeBasedClimateModel}.
-     */
-    public static synchronized ClimateModelType register(ResourceLocation id, Supplier<ClimateModel> model, StreamCodec<ByteBuf, ClimateModel> codec)
-    {
-        final ClimateModelType type = new ClimateModelType(id, model, codec);
-        REGISTRY.put(id, type);
-        return type;
-    }
-
     public static float getTemperature(Level level, BlockPos pos, long calendarTick, int daysInMonth)
     {
         return model(level).getTemperature(level, pos, calendarTick, daysInMonth);
@@ -133,7 +113,7 @@ public final class Climate
     public static void onWorldLoad(ServerLevel level)
     {
         final SelectClimateModelEvent event = new SelectClimateModelEvent(level);
-        MinecraftForge.EVENT_BUS.post(event);
+        NeoForge.EVENT_BUS.post(event);
         WorldTracker.get(level).setClimateModel(event.getModel());
         model(level).onWorldLoad(level);
     }

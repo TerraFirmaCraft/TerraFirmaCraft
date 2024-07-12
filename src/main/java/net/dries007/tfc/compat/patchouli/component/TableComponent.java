@@ -21,6 +21,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentContents;
 import net.minecraft.network.chat.Style;
 import net.minecraft.util.FastColor;
+import net.minecraft.util.GsonHelper;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -28,7 +29,6 @@ import vazkii.patchouli.api.IComponentRenderContext;
 import vazkii.patchouli.api.IVariable;
 
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
-import net.dries007.tfc.util.JsonHelpers;
 
 public class TableComponent extends CustomComponent
 {
@@ -93,7 +93,7 @@ public class TableComponent extends CustomComponent
                 final JsonObject json = element.getAsJsonObject();
                 if (json.has("fill"))
                 {
-                    final int color = Integer.decode(JsonHelpers.getAsString(json, "fill"));
+                    final int color = Integer.decode(GsonHelper.getAsString(json, "fill"));
                     entries.add(new TableEntry(Component.empty(), convert(color)));
                 }
                 else
@@ -110,7 +110,7 @@ public class TableComponent extends CustomComponent
 
                 asTextComponent(json.get("text"))
                     .map(text -> {
-                        final int color = Integer.decode(JsonHelpers.getAsString(json, "color"));
+                        final int color = Integer.decode(GsonHelper.getAsString(json, "color"));
                         return new TableEntry(text.copy().withStyle(Style.EMPTY.withFont(Minecraft.UNIFORM_FONT)), convert(color));
                     })
                     .ifPresent(legend::add);
