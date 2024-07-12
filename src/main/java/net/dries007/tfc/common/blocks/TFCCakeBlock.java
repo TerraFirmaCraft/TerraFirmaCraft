@@ -18,8 +18,8 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 
 import net.dries007.tfc.common.capabilities.food.FoodData;
-import net.dries007.tfc.common.capabilities.food.TFCFoodData;
 import net.dries007.tfc.common.items.CandleBlockItem;
+import net.dries007.tfc.common.player.IPlayerInfo;
 
 public class TFCCakeBlock extends CakeBlock
 {
@@ -31,10 +31,7 @@ public class TFCCakeBlock extends CakeBlock
         }
         else
         {
-            if (player.getFoodData() instanceof TFCFoodData foodData)
-            {
-                foodData.eat(CAKE_EAT);
-            }
+            IPlayerInfo.get(player).eat(FoodData.CAKE);
             player.awardStat(Stats.EAT_CAKE_SLICE);
             level.gameEvent(player, GameEvent.EAT, pos);
 
@@ -51,8 +48,6 @@ public class TFCCakeBlock extends CakeBlock
             return InteractionResult.SUCCESS;
         }
     }
-
-    public static final FoodData CAKE_EAT = new FoodData(2, 0f, 2f, 0.8f, 0f, 0f, 0f, 0.5f, 0);
 
     public TFCCakeBlock(Properties properties)
     {

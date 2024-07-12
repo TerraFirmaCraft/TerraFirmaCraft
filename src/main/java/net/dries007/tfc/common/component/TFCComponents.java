@@ -18,7 +18,11 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.common.capabilities.food.IFood;
+import net.dries007.tfc.common.capabilities.food.BowlComponent;
+import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.common.capabilities.food.FoodComponent;
+import net.dries007.tfc.common.capabilities.food.FoodDefinition;
+import net.dries007.tfc.common.capabilities.food.IngredientsComponent;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatComponent;
 import net.dries007.tfc.common.capabilities.heat.HeatDefinition;
@@ -37,7 +41,12 @@ public final class TFCComponents
     public static final Id<GlassOperations> GLASS = register("glass", GlassOperations.CODEC, GlassOperations.STREAM_CODEC);
 
     public static final Id<HeatComponent> HEAT = register("heat", HeatComponent.CODEC, HeatComponent.STREAM_CODEC);
-    public static final Id<IFood> FOOD = register("food", );
+    public static final Id<FoodComponent> FOOD = register("food", FoodComponent.CODEC, FoodComponent.STREAM_CODEC);
+
+    public static final Id<BowlComponent> BOWL = register("bowl", BowlComponent.CODEC, BowlComponent.STREAM_CODEC);
+    public static final Id<IngredientsComponent> INGREDIENTS = register("ingredients", IngredientsComponent.CODEC, IngredientsComponent.STREAM_CODEC);
+
+    public static final Id<EggComponent> EGG = register("egg", EggComponent.CODEC, EggComponent.STREAM_CODEC);
 
     /**
      * Modifies the default components of all items. This adds the default components to all items' prototype, so that the default
@@ -81,6 +90,21 @@ public final class TFCComponents
             if (def != null)
             {
                 stack.set(HEAT, HeatComponent.with(def));
+            }
+        }
+
+        // The semantics of food components is identical to heat components above
+        final @Nullable FoodComponent food = stack.get(FOOD);
+        if (food != null)
+        {
+            food.capture(stack);
+        }
+        else
+        {
+            final @Nullable FoodDefinition def = FoodCapability.getDefinition(stack);
+            if (def != null)
+            {
+                stack.set(FOOD, FoodComponent.with(def));
             }
         }
     }

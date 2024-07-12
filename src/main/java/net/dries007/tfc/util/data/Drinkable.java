@@ -35,12 +35,11 @@ import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.food.FoodData;
-import net.dries007.tfc.common.capabilities.food.TFCFoodData;
-import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.common.player.IPlayerInfo;
+import net.dries007.tfc.common.player.PlayerInfo;
 import net.dries007.tfc.common.recipes.RecipeHelpers;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 public record Drinkable(
@@ -109,16 +108,15 @@ public record Drinkable(
             final BlockPos pos = hit.getBlockPos();
             final BlockState state = level.getBlockState(pos);
             final Fluid fluid = state.getFluidState().getType();
-            final float thirst = player.getFoodData() instanceof TFCFoodData data ? data.getThirst() : TFCFoodData.MAX_THIRST;
-            final PlayerData playerData = PlayerData.get(player);
-            if (playerData.getLastDrinkTick() + 10 < Calendars.get(level).getTicks())
+            final IPlayerInfo info = IPlayerInfo.get(player);
+            if (info.canDrink())
             {
                 final Drinkable drinkable = get(fluid);
-                if (drinkable != null && (thirst < TFCFoodData.MAX_THIRST || drinkable.food.water() == 0 || drinkable.mayDrinkWhenFull))
+                if (drinkable != null && (info.getThirst() < PlayerInfo.MAX_THIRST || drinkable.food.water() == 0 || drinkable.mayDrinkWhenFull))
                 {
                     if (!level.isClientSide && doDrink)
                     {
-                        doDrink(level, player, state, pos, playerData, drinkable);
+                        doDrink(level, player, state, pos, info, drinkable);
                     }
                     return InteractionResult.SUCCESS;
                 }
@@ -131,11 +129,11 @@ public record Drinkable(
         return InteractionResult.PASS;
     }
 
-    private static void doDrink(Level level, Player player, BlockState state, BlockPos pos, PlayerData playerData, Drinkable drinkable)
+    private static void doDrink(Level level, Player player, BlockState state, BlockPos pos, IPlayerInfo info, Drinkable drinkable)
     {
         assert !level.isClientSide;
 
-        playerData.setLastDrinkTick(Calendars.SERVER.getTicks());
+        info.onDrink();
         level.playSound(null, pos, SoundEvents.GENERIC_DRINK, SoundSource.PLAYERS, 1.0f, 1.0f);
 
         drinkable.onDrink(player, HAND_DRINK_MB);
@@ -162,11 +160,9 @@ public record Drinkable(
 
         final float multiplier = mB / (float) HAND_DRINK_MB;
         final RandomSource random = player.getRandom();
+        final IPlayerInfo info = IPlayerInfo.get(player);
 
-        if (player.getFoodData() instanceof TFCFoodData data)
-        {
-            data.eat(food.mul(multiplier));
-        }
+        info.eat(food.mul(multiplier));
 
         for (Drinkable.Effect effect : effects)
         {

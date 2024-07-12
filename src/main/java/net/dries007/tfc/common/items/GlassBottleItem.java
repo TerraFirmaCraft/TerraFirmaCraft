@@ -27,7 +27,8 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.TFCSounds;
-import net.dries007.tfc.common.capabilities.food.TFCFoodData;
+import net.dries007.tfc.common.player.IPlayerInfo;
+import net.dries007.tfc.common.player.PlayerInfo;
 import net.dries007.tfc.util.data.Drinkable;
 
 public class GlassBottleItem extends FluidContainerItem
@@ -98,7 +99,7 @@ public class GlassBottleItem extends FluidContainerItem
         final Drinkable drinkable = Drinkable.get(handler.getFluidInTank(0).getFluid());
         if (drinkable != null)
         {
-            if (!drinkable.mayDrinkWhenFull() && player.getFoodData() instanceof TFCFoodData food && food.getThirst() >= TFCFoodData.MAX_THIRST)
+            if (!drinkable.mayDrinkWhenFull() && IPlayerInfo.get(player).getThirst() >= PlayerInfo.MAX_THIRST)
             {
                 return InteractionResultHolder.fail(stack);
             }

@@ -7,10 +7,9 @@
 package net.dries007.tfc.common.recipes.outputs;
 
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 
-import net.dries007.tfc.common.capabilities.food.DynamicBowlHandler;
-import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.common.capabilities.food.BowlComponent;
+import net.dries007.tfc.common.component.TFCComponents;
 
 public enum EmptyBowlModifier implements ItemStackModifier
 {
@@ -19,12 +18,7 @@ public enum EmptyBowlModifier implements ItemStackModifier
     @Override
     public ItemStack apply(ItemStack stack, ItemStack input)
     {
-        final ItemStack output = FoodCapability.get(input) instanceof DynamicBowlHandler handler ? handler.getBowl() : ItemStack.EMPTY;
-        return !output.isEmpty()
-            ? output
-            // Reasonable default for display in i.e. JEI for soups obtained directly from the creative menu.
-            // Prevents them from displaying empty. Works as long as the bowl handler itself doesn't ever have an empty bowl (it shouldn't)
-            : new ItemStack(Items.BOWL);
+        return stack.getOrDefault(TFCComponents.BOWL, BowlComponent.DISPLAY).bowl();
     }
 
     @Override

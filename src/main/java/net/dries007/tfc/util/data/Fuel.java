@@ -16,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.common.recipes.RecipeHelpers;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
@@ -41,7 +42,7 @@ public record Fuel(
     );
 
     public static final DataManager<Fuel> MANAGER = new DataManager<>(Helpers.identifier("fuels"), "fuel", CODEC, STREAM_CODEC);
-    public static final IndirectHashCollection<Item, Fuel> CACHE = IndirectHashCollection.create(Fuel::getValidItems, MANAGER::getValues);
+    public static final IndirectHashCollection<Item, Fuel> CACHE = IndirectHashCollection.create(r -> RecipeHelpers.itemKeys(r.ingredient), MANAGER::getValues);
 
     @Nullable
     public static Fuel get(ItemStack stack)

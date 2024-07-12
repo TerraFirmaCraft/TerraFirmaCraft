@@ -13,7 +13,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 
-import net.dries007.tfc.common.capabilities.food.TFCFoodData;
+import net.dries007.tfc.common.player.IPlayerInfo;
+import net.dries007.tfc.common.player.PlayerInfo;
 import net.dries007.tfc.config.TFCConfig;
 
 // todo: this should really be split out into individual classes for specific effects, this is really ugly
@@ -25,7 +26,7 @@ public class TFCMobEffect extends MobEffect
     }
 
     @Override
-    public void applyEffectTick(LivingEntity entity, int amplitude)
+    public boolean applyEffectTick(LivingEntity entity, int amplitude)
     {
         if (entity instanceof Player player)
         {
@@ -33,18 +34,20 @@ public class TFCMobEffect extends MobEffect
             {
                 player.setForcedPose(Pose.SLEEPING);
             }
-            else if (this == TFCEffects.THIRST.get() && player.getFoodData() instanceof TFCFoodData foodData)
+            else if (this == TFCEffects.THIRST.get())
             {
-                if (foodData.getThirst() > 0.05f)
+                final IPlayerInfo info = IPlayerInfo.get(player);
+                if (info.getThirst() > 0.05f)
                 {
-                    foodData.addThirst(-0.02f * (amplitude + 1));
+                    info.addThirst(-0.02f * (amplitude + 1));
                 }
             }
             else if (this == TFCEffects.EXHAUSTED.get())
             {
-                player.causeFoodExhaustion(TFCFoodData.PASSIVE_EXHAUSTION_PER_SECOND * 20 * TFCConfig.SERVER.passiveExhaustionModifier.get().floatValue() * 0.25f);
+                player.causeFoodExhaustion(PlayerInfo.PASSIVE_EXHAUSTION_PER_TICK * 20 * TFCConfig.SERVER.passiveExhaustionModifier.get().floatValue() * 0.25f);
             }
         }
+        return true; // todo 1.21: what to return here?
     }
 
     @Override

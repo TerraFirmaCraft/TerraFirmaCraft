@@ -17,7 +17,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
  * This is typically either used as the receiver type for a method that does not need access to the underlying holder or registry
  * type, or implemented via {@link RegistryHolder} on a type-specific holder object (thus also removing the double generic)
  *
- * @param <T> The type of the object, also used to retrieve the {@link java.util.function.Supplier<T>}
+ * @param <T> The type of the object
  * @see RegistryHolder
  */
 public interface IdHolder<T> extends Supplier<T>

@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.common.capabilities.heat;
 
-import net.minecraft.nbt.CompoundTag;
-
 import net.dries007.tfc.util.calendar.Calendars;
 
 public class HeatHandler implements IHeat
@@ -76,33 +74,6 @@ public class HeatHandler implements IHeat
     public float getWeldingTemperature()
     {
         return weldingTemp;
-    }
-
-    @Override
-    public CompoundTag serializeNBT()
-    {
-        CompoundTag nbt = new CompoundTag();
-        if (getTemperature() <= 0)
-        {
-            // Reset temperature to zero
-            nbt.putLong("ticks", 0);
-            nbt.putFloat("heat", 0);
-        }
-        else
-        {
-            // Serialize existing values - this is intentionally lazy (and not using the result of getTemperature())
-            // Why? So we don't update the serialization unnecessarily. Important for not sending unnecessary client syncs.
-            nbt.putLong("ticks", lastUpdateTick);
-            nbt.putFloat("heat", temperature);
-        }
-        return nbt;
-    }
-
-    @Override
-    public void deserializeNBT(CompoundTag nbt)
-    {
-        temperature = nbt.getFloat("heat");
-        lastUpdateTick = nbt.getLong("ticks");
     }
 
     /**

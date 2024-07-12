@@ -15,11 +15,11 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.capabilities.egg.EggCapability;
-import net.dries007.tfc.common.capabilities.egg.IEgg;
 import net.dries007.tfc.common.capabilities.heat.Heat;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
+import net.dries007.tfc.common.component.EggComponent;
+import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
@@ -92,18 +92,18 @@ public final class BarSystem
             @Override
             public boolean isBarVisible(ItemStack stack)
             {
-                final @Nullable IEgg egg = EggCapability.get(stack);
-                return egg != null && egg.getHatchDay() != 0;
+                final @Nullable EggComponent egg = stack.get(TFCComponents.EGG);
+                return egg != null && egg.fertilized();
             }
 
             @Override
             public int getBarWidth(ItemStack stack)
             {
                 final int maxDays = 8;
-                final @Nullable IEgg egg = EggCapability.get(stack);
+                final @Nullable EggComponent egg = stack.get(TFCComponents.EGG);
                 if (egg != null)
                 {
-                    final int incubationDays = maxDays - Mth.clamp((int) (egg.getHatchDay() - Calendars.CLIENT.getTotalDays()), 0, maxDays);
+                    final int incubationDays = maxDays - Mth.clamp((int) (egg.hatchDay() - Calendars.CLIENT.getTotalDays()), 0, maxDays);
                     return Math.round(13f * incubationDays / maxDays);
                 }
                 return 0;
@@ -112,11 +112,7 @@ public final class BarSystem
             @Override
             public ItemStack createDefaultItem(ItemStack stack)
             {
-                final @Nullable IEgg egg = EggCapability.get(stack);
-                if (egg != null)
-                {
-                    egg.removeFertilization();
-                }
+                stack.set(TFCComponents.EGG, EggComponent.DEFAULT);
                 return stack;
             }
         });

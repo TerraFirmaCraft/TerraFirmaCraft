@@ -12,7 +12,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.capabilities.player.PlayerData;
+import net.dries007.tfc.common.player.IPlayerInfo;
 
 public enum CycleChiselModePacket implements CustomPacketPayload
 {
@@ -31,7 +31,7 @@ public enum CycleChiselModePacket implements CustomPacketPayload
     {
         if (player != null)
         {
-            PlayerData.get(player).cycleChiselMode();
+            IPlayerInfo.get(player).cycleChiselMode();
         }
     }
 }

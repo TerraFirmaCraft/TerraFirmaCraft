@@ -7,9 +7,8 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 @FieldsAreNonnullByDefault
-package net.dries007.tfc.common.capabilities.egg;
+package net.dries007.tfc.common.player;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-
 import net.minecraft.FieldsAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;

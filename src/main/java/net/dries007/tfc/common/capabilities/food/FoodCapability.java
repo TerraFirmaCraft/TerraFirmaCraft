@@ -11,12 +11,10 @@ import java.util.List;
 import java.util.function.Supplier;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
-import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.TerraFirmaCraft;
@@ -30,22 +28,20 @@ import net.dries007.tfc.util.data.DataManager;
 
 public final class FoodCapability
 {
-    public static final Capability<IFood> CAPABILITY = Helpers.capability(new CapabilityToken<>() {});
-    public static final Capability<INetworkFood> NETWORK_CAPABILITY = Helpers.capability(new CapabilityToken<>() {});
-
-    public static final ResourceLocation KEY = Helpers.identifier("food");
     public static final DataManager<FoodDefinition> MANAGER = new DataManager<>(Helpers.identifier("food_items"), "food", FoodDefinition.CODEC, FoodDefinition.STREAM_CODEC);
     public static final IndirectHashCollection<Item, FoodDefinition> CACHE = IndirectHashCollection.create(r -> RecipeHelpers.itemKeys(r.ingredient()), MANAGER::getValues);
 
     @Nullable
     public static IFood get(ItemStack stack)
     {
-        return Helpers.getCapability(stack, CAPABILITY);
+        // This needs to return a view, respecting egg handlers (so we need some form of item -> interface -> dispatch)
+        // Then we can return a mutable component view?
+        return null; // todo: 1.21 porting
     }
 
     public static boolean has(ItemStack stack)
     {
-        return stack.getCapability(CAPABILITY).isPresent();
+        return false; // todo: 1.21 porting
     }
 
     @Nullable
@@ -169,13 +165,13 @@ public final class FoodCapability
     }
 
     /**
-     * Sets the given item stack to rotten, by directly setting the creation date to {@link FoodHandler#ROTTEN_DATE}.
+     * Sets the given item stack to rotten, by directly setting the creation date to {@link IFood#ROTTEN_DATE}.
      * @param stack The item stack
      * @return The original stack
      */
     public static ItemStack setRotten(ItemStack stack)
     {
-        return setCreationDate(stack, FoodHandler.ROTTEN_DATE);
+        return setCreationDate(stack, IFood.ROTTEN_DATE);
     }
 
     /**
@@ -185,7 +181,7 @@ public final class FoodCapability
      */
     public static void setNeverExpires(ItemStack stack)
     {
-        setCreationDate(stack, FoodHandler.NEVER_DECAY_CREATION_DATE);
+        setCreationDate(stack, IFood.NEVER_DECAY_CREATION_DATE);
     }
 
     /**
@@ -345,7 +341,7 @@ public final class FoodCapability
         setCreationDate(stack1Copy, date);
         setCreationDate(stack2Copy, date);
 
-        return ItemHandlerHelper.canItemStacksStack(stack1Copy, stack2Copy);
+        return ItemStack.isSameItemSameComponents(stack1Copy, stack2Copy);
     }
 
     /**
@@ -390,7 +386,7 @@ public final class FoodCapability
      * @param p  The decay date modifier (1 / standard decay modifier)
      * @return cf the final creation date, rounded to the nearest hour, for ease of stackability.
      */
-    private static long calculateNewCreationDate(long ci, float p)
+    public static long calculateNewCreationDate(long ci, float p)
     {
         // Cf = (1 - p) * T + p * Ci
         return (long) ((1 - p) * Calendars.get().getTicks() + p * ci);

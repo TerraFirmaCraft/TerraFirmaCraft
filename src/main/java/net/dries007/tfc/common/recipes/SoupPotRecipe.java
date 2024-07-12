@@ -22,11 +22,14 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
-import net.dries007.tfc.common.capabilities.food.DynamicBowlHandler;
+import net.dries007.tfc.common.capabilities.food.BowlComponent;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodData;
+import net.dries007.tfc.common.capabilities.food.FoodHandler;
 import net.dries007.tfc.common.capabilities.food.IFood;
+import net.dries007.tfc.common.capabilities.food.IngredientsComponent;
 import net.dries007.tfc.common.capabilities.food.Nutrient;
+import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.outputs.PotOutput;
@@ -98,18 +101,21 @@ public class SoupPotRecipe extends PotRecipe
                     maxNutrient = nutrient;
                 }
             }
-            FoodData data = FoodData.of(SOUP_HUNGER_VALUE, water, saturation, nutrition, SOUP_DECAY_MODIFIER);
-            int servings = (int) (ingredientCount / 2f) + 1;
-            long created = FoodCapability.getRoundedCreationDate();
+
+            final FoodData data = FoodData.of(SOUP_HUNGER_VALUE, water, saturation, nutrition, SOUP_DECAY_MODIFIER);
+            final int servings = (int) (ingredientCount / 2f) + 1;
+            final long created = FoodCapability.getRoundedCreationDate();
 
             soupStack = new ItemStack(TFCItems.SOUPS.get(maxNutrient).get(), servings);
+
             final @Nullable IFood food = FoodCapability.get(soupStack);
-            if (food instanceof DynamicBowlHandler handler)
+            if (food instanceof FoodHandler.Dynamic handler)
             {
                 handler.setCreationDate(created);
-                handler.setIngredients(itemIngredients);
                 handler.setFood(data);
             }
+
+            soupStack.set(TFCComponents.INGREDIENTS, IngredientsComponent.of(itemIngredients));
         }
 
         return new SoupOutput(soupStack);
@@ -135,10 +141,7 @@ public class SoupPotRecipe extends PotRecipe
             if (Helpers.isItem(clickedWith.getItem(), TFCTags.Items.SOUP_BOWLS) && !stack.isEmpty())
             {
                 // set the internal bowl to the one we clicked with
-                if (FoodCapability.get(stack) instanceof DynamicBowlHandler handler)
-                {
-                    handler.setBowl(clickedWith);
-                }
+                stack.set(TFCComponents.BOWL, BowlComponent.of(clickedWith));
 
                 // take the player's bowl, give a soup
                 clickedWith.shrink(1);

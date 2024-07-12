@@ -85,11 +85,11 @@ import net.dries007.tfc.common.blocks.soil.HoeOverlayBlock;
 import net.dries007.tfc.common.blocks.wood.TFCLoomBlock;
 import net.dries007.tfc.common.blocks.wood.TFCSaplingBlock;
 import net.dries007.tfc.common.capabilities.Capabilities;
-import net.dries007.tfc.common.capabilities.egg.EggCapability;
-import net.dries007.tfc.common.capabilities.egg.IEgg;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
+import net.dries007.tfc.common.component.EggComponent;
+import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.items.Powder;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.BarrelRecipe;
@@ -410,7 +410,7 @@ public final class BlockEntityTooltips
                 for (int i = 0; i < inventory.getSlots(); i++)
                 {
                     final ItemStack stack = inventory.getStackInSlot(i);
-                    final @Nullable IEgg egg = EggCapability.get(stack);
+                    final @Nullable EggComponent egg = stack.get(TFCComponents.EGG);
                     if (egg != null)
                     {
                         text.add(stack.getHoverName());

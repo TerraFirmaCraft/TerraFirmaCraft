@@ -13,7 +13,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
 
 import net.dries007.tfc.client.ClientHelpers;
-import net.dries007.tfc.common.capabilities.food.TFCFoodData;
+import net.dries007.tfc.common.player.IPlayerInfo;
 
 /**
  * A packet that signals to the client it needs to replace the client player's food stats object
@@ -36,7 +36,7 @@ public enum FoodDataReplacePacket implements CustomPacketPayload
         final Player player = ClientHelpers.getPlayer();
         if (player != null)
         {
-            TFCFoodData.replaceFoodStats(player);
+            IPlayerInfo.setupForPlayer(player);
         }
     }
 }

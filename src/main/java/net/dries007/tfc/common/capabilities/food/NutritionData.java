@@ -9,9 +9,9 @@ package net.dries007.tfc.common.capabilities.food;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.function.ToDoubleFunction;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.config.TFCConfig;
 
@@ -88,26 +88,15 @@ public class NutritionData
         }
     }
 
-    public CompoundTag writeToNbt()
+    public Tag writeToNbt()
     {
-        CompoundTag nbt = new CompoundTag();
-        ListTag recordsNbt = new ListTag();
-        for (FoodData data : records)
-        {
-            recordsNbt.add(data.write());
-        }
-        nbt.put("records", recordsNbt);
-        return nbt;
+        return FoodData.LIST_CODEC.encodeStart(NbtOps.INSTANCE, records).getOrThrow();
     }
 
-    public void readFromNbt(CompoundTag nbt)
+    public void readFromNbt(@Nullable Tag nbt)
     {
         records.clear();
-        ListTag recordsNbt = nbt.getList("records", Tag.TAG_COMPOUND);
-        for (int i = 0; i < recordsNbt.size(); i++)
-        {
-            records.add(FoodData.read(recordsNbt.getCompound(i)));
-        }
+        FoodData.LIST_CODEC.decode(NbtOps.INSTANCE, nbt).ifSuccess(e -> records.addAll(e.getFirst()));
         calculateNutrition();
     }
 

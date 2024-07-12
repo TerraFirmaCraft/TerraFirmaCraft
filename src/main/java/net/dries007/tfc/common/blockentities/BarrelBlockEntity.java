@@ -8,7 +8,6 @@ package net.dries007.tfc.common.blockentities;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -134,26 +133,29 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
             barrel.needsInstantRecipeUpdate = false;
             if (barrel.inventory.excess.isEmpty()) // Excess must be empty for instant recipes to apply
             {
-                Optional.<BarrelRecipe>empty() // For type erasure
-                    .or(() -> Optional.ofNullable(BarrelRecipe.get(level, TFCRecipeTypes.BARREL_INSTANT, barrel.inventory))
-                    .or(() -> Optional.ofNullable(BarrelRecipe.get(level, TFCRecipeTypes.BARREL_INSTANT_FLUID, barrel.inventory))
-                    .ifPresent(instantRecipe -> {
-                        instantRecipe.assembleOutputs(barrel.inventory);
-                        if (barrel.soundCooldownTicks == 0)
+                BarrelRecipe instantRecipe = BarrelRecipe.get(level, TFCRecipeTypes.BARREL_INSTANT, barrel.inventory);
+                if (instantRecipe == null)
+                {
+                    instantRecipe = BarrelRecipe.get(level, TFCRecipeTypes.BARREL_INSTANT_FLUID, barrel.inventory);
+                }
+                if (instantRecipe != null)
+                {
+                    instantRecipe.assembleOutputs(barrel.inventory);
+                    if (barrel.soundCooldownTicks == 0)
+                    {
+                        Helpers.playSound(level, barrel.getBlockPos(), instantRecipe.getCompleteSound());
+                        barrel.soundCooldownTicks = 5;
+                        if (instantRecipe.getCompleteSound() == SoundEvents.FIRE_EXTINGUISH && level instanceof ServerLevel server)
                         {
-                            Helpers.playSound(level, barrel.getBlockPos(), instantRecipe.getCompleteSound());
-                            barrel.soundCooldownTicks = 5;
-                            if (instantRecipe.getCompleteSound() == SoundEvents.FIRE_EXTINGUISH && level instanceof ServerLevel server)
-                            {
-                                final double x = pos.getX() + 0.5;
-                                final double y = pos.getY();
-                                final double z = pos.getZ() + 0.5;
-                                final RandomSource random = level.getRandom();
-                                server.sendParticles(TFCParticles.BUBBLE.get(), x + random.nextFloat() * 0.375 - 0.1875, y + 15f / 16f, z + random.nextFloat() * 0.375 - 0.1875, 6, 0, 0, 0, 1);
-                                server.sendParticles(TFCParticles.STEAM.get(), x + random.nextFloat() * 0.375 - 0.1875, y + 15f / 16f, z + random.nextFloat() * 0.375 - 0.1875, 6, 0, 0, 0, 1);
-                            }
+                            final double x = pos.getX() + 0.5;
+                            final double y = pos.getY();
+                            final double z = pos.getZ() + 0.5;
+                            final RandomSource random = level.getRandom();
+                            server.sendParticles(TFCParticles.BUBBLE.get(), x + random.nextFloat() * 0.375 - 0.1875, y + 15f / 16f, z + random.nextFloat() * 0.375 - 0.1875, 6, 0, 0, 0, 1);
+                            server.sendParticles(TFCParticles.STEAM.get(), x + random.nextFloat() * 0.375 - 0.1875, y + 15f / 16f, z + random.nextFloat() * 0.375 - 0.1875, 6, 0, 0, 0, 1);
                         }
-                    });
+                    }
+                }
                 barrel.markForSync();
             }
         }

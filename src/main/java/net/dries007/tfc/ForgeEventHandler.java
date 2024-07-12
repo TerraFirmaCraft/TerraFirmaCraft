@@ -144,16 +144,13 @@ import net.dries007.tfc.common.blocks.rock.AqueductBlock;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockAnvilBlock;
 import net.dries007.tfc.common.blocks.wood.TFCLecternBlock;
-import net.dries007.tfc.common.capabilities.Capabilities;
-import net.dries007.tfc.common.capabilities.food.DynamicBowlHandler;
+import net.dries007.tfc.common.capabilities.food.BowlComponent;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.common.capabilities.food.IFood;
-import net.dries007.tfc.common.capabilities.food.TFCFoodData;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
-import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.commands.TFCCommands;
+import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.component.forge.ForgingBonus;
 import net.dries007.tfc.common.component.glass.GlassWorking;
 import net.dries007.tfc.common.container.BlockEntityContainer;
@@ -164,12 +161,13 @@ import net.dries007.tfc.common.entities.misc.HoldingMinecart;
 import net.dries007.tfc.common.entities.predator.Predator;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.items.BlowpipeItem;
+import net.dries007.tfc.common.player.IPlayerInfo;
+import net.dries007.tfc.common.player.PlayerInfo;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.RecipeManagerAccessor;
 import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.network.EffectExpirePacket;
-import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.PlayerDrinkPacket;
 import net.dries007.tfc.network.UpdateClimateModelPacket;
 import net.dries007.tfc.util.AxeLoggingHelper;
@@ -854,9 +852,9 @@ public final class ForgeEventHandler
         final Player player = event.getEntity();
         final Level level = player.level();
         final float angle = Mth.wrapDegrees(player.getXRot()); // Copied from DebugScreenOverlay, which is the value in F3
-        if (angle <= -80 && !level.isClientSide() && level.isRainingAt(player.blockPosition().above()) && player.getFoodData() instanceof TFCFoodData foodData)
+        if (angle <= -80 && !level.isClientSide() && level.isRainingAt(player.blockPosition().above()))
         {
-            foodData.addThirst(TFCConfig.SERVER.thirstGainedFromDrinkingInTheRain.get().floatValue());
+            IPlayerInfo.get(player).addThirst(TFCConfig.SERVER.thirstGainedFromDrinkingInTheRain.get().floatValue());
         }
         if (!level.isClientSide() && !player.getAbilities().invulnerable && TFCConfig.SERVER.enableOverburdening.get() && level.getGameTime() % 20 == 0)
         {
@@ -877,7 +875,7 @@ public final class ForgeEventHandler
         final MobEffectInstance inst = event.getEffectInstance();
         if (event.getEntity() instanceof ServerPlayer player && inst != null)
         {
-            PacketHandler.send(PacketDistributor.PLAYER.with(() -> player), new EffectExpirePacket(inst.getEffect()));
+            PacketDistributor.sendToPlayer(player, new EffectExpirePacket(inst.getEffect()));
             if (inst.getEffect() == TFCEffects.PINNED.get())
             {
                 player.setForcedPose(null);
@@ -890,7 +888,7 @@ public final class ForgeEventHandler
         final MobEffectInstance instance = event.getEffectInstance();
         if (instance != null && event.getEntity() instanceof ServerPlayer player)
         {
-            PacketHandler.send(PacketDistributor.PLAYER.with(() -> player), new EffectExpirePacket(instance.getEffect()));
+            PacketDistributor.sendToPlayer(player, new EffectExpirePacket(instance.getEffect()));
             if (instance.getEffect() == TFCEffects.PINNED.get())
             {
                 player.setForcedPose(null);
@@ -901,7 +899,7 @@ public final class ForgeEventHandler
     public static void onLivingJump(LivingEvent.LivingJumpEvent event)
     {
         LivingEntity entity = event.getEntity();
-        if (entity.hasEffect(TFCEffects.PINNED.get()) || entity.hasEffect(TFCEffects.OVERBURDENED.get()))
+        if (entity.hasEffect(TFCEffects.PINNED.holder()) || entity.hasEffect(TFCEffects.OVERBURDENED.holder()))
         {
             entity.setDeltaMovement(0, 0, 0);
             entity.hasImpulse = false;
@@ -931,9 +929,9 @@ public final class ForgeEventHandler
         amount *= PhysicalDamageType.calculateMultiplier(event.getSource(), event.getEntity());
 
         // Player health modifier
-        if (event.getEntity() instanceof Player player && player.getFoodData() instanceof TFCFoodData foodData)
+        if (event.getEntity() instanceof Player player)
         {
-            amount /= foodData.getHealthModifier();
+            amount /= IPlayerInfo.get(player).getHealthModifier();
         }
 
         event.setAmount(amount);
@@ -1244,9 +1242,8 @@ public final class ForgeEventHandler
     {
         if (player instanceof ServerPlayer serverPlayer)
         {
-            TFCFoodData.replaceFoodStats(serverPlayer);
+            IPlayerInfo.setupForPlayer(serverPlayer);
             WorldTracker.get(serverPlayer.serverLevel()).syncTo(serverPlayer);
-            PlayerData.get(serverPlayer).sync();
 
             final ClimateModel model = Climate.model(serverPlayer.level());
             PacketDistributor.sendToPlayer(serverPlayer, new UpdateClimateModelPacket(model));
@@ -1256,10 +1253,10 @@ public final class ForgeEventHandler
     public static void onServerChat(ServerChatEvent event)
     {
         // Apply intoxication after six hours
-        final long intoxicatedTicks = PlayerData.get(event.getPlayer()).getIntoxicatedTicks() - 6 * ICalendar.TICKS_IN_HOUR;
+        final long intoxicatedTicks = IPlayerInfo.get(event.getPlayer()).getIntoxication() - 6 * ICalendar.TICKS_IN_HOUR;
         if (intoxicatedTicks > 0)
         {
-            final float intoxicationChance = Mth.clamp((float) (intoxicatedTicks - 6 * ICalendar.TICKS_IN_HOUR) / PlayerData.MAX_INTOXICATED_TICKS, 0, 0.7f);
+            final float intoxicationChance = Mth.clamp((float) (intoxicatedTicks - 6 * ICalendar.TICKS_IN_HOUR) / PlayerInfo.MAX_INTOXICATED_TICKS, 0, 0.7f);
             final RandomSource random = event.getPlayer().getRandom();
             final String originalMessage = event.getMessage().getString();
             final String[] words = originalMessage.split(" ");
@@ -1411,13 +1408,13 @@ public final class ForgeEventHandler
         }
     }
 
-    public static void onItemUseFinish(LivingEntityUseItemEvent event)
+    public static void onItemUseFinish(LivingEntityUseItemEvent.Finish event)
     {
         final ItemStack stack = event.getItem();
-        final @Nullable IFood food = FoodCapability.get(stack);
-        if (food instanceof DynamicBowlHandler)
+        final @Nullable BowlComponent bowl = stack.get(TFCComponents.BOWL);
+        if (bowl != null)
         {
-            event.setResultStack(DynamicBowlHandler.onItemUse(stack, event.getResultStack(), event.getEntity()));
+            event.setResultStack(bowl.onItemUse(stack, event.getResultStack(), event.getEntity()));
         }
     }
 

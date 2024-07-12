@@ -68,12 +68,13 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.SluiceBlockEntity;
 import net.dries007.tfc.common.blocks.devices.SluiceBlock;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
-import net.dries007.tfc.common.capabilities.egg.EggCapability;
-import net.dries007.tfc.common.capabilities.egg.IEgg;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.common.capabilities.food.IngredientsComponent;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
+import net.dries007.tfc.common.component.EggComponent;
+import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.component.forge.ForgingBonus;
 import net.dries007.tfc.common.component.forge.ForgingCapability;
 import net.dries007.tfc.common.component.glass.GlassWorking;
@@ -267,16 +268,13 @@ public class ClientForgeEventHandler
             GlassWorking.addTooltipInfo(stack, text);
             FoodCapability.addTooltipInfo(stack, text);
 
+            stack.getOrDefault(TFCComponents.INGREDIENTS, IngredientsComponent.EMPTY).addTooltipInfo(text);
+            stack.getOrDefault(TFCComponents.EGG, EggComponent.DEFAULT).addTooltipInfo(text);
+
             final @Nullable IHeat heat = HeatCapability.get(stack);
             if (heat != null)
             {
                 heat.addTooltipInfo(stack, text);
-            }
-
-            final @Nullable IEgg egg = EggCapability.get(stack);
-            if (egg != null)
-            {
-                egg.addTooltipInfo(text);
             }
 
             // Fuel information

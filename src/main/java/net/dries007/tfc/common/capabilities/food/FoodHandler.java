@@ -10,10 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
@@ -33,16 +29,9 @@ public class FoodHandler implements IFood
      */
     public static final int DEFAULT_DECAY_TICKS = ICalendar.TICKS_IN_DAY * 22;
 
-    public static final long ROTTEN_DATE = Long.MIN_VALUE;
-    public static final long NEVER_DECAY_DATE = Long.MAX_VALUE;
-
-    public static final long ROTTEN_CREATION_DATE = Long.MIN_VALUE;
-    public static final long NEVER_DECAY_CREATION_DATE = -2;
-    public static final long UNKNOWN_CREATION_DATE = -1;
-
 
     // Stacks created at certain times during loading, we infer to be non-decaying ones.
-    private static final AtomicBoolean NON_DECAYING = new AtomicBoolean(true);
+    public static final AtomicBoolean NON_DECAYING = new AtomicBoolean(true);
 
     public static void setNonDecaying(boolean value)
     {
@@ -120,7 +109,7 @@ public class FoodHandler implements IFood
     }
 
     @Override
-    public boolean isTransientNonDecaying()
+    public boolean isTransient()
     {
         return isNonDecaying;
     }
@@ -129,6 +118,12 @@ public class FoodHandler implements IFood
     public FoodData getData()
     {
         return data;
+    }
+
+    @Override
+    public void setData(FoodData data)
+    {
+        this.data = data;
     }
 
     @Override
@@ -155,45 +150,6 @@ public class FoodHandler implements IFood
     public List<FoodTrait> getTraits()
     {
         return foodTraits;
-    }
-
-    @Override
-    public CompoundTag serializeNBT()
-    {
-        CompoundTag nbt = new CompoundTag();
-        nbt.putLong("creationDate", getCreationDate());
-        if (isDynamic())
-        {
-            nbt.put("foodData", data.write());
-        }
-        // Traits are sorted so they match when trying to stack them
-        ListTag traitList = new ListTag();
-        for (FoodTrait trait : foodTraits)
-        {
-            traitList.add(StringTag.valueOf(FoodTrait.getId(trait).toString()));
-        }
-        nbt.put("traits", traitList);
-        return nbt;
-    }
-
-    @Override
-    public void deserializeNBT(CompoundTag nbt)
-    {
-        foodTraits.clear();
-        if (isDynamic())
-        {
-            data = FoodData.read(nbt.getCompound("foodData"));
-        }
-        ListTag traitList = nbt.getList("traits", Tag.TAG_STRING);
-        for (int i = 0; i < traitList.size(); i++)
-        {
-            final FoodTrait trait = FoodTrait.getTrait(Helpers.resourceLocation(traitList.getString(i)));
-            if (trait != null)
-            {
-                foodTraits.add(trait);
-            }
-        }
-        creationDate = nbt.contains("creationDate") ? nbt.getLong("creationDate") : UNKNOWN_CREATION_DATE;
     }
 
     /**
@@ -235,34 +191,9 @@ public class FoodHandler implements IFood
         }
 
         @Override
-        public boolean isTransientNonDecaying()
+        public boolean isTransient()
         {
             return !isReal || isNonDecaying;
-        }
-
-        public void setIngredients(List<ItemStack> ingredients)
-        {
-            this.ingredients = ingredients;
-        }
-
-        public List<ItemStack> getIngredients()
-        {
-            return ingredients;
-        }
-
-        @Override
-        public CompoundTag serializeNBT()
-        {
-            var tag = super.serializeNBT();
-            tag.put("ingredients", Helpers.writeItemStacksToNbt(ingredients));
-            return tag;
-        }
-
-        @Override
-        public void deserializeNBT(CompoundTag nbt)
-        {
-            super.deserializeNBT(nbt);
-            Helpers.readItemStacksFromNbt(ingredients, nbt.getList("ingredients", Tag.TAG_COMPOUND));
         }
 
         @Override

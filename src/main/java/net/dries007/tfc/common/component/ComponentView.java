@@ -20,11 +20,16 @@ public abstract class ComponentView<T>
     private final ItemStack stack;
     protected T component;
 
-    protected ComponentView(ItemStack stack, Supplier<DataComponentType<T>> type, T defaultValue)
+    protected ComponentView(ItemStack stack, T value, Supplier<DataComponentType<T>> type)
     {
         this.type = type;
         this.stack = stack;
-        this.component = stack.getOrDefault(type, defaultValue);
+        this.component = value;
+    }
+
+    protected ComponentView(ItemStack stack, Supplier<DataComponentType<T>> type, T defaultValue)
+    {
+        this(stack, stack.getOrDefault(type, defaultValue), type);
     }
 
     public T view()

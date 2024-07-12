@@ -266,7 +266,8 @@ public final class HeatCapability
         final BlockEntity entity = level.getBlockEntity(pos);
         if (entity != null)
         {
-            entity.getCapability(HeatCapability.BLOCK_CAPABILITY).ifPresent(cap -> cap.setTemperatureIfWarmer(temperature));
+            // todo 1.21: capabilities
+            //entity.getCapability(HeatCapability.BLOCK_CAPABILITY).ifPresent(cap -> cap.setTemperatureIfWarmer(temperature));
         }
     }
 

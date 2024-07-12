@@ -15,15 +15,15 @@ import net.minecraft.world.entity.EntityType;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.PhysicalDamageTypeData;
+import net.dries007.tfc.util.PhysicalDamage;
 
 public record EntityDamageResistance(
     TagKey<EntityType<?>> entity,
-    PhysicalDamageTypeData damages
+    PhysicalDamage damages
 ) {
     public static final Codec<EntityDamageResistance> CODEC = RecordCodecBuilder.create(i -> i.group(
         TagKey.codec(Registries.ENTITY_TYPE).fieldOf("entity").forGetter(c -> c.entity),
-        PhysicalDamageTypeData.CODEC.forGetter(c -> c.damages)
+        PhysicalDamage.CODEC.forGetter(c -> c.damages)
     ).apply(i, EntityDamageResistance::new));
 
     public static final DataManager<EntityDamageResistance> MANAGER = new DataManager<>(Helpers.identifier("entity_damage_resistances"), "entity_damage_resistances", CODEC);

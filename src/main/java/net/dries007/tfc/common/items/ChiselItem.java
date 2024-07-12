@@ -22,7 +22,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.capabilities.player.PlayerData;
+import net.dries007.tfc.common.player.IPlayerInfo;
 import net.dries007.tfc.common.recipes.ChiselRecipe;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
@@ -60,8 +60,7 @@ public class ChiselItem extends ToolItem
                         }
                     }
 
-                    final PlayerData cap = PlayerData.get(player);
-                    final ChiselRecipe recipeUsed = ChiselRecipe.getRecipe(state, held, cap.getChiselMode());
+                    final ChiselRecipe recipeUsed = ChiselRecipe.getRecipe(state, held, IPlayerInfo.get(player).chiselMode());
                     if (recipeUsed != null)
                     {
                         ItemStack extraDrop = recipeUsed.getExtraDrop(held);

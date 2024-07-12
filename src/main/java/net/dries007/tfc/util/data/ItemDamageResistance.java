@@ -17,21 +17,21 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.recipes.RecipeHelpers;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.PhysicalDamageTypeData;
+import net.dries007.tfc.util.PhysicalDamage;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 public record ItemDamageResistance(
     Ingredient ingredient,
-    PhysicalDamageTypeData damages
+    PhysicalDamage damages
 ) {
     public static final Codec<ItemDamageResistance> CODEC = RecordCodecBuilder.create(i -> i.group(
         Ingredient.CODEC.fieldOf("ingredient").forGetter(c -> c.ingredient),
-        PhysicalDamageTypeData.CODEC.forGetter(c -> c.damages)
+        PhysicalDamage.CODEC.forGetter(c -> c.damages)
     ).apply(i, ItemDamageResistance::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ItemDamageResistance> STREAM_CODEC = StreamCodec.composite(
         Ingredient.CONTENTS_STREAM_CODEC, c -> c.ingredient,
-        PhysicalDamageTypeData.STREAM_CODEC, c -> c.damages,
+        PhysicalDamage.STREAM_CODEC, c -> c.damages,
         ItemDamageResistance::new
     );
 

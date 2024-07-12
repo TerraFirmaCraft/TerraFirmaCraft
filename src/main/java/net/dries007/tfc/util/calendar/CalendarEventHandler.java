@@ -23,7 +23,7 @@ import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import org.slf4j.Logger;
 
-import net.dries007.tfc.common.capabilities.food.TFCFoodData;
+import net.dries007.tfc.common.player.PlayerInfo;
 import net.dries007.tfc.config.TFCConfig;
 
 /**
@@ -85,7 +85,7 @@ public class CalendarEventHandler
             {
                 // Consume food/water on all online players accordingly
                 final long jump = Calendars.SERVER.setTimeFromDayTime(currentDayTime);
-                final float exhaustion = jump * TFCFoodData.PASSIVE_EXHAUSTION_PER_TICK * TFCConfig.SERVER.passiveExhaustionModifier.get().floatValue();
+                final float exhaustion = jump * PlayerInfo.PASSIVE_EXHAUSTION_PER_TICK * TFCConfig.SERVER.passiveExhaustionModifier.get().floatValue();
                 for (Player player : event.getEntity().level().players())
                 {
                     player.causeFoodExhaustion(exhaustion);

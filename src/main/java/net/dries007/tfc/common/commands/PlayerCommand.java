@@ -6,18 +6,18 @@
 
 package net.dries007.tfc.common.commands;
 
+import com.mojang.brigadier.Command;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 
-import com.mojang.brigadier.Command;
-import com.mojang.brigadier.arguments.IntegerArgumentType;
-import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.context.CommandContext;
 import net.dries007.tfc.common.capabilities.food.Nutrient;
-import net.dries007.tfc.common.capabilities.food.TFCFoodData;
+import net.dries007.tfc.common.player.IPlayerInfo;
 import net.dries007.tfc.util.Helpers;
 
 public final class PlayerCommand
@@ -111,33 +111,23 @@ public final class PlayerCommand
 
     private static int queryWater(CommandContext<CommandSourceStack> context, Player player)
     {
-        if (player.getFoodData() instanceof TFCFoodData)
-        {
-            float water = ((TFCFoodData) player.getFoodData()).getThirst();
-            context.getSource().sendSuccess(() -> Component.translatable(QUERY_WATER, water), true);
-            return Command.SINGLE_SUCCESS;
-        }
-        context.getSource().sendFailure(Component.translatable(FAIL_INVALID_FOOD_STATS));
-        return 0;
+        final float water = IPlayerInfo.get(player).getThirst();
+        context.getSource().sendSuccess(() -> Component.translatable(QUERY_WATER, water), true);
+        return Command.SINGLE_SUCCESS;
     }
 
     private static int queryNutrition(CommandContext<CommandSourceStack> context, Player player)
     {
-        if (player.getFoodData() instanceof TFCFoodData)
+        final float[] nutrition = IPlayerInfo.get(player).nutrition().getNutrients();
+        context.getSource().sendSuccess(() -> Component.translatable(QUERY_NUTRITION), true);
+        for (Nutrient nutrient : Nutrient.VALUES)
         {
-            float[] nutrition = ((TFCFoodData) player.getFoodData()).getNutrition().getNutrients();
-            context.getSource().sendSuccess(() -> Component.translatable(QUERY_NUTRITION), true);
-            for (Nutrient nutrient : Nutrient.VALUES)
-            {
-                int percent = (int) (100 * nutrition[nutrient.ordinal()]);
-                context.getSource().sendSuccess(() -> Component.literal(" - ")
-                    .append(Helpers.translateEnum(nutrient).withStyle(nutrient.getColor()))
-                    .append(": " + percent + "%"), true);
-            }
-            return Command.SINGLE_SUCCESS;
+            int percent = (int) (100 * nutrition[nutrient.ordinal()]);
+            context.getSource().sendSuccess(() -> Component.literal(" - ")
+                .append(Helpers.translateEnum(nutrient).withStyle(nutrient.getColor()))
+                .append(": " + percent + "%"), true);
         }
-        context.getSource().sendFailure(Component.translatable(FAIL_INVALID_FOOD_STATS));
-        return 0;
+        return Command.SINGLE_SUCCESS;
     }
 
     private static int setHunger(Player player, int hunger, boolean add)
@@ -162,14 +152,12 @@ public final class PlayerCommand
 
     private static int setWater(Player player, int water, boolean add)
     {
-        if (player.getFoodData() instanceof final TFCFoodData stats)
+        final IPlayerInfo info = IPlayerInfo.get(player);
+        if (add)
         {
-            if (add)
-            {
-                water += stats.getThirst();
-            }
-            stats.setThirst(water);
+            water += info.getThirst();
         }
+        info.setThirst(water);
         return Command.SINGLE_SUCCESS;
     }
 }

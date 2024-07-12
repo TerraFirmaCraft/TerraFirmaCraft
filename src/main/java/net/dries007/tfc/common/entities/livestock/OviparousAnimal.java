@@ -30,11 +30,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 import net.neoforged.neoforge.common.NeoForge;
-import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
-import net.dries007.tfc.common.capabilities.egg.EggCapability;
-import net.dries007.tfc.common.capabilities.egg.IEgg;
+import net.dries007.tfc.common.component.EggComponent;
+import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.Pluckable;
 import net.dries007.tfc.common.entities.ai.livestock.LivestockAi;
@@ -226,17 +225,13 @@ public abstract class OviparousAnimal extends ProducingAnimal implements Pluckab
         final ItemStack stack = new ItemStack(Items.EGG);
         if (isFertilized())
         {
-            final @Nullable IEgg egg = EggCapability.get(stack);
-            if (egg != null)
+            final OviparousAnimal baby = ((EntityType<OviparousAnimal>) getType()).create(level());
+            if (baby != null)
             {
-                final OviparousAnimal baby = ((EntityType<OviparousAnimal>) getType()).create(level());
-                if (baby != null)
-                {
-                    baby.setGender(Gender.valueOf(random.nextBoolean()));
-                    baby.setBirthDay(Calendars.SERVER.getTotalDays());
-                    baby.setFamiliarity(getFamiliarity() < 0.9F ? getFamiliarity() / 2.0F : getFamiliarity() * 0.9F);
-                    egg.setFertilized(baby, Calendars.SERVER.getTotalDays() + hatchDays.get());
-                }
+                baby.setGender(Gender.valueOf(random.nextBoolean()));
+                baby.setBirthDay(Calendars.SERVER.getTotalDays());
+                baby.setFamiliarity(getFamiliarity() < 0.9F ? getFamiliarity() / 2.0F : getFamiliarity() * 0.9F);
+                stack.set(TFCComponents.EGG, EggComponent.of(level().registryAccess(), baby, Calendars.SERVER.getTotalDays() + hatchDays.get()));
             }
         }
         AnimalProductEvent event = new AnimalProductEvent(level(), blockPosition(), null, this, stack, ItemStack.EMPTY, 1);

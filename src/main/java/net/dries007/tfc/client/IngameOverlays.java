@@ -31,12 +31,12 @@ import net.neoforge.neoforged.client.gui.overlay.VanillaGuiOverlay;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.capabilities.food.TFCFoodData;
-import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.effect.TFCEffects;
 import net.dries007.tfc.common.entities.livestock.MammalProperties;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.common.entities.misc.TFCFishingHook;
+import net.dries007.tfc.common.player.IPlayerInfo;
+import net.dries007.tfc.common.player.PlayerInfo;
 import net.dries007.tfc.config.DisabledExperienceBarStyle;
 import net.dries007.tfc.config.HealthDisplayStyle;
 import net.dries007.tfc.config.TFCConfig;
@@ -170,7 +170,7 @@ public enum IngameOverlays
 
             int x = width / 2;
             int y = height - gui.rightHeight;
-            float percentFood = (float) player.getFoodData().getFoodLevel() / TFCFoodData.MAX_HUNGER;
+            float percentFood = (float) player.getFoodData().getFoodLevel() / PlayerInfo.MAX_HUNGER;
 
             stack.pushPose();
             stack.translate(x + 1, y + 4, 0);
@@ -191,15 +191,12 @@ public enum IngameOverlays
             Player player = (Player) minecraft.getCameraEntity();
             assert player != null;
 
+            final IPlayerInfo info = IPlayerInfo.get(player);
+
             int x = width / 2;
             int y = height - gui.rightHeight;
-            float percentThirst = 0;
-            float overheat = 0;
-            if (player.getFoodData() instanceof TFCFoodData data)
-            {
-                percentThirst = data.getThirst() / TFCFoodData.MAX_THIRST;
-                overheat = data.getThirstContributionFromTemperature(player);
-            }
+            float percentThirst = info.getThirst() / PlayerInfo.MAX_THIRST;
+            float overheat = info.getThirstContributionFromTemperature(player);
 
             stack.pushPose();
             stack.translate(x + 1, y + 4, 0);
@@ -207,7 +204,7 @@ public enum IngameOverlays
             graphics.blit(TEXTURE, 0, 0, 90, 25, (int) (90 * percentThirst), 5);
             if (overheat > 0)
             {
-                RenderSystem.setShaderColor(1f, 1f, 1f, overheat / TFCFoodData.MAX_TEMPERATURE_THIRST_DECAY);
+                RenderSystem.setShaderColor(1f, 1f, 1f, overheat / PlayerInfo.MAX_TEMPERATURE_THIRST_DECAY);
                 graphics.blit(TEXTURE, 0, 0, 90, 30, 90, 5);
                 RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
             }
@@ -229,7 +226,7 @@ public enum IngameOverlays
                 int u = 60;
                 if (Helpers.isItem(player.getItemInHand(InteractionHand.OFF_HAND), TFCTags.Items.HAMMERS))
                 {
-                    u = PlayerData.get(player).getChiselMode().ordinal() * 20;
+                    u = IPlayerInfo.get(player).chiselMode().ordinal() * 20;
                 }
                 stack.pushPose();
                 graphics.blit(TEXTURE, width / 2 + 100, height - 21, u, 58, 20, 20);
@@ -403,7 +400,7 @@ public enum IngameOverlays
         stack.popPose();
 
         // Health modifier affects both max and current health equally. All we do is draw different numbers as a result.
-        final float healthModifier = entity instanceof Player player && player.getFoodData() instanceof TFCFoodData data ? data.getHealthModifier() : 1f;
+        final float healthModifier = entity instanceof Player player ? IPlayerInfo.get(player).getHealthModifier() : 1f;
 
         String text = style.format(currentHealth * healthModifier, maxHealth * healthModifier);
         stack.pushPose();

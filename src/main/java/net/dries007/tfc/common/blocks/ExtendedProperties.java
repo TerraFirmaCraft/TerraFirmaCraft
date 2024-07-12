@@ -11,17 +11,9 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.ToDoubleFunction;
 import java.util.function.ToIntFunction;
-
-import net.dries007.tfc.common.blocks.wood.TFCChestBlock;
-
-import net.minecraft.world.flag.FeatureFlag;
-import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
-import net.minecraft.world.level.material.PushReaction;
-import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.flag.FeatureFlag;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -32,9 +24,14 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.level.pathfinder.PathType;
+import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Nullable;
+
+import net.dries007.tfc.common.blocks.wood.TFCChestBlock;
 
 /**
  * An extension of {@link BlockBehaviour.Properties} to allow setting properties in a constructor that normally require an override.
@@ -53,7 +50,7 @@ public class ExtendedProperties
         return new ExtendedProperties(properties);
     }
 
-    public static ExtendedProperties of(BlockBehaviour block) { return of(BlockBehaviour.Properties.copy(block)); }
+    public static ExtendedProperties of(BlockBehaviour block) { return of(BlockBehaviour.Properties.ofFullCopy(block)); }
 
     public static ExtendedProperties of() { return of(BlockBehaviour.Properties.of()); }
     public static ExtendedProperties of(DyeColor color) { return of(BlockBehaviour.Properties.of().mapColor(color)); }
@@ -72,7 +69,7 @@ public class ExtendedProperties
     // Forge methods
     private int flammability;
     private int fireSpreadSpeed;
-    @Nullable private BlockPathTypes pathType;
+    @Nullable private PathType pathType;
     private ToDoubleFunction<BlockState> enchantmentPowerGetter;
 
     private ExtendedProperties(BlockBehaviour.Properties properties)
@@ -142,7 +139,7 @@ public class ExtendedProperties
     public ExtendedProperties flammableLikeLeaves() { return flammable(60, 30).ignitedByLava(); }
     public ExtendedProperties flammableLikeWool() { return flammable(100, 60).ignitedByLava(); }
 
-    public ExtendedProperties pathType(BlockPathTypes type)
+    public ExtendedProperties pathType(PathType type)
     {
         pathType = type;
         return this;
@@ -214,7 +211,6 @@ public class ExtendedProperties
     @SuppressWarnings("deprecation") public ExtendedProperties forceSolidOff() { properties.forceSolidOff(); return this; }
     public ExtendedProperties pushReaction(PushReaction reaction) { properties.pushReaction(reaction); return this; }
     public ExtendedProperties offsetType(BlockBehaviour.OffsetType type) { properties.offsetType(type); return this; }
-    public ExtendedProperties noParticlesOnBreak() { properties.noParticlesOnBreak(); return this; }
     public ExtendedProperties requiredFeatures(FeatureFlag... flags) { properties.requiredFeatures(flags); return this; }
     public ExtendedProperties instrument(NoteBlockInstrument inst) { properties.instrument(inst); return this; }
     public ExtendedProperties defaultInstrument() { return instrument(NoteBlockInstrument.HARP); }
@@ -251,7 +247,7 @@ public class ExtendedProperties
     }
 
     @Nullable
-    BlockPathTypes getPathType()
+    PathType getPathType()
     {
         return pathType;
     }

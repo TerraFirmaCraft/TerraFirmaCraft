@@ -7,6 +7,7 @@
 package net.dries007.tfc.util.registry;
 
 import java.util.function.Supplier;
+import net.minecraft.core.Holder;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Rarity;
@@ -23,7 +24,7 @@ public interface RegistryMetal extends StringRepresentable
 {
     Tier toolTier();
 
-    ArmorMaterial armorTier();
+    Holder<ArmorMaterial> armorTier();
 
     Metal.Tier metalTier();
 

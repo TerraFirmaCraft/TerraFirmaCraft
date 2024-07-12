@@ -21,14 +21,13 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.PartialItemHandler;
-import net.dries007.tfc.common.capabilities.egg.EggCapability;
-import net.dries007.tfc.common.capabilities.egg.IEgg;
+import net.dries007.tfc.common.component.EggComponent;
+import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.container.NestBoxContainer;
 import net.dries007.tfc.common.entities.livestock.OviparousAnimal;
 import net.dries007.tfc.common.entities.misc.Seat;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.calendar.Calendars;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
 
@@ -65,10 +64,10 @@ public class NestBoxBlockEntity extends TickableInventoryBlockEntity<ItemStackHa
             for (int slot = 0; slot < nest.inventory.getSlots(); slot++)
             {
                 final ItemStack stack = nest.inventory.getStackInSlot(slot);
-                final @Nullable IEgg egg = EggCapability.get(stack);
-                if (egg != null && egg.getHatchDay() > 0 && egg.getHatchDay() <= Calendars.SERVER.getTotalDays())
+                final @Nullable EggComponent egg = stack.get(TFCComponents.EGG);
+                if (egg != null && egg.canHatch())
                 {
-                    egg.getEntity(level).ifPresent(entity -> {
+                    egg.hatch(level).ifPresent(entity -> {
                         entity.moveTo(pos, 0f, 0f);
                         level.addFreshEntity(entity);
                     });
@@ -100,7 +99,7 @@ public class NestBoxBlockEntity extends TickableInventoryBlockEntity<ItemStackHa
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        return Helpers.mightHaveCapability(stack, EggCapability.CAPABILITY);
+        return stack.has(TFCComponents.EGG);
     }
 
     @Override

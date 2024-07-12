@@ -37,8 +37,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.common.player.IPlayerInfo;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.network.StreamCodecs;
@@ -77,7 +77,7 @@ public class ChiselRecipe extends SimpleBlockRecipe
         if (Helpers.isItem(held, TFCTags.Items.CHISELS) && Helpers.isItem(player.getOffhandItem(), TFCTags.Items.HAMMERS))
         {
             final BlockPos pos = hit.getBlockPos();
-            final Mode mode = PlayerData.get(player).getChiselMode();
+            final Mode mode = IPlayerInfo.get(player).chiselMode();
             final ChiselRecipe recipe = ChiselRecipe.getRecipe(state, held, mode);
             if (recipe == null)
             {

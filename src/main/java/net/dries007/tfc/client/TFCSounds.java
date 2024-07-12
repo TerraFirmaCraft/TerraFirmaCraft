@@ -17,7 +17,6 @@ import net.neoforged.neoforge.common.util.DeferredSoundType;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-import net.dries007.tfc.common.TFCArmorMaterials;
 import net.dries007.tfc.common.entities.aquatic.Fish;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.registry.RegistryHolder;
@@ -62,7 +61,15 @@ public final class TFCSounds
     public static final Id BARREL_DRIP = register("block.barrel.drip");
 
     // Armor
-    public static final Map<TFCArmorMaterials, Id> ARMOR_EQUIP = Helpers.mapOfKeys(TFCArmorMaterials.class, mat -> register("item.armor.equip_" + mat.getId().getPath()));
+    public static final Id COPPER_EQUIP = register("item.armor.equip_copper");
+    public static final Id BISMUTH_BRONZE_EQUIP = register("item.armor.equip_bismuth_bronze");
+    public static final Id BLACK_BRONZE_EQUIP = register("item.armor.equip_black_bronze");
+    public static final Id BRONZE_EQUIP = register("item.armor.equip_bronze");
+    public static final Id WROUGHT_IRON_EQUIP = register("item.armor.equip_wrought_iron");
+    public static final Id STEEL_EQUIP = register("item.armor.equip_steel");
+    public static final Id BLACK_STEEL_EQUIP = register("item.armor.equip_black_steel");
+    public static final Id BLUE_STEEL_EQUIP = register("item.armor.equip_blue_steel");
+    public static final Id RED_STEEL_EQUIP = register("item.armor.equip_red_steel");
 
     public static final SoundType CHARCOAL = registerBlock("charcoal");
     public static final SoundType THATCH = registerBlock("thatch");

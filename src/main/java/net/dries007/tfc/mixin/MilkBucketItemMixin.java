@@ -16,14 +16,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.MilkBucketItem;
 import net.minecraft.world.level.Level;
-
-import net.dries007.tfc.common.capabilities.food.FoodData;
-import net.dries007.tfc.common.capabilities.food.TFCFoodData;
-import net.dries007.tfc.config.TFCConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import net.dries007.tfc.common.capabilities.food.FoodData;
+import net.dries007.tfc.common.player.IPlayerInfo;
+import net.dries007.tfc.config.TFCConfig;
 
 @Mixin(MilkBucketItem.class)
 public abstract class MilkBucketItemMixin extends Item
@@ -38,9 +38,9 @@ public abstract class MilkBucketItemMixin extends Item
     {
         if (!TFCConfig.SERVER.enableVanillaDrinkingMilkClearsPotionEffects.get())
         {
-            if (entity instanceof Player player && player.getFoodData() instanceof TFCFoodData foodData)
+            if (entity instanceof Player player)
             {
-                foodData.eat(new FoodData(0, 0, 0, 0, 0, 0, 0, 2.0f, 0));
+                IPlayerInfo.get(player).eat(FoodData.MILK);
             }
             if (entity instanceof ServerPlayer player)
             {

@@ -17,6 +17,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -24,8 +25,8 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.item.AnimalArmorItem;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.AxeItem;
@@ -327,7 +328,7 @@ public record Metal(
         private final boolean parts, armor, utility;
         private final Tier metalTier;
         @Nullable private final net.minecraft.world.item.Tier toolTier;
-        @Nullable private final ArmorMaterial armorTier;
+        @Nullable private final TFCArmorMaterials.Id armorTier;
         private final MapColor mapColor;
         private final Rarity rarity;
         private final int color;
@@ -337,7 +338,7 @@ public record Metal(
             this(color, mapColor, rarity, Tier.TIER_0, null, null, parts, armor, utility);
         }
 
-        Default(int color, MapColor mapColor, Rarity rarity, Tier metalTier, @Nullable net.minecraft.world.item.Tier toolTier, @Nullable ArmorMaterial armorTier, boolean parts, boolean armor, boolean utility)
+        Default(int color, MapColor mapColor, Rarity rarity, Tier metalTier, @Nullable net.minecraft.world.item.Tier toolTier, @Nullable TFCArmorMaterials.Id armorTier, boolean parts, boolean armor, boolean utility)
         {
             this.serializedName = name().toLowerCase(Locale.ROOT);
             this.metalTier = metalTier;
@@ -395,9 +396,9 @@ public record Metal(
         }
 
         @Override
-        public ArmorMaterial armorTier()
+        public Holder<ArmorMaterial> armorTier()
         {
-            return Objects.requireNonNull(armorTier, "Tried to get non-existent armor tier from " + name());
+            return Objects.requireNonNull(armorTier, "Tried to get non-existent armor tier from " + name()).holder();
         }
 
         @Override
@@ -527,7 +528,7 @@ public record Metal(
         GREAVES(Type.ARMOR, metal -> new ArmorItem(metal.armorTier(), ArmorItem.Type.LEGGINGS, properties(metal))),
         UNFINISHED_BOOTS(Type.ARMOR, false),
         BOOTS(Type.ARMOR, metal -> new ArmorItem(metal.armorTier(), ArmorItem.Type.BOOTS, properties(metal))),
-        HORSE_ARMOR(Type.ARMOR, metal -> new HorseArmorItem(Mth.floor(metal.armorTier().getDefenseForType(ArmorItem.Type.CHESTPLATE) * 1.5), Helpers.identifier("textures/entity/animal/horse_armor/" + metal.getSerializedName() + ".png"), properties(metal))),
+        HORSE_ARMOR(Type.ARMOR, metal -> new AnimalArmorItem(metal.armorTier(), AnimalArmorItem.BodyType.EQUESTRIAN, false, properties(metal))),
 
         SHIELD(Type.TOOL, metal -> new TFCShieldItem(metal.toolTier(), properties(metal)));
 

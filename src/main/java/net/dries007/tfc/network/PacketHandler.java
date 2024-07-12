@@ -34,8 +34,7 @@ public final class PacketHandler
         register.playToClient(ChunkWatchPacket.TYPE, ChunkWatchPacket.CODEC, onClient(ChunkWatchPacket::handle));
         register.playToClient(CalendarUpdatePacket.TYPE, CalendarUpdatePacket.CODEC, onClient(CalendarUpdatePacket::handle));
         register.playToClient(FoodDataReplacePacket.TYPE, FoodDataReplacePacket.CODEC, onClient(FoodDataReplacePacket::handle));
-        register.playToClient(FoodDataUpdatePacket.TYPE, FoodDataUpdatePacket.CODEC, onClient(FoodDataUpdatePacket::handle));
-        register.playToClient(PlayerDataUpdatePacket.TYPE, PlayerDataUpdatePacket.CODEC, onClient(PlayerDataUpdatePacket::handle));
+        register.playToClient(PlayerInfoPacket.TYPE, PlayerInfoPacket.CODEC, onClient(PlayerInfoPacket::handle));
         register.playToClient(ProspectedPacket.TYPE, ProspectedPacket.CODEC, onClient(ProspectedPacket::handle));
         register.playToClient(EffectExpirePacket.TYPE, EffectExpirePacket.CODEC, onClient(EffectExpirePacket::handle));
         register.playToClient(UpdateClimateModelPacket.TYPE, UpdateClimateModelPacket.CODEC, onClient(UpdateClimateModelPacket::handle));

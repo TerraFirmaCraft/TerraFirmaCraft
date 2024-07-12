@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.capabilities.food;
 
+import java.util.List;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -65,6 +66,7 @@ public record FoodData(
         Codec.FLOAT.optionalFieldOf("decay_modifier", 0f).forGetter(c -> c.decayModifier)
     ).apply(i, FoodData::new));
     public static final Codec<FoodData> CODEC = MAP_CODEC.codec();
+    public static final Codec<List<FoodData>> LIST_CODEC = CODEC.listOf();
 
     public static final StreamCodec<ByteBuf, FoodData> STREAM_CODEC = StreamCodec.composite(
         ByteBufCodecs.VAR_INT, c -> c.hunger,
@@ -77,7 +79,9 @@ public record FoodData(
     );
 
     /** An empty instance of a {@link FoodData} with no values */
-    public static final FoodData EMPTY = new FoodData(0, 0, 0, 0, new float[] {0, 0, 0, 0, 0}, 0);
+    public static final FoodData EMPTY = of(0, 0, 0, 0, 0, 0, 0);
+    public static final FoodData MILK = of(0, 0, 0, 0, 0, 0, 2.0f);
+    public static final FoodData CAKE = of(2, 2f, 0.8f, 0f, 0f, 0f, 0.5f);
 
     private static RecordCodecBuilder<float[], Float> nutrientCodec(Nutrient nutrient)
     {
@@ -87,6 +91,12 @@ public record FoodData(
     public static FoodData of(int hunger, float water, float saturation, float[] nutrients, float decayModifier)
     {
         return new FoodData(hunger, water, saturation, 0, nutrients, decayModifier);
+    }
+
+    public static FoodData of(int hunger, float saturation, float... nutrients)
+    {
+        assert nutrients.length == 5;
+        return new FoodData(hunger, 0f, saturation, 0, nutrients, 0);
     }
 
     public static FoodData decayOnly(float decayModifier)

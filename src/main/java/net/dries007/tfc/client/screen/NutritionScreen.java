@@ -19,8 +19,8 @@ import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
 import net.dries007.tfc.common.capabilities.food.Nutrient;
 import net.dries007.tfc.common.capabilities.food.NutritionData;
-import net.dries007.tfc.common.capabilities.food.TFCFoodData;
 import net.dries007.tfc.common.container.Container;
+import net.dries007.tfc.common.player.IPlayerInfo;
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
 import net.dries007.tfc.util.Helpers;
@@ -55,9 +55,9 @@ public class NutritionScreen extends TFCContainerScreen<Container>
         super.renderBg(graphics, partialTicks, mouseX, mouseY);
 
         final Player player = ClientHelpers.getPlayer();
-        if (player != null && player.getFoodData() instanceof TFCFoodData data)
+        if (player != null)
         {
-            final NutritionData nutrition = data.getNutrition();
+            final NutritionData nutrition = IPlayerInfo.get(player).nutrition();
             for (Nutrient nutrient : Nutrient.VALUES)
             {
                 final int width = (int) (nutrition.getNutrient(nutrient) * 50);

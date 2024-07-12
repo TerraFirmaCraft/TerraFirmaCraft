@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.network;
 
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -17,11 +18,11 @@ import net.minecraft.world.entity.player.Player;
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.effect.TFCEffects;
 
-public record EffectExpirePacket(MobEffect effect) implements CustomPacketPayload
+public record EffectExpirePacket(Holder<MobEffect> effect) implements CustomPacketPayload
 {
     public static final CustomPacketPayload.Type<EffectExpirePacket> TYPE = PacketHandler.type("effect_expire");
     public static final StreamCodec<RegistryFriendlyByteBuf, EffectExpirePacket> CODEC = StreamCodec.composite(
-        ByteBufCodecs.registry(Registries.MOB_EFFECT), c -> c.effect,
+        ByteBufCodecs.holderRegistry(Registries.MOB_EFFECT), c -> c.effect,
         EffectExpirePacket::new
     );
 
