@@ -15,12 +15,8 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.config.TFCConfig;
 
-/**
- * This is the capability interface for an instance of a heat applied to an item stack.
- * <p>
- * N.B. Any capability implementing this must also provide {@link INetworkHeat} in order to sync properly.
- */
-public interface IHeat extends INetworkHeat
+
+public interface IHeat
 {
     /**
      * Gets the current temperature. Should call {@link HeatCapability#adjustTemp(float, float, long)} internally

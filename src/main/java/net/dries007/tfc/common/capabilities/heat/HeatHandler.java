@@ -6,20 +6,12 @@
 
 package net.dries007.tfc.common.capabilities.heat;
 
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilitySerializable;
-import net.minecraftforge.common.util.LazyOptional;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.util.calendar.Calendars;
 
-public class HeatHandler implements ICapabilitySerializable<CompoundTag>, IHeat
+public class HeatHandler implements IHeat
 {
-    private final LazyOptional<IHeat> capability = LazyOptional.of(() -> this);
-
     private final float forgingTemp; // Temperature at which this item can be worked in forging
     private final float weldingTemp; // Temperature at which this item can be welded
 
@@ -84,17 +76,6 @@ public class HeatHandler implements ICapabilitySerializable<CompoundTag>, IHeat
     public float getWeldingTemperature()
     {
         return weldingTemp;
-    }
-
-    @NotNull
-    @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
-    {
-        if (cap == HeatCapability.CAPABILITY || cap == HeatCapability.NETWORK_CAPABILITY)
-        {
-            return capability.cast();
-        }
-        return LazyOptional.empty();
     }
 
     @Override

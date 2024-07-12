@@ -37,4 +37,6 @@ public record HeatDefinition(
         ByteBufCodecs.FLOAT, c -> c.weldingTemperature,
         HeatDefinition::new
     );
+
+    public static final HeatDefinition DEFAULT = new HeatDefinition(Ingredient.EMPTY, 0f, 0f, 0f);
 }

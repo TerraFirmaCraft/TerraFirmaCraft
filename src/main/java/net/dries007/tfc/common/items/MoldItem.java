@@ -9,7 +9,6 @@ package net.dries007.tfc.common.items;
 import java.util.List;
 import java.util.function.IntSupplier;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -25,16 +24,12 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.INBTSerializable;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
-import net.minecraftforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -58,7 +53,7 @@ public class MoldItem extends Item
 {
     private static IntSupplier mapItemTypeToConfigValue(Metal.ItemType type)
     {
-        final ForgeConfigSpec.IntValue intValue = switch (type)
+        final IntValue intValue = switch (type)
             {
                 case INGOT -> TFCConfig.SERVER.moldIngotCapacity;
                 case PICKAXE_HEAD -> TFCConfig.SERVER.moldPickaxeHeadCapacity;
@@ -88,7 +83,7 @@ public class MoldItem extends Item
         assert type.hasMold(); // Easy sanity check
     }
 
-    public MoldItem(ForgeConfigSpec.IntValue capacity, TagKey<Fluid> fluidTag, Properties properties)
+    public MoldItem(IntValue capacity, TagKey<Fluid> fluidTag, Properties properties)
     {
         this(() -> Helpers.getValueOrDefault(capacity), fluidTag, properties);
     }
@@ -211,13 +206,6 @@ public class MoldItem extends Item
         return fluidTag;
     }
 
-    @Nullable
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt)
-    {
-        return new MoldCapability(stack, capacity.getAsInt(), fluidTag);
-    }
-
     @Override
     public int getMaxStackSize(ItemStack stack)
     {
@@ -231,10 +219,9 @@ public class MoldItem extends Item
         return 1;
     }
 
-    static class MoldCapability implements MoldLike, ICapabilityProvider, INBTSerializable<CompoundTag>, DelegateHeatHandler, DelegateFluidHandler
+    static class MoldCapability implements MoldLike, DelegateHeatHandler, DelegateFluidHandler
     {
         private final ItemStack stack;
-        private final LazyOptional<MoldCapability> capability;
 
         private final HeatHandler heat;
         private final FluidTank tank;
@@ -245,7 +232,6 @@ public class MoldItem extends Item
         MoldCapability(ItemStack stack, int capacity, TagKey<Fluid> fluidTag)
         {
             this.stack = stack;
-            this.capability = LazyOptional.of(() -> this);
 
             this.heat = new HeatHandler(1, 0, 0);
             this.tank = new FluidTank(capacity, fluid -> Metal.get(fluid.getFluid()) != null && Helpers.isFluid(fluid.getFluid(), fluidTag));
@@ -274,26 +260,6 @@ public class MoldItem extends Item
         public ItemStack getContainer()
         {
             return stack;
-        }
-
-        @NotNull
-        @Override
-        public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)
-        {
-            if (stack.getCount() != 1)
-            {
-                return LazyOptional.empty();
-            }
-            if (cap == HeatCapability.NETWORK_CAPABILITY)
-            {
-                return capability.cast();
-            }
-            if (cap == Capabilities.FLUID || cap == Capabilities.FLUID_ITEM || cap == HeatCapability.CAPABILITY)
-            {
-                load();
-                return capability.cast();
-            }
-            return LazyOptional.empty();
         }
 
         @Override
