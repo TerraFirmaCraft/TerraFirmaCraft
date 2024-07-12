@@ -12,7 +12,6 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,7 +19,6 @@ import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.screen.AnvilScreen;
 import net.dries007.tfc.common.blockentities.AnvilBlockEntity;
-import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.container.AnvilContainer;
 import net.dries007.tfc.common.recipes.AnvilRecipe;
 import net.dries007.tfc.network.ScreenButtonPacket;
@@ -55,7 +53,7 @@ public class AnvilPlanButton extends Button
         }
         else
         {
-            final boolean workable = anvil.getLevel() != null && AnvilRecipe.hasAny(anvil.getLevel(), anvil.getCapability(Capabilities.ITEM).map(cap -> cap.getStackInSlot(AnvilBlockEntity.SLOT_INPUT_MAIN)).orElse(ItemStack.EMPTY), anvil.getTier());
+            final boolean workable = anvil.getLevel() != null && AnvilRecipe.hasAny(anvil.getLevel(), anvil.getInventory().getStackInSlot(AnvilBlockEntity.SLOT_INPUT_MAIN), anvil.getTier());
             graphics.blit(AnvilScreen.BACKGROUND, x + 1, y + 1, workable ? 236 : 219, workable ? 0 : 51, 16, 16, 256, 256);
         }
 

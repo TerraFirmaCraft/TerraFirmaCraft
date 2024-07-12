@@ -24,6 +24,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.apache.commons.lang3.function.TriFunction;
 import org.apache.logging.log4j.util.TriConsumer;
@@ -100,7 +101,10 @@ public class SewingTableScreen extends TFCContainerScreen<SewingTableContainer>
             createButton(getScreenX(x * 12 + 6), getScreenY(y * 12 + 6), 12, 12, 208, 32, 0, id, null);
         });
 
-        recipes.addAll(RecipeHelpers.getRecipes(Minecraft.getInstance().level.getRecipeManager(), TFCRecipeTypes.SEWING).values());
+        for (RecipeHolder<SewingRecipe> holder : RecipeHelpers.getRecipes(ClientHelpers.getLevelOrThrow(), TFCRecipeTypes.SEWING))
+        {
+            recipes.add(holder.value());
+        }
     }
 
     private void createButton(int x, int y, int sizeX, int sizeY, int u, int v, int yDiffTex, int packetButtonId, @Nullable String translationKey)

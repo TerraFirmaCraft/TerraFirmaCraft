@@ -13,7 +13,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
-import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.container.BlockEntityContainer;
 
 public class BlockEntityScreen<T extends InventoryBlockEntity<?>, C extends BlockEntityContainer<T>> extends TFCContainerScreen<C>
@@ -34,9 +33,9 @@ public class BlockEntityScreen<T extends InventoryBlockEntity<?>, C extends Bloc
 
     public void drawDisabled(GuiGraphics graphics, int start, int end)
     {
-        blockEntity.getCapability(Capabilities.ITEM).ifPresent(inventory -> {
-            // draw disabled texture over the slots
-            menu.slots.stream().filter(slot -> slot.index <= end && slot.index >= start).forEach(slot -> renderSlotHighlight(graphics, slot.x, slot.y, 1));
-        });
+        // draw disabled texture over the slots
+        menu.slots.stream()
+            .filter(slot -> slot.index <= end && slot.index >= start)
+            .forEach(slot -> renderSlotHighlight(graphics, slot.x, slot.y, 1));
     }
 }

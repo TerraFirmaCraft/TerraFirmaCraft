@@ -9,7 +9,6 @@ package net.dries007.tfc.client.render.blockentity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import com.mojang.math.Constants;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -22,7 +21,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.rotation.TripHammerBlockEntity;
 import net.dries007.tfc.common.blocks.TripHammerBlock;
-import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.items.HammerItem;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.rotation.Rotation;
@@ -41,7 +39,7 @@ public class TripHammerBlockEntityRenderer implements BlockEntityRenderer<TripHa
         if (level == null || !(state.getBlock() instanceof TripHammerBlock))
             return;
 
-        final ItemStack item = hammer.getCapability(Capabilities.ITEM).map(inv -> inv.getStackInSlot(0)).orElse(ItemStack.EMPTY);
+        final ItemStack item = hammer.getInventory().getStackInSlot(0);
         final ResourceLocation hammerTexture = item.getItem() instanceof HammerItem hammerItem ? hammerItem.getMetalTexture() : null;
         if (hammerTexture == null)
             return;

@@ -8,10 +8,7 @@ package net.dries007.tfc.client.screen;
 
 import java.util.ArrayList;
 import java.util.List;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
@@ -24,7 +21,6 @@ import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.screen.button.AnvilPlanSelectButton;
 import net.dries007.tfc.client.screen.button.NextPageButton;
 import net.dries007.tfc.common.blockentities.AnvilBlockEntity;
-import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.container.AnvilPlanContainer;
 import net.dries007.tfc.common.recipes.AnvilRecipe;
 import net.dries007.tfc.util.Helpers;
@@ -54,10 +50,7 @@ public class AnvilPlanScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilPl
         final int recipesPerPage = 18;
         final int guiLeft = getGuiLeft(), guiTop = getGuiTop();
 
-        final ItemStack inputStack = blockEntity
-            .getCapability(Capabilities.ITEM, null)
-            .map(t -> t.getStackInSlot(AnvilBlockEntity.SLOT_INPUT_MAIN))
-            .orElse(ItemStack.EMPTY);
+        final ItemStack inputStack = blockEntity.getInventory().getStackInSlot(AnvilBlockEntity.SLOT_INPUT_MAIN);
         final List<AnvilRecipe> recipes = AnvilRecipe.getAll(playerInventory.player.level(), inputStack, blockEntity.getTier());
 
         recipeButtons = new ArrayList<>();

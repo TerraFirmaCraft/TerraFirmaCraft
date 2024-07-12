@@ -84,9 +84,7 @@ public class PotScreen extends BlockEntityScreen<PotBlockEntity, PotContainer>
 
         if (RenderHelpers.isInside(mouseX, mouseY, getGuiLeft() + 121, getGuiTop() + 30, 162 - 121, 58 - 30))
         {
-            final FluidStack fluid = blockEntity.getCapability(Capabilities.FLUID)
-                .map(c -> c.getFluidInTank(0))
-                .orElse(FluidStack.EMPTY);
+            final FluidStack fluid = blockEntity.getInventory().getFluidInTank(0);
             if (!fluid.isEmpty())
             {
                 graphics.renderTooltip(font, Tooltips.fluidUnitsAndCapacityOf(fluid, FluidHelpers.BUCKET_VOLUME), mouseX, mouseY);

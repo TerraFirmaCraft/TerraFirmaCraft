@@ -17,12 +17,10 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.items.IItemHandler;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.QuernBlockEntity;
 import net.dries007.tfc.common.blocks.rotation.ConnectedAxleBlock;
-import net.dries007.tfc.util.Helpers;
 
 public class QuernBlockEntityRenderer implements BlockEntityRenderer<QuernBlockEntity>
 {
@@ -30,16 +28,15 @@ public class QuernBlockEntityRenderer implements BlockEntityRenderer<QuernBlockE
     public void render(QuernBlockEntity quern, float partialTicks, PoseStack stack, MultiBufferSource bufferSource, int packedLight, int packedOverlay)
     {
         final Level level = quern.getLevel();
-        final IItemHandler inventory = Helpers.getCapability(quern, Capabilities.ITEM);
 
-        if (inventory == null || level == null)
+        if (level == null)
         {
             return;
         }
 
-        final ItemStack input = inventory.getStackInSlot(QuernBlockEntity.SLOT_INPUT);
-        final ItemStack output = inventory.getStackInSlot(QuernBlockEntity.SLOT_OUTPUT);
-        final ItemStack handstone = inventory.getStackInSlot(QuernBlockEntity.SLOT_HANDSTONE);
+        final ItemStack input = quern.getInventory().getStackInSlot(QuernBlockEntity.SLOT_INPUT);
+        final ItemStack output = quern.getInventory().getStackInSlot(QuernBlockEntity.SLOT_OUTPUT);
+        final ItemStack handstone = quern.getInventory().getStackInSlot(QuernBlockEntity.SLOT_HANDSTONE);
 
         if (!output.isEmpty())
         {

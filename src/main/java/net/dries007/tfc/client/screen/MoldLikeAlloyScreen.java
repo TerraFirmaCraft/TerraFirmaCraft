@@ -11,7 +11,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.MoldLike;
 import net.dries007.tfc.common.container.MoldLikeAlloyContainer;
@@ -50,12 +53,12 @@ public class MoldLikeAlloyScreen extends TFCContainerScreen<MoldLikeAlloyContain
                 }
 
                 final ItemStack outputStack = this.menu.getInventory().getStackInSlot(0);
-                outputStack.getCapability(Capabilities.FLUID).ifPresent(outputFluidCap -> {
-                    if (!outputFluidCap.isFluidValid(0, fluid))
-                    {
-                        drawCenteredLine(stack, Component.translatable("tfc.tooltip.mold.fluid_incompatible"), 65);
-                    }
-                });
+                final @Nullable IFluidHandlerItem outputFluidHandler = outputStack.getCapability(Capabilities.FluidHandler.ITEM);
+
+                if (outputFluidHandler != null && !outputFluidHandler.isFluidValid(0, fluid))
+                {
+                    drawCenteredLine(stack, Component.translatable("tfc.tooltip.mold.fluid_incompatible"), 65);
+                }
             }
         }
     }

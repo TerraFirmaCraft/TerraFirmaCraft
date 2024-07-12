@@ -16,7 +16,6 @@ import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.common.blockentities.ToolRackBlockEntity;
 import net.dries007.tfc.common.blocks.wood.ToolRackBlock;
-import net.dries007.tfc.common.capabilities.Capabilities;
 
 public class ToolRackBlockEntityRenderer implements BlockEntityRenderer<ToolRackBlockEntity>
 {
@@ -85,22 +84,20 @@ public class ToolRackBlockEntityRenderer implements BlockEntityRenderer<ToolRack
     public void render(ToolRackBlockEntity toolRack, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
         if (toolRack.getLevel() == null) return;
-        toolRack.getCapability(Capabilities.ITEM).ifPresent(cap -> {
-            int meta = toolRack.getBlockState().getValue(ToolRackBlock.FACING).get2DDataValue();
+        int meta = toolRack.getBlockState().getValue(ToolRackBlock.FACING).get2DDataValue();
 
-            for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 4; i++)
+        {
+            ItemStack stack = toolRack.getInventory().getStackInSlot(i);
+            if (!stack.isEmpty())
             {
-                ItemStack stack = cap.getStackInSlot(i);
-                if (!stack.isEmpty())
-                {
-                    poseStack.pushPose();
-                    poseStack.translate(ITEM_LOCATION[meta][i][0], ITEM_LOCATION[meta][i][1], ITEM_LOCATION[meta][i][2]);
-                    poseStack.mulPose(Axis.YP.rotationDegrees(META_TO_ANGLE[meta]));
-                    poseStack.scale(ITEM_SCALE, ITEM_SCALE, ITEM_SCALE);
-                    Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer, toolRack.getLevel(),0);
-                    poseStack.popPose();
-                }
+                poseStack.pushPose();
+                poseStack.translate(ITEM_LOCATION[meta][i][0], ITEM_LOCATION[meta][i][1], ITEM_LOCATION[meta][i][2]);
+                poseStack.mulPose(Axis.YP.rotationDegrees(META_TO_ANGLE[meta]));
+                poseStack.scale(ITEM_SCALE, ITEM_SCALE, ITEM_SCALE);
+                Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer, toolRack.getLevel(), 0);
+                poseStack.popPose();
             }
-        });
+        }
     }
 }

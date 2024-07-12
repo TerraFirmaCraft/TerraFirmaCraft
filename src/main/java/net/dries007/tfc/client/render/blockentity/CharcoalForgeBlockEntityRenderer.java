@@ -15,11 +15,9 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec2;
-import net.neoforged.neoforge.items.IItemHandler;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.CharcoalForgeBlockEntity;
-import net.dries007.tfc.util.Helpers;
 
 public class CharcoalForgeBlockEntityRenderer implements BlockEntityRenderer<CharcoalForgeBlockEntity>
 {
@@ -38,14 +36,16 @@ public class CharcoalForgeBlockEntityRenderer implements BlockEntityRenderer<Cha
     @Override
     public void render(CharcoalForgeBlockEntity forge, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
-        final IItemHandler inv = Helpers.getCapability(forge, Capabilities.ITEM);
-        if (inv == null || forge.getLevel() == null)
+        if (forge.getLevel() == null)
+        {
             return;
+        }
+
         final ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
 
         for (int i = CharcoalForgeBlockEntity.SLOT_INPUT_MIN; i <= CharcoalForgeBlockEntity.SLOT_EXTRA_MAX; i++)
         {
-            final ItemStack stack = inv.getStackInSlot(i);
+            final ItemStack stack = forge.getInventory().getStackInSlot(i);
             if (stack.isEmpty())
                 continue;
             final Vec2 pos = POSITIONS[i - CharcoalForgeBlockEntity.SLOT_INPUT_MIN];

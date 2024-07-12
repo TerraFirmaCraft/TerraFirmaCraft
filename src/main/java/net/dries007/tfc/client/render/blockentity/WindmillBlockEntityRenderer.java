@@ -18,7 +18,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.items.IItemHandler;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.model.entity.WindmillBladeModel;
@@ -66,23 +65,19 @@ public class WindmillBlockEntityRenderer implements BlockEntityRenderer<Windmill
 
         stack.translate(0.5f, -1, axisX ? 0.5f : -0.5f);
 
-        final IItemHandler inv = Helpers.getCapability(windmill, Capabilities.ITEM);
         final float offsetAngle = Mth.TWO_PI / bladeCount;
         for (int i = 0; i < bladeCount; i++)
         {
             float[] color = NO_COLOR;
-            if (inv != null)
-            {
-                final ItemStack itemStack = inv.getStackInSlot(i);
-                if (itemStack.getItem() instanceof WindmillBladeItem item)
-                {
-                    color = item.getTextureColors();
-                }
-                else if (itemStack.isEmpty())
-                {
-                    continue;
-                }
+            final ItemStack itemStack = windmill.getInventory().getStackInSlot(i);
 
+            if (itemStack.getItem() instanceof WindmillBladeItem item)
+            {
+                color = item.getTextureColors();
+            }
+            else if (itemStack.isEmpty())
+            {
+                continue;
             }
 
             stack.pushPose();

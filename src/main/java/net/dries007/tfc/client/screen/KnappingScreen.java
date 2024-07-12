@@ -45,7 +45,7 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
     @Nullable
     public static ResourceLocation getLowTexture(KnappingType type, ItemStack stack)
     {
-        return type.usesDisabledTexture() ? getButtonLocation(stack.getItem(), true) : null;
+        return type.useDisabledTexture() ? getButtonLocation(stack.getItem(), true) : null;
     }
 
     public static ResourceLocation getButtonLocation(Item item, boolean disabled)
@@ -142,12 +142,12 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
     }
 
     @Override
-    public void render(GuiGraphics poseStack, int mouseX, int mouseY, float partialTicks)
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick)
     {
-        super.render(poseStack, mouseX, mouseY, partialTicks);
+        super.render(graphics, mouseX, mouseY, partialTick);
         for (ScreenParticle particle : particles)
         {
-            particle.render(poseStack);
+            particle.render(graphics);
         }
     }
 

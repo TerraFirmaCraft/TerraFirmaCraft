@@ -19,7 +19,6 @@ import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.BowlBlockEntity;
-import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.util.Helpers;
 
 public class BowlBlockEntityRenderer implements BlockEntityRenderer<BowlBlockEntity>
@@ -29,12 +28,11 @@ public class BowlBlockEntityRenderer implements BlockEntityRenderer<BowlBlockEnt
     @Override
     public void render(BowlBlockEntity bowl, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
-        final var inv = Helpers.getCapability(bowl, Capabilities.ITEM);
-        if (inv == null)
-            return;
-        final ItemStack item = inv.getStackInSlot(0);
+        final ItemStack item = bowl.getInventory().getStackInSlot(0);
         if (item.isEmpty())
+        {
             return;
+        }
 
         final ResourceLocation texture = TEXTURES.computeIfAbsent(item.getItem(), i -> {
             final ResourceLocation key = BuiltInRegistries.ITEM.getKey(item.getItem());

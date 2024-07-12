@@ -38,10 +38,11 @@ public class PotBlockEntityRenderer extends FirepitBlockEntityRenderer<PotBlockE
         else
         {
             final boolean useDefaultFluid = output != null && output.getFluidColor() != -1;
-            final FluidStack fluidStack = pot.getCapability(Capabilities.FLUID)
-                .map(cap -> cap.getFluidInTank(0))
-                .filter(f -> !f.isEmpty())
-                .orElseGet(() -> useDefaultFluid ? new FluidStack(Fluids.WATER, FluidHelpers.BUCKET_VOLUME) : FluidStack.EMPTY);
+            FluidStack fluidStack = pot.getInventory().getFluidInTank(0);
+            if (fluidStack.isEmpty() && useDefaultFluid)
+            {
+                fluidStack = new FluidStack(Fluids.WATER, FluidHelpers.BUCKET_VOLUME);
+            }
             if (!fluidStack.isEmpty())
             {
                 final int color = useDefaultFluid ? output.getFluidColor() : RenderHelpers.getFluidColor(fluidStack);
@@ -49,27 +50,25 @@ public class PotBlockEntityRenderer extends FirepitBlockEntityRenderer<PotBlockE
             }
         }
 
-        pot.getCapability(Capabilities.ITEM).ifPresent(cap -> {
-            int ordinal = 0;
-            for (int slot = SLOT_EXTRA_INPUT_START; slot <= SLOT_EXTRA_INPUT_END; slot++)
+        int ordinal = 0;
+        for (int slot = SLOT_EXTRA_INPUT_START; slot <= SLOT_EXTRA_INPUT_END; slot++)
+        {
+            ItemStack item = pot.getInventory().getStackInSlot(slot);
+            if (!item.isEmpty())
             {
-                ItemStack item = cap.getStackInSlot(slot);
-                if (!item.isEmpty())
-                {
-                    float yOffset = 0.46f;
-                    poseStack.pushPose();
-                    poseStack.translate(0.5, 0.003125D + yOffset, 0.5);
-                    poseStack.scale(0.3f, 0.3f, 0.3f);
-                    poseStack.mulPose(Axis.XP.rotationDegrees(90F));
-                    poseStack.mulPose(Axis.ZP.rotationDegrees(180F));
+                float yOffset = 0.46f;
+                poseStack.pushPose();
+                poseStack.translate(0.5, 0.003125D + yOffset, 0.5);
+                poseStack.scale(0.3f, 0.3f, 0.3f);
+                poseStack.mulPose(Axis.XP.rotationDegrees(90F));
+                poseStack.mulPose(Axis.ZP.rotationDegrees(180F));
 
-                    ordinal++;
-                    poseStack.translate(0, 0, -0.12F * ordinal);
+                ordinal++;
+                poseStack.translate(0, 0, -0.12F * ordinal);
 
-                    Minecraft.getInstance().getItemRenderer().renderStatic(item, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer, pot.getLevel(), 0);
-                    poseStack.popPose();
-                }
+                Minecraft.getInstance().getItemRenderer().renderStatic(item, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer, pot.getLevel(), 0);
+                poseStack.popPose();
             }
-        });
+        }
     }
 }

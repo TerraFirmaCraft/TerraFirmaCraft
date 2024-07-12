@@ -21,21 +21,22 @@ import net.neoforged.neoforge.client.model.data.ModelData;
 
 import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
 import net.dries007.tfc.common.blocks.devices.FirepitBlock;
-import net.dries007.tfc.util.Helpers;
 
 public class FirepitBlockEntityRenderer<T extends AbstractFirepitBlockEntity<?>> implements BlockEntityRenderer<T>
 {
     @Override
     public void render(T firepit, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int combinedLight, int combinedOverlay)
     {
-        final var inv = Helpers.getCapability(firepit, Capabilities.ITEM);
-        if (inv == null || firepit.getLevel() == null)
+        if (firepit.getLevel() == null)
+        {
             return;
+        }
+
         final Minecraft mc = Minecraft.getInstance();
         final RandomSource random = RandomSource.create();
         for (int i = AbstractFirepitBlockEntity.SLOT_FUEL_CONSUME; i <= AbstractFirepitBlockEntity.SLOT_FUEL_INPUT; i++)
         {
-            final ItemStack stack = inv.getStackInSlot(i);
+            final ItemStack stack = firepit.getInventory().getStackInSlot(i);
             if (!stack.isEmpty())
             {
                 poseStack.pushPose();

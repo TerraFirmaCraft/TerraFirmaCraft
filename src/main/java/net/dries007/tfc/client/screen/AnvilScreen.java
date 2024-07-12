@@ -131,10 +131,10 @@ public class AnvilScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilContai
         super.renderTooltip(graphics, mouseX, mouseY);
 
         final Level level = blockEntity.getLevel();
-        final @Nullable Forging forging = blockEntity.getMainInputForging();
-        if (forging != null && level != null)
+        final Forging forging = blockEntity.getMainInputForging();
+        if (level != null)
         {
-            final AnvilRecipe recipe = forging.getRecipe();
+            final @Nullable AnvilRecipe recipe = forging.view().recipe();
             if (recipe != null)
             {
                 final List<ForgeRule> rules = recipe.getRules();

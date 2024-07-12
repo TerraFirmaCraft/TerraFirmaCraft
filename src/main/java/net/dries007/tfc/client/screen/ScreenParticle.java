@@ -53,7 +53,7 @@ public class ScreenParticle
         poseStack.mulPose(Axis.ZP.rotationDegrees(rotation));
         poseStack.scale(scale, scale, 1f);
 
-        graphics.blit(texture, 0, 0, 0, 0, 0, width, height, height, width);
+        graphics.blit(texture, 0, 0, 0, 0, 0, width, height, width, height);
 
         poseStack.popPose();
     }

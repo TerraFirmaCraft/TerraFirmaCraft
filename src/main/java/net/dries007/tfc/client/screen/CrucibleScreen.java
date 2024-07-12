@@ -138,7 +138,7 @@ public class CrucibleScreen extends BlockEntityScreen<CrucibleBlockEntity, Cruci
 
             // Draw Title:
             final Metal result = alloy.getResult(ClientHelpers.getLevelOrThrow());
-            final String resultText = ChatFormatting.UNDERLINE + I18n.get(result.getTranslationKey());
+            final String resultText = ChatFormatting.UNDERLINE + I18n.get(result.translationKey());
             graphics.drawString(font, resultText, leftPos + 10, topPos + 11, 0x000000, false);
 
             int startElement = Math.max(0, (int) Math.floor(((alloy.getMetals().size() - MAX_ELEMENTS) / 49D) * (scrollPos + 1)));
@@ -164,7 +164,7 @@ public class CrucibleScreen extends BlockEntityScreen<CrucibleBlockEntity, Cruci
                 // Metal 2 name:
                 //   ZZZ units (WW.W%)
 
-                final String metalName = font.plainSubstrByWidth(I18n.get(entry.getKey().getTranslationKey()), 141) + ":";
+                final String metalName = font.plainSubstrByWidth(I18n.get(entry.getKey().translationKey()), 141) + ":";
                 // %s units (%s %)
                 final MutableComponent content = Component.translatable("tfc.tooltip.crucible_content_line", Tooltips.fluidUnits(entry.getDoubleValue()), String.format("%2.1f", Math.round(1000 * entry.getDoubleValue() / alloy.getAmount()) / 10f));
 

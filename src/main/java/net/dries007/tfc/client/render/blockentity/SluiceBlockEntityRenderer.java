@@ -79,21 +79,19 @@ public class SluiceBlockEntityRenderer implements BlockEntityRenderer<SluiceBloc
 
         final float rotation = RenderHelpers.itemTimeRotation();
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
-        sluice.getCapability(Capabilities.ITEM).ifPresent(inv -> {
-            for (int i = 0; i < inv.getSlots(); i++)
+        for (int i = 0; i < sluice.getInventory().getSlots(); i++)
+        {
+            ItemStack stack = sluice.getInventory().getStackInSlot(i);
+            if (!stack.isEmpty())
             {
-                ItemStack stack = inv.getStackInSlot(i);
-                if (!stack.isEmpty())
-                {
-                    final int step = Mth.floor((float) i / 4F);
-                    final int across = i % 4;
-                    final float x = 0.125F + (0.25F * across);
-                    final float y = 0.96875F - 0.0125F - (0.125F * step);
-                    final float z = 0.15625F - 0.0125F + (0.25F * step);
-                    drawItem(stack, x, y, z, rotation, itemRenderer, poseStack, combinedLight, combinedOverlay, buffer, sluice.getLevel());
-                }
+                final int step = Mth.floor((float) i / 4F);
+                final int across = i % 4;
+                final float x = 0.125F + (0.25F * across);
+                final float y = 0.96875F - 0.0125F - (0.125F * step);
+                final float z = 0.15625F - 0.0125F + (0.25F * step);
+                drawItem(stack, x, y, z, rotation, itemRenderer, poseStack, combinedLight, combinedOverlay, buffer, sluice.getLevel());
             }
-        });
+        }
 
         final Fluid fluid = sluice.getFlow();
         if (fluid == null)

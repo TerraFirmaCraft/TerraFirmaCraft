@@ -32,11 +32,11 @@ public class TFCContainerScreen<C extends AbstractContainerMenu> extends Abstrac
     }
 
     @Override
-    public void render(GuiGraphics poseStack, int mouseX, int mouseY, float partialTicks)
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick)
     {
-        renderBackground(poseStack);
-        super.render(poseStack, mouseX, mouseY, partialTicks);
-        renderTooltip(poseStack, mouseX, mouseY);
+        renderBackground(graphics, mouseX, mouseY, partialTick);
+        super.render(graphics, mouseX, mouseY, partialTick);
+        renderTooltip(graphics, mouseX, mouseY);
     }
 
     @Override

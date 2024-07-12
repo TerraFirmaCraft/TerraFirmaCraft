@@ -21,7 +21,6 @@ import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.screen.button.BarrelSealButton;
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
 import net.dries007.tfc.common.blocks.devices.BarrelBlock;
-import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.container.BarrelContainer;
 import net.dries007.tfc.common.recipes.BarrelRecipe;
 import net.dries007.tfc.config.TFCConfig;
@@ -94,18 +93,16 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
             graphics.blit(texture, getGuiLeft() + 92, getGuiTop() + 21, 227, 0, 9, 14);
         }
 
-        blockEntity.getCapability(Capabilities.FLUID).ifPresent(fluidHandler -> {
-            FluidStack fluidStack = fluidHandler.getFluidInTank(0);
-            if (!fluidStack.isEmpty())
-            {
-                final TextureAtlasSprite sprite = RenderHelpers.getAndBindFluidSprite(fluidStack);
-                final int fillHeight = (int) Math.ceil((float) 50 * fluidStack.getAmount() / (float) TFCConfig.SERVER.barrelCapacity.get());
+        final FluidStack fluidStack = blockEntity.getInventory().getFluidInTank(0);
+        if (!fluidStack.isEmpty())
+        {
+            final TextureAtlasSprite sprite = RenderHelpers.getAndBindFluidSprite(fluidStack);
+            final int fillHeight = (int) Math.ceil((float) 50 * fluidStack.getAmount() / (float) TFCConfig.SERVER.barrelCapacity.get());
 
-                RenderHelpers.fillAreaWithSprite(graphics, sprite, leftPos + 8, topPos + 70 - fillHeight, 16, fillHeight, 16, 16);
+            RenderHelpers.fillAreaWithSprite(graphics, sprite, leftPos + 8, topPos + 70 - fillHeight, 16, fillHeight, 16, 16);
 
-                resetToBackgroundSprite();
-            }
-        });
+            resetToBackgroundSprite();
+        }
 
         graphics.blit(texture, getGuiLeft() + 7, getGuiTop() + 19, 176, 0, 18, 52);
     }
@@ -119,13 +116,11 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
 
         if (relX >= 7 && relY >= 19 && relX < 25 && relY < 71)
         {
-            blockEntity.getCapability(Capabilities.FLUID).ifPresent(fluidHandler -> {
-                FluidStack fluid = fluidHandler.getFluidInTank(0);
-                if (!fluid.isEmpty())
-                {
-                    graphics.renderTooltip(font, Tooltips.fluidUnitsOf(fluid), mouseX, mouseY);
-                }
-            });
+            final FluidStack fluid = blockEntity.getInventory().getFluidInTank(0);
+            if (!fluid.isEmpty())
+            {
+                graphics.renderTooltip(font, Tooltips.fluidUnitsOf(fluid), mouseX, mouseY);
+            }
         }
     }
 

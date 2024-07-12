@@ -16,7 +16,6 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.BlastFurnaceBlockEntity;
 import net.dries007.tfc.common.blocks.devices.BlastFurnaceBlock;
-import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.heat.Heat;
 import net.dries007.tfc.common.container.BlastFurnaceContainer;
 import net.dries007.tfc.config.TFCConfig;
@@ -60,9 +59,7 @@ public class BlastFurnaceScreen extends BlockEntityScreen<BlastFurnaceBlockEntit
         }
 
         // Render output fluid tank
-        final FluidStack fluid = blockEntity.getCapability(Capabilities.FLUID)
-            .map(c -> c.getFluidInTank(0))
-            .orElse(FluidStack.EMPTY);
+        final FluidStack fluid = blockEntity.getInventory().getFluidInTank(0);
         if (!fluid.isEmpty())
         {
             final TextureAtlasSprite sprite = RenderHelpers.getAndBindFluidSprite(fluid);
@@ -83,9 +80,7 @@ public class BlastFurnaceScreen extends BlockEntityScreen<BlastFurnaceBlockEntit
         final int fuelCount = blockEntity.getFuelCount();
         final int inputCount = blockEntity.getInputCount();
 
-        final FluidStack fluid = blockEntity.getCapability(Capabilities.FLUID)
-            .map(c -> c.getFluidInTank(0))
-            .orElse(FluidStack.EMPTY);
+        final FluidStack fluid = blockEntity.getInventory().getFluidInTank(0);
 
         if (RenderHelpers.isInside(mouseX, mouseY, leftPos + 42, topPos + 22, 10, 66))
         {

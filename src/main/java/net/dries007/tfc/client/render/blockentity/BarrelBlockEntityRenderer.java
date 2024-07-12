@@ -53,6 +53,6 @@ public class BarrelBlockEntityRenderer implements BlockEntityRenderer<BarrelBloc
             Minecraft.getInstance().getItemRenderer().renderStatic(itemStack, ItemDisplayContext.FIXED, combinedLight, combinedOverlay, poseStack, buffer, barrel.getLevel(), 0);
 
             poseStack.popPose();
-        });
+        }
     }
 }

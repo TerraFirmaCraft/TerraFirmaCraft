@@ -19,24 +19,22 @@ import net.neoforged.neoforge.client.model.data.ModelData;
 
 import net.dries007.tfc.common.blockentities.JarsBlockEntity;
 import net.dries007.tfc.common.items.JarItem;
-import net.dries007.tfc.util.Helpers;
 
 public class JarsBlockEntityRenderer implements BlockEntityRenderer<JarsBlockEntity>
 {
     @Override
     public void render(JarsBlockEntity jars, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay)
     {
-        final var inv = Helpers.getCapability(jars, Capabilities.ITEM);
-        if (inv == null || jars.getLevel() == null)
+        if (jars.getLevel() == null)
         {
             return;
         }
 
         final RandomSource random = RandomSource.create();
         final Minecraft mc = Minecraft.getInstance();
-        for (int i = 0; i < inv.getSlots(); i++)
+        for (int i = 0; i < jars.getInventory().getSlots(); i++)
         {
-            final ItemStack stack = inv.getStackInSlot(i);
+            final ItemStack stack = jars.getInventory().getStackInSlot(i);
 
             poseStack.pushPose();
             poseStack.translate((i % 2 == 0 ? 0.5 : 0), 0, (i < 2 ? 0.5 : 0));
