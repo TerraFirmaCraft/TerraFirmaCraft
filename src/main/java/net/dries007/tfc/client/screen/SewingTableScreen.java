@@ -101,10 +101,6 @@ public class SewingTableScreen extends TFCContainerScreen<SewingTableContainer>
         });
 
         recipes.addAll(ClientHelpers.getLevelOrThrow().getRecipeManager().getAllRecipesFor(TFCRecipeTypes.SEWING.get()));
-        recipes.addAll(ClientHelpers.getLevelOrThrow().getRecipeManager().getAllRecipesFor(TFCRecipeTypes.SEWING.get()));
-        recipes.addAll(ClientHelpers.getLevelOrThrow().getRecipeManager().getAllRecipesFor(TFCRecipeTypes.SEWING.get()));
-        recipes.addAll(ClientHelpers.getLevelOrThrow().getRecipeManager().getAllRecipesFor(TFCRecipeTypes.SEWING.get()));
-        recipes.addAll(ClientHelpers.getLevelOrThrow().getRecipeManager().getAllRecipesFor(TFCRecipeTypes.SEWING.get()));
     }
 
     private void createButton(int x, int y, int sizeX, int sizeY, int u, int v, int yDiffTex, int packetButtonId, @Nullable String translationKey)
