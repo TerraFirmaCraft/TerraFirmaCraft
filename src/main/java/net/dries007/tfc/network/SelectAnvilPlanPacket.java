@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.network;
 
+import java.util.Objects;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -15,8 +16,6 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.container.AnvilContainer;
 import net.dries007.tfc.common.recipes.AnvilRecipe;
-import net.dries007.tfc.common.recipes.TFCRecipeTypes;
-import net.dries007.tfc.util.Helpers;
 
 public record SelectAnvilPlanPacket(ResourceLocation recipeId) implements CustomPacketPayload
 {
@@ -25,7 +24,7 @@ public record SelectAnvilPlanPacket(ResourceLocation recipeId) implements Custom
 
     public SelectAnvilPlanPacket(AnvilRecipe recipe)
     {
-        this(recipe.getId());
+        this(Objects.requireNonNull(AnvilRecipe.getId(recipe)));
     }
 
     @Override
@@ -38,7 +37,7 @@ public record SelectAnvilPlanPacket(ResourceLocation recipeId) implements Custom
     {
         if (player != null && player.containerMenu instanceof AnvilContainer anvilContainer)
         {
-            final @Nullable AnvilRecipe recipe = Helpers.getRecipes(player.level(), TFCRecipeTypes.ANVIL).get(recipeId);
+            final @Nullable AnvilRecipe recipe = AnvilRecipe.byId(recipeId);
             anvilContainer.getBlockEntity().chooseRecipe(recipe);
         }
     }

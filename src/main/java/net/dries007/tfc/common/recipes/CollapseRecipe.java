@@ -43,21 +43,14 @@ import net.dries007.tfc.util.tracker.WorldTracker;
  *
  * @see TFCFallingBlockEntity
  */
-public class CollapseRecipe extends SimpleBlockRecipe
+public class CollapseRecipe extends BlockRecipe
 {
     public static final IndirectHashCollection<Block, CollapseRecipe> CACHE = IndirectHashCollection.createForRecipe(recipe -> recipe.getBlockIngredient().blocks(), TFCRecipeTypes.COLLAPSE);
 
     @Nullable
     public static CollapseRecipe getRecipe(BlockState input)
     {
-        for (CollapseRecipe recipe : CACHE.getAll(input.getBlock()))
-        {
-            if (recipe.matches(input))
-            {
-                return recipe;
-            }
-        }
-        return null;
+        return RecipeHelpers.getRecipe(CACHE, input, input.getBlock());
     }
 
     /**

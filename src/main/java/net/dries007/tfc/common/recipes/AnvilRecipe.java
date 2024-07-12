@@ -20,6 +20,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -32,36 +33,24 @@ import net.dries007.tfc.common.component.forge.Forging;
 import net.dries007.tfc.common.component.forge.ForgingCapability;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.data.Metal;
 
 public class AnvilRecipe implements ISimpleRecipe<AnvilRecipe.Inventory>
 {
-    public static boolean hasAny(Level level, Inventory inventory)
-    {
-        return hasAny(level, inventory.getItem(), inventory.getTier());
-    }
-
     public static boolean hasAny(Level level, ItemStack stack, int tier)
     {
-        return Helpers.getRecipes(level, TFCRecipeTypes.ANVIL)
-            .values()
+        return RecipeHelpers.getRecipes(level, TFCRecipeTypes.ANVIL)
             .stream()
-            .anyMatch(r -> r.input.test(stack) && tier >= r.minTier); // anyMatch() should be faster than calling toList().isEmpty()
-    }
-
-    public static List<AnvilRecipe> getAll(Level level, Inventory inventory)
-    {
-        return getAll(level, inventory.getItem(), inventory.getTier());
+            .anyMatch(r -> r.value().input.test(stack) && tier >= r.value().minTier); // anyMatch() should be faster than calling toList().isEmpty()
     }
 
     public static List<AnvilRecipe> getAll(Level level, ItemStack stack, int tier)
     {
-        return Helpers.getRecipes(level, TFCRecipeTypes.ANVIL)
-            .values()
+        return RecipeHelpers.getRecipes(level, TFCRecipeTypes.ANVIL)
             .stream()
-            .filter(r -> r.input.test(stack) && tier >= r.minTier)
+            .filter(r -> r.value().input.test(stack) && tier >= r.value().minTier)
+            .map(RecipeHolder::value)
             .toList();
     }
 
@@ -128,8 +117,8 @@ public class AnvilRecipe implements ISimpleRecipe<AnvilRecipe.Inventory>
     public boolean checkComplete(Inventory inventory)
     {
         final Forging forging = ForgingCapability.get(inventory.getItem());
-        return forging.matches(rules)
-            && isWorkMatched(forging.getWork(), computeTarget(inventory));
+        return forging.view().matches(rules)
+            && isWorkMatched(forging.view().work(), computeTarget(inventory));
     }
 
     public List<ForgeRule> getRules()

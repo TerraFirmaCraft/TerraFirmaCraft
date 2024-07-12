@@ -181,12 +181,6 @@ public abstract class AmphibiousAnimal extends WildAnimal implements Temptable
     }
 
     @Override
-    public MobType getMobType()
-    {
-        return MobType.WATER;
-    }
-
-    @Override
     public boolean isPushedByFluid(FluidType type)
     {
         return false;

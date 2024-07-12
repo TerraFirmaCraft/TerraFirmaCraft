@@ -15,6 +15,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.common.IShearable;
 import net.neoforged.neoforge.common.NeoForge;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -27,7 +28,7 @@ import net.dries007.tfc.util.events.AnimalProductEvent;
 // some implementation notes for me to come back to and delete later
 // sheep (ie, color-able wooly animals) should extend this and do their own handling rather than all wooly animals secretly having colors
 // eating grass should be a property in TFCAnimal, NOT just sheep. And we need to study how that exactly will work
-public abstract class WoolyAnimal extends ProducingMammal implements IForgeShearable
+public abstract class WoolyAnimal extends ProducingMammal implements IShearable
 {
     public WoolyAnimal(EntityType<? extends WoolyAnimal> animal, Level level, TFCSounds.EntityId sounds, ProducingMammalConfig config)
     {

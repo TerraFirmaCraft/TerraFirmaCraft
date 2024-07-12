@@ -36,21 +36,14 @@ import net.dries007.tfc.util.data.Support;
  *
  * @see TFCFallingBlockEntity
  */
-public class LandslideRecipe extends SimpleBlockRecipe
+public class LandslideRecipe extends BlockRecipe
 {
     public static final IndirectHashCollection<Block, LandslideRecipe> CACHE = IndirectHashCollection.createForRecipe(recipe -> recipe.getBlockIngredient().blocks(), TFCRecipeTypes.LANDSLIDE);
 
     @Nullable
     public static LandslideRecipe getRecipe(BlockState state)
     {
-        for (LandslideRecipe recipe : CACHE.getAll(state.getBlock()))
-        {
-            if (recipe.matches(state))
-            {
-                return recipe;
-            }
-        }
-        return null;
+        return RecipeHelpers.getRecipe(CACHE, state, state.getBlock());
     }
 
     /**

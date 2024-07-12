@@ -7,12 +7,14 @@
 package net.dries007.tfc.common.recipes;
 
 import java.util.Optional;
+import com.google.common.collect.BiMap;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -22,6 +24,7 @@ import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
 import net.dries007.tfc.common.recipes.input.BarrelInventory;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 public class SealedBarrelRecipe extends BarrelRecipe
 {
@@ -39,6 +42,20 @@ public class SealedBarrelRecipe extends BarrelRecipe
         ByteBufCodecs.optional(ItemStackProvider.STREAM_CODEC), c -> c.onUnseal,
         SealedBarrelRecipe::new
     );
+
+    private static final BiMap<ResourceLocation, SealedBarrelRecipe> CACHE = IndirectHashCollection.createForRecipeId(TFCRecipeTypes.BARREL_SEALED);
+
+    @Nullable
+    public static SealedBarrelRecipe byId(ResourceLocation id)
+    {
+        return CACHE.get(id);
+    }
+
+    @Nullable
+    public static ResourceLocation getId(SealedBarrelRecipe recipe)
+    {
+        return CACHE.inverse().get(recipe);
+    }
 
     private final int duration;
     private final Optional<ItemStackProvider> onSeal;

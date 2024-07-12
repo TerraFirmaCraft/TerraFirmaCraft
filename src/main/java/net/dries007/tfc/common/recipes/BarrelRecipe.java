@@ -22,6 +22,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
@@ -38,7 +39,7 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
 
-public class BarrelRecipe implements INoopInputRecipe
+public class BarrelRecipe implements INoopInputRecipe, IRecipePredicate<BarrelInventory>
 {
     public static final MapCodec<BarrelRecipe> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
         SizedIngredient.FLAT_CODEC.optionalFieldOf("input_item").forGetter(c -> c.inputItem),
@@ -60,16 +61,9 @@ public class BarrelRecipe implements INoopInputRecipe
     );
 
     @Nullable
-    public static <B extends BarrelRecipe> B get(Level level, Supplier<RecipeType<B>> type, BarrelInventory input)
+    public static <B extends BarrelRecipe> RecipeHolder<B> get(Level level, Supplier<RecipeType<B>> type, BarrelInventory input)
     {
-        for (B recipe : Helpers.getRecipes(level, type).values())
-        {
-            if (recipe.matches(input))
-            {
-                return recipe;
-            }
-        }
-        return null;
+        return RecipeHelpers.getHolder(level, type, input);
     }
 
     protected final Optional<SizedIngredient> inputItem;

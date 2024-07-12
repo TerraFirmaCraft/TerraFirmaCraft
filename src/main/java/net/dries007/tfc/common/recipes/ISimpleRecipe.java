@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.common.recipes;
 
+import net.minecraft.core.HolderLookup;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeInput;
 
@@ -29,5 +31,11 @@ public interface ISimpleRecipe<C extends RecipeInput> extends Recipe<C>
     default boolean isSpecial()
     {
         return true;
+    }
+
+    @Override
+    default ItemStack getResultItem(HolderLookup.Provider registries)
+    {
+        return ItemStack.EMPTY;
     }
 }

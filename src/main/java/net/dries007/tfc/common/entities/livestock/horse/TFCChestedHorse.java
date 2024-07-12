@@ -40,13 +40,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforge.neoforged.common.Tags;
-import net.neoforge.neoforged.fluids.capability.IFluidHandlerItem;
-import net.neoforge.neoforged.items.ItemHandlerHelper;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.ai.TFCAvoidEntityGoal;
 import net.dries007.tfc.common.entities.ai.TFCGroundPathNavigation;

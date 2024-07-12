@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
-public class QuernRecipe extends SimpleItemRecipe
+public class QuernRecipe extends ItemRecipe
 {
     public static final IndirectHashCollection<Item, QuernRecipe> CACHE = IndirectHashCollection.createForRecipe(QuernRecipe::getValidItems, TFCRecipeTypes.QUERN);
 
@@ -39,14 +39,7 @@ public class QuernRecipe extends SimpleItemRecipe
     @Nullable
     public static QuernRecipe getRecipe(ItemStack input)
     {
-        for (QuernRecipe recipe : CACHE.getAll(input.getItem()))
-        {
-            if (recipe.matches(input))
-            {
-                return recipe;
-            }
-        }
-        return null;
+        return RecipeHelpers.getRecipe(CACHE, input, input.getItem());
     }
 
     public QuernRecipe(Ingredient ingredient, ItemStackProvider result)

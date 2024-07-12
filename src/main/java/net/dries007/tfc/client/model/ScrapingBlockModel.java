@@ -9,9 +9,6 @@ package net.dries007.tfc.client.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -20,7 +17,6 @@ import org.joml.Matrix4f;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.ScrapingBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
-import net.dries007.tfc.common.capabilities.Capabilities;
 
 public enum ScrapingBlockModel implements SimpleStaticBlockEntityModel<ScrapingBlockModel, ScrapingBlockEntity>
 {
@@ -29,19 +25,17 @@ public enum ScrapingBlockModel implements SimpleStaticBlockEntityModel<ScrapingB
     @Override
     public TextureAtlasSprite render(ScrapingBlockEntity scraping, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay)
     {
-        return scraping.getCapability(Capabilities.ITEM).map(cap -> {
-            if (scraping.getInputTexture() != null && scraping.getOutputTexture() != null)
-            {
-                final short positions = scraping.getScrapedPositions();
-                drawTiles(buffer, poseStack, scraping.getInputTexture(), positions, 0, packedLight, packedOverlay, scraping.getColor1());
-                drawTiles(buffer, poseStack, scraping.getOutputTexture(), positions, 1, packedLight, packedOverlay, scraping.getColor2());
-            }
-            if (scraping.getOutputTexture() != null)
-            {
-                return Minecraft.getInstance().getTextureAtlas(RenderHelpers.BLOCKS_ATLAS).apply(scraping.getOutputTexture());
-            }
-            return RenderHelpers.missingTexture();
-        }).orElse(RenderHelpers.missingTexture());
+        if (scraping.getInputTexture() != null && scraping.getOutputTexture() != null)
+        {
+            final short positions = scraping.getScrapedPositions();
+            drawTiles(buffer, poseStack, scraping.getInputTexture(), positions, 0, packedLight, packedOverlay, scraping.getColor1());
+            drawTiles(buffer, poseStack, scraping.getOutputTexture(), positions, 1, packedLight, packedOverlay, scraping.getColor2());
+        }
+        if (scraping.getOutputTexture() != null)
+        {
+            return Minecraft.getInstance().getTextureAtlas(RenderHelpers.BLOCKS_ATLAS).apply(scraping.getOutputTexture());
+        }
+        return RenderHelpers.missingTexture();
     }
 
     @Override

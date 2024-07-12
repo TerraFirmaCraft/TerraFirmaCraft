@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -21,6 +21,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
@@ -45,8 +46,8 @@ public class JamPotRecipe extends PotRecipe
         JamPotRecipe::new
     );
 
-    public static final PotOutput.OutputType OUTPUT_TYPE = nbt -> {
-        ItemStack stack = ItemStack.of(nbt.getCompound("item"));
+    public static final PotOutput.OutputType OUTPUT_TYPE = (provider, nbt) -> {
+        ItemStack stack = ItemStack.parseOptional(provider, nbt.getCompound("item"));
         ResourceLocation texture = Helpers.resourceLocation(nbt.getString("texture"));
         return new JamPotRecipe.JamOutput(stack, texture);
     };
@@ -62,7 +63,7 @@ public class JamPotRecipe extends PotRecipe
     }
 
     @Override
-    public ItemStack getResultItem(RegistryAccess access)
+    public ItemStack getResultItem(HolderLookup.Provider registries)
     {
         return jarredStack;
     }
@@ -118,9 +119,9 @@ public class JamPotRecipe extends PotRecipe
         }
 
         @Override
-        public void write(CompoundTag nbt)
+        public void write(HolderLookup.Provider provider, CompoundTag nbt)
         {
-            nbt.put("item", stack.save(new CompoundTag()));
+            nbt.put("item", stack.save(provider));
             nbt.putString("texture", texture.toString());
         }
 

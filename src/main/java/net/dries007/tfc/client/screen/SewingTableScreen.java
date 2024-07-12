@@ -32,6 +32,7 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.container.SewingTableContainer;
+import net.dries007.tfc.common.recipes.RecipeHelpers;
 import net.dries007.tfc.common.recipes.SewingRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.network.ScreenButtonPacket;
@@ -99,7 +100,7 @@ public class SewingTableScreen extends TFCContainerScreen<SewingTableContainer>
             createButton(getScreenX(x * 12 + 6), getScreenY(y * 12 + 6), 12, 12, 208, 32, 0, id, null);
         });
 
-        recipes.addAll(Helpers.getRecipes(Minecraft.getInstance().level.getRecipeManager(), TFCRecipeTypes.SEWING).values());
+        recipes.addAll(RecipeHelpers.getRecipes(Minecraft.getInstance().level.getRecipeManager(), TFCRecipeTypes.SEWING).values());
     }
 
     private void createButton(int x, int y, int sizeX, int sizeY, int u, int v, int yDiffTex, int packetButtonId, @Nullable String translationKey)

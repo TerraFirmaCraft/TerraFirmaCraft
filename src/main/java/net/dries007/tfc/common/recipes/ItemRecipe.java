@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.recipes;
 
 import java.util.Collection;
-
 import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -18,12 +17,12 @@ import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 /**
  * Handling for simple Ingredient -> ItemStack recipes
  */
-public abstract class SimpleItemRecipe implements INoopInputRecipe
+public abstract class ItemRecipe implements INoopInputRecipe, IRecipePredicate<ItemStack>
 {
     protected final Ingredient ingredient;
     protected final ItemStackProvider result;
 
-    protected SimpleItemRecipe(Ingredient ingredient, ItemStackProvider result)
+    protected ItemRecipe(Ingredient ingredient, ItemStackProvider result)
     {
         this.ingredient = ingredient;
         this.result = result;
@@ -32,6 +31,7 @@ public abstract class SimpleItemRecipe implements INoopInputRecipe
     /**
      * @return {@code true} if the recipe matches the {@code input}
      */
+    @Override
     public boolean matches(ItemStack input)
     {
         return ingredient.test(input);

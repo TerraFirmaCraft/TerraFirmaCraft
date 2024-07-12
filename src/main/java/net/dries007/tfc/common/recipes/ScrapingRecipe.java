@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
-public class ScrapingRecipe extends SimpleItemRecipe
+public class ScrapingRecipe extends ItemRecipe
 {
     public static final IndirectHashCollection<Item, ScrapingRecipe> CACHE = IndirectHashCollection.createForRecipe(ScrapingRecipe::getValidItems, TFCRecipeTypes.SCRAPING);
 
@@ -30,7 +30,7 @@ public class ScrapingRecipe extends SimpleItemRecipe
         ItemStackProvider.CODEC.fieldOf("result").forGetter(c -> c.result),
         ResourceLocation.CODEC.fieldOf("input_texture").forGetter(c -> c.inputTexture),
         ResourceLocation.CODEC.fieldOf("output_texture").forGetter(c -> c.outputTexture),
-        ItemStackProvider.CODEC.optionalFieldOf("extra_drop", ItemStackProvider.empty()).forGetter(c -> c.extraDrop) // todo 1.21: rename to "result_item"
+        ItemStackProvider.CODEC.optionalFieldOf("result_item", ItemStackProvider.empty()).forGetter(c -> c.extraDrop)
     ).apply(i, ScrapingRecipe::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ScrapingRecipe> STREAM_CODEC = StreamCodec.composite(
@@ -45,14 +45,7 @@ public class ScrapingRecipe extends SimpleItemRecipe
     @Nullable
     public static ScrapingRecipe getRecipe(ItemStack stack)
     {
-        for (ScrapingRecipe recipe : CACHE.getAll(stack.getItem()))
-        {
-            if (recipe.matches(stack))
-            {
-                return recipe;
-            }
-        }
-        return null;
+        return RecipeHelpers.getRecipe(CACHE, stack, stack.getItem());
     }
 
     private final ResourceLocation inputTexture;

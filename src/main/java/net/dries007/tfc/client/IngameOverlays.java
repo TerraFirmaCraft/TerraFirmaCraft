@@ -6,44 +6,11 @@
 
 package net.dries007.tfc.client;
 
-import java.awt.Color;
-import java.util.Locale;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
-import net.neoforge.neoforged.client.event.RegisterGuiOverlaysEvent;
-import net.neoforge.neoforged.client.event.RenderGuiOverlayEvent;
-import net.neoforge.neoforged.client.gui.overlay.ForgeGui;
-import net.neoforge.neoforged.client.gui.overlay.GuiOverlayManager;
-import net.neoforge.neoforged.client.gui.overlay.IGuiOverlay;
-import net.neoforge.neoforged.client.gui.overlay.NamedGuiOverlay;
-import net.neoforge.neoforged.client.gui.overlay.VanillaGuiOverlay;
-import org.jetbrains.annotations.Nullable;
-
-import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.effect.TFCEffects;
-import net.dries007.tfc.common.entities.livestock.MammalProperties;
-import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
-import net.dries007.tfc.common.entities.misc.TFCFishingHook;
-import net.dries007.tfc.common.player.IPlayerInfo;
-import net.dries007.tfc.common.player.PlayerInfo;
-import net.dries007.tfc.config.DisabledExperienceBarStyle;
-import net.dries007.tfc.config.HealthDisplayStyle;
-import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.Helpers;
-
+// todo 1.21: in-game overlays are broken AGAIN
 public enum IngameOverlays
 {
+    INSTANCE;
+    /*
     HEALTH(IngameOverlays::renderHealth),
     MOUNT_HEALTH(IngameOverlays::renderMountHealth),
     FOOD(IngameOverlays::renderFood),
@@ -54,6 +21,7 @@ public enum IngameOverlays
     JUMP_BAR(IngameOverlays::renderJumpBar),
     HUD_MOVER(IngameOverlays::moveLeftAndRightHeights),
     FAMILIARITY(IngameOverlays::renderFamiliarity),
+
     ;
 
     private final String id;
@@ -523,5 +491,5 @@ public enum IngameOverlays
             case BUMP -> player != null && (player.fishing instanceof TFCFishingHook || player.jumpableVehicle() != null) ? 0 : 6;
             default -> 0;
         };
-    }
+    }*/
 }

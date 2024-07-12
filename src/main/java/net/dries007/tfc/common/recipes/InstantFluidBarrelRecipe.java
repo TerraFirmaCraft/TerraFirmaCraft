@@ -26,7 +26,6 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
-import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.input.BarrelInventory;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
@@ -79,7 +78,7 @@ public class InstantFluidBarrelRecipe extends BarrelRecipe
         final FluidStack extractableFluid = inputStack.getCapability(Capabilities.FLUID_ITEM)
             .map(cap -> cap.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE))
             .orElse(FluidStack.EMPTY);
-        return inputFluid().test(fluidStack) && addedFluid.test(extractableFluid);
+        return inputFluid.test(fluidStack) && addedFluid.test(extractableFluid);
     }
 
     @Override

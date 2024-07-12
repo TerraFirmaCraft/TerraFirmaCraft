@@ -7,13 +7,6 @@
 package net.dries007.tfc.compat.jei.category;
 
 import java.util.List;
-
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-
-import net.minecraft.client.gui.GuiGraphics;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -21,11 +14,17 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
-import net.dries007.tfc.common.recipes.SimpleItemRecipe;
-import net.dries007.tfc.compat.jei.JEIIntegration;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class SimpleItemRecipeCategory<T extends SimpleItemRecipe> extends BaseRecipeCategory<T>
+import net.dries007.tfc.common.recipes.ItemRecipe;
+import net.dries007.tfc.compat.jei.JEIIntegration;
+
+public abstract class SimpleItemRecipeCategory<T extends ItemRecipe> extends BaseRecipeCategory<T>
 {
     public SimpleItemRecipeCategory(RecipeType<T> type, IGuiHelper helper, ItemStack icon)
     {

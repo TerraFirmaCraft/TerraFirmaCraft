@@ -23,13 +23,12 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.common.component.glass.GlassOperation;
 import net.dries007.tfc.common.component.glass.GlassOperations;
 import net.dries007.tfc.common.component.glass.GlassWorking;
-import net.dries007.tfc.util.Helpers;
 
 public record GlassworkingRecipe(
     List<GlassOperation> operations,
     Ingredient batchItem,
     ItemStack resultItem
-) implements INoopInputRecipe
+) implements INoopInputRecipe, IRecipePredicate<ItemStack>
 {
     public static final MapCodec<GlassworkingRecipe> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
         GlassOperation.CODEC.listOf().fieldOf("operations").forGetter(c -> c.operations),
@@ -47,19 +46,13 @@ public record GlassworkingRecipe(
     @Nullable
     public static GlassworkingRecipe get(Level level, ItemStack stack)
     {
-        for (GlassworkingRecipe recipe : Helpers.getRecipes(level, TFCRecipeTypes.GLASSWORKING).values())
-        {
-            if (recipe.matches(stack))
-            {
-                return recipe;
-            }
-        }
-        return null;
+        return RecipeHelpers.unbox(RecipeHelpers.getHolder(level, TFCRecipeTypes.GLASSWORKING, stack));
     }
 
     /**
      * @return {@code true} if the recipe matches the input stack
      */
+    @Override
     public boolean matches(ItemStack input)
     {
         final GlassOperations data = GlassWorking.get(input);

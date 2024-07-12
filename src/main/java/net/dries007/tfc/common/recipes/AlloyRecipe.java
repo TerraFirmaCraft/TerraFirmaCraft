@@ -12,22 +12,19 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.util.Alloy;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.data.DataManager;
 import net.dries007.tfc.util.data.Metal;
 
-public class AlloyRecipe implements INoopInputRecipe
+public class AlloyRecipe implements INoopInputRecipe, IRecipePredicate<Alloy>
 {
     public static final MapCodec<AlloyRecipe> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
         Codec.unboundedMap(
@@ -57,14 +54,7 @@ public class AlloyRecipe implements INoopInputRecipe
     @Nullable
     public static AlloyRecipe get(RecipeManager recipes, Alloy alloy)
     {
-        for (AlloyRecipe recipe : Helpers.getRecipes(recipes, TFCRecipeTypes.ALLOY).values())
-        {
-            if (alloy.matches(recipe))
-            {
-                return recipe;
-            }
-        }
-        return null;
+        return RecipeHelpers.unbox(RecipeHelpers.getHolder(recipes, TFCRecipeTypes.ALLOY, alloy));
     }
 
     private final Map<DataManager.Reference<Metal>, Range> metals;
@@ -76,6 +66,12 @@ public class AlloyRecipe implements INoopInputRecipe
         this.result = result;
     }
 
+    @Override
+    public boolean matches(Alloy input)
+    {
+        return input.matches(this);
+    }
+
     public Map<DataManager.Reference<Metal>, Range> getRanges()
     {
         return metals;
@@ -84,12 +80,6 @@ public class AlloyRecipe implements INoopInputRecipe
     public Metal getResult()
     {
         return result.get();
-    }
-
-    @Override
-    public ItemStack getResultItem(HolderLookup.Provider registries)
-    {
-        return ItemStack.EMPTY;
     }
 
     @Override

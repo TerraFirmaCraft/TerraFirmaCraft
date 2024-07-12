@@ -8,11 +8,11 @@ package net.dries007.tfc.common.recipes;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
@@ -20,13 +20,12 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.util.Helpers;
-
 
 public record BlastFurnaceRecipe(
     SizedFluidIngredient inputFluid,
-    Ingredient catalyst, FluidStack outputFluid
-) implements INoopInputRecipe
+    Ingredient catalyst,
+    FluidStack outputFluid
+) implements INoopInputRecipe, IRecipePredicate<FluidStack>
 {
     public static final MapCodec<BlastFurnaceRecipe> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
         SizedFluidIngredient.FLAT_CODEC.fieldOf("fluid").forGetter(c -> c.inputFluid),
@@ -51,11 +50,11 @@ public record BlastFurnaceRecipe(
         if (heatRecipe != null)
         {
             final FluidStack moltenFluid = heatRecipe.assembleFluid(stack);
-            for (BlastFurnaceRecipe recipe : Helpers.getRecipes(level, TFCRecipeTypes.BLAST_FURNACE).values())
+            for (RecipeHolder<BlastFurnaceRecipe> recipe : RecipeHelpers.getRecipes(level, TFCRecipeTypes.BLAST_FURNACE))
             {
-                if (recipe.inputFluid.ingredient().test(moltenFluid))
+                if (recipe.value().inputFluid.ingredient().test(moltenFluid))
                 {
-                    return recipe;
+                    return recipe.value();
                 }
             }
         }
@@ -68,14 +67,14 @@ public record BlastFurnaceRecipe(
     @Nullable
     public static BlastFurnaceRecipe get(Level level, FluidStack inputFluid)
     {
-        for (BlastFurnaceRecipe recipe : Helpers.getRecipes(level, TFCRecipeTypes.BLAST_FURNACE).values())
-        {
-            if (recipe.inputFluid.ingredient().test(inputFluid))
-            {
-                return recipe;
-            }
-        }
-        return null;
+        return RecipeHelpers.unbox(RecipeHelpers.getHolder(level, TFCRecipeTypes.BLAST_FURNACE, inputFluid));
+    }
+
+    @Override
+    public boolean matches(FluidStack input)
+    {
+        // Ignore count, since the blast furnace will aggregate all inputs
+        return inputFluid.ingredient().test(input);
     }
 
     public boolean matchesInput(ItemStack stack)
@@ -83,9 +82,7 @@ public record BlastFurnaceRecipe(
         final HeatingRecipe heat = HeatingRecipe.getRecipe(stack);
         if (heat != null)
         {
-            // Ignore count, since the blast furnace will aggregate all inputs
-            final FluidStack fluid = heat.assembleFluid(stack);
-            return inputFluid.ingredient().test(fluid);
+            return matches(heat.assembleFluid(stack));
         }
         return false;
     }
@@ -109,12 +106,6 @@ public record BlastFurnaceRecipe(
         outputFluid.setAmount(this.outputFluid.getAmount() * maximumRatio);
 
         return outputFluid;
-    }
-
-    @Override
-    public ItemStack getResultItem(HolderLookup.Provider registries)
-    {
-        return ItemStack.EMPTY;
     }
 
     @Override

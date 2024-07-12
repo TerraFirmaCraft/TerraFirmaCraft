@@ -29,7 +29,7 @@ import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.world.Codecs;
 
-public class HeatingRecipe implements INoopInputRecipe
+public class HeatingRecipe implements INoopInputRecipe, IRecipePredicate<ItemStack>
 {
     public static final IndirectHashCollection<Item, HeatingRecipe> CACHE = IndirectHashCollection.createForRecipe(r -> RecipeHelpers.itemKeys(r.ingredient), TFCRecipeTypes.HEATING);
 
@@ -55,14 +55,7 @@ public class HeatingRecipe implements INoopInputRecipe
     @Nullable
     public static HeatingRecipe getRecipe(ItemStack stack)
     {
-        for (HeatingRecipe recipe : CACHE.getAll(stack.getItem()))
-        {
-            if (recipe.matches(stack))
-            {
-                return recipe;
-            }
-        }
-        return null;
+        return RecipeHelpers.getRecipe(CACHE, stack, stack.getItem());
     }
 
     private final Ingredient ingredient;
@@ -85,6 +78,7 @@ public class HeatingRecipe implements INoopInputRecipe
     /**
      * @return {@code true} if the input matches the recipe
      */
+    @Override
     public boolean matches(ItemStack input)
     {
         return ingredient.test(input);

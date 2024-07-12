@@ -17,6 +17,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;

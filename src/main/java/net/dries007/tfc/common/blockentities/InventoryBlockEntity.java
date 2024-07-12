@@ -53,6 +53,16 @@ public abstract class InventoryBlockEntity<C extends IItemHandlerModifiable & IN
         this.defaultName = defaultName;
     }
 
+    /**
+     * Returns an internal view of the inventory of this block. This is used for internal operations within TFC that are coded specifically to
+     * this block, for example, the implementation of a bock entity renderer. <strong>DO NOT</strong> use for interactions that are meant to be
+     * interoperable with other mods, or other devices within TFC, for instance inserting on right-click.
+     */
+    public C getInventory()
+    {
+        return inventory;
+    }
+
     @Override
     public Component getDisplayName()
     {

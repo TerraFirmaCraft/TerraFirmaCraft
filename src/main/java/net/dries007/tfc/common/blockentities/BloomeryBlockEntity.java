@@ -18,6 +18,7 @@ import net.minecraft.world.Containers;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -32,6 +33,7 @@ import net.dries007.tfc.common.blocks.devices.BloomeryBlock;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.recipes.BloomeryRecipe;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
+import net.dries007.tfc.common.recipes.RecipeHelpers;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
@@ -316,7 +318,7 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
         {
             assert inputStacks.isEmpty(); // If the cached recipe is null, we must have no inputs
 
-            final Collection<BloomeryRecipe> recipes = Helpers.getRecipes(level, TFCRecipeTypes.BLOOMERY).values();
+            final Collection<RecipeHolder<BloomeryRecipe>> recipes = RecipeHelpers.getRecipes(level, TFCRecipeTypes.BLOOMERY);
 
             loop:
             for (ItemEntity entity : itemEntities)
@@ -326,12 +328,12 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
                 if (heat != null)
                 {
                     final FluidStack fluid = heat.assembleFluid(entity.getItem());
-                    for (BloomeryRecipe recipe : recipes)
+                    for (RecipeHolder<BloomeryRecipe> recipe : recipes)
                     {
-                        if (recipe.matchesInput(fluid))
+                        if (recipe.value().matchesInput(fluid))
                         {
                             // Located a recipe that matches a primary input, so break
-                            cachedRecipe = recipe;
+                            cachedRecipe = recipe.value();
                             markForSync();
                             break loop;
                         }
@@ -458,7 +460,7 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
 
         cachedRecipe = null;
 
-        final Collection<BloomeryRecipe> recipes = Helpers.getRecipes(level, TFCRecipeTypes.BLOOMERY).values();
+        final Collection<RecipeHolder<BloomeryRecipe>> recipes = RecipeHelpers.getRecipes(level, TFCRecipeTypes.BLOOMERY);
         for (ItemStack stack : inputStacks)
         {
             // Optimization: pre-melt each input stack, and only check against the bloomery recipe's fluid input
@@ -466,12 +468,12 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
             if (heat != null)
             {
                 final FluidStack fluid = heat.assembleFluid(stack);
-                for (BloomeryRecipe recipe : recipes)
+                for (RecipeHolder<BloomeryRecipe> recipe : recipes)
                 {
-                    if (recipe.matchesInput(fluid))
+                    if (recipe.value().matchesInput(fluid))
                     {
                         // Located a recipe that matches one of our primary inputs
-                        cachedRecipe = recipe;
+                        cachedRecipe = recipe.value();
                         return;
                     }
                 }

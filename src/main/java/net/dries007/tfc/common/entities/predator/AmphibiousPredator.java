@@ -108,12 +108,6 @@ public class AmphibiousPredator extends Predator implements AquaticMob
     }
 
     @Override
-    public MobType getMobType()
-    {
-        return MobType.WATER;
-    }
-
-    @Override
     public boolean canSpawnIn(Fluid fluid)
     {
         return fluid.isSame(Fluids.WATER);

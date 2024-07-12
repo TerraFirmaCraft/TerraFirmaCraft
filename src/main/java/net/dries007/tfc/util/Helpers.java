@@ -22,7 +22,6 @@ import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import com.google.common.collect.Iterators;
@@ -70,9 +69,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeManager;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ClipContext;
@@ -99,6 +97,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.util.thread.EffectiveSide;
+import net.neoforged.neoforge.capabilities.BlockCapability;
+import net.neoforged.neoforge.capabilities.ItemCapability;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -125,7 +125,6 @@ import net.dries007.tfc.common.entities.prey.Pest;
 import net.dries007.tfc.common.items.TFCShieldItem;
 import net.dries007.tfc.common.recipes.RecipeHelpers;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.mixin.accessor.RecipeManagerAccessor;
 import net.dries007.tfc.util.data.Metal;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
@@ -152,7 +151,6 @@ public final class Helpers
     public static final boolean TEST_ENVIRONMENT = detectTestSourcesPresent();
 
     public static final String BLOCK_ENTITY_TAG = BlockItem.BLOCK_ENTITY_TAG;
-    public static final String BLOCK_STATE_TAG = BlockItem.BLOCK_STATE_TAG;
 
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final int PRIME_X = 501125321;
@@ -200,36 +198,33 @@ public final class Helpers
         return JEI;
     }
 
-    @SuppressWarnings("ConstantConditions")
-    public static <T> Capability<T> capability(CapabilityToken<T> token)
-    {
-        return BOOTSTRAP_ENVIRONMENT ? null : CapabilityManager.get(token);
-    }
-
     @Nullable
-    @SuppressWarnings("ConstantConditions")
-    public static <T> T getCapability(ICapabilityProvider provider, Capability<T> capability)
+    @SuppressWarnings("DataFlowIssue") // BlockEntity.level is in practice never null, and the @Nullable C is not picked up correctly w.r.t getCapability()
+    public static <T, C> T getCapability(BlockCapability<T, C> capability, BlockEntity entity, @Nullable C context)
     {
-        return provider.getCapability(capability).orElse(null);
+        return entity.getLevel().getCapability(capability, entity.getBlockPos(), entity.getBlockState(), entity, context);
     }
 
     /**
-     * Tests if a stack *might* have a capability, either by virtue of it already having said capability, <strong>or</strong> if a single item spliced off of the stack would have that capability.
-     * This is necessary because there's a lot of places where we need to only accept items with a certain capability, for instances, "all items that are heatable" are valid in most heating devices.
-     * However, when we're in an inventory or container, there's a lot of code that is completely unaware of this restriction, for example {@link net.minecraftforge.items.SlotItemHandler#getMaxStackSize(ItemStack)}.
+     * Tests if a stack *might* have a capability, either by virtue of it already having said capability, <strong>or</strong> if a single
+     * item spliced off of the stack would have that capability. This is necessary because there's a lot of places where we need to only accept
+     * items with a certain capability, for instances, "all items that are heatable" are valid in most heating devices.
+     * <p>
+     * However, when we're in an inventory or container, there's a lot of code that is completely unaware of this restriction, for example {@link net.neoforged.neoforge.items.SlotItemHandler#getMaxStackSize(ItemStack)}.
      * This method will try and determine the stack size, by inserting a maximum size stack... which means i.e. if you try and insert a stack of 16 x empty molds, you will discover they don't, in fact, have a heat capability and as a result cannot be heated.
      * <p>
-     * N.B. The requirement that item stack capabilities only return a capability with stack size == 1 is essential to prevent duplication glitches or other inaccuracies in other, external code that isn't aware of the intricacies of how our capabilities work.
+     * N.B. The requirement that item stack capabilities only return a capability with stack size == 1 is essential to prevent duplication glitches
+     * or other inaccuracies in other, external code that isn't aware of the intricacies of how our capabilities work.
      */
-    public static <T> boolean mightHaveCapability(ItemStack stack, Capability<T> capability)
+    public static <T> boolean mightHaveCapability(ItemStack stack, ItemCapability<T, Void> capability)
     {
-        return stack.copyWithCount(1).getCapability(capability).isPresent();
+        return stack.copyWithCount(1).getCapability(capability) != null;
     }
 
-    public static <T1, T2> boolean mightHaveCapability(ItemStack stack, Capability<T1> first, Capability<T2> second)
+    public static <T1, T2> boolean mightHaveCapability(ItemStack stack, ItemCapability<T1, Void> first, ItemCapability<T2, Void> second)
     {
         final ItemStack copy = stack.copyWithCount(1);
-        return copy.getCapability(first).isPresent() && copy.getCapability(second).isPresent();
+        return copy.getCapability(first) != null && copy.getCapability(second) != null;
     }
 
     /**
@@ -443,17 +438,6 @@ public final class Helpers
         return state.hasProperty(property) ? state.setValue(property, value) : state;
     }
 
-    public static <R extends Recipe<?>> Map<ResourceLocation, R> getRecipes(Level level, Supplier<RecipeType<R>> type)
-    {
-        return getRecipes(level.getRecipeManager(), type);
-    }
-
-    @SuppressWarnings("unchecked")
-    public static <R extends Recipe<?>> Map<ResourceLocation, R> getRecipes(RecipeManager recipeManager, Supplier<RecipeType<R>> type)
-    {
-        return (Map<ResourceLocation, R>) ((RecipeManagerAccessor) recipeManager).invoke$byType(type.get());
-    }
-
     public static RecipeManager getUnsafeRecipeManager()
     {
         final MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
@@ -611,7 +595,7 @@ public final class Helpers
     /**
      * Iterate through all the slots in a {@code inventory}.
      */
-    public static Iterable<ItemStack> iterate(Container inventory)
+    public static Iterable<ItemStack> iterate(RecipeInput inventory)
     {
         return () -> new Iterator<>()
         {
@@ -620,7 +604,7 @@ public final class Helpers
             @Override
             public boolean hasNext()
             {
-                return slot < inventory.getContainerSize();
+                return slot < inventory.size();
             }
 
             @Override

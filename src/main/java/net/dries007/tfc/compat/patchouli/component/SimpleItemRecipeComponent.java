@@ -10,9 +10,9 @@ package net.dries007.tfc.compat.patchouli.component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
-import net.dries007.tfc.common.recipes.SimpleItemRecipe;
+import net.dries007.tfc.common.recipes.ItemRecipe;
 
-public abstract class SimpleItemRecipeComponent<T extends SimpleItemRecipe> extends InputOutputComponent<T>
+public abstract class SimpleItemRecipeComponent<T extends ItemRecipe> extends InputOutputComponent<T>
 {
     @Override
     public Ingredient getIngredient(T recipe)

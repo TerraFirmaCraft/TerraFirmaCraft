@@ -46,21 +46,21 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.world.Codecs;
 
-public class ChiselRecipe extends SimpleBlockRecipe
+public class ChiselRecipe implements INoopInputRecipe
 {
-    public static final IndirectHashCollection<Block, ChiselRecipe> CACHE = IndirectHashCollection.createForRecipe(recipe -> recipe.getBlockIngredient().blocks(), TFCRecipeTypes.CHISEL);
+    public static final IndirectHashCollection<Block, ChiselRecipe> CACHE = IndirectHashCollection.createForRecipe(r -> r.ingredient.blocks(), TFCRecipeTypes.CHISEL);
 
     public static final MapCodec<ChiselRecipe> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
         BlockIngredient.CODEC.fieldOf("ingredient").forGetter(c -> c.ingredient),
-        Codecs.BLOCK_STATE.fieldOf("result").forGetter(c -> c.output.orElseThrow()),
+        Codecs.BLOCK_STATE.fieldOf("result").forGetter(c -> c.output),
         Mode.CODEC.fieldOf("mode").forGetter(c -> c.mode),
         Ingredient.CODEC.optionalFieldOf("item_ingredient").forGetter(c -> c.itemIngredient),
-        ItemStackProvider.CODEC.optionalFieldOf("extra_drop", ItemStackProvider.empty()).forGetter(c -> c.itemOutput) // todo: rename to `item_output`
+        ItemStackProvider.CODEC.optionalFieldOf("item_output", ItemStackProvider.empty()).forGetter(c -> c.itemOutput)
     ).apply(i, ChiselRecipe::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ChiselRecipe> STREAM_CODEC = StreamCodec.composite(
         BlockIngredient.STREAM_CODEC, c -> c.ingredient,
-        StreamCodecs.BLOCK_STATE, c -> c.output.orElseThrow(),
+        StreamCodecs.BLOCK_STATE, c -> c.output,
         Mode.STREAM_CODEC, c -> c.mode,
         ByteBufCodecs.optional(Ingredient.CONTENTS_STREAM_CODEC), c -> c.itemIngredient,
         ItemStackProvider.STREAM_CODEC, c -> c.itemOutput,
@@ -86,7 +86,7 @@ public class ChiselRecipe extends SimpleBlockRecipe
             }
             else
             {
-                @Nullable BlockState chiseled = recipe.assembleBlock(state);
+                @Nullable BlockState chiseled = recipe.output;
 
                 // The block crafting result will be a single, simple block state, unaware of the placement context, however we want the chisel
                 // to meaningfully respond similar to how slab/stair placement naturally works. For this, we have different behavior based on the
@@ -152,14 +152,16 @@ public class ChiselRecipe extends SimpleBlockRecipe
         return null;
     }
 
+    private final BlockIngredient ingredient;
+    private final BlockState output;
     private final Mode mode;
     private final Optional<Ingredient> itemIngredient;
     private final ItemStackProvider itemOutput;
 
     public ChiselRecipe(BlockIngredient ingredient, BlockState output, Mode mode, Optional<Ingredient> itemIngredient, ItemStackProvider itemOutput)
     {
-        super(ingredient, Optional.of(output));
-
+        this.ingredient = ingredient;
+        this.output = output;
         this.mode = mode;
         this.itemIngredient = itemIngredient;
         this.itemOutput = itemOutput;
@@ -180,7 +182,7 @@ public class ChiselRecipe extends SimpleBlockRecipe
     public boolean matches(BlockState state, ItemStack stack, Mode mode)
     {
         return this.mode == mode
-            && matches(state)
+            && ingredient.test(state)
             && (itemIngredient.isEmpty() || itemIngredient.get().test(stack));
     }
 

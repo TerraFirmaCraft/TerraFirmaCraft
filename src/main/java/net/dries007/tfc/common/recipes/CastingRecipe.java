@@ -27,7 +27,7 @@ import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
-public class CastingRecipe implements INoopInputRecipe
+public class CastingRecipe implements INoopInputRecipe, IRecipePredicate<MoldLike>
 {
     public static final MapCodec<CastingRecipe> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
         Ingredient.CODEC.fieldOf("mold").forGetter(c -> c.ingredient),
@@ -49,14 +49,7 @@ public class CastingRecipe implements INoopInputRecipe
     @Nullable
     public static CastingRecipe get(MoldLike mold)
     {
-        for (CastingRecipe recipe : CACHE.getAll(mold.getContainer().getItem()))
-        {
-            if (recipe.matches(mold))
-            {
-                return recipe;
-            }
-        }
-        return null;
+        return RecipeHelpers.getRecipe(CACHE, mold, mold.getContainer().getItem());
     }
 
     private final Ingredient ingredient;
@@ -75,6 +68,7 @@ public class CastingRecipe implements INoopInputRecipe
     /**
      * @return {@code true} if the recipe matches the input, ignoring temperature. The mold must check if the content is solid.
      */
+    @Override
     public boolean matches(MoldLike mold)
     {
         return ingredient.test(mold.getContainer())

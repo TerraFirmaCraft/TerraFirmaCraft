@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
-public class LoomRecipe implements INoopInputRecipe
+public class LoomRecipe implements INoopInputRecipe, IRecipePredicate<ItemStack>
 {
     public static final IndirectHashCollection<Item, LoomRecipe> CACHE = IndirectHashCollection.createForRecipe(r -> RecipeHelpers.itemKeys(r.ingredient.ingredient()), TFCRecipeTypes.LOOM);
 
@@ -46,14 +46,7 @@ public class LoomRecipe implements INoopInputRecipe
     @Nullable
     public static LoomRecipe getRecipe(ItemStack stack)
     {
-        for (LoomRecipe recipe : CACHE.getAll(stack.getItem()))
-        {
-            if (recipe.matches(stack))
-            {
-                return recipe;
-            }
-        }
-        return null;
+        return RecipeHelpers.getRecipe(CACHE, stack, stack.getItem());
     }
 
     private final SizedIngredient ingredient;
@@ -72,6 +65,7 @@ public class LoomRecipe implements INoopInputRecipe
     /**
      * @return {@code true} if the recipe matches the {@code input}, without counting the amount
      */
+    @Override
     public boolean matches(ItemStack input)
     {
         return ingredient.ingredient().test(input);
@@ -83,24 +77,6 @@ public class LoomRecipe implements INoopInputRecipe
     public ItemStack assemble(ItemStack input)
     {
         return result.getSingleStack(input);
-    }
-
-    @Override
-    public ItemStack getResultItem(HolderLookup.Provider registries)
-    {
-        return result.getEmptyStack();
-    }
-
-    @Override
-    public RecipeSerializer<?> getSerializer()
-    {
-        return TFCRecipeSerializers.LOOM.get();
-    }
-
-    @Override
-    public RecipeType<?> getType()
-    {
-        return TFCRecipeTypes.LOOM.get();
     }
 
     public SizedIngredient getItemStackIngredient()
@@ -121,6 +97,24 @@ public class LoomRecipe implements INoopInputRecipe
     public int getStepCount()
     {
         return steps;
+    }
+
+    @Override
+    public ItemStack getResultItem(HolderLookup.Provider registries)
+    {
+        return result.getEmptyStack();
+    }
+
+    @Override
+    public RecipeSerializer<?> getSerializer()
+    {
+        return TFCRecipeSerializers.LOOM.get();
+    }
+
+    @Override
+    public RecipeType<?> getType()
+    {
+        return TFCRecipeTypes.LOOM.get();
     }
 
     @Override

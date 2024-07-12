@@ -7,8 +7,6 @@
 package net.dries007.tfc.common.capabilities;
 
 
-import net.minecraft.nbt.CompoundTag;
-
 import net.dries007.tfc.common.capabilities.heat.IHeat;
 
 public interface DelegateHeatHandler extends IHeat
@@ -52,17 +50,5 @@ public interface DelegateHeatHandler extends IHeat
     default float getWeldingTemperature()
     {
         return getHeatHandler().getWeldingTemperature();
-    }
-
-    @Override
-    default CompoundTag serializeNBT()
-    {
-        return getHeatHandler().serializeNBT();
-    }
-
-    @Override
-    default void deserializeNBT(CompoundTag nbt)
-    {
-        getHeatHandler().deserializeNBT(nbt);
     }
 }

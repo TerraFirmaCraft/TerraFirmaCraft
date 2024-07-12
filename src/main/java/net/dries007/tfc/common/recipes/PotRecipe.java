@@ -11,12 +11,13 @@ import java.util.List;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
@@ -83,15 +84,21 @@ public class PotRecipe implements ISimpleRecipe<PotBlockEntity.PotInventory>
     }
 
     @Override
-    public ItemStack getResultItem(RegistryAccess access)
+    public ItemStack assemble(PotBlockEntity.PotInventory input, HolderLookup.Provider registries)
     {
-        return ItemStack.EMPTY;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public RecipeType<?> getType()
     {
         return TFCRecipeTypes.POT.get();
+    }
+
+    @Override
+    public RecipeSerializer<?> getSerializer()
+    {
+        throw new UnsupportedOperationException();
     }
 
     public SizedFluidIngredient getFluidIngredient()

@@ -26,14 +26,14 @@ import net.dries007.tfc.world.Codecs;
 /**
  * Generic class for single block -> block based in-world crafting recipes.
  */
-public abstract class SimpleBlockRecipe implements IBlockRecipe
+public abstract class BlockRecipe implements INoopInputRecipe, IRecipePredicate<BlockState>
 {
-    public static <R extends SimpleBlockRecipe> RecipeSerializer<R> serializer(BiFunction<BlockIngredient, Optional<BlockState>, R> factory)
+    public static <R extends BlockRecipe> RecipeSerializer<R> serializer(BiFunction<BlockIngredient, Optional<BlockState>, R> factory)
     {
         return new RecipeSerializerImpl<>(codec(factory), streamCodec(factory));
     }
 
-    public static <R extends SimpleBlockRecipe> MapCodec<R> codec(BiFunction<BlockIngredient, Optional<BlockState>, R> factory)
+    public static <R extends BlockRecipe> MapCodec<R> codec(BiFunction<BlockIngredient, Optional<BlockState>, R> factory)
     {
         return RecordCodecBuilder.mapCodec(i -> i.group(
             BlockIngredient.CODEC.fieldOf("ingredient").forGetter(c -> c.ingredient),
@@ -50,7 +50,7 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
         ).apply(i, factory));
     }
 
-    public static <R extends SimpleBlockRecipe> StreamCodec<RegistryFriendlyByteBuf, R> streamCodec(BiFunction<BlockIngredient, Optional<BlockState>, R> factory)
+    public static <R extends BlockRecipe> StreamCodec<RegistryFriendlyByteBuf, R> streamCodec(BiFunction<BlockIngredient, Optional<BlockState>, R> factory)
     {
         return StreamCodec.composite(
             BlockIngredient.STREAM_CODEC, c -> c.ingredient,
@@ -62,7 +62,7 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
     protected final BlockIngredient ingredient;
     protected final Optional<BlockState> output; // If empty, then copy the input state
 
-    protected SimpleBlockRecipe(BlockIngredient ingredient, Optional<BlockState> output)
+    protected BlockRecipe(BlockIngredient ingredient, Optional<BlockState> output)
     {
         this.ingredient = ingredient;
         this.output = output;
@@ -74,7 +74,10 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
         return ingredient.test(state);
     }
 
-    @Override
+    /**
+     * @param input The input to this recipe
+     * @return The output of this recipe, given the input.
+     */
     public BlockState assembleBlock(BlockState input)
     {
         return output.orElse(input);

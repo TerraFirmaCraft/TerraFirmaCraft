@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.common.recipes.outputs;
 
+import net.minecraft.core.DefaultedRegistry;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
@@ -40,13 +42,14 @@ import net.dries007.tfc.util.Helpers;
 public interface PotOutput
 {
     ResourceKey<Registry<OutputType>> KEY = ResourceKey.createRegistryKey(Helpers.identifier("pot_output"));
-    Registry<OutputType> REGISTRY = new RegistryBuilder<>(KEY).sync(true).create();
+    ResourceKey<OutputType> DEFAULT = ResourceKey.create(KEY, Helpers.identifier("empty"));
+    DefaultedRegistry<OutputType> REGISTRY = (DefaultedRegistry<OutputType>) new RegistryBuilder<>(KEY).sync(true).defaultKey(DEFAULT).create();
 
     DeferredRegister<OutputType> TYPES = DeferredRegister.create(KEY, TerraFirmaCraft.MOD_ID);
 
     PotOutput EMPTY_INSTANCE = new PotOutput() {};
 
-    DeferredHolder<OutputType, OutputType> EMPTY = register("empty", nbt -> EMPTY_INSTANCE);
+    DeferredHolder<OutputType, OutputType> EMPTY = register("empty", (provider, nbt) -> EMPTY_INSTANCE);
     DeferredHolder<OutputType, OutputType> SOUP = register("soup", SoupPotRecipe.OUTPUT_TYPE);
     DeferredHolder<OutputType, OutputType> JAM = register("jam", JamPotRecipe.OUTPUT_TYPE);
 
@@ -58,20 +61,19 @@ public interface PotOutput
     /**
      * Read an output from an NBT tag.
      */
-    static PotOutput read(CompoundTag nbt)
+    static PotOutput read(HolderLookup.Provider provider, CompoundTag nbt)
     {
-        final OutputType type = PotRecipe.OUTPUT_TYPES.getOrDefault(Helpers.resourceLocation(nbt.getString("type")), PotRecipe.EMPTY);
-        return type.read(nbt);
+        return REGISTRY.get(Helpers.resourceLocation(nbt.getString("type"))).read(provider, nbt);
     }
 
     /**
      * Write an output to a NBT tag.
      */
-    static CompoundTag write(PotOutput output)
+    static CompoundTag write(HolderLookup.Provider provider, PotOutput output)
     {
         final CompoundTag nbt = new CompoundTag();
-        nbt.putString("type", PotRecipe.OUTPUT_TYPES.inverse().getOrDefault(output.getType(), PotRecipe.EMPTY_ID).toString());
-        output.write(nbt);
+        nbt.putString("type", REGISTRY.getKey(output.getType()).toString());
+        output.write(provider, nbt);
         return nbt;
     }
 
@@ -115,7 +117,7 @@ public interface PotOutput
     /**
      * Called with an empty pot inventory immediately after completion, and after clearing the inventory of the pot, but, before
      * checking {@link #isEmpty()}. Fills the inventory with immediate outputs from the output. Note that any outputs that depend
-     * on the inventory must be computed <strong>before</strong> this method, in {@link #getOutput(PotBlockEntity.PotInventory)}
+     * on the inventory must be computed <strong>before</strong> this method.
      */
     default void onFinish(PotBlockEntity.PotInventory inventory) {}
 
@@ -129,17 +131,17 @@ public interface PotOutput
 
     /**
      * Gets the output type of this output, used for serializing the output.
-     * If the output always returns true to {@link #isEmpty()}, then this can be left as {@link PotRecipe#EMPTY}.
+     * If the output always returns true to {@link #isEmpty()}, then this can be left as {@link PotOutput#EMPTY}.
      */
     default OutputType getType()
     {
-        return PotRecipe.EMPTY;
+        return PotOutput.EMPTY.get();
     }
 
     /**
      * Writes implementation specific output data to disk.
      */
-    default void write(CompoundTag nbt) {}
+    default void write(HolderLookup.Provider provider, CompoundTag nbt) {}
 
     @Nullable
     default BlockEntityTooltip getTooltip()
@@ -147,14 +149,12 @@ public interface PotOutput
         return null;
     }
 
-    /**
-     * The output type of a pot recipe, handles reading the output back from disk.
-     */
+    @FunctionalInterface
     interface OutputType
     {
         /**
          * Read the output from the given tag. The tag should contain the key "type", which will equal the registered ID of this output type.
          */
-        PotOutput read(CompoundTag nbt);
+        PotOutput read(HolderLookup.Provider provider, CompoundTag nbt);
     }
 }

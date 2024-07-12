@@ -24,8 +24,8 @@ public class TFCRecipeSerializers
 {
     public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, MOD_ID);
 
-    public static final Id<CollapseRecipe> COLLAPSE = register("collapse", SimpleBlockRecipe.serializer(CollapseRecipe::new));
-    public static final Id<LandslideRecipe> LANDSLIDE = register("landslide", SimpleBlockRecipe.serializer(LandslideRecipe::new));
+    public static final Id<CollapseRecipe> COLLAPSE = register("collapse", BlockRecipe.serializer(CollapseRecipe::new));
+    public static final Id<LandslideRecipe> LANDSLIDE = register("landslide", BlockRecipe.serializer(LandslideRecipe::new));
     public static final Id<ChiselRecipe> CHISEL = register("chisel", ChiselRecipe.CODEC, ChiselRecipe.STREAM_CODEC);
 
     public static final Id<HeatingRecipe> HEATING = register("heating", HeatingRecipe.CODEC, HeatingRecipe.STREAM_CODEC);

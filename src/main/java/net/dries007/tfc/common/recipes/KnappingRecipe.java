@@ -21,12 +21,11 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.container.KnappingContainer;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.data.DataManager;
 import net.dries007.tfc.util.data.KnappingPattern;
 import net.dries007.tfc.util.data.KnappingType;
 
-public class KnappingRecipe implements INoopInputRecipe
+public class KnappingRecipe implements INoopInputRecipe, IRecipePredicate<KnappingContainer>
 {
     public static final MapCodec<KnappingRecipe> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
         KnappingType.MANAGER.byIdReferenceCodec().fieldOf("knapping_type").forGetter(c -> c.knappingType),
@@ -46,14 +45,7 @@ public class KnappingRecipe implements INoopInputRecipe
     @Nullable
     public static KnappingRecipe get(Level level, KnappingContainer input)
     {
-        for (KnappingRecipe recipe : Helpers.getRecipes(level, TFCRecipeTypes.KNAPPING).values())
-        {
-            if (recipe.matches(input))
-            {
-                return recipe;
-            }
-        }
-        return null;
+        return RecipeHelpers.unbox(RecipeHelpers.getHolder(level, TFCRecipeTypes.KNAPPING, input));
     }
 
     private final DataManager.Reference<KnappingType> knappingType;
@@ -69,6 +61,7 @@ public class KnappingRecipe implements INoopInputRecipe
         this.result = result;
     }
 
+    @Override
     public boolean matches(KnappingContainer input)
     {
         return input.getKnappingType() == knappingType.get()

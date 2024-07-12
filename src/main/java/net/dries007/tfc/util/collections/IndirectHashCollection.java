@@ -18,10 +18,11 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
 
-import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.common.recipes.RecipeHelpers;
 
 /**
  * This is a structure which provides O(1), {@link HashMap} access of the wrapped {@code Map<Predicate<V>, R>} It does this by using
@@ -145,7 +146,7 @@ public class IndirectHashCollection<K, R>
     record RecipeCache<K, R extends Recipe<?>>(IndirectHashCollection<K, R> cache, Supplier<RecipeType<R>> recipeType) implements Cache
     {
         @Override public void clear() { cache.clear(); }
-        @Override public void reload(RecipeManager manager) { cache.reload(Helpers.getRecipes(manager, recipeType).values()); }
+        @Override public void reload(RecipeManager manager) { cache.reload(RecipeHelpers.getRecipes(manager, recipeType).stream().map(RecipeHolder::value).toList()); }
     }
 
     record RecipeIdCache<R extends Recipe<?>>(BiMap<ResourceLocation, R> cache, Supplier<RecipeType<R>> recipeType) implements Cache
@@ -160,7 +161,7 @@ public class IndirectHashCollection<K, R>
         public void reload(RecipeManager manager)
         {
             cache.clear();
-            cache.putAll(Helpers.getRecipes(manager, recipeType));
+            RecipeHelpers.getRecipes(manager, recipeType).forEach(holder -> cache.put(holder.id(), holder.value()));
         }
     }
 }

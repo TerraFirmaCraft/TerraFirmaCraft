@@ -14,6 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.fluids.FluidStack;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.RenderHelpers;
@@ -60,7 +61,7 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
             drawDisabled(graphics, BarrelBlockEntity.SLOT_FLUID_CONTAINER_IN, BarrelBlockEntity.SLOT_ITEM);
 
             // Draw the text displaying both the seal date, and the recipe name
-            BarrelRecipe recipe = blockEntity.getRecipe();
+            final @Nullable BarrelRecipe recipe = blockEntity.getRecipe();
             if (recipe != null)
             {
                 FormattedText resultText = recipe.getTranslationComponent();
