@@ -172,5 +172,9 @@ tasks {
             attributes["Implementation-Version"] = project.version
         }
     }
+
+    withType<JavaCompile> {
+        options.compilerArgs.addAll(listOf("-Xmaxerrs", "10000"))
+    }
 }
 
