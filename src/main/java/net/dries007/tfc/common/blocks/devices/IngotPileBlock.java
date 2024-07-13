@@ -11,7 +11,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -63,8 +63,7 @@ public class IngotPileBlock extends ExtendedBlock implements EntityBlockExtensio
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos currentPos, BlockPos neighborPos)
+    protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos currentPos, BlockPos neighborPos)
     {
         if (direction == Direction.DOWN && !neighborState.isFaceSturdy(level, neighborPos, direction.getOpposite()) && !Helpers.isBlock(neighborState, this))
         {
@@ -74,8 +73,7 @@ public class IngotPileBlock extends ExtendedBlock implements EntityBlockExtensio
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
         if (!player.isShiftKeyDown())
         {
@@ -108,14 +106,13 @@ public class IngotPileBlock extends ExtendedBlock implements EntityBlockExtensio
             {
                 level.setBlock(topPos, topState.setValue(getCountProperty(), topIngots - 1), Block.UPDATE_CLIENTS);
             }
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         if (!canSurvive(state, level, pos))
         {
@@ -125,8 +122,7 @@ public class IngotPileBlock extends ExtendedBlock implements EntityBlockExtensio
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
+    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         final BlockPos adjacentPos = pos.below();
         final BlockState adjacentState = level.getBlockState(adjacentPos);
@@ -152,8 +148,7 @@ public class IngotPileBlock extends ExtendedBlock implements EntityBlockExtensio
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
     {
         if (level.getBlockEntity(pos) instanceof IngotPileBlockEntity pile && newState.getBlock() != this)
         {
@@ -169,8 +164,7 @@ public class IngotPileBlock extends ExtendedBlock implements EntityBlockExtensio
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return SHAPES[(state.getValue(getCountProperty()) - 1) / 8];
     }
@@ -181,7 +175,7 @@ public class IngotPileBlock extends ExtendedBlock implements EntityBlockExtensio
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player)
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player)
     {
         return level.getBlockEntity(pos) instanceof IngotPileBlockEntity pile ? pile.getPickedItemStack() : ItemStack.EMPTY;
     }

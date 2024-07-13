@@ -48,9 +48,9 @@ public class ToolItem extends DiggerItem
     @Override
     public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entity)
     {
-        if (!level.isClientSide && willConsumeDurability(level, pos, state))
+        if (willConsumeDurability(level, pos, state))
         {
-            stack.hurtAndBreak(1, entity, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+            Helpers.damageItem(stack, entity, EquipmentSlot.MAINHAND);
         }
         return true;
     }

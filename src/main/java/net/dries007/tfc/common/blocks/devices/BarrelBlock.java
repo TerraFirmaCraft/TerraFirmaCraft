@@ -16,7 +16,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -49,7 +49,6 @@ import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
@@ -103,16 +102,14 @@ public class BarrelBlock extends SealableDeviceBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
         final BarrelBlockEntity barrel = level.getBlockEntity(pos, TFCBlockEntities.BARREL.get()).orElse(null);
         if (barrel != null)
         {
-            final ItemStack stack = player.getItemInHand(hand);
             if (stack.isEmpty() && player.isShiftKeyDown())
             {
-                if (state.getValue(RACK) && level.getBlockState(pos.above()).isAir() && hit.getLocation().y - pos.getY() > 0.875f)
+                if (state.getValue(RACK) && level.getBlockState(pos.above()).isAir() && hitResult.getLocation().y - pos.getY() > 0.875f)
                 {
                     ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFCBlocks.BARREL_RACK.get().asItem()));
                     level.setBlockAndUpdate(pos, state.setValue(RACK, false));
@@ -122,7 +119,7 @@ public class BarrelBlock extends SealableDeviceBlock
                     toggleSeal(level, pos, state);
                 }
                 level.playSound(null, pos, SoundEvents.WOOD_PLACE, SoundSource.BLOCKS, 1.0f, 0.85f);
-                return InteractionResult.SUCCESS;
+                return ItemInteractionResult.SUCCESS;
             }
             else if (Helpers.isItem(stack, TFCBlocks.BARREL_RACK.get().asItem()) && state.getValue(FACING) != Direction.UP && !state.getValue(RACK))
             {
@@ -132,34 +129,30 @@ public class BarrelBlock extends SealableDeviceBlock
                 }
                 level.setBlockAndUpdate(pos, state.setValue(RACK, true).setValue(FACING, player.getDirection().getOpposite()));
                 Helpers.playPlaceSound(level, pos, state);
-                return InteractionResult.sidedSuccess(level.isClientSide);
+                return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
             else if (FluidHelpers.transferBetweenBlockEntityAndItem(stack, barrel, player, hand))
             {
-                return InteractionResult.SUCCESS;
+                return ItemInteractionResult.SUCCESS;
             }
             else if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer)
             {
                 Helpers.openScreen(serverPlayer, barrel, barrel.getBlockPos());
             }
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void attack(BlockState state, Level level, BlockPos pos, Player player)
+    protected void attack(BlockState state, Level level, BlockPos pos, Player player)
     {
         if (state.getValue(SEALED) && level.getBlockEntity(pos) instanceof BarrelBlockEntity barrel && Helpers.isItem(player.getMainHandItem(), Tags.Items.RODS_WOODEN))
         {
-            final IFluidHandler tank = Helpers.getCapability(barrel, Capabilities.FLUID);
-            if (tank != null)
-            {
-                final float fill = (float) tank.getFluidInTank(0).getAmount() / tank.getTankCapacity(0);
-                final int note = Mth.ceil(fill * 24); // note blocks are 0 -> 24
-                level.playSeededSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.NOTE_BLOCK_BASEDRUM, SoundSource.RECORDS, 3.0F, NoteBlock.getPitchFromNote(note), level.random.nextLong());
-            }
+            final IFluidHandler tank = barrel.getInventory();
+            final float fill = (float) tank.getFluidInTank(0).getAmount() / tank.getTankCapacity(0);
+            final int note = Mth.ceil(fill * 24); // note blocks are 0 -> 24
+            level.playSeededSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.NOTE_BLOCK_BASEDRUM, SoundSource.RECORDS, 3.0F, NoteBlock.getPitchFromNote(note), level.random.nextLong());
         }
     }
 
@@ -175,8 +168,7 @@ public class BarrelBlock extends SealableDeviceBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos pos, BlockPos facingPos)
+    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos pos, BlockPos facingPos)
     {
         if (state.getValue(FACING).getAxis().isHorizontal() && facing == Direction.DOWN && !level.getBlockState(facingPos).isFaceSturdy(level, facingPos, Direction.UP, SupportType.CENTER))
         {
@@ -231,7 +223,7 @@ public class BarrelBlock extends SealableDeviceBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState mirror(BlockState state, Mirror mirror)
+    protected BlockState mirror(BlockState state, Mirror mirror)
     {
         return state.rotate(mirror.getRotation(state.getValue(FACING)));
     }
@@ -280,8 +272,7 @@ public class BarrelBlock extends SealableDeviceBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
+    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
         if (TFCConfig.SERVER.barrelEnableRedstoneSeal.get() && level.getBlockEntity(pos) instanceof BarrelBlockEntity barrel)
         {

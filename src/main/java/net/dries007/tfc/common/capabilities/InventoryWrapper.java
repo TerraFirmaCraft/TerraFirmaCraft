@@ -10,7 +10,6 @@ import javax.annotation.Nonnull;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
-import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 
 import net.dries007.tfc.common.container.ISlotCallback;
@@ -60,7 +59,7 @@ public record InventoryWrapper(Container container, ISlotCallback callback) impl
 
         if (!existing.isEmpty())
         {
-            if (!ItemHandlerHelper.canItemStacksStack(stack, existing))
+            if (!ItemStack.isSameItemSameComponents(stack, existing))
             {
                 return stack;
             }

@@ -18,7 +18,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
-import net.dries007.tfc.common.blockentities.TFCBlockEntity;
 import net.dries007.tfc.common.blockentities.rotation.WindmillBlockEntity;
 import net.dries007.tfc.common.blocks.rotation.AxleBlock;
 import net.dries007.tfc.common.blocks.rotation.WindmillBlock;
@@ -26,8 +25,6 @@ import net.dries007.tfc.util.Helpers;
 
 public class WindmillBladeItem extends Item
 {
-    private static final float[] NO_COLOR = {1f, 1f, 1f, 1f};
-
     private final DyeColor color;
 
     public WindmillBladeItem(Properties properties, DyeColor color)
@@ -36,14 +33,9 @@ public class WindmillBladeItem extends Item
         this.color = color;
     }
 
-    public DyeColor getColor()
+    public int getTextureColors()
     {
-        return color;
-    }
-
-    public float[] getTextureColors()
-    {
-        return color == DyeColor.WHITE ? NO_COLOR : color.getTextureDiffuseColors();
+        return color == DyeColor.WHITE ? -1 : color.getTextureDiffuseColor();
     }
 
     @Override
@@ -73,7 +65,7 @@ public class WindmillBladeItem extends Item
                 .setValue(WindmillBlock.COUNT, 1);
 
             level.setBlockAndUpdate(pos, windmillState);
-            Helpers.insertOne(level, pos, TFCBlockEntities.WINDMILL.get(), context.getItemInHand().copyWithCount(1));
+            Helpers.insertOne(level, pos, TFCBlockEntities.WINDMILL, context.getItemInHand().copyWithCount(1));
 
             if (player == null || !player.isCreative())
             {

@@ -118,7 +118,7 @@ public class PropickItem extends ToolItem
 
             level.playSound(player, pos, sound.getHitSound(), SoundSource.PLAYERS, sound.getVolume(), sound.getPitch());
 
-            context.getItemInHand().hurtAndBreak(1, player, p -> p.broadcastBreakEvent(context.getHand()));
+            Helpers.damageItem(context.getItemInHand(), player, context.getHand());
             player.getCooldowns().addCooldown(this, COOLDOWN);
 
             ProspectResult result;

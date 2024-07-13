@@ -6,8 +6,9 @@
 
 package net.dries007.tfc.util.loot;
 
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonObject;
+import java.util.List;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
@@ -18,13 +19,15 @@ import net.dries007.tfc.common.capabilities.food.FoodCapability;
 
 public class RottenFunction extends LootItemConditionalFunction
 {
-    protected RottenFunction(LootItemCondition[] conditions)
+    public static final MapCodec<RottenFunction> CODEC = RecordCodecBuilder.mapCodec(i -> commonFields(i).apply(i, RottenFunction::new));
+
+    public RottenFunction(List<LootItemCondition> conditions)
     {
         super(conditions);
     }
 
     @Override
-    public LootItemFunctionType getType()
+    public LootItemFunctionType<RottenFunction> getType()
     {
         return TFCLoot.ROTTEN.get();
     }
@@ -33,14 +36,5 @@ public class RottenFunction extends LootItemConditionalFunction
     protected ItemStack run(ItemStack stack, LootContext context)
     {
         return FoodCapability.setRotten(stack);
-    }
-
-    public static class Serializer extends LootItemConditionalFunction.Serializer<RottenFunction>
-    {
-        @Override
-        public RottenFunction deserialize(JsonObject json, JsonDeserializationContext context, LootItemCondition[] conditions)
-        {
-            return new RottenFunction(conditions);
-        }
     }
 }

@@ -56,7 +56,6 @@ import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.storage.loot.LootDataType;
 import net.neoforged.bus.api.Event;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
@@ -263,10 +262,14 @@ public final class SelfTests
      */
     public static boolean validateBlockLootTables(Stream<Block> blocks, Logger logger)
     {
-        final Collection<ResourceLocation> lootTables = ServerLifecycleHooks.getCurrentServer().getLootData().getKeys(LootDataType.TABLE);
+        final Collection<ResourceLocation> lootTables = ServerLifecycleHooks.getCurrentServer()
+            .reloadableRegistries()
+            .get()
+            .registryOrThrow(Registries.LOOT_TABLE)
+            .keySet();
         final List<Block> missingLootTables = blocks
-            .filter(b -> !lootTables.contains(b.getLootTable()))
-            .filter(b -> !b.defaultBlockState().isAir()) // catches BlockDummyAir
+            .filter(b -> !lootTables.contains(b.getLootTable().location()))
+            .filter(b -> !b.defaultBlockState().isAir())
             .toList();
 
         return logRegistryErrors("{} blocks found with a non-existent loot table:", missingLootTables, logger);

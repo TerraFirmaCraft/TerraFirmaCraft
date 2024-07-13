@@ -18,6 +18,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.model.entity.WindmillBladeModel;
@@ -68,8 +69,8 @@ public class WindmillBlockEntityRenderer implements BlockEntityRenderer<Windmill
         final float offsetAngle = Mth.TWO_PI / bladeCount;
         for (int i = 0; i < bladeCount; i++)
         {
-            float[] color = NO_COLOR;
             final ItemStack itemStack = windmill.getInventory().getStackInSlot(i);
+            int color = -1;
 
             if (itemStack.getItem() instanceof WindmillBladeItem item)
             {
@@ -82,7 +83,7 @@ public class WindmillBlockEntityRenderer implements BlockEntityRenderer<Windmill
 
             stack.pushPose();
             blade.setupAnim(windmill, partialTick, offsetAngle * i);
-            blade.renderToBuffer(stack, bufferSource.getBuffer(RenderType.entityCutout(BLADE_TEXTURE)), packedLight, packedOverlay, color[0], color[1], color[2], 1f);
+            blade.renderToBuffer(stack, bufferSource.getBuffer(RenderType.entityCutout(BLADE_TEXTURE)), packedLight, packedOverlay, color);
             stack.popPose();
         }
 
@@ -93,5 +94,11 @@ public class WindmillBlockEntityRenderer implements BlockEntityRenderer<Windmill
     public boolean shouldRenderOffScreen(WindmillBlockEntity windmill)
     {
         return true;
+    }
+
+    @Override
+    public AABB getRenderBoundingBox(WindmillBlockEntity blockEntity)
+    {
+        return AABB.INFINITE;
     }
 }

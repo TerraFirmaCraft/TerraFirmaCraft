@@ -9,6 +9,7 @@ package net.dries007.tfc.common.blockentities;
 import java.util.Arrays;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
@@ -21,6 +22,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
@@ -118,7 +120,7 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
         {
             forge.temperature = HeatCapability.adjustDeviceTemp(forge.temperature, forge.burnTemperature, forge.airTicks, isRaining);
 
-            HeatCapability.provideHeatTo(level, pos.above(), forge.temperature);
+            HeatCapability.provideHeatTo(level, pos.above(), Direction.DOWN, forge.temperature);
 
             for (int slot = SLOT_INPUT_MIN; slot <= SLOT_INPUT_MAX; slot++)
             {
@@ -255,25 +257,25 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
     }
 
     @Override
-    public void loadAdditional(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
         temperature = nbt.getFloat("temperature");
         burnTicks = nbt.getInt("burnTicks");
         airTicks = nbt.getInt("airTicks");
         burnTemperature = nbt.getFloat("burnTemperature");
         lastPlayerTick = nbt.getLong("lastPlayerTick");
-        super.loadAdditional(nbt);
+        super.loadAdditional(nbt, provider);
     }
 
     @Override
-    public void saveAdditional(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
         nbt.putFloat("temperature", temperature);
         nbt.putInt("burnTicks", burnTicks);
         nbt.putInt("airTicks", airTicks);
         nbt.putFloat("burnTemperature", burnTemperature);
         nbt.putLong("lastPlayerTick", lastPlayerTick);
-        super.saveAdditional(nbt);
+        super.saveAdditional(nbt, provider);
     }
 
     @Override
@@ -303,7 +305,7 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
         }
         else
         {
-            return Helpers.mightHaveCapability(stack, Capabilities.FLUID_ITEM) && HeatCapability.maybeHas(stack);
+            return Helpers.mightHaveCapability(stack, Capabilities.FluidHandler.ITEM) && HeatCapability.maybeHas(stack);
         }
     }
 
@@ -378,7 +380,7 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
                 if (fluidStack.isEmpty()) break;
             }
 
-            FoodCapability.applyTrait(outputStack, FoodTraits.CHARCOAL_GRILLED);
+            FoodCapability.applyTrait(outputStack, FoodTraits.CHARCOAL_GRILLED.value());
             this.inventory.setStackInSlot(startIndex, outputStack);
         }
     }

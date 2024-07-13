@@ -61,14 +61,14 @@ public class TripHammerBlockEntity extends TickableInventoryBlockEntity<ItemStac
                 {
                     if (!anvil.workRemotely(ForgeStep.HIT_LIGHT, 12, true))
                     {
-                        if (anvil.getCapability(Capabilities.ITEM).map(inv -> !inv.getStackInSlot(AnvilBlockEntity.SLOT_INPUT_MAIN).isEmpty()).orElse(false))
+                        if (!anvil.getInventory().getStackInSlot(AnvilBlockEntity.SLOT_INPUT_MAIN).isEmpty())
                         {
                             level.playSound(null, pos, TFCSounds.ANVIL_HIT.get(), SoundSource.BLOCKS, 0.4f, 0.2f);
                         }
                     }
                     else
                     {
-                        Helpers.damageItem(item, 1);
+                        Helpers.damageItem(item, level);
                         anvil.markForSync();
                     }
                     hammer.cooldownTicks = Mth.ceil(0.8f * Mth.TWO_PI / rotation.positiveSpeed());

@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -48,19 +49,19 @@ public class BerryBushBlockEntity extends TFCBlockEntity implements ICalendarTic
     }
 
     @Override
-    public void loadAdditional(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
         lastUpdateTick = nbt.getLong("lastUpdateTick");
         lastTick = nbt.getLong("lastTick");
-        super.loadAdditional(nbt);
+        super.loadAdditional(nbt, provider);
     }
 
     @Override
-    public void saveAdditional(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
         nbt.putLong("lastUpdateTick", lastUpdateTick);
         nbt.putLong("lastTick", lastTick);
-        super.saveAdditional(nbt);
+        super.saveAdditional(nbt, provider);
     }
 
     @Override

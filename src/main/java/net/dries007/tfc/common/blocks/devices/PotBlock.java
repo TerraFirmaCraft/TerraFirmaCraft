@@ -12,7 +12,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -26,6 +26,7 @@ import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCDamageSources;
 import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
+import net.dries007.tfc.common.blockentities.PotBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -63,10 +64,11 @@ public class PotBlock extends FirepitBlock
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
-        return level.getBlockEntity(pos, TFCBlockEntities.POT.get()).map(pot -> {
-            final ItemStack stack = player.getItemInHand(hand);
+        final PotBlockEntity pot = level.getBlockEntity(pos, TFCBlockEntities.POT.get()).orElse(null);
+        if (pot != null)
+        {
             if (!pot.isBoiling() && stack.isEmpty() && player.isShiftKeyDown())
             {
                 if (state.getValue(LIT))
@@ -79,42 +81,43 @@ public class PotBlock extends FirepitBlock
                     ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFCItems.POWDERS.get(Powder.WOOD_ASH).get(), pot.getAsh()));
                     pot.setAsh(0);
                     Helpers.playSound(level, pos, SoundEvents.SAND_BREAK);
-                    return InteractionResult.sidedSuccess(level.isClientSide);
+                    return ItemInteractionResult.sidedSuccess(level.isClientSide);
                 }
                 else
                 {
                     ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFCItems.POT.get()));
                     AbstractFirepitBlockEntity.convertTo(level, pos, state, pot, TFCBlocks.FIREPIT.get());
                 }
-                return InteractionResult.sidedSuccess(level.isClientSide);
+                return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
             else if (!pot.isBoiling() && FluidHelpers.transferBetweenBlockEntityAndItem(stack, pot, player, hand))
             {
                 pot.setAndUpdateSlots(-1);
                 pot.markForSync();
-                return InteractionResult.sidedSuccess(level.isClientSide);
+                return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
             else
             {
                 if (!pot.isBoiling())
                 {
-                    final InteractionResult interactResult = pot.interactWithOutput(player, stack);
-                    if (interactResult != InteractionResult.PASS)
+                    final ItemInteractionResult interactResult = pot.interactWithOutput(player, stack);
+                    if (interactResult != ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION)
                     {
                         return interactResult;
                     }
                 }
-                if (tryInsertLog(player, stack, pot, result.getLocation().y - pos.getY() < 0.6))
+                if (tryInsertLog(player, stack, pot, hitResult.getLocation().y - pos.getY() < 0.6))
                 {
-                    return InteractionResult.sidedSuccess(level.isClientSide);
+                    return ItemInteractionResult.sidedSuccess(level.isClientSide);
                 }
                 if (player instanceof ServerPlayer serverPlayer)
                 {
                     Helpers.openScreen(serverPlayer, pot, pos);
                 }
-                return InteractionResult.sidedSuccess(level.isClientSide);
+                return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
-        }).orElse(InteractionResult.PASS);
+        }
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override

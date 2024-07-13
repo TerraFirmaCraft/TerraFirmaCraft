@@ -13,6 +13,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.Main;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.PlayerRespawnLogic;
 import net.minecraft.server.level.ServerLevel;
@@ -23,6 +24,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -102,6 +104,7 @@ import net.neoforged.neoforge.event.entity.player.BonemealEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerContainerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.level.ChunkWatchEvent;
 import net.neoforged.neoforge.event.level.ExplosionEvent;
@@ -195,6 +198,7 @@ import net.dries007.tfc.util.tracker.WeatherHelpers;
 import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.chunkdata.ChunkData;
+import net.dries007.tfc.world.chunkdata.RockData;
 
 
 public final class ForgeEventHandler
@@ -249,6 +253,7 @@ public final class ForgeEventHandler
         bus.addListener(EventPriority.LOWEST, true, ForgeEventHandler::onPlayerRightClickBlockLowestPriority);
         bus.addListener(ForgeEventHandler::onPlayerRightClickItem);
         bus.addListener(ForgeEventHandler::onPlayerRightClickEmpty);
+        bus.addListener(ForgeEventHandler::onUseItemOnBlock);
         bus.addListener(ForgeEventHandler::onItemUseFinish);
         bus.addListener(ForgeEventHandler::addReloadListeners);
         bus.addListener(ForgeEventHandler::onDataPackSync);
@@ -404,7 +409,7 @@ public final class ForgeEventHandler
     /**
      * Serialize chunk data on chunk primers, before the chunk data capability is present.
      * - This saves the effort of re-generating the same data for proto chunks
-     * - And, due to the late setting of part of chunk data ({@link net.dries007.tfc.world.chunkdata.RockData#setSurfaceHeight(int[])}, avoids that being nullified when saving and reloading during the noise phase of generation
+     * - And, due to the late setting of part of chunk data ({@link RockData#setSurfaceHeight(int[])}, avoids that being nullified when saving and reloading during the noise phase of generation
      */
     // todo 1.21: probably not needed, since they are serialized and saved on proto chunks via attachments
     /*
@@ -568,15 +573,15 @@ public final class ForgeEventHandler
         BlockState state = event.getNewState();
         if (Helpers.isBlock(state, Blocks.STONE))
         {
-            event.setNewState(TFCBlocks.ROCK_BLOCKS.get(net.dries007.tfc.common.blocks.rock.Rock.GABBRO).get(net.dries007.tfc.common.blocks.rock.Rock.BlockType.HARDENED).get().defaultBlockState());
+            event.setNewState(TFCBlocks.ROCK_BLOCKS.get(Rock.GABBRO).get(Rock.BlockType.HARDENED).get().defaultBlockState());
         }
         else if (Helpers.isBlock(state, Blocks.COBBLESTONE))
         {
-            event.setNewState(TFCBlocks.ROCK_BLOCKS.get(net.dries007.tfc.common.blocks.rock.Rock.RHYOLITE).get(net.dries007.tfc.common.blocks.rock.Rock.BlockType.HARDENED).get().defaultBlockState());
+            event.setNewState(TFCBlocks.ROCK_BLOCKS.get(Rock.RHYOLITE).get(Rock.BlockType.HARDENED).get().defaultBlockState());
         }
         else if (Helpers.isBlock(state, Blocks.BASALT))
         {
-            event.setNewState(TFCBlocks.ROCK_BLOCKS.get(net.dries007.tfc.common.blocks.rock.Rock.BASALT).get(Rock.BlockType.HARDENED).get().defaultBlockState());
+            event.setNewState(TFCBlocks.ROCK_BLOCKS.get(Rock.BASALT).get(Rock.BlockType.HARDENED).get().defaultBlockState());
         }
     }
 
@@ -1408,6 +1413,22 @@ public final class ForgeEventHandler
         }
     }
 
+    public static void onUseItemOnBlock(UseItemOnBlockEvent event)
+    {
+        if (event.getUsePhase() == UseItemOnBlockEvent.UsePhase.ITEM_AFTER_BLOCK)
+        {
+            InteractionManager.onItemUse(event.getItemStack(), event.getUseOnContext(), false).ifPresent(result -> {
+                event.cancelWithResult(switch (result) {
+                    // This is the inverse of ItemInteractionResult.result()
+                    case SUCCESS, SUCCESS_NO_ITEM_USED -> ItemInteractionResult.SUCCESS;
+                    case CONSUME, CONSUME_PARTIAL -> ItemInteractionResult.CONSUME;
+                    case PASS -> ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+                    case FAIL -> ItemInteractionResult.FAIL;
+                });
+            });
+        }
+    }
+
     public static void onItemUseFinish(LivingEntityUseItemEvent.Finish event)
     {
         final ItemStack stack = event.getItem();
@@ -1439,7 +1460,7 @@ public final class ForgeEventHandler
     /**
      * This is when tags are safe to be loaded, so we can do post reload actions that involve querying ingredients.
      * It is fired on both logical server and client after resources are reloaded (or, sent from server).
-     * In addition, during the first load on a server in {@link net.minecraft.server.Main}, the server won't exist yet at all.
+     * In addition, during the first load on a server in {@link Main}, the server won't exist yet at all.
      * In that case, we need to rely on the fact that {@link AddReloadListenerEvent} will be fired before that point, and we can capture the server's recipe manager there.
      */
     @SuppressWarnings({"unchecked", "rawtypes"})

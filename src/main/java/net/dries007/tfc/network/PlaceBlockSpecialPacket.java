@@ -66,7 +66,7 @@ public enum PlaceBlockSpecialPacket implements CustomPacketPayload
                         if (y == 0 || y == 1) // if we are on the top or bottom face
                         {
                             final BlockState toPlace = PlacedItemBlock.updateStateValues(level, pos, placedItem.defaultBlockState());
-                            if (!PlacedItemBlock.isEmpty(toPlace))
+                            if (!PlacedItemBlock.isEmptyContents(toPlace))
                             {
                                 level.setBlockAndUpdate(above, toPlace);
                                 level.getBlockEntity(above, TFCBlockEntities.PLACED_ITEM.get()).ifPresent(e -> e.insertItem(player, stack, blockResult));

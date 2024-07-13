@@ -14,9 +14,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
@@ -28,7 +29,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.items.ItemStackHandler;
-import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
@@ -67,8 +67,7 @@ public class CrucibleBlock extends DeviceBlock implements EntityBlockExtension, 
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
         if (!player.isShiftKeyDown())
         {
@@ -76,21 +75,19 @@ public class CrucibleBlock extends DeviceBlock implements EntityBlockExtension, 
             {
                 level.getBlockEntity(pos, TFCBlockEntities.CRUCIBLE.get()).ifPresent(crucible -> Helpers.openScreen(serverPlayer, crucible, crucible.getBlockPos()));
             }
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return SHAPE;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getInteractionShape(BlockState state, BlockGetter level, BlockPos pos)
+    protected VoxelShape getInteractionShape(BlockState state, BlockGetter level, BlockPos pos)
     {
         return INTERACTION_SHAPE;
     }
@@ -113,7 +110,7 @@ public class CrucibleBlock extends DeviceBlock implements EntityBlockExtension, 
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip, TooltipFlag flag)
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag)
     {
         final CompoundTag tag = stack.getTagElement(Helpers.BLOCK_ENTITY_TAG);
         if (tag != null && tag.contains("empty") && !tag.getBoolean("empty"))

@@ -92,7 +92,7 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
 
         level.playSound(null, pos, SoundEvents.METAL_BREAK, SoundSource.BLOCKS, 0.7f, 0.9f + 0.2f * level.getRandom().nextFloat());
 
-        if (isEmpty(newState))
+        if (isEmptyContents(newState))
         {
             level.destroyBlock(pos, false);
         }
@@ -167,7 +167,7 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
         return count;
     }
 
-    public static boolean isEmpty(BlockState state)
+    public static boolean isEmptyContents(BlockState state)
     {
         for (BooleanProperty property : PROPERTIES)
         {
@@ -193,8 +193,7 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos currentPos, BlockPos neighborPos)
+    protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos currentPos, BlockPos neighborPos)
     {
         if (!neighborState.isFaceSturdy(level, neighborPos, direction.getOpposite()))
         {
@@ -204,8 +203,7 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         for (Direction direction : Helpers.DIRECTIONS)
         {
@@ -223,8 +221,7 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
+    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         for (Direction direction : Helpers.DIRECTIONS)
         {
@@ -242,7 +239,7 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player)
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player)
     {
         if (level instanceof Level realLevel)
         {
@@ -282,8 +279,7 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
     {
         if (level.getBlockEntity(pos) instanceof SheetPileBlockEntity pile && newState.getBlock() != this)
         {
@@ -306,8 +302,7 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return shapeCache.get(state);
     }
@@ -356,7 +351,7 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
             // There's no other way to access the position here, this is terrible...
             // Also, particle calls require a client level...
             if (state.getBlock() == block &&
-                !isEmpty(state) &&
+                !isEmptyContents(state) &&
                 target instanceof BlockHitResult blockHit &&
                 level instanceof ClientLevel clientLevel)
             {

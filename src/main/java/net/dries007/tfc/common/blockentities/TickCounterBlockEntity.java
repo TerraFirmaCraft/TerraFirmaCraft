@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -63,16 +64,16 @@ public class TickCounterBlockEntity extends TFCBlockEntity
     }
 
     @Override
-    public void loadAdditional(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
         lastUpdateTick = nbt.getLong("tick");
-        super.loadAdditional(nbt);
+        super.loadAdditional(nbt, provider);
     }
 
     @Override
-    public void saveAdditional(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
         nbt.putLong("tick", lastUpdateTick);
-        super.saveAdditional(nbt);
+        super.saveAdditional(nbt, provider);
     }
 }

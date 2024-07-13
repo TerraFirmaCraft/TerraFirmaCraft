@@ -77,7 +77,7 @@ public class ChiselItem extends ToolItem
                     TFCAdvancements.CHISELED.trigger(serverPlayer, resultState);
                 }
 
-                held.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(InteractionHand.MAIN_HAND));
+                Helpers.damageItem(held, player, InteractionHand.MAIN_HAND);
                 player.getCooldowns().addCooldown(this, 10);
                 return InteractionResult.sidedSuccess(level.isClientSide);
             }, Function.identity()); // returns the interaction result if we are given one

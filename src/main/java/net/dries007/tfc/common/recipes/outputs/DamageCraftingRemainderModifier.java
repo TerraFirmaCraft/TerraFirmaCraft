@@ -16,11 +16,14 @@ public enum DamageCraftingRemainderModifier implements ItemStackModifier
     INSTANCE;
 
     @Override
+    @SuppressWarnings("deprecation") // For damageItem(), but we don't have access to a level here
     public ItemStack apply(ItemStack stack, ItemStack input)
     {
         if (stack.isDamageableItem())
         {
-            return Helpers.damageCraftingItem(stack, 1).copy();
+            final ItemStack copy = stack.copy();
+            Helpers.damageItem(copy);
+            return copy;
         }
         else if (stack.has(DataComponents.UNBREAKABLE)) // unbreakable items are not damageable, but should still be able to be used in crafting
         {

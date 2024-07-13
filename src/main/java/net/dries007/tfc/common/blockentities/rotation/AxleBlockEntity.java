@@ -8,6 +8,7 @@ package net.dries007.tfc.common.blockentities.rotation;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -53,16 +54,16 @@ public class AxleBlockEntity extends TFCBlockEntity implements RotatingBlockEnti
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag)
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
-        super.saveAdditional(tag);
+        super.saveAdditional(tag, provider);
         tag.putBoolean("invalid", invalid);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag tag)
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
-        super.loadAdditional(tag);
+        super.loadAdditional(tag, provider);
         invalid = tag.getBoolean("invalid");
     }
 

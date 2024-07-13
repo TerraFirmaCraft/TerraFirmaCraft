@@ -8,10 +8,11 @@ package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -99,29 +100,29 @@ public class ComposterBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     }
 
     @Override
-    public void loadAdditional(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
         green = nbt.getInt("green");
         brown = nbt.getInt("brown");
         lastUpdateTick = nbt.getLong("tick");
-        super.loadAdditional(nbt);
+        super.loadAdditional(nbt, provider);
     }
 
     @Override
-    public void saveAdditional(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
         nbt.putInt("green", getGreen());
         nbt.putInt("brown", getBrown());
         nbt.putLong("tick", lastUpdateTick);
-        super.saveAdditional(nbt);
+        super.saveAdditional(nbt, provider);
     }
 
-    public InteractionResult use(ItemStack stack, Player player, boolean client)
+    public ItemInteractionResult use(ItemStack stack, Player player, boolean client)
     {
         assert level != null;
         final boolean rotten = isRotten();
         final BlockPos pos = getBlockPos();
-        if (player.blockPosition().equals(pos)) return InteractionResult.FAIL;
+        if (player.blockPosition().equals(pos)) return ItemInteractionResult.FAIL;
         final Compost compost = getCompost(stack);
         if (stack.isEmpty() && player.isShiftKeyDown()) // extract compost
         {
@@ -182,7 +183,7 @@ public class ComposterBlockEntity extends InventoryBlockEntity<ItemStackHandler>
             }
             return finishUse(client);
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     public void resetCounter()
@@ -205,7 +206,7 @@ public class ComposterBlockEntity extends InventoryBlockEntity<ItemStackHandler>
             reset();
     }
 
-    public InteractionResult finishUse(boolean client)
+    public ItemInteractionResult finishUse(boolean client)
     {
         if (!client)
         {
@@ -217,7 +218,7 @@ public class ComposterBlockEntity extends InventoryBlockEntity<ItemStackHandler>
             setState(stage);
             markForSync();
         }
-        return InteractionResult.sidedSuccess(client);
+        return ItemInteractionResult.sidedSuccess(client);
     }
 
     public int getGreen()

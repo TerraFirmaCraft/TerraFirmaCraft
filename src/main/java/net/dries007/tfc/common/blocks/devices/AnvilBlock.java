@@ -15,6 +15,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -37,7 +38,6 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.AnvilBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
-import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.data.Metal;
 
@@ -48,18 +48,14 @@ public class AnvilBlock extends DeviceBlock implements Tiered
     private static final VoxelShape SHAPE_X = box(0, 0, 3, 16, 11, 13);
     private static final VoxelShape SHAPE_Z = box(3, 0, 0, 13, 11, 16);
 
-    public static InteractionResult interactWithAnvil(Level level, BlockPos pos, Player player, InteractionHand hand)
+    public static ItemInteractionResult interactWithAnvil(Level level, BlockPos pos, Player player, InteractionHand hand)
     {
         final AnvilBlockEntity anvil = level.getBlockEntity(pos, TFCBlockEntities.ANVIL.get()).orElse(null);
         if (anvil == null)
         {
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
-        final IItemHandler inventory = anvil.getCapability(Capabilities.ITEM).resolve().orElse(null);
-        if (inventory == null)
-        {
-            return InteractionResult.PASS;
-        }
+        final IItemHandler inventory = anvil.getInventory();
         if (player.isShiftKeyDown())
         {
             final ItemStack playerStack = player.getItemInHand(hand);
@@ -73,7 +69,7 @@ public class AnvilBlock extends DeviceBlock implements Tiered
                         // Give the item to player in the main hand
                         ItemStack result = inventory.extractItem(slot, 1, false);
                         player.setItemInHand(hand, result);
-                        return InteractionResult.SUCCESS;
+                        return ItemInteractionResult.SUCCESS;
                     }
                 }
             }
@@ -91,13 +87,13 @@ public class AnvilBlock extends DeviceBlock implements Tiered
                         server.sendParticles(TFCParticles.SPARK.get(), x, y, z, 8, 0, 0, 0, 0.2f);
                     }
                     level.playSound(null, pos, SoundEvents.ANVIL_USE, SoundSource.PLAYERS, 0.6f, 1.0f);
-                    return InteractionResult.SUCCESS;
+                    return ItemInteractionResult.SUCCESS;
                 }
                 else if (weldResult == InteractionResult.FAIL)
                 {
                     // Welding was attempted, but failed for some reason - player was alerted and action was consumed.
                     // Returning fail here causes the off hand to still attempt to be used?
-                    return InteractionResult.SUCCESS;
+                    return ItemInteractionResult.SUCCESS;
                 }
             }
             else
@@ -111,7 +107,7 @@ public class AnvilBlock extends DeviceBlock implements Tiered
                     {
                         // At least one item was inserted (and so remainder < attempt)
                         player.setItemInHand(hand, resultStack);
-                        return InteractionResult.SUCCESS;
+                        return ItemInteractionResult.SUCCESS;
                     }
                 }
             }
@@ -123,9 +119,9 @@ public class AnvilBlock extends DeviceBlock implements Tiered
             {
                 Helpers.openScreen(serverPlayer, anvil.anvilProvider(), pos);
             }
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     private final int tier;
@@ -142,13 +138,13 @@ public class AnvilBlock extends DeviceBlock implements Tiered
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
         return AnvilBlock.interactWithAnvil(level, pos, player, hand);
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return state.getValue(FACING).getAxis() == Direction.Axis.X ? SHAPE_X : SHAPE_Z;
     }
@@ -173,14 +169,14 @@ public class AnvilBlock extends DeviceBlock implements Tiered
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState rotate(BlockState state, Rotation rot)
+    protected BlockState rotate(BlockState state, Rotation rot)
     {
         return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState mirror(BlockState state, Mirror mirror)
+    protected BlockState mirror(BlockState state, Mirror mirror)
     {
         return state.rotate(mirror.getRotation(state.getValue(FACING)));
     }

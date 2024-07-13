@@ -9,7 +9,6 @@ package net.dries007.tfc.common.blocks.devices;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -115,16 +114,14 @@ public class SluiceBlock extends DeviceBlock implements EntityBlockExtension
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         final int idx = state.getValue(FACING).get2DDataValue();
         return state.getValue(UPPER) ? TOP_SHAPES[idx] : BOTTOM_SHAPES[idx];
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
+    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
     {
         // 1.13 water physics causes items to fly everywhere, we need them to get 'caught' on the sluice
         if (state.getValue(UPPER) && entity instanceof ItemEntity item)
@@ -157,8 +154,7 @@ public class SluiceBlock extends DeviceBlock implements EntityBlockExtension
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState state, Direction direction, BlockState facingState, LevelAccessor level, BlockPos pos, BlockPos facingPos)
+    protected BlockState updateShape(BlockState state, Direction direction, BlockState facingState, LevelAccessor level, BlockPos pos, BlockPos facingPos)
     {
         Direction facing = state.getValue(FACING);
         if (!state.getValue(UPPER) && direction == facing.getOpposite() && !Helpers.isBlock(facingState, this))

@@ -12,7 +12,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -124,9 +124,9 @@ public interface PotOutput
     /**
      * Called when a player interacts with the pot inventory, using the specific item stack, to try and extract output.
      */
-    default InteractionResult onInteract(PotBlockEntity entity, Player player, ItemStack clickedWith)
+    default ItemInteractionResult onInteract(PotBlockEntity entity, Player player, ItemStack clickedWith)
     {
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     /**

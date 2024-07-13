@@ -47,6 +47,7 @@ import net.dries007.tfc.common.container.ISlotCallback;
 import net.dries007.tfc.common.recipes.AnvilRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.WeldingRecipe;
+import net.dries007.tfc.common.recipes.input.NonEmptyInput;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
 
@@ -197,7 +198,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
 
         // Check that we have a hammer, either in the anvil or in the player inventory
         ItemStack hammer = inventory.getStackInSlot(SLOT_HAMMER);
-        @Nullable InteractionHand hammerSlot = null;
+        InteractionHand hammerSlot = null;
         if (hammer.isEmpty())
         {
             hammer = player.getMainHandItem();
@@ -208,7 +209,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
             hammer = player.getOffhandItem();
             hammerSlot = InteractionHand.OFF_HAND;
         }
-        if (hammer.isEmpty() || !Helpers.isItem(hammer, TFCTags.Items.HAMMERS))
+        if (hammerSlot == null || hammer.isEmpty() || !Helpers.isItem(hammer, TFCTags.Items.HAMMERS))
         {
             player.displayClientMessage(Component.translatable("tfc.tooltip.hammer_required_to_work"), false);
             return InteractionResult.FAIL;
@@ -240,13 +241,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
             forge.addStep(step);
 
             // Damage the hammer
-            final InteractionHand breakingHand = hammerSlot;
-            hammer.hurtAndBreak(1, player, e -> {
-                if (breakingHand != null)
-                {
-                    e.broadcastBreakEvent(breakingHand);
-                }
-            });
+            Helpers.damageItem(hammer, player, hammerSlot);
 
             if (view.work() < 0 || view.work() > ForgeStep.LIMIT)
             {
@@ -457,7 +452,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
         internalStacks.set(SLOT_CATALYST, flux);
     }
 
-    public static class AnvilInventory extends InventoryItemHandler implements AnvilRecipe.Inventory, WeldingRecipe.Inventory
+    public static class AnvilInventory extends InventoryItemHandler implements AnvilRecipe.Inventory, WeldingRecipe.Inventory, NonEmptyInput
     {
         private final AnvilBlockEntity anvil;
 

@@ -9,6 +9,7 @@ package net.dries007.tfc.common.blockentities;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
@@ -74,16 +75,16 @@ public class GlassBasinBlockEntity extends TFCBlockEntity
     }
 
     @Override
-    protected void loadAdditional(CompoundTag tag)
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
-        super.loadAdditional(tag);
+        super.loadAdditional(tag, provider);
         this.state = NbtUtils.readBlockState(getBlockGetter(), tag.getCompound("glassState"));
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag)
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
-        super.saveAdditional(tag);
+        super.saveAdditional(tag, provider);
         tag.put("glassState", NbtUtils.writeBlockState(state));
     }
 }

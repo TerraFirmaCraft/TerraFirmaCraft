@@ -8,12 +8,14 @@ package net.dries007.tfc.util.data;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.storage.loot.LootTable;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.recipes.RecipeHelpers;
@@ -22,16 +24,16 @@ import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 public record Sluiceable(
     Ingredient ingredient,
-    ResourceLocation lootTable
+    ResourceKey<LootTable> lootTable
 ) {
     public static final Codec<Sluiceable> CODEC = RecordCodecBuilder.create(i -> i.group(
         Ingredient.CODEC.fieldOf("ingredient").forGetter(c -> c.ingredient),
-        ResourceLocation.CODEC.fieldOf("loot_table").forGetter(c -> c.lootTable)
+        ResourceKey.codec(Registries.LOOT_TABLE).fieldOf("loot_table").forGetter(c -> c.lootTable)
     ).apply(i, Sluiceable::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, Sluiceable> STREAM_CODEC = StreamCodec.composite(
         Ingredient.CONTENTS_STREAM_CODEC, c -> c.ingredient,
-        ResourceLocation.STREAM_CODEC, c -> c.lootTable,
+        ResourceKey.streamCodec(Registries.LOOT_TABLE), c -> c.lootTable,
         Sluiceable::new
     );
 

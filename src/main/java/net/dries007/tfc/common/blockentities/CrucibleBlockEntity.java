@@ -8,6 +8,7 @@ package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -17,6 +18,8 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.common.util.INBTSerializable;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
@@ -34,7 +37,7 @@ import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodTraits;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
-import net.dries007.tfc.common.capabilities.heat.IHeatBlock;
+import net.dries007.tfc.common.capabilities.heat.IHeatConsumer;
 import net.dries007.tfc.common.container.CrucibleContainer;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
@@ -102,7 +105,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
                         final FluidStack outputFluid = recipe.assembleFluid(inputStack);
 
                         // Output transformations
-                        FoodCapability.applyTrait(outputItem, FoodTraits.BURNT_TO_A_CRISP);
+                        FoodCapability.applyTrait(outputItem, FoodTraits.BURNT_TO_A_CRISP.value());
                         HeatCapability.setTemperature(outputItem, crucible.temperature);
 
                         // Add output to crucible
@@ -159,7 +162,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
     }
 
     private final SidedHandler.Builder<IFluidHandler> sidedFluidInventory;
-    private final SidedHandler.Noop<IHeatBlock> sidedHeat;
+    private final SidedHandler.Noop<IHeatConsumer> sidedHeat;
     private final IntArrayBuilder syncableData;
 
     private final HeatingRecipe[] cachedRecipes;
@@ -230,7 +233,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        return HeatCapability.maybeHas(stack) && (slot != SLOT_OUTPUT || Helpers.mightHaveCapability(stack, Capabilities.FLUID_ITEM));
+        return HeatCapability.maybeHas(stack) && (slot != SLOT_OUTPUT || Helpers.mightHaveCapability(stack, Capabilities.FluidHandler.ITEM));
     }
 
     @Override
@@ -271,25 +274,25 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
     }
 
     @Override
-    public void loadAdditional(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
         temperature = nbt.getFloat("temperature");
         targetTemperature = nbt.getFloat("targetTemperature");
         targetTemperatureStabilityTicks = nbt.getInt("targetTemperatureStabilityTicks");
         lastUpdateTick = nbt.getLong("lastUpdateTick");
         needsRecipeUpdate = true;
-        super.loadAdditional(nbt);
+        super.loadAdditional(nbt, provider);
     }
 
     @Override
-    public void saveAdditional(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
         nbt.putFloat("temperature", temperature);
         nbt.putFloat("targetTemperature", targetTemperature);
         nbt.putInt("targetTemperatureStabilityTicks", targetTemperatureStabilityTicks);
         nbt.putBoolean("empty", Helpers.isEmpty(inventory) && inventory.alloy.isEmpty()); // We save this in order for the block item to efficiently check if the crucible is empty later
         nbt.putLong("lastUpdateTick", lastUpdateTick);
-        super.saveAdditional(nbt);
+        super.saveAdditional(nbt, provider);
     }
 
     @Override
@@ -316,10 +319,9 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         }
     }
 
-    static class CrucibleInventory implements DelegateItemHandler, SimpleFluidHandler, IHeatBlock
+    static class CrucibleInventory implements DelegateItemHandler, SimpleFluidHandler, IHeatConsumer, INBTSerializable<CompoundTag>
     {
         private final CrucibleBlockEntity crucible;
-
         private final InventoryItemHandler inventory;
         private final Alloy alloy;
 
@@ -343,18 +345,18 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         }
 
         @Override
-        public CompoundTag serializeNBT()
+        public CompoundTag serializeNBT(HolderLookup.Provider provider)
         {
             final CompoundTag nbt = new CompoundTag();
-            nbt.put("inventory", inventory.serializeNBT());
+            nbt.put("inventory", inventory.serializeNBT(provider));
             nbt.put("alloy", alloy.serializeNBT());
             return nbt;
         }
 
         @Override
-        public void deserializeNBT(CompoundTag nbt)
+        public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt)
         {
-            inventory.deserializeNBT(nbt.getCompound("inventory"));
+            inventory.deserializeNBT(provider, nbt.getCompound("inventory"));
             alloy.deserializeNBT(nbt.getCompound("alloy"));
         }
 
@@ -414,14 +416,6 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
 
         @Override
         public void setTemperature(float temperature)
-        {
-            crucible.targetTemperature = temperature;
-            crucible.targetTemperatureStabilityTicks = TARGET_TEMPERATURE_STABILITY_TICKS;
-            crucible.markForSync();
-        }
-
-        @Override
-        public void setTemperatureIfWarmer(float temperature)
         {
             // Override to still cause an update to the stability ticks
             if (temperature >= crucible.temperature)

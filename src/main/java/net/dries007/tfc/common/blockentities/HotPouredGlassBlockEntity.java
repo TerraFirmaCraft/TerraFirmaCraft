@@ -14,6 +14,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -172,9 +173,9 @@ public class HotPouredGlassBlockEntity extends TickableInventoryBlockEntity<Item
     }
 
     @Override
-    public void loadAdditional(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
-        super.loadAdditional(nbt);
+        super.loadAdditional(nbt, provider);
         capacity = nbt.getInt("capacity");
         isInitialTransition = nbt.getBoolean("isInitialTransition");
         animationTicks = nbt.getInt("animationTicks");
@@ -182,9 +183,9 @@ public class HotPouredGlassBlockEntity extends TickableInventoryBlockEntity<Item
     }
 
     @Override
-    public void saveAdditional(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
-        super.saveAdditional(nbt);
+        super.saveAdditional(nbt, provider);
         nbt.putInt("capacity", capacity);
         nbt.putBoolean("isInitialTransition", isInitialTransition);
         nbt.putInt("animationTicks", animationTicks);

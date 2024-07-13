@@ -11,8 +11,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -78,8 +79,7 @@ public class BellowsBlock extends DeviceBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         final Direction direction = state.getValue(FACING);
         return level.getBlockEntity(pos, TFCBlockEntities.BELLOWS.get()).map(bellows -> {
@@ -89,8 +89,7 @@ public class BellowsBlock extends DeviceBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
     {
         state.updateNeighbourShapes(level, pos, 3);
     }
@@ -107,11 +106,12 @@ public class BellowsBlock extends DeviceBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
         level.scheduleTick(pos, this, 2);
-        return level.getBlockEntity(pos, TFCBlockEntities.BELLOWS.get()).map(BellowsBlockEntity::onRightClick).orElse(InteractionResult.PASS);
+        return level.getBlockEntity(pos, TFCBlockEntities.BELLOWS.get())
+            .map(BellowsBlockEntity::onRightClick)
+            .orElse(ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION);
     }
 
     @Override
@@ -134,8 +134,7 @@ public class BellowsBlock extends DeviceBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType type)
+    protected boolean isPathfindable(BlockState state, PathComputationType pathComputationType)
     {
         return false;
     }

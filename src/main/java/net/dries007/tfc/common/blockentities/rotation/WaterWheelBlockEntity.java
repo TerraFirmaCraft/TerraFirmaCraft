@@ -8,25 +8,20 @@ package net.dries007.tfc.common.blockentities.rotation;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
-import net.dries007.tfc.common.blockentities.TFCBlockEntity;
 import net.dries007.tfc.common.blockentities.TickableBlockEntity;
 import net.dries007.tfc.common.blocks.RiverWaterBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rotation.WaterWheelBlock;
-import net.dries007.tfc.common.fluids.FluidHelpers;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.rotation.NetworkAction;
 import net.dries007.tfc.util.rotation.Node;
 import net.dries007.tfc.util.rotation.Rotation;
@@ -183,27 +178,21 @@ public class WaterWheelBlockEntity extends TickableBlockEntity implements Rotati
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag)
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
-        super.saveAdditional(tag);
+        super.saveAdditional(tag, provider);
         node.rotation().saveToTag(tag);
         tag.putBoolean("invalid", invalid);
         tag.putFloat("targetSpeed", targetSpeed);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag tag)
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
-        super.loadAdditional(tag);
+        super.loadAdditional(tag, provider);
         node.rotation().loadFromTag(tag);
         invalid = tag.getBoolean("invalid");
         targetSpeed = tag.getFloat("targetSpeed");
-    }
-
-    @Override
-    public AABB getRenderBoundingBox()
-    {
-        return INFINITE_EXTENT_AABB;
     }
 
     @Override

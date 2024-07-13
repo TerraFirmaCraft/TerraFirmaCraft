@@ -12,7 +12,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -66,12 +66,11 @@ public class PowderkegBlock extends SealableDeviceBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
-        if (level.getBlockEntity(pos) instanceof PowderkegBlockEntity powderkeg)
+        final PowderkegBlockEntity powderkeg = level.getBlockEntity(pos, TFCBlockEntities.POWDERKEG.get()).orElse(null);
+        if (powderkeg != null)
         {
-            final ItemStack stack = player.getItemInHand(hand);
             if (stack.isEmpty() && player.isShiftKeyDown())
             {
                 if (state.getValue(LIT))
@@ -84,15 +83,15 @@ public class PowderkegBlock extends SealableDeviceBlock
                     toggleSeal(level, pos, state);
                     Helpers.playPlaceSound(level, pos, state);
                 }
-                return InteractionResult.sidedSuccess(level.isClientSide);
+                return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
             else if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer)
             {
                 Helpers.openScreen(serverPlayer, powderkeg, powderkeg.getBlockPos());
-                return InteractionResult.sidedSuccess(level.isClientSide);
+                return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override
@@ -139,8 +138,7 @@ public class PowderkegBlock extends SealableDeviceBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
+    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
         if (level.hasNeighborSignal(pos) && !state.getValue(LIT) && state.getValue(SEALED))
         {

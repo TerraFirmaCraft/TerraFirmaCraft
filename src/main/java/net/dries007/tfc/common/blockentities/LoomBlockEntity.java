@@ -8,6 +8,7 @@ package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -221,7 +222,7 @@ public class LoomBlockEntity extends TickableInventoryBlockEntity<ItemStackHandl
     }
 
     @Override
-    public void saveAdditional(CompoundTag tag)
+    public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
         tag.putInt("progress", progress);
         if (lastTexture != null)
@@ -229,17 +230,17 @@ public class LoomBlockEntity extends TickableInventoryBlockEntity<ItemStackHandl
             tag.putString("lastTexture", lastTexture.toString());
         }
         tag.putLong("lastPushed", lastPushed);
-        super.saveAdditional(tag);
+        super.saveAdditional(tag, provider);
     }
 
     @Override
-    public void loadAdditional(CompoundTag tag)
+    public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
         progress = tag.getInt("progress");
         lastTexture = tag.contains("lastTexture", Tag.TAG_STRING) ? Helpers.resourceLocation(tag.getString("lastTexture")) : null;
         needsRecipeUpdate = true;
         lastPushed = tag.getLong("lastPushed");
-        super.loadAdditional(tag);
+        super.loadAdditional(tag, provider);
     }
 
     @Override

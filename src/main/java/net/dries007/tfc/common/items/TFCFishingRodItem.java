@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.items;
 
 import java.util.List;
-
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -25,11 +24,11 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.misc.TFCFishingHook;
 import net.dries007.tfc.util.Helpers;
-import org.jetbrains.annotations.Nullable;
 
 public class TFCFishingRodItem extends FishingRodItem
 {
@@ -90,11 +89,8 @@ public class TFCFishingRodItem extends FishingRodItem
         ItemStack rod = player.getItemInHand(hand);
         if (player.fishing != null)
         {
-            int dmg = player.fishing.retrieve(rod);
-            if (!level.isClientSide)
-            {
-                rod.hurtAndBreak(dmg, player, p -> p.broadcastBreakEvent(hand));
-            }
+            final int dmg = player.fishing.retrieve(rod);
+            Helpers.damageItem(rod, dmg, player, hand);
 
             level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FISHING_BOBBER_RETRIEVE, SoundSource.NEUTRAL, 1.0F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
             player.gameEvent(GameEvent.ITEM_INTERACT_FINISH);

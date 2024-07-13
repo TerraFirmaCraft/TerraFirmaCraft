@@ -85,7 +85,6 @@ import net.dries007.tfc.common.items.EmptyPanItem;
 import net.dries007.tfc.common.items.PanItem;
 import net.dries007.tfc.common.recipes.ChiselRecipe;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
-import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.client.accessor.LocalPlayerAccessor;
 import net.dries007.tfc.network.CycleChiselModePacket;

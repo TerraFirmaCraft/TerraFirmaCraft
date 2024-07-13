@@ -8,6 +8,7 @@ package net.dries007.tfc.common.blockentities;
 
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -201,25 +202,25 @@ public class PlacedItemBlockEntity extends InventoryBlockEntity<ItemStackHandler
     }
 
     @Override
-    public void loadAdditional(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
         isHoldingLargeItem = nbt.getBoolean("isHoldingLargeItem");
         rotations[0] = nbt.getFloat("rotation1");
         rotations[1] = nbt.getFloat("rotation2");
         rotations[2] = nbt.getFloat("rotation3");
         rotations[3] = nbt.getFloat("rotation4");
-        super.loadAdditional(nbt);
+        super.loadAdditional(nbt, provider);
     }
 
     @Override
-    public void saveAdditional(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
         nbt.putBoolean("isHoldingLargeItem", isHoldingLargeItem);
         nbt.putFloat("rotation1", rotations[0]);
         nbt.putFloat("rotation2", rotations[1]);
         nbt.putFloat("rotation3", rotations[2]);
         nbt.putFloat("rotation4", rotations[3]);
-        super.saveAdditional(nbt);
+        super.saveAdditional(nbt, provider);
     }
 
     protected void updateBlock()

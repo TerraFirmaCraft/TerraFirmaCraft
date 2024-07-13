@@ -15,6 +15,8 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
+import net.dries007.tfc.util.Helpers;
+
 public class TFCHoeItem extends HoeItem
 {
     public TFCHoeItem(Tier tier, int damage, float speed, Properties properties)
@@ -27,7 +29,7 @@ public class TFCHoeItem extends HoeItem
     {
         if (!level.isClientSide && ToolItem.willConsumeDurability(level, pos, state)) // use TFC check
         {
-            stack.hurtAndBreak(1, entity, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+            Helpers.damageItem(stack, entity, EquipmentSlot.MAINHAND);
         }
         return true;
     }

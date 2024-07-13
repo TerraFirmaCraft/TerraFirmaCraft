@@ -204,23 +204,5 @@ public class AnvilRecipe implements ISimpleRecipe<AnvilRecipe.Inventory>
          * Only called on server, free to return zero elsewhere.
          */
         long getSeed();
-
-        @Override
-        default ItemStack getItem(int index)
-        {
-            return getItem();
-        }
-
-        @Override
-        default int size()
-        {
-            return 1;
-        }
-
-        @Override
-        default boolean isEmpty()
-        {
-            return getItem().isEmpty();
-        }
     }
 }

@@ -23,7 +23,7 @@ import net.minecraft.world.level.block.CarvedPumpkinBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforge.neoforged.common.Tags;
+import net.neoforged.neoforge.common.Tags;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.DecayingBlockEntity;
@@ -43,7 +43,7 @@ public class TFCPumpkinBlock extends DecayingBlock
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
         final ItemStack held = player.getItemInHand(hand);
-        if (level.getBlockEntity(pos) instanceof DecayingBlockEntity decaying && (Helpers.isItem(held, TFCTags.Items.KNIVES) || Helpers.isItem(held, Tags.Items.SHEARS)) && TFCConfig.SERVER.enablePumpkinCarving.get())
+        if (level.getBlockEntity(pos) instanceof DecayingBlockEntity decaying && (Helpers.isItem(held, TFCTags.Items.KNIVES) || Helpers.isItem(held, Tags.Items.TOOLS_SHEAR)) && TFCConfig.SERVER.enablePumpkinCarving.get())
         {
             if (!level.isClientSide && !decaying.isRotten())
             {
@@ -53,7 +53,7 @@ public class TFCPumpkinBlock extends DecayingBlock
                 decaying.setStack(ItemStack.EMPTY);
                 level.setBlock(pos, Blocks.CARVED_PUMPKIN.defaultBlockState().setValue(CarvedPumpkinBlock.FACING, facing), 11);
 
-                held.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+                Helpers.damageItem(held, player, hand);
 
                 level.gameEvent(player, GameEvent.SHEAR, pos);
                 player.awardStat(Stats.ITEM_USED.get(held.getItem()));

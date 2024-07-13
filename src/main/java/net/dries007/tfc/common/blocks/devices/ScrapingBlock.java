@@ -12,7 +12,7 @@ import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
@@ -33,7 +33,6 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.ScrapingBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
-import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.util.Helpers;
 
 public class ScrapingBlock extends DeviceBlock
@@ -54,8 +53,7 @@ public class ScrapingBlock extends DeviceBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
+    protected BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
     {
         if (facing == Direction.DOWN && !Helpers.isBlock(facingState, TFCTags.Blocks.SCRAPING_SURFACE))
         {
@@ -65,19 +63,17 @@ public class ScrapingBlock extends DeviceBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
-        final ItemStack stack = player.getItemInHand(hand);
         if (Helpers.isItem(stack, TFCTags.Items.WAXES_SCRAPING_SURFACE) && !state.getValue(WAXED))
         {
             if (!player.isCreative()) stack.shrink(1);
             level.setBlockAndUpdate(pos, state.setValue(WAXED, true));
-            return InteractionResult.sidedSuccess(level.isClientSide);
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
         if (level.getBlockEntity(pos) instanceof ScrapingBlockEntity scraping)
         {
-            final Vec3 point = calculatePoint(player.getLookAngle(), hit.getLocation().subtract(new Vec3(pos.getX(), pos.getY(), pos.getZ())));
+            final Vec3 point = calculatePoint(player.getLookAngle(), hitResult.getLocation().subtract(new Vec3(pos.getX(), pos.getY(), pos.getZ())));
             if (state.getValue(WAXED))
             {
                 final DyeColor color = DyeColor.getColor(stack);
@@ -85,33 +81,30 @@ public class ScrapingBlock extends DeviceBlock
                 {
                     doParticles(level, pos, scraping, point);
                     if (!player.isCreative()) stack.shrink(1);
-                    return InteractionResult.sidedSuccess(level.isClientSide);
+                    return ItemInteractionResult.sidedSuccess(level.isClientSide);
                 }
             }
             else if (Helpers.isItem(stack.getItem(), TFCTags.Items.KNIVES))
             {
                 scraping.onClicked((float) point.x, (float) point.z);
-                stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+                Helpers.damageItem(stack, player, hand);
                 doParticles(level, pos, scraping, point);
-                return InteractionResult.sidedSuccess(level.isClientSide);
+                return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     private static void doParticles(Level level, BlockPos pos, ScrapingBlockEntity scraping, Vec3 point)
     {
         if (level instanceof ServerLevel server)
         {
-            scraping.getCapability(Capabilities.ITEM).ifPresent(cap -> {
-                server.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, cap.getStackInSlot(0)), pos.getX() + point.x, pos.getY() + 0.0625, pos.getZ() + point.z, 2, Helpers.triangle(level.random) / 2.0D, level.random.nextDouble() / 4.0D, Helpers.triangle(level.random) / 2.0D, 0.15f);
-            });
+            server.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, scraping.getInventory().getStackInSlot(0)), pos.getX() + point.x, pos.getY() + 0.0625, pos.getZ() + point.z, 2, Helpers.triangle(level.random) / 2.0D, level.random.nextDouble() / 4.0D, Helpers.triangle(level.random) / 2.0D, 0.15f);
         }
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
     {
         return SHAPE;
     }

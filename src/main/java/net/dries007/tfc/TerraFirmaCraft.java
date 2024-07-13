@@ -13,7 +13,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.presets.WorldPreset;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.InterModComms;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
@@ -53,10 +52,6 @@ import net.dries007.tfc.common.recipes.TFCRecipeSerializers;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.outputs.ItemStackModifiers;
 import net.dries007.tfc.common.recipes.outputs.PotOutput;
-import net.dries007.tfc.compat.jade.JadeIntegration;
-import net.dries007.tfc.compat.jade.TheOneProbeIntegration;
-import net.dries007.tfc.compat.patchouli.PatchouliClientEventHandler;
-import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.CauldronInteractions;
 import net.dries007.tfc.util.DispenserBehaviors;
@@ -162,7 +157,8 @@ public final class TerraFirmaCraft
         {
             ClientEventHandler.init(bus);
             ClientForgeEventHandler.init();
-            PatchouliClientEventHandler.init();
+            // todo 1.21, compat with patchy
+            //PatchouliClientEventHandler.init();
         }
 
         NeoForgeMod.enableMilkFluid();
@@ -196,11 +192,12 @@ public final class TerraFirmaCraft
             return null;
         });
 
-        PatchouliIntegration.registerMultiBlocks();
+        // todo 1.21, compat with patchy and jade
+        /*PatchouliIntegration.registerMultiBlocks();
         if (ModList.get().isLoaded("jade"))
         {
             JadeIntegration.registerToolHandlers();
-        }
+        }*/
     }
 
     public void registerRegistries(NewRegistryEvent event)
@@ -237,7 +234,8 @@ public final class TerraFirmaCraft
     {
         if (ModList.get().isLoaded("theoneprobe"))
         {
-            InterModComms.sendTo("theoneprobe", "getTheOneProbe", TheOneProbeIntegration::new);
+            // todo: 1.21, compat with top
+            //InterModComms.sendTo("theoneprobe", "getTheOneProbe", TheOneProbeIntegration::new);
         }
     }
 }

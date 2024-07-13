@@ -10,9 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.BiPredicate;
-import java.util.function.Function;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -20,7 +17,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
@@ -39,6 +35,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent;
 import org.jetbrains.annotations.NotNull;
 
 import net.dries007.tfc.common.TFCTags;
@@ -52,7 +49,6 @@ import net.dries007.tfc.common.blocks.ThatchBedBlock;
 import net.dries007.tfc.common.blocks.devices.DoubleIngotPileBlock;
 import net.dries007.tfc.common.blocks.devices.IngotPileBlock;
 import net.dries007.tfc.common.blocks.devices.SheetPileBlock;
-import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.container.ItemStackContainerProvider;
 import net.dries007.tfc.common.container.KnappingContainer;
 import net.dries007.tfc.common.container.TFCContainerProviders;
@@ -63,17 +59,15 @@ import net.dries007.tfc.util.data.KnappingType;
 import net.dries007.tfc.util.events.DouseFireEvent;
 import net.dries007.tfc.util.events.StartFireEvent;
 
+import static net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.*;
+
 /**
- * This exists due to problems in handling right click events
- * Forge provides a right click block event. This works for intercepting would-be calls to {@link BlockState#use(Level, Player, InteractionHand, BlockHitResult)}
- * However, this cannot be used (maintaining vanilla behavior) for item usages, or calls to {@link ItemStack#onItemUse(UseOnContext, Function)}, as the priority of those two behaviors are very different (blocks take priority, cancelling the event with an item behavior forces the item to take priority).
- * For clicking items *not* on blocks, the event {@link net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickItem} is used, and is passed through this system (as the "target air" parameter).
- * <p>
- * In vanilla, the sequence of actions starts on client, where first, a {@link net.minecraft.client.multiplayer.MultiPlayerGameMode#useItemOn(LocalPlayer, InteractionHand, BlockHitResult)} is invoked, which accounts for "use item on block" behavior. This triggers {@link Block#use(BlockState, Level, BlockPos, Player, InteractionHand, BlockHitResult)} first, then {@link Item#useOn(UseOnContext)}. If this does not do anything, the client will then invoke {@link net.minecraft.client.multiplayer.MultiPlayerGameMode#useItem(Player, InteractionHand)}, which eventually invokes {@link Item#use(Level, Player, InteractionHand)}.
- * <p>
- * This is in lieu of a system such as <a href="https://github.com/MinecraftForge/MinecraftForge/pull/6615">MinecraftForge#6615</a>
+ * This handles interactions with generic items and their {@code useItemOn()} behavior. We handle multiple different calls through here:
+ * <ul>
+ *     <li>Clicking on air uses {@link RightClickItem}, which checks if the interaction supports {@code targetAir}</li>
+ *     <li>Using an item on a block intercepts {@link UseItemOnBlockEvent}, at the phase {@code ITEM_AFTER_BLOCK}</li>
+ * </ul>
  */
-@SuppressWarnings("deprecation")
 public final class InteractionManager
 {
     private static final ThreadLocal<Boolean> ACTIVE = ThreadLocal.withInitial(() -> false);
@@ -170,7 +164,7 @@ public final class InteractionManager
                 level.playSound(player, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.4F + 0.8F);
                 if (!player.isCreative())
                 {
-                    stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(context.getHand()));
+                    Helpers.damageItem(stack, player, context.getHand());
                 }
                 return InteractionResult.SUCCESS;
             }
@@ -301,10 +295,9 @@ public final class InteractionManager
                 if (Helpers.isBlock(stateClicked, TFCBlocks.LOG_PILE.get()))
                 {
                     return level.getBlockEntity(posClicked, TFCBlockEntities.LOG_PILE.get())
-                        .flatMap(entity -> entity.getCapability(Capabilities.ITEM).map(t -> t))
-                        .map(cap -> {
+                        .map(entity -> {
                             ItemStack insertStack = stack.copy();
-                            insertStack = Helpers.insertAllSlots(cap, insertStack);
+                            insertStack = Helpers.insertAllSlots(entity.getInventory(), insertStack);
                             if (insertStack.getCount() < stack.getCount()) // Some logs were inserted
                             {
                                 if (!level.isClientSide())
@@ -320,7 +313,7 @@ public final class InteractionManager
                             if (result.consumesAction())
                             {
                                 // shrinking is handled by the item placement
-                                Helpers.insertOne(level, relativePos, TFCBlockEntities.LOG_PILE.get(), insertStack);
+                                Helpers.insertOne(level, relativePos, TFCBlockEntities.LOG_PILE, insertStack);
                             }
                             return result;
                         }).orElse(InteractionResult.PASS);
@@ -336,7 +329,7 @@ public final class InteractionManager
                     final InteractionResult result = logPilePlacement.onItemUse(stack, context); // Consumes the item if successful
                     if (result.consumesAction())
                     {
-                        Helpers.insertOne(level, actualPlacedPos, TFCBlockEntities.LOG_PILE.get(), stackBefore);
+                        Helpers.insertOne(level, actualPlacedPos, TFCBlockEntities.LOG_PILE, stackBefore);
                     }
                     return result;
                 }
@@ -356,14 +349,14 @@ public final class InteractionManager
                 {
                     final BlockState state = TFCBlocks.SCRAPING.get().defaultBlockState();
                     level.setBlockAndUpdate(abovePos, state);
-                    level.getBlockEntity(abovePos, TFCBlockEntities.SCRAPING.get())
-                        .map(entity -> entity.getCapability(Capabilities.ITEM).map(cap -> {
+                    return level.getBlockEntity(abovePos, TFCBlockEntities.SCRAPING.get())
+                        .map(entity -> {
                             final ItemStack insertStack = stack.split(1);
-                            stack.setCount(stack.getCount() + cap.insertItem(0, insertStack, false).getCount());
+                            stack.setCount(stack.getCount() + entity.getInventory().insertItem(0, insertStack, false).getCount());
                             entity.updateDisplayCache();
                             level.sendBlockUpdated(abovePos, state, state, Block.UPDATE_CLIENTS);
                             return InteractionResult.SUCCESS;
-                        }).orElse(InteractionResult.PASS));
+                        }).orElse(InteractionResult.PASS);
                 }
             }
             return InteractionResult.PASS;
@@ -391,7 +384,7 @@ public final class InteractionManager
                     if (player instanceof ServerPlayer serverPlayer)
                     {
                         final ItemStackContainerProvider provider = new ItemStackContainerProvider((stack1, hand, slot, playerInventory, windowId) -> KnappingContainer.create(stack1, type, hand, slot, playerInventory, windowId), Component.translatable("tfc.screen.knapping"));
-                        provider.openScreen(serverPlayer, context.getHand(), buffer -> buffer.writeResourceLocation(type.getId()));
+                        provider.openScreen(serverPlayer, context.getHand(), buffer -> buffer.writeResourceLocation(KnappingType.MANAGER.getIdOrThrow(type)));
                     }
                 }
                 return InteractionResult.SUCCESS;
@@ -574,22 +567,6 @@ public final class InteractionManager
             }
         }
         return InteractionResult.PASS;
-    }
-
-    public static OnItemUseAction createKnappingInteraction(BiPredicate<ItemStack, Player> condition, ItemStackContainerProvider container)
-    {
-        return (stack, context) -> {
-            final Player player = context.getPlayer();
-            if (player != null && context.getClickedPos().equals(BlockPos.ZERO) && condition.test(stack, player))
-            {
-                if (player instanceof ServerPlayer serverPlayer)
-                {
-                    container.openScreen(serverPlayer, context.getHand());
-                }
-                return InteractionResult.SUCCESS;
-            }
-            return InteractionResult.PASS;
-        };
     }
 
     public static Optional<InteractionResult> onItemUse(ItemStack stack, UseOnContext context, boolean isTargetingAir)

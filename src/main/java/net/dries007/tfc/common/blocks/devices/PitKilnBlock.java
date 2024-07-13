@@ -13,7 +13,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -90,8 +90,7 @@ public class PitKilnBlock extends DeviceBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
         if (facing == Direction.DOWN && !facingState.isFaceSturdy(level, facingPos, Direction.UP))
         {
@@ -109,8 +108,7 @@ public class PitKilnBlock extends DeviceBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
         if (!level.isClientSide() && hand == InteractionHand.MAIN_HAND)
         {
@@ -164,47 +162,42 @@ public class PitKilnBlock extends DeviceBlock
                 }
             }
         }
-        return InteractionResult.SUCCESS;
+        return ItemInteractionResult.SUCCESS;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getBlockSupportShape(BlockState state, BlockGetter reader, BlockPos pos)
+    protected VoxelShape getBlockSupportShape(BlockState state, BlockGetter reader, BlockPos pos)
     {
         return SHAPE_BY_LAYER[state.getValue(STAGE)];
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
+    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         BlockState blockstate = level.getBlockState(pos.below());
         return Block.isFaceFull(blockstate.getCollisionShape(level, pos.below()), Direction.UP);
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter levle, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter levle, BlockPos pos, CollisionContext context)
     {
         return SHAPE_BY_LAYER[state.getValue(STAGE)];
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return SHAPE_BY_LAYER[state.getValue(STAGE)];
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getVisualShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getVisualShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return SHAPE_BY_LAYER[state.getValue(STAGE)];
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult result, BlockGetter level, BlockPos pos, Player player)
+    public ItemStack getCloneItemStack(BlockState state, HitResult result, LevelReader level, BlockPos pos, Player player)
     {
         if (result instanceof BlockHitResult blockResult && level.getBlockEntity(pos) instanceof PitKilnBlockEntity placedItem)
         {

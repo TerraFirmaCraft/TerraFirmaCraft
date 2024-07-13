@@ -9,6 +9,7 @@ package net.dries007.tfc.common.blockentities.rotation;
 import java.util.EnumSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
@@ -126,20 +127,20 @@ public class HandWheelBlockEntity extends TickableInventoryBlockEntity<ItemStack
     }
 
     @Override
-    public void loadAdditional(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
         rotationTimer = nbt.getInt("rotationTimer");
         invalid = nbt.getBoolean("invalid");
-        super.loadAdditional(nbt);
+        super.loadAdditional(nbt, provider);
         needsStateUpdate = true;
     }
 
     @Override
-    public void saveAdditional(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
         nbt.putInt("rotationTimer", rotationTimer);
         nbt.putBoolean("invalid", invalid);
-        super.saveAdditional(nbt);
+        super.saveAdditional(nbt, provider);
     }
 
     @Override

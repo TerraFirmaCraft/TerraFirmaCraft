@@ -12,6 +12,7 @@ import java.util.function.Consumer;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -95,27 +96,27 @@ public class IngotPileBlockEntity extends TFCBlockEntity
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag)
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
         final ListTag stacks = new ListTag();
         for (final Entry entry : entries)
         {
-            stacks.add(entry.stack.save(new CompoundTag()));
+            stacks.add(entry.stack.save(provider));
         }
         tag.put("stacks", stacks);
-        super.saveAdditional(tag);
+        super.saveAdditional(tag, provider);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag tag)
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
         entries.clear();
         final ListTag list = tag.getList("stacks", Tag.TAG_COMPOUND);
         for (int i = 0; i < list.size(); i++)
         {
-            entries.add(new Entry(ItemStack.of(list.getCompound(i))));
+            entries.add(new Entry(ItemStack.parseOptional(provider, list.getCompound(i))));
         }
-        super.loadAdditional(tag);
+        super.loadAdditional(tag, provider);
     }
 
     public void fillTooltip(Consumer<Component> tooltip)

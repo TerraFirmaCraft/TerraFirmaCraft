@@ -13,14 +13,12 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.AABB;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.model.entity.WaterWheelModel;
 import net.dries007.tfc.common.blockentities.rotation.WaterWheelBlockEntity;
 import net.dries007.tfc.common.blocks.rotation.WaterWheelBlock;
-import net.dries007.tfc.util.Helpers;
 
 public class WaterWheelBlockEntityRenderer implements BlockEntityRenderer<WaterWheelBlockEntity>
 {
@@ -57,5 +55,11 @@ public class WaterWheelBlockEntityRenderer implements BlockEntityRenderer<WaterW
     public boolean shouldRenderOffScreen(WaterWheelBlockEntity entity)
     {
         return true;
+    }
+
+    @Override
+    public AABB getRenderBoundingBox(WaterWheelBlockEntity blockEntity)
+    {
+        return AABB.INFINITE;
     }
 }

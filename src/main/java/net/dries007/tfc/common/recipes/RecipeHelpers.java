@@ -151,13 +151,13 @@ public final class RecipeHelpers
     }
 
     @Nullable
-    public static <R extends Recipe<?> & IRecipePredicate<C>, C, K> R getRecipe(IndirectHashCollection<K, R> cache, C input, K key)
+    public static <R extends IRecipePredicate<C>, C, K> R getRecipe(IndirectHashCollection<K, R> cache, C input, K key)
     {
         return getRecipe(cache.getAll(key), input);
     }
 
     @Nullable
-    public static <R extends Recipe<?> & IRecipePredicate<C>, C> R getRecipe(Collection<R> recipes, C input)
+    public static <R extends IRecipePredicate<C>, C> R getRecipe(Collection<R> recipes, C input)
     {
         for (R recipe : recipes)
         {

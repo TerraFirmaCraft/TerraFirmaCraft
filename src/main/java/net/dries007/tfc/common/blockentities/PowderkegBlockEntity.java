@@ -8,6 +8,7 @@ package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -193,17 +194,17 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
         }
 
         @Override
-        public CompoundTag serializeNBT()
+        public CompoundTag serializeNBT(HolderLookup.Provider provider)
         {
             final CompoundTag nbt = new CompoundTag();
-            nbt.put("inventory", inventory.serializeNBT());
+            nbt.put("inventory", inventory.serializeNBT(provider));
             return nbt;
         }
 
         @Override
-        public void deserializeNBT(CompoundTag nbt)
+        public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt)
         {
-            inventory.deserializeNBT(nbt.getCompound("inventory"));
+            inventory.deserializeNBT(provider, nbt.getCompound("inventory"));
         }
 
         private boolean canModify()

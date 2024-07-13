@@ -8,6 +8,7 @@ package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
@@ -34,19 +35,19 @@ public class BloomBlockEntity extends TFCBlockEntity
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag)
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
-        super.saveAdditional(tag);
-        tag.put("item", item.save(new CompoundTag()));
+        super.saveAdditional(tag, provider);
+        tag.put("item", item.save(provider));
         tag.putInt("count", count);
         tag.putInt("maxCount", maxCount);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag tag)
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
-        super.loadAdditional(tag);
-        item = ItemStack.of(tag.getCompound("item"));
+        super.loadAdditional(tag, provider);
+        item = ItemStack.parseOptional(provider, tag.getCompound("item"));
         count = tag.getInt("count");
         maxCount = tag.getInt("maxCount");
     }

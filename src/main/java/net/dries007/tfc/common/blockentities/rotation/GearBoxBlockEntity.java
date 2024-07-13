@@ -9,11 +9,10 @@ package net.dries007.tfc.common.blockentities.rotation;
 import java.util.EnumSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.TFCBlockEntity;
@@ -22,7 +21,6 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.rotation.NetworkAction;
 import net.dries007.tfc.util.rotation.Node;
 import net.dries007.tfc.util.rotation.Rotation;
-import net.dries007.tfc.util.rotation.RotationNetworkManager;
 
 public class GearBoxBlockEntity extends TFCBlockEntity implements RotatingBlockEntity
 {
@@ -96,16 +94,16 @@ public class GearBoxBlockEntity extends TFCBlockEntity implements RotatingBlockE
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag)
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
-        super.saveAdditional(tag);
+        super.saveAdditional(tag, provider);
         tag.putBoolean("invalid", invalid);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag tag)
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
-        super.loadAdditional(tag);
+        super.loadAdditional(tag, provider);
         invalid = tag.getBoolean("invalid");
     }
 

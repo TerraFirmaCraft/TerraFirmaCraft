@@ -20,6 +20,8 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.common.recipes.IRecipePredicate;
+import net.dries007.tfc.common.recipes.RecipeHelpers;
 import net.dries007.tfc.network.StreamCodecs;
 import net.dries007.tfc.util.Helpers;
 
@@ -31,7 +33,7 @@ public record KnappingType(
     boolean useDisabledTexture,
     boolean spawnsParticles,
     ItemStack jeiIconItem
-)
+) implements IRecipePredicate<ItemStack>
 {
     public static final Codec<KnappingType> CODEC = RecordCodecBuilder.create(i -> i.group(
         SizedIngredient.FLAT_CODEC.fieldOf("input").forGetter(c -> c.inputItem),
@@ -59,19 +61,17 @@ public record KnappingType(
     @Nullable
     public static KnappingType get(Player player)
     {
-        final ItemStack stack = player.getMainHandItem();
-        for (KnappingType type : MANAGER.getValues())
-        {
-            if (type.inputItem.test(stack))
-            {
-                return type;
-            }
-        }
-        return null;
+        return RecipeHelpers.getRecipe(MANAGER.getValues(), player.getMainHandItem());
     }
 
     public KnappingType(SizedIngredient inputItem, Optional<Integer> amountToConsume, Holder<SoundEvent> clickSound, boolean consumeAfterComplete, boolean useDisabledTexture, boolean spawnsParticles, ItemStack jeiIconItem)
     {
         this(inputItem, amountToConsume.orElse(inputItem.count()), clickSound, consumeAfterComplete, useDisabledTexture, spawnsParticles, jeiIconItem);
+    }
+
+    @Override
+    public boolean matches(ItemStack input)
+    {
+        return inputItem.test(input);
     }
 }

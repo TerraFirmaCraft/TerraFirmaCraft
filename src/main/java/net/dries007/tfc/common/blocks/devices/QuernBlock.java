@@ -11,7 +11,7 @@ import com.mojang.math.Constants;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -30,7 +30,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
-import org.jetbrains.annotations.NotNull;
 
 import net.dries007.tfc.client.IHighlightHandler;
 import net.dries007.tfc.common.TFCTags;
@@ -62,32 +61,32 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
 
     private static SelectionPlace getPlayerSelection(BlockGetter level, BlockPos pos, Player player, BlockHitResult result)
     {
-        return level.getBlockEntity(pos, TFCBlockEntities.QUERN.get())
-            .flatMap(quern -> quern.getCapability(Capabilities.ITEM)
-                .map(inventory -> {
-                    final ItemStack held = player.getItemInHand(InteractionHand.MAIN_HAND);
-                    final Vec3 hit = result.getLocation();
-                    if (quern.hasHandstone())
-                    {
-                        if (!quern.isGrinding() && HANDLE_AABB.move(pos).contains(hit))
-                        {
-                            return SelectionPlace.HANDLE;
-                        }
-                        else if (!quern.isGrinding() && !held.isEmpty() || !inventory.getStackInSlot(SLOT_INPUT).isEmpty() && INPUT_SLOT_AABB.move(pos).contains(hit))
-                        {
-                            return SelectionPlace.INPUT_SLOT;
-                        }
-                    }
-                    if ((quern.hasHandstone() || quern.isItemValid(SLOT_HANDSTONE, held)) && HANDSTONE_AABB.move(pos).contains(hit))
-                    {
-                        return SelectionPlace.HANDSTONE;
-                    }
-                    return SelectionPlace.BASE;
-                }))
-            .orElse(SelectionPlace.BASE);
+        final QuernBlockEntity quern = level.getBlockEntity(pos, TFCBlockEntities.QUERN.get()).orElse(null);
+        if (quern != null)
+        {
+            final IItemHandler inventory = quern.getInventory();
+            final ItemStack held = player.getItemInHand(InteractionHand.MAIN_HAND);
+            final Vec3 hit = result.getLocation();
+            if (quern.hasHandstone())
+            {
+                if (!quern.isGrinding() && HANDLE_AABB.move(pos).contains(hit))
+                {
+                    return SelectionPlace.HANDLE;
+                }
+                else if (!quern.isGrinding() && !held.isEmpty() || !inventory.getStackInSlot(SLOT_INPUT).isEmpty() && INPUT_SLOT_AABB.move(pos).contains(hit))
+                {
+                    return SelectionPlace.INPUT_SLOT;
+                }
+            }
+            if ((quern.hasHandstone() || quern.isItemValid(SLOT_HANDSTONE, held)) && HANDSTONE_AABB.move(pos).contains(hit))
+            {
+                return SelectionPlace.HANDSTONE;
+            }
+        }
+        return SelectionPlace.BASE;
     }
 
-    private static InteractionResult insertOrExtract(Level level, QuernBlockEntity quern, IItemHandler inventory, Player player, ItemStack stack, int slot)
+    private static ItemInteractionResult insertOrExtract(Level level, QuernBlockEntity quern, IItemHandler inventory, Player player, ItemStack stack, int slot)
     {
         if (!stack.isEmpty())
         {
@@ -103,7 +102,7 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
         }
         quern.setAndUpdateSlots(slot);
         quern.markForSync();
-        return InteractionResult.sidedSuccess(level.isClientSide);
+        return ItemInteractionResult.sidedSuccess(level.isClientSide);
     }
 
     public static final BooleanProperty HAS_HANDSTONE = TFCBlockStateProperties.HAS_HANDSTONE;
@@ -121,8 +120,7 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
+    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
     {
         if (level.getBlockEntity(pos) instanceof QuernBlockEntity quern)
         {
@@ -135,41 +133,42 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
-        if (level.getBlockEntity(pos) instanceof final QuernBlockEntity quern && !quern.isGrinding())
+        final QuernBlockEntity quern = level.getBlockEntity(pos, TFCBlockEntities.QUERN.get()).orElse(null);
+        if (quern != null && !quern.isGrinding())
         {
+            final IItemHandler inventory = quern.getInventory();
             final ItemStack heldStack = player.getItemInHand(hand);
-            final SelectionPlace selection = getPlayerSelection(level, pos, player, hit);
-            return quern.getCapability(Capabilities.ITEM).map(inventory -> switch (selection)
-                    {
-                        case HANDLE -> attemptGrind(level, pos, quern);
-                        case INPUT_SLOT -> insertOrExtract(level, quern, inventory, player, heldStack, SLOT_INPUT);
-                        case HANDSTONE -> (player.isShiftKeyDown() ||  Helpers.isItem(heldStack, TFCTags.Items.HANDSTONE)) ? insertOrExtract(level, quern, inventory, player, heldStack, SLOT_HANDSTONE) : attemptGrind(level, pos, quern);
-                        case BASE -> insertOrExtract(level, quern, inventory, player, ItemStack.EMPTY, SLOT_OUTPUT);
-                    })
-                .orElse(InteractionResult.PASS);
+            final SelectionPlace selection = getPlayerSelection(level, pos, player, hitResult);
+            return switch (selection)
+            {
+                case HANDLE -> attemptGrind(level, pos, quern);
+                case INPUT_SLOT -> insertOrExtract(level, quern, inventory, player, heldStack, SLOT_INPUT);
+                case HANDSTONE -> (player.isShiftKeyDown() || Helpers.isItem(heldStack, TFCTags.Items.HANDSTONE))
+                    ? insertOrExtract(level, quern, inventory, player, heldStack, SLOT_HANDSTONE)
+                    : attemptGrind(level, pos, quern);
+                case BASE -> insertOrExtract(level, quern, inventory, player, ItemStack.EMPTY, SLOT_OUTPUT);
+            };
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
-    @NotNull
-    private InteractionResult attemptGrind(Level level, BlockPos pos, QuernBlockEntity quern)
+    private ItemInteractionResult attemptGrind(Level level, BlockPos pos, QuernBlockEntity quern)
     {
-        return !quern.isConnectedToNetwork() && quern.startGrinding() ? InteractionResult.sidedSuccess(level.isClientSide) : InteractionResult.FAIL;
+        return !quern.isConnectedToNetwork() && quern.startGrinding()
+            ? ItemInteractionResult.sidedSuccess(level.isClientSide)
+            : ItemInteractionResult.FAIL;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return state.getValue(HAS_HANDSTONE) ? FULL_SHAPE : BASE_SHAPE;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return state.getValue(HAS_HANDSTONE) ? COLLISION_FULL_SHAPE : BASE_SHAPE;
     }

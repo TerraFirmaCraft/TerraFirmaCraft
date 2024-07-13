@@ -11,7 +11,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
@@ -194,12 +193,6 @@ public class CrankshaftBlockEntity extends TFCBlockEntity implements RotationSin
             return Math.max(0, PISTON_LENGTH - movement.lengthEH);
         }
         return 0f;
-    }
-
-    @Override
-    public AABB getRenderBoundingBox()
-    {
-        return INFINITE_EXTENT_AABB; // Maks sure the shaft renders the extension into the adjacent block, in edge cases
     }
 
     public record ShaftMovement(float lengthEH, float raiseAngle) {}

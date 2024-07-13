@@ -8,10 +8,11 @@ package net.dries007.tfc.common.capabilities.heat;
 
 import java.util.Iterator;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
+import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,6 +27,7 @@ public final class HeatCapability
 {
     public static final DataManager<HeatDefinition> MANAGER = new DataManager<>(Helpers.identifier("item_heats"), "item heat", HeatDefinition.CODEC, HeatDefinition.STREAM_CODEC);
     public static final IndirectHashCollection<Item, HeatDefinition> CACHE = IndirectHashCollection.create(r -> RecipeHelpers.itemKeys(r.ingredient()), MANAGER::getValues);
+    public static final BlockCapability<IHeatConsumer, @Nullable Direction> CAPABILITY = BlockCapability.create(Helpers.identifier("heat"), IHeatConsumer.class, Direction.class);
 
     public static final float POTTERY_HEAT_CAPACITY = 1.2f;
 
@@ -261,13 +263,12 @@ public final class HeatCapability
         return new Remainder(burnTicks, burnTemperature, ticks);
     }
 
-    public static void provideHeatTo(Level level, BlockPos pos, float temperature)
+    public static void provideHeatTo(Level level, BlockPos pos, Direction to, float temperature)
     {
-        final BlockEntity entity = level.getBlockEntity(pos);
-        if (entity != null)
+        final @Nullable IHeatConsumer heat = level.getCapability(CAPABILITY, pos, to);
+        if (heat != null)
         {
-            // todo 1.21: capabilities
-            //entity.getCapability(HeatCapability.BLOCK_CAPABILITY).ifPresent(cap -> cap.setTemperatureIfWarmer(temperature));
+            heat.setTemperature(temperature);
         }
     }
 

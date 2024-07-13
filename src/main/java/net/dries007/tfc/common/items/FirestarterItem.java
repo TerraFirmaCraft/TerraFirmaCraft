@@ -67,7 +67,7 @@ public class FirestarterItem extends Item
             {
                 if (!player.isCreative())
                 {
-                    stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(InteractionHand.MAIN_HAND));
+                    Helpers.damageItem(stack, player, InteractionHand.MAIN_HAND);
                 }
                 if (FirepitBlock.canSurvive(level, abovePos)) // firepit
                 {

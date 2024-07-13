@@ -98,12 +98,12 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
      */
     public T getOrThrow(ResourceLocation id)
     {
-        final T t = types.get(id);
-        if (t == null)
-        {
-            throw new IllegalArgumentException("No " + typeName + " with id " + id);
-        }
-        return t;
+        return Objects.requireNonNull(types.get(id), () -> "Unregistered id: " + id);
+    }
+
+    public ResourceLocation getIdOrThrow(T t)
+    {
+        return Objects.requireNonNull(types.inverse().get(t), "Unregistered element");
     }
 
     /**

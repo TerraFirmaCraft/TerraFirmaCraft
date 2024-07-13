@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -122,24 +123,24 @@ public class CropBlockEntity extends TFCBlockEntity implements ICalendarTickable
     }
 
     @Override
-    public void loadAdditional(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
         growth = nbt.getFloat("growth");
         yield = nbt.getFloat("yield");
         expiry = nbt.getFloat("expiry");
         lastUpdateTick = nbt.getLong("tick");
         lastGrowthTick = nbt.getLong("lastGrowthTick");
-        super.loadAdditional(nbt);
+        super.loadAdditional(nbt, provider);
     }
 
     @Override
-    public void saveAdditional(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
         nbt.putFloat("growth", growth);
         nbt.putFloat("yield", yield);
         nbt.putFloat("expiry", expiry);
         nbt.putLong("tick", lastUpdateTick);
         nbt.putLong("lastGrowthTick", lastGrowthTick);
-        super.saveAdditional(nbt);
+        super.saveAdditional(nbt, provider);
     }
 }

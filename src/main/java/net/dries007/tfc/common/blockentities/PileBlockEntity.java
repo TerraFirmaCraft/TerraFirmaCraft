@@ -6,23 +6,21 @@
 
 package net.dries007.tfc.common.blockentities;
 
-import net.minecraft.core.HolderGetter;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.core.registries.BuiltInRegistries;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.GroundcoverBlockType;
 import net.dries007.tfc.common.blocks.ISpecialPile;
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.crop.WildCropBlock;
 import net.dries007.tfc.util.Helpers;
 
 public class PileBlockEntity extends TFCBlockEntity
@@ -75,22 +73,22 @@ public class PileBlockEntity extends TFCBlockEntity
     }
 
     @Override
-    protected void loadAdditional(CompoundTag tag)
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
         HolderGetter<Block> getter = getBlockGetter();
         internalState = NbtUtils.readBlockState(getter, tag.getCompound("internalState"));
         aboveState = tag.contains("aboveState", Tag.TAG_COMPOUND) ? NbtUtils.readBlockState(getter, tag.getCompound("aboveState")) : null;
-        super.loadAdditional(tag);
+        super.loadAdditional(tag, provider);
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag)
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
         tag.put("internalState", NbtUtils.writeBlockState(internalState));
         if (aboveState != null)
         {
             tag.put("aboveState", NbtUtils.writeBlockState(aboveState));
         }
-        super.saveAdditional(tag);
+        super.saveAdditional(tag, provider);
     }
 }

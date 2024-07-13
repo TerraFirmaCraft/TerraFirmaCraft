@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -115,21 +116,21 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
     }
 
     @Override
-    public void loadAdditional(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
-        Helpers.readItemStacksFromNbt(inputStacks, nbt.getList("inputStacks", Tag.TAG_COMPOUND));
+        Helpers.readItemStacksFromNbt(provider, inputStacks, nbt.getList("inputStacks", Tag.TAG_COMPOUND));
         litTick = nbt.getLong("litTick");
         lastPlayerTick = nbt.getLong("lastTick");
-        super.loadAdditional(nbt);
+        super.loadAdditional(nbt, provider);
     }
 
     @Override
-    public void saveAdditional(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
-        nbt.put("inputStacks", Helpers.writeItemStacksToNbt(inputStacks));
+        nbt.put("inputStacks", Helpers.writeItemStacksToNbt(provider, inputStacks));
         nbt.putLong("litTick", litTick);
         nbt.putLong("lastTick", lastPlayerTick);
-        super.saveAdditional(nbt);
+        super.saveAdditional(nbt, provider);
     }
 
     public long getRemainingTicks()

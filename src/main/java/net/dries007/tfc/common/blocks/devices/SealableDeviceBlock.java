@@ -14,12 +14,14 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -31,7 +33,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.items.ItemStackHandler;
-import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
@@ -58,8 +59,7 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize, Toolt
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return state.getValue(SEALED) ? SHAPE : SHAPE_UNSEALED;
     }
@@ -81,7 +81,7 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize, Toolt
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip, TooltipFlag flag)
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag tooltipFlag)
     {
         final CompoundTag tag = stack.getTagElement(Helpers.BLOCK_ENTITY_TAG);
         if (tag != null)
@@ -158,7 +158,7 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize, Toolt
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player)
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player)
     {
         final ItemStack stack = super.getCloneItemStack(state, target, level, pos, player);
         if (state.getValue(SEALED))
@@ -166,7 +166,7 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize, Toolt
             final BlockEntity entity = level.getBlockEntity(pos);
             if (entity instanceof InventoryBlockEntity<?> inv)
             {
-                inv.saveToItem(stack);
+                inv.saveToItem(stack, level.registryAccess());
             }
         }
         return stack;

@@ -15,7 +15,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -138,7 +138,7 @@ public class SoupPotRecipe extends PotRecipe
         }
 
         @Override
-        public InteractionResult onInteract(PotBlockEntity entity, Player player, ItemStack clickedWith)
+        public ItemInteractionResult onInteract(PotBlockEntity entity, Player player, ItemStack clickedWith)
         {
             if (Helpers.isItem(clickedWith.getItem(), TFCTags.Items.SOUP_BOWLS) && !stack.isEmpty())
             {
@@ -148,9 +148,9 @@ public class SoupPotRecipe extends PotRecipe
                 // take the player's bowl, give a soup
                 clickedWith.shrink(1);
                 ItemHandlerHelper.giveItemToPlayer(player, stack.split(1));
-                return InteractionResult.SUCCESS;
+                return ItemInteractionResult.SUCCESS;
             }
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
 
         @Override

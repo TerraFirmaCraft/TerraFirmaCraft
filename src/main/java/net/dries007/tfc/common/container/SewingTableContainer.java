@@ -290,7 +290,7 @@ public class SewingTableContainer extends Container implements ISlotCallback, Bu
                 placedMaterialData.set(i, -1);
             for (int i = 0; i < MAX_STITCHES; i++)
                 stitchData.set(i, 0);
-            Helpers.damageItem(inventory.getStackInSlot(SLOT_TOOL), 1);
+            Helpers.damageItem(inventory.getStackInSlot(SLOT_TOOL), player.level());
             access.execute((level, pos) -> Helpers.playSound(level, pos, SoundEvents.UI_LOOM_TAKE_RESULT));
         }
     }

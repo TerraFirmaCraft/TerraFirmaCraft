@@ -8,6 +8,7 @@ package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
@@ -140,24 +141,24 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
     }
 
     @Override
-    public void loadAdditional(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
         isLit = nbt.getBoolean("isLit");
         litTick = nbt.getLong("litTick");
-        ContainerHelper.loadAllItems(nbt.getCompound("strawItems"), strawItems);
-        ContainerHelper.loadAllItems(nbt.getCompound("logItems"), logItems);
+        ContainerHelper.loadAllItems(nbt.getCompound("strawItems"), strawItems, provider);
+        ContainerHelper.loadAllItems(nbt.getCompound("logItems"), logItems, provider);
         updateCache();
-        super.loadAdditional(nbt);
+        super.loadAdditional(nbt, provider);
     }
 
     @Override
-    public void saveAdditional(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
         nbt.putBoolean("isLit", isLit);
         nbt.putLong("litTick", litTick);
-        nbt.put("strawItems", ContainerHelper.saveAllItems(new CompoundTag(), strawItems));
-        nbt.put("logItems", ContainerHelper.saveAllItems(new CompoundTag(), logItems));
-        super.saveAdditional(nbt);
+        nbt.put("strawItems", ContainerHelper.saveAllItems(new CompoundTag(), strawItems, provider));
+        nbt.put("logItems", ContainerHelper.saveAllItems(new CompoundTag(), logItems, provider));
+        super.saveAdditional(nbt, provider);
     }
 
     @Override

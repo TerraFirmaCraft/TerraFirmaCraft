@@ -7,9 +7,7 @@
 package net.dries007.tfc.util.loot;
 
 
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSerializationContext;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
@@ -35,42 +33,32 @@ public class TFCLoot
     public static final LootContextParam<Boolean> ISOLATED = new LootContextParam<>(Helpers.identifier("isolated"));
     public static final LootContextParam<Boolean> BURNT_OUT = new LootContextParam<>(Helpers.identifier("burnt_out"));
 
-    public static final Id<LootItemConditionType> IS_ISOLATED = lootCondition("is_isolated", new InstanceSerializer<>(IsIsolatedCondition.INSTANCE));
-    public static final Id<LootItemConditionType> IS_BURNT_OUT = lootCondition("is_burnt_out", new InstanceSerializer<>(IsBurntOutCondition.INSTANCE));
-    public static final Id<LootItemConditionType> IS_MALE = lootCondition("is_male", new InstanceSerializer<>(IsMaleCondition.INSTANCE));
-    public static final Id<LootItemConditionType> ALWAYS_TRUE = lootCondition("always_true", new InstanceSerializer<>(AlwaysTrueCondition.INSTANCE));
-    public static final Id<LootItemConditionType> NOT_PREDATED = lootCondition("not_predated", new InstanceSerializer<>(NotPredatedCondition.INSTANCE));
-    public static final Id<LootNumberProviderType> CROP_YIELD = numberProvider("crop_yield_uniform", new MinMaxProvider.Serializer(CropYieldProvider::new));
-    public static final Id<LootNumberProviderType> ANIMAL_YIELD = numberProvider("animal_yield", new MinMaxProvider.Serializer(AnimalYieldProvider::new));
-    public static final Id<LootItemFunctionType<?>> COPY_FLUID = lootFunction("copy_fluid", new CopyFluidFunction.Serializer());
-    public static final Id<LootItemFunctionType<?>> ROTTEN = lootFunction("rotten", new RottenFunction.Serializer());
+    public static final Id<LootItemConditionType> IS_ISOLATED = lootCondition("is_isolated", MapCodec.unit(IsIsolatedCondition.INSTANCE));
+    public static final Id<LootItemConditionType> IS_BURNT_OUT = lootCondition("is_burnt_out", MapCodec.unit(IsBurntOutCondition.INSTANCE));
+    public static final Id<LootItemConditionType> IS_MALE = lootCondition("is_male", MapCodec.unit(IsMaleCondition.INSTANCE));
+    public static final Id<LootItemConditionType> ALWAYS_TRUE = lootCondition("always_true", MapCodec.unit(AlwaysTrueCondition.INSTANCE));
+    public static final Id<LootItemConditionType> NOT_PREDATED = lootCondition("not_predated", MapCodec.unit(NotPredatedCondition.INSTANCE));
+    public static final Id<LootNumberProviderType> CROP_YIELD = numberProvider("crop_yield_uniform", MinMaxProvider.codec(CropYieldProvider::new));
+    public static final Id<LootNumberProviderType> ANIMAL_YIELD = numberProvider("animal_yield", MinMaxProvider.codec(AnimalYieldProvider::new));
+    public static final LootFunctionId<CopyFluidFunction> COPY_FLUID = lootFunction("copy_fluid", CopyFluidFunction.CODEC);
+    public static final LootFunctionId<RottenFunction> ROTTEN = lootFunction("rotten", RottenFunction.CODEC);
 
-    private static Id<LootItemFunctionType<?>> lootFunction(String id, Serializer<? extends LootItemFunction> serializer)
+    private static <T extends LootItemFunction> LootFunctionId<T> lootFunction(String id, MapCodec<T> codec)
     {
-        return LOOT_FUNCTIONS.register(id, () -> new LootItemFunctionType<>(serializer));
+        return new LootFunctionId<>(LOOT_FUNCTIONS.register(id, () -> new LootItemFunctionType<>(codec)));
     }
 
-    private static Id<LootItemConditionType> lootCondition(String id, Serializer<? extends LootItemCondition> serializer)
+    private static Id<LootItemConditionType> lootCondition(String id, MapCodec<? extends LootItemCondition> codec)
     {
-        return CONDITIONS.register(id, () -> new LootItemConditionType(serializer));
+        return new Id<>(CONDITIONS.register(id, () -> new LootItemConditionType(codec)));
     }
 
-    private static Id<LootNumberProviderType> numberProvider(String id, Serializer<? extends NumberProvider> serializer)
+    private static Id<LootNumberProviderType> numberProvider(String id, MapCodec<? extends NumberProvider> codec)
     {
-        return NUMBER_PROVIDERS.register(id, () -> new LootNumberProviderType(serializer));
+        return new Id<>(NUMBER_PROVIDERS.register(id, () -> new LootNumberProviderType(codec)));
     }
 
     public record Id<T>(DeferredHolder<T, T> holder) implements RegistryHolder<T, T> {}
-
-    public record InstanceSerializer<T extends LootItemCondition>(T instance) implements Serializer<T>
-    {
-        @Override
-        public void serialize(JsonObject json, T value, JsonSerializationContext context) { }
-
-        @Override
-        public T deserialize(JsonObject json, JsonDeserializationContext context)
-        {
-            return instance;
-        }
-    }
+    public record LootFunctionId<T extends LootItemFunction>(DeferredHolder<LootItemFunctionType<?>, LootItemFunctionType<T>> holder)
+        implements RegistryHolder<LootItemFunctionType<?>, LootItemFunctionType<T>> {}
 }

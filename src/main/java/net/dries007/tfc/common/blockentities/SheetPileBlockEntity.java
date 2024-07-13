@@ -12,6 +12,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -127,18 +128,18 @@ public class SheetPileBlockEntity extends TFCBlockEntity
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag)
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
-        tag.put("stacks", Helpers.writeItemStacksToNbt(stacks));
-        super.saveAdditional(tag);
+        tag.put("stacks", Helpers.writeItemStacksToNbt(provider, stacks));
+        super.saveAdditional(tag, provider);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag tag)
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
-        Helpers.readItemStacksFromNbt(stacks, tag.getList("stacks", Tag.TAG_COMPOUND));
+        Helpers.readItemStacksFromNbt(provider, stacks, tag.getList("stacks", Tag.TAG_COMPOUND));
         Arrays.fill(cachedMetals, null); // Invalidate metal cache
-        super.loadAdditional(tag);
+        super.loadAdditional(tag, provider);
     }
 
     public void fillTooltip(Consumer<Component> tooltip)

@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -40,17 +41,17 @@ public class DecayingBlockEntity extends TFCBlockEntity
     }
 
     @Override
-    public void loadAdditional(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
-        super.loadAdditional(nbt);
-        this.stack = ItemStack.of(nbt.getCompound("item"));
+        super.loadAdditional(nbt, provider);
+        this.stack = ItemStack.parseOptional(provider, nbt.getCompound("item"));
     }
 
     @Override
-    public void saveAdditional(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
-        super.saveAdditional(nbt);
-        nbt.put("item", stack.save(new CompoundTag()));
+        super.saveAdditional(nbt, provider);
+        nbt.put("item", stack.save(provider));
     }
 
     public boolean isRotten()

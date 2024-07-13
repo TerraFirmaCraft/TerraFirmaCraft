@@ -13,7 +13,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -22,6 +22,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -63,11 +64,9 @@ public class DryingBricksBlock extends BottomSupportedDeviceBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
-        final ItemStack held = player.getItemInHand(hand);
-        if (Helpers.isItem(held, asItem()) && !player.isShiftKeyDown() && !state.getValue(DRIED))
+        if (Helpers.isItem(stack, asItem()) && !player.isShiftKeyDown() && !state.getValue(DRIED))
         {
             final int count = state.getValue(COUNT);
             if (count < 4)
@@ -77,12 +76,12 @@ public class DryingBricksBlock extends BottomSupportedDeviceBlock
                 TickCounterBlockEntity.reset(level, pos);
                 if (!player.isCreative())
                 {
-                    held.shrink(1);
+                    stack.shrink(1);
                 }
-                return InteractionResult.sidedSuccess(level.isClientSide);
+                return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
         }
-        else if (held.isEmpty() && player.isShiftKeyDown())
+        else if (stack.isEmpty() && player.isShiftKeyDown())
         {
             int count = state.getValue(COUNT);
             ItemStack drop = new ItemStack(state.getValue(DRIED) ? dryItem.get() : asItem());
@@ -96,13 +95,14 @@ public class DryingBricksBlock extends BottomSupportedDeviceBlock
                 level.setBlockAndUpdate(pos, state.getFluidState().createLegacyBlock());
             }
             playSound(state, level, pos, player);
-            return InteractionResult.sidedSuccess(level.isClientSide);
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
+    @Nullable
     @Override
-    public @Nullable BlockState getStateForPlacement(BlockPlaceContext context)
+    public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         final Level level = context.getLevel();
         final BlockPos pos = context.getClickedPos();
@@ -119,14 +119,13 @@ public class DryingBricksBlock extends BottomSupportedDeviceBlock
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player)
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player)
     {
         return state.getValue(DRIED) ? dryItem.get().getDefaultInstance() : super.getCloneItemStack(state, target, level, pos, player);
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public boolean canBeReplaced(BlockState state, BlockPlaceContext context)
+    protected boolean canBeReplaced(BlockState state, BlockPlaceContext context)
     {
         return !context.isSecondaryUseActive() && Helpers.isItem(context.getItemInHand(), this.asItem()) && state.getValue(COUNT) < 4 && !state.getValue(DRIED) || super.canBeReplaced(state, context);
     }
@@ -166,8 +165,7 @@ public class DryingBricksBlock extends BottomSupportedDeviceBlock
      * Random tick falls through to here
      */
     @Override
-    @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
     {
         if (state.getValue(DRIED)) return;
         level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(counter -> {

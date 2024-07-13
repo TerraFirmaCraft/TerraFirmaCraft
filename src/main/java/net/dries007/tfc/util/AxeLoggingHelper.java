@@ -6,8 +6,11 @@
 
 package net.dries007.tfc.util;
 
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -38,7 +41,7 @@ public class AxeLoggingHelper
         for (BlockPos log : findLogs(level, pos))
         {
             level.destroyBlock(log, !inefficient || level.getRandom().nextFloat() < 0.6f, player);
-            axe.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(InteractionHand.MAIN_HAND));
+            Helpers.damageItem(axe, player, InteractionHand.MAIN_HAND);
             if (axe.isEmpty())
             {
                 return; // stop breaking if the axe is broken

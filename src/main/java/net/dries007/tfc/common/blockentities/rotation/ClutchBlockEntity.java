@@ -9,6 +9,7 @@ package net.dries007.tfc.common.blockentities.rotation;
 import java.util.Set;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -33,9 +34,9 @@ public class ClutchBlockEntity extends AxleBlockEntity
     }
 
     @Override
-    protected void loadAdditional(CompoundTag tag)
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
-        super.loadAdditional(tag);
+        super.loadAdditional(tag, provider);
 
         // When we receive an update from client due to the state changing in neighborChanged(), we need to re-update connections
         updateConnections();

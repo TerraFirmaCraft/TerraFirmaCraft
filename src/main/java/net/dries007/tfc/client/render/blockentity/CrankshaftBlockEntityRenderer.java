@@ -24,6 +24,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.client.model.data.ModelData;
 
 import net.dries007.tfc.client.RenderHelpers;
@@ -144,5 +145,11 @@ public class CrankshaftBlockEntityRenderer implements BlockEntityRenderer<Cranks
     public boolean shouldRenderOffScreen(CrankshaftBlockEntity entity)
     {
         return true;
+    }
+
+    @Override
+    public AABB getRenderBoundingBox(CrankshaftBlockEntity blockEntity)
+    {
+        return AABB.INFINITE;
     }
 }

@@ -8,6 +8,7 @@ package net.dries007.tfc.common.blockentities;
 
 import java.util.List;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -38,17 +39,17 @@ public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland
     }
 
     @Override
-    public void loadAdditional(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
         loadNutrients(nbt);
-        super.loadAdditional(nbt);
+        super.loadAdditional(nbt, provider);
     }
 
     @Override
-    public void saveAdditional(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
         saveNutrients(nbt);
-        super.saveAdditional(nbt);
+        super.saveAdditional(nbt, provider);
     }
 
     public void addHoeOverlayInfo(Level level, BlockPos pos, List<Component> text, boolean includeHydration, boolean includeNutrients)

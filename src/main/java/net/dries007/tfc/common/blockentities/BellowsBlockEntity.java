@@ -7,14 +7,14 @@
 package net.dries007.tfc.common.blockentities;
 
 import java.util.List;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.level.Level;
@@ -112,17 +112,17 @@ public class BellowsBlockEntity extends TFCBlockEntity
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag)
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
-        super.saveAdditional(tag);
+        super.saveAdditional(tag, provider);
         tag.putLong("pushed", lastPushed);
         tag.putBoolean("justPushed", justPushed);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag tag)
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
-        super.loadAdditional(tag);
+        super.loadAdditional(tag, provider);
         lastPushed = tag.getLong("pushed");
         justPushed = tag.getBoolean("justPushed");
     }
@@ -155,18 +155,18 @@ public class BellowsBlockEntity extends TFCBlockEntity
         return MIN_EXTENSION;
     }
 
-    public InteractionResult onRightClick()
+    public ItemInteractionResult onRightClick()
     {
         assert level != null;
 
         if (level.getGameTime() - lastPushed < 20 || isConnectedToNetwork())
         {
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
         doPush();
 
         // Return success in both cases because we want the player's arm to swing, because they 'tried'
-        return InteractionResult.SUCCESS;
+        return ItemInteractionResult.SUCCESS;
     }
 
     private void doPush()

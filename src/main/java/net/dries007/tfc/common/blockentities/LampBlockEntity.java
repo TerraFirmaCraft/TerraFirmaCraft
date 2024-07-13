@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
@@ -85,16 +86,16 @@ public class LampBlockEntity extends TickCounterBlockEntity implements FluidTank
     }
 
     @Override
-    public void loadAdditional(CompoundTag tag)
+    public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
-        tank.readFromNBT(tag.getCompound("tank"));
-        super.loadAdditional(tag);
+        tank.readFromNBT(provider, tag.getCompound("tank"));
+        super.loadAdditional(tag, provider);
     }
 
     @Override
-    public void saveAdditional(CompoundTag tag)
+    public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
-        tag.put("tank", tank.writeToNBT(new CompoundTag()));
-        super.saveAdditional(tag);
+        tag.put("tank", tank.writeToNBT(provider, new CompoundTag()));
+        super.saveAdditional(tag, provider);
     }
 }

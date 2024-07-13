@@ -141,17 +141,5 @@ public class WeldingRecipe implements ISimpleRecipe<WeldingRecipe.Inventory>
         ItemStack getRight();
 
         int getTier();
-
-        @Override
-        default ItemStack getItem(int index)
-        {
-            return index == 0 ? getLeft() : getRight();
-        }
-
-        @Override
-        default int size()
-        {
-            return 2;
-        }
     }
 }

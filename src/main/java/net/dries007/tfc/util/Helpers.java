@@ -22,6 +22,7 @@ import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import com.google.common.collect.Iterators;
@@ -30,10 +31,10 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -49,6 +50,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
@@ -56,6 +58,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.PathfinderMob;
@@ -63,7 +66,6 @@ import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -72,7 +74,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -81,6 +82,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ShulkerBoxBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -98,10 +100,12 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.util.thread.EffectiveSide;
 import net.neoforged.neoforge.capabilities.BlockCapability;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.ItemCapability;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
@@ -110,8 +114,8 @@ import org.slf4j.Logger;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
 import net.dries007.tfc.common.blocks.ISlowEntities;
-import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
@@ -123,7 +127,6 @@ import net.dries007.tfc.common.effect.TFCEffects;
 import net.dries007.tfc.common.entities.ai.prey.PestAi;
 import net.dries007.tfc.common.entities.prey.Pest;
 import net.dries007.tfc.common.items.TFCShieldItem;
-import net.dries007.tfc.common.recipes.RecipeHelpers;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.data.Metal;
 
@@ -150,7 +153,6 @@ public final class Helpers
      */
     public static final boolean TEST_ENVIRONMENT = detectTestSourcesPresent();
 
-    public static final String BLOCK_ENTITY_TAG = BlockItem.BLOCK_ENTITY_TAG;
 
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final int PRIME_X = 501125321;
@@ -196,6 +198,12 @@ public final class Helpers
     public static boolean isJEIEnabled()
     {
         return JEI;
+    }
+
+    @Nullable
+    public static <T, C> T getCapability(BlockCapability<T, C> capability, BlockEntity entity)
+    {
+        return getCapability(capability, entity, null);
     }
 
     @Nullable
@@ -473,32 +481,61 @@ public final class Helpers
         CACHED_RECIPE_MANAGER = manager;
     }
 
-    public static ItemStack damageCraftingItem(ItemStack stack, int amount)
+    /**
+     * Damages {@code stack} by one point, when held by {@code entity} in {@code slot}
+     */
+    public static void damageItem(ItemStack stack, LivingEntity entity, EquipmentSlot slot)
     {
-        final @Nullable Player player = RecipeHelpers.getCraftingPlayer(); // Mods may not set this properly
-        if (player instanceof ServerPlayer serverPlayer)
-        {
-            stack.hurtAndBreak(amount, serverPlayer.serverLevel(), serverPlayer, entity -> {});
-        }
-        else
-        {
-            damageItem(stack, amount);
-        }
-        return stack;
+        stack.hurtAndBreak(1, entity, slot);
     }
 
     /**
-     * A replacement for {@link ItemStack#hurtAndBreak(int, LivingEntity, Consumer)} when an entity is not present
+     * Damages {@code stack} by {@code amount}, when held by {@code entity} in {@code hand}
      */
-    public static void damageItem(ItemStack stack, int amount)
+    public static void damageItem(ItemStack stack, int amount, LivingEntity entity, InteractionHand hand)
     {
-        // There's no player here, so we can't safely do anything.
-        //amount = stack.getItem().damageItem(stack, amount, null, e -> {});
-        if (stack.hurt(amount, RandomSource.create(), null))
+        stack.hurtAndBreak(amount, entity, LivingEntity.getSlotForHand(hand));
+    }
+
+    /**
+     * Damages {@code stack} by one point, when held by {@code entity} in {@code hand}
+     */
+    public static void damageItem(ItemStack stack, LivingEntity entity, InteractionHand hand)
+    {
+        stack.hurtAndBreak(1, entity, LivingEntity.getSlotForHand(hand));
+    }
+
+    /**
+     * Damages {@code stack} without an entity present.
+     */
+    public static void damageItem(ItemStack stack, Level level)
+    {
+        if (level instanceof ServerLevel serverLevel)
         {
-            stack.shrink(1);
-            stack.setDamageValue(0);
+            stack.hurtAndBreak(1, serverLevel, null, item -> {});
         }
+    }
+
+    /**
+     * Damages {@code stack} without a level present. Note that this <strong>is not correct!</strong> as it doesn't account for enchantments,
+     * but in this case it is the closest approximation we can do.
+     * @deprecated Prefer using any other overload than this
+     */
+    @Deprecated
+    public static ItemStack damageItem(ItemStack stack)
+    {
+        if (stack.isDamageableItem())
+        {
+            final int amount = stack.getItem().damageItem(stack, 1, null, item -> {});
+            final int damage = stack.getDamageValue() + amount;
+
+            stack.setDamageValue(damage);
+            if (damage >= stack.getMaxDamage())
+            {
+                stack.shrink(1);
+            }
+        }
+        return stack;
     }
 
     /**
@@ -644,41 +681,41 @@ public final class Helpers
         };
     }
 
-    public static ListTag writeItemStacksToNbt(List<ItemStack> stacks)
+    public static ListTag writeItemStacksToNbt(HolderLookup.Provider provider, List<ItemStack> stacks)
     {
         final ListTag list = new ListTag();
         for (final ItemStack stack : stacks)
         {
-            list.add(stack.save(new CompoundTag()));
+            list.add(stack.save(provider));
         }
         return list;
     }
 
-    public static ListTag writeItemStacksToNbt(@Nullable ItemStack[] stacks)
+    public static ListTag writeItemStacksToNbt(HolderLookup.Provider provider, @Nullable ItemStack[] stacks)
     {
         final ListTag list = new ListTag();
         for (final ItemStack stack : stacks)
         {
-            list.add((stack == null ? ItemStack.EMPTY : stack).save(new CompoundTag()));
+            list.add((stack == null ? ItemStack.EMPTY : stack).save(provider));
         }
         return list;
     }
 
-    public static void readItemStacksFromNbt(List<ItemStack> stacks, ListTag list)
+    public static void readItemStacksFromNbt(HolderLookup.Provider provider, List<ItemStack> stacks, ListTag list)
     {
         stacks.clear();
         for (int i = 0; i < list.size(); i++)
         {
-            stacks.add(ItemStack.of(list.getCompound(i)));
+            stacks.add(ItemStack.parseOptional(provider, list.getCompound(i)));
         }
     }
 
-    public static void readItemStacksFromNbt(ItemStack[] stacks, ListTag list)
+    public static void readItemStacksFromNbt(HolderLookup.Provider provider, ItemStack[] stacks, ListTag list)
     {
         assert list.size() == stacks.length;
         for (int i = 0; i < list.size(); i++)
         {
-            stacks[i] = ItemStack.of(list.getCompound(i));
+            stacks[i] = ItemStack.parseOptional(provider, list.getCompound(i));
         }
     }
 
@@ -830,22 +867,19 @@ public final class Helpers
         return stack;
     }
 
-    /**
-     * This WILL NOT MUTATE the stack you give it. Do your own handling!
-     */
-    public static boolean insertOne(Level level, BlockPos pos, BlockEntityType<? extends BlockEntity> type, ItemStack stack)
+    public static boolean insertOne(Level level, BlockPos pos, Supplier<? extends BlockEntityType<? extends InventoryBlockEntity<?>>> type, ItemStack stack)
     {
-        return insertOne(level.getBlockEntity(pos, type), stack);
+        return level.getBlockEntity(pos, type.get()).map(entity -> insertOne(entity, stack)).orElse(false);
     }
 
-    public static boolean insertOne(Optional<? extends BlockEntity> blockEntity, ItemStack stack)
+    /**
+     * Inserts one item of the provided {@code stack} to the inventory of the block entity {@code entity}. Note that this method
+     * will not modify the input stack or consume another item!
+     * @return {@code true} if the insertion was successful
+     */
+    public static boolean insertOne(InventoryBlockEntity<?> entity, ItemStack stack)
     {
-        ItemStack toInsert = stack.copy();
-        return blockEntity.flatMap(entity -> entity.getCapability(Capabilities.ITEM).resolve())
-            .map(cap -> {
-                toInsert.setCount(1);
-                return insertAllSlots(cap, toInsert).isEmpty();
-            }).orElse(false);
+        return insertAllSlots(entity.getInventory(), stack.copyWithCount(1)).isEmpty();
     }
 
     /**
@@ -1026,8 +1060,10 @@ public final class Helpers
         if (!fluidStack.isEmpty())
         {
             final ItemStack mergeStack = inventory.getStackInSlot(slot);
-            return mergeStack.getCapability(Capabilities.FLUID).map(fluidCap -> {
-                final int filled = fluidCap.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
+            final @Nullable IFluidHandlerItem fluidHandler = mergeStack.getCapability(Capabilities.FluidHandler.ITEM);
+            if (fluidHandler != null)
+            {
+                final int filled = fluidHandler.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
                 if (filled > 0)
                 {
                     final @Nullable IHeat mergeHeat = HeatCapability.get(mergeStack);
@@ -1042,7 +1078,8 @@ public final class Helpers
                 final FluidStack remainder = fluidStack.copy();
                 remainder.shrink(filled);
                 return remainder;
-            }).orElse(fluidStack);
+            }
+            return fluidStack;
         }
         return FluidStack.EMPTY;
     }
@@ -1386,7 +1423,7 @@ public final class Helpers
 
     /**
      * Adds a tooltip based on an inventory, listing out the items inside.
-     * Modified from {@link net.minecraft.world.level.block.ShulkerBoxBlock#appendHoverText(ItemStack, BlockGetter, List, TooltipFlag)}
+     * Modified from {@link ShulkerBoxBlock#appendHoverText(ItemStack, Item.TooltipContext, List, TooltipFlag)}
      */
     public static void addInventoryTooltipInfo(IItemHandler inventory, List<Component> tooltips)
     {

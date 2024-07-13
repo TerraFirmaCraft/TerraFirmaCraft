@@ -16,9 +16,9 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
@@ -27,14 +27,13 @@ import net.minecraft.world.phys.HitResult;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.BurningLogPileBlockEntity;
 import net.dries007.tfc.common.blockentities.LogPileBlockEntity;
-import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.util.Helpers;
 
-public class BurningLogPileBlock extends BaseEntityBlock implements IForgeBlockExtension, EntityBlockExtension
+public class BurningLogPileBlock extends Block implements IForgeBlockExtension, EntityBlockExtension
 {
     public static void lightLogPile(Level level, BlockPos pos)
     {
@@ -116,8 +115,7 @@ public class BurningLogPileBlock extends BaseEntityBlock implements IForgeBlockE
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
+    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         tryLightNearby(level, pos);
     }
@@ -140,7 +138,7 @@ public class BurningLogPileBlock extends BaseEntityBlock implements IForgeBlockE
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player)
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader world, BlockPos pos, Player player)
     {
         return new ItemStack(Items.CHARCOAL);
     }

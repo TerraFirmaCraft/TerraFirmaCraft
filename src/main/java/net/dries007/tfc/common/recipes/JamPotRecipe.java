@@ -17,7 +17,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -94,16 +94,16 @@ public class JamPotRecipe extends PotRecipe
         }
 
         @Override
-        public InteractionResult onInteract(PotBlockEntity entity, Player player, ItemStack clickedWith)
+        public ItemInteractionResult onInteract(PotBlockEntity entity, Player player, ItemStack clickedWith)
         {
             if (Helpers.isItem(clickedWith, TFCTags.Items.EMPTY_JAR_WITH_LID) && !stack.isEmpty())
             {
                 // take the player's empty jar
                 clickedWith.shrink(1);
                 ItemHandlerHelper.giveItemToPlayer(player, stack.split(1));
-                return InteractionResult.SUCCESS;
+                return ItemInteractionResult.SUCCESS;
             }
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
 
         @Override

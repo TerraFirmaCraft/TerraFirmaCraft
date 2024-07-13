@@ -12,12 +12,13 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -45,7 +46,7 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
     /**
      * @return if there is, given the current state values, no way this block can be supported.
      */
-    public static boolean isEmpty(BlockState state)
+    public static boolean isEmptyContents(BlockState state)
     {
         for (int i = 0; i < 4; i++)
         {
@@ -117,14 +118,13 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos pos, BlockPos facingPos)
+    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos pos, BlockPos facingPos)
     {
         BlockState updateState = updateStateValues(level, pos.below(), state);
         PlacedItemBlockEntity placedItem = level.getBlockEntity(pos, TFCBlockEntities.PLACED_ITEM.get()).orElse(null);
         if (placedItem != null)
         {
-            if (isEmpty(updateState))
+            if (isEmptyContents(updateState))
             {
                 return Blocks.AIR.defaultBlockState();
             }
@@ -133,8 +133,7 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
         final PlacedItemBlockEntity placedItem = level.getBlockEntity(pos, TFCBlockEntities.PLACED_ITEM.get()).orElse(null);
         if (placedItem != null)
@@ -146,23 +145,23 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
                 {
                     PlacedItemBlockEntity.convertPlacedItemToPitKiln(level, pos, held.split(1));
                 }
-                return InteractionResult.SUCCESS;
+                return ItemInteractionResult.SUCCESS;
             }
-            return placedItem.onRightClick(player, held, hit) ? InteractionResult.SUCCESS : InteractionResult.PASS;
+            return placedItem.onRightClick(player, held, hitResult)
+                ? ItemInteractionResult.SUCCESS
+                : ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return cachedShapes.get(state);
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return Shapes.empty();
     }
@@ -174,7 +173,7 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult result, BlockGetter level, BlockPos pos, Player player)
+    public ItemStack getCloneItemStack(BlockState state, HitResult result, LevelReader level, BlockPos pos, Player player)
     {
         if (result instanceof BlockHitResult blockResult)
         {

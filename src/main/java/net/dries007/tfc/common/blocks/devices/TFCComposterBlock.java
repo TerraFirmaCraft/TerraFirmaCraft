@@ -18,7 +18,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -39,7 +39,6 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.blockentities.ComposterBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
-import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
@@ -65,15 +64,15 @@ public class TFCComposterBlock extends BottomSupportedDeviceBlock implements Ent
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
-        return level.getBlockEntity(pos, TFCBlockEntities.COMPOSTER.get()).map(composter -> composter.use(player.getItemInHand(hand), player, level.isClientSide)).orElse(InteractionResult.PASS);
+        return level.getBlockEntity(pos, TFCBlockEntities.COMPOSTER.get())
+            .map(composter -> composter.use(player.getItemInHand(hand), player, level.isClientSide))
+            .orElse(ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION);
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
+    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         level.getBlockEntity(pos, TFCBlockEntities.COMPOSTER.get()).ifPresent(ComposterBlockEntity::randomTick);
     }

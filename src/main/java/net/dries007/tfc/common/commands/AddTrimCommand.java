@@ -16,6 +16,7 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.item.ItemArgument;
 import net.minecraft.commands.arguments.item.ItemInput;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.Item;
@@ -32,7 +33,6 @@ import net.dries007.tfc.util.data.Metal;
 
 public class AddTrimCommand
 {
-    private static final String FAIL_NOT_APPLIED = "tfc.commands.trim.not_applied";
     private static final String FAIL_NOT_ARMOR = "tfc.commands.trim.not_armor";
     private static final String FAIL_BAD_MATERIAL = "tfc.commands.trim.bad_material";
     private static final String FAIL_BAD_TEMPLATE = "tfc.commands.trim.bad_template";
@@ -84,12 +84,8 @@ public class AddTrimCommand
             source.sendFailure(Component.translatable(FAIL_BAD_TEMPLATE));
             return 0;
         }
-        if (ArmorTrim.setTrim(source.registryAccess(), item, new ArmorTrim(material.get(), pattern.get())))
-        {
-            return Command.SINGLE_SUCCESS;
-        }
-        source.sendFailure(Component.translatable(FAIL_NOT_APPLIED));
-        return 0;
+        item.set(DataComponents.TRIM, new ArmorTrim(material.get(), pattern.get()));
+        return Command.SINGLE_SUCCESS;
     }
 
 }

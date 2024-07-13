@@ -9,6 +9,7 @@ package net.dries007.tfc.common.blockentities;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -79,10 +80,10 @@ public class SluiceBlockEntity extends TickableInventoryBlockEntity<ItemStackHan
                 final Sluiceable sluiceable = Sluiceable.get(stack);
                 if (sluiceable != null && level instanceof ServerLevel serverLevel)
                 {
-                    LootParams.Builder params = new LootParams.Builder(serverLevel)
+                    final LootParams.Builder builder = new LootParams.Builder(serverLevel)
                         .withOptionalParameter(LootContextParams.ORIGIN, new Vec3(pos.getX(), pos.getY(), pos.getZ()));
-                    LootTable table = serverLevel.getServer().getLootData().getLootTable(sluiceable.lootTable());
-                    final List<ItemStack> items = table.getRandomItems(params.create(LootContextParamSets.EMPTY));
+                    final LootTable table = serverLevel.getServer().reloadableRegistries().getLootTable(sluiceable.lootTable());
+                    final List<ItemStack> items = table.getRandomItems(builder.create(LootContextParamSets.EMPTY));
                     items.forEach(item -> Helpers.spawnItem(level, Vec3.atCenterOf(sluice.getWaterOutputPos()), item));
                 }
                 stack.setCount(0);
@@ -138,17 +139,17 @@ public class SluiceBlockEntity extends TickableInventoryBlockEntity<ItemStackHan
     }
 
     @Override
-    public void loadAdditional(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
         ticksRemaining = nbt.getInt("ticksRemaining");
-        super.loadAdditional(nbt);
+        super.loadAdditional(nbt, provider);
     }
 
     @Override
-    public void saveAdditional(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
         nbt.putInt("ticksRemaining", ticksRemaining);
-        super.saveAdditional(nbt);
+        super.saveAdditional(nbt, provider);
     }
 
     @Override

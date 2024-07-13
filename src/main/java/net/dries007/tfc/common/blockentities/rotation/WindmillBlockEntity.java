@@ -8,6 +8,7 @@ package net.dries007.tfc.common.blockentities.rotation;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
@@ -15,7 +16,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.TFCTags;
@@ -170,25 +170,19 @@ public class WindmillBlockEntity extends TickableInventoryBlockEntity<ItemStackH
     }
 
     @Override
-    public void saveAdditional(CompoundTag tag)
+    public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
-        super.saveAdditional(tag);
+        super.saveAdditional(tag, provider);
         node.rotation().saveToTag(tag);
         tag.putBoolean("invalid", invalid);
     }
 
     @Override
-    public void loadAdditional(CompoundTag tag)
+    public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
-        super.loadAdditional(tag);
+        super.loadAdditional(tag, provider);
         node.rotation().loadFromTag(tag);
         invalid = tag.getBoolean("invalid");
-    }
-
-    @Override
-    public AABB getRenderBoundingBox()
-    {
-        return INFINITE_EXTENT_AABB;
     }
 
     @Override

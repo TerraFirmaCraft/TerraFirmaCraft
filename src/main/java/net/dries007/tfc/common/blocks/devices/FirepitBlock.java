@@ -16,14 +16,13 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Rotation;
@@ -60,15 +59,15 @@ public class FirepitBlock extends BottomSupportedDeviceBlock implements IGhostBl
 {
     public static boolean tryInsertLog(Player player, ItemStack held, AbstractFirepitBlockEntity<?> firepit, boolean overrideBehavior)
     {
-        final var inv = Helpers.getCapability(firepit, Capabilities.ITEM);
-        if (overrideBehavior && inv != null)
+        final IItemHandlerModifiable inventory = firepit.getInventory();
+        if (overrideBehavior)
         {
             for (int i = AbstractFirepitBlockEntity.SLOT_FUEL_CONSUME; i <= AbstractFirepitBlockEntity.SLOT_FUEL_INPUT; i++)
             {
-                if (inv.getStackInSlot(i).isEmpty() && inv.isItemValid(AbstractFirepitBlockEntity.SLOT_FUEL_INPUT, held))
+                if (inventory.getStackInSlot(i).isEmpty() && inventory.isItemValid(AbstractFirepitBlockEntity.SLOT_FUEL_INPUT, held))
                 {
                     Helpers.playPlaceSound(player.level(), player.blockPosition(), SoundType.WOOD);
-                    ((IItemHandlerModifiable) inv).setStackInSlot(i, player.isCreative() ? held.copy().split(1) : held.split(1));
+                    inventory.setStackInSlot(i, player.isCreative() ? held.copy().split(1) : held.split(1));
                     firepit.markForSync();
                     return true;
                 }
@@ -104,8 +103,7 @@ public class FirepitBlock extends BottomSupportedDeviceBlock implements IGhostBl
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
+    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         if (state.getValue(LIT))
         {
@@ -199,12 +197,10 @@ public class FirepitBlock extends BottomSupportedDeviceBlock implements IGhostBl
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
         if (level.getBlockEntity(pos) instanceof FirepitBlockEntity firepit)
         {
-            final ItemStack stack = player.getItemInHand(hand);
             if (stack.getItem() == TFCItems.POT.get() || stack.getItem() == TFCItems.WROUGHT_IRON_GRILL.get())
             {
                 if (!level.isClientSide)
@@ -218,18 +214,18 @@ public class FirepitBlock extends BottomSupportedDeviceBlock implements IGhostBl
                     if (!player.isCreative())
                         stack.shrink(1);
                 }
-                return InteractionResult.SUCCESS;
+                return ItemInteractionResult.SUCCESS;
             }
             else if (tryInsertLog(player, stack, firepit, true))
             {
-                return InteractionResult.sidedSuccess(level.isClientSide);
+                return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
             else if (!state.getValue(LIT) && firepit.getAsh() > 0)
             {
                 ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFCItems.POWDERS.get(Powder.WOOD_ASH).get(), firepit.getAsh()));
                 firepit.setAsh(0);
                 Helpers.playSound(level, pos, SoundEvents.SAND_BREAK);
-                return InteractionResult.sidedSuccess(level.isClientSide);
+                return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
             else
             {
@@ -237,15 +233,14 @@ public class FirepitBlock extends BottomSupportedDeviceBlock implements IGhostBl
                 {
                     Helpers.openScreen(serverPlayer, firepit, pos);
                 }
-                return InteractionResult.SUCCESS;
+                return ItemInteractionResult.SUCCESS;
             }
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType type)
+    protected boolean isPathfindable(BlockState state, PathComputationType pathComputationType)
     {
         return false;
     }

@@ -8,6 +8,8 @@ package net.dries007.tfc.common.blockentities;
 
 import java.util.Locale;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -108,7 +110,7 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
         {
             firepit.temperature = HeatCapability.adjustDeviceTemp(firepit.temperature, firepit.burnTemperature, firepit.airTicks, isRaining);
         }
-        HeatCapability.provideHeatTo(level, pos.above(), firepit.temperature);
+        HeatCapability.provideHeatTo(level, pos.above(), Direction.DOWN, firepit.temperature);
         firepit.handleCooking();
         if (firepit.needsSlotUpdate)
         {
@@ -173,7 +175,7 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
     }
 
     @Override
-    public void loadAdditional(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
         temperature = nbt.getFloat("temperature");
         burnTicks = nbt.getInt("burnTicks");
@@ -186,11 +188,11 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
 
         needsRecipeUpdate = true;
 
-        super.loadAdditional(nbt);
+        super.loadAdditional(nbt, provider);
     }
 
     @Override
-    public void saveAdditional(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
         nbt.putFloat("temperature", temperature);
         nbt.putInt("burnTicks", burnTicks);
@@ -200,7 +202,7 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
         nbt.putFloat("dirtiness", dirtiness);
         nbt.putInt("lastMaxBurnTicks", lastMaxBurnTicks);
         nbt.putInt("ash", ash);
-        super.saveAdditional(nbt);
+        super.saveAdditional(nbt, provider);
     }
 
     @Override

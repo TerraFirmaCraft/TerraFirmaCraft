@@ -298,7 +298,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
     }
 
     @Override
-    public void saveAdditional(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
         nbt.putLong("lastUpdateTick", lastUpdateTick);
         nbt.putLong("sealedTick", sealedTick);
@@ -307,11 +307,11 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         {
             nbt.putString("recipe", recipe.id().toString());
         }
-        super.saveAdditional(nbt);
+        super.saveAdditional(nbt, provider);
     }
 
     @Override
-    public void loadAdditional(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
         lastUpdateTick = nbt.getLong("lastUpdateTick");
         sealedTick = nbt.getLong("sealedTick");
@@ -320,9 +320,10 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         recipe = null;
         if (nbt.contains("recipe", Tag.TAG_STRING))
         {
+            // todo 1.21, need to figure out the best way to handle recipes saved to NBT on BEs
             recipe = new RecipeHolder<>(Helpers.resourceLocation(nbt.getString("recipe")), null);
         }
-        super.loadAdditional(nbt);
+        super.loadAdditional(nbt, provider);
     }
 
     @Override

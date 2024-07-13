@@ -8,6 +8,7 @@ package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -81,7 +82,7 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
 
             final ItemStack handstone = quern.inventory.getStackInSlot(SLOT_HANDSTONE);
             final ItemStack undamagedHandstoneStack = handstone.copy();
-            Helpers.damageItem(handstone, 1);
+            Helpers.damageItem(handstone, level);
 
             if (!quern.hasHandstone())
             {
@@ -185,18 +186,18 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
     }
 
     @Override
-    public void loadAdditional(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
         recipeTimer = nbt.getFloat("recipeTimer");
-        super.loadAdditional(nbt);
+        super.loadAdditional(nbt, provider);
         needsStateUpdate = true;
     }
 
     @Override
-    public void saveAdditional(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
         nbt.putFloat("recipeTimer", recipeTimer);
-        super.saveAdditional(nbt);
+        super.saveAdditional(nbt, provider);
     }
 
     @Override

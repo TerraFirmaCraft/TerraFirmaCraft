@@ -87,7 +87,7 @@ public class JavelinItem extends SwordItem
             {
                 if (!level.isClientSide)
                 {
-                    stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(entity.getUsedItemHand()));
+                    Helpers.damageItem(stack, player, entity.getUsedItemHand());
 
                     ThrownJavelin javelin = new ThrownJavelin(level, player, stack);
                     javelin.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2.5F, 1.0F);
