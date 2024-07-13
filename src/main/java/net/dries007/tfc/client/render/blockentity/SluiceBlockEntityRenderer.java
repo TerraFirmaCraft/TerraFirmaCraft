@@ -49,11 +49,16 @@ public class SluiceBlockEntityRenderer implements BlockEntityRenderer<SluiceBloc
 
     private static void vertex(QuadRenderInfo info, float x, float y, float z, int color, float u, float v)
     {
-        info.builder.vertex(info.matrix4f, x, y, z).color(color).uv(u, v).overlayCoords(info.combinedOverlay).uv2(info.combinedLight).normal(0, 0, 1).endVertex();
+        info.buffer.addVertex(info.pose, x, y, z)
+            .setColor(color)
+            .setUv(u, v)
+            .setOverlay(info.packedOverlay)
+            .setLight(info.packedLight)
+            .setNormal(0, 0, 1);
     }
 
     @Override
-    public void render(SluiceBlockEntity sluice, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
+    public void render(SluiceBlockEntity sluice, float partialTicks, PoseStack poseStack, MultiBufferSource buffers, int packedLight, int packedOverlay)
     {
         if (sluice.getLevel() == null) return;
         final BlockState state = sluice.getBlockState();
@@ -89,7 +94,7 @@ public class SluiceBlockEntityRenderer implements BlockEntityRenderer<SluiceBloc
                 final float x = 0.125F + (0.25F * across);
                 final float y = 0.96875F - 0.0125F - (0.125F * step);
                 final float z = 0.15625F - 0.0125F + (0.25F * step);
-                drawItem(stack, x, y, z, rotation, itemRenderer, poseStack, combinedLight, combinedOverlay, buffer, sluice.getLevel());
+                drawItem(stack, x, y, z, rotation, itemRenderer, poseStack, packedLight, packedOverlay, buffers, sluice.getLevel());
             }
         }
 
@@ -106,10 +111,10 @@ public class SluiceBlockEntityRenderer implements BlockEntityRenderer<SluiceBloc
         TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(RenderHelpers.BLOCKS_ATLAS).apply(texture);
         final int color = Helpers.isFluid(fluid, TFCTags.Fluids.ANY_INFINITE_WATER) ? TFCColors.getWaterColor(sluice.getBlockPos()) : RenderHelpers.getFluidColor(fluid);
 
-        VertexConsumer builder = buffer.getBuffer(RenderType.entityTranslucentCull(RenderHelpers.BLOCKS_ATLAS));
-        Matrix4f matrix4f = poseStack.last().pose();
+        final VertexConsumer buffer = buffers.getBuffer(RenderType.entityTranslucentCull(RenderHelpers.BLOCKS_ATLAS));
+        final Matrix4f pose = poseStack.last().pose();
 
-        final QuadRenderInfo info = new QuadRenderInfo(builder, matrix4f, combinedOverlay, combinedLight);
+        final QuadRenderInfo info = new QuadRenderInfo(buffer, pose, packedOverlay, packedLight);
         // Top
         vertex(info, 0.05F, 1.033F, 0F, color, sprite.getU0(), sprite.getV0());
         vertex(info, 0.05F, -0.15F, 2.45F, color, sprite.getU0(), sprite.getV1());
@@ -137,5 +142,5 @@ public class SluiceBlockEntityRenderer implements BlockEntityRenderer<SluiceBloc
         poseStack.popPose();
     }
 
-    private record QuadRenderInfo(VertexConsumer builder, Matrix4f matrix4f, int combinedOverlay, int combinedLight) {}
+    private record QuadRenderInfo(VertexConsumer buffer, Matrix4f pose, int packedOverlay, int packedLight) {}
 }

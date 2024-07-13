@@ -74,9 +74,9 @@ public interface IGhostBlockHandler
         }
 
         @Override
-        public VertexConsumer color(int r, int g, int b, int a)
+        public VertexConsumer setColor(int r, int g, int b, int a)
         {
-            return parent.color(r, g, b, (a * this.alpha) / 0xFF);
+            return parent.setColor(r, g, b, (a * this.alpha) / 0xFF);
         }
     }
 }

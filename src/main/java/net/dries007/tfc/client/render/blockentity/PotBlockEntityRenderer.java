@@ -33,7 +33,7 @@ public class PotBlockEntityRenderer extends FirepitBlockEntityRenderer<PotBlockE
         final PotOutput output = pot.getOutput();
         if (output != null && output.getRenderTexture() != null)
         {
-            RenderHelpers.renderTexturedFace(poseStack, buffer, 0xFFFFFF, 0.3125F, 0.3125F, 0.6875F, 0.6875F, output.getFluidYLevel(), combinedOverlay, combinedLight, output.getRenderTexture(), false);
+            RenderHelpers.renderTexturedFace(poseStack, buffer, 0xFFFFFF, 0.3125F, 0.3125F, 0.6875F, 0.6875F, output.getFluidYLevel(), combinedOverlay, combinedLight, output.getRenderTexture());
         }
         else
         {

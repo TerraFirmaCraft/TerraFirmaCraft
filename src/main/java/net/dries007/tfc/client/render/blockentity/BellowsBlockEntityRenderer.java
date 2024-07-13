@@ -28,7 +28,7 @@ public class BellowsBlockEntityRenderer implements BlockEntityRenderer<BellowsBl
     private static final ResourceLocation SIDE_TEXTURE = Helpers.identifier("block/devices/bellows/side");
     // The number of planes each side of the bellows has
     private static final int planeCount = 4;
-    private static final double texWidth = 16D / planeCount;
+    private static final float texWidth = 16f / planeCount;
 
     // The width of the frond and back of the bellows. Each are 2/16th of a block wide
     private static final float headWidth = 0.125f;
@@ -108,7 +108,7 @@ public class BellowsBlockEntityRenderer implements BlockEntityRenderer<BellowsBl
             {
                 // Texture needs to the reversed due to the direction the planes are rendered in
                 // Otherwise the texture is cut up and displayed out of order
-                RenderHelpers.renderTexturedVertex(poseStack, buffer, packedLight, packedOverlay, v[0], v[1], v[2], sprite.getU(v[3] * -texWidth + (texWidth * (i + 1))), sprite.getV(v[4] * 16D), 1, 0, 0); // todo: incorrect normal
+                RenderHelpers.renderTexturedVertex(poseStack, buffer, packedLight, packedOverlay, v[0], v[1], v[2], sprite.getU(v[3] * -texWidth + (texWidth * (i + 1))), sprite.getV(v[4] * 16f), 1, 0, 0); // todo: incorrect normal
             }
             lastWidth = currentWidth;
         }

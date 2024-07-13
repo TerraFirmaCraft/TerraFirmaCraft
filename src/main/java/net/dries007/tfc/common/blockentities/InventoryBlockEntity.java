@@ -7,6 +7,9 @@
 package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Clearable;
@@ -63,6 +66,10 @@ public abstract class InventoryBlockEntity<C extends IItemHandlerModifiable & IN
         return inventory;
     }
 
+    /**
+     * Returns the display name of this block. This is set when placed by an item with a custom name component, and is accessed as part of the
+     * {@link MenuProvider} that this block entity implements. The mechanic is based on {@link net.minecraft.world.level.block.entity.BaseContainerBlockEntity}
+     */
     @Override
     public Component getDisplayName()
     {
@@ -74,6 +81,18 @@ public abstract class InventoryBlockEntity<C extends IItemHandlerModifiable & IN
         this.customName = customName;
     }
 
+    @Override
+    protected void applyImplicitComponents(DataComponentInput componentInput)
+    {
+        this.customName = componentInput.get(DataComponents.CUSTOM_NAME);
+    }
+
+    @Override
+    protected void collectImplicitComponents(DataComponentMap.Builder components)
+    {
+        components.set(DataComponents.CUSTOM_NAME, this.customName);
+    }
+
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int containerId, Inventory inventory, Player player)
@@ -82,25 +101,25 @@ public abstract class InventoryBlockEntity<C extends IItemHandlerModifiable & IN
     }
 
     @Override
-    public void loadAdditional(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
         if (nbt.contains("CustomName"))
         {
-            customName = Component.Serializer.fromJson(nbt.getString("CustomName"));
+            customName = Component.Serializer.fromJson(nbt.getString("CustomName"), provider);
         }
-        inventory.deserializeNBT(nbt.getCompound("inventory"));
-        super.loadAdditional(nbt);
+        inventory.deserializeNBT(provider, nbt.getCompound("inventory"));
+        super.loadAdditional(nbt, provider);
     }
 
     @Override
-    public void saveAdditional(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
         if (customName != null)
         {
-            nbt.putString("CustomName", Component.Serializer.toJson(customName));
+            nbt.putString("CustomName", Component.Serializer.toJson(customName, provider));
         }
-        nbt.put("inventory", inventory.serializeNBT());
-        super.saveAdditional(nbt);
+        nbt.put("inventory", inventory.serializeNBT(provider));
+        super.saveAdditional(nbt, provider);
     }
 
     @Override
@@ -122,11 +141,6 @@ public abstract class InventoryBlockEntity<C extends IItemHandlerModifiable & IN
                 Helpers.spawnItem(level, worldPosition, stack);
             }
         }
-    }
-
-    public void invalidateCapabilities()
-    {
-        sidedInventory.invalidate();
     }
 
     @Override

@@ -6,8 +6,8 @@
 
 package net.dries007.tfc.client;
 
-import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -21,8 +21,11 @@ import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.client.resources.sounds.AmbientSoundHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.MinecraftServer;
@@ -108,12 +111,6 @@ import static net.minecraft.ChatFormatting.*;
 
 public class ClientForgeEventHandler
 {
-    private static final Field CAP_NBT_FIELD = Helpers.uncheck(() -> {
-        final Field field = ItemStack.class.getDeclaredField("capNBT");
-        field.setAccessible(true);
-        return field;
-    });
-
     private static float waterFogLevel = 1f;
 
     public static void init()
@@ -134,13 +131,13 @@ public class ClientForgeEventHandler
         bus.addListener(ClientForgeEventHandler::onHandRender);
         bus.addListener(ClientForgeEventHandler::onToast);
         bus.addListener(ClientForgeEventHandler::onEffectRender);
-        bus.addListener(IngameOverlays::checkGuiOverlays);
+        //bus.addListener(IngameOverlays::checkGuiOverlays); // todo 1.21, overlays
     }
 
     public static void onRenderGameOverlayText(CustomizeGuiOverlayEvent.DebugText event)
     {
         final Minecraft mc = Minecraft.getInstance();
-        if (mc.level != null && mc.options.renderDebug && TFCConfig.CLIENT.enableDebug.get())
+        if (mc.level != null && TFCConfig.CLIENT.enableDebug.get())
         {
             final Entity camera = mc.getCameraEntity();
             assert camera != null;
@@ -208,7 +205,7 @@ public class ClientForgeEventHandler
         }
     }
 
-    @SuppressWarnings("ConstantConditions")
+    @SuppressWarnings({"ConstantConditions", "deprecation"})
     public static void onItemTooltip(ItemTooltipEvent event)
     {
         final ItemStack stack = event.getItemStack();
@@ -339,27 +336,39 @@ public class ClientForgeEventHandler
 
             if (TFCConfig.CLIENT.enableDebug.get() && event.getFlags().isAdvanced())
             {
-                final CompoundTag stackTag = stack.getTag();
-                if (stackTag != null)
+                boolean first = false;
+                for (TypedDataComponent<?> component : stack.getComponents())
                 {
-                    text.add(Component.literal(DARK_GRAY + "[Debug] NBT: " + stackTag));
+                    if (first) text.add(Component.literal(DARK_GRAY + "[Debug] Components:"));
+                    text.add(Component.literal(DARK_GRAY
+                        + "  "
+                        + BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(component.type())
+                        + typeOfComponent(stack.getComponentsPatch().get(component.type()))
+                        + component.value()
+                        + " => "
+                        + component.encodeValue(NbtOps.INSTANCE).getOrThrow()));
                 }
 
-                final CompoundTag capTag = Helpers.uncheck(() -> CAP_NBT_FIELD.get(stack));
-                if (capTag != null && !capTag.isEmpty())
-                {
-                    text.add(Component.literal(DARK_GRAY + "[Debug] Cap NBT: " + capTag));
-                }
+                final String itemTags = listOfTags(stack.getItem().builtInRegistryHolder());
+                final String blockTags = stack.getItem() instanceof BlockItem blockItem
+                    ? listOfTags(blockItem.builtInRegistryHolder())
+                    : "";
 
-                text.add(Component.literal(DARK_GRAY + "[Debug] Item Tags: " + stack.getItem().builtInRegistryHolder().tags().map(t1 -> "#" + t1.location()).collect(Collectors.joining(", "))));
-
-                if (stack.getItem() instanceof BlockItem blockItem)
-                {
-                    final Block block = blockItem.getBlock();
-                    text.add(Component.literal(DARK_GRAY + "[Debug] Block Tags: " + block.builtInRegistryHolder().tags().map(t -> "#" + t.location()).collect(Collectors.joining(", "))));
-                }
+                if (!itemTags.isEmpty()) text.add(Component.literal(DARK_GRAY + "[Debug] Item Tags: " + itemTags));
+                if (!blockTags.isEmpty()) text.add(Component.literal(DARK_GRAY + "[Debug] Block Tags: " + blockTags));
             }
         }
+    }
+
+    @SuppressWarnings("OptionalAssignedToNull")
+    private static String typeOfComponent(@Nullable Optional<?> optional)
+    {
+        return optional == null ? " (override) " : optional.isPresent() ? " (patch) " : " (default) ";
+    }
+
+    private static String listOfTags(Holder<?> holder)
+    {
+        return holder.tags().map(t1 -> "#" + t1.location()).collect(Collectors.joining(", "));
     }
 
     public static void onInitGuiPost(ScreenEvent.Init.Post event)

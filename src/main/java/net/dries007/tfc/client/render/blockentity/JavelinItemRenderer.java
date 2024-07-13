@@ -37,7 +37,7 @@ public class JavelinItemRenderer extends BlockEntityWithoutLevelRenderer
         poseStack.pushPose();
         poseStack.scale(1.0F, -1.0F, -1.0F);
         VertexConsumer buffer = ItemRenderer.getFoilBufferDirect(buffers, this.model.renderType(textureLocation), false, stack.hasFoil());
-        model.renderToBuffer(poseStack, buffer, packedLight, packedOverlay, 1f, 1f, 1f, 1f);
+        model.renderToBuffer(poseStack, buffer, packedLight, packedOverlay);
         poseStack.popPose();
     }
 }

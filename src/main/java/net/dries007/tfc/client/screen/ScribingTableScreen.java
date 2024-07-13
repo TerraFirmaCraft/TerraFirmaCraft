@@ -11,6 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.ItemCombinerScreen;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -88,7 +89,7 @@ public class ScribingTableScreen extends ItemCombinerScreen<ScribingTableContain
         if (!text.isEmpty())
         {
             Slot slot = menu.getSlot(AnvilMenu.INPUT_SLOT);
-            if (slot != null && slot.hasItem() && !slot.getItem().hasCustomHoverName() && text.equals(slot.getItem().getHoverName().getString()))
+            if (slot.hasItem() && !slot.getItem().has(DataComponents.CUSTOM_NAME) && text.equals(slot.getItem().getHoverName().getString()))
             {
                 text = "";
             }

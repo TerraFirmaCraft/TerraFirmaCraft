@@ -77,17 +77,17 @@ public final class TFCContainerTypes
 
     private static <T extends InventoryBlockEntity<?>, C extends BlockEntityContainer<T>> Id<C> registerBlock(String name, Supplier<BlockEntityType<T>> type, BlockEntityContainer.Factory<T, C> factory)
     {
-        return RegistrationHelpers.registerBlockEntityContainer(CONTAINERS, name, type, factory);
+        return new Id<>(RegistrationHelpers.registerBlockEntityContainer(CONTAINERS, name, type, factory));
     }
 
     private static <C extends ItemStackContainer> Id<C> registerItem(String name, ItemStackContainer.Factory<C> factory)
     {
-        return RegistrationHelpers.registerItemStackContainer(CONTAINERS, name, factory);
+        return new Id<>(RegistrationHelpers.registerItemStackContainer(CONTAINERS, name, factory));
     }
 
     private static <C extends AbstractContainerMenu> Id<C> register(String name, IContainerFactory<C> factory)
     {
-        return RegistrationHelpers.registerContainer(CONTAINERS, name, factory);
+        return new Id<>(RegistrationHelpers.registerContainer(CONTAINERS, name, factory));
     }
     
     public record Id<T extends AbstractContainerMenu>(DeferredHolder<MenuType<?>, MenuType<T>> holder)

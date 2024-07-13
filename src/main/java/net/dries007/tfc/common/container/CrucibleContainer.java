@@ -10,7 +10,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
-import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.MoldLike;
 
 public class CrucibleContainer extends BlockEntityContainer<CrucibleBlockEntity>
@@ -49,14 +48,12 @@ public class CrucibleContainer extends BlockEntityContainer<CrucibleBlockEntity>
     @Override
     protected void addContainerSlots()
     {
-        blockEntity.getCapability(Capabilities.ITEM).ifPresent(inventory -> {
-            for (int slot = CrucibleBlockEntity.SLOT_INPUT_START; slot <= CrucibleBlockEntity.SLOT_INPUT_END; slot++)
-            {
-                final int line = slot / 3, column = slot % 3;
-                addSlot(new CallbackSlot(blockEntity, inventory, slot, 26 + column * 18, 82 + line * 18));
-            }
+        for (int slot = CrucibleBlockEntity.SLOT_INPUT_START; slot <= CrucibleBlockEntity.SLOT_INPUT_END; slot++)
+        {
+            final int line = slot / 3, column = slot % 3;
+            addSlot(new CallbackSlot(blockEntity, slot, 26 + column * 18, 82 + line * 18));
+        }
 
-            addSlot(new CallbackSlot(blockEntity, inventory, CrucibleBlockEntity.SLOT_OUTPUT, 152, 100));
-        });
+        addSlot(new CallbackSlot(blockEntity, CrucibleBlockEntity.SLOT_OUTPUT, 152, 100));
     }
 }

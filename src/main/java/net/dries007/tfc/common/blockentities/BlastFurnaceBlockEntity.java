@@ -638,7 +638,7 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
         }
     }
 
-    static class BlastFurnaceInventory extends ItemStackHandler implements DelegateFluidHandler
+    public static class BlastFurnaceInventory extends ItemStackHandler implements DelegateFluidHandler
     {
         private final BlastFurnaceBlockEntity blastFurnace;
 

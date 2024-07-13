@@ -11,7 +11,6 @@ import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.GrillBlockEntity;
-import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.common.blockentities.GrillBlockEntity.*;
@@ -52,15 +51,13 @@ public class GrillContainer extends BlockEntityContainer<GrillBlockEntity>
     @Override
     protected void addContainerSlots()
     {
-        blockEntity.getCapability(Capabilities.ITEM).ifPresent(handler -> {
-            for (int i = 0; i < 4; i++) // Fuel
-            {
-                addSlot(new CallbackSlot(blockEntity, handler, i, 8, 70 - 18 * i));
-            }
-            for (int i = SLOT_EXTRA_INPUT_START; i <= SLOT_EXTRA_INPUT_END; i++) // Grill input
-            {
-                addSlot(new CallbackSlot(blockEntity, handler, i, 62 + (i - SLOT_EXTRA_INPUT_START) * 18, 20));
-            }
-        });
+        for (int i = 0; i < 4; i++) // Fuel
+        {
+            addSlot(new CallbackSlot(blockEntity, i, 8, 70 - 18 * i));
+        }
+        for (int i = SLOT_EXTRA_INPUT_START; i <= SLOT_EXTRA_INPUT_END; i++) // Grill input
+        {
+            addSlot(new CallbackSlot(blockEntity, i, 62 + (i - SLOT_EXTRA_INPUT_START) * 18, 20));
+        }
     }
 }

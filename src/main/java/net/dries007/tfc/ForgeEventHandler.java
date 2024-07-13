@@ -79,7 +79,9 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.event.ItemStackedOnOtherEvent;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
@@ -512,7 +514,7 @@ public final class ForgeEventHandler
         final Level level = event.getLevel();
         if (!level.isClientSide)
         {
-            WorldTracker.get(level).addCollapsePositions(BlockPos.containing(event.getExplosion().getPosition()), event.getExplosion().getToBlow());
+            WorldTracker.get(level).addCollapsePositions(BlockPos.containing(event.getExplosion().center()), event.getExplosion().getToBlow());
         }
     }
 
@@ -586,7 +588,7 @@ public final class ForgeEventHandler
 
         if (state.getBlock() instanceof AqueductBlock)
         {
-            event.setResult(Event.Result.DENY); // Waterlogged aqueducts do not count as the source when creating source blocks
+            event.setCanConvert(false); // Waterlogged aqueducts do not count as the source when creating source blocks
         }
 
         for (Direction direction : Direction.Plane.HORIZONTAL)
@@ -595,7 +597,7 @@ public final class ForgeEventHandler
             final BlockState relState = level.getBlockState(relPos);
             if (relState.getBlock() instanceof SluiceBlock && !relState.getValue(SluiceBlock.UPPER) && relState.getValue(SluiceBlock.FACING) == direction.getOpposite())
             {
-                event.setResult(Event.Result.DENY); // This block might be being fed by a sluice - so don't allow it to create more source blocks.
+                event.setCanConvert(false); // This block might be being fed by a sluice - so don't allow it to create more source blocks.
             }
         }
     }
@@ -725,15 +727,11 @@ public final class ForgeEventHandler
         {
             if (level.getBlockEntity(pos) instanceof BowlBlockEntity bowl)
             {
-                final var inv = Helpers.getCapability(bowl, Capabilities.ITEM);
-                if (inv != null)
+                final ItemStack stack = bowl.getInventory().getStackInSlot(0);
+                if (stack.getItem() == Items.GUNPOWDER)
                 {
-                    final ItemStack stack = inv.getStackInSlot(0);
-                    if (stack.getItem() == Items.GUNPOWDER)
-                    {
-                        level.explode(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, stack.getCount() / 6f + 2f, Level.ExplosionInteraction.BLOCK);
-                        event.setCanceled(true);
-                    }
+                    level.explode(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, stack.getCount() / 6f + 2f, Level.ExplosionInteraction.BLOCK);
+                    event.setCanceled(true);
                 }
             }
         }
@@ -820,9 +818,11 @@ public final class ForgeEventHandler
         }
         else if (blockEntity instanceof CrucibleBlockEntity crucible)
         {
+            // todo 1.21, make block heat work
+            /*
             final var cap = Helpers.getCapability(crucible, HeatCapability.BLOCK_CAPABILITY);
             if (cap != null)
-                cap.setTemperature(0f);
+                cap.setTemperature(0f);*/
         }
     }
 
@@ -1020,7 +1020,7 @@ public final class ForgeEventHandler
      * - Set a very short lifespan to item entities that are cool-able. This causes ItemExpireEvent to fire at regular intervals
      * - Causes lightning bolts to strip nearby logs
      * - Prevents skeleton trap horses from spawning (see {@link ServerLevel#tickChunk(LevelChunk, int)}
-     * - Prevents some categories of mobs from spawning. Some can't be done in {@link MobSpawnEvent.FinalizeSpawn} because Forge does not always fire it.
+     * - Prevents some categories of mobs from spawning. Some can't be done in {@link FinalizeSpawnEvent} because Forge does not always fire it.
      */
     public static void onEntityJoinLevel(EntityJoinLevelEvent event)
     {
@@ -1062,7 +1062,7 @@ public final class ForgeEventHandler
                             {
                                 mutable.setWithOffset(pos, x, y, z);
                                 BlockState state = level.getBlockState(mutable);
-                                BlockState modified = state.getToolModifiedState(new UseOnContext(level, null, InteractionHand.MAIN_HAND, new ItemStack(Items.DIAMOND_AXE), new BlockHitResult(Vec3.atBottomCenterOf(mutable), Direction.DOWN, mutable, false)), ToolActions.AXE_STRIP, true);
+                                BlockState modified = state.getToolModifiedState(new UseOnContext(level, null, InteractionHand.MAIN_HAND, new ItemStack(Items.DIAMOND_AXE), new BlockHitResult(Vec3.atBottomCenterOf(mutable), Direction.DOWN, mutable, false)), ItemAbilities.AXE_STRIP, true);
                                 if (modified != null)
                                 {
                                     level.setBlockAndUpdate(mutable, modified);
@@ -1226,7 +1226,7 @@ public final class ForgeEventHandler
         // Respawn event will handle syncing to client, as the network connection is setup by then.
         if (TFCConfig.SERVER.keepNutritionAfterDeath.get() && event.isWasDeath())
         {
-            TFCFoodData.restoreFoodStatsAfterDeath(event.getOriginal(), event.getEntity());
+            IPlayerInfo.copyOnDeath(event.getOriginal(), event.getEntity());
         }
     }
 
@@ -1382,7 +1382,7 @@ public final class ForgeEventHandler
         // Otherwise it breaks anvil shift interactions, see: TerraFirmaCraft#2254
         if (state.getBlock() instanceof AnvilBlock || state.getBlock() instanceof RockAnvilBlock || Fertilizer.get(stack) != null || (state.getBlock() instanceof BarrelBlock && !state.getValue(BarrelBlock.RACK) && state.getValue(BarrelBlock.FACING).getAxis().isHorizontal() && stack.getItem() == TFCBlocks.BARREL_RACK.get().asItem()))
         {
-            event.setUseBlock(Event.Result.ALLOW);
+            event.setUseBlock(TriState.TRUE);
         }
     }
 
@@ -1479,7 +1479,6 @@ public final class ForgeEventHandler
     {
         if (!TFCConfig.SERVER.enableVanillaBonemeal.get())
         {
-            event.setResult(Event.Result.DENY);
             event.setCanceled(true);
         }
     }
@@ -1558,7 +1557,7 @@ public final class ForgeEventHandler
         }
     }
 
-    public static void onCropsGrow(CropGrowEvent event)
+    public static void onCropsGrow(CropGrowEvent.Pre event)
     {
         final BlockState state = event.getState();
         final LevelAccessor level = event.getLevel();
@@ -1566,7 +1565,7 @@ public final class ForgeEventHandler
         {
             if (level instanceof ServerLevel server && server.random.nextFloat() > TFCConfig.SERVER.plantLongGrowthChance.get())
             {
-                event.setResult(Event.Result.DENY);
+                event.setResult(CropGrowEvent.Pre.Result.DO_NOT_GROW);
             }
         }
     }

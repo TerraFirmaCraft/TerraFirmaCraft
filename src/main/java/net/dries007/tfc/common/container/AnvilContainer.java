@@ -14,7 +14,6 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.AnvilBlockEntity;
-import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.component.forge.ForgeStep;
 import net.dries007.tfc.common.component.forge.Forging;
 import net.dries007.tfc.common.component.forge.ForgingCapability;
@@ -64,12 +63,10 @@ public class AnvilContainer extends BlockEntityContainer<AnvilBlockEntity> imple
     @Override
     protected void addContainerSlots()
     {
-        blockEntity.getCapability(Capabilities.ITEM).ifPresent(handler -> {
-            addSlot(new CallbackSlot(blockEntity, handler, AnvilBlockEntity.SLOT_INPUT_MAIN, 31, 68));
-            addSlot(new CallbackSlot(blockEntity, handler, AnvilBlockEntity.SLOT_INPUT_SECOND, 13, 68));
-            addSlot(new CallbackSlot(blockEntity, handler, AnvilBlockEntity.SLOT_HAMMER, 129, 68));
-            addSlot(new CallbackSlot(blockEntity, handler, AnvilBlockEntity.SLOT_CATALYST, 147, 68));
-        });
+        addSlot(new CallbackSlot(blockEntity, AnvilBlockEntity.SLOT_INPUT_MAIN, 31, 68));
+        addSlot(new CallbackSlot(blockEntity, AnvilBlockEntity.SLOT_INPUT_SECOND, 13, 68));
+        addSlot(new CallbackSlot(blockEntity, AnvilBlockEntity.SLOT_HAMMER, 129, 68));
+        addSlot(new CallbackSlot(blockEntity, AnvilBlockEntity.SLOT_CATALYST, 147, 68));
     }
 
     @Override
@@ -87,10 +84,10 @@ public class AnvilContainer extends BlockEntityContainer<AnvilBlockEntity> imple
                     AnvilRecipe recipe = null;
                     int target = -1;
 
-                    if (forge != null && level != null)
+                    if (level != null)
                     {
-                        recipe = forge.getRecipe();
-                        target = forge.getWorkTarget();
+                        recipe = forge.view().recipe();
+                        target = forge.view().target();
                         forge.clearRecipeIfNotWorked();
                     }
 

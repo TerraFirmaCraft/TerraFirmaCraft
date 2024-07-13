@@ -66,6 +66,7 @@ import net.dries007.tfc.common.entities.livestock.TFCAnimal;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.util.Helpers;
 
+
 public final class RenderHelpers
 {
     @SuppressWarnings("deprecation") public static final ResourceLocation BLOCKS_ATLAS = TextureAtlas.LOCATION_BLOCKS;
@@ -169,13 +170,12 @@ public final class RenderHelpers
     public static void renderTexturedVertex(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float x, float y, float z, float u, float v, float normalX, float normalY, float normalZ, boolean doShade)
     {
         final float shade = doShade ? getShade(normalX, normalY, normalZ) : 1f;
-        buffer.vertex(poseStack.last().pose(), x, y, z)
-            .color(shade, shade, shade, 1f)
-            .uv(u, v)
-            .uv2(packedLight)
-            .overlayCoords(packedOverlay)
-            .normal(poseStack.last().normal(), normalX, normalY, normalZ)
-            .endVertex();
+        buffer.addVertex(poseStack.last().pose(), x, y, z)
+            .setColor(shade, shade, shade, 1f)
+            .setUv(u, v)
+            .setLight(packedLight)
+            .setOverlay(packedOverlay)
+            .setNormal(poseStack.last(), normalX, normalY, normalZ);
     }
 
     /**
@@ -519,34 +519,32 @@ public final class RenderHelpers
         renderFluidFace(poseStack, fluidStack, buffer, getFluidColor(fluidStack), minX, minZ, maxX, maxZ, y, combinedOverlay, combinedLight);
     }
 
-    public static void renderFluidFace(PoseStack poseStack, FluidStack fluidStack, MultiBufferSource buffer, int color, float minX, float minZ, float maxX, float maxZ, float y, int combinedOverlay, int combinedLight)
+    public static void renderFluidFace(PoseStack poseStack, FluidStack fluidStack, MultiBufferSource buffer, int color, float minX, float minZ, float maxX, float maxZ, float y, int packedOverlay, int packedLight)
     {
         final Fluid fluid = fluidStack.getFluid();
         final IClientFluidTypeExtensions extension = IClientFluidTypeExtensions.of(fluid);
         final ResourceLocation texture = extension.getStillTexture(fluidStack);
-        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(RenderHelpers.BLOCKS_ATLAS).apply(texture);
+        final TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(RenderHelpers.BLOCKS_ATLAS).apply(texture);
 
-        VertexConsumer builder = buffer.getBuffer(RenderType.entityTranslucentCull(BLOCKS_ATLAS));
-        Matrix4f matrix4f = poseStack.last().pose();
+        final VertexConsumer builder = buffer.getBuffer(RenderType.entityTranslucentCull(BLOCKS_ATLAS));
+        final Matrix4f pose = poseStack.last().pose();
 
-        builder.vertex(matrix4f, minX, y, minZ).color(color).uv(sprite.getU(minX * 16), sprite.getV(minZ * 16)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(0, 1, 0).endVertex();
-        builder.vertex(matrix4f, minX, y, maxZ).color(color).uv(sprite.getU(minX * 16), sprite.getV(maxZ * 16)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(0, 1, 0).endVertex();
-        builder.vertex(matrix4f, maxX, y, maxZ).color(color).uv(sprite.getU(maxX * 16), sprite.getV(maxZ * 16)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(0, 1, 0).endVertex();
-        builder.vertex(matrix4f, maxX, y, minZ).color(color).uv(sprite.getU(maxX * 16), sprite.getV(minX * 16)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(0, 1, 0).endVertex();
+        builder.addVertex(pose, minX, y, minZ).setColor(color).setUv(sprite.getU(minX * 16), sprite.getV(minZ * 16)).setOverlay(packedOverlay).setLight(packedLight).setNormal(0, 1, 0);
+        builder.addVertex(pose, minX, y, maxZ).setColor(color).setUv(sprite.getU(minX * 16), sprite.getV(maxZ * 16)).setOverlay(packedOverlay).setLight(packedLight).setNormal(0, 1, 0);
+        builder.addVertex(pose, maxX, y, maxZ).setColor(color).setUv(sprite.getU(maxX * 16), sprite.getV(maxZ * 16)).setOverlay(packedOverlay).setLight(packedLight).setNormal(0, 1, 0);
+        builder.addVertex(pose, maxX, y, minZ).setColor(color).setUv(sprite.getU(maxX * 16), sprite.getV(minX * 16)).setOverlay(packedOverlay).setLight(packedLight).setNormal(0, 1, 0);
     }
 
-    public static void renderTexturedFace(PoseStack poseStack, MultiBufferSource buffer, int color, float minX, float minZ, float maxX, float maxZ, float y, int combinedOverlay, int combinedLight, ResourceLocation texture, boolean transparent)
+    public static void renderTexturedFace(PoseStack poseStack, MultiBufferSource buffer, int color, float minX, float minZ, float maxX, float maxZ, float y, int packedOverlay, int packedLight, ResourceLocation texture)
     {
-        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(RenderHelpers.BLOCKS_ATLAS).apply(texture);
+        final TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(RenderHelpers.BLOCKS_ATLAS).apply(texture);
+        final VertexConsumer builder = buffer.getBuffer(RenderType.solid());
+        final PoseStack.Pose pose = poseStack.last();
 
-        VertexConsumer builder = buffer.getBuffer(RenderType.solid());
-        Matrix4f matrix4f = poseStack.last().pose();
-        var norm = poseStack.last().normal();
-
-        builder.vertex(matrix4f, minX, y, minZ).color(color).uv(sprite.getU(minX * 16), sprite.getV(minZ * 16)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(norm, 0, 1, 0).endVertex();
-        builder.vertex(matrix4f, minX, y, maxZ).color(color).uv(sprite.getU(minX * 16), sprite.getV(maxZ * 16)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(norm, 0, 1, 0).endVertex();
-        builder.vertex(matrix4f, maxX, y, maxZ).color(color).uv(sprite.getU(maxX * 16), sprite.getV(maxZ * 16)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(norm, 0, 1, 0).endVertex();
-        builder.vertex(matrix4f, maxX, y, minZ).color(color).uv(sprite.getU(maxX * 16), sprite.getV(minX * 16)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(norm, 0, 1, 0).endVertex();
+        builder.addVertex(pose, minX, y, minZ).setColor(color).setUv(sprite.getU(minX * 16), sprite.getV(minZ * 16)).setOverlay(packedOverlay).setLight(packedLight).setNormal(pose, 0, 1, 0);
+        builder.addVertex(pose, minX, y, maxZ).setColor(color).setUv(sprite.getU(minX * 16), sprite.getV(maxZ * 16)).setOverlay(packedOverlay).setLight(packedLight).setNormal(pose, 0, 1, 0);
+        builder.addVertex(pose, maxX, y, maxZ).setColor(color).setUv(sprite.getU(maxX * 16), sprite.getV(maxZ * 16)).setOverlay(packedOverlay).setLight(packedLight).setNormal(pose, 0, 1, 0);
+        builder.addVertex(pose, maxX, y, minZ).setColor(color).setUv(sprite.getU(maxX * 16), sprite.getV(minX * 16)).setOverlay(packedOverlay).setLight(packedLight).setNormal(pose, 0, 1, 0);
     }
 
     public static boolean renderGhostBlock(Level level, BlockState state, BlockPos lookPos, PoseStack stack, MultiBufferSource buffer, boolean shouldGrowSlightly, int alpha)
@@ -641,13 +639,12 @@ public final class RenderHelpers
     public static void blit(Matrix4f pose, int x1, int x2, int y1, int y2, int blitOffset, float minU, float maxU, float minV, float maxV)
     {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        final BufferBuilder builder = Tesselator.getInstance().getBuilder();
-        builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-        builder.vertex(pose, x1, y2, blitOffset).uv(minU, maxV).endVertex();
-        builder.vertex(pose, x2, y2, blitOffset).uv(maxU, maxV).endVertex();
-        builder.vertex(pose, x2, y1, blitOffset).uv(maxU, minV).endVertex();
-        builder.vertex(pose, x1, y1, blitOffset).uv(minU, minV).endVertex();
-        BufferUploader.drawWithShader(builder.end());
+        final BufferBuilder buffer = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+        buffer.addVertex(pose, x1, y2, blitOffset).setUv(minU, maxV);
+        buffer.addVertex(pose, x2, y2, blitOffset).setUv(maxU, maxV);
+        buffer.addVertex(pose, x2, y1, blitOffset).setUv(maxU, minV);
+        buffer.addVertex(pose, x1, y1, blitOffset).setUv(minU, minV);
+        BufferUploader.drawWithShader(buffer.buildOrThrow());
     }
 
     public static boolean isInside(int mouseX, int mouseY, int leftX, int topY, int width, int height)
@@ -675,8 +672,9 @@ public final class RenderHelpers
 
     private static void renderMapHand(Minecraft mc, PoseStack poseStack, MultiBufferSource source, int combinedLight, HumanoidArm arm)
     {
-        RenderSystem.setShaderTexture(0, mc.player.getSkinTextureLocation());
-        PlayerRenderer playerrenderer = (PlayerRenderer) mc.getEntityRenderDispatcher().<AbstractClientPlayer>getRenderer(mc.player);
+        assert mc.player != null;
+
+        final PlayerRenderer playerRenderer = (PlayerRenderer) mc.getEntityRenderDispatcher().<AbstractClientPlayer>getRenderer(mc.player);
         poseStack.pushPose();
         final float side = arm == HumanoidArm.RIGHT ? 1.0F : -1.0F;
         poseStack.mulPose(Axis.YP.rotationDegrees(92.0F));
@@ -686,11 +684,11 @@ public final class RenderHelpers
         poseStack.translate(side * 0.3D, -1.1D, 0.45D);
         if (arm == HumanoidArm.RIGHT)
         {
-            playerrenderer.renderRightHand(poseStack, source, combinedLight, mc.player);
+            playerRenderer.renderRightHand(poseStack, source, combinedLight, mc.player);
         }
         else
         {
-            playerrenderer.renderLeftHand(poseStack, source, combinedLight, mc.player);
+            playerRenderer.renderLeftHand(poseStack, source, combinedLight, mc.player);
         }
         poseStack.popPose();
     }

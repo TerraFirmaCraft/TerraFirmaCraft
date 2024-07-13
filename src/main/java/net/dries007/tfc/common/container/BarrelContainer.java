@@ -12,15 +12,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
 import net.dries007.tfc.common.blocks.devices.BarrelBlock;
 import net.dries007.tfc.common.blocks.devices.SealableDeviceBlock;
-import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
-
-import org.jetbrains.annotations.Nullable;
 
 public class BarrelContainer extends BlockEntityContainer<BarrelBlockEntity> implements ButtonHandlerContainer
 {
@@ -57,11 +56,9 @@ public class BarrelContainer extends BlockEntityContainer<BarrelBlockEntity> imp
     @Override
     protected void addContainerSlots()
     {
-        blockEntity.getCapability(Capabilities.ITEM).ifPresent(inventory -> {
-            addSlot(new CallbackSlot(blockEntity, inventory, BarrelBlockEntity.SLOT_FLUID_CONTAINER_IN, 35, 20));
-            addSlot(new CallbackSlot(blockEntity, inventory, BarrelBlockEntity.SLOT_FLUID_CONTAINER_OUT, 35, 54));
-            addSlot(new CallbackSlot(blockEntity, inventory, BarrelBlockEntity.SLOT_ITEM, 89, 37));
-        });
+        addSlot(new CallbackSlot(blockEntity, BarrelBlockEntity.SLOT_FLUID_CONTAINER_IN, 35, 20));
+        addSlot(new CallbackSlot(blockEntity, BarrelBlockEntity.SLOT_FLUID_CONTAINER_OUT, 35, 54));
+        addSlot(new CallbackSlot(blockEntity, BarrelBlockEntity.SLOT_ITEM, 89, 37));
     }
 
     @Override
@@ -73,7 +70,9 @@ public class BarrelContainer extends BlockEntityContainer<BarrelBlockEntity> imp
         }
 
         final @Nullable IHeat heat = HeatCapability.get(stack);
-        final int containerSlot = stack.getCapability(Capabilities.FLUID_ITEM).isPresent() && heat != null && heat.getTemperature() == 0 ? BarrelBlockEntity.SLOT_FLUID_CONTAINER_IN : BarrelBlockEntity.SLOT_ITEM;
+        final int containerSlot = stack.getCapability(Capabilities.FluidHandler.ITEM) != null
+            && heat != null
+            && heat.getTemperature() == 0 ? BarrelBlockEntity.SLOT_FLUID_CONTAINER_IN : BarrelBlockEntity.SLOT_ITEM;
 
         return switch (typeOf(slotIndex))
             {

@@ -8,6 +8,7 @@ package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderGetter;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -28,7 +29,7 @@ public abstract class TFCBlockEntity extends BlockEntity
     }
 
     /**
-     * @return The packet to send to the client upon block update. This is returned in client in {@link #onDataPacket(Connection, ClientboundBlockEntityDataPacket)}
+     * @return The packet to send to the client upon block update. This is returned in client in {@code onDataPacket()}
      */
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket()
@@ -37,35 +38,35 @@ public abstract class TFCBlockEntity extends BlockEntity
     }
 
     /**
-     * Handle a packet sent from {@link #getUpdatePacket()}. Delegates to {@link #handleUpdateTag(CompoundTag)}.
+     * Handle a packet sent from {@link #getUpdatePacket()}. Calls {@link #loadWithComponents(CompoundTag, HolderLookup.Provider)}
      */
     @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet)
+    public final void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet, HolderLookup.Provider provider)
     {
-        if (packet.getTag() != null)
-        {
-            handleUpdateTag(packet.getTag());
-        }
+        super.onDataPacket(net, packet, provider);
     }
 
     /**
-     * Returns the tag containing information needed to send to the client, either on block update or on bulk chunk update. This tag is either returned with the packet in {@link #getUpdatePacket()} or {@link #handleUpdateTag(CompoundTag)} based on where it was called from.
-     * Delegates to {@link #saveWithoutMetadata()} which calls {@link #saveAdditional(CompoundTag)}
+     * Returns the tag containing information needed to send to the client, either on block update or on bulk chunk update.
+     * This tag is either returned with the packet in {@link #getUpdatePacket()} or {@link #handleUpdateTag(CompoundTag, HolderLookup.Provider)} based on where it was called from.
+     * <p>
+     * Delegates to {@link #saveCustomOnly(HolderLookup.Provider)} which calls {@link #saveAdditional(CompoundTag, HolderLookup.Provider)}
      */
     @Override
-    public CompoundTag getUpdateTag()
+    public final CompoundTag getUpdateTag(HolderLookup.Provider provider)
     {
-        return saveWithoutMetadata();
+        return saveCustomOnly(provider);
     }
 
     /**
      * Handles an update tag sent from the server.
-     * Delegates to {@link #load(CompoundTag)} which calls {@link #loadAdditional(CompoundTag)}
+     * <p>
+     * Delegates to {@link #loadWithComponents(CompoundTag, HolderLookup.Provider)} which calls {@link #loadAdditional(CompoundTag, HolderLookup.Provider)}
      */
     @Override
-    public void handleUpdateTag(CompoundTag tag)
+    public final void handleUpdateTag(CompoundTag tag, HolderLookup.Provider provider)
     {
-        load(tag);
+        super.handleUpdateTag(tag, provider);
     }
 
     @Override
@@ -90,7 +91,8 @@ public abstract class TFCBlockEntity extends BlockEntity
     }
 
     /**
-     * Called from {@link #onLoad()}, to avoid the need to call {@code super.onLoad()}. Note that this can be called before the block entity exists in the world, on client!
+     * Called from {@link #onLoad()}, to avoid the need to call {@code super.onLoad()}. Note that this can be called before
+     * the block entity exists in the world, on client!
      */
     protected void onLoadAdditional() {}
 
@@ -99,23 +101,18 @@ public abstract class TFCBlockEntity extends BlockEntity
      */
     protected void onUnloadAdditional() {}
 
-    @Override
-    public final void load(CompoundTag tag)
-    {
-        loadAdditional(tag);
-        super.load(tag);
-    }
 
     /**
      * Override to save block entity specific data.
      */
     @Override
-    protected void saveAdditional(CompoundTag tag) {}
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {}
 
     /**
      * Override to load block entity specific data.
      */
-    protected void loadAdditional(CompoundTag tag) {}
+    @Override
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {}
 
     /**
      * Syncs the block entity data to client via means of a block update.
@@ -154,7 +151,7 @@ public abstract class TFCBlockEntity extends BlockEntity
         }
     }
 
-    public void sendVanillaUpdatePacket()
+    public final void sendVanillaUpdatePacket()
     {
         final ClientboundBlockEntityDataPacket packet = getUpdatePacket();
         final BlockPos pos = getBlockPos();
@@ -164,9 +161,8 @@ public abstract class TFCBlockEntity extends BlockEntity
         }
     }
 
-    @SuppressWarnings("deprecation")
-    protected HolderGetter<Block> getBlockGetter()
+    protected final HolderGetter<Block> getBlockGetter()
     {
-        return (this.level != null ? this.level.holderLookup(Registries.BLOCK) : BuiltInRegistries.BLOCK.asLookup());
+        return this.level != null ? this.level.holderLookup(Registries.BLOCK) : BuiltInRegistries.BLOCK.asLookup();
     }
 }

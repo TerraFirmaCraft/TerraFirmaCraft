@@ -10,9 +10,8 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.common.blockentities.FirepitBlockEntity;
-import net.dries007.tfc.common.capabilities.Capabilities;
 
-import static net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity.SLOT_FUEL_INPUT;
+import static net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity.*;
 
 public class FirepitContainer extends BlockEntityContainer<FirepitBlockEntity>
 {
@@ -41,15 +40,13 @@ public class FirepitContainer extends BlockEntityContainer<FirepitBlockEntity>
     @Override
     protected void addContainerSlots()
     {
-        blockEntity.getCapability(Capabilities.ITEM).ifPresent(handler -> {
-            // fuel slots
-            for (int i = 0; i < 4; i++)
-            {
-                addSlot(new CallbackSlot(blockEntity, handler, i, 8, 70 - 18 * i));
-            }
-            addSlot(new CallbackSlot(blockEntity, handler, FirepitBlockEntity.SLOT_ITEM_INPUT, 80, 29));
-            addSlot(new CallbackSlot(blockEntity, handler, FirepitBlockEntity.SLOT_OUTPUT_1, 71, 57));
-            addSlot(new CallbackSlot(blockEntity, handler, FirepitBlockEntity.SLOT_OUTPUT_2, 89, 57));
-        });
+        // Fuel slots
+        for (int i = 0; i < 4; i++)
+        {
+            addSlot(new CallbackSlot(blockEntity, i, 8, 70 - 18 * i));
+        }
+        addSlot(new CallbackSlot(blockEntity, FirepitBlockEntity.SLOT_ITEM_INPUT, 80, 29));
+        addSlot(new CallbackSlot(blockEntity, FirepitBlockEntity.SLOT_OUTPUT_1, 71, 57));
+        addSlot(new CallbackSlot(blockEntity, FirepitBlockEntity.SLOT_OUTPUT_2, 89, 57));
     }
 }

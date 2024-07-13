@@ -11,9 +11,16 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 
+import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
+
 public class CallbackSlot extends SlotItemHandler
 {
     private final ISlotCallback callback;
+
+    public CallbackSlot(InventoryBlockEntity<?> inventory, int index, int x, int y)
+    {
+        this(inventory, inventory.getInventory(), index, x, y);
+    }
 
     public CallbackSlot(ISlotCallback callback, IItemHandler inventory, int index, int x, int y)
     {

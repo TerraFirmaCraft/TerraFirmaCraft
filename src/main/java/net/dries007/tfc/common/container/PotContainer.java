@@ -11,13 +11,10 @@ import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
-import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity.SLOT_FUEL_CONSUME;
-import static net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity.SLOT_FUEL_INPUT;
-import static net.dries007.tfc.common.blockentities.GrillBlockEntity.SLOT_EXTRA_INPUT_END;
-import static net.dries007.tfc.common.blockentities.GrillBlockEntity.SLOT_EXTRA_INPUT_START;
+import static net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity.*;
+import static net.dries007.tfc.common.blockentities.GrillBlockEntity.*;
 
 public class PotContainer extends BlockEntityContainer<PotBlockEntity>
 {
@@ -50,16 +47,14 @@ public class PotContainer extends BlockEntityContainer<PotBlockEntity>
     @Override
     protected void addContainerSlots()
     {
-        blockEntity.getCapability(Capabilities.ITEM).ifPresent(handler -> {
-            for (int i = 0; i < 4; i++) // Fuel
-            {
-                addSlot(new CallbackSlot(blockEntity, handler, i, 8, 70 - 18 * i));
-            }
-            addSlot(new CallbackSlot(blockEntity, handler, SLOT_EXTRA_INPUT_START, 65, 23));
-            addSlot(new CallbackSlot(blockEntity, handler, SLOT_EXTRA_INPUT_START + 1, 83, 23));
-            addSlot(new CallbackSlot(blockEntity, handler, SLOT_EXTRA_INPUT_START + 2, 56, 41));
-            addSlot(new CallbackSlot(blockEntity, handler, SLOT_EXTRA_INPUT_START + 3, 74, 41));
-            addSlot(new CallbackSlot(blockEntity, handler, SLOT_EXTRA_INPUT_END, 92, 41));
-        });
+        for (int i = 0; i < 4; i++) // Fuel
+        {
+            addSlot(new CallbackSlot(blockEntity, i, 8, 70 - 18 * i));
+        }
+        addSlot(new CallbackSlot(blockEntity, SLOT_EXTRA_INPUT_START, 65, 23));
+        addSlot(new CallbackSlot(blockEntity, SLOT_EXTRA_INPUT_START + 1, 83, 23));
+        addSlot(new CallbackSlot(blockEntity, SLOT_EXTRA_INPUT_START + 2, 56, 41));
+        addSlot(new CallbackSlot(blockEntity, SLOT_EXTRA_INPUT_START + 3, 74, 41));
+        addSlot(new CallbackSlot(blockEntity, SLOT_EXTRA_INPUT_END, 92, 41));
     }
 }

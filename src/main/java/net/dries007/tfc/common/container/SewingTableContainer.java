@@ -17,6 +17,7 @@ import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.ContainerListener;
 import net.minecraft.world.inventory.DataSlot;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
@@ -49,7 +50,7 @@ public class SewingTableContainer extends Container implements ISlotCallback, Bu
 
     private static boolean isString(ItemStack item)
     {
-        return Helpers.isItem(item, Tags.Items.STRING);
+        return Helpers.isItem(item, Tags.Items.STRINGS);
     }
 
     private static boolean isNeedle(ItemStack item)
@@ -136,7 +137,7 @@ public class SewingTableContainer extends Container implements ISlotCallback, Bu
     {
         access.execute((level, pos) -> {
             level.getRecipeManager().getRecipeFor(TFCRecipeTypes.SEWING.get(), input, level).ifPresentOrElse(recipe -> {
-                final ItemStack result = recipe.getResultItem(level.registryAccess());
+                final ItemStack result = recipe.value().getResultItem(level.registryAccess());
                 if (result.getItem() != inventory.getStackInSlot(SLOT_RESULT).getItem())
                 {
                     inventory.setStackInSlot(SLOT_RESULT, result);

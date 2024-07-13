@@ -13,6 +13,7 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 import com.google.common.base.Suppliers;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
@@ -157,6 +158,6 @@ public final class RegistrationHelpers
      */
     public static <C extends AbstractContainerMenu> DeferredHolder<MenuType<?>, MenuType<C>> registerContainer(DeferredRegister<MenuType<?>> containers, String name, IContainerFactory<C> factory)
     {
-        return containers.register(name, () -> IForgeMenuType.create(factory));
+        return containers.register(name, () -> new MenuType<>(factory, FeatureFlags.DEFAULT_FLAGS));
     }
 }

@@ -12,12 +12,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
 import net.dries007.tfc.common.blocks.devices.PowderkegBlock;
 import net.dries007.tfc.common.blocks.devices.SealableDeviceBlock;
-import net.dries007.tfc.common.capabilities.Capabilities;
-import org.jetbrains.annotations.Nullable;
 
 public class PowderkegContainer extends BlockEntityContainer<PowderkegBlockEntity> implements ButtonHandlerContainer
 {
@@ -65,14 +64,12 @@ public class PowderkegContainer extends BlockEntityContainer<PowderkegBlockEntit
     @Override
     protected void addContainerSlots()
     {
-        blockEntity.getCapability(Capabilities.ITEM).ifPresent(inventory -> {
-            for (int y = 0; y < 3; y++)
+        for (int y = 0; y < 3; y++)
+        {
+            for (int x = 0; x < 4; x++)
             {
-                for (int x = 0; x < 4; x++)
-                {
-                    addSlot(new CallbackSlot(blockEntity, inventory, x * 3 + y, 25 + x * 18, 19 + y * 18));
-                }
+                addSlot(new CallbackSlot(blockEntity, x * 3 + y, 25 + x * 18, 19 + y * 18));
             }
-        });
+        }
     }
 }

@@ -25,7 +25,7 @@ public class GlassBasinBlockEntityRenderer implements BlockEntityRenderer<GlassB
         if (glass.getAnimationTicks() > -1)
         {
             final float lerp = Math.min(glass.getAnimationTicks(), 60) / 60f;
-            RenderHelpers.renderTexturedFace(poseStack, buffers, 0xFFFFFF, 0, 0, 1, 1, lerp, combinedOverlay, combinedLight, TEXTURE, false);
+            RenderHelpers.renderTexturedFace(poseStack, buffers, 0xFFFFFF, 0, 0, 1, 1, lerp, combinedOverlay, combinedLight, TEXTURE);
         }
     }
 }

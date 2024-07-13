@@ -11,6 +11,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
@@ -50,7 +51,9 @@ public class MoldLikeAlloyContainer extends ItemStackContainer implements ISlotC
         if (mold != null && mold.isMolten())
         {
             final ItemStack outputStack = inventory.getStackInSlot(0);
-            outputStack.getCapability(Capabilities.FLUID).ifPresent(outputFluidCap -> {
+            final @Nullable IFluidHandler outputFluidCap = outputStack.getCapability(Capabilities.FluidHandler.ITEM);
+            if (outputFluidCap != null)
+            {
                 final FluidStack drained = mold.drain(1, IFluidHandler.FluidAction.SIMULATE);
                 if (!drained.isEmpty())
                 {
@@ -69,7 +72,7 @@ public class MoldLikeAlloyContainer extends ItemStackContainer implements ISlotC
                         }
                     }
                 }
-            });
+            }
         }
         super.broadcastChanges();
     }
@@ -122,7 +125,7 @@ public class MoldLikeAlloyContainer extends ItemStackContainer implements ISlotC
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        return Helpers.mightHaveCapability(stack, Capabilities.FLUID);
+        return Helpers.mightHaveCapability(stack, Capabilities.FluidHandler.ITEM);
     }
 
     public IItemHandler getInventory()

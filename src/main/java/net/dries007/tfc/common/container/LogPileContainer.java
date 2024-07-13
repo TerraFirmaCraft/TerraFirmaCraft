@@ -11,7 +11,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.common.blockentities.LogPileBlockEntity;
-import net.dries007.tfc.common.capabilities.Capabilities;
 
 public class LogPileContainer extends BlockEntityContainer<LogPileBlockEntity>
 {
@@ -46,11 +45,9 @@ public class LogPileContainer extends BlockEntityContainer<LogPileBlockEntity>
     @Override
     protected void addContainerSlots()
     {
-        blockEntity.getCapability(Capabilities.ITEM).ifPresent(handler -> {
-            addSlot(new CallbackSlot(blockEntity, handler, 0, 71, 23));
-            addSlot(new CallbackSlot(blockEntity, handler, 1, 89, 23));
-            addSlot(new CallbackSlot(blockEntity, handler, 2, 71, 41));
-            addSlot(new CallbackSlot(blockEntity, handler, 3, 89, 41));
-        });
+        addSlot(new CallbackSlot(blockEntity, 0, 71, 23));
+        addSlot(new CallbackSlot(blockEntity, 1, 89, 23));
+        addSlot(new CallbackSlot(blockEntity, 2, 71, 41));
+        addSlot(new CallbackSlot(blockEntity, 3, 89, 41));
     }
 }

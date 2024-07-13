@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.container;
 
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -14,6 +15,7 @@ import net.minecraft.world.inventory.ItemCombinerMenu;
 import net.minecraft.world.inventory.ItemCombinerMenuSlotDefinition;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
@@ -35,7 +37,8 @@ public class ScribingTableContainer extends ItemCombinerMenu
 
     public static FluidStack getInkFluid(ItemStack stack)
     {
-        return stack.getCapability(Capabilities.FLUID_ITEM).map(ScribingTableContainer::getInkFluid).orElse(FluidStack.EMPTY);
+        final @Nullable IFluidHandlerItem fluidHandler = stack.getCapability(Capabilities.FluidHandler.ITEM);
+        return fluidHandler == null ? FluidStack.EMPTY : getInkFluid(fluidHandler);
     }
 
     public static FluidStack getInkFluid(IFluidHandlerItem handler)
@@ -71,16 +74,22 @@ public class ScribingTableContainer extends ItemCombinerMenu
     protected void onTake(Player player, ItemStack stack)
     {
         inputSlots.setItem(0, ItemStack.EMPTY);
-        ItemStack dye = inputSlots.getItem(1);
-        inputSlots.setItem(1, dye.getCapability(Capabilities.FLUID_ITEM).map(handler -> {
-            handler.drain(new FluidStack(getInkFluid(handler), FluidHelpers.BUCKET_VOLUME), IFluidHandler.FluidAction.EXECUTE);
-            return handler.getContainer();
-        }).orElseGet(() -> {
-            ItemStack result = dye.copy();
-            result.shrink(1);
-            return result;
-        }));
 
+        final ItemStack dye = inputSlots.getItem(1);
+        final @Nullable IFluidHandlerItem dyeFluidHandler = dye.getCapability(Capabilities.FluidHandler.ITEM);
+        final ItemStack resultDye;
+        if (dyeFluidHandler != null)
+        {
+            dyeFluidHandler.drain(FluidHelpers.BUCKET_VOLUME, IFluidHandler.FluidAction.EXECUTE);
+            resultDye = dyeFluidHandler.getContainer();
+        }
+        else
+        {
+            resultDye = dye.copy();
+            resultDye.shrink(1);
+        }
+
+        inputSlots.setItem(1, resultDye);
         access.execute((level, pos) -> Helpers.playSound(level, pos, TFCSounds.SCRIBING_TABLE.get()));
     }
 
@@ -98,9 +107,9 @@ public class ScribingTableContainer extends ItemCombinerMenu
 
         if (StringUtils.isBlank(this.itemName))
         {
-            if (input.hasCustomHoverName())
+            if (input.has(DataComponents.CUSTOM_NAME))
             {
-                output.resetHoverName();
+                output.remove(DataComponents.CUSTOM_NAME);
             }
             else
             {
@@ -109,7 +118,7 @@ public class ScribingTableContainer extends ItemCombinerMenu
         }
         else if (!this.itemName.equals(input.getHoverName().getString()))
         {
-            output.setHoverName(Component.literal(this.itemName));
+            output.set(DataComponents.CUSTOM_NAME, Component.literal(this.itemName));
         }
         else
         {
@@ -139,11 +148,11 @@ public class ScribingTableContainer extends ItemCombinerMenu
             ItemStack itemstack = getSlot(2).getItem();
             if (StringUtils.isBlank(text))
             {
-                itemstack.resetHoverName();
+                itemstack.remove(DataComponents.CUSTOM_NAME);
             }
             else
             {
-                itemstack.setHoverName(Component.literal(this.itemName));
+                itemstack.set(DataComponents.CUSTOM_NAME, Component.literal(this.itemName));
             }
         }
         this.createResult();

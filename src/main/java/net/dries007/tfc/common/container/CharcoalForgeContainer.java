@@ -10,7 +10,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.common.blockentities.CharcoalForgeBlockEntity;
-import net.dries007.tfc.common.capabilities.Capabilities;
 
 public class CharcoalForgeContainer extends BlockEntityContainer<CharcoalForgeBlockEntity>
 {
@@ -39,30 +38,28 @@ public class CharcoalForgeContainer extends BlockEntityContainer<CharcoalForgeBl
     @Override
     protected void addContainerSlots()
     {
-        blockEntity.getCapability(Capabilities.ITEM).ifPresent(handler -> {
-            // Fuel slots
-            // Note: the order of these statements is important
-            int index = CharcoalForgeBlockEntity.SLOT_FUEL_MIN;
-            addSlot(new CallbackSlot(blockEntity, handler, index++, 80, 70));
-            addSlot(new CallbackSlot(blockEntity, handler, index++, 98, 52));
-            addSlot(new CallbackSlot(blockEntity, handler, index++, 62, 52));
-            addSlot(new CallbackSlot(blockEntity, handler, index++, 116, 34));
-            addSlot(new CallbackSlot(blockEntity, handler, index, 44, 34));
+        // Fuel slots
+        // Note: the order of these statements is important
+        int index = CharcoalForgeBlockEntity.SLOT_FUEL_MIN;
+        addSlot(new CallbackSlot(blockEntity, index++, 80, 70));
+        addSlot(new CallbackSlot(blockEntity, index++, 98, 52));
+        addSlot(new CallbackSlot(blockEntity, index++, 62, 52));
+        addSlot(new CallbackSlot(blockEntity, index++, 116, 34));
+        addSlot(new CallbackSlot(blockEntity, index, 44, 34));
 
-            // Input slots
-            // Note: the order of these statements is important
-            index = CharcoalForgeBlockEntity.SLOT_INPUT_MIN;
-            addSlot(new CallbackSlot(blockEntity, handler, index++, 80, 52));
-            addSlot(new CallbackSlot(blockEntity, handler, index++, 98, 34));
-            addSlot(new CallbackSlot(blockEntity, handler, index++, 62, 34));
-            addSlot(new CallbackSlot(blockEntity, handler, index++, 116, 16));
-            addSlot(new CallbackSlot(blockEntity, handler, index, 44, 16));
+        // Input slots
+        // Note: the order of these statements is important
+        index = CharcoalForgeBlockEntity.SLOT_INPUT_MIN;
+        addSlot(new CallbackSlot(blockEntity, index++, 80, 52));
+        addSlot(new CallbackSlot(blockEntity, index++, 98, 34));
+        addSlot(new CallbackSlot(blockEntity, index++, 62, 34));
+        addSlot(new CallbackSlot(blockEntity, index++, 116, 16));
+        addSlot(new CallbackSlot(blockEntity, index, 44, 16));
 
-            // Extra slots (for ceramic molds)
-            for (int i = CharcoalForgeBlockEntity.SLOT_EXTRA_MIN; i <= CharcoalForgeBlockEntity.SLOT_EXTRA_MAX; i++)
-            {
-                addSlot(new CallbackSlot(blockEntity, handler, i, 152, 16 + 18 * (i - CharcoalForgeBlockEntity.SLOT_EXTRA_MIN)));
-            }
-        });
+        // Extra slots (for ceramic molds)
+        for (int i = CharcoalForgeBlockEntity.SLOT_EXTRA_MIN; i <= CharcoalForgeBlockEntity.SLOT_EXTRA_MAX; i++)
+        {
+            addSlot(new CallbackSlot(blockEntity, i, 152, 16 + 18 * (i - CharcoalForgeBlockEntity.SLOT_EXTRA_MIN)));
+        }
     }
 }

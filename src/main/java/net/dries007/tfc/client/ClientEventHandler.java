@@ -46,9 +46,11 @@ import net.minecraft.client.renderer.entity.PufferfishRenderer;
 import net.minecraft.client.renderer.entity.SalmonRenderer;
 import net.minecraft.client.renderer.entity.TropicalFishRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -66,6 +68,7 @@ import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.event.RegisterPresetEditorsEvent;
+import net.neoforged.neoforge.client.model.DynamicFluidContainerModel;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.model.ContainedFluidModel;
@@ -248,7 +251,7 @@ public final class ClientEventHandler
         bus.addListener(ClientEventHandler::onTooltipFactoryRegistry);
         bus.addListener(ClientEventHandler::registerLayerDefinitions);
         bus.addListener(ClientEventHandler::registerPresetEditors);
-        bus.addListener(IngameOverlays::registerOverlays);
+        //bus.addListener(IngameOverlays::registerOverlays); // todo: 1.21, overlays
     }
 
     @SuppressWarnings("deprecation")
@@ -695,12 +698,12 @@ public final class ClientEventHandler
     {
         for (String metal : new String[] {"native_copper", "native_silver", "native_gold", "cassiterite"})
         {
-            event.register(Helpers.identifier("item/pan/" + metal + "/result"));
+            register(event, Helpers.identifier("item/pan/" + metal + "/result"));
 
             for (Rock rock : Rock.values())
             {
-                event.register(Helpers.identifier("item/pan/" + metal + "/" + rock.getSerializedName() + "_half"));
-                event.register(Helpers.identifier("item/pan/" + metal + "/" + rock.getSerializedName() + "_full"));
+                register(event, Helpers.identifier("item/pan/" + metal + "/" + rock.getSerializedName() + "_half"));
+                register(event, Helpers.identifier("item/pan/" + metal + "/" + rock.getSerializedName() + "_full"));
             }
         }
 
@@ -708,7 +711,7 @@ public final class ClientEventHandler
         {
             if (item instanceof JarItem jar)
             {
-                event.register(jar.getModel());
+                register(event, jar.getModel());
             }
         }
 
@@ -716,24 +719,28 @@ public final class ClientEventHandler
         {
             for (int i = AbstractFirepitBlockEntity.SLOT_FUEL_CONSUME; i <= AbstractFirepitBlockEntity.SLOT_FUEL_INPUT; i++)
             {
-                event.register(stage.getModel(i));
+                register(event, stage.getModel(i));
             }
         }
 
-        event.register(CrankshaftBlockEntityRenderer.WHEEL_MODEL);
+        register(event, CrankshaftBlockEntityRenderer.WHEEL_MODEL);
 
-        TFCConfig.CLIENT.additionalSpecialModels.get().forEach(s -> event.register(Helpers.resourceLocation(s)));
+        TFCConfig.CLIENT.additionalSpecialModels.get().forEach(s -> register(event, Helpers.resourceLocation(s)));
+    }
 
+    private static void register(ModelEvent.RegisterAdditional event, ResourceLocation id)
+    {
+        event.register(ModelResourceLocation.standalone(id)); // This event will assert this is the case, piss poor API design here
     }
 
     public static void registerModelLoaders(ModelEvent.RegisterGeometryLoaders event)
     {
-        event.register("contained_fluid", new ContainedFluidModel.Loader());
-        event.register("trim", new TrimmedItemModel.Loader());
-        event.register("ingot_pile", IngotPileBlockModel.INSTANCE);
-        event.register("double_ingot_pile", DoubleIngotPileBlockModel.INSTANCE);
-        event.register("sheet_pile", SheetPileBlockModel.INSTANCE);
-        event.register("scraping", ScrapingBlockModel.INSTANCE);
+        event.register(Helpers.identifier("contained_fluid"), new ContainedFluidModel.Loader());
+        event.register(Helpers.identifier("trim"), new TrimmedItemModel.Loader());
+        event.register(Helpers.identifier("ingot_pile"), IngotPileBlockModel.INSTANCE);
+        event.register(Helpers.identifier("double_ingot_pile"), DoubleIngotPileBlockModel.INSTANCE);
+        event.register(Helpers.identifier("sheet_pile"), SheetPileBlockModel.INSTANCE);
+        event.register(Helpers.identifier("scraping"), ScrapingBlockModel.INSTANCE);
     }
 
     public static void registerColorHandlerBlocks(RegisterColorHandlersEvent.Block event)
