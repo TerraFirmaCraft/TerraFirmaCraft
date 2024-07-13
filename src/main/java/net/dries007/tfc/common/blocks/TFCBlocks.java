@@ -42,6 +42,7 @@ import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.Nullable;
@@ -107,6 +108,7 @@ import net.dries007.tfc.common.blocks.rotation.CrankshaftBlock;
 import net.dries007.tfc.common.blocks.rotation.FluidPipeBlock;
 import net.dries007.tfc.common.blocks.rotation.FluidPumpBlock;
 import net.dries007.tfc.common.blocks.rotation.HandWheelBlock;
+import net.dries007.tfc.common.blocks.soil.ColoredBlock;
 import net.dries007.tfc.common.blocks.soil.ConnectedGrassBlock;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
@@ -152,7 +154,7 @@ public final class TFCBlocks
 
     public static final Map<SoilBlockType.Variant, DecorationBlockHolder> MUD_BRICK_DECORATIONS = Helpers.mapOfKeys(SoilBlockType.Variant.class, variant -> new DecorationBlockHolder(
         register(("mud_bricks/" + variant.name() + "_slab"), () -> new SlabBlock(Properties.of().mapColor(MapColor.DIRT).strength(2.6f).sound(SoundType.WART_BLOCK))),
-        register(("mud_bricks/" + variant.name() + "_stairs"), () -> new StairBlock(() -> SOIL.get(SoilBlockType.MUD_BRICKS).get(variant).get().defaultBlockState(), Properties.of().mapColor(MapColor.DIRT).strength(2.6f).sound(SoundType.WART_BLOCK).instrument(NoteBlockInstrument.BASEDRUM))),
+        register(("mud_bricks/" + variant.name() + "_stairs"), () -> new StairBlock(SOIL.get(SoilBlockType.MUD_BRICKS).get(variant).get().defaultBlockState(), Properties.of().mapColor(MapColor.DIRT).strength(2.6f).sound(SoundType.WART_BLOCK).instrument(NoteBlockInstrument.BASEDRUM))),
         register(("mud_bricks/" + variant.name() + "_wall"), () -> new WallBlock(Properties.of().mapColor(MapColor.DIRT).strength(2.6f).sound(SoundType.WART_BLOCK)))
     ));
 
@@ -178,7 +180,7 @@ public final class TFCBlocks
     public static final Map<SandBlockType, Map<SandstoneBlockType, DecorationBlockHolder>> SANDSTONE_DECORATIONS = Helpers.mapOfKeys(SandBlockType.class, color ->
         Helpers.mapOfKeys(SandstoneBlockType.class, type -> new DecorationBlockHolder(
             register((type.name() + "_sandstone/" + color.name() + "_slab"), () -> new SlabBlock(type.properties(color))),
-            register((type.name() + "_sandstone/" + color.name() + "_stairs"), () -> new StairBlock(() -> SANDSTONE.get(color).get(type).get().defaultBlockState(), type.properties(color))),
+            register((type.name() + "_sandstone/" + color.name() + "_stairs"), () -> new StairBlock(SANDSTONE.get(color).get(type).get().defaultBlockState(), type.properties(color))),
             register((type.name() + "_sandstone/" + color.name() + "_wall"), () -> new WallBlock(type.properties(color)))
         ))
     );
@@ -187,10 +189,10 @@ public final class TFCBlocks
         register(("groundcover/" + type.name()), () -> new GroundcoverBlock(type), type.createBlockItem())
     );
 
-    public static final Id<Block> SEA_ICE = register("sea_ice", () -> new SeaIceBlock(Properties.copy(Blocks.ICE).isValidSpawn(TFCBlocks::onlyColdMobs)));
+    public static final Id<Block> SEA_ICE = register("sea_ice", () -> new SeaIceBlock(Properties.ofFullCopy(Blocks.ICE).isValidSpawn(TFCBlocks::onlyColdMobs)));
 
-    public static final Id<SnowPileBlock> SNOW_PILE = register("snow_pile", () -> new SnowPileBlock(ExtendedProperties.of(Blocks.SNOW).randomTicks().blockEntity(TFCBlockEntities.PILE)));
-    public static final Id<IcePileBlock> ICE_PILE = register("ice_pile", () -> new IcePileBlock(ExtendedProperties.of(Blocks.ICE).randomTicks().blockEntity(TFCBlockEntities.PILE)));
+    public static final Id<SnowPileBlock> SNOW_PILE = register("snow_pile", () -> new SnowPileBlock(ExtendedProperties.of(Blocks.SNOW).randomTicks().blockEntity(TFCBlockEntities.PILE).cloneItem(() -> Blocks.SNOW)));
+    public static final Id<IcePileBlock> ICE_PILE = register("ice_pile", () -> new IcePileBlock(ExtendedProperties.of(Blocks.ICE).randomTicks().blockEntity(TFCBlockEntities.PILE).cloneItem(() -> Blocks.ICE)));
     public static final Id<ThinSpikeBlock> ICICLE = register("icicle", () -> new IcicleBlock(Properties.of().mapColor(MapColor.ICE).pushReaction(PushReaction.DESTROY).noLootTable().strength(0.4f).sound(SoundType.GLASS).noOcclusion().randomTicks()));
 
     public static final Id<ThinSpikeBlock> CALCITE = register("calcite", () -> new ThinSpikeBlock(Properties.of().mapColor(MapColor.ICE).pushReaction(PushReaction.DESTROY).noLootTable().strength(0.2f).sound(TFCSounds.THIN)));
@@ -235,7 +237,7 @@ public final class TFCBlocks
     );
 
     public static final Map<Rock, Id<Block>> ROCK_ANVILS = Helpers.mapOfKeys(Rock.class, rock -> rock.category() == RockCategory.IGNEOUS_EXTRUSIVE || rock.category() == RockCategory.IGNEOUS_INTRUSIVE, rock ->
-        register("rock/anvil/" + rock.name(), () -> new RockAnvilBlock(ExtendedProperties.of().mapColor(MapColor.STONE).sound(SoundType.STONE).strength(2, 10).requiresCorrectToolForDrops().blockEntity(TFCBlockEntities.ANVIL), TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.RAW)))
+        register("rock/anvil/" + rock.name(), () -> new RockAnvilBlock(ExtendedProperties.of().mapColor(MapColor.STONE).sound(SoundType.STONE).strength(2, 10).requiresCorrectToolForDrops().cloneItem(TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.RAW)).blockEntity(TFCBlockEntities.ANVIL)))
     );
 
     public static final Map<Rock, Id<Block>> MAGMA_BLOCKS = Helpers.mapOfKeys(Rock.class, rock -> rock.category() == RockCategory.IGNEOUS_EXTRUSIVE || rock.category() == RockCategory.IGNEOUS_INTRUSIVE, rock ->
@@ -251,7 +253,7 @@ public final class TFCBlocks
     );
 
     public static final Map<FluidId, Id<FluidCauldronBlock>> CAULDRONS = FluidId.mapOf(fluid ->
-        registerNoItem("cauldron/" + fluid.name(), () -> new FluidCauldronBlock(Properties.copy(Blocks.CAULDRON)))
+        registerNoItem("cauldron/" + fluid.name(), () -> new FluidCauldronBlock(Properties.ofFullCopy(Blocks.CAULDRON)))
     );
 
     // Wood
@@ -265,7 +267,7 @@ public final class TFCBlocks
     public static final Map<Wood, Map<Metal.Default, Id<TFCCeilingHangingSignBlock>>> CEILING_HANGING_SIGNS = registerHangingSigns("hanging_sign", TFCCeilingHangingSignBlock::new);
     public static final Map<Wood, Map<Metal.Default, Id<TFCWallHangingSignBlock>>> WALL_HANGING_SIGNS = registerHangingSigns("wall_hanging_sign", TFCWallHangingSignBlock::new);
 
-    public static final Id<Block> PALM_MOSAIC = register("wood/planks/palm_mosaic", () -> new Block(Properties.copy(Blocks.BAMBOO_MOSAIC)));
+    public static final Id<Block> PALM_MOSAIC = register("wood/planks/palm_mosaic", () -> new Block(Properties.ofFullCopy(Blocks.BAMBOO_MOSAIC)));
     public static final Id<Block> PALM_MOSAIC_STAIRS = register("wood/planks/palm_mosaic_stairs", () -> new TFCStairBlock(() -> PALM_MOSAIC.get().defaultBlockState(), ExtendedProperties.of(Blocks.BAMBOO_MOSAIC_STAIRS).flammableLikePlanks()));
     public static final Id<Block> PALM_MOSAIC_SLAB = register("wood/planks/palm_mosaic_slab", () -> new TFCSlabBlock(ExtendedProperties.of(Blocks.BAMBOO_MOSAIC_SLAB).flammableLikePlanks()));
 
@@ -278,7 +280,7 @@ public final class TFCBlocks
     );
 
     public static final Map<Plant, Id<Block>> POTTED_PLANTS = Helpers.mapOfKeys(Plant.class, Plant::hasFlowerPot, plant ->
-        registerNoItem(("plant/potted/" + plant.name()), () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, PLANTS.get(plant), BlockBehaviour.Properties.copy(Blocks.POTTED_ACACIA_SAPLING)))
+        registerNoItem(("plant/potted/" + plant.name()), () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, PLANTS.get(plant), BlockBehaviour.Properties.ofFullCopy(Blocks.POTTED_ACACIA_SAPLING)))
     );
 
     public static final Map<Crop, Id<Block>> CROPS = Helpers.mapOfKeys(Crop.class, crop ->
@@ -304,11 +306,11 @@ public final class TFCBlocks
     public static final Id<Block> WHITE_CEDAR_KRUMMHOLZ = register("plant/white_cedar_krummholz", () -> new KrummholzBlock(ExtendedProperties.of().mapColor(MapColor.PLANT).strength(8f).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY).flammableLikeLogs()));
     public static final Id<Block> DOUGLAS_FIR_KRUMMHOLZ = register("plant/douglas_fir_krummholz", () -> new KrummholzBlock(ExtendedProperties.of().mapColor(MapColor.PLANT).strength(8f).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY).flammableLikeLogs()));
     public static final Id<Block> ASPEN_KRUMMHOLZ = register("plant/aspen_krummholz", () -> new KrummholzBlock(ExtendedProperties.of().mapColor(MapColor.PLANT).strength(8f).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY).flammableLikeLogs()));
-    public static final Id<Block> POTTED_PINE_KRUMMHOLZ = registerNoItem("plant/potted/pine_krummholz", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, PINE_KRUMMHOLZ, BlockBehaviour.Properties.copy(Blocks.POTTED_ACACIA_SAPLING)));
-    public static final Id<Block> POTTED_SPRUCE_KRUMMHOLZ = registerNoItem("plant/potted/spruce_krummholz", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, PINE_KRUMMHOLZ, BlockBehaviour.Properties.copy(Blocks.POTTED_ACACIA_SAPLING)));
-    public static final Id<Block> POTTED_WHITE_CEDAR_KRUMMHOLZ = registerNoItem("plant/potted/white_cedar_krummholz", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, PINE_KRUMMHOLZ, BlockBehaviour.Properties.copy(Blocks.POTTED_ACACIA_SAPLING)));
-    public static final Id<Block> POTTED_DOUGLAS_FIR_KRUMMHOLZ = registerNoItem("plant/potted/douglas_fir_krummholz", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, PINE_KRUMMHOLZ, BlockBehaviour.Properties.copy(Blocks.POTTED_ACACIA_SAPLING)));
-    public static final Id<Block> POTTED_ASPEN_KRUMMHOLZ = registerNoItem("plant/potted/aspen_krummholz", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, PINE_KRUMMHOLZ, BlockBehaviour.Properties.copy(Blocks.POTTED_ACACIA_SAPLING)));
+    public static final Id<Block> POTTED_PINE_KRUMMHOLZ = registerNoItem("plant/potted/pine_krummholz", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, PINE_KRUMMHOLZ, BlockBehaviour.Properties.ofFullCopy(Blocks.POTTED_ACACIA_SAPLING)));
+    public static final Id<Block> POTTED_SPRUCE_KRUMMHOLZ = registerNoItem("plant/potted/spruce_krummholz", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, PINE_KRUMMHOLZ, BlockBehaviour.Properties.ofFullCopy(Blocks.POTTED_ACACIA_SAPLING)));
+    public static final Id<Block> POTTED_WHITE_CEDAR_KRUMMHOLZ = registerNoItem("plant/potted/white_cedar_krummholz", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, PINE_KRUMMHOLZ, BlockBehaviour.Properties.ofFullCopy(Blocks.POTTED_ACACIA_SAPLING)));
+    public static final Id<Block> POTTED_DOUGLAS_FIR_KRUMMHOLZ = registerNoItem("plant/potted/douglas_fir_krummholz", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, PINE_KRUMMHOLZ, BlockBehaviour.Properties.ofFullCopy(Blocks.POTTED_ACACIA_SAPLING)));
+    public static final Id<Block> POTTED_ASPEN_KRUMMHOLZ = registerNoItem("plant/potted/aspen_krummholz", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, PINE_KRUMMHOLZ, BlockBehaviour.Properties.ofFullCopy(Blocks.POTTED_ACACIA_SAPLING)));
 
     public static final Id<Block> ROTTEN_PUMPKIN = registerNoItem("rotten_pumpkin", () -> new Block(Properties.of().mapColor(MapColor.COLOR_ORANGE).strength(1.0F).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY)));
     public static final Id<Block> ROTTEN_MELON = registerNoItem("rotten_melon", () -> new Block(Properties.of().mapColor(MapColor.COLOR_GREEN).strength(1.0F).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY)));
@@ -340,7 +342,7 @@ public final class TFCBlocks
     public static final Id<Block> PLAIN_ALABASTER_BRICKS = register("alabaster/bricks", () -> new Block(Properties.of().mapColor(MapColor.STONE).requiresCorrectToolForDrops().strength(1.5F, 6.0F)));
     public static final Id<Block> PLAIN_POLISHED_ALABASTER = register("alabaster/polished", () -> new Block(Properties.of().mapColor(MapColor.STONE).requiresCorrectToolForDrops().strength(1.5F, 6.0F)));
 
-    public static final Id<Block> AGGREGATE = register("aggregate", () -> new GravelBlock(Properties.copy(Blocks.GRAVEL).strength(0.6F).sound(SoundType.GRAVEL)));
+    public static final Id<Block> AGGREGATE = register("aggregate", () -> new ColoredBlock(-8356741, Properties.ofFullCopy(Blocks.GRAVEL).strength(0.6F).sound(SoundType.GRAVEL)));
 
     public static final Map<DyeColor, Id<Block>> RAW_ALABASTER = Helpers.mapOfKeys(DyeColor.class, color ->
         register(("alabaster/raw/" + color.getName()), () -> new Block(Properties.of().mapColor(color.getMapColor()).requiresCorrectToolForDrops().strength(1.0F, 6.0F)))
@@ -354,22 +356,22 @@ public final class TFCBlocks
 
     public static final Map<DyeColor, DecorationBlockHolder> ALABASTER_BRICK_DECORATIONS = Helpers.mapOfKeys(DyeColor.class, color -> new DecorationBlockHolder(
             register(("alabaster/bricks/" + color.getName() + "_slab"), () -> new SlabBlock(Properties.of().mapColor(color.getMapColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F))),
-            register(("alabaster/bricks/" + color.getName() + "_stairs"), () -> new StairBlock(() -> ALABASTER_BRICKS.get(color).get().defaultBlockState(), Properties.of().mapColor(color.getMapColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F))),
+            register(("alabaster/bricks/" + color.getName() + "_stairs"), () -> new StairBlock(ALABASTER_BRICKS.get(color).get().defaultBlockState(), Properties.of().mapColor(color.getMapColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F))),
             register(("alabaster/bricks/" + color.getName() + "_wall"), () -> new WallBlock(Properties.of().mapColor(color.getMapColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)))
         )
     );
 
     public static final Map<DyeColor, DecorationBlockHolder> ALABASTER_POLISHED_DECORATIONS = Helpers.mapOfKeys(DyeColor.class, color -> new DecorationBlockHolder(
             register(("alabaster/polished/" + color.getName() + "_slab"), () -> new SlabBlock(Properties.of().mapColor(color.getMapColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F))),
-            register(("alabaster/polished/" + color.getName() + "_stairs"), () -> new StairBlock(() -> ALABASTER_BRICKS.get(color).get().defaultBlockState(), Properties.of().mapColor(color.getMapColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F))),
+            register(("alabaster/polished/" + color.getName() + "_stairs"), () -> new StairBlock(ALABASTER_BRICKS.get(color).get().defaultBlockState(), Properties.of().mapColor(color.getMapColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F))),
             register(("alabaster/polished/" + color.getName() + "_wall"), () -> new WallBlock(Properties.of().mapColor(color.getMapColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)))
         )
     );
 
     public static final Map<DyeColor, Id<Block>> COLORED_POURED_GLASS = Helpers.mapOfKeys(DyeColor.class, color -> register(color.getSerializedName() + "_poured_glass", () -> new PouredGlassBlock(ExtendedProperties.of().pushReaction(PushReaction.DESTROY).strength(0.3F).sound(SoundType.GLASS).noOcclusion().requiresCorrectToolForDrops(), () -> PouredGlassBlock.getStainedGlass(color))));
     public static final Id<Block> POURED_GLASS = register("poured_glass", () -> new PouredGlassBlock(ExtendedProperties.of().strength(0.3F).sound(SoundType.GLASS).pushReaction(PushReaction.DESTROY).noOcclusion().requiresCorrectToolForDrops(), () -> Items.GLASS_PANE));
-    public static final Id<Block> HOT_POURED_GLASS = registerNoItem("hot_poured_glass", () -> new HotPouredGlassBlock(ExtendedProperties.of().strength(0.3F).lightLevel(s -> 10).sound(SoundType.GLASS).pushReaction(PushReaction.DESTROY).noOcclusion().noLootTable().pathType(BlockPathTypes.DANGER_FIRE).blockEntity(TFCBlockEntities.HOT_POURED_GLASS).ticks(HotPouredGlassBlockEntity::tick)));
-    public static final Id<Block> GLASS_BASIN = registerNoItem("glass_basin", () -> new GlassBasinBlock(ExtendedProperties.of().strength(0.3f).lightLevel(s -> 10).sound(SoundType.GLASS).pushReaction(PushReaction.DESTROY).noOcclusion().noLootTable().pathType(BlockPathTypes.DANGER_FIRE).blockEntity(TFCBlockEntities.GLASS_BASIN).dynamicShape().ticks(GlassBasinBlockEntity::ticks)));
+    public static final Id<Block> HOT_POURED_GLASS = registerNoItem("hot_poured_glass", () -> new HotPouredGlassBlock(ExtendedProperties.of().strength(0.3F).lightLevel(s -> 10).sound(SoundType.GLASS).pushReaction(PushReaction.DESTROY).noOcclusion().noLootTable().pathType(PathType.DANGER_FIRE).blockEntity(TFCBlockEntities.HOT_POURED_GLASS).ticks(HotPouredGlassBlockEntity::tick)));
+    public static final Id<Block> GLASS_BASIN = registerNoItem("glass_basin", () -> new GlassBasinBlock(ExtendedProperties.of().strength(0.3f).lightLevel(s -> 10).sound(SoundType.GLASS).pushReaction(PushReaction.DESTROY).noOcclusion().noLootTable().pathType(PathType.DANGER_FIRE).blockEntity(TFCBlockEntities.GLASS_BASIN).dynamicShape().ticks(GlassBasinBlockEntity::ticks)));
 
     public static final Id<Block> FIRE_BRICKS = register("fire_bricks", () -> new Block(Properties.of().mapColor(MapColor.COLOR_RED).requiresCorrectToolForDrops().strength(2.0F, 6.0F)));
     public static final Id<Block> FIRE_CLAY_BLOCK = register("fire_clay_block", () -> new Block(Properties.of().mapColor(MapColor.CLAY).strength(0.6F).sound(SoundType.GRAVEL)));
@@ -385,10 +387,10 @@ public final class TFCBlocks
     public static final Id<Block> THATCH = register("thatch", () -> new ThatchBlock(ExtendedProperties.of(MapColor.SAND).strength(0.6F, 0.4F).noOcclusion().isViewBlocking(TFCBlocks::never).sound(TFCSounds.THATCH).flammable(50, 100)));
     public static final Id<Block> THATCH_BED = register("thatch_bed", () -> new ThatchBedBlock(ExtendedProperties.of(MapColor.SAND).sound(TFCSounds.THATCH).strength(0.6F, 0.4F).flammable(50, 100).pushReaction(PushReaction.DESTROY).blockEntity(TFCBlockEntities.THATCH_BED)), b -> new BedItem(b, new Item.Properties()));
     public static final Id<Block> LOG_PILE = registerNoItem("log_pile", () -> new LogPileBlock(ExtendedProperties.of(MapColor.WOOD).strength(0.6F).sound(SoundType.WOOD).flammable(60, 30).blockEntity(TFCBlockEntities.LOG_PILE)));
-    public static final Id<Block> BURNING_LOG_PILE = registerNoItem("burning_log_pile", () -> new BurningLogPileBlock(ExtendedProperties.of(MapColor.WOOD).randomTicks().strength(0.6F).sound(SoundType.WOOD).flammableLikeLogs().blockEntity(TFCBlockEntities.BURNING_LOG_PILE).serverTicks(BurningLogPileBlockEntity::serverTick)));
-    public static final Id<Block> FIREPIT = register("firepit", () -> new FirepitBlock(ExtendedProperties.of(MapColor.DIRT).strength(0.4F, 0.4F).sound(SoundType.NETHER_WART).randomTicks().noOcclusion().lightLevel(litBlockEmission(15)).blockEntity(TFCBlockEntities.FIREPIT).pathType(BlockPathTypes.DAMAGE_FIRE).<AbstractFirepitBlockEntity<?>>ticks(AbstractFirepitBlockEntity::serverTick, AbstractFirepitBlockEntity::clientTick)));
-    public static final Id<Block> GRILL = register("grill", () -> new GrillBlock(ExtendedProperties.of(MapColor.DIRT).strength(0.4F, 0.4F).sound(SoundType.NETHER_WART).randomTicks().noOcclusion().lightLevel(litBlockEmission(15)).blockEntity(TFCBlockEntities.GRILL).pathType(BlockPathTypes.DAMAGE_FIRE).<AbstractFirepitBlockEntity<?>>ticks(AbstractFirepitBlockEntity::serverTick, AbstractFirepitBlockEntity::clientTick)));
-    public static final Id<Block> POT = register("pot", () -> new PotBlock(ExtendedProperties.of(MapColor.DIRT).strength(0.4F, 0.4F).sound(SoundType.NETHER_WART).randomTicks().noOcclusion().lightLevel(litBlockEmission(15)).blockEntity(TFCBlockEntities.POT).pathType(BlockPathTypes.DAMAGE_FIRE).<AbstractFirepitBlockEntity<?>>ticks(AbstractFirepitBlockEntity::serverTick, AbstractFirepitBlockEntity::clientTick)));
+    public static final Id<Block> BURNING_LOG_PILE = registerNoItem("burning_log_pile", () -> new BurningLogPileBlock(ExtendedProperties.of(MapColor.WOOD).randomTicks().strength(0.6F).sound(SoundType.WOOD).flammableLikeLogs().blockEntity(TFCBlockEntities.BURNING_LOG_PILE).serverTicks(BurningLogPileBlockEntity::serverTick).cloneItem(Items.CHARCOAL)));
+    public static final Id<Block> FIREPIT = register("firepit", () -> new FirepitBlock(ExtendedProperties.of(MapColor.DIRT).strength(0.4F, 0.4F).sound(SoundType.NETHER_WART).randomTicks().noOcclusion().lightLevel(litBlockEmission(15)).blockEntity(TFCBlockEntities.FIREPIT).pathType(PathType.DAMAGE_FIRE).<AbstractFirepitBlockEntity<?>>ticks(AbstractFirepitBlockEntity::serverTick, AbstractFirepitBlockEntity::clientTick)));
+    public static final Id<Block> GRILL = register("grill", () -> new GrillBlock(ExtendedProperties.of(MapColor.DIRT).strength(0.4F, 0.4F).sound(SoundType.NETHER_WART).randomTicks().noOcclusion().lightLevel(litBlockEmission(15)).blockEntity(TFCBlockEntities.GRILL).pathType(PathType.DAMAGE_FIRE).<AbstractFirepitBlockEntity<?>>ticks(AbstractFirepitBlockEntity::serverTick, AbstractFirepitBlockEntity::clientTick)));
+    public static final Id<Block> POT = register("pot", () -> new PotBlock(ExtendedProperties.of(MapColor.DIRT).strength(0.4F, 0.4F).sound(SoundType.NETHER_WART).randomTicks().noOcclusion().lightLevel(litBlockEmission(15)).blockEntity(TFCBlockEntities.POT).pathType(PathType.DAMAGE_FIRE).<AbstractFirepitBlockEntity<?>>ticks(AbstractFirepitBlockEntity::serverTick, AbstractFirepitBlockEntity::clientTick)));
     public static final Id<Block> BELLOWS = register("bellows", () -> new BellowsBlock(ExtendedProperties.of(MapColor.WOOD).noOcclusion().dynamicShape().pushReaction(PushReaction.DESTROY).sound(SoundType.WOOD).strength(3.0f).blockEntity(TFCBlockEntities.BELLOWS).ticks(BellowsBlockEntity::tickBoth)));
     public static final Id<Block> POWDERKEG = register("powderkeg", () -> new PowderkegBlock(ExtendedProperties.of(MapColor.WOOD).noOcclusion().dynamicShape().sound(SoundType.WOOD).strength(2.5f).blockEntity(TFCBlockEntities.POWDERKEG).serverTicks(PowderkegBlockEntity::serverTick)), block -> new TooltipBlockItem(block, new Item.Properties()));
     public static final Id<Block> BARREL_RACK = register("barrel_rack", () -> new BarrelRackBlock(ExtendedProperties.of(MapColor.WOOD).sound(SoundType.WOOD).flammableLikePlanks().strength(4f)));
@@ -398,7 +400,7 @@ public final class TFCBlocks
     public static final Id<Block> PIT_KILN = registerNoItem("pit_kiln", () -> new PitKilnBlock(ExtendedProperties.of(MapColor.WOOD).sound(SoundType.WOOD).strength(0.6f).noOcclusion().blockEntity(TFCBlockEntities.PIT_KILN).serverTicks(PitKilnBlockEntity::serverTick)));
     public static final Id<Block> QUERN = register("quern", () -> new QuernBlock(ExtendedProperties.of().mapColor(MapColor.STONE).strength(0.5F, 2.0F).sound(SoundType.BASALT).noOcclusion().blockEntity(TFCBlockEntities.QUERN).ticks(QuernBlockEntity::serverTick, QuernBlockEntity::clientTick)));
     public static final Id<Block> CHARCOAL_PILE = registerNoItem("charcoal_pile", () -> new CharcoalPileBlock(Properties.of().mapColor(MapColor.COLOR_BLACK).strength(0.2F).sound(TFCSounds.CHARCOAL).pushReaction(PushReaction.DESTROY).isViewBlocking((state, level, pos) -> state.getValue(CharcoalPileBlock.LAYERS) >= 8).isSuffocating((state, level, pos) -> state.getValue(CharcoalPileBlock.LAYERS) >= 8)));
-    public static final Id<Block> CHARCOAL_FORGE = registerNoItem("charcoal_forge", () -> new CharcoalForgeBlock(ExtendedProperties.of(MapColor.COLOR_BLACK).pushReaction(PushReaction.DESTROY).strength(0.2F).randomTicks().sound(TFCSounds.CHARCOAL).lightLevel(state -> state.getValue(CharcoalForgeBlock.HEAT) * 2).pathType(BlockPathTypes.DAMAGE_FIRE).blockEntity(TFCBlockEntities.CHARCOAL_FORGE).serverTicks(CharcoalForgeBlockEntity::serverTick)));
+    public static final Id<Block> CHARCOAL_FORGE = registerNoItem("charcoal_forge", () -> new CharcoalForgeBlock(ExtendedProperties.of(MapColor.COLOR_BLACK).pushReaction(PushReaction.DESTROY).strength(0.2F).randomTicks().sound(TFCSounds.CHARCOAL).lightLevel(state -> state.getValue(CharcoalForgeBlock.HEAT) * 2).pathType(PathType.DAMAGE_FIRE).blockEntity(TFCBlockEntities.CHARCOAL_FORGE).serverTicks(CharcoalForgeBlockEntity::serverTick)));
 
     public static final Id<Block> TORCH = registerNoItem("torch", () -> new TFCTorchBlock(ExtendedProperties.of().noCollission().instabreak().randomTicks().lightLevel(state -> 14).sound(SoundType.WOOD).blockEntity(TFCBlockEntities.TICK_COUNTER), ParticleTypes.FLAME));
     public static final Id<Block> WALL_TORCH = registerNoItem("wall_torch", () -> new TFCWallTorchBlock(ExtendedProperties.of().noCollission().instabreak().randomTicks().lightLevel(state -> 14).sound(SoundType.WOOD).dropsLike(TORCH).blockEntity(TFCBlockEntities.TICK_COUNTER), ParticleTypes.FLAME));
@@ -413,22 +415,22 @@ public final class TFCBlocks
     public static final Id<Block> BLOOMERY = register("bloomery", () -> new BloomeryBlock(ExtendedProperties.of(MapColor.METAL).strength(3).sound(SoundType.METAL).lightLevel(litBlockEmission(15)).blockEntity(TFCBlockEntities.BLOOMERY).serverTicks(BloomeryBlockEntity::serverTick)));
     public static final Id<Block> BLAST_FURNACE = register("blast_furnace", () -> new BlastFurnaceBlock(ExtendedProperties.of(MapColor.METAL).strength(5f).sound(SoundType.METAL).lightLevel(litBlockEmission(15)).blockEntity(TFCBlockEntities.BLAST_FURNACE).serverTicks(BlastFurnaceBlockEntity::serverTick)));
     public static final Id<Block> BLOOM = register("bloom", () -> new BloomBlock(ExtendedProperties.of().mapColor(MapColor.STONE).requiresCorrectToolForDrops().strength(3F, 6F).noOcclusion().blockEntity(TFCBlockEntities.BLOOM)));
-    public static final Id<Block> MOLTEN = register("molten", () -> new MoltenBlock(ExtendedProperties.of().mapColor(MapColor.STONE).requiresCorrectToolForDrops().strength(-1.0F, 3600000.0F).noOcclusion().lightLevel(litBlockEmission(15)).pathType(BlockPathTypes.DAMAGE_FIRE)));
+    public static final Id<Block> MOLTEN = register("molten", () -> new MoltenBlock(ExtendedProperties.of().mapColor(MapColor.STONE).requiresCorrectToolForDrops().strength(-1.0F, 3600000.0F).noOcclusion().lightLevel(litBlockEmission(15)).pathType(PathType.DAMAGE_FIRE)));
     public static final Id<Block> WOODEN_BOWL = registerNoItem("wooden_bowl", () -> new BowlBlock(ExtendedProperties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).strength(0.3f).noOcclusion().blockEntity(TFCBlockEntities.BOWL))); // No item, since we use the vanilla one
     public static final Id<Block> CERAMIC_BOWL = register("ceramic/bowl", () -> new BowlBlock(ExtendedProperties.of().mapColor(MapColor.STONE).sound(SoundType.STONE).strength(0.3f).noOcclusion().blockEntity(TFCBlockEntities.BOWL)));
 
     public static final Id<Block> NEST_BOX = register("nest_box", () -> new NestBoxBlock(ExtendedProperties.of(MapColor.WOOD).strength(3f).noOcclusion().sound(TFCSounds.THATCH).blockEntity(TFCBlockEntities.NEST_BOX).serverTicks(NestBoxBlockEntity::serverTick).flammable(60, 30)));
 
-    public static final Id<Block> LIGHT = register("light", () -> new TFCLightBlock(Properties.copy(Blocks.LIGHT).replaceable().lightLevel(state -> state.getValue(TFCLightBlock.LEVEL)).randomTicks()));
-    public static final Id<Block> FRESHWATER_BUBBLE_COLUMN = registerNoItem("freshwater_bubble_column", () -> new TFCBubbleColumnBlock(Properties.copy(Blocks.BUBBLE_COLUMN).noCollission().noLootTable(), () -> Fluids.WATER));
-    public static final Id<Block> SALTWATER_BUBBLE_COLUMN = registerNoItem("saltwater_bubble_column", () -> new TFCBubbleColumnBlock(Properties.copy(Blocks.BUBBLE_COLUMN).noCollission().noLootTable(), TFCFluids.SALT_WATER::getSource));
+    public static final Id<Block> LIGHT = register("light", () -> new TFCLightBlock(Properties.ofFullCopy(Blocks.LIGHT).replaceable().lightLevel(state -> state.getValue(TFCLightBlock.LEVEL)).randomTicks()));
+    public static final Id<Block> FRESHWATER_BUBBLE_COLUMN = registerNoItem("freshwater_bubble_column", () -> new TFCBubbleColumnBlock(Properties.ofFullCopy(Blocks.BUBBLE_COLUMN).noCollission().noLootTable(), () -> Fluids.WATER));
+    public static final Id<Block> SALTWATER_BUBBLE_COLUMN = registerNoItem("saltwater_bubble_column", () -> new TFCBubbleColumnBlock(Properties.ofFullCopy(Blocks.BUBBLE_COLUMN).noCollission().noLootTable(), TFCFluids.SALT_WATER::getSource));
 
     public static final Id<Block> SHEET_PILE = registerNoItem("sheet_pile", () -> new SheetPileBlock(ExtendedProperties.of(MapColor.METAL).strength(4, 60).sound(SoundType.METAL).noOcclusion().blockEntity(TFCBlockEntities.SHEET_PILE)));
     public static final Id<Block> INGOT_PILE = registerNoItem("ingot_pile", () -> new IngotPileBlock(ExtendedProperties.of(MapColor.METAL).strength(4, 60).sound(SoundType.METAL).noOcclusion().blockEntity(TFCBlockEntities.INGOT_PILE)));
     public static final Id<Block> DOUBLE_INGOT_PILE = registerNoItem("double_ingot_pile", () -> new DoubleIngotPileBlock(ExtendedProperties.of(MapColor.METAL).strength(4, 60).sound(SoundType.METAL).noOcclusion().blockEntity(TFCBlockEntities.INGOT_PILE)));
 
-    public static final Id<Block> CAKE = register("cake", () -> new TFCCakeBlock(Properties.copy(Blocks.CAKE).strength(0.5f).sound(SoundType.WOOL)));
-    public static final Id<Block> CANDLE_CAKE = registerNoItem("candle_cake", () -> new TFCCandleCakeBlock(ExtendedProperties.of(Blocks.CANDLE_CAKE).strength(0.5f).sound(SoundType.WOOL).randomTicks().lightLevel(litBlockEmission(3)).blockEntity(TFCBlockEntities.TICK_COUNTER)));
+    public static final Id<Block> CAKE = register("cake", () -> new TFCCakeBlock(Properties.ofFullCopy(Blocks.CAKE).strength(0.5f).sound(SoundType.WOOL)));
+    public static final Id<Block> CANDLE_CAKE = registerNoItem("candle_cake", () -> new TFCCandleCakeBlock(ExtendedProperties.of(Blocks.CANDLE_CAKE).strength(0.5f).sound(SoundType.WOOL).randomTicks().lightLevel(litBlockEmission(3)).blockEntity(TFCBlockEntities.TICK_COUNTER).cloneItem(() -> Blocks.CAKE)));
     public static final Id<Block> CANDLE = register("candle", () -> new TFCCandleBlock(ExtendedProperties.of(Blocks.CANDLE).mapColor(MapColor.SAND).randomTicks().noOcclusion().strength(0.1F).sound(SoundType.CANDLE).lightLevel(TFCCandleBlock.LIGHTING_SCALE).blockEntity(TFCBlockEntities.TICK_COUNTER)), b -> new CandleBlockItem(new Item.Properties(), b, TFCBlocks.CANDLE_CAKE));
 
     public static final Id<Block> HAND_WHEEL_BASE = register("hand_wheel_base", () -> new HandWheelBlock(ExtendedProperties.of().strength(2f).noOcclusion().blockEntity(TFCBlockEntities.HAND_WHEEL).pushReaction(PushReaction.DESTROY).ticks(HandWheelBlockEntity::serverTick, HandWheelBlockEntity::clientTick).sound(SoundType.STONE)));
@@ -438,7 +440,7 @@ public final class TFCBlocks
     public static final Id<Block> STEEL_PUMP = register("steel_pump", () -> new FluidPumpBlock(ExtendedProperties.of().strength(5f).sound(SoundType.METAL).blockEntity(TFCBlockEntities.PUMP).serverTicks(PumpBlockEntity::serverTick).forceSolidOn()));
 
     public static final Map<DyeColor, Id<Block>> DYED_CANDLE_CAKES = Helpers.mapOfKeys(DyeColor.class, color ->
-        registerNoItem("candle_cake/" + color.getName(), () -> new TFCCandleCakeBlock(ExtendedProperties.of(MapColor.SAND).randomTicks().noOcclusion().strength(0.5F).sound(SoundType.WOOL).lightLevel(litBlockEmission(3)).blockEntity(TFCBlockEntities.TICK_COUNTER)))
+        registerNoItem("candle_cake/" + color.getName(), () -> new TFCCandleCakeBlock(ExtendedProperties.of(MapColor.SAND).randomTicks().noOcclusion().strength(0.5F).sound(SoundType.WOOL).lightLevel(litBlockEmission(3)).blockEntity(TFCBlockEntities.TICK_COUNTER).cloneItem(() -> Blocks.CAKE)))
     );
     public static final Map<DyeColor, Id<Block>> DYED_CANDLE = Helpers.mapOfKeys(DyeColor.class, color ->
         register("candle/" + color.getName(), () -> new TFCCandleBlock(ExtendedProperties.of(MapColor.SAND).randomTicks().noOcclusion().strength(0.1F).sound(SoundType.CANDLE).lightLevel(TFCCandleBlock.LIGHTING_SCALE).blockEntity(TFCBlockEntities.TICK_COUNTER)), b -> new CandleBlockItem(new Item.Properties(), b, TFCBlocks.DYED_CANDLE_CAKES.get(color)))

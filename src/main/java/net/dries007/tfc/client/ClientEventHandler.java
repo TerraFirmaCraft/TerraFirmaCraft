@@ -223,7 +223,6 @@ import net.dries007.tfc.common.entities.aquatic.Fish;
 import net.dries007.tfc.common.entities.aquatic.Jellyfish;
 import net.dries007.tfc.common.fluids.FluidId;
 import net.dries007.tfc.common.fluids.TFCFluids;
-import net.dries007.tfc.common.items.JarItem;
 import net.dries007.tfc.common.items.TFCFishingRodItem;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.config.TFCConfig;
@@ -509,8 +508,8 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.THROWN_JAVELIN.get(), ThrownJavelinRenderer::new);
         event.registerEntityRenderer(TFCEntities.GLOW_ARROW.get(), GlowArrowRenderer::new);
         event.registerEntityRenderer(TFCEntities.SEAT.get(), NoopRenderer::new);
-        event.registerEntityRenderer(TFCEntities.CHEST_MINECART.get(), ctx -> new MinecartRenderer<>(ctx, RenderHelpers.modelIdentifier("chest_minecart")));
-        event.registerEntityRenderer(TFCEntities.HOLDING_MINECART.get(), ctx -> new MinecartRenderer<>(ctx, RenderHelpers.modelIdentifier("holding_minecart")));
+        event.registerEntityRenderer(TFCEntities.CHEST_MINECART.get(), ctx -> new MinecartRenderer<>(ctx, RenderHelpers.layerId("chest_minecart")));
+        event.registerEntityRenderer(TFCEntities.HOLDING_MINECART.get(), ctx -> new MinecartRenderer<>(ctx, RenderHelpers.layerId("holding_minecart")));
         for (Wood wood : Wood.VALUES)
         {
             event.registerEntityRenderer(TFCEntities.BOATS.get(wood).get(), ctx -> new TFCBoatRenderer(ctx, wood.getSerializedName()));
@@ -573,8 +572,8 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.PHEASANT.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, PheasantModel::new, "pheasant").shadow(0.5f).texture(e -> RenderHelpers.getGenderedTexture(e, "pheasant")).build());
         event.registerEntityRenderer(TFCEntities.TURKEY.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, TurkeyModel::new, "turkey").shadow(0.5f).texture(e -> RenderHelpers.getGenderedTexture(e, "turkey")).build());
         event.registerEntityRenderer(TFCEntities.PEAFOWL.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, PeafowlModel::new, "peafowl").shadow(0.5f).texture(e -> RenderHelpers.getGenderedTexture(e, "peafowl")).build());
-        event.registerEntityRenderer(TFCEntities.MULE.get(), ctx -> new TFCChestedHorseRenderer<>(ctx, 0.92F, RenderHelpers.modelIdentifier("mule"), "mule"));
-        event.registerEntityRenderer(TFCEntities.DONKEY.get(), ctx -> new TFCChestedHorseRenderer<>(ctx, 0.87F, RenderHelpers.modelIdentifier("donkey"), "donkey"));
+        event.registerEntityRenderer(TFCEntities.MULE.get(), ctx -> new TFCChestedHorseRenderer<>(ctx, 0.92F, RenderHelpers.layerId("mule"), "mule"));
+        event.registerEntityRenderer(TFCEntities.DONKEY.get(), ctx -> new TFCChestedHorseRenderer<>(ctx, 0.87F, RenderHelpers.layerId("donkey"), "donkey"));
         event.registerEntityRenderer(TFCEntities.HORSE.get(), TFCHorseRenderer::new);
         event.registerEntityRenderer(TFCEntities.RAT.get(), RatRenderer::new);
         event.registerEntityRenderer(TFCEntities.CAT.get(), TFCCatRenderer::new);
@@ -631,66 +630,66 @@ public final class ClientEventHandler
             event.registerLayerDefinition(TFCBoatRenderer.boatName(wood.getSerializedName()), wood == Wood.PALM ? () -> raftLayer : () -> boatLayer);
             event.registerLayerDefinition(TFCChestBoatRenderer.chestBoatName(wood.getSerializedName()), wood == Wood.PALM ? () -> chestRaftLayer : () -> chestLayer);
         }
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("bluegill"), BluegillModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("crappie"), CodModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("jellyfish"), JellyfishModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("lobster"), LobsterModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("crayfish"), LobsterModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("horseshoe_crab"), HorseshoeCrabModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("isopod"), IsopodModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("orca"), OrcaModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("manatee"), ManateeModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("turtle"), TFCTurtleModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("penguin"), PenguinModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("polar_bear"), BearModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("grizzly_bear"), BearModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("black_bear"), BearModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("cougar"), CougarModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("panther"), CougarModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("lion"), LionModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("sabertooth"), SabertoothModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("tiger"), TigerModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("crocodile"), CrocodileModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("wolf"), TFCWolfModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("hyena"), HyenaModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("direwolf"), DirewolfModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("squid"), SquidModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("glow_squid"), SquidModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("pig"), () -> TFCPigModel.createTFCBodyLayer(CubeDeformation.NONE));
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("cow"), TFCCowModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("goat"), GoatModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("yak"), YakModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("alpaca"), AlpacaModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("sheep"), TFCSheepModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("musk_ox"), MuskOxModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("chicken"), TFCChickenModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("duck"), DuckModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("quail"), QuailModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("bongo"), BongoModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("caribou"), CaribouModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("deer"), DeerModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("gazelle"), GazelleModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("moose"), MooseModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("grouse"), GrouseModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("pheasant"), PheasantModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("turkey"), TurkeyModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("peafowl"), PeafowlModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("rat"), RatModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("dog"), DogModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("cat"), () -> LayerDefinition.create(OcelotModel.createBodyMesh(CubeDeformation.NONE), 64, 32));
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("cat_collar"), () -> LayerDefinition.create(OcelotModel.createBodyMesh(new CubeDeformation(0.01f)), 64, 32));
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("boar"), BoarModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("wildebeest"), WildebeestModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("javelin"), JavelinModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("chest_minecart"), MinecartModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("holding_minecart"), MinecartModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("bell_body"), BellRenderer::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("water_wheel"), WaterWheelModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("windmill_blade"), WindmillBladeModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("horse_chest"), ChestedHorseModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("mule"), ChestedHorseModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("donkey"), ChestedHorseModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("water_wheel"), WaterWheelModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("bluegill"), BluegillModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("crappie"), CodModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("jellyfish"), JellyfishModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("lobster"), LobsterModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("crayfish"), LobsterModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("horseshoe_crab"), HorseshoeCrabModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("isopod"), IsopodModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("orca"), OrcaModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("manatee"), ManateeModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("turtle"), TFCTurtleModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("penguin"), PenguinModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("polar_bear"), BearModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("grizzly_bear"), BearModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("black_bear"), BearModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("cougar"), CougarModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("panther"), CougarModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("lion"), LionModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("sabertooth"), SabertoothModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("tiger"), TigerModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("crocodile"), CrocodileModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("wolf"), TFCWolfModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("hyena"), HyenaModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("direwolf"), DirewolfModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("squid"), SquidModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("glow_squid"), SquidModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("pig"), () -> TFCPigModel.createTFCBodyLayer(CubeDeformation.NONE));
+        event.registerLayerDefinition(RenderHelpers.layerId("cow"), TFCCowModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("goat"), GoatModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("yak"), YakModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("alpaca"), AlpacaModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("sheep"), TFCSheepModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("musk_ox"), MuskOxModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("chicken"), TFCChickenModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("duck"), DuckModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("quail"), QuailModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("bongo"), BongoModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("caribou"), CaribouModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("deer"), DeerModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("gazelle"), GazelleModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("moose"), MooseModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("grouse"), GrouseModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("pheasant"), PheasantModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("turkey"), TurkeyModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("peafowl"), PeafowlModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("rat"), RatModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("dog"), DogModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("cat"), () -> LayerDefinition.create(OcelotModel.createBodyMesh(CubeDeformation.NONE), 64, 32));
+        event.registerLayerDefinition(RenderHelpers.layerId("cat_collar"), () -> LayerDefinition.create(OcelotModel.createBodyMesh(new CubeDeformation(0.01f)), 64, 32));
+        event.registerLayerDefinition(RenderHelpers.layerId("boar"), BoarModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("wildebeest"), WildebeestModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("javelin"), JavelinModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("chest_minecart"), MinecartModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("holding_minecart"), MinecartModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("bell_body"), BellRenderer::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("water_wheel"), WaterWheelModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("windmill_blade"), WindmillBladeModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("horse_chest"), ChestedHorseModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("mule"), ChestedHorseModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("donkey"), ChestedHorseModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("water_wheel"), WaterWheelModel::createBodyLayer);
     }
 
 
@@ -707,13 +706,7 @@ public final class ClientEventHandler
             }
         }
 
-        for (Item item : BuiltInRegistries.ITEM)
-        {
-            if (item instanceof JarItem jar)
-            {
-                register(event, jar.getModel());
-            }
-        }
+        JarsBlockEntityRenderer.MODELS.forEach((item, model) -> event.register(model));
 
         for (AbstractFirepitBlockEntity.BurnStage stage : AbstractFirepitBlockEntity.BurnStage.values())
         {
@@ -723,7 +716,7 @@ public final class ClientEventHandler
             }
         }
 
-        register(event, CrankshaftBlockEntityRenderer.WHEEL_MODEL);
+        event.register(CrankshaftBlockEntityRenderer.WHEEL_MODEL);
 
         TFCConfig.CLIENT.additionalSpecialModels.get().forEach(s -> register(event, Helpers.resourceLocation(s)));
     }

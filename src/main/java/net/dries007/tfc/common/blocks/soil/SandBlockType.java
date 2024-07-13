@@ -11,7 +11,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-
 import net.minecraft.world.level.material.MapColor;
 
 public enum SandBlockType
@@ -52,6 +51,6 @@ public enum SandBlockType
 
     public Block create()
     {
-        return new TFCSandBlock(getDustColor(), BlockBehaviour.Properties.copy(Blocks.SAND).mapColor(getMaterialColor()).strength(0.5F).sound(SoundType.SAND));
+        return new ColoredBlock(getDustColor(), BlockBehaviour.Properties.ofFullCopy(Blocks.SAND).mapColor(getMaterialColor()).strength(0.5F).sound(SoundType.SAND));
     }
 }

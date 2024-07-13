@@ -34,7 +34,7 @@ public class TFCChestBoatRenderer extends TFCBoatRenderer
 {
     public static ModelLayerLocation chestBoatName(String name)
     {
-        return RenderHelpers.modelIdentifier("chest_boat/" + name);
+        return RenderHelpers.layerId("chest_boat/" + name);
     }
 
     private static final ResourceLocation DEFAULT_TEXTURE = Helpers.identifier("textures/entity/chest_boat/oak.png");

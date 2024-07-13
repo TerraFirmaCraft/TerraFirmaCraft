@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blocks.rock;
 
 import java.util.Locale;
-import java.util.Random;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -25,8 +24,8 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
@@ -40,7 +39,7 @@ import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.util.Helpers;
 
-@SuppressWarnings("deprecation")
+
 public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBlock
 {
     public static final EnumProperty<Part> PART = TFCBlockStateProperties.ROCK_SPIKE_PART;
@@ -64,8 +63,7 @@ public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBl
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos currentPos, BlockPos neighborPos)
+    protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos currentPos, BlockPos neighborPos)
     {
         FluidHelpers.tickFluid(level, currentPos, state);
         return state;
@@ -89,8 +87,7 @@ public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBl
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         checkForPossibleCollapse(state, level, pos, true);
     }
@@ -116,16 +113,15 @@ public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBl
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType type)
+    protected boolean isPathfindable(BlockState state, PathComputationType pathComputationType)
     {
         return false;
     }
 
     @Override
-    public @Nullable BlockPathTypes getBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob mob)
+    public PathType getBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob mob)
     {
-        return BlockPathTypes.TRAPDOOR;
+        return PathType.BLOCKED;
     }
 
     @Override

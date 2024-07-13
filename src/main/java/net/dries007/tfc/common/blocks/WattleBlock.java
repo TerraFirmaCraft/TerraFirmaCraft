@@ -9,7 +9,7 @@ package net.dries007.tfc.common.blocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -50,10 +50,16 @@ public class WattleBlock extends StainedWattleBlock implements IGhostBlockHandle
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
-        if (hand == InteractionHand.OFF_HAND) return InteractionResult.PASS;
-        if (state.getValue(getFluidProperty()).getFluid() != Fluids.EMPTY) return InteractionResult.PASS;
+        if (hand == InteractionHand.OFF_HAND)
+        {
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        }
+        if (state.getValue(getFluidProperty()).getFluid() != Fluids.EMPTY)
+        {
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        }
         final ItemStack item = player.getItemInHand(hand);
         final boolean woven = state.getValue(WOVEN);
         if (!woven && Helpers.isItem(item, Tags.Items.RODS_WOODEN) && item.getCount() >= 4)
@@ -66,7 +72,7 @@ public class WattleBlock extends StainedWattleBlock implements IGhostBlockHandle
             Helpers.playSound(level, pos, TFCSounds.WATTLE_DAUBED.get());
             return setState(level, pos, TFCBlocks.UNSTAINED_WATTLE.get().withPropertiesOf(state), player, item, 1); // add daub
         }
-        return super.use(state, level, pos, player, hand, hit); // other behavior
+        return super.useItemOn(stack, state, level, pos, player, hand, hitResult); // other behavior
     }
 
     @Nullable
@@ -111,28 +117,25 @@ public class WattleBlock extends StainedWattleBlock implements IGhostBlockHandle
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return state.getValue(WOVEN) ? super.getCollisionShape(state, level, pos, context) : Shapes.empty();
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos)
+    protected VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos)
     {
         return state.getValue(WOVEN) ? super.getOcclusionShape(state, level, pos) : Shapes.empty();
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public FluidState getFluidState(BlockState state)
     {
         return IFluidLoggable.super.getFluidState(state);
     }
 
     @Override
-    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
         FluidHelpers.tickFluid(level, currentPos, state);
         return super.updateShape(state, facing, facingState, level, currentPos, facingPos);

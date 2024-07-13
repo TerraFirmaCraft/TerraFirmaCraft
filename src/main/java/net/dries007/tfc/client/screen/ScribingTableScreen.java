@@ -39,13 +39,6 @@ public class ScribingTableScreen extends ItemCombinerScreen<ScribingTableContain
     }
 
     @Override
-    public void containerTick()
-    {
-        super.containerTick();
-        name.tick();
-    }
-
-    @Override
     protected void subInit()
     {
         name = new EditBox(font, leftPos + 62, topPos + 24, 103, 12, Component.translatable("container.repair"));

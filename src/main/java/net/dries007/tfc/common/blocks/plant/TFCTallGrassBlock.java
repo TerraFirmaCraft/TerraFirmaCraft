@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.common.blocks.plant;
 
-import java.util.Random;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -28,11 +26,11 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.util.registry.RegistryPlant;
-import org.jetbrains.annotations.Nullable;
 
 public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITallPlant
 {
@@ -60,7 +58,7 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     }
 
     @Override
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
+    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         super.randomTick(state, level, pos, random);
         if (PlantRegrowth.canSpread(level, random) && state.getValue(PART) == Part.LOWER)
@@ -74,7 +72,7 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     }
 
     @Override
-    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
         Part part = state.getValue(PART);
         if (facing.getAxis() != Direction.Axis.Y || part == Part.LOWER != (facing == Direction.UP) || facingState.getBlock() == this && facingState.getValue(PART) != part)
@@ -88,7 +86,7 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     }
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
+    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         if (state.getValue(PART) == Part.LOWER)
         {
@@ -126,7 +124,7 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     }
 
     @Override
-    public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player)
+    public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player)
     {
         if (!level.isClientSide)
         {
@@ -148,6 +146,7 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
                 dropResources(state, level, pos, null, player, player.getMainHandItem());
             }
         }
+        return state;
     }
 
     /**
@@ -160,7 +159,7 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         Part part = state.getValue(PART);
         if (part == Part.LOWER)

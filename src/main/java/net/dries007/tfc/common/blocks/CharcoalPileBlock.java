@@ -69,21 +69,19 @@ public class CharcoalPileBlock extends Block
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player)
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player)
     {
         return new ItemStack(Items.CHARCOAL);
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType type)
+    protected boolean isPathfindable(BlockState state, PathComputationType type)
     {
         return type == PathComputationType.LAND && state.getValue(LAYERS) < 5;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    protected BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
         if (!level.isClientSide() && facing == Direction.DOWN)
         {
@@ -111,44 +109,38 @@ public class CharcoalPileBlock extends Block
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public boolean useShapeForLightOcclusion(BlockState state)
+    protected boolean useShapeForLightOcclusion(BlockState state)
     {
         return true;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getBlockSupportShape(BlockState state, BlockGetter reader, BlockPos pos)
+    protected VoxelShape getBlockSupportShape(BlockState state, BlockGetter reader, BlockPos pos)
     {
         return SHAPE_BY_LAYER[state.getValue(LAYERS)];
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
+    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         BlockState blockstate = level.getBlockState(pos.below());
         return Block.isFaceFull(blockstate.getCollisionShape(level, pos.below()), Direction.UP) || (blockstate.getBlock() == this && blockstate.getValue(LAYERS) == 8);
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return SHAPE_BY_LAYER[state.getValue(LAYERS)];
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return SHAPE_BY_LAYER[state.getValue(LAYERS) - 1];
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getVisualShape(BlockState state, BlockGetter reader, BlockPos pos, CollisionContext context)
+    protected VoxelShape getVisualShape(BlockState state, BlockGetter reader, BlockPos pos, CollisionContext context)
     {
         return SHAPE_BY_LAYER[state.getValue(LAYERS)];
     }
@@ -158,5 +150,4 @@ public class CharcoalPileBlock extends Block
     {
         super.createBlockStateDefinition(builder.add(LAYERS));
     }
-
 }

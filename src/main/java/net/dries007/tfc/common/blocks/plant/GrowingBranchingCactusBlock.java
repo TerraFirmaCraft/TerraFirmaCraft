@@ -51,8 +51,7 @@ public class GrowingBranchingCactusBlock extends BranchingCactusBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
+    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
     {
         if (rand.nextFloat() > TFCConfig.SERVER.plantGrowthChance.get())
         {
@@ -149,7 +148,6 @@ public class GrowingBranchingCactusBlock extends BranchingCactusBlock
     public boolean growRecursively(LevelAccessor level, BlockPos pos, BlockState state, int height)
     {
         final BlockState body = this.body.get().defaultBlockState();
-        final BranchingCactusBlock bodyBlock = (BranchingCactusBlock) body.getBlock();
         final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos().set(pos);
         final var random = level.getRandom();
         cursor.move(0, -1, 0);
@@ -203,7 +201,6 @@ public class GrowingBranchingCactusBlock extends BranchingCactusBlock
         return true;
     }
 
-    @SuppressWarnings("deprecation")
     public boolean canGrowInto(LevelAccessor level, BlockPos pos, Direction direction)
     {
         if (!level.getBlockState(pos).isAir())
@@ -233,11 +230,5 @@ public class GrowingBranchingCactusBlock extends BranchingCactusBlock
             PlantBlock plant = (PlantBlock) flower.get();
             level.setBlock(pos, plant.updateStateWithCurrentMonth(plant.defaultBlockState()), 3);
         }
-    }
-
-    @Override
-    protected boolean canGrowLongSideways()
-    {
-        return true;
     }
 }

@@ -32,7 +32,7 @@ public class TFCBellBlockEntityRenderer extends BellRenderer
     public TFCBellBlockEntityRenderer(BlockEntityRendererProvider.Context ctx)
     {
         super(ctx);
-        final ModelPart part = ctx.bakeLayer(RenderHelpers.modelIdentifier("bell_body"));
+        final ModelPart part = ctx.bakeLayer(RenderHelpers.layerId("bell_body"));
         this.bellBody = part.getChild("bell_body");
     }
 

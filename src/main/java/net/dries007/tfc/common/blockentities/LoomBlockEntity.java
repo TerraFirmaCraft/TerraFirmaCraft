@@ -14,7 +14,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -93,7 +93,7 @@ public class LoomBlockEntity extends TickableInventoryBlockEntity<ItemStackHandl
         }
     }
 
-    public InteractionResult onRightClick(Player player)
+    public ItemInteractionResult onRightClick(Player player)
     {
         assert level != null;
         final ItemStack heldItem = player.getMainHandItem();
@@ -106,9 +106,9 @@ public class LoomBlockEntity extends TickableInventoryBlockEntity<ItemStackHandl
                 ItemHandlerHelper.giveItemToPlayer(player, inventory.extractItem(SLOT_RECIPE, Integer.MAX_VALUE, false));
                 clearRecipe();
                 markForSync();
-                return InteractionResult.sidedSuccess(level.isClientSide);
+                return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
         // loom is complete
         if (!inventory.getStackInSlot(SLOT_OUTPUT).isEmpty())
@@ -117,7 +117,7 @@ public class LoomBlockEntity extends TickableInventoryBlockEntity<ItemStackHandl
             inventory.setStackInSlot(SLOT_OUTPUT, ItemStack.EMPTY);
             markForSync();
             clearRecipe();
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
         }
 
         // Loom is empty, initialize
@@ -127,7 +127,7 @@ public class LoomBlockEntity extends TickableInventoryBlockEntity<ItemStackHandl
             inventory.setStackInSlot(SLOT_RECIPE, heldItem.split(1));
             updateCachedRecipe();
             markForSync();
-            return InteractionResult.sidedSuccess(level.isClientSide);
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
         // Loom is not empty, add items.
         if (!recipeItem.isEmpty() && heldItem.getItem() == recipeItem.getItem() && recipe != null && recipe.getInputCount() > recipeItem.getCount())
@@ -135,7 +135,7 @@ public class LoomBlockEntity extends TickableInventoryBlockEntity<ItemStackHandl
             inventory.getStackInSlot(SLOT_RECIPE).grow(1);
             heldItem.shrink(1);
             markForSync();
-            return InteractionResult.sidedSuccess(level.isClientSide);
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
 
         // Push the loom
@@ -146,15 +146,15 @@ public class LoomBlockEntity extends TickableInventoryBlockEntity<ItemStackHandl
             // Animation will mess up if right click is held down, even if animation is sped up
             if (time <= 20) // we only let you update once a second
             {
-                return InteractionResult.PASS;
+                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
             }
             level.playSound(null, worldPosition, TFCSounds.LOOM_WEAVE.get(), SoundSource.BLOCKS, 1, 1 + ((level.random.nextFloat() - level.random.nextFloat()) / 16));
             lastPushed = level.getGameTime();
             needsProgressUpdate = true;
             markForSync();
-            return InteractionResult.sidedSuccess(level.isClientSide); // we want to swing the player's arm
+            return ItemInteractionResult.sidedSuccess(level.isClientSide); // we want to swing the player's arm
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     public boolean currentBoolean()

@@ -8,6 +8,7 @@ package net.dries007.tfc.common.blocks.plant.fruit;
 
 import java.util.function.Supplier;
 import com.google.common.base.Preconditions;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -16,7 +17,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -134,8 +135,7 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
         if (state.getValue(LIFECYCLE) == Lifecycle.FRUITING)
         {
@@ -145,9 +145,9 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
                 ItemHandlerHelper.giveItemToPlayer(player, getProductItem(level.random));
             }
             level.setBlockAndUpdate(pos, stateAfterPicking(state));
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     public BlockState stateAfterPicking(BlockState state)
@@ -156,22 +156,19 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return state.getValue(STAGE) == 2 ? Shapes.block() : PLANT_SHAPE;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return Shapes.empty();
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
+    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
     {
         if (entity.getType() != EntityType.ITEM && Helpers.isBlock(this, TFCTags.Blocks.THORNY_BUSHES))
         {
@@ -229,9 +226,15 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
     }
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
+    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         final BlockPos belowPos = pos.below();
         return mayPlaceOn(level.getBlockState(belowPos), level, belowPos);
+    }
+
+    @Override
+    protected MapCodec<? extends BushBlock> codec()
+    {
+        return fakeBlockCodec();
     }
 }

@@ -49,7 +49,7 @@ public class HorseChestLayer<T extends TFCChestedHorse, M extends EntityModel<T>
             this.model.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTick);
             this.model.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, yaw, pitch);
             VertexConsumer vertexconsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(getTexture(entity)));
-            this.model.renderToBuffer(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+            this.model.renderToBuffer(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, -1);
         }
     }
 

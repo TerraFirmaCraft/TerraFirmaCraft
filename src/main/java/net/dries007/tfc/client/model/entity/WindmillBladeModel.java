@@ -11,7 +11,11 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
 
 import net.dries007.tfc.common.blockentities.rotation.WindmillBlockEntity;
@@ -48,9 +52,9 @@ public class WindmillBladeModel extends Model
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color)
     {
-        main.render(poseStack, vertexConsumer, packedLight, packedOverlay, 1f, 1f, 1f, alpha);
-        blade.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+        main.render(poseStack, vertexConsumer, packedLight, packedOverlay, -1);
+        blade.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
     }
 }

@@ -10,12 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
-import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -32,6 +31,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.RenderHelpers;
+import net.dries007.tfc.client.screen.button.LegacyImageButton;
 import net.dries007.tfc.common.container.SewingTableContainer;
 import net.dries007.tfc.common.recipes.RecipeHelpers;
 import net.dries007.tfc.common.recipes.SewingRecipe;
@@ -109,10 +109,10 @@ public class SewingTableScreen extends TFCContainerScreen<SewingTableContainer>
 
     private void createButton(int x, int y, int sizeX, int sizeY, int u, int v, int yDiffTex, int packetButtonId, @Nullable String translationKey)
     {
-        ImageButton button;
+        LegacyImageButton button;
         if (translationKey != null)
         {
-            button = new ImageButton(x, y, sizeX, sizeY, u, v, yDiffTex, TEXTURE, 256, 256, btn -> {
+            button = new LegacyImageButton(x, y, sizeX, sizeY, u, v, yDiffTex, false, TEXTURE, btn -> {
                 if (packetButtonId == SewingTableContainer.RECIPE_ID)
                 {
                     selectedRecipe = null;
@@ -128,12 +128,12 @@ public class SewingTableScreen extends TFCContainerScreen<SewingTableContainer>
         }
         else
         {
-            button = new SilentImageButton(x, y, sizeX, sizeY, u, v, yDiffTex, TEXTURE, 256, 256, btn -> {
+            button = new LegacyImageButton(x, y, sizeX, sizeY, u, v, yDiffTex, true, TEXTURE, btn -> {
                 if (menu.getCarried().isEmpty() && !showRecipes)
                 {
                     PacketDistributor.sendToServer(new ScreenButtonPacket(packetButtonId));
                 }
-            });
+            }, CommonComponents.EMPTY);
         }
         addRenderableWidget(button);
     }
@@ -360,16 +360,5 @@ public class SewingTableScreen extends TFCContainerScreen<SewingTableContainer>
     private void playSound(SoundEvent sound)
     {
         Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(sound, 1.0F));
-    }
-
-    public static class SilentImageButton extends ImageButton
-    {
-        public SilentImageButton(int x, int y, int width, int height, int texStart, int yTexStart, int yDiffTex, ResourceLocation texture, int textureWidth, int textureHeight, OnPress onPress)
-        {
-            super(x, y, width, height, texStart, yTexStart, yDiffTex, texture, textureWidth, textureHeight, onPress);
-        }
-
-        @Override
-        public void playDownSound(SoundManager handler) {}
     }
 }

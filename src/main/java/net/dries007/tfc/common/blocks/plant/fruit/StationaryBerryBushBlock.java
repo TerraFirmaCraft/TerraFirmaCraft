@@ -7,9 +7,7 @@
 package net.dries007.tfc.common.blocks.plant.fruit;
 
 import java.util.List;
-import java.util.Random;
 import java.util.function.Supplier;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -57,14 +55,13 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return HALF_PLANT;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
+    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         IBushBlock.randomTick(this, state, level, pos, random);
     }

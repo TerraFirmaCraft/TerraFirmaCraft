@@ -15,6 +15,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.flag.FeatureFlag;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FireBlock;
@@ -71,6 +73,7 @@ public class ExtendedProperties
     private int fireSpreadSpeed;
     @Nullable private PathType pathType;
     private ToDoubleFunction<BlockState> enchantmentPowerGetter;
+    private @Nullable Supplier<ItemStack> cloneItemStack;
 
     private ExtendedProperties(BlockBehaviour.Properties properties)
     {
@@ -85,6 +88,7 @@ public class ExtendedProperties
         fireSpreadSpeed = 0;
         pathType = null;
         enchantmentPowerGetter = s -> 0;
+        this.cloneItemStack = null;
     }
 
     public ExtendedProperties blockEntity(Supplier<? extends BlockEntityType<?>> blockEntityType)
@@ -154,6 +158,18 @@ public class ExtendedProperties
     public ExtendedProperties enchantPower(ToDoubleFunction<BlockState> powerGetter)
     {
         this.enchantmentPowerGetter = powerGetter;
+        return this;
+    }
+
+    public ExtendedProperties cloneEmpty()
+    {
+        this.cloneItemStack = () -> ItemStack.EMPTY;
+        return this;
+    }
+
+    public ExtendedProperties cloneItem(@Nullable Supplier<? extends ItemLike> cloneItemStack)
+    {
+        this.cloneItemStack = cloneItemStack == null ? null : () -> new ItemStack(cloneItemStack.get());
         return this;
     }
 
@@ -255,5 +271,10 @@ public class ExtendedProperties
     float getEnchantmentPower(BlockState state)
     {
         return (float) enchantmentPowerGetter.applyAsDouble(state);
+    }
+
+    ItemStack getCloneItemStack(Block block)
+    {
+        return cloneItemStack == null ? new ItemStack(block) : cloneItemStack.get();
     }
 }

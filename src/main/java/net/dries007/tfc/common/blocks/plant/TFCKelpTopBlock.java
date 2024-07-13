@@ -17,7 +17,6 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.GrowingPlantBodyBlock;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.Fluid;
@@ -88,7 +87,7 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         VoxelShape voxelshape = super.getShape(state, level, pos, context);
         Vec3 vector3d = state.getOffset(level, pos);
@@ -96,7 +95,7 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
     }
 
     @Override
-    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
         if (facing == growthDirection.getOpposite() && !state.canSurvive(level, currentPos))
         {
@@ -121,7 +120,6 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public FluidState getFluidState(BlockState state)
     {
         return IFluidLoggable.super.getFluidState(state);

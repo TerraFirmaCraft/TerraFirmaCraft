@@ -64,10 +64,10 @@ public enum ScrapingBlockModel implements SimpleStaticBlockEntityModel<ScrapingB
                     final float r = color[0];
                     final float g = color[1];
                     final float b = color[2];
-                    buffer.vertex(mat, xOffset / 4.0F, 0.01F, zOffset / 4.0F).color(r, g, b, 1.0F).uv(sprite.getU(xOffset * 4D), sprite.getV(zOffset * 4D)).overlayCoords(packedOverlay).uv2(packedLight).normal(0, 0, 1).endVertex();
-                    buffer.vertex(mat, xOffset / 4.0F, 0.01F, zOffset / 4.0F + 0.25F).color(r, g, b, 1.0F).uv(sprite.getU(xOffset * 4D), sprite.getV(zOffset * 4D + 4.0D)).overlayCoords(packedOverlay).uv2(packedLight).normal(0, 0, 1).endVertex();
-                    buffer.vertex(mat, xOffset / 4.0F + 0.25F, 0.01F, zOffset / 4.0F + 0.25F).color(r, g, b, 1.0F).uv(sprite.getU(xOffset * 4D + 4.0D), sprite.getV(zOffset * 4D + 4.0D)).overlayCoords(packedOverlay).uv2(packedLight).normal(0, 0, 1).endVertex();
-                    buffer.vertex(mat, xOffset / 4.0F + 0.25F, 0.01F, zOffset / 4.0F).color(r, g, b, 1.0F).uv(sprite.getU(xOffset * 4D + 4.0D), sprite.getV(zOffset * 4D)).overlayCoords(packedOverlay).uv2(packedLight).normal(0, 0, 1).endVertex();
+                    buffer.addVertex(mat, xOffset / 4.0F, 0.01F, zOffset / 4.0F).setColor(r, g, b, 1.0F).setUv(sprite.getU(xOffset * 4f), sprite.getV(zOffset * 4f)).setOverlay(packedOverlay).setLight(packedLight).setNormal(0, 0, 1);
+                    buffer.addVertex(mat, xOffset / 4.0F, 0.01F, zOffset / 4.0F + 0.25F).setColor(r, g, b, 1.0F).setUv(sprite.getU(xOffset * 4f), sprite.getV(zOffset * 4f + 4f)).setOverlay(packedOverlay).setLight(packedLight).setNormal(0, 0, 1);
+                    buffer.addVertex(mat, xOffset / 4.0F + 0.25F, 0.01F, zOffset / 4.0F + 0.25F).setColor(r, g, b, 1.0F).setUv(sprite.getU(xOffset * 4f + 4f), sprite.getV(zOffset * 4f + 4f)).setOverlay(packedOverlay).setLight(packedLight).setNormal(0, 0, 1);
+                    buffer.addVertex(mat, xOffset / 4.0F + 0.25F, 0.01F, zOffset / 4.0F).setColor(r, g, b, 1.0F).setUv(sprite.getU(xOffset * 4f + 4f), sprite.getV(zOffset * 4f)).setOverlay(packedOverlay).setLight(packedLight).setNormal(0, 0, 1);
                 }
             }
         }

@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.blocks.plant.fruit;
 
-import java.util.Random;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -129,7 +128,7 @@ public class SpreadingCaneBlock extends SpreadingBushBlock implements IBushBlock
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player)
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player)
     {
         return new ItemStack(companion.get());
     }

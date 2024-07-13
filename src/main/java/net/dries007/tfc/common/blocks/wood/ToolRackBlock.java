@@ -9,8 +9,9 @@ package net.dries007.tfc.common.blocks.wood;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -56,8 +57,7 @@ public class ToolRackBlock extends DeviceBlock implements SimpleWaterloggedBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
         if (facing.getOpposite() == state.getValue(FACING) && !state.canSurvive(level, currentPos))
         {
@@ -71,23 +71,20 @@ public class ToolRackBlock extends DeviceBlock implements SimpleWaterloggedBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public FluidState getFluidState(BlockState state)
     {
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
+    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         Direction direction = state.getValue(FACING);
         return canAttachTo(level, pos.relative(direction.getOpposite()), direction);
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return switch (state.getValue(FACING))
             {
@@ -139,15 +136,14 @@ public class ToolRackBlock extends DeviceBlock implements SimpleWaterloggedBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
         ToolRackBlockEntity toolRack = level.getBlockEntity(pos, TFCBlockEntities.TOOL_RACK.get()).orElse(null);
         if (toolRack != null)
         {
-            return toolRack.onRightClick(player, getSlotFromPos(state, hit.getLocation().subtract(pos.getX(), pos.getY(), pos.getZ())));
+            return toolRack.onRightClick(player, getSlotFromPos(state, hitResult.getLocation().subtract(pos.getX(), pos.getY(), pos.getZ())));
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     private boolean canAttachTo(BlockGetter level, BlockPos pos, Direction direction)

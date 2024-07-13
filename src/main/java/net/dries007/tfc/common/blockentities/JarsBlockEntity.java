@@ -73,14 +73,14 @@ public class JarsBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         {
             ItemHandlerHelper.giveItemToPlayer(player, inventory.extractItem(slot, 1, false));
             BlockState state = JarsBlock.updateStateValues(player.level(), getBlockPos(), getBlockState());
-            player.level().setBlockAndUpdate(getBlockPos(), JarsBlock.isEmpty(state) ? Blocks.AIR.defaultBlockState() : state);
+            player.level().setBlockAndUpdate(getBlockPos(), JarsBlock.isEmptyContents(state) ? Blocks.AIR.defaultBlockState() : state);
             return true;
         }
         else if (current.isEmpty() && isItemValid(slot, held))
         {
             ItemHandlerHelper.giveItemToPlayer(player, inventory.insertItem(slot, held.split(1), false));
             BlockState state = JarsBlock.updateStateValues(player.level(), getBlockPos(), getBlockState());
-            player.level().setBlockAndUpdate(getBlockPos(), JarsBlock.isEmpty(state) ? Blocks.AIR.defaultBlockState() : state);
+            player.level().setBlockAndUpdate(getBlockPos(), JarsBlock.isEmptyContents(state) ? Blocks.AIR.defaultBlockState() : state);
             return true;
         }
         return false;

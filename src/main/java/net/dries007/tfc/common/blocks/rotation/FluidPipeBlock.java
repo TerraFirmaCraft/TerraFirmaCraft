@@ -74,8 +74,7 @@ public class FluidPipeBlock extends ExtendedBlock implements DirectionPropertyBl
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos currentPos, BlockPos neighborPos)
+    protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos currentPos, BlockPos neighborPos)
     {
         FluidHelpers.tickFluid(level, currentPos, state);
         return updateConnectedSides(level, currentPos, state, null);
@@ -95,8 +94,7 @@ public class FluidPipeBlock extends ExtendedBlock implements DirectionPropertyBl
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         int index = 0;
         for (Direction side : Helpers.DIRECTIONS)
@@ -116,7 +114,6 @@ public class FluidPipeBlock extends ExtendedBlock implements DirectionPropertyBl
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public FluidState getFluidState(BlockState state)
     {
         return IFluidLoggable.super.getFluidState(state);

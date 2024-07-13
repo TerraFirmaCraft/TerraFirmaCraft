@@ -6,15 +6,17 @@
 
 package net.dries007.tfc.common.blocks.wood;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -22,12 +24,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
@@ -68,8 +68,7 @@ public class ScribingTableBlock extends HorizontalDirectionalBlock implements IF
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return switch (state.getValue(FACING))
             {
@@ -80,29 +79,25 @@ public class ScribingTableBlock extends HorizontalDirectionalBlock implements IF
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
         if (level.isClientSide)
         {
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
         }
         else
         {
             player.openMenu(state.getMenuProvider(level, pos));
-            return InteractionResult.CONSUME;
+            return ItemInteractionResult.CONSUME;
         }
     }
 
-    @Nullable
     @Override
-    @SuppressWarnings("deprecation")
-    public MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos)
+    protected MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos)
     {
         return new SimpleMenuProvider((windowId, inv, player) -> new ScribingTableContainer(inv, windowId, ContainerLevelAccess.create(level, pos)), CONTAINER_TITLE);
     }
 
-    @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
@@ -119,5 +114,11 @@ public class ScribingTableBlock extends HorizontalDirectionalBlock implements IF
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         builder.add(FACING);
+    }
+
+    @Override
+    protected MapCodec<? extends HorizontalDirectionalBlock> codec()
+    {
+        return fakeBlockCodec();
     }
 }

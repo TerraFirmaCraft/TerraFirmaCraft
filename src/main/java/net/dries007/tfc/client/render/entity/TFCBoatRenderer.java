@@ -23,7 +23,7 @@ public class TFCBoatRenderer extends BoatRenderer
 {
     public static ModelLayerLocation boatName(String name)
     {
-        return RenderHelpers.modelIdentifier("boat/" + name);
+        return RenderHelpers.layerId("boat/" + name);
     }
 
     private final Pair<ResourceLocation, ListModel<Boat>> location;

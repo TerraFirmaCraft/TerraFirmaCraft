@@ -8,22 +8,14 @@ package net.dries007.tfc.common.blocks.plant.fruit;
 
 import java.util.List;
 import java.util.function.Supplier;
-
-import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
-import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
-import net.dries007.tfc.common.blocks.soil.HoeOverlayBlock;
-import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.calendar.Calendars;
-
-import net.minecraft.util.RandomSource;
-import org.jetbrains.annotations.Nullable;
-
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -39,11 +31,21 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blocks.*;
+import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
+import net.dries007.tfc.common.blocks.EntityBlockExtension;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.blocks.IForgeBlockExtension;
+import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.plant.Plant;
+import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
+import net.dries007.tfc.common.blocks.soil.HoeOverlayBlock;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateRange;
@@ -113,8 +115,7 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
         final int saplings = state.getValue(SAPLINGS);
         final ItemStack held = player.getItemInHand(InteractionHand.MAIN_HAND);
@@ -123,21 +124,19 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
         {
             held.shrink(1);
             level.setBlockAndUpdate(pos, state.setValue(SAPLINGS, saplings + 1));
-            return InteractionResult.sidedSuccess(level.isClientSide);
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return SeasonalPlantBlock.PLANT_SHAPE;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
+    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         // only go through this check if we are reasonably sure the plant would actually live
         if (stages[Calendars.SERVER.getCalendarMonthOfYear().ordinal()].active())
@@ -216,5 +215,11 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
     public ExtendedProperties getExtendedProperties()
     {
         return properties;
+    }
+
+    @Override
+    protected MapCodec<? extends BushBlock> codec()
+    {
+        return fakeBlockCodec();
     }
 }

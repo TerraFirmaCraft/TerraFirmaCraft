@@ -18,7 +18,7 @@ public class TFCWoodButtonBlock extends ButtonBlock implements IForgeBlockExtens
 
     public TFCWoodButtonBlock(ExtendedProperties properties, BlockSetType type)
     {
-        super(properties.properties(), type, 30, true);
+        super(type, 30, properties.properties());
         this.properties = properties;
     }
 

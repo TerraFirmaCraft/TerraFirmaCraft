@@ -30,7 +30,7 @@ public class TFCChestedHorseRenderer<T extends TFCChestedHorse> extends Abstract
     public TFCChestedHorseRenderer(EntityRendererProvider.Context ctx, float scale, ModelLayerLocation layer, ResourceLocation texture)
     {
         super(ctx, new TFCChestedHorseModel<>(ctx.bakeLayer(layer), false), scale);
-        addLayer(new HorseChestLayer<>(this, new TFCChestedHorseModel<>(ctx.bakeLayer(RenderHelpers.modelIdentifier("horse_chest")), true)));
+        addLayer(new HorseChestLayer<>(this, new TFCChestedHorseModel<>(ctx.bakeLayer(RenderHelpers.layerId("horse_chest")), true)));
         this.texture = texture;
     }
 

@@ -66,8 +66,7 @@ public class DeadCropBlock extends TFCBushBlock implements HoeOverlayBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return state.getValue(MATURE) ? CropBlock.FULL_SHAPE : CropBlock.QUARTER_SHAPE;
     }

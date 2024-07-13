@@ -18,7 +18,7 @@ public class TFCTrapDoorBlock extends TrapDoorBlock implements IForgeBlockExtens
 
     public TFCTrapDoorBlock(ExtendedProperties properties, BlockSetType type)
     {
-        super(properties.properties(), type);
+        super(type, properties.properties());
         this.properties = properties;
     }
 

@@ -26,7 +26,7 @@ public class TFCCeilingHangingSignBlock extends CeilingHangingSignBlock implemen
 
     public TFCCeilingHangingSignBlock(ExtendedProperties properties, WoodType type)
     {
-        super(properties.properties(), type);
+        super(type, properties.properties());
         this.properties = properties;
     }
 

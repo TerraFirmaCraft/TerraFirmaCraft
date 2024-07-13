@@ -12,7 +12,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -92,7 +91,7 @@ public class MoltenBlock extends ExtendedBlock
     @Override
     public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity)
     {
-        if (!entity.fireImmune() && entity instanceof LivingEntity && !EnchantmentHelper.hasFrostWalker((LivingEntity) entity) && level.getBlockState(pos).getValue(LIT))
+        if (entity instanceof LivingEntity && level.getBlockState(pos).getValue(LIT))
         {
             entity.hurt(entity.damageSources().hotFloor(), 1f);
         }
@@ -116,13 +115,11 @@ public class MoltenBlock extends ExtendedBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
+    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
     {
         if (level.getBlockState(pos.above()).isAir() && state.getValue(LIT))
         {
             Helpers.fireSpreaderTick(level, pos, rand, 2);
         }
     }
-
 }

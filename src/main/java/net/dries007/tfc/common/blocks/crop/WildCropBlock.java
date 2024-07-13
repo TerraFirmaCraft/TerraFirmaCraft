@@ -11,7 +11,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -54,8 +53,7 @@ public class WildCropBlock extends TFCBushBlock implements ISpecialPile
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
+    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
     {
         if (state.getValue(MATURE) != isMature(level))
         {
@@ -64,8 +62,7 @@ public class WildCropBlock extends TFCBushBlock implements ISpecialPile
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return CropBlock.FULL_SHAPE;
     }

@@ -16,6 +16,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -230,7 +231,10 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
     protected void updateCachedRecipe()
     {
         assert level != null;
-        cachedRecipe = level.getRecipeManager().getRecipeFor(TFCRecipeTypes.POT.get(), inventory, level).orElse(null);
+        cachedRecipe = level.getRecipeManager()
+            .getRecipeFor(TFCRecipeTypes.POT.get(), inventory, level)
+            .map(RecipeHolder::value)
+            .orElse(null);
     }
 
     public boolean isBoiling()

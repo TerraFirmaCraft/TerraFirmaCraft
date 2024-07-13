@@ -8,18 +8,17 @@ package net.dries007.tfc.common.blocks.wood;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.WallSignBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
-
-import org.jetbrains.annotations.Nullable;
 
 public class TFCWallSignBlock extends WallSignBlock implements IForgeBlockExtension, EntityBlockExtension
 {
@@ -27,7 +26,7 @@ public class TFCWallSignBlock extends WallSignBlock implements IForgeBlockExtens
 
     public TFCWallSignBlock(ExtendedProperties properties, WoodType type)
     {
-        super(properties.properties(), type);
+        super(type, properties.properties());
         this.properties = properties;
     }
 

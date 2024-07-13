@@ -11,7 +11,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -30,10 +30,12 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blockentities.rotation.HandWheelBlockEntity;
 import net.dries007.tfc.common.blockentities.rotation.RotatingBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
@@ -64,8 +66,7 @@ public class HandWheelBlock extends DeviceBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         if (level.getBlockEntity(pos) instanceof RotatingBlockEntity entity)
         {
@@ -74,38 +75,37 @@ public class HandWheelBlock extends DeviceBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
-        return level.getBlockEntity(pos, TFCBlockEntities.HAND_WHEEL.get()).map(wheel -> {
+        final HandWheelBlockEntity wheel = level.getBlockEntity(pos, TFCBlockEntities.HAND_WHEEL.get()).orElse(null);
+        if (wheel != null)
+        {
             final ItemStack held = player.getItemInHand(hand);
             if (Helpers.isItem(held, TFCTags.Items.HAND_WHEEL))
             {
-                return wheel.getCapability(Capabilities.ITEM).map(cap -> {
-                    final ItemStack current = cap.getStackInSlot(0);
-                    if (current.isEmpty() && cap.isItemValid(0, held))
-                    {
-                        ItemHandlerHelper.giveItemToPlayer(player, cap.insertItem(0, held.split(1), false));
-                        return InteractionResult.sidedSuccess(level.isClientSide);
-                    }
-                    else if (!current.isEmpty() && player.isShiftKeyDown() && held.isEmpty())
-                    {
-                        ItemHandlerHelper.giveItemToPlayer(player, cap.extractItem(0, 1, false));
-                        return InteractionResult.sidedSuccess(level.isClientSide);
-                    }
-                    return InteractionResult.PASS;
-                }).orElse(InteractionResult.PASS);
+                final ItemStackHandler inventory = wheel.getInventory();
+                final ItemStack current = inventory.getStackInSlot(0);
+                if (current.isEmpty() && inventory.isItemValid(0, held))
+                {
+                    ItemHandlerHelper.giveItemToPlayer(player, inventory.insertItem(0, held.split(1), false));
+                    return ItemInteractionResult.sidedSuccess(level.isClientSide);
+                }
+                else if (!current.isEmpty() && player.isShiftKeyDown() && held.isEmpty())
+                {
+                    ItemHandlerHelper.giveItemToPlayer(player, inventory.extractItem(0, 1, false));
+                    return ItemInteractionResult.sidedSuccess(level.isClientSide);
+                }
             }
             else
             {
                 if (!player.isShiftKeyDown())
                 {
                     wheel.rotate();
-                    return InteractionResult.sidedSuccess(level.isClientSide);
+                    return ItemInteractionResult.sidedSuccess(level.isClientSide);
                 }
             }
-            return InteractionResult.PASS;
-        }).orElse(InteractionResult.PASS);
+        }
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Nullable
@@ -116,8 +116,7 @@ public class HandWheelBlock extends DeviceBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         final int idx = state.getValue(FACING).get2DDataValue();
         return state.getValue(HAS_WHEEL) ? SHAPE_WITH_WHEEL[idx] : SHAPE[idx];

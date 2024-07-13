@@ -12,7 +12,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -44,11 +44,13 @@ public class RockConvertableToAnvilBlock extends RawRockBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
-        final ItemStack stack = player.getItemInHand(hand);
-        if (Helpers.isItem(stack, TFCTags.Items.HAMMERS) && !Helpers.isItem(player.getItemInHand(hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND), TFCTags.Items.CHISELS) && hit.getDirection() == Direction.UP && level.getBlockState(pos.above()).isAir())
+        if (Helpers.isItem(stack, TFCTags.Items.HAMMERS)
+            && !Helpers.isItem(player.getItemInHand(hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND), TFCTags.Items.CHISELS)
+            && hitResult.getDirection() == Direction.UP
+            && level.getBlockState(pos.above()).isAir()
+        )
         {
             final BlockState block = anvil.get().defaultBlockState();
             level.setBlockAndUpdate(pos, block);
@@ -56,8 +58,8 @@ public class RockConvertableToAnvilBlock extends RawRockBlock
             {
                 TFCAdvancements.ROCK_ANVIL.trigger(serverPlayer, block);
             }
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 }

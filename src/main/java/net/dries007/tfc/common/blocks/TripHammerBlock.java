@@ -9,7 +9,7 @@ package net.dries007.tfc.common.blocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -52,14 +52,13 @@ public class TripHammerBlock extends DeviceBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
         if (level.getBlockEntity(pos) instanceof TripHammerBlockEntity hammer)
         {
             final ItemStack held = player.getItemInHand(hand);
-            final IItemHandler inv = Helpers.getCapability(hammer, Capabilities.ITEM);
-            if (inv != null && inv.getStackInSlot(0).isEmpty() && inv.isItemValid(0, held))
+            final IItemHandler inv = hammer.getInventory();
+            if (inv.getStackInSlot(0).isEmpty() && inv.isItemValid(0, held))
             {
                 final ItemStack toInsert = held.copyWithCount(1);
                 if (!player.isCreative())
@@ -68,10 +67,10 @@ public class TripHammerBlock extends DeviceBlock
                 }
                 ItemHandlerHelper.giveItemToPlayer(player, inv.insertItem(0, toInsert, false));
                 hammer.markForSync();
-                return InteractionResult.sidedSuccess(level.isClientSide);
+                return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override
@@ -81,8 +80,7 @@ public class TripHammerBlock extends DeviceBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return BASE_SHAPES[state.getValue(FACING).get2DDataValue()];
     }

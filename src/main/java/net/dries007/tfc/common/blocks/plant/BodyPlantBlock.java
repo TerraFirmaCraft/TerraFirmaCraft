@@ -7,21 +7,19 @@
 package net.dries007.tfc.common.blocks.plant;
 
 import java.util.function.Supplier;
-
-import net.minecraft.tags.BlockTags;
-import net.minecraft.core.Direction;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
-
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.GrowingPlantBodyBlock;
 import net.minecraft.world.level.block.GrowingPlantHeadBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
@@ -74,8 +72,14 @@ public class BodyPlantBlock extends GrowingPlantBodyBlock implements IForgeBlock
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player)
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player)
     {
         return new ItemStack(getHeadBlock());
+    }
+
+    @Override
+    protected MapCodec<? extends GrowingPlantBodyBlock> codec()
+    {
+        return fakeBlockCodec();
     }
 }

@@ -16,9 +16,9 @@ public class TFCPressurePlateBlock extends PressurePlateBlock implements IForgeB
 {
     private final ExtendedProperties properties;
 
-    public TFCPressurePlateBlock(Sensitivity sensitivity, ExtendedProperties properties, BlockSetType type)
+    public TFCPressurePlateBlock(BlockSetType type, ExtendedProperties properties)
     {
-        super(sensitivity, properties.properties(), type);
+        super(type, properties.properties());
         this.properties = properties;
     }
 

@@ -36,7 +36,7 @@ public class WindmillBlockEntityRenderer implements BlockEntityRenderer<Windmill
 
     public WindmillBlockEntityRenderer(BlockEntityRendererProvider.Context ctx)
     {
-        this.blade = new WindmillBladeModel(ctx.bakeLayer(RenderHelpers.modelIdentifier("windmill_blade")));
+        this.blade = new WindmillBladeModel(ctx.bakeLayer(RenderHelpers.layerId("windmill_blade")));
     }
 
     @Override

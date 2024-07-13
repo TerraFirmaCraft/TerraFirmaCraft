@@ -11,7 +11,7 @@ import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -60,7 +60,7 @@ public abstract class ClimbingCropBlock extends DoubleCropBlock implements IGhos
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
         final ItemStack heldStack = player.getItemInHand(hand);
         final BlockPos posAbove = pos.above();
@@ -73,9 +73,9 @@ public abstract class ClimbingCropBlock extends DoubleCropBlock implements IGhos
                 if (!player.isCreative()) heldStack.shrink(1);
                 Helpers.playSound(level, pos, TFCSounds.CROP_STICK_ADD.get());
             }
-            return InteractionResult.sidedSuccess(level.isClientSide);
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
-        return super.use(state, level, pos, player, hand, hit);
+        return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
     }
 
     @Override

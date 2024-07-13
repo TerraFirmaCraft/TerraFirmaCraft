@@ -10,10 +10,7 @@
 
 package net.dries007.tfc.client.model.entity;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Constants;
-import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -21,7 +18,6 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.resources.ResourceLocation;
 
 import net.dries007.tfc.common.entities.prey.WingedPrey;
 import net.dries007.tfc.util.calendar.Calendars;
@@ -30,8 +26,6 @@ import net.dries007.tfc.util.calendar.Season;
 
 public class PeafowlModel extends HierarchicalAnimatedModel<WingedPrey>
 {
-    // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("modid", "modelpeacocktfc-bedrock"), "main");
     private final ModelPart neck;
     private final ModelPart body;
     private final ModelPart head;

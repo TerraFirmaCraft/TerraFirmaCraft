@@ -46,10 +46,31 @@ public interface SimpleStaticBlockEntityModel<T extends IBakedGeometry<T>, B ext
         final int packedLight = LightTexture.pack(level.getBrightness(LightLayer.BLOCK, pos), level.getBrightness(LightLayer.SKY, pos));
         final int packedOverlay = OverlayTexture.NO_OVERLAY;
         final List<BakedQuad> quads = new ArrayList<>(faces(blockEntity));
-        final VertexConsumer buffer = new QuadBakingVertexConsumer(quads::add);
-        final PoseStack poseStack = new PoseStack();
 
-        final TextureAtlasSprite particle = render(blockEntity, poseStack, buffer, packedLight, packedOverlay);
+        class Baker extends QuadBakingVertexConsumer
+        {
+            boolean first = true;
+
+            @Override
+            public VertexConsumer addVertex(float x, float y, float z)
+            {
+                if (!first)
+                {
+                    quads.add(bakeQuad());
+                }
+                first = false;
+                return super.addVertex(x, y, z);
+            }
+        }
+
+        // Inconveniently, this vertex consumer has to be manually baked after each quad. So, we listen to each
+        // addVertex(x, y, z) to empty it, except the first call, and then remember to retrieve the final vertex
+        final Baker buffer = new Baker();
+        final TextureAtlasSprite particle = render(blockEntity, new PoseStack(), buffer, packedLight, packedOverlay);
+        if (!buffer.first) // We baked at least one quad, so get the last one
+        {
+            quads.add(buffer.bakeQuad());
+        }
         return new StaticModelData(quads, particle);
     }
 

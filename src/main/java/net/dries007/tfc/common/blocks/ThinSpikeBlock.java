@@ -27,12 +27,12 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.util.Helpers;
-import org.jetbrains.annotations.Nullable;
 
 public class ThinSpikeBlock extends Block implements IFluidLoggable
 {
@@ -60,8 +60,7 @@ public class ThinSpikeBlock extends Block implements IFluidLoggable
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
         FluidHelpers.tickFluid(level, currentPos, state);
         if (facing == Direction.DOWN)
@@ -79,8 +78,7 @@ public class ThinSpikeBlock extends Block implements IFluidLoggable
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving)
+    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving)
     {
         if (!canSurvive(state, level, pos))
         {
@@ -89,8 +87,7 @@ public class ThinSpikeBlock extends Block implements IFluidLoggable
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
     {
         if (newState.getBlock() != state.getBlock())
         {
@@ -105,8 +102,7 @@ public class ThinSpikeBlock extends Block implements IFluidLoggable
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
+    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         BlockPos abovePos = pos.above();
         BlockState aboveState = level.getBlockState(abovePos);
@@ -114,15 +110,13 @@ public class ThinSpikeBlock extends Block implements IFluidLoggable
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return state.getValue(TIP) ? TIP_SHAPE : PILLAR_SHAPE;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
     {
         if (!canSurvive(state, level, pos))
         {
@@ -131,8 +125,7 @@ public class ThinSpikeBlock extends Block implements IFluidLoggable
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onProjectileHit(Level level, BlockState state, BlockHitResult hit, Projectile projectile)
+    protected void onProjectileHit(Level level, BlockState state, BlockHitResult hit, Projectile projectile)
     {
         final BlockPos pos = hit.getBlockPos();
         if (!level.isClientSide && projectile.mayInteract(level, pos) && Helpers.isEntity(projectile, EntityTypeTags.IMPACT_PROJECTILES))
@@ -142,7 +135,6 @@ public class ThinSpikeBlock extends Block implements IFluidLoggable
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public FluidState getFluidState(BlockState state)
     {
         return IFluidLoggable.super.getFluidState(state);

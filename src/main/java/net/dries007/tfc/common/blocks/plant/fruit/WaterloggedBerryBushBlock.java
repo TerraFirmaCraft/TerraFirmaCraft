@@ -8,7 +8,6 @@ package net.dries007.tfc.common.blocks.plant.fruit;
 
 import java.util.List;
 import java.util.function.Supplier;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -85,7 +84,6 @@ public class WaterloggedBerryBushBlock extends StationaryBerryBushBlock implemen
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public FluidState getFluidState(BlockState state)
     {
         return IFluidLoggable.super.getFluidState(state);

@@ -74,8 +74,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    protected BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
         if (facing == Direction.UP)
         {
@@ -89,8 +88,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving)
+    protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving)
     {
         for (Direction direction : Direction.Plane.HORIZONTAL)
         {
@@ -99,8 +97,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
     {
         for (Direction direction : Direction.Plane.HORIZONTAL)
         {
@@ -119,8 +116,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
+    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         if (!canBeGrass(state, level, pos))
         {
@@ -140,10 +136,10 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
                 {
                     posAt.setWithOffset(pos, random.nextInt(3) - 1, random.nextInt(5) - 3, random.nextInt(3) - 1);
                     final BlockState stateAt = level.getBlockState(posAt);
-                    if (stateAt.getBlock() instanceof IDirtBlock dirt)
+                    if (stateAt.getBlock() instanceof IDirtBlock dirtBlock)
                     {
                         // Spread grass to others
-                        final BlockState grassState = dirt.getGrass();
+                        final BlockState grassState = dirtBlock.getGrass();
                         if (canPropagate(grassState, level, posAt))
                         {
                             level.setBlockAndUpdate(posAt, updateStateFromNeighbors(level, posAt, grassState));
@@ -156,8 +152,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
     {
         level.setBlock(pos, updateStateFromNeighbors(level, pos, state), 2);
     }

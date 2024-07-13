@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blocks.plant.fruit;
 
 import java.util.function.Supplier;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -32,11 +31,6 @@ public class BananaSaplingBlock extends FruitTreeSaplingBlock
         super(properties, block, treeGrowthDays, ClimateRanges.BANANA_PLANT, stages);
     }
 
-    public BananaSaplingBlock(ExtendedProperties properties, Lifecycle[] stages, Supplier<? extends Block> block, int treeGrowthDays)
-    {
-        super(properties, block, treeGrowthDays, ClimateRanges.BANANA_PLANT, stages);
-    }
-
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
@@ -56,8 +50,5 @@ public class BananaSaplingBlock extends FruitTreeSaplingBlock
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
-    {
-
-    }
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {}
 }

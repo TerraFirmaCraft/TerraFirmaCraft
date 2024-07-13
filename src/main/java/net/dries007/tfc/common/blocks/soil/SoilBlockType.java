@@ -8,7 +8,6 @@ package net.dries007.tfc.common.blocks.soil;
 
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
-
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -41,7 +40,7 @@ public enum SoilBlockType
     MUD((self, variant) -> new MudBlock(BlockBehaviour.Properties.of().mapColor(MapColor.DIRT).sound(SoundType.MUD).strength(2f).speedFactor(0.8f).isRedstoneConductor(TFCBlocks::always).isViewBlocking(TFCBlocks::always).isSuffocating(TFCBlocks::always).instrument(NoteBlockInstrument.BASEDRUM))),
     MUD_BRICKS((self, variant) -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.DIRT).sound(SoundType.MUD_BRICKS).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(2.6f))),
     DRYING_BRICKS((self, variant) -> new DryingBricksBlock(ExtendedProperties.of(MapColor.DIRT).noCollission().noOcclusion().instabreak().sound(SoundType.STEM).randomTicks().blockEntity(TFCBlockEntities.TICK_COUNTER), variant.getDriedMudBrick())),
-    MUDDY_ROOTS((self, variant) -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.MUDDY_MANGROVE_ROOTS).strength(4f)))
+    MUDDY_ROOTS((self, variant) -> new RotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUDDY_MANGROVE_ROOTS).strength(4f)))
     ;
 
     public static final SoilBlockType[] VALUES = values();

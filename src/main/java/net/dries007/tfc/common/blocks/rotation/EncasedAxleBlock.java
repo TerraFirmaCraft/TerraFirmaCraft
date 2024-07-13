@@ -9,16 +9,12 @@ package net.dries007.tfc.common.blocks.rotation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-import net.dries007.tfc.common.blockentities.rotation.EncasedAxleBlockEntity;
 import net.dries007.tfc.common.blockentities.rotation.RotatingBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.wood.ExtendedRotatedPillarBlock;
-import net.dries007.tfc.util.Helpers;
 
 public class EncasedAxleBlock extends ExtendedRotatedPillarBlock implements EntityBlockExtension
 {
@@ -28,8 +24,7 @@ public class EncasedAxleBlock extends ExtendedRotatedPillarBlock implements Enti
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         if (level.getBlockEntity(pos) instanceof RotatingBlockEntity entity)
         {

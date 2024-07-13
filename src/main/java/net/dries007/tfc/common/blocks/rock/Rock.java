@@ -20,7 +20,6 @@ import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
@@ -139,8 +138,8 @@ public enum Rock implements RegistryRock
         CHISELED((rock, self) -> new Block(properties(rock).strength(rock.category().hardness(8f), 10).requiresCorrectToolForDrops()), false),
         LOOSE((rock, self) -> new LooseRockBlock(properties(rock).strength(0.05f, 0.0f).noCollission()), false),
         MOSSY_LOOSE((rock, self) -> new LooseRockBlock(properties(rock).strength(0.05f, 0.0f).noCollission()), false),
-        PRESSURE_PLATE((rock, self) -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.MOBS, properties(rock).requiresCorrectToolForDrops().noCollission().strength(0.5f), BlockSetType.POLISHED_BLACKSTONE), false),
-        BUTTON((rock, self) -> new ButtonBlock(properties(rock).noCollission().strength(0.5f), BlockSetType.POLISHED_BLACKSTONE, 20, false), false),
+        PRESSURE_PLATE((rock, self) -> new PressurePlateBlock(BlockSetType.STONE, properties(rock).requiresCorrectToolForDrops().noCollission().strength(0.5f)), false),
+        BUTTON((rock, self) -> new ButtonBlock(BlockSetType.STONE, 20, properties(rock).noCollission().strength(0.5f)), false),
         AQUEDUCT((rock, self) -> new AqueductBlock(properties(rock).strength(rock.category().hardness(6.5f), 10).requiresCorrectToolForDrops()), false);
 
         public static final BlockType[] VALUES = BlockType.values();
@@ -207,7 +206,7 @@ public enum Rock implements RegistryRock
             {
                 return new MossGrowingStairsBlock(state, properties, rock.getStair(mossy));
             }
-            return new StairBlock(state, properties);
+            return new StairBlock(state.get(), properties);
         }
 
         public WallBlock createWall(RegistryRock rock)

@@ -26,7 +26,7 @@ public class TFCWallHangingSignBlock extends WallHangingSignBlock implements IFo
 
     public TFCWallHangingSignBlock(ExtendedProperties properties, WoodType type)
     {
-        super(properties.properties(), type);
+        super(type, properties.properties());
         this.properties = properties;
     }
 

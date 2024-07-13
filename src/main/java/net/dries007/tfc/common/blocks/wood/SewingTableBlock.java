@@ -6,15 +6,17 @@
 
 package net.dries007.tfc.common.blocks.wood;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -51,24 +53,22 @@ public class SewingTableBlock extends HorizontalDirectionalBlock implements IFor
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return SHAPE;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
         if (level.isClientSide)
         {
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
         }
         else
         {
             player.openMenu(state.getMenuProvider(level, pos));
-            return InteractionResult.CONSUME;
+            return ItemInteractionResult.CONSUME;
         }
     }
 
@@ -91,11 +91,15 @@ public class SewingTableBlock extends HorizontalDirectionalBlock implements IFor
         builder.add(FACING);
     }
 
-    @Nullable
     @Override
-    @SuppressWarnings("deprecation")
-    public MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos)
+    protected MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos)
     {
         return new SimpleMenuProvider((windowId, inv, player) -> SewingTableContainer.create(inv, windowId, ContainerLevelAccess.create(level, pos)), CONTAINER_TITLE);
+    }
+
+    @Override
+    protected MapCodec<? extends HorizontalDirectionalBlock> codec()
+    {
+        return fakeBlockCodec();
     }
 }

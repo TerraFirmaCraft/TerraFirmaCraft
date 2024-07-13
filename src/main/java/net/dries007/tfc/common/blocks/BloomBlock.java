@@ -69,8 +69,7 @@ public class BloomBlock extends ExtendedBlock implements EntityBlockExtension
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return SHAPE_BY_LAYER[state.getValue(LAYERS)];
     }

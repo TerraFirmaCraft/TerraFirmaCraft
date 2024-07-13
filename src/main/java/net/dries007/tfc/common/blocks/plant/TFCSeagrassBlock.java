@@ -6,12 +6,12 @@
 
 package net.dries007.tfc.common.blocks.plant;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraft.world.level.BlockGetter;
 
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.fluids.FluidProperty;
@@ -48,7 +48,7 @@ public abstract class TFCSeagrassBlock extends WaterPlantBlock
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return switch (state.getValue(AGE))
             {
@@ -64,5 +64,4 @@ public abstract class TFCSeagrassBlock extends WaterPlantBlock
     {
         return super.getMaxHorizontalOffset();
     }
-
 }

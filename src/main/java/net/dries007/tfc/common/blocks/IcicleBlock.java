@@ -16,11 +16,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
@@ -47,8 +47,7 @@ public class IcicleBlock extends ThinSpikeBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void attack(BlockState state, Level level, BlockPos pos, Player player)
+    protected void attack(BlockState state, Level level, BlockPos pos, Player player)
     {
         if (Helpers.isItem(player.getMainHandItem(), TFCTags.Items.HAMMERS) || Helpers.isItem(player.getMainHandItem(), ItemTags.SWORDS))
         {
@@ -64,8 +63,7 @@ public class IcicleBlock extends ThinSpikeBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
+    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         final float temperature = Climate.getTemperature(level, pos);
         if (state.getValue(TIP) && state.getValue(FLUID).getFluid() == Fluids.EMPTY && temperature > OverworldClimateModel.ICICLE_MELT_TEMPERATURE && (random.nextInt(EnvironmentHelpers.ICICLE_MELT_RANDOM_TICK_CHANCE) == 0 || level.getBrightness(LightLayer.BLOCK, pos) > 11))
@@ -87,10 +85,10 @@ public class IcicleBlock extends ThinSpikeBlock
                 BlockState stateAt = level.getBlockState(mutable);
                 if (!stateAt.isAir()) // if we hit a non-air block, we won't be returning
                 {
-                    BlockEntity blockEntity = level.getBlockEntity(mutable);
-                    if (blockEntity != null)
+                    final IFluidHandler fluidHandler = level.getCapability(Capabilities.FluidHandler.BLOCK, pos, Direction.UP);
+                    if (fluidHandler != null)
                     {
-                        blockEntity.getCapability(Capabilities.FLUID, Direction.UP).ifPresent(cap -> cap.fill(new FluidStack(Fluids.WATER, 100), IFluidHandler.FluidAction.EXECUTE));
+                        fluidHandler.fill(new FluidStack(Fluids.WATER, 100), IFluidHandler.FluidAction.EXECUTE);
                     }
                     return;
                 }

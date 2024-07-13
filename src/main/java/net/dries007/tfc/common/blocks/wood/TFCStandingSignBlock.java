@@ -26,7 +26,7 @@ public class TFCStandingSignBlock extends StandingSignBlock implements IForgeBlo
 
     public TFCStandingSignBlock(ExtendedProperties properties, WoodType type)
     {
-        super(properties.properties(), type);
+        super(type, properties.properties());
         this.properties = properties;
     }
 

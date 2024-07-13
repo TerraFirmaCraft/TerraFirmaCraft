@@ -41,19 +41,10 @@ public class LogBlock extends ExtendedRotatedPillarBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos)
+    protected float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos)
     {
-        // Modified from the super() method, including the Forge patch, to add the 2x hardness in natural state modifier.
-        final float baseSpeed = (state.getValue(BRANCH_DIRECTION).natural() ? 2 : 1) * state.getDestroySpeed(level, pos);
-        if (baseSpeed == -1.0F)
-        {
-            return 0.0F;
-        }
-        else
-        {
-            final int toolModifier = ForgeHooks.isCorrectToolForDrops(state, player) ? 30 : 100;
-            return player.getDigSpeed(state, pos) / baseSpeed / (float) toolModifier;
-        }
+        return super.getDestroyProgress(state, player, level, pos)
+            / (state.getValue(BRANCH_DIRECTION).natural() ? 2 : 1);
     }
 
     @Override

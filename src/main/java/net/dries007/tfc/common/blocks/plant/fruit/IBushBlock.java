@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.common.blocks.plant.fruit;
 
-import java.util.Random;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -26,7 +24,7 @@ public interface IBushBlock
     /**
      * Target average delay between random ticks = one day.
      * Ticks are done at a rate of randomTickSpeed ticks / chunk section / world tick.
-     *
+     *<p>
      * Only implement if ticking is not desired every tick, ie that we're OK with staggered updating.
      */
     static void randomTick(IBushBlock bush, BlockState state, ServerLevel level, BlockPos pos, RandomSource random)

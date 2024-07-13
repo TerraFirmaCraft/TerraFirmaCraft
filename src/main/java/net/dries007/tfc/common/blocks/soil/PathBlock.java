@@ -6,9 +6,7 @@
 
 package net.dries007.tfc.common.blocks.soil;
 
-import java.util.Random;
 import java.util.function.Supplier;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -46,7 +44,7 @@ public class PathBlock extends DirtPathBlock implements ISoilBlock
     }
 
     @Override
-    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
     {
         level.setBlockAndUpdate(pos, Block.pushEntitiesUp(state, getDirt(), level, pos));
     }

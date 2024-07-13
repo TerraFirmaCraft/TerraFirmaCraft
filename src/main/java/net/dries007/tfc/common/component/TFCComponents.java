@@ -48,6 +48,8 @@ public final class TFCComponents
 
     public static final Id<EggComponent> EGG = register("egg", EggComponent.CODEC, EggComponent.STREAM_CODEC);
 
+    public static final Id<PannableComponent> PANNABLE = register("pannable", PannableComponent.CODEC, PannableComponent.STREAM_CODEC);
+
     /**
      * Modifies the default components of all items. This adds the default components to all items' prototype, so that the default
      * values are never serialized.

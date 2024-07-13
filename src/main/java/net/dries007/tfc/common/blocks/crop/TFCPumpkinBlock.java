@@ -13,7 +13,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -39,15 +39,14 @@ public class TFCPumpkinBlock extends DecayingBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
         final ItemStack held = player.getItemInHand(hand);
         if (level.getBlockEntity(pos) instanceof DecayingBlockEntity decaying && (Helpers.isItem(held, TFCTags.Items.KNIVES) || Helpers.isItem(held, Tags.Items.TOOLS_SHEAR)) && TFCConfig.SERVER.enablePumpkinCarving.get())
         {
             if (!level.isClientSide && !decaying.isRotten())
             {
-                Direction hitDir = hit.getDirection();
+                Direction hitDir = hitResult.getDirection();
                 Direction facing = hitDir.getAxis() == Direction.Axis.Y ? player.getDirection().getOpposite() : hitDir;
                 level.playSound(null, pos, SoundEvents.PUMPKIN_CARVE, SoundSource.BLOCKS, 1.0F, 1.0F);
                 decaying.setStack(ItemStack.EMPTY);
@@ -59,8 +58,8 @@ public class TFCPumpkinBlock extends DecayingBlock
                 player.awardStat(Stats.ITEM_USED.get(held.getItem()));
             }
 
-            return InteractionResult.sidedSuccess(level.isClientSide);
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 }

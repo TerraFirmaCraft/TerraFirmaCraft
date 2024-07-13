@@ -19,9 +19,9 @@ public class DogCollarLayer extends RenderLayer<Dog, DogModel>
 {
     private static final ResourceLocation WOLF_COLLAR_LOCATION = Helpers.identifierMC("textures/entity/wolf/wolf_collar.png");
 
-    public DogCollarLayer(RenderLayerParent<Dog, DogModel> pRenderer)
+    public DogCollarLayer(RenderLayerParent<Dog, DogModel> renderer)
     {
-        super(pRenderer);
+        super(renderer);
     }
 
     @Override
@@ -29,8 +29,7 @@ public class DogCollarLayer extends RenderLayer<Dog, DogModel>
     {
         if (entity.getOwnerUUID() != null && !entity.isInvisible())
         {
-            final float[] colors = entity.getCollarColor().getTextureDiffuseColors();
-            renderColoredCutoutModel(this.getParentModel(), WOLF_COLLAR_LOCATION, poseStack, buffer, packedLight, entity, colors[0], colors[1], colors[2]);
+            renderColoredCutoutModel(this.getParentModel(), WOLF_COLLAR_LOCATION, poseStack, buffer, packedLight, entity, entity.getCollarColor().getTextureDiffuseColor());
         }
     }
 }

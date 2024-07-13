@@ -128,10 +128,10 @@ public final class TFCItems
         register("food/" + food.name(), () -> new Item(food.createProperties()))
     );
     public static final Map<Food, ItemId> FRUIT_PRESERVES = Helpers.mapOfKeys(Food.class, Food::isFruit, food ->
-        register("jar/" + food.name(), () -> new JarItem(new Item.Properties(), food.name().toLowerCase(Locale.ROOT), false))
+        register("jar/" + food.name(), () -> new JarItem(new Item.Properties(), false))
     );
     public static final Map<Food, ItemId> UNSEALED_FRUIT_PRESERVES = Helpers.mapOfKeys(Food.class, Food::isFruit, food ->
-        register("jar/" + food.name() + "_unsealed", () -> new JarItem(new Item.Properties(), food.name().toLowerCase(Locale.ROOT) + "_unsealed", true))
+        register("jar/" + food.name() + "_unsealed", () -> new JarItem(new Item.Properties(), true))
     );
     public static final Map<Nutrient, ItemId> SOUPS = Helpers.mapOfKeys(Nutrient.class, nutrient ->
         register("food/" + nutrient.name() + "_soup", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.3f).build())))
@@ -194,8 +194,8 @@ public final class TFCItems
     public static final ItemId HEMATITIC_GLASS_BOTTLE = register("hematitic_glass_bottle", () -> new GlassBottleItem(new Item.Properties(), TFCConfig.SERVER.hematiticGlassBottleCapacity, TFCConfig.SERVER.hematiticGlassBottleBreakChance, TFCTags.Fluids.USABLE_IN_JUG));
     public static final ItemId VOLCANIC_GLASS_BOTTLE = register("volcanic_glass_bottle", () -> new GlassBottleItem(new Item.Properties(), TFCConfig.SERVER.volcanicGlassBottleCapacity, TFCConfig.SERVER.volcanicGlassBottleBreakChance, TFCTags.Fluids.USABLE_IN_JUG));
     public static final ItemId OLIVINE_GLASS_BOTTLE = register("olivine_glass_bottle", () -> new GlassBottleItem(new Item.Properties(), TFCConfig.SERVER.olivineGlassBottleCapacity, TFCConfig.SERVER.olivineGlassBottleBreakChance, TFCTags.Fluids.USABLE_IN_JUG));
-    public static final ItemId EMPTY_JAR = register("empty_jar", () -> new JarItem(new Item.Properties(), "empty", false));
-    public static final ItemId EMPTY_JAR_WITH_LID = register("empty_jar_with_lid", () -> new JarItem(new Item.Properties(), Helpers.identifier("block/jar"), false));
+    public static final ItemId EMPTY_JAR = register("empty_jar", () -> new JarItem(new Item.Properties(), false));
+    public static final ItemId EMPTY_JAR_WITH_LID = register("empty_jar_with_lid", () -> new JarItem(new Item.Properties(), false));
     public static final ItemId JAR_LID = register("jar_lid", () -> new Item(new Item.Properties()));
 
     public static final ItemId BONE_NEEDLE = register("bone_needle", () -> new Item(new Item.Properties().defaultDurability(64)));

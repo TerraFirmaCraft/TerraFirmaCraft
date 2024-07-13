@@ -9,19 +9,11 @@ package net.dries007.tfc.common.blocks.plant.fruit;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-
-import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
-
-import net.minecraft.util.RandomSource;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockGetter;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -29,9 +21,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.phys.HitResult;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
@@ -210,8 +203,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
+    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         final int hydration = FruitTreeLeavesBlock.getHydration(level, pos);
         final float temp = Climate.getAverageTemperature(level, pos);
@@ -236,12 +228,6 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
                 counter.resetCounter();
             }
         }
-    }
-
-    @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player)
-    {
-        return ItemStack.EMPTY;
     }
 
     private void placeGrownFlower(ServerLevel level, BlockPos pos, int stage, int saplings, int cycles, boolean natural)

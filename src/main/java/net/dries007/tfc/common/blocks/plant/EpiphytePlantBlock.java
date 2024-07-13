@@ -63,8 +63,7 @@ public abstract class EpiphytePlantBlock extends PlantBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
+    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
         if (!canSurvive(state, level, pos))
         {
@@ -73,7 +72,7 @@ public abstract class EpiphytePlantBlock extends PlantBlock
     }
 
     @Override
-    public BlockState updateShape(BlockState state, Direction direction, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    protected BlockState updateShape(BlockState state, Direction direction, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
         // Must be attached to a log
         if (direction.getOpposite() == state.getValue(FACING) && !Helpers.isBlock(facingState, BlockTags.LOGS))
@@ -84,14 +83,14 @@ public abstract class EpiphytePlantBlock extends PlantBlock
     }
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
+    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         BlockState attachedState = level.getBlockState(pos.relative(state.getValue(FACING).getOpposite()));
         return Helpers.isBlock(attachedState, BlockTags.LOGS);
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return SHAPES.get(state.getValue(FACING));
     }

@@ -9,8 +9,9 @@ package net.dries007.tfc.common.blocks.soil;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -29,9 +30,9 @@ import net.dries007.tfc.util.registry.RegistrySoilVariant;
 public class TFCRootedDirtBlock extends Block implements IMudBlock
 {
     private final Supplier<? extends Block> dirt;
-    @Nullable private final Supplier<? extends Block> mud;
+    private final Supplier<? extends Block> mud;
 
-    public TFCRootedDirtBlock(Properties properties, Supplier<? extends Block> dirt, @Nullable Supplier<? extends Block> mud)
+    public TFCRootedDirtBlock(Properties properties, Supplier<? extends Block> dirt, Supplier<? extends Block> mud)
     {
         super(properties);
         this.dirt = dirt;
@@ -61,14 +62,8 @@ public class TFCRootedDirtBlock extends Block implements IMudBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
-        if (mud != null)
-        {
-            return transformToMud(mud.get().defaultBlockState(), level, pos, player, hand);
-        }
-
-        return InteractionResult.PASS;
+        return transformToMud(mud.get().defaultBlockState(), level, pos, player, hand);
     }
 }

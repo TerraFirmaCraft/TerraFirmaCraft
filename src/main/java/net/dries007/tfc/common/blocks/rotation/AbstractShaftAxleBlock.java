@@ -57,8 +57,7 @@ public abstract class AbstractShaftAxleBlock extends ExtendedRotatedPillarBlock 
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         if (level.getBlockEntity(pos) instanceof RotatingBlockEntity entity)
         {
@@ -67,8 +66,7 @@ public abstract class AbstractShaftAxleBlock extends ExtendedRotatedPillarBlock 
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return switch(state.getValue(AXIS))
             {
@@ -91,8 +89,7 @@ public abstract class AbstractShaftAxleBlock extends ExtendedRotatedPillarBlock 
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
         FluidHelpers.tickFluid(level, currentPos, state);
         return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
@@ -105,7 +102,6 @@ public abstract class AbstractShaftAxleBlock extends ExtendedRotatedPillarBlock 
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public FluidState getFluidState(BlockState state)
     {
         return IFluidLoggable.super.getFluidState(state);

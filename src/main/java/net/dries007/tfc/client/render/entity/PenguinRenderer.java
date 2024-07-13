@@ -18,7 +18,7 @@ public class PenguinRenderer extends SimpleMobRenderer<Penguin, PenguinModel>
 {
     public PenguinRenderer(EntityRendererProvider.Context ctx)
     {
-        super(ctx, new PenguinModel(ctx.bakeLayer(RenderHelpers.modelIdentifier("penguin"))), "penguin", 0.2f, false, 1f, true, false, null);
+        super(ctx, new PenguinModel(ctx.bakeLayer(RenderHelpers.layerId("penguin"))), "penguin", 0.2f, false, 1f, true, false, null);
     }
 
     @Override

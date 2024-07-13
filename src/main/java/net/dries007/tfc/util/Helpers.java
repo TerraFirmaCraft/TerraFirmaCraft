@@ -36,7 +36,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -1303,19 +1303,19 @@ public final class Helpers
         return (num + div - 1) / div;
     }
 
-    public static void openScreen(ServerPlayer player, MenuProvider containerSupplier)
+    public static void openScreen(ServerPlayer player, MenuProvider provider)
     {
-        NetworkHooks.openScreen(player, containerSupplier);
+        player.openMenu(provider);
     }
 
-    public static void openScreen(ServerPlayer player, MenuProvider containerSupplier, BlockPos pos)
+    public static void openScreen(ServerPlayer player, MenuProvider provider, BlockPos pos)
     {
-        NetworkHooks.openScreen(player, containerSupplier, pos);
+        player.openMenu(provider, pos);
     }
 
-    public static void openScreen(ServerPlayer player, MenuProvider containerSupplier, Consumer<FriendlyByteBuf> extraDataWriter)
+    public static void openScreen(ServerPlayer player, MenuProvider provider, Consumer<RegistryFriendlyByteBuf> extraDataWriter)
     {
-        NetworkHooks.openScreen(player, containerSupplier, extraDataWriter);
+        player.openMenu(provider, extraDataWriter);
     }
 
     /**

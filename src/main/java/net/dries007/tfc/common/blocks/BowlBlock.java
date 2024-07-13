@@ -9,7 +9,7 @@ package net.dries007.tfc.common.blocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -18,13 +18,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.BowlBlockEntity;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.devices.DeviceBlock;
-import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodTraits;
 import net.dries007.tfc.common.capabilities.food.IFood;
@@ -45,65 +46,66 @@ public class BowlBlock extends DeviceBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return SHAPE;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
-        if (level.getBlockEntity(pos) instanceof BowlBlockEntity bowl)
+        final @Nullable BowlBlockEntity bowl = level.getBlockEntity(pos, TFCBlockEntities.BOWL.get()).orElse(null);
+        if (bowl != null)
         {
-            final var inv = Helpers.getCapability(bowl, Capabilities.ITEM);
-            if (inv != null)
+            final IItemHandler inventory = bowl.getInventory();
+            final ItemStack held = player.getItemInHand(hand);
+            final ItemStack current = inventory.getStackInSlot(0);
+            final GlassOperations data = GlassWorking.get(held);
+
+            if (!data.isEmpty())
             {
-                final ItemStack held = player.getItemInHand(hand);
-                final ItemStack current = inv.getStackInSlot(0);
-                final GlassOperations data = GlassWorking.get(held);
-                if (!data.isEmpty())
+                final GlassOperation op = GlassOperation.getByPowder(current);
+                if (op != null)
                 {
-                    final GlassOperation op = GlassOperation.getByPowder(current);
-                    if (op != null)
-                    {
-                        GlassWorking.apply(held, op);
-                        inv.getStackInSlot(0).shrink(1);
-                        Helpers.playSound(level, pos, SoundEvents.SAND_PLACE);
-                        player.getCooldowns().addCooldown(held.getItem(), 10);
-                        return InteractionResult.sidedSuccess(level.isClientSide);
-                    }
-                    return InteractionResult.PASS;
-                }
-                if (held.isEmpty() && hand == InteractionHand.MAIN_HAND)
-                {
-                    ItemHandlerHelper.giveItemToPlayer(player, inv.extractItem(0, player.isShiftKeyDown() ? 16 : 1, false));
+                    GlassWorking.apply(held, op);
+                    inventory.getStackInSlot(0).shrink(1);
                     Helpers.playSound(level, pos, SoundEvents.SAND_PLACE);
-                    return InteractionResult.sidedSuccess(level.isClientSide);
+                    player.getCooldowns().addCooldown(held.getItem(), 10);
+                    return ItemInteractionResult.sidedSuccess(level.isClientSide);
                 }
-                if (Helpers.isItem(held, TFCTags.Items.POWDERS))
+                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            }
+
+            if (held.isEmpty() && hand == InteractionHand.MAIN_HAND)
+            {
+                ItemHandlerHelper.giveItemToPlayer(player, inventory.extractItem(0, player.isShiftKeyDown() ? 16 : 1, false));
+                Helpers.playSound(level, pos, SoundEvents.SAND_PLACE);
+                return ItemInteractionResult.sidedSuccess(level.isClientSide);
+            }
+
+            if (Helpers.isItem(held, TFCTags.Items.POWDERS))
+            {
+                player.setItemInHand(hand, Helpers.insertAllSlots(inventory, held));
+                Helpers.playSound(level, pos, SoundEvents.SAND_PLACE);
+                return ItemInteractionResult.sidedSuccess(level.isClientSide);
+            }
+
+            if (Helpers.isItem(held, TFCTags.Items.CAN_BE_SALTED) && Helpers.isItem(current, TFCItems.POWDERS.get(Powder.SALT).get()))
+            {
+                final @Nullable IFood food = FoodCapability.get(held);
+                if (food != null && !food.hasTrait(FoodTraits.SALTED.value()))
                 {
-                    player.setItemInHand(hand, Helpers.insertAllSlots(inv, held));
+                    final int toSalt = Math.min(held.getCount(), current.getCount());
+                    final ItemStack salted = held.split(toSalt);
+
+                    FoodCapability.applyTrait(salted, FoodTraits.SALTED.value());
+                    ItemHandlerHelper.giveItemToPlayer(player, salted);
+                    inventory.getStackInSlot(0).shrink(toSalt);
                     Helpers.playSound(level, pos, SoundEvents.SAND_PLACE);
-                    return InteractionResult.sidedSuccess(level.isClientSide);
-                }
-                if (Helpers.isItem(held, TFCTags.Items.CAN_BE_SALTED) && Helpers.isItem(current, TFCItems.POWDERS.get(Powder.SALT).get()))
-                {
-                    final @Nullable IFood food = FoodCapability.get(held);
-                    if (food != null && !food.hasTrait(FoodTraits.SALTED))
-                    {
-                        final int toSalt = Math.min(held.getCount(), current.getCount());
-                        final ItemStack salted = held.split(toSalt);
-                        FoodCapability.applyTrait(salted, FoodTraits.SALTED);
-                        ItemHandlerHelper.giveItemToPlayer(player, salted);
-                        inv.getStackInSlot(0).shrink(toSalt);
-                        Helpers.playSound(level, pos, SoundEvents.SAND_PLACE);
-                        return InteractionResult.sidedSuccess(level.isClientSide);
-                    }
+                    return ItemInteractionResult.sidedSuccess(level.isClientSide);
                 }
             }
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 }

@@ -26,7 +26,7 @@ public class WaterWheelBlockEntityRenderer implements BlockEntityRenderer<WaterW
 
     public WaterWheelBlockEntityRenderer(BlockEntityRendererProvider.Context context)
     {
-        this.model = new WaterWheelModel(context.bakeLayer(RenderHelpers.modelIdentifier("water_wheel")));
+        this.model = new WaterWheelModel(context.bakeLayer(RenderHelpers.layerId("water_wheel")));
     }
 
     @Override

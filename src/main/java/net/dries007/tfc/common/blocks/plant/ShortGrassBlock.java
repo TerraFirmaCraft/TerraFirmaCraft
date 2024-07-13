@@ -66,7 +66,7 @@ public abstract class ShortGrassBlock extends PlantBlock implements ISpecialPile
     }
 
     @Override
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
+    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         super.randomTick(state, level, pos, random);
         if (PlantRegrowth.canSpread(level, random))
@@ -80,7 +80,7 @@ public abstract class ShortGrassBlock extends PlantBlock implements ISpecialPile
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return switch (state.getValue(AGE))
             {
@@ -90,7 +90,6 @@ public abstract class ShortGrassBlock extends PlantBlock implements ISpecialPile
                 default -> GRASS_SHAPE;
             };
     }
-
 
     @Override
     public BlockState getHiddenState(BlockState internalState, boolean byPlayer)
@@ -103,5 +102,4 @@ public abstract class ShortGrassBlock extends PlantBlock implements ISpecialPile
     {
         return Helpers.isBlock(state.getBlock(), TFCTags.Blocks.GRASS_PLANTABLE_ON);
     }
-
 }

@@ -7,14 +7,13 @@
 package net.dries007.tfc.common.blocks;
 
 import java.util.List;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
@@ -22,7 +21,9 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.BedBlock;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BedPart;
@@ -31,16 +32,15 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.ThatchBedBlockEntity;
-import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.items.HideItemType;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
-import org.jetbrains.annotations.Nullable;
 
 public class ThatchBedBlock extends BedBlock implements EntityBlockExtension, IForgeBlockExtension
 {
@@ -68,14 +68,14 @@ public class ThatchBedBlock extends BedBlock implements EntityBlockExtension, IF
     }
 
     /**
-     * This is based very closely on {@link BedBlock#use} to avoid bugs. Even if it's not the best practices.
+     * This is based very closely on {@link BedBlock#useItemOn} to avoid bugs. Even if it's not the best practices.
      */
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
         if (level.isClientSide)
         {
-            return InteractionResult.CONSUME;
+            return ItemInteractionResult.CONSUME;
         }
         else
         {
@@ -85,7 +85,7 @@ public class ThatchBedBlock extends BedBlock implements EntityBlockExtension, IF
                 state = level.getBlockState(pos);
                 if (!Helpers.isBlock(state, this))
                 {
-                    return InteractionResult.CONSUME;
+                    return ItemInteractionResult.CONSUME;
                 }
             }
         }
@@ -98,7 +98,7 @@ public class ThatchBedBlock extends BedBlock implements EntityBlockExtension, IF
                 level.removeBlock(blockpos, false);
             }
             level.explode(null, level.damageSources().badRespawnPointExplosion(pos.getCenter()), null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 7.0F, true, Level.ExplosionInteraction.BLOCK);
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
         }
         else if (state.getValue(OCCUPIED))
         {
@@ -106,14 +106,14 @@ public class ThatchBedBlock extends BedBlock implements EntityBlockExtension, IF
             {
                 player.displayClientMessage(Component.translatable("block.minecraft.bed.occupied"), true);
             }
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
         }
         else if (player instanceof ServerPlayer serverPlayer)
         {
             if (level.isThundering() && TFCConfig.SERVER.thatchBedNoSleepInThunderstorms.get())
             {
                 player.displayClientMessage(Component.translatable("tfc.thatch_bed.thundering"), true);
-                return InteractionResult.SUCCESS;
+                return ItemInteractionResult.SUCCESS;
             }
             final boolean willSleep = TFCConfig.SERVER.enableThatchBedSleeping.get();
             final boolean spawnPoint = TFCConfig.SERVER.enableThatchBedSpawnSetting.get();
@@ -125,11 +125,11 @@ public class ThatchBedBlock extends BedBlock implements EntityBlockExtension, IF
                 {
                     player.displayClientMessage(Component.translatable("tfc.thatch_bed.use_no_sleep_spawn"), true);
                     serverPlayer.setRespawnPosition(level.dimension(), pos, 0, false, false);
-                    return InteractionResult.SUCCESS;
+                    return ItemInteractionResult.SUCCESS;
                 }
                 // no spawn, no sleep, do nothing
                 player.displayClientMessage(Component.translatable("tfc.thatch_bed.use_no_sleep_no_spawn"), true);
-                return InteractionResult.SUCCESS;
+                return ItemInteractionResult.SUCCESS;
             }
 
             final BlockPos lastRespawnPos = serverPlayer.getRespawnPosition();
@@ -155,7 +155,7 @@ public class ThatchBedBlock extends BedBlock implements EntityBlockExtension, IF
             });
 
         }
-        return InteractionResult.SUCCESS;
+        return ItemInteractionResult.SUCCESS;
     }
 
     @Override
@@ -184,21 +184,21 @@ public class ThatchBedBlock extends BedBlock implements EntityBlockExtension, IF
 
     @Override
     @SuppressWarnings("deprecation")
-    public RenderShape getRenderShape(BlockState state)
+    protected RenderShape getRenderShape(BlockState state)
     {
         return RenderShape.MODEL;
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player)
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player)
     {
         if (state.getValue(PART) == BedPart.FOOT)
         {
             pos = pos.relative(state.getValue(FACING));
         }
-        return level.getBlockEntity(pos, TFCBlockEntities.THATCH_BED.get()).map(bed ->
-            bed.getCapability(Capabilities.ITEM).map(inv -> inv.getStackInSlot(0).copy()).orElse(ItemStack.EMPTY)
-        ).orElse(ItemStack.EMPTY);
+        return level.getBlockEntity(pos, TFCBlockEntities.THATCH_BED.get())
+            .map(bed -> bed.getInventory().getStackInSlot(0).copy())
+            .orElse(ItemStack.EMPTY);
     }
 
     @Override
@@ -213,8 +213,7 @@ public class ThatchBedBlock extends BedBlock implements EntityBlockExtension, IF
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
     {
         if (state.getValue(PART) == BedPart.HEAD && !Helpers.isBlock(state, newState.getBlock()))
         {

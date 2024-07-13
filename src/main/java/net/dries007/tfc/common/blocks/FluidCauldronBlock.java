@@ -7,17 +7,14 @@
 package net.dries007.tfc.common.blocks;
 
 import java.util.Collections;
-import java.util.function.Supplier;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractCauldronBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.BlockHitResult;
 
 import net.dries007.tfc.common.fluids.FluidHelpers;
@@ -34,14 +31,13 @@ public class FluidCauldronBlock extends AbstractCauldronBlock
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
-        final ItemStack stack = player.getItemInHand(hand);
         if (FluidHelpers.transferBetweenBlockHandlerAndItem(stack, CauldronInteractions.createFluidHandler(level, pos), level, pos, new FluidHelpers.AfterTransferWithPlayer(player, hand)))
         {
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override

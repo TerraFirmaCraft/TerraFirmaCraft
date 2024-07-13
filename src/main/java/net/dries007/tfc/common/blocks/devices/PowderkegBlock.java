@@ -105,7 +105,7 @@ public class PowderkegBlock extends SealableDeviceBlock
     {
         if (!state.getValue(LIT))
         {
-            level.getBlockEntity(pos, TFCBlockEntities.POWDERKEG.get()).ifPresent(keg -> keg.setLit(true, explosion.getExploder()));
+            level.getBlockEntity(pos, TFCBlockEntities.POWDERKEG.get()).ifPresent(keg -> keg.setLit(true, explosion.getDirectSourceEntity()));
         }
     }
 

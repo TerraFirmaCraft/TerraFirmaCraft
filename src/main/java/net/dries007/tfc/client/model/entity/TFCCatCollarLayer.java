@@ -25,7 +25,7 @@ public class TFCCatCollarLayer extends RenderLayer<TFCCat, TFCCatModel>
     public TFCCatCollarLayer(RenderLayerParent<TFCCat, TFCCatModel> renderer, EntityModelSet ctx)
     {
         super(renderer);
-        this.catModel = new TFCCatModel(ctx.bakeLayer(RenderHelpers.modelIdentifier("cat_collar")));
+        this.catModel = new TFCCatModel(ctx.bakeLayer(RenderHelpers.layerId("cat_collar")));
     }
 
     @Override
@@ -33,8 +33,8 @@ public class TFCCatCollarLayer extends RenderLayer<TFCCat, TFCCatModel>
     {
         if (entity.getOwnerUUID() != null && !entity.isInvisible())
         {
-            final float[] colors = entity.getCollarColor().getTextureDiffuseColors();
-            coloredCutoutModelCopyLayerRender(this.getParentModel(), this.catModel, CAT_COLLAR_LOCATION, poseStack, buffer, packedLight, entity, limbSwing, limbSwingAmount, ageInTicks, yaw, pitch, partialTick, colors[0], colors[1], colors[2]);
+            final int color = entity.getCollarColor().getTextureDiffuseColor();
+            coloredCutoutModelCopyLayerRender(this.getParentModel(), this.catModel, CAT_COLLAR_LOCATION, poseStack, buffer, packedLight, entity, limbSwing, limbSwingAmount, ageInTicks, yaw, pitch, partialTick, color);
         }
     }
 }

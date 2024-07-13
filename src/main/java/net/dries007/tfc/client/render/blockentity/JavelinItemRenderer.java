@@ -27,7 +27,7 @@ public class JavelinItemRenderer extends BlockEntityWithoutLevelRenderer
     public JavelinItemRenderer(ResourceLocation textureLocation)
     {
         super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
-        this.model = new TridentModel(Minecraft.getInstance().getEntityModels().bakeLayer(RenderHelpers.modelIdentifier("javelin")));
+        this.model = new TridentModel(Minecraft.getInstance().getEntityModels().bakeLayer(RenderHelpers.layerId("javelin")));
         this.textureLocation = textureLocation;
     }
 

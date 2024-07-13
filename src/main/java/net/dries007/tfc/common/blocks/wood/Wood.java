@@ -20,7 +20,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerPotBlock;
-import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
@@ -163,7 +162,7 @@ public enum Wood implements RegistryWood
     @Override
     public int daysToGrow()
     {
-        return TFCConfig.SERVER.saplingGrowthDays.get(this).get();
+        return TFCConfig.SERVER.saplingGrowthDays.get(this).getAsInt();
     }
 
     @Override
@@ -192,7 +191,7 @@ public enum Wood implements RegistryWood
         LEAVES(false, (self, wood) -> new TFCLeavesBlock(ExtendedProperties.of().mapColor(MapColor.PLANT).strength(0.5F).sound(SoundType.GRASS).defaultInstrument().randomTicks().noOcclusion().isViewBlocking(TFCBlocks::never).flammableLikeLeaves(), wood.autumnIndex(), wood.getBlock(self.fallenLeaves()), wood.getBlock(self.twig()))),
         PLANKS(false, wood -> new ExtendedBlock(properties(wood).strength(1.5f, 3.0F).flammableLikePlanks())),
         SAPLING(false, wood -> new TFCSaplingBlock(wood.tree(), ExtendedProperties.of(MapColor.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS).flammableLikeLeaves().blockEntity(TFCBlockEntities.TICK_COUNTER), wood::daysToGrow, wood == Wood.PALM)),
-        POTTED_SAPLING(false, wood -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, wood.getBlock(SAPLING), BlockBehaviour.Properties.copy(Blocks.POTTED_ACACIA_SAPLING))),
+        POTTED_SAPLING(false, wood -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, wood.getBlock(SAPLING), BlockBehaviour.Properties.ofFullCopy(Blocks.POTTED_ACACIA_SAPLING))),
         BOOKSHELF(true, wood -> new BookshelfBlock(properties(wood).strength(2.0F, 3.0F).flammable(20, 30).enchantPower(BookshelfBlock::getEnchantPower).blockEntity(TFCBlockEntities.BOOKSHELF))),
         DOOR(true, wood -> new TFCDoorBlock(properties(wood).strength(3.0F).noOcclusion().flammableLikePlanks(), wood.getBlockSet())),
         TRAPDOOR(true, wood -> new TFCTrapDoorBlock(properties(wood).strength(3.0F).noOcclusion().flammableLikePlanks(), wood.getBlockSet())),
@@ -200,7 +199,7 @@ public enum Wood implements RegistryWood
         LOG_FENCE(true, wood -> new TFCFenceBlock(properties(wood).strength(2.0F, 3.0F).flammableLikeLogs())),
         FENCE_GATE(true, wood -> new TFCFenceGateBlock(properties(wood).strength(2.0F, 3.0F).flammableLikePlanks())),
         BUTTON(true, wood -> new TFCWoodButtonBlock(ExtendedProperties.of().noCollission().strength(0.5F).sound(SoundType.WOOD).flammableLikePlanks(), wood.getBlockSet())),
-        PRESSURE_PLATE(true, wood -> new TFCPressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, properties(wood).noCollission().strength(0.5F).sound(SoundType.WOOD).flammableLikePlanks(), wood.getBlockSet())),
+        PRESSURE_PLATE(true, wood -> new TFCPressurePlateBlock(wood.getBlockSet(), properties(wood).noCollission().strength(0.5F).sound(SoundType.WOOD).flammableLikePlanks())),
         SLAB(true, wood -> new TFCSlabBlock(properties(wood).strength(1.5f, 3.0F).flammableLikePlanks())),
         STAIRS(true, wood -> new TFCStairBlock(() -> wood.getBlock(PLANKS).get().defaultBlockState(), properties(wood).strength(1.5f, 3.0F).sound(SoundType.WOOD).flammableLikePlanks())),
         TOOL_RACK(true, wood -> new ToolRackBlock(properties(wood).strength(2.0F).noOcclusion().blockEntity(TFCBlockEntities.TOOL_RACK))),

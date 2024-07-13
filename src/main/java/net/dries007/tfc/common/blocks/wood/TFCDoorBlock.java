@@ -18,7 +18,7 @@ public class TFCDoorBlock extends DoorBlock implements IForgeBlockExtension
 
     public TFCDoorBlock(ExtendedProperties properties, BlockSetType type)
     {
-        super(properties.properties(), type);
+        super(type, properties.properties());
         this.properties = properties;
     }
 

@@ -21,7 +21,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -112,7 +111,7 @@ public class CharcoalForgeBlock extends DeviceBlock implements IBellowsConsumer
     @Override
     public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity)
     {
-        if (!entity.fireImmune() && entity instanceof LivingEntity && !EnchantmentHelper.hasFrostWalker((LivingEntity) entity) && level.getBlockState(pos).getValue(HEAT) > 0)
+        if (entity instanceof LivingEntity && level.getBlockState(pos).getValue(HEAT) > 0)
         {
             entity.hurt(entity.damageSources().hotFloor(), 1f);
         }

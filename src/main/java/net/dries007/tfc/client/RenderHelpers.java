@@ -39,6 +39,7 @@ import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -71,6 +72,33 @@ public final class RenderHelpers
 {
     @SuppressWarnings("deprecation") public static final ResourceLocation BLOCKS_ATLAS = TextureAtlas.LOCATION_BLOCKS;
     public static final Button.CreateNarration NARRATION = Supplier::get;
+
+    /**
+     * Creates a default {@link ModelResourceLocation} with the TFC namespace using the {@link ModelResourceLocation#STANDALONE_VARIANT}.
+     * todo 1.21: figure out if this is the right one to use in all cases
+     */
+    public static ModelResourceLocation modelId(String id)
+    {
+        return ModelResourceLocation.standalone(Helpers.identifier(id));
+    }
+
+    public static ModelResourceLocation modelId(ResourceLocation id)
+    {
+        return ModelResourceLocation.standalone(id);
+    }
+
+    public static ModelLayerLocation layerId(String name)
+    {
+        return layerId(name, "main");
+    }
+
+    /**
+     * Creates {@link ModelLayerLocation} in the default manner
+     */
+    public static ModelLayerLocation layerId(String name, String part)
+    {
+        return new ModelLayerLocation(Helpers.identifier(name), part);
+    }
 
     public static TextureAtlasSprite missingTexture()
     {
@@ -467,22 +495,9 @@ public final class RenderHelpers
         poseStack.popPose();
     }
 
-    /**
-     * Creates {@link ModelLayerLocation} in the default manner
-     */
-    public static ModelLayerLocation modelIdentifier(String name, String part)
-    {
-        return new ModelLayerLocation(Helpers.identifier(name), part);
-    }
-
-    public static ModelLayerLocation modelIdentifier(String name)
-    {
-        return modelIdentifier(name, "main");
-    }
-
     public static ModelPart bakeSimple(EntityRendererProvider.Context ctx, String layerName)
     {
-        return ctx.bakeLayer(modelIdentifier(layerName));
+        return ctx.bakeLayer(layerId(layerName));
     }
 
     public static float itemTimeRotation()

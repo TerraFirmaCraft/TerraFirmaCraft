@@ -31,6 +31,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.common.CommonHooks;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
@@ -85,8 +86,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
         FluidHelpers.tickFluid(level, currentPos, state, true);
         if (!state.canSurvive(level, currentPos))
@@ -98,15 +98,13 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public FluidState getFluidState(BlockState state)
     {
         return IFluidLoggable.super.getFluidState(state);
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
+    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         if (state.getFluidState().isEmpty())
         {
@@ -153,15 +151,13 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return SHAPE;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
+    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         KelpTreeBlock body = (KelpTreeBlock) getBodyBlock().get();
         Fluid fluid = state.getValue(getFluidProperty()).getFluid();
@@ -170,7 +166,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
         if (isEmptyWaterBlock(level, abovePos) && abovePos.getY() < level.getMaxBuildHeight() && TFCConfig.SERVER.plantLongGrowthChance.get() > random.nextDouble())
         {
             int i = state.getValue(AGE);
-            if (i < 5 && ForgeHooks.onCropsGrowPre(level, abovePos, state, true))
+            if (i < 5 && CommonHooks.canCropGrow(level, abovePos, state, true))
             {
                 boolean shouldPlaceNewBody = false;
                 boolean foundGroundFurtherDown = false;
@@ -245,15 +241,13 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
                 {
                     this.placeDeadFlower(level, pos, level.getBlockState(pos).getValue(FACING));
                 }
-                ForgeHooks.onCropsGrowPost(level, pos, state);
+                CommonHooks.fireCropGrowPost(level, pos, state);
             }
         }
     }
 
-
     @Override
-    @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
     {
         if (!state.canSurvive(level, pos))
         {

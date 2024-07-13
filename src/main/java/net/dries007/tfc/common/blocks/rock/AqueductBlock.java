@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.blocks.rock;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -158,8 +159,7 @@ public class AqueductBlock extends HorizontalDirectionalBlock implements IFluidL
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
     {
         if (newState.getBlock() != this && // When replacing with another block, aka air
             state.getValue(getFluidProperty()).getFluid() != Fluids.EMPTY && // And the aqueduct currently has fluid
@@ -172,8 +172,7 @@ public class AqueductBlock extends HorizontalDirectionalBlock implements IFluidL
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return SHAPES[(state.getValue(NORTH) ? 1 << Direction.NORTH.get2DDataValue() : 0) |
             (state.getValue(EAST) ? 1 << Direction.EAST.get2DDataValue() : 0) |
@@ -182,8 +181,7 @@ public class AqueductBlock extends HorizontalDirectionalBlock implements IFluidL
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState state, Direction direction, BlockState adjacentState, LevelAccessor level, BlockPos pos, BlockPos adjacentPos)
+    protected BlockState updateShape(BlockState state, Direction direction, BlockState adjacentState, LevelAccessor level, BlockPos pos, BlockPos adjacentPos)
     {
         FluidHelpers.tickFluid(level, pos, state);
         final BlockState newState = updateOpenSides(level, pos, state);
@@ -222,7 +220,6 @@ public class AqueductBlock extends HorizontalDirectionalBlock implements IFluidL
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public FluidState getFluidState(BlockState state)
     {
         return IFluidLoggable.super.getFluidState(state);
@@ -235,8 +232,7 @@ public class AqueductBlock extends HorizontalDirectionalBlock implements IFluidL
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         // First, if we have a fluid, we have to check if this fluid is still valid
         final Direction sourceDirection = state.getValue(FACING);
@@ -339,5 +335,12 @@ public class AqueductBlock extends HorizontalDirectionalBlock implements IFluidL
     {
         // super method uses rotate which breaks the orientation of asymmetrical blocks
         return DirectionPropertyBlock.mirror(state, mirror).setValue(FACING, mirror.mirror(state.getValue(FACING)));
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    protected MapCodec<? extends HorizontalDirectionalBlock> codec()
+    {
+        return (MapCodec<? extends HorizontalDirectionalBlock>) Block.CODEC;
     }
 }

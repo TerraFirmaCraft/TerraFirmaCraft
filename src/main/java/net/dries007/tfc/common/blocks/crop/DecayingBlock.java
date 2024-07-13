@@ -63,8 +63,7 @@ public class DecayingBlock extends ExtendedBlock implements EntityBlockExtension
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
     {
         final BlockEntity entity = level.getBlockEntity(pos);
         if (entity instanceof DecayingBlockEntity decaying && !(Helpers.isBlock(state, newState.getBlock())))

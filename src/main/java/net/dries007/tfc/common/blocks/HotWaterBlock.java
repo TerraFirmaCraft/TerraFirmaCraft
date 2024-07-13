@@ -7,16 +7,15 @@
 package net.dries007.tfc.common.blocks;
 
 import java.util.function.Supplier;
-
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.LiquidBlock;
-import net.minecraft.world.level.material.FlowingFluid;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FlowingFluid;
 
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.config.TFCConfig;
@@ -25,7 +24,7 @@ public class HotWaterBlock extends LiquidBlock
 {
     public HotWaterBlock(Supplier<? extends FlowingFluid> supplier, Properties properties)
     {
-        super(supplier, properties);
+        super(supplier.get(), properties);
     }
 
     @Override
@@ -42,7 +41,6 @@ public class HotWaterBlock extends LiquidBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
     {
         if (level.random.nextInt(10) == 0 && entity instanceof LivingEntity living && living.getHealth() < living.getMaxHealth())

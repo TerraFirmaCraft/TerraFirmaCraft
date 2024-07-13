@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.block.ModelBlockRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -38,7 +39,7 @@ import net.dries007.tfc.util.Helpers;
 
 public class CrankshaftBlockEntityRenderer implements BlockEntityRenderer<CrankshaftBlockEntity>
 {
-    public static final ResourceLocation WHEEL_MODEL = Helpers.identifier("block/crankshaft_wheel");
+    public static final ModelResourceLocation WHEEL_MODEL = RenderHelpers.modelId("block/crankshaft_wheel");
     public static final ResourceLocation ROD_TEXTURE = Helpers.identifier("block/metal/block/steel");
     public static final ResourceLocation PUMP_TEXTURE = Helpers.identifier("block/metal/smooth/brass");
 

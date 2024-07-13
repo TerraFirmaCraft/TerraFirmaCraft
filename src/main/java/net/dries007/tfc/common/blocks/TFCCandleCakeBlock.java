@@ -6,14 +6,14 @@
 
 package net.dries007.tfc.common.blocks;
 
-import java.util.Random;
 import com.google.common.collect.ImmutableList;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -33,7 +33,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.dries007.tfc.common.items.CandleBlockItem;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
 
@@ -52,23 +51,22 @@ public class TFCCandleCakeBlock extends AbstractCandleBlock implements IForgeBlo
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
         // This is a QoL fix for candle-firestarter interactions. Candles extinguish on right click, so firestarter + NOT SHIFT = immediately extinguished, after you light it.
         // Firestarter can only be used in the main hand, so if we detect that specific case, we don't allow the candle to be extinguished.
         if (Helpers.isItem(player.getMainHandItem(), TFCItems.FIRESTARTER.get()))
         {
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
-        if (result.getLocation().y - (double) result.getBlockPos().getY() > 0.5D && player.getItemInHand(hand).isEmpty() && state.getValue(LIT))
+        if (hitResult.getLocation().y - hitResult.getBlockPos().getY() > 0.5D && player.getItemInHand(hand).isEmpty() && state.getValue(LIT))
         {
             extinguish(player, state, level, pos);
-            return InteractionResult.sidedSuccess(level.isClientSide);
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
         else
         {
-            final InteractionResult res = TFCCakeBlock.eatCake(level, pos, TFCBlocks.CAKE.get().defaultBlockState(), player);
+            final ItemInteractionResult res = TFCCakeBlock.eatCake(level, pos, TFCBlocks.CAKE.get().defaultBlockState(), player);
             if (res.consumesAction())
             {
                 dropResources(state, level, pos);
@@ -84,8 +82,7 @@ public class TFCCandleCakeBlock extends AbstractCandleBlock implements IForgeBlo
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return SHAPE;
     }
@@ -96,22 +93,14 @@ public class TFCCandleCakeBlock extends AbstractCandleBlock implements IForgeBlo
         builder.add(LIT);
     }
 
-    @SuppressWarnings("deprecation")
-    public ItemStack getCloneItemStack(BlockGetter p_152862_, BlockPos p_152863_, BlockState p_152864_)
-    {
-        return new ItemStack(Blocks.CAKE);
-    }
-
     @Override
-    @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState state, Direction facing, BlockState faceState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    protected BlockState updateShape(BlockState state, Direction facing, BlockState faceState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
         return facing == Direction.DOWN && !state.canSurvive(level, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, faceState, level, currentPos, facingPos);
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
+    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         final BlockPos below = pos.below();
         return level.getBlockState(below).isFaceSturdy(level, below, Direction.UP);
@@ -132,15 +121,13 @@ public class TFCCandleCakeBlock extends AbstractCandleBlock implements IForgeBlo
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType pathType)
+    protected boolean isPathfindable(BlockState state, PathComputationType pathComputationType)
     {
         return false;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
+    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
     {
         TFCCandleBlock.onRandomTick(state, level, pos);
     }
@@ -151,4 +138,9 @@ public class TFCCandleCakeBlock extends AbstractCandleBlock implements IForgeBlo
         return properties;
     }
 
+    @Override
+    protected MapCodec<? extends AbstractCandleBlock> codec()
+    {
+        return fakeBlockCodec();
+    }
 }

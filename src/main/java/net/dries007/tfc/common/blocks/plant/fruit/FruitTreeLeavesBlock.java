@@ -124,8 +124,7 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
+    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         IBushBlock.randomTick(this, state, level, pos, random);
     }
@@ -220,22 +219,19 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public int getLightBlock(BlockState state, BlockGetter level, BlockPos pos)
+    protected int getLightBlock(BlockState state, BlockGetter level, BlockPos pos)
     {
         return 1;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public float getShadeBrightness(BlockState state, BlockGetter level, BlockPos pos)
+    protected float getShadeBrightness(BlockState state, BlockGetter level, BlockPos pos)
     {
         return 0.2F;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
     {
         if (!isValid(level, pos, state))
         {
@@ -245,7 +241,6 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public FluidState getFluidState(BlockState state)
     {
         return IFluidLoggable.super.getFluidState(state);

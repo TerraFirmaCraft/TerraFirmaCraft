@@ -8,10 +8,8 @@ package net.dries007.tfc.common.blocks.rock;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -43,7 +41,7 @@ public class LooseRockBlock extends GroundcoverBlock implements IFluidLoggable
 
     public LooseRockBlock(Properties properties)
     {
-        super(ExtendedProperties.of(properties), Shapes.empty(), null);
+        super(ExtendedProperties.of(properties), Shapes.empty());
 
         registerDefaultState(defaultBlockState().setValue(COUNT, 1));
     }
@@ -55,12 +53,11 @@ public class LooseRockBlock extends GroundcoverBlock implements IFluidLoggable
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit)
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
-        ItemStack stack = player.getMainHandItem();
         if (stack.getItem() == this.asItem())
         {
-            if (handIn == InteractionHand.MAIN_HAND && state.getBlock() == this)
+            if (hand == InteractionHand.MAIN_HAND && state.getBlock() == this)
             {
                 int count = state.getValue(COUNT);
                 if (count < 3)
@@ -74,18 +71,17 @@ public class LooseRockBlock extends GroundcoverBlock implements IFluidLoggable
                         {
                             stack.shrink(1);
                         }
-                        return InteractionResult.SUCCESS;
+                        return ItemInteractionResult.SUCCESS;
                     }
-
                 }
             }
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
-        return super.use(state, level, pos, player, handIn, hit);
+        return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
     }
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
+    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         final BlockPos belowPos = pos.below();
         final BlockState below = level.getBlockState(belowPos);
@@ -93,7 +89,7 @@ public class LooseRockBlock extends GroundcoverBlock implements IFluidLoggable
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return switch (state.getValue(COUNT))
             {

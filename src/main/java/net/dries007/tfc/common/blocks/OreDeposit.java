@@ -11,6 +11,5 @@ public enum OreDeposit
     NATIVE_COPPER,
     NATIVE_SILVER,
     NATIVE_GOLD,
-    CASSITERITE;
-
+    CASSITERITE
 }

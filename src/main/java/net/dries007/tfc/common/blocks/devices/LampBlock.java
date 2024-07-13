@@ -184,7 +184,7 @@ public class LampBlock extends ExtendedBlock implements EntityBlockExtension
             level.destroyBlock(blockpos, true, projectile);
             if (state.getValue(LIT))
             {
-                projectile.setSecondsOnFire(5);
+                projectile.igniteForTicks(5 * 20);
                 final Direction fireDir = Direction.Plane.HORIZONTAL.getRandomDirection(level.random);
                 final BlockPos pos = projectile.blockPosition();
                 if (FireBlock.canBePlacedAt(level, pos, fireDir))

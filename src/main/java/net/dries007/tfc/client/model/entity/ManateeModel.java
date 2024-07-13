@@ -78,7 +78,7 @@ public class ManateeModel extends EntityModel<Manatee>
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color)
     {
         head.render(poseStack, buffer, packedLight, packedOverlay);
         finright.render(poseStack, buffer, packedLight, packedOverlay);

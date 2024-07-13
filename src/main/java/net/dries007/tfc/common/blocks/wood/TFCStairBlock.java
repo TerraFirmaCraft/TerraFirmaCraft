@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blocks.wood;
 
 import java.util.function.Supplier;
-
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -20,7 +19,7 @@ public class TFCStairBlock extends StairBlock implements IForgeBlockExtension
 
     public TFCStairBlock(Supplier<BlockState> state, ExtendedProperties properties)
     {
-        super(state, properties.properties());
+        super(state.get(), properties.properties());
         this.properties = properties;
     }
 

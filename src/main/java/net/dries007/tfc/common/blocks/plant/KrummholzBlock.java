@@ -11,7 +11,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -28,7 +28,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -75,23 +74,20 @@ public class KrummholzBlock extends ExtendedBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
-        final ItemStack held = player.getItemInHand(hand);
-        if (held.getItem() == Items.SNOW && !state.getValue(SNOWY))
+        if (stack.getItem() == Items.SNOW && !state.getValue(SNOWY))
         {
             level.setBlockAndUpdate(pos, state.cycle(SNOWY));
-            held.shrink(1);
+            stack.shrink(1);
             Helpers.playPlaceSound(level, pos, SoundType.SNOW);
-            return InteractionResult.sidedSuccess(level.isClientSide);
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos pos, BlockPos facingPos)
+    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos pos, BlockPos facingPos)
     {
         if (facing == Direction.DOWN && !state.canSurvive(level, pos))
         {
@@ -109,8 +105,7 @@ public class KrummholzBlock extends ExtendedBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         if (!state.canSurvive(level, pos))
         {
@@ -126,16 +121,14 @@ public class KrummholzBlock extends ExtendedBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
+    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         final BlockState below = level.getBlockState(pos.below());
         return below.getBlock() == this || BottomSupportedDeviceBlock.canSurvive(level, pos);
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         final boolean addSnow = state.getValue(BOTTOM) && state.getValue(SNOWY);
         return state.getValue(TIP) ? addSnow ? TIP_WITH_SNOW_SHAPE : TIP_SHAPE : addSnow ? NORMAL_WITH_SNOW_SHAPE : NORMAL_SHAPE;
@@ -154,17 +147,14 @@ public class KrummholzBlock extends ExtendedBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType)
+    protected boolean isPathfindable(BlockState state, PathComputationType pathComputationType)
     {
         return false;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public boolean isCollisionShapeFullBlock(BlockState pState, BlockGetter pLevel, BlockPos pPos)
     {
         return false;
     }
-
 }

@@ -19,11 +19,11 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
-import org.jetbrains.annotations.Nullable;
 
 public class TFCChainBlock extends RotatedPillarBlock implements IFluidLoggable
 {
@@ -35,8 +35,7 @@ public class TFCChainBlock extends RotatedPillarBlock implements IFluidLoggable
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return Blocks.CHAIN.withPropertiesOf(state).getShape(level, pos, context);
     }
@@ -54,8 +53,7 @@ public class TFCChainBlock extends RotatedPillarBlock implements IFluidLoggable
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
         FluidHelpers.tickFluid(level, currentPos, state);
         return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
@@ -68,12 +66,10 @@ public class TFCChainBlock extends RotatedPillarBlock implements IFluidLoggable
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public FluidState getFluidState(BlockState state)
     {
         return IFluidLoggable.super.getFluidState(state);
     }
-
 
     @Override
     public FluidProperty getFluidProperty()

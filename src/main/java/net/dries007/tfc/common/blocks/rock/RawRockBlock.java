@@ -12,9 +12,9 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -41,7 +41,7 @@ public class RawRockBlock extends RotatedPillarBlock
     }
 
     /**
-     * Borrowed from {@link net.minecraft.world.level.block.GravelBlock}, this creates small particles when a block is unsupported and could start a collapse.
+     * Borrowed from {@link net.minecraft.world.level.block.FallingBlock}, this creates small particles when a block is unsupported and could start a collapse.
      */
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random)
@@ -61,7 +61,7 @@ public class RawRockBlock extends RotatedPillarBlock
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip, TooltipFlag flag)
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag tooltipFlag)
     {
         if (rockTypeTooltip != null)
         {

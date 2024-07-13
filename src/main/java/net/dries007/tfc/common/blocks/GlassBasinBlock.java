@@ -12,7 +12,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
@@ -61,8 +60,7 @@ public class GlassBasinBlock extends DeviceBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         if (level.getBlockEntity(pos) instanceof GlassBasinBlockEntity basin && basin.getAnimationTicks() > -1)
         {
@@ -74,7 +72,7 @@ public class GlassBasinBlock extends DeviceBlock
     @Override
     public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity)
     {
-        if (entity instanceof LivingEntity living && !EnchantmentHelper.hasFrostWalker(living))
+        if (entity instanceof LivingEntity living)
         {
             entity.hurt(level.damageSources().hotFloor(), 1.0F);
         }

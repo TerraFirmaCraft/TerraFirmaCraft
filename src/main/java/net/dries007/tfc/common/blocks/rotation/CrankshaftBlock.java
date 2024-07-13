@@ -7,13 +7,14 @@
 package net.dries007.tfc.common.blocks.rotation;
 
 import java.util.Locale;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -63,8 +64,7 @@ public class CrankshaftBlock extends HorizontalDirectionalBlock implements IForg
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
         final ItemStack held = player.getItemInHand(hand);
         if (state.getValue(PART) == Part.BASE && Helpers.isItem(held.getItem(), STEEL_RODS))
@@ -76,10 +76,10 @@ public class CrankshaftBlock extends HorizontalDirectionalBlock implements IForg
                 level.setBlockAndUpdate(partnerPos, state.setValue(PART, Part.SHAFT));
                 if (!player.isCreative())
                     held.shrink(1);
-                return InteractionResult.sidedSuccess(level.isClientSide);
+                return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override
@@ -89,8 +89,7 @@ public class CrankshaftBlock extends HorizontalDirectionalBlock implements IForg
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
         if (state.getValue(PART) == Part.SHAFT && facingPos.equals(getPartnerPos(currentPos, state)))
         {
@@ -100,8 +99,7 @@ public class CrankshaftBlock extends HorizontalDirectionalBlock implements IForg
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         final int index = state.getValue(FACING).get2DDataValue();
         return state.getValue(PART) == Part.BASE ? BASE_SHAPES[index] : SHAFT_SHAPES[(index + 3) % 4]; // Ultimately the +3 means I messed up making the bounding box, but I cannot be arsed to fix it.
@@ -117,6 +115,12 @@ public class CrankshaftBlock extends HorizontalDirectionalBlock implements IForg
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         builder.add(FACING, PART);
+    }
+
+    @Override
+    protected MapCodec<? extends HorizontalDirectionalBlock> codec()
+    {
+        return fakeBlockCodec();
     }
 
     private BlockPos getPartnerPos(BlockPos pos, BlockState state)

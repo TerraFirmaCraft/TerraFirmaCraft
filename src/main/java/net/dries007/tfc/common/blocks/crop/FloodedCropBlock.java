@@ -62,7 +62,6 @@ public abstract class FloodedCropBlock extends DefaultCropBlock implements IFlui
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public FluidState getFluidState(BlockState state)
     {
         return IFluidLoggable.super.getFluidState(state);

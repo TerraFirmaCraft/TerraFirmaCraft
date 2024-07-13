@@ -7,16 +7,14 @@
 package net.dries007.tfc.common.blocks.plant.fruit;
 
 import java.util.List;
-import java.util.Random;
 import java.util.function.Supplier;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -27,7 +25,6 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -76,14 +73,14 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock, 
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
-        final var res = super.use(state, level, pos, player, hand, hit);
-        if (res.consumesAction())
+        final ItemInteractionResult result =super.useItemOn(stack, state, level, pos, player, hand, hitResult);
+        if (result.consumesAction())
         {
             kill(level, pos);
         }
-        return res;
+        return result;
     }
 
     @Override
@@ -215,8 +212,7 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock, 
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
     {
         if (state.getValue(STAGE) == 2 && newState.isAir())
         {
@@ -231,11 +227,5 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock, 
         BlockPos belowPos = pos.below();
         BlockState belowState = level.getBlockState(belowPos);
         return Helpers.isBlock(belowState, TFCTags.Blocks.BUSH_PLANTABLE_ON) || Helpers.isBlock(belowState, this);
-    }
-
-    @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player)
-    {
-        return new ItemStack(TFCBlocks.BANANA_SAPLING.get());
     }
 }

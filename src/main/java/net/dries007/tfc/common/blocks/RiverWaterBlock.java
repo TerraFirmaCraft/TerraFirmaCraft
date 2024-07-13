@@ -8,6 +8,7 @@ package net.dries007.tfc.common.blocks;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -21,6 +22,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.particle.TFCParticles;
@@ -35,7 +37,7 @@ public class RiverWaterBlock extends LiquidBlock implements BucketPickupExtensio
 
     public RiverWaterBlock(Properties properties)
     {
-        super(TFCFluids.RIVER_WATER, properties);
+        super(TFCFluids.RIVER_WATER.get(), properties);
 
         registerDefaultState(getStateDefinition().any().setValue(LEVEL, 0).setValue(FLOW, Flow.NONE));
     }
@@ -72,7 +74,7 @@ public class RiverWaterBlock extends LiquidBlock implements BucketPickupExtensio
     }
 
     @Override
-    public ItemStack pickupBlock(LevelAccessor level, BlockPos pos, BlockState state)
+    public ItemStack pickupBlock(@Nullable Player player, LevelAccessor level, BlockPos pos, BlockState state)
     {
         return new ItemStack(pickupBlock(level, pos, state, IFluidHandler.FluidAction.EXECUTE).getFluid().getBucket());
     }
@@ -80,18 +82,12 @@ public class RiverWaterBlock extends LiquidBlock implements BucketPickupExtensio
     @Override
     public FluidState getFluidState(BlockState state)
     {
-        return getFluid().defaultFluidState().setValue(FLOW, state.getValue(FLOW));
+        return fluid.defaultFluidState().setValue(FLOW, state.getValue(FLOW));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         super.createBlockStateDefinition(builder.add(FLOW));
-    }
-
-    @Override
-    protected synchronized void initFluidStateCache()
-    {
-        // No-op
     }
 }

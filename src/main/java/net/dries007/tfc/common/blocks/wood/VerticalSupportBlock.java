@@ -7,14 +7,6 @@
 package net.dries007.tfc.common.blocks.wood;
 
 import java.util.Map;
-
-import net.dries007.tfc.common.blocks.HorizontalPipeBlock;
-import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
-import net.dries007.tfc.common.fluids.FluidHelpers;
-import net.dries007.tfc.common.fluids.FluidProperty;
-import net.dries007.tfc.common.fluids.IFluidLoggable;
-import org.jetbrains.annotations.Nullable;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
@@ -38,10 +30,16 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.blocks.HorizontalPipeBlock;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
+import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.common.fluids.FluidProperty;
+import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.util.Helpers;
 
 public class VerticalSupportBlock extends Block implements IForgeBlockExtension, IFluidLoggable, HorizontalPipeBlock
@@ -111,8 +109,7 @@ public class VerticalSupportBlock extends Block implements IForgeBlockExtension,
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
         FluidHelpers.tickFluid(level, currentPos, state);
         if (facing.getAxis().isHorizontal())
@@ -131,8 +128,7 @@ public class VerticalSupportBlock extends Block implements IForgeBlockExtension,
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
+    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         BlockPos belowPos = pos.below();
         BlockState belowState = level.getBlockState(belowPos);
@@ -140,8 +136,7 @@ public class VerticalSupportBlock extends Block implements IForgeBlockExtension,
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         VoxelShape shape = cachedShapes.get(state);
         if (shape != null) return shape;
@@ -149,7 +144,6 @@ public class VerticalSupportBlock extends Block implements IForgeBlockExtension,
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public FluidState getFluidState(BlockState state)
     {
         return IFluidLoggable.super.getFluidState(state);

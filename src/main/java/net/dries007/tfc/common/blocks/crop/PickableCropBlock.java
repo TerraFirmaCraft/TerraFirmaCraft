@@ -11,7 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -69,9 +69,9 @@ public abstract class PickableCropBlock extends DefaultCropBlock
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
-        final InteractionResult res = super.use(state, level, pos, player, hand, result);
+        final ItemInteractionResult res = super.useItemOn(stack, state, level, pos, player, hand, hitResult);
         if (res.consumesAction())
         {
             return res; // use fertilizer
@@ -87,7 +87,7 @@ public abstract class PickableCropBlock extends DefaultCropBlock
                 crop.setYield(0f);
                 postGrowthTick(level, pos, state, crop);
                 ItemHandlerHelper.giveItemToPlayer(player, yieldItemStack(getFirstFruit(), yield, random));
-                return InteractionResult.sidedSuccess(level.isClientSide);
+                return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
             else if (age == maxAge)
             {
@@ -95,15 +95,14 @@ public abstract class PickableCropBlock extends DefaultCropBlock
                 crop.setYield(0f);
                 postGrowthTick(level, pos, state, crop);
                 ItemHandlerHelper.giveItemToPlayer(player, yieldItemStack(getSecondFruit(), yield, random));
-                return InteractionResult.sidedSuccess(level.isClientSide);
+                return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     private ItemStack yieldItemStack(Item item, float yield, RandomSource random)
     {
         return new ItemStack(item, Mth.floor(Mth.lerp(yield, 1f, 5f) + random.nextInt(2)));
     }
-
 }

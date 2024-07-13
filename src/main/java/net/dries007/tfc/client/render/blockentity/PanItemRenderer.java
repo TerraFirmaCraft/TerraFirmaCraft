@@ -15,13 +15,14 @@ import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.model.data.ModelData;
+import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.items.PanItem;
 import net.dries007.tfc.util.data.Pannable;
 
@@ -35,12 +36,13 @@ public class PanItemRenderer extends BlockEntityWithoutLevelRenderer
     @Override
     public void renderByItem(ItemStack stack, ItemDisplayContext transforms, PoseStack poseStack, MultiBufferSource buffers, int packedLight, int packedOverlay)
     {
-        ClientLevel level = Minecraft.getInstance().level;
+        final ClientLevel level = Minecraft.getInstance().level;
         if (level == null)
         {
             return;
         }
-        final Pannable pannable = PanItem.readPannable(level.holderLookup(Registries.BLOCK), stack);
+
+        final @Nullable Pannable pannable = Pannable.get(stack);
         final Minecraft mc = Minecraft.getInstance();
         final LocalPlayer player = mc.player;
         if (pannable != null)
@@ -52,7 +54,7 @@ public class PanItemRenderer extends BlockEntityWithoutLevelRenderer
                 final int useTicks = player.getTicksUsingItem();
                 location = stages.get(Mth.clamp(Math.round((float) useTicks / PanItem.USE_TIME * stages.size()), 0, stages.size() - 1));
             }
-            final BakedModel model = mc.getModelManager().getModel(location);
+            final BakedModel model = mc.getModelManager().getModel(RenderHelpers.modelId(location));
 
             poseStack.pushPose();
             mc.getBlockRenderer().getModelRenderer().renderModel(poseStack.last(), buffers.getBuffer(Sheets.solidBlockSheet()), null, model, 1f, 1f, 1f, packedLight, packedOverlay, ModelData.EMPTY, Sheets.solidBlockSheet());

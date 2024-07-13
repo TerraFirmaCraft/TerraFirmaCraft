@@ -19,9 +19,9 @@ import net.minecraft.world.level.block.state.BlockState;
 /**
  * No-ops all falling block behavior as we handle that generically through landslide recipes
  */
-public class TFCSandBlock extends ColoredFallingBlock
+public class ColoredBlock extends ColoredFallingBlock
 {
-    public TFCSandBlock(int dustColorIn, Properties properties)
+    public ColoredBlock(int dustColorIn, Properties properties)
     {
         super(new ColorRGBA(dustColorIn), properties);
     }

@@ -32,7 +32,7 @@ public class ThrownJavelinRenderer extends EntityRenderer<ThrownJavelin>
     public ThrownJavelinRenderer(EntityRendererProvider.Context context)
     {
         super(context);
-        this.model = new JavelinModel(context.bakeLayer(RenderHelpers.modelIdentifier("javelin")));
+        this.model = new JavelinModel(context.bakeLayer(RenderHelpers.layerId("javelin")));
     }
 
     @Override

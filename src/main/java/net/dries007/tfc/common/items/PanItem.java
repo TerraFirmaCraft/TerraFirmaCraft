@@ -11,10 +11,6 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 import com.google.common.base.Suppliers;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
-import net.minecraft.core.HolderGetter;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
@@ -28,8 +24,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -40,6 +34,8 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.render.blockentity.PanItemRenderer;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.component.PannableComponent;
+import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.data.Pannable;
 
@@ -47,35 +43,13 @@ public class PanItem extends Item
 {
     public static final int USE_TIME = 120;
 
-    @Nullable
-    public static BlockState readState(HolderGetter<Block> getter, ItemStack stack)
-    {
-        final CompoundTag tag = stack.getTagElement("state");
-        if (tag != null)
-        {
-            return NbtUtils.readBlockState(getter, tag);
-        }
-        return null;
-    }
-
-    @Nullable
-    public static Pannable readPannable(HolderGetter<Block> getter, ItemStack stack)
-    {
-        final BlockState state = readState(getter, stack);
-        if (state != null)
-        {
-            return Pannable.get(state);
-        }
-        return null;
-    }
-
     public PanItem(Properties properties)
     {
         super(properties);
     }
 
     @Override
-    public int getUseDuration(ItemStack stack)
+    public int getUseDuration(ItemStack stack, LivingEntity entity)
     {
         return USE_TIME;
     }
@@ -113,10 +87,10 @@ public class PanItem extends Item
     {
         if (entity instanceof Player player && level instanceof ServerLevel serverLevel)
         {
-            final Pannable pannable = readPannable(level.holderLookup(Registries.BLOCK), stack);
+            final Pannable pannable = Pannable.get(stack);
             if (pannable != null)
             {
-                final var table = level.getServer().getLootData().getLootTable(pannable.lootTable());
+                final var table = level.getServer().reloadableRegistries().getLootTable(pannable.lootTable());
                 final var builder = new LootParams.Builder(serverLevel)
                         .withParameter(LootContextParams.THIS_ENTITY, entity)
                         .withParameter(LootContextParams.ORIGIN, entity.position())
@@ -131,16 +105,12 @@ public class PanItem extends Item
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> text, TooltipFlag flag)
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag)
     {
-        if (level == null)
+        final @Nullable PannableComponent pannable = stack.get(TFCComponents.PANNABLE);
+        if (pannable != null)
         {
-            return;
-        }
-        final BlockState state = readState(level.holderLookup(Registries.BLOCK), stack);
-        if (state != null)
-        {
-            text.add(Component.translatable("tfc.tooltip.pan.contents").append(state.getBlock().getName()));
+            tooltip.add(Component.translatable("tfc.tooltip.pan.contents").append(pannable.state().getBlock().getName()));
         }
     }
 

@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.common.blocks.plant;
 
-import java.util.Random;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -29,7 +27,7 @@ public class TFCVineBlock extends VineBlock implements IForgeBlockExtension
     }
 
     @Override
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
+    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         if (Climate.getTemperature(level, pos) > 0f)
         {

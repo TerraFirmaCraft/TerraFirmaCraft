@@ -8,11 +8,11 @@ package net.dries007.tfc.common.blocks;
 
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -45,9 +45,9 @@ public class TFCTorchBlock extends TorchBlock implements IForgeBlockExtension, E
 
     private final ExtendedProperties properties;
 
-    public TFCTorchBlock(ExtendedProperties properties, ParticleOptions particle)
+    public TFCTorchBlock(ExtendedProperties properties, SimpleParticleType particle)
     {
-        super(properties.properties(), particle);
+        super(particle, properties.properties());
         this.properties = properties;
     }
 
@@ -58,8 +58,7 @@ public class TFCTorchBlock extends TorchBlock implements IForgeBlockExtension, E
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
         if (!level.isClientSide())
         {
@@ -70,12 +69,11 @@ public class TFCTorchBlock extends TorchBlock implements IForgeBlockExtension, E
                 ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFCBlocks.TORCH.get()));
             }
         }
-        return InteractionResult.SUCCESS;
+        return ItemInteractionResult.SUCCESS;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
+    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
     {
         onRandomTick(level, pos, TFCBlocks.DEAD_TORCH.get().defaultBlockState());
     }

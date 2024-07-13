@@ -12,8 +12,9 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
@@ -28,9 +29,7 @@ import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.rotation.RotatingBlockEntity;
 import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
-import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.DeviceBlock;
-import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.util.Helpers;
 
 public class GearBoxBlock extends DeviceBlock implements DirectionPropertyBlock, ConnectedAxleBlock
@@ -53,27 +52,26 @@ public class GearBoxBlock extends DeviceBlock implements DirectionPropertyBlock,
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
         if (Helpers.isItem(player.getItemInHand(hand), TFCTags.Items.HAMMERS))
         {
-            final BooleanProperty property = DirectionPropertyBlock.getProperty(result.getDirection());
+            final BooleanProperty property = DirectionPropertyBlock.getProperty(hitResult.getDirection());
             final boolean prev = state.getValue(property);
             if (prev || canEnable(state, property))
             {
                 level.setBlockAndUpdate(pos, state.cycle(property));
-                level.getBlockEntity(pos, TFCBlockEntities.GEAR_BOX.get()).ifPresent(box -> box.updateDirection(result.getDirection(), !prev));
+                level.getBlockEntity(pos, TFCBlockEntities.GEAR_BOX.get()).ifPresent(box -> box.updateDirection(hitResult.getDirection(), !prev));
                 Helpers.playPlaceSound(level, pos, state);
-                return InteractionResult.sidedSuccess(level.isClientSide);
+                return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
             else
             {
                 Helpers.playSound(level, pos, SoundEvents.ITEM_BREAK);
-                return InteractionResult.FAIL;
+                return ItemInteractionResult.FAIL;
             }
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     /**
@@ -89,8 +87,7 @@ public class GearBoxBlock extends DeviceBlock implements DirectionPropertyBlock,
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         if (level.getBlockEntity(pos) instanceof RotatingBlockEntity entity)
         {

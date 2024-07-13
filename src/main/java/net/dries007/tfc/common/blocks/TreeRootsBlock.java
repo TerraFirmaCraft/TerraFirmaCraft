@@ -32,8 +32,7 @@ public class TreeRootsBlock extends ExtendedBlock implements IFluidLoggable
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public boolean skipRendering(BlockState state, BlockState adjacentState, Direction direction)
+    protected boolean skipRendering(BlockState state, BlockState adjacentState, Direction direction)
     {
         return (adjacentState.getBlock() instanceof TreeRootsBlock || adjacentState.getBlock() instanceof MangroveRootsBlock) && direction.getAxis().isVertical();
     }
@@ -51,8 +50,7 @@ public class TreeRootsBlock extends ExtendedBlock implements IFluidLoggable
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
         FluidHelpers.tickFluid(level, currentPos, state);
         return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
@@ -65,12 +63,10 @@ public class TreeRootsBlock extends ExtendedBlock implements IFluidLoggable
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public FluidState getFluidState(BlockState state)
     {
         return IFluidLoggable.super.getFluidState(state);
     }
-
 
     @Override
     public FluidProperty getFluidProperty()

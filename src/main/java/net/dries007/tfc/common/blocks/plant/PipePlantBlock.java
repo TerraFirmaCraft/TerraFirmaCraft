@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.blocks.plant;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -15,7 +16,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.Rotation;
@@ -49,8 +49,7 @@ public abstract class PipePlantBlock extends PipeBlock implements IForgeBlockExt
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
         if (!state.canSurvive(level, currentPos))
         {
@@ -88,8 +87,7 @@ public abstract class PipePlantBlock extends PipeBlock implements IForgeBlockExt
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
+    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos().set(pos);
         for (Direction direction : Direction.Plane.HORIZONTAL)
@@ -145,8 +143,7 @@ public abstract class PipePlantBlock extends PipeBlock implements IForgeBlockExt
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
     {
         if (!state.canSurvive(level, pos))
         {
@@ -154,5 +151,9 @@ public abstract class PipePlantBlock extends PipeBlock implements IForgeBlockExt
         }
     }
 
-
+    @Override
+    protected MapCodec<? extends PipeBlock> codec()
+    {
+        return fakeBlockCodec();
+    }
 }

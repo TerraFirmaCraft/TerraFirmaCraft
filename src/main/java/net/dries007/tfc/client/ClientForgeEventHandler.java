@@ -85,6 +85,7 @@ import net.dries007.tfc.common.items.EmptyPanItem;
 import net.dries007.tfc.common.items.PanItem;
 import net.dries007.tfc.common.recipes.ChiselRecipe;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
+import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.client.accessor.LocalPlayerAccessor;
 import net.dries007.tfc.network.CycleChiselModePacket;
@@ -196,11 +197,13 @@ public class ClientForgeEventHandler
         final Player player = minecraft.player;
         if (player != null)
         {
+            // todo: 1.21 hoe overlay rendering
+            /*
             final boolean holdingHoe = Helpers.isItem(player.getMainHandItem().getItem(), TFCTags.Items.HOES) || Helpers.isItem(player.getOffhandItem().getItem(), TFCTags.Items.HOES);
             if (event.getOverlay() == VanillaGuiOverlay.CROSSHAIR.type() && minecraft.screen == null && holdingHoe && (!TFCConfig.CLIENT.showHoeOverlaysOnlyWhenShifting.get() || player.isShiftKeyDown()))
             {
                 HoeOverlays.render(minecraft, event.getWindow(), stack);
-            }
+            }*/
         }
     }
 

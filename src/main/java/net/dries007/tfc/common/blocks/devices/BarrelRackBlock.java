@@ -38,7 +38,7 @@ public class BarrelRackBlock extends ExtendedBlock
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
-        if (stack.getItem() instanceof Rackable rackable && rackable.useOnRack(state, level, pos, player, hand, hit))
+        if (stack.getItem() instanceof Rackable rackable && rackable.useOnRack(state, level, pos, player, hand, hitResult))
         {
             return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }

@@ -72,7 +72,7 @@ public class JellyfishModel extends EntityModel<Jellyfish>
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color)
     {
         head.render(poseStack, buffer, packedLight, packedOverlay);
         tail1.render(poseStack, buffer, packedLight, packedOverlay);

@@ -42,15 +42,13 @@ public class ThatchBlock extends Block implements IForgeBlockExtension, IFluidLo
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public int getLightBlock(BlockState state, BlockGetter level, BlockPos pos)
+    protected int getLightBlock(BlockState state, BlockGetter level, BlockPos pos)
     {
         return level.getMaxLightLevel();
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return Shapes.empty();
     }
@@ -70,15 +68,13 @@ public class ThatchBlock extends Block implements IForgeBlockExtension, IFluidLo
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos currentPos, BlockPos neighborPos)
+    protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos currentPos, BlockPos neighborPos)
     {
         FluidHelpers.tickFluid(level, currentPos, state);
         return super.updateShape(state, direction, neighborState, level, currentPos, neighborPos);
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public FluidState getFluidState(BlockState state)
     {
         return IFluidLoggable.super.getFluidState(state);

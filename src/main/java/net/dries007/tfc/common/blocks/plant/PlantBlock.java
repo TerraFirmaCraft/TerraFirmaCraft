@@ -109,7 +109,7 @@ public abstract class PlantBlock extends TFCBushBlock
 
     public static boolean isDryBlockPlantable(BlockState state)
     {
-        return Helpers.isBlock(state, BlockTags.SAND) || Helpers.isBlock(state, Tags.Blocks.SAND) || Helpers.isBlock(state, TFCTags.Blocks.BUSH_PLANTABLE_ON);
+        return Helpers.isBlock(state, BlockTags.SAND) || Helpers.isBlock(state, Tags.Blocks.SANDS) || Helpers.isBlock(state, TFCTags.Blocks.BUSH_PLANTABLE_ON);
     }
 
     protected PlantBlock(ExtendedProperties properties)
@@ -135,15 +135,13 @@ public abstract class PlantBlock extends TFCBushBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return PLANT_SHAPE;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
+    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         boolean dirty = false;
         final int age = state.getValue(AGE);
@@ -172,9 +170,9 @@ public abstract class PlantBlock extends TFCBushBlock
 
     /**
      * Gets the plant metadata for this block.
-     *
+     * <p>
      * The stage property is isolated and referenced via this as it is needed in the {@link Block} constructor - which builds the state container, and requires all property references to be computed in {@link Block#createBlockStateDefinition(StateDefinition.Builder)}.
-     *
+     * <p>
      * See the various {@link PlantBlock#create(RegistryPlant, ExtendedProperties)} methods and subclass versions for how to use.
      */
     public abstract RegistryPlant getPlant();

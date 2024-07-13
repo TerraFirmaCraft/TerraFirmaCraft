@@ -12,7 +12,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.ItemStack;
@@ -111,23 +111,28 @@ public class StainedWattleBlock extends ExtendedBlock implements IGhostBlockHand
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
-        if (hand == InteractionHand.OFF_HAND) return InteractionResult.PASS;
+        if (hand == InteractionHand.OFF_HAND)
+        {
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        }
         ItemStack item = player.getItemInHand(hand);
         if (item.isEmpty() && player.isShiftKeyDown())
         {
-            return tryTakeStick(state, level, pos, player, item, hit);
+            return tryTakeStick(state, level, pos, player, item, hitResult);
         }
         else if (Helpers.isItem(item, Tags.Items.RODS_WOODEN))
         {
-            return tryAddStick(state, level, pos, player, item, hit);
+            return tryAddStick(state, level, pos, player, item, hitResult);
         }
         else
         {
             // can only dye filled unstained wattle blocks
-            if (Helpers.isBlock(state, TFCBlocks.WATTLE.get())) return InteractionResult.PASS;
+            if (Helpers.isBlock(state, TFCBlocks.WATTLE.get()))
+            {
+                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            }
 
             BlockState dyed = getPossibleDyedState(item, state);
             if (dyed != null)
@@ -136,7 +141,7 @@ public class StainedWattleBlock extends ExtendedBlock implements IGhostBlockHand
                 {
                     for (int i = 0; i < 5; i++)
                     {
-                        Vec3 loc = hit.getLocation();
+                        Vec3 loc = hitResult.getLocation();
                         level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, item), loc.x, loc.y, loc.z, Helpers.triangle(level.random) / 3, Helpers.triangle(level.random) / 3, Helpers.triangle(level.random) / 3);
                     }
                 }
@@ -145,7 +150,7 @@ public class StainedWattleBlock extends ExtendedBlock implements IGhostBlockHand
                 return setState(level, pos, dyed, player, item, 1);
             }
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Nullable
@@ -182,20 +187,18 @@ public class StainedWattleBlock extends ExtendedBlock implements IGhostBlockHand
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
         return canSurvive(state, level, currentPos) ? state : Blocks.AIR.defaultBlockState();
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
+    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         return !level.getBlockState(pos.below()).canBeReplaced();
     }
 
-    protected InteractionResult tryAddStick(BlockState state, Level level, BlockPos pos, Player player, ItemStack item, BlockHitResult hit)
+    protected ItemInteractionResult tryAddStick(BlockState state, Level level, BlockPos pos, Player player, ItemStack item, BlockHitResult hit)
     {
         final Vec3 location = hit.getLocation();
         BlockState placeState = getStateFor(state, hit.getDirection(), location.x - pos.getX(), location.y - pos.getY(), location.z - pos.getZ());
@@ -204,10 +207,10 @@ public class StainedWattleBlock extends ExtendedBlock implements IGhostBlockHand
             Helpers.playSound(level, pos, TFCSounds.WATTLE_WOVEN.get());
             return setState(level, pos, placeState, player, item, 1);
         }
-        return InteractionResult.FAIL; // avoid triggering the stick placing behavior
+        return ItemInteractionResult.FAIL; // avoid triggering the stick placing behavior
     }
 
-    protected InteractionResult tryTakeStick(BlockState state, Level level, BlockPos pos, Player player, ItemStack item, BlockHitResult hit)
+    protected ItemInteractionResult tryTakeStick(BlockState state, Level level, BlockPos pos, Player player, ItemStack item, BlockHitResult hit)
     {
         final Vec3 location = hit.getLocation();
         BlockState placeState = removeStateFor(state, hit.getDirection(), location.x - pos.getX(), location.y - pos.getY(), location.z - pos.getZ());
@@ -217,14 +220,14 @@ public class StainedWattleBlock extends ExtendedBlock implements IGhostBlockHand
             Helpers.playSound(level, pos, TFCSounds.WATTLE_WOVEN.get());
             return setState(level, pos, placeState, player, item, 0);
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
-    protected InteractionResult setState(Level level, BlockPos pos, BlockState state, Player player, ItemStack item, int toShrink)
+    protected ItemInteractionResult setState(Level level, BlockPos pos, BlockState state, Player player, ItemStack item, int toShrink)
     {
         if (!player.isCreative()) item.shrink(toShrink);
         level.setBlockAndUpdate(pos, state);
-        return InteractionResult.sidedSuccess(level.isClientSide);
+        return ItemInteractionResult.sidedSuccess(level.isClientSide);
     }
 
 }

@@ -58,7 +58,7 @@ public class IsopodModel extends EntityModel<AquaticCritter>
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color)
     {
         body.render(poseStack, buffer, packedLight, packedOverlay);
         leftfeet.render(poseStack, buffer, packedLight, packedOverlay);

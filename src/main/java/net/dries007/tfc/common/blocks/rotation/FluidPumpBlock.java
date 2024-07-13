@@ -48,15 +48,13 @@ public class FluidPumpBlock extends ExtendedBlock implements EntityBlockExtensio
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return SHAPES[(state.getValue(FACING).get2DDataValue() + 2) % 4];
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
     {
         final BlockEntity entity = level.getBlockEntity(pos);
         if (entity instanceof PumpBlockEntity pump && !(Helpers.isBlock(state, newState.getBlock())))

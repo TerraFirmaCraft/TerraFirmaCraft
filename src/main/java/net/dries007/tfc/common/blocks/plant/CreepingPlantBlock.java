@@ -118,7 +118,7 @@ public abstract class CreepingPlantBlock extends PlantBlock implements Direction
     public BlockState updateShape(BlockState state, Direction direction, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
         state = state.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction), canCreepOn(level, facingPos, facingState, direction));
-        return isEmpty(state) ? Blocks.AIR.defaultBlockState() : state;
+        return isEmptyContents(state) ? Blocks.AIR.defaultBlockState() : state;
     }
 
     @Override
@@ -137,8 +137,7 @@ public abstract class CreepingPlantBlock extends PlantBlock implements Direction
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
+    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
         if (!canSurvive(state, level, pos))
         {
@@ -181,7 +180,7 @@ public abstract class CreepingPlantBlock extends PlantBlock implements Direction
         return hasEarth ? state : Blocks.AIR.defaultBlockState();
     }
 
-    private boolean isEmpty(BlockState state)
+    private static boolean isEmptyContents(BlockState state)
     {
         for (BooleanProperty property : SHAPES.keySet())
         {

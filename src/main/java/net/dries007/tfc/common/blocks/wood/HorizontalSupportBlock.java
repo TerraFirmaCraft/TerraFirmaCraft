@@ -7,10 +7,6 @@
 package net.dries007.tfc.common.blocks.wood;
 
 import java.util.Map;
-
-import net.dries007.tfc.common.fluids.FluidHelpers;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
@@ -23,10 +19,12 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.Helpers;
 
 public class HorizontalSupportBlock extends VerticalSupportBlock implements IForgeBlockExtension
@@ -81,7 +79,7 @@ public class HorizontalSupportBlock extends VerticalSupportBlock implements IFor
     }
 
     @Override
-    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
         FluidHelpers.tickFluid(level, currentPos, state);
         if (facing.getAxis().isHorizontal())
@@ -106,7 +104,7 @@ public class HorizontalSupportBlock extends VerticalSupportBlock implements IFor
      * This eliminates cases of placing and then immediately breaking.
      */
     @Override
-    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
+    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         for (Direction d : Direction.Plane.HORIZONTAL)
         {
@@ -122,7 +120,7 @@ public class HorizontalSupportBlock extends VerticalSupportBlock implements IFor
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         VoxelShape shape = cachedShapes.get(state);
         if (shape != null) return shape;

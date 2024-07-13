@@ -41,7 +41,6 @@ public class FloodedDeadCropBlock extends DeadCropBlock implements IFluidLoggabl
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public FluidState getFluidState(BlockState state)
     {
         return IFluidLoggable.super.getFluidState(state);

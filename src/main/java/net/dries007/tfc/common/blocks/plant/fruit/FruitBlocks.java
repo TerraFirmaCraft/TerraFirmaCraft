@@ -8,14 +8,12 @@ package net.dries007.tfc.common.blocks.plant.fruit;
 
 import java.awt.Color;
 import java.util.Locale;
-
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 
@@ -26,7 +24,6 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.ClimateRanges;
 
 import static net.dries007.tfc.common.blocks.plant.fruit.Lifecycle.*;
@@ -48,12 +45,12 @@ public final class FruitBlocks
 
     public static Block createPottedBananaSapling()
     {
-        return new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, TFCBlocks.BANANA_SAPLING, BlockBehaviour.Properties.copy(Blocks.POTTED_ACACIA_SAPLING));
+        return new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, TFCBlocks.BANANA_SAPLING, BlockBehaviour.Properties.ofFullCopy(Blocks.POTTED_ACACIA_SAPLING));
     }
 
     public static Block createBananaPlant()
     {
-        return new BananaPlantBlock(ExtendedProperties.of(MapColor.PLANT).strength(0.5F).sound(SoundType.GRASS).randomTicks().noOcclusion().forceSolidOn().blockEntity(TFCBlockEntities.BERRY_BUSH).serverTicks(BerryBushBlockEntity::serverTick).flammableLikeLeaves(), TFCItems.FOOD.get(Food.BANANA), BANANA_STAGES);
+        return new BananaPlantBlock(ExtendedProperties.of(MapColor.PLANT).strength(0.5F).sound(SoundType.GRASS).randomTicks().noOcclusion().forceSolidOn().blockEntity(TFCBlockEntities.BERRY_BUSH).serverTicks(BerryBushBlockEntity::serverTick).flammableLikeLeaves().cloneItem(TFCBlocks.BANANA_SAPLING), TFCItems.FOOD.get(Food.BANANA), BANANA_STAGES);
     }
 
     public enum SpreadingBush
@@ -142,7 +139,7 @@ public final class FruitBlocks
 
         public Block createPottedSapling()
         {
-            return new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, TFCBlocks.FRUIT_TREE_SAPLINGS.get(this), BlockBehaviour.Properties.copy(Blocks.POTTED_ACACIA_SAPLING));
+            return new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, TFCBlocks.FRUIT_TREE_SAPLINGS.get(this), BlockBehaviour.Properties.ofFullCopy(Blocks.POTTED_ACACIA_SAPLING));
         }
 
         public Block createLeaves()
@@ -157,7 +154,7 @@ public final class FruitBlocks
 
         public Block createGrowingBranch()
         {
-            return new GrowingFruitTreeBranchBlock(ExtendedProperties.of(MapColor.WOOD).sound(SoundType.SCAFFOLDING).randomTicks().strength(1.0f).pushReaction(PushReaction.DESTROY).blockEntity(TFCBlockEntities.TICK_COUNTER).flammableLikeLogs(), TFCBlocks.FRUIT_TREE_BRANCHES.get(this), TFCBlocks.FRUIT_TREE_LEAVES.get(this), ClimateRanges.FRUIT_TREES.get(this));
+            return new GrowingFruitTreeBranchBlock(ExtendedProperties.of(MapColor.WOOD).sound(SoundType.SCAFFOLDING).randomTicks().strength(1.0f).pushReaction(PushReaction.DESTROY).blockEntity(TFCBlockEntities.TICK_COUNTER).flammableLikeLogs().cloneEmpty(), TFCBlocks.FRUIT_TREE_BRANCHES.get(this), TFCBlocks.FRUIT_TREE_LEAVES.get(this), ClimateRanges.FRUIT_TREES.get(this));
         }
 
         public int daysToGrow()

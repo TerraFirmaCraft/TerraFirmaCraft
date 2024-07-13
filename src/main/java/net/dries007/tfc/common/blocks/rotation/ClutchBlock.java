@@ -56,8 +56,7 @@ public class ClutchBlock extends ExtendedRotatedPillarBlock implements EntityBlo
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
+    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
         final boolean signal = level.hasNeighborSignal(pos);
         if (signal != state.getValue(POWERED))
@@ -97,8 +96,7 @@ public class ClutchBlock extends ExtendedRotatedPillarBlock implements EntityBlo
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         if (level.getBlockEntity(pos) instanceof ClutchBlockEntity entity)
         {
