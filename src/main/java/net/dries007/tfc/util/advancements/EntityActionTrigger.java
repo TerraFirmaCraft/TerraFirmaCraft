@@ -6,56 +6,36 @@
 
 package net.dries007.tfc.util.advancements;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
-import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
+import java.util.Optional;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
-import net.minecraft.advancements.critereon.DeserializationContext;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 
 public class EntityActionTrigger extends SimpleCriterionTrigger<EntityActionTrigger.TriggerInstance>
 {
-    private final ResourceLocation id;
-
-    public EntityActionTrigger(ResourceLocation id)
-    {
-        this.id = id;
-    }
+    public static final Codec<EntityActionTrigger.TriggerInstance> CODEC = RecordCodecBuilder.create(i -> i.group(
+        EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(c -> c.player),
+        EntityPredicate.CODEC.fieldOf("entity").forGetter(c -> c.entity)
+    ).apply(i, TriggerInstance::new));
 
     @Override
-    public ResourceLocation getId()
+    public Codec<TriggerInstance> codec()
     {
-        return id;
-    }
-
-    @Override
-    protected EntityActionTrigger.TriggerInstance createInstance(JsonObject json, ContextAwarePredicate predicate, DeserializationContext context)
-    {
-        EntityPredicate ingredient = EntityPredicate.fromJson(json.get("entity"));
-        if (ingredient == EntityPredicate.ANY)
-        {
-            throw new JsonSyntaxException("Entity predicate " + id + " matches every entity. This probably means it failed to load.");
-        }
-        return new EntityActionTrigger.TriggerInstance(predicate, ingredient);
+        return CODEC;
     }
 
     public void trigger(ServerPlayer serverPlayer, Entity entity)
     {
-        this.trigger(serverPlayer, instance -> instance.predicate.matches(serverPlayer, entity));
+        trigger(serverPlayer, instance -> instance.entity.matches(serverPlayer, entity));
     }
 
-    public class TriggerInstance extends AbstractCriterionTriggerInstance
-    {
-        private final EntityPredicate predicate;
-
-        public TriggerInstance(ContextAwarePredicate predicate, EntityPredicate ingredient)
-        {
-            super(id, predicate);
-            this.predicate = ingredient;
-        }
-    }
+    record TriggerInstance(
+        Optional<ContextAwarePredicate> player,
+        EntityPredicate entity
+    ) implements SimpleInstance
+    {}
 }

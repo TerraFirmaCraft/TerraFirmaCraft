@@ -8,13 +8,14 @@ package net.dries007.tfc.common.blocks.rock;
 
 import java.util.Locale;
 import java.util.function.Function;
-
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ShovelItem;
+import net.minecraft.world.item.Tier;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.TFCTiers;
-import net.dries007.tfc.common.items.HammerItem;
 import net.dries007.tfc.common.items.JavelinItem;
 import net.dries007.tfc.common.items.TFCHoeItem;
 import net.dries007.tfc.common.items.ToolItem;
@@ -55,29 +56,29 @@ public enum RockCategory implements StringRepresentable
 
     public enum ItemType
     {
-        AXE(rock -> new AxeItem(rock.tier(), ToolItem.calculateVanillaAttackDamage(1.5F, rock.tier()), -3.2F, properties())),
+        AXE(rock -> new AxeItem(rock.tier(), tool(rock, 1.5f, -3.2f))),
         AXE_HEAD,
-        HAMMER(rock -> new HammerItem(rock.tier(), ToolItem.calculateVanillaAttackDamage(1f, rock.tier()), -3.0F, properties())),
+        HAMMER(rock -> new ToolItem(rock.tier(),  TFCTags.Blocks.MINEABLE_WITH_HAMMER, tool(rock, 1f, -3.0f))),
         HAMMER_HEAD,
-        HOE(rock -> new TFCHoeItem(rock.tier(), -1, -3.0f, properties())),
+        HOE(rock -> new TFCHoeItem(rock.tier(), tool(rock, -1f, -3.0f))),
         HOE_HEAD,
-        JAVELIN(rock -> new JavelinItem(rock.tier(), ToolItem.calculateVanillaAttackDamage(0.7f, rock.tier()), 1.5f * rock.tier().getAttackDamageBonus(), -2.2F, properties(), "stone")),
+        JAVELIN(rock -> new JavelinItem(rock.tier(), tool(rock, 0.7f, -2.2f))),
         JAVELIN_HEAD,
-        KNIFE(rock -> new ToolItem(rock.tier(), ToolItem.calculateVanillaAttackDamage(0.6f, rock.tier()), -2.0F, TFCTags.Blocks.MINEABLE_WITH_KNIFE, properties())),
+        KNIFE(rock -> new ToolItem(rock.tier(), TFCTags.Blocks.MINEABLE_WITH_KNIFE, tool(rock, 0.6f, -2.0f))),
         KNIFE_HEAD,
-        SHOVEL(rock -> new ShovelItem(rock.tier(), ToolItem.calculateVanillaAttackDamage(0.875F, rock.tier()), -3.0F, properties())),
+        SHOVEL(rock -> new ShovelItem(rock.tier(), tool(rock, 0.875f, -3.0f))),
         SHOVEL_HEAD;
 
-        public static Item.Properties properties()
+        public static Item.Properties tool(RockCategory rock, float attackDamageFactor, float attackSpeed)
         {
-            return new Item.Properties();
+            return new Item.Properties().attributes(ToolItem.productAttributes(rock.tier(), attackDamageFactor, attackSpeed));
         }
 
         private final Function<RockCategory, Item> itemFactory;
 
         ItemType()
         {
-            this(rock -> new Item(properties()));
+            this(rock -> new Item(new Item.Properties()));
         }
 
         ItemType(Function<RockCategory, Item> itemFactory)

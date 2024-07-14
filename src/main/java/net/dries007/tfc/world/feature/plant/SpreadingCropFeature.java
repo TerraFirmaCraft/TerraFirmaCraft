@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.world.feature.plant;
 
-import java.util.ArrayList;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -49,7 +48,7 @@ public class SpreadingCropFeature extends Feature<BlockConfig<WildSpreadingCropB
             if (level.getBlockEntity(offsetPos) instanceof DecayingBlockEntity decaying)
             {
                 final ItemStack food = new ItemStack(block.getFruit());
-                FoodCapability.applyTrait(food, FoodTraits.WILD);
+                FoodCapability.applyTrait(food, FoodTraits.WILD.value());
                 decaying.setStack(food);
             }
             setBlock(level, origin, block.defaultBlockState().setValue(WildSpreadingCropBlock.PROPERTY_BY_DIRECTION.get(direction), true));

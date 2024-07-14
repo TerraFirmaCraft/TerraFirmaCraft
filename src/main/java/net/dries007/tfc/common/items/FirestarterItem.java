@@ -28,7 +28,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.items.IItemHandlerModifiable;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
@@ -61,7 +60,7 @@ public class FirestarterItem extends Item
             if (level.isClientSide())
             {
                 Vec3 location = result.getLocation();
-                makeEffects(level, player, location.x(), location.y(), location.z(), countLeft, getUseDuration(stack), level.random);
+                makeEffects(level, player, location.x(), location.y(), location.z(), countLeft, getUseDuration(stack, player), level.random);
             }
             else if (countLeft == 1)
             {
@@ -110,13 +109,10 @@ public class FirestarterItem extends Item
 
                             final BlockState state = TFCBlocks.FIREPIT.get().defaultBlockState().setValue(FirepitBlock.AXIS, player.getDirection().getAxis());
                             level.setBlock(abovePos, state, 3);
-                            level.getBlockEntity(abovePos, TFCBlockEntities.FIREPIT.get()).ifPresent(firepit -> firepit.getCapability(Capabilities.ITEM).ifPresent(cap -> {
-                                if (cap instanceof IItemHandlerModifiable modifiableInventory)
-                                {
-                                    modifiableInventory.setStackInSlot(AbstractFirepitBlockEntity.SLOT_FUEL_CONSUME, initialLog);
-                                }
+                            level.getBlockEntity(abovePos, TFCBlockEntities.FIREPIT.get()).ifPresent(firepit -> {
+                                firepit.getInventory().setStackInSlot(AbstractFirepitBlockEntity.SLOT_FUEL_CONSUME, initialLog);
                                 firepit.light(state);
-                            }));
+                            });
                             if (player instanceof ServerPlayer serverPlayer)
                             {
                                 TFCAdvancements.FIREPIT_CREATED.trigger(serverPlayer, state);
@@ -149,7 +145,7 @@ public class FirestarterItem extends Item
     }
 
     @Override
-    public int getUseDuration(ItemStack stack)
+    public int getUseDuration(ItemStack stack, LivingEntity entity)
     {
         return 72;
     }

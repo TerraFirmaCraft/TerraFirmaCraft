@@ -6,9 +6,12 @@
 
 package net.dries007.tfc.client.render.entity;
 
+import java.util.HashMap;
+import java.util.Map;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import net.minecraft.Util;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -16,16 +19,23 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.Item;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.model.entity.JavelinModel;
+import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.entities.misc.ThrownJavelin;
-import net.dries007.tfc.common.items.JavelinItem;
+import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.data.Metal;
 
 public class ThrownJavelinRenderer extends EntityRenderer<ThrownJavelin>
 {
     public static final ResourceLocation DEFAULT_TEXTURE = Helpers.identifier("textures/entity/projectiles/stone_javelin.png");
+    public static final Map<Item, ResourceLocation> JAVELIN_TEXTURES = Util.make(new HashMap<>(), map -> {
+        TFCItems.ROCK_TOOLS.forEach((k, v) -> map.put(v.get(RockCategory.ItemType.JAVELIN).get(), Helpers.identifier("textures/entity/projectiles/stone_javelin.png")));
+        TFCItems.METAL_ITEMS.forEach((k, v) -> map.put(v.get(Metal.ItemType.JAVELIN).get(), Helpers.identifier("textures/entity/projectiles/" + k.getSerializedName() + "_javelin.png")));
+    });
 
     private final JavelinModel model;
 
@@ -36,7 +46,7 @@ public class ThrownJavelinRenderer extends EntityRenderer<ThrownJavelin>
     }
 
     @Override
-    public void render(ThrownJavelin javelin, float ageInTicks, float pitch, PoseStack poseStack, MultiBufferSource buffers, int light)
+    public void render(ThrownJavelin javelin, float ageInTicks, float pitch, PoseStack poseStack, MultiBufferSource buffers, int packedLight)
     {
         poseStack.pushPose();
 
@@ -45,16 +55,16 @@ public class ThrownJavelinRenderer extends EntityRenderer<ThrownJavelin>
         float degrees1 = Mth.lerp(pitch, javelin.xRotO, javelin.getXRot()) + 90.0F;
         poseStack.mulPose(Axis.ZP.rotationDegrees(degrees1));
 
-        VertexConsumer vertexconsumer = ItemRenderer.getFoilBufferDirect(buffers, this.model.renderType(this.getTextureLocation(javelin)), false, javelin.isEnchantGlowing());
-        this.model.renderToBuffer(poseStack, vertexconsumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        final VertexConsumer buffer = ItemRenderer.getFoilBufferDirect(buffers, this.model.renderType(getTextureLocation(javelin)), false, javelin.isEnchantGlowing());
+        this.model.renderToBuffer(poseStack, buffer, packedLight, OverlayTexture.NO_OVERLAY, -1);
 
         poseStack.popPose();
-        super.render(javelin, ageInTicks, pitch, poseStack, buffers, light);
+        super.render(javelin, ageInTicks, pitch, poseStack, buffers, packedLight);
     }
 
     @Override
     public ResourceLocation getTextureLocation(ThrownJavelin entity)
     {
-        return entity.getItem().getItem() instanceof JavelinItem javelin ? javelin.getTextureLocation() : DEFAULT_TEXTURE;
+        return JAVELIN_TEXTURES.getOrDefault(entity.getItem().getItem(), DEFAULT_TEXTURE);
     }
 }

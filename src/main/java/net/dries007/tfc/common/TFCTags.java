@@ -259,17 +259,19 @@ public class TFCTags
         public static final TagKey<Item> SEWING_LIGHT_CLOTH = create("sewing_light_cloth");
         public static final TagKey<Item> SEWING_NEEDLES = create("sewing_needles");
         public static final TagKey<Item> EMPTY_JAR_WITH_LID = create("empty_jar_with_lid");
+        public static final TagKey<Item> TRIP_HAMMERS = create("trip_hammers");
 
         public static TagKey<Item> mobEquipmentSlotTag(EquipmentSlot slot)
         {
             return switch (slot)
                 {
-                    case MAINHAND -> TFCTags.Items.MOB_MAINHAND_WEAPONS;
-                    case OFFHAND -> TFCTags.Items.MOB_OFFHAND_WEAPONS;
-                    case FEET -> TFCTags.Items.MOB_FEET_ARMOR;
-                    case LEGS -> TFCTags.Items.MOB_LEG_ARMOR;
-                    case CHEST -> TFCTags.Items.MOB_CHEST_ARMOR;
-                    case HEAD -> TFCTags.Items.MOB_HEAD_ARMOR;
+                    case MAINHAND -> Items.MOB_MAINHAND_WEAPONS;
+                    case OFFHAND -> Items.MOB_OFFHAND_WEAPONS;
+                    case FEET -> Items.MOB_FEET_ARMOR;
+                    case LEGS -> Items.MOB_LEG_ARMOR;
+                    case CHEST -> Items.MOB_CHEST_ARMOR;
+                    case HEAD -> Items.MOB_HEAD_ARMOR;
+                    case BODY -> throw new IllegalStateException("huh?"); // todo: 1.21 porting, do we need this?
                 };
         }
 

@@ -6,11 +6,10 @@
 
 package net.dries007.tfc.common.recipes.outputs;
 
-import com.mojang.serialization.MapCodec;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 
-import net.dries007.tfc.common.items.TFCFishingRodItem;
+import net.dries007.tfc.common.component.BaitComponent;
+import net.dries007.tfc.common.component.BaitType;
 import net.dries007.tfc.common.recipes.RecipeHelpers;
 
 public enum AddBaitToRodModifier implements ItemStackModifier
@@ -22,10 +21,9 @@ public enum AddBaitToRodModifier implements ItemStackModifier
     {
         for (ItemStack input : RecipeHelpers.getCraftingInput())
         {
-            TFCFishingRodItem.BaitType baitType = TFCFishingRodItem.getBaitType(input);
-            if (baitType != TFCFishingRodItem.BaitType.NONE)
+            if (BaitType.getType(input) != BaitType.NONE)
             {
-                stack.getOrCreateTag().put("bait", input.save(new CompoundTag()));
+                BaitComponent.setBait(stack, input);
                 return stack;
             }
         }

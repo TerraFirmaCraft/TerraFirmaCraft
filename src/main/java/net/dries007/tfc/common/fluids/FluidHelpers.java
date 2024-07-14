@@ -35,6 +35,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.common.SoundActions;
 import net.neoforged.neoforge.event.EventHooks;
@@ -84,7 +85,7 @@ public final class FluidHelpers
 
     public static boolean transferBetweenWorldAndItem(ItemStack originalStack, Level level, BlockHitResult target, Player player, InteractionHand hand, boolean allowPlacingAnyLiquidBlocks, boolean allowPlacingSourceBlocks, boolean allowInfiniteSourceFilling)
     {
-        return transferBetweenWorldAndItem(originalStack, level, target, new AfterTransferWithPlayer(player, hand), allowPlacingAnyLiquidBlocks, allowPlacingSourceBlocks, allowInfiniteSourceFilling);
+        return transferBetweenWorldAndItem(originalStack, level, target, with(player, hand), allowPlacingAnyLiquidBlocks, allowPlacingSourceBlocks, allowInfiniteSourceFilling);
     }
 
     public static boolean transferBetweenWorldAndItem(ItemStack originalStack, Level level, BlockHitResult target, AfterTransfer after, boolean allowPlacingAnyLiquidBlocks, boolean allowPlacingSourceBlocks, boolean allowInfiniteSourceFilling)
@@ -110,7 +111,7 @@ public final class FluidHelpers
     {
         final BlockState state = level.getBlockState(pos);
         final ItemStack stack = originalStack.copyWithCount(1);
-        final IFluidHandlerItem handler = Helpers.getCapability(stack, Capabilities.FLUID_ITEM);
+        final IFluidHandlerItem handler = stack.getCapability(Capabilities.FluidHandler.ITEM);
         if (handler == null)
         {
             return false;
@@ -147,7 +148,7 @@ public final class FluidHelpers
 
     public static boolean transferBetweenBlockEntityAndItem(ItemStack originalStack, BlockEntity entity, Player player, InteractionHand hand)
     {
-        return transferBetweenBlockEntityAndItem(originalStack, entity, player.level(), player.blockPosition(), new AfterTransferWithPlayer(player, hand));
+        return transferBetweenBlockEntityAndItem(originalStack, entity, player.level(), player.blockPosition(), with(player, hand));
     }
 
     /**
@@ -163,7 +164,7 @@ public final class FluidHelpers
      */
     public static boolean transferBetweenBlockEntityAndItem(ItemStack originalStack, BlockEntity entity, Level level, BlockPos pos, AfterTransfer after)
     {
-        return transferBetweenBlockHandlerAndItem(originalStack, Helpers.getCapability(entity, Capabilities.FLUID), level, pos, after);
+        return transferBetweenBlockHandlerAndItem(originalStack, Helpers.getCapability(Capabilities.FluidHandler.BLOCK, entity), level, pos, after);
     }
 
     /**
@@ -172,7 +173,7 @@ public final class FluidHelpers
     public static boolean transferBetweenBlockHandlerAndItem(ItemStack originalStack, @Nullable IFluidHandler blockHandler, Level level, BlockPos pos, AfterTransfer after)
     {
         final ItemStack stack = originalStack.copyWithCount(1);
-        final IFluidHandlerItem itemHandler = Helpers.getCapability(stack, Capabilities.FLUID_ITEM);
+        final IFluidHandlerItem itemHandler = stack.getCapability(Capabilities.FluidHandler.ITEM);
 
         if (itemHandler == null || blockHandler == null)
         {
@@ -560,6 +561,15 @@ public final class FluidHelpers
     }
 
     /**
+     * @return The contained fluid in a generic, simple, fluid handler item {@code stack}
+     */
+    public static FluidStack getContainedFluid(ItemStack stack)
+    {
+        final @Nullable IFluidHandlerItem handler = stack.getCapability(Capabilities.FluidHandler.ITEM);
+        return handler != null ? handler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE) : FluidStack.EMPTY;
+    }
+
+    /**
      * Returns if this is ice that is possible of melting into a fluid source.
      */
     public static boolean isMeltableIce(BlockState state)
@@ -715,7 +725,6 @@ public final class FluidHelpers
      *
      * @param tickWhenEmpty If when the fluid state is empty, this should still schedule a block tick. This is for blocks that want to be removed, generally, when fluid is removed.
      */
-    @SuppressWarnings("deprecation")
     public static void tickFluid(LevelAccessor level, BlockPos pos, BlockState state, boolean tickWhenEmpty)
     {
         if (!state.getFluidState().isEmpty())
@@ -734,22 +743,12 @@ public final class FluidHelpers
         tickFluid(level, pos, state, false);
     }
 
-    @FunctionalInterface
-    public interface AfterTransfer
+    /**
+     * Handles a fluid transfer with a player, holding the fluid item in their {@code hand}
+     */
+    public static AfterTransfer with(Player player, InteractionHand hand)
     {
-        default void updateContainerItem(ItemStack newOriginalStack)
-        {
-            updateContainerItem(newOriginalStack, ItemStack.EMPTY);
-        }
-
-        void updateContainerItem(ItemStack newOriginalStack, ItemStack newContainerStack);
-    }
-
-    public record AfterTransferWithPlayer(Player player, InteractionHand hand) implements AfterTransfer
-    {
-        @Override
-        public void updateContainerItem(ItemStack newOriginalStack, ItemStack newContainerStack)
-        {
+        return (newOriginalStack, newContainerStack) -> {
             // If we're creative, then we don't modify the original stack (in our current hand)
             // We always accept the new container stack, by adding it to our inventory
             if (!player.isCreative())
@@ -761,7 +760,18 @@ public final class FluidHelpers
                 // Always ensure that we've only created one new container stack.
                 ItemHandlerHelper.giveItemToPlayer(player, newContainerStack.copyWithCount(1));
             }
+        };
+    }
+
+    @FunctionalInterface
+    public interface AfterTransfer
+    {
+        default void updateContainerItem(ItemStack newOriginalStack)
+        {
+            updateContainerItem(newOriginalStack, ItemStack.EMPTY);
         }
+
+        void updateContainerItem(ItemStack newOriginalStack, ItemStack newContainerStack);
     }
 
     public enum Transfer

@@ -19,8 +19,10 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -495,7 +497,7 @@ public final class TFCCreativeTabs
         accept(out, TFCItems.PUFFERFISH_BUCKET);
 
         consumeOurs(BuiltInRegistries.ENTITY_TYPE, entity -> {
-            final var item = ForgeSpawnEggItem.fromEntityType(entity);
+            final SpawnEggItem item = SpawnEggItem.byId(entity);
             if (item != null)
             {
                 out.accept(item);

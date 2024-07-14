@@ -9,6 +9,7 @@ package net.dries007.tfc.common.entities.livestock;
 import javax.annotation.Nullable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntityType;
@@ -18,12 +19,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import net.dries007.tfc.client.TFCSounds;
-import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.config.animals.MammalConfig;
 
 public abstract class Mammal extends TFCAnimal implements MammalProperties
 {
-    private static final EntityDataAccessor<Long> PREGNANT_TIME = SynchedEntityData.defineId(Mammal.class, EntityHelpers.LONG_SERIALIZER);
+    private static final EntityDataAccessor<Long> PREGNANT_TIME = SynchedEntityData.defineId(Mammal.class, EntityDataSerializers.LONG);
 
     private final MammalConfig config;
     @Nullable private CompoundTag genes = null;

@@ -27,7 +27,7 @@ public class TFCPaintings
 
     private static Id register(String name, int width, int height)
     {
-        return new Id(PAINTING_TYPES.register(name, () -> new PaintingVariant(width, height)));
+        return new Id(PAINTING_TYPES.register(name, () -> new PaintingVariant(width, height, Helpers.identifier(name))));
     }
 
     public record Id(DeferredHolder<PaintingVariant, PaintingVariant> holder) implements RegistryHolder<PaintingVariant, PaintingVariant> {}

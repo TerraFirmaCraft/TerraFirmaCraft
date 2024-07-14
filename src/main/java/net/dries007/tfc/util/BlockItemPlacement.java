@@ -9,7 +9,7 @@ package net.dries007.tfc.util;
 import java.util.Collections;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionResult;
@@ -17,14 +17,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.BlockItemStateProperties;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import org.jetbrains.annotations.Nullable;
 
@@ -51,42 +50,24 @@ public class BlockItemPlacement implements InteractionManager.OnItemUseAction
     }
 
     /**
-     * Copy pasta from {@link BlockItem#updateBlockStateFromTag(BlockPos, World, ItemStack, BlockState)}
+     * Copy pasta from {@link BlockItem#updateBlockStateFromTag}
      */
-    @SuppressWarnings("ALL")
-    public static BlockState updateBlockStateFromTag(BlockPos pos, Level world, ItemStack stack, BlockState state)
+    public static BlockState updateBlockStateFromTag(BlockPos pos, Level level, ItemStack stack, BlockState state)
     {
-        BlockState newState = state;
-        CompoundTag nbt = stack.getTag();
-        if (nbt != null)
+        final BlockItemStateProperties properties = stack.getOrDefault(DataComponents.BLOCK_STATE, BlockItemStateProperties.EMPTY);
+        if (properties.isEmpty())
         {
-            CompoundTag blockStateNbt = nbt.getCompound("BlockStateTag");
-            StateDefinition<Block, BlockState> container = state.getBlock().getStateDefinition();
-
-            for (String propertyKey : blockStateNbt.getAllKeys())
+            return state;
+        }
+        else
+        {
+            BlockState newState = properties.apply(state);
+            if (newState != state)
             {
-                Property<?> property = container.getProperty(propertyKey);
-                if (property != null)
-                {
-                    String s1 = blockStateNbt.get(propertyKey).getAsString();
-                    newState = updateState(newState, property, s1);
-                }
+                level.setBlock(pos, newState, 2);
             }
+            return newState;
         }
-
-        if (newState != state)
-        {
-            world.setBlock(pos, newState, 2);
-        }
-        return newState;
-    }
-
-    /**
-     * Copy pasta from {@link BlockItem#updateState(BlockState, Property, String)}
-     */
-    private static <T extends Comparable<T>> BlockState updateState(BlockState state, Property<T> property, String value)
-    {
-        return property.getValue(value).map(valueIn -> state.setValue(property, valueIn)).orElse(state);
     }
 
     private final Supplier<? extends Item> item;
@@ -109,7 +90,7 @@ public class BlockItemPlacement implements InteractionManager.OnItemUseAction
     }
 
     /**
-     * Copy paste from {@link ItemStack#useOn(UseOnContext)}
+     * Copy pasta from {@link ItemStack#useOn(UseOnContext)}
      */
     @Override
     public InteractionResult onItemUse(ItemStack stack, UseOnContext context)

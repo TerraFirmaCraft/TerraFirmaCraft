@@ -31,17 +31,17 @@ public enum NotPredatedCondition implements LootItemCondition
     @Override
     public Set<LootContextParam<?>> getReferencedContextParams()
     {
-        return Set.of(LootContextParams.KILLER_ENTITY);
+        return Set.of(LootContextParams.ATTACKING_ENTITY);
     }
 
     @Override
     public boolean test(LootContext context)
     {
-        if (!context.hasParam(LootContextParams.KILLER_ENTITY))
+        if (!context.hasParam(LootContextParams.ATTACKING_ENTITY))
         {
             return true;
         }
-        final Entity killer = context.getParam(LootContextParams.KILLER_ENTITY);
+        final Entity killer = context.getParam(LootContextParams.ATTACKING_ENTITY);
         return killer instanceof Player || (!Helpers.isEntity(killer, TFCTags.Entities.HUNTS_LAND_PREY) && !Helpers.isEntity(killer, TFCTags.Entities.OCEAN_PREDATORS));
     }
 }

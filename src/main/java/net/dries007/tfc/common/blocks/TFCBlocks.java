@@ -550,7 +550,7 @@ public final class TFCBlocks
     private static <B extends SignBlock> Map<Wood, Map<Metal.Default, Id<B>>> registerHangingSigns(String variant, BiFunction<ExtendedProperties, WoodType, B> factory)
     {
         return Helpers.mapOfKeys(Wood.class, wood ->
-            Helpers.mapOfKeys(Metal.Default.class, Metal.Default::hasUtilities, metal -> register(
+            Helpers.mapOfKeys(Metal.Default.class, Metal.Default::allParts, metal -> register(
                     "wood/planks/" + variant + "/" + metal.getSerializedName() + "/" + wood.getSerializedName(),
                     () -> factory.apply(ExtendedProperties.of(wood.woodColor()).sound(SoundType.WOOD).noCollission().strength(1F).flammableLikePlanks().blockEntity(TFCBlockEntities.HANGING_SIGN).ticks(SignBlockEntity::tick), wood.getVanillaWoodType()),
                     (Function<B, BlockItem>) null)

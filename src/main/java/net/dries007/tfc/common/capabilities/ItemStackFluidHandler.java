@@ -8,7 +8,6 @@ package net.dries007.tfc.common.capabilities;
 
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
@@ -44,8 +43,6 @@ public class ItemStackFluidHandler implements SimpleFluidHandler, IFluidHandlerI
         this.capacity = capacity;
 
         this.fluid = FluidStack.EMPTY;
-
-        load();
     }
 
     @NotNull
@@ -111,24 +108,8 @@ public class ItemStackFluidHandler implements SimpleFluidHandler, IFluidHandlerI
         return FluidStack.EMPTY;
     }
 
-    protected void load()
-    {
-        if (!initialized)
-        {
-            initialized = true;
-            fluid = stack.getTag() == null ? FluidStack.EMPTY : FluidStack.loadFluidStackFromNBT(stack.getTag().getCompound("fluid"));
-        }
-    }
-
     protected void save()
     {
-        if (fluid.isEmpty())
-        {
-            stack.removeTagKey("fluid");
-        }
-        else
-        {
-            stack.addTagElement("fluid", fluid.writeToNBT(new CompoundTag()));
-        }
+        // todo 1.21 save behavior
     }
 }

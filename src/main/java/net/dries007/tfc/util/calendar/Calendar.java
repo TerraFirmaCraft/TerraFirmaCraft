@@ -7,8 +7,6 @@
 package net.dries007.tfc.util.calendar;
 
 import com.mojang.logging.LogUtils;
-import net.dries007.tfc.config.TFCConfig;
-
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -16,6 +14,8 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
+
+import net.dries007.tfc.config.TFCConfig;
 
 /**
  * The shared implementation of {@link ICalendar}.
@@ -25,7 +25,7 @@ import org.slf4j.Logger;
 public class Calendar implements ICalendar
 {
     public static final Logger LOGGER = LogUtils.getLogger();
-    public static final StreamCodec<ByteBuf, Calendar> STREAM = StreamCodec.composite(
+    public static final StreamCodec<ByteBuf, Calendar> STREAM_CODEC = StreamCodec.composite(
         ByteBufCodecs.VAR_INT, c -> c.daysInMonth,
         ByteBufCodecs.VAR_LONG, c -> c.playerTicks,
         ByteBufCodecs.VAR_LONG, c -> c.calendarTicks,

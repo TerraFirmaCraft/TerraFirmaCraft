@@ -18,17 +18,19 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.client.RenderHelpers;
+import net.dries007.tfc.client.render.entity.ThrownJavelinRenderer;
+import net.dries007.tfc.common.items.JavelinItem;
 
 public class JavelinItemRenderer extends BlockEntityWithoutLevelRenderer
 {
     private final ResourceLocation textureLocation;
     private final TridentModel model;
 
-    public JavelinItemRenderer(ResourceLocation textureLocation)
+    public JavelinItemRenderer(JavelinItem item)
     {
         super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
         this.model = new TridentModel(Minecraft.getInstance().getEntityModels().bakeLayer(RenderHelpers.layerId("javelin")));
-        this.textureLocation = textureLocation;
+        this.textureLocation = ThrownJavelinRenderer.JAVELIN_TEXTURES.getOrDefault(item, ThrownJavelinRenderer.DEFAULT_TEXTURE);
     }
 
     @Override

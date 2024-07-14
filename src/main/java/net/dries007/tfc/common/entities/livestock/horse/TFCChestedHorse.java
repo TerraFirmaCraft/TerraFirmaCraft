@@ -40,6 +40,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
@@ -65,15 +66,15 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
     }
 
     private static final EntityDataAccessor<Boolean> GENDER = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Long> BIRTHDAY = SynchedEntityData.defineId(TFCChestedHorse.class, EntityHelpers.LONG_SERIALIZER);
+    private static final EntityDataAccessor<Long> BIRTHDAY = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.LONG);
     private static final EntityDataAccessor<Float> FAMILIARITY = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Integer> USES = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> FERTILIZED = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Long> OLD_DAY = SynchedEntityData.defineId(TFCChestedHorse.class, EntityHelpers.LONG_SERIALIZER);
+    private static final EntityDataAccessor<Long> OLD_DAY = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.LONG);
     private static final EntityDataAccessor<Integer> GENETIC_SIZE = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Long> LAST_FED = SynchedEntityData.defineId(TFCChestedHorse.class, EntityHelpers.LONG_SERIALIZER);
+    private static final EntityDataAccessor<Long> LAST_FED = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.LONG);
     private static final CommonAnimalData ANIMAL_DATA = new CommonAnimalData(GENDER, BIRTHDAY, FAMILIARITY, USES, FERTILIZED, OLD_DAY, GENETIC_SIZE, LAST_FED);
-    private static final EntityDataAccessor<Long> PREGNANT_TIME = SynchedEntityData.defineId(TFCChestedHorse.class, EntityHelpers.LONG_SERIALIZER);
+    private static final EntityDataAccessor<Long> PREGNANT_TIME = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.LONG);
     private static final EntityDataAccessor<ItemStack> CHEST_ITEM = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.ITEM_STACK);
 
     private boolean overburdened = false;
@@ -189,13 +190,13 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
                         }
                         else
                         {
-                            final IFluidHandlerItem destFluidItemHandler = Helpers.getCapability(stack, Capabilities.FLUID_ITEM);
-                            final IFluidHandlerItem sourceFluidItemHandler = Helpers.getCapability(getChestItem(), Capabilities.FLUID_ITEM);
+                            final IFluidHandlerItem destFluidItemHandler = stack.getCapability(Capabilities.FluidHandler.ITEM);
+                            final IFluidHandlerItem sourceFluidItemHandler = getChestItem().getCapability(Capabilities.FluidHandler.ITEM);
                             if (destFluidItemHandler != null && sourceFluidItemHandler != null)
                             {
-                                if (FluidHelpers.transferBetweenItemAndOther(getChestItem(), destFluidItemHandler, sourceFluidItemHandler, destFluidItemHandler, FluidHelpers.Transfer.FILL, level(), blockPosition(), new FluidHelpers.AfterTransferWithPlayer(player, hand)))
+                                if (FluidHelpers.transferBetweenItemAndOther(getChestItem(), destFluidItemHandler, sourceFluidItemHandler, destFluidItemHandler, FluidHelpers.Transfer.FILL, level(), blockPosition(), FluidHelpers.with(player, hand)))
                                 {
-                                    return InteractionResult.sidedSuccess(this.level().isClientSide);
+                                    return InteractionResult.sidedSuccess(level().isClientSide);
                                 }
                             }
 
@@ -413,7 +414,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
     @Override
     public void addAdditionalSaveData(CompoundTag nbt)
     {
-        nbt.put("chestItem", getChestItem().save(new CompoundTag()));
+        nbt.put("chestItem", getChestItem().save(registryAccess()));
         super.addAdditionalSaveData(nbt);
         saveCommonAnimalData(nbt);
         nbt.putBoolean("overburdened", overburdened);
@@ -422,7 +423,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
     @Override
     public void readAdditionalSaveData(CompoundTag nbt)
     {
-        setChestItem(ItemStack.of(nbt.getCompound("chestItem")));
+        setChestItem(ItemStack.parseOptional(registryAccess(), nbt.getCompound("chestItem")));
         super.readAdditionalSaveData(nbt);
         readCommonAnimalData(nbt);
         overburdened = nbt.getBoolean("overburdened");

@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.fluids;
 
-import java.awt.Color;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -16,6 +15,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.neoforged.neoforge.common.SoundActions;
 import net.neoforged.neoforge.fluids.BaseFlowingFluid;
 import net.neoforged.neoforge.fluids.FluidType;
@@ -67,7 +67,7 @@ public final class TFCFluids
             .explosionResistance(100),
         lavaLike()
             .descriptionId("fluid.tfc.metal." + metal.getSerializedName())
-            .rarity(metal.getRarity()),
+            .rarity(metal.rarity()),
         new FluidTypeClientProperties(ALPHA_MASK | metal.getColor(), MOLTEN_STILL, MOLTEN_FLOW, null, null),
         MoltenFluid.Source::new,
         MoltenFluid.Flowing::new
@@ -136,21 +136,15 @@ public final class TFCFluids
         waterLike()
             .descriptionId("fluid.tfc." + color.getName() + "_dye")
             .canConvertToSource(false),
-        new FluidTypeClientProperties(dyeColorToInt(color), WATER_STILL, WATER_FLOW, WATER_OVERLAY, null),
+        new FluidTypeClientProperties(color.getTextureDiffuseColor(), WATER_STILL, WATER_FLOW, WATER_OVERLAY, null),
         MixingFluid.Source::new,
         MixingFluid.Flowing::new
     ));
 
-    public static int dyeColorToInt(DyeColor dye)
-    {
-        float[] colors = dye.getTextureDiffuseColors();
-        return new Color(colors[0], colors[1], colors[2]).getRGB();
-    }
-
     private static FluidType.Properties lavaLike()
     {
         return FluidType.Properties.create()
-            .adjacentPathType(BlockPathTypes.LAVA)
+            .adjacentPathType(PathType.LAVA)
             .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
             .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY_LAVA)
             .lightLevel(15)
@@ -169,7 +163,7 @@ public final class TFCFluids
     private static FluidType.Properties waterLike()
     {
         return FluidType.Properties.create()
-            .adjacentPathType(BlockPathTypes.WATER)
+            .adjacentPathType(PathType.WATER)
             .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
             .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
             .canConvertToSource(true)

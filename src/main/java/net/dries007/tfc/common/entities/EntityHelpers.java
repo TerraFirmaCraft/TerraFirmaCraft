@@ -10,10 +10,9 @@ import java.util.List;
 import java.util.Optional;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.Mth;
@@ -35,38 +34,18 @@ import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.MobBucketItem;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 import net.dries007.tfc.common.entities.ai.TFCAvoidEntityGoal;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 
 public final class EntityHelpers
 {
-    public static final EntityDataSerializer<Long> LONG_SERIALIZER = new EntityDataSerializer<>()
-    {
-        @Override
-        public void write(FriendlyByteBuf buf, Long value)
-        {
-            buf.writeVarLong(value);
-        }
-
-        @Override
-        public Long read(FriendlyByteBuf buf)
-        {
-            return buf.readVarLong();
-        }
-
-        @Override
-        public Long copy(Long value)
-        {
-            return value;
-        }
-    };
-
     public static void replaceAvoidEntityGoal(PathfinderMob mob, GoalSelector selector, int priority)
     {
         selector.getAvailableGoals().removeIf(wrapped -> wrapped.getGoal() instanceof AvoidEntityGoal);
@@ -91,29 +70,31 @@ public final class EntityHelpers
     }
 
     /**
-     * Fluid Sensitive version of Bucketable#bucketMobPickup
+     * Fluid Sensitive version of {@link Bucketable#bucketMobPickup}
      */
     public static <T extends LivingEntity & Bucketable> Optional<InteractionResult> bucketMobPickup(Player player, InteractionHand hand, T entity)
     {
         ItemStack held = player.getItemInHand(hand);
         ItemStack bucketItem = entity.getBucketItemStack();
-        if (bucketItem.getItem() instanceof MobBucketItem mobBucket && held.getItem() instanceof BucketItem heldBucket)
+        if (bucketItem.getItem() instanceof MobBucketItem && held.getItem() instanceof BucketItem)
         {
             // Verify that the one you're holding and the corresponding mob bucket contain the same fluid
-            if (mobBucket.getFluid().isSame(heldBucket.getFluid()) && entity.isAlive())
+            if (FluidStack.isSameFluidSameComponents(
+                FluidHelpers.getContainedFluid(bucketItem),
+                FluidHelpers.getContainedFluid(held)
+            ) && entity.isAlive())
             {
                 entity.playSound(entity.getPickupSound(), 1.0F, 1.0F);
                 entity.saveToBucketTag(bucketItem);
-                ItemStack itemstack2 = ItemUtils.createFilledResult(held, player, bucketItem, false);
-                player.setItemInHand(hand, itemstack2);
-                Level level = entity.level();
-                if (!level.isClientSide)
+                final ItemStack filledStack = ItemUtils.createFilledResult(held, player, bucketItem, false);
+                player.setItemInHand(hand, filledStack);
+                if (player instanceof ServerPlayer serverPlayer)
                 {
-                    CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayer) player, bucketItem);
+                    CriteriaTriggers.FILLED_BUCKET.trigger(serverPlayer, bucketItem);
                 }
 
                 entity.discard();
-                return Optional.of(InteractionResult.sidedSuccess(level.isClientSide));
+                return Optional.of(InteractionResult.sidedSuccess(entity.level().isClientSide));
             }
         }
         return Optional.empty();
@@ -136,7 +117,7 @@ public final class EntityHelpers
         return Calendars.get(entity.level()).getTotalDays() - lifeTimeDays;
     }
 
-    public static void setNullableAttribute(LivingEntity entity, Attribute attribute, double baseValue)
+    public static void setNullableAttribute(LivingEntity entity, Holder<Attribute> attribute, double baseValue)
     {
         AttributeInstance instance = entity.getAttribute(attribute);
         if (instance != null)

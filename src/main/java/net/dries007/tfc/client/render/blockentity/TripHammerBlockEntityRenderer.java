@@ -6,14 +6,18 @@
 
 package net.dries007.tfc.client.render.blockentity;
 
+import java.util.HashMap;
+import java.util.Map;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import net.minecraft.Util;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -21,13 +25,17 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.rotation.TripHammerBlockEntity;
 import net.dries007.tfc.common.blocks.TripHammerBlock;
-import net.dries007.tfc.common.items.HammerItem;
+import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.data.Metal;
 import net.dries007.tfc.util.rotation.Rotation;
 
 public class TripHammerBlockEntityRenderer implements BlockEntityRenderer<TripHammerBlockEntity>
 {
-    private static final ResourceLocation ROD_TEXTURE = Helpers.identifier("block/wood/planks/oak");
+    public static final ResourceLocation ROD_TEXTURE = Helpers.identifier("block/wood/planks/oak");
+    public static final Map<Item, ResourceLocation> HAMMER_TEXTURES = Util.make(new HashMap<>(), map -> {
+        TFCItems.METAL_ITEMS.forEach((k, v) -> map.put(v.get(Metal.ItemType.HAMMER).get(), Helpers.identifier("block/metal/smooth/" + k.getSerializedName())));
+    });
 
     @Override
     public void render(TripHammerBlockEntity hammer, float partialTick, PoseStack stack, MultiBufferSource buffers, int packedLight, int packedOverlay)
@@ -40,9 +48,11 @@ public class TripHammerBlockEntityRenderer implements BlockEntityRenderer<TripHa
             return;
 
         final ItemStack item = hammer.getInventory().getStackInSlot(0);
-        final ResourceLocation hammerTexture = item.getItem() instanceof HammerItem hammerItem ? hammerItem.getMetalTexture() : null;
+        final ResourceLocation hammerTexture = HAMMER_TEXTURES.get(item.getItem());
         if (hammerTexture == null)
+        {
             return;
+        }
 
         final VertexConsumer buffer = buffers.getBuffer(RenderType.cutout());
         final float px = 1f / 16f;

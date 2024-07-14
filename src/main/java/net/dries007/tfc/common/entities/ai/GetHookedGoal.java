@@ -7,22 +7,18 @@
 package net.dries007.tfc.common.entities.ai;
 
 import java.util.List;
-
-import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.items.TFCFishingRodItem;
-
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.phys.AABB;
+import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.component.BaitType;
 import net.dries007.tfc.common.entities.misc.TFCFishingHook;
 import net.dries007.tfc.util.Helpers;
 
@@ -79,9 +75,9 @@ public class GetHookedGoal extends MoveToBlockGoal
         {
             final TFCFishingHook possibleHook = entities.get(0);
             final ItemStack bait = possibleHook.getBait();
-            final TFCFishingRodItem.BaitType type = TFCFishingRodItem.getBaitType(bait);
+            final BaitType type = BaitType.getType(bait);
             final boolean isLarge = Helpers.isEntity(mob, TFCTags.Entities.NEEDS_LARGE_FISHING_BAIT);
-            if ((type == TFCFishingRodItem.BaitType.LARGE && isLarge) || (type == TFCFishingRodItem.BaitType.SMALL && !isLarge))
+            if ((type == BaitType.LARGE && isLarge) || (type == BaitType.SMALL && !isLarge))
             {
                 hook = possibleHook;
                 blockPos = hook.blockPosition();

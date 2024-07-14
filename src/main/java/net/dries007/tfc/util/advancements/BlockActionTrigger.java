@@ -6,12 +6,12 @@
 
 package net.dries007.tfc.util.advancements;
 
-import com.google.gson.JsonObject;
-import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
+import java.util.Optional;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
-import net.minecraft.advancements.critereon.DeserializationContext;
+import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -19,24 +19,15 @@ import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
 
 public class BlockActionTrigger extends SimpleCriterionTrigger<BlockActionTrigger.TriggerInstance>
 {
-    private final ResourceLocation id;
-
-    public BlockActionTrigger(ResourceLocation id)
-    {
-        this.id = id;
-    }
+    public static final Codec<BlockActionTrigger.TriggerInstance> CODEC = RecordCodecBuilder.create(i -> i.group(
+        EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(c -> c.player),
+        BlockIngredient.CODEC.fieldOf("ingredient").forGetter(c -> c.ingredient)
+    ).apply(i, TriggerInstance::new));
 
     @Override
-    public ResourceLocation getId()
+    public Codec<TriggerInstance> codec()
     {
-        return id;
-    }
-
-    @Override
-    protected TriggerInstance createInstance(JsonObject json, ContextAwarePredicate predicate, DeserializationContext context)
-    {
-        BlockIngredient ingredient = BlockIngredient.fromJson(json);
-        return new TriggerInstance(predicate, ingredient);
+        return CODEC;
     }
 
     public void trigger(ServerPlayer serverPlayer, BlockState state)
@@ -44,14 +35,9 @@ public class BlockActionTrigger extends SimpleCriterionTrigger<BlockActionTrigge
         this.trigger(serverPlayer, instance -> instance.ingredient.test(state));
     }
 
-    public class TriggerInstance extends AbstractCriterionTriggerInstance
-    {
-        private final BlockIngredient ingredient;
-
-        public TriggerInstance(ContextAwarePredicate predicate, BlockIngredient ingredient)
-        {
-            super(id, predicate);
-            this.ingredient = ingredient;
-        }
-    }
+    public record TriggerInstance(
+        Optional<ContextAwarePredicate> player,
+        BlockIngredient ingredient
+    ) implements SimpleInstance
+    {}
 }

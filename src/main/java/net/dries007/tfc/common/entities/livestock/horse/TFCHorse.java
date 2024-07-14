@@ -64,15 +64,15 @@ import net.dries007.tfc.util.calendar.Calendars;
 public class TFCHorse extends Horse implements HorseProperties
 {
     private static final EntityDataAccessor<Boolean> GENDER = SynchedEntityData.defineId(TFCHorse.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Long> BIRTHDAY = SynchedEntityData.defineId(TFCHorse.class, EntityHelpers.LONG_SERIALIZER);
+    private static final EntityDataAccessor<Long> BIRTHDAY = SynchedEntityData.defineId(TFCHorse.class, EntityDataSerializers.LONG);
     private static final EntityDataAccessor<Float> FAMILIARITY = SynchedEntityData.defineId(TFCHorse.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Integer> USES = SynchedEntityData.defineId(TFCHorse.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> FERTILIZED = SynchedEntityData.defineId(TFCHorse.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Long> OLD_DAY = SynchedEntityData.defineId(TFCHorse.class, EntityHelpers.LONG_SERIALIZER);
+    private static final EntityDataAccessor<Long> OLD_DAY = SynchedEntityData.defineId(TFCHorse.class, EntityDataSerializers.LONG);
     private static final EntityDataAccessor<Integer> GENETIC_SIZE = SynchedEntityData.defineId(TFCHorse.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Long> LAST_FED = SynchedEntityData.defineId(TFCHorse.class, EntityHelpers.LONG_SERIALIZER);
+    private static final EntityDataAccessor<Long> LAST_FED = SynchedEntityData.defineId(TFCHorse.class, EntityDataSerializers.LONG);
     private static final CommonAnimalData ANIMAL_DATA = new CommonAnimalData(GENDER, BIRTHDAY, FAMILIARITY, USES, FERTILIZED, OLD_DAY, GENETIC_SIZE, LAST_FED);
-    private static final EntityDataAccessor<Long> PREGNANT_TIME = SynchedEntityData.defineId(TFCHorse.class, EntityHelpers.LONG_SERIALIZER);
+    private static final EntityDataAccessor<Long> PREGNANT_TIME = SynchedEntityData.defineId(TFCHorse.class, EntityDataSerializers.LONG);
 
     private long lastFDecay; //Last time(in days) this entity's familiarity had decayed
     private long matingTime; //The last time(in ticks) this male tried fertilizing females

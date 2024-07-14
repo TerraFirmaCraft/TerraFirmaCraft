@@ -14,9 +14,9 @@ import net.neoforged.neoforge.common.ItemAbility;
 
 public class MaceItem extends SwordItem
 {
-    public MaceItem(Tier tier, int attackDamage, float attackSpeed, Properties properties)
+    public MaceItem(Tier tier, Properties properties)
     {
-        super(tier, attackDamage, attackSpeed, properties);
+        super(tier, properties);
     }
 
     @Override

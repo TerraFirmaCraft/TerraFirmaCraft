@@ -8,6 +8,7 @@ package net.dries007.tfc.common.entities.livestock;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -15,13 +16,12 @@ import net.neoforged.neoforge.common.ModConfigSpec.DoubleValue;
 import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 
 import net.dries007.tfc.client.TFCSounds;
-import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.config.animals.ProducingMammalConfig;
 import net.dries007.tfc.util.calendar.Calendars;
 
 public abstract class ProducingMammal extends Mammal
 {
-    public static final EntityDataAccessor<Long> DATA_PRODUCED = SynchedEntityData.defineId(ProducingMammal.class, EntityHelpers.LONG_SERIALIZER);
+    public static final EntityDataAccessor<Long> DATA_PRODUCED = SynchedEntityData.defineId(ProducingMammal.class, EntityDataSerializers.LONG);
 
     protected final IntValue produceTicks;
     protected final DoubleValue produceFamiliarity;

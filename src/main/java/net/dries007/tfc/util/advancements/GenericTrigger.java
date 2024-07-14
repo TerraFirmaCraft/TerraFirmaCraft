@@ -6,42 +6,30 @@
 
 package net.dries007.tfc.util.advancements;
 
-import com.google.gson.JsonObject;
-import net.minecraft.advancements.critereon.*;
-import net.minecraft.resources.ResourceLocation;
+import java.util.Optional;
+import com.mojang.serialization.Codec;
+import net.minecraft.advancements.critereon.ContextAwarePredicate;
+import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.server.level.ServerPlayer;
 
 public class GenericTrigger extends SimpleCriterionTrigger<GenericTrigger.TriggerInstance>
 {
-    private final ResourceLocation id;
+    public static final Codec<GenericTrigger.TriggerInstance> CODEC = EntityPredicate.ADVANCEMENT_CODEC
+        .optionalFieldOf("player")
+        .xmap(TriggerInstance::new, TriggerInstance::player)
+        .codec();
 
-    public GenericTrigger(ResourceLocation id)
+    @Override
+    public Codec<TriggerInstance> codec()
     {
-        this.id = id;
+        return CODEC;
     }
 
     public void trigger(ServerPlayer player)
     {
-        this.trigger(player, instance -> true);
+        trigger(player, instance -> true);
     }
 
-    @Override
-    protected GenericTrigger.TriggerInstance createInstance(JsonObject json, ContextAwarePredicate predicate, DeserializationContext context)
-    {
-        return new GenericTrigger.TriggerInstance(predicate);
-    }
-
-    @Override
-    public ResourceLocation getId()
-    {
-        return id;
-    }
-
-    public class TriggerInstance extends AbstractCriterionTriggerInstance
-    {
-        public TriggerInstance(ContextAwarePredicate predicate)
-        {
-            super(id, predicate);
-        }
-    }
+    record TriggerInstance(Optional<ContextAwarePredicate> player) implements SimpleInstance {}
 }

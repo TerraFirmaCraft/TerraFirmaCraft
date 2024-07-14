@@ -10,9 +10,7 @@ import java.util.List;
 import net.minecraft.core.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.ChunkGeneratorExtension;
-import net.dries007.tfc.world.region.Units;
 import net.dries007.tfc.world.settings.RockSettings;
 
 /**
@@ -22,19 +20,6 @@ import net.dries007.tfc.world.settings.RockSettings;
  */
 public interface ChunkDataGenerator
 {
-    /** @deprecated Use {@link LerpFloatLayer#scaled(double, double, double)} */
-    @Deprecated(forRemoval = true)
-    static LerpFloatLayer sampleInterpolatedGridLayer(float value00, float value01, float value10, float value11, double deltaX, double deltaZ)
-    {
-        float delta = 16f / Units.GRID_WIDTH_IN_BLOCK;
-        return new LerpFloatLayer(
-            (float) Helpers.lerp4(value00, value01, value10, value11, deltaX, deltaZ),
-            (float) Helpers.lerp4(value00, value01, value10, value11, deltaX, deltaZ + delta),
-            (float) Helpers.lerp4(value00, value01, value10, value11, deltaX + delta, deltaZ),
-            (float) Helpers.lerp4(value00, value01, value10, value11, deltaX + delta, deltaZ + delta)
-        );
-    }
-
     /**
      * Generate the provided chunk data
      */

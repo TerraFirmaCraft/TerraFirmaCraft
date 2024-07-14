@@ -37,9 +37,9 @@ import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.animal.SnowGolem;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.entity.projectile.ThrownPotion;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraft.world.inventory.ClickAction;
@@ -48,9 +48,6 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.LingeringPotionItem;
-import net.minecraft.world.item.TieredItem;
-import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -98,6 +95,7 @@ import net.neoforged.neoforge.event.entity.living.AnimalTameEvent;
 import net.neoforged.neoforge.event.entity.living.FinalizeSpawnEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingShieldBlockEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.neoforged.neoforge.event.entity.player.BonemealEvent;
@@ -166,6 +164,7 @@ import net.dries007.tfc.common.entities.misc.HoldingMinecart;
 import net.dries007.tfc.common.entities.predator.Predator;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.items.BlowpipeItem;
+import net.dries007.tfc.common.items.TFCShieldItem;
 import net.dries007.tfc.common.player.IPlayerInfo;
 import net.dries007.tfc.common.player.PlayerInfo;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
@@ -837,11 +836,12 @@ public final class ForgeEventHandler
         final Projectile projectile = event.getProjectile();
         final HitResult result = event.getRayTraceResult();
         final Level level = projectile.level();
+        /* todo 1.21 porting, potions
         if (projectile instanceof ThrownPotion potion && PotionUtils.getPotion(potion.getItem()) == Potions.WATER && PotionUtils.getMobEffects(potion.getItem()).isEmpty())
         {
             final boolean lingering = potion.getItem().getItem() instanceof LingeringPotionItem;
             DouseFireEvent.douse(level, potion.getBoundingBox().inflate(lingering ? 4 : 2, 2, lingering ? 4 : 2), projectile.getOwner() instanceof Player player ? player : null);
-        }
+        }*/
         if (!TFCConfig.SERVER.enableFireArrowSpreading.get()) return;
         if (result.getType() == HitResult.Type.BLOCK && projectile.isOnFire())
         {
@@ -914,23 +914,18 @@ public final class ForgeEventHandler
     /**
      * Apply modifications from damage types, player health, and forging bonus, before armor and absorption and other resources are consumed.
      */
-    public static void onLivingHurt(LivingHurtEvent event)
+    public static void onLivingHurt(LivingIncomingDamageEvent event)
     {
         float amount = event.getAmount();
 
-        // Forging bonus
+        // Forging Bonus
         final Entity attackerEntity = event.getSource().getEntity();
         if (attackerEntity instanceof LivingEntity livingEntity)
         {
             amount *= ForgingBonus.get(livingEntity.getMainHandItem()).damage();
-
-            if (event.getEntity() instanceof Player player)
-            {
-                Helpers.maybeDisableShield(livingEntity.getMainHandItem(), player.isUsingItem() ? player.getUseItem() : ItemStack.EMPTY, player, livingEntity);
-            }
         }
 
-        // Physical damage type
+        // Physical Damage Type Modifiers
         amount *= PhysicalDamageType.calculateMultiplier(event.getSource(), event.getEntity());
 
         // Player health modifier
@@ -946,16 +941,15 @@ public final class ForgeEventHandler
     {
         float damageModifier = 1f;
         final Item useItem = event.getEntity().getUseItem().getItem();
-        if (event.getDamageSource().getDirectEntity() instanceof LivingEntity livingEntity && livingEntity.getMainHandItem().getItem() instanceof TieredItem attackWeapon)
+
+        // todo: the original code here was broken during porting, what do we even want to do here?
+        if (useItem == Items.SHIELD)
         {
-            if (useItem instanceof TieredItem shieldItem && TierSortingRegistry.getTiersLowerThan(attackWeapon.getTier()).contains(shieldItem.getTier()))
-            {
-                damageModifier = 0.3f; // shield is worse tier than the attack weapon!
-            }
+            damageModifier = 0.25f;
         }
-        if (useItem.equals(Items.SHIELD))
+        if (useItem instanceof TFCShieldItem shield)
         {
-            damageModifier = 0.25f; // wooden shield is bad
+            damageModifier = shield.getDamageBlocked();
         }
 
         event.setBlockedDamage(event.getOriginalBlockedDamage() * damageModifier);
@@ -1103,7 +1097,7 @@ public final class ForgeEventHandler
 
         if (entity.getType() == EntityType.SKELETON)
         {
-            entity.setItemSlot(EquipmentSlot.MAINHAND, Helpers.randomItem(TFCTags.Items.SKELETON_WEAPONS, entity.level().getRandom()).orElse(Items.BOW).getDefaultInstance());
+            ((Skeleton) entity).setItemSlot(EquipmentSlot.MAINHAND, Helpers.randomItem(TFCTags.Items.SKELETON_WEAPONS, entity.level().getRandom()).orElse(Items.BOW).getDefaultInstance());
         }
         else if (entity.getType() == EntityType.SKELETON_HORSE && !TFCConfig.SERVER.enableVanillaSkeletonHorseSpawning.get())
         {
@@ -1268,7 +1262,7 @@ public final class ForgeEventHandler
             for (int i = 0; i < words.length; i++)
             {
                 String word = words[i];
-                if (word.length() == 0)
+                if (word.isEmpty())
                 {
                     continue;
                 }
@@ -1357,7 +1351,7 @@ public final class ForgeEventHandler
             // Possible issues:
             // - Right-click a chest underwater -> it should open the chest, not drink
             // - Try and remove the filter from a Create 'Basin', by right-clicking with an empty hand (create cancels this event)
-            final InteractionResult useBlockResult = state.use(level, event.getEntity(), event.getHand(), event.getHitVec());
+            final ItemInteractionResult useBlockResult = state.useItemOn(stack, level, event.getEntity(), event.getHand(), event.getHitVec());
             if (useBlockResult.consumesAction())
             {
                 if (event.getEntity() instanceof ServerPlayer serverPlayer)
@@ -1365,7 +1359,7 @@ public final class ForgeEventHandler
                     CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(serverPlayer, event.getPos(), stack);
                 }
                 event.setCanceled(true);
-                event.setCancellationResult(useBlockResult);
+                event.setCancellationResult(useBlockResult.result());
             }
             else
             {

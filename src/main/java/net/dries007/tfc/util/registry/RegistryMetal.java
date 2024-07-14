@@ -11,10 +11,10 @@ import net.minecraft.core.Holder;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.MapColor;
 
+import net.dries007.tfc.common.LevelTier;
 import net.dries007.tfc.util.data.Metal;
 
 /**
@@ -22,15 +22,13 @@ import net.dries007.tfc.util.data.Metal;
  */
 public interface RegistryMetal extends StringRepresentable
 {
-    Tier toolTier();
+    LevelTier toolTier();
 
     Holder<ArmorMaterial> armorTier();
-
-    Metal.Tier metalTier();
 
     Supplier<Block> getFullBlock();
 
     MapColor mapColor();
 
-    Rarity getRarity();
+    Rarity rarity();
 }

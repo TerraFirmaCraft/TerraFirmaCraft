@@ -9,10 +9,15 @@ package net.dries007.tfc.common.items;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -25,12 +30,33 @@ public class ToolItem extends DiggerItem
     /**
      * The vanilla constructor sets the attack damage to {@code attackDamage + tier.getAttackDamageBonus()}.
      * Whereas, we want it to be equal to {@code attackDamage * tier.getAttackDamageBonus()}.
-     * So, we pass upwards a reverse-engineered constant, in order to get the value we want at the end
+     *
+     * @see SwordItem#createAttributes
      */
+    public static ItemAttributeModifiers productAttributes(Tier tier, float attackDamageFactor, float attackSpeed)
+    {
+        return ItemAttributeModifiers.builder()
+            .add(
+                Attributes.ATTACK_DAMAGE,
+                new AttributeModifier(
+                    BASE_ATTACK_DAMAGE_ID, attackDamageFactor * tier.getAttackDamageBonus(), AttributeModifier.Operation.ADD_VALUE
+                ),
+                EquipmentSlotGroup.MAINHAND
+            )
+            .add(
+                Attributes.ATTACK_SPEED,
+                new AttributeModifier(BASE_ATTACK_SPEED_ID, attackSpeed, AttributeModifier.Operation.ADD_VALUE),
+                EquipmentSlotGroup.MAINHAND
+            )
+            .build();
+    }
+
     public static float calculateVanillaAttackDamage(float attackDamage, Tier tier)
     {
         return (attackDamage - 1) * tier.getAttackDamageBonus();
     }
+
+
 
     /**
      * Mining plants should consume some durability
@@ -40,9 +66,9 @@ public class ToolItem extends DiggerItem
         return Helpers.isBlock(state.getBlock(), TFCTags.Blocks.PLANTS) || state.getDestroySpeed(level, pos) != 0.0F;
     }
 
-    public ToolItem(Tier tier, float attackDamage, float attackSpeed, TagKey<Block> mineableBlocks, Properties properties)
+    public ToolItem(Tier tier, TagKey<Block> mineableBlocks, Properties properties)
     {
-        super(attackDamage, attackSpeed, tier, mineableBlocks, properties);
+        super(tier, mineableBlocks, properties);
     }
 
     @Override

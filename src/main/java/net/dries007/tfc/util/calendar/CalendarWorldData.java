@@ -6,22 +6,25 @@
 
 package net.dries007.tfc.util.calendar;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.SavedData;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.*;
 
 public class CalendarWorldData extends SavedData
 {
     private static final String NAME = MOD_ID + "_calendar";
+    private static final Factory<CalendarWorldData> FACTORY = new Factory<>(CalendarWorldData::new, CalendarWorldData
+    ::load);
 
     public static CalendarWorldData get(ServerLevel level)
     {
-        return level.getDataStorage().computeIfAbsent(CalendarWorldData::load, CalendarWorldData::new, NAME);
+        return level.getDataStorage().computeIfAbsent(FACTORY, NAME);
     }
 
-    private static CalendarWorldData load(CompoundTag nbt)
+    private static CalendarWorldData load(CompoundTag nbt, HolderLookup.Provider provider)
     {
         final CalendarWorldData data = new CalendarWorldData();
         data.calendar.read(nbt.getCompound("calendar"));
@@ -36,7 +39,7 @@ public class CalendarWorldData extends SavedData
     }
 
     @Override
-    public CompoundTag save(CompoundTag nbt)
+    public CompoundTag save(CompoundTag nbt, HolderLookup.Provider registries)
     {
         nbt.put("calendar", Calendars.SERVER.write());
         return nbt;

@@ -17,7 +17,7 @@ public class TFCShieldItem extends ShieldItem
 
     public TFCShieldItem(Tier tier, Properties builder)
     {
-        super(builder.defaultDurability(tier.getUses()));
+        super(builder.durability(tier.getUses()));
         this.tier = tier;
     }
 
@@ -33,14 +33,9 @@ public class TFCShieldItem extends ShieldItem
         return tier.getRepairIngredient().test(repair);
     }
 
-    /**
-     * Red steel shield: 9 ADB, 'raw' disable chance == 1/4
-     * Copper shield: 1 ADB, 'raw' disable chance == 11/12
-     * We also weight against vanilla enchantment values for compatibility
-     */
-    public float getDisableChance()
+    public float getDamageBlocked()
     {
-        return 1f - Mth.clampedMap(tier.getAttackDamageBonus(), 0f, 12f, 0f, 1f);
+        return Mth.clampedMap(tier.getAttackDamageBonus(), 0f, 12f, 0.25f, 1f);
     }
 
     public Tier getTier()

@@ -65,19 +65,22 @@ public enum PhysicalDamageType implements StringRepresentable
         if (type != null)
         {
             // Natural resistances only apply to specific damage types (because they can be infinite, which would make punching deal zero damage)
-            final PhysicalDamageType.Multiplier naturalMultiplier = EntityDamageResistance.get(entityUnderAttack);
-            if (naturalMultiplier != null)
+            final EntityDamageResistance entityResistance = EntityDamageResistance.get(entityUnderAttack);
+            if (entityResistance != null)
             {
-                resistance += naturalMultiplier.value(type);
+                resistance += entityResistance.damages().value(type);
             }
         }
 
-        for (ItemStack stack : entityUnderAttack.getArmorSlots())
+        if (entityUnderAttack instanceof LivingEntity livingEntity)
         {
-            final PhysicalDamageType.Multiplier armorMultiplier = getResistanceForItem(stack);
-            if (armorMultiplier != null)
+            for (ItemStack stack : livingEntity.getArmorSlots())
             {
-                resistance += armorMultiplier.value(type);
+                final PhysicalDamageType.Multiplier armorMultiplier = getResistanceForItem(stack);
+                if (armorMultiplier != null)
+                {
+                    resistance += armorMultiplier.value(type);
+                }
             }
         }
         return (float) Math.pow(Math.E, -0.01 * resistance);
@@ -159,11 +162,12 @@ public enum PhysicalDamageType implements StringRepresentable
     @Nullable
     public static PhysicalDamageType.Multiplier getResistanceForItem(ItemStack stack)
     {
-        var res = ItemDamageResistance.get(stack);
-        if (res != null)
+        final ItemDamageResistance itemResistance = ItemDamageResistance.get(stack);
+        if (itemResistance != null)
         {
-            return res;
+            return itemResistance.damages();
         }
+        // todo 1.21, armor material cannot implement this interface, we need a separate mapping here, maybe via registry?
         if (stack.getItem() instanceof ArmorItem armor && armor.getMaterial() instanceof PhysicalDamageType.Multiplier armorMultiplier)
         {
             return armorMultiplier;

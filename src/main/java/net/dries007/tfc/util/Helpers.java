@@ -60,7 +60,6 @@ import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -69,11 +68,9 @@ import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeManager;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -126,7 +123,6 @@ import net.dries007.tfc.common.capabilities.size.Weight;
 import net.dries007.tfc.common.effect.TFCEffects;
 import net.dries007.tfc.common.entities.ai.prey.PestAi;
 import net.dries007.tfc.common.entities.prey.Pest;
-import net.dries007.tfc.common.items.TFCShieldItem;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.data.Metal;
 
@@ -135,7 +131,6 @@ import static net.dries007.tfc.TerraFirmaCraft.*;
 public final class Helpers
 {
     public static final Direction[] DIRECTIONS = Direction.values();
-    public static final Direction[] DIRECTIONS_NOT_DOWN = new Direction[] { Direction.UP, Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST };
     public static final DyeColor[] DYE_COLORS = DyeColor.values();
 
     /**
@@ -577,7 +572,8 @@ public final class Helpers
                     if (checkPos != null)
                     {
                         mob.moveTo(checkPos);
-                        ForgeEventFactory.onFinalizeSpawn(mob, serverLevel, serverLevel.getCurrentDifficultyAt(BlockPos.containing(checkPos)), MobSpawnType.EVENT, null, null);
+                        // todo 1.21 where did finalize spawn go?
+                        //ForgeEventFactory.onFinalizeSpawn(mob, serverLevel, serverLevel.getCurrentDifficultyAt(BlockPos.containing(checkPos)), MobSpawnType.EVENT, null, null);
                         serverLevel.addFreshEntity(mob);
                         if (mob instanceof Pest pest)
                         {
@@ -1316,32 +1312,6 @@ public final class Helpers
     public static void openScreen(ServerPlayer player, MenuProvider provider, Consumer<RegistryFriendlyByteBuf> extraDataWriter)
     {
         player.openMenu(provider, extraDataWriter);
-    }
-
-    /**
-     * Based on {@link net.minecraft.world.entity.Mob#maybeDisableShield} without hardcoding and whatever
-     */
-    public static void maybeDisableShield(ItemStack axe, ItemStack shield, Player player, LivingEntity attacker)
-    {
-        if (!axe.isEmpty() && !shield.isEmpty() && axe.canDisableShield(shield, player, attacker))
-        {
-            final float vanillaDisableChance = 0.25F + EnchantmentHelper.getBlockEfficiency(attacker) * 0.05F;
-            float chanceToDisable = vanillaDisableChance;
-            final Item shieldItem = shield.getItem();
-            if (shieldItem.equals(Items.SHIELD))
-            {
-                chanceToDisable = 1f; // deliberately making vanilla shields worse.
-            }
-            else if (shieldItem instanceof TFCShieldItem tfcShield)
-            {
-                chanceToDisable = (0.25f * vanillaDisableChance) + (0.75f * tfcShield.getDisableChance());
-            }
-            if (attacker.getRandom().nextFloat() < chanceToDisable)
-            {
-                player.getCooldowns().addCooldown(shieldItem, 100);
-                attacker.level().broadcastEntityEvent(player, (byte) 30);
-            }
-        }
     }
 
     /**

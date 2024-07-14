@@ -25,10 +25,11 @@ import net.dries007.tfc.common.effect.TFCEffects;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.livestock.MammalProperties;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
+import net.dries007.tfc.util.Helpers;
 
 public interface HorseProperties extends MammalProperties
 {
-    AttributeModifier OLD_AGE_MODIFIER = new AttributeModifier("old_age", -0.5, AttributeModifier.Operation.MULTIPLY_TOTAL);
+    AttributeModifier OLD_AGE_MODIFIER = new AttributeModifier(Helpers.identifier("old_age"), -0.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
 
     float TAMED_FAMILIARITY = 0.15f;
 
@@ -130,7 +131,7 @@ public interface HorseProperties extends MammalProperties
         if (getAgeType() == Age.OLD)
         {
             final var speed = getEntity().getAttribute(Attributes.MOVEMENT_SPEED);
-            if (speed != null && !speed.hasModifier(OLD_AGE_MODIFIER))
+            if (speed != null && !speed.hasModifier(OLD_AGE_MODIFIER.id()))
             {
                 speed.addTransientModifier(OLD_AGE_MODIFIER);
             }
@@ -138,7 +139,7 @@ public interface HorseProperties extends MammalProperties
 
         for (Entity entity : getEntity().getPassengers())
         {
-            if (entity instanceof LivingEntity livingEntity && livingEntity.hasEffect(TFCEffects.OVERBURDENED.get()))
+            if (entity instanceof LivingEntity livingEntity && livingEntity.hasEffect(TFCEffects.OVERBURDENED.holder()))
             {
                 rejectPassengers();
                 if (livingEntity instanceof Player player)

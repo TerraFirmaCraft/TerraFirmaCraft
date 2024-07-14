@@ -20,6 +20,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
@@ -75,9 +76,7 @@ public class InstantFluidBarrelRecipe extends BarrelRecipe
     public boolean matches(ItemStack inputStack, FluidStack fluidStack)
     {
         // As with instant recipes, we must have enough added input to fully convert the existing fluid.
-        final FluidStack extractableFluid = inputStack.getCapability(Capabilities.FLUID_ITEM)
-            .map(cap -> cap.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE))
-            .orElse(FluidStack.EMPTY);
+        final FluidStack extractableFluid = FluidHelpers.getContainedFluid(inputStack);
         return inputFluid.test(fluidStack) && addedFluid.test(extractableFluid);
     }
 
@@ -94,7 +93,7 @@ public class InstantFluidBarrelRecipe extends BarrelRecipe
             // If we match a slot in the input slot, we continue, otherwise we assume matching the fluid IO slots
             final boolean inputIsItemSlot = matches(inventory.getStackInSlot(BarrelBlockEntity.SLOT_ITEM), primaryFluid);
             final ItemStack originalStack = Helpers.removeStack(inventory, inputIsItemSlot ? BarrelBlockEntity.SLOT_ITEM : BarrelBlockEntity.SLOT_FLUID_CONTAINER_IN);
-            final IFluidHandlerItem fluidHandler = Helpers.getCapability(originalStack.copyWithCount(1), Capabilities.FLUID_ITEM);
+            final IFluidHandlerItem fluidHandler = originalStack.copyWithCount(1).getCapability(Capabilities.FluidHandler.ITEM);
 
             if (fluidHandler == null)
             {

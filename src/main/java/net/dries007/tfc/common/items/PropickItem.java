@@ -23,7 +23,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -32,8 +31,8 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.common.LevelTier;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Ore;
@@ -95,12 +94,11 @@ public class PropickItem extends ToolItem
 
     private final float falseNegativeChance;
 
-    @SuppressWarnings("deprecation")
-    public PropickItem(Tier tier, float attackDamage, float attackSpeed, Properties properties)
+    public PropickItem(LevelTier tier, Properties properties)
     {
-        super(tier, attackDamage, attackSpeed, TFCTags.Blocks.MINEABLE_WITH_PROPICK, properties);
+        super(tier, TFCTags.Blocks.MINEABLE_WITH_PROPICK, properties);
 
-        this.falseNegativeChance = 0.3f - Mth.clamp(tier.getLevel(), 0, 5) * (0.3f / 5f);
+        this.falseNegativeChance = 0.3f - Mth.clamp(tier.level(), 0, 5) * (0.3f / 5f);
     }
 
     @Override
@@ -164,12 +162,11 @@ public class PropickItem extends ToolItem
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> text, TooltipFlag flag)
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag)
     {
         if (flag.isAdvanced())
         {
-            text.add(Component.translatable("tfc.tooltip.propick.accuracy", (int) (100 * (1 - falseNegativeChance))).withStyle(ChatFormatting.GRAY));
+            tooltip.add(Component.translatable("tfc.tooltip.propick.accuracy", (int) (100 * (1 - falseNegativeChance))).withStyle(ChatFormatting.GRAY));
         }
     }
-
 }

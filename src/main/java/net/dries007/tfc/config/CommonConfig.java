@@ -6,12 +6,10 @@
 
 package net.dries007.tfc.config;
 
-import com.mojang.logging.LogUtils;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
 import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
 import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
-import org.slf4j.Logger;
 
 /**
  * Common Config
@@ -20,8 +18,6 @@ import org.slf4j.Logger;
  */
 public class CommonConfig extends BaseConfig
 {
-    private static final Logger LOGGER = LogUtils.getLogger();
-
     // General
     public final ConfigValue<String> defaultWorldPreset;
 
@@ -30,8 +26,6 @@ public class CommonConfig extends BaseConfig
     public final IntValue defaultCalendarStartDay;
 
     // Debug
-    private final BooleanValue enableNetworkDebugging;
-    private boolean hasLoggedNetworkDebugInfoMessage = false;
     public final BooleanValue enableDatapackTests;
 
     CommonConfig(ConfigBuilder builder)
@@ -56,21 +50,6 @@ public class CommonConfig extends BaseConfig
 
         builder.swap("debug");
 
-        enableNetworkDebugging = builder.comment(
-            "Enables a series of network fail-safes that are used to debug network connections between client and servers.",
-            "Important: this MUST BE THE SAME as what the server has set, otherwise you are liable to see even stranger errors."
-        ).define("enableNetworkDebugging", !FMLEnvironment.production);
-
         enableDatapackTests = builder.comment("If enabled, TFC will validate that certain pieces of reloadable data fit the conditions we expect, for example heating recipes having heatable items. It will error or warn in the log if these conditions are not met.").define("enableDatapackTests", !FMLEnvironment.production);
-    }
-
-    public boolean enableNetworkDebugging()
-    {
-        if (!hasLoggedNetworkDebugInfoMessage)
-        {
-            hasLoggedNetworkDebugInfoMessage = true;
-            LOGGER.info("TFC Network Debugging = {}", enableNetworkDebugging.get());
-        }
-        return enableNetworkDebugging.get();
     }
 }

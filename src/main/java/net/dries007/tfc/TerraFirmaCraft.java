@@ -8,7 +8,6 @@ package net.dries007.tfc;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.presets.WorldPreset;
 import net.neoforged.api.distmarker.Dist;
@@ -41,7 +40,6 @@ import net.dries007.tfc.common.capabilities.food.FoodTraits;
 import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.effect.TFCEffects;
-import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.Faunas;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.entities.ai.TFCBrain;
@@ -131,6 +129,7 @@ public final class TerraFirmaCraft
         TFCBrain.SENSOR_TYPES.register(bus);
         TFCBrain.POI_TYPES.register(bus);
         TFCPaintings.PAINTING_TYPES.register(bus);
+        TFCAdvancements.TRIGGERS.register(bus);
 
         // World Generation (vanilla)
         TFCBlockPredicates.BLOCK_PREDICATES.register(bus);
@@ -174,14 +173,12 @@ public final class TerraFirmaCraft
         ServerCalendar.overrideDoDaylightCycleCallback();
 
         event.enqueueWork(() -> {
-            EntityDataSerializers.registerSerializer(EntityHelpers.LONG_SERIALIZER);
             DispenserBehaviors.registerDispenserBehaviors();
             IBellowsConsumer.registerDefaultOffsets();
             Wood.registerBlockSetTypes();
             TFCBrain.initializeScheduleContents();
 
             CauldronInteractions.registerCauldronInteractions();
-            TFCAdvancements.registerTriggers();
             TFCBlocks.registerFlowerPotFlowers();
             TFCBlocks.editBlockRequiredTools();
             TFCItems.editItemMaxDamage();

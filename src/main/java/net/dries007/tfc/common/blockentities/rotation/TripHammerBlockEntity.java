@@ -19,13 +19,13 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.AnvilBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.TickableInventoryBlockEntity;
 import net.dries007.tfc.common.blocks.TripHammerBlock;
 import net.dries007.tfc.common.blocks.devices.AnvilBlock;
 import net.dries007.tfc.common.component.forge.ForgeStep;
-import net.dries007.tfc.common.items.HammerItem;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.rotation.Rotation;
 
@@ -107,7 +107,7 @@ public class TripHammerBlockEntity extends TickableInventoryBlockEntity<ItemStac
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        return stack.getItem() instanceof HammerItem hammer && hammer.getMetalTexture() != null;
+        return Helpers.isItem(stack, TFCTags.Items.TRIP_HAMMERS);
     }
 
     public float getRealRotationDegrees(Rotation rotation, float partialTick)

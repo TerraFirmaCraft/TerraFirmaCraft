@@ -12,9 +12,7 @@ import java.util.function.Supplier;
 import com.google.common.base.Suppliers;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -26,13 +24,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.TridentItem;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.ItemAbility;
-import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.render.blockentity.JavelinItemRenderer;
@@ -40,29 +37,13 @@ import net.dries007.tfc.common.entities.misc.ThrownJavelin;
 import net.dries007.tfc.util.Helpers;
 
 /**
- * Modern implementation is based on {@link net.minecraft.world.item.TridentItem} rather than TFC Classic
+ * Implementation based on {@link TridentItem}
  */
 public class JavelinItem extends SwordItem
 {
-    private final ResourceLocation textureLocation;
-    private final float thrownDamage;
-
-    public JavelinItem(Tier tier, float attackDamage, float thrownDamage, float attackSpeed, Properties properties, String name)
+    public JavelinItem(Tier tier, Properties properties)
     {
-        this(tier, (int) attackDamage, thrownDamage, attackSpeed, properties, Helpers.identifier("textures/entity/projectiles/" + name + "_javelin.png"));
-    }
-
-    public JavelinItem(Tier tier, float attackDamage, float thrownDamage, float attackSpeed, Properties properties, ResourceLocation name)
-    {
-        super(tier, (int) attackDamage, attackSpeed, properties);
-        this.thrownDamage = thrownDamage;
-        this.textureLocation = name;
-    }
-
-    @Override
-    public boolean canAttackBlock(BlockState state, Level level, BlockPos pos, Player player)
-    {
-        return !player.isCreative();
+        super(tier, properties);
     }
 
     @Override
@@ -72,7 +53,7 @@ public class JavelinItem extends SwordItem
     }
 
     @Override
-    public int getUseDuration(ItemStack stack)
+    public int getUseDuration(ItemStack stack, LivingEntity entity)
     {
         return 72000;
     }
@@ -82,7 +63,7 @@ public class JavelinItem extends SwordItem
     {
         if (entity instanceof Player player)
         {
-            int i = this.getUseDuration(stack) - ticksLeft;
+            int i = this.getUseDuration(stack, entity) - ticksLeft;
             if (i >= 10)
             {
                 if (!level.isClientSide)
@@ -125,7 +106,7 @@ public class JavelinItem extends SwordItem
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag advanced)
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag tooltipFlag)
     {
         tooltip.add(Component.translatable("tfc.tooltip.javelin.thrown_damage", String.format("%.0f", getThrownDamage())).withStyle(ChatFormatting.DARK_GREEN));
     }
@@ -140,7 +121,7 @@ public class JavelinItem extends SwordItem
     public void initializeClient(Consumer<IClientItemExtensions> consumer)
     {
         consumer.accept(new IClientItemExtensions() {
-            private final Supplier<JavelinItemRenderer> renderer = Suppliers.memoize(() -> new JavelinItemRenderer(getTextureLocation()));
+            private final Supplier<JavelinItemRenderer> renderer = Suppliers.memoize(() -> new JavelinItemRenderer(JavelinItem.this));
             @Override
             public BlockEntityWithoutLevelRenderer getCustomRenderer()
             {
@@ -149,13 +130,8 @@ public class JavelinItem extends SwordItem
         });
     }
 
-    public ResourceLocation getTextureLocation()
-    {
-        return textureLocation;
-    }
-
     public float getThrownDamage()
     {
-        return thrownDamage;
+        return 1.5f * getTier().getAttackDamageBonus();
     }
 }

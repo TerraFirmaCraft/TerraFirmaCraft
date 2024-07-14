@@ -8,10 +8,8 @@ package net.dries007.tfc.common.entities.misc;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -27,13 +25,15 @@ import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.items.TFCFishingRodItem;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
 
-public class TFCFishingHook extends FishingHook implements IEntityAdditionalSpawnData
+public class TFCFishingHook extends FishingHook implements IEntityWithComplexSpawn
 {
     public static final EntityDataAccessor<ItemStack> BAIT = SynchedEntityData.defineId(TFCFishingHook.class, EntityDataSerializers.ITEM_STACK);
 
@@ -161,14 +161,14 @@ public class TFCFishingHook extends FishingHook implements IEntityAdditionalSpaw
     }
 
     @Override
-    public void writeSpawnData(FriendlyByteBuf buffer)
+    public void writeSpawnData(RegistryFriendlyByteBuf buffer)
     {
         Entity owner = getOwner();
         buffer.writeVarInt(owner == null ? this.getId() : owner.getId());
     }
 
     @Override
-    public void readSpawnData(FriendlyByteBuf additionalData)
+    public void readSpawnData(RegistryFriendlyByteBuf additionalData)
     {
         int id = additionalData.readVarInt();
         Entity entity = this.level().getEntity(id);
@@ -236,15 +236,9 @@ public class TFCFishingHook extends FishingHook implements IEntityAdditionalSpaw
             }
             if (!use.isEmpty())
             {
-                use.removeTagKey("bait");
+                use.remove(TFCComponents.BAIT);
             }
             playSound(SoundEvents.GENERIC_EAT, 1f, 1f);
         }
-    }
-
-    @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket()
-    {
-        return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

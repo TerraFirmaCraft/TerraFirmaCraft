@@ -14,7 +14,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.HangingSignItem;
@@ -117,7 +116,7 @@ public final class TFCItems
     public static final Map<Wood, ItemId> SIGNS = Helpers.mapOfKeys(Wood.class, wood -> register("wood/sign/" + wood.name(), () -> new SignItem(new Item.Properties(), TFCBlocks.WOODS.get(wood).get(Wood.BlockType.SIGN).get(), TFCBlocks.WOODS.get(wood).get(Wood.BlockType.WALL_SIGN).get())));
 
     public static final Map<Wood, Map<Metal.Default, ItemId>> HANGING_SIGNS = Helpers.mapOfKeys(Wood.class, wood ->
-        Helpers.mapOfKeys(Metal.Default.class, Metal.Default::hasUtilities, metal ->
+        Helpers.mapOfKeys(Metal.Default.class, Metal.Default::allParts, metal ->
             register("wood/hanging_sign/" + metal.name() + "/" + wood.name(), () -> new HangingSignItem(TFCBlocks.CEILING_HANGING_SIGNS.get(wood).get(metal).get(), TFCBlocks.WALL_HANGING_SIGNS.get(wood).get(metal).get(), new Item.Properties()))
         )
     );
@@ -134,10 +133,10 @@ public final class TFCItems
         register("jar/" + food.name() + "_unsealed", () -> new JarItem(new Item.Properties(), true))
     );
     public static final Map<Nutrient, ItemId> SOUPS = Helpers.mapOfKeys(Nutrient.class, nutrient ->
-        register("food/" + nutrient.name() + "_soup", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.3f).build())))
+        register("food/" + nutrient.name() + "_soup", () -> new Item(new Item.Properties()))
     );
     public static final Map<Nutrient, ItemId> SALADS = Helpers.mapOfKeys(Nutrient.class, nutrient ->
-        register("food/" + nutrient.name() + "_salad", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.3f).build())))
+        register("food/" + nutrient.name() + "_salad", () -> new Item(new Item.Properties()))
     );
 
     // Flora
@@ -198,7 +197,7 @@ public final class TFCItems
     public static final ItemId EMPTY_JAR_WITH_LID = register("empty_jar_with_lid", () -> new JarItem(new Item.Properties(), false));
     public static final ItemId JAR_LID = register("jar_lid", () -> new Item(new Item.Properties()));
 
-    public static final ItemId BONE_NEEDLE = register("bone_needle", () -> new Item(new Item.Properties().defaultDurability(64)));
+    public static final ItemId BONE_NEEDLE = register("bone_needle", () -> new Item(new Item.Properties().durability(64)));
     public static final ItemId BLANK_DISC = register("blank_disc");
     public static final ItemId BLUBBER = register("blubber");
     public static final ItemId BRASS_MECHANISMS = register("brass_mechanisms");
@@ -207,16 +206,16 @@ public final class TFCItems
     public static final ItemId DAUB = register("daub");
     public static final ItemId DIRTY_JUTE_NET = register("dirty_jute_net");
     public static final ItemId FIRE_CLAY = register("fire_clay");
-    public static final ItemId FIRESTARTER = register("firestarter", () -> new FirestarterItem(new Item.Properties().defaultDurability(8)));
+    public static final ItemId FIRESTARTER = register("firestarter", () -> new FirestarterItem(new Item.Properties().durability(8)));
     public static final ItemId GOAT_HORN = register("goat_horn");
     public static final ItemId GLOW_ARROW = register("glow_arrow", () -> new GlowArrowItem(new Item.Properties()));
     public static final ItemId GLUE = register("glue");
-    public static final ItemId HAND_WHEEL = register("hand_wheel", () -> new Item(new Item.Properties().defaultDurability(250)));
+    public static final ItemId HAND_WHEEL = register("hand_wheel", () -> new Item(new Item.Properties().durability(250)));
     public static final ItemId JUTE = register("jute");
     public static final ItemId JUTE_FIBER = register("jute_fiber");
     public static final ItemId JUTE_NET = register("jute_net");
     public static final ItemId KAOLIN_CLAY = register("kaolin_clay");
-    public static final ItemId HANDSTONE = register("handstone", () -> new Item(new Item.Properties().defaultDurability(250)));
+    public static final ItemId HANDSTONE = register("handstone", () -> new Item(new Item.Properties().durability(250)));
     public static final ItemId MORTAR = register("mortar");
     public static final ItemId OLIVE_PASTE = register("olive_paste");
     public static final ItemId PAPYRUS = register("papyrus");
@@ -226,10 +225,10 @@ public final class TFCItems
     public static final ItemId PURE_POTASSIUM = register("pure_potassium");
     public static final ItemId ROTTEN_COMPOST = register("rotten_compost", () -> new RottenCompostItem(new Item.Properties()));
     public static final ItemId SILK_CLOTH = register("silk_cloth");
-    public static final ItemId SANDPAPER = register("sandpaper", () -> new Item(new Item.Properties().defaultDurability(40)));
+    public static final ItemId SANDPAPER = register("sandpaper", () -> new Item(new Item.Properties().durability(40)));
     public static final ItemId SOAKED_PAPYRUS_STRIP = register("soaked_papyrus_strip");
     public static final ItemId SOOT = register("soot");
-    public static final ItemId SPINDLE = register("spindle", () -> new Item(new Item.Properties().defaultDurability(40)));
+    public static final ItemId SPINDLE = register("spindle", () -> new Item(new Item.Properties().durability(40)));
     public static final ItemId STICK_BUNCH = register("stick_bunch");
     public static final ItemId STICK_BUNDLE = register("stick_bundle");
     public static final ItemId STRAW = register("straw");

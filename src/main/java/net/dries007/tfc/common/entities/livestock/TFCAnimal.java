@@ -38,7 +38,6 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.Temptable;
 import net.dries007.tfc.common.entities.ai.TFCGroundPathNavigation;
 import net.dries007.tfc.common.entities.ai.livestock.LivestockAi;
@@ -50,14 +49,14 @@ import net.dries007.tfc.util.calendar.Calendars;
 public abstract class TFCAnimal extends Animal implements TFCAnimalProperties, Temptable
 {
     private static final EntityDataAccessor<Boolean> GENDER = SynchedEntityData.defineId(TFCAnimal.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Long> BIRTHDAY = SynchedEntityData.defineId(TFCAnimal.class, EntityHelpers.LONG_SERIALIZER);
+    private static final EntityDataAccessor<Long> BIRTHDAY = SynchedEntityData.defineId(TFCAnimal.class, EntityDataSerializers.LONG);
     private static final EntityDataAccessor<Float> FAMILIARITY = SynchedEntityData.defineId(TFCAnimal.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Integer> USES = SynchedEntityData.defineId(TFCAnimal.class, EntityDataSerializers.INT);
     //Is this female fertilized? (in oviparous, the egg laying is fertilized, for mammals this is pregnancy)
     private static final EntityDataAccessor<Boolean> FERTILIZED = SynchedEntityData.defineId(TFCAnimal.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Long> OLD_DAY = SynchedEntityData.defineId(TFCAnimal.class, EntityHelpers.LONG_SERIALIZER);
+    private static final EntityDataAccessor<Long> OLD_DAY = SynchedEntityData.defineId(TFCAnimal.class, EntityDataSerializers.LONG);
     private static final EntityDataAccessor<Integer> GENETIC_SIZE = SynchedEntityData.defineId(TFCAnimal.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Long> LAST_FED = SynchedEntityData.defineId(TFCAnimal.class, EntityHelpers.LONG_SERIALIZER);
+    private static final EntityDataAccessor<Long> LAST_FED = SynchedEntityData.defineId(TFCAnimal.class, EntityDataSerializers.LONG);
 
     private static final CommonAnimalData ANIMAL_DATA = new CommonAnimalData(GENDER, BIRTHDAY, FAMILIARITY, USES, FERTILIZED, OLD_DAY, GENETIC_SIZE, LAST_FED);
 

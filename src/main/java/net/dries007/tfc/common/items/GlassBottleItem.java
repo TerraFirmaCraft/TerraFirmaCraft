@@ -18,15 +18,17 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
-import net.minecraft.world.item.PotionItem;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.player.IPlayerInfo;
 import net.dries007.tfc.common.player.PlayerInfo;
 import net.dries007.tfc.util.data.Drinkable;
@@ -46,7 +48,7 @@ public class GlassBottleItem extends FluidContainerItem
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity)
     {
-        final IFluidHandler handler = stack.getCapability(Capabilities.FLUID_ITEM).resolve().orElse(null);
+        final @Nullable IFluidHandler handler = stack.getCapability(Capabilities.FluidHandler.ITEM);
         if (handler != null)
         {
             final FluidStack drained = handler.drain(DRINK_AMOUNT, IFluidHandler.FluidAction.EXECUTE);
@@ -82,9 +84,9 @@ public class GlassBottleItem extends FluidContainerItem
     }
 
     @Override
-    public int getUseDuration(ItemStack stack)
+    public int getUseDuration(ItemStack stack, LivingEntity entity)
     {
-        return PotionItem.EAT_DURATION;
+        return 32;
     }
 
     @Override
@@ -111,24 +113,28 @@ public class GlassBottleItem extends FluidContainerItem
     @Override
     public int getBarColor(ItemStack stack)
     {
-        return stack.getCapability(Capabilities.FLUID_ITEM).map(cap -> {
-            final int color = RenderHelpers.getFluidColor(cap.getFluidInTank(0));
+        final FluidStack fluid = FluidHelpers.getContainedFluid(stack);
+        if (!fluid.isEmpty())
+        {
+            final int color = RenderHelpers.getFluidColor(fluid);
             final int r = FastColor.ARGB32.red(color);
             final int g = FastColor.ARGB32.green(color);
             final int b = FastColor.ARGB32.blue(color);
             return FastColor.ARGB32.color(0, r, g, b);
-        }).orElse(0xFFFFF);
+        }
+        return 0xFFFFF;
     }
 
     @Override
     public int getBarWidth(ItemStack stack)
     {
-        return stack.getCapability(Capabilities.FLUID_ITEM).map(cap -> (int) Mth.clamp((float) cap.getFluidInTank(0).getAmount() / capacity.get() * 13, 1, 13)).orElse(0);
+        final FluidStack fluid = FluidHelpers.getContainedFluid(stack);
+        return fluid.isEmpty() ? 0 : (int) Mth.clamp((float) fluid.getAmount() / capacity.get() * 13, 1, 13);
     }
 
     @Override
     public boolean isBarVisible(ItemStack stack)
     {
-        return stack.getCapability(Capabilities.FLUID_ITEM).map(cap -> !cap.getFluidInTank(0).isEmpty()).orElse(false);
+        return !FluidHelpers.getContainedFluid(stack).isEmpty();
     }
 }

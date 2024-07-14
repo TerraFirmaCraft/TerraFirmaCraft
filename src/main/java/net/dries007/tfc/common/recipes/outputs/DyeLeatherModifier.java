@@ -6,13 +6,14 @@
 
 package net.dries007.tfc.common.recipes.outputs;
 
-import java.util.Collections;
+import java.util.List;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.DyedItemColor;
 
 public record DyeLeatherModifier(DyeColor color) implements ItemStackModifier
 {
@@ -25,7 +26,7 @@ public record DyeLeatherModifier(DyeColor color) implements ItemStackModifier
     @Override
     public ItemStack apply(ItemStack stack, ItemStack input)
     {
-        return DyeableLeatherItem.dyeArmor(stack, Collections.singletonList(DyeItem.byColor(color)));
+        return DyedItemColor.applyDyes(stack, List.of(DyeItem.byColor(color)));
     }
 
     @Override

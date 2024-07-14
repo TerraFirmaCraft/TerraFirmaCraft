@@ -22,16 +22,14 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
 
-import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.capabilities.SimpleFluidHandler;
 import net.dries007.tfc.common.fluids.FluidHelpers;
-import net.dries007.tfc.common.items.TFCItems;
 
+// todo 1.21, cauldrons are unknown since Neo might provide things for them - we should reevaluate if we want/need these at all
 public final class CauldronInteractions
 {
     private static final BiMap<Block, Fluid> CAULDRONS = HashBiMap.create();
@@ -41,6 +39,7 @@ public final class CauldronInteractions
      */
     public static void registerCauldronInteractions()
     {
+        /*
         // Add generic interactions to vanilla cauldrons
         // These handlers will work with any combination of filled / not-filled, as they use a proper
         registerForVanillaCauldrons(TFCItems.WOODEN_BUCKET.get(), CauldronInteractions::interactWithBucket);
@@ -53,6 +52,7 @@ public final class CauldronInteractions
         registerCauldronBlock(Blocks.CAULDRON, Fluids.EMPTY);
         registerCauldronBlock(Blocks.WATER_CAULDRON, Fluids.WATER);
         registerCauldronBlock(Blocks.LAVA_CAULDRON, Fluids.LAVA);
+         */
     }
 
     public static void registerCauldronBlock(Block cauldron, Fluid fluid)
@@ -62,9 +62,9 @@ public final class CauldronInteractions
 
     public static void registerForVanillaCauldrons(Item item, CauldronInteraction interaction)
     {
-        CauldronInteraction.EMPTY.put(item, interaction);
-        CauldronInteraction.WATER.put(item, interaction);
-        CauldronInteraction.LAVA.put(item, interaction);
+        //CauldronInteraction.EMPTY.put(item, interaction);
+        //CauldronInteraction.WATER.put(item, interaction);
+        //CauldronInteraction.LAVA.put(item, interaction);
     }
 
     public static IFluidHandler createFluidHandler(Level level, BlockPos pos)
@@ -74,7 +74,7 @@ public final class CauldronInteractions
 
     public static InteractionResult interactWithBucket(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack)
     {
-        if (FluidHelpers.transferBetweenBlockHandlerAndItem(stack, createFluidHandler(level, pos), level, pos, new FluidHelpers.AfterTransferWithPlayer(player, hand)))
+        if (FluidHelpers.transferBetweenBlockHandlerAndItem(stack, createFluidHandler(level, pos), level, pos, FluidHelpers.with(player, hand)))
         {
             player.awardStat(Stats.USE_CAULDRON);
             return InteractionResult.SUCCESS;

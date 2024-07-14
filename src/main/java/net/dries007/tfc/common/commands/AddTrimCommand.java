@@ -52,7 +52,7 @@ public class AddTrimCommand
 
     public static int spawnSet(CommandSourceStack source, Item materialItem, Item patternItem, Metal.Default metal) throws CommandSyntaxException
     {
-        if (!metal.hasArmor())
+        if (!metal.allParts())
         {
             source.sendFailure(Component.translatable(FAIL_NOT_ARMOR));
             return 0;

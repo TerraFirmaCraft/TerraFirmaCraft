@@ -9,8 +9,6 @@ package net.dries007.tfc.common.entities.misc;
 import java.util.function.IntConsumer;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -99,7 +97,7 @@ public class HoldingMinecart extends AbstractMinecart
     protected void addAdditionalSaveData(CompoundTag tag)
     {
         super.addAdditionalSaveData(tag);
-        tag.put("holdItem", getHoldItem().save(new CompoundTag()));
+        tag.put("holdItem", getHoldItem().save(registryAccess()));
         tag.putInt("TNTFuse", fuse);
     }
 
@@ -107,7 +105,7 @@ public class HoldingMinecart extends AbstractMinecart
     protected void readAdditionalSaveData(CompoundTag tag)
     {
         super.readAdditionalSaveData(tag);
-        setHoldItem(ItemStack.of(tag.getCompound("holdItem")));
+        setHoldItem(ItemStack.parseOptional(registryAccess(), tag.getCompound("holdItem")));
         fuse = EntityHelpers.getIntOrDefault(tag, "TNTFuse", -1);
     }
 
@@ -184,12 +182,6 @@ public class HoldingMinecart extends AbstractMinecart
     public boolean hasCustomDisplay()
     {
         return true; // tells vanilla to render getDisplayBlockState
-    }
-
-    @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket()
-    {
-        return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     @Override

@@ -57,7 +57,6 @@ public final class WorldTracker
      * @param level The world to query.
      * @return The world tracker for this world.
      */
-    @SuppressWarnings("deprecation")
     public static WorldTracker get(Level level)
     {
         throw new IllegalStateException("missing world tracker"); // todo: 1.21 porting
@@ -245,7 +244,6 @@ public final class WorldTracker
         PacketDistributor.sendToPlayer(player, new RainfallUpdatePacket(rainStartTick, rainEndTick, rainIntensity));
     }
 
-    @Override
     public CompoundTag serializeNBT()
     {
         landslideTicks.flush();
@@ -276,7 +274,6 @@ public final class WorldTracker
         return nbt;
     }
 
-    @Override
     public void deserializeNBT(@Nullable CompoundTag nbt)
     {
         if (nbt != null)

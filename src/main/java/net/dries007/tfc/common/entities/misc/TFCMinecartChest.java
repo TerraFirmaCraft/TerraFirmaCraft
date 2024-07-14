@@ -7,8 +7,6 @@
 package net.dries007.tfc.common.entities.misc;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -23,7 +21,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforge.neoforged.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 
 import net.dries007.tfc.common.blockentities.TFCChestBlockEntity;
@@ -74,24 +71,24 @@ public class TFCMinecartChest extends MinecartChest
     protected void addAdditionalSaveData(CompoundTag tag)
     {
         super.addAdditionalSaveData(tag);
-        tag.put("cartItem", getPickResult().save(new CompoundTag()));
-        tag.put("chestItem", getChestItem().save(new CompoundTag()));
+        tag.put("cartItem", getPickResult().save(registryAccess()));
+        tag.put("chestItem", getChestItem().save(registryAccess()));
     }
 
     @Override
     protected void readAdditionalSaveData(CompoundTag tag)
     {
         super.readAdditionalSaveData(tag);
-        setPickResult(ItemStack.of(tag.getCompound("cartItem")));
-        setChestItem(ItemStack.of(tag.getCompound("chestItem")));
+        setPickResult(ItemStack.parseOptional(registryAccess(), tag.getCompound("cartItem")));
+        setChestItem(ItemStack.parseOptional(registryAccess(), tag.getCompound("chestItem")));
     }
 
     @Override
-    protected void defineSynchedData()
+    protected void defineSynchedData(SynchedEntityData.Builder builder)
     {
-        super.defineSynchedData();
-        entityData.define(DATA_CHEST_ITEM, ItemStack.EMPTY);
-        entityData.define(DATA_CART_ITEM, ItemStack.EMPTY);
+        super.defineSynchedData(builder);
+        builder.define(DATA_CHEST_ITEM, ItemStack.EMPTY);
+        builder.define(DATA_CART_ITEM, ItemStack.EMPTY);
     }
 
     public ItemStack getChestItem()
@@ -138,11 +135,5 @@ public class TFCMinecartChest extends MinecartChest
     protected Item getDropItem()
     {
         return getPickResult().getItem();
-    }
-
-    @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket()
-    {
-        return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

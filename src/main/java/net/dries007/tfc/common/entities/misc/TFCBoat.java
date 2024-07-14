@@ -7,8 +7,6 @@
 package net.dries007.tfc.common.entities.misc;
 
 import java.util.function.Supplier;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
@@ -63,11 +61,5 @@ public class TFCBoat extends Boat
     public Item getDropItem()
     {
         return drop.get();
-    }
-
-    @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket()
-    {
-        return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

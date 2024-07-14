@@ -6,46 +6,14 @@
 
 package net.dries007.tfc.util;
 
-import java.util.stream.Stream;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.BlockSource;
-import net.minecraft.core.Direction;
-import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
-import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.world.entity.animal.horse.AbstractChestedHorse;
-import net.minecraft.world.item.BucketItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.DispenserBlock;
-import net.minecraft.world.level.block.LevelEvent;
-import net.minecraft.world.level.block.entity.DispenserBlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.RailShape;
-import net.minecraft.world.phys.AABB;
-import org.apache.commons.lang3.mutable.Mutable;
-import org.apache.commons.lang3.mutable.MutableObject;
 
-import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blockentities.QuernBlockEntity;
-import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.devices.QuernBlock;
-import net.dries007.tfc.common.blocks.wood.Wood;
-import net.dries007.tfc.common.capabilities.Capabilities;
-import net.dries007.tfc.common.fluids.FluidHelpers;
-import net.dries007.tfc.common.items.FluidContainerItem;
-import net.dries007.tfc.common.items.TFCItems;
-import net.dries007.tfc.common.items.TFCMinecartItem;
-import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.mixin.accessor.DispenserBlockAccessor;
-import net.dries007.tfc.util.events.StartFireEvent;
-
+// todo 1.21, dispensers have changed, we may need to reevaluate here
 public final class DispenserBehaviors
 {
+    /*
     public static final DispenseItemBehavior DEFAULT = new DefaultDispenseItemBehavior();
 
     public static final DispenseItemBehavior VANILLA_BUCKET_BEHAVIOR = new DefaultDispenseItemBehavior()
@@ -199,13 +167,14 @@ public final class DispenserBehaviors
             }
             return stack;
         }
-    };
+    };*/
 
     /**
      * {@link DispenserBlock#registerBehavior(ItemLike, DispenseItemBehavior)} is not thread safe
      */
     public static void registerDispenserBehaviors()
     {
+        /*
         // Bucket emptying
         Stream.of(TFCItems.BLUE_STEEL_BUCKET, TFCItems.RED_STEEL_BUCKET, TFCItems.JUG, TFCItems.WOODEN_BUCKET, TFCItems.SILICA_GLASS_BOTTLE, TFCItems.HEMATITIC_GLASS_BOTTLE, TFCItems.OLIVINE_GLASS_BOTTLE, TFCItems.VOLCANIC_GLASS_BOTTLE)
             .forEach(reg -> DispenserBlock.registerBehavior(reg.get(), TFC_BUCKET_BEHAVIOR));
@@ -224,8 +193,10 @@ public final class DispenserBehaviors
         DispenserBlock.registerBehavior(Items.EGG, new DefaultDispenseItemBehavior());
         DispenserBlock.registerBehavior(Items.FLINT_AND_STEEL, new MultipleItemBehavior(TFC_FLINT_AND_STEEL_BEHAVIOR, DispenserBlockAccessor.accessor$getDispenserRegistry().get(Items.FLINT_AND_STEEL)));
         DispenserBlock.registerBehavior(TFCItems.HANDSTONE.get(), HANDSTONE_BEHAVIOR);
+         */
     }
 
+    /*
     public static class MultipleItemBehavior implements DispenseItemBehavior
     {
         private final OptionalDispenseItemBehavior primary;
@@ -247,5 +218,5 @@ public final class DispenserBehaviors
             }
             return defaultBehavior.dispense(source, stack);
         }
-    }
+    }*/
 }

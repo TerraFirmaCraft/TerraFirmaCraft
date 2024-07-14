@@ -19,9 +19,9 @@ import net.dries007.tfc.util.Helpers;
 
 public class TFCHoeItem extends HoeItem
 {
-    public TFCHoeItem(Tier tier, int damage, float speed, Properties properties)
+    public TFCHoeItem(Tier tier, Properties properties)
     {
-        super(tier, damage, speed, properties);
+        super(tier, properties);
     }
 
     @Override

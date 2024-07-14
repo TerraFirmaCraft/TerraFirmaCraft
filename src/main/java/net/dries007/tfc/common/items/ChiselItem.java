@@ -31,9 +31,9 @@ import net.dries007.tfc.util.advancements.TFCAdvancements;
 
 public class ChiselItem extends ToolItem
 {
-    public ChiselItem(Tier tier, float attackDamage, float attackSpeed, Properties properties)
+    public ChiselItem(Tier tier, Properties properties)
     {
-        super(tier, attackDamage, attackSpeed, TFCTags.Blocks.MINEABLE_WITH_CHISEL, properties);
+        super(tier, TFCTags.Blocks.MINEABLE_WITH_CHISEL, properties);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class ChiselItem extends ToolItem
             final BlockState state = level.getBlockState(pos);
             final Either<BlockState, InteractionResult> result = ChiselRecipe.computeResult(player, state, new BlockHitResult(context.getClickLocation(), context.getClickedFace(), pos, context.isInside()), true);
             return result.map(resultState -> {
-                player.playSound(resultState.getSoundType().getHitSound(), 1f, 1f);
+                player.playSound(resultState.getSoundType(level, pos, player).getHitSound(), 1f, 1f);
 
                 ItemStack held = player.getMainHandItem();
                 if (!level.isClientSide)

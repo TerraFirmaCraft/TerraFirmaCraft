@@ -260,7 +260,7 @@ public final class ClientEventHandler
 
             for (Metal.Default metal : Metal.Default.values())
             {
-                if (metal.hasTools())
+                if (metal.allParts())
                 {
                     Item rod = TFCItems.METAL_ITEMS.get(metal).get(Metal.ItemType.FISHING_ROD).get();
                     ItemProperties.register(rod, Helpers.identifier("cast"), (stack, level, entity, unused) -> {
