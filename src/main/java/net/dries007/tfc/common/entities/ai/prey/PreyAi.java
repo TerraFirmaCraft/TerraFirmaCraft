@@ -7,21 +7,29 @@
 package net.dries007.tfc.common.entities.ai.prey;
 
 import java.util.Optional;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.Brain;
-import net.minecraft.world.entity.ai.behavior.*;
+import net.minecraft.world.entity.ai.behavior.AnimalPanic;
+import net.minecraft.world.entity.ai.behavior.BabyFollowAdult;
+import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
+import net.minecraft.world.entity.ai.behavior.DoNothing;
+import net.minecraft.world.entity.ai.behavior.EraseMemoryIf;
+import net.minecraft.world.entity.ai.behavior.LookAtTargetSink;
+import net.minecraft.world.entity.ai.behavior.MoveToTargetSink;
+import net.minecraft.world.entity.ai.behavior.RandomStroll;
+import net.minecraft.world.entity.ai.behavior.SetWalkTargetAwayFrom;
+import net.minecraft.world.entity.ai.behavior.SetWalkTargetFromLookTarget;
+import net.minecraft.world.entity.ai.behavior.Swim;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.schedule.Activity;
-
-import com.mojang.datafixers.util.Pair;
 
 import net.dries007.tfc.common.entities.ai.FastGateBehavior;
 import net.dries007.tfc.common.entities.ai.SetLookTarget;
@@ -59,7 +67,7 @@ public class PreyAi
     {
         brain.addActivity(Activity.CORE, 0, ImmutableList.of(
             new Swim(0.7F), // float in water
-            new AnimalPanic(2.0F), // if memory of being hit, runs away
+            new AnimalPanic<>(2.0F), // if memory of being hit, runs away
             new LookAtTargetSink(45, 90), // if memory of look target, looks at that
             new MoveToTargetSink() // tries to walk to its internal walk target. This could just be a random block.
         ));

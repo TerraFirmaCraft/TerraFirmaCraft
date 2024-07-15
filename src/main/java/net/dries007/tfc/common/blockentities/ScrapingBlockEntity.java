@@ -94,14 +94,14 @@ public class ScrapingBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         return false;
     }
 
-    public float[] getColor1()
+    public int getColor1()
     {
-        return color1 != null ? color1.getTextureDiffuseColors() : NO_COLOR;
+        return color1 != null ? color1.getTextureDiffuseColor() : -1;
     }
 
-    public float[] getColor2()
+    public int getColor2()
     {
-        return color2 != null ? color2.getTextureDiffuseColors() : NO_COLOR;
+        return color2 != null ? color2.getTextureDiffuseColor() : -1;
     }
 
     @Override

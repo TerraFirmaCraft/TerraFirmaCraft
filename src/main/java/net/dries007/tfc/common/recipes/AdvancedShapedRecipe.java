@@ -51,11 +51,12 @@ public class AdvancedShapedRecipe extends ShapedRecipe
 
     public AdvancedShapedRecipe(ShapedRecipe parent, Optional<ItemStackProvider> result, Optional<ItemStackProvider> remainder, int inputRow, int inputColumn)
     {
-        super(parent.getGroup(), parent.category(), parent.pattern(), RecipeHelpers.getResultUnsafe(parent), parent.showNotification());
+        // todo: needs an AT for pattern
+        super(parent.getGroup(), parent.category(), null /*parent.pattern()*/, RecipeHelpers.getResultUnsafe(parent), parent.showNotification());
 
         this.result = result;
         this.remainder = remainder;
-        this.inputSlot = RecipeHelpers.dissolveRowColumn(inputRow, inputColumn, parent.pattern().width);
+        this.inputSlot = RecipeHelpers.dissolveRowColumn(inputRow, inputColumn, 3); //parent.pattern().width);
         this.inputRow = inputRow;
         this.inputColumn = inputColumn;
     }

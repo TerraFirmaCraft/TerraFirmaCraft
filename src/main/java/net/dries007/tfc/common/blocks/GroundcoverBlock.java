@@ -35,6 +35,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
@@ -77,13 +78,13 @@ public class GroundcoverBlock extends ExtendedBlock implements IFluidLoggable
     }
 
     @Override
-    public boolean canPlaceLiquid(BlockGetter level, BlockPos pos, BlockState state, Fluid fluid)
+    public boolean canPlaceLiquid(@Nullable Player player, BlockGetter level, BlockPos pos, BlockState state, Fluid fluid)
     {
         if (fluid instanceof FlowingFluid && !getFluidProperty().canContain(fluid))
         {
             return true;
         }
-        return IFluidLoggable.super.canPlaceLiquid(level, pos, state, fluid);
+        return IFluidLoggable.super.canPlaceLiquid(player, level, pos, state, fluid);
     }
 
     @Override

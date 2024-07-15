@@ -39,7 +39,7 @@ public class TadpoleMixin
             if (frog != null)
             {
                 frog.moveTo(pole.getX(), pole.getY(), pole.getZ(), pole.getYRot(), pole.getXRot());
-                frog.finalizeSpawn(server, server.getCurrentDifficultyAt(frog.blockPosition()), MobSpawnType.CONVERSION, null, null);
+                frog.finalizeSpawn(server, server.getCurrentDifficultyAt(frog.blockPosition()), MobSpawnType.CONVERSION, null);
                 frog.setNoAi(pole.isNoAi());
                 if (pole.hasCustomName())
                 {

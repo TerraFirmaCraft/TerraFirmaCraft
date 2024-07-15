@@ -18,12 +18,11 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.component.forge.ForgingBonus;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 
-public class WeldingRecipe implements ISimpleRecipe<WeldingRecipe.Inventory>
+public class WeldingRecipe implements INoopInputRecipe, IRecipePredicate<WeldingRecipe.Inventory>
 {
     public static final MapCodec<WeldingRecipe> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
         Ingredient.CODEC.fieldOf("first_input").forGetter(c -> c.firstInput),
@@ -69,20 +68,15 @@ public class WeldingRecipe implements ISimpleRecipe<WeldingRecipe.Inventory>
         return tier;
     }
 
-    /**
-     * This is used when querying the matching recipe for a stack.
-     * As such it doesn't check if the recipe is complete, but only if the recipe could be completed.
-     */
     @Override
-    public boolean matches(Inventory inventory, Level level)
+    public boolean matches(Inventory input)
     {
-        final ItemStack left = inventory.getLeft(), right = inventory.getRight();
-        return (firstInput.test(left) && secondInput.test(right)) || (firstInput.test(right) && secondInput.test(left));
+        final ItemStack left = input.getLeft(), right = input.getRight();
+        return (firstInput.test(left) && secondInput.test(right))
+            || (firstInput.test(right) && secondInput.test(left));
     }
 
-
-    @Override
-    public ItemStack assemble(Inventory input, HolderLookup.Provider registries)
+    public ItemStack assemble(Inventory input)
     {
         final ItemStack stack = output.getSingleStack(input.getLeft());
         if (combineForgingBonus)

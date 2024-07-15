@@ -124,7 +124,7 @@ public final class TFCItems
     // Food
 
     public static final Map<Food, ItemId> FOOD = Helpers.mapOfKeys(Food.class, food ->
-        register("food/" + food.name(), () -> new Item(food.createProperties()))
+        register("food/" + food.name(), () -> new Item(new Item.Properties()))
     );
     public static final Map<Food, ItemId> FRUIT_PRESERVES = Helpers.mapOfKeys(Food.class, Food::isFruit, food ->
         register("jar/" + food.name(), () -> new JarItem(new Item.Properties(), false))
@@ -366,18 +366,20 @@ public final class TFCItems
     // Fluid Buckets
 
     public static final Map<FluidId, ItemId> FLUID_BUCKETS = FluidId.mapOf(fluid ->
-        register("bucket/" + fluid.name(), () -> new BucketItem(fluid.fluid(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)))
+        register("bucket/" + fluid.name(), () -> new BucketItem(fluid.fluid().get(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)))
     );
 
     public static final ItemId RED_STEEL_BUCKET = register("metal/bucket/red_steel", () -> new FluidContainerItem(new Item.Properties(), () -> FluidHelpers.BUCKET_VOLUME, TFCTags.Fluids.USABLE_IN_RED_STEEL_BUCKET, true, false));
     public static final ItemId BLUE_STEEL_BUCKET = register("metal/bucket/blue_steel", () -> new FluidContainerItem(new Item.Properties(), () -> FluidHelpers.BUCKET_VOLUME, TFCTags.Fluids.USABLE_IN_BLUE_STEEL_BUCKET, true, false));
 
-    public static final ItemId COD_BUCKET = register("bucket/cod", () -> new MobBucketItem(TFCEntities.COD, TFCFluids.SALT_WATER.source(), () -> SoundEvents.BUCKET_EMPTY_FISH, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
-    public static final ItemId PUFFERFISH_BUCKET = register("bucket/pufferfish", () -> new MobBucketItem(TFCEntities.PUFFERFISH, TFCFluids.SALT_WATER.source(), () -> SoundEvents.BUCKET_EMPTY_FISH, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
-    public static final ItemId JELLYFISH_BUCKET = register("bucket/jellyfish", () -> new MobBucketItem(TFCEntities.JELLYFISH, TFCFluids.SALT_WATER.source(), () -> SoundEvents.BUCKET_EMPTY_FISH, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
-    public static final ItemId TROPICAL_FISH_BUCKET = register("bucket/tropical_fish", () -> new MobBucketItem(TFCEntities.TROPICAL_FISH, TFCFluids.SALT_WATER.source(), () -> SoundEvents.BUCKET_EMPTY_FISH, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
+    public static final ItemId COD_BUCKET = register("bucket/cod", () -> new MobBucketItem(TFCEntities.COD.get(), TFCFluids.SALT_WATER.getSource(), SoundEvents.BUCKET_EMPTY_FISH, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
+    public static final ItemId PUFFERFISH_BUCKET = register("bucket/pufferfish", () -> new MobBucketItem(TFCEntities.PUFFERFISH.get(), TFCFluids.SALT_WATER.getSource(), SoundEvents.BUCKET_EMPTY_FISH, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
+    public static final ItemId JELLYFISH_BUCKET = register("bucket/jellyfish", () -> new MobBucketItem(TFCEntities.JELLYFISH.get(), TFCFluids.SALT_WATER.getSource(), SoundEvents.BUCKET_EMPTY_FISH, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
+    public static final ItemId TROPICAL_FISH_BUCKET = register("bucket/tropical_fish", () -> new MobBucketItem(TFCEntities.TROPICAL_FISH.get(), TFCFluids.SALT_WATER.getSource(), SoundEvents.BUCKET_EMPTY_FISH, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
 
-    public static final Map<Fish, ItemId> FRESHWATER_FISH_BUCKETS = Helpers.mapOfKeys(Fish.class, fish -> register("bucket/" + fish.getSerializedName(), () -> new MobBucketItem(TFCEntities.FRESHWATER_FISH.get(fish), () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_FISH, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1))));
+    public static final Map<Fish, ItemId> FRESHWATER_FISH_BUCKETS = Helpers.mapOfKeys(Fish.class, fish ->
+        register("bucket/" + fish.getSerializedName(), () -> new MobBucketItem(TFCEntities.FRESHWATER_FISH.get(fish).get(), Fluids.WATER, SoundEvents.BUCKET_EMPTY_FISH, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)))
+    );
 
     public static void editItemMaxDamage()
     {

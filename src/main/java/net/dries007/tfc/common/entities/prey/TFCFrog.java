@@ -10,6 +10,7 @@ import java.util.Optional;
 import com.mojang.serialization.Dynamic;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -75,11 +76,11 @@ public class TFCFrog extends Frog implements Temptable, BrainBreeder
     }
 
     @Override
-    protected void defineSynchedData()
+    protected void defineSynchedData(SynchedEntityData.Builder builder)
     {
-        super.defineSynchedData();
-        entityData.define(DATA_IS_MALE, true);
-        entityData.define(DATA_FAMILIARITY, 0f);
+        super.defineSynchedData(builder);
+        builder.define(DATA_IS_MALE, true);
+        builder.define(DATA_FAMILIARITY, 0f);
     }
 
     @Override
@@ -152,21 +153,16 @@ public class TFCFrog extends Frog implements Temptable, BrainBreeder
             && Helpers.isItem(stack, TFCTags.Items.FROG_FOOD);
     }
 
+    @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag tag)
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnData)
     {
-        final SpawnGroupData spawnData = super.finalizeSpawn(level, difficulty, type, spawnGroupData, tag);
+        spawnData = super.finalizeSpawn(level, difficulty, spawnType, spawnData);
         final BlockPos pos = blockPosition();
         final ChunkData data = EntityHelpers.getChunkDataForSpawning(level, pos);
         final float temp = data.getAverageTemp(pos);
-        if (temp < 0)
-        {
-            setVariant(FrogVariant.COLD);
-        }
-        else
-        {
-            setVariant(temp > 18 ? FrogVariant.WARM : FrogVariant.TEMPERATE);
-        }
+
+        setVariant(BuiltInRegistries.FROG_VARIANT.getHolderOrThrow(temp < 0 ? FrogVariant.COLD : temp > 18 ? FrogVariant.WARM : FrogVariant.TEMPERATE));
         setIsMale(random.nextBoolean());
         return spawnData;
     }

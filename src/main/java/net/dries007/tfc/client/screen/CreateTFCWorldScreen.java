@@ -84,7 +84,8 @@ public class CreateTFCWorldScreen extends Screen
         final ChunkGenerator generator = context.selectedDimensions().overworld();
         final Settings settings = ((ChunkGeneratorExtension) generator).settings();
 
-        options = new OptionsList(minecraft, width, height, 32, height - 32, 25);
+        // todo 1.21, what needs to change here
+        //options = new OptionsList(minecraft, width, height, 32, height - 32, 25);
 
         options.addSmall(
             flatBedrock = OptionInstance.createBoolean("tfc.create_world.flat_bedrock", settings.flatBedrock(), value -> {}),

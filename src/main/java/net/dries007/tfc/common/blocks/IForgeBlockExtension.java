@@ -64,8 +64,10 @@ public interface IForgeBlockExtension extends IBlockExtension
      * @return A non-functional, dummy block codec because we don't want to bother implementing these while Mojang still doesn't use them
      */
     @SuppressWarnings("unchecked")
+    static <T extends Block> MapCodec<T> getFakeBlockCodec() { return (MapCodec<T>) Block.CODEC; }
+
     default  <T extends Block> MapCodec<T> fakeBlockCodec()
     {
-        return (MapCodec<T>) Block.CODEC;
+        return getFakeBlockCodec();
     }
 }

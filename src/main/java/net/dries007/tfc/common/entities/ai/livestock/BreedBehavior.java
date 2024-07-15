@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.entities.ai.livestock;
 
 import java.util.Optional;
-
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.AgeableMob;
@@ -54,7 +53,7 @@ public class BreedBehavior<T extends Animal & BrainBreeder> extends Behavior<T>
         AgeableMob target = this.findValidBreedPartner(animal).get();
         animal.getBrain().setMemory(MemoryModuleType.BREED_TARGET, target);
         target.getBrain().setMemory(MemoryModuleType.BREED_TARGET, animal);
-        BehaviorUtils.lockGazeAndWalkToEachOther(animal, target, this.speedModifier);
+        BehaviorUtils.lockGazeAndWalkToEachOther(animal, target, speedModifier, 2); // todo 1.21 what distance parameter?
         this.spawnChildAtTime = time + 60 + animal.getRandom().nextInt(50);
     }
 
@@ -76,7 +75,7 @@ public class BreedBehavior<T extends Animal & BrainBreeder> extends Behavior<T>
     protected void tick(ServerLevel level, T animal, long time)
     {
         AgeableMob target = animal.getBrain().getMemory(MemoryModuleType.BREED_TARGET).get();
-        BehaviorUtils.lockGazeAndWalkToEachOther(animal, target, this.speedModifier);
+        BehaviorUtils.lockGazeAndWalkToEachOther(animal, target, speedModifier, 2);
         if (animal.closerThan(target, 3.0D) && time >= this.spawnChildAtTime)
         {
             target.getBreedOffspring(level, animal);

@@ -24,7 +24,7 @@ public record ExtraProductModifier(ItemStack stack) implements ItemStackModifier
 
     public static ExtraProductModifier of(ItemStack stack)
     {
-        return new ExtraProductModifier(FoodCapability.setStackNonDecaying(stack));
+        return new ExtraProductModifier(FoodCapability.setNonDecaying(stack));
     }
 
     @Override

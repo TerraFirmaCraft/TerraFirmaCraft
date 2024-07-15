@@ -12,6 +12,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -36,6 +37,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
+import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
@@ -210,13 +212,13 @@ public class AqueductBlock extends HorizontalDirectionalBlock implements IFluidL
     }
 
     @Override
-    public ItemStack pickupBlock(LevelAccessor level, BlockPos pos, BlockState state)
+    public ItemStack pickupBlock(@Nullable Player player, LevelAccessor level, BlockPos pos, BlockState state)
     {
         if (state.getValue(getFluidProperty()).getFluid() != Fluids.EMPTY)
         {
             level.scheduleTick(pos, this, LONG_TICK_DELAY);
         }
-        return IFluidLoggable.super.pickupBlock(level, pos, state);
+        return IFluidLoggable.super.pickupBlock(player, level, pos, state);
     }
 
     @Override
@@ -338,9 +340,8 @@ public class AqueductBlock extends HorizontalDirectionalBlock implements IFluidL
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     protected MapCodec<? extends HorizontalDirectionalBlock> codec()
     {
-        return (MapCodec<? extends HorizontalDirectionalBlock>) Block.CODEC;
+        return IForgeBlockExtension.getFakeBlockCodec();
     }
 }

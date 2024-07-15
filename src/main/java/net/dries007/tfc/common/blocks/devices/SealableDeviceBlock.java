@@ -7,16 +7,11 @@
 package net.dries007.tfc.common.blocks.devices;
 
 import java.util.List;
-import java.util.Optional;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.tooltip.TooltipComponent;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -32,7 +27,6 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
@@ -41,8 +35,6 @@ import net.dries007.tfc.common.blocks.TooltipBlock;
 import net.dries007.tfc.common.capabilities.size.IItemSize;
 import net.dries007.tfc.common.capabilities.size.Size;
 import net.dries007.tfc.common.capabilities.size.Weight;
-import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.Helpers;
 
 public class SealableDeviceBlock extends DeviceBlock implements IItemSize, TooltipBlock
 {
@@ -68,7 +60,8 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize, Toolt
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         BlockState state = getStateForPlacement(context.getLevel(), context.getClickedPos());
-        if (context.getItemInHand().getTag() != null)
+        // todo: 1.21 this relies on sealed device components
+        //if (context.getItemInHand().getTag() != null)
         {
             state = state.setValue(SEALED, true);
         }
@@ -80,6 +73,7 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize, Toolt
         return defaultBlockState().setValue(POWERED, level.hasNeighborSignal(pos));
     }
 
+    /* todo 1.21, this relies on sealed device components
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag tooltipFlag)
     {
@@ -121,7 +115,7 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize, Toolt
             }
         }
         return Optional.empty();
-    }
+    }*/
 
     /**
      * @return an array of four integers: {width, height, startIndex, endIndex}
@@ -148,7 +142,9 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize, Toolt
     @Override
     public Weight getWeight(ItemStack stack)
     {
-        return stack.getTag() == null ? Weight.HEAVY : Weight.VERY_HEAVY;
+        // todo 1.21 this relies on sealed device components
+        return Weight.HEAVY;
+        //return stack.getTag() == null ? Weight.HEAVY : Weight.VERY_HEAVY;
     }
 
     @Override

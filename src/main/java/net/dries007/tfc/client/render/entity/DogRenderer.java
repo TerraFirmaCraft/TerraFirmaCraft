@@ -28,9 +28,9 @@ public class DogRenderer extends SimpleMobRenderer<Dog, DogModel>
     }
 
     @Override
-    protected void setupRotations(Dog entity, PoseStack stack, float age, float yaw, float partialTicks)
+    protected void setupRotations(Dog entity, PoseStack stack, float bob, float yBodyRot, float partialTick, float scale)
     {
-        super.setupRotations(entity, stack, age, yaw, partialTicks);
+        super.setupRotations(entity, stack, bob, yBodyRot, partialTick, scale);
         if (entity.isSleeping())
         {
             stack.translate(0.2F, 0.1F, 0.0D);

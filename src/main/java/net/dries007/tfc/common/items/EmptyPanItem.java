@@ -8,7 +8,6 @@ package net.dries007.tfc.common.items;
 
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -18,17 +17,12 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
+import net.dries007.tfc.common.component.PannableComponent;
+import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.util.data.Pannable;
 
 public class EmptyPanItem extends Item
 {
-    private static ItemStack fill(BlockState state)
-    {
-        final ItemStack stack = new ItemStack(TFCItems.FILLED_PAN.get());
-        stack.addTagElement("state", NbtUtils.writeBlockState(state));
-        return stack;
-    }
-
     public EmptyPanItem(Properties properties)
     {
         super(properties);
@@ -52,7 +46,8 @@ public class EmptyPanItem extends Item
                 if (!player.isCreative()) stack.shrink(1);
                 player.awardStat(Stats.ITEM_USED.get(this));
 
-                final ItemStack putStack = fill(state);
+                final ItemStack putStack = new ItemStack(TFCItems.FILLED_PAN.get());
+                putStack.set(TFCComponents.PANNABLE, new PannableComponent(state));
                 if (!player.getInventory().add(putStack)) player.drop(putStack, false);
                 return InteractionResult.CONSUME;
             }

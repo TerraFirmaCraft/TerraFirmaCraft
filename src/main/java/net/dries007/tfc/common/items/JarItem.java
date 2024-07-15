@@ -71,7 +71,7 @@ public class JarItem extends Item
         }
         if (dir == Direction.UP && stateUp.getBlock() instanceof JarShelfBlock block && player != null)
         {
-            return block.use(stateUp, level, above, player, context.getHand(), new BlockHitResult(context.getClickLocation(), Direction.UP, above, true));
+            return stateUp.useItemOn(held, level, player, context.getHand(), new BlockHitResult(context.getClickLocation(), Direction.UP, above, true)).result();
         }
         return InteractionResult.PASS;
     }

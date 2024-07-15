@@ -22,10 +22,10 @@ public class PenguinRenderer extends SimpleMobRenderer<Penguin, PenguinModel>
     }
 
     @Override
-    protected void setupRotations(Penguin animal, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks)
+    protected void setupRotations(Penguin entity, PoseStack stack, float bob, float yBodyRot, float partialTick, float scale)
     {
-        super.setupRotations(animal, stack, ageInTicks, rotationYaw, partialTicks);
-        if (animal.isInWater())
+        super.setupRotations(entity, stack, bob, yBodyRot, partialTick, scale);
+        if (entity.isInWater())
         {
             stack.translate(0.0D, 0.4D, 0.0D);
             stack.mulPose(Axis.XP.rotationDegrees(270.0F));

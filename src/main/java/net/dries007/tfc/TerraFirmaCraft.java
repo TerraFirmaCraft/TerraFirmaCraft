@@ -26,6 +26,7 @@ import net.neoforged.neoforge.registries.NewRegistryEvent;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
+import net.dries007.tfc.client.BarSystem;
 import net.dries007.tfc.client.ClientEventHandler;
 import net.dries007.tfc.client.ClientForgeEventHandler;
 import net.dries007.tfc.client.TFCSounds;
@@ -148,6 +149,7 @@ public final class TerraFirmaCraft
         PotOutput.TYPES.register(bus);
         ClimateModels.TYPES.register(bus);
         DataManagers.MANAGERS.register(bus);
+        BarSystem.BARS.register(bus);
 
         CalendarEventHandler.init();
         ForgeEventHandler.init();
@@ -204,6 +206,7 @@ public final class TerraFirmaCraft
         event.register(PotOutput.REGISTRY);
         event.register(ClimateModels.REGISTRY);
         event.register(DataManagers.REGISTRY);
+        event.register(BarSystem.REGISTRY);
     }
 
     public void registerCapabilities(RegisterCapabilitiesEvent event)

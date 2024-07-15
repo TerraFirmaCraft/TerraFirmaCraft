@@ -6,20 +6,12 @@
 
 package net.dries007.tfc.common.blocks.devices;
 
-import java.util.List;
-import java.util.Optional;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.tooltip.TooltipComponent;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -27,10 +19,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.items.ItemStackHandler;
 
-import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
@@ -38,10 +27,7 @@ import net.dries007.tfc.common.blocks.TooltipBlock;
 import net.dries007.tfc.common.capabilities.size.IItemSize;
 import net.dries007.tfc.common.capabilities.size.Size;
 import net.dries007.tfc.common.capabilities.size.Weight;
-import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.Alloy;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Tooltips;
 
 public class CrucibleBlock extends DeviceBlock implements EntityBlockExtension, IItemSize, TooltipBlock
 {
@@ -95,11 +81,12 @@ public class CrucibleBlock extends DeviceBlock implements EntityBlockExtension, 
     @Override
     public Size getSize(ItemStack stack)
     {
-        final CompoundTag tag = stack.getTagElement(Helpers.BLOCK_ENTITY_TAG);
+        // todo: this relies on sealed device components
+        /*final CompoundTag tag = stack.getTagElement(Helpers.BLOCK_ENTITY_TAG);
         if (tag != null && tag.contains("empty") && !tag.getBoolean("empty"))
         {
             return Size.HUGE;
-        }
+        }*/
         return Size.LARGE;
     }
 
@@ -109,6 +96,8 @@ public class CrucibleBlock extends DeviceBlock implements EntityBlockExtension, 
         return Weight.VERY_HEAVY;
     }
 
+    // todo 1.21: this relies on sealed device components
+    /*
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag)
     {
@@ -153,5 +142,5 @@ public class CrucibleBlock extends DeviceBlock implements EntityBlockExtension, 
             }
         }
         return Optional.empty();
-    }
+    }*/
 }

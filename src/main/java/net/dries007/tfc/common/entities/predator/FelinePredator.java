@@ -59,10 +59,10 @@ public class FelinePredator extends Predator
     }
 
     @Override
-    public void defineSynchedData()
+    public void defineSynchedData(SynchedEntityData.Builder builder)
     {
-        super.defineSynchedData();
-        entityData.define(DATA_CLIMBING, false);
+        super.defineSynchedData(builder);
+        builder.define(DATA_CLIMBING, false);
     }
 
     public static AttributeSupplier.Builder createAttributes()

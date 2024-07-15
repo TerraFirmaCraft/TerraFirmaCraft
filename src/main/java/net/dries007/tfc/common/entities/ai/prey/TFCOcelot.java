@@ -82,10 +82,10 @@ public class TFCOcelot extends Ocelot
     }
 
     @Override
-    public void defineSynchedData()
+    public void defineSynchedData(SynchedEntityData.Builder builder)
     {
-        super.defineSynchedData();
-        entityData.define(DATA_FAMILIARITY, 0f);
+        super.defineSynchedData(builder);
+        builder.define(DATA_FAMILIARITY, 0f);
     }
 
     @Override
@@ -126,7 +126,7 @@ public class TFCOcelot extends Ocelot
                         final TFCCat cat = convertTo(TFCEntities.CAT.get(), false);
                         if (cat != null && level() instanceof ServerLevelAccessor server)
                         {
-                            cat.finalizeSpawn(server, level().getCurrentDifficultyAt(blockPosition()), MobSpawnType.CONVERSION, null, null);
+                            cat.finalizeSpawn(server, level().getCurrentDifficultyAt(blockPosition()), MobSpawnType.CONVERSION, null);
                             if (!wasBaby)
                             {
                                 cat.setBirthDay(Calendars.get(level()).getTotalDays() - 120);

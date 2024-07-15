@@ -6,13 +6,20 @@
 
 package net.dries007.tfc.common.component;
 
+import java.lang.reflect.Field;
 import com.mojang.serialization.Codec;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.event.ModifyDefaultComponentsEvent;
+import net.neoforged.neoforge.internal.RegistrationEvents;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.Nullable;
@@ -26,9 +33,11 @@ import net.dries007.tfc.common.capabilities.food.IngredientsComponent;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatComponent;
 import net.dries007.tfc.common.capabilities.heat.HeatDefinition;
+import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.component.forge.ForgingBonus;
 import net.dries007.tfc.common.component.forge.ForgingComponent;
 import net.dries007.tfc.common.component.glass.GlassOperations;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.registry.RegistryHolder;
 
 public final class TFCComponents
@@ -61,6 +70,74 @@ public final class TFCComponents
             .set(FORGING_BONUS.get(), ForgingBonus.DEFAULT)
             .set(GLASS.get(), GlassOperations.DEFAULT)
         );
+    }
+
+    /**
+     * Modify the default food, and stack size components after a resource reload. This is not allowed in Neo because it will not modify
+     * the prototype maps of existing item stacks. In TFC, this is a reasonable tradeoff to make - we are only modifying stack size and presence
+     * of food, and in normal gameplay, these will only miss stacks created before the initial resource reload, which in TFC of the past, would not
+     * have had correct food/size properties anyway.
+     * <p>
+     * All this to say, we use the Neo provided modification event infrastructure, with a little bit of reflection to avoid the safeguards Neo
+     * puts in place to prevent exactly what we are doing.
+     *
+     * @see ModifyDefaultComponentsEvent
+     */
+    public static void onModifyDefaultComponentsAfterResourceReload()
+    {
+        // A default instance, which is used in vanilla to signal an item is edible.
+        final FoodProperties food = new FoodProperties.Builder().build();
+
+        setAllowComponentModifications(true);
+        for (Item item : BuiltInRegistries.ITEM)
+        {
+            final ItemStack stack = new ItemStack(item);
+
+            final boolean hasFood = item.components().has(DataComponents.FOOD);
+            final boolean needsFood = FoodCapability.getDefinition(stack) != null;
+
+            final int prevSize = item.components().getOrDefault(DataComponents.MAX_STACK_SIZE, 1);
+            final int requestedSize = ItemSizeManager.getDefinition(stack).weight().stackSize;
+
+            // Only perform the modification if we want to do any modifications, to avoid otherwise expensive operations
+            // Only perform item size modifications if the original item doesn't request "1" stack size
+            if (hasFood != needsFood || (prevSize != 1 && prevSize != requestedSize))
+            {
+                final DataComponentPatch.Builder builder = DataComponentPatch.builder();
+
+                if (hasFood) builder.remove(DataComponents.FOOD);
+                if (needsFood) builder.set(DataComponents.FOOD, food);
+                if (prevSize != 1 && prevSize != requestedSize) builder.set(DataComponents.MAX_STACK_SIZE, requestedSize);
+
+                final DataComponentPatch patch = builder.build();
+                if (!patch.isEmpty())
+                {
+                    modifyDefaultComponentsFrom(item, patch);
+                }
+            }
+        }
+        setAllowComponentModifications(false);
+    }
+
+    @SuppressWarnings({"UnstableApiUsage", "deprecation"})
+    private static void modifyDefaultComponentsFrom(Item item, DataComponentPatch patch)
+    {
+        item.modifyDefaultComponentsFrom(patch);
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    private static void setAllowComponentModifications(boolean value)
+    {
+        try
+        {
+            final Field field = RegistrationEvents.class.getDeclaredField("canModifyComponents");
+            field.setAccessible(true);
+            field.set(null, value);
+        }
+        catch (NoSuchFieldException | IllegalAccessException e)
+        {
+            Helpers.throwAsUnchecked(e);
+        }
     }
 
     /**

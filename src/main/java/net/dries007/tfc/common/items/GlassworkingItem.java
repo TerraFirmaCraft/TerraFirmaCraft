@@ -11,8 +11,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.component.glass.GlassOperation;
 import net.dries007.tfc.common.component.glass.IGlassworkingTool;
@@ -34,9 +32,9 @@ public class GlassworkingItem extends Item implements IGlassworkingTool
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag)
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag tooltipFlag)
     {
-        super.appendHoverText(stack, level, tooltip, flag);
+        super.appendHoverText(stack, context, tooltip, tooltipFlag);
         addToolTooltip(tooltip);
     }
 }

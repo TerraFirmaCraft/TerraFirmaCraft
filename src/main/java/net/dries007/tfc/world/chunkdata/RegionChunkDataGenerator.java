@@ -189,7 +189,6 @@ public record RegionChunkDataGenerator(
         generateRock(pos.getX(), pos.getY(), pos.getZ(), surfaceY, null, tooltip);
     }
 
-    @SuppressWarnings("deprecation")
     private RockSettings generateRock(int x, int y, int z, int surfaceY, @Nullable ChunkRockDataCache cache, @Nullable List<String> tooltip)
     {
         // Adjust surface Y so that really high mountains don't pull up the rock layers too much

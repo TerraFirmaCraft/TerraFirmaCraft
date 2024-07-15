@@ -11,8 +11,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.component.glass.GlassOperation;
@@ -22,7 +20,7 @@ public class GemSawItem extends ToolItem implements IGlassworkingTool
 {
     public GemSawItem(Tier tier, Properties properties)
     {
-        super(tier, calculateVanillaAttackDamage(-0.2f, tier), -2.0F, TFCTags.Blocks.MINEABLE_WITH_GLASS_SAW, properties);
+        super(tier, TFCTags.Blocks.MINEABLE_WITH_GLASS_SAW, properties.attributes(ToolItem.productAttributes(tier, -0.2f, -2.0f)));
     }
 
     @Override
@@ -32,9 +30,9 @@ public class GemSawItem extends ToolItem implements IGlassworkingTool
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag)
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag tooltipFlag)
     {
-        super.appendHoverText(stack, level, tooltip, flag);
+        super.appendHoverText(stack, context, tooltip, tooltipFlag);
         addToolTooltip(tooltip);
     }
 }

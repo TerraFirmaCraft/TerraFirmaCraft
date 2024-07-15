@@ -9,7 +9,6 @@ package net.dries007.tfc.common.entities.misc;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
@@ -151,10 +150,10 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
             if (time++ == 0)
             {
                 // First tick, replace the existing block
-                BlockPos blockpos = blockPosition();
-                if (block == level().getBlockState(blockpos).getBlock())
+                final BlockPos pos = blockPosition();
+                if (block == level().getBlockState(pos).getBlock())
                 {
-                    level().removeBlock(blockpos, false);
+                    level().removeBlock(pos, false);
                 }
                 else if (!level().isClientSide)
                 {
@@ -165,16 +164,13 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
                 return;
             }
 
-            if (!isNoGravity())
-            {
-                setDeltaMovement(getDeltaMovement().add(0.0D, -0.04D, 0.0D));
-            }
-
+            applyGravity();
             move(MoverType.SELF, getDeltaMovement());
+            handlePortal();
 
-            if (!level().isClientSide)
+            if (!level().isClientSide && (this.isAlive() || this.forceTickAfterTeleportToDuplicate))
             {
-                BlockPos posAt = blockPosition();
+                final BlockPos posAt = blockPosition();
                 if (!onGround())
                 {
                     failedBreakCheck = false;
@@ -281,20 +277,16 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
         // Sets the tile entity if it exists
         if (blockData != null && fallingBlockState.hasBlockEntity())
         {
-            BlockEntity tileEntity = level().getBlockEntity(posAt);
-            if (tileEntity != null)
+            final BlockEntity blockEntity = level().getBlockEntity(posAt);
+            if (blockEntity != null)
             {
-                CompoundTag tileEntityData = tileEntity.saveWithoutMetadata();
-                for (String dataKey : tileEntityData.getAllKeys())
+                final CompoundTag blockEntityData = blockEntity.saveWithoutMetadata(level().registryAccess());
+                for (String key : blockEntityData.getAllKeys())
                 {
-                    Tag dataElement = tileEntityData.get(dataKey);
-                    if (!"x".equals(dataKey) && !"y".equals(dataKey) && !"z".equals(dataKey) && dataElement != null)
-                    {
-                        tileEntityData.put(dataKey, dataElement.copy());
-                    }
+                    blockEntityData.put(key, blockData.get(key).copy());
                 }
-                tileEntity.load(tileEntityData);
-                tileEntity.setChanged();
+                blockEntity.loadWithComponents(blockEntityData, level().registryAccess());
+                blockEntity.setChanged();
             }
         }
     }

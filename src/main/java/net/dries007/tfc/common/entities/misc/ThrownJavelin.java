@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.entities.misc;
 
-import javax.annotation.Nullable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -20,15 +19,16 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SwordItem;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.items.JavelinItem;
+import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
 
 public class ThrownJavelin extends AbstractArrow
@@ -45,12 +45,7 @@ public class ThrownJavelin extends AbstractArrow
 
     public ThrownJavelin(Level level, LivingEntity entity, ItemStack stack)
     {
-        this(TFCEntities.THROWN_JAVELIN.get(), level, entity, stack);
-    }
-
-    public ThrownJavelin(EntityType<? extends ThrownJavelin> type, Level level, LivingEntity entity, ItemStack stack)
-    {
-        super(type, entity, level);
+        super(TFCEntities.THROWN_JAVELIN.get(), entity, level, stack, null);
         setItem(stack);
         setIsEnchantGlowing(stack.hasFoil());
     }
@@ -95,15 +90,13 @@ public class ThrownJavelin extends AbstractArrow
     @Override
     protected void onHitEntity(EntityHitResult result)
     {
+        // todo 1.21, this method is very different from super, check if it needs to be fixed?
         Entity hitEntity = result.getEntity();
         float damage = getItemAttackDamage();
-        if (hitEntity instanceof LivingEntity livingentity)
-        {
-            damage += EnchantmentHelper.getDamageBonus(getItem(), livingentity.getMobType());
-        }
 
-        Entity owner = this.getOwner();
+        Entity owner = getOwner();
         this.dealtDamage = true;
+        // todo 1.21, add our own damage source for javelins
         if (hitEntity.hurt(damageSources().trident(this, owner == null ? this : owner), damage))
         {
             if (hitEntity.getType() == EntityType.ENDERMAN)
@@ -113,11 +106,12 @@ public class ThrownJavelin extends AbstractArrow
 
             if (hitEntity instanceof LivingEntity livingVictim)
             {
-                if (owner instanceof LivingEntity livingOwner)
+                // todo: enchantment things? do we even really care about these?
+                /*if (owner instanceof LivingEntity livingOwner)
                 {
                     EnchantmentHelper.doPostHurtEffects(livingVictim, owner);
                     EnchantmentHelper.doPostDamageEffects(livingOwner, livingVictim);
-                }
+                }*/
 
                 this.doPostHurtEffects(livingVictim);
             }
@@ -160,12 +154,18 @@ public class ThrownJavelin extends AbstractArrow
     }
 
     @Override
+    protected ItemStack getDefaultPickupItem()
+    {
+        return new ItemStack(TFCItems.ROCK_TOOLS.get(RockCategory.SEDIMENTARY).get(RockCategory.ItemType.JAVELIN).get());
+    }
+
+    @Override
     public void readAdditionalSaveData(CompoundTag tag)
     {
         super.readAdditionalSaveData(tag);
         if (tag.contains("item", Tag.TAG_COMPOUND))
         {
-            setItem(ItemStack.of(tag.getCompound("item")));
+            setItem(ItemStack.parseOptional(level().registryAccess(), tag.getCompound("item")));
             setIsEnchantGlowing(tag.getBoolean("glow"));
         }
         dealtDamage = tag.getBoolean("dealtDamage");
@@ -177,7 +177,7 @@ public class ThrownJavelin extends AbstractArrow
         super.addAdditionalSaveData(tag);
         if (!getItem().isEmpty())
         {
-            tag.put("item", getItem().save(new CompoundTag()));
+            tag.put("item", getItem().save(level().registryAccess(), new CompoundTag()));
             tag.putBoolean("glow", isEnchantGlowing());
         }
         tag.putBoolean("dealtDamage", dealtDamage);
@@ -185,11 +185,11 @@ public class ThrownJavelin extends AbstractArrow
 
 
     @Override
-    protected void defineSynchedData()
+    protected void defineSynchedData(SynchedEntityData.Builder builder)
     {
-        super.defineSynchedData();
-        entityData.define(DATA_ENCHANT_GLOW, false);
-        entityData.define(DATA_ITEM, ItemStack.EMPTY);
+        super.defineSynchedData(builder);
+        builder.define(DATA_ENCHANT_GLOW, false);
+        builder.define(DATA_ITEM, ItemStack.EMPTY);
     }
 
     public ItemStack getItem()

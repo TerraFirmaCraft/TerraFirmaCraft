@@ -21,7 +21,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -53,7 +52,8 @@ public class WildAnimal extends AgeableMob implements GenderedRenderAnimal
         this.hurt = sounds.hurt();
         this.step = sounds.step();
         getNavigation().setCanFloat(true);
-        this.setMaxUpStep(1.0F);
+        // todo: step up height for animals?
+        //this.setMaxUpStep(1.0F);
         this.setPathfindingMalus(PathType.POWDER_SNOW, -1.0F);
         this.setPathfindingMalus(PathType.DANGER_POWDER_SNOW, -1.0F);
         this.setPathfindingMalus(PathType.DANGER_FIRE, 16.0F);
@@ -134,13 +134,13 @@ public class WildAnimal extends AgeableMob implements GenderedRenderAnimal
         return isBaby() ? -24000 : 0;
     }
 
+    @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag)
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnData)
     {
-        SpawnGroupData spawnData = super.finalizeSpawn(level, difficulty, type, data, tag);
         setIsMale(level.getRandom().nextBoolean());
         setBaby(random.nextFloat() < 0.1f);
-        return super.finalizeSpawn(level, difficulty, type, spawnData, tag);
+        return super.finalizeSpawn(level, difficulty, spawnType, spawnData);
     }
 
     @Override
@@ -191,7 +191,7 @@ public class WildAnimal extends AgeableMob implements GenderedRenderAnimal
     }
 
     @Override
-    public boolean canBeLeashed(Player player)
+    public boolean canBeLeashed()
     {
         return Helpers.isEntity(this, TFCTags.Entities.LEASHABLE_WILD_ANIMALS);
     }

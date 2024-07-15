@@ -12,7 +12,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -21,6 +20,7 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.portal.DimensionTransition;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.effect.TFCEffects;
@@ -31,19 +31,9 @@ public class GlowArrow extends AbstractArrow implements IGlow
 {
     public static final EntityDataAccessor<BlockPos> DATA_LIGHT_POS = SynchedEntityData.defineId(GlowArrow.class, EntityDataSerializers.BLOCK_POS);
 
-    public GlowArrow(Level level)
+    public GlowArrow(Level level, LivingEntity shooter, @Nullable ItemStack weapon)
     {
-        this(TFCEntities.GLOW_ARROW.get(), level);
-    }
-
-    public GlowArrow(Level level, LivingEntity entity)
-    {
-        super(TFCEntities.GLOW_ARROW.get(), entity, level);
-    }
-
-    public GlowArrow(Level level, double x, double y, double z)
-    {
-        super(TFCEntities.GLOW_ARROW.get(), x, y, z, level);
+        super(TFCEntities.GLOW_ARROW.get(), shooter, level, new ItemStack(Items.ARROW), weapon);
     }
 
     public GlowArrow(EntityType<? extends AbstractArrow> entity, Level level)
@@ -55,7 +45,7 @@ public class GlowArrow extends AbstractArrow implements IGlow
     protected void doPostHurtEffects(LivingEntity entity)
     {
         super.doPostHurtEffects(entity);
-        entity.addEffect(new MobEffectInstance(TFCEffects.GLOW_INK.get(), 200, 0), this.getEffectSource());
+        entity.addEffect(new MobEffectInstance(TFCEffects.GLOW_INK.holder(), 200, 0), this.getEffectSource());
     }
 
     @Override
@@ -81,10 +71,10 @@ public class GlowArrow extends AbstractArrow implements IGlow
 
     @Nullable
     @Override
-    public Entity changeDimension(ServerLevel level, ITeleporter teleporter)
+    public Entity changeDimension(DimensionTransition transition)
     {
         tryRemoveLight();
-        return super.changeDimension(level, teleporter);
+        return super.changeDimension(transition);
     }
 
 
@@ -134,5 +124,11 @@ public class GlowArrow extends AbstractArrow implements IGlow
     public ItemStack getPickupItem()
     {
         return new ItemStack(Items.ARROW);
+    }
+
+    @Override
+    protected ItemStack getDefaultPickupItem()
+    {
+        return new ItemStack(Items.ARROW); // This is not used unless we don't have a pickup stack
     }
 }

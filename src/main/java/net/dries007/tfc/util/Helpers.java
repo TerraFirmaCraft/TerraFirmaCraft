@@ -196,6 +196,13 @@ public final class Helpers
     }
 
     @Nullable
+    @SuppressWarnings("DataFlowIssue") // @Nullable C is not picked up correctly w.r.t getCapability()
+    public static <T, C> T getCapability(BlockCapability<T, @Nullable C> capability, Level level, BlockPos pos)
+    {
+        return level.getCapability(capability, pos, null);
+    }
+
+    @Nullable
     public static <T, C> T getCapability(BlockCapability<T, C> capability, BlockEntity entity)
     {
         return getCapability(capability, entity, null);
@@ -203,7 +210,7 @@ public final class Helpers
 
     @Nullable
     @SuppressWarnings("DataFlowIssue") // BlockEntity.level is in practice never null, and the @Nullable C is not picked up correctly w.r.t getCapability()
-    public static <T, C> T getCapability(BlockCapability<T, C> capability, BlockEntity entity, @Nullable C context)
+    public static <T, C> T getCapability(BlockCapability<T, @Nullable C> capability, BlockEntity entity, @Nullable C context)
     {
         return entity.getLevel().getCapability(capability, entity.getBlockPos(), entity.getBlockState(), entity, context);
     }

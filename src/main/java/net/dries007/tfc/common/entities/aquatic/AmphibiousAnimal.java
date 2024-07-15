@@ -10,7 +10,6 @@ import java.util.Optional;
 import com.mojang.serialization.Dynamic;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -27,7 +26,6 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.Brain;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
@@ -43,7 +41,6 @@ import net.minecraft.world.level.pathfinder.AmphibiousNodeEvaluator;
 import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
 
@@ -94,6 +91,7 @@ public abstract class AmphibiousAnimal extends WildAnimal implements Temptable
         return 0.0F;
     }
 
+    /* todo 1.21, step height, where did it go?
     @Override
     public float getStepHeight()
     {
@@ -104,7 +102,7 @@ public abstract class AmphibiousAnimal extends WildAnimal implements Temptable
             return (float) Math.max(0, baseValue + attribute.getValue());
         }
         return baseValue;
-    }
+    }*/
 
     @Override
     protected Brain.Provider<? extends AmphibiousAnimal> brainProvider()
@@ -141,11 +139,12 @@ public abstract class AmphibiousAnimal extends WildAnimal implements Temptable
         return hurt;
     }
 
+    @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag)
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnData)
     {
         getBrain().setMemory(MemoryModuleType.HOME, GlobalPos.of(level.getLevel().dimension(), blockPosition()));
-        return super.finalizeSpawn(level, difficulty, type, data, tag);
+        return super.finalizeSpawn(level, difficulty, spawnType, spawnData);
     }
 
     @Override
@@ -187,7 +186,7 @@ public abstract class AmphibiousAnimal extends WildAnimal implements Temptable
     }
 
     @Override
-    public boolean canBeLeashed(Player player)
+    public boolean canBeLeashed()
     {
         return true;
     }

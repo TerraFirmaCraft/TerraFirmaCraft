@@ -34,9 +34,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 
-import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
 import net.dries007.tfc.common.blocks.devices.PowderkegBlock;
-import net.dries007.tfc.common.blocks.devices.SealableDeviceBlock;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.config.TFCConfig;
@@ -139,6 +137,7 @@ public class HoldingMinecart extends AbstractMinecart
         if (getHoldItem().getItem() instanceof BlockItem blockItem)
         {
             BlockState state = blockItem.getBlock().defaultBlockState();
+            /* todo 1.21: relies on sealed block entity tags
             if (state.hasProperty(SealableDeviceBlock.SEALED) && getHoldItem().hasTag())
             {
                 state = state.setValue(SealableDeviceBlock.SEALED, true);
@@ -146,7 +145,7 @@ public class HoldingMinecart extends AbstractMinecart
             if (state.getBlock() instanceof PowderkegBlock && isPrimed())
             {
                 state = state.setValue(PowderkegBlock.LIT, true);
-            }
+            }*/
             return state;
         }
         else
@@ -296,8 +295,9 @@ public class HoldingMinecart extends AbstractMinecart
     public int getPowderkegStrength()
     {
         final ItemStack stack = getHoldItem();
-        if (stack.getItem() instanceof BlockItem bi && bi.getBlock() instanceof PowderkegBlock && stack.hasTag())
+        if (stack.getItem() instanceof BlockItem bi && bi.getBlock() instanceof PowderkegBlock)
         {
+            /* todo 1.21, needs saved block entity components
             final CompoundTag tag = stack.getTagElement(Helpers.BLOCK_ENTITY_TAG);
             if (tag != null)
             {
@@ -307,7 +307,7 @@ public class HoldingMinecart extends AbstractMinecart
                 inventory.deserializeNBT(inventoryTag.getCompound("inventory"));
 
                 return PowderkegBlockEntity.getStrength(inventory);
-            }
+            }*/
         }
         return 0;
     }

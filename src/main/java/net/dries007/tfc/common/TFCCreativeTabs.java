@@ -23,6 +23,7 @@ import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -41,6 +42,7 @@ import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
+import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.HideItemType;
 import net.dries007.tfc.common.items.TFCItems;
@@ -68,6 +70,15 @@ public final class TFCCreativeTabs
     public static Stream<CreativeModeTab.DisplayItemsGenerator> generators()
     {
         return Stream.of(EARTH, ORES, ROCKS, METAL, WOOD, FOOD, FLORA, DECORATIONS, MISC).map(holder -> holder.generator);
+    }
+
+    public static void setAllTabContentAsNonDecaying(BuildCreativeModeTabContentsEvent event)
+    {
+        // todo 1.21, verify that this works properly (event priority first, then mod order). Needs an addon lol
+        // Otherwise, re-add the mixin from 1.20
+        FoodCapability.setNonDecaying(event.getTab().getIconItem());
+        event.getParentEntries().forEach(FoodCapability::setNonDecaying);
+        event.getParentEntries().forEach(FoodCapability::setNonDecaying);
     }
 
     private static void fillEarthTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output out)

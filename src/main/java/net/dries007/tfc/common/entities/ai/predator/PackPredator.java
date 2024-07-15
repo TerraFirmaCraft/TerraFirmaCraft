@@ -72,12 +72,13 @@ public class PackPredator extends Predator implements Temptable
         this.tamable = tamable;
     }
 
+    @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag)
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnData)
     {
-        final SpawnGroupData group = super.finalizeSpawn(level, difficulty, type, data, tag);
+        spawnData = super.finalizeSpawn(level, difficulty, spawnType, spawnData);
         setRespect(random.nextInt(10));
-        return group;
+        return spawnData;
     }
 
     public int getRespect()
@@ -111,11 +112,11 @@ public class PackPredator extends Predator implements Temptable
     }
 
     @Override
-    public void defineSynchedData()
+    public void defineSynchedData(SynchedEntityData.Builder builder)
     {
-        super.defineSynchedData();
-        entityData.define(DATA_RESPECT, 0);
-        entityData.define(DATA_FAMILIARITY, 0f);
+        super.defineSynchedData(builder);
+        builder.define(DATA_RESPECT, 0);
+        builder.define(DATA_FAMILIARITY, 0f);
     }
 
     @Override
@@ -226,7 +227,7 @@ public class PackPredator extends Predator implements Temptable
                         final Dog dog = convertTo(TFCEntities.DOG.get(), false);
                         if (dog != null && level() instanceof ServerLevelAccessor server)
                         {
-                            dog.finalizeSpawn(server, level().getCurrentDifficultyAt(blockPosition()), MobSpawnType.CONVERSION, null, null);
+                            dog.finalizeSpawn(server, level().getCurrentDifficultyAt(blockPosition()), MobSpawnType.CONVERSION, null);
                             dog.setGender(isMale() ? TFCAnimalProperties.Gender.MALE : TFCAnimalProperties.Gender.FEMALE);
                             if (!wasBaby)
                             {

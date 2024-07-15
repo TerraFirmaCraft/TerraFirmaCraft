@@ -387,7 +387,7 @@ public final class TFCBlocks
     public static final Id<Block> THATCH = register("thatch", () -> new ThatchBlock(ExtendedProperties.of(MapColor.SAND).strength(0.6F, 0.4F).noOcclusion().isViewBlocking(TFCBlocks::never).sound(TFCSounds.THATCH).flammable(50, 100)));
     public static final Id<Block> THATCH_BED = register("thatch_bed", () -> new ThatchBedBlock(ExtendedProperties.of(MapColor.SAND).sound(TFCSounds.THATCH).strength(0.6F, 0.4F).flammable(50, 100).pushReaction(PushReaction.DESTROY).blockEntity(TFCBlockEntities.THATCH_BED)), b -> new BedItem(b, new Item.Properties()));
     public static final Id<Block> LOG_PILE = registerNoItem("log_pile", () -> new LogPileBlock(ExtendedProperties.of(MapColor.WOOD).strength(0.6F).sound(SoundType.WOOD).flammable(60, 30).blockEntity(TFCBlockEntities.LOG_PILE)));
-    public static final Id<Block> BURNING_LOG_PILE = registerNoItem("burning_log_pile", () -> new BurningLogPileBlock(ExtendedProperties.of(MapColor.WOOD).randomTicks().strength(0.6F).sound(SoundType.WOOD).flammableLikeLogs().blockEntity(TFCBlockEntities.BURNING_LOG_PILE).serverTicks(BurningLogPileBlockEntity::serverTick).cloneItem(Items.CHARCOAL)));
+    public static final Id<Block> BURNING_LOG_PILE = registerNoItem("burning_log_pile", () -> new BurningLogPileBlock(ExtendedProperties.of(MapColor.WOOD).randomTicks().strength(0.6F).sound(SoundType.WOOD).flammableLikeLogs().blockEntity(TFCBlockEntities.BURNING_LOG_PILE).serverTicks(BurningLogPileBlockEntity::serverTick).cloneItem(() -> Items.CHARCOAL)));
     public static final Id<Block> FIREPIT = register("firepit", () -> new FirepitBlock(ExtendedProperties.of(MapColor.DIRT).strength(0.4F, 0.4F).sound(SoundType.NETHER_WART).randomTicks().noOcclusion().lightLevel(litBlockEmission(15)).blockEntity(TFCBlockEntities.FIREPIT).pathType(PathType.DAMAGE_FIRE).<AbstractFirepitBlockEntity<?>>ticks(AbstractFirepitBlockEntity::serverTick, AbstractFirepitBlockEntity::clientTick)));
     public static final Id<Block> GRILL = register("grill", () -> new GrillBlock(ExtendedProperties.of(MapColor.DIRT).strength(0.4F, 0.4F).sound(SoundType.NETHER_WART).randomTicks().noOcclusion().lightLevel(litBlockEmission(15)).blockEntity(TFCBlockEntities.GRILL).pathType(PathType.DAMAGE_FIRE).<AbstractFirepitBlockEntity<?>>ticks(AbstractFirepitBlockEntity::serverTick, AbstractFirepitBlockEntity::clientTick)));
     public static final Id<Block> POT = register("pot", () -> new PotBlock(ExtendedProperties.of(MapColor.DIRT).strength(0.4F, 0.4F).sound(SoundType.NETHER_WART).randomTicks().noOcclusion().lightLevel(litBlockEmission(15)).blockEntity(TFCBlockEntities.POT).pathType(PathType.DAMAGE_FIRE).<AbstractFirepitBlockEntity<?>>ticks(AbstractFirepitBlockEntity::serverTick, AbstractFirepitBlockEntity::clientTick)));
@@ -456,25 +456,25 @@ public final class TFCBlocks
     // Fluids
 
     public static final Map<Metal.Default, Id<LiquidBlock>> METAL_FLUIDS = Helpers.mapOfKeys(Metal.Default.class, metal ->
-        registerNoItem("fluid/metal/" + metal.name(), () -> new LiquidBlock(TFCFluids.METALS.get(metal).source(), Properties.copy(Blocks.LAVA).noLootTable()))
+        registerNoItem("fluid/metal/" + metal.name(), () -> new LiquidBlock(TFCFluids.METALS.get(metal).getSource(), Properties.ofFullCopy(Blocks.LAVA).noLootTable()))
     );
 
     public static final Map<SimpleFluid, Id<LiquidBlock>> SIMPLE_FLUIDS = Helpers.mapOfKeys(SimpleFluid.class, fluid ->
-        registerNoItem("fluid/" + fluid.getId(), () -> new LiquidBlock(TFCFluids.SIMPLE_FLUIDS.get(fluid).source(), Properties.copy(Blocks.WATER).noLootTable()))
+        registerNoItem("fluid/" + fluid.getId(), () -> new LiquidBlock(TFCFluids.SIMPLE_FLUIDS.get(fluid).getSource(), Properties.ofFullCopy(Blocks.WATER).noLootTable()))
     );
 
     public static final Map<DyeColor, Id<LiquidBlock>> COLORED_FLUIDS = Helpers.mapOfKeys(DyeColor.class, fluid ->
-        registerNoItem("fluid/" + fluid.getName() + "_dye", () -> new LiquidBlock(TFCFluids.COLORED_FLUIDS.get(fluid).source(), Properties.copy(Blocks.WATER).noLootTable()))
+        registerNoItem("fluid/" + fluid.getName() + "_dye", () -> new LiquidBlock(TFCFluids.COLORED_FLUIDS.get(fluid).getSource(), Properties.ofFullCopy(Blocks.WATER).noLootTable()))
     );
 
     public static final Map<Alcohol, Id<LiquidBlock>> ALCOHOLS = Helpers.mapOfKeys(Alcohol.class, fluid ->
-        registerNoItem("fluid/" + fluid.getId(), () -> new LiquidBlock(TFCFluids.ALCOHOLS.get(fluid).source(), Properties.copy(Blocks.WATER)))
+        registerNoItem("fluid/" + fluid.getId(), () -> new LiquidBlock(TFCFluids.ALCOHOLS.get(fluid).getSource(), Properties.ofFullCopy(Blocks.WATER)))
     );
 
-    public static final Id<LiquidBlock> SALT_WATER = registerNoItem("fluid/salt_water", () -> new LiquidBlock(TFCFluids.SALT_WATER.flowing(), Properties.copy(Blocks.WATER).noLootTable()));
-    public static final Id<LiquidBlock> SPRING_WATER = registerNoItem("fluid/spring_water", () -> new HotWaterBlock(TFCFluids.SPRING_WATER.source(), Properties.copy(Blocks.WATER).noLootTable()));
+    public static final Id<LiquidBlock> SALT_WATER = registerNoItem("fluid/salt_water", () -> new LiquidBlock(TFCFluids.SALT_WATER.getFlowing(), Properties.ofFullCopy(Blocks.WATER).noLootTable()));
+    public static final Id<LiquidBlock> SPRING_WATER = registerNoItem("fluid/spring_water", () -> new HotWaterBlock(TFCFluids.SPRING_WATER.source(), Properties.ofFullCopy(Blocks.WATER).noLootTable()));
 
-    public static final Id<RiverWaterBlock> RIVER_WATER = registerNoItem("fluid/river_water", () -> new RiverWaterBlock(Properties.copy(Blocks.WATER).noLootTable()));
+    public static final Id<RiverWaterBlock> RIVER_WATER = registerNoItem("fluid/river_water", () -> new RiverWaterBlock(Properties.ofFullCopy(Blocks.WATER).noLootTable()));
 
     public static void registerFlowerPotFlowers()
     {

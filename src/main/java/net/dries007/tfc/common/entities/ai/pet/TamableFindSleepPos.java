@@ -56,6 +56,6 @@ public class TamableFindSleepPos
     private static boolean wantsToSitAt(ServerLevel level, BlockPos pos)
     {
         BlockState state = level.getBlockState(pos);
-        return Helpers.isBlock(state, TFCTags.Blocks.PET_SITS_ON) && state.isPathfindable(level, pos, PathComputationType.LAND) && level.getBlockState(pos.above()).isAir();
+        return Helpers.isBlock(state, TFCTags.Blocks.PET_SITS_ON) && state.isPathfindable(PathComputationType.LAND) && level.getBlockState(pos.above()).isAir();
     }
 }

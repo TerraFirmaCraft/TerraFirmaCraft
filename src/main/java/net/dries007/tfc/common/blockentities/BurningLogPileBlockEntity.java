@@ -8,6 +8,7 @@ package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
@@ -37,17 +38,17 @@ public class BurningLogPileBlockEntity extends TickCounterBlockEntity
     }
 
     @Override
-    public void loadAdditional(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
         logs = nbt.getInt("logs");
-        super.loadAdditional(nbt);
+        super.loadAdditional(nbt, provider);
     }
 
     @Override
-    public void saveAdditional(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
         nbt.putInt("logs", logs);
-        super.saveAdditional(nbt);
+        super.saveAdditional(nbt, provider);
     }
 
     public void light(int logs)

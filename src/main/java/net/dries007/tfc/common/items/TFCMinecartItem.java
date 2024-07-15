@@ -7,8 +7,8 @@
 package net.dries007.tfc.common.items;
 
 import java.util.function.Supplier;
-
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -86,7 +86,7 @@ public class TFCMinecartItem extends Item
             entity.yo = y;
             entity.zo = z;
 
-            if (stack.hasCustomHoverName())
+            if (stack.has(DataComponents.CUSTOM_NAME))
             {
                 entity.setCustomName(stack.getHoverName());
             }

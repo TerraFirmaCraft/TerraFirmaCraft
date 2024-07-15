@@ -52,7 +52,7 @@ public abstract class BaseRecipeCategory<T> implements IRecipeCategory<T>
     {
         return Arrays.stream(input.ingredient().getItems())
             .map(stack -> stack.copyWithCount(input.count()))
-            .map(FoodCapability::setStackNonDecaying) // Avoid decaying in JEI views
+            .map(FoodCapability::setNonDecaying) // Avoid decaying in JEI views
             .toList();
     }
 
@@ -69,7 +69,7 @@ public abstract class BaseRecipeCategory<T> implements IRecipeCategory<T>
         }
         return inputs.stream()
             .map(output::getStack)
-            .map(FoodCapability::setStackNonDecaying) // Avoid decaying in JEI views
+            .map(FoodCapability::setNonDecaying) // Avoid decaying in JEI views
             .toList();
     }
 

@@ -313,7 +313,7 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
         // If we don't have a recipe, we'll find the first recipe which matches one of the inputs, and assign that.
         // Then, assuming we do have a recipe, we'll re-check the inputs for any that can be added, and add up to an equal amount of both.
         final BlockPos internalPos = getInternalBlockPos();
-        final List<ItemEntity> itemEntities = level.getEntitiesOfClass(ItemEntity.class, new AABB(internalPos, internalPos.offset(1, BloomeryBlock.getChimneyLevels(level, internalPos) + 1, 1)), EntitySelector.ENTITY_STILL_ALIVE);
+        final List<ItemEntity> itemEntities = level.getEntitiesOfClass(ItemEntity.class, AABB.encapsulatingFullBlocks(internalPos, internalPos.offset(1, BloomeryBlock.getChimneyLevels(level, internalPos) + 1, 1)), EntitySelector.ENTITY_STILL_ALIVE);
 
         if (cachedRecipe == null)
         {

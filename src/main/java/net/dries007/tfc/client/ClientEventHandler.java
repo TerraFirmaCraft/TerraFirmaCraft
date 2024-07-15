@@ -8,7 +8,6 @@ package net.dries007.tfc.client;
 
 import java.util.Objects;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 import java.util.stream.Stream;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -48,14 +47,11 @@ import net.minecraft.client.renderer.entity.TropicalFishRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
@@ -206,7 +202,6 @@ import net.dries007.tfc.client.screen.SaladScreen;
 import net.dries007.tfc.client.screen.ScribingTableScreen;
 import net.dries007.tfc.client.screen.SewingTableScreen;
 import net.dries007.tfc.client.screen.SmallVesselInventoryScreen;
-import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.plant.KrummholzBlock;
@@ -238,6 +233,7 @@ public final class ClientEventHandler
     public static void init(IEventBus bus)
     {
         bus.addListener(ClientEventHandler::clientSetup);
+        bus.addListener(ClientEventHandler::registerMenuScreens);
         bus.addListener(ClientEventHandler::registerModelLoaders);
         bus.addListener(ClientEventHandler::registerSpecialModels);
         bus.addListener(ClientEventHandler::registerColorHandlerBlocks);
@@ -246,8 +242,8 @@ public final class ClientEventHandler
         bus.addListener(ClientEventHandler::registerParticleFactories);
         bus.addListener(ClientEventHandler::registerClientReloadListeners);
         bus.addListener(ClientEventHandler::registerEntityRenderers);
+        bus.addListener(ClientEventHandler::registerTooltipFactories);
         bus.addListener(ClientEventHandler::registerKeyBindings);
-        bus.addListener(ClientEventHandler::onTooltipFactoryRegistry);
         bus.addListener(ClientEventHandler::registerLayerDefinitions);
         bus.addListener(ClientEventHandler::registerPresetEditors);
         //bus.addListener(IngameOverlays::registerOverlays); // todo: 1.21, overlays
@@ -300,16 +296,16 @@ public final class ClientEventHandler
                 );
             });
 
-
             ItemProperties.register(TFCItems.HANDSTONE.get(), Helpers.identifier("damaged"), (stack, level, entity, unused) -> stack.getDamageValue() > stack.getMaxDamage() - 10 ? 1F : 0F);
 
-            TFCBlocks.WOODS.values().forEach(map -> ItemProperties.register(map.get(BARREL).get().asItem(), Helpers.identifier("sealed"), (stack, level, entity, unused) -> stack.hasTag() ? 1.0f : 0f));
+            // todo 1.21, item properties based on item stack tags
+            //TFCBlocks.WOODS.values().forEach(map -> ItemProperties.register(map.get(BARREL).get().asItem(), Helpers.identifier("sealed"), (stack, level, entity, unused) -> stack.hasTag() ? 1.0f : 0f));
 
-            ItemProperties.register(TFCBlocks.POWDERKEG.get().asItem(), Helpers.identifier("sealed"), (stack, level, entity, unused) -> stack.hasTag() ? 1.0f : 0f);
+            //ItemProperties.register(TFCBlocks.POWDERKEG.get().asItem(), Helpers.identifier("sealed"), (stack, level, entity, unused) -> stack.hasTag() ? 1.0f : 0f);
 
-            Stream.of(TFCBlocks.LARGE_VESSEL, TFCBlocks.GLAZED_LARGE_VESSELS.values()).<Supplier<? extends Block>>flatMap(Helpers::flatten).forEach(vessel -> ItemProperties.register(vessel.get().asItem(), Helpers.identifier("sealed"), (stack, level, entity, unused) -> stack.hasTag() ? 1.0f : 0f));
+            //Stream.of(TFCBlocks.LARGE_VESSEL, TFCBlocks.GLAZED_LARGE_VESSELS.values()).<Supplier<? extends Block>>flatMap(Helpers::flatten).forEach(vessel -> ItemProperties.register(vessel.get().asItem(), Helpers.identifier("sealed"), (stack, level, entity, unused) -> stack.hasTag() ? 1.0f : 0f));
 
-            ItemProperties.register(TFCBlocks.LIGHT.get().asItem(), Helpers.identifierMC("level"), (stack, level, entity, unused) -> {
+            /*ItemProperties.register(TFCBlocks.LIGHT.get().asItem(), Helpers.identifierMC("level"), (stack, level, entity, unused) -> {
                 CompoundTag stackTag = stack.getTag();
                 if (stackTag != null && stackTag.contains("level", Tag.TAG_INT))
                 {
@@ -319,7 +315,7 @@ public final class ClientEventHandler
             });
 
             TFCBlocks.WOODS.values().forEach(map -> ItemProperties.register(map.get(BARREL).get().asItem(), Helpers.identifier("sealed"), (stack, level, entity, unused) -> stack.hasTag() ? 1.0f : 0f));
-
+*/
             ItemProperties.register(TFCItems.BLOWPIPE_WITH_GLASS.get(), Helpers.identifier("heat"), (stack, level, entity, unused) -> Mth.clamp(HeatCapability.getTemperature(stack) / Heat.maxVisibleTemperature(), 0, 1));
             ItemProperties.register(TFCItems.CERAMIC_BLOWPIPE_WITH_GLASS.get(), Helpers.identifier("heat"), (stack, level, entity, unused) -> Mth.clamp(HeatCapability.getTemperature(stack) / Heat.maxVisibleTemperature(), 0, 1));
 
@@ -329,8 +325,6 @@ public final class ClientEventHandler
                 HorseChestLayer.registerChest(map.get(BARREL).get().asItem(), Helpers.identifier("textures/entity/chest/horse/" + wood.getSerializedName() + "_barrel.png"));
             });
         });
-
-        BarSystem.registerDefaultBars();
 
         // Render Types
         final RenderType solid = RenderType.solid();
@@ -488,7 +482,7 @@ public final class ClientEventHandler
         event.register(TFCContainerTypes.SEWING_TABLE.get(), SewingTableScreen::new);
     }
 
-    public static void onTooltipFactoryRegistry(RegisterClientTooltipComponentFactoriesEvent event)
+    public static void registerTooltipFactories(RegisterClientTooltipComponentFactoriesEvent event)
     {
         event.register(Tooltips.DeviceImageTooltip.class, ClientDeviceImageTooltip::new);
     }
@@ -707,14 +701,7 @@ public final class ClientEventHandler
         }
 
         JarsBlockEntityRenderer.MODELS.forEach((item, model) -> event.register(model));
-
-        for (AbstractFirepitBlockEntity.BurnStage stage : AbstractFirepitBlockEntity.BurnStage.values())
-        {
-            for (int i = AbstractFirepitBlockEntity.SLOT_FUEL_CONSUME; i <= AbstractFirepitBlockEntity.SLOT_FUEL_INPUT; i++)
-            {
-                register(event, stage.getModel(i));
-            }
-        }
+        FirepitBlockEntityRenderer.BURN_STAGE_MODELS.values().forEach(list -> list.forEach(event::register));
 
         event.register(CrankshaftBlockEntityRenderer.WHEEL_MODEL);
 

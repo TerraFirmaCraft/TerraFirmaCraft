@@ -8,10 +8,8 @@ package net.dries007.tfc.common.entities.livestock.pet;
 
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
@@ -54,11 +52,12 @@ public class Dog extends TamableMammal
         return TFCTags.Items.DOG_FOOD;
     }
 
+    /* todo: where did getStandingEyeHeight go?
     @Override
     protected float getStandingEyeHeight(Pose pose, EntityDimensions size)
     {
         return size.height * 0.8F;
-    }
+    }*/
 
     @Override
     public boolean canAttack(LivingEntity entity)

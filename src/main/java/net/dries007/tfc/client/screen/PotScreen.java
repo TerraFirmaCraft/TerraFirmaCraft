@@ -148,7 +148,7 @@ public class PotScreen extends BlockEntityScreen<PotBlockEntity, PotContainer>
         }
         if (fluidColor == -1)
         {
-            final FluidStack fluid = blockEntity.getCapability(Capabilities.FLUID).map(cap -> cap.getFluidInTank(0)).orElse(FluidStack.EMPTY);
+            final FluidStack fluid = blockEntity.getInventory().getFluidInTank(0);
             if (!fluid.isEmpty())
             {
                 fluidColor = RenderHelpers.getFluidColor(fluid);

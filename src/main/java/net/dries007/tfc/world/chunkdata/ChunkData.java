@@ -61,12 +61,12 @@ public class ChunkData
      */
     public static ChunkData get(LevelChunk chunk)
     {
-        return chunk.isEmpty() ? EMPTY : chunk.getCapability(ChunkDataCapability.CAPABILITY).map(ChunkDataCapability::getData).orElse(EMPTY);
+        return EMPTY; // todo 1.21, chunk data needs to work
     }
 
     public static void update(LevelChunk chunk, ChunkData data)
     {
-        chunk.getCapability(ChunkDataCapability.CAPABILITY).ifPresent(cap -> cap.setData(data));
+        // todo: 1.21, chunk data needs to work
     }
 
     private static final Map<ChunkPos, ChunkData> CLIENT_CHUNK_QUEUE = new Object2ObjectOpenHashMap<>(128);
@@ -205,7 +205,8 @@ public class ChunkData
         assert status == Status.FULL;
         assert rainfallLayer != null && temperatureLayer != null;
 
-        return new ChunkWatchPacket(pos.x, pos.z, rainfallLayer, temperatureLayer, forestType, forestDensity, forestWeirdness);
+        // todo: chunk data syncing needs to work
+        return null; // return new ChunkWatchPacket(pos.x, pos.z, rainfallLayer, temperatureLayer, forestType, forestDensity, forestWeirdness);
     }
 
     /**

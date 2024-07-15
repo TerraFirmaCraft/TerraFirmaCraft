@@ -51,8 +51,9 @@ public class TFCMobEffect extends MobEffect
     }
 
     @Override
-    public boolean isDurationEffectTick(int duration, int amplitude)
+    public boolean shouldApplyEffectTickThisTick(int duration, int amplitude)
     {
+        // todo: was replaced from isDurationEffectTick
         return this == TFCEffects.PINNED.get() || tickForAmplitude(TFCEffects.THIRST, 50, amplitude) || tick(TFCEffects.EXHAUSTED, duration % 20 == 0);
     }
 
@@ -61,9 +62,6 @@ public class TFCMobEffect extends MobEffect
         return this == check.get() && accepted;
     }
 
-    /**
-     * {@link MobEffect#isDurationEffectTick(int, int)}
-     */
     private boolean tickForAmplitude(Supplier<MobEffect> check, int base, int amplitude)
     {
         if (this == check.get())

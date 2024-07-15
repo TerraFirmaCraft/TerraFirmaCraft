@@ -6,14 +6,12 @@
 
 package net.dries007.tfc.common.blockentities;
 
-import java.util.Locale;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -475,18 +473,6 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
         RED,
         WHITE,
         COLD;
-
-        private final ResourceLocation[] modelLocations = {
-            Helpers.identifier("block/firepit_log_1_" + name().toLowerCase(Locale.ROOT)),
-            Helpers.identifier("block/firepit_log_2_" + name().toLowerCase(Locale.ROOT)),
-            Helpers.identifier("block/firepit_log_3_" + name().toLowerCase(Locale.ROOT)),
-            Helpers.identifier("block/firepit_log_4_" + name().toLowerCase(Locale.ROOT))
-        };
-
-        public ResourceLocation getModel(int slot)
-        {
-            return modelLocations[slot];
-        }
 
         private static final BurnStage[] HEAT_STAGES = {FRESH, DRIED, RED, WHITE};
     }

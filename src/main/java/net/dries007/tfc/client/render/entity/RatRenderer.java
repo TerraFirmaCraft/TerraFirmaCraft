@@ -22,9 +22,9 @@ public class RatRenderer extends SimpleMobRenderer<Pest, RatModel>
     }
 
     @Override
-    protected void setupRotations(Pest entity, PoseStack poseStack, float age, float yaw, float partialTicks)
+    protected void setupRotations(Pest entity, PoseStack poseStack, float bob, float yBodyRot, float partialTick, float scale)
     {
-        super.setupRotations(entity, poseStack, age, yaw, partialTicks);
+        super.setupRotations(entity, poseStack, bob, yBodyRot, partialTick, scale);
         if (entity.isClimbing())
         {
             poseStack.pushPose();

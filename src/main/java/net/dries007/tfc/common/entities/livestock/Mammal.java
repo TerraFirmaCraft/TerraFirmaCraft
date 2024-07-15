@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.entities.livestock;
 
-import javax.annotation.Nullable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -17,6 +16,7 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.config.animals.MammalConfig;
@@ -65,19 +65,18 @@ public abstract class Mammal extends TFCAnimal implements MammalProperties
         return genes;
     }
 
-    @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag tag)
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnData)
     {
-        spawnData = super.finalizeSpawn(level, difficulty, reason, spawnData, tag);
+        spawnData = super.finalizeSpawn(level, difficulty, spawnType, spawnData);
         setPregnantTime(-1L);
         return spawnData;
     }
 
     @Override
-    protected void defineSynchedData()
+    protected void defineSynchedData(SynchedEntityData.Builder builder)
     {
-        super.defineSynchedData();
-        entityData.define(PREGNANT_TIME, -1L);
+        super.defineSynchedData(builder);
+        builder.define(PREGNANT_TIME, -1L);
     }
 }

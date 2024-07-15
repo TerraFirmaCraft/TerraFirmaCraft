@@ -7,8 +7,6 @@
 package net.dries007.tfc.common.entities.misc;
 
 import java.util.function.Supplier;
-import javax.annotation.Nullable;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -23,14 +21,9 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.neoforge.neoforged.common.capabilities.Capability;
-import net.neoforge.neoforged.common.util.LazyOptional;
-import net.neoforge.neoforged.items.IItemHandler;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.TFCChestBlockEntity;
-import net.dries007.tfc.common.capabilities.Capabilities;
-import net.dries007.tfc.common.capabilities.InventoryWrapper;
 import net.dries007.tfc.common.container.ISlotCallback;
 import net.dries007.tfc.common.container.RestrictedChestContainer;
 import net.dries007.tfc.common.container.TFCContainerTypes;
@@ -40,7 +33,6 @@ public class TFCChestBoat extends ChestBoat implements ISlotCallback
     public static final EntityDataAccessor<ItemStack> CHEST_ITEM = SynchedEntityData.defineId(TFCChestBoat.class, EntityDataSerializers.ITEM_STACK);
 
     private final Supplier<? extends Item> drop;
-    private @Nullable LazyOptional<IItemHandler> inventoryHandler;
 
     public TFCChestBoat(EntityType<? extends Boat> type, Level level, Supplier<? extends Item> drop)
     {
@@ -72,7 +64,7 @@ public class TFCChestBoat extends ChestBoat implements ISlotCallback
     @Override
     public int getContainerSize()
     {
-        return 18;
+        return 18; // N.B. The actual list of item stacks is hardcoded to 27, but the only accesses guard through this, so we're fine to decrease it
     }
 
     @Override
@@ -88,68 +80,24 @@ public class TFCChestBoat extends ChestBoat implements ISlotCallback
     }
 
     @Override
-    public void invalidateCaps()
+    protected void defineSynchedData(SynchedEntityData.Builder builder)
     {
-        invalidateInventoryHandler();
-    }
-
-    @NotNull
-    @Override
-    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap)
-    {
-        return getCapability(cap, null);
-    }
-
-    @NotNull
-    @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
-    {
-        if (cap == Capabilities.ITEM)
-        {
-            return getInventoryHandler().cast();
-        }
-        return LazyOptional.empty();
-    }
-
-    private void invalidateInventoryHandler()
-    {
-        if (inventoryHandler != null)
-        {
-            inventoryHandler.invalidate();
-            inventoryHandler = null;
-        }
-    }
-
-    private LazyOptional<IItemHandler> getInventoryHandler()
-    {
-        if (inventoryHandler != null)
-        {
-            return inventoryHandler;
-        }
-        final InventoryWrapper itemHandler = new InventoryWrapper(this, this);
-        inventoryHandler = LazyOptional.of(() -> itemHandler);
-        return inventoryHandler;
-    }
-
-    @Override
-    protected void defineSynchedData()
-    {
-        super.defineSynchedData();
-        entityData.define(CHEST_ITEM, ItemStack.EMPTY);
+        super.defineSynchedData(builder);
+        builder.define(CHEST_ITEM, ItemStack.EMPTY);
     }
 
     @Override
     protected void readAdditionalSaveData(CompoundTag tag)
     {
         super.readAdditionalSaveData(tag);
-        setChestItem(ItemStack.of(tag.getCompound("chestItem")));
+        setChestItem(ItemStack.parseOptional(level().registryAccess(), tag.getCompound("chestItem")));
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag tag)
     {
         super.addAdditionalSaveData(tag);
-        tag.put("chestItem", getChestItem().save(new CompoundTag()));
+        tag.put("chestItem", getChestItem().save(level().registryAccess()));
     }
 
     @Override

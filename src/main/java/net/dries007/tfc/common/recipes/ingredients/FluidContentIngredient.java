@@ -13,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.crafting.IngredientType;
 import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 
-import net.dries007.tfc.common.capabilities.Capabilities;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 
 public record FluidContentIngredient(SizedFluidIngredient fluid) implements PreciseIngredient
 {
@@ -23,10 +23,7 @@ public record FluidContentIngredient(SizedFluidIngredient fluid) implements Prec
     @Override
     public boolean test(ItemStack stack)
     {
-        return stack.getCapability(Capabilities.FLUID_ITEM)
-            .map(cap -> cap.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE))
-            .filter(fluid)
-            .isPresent();
+        return fluid.test(FluidHelpers.getContainedFluid(stack));
     }
 
     @Override

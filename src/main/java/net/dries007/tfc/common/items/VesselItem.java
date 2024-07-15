@@ -9,7 +9,6 @@ package net.dries007.tfc.common.items;
 import java.util.List;
 import java.util.Optional;
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -22,7 +21,6 @@ import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.common.util.INBTSerializable;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.ItemStackHandler;
@@ -196,7 +194,8 @@ public class VesselItem extends Item
         return 1;
     }
 
-    static class VesselCapability implements VesselLike, INBTSerializable<CompoundTag>, DelegateItemHandler, DelegateHeatHandler, SimpleFluidHandler
+    // todo: components and capabilities for vessels
+    static class VesselCapability implements VesselLike, DelegateItemHandler, DelegateHeatHandler, SimpleFluidHandler
     {
         private final ItemStack stack;
 
@@ -246,19 +245,19 @@ public class VesselItem extends Item
         {
             final ItemStack stack = inventory.getStackInSlot(slot);
             cachedRecipes[slot] = stack.isEmpty() ? null : HeatingRecipe.getRecipe(stack); // Update cached recipe for slot
-            updateAndSave(); // Update heat capacity as average of inventory slots
+            //updateAndSave(); // Update heat capacity as average of inventory slots
         }
 
         @Override
         public void onSlotTake(Player player, int slot, ItemStack stack)
         {
-            FoodCapability.removeTrait(stack, FoodTraits.PRESERVED);
+            FoodCapability.removeTrait(stack, FoodTraits.PRESERVED.value());
         }
 
         @Override
         public void onCarried(ItemStack stack)
         {
-            FoodCapability.removeTrait(stack, FoodTraits.PRESERVED);
+            FoodCapability.removeTrait(stack, FoodTraits.PRESERVED.value());
         }
 
         @Override
@@ -354,7 +353,7 @@ public class VesselItem extends Item
                 final int result = alloy.add(metal, resource.getAmount(), action.simulate());
                 if (action.execute())
                 {
-                    updateAndSave();
+                    //updateAndSave();
                 }
                 return result;
             }
@@ -378,7 +377,7 @@ public class VesselItem extends Item
                 final int amount = alloy.removeAlloy(maxDrain, action.simulate());
                 if (action.execute())
                 {
-                    updateAndSave();
+                    //updateAndSave();
                 }
                 return new FluidStack(result.fluid(), amount);
             }
@@ -388,7 +387,7 @@ public class VesselItem extends Item
         @Override
         public void setStackInSlot(int slot, ItemStack stack)
         {
-            FoodCapability.applyTrait(stack, FoodTraits.PRESERVED);
+            FoodCapability.applyTrait(stack, FoodTraits.PRESERVED.value());
             inventory.setStackInSlot(slot, stack);
         }
 
@@ -397,9 +396,9 @@ public class VesselItem extends Item
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
         {
             final ItemStack input = stack.copy();
-            FoodCapability.applyTrait(input, FoodTraits.PRESERVED);
+            FoodCapability.applyTrait(input, FoodTraits.PRESERVED.value());
             final ItemStack result = inventory.insertItem(slot, input, simulate);
-            FoodCapability.removeTrait(result, FoodTraits.PRESERVED);
+            FoodCapability.removeTrait(result, FoodTraits.PRESERVED.value());
             return result;
         }
 
@@ -408,20 +407,8 @@ public class VesselItem extends Item
         public ItemStack extractItem(int slot, int amount, boolean simulate)
         {
             final ItemStack result = inventory.extractItem(slot, amount, simulate);
-            FoodCapability.removeTrait(result, FoodTraits.PRESERVED);
+            FoodCapability.removeTrait(result, FoodTraits.PRESERVED.value());
             return result;
-        }
-
-        @Override
-        public CompoundTag serializeNBT()
-        {
-            return heat.serializeNBT();
-        }
-
-        @Override
-        public void deserializeNBT(CompoundTag nbt)
-        {
-            heat.deserializeNBT(nbt);
         }
 
         /**
@@ -463,30 +450,8 @@ public class VesselItem extends Item
             }
             if (updatedAlloy)
             {
-                updateAndSave();
+                //updateAndSave();
             }
-        }
-
-        private void load()
-        {
-            if (initialized)
-            {
-                return;
-            }
-            initialized = true;
-
-            final CompoundTag tag = stack.getOrCreateTag();
-            inventory.deserializeNBT(tag.getCompound("inventory"));
-            alloy.deserializeNBT(tag.getCompound("alloy"));
-
-            // Additionally, we need to update the contents of our cached recipes. Since we can experience modification (copy) which will invalidate our cache, that would not trigger setAndUpdateSlots
-            for (int i = 0; i < inventory.getSlots(); i++)
-            {
-                final ItemStack stack = inventory.getStackInSlot(i);
-                cachedRecipes[i] = stack.isEmpty() ? null : HeatingRecipe.getRecipe(stack);
-            }
-
-            updateHeatCapacity();
         }
 
         private void updateHeatCapacity()
@@ -518,16 +483,6 @@ public class VesselItem extends Item
             }
 
             heat.setHeatCapacity(value);
-        }
-
-        private void updateAndSave()
-        {
-            updateHeatCapacity();
-
-            final CompoundTag tag = stack.getOrCreateTag();
-
-            tag.put("inventory", inventory.serializeNBT());
-            tag.put("alloy", alloy.serializeNBT());
         }
     }
 }

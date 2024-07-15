@@ -9,7 +9,6 @@ package net.dries007.tfc.common.items;
 import java.util.List;
 import java.util.function.IntSupplier;
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -27,7 +26,6 @@ import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
@@ -35,7 +33,6 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.DelegateFluidHandler;
 import net.dries007.tfc.common.capabilities.DelegateHeatHandler;
 import net.dries007.tfc.common.capabilities.MoldLike;
@@ -43,6 +40,7 @@ import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatHandler;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.container.TFCContainerProviders;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.CastingRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
@@ -166,7 +164,7 @@ public class MoldItem extends Item
                     final ItemStack result = recipe.assemble(mold);
 
                     final boolean noCarry = carried.isEmpty();
-                    final boolean stackable = ItemHandlerHelper.canItemStacksStack(result, carried) && result.getCount() + carried.getCount() <= carried.getMaxStackSize();
+                    final boolean stackable = ItemStack.isSameItemSameComponents(result, carried) && result.getCount() + carried.getCount() <= carried.getMaxStackSize();
 
                     if (!noCarry && !stackable)
                     {
@@ -211,14 +209,10 @@ public class MoldItem extends Item
     {
         // We cannot just query the stack size to see if it has a contained fluid, as that would be self-referential
         // So we have to query a handler that *would* return a capability here, which means copying with stack size = 1
-        final IFluidHandlerItem handler = Helpers.getCapability(stack.copyWithCount(1), Capabilities.FLUID_ITEM);
-        if (handler != null && handler.getFluidInTank(0).isEmpty())
-        {
-            return super.getMaxStackSize(stack);
-        }
-        return 1;
+        return FluidHelpers.getContainedFluid(stack.copyWithCount(1)).isEmpty() ? super.getMaxStackSize(stack) : 1;
     }
 
+    // todo 1.21, item stack capability/component implementations!
     static class MoldCapability implements MoldLike, DelegateHeatHandler, DelegateFluidHandler
     {
         private final ItemStack stack;
@@ -269,7 +263,7 @@ public class MoldItem extends Item
             final int amount = tank.fill(resource, action);
             if (amount > 0)
             {
-                updateAndSave();
+                //updateAndSave();
             }
             return amount;
         }
@@ -283,7 +277,7 @@ public class MoldItem extends Item
                 final FluidStack result = drain(resource.getAmount(), action);
                 if (!result.isEmpty())
                 {
-                    updateAndSave();
+                    //updateAndSave();
                 }
                 return result;
             }
@@ -303,7 +297,7 @@ public class MoldItem extends Item
             final FluidStack result = tank.drain(maxDrain, action);
             if (!result.isEmpty())
             {
-                updateAndSave();
+                //updateAndSave();
             }
             return result;
         }
@@ -331,38 +325,10 @@ public class MoldItem extends Item
             return false;
         }
 
-        @Override
-        public CompoundTag serializeNBT()
-        {
-            return heat.serializeNBT();
-        }
-
-        @Override
-        public void deserializeNBT(CompoundTag nbt)
-        {
-            heat.deserializeNBT(nbt);
-        }
-
         @Nullable
         private Metal getContainedMetal()
         {
             return Metal.get(tank.getFluid().getFluid());
-        }
-
-        private void load()
-        {
-            if (initialized)
-            {
-                return;
-            }
-            initialized = true;
-
-            final @Nullable CompoundTag tag = stack.getTagElement("tank");
-            if (tag != null)
-            {
-                tank.readFromNBT(tag);
-            }
-            updateHeatCapacity();
         }
 
         private void updateHeatCapacity()
@@ -378,20 +344,6 @@ public class MoldItem extends Item
             }
 
             heat.setHeatCapacity(value);
-        }
-
-        private void updateAndSave()
-        {
-            updateHeatCapacity();
-
-            if (tank.isEmpty())
-            {
-                stack.removeTagKey("tank");
-            }
-            else
-            {
-                stack.addTagElement("tank", tank.writeToNBT(new CompoundTag()));
-            }
         }
     }
 }

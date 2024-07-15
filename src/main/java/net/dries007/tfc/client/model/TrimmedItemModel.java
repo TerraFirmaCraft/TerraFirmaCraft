@@ -14,11 +14,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.mojang.math.Transformation;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.BlockModelRotation;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.ModelState;
@@ -26,31 +24,26 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.armortrim.ArmorTrim;
-import net.neoforged.neoforge.client.NeoForgeRenderTypes;
 import net.neoforged.neoforge.client.RenderTypeGroup;
 import net.neoforged.neoforge.client.model.CompositeModel;
-import net.neoforged.neoforge.client.model.SimpleModelState;
 import net.neoforged.neoforge.client.model.geometry.IGeometryBakingContext;
 import net.neoforged.neoforge.client.model.geometry.IGeometryLoader;
 import net.neoforged.neoforge.client.model.geometry.IUnbakedGeometry;
-import net.neoforged.neoforge.client.model.geometry.StandaloneGeometryBakingContext;
-import net.neoforged.neoforge.client.model.geometry.UnbakedGeometryHelper;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.client.RenderHelpers;
-import net.dries007.tfc.util.Helpers;
 
-
+// todo 1.21, this whole thing looks concerning and broken and idk how to fix it
 public record TrimmedItemModel(@Nullable ArmorTrim trim) implements IUnbakedGeometry<TrimmedItemModel>
 {
 
     @Override
-    public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation)
+    public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides)
     {
+        /*
         final TextureAtlasSprite baseSprite = spriteGetter.apply(context.getMaterial("armor"));
         final TextureAtlasSprite overlaySprite = context.hasMaterial("overlay") ? spriteGetter.apply(context.getMaterial("overlay")) : null;
         final ResourceLocation trimLocation = context.getMaterial("trim").texture();
-        final String color = trim != null ? trim.material().get().assetName() : null;
+        final String color = trim != null ? trim.material().value().assetName() : null;
         final TextureAtlasSprite trimSprite = trim != null ? spriteGetter.apply(new Material(RenderHelpers.BLOCKS_ATLAS, trimLocation.withSuffix("_" + color))) : null;
 
         final var itemContext = StandaloneGeometryBakingContext.builder(context).withGui3d(false).withUseBlockLight(false).build(modelLocation);
@@ -71,14 +64,16 @@ public record TrimmedItemModel(@Nullable ArmorTrim trim) implements IUnbakedGeom
 
         builder.setParticle(baseSprite);
         return builder.build();
+        */
+        return null;
     }
 
     private static void addQuads(ModelState modelState, ResourceLocation modelLocation, TextureAtlasSprite trimSprite, CompositeModel.Baked.Builder builder, RenderTypeGroup normalRenderTypes, @Nullable Transformation transformation)
     {
-        var transformedState = transformation == null ? modelState : new SimpleModelState(modelState.getRotation().compose(transformation), modelState.isUvLocked());
+        /*var transformedState = transformation == null ? modelState : new SimpleModelState(modelState.getRotation().compose(transformation), modelState.isUvLocked());
         var unbaked = UnbakedGeometryHelper.createUnbakedItemElements(0, trimSprite.contents());
         var quads = UnbakedGeometryHelper.bakeElements(unbaked, material -> trimSprite, transformedState, modelLocation);
-        builder.addQuads(normalRenderTypes, quads);
+        builder.addQuads(normalRenderTypes, quads);*/
     }
 
     public static class Loader implements IGeometryLoader<TrimmedItemModel>
@@ -109,7 +104,7 @@ public record TrimmedItemModel(@Nullable ArmorTrim trim) implements IUnbakedGeom
         @Override
         public BakedModel resolve(BakedModel originalModel, ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed)
         {
-            BakedModel overridden = nested.resolve(originalModel, stack, level, entity, seed);
+            /*BakedModel overridden = nested.resolve(originalModel, stack, level, entity, seed);
             if (overridden != originalModel || level == null) return overridden;
             return ArmorTrim.getTrim(level.registryAccess(), stack).map(trim -> {
                 final String name = trim.material().get().assetName();
@@ -121,7 +116,8 @@ public record TrimmedItemModel(@Nullable ArmorTrim trim) implements IUnbakedGeom
                     return bakedModel;
                 }
                 return cache.get(name);
-            }).orElse(originalModel);
+            }).orElse(originalModel);*/
+            return null;
         }
     }
 

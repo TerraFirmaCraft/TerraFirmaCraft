@@ -9,8 +9,6 @@ package net.dries007.tfc.common.entities.prey;
 import java.util.function.Supplier;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Dynamic;
-import javax.annotation.Nullable;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
@@ -29,6 +27,7 @@ import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.entities.EntityHelpers;
@@ -171,12 +170,12 @@ public class RammingPrey extends WildAnimal
         super.aiStep();
     }
 
+    @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag tag)
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnData)
     {
         RammingPreyAi.initMemories(this, level.getRandom());
-
-        return super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData, tag);
+        return super.finalizeSpawn(level, difficulty, spawnType, spawnData);
     }
 
     public int getTelegraphAttackTick()

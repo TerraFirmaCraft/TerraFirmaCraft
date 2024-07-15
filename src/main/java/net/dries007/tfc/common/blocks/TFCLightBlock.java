@@ -8,8 +8,6 @@ package net.dries007.tfc.common.blocks;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -59,11 +57,11 @@ public class TFCLightBlock extends Block implements IFluidLoggable
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         BlockState state = defaultBlockState();
-        CompoundTag tag = context.getItemInHand().getTag();
+        /*CompoundTag tag = context.getItemInHand().getTag();
         if (tag != null && tag.contains("level", Tag.TAG_INT))
         {
             state = state.setValue(LEVEL, tag.getInt("level"));
-        }
+        }*/ // todo: light block implementation
         return state;
     }
 
@@ -144,9 +142,10 @@ public class TFCLightBlock extends Block implements IFluidLoggable
     @Override
     public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player)
     {
-        ItemStack stack = super.getCloneItemStack(state, target, level, pos, player);
+        /*ItemStack stack = super.getCloneItemStack(state, target, level, pos, player);
         CompoundTag tag = stack.getOrCreateTag();
         tag.putInt("level", state.getValue(LEVEL));
-        return stack;
+        return stack;*/
+        return ItemStack.EMPTY; // todo: light block implementation
     }
 }

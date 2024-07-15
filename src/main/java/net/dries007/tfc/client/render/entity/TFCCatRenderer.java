@@ -24,9 +24,9 @@ public class TFCCatRenderer extends SimpleMobRenderer<TFCCat, TFCCatModel>
     }
 
     @Override
-    protected void setupRotations(TFCCat entity, PoseStack poseStack, float ageInTicks, float yaw, float partialTicks)
+    protected void setupRotations(TFCCat entity, PoseStack poseStack, float bob, float yBodyRot, float partialTick, float scale)
     {
-        super.setupRotations(entity, poseStack, ageInTicks, yaw, partialTicks);
+        super.setupRotations(entity, poseStack, bob, yBodyRot, partialTick, scale);
         if (entity.isSleeping())
         {
             poseStack.translate(0.4f, 0.15f, 0.15f);

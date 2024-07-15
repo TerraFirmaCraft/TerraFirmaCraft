@@ -18,6 +18,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -275,23 +276,14 @@ public final class FluidHelpers
      */
     public static boolean transferExact(IFluidHandler from, IFluidHandler to, int amount)
     {
-        if (couldTransferExact(from, to, amount))
-        {
-            to.fill(from.drain(amount, IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE);
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * @return {@code true} if the action would succeed
-     */
-    public static boolean couldTransferExact(IFluidHandler from, IFluidHandler to, int amount)
-    {
         final FluidStack drained = from.drain(amount, IFluidHandler.FluidAction.SIMULATE);
         if (drained.getAmount() == amount)
         {
-            return to.fill(drained, IFluidHandler.FluidAction.SIMULATE) == amount;
+            if (to.fill(drained, IFluidHandler.FluidAction.SIMULATE) == amount)
+            {
+                to.fill(from.drain(amount, IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE);
+                return true;
+            }
         }
         return false;
     }
@@ -354,10 +346,9 @@ public final class FluidHelpers
             if (action.execute())
             {
                 // Directly execute, assuming that we can pickup into a bucket, then empty the bucket to obtain the contents
-                final ItemStack stack = pickup.pickupBlock(level, pos, state);
-                final FluidStack fluid = stack.getCapability(Capabilities.FLUID_ITEM)
-                    .map(cap -> cap.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE))
-                    .orElse(FluidStack.EMPTY);
+                final ItemStack stack = pickup.pickupBlock(null, level, pos, state);
+                final @Nullable IFluidHandler fluidHandler = stack.getCapability(Capabilities.FluidHandler.ITEM);
+                final FluidStack fluid = fluidHandler != null ? fluidHandler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE) : FluidStack.EMPTY;
                 sound.accept(fluid);
                 return fluid;
             }
@@ -371,7 +362,7 @@ public final class FluidHelpers
     }
 
     /**
-     * This is based on {@link net.minecraft.world.item.BucketItem#emptyContents(Player, Level, BlockPos, BlockHitResult)}
+     * This is based on {@link BucketItem#emptyContents}
      */
     public static boolean emptyFluidFrom(IFluidHandler handler, Level level, BlockPos pos, BlockState state, @Nullable BlockHitResult hit, boolean allowPlacingSourceBlocks)
     {
@@ -379,7 +370,7 @@ public final class FluidHelpers
         final FluidStack simulatedDrained = handler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE);
         final Fluid fluid = simulatedDrained.getFluid();
 
-        final boolean willReplace = state.isAir() || state.canBeReplaced(fluid) || (block instanceof LiquidBlockContainer container && container.canPlaceLiquid(level, pos, state, fluid) && allowPlacingSourceBlocks);
+        final boolean willReplace = state.isAir() || state.canBeReplaced(fluid) || (block instanceof LiquidBlockContainer container && container.canPlaceLiquid(null, level, pos, state, fluid) && allowPlacingSourceBlocks);
         if (!willReplace)
         {
             if (hit == null)
@@ -400,7 +391,7 @@ public final class FluidHelpers
             }
             return true;
         }
-        else if (block instanceof LiquidBlockContainer container && container.canPlaceLiquid(level, pos, state, fluid) && simulatedDrained.getAmount() >= BUCKET_VOLUME)
+        else if (block instanceof LiquidBlockContainer container && container.canPlaceLiquid(null, level, pos, state, fluid) && simulatedDrained.getAmount() >= BUCKET_VOLUME)
         {
             if (allowPlacingSourceBlocks)
             {
@@ -561,12 +552,25 @@ public final class FluidHelpers
     }
 
     /**
-     * @return The contained fluid in a generic, simple, fluid handler item {@code stack}
+     * @return The contained fluid in an arbitrary fluid handler, determined by simulating a drain. This is more generic for use with
+     * arbitrary fluid handlers, but <strong>will not work</strong> with handlers that have contained fluids, but prevent modification
+     * (i.e. molds when solid)
+     * @see #getContainedFluidInTank(ItemStack)
      */
     public static FluidStack getContainedFluid(ItemStack stack)
     {
         final @Nullable IFluidHandlerItem handler = stack.getCapability(Capabilities.FluidHandler.ITEM);
         return handler != null ? handler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE) : FluidStack.EMPTY;
+    }
+
+    /**
+     * @return The contained fluid in a fluid stack with a single tank. This is implementation-specific, but works for cases like molds
+     * that have potential to have a contained fluid but be solid
+     */
+    public static FluidStack getContainedFluidInTank(ItemStack stack)
+    {
+        final @Nullable IFluidHandlerItem handler = stack.getCapability(Capabilities.FluidHandler.ITEM);
+        return handler != null ? handler.getFluidInTank(0) : FluidStack.EMPTY;
     }
 
     /**

@@ -6,9 +6,7 @@
 
 package net.dries007.tfc.common.entities.prey;
 
-import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -28,6 +26,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.event.EventHooks;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.plant.fruit.Lifecycle;
@@ -85,11 +85,11 @@ public class TFCFox extends Fox
         goalSelector.addGoal(10, new TFCFoxEatBerriesGoal());
     }
 
-    @Override
     @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag)
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnData)
     {
-        final SpawnGroupData spawnData = super.finalizeSpawn(level, difficulty, type, data, tag);
+        spawnData = super.finalizeSpawn(level, difficulty, spawnType, spawnData);
         final ChunkData chunkData = EntityHelpers.getChunkDataForSpawning(level, blockPosition());
         setVariant(chunkData.getAverageTemp(blockPosition()) < 0 ? Type.SNOW : Type.RED);
         return spawnData;
@@ -128,7 +128,7 @@ public class TFCFox extends Fox
         {
             TFCFox fox = TFCFox.this;
             Level level = fox.level();
-            if (ForgeEventFactory.getMobGriefingEvent(level, fox))
+            if (EventHooks.canEntityGrief(level, fox))
             {
                 BlockState currentState = level.getBlockState(blockPos);
                 if (currentState.getBlock() instanceof SeasonalPlantBlock seasonal && fox.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty())

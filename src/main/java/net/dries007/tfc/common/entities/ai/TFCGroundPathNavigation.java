@@ -7,14 +7,17 @@
 package net.dries007.tfc.common.entities.ai;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.pathfinder.*;
+import net.minecraft.world.level.pathfinder.Node;
+import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.level.pathfinder.PathFinder;
+import net.minecraft.world.level.pathfinder.PathType;
+import net.minecraft.world.level.pathfinder.PathfindingContext;
+import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
@@ -23,6 +26,7 @@ import net.dries007.tfc.util.Helpers;
 
 public class TFCGroundPathNavigation extends GroundPathNavigation
 {
+    // todo 1.21: the only modification here looks like replacing a water for water-like check in the original
     public static int getSurfaceYRespectingFluid(GroundPathNavigation navigation, Mob mob, Level level)
     {
         final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
@@ -67,93 +71,82 @@ public class TFCGroundPathNavigation extends GroundPathNavigation
     public static class TFCWalkNodeEvaluator extends WalkNodeEvaluator
     {
         @Override
-        protected BlockPathTypes evaluateBlockPathType(BlockGetter level, BlockPos pos, BlockPathTypes pathType)
+        public PathType getPathType(PathfindingContext context, int x, int y, int z)
         {
-            // interpret leaves as open space
-            if (pathType == BlockPathTypes.LEAVES)
-            {
-                return BlockPathTypes.OPEN;
-            }
-            return super.evaluateBlockPathType(level, pos, pathType);
+            // todo 1.21: can this be fixed by just making our leaves return PathType.OPEN ? That seems much better than this hack
+            final PathType pathType = super.getPathType(context, x, y, z);
+            return pathType == PathType.LEAVES ? PathType.OPEN : pathType;
         }
 
+        // todo 1.21, this might be better implemented as a mixin into the original class, since we should apply for all mobs?
+        // It seems we only need to modify one check, which can be done really nice with mixinextras
         @Override
         public Node getStart()
         {
             final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
-            int y = mob.getBlockY();
-            BlockState state = level.getBlockState(cursor.set(mob.getX(), y, mob.getZ()));
-            // if we are in fluid, rise to the surface
-            // tfc: don't check if mobs can stand on the fluid, we don't do that here.
-            if (canFloat() && mob.isInWater())
-            {
-                while (true) // tfc: use proper fluid check
-                {
-                    if (!Helpers.isFluid(state.getFluidState(), TFCTags.Fluids.WATER_LIKE))
-                    {
-                        --y;
-                        break;
-                    }
 
-                    ++y;
-                    state = level.getBlockState(cursor.set(mob.getX(), y, mob.getZ()));
+            int yPos = this.mob.getBlockY();
+            BlockState groundState = this.currentContext.getBlockState(cursor.set(mob.getX(), yPos, mob.getZ()));
+            if (!mob.canStandOnFluid(groundState.getFluidState()))
+            {
+                if (canFloat() && mob.isInWater())
+                {
+                    while (true)
+                    {
+                        // TFC: Include other water fluids here
+                        if (!Helpers.isFluid(groundState.getFluidState(), TFCTags.Fluids.WATER_LIKE))
+                        {
+                            yPos--;
+                            break;
+                        }
+
+                        groundState = currentContext.getBlockState(cursor.set(mob.getX(), ++yPos, mob.getZ()));
+                    }
+                }
+                else if (mob.onGround())
+                {
+                    yPos = Mth.floor(mob.getY() + 0.5);
+                }
+                else
+                {
+                    cursor.set(mob.getX(), mob.getY() + 1.0, mob.getZ());
+
+                    while (cursor.getY() > currentContext.level().getMinBuildHeight())
+                    {
+                        yPos = cursor.getY();
+                        cursor.setY(cursor.getY() - 1);
+
+                        final BlockState insideState = this.currentContext.getBlockState(cursor);
+                        if (!insideState.isAir() && !insideState.isPathfindable(PathComputationType.LAND))
+                        {
+                            break;
+                        }
+                    }
                 }
             }
-            else if (mob.onGround()) // already on the ground, then just return our fuzzed standing pos
+            else
             {
-                y = Mth.floor(mob.getY() + 0.5D);
-            }
-            else // move down until we hit something non-pathfindable, then take the block above it
-            {
-                cursor.set(mob.blockPosition());
-                final int min = level.getMinBuildHeight();
-                // tfc: use the cursor here instead of immutable positions
-                while (true)
+                while (mob.canStandOnFluid(groundState.getFluidState()))
                 {
-                    state = level.getBlockState(cursor);
-                    if (!(state.isAir() || state.isPathfindable(level, cursor, PathComputationType.LAND) && cursor.getY() > min))
-                    {
-                        break;
-                    }
-                    cursor.move(0, -1, 0);
+                    groundState = currentContext.getBlockState(cursor.set(mob.getX(), ++yPos, mob.getZ()));
                 }
-                y = cursor.getY() + 1;
+                yPos--;
             }
 
-            // pathfinding malus sets how much we enjoy going to the particular block
-            // if we hit a negative malus we should assume it is dangerous/impassable
             final BlockPos mobPos = mob.blockPosition();
-            final BlockPathTypes pathType = getCachedBlockType(mob, mobPos.getX(), y, mobPos.getZ());
-            if (mob.getPathfindingMalus(pathType) < 0)
+            if (!canStartAt(cursor.set(mobPos.getX(), yPos, mobPos.getZ())))
             {
-                // check each corner of our bounding box, if we hit a positive malus short-circuit and use that.
-                final AABB aabb = mob.getBoundingBox();
-                if (hasPositiveMalus(cursor.set(aabb.minX, y, aabb.minZ)) || hasPositiveMalus(cursor.set(aabb.minX, y, aabb.maxZ)) || hasPositiveMalus(cursor.set(aabb.maxX, y, aabb.minZ)) || hasPositiveMalus(cursor.set(aabb.maxX, y, aabb.maxZ)))
+                final AABB box = mob.getBoundingBox();
+                if (canStartAt(cursor.set(box.minX, yPos, box.minZ))
+                    || canStartAt(cursor.set(box.minX, yPos, box.maxZ))
+                    || canStartAt(cursor.set(box.maxX, yPos, box.minZ))
+                    || canStartAt(cursor.set(box.maxX, yPos, box.maxZ)))
                 {
-                    return chooseNode(cursor.getX(), cursor.getY(), cursor.getZ());
+                    return getStartNode(cursor);
                 }
             }
-            // we are pretty sure that the current block is appropriate, so just return that.
-            return chooseNode(mobPos.getX(), y, mobPos.getZ());
-        }
 
-        private Node chooseNode(int x, int y, int z)
-        {
-            final Node node = getNode(x, y, z);
-            node.type = getBlockPathType(mob, node.asBlockPos());
-            node.costMalus = mob.getPathfindingMalus(node.type);
-            return node;
-        }
-
-        private boolean hasPositiveMalus(BlockPos pos)
-        {
-            return mob.getPathfindingMalus(getBlockPathType(mob, pos)) >= 0.0F;
-        }
-
-        @Override
-        protected BlockPathTypes getBlockPathType(Mob mob, BlockPos pos)
-        {
-            return getCachedBlockType(mob, pos.getX(), pos.getY(), pos.getZ());
+            return this.getStartNode(cursor);
         }
     }
 }

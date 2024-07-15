@@ -6,8 +6,8 @@
 
 package net.dries007.tfc.common.entities.aquatic;
 
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -23,6 +23,7 @@ import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.animal.AbstractSchoolingFish;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.material.Fluid;
@@ -69,8 +70,7 @@ public class Jellyfish extends AbstractSchoolingFish implements AquaticMob
     public void saveToBucketTag(ItemStack stack)
     {
         super.saveToBucketTag(stack);
-        CompoundTag compoundtag = stack.getOrCreateTag();
-        compoundtag.putInt("BucketVariantTag", this.getVariant());
+        CustomData.update(DataComponents.BUCKET_ENTITY_DATA, stack, tag -> tag.putInt("BucketVariantTag", getVariant()));
     }
 
     @Override
@@ -91,11 +91,12 @@ public class Jellyfish extends AbstractSchoolingFish implements AquaticMob
         super.playerTouch(player);
     }
 
-    @Override
     @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance diff, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag)
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnData)
     {
-        data = super.finalizeSpawn(level, diff, type, data, tag);
+        spawnData = super.finalizeSpawn(level, difficulty, spawnType, spawnData);
+        /* todo 1.21, finalize spawn with bucket tag?
         if (tag != null && tag.contains("BucketVariantTag", Tag.TAG_INT))
         {
             setVariant(tag.getInt("BucketVariantTag"));
@@ -104,15 +105,15 @@ public class Jellyfish extends AbstractSchoolingFish implements AquaticMob
         {
             final int length = LOCATIONS.length;
             setVariant(random.nextInt(length));
-        }
-        return data;
+        }*/
+        return spawnData;
     }
 
     @Override
-    protected void defineSynchedData()
+    protected void defineSynchedData(SynchedEntityData.Builder builder)
     {
-        super.defineSynchedData();
-        this.entityData.define(DATA_ID_TYPE_VARIANT, 0);
+        super.defineSynchedData(builder);
+        builder.define(DATA_ID_TYPE_VARIANT, 0);
     }
 
     @Override

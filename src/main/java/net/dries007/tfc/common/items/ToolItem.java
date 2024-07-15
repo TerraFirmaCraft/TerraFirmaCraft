@@ -51,13 +51,6 @@ public class ToolItem extends DiggerItem
             .build();
     }
 
-    public static float calculateVanillaAttackDamage(float attackDamage, Tier tier)
-    {
-        return (attackDamage - 1) * tier.getAttackDamageBonus();
-    }
-
-
-
     /**
      * Mining plants should consume some durability
      */

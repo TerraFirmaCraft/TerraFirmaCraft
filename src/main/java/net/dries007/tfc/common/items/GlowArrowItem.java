@@ -11,6 +11,7 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.entities.misc.GlowArrow;
 
@@ -22,8 +23,8 @@ public class GlowArrowItem extends ArrowItem
     }
 
     @Override
-    public AbstractArrow createArrow(Level level, ItemStack stack, LivingEntity entity)
+    public AbstractArrow createArrow(Level level, ItemStack ammo, LivingEntity shooter, @Nullable ItemStack weapon)
     {
-        return new GlowArrow(level, entity);
+        return new GlowArrow(level, shooter, weapon);
     }
 }

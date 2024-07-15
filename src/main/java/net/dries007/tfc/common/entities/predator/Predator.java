@@ -202,19 +202,20 @@ public class Predator extends WildAnimal
         super.handleEntityEvent(id);
     }
 
+    @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag)
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnData)
     {
-        SpawnGroupData spawnData = super.finalizeSpawn(level, difficulty, type, data, tag);
+        spawnData = super.finalizeSpawn(level, difficulty, spawnType, spawnData);
         getBrain().setMemory(MemoryModuleType.HOME, GlobalPos.of(level.getLevel().dimension(), blockPosition()));
         return spawnData;
     }
 
     @Override
-    public void defineSynchedData()
+    public void defineSynchedData(SynchedEntityData.Builder builder)
     {
-        super.defineSynchedData();
-        entityData.define(DATA_SLEEPING, false);
+        super.defineSynchedData(builder);
+        builder.define(DATA_SLEEPING, false);
     }
 
     @Override
@@ -255,7 +256,7 @@ public class Predator extends WildAnimal
         {
             if (!player.level().isClientSide)
             {
-                player.addEffect(new MobEffectInstance(TFCEffects.PINNED.get(), 35, 0, false, false));
+                player.addEffect(new MobEffectInstance(TFCEffects.PINNED.holder(), 35, 0, false, false));
             }
             return true;
         }

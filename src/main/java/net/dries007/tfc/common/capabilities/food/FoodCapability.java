@@ -8,7 +8,6 @@ package net.dries007.tfc.common.capabilities.food;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.function.Supplier;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
@@ -255,7 +254,7 @@ public final class FoodCapability
     }
 
 
-    public static ItemStack setStackNonDecaying(ItemStack stack)
+    public static ItemStack setNonDecaying(ItemStack stack)
     {
         final @Nullable IFood food = get(stack);
         if (food != null)
@@ -263,14 +262,6 @@ public final class FoodCapability
             food.setNonDecaying();
         }
         return stack;
-    }
-
-    /**
-     * Sets a stack to non-decaying in a lazy fashion, which can be used before capabilities are fully loaded.
-     */
-    public static Supplier<ItemStack> createNonDecayingStack(ItemStack stack)
-    {
-        return () -> setStackNonDecaying(stack);
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -281,7 +272,7 @@ public final class FoodCapability
             final @Nullable ItemStack stack = recipe.value().getResultItem(registryAccess);
             if (stack != null)
             {
-                setStackNonDecaying(stack);
+                setNonDecaying(stack);
             }
             else
             {

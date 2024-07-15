@@ -50,7 +50,7 @@ public enum ScrapingBlockModel implements SimpleStaticBlockEntityModel<ScrapingB
         return 16;
     }
 
-    private void drawTiles(VertexConsumer buffer, PoseStack poseStack, ResourceLocation texture, short positions, int condition, int packedLight, int packedOverlay, float[] color)
+    private void drawTiles(VertexConsumer buffer, PoseStack poseStack, ResourceLocation texture, short positions, int condition, int packedLight, int packedOverlay, int color)
     {
         Matrix4f mat = poseStack.last().pose();
         TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(RenderHelpers.BLOCKS_ATLAS).apply(texture);
@@ -61,13 +61,10 @@ public enum ScrapingBlockModel implements SimpleStaticBlockEntityModel<ScrapingB
                 // Checks the nth bit of positions
                 if ((((positions >> (xOffset + 4 * zOffset)) & 1) == condition))
                 {
-                    final float r = color[0];
-                    final float g = color[1];
-                    final float b = color[2];
-                    buffer.addVertex(mat, xOffset / 4.0F, 0.01F, zOffset / 4.0F).setColor(r, g, b, 1.0F).setUv(sprite.getU(xOffset * 4f), sprite.getV(zOffset * 4f)).setOverlay(packedOverlay).setLight(packedLight).setNormal(0, 0, 1);
-                    buffer.addVertex(mat, xOffset / 4.0F, 0.01F, zOffset / 4.0F + 0.25F).setColor(r, g, b, 1.0F).setUv(sprite.getU(xOffset * 4f), sprite.getV(zOffset * 4f + 4f)).setOverlay(packedOverlay).setLight(packedLight).setNormal(0, 0, 1);
-                    buffer.addVertex(mat, xOffset / 4.0F + 0.25F, 0.01F, zOffset / 4.0F + 0.25F).setColor(r, g, b, 1.0F).setUv(sprite.getU(xOffset * 4f + 4f), sprite.getV(zOffset * 4f + 4f)).setOverlay(packedOverlay).setLight(packedLight).setNormal(0, 0, 1);
-                    buffer.addVertex(mat, xOffset / 4.0F + 0.25F, 0.01F, zOffset / 4.0F).setColor(r, g, b, 1.0F).setUv(sprite.getU(xOffset * 4f + 4f), sprite.getV(zOffset * 4f)).setOverlay(packedOverlay).setLight(packedLight).setNormal(0, 0, 1);
+                    buffer.addVertex(mat, xOffset / 4.0F, 0.01F, zOffset / 4.0F).setColor(color).setUv(sprite.getU(xOffset * 4f), sprite.getV(zOffset * 4f)).setOverlay(packedOverlay).setLight(packedLight).setNormal(0, 0, 1);
+                    buffer.addVertex(mat, xOffset / 4.0F, 0.01F, zOffset / 4.0F + 0.25F).setColor(color).setUv(sprite.getU(xOffset * 4f), sprite.getV(zOffset * 4f + 4f)).setOverlay(packedOverlay).setLight(packedLight).setNormal(0, 0, 1);
+                    buffer.addVertex(mat, xOffset / 4.0F + 0.25F, 0.01F, zOffset / 4.0F + 0.25F).setColor(color).setUv(sprite.getU(xOffset * 4f + 4f), sprite.getV(zOffset * 4f + 4f)).setOverlay(packedOverlay).setLight(packedLight).setNormal(0, 0, 1);
+                    buffer.addVertex(mat, xOffset / 4.0F + 0.25F, 0.01F, zOffset / 4.0F).setColor(color).setUv(sprite.getU(xOffset * 4f + 4f), sprite.getV(zOffset * 4f)).setOverlay(packedOverlay).setLight(packedLight).setNormal(0, 0, 1);
                 }
             }
         }

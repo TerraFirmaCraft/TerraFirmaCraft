@@ -6,13 +6,13 @@
 
 package net.dries007.tfc.common.entities.ai.prey;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.ToIntFunction;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -198,7 +198,7 @@ public class PrepareRamNearestTargetTFC<E extends PathfinderMob> extends Behavio
 
     private boolean isWalkableBlock(PathfinderMob rammingPrey, BlockPos pos)
     {
-        return rammingPrey.getNavigation().isStableDestination(pos) && rammingPrey.getPathfindingMalus(WalkNodeEvaluator.getBlockPathTypeStatic(rammingPrey.level(), pos.mutable())) == 0.0F;
+        return rammingPrey.getNavigation().isStableDestination(pos) && rammingPrey.getPathfindingMalus(WalkNodeEvaluator.getPathTypeStatic(rammingPrey, pos.mutable())) == 0.0F;
     }
 
     private void chooseRamPosition(PathfinderMob rammingPrey, LivingEntity target)

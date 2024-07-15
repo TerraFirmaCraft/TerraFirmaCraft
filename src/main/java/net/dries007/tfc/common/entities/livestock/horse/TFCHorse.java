@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.entities.livestock.horse;
 
 import java.util.function.Supplier;
-import javax.annotation.Nullable;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -44,6 +43,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
@@ -109,10 +109,10 @@ public class TFCHorse extends Horse implements HorseProperties
 
     // HORSE SPECIFIC STUFF
 
-    @Override
+    //@Override // todo: 1.21 passenger riding offset has changed
     public double getPassengersRidingOffset()
     {
-        return super.getPassengersRidingOffset() * getAgeScale();
+        return 0;//super.getPassengersRidingOffset() * getAgeScale();
     }
 
     @Override
@@ -250,7 +250,7 @@ public class TFCHorse extends Horse implements HorseProperties
                 }
 
                 final boolean canBeSaddled = !this.isBaby() && !this.isSaddled() && stack.is(Items.SADDLE);
-                if (this.isArmor(stack) || canBeSaddled)
+                if (this.isBodyArmorItem(stack) || canBeSaddled)
                 {
                     this.openCustomInventoryScreen(player);
                     return InteractionResult.sidedSuccess(this.level().isClientSide);
@@ -314,15 +314,14 @@ public class TFCHorse extends Horse implements HorseProperties
         this.lastAge = lastAge;
     }
 
-
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag tag)
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnData)
     {
-        spawnData = super.finalizeSpawn(level, difficulty, reason, spawnData, tag);
-        if (reason != MobSpawnType.BREEDING)
+        spawnData = super.finalizeSpawn(level, difficulty, spawnType, spawnData);
+        if (spawnType != MobSpawnType.BREEDING)
         {
-            initCommonAnimalData(level, difficulty, reason);
+            initCommonAnimalData(level, difficulty, spawnType);
         }
         setPregnantTime(-1L);
         return spawnData;

@@ -40,7 +40,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
@@ -52,7 +51,6 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Tooltips;
 
 public class BarrelBlock extends SealableDeviceBlock
 {
@@ -159,12 +157,13 @@ public class BarrelBlock extends SealableDeviceBlock
     @Override
     protected void addExtraInfo(List<Component> tooltip, CompoundTag inventoryTag)
     {
-        final FluidTank tank = new FluidTank(TFCConfig.SERVER.barrelCapacity.get());
+        // todo 1.21: this whole method needs to be rethought with sealed device components
+        /*final FluidTank tank = new FluidTank(TFCConfig.SERVER.barrelCapacity.get());
         tank.readFromNBT(inventoryTag.getCompound("tank"));
         if (!tank.isEmpty())
         {
             tooltip.add(Tooltips.fluidUnitsOf(tank.getFluid()));
-        }
+        }*/
     }
 
     @Override

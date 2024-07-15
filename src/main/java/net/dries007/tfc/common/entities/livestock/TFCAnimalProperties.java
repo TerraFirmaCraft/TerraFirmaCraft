@@ -8,7 +8,6 @@ package net.dries007.tfc.common.entities.livestock;
 
 import java.util.Locale;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import net.minecraft.Util;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -38,6 +37,7 @@ import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.food.BowlComponent;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;

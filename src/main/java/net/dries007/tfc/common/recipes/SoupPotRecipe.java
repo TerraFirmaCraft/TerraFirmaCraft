@@ -36,7 +36,6 @@ import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.outputs.PotOutput;
 import net.dries007.tfc.compat.jade.common.BlockEntityTooltip;
-import net.dries007.tfc.compat.jade.common.BlockEntityTooltips;
 import net.dries007.tfc.util.Helpers;
 
 public class SoupPotRecipe extends PotRecipe
@@ -176,7 +175,8 @@ public class SoupPotRecipe extends PotRecipe
         {
             return ((level, state, pos, entity, tooltip) -> {
                 final List<Component> text = new ArrayList<>();
-                BlockEntityTooltips.itemWithCount(tooltip, stack);
+                // todo 1.21, when re-enable jade
+                //BlockEntityTooltips.itemWithCount(tooltip, stack);
                 FoodCapability.addTooltipInfo(stack, text);
                 text.forEach(tooltip);
             });

@@ -7,7 +7,9 @@
 package net.dries007.tfc.common.blocks;
 
 import java.util.Collections;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -25,9 +27,10 @@ import net.dries007.tfc.util.CauldronInteractions;
  */
 public class FluidCauldronBlock extends AbstractCauldronBlock
 {
+    // todo: cauldron interactions need to be completely rethought, probably
     public FluidCauldronBlock(Properties properties)
     {
-        super(properties, Collections.emptyMap());
+        super(properties, new CauldronInteraction.InteractionMap("wut", Collections.emptyMap()));
     }
 
     @Override
@@ -42,5 +45,11 @@ public class FluidCauldronBlock extends AbstractCauldronBlock
     public boolean isFull(BlockState state)
     {
         return true;
+    }
+
+    @Override
+    protected MapCodec<? extends AbstractCauldronBlock> codec()
+    {
+        return IForgeBlockExtension.getFakeBlockCodec();
     }
 }

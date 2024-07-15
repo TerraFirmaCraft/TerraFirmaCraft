@@ -82,7 +82,7 @@ public class TFCChestBoatRenderer extends TFCBoatRenderer
             poseStack.mulPose(Axis.YP.rotationDegrees(90.0F));
             model.setupAnim(chest, pitch, 0.0F, -0.1F, 0.0F, 0.0F);
             VertexConsumer vertexconsumer = buffers.getBuffer(model.renderType(getChestTexture(chest)));
-            model.renderToBuffer(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+            model.renderToBuffer(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, -1);
 
             poseStack.popPose();
         }

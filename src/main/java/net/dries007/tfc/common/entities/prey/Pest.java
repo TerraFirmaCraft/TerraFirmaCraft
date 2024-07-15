@@ -9,7 +9,6 @@ package net.dries007.tfc.common.entities.prey;
 import com.mojang.serialization.Dynamic;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -76,10 +75,10 @@ public class Pest extends Prey
     }
 
     @Override
-    protected void defineSynchedData()
+    protected void defineSynchedData(SynchedEntityData.Builder builder)
     {
-        super.defineSynchedData();
-        entityData.define(DATA_CLIMBING, false);
+        super.defineSynchedData(builder);
+        builder.define(DATA_CLIMBING, false);
     }
 
     public void setClimbing(boolean climbing)
@@ -178,10 +177,11 @@ public class Pest extends Prey
         return !isPersistenceRequired();
     }
 
+    @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag)
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnData)
     {
-        final SpawnGroupData spawnData = super.finalizeSpawn(level, difficulty, type, data, tag);
+        spawnData = super.finalizeSpawn(level, difficulty, spawnType, spawnData);
         if (random.nextInt(1000) == 0)
         {
             setCustomName(Component.literal("Pak"));

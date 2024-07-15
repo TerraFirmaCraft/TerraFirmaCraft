@@ -20,6 +20,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.Tooltips;
 import net.dries007.tfc.util.loot.CopyFluidFunction;
 
@@ -33,7 +34,7 @@ public class LampBlockItem extends BlockItem
     @Override
     public String getDescriptionId(ItemStack stack)
     {
-        return getFluidInside(stack).isEmpty() ? super.getDescriptionId(stack) : super.getDescriptionId(stack) + ".filled";
+        return FluidHelpers.getContainedFluid(stack).isEmpty() ? super.getDescriptionId(stack) : super.getDescriptionId(stack) + ".filled";
     }
 
     @Override
@@ -45,17 +46,12 @@ public class LampBlockItem extends BlockItem
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag)
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag tooltipFlag)
     {
-        FluidStack fluid = getFluidInside(stack);
+        final FluidStack fluid = FluidHelpers.getContainedFluid(stack);
         if (!fluid.isEmpty())
         {
             tooltip.add(Tooltips.fluidUnitsOf(fluid));
         }
-    }
-
-    private FluidStack getFluidInside(ItemStack stack)
-    {
-        return stack.getCapability(Capabilities.FLUID_ITEM).map(cap -> cap.getFluidInTank(0)).orElse(FluidStack.EMPTY);
     }
 }

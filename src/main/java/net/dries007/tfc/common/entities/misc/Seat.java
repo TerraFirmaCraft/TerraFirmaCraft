@@ -63,7 +63,7 @@ public class Seat extends Entity
         }
     }
 
-    @Override
+    //@Override // todo: 1.21 passenger riding offset has changed
     public double getPassengersRidingOffset()
     {
         return -0.25;

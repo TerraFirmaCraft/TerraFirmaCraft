@@ -45,6 +45,7 @@ import net.dries007.tfc.common.container.AnvilContainer;
 import net.dries007.tfc.common.container.AnvilPlanContainer;
 import net.dries007.tfc.common.container.ISlotCallback;
 import net.dries007.tfc.common.recipes.AnvilRecipe;
+import net.dries007.tfc.common.recipes.RecipeHelpers;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.WeldingRecipe;
 import net.dries007.tfc.common.recipes.input.NonEmptyInput;
@@ -392,7 +393,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
 
         assert level != null;
 
-        final WeldingRecipe recipe = level.getRecipeManager().getRecipeFor(TFCRecipeTypes.WELDING.get(), inventory, level).orElse(null);
+        final WeldingRecipe recipe = RecipeHelpers.unbox(RecipeHelpers.getHolder(level, TFCRecipeTypes.WELDING, inventory));
         if (recipe != null)
         {
             if (!recipe.isCorrectTier(getTier()))
@@ -416,7 +417,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
                 return InteractionResult.FAIL;
             }
 
-            final ItemStack result = recipe.assemble(inventory, level.registryAccess());
+            final ItemStack result = recipe.assemble(inventory);
             final @Nullable IHeat resultHeat = HeatCapability.get(result);
 
             inventory.setStackInSlot(SLOT_INPUT_MAIN, result);

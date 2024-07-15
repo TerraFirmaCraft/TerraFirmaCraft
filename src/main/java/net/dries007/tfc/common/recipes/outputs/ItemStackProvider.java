@@ -59,7 +59,7 @@ public record ItemStackProvider(
 
     public static ItemStackProvider of(ItemStack stack, List<ItemStackModifier> modifiers)
     {
-        return new ItemStackProvider(FoodCapability.setStackNonDecaying(stack), modifiers);
+        return new ItemStackProvider(FoodCapability.setNonDecaying(stack), modifiers);
     }
 
     /**

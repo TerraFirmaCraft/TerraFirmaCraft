@@ -32,6 +32,11 @@ public record ItemSizeDefinition(
         ItemSizeDefinition::new
     );
 
+    public ItemSizeDefinition(Size size, Weight weight)
+    {
+        this(Ingredient.EMPTY, size, weight);
+    }
+
     @Override
     public Size getSize(ItemStack stack)
     {

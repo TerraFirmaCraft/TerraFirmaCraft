@@ -6,9 +6,6 @@
 
 package net.dries007.tfc.common.items;
 
-import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.Item;
-
 public enum Food
 {
     // Berries
@@ -199,18 +196,5 @@ public enum Food
     public boolean isFruit()
     {
         return fruit;
-    }
-
-    public FoodProperties getFoodProperties()
-    {
-        FoodProperties.Builder builder = new FoodProperties.Builder();
-        if (meat) builder.meat();
-        if (fast) builder.fast();
-        return builder.nutrition(4).saturationMod(0.3f).build();
-    }
-
-    public Item.Properties createProperties()
-    {
-        return new Item.Properties().food(getFoodProperties());
     }
 }

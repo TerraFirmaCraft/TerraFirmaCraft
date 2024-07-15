@@ -162,12 +162,12 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
     }
 
     @Override
-    protected void defineSynchedData()
+    protected void defineSynchedData(SynchedEntityData.Builder builder)
     {
-        super.defineSynchedData();
-        entityData.define(DATA_OWNER, Optional.empty());
-        entityData.define(DATA_PET_FLAGS, (byte) 0);
-        entityData.define(DATA_COLLAR_COLOR, DyeColor.WHITE.getId());
+        super.defineSynchedData(builder);
+        builder.define(DATA_OWNER, Optional.empty());
+        builder.define(DATA_PET_FLAGS, (byte) 0);
+        builder.define(DATA_COLLAR_COLOR, DyeColor.WHITE.getId());
     }
 
     public DyeColor getCollarColor()

@@ -7,8 +7,6 @@
 package net.dries007.tfc.common.items;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -22,15 +20,16 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
 import net.dries007.tfc.common.blockentities.BarrelInventoryCallback;
 import net.dries007.tfc.common.blocks.devices.BarrelBlock;
 import net.dries007.tfc.common.blocks.devices.SealableDeviceBlock;
-import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.DelegateFluidHandler;
 import net.dries007.tfc.common.capabilities.FluidTankCallback;
 import net.dries007.tfc.common.container.ISlotCallback;
@@ -97,7 +96,7 @@ public class BarrelBlockItem extends TooltipBlockItem implements Rackable
     private InteractionResult tryInteractWithFluid(Level level, Player player, InteractionHand hand)
     {
         final ItemStack stack = player.getItemInHand(hand);
-        final IFluidHandler handler = Helpers.getCapability(stack, Capabilities.FLUID_ITEM);
+        final @Nullable IFluidHandler handler = stack.getCapability(Capabilities.FluidHandler.ITEM);
         if (handler == null)
         {
             return InteractionResult.PASS;
@@ -139,20 +138,19 @@ public class BarrelBlockItem extends TooltipBlockItem implements Rackable
             this.stack = stack;
             this.inventory = new BarrelBlockEntity.BarrelInventory(this);
             this.hasActiveRecipe = false;
-
-            load();
         }
 
         @Override
         public boolean canModify()
         {
-            return stack.getTag() == null || !hasActiveRecipe; // As long as not sealed, or sealed but with no active recipe.
+            return true; // todo 1.21, sealed barrel block entity components
+            //return stack.getTag() == null || !hasActiveRecipe; // As long as not sealed, or sealed but with no active recipe.
         }
 
         @Override
         public void fluidTankChanged()
         {
-            save();
+
         }
 
         @Override
@@ -166,30 +164,6 @@ public class BarrelBlockItem extends TooltipBlockItem implements Rackable
         public ItemStack getContainer()
         {
             return stack.copy();
-        }
-
-        private void load()
-        {
-            final CompoundTag tag = stack.getTag();
-            if (tag != null && tag.contains(Helpers.BLOCK_ENTITY_TAG, Tag.TAG_COMPOUND))
-            {
-                final CompoundTag blockEntityTag = tag.getCompound(Helpers.BLOCK_ENTITY_TAG);
-
-                hasActiveRecipe = blockEntityTag.contains("recipe", Tag.TAG_STRING);
-                inventory.deserializeNBT(blockEntityTag.getCompound("inventory"));
-            }
-        }
-
-        private void save()
-        {
-            if (inventory.isInventoryEmpty())
-            {
-                stack.removeTagKey(Helpers.BLOCK_ENTITY_TAG);
-            }
-            else
-            {
-                stack.getOrCreateTagElement(Helpers.BLOCK_ENTITY_TAG).put("inventory", inventory.serializeNBT());
-            }
         }
     }
 }

@@ -7,7 +7,6 @@
 package net.dries007.tfc.client.model.entity;
 
 import com.mojang.math.Constants;
-import net.minecraft.client.model.WolfModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.util.Mth;
@@ -18,7 +17,8 @@ public class DogModel extends HierarchicalAnimatedModel<Dog>
 {
     public static LayerDefinition createBodyLayer()
     {
-        return WolfModel.createBodyLayer();
+        throw new IllegalStateException(); // todo 1.21, Where is this?
+        //return WolfModel.createBodyLayer();
     }
 
     private final ModelPart head;

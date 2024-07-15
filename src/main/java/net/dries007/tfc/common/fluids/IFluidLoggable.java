@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.fluids;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
@@ -19,6 +20,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.fluids.FluidStack;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A generic interface for a block which is able to contain any number of predetermined fluid properties
@@ -31,7 +33,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 public interface IFluidLoggable extends SimpleWaterloggedBlock, LiquidBlockContainer, BucketPickup
 {
     @Override
-    default boolean canPlaceLiquid(BlockGetter level, BlockPos pos, BlockState state, Fluid fluid)
+    default boolean canPlaceLiquid(@Nullable Player player, BlockGetter level, BlockPos pos, BlockState state, Fluid fluid)
     {
         final Fluid containedFluid = state.getValue(getFluidProperty()).getFluid();
         if (containedFluid == Fluids.EMPTY)
@@ -58,12 +60,12 @@ public interface IFluidLoggable extends SimpleWaterloggedBlock, LiquidBlockConta
     }
 
     @Override
-    default ItemStack pickupBlock(LevelAccessor worldIn, BlockPos pos, BlockState state)
+    default ItemStack pickupBlock(@Nullable Player player, LevelAccessor level, BlockPos pos, BlockState state)
     {
         final Fluid containedFluid = state.getValue(getFluidProperty()).getFluid();
         if (containedFluid != Fluids.EMPTY)
         {
-            worldIn.setBlock(pos, state.setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)), 3);
+            level.setBlock(pos, state.setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)), 3);
             return containedFluid.getFluidType().getBucket(new FluidStack(containedFluid, FluidHelpers.BUCKET_VOLUME));
         }
         return ItemStack.EMPTY;

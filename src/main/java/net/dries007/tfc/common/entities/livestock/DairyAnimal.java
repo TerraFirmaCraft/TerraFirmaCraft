@@ -16,16 +16,17 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.config.animals.ProducingMammalConfig;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.events.AnimalProductEvent;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
@@ -41,7 +42,7 @@ public abstract class DairyAnimal extends ProducingMammal
     public InteractionResult mobInteract(Player player, InteractionHand hand)
     {
         final ItemStack held = player.getItemInHand(hand);
-        final IFluidHandlerItem destFluidItemHandler = Helpers.getCapability(held, Capabilities.FLUID_ITEM);
+        final @Nullable IFluidHandlerItem destFluidItemHandler = held.getCapability(Capabilities.FluidHandler.ITEM);
 
         if (!held.isEmpty() && destFluidItemHandler != null)
         {

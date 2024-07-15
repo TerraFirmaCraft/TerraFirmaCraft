@@ -15,9 +15,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.animal.Chicken;
@@ -46,7 +44,8 @@ public abstract class OviparousAnimal extends ProducingAnimal implements Pluckab
 {
     public static AttributeSupplier.Builder createAttributes()
     {
-        return Chicken.createAttributes().add(ForgeMod.STEP_HEIGHT_ADDITION.get(), 1.5);
+        // todo 1.21 step height?
+        return Chicken.createAttributes();//.add(NeoForgeMod.STEP_HEIGHT_ADDITION.get(), 1.5);
     }
 
     public float flapping = 1f;
@@ -178,11 +177,12 @@ public abstract class OviparousAnimal extends ProducingAnimal implements Pluckab
         nextFlap = flyDist + flapSpeed / 2.0F;
     }
 
+    /* todo 1.21 standing eye height?
     @Override
     protected float getStandingEyeHeight(Pose pose, EntityDimensions dims)
     {
         return dims.height * 0.92F;
-    }
+    }*/
 
     @Override
     public void aiStep()

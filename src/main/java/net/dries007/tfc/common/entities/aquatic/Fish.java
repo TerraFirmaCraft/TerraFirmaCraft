@@ -43,7 +43,7 @@ public enum Fish
         {
             return new TFCSounds.FishId(() -> SoundEvents.SALMON_AMBIENT, () -> SoundEvents.SALMON_DEATH, () -> SoundEvents.SALMON_HURT, () -> SoundEvents.SALMON_FLOP);
         }
-        return TFCSounds.createFish(serializedName);
+        return TFCSounds.registerFish(serializedName);
     }
 
     public float getWidth()

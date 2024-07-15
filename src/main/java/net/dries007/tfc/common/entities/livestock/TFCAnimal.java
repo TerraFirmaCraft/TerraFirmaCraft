@@ -8,7 +8,6 @@ package net.dries007.tfc.common.entities.livestock;
 
 import java.util.function.Supplier;
 import com.mojang.serialization.Dynamic;
-import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -35,6 +34,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
@@ -73,7 +73,8 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties, T
     {
         super(type, level);
         getNavigation().setCanFloat(true);
-        this.setMaxUpStep(1.0F);
+        // todo 1.21 step height
+        //this.setMaxUpStep(1.0F);
         this.matingTime = Calendars.get(level).getTicks();
         this.lastFDecay = Calendars.get(level).getTotalDays();
         this.ambient = sounds.ambient();
@@ -200,15 +201,14 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties, T
         this.lastAge = lastAge;
     }
 
-    @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag tag)
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnData)
     {
-        if (reason != MobSpawnType.BREEDING)
+        if (spawnType != MobSpawnType.BREEDING)
         {
-            initCommonAnimalData(level, difficulty, reason);
+            initCommonAnimalData(level, difficulty, spawnType);
         }
-        return super.finalizeSpawn(level, difficulty, reason, spawnData, tag);
+        return super.finalizeSpawn(level, difficulty, spawnType, spawnData);
     }
 
     @Override

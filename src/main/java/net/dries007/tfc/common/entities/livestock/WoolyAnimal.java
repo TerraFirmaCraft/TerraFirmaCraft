@@ -17,7 +17,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.IShearable;
 import net.neoforged.neoforge.common.NeoForge;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
@@ -36,19 +35,17 @@ public abstract class WoolyAnimal extends ProducingMammal implements IShearable
     }
 
     @Override
-    public boolean isShearable(@NotNull ItemStack item, Level level, BlockPos pos)
+    public boolean isShearable(@Nullable Player player, ItemStack item, Level level, BlockPos pos)
     {
         return isReadyForAnimalProduct();
     }
 
     @Override
-    @NotNull
-    public List<ItemStack> onSheared(@Nullable Player player, @NotNull ItemStack item, Level level, BlockPos pos, int fortune)
+    public List<ItemStack> onSheared(@Nullable Player player, ItemStack item, Level level, BlockPos pos)
     {
         setProductsCooldown();
         playSound(SoundEvents.SHEEP_SHEAR, 1.0f, 1.0f);
 
-        // if the event was not cancelled
         AnimalProductEvent event = new AnimalProductEvent(level, pos, player, this, getWoolItem(), item, 1);
         if (!NeoForge.EVENT_BUS.post(event).isCanceled())
         {

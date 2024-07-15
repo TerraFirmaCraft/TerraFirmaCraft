@@ -8,7 +8,6 @@ package net.dries007.tfc.common.items;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -17,11 +16,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
+import net.dries007.tfc.common.TFCTags;
+
 public class ScytheItem extends ToolItem implements CreativeMiningTool
 {
-    public ScytheItem(Tier tier, float attackDamage, float attackSpeed, TagKey<Block> mineableBlocks, Properties properties)
+    public ScytheItem(Tier tier, Properties properties)
     {
-        super(tier, attackDamage, attackSpeed, mineableBlocks, properties);
+        super(tier, TFCTags.Blocks.MINEABLE_WITH_SCYTHE, properties);
     }
 
     @Override

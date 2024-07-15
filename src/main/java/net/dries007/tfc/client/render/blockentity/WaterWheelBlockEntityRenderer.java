@@ -46,7 +46,7 @@ public class WaterWheelBlockEntityRenderer implements BlockEntityRenderer<WaterW
         }
 
         model.setupAnim(wheel, partialTick);
-        model.renderToBuffer(stack, buffer.getBuffer(RenderType.entityCutout(wheelBlock.getTextureLocation())), packedLight, packedOverlay, 1f, 1f, 1f, 1f);
+        model.renderToBuffer(stack, buffer.getBuffer(RenderType.entityCutout(wheelBlock.getTextureLocation())), packedLight, packedOverlay, -1);
 
         stack.popPose();
     }

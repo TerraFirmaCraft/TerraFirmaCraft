@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.entities.livestock.horse;
 
 import java.util.function.Supplier;
-import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -44,6 +43,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
@@ -108,10 +108,10 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
 
     // HORSE SPECIFIC STUFF
 
-    @Override
+    //@Override // todo: 1.21 passenger riding offset has changed
     public double getPassengersRidingOffset()
     {
-        return super.getPassengersRidingOffset() * getAgeScale();
+        return 0; //super.getPassengersRidingOffset() * getAgeScale();
     }
 
     public ItemStack getChestItem()
@@ -341,19 +341,19 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
     }
 
     @Override
-    public boolean canBeLeashed(Player player)
+    public boolean canBeLeashed()
     {
-        return super.canBeLeashed(player) && !overburdened;
+        return super.canBeLeashed() && !overburdened;
     }
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag tag)
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnData)
     {
-        spawnData = super.finalizeSpawn(level, difficulty, reason, spawnData, tag);
-        if (reason != MobSpawnType.BREEDING)
+        spawnData = super.finalizeSpawn(level, difficulty, spawnType, spawnData);
+        if (spawnType != MobSpawnType.BREEDING)
         {
-            initCommonAnimalData(level, difficulty, reason);
+            initCommonAnimalData(level, difficulty, spawnType);
         }
         setPregnantTime(-1L);
         return spawnData;

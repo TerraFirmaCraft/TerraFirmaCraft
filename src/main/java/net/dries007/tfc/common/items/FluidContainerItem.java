@@ -20,9 +20,9 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.BlockHitResult;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.fluids.FluidHelpers;
@@ -59,7 +59,7 @@ public class FluidContainerItem extends Item
         }
 
         // Fallback behavior
-        final IFluidHandler handler = Helpers.getCapability(stack, Capabilities.FLUID_ITEM);
+        final @Nullable IFluidHandler handler = stack.getCapability(Capabilities.FluidHandler.ITEM);
         if (handler == null)
         {
             return InteractionResultHolder.pass(stack);
@@ -77,12 +77,10 @@ public class FluidContainerItem extends Item
     @Override
     public Component getName(ItemStack stack)
     {
-        final FluidStack fluid = stack.getCapability(Capabilities.FLUID_ITEM)
-            .map(cap -> cap.getFluidInTank(0))
-            .orElse(FluidStack.EMPTY);
+        final FluidStack fluid = FluidHelpers.getContainedFluid(stack);
         if (!fluid.isEmpty())
         {
-            return Component.translatable(getDescriptionId(stack) + ".filled", fluid.getDisplayName());
+            return Component.translatable(getDescriptionId(stack) + ".filled", fluid.getHoverName());
         }
         return super.getName(stack);
     }
@@ -92,24 +90,17 @@ public class FluidContainerItem extends Item
     {
         // We cannot just query the stack size to see if it has a contained fluid, as that would be self-referential
         // So we have to query a handler that *would* return a capability here, which means copying with stack size = 1
-        final IFluidHandlerItem handler = Helpers.getCapability(stack.copyWithCount(1), Capabilities.FLUID_ITEM);
-        if (handler != null && handler.getFluidInTank(0).isEmpty())
-        {
-            return super.getMaxStackSize(stack);
-        }
-        return 1;
+        return FluidHelpers.getContainedFluid(stack.copyWithCount(1)).isEmpty() ? super.getMaxStackSize(stack) : 1;
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltips, TooltipFlag isAdvanced)
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag tooltipFlag)
     {
-        stack.getCapability(Capabilities.FLUID_ITEM).ifPresent(cap -> {
-            final FluidStack fluid = cap.getFluidInTank(0);
-            if (!fluid.isEmpty() && fluid.getAmount() < capacity.get())
-            {
-                tooltips.add(Tooltips.fluidUnitsAndCapacityOf(fluid, capacity.get()));
-            }
-        });
+        final FluidStack fluid = FluidHelpers.getContainedFluid(stack);
+        if (!fluid.isEmpty())
+        {
+            tooltip.add(Tooltips.fluidUnitsAndCapacityOf(fluid, capacity.get()));
+        }
     }
 
     @Override
@@ -121,7 +112,7 @@ public class FluidContainerItem extends Item
     @Override
     public boolean hasCraftingRemainingItem(ItemStack stack)
     {
-        return stack.getCapability(Capabilities.FLUID_ITEM).map(cap -> !cap.getFluidInTank(0).isEmpty()).orElse(false);
+        return !FluidHelpers.getContainedFluid(stack).isEmpty();
     }
 
     public boolean canPlaceSourceBlocks()

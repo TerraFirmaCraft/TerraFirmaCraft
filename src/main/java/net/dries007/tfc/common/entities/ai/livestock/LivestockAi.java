@@ -11,13 +11,22 @@ import com.google.common.collect.ImmutableSet;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.Brain;
-import net.minecraft.world.entity.ai.behavior.*;
+import net.minecraft.world.entity.ai.behavior.AnimalPanic;
+import net.minecraft.world.entity.ai.behavior.BabyFollowAdult;
+import net.minecraft.world.entity.ai.behavior.CountDownCooldownTicks;
+import net.minecraft.world.entity.ai.behavior.DoNothing;
+import net.minecraft.world.entity.ai.behavior.EraseMemoryIf;
+import net.minecraft.world.entity.ai.behavior.FollowTemptation;
+import net.minecraft.world.entity.ai.behavior.LookAtTargetSink;
+import net.minecraft.world.entity.ai.behavior.MoveToTargetSink;
+import net.minecraft.world.entity.ai.behavior.RandomStroll;
+import net.minecraft.world.entity.ai.behavior.SetWalkTargetAwayFrom;
+import net.minecraft.world.entity.ai.behavior.SetWalkTargetFromLookTarget;
+import net.minecraft.world.entity.ai.behavior.Swim;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.schedule.Activity;
-
-import com.mojang.datafixers.util.Pair;
 
 import net.dries007.tfc.common.entities.ai.FastGateBehavior;
 import net.dries007.tfc.common.entities.ai.SetLookTarget;
@@ -25,7 +34,6 @@ import net.dries007.tfc.common.entities.ai.TFCBrain;
 import net.dries007.tfc.common.entities.ai.prey.AvoidPredatorBehavior;
 import net.dries007.tfc.common.entities.ai.prey.PreyAi;
 import net.dries007.tfc.common.entities.livestock.TFCAnimal;
-import net.dries007.tfc.common.entities.prey.Prey;
 
 public class LivestockAi
 {
@@ -83,7 +91,7 @@ public class LivestockAi
             SetLookTarget.create(EntityType.PLAYER, 6.0F, UniformInt.of(30, 60)), // looks at player, but its only try it every so often -- "Run Sometimes"
             AvoidPredatorBehavior.create(true),
             new BreedBehavior<>(1.0F), // custom TFC breed behavior
-            new AnimalPanic(2.0F), // if memory of being hit, runs away
+            new AnimalPanic<>(2.0F), // if memory of being hit, runs away
             new FollowTemptation(e -> e.isBaby() ? 1.5F : 1.25F), // sets the walk and look targets to whomever it has a memory of being tempted by
             BabyFollowAdult.create(UniformInt.of(5, 16), 1.25F), // babies follow any random adult around
             createIdleMovementBehaviors()

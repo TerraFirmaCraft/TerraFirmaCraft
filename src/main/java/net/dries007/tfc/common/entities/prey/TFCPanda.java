@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.entities.prey;
 
-import javax.annotation.Nullable;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -16,6 +15,7 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.animal.Panda;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.EntityHelpers;

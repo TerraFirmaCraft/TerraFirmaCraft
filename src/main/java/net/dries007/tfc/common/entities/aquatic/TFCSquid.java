@@ -9,6 +9,7 @@ package net.dries007.tfc.common.entities.aquatic;
 import java.util.Objects;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -68,10 +69,10 @@ public class TFCSquid extends Squid implements AquaticMob
     }
 
     @Override
-    public void defineSynchedData()
+    public void defineSynchedData(SynchedEntityData.Builder builder)
     {
-        super.defineSynchedData();
-        entityData.define(ID_SIZE, MIN_SIZE);
+        super.defineSynchedData(builder);
+        builder.define(ID_SIZE, MIN_SIZE);
     }
 
     @Override
@@ -109,17 +110,17 @@ public class TFCSquid extends Squid implements AquaticMob
         return false;
     }
 
-    public MobEffect getInkEffect()
+    public Holder<MobEffect> getInkEffect()
     {
-        return TFCEffects.INK.get();
+        return TFCEffects.INK.holder();
     }
 
     @Nullable
     @Override
-    @SuppressWarnings("deprecation")
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData data, @Nullable CompoundTag tag)
+    @SuppressWarnings("deprecation") // Override Only
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnData)
     {
-        final var spawn = super.finalizeSpawn(level, difficulty, spawnType, data, tag);
+        spawnData = super.finalizeSpawn(level, difficulty, spawnType, spawnData);
 
         var pair = getSizeRangeForSpawning();
         setSize(Mth.nextInt(random, pair.getFirst(), pair.getSecond()), true);
@@ -132,18 +133,19 @@ public class TFCSquid extends Squid implements AquaticMob
                 if (getSize() < pair.getFirst())
                 {
                     discard();
-                    return spawn;
+                    return spawnData;
                 }
             }
         }
 
-        return spawn;
+        return spawnData;
     }
 
     @Override
-    public EntityDimensions getDimensions(Pose pose)
+    protected EntityDimensions getDefaultDimensions(Pose pose)
     {
-        return super.getDimensions(pose).scale(getVisualScale());
+        // todo 1.21, replaced getDimensions() with getDefaultDimensions(), is this correct?
+        return super.getDefaultDimensions(pose).scale(getVisualScale());
     }
 
     public float getVisualScale()

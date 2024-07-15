@@ -18,7 +18,7 @@ import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 
 import net.dries007.tfc.util.climate.OverworldClimateModel;
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.ChunkDataGenerator;
+import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.ForestType;
 
 public class ClimatePlacement extends PlacementModifier
@@ -105,7 +105,7 @@ public class ClimatePlacement extends PlacementModifier
     @Override
     public Stream<BlockPos> getPositions(PlacementContext context, RandomSource random, BlockPos pos)
     {
-        final ChunkData data = ChunkDataGenerator.get(context.getLevel()).get(context.getLevel(), pos);
+        final ChunkData data = ChunkDataProvider.get(context.getLevel()).get(context.getLevel(), pos);
         if (isValid(data, pos, random))
         {
             return Stream.of(pos);

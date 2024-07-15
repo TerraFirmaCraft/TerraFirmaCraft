@@ -483,7 +483,7 @@ public record Metal(
         MACE_HEAD(PartType.ALL, true),
         KNIFE(PartType.ALL, metal -> new ToolItem(metal.toolTier(), TFCTags.Blocks.MINEABLE_WITH_KNIFE, tool(metal, 0.6f, -2.0f))),
         KNIFE_BLADE(PartType.ALL, true),
-        SCYTHE(PartType.ALL, metal -> new ScytheItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(0.7f, metal.toolTier()), -3.2F, TFCTags.Blocks.MINEABLE_WITH_SCYTHE, base(metal))),
+        SCYTHE(PartType.ALL, metal -> new ScytheItem(metal.toolTier(), tool(metal, 0.7f, -3.2f))),
         SCYTHE_BLADE(PartType.ALL, true),
         SHEARS(PartType.ALL, metal -> new ShearsItem(base(metal).durability(metal.toolTier().getUses()))),
 

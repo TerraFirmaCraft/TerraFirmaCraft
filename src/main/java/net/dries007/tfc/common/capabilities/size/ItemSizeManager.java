@@ -31,10 +31,10 @@ public final class ItemSizeManager
 
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    public static final ItemSize TOOL_SIZE = new ItemSize(Size.LARGE, Weight.MEDIUM); // Stored only in chests, stack size should be limited to 1 since it is a tool
-    public static final ItemSize ARMOR_SIZE = new ItemSize(Size.LARGE, Weight.VERY_HEAVY); // Stored only in chests and stack size = 1
-    public static final ItemSize BLOCK_SIZE = new ItemSize(Size.SMALL, Weight.LIGHT); // Fits small vessels and stack size = 32
-    public static final ItemSize DEFAULT_SIZE = new ItemSize(Size.VERY_SMALL, Weight.VERY_LIGHT); // Stored anywhere and stack size = 64
+    public static final ItemSizeDefinition TOOL_SIZE = new ItemSizeDefinition(Size.LARGE, Weight.MEDIUM); // Stored only in chests, stack size should be limited to 1 since it is a tool
+    public static final ItemSizeDefinition ARMOR_SIZE = new ItemSizeDefinition(Size.LARGE, Weight.VERY_HEAVY); // Stored only in chests and stack size = 1
+    public static final ItemSizeDefinition BLOCK_SIZE = new ItemSizeDefinition(Size.SMALL, Weight.LIGHT); // Fits small vessels and stack size = 32
+    public static final ItemSizeDefinition DEFAULT_SIZE = new ItemSizeDefinition(Size.VERY_SMALL, Weight.VERY_LIGHT); // Stored anywhere and stack size = 64
 
     /**
      * After a resource reload, updates all modifiable items (best guess) to have item sizes that reflect the {@link IItemSize}
@@ -73,7 +73,13 @@ public final class ItemSizeManager
             return size;
         }
 
+        return getDefinition(stack);
+    }
+
+    public static ItemSizeDefinition getDefinition(ItemStack stack)
+    {
         // Definitions
+        final Item item = stack.getItem();
         for (ItemSizeDefinition def : CACHE.getAll(stack.getItem()))
         {
             if (def.ingredient().test(stack))

@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.entities.prey;
 
-import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -43,7 +42,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.neoforge.neoforged.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.EntityHelpers;
@@ -126,7 +126,7 @@ public class TFCRabbit extends Rabbit implements MammalProperties
     }
 
     @Override
-    protected void jumpFromGround()
+    public void jumpFromGround()
     {
         super.jumpFromGround();
         if (getDeltaMovement().x == 0f || getDeltaMovement().z == 0f)
@@ -202,12 +202,12 @@ public class TFCRabbit extends Rabbit implements MammalProperties
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag tag)
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnData)
     {
-        spawnData = super.finalizeSpawn(level, difficulty, reason, spawnData, tag);
-        if (reason != MobSpawnType.BREEDING)
+        spawnData = super.finalizeSpawn(level, difficulty, spawnType, spawnData);
+        if (spawnType != MobSpawnType.BREEDING)
         {
-            initCommonAnimalData(level, difficulty, reason);
+            initCommonAnimalData(level, difficulty, spawnType);
             this.setVariant(getRandomRabbitType(level, blockPosition()));
         }
         setPregnantTime(-1L);
@@ -430,7 +430,7 @@ public class TFCRabbit extends Rabbit implements MammalProperties
         {
             if (nextStartTick <= 0)
             {
-                if (!ForgeEventFactory.getMobGriefingEvent(rabbit.level(), rabbit))
+                if (!EventHooks.canEntityGrief(rabbit.level(), rabbit))
                 {
                     return false;
                 }
