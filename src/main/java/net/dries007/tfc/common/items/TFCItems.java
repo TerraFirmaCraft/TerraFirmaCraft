@@ -47,7 +47,6 @@ import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidId;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.mixin.accessor.ItemAccessor;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.data.Metal;
 import net.dries007.tfc.util.registry.IdHolder;
@@ -381,10 +380,6 @@ public final class TFCItems
         register("bucket/" + fish.getSerializedName(), () -> new MobBucketItem(TFCEntities.FRESHWATER_FISH.get(fish).get(), Fluids.WATER, SoundEvents.BUCKET_EMPTY_FISH, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)))
     );
 
-    public static void editItemMaxDamage()
-    {
-        ((ItemAccessor) Items.FLINT_AND_STEEL).accessor$setMaxDamage(TFCTiers.STEEL.getUses());
-    }
 
     private static <T extends Mob> ItemId registerSpawnEgg(IdHolder<EntityType<T>> entity, int color1, int color2)
     {

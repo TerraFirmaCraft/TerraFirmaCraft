@@ -421,7 +421,10 @@ public final class TFCBlocks
 
     public static final Id<Block> NEST_BOX = register("nest_box", () -> new NestBoxBlock(ExtendedProperties.of(MapColor.WOOD).strength(3f).noOcclusion().sound(TFCSounds.THATCH).blockEntity(TFCBlockEntities.NEST_BOX).serverTicks(NestBoxBlockEntity::serverTick).flammable(60, 30)));
 
-    public static final Id<Block> LIGHT = register("light", () -> new TFCLightBlock(Properties.ofFullCopy(Blocks.LIGHT).replaceable().lightLevel(state -> state.getValue(TFCLightBlock.LEVEL)).randomTicks()));
+    public static final Id<Block> LIGHT = register("light", () -> new TFCLightBlock(Properties.ofFullCopy(Blocks.LIGHT)
+        .replaceable().lightLevel(state -> state.getValue(TFCLightBlock.LEVEL)).randomTicks()
+        .mapColor(MapColor.NONE) // Need to override map color so it doesn't use the default (which checks waterlogged property)
+    ));
     public static final Id<Block> FRESHWATER_BUBBLE_COLUMN = registerNoItem("freshwater_bubble_column", () -> new TFCBubbleColumnBlock(Properties.ofFullCopy(Blocks.BUBBLE_COLUMN).noCollission().noLootTable(), () -> Fluids.WATER));
     public static final Id<Block> SALTWATER_BUBBLE_COLUMN = registerNoItem("saltwater_bubble_column", () -> new TFCBubbleColumnBlock(Properties.ofFullCopy(Blocks.BUBBLE_COLUMN).noCollission().noLootTable(), TFCFluids.SALT_WATER::getSource));
 
@@ -546,6 +549,7 @@ public final class TFCBlocks
     {
         return (state) -> state.getValue(BlockStateProperties.LIT) ? lightValue : 0;
     }
+
 
     private static <B extends SignBlock> Map<Wood, Map<Metal.Default, Id<B>>> registerHangingSigns(String variant, BiFunction<ExtendedProperties, WoodType, B> factory)
     {

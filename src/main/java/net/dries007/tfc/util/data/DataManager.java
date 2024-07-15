@@ -52,6 +52,7 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
 
     protected final BiMap<ResourceLocation, T> types;
     protected final String typeName;
+    protected final String registryName;
 
     protected final Codec<T> codec;
     protected final @Nullable StreamCodec<RegistryFriendlyByteBuf, T> streamCodec;
@@ -79,6 +80,7 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
 
         this.types = HashBiMap.create();
         this.typeName = typeName;
+        this.registryName = domain.getPath();
         this.codec = codec;
         this.streamCodec = streamCodec;
         this.references = new HashMap<>();

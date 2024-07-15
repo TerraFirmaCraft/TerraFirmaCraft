@@ -16,9 +16,11 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.world.item.crafting.ShapedRecipePattern;
 
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 
@@ -29,8 +31,12 @@ import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 public class AdvancedShapedRecipe extends ShapedRecipe
 {
     public static final MapCodec<AdvancedShapedRecipe> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
-        RecipeSerializer.SHAPED_RECIPE.codec().forGetter(c -> c),
-        ItemStackProvider.CODEC.optionalFieldOf("result_provider").forGetter(c -> c.result),
+        // Copied from ShapedRecipe.Serializer.CODEC, as we want to avoid the "result" field as a strict item stack
+        Codec.STRING.optionalFieldOf("group", "").forGetter(ShapedRecipe::getGroup),
+        CraftingBookCategory.CODEC.fieldOf("category").orElse(CraftingBookCategory.MISC).forGetter(ShapedRecipe::category),
+        ShapedRecipePattern.MAP_CODEC.forGetter(c -> c.pattern),
+        Codec.BOOL.optionalFieldOf("show_notification", true).forGetter(ShapedRecipe::showNotification),
+        ItemStackProvider.CODEC.fieldOf("result").forGetter(c -> c.result),
         ItemStackProvider.CODEC.optionalFieldOf("remainder").forGetter(c -> c.remainder),
         Codec.INT.optionalFieldOf("input_row", 0).forGetter(c -> c.inputRow),
         Codec.INT.optionalFieldOf("input_column", 0).forGetter(c -> c.inputColumn)
@@ -38,25 +44,29 @@ public class AdvancedShapedRecipe extends ShapedRecipe
 
     public static final StreamCodec<RegistryFriendlyByteBuf, AdvancedShapedRecipe> STREAM_CODEC = StreamCodec.composite(
         RecipeSerializer.SHAPED_RECIPE.streamCodec(), c -> c,
-        ByteBufCodecs.optional(ItemStackProvider.STREAM_CODEC), c -> c.result,
+        ItemStackProvider.STREAM_CODEC, c -> c.result,
         ByteBufCodecs.optional(ItemStackProvider.STREAM_CODEC), c -> c.remainder,
         ByteBufCodecs.VAR_INT, c -> c.inputRow,
         ByteBufCodecs.VAR_INT, c -> c.inputColumn,
         AdvancedShapedRecipe::new
     );
 
-    private final Optional<ItemStackProvider> result;
+    private final ItemStackProvider result;
     private final Optional<ItemStackProvider> remainder;
     private final int inputSlot, inputRow, inputColumn;
 
-    public AdvancedShapedRecipe(ShapedRecipe parent, Optional<ItemStackProvider> result, Optional<ItemStackProvider> remainder, int inputRow, int inputColumn)
+    private AdvancedShapedRecipe(ShapedRecipe parent, ItemStackProvider result, Optional<ItemStackProvider> remainder, int inputRow, int inputColumn)
     {
-        // todo: needs an AT for pattern
-        super(parent.getGroup(), parent.category(), null /*parent.pattern()*/, RecipeHelpers.getResultUnsafe(parent), parent.showNotification());
+        this(parent.getGroup(), parent.category(), parent.pattern, parent.showNotification(), result, remainder, inputRow, inputColumn);
+    }
+
+    public AdvancedShapedRecipe(String group, CraftingBookCategory category, ShapedRecipePattern pattern, boolean showNotification, ItemStackProvider result, Optional<ItemStackProvider> remainder, int inputRow, int inputColumn)
+    {
+        super(group, category, pattern, ItemStack.EMPTY, showNotification);
 
         this.result = result;
         this.remainder = remainder;
-        this.inputSlot = RecipeHelpers.dissolveRowColumn(inputRow, inputColumn, 3); //parent.pattern().width);
+        this.inputSlot = RecipeHelpers.dissolveRowColumn(inputRow, inputColumn, pattern.width());
         this.inputRow = inputRow;
         this.inputColumn = inputColumn;
     }
@@ -64,20 +74,18 @@ public class AdvancedShapedRecipe extends ShapedRecipe
     @Override
     public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries)
     {
-        return result.map(result -> {
-            RecipeHelpers.setCraftingInput(input);
-            final int matchSlot = RecipeHelpers.translateMatch(this, inputSlot, input);
-            final ItemStack inputStack = matchSlot != -1 ? input.getItem(matchSlot).copy() : ItemStack.EMPTY;
-            final ItemStack output = result.getSingleStack(inputStack);
-            RecipeHelpers.clearCraftingInput();
-            return output;
-        }).orElseGet(() -> super.assemble(input, registries));
+        RecipeHelpers.setCraftingInput(input);
+        final int matchSlot = RecipeHelpers.translateMatch(this, inputSlot, input);
+        final ItemStack inputStack = matchSlot != -1 ? input.getItem(matchSlot).copy() : ItemStack.EMPTY;
+        final ItemStack output = result.getSingleStack(inputStack);
+        RecipeHelpers.clearCraftingInput();
+        return output;
     }
 
     @Override
     public ItemStack getResultItem(HolderLookup.Provider registries)
     {
-        return result.map(ItemStackProvider::getEmptyStack).orElseGet(() -> super.getResultItem(registries));
+        return result.getEmptyStack();
     }
 
     @Override
@@ -90,7 +98,7 @@ public class AdvancedShapedRecipe extends ShapedRecipe
     @Override
     public boolean isSpecial()
     {
-        return result.isPresent() && result.get().dependsOnInput();
+        return result.dependsOnInput();
     }
 
     @Override

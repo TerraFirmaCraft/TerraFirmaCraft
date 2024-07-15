@@ -6,8 +6,9 @@
 
 package net.dries007.tfc.mixin;
 
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.RandomSource;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -23,13 +24,13 @@ public abstract class ItemStackMixin
     /**
      * Inject into the same spot where unbreaking enchantment is processed, in order to additionally apply forging bonus in the same respect
      */
-    @Inject(method = "hurt", at = @At("HEAD"), cancellable = true)
-    private void applyForgingBonusToPreventItemDamage(int amount, RandomSource random, ServerPlayer player, CallbackInfoReturnable<Boolean> cir)
+    @WrapOperation(
+        method = "hurtAndBreak(ILnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/LivingEntity;Ljava/util/function/Consumer;)V",
+        at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper;processDurabilityChange(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/item/ItemStack;I)I")
+    )
+    private int applyForgingBonusToPreventItemDamage(ServerLevel level, ItemStack stack, int damage, Operation<Integer> original)
     {
-        if (ForgingBonus.applyLikeUnbreaking((ItemStack) (Object) this, random))
-        {
-            cir.setReturnValue(false);
-        }
+        return ForgingBonus.applyLikeUnbreaking(stack, level.random, original.call(level, stack, damage));
     }
 
     @Inject(method = "isBarVisible", at = @At("HEAD"), cancellable = true)

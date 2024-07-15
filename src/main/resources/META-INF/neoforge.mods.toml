@@ -1,13 +1,13 @@
 # Loader metadata
 modLoader = "javafml"
-loaderVersion = "[47,)"
+loaderVersion = "[4,)"
 license = "EUPL-1.2"
 issueTrackerURL = "https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues"
 
 # TFC
 [[mods]]
-    modId = "tfc"
-    version = "${file.jarVersion}"
+    modId = "${modId}"
+    version = "${modVersion}"
     displayName = "TerraFirmaCraft"
     credits = "By AlcatrazEscapee, Disastermoo, Dries007, Bunsan, Claycorp, DavidTriphon, EERussianguy, Gaelmare, and many others. Based on the original work by Bioxx, Dunk, and Kitty. Music by Mike \"Menoch\" Pelaez"
     authors = "AlcatrazEscapee"
@@ -16,36 +16,34 @@ issueTrackerURL = "https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues"
 # Dependencies
 [[dependencies.tfc]]
     modId = "patchouli"
-    mandatory = true
+    type = "optional"
     versionRange = "[1.20.1-81-FORGE,)"
     ordering = "NONE"
     side = "BOTH"
 
 [[dependencies.tfc]]
     modId = "jei"
-    mandatory = false
+    type = "optional"
     versionRange = "[15.1.0.19,)"
     ordering = "NONE"
     side = "CLIENT"
 
 [[dependencies.tfc]]
-    modId = "forge"
-    mandatory = true
-    # Forge crashes on [47.1.36, 47.2.6) due to issue #9774
-    # Forge also fails to spawn entities on at least [47.1.6, 47.1.30) due to issue #9788
-    # NeoForge crashes on [47.1.51, 47.1.81) due to issue #256. It's unlikely they release a 47.2.x version, and Forge didn't reach 47.1.81, so any versions [47.1.81,47.2.0) should be strictly NeoForge
-    # We build against 47.1.3, which is the 'last known stable' version of Forge before the fork
-    # So the version range here is restricted to only known versions where there are no issues.
-    versionRange = "[47.1.3,47.1.6),[47.1.81,47.2.0),[47.2.6,)"
+    modId = "neoforge"
+    type = "required"
+    versionRange = "${neoForgeVersionRange}"
     ordering = "AFTER"
     side = "BOTH"
 
 [[dependencies.tfc]]
     modId = "minecraft"
-    mandatory = true
-    versionRange = "[1.20.1,1.20.2)"
+    type = "required"
+    versionRange = "${minecraftVersionRange}"
     ordering = "AFTER"
     side = "BOTH"
+
+[[mixins]]
+    config = "${modId}.mixins.json"
 
 # We do our own biome coloring, see #2279
 [mods."sodium:options"]

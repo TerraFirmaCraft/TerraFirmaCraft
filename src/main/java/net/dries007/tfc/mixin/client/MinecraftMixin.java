@@ -6,26 +6,22 @@
 
 package net.dries007.tfc.mixin.client;
 
-import com.mojang.realmsclient.client.RealmsClient;
 import net.minecraft.client.Minecraft;
-
-import net.dries007.tfc.util.SelfTests;
-
-import net.minecraft.client.main.GameConfig;
-import net.minecraft.server.packs.resources.ReloadInstance;
-import org.spongepowered.asm.mixin.Dynamic;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import net.dries007.tfc.util.SelfTests;
+
 @Mixin(Minecraft.class)
 public abstract class MinecraftMixin
 {
-
-    @Dynamic("Lambda method in <init>, lambda$new$4")
-    @Inject(method = "*(Lcom/mojang/realmsclient/client/RealmsClient;Lnet/minecraft/server/packs/resources/ReloadInstance;Lnet/minecraft/client/main/GameConfig;)V", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/client/loading/ClientModLoader;completeModLoading()Z", remap = false), remap = false)
-    private void runSelfTests(RealmsClient rc, ReloadInstance reloadInstance, GameConfig config, CallbackInfo ci)
+    @Inject(
+        method = "lambda$new$7(Lnet/minecraft/client/Minecraft$GameLoadCookie;)V",
+        at = @At(value = "INVOKE", target = "Lnet/minecraft/client/ResourceLoadStateTracker;finishReload()V")
+    )
+    private void runSelfTests(CallbackInfo ci)
     {
         SelfTests.runClientSelfTests();
     }

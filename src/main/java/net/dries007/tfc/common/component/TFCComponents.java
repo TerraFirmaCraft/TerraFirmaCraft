@@ -18,6 +18,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.event.ModifyDefaultComponentsEvent;
 import net.neoforged.neoforge.internal.RegistrationEvents;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -25,6 +26,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.common.TFCTiers;
 import net.dries007.tfc.common.capabilities.food.BowlComponent;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodComponent;
@@ -62,6 +64,8 @@ public final class TFCComponents
     /**
      * Modifies the default components of all items. This adds the default components to all items' prototype, so that the default
      * values are never serialized.
+     * <p>
+     * This also performs one TFC-specific change - giving flint and steel durability comparable to other steel tools
      */
     public static void onModifyDefaultComponents(ModifyDefaultComponentsEvent event)
     {
@@ -70,6 +74,7 @@ public final class TFCComponents
             .set(FORGING_BONUS.get(), ForgingBonus.DEFAULT)
             .set(GLASS.get(), GlassOperations.DEFAULT)
         );
+        event.modify(Items.FLINT_AND_STEEL, builder -> builder.set(DataComponents.MAX_DAMAGE, TFCTiers.STEEL.getUses()));
     }
 
     /**

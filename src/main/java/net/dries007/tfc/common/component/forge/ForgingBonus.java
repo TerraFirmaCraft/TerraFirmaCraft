@@ -14,10 +14,10 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.config.TFCConfig;
@@ -60,22 +60,26 @@ public enum ForgingBonus implements StringRepresentable
     }
 
     /**
-     * Mimics unbreaking behavior for higher forging bonuses.
-     *
-     * @return {@code true} if the damage was consumed.
-     * @see ItemStack#hurt(int, RandomSource, ServerPlayer)
+     * Mimics unbreaking-like effects for items with a forging bonus. This hooks into the method enchantments use to apply durability
+     * based effects, in {@link EnchantmentHelper#processDurabilityChange}, and modifies the amount of damage taken. We base the system
+     * off of how enchantments work - each durability point of damage has a chance to not apply (binomial distribution)
      */
-    public static boolean applyLikeUnbreaking(ItemStack stack, RandomSource random)
+    public static int applyLikeUnbreaking(ItemStack stack, RandomSource random, int originalDamage)
     {
-        if (stack.isDamageableItem())
+        final ForgingBonus bonus = get(stack);
+
+        int damage = originalDamage;
+        if (bonus != NONE)
         {
-            final ForgingBonus bonus = get(stack);
-            if (bonus != NONE)
+            for (int i = 0; i < damage; i++)
             {
-                return random.nextFloat() < bonus.durability();
+                if (random.nextFloat() < bonus.durability())
+                {
+                    damage--;
+                }
             }
         }
-        return false;
+        return damage;
     }
 
     /**

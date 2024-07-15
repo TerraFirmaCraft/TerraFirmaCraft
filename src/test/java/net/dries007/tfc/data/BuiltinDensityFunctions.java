@@ -8,7 +8,7 @@ package net.dries007.tfc.data;
 
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.DensityFunctions;
@@ -24,7 +24,7 @@ import static net.minecraft.world.level.levelgen.DensityFunctions.*;
 
 public final class BuiltinDensityFunctions
 {
-    public static void load(BootstapContext<DensityFunction> context)
+    public static void load(BootstrapContext<DensityFunction> context)
     {
         final HolderGetter<NormalNoise.NoiseParameters> noises = context.lookup(Registries.NOISE);
         final HolderGetter<DensityFunction> functions = context.lookup(Registries.DENSITY_FUNCTION);

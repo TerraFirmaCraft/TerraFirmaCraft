@@ -6,34 +6,30 @@
 
 package net.dries007.tfc.mixin;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.chunk.LevelChunk;
-
-import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.EnvironmentHelpers;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.EnvironmentHelpers;
 
 @Mixin(ServerLevel.class)
 public abstract class ServerLevelMixin
 {
     /**
-     * Replace snow and ice generation, and thawing, with specialized versions.
-     * Target the {@link java.util.Random#nextInt(int)} call which guards the snow and ice block.
+     * Don't do vanilla snow and ice generation if not enabled, as we have our own overrides
      */
-    @Redirect(method = "tickChunk", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/RandomSource;nextInt(I)I"), slice = @Slice(
-        from = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LightningBolt;setVisualOnly(Z)V"),
-        to = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/biome/Biome;shouldFreeze(Lnet/minecraft/world/level/LevelReader;Lnet/minecraft/core/BlockPos;)Z")
-    ))
-    private int preventVanillaSnowAndIce(RandomSource random, int bound, LevelChunk chunk, int randomTickSpeed)
+    @Inject(method = "tickPrecipitation", at = @At("HEAD"), cancellable = true)
+    private void preventVanillaSnowAndIce(BlockPos blockPos, CallbackInfo ci)
     {
-        // Targeting the random.nextInt(16) only
-        return !TFCConfig.SERVER.enableVanillaWeatherEffects.get() && bound == 16 ? 1 : random.nextInt(bound);
+        if (!TFCConfig.SERVER.enableVanillaWeatherEffects.getAsBoolean())
+        {
+            ci.cancel();
+        }
     }
 
     @Inject(method = "tickChunk", at = @At(value = "TAIL"))

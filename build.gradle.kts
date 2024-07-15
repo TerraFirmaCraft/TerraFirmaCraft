@@ -9,7 +9,7 @@ plugins {
 
 // Toolchain versions
 val minecraftVersion: String = "1.21"
-val neoForgeVersion: String = "21.0.77-beta"
+val neoForgeVersion: String = "21.0.95-beta"
 val parchmentVersion: String = "2024.07.07"
 val parchmentMinecraftVersion: String = "1.21"
 
@@ -127,13 +127,18 @@ license {
 }
 
 tasks {
-
     processResources {
-        if (modIsInCI) {
-            filesMatching("**/book.json") {
-                expand(mapOf("version" to project.version))
-            }
+        val modReplacementProperties = mapOf(
+            "modId" to modId,
+            "modVersion" to modVersion,
+            "minecraftVersionRange" to "[$minecraftVersion,)",
+            "neoForgeVersionRange" to "[$neoForgeVersion,)",
+        )
 
+        inputs.properties(modReplacementProperties)
+        filesMatching(listOf("book.json", "META-INF/neoforge.mods.toml")) { expand(modReplacementProperties) }
+
+        if (modIsInCI) {
             doLast {
                 val jsonMinifyStart: Long = System.currentTimeMillis()
                 var jsonMinified: Long = 0
@@ -171,10 +176,6 @@ tasks {
         manifest {
             attributes["Implementation-Version"] = project.version
         }
-    }
-
-    withType<JavaCompile> {
-        options.compilerArgs.addAll(listOf("-Xmaxerrs", "10000"))
     }
 }
 

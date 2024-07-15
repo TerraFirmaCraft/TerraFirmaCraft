@@ -22,15 +22,13 @@ public abstract class SoundEngineMixin
     @Shadow @Final
     private static Set<ResourceLocation> ONLY_WARN_ONCE;
 
-    private static final ResourceLocation VALID_SOUND_EVENT = SoundEvents.FIRE_EXTINGUISH.getLocation();
-
     @ModifyArg(method = "reload", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/sounds/SoundManager;getSoundEvent(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/client/sounds/WeighedSoundEvents;"))
     private ResourceLocation preventLogSpamFromMissingVanillaSounds(ResourceLocation res)
     {
         if (((SoundEngine) (Object) this).soundManager.getSoundEvent(res) == null && res.getNamespace().equals("minecraft"))
         {
             ONLY_WARN_ONCE.add(res);
-            return VALID_SOUND_EVENT;
+            return SoundEvents.FIRE_EXTINGUISH.getLocation();
         }
         return res;
     }

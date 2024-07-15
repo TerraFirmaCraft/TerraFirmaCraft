@@ -513,7 +513,7 @@ public final class ForgeEventHandler
         }
     }
 
-    public static void onExplosionDetonate(ExplosionEvent event)
+    public static void onExplosionDetonate(ExplosionEvent.Detonate event)
     {
         final Level level = event.getLevel();
         if (!level.isClientSide)
