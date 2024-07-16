@@ -23,6 +23,7 @@ val modId: String = "tfc"
 val modVersion: String = System.getenv("VERSION") ?: "0.0.0-indev"
 val modJavaVersion: String = "21"
 val modIsInCI: Boolean = !modVersion.contains("-indev")
+val modDataOutput: String = "src/generated/resources"
 
 
 base {
@@ -73,9 +74,22 @@ dependencies {
     //minecraftLibrary("org.junit.jupiter:junit-jupiter-engine:5.9.2")
 }
 
+sourceSets.main {
+    resources {
+        srcDir(modDataOutput)
+    }
+}
+val sourceSetsDeprecated = sourceSets.create("deprecated") {} // A source set for compat/test code that is currently not functional
+sourceSets {
+    create("data") {
+        runtimeClasspath += sourceSets.main.get().output;
+        compileClasspath += sourceSets.main.get().output;
+    }
+}
+
 neoForge {
     version.set(neoForgeVersion)
-    addModdingDependenciesTo(sourceSets.test.get())
+    addModdingDependenciesTo(sourceSets["data"])
     validateAccessTransformers = true
 
     parchment {
@@ -86,7 +100,7 @@ neoForge {
     runs {
         configureEach {
             // Only JBR allows enhanced class redefinition, so ignore the option for any other JDKs
-            jvmArguments.addAll("-XX:+IgnoreUnrecognizedVMOptions", "-XX:+AllowEnhancedClassRedefinition")
+            jvmArguments.addAll("-XX:+IgnoreUnrecognizedVMOptions", "-XX:+AllowEnhancedClassRedefinition", "-ea")
         }
         register("client") {
             client()
@@ -99,22 +113,16 @@ neoForge {
         }
         register("data") {
             data()
-            sourceSet = sourceSets.test
-            programArguments.addAll("--all", "--mod", modId, "--output", file("src/generated/resources").absolutePath, "--existing",  file("src/main/resources").absolutePath)
+            sourceSet = sourceSets["data"]
+            programArguments.addAll("--all", "--mod", modId, "--output", file(modDataOutput).absolutePath, "--existing",  file("src/main/resources").absolutePath)
         }
     }
 
     mods {
         create(modId) {
             sourceSet(sourceSets.main.get())
-            sourceSet(sourceSets.test.get())
+            sourceSet(sourceSets["data"])
         }
-    }
-}
-
-sourceSets.main {
-    resources {
-        srcDir("src/generated/resources/")
     }
 }
 
