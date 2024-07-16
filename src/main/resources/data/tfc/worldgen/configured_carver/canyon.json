@@ -19,34 +19,26 @@
     "aquifers_enabled": true,
     "vertical_rotation": {
       "type": "uniform",
-      "value": {
-        "min_inclusive": -0.125,
-        "max_exclusive": 0.125
-      }
+      "min_inclusive": -0.125,
+      "max_exclusive": 0.125
     },
     "shape": {
       "distance_factor": {
         "type": "uniform",
-        "value": {
-          "min_inclusive": 0.75,
-          "max_exclusive": 1.0
-        }
+        "min_inclusive": 0.75,
+        "max_exclusive": 1.0
       },
       "thickness": {
         "type": "trapezoid",
-        "value": {
-          "min": 0.0,
-          "max": 6.0,
-          "plateau": 2.0
-        }
+        "min": 0.0,
+        "max": 6.0,
+        "plateau": 2.0
       },
       "width_smoothness": 3,
       "horizontal_radius_factor": {
         "type": "uniform",
-        "value": {
-          "min_inclusive": 0.75,
-          "max_exclusive": 1.0
-        }
+        "min_inclusive": 0.75,
+        "max_exclusive": 1.0
       },
       "vertical_radius_default_factor": 1.0,
       "vertical_radius_center_factor": 0.0

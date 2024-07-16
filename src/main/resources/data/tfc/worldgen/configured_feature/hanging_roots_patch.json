@@ -6,10 +6,8 @@
     "vegetation_chance": 0.08,
     "xz_radius": {
       "type": "uniform",
-      "value": {
-        "min_inclusive": 4,
-        "max_inclusive": 7
-      }
+      "min_inclusive": 4,
+      "max_inclusive": 7
     },
     "extra_edge_column_chance": 0.3,
     "extra_bottom_block_chance": 0.0,
@@ -18,10 +16,8 @@
     "surface": "ceiling",
     "depth": {
       "type": "uniform",
-      "value": {
-        "min_inclusive": 1,
-        "max_inclusive": 2
-      }
+      "min_inclusive": 1,
+      "max_inclusive": 2
     },
     "replaceable": "#minecraft:base_stone_overworld",
     "ground_state": {

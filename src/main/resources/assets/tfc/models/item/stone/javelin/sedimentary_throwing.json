@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "loader": "forge:separate_transforms",
+  "loader": "neoforge:separate_transforms",
   "gui_light": "front",
   "base": {
     "parent": "tfc:item/stone/javelin/sedimentary_throwing_base"

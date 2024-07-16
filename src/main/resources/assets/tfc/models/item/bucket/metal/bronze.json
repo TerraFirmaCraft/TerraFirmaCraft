@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "loader": "forge:fluid_container",
-  "parent": "forge:item/bucket",
+  "loader": "neoforge:fluid_container",
+  "parent": "neoforge:item/bucket",
   "fluid": "tfc:metal/bronze"
 }

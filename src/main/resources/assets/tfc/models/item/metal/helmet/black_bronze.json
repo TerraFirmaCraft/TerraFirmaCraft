@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "loader": "tfc:trim",
-  "parent": "forge:item/default",
+  "parent": "neoforge:item/default",
   "textures": {
     "armor": "tfc:item/metal/helmet/black_bronze",
     "trim": "tfc:item/helmet_trim"

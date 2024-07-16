@@ -925,7 +925,7 @@ def generate(rm: ResourceManager):
 
     rm.item_model(('blowpipe', 'ceramic_blowpipe'), {'0': 'tfc:block/glass/ceramic_blowpipe'}, parent='tfc:item/blowpipe/blowpipe')
     for pref in ('', 'ceramic_'):
-        rm.custom_item_model('%sblowpipe' % pref, 'forge:separate_transforms', {
+        rm.custom_item_model('%sblowpipe' % pref, 'neoforge:separate_transforms', {
             'base': {'parent': 'tfc:item/blowpipe/%sempty_held' % pref},
             'perspectives': get_perspectives('tfc:item/blowpipe/%sempty_gui' % pref)
         }).with_lang(lang('%sblowpipe', pref))
@@ -933,7 +933,7 @@ def generate(rm: ResourceManager):
         rm.item_model('blowpipe/%sgui_hot' % pref, 'tfc:item/%sblowpipe_with_glass_hot' % pref)
         for i in range(0, 6):
             rm.item_model('blowpipe/%s%s' % (pref, i), {'1': 'tfc:block/glass/%s' % i}, parent='tfc:item/blowpipe/%sblowpipe' % pref)
-            rm.custom_item_model('blowpipe/%s%s_st' % (pref, i), 'forge:separate_transforms', {
+            rm.custom_item_model('blowpipe/%s%s_st' % (pref, i), 'neoforge:separate_transforms', {
                 'base': {'parent': 'tfc:item/blowpipe/%s%s' % (pref, i)},
                 'perspectives': get_perspectives('tfc:item/blowpipe/%sgui_cold' % pref if i == 0 else 'tfc:item/blowpipe/%sgui_hot' % pref),
             })
@@ -2055,8 +2055,8 @@ def generate(rm: ResourceManager):
         rm.lang('fluid.tfc.metal.%s' % metal, lang('%s', metal))
         rm.fluid_tag(metal, 'tfc:metal/%s' % metal, 'tfc:metal/flowing_%s' % metal)
 
-        item = rm.custom_item_model(('bucket', 'metal', metal), 'forge:fluid_container', {
-            'parent': 'forge:item/bucket',
+        item = rm.custom_item_model(('bucket', 'metal', metal), 'neoforge:fluid_container', {
+            'parent': 'neoforge:item/bucket',
             'fluid': 'tfc:metal/%s' % metal
         })
         item.with_lang(lang('molten %s bucket', metal))
@@ -2145,8 +2145,8 @@ def water_based_fluid(rm: ResourceManager, name: str):
     rm.blockstate(('fluid', name)).with_block_model({'particle': 'minecraft:block/water_still'}, parent=None).with_lang(lang(name)).with_tag('all_fluids')
     rm.fluid_tag(name, 'tfc:%s' % name, 'tfc:flowing_%s' % name)
 
-    item = rm.custom_item_model(('bucket', name), 'forge:fluid_container', {
-        'parent': 'forge:item/bucket',
+    item = rm.custom_item_model(('bucket', name), 'neoforge:fluid_container', {
+        'parent': 'neoforge:item/bucket',
         'fluid': 'tfc:%s' % name
     })
     item.with_lang(lang('%s bucket', name))
@@ -2233,13 +2233,13 @@ def make_javelin(rm: ResourceManager, name_parts: str, texture: str) -> 'ItemCon
         'ground': {'parent': model + '_gui'},
         'gui': {'parent': model + '_gui'}
     }
-    rm.custom_item_model(name_parts + '_throwing', 'forge:separate_transforms', {
+    rm.custom_item_model(name_parts + '_throwing', 'neoforge:separate_transforms', {
         'gui_light': 'front',
         'base': {'parent': model + '_throwing_base'},
         'perspectives': correct_perspectives
     })
 
-    return rm.custom_item_model(name_parts, 'forge:separate_transforms', {
+    return rm.custom_item_model(name_parts, 'neoforge:separate_transforms', {
         'gui_light': 'front',
         'overrides': [{'predicate': {'tfc:throwing': 1}, 'model': model + '_throwing'}],
         'base': {'parent': model + '_in_hand'},
@@ -2248,8 +2248,8 @@ def make_javelin(rm: ResourceManager, name_parts: str, texture: str) -> 'ItemCon
 
 
 def contained_fluid(rm: ResourceManager, name_parts: utils.ResourceIdentifier, base: str, overlay: str) -> 'ItemContext':
-    return rm.custom_item_model(name_parts, 'tfc:contained_fluid', {
-        'parent': 'forge:item/default',
+    return rm.custom_item_model(name_parts, 'neoforge:contained_fluid', {
+        'parent': 'neoforge:item/default',
         'textures': {
             'base': base,
             'fluid': overlay
@@ -2258,7 +2258,7 @@ def contained_fluid(rm: ResourceManager, name_parts: utils.ResourceIdentifier, b
 
 def trim_model(rm: ResourceManager, name_parts: utils.ResourceIdentifier, base: str, trim: str, overlay: str = None) -> 'ItemContext':
     return rm.custom_item_model(name_parts, 'tfc:trim', {
-        'parent': 'forge:item/default',
+        'parent': 'neoforge:item/default',
         'textures': {
             'armor': base,
             'trim': trim,

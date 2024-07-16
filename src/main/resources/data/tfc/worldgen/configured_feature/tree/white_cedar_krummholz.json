@@ -5,10 +5,8 @@
     "block": "tfc:plant/white_cedar_krummholz",
     "height": {
       "type": "uniform",
-      "value": {
-        "min_inclusive": 1,
-        "max_inclusive": 4
-      }
+      "min_inclusive": 1,
+      "max_inclusive": 4
     }
   }
 }

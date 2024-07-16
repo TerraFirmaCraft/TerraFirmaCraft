@@ -1444,31 +1444,25 @@ def decorate_block_predicate(predicate: Json) -> Json:
 def uniform_float(min_inclusive: float, max_exclusive: float) -> Dict[str, Any]:
     return {
         'type': 'uniform',
-        'value': {
-            'min_inclusive': min_inclusive,
-            'max_exclusive': max_exclusive
-        }
+        'min_inclusive': min_inclusive,
+        'max_exclusive': max_exclusive
     }
 
 
 def uniform_int(min_inclusive: int, max_inclusive: int) -> Dict[str, Any]:
     return {
         'type': 'uniform',
-        'value': {
-            'min_inclusive': min_inclusive,
-            'max_inclusive': max_inclusive
-        }
+        'min_inclusive': min_inclusive,
+        'max_inclusive': max_inclusive
     }
 
 
 def trapezoid_float(min_value: float, max_value: float, plateau: float) -> Dict[str, Any]:
     return {
         'type': 'trapezoid',
-        'value': {
-            'min': min_value,
-            'max': max_value,
-            'plateau': plateau
-        }
+        'min': min_value,
+        'max': max_value,
+        'plateau': plateau
     }
 
 

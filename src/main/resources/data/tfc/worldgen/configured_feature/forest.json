@@ -10,10 +10,8 @@
       "sparse": {
         "tree_count": {
           "type": "uniform",
-          "value": {
-            "min_inclusive": 1,
-            "max_inclusive": 3
-          }
+          "min_inclusive": 1,
+          "max_inclusive": 3
         },
         "groundcover_count": 6,
         "per_chunk_chance": 0.08,
@@ -25,10 +23,8 @@
         "groundcover_count": 10,
         "leaf_pile_count": {
           "type": "uniform",
-          "value": {
-            "min_inclusive": 0,
-            "max_inclusive": 1
-          }
+          "min_inclusive": 0,
+          "max_inclusive": 1
         }
       },
       "normal": {
@@ -42,10 +38,8 @@
         "allows_old_growth": true,
         "leaf_pile_count": {
           "type": "uniform",
-          "value": {
-            "min_inclusive": 0,
-            "max_inclusive": 1
-          }
+          "min_inclusive": 0,
+          "max_inclusive": 1
         }
       }
     }

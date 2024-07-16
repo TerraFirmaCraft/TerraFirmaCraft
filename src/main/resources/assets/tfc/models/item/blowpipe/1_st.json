@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "loader": "forge:separate_transforms",
+  "loader": "neoforge:separate_transforms",
   "base": {
     "parent": "tfc:item/blowpipe/1"
   },
