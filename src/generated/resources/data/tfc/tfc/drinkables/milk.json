@@ -1,0 +1,7 @@
+{
+  "dairy": 1.0,
+  "ingredient": {
+    "fluid": "minecraft:milk"
+  },
+  "water": 10.0
+}

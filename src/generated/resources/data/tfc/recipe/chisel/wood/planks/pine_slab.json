@@ -1,0 +1,12 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:wood/planks/pine"
+  ],
+  "item_output": {
+    "count": 1,
+    "id": "tfc:wood/planks/pine_slab"
+  },
+  "mode": "slab",
+  "result": "tfc:wood/planks/pine_slab"
+}

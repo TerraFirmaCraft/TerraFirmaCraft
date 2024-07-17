@@ -1,0 +1,23 @@
+{
+  "values": [
+    "#c:double_ingots/bismuth",
+    "#c:double_ingots/bismuth_bronze",
+    "#c:double_ingots/black_bronze",
+    "#c:double_ingots/bronze",
+    "#c:double_ingots/brass",
+    "#c:double_ingots/copper",
+    "#c:double_ingots/gold",
+    "#c:double_ingots/nickel",
+    "#c:double_ingots/rose_gold",
+    "#c:double_ingots/silver",
+    "#c:double_ingots/tin",
+    "#c:double_ingots/zinc",
+    "#c:double_ingots/sterling_silver",
+    "#c:double_ingots/wrought_iron",
+    "#c:double_ingots/cast_iron",
+    "#c:double_ingots/steel",
+    "#c:double_ingots/black_steel",
+    "#c:double_ingots/blue_steel",
+    "#c:double_ingots/red_steel"
+  ]
+}

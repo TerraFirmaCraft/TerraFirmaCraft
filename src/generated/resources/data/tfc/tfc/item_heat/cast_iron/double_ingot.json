@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 921.00006,
+  "heat_capacity": 5.714286,
+  "ingredient": {
+    "tag": "c:double_ingots/cast_iron"
+  },
+  "welding_temperature": 1228.0
+}

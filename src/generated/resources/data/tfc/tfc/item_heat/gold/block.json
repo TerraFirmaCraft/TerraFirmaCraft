@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 636.0,
+  "heat_capacity": 1.6666666,
+  "ingredient": {
+    "tag": "c:storage_blocks/gold"
+  },
+  "welding_temperature": 848.0
+}

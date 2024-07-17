@@ -1,0 +1,8 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:cut_sandstone/pink"
+  ],
+  "mode": "stair",
+  "result": "tfc:cut_sandstone/pink_stairs"
+}

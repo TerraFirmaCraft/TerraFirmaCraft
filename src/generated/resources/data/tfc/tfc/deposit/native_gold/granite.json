@@ -1,0 +1,11 @@
+{
+  "ingredient": {
+    "item": "tfc:deposit/native_gold/granite"
+  },
+  "loot_table": "tfc:deposit/granite_native_gold",
+  "model_stages": [
+    "tfc:item/pan/native_gold/granite_full",
+    "tfc:item/pan/native_gold/granite_half",
+    "tfc:item/pan/native_gold/result"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "type": "tfc:welding",
+  "first_input": {
+    "item": "tfc:metal/unfinished_chestplate/bismuth_bronze"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/chestplate/bismuth_bronze"
+  },
+  "second_input": {
+    "tag": "c:double_sheets/bismuth_bronze"
+  },
+  "tier": 1
+}

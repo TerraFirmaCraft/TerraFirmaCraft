@@ -1,0 +1,15 @@
+{
+  "effects": [
+    {
+      "amplifier": 1,
+      "chance": 0.25,
+      "duration": 600,
+      "effect": "tfc:thirst"
+    }
+  ],
+  "ingredient": {
+    "fluid": "tfc:salt_water"
+  },
+  "may_drink_when_full": true,
+  "water": -1.0
+}

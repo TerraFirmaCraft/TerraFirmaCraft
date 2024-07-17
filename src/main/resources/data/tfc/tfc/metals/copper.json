@@ -1,0 +1,16 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "tier": 1,
+  "fluid": "tfc:metal/copper",
+  "melt_temperature": 1080,
+  "specific_heat_capacity": 0.00857,
+  "ingots": {
+    "tag": "forge:ingots/copper"
+  },
+  "double_ingots": {
+    "tag": "forge:double_ingots/copper"
+  },
+  "sheets": {
+    "tag": "forge:sheets/copper"
+  }
+}

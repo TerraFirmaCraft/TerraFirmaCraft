@@ -1,0 +1,13 @@
+{
+  "type": "tfc:welding",
+  "first_input": {
+    "tag": "c:sheets/bismuth"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/double_sheet/bismuth"
+  },
+  "second_input": {
+    "tag": "c:ingots/bismuth"
+  }
+}

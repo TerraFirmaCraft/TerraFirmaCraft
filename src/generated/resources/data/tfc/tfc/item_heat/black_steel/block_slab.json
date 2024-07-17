@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 891.00006,
+  "heat_capacity": 1.4285715,
+  "ingredient": {
+    "item": "tfc:metal/block/black_steel_slab"
+  },
+  "welding_temperature": 1188.0
+}

@@ -1,0 +1,12 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:cut_sandstone/pink"
+  ],
+  "item_output": {
+    "count": 1,
+    "id": "tfc:cut_sandstone/pink_slab"
+  },
+  "mode": "slab",
+  "result": "tfc:cut_sandstone/pink_slab"
+}

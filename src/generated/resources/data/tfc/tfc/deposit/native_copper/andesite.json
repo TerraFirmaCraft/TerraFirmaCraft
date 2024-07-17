@@ -1,0 +1,11 @@
+{
+  "ingredient": {
+    "item": "tfc:deposit/native_copper/andesite"
+  },
+  "loot_table": "tfc:deposit/andesite_native_copper",
+  "model_stages": [
+    "tfc:item/pan/native_copper/andesite_full",
+    "tfc:item/pan/native_copper/andesite_half",
+    "tfc:item/pan/native_copper/result"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "type": "tfc:welding",
+  "first_input": {
+    "tag": "c:sheets/red_steel"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/double_sheet/red_steel"
+  },
+  "second_input": {
+    "tag": "c:ingots/red_steel"
+  },
+  "tier": 5
+}

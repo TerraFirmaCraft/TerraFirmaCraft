@@ -1,0 +1,11 @@
+{
+  "ingredient": {
+    "item": "tfc:deposit/native_copper/phyllite"
+  },
+  "loot_table": "tfc:deposit/phyllite_native_copper",
+  "model_stages": [
+    "tfc:item/pan/native_copper/phyllite_full",
+    "tfc:item/pan/native_copper/phyllite_half",
+    "tfc:item/pan/native_copper/result"
+  ]
+}

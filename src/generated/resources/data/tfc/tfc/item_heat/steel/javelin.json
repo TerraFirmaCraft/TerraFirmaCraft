@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 924.00006,
+  "heat_capacity": 2.857143,
+  "ingredient": {
+    "item": "tfc:metal/javelin/steel"
+  },
+  "welding_temperature": 1232.0
+}

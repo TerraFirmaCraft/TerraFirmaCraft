@@ -1,0 +1,17 @@
+{
+  "type": "tfc:barrel_sealed",
+  "duration": 1000,
+  "input_fluid": {
+    "amount": 25,
+    "fluid": "tfc:lye"
+  },
+  "input_item": {
+    "count": 1,
+    "tag": "tfc:colored_windmill_blades"
+  },
+  "output_item": {
+    "count": 1,
+    "id": "tfc:windmill_blade/white"
+  },
+  "tooltip": ""
+}

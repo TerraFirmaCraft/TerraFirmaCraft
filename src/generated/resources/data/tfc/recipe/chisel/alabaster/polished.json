@@ -1,0 +1,8 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:alabaster/raw"
+  ],
+  "mode": "smooth",
+  "result": "tfc:alabaster/polished"
+}

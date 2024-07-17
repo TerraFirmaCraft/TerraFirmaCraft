@@ -1,0 +1,8 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:wood/planks/white_cedar"
+  ],
+  "mode": "stair",
+  "result": "tfc:wood/planks/white_cedar_stairs"
+}

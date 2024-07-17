@@ -1,0 +1,16 @@
+{
+  "type": "tfc:anvil",
+  "ingredient": {
+    "tag": "c:sheets/red_steel"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/trapdoor/red_steel"
+  },
+  "rules": [
+    "bend_last",
+    "draw_second_last",
+    "draw_third_last"
+  ],
+  "tier": 6
+}

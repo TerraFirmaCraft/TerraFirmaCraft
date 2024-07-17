@@ -1,0 +1,15 @@
+{
+  "values": [
+    "tfc:food/cod",
+    "tfc:food/tropical_fish",
+    "tfc:food/calamari",
+    "tfc:food/shellfish",
+    "tfc:food/bluegill",
+    "tfc:food/crappie",
+    "tfc:food/lake_trout",
+    "tfc:food/largemouth_bass",
+    "tfc:food/rainbow_trout",
+    "tfc:food/salmon",
+    "tfc:food/smallmouth_bass"
+  ]
+}

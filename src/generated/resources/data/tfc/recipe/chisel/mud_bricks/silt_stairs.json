@@ -1,0 +1,8 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:mud_bricks/silt"
+  ],
+  "mode": "stair",
+  "result": "tfc:mud_bricks/silt_stairs"
+}

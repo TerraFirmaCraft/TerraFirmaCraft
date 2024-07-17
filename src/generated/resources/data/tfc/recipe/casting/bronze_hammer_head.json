@@ -1,0 +1,14 @@
+{
+  "type": "tfc:casting",
+  "fluid": {
+    "amount": 100,
+    "fluid": "tfc:metal/bronze"
+  },
+  "mold": {
+    "item": "tfc:ceramic/hammer_head_mold"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/hammer_head/bronze"
+  }
+}

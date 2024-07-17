@@ -1,0 +1,15 @@
+{
+  "double_ingots": {
+    "tag": "c:double_ingots/tin"
+  },
+  "fluid": "tfc:metal/tin",
+  "ingots": {
+    "tag": "c:ingots/tin"
+  },
+  "melt_temperature": 230.0,
+  "sheets": {
+    "tag": "c:sheets/tin"
+  },
+  "specific_heat_capacity": 0.021428572,
+  "tier": 0
+}

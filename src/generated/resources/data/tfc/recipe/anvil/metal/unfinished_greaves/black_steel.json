@@ -1,0 +1,17 @@
+{
+  "type": "tfc:anvil",
+  "apply_bonus": true,
+  "ingredient": {
+    "tag": "c:double_sheets/black_steel"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/unfinished_greaves/black_steel"
+  },
+  "rules": [
+    "bend_any",
+    "draw_any",
+    "hit_any"
+  ],
+  "tier": 5
+}

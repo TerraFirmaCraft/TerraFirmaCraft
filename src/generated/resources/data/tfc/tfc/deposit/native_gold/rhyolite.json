@@ -1,0 +1,11 @@
+{
+  "ingredient": {
+    "item": "tfc:deposit/native_gold/rhyolite"
+  },
+  "loot_table": "tfc:deposit/rhyolite_native_gold",
+  "model_stages": [
+    "tfc:item/pan/native_gold/rhyolite_full",
+    "tfc:item/pan/native_gold/rhyolite_half",
+    "tfc:item/pan/native_gold/result"
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 591.0,
+  "heat_capacity": 2.142857,
+  "ingredient": {
+    "item": "tfc:metal/block/bismuth_bronze_stairs"
+  },
+  "welding_temperature": 788.0
+}

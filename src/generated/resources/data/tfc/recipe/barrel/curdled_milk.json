@@ -1,0 +1,13 @@
+{
+  "type": "tfc:barrel_sealed",
+  "duration": 12000,
+  "input_fluid": {
+    "amount": 1,
+    "fluid": "tfc:milk_vinegar"
+  },
+  "output_fluid": {
+    "amount": 1,
+    "id": "tfc:curdled_milk"
+  },
+  "tooltip": ""
+}

@@ -1,0 +1,11 @@
+{
+  "ingredient": {
+    "item": "tfc:deposit/cassiterite/marble"
+  },
+  "loot_table": "tfc:deposit/marble_cassiterite",
+  "model_stages": [
+    "tfc:item/pan/cassiterite/marble_full",
+    "tfc:item/pan/cassiterite/marble_half",
+    "tfc:item/pan/cassiterite/result"
+  ]
+}

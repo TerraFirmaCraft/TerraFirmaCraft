@@ -1,0 +1,16 @@
+{
+  "type": "tfc:anvil",
+  "ingredient": {
+    "item": "tfc:raw_iron_bloom"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:refined_iron_bloom"
+  },
+  "rules": [
+    "hit_last",
+    "hit_second_last",
+    "hit_third_last"
+  ],
+  "tier": 2
+}

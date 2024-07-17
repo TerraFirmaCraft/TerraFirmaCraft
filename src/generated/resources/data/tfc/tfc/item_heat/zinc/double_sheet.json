@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 252.00002,
+  "heat_capacity": 19.04762,
+  "ingredient": {
+    "tag": "c:double_sheets/zinc"
+  },
+  "welding_temperature": 336.0
+}

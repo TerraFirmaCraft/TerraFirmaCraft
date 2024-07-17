@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 891.00006,
+  "heat_capacity": 0.17142858,
+  "ingredient": {
+    "item": "tfc:metal/chain/black_steel"
+  },
+  "welding_temperature": 1188.0
+}

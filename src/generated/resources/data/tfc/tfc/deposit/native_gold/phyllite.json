@@ -1,0 +1,11 @@
+{
+  "ingredient": {
+    "item": "tfc:deposit/native_gold/phyllite"
+  },
+  "loot_table": "tfc:deposit/phyllite_native_gold",
+  "model_stages": [
+    "tfc:item/pan/native_gold/phyllite_full",
+    "tfc:item/pan/native_gold/phyllite_half",
+    "tfc:item/pan/native_gold/result"
+  ]
+}

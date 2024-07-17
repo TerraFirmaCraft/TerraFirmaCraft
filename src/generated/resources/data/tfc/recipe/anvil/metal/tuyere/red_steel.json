@@ -1,0 +1,15 @@
+{
+  "type": "tfc:anvil",
+  "ingredient": {
+    "tag": "c:double_sheets/red_steel"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/tuyere/red_steel"
+  },
+  "rules": [
+    "bend_last",
+    "bend_second_last"
+  ],
+  "tier": 6
+}

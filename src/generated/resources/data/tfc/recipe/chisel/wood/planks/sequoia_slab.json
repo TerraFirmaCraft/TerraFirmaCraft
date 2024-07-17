@@ -1,0 +1,12 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:wood/planks/sequoia"
+  ],
+  "item_output": {
+    "count": 1,
+    "id": "tfc:wood/planks/sequoia_slab"
+  },
+  "mode": "slab",
+  "result": "tfc:wood/planks/sequoia_slab"
+}

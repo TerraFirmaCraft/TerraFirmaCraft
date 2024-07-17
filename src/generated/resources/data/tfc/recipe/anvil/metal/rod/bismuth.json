@@ -1,0 +1,16 @@
+{
+  "type": "tfc:anvil",
+  "ingredient": {
+    "tag": "c:double_ingots/bismuth"
+  },
+  "result": {
+    "count": 2,
+    "id": "tfc:metal/rod/bismuth"
+  },
+  "rules": [
+    "hit_last",
+    "hit_second_last",
+    "hit_third_last"
+  ],
+  "tier": 0
+}

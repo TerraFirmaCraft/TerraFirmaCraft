@@ -1,0 +1,15 @@
+{
+  "type": "tfc:casting",
+  "break_chance": 0.1,
+  "fluid": {
+    "amount": 100,
+    "fluid": "tfc:metal/weak_red_steel"
+  },
+  "mold": {
+    "item": "tfc:ceramic/ingot_mold"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/ingot/weak_red_steel"
+  }
+}

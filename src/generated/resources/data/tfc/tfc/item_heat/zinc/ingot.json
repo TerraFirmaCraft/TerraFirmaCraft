@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 252.00002,
+  "heat_capacity": 4.761905,
+  "ingredient": {
+    "tag": "c:ingots/zinc"
+  },
+  "welding_temperature": 336.0
+}

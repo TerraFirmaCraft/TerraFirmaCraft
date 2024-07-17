@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 162.0,
+  "heat_capacity": 5.357143,
+  "ingredient": {
+    "item": "tfc:metal/block/bismuth_stairs"
+  },
+  "welding_temperature": 216.0
+}

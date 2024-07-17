@@ -3,22 +3,6 @@
   "replace": false,
   "values": [
     "tfc:plant/banana_plant",
-    "tfc:plant/dead_banana_plant",
-    "tfc:plant/cherry_branch",
-    "tfc:plant/cherry_growing_branch",
-    "tfc:plant/green_apple_branch",
-    "tfc:plant/green_apple_growing_branch",
-    "tfc:plant/lemon_branch",
-    "tfc:plant/lemon_growing_branch",
-    "tfc:plant/olive_branch",
-    "tfc:plant/olive_growing_branch",
-    "tfc:plant/orange_branch",
-    "tfc:plant/orange_growing_branch",
-    "tfc:plant/peach_branch",
-    "tfc:plant/peach_growing_branch",
-    "tfc:plant/plum_branch",
-    "tfc:plant/plum_growing_branch",
-    "tfc:plant/red_apple_branch",
-    "tfc:plant/red_apple_growing_branch"
+    "tfc:plant/dead_banana_plant"
   ]
 }

@@ -1,0 +1,15 @@
+{
+  "double_ingots": {
+    "tag": "c:double_ingots/rose_gold"
+  },
+  "fluid": "tfc:metal/rose_gold",
+  "ingots": {
+    "tag": "c:ingots/rose_gold"
+  },
+  "melt_temperature": 960.0,
+  "sheets": {
+    "tag": "c:sheets/rose_gold"
+  },
+  "specific_heat_capacity": 0.008571429,
+  "tier": 0
+}

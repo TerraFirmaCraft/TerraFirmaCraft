@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 924.00006,
+  "heat_capacity": 1.4285715,
+  "ingredient": {
+    "tag": "c:rods/red_steel"
+  },
+  "welding_temperature": 1232.0
+}

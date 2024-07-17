@@ -1,0 +1,58 @@
+{
+  "type": "tfc:barrel_sealed",
+  "duration": -1,
+  "input_fluid": {
+    "amount": 125,
+    "fluid": "tfc:vinegar"
+  },
+  "input_item": {
+    "type": "tfc:and",
+    "children": [
+      [
+        {
+          "tag": "c:foods/fruit"
+        },
+        {
+          "tag": "c:foods/vegetable"
+        },
+        {
+          "tag": "tfc:foods/meat"
+        },
+        {
+          "tag": "tfc:foods/fish"
+        }
+      ],
+      {
+        "type": "tfc:not_rotten"
+      },
+      {
+        "type": "tfc:has_trait",
+        "trait": "tfc:pickled"
+      }
+    ],
+    "count": 1
+  },
+  "on_seal": {
+    "modifiers": [
+      {
+        "type": "tfc:copy_input"
+      },
+      {
+        "type": "tfc:add_trait",
+        "trait": "tfc:vinegar"
+      }
+    ]
+  },
+  "on_unseal": {
+    "modifiers": [
+      {
+        "type": "tfc:copy_input"
+      },
+      {
+        "type": "tfc:remove_trait",
+        "trait": "tfc:vinegar"
+      }
+    ]
+  },
+  "tooltip": ""
+}

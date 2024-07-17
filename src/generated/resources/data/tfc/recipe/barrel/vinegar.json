@@ -1,0 +1,25 @@
+{
+  "type": "tfc:barrel_sealed",
+  "duration": 8000,
+  "input_fluid": {
+    "amount": 250,
+    "tag": "tfc:alcohols"
+  },
+  "input_item": {
+    "type": "tfc:and",
+    "children": [
+      {
+        "tag": "c:foods/fruit"
+      },
+      {
+        "type": "tfc:not_rotten"
+      }
+    ],
+    "count": 1
+  },
+  "output_fluid": {
+    "amount": 250,
+    "id": "tfc:vinegar"
+  },
+  "tooltip": ""
+}

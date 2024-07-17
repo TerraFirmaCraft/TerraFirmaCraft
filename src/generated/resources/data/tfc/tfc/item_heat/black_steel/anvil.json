@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 891.00006,
+  "heat_capacity": 40.0,
+  "ingredient": {
+    "item": "tfc:metal/anvil/black_steel"
+  },
+  "welding_temperature": 1188.0
+}

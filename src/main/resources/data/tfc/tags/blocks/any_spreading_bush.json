@@ -3,7 +3,6 @@
   "replace": false,
   "values": [
     "tfc:plant/dead_berry_bush",
-    "tfc:plant/dead_cane",
-    "#tfc:spreading_bush"
+    "tfc:plant/dead_cane"
   ]
 }

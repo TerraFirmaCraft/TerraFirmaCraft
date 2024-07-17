@@ -1,0 +1,16 @@
+{
+  "type": "tfc:anvil",
+  "apply_bonus": true,
+  "ingredient": {
+    "tag": "c:ingots/bismuth_bronze"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/shovel_head/bismuth_bronze"
+  },
+  "rules": [
+    "punch_last",
+    "hit_not_last"
+  ],
+  "tier": 2
+}

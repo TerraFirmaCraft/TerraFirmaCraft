@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 648.0,
+  "heat_capacity": 40.0,
+  "ingredient": {
+    "item": "tfc:metal/anvil/copper"
+  },
+  "welding_temperature": 864.0
+}

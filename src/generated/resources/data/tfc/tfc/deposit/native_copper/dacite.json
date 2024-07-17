@@ -1,0 +1,11 @@
+{
+  "ingredient": {
+    "item": "tfc:deposit/native_copper/dacite"
+  },
+  "loot_table": "tfc:deposit/dacite_native_copper",
+  "model_stages": [
+    "tfc:item/pan/native_copper/dacite_full",
+    "tfc:item/pan/native_copper/dacite_half",
+    "tfc:item/pan/native_copper/result"
+  ]
+}

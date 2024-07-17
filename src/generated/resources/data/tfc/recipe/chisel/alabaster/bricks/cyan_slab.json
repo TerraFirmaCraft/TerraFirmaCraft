@@ -1,0 +1,12 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:alabaster/bricks/cyan"
+  ],
+  "item_output": {
+    "count": 1,
+    "id": "tfc:alabaster/bricks/cyan_slab"
+  },
+  "mode": "slab",
+  "result": "tfc:alabaster/bricks/cyan_slab"
+}

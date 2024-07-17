@@ -1,0 +1,13 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:rock/raw/shale",
+    "tfc:rock/hardened/shale"
+  ],
+  "item_output": {
+    "count": 1,
+    "id": "tfc:rock/raw/shale_slab"
+  },
+  "mode": "slab",
+  "result": "tfc:rock/raw/shale_slab"
+}

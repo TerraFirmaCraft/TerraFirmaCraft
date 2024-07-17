@@ -1,0 +1,11 @@
+{
+  "ingredient": {
+    "item": "tfc:deposit/native_silver/marble"
+  },
+  "loot_table": "tfc:deposit/marble_native_silver",
+  "model_stages": [
+    "tfc:item/pan/native_silver/marble_full",
+    "tfc:item/pan/native_silver/marble_half",
+    "tfc:item/pan/native_silver/result"
+  ]
+}

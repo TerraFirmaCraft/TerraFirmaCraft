@@ -1,0 +1,17 @@
+{
+  "type": "tfc:anvil",
+  "apply_bonus": true,
+  "ingredient": {
+    "tag": "c:double_ingots/black_steel"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/mace_head/black_steel"
+  },
+  "rules": [
+    "hit_last",
+    "shrink_not_last",
+    "bend_not_last"
+  ],
+  "tier": 5
+}

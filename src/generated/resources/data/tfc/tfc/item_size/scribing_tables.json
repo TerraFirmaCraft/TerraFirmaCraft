@@ -1,0 +1,15 @@
+{
+  "ingredient": [
+    {
+      "tag": "tfc:scribing_tables"
+    },
+    {
+      "tag": "tfc:sewing_tables"
+    },
+    {
+      "item": "minecraft:loom"
+    }
+  ],
+  "size": "large",
+  "weight": "light"
+}

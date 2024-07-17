@@ -1,0 +1,17 @@
+{
+  "type": "tfc:barrel_sealed",
+  "duration": 8000,
+  "input_fluid": {
+    "amount": 500,
+    "fluid": "minecraft:water"
+  },
+  "input_item": {
+    "count": 1,
+    "item": "tfc:large_scraped_hide"
+  },
+  "output_item": {
+    "count": 1,
+    "id": "tfc:large_prepared_hide"
+  },
+  "tooltip": ""
+}

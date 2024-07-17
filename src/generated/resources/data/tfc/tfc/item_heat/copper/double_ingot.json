@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 648.0,
+  "heat_capacity": 5.714286,
+  "ingredient": {
+    "tag": "c:double_ingots/copper"
+  },
+  "welding_temperature": 864.0
+}

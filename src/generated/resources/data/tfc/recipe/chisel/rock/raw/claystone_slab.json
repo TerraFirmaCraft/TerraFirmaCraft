@@ -1,0 +1,13 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:rock/raw/claystone",
+    "tfc:rock/hardened/claystone"
+  ],
+  "item_output": {
+    "count": 1,
+    "id": "tfc:rock/raw/claystone_slab"
+  },
+  "mode": "slab",
+  "result": "tfc:rock/raw/claystone_slab"
+}

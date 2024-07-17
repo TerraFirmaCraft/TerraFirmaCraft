@@ -1,0 +1,14 @@
+{
+  "type": "tfc:casting",
+  "fluid": {
+    "amount": 100,
+    "fluid": "tfc:metal/bronze"
+  },
+  "mold": {
+    "item": "tfc:ceramic/scythe_blade_mold"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/scythe_blade/bronze"
+  }
+}

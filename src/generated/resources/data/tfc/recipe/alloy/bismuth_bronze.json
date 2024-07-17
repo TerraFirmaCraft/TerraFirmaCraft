@@ -1,0 +1,21 @@
+{
+  "type": "tfc:alloy",
+  "contents": [
+    {
+      "fluid": "tfc:metal/zinc",
+      "max": 0.3,
+      "min": 0.2
+    },
+    {
+      "fluid": "tfc:metal/copper",
+      "max": 0.65,
+      "min": 0.5
+    },
+    {
+      "fluid": "tfc:metal/bismuth",
+      "max": 0.2,
+      "min": 0.1
+    }
+  ],
+  "result": "tfc:metal/bismuth_bronze"
+}

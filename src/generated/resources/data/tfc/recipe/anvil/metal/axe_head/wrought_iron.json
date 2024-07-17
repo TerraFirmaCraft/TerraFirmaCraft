@@ -1,0 +1,17 @@
+{
+  "type": "tfc:anvil",
+  "apply_bonus": true,
+  "ingredient": {
+    "tag": "c:ingots/wrought_iron"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/axe_head/wrought_iron"
+  },
+  "rules": [
+    "punch_last",
+    "hit_second_last",
+    "upset_third_last"
+  ],
+  "tier": 3
+}

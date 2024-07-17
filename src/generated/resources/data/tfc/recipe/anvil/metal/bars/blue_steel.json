@@ -1,0 +1,16 @@
+{
+  "type": "tfc:anvil",
+  "ingredient": {
+    "tag": "c:sheets/blue_steel"
+  },
+  "result": {
+    "count": 8,
+    "id": "tfc:metal/bars/blue_steel"
+  },
+  "rules": [
+    "upset_last",
+    "punch_second_last",
+    "punch_third_last"
+  ],
+  "tier": 6
+}

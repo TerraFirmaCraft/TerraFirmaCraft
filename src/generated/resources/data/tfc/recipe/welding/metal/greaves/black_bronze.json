@@ -1,0 +1,14 @@
+{
+  "type": "tfc:welding",
+  "first_input": {
+    "item": "tfc:metal/unfinished_greaves/black_bronze"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/greaves/black_bronze"
+  },
+  "second_input": {
+    "tag": "c:sheets/black_bronze"
+  },
+  "tier": 1
+}

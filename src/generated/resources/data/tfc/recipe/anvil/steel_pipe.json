@@ -1,0 +1,15 @@
+{
+  "type": "tfc:anvil",
+  "ingredient": {
+    "tag": "c:sheets/steel"
+  },
+  "result": {
+    "count": 8,
+    "id": "tfc:steel_pipe"
+  },
+  "rules": [
+    "draw_last",
+    "bend_not_last"
+  ],
+  "tier": 4
+}

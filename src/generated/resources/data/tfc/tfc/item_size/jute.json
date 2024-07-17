@@ -1,0 +1,12 @@
+{
+  "ingredient": [
+    {
+      "item": "tfc:jute_fiber"
+    },
+    {
+      "item": "tfc:jute"
+    }
+  ],
+  "size": "small",
+  "weight": "very_light"
+}

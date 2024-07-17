@@ -1,0 +1,13 @@
+{
+  "type": "tfc:welding",
+  "first_input": {
+    "tag": "c:sheets/silver"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/double_sheet/silver"
+  },
+  "second_input": {
+    "tag": "c:ingots/silver"
+  }
+}

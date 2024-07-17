@@ -1,0 +1,18 @@
+{
+  "duration": 707,
+  "ingredient": [
+    {
+      "item": "tfc:wood/log/douglas_fir"
+    },
+    {
+      "item": "tfc:wood/stripped_log/douglas_fir"
+    },
+    {
+      "item": "tfc:wood/wood/douglas_fir"
+    },
+    {
+      "item": "tfc:wood/stripped_wood/douglas_fir"
+    }
+  ],
+  "temperature": 1500.0
+}

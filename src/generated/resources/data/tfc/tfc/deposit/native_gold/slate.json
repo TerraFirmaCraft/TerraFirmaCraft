@@ -1,0 +1,11 @@
+{
+  "ingredient": {
+    "item": "tfc:deposit/native_gold/slate"
+  },
+  "loot_table": "tfc:deposit/slate_native_gold",
+  "model_stages": [
+    "tfc:item/pan/native_gold/slate_full",
+    "tfc:item/pan/native_gold/slate_half",
+    "tfc:item/pan/native_gold/result"
+  ]
+}

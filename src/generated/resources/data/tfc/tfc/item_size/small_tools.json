@@ -1,0 +1,21 @@
+{
+  "ingredient": [
+    {
+      "tag": "tfc:tools/chisel"
+    },
+    {
+      "tag": "tfc:tools/knife"
+    },
+    {
+      "tag": "c:tools/shear"
+    },
+    {
+      "tag": "tfc:tools/glassworking"
+    },
+    {
+      "tag": "tfc:tools/blowpipe"
+    }
+  ],
+  "size": "large",
+  "weight": "medium"
+}

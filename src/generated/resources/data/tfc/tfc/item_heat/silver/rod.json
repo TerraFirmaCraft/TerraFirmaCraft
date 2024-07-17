@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 576.60004,
+  "heat_capacity": 1.0416666,
+  "ingredient": {
+    "tag": "c:rods/silver"
+  },
+  "welding_temperature": 768.8
+}

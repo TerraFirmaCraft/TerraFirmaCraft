@@ -1,0 +1,20 @@
+{
+  "type": "tfc:barrel_instant",
+  "input_fluid": {
+    "amount": 250,
+    "fluid": "tfc:olive_oil_water"
+  },
+  "input_item": {
+    "count": 1,
+    "item": "tfc:jute_net"
+  },
+  "output_fluid": {
+    "amount": 50,
+    "id": "tfc:olive_oil"
+  },
+  "output_item": {
+    "count": 1,
+    "id": "tfc:dirty_jute_net"
+  },
+  "tooltip": ""
+}

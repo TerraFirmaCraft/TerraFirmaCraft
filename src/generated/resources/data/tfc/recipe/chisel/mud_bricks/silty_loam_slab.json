@@ -1,0 +1,12 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:mud_bricks/silty_loam"
+  ],
+  "item_output": {
+    "count": 1,
+    "id": "tfc:mud_bricks/silty_loam_slab"
+  },
+  "mode": "slab",
+  "result": "tfc:mud_bricks/silty_loam_slab"
+}

@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 138.0,
+  "heat_capacity": 5.357143,
+  "ingredient": {
+    "item": "tfc:metal/block/tin_stairs"
+  },
+  "welding_temperature": 184.0
+}

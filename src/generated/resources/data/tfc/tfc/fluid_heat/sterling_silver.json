@@ -1,0 +1,15 @@
+{
+  "double_ingots": {
+    "tag": "c:double_ingots/sterling_silver"
+  },
+  "fluid": "tfc:metal/sterling_silver",
+  "ingots": {
+    "tag": "c:ingots/sterling_silver"
+  },
+  "melt_temperature": 950.0,
+  "sheets": {
+    "tag": "c:sheets/sterling_silver"
+  },
+  "specific_heat_capacity": 0.008571429,
+  "tier": 0
+}

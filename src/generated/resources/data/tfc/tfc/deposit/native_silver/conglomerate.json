@@ -1,0 +1,11 @@
+{
+  "ingredient": {
+    "item": "tfc:deposit/native_silver/conglomerate"
+  },
+  "loot_table": "tfc:deposit/conglomerate_native_silver",
+  "model_stages": [
+    "tfc:item/pan/native_silver/conglomerate_full",
+    "tfc:item/pan/native_silver/conglomerate_half",
+    "tfc:item/pan/native_silver/result"
+  ]
+}

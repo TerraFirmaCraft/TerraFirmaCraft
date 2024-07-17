@@ -1,0 +1,13 @@
+{
+  "type": "tfc:welding",
+  "first_input": {
+    "tag": "c:ingots/nickel"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/double_ingot/nickel"
+  },
+  "second_input": {
+    "tag": "c:ingots/nickel"
+  }
+}

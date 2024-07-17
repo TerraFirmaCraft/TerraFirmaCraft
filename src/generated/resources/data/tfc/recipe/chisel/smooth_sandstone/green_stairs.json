@@ -1,0 +1,8 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:smooth_sandstone/green"
+  ],
+  "mode": "stair",
+  "result": "tfc:smooth_sandstone/green_stairs"
+}

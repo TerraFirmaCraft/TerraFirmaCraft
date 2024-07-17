@@ -1,0 +1,13 @@
+{
+  "type": "tfc:welding",
+  "first_input": {
+    "tag": "c:sheets/rose_gold"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/double_sheet/rose_gold"
+  },
+  "second_input": {
+    "tag": "c:ingots/rose_gold"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "ingredient": [
+    {
+      "tag": "c:tools/fishing_rod"
+    },
+    {
+      "tag": "c:tools/mining_tool"
+    },
+    {
+      "tag": "c:tools/melee_weapon"
+    },
+    {
+      "tag": "c:tools/ranged_weapon"
+    },
+    {
+      "tag": "c:tools/shield"
+    }
+  ],
+  "size": "very_large",
+  "weight": "very_heavy"
+}

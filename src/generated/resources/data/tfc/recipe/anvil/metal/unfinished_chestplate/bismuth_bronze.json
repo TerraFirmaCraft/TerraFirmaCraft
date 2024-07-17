@@ -1,0 +1,17 @@
+{
+  "type": "tfc:anvil",
+  "apply_bonus": true,
+  "ingredient": {
+    "tag": "c:double_sheets/bismuth_bronze"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/unfinished_chestplate/bismuth_bronze"
+  },
+  "rules": [
+    "hit_last",
+    "hit_second_last",
+    "upset_third_last"
+  ],
+  "tier": 2
+}

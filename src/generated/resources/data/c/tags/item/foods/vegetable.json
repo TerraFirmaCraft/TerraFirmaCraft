@@ -1,0 +1,19 @@
+{
+  "values": [
+    "tfc:food/beet",
+    "tfc:food/cabbage",
+    "tfc:food/carrot",
+    "tfc:food/garlic",
+    "tfc:food/green_bean",
+    "tfc:food/green_bell_pepper",
+    "tfc:food/onion",
+    "tfc:food/potato",
+    "tfc:food/baked_potato",
+    "tfc:food/red_bell_pepper",
+    "tfc:food/soybean",
+    "tfc:food/sugarcane",
+    "tfc:food/squash",
+    "tfc:food/tomato",
+    "tfc:food/yellow_bell_pepper"
+  ]
+}

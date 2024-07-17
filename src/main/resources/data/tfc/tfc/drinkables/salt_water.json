@@ -1,0 +1,13 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": "tfc:salt_water",
+  "thirst": -1,
+  "effects": [
+    {
+      "type": "tfc:thirst",
+      "duration": 600,
+      "chance": 0.25
+    }
+  ],
+  "may_drink_when_full": true
+}

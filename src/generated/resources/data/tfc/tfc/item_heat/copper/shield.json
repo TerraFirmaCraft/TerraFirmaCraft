@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 648.0,
+  "heat_capacity": 11.428572,
+  "ingredient": {
+    "item": "tfc:metal/shield/copper"
+  },
+  "welding_temperature": 864.0
+}

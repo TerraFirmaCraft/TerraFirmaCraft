@@ -1,0 +1,9 @@
+{
+  "fluid": "tfc:metal/weak_steel",
+  "ingots": {
+    "tag": "c:ingots/weak_steel"
+  },
+  "melt_temperature": 1540.0,
+  "specific_heat_capacity": 0.008571429,
+  "tier": 0
+}

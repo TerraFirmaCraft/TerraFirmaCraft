@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 138.0,
+  "heat_capacity": 14.285714,
+  "ingredient": {
+    "tag": "c:sheets/tin"
+  },
+  "welding_temperature": 184.0
+}

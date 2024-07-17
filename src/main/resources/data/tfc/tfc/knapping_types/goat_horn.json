@@ -1,0 +1,16 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "input": {
+    "ingredient": {
+      "tag": "tfc:goat_horn_knapping"
+    },
+    "count": 1
+  },
+  "click_sound": "tfc:item.knapping.stone",
+  "consume_after_complete": false,
+  "use_disabled_texture": true,
+  "spawns_particles": false,
+  "jei_icon_item": {
+    "item": "minecraft:goat_horn"
+  }
+}

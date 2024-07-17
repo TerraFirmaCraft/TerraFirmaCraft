@@ -1,0 +1,21 @@
+{
+  "values": [
+    "tfc:ceramic/vessel",
+    "tfc:ceramic/white_glazed_vessel",
+    "tfc:ceramic/orange_glazed_vessel",
+    "tfc:ceramic/magenta_glazed_vessel",
+    "tfc:ceramic/light_blue_glazed_vessel",
+    "tfc:ceramic/yellow_glazed_vessel",
+    "tfc:ceramic/lime_glazed_vessel",
+    "tfc:ceramic/pink_glazed_vessel",
+    "tfc:ceramic/gray_glazed_vessel",
+    "tfc:ceramic/light_gray_glazed_vessel",
+    "tfc:ceramic/cyan_glazed_vessel",
+    "tfc:ceramic/purple_glazed_vessel",
+    "tfc:ceramic/blue_glazed_vessel",
+    "tfc:ceramic/brown_glazed_vessel",
+    "tfc:ceramic/green_glazed_vessel",
+    "tfc:ceramic/red_glazed_vessel",
+    "tfc:ceramic/black_glazed_vessel"
+  ]
+}

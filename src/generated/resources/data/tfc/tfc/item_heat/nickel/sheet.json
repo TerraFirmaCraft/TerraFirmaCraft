@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 871.80005,
+  "heat_capacity": 4.1666665,
+  "ingredient": {
+    "tag": "c:sheets/nickel"
+  },
+  "welding_temperature": 1162.4
+}

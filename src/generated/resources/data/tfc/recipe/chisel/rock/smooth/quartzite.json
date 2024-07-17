@@ -1,0 +1,9 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:rock/raw/quartzite",
+    "tfc:rock/hardened/quartzite"
+  ],
+  "mode": "smooth",
+  "result": "tfc:rock/smooth/quartzite"
+}

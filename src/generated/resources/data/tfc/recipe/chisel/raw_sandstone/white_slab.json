@@ -1,0 +1,12 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:raw_sandstone/white"
+  ],
+  "item_output": {
+    "count": 1,
+    "id": "tfc:raw_sandstone/white_slab"
+  },
+  "mode": "slab",
+  "result": "tfc:raw_sandstone/white_slab"
+}

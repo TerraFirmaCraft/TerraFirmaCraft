@@ -1,0 +1,17 @@
+{
+  "type": "tfc:barrel_sealed",
+  "duration": 8000,
+  "input_fluid": {
+    "amount": 200,
+    "fluid": "minecraft:water"
+  },
+  "input_item": {
+    "count": 1,
+    "item": "tfc:papyrus_strip"
+  },
+  "output_item": {
+    "count": 1,
+    "id": "tfc:soaked_papyrus_strip"
+  },
+  "tooltip": ""
+}

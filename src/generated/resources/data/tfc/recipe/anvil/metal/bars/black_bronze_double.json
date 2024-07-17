@@ -1,0 +1,16 @@
+{
+  "type": "tfc:anvil",
+  "ingredient": {
+    "tag": "c:double_sheets/black_bronze"
+  },
+  "result": {
+    "count": 16,
+    "id": "tfc:metal/bars/black_bronze"
+  },
+  "rules": [
+    "upset_last",
+    "punch_second_last",
+    "punch_third_last"
+  ],
+  "tier": 2
+}

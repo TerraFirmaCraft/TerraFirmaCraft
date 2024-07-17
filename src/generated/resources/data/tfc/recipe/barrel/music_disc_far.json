@@ -1,0 +1,17 @@
+{
+  "type": "tfc:barrel_sealed",
+  "duration": 1000,
+  "input_fluid": {
+    "amount": 25,
+    "fluid": "tfc:green_dye"
+  },
+  "input_item": {
+    "count": 1,
+    "item": "tfc:blank_disc"
+  },
+  "output_item": {
+    "count": 1,
+    "id": "minecraft:music_disc_far"
+  },
+  "tooltip": ""
+}

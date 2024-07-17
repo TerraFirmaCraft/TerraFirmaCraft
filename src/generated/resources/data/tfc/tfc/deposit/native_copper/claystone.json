@@ -1,0 +1,11 @@
+{
+  "ingredient": {
+    "item": "tfc:deposit/native_copper/claystone"
+  },
+  "loot_table": "tfc:deposit/claystone_native_copper",
+  "model_stages": [
+    "tfc:item/pan/native_copper/claystone_full",
+    "tfc:item/pan/native_copper/claystone_half",
+    "tfc:item/pan/native_copper/result"
+  ]
+}

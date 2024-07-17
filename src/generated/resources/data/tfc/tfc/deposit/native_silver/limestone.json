@@ -1,0 +1,11 @@
+{
+  "ingredient": {
+    "item": "tfc:deposit/native_silver/limestone"
+  },
+  "loot_table": "tfc:deposit/limestone_native_silver",
+  "model_stages": [
+    "tfc:item/pan/native_silver/limestone_full",
+    "tfc:item/pan/native_silver/limestone_half",
+    "tfc:item/pan/native_silver/result"
+  ]
+}

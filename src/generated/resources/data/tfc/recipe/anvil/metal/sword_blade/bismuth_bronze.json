@@ -1,0 +1,17 @@
+{
+  "type": "tfc:anvil",
+  "apply_bonus": true,
+  "ingredient": {
+    "tag": "c:double_ingots/bismuth_bronze"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/sword_blade/bismuth_bronze"
+  },
+  "rules": [
+    "hit_last",
+    "bend_second_last",
+    "bend_third_last"
+  ],
+  "tier": 2
+}

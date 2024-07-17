@@ -1,0 +1,11 @@
+{
+  "ingredient": {
+    "item": "tfc:deposit/cassiterite/gneiss"
+  },
+  "loot_table": "tfc:deposit/gneiss_cassiterite",
+  "model_stages": [
+    "tfc:item/pan/cassiterite/gneiss_full",
+    "tfc:item/pan/cassiterite/gneiss_half",
+    "tfc:item/pan/cassiterite/result"
+  ]
+}

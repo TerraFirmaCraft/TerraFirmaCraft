@@ -1,0 +1,17 @@
+{
+  "type": "tfc:anvil",
+  "apply_bonus": true,
+  "ingredient": {
+    "tag": "c:ingots/black_steel"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/knife_blade/black_steel"
+  },
+  "rules": [
+    "hit_last",
+    "draw_second_last",
+    "draw_third_last"
+  ],
+  "tier": 5
+}

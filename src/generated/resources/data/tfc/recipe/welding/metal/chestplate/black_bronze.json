@@ -1,0 +1,14 @@
+{
+  "type": "tfc:welding",
+  "first_input": {
+    "item": "tfc:metal/unfinished_chestplate/black_bronze"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/chestplate/black_bronze"
+  },
+  "second_input": {
+    "tag": "c:double_sheets/black_bronze"
+  },
+  "tier": 1
+}

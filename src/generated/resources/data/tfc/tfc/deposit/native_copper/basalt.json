@@ -1,0 +1,11 @@
+{
+  "ingredient": {
+    "item": "tfc:deposit/native_copper/basalt"
+  },
+  "loot_table": "tfc:deposit/basalt_native_copper",
+  "model_stages": [
+    "tfc:item/pan/native_copper/basalt_full",
+    "tfc:item/pan/native_copper/basalt_half",
+    "tfc:item/pan/native_copper/result"
+  ]
+}

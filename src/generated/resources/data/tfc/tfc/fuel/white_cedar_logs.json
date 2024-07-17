@@ -1,0 +1,19 @@
+{
+  "duration": 625,
+  "ingredient": [
+    {
+      "item": "tfc:wood/log/white_cedar"
+    },
+    {
+      "item": "tfc:wood/stripped_log/white_cedar"
+    },
+    {
+      "item": "tfc:wood/wood/white_cedar"
+    },
+    {
+      "item": "tfc:wood/stripped_wood/white_cedar"
+    }
+  ],
+  "purity": 0.95,
+  "temperature": 1500.0
+}

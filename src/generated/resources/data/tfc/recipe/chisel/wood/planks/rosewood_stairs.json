@@ -1,0 +1,8 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:wood/planks/rosewood"
+  ],
+  "mode": "stair",
+  "result": "tfc:wood/planks/rosewood_stairs"
+}

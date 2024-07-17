@@ -1,0 +1,15 @@
+{
+  "double_ingots": {
+    "tag": "c:double_ingots/bismuth"
+  },
+  "fluid": "tfc:metal/bismuth",
+  "ingots": {
+    "tag": "c:ingots/bismuth"
+  },
+  "melt_temperature": 270.0,
+  "sheets": {
+    "tag": "c:sheets/bismuth"
+  },
+  "specific_heat_capacity": 0.021428572,
+  "tier": 0
+}

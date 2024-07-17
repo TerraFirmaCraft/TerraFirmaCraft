@@ -1,0 +1,15 @@
+{
+  "type": "tfc:anvil",
+  "ingredient": {
+    "tag": "c:ingots/copper"
+  },
+  "result": {
+    "count": 16,
+    "id": "tfc:metal/chain/copper"
+  },
+  "rules": [
+    "hit_any",
+    "draw_third_last"
+  ],
+  "tier": 1
+}

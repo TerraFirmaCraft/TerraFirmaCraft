@@ -1,0 +1,21 @@
+{
+  "type": "tfc:alloy",
+  "contents": [
+    {
+      "fluid": "tfc:metal/steel",
+      "max": 0.7,
+      "min": 0.5
+    },
+    {
+      "fluid": "tfc:metal/nickel",
+      "max": 0.25,
+      "min": 0.15
+    },
+    {
+      "fluid": "tfc:metal/black_bronze",
+      "max": 0.25,
+      "min": 0.15
+    }
+  ],
+  "result": "tfc:metal/weak_steel"
+}

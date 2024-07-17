@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 921.00006,
+  "heat_capacity": 11.428572,
+  "ingredient": {
+    "item": "tfc:metal/unfinished_chestplate/wrought_iron"
+  },
+  "welding_temperature": 1228.0
+}

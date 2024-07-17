@@ -1,0 +1,11 @@
+{
+  "ingredient": {
+    "item": "tfc:deposit/native_gold/gabbro"
+  },
+  "loot_table": "tfc:deposit/gabbro_native_gold",
+  "model_stages": [
+    "tfc:item/pan/native_gold/gabbro_full",
+    "tfc:item/pan/native_gold/gabbro_half",
+    "tfc:item/pan/native_gold/result"
+  ]
+}

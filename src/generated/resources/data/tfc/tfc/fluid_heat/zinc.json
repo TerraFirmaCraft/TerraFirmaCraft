@@ -1,0 +1,15 @@
+{
+  "double_ingots": {
+    "tag": "c:double_ingots/zinc"
+  },
+  "fluid": "tfc:metal/zinc",
+  "ingots": {
+    "tag": "c:ingots/zinc"
+  },
+  "melt_temperature": 420.0,
+  "sheets": {
+    "tag": "c:sheets/zinc"
+  },
+  "specific_heat_capacity": 0.014285715,
+  "tier": 0
+}

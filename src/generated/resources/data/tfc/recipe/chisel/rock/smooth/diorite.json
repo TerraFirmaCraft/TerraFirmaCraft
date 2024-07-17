@@ -1,0 +1,9 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:rock/raw/diorite",
+    "tfc:rock/hardened/diorite"
+  ],
+  "mode": "smooth",
+  "result": "tfc:rock/smooth/diorite"
+}

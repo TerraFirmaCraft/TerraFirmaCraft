@@ -1,0 +1,13 @@
+{
+  "type": "tfc:welding",
+  "first_input": {
+    "tag": "c:ingots/weak_steel"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/ingot/high_carbon_black_steel"
+  },
+  "second_input": {
+    "tag": "c:ingots/pig_iron"
+  }
+}

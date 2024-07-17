@@ -1,0 +1,16 @@
+{
+  "type": "tfc:anvil",
+  "ingredient": {
+    "tag": "c:ingots/high_carbon_black_steel"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/ingot/black_steel"
+  },
+  "rules": [
+    "hit_last",
+    "hit_second_last",
+    "hit_third_last"
+  ],
+  "tier": 0
+}

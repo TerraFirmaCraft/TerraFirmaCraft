@@ -150,9 +150,9 @@ def resources_at(
     vanilla_rm.lang(constants.VANILLA_OVERRIDE_LANG)
 
     assets.generate(rm)
-    data.generate(rm)
-    tags.generate(rm)
-    recipes.generate(rm)
+    #data.generate(rm)
+    #tags.generate(rm)
+    #recipes.generate(rm)
     recipes.generate_test(test_rm)
     world_gen.generate(rm)
     advancements.generate(rm)

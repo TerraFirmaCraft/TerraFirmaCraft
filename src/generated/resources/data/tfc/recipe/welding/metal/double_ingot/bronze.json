@@ -1,0 +1,14 @@
+{
+  "type": "tfc:welding",
+  "first_input": {
+    "tag": "c:ingots/bronze"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/double_ingot/bronze"
+  },
+  "second_input": {
+    "tag": "c:ingots/bronze"
+  },
+  "tier": 1
+}

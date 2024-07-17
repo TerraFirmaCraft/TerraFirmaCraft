@@ -1,0 +1,19 @@
+{
+  "duration": 640,
+  "ingredient": [
+    {
+      "item": "tfc:wood/log/rosewood"
+    },
+    {
+      "item": "tfc:wood/stripped_log/rosewood"
+    },
+    {
+      "item": "tfc:wood/wood/rosewood"
+    },
+    {
+      "item": "tfc:wood/stripped_wood/rosewood"
+    }
+  ],
+  "purity": 0.95,
+  "temperature": 1500.0
+}

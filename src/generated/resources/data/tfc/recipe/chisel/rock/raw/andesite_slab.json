@@ -1,0 +1,13 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:rock/raw/andesite",
+    "tfc:rock/hardened/andesite"
+  ],
+  "item_output": {
+    "count": 1,
+    "id": "tfc:rock/raw/andesite_slab"
+  },
+  "mode": "slab",
+  "result": "tfc:rock/raw/andesite_slab"
+}

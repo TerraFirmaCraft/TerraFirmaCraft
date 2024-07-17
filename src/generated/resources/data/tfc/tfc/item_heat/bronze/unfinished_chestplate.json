@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 570.0,
+  "heat_capacity": 11.428572,
+  "ingredient": {
+    "item": "tfc:metal/unfinished_chestplate/bronze"
+  },
+  "welding_temperature": 760.0
+}

@@ -1,0 +1,15 @@
+{
+  "double_ingots": {
+    "tag": "c:double_ingots/blue_steel"
+  },
+  "fluid": "tfc:metal/blue_steel",
+  "ingots": {
+    "tag": "c:ingots/blue_steel"
+  },
+  "melt_temperature": 1540.0,
+  "sheets": {
+    "tag": "c:sheets/blue_steel"
+  },
+  "specific_heat_capacity": 0.008571429,
+  "tier": 6
+}

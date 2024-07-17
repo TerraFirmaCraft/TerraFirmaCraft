@@ -1,0 +1,26 @@
+{
+  "values": [
+    "tfc:food/beef",
+    "tfc:food/pork",
+    "tfc:food/chicken",
+    "tfc:food/quail",
+    "tfc:food/mutton",
+    "tfc:food/bear",
+    "tfc:food/horse_meat",
+    "tfc:food/pheasant",
+    "tfc:food/grouse",
+    "tfc:food/turkey",
+    "tfc:food/peafowl",
+    "tfc:food/venison",
+    "tfc:food/wolf",
+    "tfc:food/rabbit",
+    "tfc:food/fox",
+    "tfc:food/hyena",
+    "tfc:food/duck",
+    "tfc:food/chevon",
+    "tfc:food/gran_feline",
+    "tfc:food/turtle",
+    "tfc:food/camelidae",
+    "tfc:food/frog_legs"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "ingredient": {
+    "item": "tfc:deposit/native_silver/gneiss"
+  },
+  "loot_table": "tfc:deposit/gneiss_native_silver",
+  "model_stages": [
+    "tfc:item/pan/native_silver/gneiss_full",
+    "tfc:item/pan/native_silver/gneiss_half",
+    "tfc:item/pan/native_silver/result"
+  ]
+}

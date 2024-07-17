@@ -1,0 +1,11 @@
+{
+  "ingredient": {
+    "item": "tfc:deposit/cassiterite/shale"
+  },
+  "loot_table": "tfc:deposit/shale_cassiterite",
+  "model_stages": [
+    "tfc:item/pan/cassiterite/shale_full",
+    "tfc:item/pan/cassiterite/shale_half",
+    "tfc:item/pan/cassiterite/result"
+  ]
+}

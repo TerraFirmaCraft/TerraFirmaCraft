@@ -1,0 +1,11 @@
+{
+  "ingredient": {
+    "item": "tfc:deposit/native_gold/andesite"
+  },
+  "loot_table": "tfc:deposit/andesite_native_gold",
+  "model_stages": [
+    "tfc:item/pan/native_gold/andesite_full",
+    "tfc:item/pan/native_gold/andesite_half",
+    "tfc:item/pan/native_gold/result"
+  ]
+}

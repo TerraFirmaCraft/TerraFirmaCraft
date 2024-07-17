@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 558.0,
+  "heat_capacity": 1.4285715,
+  "ingredient": {
+    "item": "tfc:metal/block/brass_slab"
+  },
+  "welding_temperature": 744.0
+}

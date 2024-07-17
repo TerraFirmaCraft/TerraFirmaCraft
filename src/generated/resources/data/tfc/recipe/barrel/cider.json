@@ -1,0 +1,30 @@
+{
+  "type": "tfc:barrel_sealed",
+  "duration": 72000,
+  "input_fluid": {
+    "amount": 500,
+    "fluid": "minecraft:water"
+  },
+  "input_item": {
+    "type": "tfc:and",
+    "children": [
+      [
+        {
+          "item": "tfc:food/red_apple"
+        },
+        {
+          "item": "tfc:food/green_apple"
+        }
+      ],
+      {
+        "type": "tfc:not_rotten"
+      }
+    ],
+    "count": 1
+  },
+  "output_fluid": {
+    "amount": 500,
+    "id": "tfc:cider"
+  },
+  "tooltip": ""
+}

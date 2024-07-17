@@ -1,0 +1,11 @@
+{
+  "ingredient": {
+    "item": "tfc:deposit/native_copper/shale"
+  },
+  "loot_table": "tfc:deposit/shale_native_copper",
+  "model_stages": [
+    "tfc:item/pan/native_copper/shale_full",
+    "tfc:item/pan/native_copper/shale_half",
+    "tfc:item/pan/native_copper/result"
+  ]
+}

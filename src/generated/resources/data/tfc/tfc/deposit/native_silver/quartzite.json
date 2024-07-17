@@ -1,0 +1,11 @@
+{
+  "ingredient": {
+    "item": "tfc:deposit/native_silver/quartzite"
+  },
+  "loot_table": "tfc:deposit/quartzite_native_silver",
+  "model_stages": [
+    "tfc:item/pan/native_silver/quartzite_full",
+    "tfc:item/pan/native_silver/quartzite_half",
+    "tfc:item/pan/native_silver/result"
+  ]
+}

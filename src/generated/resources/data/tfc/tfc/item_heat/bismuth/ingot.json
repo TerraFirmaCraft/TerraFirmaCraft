@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 162.0,
+  "heat_capacity": 7.142857,
+  "ingredient": {
+    "tag": "c:ingots/bismuth"
+  },
+  "welding_temperature": 216.0
+}

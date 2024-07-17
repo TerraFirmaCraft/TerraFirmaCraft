@@ -1,0 +1,15 @@
+{
+  "type": "tfc:casting",
+  "break_chance": 0.01,
+  "fluid": {
+    "amount": 100,
+    "fluid": "tfc:metal/high_carbon_blue_steel"
+  },
+  "mold": {
+    "item": "tfc:ceramic/fire_ingot_mold"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/ingot/high_carbon_blue_steel"
+  }
+}

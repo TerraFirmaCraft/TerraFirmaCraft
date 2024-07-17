@@ -1,0 +1,17 @@
+{
+  "type": "tfc:anvil",
+  "apply_bonus": true,
+  "ingredient": {
+    "tag": "c:ingots/red_steel"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/chisel_head/red_steel"
+  },
+  "rules": [
+    "hit_last",
+    "hit_not_last",
+    "draw_not_last"
+  ],
+  "tier": 6
+}

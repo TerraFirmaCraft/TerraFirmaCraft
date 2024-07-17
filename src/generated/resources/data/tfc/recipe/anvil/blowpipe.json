@@ -1,0 +1,16 @@
+{
+  "type": "tfc:anvil",
+  "ingredient": {
+    "tag": "c:rods/brass"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:blowpipe"
+  },
+  "rules": [
+    "draw_last",
+    "draw_second_last",
+    "hit_third_last"
+  ],
+  "tier": 0
+}

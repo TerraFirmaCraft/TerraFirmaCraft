@@ -1,0 +1,13 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:rock/raw/schist",
+    "tfc:rock/hardened/schist"
+  ],
+  "item_output": {
+    "count": 1,
+    "id": "tfc:rock/raw/schist_slab"
+  },
+  "mode": "slab",
+  "result": "tfc:rock/raw/schist_slab"
+}

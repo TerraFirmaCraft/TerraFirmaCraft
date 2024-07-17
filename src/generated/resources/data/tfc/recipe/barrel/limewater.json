@@ -1,0 +1,24 @@
+{
+  "type": "tfc:barrel_instant",
+  "input_fluid": {
+    "amount": 500,
+    "fluid": "minecraft:water"
+  },
+  "input_item": {
+    "type": "neoforge:compound",
+    "children": [
+      {
+        "item": "tfc:powder/lime"
+      },
+      {
+        "item": "tfc:powder/flux"
+      }
+    ],
+    "count": 1
+  },
+  "output_fluid": {
+    "amount": 500,
+    "id": "tfc:limewater"
+  },
+  "tooltip": ""
+}

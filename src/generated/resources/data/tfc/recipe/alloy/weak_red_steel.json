@@ -1,0 +1,26 @@
+{
+  "type": "tfc:alloy",
+  "contents": [
+    {
+      "fluid": "tfc:metal/black_steel",
+      "max": 0.55,
+      "min": 0.5
+    },
+    {
+      "fluid": "tfc:metal/steel",
+      "max": 0.25,
+      "min": 0.2
+    },
+    {
+      "fluid": "tfc:metal/brass",
+      "max": 0.15,
+      "min": 0.1
+    },
+    {
+      "fluid": "tfc:metal/rose_gold",
+      "max": 0.15,
+      "min": 0.1
+    }
+  ],
+  "result": "tfc:metal/weak_red_steel"
+}

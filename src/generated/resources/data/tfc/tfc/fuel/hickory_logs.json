@@ -1,0 +1,19 @@
+{
+  "duration": 762,
+  "ingredient": [
+    {
+      "item": "tfc:wood/log/hickory"
+    },
+    {
+      "item": "tfc:wood/stripped_log/hickory"
+    },
+    {
+      "item": "tfc:wood/wood/hickory"
+    },
+    {
+      "item": "tfc:wood/stripped_wood/hickory"
+    }
+  ],
+  "purity": 0.8,
+  "temperature": 2000.0
+}

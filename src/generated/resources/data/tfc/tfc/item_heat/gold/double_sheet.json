@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 636.0,
+  "heat_capacity": 6.6666665,
+  "ingredient": {
+    "tag": "c:double_sheets/gold"
+  },
+  "welding_temperature": 848.0
+}

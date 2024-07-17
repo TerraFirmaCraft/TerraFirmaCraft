@@ -1,0 +1,17 @@
+{
+  "type": "tfc:barrel_sealed",
+  "duration": 4000,
+  "input_fluid": {
+    "amount": 40,
+    "fluid": "tfc:tallow"
+  },
+  "input_item": {
+    "count": 1,
+    "tag": "c:strings"
+  },
+  "output_item": {
+    "count": 1,
+    "id": "tfc:candle"
+  },
+  "tooltip": ""
+}

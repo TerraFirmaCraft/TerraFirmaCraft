@@ -1,0 +1,12 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:wood/planks/ash"
+  ],
+  "item_output": {
+    "count": 1,
+    "id": "tfc:wood/planks/ash_slab"
+  },
+  "mode": "slab",
+  "result": "tfc:wood/planks/ash_slab"
+}

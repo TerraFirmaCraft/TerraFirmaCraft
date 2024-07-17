@@ -1,0 +1,14 @@
+{
+  "type": "tfc:welding",
+  "first_input": {
+    "item": "tfc:metal/unfinished_boots/black_steel"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/boots/black_steel"
+  },
+  "second_input": {
+    "tag": "c:sheets/black_steel"
+  },
+  "tier": 4
+}

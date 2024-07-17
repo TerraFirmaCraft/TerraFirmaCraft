@@ -1,0 +1,14 @@
+{
+  "type": "tfc:welding",
+  "first_input": {
+    "item": "tfc:metal/knife_blade/copper"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/shears/copper"
+  },
+  "second_input": {
+    "item": "tfc:metal/knife_blade/copper"
+  },
+  "tier": 0
+}

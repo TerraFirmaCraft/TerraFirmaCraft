@@ -1,0 +1,17 @@
+{
+  "type": "tfc:barrel_sealed",
+  "duration": 1000,
+  "input_fluid": {
+    "amount": 25,
+    "fluid": "tfc:cyan_dye"
+  },
+  "input_item": {
+    "count": 1,
+    "item": "minecraft:white_glazed_terracotta"
+  },
+  "output_item": {
+    "count": 1,
+    "id": "minecraft:cyan_glazed_terracotta"
+  },
+  "tooltip": ""
+}

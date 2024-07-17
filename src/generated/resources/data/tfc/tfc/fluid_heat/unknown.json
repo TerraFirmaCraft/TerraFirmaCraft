@@ -1,0 +1,9 @@
+{
+  "fluid": "tfc:metal/unknown",
+  "ingots": {
+    "tag": "c:ingots/unknown"
+  },
+  "melt_temperature": 400.0,
+  "specific_heat_capacity": 0.006,
+  "tier": 0
+}

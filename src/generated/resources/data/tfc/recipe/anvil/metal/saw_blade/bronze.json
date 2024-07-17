@@ -1,0 +1,16 @@
+{
+  "type": "tfc:anvil",
+  "apply_bonus": true,
+  "ingredient": {
+    "tag": "c:ingots/bronze"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/saw_blade/bronze"
+  },
+  "rules": [
+    "hit_last",
+    "hit_second_last"
+  ],
+  "tier": 2
+}

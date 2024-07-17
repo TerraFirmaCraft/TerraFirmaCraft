@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 891.00006,
+  "heat_capacity": 2.857143,
+  "ingredient": {
+    "item": "tfc:metal/shovel_head/black_steel"
+  },
+  "welding_temperature": 1188.0
+}

@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 648.0,
+  "heat_capacity": 0.17142858,
+  "ingredient": {
+    "item": "tfc:metal/chain/copper"
+  },
+  "welding_temperature": 864.0
+}

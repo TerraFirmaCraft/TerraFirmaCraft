@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 240.00002,
+  "heat_capacity": 2.0,
+  "ingredient": {
+    "tag": "c:ingots/unknown"
+  },
+  "welding_temperature": 320.0
+}

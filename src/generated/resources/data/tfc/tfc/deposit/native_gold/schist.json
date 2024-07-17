@@ -1,0 +1,11 @@
+{
+  "ingredient": {
+    "item": "tfc:deposit/native_gold/schist"
+  },
+  "loot_table": "tfc:deposit/schist_native_gold",
+  "model_stages": [
+    "tfc:item/pan/native_gold/schist_full",
+    "tfc:item/pan/native_gold/schist_half",
+    "tfc:item/pan/native_gold/result"
+  ]
+}

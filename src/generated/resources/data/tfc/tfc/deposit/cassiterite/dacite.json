@@ -1,0 +1,11 @@
+{
+  "ingredient": {
+    "item": "tfc:deposit/cassiterite/dacite"
+  },
+  "loot_table": "tfc:deposit/dacite_cassiterite",
+  "model_stages": [
+    "tfc:item/pan/cassiterite/dacite_full",
+    "tfc:item/pan/cassiterite/dacite_half",
+    "tfc:item/pan/cassiterite/result"
+  ]
+}

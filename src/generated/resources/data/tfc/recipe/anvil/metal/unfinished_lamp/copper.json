@@ -1,0 +1,16 @@
+{
+  "type": "tfc:anvil",
+  "ingredient": {
+    "tag": "c:ingots/copper"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/unfinished_lamp/copper"
+  },
+  "rules": [
+    "bend_last",
+    "bend_second_last",
+    "draw_third_last"
+  ],
+  "tier": 1
+}

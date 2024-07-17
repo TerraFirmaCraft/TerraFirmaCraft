@@ -1,0 +1,14 @@
+{
+  "type": "tfc:welding",
+  "first_input": {
+    "item": "tfc:metal/knife_blade/blue_steel"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/shears/blue_steel"
+  },
+  "second_input": {
+    "item": "tfc:metal/knife_blade/blue_steel"
+  },
+  "tier": 5
+}

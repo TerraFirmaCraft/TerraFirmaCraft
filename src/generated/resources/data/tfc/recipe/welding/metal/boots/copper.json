@@ -1,0 +1,14 @@
+{
+  "type": "tfc:welding",
+  "first_input": {
+    "item": "tfc:metal/unfinished_boots/copper"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/boots/copper"
+  },
+  "second_input": {
+    "tag": "c:sheets/copper"
+  },
+  "tier": 0
+}

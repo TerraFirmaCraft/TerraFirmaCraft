@@ -1,0 +1,13 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:rock/raw/granite",
+    "tfc:rock/hardened/granite"
+  ],
+  "item_output": {
+    "count": 1,
+    "id": "tfc:rock/raw/granite_slab"
+  },
+  "mode": "slab",
+  "result": "tfc:rock/raw/granite_slab"
+}

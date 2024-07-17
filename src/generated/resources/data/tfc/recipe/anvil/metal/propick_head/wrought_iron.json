@@ -1,0 +1,17 @@
+{
+  "type": "tfc:anvil",
+  "apply_bonus": true,
+  "ingredient": {
+    "tag": "c:ingots/wrought_iron"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/propick_head/wrought_iron"
+  },
+  "rules": [
+    "punch_last",
+    "draw_not_last",
+    "bend_not_last"
+  ],
+  "tier": 3
+}

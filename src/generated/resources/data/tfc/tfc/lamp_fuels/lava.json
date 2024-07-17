@@ -1,0 +1,10 @@
+{
+  "burn_rate": -1,
+  "fluid": {
+    "fluid": "minecraft:lava"
+  },
+  "lamps": [
+    "tfc:metal/lamp/blue_steel",
+    "tfc:metal/lamp/red_steel"
+  ]
+}

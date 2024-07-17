@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 576.60004,
+  "heat_capacity": 2.0833333,
+  "ingredient": {
+    "tag": "c:ingots/silver"
+  },
+  "welding_temperature": 768.8
+}

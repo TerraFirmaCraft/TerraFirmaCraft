@@ -1,0 +1,11 @@
+{
+  "ingredient": {
+    "item": "tfc:deposit/cassiterite/schist"
+  },
+  "loot_table": "tfc:deposit/schist_cassiterite",
+  "model_stages": [
+    "tfc:item/pan/cassiterite/schist_full",
+    "tfc:item/pan/cassiterite/schist_half",
+    "tfc:item/pan/cassiterite/result"
+  ]
+}

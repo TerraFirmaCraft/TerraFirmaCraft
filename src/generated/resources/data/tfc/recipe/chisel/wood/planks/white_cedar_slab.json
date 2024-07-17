@@ -1,0 +1,12 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:wood/planks/white_cedar"
+  ],
+  "item_output": {
+    "count": 1,
+    "id": "tfc:wood/planks/white_cedar_slab"
+  },
+  "mode": "slab",
+  "result": "tfc:wood/planks/white_cedar_slab"
+}

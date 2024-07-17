@@ -1,0 +1,11 @@
+{
+  "ingredient": {
+    "item": "tfc:deposit/native_copper/quartzite"
+  },
+  "loot_table": "tfc:deposit/quartzite_native_copper",
+  "model_stages": [
+    "tfc:item/pan/native_copper/quartzite_full",
+    "tfc:item/pan/native_copper/quartzite_half",
+    "tfc:item/pan/native_copper/result"
+  ]
+}

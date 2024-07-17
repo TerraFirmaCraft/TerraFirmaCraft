@@ -1,0 +1,13 @@
+{
+  "type": "tfc:welding",
+  "first_input": {
+    "tag": "c:ingots/sterling_silver"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/double_ingot/sterling_silver"
+  },
+  "second_input": {
+    "tag": "c:ingots/sterling_silver"
+  }
+}

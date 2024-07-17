@@ -1,0 +1,16 @@
+{
+  "type": "tfc:anvil",
+  "apply_bonus": true,
+  "ingredient": {
+    "tag": "c:ingots/red_steel"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/hammer_head/red_steel"
+  },
+  "rules": [
+    "punch_last",
+    "shrink_not_last"
+  ],
+  "tier": 6
+}

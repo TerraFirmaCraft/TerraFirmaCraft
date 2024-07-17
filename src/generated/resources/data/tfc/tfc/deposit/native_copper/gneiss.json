@@ -1,0 +1,11 @@
+{
+  "ingredient": {
+    "item": "tfc:deposit/native_copper/gneiss"
+  },
+  "loot_table": "tfc:deposit/gneiss_native_copper",
+  "model_stages": [
+    "tfc:item/pan/native_copper/gneiss_full",
+    "tfc:item/pan/native_copper/gneiss_half",
+    "tfc:item/pan/native_copper/result"
+  ]
+}

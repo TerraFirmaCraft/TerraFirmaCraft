@@ -1,0 +1,15 @@
+{
+  "type": "tfc:anvil",
+  "ingredient": {
+    "tag": "c:ingots/black_steel"
+  },
+  "result": {
+    "count": 16,
+    "id": "tfc:metal/chain/black_steel"
+  },
+  "rules": [
+    "hit_any",
+    "draw_third_last"
+  ],
+  "tier": 5
+}

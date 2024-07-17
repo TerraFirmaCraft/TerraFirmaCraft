@@ -1,0 +1,25 @@
+{
+  "type": "tfc:barrel_instant",
+  "input_fluid": {
+    "amount": 1,
+    "fluid": "tfc:salt_water"
+  },
+  "input_item": {
+    "type": "tfc:heat",
+    "count": 1,
+    "min": 1.0
+  },
+  "output_item": {
+    "modifiers": [
+      {
+        "type": "tfc:copy_input"
+      },
+      {
+        "type": "tfc:add_heat",
+        "temperature": -5.0
+      }
+    ]
+  },
+  "sound": "minecraft:block.fire.extinguish",
+  "tooltip": ""
+}

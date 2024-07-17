@@ -1,0 +1,16 @@
+{
+  "type": "tfc:anvil",
+  "ingredient": {
+    "tag": "c:ingots/tin"
+  },
+  "result": {
+    "count": 16,
+    "id": "tfc:jar_lid"
+  },
+  "rules": [
+    "hit_last",
+    "hit_second_last",
+    "punch_third_last"
+  ],
+  "tier": 0
+}

@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 138.0,
+  "heat_capacity": 3.5714285,
+  "ingredient": {
+    "tag": "c:rods/tin"
+  },
+  "welding_temperature": 184.0
+}

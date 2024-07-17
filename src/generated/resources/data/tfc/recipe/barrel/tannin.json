@@ -1,0 +1,139 @@
+{
+  "type": "tfc:barrel_sealed",
+  "duration": 8000,
+  "input_fluid": {
+    "amount": 1000,
+    "fluid": "minecraft:water"
+  },
+  "input_item": {
+    "type": "neoforge:compound",
+    "children": [
+      {
+        "item": "tfc:wood/log/acacia"
+      },
+      {
+        "item": "tfc:wood/log/ash"
+      },
+      {
+        "item": "tfc:wood/log/aspen"
+      },
+      {
+        "item": "tfc:wood/log/birch"
+      },
+      {
+        "item": "tfc:wood/log/blackwood"
+      },
+      {
+        "item": "tfc:wood/log/chestnut"
+      },
+      {
+        "item": "tfc:wood/log/douglas_fir"
+      },
+      {
+        "item": "tfc:wood/log/hickory"
+      },
+      {
+        "item": "tfc:wood/log/kapok"
+      },
+      {
+        "item": "tfc:wood/log/mangrove"
+      },
+      {
+        "item": "tfc:wood/log/maple"
+      },
+      {
+        "item": "tfc:wood/log/oak"
+      },
+      {
+        "item": "tfc:wood/log/palm"
+      },
+      {
+        "item": "tfc:wood/log/pine"
+      },
+      {
+        "item": "tfc:wood/log/rosewood"
+      },
+      {
+        "item": "tfc:wood/log/sequoia"
+      },
+      {
+        "item": "tfc:wood/log/spruce"
+      },
+      {
+        "item": "tfc:wood/log/sycamore"
+      },
+      {
+        "item": "tfc:wood/log/white_cedar"
+      },
+      {
+        "item": "tfc:wood/log/willow"
+      },
+      {
+        "item": "tfc:wood/wood/acacia"
+      },
+      {
+        "item": "tfc:wood/wood/ash"
+      },
+      {
+        "item": "tfc:wood/wood/aspen"
+      },
+      {
+        "item": "tfc:wood/wood/birch"
+      },
+      {
+        "item": "tfc:wood/wood/blackwood"
+      },
+      {
+        "item": "tfc:wood/wood/chestnut"
+      },
+      {
+        "item": "tfc:wood/wood/douglas_fir"
+      },
+      {
+        "item": "tfc:wood/wood/hickory"
+      },
+      {
+        "item": "tfc:wood/wood/kapok"
+      },
+      {
+        "item": "tfc:wood/wood/mangrove"
+      },
+      {
+        "item": "tfc:wood/wood/maple"
+      },
+      {
+        "item": "tfc:wood/wood/oak"
+      },
+      {
+        "item": "tfc:wood/wood/palm"
+      },
+      {
+        "item": "tfc:wood/wood/pine"
+      },
+      {
+        "item": "tfc:wood/wood/rosewood"
+      },
+      {
+        "item": "tfc:wood/wood/sequoia"
+      },
+      {
+        "item": "tfc:wood/wood/spruce"
+      },
+      {
+        "item": "tfc:wood/wood/sycamore"
+      },
+      {
+        "item": "tfc:wood/wood/white_cedar"
+      },
+      {
+        "item": "tfc:wood/wood/willow"
+      }
+    ],
+    "count": 1
+  },
+  "output_fluid": {
+    "amount": 1000,
+    "id": "tfc:tannin"
+  },
+  "tooltip": ""
+}

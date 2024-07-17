@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 636.0,
+  "heat_capacity": 0.8333333,
+  "ingredient": {
+    "tag": "c:rods/gold"
+  },
+  "welding_temperature": 848.0
+}

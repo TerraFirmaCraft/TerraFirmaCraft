@@ -1,0 +1,13 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:rock/raw/dacite",
+    "tfc:rock/hardened/dacite"
+  ],
+  "item_output": {
+    "count": 1,
+    "id": "tfc:rock/raw/dacite_slab"
+  },
+  "mode": "slab",
+  "result": "tfc:rock/raw/dacite_slab"
+}

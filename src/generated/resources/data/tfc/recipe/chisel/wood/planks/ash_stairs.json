@@ -1,0 +1,8 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:wood/planks/ash"
+  ],
+  "mode": "stair",
+  "result": "tfc:wood/planks/ash_stairs"
+}

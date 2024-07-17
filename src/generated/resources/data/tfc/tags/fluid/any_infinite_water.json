@@ -1,0 +1,9 @@
+{
+  "values": [
+    "#tfc:any_fresh_water",
+    "tfc:salt_water",
+    "tfc:flowing_salt_water",
+    "tfc:spring_water",
+    "tfc:flowing_spring_water"
+  ]
+}

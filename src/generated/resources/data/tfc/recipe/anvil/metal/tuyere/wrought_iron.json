@@ -1,0 +1,15 @@
+{
+  "type": "tfc:anvil",
+  "ingredient": {
+    "tag": "c:double_sheets/wrought_iron"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/tuyere/wrought_iron"
+  },
+  "rules": [
+    "bend_last",
+    "bend_second_last"
+  ],
+  "tier": 3
+}

@@ -1,0 +1,17 @@
+{
+  "type": "tfc:anvil",
+  "apply_bonus": true,
+  "ingredient": {
+    "tag": "c:sheets/red_steel"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/fish_hook/red_steel"
+  },
+  "rules": [
+    "draw_not_last",
+    "bend_any",
+    "hit_any"
+  ],
+  "tier": 6
+}

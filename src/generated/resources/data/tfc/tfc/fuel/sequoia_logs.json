@@ -1,0 +1,19 @@
+{
+  "duration": 612,
+  "ingredient": [
+    {
+      "item": "tfc:wood/log/sequoia"
+    },
+    {
+      "item": "tfc:wood/stripped_log/sequoia"
+    },
+    {
+      "item": "tfc:wood/wood/sequoia"
+    },
+    {
+      "item": "tfc:wood/stripped_wood/sequoia"
+    }
+  ],
+  "purity": 0.7,
+  "temperature": 1750.0
+}

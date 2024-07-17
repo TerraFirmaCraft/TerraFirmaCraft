@@ -1,0 +1,11 @@
+{
+  "ingredient": {
+    "item": "tfc:deposit/native_copper/slate"
+  },
+  "loot_table": "tfc:deposit/slate_native_copper",
+  "model_stages": [
+    "tfc:item/pan/native_copper/slate_full",
+    "tfc:item/pan/native_copper/slate_half",
+    "tfc:item/pan/native_copper/result"
+  ]
+}

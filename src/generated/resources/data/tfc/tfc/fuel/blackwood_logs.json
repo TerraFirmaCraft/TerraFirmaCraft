@@ -1,0 +1,19 @@
+{
+  "duration": 720,
+  "ingredient": [
+    {
+      "item": "tfc:wood/log/blackwood"
+    },
+    {
+      "item": "tfc:wood/stripped_log/blackwood"
+    },
+    {
+      "item": "tfc:wood/wood/blackwood"
+    },
+    {
+      "item": "tfc:wood/stripped_wood/blackwood"
+    }
+  ],
+  "purity": 0.95,
+  "temperature": 1750.0
+}

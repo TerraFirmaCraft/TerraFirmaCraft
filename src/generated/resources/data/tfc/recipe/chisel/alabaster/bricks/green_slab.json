@@ -1,0 +1,12 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:alabaster/bricks/green"
+  ],
+  "item_output": {
+    "count": 1,
+    "id": "tfc:alabaster/bricks/green_slab"
+  },
+  "mode": "slab",
+  "result": "tfc:alabaster/bricks/green_slab"
+}

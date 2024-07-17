@@ -1,0 +1,16 @@
+{
+  "type": "tfc:alloy",
+  "contents": [
+    {
+      "fluid": "tfc:metal/copper",
+      "max": 0.4,
+      "min": 0.2
+    },
+    {
+      "fluid": "tfc:metal/silver",
+      "max": 0.8,
+      "min": 0.6
+    }
+  ],
+  "result": "tfc:metal/sterling_silver"
+}

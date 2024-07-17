@@ -1,0 +1,11 @@
+{
+  "ingredient": {
+    "item": "tfc:deposit/native_gold/claystone"
+  },
+  "loot_table": "tfc:deposit/claystone_native_gold",
+  "model_stages": [
+    "tfc:item/pan/native_gold/claystone_full",
+    "tfc:item/pan/native_gold/claystone_half",
+    "tfc:item/pan/native_gold/result"
+  ]
+}

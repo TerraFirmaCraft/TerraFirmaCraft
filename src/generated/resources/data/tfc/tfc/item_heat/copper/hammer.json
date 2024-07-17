@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 648.0,
+  "heat_capacity": 2.857143,
+  "ingredient": {
+    "item": "tfc:metal/hammer/copper"
+  },
+  "welding_temperature": 864.0
+}

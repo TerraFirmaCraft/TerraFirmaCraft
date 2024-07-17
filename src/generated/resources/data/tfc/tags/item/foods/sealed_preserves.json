@@ -1,0 +1,26 @@
+{
+  "values": [
+    "tfc:jar/blackberry",
+    "tfc:jar/blueberry",
+    "tfc:jar/bunchberry",
+    "tfc:jar/cloudberry",
+    "tfc:jar/cranberry",
+    "tfc:jar/elderberry",
+    "tfc:jar/gooseberry",
+    "tfc:jar/raspberry",
+    "tfc:jar/snowberry",
+    "tfc:jar/strawberry",
+    "tfc:jar/wintergreen_berry",
+    "tfc:jar/banana",
+    "tfc:jar/cherry",
+    "tfc:jar/green_apple",
+    "tfc:jar/lemon",
+    "tfc:jar/olive",
+    "tfc:jar/orange",
+    "tfc:jar/peach",
+    "tfc:jar/plum",
+    "tfc:jar/red_apple",
+    "tfc:jar/pumpkin_chunks",
+    "tfc:jar/melon_slice"
+  ]
+}

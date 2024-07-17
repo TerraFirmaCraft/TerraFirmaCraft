@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 558.0,
+  "heat_capacity": 5.714286,
+  "ingredient": {
+    "tag": "c:sheets/brass"
+  },
+  "welding_temperature": 744.0
+}

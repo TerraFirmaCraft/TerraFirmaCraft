@@ -1,0 +1,14 @@
+{
+  "type": "tfc:welding",
+  "first_input": {
+    "item": "tfc:metal/unfinished_chestplate/wrought_iron"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/chestplate/wrought_iron"
+  },
+  "second_input": {
+    "tag": "c:double_sheets/wrought_iron"
+  },
+  "tier": 2
+}

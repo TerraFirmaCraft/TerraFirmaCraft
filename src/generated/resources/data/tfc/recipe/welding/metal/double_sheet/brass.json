@@ -1,0 +1,13 @@
+{
+  "type": "tfc:welding",
+  "first_input": {
+    "tag": "c:sheets/brass"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/double_sheet/brass"
+  },
+  "second_input": {
+    "tag": "c:ingots/brass"
+  }
+}

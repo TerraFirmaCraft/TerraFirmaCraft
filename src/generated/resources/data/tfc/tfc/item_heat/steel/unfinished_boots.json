@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 924.00006,
+  "heat_capacity": 5.714286,
+  "ingredient": {
+    "item": "tfc:metal/unfinished_boots/steel"
+  },
+  "welding_temperature": 1232.0
+}

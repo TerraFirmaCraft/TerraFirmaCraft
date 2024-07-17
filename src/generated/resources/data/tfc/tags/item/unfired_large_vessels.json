@@ -1,0 +1,21 @@
+{
+  "values": [
+    "tfc:ceramic/unfired_large_vessel",
+    "tfc:ceramic/unfired_large_vessel/white",
+    "tfc:ceramic/unfired_large_vessel/orange",
+    "tfc:ceramic/unfired_large_vessel/magenta",
+    "tfc:ceramic/unfired_large_vessel/light_blue",
+    "tfc:ceramic/unfired_large_vessel/yellow",
+    "tfc:ceramic/unfired_large_vessel/lime",
+    "tfc:ceramic/unfired_large_vessel/pink",
+    "tfc:ceramic/unfired_large_vessel/gray",
+    "tfc:ceramic/unfired_large_vessel/light_gray",
+    "tfc:ceramic/unfired_large_vessel/cyan",
+    "tfc:ceramic/unfired_large_vessel/purple",
+    "tfc:ceramic/unfired_large_vessel/blue",
+    "tfc:ceramic/unfired_large_vessel/brown",
+    "tfc:ceramic/unfired_large_vessel/green",
+    "tfc:ceramic/unfired_large_vessel/red",
+    "tfc:ceramic/unfired_large_vessel/black"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "tier": 2,
+  "fluid": "tfc:metal/brass",
+  "melt_temperature": 930,
+  "specific_heat_capacity": 0.00857,
+  "ingots": {
+    "tag": "forge:ingots/brass"
+  },
+  "double_ingots": {
+    "tag": "forge:double_ingots/brass"
+  },
+  "sheets": {
+    "tag": "forge:sheets/brass"
+  }
+}

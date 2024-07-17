@@ -1,0 +1,14 @@
+{
+  "type": "tfc:welding",
+  "first_input": {
+    "item": "tfc:metal/unfinished_boots/bismuth_bronze"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/boots/bismuth_bronze"
+  },
+  "second_input": {
+    "tag": "c:sheets/bismuth_bronze"
+  },
+  "tier": 1
+}

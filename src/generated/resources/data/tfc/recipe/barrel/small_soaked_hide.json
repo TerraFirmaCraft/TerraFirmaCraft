@@ -1,0 +1,17 @@
+{
+  "type": "tfc:barrel_sealed",
+  "duration": 8000,
+  "input_fluid": {
+    "amount": 300,
+    "fluid": "tfc:limewater"
+  },
+  "input_item": {
+    "count": 1,
+    "item": "tfc:small_raw_hide"
+  },
+  "output_item": {
+    "count": 1,
+    "id": "tfc:small_soaked_hide"
+  },
+  "tooltip": ""
+}

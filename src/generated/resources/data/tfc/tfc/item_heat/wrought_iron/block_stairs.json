@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 921.00006,
+  "heat_capacity": 2.142857,
+  "ingredient": {
+    "item": "tfc:metal/block/wrought_iron_stairs"
+  },
+  "welding_temperature": 1228.0
+}

@@ -1,0 +1,25 @@
+{
+  "values": [
+    "tfc:food/blackberry",
+    "tfc:food/blueberry",
+    "tfc:food/bunchberry",
+    "tfc:food/cloudberry",
+    "tfc:food/cranberry",
+    "tfc:food/elderberry",
+    "tfc:food/gooseberry",
+    "tfc:food/raspberry",
+    "tfc:food/snowberry",
+    "tfc:food/strawberry",
+    "tfc:food/wintergreen_berry",
+    "tfc:food/banana",
+    "tfc:food/cherry",
+    "tfc:food/green_apple",
+    "tfc:food/lemon",
+    "tfc:food/olive",
+    "tfc:food/orange",
+    "tfc:food/peach",
+    "tfc:food/plum",
+    "tfc:food/red_apple",
+    "tfc:food/pumpkin_chunks"
+  ]
+}

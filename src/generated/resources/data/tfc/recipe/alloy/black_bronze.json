@@ -1,0 +1,21 @@
+{
+  "type": "tfc:alloy",
+  "contents": [
+    {
+      "fluid": "tfc:metal/copper",
+      "max": 0.7,
+      "min": 0.5
+    },
+    {
+      "fluid": "tfc:metal/silver",
+      "max": 0.25,
+      "min": 0.1
+    },
+    {
+      "fluid": "tfc:metal/gold",
+      "max": 0.25,
+      "min": 0.1
+    }
+  ],
+  "result": "tfc:metal/black_bronze"
+}

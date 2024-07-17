@@ -1,0 +1,17 @@
+{
+  "type": "tfc:barrel_sealed",
+  "duration": 1000,
+  "input_fluid": {
+    "amount": 25,
+    "fluid": "tfc:brown_dye"
+  },
+  "input_item": {
+    "count": 1,
+    "item": "tfc:windmill_blade/white"
+  },
+  "output_item": {
+    "count": 1,
+    "id": "tfc:windmill_blade/brown"
+  },
+  "tooltip": ""
+}

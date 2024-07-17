@@ -1,0 +1,9 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:rock/raw/phyllite",
+    "tfc:rock/hardened/phyllite"
+  ],
+  "mode": "smooth",
+  "result": "tfc:rock/smooth/phyllite"
+}

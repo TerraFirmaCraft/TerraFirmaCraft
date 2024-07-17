@@ -1,0 +1,16 @@
+{
+  "type": "tfc:barrel_instant",
+  "input_fluid": {
+    "amount": 125,
+    "fluid": "minecraft:water"
+  },
+  "input_item": {
+    "count": 1,
+    "item": "tfc:powder/salt"
+  },
+  "output_fluid": {
+    "amount": 125,
+    "id": "tfc:salt_water"
+  },
+  "tooltip": ""
+}

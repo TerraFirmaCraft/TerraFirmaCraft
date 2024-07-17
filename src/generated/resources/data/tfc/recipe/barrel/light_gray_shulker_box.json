@@ -1,0 +1,17 @@
+{
+  "type": "tfc:barrel_sealed",
+  "duration": 1000,
+  "input_fluid": {
+    "amount": 25,
+    "fluid": "tfc:light_gray_dye"
+  },
+  "input_item": {
+    "count": 1,
+    "item": "minecraft:shulker_box"
+  },
+  "output_item": {
+    "count": 1,
+    "id": "minecraft:light_gray_shulker_box"
+  },
+  "tooltip": ""
+}

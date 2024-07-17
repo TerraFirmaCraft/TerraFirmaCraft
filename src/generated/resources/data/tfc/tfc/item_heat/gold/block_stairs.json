@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 636.0,
+  "heat_capacity": 1.25,
+  "ingredient": {
+    "item": "tfc:metal/block/gold_stairs"
+  },
+  "welding_temperature": 848.0
+}

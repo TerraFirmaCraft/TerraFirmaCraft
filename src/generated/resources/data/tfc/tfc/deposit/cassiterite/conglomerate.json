@@ -1,0 +1,11 @@
+{
+  "ingredient": {
+    "item": "tfc:deposit/cassiterite/conglomerate"
+  },
+  "loot_table": "tfc:deposit/conglomerate_cassiterite",
+  "model_stages": [
+    "tfc:item/pan/cassiterite/conglomerate_full",
+    "tfc:item/pan/cassiterite/conglomerate_half",
+    "tfc:item/pan/cassiterite/result"
+  ]
+}

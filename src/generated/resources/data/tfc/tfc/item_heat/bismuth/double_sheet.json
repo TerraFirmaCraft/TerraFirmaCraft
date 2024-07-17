@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 162.0,
+  "heat_capacity": 28.571428,
+  "ingredient": {
+    "tag": "c:double_sheets/bismuth"
+  },
+  "welding_temperature": 216.0
+}

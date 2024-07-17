@@ -1,0 +1,16 @@
+{
+  "values": [
+    "tfc:food/cooked_turtle",
+    "tfc:food/cooked_cod",
+    "tfc:food/cooked_tropical_fish",
+    "tfc:food/cooked_calamari",
+    "tfc:food/cooked_shellfish",
+    "tfc:food/cooked_bluegill",
+    "tfc:food/cooked_crappie",
+    "tfc:food/cooked_lake_trout",
+    "tfc:food/cooked_largemouth_bass",
+    "tfc:food/cooked_rainbow_trout",
+    "tfc:food/cooked_salmon",
+    "tfc:food/cooked_smallmouth_bass"
+  ]
+}

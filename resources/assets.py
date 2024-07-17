@@ -966,21 +966,22 @@ def generate(rm: ResourceManager):
             }, parent='tfc:block/ore')
             rare = DEPOSIT_RARES[rock]
             block.with_block_loot('tfc:deposit/%s/%s' % (ore, rock))
-            for path, chance, loot_type in (('panning', 0.5, 'minecraft:fishing'), ('sluicing', 0.55, 'minecraft:empty')):
-                rm.loot('deposits/%s_%s' % (ore, rock), *[loot_tables.alternatives({
-                   'name': 'tfc:ore/small_%s' % ore,
-                   'conditions': [loot_tables.random_chance(chance)],  # 50% chance (for pan)
-                }, {
-                   'name': 'tfc:rock/loose/%s' % rock,
-                   'conditions': [loot_tables.random_chance(0.5)],  # 25% chance
-                },
-                {
-                    'name': 'tfc:rock/loose/%s' % rock if rock not in ('rhyolite', 'dacite', 'andesite') else 'tfc:groundcover/pumice',
-                    'conditions': [loot_tables.random_chance(0.25)],  # 6.25% chance... for when its not pumice this just rerolls loose rocks
-                }, {
-                   'name': 'tfc:ore/%s' % rare,
-                   'conditions': [loot_tables.random_chance(0.0533)],  # 1% chance
-                })], path=path, loot_type=loot_type)
+            rm.loot('%s_%s' % (ore, rock), loot_tables.alternatives({
+               'name': 'tfc:ore/small_%s' % ore,
+               'conditions': [loot_tables.random_chance(0.5)],  # 50% chance
+            }, {
+                'name': 'tfc:ore/small_%s' % ore,
+                'conditions': [loot_tables.random_chance(0.1), 'tfc:is_sluice'],  # +10% chance (for sluice)
+            }, {
+               'name': 'tfc:rock/loose/%s' % rock,
+               'conditions': [loot_tables.random_chance(0.5)],  # 25% chance
+            }, {
+                'name': 'tfc:rock/loose/%s' % rock if rock not in ('rhyolite', 'dacite', 'andesite') else 'tfc:groundcover/pumice',
+                'conditions': [loot_tables.random_chance(0.25)],  # 6.25% chance... for when its not pumice this just rerolls loose rocks
+            }, {
+               'name': 'tfc:ore/%s' % rare,
+               'conditions': [loot_tables.random_chance(0.0533)],  # 1% chance
+            }), path='deposit', loot_type='minecraft:empty')
 
     rm.item_model(('pan', 'filled'), {'particle': 'tfc:item/pan/interior'}, parent='tfc:item/entity_with_transforms').with_lang(lang('Filled Pan'))
 
@@ -2248,7 +2249,7 @@ def make_javelin(rm: ResourceManager, name_parts: str, texture: str) -> 'ItemCon
 
 
 def contained_fluid(rm: ResourceManager, name_parts: utils.ResourceIdentifier, base: str, overlay: str) -> 'ItemContext':
-    return rm.custom_item_model(name_parts, 'neoforge:contained_fluid', {
+    return rm.custom_item_model(name_parts, 'neoforge:fluid_container', {
         'parent': 'neoforge:item/default',
         'textures': {
             'base': base,

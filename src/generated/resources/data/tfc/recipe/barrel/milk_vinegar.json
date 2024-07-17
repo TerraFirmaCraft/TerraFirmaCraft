@@ -1,0 +1,16 @@
+{
+  "type": "tfc:barrel_instant_fluid",
+  "added_fluid": {
+    "amount": 1,
+    "fluid": "tfc:vinegar"
+  },
+  "output_fluid": {
+    "amount": 10,
+    "id": "tfc:milk_vinegar"
+  },
+  "primary_fluid": {
+    "amount": 9,
+    "fluid": "minecraft:milk"
+  },
+  "tooltip": ""
+}

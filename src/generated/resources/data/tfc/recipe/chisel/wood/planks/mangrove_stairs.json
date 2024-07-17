@@ -1,0 +1,8 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:wood/planks/mangrove"
+  ],
+  "mode": "stair",
+  "result": "tfc:wood/planks/mangrove_stairs"
+}

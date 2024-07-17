@@ -1,0 +1,10 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "tier": 3,
+  "fluid": "tfc:metal/pig_iron",
+  "melt_temperature": 1535,
+  "specific_heat_capacity": 0.00857,
+  "ingots": {
+    "tag": "forge:ingots/pig_iron"
+  }
+}

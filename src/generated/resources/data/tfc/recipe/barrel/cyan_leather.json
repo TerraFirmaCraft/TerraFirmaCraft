@@ -1,0 +1,41 @@
+{
+  "type": "tfc:barrel_sealed",
+  "duration": 1000,
+  "input_fluid": {
+    "amount": 25,
+    "fluid": "tfc:cyan_dye"
+  },
+  "input_item": {
+    "type": "neoforge:compound",
+    "children": [
+      {
+        "item": "minecraft:leather_chestplate"
+      },
+      {
+        "item": "minecraft:leather_leggings"
+      },
+      {
+        "item": "minecraft:leather_boots"
+      },
+      {
+        "item": "minecraft:leather_helmet"
+      },
+      {
+        "item": "minecraft:leather_horse_armor"
+      }
+    ],
+    "count": 1
+  },
+  "output_item": {
+    "modifiers": [
+      {
+        "type": "tfc:copy_input"
+      },
+      {
+        "type": "tfc:dye_leather",
+        "color": "cyan"
+      }
+    ]
+  },
+  "tooltip": ""
+}

@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 921.00006,
+  "heat_capacity": 17.142857,
+  "ingredient": {
+    "item": "tfc:metal/helmet/wrought_iron"
+  },
+  "welding_temperature": 1228.0
+}

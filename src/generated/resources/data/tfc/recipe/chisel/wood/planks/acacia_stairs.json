@@ -1,0 +1,8 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:wood/planks/acacia"
+  ],
+  "mode": "stair",
+  "result": "tfc:wood/planks/acacia_stairs"
+}

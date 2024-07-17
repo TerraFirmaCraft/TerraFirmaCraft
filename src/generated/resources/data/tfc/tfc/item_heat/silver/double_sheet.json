@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 576.60004,
+  "heat_capacity": 8.333333,
+  "ingredient": {
+    "tag": "c:double_sheets/silver"
+  },
+  "welding_temperature": 768.8
+}

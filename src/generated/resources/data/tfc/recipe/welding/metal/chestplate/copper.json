@@ -1,0 +1,14 @@
+{
+  "type": "tfc:welding",
+  "first_input": {
+    "item": "tfc:metal/unfinished_chestplate/copper"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/chestplate/copper"
+  },
+  "second_input": {
+    "tag": "c:double_sheets/copper"
+  },
+  "tier": 0
+}

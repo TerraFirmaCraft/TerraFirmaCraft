@@ -1,0 +1,13 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:rock/raw/phyllite",
+    "tfc:rock/hardened/phyllite"
+  ],
+  "item_output": {
+    "count": 1,
+    "id": "tfc:rock/raw/phyllite_slab"
+  },
+  "mode": "slab",
+  "result": "tfc:rock/raw/phyllite_slab"
+}

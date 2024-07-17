@@ -1,0 +1,12 @@
+{
+  "ingredient": [
+    {
+      "item": "tfc:empty_jar"
+    },
+    {
+      "item": "tfc:empty_jar_with_lid"
+    }
+  ],
+  "size": "normal",
+  "weight": "light"
+}

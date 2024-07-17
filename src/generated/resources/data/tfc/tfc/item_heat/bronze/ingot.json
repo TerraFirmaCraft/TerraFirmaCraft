@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 570.0,
+  "heat_capacity": 2.857143,
+  "ingredient": {
+    "tag": "c:ingots/bronze"
+  },
+  "welding_temperature": 760.0
+}

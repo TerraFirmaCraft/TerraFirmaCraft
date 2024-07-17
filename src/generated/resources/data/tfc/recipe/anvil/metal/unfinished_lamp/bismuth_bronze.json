@@ -1,0 +1,16 @@
+{
+  "type": "tfc:anvil",
+  "ingredient": {
+    "tag": "c:ingots/bismuth_bronze"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/unfinished_lamp/bismuth_bronze"
+  },
+  "rules": [
+    "bend_last",
+    "bend_second_last",
+    "draw_third_last"
+  ],
+  "tier": 2
+}

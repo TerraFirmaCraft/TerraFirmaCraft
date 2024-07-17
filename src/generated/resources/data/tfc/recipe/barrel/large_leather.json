@@ -1,0 +1,17 @@
+{
+  "type": "tfc:barrel_sealed",
+  "duration": 8000,
+  "input_fluid": {
+    "amount": 500,
+    "fluid": "tfc:tannin"
+  },
+  "input_item": {
+    "count": 1,
+    "item": "tfc:large_prepared_hide"
+  },
+  "output_item": {
+    "count": 3,
+    "id": "minecraft:leather"
+  },
+  "tooltip": ""
+}

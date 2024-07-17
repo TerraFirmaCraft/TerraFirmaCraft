@@ -1,0 +1,16 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "tier": 1,
+  "fluid": "tfc:metal/gold",
+  "melt_temperature": 1060,
+  "specific_heat_capacity": 0.005,
+  "ingots": {
+    "tag": "forge:ingots/gold"
+  },
+  "double_ingots": {
+    "tag": "forge:double_ingots/gold"
+  },
+  "sheets": {
+    "tag": "forge:sheets/gold"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:alabaster/polished/light_gray"
+  ],
+  "item_output": {
+    "count": 1,
+    "id": "tfc:alabaster/polished/light_gray_slab"
+  },
+  "mode": "slab",
+  "result": "tfc:alabaster/polished/light_gray_slab"
+}

@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "loader": "neoforge:contained_fluid",
+  "loader": "neoforge:fluid_container",
   "parent": "neoforge:item/default",
   "textures": {
     "base": "tfc:item/ceramic/jug_empty",

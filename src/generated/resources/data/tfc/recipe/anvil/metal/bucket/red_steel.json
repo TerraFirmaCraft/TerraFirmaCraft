@@ -1,0 +1,16 @@
+{
+  "type": "tfc:anvil",
+  "ingredient": {
+    "tag": "c:sheets/red_steel"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/bucket/red_steel"
+  },
+  "rules": [
+    "hit_last",
+    "bend_second_last",
+    "bend_third_last"
+  ],
+  "tier": 6
+}

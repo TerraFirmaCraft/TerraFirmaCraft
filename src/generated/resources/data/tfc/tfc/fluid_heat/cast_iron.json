@@ -1,0 +1,15 @@
+{
+  "double_ingots": {
+    "tag": "c:double_ingots/cast_iron"
+  },
+  "fluid": "tfc:metal/cast_iron",
+  "ingots": {
+    "tag": "c:ingots/cast_iron"
+  },
+  "melt_temperature": 1535.0,
+  "sheets": {
+    "tag": "c:sheets/cast_iron"
+  },
+  "specific_heat_capacity": 0.008571429,
+  "tier": 0
+}

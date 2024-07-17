@@ -1,0 +1,16 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "tier": 6,
+  "fluid": "tfc:metal/red_steel",
+  "melt_temperature": 1540,
+  "specific_heat_capacity": 0.00857,
+  "ingots": {
+    "tag": "forge:ingots/red_steel"
+  },
+  "double_ingots": {
+    "tag": "forge:double_ingots/red_steel"
+  },
+  "sheets": {
+    "tag": "forge:sheets/red_steel"
+  }
+}

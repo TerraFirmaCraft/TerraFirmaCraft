@@ -1,0 +1,14 @@
+{
+  "type": "tfc:welding",
+  "first_input": {
+    "tag": "c:rods/brass"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:jacks"
+  },
+  "second_input": {
+    "tag": "c:rods/brass"
+  },
+  "tier": 0
+}

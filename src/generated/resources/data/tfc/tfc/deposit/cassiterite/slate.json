@@ -1,0 +1,11 @@
+{
+  "ingredient": {
+    "item": "tfc:deposit/cassiterite/slate"
+  },
+  "loot_table": "tfc:deposit/slate_cassiterite",
+  "model_stages": [
+    "tfc:item/pan/cassiterite/slate_full",
+    "tfc:item/pan/cassiterite/slate_half",
+    "tfc:item/pan/cassiterite/result"
+  ]
+}

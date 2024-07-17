@@ -1,0 +1,16 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "tier": 1,
+  "fluid": "tfc:metal/bismuth",
+  "melt_temperature": 270,
+  "specific_heat_capacity": 0.02143,
+  "ingots": {
+    "tag": "forge:ingots/bismuth"
+  },
+  "double_ingots": {
+    "tag": "forge:double_ingots/bismuth"
+  },
+  "sheets": {
+    "tag": "forge:sheets/bismuth"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "duration": 728,
+  "ingredient": [
+    {
+      "item": "tfc:wood/log/oak"
+    },
+    {
+      "item": "tfc:wood/stripped_log/oak"
+    },
+    {
+      "item": "tfc:wood/wood/oak"
+    },
+    {
+      "item": "tfc:wood/stripped_wood/oak"
+    }
+  ],
+  "temperature": 2250.0
+}

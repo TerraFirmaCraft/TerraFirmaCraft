@@ -1,0 +1,25 @@
+{
+  "values": [
+    "tfc:food/cooked_beef",
+    "tfc:food/cooked_pork",
+    "tfc:food/cooked_chicken",
+    "tfc:food/cooked_quail",
+    "tfc:food/cooked_mutton",
+    "tfc:food/cooked_bear",
+    "tfc:food/cooked_horse_meat",
+    "tfc:food/cooked_pheasant",
+    "tfc:food/cooked_turkey",
+    "tfc:food/cooked_peafowl",
+    "tfc:food/cooked_grouse",
+    "tfc:food/cooked_venison",
+    "tfc:food/cooked_wolf",
+    "tfc:food/cooked_rabbit",
+    "tfc:food/cooked_fox",
+    "tfc:food/cooked_hyena",
+    "tfc:food/cooked_duck",
+    "tfc:food/cooked_chevon",
+    "tfc:food/cooked_camelidae",
+    "tfc:food/cooked_frog_legs",
+    "tfc:food/cooked_gran_feline"
+  ]
+}

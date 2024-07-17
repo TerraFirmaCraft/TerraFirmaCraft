@@ -1,0 +1,13 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:rock/raw/dolomite",
+    "tfc:rock/hardened/dolomite"
+  ],
+  "item_output": {
+    "count": 1,
+    "id": "tfc:rock/raw/dolomite_slab"
+  },
+  "mode": "slab",
+  "result": "tfc:rock/raw/dolomite_slab"
+}

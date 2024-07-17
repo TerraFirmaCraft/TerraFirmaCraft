@@ -1,0 +1,9 @@
+{
+  "fluid": "tfc:metal/pig_iron",
+  "ingots": {
+    "tag": "c:ingots/pig_iron"
+  },
+  "melt_temperature": 1535.0,
+  "specific_heat_capacity": 0.008571429,
+  "tier": 0
+}

@@ -1,0 +1,16 @@
+{
+  "type": "tfc:alloy",
+  "contents": [
+    {
+      "fluid": "tfc:metal/copper",
+      "max": 0.92,
+      "min": 0.88
+    },
+    {
+      "fluid": "tfc:metal/zinc",
+      "max": 0.12,
+      "min": 0.08
+    }
+  ],
+  "result": "tfc:metal/brass"
+}

@@ -1,0 +1,16 @@
+{
+  "type": "tfc:anvil",
+  "ingredient": {
+    "tag": "c:sheets/wrought_iron"
+  },
+  "result": {
+    "count": 1,
+    "id": "minecraft:iron_door"
+  },
+  "rules": [
+    "hit_last",
+    "draw_not_last",
+    "punch_not_last"
+  ],
+  "tier": 3
+}

@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 642.0,
+  "heat_capacity": 2.857143,
+  "ingredient": {
+    "item": "tfc:metal/hammer_head/black_bronze"
+  },
+  "welding_temperature": 856.0
+}

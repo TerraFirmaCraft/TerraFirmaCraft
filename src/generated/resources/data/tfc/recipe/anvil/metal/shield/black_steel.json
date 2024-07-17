@@ -1,0 +1,17 @@
+{
+  "type": "tfc:anvil",
+  "apply_bonus": true,
+  "ingredient": {
+    "tag": "c:double_sheets/black_steel"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/shield/black_steel"
+  },
+  "rules": [
+    "upset_last",
+    "bend_second_last",
+    "bend_third_last"
+  ],
+  "tier": 5
+}

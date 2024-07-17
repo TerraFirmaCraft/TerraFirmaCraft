@@ -1,0 +1,17 @@
+{
+  "type": "tfc:barrel_sealed",
+  "duration": 1000,
+  "input_fluid": {
+    "amount": 100,
+    "fluid": "tfc:limewater"
+  },
+  "input_item": {
+    "count": 1,
+    "item": "tfc:ore/gypsum"
+  },
+  "output_item": {
+    "count": 1,
+    "id": "tfc:alabaster/raw"
+  },
+  "tooltip": ""
+}

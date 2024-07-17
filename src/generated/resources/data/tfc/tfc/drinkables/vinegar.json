@@ -1,0 +1,14 @@
+{
+  "effects": [
+    {
+      "amplifier": 1,
+      "chance": 0.8,
+      "duration": 80,
+      "effect": "tfc:thirst"
+    }
+  ],
+  "ingredient": {
+    "fluid": "tfc:vinegar"
+  },
+  "water": 5.0
+}

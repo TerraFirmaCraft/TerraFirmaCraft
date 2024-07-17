@@ -1,0 +1,9 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:rock/raw/rhyolite",
+    "tfc:rock/hardened/rhyolite"
+  ],
+  "mode": "stair",
+  "result": "tfc:rock/raw/rhyolite_stairs"
+}

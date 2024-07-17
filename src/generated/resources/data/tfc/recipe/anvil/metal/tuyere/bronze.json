@@ -1,0 +1,15 @@
+{
+  "type": "tfc:anvil",
+  "ingredient": {
+    "tag": "c:double_sheets/bronze"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/tuyere/bronze"
+  },
+  "rules": [
+    "bend_last",
+    "bend_second_last"
+  ],
+  "tier": 2
+}

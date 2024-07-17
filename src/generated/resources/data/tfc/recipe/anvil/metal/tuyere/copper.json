@@ -1,0 +1,15 @@
+{
+  "type": "tfc:anvil",
+  "ingredient": {
+    "tag": "c:double_sheets/copper"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/tuyere/copper"
+  },
+  "rules": [
+    "bend_last",
+    "bend_second_last"
+  ],
+  "tier": 1
+}

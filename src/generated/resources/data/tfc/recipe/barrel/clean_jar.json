@@ -1,0 +1,24 @@
+{
+  "type": "tfc:barrel_instant",
+  "input_fluid": {
+    "amount": 100,
+    "fluid": "minecraft:water"
+  },
+  "input_item": {
+    "type": "neoforge:compound",
+    "children": [
+      {
+        "tag": "tfc:foods/preserves"
+      },
+      {
+        "tag": "tfc:foods/sealed_preserves"
+      }
+    ],
+    "count": 1
+  },
+  "output_item": {
+    "count": 1,
+    "id": "tfc:empty_jar"
+  },
+  "tooltip": ""
+}

@@ -1,0 +1,8 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:wood/planks/hickory"
+  ],
+  "mode": "stair",
+  "result": "tfc:wood/planks/hickory_stairs"
+}
