@@ -15,6 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.common.recipes.IRecipePredicate;
 import net.dries007.tfc.common.recipes.RecipeHelpers;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.PhysicalDamage;
@@ -23,7 +24,8 @@ import net.dries007.tfc.util.collections.IndirectHashCollection;
 public record ItemDamageResistance(
     Ingredient ingredient,
     PhysicalDamage damages
-) {
+) implements IRecipePredicate<ItemStack>
+{
     public static final Codec<ItemDamageResistance> CODEC = RecordCodecBuilder.create(i -> i.group(
         Ingredient.CODEC.fieldOf("ingredient").forGetter(c -> c.ingredient),
         PhysicalDamage.CODEC.forGetter(c -> c.damages)
@@ -35,19 +37,18 @@ public record ItemDamageResistance(
         ItemDamageResistance::new
     );
 
-    public static final DataManager<ItemDamageResistance> MANAGER = new DataManager<>(Helpers.identifier("item_damage_resistances"), CODEC, STREAM_CODEC);
+    public static final DataManager<ItemDamageResistance> MANAGER = new DataManager<>(Helpers.identifier("item_damage_resistance"), CODEC, STREAM_CODEC);
     public static final IndirectHashCollection<Item, ItemDamageResistance> CACHE = IndirectHashCollection.create(c -> RecipeHelpers.itemKeys(c.ingredient), MANAGER::getValues);
 
     @Nullable
-    public static ItemDamageResistance get(ItemStack item)
+    public static ItemDamageResistance get(ItemStack stack)
     {
-        for (ItemDamageResistance resist : CACHE.getAll(item.getItem()))
-        {
-            if (resist.ingredient.test(item))
-            {
-                return resist;
-            }
-        }
-        return null;
+        return RecipeHelpers.getRecipe(CACHE, stack, stack.getItem());
+    }
+
+    @Override
+    public boolean matches(ItemStack input)
+    {
+        return ingredient.test(input);
     }
 }

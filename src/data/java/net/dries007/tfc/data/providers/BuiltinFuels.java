@@ -10,7 +10,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 
-import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.GroundcoverBlockType;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Ore;
@@ -27,7 +26,7 @@ public class BuiltinFuels extends DataManagerProvider<Fuel> implements Accessors
     }
 
     @Override
-    protected void addData()
+    protected void addData(HolderLookup.Provider provider)
     {
         add(Wood.ACACIA, 650, 1000, 0.95f);
         add(Wood.ASH, 696, 1250, 0.95f);

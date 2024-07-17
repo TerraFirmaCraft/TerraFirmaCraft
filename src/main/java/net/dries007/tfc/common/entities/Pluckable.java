@@ -17,7 +17,7 @@ import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 
-import net.dries007.tfc.common.TFCDamageSources;
+import net.dries007.tfc.common.TFCDamageTypes;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
@@ -57,7 +57,7 @@ public interface Pluckable
                     AnimalProductEvent event = new AnimalProductEvent(level, entity.blockPosition(), player, properties, feather, ItemStack.EMPTY, 1);
                     if (!NeoForge.EVENT_BUS.post(event).isCanceled())
                     {
-                        TFCDamageSources.pluck(entity, entity.getMaxHealth() * 0.15f, null);
+                        TFCDamageTypes.pluck(entity, entity.getMaxHealth() * 0.15f, null);
                         properties.addUses(event.getUses());
                         ItemHandlerHelper.giveItemToPlayer(player, event.getProduct());
                     }
@@ -72,7 +72,7 @@ public interface Pluckable
             else
             {
                 ItemHandlerHelper.giveItemToPlayer(player, feather);
-                TFCDamageSources.pluck(entity, entity.getMaxHealth() * 0.15f, null);
+                TFCDamageTypes.pluck(entity, entity.getMaxHealth() * 0.15f, null);
                 setLastPluckedTick(Calendars.SERVER.getTicks());
             }
             return true;

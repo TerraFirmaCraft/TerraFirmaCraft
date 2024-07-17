@@ -167,11 +167,6 @@ public enum PhysicalDamageType implements StringRepresentable
         {
             return itemResistance.damages();
         }
-        // todo 1.21, armor material cannot implement this interface, we need a separate mapping here, maybe via registry?
-        if (stack.getItem() instanceof ArmorItem armor && armor.getMaterial() instanceof PhysicalDamageType.Multiplier armorMultiplier)
-        {
-            return armorMultiplier;
-        }
         return null;
     }
 

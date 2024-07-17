@@ -25,7 +25,7 @@ public class BuiltinDrinkables extends DataManagerProvider<Drinkable> implements
     }
 
     @Override
-    protected void addData()
+    protected void addData(HolderLookup.Provider provider)
     {
         add("water",
             FluidIngredient.of(Fluids.WATER, TFCFluids.RIVER_WATER.get()),

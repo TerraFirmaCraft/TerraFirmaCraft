@@ -21,7 +21,7 @@ public class BuiltinFluidHeat extends DataManagerProvider<FluidHeat> implements 
     }
 
     @Override
-    protected void addData()
+    protected void addData(HolderLookup.Provider provider)
     {
         add(Metal.BISMUTH, 0.14f, 270);
         add(Metal.BISMUTH_BRONZE, 0.35f, 985);

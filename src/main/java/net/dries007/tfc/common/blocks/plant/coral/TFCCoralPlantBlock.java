@@ -24,7 +24,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.TFCDamageSources;
+import net.dries007.tfc.common.TFCDamageTypes;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.entities.aquatic.AquaticMob;
@@ -104,7 +104,7 @@ public class TFCCoralPlantBlock extends Block implements IFluidLoggable
     {
         if (!(entity instanceof AquaticMob))
         {
-            TFCDamageSources.coral(entity, 0.5f);
+            TFCDamageTypes.coral(entity, 0.5f);
         }
     }
 

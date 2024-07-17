@@ -48,6 +48,11 @@ public record BlockIngredient(Either<Set<Block>, TagKey<Block>> either) implemen
         return new BlockIngredient(Either.right(tag));
     }
 
+    public static BlockIngredient of(Block block)
+    {
+        return new BlockIngredient(Either.left(Set.of(block)));
+    }
+
     public static BlockIngredient of(Stream<Block> blocks)
     {
         return new BlockIngredient(Either.left(ImmutableSet.copyOf(blocks.toList())));

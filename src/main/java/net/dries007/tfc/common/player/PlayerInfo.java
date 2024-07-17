@@ -18,7 +18,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 import net.neoforged.neoforge.network.PacketDistributor;
 
-import net.dries007.tfc.common.TFCDamageSources;
+import net.dries007.tfc.common.TFCDamageTypes;
 import net.dries007.tfc.common.capabilities.food.FoodData;
 import net.dries007.tfc.common.capabilities.food.IFood;
 import net.dries007.tfc.common.capabilities.food.NutritionData;
@@ -292,7 +292,7 @@ public final class PlayerInfo extends net.minecraft.world.food.FoodData implemen
                 if (thirst <= 0f)
                 {
                     // Hurt the player, same as starvation
-                    TFCDamageSources.dehydration(player, 1f);
+                    TFCDamageTypes.dehydration(player, 1f);
                 }
             }
             else if (thirst < 20f)

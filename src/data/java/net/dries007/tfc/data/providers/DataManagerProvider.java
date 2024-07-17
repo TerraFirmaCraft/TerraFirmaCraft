@@ -35,7 +35,7 @@ public abstract class DataManagerProvider<T> implements DataProvider
     public CompletableFuture<?> run(CachedOutput output)
     {
         return beforeRun().thenCompose(provider -> {
-            addData();
+            addData(provider);
             contentDone.complete(null);
             return CompletableFuture.allOf(elements.entrySet()
                 .stream()
@@ -65,5 +65,5 @@ public abstract class DataManagerProvider<T> implements DataProvider
         return lookup;
     }
 
-    protected abstract void addData();
+    protected abstract void addData(HolderLookup.Provider provider);
 }

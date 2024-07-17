@@ -84,6 +84,10 @@ public class BuiltinFluidTags extends FluidTagsProvider implements Accessors
             fluidOf(Metal.BRONZE),
             fluidOf(Metal.BLACK_BRONZE),
             fluidOf(Metal.BISMUTH_BRONZE));
+        tag(USABLE_IN_BELL_MOLD).add(
+            fluidOf(Metal.BRONZE),
+            fluidOf(Metal.GOLD),
+            fluidOf(Metal.BRASS));
     }
 
     private void tag(TagKey<Fluid> tag, Stream<Fluid> blocks)

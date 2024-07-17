@@ -40,8 +40,7 @@ public final class DataManagers
         register(Fauna.MANAGER);
         register(ClimateRange.MANAGER);
         register(LampFuel.MANAGER);
-        register(Sluiceable.MANAGER);
-        register(Pannable.MANAGER);
+        register(Deposit.MANAGER);
         register(HeatCapability.MANAGER);
         register(FoodCapability.MANAGER);
     }

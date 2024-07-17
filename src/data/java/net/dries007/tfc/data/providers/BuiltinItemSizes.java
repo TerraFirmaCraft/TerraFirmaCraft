@@ -29,7 +29,7 @@ public class BuiltinItemSizes extends DataManagerProvider<ItemSizeDefinition> im
     }
 
     @Override
-    protected void addData()
+    protected void addData(HolderLookup.Provider provider)
     {
         add("logs", ItemTags.LOGS, Size.VERY_LARGE, Weight.MEDIUM);
         add("chests", Tags.Items.CHESTS, Size.LARGE, Weight.LIGHT);

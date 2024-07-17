@@ -7,16 +7,15 @@
 package net.dries007.tfc.util.data;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.Supplier;
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
@@ -24,6 +23,7 @@ import com.mojang.logging.LogUtils;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import io.netty.buffer.ByteBuf;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.RegistryOps;
@@ -37,22 +37,22 @@ import org.slf4j.Logger;
 import net.dries007.tfc.util.SelfTests;
 
 
-// todo: add a int ID mechanism, sync int IDs as part of normal sync, and then use int IDs for stream codec references
 public class DataManager<T> extends SimpleJsonResourceReloadListener
 {
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final Gson GSON = new Gson();
 
-    protected final BiMap<ResourceLocation, T> types;
     private final String registryName;
+    private final Codec<T> codec;
+    private final @Nullable StreamCodec<RegistryFriendlyByteBuf, T> streamCodec;
 
-    protected final Codec<T> codec;
-    protected final @Nullable StreamCodec<RegistryFriendlyByteBuf, T> streamCodec;
+    private final Map<ResourceLocation, T> byKey = new HashMap<>();
+    private final Map<T, ResourceLocation> toKey = new IdentityHashMap<>(); // Allow equal values to map to unique keys
 
     private final Codec<Reference<T>> byIdCodec = ResourceLocation.CODEC.xmap(this::getReference, Reference::id);
     private final StreamCodec<ByteBuf, Reference<T>> byIdStreamCodec = ResourceLocation.STREAM_CODEC.map(this::getReference, Reference::id);
 
-    private final Map<ResourceLocation, Reference<T>> references;
+    private final Map<ResourceLocation, Reference<T>> references = new HashMap<>();
     private final Object referencesLock = new Object();
 
     /**
@@ -70,11 +70,9 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
     {
         super(GSON, domain.getNamespace() + "/" + domain.getPath());
 
-        this.types = HashBiMap.create();
         this.registryName = domain.getPath();
         this.codec = codec;
         this.streamCodec = streamCodec;
-        this.references = new HashMap<>();
     }
 
     /**
@@ -83,7 +81,7 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
     @Nullable
     public T get(ResourceLocation id)
     {
-        return types.get(id);
+        return byKey.get(id);
     }
 
     /**
@@ -91,12 +89,12 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
      */
     public T getOrThrow(ResourceLocation id)
     {
-        return Objects.requireNonNull(types.get(id), () -> "Unregistered id: " + id);
+        return Objects.requireNonNull(byKey.get(id));
     }
 
-    public ResourceLocation getIdOrThrow(T t)
+    public ResourceLocation getIdOrThrow(T value)
     {
-        return Objects.requireNonNull(types.inverse().get(t), "Unregistered element");
+        return Objects.requireNonNull(toKey.get(value));
     }
 
     /**
@@ -110,19 +108,19 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
         final Reference<T> ref;
         synchronized(referencesLock)
         {
-            ref = references.computeIfAbsent(id, key -> new Reference<>(key, types.get(key)));
+            ref = references.computeIfAbsent(id, key -> new Reference<>(key, byKey.get(key)));
         }
         return ref;
     }
 
     public Map<ResourceLocation, T> getElements()
     {
-        return Collections.unmodifiableMap(types);
+        return Collections.unmodifiableMap(byKey);
     }
 
-    public Set<T> getValues()
+    public Collection<T> getValues()
     {
-        return types.values();
+        return byKey.values();
     }
 
     public boolean isSynced()
@@ -172,10 +170,10 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
     public void onSync(Map<ResourceLocation, T> elements)
     {
         // Sync received from physical server
-        types.clear();
-        types.putAll(elements);
+        byKey.clear();
+        byKey.putAll(elements);
         updateReferences();
-        LOGGER.info("Received {} {}(s) from physical server", types.size(), registryName);
+        LOGGER.info("Received {} {}(s) from physical server", byKey.size(), registryName);
     }
 
     /**
@@ -190,7 +188,7 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> elements, ResourceManager resourceManagerIn, ProfilerFiller profilerIn)
     {
-        types.clear();
+        byKey.clear();
 
         final RegistryOps<JsonElement> ops = getRegistryLookup().createSerializationContext(JsonOps.INSTANCE);
         for (Map.Entry<ResourceLocation, JsonElement> entry : elements.entrySet())
@@ -198,7 +196,7 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
             final ResourceLocation id = entry.getKey();
             try
             {
-                types.put(id, codec.parse(ops, entry.getValue()).getOrThrow(JsonParseException::new));
+                byKey.put(id, codec.parse(ops, entry.getValue()).getOrThrow(JsonParseException::new));
             }
             catch (IllegalArgumentException | JsonParseException e)
             {
@@ -209,7 +207,7 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
 
         updateReferences();
 
-        LOGGER.info("Loaded {} {}(s).", types.size(), registryName);
+        LOGGER.info("Loaded {} {}(s).", byKey.size(), registryName);
     }
 
     private void updateReferences()
@@ -235,6 +233,9 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
                 SelfTests.reportExternalError();
             }
         }
+
+        toKey.clear();
+        byKey.forEach((id, value) -> toKey.put(value, id));
     }
 
     public static class Reference<T> implements Supplier<T>

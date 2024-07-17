@@ -32,7 +32,7 @@ import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.client.IHighlightHandler;
 import net.dries007.tfc.client.TFCSounds;
-import net.dries007.tfc.common.TFCDamageSources;
+import net.dries007.tfc.common.TFCDamageTypes;
 import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
 import net.dries007.tfc.common.blockentities.GrillBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
@@ -127,7 +127,7 @@ public class GrillBlock extends FirepitBlock implements IHighlightHandler
                 {
                     if (state.getValue(LIT))
                     {
-                        TFCDamageSources.grill(player, 1f);
+                        TFCDamageTypes.grill(player, 1f);
                         Helpers.playSound(level, pos, TFCSounds.ITEM_COOL.get());
                     }
                     if (!state.getValue(LIT) && !state.getValue(LIT) && grill.getAsh() > 0)

@@ -98,11 +98,10 @@ import net.dries007.tfc.util.PhysicalDamageType;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
+import net.dries007.tfc.util.data.Deposit;
 import net.dries007.tfc.util.data.Fertilizer;
 import net.dries007.tfc.util.data.FluidHeat;
 import net.dries007.tfc.util.data.Fuel;
-import net.dries007.tfc.util.data.Pannable;
-import net.dries007.tfc.util.data.Sluiceable;
 import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.chunkdata.ChunkData;
@@ -321,8 +320,9 @@ public class ClientForgeEventHandler
                 }
             }
 
-            final boolean sluice = Sluiceable.get(stack) != null;
-            final boolean pan = stack.getItem() instanceof BlockItem bi && Pannable.get(bi.getBlock().defaultBlockState()) != null;
+            final Deposit deposit = Deposit.get(stack);
+            final boolean sluice = deposit != null && deposit.usableInSluice();
+            final boolean pan = deposit != null && deposit.usableInPan();
             if (sluice && !pan)
             {
                 text.add(Component.translatable("tfc.tooltip.usable_in_sluice").withStyle(GRAY));

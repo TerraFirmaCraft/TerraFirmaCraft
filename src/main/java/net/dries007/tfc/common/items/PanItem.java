@@ -34,10 +34,9 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.render.blockentity.PanItemRenderer;
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.component.PannableComponent;
 import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.data.Pannable;
+import net.dries007.tfc.util.data.Deposit;
 
 public class PanItem extends Item
 {
@@ -87,10 +86,10 @@ public class PanItem extends Item
     {
         if (entity instanceof Player player && level instanceof ServerLevel serverLevel)
         {
-            final Pannable pannable = Pannable.get(stack);
-            if (pannable != null)
+            final @Nullable Deposit depositStack = Deposit.get(stack.get(TFCComponents.DEPOSIT));
+            if (depositStack != null)
             {
-                final var table = level.getServer().reloadableRegistries().getLootTable(pannable.lootTable());
+                final var table = level.getServer().reloadableRegistries().getLootTable(depositStack.lootTable());
                 final var builder = new LootParams.Builder(serverLevel)
                         .withParameter(LootContextParams.THIS_ENTITY, entity)
                         .withParameter(LootContextParams.ORIGIN, entity.position())
@@ -107,10 +106,10 @@ public class PanItem extends Item
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag)
     {
-        final @Nullable PannableComponent pannable = stack.get(TFCComponents.PANNABLE);
-        if (pannable != null)
+        final @Nullable ItemStack deposit = stack.get(TFCComponents.DEPOSIT);
+        if (deposit != null)
         {
-            tooltip.add(Component.translatable("tfc.tooltip.pan.contents").append(pannable.state().getBlock().getName()));
+            tooltip.add(Component.translatable("tfc.tooltip.pan.contents").append(deposit.getHoverName()));
         }
     }
 

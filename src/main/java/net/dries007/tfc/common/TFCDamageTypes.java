@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.util.Helpers;
 
-public class TFCDamageSources
+public class TFCDamageTypes
 {
     public static final ResourceKey<DamageType> GRILL = ResourceKey.create(Registries.DAMAGE_TYPE, Helpers.identifier("grill"));
     public static final ResourceKey<DamageType> POT = ResourceKey.create(Registries.DAMAGE_TYPE, Helpers.identifier("pot"));

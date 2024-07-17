@@ -33,7 +33,7 @@ public class BuiltinItemHeat extends DataManagerProvider<HeatDefinition> impleme
     }
 
     @Override
-    protected void addData()
+    protected void addData(HolderLookup.Provider provider)
     {
         for (Metal metal : Metal.values())
         {
@@ -44,6 +44,8 @@ public class BuiltinItemHeat extends DataManagerProvider<HeatDefinition> impleme
                 if (type.has(metal))
                     add(metal, type.name(), ingredientOf(metal, type), units(type));
         }
+
+        // todo: more
     }
 
     private void add(Metal metal, String typeName, Ingredient ingredient, int units)

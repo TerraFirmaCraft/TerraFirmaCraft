@@ -15,11 +15,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 
-import net.dries007.tfc.common.component.PannableComponent;
 import net.dries007.tfc.common.component.TFCComponents;
-import net.dries007.tfc.util.data.Pannable;
+import net.dries007.tfc.util.data.Deposit;
 
 public class EmptyPanItem extends Item
 {
@@ -36,9 +34,9 @@ public class EmptyPanItem extends Item
         {
             final Level level = context.getLevel();
             final BlockPos pos = context.getClickedPos();
-            final BlockState state = level.getBlockState(pos);
             final ItemStack stack = player.getItemInHand(context.getHand());
-            if (Pannable.get(state) != null)
+            final ItemStack depositStack = new ItemStack(level.getBlockState(pos).getBlock());
+            if (Deposit.get(depositStack) != null)
             {
                 if (level.isClientSide) return InteractionResult.SUCCESS;
 
@@ -47,7 +45,7 @@ public class EmptyPanItem extends Item
                 player.awardStat(Stats.ITEM_USED.get(this));
 
                 final ItemStack putStack = new ItemStack(TFCItems.FILLED_PAN.get());
-                putStack.set(TFCComponents.PANNABLE, new PannableComponent(state));
+                putStack.set(TFCComponents.DEPOSIT, depositStack);
                 if (!player.getInventory().add(putStack)) player.drop(putStack, false);
                 return InteractionResult.CONSUME;
             }

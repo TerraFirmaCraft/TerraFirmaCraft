@@ -24,7 +24,7 @@ import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.particle.TFCParticles;
-import net.dries007.tfc.common.TFCDamageSources;
+import net.dries007.tfc.common.TFCDamageTypes;
 import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
@@ -73,7 +73,7 @@ public class PotBlock extends FirepitBlock
             {
                 if (state.getValue(LIT))
                 {
-                    TFCDamageSources.pot(player, 1f);
+                    TFCDamageTypes.pot(player, 1f);
                     Helpers.playSound(level, pos, TFCSounds.ITEM_COOL.get());
                 }
                 if (!state.getValue(LIT) && !pot.isBoiling() && !state.getValue(LIT) && pot.getAsh() > 0)

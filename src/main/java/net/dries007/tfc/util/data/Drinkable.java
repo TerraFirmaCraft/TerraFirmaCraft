@@ -77,7 +77,7 @@ public record Drinkable(
         Drinkable::new
     );
 
-    public static final DataManager<Drinkable> MANAGER = new DataManager<>(Helpers.identifier("drinkables"), CODEC, STREAM_CODEC);
+    public static final DataManager<Drinkable> MANAGER = new DataManager<>(Helpers.identifier("drinkable"), CODEC, STREAM_CODEC);
     public static final IndirectHashCollection<Fluid, Drinkable> CACHE = IndirectHashCollection.create(c -> RecipeHelpers.fluidKeys(c.ingredient), MANAGER::getValues);
 
     /** Amount of mB drank when drinking by hand on a source block */

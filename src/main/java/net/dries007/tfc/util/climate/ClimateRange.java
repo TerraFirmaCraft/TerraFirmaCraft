@@ -45,7 +45,7 @@ public record ClimateRange(
     );
 
 
-    public static final DataManager<ClimateRange> MANAGER = new DataManager<>(Helpers.identifier("climate_ranges"), ClimateRange.CODEC, ClimateRange.STREAM_CODEC);
+    public static final DataManager<ClimateRange> MANAGER = new DataManager<>(Helpers.identifier("climate_range"), ClimateRange.CODEC, ClimateRange.STREAM_CODEC);
     public static final ClimateRange NOOP = new ClimateRange(0, 100, 0, -100, 100, 0);
 
     public int getMinHydration(boolean allowWiggle)

@@ -32,9 +32,11 @@ public class TFCLoot
 
     public static final LootContextParam<Boolean> ISOLATED = new LootContextParam<>(Helpers.identifier("isolated"));
     public static final LootContextParam<Boolean> BURNT_OUT = new LootContextParam<>(Helpers.identifier("burnt_out"));
+    public static final LootContextParam<Boolean> SLUICE = new LootContextParam<>(Helpers.identifier("sluice"));
 
     public static final Id<LootItemConditionType> IS_ISOLATED = lootCondition("is_isolated", MapCodec.unit(IsIsolatedCondition.INSTANCE));
     public static final Id<LootItemConditionType> IS_BURNT_OUT = lootCondition("is_burnt_out", MapCodec.unit(IsBurntOutCondition.INSTANCE));
+    public static final Id<LootItemConditionType> IS_SLUICE = lootCondition("is_sluice", MapCodec.unit(IsSluiceCondition.INSTANCE));
     public static final Id<LootItemConditionType> IS_MALE = lootCondition("is_male", MapCodec.unit(IsMaleCondition.INSTANCE));
     public static final Id<LootItemConditionType> ALWAYS_TRUE = lootCondition("always_true", MapCodec.unit(AlwaysTrueCondition.INSTANCE));
     public static final Id<LootItemConditionType> NOT_PREDATED = lootCondition("not_predated", MapCodec.unit(NotPredatedCondition.INSTANCE));

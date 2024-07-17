@@ -18,7 +18,7 @@ public class BuiltinSupports extends DataManagerProvider<Support>
     }
 
     @Override
-    protected void addData()
+    protected void addData(HolderLookup.Provider provider)
     {
         add("horizontal_support_beam", new Support(BlockIngredient.of(
             Arrays.stream(Wood.values()).map(w -> TFCBlocks.WOODS.get(w).get(Wood.BlockType.HORIZONTAL_SUPPORT).get())),

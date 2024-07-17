@@ -27,7 +27,7 @@ public class BuiltinKnappingTypes extends DataManagerProvider<KnappingType>
     }
 
     @Override
-    protected void addData()
+    protected void addData(HolderLookup.Provider provider)
     {
         add("rock",
             Ingredient.of(TFCTags.Items.ROCK_KNAPPING), 2, 1,

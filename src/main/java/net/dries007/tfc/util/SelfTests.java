@@ -488,7 +488,7 @@ public final class SelfTests
                     .collect(Collectors.toSet());
 
 
-                error |= logErrors("{} items defined in the tag for the metal " + FluidHeat.MANAGER.getIdOrThrow(metal) + " were missing from the #" + containingTag.location() + " tag", metalItems, LOGGER);
+                error |= logErrors("{} items defined in the tag for the metal " + metal + " were missing from the #" + containingTag.location() + " tag", metalItems, LOGGER);
             }
         }
         return error;
@@ -541,12 +541,14 @@ public final class SelfTests
 
     private static boolean validateMoldsCanContainCastingIngredients(RecipeManager manager)
     {
-        final List<Fluid> errors = manager.getAllRecipesFor(TFCRecipeTypes.CASTING.get()).stream()
+        final List<ResourceLocation> errors = manager.getAllRecipesFor(TFCRecipeTypes.CASTING.get()).stream()
             .flatMap(recipe -> RecipeHelpers.stream(recipe.value().getIngredient())
                 .filter(item -> item instanceof MoldItem)
                 .flatMap(item -> RecipeHelpers.stream(recipe.value().getFluidIngredient())
                     .filter(fluid -> !Helpers.isFluid(fluid, ((MoldItem) item).getFluidTag())))
-            ).toList();
+            )
+            .map(BuiltInRegistries.FLUID::getKey)
+            .toList();
 
         return logErrors("{} fluids were found that were given as ingredients in a casting recipe that could not be put into the specified mold. This probably means that you need to add fluids to the tfc:usable_in_tool_head_mold or tfc:usable_in_ingot_mold tag.", errors, LOGGER);
     }

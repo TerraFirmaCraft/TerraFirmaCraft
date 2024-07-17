@@ -44,7 +44,7 @@ public record LampFuel(
     );
 
 
-    public static final DataManager<LampFuel> MANAGER = new DataManager<>(Helpers.identifier("lamp_fuels"), CODEC, STREAM_CODEC);
+    public static final DataManager<LampFuel> MANAGER = new DataManager<>(Helpers.identifier("lamp_fuel"), CODEC, STREAM_CODEC);
     public static final IndirectHashCollection<Fluid, LampFuel> CACHE = IndirectHashCollection.create(r -> RecipeHelpers.fluidKeys(r.fluid), MANAGER::getValues);
 
     @Nullable

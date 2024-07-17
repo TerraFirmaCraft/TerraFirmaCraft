@@ -56,7 +56,7 @@ public final class TFCComponents
 
     public static final Id<BowlComponent> BOWL = register("bowl", BowlComponent.CODEC, BowlComponent.STREAM_CODEC);
     public static final Id<IngredientsComponent> INGREDIENTS = register("ingredients", IngredientsComponent.CODEC, IngredientsComponent.STREAM_CODEC);
-    public static final Id<PannableComponent> PANNABLE = register("pan", PannableComponent.CODEC, PannableComponent.STREAM_CODEC);
+    public static final Id<ItemStack> DEPOSIT = register("deposit", ItemStack.CODEC, ItemStack.STREAM_CODEC);
     public static final Id<BaitComponent> BAIT = register("bait", BaitComponent.CODEC, BaitComponent.STREAM_CODEC);
 
     public static final Id<EggComponent> EGG = register("egg", EggComponent.CODEC, EggComponent.STREAM_CODEC);
