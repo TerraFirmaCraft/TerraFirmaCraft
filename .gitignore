@@ -2,6 +2,7 @@
 *
 !*/
 !/.gitignore
+!/.gitattributes
 !/.editorconfig
 
 # Github and build script
@@ -45,6 +46,4 @@ __pycache__/
 /build/
 /venv/
 /.idea/
-/src/main/resources/data_zipped.zip
-/src/main/resources/assets_zipped.zip
 /src/generated/resources/.cache/**
