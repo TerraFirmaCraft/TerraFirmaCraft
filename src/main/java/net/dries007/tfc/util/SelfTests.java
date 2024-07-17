@@ -22,6 +22,7 @@ import java.util.stream.Stream;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.logging.LogUtils;
+import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -119,8 +120,7 @@ public final class SelfTests
     @SuppressWarnings({"ConstantConditions", "deprecation"})
     public static void runWorldVersionTest()
     {
-        // todo 1.21, update this properly
-        //assert SharedConstants.WORLD_VERSION == 3465 : "If this fails, you need to update the world version here, AND in resources/generate_trees.py, then run `python resources trees`. This updates them and avoids triggering DFU when placed!";
+        assert SharedConstants.WORLD_VERSION == 3953 : "If this fails, you need to update the world version here, AND in resources/generate_trees.py, then run `python resources trees`. This updates them and avoids triggering DFU when placed!";
     }
 
     public static void runClientSelfTests()
