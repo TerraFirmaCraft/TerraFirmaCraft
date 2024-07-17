@@ -12,7 +12,6 @@ import java.util.List;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
@@ -34,7 +33,6 @@ import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.OverworldClimateModel;
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.ForestType;
 
 public class ForestFeature extends Feature<ForestConfig>
@@ -52,8 +50,7 @@ public class ForestFeature extends Feature<ForestConfig>
         final RandomSource random = context.random();
         final ForestConfig config = context.config();
 
-        final ChunkDataProvider provider = ChunkDataProvider.get(context.chunkGenerator());
-        final ChunkData data = provider.get(level, pos);
+        final ChunkData data = ChunkData.get(level, pos);
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final ForestType forestType = data.getForestType();
         final ForestConfig.Type typeConfig = config.typeMap().get(forestType);

@@ -15,10 +15,11 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.chunk.ChunkGeneratorStructureState;
 import net.minecraft.world.level.levelgen.Aquifer;
+import net.neoforged.neoforge.client.event.RegisterPresetEditorsEvent;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.world.biome.BiomeSourceExtension;
-import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
+import net.dries007.tfc.world.chunkdata.ChunkDataGenerator;
 import net.dries007.tfc.world.settings.RockLayerSettings;
 import net.dries007.tfc.world.settings.Settings;
 
@@ -54,11 +55,11 @@ public interface ChunkGeneratorExtension
 
     /**
      * Used on client to set the settings via the preset configuration screen.
-     * This is technically compatible with any {@link ChunkGeneratorExtension} but will only exist if it is registered via {@link net.minecraftforge.client.event.RegisterPresetEditorsEvent} for that screen.
+     * This is technically compatible with any {@link ChunkGeneratorExtension} but will only exist if it is registered via {@link RegisterPresetEditorsEvent} for that screen.
      */
     void applySettings(UnaryOperator<Settings> settings);
 
-    ChunkDataProvider chunkDataProvider();
+    ChunkDataGenerator chunkDataGenerator();
 
     Aquifer getOrCreateAquifer(ChunkAccess chunk);
 

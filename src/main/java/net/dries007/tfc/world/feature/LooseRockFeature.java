@@ -22,7 +22,6 @@ import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.settings.RockSettings;
 
 /**
@@ -42,8 +41,7 @@ public class LooseRockFeature extends Feature<NoneFeatureConfiguration>
         final BlockPos pos = context.origin();
         final var random = context.random();
 
-        final ChunkDataProvider provider = ChunkDataProvider.get(context.chunkGenerator());
-        final ChunkData data = provider.get(level, pos);
+        final ChunkData data = ChunkData.get(level, pos);
         final RockSettings rock = data.getRockData().getRock(pos);
 
         final @Nullable Block looseRock = rock.loose().orElse(null);

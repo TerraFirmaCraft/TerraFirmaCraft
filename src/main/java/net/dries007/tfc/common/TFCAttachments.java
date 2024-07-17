@@ -13,7 +13,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.attachment.IAttachmentHolder;
 import net.neoforged.neoforge.attachment.IAttachmentSerializer;
@@ -23,6 +25,7 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.mixin.accessor.ChunkAccessAccessor;
 import net.dries007.tfc.util.registry.RegistryHolder;
 import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.world.ChunkGeneratorExtension;
@@ -35,14 +38,10 @@ public final class TFCAttachments
 
     public static final Id<ChunkData> CHUNK_DATA = register("chunk_data", () -> AttachmentType.builder(holder -> {
             final ChunkAccess chunk = (ChunkAccess) holder;
-            final ChunkDataGenerator generator = chunk.getLevel() instanceof ServerLevel level
+            final ChunkDataGenerator generator = ((ChunkAccessAccessor) chunk).accessor$getLevelHeightAccessor() instanceof ServerLevel level
                 && level.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension ex
-                ? ex.chunkDataProvider().generator()
+                ? ex.chunkDataGenerator()
                 : null;
-            if (chunk.getLevel() instanceof ClientLevel)
-            {
-                ChunkData.dequeueClientChunkData(chunk.getPos());
-            }
             return new ChunkData(generator, chunk.getPos());
         })
         .serialize(new IAttachmentSerializer<CompoundTag, ChunkData>() {

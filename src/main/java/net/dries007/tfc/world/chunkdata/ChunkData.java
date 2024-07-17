@@ -10,22 +10,19 @@ import java.util.Map;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.EmptyLevelChunk;
+import net.minecraft.world.level.chunk.ImposterProtoChunk;
 import net.minecraft.world.level.chunk.LevelChunk;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.common.TFCAttachments;
 import net.dries007.tfc.network.ChunkWatchPacket;
-import net.dries007.tfc.world.ChunkGeneratorExtension;
 
-/**
- * Additional data which is attached to chunks during world generation and used by various phase of the TFC chunk generator,
- * and subsequent features. Most of this data is persisted after world generation attached to the {@link LevelChunk}. A shallow
- * copy is synced to the client.
- * <p>
- * In order to query chunk data during world generation, <strong>always</strong> go through {@link ChunkDataProvider}, which can be
- * accessed through {@link ChunkGeneratorExtension} - either accessed directly, i.e. in feature generation, or through the level.
- */
+
 public class ChunkData
 {
     public static final ChunkData EMPTY = new ChunkData.Immutable();
@@ -34,39 +31,48 @@ public class ChunkData
     private static final float UNKNOWN_TEMPERATURE = 10;
 
     /**
-     * Returns the chunk data present at this {@code level} and {@code pos}. This cannot be used during world generation, and on client will return a {@link Status#CLIENT} chunk data.
-     * @return the chunk data, or {@link #EMPTY} if the chunk is not loaded, or data is not available (yet).
+     * Accesses the chunk data from a given level, at a given position. This method <strong>may deadlock</strong> if called on a {@link ServerLevel}
+     * from within a world generation context, as it will try and load the chunk. Make sure you are accessing the correct level for the context provided.
+     *
+     * @see #get(ChunkAccess)
      */
     public static ChunkData get(LevelReader level, BlockPos pos)
     {
-        return get(level, new ChunkPos(pos));
+        return get(level.getChunk(pos));
     }
 
     /**
-     * Returns the chunk data present at this {@code level} and {@code pos}. This cannot be used during world generation, and on client will return a {@link Status#CLIENT} chunk data.
-     * @return the chunk data, or {@link #EMPTY} if the chunk is not loaded, or data is not available (yet).
+     * Accesses the chunk data from a given level, at a given position. This method <strong>may deadlock</strong> if called on a {@link ServerLevel}
+     * from within a world generation context, as it will try and load the chunk. Make sure you are accessing the correct level for the context provided.
+     *
+     * @see #get(ChunkAccess)
      */
-    @SuppressWarnings("deprecation")
     public static ChunkData get(LevelReader level, ChunkPos pos)
     {
-        return level.hasChunk(pos.x, pos.z)
-            && level.getChunk(pos.x, pos.z) instanceof LevelChunk levelChunk
-                ? get(levelChunk)
-                : EMPTY;
+        return get(level.getChunk(pos.x, pos.z));
     }
 
     /**
-     * Returns the chunk data present at this {@code chunk}. This cannot be used during world generation, and on client will return a {@link Status#CLIENT} chunk data.
-     * @return the chunk data, or {@link #EMPTY} if the chunk is not loaded, or data is not available (yet).
+     * Accesses the chunk data from the given chunk. This is safe to call at all points during world generation, on server, or on client if proper
+     * access to a chunk is already made. It may return different things when called in different contexts:
+     * <ul>
+     *     <li><strong>On Client</strong>, this will return a client-side, shallow copy of the chunk data, which is synced on chunk watch and unwatch
+     *     to individual players</li>
+     *     <li><strong>On Server</strong>, when invoked with a {@link LevelChunk}, this will return the full view of the chunk data.</li>
+     *     <li><strong>During World Generation</strong>, this will always return a view of the chunk data, generated as much as possible. If the chunk
+     *     is an impostor, the view of the underlying chunk will be returned.</li>
+     * </ul>
+     * Note that this should only be used for mutable access when the caller has ensured that the chunk is mutable at the time - an impostor, or empty
+     * chunk will not allow mutation, or the chunk data on client should not be mutated under any case!
+     *
+     * @see #get(LevelReader, BlockPos)
+     * @see #get(LevelReader, ChunkPos)
      */
-    public static ChunkData get(LevelChunk chunk)
+    public static ChunkData get(ChunkAccess chunk)
     {
-        return EMPTY; // todo 1.21, chunk data needs to work
-    }
-
-    public static void update(LevelChunk chunk, ChunkData data)
-    {
-        // todo: 1.21, chunk data needs to work
+        return chunk instanceof ImposterProtoChunk impostor ? get(impostor.getWrapped())
+            : chunk instanceof EmptyLevelChunk ? ChunkData.EMPTY
+            : chunk.getData(TFCAttachments.CHUNK_DATA);
     }
 
     private static final Map<ChunkPos, ChunkData> CLIENT_CHUNK_QUEUE = new Object2ObjectOpenHashMap<>(128);

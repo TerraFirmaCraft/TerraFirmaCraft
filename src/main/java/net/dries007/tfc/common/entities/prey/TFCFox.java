@@ -90,7 +90,8 @@ public class TFCFox extends Fox
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnData)
     {
         spawnData = super.finalizeSpawn(level, difficulty, spawnType, spawnData);
-        final ChunkData chunkData = EntityHelpers.getChunkDataForSpawning(level, blockPosition());
+        BlockPos pos = blockPosition();
+        final ChunkData chunkData = ChunkData.get(level, pos);
         setVariant(chunkData.getAverageTemp(blockPosition()) < 0 ? Type.SNOW : Type.RED);
         return spawnData;
     }

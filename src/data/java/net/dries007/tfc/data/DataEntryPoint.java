@@ -27,6 +27,8 @@ import net.dries007.tfc.data.providers.BuiltinItemSizes;
 import net.dries007.tfc.data.providers.BuiltinItemTags;
 import net.dries007.tfc.data.providers.BuiltinKnappingTypes;
 import net.dries007.tfc.data.providers.BuiltinLampFuels;
+import net.dries007.tfc.data.providers.BuiltinPaintingTags;
+import net.dries007.tfc.data.providers.BuiltinPaintings;
 import net.dries007.tfc.data.providers.BuiltinRecipes;
 import net.dries007.tfc.data.providers.BuiltinSupports;
 
@@ -44,6 +46,7 @@ public final class DataEntryPoint
             event.getGenerator().getPackOutput(), event.getLookupProvider(),
             new RegistrySetBuilder()
                 .add(Registries.DENSITY_FUNCTION, BuiltinDensityFunctions::load)
+                .add(Registries.PAINTING_VARIANT, BuiltinPaintings::new)
             ,
             Set.of(MOD_ID, "minecraft")))
             .getRegistryProvider();
@@ -55,6 +58,7 @@ public final class DataEntryPoint
 
         add(event, new BuiltinItemTags(event, lookup, blockTags));
         add(event, new BuiltinFluidTags(event, lookup, drinkables));
+        add(event, new BuiltinPaintingTags(event, lookup));
 
         add(event, new BuiltinItemHeat(output, lookup, fluidHeat));
         add(event, new BuiltinSupports(output, lookup));

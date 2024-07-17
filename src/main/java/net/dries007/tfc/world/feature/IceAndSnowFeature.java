@@ -8,14 +8,12 @@ package net.dries007.tfc.world.feature;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 import net.dries007.tfc.util.climate.Climate;
-import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
 public class IceAndSnowFeature extends Feature<NoneFeatureConfiguration>
@@ -30,9 +28,7 @@ public class IceAndSnowFeature extends Feature<NoneFeatureConfiguration>
     {
         final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
-        final ChunkPos chunkPos = new ChunkPos(pos);
-        final ChunkGeneratorExtension extension = (ChunkGeneratorExtension) context.chunkGenerator();
-        final ChunkData chunkData = extension.chunkDataProvider().get(level, chunkPos);
+        final ChunkData chunkData = ChunkData.get(level, pos);
         Climate.onChunkLoad(level, level.getChunk(pos), chunkData);
         return true;
     }

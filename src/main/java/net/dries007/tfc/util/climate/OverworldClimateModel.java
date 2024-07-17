@@ -56,7 +56,7 @@ import net.dries007.tfc.world.noise.OpenSimplex2D;
  * - altitude based temperature, including both above and below ground effects.
  * - time varying precipitation types.
  */
-public class OverworldClimateModel implements WorldGenClimateModel
+public class OverworldClimateModel implements ClimateModel
 {
     public static final float SNOW_FREEZE_TEMPERATURE = -2f;
     public static final float SNOW_MELT_TEMPERATURE = 2f;
@@ -158,8 +158,10 @@ public class OverworldClimateModel implements WorldGenClimateModel
     }
 
     @Override
-    public float getTemperature(@Nullable LevelReader level, BlockPos pos, ChunkData data, long calendarTicks, int daysInMonth)
+    public float getTemperature(LevelReader level, BlockPos pos, long calendarTicks, int daysInMonth)
     {
+        final ChunkData data = ChunkData.get(level, pos);
+
         // Month temperature
         final Month currentMonth = ICalendar.getMonthOfYear(calendarTicks, daysInMonth);
         final float delta = ICalendar.getFractionOfMonth(calendarTicks, daysInMonth);
@@ -288,7 +290,7 @@ public class OverworldClimateModel implements WorldGenClimateModel
                 mutablePos.set(x, level.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z), z);
 
                 final float noise = (float) snowPatchNoise.noise(x, z);
-                final float temperature = getTemperature(null, mutablePos, chunkData, Calendars.SERVER.getCalendarTicks(), Calendars.SERVER.getCalendarDaysInMonth());
+                final float temperature = getTemperature(level, mutablePos, Calendars.SERVER.getCalendarTicks(), Calendars.SERVER.getCalendarDaysInMonth());
                 final float snowTemperatureModifier = Mth.clampedMap(temperature, -10f, 2f, -1, 1);
 
                 // Handle snow

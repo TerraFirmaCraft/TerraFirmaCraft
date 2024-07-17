@@ -9,12 +9,10 @@ package net.dries007.tfc.common.entities;
 import java.util.List;
 import java.util.Optional;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -34,15 +32,12 @@ import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.MobBucketItem;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 import net.dries007.tfc.common.entities.ai.TFCAvoidEntityGoal;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.calendar.Calendars;
-import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 
 public final class EntityHelpers
 {
@@ -60,13 +55,6 @@ public final class EntityHelpers
     public static void removeGoalOfClass(GoalSelector selector, Class<?> clazz)
     {
         selector.getAvailableGoals().removeIf(wrapped -> wrapped.getGoal().getClass() == clazz);
-    }
-
-    public static ChunkData getChunkDataForSpawning(ServerLevelAccessor level, BlockPos pos)
-    {
-        return level instanceof WorldGenRegion worldGenLevel ?
-            ChunkDataProvider.get(worldGenLevel).get(worldGenLevel.getChunk(pos)) :
-            ChunkData.get(level, pos);
     }
 
     /**

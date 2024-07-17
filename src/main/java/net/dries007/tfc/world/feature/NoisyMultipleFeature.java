@@ -18,7 +18,6 @@ import net.minecraft.world.level.levelgen.feature.configurations.SimpleRandomFea
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 
 public class NoisyMultipleFeature extends Feature<SimpleRandomFeatureConfiguration>
 {
@@ -31,8 +30,7 @@ public class NoisyMultipleFeature extends Feature<SimpleRandomFeatureConfigurati
     public boolean place(FeaturePlaceContext<SimpleRandomFeatureConfiguration> context)
     {
         final BlockPos pos = context.origin();
-        final ChunkDataProvider provider = ChunkDataProvider.get(context.chunkGenerator());
-        final ChunkData data = provider.get(context.level(), pos);
+        final ChunkData data = ChunkData.get(context.level(), pos);
         final int rotation = (int) Math.ceil(data.getForestWeirdness() * 10 * context.config().features.size());
 
         List<Holder<PlacedFeature>> features = context.config().features.stream().collect(Collectors.toList());

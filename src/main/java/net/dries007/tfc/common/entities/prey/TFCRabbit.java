@@ -394,7 +394,7 @@ public class TFCRabbit extends Rabbit implements MammalProperties
     private Rabbit.Variant getRandomRabbitType(ServerLevelAccessor level, BlockPos pos)
     {
         final int i = random.nextInt(100);
-        final ChunkData data = EntityHelpers.getChunkDataForSpawning(level, pos);
+        final ChunkData data = ChunkData.get(level, pos);
         final float rain = data.getRainfall(pos);
         final float temp = data.getAverageTemp(pos);
         if (temp < 0)

@@ -66,7 +66,7 @@ public class ClimateStructurePlacement extends RandomSpreadStructurePlacement
         final int blockX = chunkPos.getMinBlockX();
         final int blockZ = chunkPos.getMinBlockZ();
         final BlockPos pos = new BlockPos(blockX, 0, blockZ);
-        final ChunkData data = ex.chunkDataProvider().createAndGeneratePartial(chunkPos);
+        final ChunkData data = ex.chunkDataGenerator().createAndGeneratePartial(chunkPos);
         final WorldgenRandom random = new WorldgenRandom(new LegacyRandomSource(0L));
 
         random.setLargeFeatureWithSalt(state.getLevelSeed(), x, z, this.salt());

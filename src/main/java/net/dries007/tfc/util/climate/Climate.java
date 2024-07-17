@@ -8,7 +8,6 @@ package net.dries007.tfc.util.climate;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.WorldGenLevel;
@@ -25,7 +24,6 @@ import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.events.SelectClimateModelEvent;
 import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 
 /**
  * Central location for all climate handling.
@@ -141,27 +139,14 @@ public final class Climate
         return toVanillaTemperature(getTemperature(level, pos, Calendars.get(level)));
     }
 
-    public static float getVanillaBiomeTemperatureSafely(LevelReader maybeLevel, BlockPos pos, Biome fallback)
+    public static float getVanillaBiomeTemperatureSafely(LevelReader level, BlockPos pos, Biome fallback)
     {
-        final Level unsafeLevel = Helpers.getUnsafeLevel(maybeLevel);
+        final Level unsafeLevel = Helpers.getUnsafeLevel(level);
         if (unsafeLevel != null)
         {
-            final ICalendar calendar = Calendars.get(maybeLevel);
+            final ICalendar calendar = Calendars.get(level);
             final ClimateModel model = model(unsafeLevel);
-            if (maybeLevel instanceof WorldGenRegion worldGenLevel)
-            {
-                // World generation. If the model supports direct calls, then find the correct chunk data and pass it in
-                if (model instanceof WorldGenClimateModel worldGenModel)
-                {
-                    final ChunkData data = ChunkDataProvider.get(worldGenLevel).get(worldGenLevel.getChunk(pos));
-                    return toVanillaTemperature(worldGenModel.getTemperature(worldGenLevel, pos, data, calendar.getCalendarTicks(), calendar.getCalendarDaysInMonth()));
-                }
-            }
-            else
-            {
-                // Pretty sure we're not in world generation, so we can call the model directly.
-                return toVanillaTemperature(model.getTemperature(maybeLevel, pos, calendar.getCalendarTicks(), calendar.getCalendarDaysInMonth()));
-            }
+            return model.getTemperature(level, pos, calendar.getCalendarTicks(), calendar.getCalendarDaysInMonth());
         }
         return ((BiomeAccessor) (Object) fallback).invoke$getTemperature(pos);
     }

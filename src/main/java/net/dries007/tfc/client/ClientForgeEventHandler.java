@@ -180,7 +180,7 @@ public class ClientForgeEventHandler
                 if (server != null && server.overworld().getChunkSource().getGenerator() instanceof ChunkGeneratorExtension ex)
                 {
                     final int approxSurfaceY = mc.level.getHeight(Heightmap.Types.MOTION_BLOCKING, pos.getX(), pos.getZ());
-                    ex.chunkDataProvider().generator().displayDebugInfo(tooltip, pos, approxSurfaceY);
+                    ex.chunkDataGenerator().displayDebugInfo(tooltip, pos, approxSurfaceY);
                 }
             }
         }

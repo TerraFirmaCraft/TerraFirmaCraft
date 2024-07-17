@@ -40,7 +40,6 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.entities.BrainBreeder;
-import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.entities.Temptable;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
@@ -159,7 +158,7 @@ public class TFCFrog extends Frog implements Temptable, BrainBreeder
     {
         spawnData = super.finalizeSpawn(level, difficulty, spawnType, spawnData);
         final BlockPos pos = blockPosition();
-        final ChunkData data = EntityHelpers.getChunkDataForSpawning(level, pos);
+        final ChunkData data = ChunkData.get(level, pos);
         final float temp = data.getAverageTemp(pos);
 
         setVariant(BuiltInRegistries.FROG_VARIANT.getHolderOrThrow(temp < 0 ? FrogVariant.COLD : temp > 18 ? FrogVariant.WARM : FrogVariant.TEMPERATE));

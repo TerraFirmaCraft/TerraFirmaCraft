@@ -24,7 +24,6 @@ import net.minecraft.world.level.material.Fluids;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.OverworldClimateModel;
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 
 public class IceCaveFeature extends Feature<NoneFeatureConfiguration>
 {
@@ -48,8 +47,7 @@ public class IceCaveFeature extends Feature<NoneFeatureConfiguration>
 
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final ChunkPos chunkPos = new ChunkPos(pos);
-        final ChunkDataProvider provider = ChunkDataProvider.get(context.chunkGenerator());
-        final ChunkData chunkData = provider.get(level, chunkPos);
+        final ChunkData chunkData = ChunkData.get(level, chunkPos);
         for (int i = 0; i < 72; i++)
         {
             mutablePos.setWithOffset(pos, random.nextInt(15) - random.nextInt(15), -3, random.nextInt(15) - random.nextInt(15));

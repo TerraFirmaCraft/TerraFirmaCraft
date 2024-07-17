@@ -90,8 +90,16 @@ public record RegionChunkDataGenerator(
     }
 
     @Override
-    public void generate(ChunkData data)
+    public ChunkData generate(ChunkData data)
     {
+        switch (data.status())
+        {
+            case EMPTY: break; // Allow generation
+            case PARTIAL, FULL: return data; // Skip generation, this data is already generated
+            case CLIENT, INVALID: throw new IllegalStateException("generate() called on chunk data with status " + data.status());
+        }
+
+
         final ChunkPos pos = data.getPos();
         final int blockX = pos.getMinBlockX(), blockZ = pos.getMinBlockZ();
 
@@ -165,6 +173,8 @@ public record RegionChunkDataGenerator(
             forestWeirdness,
             forestDensity
         );
+
+        return data;
     }
 
     private float adjustRiverRainfall(float currentRainfall, float originalRainfall, float widthInfluence, MidpointFractal fractal, double gridX, double gridZ)

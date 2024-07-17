@@ -50,7 +50,7 @@ public abstract class VeinFeature<C extends IVeinConfig, V extends IVein> extend
         final WorldGenerationContext generationContext = new WorldGenerationContext(context.chunkGenerator(), level);
 
         final ChunkPos chunkPos = new ChunkPos(pos);
-        final List<V> veins = getNearbyVeins(level, generationContext, chunkPos, config.chunkRadius(), config, level::getBiome);
+        final List<V> veins = getNearbyVeins(level, generationContext, chunkPos, config.chunkRadius(), config, p -> level.getUncachedNoiseBiome(p.getX(), p.getY(), p.getZ()));
         if (!veins.isEmpty())
         {
             for (V vein : veins)

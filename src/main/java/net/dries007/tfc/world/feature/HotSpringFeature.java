@@ -32,7 +32,6 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.collections.IWeighted;
 import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.noise.Metaballs2D;
 import net.dries007.tfc.world.settings.RockSettings;
 
@@ -54,8 +53,7 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
 
         final Metaballs2D noise = Metaballs2D.simple(Helpers.fork(random), config.radius());
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-        final ChunkDataProvider provider = ChunkDataProvider.get(context.chunkGenerator());
-        final ChunkData data = provider.get(context.level(), pos);
+        final ChunkData data = ChunkData.get(context.level(), pos);
         final RockSettings rock = data.getRockData().getRock(pos.getX(), 0, pos.getZ());
         final Block rawBlock = rock.hardened();
         final BlockState rockState = rawBlock.defaultBlockState();

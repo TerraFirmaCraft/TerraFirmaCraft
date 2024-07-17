@@ -18,7 +18,7 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
+import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.RockData;
 
 public class CaveColumnFeature extends Feature<NoneFeatureConfiguration>
@@ -36,8 +36,7 @@ public class CaveColumnFeature extends Feature<NoneFeatureConfiguration>
 
         final var random = context.random();
 
-        final ChunkDataProvider provider = ChunkDataProvider.get(context.chunkGenerator());
-        final RockData data = provider.get(context.level(), pos).getRockData();
+        final RockData data = ChunkData.get(context.level(), pos).getRockData();
 
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos().set(pos);
         final float amp = Mth.nextFloat(random, 0.25f, 0.6f);

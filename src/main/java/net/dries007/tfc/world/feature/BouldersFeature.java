@@ -18,7 +18,6 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.noise.Metaballs3D;
 import net.dries007.tfc.world.settings.RockSettings;
 
@@ -37,8 +36,7 @@ public class BouldersFeature extends Feature<BoulderConfig>
         final RandomSource random = context.random();
         final BoulderConfig config = context.config();
 
-        final ChunkDataProvider provider = ChunkDataProvider.get(context.chunkGenerator());
-        final ChunkData data = provider.get(context.level(), pos);
+        final ChunkData data = ChunkData.get(context.level(), pos);
         final RockSettings rock = data.getRockData().getRock(pos);
         final List<BlockState> states = config.getStates(rock.raw());
         if (states != null)

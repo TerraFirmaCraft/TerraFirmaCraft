@@ -86,7 +86,6 @@ import net.dries007.tfc.world.biome.BiomeSourceExtension;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataGenerator;
-import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.RegionChunkDataGenerator;
 import net.dries007.tfc.world.chunkdata.RockData;
 import net.dries007.tfc.world.layer.TFCLayers;
@@ -127,7 +126,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     private final NoiseBasedChunkGenerator stupidMojangChunkGenerator; // Mojang fix your god awful deprecated carver nonsense
     private final FastConcurrentCache<TFCAquifer> aquiferCache;
 
-    private ChunkDataProvider chunkDataProvider;
+    private ChunkDataGenerator chunkDataGenerator;
     private long noiseSamplerSeed;
     private SurfaceManager surfaceManager;
     private NoiseSampler noiseSampler;
@@ -157,9 +156,9 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     }
 
     @Override
-    public ChunkDataProvider chunkDataProvider()
+    public ChunkDataGenerator chunkDataGenerator()
     {
-        return chunkDataProvider;
+        return chunkDataGenerator;
     }
 
     @Override
@@ -188,7 +187,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     @SuppressWarnings("ConstantConditions") // this.chunkDataProvider is null
     public void initRandomState(ChunkMap chunkMap, ServerLevel level)
     {
-        if (chunkDataProvider != null)
+        if (chunkDataGenerator != null)
         {
             // Already initialized, so (1) duplicate the chunk generator, only for this chunk map, then (2) re-initialize random state
             final TFCChunkGenerator copy = copy();
@@ -208,7 +207,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
         this.noiseSamplerSeed = seed;
         this.noiseSampler = new NoiseSampler(random.nextLong(), level.registryAccess().lookupOrThrow(Registries.NOISE), level.registryAccess().lookupOrThrow(Registries.DENSITY_FUNCTION));
-        this.chunkDataProvider = new ChunkDataProvider(chunkDataGenerator);
+        this.chunkDataGenerator = chunkDataGenerator;
         this.surfaceManager = new SurfaceManager(seed);
 
         this.customBiomeSource.initRandomState(regionGenerator, biomeLayer);
@@ -236,7 +235,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     public CompletableFuture<ChunkAccess> createBiomes(RandomState randomState, Blender blender, StructureManager structureManager, ChunkAccess chunk)
     {
         return CompletableFuture.supplyAsync(() -> {
-            chunkDataProvider.get(chunk);
+            chunkDataGenerator.generate(chunk);
             chunk.fillBiomesFromNoise((quartX, quartY, quartZ, sampler) -> customBiomeSource.getBiome(quartX, quartZ), NoopClimateSampler.INSTANCE);
             return chunk;
         }, Util.backgroundExecutor());
@@ -401,7 +400,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     @Override
     public void createStructures(RegistryAccess dynamicRegistry, ChunkGeneratorStructureState structureState, StructureManager structureFeatureManager, ChunkAccess chunk, StructureTemplateManager templateManager)
     {
-        chunkDataProvider.get(chunk); // populate chunk data before references to enable placements
+        chunkDataGenerator.generate(chunk); // populate chunk data before references to enable placements
         super.createStructures(dynamicRegistry, structureState, structureFeatureManager, chunk, templateManager);
     }
 
@@ -419,7 +418,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         final LevelAccessor actualLevel = (LevelAccessor) ((ChunkAccessAccessor) chunk).accessor$getLevelHeightAccessor();
         final ChunkPos chunkPos = chunk.getPos();
         final RandomSource random = new XoroshiroRandomSource(chunkPos.x * 1842639486192314L, chunkPos.z * 579238196380231L);
-        final ChunkData chunkData = chunkDataProvider.get(chunk);
+        final ChunkData chunkData = chunkDataGenerator.generate(chunk);
 
         // Lock sections
         final Set<LevelChunkSection> sections = new HashSet<>();
@@ -528,7 +527,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
     private ChunkBaseBlockSource createBaseBlockSourceForChunk(ChunkAccess chunk)
     {
-        final RockData rockData = chunkDataProvider.get(chunk).getRockData();
+        final RockData rockData = ChunkData.get(chunk).getRockData();
         return new ChunkBaseBlockSource(rockData, this::sampleBiomeNoRiver);
     }
 
@@ -563,7 +562,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         TFCAquifer aquifer = aquiferCache.getIfPresent(chunkPos.x, chunkPos.z);
         if (aquifer == null)
         {
-            final ChunkData chunkData = chunkDataProvider.get(chunk);
+            final ChunkData chunkData = ChunkData.get(chunk);
 
             aquifer = new TFCAquifer(chunkPos, settings, baseBlockSource, getSeaLevel(), noiseSampler.positionalRandomFactory, noiseSampler.barrierNoise);
             aquifer.setSurfaceHeights(chunkData.getAquiferSurfaceHeight());

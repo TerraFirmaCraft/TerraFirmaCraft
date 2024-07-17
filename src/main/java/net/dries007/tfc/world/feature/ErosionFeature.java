@@ -23,7 +23,7 @@ import net.dries007.tfc.common.entities.misc.TFCFallingBlockEntity;
 import net.dries007.tfc.common.recipes.LandslideRecipe;
 import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.MutableDensityFunctionContext;
-import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
+import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.RockData;
 import net.dries007.tfc.world.settings.RockLayerSettings;
 
@@ -44,7 +44,7 @@ public class ErosionFeature extends Feature<NoneFeatureConfiguration>
         final ChunkPos chunkPos = new ChunkPos(pos);
         final int chunkX = chunkPos.getMinBlockX(), chunkZ = chunkPos.getMinBlockZ();
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-        final RockData rockData = ChunkDataProvider.get(context.chunkGenerator()).get(chunk).getRockData();
+        final RockData rockData = ChunkData.get(chunk).getRockData();
 
         final ChunkGeneratorExtension extension = (ChunkGeneratorExtension) context.chunkGenerator();
         final RockLayerSettings rockSettings = extension.rockLayerSettings();

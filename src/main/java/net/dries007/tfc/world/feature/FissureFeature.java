@@ -19,7 +19,6 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.settings.RockSettings;
 
 public class FissureFeature extends Feature<FissureConfig>
@@ -138,8 +137,7 @@ public class FissureFeature extends Feature<FissureConfig>
         final int placeCount = 1 + rand.nextInt(config.count());
         final int minDepth = config.minDepth().resolveY(new WorldGenerationContext(context.chunkGenerator(), level));
         final BlockState insideState = config.wallState().orElseGet(() -> {
-            final ChunkDataProvider provider = ChunkDataProvider.get(context.chunkGenerator());
-            final ChunkData data = provider.get(context.level(), pos);
+            final ChunkData data = ChunkData.get(context.level(), pos);
             final RockSettings rock = data.getRockData().getRock(pos.getX(), context.chunkGenerator().getMinY() + 1, pos.getZ());
             return rock.raw().defaultBlockState();
         });

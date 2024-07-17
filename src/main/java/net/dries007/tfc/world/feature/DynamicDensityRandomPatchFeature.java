@@ -17,7 +17,6 @@ import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConf
 
 import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.ForestType;
 
 public class DynamicDensityRandomPatchFeature extends Feature<RandomPatchConfiguration>
@@ -54,8 +53,7 @@ public class DynamicDensityRandomPatchFeature extends Feature<RandomPatchConfigu
 
     private int getTries(FeaturePlaceContext<RandomPatchConfiguration> context, WorldGenLevel level, BlockPos pos, int tries)
     {
-        final ChunkDataProvider provider = ChunkDataProvider.get(context.chunkGenerator());
-        final ChunkData data = provider.get(level, pos);
+        final ChunkData data = ChunkData.get(level, pos);
         final ForestType forestType = data.getForestType();
 
         final int seaLevel = context.chunkGenerator().getSeaLevel();

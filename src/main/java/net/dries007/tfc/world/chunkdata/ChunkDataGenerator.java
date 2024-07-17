@@ -8,22 +8,28 @@ package net.dries007.tfc.world.chunkdata;
 
 import java.util.List;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.chunk.ChunkAccess;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.settings.RockSettings;
 
-/**
- * This is the object responsible for generating TFC chunk data, in parallel with normal chunk generation.
- * <p>
- * In order to apply this to a custom chunk generator: the chunk generator MUST implement {@link ChunkGeneratorExtension} and return a {@link ChunkDataProvider}, which contains an instance of this generator.
- */
 public interface ChunkDataGenerator
 {
     /**
      * Generate the provided chunk data
      */
-    void generate(ChunkData data);
+    ChunkData generate(ChunkData data);
+
+    default ChunkData generate(ChunkAccess chunk)
+    {
+        return generate(ChunkData.get(chunk));
+    }
+
+    default ChunkData createAndGeneratePartial(ChunkPos pos)
+    {
+        return generate(new ChunkData(this, pos));
+    }
 
     /**
      * Generate the rock at the given {@code (x, y, z)} position. Coordinates must be <strong>block coordinates</strong>, not chunk-local. {@code surfaceY} should be the view provided in {@link RockData}

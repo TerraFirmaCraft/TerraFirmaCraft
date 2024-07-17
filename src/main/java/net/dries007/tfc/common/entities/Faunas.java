@@ -218,7 +218,7 @@ public class Faunas
                 return false;
             }
 
-            final ChunkData data = EntityHelpers.getChunkDataForSpawning(level, pos);
+            final ChunkData data = ChunkData.get(level, pos);
             if (!fauna.climate().isValid(data, pos, rand))
             {
                 return false;

@@ -26,7 +26,7 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
+import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.settings.RockSettings;
 
 public class TidePoolFeature extends Feature<NoneFeatureConfiguration>
@@ -53,8 +53,7 @@ public class TidePoolFeature extends Feature<NoneFeatureConfiguration>
         final int zSize = Mth.nextInt(random, 3, 7);
         final int maxLength = Math.max(xSize, zSize);
 
-        final ChunkDataProvider provider = ChunkDataProvider.get(context.chunkGenerator());
-        final RockSettings rock = provider.get(context.level(), origin).getRockData().getRock(origin);
+        final RockSettings rock = ChunkData.get(context.level(), origin).getRockData().getRock(origin);
         final BlockState cobble = rock.cobble().defaultBlockState();
         final BlockState raw = rock.raw().defaultBlockState();
         final BlockState water = TFCBlocks.SALT_WATER.get().defaultBlockState();
