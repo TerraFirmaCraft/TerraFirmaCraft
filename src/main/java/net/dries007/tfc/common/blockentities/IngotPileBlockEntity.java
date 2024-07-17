@@ -21,7 +21,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.util.data.Metal;
+import net.dries007.tfc.util.data.FluidHeat;
 
 public class IngotPileBlockEntity extends TFCBlockEntity
 {
@@ -64,13 +64,13 @@ public class IngotPileBlockEntity extends TFCBlockEntity
     /**
      * Returns a cached metal for the given side, if present, otherwise grabs from the cache.
      * The metal is defined by checking what metal the stack would melt into if heated.
-     * Any other items turn into {@link Metal#unknown()}.
+     * Any other items turn into {@link FluidHeat#unknown()}.
      */
-    public Metal getOrCacheMetal(int index)
+    public FluidHeat getOrCacheMetal(int index)
     {
         if (index >= entries.size())
         {
-            return Metal.unknown();
+            return FluidHeat.unknown();
         }
 
         final Entry entry;
@@ -81,15 +81,15 @@ public class IngotPileBlockEntity extends TFCBlockEntity
         catch (IndexOutOfBoundsException e)
         {
             // This is terrible, but it's a threadsafety issue. `entries` might be updated between the bounds check above, and this query
-            return Metal.unknown();
+            return FluidHeat.unknown();
         }
 
         if (entry.metal == null)
         {
-            entry.metal = Metal.getFromIngot(entry.stack);
+            entry.metal = FluidHeat.getFromIngot(entry.stack);
             if (entry.metal == null)
             {
-                entry.metal = Metal.unknown();
+                entry.metal = FluidHeat.unknown();
             }
         }
         return entry.metal;
@@ -121,10 +121,10 @@ public class IngotPileBlockEntity extends TFCBlockEntity
 
     public void fillTooltip(Consumer<Component> tooltip)
     {
-        final Object2IntMap<Metal> map = new Object2IntOpenHashMap<>();
+        final Object2IntMap<FluidHeat> map = new Object2IntOpenHashMap<>();
         for (Entry entry : entries)
         {
-            final Metal metal = entry.metal;
+            final FluidHeat metal = entry.metal;
             if (metal != null)
             {
                 map.mergeInt(metal, 1, Integer::sum);
@@ -141,7 +141,7 @@ public class IngotPileBlockEntity extends TFCBlockEntity
     static class Entry
     {
         final ItemStack stack;
-        @Nullable Metal metal;
+        @Nullable FluidHeat metal;
 
         Entry(ItemStack stack)
         {

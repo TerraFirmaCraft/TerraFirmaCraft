@@ -25,7 +25,7 @@ import net.dries007.tfc.util.data.Fuel;
 
 public final class HeatCapability
 {
-    public static final DataManager<HeatDefinition> MANAGER = new DataManager<>(Helpers.identifier("item_heats"), "item heat", HeatDefinition.CODEC, HeatDefinition.STREAM_CODEC);
+    public static final DataManager<HeatDefinition> MANAGER = new DataManager<>(Helpers.identifier("item_heat"), "item heat", HeatDefinition.CODEC, HeatDefinition.STREAM_CODEC);
     public static final IndirectHashCollection<Item, HeatDefinition> CACHE = IndirectHashCollection.create(r -> RecipeHelpers.itemKeys(r.ingredient()), MANAGER::getValues);
     public static final BlockCapability<IHeatConsumer, @Nullable Direction> CAPABILITY = BlockCapability.create(Helpers.identifier("heat"), IHeatConsumer.class, Direction.class);
 

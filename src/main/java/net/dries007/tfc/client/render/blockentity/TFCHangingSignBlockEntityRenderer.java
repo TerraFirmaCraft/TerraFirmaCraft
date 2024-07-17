@@ -33,7 +33,7 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.mixin.client.accessor.SignRendererAccessor;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.data.Metal;
+import net.dries007.tfc.util.Metal;
 
 public class TFCHangingSignBlockEntityRenderer extends HangingSignRenderer
 {
@@ -58,7 +58,7 @@ public class TFCHangingSignBlockEntityRenderer extends HangingSignRenderer
         return new HangingSignModelData(new Material(Sheets.SIGN_SHEET, signLocation), guiLocation);
     }
 
-    private static HangingSignModelData createModelData(Metal.Default metal, Supplier<? extends SignBlock> reg)
+    private static HangingSignModelData createModelData(Metal metal, Supplier<? extends SignBlock> reg)
     {
         final WoodType type = reg.get().type();
         final ResourceLocation woodName = Helpers.resourceLocation(type.name());

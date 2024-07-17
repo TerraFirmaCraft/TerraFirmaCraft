@@ -34,7 +34,6 @@ import net.dries007.tfc.common.component.forge.ForgingCapability;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
-import net.dries007.tfc.util.data.Metal;
 
 public class AnvilRecipe implements ISimpleRecipe<AnvilRecipe.Inventory>
 {
@@ -195,7 +194,7 @@ public class AnvilRecipe implements ISimpleRecipe<AnvilRecipe.Inventory>
         ItemStack getItem();
 
         /**
-         * @return The tier ({@link Metal.Tier} of the anvil)
+         * @return The tier of the anvil
          */
         int getTier();
 

@@ -14,6 +14,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.crafting.IngredientType;
 
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
@@ -31,11 +32,23 @@ public record HeatIngredient(float min, float max) implements PreciseIngredient
         HeatIngredient::new
     );
 
+    public static Ingredient min(float min)
+    {
+        return new HeatIngredient(min, Float.MAX_VALUE).toVanilla();
+    }
+
     @Override
     public boolean test(ItemStack stack)
     {
         final float temperature = HeatCapability.getTemperature(stack);
         return temperature >= min && temperature <= max;
+    }
+
+    @Override
+    public ItemStack modifyStackForDisplay(ItemStack stack)
+    {
+        HeatCapability.setTemperature(stack, min);
+        return stack;
     }
 
     @Override

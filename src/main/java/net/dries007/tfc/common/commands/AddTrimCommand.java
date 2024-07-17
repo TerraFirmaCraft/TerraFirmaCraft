@@ -28,7 +28,7 @@ import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.server.command.EnumArgument;
 
 import net.dries007.tfc.common.items.TFCItems;
-import net.dries007.tfc.util.data.Metal;
+import net.dries007.tfc.util.Metal;
 
 
 public class AddTrimCommand
@@ -43,14 +43,14 @@ public class AddTrimCommand
             .then(Commands.argument("material", ItemArgument.item(buildContext))
                 .then(Commands.argument("pattern", ItemArgument.item(buildContext))
                     .executes(context -> addTrim(context.getSource(), context.getArgument("material", ItemInput.class).getItem(), context.getArgument("pattern", ItemInput.class).getItem(), context.getSource().getPlayerOrException().getMainHandItem()))
-                    .then(Commands.argument("metal", EnumArgument.enumArgument(Metal.Default.class))
-                        .executes(context -> spawnSet(context.getSource(), context.getArgument("material", ItemInput.class).getItem(), context.getArgument("pattern", ItemInput.class).getItem(), context.getArgument("metal", Metal.Default.class)))
+                    .then(Commands.argument("metal", EnumArgument.enumArgument(Metal.class))
+                        .executes(context -> spawnSet(context.getSource(), context.getArgument("material", ItemInput.class).getItem(), context.getArgument("pattern", ItemInput.class).getItem(), context.getArgument("metal", Metal.class)))
                     )
                 )
             );
     }
 
-    public static int spawnSet(CommandSourceStack source, Item materialItem, Item patternItem, Metal.Default metal) throws CommandSyntaxException
+    public static int spawnSet(CommandSourceStack source, Item materialItem, Item patternItem, Metal metal) throws CommandSyntaxException
     {
         if (!metal.allParts())
         {

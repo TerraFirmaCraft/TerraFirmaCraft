@@ -20,7 +20,7 @@ import net.dries007.tfc.common.capabilities.MoldLike;
 import net.dries007.tfc.common.container.MoldLikeAlloyContainer;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Tooltips;
-import net.dries007.tfc.util.data.Metal;
+import net.dries007.tfc.util.data.FluidHeat;
 
 public class MoldLikeAlloyScreen extends TFCContainerScreen<MoldLikeAlloyContainer>
 {
@@ -39,7 +39,7 @@ public class MoldLikeAlloyScreen extends TFCContainerScreen<MoldLikeAlloyContain
         if (mold != null)
         {
             final FluidStack fluid = mold.getFluidInTank(0);
-            final Metal metal = Metal.get(fluid.getFluid());
+            final FluidHeat metal = FluidHeat.get(fluid.getFluid());
             if (metal != null)
             {
                 drawCenteredLine(stack, metal.getDisplayName(), 14);

@@ -27,7 +27,7 @@ import net.dries007.tfc.client.TFCColors;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.data.Metal;
+import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.registry.RegistrationHelpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
@@ -59,7 +59,7 @@ public final class TFCFluids
     /**
      * Fluid instances
      */
-    public static final Map<Metal.Default, FluidHolder<BaseFlowingFluid>> METALS = Helpers.mapOfKeys(Metal.Default.class, metal -> register(
+    public static final Map<Metal, FluidHolder<BaseFlowingFluid>> METALS = Helpers.mapOfKeys(Metal.class, metal -> register(
         "metal/" + metal.getSerializedName(),
         properties -> properties
             .block(TFCBlocks.METAL_FLUIDS.get(metal))
@@ -111,19 +111,6 @@ public final class TFCFluids
             .descriptionId("fluid.tfc." + fluid.getId())
             .canConvertToSource(false),
         new FluidTypeClientProperties(fluid.isTransparent() ? ALPHA_MASK | fluid.getColor() : fluid.getColor(), WATER_STILL, WATER_FLOW, WATER_OVERLAY, UNDERWATER_LOCATION),
-        MixingFluid.Source::new,
-        MixingFluid.Flowing::new
-    ));
-
-    public static final Map<Alcohol, FluidHolder<BaseFlowingFluid>> ALCOHOLS = Helpers.mapOfKeys(Alcohol.class, fluid -> register(
-        fluid.getId(),
-        properties -> properties
-            .block(TFCBlocks.ALCOHOLS.get(fluid))
-            .bucket(TFCItems.FLUID_BUCKETS.get(FluidId.asType(fluid))),
-        waterLike()
-            .descriptionId("fluid.tfc." + fluid.getId())
-            .canConvertToSource(false),
-        new FluidTypeClientProperties(fluid.getColor(), WATER_STILL, WATER_FLOW, WATER_OVERLAY, null),
         MixingFluid.Source::new,
         MixingFluid.Flowing::new
     ));

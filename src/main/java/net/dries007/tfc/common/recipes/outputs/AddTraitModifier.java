@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.recipes.outputs;
 
 import com.mojang.serialization.MapCodec;
+import net.minecraft.core.Holder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
@@ -18,6 +19,11 @@ public record AddTraitModifier(FoodTrait trait) implements ItemStackModifier
 {
     public static final MapCodec<AddTraitModifier> CODEC = FoodTrait.CODEC.fieldOf("trait").xmap(AddTraitModifier::new, AddTraitModifier::trait);
     public static final StreamCodec<RegistryFriendlyByteBuf, AddTraitModifier> STREAM_CODEC = FoodTrait.STREAM_CODEC.map(AddTraitModifier::new, AddTraitModifier::trait);
+
+    public static AddTraitModifier of(Holder<FoodTrait> trait)
+    {
+        return new AddTraitModifier(trait.value());
+    }
 
     @Override
     public ItemStack apply(ItemStack stack, ItemStack input)

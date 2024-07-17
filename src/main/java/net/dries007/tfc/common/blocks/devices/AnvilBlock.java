@@ -39,7 +39,6 @@ import net.dries007.tfc.common.blockentities.AnvilBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.data.Metal;
 
 public class AnvilBlock extends DeviceBlock implements Tiered
 {
@@ -125,11 +124,6 @@ public class AnvilBlock extends DeviceBlock implements Tiered
     }
 
     private final int tier;
-
-    public AnvilBlock(ExtendedProperties properties, Metal.Tier tier)
-    {
-        this(properties, tier.ordinal());
-    }
 
     public AnvilBlock(ExtendedProperties properties, int tier)
     {

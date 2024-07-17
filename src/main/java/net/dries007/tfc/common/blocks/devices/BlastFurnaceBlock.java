@@ -37,7 +37,6 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.MultiBlock;
-import net.dries007.tfc.util.data.Metal;
 
 public class BlastFurnaceBlock extends DeviceBlock implements IBellowsConsumer
 {
@@ -111,8 +110,7 @@ public class BlastFurnaceBlock extends DeviceBlock implements IBellowsConsumer
 
     private static boolean isTier3SheetOrHigherInDirection(BlockState state, SheetPileBlockEntity pile, Direction face)
     {
-        return state.getValue(DirectionPropertyBlock.getProperty(face))
-            && pile.getOrCacheMetal(face).tier() >= Metal.Tier.TIER_III.ordinal();
+        return state.getValue(DirectionPropertyBlock.getProperty(face)) && pile.getOrCacheMetal(face).tier() >= 3;
     }
 
     public BlastFurnaceBlock(ExtendedProperties properties)

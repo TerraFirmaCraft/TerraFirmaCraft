@@ -8,7 +8,6 @@ package net.dries007.tfc.common.recipes.outputs;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -25,6 +24,11 @@ public record AddHeatModifier(float temperature) implements ItemStackModifier
         ByteBufCodecs.FLOAT, c -> c.temperature,
         AddHeatModifier::new
     );
+
+    public static AddHeatModifier of(float temperature)
+    {
+        return new AddHeatModifier(temperature);
+    }
 
     @Override
     public ItemStack apply(ItemStack stack, ItemStack input)

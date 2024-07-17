@@ -56,7 +56,7 @@ import net.dries007.tfc.common.blocks.ExtendedBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.data.Metal;
+import net.dries007.tfc.util.data.FluidHeat;
 
 /**
  * A sheet pile is a collection of metal sheets (which can be made from arbitrary metals, and hence items), placed on the side of blocks.
@@ -369,7 +369,7 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
             return true;
         }
 
-        private void addHitEffects(ClientLevel level, BlockPos pos, BlockState state, Direction face, Metal metal)
+        private void addHitEffects(ClientLevel level, BlockPos pos, BlockState state, Direction face, FluidHeat metal)
         {
             double x = level.random.nextDouble() * 0.8 + 0.1;
             double y = level.random.nextDouble() * 0.8 + 0.1;

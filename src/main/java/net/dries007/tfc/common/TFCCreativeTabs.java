@@ -47,8 +47,8 @@ import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.HideItemType;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
+import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.SelfTests;
-import net.dries007.tfc.util.data.Metal;
 
 
 @SuppressWarnings("unused")
@@ -60,7 +60,7 @@ public final class TFCCreativeTabs
     public static final Id EARTH = register("earth", () -> new ItemStack(TFCBlocks.ROCK_BLOCKS.get(Rock.QUARTZITE).get(Rock.BlockType.RAW).get()), TFCCreativeTabs::fillEarthTab);
     public static final Id ORES = register("ores", () -> new ItemStack(TFCItems.GRADED_ORES.get(Ore.NATIVE_COPPER).get(Ore.Grade.NORMAL).get()), TFCCreativeTabs::fillOresTab);
     public static final Id ROCKS = register("rock", () -> new ItemStack(TFCBlocks.ROCK_BLOCKS.get(Rock.ANDESITE).get(Rock.BlockType.RAW).get()), TFCCreativeTabs::fillRocksTab);
-    public static final Id METAL = register("metals", () -> new ItemStack(TFCItems.METAL_ITEMS.get(Metal.Default.WROUGHT_IRON).get(Metal.ItemType.INGOT).get()), TFCCreativeTabs::fillMetalTab);
+    public static final Id METAL = register("metals", () -> new ItemStack(TFCItems.METAL_ITEMS.get(Metal.WROUGHT_IRON).get(Metal.ItemType.INGOT).get()), TFCCreativeTabs::fillMetalTab);
     public static final Id WOOD = register("wood", () -> new ItemStack(TFCBlocks.WOODS.get(Wood.DOUGLAS_FIR).get(Wood.BlockType.LOG).get()), TFCCreativeTabs::fillWoodTab);
     public static final Id FOOD = register("food", () -> new ItemStack(TFCItems.FOOD.get(Food.RED_APPLE).get()), TFCCreativeTabs::fillFoodTab);
     public static final Id FLORA = register("flora", () -> new ItemStack(TFCBlocks.PLANTS.get(Plant.GOLDENROD).get()), TFCCreativeTabs::fillPlantsTab);
@@ -161,7 +161,7 @@ public final class TFCCreativeTabs
 
     private static void fillMetalTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output out)
     {
-        for (Metal.Default metal : Metal.Default.values())
+        for (Metal metal : Metal.values())
         {
             for (Metal.BlockType type : new Metal.BlockType[] {
                 Metal.BlockType.ANVIL,
@@ -179,23 +179,23 @@ public final class TFCCreativeTabs
 
             accept(out, TFCItems.METAL_ITEMS, metal, Metal.ItemType.UNFINISHED_LAMP);
 
-            if (metal == Metal.Default.BRONZE)
+            if (metal == Metal.BRONZE)
                 accept(out, TFCBlocks.BRONZE_BELL);
-            else if (metal == Metal.Default.BRASS)
+            else if (metal == Metal.BRASS)
             {
                 accept(out, TFCBlocks.BRASS_BELL);
                 accept(out, TFCItems.BRASS_MECHANISMS);
                 accept(out, TFCItems.JACKS);
             }
-            else if (metal == Metal.Default.GOLD)
+            else if (metal == Metal.GOLD)
                 out.accept(Blocks.BELL);
-            else if (metal == Metal.Default.RED_STEEL)
+            else if (metal == Metal.RED_STEEL)
                 accept(out, TFCItems.RED_STEEL_BUCKET);
-            else if (metal == Metal.Default.BLUE_STEEL)
+            else if (metal == Metal.BLUE_STEEL)
                 accept(out, TFCItems.BLUE_STEEL_BUCKET);
-            else if (metal == Metal.Default.WROUGHT_IRON)
+            else if (metal == Metal.WROUGHT_IRON)
                 accept(out, TFCItems.WROUGHT_IRON_GRILL);
-            else if (metal == Metal.Default.STEEL)
+            else if (metal == Metal.STEEL)
             {
                 accept(out, TFCBlocks.STEEL_PIPE);
                 accept(out, TFCBlocks.STEEL_PUMP);
@@ -497,8 +497,7 @@ public final class TFCCreativeTabs
         accept(out, TFCItems.EMPTY_JAR);
         accept(out, TFCItems.EMPTY_JAR_WITH_LID);
         accept(out, TFCItems.JAR_LID);
-        accept(out, TFCItems.WINDMILL_BLADE);
-        TFCItems.COLORED_WINDMILL_BLADES.values().forEach(blade -> accept(out, blade));
+        TFCItems.WINDMILL_BLADES.values().forEach(blade -> accept(out, blade));
         consumeOurs(BuiltInRegistries.FLUID, fluid -> out.accept(fluid.getBucket()));
 
         TFCItems.FRESHWATER_FISH_BUCKETS.values().forEach(reg -> accept(out, reg));
@@ -604,7 +603,7 @@ public final class TFCCreativeTabs
             accept(out, TFCItems.CHEST_MINECARTS, wood);
             accept(out, TFCItems.SIGNS, wood);
 
-            for (Metal.Default metal : Metal.Default.values())
+            for (Metal metal : Metal.values())
             {
                 accept(out, TFCItems.HANGING_SIGNS.get(wood), metal);
             }

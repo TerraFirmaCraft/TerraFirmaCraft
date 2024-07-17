@@ -23,6 +23,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.MobBucketItem;
 import net.minecraft.world.item.SignItem;
 import net.minecraft.world.item.StandingAndWallBlockItem;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -48,7 +49,7 @@ import net.dries007.tfc.common.fluids.FluidId;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.data.Metal;
+import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.registry.IdHolder;
 import net.dries007.tfc.util.registry.RegistryHolder;
 
@@ -94,7 +95,7 @@ public final class TFCItems
 
     // Metal
 
-    public static final Map<Metal.Default, Map<Metal.ItemType, ItemId>> METAL_ITEMS = Helpers.mapOfKeys(Metal.Default.class, metal ->
+    public static final Map<Metal, Map<Metal.ItemType, ItemId>> METAL_ITEMS = Helpers.mapOfKeys(Metal.class, metal ->
         Helpers.mapOfKeys(Metal.ItemType.class, type -> type.has(metal), type ->
             register("metal/" + type.name() + "/" + metal.name(), () -> type.create(metal))
         )
@@ -114,8 +115,8 @@ public final class TFCItems
 
     public static final Map<Wood, ItemId> SIGNS = Helpers.mapOfKeys(Wood.class, wood -> register("wood/sign/" + wood.name(), () -> new SignItem(new Item.Properties(), TFCBlocks.WOODS.get(wood).get(Wood.BlockType.SIGN).get(), TFCBlocks.WOODS.get(wood).get(Wood.BlockType.WALL_SIGN).get())));
 
-    public static final Map<Wood, Map<Metal.Default, ItemId>> HANGING_SIGNS = Helpers.mapOfKeys(Wood.class, wood ->
-        Helpers.mapOfKeys(Metal.Default.class, Metal.Default::allParts, metal ->
+    public static final Map<Wood, Map<Metal, ItemId>> HANGING_SIGNS = Helpers.mapOfKeys(Wood.class, wood ->
+        Helpers.mapOfKeys(Metal.class, Metal::allParts, metal ->
             register("wood/hanging_sign/" + metal.name() + "/" + wood.name(), () -> new HangingSignItem(TFCBlocks.CEILING_HANGING_SIGNS.get(wood).get(metal).get(), TFCBlocks.WALL_HANGING_SIGNS.get(wood).get(metal).get(), new Item.Properties()))
         )
     );
@@ -244,9 +245,8 @@ public final class TFCItems
     public static final ItemId EMPTY_PAN = register("pan/empty", () -> new EmptyPanItem(new Item.Properties()));
     public static final ItemId FILLED_PAN = register("pan/filled", () -> new PanItem(new Item.Properties().stacksTo(1)));
 
-    public static final ItemId WINDMILL_BLADE = register("windmill_blade", () -> new WindmillBladeItem(new Item.Properties(), DyeColor.WHITE));
-    public static final Map<DyeColor, ItemId> COLORED_WINDMILL_BLADES = Helpers.mapOfKeys(DyeColor.class, color -> color != DyeColor.WHITE, color ->
-        register(color.getSerializedName() + "_windmill_blade", () -> new WindmillBladeItem(new Item.Properties(), color))
+    public static final Map<DyeColor, ItemId> WINDMILL_BLADES = Helpers.mapOfKeys(DyeColor.class, color ->
+        register("windmill_blade/" + color.getSerializedName(), () -> new WindmillBladeItem(new Item.Properties(), color))
     );
     public static final Map<Fish, ItemId> FRESHWATER_FISH_EGGS = Helpers.mapOfKeys(Fish.class, fish -> registerSpawnEgg(TFCEntities.FRESHWATER_FISH.get(fish), fish.getEggColor1(), fish.getEggColor2()));
 
@@ -396,5 +396,12 @@ public final class TFCItems
         return new ItemId(ITEMS.register(name.toLowerCase(Locale.ROOT), item));
     }
     
-    public record ItemId(DeferredHolder<Item, Item> holder) implements RegistryHolder<Item, Item> {}
+    public record ItemId(DeferredHolder<Item, Item> holder) implements RegistryHolder<Item, Item>, ItemLike
+    {
+        @Override
+        public Item asItem()
+        {
+            return get();
+        }
+    }
 }

@@ -51,8 +51,8 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
     private static final Gson GSON = new Gson();
 
     protected final BiMap<ResourceLocation, T> types;
-    protected final String typeName;
-    protected final String registryName;
+    public final String typeName;
+    public final String registryName;
 
     protected final Codec<T> codec;
     protected final @Nullable StreamCodec<RegistryFriendlyByteBuf, T> streamCodec;
@@ -137,6 +137,11 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
     public boolean isSynced()
     {
         return streamCodec != null;
+    }
+
+    public final Codec<T> elementCodec()
+    {
+        return codec;
     }
 
     /**
@@ -252,6 +257,12 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
         public T get()
         {
             return value.orElseThrow(() -> new IllegalStateException("Referencing value before loaded"));
+        }
+
+        public void set(T value)
+        {
+            assert this.value.isEmpty() : "Assigned a duplicate value!";
+            this.value = Optional.of(value);
         }
     }
 

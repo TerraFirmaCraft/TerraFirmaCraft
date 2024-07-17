@@ -26,7 +26,7 @@ import net.dries007.tfc.util.data.DataManager;
 
 public final class ItemSizeManager
 {
-    public static final DataManager<ItemSizeDefinition> MANAGER = new DataManager<>(Helpers.identifier("item_sizes"), "item size", ItemSizeDefinition.CODEC, ItemSizeDefinition.STREAM_CODEC);
+    public static final DataManager<ItemSizeDefinition> MANAGER = new DataManager<>(Helpers.identifier("item_size"), "item size", ItemSizeDefinition.CODEC, ItemSizeDefinition.STREAM_CODEC);
     public static final IndirectHashCollection<Item, ItemSizeDefinition> CACHE = IndirectHashCollection.create(r -> RecipeHelpers.itemKeys(r.ingredient()), MANAGER::getValues);
 
     private static final Logger LOGGER = LogUtils.getLogger();

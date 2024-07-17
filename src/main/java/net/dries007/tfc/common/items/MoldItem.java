@@ -44,8 +44,9 @@ import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.CastingRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.Tooltips;
-import net.dries007.tfc.util.data.Metal;
+import net.dries007.tfc.util.data.FluidHeat;
 
 public class MoldItem extends Item
 {
@@ -228,7 +229,7 @@ public class MoldItem extends Item
             this.stack = stack;
 
             this.heat = new HeatHandler(1, 0, 0);
-            this.tank = new FluidTank(capacity, fluid -> Metal.get(fluid.getFluid()) != null && Helpers.isFluid(fluid.getFluid(), fluidTag));
+            this.tank = new FluidTank(capacity, fluid -> FluidHeat.get(fluid.getFluid()) != null && Helpers.isFluid(fluid.getFluid(), fluidTag));
             this.capacity = capacity;
         }
 
@@ -239,7 +240,7 @@ public class MoldItem extends Item
             final FluidStack fluid = tank.getFluid();
             if (!fluid.isEmpty())
             {
-                final Metal metal = Metal.get(fluid.getFluid());
+                final FluidHeat metal = FluidHeat.get(fluid.getFluid());
                 if (metal != null)
                 {
                     text.add(Component.translatable("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
@@ -317,7 +318,7 @@ public class MoldItem extends Item
         @Override
         public boolean isMolten()
         {
-            final Metal metal = getContainedMetal();
+            final FluidHeat metal = getContainedMetal();
             if (metal != null)
             {
                 return getTemperature() >= metal.meltTemperature();
@@ -326,15 +327,15 @@ public class MoldItem extends Item
         }
 
         @Nullable
-        private Metal getContainedMetal()
+        private FluidHeat getContainedMetal()
         {
-            return Metal.get(tank.getFluid().getFluid());
+            return FluidHeat.get(tank.getFluid().getFluid());
         }
 
         private void updateHeatCapacity()
         {
             final FluidStack fluid = tank.getFluid();
-            final Metal metal = Metal.get(fluid.getFluid());
+            final FluidHeat metal = FluidHeat.get(fluid.getFluid());
 
             float value = HeatCapability.POTTERY_HEAT_CAPACITY;
             if (!fluid.isEmpty() && metal != null)

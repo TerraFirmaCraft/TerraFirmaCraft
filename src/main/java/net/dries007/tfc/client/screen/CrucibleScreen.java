@@ -12,14 +12,14 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.level.material.Fluid;
+import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 
-import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
 import net.dries007.tfc.common.capabilities.MoldLike;
@@ -27,10 +27,9 @@ import net.dries007.tfc.common.capabilities.heat.Heat;
 import net.dries007.tfc.common.container.CrucibleContainer;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.PourFasterPacket;
-import net.dries007.tfc.util.AlloyView;
+import net.dries007.tfc.util.FluidAlloy;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Tooltips;
-import net.dries007.tfc.util.data.Metal;
 
 public class CrucibleScreen extends BlockEntityScreen<CrucibleBlockEntity, CrucibleContainer>
 {
@@ -126,27 +125,27 @@ public class CrucibleScreen extends BlockEntityScreen<CrucibleBlockEntity, Cruci
         graphics.blit(texture, leftPos + 154, topPos + 11 + scrollPos, 176, 7, 12, 15);
 
         // Draw the fluid + detailed content
-        AlloyView alloy = blockEntity.getAlloy();
+        final FluidAlloy alloy = blockEntity.getAlloy();
+        final FluidStack alloyResult = blockEntity.getAlloyResult();
         if (alloy.getAmount() > 0)
         {
-            final TextureAtlasSprite sprite = RenderHelpers.getAndBindFluidSprite(alloy.getResultAsFluidStack());
-            final int fillHeight = (int) Math.ceil((float) 31 * alloy.getAmount() / alloy.getMaxUnits());
+            final TextureAtlasSprite sprite = RenderHelpers.getAndBindFluidSprite(alloyResult);
+            final int fillHeight = (int) Math.ceil((float) 31 * alloy.getAmount() / alloy.getMaxAmount());
 
             RenderHelpers.fillAreaWithSprite(graphics, sprite, leftPos + 97, topPos + 124 - fillHeight, 36, fillHeight, 16, 16);
 
             resetToBackgroundSprite();
 
             // Draw Title:
-            final Metal result = alloy.getResult(ClientHelpers.getLevelOrThrow());
-            final String resultText = ChatFormatting.UNDERLINE + I18n.get(result.translationKey());
+            final Component resultText = alloyResult.getFluidType().getDescription().copy().withStyle(ChatFormatting.UNDERLINE);
             graphics.drawString(font, resultText, leftPos + 10, topPos + 11, 0x000000, false);
 
-            int startElement = Math.max(0, (int) Math.floor(((alloy.getMetals().size() - MAX_ELEMENTS) / 49D) * (scrollPos + 1)));
+            int startElement = Math.max(0, (int) Math.floor(((alloy.getContent().size() - MAX_ELEMENTS) / 49D) * (scrollPos + 1)));
 
             // Draw Components
             int yPos = topPos + 22;
             int index = -1; // So the first +1 = 0
-            for (Object2DoubleMap.Entry<Metal> entry : alloy.getMetals().object2DoubleEntrySet())
+            for (Object2DoubleMap.Entry<Fluid> entry : alloy.getContent().object2DoubleEntrySet())
             {
                 index++;
                 if (index < startElement)
@@ -164,7 +163,7 @@ public class CrucibleScreen extends BlockEntityScreen<CrucibleBlockEntity, Cruci
                 // Metal 2 name:
                 //   ZZZ units (WW.W%)
 
-                final String metalName = font.plainSubstrByWidth(I18n.get(entry.getKey().translationKey()), 141) + ":";
+                final String metalName = font.plainSubstrByWidth(entry.getKey().getFluidType().getDescription().getString(), 141) + ":";
                 // %s units (%s %)
                 final MutableComponent content = Component.translatable("tfc.tooltip.crucible_content_line", Tooltips.fluidUnits(entry.getDoubleValue()), String.format("%2.1f", Math.round(1000 * entry.getDoubleValue() / alloy.getAmount()) / 10f));
 

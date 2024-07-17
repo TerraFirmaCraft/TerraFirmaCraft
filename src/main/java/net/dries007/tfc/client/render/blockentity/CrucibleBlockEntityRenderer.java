@@ -20,7 +20,7 @@ public class CrucibleBlockEntityRenderer implements BlockEntityRenderer<Crucible
     @Override
     public void render(CrucibleBlockEntity crucible, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
-        FluidStack fluidStack = crucible.getAlloy().getResultAsFluidStack();
+        final FluidStack fluidStack = crucible.getAlloyResult();
         if (!fluidStack.isEmpty())
         {
             final float height = ((float) fluidStack.getAmount() / TFCConfig.SERVER.crucibleCapacity.get() * 13f + 2f) / 16f;

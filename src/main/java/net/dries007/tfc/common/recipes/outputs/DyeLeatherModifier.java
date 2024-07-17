@@ -23,6 +23,11 @@ public record DyeLeatherModifier(DyeColor color) implements ItemStackModifier
         DyeLeatherModifier::new
     );
 
+    public static DyeLeatherModifier of(DyeColor color)
+    {
+        return new DyeLeatherModifier(color);
+    }
+
     @Override
     public ItemStack apply(ItemStack stack, ItemStack input)
     {

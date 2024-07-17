@@ -23,9 +23,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 
-import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.outputs.PotOutput;
 import net.dries007.tfc.compat.jade.common.BlockEntityTooltip;
 import net.dries007.tfc.util.Helpers;
@@ -95,7 +95,7 @@ public class JamPotRecipe extends PotRecipe
         @Override
         public ItemInteractionResult onInteract(PotBlockEntity entity, Player player, ItemStack clickedWith)
         {
-            if (Helpers.isItem(clickedWith, TFCTags.Items.EMPTY_JAR_WITH_LID) && !stack.isEmpty())
+            if (Helpers.isItem(clickedWith, TFCItems.EMPTY_JAR_WITH_LID) && !stack.isEmpty())
             {
                 // take the player's empty jar
                 clickedWith.shrink(1);

@@ -29,7 +29,7 @@ public class FoodTraits
     public static final DeferredHolder<FoodTrait, FoodTrait> BRINED = register("brined", TFCConfig.SERVER.traitBrinedModifier); // No decay modifier, required to pickle foods
     public static final DeferredHolder<FoodTrait, FoodTrait> PICKLED = register("pickled", TFCConfig.SERVER.traitPickledModifier);
     public static final DeferredHolder<FoodTrait, FoodTrait> PRESERVED = register("preserved", TFCConfig.SERVER.traitPreservedModifier); // Large / Small vessels
-    public static final DeferredHolder<FoodTrait, FoodTrait> VINEGAR = register("vinegar", TFCConfig.SERVER.traitVinegarModifier); // Used for the state of being sealed in vinegar
+    public static final DeferredHolder<FoodTrait, FoodTrait> PRESERVED_IN_VINEGAR = register("vinegar", TFCConfig.SERVER.traitVinegarModifier); // Used for the state of being sealed in vinegar
     public static final DeferredHolder<FoodTrait, FoodTrait> CHARCOAL_GRILLED = register("charcoal_grilled", TFCConfig.SERVER.traitCharcoalGrilledModifier); // Slight debuff from cooking in a charcoal forge
     public static final DeferredHolder<FoodTrait, FoodTrait> WOOD_GRILLED = register("wood_grilled", TFCConfig.SERVER.traitWoodGrilledModifier); // Slight buff when cooking in a grill
     public static final DeferredHolder<FoodTrait, FoodTrait> BURNT_TO_A_CRISP = register("burnt_to_a_crisp", TFCConfig.SERVER.traitBurntToACrispModifier); // Cooking food in something that's WAY TOO HOT too cook food in you fool!

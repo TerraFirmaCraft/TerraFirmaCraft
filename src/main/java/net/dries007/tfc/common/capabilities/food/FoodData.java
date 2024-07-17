@@ -99,6 +99,16 @@ public record FoodData(
         return new FoodData(hunger, 0f, saturation, 0, nutrients, 0);
     }
 
+    public static FoodData ofFood(int hunger, float water, float saturation, float decayModifier)
+    {
+        return new FoodData(hunger, water, saturation, 0, new float[5], decayModifier);
+    }
+
+    public static FoodData ofDrink(float water, int intoxication)
+    {
+        return new FoodData(0, water, 0, intoxication, new float[5], 0);
+    }
+
     public static FoodData decayOnly(float decayModifier)
     {
         return new FoodData(0, 0, 0, 0, new float[] {0, 0, 0, 0, 0}, decayModifier);
@@ -127,6 +137,22 @@ public record FoodData(
             mul(nutrients, multiplier),
             decayModifier
         );
+    }
+
+    public FoodData grain(float value) { return with(Nutrient.GRAIN, value); }
+    public FoodData vegetables(float value) { return with(Nutrient.VEGETABLES, value); }
+    public FoodData fruit(float value) { return with(Nutrient.FRUIT, value); }
+    public FoodData protein(float value) { return with(Nutrient.PROTEIN, value); }
+    public FoodData dairy(float value) { return with(Nutrient.DAIRY, value); }
+
+    /**
+     * Mutates the current {@code FoodData}, setting the nutrient to the provided value. <strong>Do not use</strong> in contexts where
+     * the food data is considered immutable! This is used instead of a builder for cases like building food for data generation!
+     */
+    public FoodData with(Nutrient nutrient, float value)
+    {
+        nutrients[nutrient.ordinal()] = value;
+        return this;
     }
 
     private static float[] mul(float[] input, float multiplier)

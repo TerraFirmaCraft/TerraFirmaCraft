@@ -49,6 +49,7 @@ import net.dries007.tfc.common.items.PropickItem;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.TFCRecipeSerializers;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
+import net.dries007.tfc.common.recipes.ingredients.TFCIngredients;
 import net.dries007.tfc.common.recipes.outputs.ItemStackModifiers;
 import net.dries007.tfc.common.recipes.outputs.PotOutput;
 import net.dries007.tfc.config.TFCConfig;
@@ -132,6 +133,7 @@ public final class TerraFirmaCraft
         TFCPaintings.PAINTING_TYPES.register(bus);
         TFCAdvancements.TRIGGERS.register(bus);
         TFCComponents.COMPONENTS.register(bus);
+        TFCIngredients.TYPES.register(bus);
 
         // World Generation (vanilla)
         TFCBlockPredicates.BLOCK_PREDICATES.register(bus);

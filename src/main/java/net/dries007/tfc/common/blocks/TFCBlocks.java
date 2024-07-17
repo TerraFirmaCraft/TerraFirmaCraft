@@ -21,6 +21,7 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerPotBlock;
@@ -117,7 +118,6 @@ import net.dries007.tfc.common.blocks.wood.TFCSlabBlock;
 import net.dries007.tfc.common.blocks.wood.TFCStairBlock;
 import net.dries007.tfc.common.blocks.wood.TFCWallHangingSignBlock;
 import net.dries007.tfc.common.blocks.wood.Wood;
-import net.dries007.tfc.common.fluids.Alcohol;
 import net.dries007.tfc.common.fluids.FluidId;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.common.fluids.SimpleFluid;
@@ -128,7 +128,7 @@ import net.dries007.tfc.common.items.TooltipBlockItem;
 import net.dries007.tfc.mixin.accessor.BlockBehaviourAccessor;
 import net.dries007.tfc.mixin.accessor.BlockStateBaseAccessor;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.data.Metal;
+import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.registry.RegistrationHelpers;
 import net.dries007.tfc.util.registry.RegistryHolder;
 
@@ -246,7 +246,7 @@ public final class TFCBlocks
 
     // Metals
 
-    public static final Map<Metal.Default, Map<Metal.BlockType, Id<Block>>> METALS = Helpers.mapOfKeys(Metal.Default.class, metal ->
+    public static final Map<Metal, Map<Metal.BlockType, Id<Block>>> METALS = Helpers.mapOfKeys(Metal.class, metal ->
         Helpers.mapOfKeys(Metal.BlockType.class, type -> type.has(metal), type ->
             register(type.createName(metal), type.create(metal), type.createBlockItem(new Item.Properties()))
         )
@@ -264,8 +264,8 @@ public final class TFCBlocks
         )
     );
 
-    public static final Map<Wood, Map<Metal.Default, Id<TFCCeilingHangingSignBlock>>> CEILING_HANGING_SIGNS = registerHangingSigns("hanging_sign", TFCCeilingHangingSignBlock::new);
-    public static final Map<Wood, Map<Metal.Default, Id<TFCWallHangingSignBlock>>> WALL_HANGING_SIGNS = registerHangingSigns("wall_hanging_sign", TFCWallHangingSignBlock::new);
+    public static final Map<Wood, Map<Metal, Id<TFCCeilingHangingSignBlock>>> CEILING_HANGING_SIGNS = registerHangingSigns("hanging_sign", TFCCeilingHangingSignBlock::new);
+    public static final Map<Wood, Map<Metal, Id<TFCWallHangingSignBlock>>> WALL_HANGING_SIGNS = registerHangingSigns("wall_hanging_sign", TFCWallHangingSignBlock::new);
 
     public static final Id<Block> PALM_MOSAIC = register("wood/planks/palm_mosaic", () -> new Block(Properties.ofFullCopy(Blocks.BAMBOO_MOSAIC)));
     public static final Id<Block> PALM_MOSAIC_STAIRS = register("wood/planks/palm_mosaic_stairs", () -> new TFCStairBlock(() -> PALM_MOSAIC.get().defaultBlockState(), ExtendedProperties.of(Blocks.BAMBOO_MOSAIC_STAIRS).flammableLikePlanks()));
@@ -458,7 +458,7 @@ public final class TFCBlocks
 
     // Fluids
 
-    public static final Map<Metal.Default, Id<LiquidBlock>> METAL_FLUIDS = Helpers.mapOfKeys(Metal.Default.class, metal ->
+    public static final Map<Metal, Id<LiquidBlock>> METAL_FLUIDS = Helpers.mapOfKeys(Metal.class, metal ->
         registerNoItem("fluid/metal/" + metal.name(), () -> new LiquidBlock(TFCFluids.METALS.get(metal).getSource(), Properties.ofFullCopy(Blocks.LAVA).noLootTable()))
     );
 
@@ -468,10 +468,6 @@ public final class TFCBlocks
 
     public static final Map<DyeColor, Id<LiquidBlock>> COLORED_FLUIDS = Helpers.mapOfKeys(DyeColor.class, fluid ->
         registerNoItem("fluid/" + fluid.getName() + "_dye", () -> new LiquidBlock(TFCFluids.COLORED_FLUIDS.get(fluid).getSource(), Properties.ofFullCopy(Blocks.WATER).noLootTable()))
-    );
-
-    public static final Map<Alcohol, Id<LiquidBlock>> ALCOHOLS = Helpers.mapOfKeys(Alcohol.class, fluid ->
-        registerNoItem("fluid/" + fluid.getId(), () -> new LiquidBlock(TFCFluids.ALCOHOLS.get(fluid).getSource(), Properties.ofFullCopy(Blocks.WATER)))
     );
 
     public static final Id<LiquidBlock> SALT_WATER = registerNoItem("fluid/salt_water", () -> new LiquidBlock(TFCFluids.SALT_WATER.getFlowing(), Properties.ofFullCopy(Blocks.WATER).noLootTable()));
@@ -551,10 +547,10 @@ public final class TFCBlocks
     }
 
 
-    private static <B extends SignBlock> Map<Wood, Map<Metal.Default, Id<B>>> registerHangingSigns(String variant, BiFunction<ExtendedProperties, WoodType, B> factory)
+    private static <B extends SignBlock> Map<Wood, Map<Metal, Id<B>>> registerHangingSigns(String variant, BiFunction<ExtendedProperties, WoodType, B> factory)
     {
         return Helpers.mapOfKeys(Wood.class, wood ->
-            Helpers.mapOfKeys(Metal.Default.class, Metal.Default::allParts, metal -> register(
+            Helpers.mapOfKeys(Metal.class, Metal::allParts, metal -> register(
                     "wood/planks/" + variant + "/" + metal.getSerializedName() + "/" + wood.getSerializedName(),
                     () -> factory.apply(ExtendedProperties.of(wood.woodColor()).sound(SoundType.WOOD).noCollission().strength(1F).flammableLikePlanks().blockEntity(TFCBlockEntities.HANGING_SIGN).ticks(SignBlockEntity::tick), wood.getVanillaWoodType()),
                     (Function<B, BlockItem>) null)
@@ -582,5 +578,12 @@ public final class TFCBlocks
         return new Id<>(RegistrationHelpers.registerBlock(TFCBlocks.BLOCKS, TFCItems.ITEMS, name, blockSupplier, blockItemFactory));
     }
     
-    public record Id<T extends Block>(DeferredHolder<Block, T> holder) implements RegistryHolder<Block, T> {}
+    public record Id<T extends Block>(DeferredHolder<Block, T> holder) implements RegistryHolder<Block, T>, ItemLike
+    {
+        @Override
+        public Item asItem()
+        {
+            return get().asItem();
+        }
+    }
 }

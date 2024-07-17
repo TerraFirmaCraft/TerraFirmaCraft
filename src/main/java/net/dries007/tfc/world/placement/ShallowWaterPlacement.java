@@ -42,7 +42,7 @@ public class ShallowWaterPlacement extends PlacementModifier
         for (int i = 0; i < maxDepth; i++)
         {
             mutablePos.move(0, -1, 0);
-            if (!context.getLevel().isFluidAtPosition(mutablePos, state -> Helpers.isFluid(state, TFCTags.Fluids.ANY_WATER)))
+            if (!context.getLevel().isFluidAtPosition(mutablePos, state -> Helpers.isFluid(state, TFCTags.Fluids.ANY_INFINITE_WATER)))
             {
                 if (i < minDepth)
                 {

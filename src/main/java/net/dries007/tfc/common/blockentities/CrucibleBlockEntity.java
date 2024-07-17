@@ -42,12 +42,11 @@ import net.dries007.tfc.common.container.CrucibleContainer;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.Alloy;
-import net.dries007.tfc.util.AlloyView;
+import net.dries007.tfc.util.FluidAlloy;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IntArrayBuilder;
 import net.dries007.tfc.util.calendar.ICalendarTickable;
-import net.dries007.tfc.util.data.Metal;
+import net.dries007.tfc.util.data.FluidHeat;
 
 public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBlockEntity.CrucibleInventory> implements ICalendarTickable
 {
@@ -217,17 +216,20 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         return temperature;
     }
 
+    public FluidAlloy getAlloy()
+    {
+        return inventory.alloy;
+    }
+
+    public FluidStack getAlloyResult()
+    {
+        assert level != null;
+        return inventory.alloy.getResult(level);
+    }
+
     public ContainerData getSyncableData()
     {
         return syncableData;
-    }
-
-    /**
-     * Gets a READ ONLY view of the alloy. Used for display / informational purposes only
-     */
-    public AlloyView getAlloy()
-    {
-        return inventory.alloy;
     }
 
     @Override
@@ -323,19 +325,20 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
     {
         private final CrucibleBlockEntity crucible;
         private final InventoryItemHandler inventory;
-        private final Alloy alloy;
+        private final FluidAlloy alloy;
 
         CrucibleInventory(InventoryBlockEntity<?> entity)
         {
             this.crucible = (CrucibleBlockEntity) entity;
             this.inventory = new InventoryItemHandler(entity, SLOTS);
-            this.alloy = new Alloy(TFCConfig.SERVER.crucibleCapacity.get());
+            this.alloy = new FluidAlloy(TFCConfig.SERVER.crucibleCapacity.get());
         }
 
         public boolean isMolten()
         {
             assert crucible.level != null;
-            return crucible.temperature > alloy.getResult(crucible.level).meltTemperature();
+            final @Nullable FluidHeat metal = FluidHeat.get(alloy.getResult(crucible.level).getFluid());
+            return metal == null || crucible.temperature > metal.meltTemperature();
         }
 
         @Override
@@ -364,30 +367,26 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         @Override
         public FluidStack getFluidInTank(int tank)
         {
-            return alloy.getResultAsFluidStack();
+            assert crucible.level != null;
+            return alloy.getResult(crucible.level);
         }
 
         @Override
         public int getTankCapacity(int tank)
         {
-            return alloy.getMaxUnits();
+            return alloy.getMaxAmount();
         }
 
         @Override
         public boolean isFluidValid(int tank, @NotNull FluidStack stack)
         {
-            return Metal.get(stack.getFluid()) != null;
+            return FluidHeat.get(stack.getFluid()) != null;
         }
 
         @Override
         public int fill(FluidStack resource, IFluidHandler.FluidAction action)
         {
-            final Metal metal = Metal.get(resource.getFluid());
-            if (metal != null)
-            {
-                return alloy.add(metal, resource.getAmount(), action.simulate());
-            }
-            return 0;
+            return alloy.add(resource, action);
         }
 
         @NotNull
@@ -397,13 +396,12 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
             if (isMolten())
             {
                 assert crucible.level != null;
-                final Metal result = alloy.getResult(crucible.level);
-                final int amount = alloy.removeAlloy(maxDrain, action.simulate());
+                final FluidStack result = alloy.extract(crucible.level.getRecipeManager(), maxDrain, action);
                 if (action.execute())
                 {
                     crucible.markForSync();
                 }
-                return new FluidStack(result.fluid(), amount);
+                return result;
             }
             return FluidStack.EMPTY;
         }

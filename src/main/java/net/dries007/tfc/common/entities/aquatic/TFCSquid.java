@@ -255,7 +255,7 @@ public class TFCSquid extends Squid implements AquaticMob
                 Vec3 vec3 = new Vec3(squid.getX() - livingentity.getX(), squid.getY() - livingentity.getY(), squid.getZ() - livingentity.getZ());
                 BlockState blockstate = squid.level().getBlockState(BlockPos.containing(squid.getX() + vec3.x, squid.getY() + vec3.y, squid.getZ() + vec3.z));
                 FluidState fluidstate = squid.level().getFluidState(BlockPos.containing(squid.getX() + vec3.x, squid.getY() + vec3.y, squid.getZ() + vec3.z));
-                if (fluidstate.is(TFCTags.Fluids.ANY_WATER) || blockstate.isAir())
+                if (fluidstate.is(TFCTags.Fluids.ANY_INFINITE_WATER) || blockstate.isAir())
                 {
                     double d0 = vec3.length();
                     if (d0 > 0.0D)

@@ -25,12 +25,12 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 
 import net.dries007.tfc.common.blocks.devices.SheetPileBlock;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.data.Metal;
+import net.dries007.tfc.util.data.FluidHeat;
 
 public class SheetPileBlockEntity extends TFCBlockEntity
 {
     private final ItemStack[] stacks;
-    private final Metal[] cachedMetals;
+    private final FluidHeat[] cachedMetals;
 
     private static final DirectionProperty FACING = SheetPileBlock.FACING;
     private static final BooleanProperty MIRROR = SheetPileBlock.MIRROR;
@@ -68,7 +68,7 @@ public class SheetPileBlockEntity extends TFCBlockEntity
         super(TFCBlockEntities.SHEET_PILE.get(), pos, state);
 
         this.stacks = new ItemStack[6];
-        this.cachedMetals = new Metal[6];
+        this.cachedMetals = new FluidHeat[6];
 
         Arrays.fill(stacks, ItemStack.EMPTY);
     }
@@ -99,20 +99,20 @@ public class SheetPileBlockEntity extends TFCBlockEntity
     /**
      * Returns a cached metal for the given side, if present, otherwise grabs from the cache.
      * The metal is defined by checking what metal the stack would melt into if heated.
-     * Any other items turn into {@link Metal#unknown()}.
+     * Any other items turn into {@link FluidHeat#unknown()}.
      */
-    public Metal getOrCacheMetal(Direction direction)
+    public FluidHeat getOrCacheMetal(Direction direction)
     {
         final int index = faceToIndex(direction);
         final ItemStack stack = stacks[index];
 
-        Metal metal = cachedMetals[index];
+        FluidHeat metal = cachedMetals[index];
         if (metal == null)
         {
-            metal = Metal.getFromSheet(stack);
+            metal = FluidHeat.getFromSheet(stack);
             if (metal == null)
             {
-                metal = Metal.unknown();
+                metal = FluidHeat.unknown();
             }
             cachedMetals[index] = metal;
         }
@@ -122,7 +122,7 @@ public class SheetPileBlockEntity extends TFCBlockEntity
     /**
      * Sets the cached metals for a block entity that is not placed in the world
      */
-    public void setAllMetalsFromOutsideWorld(Metal metal)
+    public void setAllMetalsFromOutsideWorld(FluidHeat metal)
     {
         Arrays.fill(cachedMetals, metal);
     }
@@ -144,8 +144,8 @@ public class SheetPileBlockEntity extends TFCBlockEntity
 
     public void fillTooltip(Consumer<Component> tooltip)
     {
-        final Object2IntMap<Metal> map = new Object2IntOpenHashMap<>();
-        for (Metal metal : cachedMetals)
+        final Object2IntMap<FluidHeat> map = new Object2IntOpenHashMap<>();
+        for (FluidHeat metal : cachedMetals)
         {
             if (metal != null)
             {

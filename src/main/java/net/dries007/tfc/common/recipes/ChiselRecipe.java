@@ -74,7 +74,7 @@ public class ChiselRecipe implements INoopInputRecipe
     public static Either<BlockState, InteractionResult> computeResult(Player player, BlockState state, BlockHitResult hit, boolean informWhy)
     {
         final ItemStack held = player.getMainHandItem();
-        if (Helpers.isItem(held, TFCTags.Items.CHISELS) && Helpers.isItem(player.getOffhandItem(), TFCTags.Items.HAMMERS))
+        if (Helpers.isItem(held, TFCTags.Items.TOOLS_CHISELS) && Helpers.isItem(player.getOffhandItem(), TFCTags.Items.HAMMERS))
         {
             final BlockPos pos = hit.getBlockPos();
             final Mode mode = IPlayerInfo.get(player).chiselMode();

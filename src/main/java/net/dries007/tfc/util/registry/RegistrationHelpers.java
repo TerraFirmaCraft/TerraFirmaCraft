@@ -39,7 +39,7 @@ import net.dries007.tfc.common.container.BlockEntityContainer;
 import net.dries007.tfc.common.container.ItemStackContainer;
 import net.dries007.tfc.common.container.ItemStackContainerProvider;
 import net.dries007.tfc.common.fluids.FluidHolder;
-import net.dries007.tfc.util.data.Metal;
+import net.dries007.tfc.util.Metal;
 
 /**
  * Public APIs for registering things that are nontrivial.

@@ -47,7 +47,7 @@ public class RockConvertableToAnvilBlock extends RawRockBlock
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
         if (Helpers.isItem(stack, TFCTags.Items.HAMMERS)
-            && !Helpers.isItem(player.getItemInHand(hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND), TFCTags.Items.CHISELS)
+            && !Helpers.isItem(player.getItemInHand(hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND), TFCTags.Items.TOOLS_CHISELS)
             && hitResult.getDirection() == Direction.UP
             && level.getBlockState(pos.above()).isAir()
         )

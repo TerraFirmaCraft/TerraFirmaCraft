@@ -18,7 +18,7 @@ import net.dries007.tfc.common.capabilities.size.Size;
 import net.dries007.tfc.config.animals.MammalConfig;
 import net.dries007.tfc.config.animals.OviparousAnimalConfig;
 import net.dries007.tfc.config.animals.ProducingMammalConfig;
-import net.dries007.tfc.util.Alloy;
+import net.dries007.tfc.util.FluidAlloy;
 
 /**
  * Server Config
@@ -377,7 +377,7 @@ public class ServerConfig extends BaseConfig
 
         builder.swap("crucible");
 
-        crucibleCapacity = builder.comment("Tank capacity of a crucible (in mB).").define("crucibleCapacity", 4000, 0, Alloy.MAX_ALLOY);
+        crucibleCapacity = builder.comment("Tank capacity of a crucible (in mB).").define("crucibleCapacity", 4000, 0, FluidAlloy.MAX_ALLOY);
         cruciblePouringRate = builder.comment("A modifier for how fast fluid containers empty into crucibles. Containers will empty 1 mB every (this) number of ticks.").define("cruciblePouringRate", 4, 1, Integer.MAX_VALUE);
         crucibleFastPouringRate = builder.comment("A modifier for how fast fluid containers empty into crucibles when shift is held. Containers will empty 1 mB every (this) number of ticks.").define("crucibleFastPouringRate", 1, 1, Integer.MAX_VALUE);
         crucibleEnableAutomation = builder.comment("If true, barrels will interact with in-world automation such as hoppers on a side-specific basis.").define("crucibleEnableAutomation", true);
@@ -413,7 +413,7 @@ public class ServerConfig extends BaseConfig
 
         builder.swap("lamp");
 
-        lampCapacity = builder.comment("Tank capacity of a lamp (in mB).").define("lampCapacity", 250, 0, Alloy.MAX_ALLOY);
+        lampCapacity = builder.comment("Tank capacity of a lamp (in mB).").define("lampCapacity", 250, 0, FluidAlloy.MAX_ALLOY);
 
         builder.swap("pumpkin");
 
@@ -516,47 +516,47 @@ public class ServerConfig extends BaseConfig
 
         builder.pop().swap("items").push("smallVessel");
 
-        smallVesselCapacity = builder.comment("Tank capacity of a small vessel (in mB).").define("smallVesselCapacity", 3000, 0, Alloy.MAX_ALLOY);
+        smallVesselCapacity = builder.comment("Tank capacity of a small vessel (in mB).").define("smallVesselCapacity", 3000, 0, FluidAlloy.MAX_ALLOY);
         smallVesselMaximumItemSize = builder.comment("The largest (inclusive) size of an item that is allowed in a small vessel.").define("smallVesselMaximumItemSize", Size.SMALL);
         enableSmallVesselInventoryInteraction = builder.comment("If true, the vessel can be inserted and extracted from by clicking on it in the inventory. You may want to disable this if you have a inventory-tweaking mod").define("enableSmallVesselInventoryInteraction", true);
 
         builder.swap("molds");
 
-        moldIngotCapacity = builder.comment("Tank capacity of a Ingot mold (in mB).").define("moldIngotCapacity", 100, 0, Alloy.MAX_ALLOY);
-        moldFireIngotCapacity = builder.comment("Tank capacity of a Fire Ingot mold (in mB).").define("moldIngotCapacity", 100, 0, Alloy.MAX_ALLOY);
-        moldPickaxeHeadCapacity = builder.comment("Tank capacity of a Pickaxe Head mold (in mB).").define("moldPickaxeHeadCapacity", 100, 0, Alloy.MAX_ALLOY);
-        moldPropickHeadCapacity = builder.comment("Tank capacity of a Propick Head mold (in mB).").define("moldPropickHeadCapacity", 100, 0, Alloy.MAX_ALLOY);
-        moldAxeHeadCapacity = builder.comment("Tank capacity of a Axe Head mold (in mB).").define("moldAxeHeadCapacity", 100, 0, Alloy.MAX_ALLOY);
-        moldShovelHeadCapacity = builder.comment("Tank capacity of a Shovel Head mold (in mB).").define("moldShovelHeadCapacity", 100, 0, Alloy.MAX_ALLOY);
-        moldHoeHeadCapacity = builder.comment("Tank capacity of a Hoe Head mold (in mB).").define("moldHoeHeadCapacity", 100, 0, Alloy.MAX_ALLOY);
-        moldChiselHeadCapacity = builder.comment("Tank capacity of a Chisel Head mold (in mB).").define("moldChiselHeadCapacity", 100, 0, Alloy.MAX_ALLOY);
-        moldHammerHeadCapacity = builder.comment("Tank capacity of a Hammer Head mold (in mB).").define("moldHammerHeadCapacity", 100, 0, Alloy.MAX_ALLOY);
-        moldSawBladeCapacity = builder.comment("Tank capacity of a Saw Blade mold (in mB).").define("moldSawBladeCapacity", 100, 0, Alloy.MAX_ALLOY);
-        moldJavelinHeadCapacity = builder.comment("Tank capacity of a Javelin Head mold (in mB).").define("moldJavelinHeadCapacity", 100, 0, Alloy.MAX_ALLOY);
-        moldSwordBladeCapacity = builder.comment("Tank capacity of a Sword Blade mold (in mB).").define("moldSwordBladeCapacity", 200, 0, Alloy.MAX_ALLOY);
-        moldMaceHeadCapacity = builder.comment("Tank capacity of a Mace Head mold (in mB).").define("moldMaceHeadCapacity", 200, 0, Alloy.MAX_ALLOY);
-        moldKnifeBladeCapacity = builder.comment("Tank capacity of a Knife Blade mold (in mB).").define("moldKnifeBladeCapacity", 100, 0, Alloy.MAX_ALLOY);
-        moldScytheBladeCapacity = builder.comment("Tank capacity of a Scythe Blade mold (in mB).").define("moldScytheBladeCapacity", 100, 0, Alloy.MAX_ALLOY);
-        moldBellCapacity = builder.comment("Tank capacity of a Bell mold (in mB).").define("moldScytheBladeCapacity", 100, 0, Alloy.MAX_ALLOY);
+        moldIngotCapacity = builder.comment("Tank capacity of a Ingot mold (in mB).").define("moldIngotCapacity", 100, 0, FluidAlloy.MAX_ALLOY);
+        moldFireIngotCapacity = builder.comment("Tank capacity of a Fire Ingot mold (in mB).").define("moldIngotCapacity", 100, 0, FluidAlloy.MAX_ALLOY);
+        moldPickaxeHeadCapacity = builder.comment("Tank capacity of a Pickaxe Head mold (in mB).").define("moldPickaxeHeadCapacity", 100, 0, FluidAlloy.MAX_ALLOY);
+        moldPropickHeadCapacity = builder.comment("Tank capacity of a Propick Head mold (in mB).").define("moldPropickHeadCapacity", 100, 0, FluidAlloy.MAX_ALLOY);
+        moldAxeHeadCapacity = builder.comment("Tank capacity of a Axe Head mold (in mB).").define("moldAxeHeadCapacity", 100, 0, FluidAlloy.MAX_ALLOY);
+        moldShovelHeadCapacity = builder.comment("Tank capacity of a Shovel Head mold (in mB).").define("moldShovelHeadCapacity", 100, 0, FluidAlloy.MAX_ALLOY);
+        moldHoeHeadCapacity = builder.comment("Tank capacity of a Hoe Head mold (in mB).").define("moldHoeHeadCapacity", 100, 0, FluidAlloy.MAX_ALLOY);
+        moldChiselHeadCapacity = builder.comment("Tank capacity of a Chisel Head mold (in mB).").define("moldChiselHeadCapacity", 100, 0, FluidAlloy.MAX_ALLOY);
+        moldHammerHeadCapacity = builder.comment("Tank capacity of a Hammer Head mold (in mB).").define("moldHammerHeadCapacity", 100, 0, FluidAlloy.MAX_ALLOY);
+        moldSawBladeCapacity = builder.comment("Tank capacity of a Saw Blade mold (in mB).").define("moldSawBladeCapacity", 100, 0, FluidAlloy.MAX_ALLOY);
+        moldJavelinHeadCapacity = builder.comment("Tank capacity of a Javelin Head mold (in mB).").define("moldJavelinHeadCapacity", 100, 0, FluidAlloy.MAX_ALLOY);
+        moldSwordBladeCapacity = builder.comment("Tank capacity of a Sword Blade mold (in mB).").define("moldSwordBladeCapacity", 200, 0, FluidAlloy.MAX_ALLOY);
+        moldMaceHeadCapacity = builder.comment("Tank capacity of a Mace Head mold (in mB).").define("moldMaceHeadCapacity", 200, 0, FluidAlloy.MAX_ALLOY);
+        moldKnifeBladeCapacity = builder.comment("Tank capacity of a Knife Blade mold (in mB).").define("moldKnifeBladeCapacity", 100, 0, FluidAlloy.MAX_ALLOY);
+        moldScytheBladeCapacity = builder.comment("Tank capacity of a Scythe Blade mold (in mB).").define("moldScytheBladeCapacity", 100, 0, FluidAlloy.MAX_ALLOY);
+        moldBellCapacity = builder.comment("Tank capacity of a Bell mold (in mB).").define("moldScytheBladeCapacity", 100, 0, FluidAlloy.MAX_ALLOY);
 
         builder.swap("jug");
 
-        jugCapacity = builder.comment("Tank capacity of a ceramic jug (in mB).").define("jugCapacity", 100, 0, Alloy.MAX_ALLOY);
+        jugCapacity = builder.comment("Tank capacity of a ceramic jug (in mB).").define("jugCapacity", 100, 0, FluidAlloy.MAX_ALLOY);
         jugBreakChance = builder.comment("The chance a jug will break after drinking.").define("jugBreakChance", 0.02, 0, 1);
 
         builder.swap("glassBottle");
 
-        silicaGlassBottleCapacity = builder.comment("Tank capacity of a silica glass bottle (in mB).").define("silicaGlassBottleCapacity", 500, 0, Alloy.MAX_ALLOY);
+        silicaGlassBottleCapacity = builder.comment("Tank capacity of a silica glass bottle (in mB).").define("silicaGlassBottleCapacity", 500, 0, FluidAlloy.MAX_ALLOY);
         silicaGlassBottleBreakChance = builder.comment("The chance a silica glass bottle will break after drinking.").define("silicaGlassBottleBreakChance", 0.005, 0, 1);
-        hematiticGlassBottleCapacity = builder.comment("Tank capacity of a hematitic glass bottle (in mB).").define("hematiticGlassBottleCapacity", 400, 0, Alloy.MAX_ALLOY);
+        hematiticGlassBottleCapacity = builder.comment("Tank capacity of a hematitic glass bottle (in mB).").define("hematiticGlassBottleCapacity", 400, 0, FluidAlloy.MAX_ALLOY);
         hematiticGlassBottleBreakChance = builder.comment("The chance a hematitic glass bottle will break after drinking.").define("hematiticGlassBottleBreakChance", 0.02, 0, 1);
-        volcanicGlassBottleCapacity = builder.comment("Tank capacity of a volcanic glass bottle (in mB).").define("volcanicGlassBottleCapacity", 400, 0, Alloy.MAX_ALLOY);
+        volcanicGlassBottleCapacity = builder.comment("Tank capacity of a volcanic glass bottle (in mB).").define("volcanicGlassBottleCapacity", 400, 0, FluidAlloy.MAX_ALLOY);
         volcanicGlassBottleBreakChance = builder.comment("The chance a volcanic glass bottle will break after drinking.").define("volcanicGlassBottleBreakChance", 0.04, 0, 1);
-        olivineGlassBottleCapacity = builder.comment("Tank capacity of a olivine glass bottle (in mB).").define("olivineGlassBottleCapacity", 400, 0, Alloy.MAX_ALLOY);
+        olivineGlassBottleCapacity = builder.comment("Tank capacity of a olivine glass bottle (in mB).").define("olivineGlassBottleCapacity", 400, 0, FluidAlloy.MAX_ALLOY);
         olivineGlassBottleBreakChance = builder.comment("The chance a olivine glass bottle will break after drinking.").define("olivineGlassBottleBreakChance", 0.01, 0, 1);
 
         builder.swap("woodenBucket");
-        woodenBucketCapacity = builder.comment("Tank capacity of a wooden bucket (in mB).").define("woodenBucketCapacity", 1000, 0, Alloy.MAX_ALLOY);
+        woodenBucketCapacity = builder.comment("Tank capacity of a wooden bucket (in mB).").define("woodenBucketCapacity", 1000, 0, FluidAlloy.MAX_ALLOY);
 
         builder.pop().swap("mechanics").push("heat");
 

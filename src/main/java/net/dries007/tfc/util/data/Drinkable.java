@@ -177,5 +177,5 @@ public record Drinkable(
         player.setSprinting(false);
     }
 
-    record Effect(Holder<MobEffect> type, int duration, int amplifier, float chance) {}
+    public record Effect(Holder<MobEffect> type, int duration, int amplifier, float chance) {}
 }

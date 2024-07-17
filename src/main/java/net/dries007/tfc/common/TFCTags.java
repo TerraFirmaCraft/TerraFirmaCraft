@@ -102,6 +102,8 @@ public class TFCTags
         public static final TagKey<Block> POWDERKEG_BREAKING_BLOCKS = create("powderkeg_breaking_blocks");
         public static final TagKey<Block> KAOLIN_CLAY_REPLACEABLE = create("kaolin_clay_replaceable");
 
+        public static final TagKey<Block> LAMPS = create("lamps");
+
         private static TagKey<Block> create(String id)
         {
             return TagKey.create(Registries.BLOCK, Helpers.identifier(id));
@@ -120,14 +122,14 @@ public class TFCTags
          * These water tags contain only source fluids of given water variants.
          * <ul>
          *     <li>{@code ANY_FRESH_WATER} contains only fresh water (vanilla), and river water</li>
-         *     <li>{@code ANY_INFINITE_WATER} contains that, plus salt water. It is also all waters which are dynamically colored</li>
-         *     <li>{@code ANY_WATER} contains that, plus spring water</li>
+         *     <li>{@code ANY_INFINITE_WATER} contains that, plus salt water and spring water</li>
          * </ul>
          */
         public static final TagKey<Fluid> ANY_FRESH_WATER = create("any_fresh_water");
         public static final TagKey<Fluid> ANY_INFINITE_WATER = create("any_infinite_water");
-        public static final TagKey<Fluid> ANY_WATER = create("any_water");
 
+        public static final TagKey<Fluid> FRESH_WATER = create("fresh_water");
+        public static final TagKey<Fluid> INFINITE_WATER = create("infinite_water");
 
         public static final TagKey<Fluid> MIXABLE = create("mixable");
         public static final TagKey<Fluid> HYDRATING = create("hydrating"); // Fluids that work to hydrate farmland, berry bushes, or other growing things
@@ -137,11 +139,18 @@ public class TFCTags
         public static final TagKey<Fluid> USABLE_IN_RED_STEEL_BUCKET = create("usable_in_red_steel_bucket");
         public static final TagKey<Fluid> USABLE_IN_BLUE_STEEL_BUCKET = create("usable_in_blue_steel_bucket");
         public static final TagKey<Fluid> USABLE_IN_BARREL = create("usable_in_barrel");
-        public static final TagKey<Fluid> SCRIBING_INK = create("scribing_ink");
+        public static final TagKey<Fluid> USABLE_IN_SCRIBING_TABLE = create("usable_in_scribing_table");
         public static final TagKey<Fluid> USABLE_IN_SLUICE = create("usable_in_sluice");
         public static final TagKey<Fluid> USABLE_IN_INGOT_MOLD = create("usable_in_ingot_mold");
         public static final TagKey<Fluid> USABLE_IN_TOOL_HEAD_MOLD = create("usable_in_tool_head_mold");
         public static final TagKey<Fluid> USABLE_IN_BELL_MOLD = create("usable_in_bell_mold");
+
+        public static final TagKey<Fluid> ALCOHOLS = create("alcohols");
+        public static final TagKey<Fluid> MOLTEN_METALS = create("molten_metals");
+
+        public static final TagKey<Fluid> DRINKABLES = create("drinkables");
+        public static final TagKey<Fluid> INGREDIENTS = create("ingredients");
+
 
         private static TagKey<Fluid> create(String id)
         {
@@ -151,115 +160,160 @@ public class TFCTags
 
     public static class Items
     {
-        public static final TagKey<Item> THATCH_BED_HIDES = create("thatch_bed_hides");
-        public static final TagKey<Item> FIREPIT_KINDLING = create("firepit_kindling");
-        public static final TagKey<Item> FIREPIT_STICKS = create("firepit_sticks");
-        public static final TagKey<Item> FIREPIT_LOGS = create("firepit_logs");
-        public static final TagKey<Item> STARTS_FIRES_WITH_DURABILITY = create("starts_fires_with_durability");
-        public static final TagKey<Item> STARTS_FIRES_WITH_ITEMS = create("starts_fires_with_items");
-        public static final TagKey<Item> EXTINGUISHER = create("extinguisher");
-        public static final TagKey<Item> LOG_PILE_LOGS = create("log_pile_logs");
-        public static final TagKey<Item> PIT_KILN_STRAW = create("pit_kiln_straw");
-        public static final TagKey<Item> PIT_KILN_LOGS = create("pit_kiln_logs");
-        public static final TagKey<Item> CAN_BE_LIT_ON_TORCH = create("can_be_lit_on_torch");
-        public static final TagKey<Item> FIREPIT_FUEL = create("firepit_fuel");
-        public static final TagKey<Item> FORGE_FUEL = create("forge_fuel");
-        public static final TagKey<Item> BLAST_FURNACE_FUEL = create("blast_furnace_fuel");
-        public static final TagKey<Item> HANDSTONE = create("handstone");
-        public static final TagKey<Item> HAND_WHEEL = create("hand_wheel");
-        public static final TagKey<Item> SCRAPABLE = create("scrapable");
-        public static final TagKey<Item> KNIVES = create("knives");
-        public static final TagKey<Item> HOES = create("hoes");
-        public static final TagKey<Item> HAMMERS = create("hammers");
-        public static final TagKey<Item> CHISELS = create("chisels");
-        public static final TagKey<Item> FLUX = create("flux");
-        public static final TagKey<Item> ANVILS = create("anvils");
-        public static final TagKey<Item> TUYERES = create("tuyeres");
-        public static final TagKey<Item> ANY_KNAPPING = create("any_knapping");
-        public static final TagKey<Item> ROCK_KNAPPING = create("rock_knapping");
-        public static final TagKey<Item> AXES_THAT_LOG = create("axes_that_log"); // Axes which cut down entire trees
-        public static final TagKey<Item> INEFFICIENT_LOGGING_AXES = create("inefficient_logging_axes"); // Axes which are 60% efficient at destroying logs
-        public static final TagKey<Item> COMPOST_GREENS = create("compost_greens");
-        public static final TagKey<Item> COMPOST_GREENS_LOW = create("compost_greens_low");
-        public static final TagKey<Item> COMPOST_GREENS_HIGH = create("compost_greens_high");
-        public static final TagKey<Item> COMPOST_BROWNS = create("compost_browns");
-        public static final TagKey<Item> COMPOST_BROWNS_LOW = create("compost_browns_low");
-        public static final TagKey<Item> COMPOST_BROWNS_HIGH = create("compost_browns_high");
-        public static final TagKey<Item> COMPOST_POISONS = create("compost_poisons");
-        public static final TagKey<Item> USABLE_ON_TOOL_RACK = create("usable_on_tool_rack");
-        public static final TagKey<Item> USABLE_IN_POWDER_KEG = create("usable_in_powder_keg");
-        public static final TagKey<Item> SOUP_BOWLS = create("soup_bowls"); // Bowls that when right clicked on a pot, can extract soup
-        public static final TagKey<Item> SALAD_BOWLS = create("salad_bowls"); // Bowls that when right clicked, open the salad UI
-        public static final TagKey<Item> USABLE_IN_SALAD = create("foods/usable_in_salad"); // Items that are valid ingredients for a salad
-        public static final TagKey<Item> FOODS = create("foods");
-        public static final TagKey<Item> PIG_FOOD = create("pig_food");
-        public static final TagKey<Item> COW_FOOD = create("cow_food");
-        public static final TagKey<Item> YAK_FOOD = create("yak_food");
-        public static final TagKey<Item> GOAT_FOOD = create("goat_food");
-        public static final TagKey<Item> ALPACA_FOOD = create("alpaca_food");
-        public static final TagKey<Item> SHEEP_FOOD = create("sheep_food");
-        public static final TagKey<Item> MUSK_OX_FOOD = create("musk_ox_food");
-        public static final TagKey<Item> CHICKEN_FOOD = create("chicken_food");
-        public static final TagKey<Item> DUCK_FOOD = create("duck_food");
-        public static final TagKey<Item> QUAIL_FOOD = create("quail_food");
-        public static final TagKey<Item> DONKEY_FOOD = create("donkey_food");
-        public static final TagKey<Item> MULE_FOOD = create("mule_food");
-        public static final TagKey<Item> HORSE_FOOD = create("horse_food");
-        public static final TagKey<Item> CAT_FOOD = create("cat_food");
-        public static final TagKey<Item> DOG_FOOD = create("dog_food");
-        public static final TagKey<Item> PENGUIN_FOOD = create("penguin_food");
-        public static final TagKey<Item> TURTLE_FOOD = create("turtle_food");
-        public static final TagKey<Item> FROG_FOOD = create("frog_food");
-        public static final TagKey<Item> RABBIT_FOOD = create("rabbit_food");
-        public static final TagKey<Item> SCRIBING_INK = create("scribing_ink");
-        public static final TagKey<Item> SMALL_FISHING_BAIT = create("small_fishing_bait");
-        public static final TagKey<Item> LARGE_FISHING_BAIT = create("large_fishing_bait");
-        public static final TagKey<Item> HOLDS_SMALL_FISHING_BAIT = create("holds_small_fishing_bait");
-        public static final TagKey<Item> HOLDS_LARGE_FISHING_BAIT = create("holds_large_fishing_bait");
-        public static final TagKey<Item> PILEABLE_INGOTS = create("pileable_ingots"); // Ingots that can be added to piles
-        public static final TagKey<Item> PILEABLE_DOUBLE_INGOTS = create("pileable_double_ingots"); // Double Ingots that can be added to piles
-        public static final TagKey<Item> PILEABLE_SHEETS = create("pileable_sheets"); // Sheets that can be added to piles
-        public static final TagKey<Item> FOX_SPAWNS_WITH = create("fox_spawns_with"); // fox has a chance to spawn with this in its mouth
-        public static final TagKey<Item> MOB_FEET_ARMOR = create("mob_feet_armor"); // armor that mobs can put on their feet
-        public static final TagKey<Item> MOB_LEG_ARMOR = create("mob_leg_armor"); // armor that mobs can put on their legs
-        public static final TagKey<Item> MOB_CHEST_ARMOR = create("mob_chest_armor"); // armor that mobs can put on their chest
-        public static final TagKey<Item> MOB_HEAD_ARMOR = create("mob_head_armor"); // armor that mobs can put on their head
-        public static final TagKey<Item> MOB_MAINHAND_WEAPONS = create("mob_mainhand_weapons"); // armor that mobs can put on their mainhand
-        public static final TagKey<Item> MOB_OFFHAND_WEAPONS = create("mob_offhand_weapons"); // armor that mobs can put on their mainhand
-        public static final TagKey<Item> SKELETON_WEAPONS = create("skeleton_weapons"); // stuff we force skeletons to hold. includes javelins and bows
-        public static final TagKey<Item> DISABLED_MONSTER_HELD_ITEMS = create("disabled_monster_held_items"); // items Monsters will not spawn holding. also gated with ServerConfig#enableVanillaMobsSpawningWithVanillaEquipment
-        public static final TagKey<Item> DEALS_SLASHING_DAMAGE = create("deals_slashing_damage");
-        public static final TagKey<Item> DEALS_PIERCING_DAMAGE = create("deals_piercing_damage");
-        public static final TagKey<Item> DEALS_CRUSHING_DAMAGE = create("deals_crushing_damage");
-        public static final TagKey<Item> FLUID_ITEM_INGREDIENT_EMPTY_CONTAINERS = create("fluid_item_ingredient_empty_containers"); // Containers that are filled, as examples for FluidItemIngredient
-        public static final TagKey<Item> PLACED_ITEM_BLACKLIST = create("placed_item_blacklist"); // items that cannot go in placed items, for whatever reason
-        public static final TagKey<Item> PLACED_ITEM_WHITELIST = create("placed_item_whitelist"); // items that can go in placed items. not used unless enabled
-        public static final TagKey<Item> DAUB = create("daub"); // acts like daub on wattle blocks
-        public static final TagKey<Item> PIGLIN_BARTERING_INGOTS = create("piglin_bartering_ingots"); // ingots that piglins will trade for.
-        public static final TagKey<Item> CARRIED_BY_HORSE = create("carried_by_horse");
-        public static final TagKey<Item> WAXES_SCRAPING_SURFACE = create("waxes_scraping_surface");
-        public static final TagKey<Item> POWDERS = create("powders");
-        public static final TagKey<Item> CAN_BE_SALTED = create("foods/can_be_salted");
-        public static final TagKey<Item> GLASS_BATCHES = create("glass_batches");
-        public static final TagKey<Item> BLOWPIPES = create("blowpipes");
-        public static final TagKey<Item> ALL_BLOWPIPES = create("all_blowpipes");
-        public static final TagKey<Item> SILICA_ITEMS = create("silica_items");
-        public static final TagKey<Item> HEMATITIC_ITEMS = create("hematitic_items");
-        public static final TagKey<Item> OLIVINE_ITEMS = create("olivine_items");
-        public static final TagKey<Item> VOLCANIC_ITEMS = create("volcanic_items");
-        public static final TagKey<Item> IGNEOUS_INTRUSIVE_ITEMS = create("igneous_intrusive_items");
-        public static final TagKey<Item> IGNEOUS_EXTRUSIVE_ITEMS = create("igneous_extrusive_items");
-        public static final TagKey<Item> METAMORPHIC_ITEMS = create("metamorphic_items");
-        public static final TagKey<Item> SEDIMENTARY_ITEMS = create("sedimentary_items");
-        public static final TagKey<Item> JARS = create("jars");
-        public static final TagKey<Item> SEALED_JARS = create("sealed_jars");
-        public static final TagKey<Item> UNSEALED_JARS = create("unsealed_jars");
-        public static final TagKey<Item> WINDMILL_BLADES = create("windmill_blades");
-        public static final TagKey<Item> SEWING_DARK_CLOTH = create("sewing_dark_cloth");
-        public static final TagKey<Item> SEWING_LIGHT_CLOTH = create("sewing_light_cloth");
-        public static final TagKey<Item> SEWING_NEEDLES = create("sewing_needles");
-        public static final TagKey<Item> EMPTY_JAR_WITH_LID = create("empty_jar_with_lid");
-        public static final TagKey<Item> TRIP_HAMMERS = create("trip_hammers");
+        public static final TagKey<Item> THATCH_BED_HIDES = tag("thatch_bed_hides");
+        public static final TagKey<Item> FIREPIT_KINDLING = tag("firepit_kindling");
+        public static final TagKey<Item> FIREPIT_STICKS = tag("firepit_sticks");
+        public static final TagKey<Item> FIREPIT_LOGS = tag("firepit_logs");
+        public static final TagKey<Item> STARTS_FIRES_WITH_DURABILITY = tag("starts_fires_with_durability");
+        public static final TagKey<Item> STARTS_FIRES_WITH_ITEMS = tag("starts_fires_with_items");
+        public static final TagKey<Item> EXTINGUISHER = tag("extinguisher");
+        public static final TagKey<Item> LOG_PILE_LOGS = tag("log_pile_logs");
+        public static final TagKey<Item> PIT_KILN_STRAW = tag("pit_kiln_straw");
+        public static final TagKey<Item> PIT_KILN_LOGS = tag("pit_kiln_logs");
+        public static final TagKey<Item> CAN_BE_LIT_ON_TORCH = tag("can_be_lit_on_torch");
+        public static final TagKey<Item> FIREPIT_FUEL = tag("firepit_fuel");
+        public static final TagKey<Item> FORGE_FUEL = tag("forge_fuel");
+        public static final TagKey<Item> BLAST_FURNACE_FUEL = tag("blast_furnace_fuel");
+        public static final TagKey<Item> HANDSTONE = tag("handstone");
+        public static final TagKey<Item> HAND_WHEEL = tag("hand_wheel");
+        public static final TagKey<Item> SCRAPABLE = tag("scrapable");
+        public static final TagKey<Item> HOES = tag("hoes");
+        public static final TagKey<Item> HAMMERS = tag("hammers");
+        public static final TagKey<Item> FLUX = tag("flux");
+        public static final TagKey<Item> ANVILS = tag("anvils");
+        public static final TagKey<Item> TUYERES = tag("tuyeres");
+        public static final TagKey<Item> ANY_KNAPPING = tag("any_knapping");
+        public static final TagKey<Item> ROCK_KNAPPING = tag("rock_knapping");
+        public static final TagKey<Item> AXES_THAT_LOG = tag("axes_that_log"); // Axes which cut down entire trees
+        public static final TagKey<Item> INEFFICIENT_LOGGING_AXES = tag("inefficient_logging_axes"); // Axes which are 60% efficient at destroying logs
+        public static final TagKey<Item> COMPOST_GREENS = tag("compost_greens");
+        public static final TagKey<Item> COMPOST_GREENS_LOW = tag("compost_greens_low");
+        public static final TagKey<Item> COMPOST_GREENS_HIGH = tag("compost_greens_high");
+        public static final TagKey<Item> COMPOST_BROWNS = tag("compost_browns");
+        public static final TagKey<Item> COMPOST_BROWNS_LOW = tag("compost_browns_low");
+        public static final TagKey<Item> COMPOST_BROWNS_HIGH = tag("compost_browns_high");
+        public static final TagKey<Item> COMPOST_POISONS = tag("compost_poisons");
+        public static final TagKey<Item> USABLE_ON_TOOL_RACK = tag("usable_on_tool_rack");
+        public static final TagKey<Item> USABLE_IN_POWDER_KEG = tag("usable_in_powder_keg");
+        public static final TagKey<Item> SOUP_BOWLS = tag("soup_bowls"); // Bowls that when right clicked on a pot, can extract soup
+        public static final TagKey<Item> SALAD_BOWLS = tag("salad_bowls"); // Bowls that when right clicked, open the salad UI
+        public static final TagKey<Item> USABLE_IN_SALAD = tag("foods/usable_in_salad"); // Items that are valid ingredients for a salad
+        public static final TagKey<Item> FOODS = tag("foods");
+        public static final TagKey<Item> PIG_FOOD = tag("pig_food");
+        public static final TagKey<Item> COW_FOOD = tag("cow_food");
+        public static final TagKey<Item> YAK_FOOD = tag("yak_food");
+        public static final TagKey<Item> GOAT_FOOD = tag("goat_food");
+        public static final TagKey<Item> ALPACA_FOOD = tag("alpaca_food");
+        public static final TagKey<Item> SHEEP_FOOD = tag("sheep_food");
+        public static final TagKey<Item> MUSK_OX_FOOD = tag("musk_ox_food");
+        public static final TagKey<Item> CHICKEN_FOOD = tag("chicken_food");
+        public static final TagKey<Item> DUCK_FOOD = tag("duck_food");
+        public static final TagKey<Item> QUAIL_FOOD = tag("quail_food");
+        public static final TagKey<Item> DONKEY_FOOD = tag("donkey_food");
+        public static final TagKey<Item> MULE_FOOD = tag("mule_food");
+        public static final TagKey<Item> HORSE_FOOD = tag("horse_food");
+        public static final TagKey<Item> CAT_FOOD = tag("cat_food");
+        public static final TagKey<Item> DOG_FOOD = tag("dog_food");
+        public static final TagKey<Item> PENGUIN_FOOD = tag("penguin_food");
+        public static final TagKey<Item> TURTLE_FOOD = tag("turtle_food");
+        public static final TagKey<Item> FROG_FOOD = tag("frog_food");
+        public static final TagKey<Item> RABBIT_FOOD = tag("rabbit_food");
+        public static final TagKey<Item> SCRIBING_INK = tag("scribing_ink");
+        public static final TagKey<Item> SMALL_FISHING_BAIT = tag("small_fishing_bait");
+        public static final TagKey<Item> LARGE_FISHING_BAIT = tag("large_fishing_bait");
+        public static final TagKey<Item> HOLDS_SMALL_FISHING_BAIT = tag("holds_small_fishing_bait");
+        public static final TagKey<Item> HOLDS_LARGE_FISHING_BAIT = tag("holds_large_fishing_bait");
+        public static final TagKey<Item> PILEABLE_INGOTS = tag("pileable_ingots"); // Ingots that can be added to piles
+        public static final TagKey<Item> PILEABLE_DOUBLE_INGOTS = tag("pileable_double_ingots"); // Double Ingots that can be added to piles
+        public static final TagKey<Item> PILEABLE_SHEETS = tag("pileable_sheets"); // Sheets that can be added to piles
+        public static final TagKey<Item> FOX_SPAWNS_WITH = tag("fox_spawns_with"); // fox has a chance to spawn with this in its mouth
+        public static final TagKey<Item> MOB_FEET_ARMOR = tag("mob_feet_armor"); // armor that mobs can put on their feet
+        public static final TagKey<Item> MOB_LEG_ARMOR = tag("mob_leg_armor"); // armor that mobs can put on their legs
+        public static final TagKey<Item> MOB_CHEST_ARMOR = tag("mob_chest_armor"); // armor that mobs can put on their chest
+        public static final TagKey<Item> MOB_HEAD_ARMOR = tag("mob_head_armor"); // armor that mobs can put on their head
+        public static final TagKey<Item> MOB_MAINHAND_WEAPONS = tag("mob_mainhand_weapons"); // armor that mobs can put on their mainhand
+        public static final TagKey<Item> MOB_OFFHAND_WEAPONS = tag("mob_offhand_weapons"); // armor that mobs can put on their mainhand
+        public static final TagKey<Item> SKELETON_WEAPONS = tag("skeleton_weapons"); // stuff we force skeletons to hold. includes javelins and bows
+        public static final TagKey<Item> DISABLED_MONSTER_HELD_ITEMS = tag("disabled_monster_held_items"); // items Monsters will not spawn holding. also gated with ServerConfig#enableVanillaMobsSpawningWithVanillaEquipment
+        public static final TagKey<Item> DEALS_SLASHING_DAMAGE = tag("deals_slashing_damage");
+        public static final TagKey<Item> DEALS_PIERCING_DAMAGE = tag("deals_piercing_damage");
+        public static final TagKey<Item> DEALS_CRUSHING_DAMAGE = tag("deals_crushing_damage");
+        public static final TagKey<Item> FLUID_ITEM_INGREDIENT_EMPTY_CONTAINERS = tag("fluid_item_ingredient_empty_containers"); // Containers that are filled, as examples for FluidItemIngredient
+        public static final TagKey<Item> PLACED_ITEM_BLACKLIST = tag("placed_item_blacklist"); // items that cannot go in placed items, for whatever reason
+        public static final TagKey<Item> PLACED_ITEM_WHITELIST = tag("placed_item_whitelist"); // items that can go in placed items. not used unless enabled
+        public static final TagKey<Item> DAUB = tag("daub"); // acts like daub on wattle blocks
+        public static final TagKey<Item> PIGLIN_BARTERING_INGOTS = tag("piglin_bartering_ingots"); // ingots that piglins will trade for.
+        public static final TagKey<Item> CARRIED_BY_HORSE = tag("carried_by_horse");
+        public static final TagKey<Item> WAXES_SCRAPING_SURFACE = tag("waxes_scraping_surface");
+        public static final TagKey<Item> POWDERS = tag("powders");
+        public static final TagKey<Item> CAN_BE_SALTED = tag("foods/can_be_salted");
+        public static final TagKey<Item> GLASS_BATCHES = tag("glass_batches");
+        public static final TagKey<Item> BLOWPIPES = tag("blowpipes");
+        public static final TagKey<Item> ALL_BLOWPIPES = tag("all_blowpipes");
+        public static final TagKey<Item> SILICA_ITEMS = tag("silica_items");
+        public static final TagKey<Item> HEMATITIC_ITEMS = tag("hematitic_items");
+        public static final TagKey<Item> OLIVINE_ITEMS = tag("olivine_items");
+        public static final TagKey<Item> VOLCANIC_ITEMS = tag("volcanic_items");
+        public static final TagKey<Item> IGNEOUS_INTRUSIVE_ITEMS = tag("igneous_intrusive_items");
+        public static final TagKey<Item> IGNEOUS_EXTRUSIVE_ITEMS = tag("igneous_extrusive_items");
+        public static final TagKey<Item> METAMORPHIC_ITEMS = tag("metamorphic_items");
+        public static final TagKey<Item> SEDIMENTARY_ITEMS = tag("sedimentary_items");
+        public static final TagKey<Item> JARS = tag("jars");
+        public static final TagKey<Item> SEALED_JARS = tag("sealed_jars");
+        public static final TagKey<Item> UNSEALED_JARS = tag("unsealed_jars");
+        public static final TagKey<Item> WINDMILL_BLADES = tag("windmill_blades");
+        public static final TagKey<Item> SEWING_DARK_CLOTH = tag("sewing_dark_cloth");
+        public static final TagKey<Item> SEWING_LIGHT_CLOTH = tag("sewing_light_cloth");
+        public static final TagKey<Item> SEWING_NEEDLES = tag("sewing_needles");
+        public static final TagKey<Item> EMPTY_JAR_WITH_LID = tag("empty_jar_with_lid");
+        public static final TagKey<Item> TRIP_HAMMERS = tag("trip_hammers");
+
+        public static final TagKey<Item> FRUITS = tag("foods/fruits");
+        public static final TagKey<Item> VEGETABLES = tag("foods/vegetables");
+        public static final TagKey<Item> MEATS = tag("foods/meats");
+        public static final TagKey<Item> RAW_MEATS = tag("foods/raw_meats");
+        public static final TagKey<Item> COOKED_MEATS = tag("foods/cooked_meats");
+        public static final TagKey<Item> SALADS = tag("foods/salads");
+        public static final TagKey<Item> SOUPS = tag("foods/soups");
+        public static final TagKey<Item> PRESERVES = tag("foods/preserves");
+        public static final TagKey<Item> SEALED_PRESERVES = tag("foods/sealed_preserves");
+
+        public static final TagKey<Item> COLORED_WOOL = tag("colored_wool");
+        public static final TagKey<Item> COLORED_CARPETS = tag("colored_carpets");
+        public static final TagKey<Item> COLORED_BEDS = tag("colored_beds");
+        public static final TagKey<Item> COLORED_BANNERS = tag("colored_banners");
+        public static final TagKey<Item> COLORED_TERRACOTTA = tag("colored_terracotta");
+        public static final TagKey<Item> COLORED_GLAZED_TERRACOTTA = tag("colored_glazed_terracotta");
+        public static final TagKey<Item> COLORED_SHULKER_BOXES = tag("colored_shulker_boxes");
+        public static final TagKey<Item> COLORED_CONCRETE_POWDER = tag("colored_concrete_powder");
+        public static final TagKey<Item> COLORED_CANDLES = tag("colored_candles");
+        public static final TagKey<Item> COLORED_WINDMILL_BLADES = tag("colored_windmill_blades");
+        public static final TagKey<Item> COLORED_RAW_ALABASTER = tag("colored_raw_alabaster");
+        public static final TagKey<Item> COLORED_ALABASTER_BRICKS = tag("colored_alabaster_bricks");
+        public static final TagKey<Item> COLORED_POLISHED_ALABASTER = tag("colored_polished_alabaster");
+        public static final TagKey<Item> COLORED_VESSELS = tag("colored_vessels");
+        public static final TagKey<Item> COLORED_LARGE_VESSELS = tag("colored_large_vessels");
+
+        public static final TagKey<Item> TOOL_RACKS = tag("tool_racks");
+        public static final TagKey<Item> SCRIBING_TABLES = tag("scribing_tables");
+        public static final TagKey<Item> SEWING_TABLES = tag("sewing_tables");
+        public static final TagKey<Item> VESSELS = tag("vessels");
+        public static final TagKey<Item> UNFIRED_VESSELS = tag("unfired_vessels");
+        public static final TagKey<Item> FIRED_VESSELS = tag("fired_vessels");
+        public static final TagKey<Item> LARGE_VESSELS = tag("large_vessels");
+        public static final TagKey<Item> UNFIRED_LARGE_VESSELS = tag("unfired_large_vessels");
+        public static final TagKey<Item> FIRED_LARGE_VESSELS = tag("fired_large_vessels");
+        public static final TagKey<Item> MOLDS = tag("molds");
+
+        public static final TagKey<Item> DOUBLE_INGOTS = commonTag("double_sheets");
+        public static final TagKey<Item> SHEETS = commonTag("double_sheets");
+        public static final TagKey<Item> DOUBLE_SHEETS = commonTag("double_sheets");
+
+        public static final TagKey<Item> TOOLS_KNIVES = tag("tools/knives");
+        public static final TagKey<Item> TOOLS_CHISELS = tag("tools/chisels");
+        public static final TagKey<Item> TOOLS_SHEARS = tag("tools/shears");
+        public static final TagKey<Item> TOOLS_GLASSWORKING = tag("tools/glassworking");
+        public static final TagKey<Item> TOOLS_BLOWPIPES = tag("tools/blowpipes");
 
         public static TagKey<Item> mobEquipmentSlotTag(EquipmentSlot slot)
         {
@@ -275,7 +329,12 @@ public class TFCTags
                 };
         }
 
-        private static TagKey<Item> create(String id)
+        private static TagKey<Item> tag(String id)
+        {
+            return TagKey.create(Registries.ITEM, Helpers.identifier(id));
+        }
+
+        private static TagKey<Item> commonTag(String id)
         {
             return TagKey.create(Registries.ITEM, Helpers.identifier(id));
         }

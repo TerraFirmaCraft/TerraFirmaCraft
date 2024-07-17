@@ -193,7 +193,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             // Already initialized, so (1) duplicate the chunk generator, only for this chunk map, then (2) re-initialize random state
             final TFCChunkGenerator copy = copy();
 
-            ((ChunkMapAccessor) chunkMap).accessor$setGenerator(copy);
+            ((ChunkMapBridge) chunkMap).tfc$updateGenerator(copy);
             copy.initRandomState(chunkMap, level);
             return;
         }

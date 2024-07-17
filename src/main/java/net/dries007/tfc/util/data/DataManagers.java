@@ -33,7 +33,7 @@ public final class DataManagers
         register(Drinkable.MANAGER);
         register(Fertilizer.MANAGER);
         register(Fuel.MANAGER);
-        register(Metal.MANAGER);
+        register(FluidHeat.MANAGER);
         register(KnappingType.MANAGER);
         register(Support.MANAGER);
         register(ItemSizeManager.MANAGER);

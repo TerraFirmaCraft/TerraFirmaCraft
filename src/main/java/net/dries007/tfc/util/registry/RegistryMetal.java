@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.MapColor;
 
 import net.dries007.tfc.common.LevelTier;
-import net.dries007.tfc.util.data.Metal;
+import net.dries007.tfc.util.Metal;
 
 /**
  * Interface used in registration to allow {@link Metal.BlockType}, {@link Metal.ItemType} to be used by addons.

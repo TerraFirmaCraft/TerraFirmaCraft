@@ -73,6 +73,7 @@ import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
@@ -124,7 +125,7 @@ import net.dries007.tfc.common.effect.TFCEffects;
 import net.dries007.tfc.common.entities.ai.prey.PestAi;
 import net.dries007.tfc.common.entities.prey.Pest;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.data.Metal;
+import net.dries007.tfc.util.data.FluidHeat;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
 
@@ -1072,7 +1073,7 @@ public final class Helpers
                     final @Nullable IHeat mergeHeat = HeatCapability.get(mergeStack);
                     if (mergeHeat != null)
                     {
-                        final Metal metal = Objects.requireNonNullElse(Metal.get(fluidStack.getFluid()), Metal.unknown());
+                        final FluidHeat metal = Objects.requireNonNullElse(FluidHeat.get(fluidStack.getFluid()), FluidHeat.unknown());
                         final float heatCapacity = metal.heatCapacity(filled);
 
                         mergeHeat.addTemperatureFromSourceWithHeatCapacity(temperature, heatCapacity);
@@ -1444,9 +1445,9 @@ public final class Helpers
         return empty || list.isEmpty() ? Optional.empty() : Optional.of(new Tooltips.DeviceImageTooltip(list, width, height));
     }
 
-    public static boolean isItem(ItemStack stack, Item item)
+    public static boolean isItem(ItemStack stack, ItemLike item)
     {
-        return stack.is(item);
+        return stack.is(item.asItem());
     }
 
     public static boolean isItem(ItemStack stack, TagKey<Item> tag)

@@ -84,7 +84,7 @@ public class ScrapingBlock extends DeviceBlock
                     return ItemInteractionResult.sidedSuccess(level.isClientSide);
                 }
             }
-            else if (Helpers.isItem(stack.getItem(), TFCTags.Items.KNIVES))
+            else if (Helpers.isItem(stack.getItem(), TFCTags.Items.TOOLS_KNIVES))
             {
                 scraping.onClicked((float) point.x, (float) point.z);
                 Helpers.damageItem(stack, player, hand);

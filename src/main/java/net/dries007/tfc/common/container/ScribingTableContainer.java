@@ -46,7 +46,7 @@ public class ScribingTableContainer extends ItemCombinerMenu
         for (int tank = 0; tank < handler.getTanks(); tank++)
         {
             FluidStack fluidStack = handler.getFluidInTank(tank);
-            if (Helpers.isFluid(fluidStack.getFluid(), TFCTags.Fluids.SCRIBING_INK) && fluidStack.getAmount() >= FluidHelpers.BUCKET_VOLUME)
+            if (Helpers.isFluid(fluidStack.getFluid(), TFCTags.Fluids.USABLE_IN_SCRIBING_TABLE) && fluidStack.getAmount() >= FluidHelpers.BUCKET_VOLUME)
                 return fluidStack;
         }
         return FluidStack.EMPTY;

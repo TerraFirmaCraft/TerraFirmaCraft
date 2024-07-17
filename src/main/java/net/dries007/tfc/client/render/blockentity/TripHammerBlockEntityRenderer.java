@@ -27,7 +27,7 @@ import net.dries007.tfc.common.blockentities.rotation.TripHammerBlockEntity;
 import net.dries007.tfc.common.blocks.TripHammerBlock;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.data.Metal;
+import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.rotation.Rotation;
 
 public class TripHammerBlockEntityRenderer implements BlockEntityRenderer<TripHammerBlockEntity>

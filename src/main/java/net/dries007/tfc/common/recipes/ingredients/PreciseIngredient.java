@@ -35,4 +35,9 @@ public interface PreciseIngredient extends ICustomIngredient
     {
         return false;
     }
+
+    default ItemStack modifyStackForDisplay(ItemStack stack)
+    {
+        return stack;
+    }
 }

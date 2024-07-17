@@ -41,10 +41,10 @@ import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.container.TFCContainerProviders;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.Alloy;
+import net.dries007.tfc.util.FluidAlloy;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Tooltips;
-import net.dries007.tfc.util.data.Metal;
+import net.dries007.tfc.util.data.FluidHeat;
 
 public class VesselItem extends Item
 {
@@ -200,7 +200,7 @@ public class VesselItem extends Item
         private final ItemStack stack;
 
         private final ItemStackHandler inventory;
-        private final Alloy alloy;
+        private final FluidAlloy alloy;
         private final HeatHandler heat; // Since we cannot heat individual items (no tick() method), we only use a heat value for the container
         private final int capacity;
 
@@ -214,7 +214,7 @@ public class VesselItem extends Item
 
             this.inventory = new InventoryItemHandler(this, SLOTS);
             this.capacity = Helpers.getValueOrDefault(TFCConfig.SERVER.smallVesselCapacity);
-            this.alloy = new Alloy(capacity);
+            this.alloy = new FluidAlloy(capacity);
             this.heat = new HeatHandler(1, 0, 0)
             {
                 @Override
@@ -271,8 +271,9 @@ public class VesselItem extends Item
             {
                 // Since the temperature here is not cached, we cannot cache the mode, and instead have to calculate it on demand
                 // The alloy result here is cached internally, and the temperature should be quick (since it queries the alloy heat handler)
-                final Metal result = alloy.getResult();
-                return getTemperature() >= result.meltTemperature() ? Mode.MOLTEN_ALLOY : Mode.SOLID_ALLOY;
+                final FluidStack result = alloy.getResult();
+                final @Nullable FluidHeat metal = FluidHeat.get(result.getFluid());
+                return metal == null || getTemperature() >= metal.meltTemperature() ? Mode.MOLTEN_ALLOY : Mode.SOLID_ALLOY;
             }
         }
 
@@ -301,7 +302,7 @@ public class VesselItem extends Item
                     }
                     case MOLTEN_ALLOY, SOLID_ALLOY -> {
                         text.add(Component.translatable("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
-                        text.add(Tooltips.fluidUnitsAndCapacityOf(alloy.getResult().getDisplayName(), alloy.getAmount(), capacity)
+                        text.add(Tooltips.fluidUnitsAndCapacityOf(alloy.getResult(), capacity)
                                 .append(Tooltips.moltenOrSolid(isMolten())));
                         if (!Helpers.isEmpty(inventory))
                         {
@@ -329,28 +330,28 @@ public class VesselItem extends Item
         @Override
         public FluidStack getFluidInTank(int tank)
         {
-            return alloy.getResultAsFluidStack();
+            return alloy.getResult();
         }
 
         @Override
         public int getTankCapacity(int tank)
         {
-            return alloy.getMaxUnits();
+            return alloy.getMaxAmount();
         }
 
         @Override
         public boolean isFluidValid(int tank, FluidStack stack)
         {
-            return Metal.get(stack.getFluid()) != null;
+            return FluidHeat.get(stack.getFluid()) != null;
         }
 
         @Override
         public int fill(FluidStack resource, FluidAction action)
         {
-            final Metal metal = Metal.get(resource.getFluid());
+            final FluidHeat metal = FluidHeat.get(resource.getFluid());
             if (metal != null)
             {
-                final int result = alloy.add(metal, resource.getAmount(), action.simulate());
+                final int result = alloy.add(resource, action);
                 if (action.execute())
                 {
                     //updateAndSave();
@@ -373,13 +374,12 @@ public class VesselItem extends Item
             final Mode mode = mode();
             if (mode == Mode.MOLTEN_ALLOY || mode == Mode.SOLID_ALLOY)
             {
-                final Metal result = alloy.getResult();
-                final int amount = alloy.removeAlloy(maxDrain, action.simulate());
+                final FluidStack result = alloy.extract(Helpers.getUnsafeRecipeManager(), maxDrain, action);
                 if (action.execute())
                 {
                     //updateAndSave();
                 }
-                return new FluidStack(result.fluid(), amount);
+                return result;
             }
             return FluidStack.EMPTY;
         }
@@ -439,10 +439,10 @@ public class VesselItem extends Item
                         this.inventory.setStackInSlot(i, outputStack);
 
                         // Apply fluid output
-                        Metal metal = Metal.get(outputFluid.getFluid());
+                        FluidHeat metal = FluidHeat.get(outputFluid.getFluid());
                         if (metal != null)
                         {
-                            alloy.add(metal, outputFluid.getAmount(), false);
+                            alloy.add(outputFluid, FluidAction.EXECUTE);
                             updatedAlloy = true;
                         }
                     }
@@ -479,7 +479,8 @@ public class VesselItem extends Item
             if (!alloy.isEmpty())
             {
                 // Bias so that larger quantities of liquid cool faster (relative to a perfect mixture)
-                value += alloy.getHeatCapacity(0.7f);
+                // todo 1.21 porting, we need to re-add alloy heat capacity here
+                value += 0f;//alloy.getHeatCapacity(0.7f);
             }
 
             heat.setHeatCapacity(value);

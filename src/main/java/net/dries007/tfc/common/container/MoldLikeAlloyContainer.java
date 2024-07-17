@@ -23,7 +23,7 @@ import net.dries007.tfc.common.capabilities.MoldLike;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.data.Metal;
+import net.dries007.tfc.util.data.FluidHeat;
 
 public class MoldLikeAlloyContainer extends ItemStackContainer implements ISlotCallback
 {
@@ -60,7 +60,7 @@ public class MoldLikeAlloyContainer extends ItemStackContainer implements ISlotC
                     final int filled = outputFluidCap.fill(drained, IFluidHandler.FluidAction.EXECUTE);
                     if (filled == 1)
                     {
-                        final Metal metal = Objects.requireNonNullElse(Metal.get(drained.getFluid()), Metal.unknown());
+                        final FluidHeat metal = Objects.requireNonNullElse(FluidHeat.get(drained.getFluid()), FluidHeat.unknown());
                         final @Nullable IHeat outputHeat = HeatCapability.get(outputStack);
                         final float heatCapacityOf1mB = metal.heatCapacity(1);
 

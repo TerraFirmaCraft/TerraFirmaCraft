@@ -99,8 +99,8 @@ import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.data.Fertilizer;
+import net.dries007.tfc.util.data.FluidHeat;
 import net.dries007.tfc.util.data.Fuel;
-import net.dries007.tfc.util.data.Metal;
 import net.dries007.tfc.util.data.Pannable;
 import net.dries007.tfc.util.data.Sluiceable;
 import net.dries007.tfc.util.tracker.WorldTracker;
@@ -308,7 +308,7 @@ public class ClientForgeEventHandler
                 final FluidStack fluid = recipe.assembleFluid(stack);
                 if (!fluid.isEmpty())
                 {
-                    final Metal metal = Metal.get(fluid.getFluid());
+                    final FluidHeat metal = FluidHeat.get(fluid.getFluid());
                     if (metal != null)
                     {
                         final MutableComponent heatTooltip = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(recipe.getTemperature());

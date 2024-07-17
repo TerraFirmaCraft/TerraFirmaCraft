@@ -130,7 +130,7 @@ public class TFCCoralPlantBlock extends Block implements IFluidLoggable
      */
     protected boolean scanForWater(BlockState state, BlockGetter level, BlockPos pos)
     {
-        if (Helpers.isFluid(state.getValue(getFluidProperty()).getFluid(), TFCTags.Fluids.ANY_WATER))
+        if (Helpers.isFluid(state.getValue(getFluidProperty()).getFluid(), TFCTags.Fluids.ANY_INFINITE_WATER))
         {
             return true;
         }
@@ -138,7 +138,7 @@ public class TFCCoralPlantBlock extends Block implements IFluidLoggable
         {
             for (Direction direction : Helpers.DIRECTIONS)
             {
-                if (Helpers.isFluid(level.getFluidState(pos.relative(direction)), TFCTags.Fluids.ANY_WATER))
+                if (Helpers.isFluid(level.getFluidState(pos.relative(direction)), TFCTags.Fluids.ANY_INFINITE_WATER))
                 {
                     return true;
                 }

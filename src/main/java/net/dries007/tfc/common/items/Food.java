@@ -93,6 +93,7 @@ public enum Food
     SQUASH,
     TOMATO,
     YELLOW_BELL_PEPPER,
+    // Non-Vegetables
     CHEESE,
     COOKED_EGG,
     BOILED_EGG,

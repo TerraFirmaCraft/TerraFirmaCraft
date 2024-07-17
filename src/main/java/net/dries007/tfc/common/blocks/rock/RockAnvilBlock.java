@@ -22,7 +22,6 @@ import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.devices.AnvilBlock;
 import net.dries007.tfc.common.blocks.devices.DeviceBlock;
 import net.dries007.tfc.common.blocks.devices.Tiered;
-import net.dries007.tfc.util.data.Metal;
 
 public class RockAnvilBlock extends DeviceBlock implements Tiered
 {
@@ -48,6 +47,6 @@ public class RockAnvilBlock extends DeviceBlock implements Tiered
     @Override
     public int getTier()
     {
-        return Metal.Tier.TIER_0.ordinal();
+        return 0;
     }
 }

@@ -19,7 +19,7 @@ import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.IngotPileBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.devices.IngotPileBlock;
-import net.dries007.tfc.util.data.Metal;
+import net.dries007.tfc.util.data.FluidHeat;
 
 public enum IngotPileBlockModel implements SimpleStaticBlockEntityModel<IngotPileBlockModel, IngotPileBlockEntity>
 {
@@ -34,7 +34,7 @@ public enum IngotPileBlockModel implements SimpleStaticBlockEntityModel<IngotPil
         TextureAtlasSprite sprite = null;
         for (int i = 0; i < ingots; i++)
         {
-            final Metal metal = pile.getOrCacheMetal(i);
+            final FluidHeat metal = pile.getOrCacheMetal(i);
             sprite = textureAtlas.apply(metal.softTextureId());
 
             final int layer = (i + 8) / 8;

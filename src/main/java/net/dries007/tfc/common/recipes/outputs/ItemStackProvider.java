@@ -15,6 +15,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
 
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 
@@ -52,9 +53,29 @@ public record ItemStackProvider(
         return COPY_INPUT;
     }
 
+    public static ItemStackProvider of(ItemLike item)
+    {
+        return of(new ItemStack(item));
+    }
+
+    public static ItemStackProvider of(ItemLike item, int count)
+    {
+        return of(new ItemStack(item, count));
+    }
+
+    public static ItemStackProvider of(ItemStack stack)
+    {
+        return of(stack, List.of());
+    }
+
     public static ItemStackProvider of(ItemStack stack, ItemStackModifier... modifiers)
     {
         return of(stack, List.of(modifiers));
+    }
+
+    public static ItemStackProvider of(ItemStackModifier... modifiers)
+    {
+        return of(ItemStack.EMPTY, List.of(modifiers));
     }
 
     public static ItemStackProvider of(ItemStack stack, List<ItemStackModifier> modifiers)

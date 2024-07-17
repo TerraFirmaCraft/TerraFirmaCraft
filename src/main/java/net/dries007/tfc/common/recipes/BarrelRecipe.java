@@ -6,13 +6,16 @@
 
 package net.dries007.tfc.common.recipes;
 
+import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -21,11 +24,16 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -168,8 +176,13 @@ public class BarrelRecipe implements INoopInputRecipe, IRecipePredicate<BarrelIn
         });
     }
 
+    public ItemStack getResultItem()
+    {
+        return outputItem.getEmptyStack();
+    }
+
     @Override
-    public ItemStack getResultItem(HolderLookup.Provider registries)
+    public ItemStack getResultItem(HolderLookup.Provider provider)
     {
         return outputItem.getEmptyStack();
     }
@@ -214,5 +227,87 @@ public class BarrelRecipe implements INoopInputRecipe, IRecipePredicate<BarrelIn
     public MutableComponent getTranslationComponent()
     {
         return Component.translatable("tfc.recipe.barrel." + tooltip);
+    }
+
+    /**
+     * A builder capable of building all types of barrel recipes currently implemented by TFC
+     */
+    public static class Builder
+    {
+        private final Consumer<BarrelRecipe> onFinish;
+        private Optional<SizedIngredient> inputItem = Optional.empty();
+        private @Nullable SizedFluidIngredient inputFluid = null;
+        private ItemStackProvider outputItem = ItemStackProvider.empty();
+        private FluidStack outputFluid = FluidStack.EMPTY;
+        private Holder<SoundEvent> sound = Holder.direct(SoundEvents.BREWING_STAND_BREW);
+        private String tooltip = ""; // todo: see if this is actually necessary
+
+        public Builder(Consumer<BarrelRecipe> onFinish)
+        {
+            this.onFinish = onFinish;
+        }
+
+        public Builder input(ItemLike item) { return input(SizedIngredient.of(item, 1)); }
+        public Builder input(TagKey<Item> item) { return input(SizedIngredient.of(item, 1)); }
+        public Builder input(Ingredient item) { return input(new SizedIngredient(item, 1)); }
+        public Builder input(SizedIngredient item)
+        {
+            this.inputItem = Optional.of(item);
+            return this;
+        }
+
+        public Builder input(TagKey<Fluid> fluid, int amount) { return input(SizedFluidIngredient.of(fluid, amount)); }
+        public Builder input(Fluid fluid, int amount)  { return input(SizedFluidIngredient.of(fluid, amount)); }
+        public Builder input(SizedFluidIngredient fluid)
+        {
+            this.inputFluid = fluid;
+            return this;
+        }
+
+        public Builder output(ItemLike item) { return output(ItemStackProvider.of(item)); }
+        public Builder output(ItemStackProvider item)
+        {
+            this.outputItem = item;
+            return this;
+        }
+
+        public Builder output(Fluid fluid, int amount) { return output(new FluidStack(fluid, amount)); }
+        public Builder output(FluidStack fluid)
+        {
+            this.outputFluid = fluid;
+            return this;
+        }
+
+        public Builder sound(SoundEvent sound)
+        {
+            this.sound = BuiltInRegistries.SOUND_EVENT.wrapAsHolder(sound);
+            return this;
+        }
+
+        public void instant()
+        {
+            onFinish.accept(new InstantBarrelRecipe(parent()));
+        }
+
+        public void instantOnAdd(Fluid fluid) { instantOnAdd(SizedFluidIngredient.of(fluid, 1)); }
+        public void instantOnAdd(SizedFluidIngredient addedFluid)
+        {
+            onFinish.accept(new InstantFluidBarrelRecipe(Objects.requireNonNull(inputFluid, "Missing input fluid"), addedFluid, outputFluid, sound, tooltip));
+        }
+
+        public void sealed(int duration)
+        {
+            onFinish.accept(new SealedBarrelRecipe(parent(), duration, Optional.empty(), Optional.empty()));
+        }
+
+        public void sealed(ItemStackProvider onSeal, ItemStackProvider onUnseal)
+        {
+            onFinish.accept(new SealedBarrelRecipe(parent(), -1, Optional.of(onSeal), Optional.of(onUnseal)));
+        }
+
+        private BarrelRecipe parent()
+        {
+            return new BarrelRecipe(inputItem, Objects.requireNonNull(inputFluid, "Missing input fluid"), outputItem, outputFluid, sound, tooltip);
+        }
     }
 }

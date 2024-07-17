@@ -15,6 +15,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -119,6 +120,6 @@ public class WindmillBlock extends DeviceBlock implements EntityBlockExtension, 
     @Override
     public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player)
     {
-        return new ItemStack(TFCItems.WINDMILL_BLADE.get());
+        return new ItemStack(TFCItems.WINDMILL_BLADES.get(DyeColor.WHITE));
     }
 }

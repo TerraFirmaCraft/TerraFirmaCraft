@@ -29,6 +29,8 @@ public final class TFCIngredients
     public static final Id<HeatIngredient> HEAT = register("heat", HeatIngredient.CODEC, HeatIngredient.STREAM_CODEC);
     public static final Id<FluidContentIngredient> FLUID_CONTENT = register("fluid_content", FluidContentIngredient.CODEC, FluidContentIngredient.STREAM_CODEC);
 
+    public static final Id<AndIngredient> AND = register("and", AndIngredient.CODEC, AndIngredient.STREAM_CODEC);
+
     private static <T extends ICustomIngredient> Id<T> register(String name, MapCodec<T> codec, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec)
     {
         return new Id<>(TYPES.register(name, () -> new IngredientType<>(codec, streamCodec)));

@@ -1,6 +1,5 @@
 package net.dries007.tfc.util.registry;
 
-import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 /**
@@ -37,10 +36,5 @@ public interface RegistryHolder<R, T extends R> extends IdHolder<T>, HolderHolde
     default T get()
     {
         return holder().get();
-    }
-
-    default ResourceLocation getId()
-    {
-        return holder().getId();
     }
 }

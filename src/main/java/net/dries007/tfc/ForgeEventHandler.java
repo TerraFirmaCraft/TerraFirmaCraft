@@ -187,7 +187,7 @@ import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.data.DataManagers;
 import net.dries007.tfc.util.data.Drinkable;
 import net.dries007.tfc.util.data.Fertilizer;
-import net.dries007.tfc.util.data.Metal;
+import net.dries007.tfc.util.data.FluidHeat;
 import net.dries007.tfc.util.data.Support;
 import net.dries007.tfc.util.events.DouseFireEvent;
 import net.dries007.tfc.util.events.LoggingEvent;
@@ -1468,7 +1468,7 @@ public final class ForgeEventHandler
 
             // Then apply post reload actions which may query the cache
             Support.updateMaximumSupportRange();
-            Metal.updateMetalFluidMap();
+            FluidHeat.updateMetalFluidMap();
 
             ItemSizeManager.applyItemStackSizeOverrides();
             FoodCapability.markRecipeOutputsAsNonDecaying(event.getRegistryAccess(), manager);

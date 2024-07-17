@@ -6,7 +6,9 @@
 
 package net.dries007.tfc.util.registry;
 
+import java.util.Objects;
 import net.minecraft.core.Holder;
+import net.minecraft.resources.ResourceKey;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 /**
@@ -19,4 +21,9 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 public interface HolderHolder<T>
 {
     DeferredHolder<T, ? extends T> holder();
+
+    default ResourceKey<T> key()
+    {
+        return Objects.requireNonNull(holder().getKey());
+    }
 }

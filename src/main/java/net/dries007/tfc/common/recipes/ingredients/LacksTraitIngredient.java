@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.recipes.ingredients;
 
 import com.mojang.serialization.MapCodec;
+import net.minecraft.core.Holder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
@@ -19,6 +20,11 @@ public record LacksTraitIngredient(FoodTrait trait) implements PreciseIngredient
 {
     public static final MapCodec<LacksTraitIngredient> CODEC = FoodTrait.CODEC.fieldOf("trait").xmap(LacksTraitIngredient::new, LacksTraitIngredient::trait);
     public static final StreamCodec<RegistryFriendlyByteBuf, LacksTraitIngredient> STREAM_CODEC = FoodTrait.STREAM_CODEC.map(LacksTraitIngredient::new, LacksTraitIngredient::trait);
+
+    public static LacksTraitIngredient of(Holder<FoodTrait> trait)
+    {
+        return new LacksTraitIngredient(trait.value());
+    }
 
     @Override
     public boolean test(ItemStack stack)

@@ -28,6 +28,12 @@ public enum RottenIngredient implements PreciseIngredient
     }
 
     @Override
+    public ItemStack modifyStackForDisplay(ItemStack stack)
+    {
+        return FoodCapability.setRotten(stack);
+    }
+
+    @Override
     public IngredientType<?> getType()
     {
         return TFCIngredients.ROTTEN.get();
