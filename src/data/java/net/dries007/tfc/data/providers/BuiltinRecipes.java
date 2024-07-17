@@ -23,6 +23,7 @@ import net.dries007.tfc.data.recipes.AlloyRecipes;
 import net.dries007.tfc.data.recipes.AnvilRecipes;
 import net.dries007.tfc.data.recipes.BarrelRecipes;
 import net.dries007.tfc.data.recipes.CastingRecipes;
+import net.dries007.tfc.data.recipes.ChiselRecipes;
 import net.dries007.tfc.data.recipes.WeldingRecipes;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
@@ -34,6 +35,7 @@ public final class BuiltinRecipes extends RecipeProvider implements
     AlloyRecipes,
     BarrelRecipes,
     CastingRecipes,
+    ChiselRecipes,
     WeldingRecipes
 {
     RecipeOutput output;
@@ -60,6 +62,7 @@ public final class BuiltinRecipes extends RecipeProvider implements
         alloyRecipes();
         barrelRecipes();
         castingRecipes();
+        chiselRecipes();
         weldingRecipes();
 
         add(new BloomeryRecipe(

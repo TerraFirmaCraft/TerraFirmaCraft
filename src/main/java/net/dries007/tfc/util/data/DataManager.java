@@ -22,9 +22,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.mojang.logging.LogUtils;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
 import com.mojang.serialization.JsonOps;
-import com.mojang.serialization.MapCodec;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -32,7 +30,6 @@ import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
-import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.profiling.ProfilerFiller;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -43,16 +40,11 @@ import net.dries007.tfc.util.SelfTests;
 // todo: add a int ID mechanism, sync int IDs as part of normal sync, and then use int IDs for stream codec references
 public class DataManager<T> extends SimpleJsonResourceReloadListener
 {
-    public static final MapCodec<ResourceLocation> ID = ExtraCodecs.retrieveContext(ops ->
-        ops instanceof DataManager.IdAware<?> idAware && idAware.id != null ? DataResult.success(idAware.id) : DataResult.error(() -> "Not ID aware"));
-
-
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final Gson GSON = new Gson();
 
     protected final BiMap<ResourceLocation, T> types;
-    public final String typeName;
-    public final String registryName;
+    private final String registryName;
 
     protected final Codec<T> codec;
     protected final @Nullable StreamCodec<RegistryFriendlyByteBuf, T> streamCodec;
@@ -66,20 +58,19 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
     /**
      * Create a {@link DataManager} that is not synced to client
      */
-    public DataManager(ResourceLocation domain, String typeName, Codec<T> codec)
+    public DataManager(ResourceLocation domain, Codec<T> codec)
     {
-        this(domain, typeName, codec, null);
+        this(domain, codec, null);
     }
 
     /**
      * Create a {@link DataManager} that is synced to client
      */
-    public DataManager(ResourceLocation domain, String typeName, Codec<T> codec, @Nullable StreamCodec<RegistryFriendlyByteBuf, T> streamCodec)
+    public DataManager(ResourceLocation domain, Codec<T> codec, @Nullable StreamCodec<RegistryFriendlyByteBuf, T> streamCodec)
     {
         super(GSON, domain.getNamespace() + "/" + domain.getPath());
 
         this.types = HashBiMap.create();
-        this.typeName = typeName;
         this.registryName = domain.getPath();
         this.codec = codec;
         this.streamCodec = streamCodec;
@@ -139,11 +130,6 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
         return streamCodec != null;
     }
 
-    public final Codec<T> elementCodec()
-    {
-        return codec;
-    }
-
     /**
      * @return A codec that can return a reference to an element via an ID, that does not require elements to be loaded
      */
@@ -162,28 +148,43 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
     }
 
     /**
+     * @return A codec used to encode objects. Note that this will not maintain references, and should not be used by data loading code
+     * @see #byIdReferenceCodec()
+     */
+    public final Codec<T> codec()
+    {
+        return codec;
+    }
+
+    /**
      * @return The codec used to write individual data manager elements to the network. Should only be used by the initial sync packet!
      * @throws NullPointerException if {@link #isSynced()} is {@code false}
+     * @see #byIdStreamCodec()
      */
     public final StreamCodec<RegistryFriendlyByteBuf, T> streamCodec()
     {
         return Objects.requireNonNull(streamCodec);
     }
 
-    public void onSync(boolean isMemoryConnection, Map<ResourceLocation, T> elements)
+    /**
+     * Updates the data manager with the state of the networked elements. Only called on physical client connecting to a physical server.
+     */
+    public void onSync(Map<ResourceLocation, T> elements)
     {
-        if (isMemoryConnection)
-        {
-            LOGGER.info("Ignored {}(s) sync from logical server", typeName);
-        }
-        else
-        {
-            // Sync received from physical server
-            types.clear();
-            types.putAll(elements);
-            updateReferences();
-            LOGGER.info("Received {} {}(s) from physical server", types.size(), typeName);
-        }
+        // Sync received from physical server
+        types.clear();
+        types.putAll(elements);
+        updateReferences();
+        LOGGER.info("Received {} {}(s) from physical server", types.size(), registryName);
+    }
+
+    /**
+     * @return The registry name (excluding namespace) of this data manager
+     */
+    @Override
+    public final String getName()
+    {
+        return registryName;
     }
 
     @Override
@@ -191,25 +192,24 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
     {
         types.clear();
 
-        final IdAware<JsonElement> ops = new IdAware<>(getRegistryLookup().createSerializationContext(JsonOps.INSTANCE));
+        final RegistryOps<JsonElement> ops = getRegistryLookup().createSerializationContext(JsonOps.INSTANCE);
         for (Map.Entry<ResourceLocation, JsonElement> entry : elements.entrySet())
         {
             final ResourceLocation id = entry.getKey();
             try
             {
-                ops.id = id;
                 types.put(id, codec.parse(ops, entry.getValue()).getOrThrow(JsonParseException::new));
             }
             catch (IllegalArgumentException | JsonParseException e)
             {
-                LOGGER.error("{} '{}' failed to parse. {}: {}", typeName, id, e.getClass().getSimpleName(), e.getMessage());
+                LOGGER.error("{} '{}' failed to parse. {}: {}", registryName, id, e.getClass().getSimpleName(), e.getMessage());
                 SelfTests.reportExternalError();
             }
         }
 
         updateReferences();
 
-        LOGGER.info("Loaded {} {}(s).", types.size(), typeName);
+        LOGGER.info("Loaded {} {}(s).", types.size(), registryName);
     }
 
     private void updateReferences()
@@ -231,7 +231,7 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
 
             if (!unboundReferences.isEmpty())
             {
-                LOGGER.error("There were {} '{}' that were used but not defined: {}", unboundReferences.size(), typeName, unboundReferences);
+                LOGGER.error("There were {} '{}' that were used but not defined: {}", unboundReferences.size(), registryName, unboundReferences);
                 SelfTests.reportExternalError();
             }
         }
@@ -263,16 +263,6 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
         {
             assert this.value.isEmpty() : "Assigned a duplicate value!";
             this.value = Optional.of(value);
-        }
-    }
-
-    static class IdAware<T> extends RegistryOps<T>
-    {
-        @Nullable ResourceLocation id = null;
-
-        IdAware(RegistryOps<T> other)
-        {
-            super(other);
         }
     }
 }

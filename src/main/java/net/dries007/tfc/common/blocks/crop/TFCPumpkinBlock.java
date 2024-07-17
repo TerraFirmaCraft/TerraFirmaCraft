@@ -42,7 +42,7 @@ public class TFCPumpkinBlock extends DecayingBlock
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
         final ItemStack held = player.getItemInHand(hand);
-        if (level.getBlockEntity(pos) instanceof DecayingBlockEntity decaying && (Helpers.isItem(held, TFCTags.Items.TOOLS_KNIVES) || Helpers.isItem(held, Tags.Items.TOOLS_SHEAR)) && TFCConfig.SERVER.enablePumpkinCarving.get())
+        if (level.getBlockEntity(pos) instanceof DecayingBlockEntity decaying && (Helpers.isItem(held, TFCTags.Items.TOOLS_KNIFE) || Helpers.isItem(held, Tags.Items.TOOLS_SHEAR)) && TFCConfig.SERVER.enablePumpkinCarving.get())
         {
             if (!level.isClientSide && !decaying.isRotten())
             {

@@ -23,16 +23,6 @@ import net.dries007.tfc.mixin.accessor.FlowingFluidAccessor;
 
 public abstract class MixingFluid extends BaseFlowingFluid
 {
-    /**
-     * @see net.minecraft.world.level.material.FlowingFluid#getCacheKey(BlockPos, BlockPos)
-     */
-    public static short getCacheKey(BlockPos from, BlockPos to)
-    {
-        int deltaX = to.getX() - from.getX();
-        int deltaZ = to.getZ() - from.getZ();
-        return (short) ((deltaX + 128 & 255) << 8 | deltaZ + 128 & 255);
-    }
-
     protected MixingFluid(Properties properties)
     {
         super(properties);
@@ -138,13 +128,11 @@ public abstract class MixingFluid extends BaseFlowingFluid
 
     /**
      * Modified to use mixing mechanics, in such a way that can be exposed to other subclasses
-     *
-     * @see FluidHelpers#getNewFluidWithMixing(FlowingFluid, Level, BlockPos, BlockState, boolean, int)
      */
     @Override
     protected FluidState getNewLiquid(Level level, BlockPos pos, BlockState blockStateIn)
     {
-        return FluidHelpers.getNewFluidWithMixing(this, level, pos, blockStateIn, canConvertToSource(blockStateIn.getFluidState(), level, pos), getDropOff(level));
+        return FluidHelpers.getNewFluidWithMixing(this, level, pos, blockStateIn, getDropOff(level));
     }
 
     @Override

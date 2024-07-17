@@ -114,7 +114,8 @@ public interface BarrelRecipes extends Recipes
         final Ingredient foods = CompoundIngredient.of(
             Ingredient.of(TFCTags.Items.FRUITS),
             Ingredient.of(TFCTags.Items.VEGETABLES),
-            Ingredient.of(TFCTags.Items.MEATS)
+            Ingredient.of(TFCTags.Items.MEATS),
+            Ingredient.of(TFCTags.Items.FISH)
         );
         barrel("brined")
             .input(AndIngredient.of(

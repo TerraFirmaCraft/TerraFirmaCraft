@@ -37,7 +37,7 @@ public abstract class FlowingFluidMixin extends Fluid
     {
         if (FluidHelpers.canMixFluids(this))
         {
-            cir.setReturnValue(FluidHelpers.getNewFluidWithMixing((FlowingFluid) (Object) this, level, pos, state, canConvertToSource(state.getFluidState(), level, pos), getDropOff(level)));
+            cir.setReturnValue(FluidHelpers.getNewFluidWithMixing((FlowingFluid) (Object) this, level, pos, state, getDropOff(level)));
         }
     }
 }

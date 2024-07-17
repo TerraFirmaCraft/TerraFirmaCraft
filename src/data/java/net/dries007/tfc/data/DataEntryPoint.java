@@ -21,7 +21,9 @@ import net.dries007.tfc.data.providers.BuiltinDensityFunctions;
 import net.dries007.tfc.data.providers.BuiltinDrinkables;
 import net.dries007.tfc.data.providers.BuiltinFluidHeat;
 import net.dries007.tfc.data.providers.BuiltinFluidTags;
+import net.dries007.tfc.data.providers.BuiltinFuels;
 import net.dries007.tfc.data.providers.BuiltinItemHeat;
+import net.dries007.tfc.data.providers.BuiltinItemSizes;
 import net.dries007.tfc.data.providers.BuiltinItemTags;
 import net.dries007.tfc.data.providers.BuiltinKnappingTypes;
 import net.dries007.tfc.data.providers.BuiltinLampFuels;
@@ -58,6 +60,8 @@ public final class DataEntryPoint
         add(event, new BuiltinSupports(output, lookup));
         add(event, new BuiltinKnappingTypes(output, lookup));
         add(event, new BuiltinLampFuels(output, lookup));
+        add(event, new BuiltinItemSizes(output, lookup));
+        add(event, new BuiltinFuels(output, lookup));
     }
 
     private static <T extends DataProvider> T add(GatherDataEvent event, T provider)

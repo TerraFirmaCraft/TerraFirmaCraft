@@ -414,7 +414,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
     @Override
     public void addAdditionalSaveData(CompoundTag nbt)
     {
-        nbt.put("chestItem", getChestItem().save(registryAccess()));
+        nbt.put("chestItem", getChestItem().saveOptional(registryAccess()));
         super.addAdditionalSaveData(nbt);
         saveCommonAnimalData(nbt);
         nbt.putBoolean("overburdened", overburdened);

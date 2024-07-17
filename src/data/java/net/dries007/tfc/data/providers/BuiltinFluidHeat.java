@@ -62,7 +62,7 @@ public class BuiltinFluidHeat extends DataManagerProvider<FluidHeat> implements 
             HEAT_CAPACITY / baseHeatCapacity,
             Optional.of(Ingredient.of(tagOf(metal, Metal.ItemType.INGOT))),
             metal.defaultParts() ? Optional.of(Ingredient.of(tagOf(metal, Metal.ItemType.DOUBLE_INGOT))) : Optional.empty(),
-            metal.defaultParts() ? Optional.of(Ingredient.of(tagOf(metal, Metal.ItemType.DOUBLE_SHEET))) : Optional.empty()
+            metal.defaultParts() ? Optional.of(Ingredient.of(tagOf(metal, Metal.ItemType.SHEET))) : Optional.empty()
         ));
     }
 }

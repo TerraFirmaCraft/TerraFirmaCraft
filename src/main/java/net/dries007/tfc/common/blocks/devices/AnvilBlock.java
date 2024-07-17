@@ -72,7 +72,7 @@ public class AnvilBlock extends DeviceBlock implements Tiered
                     }
                 }
             }
-            else if (Helpers.isItem(playerStack, TFCTags.Items.HAMMERS)) // Attempt welding with a hammer in hand
+            else if (Helpers.isItem(playerStack, TFCTags.Items.TOOLS_HAMMER)) // Attempt welding with a hammer in hand
             {
                 final InteractionResult weldResult = anvil.weld(player);
                 if (weldResult == InteractionResult.SUCCESS)

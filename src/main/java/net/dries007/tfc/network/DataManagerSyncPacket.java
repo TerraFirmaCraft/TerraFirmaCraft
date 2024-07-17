@@ -9,11 +9,13 @@ package net.dries007.tfc.network;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import com.mojang.logging.LogUtils;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
+import org.slf4j.Logger;
 
 import net.dries007.tfc.util.data.DataManager;
 import net.dries007.tfc.util.data.DataManagers;
@@ -25,6 +27,8 @@ public record DataManagerSyncPacket(List<Entry<?>> values) implements CustomPack
         .<Entry<?>>dispatch(Entry::manager, DataManagerSyncPacket::streamCodec)
         .apply(ByteBufCodecs.list())
         .map(DataManagerSyncPacket::new, DataManagerSyncPacket::values);
+
+    private static final Logger LOGGER = LogUtils.getLogger();
 
     private static <T> StreamCodec<RegistryFriendlyByteBuf, Entry<T>> streamCodec(DataManager<T> manager)
     {
@@ -60,7 +64,14 @@ public record DataManagerSyncPacket(List<Entry<?>> values) implements CustomPack
 
         void handle(boolean isMemoryConnection)
         {
-            manager.onSync(isMemoryConnection, values);
+            if (isMemoryConnection)
+            {
+                LOGGER.info("Ignoring DataManager sync on logical server");
+            }
+            else
+            {
+                manager.onSync(values);
+            }
         }
     }
 }

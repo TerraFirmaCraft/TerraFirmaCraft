@@ -1,42 +1,92 @@
 package net.dries007.tfc.data.providers;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
+import com.google.common.base.Preconditions;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.tags.TagsProvider;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.packs.PackType;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagBuilder;
+import net.minecraft.tags.TagEntry;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.data.ExistingFileHelper.ResourceType;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.data.Accessors;
 import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.registry.IdHolder;
 
-public class BuiltinBlockTags extends BlockTagsProvider
+public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
 {
+    private final ExistingFileHelper.IResourceType resourceType;
+
     public BuiltinBlockTags(GatherDataEvent event, CompletableFuture<HolderLookup.Provider> lookup)
     {
-        super(event.getGenerator().getPackOutput(), lookup, TerraFirmaCraft.MOD_ID, event.getExistingFileHelper());
+        super(event.getGenerator().getPackOutput(), Registries.BLOCK, lookup, TerraFirmaCraft.MOD_ID, event.getExistingFileHelper());
+        this.resourceType = new ResourceType(PackType.SERVER_DATA, ".json", Registries.tagsDirPath(registryKey));
     }
 
     @Override
     protected void addTags(HolderLookup.Provider provider)
     {
-        tag(BlockTags.REPLACEABLE, BuiltInRegistries.BLOCK
+        tag(BlockTags.REPLACEABLE).add(BuiltInRegistries.BLOCK
             .entrySet()
             .stream()
             .filter(e -> e.getValue().defaultBlockState().canBeReplaced() && e.getKey().location().getNamespace().equals(TerraFirmaCraft.MOD_ID))
             .map(Map.Entry::getValue));
 
-        tag(TFCTags.Blocks.LAMPS, TFCBlocks.METALS.values().stream().map(m -> m.get(Metal.BlockType.LAMP).get()));
+        tag(TFCTags.Blocks.LAMPS).add(pivot(TFCBlocks.METALS, Metal.BlockType.LAMP));
     }
 
-    private void tag(TagKey<Block> tag, Stream<Block> blocks)
+    @Override
+    protected BlockTagAppender tag(TagKey<Block> tag)
     {
-        blocks.forEach(tag(tag)::add);
+        return new BlockTagAppender(getOrCreateRawBuilder(tag), modId);
+    }
+
+    @Override
+    protected TagBuilder getOrCreateRawBuilder(TagKey<Block> tag)
+    {
+        if (existingFileHelper != null) existingFileHelper.trackGenerated(tag.location(), resourceType);
+        return this.builders.computeIfAbsent(tag.location(), key -> new TagBuilder()
+        {
+            @Override
+            public TagBuilder add(TagEntry entry)
+            {
+                Preconditions.checkArgument(!entry.getId().equals(BuiltInRegistries.ITEM.getDefaultKey()), "Adding air to block tag");
+                return super.add(entry);
+            }
+        });
+    }
+
+    static class BlockTagAppender extends TagAppender<Block>
+    {
+        BlockTagAppender(TagBuilder builder, String modId)
+        {
+            super(builder, modId);
+        }
+
+        BlockTagAppender add(Block... blocks) { return add(Arrays.stream(blocks)); }
+        BlockTagAppender add(Stream<Block> blocks) { blocks.forEach(item -> add(key(item))); return this; }
+        BlockTagAppender add(Map<?, ? extends IdHolder<? extends Block>> blocks) { return add(blocks.values().stream().map(IdHolder::get)); }
+
+        private ResourceKey<Block> key(Block block)
+        {
+            return BuiltInRegistries.BLOCK.getResourceKey(block).orElseThrow();
+        }
     }
 }

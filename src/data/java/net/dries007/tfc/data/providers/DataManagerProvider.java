@@ -27,7 +27,7 @@ public abstract class DataManagerProvider<T> implements DataProvider
         this.manager = manager;
         this.lookup = lookup;
         this.elements = new HashMap<>();
-        this.path = output.createPathProvider(PackOutput.Target.DATA_PACK, TerraFirmaCraft.MOD_ID + "/" + manager.registryName);
+        this.path = output.createPathProvider(PackOutput.Target.DATA_PACK, TerraFirmaCraft.MOD_ID + "/" + manager.getName());
         this.contentDone = new CompletableFuture<>();
     }
 
@@ -39,7 +39,7 @@ public abstract class DataManagerProvider<T> implements DataProvider
             contentDone.complete(null);
             return CompletableFuture.allOf(elements.entrySet()
                 .stream()
-                .map(e -> DataProvider.saveStable(output, provider, manager.elementCodec(), e.getValue(), path.json(e.getKey())))
+                .map(e -> DataProvider.saveStable(output, provider, manager.codec(), e.getValue(), path.json(e.getKey())))
                 .toArray(CompletableFuture[]::new));
         });
     }
@@ -52,7 +52,7 @@ public abstract class DataManagerProvider<T> implements DataProvider
     @Override
     public final String getName()
     {
-        return "Data Manager (" + manager.typeName + ")";
+        return "Data Manager (" + manager.getName() + ")";
     }
 
     protected final void add(String name, T value)

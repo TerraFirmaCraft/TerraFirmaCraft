@@ -35,7 +35,7 @@ public record ItemDamageResistance(
         ItemDamageResistance::new
     );
 
-    public static final DataManager<ItemDamageResistance> MANAGER = new DataManager<>(Helpers.identifier("item_damage_resistances"), "item_damage_resistances", CODEC, STREAM_CODEC);
+    public static final DataManager<ItemDamageResistance> MANAGER = new DataManager<>(Helpers.identifier("item_damage_resistances"), CODEC, STREAM_CODEC);
     public static final IndirectHashCollection<Item, ItemDamageResistance> CACHE = IndirectHashCollection.create(c -> RecipeHelpers.itemKeys(c.ingredient), MANAGER::getValues);
 
     @Nullable

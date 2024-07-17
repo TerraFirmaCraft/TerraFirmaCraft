@@ -74,7 +74,7 @@ public record FluidHeat(
 
     public static final ResourceLocation UNKNOWN_ID = Helpers.identifier("unknown");
 
-    public static final DataManager<FluidHeat> MANAGER = new DataManager<>(Helpers.identifier("fluid_heat"), "fluid heat", CODEC, STREAM_CODEC);
+    public static final DataManager<FluidHeat> MANAGER = new DataManager<>(Helpers.identifier("fluid_heat"), CODEC, STREAM_CODEC);
     private static final Map<Fluid, FluidHeat> CACHE = new HashMap<>();
 
     /**

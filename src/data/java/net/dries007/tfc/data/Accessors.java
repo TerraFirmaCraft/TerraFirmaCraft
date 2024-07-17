@@ -1,6 +1,8 @@
 package net.dries007.tfc.data;
 
 import java.util.Locale;
+import java.util.Map;
+import java.util.stream.Collectors;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -106,5 +108,13 @@ public interface Accessors
     default int hours(int hours)
     {
         return hours * ICalendar.TICKS_IN_HOUR;
+    }
+
+    default <T1, T2, V> Map<T1, V> pivot(Map<T1, Map<T2, V>> map, T2 key)
+    {
+        return map.entrySet()
+            .stream()
+            .filter(e -> e.getValue().containsKey(key))
+            .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().get(key)));
     }
 }

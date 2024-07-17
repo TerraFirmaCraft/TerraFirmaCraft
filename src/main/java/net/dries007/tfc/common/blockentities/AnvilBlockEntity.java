@@ -114,7 +114,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
         return switch (slot)
             {
                 case SLOT_INPUT_MAIN, SLOT_INPUT_SECOND -> true;
-                case SLOT_HAMMER -> Helpers.isItem(stack, TFCTags.Items.HAMMERS);
+                case SLOT_HAMMER -> Helpers.isItem(stack, TFCTags.Items.TOOLS_HAMMER);
                 case SLOT_CATALYST -> Helpers.isItem(stack, TFCTags.Items.FLUX);
                 default -> false;
             };
@@ -210,7 +210,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
             hammer = player.getOffhandItem();
             hammerSlot = InteractionHand.OFF_HAND;
         }
-        if (hammerSlot == null || hammer.isEmpty() || !Helpers.isItem(hammer, TFCTags.Items.HAMMERS))
+        if (hammerSlot == null || hammer.isEmpty() || !Helpers.isItem(hammer, TFCTags.Items.TOOLS_HAMMER))
         {
             player.displayClientMessage(Component.translatable("tfc.tooltip.hammer_required_to_work"), false);
             return InteractionResult.FAIL;

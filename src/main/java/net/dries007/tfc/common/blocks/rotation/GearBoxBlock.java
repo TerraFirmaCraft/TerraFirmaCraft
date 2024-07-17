@@ -54,7 +54,7 @@ public class GearBoxBlock extends DeviceBlock implements DirectionPropertyBlock,
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
-        if (Helpers.isItem(player.getItemInHand(hand), TFCTags.Items.HAMMERS))
+        if (Helpers.isItem(player.getItemInHand(hand), TFCTags.Items.TOOLS_HAMMER))
         {
             final BooleanProperty property = DirectionPropertyBlock.getProperty(hitResult.getDirection());
             final boolean prev = state.getValue(property);

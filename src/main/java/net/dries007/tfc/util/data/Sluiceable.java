@@ -37,7 +37,7 @@ public record Sluiceable(
         Sluiceable::new
     );
 
-    public static final DataManager<Sluiceable> MANAGER = new DataManager<>(Helpers.identifier("sluicing"), "sluicing", CODEC, STREAM_CODEC);
+    public static final DataManager<Sluiceable> MANAGER = new DataManager<>(Helpers.identifier("sluicing"), CODEC, STREAM_CODEC);
     public static final IndirectHashCollection<Item, Sluiceable> CACHE = IndirectHashCollection.create(r -> RecipeHelpers.itemKeys(r.ingredient), MANAGER::getValues);
 
     @Nullable

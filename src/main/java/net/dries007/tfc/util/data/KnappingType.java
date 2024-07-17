@@ -56,7 +56,7 @@ public record KnappingType(
         KnappingType::new
     );
 
-    public static final DataManager<KnappingType> MANAGER = new DataManager<>(Helpers.identifier("knapping_types"), "knapping_types", CODEC, STREAM_CODEC);
+    public static final DataManager<KnappingType> MANAGER = new DataManager<>(Helpers.identifier("knapping_types"), CODEC, STREAM_CODEC);
 
     @Nullable
     public static KnappingType get(Player player)

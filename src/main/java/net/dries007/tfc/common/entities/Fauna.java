@@ -31,5 +31,5 @@ public record Fauna(
         Codec.INT.optionalFieldOf("max_brightness", -1).forGetter(c -> c.maxBrightness)
     ).apply(i, Fauna::new));
 
-    public static final DataManager<Fauna> MANAGER = new DataManager<>(Helpers.identifier("fauna"), "fauna", CODEC);
+    public static final DataManager<Fauna> MANAGER = new DataManager<>(Helpers.identifier("fauna"), CODEC);
 }

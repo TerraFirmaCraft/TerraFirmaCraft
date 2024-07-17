@@ -26,7 +26,7 @@ public record EntityDamageResistance(
         PhysicalDamage.CODEC.forGetter(c -> c.damages)
     ).apply(i, EntityDamageResistance::new));
 
-    public static final DataManager<EntityDamageResistance> MANAGER = new DataManager<>(Helpers.identifier("entity_damage_resistances"), "entity_damage_resistances", CODEC);
+    public static final DataManager<EntityDamageResistance> MANAGER = new DataManager<>(Helpers.identifier("entity_damage_resistances"), CODEC);
 
     @Nullable
     public static EntityDamageResistance get(Entity entity)

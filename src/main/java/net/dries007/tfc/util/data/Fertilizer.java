@@ -42,7 +42,7 @@ public record Fertilizer(
         Fertilizer::new
     );
 
-    public static final DataManager<Fertilizer> MANAGER = new DataManager<>(Helpers.identifier("fertilizers"), "fertilizer", CODEC, STREAM_CODEC);
+    public static final DataManager<Fertilizer> MANAGER = new DataManager<>(Helpers.identifier("fertilizers"), CODEC, STREAM_CODEC);
     public static final IndirectHashCollection<Item, Fertilizer> CACHE = IndirectHashCollection.create(c -> RecipeHelpers.itemKeys(c.ingredient), MANAGER::getValues);
 
     @Nullable

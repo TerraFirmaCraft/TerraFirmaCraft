@@ -60,10 +60,10 @@ public class ChiselItem extends ToolItem
                         }
                     }
 
-                    final ChiselRecipe recipeUsed = ChiselRecipe.getRecipe(state, held, IPlayerInfo.get(player).chiselMode());
+                    final ChiselRecipe recipeUsed = ChiselRecipe.getRecipe(state, IPlayerInfo.get(player).chiselMode());
                     if (recipeUsed != null)
                     {
-                        ItemStack extraDrop = recipeUsed.getExtraDrop(held);
+                        ItemStack extraDrop = recipeUsed.getItemOutput(held);
                         if (!extraDrop.isEmpty())
                         {
                             ItemHandlerHelper.giveItemToPlayer(player, extraDrop);

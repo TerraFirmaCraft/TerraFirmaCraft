@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.recipes;
 
 import java.util.Locale;
-import java.util.Optional;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -15,9 +14,9 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
@@ -25,7 +24,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
@@ -54,7 +52,6 @@ public class ChiselRecipe implements INoopInputRecipe
         BlockIngredient.CODEC.fieldOf("ingredient").forGetter(c -> c.ingredient),
         Codecs.BLOCK_STATE.fieldOf("result").forGetter(c -> c.output),
         Mode.CODEC.fieldOf("mode").forGetter(c -> c.mode),
-        Ingredient.CODEC.optionalFieldOf("item_ingredient").forGetter(c -> c.itemIngredient),
         ItemStackProvider.CODEC.optionalFieldOf("item_output", ItemStackProvider.empty()).forGetter(c -> c.itemOutput)
     ).apply(i, ChiselRecipe::new));
 
@@ -62,23 +59,29 @@ public class ChiselRecipe implements INoopInputRecipe
         BlockIngredient.STREAM_CODEC, c -> c.ingredient,
         StreamCodecs.BLOCK_STATE, c -> c.output,
         Mode.STREAM_CODEC, c -> c.mode,
-        ByteBufCodecs.optional(Ingredient.CONTENTS_STREAM_CODEC), c -> c.itemIngredient,
         ItemStackProvider.STREAM_CODEC, c -> c.itemOutput,
         ChiselRecipe::new
     );
 
 
     /**
-     * In a sentence, this method returns "Either" a BlockState, which the caller must handle, or an InteractionResult to be returned
+     * Attempts to chisel a block, returning the result if chiseling would occur, for the caller to handle.
+     *
+     * @param player The player doing the chiseling
+     * @param state The initial state of the targeted block
+     * @param hit The hit result on the targeted block, used for orientation of slabs and stairs
+     * @param informWhy If {@code true}, this will trigger a client message for the player if the recipe fails, explaining why it failed
+     * @return Either a block state to be set in the position of the input, or an interaction result with a fail/pass if the chiseling
+     * was not successful.
      */
     public static Either<BlockState, InteractionResult> computeResult(Player player, BlockState state, BlockHitResult hit, boolean informWhy)
     {
         final ItemStack held = player.getMainHandItem();
-        if (Helpers.isItem(held, TFCTags.Items.TOOLS_CHISELS) && Helpers.isItem(player.getOffhandItem(), TFCTags.Items.HAMMERS))
+        if (Helpers.isItem(held, TFCTags.Items.TOOLS_CHISEL) && Helpers.isItem(player.getOffhandItem(), TFCTags.Items.TOOLS_HAMMER))
         {
             final BlockPos pos = hit.getBlockPos();
             final Mode mode = IPlayerInfo.get(player).chiselMode();
-            final ChiselRecipe recipe = ChiselRecipe.getRecipe(state, held, mode);
+            final ChiselRecipe recipe = ChiselRecipe.getRecipe(state, mode);
             if (recipe == null)
             {
                 if (informWhy) complain(player, "no_recipe");
@@ -140,11 +143,11 @@ public class ChiselRecipe implements INoopInputRecipe
     }
 
     @Nullable
-    public static ChiselRecipe getRecipe(BlockState state, ItemStack held, Mode mode)
+    public static ChiselRecipe getRecipe(BlockState state, Mode mode)
     {
         for (ChiselRecipe recipe : CACHE.getAll(state.getBlock()))
         {
-            if (recipe.matches(state, held, mode))
+            if (recipe.matches(state, mode))
             {
                 return recipe;
             }
@@ -155,16 +158,20 @@ public class ChiselRecipe implements INoopInputRecipe
     private final BlockIngredient ingredient;
     private final BlockState output;
     private final Mode mode;
-    private final Optional<Ingredient> itemIngredient;
     private final ItemStackProvider itemOutput;
 
-    public ChiselRecipe(BlockIngredient ingredient, BlockState output, Mode mode, Optional<Ingredient> itemIngredient, ItemStackProvider itemOutput)
+    public ChiselRecipe(BlockIngredient ingredient, BlockState output, Mode mode, ItemStackProvider itemOutput)
     {
         this.ingredient = ingredient;
         this.output = output;
         this.mode = mode;
-        this.itemIngredient = itemIngredient;
         this.itemOutput = itemOutput;
+    }
+
+    @Override
+    public ItemStack getResultItem(HolderLookup.Provider registries)
+    {
+        return new ItemStack(output.getBlock());
     }
 
     @Override
@@ -179,11 +186,9 @@ public class ChiselRecipe implements INoopInputRecipe
         return TFCRecipeTypes.CHISEL.get();
     }
 
-    public boolean matches(BlockState state, ItemStack stack, Mode mode)
+    public boolean matches(BlockState state, Mode mode)
     {
-        return this.mode == mode
-            && ingredient.test(state)
-            && (itemIngredient.isEmpty() || itemIngredient.get().test(stack));
+        return this.mode == mode && ingredient.test(state);
     }
 
     public Mode getMode()
@@ -191,12 +196,7 @@ public class ChiselRecipe implements INoopInputRecipe
         return mode;
     }
 
-    public @Nullable Ingredient getItemIngredient()
-    {
-        return itemIngredient.orElse(null);
-    }
-
-    public ItemStack getExtraDrop(ItemStack chisel)
+    public ItemStack getItemOutput(ItemStack chisel)
     {
         return itemOutput.getSingleStack(chisel);
     }

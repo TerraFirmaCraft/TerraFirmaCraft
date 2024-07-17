@@ -32,6 +32,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.common.TFCAttachments;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.misc.TFCFallingBlockEntity;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
@@ -59,7 +60,7 @@ public final class WorldTracker
      */
     public static WorldTracker get(Level level)
     {
-        throw new IllegalStateException("missing world tracker"); // todo: 1.21 porting
+        return level.getData(TFCAttachments.WORLD_TRACKER);
     }
 
     private final Level level;

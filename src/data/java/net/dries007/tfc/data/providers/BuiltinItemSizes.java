@@ -36,6 +36,7 @@ public class BuiltinItemSizes extends DataManagerProvider<ItemSizeDefinition> im
         add("slabs", ItemTags.SLABS, Size.SMALL, Weight.VERY_LIGHT);
         add("stairs", ItemTags.STAIRS, Size.SMALL, Weight.LIGHT);
         add("doors", ItemTags.DOORS, Size.VERY_LARGE, Weight.HEAVY);
+        add("trapdoors", ItemTags.TRAPDOORS, Size.LARGE, Weight.HEAVY);
         add("signs", ItemTags.SIGNS, Size.VERY_SMALL, Weight.HEAVY);
         add("hanging_signs", ItemTags.HANGING_SIGNS, Size.VERY_SMALL, Weight.HEAVY);
         add("boats", ItemTags.BOATS, Size.VERY_LARGE, Weight.HEAVY);
@@ -74,11 +75,11 @@ public class BuiltinItemSizes extends DataManagerProvider<ItemSizeDefinition> im
         add("salads", TFCTags.Items.SALADS, Size.VERY_SMALL, Weight.MEDIUM);
         add("bloomery", TFCBlocks.BLOOMERY, Size.LARGE, Weight.VERY_HEAVY);
         add("small_tools", CompoundIngredient.of(
-            Ingredient.of(TFCTags.Items.TOOLS_CHISELS),
-            Ingredient.of(TFCTags.Items.TOOLS_KNIVES),
-            Ingredient.of(TFCTags.Items.TOOLS_SHEARS),
+            Ingredient.of(TFCTags.Items.TOOLS_CHISEL),
+            Ingredient.of(TFCTags.Items.TOOLS_KNIFE),
+            Ingredient.of(Tags.Items.TOOLS_SHEAR),
             Ingredient.of(TFCTags.Items.TOOLS_GLASSWORKING),
-            Ingredient.of(TFCTags.Items.TOOLS_BLOWPIPES)
+            Ingredient.of(TFCTags.Items.TOOLS_BLOWPIPE)
         ), Size.LARGE, Weight.MEDIUM);
         add("tools", CompoundIngredient.of(
             Ingredient.of(Tags.Items.TOOLS_FISHING_ROD),
@@ -87,28 +88,21 @@ public class BuiltinItemSizes extends DataManagerProvider<ItemSizeDefinition> im
             Ingredient.of(Tags.Items.RANGED_WEAPON_TOOLS),
             Ingredient.of(Tags.Items.TOOLS_SHIELD)
         ), Size.VERY_LARGE, Weight.VERY_HEAVY);
-
-        /*
-
-'#tfc:plants', Size.tiny, Weight.very_light)
-'#tfc:sluices', Size.very_large, Weight.very_heavy)
-'#tfc:lamps', Size.normal, Weight.medium)
-'#tfc:buckets', Size.large, Weight.medium)
-'#tfc:anvils', Size.huge, Weight.very_heavy)
-'#tfc:minecarts', Size.very_large, Weight.heavy)
-'#tfc:looms', Size.large, Weight.very_heavy)
-'#tfc:tuyeres', Size.large, Weight.heavy)
-'#tfc:trapdoors', Size.large, Weight.heavy)
-['#tfc:chisels', '#tfc:knives', '#tfc:shears'], Size.large, Weight.medium)
-['#forge:fishing_rods', '#tfc:pickaxes', '#tfc:propicks', '#tfc:axes', '#tfc:shovels', '#tfc:hoes', '#tfc:hammers', '#tfc:saws', '#tfc:javelins', '#tfc:swords', '#tfc:maces', '#tfc:scythes', '#tfc:shields', '#tfc:glassworking_tools', '#tfc:all_blowpipes'], Size.very_large, Weight.very_heavy)
-'#tfc:ore_pieces', Size.small, Weight.medium)
-'#tfc:small_ore_pieces', Size.small, Weight.light)
-'#tfc:jars', Size.very_large, Weight.heavy)
-['tfc:empty_jar', 'tfc:empty_jar_with_lid'], Size.tiny, Weight.medium)
-'#tfc:glass_bottles', Size.large, Weight.heavy)
-'#tfc:windmill_blades', Size.very_large, Weight.very_heavy)
-'#tfc:water_wheels', Size.very_large, Weight.very_heavy)
-         */
+        add("plants", TFCTags.Items.PLANTS, Size.TINY, Weight.VERY_LIGHT);
+        add("sluices", TFCTags.Items.SLUICES, Size.VERY_LARGE, Weight.VERY_HEAVY);
+        add("lamps", TFCTags.Items.LAMPS, Size.NORMAL, Weight.MEDIUM);
+        add("buckets", TFCTags.Items.BUCKETS, Size.LARGE, Weight.MEDIUM);
+        add("anvils", TFCTags.Items.ANVILS, Size.HUGE, Weight.VERY_HEAVY);
+        add("minecarts", TFCTags.Items.MINECARTS, Size.VERY_LARGE, Weight.VERY_HEAVY);
+        add("looms", TFCTags.Items.LOOMS, Size.LARGE, Weight.VERY_HEAVY);
+        add("tuyeres", TFCTags.Items.TUYERES, Size.LARGE, Weight.HEAVY);
+        add("ores", TFCTags.Items.ORE_PIECES, Size.SMALL, Weight.MEDIUM);
+        add("small_ores", TFCTags.Items.SMALL_ORE_PIECES, Size.SMALL, Weight.LIGHT);
+        add("jars", TFCTags.Items.JARS, Size.NORMAL, Weight.VERY_HEAVY);
+        add("empty_jars", Ingredient.of(TFCItems.EMPTY_JAR, TFCItems.EMPTY_JAR_WITH_LID), Size.NORMAL, Weight.LIGHT);
+        add("glass_bottles", TFCTags.Items.GLASS_BOTTLES, Size.NORMAL, Weight.MEDIUM);
+        add("windmill_blades", TFCTags.Items.WINDMILL_BLADES, Size.VERY_LARGE, Weight.VERY_HEAVY);
+        add("water_wheels", TFCTags.Items.WATER_WHEELS, Size.VERY_LARGE, Weight.VERY_HEAVY);
     }
 
     private void add(String name, TagKey<Item> item, Size size, Weight weight)
@@ -121,7 +115,7 @@ public class BuiltinItemSizes extends DataManagerProvider<ItemSizeDefinition> im
         add(name, new ItemSizeDefinition(Ingredient.of(item), size, weight));
     }
 
-    private void add(String name,Ingredient item, Size size, Weight weight)
+    private void add(String name, Ingredient item, Size size, Weight weight)
     {
         add(name, new ItemSizeDefinition(item, size, weight));
     }

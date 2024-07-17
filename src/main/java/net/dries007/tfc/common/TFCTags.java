@@ -15,6 +15,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
+import net.neoforged.neoforge.common.Tags;
 
 import net.dries007.tfc.util.Helpers;
 
@@ -102,6 +103,7 @@ public class TFCTags
         public static final TagKey<Block> POWDERKEG_BREAKING_BLOCKS = create("powderkeg_breaking_blocks");
         public static final TagKey<Block> KAOLIN_CLAY_REPLACEABLE = create("kaolin_clay_replaceable");
 
+        // ===== Data Generated ===== //
         public static final TagKey<Block> LAMPS = create("lamps");
 
         private static TagKey<Block> create(String id)
@@ -177,8 +179,6 @@ public class TFCTags
         public static final TagKey<Item> HANDSTONE = tag("handstone");
         public static final TagKey<Item> HAND_WHEEL = tag("hand_wheel");
         public static final TagKey<Item> SCRAPABLE = tag("scrapable");
-        public static final TagKey<Item> HOES = tag("hoes");
-        public static final TagKey<Item> HAMMERS = tag("hammers");
         public static final TagKey<Item> FLUX = tag("flux");
         public static final TagKey<Item> ANVILS = tag("anvils");
         public static final TagKey<Item> TUYERES = tag("tuyeres");
@@ -261,22 +261,27 @@ public class TFCTags
         public static final TagKey<Item> JARS = tag("jars");
         public static final TagKey<Item> SEALED_JARS = tag("sealed_jars");
         public static final TagKey<Item> UNSEALED_JARS = tag("unsealed_jars");
-        public static final TagKey<Item> WINDMILL_BLADES = tag("windmill_blades");
         public static final TagKey<Item> SEWING_DARK_CLOTH = tag("sewing_dark_cloth");
         public static final TagKey<Item> SEWING_LIGHT_CLOTH = tag("sewing_light_cloth");
         public static final TagKey<Item> SEWING_NEEDLES = tag("sewing_needles");
-        public static final TagKey<Item> EMPTY_JAR_WITH_LID = tag("empty_jar_with_lid");
         public static final TagKey<Item> TRIP_HAMMERS = tag("trip_hammers");
 
-        public static final TagKey<Item> FRUITS = tag("foods/fruits");
-        public static final TagKey<Item> VEGETABLES = tag("foods/vegetables");
-        public static final TagKey<Item> MEATS = tag("foods/meats");
-        public static final TagKey<Item> RAW_MEATS = tag("foods/raw_meats");
-        public static final TagKey<Item> COOKED_MEATS = tag("foods/cooked_meats");
-        public static final TagKey<Item> SALADS = tag("foods/salads");
-        public static final TagKey<Item> SOUPS = tag("foods/soups");
+
+        // ===== Data Generated ===== //
+        public static final TagKey<Item> FRUITS = Tags.Items.FOODS_FRUIT;
+        public static final TagKey<Item> VEGETABLES = Tags.Items.FOODS_VEGETABLE;
+        public static final TagKey<Item> RAW_MEATS = Tags.Items.FOODS_RAW_MEAT;
+        public static final TagKey<Item> COOKED_MEATS = Tags.Items.FOODS_COOKED_MEAT;
+        public static final TagKey<Item> MEATS = commonTag("foods/meat");
+        public static final TagKey<Item> RAW_FISH = Tags.Items.FOODS_RAW_FISH;
+        public static final TagKey<Item> COOKED_FISH = Tags.Items.FOODS_COOKED_FISH;
+        public static final TagKey<Item> FISH = commonTag("foods/fish");
+        public static final TagKey<Item> SALADS = commonTag("foods/salad");
+        public static final TagKey<Item> SOUPS = Tags.Items.FOODS_SOUP;
         public static final TagKey<Item> PRESERVES = tag("foods/preserves");
         public static final TagKey<Item> SEALED_PRESERVES = tag("foods/sealed_preserves");
+
+        public static final TagKey<Item> PLANTS = tag("plants");
 
         public static final TagKey<Item> COLORED_WOOL = tag("colored_wool");
         public static final TagKey<Item> COLORED_CARPETS = tag("colored_carpets");
@@ -297,6 +302,8 @@ public class TFCTags
         public static final TagKey<Item> TOOL_RACKS = tag("tool_racks");
         public static final TagKey<Item> SCRIBING_TABLES = tag("scribing_tables");
         public static final TagKey<Item> SEWING_TABLES = tag("sewing_tables");
+        public static final TagKey<Item> SLUICES = tag("sluices");
+        public static final TagKey<Item> LOOMS = tag("looms");
         public static final TagKey<Item> VESSELS = tag("vessels");
         public static final TagKey<Item> UNFIRED_VESSELS = tag("unfired_vessels");
         public static final TagKey<Item> FIRED_VESSELS = tag("fired_vessels");
@@ -304,16 +311,24 @@ public class TFCTags
         public static final TagKey<Item> UNFIRED_LARGE_VESSELS = tag("unfired_large_vessels");
         public static final TagKey<Item> FIRED_LARGE_VESSELS = tag("fired_large_vessels");
         public static final TagKey<Item> MOLDS = tag("molds");
+        public static final TagKey<Item> LAMPS = tag(Blocks.LAMPS);
+        public static final TagKey<Item> BUCKETS = commonTag("buckets");
+        public static final TagKey<Item> MINECARTS = commonTag("minecarts");
+        public static final TagKey<Item> ORE_PIECES = tag("ore_pieces");
+        public static final TagKey<Item> SMALL_ORE_PIECES = tag("small_ore_pieces");
+        public static final TagKey<Item> WATER_WHEELS = tag("water_wheels");
+        public static final TagKey<Item> WINDMILL_BLADES = tag("windmill_blades");
+        public static final TagKey<Item> GLASS_BOTTLES = tag("glass_bottles");
 
         public static final TagKey<Item> DOUBLE_INGOTS = commonTag("double_sheets");
         public static final TagKey<Item> SHEETS = commonTag("double_sheets");
         public static final TagKey<Item> DOUBLE_SHEETS = commonTag("double_sheets");
 
-        public static final TagKey<Item> TOOLS_KNIVES = tag("tools/knives");
-        public static final TagKey<Item> TOOLS_CHISELS = tag("tools/chisels");
-        public static final TagKey<Item> TOOLS_SHEARS = tag("tools/shears");
-        public static final TagKey<Item> TOOLS_GLASSWORKING = tag("tools/glassworking");
-        public static final TagKey<Item> TOOLS_BLOWPIPES = tag("tools/blowpipes");
+        public static final TagKey<Item> TOOLS_HAMMER = commonTag("tools/hammer");
+        public static final TagKey<Item> TOOLS_KNIFE = commonTag("tools/knife");
+        public static final TagKey<Item> TOOLS_CHISEL = commonTag("tools/chisel");
+        public static final TagKey<Item> TOOLS_GLASSWORKING = commonTag("tools/glassworking");
+        public static final TagKey<Item> TOOLS_BLOWPIPE = commonTag("tools/blowpipe");
 
         public static TagKey<Item> mobEquipmentSlotTag(EquipmentSlot slot)
         {
@@ -327,6 +342,11 @@ public class TFCTags
                     case HEAD -> Items.MOB_HEAD_ARMOR;
                     case BODY -> throw new IllegalStateException("huh?"); // todo: 1.21 porting, do we need this?
                 };
+        }
+
+        private static TagKey<Item> tag(TagKey<Block> tag)
+        {
+            return TagKey.create(Registries.ITEM, tag.location());
         }
 
         private static TagKey<Item> tag(String id)

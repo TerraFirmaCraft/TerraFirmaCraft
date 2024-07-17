@@ -16,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.common.recipes.IRecipePredicate;
 import net.dries007.tfc.common.recipes.RecipeHelpers;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
@@ -25,7 +26,8 @@ public record Fuel(
     int duration,
     float temperature,
     float purity
-) {
+) implements IRecipePredicate<ItemStack>
+{
     public static final Codec<Fuel> CODEC = RecordCodecBuilder.create(i -> i.group(
         Ingredient.CODEC.fieldOf("ingredient").forGetter(c -> c.ingredient),
         Codec.INT.fieldOf("duration").forGetter(c -> c.duration),
@@ -41,19 +43,18 @@ public record Fuel(
         Fuel::new
     );
 
-    public static final DataManager<Fuel> MANAGER = new DataManager<>(Helpers.identifier("fuels"), "fuel", CODEC, STREAM_CODEC);
+    public static final DataManager<Fuel> MANAGER = new DataManager<>(Helpers.identifier("fuel"), CODEC, STREAM_CODEC);
     public static final IndirectHashCollection<Item, Fuel> CACHE = IndirectHashCollection.create(r -> RecipeHelpers.itemKeys(r.ingredient), MANAGER::getValues);
 
     @Nullable
     public static Fuel get(ItemStack stack)
     {
-        for (Fuel def : CACHE.getAll(stack.getItem()))
-        {
-            if (def.ingredient.test(stack))
-            {
-                return def;
-            }
-        }
-        return null;
+        return RecipeHelpers.getRecipe(CACHE, stack, stack.getItem());
+    }
+
+    @Override
+    public boolean matches(ItemStack input)
+    {
+        return ingredient.test(input);
     }
 }

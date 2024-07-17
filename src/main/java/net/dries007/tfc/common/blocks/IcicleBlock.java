@@ -49,7 +49,7 @@ public class IcicleBlock extends ThinSpikeBlock
     @Override
     protected void attack(BlockState state, Level level, BlockPos pos, Player player)
     {
-        if (Helpers.isItem(player.getMainHandItem(), TFCTags.Items.HAMMERS) || Helpers.isItem(player.getMainHandItem(), ItemTags.SWORDS))
+        if (Helpers.isItem(player.getMainHandItem(), TFCTags.Items.TOOLS_HAMMER) || Helpers.isItem(player.getMainHandItem(), ItemTags.SWORDS))
         {
             level.destroyBlock(pos, true);
             for (BlockPos testPos : BlockPos.betweenClosed(pos.offset(-2, -2, -2), pos.offset(2, 2, 2)))

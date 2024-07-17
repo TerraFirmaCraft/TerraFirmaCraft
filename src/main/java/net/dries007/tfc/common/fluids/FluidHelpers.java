@@ -293,7 +293,7 @@ public final class FluidHelpers
         final FluidStack fluid = pickupFluid(level, pos, state, IFluidHandler.FluidAction.SIMULATE);
         if (fluid != null && !fluid.isEmpty())
         {
-            if (allowInfiniteSourceFilling && fluid.getFluid() instanceof FlowingFluid flowing)
+            if (allowInfiniteSourceFilling && fluid.getFluid() instanceof FlowingFluid)
             {
                 // Note that this check will be cancelled, if the block is an aqueduct, which is required.
                 // However, for QoL, we can bypass that and let aqueducts count as an infinite source **in this case only!**
@@ -364,6 +364,7 @@ public final class FluidHelpers
     /**
      * This is based on {@link BucketItem#emptyContents}
      */
+    @SuppressWarnings("deprecation")
     public static boolean emptyFluidFrom(IFluidHandler handler, Level level, BlockPos pos, BlockState state, @Nullable BlockHitResult hit, boolean allowPlacingSourceBlocks)
     {
         final Block block = state.getBlock();
@@ -613,13 +614,12 @@ public final class FluidHelpers
      * @param level              The world
      * @param pos                A position
      * @param blockStateIn       The current block state at that position
-     * @param canConvertToSource The result of {@code self.canConvertToSource()} as it's protected
      * @param dropOff            The result of {@code self.getDropOff(worldIn)} as it's protected
      * @return The fluid state that should exist at that position
      * @see FlowingFluid#getNewLiquid(Level, BlockPos, BlockState)
      */
     @SuppressWarnings("deprecation")
-    public static FluidState getNewFluidWithMixing(FlowingFluid self, Level level, BlockPos pos, BlockState blockStateIn, boolean canConvertToSource, int dropOff)
+    public static FluidState getNewFluidWithMixing(FlowingFluid self, Level level, BlockPos pos, BlockState blockStateIn, int dropOff)
     {
         int maxAdjacentFluidAmount = 0; // The maximum height of fluids flowing into this block from the sides
         FlowingFluid maxAdjacentFluid = self;

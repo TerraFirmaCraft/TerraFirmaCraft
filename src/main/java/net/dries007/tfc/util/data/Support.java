@@ -44,7 +44,7 @@ public record Support(
         Support::new
     );
 
-    public static final DataManager<Support> MANAGER = new DataManager<>(Helpers.identifier("support"), "support", CODEC, STREAM_CODEC);
+    public static final DataManager<Support> MANAGER = new DataManager<>(Helpers.identifier("support"), CODEC, STREAM_CODEC);
     public static final IndirectHashCollection<Block, Support> CACHE = IndirectHashCollection.create(s -> s.ingredient.blocks(), MANAGER::getValues);
 
     /**

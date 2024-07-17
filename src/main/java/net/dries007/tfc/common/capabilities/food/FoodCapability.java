@@ -27,7 +27,7 @@ import net.dries007.tfc.util.data.DataManager;
 
 public final class FoodCapability
 {
-    public static final DataManager<FoodDefinition> MANAGER = new DataManager<>(Helpers.identifier("food_items"), "food", FoodDefinition.CODEC, FoodDefinition.STREAM_CODEC);
+    public static final DataManager<FoodDefinition> MANAGER = new DataManager<>(Helpers.identifier("food"), FoodDefinition.CODEC, FoodDefinition.STREAM_CODEC);
     public static final IndirectHashCollection<Item, FoodDefinition> CACHE = IndirectHashCollection.create(r -> RecipeHelpers.itemKeys(r.ingredient()), MANAGER::getValues);
 
     @Nullable

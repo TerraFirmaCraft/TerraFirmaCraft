@@ -48,6 +48,6 @@ public final class DataManagers
 
     private static void register(DataManager<?> manager)
     {
-        MANAGERS.register(manager.registryName, () -> manager);
+        MANAGERS.register(manager.getName(), () -> manager);
     }
 }

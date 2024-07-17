@@ -31,6 +31,7 @@ import net.dries007.tfc.client.ClientEventHandler;
 import net.dries007.tfc.client.ClientForgeEventHandler;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.particle.TFCParticles;
+import net.dries007.tfc.common.TFCAttachments;
 import net.dries007.tfc.common.TFCCreativeTabs;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -113,7 +114,6 @@ public final class TerraFirmaCraft
         TFCItems.ITEMS.register(bus);
         TFCContainerTypes.CONTAINERS.register(bus);
         TFCEntities.ENTITIES.register(bus);
-        TFCFluids.FLUID_TYPES.register(bus);
         TFCFluids.FLUIDS.register(bus);
         TFCRecipeTypes.RECIPE_TYPES.register(bus);
         TFCRecipeSerializers.RECIPE_SERIALIZERS.register(bus);
@@ -133,7 +133,6 @@ public final class TerraFirmaCraft
         TFCPaintings.PAINTING_TYPES.register(bus);
         TFCAdvancements.TRIGGERS.register(bus);
         TFCComponents.COMPONENTS.register(bus);
-        TFCIngredients.TYPES.register(bus);
 
         // World Generation (vanilla)
         TFCBlockPredicates.BLOCK_PREDICATES.register(bus);
@@ -153,6 +152,11 @@ public final class TerraFirmaCraft
         ClimateModels.TYPES.register(bus);
         DataManagers.MANAGERS.register(bus);
         BarSystem.BARS.register(bus);
+
+        // Custom Registries (neoforge)
+        TFCFluids.FLUID_TYPES.register(bus);
+        TFCIngredients.TYPES.register(bus);
+        TFCAttachments.TYPES.register(bus);
 
         CalendarEventHandler.init();
         ForgeEventHandler.init();

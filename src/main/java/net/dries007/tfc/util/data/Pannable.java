@@ -48,7 +48,7 @@ public record Pannable(
         Pannable::new
     );
 
-    public static final DataManager<Pannable> MANAGER = new DataManager<>(Helpers.identifier("panning"), "panning", CODEC, STREAM_CODEC);
+    public static final DataManager<Pannable> MANAGER = new DataManager<>(Helpers.identifier("panning"), CODEC, STREAM_CODEC);
     public static final IndirectHashCollection<Block, Pannable> CACHE = IndirectHashCollection.create(s -> s.ingredient.blocks(), MANAGER::getValues);
 
     @Nullable
