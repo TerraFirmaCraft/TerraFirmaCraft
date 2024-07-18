@@ -1,0 +1,9 @@
+{
+  "dairy": 3.0,
+  "decay_modifier": 0.3,
+  "hunger": 4,
+  "ingredient": {
+    "item": "tfc:food/cheese"
+  },
+  "saturation": 2.0
+}

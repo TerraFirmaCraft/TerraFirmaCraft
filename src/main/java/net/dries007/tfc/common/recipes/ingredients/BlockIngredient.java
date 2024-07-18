@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.recipes.ingredients;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -21,6 +22,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.network.StreamCodecs;
@@ -48,8 +50,9 @@ public record BlockIngredient(Either<Set<Block>, TagKey<Block>> either) implemen
         return new BlockIngredient(Either.right(tag));
     }
 
-    public static BlockIngredient of(Block block)
+    public static BlockIngredient of(Block... block)
     {
+        assert Arrays.stream(block).allMatch(b -> b != Blocks.AIR);
         return new BlockIngredient(Either.left(Set.of(block)));
     }
 

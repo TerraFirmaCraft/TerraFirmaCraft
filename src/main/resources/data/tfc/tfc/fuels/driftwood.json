@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "item": "tfc:groundcover/driftwood"
-  },
-  "duration": 400,
-  "temperature": 650,
-  "purity": 0.4
-}

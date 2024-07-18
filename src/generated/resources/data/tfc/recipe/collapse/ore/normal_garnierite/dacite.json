@@ -1,0 +1,7 @@
+{
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:ore/rich_garnierite/dacite"
+  ],
+  "result": "tfc:ore/normal_garnierite/dacite"
+}

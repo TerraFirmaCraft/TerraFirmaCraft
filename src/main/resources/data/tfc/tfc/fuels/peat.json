@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "item": "tfc:peat"
-  },
-  "duration": 2500,
-  "temperature": 600,
-  "purity": 0.7
-}

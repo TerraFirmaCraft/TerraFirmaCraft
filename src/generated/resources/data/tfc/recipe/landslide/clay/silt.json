@@ -1,0 +1,8 @@
+{
+  "type": "tfc:landslide",
+  "ingredient": [
+    "tfc:clay/silt",
+    "tfc:clay_grass/silt"
+  ],
+  "result": "tfc:clay/silt"
+}

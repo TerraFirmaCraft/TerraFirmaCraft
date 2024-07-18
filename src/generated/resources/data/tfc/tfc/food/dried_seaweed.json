@@ -1,0 +1,9 @@
+{
+  "decay_modifier": 2.0,
+  "hunger": 2,
+  "ingredient": {
+    "item": "tfc:food/dried_seaweed"
+  },
+  "saturation": 1.0,
+  "vegetables": 0.5
+}

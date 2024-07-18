@@ -1,0 +1,7 @@
+{
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:ore/rich_magnetite/chalk"
+  ],
+  "result": "tfc:ore/normal_magnetite/chalk"
+}

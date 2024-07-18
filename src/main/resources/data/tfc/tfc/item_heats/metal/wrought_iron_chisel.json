@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "item": "tfc:metal/chisel/wrought_iron"
-  },
-  "heat_capacity": 2.857,
-  "forging_temperature": 921,
-  "welding_temperature": 1228
-}

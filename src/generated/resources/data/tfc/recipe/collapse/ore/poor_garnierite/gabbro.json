@@ -1,0 +1,7 @@
+{
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:ore/normal_garnierite/gabbro"
+  ],
+  "result": "tfc:ore/poor_garnierite/gabbro"
+}

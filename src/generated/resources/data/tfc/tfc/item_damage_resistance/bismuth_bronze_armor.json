@@ -1,0 +1,19 @@
+{
+  "crushing": 15.0,
+  "ingredient": [
+    {
+      "item": "tfc:metal/helmet/bismuth_bronze"
+    },
+    {
+      "item": "tfc:metal/chestplate/bismuth_bronze"
+    },
+    {
+      "item": "tfc:metal/greaves/bismuth_bronze"
+    },
+    {
+      "item": "tfc:metal/boots/bismuth_bronze"
+    }
+  ],
+  "piercing": 10.0,
+  "slashing": 8.25
+}

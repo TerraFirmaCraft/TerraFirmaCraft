@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "item": "tfc:metal/bars/copper"
-  },
-  "heat_capacity": 0.714,
-  "forging_temperature": 648,
-  "welding_temperature": 864
-}

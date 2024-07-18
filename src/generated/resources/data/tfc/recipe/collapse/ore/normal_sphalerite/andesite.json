@@ -1,0 +1,7 @@
+{
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:ore/rich_sphalerite/andesite"
+  ],
+  "result": "tfc:ore/normal_sphalerite/andesite"
+}

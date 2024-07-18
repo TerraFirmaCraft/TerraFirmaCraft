@@ -15,6 +15,7 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
+import net.minecraft.core.DefaultedRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -62,11 +63,11 @@ public final class Codecs extends ExtraCodecs
     /**
      * Creates a codec for a given registry which does not default
      */
-    public static <R> Codec<R> nonDefaultedRegistryCodec(Registry<R> registry)
+    public static <R> Codec<R> nonDefaultedRegistryCodec(DefaultedRegistry<R> registry)
     {
         return ResourceLocation.CODEC.flatXmap(
-            id -> registry.getOptional(id).map(DataResult::success).orElseGet(() -> DataResult.error(() -> "Unknown registry entry: " + id + " for registry: " + registry.key())),
-            value -> DataResult.success(registry.getKey(value))
+            id -> registry.containsKey(id) ? DataResult.success(registry.get(id)) : DataResult.error(() -> "No such key: " + id),
+            value -> registry.containsValue(value) ? DataResult.success(registry.getKey(value)) : DataResult.error(() -> "No such value: " + value)
         );
     }
 

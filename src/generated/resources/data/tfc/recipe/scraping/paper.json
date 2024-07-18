@@ -1,0 +1,12 @@
+{
+  "type": "tfc:scraping",
+  "ingredient": {
+    "item": "tfc:unrefined_paper"
+  },
+  "input_texture": "tfc:block/unrefined_paper",
+  "output_texture": "tfc:block/paper",
+  "result": {
+    "count": 1,
+    "id": "minecraft:paper"
+  }
+}

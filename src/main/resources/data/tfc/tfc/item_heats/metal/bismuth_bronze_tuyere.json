@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "item": "tfc:metal/tuyere/bismuth_bronze"
-  },
-  "heat_capacity": 11.429,
-  "forging_temperature": 591,
-  "welding_temperature": 788
-}

@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "item": "tfc:metal/chestplate/copper"
-  },
-  "heat_capacity": 22.857,
-  "forging_temperature": 648,
-  "welding_temperature": 864
-}

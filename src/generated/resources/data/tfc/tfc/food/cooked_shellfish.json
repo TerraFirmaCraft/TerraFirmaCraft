@@ -1,0 +1,9 @@
+{
+  "decay_modifier": 2.25,
+  "hunger": 2,
+  "ingredient": {
+    "item": "tfc:food/cooked_shellfish"
+  },
+  "protein": 1.5,
+  "saturation": 2.0
+}

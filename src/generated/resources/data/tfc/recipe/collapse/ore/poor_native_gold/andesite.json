@@ -1,0 +1,7 @@
+{
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:ore/normal_native_gold/andesite"
+  ],
+  "result": "tfc:ore/poor_native_gold/andesite"
+}

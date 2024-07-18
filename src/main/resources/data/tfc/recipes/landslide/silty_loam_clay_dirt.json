@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:landslide",
-  "ingredient": [
-    "tfc:clay/silty_loam",
-    "tfc:clay_grass/silty_loam"
-  ],
-  "result": "tfc:clay/silty_loam"
-}

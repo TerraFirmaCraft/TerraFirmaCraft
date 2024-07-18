@@ -1,0 +1,9 @@
+{
+  "decay_modifier": 1.67,
+  "hunger": 4,
+  "ingredient": {
+    "item": "tfc:food/squash"
+  },
+  "saturation": 1.0,
+  "vegetables": 1.5
+}

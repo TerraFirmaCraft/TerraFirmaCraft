@@ -203,11 +203,11 @@ public class SaladContainer extends Container implements ISlotCallback
                     if (maxNutrient != null)
                     {
                         final ItemStack salad = new ItemStack(TFCItems.SALADS.get(maxNutrient).get(), minIngredientCount);
-                        final @Nullable IFood saladCap = FoodCapability.get(salad);
-                        if (saladCap instanceof FoodHandler.Dynamic handler)
+                        final @Nullable IFood food = FoodCapability.get(salad);
+                        if (food != null)
                         {
-                            handler.setCreationDate(FoodCapability.getRoundedCreationDate());
-                            handler.setFood(FoodData.of(4, water, saturation, nutrition, 4.0f));
+                            food.setCreationDate(FoodCapability.getRoundedCreationDate());
+                            food.setData(FoodData.of(4, water, saturation, nutrition, 4.0f));
                         }
                         salad.set(TFCComponents.INGREDIENTS, IngredientsComponent.of(ingredients));
                         salad.set(TFCComponents.BOWL, BowlComponent.of(bowlStack));

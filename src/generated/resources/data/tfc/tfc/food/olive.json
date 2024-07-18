@@ -1,0 +1,9 @@
+{
+  "decay_modifier": 1.6,
+  "fruit": 1.0,
+  "hunger": 4,
+  "ingredient": {
+    "item": "tfc:food/olive"
+  },
+  "saturation": 0.2
+}

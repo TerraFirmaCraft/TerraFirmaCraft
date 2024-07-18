@@ -1,0 +1,9 @@
+{
+  "decay_modifier": 0.4,
+  "hunger": 4,
+  "ingredient": {
+    "item": "tfc:food/garlic"
+  },
+  "saturation": 0.5,
+  "vegetables": 2.0
+}

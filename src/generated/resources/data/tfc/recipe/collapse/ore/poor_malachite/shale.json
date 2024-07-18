@@ -1,0 +1,7 @@
+{
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:ore/normal_malachite/shale"
+  ],
+  "result": "tfc:ore/poor_malachite/shale"
+}

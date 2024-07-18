@@ -1,0 +1,7 @@
+{
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:ore/normal_garnierite/phyllite"
+  ],
+  "result": "tfc:ore/poor_garnierite/phyllite"
+}

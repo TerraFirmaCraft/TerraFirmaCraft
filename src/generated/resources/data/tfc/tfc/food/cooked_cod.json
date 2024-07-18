@@ -1,0 +1,9 @@
+{
+  "decay_modifier": 2.25,
+  "hunger": 4,
+  "ingredient": {
+    "item": "tfc:food/cooked_cod"
+  },
+  "protein": 2.0,
+  "saturation": 1.0
+}

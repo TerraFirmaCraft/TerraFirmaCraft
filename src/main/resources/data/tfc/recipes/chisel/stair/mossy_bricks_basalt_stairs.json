@@ -1,7 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:chisel",
-  "ingredient": "tfc:rock/mossy_bricks/basalt",
-  "result": "tfc:rock/mossy_bricks/basalt_stairs",
-  "mode": "stair"
-}

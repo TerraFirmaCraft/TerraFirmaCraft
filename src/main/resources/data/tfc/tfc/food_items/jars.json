@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "tag": "tfc:foods/sealed_preserves"
-  },
-  "hunger": 0,
-  "saturation": 0,
-  "decay_modifier": 0.1
-}

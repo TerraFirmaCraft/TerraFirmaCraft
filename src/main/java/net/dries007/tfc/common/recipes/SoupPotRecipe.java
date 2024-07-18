@@ -110,10 +110,10 @@ public class SoupPotRecipe extends PotRecipe
             soupStack = new ItemStack(TFCItems.SOUPS.get(maxNutrient).get(), servings);
 
             final @Nullable IFood food = FoodCapability.get(soupStack);
-            if (food instanceof FoodHandler.Dynamic handler)
+            if (food != null)
             {
-                handler.setCreationDate(created);
-                handler.setFood(data);
+                food.setCreationDate(created);
+                food.setData(data);
             }
 
             soupStack.set(TFCComponents.INGREDIENTS, IngredientsComponent.of(itemIngredients));

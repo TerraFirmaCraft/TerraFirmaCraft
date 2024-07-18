@@ -1,0 +1,7 @@
+{
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:ore/rich_garnierite/claystone"
+  ],
+  "result": "tfc:ore/normal_garnierite/claystone"
+}

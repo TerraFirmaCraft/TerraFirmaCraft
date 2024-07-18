@@ -1,0 +1,19 @@
+{
+  "crushing": 12.5,
+  "ingredient": [
+    {
+      "item": "tfc:metal/helmet/bronze"
+    },
+    {
+      "item": "tfc:metal/chestplate/bronze"
+    },
+    {
+      "item": "tfc:metal/greaves/bronze"
+    },
+    {
+      "item": "tfc:metal/boots/bronze"
+    }
+  ],
+  "piercing": 12.5,
+  "slashing": 8.25
+}

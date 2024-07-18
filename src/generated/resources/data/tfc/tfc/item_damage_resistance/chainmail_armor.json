@@ -1,0 +1,19 @@
+{
+  "crushing": 2.0,
+  "ingredient": [
+    {
+      "item": "minecraft:chainmail_helmet"
+    },
+    {
+      "item": "minecraft:chainmail_chestplate"
+    },
+    {
+      "item": "minecraft:chainmail_leggings"
+    },
+    {
+      "item": "minecraft:chainmail_boots"
+    }
+  ],
+  "piercing": 8.0,
+  "slashing": 8.0
+}

@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "tag": "forge:double_ingots/zinc"
-  },
-  "heat_capacity": 9.524,
-  "forging_temperature": 252,
-  "welding_temperature": 336
-}

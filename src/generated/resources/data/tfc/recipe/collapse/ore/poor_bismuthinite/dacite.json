@@ -1,0 +1,7 @@
+{
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:ore/normal_bismuthinite/dacite"
+  ],
+  "result": "tfc:ore/poor_bismuthinite/dacite"
+}

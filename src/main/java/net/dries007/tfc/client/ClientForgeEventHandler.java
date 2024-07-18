@@ -320,18 +320,7 @@ public class ClientForgeEventHandler
                 }
             }
 
-            final Deposit deposit = Deposit.get(stack);
-            final boolean sluice = deposit != null && deposit.usableInSluice();
-            final boolean pan = deposit != null && deposit.usableInPan();
-            if (sluice && !pan)
-            {
-                text.add(Component.translatable("tfc.tooltip.usable_in_sluice").withStyle(GRAY));
-            }
-            else if (pan && !sluice)
-            {
-                text.add(Component.translatable("tfc.tooltip.usable_in_pan").withStyle(GRAY));
-            }
-            else if (pan && sluice)
+            if (Deposit.get(stack) != null)
             {
                 text.add(Component.translatable("tfc.tooltip.usable_in_sluice_and_pan").withStyle(GRAY));
             }

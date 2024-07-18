@@ -1,0 +1,7 @@
+{
+  "decay_modifier": 0.5,
+  "hunger": 4,
+  "ingredient": {
+    "item": "tfc:melon"
+  }
+}

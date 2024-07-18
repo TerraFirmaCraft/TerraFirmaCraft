@@ -1,0 +1,7 @@
+{
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:ore/rich_garnierite/quartzite"
+  ],
+  "result": "tfc:ore/normal_garnierite/quartzite"
+}

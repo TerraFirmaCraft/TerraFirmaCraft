@@ -1,0 +1,19 @@
+{
+  "crushing": 20.0,
+  "ingredient": [
+    {
+      "item": "tfc:metal/helmet/wrought_iron"
+    },
+    {
+      "item": "tfc:metal/chestplate/wrought_iron"
+    },
+    {
+      "item": "tfc:metal/greaves/wrought_iron"
+    },
+    {
+      "item": "tfc:metal/boots/wrought_iron"
+    }
+  ],
+  "piercing": 20.0,
+  "slashing": 13.2
+}

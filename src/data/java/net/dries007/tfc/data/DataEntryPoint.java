@@ -29,6 +29,7 @@ import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.common.TFCDamageTypes;
 import net.dries007.tfc.data.providers.BuiltinBlockTags;
 import net.dries007.tfc.data.providers.BuiltinDensityFunctions;
 import net.dries007.tfc.data.providers.BuiltinDeposits;
@@ -37,6 +38,7 @@ import net.dries007.tfc.data.providers.BuiltinEntityDamageResist;
 import net.dries007.tfc.data.providers.BuiltinFertilizers;
 import net.dries007.tfc.data.providers.BuiltinFluidHeat;
 import net.dries007.tfc.data.providers.BuiltinFluidTags;
+import net.dries007.tfc.data.providers.BuiltinFoods;
 import net.dries007.tfc.data.providers.BuiltinFuels;
 import net.dries007.tfc.data.providers.BuiltinItemDamageResist;
 import net.dries007.tfc.data.providers.BuiltinItemHeat;
@@ -44,7 +46,6 @@ import net.dries007.tfc.data.providers.BuiltinItemSizes;
 import net.dries007.tfc.data.providers.BuiltinItemTags;
 import net.dries007.tfc.data.providers.BuiltinKnappingTypes;
 import net.dries007.tfc.data.providers.BuiltinLampFuels;
-import net.dries007.tfc.data.providers.BuiltinPaintingTags;
 import net.dries007.tfc.data.providers.BuiltinPaintings;
 import net.dries007.tfc.data.providers.BuiltinRecipes;
 import net.dries007.tfc.data.providers.BuiltinSupports;
@@ -103,9 +104,9 @@ public final class DataEntryPoint
         });
 
         add(event, new BuiltinDeposits(output, lookup));
-        add(event, new BuiltinDrinkables(output, lookup));
         add(event, new BuiltinEntityDamageResist(output, lookup));
         add(event, new BuiltinFertilizers(output, lookup));
+        add(event, new BuiltinFoods(output, lookup));
         add(event, new BuiltinFuels(output, lookup));
         add(event, new BuiltinItemDamageResist(output, lookup));
         add(event, new BuiltinItemHeat(output, lookup, fluidHeat));

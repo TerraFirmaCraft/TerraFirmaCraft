@@ -1,0 +1,7 @@
+{
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:ore/rich_hematite/shale"
+  ],
+  "result": "tfc:ore/normal_hematite/shale"
+}

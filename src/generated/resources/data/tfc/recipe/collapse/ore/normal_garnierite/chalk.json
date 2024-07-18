@@ -1,0 +1,7 @@
+{
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:ore/rich_garnierite/chalk"
+  ],
+  "result": "tfc:ore/normal_garnierite/chalk"
+}

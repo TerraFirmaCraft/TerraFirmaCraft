@@ -1,7 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:chisel",
-  "ingredient": "tfc:rock/bricks/rhyolite",
-  "result": "tfc:rock/bricks/rhyolite_stairs",
-  "mode": "stair"
-}

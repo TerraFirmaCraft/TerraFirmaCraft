@@ -1,7 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:chisel",
-  "ingredient": "tfc:wood/planks/willow",
-  "result": "tfc:wood/planks/willow_stairs",
-  "mode": "stair"
-}

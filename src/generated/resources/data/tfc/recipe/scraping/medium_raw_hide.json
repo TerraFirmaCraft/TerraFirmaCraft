@@ -1,0 +1,16 @@
+{
+  "type": "tfc:scraping",
+  "ingredient": {
+    "item": "tfc:medium_sheepskin_hide"
+  },
+  "input_texture": "tfc:item/hide/medium/sheepskin",
+  "output_texture": "tfc:item/hide/medium/raw",
+  "result": {
+    "count": 1,
+    "id": "tfc:medium_raw_hide"
+  },
+  "result_item": {
+    "count": 1,
+    "id": "tfc:wool"
+  }
+}

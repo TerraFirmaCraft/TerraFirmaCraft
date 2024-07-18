@@ -1,0 +1,9 @@
+{
+  "decay_modifier": 1.5,
+  "hunger": 4,
+  "ingredient": {
+    "item": "tfc:food/cooked_tropical_fish"
+  },
+  "protein": 2.0,
+  "saturation": 1.0
+}

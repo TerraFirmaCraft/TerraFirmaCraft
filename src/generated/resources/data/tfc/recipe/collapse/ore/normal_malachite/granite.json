@@ -1,0 +1,7 @@
+{
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:ore/rich_malachite/granite"
+  ],
+  "result": "tfc:ore/normal_malachite/granite"
+}

@@ -1,0 +1,9 @@
+{
+  "decay_modifier": 1.0,
+  "hunger": 4,
+  "ingredient": {
+    "item": "tfc:food/baked_potato"
+  },
+  "saturation": 2.0,
+  "vegetables": 1.5
+}

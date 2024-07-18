@@ -1,0 +1,7 @@
+{
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:ore/rich_cassiterite/slate"
+  ],
+  "result": "tfc:ore/normal_cassiterite/slate"
+}

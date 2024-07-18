@@ -1,0 +1,13 @@
+{
+  "type": "tfc:loom",
+  "ingredient": {
+    "count": 24,
+    "tag": "c:strings"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:silk_cloth"
+  },
+  "steps": 24,
+  "texture": "minecraft:block/white_wool"
+}

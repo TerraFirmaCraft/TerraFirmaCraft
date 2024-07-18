@@ -1,0 +1,7 @@
+{
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:ore/rich_tetrahedrite/claystone"
+  ],
+  "result": "tfc:ore/normal_tetrahedrite/claystone"
+}

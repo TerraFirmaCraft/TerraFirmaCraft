@@ -1,0 +1,7 @@
+{
+  "decay_modifier": 5.0,
+  "fruit": 0.75,
+  "ingredient": {
+    "tag": "tfc:foods/preserves"
+  }
+}

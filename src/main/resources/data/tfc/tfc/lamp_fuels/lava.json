@@ -1,6 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "fluid": "minecraft:lava",
-  "burn_rate": -1,
-  "valid_lamps": "tfc:metal/lamp/blue_steel"
-}

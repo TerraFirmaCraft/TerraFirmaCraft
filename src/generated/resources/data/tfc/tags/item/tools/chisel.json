@@ -1,13 +1,13 @@
 {
   "values": [
-    "tfc:metal/chisel/bronze",
-    "tfc:metal/chisel/black_steel",
+    "tfc:metal/chisel/steel",
     "tfc:metal/chisel/red_steel",
     "tfc:metal/chisel/bismuth_bronze",
-    "tfc:metal/chisel/steel",
+    "tfc:metal/chisel/bronze",
     "tfc:metal/chisel/wrought_iron",
-    "tfc:metal/chisel/blue_steel",
     "tfc:metal/chisel/black_bronze",
-    "tfc:metal/chisel/copper"
+    "tfc:metal/chisel/copper",
+    "tfc:metal/chisel/black_steel",
+    "tfc:metal/chisel/blue_steel"
   ]
 }

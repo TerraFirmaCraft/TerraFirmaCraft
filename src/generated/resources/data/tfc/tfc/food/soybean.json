@@ -1,0 +1,10 @@
+{
+  "decay_modifier": 2.5,
+  "hunger": 4,
+  "ingredient": {
+    "item": "tfc:food/soybean"
+  },
+  "protein": 1.0,
+  "saturation": 2.0,
+  "vegetables": 0.5
+}

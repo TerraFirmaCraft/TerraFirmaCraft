@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "item": "tfc:metal/mace_head/black_steel"
-  },
-  "heat_capacity": 5.714,
-  "forging_temperature": 891,
-  "welding_temperature": 1188
-}

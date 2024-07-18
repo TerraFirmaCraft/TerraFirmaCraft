@@ -1,7 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:chisel",
-  "ingredient": "tfc:rock/smooth/chalk",
-  "result": "tfc:rock/smooth/chalk_stairs",
-  "mode": "stair"
-}

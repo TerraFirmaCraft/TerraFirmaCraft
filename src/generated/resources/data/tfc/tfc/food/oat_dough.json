@@ -1,0 +1,7 @@
+{
+  "decay_modifier": 3.0,
+  "hunger": 4,
+  "ingredient": {
+    "item": "tfc:food/oat_dough"
+  }
+}

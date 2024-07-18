@@ -1,0 +1,10 @@
+{
+  "decay_modifier": 4.9,
+  "fruit": 0.5,
+  "hunger": 4,
+  "ingredient": {
+    "item": "tfc:food/strawberry"
+  },
+  "saturation": 0.5,
+  "water": 10.0
+}

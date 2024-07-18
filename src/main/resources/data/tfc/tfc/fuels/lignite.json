@@ -1,8 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "item": "tfc:ore/lignite"
-  },
-  "duration": 2200,
-  "temperature": 1350
-}

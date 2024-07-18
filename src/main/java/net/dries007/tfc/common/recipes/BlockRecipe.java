@@ -13,9 +13,11 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -37,16 +39,7 @@ public abstract class BlockRecipe implements INoopInputRecipe, IRecipePredicate<
     {
         return RecordCodecBuilder.mapCodec(i -> i.group(
             BlockIngredient.CODEC.fieldOf("ingredient").forGetter(c -> c.ingredient),
-            Codec.mapEither(
-                Codec.BOOL.fieldOf("copy_input"),
-                Codecs.BLOCK_STATE.fieldOf("result")
-            ).<Optional<BlockState>>flatXmap(
-                e -> e.map(
-                    l -> l ? DataResult.success(Optional.empty()) : DataResult.error(() -> "Must specify result if copy_input is false"),
-                    r -> DataResult.success(Optional.of(r))
-                ),
-                e -> DataResult.success(e.isPresent() ? Either.right(e.get()) : Either.left(true))
-            ).forGetter(c -> c.output)
+            Codecs.BLOCK_STATE.optionalFieldOf("result").forGetter(c -> c.output)
         ).apply(i, factory));
     }
 
@@ -72,6 +65,15 @@ public abstract class BlockRecipe implements INoopInputRecipe, IRecipePredicate<
     public boolean matches(BlockState state)
     {
         return ingredient.test(state);
+    }
+
+    @Override
+    public ItemStack getResultItem(HolderLookup.Provider registries)
+    {
+        return output.map(BlockState::getBlock)
+            .or(() -> ingredient.blocks().stream().findFirst())
+            .map(ItemStack::new)
+            .orElse(ItemStack.EMPTY);
     }
 
     /**

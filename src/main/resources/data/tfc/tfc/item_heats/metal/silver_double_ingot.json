@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "tag": "forge:double_ingots/silver"
-  },
-  "heat_capacity": 4.167,
-  "forging_temperature": 577,
-  "welding_temperature": 769
-}

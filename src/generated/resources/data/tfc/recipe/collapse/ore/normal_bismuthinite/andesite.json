@@ -1,0 +1,7 @@
+{
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:ore/rich_bismuthinite/andesite"
+  ],
+  "result": "tfc:ore/normal_bismuthinite/andesite"
+}

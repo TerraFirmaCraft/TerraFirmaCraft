@@ -1,0 +1,8 @@
+{
+  "decay_modifier": 0.25,
+  "hunger": 4,
+  "ingredient": {
+    "item": "tfc:food/rye_grain"
+  },
+  "saturation": 0.5
+}

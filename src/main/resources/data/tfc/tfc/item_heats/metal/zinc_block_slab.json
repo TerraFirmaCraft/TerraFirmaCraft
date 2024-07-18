@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "item": "tfc:metal/block/zinc_slab"
-  },
-  "heat_capacity": 2.381,
-  "forging_temperature": 252,
-  "welding_temperature": 336
-}

@@ -1,0 +1,10 @@
+{
+  "decay_modifier": 4.9,
+  "fruit": 0.75,
+  "hunger": 4,
+  "ingredient": {
+    "item": "tfc:food/blackberry"
+  },
+  "saturation": 0.2,
+  "water": 5.0
+}

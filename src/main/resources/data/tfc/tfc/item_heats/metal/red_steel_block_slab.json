@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "item": "tfc:metal/block/red_steel_slab"
-  },
-  "heat_capacity": 1.429,
-  "forging_temperature": 924,
-  "welding_temperature": 1232
-}

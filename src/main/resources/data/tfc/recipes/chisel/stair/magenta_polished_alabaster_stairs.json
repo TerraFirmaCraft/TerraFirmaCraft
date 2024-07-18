@@ -1,7 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:chisel",
-  "ingredient": "tfc:alabaster/polished/magenta",
-  "result": "tfc:alabaster/polished/magenta_stairs",
-  "mode": "stair"
-}

@@ -99,7 +99,17 @@ public record FoodData(
         return new FoodData(hunger, 0f, saturation, 0, nutrients, 0);
     }
 
-    public static FoodData ofFood(int hunger, float water, float saturation, float decayModifier)
+    public static FoodData ofDecay(float decayModifier)
+    {
+        return ofFood(0, 0, decayModifier);
+    }
+
+    public static FoodData ofFood(float saturation, float water, float decayModifier)
+    {
+        return ofFood(4, saturation, water, decayModifier);
+    }
+
+    public static FoodData ofFood(int hunger, float saturation, float water, float decayModifier)
     {
         return new FoodData(hunger, water, saturation, 0, new float[5], decayModifier);
     }
@@ -107,11 +117,6 @@ public record FoodData(
     public static FoodData ofDrink(float water, int intoxication)
     {
         return new FoodData(0, water, 0, intoxication, new float[5], 0);
-    }
-
-    public static FoodData decayOnly(float decayModifier)
-    {
-        return new FoodData(0, 0, 0, 0, new float[] {0, 0, 0, 0, 0}, decayModifier);
     }
 
     public float nutrient(Nutrient nutrient)

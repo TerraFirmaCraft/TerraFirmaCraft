@@ -1,0 +1,7 @@
+{
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:ore/rich_limonite/phyllite"
+  ],
+  "result": "tfc:ore/normal_limonite/phyllite"
+}

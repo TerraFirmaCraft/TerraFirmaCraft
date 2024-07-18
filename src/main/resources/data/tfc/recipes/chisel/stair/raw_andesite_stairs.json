@@ -1,7 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:chisel",
-  "ingredient": "tfc:rock/raw/andesite",
-  "result": "tfc:rock/raw/andesite_stairs",
-  "mode": "stair"
-}

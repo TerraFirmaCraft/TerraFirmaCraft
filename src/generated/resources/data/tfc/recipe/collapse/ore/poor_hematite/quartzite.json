@@ -1,0 +1,7 @@
+{
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:ore/normal_hematite/quartzite"
+  ],
+  "result": "tfc:ore/poor_hematite/quartzite"
+}

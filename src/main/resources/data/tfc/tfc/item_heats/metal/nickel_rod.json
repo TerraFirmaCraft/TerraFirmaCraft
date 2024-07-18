@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "tag": "forge:rods/nickel"
-  },
-  "heat_capacity": 1.042,
-  "forging_temperature": 872,
-  "welding_temperature": 1162
-}

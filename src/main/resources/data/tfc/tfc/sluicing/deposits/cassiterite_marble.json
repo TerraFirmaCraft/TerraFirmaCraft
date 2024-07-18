@@ -1,7 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "item": "tfc:deposit/cassiterite/marble"
-  },
-  "loot_table": "tfc:panning/deposits/cassiterite_marble"
-}

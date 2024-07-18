@@ -51,9 +51,11 @@ public record EggComponent(
 
     public static final EggComponent DEFAULT = new EggComponent(false, -1, Optional.empty());
 
-    public static EggComponent of(HolderLookup.Provider provider, OviparousAnimal entity, long hatchDay)
+    public static EggComponent of(OviparousAnimal entity, long hatchDay)
     {
-        return new EggComponent(true, hatchDay, Optional.of(entity.serializeNBT(provider)));
+        final CompoundTag entityTag = new CompoundTag();
+        entity.save(entityTag);
+        return new EggComponent(true, hatchDay, Optional.of(entityTag));
     }
 
     public void addTooltipInfo(List<Component> text)

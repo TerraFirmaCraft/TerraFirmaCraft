@@ -1,0 +1,7 @@
+{
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:ore/normal_malachite/dacite"
+  ],
+  "result": "tfc:ore/poor_malachite/dacite"
+}

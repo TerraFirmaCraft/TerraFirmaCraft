@@ -11,8 +11,10 @@ import java.util.List;
 import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
@@ -217,7 +219,7 @@ public class CollapseRecipe extends BlockRecipe
         return false;
     }
 
-    CollapseRecipe(BlockIngredient ingredient, Optional<BlockState> output)
+    public CollapseRecipe(BlockIngredient ingredient, Optional<BlockState> output)
     {
         super(ingredient, output);
     }

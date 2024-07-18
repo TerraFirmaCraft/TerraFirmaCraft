@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "tag": "forge:double_sheets/silver"
-  },
-  "heat_capacity": 8.333,
-  "forging_temperature": 577,
-  "welding_temperature": 769
-}

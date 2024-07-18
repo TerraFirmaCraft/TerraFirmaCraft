@@ -1,0 +1,9 @@
+{
+  "decay_modifier": 2.5,
+  "grain": 0.5,
+  "hunger": 2,
+  "ingredient": {
+    "item": "tfc:food/cattail_root"
+  },
+  "saturation": 1.0
+}

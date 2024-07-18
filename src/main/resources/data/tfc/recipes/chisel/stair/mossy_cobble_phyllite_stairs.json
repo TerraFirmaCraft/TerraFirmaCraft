@@ -1,7 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:chisel",
-  "ingredient": "tfc:rock/mossy_cobble/phyllite",
-  "result": "tfc:rock/mossy_cobble/phyllite_stairs",
-  "mode": "stair"
-}

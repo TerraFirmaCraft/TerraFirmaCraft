@@ -61,7 +61,7 @@ public record MealModifier(FoodData baseFood, List<MealPortion> portions) implem
     public ItemStack apply(ItemStack stack, ItemStack input)
     {
         final @Nullable IFood inputFood = FoodCapability.get(stack);
-        if (!(inputFood instanceof FoodHandler.Dynamic handler))
+        if (inputFood == null)
         {
             return stack;
         }
@@ -141,8 +141,8 @@ public record MealModifier(FoodData baseFood, List<MealPortion> portions) implem
             }
         }
 
-        handler.setFood(FoodData.of(baseFood.hunger(), water, saturation, nutrition, baseFood.decayModifier()));
-        handler.setCreationDate(FoodCapability.getRoundedCreationDate());
+        inputFood.setData(FoodData.of(baseFood.hunger(), water, saturation, nutrition, baseFood.decayModifier()));
+        inputFood.setCreationDate(FoodCapability.getRoundedCreationDate());
 
         stack.set(TFCComponents.INGREDIENTS, IngredientsComponent.of(itemIngredients));
 

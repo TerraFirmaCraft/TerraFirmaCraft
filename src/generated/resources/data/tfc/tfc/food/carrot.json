@@ -1,0 +1,9 @@
+{
+  "decay_modifier": 0.7,
+  "hunger": 4,
+  "ingredient": {
+    "item": "tfc:food/carrot"
+  },
+  "saturation": 2.0,
+  "vegetables": 1.0
+}

@@ -1,0 +1,13 @@
+{
+  "type": "tfc:loom",
+  "ingredient": {
+    "count": 4,
+    "item": "tfc:wool_cloth"
+  },
+  "result": {
+    "count": 8,
+    "id": "minecraft:white_wool"
+  },
+  "steps": 4,
+  "texture": "minecraft:block/white_wool"
+}

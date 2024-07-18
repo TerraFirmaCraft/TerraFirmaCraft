@@ -1,7 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:chisel",
-  "ingredient": "tfc:rock/raw/chert",
-  "result": "tfc:rock/smooth/chert",
-  "mode": "smooth"
-}

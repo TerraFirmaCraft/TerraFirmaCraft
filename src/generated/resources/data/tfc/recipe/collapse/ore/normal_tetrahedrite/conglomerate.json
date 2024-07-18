@@ -1,0 +1,7 @@
+{
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:ore/rich_tetrahedrite/conglomerate"
+  ],
+  "result": "tfc:ore/normal_tetrahedrite/conglomerate"
+}

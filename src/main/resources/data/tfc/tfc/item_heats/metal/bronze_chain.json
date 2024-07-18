@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "item": "tfc:metal/chain/bronze"
-  },
-  "heat_capacity": 0.171,
-  "forging_temperature": 570,
-  "welding_temperature": 760
-}

@@ -1,0 +1,19 @@
+{
+  "crushing": 50.0,
+  "ingredient": [
+    {
+      "item": "tfc:metal/helmet/red_steel"
+    },
+    {
+      "item": "tfc:metal/chestplate/red_steel"
+    },
+    {
+      "item": "tfc:metal/greaves/red_steel"
+    },
+    {
+      "item": "tfc:metal/boots/red_steel"
+    }
+  ],
+  "piercing": 62.5,
+  "slashing": 50.0
+}

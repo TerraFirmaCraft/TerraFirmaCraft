@@ -1,0 +1,9 @@
+{
+  "decay_modifier": 2.5,
+  "hunger": 4,
+  "ingredient": {
+    "item": "tfc:food/red_bell_pepper"
+  },
+  "saturation": 1.0,
+  "vegetables": 1.0
+}

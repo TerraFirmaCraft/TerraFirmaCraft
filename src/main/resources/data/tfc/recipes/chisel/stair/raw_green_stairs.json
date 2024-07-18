@@ -1,7 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:chisel",
-  "ingredient": "tfc:raw_sandstone/green",
-  "result": "tfc:raw_sandstone/green_stairs",
-  "mode": "stair"
-}

@@ -1,0 +1,9 @@
+{
+  "decay_modifier": 3.5,
+  "hunger": 4,
+  "ingredient": {
+    "item": "tfc:food/green_bean"
+  },
+  "saturation": 0.5,
+  "vegetables": 1.0
+}

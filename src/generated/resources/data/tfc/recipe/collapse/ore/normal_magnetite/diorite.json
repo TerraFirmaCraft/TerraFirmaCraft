@@ -1,0 +1,7 @@
+{
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:ore/rich_magnetite/diorite"
+  ],
+  "result": "tfc:ore/normal_magnetite/diorite"
+}

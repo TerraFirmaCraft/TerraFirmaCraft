@@ -1,0 +1,7 @@
+{
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:ore/normal_sphalerite/schist"
+  ],
+  "result": "tfc:ore/poor_sphalerite/schist"
+}

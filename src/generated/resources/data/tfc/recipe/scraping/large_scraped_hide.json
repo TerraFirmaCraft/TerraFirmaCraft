@@ -1,0 +1,12 @@
+{
+  "type": "tfc:scraping",
+  "ingredient": {
+    "item": "tfc:large_soaked_hide"
+  },
+  "input_texture": "tfc:item/hide/large/soaked",
+  "output_texture": "tfc:item/hide/large/scraped",
+  "result": {
+    "count": 1,
+    "id": "tfc:large_scraped_hide"
+  }
+}

@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "item": "tfc:metal/block/nickel_stairs"
-  },
-  "heat_capacity": 1.563,
-  "forging_temperature": 872,
-  "welding_temperature": 1162
-}

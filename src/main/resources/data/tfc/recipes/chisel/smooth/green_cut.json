@@ -1,7 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:chisel",
-  "ingredient": "tfc:smooth_sandstone/green",
-  "result": "tfc:cut_sandstone/green",
-  "mode": "smooth"
-}

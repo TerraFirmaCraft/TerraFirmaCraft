@@ -1,0 +1,9 @@
+{
+  "decay_modifier": 2.0,
+  "fruit": 1.0,
+  "hunger": 4,
+  "ingredient": {
+    "item": "tfc:food/banana"
+  },
+  "saturation": 0.2
+}

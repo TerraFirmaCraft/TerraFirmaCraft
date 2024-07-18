@@ -1,0 +1,10 @@
+{
+  "decay_modifier": 1.5,
+  "fruit": 0.75,
+  "hunger": 4,
+  "ingredient": {
+    "item": "tfc:food/pumpkin_chunks"
+  },
+  "saturation": 1.0,
+  "water": 5.0
+}

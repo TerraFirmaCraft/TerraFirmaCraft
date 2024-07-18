@@ -1,0 +1,7 @@
+{
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:ore/normal_hematite/basalt"
+  ],
+  "result": "tfc:ore/poor_hematite/basalt"
+}

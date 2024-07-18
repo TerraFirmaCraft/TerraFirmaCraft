@@ -1,0 +1,7 @@
+{
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:ore/rich_malachite/gneiss"
+  ],
+  "result": "tfc:ore/normal_malachite/gneiss"
+}

@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "tag": "forge:ingots/bismuth"
-  },
-  "heat_capacity": 7.143,
-  "forging_temperature": 162,
-  "welding_temperature": 216
-}

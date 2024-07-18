@@ -1,0 +1,17 @@
+{
+  "ingredient": [
+    {
+      "item": "minecraft:leather_helmet"
+    },
+    {
+      "item": "minecraft:leather_chestplate"
+    },
+    {
+      "item": "minecraft:leather_leggings"
+    },
+    {
+      "item": "minecraft:leather_boots"
+    }
+  ],
+  "slashing": 3.0
+}

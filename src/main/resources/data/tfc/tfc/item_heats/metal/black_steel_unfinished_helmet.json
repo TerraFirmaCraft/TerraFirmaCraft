@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "item": "tfc:metal/unfinished_helmet/black_steel"
-  },
-  "heat_capacity": 11.429,
-  "forging_temperature": 891,
-  "welding_temperature": 1188
-}

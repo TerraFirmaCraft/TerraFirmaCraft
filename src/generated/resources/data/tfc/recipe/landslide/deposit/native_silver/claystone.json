@@ -1,0 +1,6 @@
+{
+  "type": "tfc:landslide",
+  "ingredient": [
+    "tfc:deposit/native_silver/claystone"
+  ]
+}

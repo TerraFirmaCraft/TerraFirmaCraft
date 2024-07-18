@@ -1,0 +1,13 @@
+{
+  "type": "tfc:loom",
+  "ingredient": {
+    "count": 12,
+    "item": "tfc:jute_fiber"
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:burlap_cloth"
+  },
+  "steps": 12,
+  "texture": "tfc:block/burlap"
+}

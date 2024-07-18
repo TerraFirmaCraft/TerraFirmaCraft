@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "item": "tfc:jar_lid"
-  },
-  "heat_capacity": 0.857,
-  "forging_temperature": 138,
-  "welding_temperature": 184
-}

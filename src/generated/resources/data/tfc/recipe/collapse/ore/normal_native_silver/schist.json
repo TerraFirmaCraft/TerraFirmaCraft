@@ -1,0 +1,7 @@
+{
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:ore/rich_native_silver/schist"
+  ],
+  "result": "tfc:ore/normal_native_silver/schist"
+}

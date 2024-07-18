@@ -1,0 +1,7 @@
+{
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:ore/normal_cassiterite/marble"
+  ],
+  "result": "tfc:ore/poor_cassiterite/marble"
+}

@@ -1,0 +1,7 @@
+{
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:ore/normal_native_silver/marble"
+  ],
+  "result": "tfc:ore/poor_native_silver/marble"
+}

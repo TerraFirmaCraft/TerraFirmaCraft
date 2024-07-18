@@ -1,0 +1,9 @@
+{
+  "decay_modifier": 2.7,
+  "hunger": 4,
+  "ingredient": {
+    "item": "tfc:food/green_bell_pepper"
+  },
+  "saturation": 0.5,
+  "vegetables": 0.75
+}

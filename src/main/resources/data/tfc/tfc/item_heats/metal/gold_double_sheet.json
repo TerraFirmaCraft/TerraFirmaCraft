@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "tag": "forge:double_sheets/gold"
-  },
-  "heat_capacity": 6.667,
-  "forging_temperature": 636,
-  "welding_temperature": 848
-}

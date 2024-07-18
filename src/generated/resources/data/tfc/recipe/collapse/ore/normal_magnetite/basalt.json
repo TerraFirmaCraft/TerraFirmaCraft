@@ -1,0 +1,7 @@
+{
+  "type": "tfc:collapse",
+  "ingredient": [
+    "tfc:ore/rich_magnetite/basalt"
+  ],
+  "result": "tfc:ore/normal_magnetite/basalt"
+}

@@ -1,7 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:chisel",
-  "ingredient": "tfc:wood/planks/chestnut",
-  "result": "tfc:wood/planks/chestnut_stairs",
-  "mode": "stair"
-}

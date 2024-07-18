@@ -1,7 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "item": "tfc:deposit/native_silver/dacite"
-  },
-  "loot_table": "tfc:panning/deposits/native_silver_dacite"
-}

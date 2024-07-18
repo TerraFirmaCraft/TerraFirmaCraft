@@ -1,0 +1,8 @@
+{
+  "decay_modifier": 2.0,
+  "hunger": 4,
+  "ingredient": {
+    "item": "tfc:food/turtle"
+  },
+  "protein": 1.5
+}

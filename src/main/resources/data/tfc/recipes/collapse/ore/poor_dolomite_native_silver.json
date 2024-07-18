@@ -1,6 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:collapse",
-  "ingredient": "tfc:ore/normal_native_silver/dolomite",
-  "result": "tfc:ore/poor_native_silver/dolomite"
-}

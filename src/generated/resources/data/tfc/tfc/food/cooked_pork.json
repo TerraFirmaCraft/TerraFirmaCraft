@@ -1,0 +1,9 @@
+{
+  "decay_modifier": 1.5,
+  "hunger": 4,
+  "ingredient": {
+    "item": "tfc:food/cooked_pork"
+  },
+  "protein": 2.5,
+  "saturation": 2.0
+}

@@ -82,8 +82,8 @@ sourceSets.main {
 val sourceSetsDeprecated = sourceSets.create("deprecated") {} // A source set for compat/test code that is currently not functional
 sourceSets {
     create("data") {
-        runtimeClasspath += sourceSets.main.get().output;
-        compileClasspath += sourceSets.main.get().output;
+        runtimeClasspath += sourceSets.main.get().output
+        compileClasspath += sourceSets.main.get().output
     }
 }
 

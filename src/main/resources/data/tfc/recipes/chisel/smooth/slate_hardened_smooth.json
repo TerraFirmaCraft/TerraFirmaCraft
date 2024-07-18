@@ -1,7 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:chisel",
-  "ingredient": "tfc:rock/hardened/slate",
-  "result": "tfc:rock/smooth/slate",
-  "mode": "smooth"
-}

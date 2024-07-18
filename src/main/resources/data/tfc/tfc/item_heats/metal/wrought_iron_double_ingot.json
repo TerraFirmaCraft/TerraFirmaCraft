@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "ingredient": {
-    "tag": "forge:double_ingots/wrought_iron"
-  },
-  "heat_capacity": 5.714,
-  "forging_temperature": 921,
-  "welding_temperature": 1228
-}

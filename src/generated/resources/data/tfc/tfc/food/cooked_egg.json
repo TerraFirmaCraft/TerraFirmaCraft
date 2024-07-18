@@ -1,0 +1,10 @@
+{
+  "dairy": 0.25,
+  "decay_modifier": 4.0,
+  "hunger": 4,
+  "ingredient": {
+    "item": "tfc:food/cooked_egg"
+  },
+  "protein": 1.5,
+  "saturation": 0.5
+}
