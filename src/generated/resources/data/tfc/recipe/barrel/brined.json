@@ -16,10 +16,10 @@
           "tag": "c:foods/vegetable"
         },
         {
-          "tag": "tfc:foods/meat"
+          "tag": "c:foods/meat"
         },
         {
-          "tag": "tfc:foods/fish"
+          "tag": "c:foods/fish"
         }
       ],
       {

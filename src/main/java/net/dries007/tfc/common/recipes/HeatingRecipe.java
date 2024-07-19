@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.recipes;
 
-import java.util.Random;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -27,7 +26,6 @@ import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
-import net.dries007.tfc.world.Codecs;
 
 public class HeatingRecipe implements INoopInputRecipe, IRecipePredicate<ItemStack>
 {
@@ -44,7 +42,7 @@ public class HeatingRecipe implements INoopInputRecipe, IRecipePredicate<ItemSta
     public static final StreamCodec<RegistryFriendlyByteBuf, HeatingRecipe> STREAM_CODEC = StreamCodec.composite(
         Ingredient.CONTENTS_STREAM_CODEC, c -> c.ingredient,
         ItemStackProvider.STREAM_CODEC, c -> c.outputItem,
-        FluidStack.STREAM_CODEC, c -> c.outputFluid,
+        FluidStack.OPTIONAL_STREAM_CODEC, c -> c.outputFluid,
         ByteBufCodecs.FLOAT, c -> c.temperature,
         ByteBufCodecs.BOOL, c -> c.useDurability,
         HeatingRecipe::new

@@ -46,7 +46,7 @@ public class InstantFluidBarrelRecipe extends BarrelRecipe
     public static final StreamCodec<RegistryFriendlyByteBuf, InstantFluidBarrelRecipe> STREAM_CODEC = StreamCodec.composite(
         SizedFluidIngredient.STREAM_CODEC, c -> c.inputFluid,
         SizedFluidIngredient.STREAM_CODEC, c -> c.addedFluid,
-        FluidStack.STREAM_CODEC, c -> c.outputFluid,
+        FluidStack.OPTIONAL_STREAM_CODEC, c -> c.outputFluid,
         ByteBufCodecs.holderRegistry(Registries.SOUND_EVENT), c -> c.sound,
         ByteBufCodecs.STRING_UTF8, c -> c.tooltip,
         InstantFluidBarrelRecipe::new

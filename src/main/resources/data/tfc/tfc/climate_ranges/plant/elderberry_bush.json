@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "min_hydration": 12,
-  "max_hydration": 100,
-  "hydration_wiggle_range": 0,
-  "min_temperature": 10,
-  "max_temperature": 33,
-  "temperature_wiggle_range": 0
-}

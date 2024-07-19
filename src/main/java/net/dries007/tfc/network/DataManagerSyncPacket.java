@@ -49,8 +49,15 @@ public record DataManagerSyncPacket(List<Entry<?>> values) implements CustomPack
 
     void handle(boolean isMemoryConnection)
     {
+        if (isMemoryConnection)
+        {
+            LOGGER.info("Ignoring DataManager sync on logical server");
+            return;
+        }
         for (Entry<?> v : values)
-            v.handle(isMemoryConnection);
+        {
+            v.handle();
+        }
     }
 
     record Entry<T>(
@@ -62,16 +69,9 @@ public record DataManagerSyncPacket(List<Entry<?>> values) implements CustomPack
             this(manager, manager.getElements());
         }
 
-        void handle(boolean isMemoryConnection)
+        void handle()
         {
-            if (isMemoryConnection)
-            {
-                LOGGER.info("Ignoring DataManager sync on logical server");
-            }
-            else
-            {
-                manager.onSync(values);
-            }
+            manager.onSync(values);
         }
     }
 }

@@ -35,7 +35,7 @@ public record ItemStackProvider(
     );
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ItemStackProvider> STREAM_CODEC = StreamCodec.composite(
-        ItemStack.STREAM_CODEC, c -> c.stack,
+        ItemStack.OPTIONAL_STREAM_CODEC, c -> c.stack,
         ItemStackModifier.STREAM_CODEC.apply(ByteBufCodecs.list()), c -> c.modifiers,
         ItemStackProvider::of
     );

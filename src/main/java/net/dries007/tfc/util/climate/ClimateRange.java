@@ -29,8 +29,8 @@ public record ClimateRange(
         Codec.INT.optionalFieldOf("min_hydration", 0).forGetter(c -> c.minHydration),
         Codec.INT.optionalFieldOf("max_hydration", 100).forGetter(c -> c.maxHydration),
         Codec.INT.optionalFieldOf("hydration_wiggle_range", 0).forGetter(c -> c.hydrationWiggleRange),
-        Codec.FLOAT.optionalFieldOf("min_temperature", -100f).forGetter(c -> c.minTemperature),
-        Codec.FLOAT.optionalFieldOf("max_temperature", 100f).forGetter(c -> c.maxTemperature),
+        Codec.FLOAT.optionalFieldOf("min_temperature", Float.NEGATIVE_INFINITY).forGetter(c -> c.minTemperature),
+        Codec.FLOAT.optionalFieldOf("max_temperature", Float.POSITIVE_INFINITY).forGetter(c -> c.maxTemperature),
         Codec.FLOAT.optionalFieldOf("temperature_wiggle_range", 0f).forGetter(c -> c.temperatureWiggleRange)
     ).apply(i, ClimateRange::new));
 
@@ -105,5 +105,42 @@ public record ClimateRange(
     public enum Result
     {
         LOW, VALID, HIGH
+    }
+
+    public static final class Builder
+    {
+        int minHydration = 0;
+        int maxHydration = 100;
+        int hydrationWiggleRange = 0;
+        float minTemperature = Float.NEGATIVE_INFINITY;
+        float maxTemperature = Float.POSITIVE_INFINITY;
+        float temperatureWiggleRange = 0;
+
+        public Builder minHydration(int min) { return hydration(min, 100); }
+        public Builder maxHydration(int max) { return hydration(0, max); }
+        public Builder hydration(int min, int max) { return hydration(min, max, 0); }
+        public Builder hydration(int min, int max, int range)
+        {
+            minHydration = min;
+            maxHydration = max;
+            hydrationWiggleRange = range;
+            return this;
+        }
+
+        public Builder minTemperature(float min) { return temperature(min, Float.POSITIVE_INFINITY); }
+        public Builder maxTemperature(float max) { return temperature(Float.NEGATIVE_INFINITY, max); }
+        public Builder temperature(float min, float max) { return temperature(min, max, 0); }
+        public Builder temperature(float min, float max, float range)
+        {
+            minTemperature = min;
+            maxTemperature = max;
+            temperatureWiggleRange = range;
+            return this;
+        }
+
+        public ClimateRange build()
+        {
+            return new ClimateRange(minHydration, maxHydration, hydrationWiggleRange, minTemperature, maxTemperature, temperatureWiggleRange);
+        }
     }
 }

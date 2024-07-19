@@ -60,6 +60,11 @@ public abstract class DataManagerProvider<T> implements DataProvider
         if (elements.put(Helpers.identifier(name), value) != null) throw new IllegalStateException("Duplicate registration of " + name);
     }
 
+    protected final void add(DataManager.Reference<T> reference, T value)
+    {
+        if (elements.put(reference.id(), value) != null) throw new IllegalStateException("Duplicate registration of " + reference.id());
+    }
+
     protected CompletableFuture<HolderLookup.Provider> beforeRun()
     {
         return lookup;

@@ -62,7 +62,7 @@ public class BarrelRecipe implements INoopInputRecipe, IRecipePredicate<BarrelIn
         ByteBufCodecs.optional(SizedIngredient.STREAM_CODEC), c -> c.inputItem,
         SizedFluidIngredient.STREAM_CODEC, c -> c.inputFluid,
         ItemStackProvider.STREAM_CODEC, c -> c.outputItem,
-        FluidStack.STREAM_CODEC, c -> c.outputFluid,
+        FluidStack.OPTIONAL_STREAM_CODEC, c -> c.outputFluid,
         ByteBufCodecs.holderRegistry(Registries.SOUND_EVENT), c -> c.sound,
         ByteBufCodecs.STRING_UTF8, c -> c.tooltip,
         BarrelRecipe::new

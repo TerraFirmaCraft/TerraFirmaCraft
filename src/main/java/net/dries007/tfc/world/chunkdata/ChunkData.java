@@ -211,8 +211,7 @@ public class ChunkData
         assert status == Status.FULL;
         assert rainfallLayer != null && temperatureLayer != null;
 
-        // todo: chunk data syncing needs to work
-        return null; // return new ChunkWatchPacket(pos.x, pos.z, rainfallLayer, temperatureLayer, forestType, forestDensity, forestWeirdness);
+        return new ChunkWatchPacket(pos, rainfallLayer, temperatureLayer, forestType, forestWeirdness, forestDensity);
     }
 
     /**

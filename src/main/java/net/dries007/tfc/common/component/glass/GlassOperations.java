@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.component.glass;
 
 import java.util.List;
-import java.util.stream.Stream;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -37,7 +36,7 @@ public record GlassOperations(
 
     public static final StreamCodec<RegistryFriendlyByteBuf, GlassOperations> STREAM_CODEC = StreamCodec.composite(
         GlassOperation.STREAM_CODEC.apply(ByteBufCodecs.list()), c -> c.steps,
-        ItemStack.STREAM_CODEC, c -> c.batch,
+        ItemStack.OPTIONAL_STREAM_CODEC, c -> c.batch,
         GlassOperations::new
     );
 

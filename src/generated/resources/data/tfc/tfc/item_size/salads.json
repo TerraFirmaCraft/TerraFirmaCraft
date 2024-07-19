@@ -1,6 +1,6 @@
 {
   "ingredient": {
-    "tag": "tfc:foods/salad"
+    "tag": "c:foods/salad"
   },
   "size": "very_small",
   "weight": "medium"

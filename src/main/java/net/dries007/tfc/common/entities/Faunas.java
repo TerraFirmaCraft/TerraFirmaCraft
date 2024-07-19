@@ -52,72 +52,73 @@ import net.dries007.tfc.common.entities.prey.TFCPanda;
 import net.dries007.tfc.common.entities.prey.TFCRabbit;
 import net.dries007.tfc.common.entities.prey.WingedPrey;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.data.DataManager;
 import net.dries007.tfc.util.registry.IdHolder;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
 public class Faunas
 {
-    public static final FaunaType<TFCCod> COD = registerFish(TFCEntities.COD);
-    public static final FaunaType<Jellyfish> JELLYFISH = registerFish(TFCEntities.JELLYFISH);
-    public static final FaunaType<TFCTropicalFish> TROPICAL_FISH = registerFish(TFCEntities.TROPICAL_FISH);
-    public static final FaunaType<TFCPufferfish> PUFFERFISH = registerFish(TFCEntities.PUFFERFISH);
-    public static final Map<Fish, FaunaType<FreshwaterFish>> FRESHWATER_FISH = Helpers.mapOfKeys(Fish.class, fish -> registerFish(TFCEntities.FRESHWATER_FISH.get(fish)));
-    public static final FaunaType<AquaticCritter> LOBSTER = registerFish(TFCEntities.LOBSTER);
-    public static final FaunaType<AquaticCritter> CRAYFISH = registerFish(TFCEntities.CRAYFISH);
-    public static final FaunaType<AquaticCritter> ISOPOD = registerFish(TFCEntities.ISOPOD);
-    public static final FaunaType<AquaticCritter> HORSESHOE_CRAB = registerFish(TFCEntities.HORSESHOE_CRAB);
-    public static final FaunaType<TFCDolphin> DOLPHIN = registerFish(TFCEntities.DOLPHIN);
-    public static final FaunaType<TFCDolphin> ORCA = registerFish(TFCEntities.ORCA);
-    public static final FaunaType<Manatee> MANATEE = registerFish(TFCEntities.MANATEE);
-    public static final FaunaType<TFCTurtle> TURTLE = registerAnimal(TFCEntities.TURTLE);
-    public static final FaunaType<Penguin> PENGUIN = registerAnimal(TFCEntities.PENGUIN);
-    public static final FaunaType<TFCFrog> FROG = registerAnimal(TFCEntities.FROG);
-    public static final FaunaType<Predator> POLAR_BEAR = registerAnimal(TFCEntities.POLAR_BEAR);
-    public static final FaunaType<Predator> GRIZZLY_BEAR = registerAnimal(TFCEntities.GRIZZLY_BEAR);
-    public static final FaunaType<Predator> BLACK_BEAR = registerAnimal(TFCEntities.BLACK_BEAR);
-    public static final FaunaType<FelinePredator> COUGAR = registerAnimal(TFCEntities.COUGAR);
-    public static final FaunaType<FelinePredator> PANTHER = registerAnimal(TFCEntities.PANTHER);
-    public static final FaunaType<FelinePredator> LION = registerAnimal(TFCEntities.LION);
-    public static final FaunaType<FelinePredator> SABERTOOTH = registerAnimal(TFCEntities.SABERTOOTH);
-    public static final FaunaType<FelinePredator> TIGER = registerAnimal(TFCEntities.TIGER);
-    public static final FaunaType<AmphibiousPredator> CROCODILE = registerAmphibiousPredator(TFCEntities.CROCODILE);
-    public static final FaunaType<PackPredator> WOLF = registerAnimal(TFCEntities.WOLF);
-    public static final FaunaType<PackPredator> HYENA = registerAnimal(TFCEntities.HYENA);
-    public static final FaunaType<PackPredator> DIREWOLF = registerAnimal(TFCEntities.DIREWOLF);
-    public static final FaunaType<TFCSquid> SQUID = registerFish(TFCEntities.SQUID);
-    public static final FaunaType<Octopoteuthis> OCTOPOTEUTHIS = registerFish(TFCEntities.OCTOPOTEUTHIS);
-    public static final FaunaType<Mammal> PIG = registerAnimal(TFCEntities.PIG);
-    public static final FaunaType<DairyAnimal> COW = registerAnimal(TFCEntities.COW);
-    public static final FaunaType<DairyAnimal> GOAT = registerAnimal(TFCEntities.GOAT);
-    public static final FaunaType<DairyAnimal> YAK = registerAnimal(TFCEntities.YAK);
-    public static final FaunaType<WoolyAnimal> ALPACA = registerAnimal(TFCEntities.ALPACA);
-    public static final FaunaType<WoolyAnimal> SHEEP = registerAnimal(TFCEntities.SHEEP);
-    public static final FaunaType<WoolyAnimal> MUSK_OX = registerAnimal(TFCEntities.MUSK_OX);
-    public static final FaunaType<OviparousAnimal> CHICKEN = registerAnimal(TFCEntities.CHICKEN);
-    public static final FaunaType<OviparousAnimal> DUCK = registerAnimal(TFCEntities.DUCK);
-    public static final FaunaType<OviparousAnimal> QUAIL = registerAnimal(TFCEntities.QUAIL);
-    public static final FaunaType<TFCRabbit> RABBIT = registerAnimal(TFCEntities.RABBIT);
-    public static final FaunaType<TFCFox> FOX = registerAnimal(TFCEntities.FOX);
-    public static final FaunaType<TFCPanda> PANDA = registerAnimal(TFCEntities.PANDA);
-    public static final FaunaType<TFCOcelot> OCELOT = registerAnimal(TFCEntities.OCELOT);
-    public static final FaunaType<RammingPrey> BOAR = registerAnimal(TFCEntities.BOAR);
-    public static final FaunaType<RammingPrey> WILDEBEEST = registerAnimal(TFCEntities.WILDEBEEST);
-    public static final FaunaType<Prey> BONGO = registerAnimal(TFCEntities.BONGO);
-    public static final FaunaType<Prey> CARIBOU = registerAnimal(TFCEntities.CARIBOU);
-    public static final FaunaType<Prey> DEER = registerAnimal(TFCEntities.DEER);
-    public static final FaunaType<Prey> GAZELLE = registerAnimal(TFCEntities.GAZELLE);
-    public static final FaunaType<RammingPrey> MOOSE = registerAnimal(TFCEntities.MOOSE);
-    public static final FaunaType<WingedPrey> GROUSE = registerAnimal(TFCEntities.GROUSE);
-    public static final FaunaType<WingedPrey> PHEASANT = registerAnimal(TFCEntities.PHEASANT);
-    public static final FaunaType<WingedPrey> TURKEY = registerAnimal(TFCEntities.TURKEY);
-    public static final FaunaType<WingedPrey> PEAFOWL = registerAnimal(TFCEntities.PEAFOWL);
-    public static final FaunaType<TFCDonkey> DONKEY = registerAnimal(TFCEntities.DONKEY);
-    public static final FaunaType<TFCMule> MULE = registerAnimal(TFCEntities.MULE);
-    public static final FaunaType<TFCHorse> HORSE = registerAnimal(TFCEntities.HORSE);
+    public static final Id<TFCCod> COD = registerFish(TFCEntities.COD);
+    public static final Id<Jellyfish> JELLYFISH = registerFish(TFCEntities.JELLYFISH);
+    public static final Id<TFCTropicalFish> TROPICAL_FISH = registerFish(TFCEntities.TROPICAL_FISH);
+    public static final Id<TFCPufferfish> PUFFERFISH = registerFish(TFCEntities.PUFFERFISH);
+    public static final Map<Fish, Id<FreshwaterFish>> FISH = Helpers.mapOfKeys(Fish.class, fish -> registerFish(TFCEntities.FRESHWATER_FISH.get(fish)));
+    public static final Id<AquaticCritter> LOBSTER = registerFish(TFCEntities.LOBSTER);
+    public static final Id<AquaticCritter> CRAYFISH = registerFish(TFCEntities.CRAYFISH);
+    public static final Id<AquaticCritter> ISOPOD = registerFish(TFCEntities.ISOPOD);
+    public static final Id<AquaticCritter> HORSESHOE_CRAB = registerFish(TFCEntities.HORSESHOE_CRAB);
+    public static final Id<TFCDolphin> DOLPHIN = registerFish(TFCEntities.DOLPHIN);
+    public static final Id<TFCDolphin> ORCA = registerFish(TFCEntities.ORCA);
+    public static final Id<Manatee> MANATEE = registerFish(TFCEntities.MANATEE);
+    public static final Id<TFCTurtle> TURTLE = registerAnimal(TFCEntities.TURTLE);
+    public static final Id<Penguin> PENGUIN = registerAnimal(TFCEntities.PENGUIN);
+    public static final Id<TFCFrog> FROG = registerAnimal(TFCEntities.FROG);
+    public static final Id<Predator> POLAR_BEAR = registerAnimal(TFCEntities.POLAR_BEAR);
+    public static final Id<Predator> GRIZZLY_BEAR = registerAnimal(TFCEntities.GRIZZLY_BEAR);
+    public static final Id<Predator> BLACK_BEAR = registerAnimal(TFCEntities.BLACK_BEAR);
+    public static final Id<FelinePredator> COUGAR = registerAnimal(TFCEntities.COUGAR);
+    public static final Id<FelinePredator> PANTHER = registerAnimal(TFCEntities.PANTHER);
+    public static final Id<FelinePredator> LION = registerAnimal(TFCEntities.LION);
+    public static final Id<FelinePredator> SABERTOOTH = registerAnimal(TFCEntities.SABERTOOTH);
+    public static final Id<FelinePredator> TIGER = registerAnimal(TFCEntities.TIGER);
+    public static final Id<AmphibiousPredator> CROCODILE = registerAmphibiousPredator(TFCEntities.CROCODILE);
+    public static final Id<PackPredator> WOLF = registerAnimal(TFCEntities.WOLF);
+    public static final Id<PackPredator> HYENA = registerAnimal(TFCEntities.HYENA);
+    public static final Id<PackPredator> DIREWOLF = registerAnimal(TFCEntities.DIREWOLF);
+    public static final Id<TFCSquid> SQUID = registerFish(TFCEntities.SQUID);
+    public static final Id<Octopoteuthis> OCTOPOTEUTHIS = registerFish(TFCEntities.OCTOPOTEUTHIS);
+    public static final Id<Mammal> PIG = registerAnimal(TFCEntities.PIG);
+    public static final Id<DairyAnimal> COW = registerAnimal(TFCEntities.COW);
+    public static final Id<DairyAnimal> GOAT = registerAnimal(TFCEntities.GOAT);
+    public static final Id<DairyAnimal> YAK = registerAnimal(TFCEntities.YAK);
+    public static final Id<WoolyAnimal> ALPACA = registerAnimal(TFCEntities.ALPACA);
+    public static final Id<WoolyAnimal> SHEEP = registerAnimal(TFCEntities.SHEEP);
+    public static final Id<WoolyAnimal> MUSK_OX = registerAnimal(TFCEntities.MUSK_OX);
+    public static final Id<OviparousAnimal> CHICKEN = registerAnimal(TFCEntities.CHICKEN);
+    public static final Id<OviparousAnimal> DUCK = registerAnimal(TFCEntities.DUCK);
+    public static final Id<OviparousAnimal> QUAIL = registerAnimal(TFCEntities.QUAIL);
+    public static final Id<TFCRabbit> RABBIT = registerAnimal(TFCEntities.RABBIT);
+    public static final Id<TFCFox> FOX = registerAnimal(TFCEntities.FOX);
+    public static final Id<TFCPanda> PANDA = registerAnimal(TFCEntities.PANDA);
+    public static final Id<TFCOcelot> OCELOT = registerAnimal(TFCEntities.OCELOT);
+    public static final Id<RammingPrey> BOAR = registerAnimal(TFCEntities.BOAR);
+    public static final Id<RammingPrey> WILDEBEEST = registerAnimal(TFCEntities.WILDEBEEST);
+    public static final Id<Prey> BONGO = registerAnimal(TFCEntities.BONGO);
+    public static final Id<Prey> CARIBOU = registerAnimal(TFCEntities.CARIBOU);
+    public static final Id<Prey> DEER = registerAnimal(TFCEntities.DEER);
+    public static final Id<Prey> GAZELLE = registerAnimal(TFCEntities.GAZELLE);
+    public static final Id<RammingPrey> MOOSE = registerAnimal(TFCEntities.MOOSE);
+    public static final Id<WingedPrey> GROUSE = registerAnimal(TFCEntities.GROUSE);
+    public static final Id<WingedPrey> PHEASANT = registerAnimal(TFCEntities.PHEASANT);
+    public static final Id<WingedPrey> TURKEY = registerAnimal(TFCEntities.TURKEY);
+    public static final Id<WingedPrey> PEAFOWL = registerAnimal(TFCEntities.PEAFOWL);
+    public static final Id<TFCDonkey> DONKEY = registerAnimal(TFCEntities.DONKEY);
+    public static final Id<TFCMule> MULE = registerAnimal(TFCEntities.MULE);
+    public static final Id<TFCHorse> HORSE = registerAnimal(TFCEntities.HORSE);
 
     public static void registerSpawnPlacements(RegisterSpawnPlacementsEvent event)
     {
-        FRESHWATER_FISH.values().forEach(fish -> registerSpawnPlacement(event, fish));
+        FISH.values().forEach(fish -> registerSpawnPlacement(event, fish));
         registerSpawnPlacement(event, COD);
         registerSpawnPlacement(event, JELLYFISH);
         registerSpawnPlacement(event, TROPICAL_FISH);
@@ -176,28 +177,27 @@ public class Faunas
         registerSpawnPlacement(event, DIREWOLF);
     }
 
-    private static <E extends Mob> FaunaType<E> registerAnimal(IdHolder<EntityType<E>> entity)
+    private static <E extends Mob> Id<E> registerAnimal(IdHolder<EntityType<E>> entity)
     {
         return register(entity, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES);
     }
 
-    private static <E extends Mob> FaunaType<E> registerFish(IdHolder<EntityType<E>> entity)
+    private static <E extends Mob> Id<E> registerFish(IdHolder<EntityType<E>> entity)
     {
         return register(entity, SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES);
     }
 
-    private static <E extends Mob> FaunaType<E> registerAmphibiousPredator(IdHolder<EntityType<E>> entity)
+    private static <E extends Mob> Id<E> registerAmphibiousPredator(IdHolder<EntityType<E>> entity)
     {
         return register(entity, SpawnPlacementTypes.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES);
     }
 
-    private static <E extends Mob> FaunaType<E> register(IdHolder<EntityType<E>> entity, SpawnPlacementType spawnPlacement, Heightmap.Types heightmapType)
+    private static <E extends Mob> Id<E> register(IdHolder<EntityType<E>> entity, SpawnPlacementType spawnPlacement, Heightmap.Types heightmapType)
     {
-        final Supplier<Fauna> fauna = Fauna.MANAGER.getReference(entity.getId());
-        return new FaunaType<>(entity, fauna, spawnPlacement, heightmapType);
+        return new Id<>(entity, Fauna.MANAGER.getReference(entity.getId()), spawnPlacement, heightmapType);
     }
 
-    private static <E extends Mob> void registerSpawnPlacement(RegisterSpawnPlacementsEvent event, FaunaType<E> type)
+    private static <E extends Mob> void registerSpawnPlacement(RegisterSpawnPlacementsEvent event, Id<E> type)
     {
         event.register(type.entity().get(), type.spawnPlacementType(), type.heightmapType(), (mob, level, heightmap, pos, rand) -> {
             final Fauna fauna = type.fauna().get();
@@ -233,9 +233,9 @@ public class Faunas
         }, RegisterSpawnPlacementsEvent.Operation.REPLACE);
     }
 
-    record FaunaType<E extends Mob>(
+    public record Id<E extends Mob>(
         Supplier<EntityType<E>> entity,
-        Supplier<Fauna> fauna,
+        DataManager.Reference<Fauna> fauna,
         SpawnPlacementType spawnPlacementType,
         Heightmap.Types heightmapType
     ) {}

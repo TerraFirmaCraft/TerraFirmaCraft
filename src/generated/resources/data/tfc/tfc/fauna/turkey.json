@@ -1,0 +1,7 @@
+{
+  "max_forest": "normal",
+  "max_rainfall": 450.0,
+  "max_temperature": 17.0,
+  "min_rainfall": 250.0,
+  "min_temperature": 0.0
+}

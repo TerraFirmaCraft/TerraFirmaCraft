@@ -1,0 +1,6 @@
+{
+  "max_forest": "edge",
+  "max_temperature": 30.0,
+  "min_rainfall": 100.0,
+  "min_temperature": -25.0
+}

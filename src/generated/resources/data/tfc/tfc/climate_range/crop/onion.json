@@ -1,0 +1,6 @@
+{
+  "max_hydration": 90,
+  "max_temperature": 30.0,
+  "min_hydration": 25,
+  "min_temperature": 0.0
+}

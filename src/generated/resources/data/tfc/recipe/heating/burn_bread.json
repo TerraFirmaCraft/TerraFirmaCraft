@@ -1,7 +1,7 @@
 {
   "type": "tfc:heating",
   "ingredient": {
-    "tag": "tfc:foods/bread"
+    "tag": "c:foods/bread"
   },
   "temperature": 700.0
 }

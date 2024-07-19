@@ -11,6 +11,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.data.DataManager;
+import net.dries007.tfc.world.chunkdata.ForestType;
 import net.dries007.tfc.world.placement.ClimatePlacement;
 
 /**
@@ -32,4 +33,55 @@ public record Fauna(
     ).apply(i, Fauna::new));
 
     public static final DataManager<Fauna> MANAGER = new DataManager<>(Helpers.identifier("fauna"), CODEC);
+
+    public static final class Builder
+    {
+        float minTemperature = Float.NEGATIVE_INFINITY, maxTemperature = Float.POSITIVE_INFINITY;
+        float minRainfall = Float.NEGATIVE_INFINITY, maxRainfall = Float.POSITIVE_INFINITY;
+        ForestType minForest = ForestType.NONE, maxForest = ForestType.OLD_GROWTH;
+        boolean fuzzy = false;
+        int chance = 1;
+        int distanceBelowSeaLevel = -1;
+        boolean solidGround = false;
+        int maxBrightness = -1;
+
+        public Builder minTemperature(float min) { return temperature(min, Float.POSITIVE_INFINITY); }
+        public Builder maxTemperature(float max) { return temperature(Float.NEGATIVE_INFINITY, max); }
+        public Builder temperature(float min, float max)
+        {
+            minTemperature = min;
+            maxTemperature = max;
+            return this;
+        }
+
+        public Builder minRainfall(float min) { return rainfall(min, Float.POSITIVE_INFINITY); }
+        public Builder maxRainfall(float max) { return rainfall(Float.NEGATIVE_INFINITY, max); }
+        public Builder rainfall(float min, float max)
+        {
+            minRainfall = min;
+            maxRainfall = max;
+            return this;
+        }
+
+        public Builder minForest(ForestType min) { return forest(min, ForestType.OLD_GROWTH); }
+        public Builder maxForest(ForestType max) { return forest(ForestType.NONE, max); }
+        public Builder forest(ForestType min, ForestType max)
+        {
+            minForest = min;
+            maxForest = max;
+            return this;
+        }
+
+        public Builder chance(int value) { chance = value; return this; }
+        public Builder distanceBelowSeaLevel(int value) { distanceBelowSeaLevel = value; return this; }
+        public Builder maxBrightness(int value) { maxBrightness = value; return this; }
+
+        public Builder fuzzy() { this.fuzzy = true; return this; }
+        public Builder solid() { this.solidGround = true; return this; }
+
+        public Fauna build()
+        {
+            return new Fauna(chance, distanceBelowSeaLevel, new ClimatePlacement(minTemperature, maxTemperature, minRainfall, maxRainfall, minForest, maxForest, fuzzy), solidGround, maxBrightness);
+        }
+    }
 }

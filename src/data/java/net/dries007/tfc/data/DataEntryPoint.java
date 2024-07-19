@@ -29,10 +29,12 @@ import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 import net.dries007.tfc.data.providers.BuiltinBlockTags;
+import net.dries007.tfc.data.providers.BuiltinClimateRanges;
 import net.dries007.tfc.data.providers.BuiltinDensityFunctions;
 import net.dries007.tfc.data.providers.BuiltinDeposits;
 import net.dries007.tfc.data.providers.BuiltinDrinkables;
 import net.dries007.tfc.data.providers.BuiltinEntityDamageResist;
+import net.dries007.tfc.data.providers.BuiltinFauna;
 import net.dries007.tfc.data.providers.BuiltinFertilizers;
 import net.dries007.tfc.data.providers.BuiltinFluidHeat;
 import net.dries007.tfc.data.providers.BuiltinFluidTags;
@@ -113,8 +115,8 @@ public final class DataEntryPoint
         add(event, new BuiltinKnappingTypes(output, lookup));
         add(event, new BuiltinLampFuels(output, lookup));
         add(event, new BuiltinSupports(output, lookup));
-        // todo: climate range
-        // todo: fauna
+        add(event, new BuiltinClimateRanges(output, lookup));
+        add(event, new BuiltinFauna(output, lookup));
     }
 
     private static <T extends DataProvider> T add(GatherDataEvent event, T provider)

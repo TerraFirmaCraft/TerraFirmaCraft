@@ -54,6 +54,7 @@ import net.dries007.tfc.common.recipes.ingredients.TFCIngredients;
 import net.dries007.tfc.common.recipes.outputs.ItemStackModifiers;
 import net.dries007.tfc.common.recipes.outputs.PotOutput;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.util.CauldronInteractions;
 import net.dries007.tfc.util.DispenserBehaviors;
 import net.dries007.tfc.util.Helpers;
@@ -108,6 +109,7 @@ public final class TerraFirmaCraft
         bus.addListener(TFCEntities::onEntityAttributeCreation);
         bus.addListener(Faunas::registerSpawnPlacements);
         bus.addListener(TFCComponents::onModifyDefaultComponents);
+        bus.addListener(PacketHandler::setup);
 
         // Core Registries (vanilla)
         TFCBlocks.BLOCKS.register(bus);

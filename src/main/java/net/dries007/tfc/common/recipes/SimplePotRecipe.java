@@ -41,7 +41,7 @@ public class SimplePotRecipe extends PotRecipe
 
     public static final StreamCodec<RegistryFriendlyByteBuf, SimplePotRecipe> STREAM_CODEC = StreamCodec.composite(
         PotRecipe.STREAM_CODEC, c -> c,
-        FluidStack.STREAM_CODEC, c -> c.outputFluid,
+        FluidStack.OPTIONAL_STREAM_CODEC, c -> c.outputFluid,
         ItemStackProvider.STREAM_CODEC.apply(ByteBufCodecs.list(5)), c -> c.outputItems,
         SimplePotRecipe::new
     );

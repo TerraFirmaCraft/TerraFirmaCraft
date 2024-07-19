@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "chance": 10,
-  "distance_below_sea_level": 6,
-  "climate": {
-    "max_temperature": 19,
-    "min_rainfall": 100
-  }
-}

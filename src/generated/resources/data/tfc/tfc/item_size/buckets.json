@@ -1,6 +1,6 @@
 {
   "ingredient": {
-    "tag": "tfc:buckets"
+    "tag": "c:buckets"
   },
   "size": "large",
   "weight": "medium"
