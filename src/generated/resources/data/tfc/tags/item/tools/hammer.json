@@ -1,13 +1,13 @@
 {
   "values": [
+    "tfc:metal/hammer/bismuth_bronze",
+    "tfc:metal/hammer/black_bronze",
     "tfc:metal/hammer/bronze",
+    "tfc:metal/hammer/copper",
     "tfc:metal/hammer/wrought_iron",
     "tfc:metal/hammer/steel",
     "tfc:metal/hammer/black_steel",
     "tfc:metal/hammer/blue_steel",
-    "tfc:metal/hammer/copper",
-    "tfc:metal/hammer/bismuth_bronze",
-    "tfc:metal/hammer/black_bronze",
     "tfc:metal/hammer/red_steel"
   ]
 }

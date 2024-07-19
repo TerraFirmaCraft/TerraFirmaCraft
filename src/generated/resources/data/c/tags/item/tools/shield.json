@@ -1,13 +1,13 @@
 {
   "values": [
+    "tfc:metal/shield/bismuth_bronze",
+    "tfc:metal/shield/black_bronze",
     "tfc:metal/shield/bronze",
+    "tfc:metal/shield/copper",
     "tfc:metal/shield/wrought_iron",
     "tfc:metal/shield/steel",
     "tfc:metal/shield/black_steel",
     "tfc:metal/shield/blue_steel",
-    "tfc:metal/shield/copper",
-    "tfc:metal/shield/bismuth_bronze",
-    "tfc:metal/shield/black_bronze",
     "tfc:metal/shield/red_steel"
   ]
 }

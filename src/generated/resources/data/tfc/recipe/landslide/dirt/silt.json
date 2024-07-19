@@ -1,11 +1,11 @@
 {
   "type": "tfc:landslide",
   "ingredient": [
-    "tfc:farmland/silt",
-    "tfc:grass_path/silt",
-    "tfc:dirt/silt",
     "tfc:rooted_dirt/silt",
-    "tfc:grass/silt"
+    "tfc:grass_path/silt",
+    "tfc:grass/silt",
+    "tfc:farmland/silt",
+    "tfc:dirt/silt"
   ],
   "result": "tfc:dirt/silt"
 }

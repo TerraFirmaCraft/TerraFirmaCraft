@@ -2,7 +2,7 @@ package net.dries007.tfc.data;
 
 import java.util.Locale;
 import java.util.Map;
-import java.util.stream.Collectors;
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -21,7 +21,6 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.fluids.SimpleFluid;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCItems;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.calendar.ICalendar;
 
@@ -131,9 +130,12 @@ public interface Accessors
 
     default <T1, T2, V> Map<T1, V> pivot(Map<T1, Map<T2, V>> map, T2 key)
     {
-        return map.entrySet()
-            .stream()
-            .filter(e -> e.getValue().containsKey(key))
-            .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().get(key)));
+        // This method must maintain a consistent, deterministic ordering, so we can't collect into a typical
+        // hash map - we must use an order-preserving map here - immutable map is the easiest way to do that
+        final ImmutableMap.Builder<T1, V> builder = new ImmutableMap.Builder<>();
+        for (Map.Entry<T1, Map<T2, V>> entry : map.entrySet())
+            if (entry.getValue().containsKey(key))
+                builder.put(entry.getKey(), entry.getValue().get(key));
+        return builder.build();
     }
 }

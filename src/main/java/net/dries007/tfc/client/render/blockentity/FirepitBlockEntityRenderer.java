@@ -6,9 +6,9 @@
 
 package net.dries007.tfc.client.render.blockentity;
 
-import java.util.EnumMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -30,7 +30,7 @@ import net.dries007.tfc.util.Helpers;
 
 public class FirepitBlockEntityRenderer<T extends AbstractFirepitBlockEntity<?>> implements BlockEntityRenderer<T>
 {
-    public static final EnumMap<AbstractFirepitBlockEntity.BurnStage, List<ModelResourceLocation>> BURN_STAGE_MODELS = Helpers.mapOfKeys(AbstractFirepitBlockEntity.BurnStage.class, e -> List.of(
+    public static final Map<AbstractFirepitBlockEntity.BurnStage, List<ModelResourceLocation>> BURN_STAGE_MODELS = Helpers.mapOfKeys(AbstractFirepitBlockEntity.BurnStage.class, e -> List.of(
         RenderHelpers.modelId("block/firepit_log_1_" + e.name().toLowerCase(Locale.ROOT)),
             RenderHelpers.modelId("block/firepit_log_2_" + e.name().toLowerCase(Locale.ROOT)),
             RenderHelpers.modelId("block/firepit_log_3_" + e.name().toLowerCase(Locale.ROOT)),

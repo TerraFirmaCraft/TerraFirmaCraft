@@ -1,9 +1,9 @@
 {
   "values": [
-    "tfc:supports",
     "tfc:lake",
+    "tfc:golden_field",
+    "tfc:supports",
     "tfc:hot_spring",
-    "tfc:volcano",
-    "tfc:golden_field"
+    "tfc:volcano"
   ]
 }

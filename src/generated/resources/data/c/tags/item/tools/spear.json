@@ -1,17 +1,17 @@
 {
   "values": [
+    "tfc:metal/javelin/bismuth_bronze",
+    "tfc:metal/javelin/black_bronze",
     "tfc:metal/javelin/bronze",
+    "tfc:metal/javelin/copper",
     "tfc:metal/javelin/wrought_iron",
     "tfc:metal/javelin/steel",
     "tfc:metal/javelin/black_steel",
     "tfc:metal/javelin/blue_steel",
-    "tfc:metal/javelin/copper",
-    "tfc:metal/javelin/bismuth_bronze",
-    "tfc:metal/javelin/black_bronze",
     "tfc:metal/javelin/red_steel",
-    "tfc:stone/javelin/sedimentary",
+    "tfc:stone/javelin/igneous_extrusive",
     "tfc:stone/javelin/igneous_intrusive",
     "tfc:stone/javelin/metamorphic",
-    "tfc:stone/javelin/igneous_extrusive"
+    "tfc:stone/javelin/sedimentary"
   ]
 }
