@@ -28,8 +28,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
-import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.common.TFCDamageTypes;
 import net.dries007.tfc.data.providers.BuiltinBlockTags;
 import net.dries007.tfc.data.providers.BuiltinDensityFunctions;
 import net.dries007.tfc.data.providers.BuiltinDeposits;
@@ -81,6 +79,7 @@ public final class DataEntryPoint
             .lookupOrThrow(Registries.PAINTING_VARIANT)
             .listElementIds()
             .filter(e -> e.location().getNamespace().equals(MOD_ID))
+            .sorted() // Determinism
             .forEach(add.apply(PaintingVariantTags.PLACEABLE)));
         tags(event, Registries.DAMAGE_TYPE, lookup, (provider, add) -> {
             List.of(

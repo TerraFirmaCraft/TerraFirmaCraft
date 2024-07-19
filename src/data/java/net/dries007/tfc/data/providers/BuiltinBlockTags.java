@@ -45,6 +45,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .entrySet()
             .stream()
             .filter(e -> e.getValue().defaultBlockState().canBeReplaced() && e.getKey().location().getNamespace().equals(TerraFirmaCraft.MOD_ID))
+            .sorted(Map.Entry.comparingByKey()) // Determinism
             .map(Map.Entry::getValue));
 
         pivot(TFCBlocks.METALS, Metal.BlockType.BLOCK).forEach((metal, block) -> tag(storageBlockTagOf(Registries.BLOCK, metal)).add(block));

@@ -9,7 +9,6 @@ package net.dries007.tfc.common.recipes.ingredients;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 import com.google.common.collect.ImmutableSet;
@@ -32,16 +31,17 @@ import net.dries007.tfc.world.Codecs;
 /**
  * An ingredient that can express either blocks, or tags of blocks, in a format similar to other ingredient types. This does not bother exposing
  * the degree of complexity as the NeoForge provided fluid ingredients / sized ingredients, as it's pretty unnecessary for our purposes.
+ * @implNote This is typed with {@link ImmutableSet} to indicate we require strict deterministic iteration order (for data generation)
  */
-public record BlockIngredient(Either<Set<Block>, TagKey<Block>> either) implements Predicate<Block>
+public record BlockIngredient(Either<ImmutableSet<Block>, TagKey<Block>> either) implements Predicate<Block>
 {
     public static final Codec<BlockIngredient> CODEC = Codec.either(
-        Codecs.BLOCK.listOf().<Set<Block>>xmap(ImmutableSet::copyOf, List::copyOf),
+        Codecs.BLOCK.listOf().xmap(ImmutableSet::copyOf, List::copyOf),
         TagKey.hashedCodec(Registries.BLOCK)
     ).xmap(BlockIngredient::new, BlockIngredient::either);
 
     public static final StreamCodec<RegistryFriendlyByteBuf, BlockIngredient> STREAM_CODEC = ByteBufCodecs.either(
-        StreamCodecs.BLOCK.apply(ByteBufCodecs.list()).<Set<Block>>map(ImmutableSet::copyOf, List::copyOf),
+        StreamCodecs.BLOCK.apply(ByteBufCodecs.list()).map(ImmutableSet::copyOf, List::copyOf),
         ResourceLocation.STREAM_CODEC.map(k -> TagKey.create(Registries.BLOCK, k), TagKey::location)
     ).map(BlockIngredient::new, BlockIngredient::either);
 
@@ -52,8 +52,8 @@ public record BlockIngredient(Either<Set<Block>, TagKey<Block>> either) implemen
 
     public static BlockIngredient of(Block... block)
     {
-        assert Arrays.stream(block).allMatch(b -> b != Blocks.AIR);
-        return new BlockIngredient(Either.left(Set.of(block)));
+        assert Arrays.stream(block).allMatch(b -> b != Blocks.AIR); // Don't create ingredients containing air
+        return new BlockIngredient(Either.left(ImmutableSet.copyOf(block)));
     }
 
     public static BlockIngredient of(Stream<Block> blocks)
