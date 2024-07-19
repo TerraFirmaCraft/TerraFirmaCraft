@@ -45,15 +45,16 @@ public class ItemStackModifiers
     public static final Id<DyeLeatherModifier> DYE_LEATHER = register("dye_leather", DyeLeatherModifier.CODEC, DyeLeatherModifier.STREAM_CODEC);
     public static final Id<MealModifier> MEAL = register("meal", MealModifier.CODEC, MealModifier.STREAM_CODEC);
     public static final Id<ExtraProductModifier> EXTRA_PRODUCT = register("extra_products", ExtraProductModifier.CODEC, ExtraProductModifier.STREAM_CODEC);
+    public static final Id<ChanceModifier> CHANCE = register("chance", ChanceModifier.CHANCE, ChanceModifier.STREAM_CODEC);
 
     private static <T extends ItemStackModifier> Id<T> register(String name, T singleInstance)
     {
         return new Id<>(TYPES.register(name, () -> new ItemStackModifierType<>(MapCodec.unit(singleInstance), StreamCodec.unit(singleInstance))));
     }
 
-    private static <T extends ItemStackModifier> Id<T> register(String name, MapCodec<T> codec, StreamCodec<RegistryFriendlyByteBuf, T> streamCodec)
+    private static <T extends ItemStackModifier> Id<T> register(String name, MapCodec<T> codec, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec)
     {
-        return new Id<>(TYPES.register(name, () -> new ItemStackModifierType<>(codec, streamCodec)));
+        return new Id<>(TYPES.register(name, () -> new ItemStackModifierType<>(codec, streamCodec.cast())));
     }
 
     record Id<T extends ItemStackModifier>(DeferredHolder<ItemStackModifierType<?>, ItemStackModifierType<T>> holder)

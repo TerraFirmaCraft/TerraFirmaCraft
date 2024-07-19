@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "tag": "c:storage_blocks/copper"
+  },
+  "result_fluid": {
+    "amount": 100,
+    "id": "tfc:metal/copper"
+  },
+  "temperature": 1080.0
+}

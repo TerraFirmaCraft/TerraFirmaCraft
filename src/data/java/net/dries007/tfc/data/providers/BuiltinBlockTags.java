@@ -15,10 +15,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagBuilder;
 import net.minecraft.tags.TagEntry;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.data.ExistingFileHelper.ResourceType;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
@@ -29,6 +26,7 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.data.Accessors;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.registry.IdHolder;
+import net.dries007.tfc.util.registry.RegistryHolder;
 
 public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
 {
@@ -49,6 +47,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .filter(e -> e.getValue().defaultBlockState().canBeReplaced() && e.getKey().location().getNamespace().equals(TerraFirmaCraft.MOD_ID))
             .map(Map.Entry::getValue));
 
+        pivot(TFCBlocks.METALS, Metal.BlockType.BLOCK).forEach((metal, block) -> tag(storageBlockTagOf(Registries.BLOCK, metal)).add(block));
         tag(TFCTags.Blocks.LAMPS).add(pivot(TFCBlocks.METALS, Metal.BlockType.LAMP));
     }
 
@@ -73,6 +72,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         });
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     static class BlockTagAppender extends TagAppender<Block>
     {
         BlockTagAppender(TagBuilder builder, String modId)
@@ -81,6 +81,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         }
 
         BlockTagAppender add(Block... blocks) { return add(Arrays.stream(blocks)); }
+        BlockTagAppender add(TFCBlocks.Id<?>... blocks) { return add(Arrays.stream(blocks).map(RegistryHolder::get)); }
         BlockTagAppender add(Stream<Block> blocks) { blocks.forEach(item -> add(key(item))); return this; }
         BlockTagAppender add(Map<?, ? extends IdHolder<? extends Block>> blocks) { return add(blocks.values().stream().map(IdHolder::get)); }
 

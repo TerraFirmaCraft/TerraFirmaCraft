@@ -1,0 +1,12 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:metal/propick/steel"
+  },
+  "result_fluid": {
+    "amount": 100,
+    "id": "tfc:metal/steel"
+  },
+  "temperature": 1540.0,
+  "use_durability": true
+}

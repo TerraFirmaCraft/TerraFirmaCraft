@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.common.blocks;
 
+import net.dries007.tfc.common.blocks.rock.Ore;
+
 public enum Gem
 {
     AMETHYST,
@@ -16,5 +18,20 @@ public enum Gem
     PYRITE,
     RUBY,
     SAPPHIRE,
-    TOPAZ
+    TOPAZ;
+
+    public Ore ore()
+    {
+        return switch (this) {
+            case AMETHYST -> Ore.AMETHYST;
+            case DIAMOND -> Ore.DIAMOND;
+            case EMERALD -> Ore.EMERALD;
+            case LAPIS_LAZULI -> Ore.LAPIS_LAZULI;
+            case OPAL -> Ore.OPAL;
+            case PYRITE -> Ore.PYRITE;
+            case RUBY -> Ore.RUBY;
+            case SAPPHIRE -> Ore.SAPPHIRE;
+            case TOPAZ -> Ore.TOPAZ;
+        };
+    }
 }

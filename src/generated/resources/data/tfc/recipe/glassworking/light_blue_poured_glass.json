@@ -1,0 +1,14 @@
+{
+  "type": "tfc:glassworking",
+  "batch": {
+    "item": "tfc:silica_glass_batch"
+  },
+  "operations": [
+    "lapis_lazuli",
+    "table_pour"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:light_blue_poured_glass"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:jar_lid"
+  },
+  "result_fluid": {
+    "amount": 50,
+    "id": "tfc:metal/tin"
+  },
+  "temperature": 230.0
+}

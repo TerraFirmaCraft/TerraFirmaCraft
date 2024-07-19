@@ -1,0 +1,10 @@
+{
+  "type": "tfc:quern",
+  "ingredient": {
+    "item": "tfc:ore/small_native_silver"
+  },
+  "result": {
+    "count": 2,
+    "id": "tfc:powder/native_silver"
+  }
+}

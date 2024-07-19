@@ -25,7 +25,6 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodData;
-import net.dries007.tfc.common.capabilities.food.FoodHandler;
 import net.dries007.tfc.common.capabilities.food.IFood;
 import net.dries007.tfc.common.capabilities.food.IngredientsComponent;
 import net.dries007.tfc.common.capabilities.food.Nutrient;
@@ -58,7 +57,7 @@ public record MealModifier(FoodData baseFood, List<MealPortion> portions) implem
     );
 
     @Override
-    public ItemStack apply(ItemStack stack, ItemStack input)
+    public ItemStack apply(ItemStack stack, ItemStack input, Context context)
     {
         final @Nullable IFood inputFood = FoodCapability.get(stack);
         if (inputFood == null)

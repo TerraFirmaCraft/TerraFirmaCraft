@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:ore/rich_native_gold"
+  },
+  "result_fluid": {
+    "amount": 35,
+    "id": "tfc:metal/gold"
+  },
+  "temperature": 1060.0
+}

@@ -26,7 +26,7 @@ public record RemoveTraitModifier(FoodTrait trait) implements ItemStackModifier
     }
 
     @Override
-    public ItemStack apply(ItemStack stack, ItemStack input)
+    public ItemStack apply(ItemStack stack, ItemStack input, Context context)
     {
         return FoodCapability.removeTrait(stack, trait);
     }

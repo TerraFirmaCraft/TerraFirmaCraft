@@ -1,0 +1,42 @@
+{
+  "type": "tfc:quern",
+  "ingredient": [
+    {
+      "item": "tfc:plant/guzmania"
+    },
+    {
+      "item": "tfc:plant/poppy"
+    },
+    {
+      "item": "tfc:plant/rose"
+    },
+    {
+      "item": "tfc:plant/snapdragon_red"
+    },
+    {
+      "item": "tfc:plant/tropical_milkweed"
+    },
+    {
+      "item": "tfc:plant/tulip_red"
+    },
+    {
+      "item": "tfc:plant/vriesea"
+    },
+    {
+      "item": "tfc:plant/anthurium"
+    },
+    {
+      "item": "tfc:plant/blood_lily"
+    },
+    {
+      "item": "tfc:plant/heliconia"
+    },
+    {
+      "item": "tfc:plant/kangaroo_paw"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:red_dye"
+  }
+}

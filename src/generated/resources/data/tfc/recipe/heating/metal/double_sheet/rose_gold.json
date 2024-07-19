@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "tag": "c:double_sheets/rose_gold"
+  },
+  "result_fluid": {
+    "amount": 400,
+    "id": "tfc:metal/rose_gold"
+  },
+  "temperature": 960.0
+}

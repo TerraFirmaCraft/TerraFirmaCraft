@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "minecraft:orange_terracotta"
+  },
+  "result_item": {
+    "count": 1,
+    "id": "minecraft:orange_glazed_terracotta"
+  },
+  "temperature": 1399.0
+}

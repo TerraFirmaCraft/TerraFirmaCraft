@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:ore/normal_malachite"
+  },
+  "result_fluid": {
+    "amount": 25,
+    "id": "tfc:metal/copper"
+  },
+  "temperature": 1080.0
+}

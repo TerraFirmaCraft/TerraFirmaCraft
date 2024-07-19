@@ -32,6 +32,8 @@ import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.common.recipes.outputs.ItemStackModifier;
+import net.dries007.tfc.common.recipes.outputs.ItemStackModifier.Context;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.mixin.accessor.RecipeManagerAccessor;
 import net.dries007.tfc.util.Helpers;
@@ -43,7 +45,6 @@ import net.dries007.tfc.util.collections.IndirectHashCollection;
 public final class RecipeHelpers
 {
     private static final ThreadLocal<Iterable<ItemStack>> CRAFTING_INPUT = ThreadLocal.withInitial(() -> Collections::emptyIterator);
-    private static final ThreadLocal<Boolean> UNIQUE_INPUT = ThreadLocal.withInitial(() -> false);
 
     /**
      * Neo does not correctly mark this as nullable
@@ -82,23 +83,13 @@ public final class RecipeHelpers
         return CRAFTING_INPUT.get();
     }
 
-    /**
-     * @return {@code true} if this is the one unique call to a given {@link ItemStackProvider} used as a remainder.
-     */
-    public static boolean isUniqueInput()
-    {
-        return UNIQUE_INPUT.get();
-    }
-
     public static NonNullList<ItemStack> getRemainderItemsWithProvider(CraftingInput input, ItemStackProvider provider)
     {
         final NonNullList<ItemStack> results = NonNullList.withSize(input.size(), ItemStack.EMPTY);
         for (int i = 0; i < results.size(); i++)
         {
-            UNIQUE_INPUT.set(i == 0);
-
             final ItemStack stack = input.getItem(i);
-            final ItemStack outputStack = provider.getSingleStack(stack);
+            final ItemStack outputStack = provider.getStack(stack.copyWithCount(1), i == 0 ? Context.DEFAULT : Context.NO_ONE_TIME_EFFECTS);
 
             if (!outputStack.isEmpty())
             {

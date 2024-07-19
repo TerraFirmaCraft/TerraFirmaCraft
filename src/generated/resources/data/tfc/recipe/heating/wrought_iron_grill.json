@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:wrought_iron_grill"
+  },
+  "result_fluid": {
+    "amount": 100,
+    "id": "tfc:metal/cast_iron"
+  },
+  "temperature": 1535.0
+}

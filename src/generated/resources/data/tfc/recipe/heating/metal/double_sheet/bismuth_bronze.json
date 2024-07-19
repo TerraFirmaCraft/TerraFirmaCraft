@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "tag": "c:double_sheets/bismuth_bronze"
+  },
+  "result_fluid": {
+    "amount": 400,
+    "id": "tfc:metal/bismuth_bronze"
+  },
+  "temperature": 985.0
+}

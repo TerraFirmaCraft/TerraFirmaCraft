@@ -25,6 +25,8 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterators;
 import com.mojang.logging.LogUtils;
 import net.minecraft.ChatFormatting;
@@ -1136,6 +1138,17 @@ public final class Helpers
             Collections.swap(list, i, r.nextInt(i + 1));
         }
         return list.subList(length - n, length);
+    }
+
+    /**
+     * Given a list containing {@code [a0, ... aN]} and an element {@code aN+1}, returns a new, immutable list containing {@code [a0, ... aN, aN+1]},
+     * in the most efficient manner that we can manage (a single data copy). This takes advantage that {@link ImmutableList}, along with its
+     * builder, will not create copies if the builder is sized perfectly.
+     * @return A new list containing the same elements plus the element to be appended.
+     */
+    public static <T> List<T> immutableAdd(List<T> list, T element)
+    {
+        return ImmutableList.<T>builderWithExpectedSize(list.size() + 1).addAll(list).add(element).build();
     }
 
     /**

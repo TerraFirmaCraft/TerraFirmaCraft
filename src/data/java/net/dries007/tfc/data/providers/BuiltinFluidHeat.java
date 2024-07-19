@@ -60,9 +60,9 @@ public class BuiltinFluidHeat extends DataManagerProvider<FluidHeat> implements 
             metal.tier(),
             meltTemperature,
             HEAT_CAPACITY / baseHeatCapacity,
-            Optional.of(Ingredient.of(tagOf(metal, Metal.ItemType.INGOT))),
-            metal.defaultParts() ? Optional.of(Ingredient.of(tagOf(metal, Metal.ItemType.DOUBLE_INGOT))) : Optional.empty(),
-            metal.defaultParts() ? Optional.of(Ingredient.of(tagOf(metal, Metal.ItemType.SHEET))) : Optional.empty()
+            Optional.of(Ingredient.of(commonTagOf(metal, Metal.ItemType.INGOT))),
+            metal.defaultParts() ? Optional.of(Ingredient.of(commonTagOf(metal, Metal.ItemType.DOUBLE_INGOT))) : Optional.empty(),
+            metal.defaultParts() ? Optional.of(Ingredient.of(commonTagOf(metal, Metal.ItemType.SHEET))) : Optional.empty()
         ));
     }
 }

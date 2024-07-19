@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:ore/poor_garnierite"
+  },
+  "result_fluid": {
+    "amount": 15,
+    "id": "tfc:metal/nickel"
+  },
+  "temperature": 1453.0
+}

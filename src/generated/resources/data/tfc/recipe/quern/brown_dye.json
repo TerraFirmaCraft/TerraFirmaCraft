@@ -1,0 +1,15 @@
+{
+  "type": "tfc:quern",
+  "ingredient": [
+    {
+      "item": "tfc:plant/field_horsetail"
+    },
+    {
+      "item": "tfc:plant/sargassum"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:brown_dye"
+  }
+}

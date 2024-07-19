@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "tag": "c:sheets/nickel"
+  },
+  "result_fluid": {
+    "amount": 200,
+    "id": "tfc:metal/nickel"
+  },
+  "temperature": 1453.0
+}

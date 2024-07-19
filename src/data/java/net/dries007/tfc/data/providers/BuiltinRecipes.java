@@ -31,18 +31,24 @@ import net.dries007.tfc.common.recipes.BloomeryRecipe;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.common.recipes.LandslideRecipe;
 import net.dries007.tfc.common.recipes.LoomRecipe;
+import net.dries007.tfc.common.recipes.QuernRecipe;
 import net.dries007.tfc.common.recipes.ScrapingRecipe;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
+import net.dries007.tfc.data.DataAccessor;
 import net.dries007.tfc.data.recipes.AlloyRecipes;
 import net.dries007.tfc.data.recipes.AnvilRecipes;
 import net.dries007.tfc.data.recipes.BarrelRecipes;
 import net.dries007.tfc.data.recipes.CastingRecipes;
 import net.dries007.tfc.data.recipes.ChiselRecipes;
+import net.dries007.tfc.data.recipes.GlassRecipes;
+import net.dries007.tfc.data.recipes.HeatRecipes;
+import net.dries007.tfc.data.recipes.QuernRecipes;
 import net.dries007.tfc.data.recipes.WeldingRecipes;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.util.data.FluidHeat;
 import net.dries007.tfc.util.registry.RegistryHolder;
 
 @SuppressWarnings("NotNullFieldNotInitialized")
@@ -52,14 +58,19 @@ public final class BuiltinRecipes extends RecipeProvider implements
     BarrelRecipes,
     CastingRecipes,
     ChiselRecipes,
+    GlassRecipes,
+    HeatRecipes,
+    QuernRecipes,
     WeldingRecipes
 {
+    final DataAccessor<FluidHeat> fluidHeat;
     RecipeOutput output;
     HolderLookup.Provider lookup;
 
-    public BuiltinRecipes(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup)
+    public BuiltinRecipes(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup, DataAccessor<FluidHeat> fluidHeat)
     {
         super(output, lookup);
+        this.fluidHeat = fluidHeat;
     }
 
     @Override
@@ -80,6 +91,9 @@ public final class BuiltinRecipes extends RecipeProvider implements
         barrelRecipes();
         castingRecipes();
         chiselRecipes();
+        glassRecipes();
+        heatRecipes();
+        quernRecipes();
         weldingRecipes();
 
         // Bloomery Recipes
@@ -189,6 +203,12 @@ public final class BuiltinRecipes extends RecipeProvider implements
             TFCBlocks.PINK_KAOLIN_CLAY,
             TFCBlocks.RED_KAOLIN_CLAY
         ).forEach(block -> add(new LandslideRecipe(BlockIngredient.of(block.get()), Optional.empty())));
+    }
+
+    @Override
+    public DataAccessor<FluidHeat> fluidHeat()
+    {
+        return fluidHeat;
     }
 
     @Override

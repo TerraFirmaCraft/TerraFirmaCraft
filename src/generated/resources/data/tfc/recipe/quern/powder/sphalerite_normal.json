@@ -1,0 +1,10 @@
+{
+  "type": "tfc:quern",
+  "ingredient": {
+    "item": "tfc:ore/normal_sphalerite"
+  },
+  "result": {
+    "count": 5,
+    "id": "tfc:powder/sphalerite"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "type": "tfc:quern",
+  "ingredient": [
+    {
+      "item": "tfc:gem/topaz"
+    },
+    {
+      "item": "tfc:ore/topaz"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "id": "tfc:powder/topaz"
+  }
+}

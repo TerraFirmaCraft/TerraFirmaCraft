@@ -1,8 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:heating",
-  "ingredient": {
-    "tag": "tfc:foods/dough"
-  },
-  "temperature": 700
-}

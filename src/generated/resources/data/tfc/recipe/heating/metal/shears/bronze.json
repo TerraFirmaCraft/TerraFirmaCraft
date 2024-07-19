@@ -1,0 +1,12 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:metal/shears/bronze"
+  },
+  "result_fluid": {
+    "amount": 200,
+    "id": "tfc:metal/bronze"
+  },
+  "temperature": 950.0,
+  "use_durability": true
+}

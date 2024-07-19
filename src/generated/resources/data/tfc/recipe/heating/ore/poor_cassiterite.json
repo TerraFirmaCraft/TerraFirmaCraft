@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:ore/poor_cassiterite"
+  },
+  "result_fluid": {
+    "amount": 15,
+    "id": "tfc:metal/tin"
+  },
+  "temperature": 230.0
+}

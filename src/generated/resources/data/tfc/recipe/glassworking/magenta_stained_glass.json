@@ -1,0 +1,14 @@
+{
+  "type": "tfc:glassworking",
+  "batch": {
+    "tag": "tfc:glass_batches_tier_2"
+  },
+  "operations": [
+    "ruby",
+    "basin_pour"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:magenta_stained_glass"
+  }
+}

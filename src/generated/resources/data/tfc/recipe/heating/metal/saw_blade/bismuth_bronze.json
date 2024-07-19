@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:metal/saw_blade/bismuth_bronze"
+  },
+  "result_fluid": {
+    "amount": 100,
+    "id": "tfc:metal/bismuth_bronze"
+  },
+  "temperature": 985.0
+}

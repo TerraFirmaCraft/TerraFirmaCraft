@@ -3,7 +3,6 @@ package net.dries007.tfc.data.providers;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 import com.google.common.base.Preconditions;
@@ -21,7 +20,6 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
@@ -58,15 +56,16 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         for (Metal metal : Metal.values())
         {
             metalTag(metal, Metal.ItemType.INGOT);
-            tag(PILEABLE_INGOTS).addTag(tagOf(metal, Metal.ItemType.INGOT));
+            tag(PILEABLE_INGOTS).addTag(commonTagOf(metal, Metal.ItemType.INGOT));
             if (metal.defaultParts())
             {
                 metalTag(metal, Metal.ItemType.DOUBLE_INGOT);
                 metalTag(metal, Metal.ItemType.SHEET);
                 metalTag(metal, Metal.ItemType.DOUBLE_SHEET);
                 metalTag(metal, Metal.ItemType.ROD);
-                tag(PILEABLE_DOUBLE_INGOTS).addTag(tagOf(metal, Metal.ItemType.DOUBLE_INGOT));
-                tag(PILEABLE_SHEETS).addTag(tagOf(metal, Metal.ItemType.SHEET));
+                tag(PILEABLE_DOUBLE_INGOTS).addTag(commonTagOf(metal, Metal.ItemType.DOUBLE_INGOT));
+                tag(PILEABLE_SHEETS).addTag(commonTagOf(metal, Metal.ItemType.SHEET));
+                copy(storageBlockTagOf(Registries.BLOCK, metal), storageBlockTagOf(Registries.ITEM, metal));
             }
         }
 
@@ -131,6 +130,11 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(MINING_TOOL_TOOLS).add(TFCItems.METAL_ITEMS, Metal.ItemType.PICKAXE);
         tag(TOOLS_GLASSWORKING).add(TFCItems.PADDLE, TFCItems.JACKS, TFCItems.GEM_SAW);
         tag(TOOLS_BLOWPIPE).add(TFCItems.BLOWPIPE, TFCItems.CERAMIC_BLOWPIPE);
+
+        tag(GLASS_BATCHES_T2).add(TFCItems.SILICA_GLASS_BATCH, TFCItems.HEMATITIC_GLASS_BATCH);
+        tag(GLASS_BATCHES_T3).addTag(GLASS_BATCHES_T2).add(TFCItems.OLIVINE_GLASS_BATCH);
+        tag(GLASS_BATCHES).addTag(GLASS_BATCHES_T3).add(TFCItems.VOLCANIC_GLASS_BATCH);
+        tag(GLASS_BATCHES_NOT_T1).add(TFCItems.HEMATITIC_GLASS_BATCH, TFCItems.OLIVINE_GLASS_BATCH, TFCItems.VOLCANIC_GLASS_BATCH);
     }
 
     @Override
@@ -156,7 +160,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
 
     private void metalTag(Metal metal, Metal.ItemType type)
     {
-        tag(tagOf(metal, type)).add(TFCItems.METAL_ITEMS.get(metal).get(type));
+        tag(commonTagOf(metal, type)).add(TFCItems.METAL_ITEMS.get(metal).get(type));
     }
 
     private void tagNotWhite(TagKey<Item> tag, String itemName)
@@ -186,6 +190,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         });
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     static class ItemTagAppender extends TagAppender<Item> implements Accessors
     {
         ItemTagAppender(TagBuilder builder, String modId)
@@ -199,6 +204,8 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         <T1, T2, V extends ItemLike> ItemTagAppender add(Map<T1, Map<T2, V>> items, T2 key) { return add(pivot(items, key)); }
 
         ItemTagAppender add(Food... foods) { for (Food food : foods) add(TFCItems.FOOD.get(food)); return this; }
+
+        @Override public ItemTagAppender addTag(TagKey<Item> tag) { return (ItemTagAppender) super.addTag(tag); }
 
         private ResourceKey<Item> key(ItemLike item)
         {

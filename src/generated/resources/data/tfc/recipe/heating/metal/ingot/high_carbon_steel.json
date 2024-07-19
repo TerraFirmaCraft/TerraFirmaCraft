@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "tag": "c:ingots/high_carbon_steel"
+  },
+  "result_fluid": {
+    "amount": 100,
+    "id": "tfc:metal/pig_iron"
+  },
+  "temperature": 1540.0
+}

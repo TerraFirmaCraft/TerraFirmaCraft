@@ -15,6 +15,8 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 
+import net.dries007.tfc.util.Helpers;
+
 
 /**
  * A component for glassworking operations that are attached to an item. This consists of a glassworking {@code batch},
@@ -56,7 +58,7 @@ public record GlassOperations(
     {
         return steps.size() >= LIMIT || batch.isEmpty()
             ? this
-            : new GlassOperations(Stream.concat(steps.stream(), Stream.of(operation)).toList(), batch.copy());
+            : new GlassOperations(Helpers.immutableAdd(steps, operation), batch.copy());
     }
 
     GlassOperations with(ItemStack batch)

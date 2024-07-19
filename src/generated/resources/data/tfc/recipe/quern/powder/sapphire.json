@@ -1,0 +1,15 @@
+{
+  "type": "tfc:quern",
+  "ingredient": [
+    {
+      "item": "tfc:gem/sapphire"
+    },
+    {
+      "item": "tfc:ore/sapphire"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "id": "tfc:powder/sapphire"
+  }
+}

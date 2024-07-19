@@ -101,21 +101,33 @@ public record ItemStackProvider(
      */
     public ItemStack getEmptyStack()
     {
-        return getStack(ItemStack.EMPTY);
+        return getStack(ItemStack.EMPTY, ItemStackModifier.Context.NO_RANDOM_CHANCE);
     }
 
     /**
      * Gets the output stack from this provider, for the given input stack.
      *
-     * @param input The input stack. <strong>Important:</strong> The input stack will be treated as an entire stack, including count, and the returned stack may be the same count as the input due to the presence of {@link CopyInputModifier}s. If this behavior is not desired, use {@link #getSingleStack(ItemStack)}.
+     * @param input The input stack. <strong>Important:</strong> The input stack will be treated as an entire stack, including count, and the
+     *              returned stack may be the same count as the input due to the presence of {@link CopyInputModifier}s. If this behavior is
+     *              not desired, use {@link #getSingleStack(ItemStack)}.
      * @return A new stack, possibly dependent on the input stack size.
      */
     public ItemStack getStack(ItemStack input)
     {
+        return getStack(input, ItemStackModifier.Context.DEFAULT);
+    }
+
+    /**
+     * Gets the output stack from this provider, for the given input stack, and allows providing a non-typical
+     * context to the provider.
+     * @return A new stack, possibly dependent on the input stack
+     */
+    public ItemStack getStack(ItemStack input, ItemStackModifier.Context context)
+    {
         ItemStack output = stack.copy();
         for (ItemStackModifier modifier : modifiers)
         {
-            output = modifier.apply(output, input);
+            output = modifier.apply(output, input, context);
         }
         return output;
     }

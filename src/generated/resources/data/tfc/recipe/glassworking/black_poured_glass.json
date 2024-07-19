@@ -1,0 +1,14 @@
+{
+  "type": "tfc:glassworking",
+  "batch": {
+    "tag": "tfc:glass_batches"
+  },
+  "operations": [
+    "graphite",
+    "table_pour"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:black_poured_glass"
+  }
+}

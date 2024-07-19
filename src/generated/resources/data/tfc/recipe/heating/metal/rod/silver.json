@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "tag": "c:rods/silver"
+  },
+  "result_fluid": {
+    "amount": 50,
+    "id": "tfc:metal/silver"
+  },
+  "temperature": 961.0
+}

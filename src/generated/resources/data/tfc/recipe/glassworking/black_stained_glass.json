@@ -1,0 +1,14 @@
+{
+  "type": "tfc:glassworking",
+  "batch": {
+    "tag": "tfc:glass_batches"
+  },
+  "operations": [
+    "graphite",
+    "basin_pour"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:black_stained_glass"
+  }
+}

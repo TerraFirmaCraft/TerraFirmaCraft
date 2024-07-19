@@ -1,0 +1,17 @@
+{
+  "type": "tfc:glassworking",
+  "batch": {
+    "tag": "tfc:glass_batches"
+  },
+  "operations": [
+    "blow",
+    "pinch",
+    "flatten",
+    "blow",
+    "saw"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:lamp_glass"
+  }
+}

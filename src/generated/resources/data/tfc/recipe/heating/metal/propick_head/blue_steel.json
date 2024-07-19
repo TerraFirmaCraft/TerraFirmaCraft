@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:metal/propick_head/blue_steel"
+  },
+  "result_fluid": {
+    "amount": 100,
+    "id": "tfc:metal/blue_steel"
+  },
+  "temperature": 1540.0
+}

@@ -73,7 +73,7 @@ public final class DataEntryPoint
         final var fluidHeat = add(event, new BuiltinFluidHeat(output, lookup)).output();
         final var drinkables = add(event, new BuiltinDrinkables(output, lookup)).output();
 
-        add(event, new BuiltinRecipes(output, lookup));
+        add(event, new BuiltinRecipes(output, lookup, fluidHeat));
 
         add(event, new BuiltinItemTags(event, lookup, blockTags));
         add(event, new BuiltinFluidTags(event, lookup, drinkables));

@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:ceramic/unfired_brick"
+  },
+  "result_item": {
+    "count": 1,
+    "id": "minecraft:brick"
+  },
+  "temperature": 1399.0
+}

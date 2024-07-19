@@ -1,0 +1,10 @@
+{
+  "type": "tfc:quern",
+  "ingredient": {
+    "item": "tfc:ore/poor_hematite"
+  },
+  "result": {
+    "count": 3,
+    "id": "tfc:powder/hematite"
+  }
+}

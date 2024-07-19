@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:metal/unfinished_boots/bronze"
+  },
+  "result_fluid": {
+    "amount": 200,
+    "id": "tfc:metal/bronze"
+  },
+  "temperature": 950.0
+}

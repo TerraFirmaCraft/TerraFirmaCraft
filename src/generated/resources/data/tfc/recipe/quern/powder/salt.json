@@ -1,0 +1,10 @@
+{
+  "type": "tfc:quern",
+  "ingredient": {
+    "item": "tfc:ore/halite"
+  },
+  "result": {
+    "count": 4,
+    "id": "tfc:powder/salt"
+  }
+}

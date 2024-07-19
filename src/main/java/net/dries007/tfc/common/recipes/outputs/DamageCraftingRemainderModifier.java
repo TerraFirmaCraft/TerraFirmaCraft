@@ -17,7 +17,7 @@ public enum DamageCraftingRemainderModifier implements ItemStackModifier
 
     @Override
     @SuppressWarnings("deprecation") // For damageItem(), but we don't have access to a level here
-    public ItemStack apply(ItemStack stack, ItemStack input)
+    public ItemStack apply(ItemStack stack, ItemStack input, Context context)
     {
         if (stack.isDamageableItem())
         {

@@ -1,0 +1,14 @@
+{
+  "type": "tfc:glassworking",
+  "batch": {
+    "tag": "tfc:glass_batches"
+  },
+  "operations": [
+    "nickel",
+    "basin_pour"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:brown_stained_glass"
+  }
+}

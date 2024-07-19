@@ -1,0 +1,30 @@
+{
+  "type": "tfc:quern",
+  "ingredient": [
+    {
+      "item": "tfc:plant/foxglove"
+    },
+    {
+      "item": "tfc:plant/sacred_datura"
+    },
+    {
+      "item": "tfc:plant/tulip_pink"
+    },
+    {
+      "item": "tfc:plant/snapdragon_pink"
+    },
+    {
+      "item": "tfc:plant/hibiscus"
+    },
+    {
+      "item": "tfc:plant/lotus"
+    },
+    {
+      "item": "tfc:plant/maiden_pink"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:pink_dye"
+  }
+}

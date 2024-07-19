@@ -1,0 +1,27 @@
+{
+  "type": "tfc:quern",
+  "ingredient": [
+    {
+      "item": "tfc:plant/calendula"
+    },
+    {
+      "item": "tfc:plant/dandelion"
+    },
+    {
+      "item": "tfc:plant/meads_milkweed"
+    },
+    {
+      "item": "tfc:plant/goldenrod"
+    },
+    {
+      "item": "tfc:plant/snapdragon_yellow"
+    },
+    {
+      "item": "tfc:plant/desert_flame"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:yellow_dye"
+  }
+}

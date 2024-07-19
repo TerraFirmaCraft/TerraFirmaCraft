@@ -11,6 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
@@ -20,6 +21,7 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.fluids.SimpleFluid;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.calendar.ICalendar;
 
@@ -28,24 +30,31 @@ public interface Accessors
     default Ingredient ingredientOf(Metal metal, Metal.ItemType type)
     {
         return type.isDefault()
-            ? Ingredient.of(tagOf(metal, type))
+            ? Ingredient.of(commonTagOf(metal, type))
             : Ingredient.of(TFCItems.METAL_ITEMS.get(metal).get(type).get());
     }
 
     default Ingredient ingredientOf(Metal metal, Metal.BlockType type)
     {
         return type == Metal.BlockType.BLOCK
-            ? Ingredient.of(tagOf(Registries.ITEM, "storage_blocks/" + metal.name()))
+            ? Ingredient.of(storageBlockTagOf(Registries.ITEM, metal))
             : Ingredient.of(TFCBlocks.METALS.get(metal).get(type).get());
     }
 
-    default TagKey<Item> tagOf(Metal metal, Metal.ItemType type)
+    default TagKey<Item> commonTagOf(Metal metal, Metal.ItemType type)
     {
-        assert type.isDefault() : "Non-typical use of tag for " + metal.getSerializedName() + " / " + type.name().toLowerCase(Locale.ROOT);
-        return tagOf(Registries.ITEM, type.name() + "s/" + metal.name());
+        assert type.isDefault() : "Non-typical use of tag for " + metal.getSerializedName() + " / " + type.name();
+        assert type.has(metal) : "Non-typical use of " + metal.getSerializedName() + " / " + type.name();
+        return commonTagOf(Registries.ITEM, type.name() + "s/" + metal.name());
     }
 
-    default <T> TagKey<T> tagOf(ResourceKey<Registry<T>> key, String name)
+    default <T> TagKey<T> storageBlockTagOf(ResourceKey<Registry<T>> key, Metal metal)
+    {
+        assert metal.defaultParts() : "Non-typical use of a non-default metal " + metal.getSerializedName();
+        return commonTagOf(key, "storage_blocks/" + metal.getSerializedName());
+    }
+
+    default <T> TagKey<T> commonTagOf(ResourceKey<Registry<T>> key, String name)
     {
         return TagKey.create(key, ResourceLocation.fromNamespaceAndPath("c", name.toLowerCase(Locale.ROOT)));
     }
@@ -71,10 +80,20 @@ public interface Accessors
         return TFCFluids.METALS.get(metal).getSource();
     }
 
-    default ResourceLocation nameOf(ItemLike item)
+    default String nameOf(Ingredient ingredient)
     {
-        assert item.asItem() != Items.AIR;
-        return BuiltInRegistries.ITEM.getKey(item.asItem());
+        assert ingredient.getValues().length == 1 : "Ingredient should only have one value";
+        final Ingredient.Value value = ingredient.getValues()[0];
+        if (value instanceof Ingredient.TagValue(TagKey<Item> tag)) return tag.location().getPath();
+        if (value instanceof Ingredient.ItemValue(ItemStack item)) return nameOf(item.getItem());
+        throw new AssertionError("Unknown ingredient value");
+    }
+
+    default String nameOf(ItemLike item)
+    {
+        assert item.asItem() != Items.AIR : "Should never get name of Items.AIR";
+        assert item.asItem() != Items.BARRIER : "Should never get name of Items.BARRIER";
+        return BuiltInRegistries.ITEM.getKey(item.asItem()).getPath();
     }
 
     default int units(Metal.ItemType type)

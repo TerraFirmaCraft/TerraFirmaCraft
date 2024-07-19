@@ -1,0 +1,10 @@
+{
+  "type": "tfc:quern",
+  "ingredient": {
+    "item": "tfc:ore/rich_malachite"
+  },
+  "result": {
+    "count": 7,
+    "id": "tfc:powder/malachite"
+  }
+}

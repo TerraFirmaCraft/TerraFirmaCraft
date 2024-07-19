@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "tag": "c:ingots/unknown"
+  },
+  "result_fluid": {
+    "amount": 100,
+    "id": "tfc:metal/unknown"
+  },
+  "temperature": 400.0
+}

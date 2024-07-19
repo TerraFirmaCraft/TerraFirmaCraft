@@ -1,0 +1,13 @@
+{
+  "type": "tfc:glassworking",
+  "batch": {
+    "item": "tfc:silica_glass_batch"
+  },
+  "operations": [
+    "table_pour"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:poured_glass"
+  }
+}

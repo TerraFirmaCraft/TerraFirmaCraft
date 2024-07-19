@@ -28,10 +28,10 @@ public record ExtraProductModifier(ItemStack stack) implements ItemStackModifier
     }
 
     @Override
-    public ItemStack apply(ItemStack stack, ItemStack input)
+    public ItemStack apply(ItemStack stack, ItemStack input, Context context)
     {
         final @Nullable Player player = RecipeHelpers.getCraftingPlayer();
-        if (player != null && RecipeHelpers.isUniqueInput())
+        if (player != null && context == Context.DEFAULT)
         {
             ItemHandlerHelper.giveItemToPlayer(player, stack.copy());
         }

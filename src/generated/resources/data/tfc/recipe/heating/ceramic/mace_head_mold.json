@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:ceramic/unfired_mace_head_mold"
+  },
+  "result_item": {
+    "count": 1,
+    "id": "tfc:ceramic/mace_head_mold"
+  },
+  "temperature": 1399.0
+}

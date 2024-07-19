@@ -1,0 +1,12 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:metal/fishing_rod/black_bronze"
+  },
+  "result_fluid": {
+    "amount": 200,
+    "id": "tfc:metal/black_bronze"
+  },
+  "temperature": 1070.0,
+  "use_durability": true
+}

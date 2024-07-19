@@ -1,0 +1,19 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "type": "tfc:and",
+    "children": [
+      {
+        "item": "tfc:food/dried_seaweed"
+      },
+      {
+        "type": "tfc:not_rotten"
+      }
+    ]
+  },
+  "result_item": {
+    "count": 3,
+    "id": "tfc:powder/soda_ash"
+  },
+  "temperature": 500.0
+}

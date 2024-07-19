@@ -31,7 +31,7 @@ public record AddHeatModifier(float temperature) implements ItemStackModifier
     }
 
     @Override
-    public ItemStack apply(ItemStack stack, ItemStack input)
+    public ItemStack apply(ItemStack stack, ItemStack input, Context context)
     {
         final @Nullable IHeat heat = HeatCapability.get(stack);
         if (heat != null)

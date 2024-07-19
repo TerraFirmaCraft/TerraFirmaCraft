@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:powder/flux"
+  },
+  "result_item": {
+    "count": 1,
+    "id": "tfc:powder/lime"
+  },
+  "temperature": 840.0
+}

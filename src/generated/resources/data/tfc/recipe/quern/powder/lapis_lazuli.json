@@ -1,0 +1,15 @@
+{
+  "type": "tfc:quern",
+  "ingredient": [
+    {
+      "item": "tfc:gem/lapis_lazuli"
+    },
+    {
+      "item": "tfc:ore/lapis_lazuli"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "id": "tfc:powder/lapis_lazuli"
+  }
+}

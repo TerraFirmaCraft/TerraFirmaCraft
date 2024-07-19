@@ -1,0 +1,36 @@
+{
+  "type": "tfc:quern",
+  "ingredient": [
+    {
+      "item": "tfc:plant/houstonia"
+    },
+    {
+      "item": "tfc:plant/oxeye_daisy"
+    },
+    {
+      "item": "tfc:plant/primrose"
+    },
+    {
+      "item": "tfc:plant/snapdragon_white"
+    },
+    {
+      "item": "tfc:plant/trillium"
+    },
+    {
+      "item": "tfc:plant/spanish_moss"
+    },
+    {
+      "item": "tfc:plant/tulip_white"
+    },
+    {
+      "item": "tfc:plant/water_lily"
+    },
+    {
+      "item": "tfc:plant/lily_of_the_valley"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:white_dye"
+  }
+}

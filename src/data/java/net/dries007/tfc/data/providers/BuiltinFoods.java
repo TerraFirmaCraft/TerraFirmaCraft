@@ -198,7 +198,7 @@ public class BuiltinFoods extends DataManagerProvider<FoodDefinition> implements
 
     private void add(ItemLike item, FoodData food)
     {
-        add(nameOf(item).getPath().replace("food/", ""), new FoodDefinition(Ingredient.of(item), food));
+        add(nameOf(item).replace("food/", ""), new FoodDefinition(Ingredient.of(item), food));
     }
 
     private void add(TagKey<Item> tag, FoodData food)

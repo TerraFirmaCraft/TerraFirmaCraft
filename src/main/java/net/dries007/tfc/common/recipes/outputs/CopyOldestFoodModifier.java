@@ -17,7 +17,7 @@ public enum CopyOldestFoodModifier implements ItemStackModifier
     INSTANCE;
 
     @Override
-    public ItemStack apply(ItemStack stack, ItemStack input)
+    public ItemStack apply(ItemStack stack, ItemStack input, Context context)
     {
         return FoodCapability.updateFoodFromAllPrevious(Lists.newArrayList(RecipeHelpers.getCraftingInput()), stack);
     }

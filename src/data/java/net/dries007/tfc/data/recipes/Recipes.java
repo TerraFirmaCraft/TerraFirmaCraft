@@ -4,19 +4,28 @@ import java.util.Objects;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Recipe;
 
 import net.dries007.tfc.data.Accessors;
+import net.dries007.tfc.data.DataAccessor;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.data.FluidHeat;
 
 public interface Recipes extends Accessors
 {
+    DataAccessor<FluidHeat> fluidHeat();
     HolderLookup.Provider lookup();
+
+    default float temperatureOf(Metal metal)
+    {
+        return fluidHeat().get(Helpers.identifier(metal.getSerializedName())).meltTemperature();
+    }
 
     default void add(Recipe<?> recipe)
     {
-        final ItemStack output = recipe.getResultItem(lookup());
-        assert !output.isEmpty() : "Empty item used in name";
-        add(BuiltInRegistries.ITEM.getKey(output.getItem()).getPath(), recipe);
+        add(nameOf(recipe.getResultItem(lookup()).getItem()), recipe);
     }
 
     default void add(String name, Recipe<?> recipe)

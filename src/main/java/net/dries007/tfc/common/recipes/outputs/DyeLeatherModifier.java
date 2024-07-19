@@ -29,7 +29,7 @@ public record DyeLeatherModifier(DyeColor color) implements ItemStackModifier
     }
 
     @Override
-    public ItemStack apply(ItemStack stack, ItemStack input)
+    public ItemStack apply(ItemStack stack, ItemStack input, Context context)
     {
         return DyedItemColor.applyDyes(stack, List.of(DyeItem.byColor(color)));
     }

@@ -1,0 +1,12 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:metal/tuyere/wrought_iron"
+  },
+  "result_fluid": {
+    "amount": 400,
+    "id": "tfc:metal/cast_iron"
+  },
+  "temperature": 1535.0,
+  "use_durability": true
+}

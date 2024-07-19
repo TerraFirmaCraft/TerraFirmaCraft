@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:ceramic/unfired_bell_mold"
+  },
+  "result_item": {
+    "count": 1,
+    "id": "tfc:ceramic/bell_mold"
+  },
+  "temperature": 1399.0
+}

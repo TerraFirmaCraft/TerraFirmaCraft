@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:ceramic/unfired_fire_brick"
+  },
+  "result_item": {
+    "count": 1,
+    "id": "tfc:ceramic/fire_brick"
+  },
+  "temperature": 1399.0
+}

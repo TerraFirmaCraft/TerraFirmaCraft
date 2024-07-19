@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "tag": "c:rods/black_bronze"
+  },
+  "result_fluid": {
+    "amount": 50,
+    "id": "tfc:metal/black_bronze"
+  },
+  "temperature": 1070.0
+}

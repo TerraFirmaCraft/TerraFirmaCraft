@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:ceramic_blowpipe_with_glass"
+  },
+  "result_item": {
+    "count": 1,
+    "id": "tfc:ceramic_blowpipe"
+  },
+  "temperature": 1500.0
+}

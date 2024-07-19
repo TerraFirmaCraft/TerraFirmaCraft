@@ -303,7 +303,7 @@ public interface BarrelRecipes extends Recipes
 
     private void removeDye(TagKey<Item> input, ItemLike output)
     {
-        barrel("bleaching_" + nameOf(output).getPath().replace("white_", "").replace("/white", ""))
+        barrel("bleaching_" + nameOf(output).replace("white_", "").replace("/white", ""))
             .input(input)
             .input(fluidOf(SimpleFluid.LYE), 25)
             .output(output)

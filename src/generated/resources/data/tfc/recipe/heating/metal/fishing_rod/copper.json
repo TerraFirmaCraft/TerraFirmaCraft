@@ -1,0 +1,12 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:metal/fishing_rod/copper"
+  },
+  "result_fluid": {
+    "amount": 200,
+    "id": "tfc:metal/copper"
+  },
+  "temperature": 1080.0,
+  "use_durability": true
+}

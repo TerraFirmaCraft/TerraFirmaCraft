@@ -1,0 +1,12 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:metal/sword/blue_steel"
+  },
+  "result_fluid": {
+    "amount": 200,
+    "id": "tfc:metal/blue_steel"
+  },
+  "temperature": 1540.0,
+  "use_durability": true
+}

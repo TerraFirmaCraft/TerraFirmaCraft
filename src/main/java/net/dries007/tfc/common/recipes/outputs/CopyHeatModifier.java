@@ -17,7 +17,7 @@ public enum CopyHeatModifier implements ItemStackModifier
     INSTANCE;
 
     @Override
-    public ItemStack apply(ItemStack stack, ItemStack input)
+    public ItemStack apply(ItemStack stack, ItemStack input, Context context)
     {
         final @Nullable IHeat heat = HeatCapability.get(input);
         if (heat != null)

@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:metal/chestplate/black_steel"
+  },
+  "result_fluid": {
+    "amount": 800,
+    "id": "tfc:metal/black_steel"
+  },
+  "temperature": 1485.0
+}

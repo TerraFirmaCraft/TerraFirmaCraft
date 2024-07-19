@@ -1,0 +1,14 @@
+{
+  "type": "tfc:glassworking",
+  "batch": {
+    "tag": "tfc:glass_batches_not_tier_1"
+  },
+  "operations": [
+    "amethyst",
+    "basin_pour"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:tinted_glass"
+  }
+}

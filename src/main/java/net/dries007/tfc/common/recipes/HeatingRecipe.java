@@ -38,8 +38,7 @@ public class HeatingRecipe implements INoopInputRecipe, IRecipePredicate<ItemSta
         ItemStackProvider.CODEC.optionalFieldOf("result_item", ItemStackProvider.empty()).forGetter(c -> c.outputItem),
         FluidStack.CODEC.optionalFieldOf("result_fluid", FluidStack.EMPTY).forGetter(c -> c.outputFluid),
         Codec.FLOAT.fieldOf("temperature").forGetter(c -> c.temperature),
-        Codec.BOOL.optionalFieldOf("use_durability", false).forGetter(c -> c.useDurability),
-        Codecs.UNIT_FLOAT.optionalFieldOf("chance", 1f).forGetter(c -> c.chance)
+        Codec.BOOL.optionalFieldOf("use_durability", false).forGetter(c -> c.useDurability)
     ).apply(i, HeatingRecipe::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, HeatingRecipe> STREAM_CODEC = StreamCodec.composite(
@@ -48,7 +47,6 @@ public class HeatingRecipe implements INoopInputRecipe, IRecipePredicate<ItemSta
         FluidStack.STREAM_CODEC, c -> c.outputFluid,
         ByteBufCodecs.FLOAT, c -> c.temperature,
         ByteBufCodecs.BOOL, c -> c.useDurability,
-        ByteBufCodecs.FLOAT, c -> c.chance,
         HeatingRecipe::new
     );
 
@@ -63,16 +61,14 @@ public class HeatingRecipe implements INoopInputRecipe, IRecipePredicate<ItemSta
     private final FluidStack outputFluid;
     private final float temperature;
     private final boolean useDurability;
-    private final float chance;
 
-    public HeatingRecipe(Ingredient ingredient, ItemStackProvider outputItem, FluidStack outputFluid, float temperature, boolean useDurability, float chance)
+    public HeatingRecipe(Ingredient ingredient, ItemStackProvider outputItem, FluidStack outputFluid, float temperature, boolean useDurability)
     {
         this.ingredient = ingredient;
         this.outputItem = outputItem;
         this.outputFluid = outputFluid;
         this.temperature = temperature;
         this.useDurability = useDurability;
-        this.chance = chance;
     }
 
     /**
@@ -86,7 +82,7 @@ public class HeatingRecipe implements INoopInputRecipe, IRecipePredicate<ItemSta
 
     /**
      * Returns the item component of the recipe output. Note that {@code input} must be a single count stack. Use
-     * {@link #assembleStacked(ItemStack, int, float)} for outputs operating on stacked inputs.
+     * {@link #assembleStacked(ItemStack, int)} for outputs operating on stacked inputs.
      */
     public ItemStack assembleItem(ItemStack input)
     {
@@ -99,11 +95,6 @@ public class HeatingRecipe implements INoopInputRecipe, IRecipePredicate<ItemSta
             HeatCapability.setTemperature(outputStack, inputHeat.getTemperature());
         }
 
-        if (!outputStack.isEmpty() && chance < 1f)
-        {
-            final Random random = new Random();
-            return random.nextFloat() < chance ? outputStack : ItemStack.EMPTY;
-        }
         return outputStack;
     }
 
@@ -123,9 +114,8 @@ public class HeatingRecipe implements INoopInputRecipe, IRecipePredicate<ItemSta
     /**
      * A variant of {@link #assembleItem(ItemStack)} which respects a stacked input item.
      * @param stackSizeCap The slot limit of the output container. This method will return no more than this limit.
-     * @param chance The chance to use for the recipe. Typically, this is {@code recipe.getChance()}, but for display purposes {@code 1f} can be used
      */
-    public ItemStack assembleStacked(ItemStack inputStack, int stackSizeCap, float chance)
+    public ItemStack assembleStacked(ItemStack inputStack, int stackSizeCap)
     {
         final ItemStack outputStack = outputItem.getSingleStack(inputStack);
 
@@ -142,20 +132,6 @@ public class HeatingRecipe implements INoopInputRecipe, IRecipePredicate<ItemSta
             Math.min(outputStack.getMaxStackSize(), stackSizeCap)
         ));
 
-        // Reduce stack size based on chance output
-        if (!outputStack.isEmpty() && chance < 1f)
-        {
-            final Random random = new Random();
-            int count = 0;
-            for (int i = 0; i < outputStack.getCount(); i++)
-            {
-                if (random.nextFloat() < chance)
-                    count += 1;
-            }
-            outputStack.setCount(count);
-            if (count == 0)
-                return ItemStack.EMPTY;
-        }
         return outputStack;
     }
 
@@ -172,11 +148,6 @@ public class HeatingRecipe implements INoopInputRecipe, IRecipePredicate<ItemSta
     public Ingredient getIngredient()
     {
         return ingredient;
-    }
-
-    public float getChance()
-    {
-        return chance;
     }
 
     @Override

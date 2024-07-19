@@ -1,0 +1,10 @@
+{
+  "type": "tfc:quern",
+  "ingredient": {
+    "item": "tfc:plant/yucca"
+  },
+  "result": {
+    "count": 1,
+    "id": "minecraft:light_gray_dye"
+  }
+}

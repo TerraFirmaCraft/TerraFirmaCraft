@@ -1,0 +1,24 @@
+{
+  "type": "tfc:quern",
+  "ingredient": [
+    {
+      "item": "tfc:plant/athyrium_fern"
+    },
+    {
+      "item": "tfc:plant/morning_glory"
+    },
+    {
+      "item": "tfc:plant/pulsatilla"
+    },
+    {
+      "item": "tfc:plant/lilac"
+    },
+    {
+      "item": "tfc:plant/silver_spurflower"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:magenta_dye"
+  }
+}

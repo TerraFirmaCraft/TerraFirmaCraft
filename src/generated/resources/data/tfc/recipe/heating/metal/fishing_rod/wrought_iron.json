@@ -1,0 +1,12 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:metal/fishing_rod/wrought_iron"
+  },
+  "result_fluid": {
+    "amount": 200,
+    "id": "tfc:metal/cast_iron"
+  },
+  "temperature": 1535.0,
+  "use_durability": true
+}

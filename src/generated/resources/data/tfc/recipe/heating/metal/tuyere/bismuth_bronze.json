@@ -1,0 +1,12 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:metal/tuyere/bismuth_bronze"
+  },
+  "result_fluid": {
+    "amount": 400,
+    "id": "tfc:metal/bismuth_bronze"
+  },
+  "temperature": 985.0,
+  "use_durability": true
+}

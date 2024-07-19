@@ -1,0 +1,16 @@
+{
+  "type": "tfc:glassworking",
+  "batch": {
+    "tag": "tfc:glass_batches_tier_2"
+  },
+  "operations": [
+    "blow",
+    "pinch",
+    "roll",
+    "saw"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:empty_jar"
+  }
+}

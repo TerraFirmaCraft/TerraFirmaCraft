@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:ore/poor_magnetite"
+  },
+  "result_fluid": {
+    "amount": 15,
+    "id": "tfc:metal/cast_iron"
+  },
+  "temperature": 1535.0
+}

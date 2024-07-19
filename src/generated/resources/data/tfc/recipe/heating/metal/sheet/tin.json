@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "tag": "c:sheets/tin"
+  },
+  "result_fluid": {
+    "amount": 200,
+    "id": "tfc:metal/tin"
+  },
+  "temperature": 230.0
+}

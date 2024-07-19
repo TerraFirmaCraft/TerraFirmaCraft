@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "tag": "c:double_sheets/bismuth"
+  },
+  "result_fluid": {
+    "amount": 400,
+    "id": "tfc:metal/bismuth"
+  },
+  "temperature": 270.0
+}

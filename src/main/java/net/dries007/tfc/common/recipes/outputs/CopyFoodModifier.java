@@ -15,7 +15,7 @@ public enum CopyFoodModifier implements ItemStackModifier
     INSTANCE;
 
     @Override
-    public ItemStack apply(ItemStack stack, ItemStack input)
+    public ItemStack apply(ItemStack stack, ItemStack input, Context context)
     {
         return FoodCapability.updateFoodFromPrevious(input, stack);
     }

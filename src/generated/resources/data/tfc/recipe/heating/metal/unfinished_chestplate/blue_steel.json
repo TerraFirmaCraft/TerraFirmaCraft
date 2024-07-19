@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:metal/unfinished_chestplate/blue_steel"
+  },
+  "result_fluid": {
+    "amount": 400,
+    "id": "tfc:metal/blue_steel"
+  },
+  "temperature": 1540.0
+}

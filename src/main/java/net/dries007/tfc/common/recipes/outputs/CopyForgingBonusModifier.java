@@ -15,7 +15,7 @@ public enum CopyForgingBonusModifier implements ItemStackModifier
     INSTANCE;
 
     @Override
-    public ItemStack apply(ItemStack stack, ItemStack input)
+    public ItemStack apply(ItemStack stack, ItemStack input, Context context)
     {
         ForgingBonus.set(stack, ForgingBonus.get(input));
         return stack;

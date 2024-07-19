@@ -1,0 +1,12 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:metal/fishing_rod/bismuth_bronze"
+  },
+  "result_fluid": {
+    "amount": 200,
+    "id": "tfc:metal/bismuth_bronze"
+  },
+  "temperature": 985.0,
+  "use_durability": true
+}

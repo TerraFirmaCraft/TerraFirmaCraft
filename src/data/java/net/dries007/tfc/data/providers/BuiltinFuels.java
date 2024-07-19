@@ -74,7 +74,7 @@ public class BuiltinFuels extends DataManagerProvider<Fuel> implements Accessors
 
     private void add(ItemLike item, int duration, float temperature, float purity)
     {
-        add(nameOf(item).getPath(), new Fuel(Ingredient.of(item), duration, temperature, purity));
+        add(nameOf(item), new Fuel(Ingredient.of(item), duration, temperature, purity));
     }
 
     private void add(String name, Ingredient item, int duration, float temperature, float purity)

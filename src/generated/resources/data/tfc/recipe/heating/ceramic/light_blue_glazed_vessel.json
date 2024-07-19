@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:ceramic/light_blue_unfired_vessel"
+  },
+  "result_item": {
+    "count": 1,
+    "id": "tfc:ceramic/light_blue_glazed_vessel"
+  },
+  "temperature": 1399.0
+}

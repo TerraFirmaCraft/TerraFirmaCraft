@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:gem_saw"
+  },
+  "result_fluid": {
+    "amount": 50,
+    "id": "tfc:metal/brass"
+  },
+  "temperature": 930.0
+}

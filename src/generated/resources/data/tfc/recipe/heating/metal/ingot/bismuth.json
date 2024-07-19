@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "tag": "c:ingots/bismuth"
+  },
+  "result_fluid": {
+    "amount": 100,
+    "id": "tfc:metal/bismuth"
+  },
+  "temperature": 270.0
+}

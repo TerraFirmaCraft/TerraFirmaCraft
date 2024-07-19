@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "tag": "c:ingots/tin"
+  },
+  "result_fluid": {
+    "amount": 100,
+    "id": "tfc:metal/tin"
+  },
+  "temperature": 230.0
+}

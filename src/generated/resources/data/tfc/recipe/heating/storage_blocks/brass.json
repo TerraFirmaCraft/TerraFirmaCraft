@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "tag": "c:storage_blocks/brass"
+  },
+  "result_fluid": {
+    "amount": 100,
+    "id": "tfc:metal/brass"
+  },
+  "temperature": 930.0
+}

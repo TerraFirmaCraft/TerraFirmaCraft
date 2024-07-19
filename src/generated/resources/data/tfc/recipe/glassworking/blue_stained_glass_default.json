@@ -1,0 +1,13 @@
+{
+  "type": "tfc:glassworking",
+  "batch": {
+    "item": "tfc:volcanic_glass_batch"
+  },
+  "operations": [
+    "basin_pour"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:blue_stained_glass"
+  }
+}

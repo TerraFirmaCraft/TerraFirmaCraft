@@ -1,0 +1,12 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:metal/knife/copper"
+  },
+  "result_fluid": {
+    "amount": 100,
+    "id": "tfc:metal/copper"
+  },
+  "temperature": 1080.0,
+  "use_durability": true
+}

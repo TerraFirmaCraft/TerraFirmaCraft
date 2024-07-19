@@ -1,0 +1,12 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:metal/shield/copper"
+  },
+  "result_fluid": {
+    "amount": 400,
+    "id": "tfc:metal/copper"
+  },
+  "temperature": 1080.0,
+  "use_durability": true
+}

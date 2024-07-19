@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:plant/giant_kelp_flower"
+  },
+  "result_item": {
+    "count": 1,
+    "id": "tfc:food/dried_kelp"
+  },
+  "temperature": 200.0
+}

@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:ore/small_bismuthinite"
+  },
+  "result_fluid": {
+    "amount": 10,
+    "id": "tfc:metal/bismuth"
+  },
+  "temperature": 270.0
+}

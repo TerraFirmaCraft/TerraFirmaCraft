@@ -1,0 +1,7 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "tag": "tfc:foods/meat"
+  },
+  "temperature": 900.0
+}

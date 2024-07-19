@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:ceramic/unfired_pot"
+  },
+  "result_item": {
+    "count": 1,
+    "id": "tfc:ceramic/pot"
+  },
+  "temperature": 1399.0
+}

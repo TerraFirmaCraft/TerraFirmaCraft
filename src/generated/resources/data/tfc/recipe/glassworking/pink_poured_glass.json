@@ -1,0 +1,14 @@
+{
+  "type": "tfc:glassworking",
+  "batch": {
+    "item": "tfc:silica_glass_batch"
+  },
+  "operations": [
+    "gold",
+    "table_pour"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:pink_poured_glass"
+  }
+}

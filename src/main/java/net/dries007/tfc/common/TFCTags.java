@@ -247,7 +247,6 @@ public class TFCTags
         public static final TagKey<Item> WAXES_SCRAPING_SURFACE = tag("waxes_scraping_surface");
         public static final TagKey<Item> POWDERS = tag("powders");
         public static final TagKey<Item> CAN_BE_SALTED = tag("foods/can_be_salted");
-        public static final TagKey<Item> GLASS_BATCHES = tag("glass_batches");
         public static final TagKey<Item> BLOWPIPES = tag("blowpipes");
         public static final TagKey<Item> ALL_BLOWPIPES = tag("all_blowpipes");
         public static final TagKey<Item> SILICA_ITEMS = tag("silica_items");
@@ -276,6 +275,7 @@ public class TFCTags
         public static final TagKey<Item> RAW_FISH = Tags.Items.FOODS_RAW_FISH;
         public static final TagKey<Item> COOKED_FISH = Tags.Items.FOODS_COOKED_FISH;
         public static final TagKey<Item> FISH = commonTag("foods/fish");
+        public static final TagKey<Item> BREAD = commonTag("foods/bread");
         public static final TagKey<Item> SALADS = commonTag("foods/salad");
         public static final TagKey<Item> SOUPS = Tags.Items.FOODS_SOUP;
         public static final TagKey<Item> PRESERVES = tag("foods/preserves");
@@ -329,6 +329,12 @@ public class TFCTags
         public static final TagKey<Item> TOOLS_CHISEL = commonTag("tools/chisel");
         public static final TagKey<Item> TOOLS_GLASSWORKING = commonTag("tools/glassworking");
         public static final TagKey<Item> TOOLS_BLOWPIPE = commonTag("tools/blowpipe");
+
+        public static final TagKey<Item> GLASS_BATCHES = tag("glass_batches");
+        public static final TagKey<Item> GLASS_BATCHES_T2 = tag("glass_batches_tier_2");
+        public static final TagKey<Item> GLASS_BATCHES_T3 = tag("glass_batches_tier_3");
+        public static final TagKey<Item> GLASS_BATCHES_NOT_T1 = tag("glass_batches_not_tier_1");
+
 
         public static TagKey<Item> mobEquipmentSlotTag(EquipmentSlot slot)
         {

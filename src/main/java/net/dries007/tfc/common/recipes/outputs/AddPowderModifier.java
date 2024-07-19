@@ -17,7 +17,7 @@ public enum AddPowderModifier implements ItemStackModifier
     INSTANCE;
 
     @Override
-    public ItemStack apply(ItemStack stack, ItemStack primaryInput)
+    public ItemStack apply(ItemStack stack, ItemStack primaryInput, Context context)
     {
         for (ItemStack input : RecipeHelpers.getCraftingInput())
         {

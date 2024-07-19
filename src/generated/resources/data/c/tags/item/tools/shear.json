@@ -1,13 +1,13 @@
 {
   "values": [
-    "tfc:metal/shears/steel",
-    "tfc:metal/shears/red_steel",
-    "tfc:metal/shears/bismuth_bronze",
     "tfc:metal/shears/bronze",
     "tfc:metal/shears/wrought_iron",
-    "tfc:metal/shears/black_bronze",
-    "tfc:metal/shears/copper",
+    "tfc:metal/shears/steel",
     "tfc:metal/shears/black_steel",
-    "tfc:metal/shears/blue_steel"
+    "tfc:metal/shears/blue_steel",
+    "tfc:metal/shears/copper",
+    "tfc:metal/shears/bismuth_bronze",
+    "tfc:metal/shears/black_bronze",
+    "tfc:metal/shears/red_steel"
   ]
 }

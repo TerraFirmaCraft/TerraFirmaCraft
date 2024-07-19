@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "tag": "c:ingots/rose_gold"
+  },
+  "result_fluid": {
+    "amount": 100,
+    "id": "tfc:metal/rose_gold"
+  },
+  "temperature": 960.0
+}

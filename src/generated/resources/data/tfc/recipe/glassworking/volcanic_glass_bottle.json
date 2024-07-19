@@ -1,0 +1,15 @@
+{
+  "type": "tfc:glassworking",
+  "batch": {
+    "item": "tfc:volcanic_glass_batch"
+  },
+  "operations": [
+    "blow",
+    "pinch",
+    "saw"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:volcanic_glass_bottle"
+  }
+}

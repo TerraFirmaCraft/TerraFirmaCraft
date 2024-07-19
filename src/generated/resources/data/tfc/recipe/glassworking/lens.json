@@ -1,0 +1,16 @@
+{
+  "type": "tfc:glassworking",
+  "batch": {
+    "item": "tfc:silica_glass_batch"
+  },
+  "operations": [
+    "blow",
+    "stretch",
+    "roll",
+    "saw"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:lens"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "type": "tfc:quern",
+  "ingredient": [
+    {
+      "item": "tfc:plant/allium"
+    },
+    {
+      "item": "tfc:plant/black_orchid"
+    },
+    {
+      "item": "tfc:plant/perovskia"
+    },
+    {
+      "item": "tfc:plant/blue_ginger"
+    },
+    {
+      "item": "tfc:plant/pickerelweed"
+    },
+    {
+      "item": "tfc:plant/heather"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:purple_dye"
+  }
+}

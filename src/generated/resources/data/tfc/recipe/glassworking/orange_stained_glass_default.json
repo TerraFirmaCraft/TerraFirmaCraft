@@ -1,0 +1,13 @@
+{
+  "type": "tfc:glassworking",
+  "batch": {
+    "item": "tfc:hematitic_glass_batch"
+  },
+  "operations": [
+    "basin_pour"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:orange_stained_glass"
+  }
+}

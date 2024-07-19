@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "tag": "c:rods/steel"
+  },
+  "result_fluid": {
+    "amount": 50,
+    "id": "tfc:metal/steel"
+  },
+  "temperature": 1540.0
+}

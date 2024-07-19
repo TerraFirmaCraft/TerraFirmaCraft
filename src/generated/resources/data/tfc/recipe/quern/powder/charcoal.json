@@ -1,0 +1,10 @@
+{
+  "type": "tfc:quern",
+  "ingredient": {
+    "item": "minecraft:charcoal"
+  },
+  "result": {
+    "count": 4,
+    "id": "tfc:powder/charcoal"
+  }
+}

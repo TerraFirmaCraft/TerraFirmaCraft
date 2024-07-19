@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:ceramic/unfired_large_vessel/black"
+  },
+  "result_item": {
+    "count": 1,
+    "id": "tfc:ceramic/large_vessel/black"
+  },
+  "temperature": 1399.0
+}
