@@ -98,6 +98,7 @@ public class TFCTags
         public static final TagKey<Block> KAOLIN_CLAY_REPLACEABLE = tag("kaolin_clay_replaceable");
 
         // ===== Data Generated ===== //
+
         public static final TagKey<Block> LAMPS = tag("lamps");
 
         /** If the block can trigger collapses to start nearby when mined */

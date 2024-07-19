@@ -3,8 +3,6 @@ package net.dries007.tfc.data.recipes;
 import java.util.Objects;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Recipe;
 
 import net.dries007.tfc.data.Accessors;
@@ -34,4 +32,6 @@ public interface Recipes extends Accessors
     }
 
     void add(String prefix, String name, Recipe<?> recipe);
+
+    void remove(String... names);
 }

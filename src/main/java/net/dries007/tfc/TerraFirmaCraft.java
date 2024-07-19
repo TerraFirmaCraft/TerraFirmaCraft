@@ -31,6 +31,7 @@ import net.dries007.tfc.client.ClientEventHandler;
 import net.dries007.tfc.client.ClientForgeEventHandler;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.particle.TFCParticles;
+import net.dries007.tfc.common.TFCArmorMaterials;
 import net.dries007.tfc.common.TFCAttachments;
 import net.dries007.tfc.common.TFCCreativeTabs;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
@@ -135,6 +136,7 @@ public final class TerraFirmaCraft
         TFCPaintings.PAINTING_TYPES.register(bus);
         TFCAdvancements.TRIGGERS.register(bus);
         TFCComponents.COMPONENTS.register(bus);
+        TFCArmorMaterials.ARMOR_MATERIALS.register(bus);
 
         // World Generation (vanilla)
         TFCBlockPredicates.BLOCK_PREDICATES.register(bus);
