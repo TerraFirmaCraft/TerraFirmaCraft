@@ -40,10 +40,25 @@ public class LandslideRecipe extends BlockRecipe
 {
     public static final IndirectHashCollection<Block, LandslideRecipe> CACHE = IndirectHashCollection.createForRecipe(recipe -> recipe.getBlockIngredient().blocks(), TFCRecipeTypes.LANDSLIDE);
 
-    @Nullable
-    public static LandslideRecipe getRecipe(BlockState state)
+    /**
+     * This is the fallback recipe, which defines default behavior (no result) for any block in the {@link TFCTags.Blocks#CAN_LANDSLIDE} tag.
+     * See {@link CollapseRecipe#FALLBACK} for an explanation why this exists.
+     */
+    private static final LandslideRecipe FALLBACK = new LandslideRecipe();
+
+    /**
+     * @return {@code true} if this block can landslide, by virtue of having a recipe, or being defined in the fallback tag.
+     */
+    public static boolean canLandslide(BlockState input)
     {
-        return RecipeHelpers.getRecipe(CACHE, state, state.getBlock());
+        return getRecipe(input) != null;
+    }
+
+    @Nullable
+    public static LandslideRecipe getRecipe(BlockState input)
+    {
+        final @Nullable LandslideRecipe recipe = RecipeHelpers.getRecipe(CACHE, input, input.getBlock());
+        return recipe == null && FALLBACK.matches(input) ? FALLBACK : recipe;
     }
 
     /**
@@ -126,7 +141,8 @@ public class LandslideRecipe extends BlockRecipe
                         // In order to fall in a direction, we need both the block immediately next to, and the one below to be open
                         // The one adjacent needs to be breakable, wheras the one below just needs to be unstable
                         final BlockPos posSide = pos.relative(side), posSideBelow = posSide.below();
-                        if (TFCFallingBlockEntity.canFallThrough(level, posSide, side, fallingState) && TFCFallingBlockEntity.canFallThrough(level, posSideBelow, Direction.DOWN))
+                        if (TFCFallingBlockEntity.canFallThrough(level, posSide, side, fallingState) &&
+                            TFCFallingBlockEntity.canFallThrough(level, posSideBelow, Direction.DOWN))
                         {
                             possibleDirections.add(posSide);
                         }
@@ -149,10 +165,21 @@ public class LandslideRecipe extends BlockRecipe
         return sideState.isFaceSturdy(world, sidePos, side.getOpposite()) || Helpers.isBlock(sideState, TFCTags.Blocks.SUPPORTS_LANDSLIDE);
     }
 
-    public LandslideRecipe(BlockIngredient ingredient, Optional<BlockState> output)
+    public LandslideRecipe(BlockIngredient ingredient, BlockState output)
+    {
+        super(ingredient, Optional.of(output));
+    }
+
+    LandslideRecipe(BlockIngredient ingredient, Optional<BlockState> output)
     {
         super(ingredient, output);
     }
+
+    LandslideRecipe()
+    {
+        super(BlockIngredient.of(TFCTags.Blocks.CAN_LANDSLIDE), Optional.empty());
+    }
+
 
     @Override
     public RecipeSerializer<?> getSerializer()

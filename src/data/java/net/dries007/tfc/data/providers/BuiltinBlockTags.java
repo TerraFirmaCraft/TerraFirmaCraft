@@ -16,6 +16,7 @@ import net.minecraft.tags.TagBuilder;
 import net.minecraft.tags.TagEntry;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.data.ExistingFileHelper.ResourceType;
@@ -25,10 +26,10 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Rock;
+import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.data.Accessors;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.registry.IdHolder;
-import net.dries007.tfc.util.registry.RegistryHolder;
 
 import static net.dries007.tfc.common.TFCTags.Blocks.*;
 
@@ -58,15 +59,36 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
 
         // ===== TFC Tags ===== //
         tag(LAMPS).add(pivot(TFCBlocks.METALS, Metal.BlockType.LAMP));
+
         tag(CAN_TRIGGER_COLLAPSE).addTags(Tags.Blocks.ORES, Tags.Blocks.STONES);
         tag(CAN_START_COLLAPSE).addTags(Tags.Blocks.ORES, TFCTags.Blocks.STONES_RAW);
         tag(CAN_COLLAPSE).addTags(Tags.Blocks.ORES, Tags.Blocks.STONES, STONES_SMOOTH, STONES_SPIKE);
+
+        tag(CAN_LANDSLIDE)
+            .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.COBBLE)
+            .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.MOSSY_COBBLE)
+            .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.GRAVEL)
+            .add(TFCBlocks.SAND)
+            .addAll(TFCBlocks.ORE_DEPOSITS)
+            .add(
+                TFCBlocks.WHITE_KAOLIN_CLAY,
+                TFCBlocks.PINK_KAOLIN_CLAY,
+                TFCBlocks.RED_KAOLIN_CLAY
+            );
+        tag(SUPPORTS_LANDSLIDE).addTags(FARMLANDS, PATHS);
+        tag(NOT_SOLID_SUPPORTING).addTags(STONES_SMOOTH);
+        tag(TOUGHNESS_1).add(TFCBlocks.CHARCOAL_PILE, TFCBlocks.CHARCOAL_FORGE);
+        tag(TOUGHNESS_2).addTag(STONES);
+        tag(TOUGHNESS_3).add(Blocks.BEDROCK);
 
         tag(STONES).addTags(STONES_RAW, STONES_HARDENED);
         tag(STONES_RAW).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.RAW);
         tag(STONES_HARDENED).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.HARDENED);
         tag(STONES_SMOOTH).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.SMOOTH);
         tag(STONES_SPIKE).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.SPIKE);
+
+        tag(FARMLANDS).add(Blocks.FARMLAND).add(TFCBlocks.SOIL.get(SoilBlockType.FARMLAND));
+        tag(PATHS).add(Blocks.DIRT_PATH).add(TFCBlocks.SOIL.get(SoilBlockType.GRASS_PATH));
     }
 
     @Override
@@ -99,9 +121,10 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         }
 
         BlockTagAppender add(Block... blocks) { return add(Arrays.stream(blocks)); }
-        BlockTagAppender add(TFCBlocks.Id<?>... blocks) { return add(Arrays.stream(blocks).map(RegistryHolder::get)); }
-        BlockTagAppender add(Stream<Block> blocks) { blocks.forEach(item -> add(key(item))); return this; }
-        BlockTagAppender add(Map<?, ? extends IdHolder<? extends Block>> blocks) { return add(blocks.values().stream().map(IdHolder::get)); }
+        BlockTagAppender add(Stream<Block> blocks) { blocks.forEach(b -> add(key(b))); return this; }
+        @SafeVarargs final <T extends IdHolder<? extends Block>> BlockTagAppender add(T... blocks) { return add(Arrays.stream(blocks).map(IdHolder::get)); }
+        BlockTagAppender add(Map<?, ? extends IdHolder<? extends Block>> blocks) { blocks.values().forEach(this::add); return this; }
+        BlockTagAppender addAll(Map<?, ? extends Map<?, ? extends IdHolder<? extends Block>>> blocks) { blocks.values().forEach(m -> m.values().forEach(this::add)); return this; }
         <T1, T2, V extends IdHolder<? extends Block>> BlockTagAppender add(Map<T1, Map<T2, V>> blocks, T2 key) { return add(pivot(blocks, key)); }
 
         @Override @SafeVarargs public final BlockTagAppender addTags(TagKey<Block>... values) { return (BlockTagAppender) super.addTags(values); }

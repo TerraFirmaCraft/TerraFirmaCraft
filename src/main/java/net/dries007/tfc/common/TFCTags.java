@@ -18,18 +18,14 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.common.Tags;
 
+import net.dries007.tfc.common.recipes.CollapseRecipe;
+import net.dries007.tfc.common.recipes.LandslideRecipe;
 import net.dries007.tfc.util.Helpers;
 
 public class TFCTags
 {
     public static class Blocks
     {
-        public static final TagKey<Block> CAN_LANDSLIDE = tag("can_landslide");
-        public static final TagKey<Block> SUPPORTS_LANDSLIDE = tag("supports_landslide"); // Non-full blocks that count as full blocks for the purposes of landslide side support check
-        public static final TagKey<Block> NOT_SOLID_SUPPORTING = tag("not_solid_supporting"); // Blocks that don't count as supporting the block above for the purposes of collapse start checks
-        public static final TagKey<Block> TOUGHNESS_1 = tag("toughness_1"); // Tags for toughness of materials w.r.t falling blocks
-        public static final TagKey<Block> TOUGHNESS_2 = tag("toughness_2"); // Tags for toughness of materials w.r.t falling blocks
-        public static final TagKey<Block> TOUGHNESS_3 = tag("toughness_3"); // Tags for toughness of materials w.r.t falling blocks
         public static final TagKey<Block> GRASS = tag("grass"); // Used for connected textures on grass blocks, different from the vanilla/forge tag
         public static final TagKey<Block> TREE_GROWS_ON = tag("tree_grows_on"); // Used for tree growth
         public static final TagKey<Block> SPREADING_FRUIT_GROWS_ON = tag("spreading_fruit_grows_on"); // pumpkins and melons will grow here
@@ -104,15 +100,33 @@ public class TFCTags
         // ===== Data Generated ===== //
         public static final TagKey<Block> LAMPS = tag("lamps");
 
+        /** If the block can trigger collapses to start nearby when mined */
         public static final TagKey<Block> CAN_TRIGGER_COLLAPSE = tag("can_trigger_collapse");
+        /** If the block can form the epicenter of a collapse */
         public static final TagKey<Block> CAN_START_COLLAPSE = tag("can_start_collapse");
+        /** If the block can collapse, by default turning into itself. Do not check this, use {@link CollapseRecipe#canCollapse} */
         public static final TagKey<Block> CAN_COLLAPSE = tag("can_collapse");
+
+        /** If the block can landslide, by default turning into itself. Do not check this, use {@link LandslideRecipe#canLandslide} */
+        public static final TagKey<Block> CAN_LANDSLIDE = tag("can_landslide");
+
+        /** Non-full blocks that count as full blocks for the purposes of landslide side support check */
+        public static final TagKey<Block> SUPPORTS_LANDSLIDE = tag("supports_landslide");
+        /** Blocks that don't count as supporting the block above for the purposes of collapse start checks */
+        public static final TagKey<Block> NOT_SOLID_SUPPORTING = tag("not_solid_supporting");
+        /** Tags for toughness of materials w.r.t falling blocks */
+        public static final TagKey<Block> TOUGHNESS_1 = tag("toughness_1");
+        public static final TagKey<Block> TOUGHNESS_2 = tag("toughness_2");
+        public static final TagKey<Block> TOUGHNESS_3 = tag("toughness_3");
 
         public static final TagKey<Block> STONES = Tags.Blocks.STONES; // Includes raw + hardened
         public static final TagKey<Block> STONES_RAW = commonTag("stones/raw");
         public static final TagKey<Block> STONES_HARDENED = commonTag("stones/hardened");
         public static final TagKey<Block> STONES_SMOOTH = commonTag("stones/smooth");
         public static final TagKey<Block> STONES_SPIKE = commonTag("stones/spike");
+
+        public static final TagKey<Block> FARMLANDS = commonTag("farmlands");
+        public static final TagKey<Block> PATHS = commonTag("paths");
 
         private static TagKey<Block> tag(String name)
         {

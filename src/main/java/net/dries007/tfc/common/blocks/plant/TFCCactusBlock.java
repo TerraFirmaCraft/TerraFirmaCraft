@@ -46,6 +46,7 @@ public abstract class TFCCactusBlock extends TFCTallGrassBlock
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         final BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();

@@ -175,12 +175,15 @@ public final class WorldTracker
         {
             for (Collapse collapse : collapsesInProgress)
             {
-                Set<BlockPos> updatedPositions = new HashSet<>();
+                final Set<BlockPos> updatedPositions = new HashSet<>();
                 for (BlockPos posAt : collapse.nextPositions)
                 {
                     // Check the current position for collapsing
-                    BlockState stateAt = level.getBlockState(posAt);
-                    if (Helpers.isBlock(stateAt, TFCTags.Blocks.CAN_COLLAPSE) && TFCFallingBlockEntity.canFallInDirection(level, posAt, Direction.DOWN) && posAt.distSqr(collapse.centerPos) < collapse.radiusSquared && random.nextFloat() < TFCConfig.SERVER.collapsePropagateChance.get())
+                    final BlockState stateAt = level.getBlockState(posAt);
+                    if (CollapseRecipe.canCollapse(stateAt) &&
+                        TFCFallingBlockEntity.canFallInDirection(level, posAt, Direction.DOWN) &&
+                        posAt.distSqr(collapse.centerPos) < collapse.radiusSquared &&
+                        random.nextFloat() < TFCConfig.SERVER.collapsePropagateChance.get())
                     {
                         if (CollapseRecipe.collapseBlock(level, posAt, stateAt))
                         {

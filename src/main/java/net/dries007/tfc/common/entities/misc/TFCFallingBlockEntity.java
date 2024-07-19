@@ -29,6 +29,7 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.rock.IFallableBlock;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.common.recipes.LandslideRecipe;
 import net.dries007.tfc.mixin.accessor.FallingBlockEntityAccessor;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.tracker.WorldTracker;
@@ -269,7 +270,7 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
             fallingBlock.onLand(this.level(), posAt, fallingBlockState, hitBlockState, this);
         }
 
-        if (Helpers.isBlock(fallingBlockState.getBlock(), TFCTags.Blocks.CAN_LANDSLIDE))
+        if (LandslideRecipe.canLandslide(fallingBlockState))
         {
             WorldTracker.get(level()).addLandslidePos(posAt);
         }

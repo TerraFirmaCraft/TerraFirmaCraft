@@ -11,10 +11,8 @@ import java.util.List;
 import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
@@ -49,10 +47,30 @@ public class CollapseRecipe extends BlockRecipe
 {
     public static final IndirectHashCollection<Block, CollapseRecipe> CACHE = IndirectHashCollection.createForRecipe(recipe -> recipe.getBlockIngredient().blocks(), TFCRecipeTypes.COLLAPSE);
 
+    /**
+     * This is the fallback recipe, which defines default behavior (no result) for any block in the {@link TFCTags.Blocks#CAN_COLLAPSE} tag. We
+     * do this for multiple reasons.
+     * <p>
+     * Firstly, it reduces the number of default recipes we have to provide, or reduces the need for additional recipes that are added for blocks
+     * that only need to signal they exist in the above tag. Secondly, it allows us to rely on this "fallback" mechanism, without the duplication
+     * of data that not having a fallback requires. The {@link TFCTags.Blocks#CAN_COLLAPSE} tag thus is always thus a subset of collapsible blocks,
+     * and we don't need to have a validation mechanism that the tag, and the inputs to recipes, are synced.
+     */
+    private static final CollapseRecipe FALLBACK = new CollapseRecipe();
+
+    /**
+     * @return {@code true} if this block is collapsible, by virtue of having a recipe, or being defined in the fallback tag.
+     */
+    public static boolean canCollapse(BlockState input)
+    {
+        return getRecipe(input) != null;
+    }
+
     @Nullable
     public static CollapseRecipe getRecipe(BlockState input)
     {
-        return RecipeHelpers.getRecipe(CACHE, input, input.getBlock());
+        final @Nullable CollapseRecipe recipe = RecipeHelpers.getRecipe(CACHE, input, input.getBlock());
+        return recipe == null && FALLBACK.matches(input) ? FALLBACK : recipe;
     }
 
     /**
@@ -147,6 +165,7 @@ public class CollapseRecipe extends BlockRecipe
         final int radius = TFCConfig.SERVER.collapseMinRadius.get() + random.nextInt(TFCConfig.SERVER.collapseRadiusVariance.get());
         final int radiusSquared = radius * radius;
         final List<BlockPos> secondaryPositions = new ArrayList<>();
+        final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
 
         TerraFirmaCraft.LOGGER.info("Collapse started at pos {}, with the block column {} -> (start: {}) -> {}",
             centerPos,
@@ -160,14 +179,15 @@ public class CollapseRecipe extends BlockRecipe
             boolean foundEmpty = false; // If we've found a space to collapse into
             for (int y = 0; y <= 8; y++)
             {
-                BlockPos posAt = pos.above(y);
-                BlockState stateAt = level.getBlockState(posAt);
-                if (foundEmpty && Helpers.isBlock(stateAt, TFCTags.Blocks.CAN_COLLAPSE))
+                final BlockPos posAt = cursor.setWithOffset(pos, 0, y, 0);
+                final BlockState stateAt = level.getBlockState(posAt);
+                if (foundEmpty && canCollapse(stateAt))
                 {
                     // Check for a possible collapse
                     if (posAt.distSqr(centerPos) < radiusSquared && random.nextFloat() < TFCConfig.SERVER.collapsePropagateChance.get())
                     {
-                        if (collapseBlock(level, posAt, stateAt, true)) // Trigger destruction, since our previous check only was 'non-full-blocks'
+                        // Trigger destruction, since our previous check only was 'non-full-blocks'
+                        if (collapseBlock(level, posAt, stateAt, true))
                         {
                             // This column has started to collapse. Mark the next block above as unstable for the "follow up"
                             secondaryPositions.add(posAt.above());
@@ -219,9 +239,19 @@ public class CollapseRecipe extends BlockRecipe
         return false;
     }
 
-    public CollapseRecipe(BlockIngredient ingredient, Optional<BlockState> output)
+    public CollapseRecipe(BlockIngredient ingredient, BlockState output)
+    {
+        super(ingredient, Optional.of(output));
+    }
+
+    CollapseRecipe(BlockIngredient ingredient, Optional<BlockState> output)
     {
         super(ingredient, output);
+    }
+
+    CollapseRecipe()
+    {
+        super(BlockIngredient.of(TFCTags.Blocks.CAN_COLLAPSE), Optional.empty());
     }
 
     @Override

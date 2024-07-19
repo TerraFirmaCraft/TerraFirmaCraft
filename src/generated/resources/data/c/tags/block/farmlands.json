@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:farmland",
+    "tfc:farmland/silt",
+    "tfc:farmland/loam",
+    "tfc:farmland/sandy_loam",
+    "tfc:farmland/silty_loam"
+  ]
+}

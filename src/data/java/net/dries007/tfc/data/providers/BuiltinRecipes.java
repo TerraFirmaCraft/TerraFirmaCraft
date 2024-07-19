@@ -1,7 +1,6 @@
 package net.dries007.tfc.data.providers;
 
 import java.util.Locale;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 import net.minecraft.core.HolderLookup;
@@ -9,7 +8,6 @@ import net.minecraft.data.CachedOutput;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
@@ -31,7 +29,6 @@ import net.dries007.tfc.common.recipes.BloomeryRecipe;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.common.recipes.LandslideRecipe;
 import net.dries007.tfc.common.recipes.LoomRecipe;
-import net.dries007.tfc.common.recipes.QuernRecipe;
 import net.dries007.tfc.common.recipes.ScrapingRecipe;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
@@ -146,7 +143,6 @@ public final class BuiltinRecipes extends RecipeProvider implements
 
         // Collapse Recipes
         TFCBlocks.ROCK_BLOCKS.forEach((rock, blocks) -> {
-            add(new CollapseRecipe(BlockIngredient.of(blocks.get(Rock.BlockType.SPIKE).get()), Optional.empty()));
             add(new CollapseRecipe(BlockIngredient.of(Stream.of(
                 blocks.get(Rock.BlockType.RAW).get(),
                 blocks.get(Rock.BlockType.HARDENED).get(),
@@ -158,26 +154,18 @@ public final class BuiltinRecipes extends RecipeProvider implements
                 TFCBlocks.ORES.get(rock).values()
                     .stream()
                     .map(RegistryHolder::get)
-            ).<Block>flatMap(Helpers::flatten)), Optional.of(blocks.get(Rock.BlockType.COBBLE).get().defaultBlockState())));
+            ).<Block>flatMap(Helpers::flatten)), blocks.get(Rock.BlockType.COBBLE).get().defaultBlockState()));
             TFCBlocks.GRADED_ORES.get(rock).forEach((ore, oreBlocks) -> {
                 add(new CollapseRecipe(
                     BlockIngredient.of(oreBlocks.get(Ore.Grade.RICH).get()),
-                    Optional.of(oreBlocks.get(Ore.Grade.NORMAL).get().defaultBlockState())));
+                    oreBlocks.get(Ore.Grade.NORMAL).get().defaultBlockState()));
                 add(new CollapseRecipe(
                     BlockIngredient.of(oreBlocks.get(Ore.Grade.NORMAL).get()),
-                    Optional.of(oreBlocks.get(Ore.Grade.POOR).get().defaultBlockState())));
+                    oreBlocks.get(Ore.Grade.POOR).get().defaultBlockState()));
             });
         });
 
         // Landslide Recipes
-        TFCBlocks.ROCK_BLOCKS.forEach((rock, blocks) ->
-            Stream.of(Rock.BlockType.COBBLE, Rock.BlockType.MOSSY_COBBLE, Rock.BlockType.GRAVEL).forEach(type -> add(
-                new LandslideRecipe(BlockIngredient.of(blocks.get(type).get()), Optional.empty()))));
-        TFCBlocks.SAND.values().forEach(block -> add(
-            new LandslideRecipe(BlockIngredient.of(block.get()), Optional.empty())));
-        TFCBlocks.ORE_DEPOSITS.values().forEach(map -> map.values().forEach(block -> add(
-            new LandslideRecipe(BlockIngredient.of(block.get()), Optional.empty()))));
-
         for (SoilBlockType.Variant type : SoilBlockType.Variant.values())
         {
             final var blocks = pivot(TFCBlocks.SOIL, type);
@@ -185,24 +173,18 @@ public final class BuiltinRecipes extends RecipeProvider implements
             add(new LandslideRecipe(BlockIngredient.of(
                 blocks.get(SoilBlockType.CLAY).get(),
                 blocks.get(SoilBlockType.CLAY_GRASS).get()
-            ), Optional.of(blocks.get(SoilBlockType.CLAY).get().defaultBlockState())));
+            ), blocks.get(SoilBlockType.CLAY).get().defaultBlockState()));
             add(new LandslideRecipe(BlockIngredient.of(
                 blocks.get(SoilBlockType.DIRT).get(),
                 blocks.get(SoilBlockType.GRASS).get(),
                 blocks.get(SoilBlockType.GRASS_PATH).get(),
                 blocks.get(SoilBlockType.FARMLAND).get(),
                 blocks.get(SoilBlockType.ROOTED_DIRT).get()
-            ), Optional.of(blocks.get(SoilBlockType.DIRT).get().defaultBlockState())));
+            ), blocks.get(SoilBlockType.DIRT).get().defaultBlockState()));
             add(new LandslideRecipe(BlockIngredient.of(
                 blocks.get(SoilBlockType.MUD).get()
-            ), Optional.of(blocks.get(SoilBlockType.MUD).get().defaultBlockState())));
+            ), blocks.get(SoilBlockType.MUD).get().defaultBlockState()));
         }
-
-        Stream.of(
-            TFCBlocks.WHITE_KAOLIN_CLAY,
-            TFCBlocks.PINK_KAOLIN_CLAY,
-            TFCBlocks.RED_KAOLIN_CLAY
-        ).forEach(block -> add(new LandslideRecipe(BlockIngredient.of(block.get()), Optional.empty())));
     }
 
     @Override

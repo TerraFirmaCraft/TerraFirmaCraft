@@ -159,8 +159,6 @@ public final class SelfTests
         throwIfAny(
             validateFoodsAreFoods(),
             validateJugDrinkable(),
-            validateCollapseRecipeTags(manager),
-            validateLandslideRecipeTags(manager),
             validateMetalTagsAreCorrect(FluidHeat::ingots, TFCTags.Items.PILEABLE_INGOTS),
             validateMetalTagsAreCorrect(FluidHeat::doubleIngots, TFCTags.Items.PILEABLE_DOUBLE_INGOTS),
             validateMetalTagsAreCorrect(FluidHeat::sheets, TFCTags.Items.PILEABLE_SHEETS),
@@ -452,26 +450,6 @@ public final class SelfTests
             .toList();
 
         return logWarnings("{} fluids were in the tfc:usable_in_jug tag but lack a Drinkable json entry", errors, LOGGER);
-    }
-
-    private static boolean validateCollapseRecipeTags(RecipeManager manager)
-    {
-        final List<Block> errors = manager.getAllRecipesFor(TFCRecipeTypes.COLLAPSE.get()).stream()
-            .flatMap(recipe -> recipe.value().getBlockIngredient().all())
-            .filter(block -> !Helpers.isBlock(block, TFCTags.Blocks.CAN_COLLAPSE))
-            .toList();
-
-        return logErrors("{} blocks were defined in a collapse recipe but lack the tfc:can_collapse tag", errors, LOGGER);
-    }
-
-    private static boolean validateLandslideRecipeTags(RecipeManager manager)
-    {
-        final List<Block> errors = manager.getAllRecipesFor(TFCRecipeTypes.LANDSLIDE.get()).stream()
-            .flatMap(recipe -> recipe.value().getBlockIngredient().all())
-            .filter(block -> !Helpers.isBlock(block, TFCTags.Blocks.CAN_LANDSLIDE))
-            .toList();
-
-        return logErrors("{} blocks were defined in a landslide recipe but lack the tfc:can_landslide tag", errors, LOGGER);
     }
 
     private static boolean validateMetalTagsAreCorrect(Function<FluidHeat, Optional<Ingredient>> metalItemType, TagKey<Item> containingTag)

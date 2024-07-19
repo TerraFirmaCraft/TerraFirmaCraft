@@ -168,6 +168,7 @@ import net.dries007.tfc.common.items.TFCShieldItem;
 import net.dries007.tfc.common.player.IPlayerInfo;
 import net.dries007.tfc.common.player.PlayerInfo;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
+import net.dries007.tfc.common.recipes.LandslideRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.RecipeManagerAccessor;
 import net.dries007.tfc.network.DataManagerSyncPacket;
@@ -468,7 +469,7 @@ public final class ForgeEventHandler
             final BlockPos pos = event.getPos();
             final BlockState state = event.getState();
 
-            if (Helpers.isBlock(state, TFCTags.Blocks.CAN_LANDSLIDE))
+            if (LandslideRecipe.canLandslide(state))
             {
                 WorldTracker.get(world).addLandslidePos(pos);
             }
@@ -500,7 +501,7 @@ public final class ForgeEventHandler
                 final BlockPos pos = event.getPos().relative(direction);
                 final BlockState state = level.getBlockState(pos);
 
-                if (Helpers.isBlock(state, TFCTags.Blocks.CAN_LANDSLIDE))
+                if (LandslideRecipe.canLandslide(state))
                 {
                     WorldTracker.get(level).addLandslidePos(pos);
                 }

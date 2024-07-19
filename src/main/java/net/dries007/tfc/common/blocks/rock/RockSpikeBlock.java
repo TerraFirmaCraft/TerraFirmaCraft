@@ -31,7 +31,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
-import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
@@ -175,7 +174,7 @@ public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBl
         }
 
         // No support, so either collapse, or break
-        if (Helpers.isBlock(this, TFCTags.Blocks.CAN_COLLAPSE) && CollapseRecipe.collapseBlock(level, pos, state))
+        if (CollapseRecipe.collapseBlock(level, pos, state))
         {
             // Additionally, run a tick on the block below, on the exact same tick.
             // This ensures the whole spike collapses at the same time, rather than the upper parts destroying the bottom parts.
