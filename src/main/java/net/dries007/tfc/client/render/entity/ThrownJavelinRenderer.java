@@ -34,7 +34,10 @@ public class ThrownJavelinRenderer extends EntityRenderer<ThrownJavelin>
     public static final ResourceLocation DEFAULT_TEXTURE = Helpers.identifier("textures/entity/projectiles/stone_javelin.png");
     public static final Map<Item, ResourceLocation> JAVELIN_TEXTURES = Util.make(new HashMap<>(), map -> {
         TFCItems.ROCK_TOOLS.forEach((k, v) -> map.put(v.get(RockCategory.ItemType.JAVELIN).get(), Helpers.identifier("textures/entity/projectiles/stone_javelin.png")));
-        TFCItems.METAL_ITEMS.forEach((k, v) -> map.put(v.get(Metal.ItemType.JAVELIN).get(), Helpers.identifier("textures/entity/projectiles/" + k.getSerializedName() + "_javelin.png")));
+        TFCItems.METAL_ITEMS.entrySet()
+            .stream()
+            .filter(e -> e.getValue().containsKey(Metal.ItemType.JAVELIN))
+            .forEach(e -> map.put(e.getValue().get(Metal.ItemType.JAVELIN).get(), Helpers.identifier("textures/entity/projectiles/" + e.getKey().getSerializedName() + "_javelin.png")));
     });
 
     private final JavelinModel model;

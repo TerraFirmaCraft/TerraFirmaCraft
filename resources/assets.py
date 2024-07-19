@@ -2254,7 +2254,8 @@ def contained_fluid(rm: ResourceManager, name_parts: utils.ResourceIdentifier, b
         'textures': {
             'base': base,
             'fluid': overlay
-        }
+        },
+        'fluid': 'minecraft:water'  # todo 1.21: why does the default require this, we probably want to switch away from it anyway?
     })
 
 def trim_model(rm: ResourceManager, name_parts: utils.ResourceIdentifier, base: str, trim: str, overlay: str = None) -> 'ItemContext':

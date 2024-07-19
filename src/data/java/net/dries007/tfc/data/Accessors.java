@@ -128,6 +128,11 @@ public interface Accessors
         return hours * ICalendar.TICKS_IN_HOUR;
     }
 
+    /**
+     * Given a {@code Map<T1, Map<T2, V1>>}, and a key {@code T2}, constructs a map of all the mappings of {@code T1} to maps which contain
+     * an entry for the given key {@code T2}
+     * @return An immutable map, with iteration order given by iteration order of the input map
+     */
     default <T1, T2, V> Map<T1, V> pivot(Map<T1, Map<T2, V>> map, T2 key)
     {
         // This method must maintain a consistent, deterministic ordering, so we can't collect into a typical
