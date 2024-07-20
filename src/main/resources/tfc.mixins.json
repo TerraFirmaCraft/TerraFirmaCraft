@@ -44,7 +44,6 @@
     "accessor.HorseAccessor",
     "accessor.OcelotAccessor",
     "accessor.PatchedDataComponentMapAccessor",
-    "accessor.PlayerAccessor",
     "accessor.RecipeManagerAccessor",
     "accessor.StructureTemplateAccessor"
   ],

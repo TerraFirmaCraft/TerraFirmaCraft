@@ -16,7 +16,7 @@ import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 
-import net.dries007.tfc.common.capabilities.food.Nutrient;
+import net.dries007.tfc.common.component.food.Nutrient;
 import net.dries007.tfc.common.player.IPlayerInfo;
 import net.dries007.tfc.util.Helpers;
 

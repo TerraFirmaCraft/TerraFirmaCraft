@@ -34,7 +34,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.capabilities.food.FoodData;
+import net.dries007.tfc.common.component.food.FoodData;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.player.IPlayerInfo;
 import net.dries007.tfc.common.player.PlayerInfo;

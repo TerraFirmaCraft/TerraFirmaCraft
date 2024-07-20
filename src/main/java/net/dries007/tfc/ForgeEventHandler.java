@@ -152,15 +152,15 @@ import net.dries007.tfc.common.blocks.rock.AqueductBlock;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockAnvilBlock;
 import net.dries007.tfc.common.blocks.wood.TFCLecternBlock;
-import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.common.capabilities.heat.HeatCapability;
-import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.commands.TFCCommands;
 import net.dries007.tfc.common.component.Bowl;
 import net.dries007.tfc.common.component.ItemStackComponent;
 import net.dries007.tfc.common.component.TFCComponents;
+import net.dries007.tfc.common.component.food.FoodCapability;
 import net.dries007.tfc.common.component.forge.ForgingBonus;
 import net.dries007.tfc.common.component.glass.GlassWorking;
+import net.dries007.tfc.common.component.heat.HeatCapability;
+import net.dries007.tfc.common.component.heat.IHeat;
 import net.dries007.tfc.common.container.BlockEntityContainer;
 import net.dries007.tfc.common.container.Container;
 import net.dries007.tfc.common.container.PestContainer;
@@ -1248,7 +1248,6 @@ public final class ForgeEventHandler
     {
         if (player instanceof ServerPlayer serverPlayer)
         {
-            IPlayerInfo.setupForPlayer(serverPlayer);
             WorldTracker.get(serverPlayer.serverLevel()).syncTo(serverPlayer);
 
             final ClimateModel model = Climate.model(serverPlayer.level());

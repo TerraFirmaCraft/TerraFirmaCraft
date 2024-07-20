@@ -23,13 +23,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.common.capabilities.food.FoodData;
-import net.dries007.tfc.common.capabilities.food.IFood;
-import net.dries007.tfc.common.capabilities.food.Nutrient;
-import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.component.IngredientsComponent;
 import net.dries007.tfc.common.component.TFCComponents;
+import net.dries007.tfc.common.component.food.FoodCapability;
+import net.dries007.tfc.common.component.food.FoodData;
+import net.dries007.tfc.common.component.food.IFood;
+import net.dries007.tfc.common.component.food.Nutrient;
+import net.dries007.tfc.common.component.heat.HeatCapability;
 import net.dries007.tfc.common.recipes.RecipeHelpers;
 
 public record MealModifier(FoodData baseFood, List<MealPortion> portions) implements ItemStackModifier
@@ -85,7 +85,7 @@ public record MealModifier(FoodData baseFood, List<MealPortion> portions) implem
                     final ItemStack tooltipItem = item.copyWithCount(1);
 
                     // Clear any transient data that doesn't display, so we don't create weird stackability issues
-                    FoodCapability.setNeverExpires(tooltipItem);
+                    FoodCapability.setNonDecaying(tooltipItem);
                     HeatCapability.setTemperature(tooltipItem, 0);
 
                     itemIngredients.add(tooltipItem);

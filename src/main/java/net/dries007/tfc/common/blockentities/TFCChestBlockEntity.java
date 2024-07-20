@@ -19,7 +19,7 @@ import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.InventoryWrapper;
-import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
+import net.dries007.tfc.common.component.size.ItemSizeManager;
 import net.dries007.tfc.common.container.ISlotCallback;
 import net.dries007.tfc.common.container.PestContainer;
 import net.dries007.tfc.common.container.RestrictedChestContainer;

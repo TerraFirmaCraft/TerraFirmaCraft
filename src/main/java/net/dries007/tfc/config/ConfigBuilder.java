@@ -68,6 +68,7 @@ public class ConfigBuilder
 
     public BooleanValue define(String path, boolean value) { return begin(path).define(path, value); }
     public IntValue define(String path, int value, int min, int max) { return begin(path).defineInRange(path, value, min, max); }
+    public ConfigValue<Integer> define(String path, int value) { return begin(path).define(path, value); }
     public DoubleValue define(String path, double value, double min, double max) { return begin(path).defineInRange(path, value, min, max); }
     public ConfigValue<String> define(String path, String value) { return begin(path).define(path, value); }
     public <E extends Enum<E>> EnumValue<E> define(String path, E value) { return begin(path).defineEnum(path, value); }

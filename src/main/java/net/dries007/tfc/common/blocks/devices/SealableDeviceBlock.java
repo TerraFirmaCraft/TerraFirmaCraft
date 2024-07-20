@@ -32,9 +32,9 @@ import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TooltipBlock;
-import net.dries007.tfc.common.capabilities.size.IItemSize;
-import net.dries007.tfc.common.capabilities.size.Size;
-import net.dries007.tfc.common.capabilities.size.Weight;
+import net.dries007.tfc.common.component.size.IItemSize;
+import net.dries007.tfc.common.component.size.Size;
+import net.dries007.tfc.common.component.size.Weight;
 
 public class SealableDeviceBlock extends DeviceBlock implements IItemSize, TooltipBlock
 {

@@ -23,7 +23,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
 import net.dries007.tfc.common.capabilities.MoldLike;
-import net.dries007.tfc.common.capabilities.heat.Heat;
+import net.dries007.tfc.common.component.heat.Heat;
 import net.dries007.tfc.common.container.CrucibleContainer;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.PourFasterPacket;

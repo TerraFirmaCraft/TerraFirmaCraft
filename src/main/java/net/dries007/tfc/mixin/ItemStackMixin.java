@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.dries007.tfc.client.BarSystem;
-import net.dries007.tfc.common.component.ItemStackBridge;
+import net.dries007.tfc.common.component.ItemStackHooks;
 import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.component.forge.ForgingBonus;
 
@@ -33,7 +33,7 @@ public abstract class ItemStackMixin
     @Inject(method = "<init>(Lnet/minecraft/world/level/ItemLike;ILnet/minecraft/core/component/PatchedDataComponentMap;)V", at = @At("TAIL"))
     private void modifyItemStackOnConstructing(CallbackInfo ci)
     {
-        ItemStackBridge.onModifyItemStackComponents((ItemStack) (Object) this);
+        ItemStackHooks.onModifyItemStackComponents((ItemStack) (Object) this);
     }
 
     /**
@@ -44,7 +44,7 @@ public abstract class ItemStackMixin
     @Redirect(method = "copy", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/component/PatchedDataComponentMap;copy()Lnet/minecraft/core/component/PatchedDataComponentMap;"))
     private PatchedDataComponentMap modifyItemCopyToUpdateComponents(PatchedDataComponentMap map)
     {
-        return ItemStackBridge.onCopyItemStackComponents((ItemStack) (Object) this, map);
+        return ItemStackHooks.onCopyItemStackComponents((ItemStack) (Object) this, map);
     }
 
     /**

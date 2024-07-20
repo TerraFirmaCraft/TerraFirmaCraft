@@ -32,6 +32,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.component.EggComponent;
 import net.dries007.tfc.common.component.TFCComponents;
+import net.dries007.tfc.common.component.food.FoodCapability;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.Pluckable;
 import net.dries007.tfc.common.entities.ai.livestock.LivestockAi;
@@ -232,6 +233,7 @@ public abstract class OviparousAnimal extends ProducingAnimal implements Pluckab
                 baby.setBirthDay(Calendars.SERVER.getTotalDays());
                 baby.setFamiliarity(getFamiliarity() < 0.9F ? getFamiliarity() / 2.0F : getFamiliarity() * 0.9F);
                 stack.set(TFCComponents.EGG, EggComponent.of(baby, Calendars.SERVER.getTotalDays() + hatchDays.get()));
+                FoodCapability.setInvisibleNonDecaying(stack);
             }
         }
         AnimalProductEvent event = new AnimalProductEvent(level(), blockPosition(), null, this, stack, ItemStack.EMPTY, 1);

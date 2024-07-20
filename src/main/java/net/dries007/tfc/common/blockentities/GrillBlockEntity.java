@@ -18,10 +18,10 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.PartialItemHandler;
-import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.common.capabilities.food.FoodTraits;
-import net.dries007.tfc.common.capabilities.heat.HeatCapability;
-import net.dries007.tfc.common.capabilities.heat.IHeat;
+import net.dries007.tfc.common.component.food.FoodCapability;
+import net.dries007.tfc.common.component.food.FoodTraits;
+import net.dries007.tfc.common.component.heat.HeatCapability;
+import net.dries007.tfc.common.component.heat.IHeat;
 import net.dries007.tfc.common.container.GrillContainer;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.config.TFCConfig;
@@ -91,7 +91,6 @@ public class GrillBlockEntity extends AbstractFirepitBlockEntity<ItemStackHandle
                 {
                     ItemStack output = recipe.assembleItem(inputStack);
                     FoodCapability.applyTrait(output, FoodTraits.WOOD_GRILLED.value());
-                    FoodCapability.updateFoodDecayOnCreate(output);
                     inventory.setStackInSlot(slot, output);
                     markForSync();
                 }

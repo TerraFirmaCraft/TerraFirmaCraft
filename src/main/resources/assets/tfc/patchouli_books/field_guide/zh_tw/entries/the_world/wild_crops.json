@@ -441,13 +441,13 @@
           "text": "150 - 410"
         },
         {
-          "text": "Melon"
+          "text": "Potato"
         },
         {
-          "text": "  5 - 37"
+          "text": " -1 - 37"
         },
         {
-          "text": "200 - 500"
+          "text": "200 - 410"
         }
       ],
       "text": "",
@@ -479,24 +479,6 @@
         {
           "text": "Rainfall (mm)",
           "bold": true
-        },
-        {
-          "text": "Potato"
-        },
-        {
-          "text": " -1 - 37"
-        },
-        {
-          "text": "200 - 410"
-        },
-        {
-          "text": "Pumpkin"
-        },
-        {
-          "text": "  0 - 30"
-        },
-        {
-          "text": "120 - 390"
         },
         {
           "text": "Onion"
@@ -560,6 +542,24 @@
         },
         {
           "text": "310 - 500"
+        },
+        {
+          "text": "Pumpkin"
+        },
+        {
+          "text": "  0 - 30"
+        },
+        {
+          "text": "120 - 390"
+        },
+        {
+          "text": "Melon"
+        },
+        {
+          "text": "  5 - 37"
+        },
+        {
+          "text": "200 - 500"
         },
         {
           "text": "Red Bell Pepper"

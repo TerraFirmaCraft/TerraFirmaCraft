@@ -6,18 +6,14 @@
 
 package net.dries007.tfc.common.player;
 
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.network.PacketDistributor;
 
-import net.dries007.tfc.common.capabilities.food.FoodData;
-import net.dries007.tfc.common.capabilities.food.IFood;
-import net.dries007.tfc.common.capabilities.food.NutritionData;
+import net.dries007.tfc.common.component.food.FoodData;
+import net.dries007.tfc.common.component.food.IFood;
+import net.dries007.tfc.common.component.food.NutritionData;
 import net.dries007.tfc.common.recipes.ChiselRecipe;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.mixin.accessor.PlayerAccessor;
-import net.dries007.tfc.network.FoodDataReplacePacket;
 import net.dries007.tfc.network.PlayerInfoPacket;
 
 public interface IPlayerInfo
@@ -30,19 +26,7 @@ public interface IPlayerInfo
      */
     static IPlayerInfo get(Player player)
     {
-        return (IPlayerInfo) player.getFoodData();
-    }
-
-    static void setupForPlayer(Player player)
-    {
-        if (!(player.getFoodData() instanceof IPlayerInfo))
-        {
-            ((PlayerAccessor) player).accessor$setFoodData(new PlayerInfo(player));
-        }
-        if (player instanceof ServerPlayer serverPlayer)
-        {
-            PacketDistributor.sendToPlayer(serverPlayer, FoodDataReplacePacket.PACKET);
-        }
+        return ((PlayerBridge) player).tfc$getPlayerInfo();
     }
 
     static void copyOnDeath(Player oldPlayer, Player newPlayer)

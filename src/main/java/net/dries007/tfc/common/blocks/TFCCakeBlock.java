@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 
-import net.dries007.tfc.common.capabilities.food.FoodData;
+import net.dries007.tfc.common.component.food.FoodData;
 import net.dries007.tfc.common.items.CandleBlockItem;
 import net.dries007.tfc.common.player.IPlayerInfo;
 

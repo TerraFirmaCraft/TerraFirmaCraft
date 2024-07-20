@@ -8,7 +8,7 @@ package net.dries007.tfc.common.recipes.outputs;
 
 import net.minecraft.world.item.ItemStack;
 
-import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.common.component.food.FoodCapability;
 
 public enum ResetFoodModifier implements ItemStackModifier
 {
@@ -17,7 +17,7 @@ public enum ResetFoodModifier implements ItemStackModifier
     @Override
     public ItemStack apply(ItemStack stack, ItemStack input, Context context)
     {
-        return FoodCapability.updateFoodDecayOnCreate(stack);
+        return FoodCapability.setCreatedNow(stack);
     }
 
     @Override

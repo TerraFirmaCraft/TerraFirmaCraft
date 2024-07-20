@@ -34,11 +34,8 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.DelegateFluidHandler;
-import net.dries007.tfc.common.capabilities.DelegateHeatHandler;
 import net.dries007.tfc.common.capabilities.MoldLike;
-import net.dries007.tfc.common.capabilities.heat.HeatCapability;
-import net.dries007.tfc.common.capabilities.heat.HeatHandler;
-import net.dries007.tfc.common.capabilities.heat.IHeat;
+import net.dries007.tfc.common.component.heat.HeatCapability;
 import net.dries007.tfc.common.container.TFCContainerProviders;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.CastingRecipe;
@@ -214,11 +211,10 @@ public class MoldItem extends Item
     }
 
     // todo 1.21, item stack capability/component implementations!
-    static class MoldCapability implements MoldLike, DelegateHeatHandler, DelegateFluidHandler
+    static class MoldCapability implements MoldLike, DelegateFluidHandler
     {
         private final ItemStack stack;
 
-        private final HeatHandler heat;
         private final FluidTank tank;
         private final int capacity;
 
@@ -228,15 +224,12 @@ public class MoldItem extends Item
         {
             this.stack = stack;
 
-            this.heat = new HeatHandler(1, 0, 0);
             this.tank = new FluidTank(capacity, fluid -> FluidHeat.get(fluid.getFluid()) != null && Helpers.isFluid(fluid.getFluid(), fluidTag));
             this.capacity = capacity;
         }
 
-        @Override
         public void addTooltipInfo(ItemStack stack, List<Component> text)
         {
-            heat.addTooltipInfo(stack, text);
             final FluidStack fluid = tank.getFluid();
             if (!fluid.isEmpty())
             {
@@ -310,18 +303,13 @@ public class MoldItem extends Item
         }
 
         @Override
-        public IHeat getHeatHandler()
-        {
-            return heat;
-        }
-
-        @Override
         public boolean isMolten()
         {
             final FluidHeat metal = getContainedMetal();
             if (metal != null)
             {
-                return getTemperature() >= metal.meltTemperature();
+                // todo 1.21
+                return true;//getTemperature() >= metal.meltTemperature();
             }
             return false;
         }
@@ -343,8 +331,6 @@ public class MoldItem extends Item
                 // Non-empty mold, so add the heat capacity of the vessel with the heat capacity of the content
                 value += metal.heatCapacity(fluid.getAmount());
             }
-
-            heat.setHeatCapacity(value);
         }
     }
 }

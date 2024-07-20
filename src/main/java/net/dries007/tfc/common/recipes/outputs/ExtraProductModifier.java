@@ -14,7 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.common.component.food.FoodCapability;
 import net.dries007.tfc.common.recipes.RecipeHelpers;
 
 public record ExtraProductModifier(ItemStack stack) implements ItemStackModifier
@@ -24,7 +24,7 @@ public record ExtraProductModifier(ItemStack stack) implements ItemStackModifier
 
     public static ExtraProductModifier of(ItemStack stack)
     {
-        return new ExtraProductModifier(FoodCapability.setNonDecaying(stack));
+        return new ExtraProductModifier(FoodCapability.setTransientNonDecaying(stack));
     }
 
     @Override

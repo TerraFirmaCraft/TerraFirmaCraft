@@ -24,7 +24,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.material.Fluid;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.capabilities.heat.IHeat;
+import net.dries007.tfc.common.component.heat.IHeat;
 import net.dries007.tfc.network.StreamCodecs;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.Codecs;

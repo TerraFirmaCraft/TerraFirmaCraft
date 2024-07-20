@@ -29,6 +29,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
@@ -78,16 +79,16 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.SluiceBlockEntity;
 import net.dries007.tfc.common.blocks.devices.SluiceBlock;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
-import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.common.capabilities.heat.HeatCapability;
-import net.dries007.tfc.common.capabilities.heat.IHeat;
-import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.component.EggComponent;
 import net.dries007.tfc.common.component.IngredientsComponent;
 import net.dries007.tfc.common.component.TFCComponents;
+import net.dries007.tfc.common.component.food.FoodCapability;
 import net.dries007.tfc.common.component.forge.ForgingBonus;
 import net.dries007.tfc.common.component.forge.ForgingCapability;
 import net.dries007.tfc.common.component.glass.GlassWorking;
+import net.dries007.tfc.common.component.heat.HeatCapability;
+import net.dries007.tfc.common.component.heat.IHeat;
+import net.dries007.tfc.common.component.size.ItemSizeManager;
 import net.dries007.tfc.common.items.EmptyPanItem;
 import net.dries007.tfc.common.items.PanItem;
 import net.dries007.tfc.common.recipes.ChiselRecipe;
@@ -343,17 +344,16 @@ public class ClientForgeEventHandler
                         text.add(Component.literal(DARK_GRAY + "[Debug] Components:"));
                         first = false;
                     }
-                    // todo 1.21 this encoding can fail? why? (armor trims)
-                    component.encodeValue(NbtOps.INSTANCE).ifSuccess(tag -> {
-                        text.add(Component.literal(DARK_GRAY
-                            + typeOfComponent(stack.getComponentsPatch().get(component.type()))
-                            + BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(component.type())
-                            + " "
-                            + component.value()
-                            + " = "
-                            + tag));
-                    });
-
+                    text.add(Component.literal(DARK_GRAY
+                        + typeOfComponent(stack.getComponentsPatch().get(component.type()))
+                        + BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(component.type())
+                        + " "
+                        + component.value()
+                        + " = "
+                        + component.encodeValue(RegistryOps.create(NbtOps.INSTANCE, Minecraft.getInstance().level.registryAccess()))
+                            .result()
+                            .map(Object::toString)
+                            .orElse("???")));
                 }
 
                 final String itemTags = listOfTags(stack.getItem().builtInRegistryHolder());

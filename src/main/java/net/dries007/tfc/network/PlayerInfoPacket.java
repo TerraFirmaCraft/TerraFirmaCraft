@@ -13,7 +13,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
 
 import net.dries007.tfc.client.ClientHelpers;
-import net.dries007.tfc.common.capabilities.food.FoodData;
+import net.dries007.tfc.common.component.food.FoodData;
 import net.dries007.tfc.common.player.IPlayerInfo;
 import net.dries007.tfc.common.recipes.ChiselRecipe;
 

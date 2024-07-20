@@ -9,7 +9,7 @@ import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.capabilities.food.FoodData;
+import net.dries007.tfc.common.component.food.FoodData;
 import net.dries007.tfc.common.effect.TFCEffects;
 import net.dries007.tfc.common.fluids.SimpleFluid;
 import net.dries007.tfc.common.fluids.TFCFluids;

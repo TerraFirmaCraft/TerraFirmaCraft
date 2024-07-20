@@ -13,7 +13,7 @@ import net.minecraft.world.entity.player.Inventory;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.GrillBlockEntity;
-import net.dries007.tfc.common.capabilities.heat.Heat;
+import net.dries007.tfc.common.component.heat.Heat;
 import net.dries007.tfc.common.container.GrillContainer;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;

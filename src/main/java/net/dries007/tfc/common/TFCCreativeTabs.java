@@ -42,7 +42,7 @@ import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
-import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.common.component.food.FoodCapability;
 import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.HideItemType;
 import net.dries007.tfc.common.items.TFCItems;
@@ -76,9 +76,9 @@ public final class TFCCreativeTabs
     {
         // todo 1.21, verify that this works properly (event priority first, then mod order). Needs an addon lol
         // Otherwise, re-add the mixin from 1.20
-        FoodCapability.setNonDecaying(event.getTab().getIconItem());
-        event.getParentEntries().forEach(FoodCapability::setNonDecaying);
-        event.getParentEntries().forEach(FoodCapability::setNonDecaying);
+        FoodCapability.setTransientNonDecaying(event.getTab().getIconItem());
+        event.getParentEntries().forEach(FoodCapability::setTransientNonDecaying);
+        event.getParentEntries().forEach(FoodCapability::setTransientNonDecaying);
     }
 
     private static void fillEarthTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output out)

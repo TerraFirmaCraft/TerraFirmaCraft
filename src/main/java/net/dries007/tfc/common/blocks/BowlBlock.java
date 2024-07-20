@@ -26,9 +26,9 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.BowlBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.devices.DeviceBlock;
-import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.common.capabilities.food.FoodTraits;
-import net.dries007.tfc.common.capabilities.food.IFood;
+import net.dries007.tfc.common.component.food.FoodCapability;
+import net.dries007.tfc.common.component.food.FoodTraits;
+import net.dries007.tfc.common.component.food.IFood;
 import net.dries007.tfc.common.component.glass.GlassOperation;
 import net.dries007.tfc.common.component.glass.GlassOperations;
 import net.dries007.tfc.common.component.glass.GlassWorking;
@@ -93,7 +93,7 @@ public class BowlBlock extends DeviceBlock
             if (Helpers.isItem(held, TFCTags.Items.CAN_BE_SALTED) && Helpers.isItem(current, TFCItems.POWDERS.get(Powder.SALT).get()))
             {
                 final @Nullable IFood food = FoodCapability.get(held);
-                if (food != null && !food.hasTrait(FoodTraits.SALTED.value()))
+                if (food != null && !food.hasTrait(FoodTraits.SALTED))
                 {
                     final int toSalt = Math.min(held.getCount(), current.getCount());
                     final ItemStack salted = held.split(toSalt);

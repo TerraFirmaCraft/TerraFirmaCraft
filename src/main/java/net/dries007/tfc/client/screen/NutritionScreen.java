@@ -17,8 +17,8 @@ import net.neoforged.neoforge.network.PacketDistributor;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
-import net.dries007.tfc.common.capabilities.food.Nutrient;
-import net.dries007.tfc.common.capabilities.food.NutritionData;
+import net.dries007.tfc.common.component.food.Nutrient;
+import net.dries007.tfc.common.component.food.NutritionData;
 import net.dries007.tfc.common.container.Container;
 import net.dries007.tfc.common.player.IPlayerInfo;
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;

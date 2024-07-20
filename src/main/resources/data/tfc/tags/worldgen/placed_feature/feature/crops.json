@@ -13,9 +13,7 @@
     "tfc:plant/wild_crop/carrot_patch",
     "tfc:plant/wild_crop/garlic_patch",
     "tfc:plant/wild_crop/green_bean_patch",
-    "tfc:plant/wild_crop/melon_patch",
     "tfc:plant/wild_crop/potato_patch",
-    "tfc:plant/wild_crop/pumpkin_patch",
     "tfc:plant/wild_crop/onion_patch",
     "tfc:plant/wild_crop/soybean_patch",
     "tfc:plant/wild_crop/squash_patch",
@@ -23,6 +21,8 @@
     "tfc:plant/wild_crop/tomato_patch",
     "tfc:plant/wild_crop/jute_patch",
     "tfc:plant/wild_crop/papyrus_patch",
+    "tfc:plant/wild_crop/pumpkin_patch",
+    "tfc:plant/wild_crop/melon_patch",
     "tfc:plant/wild_crop/red_bell_pepper_patch",
     "tfc:plant/wild_crop/yellow_bell_pepper_patch"
   ]

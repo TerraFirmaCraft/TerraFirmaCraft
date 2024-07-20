@@ -20,8 +20,8 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
 import net.dries007.tfc.common.capabilities.MoldLike;
-import net.dries007.tfc.common.capabilities.heat.HeatCapability;
-import net.dries007.tfc.common.capabilities.heat.IHeat;
+import net.dries007.tfc.common.component.heat.HeatCapability;
+import net.dries007.tfc.common.component.heat.IHeat;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.data.FluidHeat;
 

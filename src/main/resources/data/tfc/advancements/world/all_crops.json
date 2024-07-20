@@ -134,18 +134,6 @@
         ]
       }
     },
-    "melon": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "tfc:seeds/melon"
-            ]
-          }
-        ]
-      }
-    },
     "potato": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
@@ -153,18 +141,6 @@
           {
             "items": [
               "tfc:seeds/potato"
-            ]
-          }
-        ]
-      }
-    },
-    "pumpkin": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "tfc:seeds/pumpkin"
             ]
           }
         ]
@@ -254,6 +230,30 @@
         ]
       }
     },
+    "pumpkin": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:seeds/pumpkin"
+            ]
+          }
+        ]
+      }
+    },
+    "melon": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:seeds/melon"
+            ]
+          }
+        ]
+      }
+    },
     "red_bell_pepper": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
@@ -330,13 +330,7 @@
       "green_bean"
     ],
     [
-      "melon"
-    ],
-    [
       "potato"
-    ],
-    [
-      "pumpkin"
     ],
     [
       "onion"
@@ -358,6 +352,12 @@
     ],
     [
       "papyrus"
+    ],
+    [
+      "pumpkin"
+    ],
+    [
+      "melon"
     ],
     [
       "red_bell_pepper"

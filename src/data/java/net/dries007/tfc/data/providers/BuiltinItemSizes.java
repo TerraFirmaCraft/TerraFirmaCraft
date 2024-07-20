@@ -14,10 +14,10 @@ import net.neoforged.neoforge.common.crafting.CompoundIngredient;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.capabilities.size.ItemSizeDefinition;
-import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
-import net.dries007.tfc.common.capabilities.size.Size;
-import net.dries007.tfc.common.capabilities.size.Weight;
+import net.dries007.tfc.common.component.size.ItemSizeDefinition;
+import net.dries007.tfc.common.component.size.ItemSizeManager;
+import net.dries007.tfc.common.component.size.Size;
+import net.dries007.tfc.common.component.size.Weight;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.data.Accessors;
 

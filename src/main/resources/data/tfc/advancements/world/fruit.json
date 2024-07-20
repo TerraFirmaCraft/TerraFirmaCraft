@@ -42,6 +42,16 @@
         }
       }
     },
+    "snowberry": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": [
+            "tfc:food/snowberry"
+          ]
+        }
+      }
+    },
     "bunchberry": {
       "trigger": "minecraft:consume_item",
       "conditions": {
@@ -58,16 +68,6 @@
         "item": {
           "items": [
             "tfc:food/gooseberry"
-          ]
-        }
-      }
-    },
-    "snowberry": {
-      "trigger": "minecraft:consume_item",
-      "conditions": {
-        "item": {
-          "items": [
-            "tfc:food/snowberry"
           ]
         }
       }
@@ -233,13 +233,13 @@
       "elderberry"
     ],
     [
+      "snowberry"
+    ],
+    [
       "bunchberry"
     ],
     [
       "gooseberry"
-    ],
-    [
-      "snowberry"
     ],
     [
       "cloudberry"

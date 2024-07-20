@@ -45,7 +45,7 @@ import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
-import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.common.component.food.FoodCapability;
 import net.dries007.tfc.common.entities.Temptable;
 import net.dries007.tfc.common.entities.ai.amphibian.AmphibianAi;
 import net.dries007.tfc.common.entities.prey.WildAnimal;

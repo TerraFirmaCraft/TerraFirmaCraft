@@ -19,9 +19,9 @@ import net.minecraft.world.food.FoodProperties;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 import net.dries007.tfc.common.TFCDamageTypes;
-import net.dries007.tfc.common.capabilities.food.FoodData;
-import net.dries007.tfc.common.capabilities.food.IFood;
-import net.dries007.tfc.common.capabilities.food.NutritionData;
+import net.dries007.tfc.common.component.food.FoodData;
+import net.dries007.tfc.common.component.food.IFood;
+import net.dries007.tfc.common.component.food.NutritionData;
 import net.dries007.tfc.common.recipes.ChiselRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.PlayerInfoPacket;
@@ -71,7 +71,7 @@ public final class PlayerInfo extends net.minecraft.world.food.FoodData implemen
 
     private boolean modified = false;
 
-    PlayerInfo(Player player)
+    public PlayerInfo(Player player)
     {
         this.player = player;
         this.food = player.getFoodData(); // This must be the original food data, we replace it after the player info is created

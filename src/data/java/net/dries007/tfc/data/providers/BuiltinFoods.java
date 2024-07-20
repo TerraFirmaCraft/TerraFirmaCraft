@@ -11,14 +11,14 @@ import net.minecraft.world.level.ItemLike;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.common.capabilities.food.FoodData;
-import net.dries007.tfc.common.capabilities.food.FoodDefinition;
+import net.dries007.tfc.common.component.food.FoodCapability;
+import net.dries007.tfc.common.component.food.FoodData;
+import net.dries007.tfc.common.component.food.FoodDefinition;
 import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.data.Accessors;
 
-import static net.dries007.tfc.common.capabilities.food.FoodData.*;
+import static net.dries007.tfc.common.component.food.FoodData.*;
 
 public class BuiltinFoods extends DataManagerProvider<FoodDefinition> implements Accessors
 {

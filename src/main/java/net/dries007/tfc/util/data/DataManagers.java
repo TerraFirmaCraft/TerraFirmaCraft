@@ -12,9 +12,9 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.RegistryBuilder;
 
 import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.common.capabilities.heat.HeatCapability;
-import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
+import net.dries007.tfc.common.component.food.FoodCapability;
+import net.dries007.tfc.common.component.heat.HeatCapability;
+import net.dries007.tfc.common.component.size.ItemSizeManager;
 import net.dries007.tfc.common.entities.Fauna;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.ClimateRange;

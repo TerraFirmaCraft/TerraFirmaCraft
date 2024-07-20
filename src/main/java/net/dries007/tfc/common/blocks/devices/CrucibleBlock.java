@@ -24,9 +24,9 @@ import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TooltipBlock;
-import net.dries007.tfc.common.capabilities.size.IItemSize;
-import net.dries007.tfc.common.capabilities.size.Size;
-import net.dries007.tfc.common.capabilities.size.Weight;
+import net.dries007.tfc.common.component.size.IItemSize;
+import net.dries007.tfc.common.component.size.Size;
+import net.dries007.tfc.common.component.size.Weight;
 import net.dries007.tfc.util.Helpers;
 
 public class CrucibleBlock extends DeviceBlock implements EntityBlockExtension, IItemSize, TooltipBlock

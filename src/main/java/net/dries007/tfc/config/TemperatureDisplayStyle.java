@@ -7,11 +7,10 @@
 package net.dries007.tfc.config;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.network.chat.MutableComponent;
-
-import net.dries007.tfc.common.capabilities.heat.Heat;
+import net.dries007.tfc.common.component.heat.Heat;
 
 public enum TemperatureDisplayStyle
 {

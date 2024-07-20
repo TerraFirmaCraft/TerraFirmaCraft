@@ -31,16 +31,16 @@ import org.slf4j.Logger;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.TFCTiers;
-import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.common.capabilities.food.FoodComponent;
-import net.dries007.tfc.common.capabilities.food.FoodDefinition;
-import net.dries007.tfc.common.capabilities.heat.HeatCapability;
-import net.dries007.tfc.common.capabilities.heat.HeatComponent;
-import net.dries007.tfc.common.capabilities.heat.HeatDefinition;
-import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
+import net.dries007.tfc.common.component.food.FoodCapability;
+import net.dries007.tfc.common.component.food.FoodComponent;
+import net.dries007.tfc.common.component.food.FoodDefinition;
 import net.dries007.tfc.common.component.forge.ForgingBonus;
 import net.dries007.tfc.common.component.forge.ForgingComponent;
 import net.dries007.tfc.common.component.glass.GlassOperations;
+import net.dries007.tfc.common.component.heat.HeatCapability;
+import net.dries007.tfc.common.component.heat.HeatComponent;
+import net.dries007.tfc.common.component.heat.HeatDefinition;
+import net.dries007.tfc.common.component.size.ItemSizeManager;
 import net.dries007.tfc.mixin.accessor.PatchedDataComponentMapAccessor;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.registry.RegistryHolder;
@@ -104,7 +104,7 @@ public final class TFCComponents
      */
     public static void onModifyDefaultComponentsAfterResourceReload()
     {
-        ItemStackBridge.ENABLED = true;
+        ItemStackHooks.ENABLED = true;
 
         int count = 0;
 

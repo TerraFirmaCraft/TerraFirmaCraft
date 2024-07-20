@@ -11,8 +11,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.capabilities.heat.HeatCapability;
-import net.dries007.tfc.common.capabilities.heat.IHeat;
+import net.dries007.tfc.common.component.heat.HeatCapability;
 import net.dries007.tfc.common.recipes.input.NonEmptyInput;
 
 /**
@@ -22,7 +21,7 @@ import net.dries007.tfc.common.recipes.input.NonEmptyInput;
  *
  * Also extends {@link NonEmptyInput} in order to easily use it as a recipe query container.
  */
-public interface MoldLike extends IFluidHandlerItem, IHeat, NonEmptyInput
+public interface MoldLike extends IFluidHandlerItem, NonEmptyInput
 {
     @Nullable
     static MoldLike get(ItemStack stack)

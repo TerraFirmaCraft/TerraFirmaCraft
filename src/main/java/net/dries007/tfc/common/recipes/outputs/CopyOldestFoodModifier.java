@@ -9,7 +9,7 @@ package net.dries007.tfc.common.recipes.outputs;
 import com.google.common.collect.Lists;
 import net.minecraft.world.item.ItemStack;
 
-import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.common.component.food.FoodCapability;
 import net.dries007.tfc.common.recipes.RecipeHelpers;
 
 public enum CopyOldestFoodModifier implements ItemStackModifier

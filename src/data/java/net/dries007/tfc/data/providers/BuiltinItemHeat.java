@@ -20,8 +20,8 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.blocks.rock.Ore;
-import net.dries007.tfc.common.capabilities.heat.HeatCapability;
-import net.dries007.tfc.common.capabilities.heat.HeatDefinition;
+import net.dries007.tfc.common.component.heat.HeatCapability;
+import net.dries007.tfc.common.component.heat.HeatDefinition;
 import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.Powder;
 import net.dries007.tfc.common.items.TFCItems;
@@ -103,11 +103,13 @@ public class BuiltinItemHeat extends DataManagerProvider<HeatDefinition> impleme
         add(TFCItems.KAOLIN_CLAY, 2.0f);
         add(CompoundIngredient.of(
             Ingredient.of(Items.TERRACOTTA),
+            Ingredient.of(Items.WHITE_TERRACOTTA),
             Ingredient.of(TFCTags.Items.COLORED_TERRACOTTA)
         ), 0.5f);
         add(TFCTags.Items.DOUGH, 1.0f);
         add(TFCTags.Items.BREAD, 1.0f);
         add(TFCTags.Items.MEATS, 1.0f);
+        add(TFCTags.Items.FISH, 1.0f);
         add(Ingredient.of(
             TFCItems.FOOD.get(Food.FRESH_SEAWEED),
             TFCItems.FOOD.get(Food.DRIED_SEAWEED),

@@ -12,8 +12,7 @@ import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.capabilities.heat.HeatCapability;
-import net.dries007.tfc.common.capabilities.heat.IHeat;
+import net.dries007.tfc.common.component.heat.HeatCapability;
 import net.dries007.tfc.common.container.ISlotCallback;
 import net.dries007.tfc.common.recipes.input.NonEmptyInput;
 
@@ -22,7 +21,7 @@ import net.dries007.tfc.common.recipes.input.NonEmptyInput;
  * - They have both fluid, and item inventories.
  * - They can be heated, in both states, and can contain either items, or alloys.
  */
-public interface VesselLike extends MoldLike, IItemHandlerModifiable, IFluidHandlerItem, IHeat, NonEmptyInput, ISlotCallback
+public interface VesselLike extends MoldLike, IItemHandlerModifiable, IFluidHandlerItem, NonEmptyInput, ISlotCallback
 {
     @Nullable
     static VesselLike get(ItemStack stack)

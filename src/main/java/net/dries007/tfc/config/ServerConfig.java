@@ -14,7 +14,7 @@ import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 
 import net.dries007.tfc.common.blocks.plant.fruit.FruitBlocks;
 import net.dries007.tfc.common.blocks.wood.Wood;
-import net.dries007.tfc.common.capabilities.size.Size;
+import net.dries007.tfc.common.component.size.Size;
 import net.dries007.tfc.config.animals.MammalConfig;
 import net.dries007.tfc.config.animals.OviparousAnimalConfig;
 import net.dries007.tfc.config.animals.ProducingMammalConfig;
@@ -462,7 +462,7 @@ public class ServerConfig extends BaseConfig
 
         charcoalForgeEnableAutomation = builder.comment("If true, charcoal forges will interact with in-world automation such as hoppers on a side-specific basis.").define("charcoalForgeEnableAutomation", true);
 
-        builder.swap("firePitEnableAutomation");
+        builder.swap("firepit");
 
         firePitEnableAutomation = builder.comment("If true, fire pits will interact with in-world automation such as hoppers on a side-specific basis.").define("firePitEnableAutomation", true);
 
@@ -694,11 +694,11 @@ public class ServerConfig extends BaseConfig
 
         builder.swap("quail");
         quailConfig = OviparousAnimalConfig.build(builder, "quail", 0.35, 22, 48, true, 28000, 0.15, 8);
-        builder.pop(3);
+        builder.pop(2);
 
         familiarityDecayLimit = builder.comment("Familiarity value above which familiarity no longer will decay. Default is 0.3, or 30%. Setting it to 0 will cause familiarity to never decay.").define("familiarityDecayLimit", 0.3, 0.0, 1.0);
 
-        builder.push("weird");
+        builder.swap("weird");
         farmlandMakesTheBestRaceTracks = builder.define("farmlandMakesTheBestRaceTracks", false);
         builder.pop();
     }

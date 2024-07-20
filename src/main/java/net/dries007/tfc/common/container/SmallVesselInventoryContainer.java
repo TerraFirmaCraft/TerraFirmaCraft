@@ -13,8 +13,8 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.VesselLike;
-import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.common.capabilities.food.FoodTraits;
+import net.dries007.tfc.common.component.food.FoodCapability;
+import net.dries007.tfc.common.component.food.FoodTraits;
 import net.dries007.tfc.common.items.VesselItem;
 
 public class SmallVesselInventoryContainer extends ItemStackContainer

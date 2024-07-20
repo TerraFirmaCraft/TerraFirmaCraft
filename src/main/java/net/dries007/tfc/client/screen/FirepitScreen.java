@@ -13,7 +13,7 @@ import net.minecraft.world.entity.player.Inventory;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.FirepitBlockEntity;
-import net.dries007.tfc.common.capabilities.heat.Heat;
+import net.dries007.tfc.common.component.heat.Heat;
 import net.dries007.tfc.common.container.FirepitContainer;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;

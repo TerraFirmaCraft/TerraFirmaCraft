@@ -27,17 +27,15 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.capabilities.DelegateHeatHandler;
 import net.dries007.tfc.common.capabilities.DelegateItemHandler;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
 import net.dries007.tfc.common.capabilities.SimpleFluidHandler;
 import net.dries007.tfc.common.capabilities.VesselLike;
-import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.common.capabilities.food.FoodTraits;
-import net.dries007.tfc.common.capabilities.heat.HeatCapability;
-import net.dries007.tfc.common.capabilities.heat.HeatHandler;
-import net.dries007.tfc.common.capabilities.heat.IHeat;
-import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
+import net.dries007.tfc.common.component.food.FoodCapability;
+import net.dries007.tfc.common.component.food.FoodTraits;
+import net.dries007.tfc.common.component.heat.HeatCapability;
+import net.dries007.tfc.common.component.heat.IHeat;
+import net.dries007.tfc.common.component.size.ItemSizeManager;
 import net.dries007.tfc.common.container.TFCContainerProviders;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.config.TFCConfig;
@@ -51,8 +49,8 @@ public class VesselItem extends Item
     @Nullable
     public static VesselLike getInventoryVessel(ItemStack stack)
     {
-        final VesselLike vessel = VesselLike.get(stack);
-        return vessel != null && vessel.mode() == VesselLike.Mode.INVENTORY && vessel.getTemperature() == 0f ? vessel : null;
+        final VesselLike vessel = VesselLike.get(stack); // todo 1.21
+        return vessel != null && vessel.mode() == VesselLike.Mode.INVENTORY /*&& vessel.getTemperature() == 0f*/ ? vessel : null;
     }
 
     public static final int SLOTS = 4;
@@ -152,6 +150,8 @@ public class VesselItem extends Item
             {
                 if (vessel.mode() == VesselLike.Mode.INVENTORY)
                 {
+                    // todo: 1.21
+                    /*
                     if (vessel.getTemperature() > 0)
                     {
                         player.displayClientMessage(Component.translatable("tfc.tooltip.small_vessel.inventory_too_hot"), true);
@@ -159,7 +159,7 @@ public class VesselItem extends Item
                     else
                     {
                         TFCContainerProviders.SMALL_VESSEL.openScreen(serverPlayer, hand);
-                    }
+                    }*/
                 }
                 else if (vessel.mode() == VesselLike.Mode.MOLTEN_ALLOY)
                 {
@@ -195,13 +195,12 @@ public class VesselItem extends Item
     }
 
     // todo: components and capabilities for vessels
-    static class VesselCapability implements VesselLike, DelegateItemHandler, DelegateHeatHandler, SimpleFluidHandler
+    static class VesselCapability implements VesselLike, DelegateItemHandler, SimpleFluidHandler
     {
         private final ItemStack stack;
 
         private final ItemStackHandler inventory;
         private final FluidAlloy alloy;
-        private final HeatHandler heat; // Since we cannot heat individual items (no tick() method), we only use a heat value for the container
         private final int capacity;
 
         private final HeatingRecipe[] cachedRecipes; // Recipes for each of the four slots in the inventory
@@ -215,23 +214,8 @@ public class VesselItem extends Item
             this.inventory = new InventoryItemHandler(this, SLOTS);
             this.capacity = Helpers.getValueOrDefault(TFCConfig.SERVER.smallVesselCapacity);
             this.alloy = new FluidAlloy(capacity);
-            this.heat = new HeatHandler(1, 0, 0)
-            {
-                @Override
-                public void setTemperature(float temperature)
-                {
-                    super.setTemperature(temperature);
-                    updateInventoryMelting();
-                }
-            };
 
             this.cachedRecipes = new HeatingRecipe[SLOTS];
-        }
-
-        @Override
-        public IHeat getHeatHandler()
-        {
-            return heat;
         }
 
         @Override
@@ -273,7 +257,7 @@ public class VesselItem extends Item
                 // The alloy result here is cached internally, and the temperature should be quick (since it queries the alloy heat handler)
                 final FluidStack result = alloy.getResult();
                 final @Nullable FluidHeat metal = FluidHeat.get(result.getFluid());
-                return metal == null || getTemperature() >= metal.meltTemperature() ? Mode.MOLTEN_ALLOY : Mode.SOLID_ALLOY;
+                return metal == null /*|| getTemperature() >= metal.meltTemperature()*/ ? Mode.MOLTEN_ALLOY : Mode.SOLID_ALLOY;
             }
         }
 
@@ -283,10 +267,10 @@ public class VesselItem extends Item
             return ItemSizeManager.get(stack).getSize(stack).isEqualOrSmallerThan(TFCConfig.SERVER.smallVesselMaximumItemSize.get());
         }
 
-        @Override
+        //@Override
         public void addTooltipInfo(ItemStack stack, List<Component> text)
         {
-            heat.addTooltipInfo(stack, text);
+            //heat.addTooltipInfo(stack, text);
             if (!Helpers.isEmpty(inventory) || !alloy.isEmpty()) // Only show the 'contents' label if we actually have contents
             {
 
@@ -424,7 +408,7 @@ public class VesselItem extends Item
                 if (cachedRecipes[i] != null)
                 {
                     final HeatingRecipe recipe = cachedRecipes[i];
-                    if (recipe.isValidTemperature(heat.getTemperature()))
+                    if (recipe.isValidTemperature(0f)); // todo: 1.21 heat.getTemperature()))
                     {
                         // Melt item, add the contents to the alloy. Excess solids are placed into the inventory, more than can fit is voided.
                         final ItemStack outputStack = recipe.assembleStacked(stack, getSlotStackLimit(i));
@@ -483,7 +467,7 @@ public class VesselItem extends Item
                 value += 0f;//alloy.getHeatCapacity(0.7f);
             }
 
-            heat.setHeatCapacity(value);
+            //heat.setHeatCapacity(value);
         }
     }
 }

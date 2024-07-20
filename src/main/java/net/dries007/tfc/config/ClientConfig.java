@@ -35,7 +35,7 @@ public class ClientConfig extends BaseConfig
     public final IntValue effectHorizontalAdjustment;
     public final EnumValue<HealthDisplayStyle> healthDisplayStyle;
     public final EnumValue<FoodExpiryTooltipStyle> foodExpiryTooltipStyle;
-    public final IntValue foodExpiryOverlayColor;
+    public final ConfigValue<Integer> foodExpiryOverlayColor;
     public final EnumValue<TemperatureDisplayStyle> heatTooltipStyle;
     public final EnumValue<TemperatureDisplayStyle> climateTooltipStyle;
     public final EnumValue<TimeDeltaTooltipStyle> timeDeltaTooltipStyle;
@@ -91,7 +91,9 @@ public class ClientConfig extends BaseConfig
             "  TIME_LEFT - e.g. 'Expires in about 3 day(s)",
             "  BOTH - Shows both of the above, e.g. Expires on June 3, 05:00 (in about 3 day(s))."
         ).define("foodExpiryTooltipStyle", FoodExpiryTooltipStyle.BOTH);
-        foodExpiryOverlayColor = builder.comment("The overlay color to indicate rotten foods, in ARGB. Default = 0xFF88CC33").define("foodExpiryOverlayColor", 0xFF88CC33, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        foodExpiryOverlayColor = builder
+            .comment("The overlay color to indicate rotten foods, in ARGB. Default = 0xFF88CC33")
+            .define("foodExpiryOverlayColor", 0xFF88CC33);
 
         final var temperatureDisplayStyle = new String[] {
             "  COLOR = Approximate, color based tooltips (like Very Hot**, Brilliant White)",
