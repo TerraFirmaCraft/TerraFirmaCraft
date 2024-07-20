@@ -1,8 +1,9 @@
 package net.dries007.tfc.data.providers;
 
-import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
@@ -18,15 +19,15 @@ public abstract class DataManagerProvider<T> implements DataProvider
 {
     private final DataManager<T> manager;
     private final CompletableFuture<HolderLookup.Provider> lookup;
-    private final Map<ResourceLocation, T> elements;
+    private final ImmutableMap.Builder<ResourceLocation, T> elements;
     private final PackOutput.PathProvider path;
-    private final CompletableFuture<Void> contentDone;
+    protected final CompletableFuture<Map<ResourceLocation, T>> contentDone;
 
     protected DataManagerProvider(DataManager<T> manager, PackOutput output, CompletableFuture<HolderLookup.Provider> lookup)
     {
         this.manager = manager;
         this.lookup = lookup;
-        this.elements = new HashMap<>();
+        this.elements = ImmutableMap.builder();
         this.path = output.createPathProvider(PackOutput.Target.DATA_PACK, TerraFirmaCraft.MOD_ID + "/" + manager.getName());
         this.contentDone = new CompletableFuture<>();
     }
@@ -36,17 +37,18 @@ public abstract class DataManagerProvider<T> implements DataProvider
     {
         return beforeRun().thenCompose(provider -> {
             addData(provider);
-            contentDone.complete(null);
-            return CompletableFuture.allOf(elements.entrySet()
+            final Map<ResourceLocation, T> map = elements.buildOrThrow();
+            contentDone.complete(map);
+            return CompletableFuture.allOf(map.entrySet()
                 .stream()
                 .map(e -> DataProvider.saveStable(output, provider, manager.codec(), e.getValue(), path.json(e.getKey())))
                 .toArray(CompletableFuture[]::new));
         });
     }
 
-    public final DataAccessor<T> output()
+    public DataAccessor<T> output()
     {
-        return new DataAccessor<>(contentDone.thenApply(v -> elements));
+        return new DataAccessor.Future<>(contentDone);
     }
 
     @Override
@@ -57,12 +59,12 @@ public abstract class DataManagerProvider<T> implements DataProvider
 
     protected final void add(String name, T value)
     {
-        if (elements.put(Helpers.identifier(name), value) != null) throw new IllegalStateException("Duplicate registration of " + name);
+        elements.put(Helpers.identifier(name.toLowerCase(Locale.ROOT)), value);
     }
 
     protected final void add(DataManager.Reference<T> reference, T value)
     {
-        if (elements.put(reference.id(), value) != null) throw new IllegalStateException("Duplicate registration of " + reference.id());
+        elements.put(reference.id(), value);
     }
 
     protected CompletableFuture<HolderLookup.Provider> beforeRun()

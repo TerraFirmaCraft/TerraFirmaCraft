@@ -1,0 +1,19 @@
+{
+  "forging_temperature": 252.00002,
+  "heat_capacity": 1.9047621,
+  "ingredient": [
+    {
+      "item": "tfc:ore/small_sphalerite"
+    },
+    {
+      "item": "tfc:ore/poor_sphalerite"
+    },
+    {
+      "item": "tfc:ore/normal_sphalerite"
+    },
+    {
+      "item": "tfc:ore/rich_sphalerite"
+    }
+  ],
+  "welding_temperature": 336.0
+}

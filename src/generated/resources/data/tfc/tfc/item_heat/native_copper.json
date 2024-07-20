@@ -1,0 +1,19 @@
+{
+  "forging_temperature": 648.0,
+  "heat_capacity": 1.1428572,
+  "ingredient": [
+    {
+      "item": "tfc:ore/small_native_copper"
+    },
+    {
+      "item": "tfc:ore/poor_native_copper"
+    },
+    {
+      "item": "tfc:ore/normal_native_copper"
+    },
+    {
+      "item": "tfc:ore/rich_native_copper"
+    }
+  ],
+  "welding_temperature": 864.0
+}

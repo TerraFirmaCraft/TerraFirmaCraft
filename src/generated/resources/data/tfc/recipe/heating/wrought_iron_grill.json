@@ -4,7 +4,7 @@
     "item": "tfc:wrought_iron_grill"
   },
   "result_fluid": {
-    "amount": 100,
+    "amount": 400,
     "id": "tfc:metal/cast_iron"
   },
   "temperature": 1535.0

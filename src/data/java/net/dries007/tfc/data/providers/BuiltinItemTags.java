@@ -18,6 +18,7 @@ import net.minecraft.tags.TagEntry;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
@@ -50,7 +51,6 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     protected void addTags(HolderLookup.Provider provider)
     {
         for (Metal metal : Metal.values())
@@ -77,10 +77,31 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(RAW_FISH).add(Food.COD, Food.TROPICAL_FISH, Food.CALAMARI, Food.SHELLFISH, Food.BLUEGILL, Food.CRAPPIE, Food.LAKE_TROUT, Food.LARGEMOUTH_BASS, Food.RAINBOW_TROUT, Food.SALMON, Food.SMALLMOUTH_BASS);
         tag(COOKED_FISH).add(Food.COOKED_TURTLE, Food.COOKED_COD, Food.COOKED_TROPICAL_FISH, Food.COOKED_CALAMARI, Food.COOKED_SHELLFISH, Food.COOKED_BLUEGILL, Food.COOKED_CRAPPIE, Food.COOKED_LAKE_TROUT, Food.COOKED_LARGEMOUTH_BASS, Food.COOKED_RAINBOW_TROUT, Food.COOKED_SALMON, Food.COOKED_SMALLMOUTH_BASS);
         tag(FISH).addTags(RAW_FISH, COOKED_FISH);
+        tag(DOUGH)
+            .add(Food.BARLEY_DOUGH)
+            .add(Food.MAIZE_DOUGH)
+            .add(Food.OAT_DOUGH)
+            .add(Food.RYE_DOUGH)
+            .add(Food.RICE_DOUGH)
+            .add(Food.WHEAT_DOUGH);
+        tag(BREAD)
+            .add(Food.BARLEY_BREAD)
+            .add(Food.MAIZE_BREAD)
+            .add(Food.OAT_BREAD)
+            .add(Food.RYE_BREAD)
+            .add(Food.RICE_BREAD)
+            .add(Food.WHEAT_BREAD)
+            .add(Items.BREAD);
         tag(SALADS).add(TFCItems.SALADS);
         tag(SOUPS).add(TFCItems.SOUPS);
         tag(PRESERVES).add(TFCItems.UNSEALED_FRUIT_PRESERVES);
         tag(SEALED_PRESERVES).add(TFCItems.FRUIT_PRESERVES);
+        tag(SWEETENERS).add(Items.SUGAR);
+        tag(USABLE_IN_SOUP)
+            .addTags(FRUITS, VEGETABLES, MEATS, COOKED_MEATS)
+            .add(Food.COOKED_RICE);
+
+        tag(PLANTS); // todo
 
         tagNotWhite(COLORED_WOOL, "wool");
         tagNotWhite(COLORED_CARPETS, "carpet");
@@ -105,13 +126,43 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(LOOMS).add(TFCBlocks.WOODS, Wood.BlockType.LOOM);
 
         copy(TFCTags.Blocks.LAMPS, LAMPS);
+        tag(BUCKETS).add(
+            TFCItems.WOODEN_BUCKET,
+            TFCItems.RED_STEEL_BUCKET,
+            TFCItems.BLUE_STEEL_BUCKET);
+        tag(MINECARTS).add(TFCItems.CHEST_MINECARTS);
+        tag(ORE_PIECES)
+            .add(TFCItems.ORES)
+            .addAll(TFCItems.GRADED_ORES);
+        tag(SMALL_ORE_PIECES)
+            .add(TFCBlocks.SMALL_ORES);
+        tag(WATER_WHEELS).add(TFCBlocks.WOODS, Wood.BlockType.WATER_WHEEL);
+        tag(WINDMILL_BLADES)
+            .add(TFCItems.WINDMILL_BLADES.get(DyeColor.WHITE))
+            .addTag(COLORED_WINDMILL_BLADES);
 
-        tag(VESSELS).addTag(UNFIRED_VESSELS).addTag(FIRED_VESSELS);
-        tag(UNFIRED_VESSELS).add(TFCItems.UNFIRED_VESSEL).add(TFCItems.UNFIRED_GLAZED_VESSELS);
-        tag(FIRED_VESSELS).add(TFCItems.VESSEL).add(TFCItems.GLAZED_VESSELS);
-        tag(LARGE_VESSELS).addTag(UNFIRED_LARGE_VESSELS).addTag(FIRED_LARGE_VESSELS);
-        tag(UNFIRED_LARGE_VESSELS).add(TFCItems.UNFIRED_LARGE_VESSEL).add(TFCItems.UNFIRED_GLAZED_LARGE_VESSELS);
-        tag(FIRED_LARGE_VESSELS).add(TFCBlocks.LARGE_VESSEL).add(TFCBlocks.GLAZED_LARGE_VESSELS);
+        tag(VESSELS).addTags(UNFIRED_VESSELS, FIRED_VESSELS);
+        tag(UNFIRED_VESSELS)
+            .add(TFCItems.UNFIRED_VESSEL)
+            .add(TFCItems.UNFIRED_GLAZED_VESSELS);
+        tag(FIRED_VESSELS)
+            .add(TFCItems.VESSEL).add(TFCItems.GLAZED_VESSELS);
+        tag(LARGE_VESSELS).addTags(UNFIRED_LARGE_VESSELS, FIRED_LARGE_VESSELS);
+        tag(UNFIRED_LARGE_VESSELS)
+            .add(TFCItems.UNFIRED_LARGE_VESSEL)
+            .add(TFCItems.UNFIRED_GLAZED_LARGE_VESSELS);
+        tag(FIRED_LARGE_VESSELS)
+            .add(TFCBlocks.LARGE_VESSEL)
+            .add(TFCBlocks.GLAZED_LARGE_VESSELS);
+        tag(MOLDS).addTags(UNFIRED_MOLDS, FIRED_MOLDS);
+        tag(UNFIRED_MOLDS)
+            .add(TFCItems.UNFIRED_MOLDS)
+            .add(TFCItems.UNFIRED_FIRE_INGOT_MOLD)
+            .add(TFCItems.UNFIRED_BELL_MOLD);
+        tag(FIRED_MOLDS)
+            .add(TFCItems.MOLDS)
+            .add(TFCItems.FIRE_INGOT_MOLD)
+            .add(TFCItems.BELL_MOLD);
 
         tag(TOOLS).addTags(TOOLS_KNIFE, TOOLS_CHISEL, TOOLS_SHEAR, TOOLS_GLASSWORKING, TOOLS_BLOWPIPE);
         tag(TOOLS_SHIELD).add(TFCItems.METAL_ITEMS, Metal.ItemType.SHIELD);
@@ -135,6 +186,12 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(GLASS_BATCHES_T3).addTag(GLASS_BATCHES_T2).add(TFCItems.OLIVINE_GLASS_BATCH);
         tag(GLASS_BATCHES).addTag(GLASS_BATCHES_T3).add(TFCItems.VOLCANIC_GLASS_BATCH);
         tag(GLASS_BATCHES_NOT_T1).add(TFCItems.HEMATITIC_GLASS_BATCH, TFCItems.OLIVINE_GLASS_BATCH, TFCItems.VOLCANIC_GLASS_BATCH);
+        tag(GLASS_BLOWPIPES).add(TFCItems.BLOWPIPE_WITH_GLASS, TFCItems.CERAMIC_BLOWPIPE_WITH_GLASS);
+        tag(GLASS_BOTTLES).add(
+            TFCItems.SILICA_GLASS_BOTTLE,
+            TFCItems.HEMATITIC_GLASS_BOTTLE,
+            TFCItems.OLIVINE_GLASS_BOTTLE,
+            TFCItems.VOLCANIC_GLASS_BOTTLE);
     }
 
     @Override
@@ -200,12 +257,14 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
 
         ItemTagAppender add(ItemLike... items) { return add(Arrays.stream(items)); }
         ItemTagAppender add(Stream<? extends ItemLike> items) { items.forEach(item -> add(key(item))); return this; }
-        <T1, V extends ItemLike> ItemTagAppender add(Map<T1, V> items) { return add(items.values().stream()); }
+        ItemTagAppender add(Map<?, ? extends ItemLike> items) { return add(items.values().stream()); }
+        ItemTagAppender addAll(Map<?, ? extends Map<?, ? extends ItemLike>> items) { items.values().forEach(m -> m.values().forEach(this::add)); return this; }
         <T1, T2, V extends ItemLike> ItemTagAppender add(Map<T1, Map<T2, V>> items, T2 key) { return add(pivot(items, key)); }
 
         ItemTagAppender add(Food... foods) { for (Food food : foods) add(TFCItems.FOOD.get(food)); return this; }
 
         @Override public ItemTagAppender addTag(TagKey<Item> tag) { return (ItemTagAppender) super.addTag(tag); }
+        @Override @SafeVarargs public final ItemTagAppender addTags(TagKey<Item>... values) { return (ItemTagAppender) super.addTags(values); }
 
         private ResourceKey<Item> key(ItemLike item)
         {

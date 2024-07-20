@@ -69,12 +69,14 @@ public final class DataEntryPoint
             ,
             Set.of(MOD_ID, "minecraft")))
             .getRegistryProvider();
-        final var blockTags = add(event, new BuiltinBlockTags(event, lookup)).contentsGetter();
         final var fluidHeat = add(event, new BuiltinFluidHeat(output, lookup)).output();
+        final var itemHeat = add(event, new BuiltinItemHeat(output, lookup, fluidHeat)).output();
+
         final var drinkables = add(event, new BuiltinDrinkables(output, lookup)).output();
 
-        add(event, new BuiltinRecipes(output, lookup, fluidHeat));
+        add(event, new BuiltinRecipes(output, lookup, fluidHeat, itemHeat));
 
+        final var blockTags = add(event, new BuiltinBlockTags(event, lookup)).contentsGetter();
         add(event, new BuiltinItemTags(event, lookup, blockTags));
         add(event, new BuiltinFluidTags(event, lookup, drinkables));
         tags(event, Registries.PAINTING_VARIANT, lookup, (provider, add) -> provider
@@ -110,7 +112,6 @@ public final class DataEntryPoint
         add(event, new BuiltinFoods(output, lookup));
         add(event, new BuiltinFuels(output, lookup));
         add(event, new BuiltinItemDamageResist(output, lookup));
-        add(event, new BuiltinItemHeat(output, lookup, fluidHeat));
         add(event, new BuiltinItemSizes(output, lookup));
         add(event, new BuiltinKnappingTypes(output, lookup));
         add(event, new BuiltinLampFuels(output, lookup));

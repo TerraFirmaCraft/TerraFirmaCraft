@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 558.0,
+  "heat_capacity": 2.857143,
+  "ingredient": {
+    "item": "tfc:jacks"
+  },
+  "welding_temperature": 744.0
+}

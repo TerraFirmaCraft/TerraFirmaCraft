@@ -91,7 +91,7 @@ public class BuiltinItemSizes extends DataManagerProvider<ItemSizeDefinition> im
         add("plants", TFCTags.Items.PLANTS, Size.TINY, Weight.VERY_LIGHT);
         add("sluices", TFCTags.Items.SLUICES, Size.VERY_LARGE, Weight.VERY_HEAVY);
         add("lamps", TFCTags.Items.LAMPS, Size.NORMAL, Weight.MEDIUM);
-        add("buckets", TFCTags.Items.BUCKETS, Size.LARGE, Weight.MEDIUM);
+        add("buckets", Tags.Items.BUCKETS, Size.LARGE, Weight.MEDIUM);
         add("anvils", TFCTags.Items.ANVILS, Size.HUGE, Weight.VERY_HEAVY);
         add("minecarts", TFCTags.Items.MINECARTS, Size.VERY_LARGE, Weight.VERY_HEAVY);
         add("looms", TFCTags.Items.LOOMS, Size.LARGE, Weight.VERY_HEAVY);

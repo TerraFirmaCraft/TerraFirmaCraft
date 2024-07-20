@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 921.00006,
+  "heat_capacity": 2.857143,
+  "ingredient": {
+    "item": "tfc:raw_iron_bloom"
+  },
+  "welding_temperature": 1228.0
+}

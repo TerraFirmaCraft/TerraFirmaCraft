@@ -1,0 +1,6 @@
+{
+  "heat_capacity": 1.0,
+  "ingredient": {
+    "tag": "c:foods/dough"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "forging_temperature": 921.00006,
+  "heat_capacity": 1.1428572,
+  "ingredient": [
+    {
+      "item": "tfc:ore/small_hematite"
+    },
+    {
+      "item": "tfc:ore/poor_hematite"
+    },
+    {
+      "item": "tfc:ore/normal_hematite"
+    },
+    {
+      "item": "tfc:ore/rich_hematite"
+    }
+  ],
+  "welding_temperature": 1228.0
+}

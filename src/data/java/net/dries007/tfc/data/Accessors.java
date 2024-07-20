@@ -17,6 +17,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.common.crafting.CompoundIngredient;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.fluids.SimpleFluid;
@@ -82,7 +83,7 @@ public interface Accessors
 
     default String nameOf(Ingredient ingredient)
     {
-        assert ingredient.getValues().length == 1 : "Ingredient should only have one value";
+        if (ingredient.getCustomIngredient() instanceof CompoundIngredient ing) return nameOf(ing.children().get(0));
         final Ingredient.Value value = ingredient.getValues()[0];
         if (value instanceof Ingredient.TagValue(TagKey<Item> tag)) return tag.location().getPath();
         if (value instanceof Ingredient.ItemValue(ItemStack item)) return nameOf(item.getItem());

@@ -1,0 +1,19 @@
+{
+  "forging_temperature": 921.00006,
+  "heat_capacity": 1.1428572,
+  "ingredient": [
+    {
+      "item": "tfc:ore/small_limonite"
+    },
+    {
+      "item": "tfc:ore/poor_limonite"
+    },
+    {
+      "item": "tfc:ore/normal_limonite"
+    },
+    {
+      "item": "tfc:ore/rich_limonite"
+    }
+  ],
+  "welding_temperature": 1228.0
+}

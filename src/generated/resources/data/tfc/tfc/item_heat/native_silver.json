@@ -1,0 +1,19 @@
+{
+  "forging_temperature": 576.60004,
+  "heat_capacity": 0.8333333,
+  "ingredient": [
+    {
+      "item": "tfc:ore/small_native_silver"
+    },
+    {
+      "item": "tfc:ore/poor_native_silver"
+    },
+    {
+      "item": "tfc:ore/normal_native_silver"
+    },
+    {
+      "item": "tfc:ore/rich_native_silver"
+    }
+  ],
+  "welding_temperature": 768.8
+}

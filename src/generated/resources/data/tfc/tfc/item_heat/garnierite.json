@@ -1,0 +1,19 @@
+{
+  "forging_temperature": 871.80005,
+  "heat_capacity": 0.8333333,
+  "ingredient": [
+    {
+      "item": "tfc:ore/small_garnierite"
+    },
+    {
+      "item": "tfc:ore/poor_garnierite"
+    },
+    {
+      "item": "tfc:ore/normal_garnierite"
+    },
+    {
+      "item": "tfc:ore/rich_garnierite"
+    }
+  ],
+  "welding_temperature": 1162.4
+}

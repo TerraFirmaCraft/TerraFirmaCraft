@@ -1,0 +1,19 @@
+{
+  "forging_temperature": 921.00006,
+  "heat_capacity": 1.1428572,
+  "ingredient": [
+    {
+      "item": "tfc:ore/small_magnetite"
+    },
+    {
+      "item": "tfc:ore/poor_magnetite"
+    },
+    {
+      "item": "tfc:ore/normal_magnetite"
+    },
+    {
+      "item": "tfc:ore/rich_magnetite"
+    }
+  ],
+  "welding_temperature": 1228.0
+}

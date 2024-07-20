@@ -1,0 +1,19 @@
+{
+  "forging_temperature": 162.0,
+  "heat_capacity": 2.857143,
+  "ingredient": [
+    {
+      "item": "tfc:ore/small_bismuthinite"
+    },
+    {
+      "item": "tfc:ore/poor_bismuthinite"
+    },
+    {
+      "item": "tfc:ore/normal_bismuthinite"
+    },
+    {
+      "item": "tfc:ore/rich_bismuthinite"
+    }
+  ],
+  "welding_temperature": 216.0
+}

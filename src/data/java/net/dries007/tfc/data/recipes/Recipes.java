@@ -7,6 +7,7 @@ import net.minecraft.world.item.crafting.Recipe;
 
 import net.dries007.tfc.data.Accessors;
 import net.dries007.tfc.data.DataAccessor;
+import net.dries007.tfc.data.providers.BuiltinItemHeat;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.data.FluidHeat;
@@ -14,6 +15,7 @@ import net.dries007.tfc.util.data.FluidHeat;
 public interface Recipes extends Accessors
 {
     DataAccessor<FluidHeat> fluidHeat();
+    BuiltinItemHeat.Output itemHeat();
     HolderLookup.Provider lookup();
 
     default float temperatureOf(Metal metal)

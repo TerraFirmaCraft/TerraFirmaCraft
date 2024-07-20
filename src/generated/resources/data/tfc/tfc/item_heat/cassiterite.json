@@ -1,0 +1,19 @@
+{
+  "forging_temperature": 138.0,
+  "heat_capacity": 2.857143,
+  "ingredient": [
+    {
+      "item": "tfc:ore/small_cassiterite"
+    },
+    {
+      "item": "tfc:ore/poor_cassiterite"
+    },
+    {
+      "item": "tfc:ore/normal_cassiterite"
+    },
+    {
+      "item": "tfc:ore/rich_cassiterite"
+    }
+  ],
+  "welding_temperature": 184.0
+}

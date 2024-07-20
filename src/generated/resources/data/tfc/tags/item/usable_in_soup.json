@@ -1,0 +1,9 @@
+{
+  "values": [
+    "#c:foods/fruit",
+    "#c:foods/vegetable",
+    "#c:foods/meat",
+    "#c:foods/cooked_meat",
+    "tfc:food/cooked_rice"
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "forging_temperature": 636.0,
+  "heat_capacity": 1.6666666,
+  "ingredient": {
+    "item": "minecraft:bell"
+  },
+  "welding_temperature": 848.0
+}

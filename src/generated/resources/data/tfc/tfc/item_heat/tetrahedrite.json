@@ -1,0 +1,19 @@
+{
+  "forging_temperature": 648.0,
+  "heat_capacity": 1.1428572,
+  "ingredient": [
+    {
+      "item": "tfc:ore/small_tetrahedrite"
+    },
+    {
+      "item": "tfc:ore/poor_tetrahedrite"
+    },
+    {
+      "item": "tfc:ore/normal_tetrahedrite"
+    },
+    {
+      "item": "tfc:ore/rich_tetrahedrite"
+    }
+  ],
+  "welding_temperature": 864.0
+}

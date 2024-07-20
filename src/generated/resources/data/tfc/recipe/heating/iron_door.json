@@ -4,7 +4,7 @@
     "item": "minecraft:iron_door"
   },
   "result_fluid": {
-    "amount": 100,
+    "amount": 200,
     "id": "tfc:metal/cast_iron"
   },
   "temperature": 1535.0

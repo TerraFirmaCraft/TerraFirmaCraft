@@ -1,0 +1,17 @@
+{
+  "heat_capacity": 1.0,
+  "ingredient": [
+    {
+      "item": "tfc:food/fresh_seaweed"
+    },
+    {
+      "item": "tfc:food/dried_seaweed"
+    },
+    {
+      "item": "tfc:food/dried_kelp"
+    },
+    {
+      "item": "tfc:plant/giant_kelp_flower"
+    }
+  ]
+}

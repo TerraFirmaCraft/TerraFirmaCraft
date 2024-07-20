@@ -5,15 +5,19 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 import net.minecraft.resources.ResourceLocation;
 
-public record DataAccessor<T>(CompletableFuture<Map<ResourceLocation, T>> future)
+public interface DataAccessor<T>
 {
-    public T get(ResourceLocation id)
+    default T get(ResourceLocation id)
     {
-        return future.getNow(Map.of()).get(id);
+        return future().getNow(Map.of()).get(id);
     }
 
-    public Stream<T> all()
+    default Stream<T> all()
     {
-        return future.getNow(Map.of()).values().stream();
+        return future().getNow(Map.of()).values().stream();
     }
+
+    CompletableFuture<Map<ResourceLocation, T>> future();
+
+    record Future<T>(CompletableFuture<Map<ResourceLocation, T>> future) implements DataAccessor<T> {}
 }

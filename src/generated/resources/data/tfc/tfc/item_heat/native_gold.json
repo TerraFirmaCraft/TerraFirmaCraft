@@ -1,0 +1,19 @@
+{
+  "forging_temperature": 636.0,
+  "heat_capacity": 0.6666667,
+  "ingredient": [
+    {
+      "item": "tfc:ore/small_native_gold"
+    },
+    {
+      "item": "tfc:ore/poor_native_gold"
+    },
+    {
+      "item": "tfc:ore/normal_native_gold"
+    },
+    {
+      "item": "tfc:ore/rich_native_gold"
+    }
+  ],
+  "welding_temperature": 848.0
+}

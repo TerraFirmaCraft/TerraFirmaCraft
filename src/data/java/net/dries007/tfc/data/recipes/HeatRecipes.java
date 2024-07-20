@@ -24,6 +24,7 @@ import net.dries007.tfc.common.recipes.ingredients.NotRottenIngredient;
 import net.dries007.tfc.common.recipes.outputs.ChanceModifier;
 import net.dries007.tfc.common.recipes.outputs.CopyFoodModifier;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
+import net.dries007.tfc.data.providers.BuiltinItemHeat;
 import net.dries007.tfc.util.Metal;
 
 public interface HeatRecipes extends Recipes
@@ -116,18 +117,9 @@ public interface HeatRecipes extends Recipes
         burnFood("bread", Ingredient.of(TFCTags.Items.BREAD), 700);
         burnFood("meat", Ingredient.of(TFCTags.Items.MEATS), 900);
 
-        addOres(Ore.NATIVE_COPPER, Metal.COPPER);
-        addOres(Ore.NATIVE_GOLD, Metal.GOLD);
-        addOres(Ore.HEMATITE, Metal.CAST_IRON);
-        addOres(Ore.NATIVE_SILVER, Metal.SILVER);
-        addOres(Ore.CASSITERITE, Metal.TIN);
-        addOres(Ore.BISMUTHINITE, Metal.BISMUTH);
-        addOres(Ore.GARNIERITE, Metal.NICKEL);
-        addOres(Ore.MALACHITE, Metal.COPPER);
-        addOres(Ore.MAGNETITE, Metal.CAST_IRON);
-        addOres(Ore.LIMONITE, Metal.CAST_IRON);
-        addOres(Ore.SPHALERITE, Metal.ZINC);
-        addOres(Ore.TETRAHEDRITE, Metal.COPPER);
+        for (Ore ore : Ore.values())
+            if (ore.isGraded())
+                addOres(ore, ore.metal());
 
         pivot(TFCBlocks.METALS, Metal.BlockType.BLOCK).forEach((metal, block) -> add(
             Ingredient.of(storageBlockTagOf(Registries.ITEM, metal)),
@@ -139,16 +131,10 @@ public interface HeatRecipes extends Recipes
             new FluidStack(meltFluidFor(metal), units(type)),
             temperatureOf(metal), new ItemStack(item).isDamageableItem()))));
 
-        addMetal(TFCItems.RAW_IRON_BLOOM, Metal.CAST_IRON, 100);
-        addMetal(TFCItems.REFINED_IRON_BLOOM, Metal.CAST_IRON, 100);
-        addMetal(TFCItems.WROUGHT_IRON_GRILL, Metal.CAST_IRON, 100);
-        addMetal(Items.IRON_DOOR, Metal.CAST_IRON, 100);
-        addMetal(TFCBlocks.BRONZE_BELL, Metal.BRONZE, 100);
-        addMetal(TFCBlocks.BRASS_BELL, Metal.BRASS, 100);
-        addMetal(Items.BELL, Metal.GOLD, 100);
-        addMetal(TFCItems.JACKS, Metal.BRASS, 100);
-        addMetal(TFCItems.GEM_SAW, Metal.BRASS, 50);
-        addMetal(TFCItems.JAR_LID, Metal.TIN, 50);
+        for (BuiltinItemHeat.WithMelting melt : itemHeat().withMelting())
+        {
+            add(Ingredient.of(melt.item()), new FluidStack(fluidOf(melt.metal()), melt.units()), temperatureOf(melt.metal()));
+        }
     }
 
     private Fluid meltFluidFor(Metal metal)
@@ -177,11 +163,6 @@ public interface HeatRecipes extends Recipes
         add(Ingredient.of(TFCItems.GRADED_ORES.get(ore).get(Ore.Grade.POOR)), new FluidStack(fluidOf(metal), 15), temperature);
         add(Ingredient.of(TFCItems.GRADED_ORES.get(ore).get(Ore.Grade.NORMAL)), new FluidStack(fluidOf(metal), 25), temperature);
         add(Ingredient.of(TFCItems.GRADED_ORES.get(ore).get(Ore.Grade.RICH)), new FluidStack(fluidOf(metal), 35), temperature);
-    }
-
-    private void addMetal(ItemLike input, Metal output, int amount)
-    {
-        add(Ingredient.of(input), new FluidStack(fluidOf(output), amount), temperatureOf(output));
     }
 
     private void addFood(Food input, Food output)
