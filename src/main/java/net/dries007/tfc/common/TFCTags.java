@@ -308,6 +308,8 @@ public class TFCTags
         public static final TagKey<Item> SOUPS = Tags.Items.FOODS_SOUP;
         public static final TagKey<Item> PRESERVES = tag("foods/preserves");
         public static final TagKey<Item> SEALED_PRESERVES = tag("foods/sealed_preserves");
+        public static final TagKey<Item> SWEETENERS = tag("sweeteners");
+        public static final TagKey<Item> USABLE_IN_SOUP = tag("usable_in_soup");
 
         public static final TagKey<Item> PLANTS = tag("plants");
 

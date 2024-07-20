@@ -17,6 +17,7 @@ import net.minecraft.world.item.crafting.RecipeManager;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.recipes.RecipeHelpers;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
@@ -30,45 +31,40 @@ public final class FoodCapability
     public static final DataManager<FoodDefinition> MANAGER = new DataManager<>(Helpers.identifier("food"), FoodDefinition.CODEC, FoodDefinition.STREAM_CODEC);
     public static final IndirectHashCollection<Item, FoodDefinition> CACHE = IndirectHashCollection.create(r -> RecipeHelpers.itemKeys(r.ingredient()), MANAGER::getValues);
 
+    /**
+     * Most TFC foods have decay modifiers in the range [1, 4] (high = faster decay)
+     * That puts decay times at 25% - 100% of this value
+     * So meat / fruit will decay in ~5 days, grains take ~20 days
+     * Other modifiers are applied on top of that
+     */
+    public static final int DEFAULT_DECAY_TICKS = ICalendar.TICKS_IN_DAY * 22;
+
     @Nullable
     public static IFood get(ItemStack stack)
     {
         // This needs to return a view, respecting egg handlers (so we need some form of item -> interface -> dispatch)
         // Then we can return a mutable component view?
-        return null; // todo: 1.21 porting
+        // todo 1.21, food porting
+        return stack.get(TFCComponents.FOOD);
     }
 
     public static boolean has(ItemStack stack)
     {
-        return false; // todo: 1.21 porting
+        return stack.has(TFCComponents.FOOD);
     }
 
     @Nullable
     public static FoodDefinition getDefinition(ItemStack stack)
     {
-        for (FoodDefinition def : CACHE.getAll(stack.getItem()))
-        {
-            if (def.ingredient().test(stack))
-            {
-                return def;
-            }
-        }
-        return null;
+        return RecipeHelpers.getRecipe(CACHE, stack, stack.getItem());
     }
 
-    /**
-     * Applies {@code trait} to {@code food}, and updates the creation date to preserve the decay proportion of the food.
-     */
-    public static void applyTrait(IFood food, FoodTrait trait)
+    public static void setFoodForDynamicItemOnCreate(ItemStack stack, FoodData data)
     {
-        if (!food.hasTrait(trait))
+        final @Nullable FoodComponent food = stack.get(TFCComponents.FOOD);
+        if (food != null)
         {
-            if (!food.isRotten())
-            {
-                // Applied decay DATE modifier = 1 / decay mod
-                food.setCreationDate(calculateNewCreationDate(food.getCreationDate(), 1f / trait.getDecayModifier()));
-            }
-            food.getTraits().add(trait);
+            stack.set(TFCComponents.FOOD, food.with(data, getRoundedCreationDate()));
         }
     }
 
@@ -77,28 +73,15 @@ public final class FoodCapability
      */
     public static ItemStack applyTrait(ItemStack stack, FoodTrait trait)
     {
-        final @Nullable IFood food = get(stack);
-        if (food != null)
+        final @Nullable FoodComponent food = stack.get(TFCComponents.FOOD);
+        if (food != null && !food.hasTrait(trait) && !food.isRotten())
         {
-            applyTrait(food, trait);
+            stack.set(TFCComponents.FOOD, food.withTraitApplied(
+                trait,
+                calculateNewCreationDate(food.getCreationDate(), 1f / trait.getDecayModifier())
+            ));
         }
         return stack;
-    }
-
-    /**
-     * Removes {@code trait} from {@code food}, and updates the creation date to preserve the decay proportion of the food.
-     */
-    public static void removeTrait(IFood food, FoodTrait trait)
-    {
-        if (food.hasTrait(trait))
-        {
-            if (!food.isRotten())
-            {
-                // Removed trait = 1 / apply trait
-                food.setCreationDate(calculateNewCreationDate(food.getCreationDate(), trait.getDecayModifier()));
-            }
-            food.getTraits().remove(trait);
-        }
     }
 
     /**
@@ -106,10 +89,13 @@ public final class FoodCapability
      */
     public static ItemStack removeTrait(ItemStack stack, FoodTrait trait)
     {
-        final @Nullable IFood food = get(stack);
-        if (food != null)
+        final @Nullable FoodComponent food = stack.get(TFCComponents.FOOD);
+        if (food != null && food.hasTrait(trait) && !food.isRotten())
         {
-            removeTrait(food, trait);
+            stack.set(TFCComponents.FOOD, food.withTraitRemoved(
+                trait,
+                calculateNewCreationDate(food.getCreationDate(), trait.getDecayModifier())
+            ));
         }
         return stack;
     }
@@ -119,7 +105,7 @@ public final class FoodCapability
      */
     public static boolean hasTrait(ItemStack stack, FoodTrait trait)
     {
-        final @Nullable IFood food = get(stack);
+        final @Nullable FoodComponent food = stack.get(TFCComponents.FOOD);
         return food != null && food.hasTrait(trait);
     }
 
@@ -128,13 +114,13 @@ public final class FoodCapability
      */
     public static boolean isRotten(ItemStack stack)
     {
-        final @Nullable IFood food = get(stack);
+        final @Nullable FoodComponent food = stack.get(TFCComponents.FOOD);
         return food != null && food.isRotten();
     }
 
     public static void addTooltipInfo(ItemStack stack, List<Component> text)
     {
-        final @Nullable IFood food = get(stack);
+        final @Nullable FoodComponent food = stack.get(TFCComponents.FOOD);
         if (food != null)
         {
             food.addTooltipInfo(stack, text);
@@ -155,10 +141,12 @@ public final class FoodCapability
      */
     public static ItemStack setCreationDate(ItemStack stack, long date)
     {
-        final @Nullable IFood food = get(stack);
+        // todo: 1.21, is there a more graceful way to handle this?
+        if (!TFCComponents.FOOD.holder().isBound()) return stack; // Don't do anything if invoked way too early
+        final @Nullable FoodComponent food = stack.get(TFCComponents.FOOD);
         if (food != null)
         {
-            food.setCreationDate(date);
+            stack.set(TFCComponents.FOOD, food.with(date));
         }
         return stack;
     }
@@ -195,22 +183,26 @@ public final class FoodCapability
         return setCreationDate(stack, getRoundedCreationDate());
     }
 
+    public static ItemStack setNonDecaying(ItemStack stack)
+    {
+        return setCreationDate(stack, IFood.TRANSIENT_CREATION_DATE);
+    }
+
     /**
      * Sets the creation date of {@code newStack} based on the creation date and decay of {@code oldStack}, and also copies any
      * {@link FoodTrait}s from the {@code oldStack} to {@code newStack}. This preserves the relative decay between the two items.
      */
     public static ItemStack updateFoodFromPrevious(ItemStack oldStack, ItemStack newStack)
     {
-        final @Nullable IFood oldFood = get(oldStack);
-        final @Nullable IFood newFood = get(newStack);
+        final @Nullable FoodComponent oldFood = oldStack.get(TFCComponents.FOOD);
+        final @Nullable FoodComponent newFood = newStack.get(TFCComponents.FOOD);
         if (oldFood != null && newFood != null)
         {
-            // Copy traits from old stack to new stack
-            newFood.getTraits().addAll(oldFood.getTraits());
+            // Copy traits from old stack to new stack - we do this first, so we can calculate a proper decay modifier with both traits
+            final FoodComponent tempFood = newFood.withTraitsApplied(oldFood.getTraits());
+            final float decayDelta = tempFood.getDecayDateModifier() / oldFood.getDecayDateModifier();
 
-            // Applied trait decay DATE modifier = new / old
-            final float decayDelta = newFood.getDecayDateModifier() / oldFood.getDecayDateModifier();
-            newFood.setCreationDate(calculateNewRoundedCreationDate(oldFood.getCreationDate(), decayDelta));
+            newStack.set(TFCComponents.FOOD, tempFood.with(calculateNewRoundedCreationDate(oldFood.getCreationDate(), decayDelta)));
         }
         return newStack;
     }
@@ -223,7 +215,7 @@ public final class FoodCapability
      */
     public static ItemStack updateFoodFromAllPrevious(Collection<ItemStack> oldStacks, ItemStack newStack)
     {
-        final @Nullable IFood newFood = get(newStack);
+        final @Nullable FoodComponent newFood = newStack.get(TFCComponents.FOOD);
         if (newFood != null)
         {
             if (oldStacks.isEmpty())
@@ -236,7 +228,7 @@ public final class FoodCapability
             int oldFoodCount = 0;
             for (ItemStack oldStack : oldStacks)
             {
-                final IFood oldFood = get(oldStack);
+                final @Nullable FoodComponent oldFood = oldStack.get(TFCComponents.FOOD);
                 if (oldFood != null)
                 {
                     decayDateModifier += oldFood.getDecayDateModifier();
@@ -247,21 +239,10 @@ public final class FoodCapability
             if (oldFoodCount > 0)
             {
                 final float decayDelta = oldFoodCount * newFood.getDecayDateModifier() / decayDateModifier;
-                newFood.setCreationDate(calculateNewCreationDate(oldCreationDate, decayDelta));
+                newStack.set(TFCComponents.FOOD, newFood.with(calculateNewCreationDate(oldCreationDate, decayDelta)));
             }
         }
         return newStack;
-    }
-
-
-    public static ItemStack setNonDecaying(ItemStack stack)
-    {
-        final @Nullable IFood food = get(stack);
-        if (food != null)
-        {
-            food.setNonDecaying();
-        }
-        return stack;
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -302,11 +283,11 @@ public final class FoodCapability
         }
         else if (FoodCapability.areStacksStackableExceptCreationDate(stackToMergeInto, stackToMerge))
         {
-            final @Nullable IFood mergeIntoFood = get(stackToMergeInto);
-            final @Nullable IFood mergeFood = get(stackToMerge);
+            final @Nullable FoodComponent mergeIntoFood = stackToMergeInto.get(TFCComponents.FOOD);
+            final @Nullable FoodComponent mergeFood = stackToMerge.get(TFCComponents.FOOD);
             if (mergeIntoFood != null && mergeFood != null)
             {
-                mergeIntoFood.setCreationDate(Math.min(mergeIntoFood.getCreationDate(), mergeFood.getCreationDate()));
+                stackToMergeInto.set(TFCComponents.FOOD, mergeIntoFood.with(Math.min(mergeIntoFood.getCreationDate(), mergeFood.getCreationDate())));
             }
 
             final int mergeAmount = Math.min(stackToMerge.getCount(), stackToMergeInto.getMaxStackSize() - stackToMergeInto.getCount());
@@ -347,6 +328,13 @@ public final class FoodCapability
     {
         final int window = Helpers.getValueOrDefault(TFCConfig.SERVER.foodDecayStackWindow) * ICalendar.TICKS_IN_HOUR;
         return ((tick - 1) / window + 1) * window;
+    }
+
+    public static long getRottenDate(long creationDate, float decayDateModifier)
+    {
+        return decayDateModifier == Float.POSITIVE_INFINITY
+            ? IFood.NEVER_DECAY_DATE
+            : creationDate + (long) (decayDateModifier * DEFAULT_DECAY_TICKS);
     }
 
     private static long calculateNewRoundedCreationDate(long ci, float p)

@@ -147,12 +147,12 @@ import net.dries007.tfc.common.blocks.rock.AqueductBlock;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockAnvilBlock;
 import net.dries007.tfc.common.blocks.wood.TFCLecternBlock;
-import net.dries007.tfc.common.capabilities.food.BowlComponent;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
-import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.commands.TFCCommands;
+import net.dries007.tfc.common.component.Bowl;
+import net.dries007.tfc.common.component.ItemStackComponent;
 import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.component.forge.ForgingBonus;
 import net.dries007.tfc.common.component.glass.GlassWorking;
@@ -553,7 +553,6 @@ public final class ForgeEventHandler
             Climate.onWorldLoad(level);
             if (level.dimension() == Level.OVERWORLD)
             {
-                ItemSizeManager.applyItemStackSizeOverrides();
                 SelfTests.runServerSelfTests();
             }
         }
@@ -1427,10 +1426,10 @@ public final class ForgeEventHandler
     public static void onItemUseFinish(LivingEntityUseItemEvent.Finish event)
     {
         final ItemStack stack = event.getItem();
-        final @Nullable BowlComponent bowl = stack.get(TFCComponents.BOWL);
+        final @Nullable ItemStackComponent bowl = stack.get(TFCComponents.BOWL);
         if (bowl != null)
         {
-            event.setResultStack(bowl.onItemUse(stack, event.getResultStack(), event.getEntity()));
+            event.setResultStack(Bowl.onItemUse(bowl, stack, event.getResultStack(), event.getEntity()));
         }
     }
 
@@ -1471,7 +1470,7 @@ public final class ForgeEventHandler
             Support.updateMaximumSupportRange();
             FluidHeat.updateMetalFluidMap();
 
-            ItemSizeManager.applyItemStackSizeOverrides();
+            TFCComponents.onModifyDefaultComponentsAfterResourceReload();
             FoodCapability.markRecipeOutputsAsNonDecaying(event.getRegistryAccess(), manager);
 
             if (TFCConfig.COMMON.enableDatapackTests.get())

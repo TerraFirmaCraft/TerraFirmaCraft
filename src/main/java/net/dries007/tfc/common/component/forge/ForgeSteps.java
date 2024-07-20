@@ -39,15 +39,21 @@ public record ForgeSteps(
         ForgeSteps::new
     );
 
+    public static final ForgeSteps EMPTY = new ForgeSteps(Optional.empty(), Optional.empty(), Optional.empty(), 0);
+
     public ForgeSteps withStep(@Nullable ForgeStep step)
     {
         return new ForgeSteps(Optional.ofNullable(step), last, secondLast, total + 1);
     }
 
     @Override
+    @SuppressWarnings("OptionalGetWithoutIsPresent") // We know that thirdLast => secondLast => last
     public String toString()
     {
-        return "[" + last + ", " + secondLast + ", " + thirdLast + ", ...]";
+        return thirdLast.isPresent() ? "[" + last.get() + ", " + secondLast.get() + ", " + thirdLast + ", ...]"
+            : secondLast.isPresent() ? "[" + last.get() + ", " + secondLast.get() + ", ...]"
+            : last.isPresent() ? "[" + last.get() + "]"
+            : "[]";
     }
 
     /**

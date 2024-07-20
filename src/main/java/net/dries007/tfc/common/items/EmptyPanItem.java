@@ -16,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 
+import net.dries007.tfc.common.component.ItemStackComponent;
 import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.util.data.Deposit;
 
@@ -45,7 +46,7 @@ public class EmptyPanItem extends Item
                 player.awardStat(Stats.ITEM_USED.get(this));
 
                 final ItemStack putStack = new ItemStack(TFCItems.FILLED_PAN.get());
-                putStack.set(TFCComponents.DEPOSIT, depositStack);
+                putStack.set(TFCComponents.DEPOSIT, new ItemStackComponent(depositStack));
                 if (!player.getInventory().add(putStack)) player.drop(putStack, false);
                 return InteractionResult.CONSUME;
             }

@@ -7,22 +7,15 @@
 package net.dries007.tfc.common.capabilities.food;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.function.DoubleSupplier;
-import java.util.function.Supplier;
 import com.mojang.serialization.Codec;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import org.jetbrains.annotations.Nullable;
-
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 
 public final class FoodTrait
 {
@@ -46,10 +39,9 @@ public final class FoodTrait
     /**
      * Adds information about the trait to the food stack
      *
-     * @param stack The stack
      * @param text  The tooltip strings
      */
-    public void addTooltipInfo(ItemStack stack, List<Component> text)
+    public void addTooltipInfo(List<Component> text)
     {
         if (translationKey != null)
         {

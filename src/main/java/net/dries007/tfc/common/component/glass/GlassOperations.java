@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.component.glass;
 
 import java.util.List;
+import java.util.Objects;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -63,5 +64,19 @@ public record GlassOperations(
     GlassOperations with(ItemStack batch)
     {
         return new GlassOperations(steps, batch.copy());
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        return obj instanceof GlassOperations ops
+            && steps.equals(ops.steps)
+            && ItemStack.matches(batch, ops.batch);
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(steps, ItemStack.hashItemAndComponents(batch));
     }
 }

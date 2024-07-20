@@ -26,9 +26,9 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodData;
 import net.dries007.tfc.common.capabilities.food.IFood;
-import net.dries007.tfc.common.capabilities.food.IngredientsComponent;
 import net.dries007.tfc.common.capabilities.food.Nutrient;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.component.IngredientsComponent;
 import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.recipes.RecipeHelpers;
 
@@ -140,10 +140,10 @@ public record MealModifier(FoodData baseFood, List<MealPortion> portions) implem
             }
         }
 
-        inputFood.setData(FoodData.of(baseFood.hunger(), water, saturation, nutrition, baseFood.decayModifier()));
-        inputFood.setCreationDate(FoodCapability.getRoundedCreationDate());
-
         stack.set(TFCComponents.INGREDIENTS, IngredientsComponent.of(itemIngredients));
+        FoodCapability.setFoodForDynamicItemOnCreate(
+            stack,
+            FoodData.of(baseFood.hunger(), water, saturation, nutrition, baseFood.decayModifier()));
 
         return stack;
     }

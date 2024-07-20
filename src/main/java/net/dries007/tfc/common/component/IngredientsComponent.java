@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.capabilities.food;
+package net.dries007.tfc.common.component;
 
 import java.util.List;
 import com.mojang.serialization.Codec;
@@ -44,5 +44,19 @@ public record IngredientsComponent(List<ItemStack> ingredients)
                 text.add(Tooltips.countOfItem(ingredient).withStyle(ChatFormatting.GRAY));
             }
         }
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean equals(Object obj)
+    {
+        return this == obj || (obj instanceof IngredientsComponent that && ItemStack.listMatches(ingredients, that.ingredients));
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public int hashCode()
+    {
+        return ItemStack.hashStackList(ingredients);
     }
 }

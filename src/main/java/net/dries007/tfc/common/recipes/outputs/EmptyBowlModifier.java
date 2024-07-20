@@ -8,7 +8,7 @@ package net.dries007.tfc.common.recipes.outputs;
 
 import net.minecraft.world.item.ItemStack;
 
-import net.dries007.tfc.common.capabilities.food.BowlComponent;
+import net.dries007.tfc.common.component.Bowl;
 import net.dries007.tfc.common.component.TFCComponents;
 
 public enum EmptyBowlModifier implements ItemStackModifier
@@ -18,7 +18,7 @@ public enum EmptyBowlModifier implements ItemStackModifier
     @Override
     public ItemStack apply(ItemStack stack, ItemStack input, Context context)
     {
-        return stack.getOrDefault(TFCComponents.BOWL, BowlComponent.DISPLAY).bowl();
+        return stack.getOrDefault(TFCComponents.BOWL, Bowl.DISPLAY).stack();
     }
 
     @Override

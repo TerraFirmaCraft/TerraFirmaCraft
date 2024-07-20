@@ -7,7 +7,9 @@
 package net.dries007.tfc.common.capabilities.food;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -15,6 +17,10 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
+
+import net.dries007.tfc.common.component.TFCComponents;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.calendar.Calendars;
 
 
 /**
@@ -30,13 +36,13 @@ public record FoodComponent(
     List<FoodTrait> traits,
     Optional<FoodData> food,
     long creationDate
-)
+) implements IFood
 {
-    public static final Codec<FoodComponent> CODEC = RecordCodecBuilder.create(i -> i.group(
+    public static final Codec<FoodComponent> CODEC = RecordCodecBuilder.<FoodComponent>create(i -> i.group(
         FoodTrait.CODEC.listOf().optionalFieldOf("traits", List.of()).forGetter(c -> c.traits),
         FoodData.CODEC.optionalFieldOf("food").forGetter(c -> c.food),
-        Codec.LONG.optionalFieldOf("creation_date", IFood.UNKNOWN_CREATION_DATE).forGetter(c -> c.creationDate)
-    ).apply(i, FoodComponent::new));
+        Codec.LONG.optionalFieldOf("creation_date", IFood.ROTTEN_CREATION_DATE).forGetter(c -> c.creationDate)
+    ).apply(i, FoodComponent::new)).xmap(Function.identity(), FoodComponent::sanitize);
 
     public static final StreamCodec<RegistryFriendlyByteBuf, FoodComponent> STREAM_CODEC = StreamCodec.composite(
         FoodTrait.STREAM_CODEC.apply(ByteBufCodecs.list()), c -> c.traits,
@@ -45,14 +51,9 @@ public record FoodComponent(
         FoodComponent::new
     );
 
-    public static FoodComponent with(FoodDefinition parent)
+    public FoodComponent(FoodDefinition parent)
     {
-        return new FoodComponent(new ParentHolder(parent));
-    }
-
-    FoodComponent(ParentHolder parent)
-    {
-        this(parent, List.of(), Optional.empty(), IFood.UNKNOWN_CREATION_DATE);
+        this(new ParentHolder(parent), List.of(), Optional.empty(), FoodCapability.getRoundedCreationDate());
     }
 
     FoodComponent(List<FoodTrait> traits, Optional<FoodData> food, long creationDate)
@@ -60,21 +61,73 @@ public record FoodComponent(
         this(new ParentHolder(null), traits, food, creationDate);
     }
 
+    @Override
+    public long getCreationDate()
+    {
+        if (creationDate < 0)
+        {
+            return creationDate;
+        }
+        return FoodCapability.getRottenDate(creationDate, getDecayDateModifier()) < Calendars.get().getTicks()
+            ? ROTTEN_CREATION_DATE
+            : creationDate;
+    }
+
+    @Override
+    public boolean isRotten()
+    {
+        final long creationDate = getCreationDate();
+        return creationDate != TRANSIENT_CREATION_DATE
+            && creationDate != NEVER_DECAY_CREATION_DATE
+            && (creationDate == ROTTEN_CREATION_DATE ||
+                FoodCapability.getRottenDate(creationDate, getDecayDateModifier()) <= Calendars.get().getTicks());
+    }
+
+    @Override
+    public FoodData getData()
+    {
+        return food.isPresent() ? food.get()
+            : holder.value != null ? holder.value.food()
+            : FoodData.EMPTY;
+    }
+
+    @Override
+    public List<FoodTrait> getTraits()
+    {
+        return traits;
+    }
+
+    FoodComponent sanitize()
+    {
+        final long creationDate = getCreationDate();
+        return this.creationDate != creationDate
+            ? new FoodComponent(holder, traits, food, creationDate)
+            : this;
+    }
+
     FoodComponent with(long creationDate)
     {
         return new FoodComponent(holder, traits, food, creationDate);
     }
 
-    FoodComponent with(FoodData food)
+    FoodComponent with(FoodData food, long creationDate)
     {
         return new FoodComponent(holder, traits, Optional.of(food), creationDate);
     }
 
-    FoodData getFood()
+    FoodComponent withTraitApplied(FoodTrait trait, long creationDate)
     {
-        return food.isPresent() ? food.get()
-            : holder.value != null ? holder.value.food()
-            : FoodData.EMPTY;
+        return new FoodComponent(holder, Helpers.immutableAdd(traits, trait), food, creationDate);
+    }
+
+    FoodComponent withTraitsApplied(List<FoodTrait> others)
+    {
+        return new FoodComponent(holder, Helpers.immutableAddAll(traits, others), food, creationDate);
+    }
+
+    FoodComponent withTraitRemoved(FoodTrait trait, long creationDate)
+    {
+        return new FoodComponent(holder, Helpers.immutableRemove(traits, trait), food, creationDate);
     }
 
     public void capture(ItemStack stack)
@@ -87,6 +140,31 @@ public record FoodComponent(
                 holder.value = FoodDefinition.DEFAULT;
             }
         }
+        if (creationDate == IFood.UNKNOWN_CREATION_DATE || creationDate == IFood.TRANSIENT_CREATION_DATE)
+        {
+            stack.set(TFCComponents.FOOD, new FoodComponent(holder, traits, food, FoodCapability.getRoundedCreationDate()));
+        }
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        return this == obj || (obj instanceof FoodComponent that
+            && traits.equals(that.traits)
+            && food.equals(that.food)
+            && creationDate == that.creationDate);
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(traits, food, creationDate);
+    }
+
+    @Override
+    public String toString()
+    {
+        return "FoodComponent[creationDate=%s,rotten=%s,traits=%s%s]".formatted(creationDate, isRotten(), traits, food.isPresent() ? ",food=" + food.get() : "");
     }
 
     static class ParentHolder

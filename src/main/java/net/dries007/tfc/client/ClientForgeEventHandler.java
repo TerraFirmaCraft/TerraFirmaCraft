@@ -22,6 +22,7 @@ import net.minecraft.client.resources.sounds.AmbientSoundHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -38,6 +39,10 @@ import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.component.ItemLore;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -72,11 +77,11 @@ import net.dries007.tfc.common.blockentities.SluiceBlockEntity;
 import net.dries007.tfc.common.blocks.devices.SluiceBlock;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.common.capabilities.food.IngredientsComponent;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.component.EggComponent;
+import net.dries007.tfc.common.component.IngredientsComponent;
 import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.component.forge.ForgingBonus;
 import net.dries007.tfc.common.component.forge.ForgingCapability;
@@ -327,16 +332,22 @@ public class ClientForgeEventHandler
 
             if (TFCConfig.CLIENT.enableDebug.get() && event.getFlags().isAdvanced())
             {
-                boolean first = false;
+                boolean first = true;
                 for (TypedDataComponent<?> component : stack.getComponents())
                 {
-                    if (first) text.add(Component.literal(DARK_GRAY + "[Debug] Components:"));
+                    // Ignore certain default component types
+                    if (isDefaultComponentWithDefaultValue(component)) continue;
+                    if (first)
+                    {
+                        text.add(Component.literal(DARK_GRAY + "[Debug] Components:"));
+                        first = false;
+                    }
                     text.add(Component.literal(DARK_GRAY
-                        + "  "
-                        + BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(component.type())
                         + typeOfComponent(stack.getComponentsPatch().get(component.type()))
+                        + BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(component.type())
+                        + " "
                         + component.value()
-                        + " => "
+                        + " = "
                         + component.encodeValue(NbtOps.INSTANCE).getOrThrow()));
                 }
 
@@ -351,10 +362,19 @@ public class ClientForgeEventHandler
         }
     }
 
+    private static boolean isDefaultComponentWithDefaultValue(TypedDataComponent<?> component)
+    {
+        return (component.type() == DataComponents.LORE && component.value().equals(ItemLore.EMPTY))
+            || (component.type() == DataComponents.RARITY && component.value().equals(Rarity.COMMON))
+            || (component.type() == DataComponents.REPAIR_COST && component.value().equals(0))
+            || (component.type() == DataComponents.ENCHANTMENTS && component.value().equals(ItemEnchantments.EMPTY))
+            || (component.type() == DataComponents.ATTRIBUTE_MODIFIERS && component.value().equals(ItemAttributeModifiers.EMPTY));
+    }
+
     @SuppressWarnings("OptionalAssignedToNull")
     private static String typeOfComponent(@Nullable Optional<?> optional)
     {
-        return optional == null ? " (override) " : optional.isPresent() ? " (patch) " : " (default) ";
+        return optional == null ? " " : optional.isPresent() ? " ++ " : " -- ";
     }
 
     private static String listOfTags(Holder<?> holder)

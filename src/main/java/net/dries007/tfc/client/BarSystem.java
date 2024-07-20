@@ -116,7 +116,7 @@ public final class BarSystem
         @Override
         public ItemStack createDefaultItem(ItemStack stack)
         {
-            stack.set(TFCComponents.EGG, EggComponent.DEFAULT);
+            stack.remove(TFCComponents.EGG);
             return stack;
         }
     });

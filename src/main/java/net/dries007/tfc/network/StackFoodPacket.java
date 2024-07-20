@@ -6,9 +6,10 @@
 
 package net.dries007.tfc.network;
 
-import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.common.capabilities.food.IFood;
-
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -20,10 +21,8 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
+import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.common.capabilities.food.IFood;
 
 public record StackFoodPacket(int index) implements CustomPacketPayload
 {
@@ -98,7 +97,7 @@ public record StackFoodPacket(int index) implements CustomPacketPayload
             }
 
             targetStack.setCount(currentAmount);
-            targetCap.setCreationDate(minCreationDate);
+            FoodCapability.setCreationDate(targetStack, minCreationDate);
 
             menu.slotsChanged(menu.getCraftSlots());
         }

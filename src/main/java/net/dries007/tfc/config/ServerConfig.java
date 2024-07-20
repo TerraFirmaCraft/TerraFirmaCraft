@@ -373,7 +373,7 @@ public class ServerConfig extends BaseConfig
         builder.swap("pitKiln");
 
         pitKilnTicks = builder.comment("Number of ticks required for a pit kiln to burn out. (1000 = 1 in game hour = 50 seconds), default is 8 hours.").define("pitKilnTicks", 8000, 20, Integer.MAX_VALUE);
-        pitKilnTemperature = builder.comment("The maximum temperature which a pit kiln reaches.").define("pitKilnTemperature1", 1400, 0, Integer.MAX_VALUE);
+        pitKilnTemperature = builder.comment("The maximum temperature which a pit kiln reaches.").define("pitKilnTemperature", 1400, 0, Integer.MAX_VALUE);
 
         builder.swap("crucible");
 
@@ -422,7 +422,7 @@ public class ServerConfig extends BaseConfig
 
         builder.swap("bloomery");
 
-        bloomeryCapacity = builder.comment("Inventory capacity (in number of items per level of chimney) of the bloomery.").define("bloomeryCapacity1", 16, 1, Integer.MAX_VALUE);
+        bloomeryCapacity = builder.comment("Inventory capacity (in number of items per level of chimney) of the bloomery.").define("bloomeryCapacity", 16, 1, Integer.MAX_VALUE);
         bloomeryMaxChimneyHeight = builder.comment("The maximum number of levels that can be built in a bloomery multiblock, for added capacity.").define("bloomeryMaxChimneyHeight", 3, 1, Integer.MAX_VALUE);
 
         builder.swap("blastFurnace");
@@ -496,7 +496,7 @@ public class ServerConfig extends BaseConfig
         fruitSaplingGrowthDays = new EnumMap<>(FruitBlocks.Tree.class);
         for (FruitBlocks.Tree tree : FruitBlocks.Tree.values())
         {
-            final String valueName = String.format("%sSaplingGrowthDays1", tree.getSerializedName());
+            final String valueName = String.format("%sSaplingGrowthDays", tree.getSerializedName());
             fruitSaplingGrowthDays.put(tree, builder.comment(String.format("Days for a %s tree sapling to be eligible to grow", tree.getSerializedName())).define(valueName, tree.defaultDaysToGrow(), 0, Integer.MAX_VALUE));
         }
         bananaSaplingGrowthDays = builder.comment("Days for a banana tree sapling to be eligible to grow").define("bananaSaplingGrowthDays", 6, 0, Integer.MAX_VALUE);
@@ -589,7 +589,7 @@ public class ServerConfig extends BaseConfig
             "1.0 = A full hunger bar's worth of exhaustion every 2.5 days. Set to zero to disable completely.").define("passiveExhaustionMultiplier", 1d, 0d, 100d);
         thirstModifier = builder.comment(
             "A multiplier for how quickly the player gets thirsty.",
-            "The player loses thirst in sync with when they lose hunger. This represents how much thirst they lose. 0 = None, 100 = the entire thirst bar.").define("thirstModifier1", 5d, 0d, 100d);
+            "The player loses thirst in sync with when they lose hunger. This represents how much thirst they lose. 0 = None, 100 = the entire thirst bar.").define("thirstModifier", 5d, 0d, 100d);
         enableThirstOverheating = builder.comment("Enables the player losing more thirst in hotter environments.").define("enableThirstOverheating", true);
         thirstGainedFromDrinkingInTheRain = builder.comment("How much thirst the player gains from drinking in the rain (standing outside in the rain and looking up) per tick.").define("thirstGainedFromDrinkingInTheRain", 5d / 24d, 0d, 100d);
         naturalRegenerationModifier = builder.comment(

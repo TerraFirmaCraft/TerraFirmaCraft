@@ -23,6 +23,7 @@ import net.neoforged.neoforge.client.model.data.ModelData;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.RenderHelpers;
+import net.dries007.tfc.common.component.ItemStackComponent;
 import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.items.PanItem;
 import net.dries007.tfc.util.data.Deposit;
@@ -43,7 +44,7 @@ public class PanItemRenderer extends BlockEntityWithoutLevelRenderer
             return;
         }
 
-        final @Nullable Deposit deposit = Deposit.get(stack.get(TFCComponents.DEPOSIT));
+        final @Nullable Deposit deposit = Deposit.get(stack.getOrDefault(TFCComponents.DEPOSIT, ItemStackComponent.EMPTY).stack());
         final Minecraft mc = Minecraft.getInstance();
         final LocalPlayer player = mc.player;
         if (deposit != null)

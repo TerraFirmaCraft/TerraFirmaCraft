@@ -18,13 +18,12 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
-import net.dries007.tfc.common.capabilities.food.BowlComponent;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodData;
-import net.dries007.tfc.common.capabilities.food.FoodHandler;
 import net.dries007.tfc.common.capabilities.food.IFood;
-import net.dries007.tfc.common.capabilities.food.IngredientsComponent;
 import net.dries007.tfc.common.capabilities.food.Nutrient;
+import net.dries007.tfc.common.component.Bowl;
+import net.dries007.tfc.common.component.IngredientsComponent;
 import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
@@ -203,14 +202,9 @@ public class SaladContainer extends Container implements ISlotCallback
                     if (maxNutrient != null)
                     {
                         final ItemStack salad = new ItemStack(TFCItems.SALADS.get(maxNutrient).get(), minIngredientCount);
-                        final @Nullable IFood food = FoodCapability.get(salad);
-                        if (food != null)
-                        {
-                            food.setCreationDate(FoodCapability.getRoundedCreationDate());
-                            food.setData(FoodData.of(4, water, saturation, nutrition, 4.0f));
-                        }
+                        FoodCapability.setFoodForDynamicItemOnCreate(salad, FoodData.of(4, water, saturation, nutrition, 4.0f));
                         salad.set(TFCComponents.INGREDIENTS, IngredientsComponent.of(ingredients));
-                        salad.set(TFCComponents.BOWL, BowlComponent.of(bowlStack));
+                        salad.set(TFCComponents.BOWL, Bowl.of(bowlStack));
                         inventory.setStackInSlot(SLOT_OUTPUT, salad);
                         return;
                     }

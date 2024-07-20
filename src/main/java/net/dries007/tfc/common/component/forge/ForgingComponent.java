@@ -34,7 +34,7 @@ public record ForgingComponent(
 )
 {
     public static final Codec<ForgingComponent> CODEC = RecordCodecBuilder.create(i -> i.group(
-        ForgeSteps.CODEC.fieldOf("steps").forGetter(c -> c.steps),
+        ForgeSteps.CODEC.optionalFieldOf("steps", ForgeSteps.EMPTY).forGetter(c -> c.steps),
         Codec.INT.optionalFieldOf("work", 0).forGetter(c -> c.work),
         Codec.INT.optionalFieldOf("target", 0).forGetter(c -> c.target),
         ResourceLocation.CODEC.optionalFieldOf("recipe")
@@ -147,6 +147,12 @@ public record ForgingComponent(
         public int hashCode()
         {
             return Objects.hash(recipe, recipeId);
+        }
+
+        @Override
+        public String toString()
+        {
+            return recipeId != null ? recipeId.toString() : (recipe != null ? "???" : "null");
         }
     }
 }

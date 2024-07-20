@@ -28,7 +28,7 @@ public class SimplePotRecipe extends PotRecipe
     public static final MapCodec<SimplePotRecipe> CODEC = RecordCodecBuilder.<SimplePotRecipe>mapCodec(i -> i.group(
         PotRecipe.CODEC.forGetter(c -> c),
         FluidStack.CODEC.optionalFieldOf("fluid_output", FluidStack.EMPTY).forGetter(c -> c.outputFluid),
-        ItemStackProvider.CODEC.listOf(0, 5).fieldOf("item_output").forGetter(c -> c.outputItems)
+        ItemStackProvider.CODEC.listOf(0, 5).optionalFieldOf("item_output", List.of()).forGetter(c -> c.outputItems)
     ).apply(i, SimplePotRecipe::new))
         .validate(recipe -> {
             final boolean anyProvidersDependOnInput = recipe.outputItems.stream().anyMatch(ItemStackProvider::dependsOnInput);

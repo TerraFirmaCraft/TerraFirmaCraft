@@ -8,19 +8,45 @@ package net.dries007.tfc.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import net.minecraft.core.component.PatchedDataComponentMap;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.dries007.tfc.client.BarSystem;
+import net.dries007.tfc.common.component.ItemStackBridge;
+import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.component.forge.ForgingBonus;
 
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin
 {
+    /**
+     * Modify the components attached to a stack on constructing, for time-dependent components.
+     * @see TFCComponents#onModifyItemStackComponents
+     */
+    @Inject(method = "<init>(Lnet/minecraft/world/level/ItemLike;ILnet/minecraft/core/component/PatchedDataComponentMap;)V", at = @At("TAIL"))
+    private void modifyItemStackOnConstructing(CallbackInfo ci)
+    {
+        ItemStackBridge.onModifyItemStackComponents((ItemStack) (Object) this);
+    }
+
+    /**
+     * When copying components, do a check to see if the default prototype has been updated - if so, then replace it on the copy,
+     * to ensure stacks created before we update default components don't leak the original prototype.
+     * @see TFCComponents#onCopyItemStackComponents
+     */
+    @Redirect(method = "copy", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/component/PatchedDataComponentMap;copy()Lnet/minecraft/core/component/PatchedDataComponentMap;"))
+    private PatchedDataComponentMap modifyItemCopyToUpdateComponents(PatchedDataComponentMap map)
+    {
+        return ItemStackBridge.onCopyItemStackComponents((ItemStack) (Object) this, map);
+    }
+
     /**
      * Inject into the same spot where unbreaking enchantment is processed, in order to additionally apply forging bonus in the same respect
      */

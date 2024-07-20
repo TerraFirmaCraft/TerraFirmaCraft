@@ -56,7 +56,7 @@ public class PotRecipe implements ISimpleRecipe<PotBlockEntity.PotInventory>
         this(base.itemIngredients, base.fluidIngredient, base.duration, base.temperature);
     }
 
-    private PotRecipe(List<Ingredient> itemIngredients, SizedFluidIngredient fluidIngredient, int duration, float temperature)
+    public PotRecipe(List<Ingredient> itemIngredients, SizedFluidIngredient fluidIngredient, int duration, float temperature)
     {
         this.itemIngredients = itemIngredients;
         this.fluidIngredient = fluidIngredient;

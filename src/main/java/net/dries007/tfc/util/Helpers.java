@@ -25,6 +25,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterators;
 import com.mojang.logging.LogUtils;
@@ -155,7 +156,7 @@ public final class Helpers
     private static final int PRIME_X = 501125321;
     private static final int PRIME_Y = 1136930381;
 
-    private static final boolean JEI = !BOOTSTRAP_ENVIRONMENT && ModList.get().isLoaded("jei");
+    private static final Supplier<Boolean> JEI = Suppliers.memoize(() -> !BOOTSTRAP_ENVIRONMENT && ModList.get().isLoaded("jei"));
 
     @Nullable private static RecipeManager CACHED_RECIPE_MANAGER = null;
 
@@ -194,7 +195,7 @@ public final class Helpers
 
     public static boolean isJEIEnabled()
     {
-        return JEI;
+        return JEI.get();
     }
 
     @Nullable
@@ -1152,6 +1153,29 @@ public final class Helpers
     public static <T> List<T> immutableAdd(List<T> list, T element)
     {
         return ImmutableList.<T>builderWithExpectedSize(list.size() + 1).addAll(list).add(element).build();
+    }
+
+    public static <T> List<T> immutableAddAll(List<T> list, List<T> others)
+    {
+        return ImmutableList.<T>builderWithExpectedSize(list.size() + others.size())
+            .addAll(list)
+            .addAll(others)
+            .build();
+    }
+
+    /**
+     * Given a list containing {@code [a0, ... aN]} and an element {@code ai}, returns a new, immutable list containing {@code [a0, ... ai-1
+     * , ai+1, ... aN]} in the most efficient manner we can manage (a single data copy).
+     * @return A new list containing one fewer element than the original list
+     * @throws IndexOutOfBoundsException if
+     */
+    public static <T> List<T> immutableRemove(List<T> list, T element)
+    {
+        final ImmutableList.Builder<T> builder = ImmutableList.builderWithExpectedSize(list.size() - 1);
+        for (final T t : list)
+            if (t != element)
+                builder.add(t);
+        return builder.build();
     }
 
     /**

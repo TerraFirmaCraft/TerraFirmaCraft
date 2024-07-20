@@ -25,7 +25,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.component.BaitComponent;
+import net.dries007.tfc.common.component.Bait;
 import net.dries007.tfc.common.component.BaitType;
 import net.dries007.tfc.common.entities.misc.TFCFishingHook;
 import net.dries007.tfc.util.Helpers;
@@ -71,7 +71,7 @@ public class TFCFishingRodItem extends FishingRodItem
             level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FISHING_BOBBER_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
             if (!level.isClientSide)
             {
-                ItemStack bait = BaitComponent.getBait(rod);
+                ItemStack bait = Bait.getBait(rod);
                 if (bait.isEmpty())
                 {
                     player.displayClientMessage(Component.translatable("tfc.fishing.no_bait"), true);
@@ -92,7 +92,7 @@ public class TFCFishingRodItem extends FishingRodItem
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag tooltipFlag)
     {
-        final ItemStack bait = BaitComponent.getBait(stack);
+        final ItemStack bait = Bait.getBait(stack);
         if (!bait.isEmpty())
         {
             tooltip.add(Component.translatable("tfc.tooltip.fishing.bait").append(bait.getHoverName()));
@@ -109,7 +109,7 @@ public class TFCFishingRodItem extends FishingRodItem
                 (type == BaitType.LARGE && Helpers.isItem(stack, TFCTags.Items.HOLDS_LARGE_FISHING_BAIT))
             )
             {
-                BaitComponent.setBait(stack, carried.split(1));
+                Bait.setBait(stack, carried.split(1));
                 return true;
             }
         }

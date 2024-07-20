@@ -41,7 +41,9 @@ import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.capabilities.food.Nutrient;
+import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.component.glass.GlassOperation;
+import net.dries007.tfc.common.component.glass.GlassOperations;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.entities.aquatic.Fish;
 import net.dries007.tfc.common.fluids.FluidHelpers;
@@ -178,8 +180,8 @@ public final class TFCItems
 
     public static final ItemId CERAMIC_BLOWPIPE = register("ceramic_blowpipe", () -> new BlowpipeItem(new Item.Properties()));
     public static final ItemId BLOWPIPE = register("blowpipe", () -> new BlowpipeItem(new Item.Properties()));
-    public static final ItemId CERAMIC_BLOWPIPE_WITH_GLASS = register("ceramic_blowpipe_with_glass", () -> new GlassBlowpipeItem(new Item.Properties(), 0.1f));
-    public static final ItemId BLOWPIPE_WITH_GLASS = register("blowpipe_with_glass", () -> new GlassBlowpipeItem(new Item.Properties(), 0f));
+    public static final ItemId CERAMIC_BLOWPIPE_WITH_GLASS = register("ceramic_blowpipe_with_glass", () -> new GlassBlowpipeItem(new Item.Properties().component(TFCComponents.GLASS, GlassOperations.DEFAULT), 0.1f));
+    public static final ItemId BLOWPIPE_WITH_GLASS = register("blowpipe_with_glass", () -> new GlassBlowpipeItem(new Item.Properties().component(TFCComponents.GLASS, GlassOperations.DEFAULT), 0f));
     public static final ItemId JACKS = register("jacks", () -> new GlassworkingItem(new Item.Properties(), GlassOperation.PINCH));
     public static final ItemId PADDLE = register("paddle", () -> new GlassworkingItem(new Item.Properties(), GlassOperation.FLATTEN));
     public static final ItemId GEM_SAW = register("gem_saw", () -> new GemSawItem(TFCTiers.BRONZE, new Item.Properties()));

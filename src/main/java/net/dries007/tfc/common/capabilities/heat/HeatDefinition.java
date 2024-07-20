@@ -11,7 +11,10 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+
+import net.dries007.tfc.common.recipes.IRecipePredicate;
 
 /**
  * This is a definition (reloaded via {@link HeatCapability}) of a heat that is applied to an item stack.
@@ -21,7 +24,7 @@ public record HeatDefinition(
     float heatCapacity,
     float forgingTemperature,
     float weldingTemperature
-)
+) implements IRecipePredicate<ItemStack>
 {
     public static final Codec<HeatDefinition> CODEC = RecordCodecBuilder.create(i -> i.group(
         Ingredient.CODEC.fieldOf("ingredient").forGetter(c -> c.ingredient),
@@ -39,4 +42,10 @@ public record HeatDefinition(
     );
 
     public static final HeatDefinition DEFAULT = new HeatDefinition(Ingredient.EMPTY, 0f, 0f, 0f);
+
+    @Override
+    public boolean matches(ItemStack input)
+    {
+        return ingredient.test(input);
+    }
 }

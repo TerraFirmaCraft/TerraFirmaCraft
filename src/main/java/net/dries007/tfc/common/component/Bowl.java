@@ -4,12 +4,9 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.capabilities.food;
+package net.dries007.tfc.common.component;
 
-import com.mojang.serialization.Codec;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,23 +16,16 @@ import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 
-/**
- * A component for stacks that have a bowl item they were created with, and need to return when consumed
- * @param bowl The bowl item, never empty, always stack size = 1
- */
-public record BowlComponent(ItemStack bowl)
+public final class Bowl
 {
-    public static final Codec<BowlComponent> CODEC = ItemStack.CODEC.xmap(BowlComponent::new, BowlComponent::bowl);
-    public static final StreamCodec<RegistryFriendlyByteBuf, BowlComponent> STREAM_CODEC = ItemStack.STREAM_CODEC.map(BowlComponent::new, BowlComponent::bowl);
+    public static final ItemStackComponent DISPLAY = of(new ItemStack(Items.BOWL)); // Used for display purposes, in getOrDefault()
 
-    public static final BowlComponent DISPLAY = of(new ItemStack(Items.BOWL)); // Used for display purposes, in getOrDefault()
-
-    public static BowlComponent of(ItemStack stack)
+    public static ItemStackComponent of(ItemStack stack)
     {
-        return new BowlComponent(stack.copyWithCount(1));
+        return new ItemStackComponent(stack.copyWithCount(1));
     }
 
-    public ItemStack onItemUse(ItemStack original, ItemStack result, LivingEntity entity)
+    public static ItemStack onItemUse(ItemStackComponent bowl, ItemStack original, ItemStack result, LivingEntity entity)
     {
         // This is a rare stackable-with-remainder-after-finished-using item
         // See: vanilla honey bottles
@@ -46,17 +36,17 @@ public record BowlComponent(ItemStack bowl)
         }
 
         // Pull the bowl out first, before we shrink the stack in super.finishUsingItem()
-        final ItemStack bowl = this.bowl.copy();
+        final ItemStack bowlStack = bowl.stack().copy();
 
         if (result.isEmpty())
         {
-            return bowl;
+            return bowlStack;
         }
         else if (entity instanceof Player player && !player.getAbilities().instabuild)
         {
             // In non-creative, we still need to give the player an empty bowl, but we must also return the result here, as it is non-empty
             // The super() call to finishUsingItem will handle decrementing the stack - only in non-creative - for us already.
-            ItemHandlerHelper.giveItemToPlayer(player, bowl);
+            ItemHandlerHelper.giveItemToPlayer(player, bowlStack);
         }
         return result;
     }

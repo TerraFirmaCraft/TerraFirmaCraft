@@ -39,8 +39,8 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.capabilities.food.BowlComponent;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.common.component.ItemStackComponent;
 import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.entities.BrainBreeder;
 import net.dries007.tfc.common.entities.EntityHelpers;
@@ -209,10 +209,10 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal, BrainBreeder
             setLastFamiliarityDecay(days); // no decay today
             if (!player.isCreative())
             {
-                final @Nullable BowlComponent bowl = stack.get(TFCComponents.BOWL);
+                final @Nullable ItemStackComponent bowl = stack.get(TFCComponents.BOWL);
                 if (bowl != null)
                 {
-                    ItemHandlerHelper.giveItemToPlayer(player, bowl.bowl().copy());
+                    ItemHandlerHelper.giveItemToPlayer(player, bowl.stack().copy());
                 }
                 if (stack.hasCraftingRemainingItem())
                 {

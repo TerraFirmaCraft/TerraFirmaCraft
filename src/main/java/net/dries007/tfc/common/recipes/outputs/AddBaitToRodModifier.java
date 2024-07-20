@@ -8,7 +8,7 @@ package net.dries007.tfc.common.recipes.outputs;
 
 import net.minecraft.world.item.ItemStack;
 
-import net.dries007.tfc.common.component.BaitComponent;
+import net.dries007.tfc.common.component.Bait;
 import net.dries007.tfc.common.component.BaitType;
 import net.dries007.tfc.common.recipes.RecipeHelpers;
 
@@ -23,7 +23,7 @@ public enum AddBaitToRodModifier implements ItemStackModifier
         {
             if (BaitType.getType(input) != BaitType.NONE)
             {
-                BaitComponent.setBait(stack, input);
+                Bait.setBait(stack, input);
                 return stack;
             }
         }

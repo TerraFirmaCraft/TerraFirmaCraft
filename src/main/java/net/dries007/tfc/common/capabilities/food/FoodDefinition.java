@@ -10,12 +10,15 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+
+import net.dries007.tfc.common.recipes.IRecipePredicate;
 
 public record FoodDefinition(
     Ingredient ingredient,
     FoodData food
-)
+) implements IRecipePredicate<ItemStack>
 {
     public static final Codec<FoodDefinition> CODEC = RecordCodecBuilder.create(i -> i.group(
         Ingredient.CODEC.fieldOf("ingredient").forGetter(c -> c.ingredient),
@@ -29,4 +32,10 @@ public record FoodDefinition(
     );
 
     public static final FoodDefinition DEFAULT = new FoodDefinition(Ingredient.EMPTY, FoodData.EMPTY);
+
+    @Override
+    public boolean matches(ItemStack input)
+    {
+        return ingredient.test(input);
+    }
 }

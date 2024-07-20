@@ -16,6 +16,7 @@ import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.recipes.RecipeHelpers;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
@@ -34,7 +35,9 @@ public final class HeatCapability
     @Nullable
     public static IHeat get(ItemStack stack)
     {
-        return null; // todo: 1.21 porting
+        // todo: 1.21 porting, allow for custom implementations here? like a capability dispatch with fallback?
+        final @Nullable HeatComponent value = stack.get(TFCComponents.HEAT);
+        return value != null ? new HeatView(stack, value) : null;
     }
 
     /**
@@ -42,7 +45,7 @@ public final class HeatCapability
      */
     public static float getTemperature(ItemStack stack)
     {
-        final @Nullable IHeat heat = get(stack);
+        final @Nullable HeatComponent heat = stack.get(TFCComponents.HEAT);
         return heat != null ? heat.getTemperature() : 0;
     }
 
@@ -60,12 +63,12 @@ public final class HeatCapability
 
     public static boolean has(ItemStack stack)
     {
-        return false; // todo: 1.21 porting
+        return stack.has(TFCComponents.HEAT); // todo: 1.21 porting
     }
 
     public static boolean maybeHas(ItemStack stack)
     {
-        return false; // todo: 1.21 porting
+        return stack.has(TFCComponents.HEAT); // todo: 1.21 porting
     }
 
     /**
@@ -73,21 +76,13 @@ public final class HeatCapability
      */
     public static boolean isHot(ItemStack stack)
     {
-        final @Nullable IHeat heat = get(stack);
-        return heat != null && heat.getTemperature() > 0;
+        return getTemperature(stack) > 0;
     }
 
     @Nullable
     public static HeatDefinition getDefinition(ItemStack stack)
     {
-        for (HeatDefinition def : CACHE.getAll(stack.getItem()))
-        {
-            if (def.ingredient().test(stack))
-            {
-                return def;
-            }
-        }
-        return null;
+        return RecipeHelpers.getRecipe(CACHE, stack, stack.getItem());
     }
 
     public static float adjustTempTowards(float temp, float target)

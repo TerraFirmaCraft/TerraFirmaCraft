@@ -20,7 +20,6 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
-import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 import org.jetbrains.annotations.Nullable;
@@ -38,7 +37,6 @@ import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.IBellowsConsumer;
 import net.dries007.tfc.common.blocks.wood.Wood;
-import net.dries007.tfc.common.capabilities.food.FoodHandler;
 import net.dries007.tfc.common.capabilities.food.FoodTraits;
 import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.container.TFCContainerTypes;
@@ -104,13 +102,13 @@ public final class TerraFirmaCraft
 
         bus.addListener(this::setup);
         bus.addListener(this::registerRegistries);
-        bus.addListener(this::registerCapabilities);
         bus.addListener(this::loadComplete);
         bus.addListener(this::onInterModComms);
         bus.addListener(TFCEntities::onEntityAttributeCreation);
         bus.addListener(Faunas::registerSpawnPlacements);
         bus.addListener(TFCComponents::onModifyDefaultComponents);
         bus.addListener(PacketHandler::setup);
+        bus.addListener(TFCCreativeTabs::setAllTabContentAsNonDecaying);
 
         // Core Registries (vanilla)
         TFCBlocks.BLOCKS.register(bus);
@@ -219,21 +217,8 @@ public final class TerraFirmaCraft
         event.register(BarSystem.REGISTRY);
     }
 
-    public void registerCapabilities(RegisterCapabilitiesEvent event)
-    {
-        // todo: most of these won't be capabilities anymore, probably none
-        // event.register(IHeat.class);
-        // event.register(IHeatBlock.class);
-        // event.register(Forging.class);
-        // event.register(ChunkData.class);
-        // event.register(WorldTracker.class);
-        // event.register(IFood.class);
-        // event.register(PlayerData.class);
-    }
-
     public void loadComplete(FMLLoadCompleteEvent event)
     {
-        FoodHandler.setNonDecaying(false);
         if (syncLoadError != null)
         {
             Helpers.throwAsUnchecked(syncLoadError);
