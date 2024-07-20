@@ -16,6 +16,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.fluids.SimpleFluid;
@@ -86,6 +87,12 @@ public interface Accessors
         if (value instanceof Ingredient.TagValue(TagKey<Item> tag)) return tag.location().getPath();
         if (value instanceof Ingredient.ItemValue(ItemStack item)) return nameOf(item.getItem());
         throw new AssertionError("Unknown ingredient value");
+    }
+
+    default String nameOf(Fluid fluid)
+    {
+        assert fluid != Fluids.EMPTY : "Should never get name of Items.AIR";
+        return BuiltInRegistries.FLUID.getKey(fluid).getPath();
     }
 
     default String nameOf(ItemLike item)

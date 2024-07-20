@@ -1,0 +1,88 @@
+{
+  "type": "tfc:pot",
+  "duration": 1000,
+  "fluid_ingredient": {
+    "amount": 100,
+    "fluid": "minecraft:water"
+  },
+  "ingredients": [
+    {
+      "type": "tfc:and",
+      "children": [
+        {
+          "item": "minecraft:egg"
+        },
+        {
+          "type": "tfc:not_rotten"
+        }
+      ]
+    },
+    {
+      "type": "tfc:and",
+      "children": [
+        {
+          "item": "minecraft:egg"
+        },
+        {
+          "type": "tfc:not_rotten"
+        }
+      ]
+    },
+    {
+      "type": "tfc:and",
+      "children": [
+        {
+          "item": "minecraft:egg"
+        },
+        {
+          "type": "tfc:not_rotten"
+        }
+      ]
+    },
+    {
+      "type": "tfc:and",
+      "children": [
+        {
+          "item": "minecraft:egg"
+        },
+        {
+          "type": "tfc:not_rotten"
+        }
+      ]
+    },
+    {
+      "type": "tfc:and",
+      "children": [
+        {
+          "item": "minecraft:egg"
+        },
+        {
+          "type": "tfc:not_rotten"
+        }
+      ]
+    }
+  ],
+  "item_output": [
+    {
+      "count": 1,
+      "id": "tfc:food/boiled_egg"
+    },
+    {
+      "count": 1,
+      "id": "tfc:food/boiled_egg"
+    },
+    {
+      "count": 1,
+      "id": "tfc:food/boiled_egg"
+    },
+    {
+      "count": 1,
+      "id": "tfc:food/boiled_egg"
+    },
+    {
+      "count": 1,
+      "id": "tfc:food/boiled_egg"
+    }
+  ],
+  "temperature": 300.0
+}

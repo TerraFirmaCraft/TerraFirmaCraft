@@ -1,0 +1,55 @@
+{
+  "type": "tfc:pot_soup",
+  "duration": 1000,
+  "fluid_ingredient": {
+    "amount": 100,
+    "fluid": "minecraft:water"
+  },
+  "ingredients": [
+    {
+      "type": "tfc:and",
+      "children": [
+        {
+          "tag": "tfc:usable_in_soup"
+        },
+        {
+          "type": "tfc:not_rotten"
+        }
+      ]
+    },
+    {
+      "type": "tfc:and",
+      "children": [
+        {
+          "tag": "tfc:usable_in_soup"
+        },
+        {
+          "type": "tfc:not_rotten"
+        }
+      ]
+    },
+    {
+      "type": "tfc:and",
+      "children": [
+        {
+          "tag": "tfc:usable_in_soup"
+        },
+        {
+          "type": "tfc:not_rotten"
+        }
+      ]
+    },
+    {
+      "type": "tfc:and",
+      "children": [
+        {
+          "tag": "tfc:usable_in_soup"
+        },
+        {
+          "type": "tfc:not_rotten"
+        }
+      ]
+    }
+  ],
+  "temperature": 300.0
+}

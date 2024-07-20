@@ -1,0 +1,61 @@
+{
+  "type": "tfc:pot",
+  "duration": 1000,
+  "fluid_ingredient": {
+    "amount": 100,
+    "fluid": "minecraft:water"
+  },
+  "ingredients": [
+    {
+      "type": "tfc:and",
+      "children": [
+        {
+          "item": "tfc:food/rice_grain"
+        }
+      ]
+    },
+    {
+      "type": "tfc:and",
+      "children": [
+        {
+          "item": "tfc:food/rice_grain"
+        }
+      ]
+    },
+    {
+      "type": "tfc:and",
+      "children": [
+        {
+          "item": "tfc:food/rice_grain"
+        }
+      ]
+    },
+    {
+      "type": "tfc:and",
+      "children": [
+        {
+          "item": "tfc:food/rice_grain"
+        }
+      ]
+    }
+  ],
+  "item_output": [
+    {
+      "count": 1,
+      "id": "tfc:food/cooked_rice"
+    },
+    {
+      "count": 1,
+      "id": "tfc:food/cooked_rice"
+    },
+    {
+      "count": 1,
+      "id": "tfc:food/cooked_rice"
+    },
+    {
+      "count": 1,
+      "id": "tfc:food/cooked_rice"
+    }
+  ],
+  "temperature": 300.0
+}

@@ -52,6 +52,7 @@ import net.dries007.tfc.data.recipes.ChiselRecipes;
 import net.dries007.tfc.data.recipes.CraftingRecipes;
 import net.dries007.tfc.data.recipes.GlassRecipes;
 import net.dries007.tfc.data.recipes.HeatRecipes;
+import net.dries007.tfc.data.recipes.PotRecipes;
 import net.dries007.tfc.data.recipes.QuernRecipes;
 import net.dries007.tfc.data.recipes.WeldingRecipes;
 import net.dries007.tfc.util.Helpers;
@@ -70,6 +71,7 @@ public final class BuiltinRecipes extends VanillaRecipeProvider implements
     CraftingRecipes,
     GlassRecipes,
     HeatRecipes,
+    PotRecipes,
     QuernRecipes,
     WeldingRecipes
 {
@@ -149,6 +151,7 @@ public final class BuiltinRecipes extends VanillaRecipeProvider implements
         craftingRecipes();
         glassRecipes();
         heatRecipes();
+        potRecipes();
         quernRecipes();
         weldingRecipes();
 

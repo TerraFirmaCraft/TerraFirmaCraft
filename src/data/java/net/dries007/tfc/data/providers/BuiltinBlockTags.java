@@ -58,7 +58,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         pivot(TFCBlocks.METALS, Metal.BlockType.BLOCK).forEach((metal, block) -> tag(storageBlockTagOf(Registries.BLOCK, metal)).add(block));
 
         // ===== TFC Tags ===== //
-        tag(LAMPS).add(pivot(TFCBlocks.METALS, Metal.BlockType.LAMP));
+        tag(LAMPS).add(TFCBlocks.METALS, Metal.BlockType.LAMP);
 
         tag(CAN_TRIGGER_COLLAPSE).addTags(Tags.Blocks.ORES, Tags.Blocks.STONES);
         tag(CAN_START_COLLAPSE).addTags(Tags.Blocks.ORES, TFCTags.Blocks.STONES_RAW);

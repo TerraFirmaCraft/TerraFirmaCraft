@@ -1,0 +1,30 @@
+{
+  "type": "tfc:pot",
+  "duration": 2000,
+  "fluid_ingredient": {
+    "amount": 1000,
+    "fluid": "minecraft:water"
+  },
+  "fluid_output": {
+    "amount": 1000,
+    "id": "tfc:olive_oil_water"
+  },
+  "ingredients": [
+    {
+      "item": "tfc:olive_paste"
+    },
+    {
+      "item": "tfc:olive_paste"
+    },
+    {
+      "item": "tfc:olive_paste"
+    },
+    {
+      "item": "tfc:olive_paste"
+    },
+    {
+      "item": "tfc:olive_paste"
+    }
+  ],
+  "temperature": 300.0
+}
