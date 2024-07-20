@@ -246,7 +246,7 @@ public final class ClientEventHandler
         bus.addListener(ClientEventHandler::registerKeyBindings);
         bus.addListener(ClientEventHandler::registerLayerDefinitions);
         bus.addListener(ClientEventHandler::registerPresetEditors);
-        //bus.addListener(IngameOverlays::registerOverlays); // todo: 1.21, overlays
+        bus.addListener(IngameOverlays::registerOverlays);
     }
 
     @SuppressWarnings("deprecation")

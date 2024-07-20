@@ -62,7 +62,7 @@ public class TFCRabbit extends Rabbit implements MammalProperties
 {
     public static AttributeSupplier.Builder createAttributes()
     {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 12.0D).add(Attributes.MOVEMENT_SPEED, 0.3F);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 12.0D).add(Attributes.MOVEMENT_SPEED, 0.3F).add(Attributes.ATTACK_DAMAGE, 3.0);
     }
 
     private static final EntityDataAccessor<Boolean> GENDER = SynchedEntityData.defineId(TFCRabbit.class, EntityDataSerializers.BOOLEAN);

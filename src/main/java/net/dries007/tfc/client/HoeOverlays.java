@@ -22,7 +22,7 @@ import net.dries007.tfc.config.TFCConfig;
 
 public class HoeOverlays
 {
-    public static boolean render(Minecraft minecraft, Window window, GuiGraphics graphics)
+    public static boolean render(Minecraft minecraft, GuiGraphics graphics)
     {
         final Level world = minecraft.level;
         final BlockPos targetedPos = ClientHelpers.getTargetedPos();
@@ -35,8 +35,8 @@ public class HoeOverlays
                 overlayBlock.addHoeOverlayInfo(world, targetedPos, targetedState, lines, TFCConfig.CLIENT.enableDebug.get());
                 if (!lines.isEmpty())
                 {
-                    int x = window.getGuiScaledWidth() / 2 + 3;
-                    int y = window.getGuiScaledHeight() / 2 + 8;
+                    int x = graphics.guiWidth() / 2 + 3;
+                    int y = graphics.guiHeight() / 2 + 8;
                     for (Component line : lines)
                     {
                         drawCenteredText(minecraft, graphics, line, x, y);

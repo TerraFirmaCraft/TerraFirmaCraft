@@ -10,6 +10,7 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -40,6 +41,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.entity.projectile.ThrownPotion;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraft.world.inventory.ClickAction;
@@ -48,6 +50,9 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.LingeringPotionItem;
+import net.minecraft.world.item.alchemy.PotionContents;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -836,12 +841,15 @@ public final class ForgeEventHandler
         final Projectile projectile = event.getProjectile();
         final HitResult result = event.getRayTraceResult();
         final Level level = projectile.level();
-        /* todo 1.21 porting, potions
-        if (projectile instanceof ThrownPotion potion && PotionUtils.getPotion(potion.getItem()) == Potions.WATER && PotionUtils.getMobEffects(potion.getItem()).isEmpty())
+        if (projectile instanceof ThrownPotion potion)
         {
-            final boolean lingering = potion.getItem().getItem() instanceof LingeringPotionItem;
-            DouseFireEvent.douse(level, potion.getBoundingBox().inflate(lingering ? 4 : 2, 2, lingering ? 4 : 2), projectile.getOwner() instanceof Player player ? player : null);
-        }*/
+            final PotionContents contents = potion.getItem().get(DataComponents.POTION_CONTENTS);
+            if (contents != null && contents.is(Potions.WATER) && !contents.hasEffects())
+            {
+                final boolean lingering = potion.getItem().getItem() instanceof LingeringPotionItem;
+                DouseFireEvent.douse(level, potion.getBoundingBox().inflate(lingering ? 4 : 2, 2, lingering ? 4 : 2), projectile.getOwner() instanceof Player player ? player : null);
+            }
+        }
         if (!TFCConfig.SERVER.enableFireArrowSpreading.get()) return;
         if (result.getType() == HitResult.Type.BLOCK && projectile.isOnFire())
         {

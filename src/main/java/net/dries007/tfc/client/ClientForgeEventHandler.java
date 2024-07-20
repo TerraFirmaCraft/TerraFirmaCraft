@@ -30,6 +30,7 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
@@ -62,6 +63,7 @@ import net.neoforged.neoforge.client.event.RenderHighlightEvent;
 import net.neoforged.neoforge.client.event.ScreenEvent;
 import net.neoforged.neoforge.client.event.ToastAddEvent;
 import net.neoforged.neoforge.client.event.ViewportEvent;
+import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -135,7 +137,7 @@ public class ClientForgeEventHandler
         bus.addListener(ClientForgeEventHandler::onHandRender);
         bus.addListener(ClientForgeEventHandler::onToast);
         bus.addListener(ClientForgeEventHandler::onEffectRender);
-        //bus.addListener(IngameOverlays::checkGuiOverlays); // todo 1.21, overlays
+        bus.addListener(IngameOverlays::checkGuiOverlays);
     }
 
     public static void onRenderGameOverlayText(CustomizeGuiOverlayEvent.DebugText event)
@@ -196,18 +198,17 @@ public class ClientForgeEventHandler
     public static void onRenderGameOverlayPost(RenderGuiLayerEvent.Post event)
     {
         // todo this should probably be a forge ingame gui
-        final GuiGraphics stack = event.getGuiGraphics();
+        final GuiGraphics graphics = event.getGuiGraphics();
         final Minecraft minecraft = Minecraft.getInstance();
         final Player player = minecraft.player;
         if (player != null)
         {
-            // todo: 1.21 hoe overlay rendering
-            /*
-            final boolean holdingHoe = Helpers.isItem(player.getMainHandItem().getItem(), TFCTags.Items.HOES) || Helpers.isItem(player.getOffhandItem().getItem(), TFCTags.Items.HOES);
-            if (event.getOverlay() == VanillaGuiOverlay.CROSSHAIR.type() && minecraft.screen == null && holdingHoe && (!TFCConfig.CLIENT.showHoeOverlaysOnlyWhenShifting.get() || player.isShiftKeyDown()))
+            // todo 1.21 hoe tag broken?
+            final boolean holdingHoe = Helpers.isItem(player.getMainHandItem().getItem(), ItemTags.HOES) || Helpers.isItem(player.getOffhandItem().getItem(), ItemTags.HOES);
+            if (event.getName() == VanillaGuiLayers.CROSSHAIR && holdingHoe && (!TFCConfig.CLIENT.showHoeOverlaysOnlyWhenShifting.get() || player.isShiftKeyDown()))
             {
-                HoeOverlays.render(minecraft, event.getWindow(), stack);
-            }*/
+                HoeOverlays.render(minecraft, graphics);
+            }
         }
     }
 
@@ -342,13 +343,17 @@ public class ClientForgeEventHandler
                         text.add(Component.literal(DARK_GRAY + "[Debug] Components:"));
                         first = false;
                     }
-                    text.add(Component.literal(DARK_GRAY
-                        + typeOfComponent(stack.getComponentsPatch().get(component.type()))
-                        + BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(component.type())
-                        + " "
-                        + component.value()
-                        + " = "
-                        + component.encodeValue(NbtOps.INSTANCE).getOrThrow()));
+                    // todo 1.21 this encoding can fail? why? (armor trims)
+                    component.encodeValue(NbtOps.INSTANCE).ifSuccess(tag -> {
+                        text.add(Component.literal(DARK_GRAY
+                            + typeOfComponent(stack.getComponentsPatch().get(component.type()))
+                            + BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(component.type())
+                            + " "
+                            + component.value()
+                            + " = "
+                            + tag));
+                    });
+
                 }
 
                 final String itemTags = listOfTags(stack.getItem().builtInRegistryHolder());
