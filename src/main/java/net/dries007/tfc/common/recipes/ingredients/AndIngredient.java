@@ -17,7 +17,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.crafting.ICustomIngredient;
 import net.neoforged.neoforge.common.crafting.IngredientType;
+import net.neoforged.neoforge.common.crafting.IntersectionIngredient;
 
+/**
+ * A variant of {@link IntersectionIngredient} which has special handling to account for ingredients that only represent modifiers,
+ * i.e. an ingredient that checks heat. No default items will have this property, so we need to explicitly modify the other value
+ * items.
+ * <p>
+ * This behavior only affects {@link #getItems()} - in all other respects this is a AND'd together ingredient.
+ */
 public record AndIngredient(List<Ingredient> children) implements ICustomIngredient
 {
     public static final MapCodec<AndIngredient> CODEC = Ingredient.CODEC.listOf()

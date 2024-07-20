@@ -165,7 +165,7 @@ public final class TerraFirmaCraft
 
         if (FMLEnvironment.dist == Dist.CLIENT)
         {
-            ClientEventHandler.init(bus);
+            ClientEventHandler.init(mod, bus);
             ClientForgeEventHandler.init();
             // todo 1.21, compat with patchy
             //PatchouliClientEventHandler.init();

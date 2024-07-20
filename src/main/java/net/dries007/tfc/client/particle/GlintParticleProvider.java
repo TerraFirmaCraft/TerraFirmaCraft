@@ -14,8 +14,6 @@ import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.particle.SuspendedTownParticle;
 import net.minecraft.core.particles.SimpleParticleType;
 
-import net.dries007.tfc.mixin.client.accessor.SuspendedTownParticleAccessor;
-
 public class GlintParticleProvider implements ParticleProvider<SimpleParticleType>
 {
     private final SpriteSet sprite;
@@ -37,7 +35,7 @@ public class GlintParticleProvider implements ParticleProvider<SimpleParticleTyp
     @Override
     public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
     {
-        final SuspendedTownParticle particle = SuspendedTownParticleAccessor.invoke$new(level, x, y, z, xSpeed, ySpeed, zSpeed);
+        final SuspendedTownParticle particle = new SuspendedTownParticle(level, x, y, z, xSpeed, ySpeed, zSpeed){};
         particle.pickSprite(sprite);
         particle.setColor(red, green, blue);
         return particle;

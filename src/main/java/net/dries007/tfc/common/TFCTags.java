@@ -148,6 +148,8 @@ public class TFCTags
         public static final TagKey<Fluid> WATER_LIKE = FluidTags.WATER;
         public static final TagKey<Fluid> LAVA_LIKE = FluidTags.LAVA;
 
+        // ===== Data Generated ===== //
+
         /**
          * These water tags contain only source fluids of given water variants.
          * <ul>
@@ -162,7 +164,15 @@ public class TFCTags
         public static final TagKey<Fluid> INFINITE_WATER = create("infinite_water");
 
         public static final TagKey<Fluid> MIXABLE = create("mixable");
-        public static final TagKey<Fluid> HYDRATING = create("hydrating"); // Fluids that work to hydrate farmland, berry bushes, or other growing things
+        /** Fluids that work to hydrate farmland, berry bushes, or other plants that query hydration */
+        public static final TagKey<Fluid> HYDRATING = create("hydrating");
+
+        public static final TagKey<Fluid> ALCOHOLS = create("alcohols");
+        public static final TagKey<Fluid> MOLTEN_METALS = create("molten_metals");
+
+        public static final TagKey<Fluid> DRINKABLES = create("drinkables");
+        public static final TagKey<Fluid> INGREDIENTS = create("ingredients");
+
         public static final TagKey<Fluid> USABLE_IN_POT = create("usable_in_pot");
         public static final TagKey<Fluid> USABLE_IN_JUG = create("usable_in_jug");
         public static final TagKey<Fluid> USABLE_IN_WOODEN_BUCKET = create("usable_in_wooden_bucket");
@@ -174,13 +184,6 @@ public class TFCTags
         public static final TagKey<Fluid> USABLE_IN_INGOT_MOLD = create("usable_in_ingot_mold");
         public static final TagKey<Fluid> USABLE_IN_TOOL_HEAD_MOLD = create("usable_in_tool_head_mold");
         public static final TagKey<Fluid> USABLE_IN_BELL_MOLD = create("usable_in_bell_mold");
-
-        public static final TagKey<Fluid> ALCOHOLS = create("alcohols");
-        public static final TagKey<Fluid> MOLTEN_METALS = create("molten_metals");
-
-        public static final TagKey<Fluid> DRINKABLES = create("drinkables");
-        public static final TagKey<Fluid> INGREDIENTS = create("ingredients");
-
 
         private static TagKey<Fluid> create(String id)
         {
@@ -303,6 +306,7 @@ public class TFCTags
         public static final TagKey<Item> RAW_FISH = Tags.Items.FOODS_RAW_FISH;
         public static final TagKey<Item> COOKED_FISH = Tags.Items.FOODS_COOKED_FISH;
         public static final TagKey<Item> FISH = commonTag("foods/fish");
+        public static final TagKey<Item> DOUGH = commonTag("foods/dough");
         public static final TagKey<Item> BREAD = commonTag("foods/bread");
         public static final TagKey<Item> SALADS = commonTag("foods/salad");
         public static final TagKey<Item> SOUPS = Tags.Items.FOODS_SOUP;
@@ -341,14 +345,14 @@ public class TFCTags
         public static final TagKey<Item> UNFIRED_LARGE_VESSELS = tag("unfired_large_vessels");
         public static final TagKey<Item> FIRED_LARGE_VESSELS = tag("fired_large_vessels");
         public static final TagKey<Item> MOLDS = tag("molds");
+        public static final TagKey<Item> UNFIRED_MOLDS = tag("unfired_molds");
+        public static final TagKey<Item> FIRED_MOLDS = tag("fired_molds");
         public static final TagKey<Item> LAMPS = tag(Blocks.LAMPS);
-        public static final TagKey<Item> BUCKETS = commonTag("buckets");
         public static final TagKey<Item> MINECARTS = commonTag("minecarts");
         public static final TagKey<Item> ORE_PIECES = tag("ore_pieces");
         public static final TagKey<Item> SMALL_ORE_PIECES = tag("small_ore_pieces");
         public static final TagKey<Item> WATER_WHEELS = tag("water_wheels");
         public static final TagKey<Item> WINDMILL_BLADES = tag("windmill_blades");
-        public static final TagKey<Item> GLASS_BOTTLES = tag("glass_bottles");
 
         public static final TagKey<Item> DOUBLE_INGOTS = commonTag("double_sheets");
         public static final TagKey<Item> SHEETS = commonTag("double_sheets");
@@ -364,6 +368,8 @@ public class TFCTags
         public static final TagKey<Item> GLASS_BATCHES_T2 = tag("glass_batches_tier_2");
         public static final TagKey<Item> GLASS_BATCHES_T3 = tag("glass_batches_tier_3");
         public static final TagKey<Item> GLASS_BATCHES_NOT_T1 = tag("glass_batches_not_tier_1");
+        public static final TagKey<Item> GLASS_BLOWPIPES = tag("glass_blowpipes");
+        public static final TagKey<Item> GLASS_BOTTLES = tag("glass_bottles");
 
 
         public static TagKey<Item> mobEquipmentSlotTag(EquipmentSlot slot)

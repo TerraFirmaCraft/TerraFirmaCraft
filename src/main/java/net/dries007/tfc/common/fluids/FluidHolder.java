@@ -30,6 +30,11 @@ public record FluidHolder<F extends FlowingFluid>(
         return source.get();
     }
 
+    public FluidType getType()
+    {
+        return type.value();
+    }
+
     public BlockState createSourceBlock()
     {
         return source.get().defaultFluidState().createLegacyBlock();

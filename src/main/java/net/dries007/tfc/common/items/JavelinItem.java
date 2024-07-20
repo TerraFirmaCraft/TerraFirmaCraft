@@ -7,11 +7,7 @@
 package net.dries007.tfc.common.items;
 
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-import com.google.common.base.Suppliers;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -27,12 +23,10 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.TridentItem;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.ItemAbility;
 
 import net.dries007.tfc.client.TFCSounds;
-import net.dries007.tfc.client.render.blockentity.JavelinItemRenderer;
 import net.dries007.tfc.common.entities.misc.ThrownJavelin;
 import net.dries007.tfc.util.Helpers;
 
@@ -115,19 +109,6 @@ public class JavelinItem extends SwordItem
     public boolean canPerformAction(ItemStack stack, ItemAbility toolAction)
     {
         return super.canPerformAction(stack, toolAction) && toolAction != ItemAbilities.SWORD_SWEEP;
-    }
-
-    @Override
-    public void initializeClient(Consumer<IClientItemExtensions> consumer)
-    {
-        consumer.accept(new IClientItemExtensions() {
-            private final Supplier<JavelinItemRenderer> renderer = Suppliers.memoize(() -> new JavelinItemRenderer(JavelinItem.this));
-            @Override
-            public BlockEntityWithoutLevelRenderer getCustomRenderer()
-            {
-                return renderer.get();
-            }
-        });
     }
 
     public float getThrownDamage()

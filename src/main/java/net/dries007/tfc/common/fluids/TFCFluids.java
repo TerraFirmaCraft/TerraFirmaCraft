@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.material.FlowingFluid;
@@ -23,7 +22,6 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
-import net.dries007.tfc.client.TFCColors;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
@@ -38,18 +36,6 @@ public final class TFCFluids
 {
     public static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(NeoForgeRegistries.FLUID_TYPES, MOD_ID);
     public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(Registries.FLUID, MOD_ID);
-
-    /**
-     * Texture locations for both vanilla and TFC fluid textures
-     */
-    public static final ResourceLocation WATER_STILL = Helpers.identifierMC("block/water_still");
-    public static final ResourceLocation WATER_FLOW = Helpers.identifierMC("block/water_flow");
-    public static final ResourceLocation WATER_OVERLAY = Helpers.identifierMC("block/water_overlay");
-    /** @see net.minecraft.client.renderer.ScreenEffectRenderer#UNDERWATER_LOCATION */
-    public static final ResourceLocation UNDERWATER_LOCATION = Helpers.identifierMC("textures/misc/underwater.png");
-
-    public static final ResourceLocation MOLTEN_STILL = Helpers.identifier("block/molten_still");
-    public static final ResourceLocation MOLTEN_FLOW = Helpers.identifier("block/molten_flow");
 
     /**
      * A mask for fluid color - most fluids should be using this
@@ -68,7 +54,6 @@ public final class TFCFluids
         lavaLike()
             .descriptionId("fluid.tfc.metal." + metal.getSerializedName())
             .rarity(metal.rarity()),
-        new FluidTypeClientProperties(ALPHA_MASK | metal.getColor(), MOLTEN_STILL, MOLTEN_FLOW, null, null),
         MoltenFluid.Source::new,
         MoltenFluid.Flowing::new
     ));
@@ -80,10 +65,6 @@ public final class TFCFluids
             .bucket(TFCItems.FLUID_BUCKETS.get(FluidId.SALT_WATER)),
         waterLike()
             .descriptionId("fluid.tfc.salt_water"),
-        new FluidTypeClientProperties(
-            ALPHA_MASK | 0x3F76E4, (level, pos) -> level.getBlockTint(pos, TFCColors.SALT_WATER) | TFCFluids.ALPHA_MASK,
-            WATER_STILL, WATER_FLOW, WATER_OVERLAY, UNDERWATER_LOCATION
-        ),
         MixingFluid.Source::new,
         MixingFluid.Flowing::new
     );
@@ -95,7 +76,6 @@ public final class TFCFluids
             .bucket(TFCItems.FLUID_BUCKETS.get(FluidId.SPRING_WATER)),
         waterLike()
             .descriptionId("fluid.tfc.spring_water"),
-        new FluidTypeClientProperties(ALPHA_MASK | 0x4ECBD7, WATER_STILL, WATER_FLOW, WATER_OVERLAY, UNDERWATER_LOCATION),
         MixingFluid.Source::new,
         MixingFluid.Flowing::new
     );
@@ -110,7 +90,6 @@ public final class TFCFluids
         waterLike()
             .descriptionId("fluid.tfc." + fluid.getId())
             .canConvertToSource(false),
-        new FluidTypeClientProperties(fluid.isTransparent() ? ALPHA_MASK | fluid.getColor() : fluid.getColor(), WATER_STILL, WATER_FLOW, WATER_OVERLAY, UNDERWATER_LOCATION),
         MixingFluid.Source::new,
         MixingFluid.Flowing::new
     ));
@@ -123,7 +102,6 @@ public final class TFCFluids
         waterLike()
             .descriptionId("fluid.tfc." + color.getName() + "_dye")
             .canConvertToSource(false),
-        new FluidTypeClientProperties(color.getTextureDiffuseColor(), WATER_STILL, WATER_FLOW, WATER_OVERLAY, null),
         MixingFluid.Source::new,
         MixingFluid.Flowing::new
     ));
@@ -162,12 +140,12 @@ public final class TFCFluids
             .supportsBoating(true);
     }
 
-    private static <F extends FlowingFluid> FluidHolder<F> register(String name, Consumer<BaseFlowingFluid.Properties> builder, FluidType.Properties typeProperties, FluidTypeClientProperties clientProperties, Function<BaseFlowingFluid.Properties, F> sourceFactory, Function<BaseFlowingFluid.Properties, F> flowingFactory)
+    private static <F extends FlowingFluid> FluidHolder<F> register(String name, Consumer<BaseFlowingFluid.Properties> builder, FluidType.Properties typeProperties, Function<BaseFlowingFluid.Properties, F> sourceFactory, Function<BaseFlowingFluid.Properties, F> flowingFactory)
     {
         // Names `metal/foo` to `metal/flowing_foo`
         final int index = name.lastIndexOf('/');
         final String flowingName = index == -1 ? "flowing_" + name : name.substring(0, index) + "/flowing_" + name.substring(index + 1);
 
-        return RegistrationHelpers.registerFluid(FLUID_TYPES, FLUIDS, name, name, flowingName, builder, () -> new ExtendedFluidType(typeProperties, clientProperties), sourceFactory, flowingFactory);
+        return RegistrationHelpers.registerFluid(FLUID_TYPES, FLUIDS, name, name, flowingName, builder, () -> new FluidType(typeProperties), sourceFactory, flowingFactory);
     }
 }

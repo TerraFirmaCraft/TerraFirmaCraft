@@ -1213,7 +1213,6 @@ public final class ForgeEventHandler
             {
                 event.setExtraLife(lifespan);
             }
-            event.setCanceled(true);
         }
     }
 

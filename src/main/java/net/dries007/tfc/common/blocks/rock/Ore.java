@@ -9,11 +9,11 @@ package net.dries007.tfc.common.blocks.rock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-
 import net.minecraft.world.level.material.MapColor;
 
 import net.dries007.tfc.common.blocks.ExtendedBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.registry.RegistryRock;
 
 /**
@@ -64,6 +64,22 @@ public enum Ore
     public boolean isGraded()
     {
         return graded;
+    }
+
+    public Metal metal()
+    {
+        return switch(this)
+        {
+            case NATIVE_COPPER, MALACHITE, TETRAHEDRITE -> Metal.COPPER;
+            case NATIVE_GOLD -> Metal.GOLD;
+            case HEMATITE, MAGNETITE, LIMONITE -> Metal.CAST_IRON;
+            case NATIVE_SILVER -> Metal.SILVER;
+            case CASSITERITE -> Metal.TIN;
+            case BISMUTHINITE -> Metal.BISMUTH;
+            case GARNIERITE -> Metal.NICKEL;
+            case SPHALERITE -> Metal.ZINC;
+            default -> throw new IllegalStateException("No metal for ore " + this);
+        };
     }
 
     public Block create(RegistryRock rock)

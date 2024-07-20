@@ -15,6 +15,7 @@ import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 
 import net.dries007.tfc.common.fluids.FluidHelpers;
 
+// todo 1.21 implement the getItems() with tag values
 public record FluidContentIngredient(SizedFluidIngredient fluid) implements PreciseIngredient
 {
     public static final MapCodec<FluidContentIngredient> CODEC = SizedFluidIngredient.FLAT_CODEC.fieldOf("fluid").xmap(FluidContentIngredient::new, FluidContentIngredient::fluid);

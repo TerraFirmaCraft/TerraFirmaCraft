@@ -19,16 +19,21 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
+import net.dries007.tfc.common.items.ChestBlockItem;
+
 public class ChestItemRenderer extends BlockEntityWithoutLevelRenderer
 {
     private final BlockEntity chest;
     private final BlockEntityRenderDispatcher dispatch;
 
-    public ChestItemRenderer(Block block)
+    public ChestItemRenderer(ChestBlockItem item)
     {
         super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
+
+        final Block block = item.getBlock();
+
         chest = Objects.requireNonNull(((EntityBlock) block).newBlockEntity(BlockPos.ZERO, block.defaultBlockState()));
-        this.dispatch = Minecraft.getInstance().getBlockEntityRenderDispatcher();
+        dispatch = Minecraft.getInstance().getBlockEntityRenderDispatcher();
     }
 
     @Override

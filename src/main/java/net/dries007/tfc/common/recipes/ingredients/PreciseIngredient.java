@@ -17,10 +17,9 @@ import net.neoforged.neoforge.common.crafting.ICustomIngredient;
  *     <li>{@link #getItems()} is overridden to return a single, nonsensical item (to prevent from being seen as empty), even though the ingredient *technically* accepts any items</li>
  *     <li>{@link #isSimple()} is obviously {@code false}</li>
  * </ul>
- * todo: future implement this
- * This means this ingredient lacks one major feature: to specify, via the {@link #getItems()} of the containing intersection ingredient,
- * how the underlying items will be look. In order to solve this, we should have a custom intersection ingredient that is TFC-aware,
- * and is able to query {@link PreciseIngredient}s and use them to make a proper view of the potential items.
+ * Note that for most precise ingredients, they don't function correctly w.r.t {@link #getItems()} showing all possible available items. The solution
+ * for ingredients like heat, or food, is to use {@link AndIngredient} which uses {@link #modifyStackForDisplay(ItemStack)} to produce "display" stacks,
+ * based on a primary ingredient, plus additional custom ingredients.
  */
 public interface PreciseIngredient extends ICustomIngredient
 {

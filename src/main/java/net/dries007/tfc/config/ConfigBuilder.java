@@ -71,11 +71,10 @@ public class ConfigBuilder
     public DoubleValue define(String path, double value, double min, double max) { return begin(path).defineInRange(path, value, min, max); }
     public ConfigValue<String> define(String path, String value) { return begin(path).define(path, value); }
     public <E extends Enum<E>> EnumValue<E> define(String path, E value) { return begin(path).defineEnum(path, value); }
-    public ConfigValue<List<? extends String>> define(String path, List<? extends String> value, Predicate<String> predicate) { return begin(path).defineListAllowEmpty(path, new ArrayList<>(value), o -> o instanceof String s && predicate.test(s)); }
+    public ConfigValue<List<? extends String>> define(String path, List<? extends String> value, Predicate<String> predicate) { return begin(path).defineListAllowEmpty(path, new ArrayList<>(value), String::new, o -> o instanceof String s && predicate.test(s)); }
 
     private ModConfigSpec.Builder begin(String path)
     {
-        // Since there is no config GUI (yet, circa 1.16), this is still unused
         builder.translation("tfc.config." + translationKeyPrefix + "." + path);
         emptyLineAdded = false;
         return builder;

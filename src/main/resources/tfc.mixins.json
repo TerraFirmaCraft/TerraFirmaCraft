@@ -37,7 +37,6 @@
     "accessor.ChunkAccessAccessor",
     "accessor.ChunkGeneratorAccessor",
     "accessor.ChunkMapAccessor",
-    "accessor.DispenserBlockAccessor",
     "accessor.FallingBlockEntityAccessor",
     "accessor.FlowingFluidAccessor",
     "accessor.GameRulesAccessor",
@@ -68,7 +67,6 @@
     "client.accessor.LevelRendererAccessor",
     "client.accessor.LocalPlayerAccessor",
     "client.accessor.SignRendererAccessor",
-    "client.accessor.SuspendedTownParticleAccessor",
     "client.compat.sodium.FluidRendererMixin",
     "client.compat.sodium.ItemColorsMixin"
   ],
