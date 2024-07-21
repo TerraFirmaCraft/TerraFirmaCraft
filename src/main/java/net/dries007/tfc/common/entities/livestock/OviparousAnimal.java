@@ -15,9 +15,12 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Chicken;
 import net.minecraft.world.entity.animal.Rabbit;
 import net.minecraft.world.entity.player.Player;
@@ -44,8 +47,7 @@ public abstract class OviparousAnimal extends ProducingAnimal implements Pluckab
 {
     public static AttributeSupplier.Builder createAttributes()
     {
-        // todo 1.21 step height?
-        return Chicken.createAttributes();//.add(NeoForgeMod.STEP_HEIGHT_ADDITION.get(), 1.5);
+        return Chicken.createAttributes().add(Attributes.STEP_HEIGHT, 1.5);
     }
 
     public float flapping = 1f;
@@ -58,12 +60,19 @@ public abstract class OviparousAnimal extends ProducingAnimal implements Pluckab
     private long lastPlucked = Long.MIN_VALUE;
     private boolean crowed;
     private final boolean isCrowingBird;
+    private final EntityDimensions babyDims;
 
     public OviparousAnimal(EntityType<? extends OviparousAnimal> type, Level level, TFCSounds.EntityId sounds, OviparousAnimalConfig config, boolean isCrowingBird)
     {
         super(type, level, sounds, config.inner());
         this.isCrowingBird = isCrowingBird;
         this.hatchDays = config.hatchDays();
+        this.babyDims = type.getDimensions().scale(0.5f).withEyeHeight(0.2975f);
+    }
+
+    @Override
+    public EntityDimensions getDefaultDimensions(Pose pose) {
+        return this.isBaby() ? babyDims : super.getDefaultDimensions(pose);
     }
 
     @Override
@@ -176,13 +185,6 @@ public abstract class OviparousAnimal extends ProducingAnimal implements Pluckab
     {
         nextFlap = flyDist + flapSpeed / 2.0F;
     }
-
-    /* todo 1.21 standing eye height?
-    @Override
-    protected float getStandingEyeHeight(Pose pose, EntityDimensions dims)
-    {
-        return dims.height * 0.92F;
-    }*/
 
     @Override
     public void aiStep()

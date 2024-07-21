@@ -47,13 +47,12 @@ public class TFCMobEffect extends MobEffect
                 player.causeFoodExhaustion(PlayerInfo.PASSIVE_EXHAUSTION_PER_TICK * 20 * TFCConfig.SERVER.passiveExhaustionModifier.get().floatValue() * 0.25f);
             }
         }
-        return true; // todo 1.21: what to return here?
+        return true;
     }
 
     @Override
     public boolean shouldApplyEffectTickThisTick(int duration, int amplitude)
     {
-        // todo: was replaced from isDurationEffectTick
         return this == TFCEffects.PINNED.get() || tickForAmplitude(TFCEffects.THIRST, 50, amplitude) || tick(TFCEffects.EXHAUSTED, duration % 20 == 0);
     }
 

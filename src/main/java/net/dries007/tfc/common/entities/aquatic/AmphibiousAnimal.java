@@ -57,7 +57,7 @@ public abstract class AmphibiousAnimal extends WildAnimal implements Temptable
 
     public static AttributeSupplier.Builder createAttributes()
     {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 14.0D).add(Attributes.MOVEMENT_SPEED, 1.0D).add(Attributes.ATTACK_DAMAGE, 2.0D);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 14.0D).add(Attributes.MOVEMENT_SPEED, 1.0D).add(Attributes.ATTACK_DAMAGE, 2.0D).add(Attributes.STEP_HEIGHT, 1.0);
     }
 
     private static final EntityDataAccessor<Boolean> DATA_PLAYING_DEAD = SynchedEntityData.defineId(AmphibiousAnimal.class, EntityDataSerializers.BOOLEAN);
@@ -90,19 +90,6 @@ public abstract class AmphibiousAnimal extends WildAnimal implements Temptable
     {
         return 0.0F;
     }
-
-    /* todo 1.21, step height, where did it go?
-    @Override
-    public float getStepHeight()
-    {
-        final float baseValue = isPlayingDead() ? 0f : 1f;
-        final AttributeInstance attribute = getAttribute(NeoForgeMod.STEP_HEIGHT_ADDITION.get());
-        if (attribute != null)
-        {
-            return (float) Math.max(0, baseValue + attribute.getValue());
-        }
-        return baseValue;
-    }*/
 
     @Override
     protected Brain.Provider<? extends AmphibiousAnimal> brainProvider()

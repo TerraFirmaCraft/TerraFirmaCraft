@@ -87,45 +87,6 @@ public class ThrownJavelin extends AbstractArrow
         return this.dealtDamage ? null : super.findHitEntity(pos1, pos2);
     }
 
-    @Override
-    protected void onHitEntity(EntityHitResult result)
-    {
-        // todo 1.21, this method is very different from super, check if it needs to be fixed?
-        Entity hitEntity = result.getEntity();
-        float damage = getItemAttackDamage();
-
-        Entity owner = getOwner();
-        this.dealtDamage = true;
-        // todo 1.21, add our own damage source for javelins
-        if (hitEntity.hurt(damageSources().trident(this, owner == null ? this : owner), damage))
-        {
-            if (hitEntity.getType() == EntityType.ENDERMAN)
-            {
-                return;
-            }
-
-            if (hitEntity instanceof LivingEntity livingVictim)
-            {
-                // todo: enchantment things? do we even really care about these?
-                /*if (owner instanceof LivingEntity livingOwner)
-                {
-                    EnchantmentHelper.doPostHurtEffects(livingVictim, owner);
-                    EnchantmentHelper.doPostDamageEffects(livingOwner, livingVictim);
-                }*/
-
-                this.doPostHurtEffects(livingVictim);
-            }
-
-            if (owner instanceof ServerPlayer serverPlayer)
-            {
-                TFCAdvancements.STAB_ENTITY.trigger(serverPlayer, hitEntity);
-            }
-        }
-
-        this.setDeltaMovement(this.getDeltaMovement().multiply(-0.01D, -0.1D, -0.01D));
-        this.playSound(TFCSounds.JAVELIN_HIT.get(), 1F, 1F);
-    }
-
 
     @Override
     protected float getWaterInertia()

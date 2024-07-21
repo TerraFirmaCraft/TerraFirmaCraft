@@ -11,9 +11,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.entities.TFCEntities;
@@ -47,6 +49,8 @@ public class Seat extends Entity
         return null;
     }
 
+    private static final Vec3 ATTACHMENT_POINT = new Vec3(0, -0.25, 0);
+
     public Seat(EntityType<?> type, Level level)
     {
         super(type, level);
@@ -63,10 +67,10 @@ public class Seat extends Entity
         }
     }
 
-    //@Override // todo: 1.21 passenger riding offset has changed
-    public double getPassengersRidingOffset()
+    @Override
+    protected Vec3 getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float partialTick)
     {
-        return -0.25;
+        return ATTACHMENT_POINT;
     }
 
     @Override

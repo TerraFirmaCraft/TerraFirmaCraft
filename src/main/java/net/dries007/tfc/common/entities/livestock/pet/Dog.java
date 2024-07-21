@@ -52,13 +52,6 @@ public class Dog extends TamableMammal
         return TFCTags.Items.DOG_FOOD;
     }
 
-    /* todo: where did getStandingEyeHeight go?
-    @Override
-    protected float getStandingEyeHeight(Pose pose, EntityDimensions size)
-    {
-        return size.height * 0.8F;
-    }*/
-
     @Override
     public boolean canAttack(LivingEntity entity)
     {

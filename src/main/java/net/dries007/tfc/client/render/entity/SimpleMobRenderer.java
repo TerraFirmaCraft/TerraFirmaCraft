@@ -61,10 +61,6 @@ public class SimpleMobRenderer<T extends Mob, M extends EntityModel<T>> extends 
     protected void scale(T entity, PoseStack poseStack, float scale)
     {
         float amount = entity.isBaby() ? this.scale * 0.7f : this.scale;
-        if (entity instanceof TFCAnimalProperties animal)
-        {
-            amount *= animal.getAgeScale();
-        }
         poseStack.scale(amount, amount, amount);
         super.scale(entity, poseStack, scale);
     }

@@ -400,7 +400,7 @@ public final class ForgeEventHandler
         }
     }*/
 
-    public static void onChunkWatch(ChunkWatchEvent.Watch event)
+    public static void onChunkWatch(ChunkWatchEvent.Sent event)
     {
         // When we watch a chunk, the chunk data should already be generated on server, and have FULL status, (with a TFC chunk generator)
         // We then sync the data on these chunks to client directly

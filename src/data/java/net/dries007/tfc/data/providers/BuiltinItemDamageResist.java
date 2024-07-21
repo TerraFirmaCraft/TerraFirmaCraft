@@ -5,15 +5,12 @@ import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 
-import net.dries007.tfc.common.TFCArmorMaterials;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.data.Accessors;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.PhysicalDamage;
-import net.dries007.tfc.util.data.DataManager;
 import net.dries007.tfc.util.data.ItemDamageResistance;
 
 public class BuiltinItemDamageResist extends DataManagerProvider<ItemDamageResistance> implements Accessors

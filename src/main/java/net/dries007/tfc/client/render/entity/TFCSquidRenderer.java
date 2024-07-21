@@ -24,6 +24,6 @@ public class TFCSquidRenderer<T extends TFCSquid> extends SquidRenderer<T>
     protected void setupRotations(T entity, PoseStack poseStack, float bob, float yBodyRot, float partialTick, float scale)
     {
         super.setupRotations(entity, poseStack, bob, yBodyRot, partialTick, scale);
-        poseStack.scale(entity.getVisualScale(), entity.getVisualScale(), entity.getVisualScale());
+//        poseStack.scale(entity.getVisualScale(), entity.getVisualScale(), entity.getVisualScale());
     }
 }

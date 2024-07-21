@@ -12,8 +12,10 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.chunk.LevelChunk;
 
 import net.dries007.tfc.client.ClientHelpers;
+import net.dries007.tfc.common.TFCAttachments;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ForestType;
 import net.dries007.tfc.world.chunkdata.LerpFloatLayer;
@@ -52,7 +54,8 @@ public record ChunkWatchPacket(
         final Level level = ClientHelpers.getLevel();
         if (level != null)
         {
-            ChunkData data = ChunkData.get(level, pos);
+            final LevelChunk chunk = level.getChunk(pos.x, pos.z);
+            ChunkData data = ChunkData.get(chunk);
             if (data.status() == ChunkData.Status.INVALID)
             {
                 // The chunk has not been loaded yet on client, but we have data we need to get to the chunk,
@@ -61,6 +64,7 @@ public record ChunkWatchPacket(
             }
 
             data.onUpdatePacket(rainfall, temperature, forestType, forestDensity, forestWeirdness);
+            chunk.setData(TFCAttachments.CHUNK_DATA.get(), data);
         }
     }
 }

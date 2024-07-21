@@ -30,6 +30,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -392,6 +393,11 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal, BrainBreeder
     default void setGeneticSize(int size)
     {
         entityData().set(animalData().geneticSize(), Mth.clamp(size, 1, 32));
+        final var instance = getEntity().getAttribute(Attributes.SCALE);
+        if (instance != null)
+        {
+            instance.setBaseValue(AGE_SCALES[getGeneticSize() - 1]);
+        }
     }
 
     default float getAgeScale()
