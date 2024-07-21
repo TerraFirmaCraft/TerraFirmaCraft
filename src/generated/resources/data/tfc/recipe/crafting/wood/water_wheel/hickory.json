@@ -1,0 +1,23 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "A": {
+      "item": "tfc:wood/axle/hickory"
+    },
+    "L": {
+      "item": "tfc:wood/lumber/hickory"
+    },
+    "P": {
+      "item": "tfc:wood/planks/hickory"
+    }
+  },
+  "pattern": [
+    "LPL",
+    "PAP",
+    "LPL"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:wood/water_wheel/hickory"
+  }
+}

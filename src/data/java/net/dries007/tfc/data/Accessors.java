@@ -20,9 +20,11 @@ import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.common.crafting.CompoundIngredient;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.fluids.SimpleFluid;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.calendar.ICalendar;
 
@@ -42,6 +44,12 @@ public interface Accessors
             : Ingredient.of(TFCBlocks.METALS.get(metal).get(type).get());
     }
 
+
+    default TagKey<Item> logsTagOf(Wood wood)
+    {
+        return TagKey.create(Registries.ITEM, Helpers.identifier(wood.getSerializedName()));
+    }
+
     default TagKey<Item> commonTagOf(Metal metal, Metal.ItemType type)
     {
         assert type.isDefault() : "Non-typical use of tag for " + metal.getSerializedName() + " / " + type.name();
@@ -58,6 +66,16 @@ public interface Accessors
     default <T> TagKey<T> commonTagOf(ResourceKey<Registry<T>> key, String name)
     {
         return TagKey.create(key, ResourceLocation.fromNamespaceAndPath("c", name.toLowerCase(Locale.ROOT)));
+    }
+
+    default Item dyeOf(DyeColor color)
+    {
+        return itemOf(ResourceLocation.withDefaultNamespace(color.getSerializedName() + "_dye"));
+    }
+
+    default Item dyedOf(DyeColor color, String suffix)
+    {
+        return itemOf(ResourceLocation.withDefaultNamespace(color.getSerializedName() + "_" + suffix));
     }
 
     default Item itemOf(ResourceLocation name)

@@ -1,0 +1,17 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "#": {
+      "item": "tfc:rock/mossy_bricks/diorite"
+    }
+  },
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "result": {
+    "count": 8,
+    "id": "tfc:rock/mossy_bricks/diorite_stairs"
+  }
+}

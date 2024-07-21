@@ -1,54 +1,10 @@
 {
   "type": "tfc:quern",
-  "ingredient": [
-    {
-      "item": "tfc:food/shellfish"
-    },
-    {
-      "item": "tfc:groundcover/mollusk"
-    },
-    {
-      "item": "tfc:groundcover/clam"
-    },
-    {
-      "item": "tfc:groundcover/mussel"
-    },
-    {
-      "item": "tfc:groundcover/sea_urchin"
-    },
-    {
-      "item": "minecraft:turtle_scute"
-    },
-    {
-      "item": "minecraft:armadillo_scute"
-    },
-    {
-      "item": "tfc:rock/loose/limestone"
-    },
-    {
-      "item": "tfc:rock/mossy_loose/limestone"
-    },
-    {
-      "item": "tfc:rock/loose/dolomite"
-    },
-    {
-      "item": "tfc:rock/mossy_loose/dolomite"
-    },
-    {
-      "item": "tfc:rock/loose/chalk"
-    },
-    {
-      "item": "tfc:rock/mossy_loose/chalk"
-    },
-    {
-      "item": "tfc:rock/loose/marble"
-    },
-    {
-      "item": "tfc:rock/mossy_loose/marble"
-    }
-  ],
+  "ingredient": {
+    "item": "tfc:ore/borax"
+  },
   "result": {
-    "count": 2,
+    "count": 6,
     "id": "tfc:powder/flux"
   }
 }

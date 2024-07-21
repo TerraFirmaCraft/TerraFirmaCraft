@@ -1,7 +1,20 @@
 {
-  "neoforge:conditions": [
-    {
-      "type": "neoforge:false"
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "H": {
+      "tag": "tfc:high_quality_cloth"
+    },
+    "S": {
+      "tag": "c:rods/wooden"
     }
-  ]
+  },
+  "pattern": [
+    "H",
+    "H",
+    "S"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:white_banner"
+  }
 }

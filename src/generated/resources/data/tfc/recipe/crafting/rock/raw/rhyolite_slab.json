@@ -1,0 +1,15 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "#": {
+      "item": "tfc:rock/raw/rhyolite"
+    }
+  },
+  "pattern": [
+    "###"
+  ],
+  "result": {
+    "count": 6,
+    "id": "tfc:rock/raw/rhyolite_slab"
+  }
+}

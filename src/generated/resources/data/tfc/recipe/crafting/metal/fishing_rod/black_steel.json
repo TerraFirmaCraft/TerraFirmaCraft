@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "L": {
+      "tag": "c:strings"
+    },
+    "S": {
+      "tag": "c:rods/wooden"
+    },
+    "X": {
+      "item": "tfc:metal/fish_hook/black_steel"
+    }
+  },
+  "pattern": [
+    "  S",
+    " SL",
+    "SXL"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/fishing_rod/black_steel"
+  }
+}

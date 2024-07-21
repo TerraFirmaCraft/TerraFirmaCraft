@@ -1,0 +1,16 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "X": {
+      "item": "tfc:rock/loose/rhyolite"
+    }
+  },
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:rock/cobble/rhyolite"
+  }
+}

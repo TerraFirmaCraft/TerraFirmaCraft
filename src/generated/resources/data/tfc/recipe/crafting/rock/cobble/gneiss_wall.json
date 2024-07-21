@@ -1,0 +1,16 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "#": {
+      "item": "tfc:rock/cobble/gneiss"
+    }
+  },
+  "pattern": [
+    "###",
+    "###"
+  ],
+  "result": {
+    "count": 6,
+    "id": "tfc:rock/cobble/gneiss_wall"
+  }
+}

@@ -28,5 +28,5 @@ public interface RegistrySoilVariant
     /**
      * @return A dried mud brick item of this soil variant.
      */
-    Supplier<? extends Item> getDriedMudBrick();
+    Supplier<? extends Item> mudBrick();
 }

@@ -1,0 +1,15 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "#": {
+      "item": "tfc:wood/planks/maple"
+    }
+  },
+  "pattern": [
+    "###"
+  ],
+  "result": {
+    "count": 6,
+    "id": "tfc:wood/planks/maple_slab"
+  }
+}

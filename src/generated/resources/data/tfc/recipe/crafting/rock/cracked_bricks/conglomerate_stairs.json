@@ -1,0 +1,17 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "#": {
+      "item": "tfc:rock/cracked_bricks/conglomerate"
+    }
+  },
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "result": {
+    "count": 8,
+    "id": "tfc:rock/cracked_bricks/conglomerate_stairs"
+  }
+}

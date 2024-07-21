@@ -1,0 +1,19 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "M": {
+      "item": "tfc:mortar"
+    },
+    "X": {
+      "item": "tfc:brick/diorite"
+    }
+  },
+  "pattern": [
+    "X X",
+    "MXM"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:rock/aqueduct/diorite"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "type": "tfc:advanced_shapeless_crafting",
+  "ingredients": [
+    {
+      "tag": "tfc:glass_batches"
+    },
+    {
+      "item": "tfc:blowpipe"
+    }
+  ],
+  "primary_ingredient": {
+    "tag": "tfc:glass_batches"
+  },
+  "result": {
+    "modifiers": [
+      {
+        "type": "tfc:add_glass"
+      }
+    ],
+    "stack": {
+      "count": 1,
+      "id": "tfc:blowpipe_with_glass"
+    }
+  }
+}

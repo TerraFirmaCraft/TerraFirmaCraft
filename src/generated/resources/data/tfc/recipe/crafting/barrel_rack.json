@@ -1,0 +1,20 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "L": {
+      "tag": "tfc:lumber"
+    },
+    "S": {
+      "item": "minecraft:scaffolding"
+    }
+  },
+  "pattern": [
+    "L L",
+    " S ",
+    "L L"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:barrel_rack"
+  }
+}

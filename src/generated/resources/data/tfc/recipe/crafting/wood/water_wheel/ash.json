@@ -1,0 +1,23 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "A": {
+      "item": "tfc:wood/axle/ash"
+    },
+    "L": {
+      "item": "tfc:wood/lumber/ash"
+    },
+    "P": {
+      "item": "tfc:wood/planks/ash"
+    }
+  },
+  "pattern": [
+    "LPL",
+    "PAP",
+    "LPL"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:wood/water_wheel/ash"
+  }
+}

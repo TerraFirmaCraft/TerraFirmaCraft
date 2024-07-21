@@ -1,0 +1,16 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "X": {
+      "tag": "c:sheets/wrought_iron"
+    }
+  },
+  "pattern": [
+    "X X",
+    "XXX"
+  ],
+  "result": {
+    "count": 2,
+    "id": "minecraft:minecart"
+  }
+}

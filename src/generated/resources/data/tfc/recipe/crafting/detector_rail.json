@@ -1,0 +1,23 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "I": {
+      "tag": "c:rods/steel"
+    },
+    "P": {
+      "tag": "c:stones/pressure_plate"
+    },
+    "R": {
+      "tag": "c:dusts/redstone"
+    }
+  },
+  "pattern": [
+    "I I",
+    "IPI",
+    "IRI"
+  ],
+  "result": {
+    "count": 8,
+    "id": "minecraft:detector_rail"
+  }
+}

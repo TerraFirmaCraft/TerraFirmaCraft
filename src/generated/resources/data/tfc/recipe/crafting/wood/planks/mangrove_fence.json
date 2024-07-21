@@ -1,0 +1,19 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "L": {
+      "item": "tfc:wood/lumber/mangrove"
+    },
+    "P": {
+      "item": "tfc:wood/planks/mangrove"
+    }
+  },
+  "pattern": [
+    "PLP",
+    "PLP"
+  ],
+  "result": {
+    "count": 8,
+    "id": "tfc:wood/planks/mangrove_fence"
+  }
+}

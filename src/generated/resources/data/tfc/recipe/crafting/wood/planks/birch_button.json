@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "tfc:wood/planks/birch"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:wood/planks/birch_button"
+  }
+}

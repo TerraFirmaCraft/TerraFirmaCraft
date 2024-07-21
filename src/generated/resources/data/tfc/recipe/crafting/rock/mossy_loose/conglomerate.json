@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "tfc:rock/mossy_cobble/conglomerate"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "id": "tfc:rock/mossy_loose/conglomerate"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "C": {
+      "tag": "c:cobblestones/normal"
+    },
+    "L": {
+      "tag": "tfc:lumber"
+    },
+    "M": {
+      "item": "tfc:brass_mechanisms"
+    },
+    "R": {
+      "tag": "c:dusts/redstone"
+    }
+  },
+  "pattern": [
+    "LLL",
+    "CMC",
+    "CRC"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:piston"
+  }
+}

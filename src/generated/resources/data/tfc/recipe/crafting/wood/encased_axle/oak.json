@@ -1,0 +1,23 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "A": {
+      "item": "tfc:wood/axle/oak"
+    },
+    "L": {
+      "item": "tfc:wood/lumber/oak"
+    },
+    "S": {
+      "item": "tfc:wood/stripped_log/oak"
+    }
+  },
+  "pattern": [
+    " S ",
+    "LAL",
+    " S "
+  ],
+  "result": {
+    "count": 4,
+    "id": "tfc:wood/encased_axle/oak"
+  }
+}

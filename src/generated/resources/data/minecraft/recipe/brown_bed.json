@@ -1,7 +1,23 @@
 {
-  "neoforge:conditions": [
-    {
-      "type": "neoforge:false"
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "D": {
+      "item": "minecraft:brown_dye"
+    },
+    "H": {
+      "tag": "tfc:high_quality_cloth"
+    },
+    "L": {
+      "tag": "tfc:lumber"
     }
-  ]
+  },
+  "pattern": [
+    "DDD",
+    "HHH",
+    "LLL"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:brown_bed"
+  }
 }

@@ -1,0 +1,23 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "A": {
+      "item": "tfc:wood/axle/hickory"
+    },
+    "L": {
+      "item": "tfc:wood/lumber/hickory"
+    },
+    "S": {
+      "item": "tfc:wood/stripped_log/hickory"
+    }
+  },
+  "pattern": [
+    " S ",
+    "LAL",
+    " S "
+  ],
+  "result": {
+    "count": 4,
+    "id": "tfc:wood/encased_axle/hickory"
+  }
+}

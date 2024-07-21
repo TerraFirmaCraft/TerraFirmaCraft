@@ -1,0 +1,15 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "#": {
+      "item": "tfc:alabaster/bricks/white"
+    }
+  },
+  "pattern": [
+    "###"
+  ],
+  "result": {
+    "count": 6,
+    "id": "tfc:alabaster/bricks/white_slab"
+  }
+}

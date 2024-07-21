@@ -1,0 +1,40 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "type": "tfc:and",
+      "children": [
+        {
+          "item": "tfc:food/maize_bread"
+        },
+        {
+          "type": "tfc:not_rotten"
+        }
+      ]
+    },
+    "K": {
+      "tag": "c:tools/knife"
+    },
+    "S": {
+      "type": "tfc:and",
+      "children": [
+        {
+          "tag": "tfc:usable_in_sandwich"
+        },
+        {
+          "type": "tfc:not_rotten"
+        }
+      ]
+    }
+  },
+  "pattern": [
+    "KB ",
+    "SSS",
+    " B "
+  ],
+  "result": {
+    "count": 2,
+    "id": "tfc:food/maize_bread_sandwich"
+  }
+}

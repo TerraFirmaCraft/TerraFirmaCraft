@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Predicate;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -13,6 +14,8 @@ import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagBuilder;
 import net.minecraft.tags.TagEntry;
 import net.minecraft.tags.TagKey;
@@ -21,14 +24,17 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.rock.Ore;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.blocks.wood.Wood;
+import net.dries007.tfc.common.component.glass.GlassOperation;
 import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.data.Accessors;
@@ -53,6 +59,15 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
     @Override
     protected void addTags(HolderLookup.Provider provider)
     {
+        // ===== Common Tags ===== //
+
+        tag(PLAYER_WORKSTATIONS_CRAFTING_TABLES).add(TFCBlocks.WOODS, Wood.BlockType.WORKBENCH);
+        tag(STORAGE_BLOCKS_WHEAT).remove(Items.HAY_BLOCK);
+
+        tag(SEEDS).add(TFCItems.CROP_SEEDS);
+
+        // ===== TFC Tags ===== //
+
         for (Metal metal : Metal.values())
         {
             metalTag(metal, Metal.ItemType.INGOT);
@@ -69,6 +84,11 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             }
         }
 
+        tag(DOUBLE_SHEETS_ANY_BRONZE).addTags(
+            commonTagOf(Metal.BRONZE, Metal.ItemType.DOUBLE_SHEET),
+            commonTagOf(Metal.BISMUTH_BRONZE, Metal.ItemType.DOUBLE_SHEET),
+            commonTagOf(Metal.BLACK_BRONZE, Metal.ItemType.DOUBLE_SHEET));
+
         tag(FRUITS).add(Food.BLACKBERRY, Food.BLUEBERRY, Food.BUNCHBERRY, Food.CLOUDBERRY, Food.CRANBERRY, Food.ELDERBERRY, Food.GOOSEBERRY, Food.RASPBERRY, Food.SNOWBERRY, Food.STRAWBERRY, Food.WINTERGREEN_BERRY, Food.BANANA, Food.CHERRY, Food.GREEN_APPLE, Food.LEMON, Food.OLIVE, Food.ORANGE, Food.PEACH, Food.PLUM, Food.RED_APPLE, Food.PUMPKIN_CHUNKS);
         tag(VEGETABLES).add(Food.BEET, Food.CABBAGE, Food.CARROT, Food.GARLIC, Food.GREEN_BEAN, Food.GREEN_BELL_PEPPER, Food.ONION, Food.POTATO, Food.BAKED_POTATO, Food.RED_BELL_PEPPER, Food.SOYBEAN, Food.SUGARCANE, Food.SQUASH, Food.TOMATO, Food.YELLOW_BELL_PEPPER);
         tag(RAW_MEATS).add(Food.BEEF, Food.PORK, Food.CHICKEN, Food.QUAIL, Food.MUTTON, Food.BEAR, Food.HORSE_MEAT, Food.PHEASANT, Food.GROUSE, Food.TURKEY, Food.PEAFOWL, Food.VENISON, Food.WOLF, Food.RABBIT, Food.FOX, Food.HYENA, Food.DUCK, Food.CHEVON, Food.GRAN_FELINE, Food.TURTLE, Food.CAMELIDAE, Food.FROG_LEGS);
@@ -77,29 +97,46 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(RAW_FISH).add(Food.COD, Food.TROPICAL_FISH, Food.CALAMARI, Food.SHELLFISH, Food.BLUEGILL, Food.CRAPPIE, Food.LAKE_TROUT, Food.LARGEMOUTH_BASS, Food.RAINBOW_TROUT, Food.SALMON, Food.SMALLMOUTH_BASS);
         tag(COOKED_FISH).add(Food.COOKED_TURTLE, Food.COOKED_COD, Food.COOKED_TROPICAL_FISH, Food.COOKED_CALAMARI, Food.COOKED_SHELLFISH, Food.COOKED_BLUEGILL, Food.COOKED_CRAPPIE, Food.COOKED_LAKE_TROUT, Food.COOKED_LARGEMOUTH_BASS, Food.COOKED_RAINBOW_TROUT, Food.COOKED_SALMON, Food.COOKED_SMALLMOUTH_BASS);
         tag(FISH).addTags(RAW_FISH, COOKED_FISH);
-        tag(DOUGH)
-            .add(Food.BARLEY_DOUGH)
-            .add(Food.MAIZE_DOUGH)
-            .add(Food.OAT_DOUGH)
-            .add(Food.RYE_DOUGH)
-            .add(Food.RICE_DOUGH)
-            .add(Food.WHEAT_DOUGH);
+        tag(FLOUR).add(Food.BARLEY_FLOUR, Food.MAIZE_FLOUR, Food.OAT_FLOUR, Food.RYE_FLOUR, Food.RICE_FLOUR, Food.WHEAT_FLOUR);
+        tag(DOUGH).add(Food.BARLEY_DOUGH, Food.MAIZE_DOUGH, Food.OAT_DOUGH, Food.RYE_DOUGH, Food.RICE_DOUGH, Food.WHEAT_DOUGH);
         tag(BREAD)
-            .add(Food.BARLEY_BREAD)
-            .add(Food.MAIZE_BREAD)
-            .add(Food.OAT_BREAD)
-            .add(Food.RYE_BREAD)
-            .add(Food.RICE_BREAD)
-            .add(Food.WHEAT_BREAD)
+            .add(Food.BARLEY_BREAD, Food.MAIZE_BREAD, Food.OAT_BREAD, Food.RYE_BREAD, Food.RICE_BREAD, Food.WHEAT_BREAD)
             .add(Items.BREAD);
+        tag(DAIRY).add(Food.CHEESE);
         tag(SALADS).add(TFCItems.SALADS);
         tag(SOUPS).add(TFCItems.SOUPS);
         tag(PRESERVES).add(TFCItems.UNSEALED_FRUIT_PRESERVES);
         tag(SEALED_PRESERVES).add(TFCItems.FRUIT_PRESERVES);
         tag(SWEETENERS).add(Items.SUGAR);
+        tag(BOWLS).add(Items.BOWL, TFCBlocks.CERAMIC_BOWL);
+        tag(SALAD_BOWLS).addTag(BOWLS);
+        tag(SOUP_BOWLS).addTag(BOWLS);
+        tag(USABLE_IN_SALAD)
+            .addTags(FRUITS, VEGETABLES, COOKED_MEATS);
         tag(USABLE_IN_SOUP)
             .addTags(FRUITS, VEGETABLES, MEATS, COOKED_MEATS)
             .add(Food.COOKED_RICE);
+        tag(USABLE_IN_SANDWICH).addTags(VEGETABLES, COOKED_MEATS, DAIRY);
+        tag(USABLE_IN_JAM_SANDWICH).addTags(COOKED_MEATS, DAIRY, PRESERVES);
+
+        tag(SMALL_FISHING_BAIT)
+            .addTag(SEEDS)
+            .add(Food.SHELLFISH);
+        tag(LARGE_FISHING_BAIT)
+            .add(Food.COD, Food.SALMON, Food.TROPICAL_FISH, Food.BLUEGILL);
+        tag(HOLDS_SMALL_FISHING_BAIT).add(
+            TFCItems.METAL_ITEMS.get(Metal.COPPER).get(Metal.ItemType.FISHING_ROD),
+            TFCItems.METAL_ITEMS.get(Metal.BRONZE).get(Metal.ItemType.FISHING_ROD),
+            TFCItems.METAL_ITEMS.get(Metal.BLACK_BRONZE).get(Metal.ItemType.FISHING_ROD),
+            TFCItems.METAL_ITEMS.get(Metal.BISMUTH_BRONZE).get(Metal.ItemType.FISHING_ROD));
+        tag(HOLDS_LARGE_FISHING_BAIT)
+            .addTag(HOLDS_SMALL_FISHING_BAIT)
+            .add(
+                TFCItems.METAL_ITEMS.get(Metal.WROUGHT_IRON).get(Metal.ItemType.FISHING_ROD),
+                TFCItems.METAL_ITEMS.get(Metal.STEEL).get(Metal.ItemType.FISHING_ROD),
+                TFCItems.METAL_ITEMS.get(Metal.BLACK_STEEL).get(Metal.ItemType.FISHING_ROD),
+                TFCItems.METAL_ITEMS.get(Metal.RED_STEEL).get(Metal.ItemType.FISHING_ROD),
+                TFCItems.METAL_ITEMS.get(Metal.BLUE_STEEL).get(Metal.ItemType.FISHING_ROD));
 
         tag(PLANTS); // todo
 
@@ -112,7 +149,8 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tagNotWhite(COLORED_SHULKER_BOXES, "shulker_box");
         tagNotWhite(COLORED_CONCRETE_POWDER, "concrete_powder");
         tag(COLORED_CANDLES).add(TFCBlocks.DYED_CANDLE);
-        tag(COLORED_WINDMILL_BLADES).add(TFCItems.WINDMILL_BLADES.entrySet().stream().filter(e -> e.getKey() != DyeColor.WHITE).map(Map.Entry::getValue));
+        tag(COLORED_WINDMILL_BLADES)
+            .addOnly(TFCItems.WINDMILL_BLADES, c -> c != DyeColor.WHITE);
         tag(COLORED_RAW_ALABASTER).add(TFCBlocks.RAW_ALABASTER);
         tag(COLORED_ALABASTER_BRICKS).add(TFCBlocks.ALABASTER_BRICKS);
         tag(COLORED_POLISHED_ALABASTER).add(TFCBlocks.POLISHED_ALABASTER);
@@ -140,6 +178,8 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(WINDMILL_BLADES)
             .add(TFCItems.WINDMILL_BLADES.get(DyeColor.WHITE))
             .addTag(COLORED_WINDMILL_BLADES);
+        tag(AXLES).add(TFCBlocks.WOODS, Wood.BlockType.AXLE);
+        tag(LUMBER).add(TFCItems.LUMBER);
 
         tag(VESSELS).addTags(UNFIRED_VESSELS, FIRED_VESSELS);
         tag(UNFIRED_VESSELS)
@@ -178,6 +218,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(TOOLS_MACE).add(TFCItems.METAL_ITEMS, Metal.ItemType.MACE);
         tag(TOOLS_CHISEL).add(TFCItems.METAL_ITEMS, Metal.ItemType.CHISEL);
         tag(TOOLS_HAMMER).add(TFCItems.METAL_ITEMS, Metal.ItemType.HAMMER);
+        tag(TOOLS_SAW).add(TFCItems.METAL_ITEMS, Metal.ItemType.SAW);
         tag(MINING_TOOL_TOOLS).add(TFCItems.METAL_ITEMS, Metal.ItemType.PICKAXE);
         tag(TOOLS_GLASSWORKING).add(TFCItems.PADDLE, TFCItems.JACKS, TFCItems.GEM_SAW);
         tag(TOOLS_BLOWPIPE).add(TFCItems.BLOWPIPE, TFCItems.CERAMIC_BLOWPIPE);
@@ -187,11 +228,29 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(GLASS_BATCHES).addTag(GLASS_BATCHES_T3).add(TFCItems.VOLCANIC_GLASS_BATCH);
         tag(GLASS_BATCHES_NOT_T1).add(TFCItems.HEMATITIC_GLASS_BATCH, TFCItems.OLIVINE_GLASS_BATCH, TFCItems.VOLCANIC_GLASS_BATCH);
         tag(GLASS_BLOWPIPES).add(TFCItems.BLOWPIPE_WITH_GLASS, TFCItems.CERAMIC_BLOWPIPE_WITH_GLASS);
+        tag(GLASS_POWDERS).add(GlassOperation.POWDERS.get().keySet().stream());
         tag(GLASS_BOTTLES).add(
             TFCItems.SILICA_GLASS_BOTTLE,
             TFCItems.HEMATITIC_GLASS_BOTTLE,
             TFCItems.OLIVINE_GLASS_BOTTLE,
             TFCItems.VOLCANIC_GLASS_BOTTLE);
+
+        tag(HIGH_QUALITY_CLOTH).add(TFCItems.SILK_CLOTH, TFCItems.WOOL_CLOTH);
+        tag(STRINGS).add(TFCItems.WOOL_YARN);
+        tag(GEM_POWDERS).addOnly(TFCItems.ORE_POWDERS, Ore::isGem);
+
+        copy(Tags.Blocks.STONES, STONES);
+        copy(TFCTags.Blocks.STONES_RAW, STONES_RAW);
+        copy(TFCTags.Blocks.STONES_HARDENED, STONES_HARDENED);
+        copy(TFCTags.Blocks.STONES_SMOOTH, STONES_SMOOTH);
+        copy(TFCTags.Blocks.STONES_SMOOTH_SLABS, STONES_SMOOTH_SLABS);
+        copy(TFCTags.Blocks.STONES_PRESSURE_PLATES, STONES_PRESSURE_PLATES);
+
+        copy(BlockTags.DIRT, ItemTags.DIRT);
+        copy(TFCTags.Blocks.MUD, MUD);
+
+        copy(Tags.Blocks.COBBLESTONES_NORMAL, COBBLESTONES_NORMAL);
+        copy(Tags.Blocks.COBBLESTONES_MOSSY, COBBLESTONES_MOSSY);
     }
 
     @Override
@@ -255,16 +314,62 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             super(builder, modId);
         }
 
-        ItemTagAppender add(ItemLike... items) { return add(Arrays.stream(items)); }
-        ItemTagAppender add(Stream<? extends ItemLike> items) { items.forEach(item -> add(key(item))); return this; }
-        ItemTagAppender add(Map<?, ? extends ItemLike> items) { return add(items.values().stream()); }
-        ItemTagAppender addAll(Map<?, ? extends Map<?, ? extends ItemLike>> items) { items.values().forEach(m -> m.values().forEach(this::add)); return this; }
-        <T1, T2, V extends ItemLike> ItemTagAppender add(Map<T1, Map<T2, V>> items, T2 key) { return add(pivot(items, key)); }
+        ItemTagAppender add(ItemLike... items)
+        {
+            for (ItemLike item : items) add(key(item));
+            return this;
+        }
 
-        ItemTagAppender add(Food... foods) { for (Food food : foods) add(TFCItems.FOOD.get(food)); return this; }
+        ItemTagAppender add(Stream<? extends ItemLike> items)
+        {
+            items.forEach(item -> add(key(item)));
+            return this;
+        }
 
-        @Override public ItemTagAppender addTag(TagKey<Item> tag) { return (ItemTagAppender) super.addTag(tag); }
-        @Override @SafeVarargs public final ItemTagAppender addTags(TagKey<Item>... values) { return (ItemTagAppender) super.addTags(values); }
+        ItemTagAppender add(Map<?, ? extends ItemLike> items)
+        {
+            return add(items.values().stream());
+        }
+
+        <T> ItemTagAppender addOnly(Map<T, ? extends ItemLike> items, Predicate<T> only)
+        {
+            return add(items.entrySet().stream().filter(e -> only.test(e.getKey())).map(Map.Entry::getValue));
+        }
+
+        ItemTagAppender addAll(Map<?, ? extends Map<?, ? extends ItemLike>> items)
+        {
+            return add(items.values().stream().flatMap(m -> m.values().stream()));
+        }
+
+        <T1, T2, V extends ItemLike> ItemTagAppender add(Map<T1, Map<T2, V>> items, T2 key)
+        {
+            return add(pivot(items, key));
+        }
+
+        ItemTagAppender add(Food... foods)
+        {
+            for (Food food : foods) add(TFCItems.FOOD.get(food));
+            return this;
+        }
+
+        @Override
+        public ItemTagAppender addTag(TagKey<Item> tag)
+        {
+            return (ItemTagAppender) super.addTag(tag);
+        }
+
+        @Override
+        @SafeVarargs
+        public final ItemTagAppender addTags(TagKey<Item>... values)
+        {
+            return (ItemTagAppender) super.addTags(values);
+        }
+
+        ItemTagAppender remove(ItemLike... items)
+        {
+            for (ItemLike item : items) remove(key(item));
+            return this;
+        }
 
         private ResourceKey<Item> key(ItemLike item)
         {

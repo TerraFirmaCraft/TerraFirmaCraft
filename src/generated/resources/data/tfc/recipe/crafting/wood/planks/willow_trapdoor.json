@@ -1,0 +1,16 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "L": {
+      "item": "tfc:wood/lumber/willow"
+    }
+  },
+  "pattern": [
+    "LLL",
+    "LLL"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:wood/planks/willow_trapdoor"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "X": {
+      "item": "tfc:wood/planks/aspen"
+    }
+  },
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:wood/planks/aspen_workbench"
+  }
+}

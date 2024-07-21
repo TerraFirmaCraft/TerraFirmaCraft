@@ -10,7 +10,10 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.common.crafting.IngredientType;
+import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 
 import net.dries007.tfc.common.fluids.FluidHelpers;
@@ -20,6 +23,11 @@ public record FluidContentIngredient(SizedFluidIngredient fluid) implements Prec
 {
     public static final MapCodec<FluidContentIngredient> CODEC = SizedFluidIngredient.FLAT_CODEC.fieldOf("fluid").xmap(FluidContentIngredient::new, FluidContentIngredient::fluid);
     public static final StreamCodec<RegistryFriendlyByteBuf, FluidContentIngredient> STREAM_CODEC = SizedFluidIngredient.STREAM_CODEC.map(FluidContentIngredient::new, FluidContentIngredient::fluid);
+
+    public static Ingredient of(Fluid fluid, int amount)
+    {
+        return new FluidContentIngredient(SizedFluidIngredient.of(fluid, amount)).toVanilla();
+    }
 
     @Override
     public boolean test(ItemStack stack)

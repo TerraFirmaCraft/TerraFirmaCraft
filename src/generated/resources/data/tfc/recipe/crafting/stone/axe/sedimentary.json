@@ -1,0 +1,19 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "S": {
+      "tag": "c:rods/wooden"
+    },
+    "X": {
+      "item": "tfc:stone/axe_head/sedimentary"
+    }
+  },
+  "pattern": [
+    "X",
+    "S"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:stone/axe/sedimentary"
+  }
+}

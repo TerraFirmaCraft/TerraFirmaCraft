@@ -1,0 +1,23 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "A": {
+      "item": "tfc:wood/axle/willow"
+    },
+    "L": {
+      "item": "tfc:wood/lumber/willow"
+    },
+    "P": {
+      "item": "tfc:wood/planks/willow"
+    }
+  },
+  "pattern": [
+    "LPL",
+    "PAP",
+    "LPL"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:wood/water_wheel/willow"
+  }
+}

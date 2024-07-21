@@ -1,8 +1,10 @@
 package net.dries007.tfc.data.providers;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
 import java.util.stream.Stream;
 import com.google.common.base.Preconditions;
 import net.minecraft.core.HolderLookup;
@@ -10,6 +12,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagBuilder;
@@ -21,9 +24,11 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.data.ExistingFileHelper.ResourceType;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.DecorationBlockHolder;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
@@ -56,6 +61,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
 
         // ===== Common Tags ===== //
         pivot(TFCBlocks.METALS, Metal.BlockType.BLOCK).forEach((metal, block) -> tag(storageBlockTagOf(Registries.BLOCK, metal)).add(block));
+        tag(Tags.Blocks.STORAGE_BLOCKS_WHEAT).remove(Blocks.HAY_BLOCK);
 
         // ===== TFC Tags ===== //
         tag(LAMPS).add(TFCBlocks.METALS, Metal.BlockType.LAMP);
@@ -85,10 +91,26 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(STONES_RAW).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.RAW);
         tag(STONES_HARDENED).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.HARDENED);
         tag(STONES_SMOOTH).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.SMOOTH);
+        tag(STONES_SMOOTH_SLABS).add(pivot(TFCBlocks.ROCK_DECORATIONS, Rock.BlockType.SMOOTH).values(), DecorationBlockHolder::slab);
         tag(STONES_SPIKE).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.SPIKE);
+        tag(STONES_PRESSURE_PLATES)
+            .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.PRESSURE_PLATE)
+            .addOptionalTag(ResourceLocation.withDefaultNamespace("stone_pressure_plates"));
 
-        tag(FARMLANDS).add(Blocks.FARMLAND).add(TFCBlocks.SOIL.get(SoilBlockType.FARMLAND));
-        tag(PATHS).add(Blocks.DIRT_PATH).add(TFCBlocks.SOIL.get(SoilBlockType.GRASS_PATH));
+        tag(Tags.Blocks.COBBLESTONES_NORMAL).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.COBBLE);
+        tag(Tags.Blocks.COBBLESTONES_MOSSY).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.MOSSY_COBBLE);
+
+        tag(FARMLANDS)
+            .add(Blocks.FARMLAND)
+            .add(TFCBlocks.SOIL.get(SoilBlockType.FARMLAND));
+        tag(PATHS)
+            .add(Blocks.DIRT_PATH)
+            .add(TFCBlocks.SOIL.get(SoilBlockType.GRASS_PATH));
+        tag(BlockTags.DIRT)
+            .add(TFCBlocks.SOIL.get(SoilBlockType.DIRT));
+        tag(MUD)
+            .add(Blocks.MUD)
+            .add(TFCBlocks.SOIL.get(SoilBlockType.MUD));
     }
 
     @Override
@@ -120,14 +142,59 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             super(builder, modId);
         }
 
-        BlockTagAppender add(Block... blocks) { return add(Arrays.stream(blocks)); }
-        BlockTagAppender add(Stream<Block> blocks) { blocks.forEach(b -> add(key(b))); return this; }
-        @SafeVarargs final <T extends IdHolder<? extends Block>> BlockTagAppender add(T... blocks) { return add(Arrays.stream(blocks).map(IdHolder::get)); }
-        BlockTagAppender add(Map<?, ? extends IdHolder<? extends Block>> blocks) { blocks.values().forEach(this::add); return this; }
-        BlockTagAppender addAll(Map<?, ? extends Map<?, ? extends IdHolder<? extends Block>>> blocks) { blocks.values().forEach(m -> m.values().forEach(this::add)); return this; }
-        <T1, T2, V extends IdHolder<? extends Block>> BlockTagAppender add(Map<T1, Map<T2, V>> blocks, T2 key) { return add(pivot(blocks, key)); }
+        BlockTagAppender add(Block... blocks)
+        {
+            for (Block block : blocks) add(key(block));
+            return this;
+        }
 
-        @Override @SafeVarargs public final BlockTagAppender addTags(TagKey<Block>... values) { return (BlockTagAppender) super.addTags(values); }
+        BlockTagAppender add(Stream<Block> blocks)
+        {
+            blocks.forEach(b -> add(key(b)));
+            return this;
+        }
+
+        BlockTagAppender add(Collection<DecorationBlockHolder> blocks, Function<DecorationBlockHolder, ? extends DeferredHolder<Block, ? extends Block>> type)
+        {
+            blocks.forEach(b -> add(type.apply(b).get()));
+            return this;
+        }
+
+        @SafeVarargs
+        final <T extends IdHolder<? extends Block>> BlockTagAppender add(T... blocks)
+        {
+            return add(Arrays.stream(blocks).map(IdHolder::get));
+        }
+
+        BlockTagAppender add(Map<?, ? extends IdHolder<? extends Block>> blocks)
+        {
+            blocks.values().forEach(this::add);
+            return this;
+        }
+
+        BlockTagAppender addAll(Map<?, ? extends Map<?, ? extends IdHolder<? extends Block>>> blocks)
+        {
+            blocks.values().forEach(m -> m.values().forEach(this::add));
+            return this;
+        }
+
+        <T1, T2, V extends IdHolder<? extends Block>> BlockTagAppender add(Map<T1, Map<T2, V>> blocks, T2 key)
+        {
+            return add(pivot(blocks, key));
+        }
+
+        @Override
+        @SafeVarargs
+        public final BlockTagAppender addTags(TagKey<Block>... values)
+        {
+            return (BlockTagAppender) super.addTags(values);
+        }
+
+        BlockTagAppender remove(Block... blocks)
+        {
+            for (Block block : blocks) remove(key(block));
+            return this;
+        }
 
         private ResourceKey<Block> key(Block block)
         {

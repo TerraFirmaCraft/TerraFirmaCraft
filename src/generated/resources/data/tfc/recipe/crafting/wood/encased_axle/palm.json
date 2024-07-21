@@ -1,0 +1,23 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "A": {
+      "item": "tfc:wood/axle/palm"
+    },
+    "L": {
+      "item": "tfc:wood/lumber/palm"
+    },
+    "S": {
+      "item": "tfc:wood/stripped_log/palm"
+    }
+  },
+  "pattern": [
+    " S ",
+    "LAL",
+    " S "
+  ],
+  "result": {
+    "count": 4,
+    "id": "tfc:wood/encased_axle/palm"
+  }
+}

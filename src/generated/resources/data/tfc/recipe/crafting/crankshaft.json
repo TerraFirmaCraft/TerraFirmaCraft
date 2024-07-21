@@ -1,0 +1,22 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "A": {
+      "tag": "tfc:axles"
+    },
+    "M": {
+      "item": "tfc:brass_mechanisms"
+    },
+    "S": {
+      "tag": "c:sheets/brass"
+    }
+  },
+  "pattern": [
+    "AM",
+    " S"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:crankshaft"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "R": {
+      "tag": "c:rods/wooden"
+    },
+    "S": {
+      "tag": "c:stones/smooth_slabs"
+    }
+  },
+  "pattern": [
+    "R R",
+    " R ",
+    "RSR"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:armor_stand"
+  }
+}

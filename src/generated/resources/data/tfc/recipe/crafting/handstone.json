@@ -1,0 +1,19 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "B": {
+      "tag": "c:stones"
+    },
+    "S": {
+      "tag": "c:rods/wooden"
+    }
+  },
+  "pattern": [
+    "S  ",
+    "BBB"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:handstone"
+  }
+}

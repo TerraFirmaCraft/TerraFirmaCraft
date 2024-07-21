@@ -1,0 +1,19 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "L": {
+      "item": "tfc:wood/lumber/palm"
+    },
+    "P": {
+      "item": "tfc:wood/planks/palm"
+    }
+  },
+  "pattern": [
+    "LPL",
+    "LPL"
+  ],
+  "result": {
+    "count": 2,
+    "id": "tfc:wood/planks/palm_fence_gate"
+  }
+}

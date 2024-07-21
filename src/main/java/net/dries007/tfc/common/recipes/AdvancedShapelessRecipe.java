@@ -7,6 +7,8 @@
 package net.dries007.tfc.common.recipes;
 
 import java.util.Optional;
+import java.util.function.Function;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -16,9 +18,12 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
 
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
@@ -33,29 +38,46 @@ import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 public class AdvancedShapelessRecipe extends ShapelessRecipe
 {
     public static final MapCodec<AdvancedShapelessRecipe> CODEC = RecordCodecBuilder.<AdvancedShapelessRecipe>mapCodec(i -> i.group(
-        RecipeSerializer.SHAPELESS_RECIPE.codec().forGetter(c -> c),
-        ItemStackProvider.CODEC.optionalFieldOf("result_provider").forGetter(c -> c.result),
+        // This part of the codec is identical to the shapeless recipe codec
+        Codec.STRING.optionalFieldOf("group", "").forGetter(ShapelessRecipe::getGroup),
+        CraftingBookCategory.CODEC.optionalFieldOf("category", CraftingBookCategory.MISC).forGetter(ShapelessRecipe::category),
+        Ingredient.CODEC_NONEMPTY
+            .listOf()
+            .fieldOf("ingredients")
+            .flatXmap(list -> {
+                final Ingredient[] values = list.toArray(Ingredient[]::new); // Neo skip the empty check and immediately create the array.
+                final int length = ShapedRecipePattern.getMaxHeight() * ShapedRecipePattern.getMaxWidth();
+                return values.length == 0
+                    ? DataResult.error(() -> "No ingredients for shapeless recipe")
+                    : values.length > length
+                        ? DataResult.error(() -> "Too many ingredients for shapeless recipe. The maximum is: %s".formatted(length))
+                        : DataResult.success(NonNullList.of(Ingredient.EMPTY, values));
+            }, DataResult::success)
+            .forGetter(ShapelessRecipe::getIngredients),
+        ItemStackProvider.CODEC.fieldOf("result").forGetter(c -> c.result),
         ItemStackProvider.CODEC.optionalFieldOf("remainder").forGetter(c -> c.remainder),
         Ingredient.CODEC.optionalFieldOf("primary_ingredient").forGetter(c -> c.primaryIngredient)
-    ).apply(i, AdvancedShapelessRecipe::new)).validate(recipe -> recipe.result.isPresent() && recipe.primaryIngredient.isEmpty()
-        ? DataResult.error(() -> "If result_provider is present, then primary_ingredient must also be present")
-        : DataResult.success(recipe));
+    ).apply(i, AdvancedShapelessRecipe::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, AdvancedShapelessRecipe> STREAM_CODEC = StreamCodec.composite(
-        RecipeSerializer.SHAPELESS_RECIPE.streamCodec(), c -> c,
-        ByteBufCodecs.optional(ItemStackProvider.STREAM_CODEC), c -> c.result,
+        ByteBufCodecs.STRING_UTF8, ShapelessRecipe::getGroup,
+        CraftingBookCategory.STREAM_CODEC, ShapelessRecipe::category,
+        Ingredient.CONTENTS_STREAM_CODEC
+            .apply(ByteBufCodecs.list())
+            .map(NonNullList::copyOf, Function.identity()), ShapelessRecipe::getIngredients,
+        ItemStackProvider.STREAM_CODEC, c -> c.result,
         ByteBufCodecs.optional(ItemStackProvider.STREAM_CODEC), c -> c.remainder,
         ByteBufCodecs.optional(Ingredient.CONTENTS_STREAM_CODEC), c -> c.primaryIngredient,
         AdvancedShapelessRecipe::new
     );
 
-    private final Optional<ItemStackProvider> result;
+    private final ItemStackProvider result;
     private final Optional<ItemStackProvider> remainder;
     private final Optional<Ingredient> primaryIngredient;
 
-    public AdvancedShapelessRecipe(ShapelessRecipe parent, Optional<ItemStackProvider> result, Optional<ItemStackProvider> remainder, Optional<Ingredient> primaryIngredient)
+    public AdvancedShapelessRecipe(String group, CraftingBookCategory category, NonNullList<Ingredient> ingredients, ItemStackProvider result, Optional<ItemStackProvider> remainder, Optional<Ingredient> primaryIngredient)
     {
-        super(parent.getGroup(), parent.category(), RecipeHelpers.getResultUnsafe(parent), parent.getIngredients());
+        super(group, category, ItemStack.EMPTY, ingredients);
 
         this.result = result;
         this.remainder = remainder;
@@ -65,18 +87,16 @@ public class AdvancedShapelessRecipe extends ShapelessRecipe
     @Override
     public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries)
     {
-        return this.result.map(result -> {
-            RecipeHelpers.setCraftingInput(input);
-            final ItemStack output = result.getSingleStack(getPrimaryInput(input).copy());
-            RecipeHelpers.clearCraftingInput();
-            return output;
-        }).orElseGet(() -> super.assemble(input, registries));
+        RecipeHelpers.setCraftingInput(input);
+        final ItemStack output = result.getSingleStack(getPrimaryInput(input).copy());
+        RecipeHelpers.clearCraftingInput();
+        return output;
     }
 
     @Override
     public ItemStack getResultItem(HolderLookup.Provider registries)
     {
-        return result.map(ItemStackProvider::getEmptyStack).orElseGet(() -> super.getResultItem(registries));
+        return result.getEmptyStack();
     }
 
     @Override
@@ -103,7 +123,7 @@ public class AdvancedShapelessRecipe extends ShapelessRecipe
     @Override
     public boolean isSpecial()
     {
-        return result.isPresent() && result.get().dependsOnInput();
+        return result.dependsOnInput();
     }
 
     @Override

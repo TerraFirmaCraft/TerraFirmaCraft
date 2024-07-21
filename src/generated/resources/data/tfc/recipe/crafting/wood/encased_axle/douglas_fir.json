@@ -1,0 +1,23 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "A": {
+      "item": "tfc:wood/axle/douglas_fir"
+    },
+    "L": {
+      "item": "tfc:wood/lumber/douglas_fir"
+    },
+    "S": {
+      "item": "tfc:wood/stripped_log/douglas_fir"
+    }
+  },
+  "pattern": [
+    " S ",
+    "LAL",
+    " S "
+  ],
+  "result": {
+    "count": 4,
+    "id": "tfc:wood/encased_axle/douglas_fir"
+  }
+}

@@ -1,8 +1,11 @@
 package net.dries007.tfc.data.providers;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
@@ -20,6 +23,7 @@ import net.minecraft.util.Unit;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.conditions.ICondition;
@@ -82,6 +86,7 @@ public final class BuiltinRecipes extends VanillaRecipeProvider implements
     // removing. This helps prevent us keeping old recipe removals around.
     final Set<ResourceLocation> vanillaRecipes = new HashSet<>();
     final Set<ResourceLocation> removedRecipes = new HashSet<>();
+    final Set<ResourceLocation> replacedRecipes = new HashSet<>();
 
     // This here, is a dirty hack that allows us to generate a recipe without a 'type' field, which is perfectly legal! As long as
     // we can ensure that the recipe will NEVER pass the condition - aka, if it is using a false condition. This is the most effective
@@ -282,7 +287,18 @@ public final class BuiltinRecipes extends VanillaRecipeProvider implements
         {
             final ResourceLocation id = ResourceLocation.withDefaultNamespace(name);
             assert vanillaRecipes.contains(id) : "Recipe " + id + " was not a legal vanilla recipe to remove";
+            assert !removedRecipes.contains(id) && !replacedRecipes.contains(id) : "Recipe " + id + " was already replaced or removed";
             removedRecipes.add(id);
         }
+    }
+
+    @Override
+    public void replace(String name, Recipe<?> recipe)
+    {
+        final ResourceLocation id = ResourceLocation.withDefaultNamespace(name);
+        assert vanillaRecipes.contains(id) : "Recipe " + id + " was not a legal vanilla recipe to replace";
+        assert !removedRecipes.contains(id) && !replacedRecipes.contains(id) : "Recipe " + id + " was already replaced or removed";
+        replacedRecipes.add(id);
+        output.accept(id, recipe, null);
     }
 }

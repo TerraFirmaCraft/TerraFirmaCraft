@@ -1,0 +1,22 @@
+{
+  "values": [
+    "tfc:powder/soda_ash",
+    "tfc:powder/sulfur",
+    "tfc:powder/graphite",
+    "tfc:powder/hematite",
+    "tfc:powder/limonite",
+    "tfc:powder/magnetite",
+    "tfc:powder/native_gold",
+    "tfc:powder/native_copper",
+    "tfc:powder/malachite",
+    "tfc:powder/tetrahedrite",
+    "tfc:powder/cassiterite",
+    "tfc:powder/garnierite",
+    "tfc:powder/native_silver",
+    "tfc:powder/amethyst",
+    "tfc:powder/ruby",
+    "tfc:powder/lapis_lazuli",
+    "tfc:powder/pyrite",
+    "tfc:powder/sapphire"
+  ]
+}

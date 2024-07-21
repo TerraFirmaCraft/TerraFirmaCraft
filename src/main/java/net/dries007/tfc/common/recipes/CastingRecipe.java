@@ -84,7 +84,8 @@ public class CastingRecipe implements INoopInputRecipe, IRecipePredicate<MoldLik
         final @Nullable IHeat heat = HeatCapability.get(stack);
         if (heat != null)
         {
-            heat.setTemperatureIfWarmer(mold.getTemperature());
+            // todo 1.21 molds
+            heat.setTemperatureIfWarmer(0); // mold.getTemperature());
         }
         return stack;
     }

@@ -1,0 +1,23 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "I": {
+      "tag": "c:rods/wrought_iron"
+    },
+    "S": {
+      "tag": "c:rods/wooden"
+    },
+    "T": {
+      "item": "minecraft:redstone_torch"
+    }
+  },
+  "pattern": [
+    "ISI",
+    "ITI",
+    "ISI"
+  ],
+  "result": {
+    "count": 4,
+    "id": "minecraft:activator_rail"
+  }
+}

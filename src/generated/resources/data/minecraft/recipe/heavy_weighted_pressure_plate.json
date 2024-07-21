@@ -1,0 +1,15 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "I": {
+      "tag": "c:ingots/wrought_iron"
+    }
+  },
+  "pattern": [
+    "II"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:heavy_weighted_pressure_plate"
+  }
+}

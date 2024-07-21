@@ -1,0 +1,19 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "L": {
+      "tag": "tfc:hickory"
+    },
+    "S": {
+      "tag": "c:tools/saw"
+    }
+  },
+  "pattern": [
+    "LS",
+    "L "
+  ],
+  "result": {
+    "count": 8,
+    "id": "tfc:wood/support/hickory"
+  }
+}

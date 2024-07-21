@@ -21,49 +21,66 @@ import net.dries007.tfc.util.registry.RegistryRock;
  */
 public enum Ore
 {
-    NATIVE_COPPER(true),
-    NATIVE_GOLD(true),
-    HEMATITE(true),
-    NATIVE_SILVER(true),
-    CASSITERITE(true),
-    BISMUTHINITE(true),
-    GARNIERITE(true),
-    MALACHITE(true),
-    MAGNETITE(true),
-    LIMONITE(true),
-    SPHALERITE(true),
-    TETRAHEDRITE(true),
-    BITUMINOUS_COAL(false),
-    LIGNITE(false),
-    GYPSUM(false),
-    GRAPHITE(false),
-    SULFUR(false),
-    CINNABAR(false),
-    CRYOLITE(false),
-    SALTPETER(false),
-    SYLVITE(false),
-    BORAX(false),
-    HALITE(false),
-    AMETHYST(false),
-    DIAMOND(false),
-    EMERALD(false),
-    LAPIS_LAZULI(false),
-    OPAL(false),
-    PYRITE(false),
-    RUBY(false),
-    SAPPHIRE(false),
-    TOPAZ(false);
+    // Graded Ores (Rich / Normal / Poor)
+    NATIVE_COPPER(Type.GRADED),
+    NATIVE_GOLD(Type.GRADED),
+    HEMATITE(Type.GRADED),
+    NATIVE_SILVER(Type.GRADED),
+    CASSITERITE(Type.GRADED),
+    BISMUTHINITE(Type.GRADED),
+    GARNIERITE(Type.GRADED),
+    MALACHITE(Type.GRADED),
+    MAGNETITE(Type.GRADED),
+    LIMONITE(Type.GRADED),
+    SPHALERITE(Type.GRADED),
+    TETRAHEDRITE(Type.GRADED),
 
-    private final boolean graded;
+    // Normal
+    BITUMINOUS_COAL(Type.NORMAL),
+    LIGNITE(Type.NORMAL),
+    GYPSUM(Type.NORMAL),
+    CINNABAR(Type.NORMAL),
+    CRYOLITE(Type.NORMAL),
+    BORAX(Type.NORMAL),
+    HALITE(Type.NORMAL),
 
-    Ore(boolean graded)
+    // Normal + Powder
+    GRAPHITE(Type.NORMAL_WITH_POWDER),
+    SALTPETER(Type.NORMAL_WITH_POWDER),
+    SULFUR(Type.NORMAL_WITH_POWDER),
+    SYLVITE(Type.NORMAL_WITH_POWDER),
+
+    // Gems
+    AMETHYST(Type.GEM),
+    DIAMOND(Type.GEM),
+    EMERALD(Type.GEM),
+    LAPIS_LAZULI(Type.GEM),
+    OPAL(Type.GEM),
+    PYRITE(Type.GEM),
+    RUBY(Type.GEM),
+    SAPPHIRE(Type.GEM),
+    TOPAZ(Type.GEM);
+
+    private final Type type;
+
+    Ore(Type type)
     {
-        this.graded = graded;
+        this.type = type;
     }
 
     public boolean isGraded()
     {
-        return graded;
+        return type == Type.GRADED;
+    }
+
+    public boolean isGem()
+    {
+        return type == Type.GEM;
+    }
+
+    public boolean hasPowder()
+    {
+        return type != Type.NORMAL;
     }
 
     public Metal metal()
@@ -95,13 +112,11 @@ public enum Ore
 
     public enum Grade
     {
-        POOR, NORMAL, RICH;
+        POOR, NORMAL, RICH
+    }
 
-        private static final Grade[] VALUES = values();
-
-        public static Grade valueOf(int i)
-        {
-            return i < 0 || i >= VALUES.length ? NORMAL : VALUES[i];
-        }
+    enum Type
+    {
+        GRADED, NORMAL, NORMAL_WITH_POWDER, GEM
     }
 }

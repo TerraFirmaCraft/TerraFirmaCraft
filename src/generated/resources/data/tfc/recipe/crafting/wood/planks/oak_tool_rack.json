@@ -1,0 +1,17 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "L": {
+      "item": "tfc:wood/lumber/oak"
+    }
+  },
+  "pattern": [
+    "LLL",
+    "   ",
+    "LLL"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:wood/planks/oak_tool_rack"
+  }
+}

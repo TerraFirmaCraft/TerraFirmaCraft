@@ -1,0 +1,23 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "A": {
+      "item": "tfc:wood/axle/chestnut"
+    },
+    "L": {
+      "item": "tfc:wood/lumber/chestnut"
+    },
+    "P": {
+      "item": "tfc:wood/planks/chestnut"
+    }
+  },
+  "pattern": [
+    "LPL",
+    "PAP",
+    "LPL"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:wood/water_wheel/chestnut"
+  }
+}

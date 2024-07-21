@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:magenta_dye"
+    },
+    {
+      "item": "tfc:ceramic/unfired_large_vessel"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:ceramic/unfired_large_vessel/magenta"
+  }
+}

@@ -178,7 +178,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
      * <p>
      * Another issue may arise if a mod tries to attach the same chunk generator to another world. Create does this to create simulated / wrapped worlds.
      * This causes us a problem, because it in effect, resets the random state, and importantly will reset, and clear the cache of partial chunk data, in
-     * {@code this.chunkDataProvider}. In order to prevent this from being an issue, we will duplicate the chunk generator on the {@link ChunkMap} first,
+     * {@code this.chunkDataGenerator}. In order to prevent this from being an issue, we will duplicate the chunk generator on the {@link ChunkMap} first,
      * then re-call initialization on that duplicated version.
      * <p>
      * See: <a href="https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues/2591">TerraFirmaCraft#2591</a>

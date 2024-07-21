@@ -1,7 +1,13 @@
 {
-  "neoforge:conditions": [
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
     {
-      "type": "neoforge:false"
+      "tag": "c:storage_blocks/lapis"
     }
-  ]
+  ],
+  "result": {
+    "count": 9,
+    "id": "tfc:ore/lapis_lazuli"
+  }
 }

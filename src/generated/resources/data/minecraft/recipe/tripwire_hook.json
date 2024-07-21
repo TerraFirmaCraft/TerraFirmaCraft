@@ -1,0 +1,23 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "L": {
+      "tag": "tfc:lumber"
+    },
+    "R": {
+      "tag": "c:rods/wooden"
+    },
+    "S": {
+      "tag": "c:sheets/wrought_iron"
+    }
+  },
+  "pattern": [
+    "S",
+    "L",
+    "R"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:tripwire_hook"
+  }
+}

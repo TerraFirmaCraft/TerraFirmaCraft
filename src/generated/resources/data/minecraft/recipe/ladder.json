@@ -1,0 +1,17 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "L": {
+      "tag": "tfc:lumber"
+    }
+  },
+  "pattern": [
+    "L L",
+    "L L",
+    "L L"
+  ],
+  "result": {
+    "count": 16,
+    "id": "minecraft:ladder"
+  }
+}

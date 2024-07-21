@@ -1,0 +1,19 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "L": {
+      "item": "tfc:wood/lumber/douglas_fir"
+    },
+    "P": {
+      "item": "tfc:wood/planks/douglas_fir"
+    }
+  },
+  "pattern": [
+    "LPL",
+    "LPL"
+  ],
+  "result": {
+    "count": 2,
+    "id": "tfc:wood/planks/douglas_fir_fence_gate"
+  }
+}

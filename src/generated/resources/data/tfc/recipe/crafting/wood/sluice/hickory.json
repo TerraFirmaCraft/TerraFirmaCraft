@@ -1,0 +1,20 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "L": {
+      "item": "tfc:wood/lumber/hickory"
+    },
+    "S": {
+      "tag": "c:rods/wooden"
+    }
+  },
+  "pattern": [
+    "  S",
+    " SL",
+    "SLL"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:wood/sluice/hickory"
+  }
+}

@@ -52,12 +52,10 @@ public interface ItemStackModifier
      *     <li>{@link #DEFAULT} is the default context, where everything should operate as per normal</li>
      *     <li>{@link #NO_RANDOM_CHANCE} is a context used when querying for the purposes of inventory display, or other non-gameplay
      *     purposes, where the output needs to be deterministic and not represent the exact state of the recipe.</li>
-     *     <li>{@link #NO_ONE_TIME_EFFECTS} is a context used to indicate that the same provider is being queried multiple times,
-     *     and this invocation should not produce one-time effects (on a per-recipe basis).</li>
      * </ul>
      */
     enum Context
     {
-        DEFAULT, NO_RANDOM_CHANCE, NO_ONE_TIME_EFFECTS;
+        DEFAULT, NO_RANDOM_CHANCE
     }
 }

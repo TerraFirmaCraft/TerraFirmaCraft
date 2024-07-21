@@ -1,0 +1,23 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "A": {
+      "item": "tfc:wood/axle/sequoia"
+    },
+    "L": {
+      "item": "tfc:wood/lumber/sequoia"
+    },
+    "S": {
+      "item": "tfc:wood/stripped_log/sequoia"
+    }
+  },
+  "pattern": [
+    " S ",
+    "LAL",
+    " S "
+  ],
+  "result": {
+    "count": 4,
+    "id": "tfc:wood/encased_axle/sequoia"
+  }
+}

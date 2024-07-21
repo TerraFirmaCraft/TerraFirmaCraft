@@ -1,0 +1,22 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "X": [
+      {
+        "item": "tfc:glue"
+      },
+      {
+        "item": "minecraft:slime_ball"
+      }
+    ]
+  },
+  "pattern": [
+    "XXX",
+    "XXX",
+    "XXX"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:slime_block"
+  }
+}

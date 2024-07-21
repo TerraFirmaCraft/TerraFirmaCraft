@@ -1,0 +1,19 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "L": {
+      "item": "tfc:wood/lumber/oak"
+    },
+    "P": {
+      "item": "tfc:wood/planks/oak"
+    }
+  },
+  "pattern": [
+    "LPL",
+    "LPL"
+  ],
+  "result": {
+    "count": 2,
+    "id": "tfc:wood/planks/oak_fence_gate"
+  }
+}

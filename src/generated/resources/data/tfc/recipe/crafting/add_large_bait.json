@@ -1,0 +1,24 @@
+{
+  "type": "tfc:advanced_shapeless_crafting",
+  "ingredients": [
+    {
+      "tag": "tfc:holds_large_fishing_bait"
+    },
+    {
+      "tag": "tfc:large_fishing_bait"
+    }
+  ],
+  "primary_ingredient": {
+    "tag": "tfc:holds_large_fishing_bait"
+  },
+  "result": {
+    "modifiers": [
+      {
+        "type": "tfc:copy_input"
+      },
+      {
+        "type": "tfc:add_bait_to_rod"
+      }
+    ]
+  }
+}

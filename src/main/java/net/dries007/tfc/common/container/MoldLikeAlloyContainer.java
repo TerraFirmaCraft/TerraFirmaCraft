@@ -68,7 +68,8 @@ public class MoldLikeAlloyContainer extends ItemStackContainer implements ISlotC
                         mold.drain(1, IFluidHandler.FluidAction.EXECUTE);
                         if (outputHeat != null)
                         {
-                            outputHeat.addTemperatureFromSourceWithHeatCapacity(mold.getTemperature(), heatCapacityOf1mB);
+                            // todo: 1.21
+                            outputHeat.addTemperatureFromSourceWithHeatCapacity(0f /*mold.getTemperature()*/, heatCapacityOf1mB);
                         }
                     }
                 }

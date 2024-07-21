@@ -1,0 +1,19 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "L": {
+      "item": "tfc:wood/lumber/chestnut"
+    },
+    "P": {
+      "item": "tfc:wood/planks/chestnut"
+    }
+  },
+  "pattern": [
+    "PLP",
+    "PLP"
+  ],
+  "result": {
+    "count": 8,
+    "id": "tfc:wood/planks/chestnut_fence"
+  }
+}

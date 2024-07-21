@@ -1,7 +1,20 @@
 {
-  "neoforge:conditions": [
-    {
-      "type": "neoforge:false"
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "R": {
+      "tag": "c:rods/wrought_iron"
+    },
+    "S": {
+      "tag": "c:rods/wooden"
     }
-  ]
+  },
+  "pattern": [
+    "R R",
+    "RSR",
+    "R R"
+  ],
+  "result": {
+    "count": 32,
+    "id": "minecraft:rail"
+  }
 }

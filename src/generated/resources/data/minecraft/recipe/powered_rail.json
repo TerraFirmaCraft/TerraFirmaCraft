@@ -1,0 +1,23 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "D": {
+      "tag": "c:dusts/redstone"
+    },
+    "R": {
+      "tag": "c:rods/gold"
+    },
+    "S": {
+      "tag": "c:rods/wooden"
+    }
+  },
+  "pattern": [
+    "R R",
+    "RSR",
+    "RDR"
+  ],
+  "result": {
+    "count": 16,
+    "id": "minecraft:powered_rail"
+  }
+}

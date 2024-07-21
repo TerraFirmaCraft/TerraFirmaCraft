@@ -1,9 +1,12 @@
 package net.dries007.tfc.data.recipes;
 
+import java.util.List;
 import java.util.Objects;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeType;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.data.Accessors;
 import net.dries007.tfc.data.DataAccessor;
@@ -11,6 +14,7 @@ import net.dries007.tfc.data.providers.BuiltinItemHeat;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.data.FluidHeat;
+import net.dries007.tfc.util.data.KnappingType;
 
 public interface Recipes extends Accessors
 {
@@ -36,4 +40,6 @@ public interface Recipes extends Accessors
     void add(String prefix, String name, Recipe<?> recipe);
 
     void remove(String... names);
+
+    void replace(String name, Recipe<?> recipe);
 }

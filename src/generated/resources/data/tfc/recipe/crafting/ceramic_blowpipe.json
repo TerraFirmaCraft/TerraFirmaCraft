@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "tfc:ceramic_blowpipe_with_glass"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:ceramic_blowpipe"
+  }
+}

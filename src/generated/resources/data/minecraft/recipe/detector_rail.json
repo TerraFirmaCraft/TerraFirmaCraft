@@ -1,0 +1,23 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "I": {
+      "tag": "c:rods/wrought_iron"
+    },
+    "P": {
+      "tag": "c:stones/pressure_plate"
+    },
+    "R": {
+      "tag": "c:dusts/redstone"
+    }
+  },
+  "pattern": [
+    "I I",
+    "IPI",
+    "IRI"
+  ],
+  "result": {
+    "count": 4,
+    "id": "minecraft:detector_rail"
+  }
+}

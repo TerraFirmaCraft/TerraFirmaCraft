@@ -1,7 +1,23 @@
 {
-  "neoforge:conditions": [
-    {
-      "type": "neoforge:false"
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "C": {
+      "tag": "c:sheets/copper"
+    },
+    "L": {
+      "item": "tfc:lens"
+    },
+    "M": {
+      "item": "tfc:brass_mechanisms"
     }
-  ]
+  },
+  "pattern": [
+    "L",
+    "C",
+    "M"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:spyglass"
+  }
 }

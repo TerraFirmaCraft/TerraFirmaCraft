@@ -1,0 +1,20 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "B": {
+      "item": "tfc:wood/planks/maple_bookshelf"
+    },
+    "L": {
+      "item": "tfc:wood/lumber/maple"
+    }
+  },
+  "pattern": [
+    "LLL",
+    " B ",
+    " L "
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:wood/lectern/maple"
+  }
+}

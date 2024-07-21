@@ -1,0 +1,22 @@
+{
+  "type": "tfc:advanced_shapeless_crafting",
+  "ingredients": [
+    {
+      "tag": "c:tools/saw"
+    },
+    {
+      "tag": "tfc:aspen"
+    }
+  ],
+  "remainder": {
+    "modifiers": [
+      {
+        "type": "tfc:damage_crafting_remainder"
+      }
+    ]
+  },
+  "result": {
+    "count": 8,
+    "id": "tfc:wood/lumber/aspen"
+  }
+}

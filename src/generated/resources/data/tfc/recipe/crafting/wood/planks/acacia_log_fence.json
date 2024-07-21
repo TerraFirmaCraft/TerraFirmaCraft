@@ -1,0 +1,19 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "L": {
+      "item": "tfc:wood/lumber/acacia"
+    },
+    "P": {
+      "item": "tfc:wood/log/acacia"
+    }
+  },
+  "pattern": [
+    "PLP",
+    "PLP"
+  ],
+  "result": {
+    "count": 8,
+    "id": "tfc:wood/planks/acacia_log_fence"
+  }
+}

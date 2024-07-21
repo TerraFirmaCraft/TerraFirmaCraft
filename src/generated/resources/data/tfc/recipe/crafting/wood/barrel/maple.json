@@ -1,0 +1,17 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "L": {
+      "item": "tfc:wood/lumber/maple"
+    }
+  },
+  "pattern": [
+    "L L",
+    "L L",
+    "LLL"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:wood/barrel/maple"
+  }
+}

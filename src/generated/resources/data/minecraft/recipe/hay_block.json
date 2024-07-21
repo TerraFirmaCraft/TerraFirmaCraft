@@ -1,7 +1,17 @@
 {
-  "neoforge:conditions": [
-    {
-      "type": "neoforge:false"
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "X": {
+      "item": "tfc:straw"
     }
-  ]
+  },
+  "pattern": [
+    "XXX",
+    "XXX",
+    "XXX"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:hay_block"
+  }
 }

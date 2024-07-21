@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "type": "tfc:fluid_content",
+      "fluid": {
+        "amount": 100,
+        "fluid": "minecraft:water"
+      }
+    },
+    {
+      "item": "tfc:dirt/sandy_loam"
+    },
+    {
+      "item": "tfc:dirt/sandy_loam"
+    },
+    {
+      "item": "tfc:dirt/sandy_loam"
+    },
+    {
+      "item": "tfc:dirt/sandy_loam"
+    },
+    {
+      "item": "tfc:dirt/sandy_loam"
+    }
+  ],
+  "result": {
+    "count": 5,
+    "id": "tfc:mud/sandy_loam"
+  }
+}

@@ -34,7 +34,7 @@ public interface PotRecipes extends Recipes
     {
         for (DyeColor color : DyeColor.values())
             pot(
-                itemOf(ResourceLocation.withDefaultNamespace(color.getSerializedName() + "_dye")), 1,
+                dyeOf(color), 1,
                 fluidOf(color),
                 hours(2), 600f);
 

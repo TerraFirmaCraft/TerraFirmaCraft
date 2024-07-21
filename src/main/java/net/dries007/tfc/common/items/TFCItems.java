@@ -32,7 +32,6 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import net.dries007.tfc.common.TFCCreativeTabs;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.TFCTiers;
-import net.dries007.tfc.common.blocks.Gem;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.crop.Crop;
 import net.dries007.tfc.common.blocks.plant.coral.Coral;
@@ -79,8 +78,8 @@ public final class TFCItems
         )
     );
 
-    public static final Map<Gem, ItemId> GEMS = Helpers.mapOfKeys(Gem.class, gem ->
-        register("gem/" + gem.name())
+    public static final Map<Ore, ItemId> GEMS = Helpers.mapOfKeys(Ore.class, Ore::isGem, ore ->
+        register("gem/" + ore.name())
     );
 
     // Rock Stuff
@@ -174,9 +173,8 @@ public final class TFCItems
         )
     );
 
-    public static final Map<Gem, ItemId> GEM_DUST = Helpers.mapOfKeys(Gem.class, gem -> register("powder/" + gem.name()));
     public static final Map<Powder, ItemId> POWDERS = Helpers.mapOfKeys(Powder.class, powder -> register("powder/" + powder.name()));
-    public static final Map<Ore, ItemId> ORE_POWDERS = Helpers.mapOfKeys(Ore.class, Ore::isGraded, ore -> register("powder/" + ore.name()));
+    public static final Map<Ore, ItemId> ORE_POWDERS = Helpers.mapOfKeys(Ore.class, Ore::hasPowder, ore -> register("powder/" + ore.name()));
 
     public static final ItemId CERAMIC_BLOWPIPE = register("ceramic_blowpipe", () -> new BlowpipeItem(new Item.Properties()));
     public static final ItemId BLOWPIPE = register("blowpipe", () -> new BlowpipeItem(new Item.Properties()));

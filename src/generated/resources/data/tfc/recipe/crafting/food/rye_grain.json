@@ -1,0 +1,44 @@
+{
+  "type": "tfc:advanced_shapeless_crafting",
+  "ingredients": [
+    {
+      "type": "tfc:and",
+      "children": [
+        {
+          "item": "tfc:food/rye"
+        },
+        {
+          "type": "tfc:not_rotten"
+        }
+      ]
+    },
+    {
+      "tag": "c:tools/knife"
+    }
+  ],
+  "remainder": {
+    "modifiers": [
+      {
+        "type": "tfc:damage_crafting_remainder"
+      }
+    ]
+  },
+  "result": {
+    "modifiers": [
+      {
+        "type": "tfc:copy_food"
+      },
+      {
+        "type": "tfc:extra_products",
+        "stack": {
+          "count": 1,
+          "id": "tfc:straw"
+        }
+      }
+    ],
+    "stack": {
+      "count": 1,
+      "id": "tfc:food/rye_grain"
+    }
+  }
+}

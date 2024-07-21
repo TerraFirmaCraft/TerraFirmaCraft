@@ -1,0 +1,23 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "A": {
+      "item": "tfc:wood/axle/white_cedar"
+    },
+    "L": {
+      "item": "tfc:wood/lumber/white_cedar"
+    },
+    "S": {
+      "item": "tfc:wood/stripped_log/white_cedar"
+    }
+  },
+  "pattern": [
+    " S ",
+    "LAL",
+    " S "
+  ],
+  "result": {
+    "count": 4,
+    "id": "tfc:wood/encased_axle/white_cedar"
+  }
+}

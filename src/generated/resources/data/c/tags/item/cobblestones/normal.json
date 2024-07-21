@@ -1,0 +1,24 @@
+{
+  "values": [
+    "tfc:rock/cobble/granite",
+    "tfc:rock/cobble/diorite",
+    "tfc:rock/cobble/gabbro",
+    "tfc:rock/cobble/shale",
+    "tfc:rock/cobble/claystone",
+    "tfc:rock/cobble/limestone",
+    "tfc:rock/cobble/conglomerate",
+    "tfc:rock/cobble/dolomite",
+    "tfc:rock/cobble/chert",
+    "tfc:rock/cobble/chalk",
+    "tfc:rock/cobble/rhyolite",
+    "tfc:rock/cobble/basalt",
+    "tfc:rock/cobble/andesite",
+    "tfc:rock/cobble/dacite",
+    "tfc:rock/cobble/quartzite",
+    "tfc:rock/cobble/slate",
+    "tfc:rock/cobble/phyllite",
+    "tfc:rock/cobble/schist",
+    "tfc:rock/cobble/gneiss",
+    "tfc:rock/cobble/marble"
+  ]
+}

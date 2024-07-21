@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "tfc:rock/cobble/limestone"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "id": "tfc:rock/loose/limestone"
+  }
+}

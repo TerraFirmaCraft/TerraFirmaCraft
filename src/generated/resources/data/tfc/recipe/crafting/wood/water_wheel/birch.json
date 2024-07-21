@@ -1,0 +1,23 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "A": {
+      "item": "tfc:wood/axle/birch"
+    },
+    "L": {
+      "item": "tfc:wood/lumber/birch"
+    },
+    "P": {
+      "item": "tfc:wood/planks/birch"
+    }
+  },
+  "pattern": [
+    "LPL",
+    "PAP",
+    "LPL"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:wood/water_wheel/birch"
+  }
+}

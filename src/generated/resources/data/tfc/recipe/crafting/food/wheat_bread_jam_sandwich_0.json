@@ -1,0 +1,51 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "type": "tfc:and",
+      "children": [
+        {
+          "item": "tfc:food/wheat_bread"
+        },
+        {
+          "type": "tfc:not_rotten"
+        }
+      ]
+    },
+    "J": {
+      "type": "tfc:and",
+      "children": [
+        {
+          "tag": "tfc:foods/preserves"
+        },
+        {
+          "type": "tfc:not_rotten"
+        }
+      ]
+    },
+    "K": {
+      "tag": "c:tools/knife"
+    },
+    "S": {
+      "type": "tfc:and",
+      "children": [
+        {
+          "tag": "tfc:usable_in_jam_sandwich"
+        },
+        {
+          "type": "tfc:not_rotten"
+        }
+      ]
+    }
+  },
+  "pattern": [
+    "KB ",
+    "JSS",
+    " B "
+  ],
+  "result": {
+    "count": 2,
+    "id": "tfc:food/wheat_bread_jam_sandwich"
+  }
+}

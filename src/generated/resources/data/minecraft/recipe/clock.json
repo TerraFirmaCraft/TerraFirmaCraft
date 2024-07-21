@@ -1,7 +1,23 @@
 {
-  "neoforge:conditions": [
-    {
-      "type": "neoforge:false"
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "G": {
+      "tag": "c:sheets/gold"
+    },
+    "M": {
+      "item": "tfc:brass_mechanisms"
+    },
+    "R": {
+      "tag": "c:dusts/redstone"
     }
-  ]
+  },
+  "pattern": [
+    "GRG",
+    "RMR",
+    "GRG"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:clock"
+  }
 }

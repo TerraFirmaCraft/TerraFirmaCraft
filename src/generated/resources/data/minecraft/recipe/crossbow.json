@@ -1,0 +1,26 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "L": {
+      "tag": "tfc:lumber"
+    },
+    "R": {
+      "tag": "c:rods/wrought_iron"
+    },
+    "S": {
+      "tag": "c:strings"
+    },
+    "T": {
+      "item": "minecraft:tripwire_hook"
+    }
+  },
+  "pattern": [
+    "LRL",
+    "STS",
+    " L "
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:crossbow"
+  }
+}

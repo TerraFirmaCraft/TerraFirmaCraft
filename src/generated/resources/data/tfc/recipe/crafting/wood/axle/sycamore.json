@@ -1,0 +1,18 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "G": {
+      "item": "tfc:glue"
+    },
+    "W": {
+      "item": "tfc:wood/stripped_log/sycamore"
+    }
+  },
+  "pattern": [
+    "WGW"
+  ],
+  "result": {
+    "count": 4,
+    "id": "tfc:wood/axle/sycamore"
+  }
+}

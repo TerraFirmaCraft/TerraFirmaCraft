@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "type": "tfc:fluid_content",
+      "fluid": {
+        "amount": 100,
+        "fluid": "minecraft:water"
+      }
+    },
+    {
+      "item": "tfc:dirt/silt"
+    },
+    {
+      "item": "tfc:dirt/silt"
+    },
+    {
+      "item": "tfc:dirt/silt"
+    },
+    {
+      "item": "tfc:dirt/silt"
+    },
+    {
+      "item": "tfc:dirt/silt"
+    },
+    {
+      "item": "tfc:dirt/silt"
+    }
+  ],
+  "result": {
+    "count": 6,
+    "id": "tfc:mud/silt"
+  }
+}

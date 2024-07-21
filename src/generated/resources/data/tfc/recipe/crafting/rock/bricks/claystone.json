@@ -1,0 +1,20 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "X": {
+      "item": "tfc:mortar"
+    },
+    "Y": {
+      "item": "tfc:brick/claystone"
+    }
+  },
+  "pattern": [
+    "XYX",
+    "YXY",
+    "XYX"
+  ],
+  "result": {
+    "count": 4,
+    "id": "tfc:rock/bricks/claystone"
+  }
+}

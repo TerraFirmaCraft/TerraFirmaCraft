@@ -6,18 +6,20 @@
 
 package net.dries007.tfc.common.items;
 
+import net.dries007.tfc.common.blocks.rock.Ore;
+
+/**
+ * Powders that are not derived from ores
+ * @see Ore
+ */
 public enum Powder
 {
     CHARCOAL,
     COKE,
     FLUX,
-    GRAPHITE,
     KAOLINITE,
     LIME,
     SALT,
-    SALTPETER,
     SODA_ASH,
-    SULFUR,
-    SYLVITE,
     WOOD_ASH
 }

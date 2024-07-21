@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "type": "tfc:fluid_content",
+      "fluid": {
+        "amount": 100,
+        "fluid": "minecraft:water"
+      }
+    },
+    {
+      "item": "tfc:dirt/loam"
+    },
+    {
+      "item": "tfc:dirt/loam"
+    },
+    {
+      "item": "tfc:dirt/loam"
+    },
+    {
+      "item": "tfc:dirt/loam"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "id": "tfc:mud/loam"
+  }
+}

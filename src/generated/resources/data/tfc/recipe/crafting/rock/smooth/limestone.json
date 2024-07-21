@@ -1,0 +1,22 @@
+{
+  "type": "tfc:advanced_shapeless_crafting",
+  "ingredients": [
+    {
+      "item": "tfc:rock/raw/limestone"
+    },
+    {
+      "tag": "c:tools/chisel"
+    }
+  ],
+  "remainder": {
+    "modifiers": [
+      {
+        "type": "tfc:damage_crafting_remainder"
+      }
+    ]
+  },
+  "result": {
+    "count": 1,
+    "id": "tfc:rock/smooth/limestone"
+  }
+}

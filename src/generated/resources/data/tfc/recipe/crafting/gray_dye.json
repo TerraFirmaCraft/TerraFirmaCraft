@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    [
+      {
+        "item": "tfc:powder/cassiterite"
+      },
+      {
+        "item": "tfc:powder/magnetite"
+      },
+      {
+        "item": "tfc:powder/sphalerite"
+      },
+      {
+        "item": "tfc:powder/tetrahedrite"
+      }
+    ]
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:gray_dye"
+  }
+}

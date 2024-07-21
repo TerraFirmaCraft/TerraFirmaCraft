@@ -36,7 +36,8 @@ public class SmallVesselInventoryContainer extends ItemStackContainer
     @Override
     public boolean stillValid(Player player)
     {
-        return vessel != null && vessel.mode() == VesselLike.Mode.INVENTORY && vessel.getTemperature() == 0 && super.stillValid(player);
+        // todo 1.21 molds
+        return vessel != null && vessel.mode() == VesselLike.Mode.INVENTORY/* && vessel.getTemperature() == 0*/ && super.stillValid(player);
     }
 
     @Override

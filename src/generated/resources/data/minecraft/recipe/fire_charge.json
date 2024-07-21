@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:gunpowder"
+    },
+    {
+      "tag": "minecraft:coals"
+    },
+    {
+      "item": "tfc:firestarter"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:fire_charge"
+  }
+}

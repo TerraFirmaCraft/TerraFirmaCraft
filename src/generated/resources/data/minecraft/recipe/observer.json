@@ -1,0 +1,23 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "C": {
+      "tag": "c:cobblestones/normal"
+    },
+    "M": {
+      "item": "tfc:brass_mechanisms"
+    },
+    "R": {
+      "tag": "c:dusts/redstone"
+    }
+  },
+  "pattern": [
+    "CCC",
+    "RRM",
+    "CCC"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:observer"
+  }
+}

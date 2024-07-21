@@ -1,0 +1,23 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "A": {
+      "item": "tfc:wood/axle/spruce"
+    },
+    "L": {
+      "item": "tfc:wood/lumber/spruce"
+    },
+    "P": {
+      "item": "tfc:wood/planks/spruce"
+    }
+  },
+  "pattern": [
+    "LPL",
+    "PAP",
+    "LPL"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:wood/water_wheel/spruce"
+  }
+}

@@ -45,7 +45,7 @@ public class MoldLikeAlloyScreen extends TFCContainerScreen<MoldLikeAlloyContain
                 drawCenteredLine(stack, metal.getDisplayName(), 14);
                 drawCenteredLine(stack, Tooltips.fluidUnits(fluid.getAmount()), 23);
 
-                final float temperature = mold.getTemperature();
+                final float temperature = 0f; // mold.getTemperature(); todo 1.21
                 final MutableComponent tooltip = TFCConfig.CLIENT.heatTooltipStyle.get().format(temperature);
                 if (tooltip != null)
                 {

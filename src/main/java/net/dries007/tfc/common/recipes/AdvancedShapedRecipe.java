@@ -33,7 +33,7 @@ public class AdvancedShapedRecipe extends ShapedRecipe
     public static final MapCodec<AdvancedShapedRecipe> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
         // Copied from ShapedRecipe.Serializer.CODEC, as we want to avoid the "result" field as a strict item stack
         Codec.STRING.optionalFieldOf("group", "").forGetter(ShapedRecipe::getGroup),
-        CraftingBookCategory.CODEC.fieldOf("category").orElse(CraftingBookCategory.MISC).forGetter(ShapedRecipe::category),
+        CraftingBookCategory.CODEC.optionalFieldOf("category", CraftingBookCategory.MISC).forGetter(ShapedRecipe::category),
         ShapedRecipePattern.MAP_CODEC.forGetter(c -> c.pattern),
         Codec.BOOL.optionalFieldOf("show_notification", true).forGetter(ShapedRecipe::showNotification),
         ItemStackProvider.CODEC.fieldOf("result").forGetter(c -> c.result),

@@ -1,0 +1,22 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "H": {
+      "item": "minecraft:leather_horse_armor"
+    },
+    "J": {
+      "item": "tfc:jute_fiber"
+    },
+    "S": {
+      "tag": "c:double_sheets/blue_steel"
+    }
+  },
+  "pattern": [
+    "JHJ",
+    "SSS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/horse_armor/blue_steel"
+  }
+}

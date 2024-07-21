@@ -1,0 +1,23 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "A": {
+      "item": "tfc:wood/axle/blackwood"
+    },
+    "L": {
+      "item": "tfc:wood/lumber/blackwood"
+    },
+    "S": {
+      "item": "tfc:wood/stripped_log/blackwood"
+    }
+  },
+  "pattern": [
+    " S ",
+    "LAL",
+    " S "
+  ],
+  "result": {
+    "count": 4,
+    "id": "tfc:wood/encased_axle/blackwood"
+  }
+}

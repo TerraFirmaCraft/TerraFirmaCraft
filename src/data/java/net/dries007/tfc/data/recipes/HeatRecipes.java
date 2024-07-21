@@ -58,10 +58,7 @@ public interface HeatRecipes extends Recipes
         TFCBlocks.GLAZED_LARGE_VESSELS.forEach((color, item) -> add(TFCItems.UNFIRED_GLAZED_LARGE_VESSELS.get(color), item, POTTERY));
 
         for (DyeColor color : DyeColor.values())
-            add(
-                itemOf(ResourceLocation.withDefaultNamespace(color.getSerializedName() + "_terracotta")),
-                itemOf(ResourceLocation.withDefaultNamespace(color.getSerializedName() + "_glazed_terracotta")),
-                POTTERY);
+            add(dyedOf(color, "terracotta"), dyedOf(color, "glazed_terracotta"), POTTERY);
 
         addFood(Food.BARLEY_DOUGH, Food.BARLEY_BREAD);
         addFood(Food.MAIZE_DOUGH, Food.MAIZE_BREAD);

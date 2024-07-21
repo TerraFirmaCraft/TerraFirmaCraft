@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "tfc:mud/sandy_loam"
+    },
+    {
+      "item": "tfc:straw"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:drying_bricks/sandy_loam"
+  }
+}

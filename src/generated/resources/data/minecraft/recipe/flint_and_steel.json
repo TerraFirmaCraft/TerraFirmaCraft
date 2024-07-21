@@ -1,7 +1,16 @@
 {
-  "neoforge:conditions": [
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
     {
-      "type": "neoforge:false"
+      "tag": "c:rods/steel"
+    },
+    {
+      "item": "minecraft:flint"
     }
-  ]
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:flint_and_steel"
+  }
 }

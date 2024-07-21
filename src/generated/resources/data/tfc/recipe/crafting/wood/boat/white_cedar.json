@@ -1,0 +1,16 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "P": {
+      "item": "tfc:wood/planks/white_cedar"
+    }
+  },
+  "pattern": [
+    "P P",
+    "PPP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:wood/boat/white_cedar"
+  }
+}

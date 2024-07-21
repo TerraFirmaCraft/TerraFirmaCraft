@@ -1,0 +1,20 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "D": {
+      "tag": "minecraft:dirt"
+    },
+    "L": {
+      "tag": "tfc:lumber"
+    }
+  },
+  "pattern": [
+    "L L",
+    "LDL",
+    "LLL"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:composter"
+  }
+}

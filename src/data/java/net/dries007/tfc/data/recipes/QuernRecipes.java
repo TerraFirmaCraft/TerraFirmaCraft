@@ -25,8 +25,7 @@ public interface QuernRecipes extends Recipes
     default void quernRecipes()
     {
         add(notRotten(TFCItems.FOOD.get(Food.OLIVE)), TFCItems.OLIVE_PASTE, 2);
-        add(TFCItems.ORES.get(Ore.BORAX), TFCItems.POWDERS.get(Powder.FLUX), 6);
-        add("from_borax", Ingredient.of(
+        add(Ingredient.of(
             TFCItems.FOOD.get(Food.SHELLFISH),
             TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.MOLLUSK),
             TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.CLAM),
@@ -43,6 +42,7 @@ public interface QuernRecipes extends Recipes
             TFCBlocks.ROCK_BLOCKS.get(Rock.MARBLE).get(Rock.BlockType.LOOSE),
             TFCBlocks.ROCK_BLOCKS.get(Rock.MARBLE).get(Rock.BlockType.MOSSY_LOOSE)
         ), TFCItems.POWDERS.get(Powder.FLUX), 2);
+        add("from_borax", TFCItems.ORES.get(Ore.BORAX), TFCItems.POWDERS.get(Powder.FLUX), 6);
         add(Ingredient.of(
             TFCItems.ORES.get(Ore.CINNABAR),
             TFCItems.ORES.get(Ore.CRYOLITE)
@@ -57,17 +57,17 @@ public interface QuernRecipes extends Recipes
         addGrain(Food.RYE_GRAIN, Food.RYE_FLOUR);
         addGrain(Food.WHEAT_GRAIN, Food.WHEAT_FLOUR);
         add(TFCItems.ORES.get(Ore.HALITE), TFCItems.POWDERS.get(Powder.SALT), 4);
-        add(TFCItems.ORES.get(Ore.SYLVITE), TFCItems.POWDERS.get(Powder.SYLVITE), 4);
-        add(TFCItems.ORES.get(Ore.SULFUR), TFCItems.POWDERS.get(Powder.SULFUR), 4);
-        add(TFCItems.ORES.get(Ore.SALTPETER), TFCItems.POWDERS.get(Powder.SALTPETER), 4);
-        add(TFCItems.ORES.get(Ore.GRAPHITE), TFCItems.POWDERS.get(Powder.GRAPHITE), 4);
+        add(TFCItems.ORES.get(Ore.SYLVITE), TFCItems.ORE_POWDERS.get(Ore.SYLVITE), 4);
+        add(TFCItems.ORES.get(Ore.SULFUR), TFCItems.ORE_POWDERS.get(Ore.SULFUR), 4);
+        add(TFCItems.ORES.get(Ore.SALTPETER), TFCItems.ORE_POWDERS.get(Ore.SALTPETER), 4);
+        add(TFCItems.ORES.get(Ore.GRAPHITE), TFCItems.ORE_POWDERS.get(Ore.GRAPHITE), 4);
         TFCItems.GRADED_ORES.forEach((ore, items) -> {
             add("small", TFCBlocks.SMALL_ORES.get(ore), TFCItems.ORE_POWDERS.get(ore), 2);
             add("poor", items.get(Ore.Grade.POOR), TFCItems.ORE_POWDERS.get(ore), 3);
             add("normal", items.get(Ore.Grade.NORMAL), TFCItems.ORE_POWDERS.get(ore), 5);
             add("rich", items.get(Ore.Grade.RICH), TFCItems.ORE_POWDERS.get(ore), 7);
         });
-        TFCItems.GEMS.forEach((gem, item) -> add(Ingredient.of(item, TFCItems.ORES.get(gem.ore())), TFCItems.GEM_DUST.get(gem), 4));
+        TFCItems.GEMS.forEach((gem, item) -> add(Ingredient.of(item, TFCItems.ORES.get(gem)), TFCItems.ORE_POWDERS.get(gem), 4));
         addDye(Items.WHITE_DYE, Plant.HOUSTONIA, Plant.OXEYE_DAISY, Plant.PRIMROSE, Plant.SNAPDRAGON_WHITE, Plant.TRILLIUM, Plant.SPANISH_MOSS, Plant.TULIP_WHITE, Plant.WATER_LILY, Plant.LILY_OF_THE_VALLEY);
         addDye(Items.ORANGE_DYE, Plant.BUTTERFLY_MILKWEED, Plant.CANNA, Plant.NASTURTIUM, Plant.STRELITZIA, Plant.TULIP_ORANGE, Plant.WATER_CANNA, Plant.MARIGOLD);
         addDye(Items.MAGENTA_DYE, Plant.ATHYRIUM_FERN, Plant.MORNING_GLORY, Plant.PULSATILLA, Plant.LILAC, Plant.SILVER_SPURFLOWER);

@@ -1,0 +1,45 @@
+{
+  "type": "tfc:advanced_shapeless_crafting",
+  "ingredients": [
+    {
+      "type": "tfc:and",
+      "children": [
+        {
+          "item": "tfc:food/barley_flour"
+        },
+        {
+          "type": "tfc:not_rotten"
+        }
+      ]
+    },
+    {
+      "type": "tfc:and",
+      "children": [
+        {
+          "item": "tfc:food/barley_flour"
+        },
+        {
+          "type": "tfc:not_rotten"
+        }
+      ]
+    },
+    {
+      "type": "tfc:fluid_content",
+      "fluid": {
+        "amount": 100,
+        "fluid": "minecraft:water"
+      }
+    }
+  ],
+  "result": {
+    "modifiers": [
+      {
+        "type": "tfc:copy_oldest_food"
+      }
+    ],
+    "stack": {
+      "count": 4,
+      "id": "tfc:food/barley_dough"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "L": {
+      "tag": "tfc:lumber"
+    },
+    "R": {
+      "tag": "c:leathers"
+    }
+  },
+  "pattern": [
+    "LLL",
+    "RRR",
+    "LLL"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:bellows"
+  }
+}

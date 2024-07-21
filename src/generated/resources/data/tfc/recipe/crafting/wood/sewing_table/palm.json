@@ -1,0 +1,26 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "G": {
+      "item": "tfc:wood/log/palm"
+    },
+    "L": {
+      "tag": "c:leathers"
+    },
+    "P": {
+      "item": "tfc:wood/planks/palm"
+    },
+    "S": {
+      "tag": "c:tools/shear"
+    }
+  },
+  "pattern": [
+    " LS",
+    "PPP",
+    "G G"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:wood/sewing_table/palm"
+  }
+}

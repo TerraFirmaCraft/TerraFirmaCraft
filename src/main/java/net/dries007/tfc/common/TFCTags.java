@@ -124,10 +124,13 @@ public class TFCTags
         public static final TagKey<Block> STONES_RAW = commonTag("stones/raw");
         public static final TagKey<Block> STONES_HARDENED = commonTag("stones/hardened");
         public static final TagKey<Block> STONES_SMOOTH = commonTag("stones/smooth");
+        public static final TagKey<Block> STONES_SMOOTH_SLABS = commonTag("stones/smooth_slabs");
         public static final TagKey<Block> STONES_SPIKE = commonTag("stones/spike");
+        public static final TagKey<Block> STONES_PRESSURE_PLATES = commonTag("stones/pressure_plate");
 
         public static final TagKey<Block> FARMLANDS = commonTag("farmlands");
         public static final TagKey<Block> PATHS = commonTag("paths");
+        public static final TagKey<Block> MUD = commonTag("mud");
 
         private static TagKey<Block> tag(String name)
         {
@@ -226,9 +229,6 @@ public class TFCTags
         public static final TagKey<Item> COMPOST_POISONS = tag("compost_poisons");
         public static final TagKey<Item> USABLE_ON_TOOL_RACK = tag("usable_on_tool_rack");
         public static final TagKey<Item> USABLE_IN_POWDER_KEG = tag("usable_in_powder_keg");
-        public static final TagKey<Item> SOUP_BOWLS = tag("soup_bowls"); // Bowls that when right clicked on a pot, can extract soup
-        public static final TagKey<Item> SALAD_BOWLS = tag("salad_bowls"); // Bowls that when right clicked, open the salad UI
-        public static final TagKey<Item> USABLE_IN_SALAD = tag("foods/usable_in_salad"); // Items that are valid ingredients for a salad
         public static final TagKey<Item> FOODS = tag("foods");
         public static final TagKey<Item> PIG_FOOD = tag("pig_food");
         public static final TagKey<Item> COW_FOOD = tag("cow_food");
@@ -250,10 +250,6 @@ public class TFCTags
         public static final TagKey<Item> FROG_FOOD = tag("frog_food");
         public static final TagKey<Item> RABBIT_FOOD = tag("rabbit_food");
         public static final TagKey<Item> SCRIBING_INK = tag("scribing_ink");
-        public static final TagKey<Item> SMALL_FISHING_BAIT = tag("small_fishing_bait");
-        public static final TagKey<Item> LARGE_FISHING_BAIT = tag("large_fishing_bait");
-        public static final TagKey<Item> HOLDS_SMALL_FISHING_BAIT = tag("holds_small_fishing_bait");
-        public static final TagKey<Item> HOLDS_LARGE_FISHING_BAIT = tag("holds_large_fishing_bait");
         public static final TagKey<Item> PILEABLE_INGOTS = tag("pileable_ingots"); // Ingots that can be added to piles
         public static final TagKey<Item> PILEABLE_DOUBLE_INGOTS = tag("pileable_double_ingots"); // Double Ingots that can be added to piles
         public static final TagKey<Item> PILEABLE_SHEETS = tag("pileable_sheets"); // Sheets that can be added to piles
@@ -298,6 +294,8 @@ public class TFCTags
 
 
         // ===== Data Generated ===== //
+
+
         public static final TagKey<Item> FRUITS = Tags.Items.FOODS_FRUIT;
         public static final TagKey<Item> VEGETABLES = Tags.Items.FOODS_VEGETABLE;
         public static final TagKey<Item> RAW_MEATS = Tags.Items.FOODS_RAW_MEAT;
@@ -306,14 +304,29 @@ public class TFCTags
         public static final TagKey<Item> RAW_FISH = Tags.Items.FOODS_RAW_FISH;
         public static final TagKey<Item> COOKED_FISH = Tags.Items.FOODS_COOKED_FISH;
         public static final TagKey<Item> FISH = commonTag("foods/fish");
+        public static final TagKey<Item> FLOUR = commonTag("foods/flour");
         public static final TagKey<Item> DOUGH = commonTag("foods/dough");
         public static final TagKey<Item> BREAD = commonTag("foods/bread");
+        public static final TagKey<Item> DAIRY = commonTag("foods/dairy");
         public static final TagKey<Item> SALADS = commonTag("foods/salad");
         public static final TagKey<Item> SOUPS = Tags.Items.FOODS_SOUP;
         public static final TagKey<Item> PRESERVES = tag("foods/preserves");
         public static final TagKey<Item> SEALED_PRESERVES = tag("foods/sealed_preserves");
         public static final TagKey<Item> SWEETENERS = tag("sweeteners");
+        public static final TagKey<Item> BOWLS = commonTag("bowls");
+        /** Bowls that interact with soup pot recipes */
+        public static final TagKey<Item> SOUP_BOWLS = tag("soup_bowls");
+        /** Bowls that interact with salad recipes */
+        public static final TagKey<Item> SALAD_BOWLS = tag("salad_bowls");
+        public static final TagKey<Item> USABLE_IN_SALAD = tag("usable_in_salad");
         public static final TagKey<Item> USABLE_IN_SOUP = tag("usable_in_soup");
+        public static final TagKey<Item> USABLE_IN_SANDWICH = tag("usable_in_sandwich");
+        public static final TagKey<Item> USABLE_IN_JAM_SANDWICH = tag("usable_in_jam_sandwich");
+
+        public static final TagKey<Item> SMALL_FISHING_BAIT = tag("small_fishing_bait");
+        public static final TagKey<Item> LARGE_FISHING_BAIT = tag("large_fishing_bait");
+        public static final TagKey<Item> HOLDS_SMALL_FISHING_BAIT = tag("holds_small_fishing_bait");
+        public static final TagKey<Item> HOLDS_LARGE_FISHING_BAIT = tag("holds_large_fishing_bait");
 
         public static final TagKey<Item> PLANTS = tag("plants");
 
@@ -353,12 +366,16 @@ public class TFCTags
         public static final TagKey<Item> SMALL_ORE_PIECES = tag("small_ore_pieces");
         public static final TagKey<Item> WATER_WHEELS = tag("water_wheels");
         public static final TagKey<Item> WINDMILL_BLADES = tag("windmill_blades");
+        public static final TagKey<Item> AXLES = tag("axles");
+        public static final TagKey<Item> LUMBER = tag("lumber");
 
         public static final TagKey<Item> DOUBLE_INGOTS = commonTag("double_sheets");
         public static final TagKey<Item> SHEETS = commonTag("double_sheets");
         public static final TagKey<Item> DOUBLE_SHEETS = commonTag("double_sheets");
+        public static final TagKey<Item> DOUBLE_SHEETS_ANY_BRONZE = commonTag("double_sheets/any_bronze");
 
         public static final TagKey<Item> TOOLS_HAMMER = commonTag("tools/hammer");
+        public static final TagKey<Item> TOOLS_SAW = commonTag("tools/saw");
         public static final TagKey<Item> TOOLS_KNIFE = commonTag("tools/knife");
         public static final TagKey<Item> TOOLS_CHISEL = commonTag("tools/chisel");
         public static final TagKey<Item> TOOLS_GLASSWORKING = commonTag("tools/glassworking");
@@ -369,7 +386,19 @@ public class TFCTags
         public static final TagKey<Item> GLASS_BATCHES_T3 = tag("glass_batches_tier_3");
         public static final TagKey<Item> GLASS_BATCHES_NOT_T1 = tag("glass_batches_not_tier_1");
         public static final TagKey<Item> GLASS_BLOWPIPES = tag("glass_blowpipes");
+        public static final TagKey<Item> GLASS_POWDERS = tag("glass_powders");
         public static final TagKey<Item> GLASS_BOTTLES = tag("glass_bottles");
+
+        public static final TagKey<Item> HIGH_QUALITY_CLOTH = tag("high_quality_cloth");
+        public static final TagKey<Item> GEM_POWDERS = tag("gem_powders");
+
+        public static final TagKey<Item> STONES_RAW = tag(Blocks.STONES_RAW);
+        public static final TagKey<Item> STONES_HARDENED = tag(Blocks.STONES_HARDENED);
+        public static final TagKey<Item> STONES_SMOOTH = tag(Blocks.STONES_SMOOTH);
+        public static final TagKey<Item> STONES_SMOOTH_SLABS = tag(Blocks.STONES_SMOOTH_SLABS);
+        public static final TagKey<Item> STONES_PRESSURE_PLATES = tag(Blocks.STONES_PRESSURE_PLATES);
+
+        public static final TagKey<Item> MUD = tag(Blocks.MUD);
 
 
         public static TagKey<Item> mobEquipmentSlotTag(EquipmentSlot slot)

@@ -23,7 +23,6 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
-import net.dries007.tfc.common.blocks.Gem;
 import net.dries007.tfc.common.blocks.rock.Ore;
 import net.dries007.tfc.common.component.heat.Heat;
 import net.dries007.tfc.common.component.heat.HeatCapability;
@@ -63,37 +62,26 @@ public enum GlassOperation implements StringRepresentable
     public static final Codec<GlassOperation> CODEC = StringRepresentable.fromValues(GlassOperation::values);
     public static final StreamCodec<ByteBuf, GlassOperation> STREAM_CODEC = StreamCodecs.forEnum(GlassOperation::values);
 
-    public static final GlassOperation[] VALUES = values();
-
-    public static final Supplier<Map<Item, GlassOperation>> POWDERS = Suppliers.memoize(() -> {
-            ImmutableMap.Builder<Item, GlassOperation> builder = ImmutableMap.builder();
-            builder.put(TFCItems.POWDERS.get(Powder.SODA_ASH).get(), SODA_ASH);
-            builder.put(TFCItems.POWDERS.get(Powder.SULFUR).get(), SULFUR);
-            builder.put(TFCItems.POWDERS.get(Powder.GRAPHITE).get(), GRAPHITE);
-            builder.put(TFCItems.ORE_POWDERS.get(Ore.HEMATITE).get(), IRON);
-            builder.put(TFCItems.ORE_POWDERS.get(Ore.LIMONITE).get(), IRON);
-            builder.put(TFCItems.ORE_POWDERS.get(Ore.MAGNETITE).get(), IRON);
-            builder.put(TFCItems.ORE_POWDERS.get(Ore.NATIVE_GOLD).get(), GOLD);
-            builder.put(TFCItems.ORE_POWDERS.get(Ore.NATIVE_COPPER).get(), COPPER);
-            builder.put(TFCItems.ORE_POWDERS.get(Ore.MALACHITE).get(), COPPER);
-            builder.put(TFCItems.ORE_POWDERS.get(Ore.TETRAHEDRITE).get(), COPPER);
-            builder.put(TFCItems.ORE_POWDERS.get(Ore.CASSITERITE).get(), TIN);
-            builder.put(TFCItems.ORE_POWDERS.get(Ore.GARNIERITE).get(), NICKEL);
-            builder.put(TFCItems.ORE_POWDERS.get(Ore.NATIVE_SILVER).get(), SILVER);
-            builder.put(TFCItems.GEM_DUST.get(Gem.AMETHYST).get(), AMETHYST);
-            builder.put(TFCItems.GEM_DUST.get(Gem.RUBY).get(), RUBY);
-            builder.put(TFCItems.GEM_DUST.get(Gem.LAPIS_LAZULI).get(), LAPIS_LAZULI);
-            builder.put(TFCItems.GEM_DUST.get(Gem.PYRITE).get(), PYRITE);
-            builder.put(TFCItems.GEM_DUST.get(Gem.SAPPHIRE).get(), SAPPHIRE);
-            return builder.build();
-        }
-    );
-
-    @Nullable
-    public static GlassOperation byIndex(int id)
-    {
-        return id >= 0 && id < VALUES.length ? VALUES[id] : null;
-    }
+    public static final Supplier<Map<Item, GlassOperation>> POWDERS = Suppliers.memoize(() -> ImmutableMap.<Item, GlassOperation>builder()
+        .put(TFCItems.POWDERS.get(Powder.SODA_ASH).get(), SODA_ASH)
+        .put(TFCItems.ORE_POWDERS.get(Ore.SULFUR).get(), SULFUR)
+        .put(TFCItems.ORE_POWDERS.get(Ore.GRAPHITE).get(), GRAPHITE)
+        .put(TFCItems.ORE_POWDERS.get(Ore.HEMATITE).get(), IRON)
+        .put(TFCItems.ORE_POWDERS.get(Ore.LIMONITE).get(), IRON)
+        .put(TFCItems.ORE_POWDERS.get(Ore.MAGNETITE).get(), IRON)
+        .put(TFCItems.ORE_POWDERS.get(Ore.NATIVE_GOLD).get(), GOLD)
+        .put(TFCItems.ORE_POWDERS.get(Ore.NATIVE_COPPER).get(), COPPER)
+        .put(TFCItems.ORE_POWDERS.get(Ore.MALACHITE).get(), COPPER)
+        .put(TFCItems.ORE_POWDERS.get(Ore.TETRAHEDRITE).get(), COPPER)
+        .put(TFCItems.ORE_POWDERS.get(Ore.CASSITERITE).get(), TIN)
+        .put(TFCItems.ORE_POWDERS.get(Ore.GARNIERITE).get(), NICKEL)
+        .put(TFCItems.ORE_POWDERS.get(Ore.NATIVE_SILVER).get(), SILVER)
+        .put(TFCItems.ORE_POWDERS.get(Ore.AMETHYST).get(), AMETHYST)
+        .put(TFCItems.ORE_POWDERS.get(Ore.RUBY).get(), RUBY)
+        .put(TFCItems.ORE_POWDERS.get(Ore.LAPIS_LAZULI).get(), LAPIS_LAZULI)
+        .put(TFCItems.ORE_POWDERS.get(Ore.PYRITE).get(), PYRITE)
+        .put(TFCItems.ORE_POWDERS.get(Ore.SAPPHIRE).get(), SAPPHIRE)
+        .build());
 
     @Nullable
     public static GlassOperation get(ItemStack stack, Player player)

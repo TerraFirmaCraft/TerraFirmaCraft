@@ -1,0 +1,23 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "A": {
+      "item": "tfc:wood/axle/sequoia"
+    },
+    "L": {
+      "item": "tfc:wood/lumber/sequoia"
+    },
+    "P": {
+      "item": "tfc:wood/planks/sequoia"
+    }
+  },
+  "pattern": [
+    "LPL",
+    "PAP",
+    "LPL"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:wood/water_wheel/sequoia"
+  }
+}

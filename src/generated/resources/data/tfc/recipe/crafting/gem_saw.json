@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "c:rods/brass"
+    },
+    {
+      "tag": "tfc:gem_powders"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:gem_saw"
+  }
+}

@@ -9,6 +9,7 @@ import net.minecraft.world.level.ItemLike;
 
 import net.dries007.tfc.common.blocks.GroundcoverBlockType;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.rock.Ore;
 import net.dries007.tfc.common.items.Powder;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.data.Accessors;
@@ -25,10 +26,10 @@ public class BuiltinFertilizers extends DataManagerProvider<Fertilizer> implemen
     @Override
     protected void addData(HolderLookup.Provider provider)
     {
-        add(TFCItems.POWDERS.get(Powder.SYLVITE), 0, 0, 0.5f);
+        add(TFCItems.ORE_POWDERS.get(Ore.SYLVITE), 0, 0, 0.5f);
         add(TFCItems.POWDERS.get(Powder.WOOD_ASH), 0, 0.1f, 0.3f);
         add(TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.GUANO), 0.8f, 0.5f, 0.1f);
-        add(TFCItems.POWDERS.get(Powder.SALTPETER), 0.1f, 0, 0.4f);
+        add(TFCItems.ORE_POWDERS.get(Ore.SALTPETER), 0.1f, 0, 0.4f);
         add(Items.BONE_MEAL, 0, 0.1f, 0);
         add(TFCItems.COMPOST, 0.4f, 0.2f, 0.4f);
         add(TFCItems.PURE_NITROGEN, 0.1f, 0, 0);

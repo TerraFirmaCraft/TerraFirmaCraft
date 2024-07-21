@@ -89,6 +89,9 @@ public final class TFCComponents
 
         // Modify eggs to add the egg component's default non-fertilized value
         event.modify(Items.EGG, b -> b.set(EGG.get(), EggComponent.DEFAULT));
+
+        // Bump minecarts' default stack size up, to make them modifiable
+        event.modify(Items.MINECART, b -> b.set(DataComponents.MAX_STACK_SIZE, 64));
     }
 
     /**
@@ -153,16 +156,12 @@ public final class TFCComponents
     @SuppressWarnings("UnstableApiUsage")
     private static void setAllowComponentModifications(boolean value)
     {
-        try
-        {
+        Helpers.uncheck(() -> {
             final Field field = RegistrationEvents.class.getDeclaredField("canModifyComponents");
             field.setAccessible(true);
             field.set(null, value);
-        }
-        catch (NoSuchFieldException | IllegalAccessException e)
-        {
-            Helpers.throwAsUnchecked(e);
-        }
+            return null;
+        });
     }
 
     /**
@@ -189,7 +188,7 @@ public final class TFCComponents
         // or containing a value the same as the default)
         //
         // Fortunately, vanilla has a method that performs this validation, as fast as possible, and returns us a new map which is either
-        // as fast plain copy, or a full copy with sanitized patch values
+        // as fast plain copy, or a full copy with sanitized patch values. It also handles marking both maps as copyOnWrite=true
         return PatchedDataComponentMap.fromPatch(newPrototype, map.asPatch());
     }
 

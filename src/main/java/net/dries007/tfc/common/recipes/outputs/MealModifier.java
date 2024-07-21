@@ -154,7 +154,7 @@ public record MealModifier(FoodData baseFood, List<MealPortion> portions) implem
         return ItemStackModifiers.MEAL.get();
     }
 
-    record MealPortion(
+    public record MealPortion(
         Optional<Ingredient> ingredient,
         float nutrientModifier,
         float waterModifier,

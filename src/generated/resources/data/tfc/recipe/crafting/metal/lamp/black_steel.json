@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "tfc:metal/unfinished_lamp/black_steel"
+    },
+    {
+      "item": "tfc:lamp_glass"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/lamp/black_steel"
+  }
+}

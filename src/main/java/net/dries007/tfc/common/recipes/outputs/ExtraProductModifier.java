@@ -35,7 +35,7 @@ public record ExtraProductModifier(ItemStack stack) implements ItemStackModifier
         {
             ItemHandlerHelper.giveItemToPlayer(player, stack.copy());
         }
-        return null;
+        return stack;
     }
 
     @Override

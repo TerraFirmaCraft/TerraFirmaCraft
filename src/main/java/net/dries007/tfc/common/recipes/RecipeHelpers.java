@@ -89,7 +89,7 @@ public final class RecipeHelpers
         for (int i = 0; i < results.size(); i++)
         {
             final ItemStack stack = input.getItem(i);
-            final ItemStack outputStack = provider.getStack(stack.copyWithCount(1), i == 0 ? Context.DEFAULT : Context.NO_ONE_TIME_EFFECTS);
+            final ItemStack outputStack = provider.getStack(stack.copyWithCount(1));
 
             if (!outputStack.isEmpty())
             {

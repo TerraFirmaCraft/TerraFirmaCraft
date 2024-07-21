@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "H": {
+      "tag": "c:tools/hammer"
+    },
+    "S": {
+      "tag": "c:sheets/bismuth"
+    },
+    "W": {
+      "tag": "minecraft:planks"
+    }
+  },
+  "pattern": [
+    " SH",
+    "SWS",
+    " S "
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:metal/block/bismuth"
+  }
+}

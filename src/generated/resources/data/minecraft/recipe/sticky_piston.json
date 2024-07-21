@@ -1,7 +1,19 @@
 {
-  "neoforge:conditions": [
-    {
-      "type": "neoforge:false"
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "G": {
+      "item": "tfc:glue"
+    },
+    "P": {
+      "item": "minecraft:piston"
     }
-  ]
+  },
+  "pattern": [
+    "G",
+    "P"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:sticky_piston"
+  }
 }

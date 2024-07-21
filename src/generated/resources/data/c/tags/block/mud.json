@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:mud",
+    "tfc:mud/silt",
+    "tfc:mud/loam",
+    "tfc:mud/sandy_loam",
+    "tfc:mud/silty_loam"
+  ]
+}

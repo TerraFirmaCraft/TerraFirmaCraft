@@ -1,0 +1,16 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "P": {
+      "item": "tfc:wood/planks/douglas_fir"
+    }
+  },
+  "pattern": [
+    "P P",
+    "PPP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:wood/boat/douglas_fir"
+  }
+}

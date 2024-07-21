@@ -1,0 +1,26 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "D": {
+      "tag": "c:dyes/black"
+    },
+    "F": {
+      "tag": "c:feathers"
+    },
+    "S": {
+      "item": "tfc:wood/planks/rosewood_slab"
+    },
+    "W": {
+      "item": "tfc:wood/planks/rosewood"
+    }
+  },
+  "pattern": [
+    "F D",
+    "SSS",
+    "W W"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:wood/scribing_table/rosewood"
+  }
+}

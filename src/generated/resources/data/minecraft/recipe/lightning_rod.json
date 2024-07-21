@@ -1,7 +1,17 @@
 {
-  "neoforge:conditions": [
-    {
-      "type": "neoforge:false"
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "X": {
+      "tag": "c:rods/copper"
     }
-  ]
+  },
+  "pattern": [
+    "X",
+    "X",
+    "X"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:lightning_rod"
+  }
 }
