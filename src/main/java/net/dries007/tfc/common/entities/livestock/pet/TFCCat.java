@@ -158,13 +158,6 @@ public class TFCCat extends TamableMammal
         return TFCTags.Items.CAT_FOOD;
     }
 
-    /* todo 1.21 where did standing eye height go
-    @Override
-    protected float getStandingEyeHeight(Pose pose, EntityDimensions size)
-    {
-        return size.height * 0.5F;
-    }*/
-
     @Override
     public void receiveCommand(ServerPlayer player, Command command)
     {

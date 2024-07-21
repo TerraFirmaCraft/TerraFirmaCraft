@@ -8,7 +8,6 @@ package net.dries007.tfc.client.render.entity;
 
 import java.util.Map;
 import com.google.common.collect.Maps;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.Util;
 import net.minecraft.client.model.HorseModel;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -20,7 +19,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.entity.animal.horse.Variant;
 
-import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.util.Helpers;
 
 public class TFCHorseRenderer extends AbstractHorseRenderer<Horse, HorseModel<Horse>>
@@ -48,14 +46,4 @@ public class TFCHorseRenderer extends AbstractHorseRenderer<Horse, HorseModel<Ho
         return LOCATION_BY_VARIANT.get(horse.getVariant());
     }
 
-    @Override
-    protected void scale(Horse horse, PoseStack poseStack, float ticks)
-    {
-        if (horse instanceof TFCAnimalProperties animal)
-        {
-            final float scale = animal.getAgeScale();
-            poseStack.scale(scale, scale, scale);
-        }
-        super.scale(horse, poseStack, ticks);
-    }
 }

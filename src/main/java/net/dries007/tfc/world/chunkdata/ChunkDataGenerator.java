@@ -7,11 +7,13 @@
 package net.dries007.tfc.world.chunkdata;
 
 import java.util.List;
+import java.util.Objects;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.common.TFCAttachments;
 import net.dries007.tfc.world.settings.RockSettings;
 
 public interface ChunkDataGenerator
@@ -23,7 +25,7 @@ public interface ChunkDataGenerator
 
     default ChunkData generate(ChunkAccess chunk)
     {
-        return generate(ChunkData.get(chunk));
+        return Objects.requireNonNull(chunk.setData(TFCAttachments.CHUNK_DATA.get(), generate(ChunkData.get(chunk))));
     }
 
     default ChunkData createAndGeneratePartial(ChunkPos pos)

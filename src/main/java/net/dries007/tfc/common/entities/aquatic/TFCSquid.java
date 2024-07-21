@@ -11,21 +11,16 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.Squid;
@@ -45,8 +40,6 @@ import net.dries007.tfc.util.Helpers;
 
 public class TFCSquid extends Squid implements AquaticMob
 {
-    public static final EntityDataAccessor<Integer> ID_SIZE = SynchedEntityData.defineId(TFCSquid.class, EntityDataSerializers.INT);
-
     public static final int MAX_SIZE = 127;
     public static final int MIN_SIZE = 1;
 
@@ -66,34 +59,6 @@ public class TFCSquid extends Squid implements AquaticMob
     {
         goalSelector.addGoal(1, new RandomMovementGoal(this));
         goalSelector.addGoal(2, new FleeGoal(this));
-    }
-
-    @Override
-    public void defineSynchedData(SynchedEntityData.Builder builder)
-    {
-        super.defineSynchedData(builder);
-        builder.define(ID_SIZE, MIN_SIZE);
-    }
-
-    @Override
-    public void addAdditionalSaveData(CompoundTag tag)
-    {
-        super.addAdditionalSaveData(tag);
-        tag.putInt("size", getSize() - 1);
-    }
-
-    @Override
-    public void readAdditionalSaveData(CompoundTag tag)
-    {
-        setSize(tag.getInt("size") + 1, false);
-        super.readAdditionalSaveData(tag);
-    }
-
-    @Override
-    public void onSyncedDataUpdated(EntityDataAccessor<?> data)
-    {
-        super.onSyncedDataUpdated(data);
-        if (ID_SIZE.equals(data)) refreshDimensions();
     }
 
     @Override
@@ -141,17 +106,6 @@ public class TFCSquid extends Squid implements AquaticMob
         return spawnData;
     }
 
-    @Override
-    protected EntityDimensions getDefaultDimensions(Pose pose)
-    {
-        // todo 1.21, replaced getDimensions() with getDefaultDimensions(), is this correct?
-        return super.getDefaultDimensions(pose).scale(getVisualScale());
-    }
-
-    public float getVisualScale()
-    {
-        return 0.05F * getSize();
-    }
 
     public Pair<Integer, Integer> getSizeRangeForSpawning()
     {
@@ -160,17 +114,19 @@ public class TFCSquid extends Squid implements AquaticMob
 
     public int getSize()
     {
-        return entityData.get(ID_SIZE);
+        return Mth.ceil(getScale() / 5f * 128f);
     }
 
     public void setSize(int size, boolean heal)
     {
         size = Mth.clamp(size, MIN_SIZE, MAX_SIZE);
-        reapplyPosition();
-        refreshDimensions();
         Objects.requireNonNull(getAttribute(Attributes.MAX_HEALTH)).setBaseValue(size);
         if (heal) setHealth(getMaxHealth());
-        entityData.set(ID_SIZE, size);
+        final AttributeInstance instance = getAttribute(Attributes.SCALE);
+        if (instance != null)
+        {
+            instance.setBaseValue(size / 128f * 5f);
+        }
     }
 
     public static class RandomMovementGoal extends Goal

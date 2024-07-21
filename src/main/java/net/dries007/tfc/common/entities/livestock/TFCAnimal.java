@@ -73,8 +73,6 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties, T
     {
         super(type, level);
         getNavigation().setCanFloat(true);
-        // todo 1.21 step height
-        //this.setMaxUpStep(1.0F);
         this.matingTime = Calendars.get(level).getTicks();
         this.lastFDecay = Calendars.get(level).getTotalDays();
         this.ambient = sounds.ambient();

@@ -52,8 +52,6 @@ public class WildAnimal extends AgeableMob implements GenderedRenderAnimal
         this.hurt = sounds.hurt();
         this.step = sounds.step();
         getNavigation().setCanFloat(true);
-        // todo: step up height for animals?
-        //this.setMaxUpStep(1.0F);
         this.setPathfindingMalus(PathType.POWDER_SNOW, -1.0F);
         this.setPathfindingMalus(PathType.DANGER_POWDER_SNOW, -1.0F);
         this.setPathfindingMalus(PathType.DANGER_FIRE, 16.0F);

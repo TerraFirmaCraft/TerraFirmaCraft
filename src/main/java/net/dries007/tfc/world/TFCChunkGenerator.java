@@ -374,7 +374,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     @SuppressWarnings("deprecation")
     public void spawnOriginalMobs(WorldGenRegion level)
     {
-        if (true) return; // todo 1.21, mobs are broken in finalize spawn rn
         if (!this.noiseSettings.value().disableMobGeneration())
         {
             final ChunkPos pos = level.getCenter();
