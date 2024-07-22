@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "tfc:rock/cracked_bricks/diorite"
-  },
-  "result": "tfc:rock/cracked_bricks/diorite_wall",
-  "count": 1
-}

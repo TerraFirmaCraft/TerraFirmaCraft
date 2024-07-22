@@ -1,0 +1,19 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "C": {
+      "item": "tfc:wool_cloth"
+    },
+    "L": {
+      "tag": "tfc:lumber"
+    }
+  },
+  "pattern": [
+    "LLL",
+    " CC"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:windmill_blade/white"
+  }
+}

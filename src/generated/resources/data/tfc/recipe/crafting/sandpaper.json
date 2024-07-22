@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:paper"
+    },
+    {
+      "item": "tfc:powder/flux"
+    },
+    {
+      "item": "tfc:glue"
+    },
+    {
+      "tag": "c:sands/volcanic"
+    },
+    {
+      "tag": "tfc:gem_powders"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:sandpaper"
+  }
+}

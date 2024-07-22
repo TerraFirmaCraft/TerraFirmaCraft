@@ -33,9 +33,11 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Ore;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
+import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.component.glass.GlassOperation;
 import net.dries007.tfc.common.items.Food;
+import net.dries007.tfc.common.items.Powder;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.data.Accessors;
 import net.dries007.tfc.util.Metal;
@@ -118,6 +120,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             .add(Food.COOKED_RICE);
         tag(USABLE_IN_SANDWICH).addTags(VEGETABLES, COOKED_MEATS, DAIRY);
         tag(USABLE_IN_JAM_SANDWICH).addTags(COOKED_MEATS, DAIRY, PRESERVES);
+        tag(CAN_BE_SALTED);
 
         tag(SMALL_FISHING_BAIT)
             .addTag(SEEDS)
@@ -234,6 +237,19 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             TFCItems.HEMATITIC_GLASS_BOTTLE,
             TFCItems.OLIVINE_GLASS_BOTTLE,
             TFCItems.VOLCANIC_GLASS_BOTTLE);
+        tag(GLASS_POTASH).add(TFCItems.POWDERS.get(Powder.SODA_ASH), TFCItems.ORE_POWDERS.get(Ore.SALTPETER));
+
+        tag(SILICA_SAND).add(
+            TFCBlocks.SAND.get(SandBlockType.WHITE));
+        tag(OLIVINE_SAND).add(
+            TFCBlocks.SAND.get(SandBlockType.GREEN),
+            TFCBlocks.SAND.get(SandBlockType.BROWN));
+        tag(HEMATITIC_SAND).add(
+            TFCBlocks.SAND.get(SandBlockType.YELLOW),
+            TFCBlocks.SAND.get(SandBlockType.RED),
+            TFCBlocks.SAND.get(SandBlockType.PINK));
+        tag(VOLCANIC_SAND).add(
+            TFCBlocks.SAND.get(SandBlockType.BLACK));
 
         tag(HIGH_QUALITY_CLOTH).add(TFCItems.SILK_CLOTH, TFCItems.WOOL_CLOTH);
         tag(STRINGS).add(TFCItems.WOOL_YARN);
@@ -248,6 +264,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
 
         copy(BlockTags.DIRT, ItemTags.DIRT);
         copy(TFCTags.Blocks.MUD, MUD);
+        copy(TFCTags.Blocks.MUD_BRICKS, MUD_BRICKS);
 
         copy(Tags.Blocks.COBBLESTONES_NORMAL, COBBLESTONES_NORMAL);
         copy(Tags.Blocks.COBBLESTONES_MOSSY, COBBLESTONES_MOSSY);

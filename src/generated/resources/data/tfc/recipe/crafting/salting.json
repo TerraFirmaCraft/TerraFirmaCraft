@@ -1,0 +1,46 @@
+{
+  "type": "tfc:advanced_shapeless_crafting",
+  "ingredients": [
+    {
+      "type": "tfc:and",
+      "children": [
+        {
+          "tag": "tfc:foods/can_be_salted"
+        },
+        {
+          "type": "tfc:not_rotten"
+        },
+        {
+          "type": "tfc:lacks_trait",
+          "trait": "tfc:salted"
+        }
+      ]
+    },
+    {
+      "item": "tfc:powder/salt"
+    }
+  ],
+  "primary_ingredient": {
+    "type": "tfc:and",
+    "children": [
+      {
+        "tag": "tfc:foods/can_be_salted"
+      },
+      {
+        "type": "tfc:not_rotten"
+      },
+      {
+        "type": "tfc:lacks_trait",
+        "trait": "tfc:salted"
+      }
+    ]
+  },
+  "result": {
+    "modifiers": [
+      {
+        "type": "tfc:add_trait",
+        "trait": "tfc:salted"
+      }
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "tfc:stick_bundle"
+    }
+  ],
+  "result": {
+    "count": 18,
+    "id": "minecraft:stick"
+  }
+}

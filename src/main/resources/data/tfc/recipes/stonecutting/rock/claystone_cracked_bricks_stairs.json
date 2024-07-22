@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "tfc:rock/cracked_bricks/claystone"
-  },
-  "result": "tfc:rock/cracked_bricks/claystone_stairs",
-  "count": 1
-}

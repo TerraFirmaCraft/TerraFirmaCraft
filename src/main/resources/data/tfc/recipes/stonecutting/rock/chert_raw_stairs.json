@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "tfc:rock/raw/chert"
-  },
-  "result": "tfc:rock/raw/chert_stairs",
-  "count": 1
-}

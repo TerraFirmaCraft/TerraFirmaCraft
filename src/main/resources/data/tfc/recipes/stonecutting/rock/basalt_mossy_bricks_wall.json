@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "tfc:rock/mossy_bricks/basalt"
-  },
-  "result": "tfc:rock/mossy_bricks/basalt_wall",
-  "count": 1
-}

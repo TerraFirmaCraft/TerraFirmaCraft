@@ -2,10 +2,12 @@ package net.dries007.tfc.data.recipes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import com.google.common.collect.ImmutableMap;
+import net.minecraft.core.Holder;
 import net.minecraft.core.NonNullList;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -26,6 +28,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.DecorationBlockHolder;
+import net.dries007.tfc.common.blocks.GroundcoverBlockType;
 import net.dries007.tfc.common.blocks.SandstoneBlockType;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Ore;
@@ -34,7 +37,10 @@ import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.component.food.FoodData;
+import net.dries007.tfc.common.component.food.FoodTrait;
+import net.dries007.tfc.common.component.food.FoodTraits;
 import net.dries007.tfc.common.items.Food;
+import net.dries007.tfc.common.items.HideItemType;
 import net.dries007.tfc.common.items.Powder;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.AdvancedShapedRecipe;
@@ -43,10 +49,12 @@ import net.dries007.tfc.common.recipes.CastingCraftingRecipe;
 import net.dries007.tfc.common.recipes.FoodCombiningCraftingRecipe;
 import net.dries007.tfc.common.recipes.ingredients.AndIngredient;
 import net.dries007.tfc.common.recipes.ingredients.FluidContentIngredient;
+import net.dries007.tfc.common.recipes.ingredients.LacksTraitIngredient;
 import net.dries007.tfc.common.recipes.ingredients.NotRottenIngredient;
 import net.dries007.tfc.common.recipes.outputs.AddBaitToRodModifier;
 import net.dries007.tfc.common.recipes.outputs.AddGlassModifier;
 import net.dries007.tfc.common.recipes.outputs.AddPowderModifier;
+import net.dries007.tfc.common.recipes.outputs.AddTraitModifier;
 import net.dries007.tfc.common.recipes.outputs.CopyFoodModifier;
 import net.dries007.tfc.common.recipes.outputs.CopyForgingBonusModifier;
 import net.dries007.tfc.common.recipes.outputs.CopyInputModifier;
@@ -313,6 +321,10 @@ public interface CraftingRecipes extends Recipes
                 .shapeless(blocks.apply(SoilBlockType.DRYING_BRICKS));
             recipe2x2(soil.mudBrick(), blocks.apply(SoilBlockType.MUD_BRICKS), 1);
             addDecorations(blocks.apply(SoilBlockType.MUD_BRICKS), TFCBlocks.MUD_BRICK_DECORATIONS.get(soil));
+            recipe()
+                .input(blocks.apply(SoilBlockType.MUD))
+                .input(TFCBlocks.TREE_ROOTS)
+                .shapeless(blocks.apply(SoilBlockType.MUDDY_ROOTS));
 
             for (int n = 1; n <= 8; n++)
                 recipe("" + n)
@@ -509,6 +521,29 @@ public interface CraftingRecipes extends Recipes
                 .input(dyeOf(color))
                 .shapeless(dyedOf(color, "concrete_powder"));
         }
+
+        for (HideItemType.Size size : HideItemType.Size.values())
+        {
+            final Function<HideItemType, ItemLike> hides = type -> TFCItems.HIDES.get(type).get(size);
+
+            recipe()
+                .input(hides.apply(HideItemType.SHEEPSKIN))
+                .input(TFCTags.Items.TOOLS_KNIFE)
+                .damageInputs()
+                .extraProduct(TFCItems.WOOL, 1 + size.ordinal())
+                .shapeless(hides.apply(HideItemType.RAW));
+            recipe("from_" + size.name().toLowerCase(Locale.ROOT))
+                .input(hides.apply(HideItemType.SCRAPED))
+                .input(TFCTags.Items.TOOLS_HAMMER)
+                .input(TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.PUMICE))
+                .damageInputs()
+                .shapeless(TFCItems.TREATED_HIDE, 1 + size.ordinal());
+        }
+
+        TFCItems.FRUIT_PRESERVES.forEach((food, item) ->
+            recipe()
+                .input(notRotten(Ingredient.of(item)))
+                .shapeless(TFCItems.UNSEALED_FRUIT_PRESERVES.get(food)));
 
         replace("activator_rail")
             .input('S', Tags.Items.RODS_WOODEN)
@@ -753,6 +788,7 @@ public interface CraftingRecipes extends Recipes
         // todo: auto-generate clay knapping remainder / uncrafting recipes from inputs
         // todo: are uncrafing (i.e. slab, stair) recipes really wanted? or make sense?
         // todo: no crafting recipe for flux? (only quern)
+        // todo: lingering water bottles, what?
 
         recipe()
             .inputIsPrimary(TFCTags.Items.GLASS_BATCHES)
@@ -776,6 +812,27 @@ public interface CraftingRecipes extends Recipes
             .copyInput()
             .addPowder()
             .shapeless("add_powder");
+        recipe()
+            .input(TFCTags.Items.GLASS_POTASH)
+            .input(TFCItems.POWDERS.get(Powder.LIME))
+            .input(TFCTags.Items.HEMATITIC_SAND)
+            .shapeless(TFCItems.HEMATITIC_GLASS_BATCH, 4);
+        recipe()
+            .input(TFCTags.Items.GLASS_POTASH)
+            .input(TFCItems.POWDERS.get(Powder.LIME))
+            .input(TFCTags.Items.OLIVINE_SAND)
+            .shapeless(TFCItems.OLIVINE_GLASS_BATCH, 4);
+        recipe()
+            .input(TFCTags.Items.GLASS_POTASH)
+            .input(TFCItems.POWDERS.get(Powder.LIME))
+            .input(TFCTags.Items.SILICA_SAND)
+            .shapeless(TFCItems.SILICA_GLASS_BATCH, 4);
+        recipe()
+            .input(TFCTags.Items.GLASS_POTASH)
+            .input(TFCItems.POWDERS.get(Powder.LIME))
+            .input(TFCTags.Items.VOLCANIC_SAND)
+            .shapeless(TFCItems.VOLCANIC_GLASS_BATCH, 4);
+
         recipe()
             .inputIsPrimary(TFCTags.Items.HOLDS_LARGE_FISHING_BAIT)
             .input(TFCTags.Items.LARGE_FISHING_BAIT)
@@ -884,7 +941,157 @@ public interface CraftingRecipes extends Recipes
             .input('B', Tags.Items.STONES)
             .pattern("S  ", "BBB")
             .shaped(TFCItems.HANDSTONE);
-        // todo: continue with crafting/hematitic_glass_batch.json
+        recipe()
+            .input(TFCItems.EMPTY_JAR)
+            .input(TFCItems.JAR_LID)
+            .shapeless(TFCItems.EMPTY_JAR_WITH_LID);
+        recipe()
+            .input('X', TFCItems.JUTE_FIBER)
+            .pattern("X X", " X ", "X X")
+            .shaped(TFCItems.JUTE_NET);
+        replace("lead")
+            .input('X', TFCItems.JUTE_FIBER)
+            .pattern(" XX", " XX", "X  ")
+            .shaped(Items.LEAD);
+        recipe()
+            .input(notRotten(Ingredient.of(TFCBlocks.MELON)))
+            .input(TFCTags.Items.TOOLS_KNIFE)
+            .shapeless(TFCItems.FOOD.get(Food.MELON_SLICE), 4);
+        recipe()
+            .input('L', TFCTags.Items.LUMBER)
+            .input('S', TFCItems.STRAW)
+            .pattern("S S", "LSL", "LLL")
+            .shaped(TFCBlocks.NEST_BOX);
+        recipe()
+            .input('L', TFCTags.Items.LUMBER)
+            .input('S', Tags.Items.RODS_WOODEN)
+            .pattern("LL", "LL", "S ")
+            .shaped(TFCItems.PADDLE);
+        recipe()
+            .input(TFCItems.PAPYRUS)
+            .input(TFCTags.Items.TOOLS_KNIFE)
+            .damageInputs()
+            .shapeless(TFCItems.PAPYRUS_STRIP, 4);
+        recipe()
+            .input(TFCItems.TREATED_HIDE)
+            .input(notRotten(Ingredient.of(Items.EGG)))
+            .input(notRotten(Ingredient.of(TFCTags.Items.FLOUR)))
+            .input(TFCItems.POWDERS.get(Powder.LIME))
+            .shapeless(Items.PAPER, 2);
+        recipe()
+            .input(TFCBlocks.WHITE_KAOLIN_CLAY)
+            .input(TFCItems.ORE_POWDERS.get(Ore.HEMATITE))
+            .shapeless(TFCBlocks.PINK_KAOLIN_CLAY);
+        recipe()
+            .input(TFCBlocks.PINK_KAOLIN_CLAY)
+            .input(TFCItems.ORE_POWDERS.get(Ore.HEMATITE))
+            .shapeless(TFCBlocks.RED_KAOLIN_CLAY);
+        recipe()
+            .input('L', TFCTags.Items.LUMBER)
+            .input('R', Tags.Items.DYES_RED)
+            .input('S', Tags.Items.STRINGS)
+            .pattern("LSL", "LRL", "LLL")
+            .shaped(TFCBlocks.POWDERKEG);
+        recipe()
+            .input(TFCTags.Items.TOOLS_HAMMER)
+            .input(notRotten(Ingredient.of(TFCBlocks.PUMPKIN)))
+            .damageInputs()
+            .shapeless(TFCItems.FOOD.get(Food.PUMPKIN_CHUNKS));
+        recipe()
+            .input(TFCTags.Items.TOOLS_KNIFE)
+            .input(notRotten(Food.PUMPKIN_CHUNKS))
+            .input(TFCTags.Items.SWEETENERS)
+            .input(notRotten(Ingredient.of(Items.EGG)))
+            .input(notRotten(Ingredient.of(TFCTags.Items.DOUGH)))
+            .damageInputs()
+            .shapeless(Items.PUMPKIN_PIE);
+        recipe()
+            .input('X', TFCTags.Items.STONES_RAW)
+            .input('Y', TFCTags.Items.STONES_SMOOTH)
+            .pattern("YYY", "XXX")
+            .shaped(TFCBlocks.QUERN);
+        recipe()
+            .input(TFCItems.SOOT)
+            .input(TFCItems.COMPOST)
+            .shapeless(TFCItems.ROTTEN_COMPOST);
+        recipe()
+            .inputIsPrimary(AndIngredient.of(
+                Ingredient.of(TFCTags.Items.CAN_BE_SALTED),
+                NotRottenIngredient.INSTANCE,
+                LacksTraitIngredient.of(FoodTraits.SALTED)
+            ))
+            .input(TFCItems.POWDERS.get(Powder.SALT))
+            .addTrait(FoodTraits.SALTED)
+            .shapeless("salting");
+        recipe()
+            .input(Items.PAPER)
+            .input(TFCItems.POWDERS.get(Powder.FLUX))
+            .input(TFCItems.GLUE)
+            .input(TFCTags.Items.VOLCANIC_SAND)
+            .input(TFCTags.Items.GEM_POWDERS)
+            .shapeless(TFCItems.SANDPAPER);
+        recipe()
+            .input(TFCTags.Items.MUD_BRICKS)
+            .input(TFCItems.DAUB)
+            .shapeless(TFCBlocks.SMOOTH_MUD_BRICKS);
+        recipe()
+            .input(TFCItems.GLUE)
+            .input(TFCItems.POWDERS.get(Powder.CHARCOAL))
+            .input(TFCItems.POWDERS.get(Powder.WOOD_ASH))
+            .shapeless(TFCItems.SOOT);
+        recipe()
+            .input('X', TFCItems.SPINDLE_HEAD)
+            .input('Y', Tags.Items.RODS_WOODEN)
+            .pattern("X", "Y")
+            .shaped(TFCItems.SPINDLE);
+        recipe()
+            .input('P', TFCBlocks.STEEL_PIPE)
+            .input('G', TFCItems.GLUE)
+            .input('M', TFCItems.BRASS_MECHANISMS)
+            .pattern("PGM", " P ")
+            .shaped(TFCBlocks.STEEL_PUMP);
+        recipe()
+            .input('X', Tags.Items.RODS_WOODEN)
+            .pattern("XXX", "XXX", "XXX")
+            .shaped(TFCItems.STICK_BUNCH);
+        recipe()
+            .input('X', TFCItems.STICK_BUNCH)
+            .pattern("X", "X")
+            .shaped(TFCItems.STICK_BUNDLE);
+        recipe("from_bunch")
+            .input(TFCItems.STICK_BUNCH)
+            .shapeless(Items.STICK, 9);
+        recipe("from_bundle")
+            .input(TFCItems.STICK_BUNDLE)
+            .shapeless(Items.STICK, 18);
+        recipe2x2(TFCItems.STRAW, TFCBlocks.THATCH, 1);
+        recipe()
+            .input(TFCBlocks.THATCH)
+            .shapeless(TFCItems.STRAW, 4);
+        recipe()
+            .input('S', ingredientOf(Metal.STEEL, Metal.ItemType.SHEET))
+            .input('M', TFCItems.BRASS_MECHANISMS)
+            .input('R', ingredientOf(Metal.STEEL, Metal.ItemType.ROD))
+            .pattern("SMR", "SMR")
+            .shaped(TFCBlocks.TRIP_HAMMER);
+        recipe()
+            .input('X', ItemTags.LOGS)
+            .pattern("X", "X")
+            .shaped(TFCBlocks.WATTLE);
+        recipe()
+            .input('L', TFCTags.Items.LUMBER)
+            .input('C', TFCItems.WOOL_CLOTH)
+            .pattern("LLL", " CC")
+            .shaped(TFCItems.WINDMILL_BLADES.get(DyeColor.WHITE));
+        recipe()
+            .input('L', TFCTags.Items.LUMBER)
+            .pattern("L L", " L ")
+            .shaped(TFCItems.WOODEN_BUCKET);
+        recipe()
+            .input(TFCItems.SPINDLE)
+            .input(TFCItems.WOOL)
+            .damageInputs()
+            .shapeless(TFCItems.WOOL_YARN, 8);
     }
 
     /**
@@ -1074,7 +1281,9 @@ public interface CraftingRecipes extends Recipes
         Builder addGlass() { needsAdvInput = true; return addOutputModifier(AddGlassModifier.INSTANCE); }
         Builder addPowder() { return addOutputModifier(AddPowderModifier.INSTANCE); }
         Builder addBait() { return addOutputModifier(AddBaitToRodModifier.INSTANCE); }
-        Builder extraProduct(ItemLike item) { return addOutputModifier(new ExtraProductModifier(new ItemStack(item))); }
+        Builder extraProduct(ItemLike item) { return extraProduct(item, 1); }
+        Builder extraProduct(ItemLike item, int count) { return addOutputModifier(new ExtraProductModifier(new ItemStack(item))); }
+        Builder addTrait(Holder<FoodTrait> trait) { return addOutputModifier(AddTraitModifier.of(trait)); }
 
         Builder addOutputModifier(ItemStackModifier modifier) { outputs.add(modifier); return this; }
 

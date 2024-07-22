@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "tfc:rock/cobble/conglomerate"
-  },
-  "result": "tfc:rock/cobble/conglomerate_stairs",
-  "count": 1
-}

@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "tfc:rock/smooth/schist"
-  },
-  "result": "tfc:rock/smooth/schist_stairs",
-  "count": 1
-}

@@ -1,0 +1,33 @@
+{
+  "type": "tfc:advanced_shapeless_crafting",
+  "ingredients": [
+    {
+      "item": "tfc:medium_sheepskin_hide"
+    },
+    {
+      "tag": "c:tools/knife"
+    }
+  ],
+  "remainder": {
+    "modifiers": [
+      {
+        "type": "tfc:damage_crafting_remainder"
+      }
+    ]
+  },
+  "result": {
+    "modifiers": [
+      {
+        "type": "tfc:extra_products",
+        "stack": {
+          "count": 1,
+          "id": "tfc:wool"
+        }
+      }
+    ],
+    "stack": {
+      "count": 1,
+      "id": "tfc:medium_raw_hide"
+    }
+  }
+}

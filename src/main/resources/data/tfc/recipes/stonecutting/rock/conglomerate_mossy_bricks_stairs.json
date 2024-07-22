@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "tfc:rock/mossy_bricks/conglomerate"
-  },
-  "result": "tfc:rock/mossy_bricks/conglomerate_stairs",
-  "count": 1
-}

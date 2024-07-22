@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "tfc:pink_kaolin_clay"
+    },
+    {
+      "item": "tfc:powder/hematite"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:red_kaolin_clay"
+  }
+}

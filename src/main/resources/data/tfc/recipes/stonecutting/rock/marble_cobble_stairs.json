@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "tfc:rock/cobble/marble"
-  },
-  "result": "tfc:rock/cobble/marble_stairs",
-  "count": 1
-}

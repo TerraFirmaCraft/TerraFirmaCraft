@@ -1,0 +1,17 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "X": {
+      "item": "tfc:jute_fiber"
+    }
+  },
+  "pattern": [
+    " XX",
+    " XX",
+    "X  "
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:lead"
+  }
+}

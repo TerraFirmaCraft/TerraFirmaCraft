@@ -1,0 +1,16 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "L": {
+      "tag": "tfc:lumber"
+    }
+  },
+  "pattern": [
+    "L L",
+    " L "
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:wooden_bucket"
+  }
+}

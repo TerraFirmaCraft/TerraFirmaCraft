@@ -1,0 +1,22 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "M": {
+      "item": "tfc:brass_mechanisms"
+    },
+    "R": {
+      "tag": "c:rods/steel"
+    },
+    "S": {
+      "tag": "c:sheets/steel"
+    }
+  },
+  "pattern": [
+    "SMR",
+    "SMR"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:trip_hammer"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "tfc:glass_potash"
+    },
+    {
+      "item": "tfc:powder/lime"
+    },
+    {
+      "tag": "c:sands/hematitic"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "id": "tfc:hematitic_glass_batch"
+  }
+}

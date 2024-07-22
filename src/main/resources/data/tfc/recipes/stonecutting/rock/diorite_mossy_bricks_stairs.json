@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "tfc:rock/mossy_bricks/diorite"
-  },
-  "result": "tfc:rock/mossy_bricks/diorite_stairs",
-  "count": 1
-}

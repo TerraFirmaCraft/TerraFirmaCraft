@@ -1,0 +1,19 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "X": {
+      "tag": "c:stones/raw"
+    },
+    "Y": {
+      "tag": "c:stones/smooth"
+    }
+  },
+  "pattern": [
+    "YYY",
+    "XXX"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:quern"
+  }
+}

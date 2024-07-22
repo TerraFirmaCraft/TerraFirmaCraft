@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "tfc:rock/raw/dolomite"
-  },
-  "result": "tfc:rock/raw/dolomite_stairs",
-  "count": 1
-}

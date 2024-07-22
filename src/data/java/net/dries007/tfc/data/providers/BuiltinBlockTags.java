@@ -111,6 +111,9 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(MUD)
             .add(Blocks.MUD)
             .add(TFCBlocks.SOIL.get(SoilBlockType.MUD));
+        tag(MUD_BRICKS)
+            .add(Blocks.MUD_BRICKS)
+            .add(TFCBlocks.SOIL.get(SoilBlockType.MUD_BRICKS));
     }
 
     @Override

@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "tfc:rock/raw/granite"
-  },
-  "result": "tfc:rock/raw/granite_wall",
-  "count": 1
-}

@@ -131,6 +131,7 @@ public class TFCTags
         public static final TagKey<Block> FARMLANDS = commonTag("farmlands");
         public static final TagKey<Block> PATHS = commonTag("paths");
         public static final TagKey<Block> MUD = commonTag("mud");
+        public static final TagKey<Block> MUD_BRICKS = commonTag("mud_bricks");
 
         private static TagKey<Block> tag(String name)
         {
@@ -273,7 +274,6 @@ public class TFCTags
         public static final TagKey<Item> CARRIED_BY_HORSE = tag("carried_by_horse");
         public static final TagKey<Item> WAXES_SCRAPING_SURFACE = tag("waxes_scraping_surface");
         public static final TagKey<Item> POWDERS = tag("powders");
-        public static final TagKey<Item> CAN_BE_SALTED = tag("foods/can_be_salted");
         public static final TagKey<Item> BLOWPIPES = tag("blowpipes");
         public static final TagKey<Item> ALL_BLOWPIPES = tag("all_blowpipes");
         public static final TagKey<Item> SILICA_ITEMS = tag("silica_items");
@@ -322,6 +322,7 @@ public class TFCTags
         public static final TagKey<Item> USABLE_IN_SOUP = tag("usable_in_soup");
         public static final TagKey<Item> USABLE_IN_SANDWICH = tag("usable_in_sandwich");
         public static final TagKey<Item> USABLE_IN_JAM_SANDWICH = tag("usable_in_jam_sandwich");
+        public static final TagKey<Item> CAN_BE_SALTED = tag("foods/can_be_salted");
 
         public static final TagKey<Item> SMALL_FISHING_BAIT = tag("small_fishing_bait");
         public static final TagKey<Item> LARGE_FISHING_BAIT = tag("large_fishing_bait");
@@ -388,6 +389,12 @@ public class TFCTags
         public static final TagKey<Item> GLASS_BLOWPIPES = tag("glass_blowpipes");
         public static final TagKey<Item> GLASS_POWDERS = tag("glass_powders");
         public static final TagKey<Item> GLASS_BOTTLES = tag("glass_bottles");
+        public static final TagKey<Item> GLASS_POTASH = tag("glass_potash");
+
+        public static final TagKey<Item> SILICA_SAND = commonTag("sands/silica");
+        public static final TagKey<Item> OLIVINE_SAND = commonTag("sands/olivine");
+        public static final TagKey<Item> HEMATITIC_SAND = commonTag("sands/hematitic");
+        public static final TagKey<Item> VOLCANIC_SAND = commonTag("sands/volcanic");
 
         public static final TagKey<Item> HIGH_QUALITY_CLOTH = tag("high_quality_cloth");
         public static final TagKey<Item> GEM_POWDERS = tag("gem_powders");
@@ -399,6 +406,7 @@ public class TFCTags
         public static final TagKey<Item> STONES_PRESSURE_PLATES = tag(Blocks.STONES_PRESSURE_PLATES);
 
         public static final TagKey<Item> MUD = tag(Blocks.MUD);
+        public static final TagKey<Item> MUD_BRICKS = tag(Blocks.MUD_BRICKS);
 
 
         public static TagKey<Item> mobEquipmentSlotTag(EquipmentSlot slot)

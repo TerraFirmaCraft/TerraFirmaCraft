@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "tfc:empty_jar"
+    },
+    {
+      "item": "tfc:jar_lid"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:empty_jar_with_lid"
+  }
+}

@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "tfc:rock/smooth/claystone"
-  },
-  "result": "tfc:rock/smooth/claystone_wall",
-  "count": 1
-}

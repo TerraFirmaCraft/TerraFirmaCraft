@@ -1,0 +1,23 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "L": {
+      "tag": "tfc:lumber"
+    },
+    "R": {
+      "tag": "c:dyes/red"
+    },
+    "S": {
+      "tag": "c:strings"
+    }
+  },
+  "pattern": [
+    "LSL",
+    "LRL",
+    "LLL"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:powderkeg"
+  }
+}

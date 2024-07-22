@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "tfc:rock/smooth/chalk"
-  },
-  "result": "tfc:rock/smooth/chalk_wall",
-  "count": 1
-}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "tfc:mud/silt"
+    },
+    {
+      "item": "tfc:tree_roots"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:muddy_roots/silt"
+  }
+}

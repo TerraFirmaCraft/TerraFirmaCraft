@@ -1,0 +1,22 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "G": {
+      "item": "tfc:glue"
+    },
+    "M": {
+      "item": "tfc:brass_mechanisms"
+    },
+    "P": {
+      "item": "tfc:steel_pipe"
+    }
+  },
+  "pattern": [
+    "PGM",
+    " P "
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:steel_pump"
+  }
+}

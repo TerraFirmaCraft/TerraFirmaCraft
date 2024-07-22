@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "tfc:rock/mossy_bricks/slate"
-  },
-  "result": "tfc:rock/mossy_bricks/slate_wall",
-  "count": 1
-}
