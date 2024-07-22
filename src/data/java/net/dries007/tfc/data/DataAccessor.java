@@ -5,6 +5,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 import net.minecraft.resources.ResourceLocation;
 
+import net.dries007.tfc.util.data.DataManager;
+import net.dries007.tfc.util.data.KnappingType;
+
 public interface DataAccessor<T>
 {
     default T get(ResourceLocation id)

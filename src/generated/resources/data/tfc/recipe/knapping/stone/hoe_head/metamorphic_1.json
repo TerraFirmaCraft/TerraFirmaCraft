@@ -1,0 +1,18 @@
+{
+  "type": "tfc:knapping",
+  "ingredient": {
+    "tag": "tfc:stones/loose/metamorphic"
+  },
+  "knapping_type": "tfc:rock",
+  "pattern": [
+    "#####",
+    "##   ",
+    "     ",
+    "#####",
+    "##   "
+  ],
+  "result": {
+    "count": 2,
+    "id": "tfc:stone/hoe_head/metamorphic"
+  }
+}

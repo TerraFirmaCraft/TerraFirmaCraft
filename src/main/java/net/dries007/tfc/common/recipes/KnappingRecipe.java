@@ -29,7 +29,7 @@ public class KnappingRecipe implements INoopInputRecipe, IRecipePredicate<Knappi
 {
     public static final MapCodec<KnappingRecipe> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
         KnappingType.MANAGER.byIdReferenceCodec().fieldOf("knapping_type").forGetter(c -> c.knappingType),
-        KnappingPattern.CODEC.fieldOf("pattern").forGetter(c -> c.pattern),
+        KnappingPattern.CODEC.forGetter(c -> c.pattern),
         Ingredient.CODEC.optionalFieldOf("ingredient").forGetter(c -> c.ingredient),
         ItemStack.CODEC.fieldOf("result").forGetter(c -> c.result)
     ).apply(i, KnappingRecipe::new));
@@ -79,7 +79,7 @@ public class KnappingRecipe implements INoopInputRecipe, IRecipePredicate<Knappi
         return result.copy();
     }
 
-    public KnappingType getKnappingType()
+    public KnappingType knappingType()
     {
         return knappingType.get();
     }

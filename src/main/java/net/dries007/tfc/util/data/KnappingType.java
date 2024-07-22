@@ -25,14 +25,26 @@ import net.dries007.tfc.common.recipes.RecipeHelpers;
 import net.dries007.tfc.network.StreamCodecs;
 import net.dries007.tfc.util.Helpers;
 
+/**
+ *
+ * @param inputItem
+ * @param amountToConsume
+ * @param clickSound
+ * @param consumeAfterComplete
+ * @param hasOffTexture If the knapping window should display a texture for tiles that are <strong>off</strong> (see the nomenclature in {@link KnappingPattern})
+ * @param spawnsParticles
+ * @param icon
+ *
+ * @see KnappingPattern
+ */
 public record KnappingType(
     SizedIngredient inputItem,
     int amountToConsume,
     Holder<SoundEvent> clickSound,
     boolean consumeAfterComplete,
-    boolean useDisabledTexture,
+    boolean hasOffTexture,
     boolean spawnsParticles,
-    ItemStack jeiIconItem
+    ItemStack icon
 ) implements IRecipePredicate<ItemStack>
 {
     public static final Codec<KnappingType> CODEC = RecordCodecBuilder.create(i -> i.group(
@@ -40,9 +52,9 @@ public record KnappingType(
         Codec.INT.optionalFieldOf("amount_to_consume").forGetter(c -> c.amountToConsume == c.inputItem.count() ? Optional.empty() : Optional.of(c.amountToConsume)),
         SoundEvent.CODEC.fieldOf("click_sound").forGetter(c -> c.clickSound),
         Codec.BOOL.fieldOf("consume_after_complete").forGetter(c -> c.consumeAfterComplete),
-        Codec.BOOL.fieldOf("use_disabled_texture").forGetter(c -> c.useDisabledTexture),
+        Codec.BOOL.fieldOf("has_off_texture").forGetter(c -> c.hasOffTexture),
         Codec.BOOL.fieldOf("spawns_particles").forGetter(c -> c.spawnsParticles),
-        ItemStack.CODEC.fieldOf("jei_icon_item").forGetter(c -> c.jeiIconItem)
+        ItemStack.CODEC.fieldOf("icon").forGetter(c -> c.icon)
     ).apply(i, KnappingType::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, KnappingType> STREAM_CODEC = StreamCodecs.composite(
@@ -50,9 +62,9 @@ public record KnappingType(
         ByteBufCodecs.VAR_INT, c -> c.amountToConsume,
         ByteBufCodecs.holderRegistry(Registries.SOUND_EVENT), c -> c.clickSound,
         ByteBufCodecs.BOOL, c -> c.consumeAfterComplete,
-        ByteBufCodecs.BOOL, c -> c.useDisabledTexture,
+        ByteBufCodecs.BOOL, c -> c.hasOffTexture,
         ByteBufCodecs.BOOL, c -> c.spawnsParticles,
-        ItemStack.STREAM_CODEC, c -> c.jeiIconItem,
+        ItemStack.STREAM_CODEC, c -> c.icon,
         KnappingType::new
     );
 

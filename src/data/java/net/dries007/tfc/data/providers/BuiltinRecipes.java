@@ -56,13 +56,16 @@ import net.dries007.tfc.data.recipes.ChiselRecipes;
 import net.dries007.tfc.data.recipes.CraftingRecipes;
 import net.dries007.tfc.data.recipes.GlassRecipes;
 import net.dries007.tfc.data.recipes.HeatRecipes;
+import net.dries007.tfc.data.recipes.KnappingRecipes;
 import net.dries007.tfc.data.recipes.PotRecipes;
 import net.dries007.tfc.data.recipes.QuernRecipes;
+import net.dries007.tfc.data.recipes.SewingRecipes;
 import net.dries007.tfc.data.recipes.WeldingRecipes;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.data.FluidHeat;
+import net.dries007.tfc.util.data.KnappingType;
 import net.dries007.tfc.util.registry.RegistryHolder;
 
 @SuppressWarnings("NotNullFieldNotInitialized")
@@ -75,8 +78,10 @@ public final class BuiltinRecipes extends VanillaRecipeProvider implements
     CraftingRecipes,
     GlassRecipes,
     HeatRecipes,
+    KnappingRecipes,
     PotRecipes,
     QuernRecipes,
+    SewingRecipes,
     WeldingRecipes
 {
     final DataAccessor<FluidHeat> fluidHeat;
@@ -158,8 +163,10 @@ public final class BuiltinRecipes extends VanillaRecipeProvider implements
         craftingRecipes();
         glassRecipes();
         heatRecipes();
+        knappingRecipes();
         potRecipes();
         quernRecipes();
+        sewingRecipes();
         weldingRecipes();
 
         // Bloomery Recipes

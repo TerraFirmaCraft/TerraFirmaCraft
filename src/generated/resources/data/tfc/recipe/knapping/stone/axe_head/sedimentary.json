@@ -1,0 +1,18 @@
+{
+  "type": "tfc:knapping",
+  "ingredient": {
+    "tag": "tfc:stones/loose/sedimentary"
+  },
+  "knapping_type": "tfc:rock",
+  "pattern": [
+    " #   ",
+    "#### ",
+    "#####",
+    "#### ",
+    " #   "
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:stone/axe_head/sedimentary"
+  }
+}

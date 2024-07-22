@@ -1,0 +1,16 @@
+{
+  "type": "tfc:knapping",
+  "default_on": true,
+  "knapping_type": "tfc:clay",
+  "pattern": [
+    "## #",
+    "#  #",
+    "#  #",
+    "#  #",
+    "#  #"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:ceramic/unfired_knife_blade_mold"
+  }
+}

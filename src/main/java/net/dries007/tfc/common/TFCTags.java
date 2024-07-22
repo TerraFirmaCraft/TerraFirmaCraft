@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.common;
 
+import java.util.Map;
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
@@ -18,6 +20,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.common.Tags;
 
+import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.common.recipes.LandslideRecipe;
 import net.dries007.tfc.util.Helpers;
@@ -404,6 +407,8 @@ public class TFCTags
         public static final TagKey<Item> STONES_SMOOTH = tag(Blocks.STONES_SMOOTH);
         public static final TagKey<Item> STONES_SMOOTH_SLABS = tag(Blocks.STONES_SMOOTH_SLABS);
         public static final TagKey<Item> STONES_PRESSURE_PLATES = tag(Blocks.STONES_PRESSURE_PLATES);
+
+        public static final Map<RockCategory, TagKey<Item>> STONES_OF_CATEGORY = Helpers.mapOfKeys(RockCategory.class, type -> tag("stones/loose/" + type.getSerializedName()));
 
         public static final TagKey<Item> MUD = tag(Blocks.MUD);
         public static final TagKey<Item> MUD_BRICKS = tag(Blocks.MUD_BRICKS);

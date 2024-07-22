@@ -1,0 +1,16 @@
+{
+  "type": "tfc:knapping",
+  "default_on": false,
+  "ingredient": {
+    "tag": "tfc:stones/loose/sedimentary"
+  },
+  "knapping_type": "tfc:rock",
+  "pattern": [
+    "#####",
+    "   ##"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:stone/hoe_head/sedimentary"
+  }
+}

@@ -1,14 +1,14 @@
 {
   "click_sound": "tfc:item.knapping.clay",
   "consume_after_complete": true,
+  "has_off_texture": true,
+  "icon": {
+    "count": 1,
+    "id": "tfc:fire_clay"
+  },
   "input": {
     "count": 5,
     "item": "tfc:fire_clay"
   },
-  "jei_icon_item": {
-    "count": 1,
-    "id": "tfc:fire_clay"
-  },
-  "spawns_particles": false,
-  "use_disabled_texture": true
+  "spawns_particles": false
 }

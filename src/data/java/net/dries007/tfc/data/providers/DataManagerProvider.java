@@ -59,7 +59,12 @@ public abstract class DataManagerProvider<T> implements DataProvider
 
     protected final void add(String name, T value)
     {
-        elements.put(Helpers.identifier(name.toLowerCase(Locale.ROOT)), value);
+        add(Helpers.identifier(name.toLowerCase(Locale.ROOT)), value);
+    }
+
+    protected final void add(ResourceLocation name, T value)
+    {
+        elements.put(name, value);
     }
 
     protected final void add(DataManager.Reference<T> reference, T value)

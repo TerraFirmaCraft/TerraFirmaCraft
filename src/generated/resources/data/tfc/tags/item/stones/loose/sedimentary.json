@@ -1,0 +1,18 @@
+{
+  "values": [
+    "tfc:rock/loose/shale",
+    "tfc:rock/loose/claystone",
+    "tfc:rock/loose/limestone",
+    "tfc:rock/loose/conglomerate",
+    "tfc:rock/loose/dolomite",
+    "tfc:rock/loose/chert",
+    "tfc:rock/loose/chalk",
+    "tfc:rock/mossy_loose/shale",
+    "tfc:rock/mossy_loose/claystone",
+    "tfc:rock/mossy_loose/limestone",
+    "tfc:rock/mossy_loose/conglomerate",
+    "tfc:rock/mossy_loose/dolomite",
+    "tfc:rock/mossy_loose/chert",
+    "tfc:rock/mossy_loose/chalk"
+  ]
+}

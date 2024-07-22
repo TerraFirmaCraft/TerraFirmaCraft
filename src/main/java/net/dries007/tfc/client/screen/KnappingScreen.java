@@ -45,7 +45,7 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
     @Nullable
     public static ResourceLocation getLowTexture(KnappingType type, ItemStack stack)
     {
-        return type.useDisabledTexture() ? getButtonLocation(stack.getItem(), true) : null;
+        return type.hasOffTexture() ? getButtonLocation(stack.getItem(), true) : null;
     }
 
     public static ResourceLocation getButtonLocation(Item item, boolean disabled)

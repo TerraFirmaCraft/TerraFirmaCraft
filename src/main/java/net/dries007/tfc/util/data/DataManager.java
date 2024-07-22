@@ -243,6 +243,11 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
         private final ResourceLocation id;
         private Optional<T> value;
 
+        public Reference(ResourceLocation id)
+        {
+            this(id, null);
+        }
+
         Reference(ResourceLocation id, @Nullable T value)
         {
             this.id = id;

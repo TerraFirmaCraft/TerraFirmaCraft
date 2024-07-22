@@ -1,0 +1,20 @@
+{
+  "type": "tfc:sewing",
+  "result": {
+    "count": 1,
+    "id": "minecraft:flower_banner_pattern"
+  },
+  "squares": [
+    "   ##   ",
+    "  ####  ",
+    "  ####  ",
+    "   ##   "
+  ],
+  "stitches": [
+    "   # #   ",
+    "  ## ##  ",
+    "         ",
+    "  ## ##  ",
+    "   # #   "
+  ]
+}

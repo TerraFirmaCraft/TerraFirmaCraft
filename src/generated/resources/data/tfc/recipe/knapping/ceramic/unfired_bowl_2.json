@@ -1,0 +1,15 @@
+{
+  "type": "tfc:knapping",
+  "knapping_type": "tfc:clay",
+  "pattern": [
+    "#   #",
+    " ### ",
+    "     ",
+    "#   #",
+    " ### "
+  ],
+  "result": {
+    "count": 4,
+    "id": "tfc:ceramic/unfired_bowl"
+  }
+}

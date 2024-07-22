@@ -1,0 +1,16 @@
+{
+  "type": "tfc:knapping",
+  "default_on": true,
+  "knapping_type": "tfc:fire_clay",
+  "pattern": [
+    "####",
+    "#  #",
+    "#  #",
+    "#  #",
+    "####"
+  ],
+  "result": {
+    "count": 2,
+    "id": "tfc:ceramic/unfired_fire_ingot_mold"
+  }
+}

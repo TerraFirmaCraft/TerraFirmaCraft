@@ -1,0 +1,18 @@
+{
+  "type": "tfc:knapping",
+  "ingredient": {
+    "tag": "tfc:stones/loose/igneous_extrusive"
+  },
+  "knapping_type": "tfc:rock",
+  "pattern": [
+    "#  # ",
+    "## ##",
+    "## ##",
+    "## ##",
+    "## ##"
+  ],
+  "result": {
+    "count": 2,
+    "id": "tfc:stone/knife_head/igneous_extrusive"
+  }
+}
