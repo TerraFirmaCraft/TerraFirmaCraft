@@ -113,7 +113,7 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
-        return Helpers.isBlock(level.getBlockState(pos.below()), TFCTags.Blocks.FARMLAND);
+        return Helpers.isBlock(level.getBlockState(pos.below()), TFCTags.Blocks.FARMLANDS);
     }
 
     @Override

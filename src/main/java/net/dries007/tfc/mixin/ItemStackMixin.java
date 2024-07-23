@@ -28,7 +28,7 @@ public abstract class ItemStackMixin
 {
     /**
      * Modify the components attached to a stack on constructing, for time-dependent components.
-     * @see TFCComponents#onModifyItemStackComponents
+     * @see ItemStackHooks#onModifyItemStackComponents
      */
     @Inject(method = "<init>(Lnet/minecraft/world/level/ItemLike;ILnet/minecraft/core/component/PatchedDataComponentMap;)V", at = @At("TAIL"))
     private void modifyItemStackOnConstructing(CallbackInfo ci)
@@ -39,7 +39,7 @@ public abstract class ItemStackMixin
     /**
      * When copying components, do a check to see if the default prototype has been updated - if so, then replace it on the copy,
      * to ensure stacks created before we update default components don't leak the original prototype.
-     * @see TFCComponents#onCopyItemStackComponents
+     * @see ItemStackHooks#onCopyItemStackComponents
      */
     @Redirect(method = "copy", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/component/PatchedDataComponentMap;copy()Lnet/minecraft/core/component/PatchedDataComponentMap;"))
     private PatchedDataComponentMap modifyItemCopyToUpdateComponents(PatchedDataComponentMap map)

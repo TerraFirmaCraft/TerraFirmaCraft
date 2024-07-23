@@ -100,7 +100,7 @@ public class LoomRecipe implements INoopInputRecipe, IRecipePredicate<ItemStack>
     }
 
     @Override
-    public ItemStack getResultItem(HolderLookup.Provider registries)
+    public ItemStack getResultItem(@Nullable HolderLookup.Provider registries)
     {
         return result.getEmptyStack();
     }

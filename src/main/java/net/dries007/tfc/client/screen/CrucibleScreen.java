@@ -24,6 +24,8 @@ import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
 import net.dries007.tfc.common.capabilities.MoldLike;
 import net.dries007.tfc.common.component.heat.Heat;
+import net.dries007.tfc.common.component.mold.IMold;
+import net.dries007.tfc.common.component.mold.Mold;
 import net.dries007.tfc.common.container.CrucibleContainer;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.PourFasterPacket;
@@ -58,7 +60,7 @@ public class CrucibleScreen extends BlockEntityScreen<CrucibleBlockEntity, Cruci
         {
             if (hoveredSlot != null)
             {
-                final MoldLike mold = MoldLike.get(hoveredSlot.getItem());
+                final IMold mold = IMold.get(hoveredSlot.getItem());
                 if (mold != null)
                 {
                     PacketDistributor.sendToServer(new PourFasterPacket(blockEntity.getBlockPos(), hoveredSlot.index));

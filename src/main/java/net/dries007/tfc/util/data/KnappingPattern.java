@@ -144,6 +144,11 @@ public final class KnappingPattern
         return height;
     }
 
+    public boolean defaultIsOn()
+    {
+        return defaultOn;
+    }
+
     public void setAll(boolean value)
     {
         data = value ? (1 << (width * height)) - 1 : 0;

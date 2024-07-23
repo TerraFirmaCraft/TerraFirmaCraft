@@ -119,7 +119,7 @@ public final class TFCSounds
     public static final FishId MANATEE = registerFish("manatee");
     public static final FishId JELLYFISH = registerFish("jellyfish");
 
-    public static final Map<Fish, FishId> FRESHWATER_FISHES = Helpers.mapOfKeys(Fish.class, Fish::makeSound);
+    public static final Map<Fish, FishId> FRESHWATER_FISHES = Helpers.mapOf(Fish.class, Fish::makeSound);
 
     public static final Id ROOSTER_CRY = register("entity.rooster.cry");
     public static final Id RAMMING_IMPACT = register("entity.ramming.impact");

@@ -22,6 +22,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.material.Fluid;
+import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.component.heat.IHeat;
@@ -90,6 +91,11 @@ public record FluidHeat(
         return CACHE.get(fluid);
     }
 
+    public static FluidHeat getOrUnknown(FluidStack fluid)
+    {
+        return CACHE.getOrDefault(fluid.getFluid(), unknown());
+    }
+
     /**
      * Get the 'unknown' metal. This is the only metal that any assurances are made that it exists.
      */
@@ -127,7 +133,7 @@ public record FluidHeat(
         return null;
     }
 
-    public static void updateMetalFluidMap()
+    public static void updateCache()
     {
         // Ensure 'unknown' metal exists
         unknown();

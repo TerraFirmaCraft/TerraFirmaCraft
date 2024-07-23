@@ -60,7 +60,7 @@ public record GlassworkingRecipe(
     }
 
     @Override
-    public ItemStack getResultItem(HolderLookup.Provider registries)
+    public ItemStack getResultItem(@Nullable HolderLookup.Provider registries)
     {
         return resultItem;
     }

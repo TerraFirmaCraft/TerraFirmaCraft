@@ -15,11 +15,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.common.crafting.CompoundIngredient;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.rock.Ore;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.fluids.SimpleFluid;
 import net.dries007.tfc.common.fluids.TFCFluids;
@@ -61,6 +64,11 @@ public interface Accessors
     {
         assert metal.defaultParts() : "Non-typical use of a non-default metal " + metal.getSerializedName();
         return commonTagOf(key, "storage_blocks/" + metal.getSerializedName());
+    }
+
+    default TagKey<Block> oreBlockTagOf(Ore ore, @Nullable Ore.Grade grade)
+    {
+        return commonTagOf(Registries.BLOCK, "ores/" + (ore.isGraded() ? ore.metal().name() : ore.name()) + (grade == null ? "" : "/" + grade.name()));
     }
 
     default <T> TagKey<T> commonTagOf(ResourceKey<Registry<T>> key, String name)

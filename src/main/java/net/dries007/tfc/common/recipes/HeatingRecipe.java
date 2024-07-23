@@ -149,7 +149,7 @@ public class HeatingRecipe implements INoopInputRecipe, IRecipePredicate<ItemSta
     }
 
     @Override
-    public ItemStack getResultItem(HolderLookup.Provider registries)
+    public ItemStack getResultItem(@Nullable HolderLookup.Provider registries)
     {
         return outputItem.getEmptyStack();
     }

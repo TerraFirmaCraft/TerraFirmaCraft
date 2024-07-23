@@ -116,17 +116,17 @@ public class TFCEntities
     public static final Id<TFCMinecartChest> CHEST_MINECART = register("chest_minecart", EntityType.Builder.of(TFCMinecartChest::new, MobCategory.MISC).sized(0.98F, 0.7F).clientTrackingRange(8));
     public static final Id<HoldingMinecart> HOLDING_MINECART = register("holding_minecart", EntityType.Builder.<HoldingMinecart>of(HoldingMinecart::new, MobCategory.MISC).sized(0.98F, 0.7F).clientTrackingRange(8));
 
-    public static final Map<Wood, Id<TFCChestBoat>> CHEST_BOATS = Helpers.mapOfKeys(Wood.class, wood ->
+    public static final Map<Wood, Id<TFCChestBoat>> CHEST_BOATS = Helpers.mapOf(Wood.class, wood ->
         register("chest_boat/" + wood.name(), EntityType.Builder.<TFCChestBoat>of((type, level) -> new TFCChestBoat(type, level, TFCItems.BOATS.get(wood)), MobCategory.MISC).sized(1.375F, 0.5625F).clientTrackingRange(10))
     );
-    public static final Map<Wood, Id<TFCBoat>> BOATS = Helpers.mapOfKeys(Wood.class, wood ->
+    public static final Map<Wood, Id<TFCBoat>> BOATS = Helpers.mapOf(Wood.class, wood ->
         register("boat/" + wood.name(), EntityType.Builder.<TFCBoat>of((type, level) -> new TFCBoat(type, level, CHEST_BOATS.get(wood), TFCItems.BOATS.get(wood)), MobCategory.MISC).sized(1.375F, 0.5625F).clientTrackingRange(10))
     );
 
 
     // Water Ambient
 
-    public static final Map<Fish, Id<FreshwaterFish>> FRESHWATER_FISH = Helpers.mapOfKeys(Fish.class, fish -> register(fish.getSerializedName(), EntityType.Builder.<FreshwaterFish>of((type, level) -> new FreshwaterFish(type, level, TFCSounds.FRESHWATER_FISHES.get(fish), TFCItems.FRESHWATER_FISH_BUCKETS.get(fish)), MobCategory.WATER_AMBIENT).sized(fish.getWidth(), fish.getHeight()).clientTrackingRange(4)));
+    public static final Map<Fish, Id<FreshwaterFish>> FRESHWATER_FISH = Helpers.mapOf(Fish.class, fish -> register(fish.getSerializedName(), EntityType.Builder.<FreshwaterFish>of((type, level) -> new FreshwaterFish(type, level, TFCSounds.FRESHWATER_FISHES.get(fish), TFCItems.FRESHWATER_FISH_BUCKETS.get(fish)), MobCategory.WATER_AMBIENT).sized(fish.getWidth(), fish.getHeight()).clientTrackingRange(4)));
 
     public static final Id<TFCCod> COD = register("cod", EntityType.Builder.of(TFCCod::new, MobCategory.WATER_AMBIENT).sized(0.5F, 0.3F).eyeHeight(0.26F).clientTrackingRange(4));
     public static final Id<TFCTropicalFish> TROPICAL_FISH = register("tropical_fish", EntityType.Builder.of(TFCTropicalFish::new, MobCategory.WATER_AMBIENT).sized(0.5F, 0.4F).eyeHeight(0.26F).clientTrackingRange(4));

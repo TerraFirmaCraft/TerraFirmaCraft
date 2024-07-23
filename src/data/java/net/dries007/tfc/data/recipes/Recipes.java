@@ -5,26 +5,21 @@ import java.util.Objects;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeType;
-import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.data.Accessors;
-import net.dries007.tfc.data.DataAccessor;
 import net.dries007.tfc.data.providers.BuiltinItemHeat;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.data.FluidHeat;
-import net.dries007.tfc.util.data.KnappingType;
 
 public interface Recipes extends Accessors
 {
-    DataAccessor<FluidHeat> fluidHeat();
-    BuiltinItemHeat.Output itemHeat();
+    List<BuiltinItemHeat.WithMelting> withMelting();
     HolderLookup.Provider lookup();
 
     default float temperatureOf(Metal metal)
     {
-        return fluidHeat().get(Helpers.identifier(metal.getSerializedName())).meltTemperature();
+        return FluidHeat.MANAGER.getOrThrow(Helpers.identifier(metal.getSerializedName())).meltTemperature();
     }
 
     default void add(Recipe<?> recipe)

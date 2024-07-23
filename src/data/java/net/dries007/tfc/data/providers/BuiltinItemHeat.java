@@ -3,11 +3,9 @@ package net.dries007.tfc.data.providers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -26,7 +24,6 @@ import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.Powder;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.data.Accessors;
-import net.dries007.tfc.data.DataAccessor;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.data.FluidHeat;
@@ -34,25 +31,24 @@ import net.dries007.tfc.util.data.FluidHeat;
 
 public class BuiltinItemHeat extends DataManagerProvider<HeatDefinition> implements Accessors
 {
-    private final DataAccessor<FluidHeat> fluidHeat;
-    private final List<WithMelting> withMelting = new ArrayList<>();
+    public final List<WithMelting> withMelting = new ArrayList<>();
+    private final CompletableFuture<?> before;
 
-    public BuiltinItemHeat(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup, DataAccessor<FluidHeat> fluidHeat)
+    public BuiltinItemHeat(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup)
+    {
+        this(output, lookup, CompletableFuture.completedFuture(null));
+    }
+
+    public BuiltinItemHeat(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup, CompletableFuture<?> before)
     {
         super(HeatCapability.MANAGER, output, lookup);
-        this.fluidHeat = fluidHeat;
+        this.before = before;
     }
 
     @Override
     protected CompletableFuture<HolderLookup.Provider> beforeRun()
     {
-        return fluidHeat.future().thenCompose(v -> super.beforeRun());
-    }
-
-    @Override
-    public Output output()
-    {
-        return new Output(contentDone, withMelting);
+        return before.thenCompose(v -> super.beforeRun());
     }
 
     @Override
@@ -155,18 +151,13 @@ public class BuiltinItemHeat extends DataManagerProvider<HeatDefinition> impleme
 
     private void add(String name, Ingredient ingredient, Metal metal, int units)
     {
-        final FluidHeat fluidHeat = this.fluidHeat.get(Helpers.identifier(metal.getSerializedName()));
+        final FluidHeat fluidHeat = FluidHeat.MANAGER.getOrThrow(Helpers.identifier(metal.getSerializedName()));
         add(name, new HeatDefinition(
             ingredient,
             (fluidHeat.specificHeatCapacity() / BuiltinFluidHeat.HEAT_CAPACITY) * (units / 100f),
             fluidHeat.meltTemperature() * 0.6f,
             fluidHeat.meltTemperature() * 0.8f));
     }
-
-    public record Output(
-        CompletableFuture<Map<ResourceLocation, HeatDefinition>> future,
-        List<WithMelting> withMelting
-    ) implements DataAccessor<HeatDefinition> {}
 
     public record WithMelting(ItemLike item, Metal metal, int units) {}
 }

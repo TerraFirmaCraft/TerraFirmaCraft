@@ -3,7 +3,7 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "c:mud"
+      "tag": "tfc:mud"
     },
     {
       "item": "minecraft:clay_ball"

@@ -10,6 +10,7 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -87,6 +88,7 @@ public class SpringFeature extends Feature<SpringConfiguration>
         return false;
     }
 
+    @SuppressWarnings("deprecation")
     private static Holder<Block> getHolder(BlockState state)
     {
         return state.getBlock().builtInRegistryHolder();

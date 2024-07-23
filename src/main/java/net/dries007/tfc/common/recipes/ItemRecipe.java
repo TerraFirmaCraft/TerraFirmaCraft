@@ -11,6 +11,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 
@@ -46,7 +47,7 @@ public abstract class ItemRecipe implements INoopInputRecipe, IRecipePredicate<I
     }
 
     @Override
-    public ItemStack getResultItem(HolderLookup.Provider registries)
+    public ItemStack getResultItem(@Nullable HolderLookup.Provider registries)
     {
         return result.getEmptyStack();
     }

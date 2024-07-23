@@ -22,6 +22,7 @@ import net.dries007.tfc.common.capabilities.InventoryItemHandler;
 import net.dries007.tfc.common.capabilities.MoldLike;
 import net.dries007.tfc.common.component.heat.HeatCapability;
 import net.dries007.tfc.common.component.heat.IHeat;
+import net.dries007.tfc.common.component.mold.IMold;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.data.FluidHeat;
 
@@ -32,14 +33,14 @@ public class MoldLikeAlloyContainer extends ItemStackContainer implements ISlotC
         return new MoldLikeAlloyContainer(stack, hand, slot, playerInv, windowId).init(playerInv);
     }
 
-    @Nullable private final MoldLike mold;
+    @Nullable private final IMold mold;
     private final IItemHandlerModifiable inventory;
 
     private MoldLikeAlloyContainer(ItemStack stack, InteractionHand hand, int slot, Inventory playerInv, int windowId)
     {
         super(TFCContainerTypes.MOLD_LIKE_ALLOY.get(), windowId, playerInv, stack, hand, slot);
 
-        this.mold = MoldLike.get(stack);
+        this.mold = IMold.get(stack);
         this.inventory = new InventoryItemHandler(this, 1);
     }
 
@@ -60,16 +61,15 @@ public class MoldLikeAlloyContainer extends ItemStackContainer implements ISlotC
                     final int filled = outputFluidCap.fill(drained, IFluidHandler.FluidAction.EXECUTE);
                     if (filled == 1)
                     {
-                        final FluidHeat metal = Objects.requireNonNullElse(FluidHeat.get(drained.getFluid()), FluidHeat.unknown());
+                        final FluidHeat fluidHeat = FluidHeat.getOrUnknown(drained);
                         final @Nullable IHeat outputHeat = HeatCapability.get(outputStack);
-                        final float heatCapacityOf1mB = metal.heatCapacity(1);
+                        final float heatCapacityOf1mB = fluidHeat.heatCapacity(1);
 
                         // Execute the prior drain, and adjust temperature
                         mold.drain(1, IFluidHandler.FluidAction.EXECUTE);
                         if (outputHeat != null)
                         {
-                            // todo: 1.21
-                            outputHeat.addTemperatureFromSourceWithHeatCapacity(0f /*mold.getTemperature()*/, heatCapacityOf1mB);
+                            outputHeat.addTemperatureFromSourceWithHeatCapacity(mold.getTemperature(), heatCapacityOf1mB);
                         }
                     }
                 }

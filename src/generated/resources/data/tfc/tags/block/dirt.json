@@ -1,0 +1,13 @@
+{
+  "values": [
+    "minecraft:dirt",
+    "tfc:dirt/silt",
+    "tfc:dirt/loam",
+    "tfc:dirt/sandy_loam",
+    "tfc:dirt/silty_loam",
+    "tfc:rooted_dirt/silt",
+    "tfc:rooted_dirt/loam",
+    "tfc:rooted_dirt/sandy_loam",
+    "tfc:rooted_dirt/silty_loam"
+  ]
+}

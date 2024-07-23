@@ -1474,7 +1474,7 @@ public final class ForgeEventHandler
 
             // Then apply post reload actions which may query the cache
             Support.updateMaximumSupportRange();
-            FluidHeat.updateMetalFluidMap();
+            FluidHeat.updateCache();
 
             TFCComponents.onModifyDefaultComponentsAfterResourceReload();
             FoodCapability.markRecipeOutputsAsNonDecaying(event.getRegistryAccess(), manager);

@@ -24,7 +24,6 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.fluids.FluidHolder;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.data.Accessors;
-import net.dries007.tfc.data.DataAccessor;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.data.Drinkable;
 
@@ -33,18 +32,18 @@ import static net.dries007.tfc.common.fluids.SimpleFluid.*;
 
 public class BuiltinFluidTags extends TagsProvider<Fluid> implements Accessors
 {
-    private final DataAccessor<Drinkable> drinkables;
+    private final CompletableFuture<?> before;
 
-    public BuiltinFluidTags(GatherDataEvent event, CompletableFuture<HolderLookup.Provider> provider, DataAccessor<Drinkable> drinkables)
+    public BuiltinFluidTags(GatherDataEvent event, CompletableFuture<HolderLookup.Provider> provider, CompletableFuture<?> before)
     {
         super(event.getGenerator().getPackOutput(), Registries.FLUID, provider, TerraFirmaCraft.MOD_ID, event.getExistingFileHelper());
-        this.drinkables = drinkables;
+        this.before = before;
     }
 
     @Override
     protected CompletableFuture<HolderLookup.Provider> createContentsProvider()
     {
-        return drinkables.future().thenCompose(v -> super.createContentsProvider());
+        return before.thenCompose(v -> super.createContentsProvider());
     }
 
     @Override
@@ -80,7 +79,7 @@ public class BuiltinFluidTags extends TagsProvider<Fluid> implements Accessors
             fluidOf(RYE_WHISKEY));
         tag(MOLTEN_METALS).add(TFCFluids.METALS);
 
-        drinkables.all().forEach(drink -> tag(DRINKABLES, drink.ingredient()));
+        Drinkable.MANAGER.getValues().forEach(drink -> tag(DRINKABLES, drink.ingredient()));
         tag(INGREDIENTS)
             .addTag(DRINKABLES)
             .add(TFCFluids.SIMPLE_FLUIDS)

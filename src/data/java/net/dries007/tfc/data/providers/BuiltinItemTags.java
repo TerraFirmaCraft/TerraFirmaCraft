@@ -30,6 +30,7 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.GroundcoverBlockType;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Ore;
 import net.dries007.tfc.common.blocks.rock.Rock;
@@ -68,6 +69,12 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(STORAGE_BLOCKS_WHEAT).remove(Items.HAY_BLOCK);
 
         tag(SEEDS).add(TFCItems.CROP_SEEDS);
+        tag(BOOKS).add(
+            Items.BOOK,
+            Items.ENCHANTED_BOOK,
+            Items.WRITABLE_BOOK,
+            Items.WRITTEN_BOOK,
+            Items.KNOWLEDGE_BOOK);
 
         // ===== TFC Tags ===== //
 
@@ -208,6 +215,18 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             .add(TFCItems.FIRE_INGOT_MOLD)
             .add(TFCItems.BELL_MOLD);
 
+        tag(FIREPIT_FUEL)
+            .addTags(BOOKS, ItemTags.LEAVES)
+            .add(
+                TFCBlocks.PEAT,
+                TFCBlocks.PEAT_GRASS,
+                TFCItems.STICK_BUNDLE,
+                Items.PAPER,
+                TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.PINECONE),
+                TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.DRIFTWOOD));
+        tag(FORGE_FUEL).addTag(ItemTags.COALS);
+        tag(BLAST_FURNACE_FUEL).add(Items.CHARCOAL);
+
         tag(TOOLS).addTags(TOOLS_KNIFE, TOOLS_CHISEL, TOOLS_SHEAR, TOOLS_GLASSWORKING, TOOLS_BLOWPIPE);
         tag(TOOLS_SHIELD).add(TFCItems.METAL_ITEMS, Metal.ItemType.SHIELD);
         tag(TOOLS_FISHING_ROD).add(TFCItems.METAL_ITEMS, Metal.ItemType.FISHING_ROD);
@@ -267,6 +286,8 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         pivot(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.MOSSY_LOOSE).forEach((rock, item) -> tag(STONES_OF_CATEGORY.get(rock.category())).add(item));
 
         copy(BlockTags.DIRT, ItemTags.DIRT);
+        copy(TFCTags.Blocks.DIRT, DIRT);
+        copy(TFCTags.Blocks.GRASS, GRASS);
         copy(TFCTags.Blocks.MUD, MUD);
         copy(TFCTags.Blocks.MUD_BRICKS, MUD_BRICKS);
 

@@ -16,6 +16,7 @@ import net.dries007.tfc.data.providers.BuiltinKnappingTypes;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.data.DataManager;
 import net.dries007.tfc.util.data.KnappingPattern;
+import net.dries007.tfc.util.data.KnappingType;
 
 public interface KnappingRecipes extends Recipes
 {
@@ -128,6 +129,6 @@ public interface KnappingRecipes extends Recipes
 
     private void knapping(ResourceLocation knappingType, String[] pattern, ItemLike output, int count)
     {
-        add(new KnappingRecipe(new DataManager.Reference<>(knappingType), KnappingPattern.from(true, pattern), Optional.empty(), new ItemStack(output, count)));
+        add(new KnappingRecipe(KnappingType.MANAGER.getReference(knappingType), KnappingPattern.from(true, pattern), Optional.empty(), new ItemStack(output, count)));
     }
 }

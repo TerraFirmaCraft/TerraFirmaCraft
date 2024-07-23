@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
@@ -58,6 +59,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.bus.api.Event;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -89,6 +91,7 @@ import net.dries007.tfc.common.component.forge.ForgeStep;
 import net.dries007.tfc.common.component.forge.ForgingBonus;
 import net.dries007.tfc.common.component.heat.Heat;
 import net.dries007.tfc.common.component.heat.HeatCapability;
+import net.dries007.tfc.common.component.mold.IMold;
 import net.dries007.tfc.common.component.size.Size;
 import net.dries007.tfc.common.component.size.Weight;
 import net.dries007.tfc.common.items.MoldItem;
@@ -519,16 +522,23 @@ public final class SelfTests
 
     private static boolean validateMoldsCanContainCastingIngredients(RecipeManager manager)
     {
-        final List<ResourceLocation> errors = manager.getAllRecipesFor(TFCRecipeTypes.CASTING.get()).stream()
-            .flatMap(recipe -> RecipeHelpers.stream(recipe.value().getIngredient())
-                .filter(item -> item instanceof MoldItem)
-                .flatMap(item -> RecipeHelpers.stream(recipe.value().getFluidIngredient())
-                    .filter(fluid -> !Helpers.isFluid(fluid, ((MoldItem) item).getFluidTag())))
-            )
-            .map(BuiltInRegistries.FLUID::getKey)
+        final List<String> errors = manager.getAllRecipesFor(TFCRecipeTypes.CASTING.get())
+            .stream()
+            .map(holder -> {
+                for (ItemStack stack : holder.value().getIngredient().getItems())
+                {
+                    final IMold mold = IMold.get(stack);
+                    if (mold == null) return "Item is not a mold: " + stack;
+                    for (FluidStack fluid : holder.value().getFluidIngredient().getFluids())
+                        if (!mold.isFluidValid(0, fluid))
+                            return "Mold " + stack + " cannot contain " + fluid;
+                }
+                return null;
+            })
+            .filter(Objects::nonNull)
             .toList();
 
-        return logErrors("{} fluids were found that were given as ingredients in a casting recipe that could not be put into the specified mold. This probably means that you need to add fluids to the tfc:usable_in_tool_head_mold or tfc:usable_in_ingot_mold tag.", errors, LOGGER);
+        return logErrors("{} mold recipes were invalid", errors, LOGGER);
     }
 
     private static boolean validateHeatingRecipeIngredientsAreHeatable(RecipeManager manager)

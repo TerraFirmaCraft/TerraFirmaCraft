@@ -17,6 +17,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
@@ -26,20 +27,22 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
 import net.dries007.tfc.util.registry.RegistryRock;
 
-public class RockConvertableToAnvilBlock extends RawRockBlock
+public class RockConvertableToAnvilBlock extends RotatedPillarBlock
 {
     public static Block createForIgneousOnly(Properties properties, RegistryRock rock, boolean naturallySupported)
     {
         return rock.category() == RockCategory.IGNEOUS_EXTRUSIVE || rock.category() == RockCategory.IGNEOUS_INTRUSIVE
-            ? new RockConvertableToAnvilBlock(properties, rock.getAnvil(), naturallySupported, rock.displayCategory().createTooltip())
-            : new RawRockBlock(properties, naturallySupported, rock.displayCategory().createTooltip());
+            ? new RockConvertableToAnvilBlock(properties, rock.getAnvil())
+            : naturallySupported
+                ? new RotatedPillarBlock(properties)
+                : new RawRockBlock(properties);
     }
 
     private final Supplier<? extends Block> anvil;
 
-    public RockConvertableToAnvilBlock(Properties properties, Supplier<? extends Block> anvil, boolean naturallySupported, @Nullable Component rockTypeTooltip)
+    public RockConvertableToAnvilBlock(Properties properties, Supplier<? extends Block> anvil)
     {
-        super(properties, naturallySupported, rockTypeTooltip);
+        super(properties);
         this.anvil = anvil;
     }
 

@@ -18,12 +18,12 @@ public final class ClimateRanges
 {
     public static final DataManager.Reference<ClimateRange> BANANA_PLANT = register("plant/banana_tree");
     public static final DataManager.Reference<ClimateRange> CRANBERRY_BUSH = register("plant/cranberry_bush");
-    public static final Map<FruitBlocks.StationaryBush, DataManager.Reference<ClimateRange>> STATIONARY_BUSHES = Helpers.mapOfKeys(FruitBlocks.StationaryBush.class, bush -> register("plant/" + bush.name() + "_bush"));
-    public static final Map<FruitBlocks.SpreadingBush, DataManager.Reference<ClimateRange>> SPREADING_BUSHES = Helpers.mapOfKeys(FruitBlocks.SpreadingBush.class, bush -> register("plant/" + bush.name() + "_bush"));
+    public static final Map<FruitBlocks.StationaryBush, DataManager.Reference<ClimateRange>> STATIONARY_BUSHES = Helpers.mapOf(FruitBlocks.StationaryBush.class, bush -> register("plant/" + bush.name() + "_bush"));
+    public static final Map<FruitBlocks.SpreadingBush, DataManager.Reference<ClimateRange>> SPREADING_BUSHES = Helpers.mapOf(FruitBlocks.SpreadingBush.class, bush -> register("plant/" + bush.name() + "_bush"));
 
-    public static final Map<FruitBlocks.Tree, DataManager.Reference<ClimateRange>> FRUIT_TREES = Helpers.mapOfKeys(FruitBlocks.Tree.class, tree -> register("plant/" + tree.name() + "_tree"));
+    public static final Map<FruitBlocks.Tree, DataManager.Reference<ClimateRange>> FRUIT_TREES = Helpers.mapOf(FruitBlocks.Tree.class, tree -> register("plant/" + tree.name() + "_tree"));
 
-    public static final Map<Crop, DataManager.Reference<ClimateRange>> CROPS = Helpers.mapOfKeys(Crop.class, crop -> register("crop/" + crop.getSerializedName()));
+    public static final Map<Crop, DataManager.Reference<ClimateRange>> CROPS = Helpers.mapOf(Crop.class, crop -> register("crop/" + crop.getSerializedName()));
 
     private static DataManager.Reference<ClimateRange> register(String name)
     {

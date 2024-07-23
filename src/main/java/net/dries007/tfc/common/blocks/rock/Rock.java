@@ -11,6 +11,7 @@ import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.PressurePlateBlock;
@@ -25,8 +26,8 @@ import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.common.Lore;
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.util.registry.RegistryRock;
 
 /**
@@ -34,45 +35,43 @@ import net.dries007.tfc.util.registry.RegistryRock;
  */
 public enum Rock implements RegistryRock
 {
-    GRANITE(RockDisplayCategory.FELSIC_IGNEOUS_INTRUSIVE, MapColor.STONE, SandBlockType.BROWN),
-    DIORITE(RockDisplayCategory.INTERMEDIATE_IGNEOUS_INTRUSIVE, MapColor.METAL, SandBlockType.WHITE),
-    GABBRO(RockDisplayCategory.MAFIC_IGNEOUS_INTRUSIVE, MapColor.COLOR_GRAY, SandBlockType.BLACK),
-    SHALE(RockDisplayCategory.SEDIMENTARY, MapColor.COLOR_GRAY, SandBlockType.BLACK),
-    CLAYSTONE(RockDisplayCategory.SEDIMENTARY, MapColor.TERRACOTTA_YELLOW, SandBlockType.BROWN),
-    LIMESTONE(RockDisplayCategory.SEDIMENTARY, MapColor.TERRACOTTA_WHITE, SandBlockType.WHITE),
-    CONGLOMERATE(RockDisplayCategory.SEDIMENTARY, MapColor.TERRACOTTA_LIGHT_GRAY, SandBlockType.GREEN),
-    DOLOMITE(RockDisplayCategory.SEDIMENTARY, MapColor.COLOR_GRAY, SandBlockType.BLACK),
-    CHERT(RockDisplayCategory.SEDIMENTARY, MapColor.TERRACOTTA_ORANGE, SandBlockType.YELLOW),
-    CHALK(RockDisplayCategory.SEDIMENTARY, MapColor.QUARTZ, SandBlockType.WHITE),
-    RHYOLITE(RockDisplayCategory.FELSIC_IGNEOUS_EXTRUSIVE, MapColor.TERRACOTTA_LIGHT_GRAY, SandBlockType.RED),
-    BASALT(RockDisplayCategory.MAFIC_IGNEOUS_EXTRUSIVE, MapColor.COLOR_BLACK, SandBlockType.RED),
-    ANDESITE(RockDisplayCategory.INTERMEDIATE_IGNEOUS_EXTRUSIVE, MapColor.TERRACOTTA_CYAN, SandBlockType.RED),
-    DACITE(RockDisplayCategory.INTERMEDIATE_IGNEOUS_EXTRUSIVE, MapColor.STONE, SandBlockType.RED),
-    QUARTZITE(RockDisplayCategory.METAMORPHIC, MapColor.TERRACOTTA_WHITE, SandBlockType.YELLOW),
-    SLATE(RockDisplayCategory.METAMORPHIC, MapColor.WOOD, SandBlockType.BROWN),
-    PHYLLITE(RockDisplayCategory.METAMORPHIC, MapColor.TERRACOTTA_LIGHT_BLUE, SandBlockType.BROWN),
-    SCHIST(RockDisplayCategory.METAMORPHIC, MapColor.TERRACOTTA_LIGHT_GREEN, SandBlockType.GREEN),
-    GNEISS(RockDisplayCategory.METAMORPHIC, MapColor.TERRACOTTA_LIGHT_GRAY, SandBlockType.GREEN),
-    MARBLE(RockDisplayCategory.METAMORPHIC, MapColor.WOOL, SandBlockType.WHITE);
+    GRANITE(RockDisplayCategory.FELSIC_IGNEOUS_INTRUSIVE, MapColor.STONE),
+    DIORITE(RockDisplayCategory.INTERMEDIATE_IGNEOUS_INTRUSIVE, MapColor.METAL),
+    GABBRO(RockDisplayCategory.MAFIC_IGNEOUS_INTRUSIVE, MapColor.COLOR_GRAY),
+    SHALE(RockDisplayCategory.SEDIMENTARY, MapColor.COLOR_GRAY),
+    CLAYSTONE(RockDisplayCategory.SEDIMENTARY, MapColor.TERRACOTTA_YELLOW),
+    LIMESTONE(RockDisplayCategory.SEDIMENTARY, MapColor.TERRACOTTA_WHITE),
+    CONGLOMERATE(RockDisplayCategory.SEDIMENTARY, MapColor.TERRACOTTA_LIGHT_GRAY),
+    DOLOMITE(RockDisplayCategory.SEDIMENTARY, MapColor.COLOR_GRAY),
+    CHERT(RockDisplayCategory.SEDIMENTARY, MapColor.TERRACOTTA_ORANGE),
+    CHALK(RockDisplayCategory.SEDIMENTARY, MapColor.QUARTZ),
+    RHYOLITE(RockDisplayCategory.FELSIC_IGNEOUS_EXTRUSIVE, MapColor.TERRACOTTA_LIGHT_GRAY),
+    BASALT(RockDisplayCategory.MAFIC_IGNEOUS_EXTRUSIVE, MapColor.COLOR_BLACK),
+    ANDESITE(RockDisplayCategory.INTERMEDIATE_IGNEOUS_EXTRUSIVE, MapColor.TERRACOTTA_CYAN),
+    DACITE(RockDisplayCategory.INTERMEDIATE_IGNEOUS_EXTRUSIVE, MapColor.STONE),
+    QUARTZITE(RockDisplayCategory.METAMORPHIC, MapColor.TERRACOTTA_WHITE),
+    SLATE(RockDisplayCategory.METAMORPHIC, MapColor.WOOD),
+    PHYLLITE(RockDisplayCategory.METAMORPHIC, MapColor.TERRACOTTA_LIGHT_BLUE),
+    SCHIST(RockDisplayCategory.METAMORPHIC, MapColor.TERRACOTTA_LIGHT_GREEN),
+    GNEISS(RockDisplayCategory.METAMORPHIC, MapColor.TERRACOTTA_LIGHT_GRAY),
+    MARBLE(RockDisplayCategory.METAMORPHIC, MapColor.WOOL);
 
     public static final Rock[] VALUES = values();
 
     private final String serializedName;
     private final RockDisplayCategory category;
     private final MapColor color;
-    private final SandBlockType sandType;
 
-    Rock(RockDisplayCategory category, MapColor color, SandBlockType sandType)
+    Rock(RockDisplayCategory category, MapColor color)
     {
         this.serializedName = name().toLowerCase(Locale.ROOT);
         this.category = category;
         this.color = color;
-        this.sandType = sandType;
     }
 
-    public SandBlockType getSandType()
+    public Item.Properties createItemProperties()
     {
-        return sandType;
+        return new Item.Properties().component(Lore.TYPE, Lore.ROCKS.get(category));
     }
 
     @Override
@@ -151,7 +150,10 @@ public enum Rock implements RegistryRock
 
         private static BlockBehaviour.Properties properties(RegistryRock rock)
         {
-            return BlockBehaviour.Properties.of().mapColor(rock.color()).sound(SoundType.STONE).instrument(NoteBlockInstrument.BASEDRUM);
+            return BlockBehaviour.Properties.of()
+                .mapColor(rock.color())
+                .sound(SoundType.STONE)
+                .instrument(NoteBlockInstrument.BASEDRUM);
         }
 
         private final boolean variants;

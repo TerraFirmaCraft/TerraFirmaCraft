@@ -1,25 +1,8 @@
 {
   "duration": 150,
-  "ingredient": [
-    {
-      "item": "minecraft:paper"
-    },
-    {
-      "item": "minecraft:book"
-    },
-    {
-      "item": "minecraft:written_book"
-    },
-    {
-      "item": "minecraft:knowledge_book"
-    },
-    {
-      "item": "minecraft:writable_book"
-    },
-    {
-      "item": "minecraft:enchanted_book"
-    }
-  ],
+  "ingredient": {
+    "tag": "c:books"
+  },
   "purity": 0.7,
   "temperature": 199.0
 }

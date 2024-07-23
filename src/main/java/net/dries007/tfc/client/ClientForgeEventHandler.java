@@ -75,10 +75,8 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
-import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.SluiceBlockEntity;
 import net.dries007.tfc.common.blocks.devices.SluiceBlock;
-import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.component.EggComponent;
 import net.dries007.tfc.common.component.IngredientsComponent;
 import net.dries007.tfc.common.component.TFCComponents;
@@ -225,47 +223,6 @@ public class ClientForgeEventHandler
             // 2. Extra information, that is useful QoL info, but not necessary (such as possible recipes, melting into, etc.)
             // 3. Debug information, that is only available in debug mode.
 
-            if (Helpers.isItem(stack, TFCTags.Items.SILICA_ITEMS))
-            {
-                text.add(Component.translatable("tfc.tooltip.glass.silica").withStyle(AQUA, ITALIC));
-            }
-            else if (Helpers.isItem(stack, TFCTags.Items.HEMATITIC_ITEMS))
-            {
-                text.add(Component.translatable("tfc.tooltip.glass.hematitic").withStyle(RED, ITALIC));
-            }
-            else if (Helpers.isItem(stack, TFCTags.Items.OLIVINE_ITEMS))
-            {
-                text.add(Component.translatable("tfc.tooltip.glass.olivine").withStyle(GREEN, ITALIC));
-            }
-            else if (Helpers.isItem(stack, TFCTags.Items.VOLCANIC_ITEMS))
-            {
-                text.add(Component.translatable("tfc.tooltip.glass.volcanic").withStyle(DARK_PURPLE, ITALIC));
-            }
-            else if (Helpers.isItem(stack, TFCTags.Items.SEDIMENTARY_ITEMS))
-            {
-                text.add(Helpers.translateEnum(RockCategory.SEDIMENTARY).withStyle(GRAY, ITALIC));
-            }
-            else if (Helpers.isItem(stack, TFCTags.Items.METAMORPHIC_ITEMS))
-            {
-                text.add(Helpers.translateEnum(RockCategory.METAMORPHIC).withStyle(GRAY, ITALIC));
-            }
-            else if (Helpers.isItem(stack, TFCTags.Items.IGNEOUS_EXTRUSIVE_ITEMS))
-            {
-                text.add(Helpers.translateEnum(RockCategory.IGNEOUS_EXTRUSIVE).withStyle(GRAY, ITALIC));
-            }
-            else if (Helpers.isItem(stack, TFCTags.Items.IGNEOUS_INTRUSIVE_ITEMS))
-            {
-                text.add(Helpers.translateEnum(RockCategory.IGNEOUS_INTRUSIVE).withStyle(GRAY, ITALIC));
-            }
-            else if (Helpers.isItem(stack, TFCTags.Items.UNSEALED_JARS))
-            {
-                text.add(Component.translatable("tfc.tooltip.unsealed").withStyle(GRAY, ITALIC));
-            }
-            else if (Helpers.isItem(stack, TFCTags.Items.SEALED_JARS))
-            {
-                text.add(Component.translatable("tfc.tooltip.sealed").withStyle(GRAY, ITALIC));
-            }
-
             ItemSizeManager.addTooltipInfo(stack, text);
             PhysicalDamageType.addTooltipInfo(stack, text);
             ForgingBonus.addTooltipInfo(stack, text);
@@ -347,13 +304,15 @@ public class ClientForgeEventHandler
                     text.add(Component.literal(DARK_GRAY
                         + typeOfComponent(stack.getComponentsPatch().get(component.type()))
                         + BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(component.type())
-                        + " "
-                        + component.value()
                         + " = "
-                        + component.encodeValue(RegistryOps.create(NbtOps.INSTANCE, Minecraft.getInstance().level.registryAccess()))
-                            .result()
-                            .map(Object::toString)
-                            .orElse("???")));
+                        + component.value()
+                        // Avoid showing the encoding, it's interesting but not necessary. Uncomment if needing to debug
+                        //+ " = "
+                        //+ component.encodeValue(RegistryOps.create(NbtOps.INSTANCE, Minecraft.getInstance().level.registryAccess()))
+                        //    .result()
+                        //    .map(Object::toString)
+                        //   .orElse("???")
+                    ));
                 }
 
                 final String itemTags = listOfTags(stack.getItem().builtInRegistryHolder());

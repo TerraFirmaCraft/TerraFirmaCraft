@@ -129,7 +129,7 @@ public class GlassBottleItem extends FluidContainerItem
     public int getBarWidth(ItemStack stack)
     {
         final FluidStack fluid = FluidHelpers.getContainedFluid(stack);
-        return fluid.isEmpty() ? 0 : (int) Mth.clamp((float) fluid.getAmount() / capacity.get() * 13, 1, 13);
+        return fluid.isEmpty() ? 0 : (int) Mth.clamp((float) fluid.getAmount() / containerInfo.fluidCapacity() * 13, 1, 13);
     }
 
     @Override

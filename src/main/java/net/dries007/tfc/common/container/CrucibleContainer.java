@@ -11,6 +11,7 @@ import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
 import net.dries007.tfc.common.capabilities.MoldLike;
+import net.dries007.tfc.common.component.mold.IMold;
 
 public class CrucibleContainer extends BlockEntityContainer<CrucibleBlockEntity>
 {
@@ -32,7 +33,7 @@ public class CrucibleContainer extends BlockEntityContainer<CrucibleBlockEntity>
         return switch (typeOf(slotIndex))
             {
                 case MAIN_INVENTORY, HOTBAR -> {
-                    if (MoldLike.get(stack) != null)
+                    if (IMold.get(stack) != null)
                     {
                         yield !moveItemStackTo(stack, CrucibleBlockEntity.SLOT_OUTPUT, CrucibleBlockEntity.SLOT_OUTPUT + 1, false);
                     }

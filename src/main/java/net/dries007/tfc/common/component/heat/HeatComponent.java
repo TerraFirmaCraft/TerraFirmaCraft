@@ -18,18 +18,8 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.util.calendar.Calendars;
 
-/**
- * The component for recording a heat value on an item.
- * @param holder The definition, which requires runtime knowledge of the stack we are attached to. It exposes interior mutability for a given stack
- * @param lastTemperature The last recorded temperature, at {@code lastTick}
- * @param lastTick The tick timestamp of the last recorded temperature
- */
-public record HeatComponent(
-    ParentHolder holder,
-    float heatCapacity,
-    float lastTemperature,
-    long lastTick
-)
+
+public final class HeatComponent
 {
     public static final Codec<HeatComponent> CODEC = RecordCodecBuilder.<HeatComponent>create(i -> i.group(
         Codec.FLOAT.optionalFieldOf("capacity", 0f).forGetter(c -> c.heatCapacity),
@@ -44,89 +34,154 @@ public record HeatComponent(
         HeatComponent::new
     );
 
-    public static final HeatComponent EMPTY = new HeatComponent(ParentHolder.EMPTY, 0f, 0f, 0L);
+    public static final HeatComponent EMPTY = new HeatComponent(null, 0f, 0f, 0L);
 
-    public HeatComponent(HeatDefinition parent)
+    /**
+     * Create a new {@link HeatComponent} from a custom heat capacity value. The component will have no definition applied,
+     * and should not be overwritten by external values.
+     * @param heatCapacity The heat capacity
+     */
+    public static HeatComponent of(float heatCapacity)
     {
-        this(new ParentHolder(parent), 0f, 0f, 0L);
+        return new HeatComponent(null, heatCapacity, 0f, 0L);
     }
+
+    /**
+     * Creates a new {@link HeatComponent} from a {@link HeatDefinition}. This should only be used to create default values
+     * on creation of item stacks.
+     * @param parent The definition used for this item
+     */
+    public static HeatComponent of(HeatDefinition parent)
+    {
+        return new HeatComponent(parent, 0f, 0f, 0L);
+    }
+
+    private @Nullable HeatDefinition parent;
+    private final float heatCapacity;
+    private float lastTemperature;
+    private long lastTick;
 
     HeatComponent(float heatCapacity, float lastTemperature, long lastTick)
     {
-        this(new ParentHolder(null), heatCapacity, lastTemperature, lastTick);
+        this(null, heatCapacity, lastTemperature, lastTick);
+    }
+
+    /**
+     * @param parent The definition, which requires runtime knowledge of the stack we are attached to. It exposes interior mutability for a given stack
+     * @param heatCapacity The custom heat capacity of this item, typically set by an external device or capability
+     * @param lastTemperature The last recorded temperature, at {@code lastTick}
+     * @param lastTick The tick timestamp of the last recorded temperature
+     */
+    HeatComponent(@Nullable HeatDefinition parent, float heatCapacity, float lastTemperature, long lastTick)
+    {
+        this.parent = parent;
+        this.heatCapacity = heatCapacity;
+        this.lastTemperature = lastTemperature;
+        this.lastTick = lastTick;
     }
 
     public void capture(ItemStack stack)
     {
-        if (holder.value == null)
+        if (parent == null)
         {
-            holder.value = HeatCapability.getDefinition(stack);
-            if (holder.value == null)
+            parent = HeatCapability.getDefinition(stack);
+            if (parent == null)
             {
-                holder.value = HeatDefinition.DEFAULT;
+                parent = HeatDefinition.DEFAULT;
             }
         }
     }
 
+    /**
+     * @return The current temperature, or an estimation of it
+     */
     float getTemperature()
+    {
+        return sanitize().calculateTemperature();
+    }
+
+    private float calculateTemperature()
     {
         return HeatCapability.adjustTemp(lastTemperature, getHeatCapacity(), Calendars.get().getTicks() - lastTick);
     }
 
+    /**
+     * @return The current heat capacity, or an estimation of it
+     */
     float getHeatCapacity()
     {
-        return heatCapacity != 0f ? heatCapacity : parent().heatCapacity();
+        return heatCapacity != 0f ? heatCapacity : parent == null ? Float.POSITIVE_INFINITY : parent.heatCapacity();
     }
 
+    /**
+     * Sanitizes this heat component, overwriting interior-mutable values with the most up-to-date values. This should be called upon any access
+     * to the interior values of {@link #lastTemperature} and {@link #lastTick} as they may have reset since being updated, or are equal despite
+     * being separate values.
+     * <p>
+     * Note that if we do not have a heat capacity - i.e. we don't have either a parent or a custom heat capacity, we refrain from updating any
+     * values for the current temperature, as they may be invalid.
+     *
+     * @return This heat component
+     */
     HeatComponent sanitize()
     {
-        return holder.value != null && getTemperature() <= 0f
-            ? heatCapacity != 0f
-                ? new HeatComponent(ParentHolder.EMPTY, heatCapacity, 0f, 0L)
-                : EMPTY
-            : this;
+        if ((parent != null || heatCapacity != 0f) && (lastTemperature != 0f || lastTick != 0L))
+        {
+            lastTemperature = Math.max(0f, calculateTemperature());
+            lastTick = lastTemperature <= 0f ? 0L : Calendars.get().getTicks();
+        }
+        return this;
     }
 
     HeatComponent with(float temperature, long tick)
     {
-        return new HeatComponent(holder, heatCapacity, temperature, tick);
+        return new HeatComponent(parent, heatCapacity, temperature, tick);
+    }
+
+    HeatComponent withHeatCapacity(float heatCapacity)
+    {
+        // Calling getTemperature() and getTicks() perform sanitization effectively, before updating the heat capacity
+        return new HeatComponent(parent, heatCapacity, getTemperature(), Calendars.get().getTicks());
     }
 
     HeatDefinition parent()
     {
-        return Objects.requireNonNull(holder.value);
+        return Objects.requireNonNull(parent);
     }
 
     @Override
     public boolean equals(Object obj)
     {
-        return obj == this || (obj instanceof HeatComponent that
-            && lastTick == that.lastTick
-            && heatCapacity == heatCapacity
-            && lastTemperature == that.lastTemperature);
+        if (obj == this) return true;
+        if (obj instanceof HeatComponent that)
+        {
+            // Sanitize before comparing directly
+            this.sanitize();
+            that.sanitize();
+            return heatCapacity == heatCapacity
+                && lastTick == that.lastTick
+                && lastTemperature == that.lastTemperature;
+        }
+        return false;
     }
 
     @Override
     public int hashCode()
     {
-        return Objects.hash(heatCapacity, lastTemperature, lastTick);
+        // Don't hash temperature or tick, as those are transient values and may change
+        // The only values we can accurately hash are the heat capacity (final).
+        // Everything else exposes interior mutability! Luckily, these don't need to be hashed often, because this is 99% useless
+        return Objects.hash(heatCapacity);
     }
 
     @Override
     public String toString()
     {
-        return "Heat[lastTemperature=%s,lastTick=%s,heatCapacity=%s,temperature=%s]".formatted(lastTemperature, lastTemperature, heatCapacity, getTemperature());
-    }
-
-    static class ParentHolder
-    {
-        static final ParentHolder EMPTY = new ParentHolder(null);
-
-        @Nullable HeatDefinition value;
-
-        ParentHolder(@Nullable HeatDefinition value)
-        {
-            this.value = value;
-        }
+        return "Heat[parent=%s%s,lastTick=%s,lastTemperature=%5.0f,temperature=%5.0f]".formatted(
+            parent != null ? Objects.requireNonNullElse(HeatCapability.MANAGER.getId(parent), "<custom>") : "<null>",
+            heatCapacity == 0f ? "" : ",heatCapacity=" + heatCapacity,
+            lastTick == Calendars.get().getTicks() ? "<now>" : "%8d".formatted(lastTick),
+            lastTemperature,
+            getTemperature());
     }
 }

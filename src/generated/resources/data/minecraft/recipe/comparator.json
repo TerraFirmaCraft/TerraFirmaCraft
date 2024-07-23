@@ -5,7 +5,7 @@
       "tag": "c:dusts/redstone"
     },
     "S": {
-      "tag": "c:stones/smooth"
+      "tag": "c:stones/raw"
     },
     "T": {
       "item": "minecraft:redstone_torch"

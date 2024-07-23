@@ -23,7 +23,6 @@ import com.mojang.logging.LogUtils;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import io.netty.buffer.ByteBuf;
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.RegistryOps;
@@ -82,6 +81,12 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
     public T get(ResourceLocation id)
     {
         return byKey.get(id);
+    }
+
+    @Nullable
+    public ResourceLocation getId(T value)
+    {
+        return toKey.get(value);
     }
 
     /**
@@ -165,9 +170,10 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
     }
 
     /**
-     * Updates the data manager with the state of the networked elements. Only called on physical client connecting to a physical server.
+     * Updates the data manager with the state of the networked elements. Only called on physical client connecting to a physical server,
+     * and in test environments where we want to create values from external data.
      */
-    public void onSync(Map<ResourceLocation, T> elements)
+    public void bindValues(Map<ResourceLocation, T> elements)
     {
         // Sync received from physical server
         byKey.clear();

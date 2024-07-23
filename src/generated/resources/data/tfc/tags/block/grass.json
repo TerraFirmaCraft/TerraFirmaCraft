@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:grass_block",
+    "tfc:grass/silt",
+    "tfc:grass/loam",
+    "tfc:grass/sandy_loam",
+    "tfc:grass/silty_loam"
+  ]
+}

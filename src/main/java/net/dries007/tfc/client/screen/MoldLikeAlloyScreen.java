@@ -17,6 +17,7 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.MoldLike;
+import net.dries007.tfc.common.component.mold.IMold;
 import net.dries007.tfc.common.container.MoldLikeAlloyContainer;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Tooltips;
@@ -35,7 +36,7 @@ public class MoldLikeAlloyScreen extends TFCContainerScreen<MoldLikeAlloyContain
         super.renderLabels(stack, mouseX, mouseY);
 
         // Metal and contents tooltip
-        final MoldLike mold = MoldLike.get(menu.getTargetStack());
+        final IMold mold = IMold.get(menu.getTargetStack());
         if (mold != null)
         {
             final FluidStack fluid = mold.getFluidInTank(0);
@@ -45,7 +46,7 @@ public class MoldLikeAlloyScreen extends TFCContainerScreen<MoldLikeAlloyContain
                 drawCenteredLine(stack, metal.getDisplayName(), 14);
                 drawCenteredLine(stack, Tooltips.fluidUnits(fluid.getAmount()), 23);
 
-                final float temperature = 0f; // mold.getTemperature(); todo 1.21
+                final float temperature = mold.getTemperature();
                 final MutableComponent tooltip = TFCConfig.CLIENT.heatTooltipStyle.get().format(temperature);
                 if (tooltip != null)
                 {

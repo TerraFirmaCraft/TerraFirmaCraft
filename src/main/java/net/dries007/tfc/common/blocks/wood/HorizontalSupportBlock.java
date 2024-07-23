@@ -45,7 +45,7 @@ public class HorizontalSupportBlock extends VerticalSupportBlock implements IFor
         for (Direction checkDir : Direction.Plane.HORIZONTAL)
         {
             mutablePos.set(pos).move(checkDir);
-            if (Helpers.isBlock(level.getBlockState(mutablePos), TFCTags.Blocks.SUPPORT_BEAM))
+            if (Helpers.isBlock(level.getBlockState(mutablePos), TFCTags.Blocks.SUPPORT_BEAMS))
             {
                 direction = checkDir.getOpposite();
                 break;
@@ -84,13 +84,13 @@ public class HorizontalSupportBlock extends VerticalSupportBlock implements IFor
         FluidHelpers.tickFluid(level, currentPos, state);
         if (facing.getAxis().isHorizontal())
         {
-            state = state.setValue(PROPERTY_BY_DIRECTION.get(facing), Helpers.isBlock(facingState, TFCTags.Blocks.SUPPORT_BEAM));
+            state = state.setValue(PROPERTY_BY_DIRECTION.get(facing), Helpers.isBlock(facingState, TFCTags.Blocks.SUPPORT_BEAMS));
             // if support incomplete, try the other way (E/W vs N/S)
-            if (!Helpers.isBlock(facingState, TFCTags.Blocks.SUPPORT_BEAM) || !Helpers.isBlock(level.getBlockState(currentPos.relative(facing.getOpposite())), TFCTags.Blocks.SUPPORT_BEAM))
+            if (!Helpers.isBlock(facingState, TFCTags.Blocks.SUPPORT_BEAMS) || !Helpers.isBlock(level.getBlockState(currentPos.relative(facing.getOpposite())), TFCTags.Blocks.SUPPORT_BEAMS))
             {
                 // if support incomplete here, we definitely can break
-                if (!Helpers.isBlock(level.getBlockState(currentPos.relative(facing.getClockWise())), TFCTags.Blocks.SUPPORT_BEAM)
-                    || !Helpers.isBlock(level.getBlockState(currentPos.relative(facing.getCounterClockWise())), TFCTags.Blocks.SUPPORT_BEAM))
+                if (!Helpers.isBlock(level.getBlockState(currentPos.relative(facing.getClockWise())), TFCTags.Blocks.SUPPORT_BEAMS)
+                    || !Helpers.isBlock(level.getBlockState(currentPos.relative(facing.getCounterClockWise())), TFCTags.Blocks.SUPPORT_BEAMS))
                 {
                     return Blocks.AIR.defaultBlockState();
                 }
@@ -110,7 +110,7 @@ public class HorizontalSupportBlock extends VerticalSupportBlock implements IFor
         {
             if (getHorizontalDistance(d, level, pos) > 0) // we found a pole it could connect to
             {
-                if (Helpers.isBlock(level.getBlockState(pos.relative(d.getOpposite())), TFCTags.Blocks.SUPPORT_BEAM))
+                if (Helpers.isBlock(level.getBlockState(pos.relative(d.getOpposite())), TFCTags.Blocks.SUPPORT_BEAMS))
                 {
                     return true;
                 }
@@ -135,13 +135,13 @@ public class HorizontalSupportBlock extends VerticalSupportBlock implements IFor
         {
             cursor.set(pos).move(direction, i);
             final BlockState stateAt = level.getBlockState(cursor);
-            if (!Helpers.isBlock(stateAt, TFCTags.Blocks.SUPPORT_BEAM) && !isEmptyOrValidFluid(stateAt))
+            if (!Helpers.isBlock(stateAt, TFCTags.Blocks.SUPPORT_BEAMS) && !isEmptyOrValidFluid(stateAt))
             {
                 return 0;
             }
             cursor.move(direction, 1);
             BlockState state = level.getBlockState(cursor);
-            if (Helpers.isBlock(state, TFCTags.Blocks.SUPPORT_BEAM)) // vertical only?
+            if (Helpers.isBlock(state, TFCTags.Blocks.SUPPORT_BEAMS)) // vertical only?
             {
                 distance = i;
                 break;

@@ -475,7 +475,7 @@ public class TFCRabbit extends Rabbit implements MammalProperties
         protected boolean isValidTarget(LevelReader level, BlockPos pos)
         {
             BlockState state = level.getBlockState(pos);
-            if (Helpers.isBlock(state, TFCTags.Blocks.FARMLAND) && wantsToRaid && !canRaid)
+            if (Helpers.isBlock(state, TFCTags.Blocks.FARMLANDS) && wantsToRaid && !canRaid)
             {
                 state = level.getBlockState(pos.above());
                 if (Helpers.isBlock(state, TFCTags.Blocks.RABBIT_RAIDABLE))

@@ -24,6 +24,7 @@ import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.PaintingVariantTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.tags.WorldPresetTags;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -31,6 +32,7 @@ import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.internal.RegistrationEvents;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.data.providers.BuiltinBlockTags;
 import net.dries007.tfc.data.providers.BuiltinClimateRanges;
 import net.dries007.tfc.data.providers.BuiltinDensityFunctions;
@@ -52,6 +54,7 @@ import net.dries007.tfc.data.providers.BuiltinLampFuels;
 import net.dries007.tfc.data.providers.BuiltinPaintings;
 import net.dries007.tfc.data.providers.BuiltinRecipes;
 import net.dries007.tfc.data.providers.BuiltinSupports;
+import net.dries007.tfc.data.providers.BuiltinWorldPreset;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.PhysicalDamageType;
 
@@ -71,12 +74,11 @@ public final class DataEntryPoint
             event.getGenerator().getPackOutput(), event.getLookupProvider(),
             new RegistrySetBuilder()
                 .add(Registries.DENSITY_FUNCTION, BuiltinDensityFunctions::load)
+                .add(Registries.WORLD_PRESET, BuiltinWorldPreset::load)
                 .add(Registries.PAINTING_VARIANT, BuiltinPaintings::new)
-            ,
-            Set.of(MOD_ID, "minecraft")))
-            .getRegistryProvider();
+            , Set.of(MOD_ID, "minecraft"))).getRegistryProvider();
         final var fluidHeat = add(event, new BuiltinFluidHeat(output, lookup)).output();
-        final var itemHeat = add(event, new BuiltinItemHeat(output, lookup, fluidHeat)).output();
+        final var itemHeat = add(event, new BuiltinItemHeat(output, lookup, fluidHeat));
 
         final var drinkables = add(event, new BuiltinDrinkables(output, lookup)).output();
 
@@ -111,6 +113,8 @@ public final class DataEntryPoint
             ).forEach(add.apply(PhysicalDamageType.IS_PIERCING));
             add.apply(PhysicalDamageType.IS_SLASHING);
         });
+        tags(event, Registries.WORLD_PRESET, lookup, (provider, add) ->
+            add.apply(WorldPresetTags.NORMAL).accept(PRESET));
 
         add(event, new BuiltinDeposits(output, lookup));
         add(event, new BuiltinEntityDamageResist(output, lookup));

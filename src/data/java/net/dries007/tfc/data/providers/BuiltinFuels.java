@@ -10,6 +10,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.GroundcoverBlockType;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Ore;
@@ -56,7 +57,7 @@ public class BuiltinFuels extends DataManagerProvider<Fuel> implements Accessors
         add(TFCItems.STICK_BUNDLE, 600, 900, 0.8f);
         add(TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.DRIFTWOOD), 400, 650, 0.4f);
         add(TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.PINECONE), 220, 150, 0.15f);
-        add("paper", Ingredient.of(Items.PAPER, Items.BOOK, Items.WRITTEN_BOOK, Items.KNOWLEDGE_BOOK, Items.WRITABLE_BOOK, Items.ENCHANTED_BOOK), 150, 199, 0.7f);
+        add("paper", Ingredient.of(TFCTags.Items.BOOKS), 150, 199, 0.7f);
         add("leaves", Ingredient.of(ItemTags.LEAVES), 600, 100, 0.25f);
     }
 

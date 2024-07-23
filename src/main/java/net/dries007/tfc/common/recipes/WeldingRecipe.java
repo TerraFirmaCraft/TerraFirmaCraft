@@ -18,6 +18,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.component.forge.ForgingBonus;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
@@ -96,7 +97,7 @@ public class WeldingRecipe implements INoopInputRecipe, IRecipePredicate<Welding
     }
 
     @Override
-    public ItemStack getResultItem(HolderLookup.Provider registries)
+    public ItemStack getResultItem(@Nullable HolderLookup.Provider registries)
     {
         return output.getEmptyStack();
     }

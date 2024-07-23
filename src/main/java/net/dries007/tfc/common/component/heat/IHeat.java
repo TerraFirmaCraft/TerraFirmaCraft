@@ -86,6 +86,8 @@ public interface IHeat
      */
     float getHeatCapacity();
 
+    void setHeatCapacity(float value);
+
     /**
      * @return The temperature that this item can be worked at.
      */

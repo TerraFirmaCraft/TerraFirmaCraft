@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.recipes;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
@@ -24,10 +25,11 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.common.capabilities.MoldLike;
 import net.dries007.tfc.common.component.heat.HeatCapability;
 import net.dries007.tfc.common.component.heat.IHeat;
+import net.dries007.tfc.common.component.mold.IMold;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
-public class CastingRecipe implements INoopInputRecipe, IRecipePredicate<MoldLike>
+public class CastingRecipe implements INoopInputRecipe, IRecipePredicate<IMold>
 {
     public static final MapCodec<CastingRecipe> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
         Ingredient.CODEC.fieldOf("mold").forGetter(c -> c.ingredient),
@@ -47,7 +49,7 @@ public class CastingRecipe implements INoopInputRecipe, IRecipePredicate<MoldLik
     public static final IndirectHashCollection<Item, CastingRecipe> CACHE = IndirectHashCollection.createForRecipe(r -> RecipeHelpers.itemKeys(r.ingredient), TFCRecipeTypes.CASTING);
 
     @Nullable
-    public static CastingRecipe get(MoldLike mold)
+    public static CastingRecipe get(IMold mold)
     {
         return RecipeHelpers.getRecipe(CACHE, mold, mold.getContainer().getItem());
     }
@@ -69,7 +71,7 @@ public class CastingRecipe implements INoopInputRecipe, IRecipePredicate<MoldLik
      * @return {@code true} if the recipe matches the input, ignoring temperature. The mold must check if the content is solid.
      */
     @Override
-    public boolean matches(MoldLike mold)
+    public boolean matches(IMold mold)
     {
         return ingredient.test(mold.getContainer())
             && fluidIngredient.test(mold.getFluidInTank(0));
@@ -78,14 +80,13 @@ public class CastingRecipe implements INoopInputRecipe, IRecipePredicate<MoldLik
     /**
      * Assembles the recipe output, and copies over remaining heat from the mold to the output
      */
-    public ItemStack assemble(MoldLike mold)
+    public ItemStack assemble(IMold mold)
     {
         final ItemStack stack = result.getSingleStack(mold.getContainer().copy());
         final @Nullable IHeat heat = HeatCapability.get(stack);
         if (heat != null)
         {
-            // todo 1.21 molds
-            heat.setTemperatureIfWarmer(0); // mold.getTemperature());
+            heat.setTemperatureIfWarmer(mold.getTemperature());
         }
         return stack;
     }

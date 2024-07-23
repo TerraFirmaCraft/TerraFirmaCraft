@@ -10,50 +10,6 @@ from constants import *
 
 def generate(rm: ResourceManager):
 
-    rm.world_preset('overworld', {
-        'minecraft:overworld': {
-            'type': 'minecraft:overworld',
-            'generator': {
-                'type': 'tfc:overworld',
-                'biome_source': {
-                    'type': 'tfc:overworld',
-                },
-                'settings': 'minecraft:overworld',
-                'tfc_settings': {
-                    'spawn_distance': 4_000,
-                    'spawn_center_x': 0,
-                    'spawn_center_z': 0,
-                    'rock_layer_settings': rock_layers(),
-                    'temperature_scale': 20_000,
-                    'rainfall_scale': 20_000,
-                    'flat_bedrock': False,
-                    'continentalness': 0.5
-                }
-            }
-        },
-        'minecraft:the_nether': {
-            'type': 'minecraft:the_nether',
-            'generator': {
-                'type': 'minecraft:noise',
-                'biome_source': {
-                    'type': 'minecraft:multi_noise',
-                    'preset': 'minecraft:nether'
-                },
-                'settings': 'minecraft:nether'
-            }
-        },
-        'minecraft:the_end': {
-            'type': 'minecraft:the_end',
-            'generator': {
-                'type': 'minecraft:noise',
-                'biome_source': {
-                    'type': 'minecraft:the_end'
-                },
-                'settings': 'minecraft:end'
-            }
-        }
-    })
-
     # Biome Feature Tags
     # Biomes -> in_biome/<step>/<optional biome>
     # in_biome/ -> other tags in the form feature/<name>s
@@ -1145,13 +1101,6 @@ def vein_ore_blocks(vein: Vein, rock: str) -> List[Dict[str, Any]]:
         'weight': rich,
         'block': 'tfc:ore/rich_%s/%s' % (vein.ore, rock)
     }]
-    if False:  # todo: spoiler stuff?
-        if vein.spoiler_ore is not None and rock in vein.spoiler_rocks:
-            p = vein.spoiler_rarity * 0.01  # as a percentage of the overall vein
-            ore_blocks.append({
-                'weight': int(100 * p / (1 - p)),
-                'block': 'tfc:ore/%s/%s' % (vein.spoiler_ore, rock)
-            })
     if vein.deposits:
         ore_blocks.append({
             'weight': 10,
@@ -1161,16 +1110,7 @@ def vein_ore_blocks(vein: Vein, rock: str) -> List[Dict[str, Any]]:
 
 
 def mineral_ore_blocks(vein: Vein, rock: str) -> List[Dict[str, Any]]:
-    if False:
-        if vein.spoiler_ore is not None and rock in vein.spoiler_rocks:
-            ore_blocks = [{'weight': 100, 'block': 'tfc:ore/%s/%s' % (vein.ore, rock)}]
-            p = vein.spoiler_rarity * 0.01  # as a percentage of the overall vein
-            ore_blocks.append({
-                'weight': int(100 * p / (1 - p)),
-                'block': 'tfc:ore/%s/%s' % (vein.spoiler_ore, rock)
-            })
-    ore_blocks = [{'block': 'tfc:ore/%s/%s' % (vein.ore, rock)}]
-    return ore_blocks
+    return [{'block': 'tfc:ore/%s/%s' % (vein.ore, rock)}]
 
 
 def vein_density(density: int) -> float:
@@ -1661,34 +1601,3 @@ def mcresources_biome(self, name_parts: ResourceIdentifier, has_precipitation: b
         'parent': parent,
         'spawn_costs': spawn_costs
     })
-
-
-def rock_layers():
-    def make(name: str, **kwargs):
-        return {'id': name, 'layers': kwargs}
-
-    return {
-        'rocks': {rock: 'tfc:%s' % rock for rock in ROCKS},
-        'bottom': ['gneiss', 'schist', 'diorite', 'granite', 'gabbro'],
-        'layers': [
-            make('felsic', granite='bottom'),
-            make('intermediate', diorite='bottom'),
-            make('mafic', gabbro='bottom'),
-            make('igneous_extrusive', rhyolite='felsic', andesite='intermediate', dacite='intermediate', basalt='mafic'),
-            make('igneous_extrusive_x2', rhyolite='igneous_extrusive', andesite='igneous_extrusive', dacite='igneous_extrusive', basalt='igneous_extrusive'),
-            make('phyllite', phyllite='bottom', gneiss='bottom', schist='bottom'),
-            make('slate', slate='bottom', phyllite='phyllite'),
-            make('marble', marble='bottom'),
-            make('quartzite', quartzite='bottom'),
-            make('sedimentary', shale='slate', claystone='slate', conglomerate='slate', limestone='marble', dolomite='marble', chalk='marble', chert='quartzite'),
-            make('uplift',
-                 slate='phyllite', marble='bottom', quartzite='bottom',  # Metamorphic that was exposed, so it proceeds normally
-                 diorite='sedimentary', granite='sedimentary', gabbro='sedimentary'  # Uplift / cap, so igneous intrusive on top of sedimentary
-                 ),
-        ],
-        'ocean_floor': ['igneous_extrusive'],
-        'volcanic': ['igneous_extrusive', 'igneous_extrusive_x2'],
-        'land': ['igneous_extrusive', 'sedimentary'],
-        'uplift': ['sedimentary', 'uplift']
-    }
-

@@ -31,7 +31,7 @@ import net.dries007.tfc.common.player.PlayerInfo;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.data.Drinkable;
 
-public class JugItem extends DiscreteFluidContainerItem
+public class JugItem extends FluidContainerItem
 {
     public JugItem(Item.Properties properties, Supplier<Integer> capacity, TagKey<Fluid> whitelist)
     {

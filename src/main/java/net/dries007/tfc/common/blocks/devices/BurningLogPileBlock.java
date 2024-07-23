@@ -56,7 +56,7 @@ public class BurningLogPileBlock extends Block implements IForgeBlockExtension, 
 
     private static boolean isValidCoverBlock(BlockState offsetState, Level level, BlockPos pos, Direction side)
     {
-        if (Helpers.isBlock(offsetState, TFCTags.Blocks.CHARCOAL_COVER_WHITELIST))// log pile, charcoal pile, this
+        if (Helpers.isBlock(offsetState, TFCTags.Blocks.CHARCOAL_PIT_INSULATION))// log pile, charcoal pile, this
         {
             return true;
         }

@@ -23,6 +23,7 @@ import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
 
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
+import net.dries007.tfc.network.StreamCodecs;
 
 /**
  * A shaped recipe type which uses {@link ItemStackProvider} as it's output mechanism
@@ -42,8 +43,11 @@ public class AdvancedShapedRecipe extends ShapedRecipe
         Codec.INT.optionalFieldOf("input_column", 0).forGetter(c -> c.inputColumn)
     ).apply(i, AdvancedShapedRecipe::new));
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, AdvancedShapedRecipe> STREAM_CODEC = StreamCodec.composite(
-        RecipeSerializer.SHAPED_RECIPE.streamCodec(), c -> c,
+    public static final StreamCodec<RegistryFriendlyByteBuf, AdvancedShapedRecipe> STREAM_CODEC = StreamCodecs.composite(
+        ByteBufCodecs.STRING_UTF8, ShapedRecipe::getGroup,
+        CraftingBookCategory.STREAM_CODEC, ShapedRecipe::category,
+        ShapedRecipePattern.STREAM_CODEC, c -> c.pattern,
+        ByteBufCodecs.BOOL, ShapedRecipe::showNotification,
         ItemStackProvider.STREAM_CODEC, c -> c.result,
         ByteBufCodecs.optional(ItemStackProvider.STREAM_CODEC), c -> c.remainder,
         ByteBufCodecs.VAR_INT, c -> c.inputRow,
@@ -54,11 +58,6 @@ public class AdvancedShapedRecipe extends ShapedRecipe
     private final ItemStackProvider result;
     private final Optional<ItemStackProvider> remainder;
     private final int inputSlot, inputRow, inputColumn;
-
-    private AdvancedShapedRecipe(ShapedRecipe parent, ItemStackProvider result, Optional<ItemStackProvider> remainder, int inputRow, int inputColumn)
-    {
-        this(parent.getGroup(), parent.category(), parent.pattern, parent.showNotification(), result, remainder, inputRow, inputColumn);
-    }
 
     public AdvancedShapedRecipe(String group, CraftingBookCategory category, ShapedRecipePattern pattern, boolean showNotification, ItemStackProvider result, Optional<ItemStackProvider> remainder, int inputRow, int inputColumn)
     {

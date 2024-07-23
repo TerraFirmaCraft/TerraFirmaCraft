@@ -146,13 +146,13 @@ public final class TFCBlocks
 
     // Earth
 
-    public static final Map<SoilBlockType, Map<SoilBlockType.Variant, Id<Block>>> SOIL = Helpers.mapOfKeys(SoilBlockType.class, type ->
-        Helpers.mapOfKeys(SoilBlockType.Variant.class, variant ->
+    public static final Map<SoilBlockType, Map<SoilBlockType.Variant, Id<Block>>> SOIL = Helpers.mapOf(SoilBlockType.class, type ->
+        Helpers.mapOf(SoilBlockType.Variant.class, variant ->
             register((type.name() + "/" + variant.name()), () -> type.create(variant))
         )
     );
 
-    public static final Map<SoilBlockType.Variant, DecorationBlockHolder> MUD_BRICK_DECORATIONS = Helpers.mapOfKeys(SoilBlockType.Variant.class, variant -> new DecorationBlockHolder(
+    public static final Map<SoilBlockType.Variant, DecorationBlockHolder> MUD_BRICK_DECORATIONS = Helpers.mapOf(SoilBlockType.Variant.class, variant -> new DecorationBlockHolder(
         register(("mud_bricks/" + variant.name() + "_slab"), () -> new SlabBlock(Properties.of().mapColor(MapColor.DIRT).strength(2.6f).sound(SoundType.WART_BLOCK))),
         register(("mud_bricks/" + variant.name() + "_stairs"), () -> new StairBlock(SOIL.get(SoilBlockType.MUD_BRICKS).get(variant).get().defaultBlockState(), Properties.of().mapColor(MapColor.DIRT).strength(2.6f).sound(SoundType.WART_BLOCK).instrument(NoteBlockInstrument.BASEDRUM))),
         register(("mud_bricks/" + variant.name() + "_wall"), () -> new WallBlock(Properties.of().mapColor(MapColor.DIRT).strength(2.6f).sound(SoundType.WART_BLOCK)))
@@ -167,25 +167,25 @@ public final class TFCBlocks
     public static final Id<Block> WHITE_KAOLIN_CLAY = register("white_kaolin_clay", () -> new Block(Properties.of().mapColor(MapColor.TERRACOTTA_WHITE).strength(5.0F).sound(SoundType.GRAVEL)));
     public static final Id<Block> KAOLIN_CLAY_GRASS = register("kaolin_clay_grass", () -> new ConnectedGrassBlock(Properties.of().mapColor(MapColor.GRASS).randomTicks().strength(5.0F).sound(SoundType.GRAVEL), RED_KAOLIN_CLAY, null, null));
 
-    public static final Map<SandBlockType, Id<Block>> SAND = Helpers.mapOfKeys(SandBlockType.class, type ->
+    public static final Map<SandBlockType, Id<Block>> SAND = Helpers.mapOf(SandBlockType.class, type ->
         register(("sand/" + type.name()), type::create)
     );
 
-    public static final Map<SandBlockType, Map<SandstoneBlockType, Id<Block>>> SANDSTONE = Helpers.mapOfKeys(SandBlockType.class, color ->
-        Helpers.mapOfKeys(SandstoneBlockType.class, type ->
+    public static final Map<SandBlockType, Map<SandstoneBlockType, Id<Block>>> SANDSTONE = Helpers.mapOf(SandBlockType.class, color ->
+        Helpers.mapOf(SandstoneBlockType.class, type ->
             register((type.name() + "_sandstone/" + color.name()), () -> new Block(type.properties(color)))
         )
     );
 
-    public static final Map<SandBlockType, Map<SandstoneBlockType, DecorationBlockHolder>> SANDSTONE_DECORATIONS = Helpers.mapOfKeys(SandBlockType.class, color ->
-        Helpers.mapOfKeys(SandstoneBlockType.class, type -> new DecorationBlockHolder(
+    public static final Map<SandBlockType, Map<SandstoneBlockType, DecorationBlockHolder>> SANDSTONE_DECORATIONS = Helpers.mapOf(SandBlockType.class, color ->
+        Helpers.mapOf(SandstoneBlockType.class, type -> new DecorationBlockHolder(
             register((type.name() + "_sandstone/" + color.name() + "_slab"), () -> new SlabBlock(type.properties(color))),
             register((type.name() + "_sandstone/" + color.name() + "_stairs"), () -> new StairBlock(SANDSTONE.get(color).get(type).get().defaultBlockState(), type.properties(color))),
             register((type.name() + "_sandstone/" + color.name() + "_wall"), () -> new WallBlock(type.properties(color)))
         ))
     );
 
-    public static final Map<GroundcoverBlockType, Id<Block>> GROUNDCOVER = Helpers.mapOfKeys(GroundcoverBlockType.class, type ->
+    public static final Map<GroundcoverBlockType, Id<Block>> GROUNDCOVER = Helpers.mapOf(GroundcoverBlockType.class, type ->
         register(("groundcover/" + type.name()), () -> new GroundcoverBlock(type), type.createBlockItem())
     );
 
@@ -199,55 +199,55 @@ public final class TFCBlocks
 
     // Ores
 
-    public static final Map<Rock, Map<Ore, Id<Block>>> ORES = Helpers.mapOfKeys(Rock.class, rock ->
-        Helpers.mapOfKeys(Ore.class, ore -> !ore.isGraded(), ore ->
+    public static final Map<Rock, Map<Ore, Id<Block>>> ORES = Helpers.mapOf(Rock.class, rock ->
+        Helpers.mapOf(Ore.class, ore -> !ore.isGraded(), ore ->
             register(("ore/" + ore.name() + "/" + rock.name()), () -> ore.create(rock))
         )
     );
-    public static final Map<Rock, Map<Ore, Map<Ore.Grade, Id<Block>>>> GRADED_ORES = Helpers.mapOfKeys(Rock.class, rock ->
-        Helpers.mapOfKeys(Ore.class, Ore::isGraded, ore ->
-            Helpers.mapOfKeys(Ore.Grade.class, grade ->
+    public static final Map<Rock, Map<Ore, Map<Ore.Grade, Id<Block>>>> GRADED_ORES = Helpers.mapOf(Rock.class, rock ->
+        Helpers.mapOf(Ore.class, Ore::isGraded, ore ->
+            Helpers.mapOf(Ore.Grade.class, grade ->
                 register(("ore/" + grade.name() + "_" + ore.name() + "/" + rock.name()), () -> ore.create(rock))
             )
         )
     );
-    public static final Map<Ore, Id<Block>> SMALL_ORES = Helpers.mapOfKeys(Ore.class, Ore::isGraded, type ->
+    public static final Map<Ore, Id<Block>> SMALL_ORES = Helpers.mapOf(Ore.class, Ore::isGraded, type ->
         register(("ore/small_" + type.name()), () -> GroundcoverBlock.looseOre(Properties.of().mapColor(MapColor.GRASS).strength(0.05F, 0.0F).sound(SoundType.NETHER_ORE).noCollission().pushReaction(PushReaction.DESTROY)))
     );
-    public static final Map<Rock, Map<OreDeposit, Id<Block>>> ORE_DEPOSITS = Helpers.mapOfKeys(Rock.class, rock ->
-        Helpers.mapOfKeys(OreDeposit.class, ore ->
+    public static final Map<Rock, Map<OreDeposit, Id<Block>>> ORE_DEPOSITS = Helpers.mapOf(Rock.class, rock ->
+        Helpers.mapOf(OreDeposit.class, ore ->
             register("deposit/" + ore.name() + "/" + rock.name(), () -> new Block(Block.Properties.of().mapColor(MapColor.STONE).sound(SoundType.GRAVEL).strength(rock.category().hardness(2.0f)))) // Same hardness as gravel
         )
     );
 
     // Rock Stuff
 
-    public static final Map<Rock, Map<Rock.BlockType, Id<Block>>> ROCK_BLOCKS = Helpers.mapOfKeys(Rock.class, rock ->
-        Helpers.mapOfKeys(Rock.BlockType.class, type ->
-            register(("rock/" + type.name() + "/" + rock.name()), () -> type.create(rock))
+    public static final Map<Rock, Map<Rock.BlockType, Id<Block>>> ROCK_BLOCKS = Helpers.mapOf(Rock.class, rock ->
+        Helpers.mapOf(Rock.BlockType.class, type ->
+            register(("rock/" + type.name() + "/" + rock.name()), () -> type.create(rock), rock.createItemProperties())
         )
     );
 
-    public static final Map<Rock, Map<Rock.BlockType, DecorationBlockHolder>> ROCK_DECORATIONS = Helpers.mapOfKeys(Rock.class, rock ->
-        Helpers.mapOfKeys(Rock.BlockType.class, Rock.BlockType::hasVariants, type -> new DecorationBlockHolder(
+    public static final Map<Rock, Map<Rock.BlockType, DecorationBlockHolder>> ROCK_DECORATIONS = Helpers.mapOf(Rock.class, rock ->
+        Helpers.mapOf(Rock.BlockType.class, Rock.BlockType::hasVariants, type -> new DecorationBlockHolder(
             register(("rock/" + type.name() + "/" + rock.name()) + "_slab", () -> type.createSlab(rock)),
             register(("rock/" + type.name() + "/" + rock.name()) + "_stairs", () -> type.createStairs(rock)),
             register(("rock/" + type.name() + "/" + rock.name()) + "_wall", () -> type.createWall(rock))
         ))
     );
 
-    public static final Map<Rock, Id<Block>> ROCK_ANVILS = Helpers.mapOfKeys(Rock.class, rock -> rock.category() == RockCategory.IGNEOUS_EXTRUSIVE || rock.category() == RockCategory.IGNEOUS_INTRUSIVE, rock ->
+    public static final Map<Rock, Id<Block>> ROCK_ANVILS = Helpers.mapOf(Rock.class, rock -> rock.category() == RockCategory.IGNEOUS_EXTRUSIVE || rock.category() == RockCategory.IGNEOUS_INTRUSIVE, rock ->
         register("rock/anvil/" + rock.name(), () -> new RockAnvilBlock(ExtendedProperties.of().mapColor(MapColor.STONE).sound(SoundType.STONE).strength(2, 10).requiresCorrectToolForDrops().cloneItem(TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.RAW)).blockEntity(TFCBlockEntities.ANVIL)))
     );
 
-    public static final Map<Rock, Id<Block>> MAGMA_BLOCKS = Helpers.mapOfKeys(Rock.class, rock -> rock.category() == RockCategory.IGNEOUS_EXTRUSIVE || rock.category() == RockCategory.IGNEOUS_INTRUSIVE, rock ->
+    public static final Map<Rock, Id<Block>> MAGMA_BLOCKS = Helpers.mapOf(Rock.class, rock -> rock.category() == RockCategory.IGNEOUS_EXTRUSIVE || rock.category() == RockCategory.IGNEOUS_INTRUSIVE, rock ->
         register("rock/magma/" + rock.name(), () -> new TFCMagmaBlock(Properties.of().mapColor(MapColor.NETHER).requiresCorrectToolForDrops().lightLevel(s -> 6).randomTicks().strength(0.5F).isValidSpawn((state, level, pos, type) -> type.fireImmune()).hasPostProcess(TFCBlocks::always)))
     );
 
     // Metals
 
-    public static final Map<Metal, Map<Metal.BlockType, Id<Block>>> METALS = Helpers.mapOfKeys(Metal.class, metal ->
-        Helpers.mapOfKeys(Metal.BlockType.class, type -> type.has(metal), type ->
+    public static final Map<Metal, Map<Metal.BlockType, Id<Block>>> METALS = Helpers.mapOf(Metal.class, metal ->
+        Helpers.mapOf(Metal.BlockType.class, type -> type.has(metal), type ->
             register(type.createName(metal), type.create(metal), type.createBlockItem(new Item.Properties()))
         )
     );
@@ -258,8 +258,8 @@ public final class TFCBlocks
 
     // Wood
 
-    public static final Map<Wood, Map<Wood.BlockType, Id<Block>>> WOODS = Helpers.mapOfKeys(Wood.class, wood ->
-        Helpers.mapOfKeys(Wood.BlockType.class, type ->
+    public static final Map<Wood, Map<Wood.BlockType, Id<Block>>> WOODS = Helpers.mapOf(Wood.class, wood ->
+        Helpers.mapOf(Wood.BlockType.class, type ->
             register(type.nameFor(wood), type.create(wood), type.createBlockItem(wood, new Item.Properties()))
         )
     );
@@ -275,28 +275,28 @@ public final class TFCBlocks
 
     // Flora
 
-    public static final Map<Plant, Id<Block>> PLANTS = Helpers.mapOfKeys(Plant.class, plant ->
+    public static final Map<Plant, Id<Block>> PLANTS = Helpers.mapOf(Plant.class, plant ->
         register(("plant/" + plant.name()), plant::create, plant.createBlockItem(new Item.Properties()))
     );
 
-    public static final Map<Plant, Id<Block>> POTTED_PLANTS = Helpers.mapOfKeys(Plant.class, Plant::hasFlowerPot, plant ->
+    public static final Map<Plant, Id<Block>> POTTED_PLANTS = Helpers.mapOf(Plant.class, Plant::hasFlowerPot, plant ->
         registerNoItem(("plant/potted/" + plant.name()), () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, PLANTS.get(plant), BlockBehaviour.Properties.ofFullCopy(Blocks.POTTED_ACACIA_SAPLING)))
     );
 
-    public static final Map<Crop, Id<Block>> CROPS = Helpers.mapOfKeys(Crop.class, crop ->
+    public static final Map<Crop, Id<Block>> CROPS = Helpers.mapOf(Crop.class, crop ->
         registerNoItem("crop/" + crop.name(), crop::create)
     );
 
-    public static final Map<Crop, Id<Block>> DEAD_CROPS = Helpers.mapOfKeys(Crop.class, crop ->
+    public static final Map<Crop, Id<Block>> DEAD_CROPS = Helpers.mapOf(Crop.class, crop ->
         registerNoItem("dead_crop/" + crop.name(), crop::createDead)
     );
 
-    public static final Map<Crop, Id<Block>> WILD_CROPS = Helpers.mapOfKeys(Crop.class, crop ->
+    public static final Map<Crop, Id<Block>> WILD_CROPS = Helpers.mapOf(Crop.class, crop ->
         register("wild_crop/" + crop.name(), crop::createWild)
     );
 
-    public static final Map<Coral, Map<Coral.BlockType, Id<Block>>> CORAL = Helpers.mapOfKeys(Coral.class, color ->
-        Helpers.mapOfKeys(Coral.BlockType.class, type ->
+    public static final Map<Coral, Map<Coral.BlockType, Id<Block>>> CORAL = Helpers.mapOf(Coral.class, color ->
+        Helpers.mapOf(Coral.BlockType.class, type ->
             register("coral/" + color.toString() + "_" + type.toString(), type.create(color), type.createBlockItem(new Item.Properties()))
         )
     );
@@ -319,19 +319,19 @@ public final class TFCBlocks
 
     public static final Id<Block> SEA_PICKLE = register("sea_pickle", () -> new TFCSeaPickleBlock(Properties.of().pushReaction(PushReaction.DESTROY).mapColor(MapColor.COLOR_GREEN).pushReaction(PushReaction.DESTROY).lightLevel((state) -> TFCSeaPickleBlock.isDead(state) ? 0 : 3 + 3 * state.getValue(SeaPickleBlock.PICKLES)).sound(SoundType.SLIME_BLOCK).noOcclusion()));
 
-    public static final Map<FruitBlocks.StationaryBush, Id<Block>> STATIONARY_BUSHES = Helpers.mapOfKeys(FruitBlocks.StationaryBush.class, bush -> register("plant/" + bush.name() + "_bush", bush::create));
-    public static final Map<FruitBlocks.SpreadingBush, Id<Block>> SPREADING_CANES = Helpers.mapOfKeys(FruitBlocks.SpreadingBush.class, bush -> registerNoItem("plant/" + bush.name() + "_bush_cane", bush::createCane));
-    public static final Map<FruitBlocks.SpreadingBush, Id<Block>> SPREADING_BUSHES = Helpers.mapOfKeys(FruitBlocks.SpreadingBush.class, bush -> register("plant/" + bush.name() + "_bush", bush::createBush));
+    public static final Map<FruitBlocks.StationaryBush, Id<Block>> STATIONARY_BUSHES = Helpers.mapOf(FruitBlocks.StationaryBush.class, bush -> register("plant/" + bush.name() + "_bush", bush::create));
+    public static final Map<FruitBlocks.SpreadingBush, Id<Block>> SPREADING_CANES = Helpers.mapOf(FruitBlocks.SpreadingBush.class, bush -> registerNoItem("plant/" + bush.name() + "_bush_cane", bush::createCane));
+    public static final Map<FruitBlocks.SpreadingBush, Id<Block>> SPREADING_BUSHES = Helpers.mapOf(FruitBlocks.SpreadingBush.class, bush -> register("plant/" + bush.name() + "_bush", bush::createBush));
     public static final Id<Block> CRANBERRY_BUSH = register("plant/cranberry_bush", FruitBlocks::createCranberry);
 
     public static final Id<Block> DEAD_BERRY_BUSH = registerNoItem("plant/dead_berry_bush", () -> new DeadBerryBushBlock(ExtendedProperties.of(MapColor.PLANT).strength(0.6f).noOcclusion().sound(SoundType.SWEET_BERRY_BUSH).randomTicks().blockEntity(TFCBlockEntities.TICK_COUNTER).flammable(120, 90)));
     public static final Id<Block> DEAD_BANANA_PLANT = registerNoItem("plant/dead_banana_plant", () -> new DeadBananaPlantBlock(ExtendedProperties.of(MapColor.PLANT).strength(0.6f).noOcclusion().sound(SoundType.SWEET_BERRY_BUSH).blockEntity(TFCBlockEntities.TICK_COUNTER).flammable(120, 90)));
     public static final Id<Block> DEAD_CANE = registerNoItem("plant/dead_cane", () -> new DeadCaneBlock(ExtendedProperties.of(MapColor.PLANT).strength(0.6f).noOcclusion().sound(SoundType.SWEET_BERRY_BUSH).randomTicks().blockEntity(TFCBlockEntities.TICK_COUNTER).flammable(120, 90)));
-    public static final Map<FruitBlocks.Tree, Id<Block>> FRUIT_TREE_LEAVES = Helpers.mapOfKeys(FruitBlocks.Tree.class, tree -> register("plant/" + tree.name() + "_leaves", tree::createLeaves));
-    public static final Map<FruitBlocks.Tree, Id<Block>> FRUIT_TREE_BRANCHES = Helpers.mapOfKeys(FruitBlocks.Tree.class, tree -> registerNoItem("plant/" + tree.name() + "_branch", tree::createBranch));
-    public static final Map<FruitBlocks.Tree, Id<Block>> FRUIT_TREE_GROWING_BRANCHES = Helpers.mapOfKeys(FruitBlocks.Tree.class, tree -> registerNoItem("plant/" + tree.name() + "_growing_branch", tree::createGrowingBranch));
-    public static final Map<FruitBlocks.Tree, Id<Block>> FRUIT_TREE_SAPLINGS = Helpers.mapOfKeys(FruitBlocks.Tree.class, tree -> register("plant/" + tree.name() + "_sapling", tree::createSapling));
-    public static final Map<FruitBlocks.Tree, Id<Block>> FRUIT_TREE_POTTED_SAPLINGS = Helpers.mapOfKeys(FruitBlocks.Tree.class, tree -> registerNoItem("plant/potted/" + tree.name() + "_sapling", tree::createPottedSapling));
+    public static final Map<FruitBlocks.Tree, Id<Block>> FRUIT_TREE_LEAVES = Helpers.mapOf(FruitBlocks.Tree.class, tree -> register("plant/" + tree.name() + "_leaves", tree::createLeaves));
+    public static final Map<FruitBlocks.Tree, Id<Block>> FRUIT_TREE_BRANCHES = Helpers.mapOf(FruitBlocks.Tree.class, tree -> registerNoItem("plant/" + tree.name() + "_branch", tree::createBranch));
+    public static final Map<FruitBlocks.Tree, Id<Block>> FRUIT_TREE_GROWING_BRANCHES = Helpers.mapOf(FruitBlocks.Tree.class, tree -> registerNoItem("plant/" + tree.name() + "_growing_branch", tree::createGrowingBranch));
+    public static final Map<FruitBlocks.Tree, Id<Block>> FRUIT_TREE_SAPLINGS = Helpers.mapOf(FruitBlocks.Tree.class, tree -> register("plant/" + tree.name() + "_sapling", tree::createSapling));
+    public static final Map<FruitBlocks.Tree, Id<Block>> FRUIT_TREE_POTTED_SAPLINGS = Helpers.mapOf(FruitBlocks.Tree.class, tree -> registerNoItem("plant/potted/" + tree.name() + "_sapling", tree::createPottedSapling));
     public static final Id<Block> BANANA_PLANT = registerNoItem("plant/banana_plant", FruitBlocks::createBananaPlant);
     public static final Id<Block> BANANA_SAPLING = register("plant/banana_sapling", FruitBlocks::createBananaSapling);
     public static final Id<Block> BANANA_POTTED_SAPLING = registerNoItem("plant/potted/banana_sapling", FruitBlocks::createPottedBananaSapling);
@@ -344,31 +344,31 @@ public final class TFCBlocks
 
     public static final Id<Block> AGGREGATE = register("aggregate", () -> new ColoredBlock(-8356741, Properties.ofFullCopy(Blocks.GRAVEL).strength(0.6F).sound(SoundType.GRAVEL)));
 
-    public static final Map<DyeColor, Id<Block>> RAW_ALABASTER = Helpers.mapOfKeys(DyeColor.class, color ->
+    public static final Map<DyeColor, Id<Block>> RAW_ALABASTER = Helpers.mapOf(DyeColor.class, color ->
         register(("alabaster/raw/" + color.getName()), () -> new Block(Properties.of().mapColor(color.getMapColor()).requiresCorrectToolForDrops().strength(1.0F, 6.0F)))
     );
-    public static final Map<DyeColor, Id<Block>> ALABASTER_BRICKS = Helpers.mapOfKeys(DyeColor.class, color ->
+    public static final Map<DyeColor, Id<Block>> ALABASTER_BRICKS = Helpers.mapOf(DyeColor.class, color ->
         register(("alabaster/bricks/" + color.getName()), () -> new Block(Properties.of().mapColor(color.getMapColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)))
     );
-    public static final Map<DyeColor, Id<Block>> POLISHED_ALABASTER = Helpers.mapOfKeys(DyeColor.class, color ->
+    public static final Map<DyeColor, Id<Block>> POLISHED_ALABASTER = Helpers.mapOf(DyeColor.class, color ->
         register(("alabaster/polished/" + color.getName()), () -> new Block(Properties.of().mapColor(color.getMapColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)))
     );
 
-    public static final Map<DyeColor, DecorationBlockHolder> ALABASTER_BRICK_DECORATIONS = Helpers.mapOfKeys(DyeColor.class, color -> new DecorationBlockHolder(
+    public static final Map<DyeColor, DecorationBlockHolder> ALABASTER_BRICK_DECORATIONS = Helpers.mapOf(DyeColor.class, color -> new DecorationBlockHolder(
             register(("alabaster/bricks/" + color.getName() + "_slab"), () -> new SlabBlock(Properties.of().mapColor(color.getMapColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F))),
             register(("alabaster/bricks/" + color.getName() + "_stairs"), () -> new StairBlock(ALABASTER_BRICKS.get(color).get().defaultBlockState(), Properties.of().mapColor(color.getMapColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F))),
             register(("alabaster/bricks/" + color.getName() + "_wall"), () -> new WallBlock(Properties.of().mapColor(color.getMapColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)))
         )
     );
 
-    public static final Map<DyeColor, DecorationBlockHolder> ALABASTER_POLISHED_DECORATIONS = Helpers.mapOfKeys(DyeColor.class, color -> new DecorationBlockHolder(
+    public static final Map<DyeColor, DecorationBlockHolder> ALABASTER_POLISHED_DECORATIONS = Helpers.mapOf(DyeColor.class, color -> new DecorationBlockHolder(
             register(("alabaster/polished/" + color.getName() + "_slab"), () -> new SlabBlock(Properties.of().mapColor(color.getMapColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F))),
             register(("alabaster/polished/" + color.getName() + "_stairs"), () -> new StairBlock(ALABASTER_BRICKS.get(color).get().defaultBlockState(), Properties.of().mapColor(color.getMapColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F))),
             register(("alabaster/polished/" + color.getName() + "_wall"), () -> new WallBlock(Properties.of().mapColor(color.getMapColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)))
         )
     );
 
-    public static final Map<DyeColor, Id<Block>> COLORED_POURED_GLASS = Helpers.mapOfKeys(DyeColor.class, color -> register(color.getSerializedName() + "_poured_glass", () -> new PouredGlassBlock(ExtendedProperties.of().pushReaction(PushReaction.DESTROY).strength(0.3F).sound(SoundType.GLASS).noOcclusion().requiresCorrectToolForDrops(), () -> PouredGlassBlock.getStainedGlass(color))));
+    public static final Map<DyeColor, Id<Block>> COLORED_POURED_GLASS = Helpers.mapOf(DyeColor.class, color -> register(color.getSerializedName() + "_poured_glass", () -> new PouredGlassBlock(ExtendedProperties.of().pushReaction(PushReaction.DESTROY).strength(0.3F).sound(SoundType.GLASS).noOcclusion().requiresCorrectToolForDrops(), () -> PouredGlassBlock.getStainedGlass(color))));
     public static final Id<Block> POURED_GLASS = register("poured_glass", () -> new PouredGlassBlock(ExtendedProperties.of().strength(0.3F).sound(SoundType.GLASS).pushReaction(PushReaction.DESTROY).noOcclusion().requiresCorrectToolForDrops(), () -> Items.GLASS_PANE));
     public static final Id<Block> HOT_POURED_GLASS = registerNoItem("hot_poured_glass", () -> new HotPouredGlassBlock(ExtendedProperties.of().strength(0.3F).lightLevel(s -> 10).sound(SoundType.GLASS).pushReaction(PushReaction.DESTROY).noOcclusion().noLootTable().pathType(PathType.DANGER_FIRE).blockEntity(TFCBlockEntities.HOT_POURED_GLASS).ticks(HotPouredGlassBlockEntity::tick)));
     public static final Id<Block> GLASS_BASIN = registerNoItem("glass_basin", () -> new GlassBasinBlock(ExtendedProperties.of().strength(0.3f).lightLevel(s -> 10).sound(SoundType.GLASS).pushReaction(PushReaction.DESTROY).noOcclusion().noLootTable().pathType(PathType.DANGER_FIRE).blockEntity(TFCBlockEntities.GLASS_BASIN).dynamicShape().ticks(GlassBasinBlockEntity::ticks)));
@@ -378,7 +378,7 @@ public final class TFCBlocks
 
     public static final Id<Block> WATTLE = register("wattle", () -> new WattleBlock(ExtendedProperties.of(MapColor.WOOD).strength(0.3F).noOcclusion().sound(SoundType.SCAFFOLDING).flammable(60, 30)));
     public static final Id<Block> UNSTAINED_WATTLE = register("wattle/unstained", () -> new StainedWattleBlock(ExtendedProperties.of(MapColor.WOOD).strength(0.3F).sound(SoundType.SCAFFOLDING).flammable(60, 30)));
-    public static final Map<DyeColor, Id<Block>> STAINED_WATTLE = Helpers.mapOfKeys(DyeColor.class, color ->
+    public static final Map<DyeColor, Id<Block>> STAINED_WATTLE = Helpers.mapOf(DyeColor.class, color ->
         register("wattle/" + color.getName(), () -> new StainedWattleBlock(ExtendedProperties.of(MapColor.WOOD).strength(0.3F).sound(SoundType.SCAFFOLDING).flammable(60, 30)))
     );
 
@@ -442,31 +442,31 @@ public final class TFCBlocks
     public static final Id<Block> STEEL_PIPE = register("steel_pipe", () -> new FluidPipeBlock(ExtendedProperties.of().strength(5f).sound(SoundType.METAL)));
     public static final Id<Block> STEEL_PUMP = register("steel_pump", () -> new FluidPumpBlock(ExtendedProperties.of().strength(5f).sound(SoundType.METAL).blockEntity(TFCBlockEntities.PUMP).serverTicks(PumpBlockEntity::serverTick).forceSolidOn()));
 
-    public static final Map<DyeColor, Id<Block>> DYED_CANDLE_CAKES = Helpers.mapOfKeys(DyeColor.class, color ->
+    public static final Map<DyeColor, Id<Block>> DYED_CANDLE_CAKES = Helpers.mapOf(DyeColor.class, color ->
         registerNoItem("candle_cake/" + color.getName(), () -> new TFCCandleCakeBlock(ExtendedProperties.of(MapColor.SAND).randomTicks().noOcclusion().strength(0.5F).sound(SoundType.WOOL).lightLevel(litBlockEmission(3)).blockEntity(TFCBlockEntities.TICK_COUNTER).cloneItem(() -> Blocks.CAKE)))
     );
-    public static final Map<DyeColor, Id<Block>> DYED_CANDLE = Helpers.mapOfKeys(DyeColor.class, color ->
+    public static final Map<DyeColor, Id<Block>> DYED_CANDLE = Helpers.mapOf(DyeColor.class, color ->
         register("candle/" + color.getName(), () -> new TFCCandleBlock(ExtendedProperties.of(MapColor.SAND).randomTicks().noOcclusion().strength(0.1F).sound(SoundType.CANDLE).lightLevel(TFCCandleBlock.LIGHTING_SCALE).blockEntity(TFCBlockEntities.TICK_COUNTER)), b -> new CandleBlockItem(new Item.Properties(), b, TFCBlocks.DYED_CANDLE_CAKES.get(color)))
     );
 
     public static final Id<Block> JARS = registerNoItem("jars", () -> new JarsBlock(ExtendedProperties.of().noOcclusion().instabreak().sound(SoundType.GLASS).randomTicks().blockEntity(TFCBlockEntities.JARS)));
 
     public static final Id<Block> LARGE_VESSEL = register("ceramic/large_vessel", () -> new LargeVesselBlock(ExtendedProperties.of(MapColor.CLAY).strength(2.5F).noOcclusion().blockEntity(TFCBlockEntities.LARGE_VESSEL)), block -> new TooltipBlockItem(block, new Item.Properties()));
-    public static final Map<DyeColor, Id<Block>> GLAZED_LARGE_VESSELS = Helpers.mapOfKeys(DyeColor.class, color ->
+    public static final Map<DyeColor, Id<Block>> GLAZED_LARGE_VESSELS = Helpers.mapOf(DyeColor.class, color ->
         register("ceramic/large_vessel/" + color.getName(), () -> new LargeVesselBlock(ExtendedProperties.of(MapColor.CLAY).strength(2.5F).noOcclusion().blockEntity(TFCBlockEntities.LARGE_VESSEL)), block -> new TooltipBlockItem(block, new Item.Properties()))
     );
 
     // Fluids
 
-    public static final Map<Metal, Id<LiquidBlock>> METAL_FLUIDS = Helpers.mapOfKeys(Metal.class, metal ->
+    public static final Map<Metal, Id<LiquidBlock>> METAL_FLUIDS = Helpers.mapOf(Metal.class, metal ->
         registerNoItem("fluid/metal/" + metal.name(), () -> new LiquidBlock(TFCFluids.METALS.get(metal).getSource(), Properties.ofFullCopy(Blocks.LAVA).noLootTable()))
     );
 
-    public static final Map<SimpleFluid, Id<LiquidBlock>> SIMPLE_FLUIDS = Helpers.mapOfKeys(SimpleFluid.class, fluid ->
+    public static final Map<SimpleFluid, Id<LiquidBlock>> SIMPLE_FLUIDS = Helpers.mapOf(SimpleFluid.class, fluid ->
         registerNoItem("fluid/" + fluid.getId(), () -> new LiquidBlock(TFCFluids.SIMPLE_FLUIDS.get(fluid).getSource(), Properties.ofFullCopy(Blocks.WATER).noLootTable()))
     );
 
-    public static final Map<DyeColor, Id<LiquidBlock>> COLORED_FLUIDS = Helpers.mapOfKeys(DyeColor.class, fluid ->
+    public static final Map<DyeColor, Id<LiquidBlock>> COLORED_FLUIDS = Helpers.mapOf(DyeColor.class, fluid ->
         registerNoItem("fluid/" + fluid.getName() + "_dye", () -> new LiquidBlock(TFCFluids.COLORED_FLUIDS.get(fluid).getSource(), Properties.ofFullCopy(Blocks.WATER).noLootTable()))
     );
 
@@ -549,8 +549,8 @@ public final class TFCBlocks
 
     private static <B extends SignBlock> Map<Wood, Map<Metal, Id<B>>> registerHangingSigns(String variant, BiFunction<ExtendedProperties, WoodType, B> factory)
     {
-        return Helpers.mapOfKeys(Wood.class, wood ->
-            Helpers.mapOfKeys(Metal.class, Metal::allParts, metal -> register(
+        return Helpers.mapOf(Wood.class, wood ->
+            Helpers.mapOf(Metal.class, Metal::allParts, metal -> register(
                     "wood/planks/" + variant + "/" + metal.getSerializedName() + "/" + wood.getSerializedName(),
                     () -> factory.apply(ExtendedProperties.of(wood.woodColor()).sound(SoundType.WOOD).noCollission().strength(1F).flammableLikePlanks().blockEntity(TFCBlockEntities.HANGING_SIGN).ticks(SignBlockEntity::tick), wood.getVanillaWoodType()),
                     (Function<B, BlockItem>) null)

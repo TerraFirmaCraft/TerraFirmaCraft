@@ -1,8 +1,7 @@
 {
   "values": [
-    "tfc:dirt/silt",
-    "tfc:dirt/loam",
-    "tfc:dirt/sandy_loam",
-    "tfc:dirt/silty_loam"
+    "#tfc:grass",
+    "#tfc:dirt",
+    "#tfc:mud"
   ]
 }

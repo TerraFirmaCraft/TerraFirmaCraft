@@ -40,6 +40,7 @@ public class KrummholzFeature extends Feature<KrummholzConfig>
         cursor.setWithOffset(pos, 0, -1, 0);
 
         final BlockState below = level.getBlockState(cursor);
+        // todo: this should not exist, this should use a tag specified by the config, not three separate checks
         boolean validBlock = Helpers.isBlock(below, TFCTags.Blocks.TREE_GROWS_ON);
         if (config.spawnsOnStone())
             validBlock |= Helpers.isBlock(below, Tags.Blocks.STONES);

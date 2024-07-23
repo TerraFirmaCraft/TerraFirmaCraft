@@ -1,0 +1,24 @@
+{
+  "values": [
+    "tfc:ore/lignite/granite",
+    "tfc:ore/lignite/diorite",
+    "tfc:ore/lignite/gabbro",
+    "tfc:ore/lignite/shale",
+    "tfc:ore/lignite/claystone",
+    "tfc:ore/lignite/limestone",
+    "tfc:ore/lignite/conglomerate",
+    "tfc:ore/lignite/dolomite",
+    "tfc:ore/lignite/chert",
+    "tfc:ore/lignite/chalk",
+    "tfc:ore/lignite/rhyolite",
+    "tfc:ore/lignite/basalt",
+    "tfc:ore/lignite/andesite",
+    "tfc:ore/lignite/dacite",
+    "tfc:ore/lignite/quartzite",
+    "tfc:ore/lignite/slate",
+    "tfc:ore/lignite/phyllite",
+    "tfc:ore/lignite/schist",
+    "tfc:ore/lignite/gneiss",
+    "tfc:ore/lignite/marble"
+  ]
+}

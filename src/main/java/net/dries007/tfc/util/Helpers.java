@@ -158,7 +158,7 @@ public final class Helpers
     private static final int PRIME_X = 501125321;
     private static final int PRIME_Y = 1136930381;
 
-    private static final Supplier<Boolean> JEI = Suppliers.memoize(() -> !BOOTSTRAP_ENVIRONMENT && ModList.get().isLoaded("jei"));
+    private static final Supplier<Boolean> JEI = Suppliers.memoize(() -> ModList.get().isLoaded("jei"));
 
     @Nullable private static RecipeManager CACHED_RECIPE_MANAGER = null;
 
@@ -246,16 +246,16 @@ public final class Helpers
      * Creates a map of each enum constant to the value as provided by the value mapper.
      * @return A {@code Map<E, V>}, with consistent iteration order.
      */
-    public static <E extends Enum<E>, V> Map<E, V> mapOfKeys(Class<E> enumClass, Function<E, V> valueMapper)
+    public static <E extends Enum<E>, V> Map<E, V> mapOf(Class<E> enumClass, Function<E, V> valueMapper)
     {
-        return mapOfKeys(enumClass, key -> true, valueMapper);
+        return mapOf(enumClass, key -> true, valueMapper);
     }
 
     /**
      * Creates a map of each enum constant to the value as provided by the value mapper, only using enum constants that match the provided predicate.
      * @return A {@code Map<E, V>}, with consistent iteration order.
      */
-    public static <E extends Enum<E>, V> Map<E, V> mapOfKeys(Class<E> enumClass, Predicate<E> keyPredicate, Function<E, V> valueMapper)
+    public static <E extends Enum<E>, V> Map<E, V> mapOf(Class<E> enumClass, Predicate<E> keyPredicate, Function<E, V> valueMapper)
     {
         return Arrays.stream(enumClass.getEnumConstants())
             .filter(keyPredicate)
@@ -1646,7 +1646,7 @@ public final class Helpers
     {
         try
         {
-            Class.forName("net.dries007.tfc.TestMarker");
+            Class.forName("net.dries007.tfc.test.TestSetup");
             return true;
         }
         catch (ClassNotFoundException e) { /* Guess not */ }

@@ -17,7 +17,7 @@ public record TreePlacementConfig(int width, int height, GroundType groundType)
         Codec.INT.fieldOf("width").forGetter(c -> c.width),
         Codec.INT.fieldOf("height").forGetter(c -> c.height),
         GroundType.CODEC.optionalFieldOf("ground_type", GroundType.NORMAL).forGetter(c -> c.groundType)
-        ).apply(instance, TreePlacementConfig::new));
+    ).apply(instance, TreePlacementConfig::new));
 
     public boolean mayPlaceInWater()
     {

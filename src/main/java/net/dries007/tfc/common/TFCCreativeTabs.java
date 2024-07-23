@@ -355,8 +355,9 @@ public final class TFCCreativeTabs
         // These only display in dev. First one is the normal book, second is the hot reloaded one
         if (!FMLEnvironment.production)
         {
-            out.accept(PatchouliIntegration.getFieldGuide(false));
-            out.accept(PatchouliIntegration.getFieldGuide(true));
+            // todo: 1.21, these break? weird?
+            //out.accept(PatchouliIntegration.getFieldGuide(false));
+            //out.accept(PatchouliIntegration.getFieldGuide(true));
         }
 
         accept(out, TFCItems.FIRESTARTER);

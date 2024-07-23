@@ -150,7 +150,7 @@ public class AnvilRecipe implements ISimpleRecipe<AnvilRecipe.Inventory>
     }
 
     @Override
-    public ItemStack getResultItem(HolderLookup.Provider registries)
+    public ItemStack getResultItem(@Nullable HolderLookup.Provider registries)
     {
         return output.getEmptyStack();
     }

@@ -1,0 +1,24 @@
+{
+  "values": [
+    "tfc:rock/gravel/granite",
+    "tfc:rock/gravel/diorite",
+    "tfc:rock/gravel/gabbro",
+    "tfc:rock/gravel/shale",
+    "tfc:rock/gravel/claystone",
+    "tfc:rock/gravel/limestone",
+    "tfc:rock/gravel/conglomerate",
+    "tfc:rock/gravel/dolomite",
+    "tfc:rock/gravel/chert",
+    "tfc:rock/gravel/chalk",
+    "tfc:rock/gravel/rhyolite",
+    "tfc:rock/gravel/basalt",
+    "tfc:rock/gravel/andesite",
+    "tfc:rock/gravel/dacite",
+    "tfc:rock/gravel/quartzite",
+    "tfc:rock/gravel/slate",
+    "tfc:rock/gravel/phyllite",
+    "tfc:rock/gravel/schist",
+    "tfc:rock/gravel/gneiss",
+    "tfc:rock/gravel/marble"
+  ]
+}

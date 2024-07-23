@@ -107,7 +107,7 @@ public class IndirectHashCollection<K, R>
 
     public Collection<R> getAll(K key)
     {
-        return indirectResultMap.getOrDefault(key, Collections.emptyList());
+        return indirectResultMap.getOrDefault(key, List.of());
     }
 
     public void reload(Collection<R> values)

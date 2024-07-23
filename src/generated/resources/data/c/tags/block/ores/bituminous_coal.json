@@ -1,0 +1,24 @@
+{
+  "values": [
+    "tfc:ore/bituminous_coal/granite",
+    "tfc:ore/bituminous_coal/diorite",
+    "tfc:ore/bituminous_coal/gabbro",
+    "tfc:ore/bituminous_coal/shale",
+    "tfc:ore/bituminous_coal/claystone",
+    "tfc:ore/bituminous_coal/limestone",
+    "tfc:ore/bituminous_coal/conglomerate",
+    "tfc:ore/bituminous_coal/dolomite",
+    "tfc:ore/bituminous_coal/chert",
+    "tfc:ore/bituminous_coal/chalk",
+    "tfc:ore/bituminous_coal/rhyolite",
+    "tfc:ore/bituminous_coal/basalt",
+    "tfc:ore/bituminous_coal/andesite",
+    "tfc:ore/bituminous_coal/dacite",
+    "tfc:ore/bituminous_coal/quartzite",
+    "tfc:ore/bituminous_coal/slate",
+    "tfc:ore/bituminous_coal/phyllite",
+    "tfc:ore/bituminous_coal/schist",
+    "tfc:ore/bituminous_coal/gneiss",
+    "tfc:ore/bituminous_coal/marble"
+  ]
+}

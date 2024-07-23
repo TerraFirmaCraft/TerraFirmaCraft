@@ -6,9 +6,7 @@
 
 package net.dries007.tfc.common.items;
 
-import java.util.List;
 import java.util.function.IntSupplier;
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -24,25 +22,23 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
-import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.capabilities.DelegateFluidHandler;
-import net.dries007.tfc.common.capabilities.MoldLike;
+import net.dries007.tfc.common.component.TFCComponents;
+import net.dries007.tfc.common.component.fluid.FluidComponent;
+import net.dries007.tfc.common.component.fluid.FluidContainerInfo;
 import net.dries007.tfc.common.component.heat.HeatCapability;
+import net.dries007.tfc.common.component.heat.HeatComponent;
+import net.dries007.tfc.common.component.mold.IMold;
 import net.dries007.tfc.common.container.TFCContainerProviders;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.CastingRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
-import net.dries007.tfc.util.Tooltips;
 import net.dries007.tfc.util.data.FluidHeat;
 
 public class MoldItem extends Item
@@ -70,8 +66,7 @@ public class MoldItem extends Item
         return () -> Helpers.getValueOrDefault(intValue);
     }
 
-    private final IntSupplier capacity;
-    private final TagKey<Fluid> fluidTag;
+    private final FluidContainerInfo containerInfo;
 
     public MoldItem(Metal.ItemType type, Properties properties)
     {
@@ -86,17 +81,35 @@ public class MoldItem extends Item
 
     public MoldItem(IntSupplier capacity, TagKey<Fluid> fluidTag, Properties properties)
     {
-        super(properties);
+        super(properties
+            .component(TFCComponents.HEAT, HeatComponent.of(HeatCapability.POTTERY_HEAT_CAPACITY))
+            .component(TFCComponents.FLUID, FluidComponent.EMPTY));
 
-        this.capacity = capacity;
-        this.fluidTag = fluidTag;
+        this.containerInfo = new FluidContainerInfo() {
+            @Override
+            public boolean canContainFluid(Fluid input)
+            {
+                return Helpers.isFluid(input, fluidTag) && FluidHeat.get(input) != null;
+            }
+
+            @Override
+            public int fluidCapacity()
+            {
+                return capacity.getAsInt();
+            }
+        };
+    }
+
+    public FluidContainerInfo containerInfo()
+    {
+        return containerInfo;
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
     {
         final ItemStack stack = player.getItemInHand(hand);
-        final MoldLike mold = MoldLike.get(stack);
+        final IMold mold = IMold.get(stack);
         if (mold != null)
         {
             if (player.isShiftKeyDown())
@@ -153,7 +166,7 @@ public class MoldItem extends Item
     {
         if (action == ClickAction.SECONDARY && !player.isCreative() && slot.allowModification(player))
         {
-            final MoldLike mold = MoldLike.get(stack);
+            final IMold mold = IMold.get(stack);
             if (mold != null && !mold.isMolten())
             {
                 final CastingRecipe recipe = CastingRecipe.get(mold);
@@ -197,140 +210,11 @@ public class MoldItem extends Item
         return false;
     }
 
-    public TagKey<Fluid> getFluidTag()
-    {
-        return fluidTag;
-    }
-
     @Override
     public int getMaxStackSize(ItemStack stack)
     {
         // We cannot just query the stack size to see if it has a contained fluid, as that would be self-referential
         // So we have to query a handler that *would* return a capability here, which means copying with stack size = 1
         return FluidHelpers.getContainedFluid(stack.copyWithCount(1)).isEmpty() ? super.getMaxStackSize(stack) : 1;
-    }
-
-    // todo 1.21, item stack capability/component implementations!
-    static class MoldCapability implements MoldLike, DelegateFluidHandler
-    {
-        private final ItemStack stack;
-
-        private final FluidTank tank;
-        private final int capacity;
-
-        private boolean initialized = false;
-
-        MoldCapability(ItemStack stack, int capacity, TagKey<Fluid> fluidTag)
-        {
-            this.stack = stack;
-
-            this.tank = new FluidTank(capacity, fluid -> FluidHeat.get(fluid.getFluid()) != null && Helpers.isFluid(fluid.getFluid(), fluidTag));
-            this.capacity = capacity;
-        }
-
-        public void addTooltipInfo(ItemStack stack, List<Component> text)
-        {
-            final FluidStack fluid = tank.getFluid();
-            if (!fluid.isEmpty())
-            {
-                final FluidHeat metal = FluidHeat.get(fluid.getFluid());
-                if (metal != null)
-                {
-                    text.add(Component.translatable("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
-                    text.add(Tooltips.fluidUnitsAndCapacityOf(fluid, capacity)
-                        .append(Tooltips.moltenOrSolid(isMolten())));
-                }
-            }
-        }
-
-        @NotNull
-        @Override
-        public ItemStack getContainer()
-        {
-            return stack;
-        }
-
-        @Override
-        public int fill(FluidStack resource, FluidAction action)
-        {
-            // Can always fill into a mold, despite the solid-ness
-            final int amount = tank.fill(resource, action);
-            if (amount > 0)
-            {
-                //updateAndSave();
-            }
-            return amount;
-        }
-
-        @NotNull
-        @Override
-        public FluidStack drain(FluidStack resource, FluidAction action)
-        {
-            if (resource.getFluid() == tank.getFluid().getFluid())
-            {
-                final FluidStack result = drain(resource.getAmount(), action);
-                if (!result.isEmpty())
-                {
-                    //updateAndSave();
-                }
-                return result;
-            }
-            return FluidStack.EMPTY;
-        }
-
-        @NotNull
-        @Override
-        public FluidStack drain(int maxDrain, FluidAction action)
-        {
-            return isMolten() ? drainIgnoringTemperature(maxDrain, action) : FluidStack.EMPTY;
-        }
-
-        @Override
-        public FluidStack drainIgnoringTemperature(int maxDrain, FluidAction action)
-        {
-            final FluidStack result = tank.drain(maxDrain, action);
-            if (!result.isEmpty())
-            {
-                //updateAndSave();
-            }
-            return result;
-        }
-
-        @Override
-        public IFluidHandler getFluidHandler()
-        {
-            return tank;
-        }
-
-        @Override
-        public boolean isMolten()
-        {
-            final FluidHeat metal = getContainedMetal();
-            if (metal != null)
-            {
-                // todo 1.21
-                return true;//getTemperature() >= metal.meltTemperature();
-            }
-            return false;
-        }
-
-        @Nullable
-        private FluidHeat getContainedMetal()
-        {
-            return FluidHeat.get(tank.getFluid().getFluid());
-        }
-
-        private void updateHeatCapacity()
-        {
-            final FluidStack fluid = tank.getFluid();
-            final FluidHeat metal = FluidHeat.get(fluid.getFluid());
-
-            float value = HeatCapability.POTTERY_HEAT_CAPACITY;
-            if (!fluid.isEmpty() && metal != null)
-            {
-                // Non-empty mold, so add the heat capacity of the vessel with the heat capacity of the content
-                value += metal.heatCapacity(fluid.getAmount());
-            }
-        }
     }
 }

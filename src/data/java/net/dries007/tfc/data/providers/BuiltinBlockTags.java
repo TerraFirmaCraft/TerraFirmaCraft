@@ -30,8 +30,10 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.DecorationBlockHolder;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.rock.Ore;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
+import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.data.Accessors;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.registry.IdHolder;
@@ -51,7 +53,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
     @Override
     protected void addTags(HolderLookup.Provider provider)
     {
-        // ===== Minecraft Tags ===== //
+        // ===== Minecraft Functionality Tags ===== //
         tag(BlockTags.REPLACEABLE).add(BuiltInRegistries.BLOCK
             .entrySet()
             .stream()
@@ -59,12 +61,39 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .sorted(Map.Entry.comparingByKey()) // Determinism
             .map(Map.Entry::getValue));
 
+        tag(BlockTags.SNOW_LAYER_CANNOT_SURVIVE_ON).add(TFCBlocks.SEA_ICE, TFCBlocks.ICE_PILE);
+        tag(BlockTags.SNOW_LAYER_CAN_SURVIVE_ON).add(TFCBlocks.SOIL.get(SoilBlockType.MUD));
+
         // ===== Common Tags ===== //
-        pivot(TFCBlocks.METALS, Metal.BlockType.BLOCK).forEach((metal, block) -> tag(storageBlockTagOf(Registries.BLOCK, metal)).add(block));
+
+        pivot(TFCBlocks.METALS, Metal.BlockType.BLOCK).forEach((metal, block) ->
+            tag(storageBlockTagOf(Registries.BLOCK, metal)).add(block));
+
+        for (Ore ore : Ore.values())
+        {
+            if (ore.isGraded())
+            {
+                final var ores = pivot(TFCBlocks.GRADED_ORES, ore);
+
+                tag(Tags.Blocks.ORES).addTags(
+                    oreBlockTagOf(ore, Ore.Grade.POOR),
+                    oreBlockTagOf(ore, Ore.Grade.NORMAL),
+                    oreBlockTagOf(ore, Ore.Grade.RICH));
+                tag(oreBlockTagOf(ore, Ore.Grade.POOR)).add(ores, Ore.Grade.POOR);
+                tag(oreBlockTagOf(ore, Ore.Grade.NORMAL)).add(ores, Ore.Grade.NORMAL);
+                tag(oreBlockTagOf(ore, Ore.Grade.RICH)).add(ores, Ore.Grade.RICH);
+            }
+            else
+            {
+                tag(Tags.Blocks.ORES).addTag(oreBlockTagOf(ore, null));
+                tag(oreBlockTagOf(ore, null)).add(TFCBlocks.ORES, ore);
+            }
+        }
+
         tag(Tags.Blocks.STORAGE_BLOCKS_WHEAT).remove(Blocks.HAY_BLOCK);
+        tag(Tags.Blocks.PLAYER_WORKSTATIONS_CRAFTING_TABLES).addTag(WORKBENCHES);
 
         // ===== TFC Tags ===== //
-        tag(LAMPS).add(TFCBlocks.METALS, Metal.BlockType.LAMP);
 
         tag(CAN_TRIGGER_COLLAPSE).addTags(Tags.Blocks.ORES, Tags.Blocks.STONES);
         tag(CAN_START_COLLAPSE).addTags(Tags.Blocks.ORES, TFCTags.Blocks.STONES_RAW);
@@ -86,34 +115,113 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(TOUGHNESS_1).add(TFCBlocks.CHARCOAL_PILE, TFCBlocks.CHARCOAL_FORGE);
         tag(TOUGHNESS_2).addTag(STONES);
         tag(TOUGHNESS_3).add(Blocks.BEDROCK);
+        tag(BREAKS_WHEN_ISOLATED).addTag(STONES_RAW);
 
         tag(STONES).addTags(STONES_RAW, STONES_HARDENED);
         tag(STONES_RAW).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.RAW);
         tag(STONES_HARDENED).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.HARDENED);
         tag(STONES_SMOOTH).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.SMOOTH);
+        tag(BlockTags.STONE_BRICKS)
+            .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.BRICKS)
+            .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.CRACKED_BRICKS)
+            .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.MOSSY_BRICKS)
+            .add(Blocks.BRICKS)
+            .add(TFCBlocks.FIRE_BRICKS);
         tag(STONES_SMOOTH_SLABS).add(pivot(TFCBlocks.ROCK_DECORATIONS, Rock.BlockType.SMOOTH).values(), DecorationBlockHolder::slab);
         tag(STONES_SPIKE).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.SPIKE);
         tag(STONES_PRESSURE_PLATES)
             .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.PRESSURE_PLATE)
             .addOptionalTag(ResourceLocation.withDefaultNamespace("stone_pressure_plates"));
+        tag(INSULATION)
+            .addTags(STONES, STONES_SMOOTH, BlockTags.STONE_BRICKS, Tags.Blocks.COBBLESTONES)
+            .add(Blocks.BRICKS)
+            .add(TFCBlocks.FIRE_BRICKS);
 
         tag(Tags.Blocks.COBBLESTONES_NORMAL).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.COBBLE);
         tag(Tags.Blocks.COBBLESTONES_MOSSY).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.MOSSY_COBBLE);
+        tag(Tags.Blocks.GRAVELS).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.GRAVEL);
+        tag(Tags.Blocks.SANDS).add(TFCBlocks.SAND);
 
+        tag(LAMPS).add(TFCBlocks.METALS, Metal.BlockType.LAMP);
+
+        // Minecraft logs tags contain all log, stripped log, wood, and stripped wood
+        // logs contains logs_that_burn + nether logs
+        tag(BlockTags.LOGS_THAT_BURN)
+            .add(TFCBlocks.WOODS, Wood.BlockType.LOG)
+            .add(TFCBlocks.WOODS, Wood.BlockType.STRIPPED_LOG)
+            .add(TFCBlocks.WOODS, Wood.BlockType.WOOD)
+            .add(TFCBlocks.WOODS, Wood.BlockType.STRIPPED_WOOD);
+        tag(LOGS_THAT_LOG).addTag(BlockTags.LOGS);
+        tag(WORKBENCHES).add(TFCBlocks.WOODS, Wood.BlockType.WORKBENCH);
+        tag(SUPPORT_BEAMS)
+            .add(TFCBlocks.WOODS, Wood.BlockType.HORIZONTAL_SUPPORT)
+            .add(TFCBlocks.WOODS, Wood.BlockType.VERTICAL_SUPPORT);
+
+        tag(CHARCOAL_PIT_INSULATION).add(
+            TFCBlocks.LOG_PILE,
+            TFCBlocks.BURNING_LOG_PILE,
+            TFCBlocks.CHARCOAL_PILE);
+        tag(CHARCOAL_FORGE_INSULATION).addTag(INSULATION);
+        tag(CHARCOAL_FORGE_INVISIBLE).add(TFCBlocks.CRUCIBLE);
+        tag(BLOOMERY_INSULATION).addTag(INSULATION);
+        tag(BLAST_FURNACE_INSULATION).add(TFCBlocks.FIRE_BRICKS);
+        tag(SCRAPING_SURFACE).addTag(BlockTags.LOGS);
+
+        tag(MINEABLE_WITH_PROPICK); // Empty
+        tag(MINEABLE_WITH_CHISEL); // Empty
+        tag(MINEABLE_WITH_HAMMER).addTag(MINEABLE_WITH_BLUNT_TOOL);
+        tag(MINEABLE_WITH_KNIFE).addTag(MINEABLE_WITH_SHARP_TOOL);
+        tag(MINEABLE_WITH_SCYTHE).addTag(MINEABLE_WITH_SHARP_TOOL);
+        tag(MINEABLE_WITH_GLASS_SAW)
+            .addTags(Tags.Blocks.GLASS_BLOCKS, Tags.Blocks.GLASS_PANES)
+            .add(TFCBlocks.COLORED_POURED_GLASS)
+            .add(TFCBlocks.POURED_GLASS);
+
+        tag(MINEABLE_WITH_BLUNT_TOOL).addTag(BlockTags.LOGS);
+        tag(MINEABLE_WITH_SHARP_TOOL).addTag(BlockTags.MINEABLE_WITH_HOE); // Make our "sharp tools" equivalent to hoes
+
+        tag(PROSPECTABLE).addTags(Tags.Blocks.ORES);
+
+        tag(BlockTags.DIRT).addTags(GRASS, DIRT, MUD);
+        tag(DIRT)
+            .add(Blocks.DIRT)
+            .add(TFCBlocks.SOIL.get(SoilBlockType.DIRT))
+            .add(TFCBlocks.SOIL.get(SoilBlockType.ROOTED_DIRT));
+        tag(GRASS)
+            .add(Blocks.GRASS_BLOCK)
+            .add(TFCBlocks.SOIL.get(SoilBlockType.GRASS));
         tag(FARMLANDS)
             .add(Blocks.FARMLAND)
             .add(TFCBlocks.SOIL.get(SoilBlockType.FARMLAND));
         tag(PATHS)
             .add(Blocks.DIRT_PATH)
             .add(TFCBlocks.SOIL.get(SoilBlockType.GRASS_PATH));
-        tag(BlockTags.DIRT)
-            .add(TFCBlocks.SOIL.get(SoilBlockType.DIRT));
         tag(MUD)
             .add(Blocks.MUD)
             .add(TFCBlocks.SOIL.get(SoilBlockType.MUD));
         tag(MUD_BRICKS)
             .add(Blocks.MUD_BRICKS)
             .add(TFCBlocks.SOIL.get(SoilBlockType.MUD_BRICKS));
+        tag(CLAYS)
+            .addTags(KAOLIN_CLAYS)
+            .add(TFCBlocks.SOIL.get(SoilBlockType.CLAY))
+            .add(TFCBlocks.SOIL.get(SoilBlockType.CLAY_GRASS));
+        tag(KAOLIN_CLAYS).add(
+            TFCBlocks.KAOLIN_CLAY_GRASS,
+            TFCBlocks.WHITE_KAOLIN_CLAY,
+            TFCBlocks.PINK_KAOLIN_CLAY,
+            TFCBlocks.RED_KAOLIN_CLAY);
+
+        tag(TREE_GROWS_ON).addTag(BlockTags.DIRT);
+        tag(WILD_CROP_GROWS_ON).addTag(BlockTags.DIRT);
+        tag(SPREADING_FRUIT_GROWS_ON).addTags(BlockTags.DIRT, FARMLANDS, Tags.Blocks.GRAVELS);
+        tag(BUSH_PLANTABLE_ON).addTags(BlockTags.DIRT, FARMLANDS);
+        tag(GRASS_PLANTABLE_ON)
+            .addTags(BlockTags.DIRT, FARMLANDS, CLAYS)
+            .add(TFCBlocks.PEAT, TFCBlocks.PEAT_GRASS);
+        tag(SEA_BUSH_PLANTABLE_ON).addTags(BlockTags.DIRT, Tags.Blocks.GRAVELS, Tags.Blocks.SANDS);
+        tag(HALOPHYTE_PLANTABLE_ON).addTag(BlockTags.DIRT);
+        tag(CREEPING_STONE_PLANTABLE_ON).addTags(STONES, STONES_SMOOTH, Tags.Blocks.COBBLESTONES);
     }
 
     @Override

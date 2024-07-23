@@ -1,6 +1,6 @@
 {
   "values": [
-    "#c:farmlands",
-    "#c:paths"
+    "#tfc:farmlands",
+    "#tfc:paths"
   ]
 }

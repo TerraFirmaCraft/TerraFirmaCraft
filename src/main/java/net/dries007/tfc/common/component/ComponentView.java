@@ -17,7 +17,7 @@ import net.minecraft.world.item.ItemStack;
 public abstract class ComponentView<T>
 {
     private final Supplier<DataComponentType<T>> type;
-    private final ItemStack stack;
+    protected final ItemStack stack;
     protected T component;
 
     protected ComponentView(ItemStack stack, T value, Supplier<DataComponentType<T>> type)

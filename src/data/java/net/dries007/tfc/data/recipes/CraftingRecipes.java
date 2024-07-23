@@ -558,7 +558,7 @@ public interface CraftingRecipes extends Recipes
             .pattern("ISI", "ITI", "ISI")
             .shaped(Items.ACTIVATOR_RAIL, 8);
         replace("comparator")
-            .input('S', TFCTags.Items.STONES_SMOOTH)
+            .input('S', TFCTags.Items.STONES_RAW)
             .input('R', Tags.Items.DUSTS_REDSTONE)
             .input('T', Items.REDSTONE_TORCH)
             .pattern(" T ", "TRT", "SSS")
@@ -633,7 +633,7 @@ public interface CraftingRecipes extends Recipes
             .pattern("R R", "RSR", "R R")
             .shaped(Items.RAIL, 64);
         replace("repeater")
-            .input('S', TFCTags.Items.STONES_SMOOTH)
+            .input('S', TFCTags.Items.STONES_RAW)
             .input('R', Tags.Items.DUSTS_REDSTONE)
             .input('T', Items.REDSTONE_TORCH)
             .pattern("TRT", "SSS")

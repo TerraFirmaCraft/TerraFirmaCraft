@@ -62,7 +62,7 @@ public class Faunas
     public static final Id<Jellyfish> JELLYFISH = registerFish(TFCEntities.JELLYFISH);
     public static final Id<TFCTropicalFish> TROPICAL_FISH = registerFish(TFCEntities.TROPICAL_FISH);
     public static final Id<TFCPufferfish> PUFFERFISH = registerFish(TFCEntities.PUFFERFISH);
-    public static final Map<Fish, Id<FreshwaterFish>> FISH = Helpers.mapOfKeys(Fish.class, fish -> registerFish(TFCEntities.FRESHWATER_FISH.get(fish)));
+    public static final Map<Fish, Id<FreshwaterFish>> FISH = Helpers.mapOf(Fish.class, fish -> registerFish(TFCEntities.FRESHWATER_FISH.get(fish)));
     public static final Id<AquaticCritter> LOBSTER = registerFish(TFCEntities.LOBSTER);
     public static final Id<AquaticCritter> CRAYFISH = registerFish(TFCEntities.CRAYFISH);
     public static final Id<AquaticCritter> ISOPOD = registerFish(TFCEntities.ISOPOD);

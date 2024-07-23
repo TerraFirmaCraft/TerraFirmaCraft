@@ -79,7 +79,7 @@ public abstract class DoubleCropBlock extends CropBlock
         final BlockState belowState = level.getBlockState(pos.below());
         if (part == Part.BOTTOM)
         {
-            return Helpers.isBlock(belowState.getBlock(), TFCTags.Blocks.FARMLAND);
+            return Helpers.isBlock(belowState.getBlock(), TFCTags.Blocks.FARMLANDS);
         }
         else
         {

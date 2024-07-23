@@ -70,29 +70,11 @@ public abstract class SnowLayerBlockMixin extends Block
     @Inject(method = "canSurvive", at = @At(value = "RETURN"), cancellable = true)
     private void canSurviveAddIceAndLeavesConditions(BlockState state, LevelReader level, BlockPos pos, CallbackInfoReturnable<Boolean> cir)
     {
-        final BlockState belowState = level.getBlockState(pos.below());
-        if (cir.getReturnValueZ())
+        // Allow tfc leaves to accumulate a single layer of snow on them, despite not having a solid collision face
+        // This condition cannot be properly added via the tag, because we only want this to pass for single-layer snow
+        if (!cir.getReturnValueZ() && level.getBlockState(pos.below()).getBlock() instanceof ILeavesBlock && state.getValue(SnowLayerBlock.LAYERS) == 1)
         {
-            // Snow should not survive on ice (this adds to the big existing conditional)
-            if (Helpers.isBlock(belowState, TFCBlocks.SEA_ICE.get()) || Helpers.isBlock(belowState, TFCBlocks.ICE_PILE.get()))
-            {
-                cir.setReturnValue(false);
-            }
-        }
-        else
-        {
-            if (Helpers.isBlock(belowState, TFCTags.Blocks.SNOW_LAYER_SURVIVES_ON))
-            {
-                cir.setReturnValue(true);
-            }
-            // Allow tfc leaves to accumulate a single layer of snow on them, despite not having a solid collision face
-            if (state.getValue(SnowLayerBlock.LAYERS) == 1)
-            {
-                if (belowState.getBlock() instanceof ILeavesBlock)
-                {
-                    cir.setReturnValue(true);
-                }
-            }
+            cir.setReturnValue(true);
         }
     }
 

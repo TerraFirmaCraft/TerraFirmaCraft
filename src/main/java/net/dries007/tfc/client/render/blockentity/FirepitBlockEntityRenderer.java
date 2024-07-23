@@ -30,7 +30,7 @@ import net.dries007.tfc.util.Helpers;
 
 public class FirepitBlockEntityRenderer<T extends AbstractFirepitBlockEntity<?>> implements BlockEntityRenderer<T>
 {
-    public static final Map<AbstractFirepitBlockEntity.BurnStage, List<ModelResourceLocation>> BURN_STAGE_MODELS = Helpers.mapOfKeys(AbstractFirepitBlockEntity.BurnStage.class, e -> List.of(
+    public static final Map<AbstractFirepitBlockEntity.BurnStage, List<ModelResourceLocation>> BURN_STAGE_MODELS = Helpers.mapOf(AbstractFirepitBlockEntity.BurnStage.class, e -> List.of(
         RenderHelpers.modelId("block/firepit_log_1_" + e.name().toLowerCase(Locale.ROOT)),
             RenderHelpers.modelId("block/firepit_log_2_" + e.name().toLowerCase(Locale.ROOT)),
             RenderHelpers.modelId("block/firepit_log_3_" + e.name().toLowerCase(Locale.ROOT)),

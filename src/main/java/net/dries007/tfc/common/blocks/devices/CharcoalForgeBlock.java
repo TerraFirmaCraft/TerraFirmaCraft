@@ -55,7 +55,7 @@ public class CharcoalForgeBlock extends DeviceBlock implements IBellowsConsumer
         BlockPos origin = BlockPos.ZERO;
         FORGE_MULTIBLOCK = new MultiBlock()
             // Top block
-            .match(origin.above(), state -> state.isAir() || Helpers.isBlock(state, TFCTags.Blocks.FORGE_INVISIBLE_WHITELIST))
+            .match(origin.above(), state -> state.isAir() || Helpers.isBlock(state, TFCTags.Blocks.CHARCOAL_FORGE_INVISIBLE))
             // Chimney
             .matchOneOf(origin.above(), new MultiBlock()
                 .match(origin, skyMatcher)
@@ -73,7 +73,7 @@ public class CharcoalForgeBlock extends DeviceBlock implements IBellowsConsumer
 
     public static boolean isForgeInsulationBlock(BlockState state)
     {
-        return Helpers.isBlock(state, TFCTags.Blocks.FORGE_INSULATION);
+        return Helpers.isBlock(state, TFCTags.Blocks.CHARCOAL_FORGE_INSULATION);
     }
 
     public CharcoalForgeBlock(ExtendedProperties properties)

@@ -1,0 +1,10 @@
+{
+  "values": [
+    "#c:stones",
+    "#c:stones/smooth",
+    "#minecraft:stone_bricks",
+    "#c:cobblestones",
+    "minecraft:bricks",
+    "tfc:fire_bricks"
+  ]
+}

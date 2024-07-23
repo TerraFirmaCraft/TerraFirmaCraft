@@ -22,7 +22,7 @@ public final class HeatView extends ComponentView<HeatComponent> implements IHea
     @Override
     public float getTemperature()
     {
-        return HeatCapability.adjustTemp(component.lastTemperature(), getHeatCapacity(), Calendars.get().getTicks() - component.lastTick());
+        return component.getTemperature();
     }
 
     @Override
@@ -34,7 +34,13 @@ public final class HeatView extends ComponentView<HeatComponent> implements IHea
     @Override
     public float getHeatCapacity()
     {
-        return component.heatCapacity() != 0f ? component.heatCapacity() : component.parent().heatCapacity();
+        return component.getHeatCapacity();
+    }
+
+    @Override
+    public void setHeatCapacity(float value)
+    {
+        apply(component.withHeatCapacity(value));
     }
 
     @Override

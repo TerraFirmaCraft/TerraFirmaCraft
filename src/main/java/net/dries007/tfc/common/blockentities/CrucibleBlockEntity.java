@@ -28,7 +28,6 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.DelegateItemHandler;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
-import net.dries007.tfc.common.capabilities.MoldLike;
 import net.dries007.tfc.common.capabilities.PartialFluidHandler;
 import net.dries007.tfc.common.capabilities.PartialItemHandler;
 import net.dries007.tfc.common.capabilities.SidedHandler;
@@ -38,6 +37,7 @@ import net.dries007.tfc.common.component.food.FoodTraits;
 import net.dries007.tfc.common.component.heat.HeatCapability;
 import net.dries007.tfc.common.component.heat.IHeat;
 import net.dries007.tfc.common.component.heat.IHeatConsumer;
+import net.dries007.tfc.common.component.mold.IMold;
 import net.dries007.tfc.common.container.CrucibleContainer;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
@@ -120,7 +120,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
                 // Re-query the input stack, as it may have changed.
                 // Try to handle draining from a mold-like item
                 final ItemStack drainStack = crucible.inventory.getStackInSlot(slot);
-                MoldLike mold = MoldLike.get(drainStack);
+                IMold mold = IMold.get(drainStack);
                 if (mold != null && mold.isMolten())
                 {
                     // Drain contents into the crucible
@@ -235,7 +235,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        return HeatCapability.maybeHas(stack) && (slot != SLOT_OUTPUT || Helpers.mightHaveCapability(stack, Capabilities.FluidHandler.ITEM));
+        return HeatCapability.has(stack) && (slot != SLOT_OUTPUT || Helpers.mightHaveCapability(stack, Capabilities.FluidHandler.ITEM));
     }
 
     @Override

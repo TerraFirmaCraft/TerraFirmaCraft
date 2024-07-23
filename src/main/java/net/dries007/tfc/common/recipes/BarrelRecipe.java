@@ -182,7 +182,7 @@ public class BarrelRecipe implements INoopInputRecipe, IRecipePredicate<BarrelIn
     }
 
     @Override
-    public ItemStack getResultItem(HolderLookup.Provider provider)
+    public ItemStack getResultItem(@Nullable HolderLookup.Provider provider)
     {
         return outputItem.getEmptyStack();
     }

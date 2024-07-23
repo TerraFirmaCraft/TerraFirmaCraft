@@ -1,0 +1,24 @@
+{
+  "values": [
+    "tfc:ore/cryolite/granite",
+    "tfc:ore/cryolite/diorite",
+    "tfc:ore/cryolite/gabbro",
+    "tfc:ore/cryolite/shale",
+    "tfc:ore/cryolite/claystone",
+    "tfc:ore/cryolite/limestone",
+    "tfc:ore/cryolite/conglomerate",
+    "tfc:ore/cryolite/dolomite",
+    "tfc:ore/cryolite/chert",
+    "tfc:ore/cryolite/chalk",
+    "tfc:ore/cryolite/rhyolite",
+    "tfc:ore/cryolite/basalt",
+    "tfc:ore/cryolite/andesite",
+    "tfc:ore/cryolite/dacite",
+    "tfc:ore/cryolite/quartzite",
+    "tfc:ore/cryolite/slate",
+    "tfc:ore/cryolite/phyllite",
+    "tfc:ore/cryolite/schist",
+    "tfc:ore/cryolite/gneiss",
+    "tfc:ore/cryolite/marble"
+  ]
+}

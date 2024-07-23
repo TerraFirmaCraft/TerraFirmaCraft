@@ -71,7 +71,7 @@ public record DataManagerSyncPacket(List<Entry<?>> values) implements CustomPack
 
         void handle()
         {
-            manager.onSync(values);
+            manager.bindValues(values);
         }
     }
 }

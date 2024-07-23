@@ -37,6 +37,7 @@ import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.IBellowsConsumer;
 import net.dries007.tfc.common.blocks.wood.Wood;
+import net.dries007.tfc.common.capabilities.TFCCapabilities;
 import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.component.food.FoodTraits;
 import net.dries007.tfc.common.container.TFCContainerTypes;
@@ -52,6 +53,8 @@ import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.ingredients.TFCIngredients;
 import net.dries007.tfc.common.recipes.outputs.ItemStackModifiers;
 import net.dries007.tfc.common.recipes.outputs.PotOutput;
+import net.dries007.tfc.compat.patchouli.PatchouliClientEventHandler;
+import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.util.CauldronInteractions;
@@ -92,7 +95,12 @@ public final class TerraFirmaCraft
         IEventBus bus
     ) {
         LOGGER.info("Initializing TerraFirmaCraft");
-        LOGGER.info("Options: Assertions Enabled = {}, Boostrap = {}, Test = {}, Debug Logging = {}", Helpers.ASSERTIONS_ENABLED, Helpers.BOOTSTRAP_ENVIRONMENT, Helpers.TEST_ENVIRONMENT, LOGGER.isDebugEnabled());
+        LOGGER.info("Options: Assertions = {}, Test = {}, Debug = {}, Production = {}, Dist = {}",
+            Helpers.ASSERTIONS_ENABLED,
+            Helpers.TEST_ENVIRONMENT,
+            LOGGER.isDebugEnabled(),
+            FMLEnvironment.production,
+            FMLEnvironment.dist);
 
         SelfTests.runWorldVersionTest();
 
@@ -105,10 +113,11 @@ public final class TerraFirmaCraft
         bus.addListener(this::loadComplete);
         bus.addListener(this::onInterModComms);
         bus.addListener(TFCEntities::onEntityAttributeCreation);
-        bus.addListener(Faunas::registerSpawnPlacements);
         bus.addListener(TFCComponents::onModifyDefaultComponents);
-        bus.addListener(PacketHandler::setup);
+        bus.addListener(TFCCapabilities::onRegisterCapabilities);
         bus.addListener(TFCCreativeTabs::setAllTabContentAsNonDecaying);
+        bus.addListener(Faunas::registerSpawnPlacements);
+        bus.addListener(PacketHandler::setup);
 
         // Core Registries (vanilla)
         TFCBlocks.BLOCKS.register(bus);
@@ -167,8 +176,7 @@ public final class TerraFirmaCraft
         {
             ClientEventHandler.init(mod, bus);
             ClientForgeEventHandler.init();
-            // todo 1.21, compat with patchy
-            //PatchouliClientEventHandler.init();
+            PatchouliClientEventHandler.init();
         }
 
         NeoForgeMod.enableMilkFluid();
@@ -180,7 +188,6 @@ public final class TerraFirmaCraft
 
         PropickItem.registerDefaultRepresentativeBlocks();
         InteractionManager.registerDefaultInteractions();
-        RockSettings.registerDefaultRocks();
         ServerCalendar.overrideDoDaylightCycleCallback();
 
         event.enqueueWork(() -> {
@@ -200,8 +207,8 @@ public final class TerraFirmaCraft
         });
 
         // todo 1.21, compat with patchy and jade
-        /*PatchouliIntegration.registerMultiBlocks();
-        if (ModList.get().isLoaded("jade"))
+        PatchouliIntegration.registerMultiBlocks();
+        /*if (ModList.get().isLoaded("jade"))
         {
             JadeIntegration.registerToolHandlers();
         }*/

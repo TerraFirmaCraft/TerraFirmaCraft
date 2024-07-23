@@ -7,9 +7,9 @@
 package net.dries007.tfc.common;
 
 import java.util.Map;
-import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
@@ -29,18 +29,9 @@ public class TFCTags
 {
     public static class Blocks
     {
-        public static final TagKey<Block> GRASS = tag("grass"); // Used for connected textures on grass blocks, different from the vanilla/forge tag
-        public static final TagKey<Block> TREE_GROWS_ON = tag("tree_grows_on"); // Used for tree growth
-        public static final TagKey<Block> SPREADING_FRUIT_GROWS_ON = tag("spreading_fruit_grows_on"); // pumpkins and melons will grow here
-        public static final TagKey<Block> BUSH_PLANTABLE_ON = tag("bush_plantable_on"); // Used for plant placement
-        public static final TagKey<Block> GRASS_PLANTABLE_ON = tag("grass_plantable_on"); // Grass has a slightly expanded placing allowance
         public static final TagKey<Block> PLANTS = tag("plants"); // for some decoration placement
         public static final TagKey<Block> SINGLE_BLOCK_REPLACEABLE = tag("single_block_replaceable"); // blocks that features can safely destroy
-        public static final TagKey<Block> SEA_BUSH_PLANTABLE_ON = tag("sea_bush_plantable_on"); // Used for sea plant placement
         public static final TagKey<Block> HALOPHYTE = tag("halophyte"); // Used for all saltwater plants that generate in salt marshes
-        public static final TagKey<Block> HALOPHYTE_PLANTABLE_ON = tag("halophyte_plantable_on"); // Used for halophyte placement
-        public static final TagKey<Block> CREEPING_PLANTABLE_ON = tag("creeping_plantable_on");
-        public static final TagKey<Block> CREEPING_STONE_PLANTABLE_ON = tag("creeping_stone_plantable_on");
         public static final TagKey<Block> KELP_TREE = tag("kelp_tree");
         public static final TagKey<Block> KELP_BRANCH = tag("kelp_branch");
         public static final TagKey<Block> WALL_CORALS = tag("wall_corals");
@@ -51,46 +42,18 @@ public class TFCTags
         public static final TagKey<Block> FRUIT_TREE_BRANCH = tag("fruit_tree_branch");
         public static final TagKey<Block> FRUIT_TREE_LEAVES = tag("fruit_tree_leaves");
         public static final TagKey<Block> FRUIT_TREE_SAPLING = tag("fruit_tree_sapling");
-        public static final TagKey<Block> SUPPORT_BEAM = tag("support_beams");
-        public static final TagKey<Block> WORKBENCHES = tag("workbenches");
         public static final TagKey<Block> THATCH_BED_THATCH = tag("thatch_bed_thatch");
         public static final TagKey<Block> SNOW = tag("snow"); // Blocks that cover grass with snow.
         public static final TagKey<Block> CAN_BE_SNOW_PILED = tag("can_be_snow_piled"); // Blocks that can be replaced with snow piles
         public static final TagKey<Block> CAN_BE_ICE_PILED = tag("can_be_ice_piled"); // Blocks that need to be replaced with ice piles, either from ice freezing below it, or ice freezing inside the block itself.
-        public static final TagKey<Block> BREAKS_WHEN_ISOLATED = tag("breaks_when_isolated"); // When surrounded on all six sides by air, this block will break and drop itself
         public static final TagKey<Block> LIT_BY_DROPPED_TORCH = tag("lit_by_dropped_torch"); // Causes dropped torches to start fires on them
-        public static final TagKey<Block> CHARCOAL_COVER_WHITELIST = tag("charcoal_cover_whitelist"); // things that skip the valid cover block check on charcoal pits
-        public static final TagKey<Block> FORGE_INSULATION = tag("forge_insulation"); // blocks that can hold a forge inside them
-        public static final TagKey<Block> FORGE_INVISIBLE_WHITELIST = tag("forge_invisible_whitelist"); // i.e., crucibles. stuff that can be in a forge's chimney
-        public static final TagKey<Block> BLOOMERY_INSULATION = tag("bloomery_insulation"); // valid blocks for bloomery structure
-        public static final TagKey<Block> BLAST_FURNACE_INSULATION = tag("blast_furnace_insulation"); // valid blocks for blast furnace structure
-        public static final TagKey<Block> SCRAPING_SURFACE = tag("scraping_surface"); // surfaces you can scrape hides on
-        public static final TagKey<Block> CAN_CARVE = tag("can_carve"); // carvable by TFC world carvers
-        public static final TagKey<Block> LOGS_THAT_LOG = tag("logs_that_log"); // logs that are cut down in entire trees
-        public static final TagKey<Block> NEEDS_STONE_TOOL = tag("needs_stone_tool"); // Equivalent to vanilla wood
-        public static final TagKey<Block> NEEDS_COPPER_TOOL = tag("needs_copper_tool"); // Equivalent to vanilla stone
-        public static final TagKey<Block> NEEDS_BRONZE_TOOL = tag("needs_bronze_tool"); // Equivalent to vanilla iron
-        public static final TagKey<Block> NEEDS_WROUGHT_IRON_TOOL = tag("needs_wrought_iron_tool");
-        public static final TagKey<Block> NEEDS_STEEL_TOOL = tag("needs_steel_tool"); // Equivalent to vanilla diamond
-        public static final TagKey<Block> NEEDS_BLACK_STEEL_TOOL = tag("needs_black_steel_tool");
-        public static final TagKey<Block> NEEDS_COLORED_STEEL_TOOL = tag("needs_colored_steel_tool"); // Equivalent to vanilla netherite
-        public static final TagKey<Block> MINEABLE_WITH_PROPICK = tag("mineable_with_propick");
-        public static final TagKey<Block> MINEABLE_WITH_CHISEL = tag("mineable_with_chisel");
-        public static final TagKey<Block> MINEABLE_WITH_HAMMER = tag("mineable_with_hammer");
-        public static final TagKey<Block> MINEABLE_WITH_KNIFE = tag("mineable_with_knife");
-        public static final TagKey<Block> MINEABLE_WITH_SCYTHE = tag("mineable_with_scythe");
-        public static final TagKey<Block> MINEABLE_WITH_GLASS_SAW = tag("mineable_with_glass_saw");
-        public static final TagKey<Block> PROSPECTABLE = tag("prospectable"); // can be found with the prospector pick
         public static final TagKey<Block> CONVERTS_TO_HUMUS = tag("converts_to_humus");
-        public static final TagKey<Block> WILD_CROP_GROWS_ON = tag("wild_crop_grows_on"); // Used for wild crops
-        public static final TagKey<Block> FARMLAND = tag("farmland"); // Crops that are not wild can grow on this
         public static final TagKey<Block> POWDER_SNOW_REPLACEABLE = tag("powder_snow_replaceable"); // on feature gen, can be replaced by powder snow
         public static final TagKey<Block> RABBIT_RAIDABLE = tag("rabbit_raidable"); // rabbits will break it
         public static final TagKey<Block> FOX_RAIDABLE = tag("fox_raidable"); // foxes will eat the berries. only applies to seasonal plant blocks
         public static final TagKey<Block> SEASONAL_LEAVES = tag("seasonal_leaves"); // drops fall leaf particles
         public static final TagKey<Block> PET_SITS_ON = tag("pet_sits_on"); // pet prefers to sit here.
         public static final TagKey<Block> MINECART_HOLDABLE = tag("minecart_holdable"); // blocks that carts will hold. this is a block tag to ensure it can render in the cart.
-        public static final TagKey<Block> SNOW_LAYER_SURVIVES_ON = tag("snow_layer_survives_on");
         public static final TagKey<Block> MONSTER_SPAWNS_ON = tag("monster_spawns_on");
         public static final TagKey<Block> BOTTOM_SUPPORT_ACCEPTED = tag("bottom_support_accepted"); // ignored by devices for bottom support
         public static final TagKey<Block> TIDE_POOL_BLOCKS = tag("tide_pool_blocks"); // groundcover blocks that spawn in tide pools
@@ -101,8 +64,6 @@ public class TFCTags
         public static final TagKey<Block> KAOLIN_CLAY_REPLACEABLE = tag("kaolin_clay_replaceable");
 
         // ===== Data Generated ===== //
-
-        public static final TagKey<Block> LAMPS = tag("lamps");
 
         /** If the block can trigger collapses to start nearby when mined */
         public static final TagKey<Block> CAN_TRIGGER_COLLAPSE = tag("can_trigger_collapse");
@@ -122,6 +83,8 @@ public class TFCTags
         public static final TagKey<Block> TOUGHNESS_1 = tag("toughness_1");
         public static final TagKey<Block> TOUGHNESS_2 = tag("toughness_2");
         public static final TagKey<Block> TOUGHNESS_3 = tag("toughness_3");
+        /** When surrounded on all six sides by air, this block will break and drop itself */
+        public static final TagKey<Block> BREAKS_WHEN_ISOLATED = tag("breaks_when_isolated");
 
         public static final TagKey<Block> STONES = Tags.Blocks.STONES; // Includes raw + hardened
         public static final TagKey<Block> STONES_RAW = commonTag("stones/raw");
@@ -130,11 +93,60 @@ public class TFCTags
         public static final TagKey<Block> STONES_SMOOTH_SLABS = commonTag("stones/smooth_slabs");
         public static final TagKey<Block> STONES_SPIKE = commonTag("stones/spike");
         public static final TagKey<Block> STONES_PRESSURE_PLATES = commonTag("stones/pressure_plate");
+        /** Common solid stone blocks, including stone, cobble, bricks, smooth, plus non-stone bricks */
+        public static final TagKey<Block> INSULATION = tag("insulation");
 
-        public static final TagKey<Block> FARMLANDS = commonTag("farmlands");
-        public static final TagKey<Block> PATHS = commonTag("paths");
-        public static final TagKey<Block> MUD = commonTag("mud");
-        public static final TagKey<Block> MUD_BRICKS = commonTag("mud_bricks");
+        public static final TagKey<Block> LAMPS = tag("lamps");
+
+        /** Logs that can be cut down in entire trees via axes */
+        public static final TagKey<Block> LOGS_THAT_LOG = tag("logs_that_log");
+        public static final TagKey<Block> WORKBENCHES = tag("workbenches");
+        public static final TagKey<Block> SUPPORT_BEAMS = tag("support_beams");
+
+        /** Blocks that are valid for covering a charcoal pit, in addition to the default non-flammable solid blocks */
+        public static final TagKey<Block> CHARCOAL_PIT_INSULATION = tag("charcoal_pit_insulation");
+        /** Blocks that are valid to surround a charcoal forge */
+        public static final TagKey<Block> CHARCOAL_FORGE_INSULATION = tag("charcoal_forge_insulation");
+        /** Blocks that are valid to obscure a charcoal forge without obscuring chimney access i.e. crucibles*/
+        public static final TagKey<Block> CHARCOAL_FORGE_INVISIBLE = tag("charcoal_forge_invisible");
+        /** Blocks that are valid for a bloomery multiblock structure */
+        public static final TagKey<Block> BLOOMERY_INSULATION = tag("bloomery_insulation");
+        /** Blocks that are valid for a blast furnace multiblock structure */
+        public static final TagKey<Block> BLAST_FURNACE_INSULATION = tag("blast_furnace_insulation");
+        public static final TagKey<Block> SCRAPING_SURFACE = tag("scraping_surface"); // surfaces you can scrape hides on
+
+        public static final TagKey<Block> MINEABLE_WITH_PROPICK = tag("mineable/propick");
+        public static final TagKey<Block> MINEABLE_WITH_CHISEL = tag("mineable/chisel");
+        public static final TagKey<Block> MINEABLE_WITH_HAMMER = tag("mineable/hammer");
+        public static final TagKey<Block> MINEABLE_WITH_KNIFE = tag("mineable/knife");
+        public static final TagKey<Block> MINEABLE_WITH_SCYTHE = tag("mineable/scythe");
+        public static final TagKey<Block> MINEABLE_WITH_GLASS_SAW = tag("mineable/glass_saw");
+
+        public static final TagKey<Block> MINEABLE_WITH_BLUNT_TOOL = tag("mineable/blunt");
+        public static final TagKey<Block> MINEABLE_WITH_SHARP_TOOL = tag("mineable/sharp");
+
+        public static final TagKey<Block> PROSPECTABLE = tag("prospectable"); // can be found with the prospector pick
+
+        /** The vanilla tag {@link BlockTags#DIRT} contains all dirts, grasses, muds. These tags mostly only contain the respective TFC blocks and identical ones */
+        public static final TagKey<Block> DIRT = tag("dirt");
+        public static final TagKey<Block> GRASS = tag("grass");
+        /** Used for non-wild crop growth. */
+        public static final TagKey<Block> FARMLANDS = tag("farmlands");
+        public static final TagKey<Block> PATHS = tag("paths");
+        public static final TagKey<Block> MUD = tag("mud");
+        public static final TagKey<Block> MUD_BRICKS = tag("mud_bricks");
+        /** Includes kaolin clay, both grass and clay block variants */
+        public static final TagKey<Block> CLAYS = tag("clays");
+        public static final TagKey<Block> KAOLIN_CLAYS = tag("clays/kaolin");
+
+        public static final TagKey<Block> TREE_GROWS_ON = tag("tree_grows_on"); // Used for tree growth
+        public static final TagKey<Block> WILD_CROP_GROWS_ON = tag("wild_crop_grows_on"); // Used for wild crops
+        public static final TagKey<Block> SPREADING_FRUIT_GROWS_ON = tag("spreading_fruit_grows_on"); // pumpkins and melons will grow here
+        public static final TagKey<Block> BUSH_PLANTABLE_ON = tag("bush_plantable_on"); // Used for plant placement
+        public static final TagKey<Block> GRASS_PLANTABLE_ON = tag("grass_plantable_on"); // Grass has a slightly expanded placing allowance
+        public static final TagKey<Block> SEA_BUSH_PLANTABLE_ON = tag("sea_bush_plantable_on"); // Used for sea plant placement
+        public static final TagKey<Block> HALOPHYTE_PLANTABLE_ON = tag("halophyte_plantable_on"); // Used for halophyte placement
+        public static final TagKey<Block> CREEPING_STONE_PLANTABLE_ON = tag("creeping_stone_plantable_on");
 
         private static TagKey<Block> tag(String name)
         {
@@ -211,9 +223,6 @@ public class TFCTags
         public static final TagKey<Item> PIT_KILN_STRAW = tag("pit_kiln_straw");
         public static final TagKey<Item> PIT_KILN_LOGS = tag("pit_kiln_logs");
         public static final TagKey<Item> CAN_BE_LIT_ON_TORCH = tag("can_be_lit_on_torch");
-        public static final TagKey<Item> FIREPIT_FUEL = tag("firepit_fuel");
-        public static final TagKey<Item> FORGE_FUEL = tag("forge_fuel");
-        public static final TagKey<Item> BLAST_FURNACE_FUEL = tag("blast_furnace_fuel");
         public static final TagKey<Item> HANDSTONE = tag("handstone");
         public static final TagKey<Item> HAND_WHEEL = tag("hand_wheel");
         public static final TagKey<Item> SCRAPABLE = tag("scrapable");
@@ -254,9 +263,6 @@ public class TFCTags
         public static final TagKey<Item> FROG_FOOD = tag("frog_food");
         public static final TagKey<Item> RABBIT_FOOD = tag("rabbit_food");
         public static final TagKey<Item> SCRIBING_INK = tag("scribing_ink");
-        public static final TagKey<Item> PILEABLE_INGOTS = tag("pileable_ingots"); // Ingots that can be added to piles
-        public static final TagKey<Item> PILEABLE_DOUBLE_INGOTS = tag("pileable_double_ingots"); // Double Ingots that can be added to piles
-        public static final TagKey<Item> PILEABLE_SHEETS = tag("pileable_sheets"); // Sheets that can be added to piles
         public static final TagKey<Item> FOX_SPAWNS_WITH = tag("fox_spawns_with"); // fox has a chance to spawn with this in its mouth
         public static final TagKey<Item> MOB_FEET_ARMOR = tag("mob_feet_armor"); // armor that mobs can put on their feet
         public static final TagKey<Item> MOB_LEG_ARMOR = tag("mob_leg_armor"); // armor that mobs can put on their legs
@@ -279,17 +285,7 @@ public class TFCTags
         public static final TagKey<Item> POWDERS = tag("powders");
         public static final TagKey<Item> BLOWPIPES = tag("blowpipes");
         public static final TagKey<Item> ALL_BLOWPIPES = tag("all_blowpipes");
-        public static final TagKey<Item> SILICA_ITEMS = tag("silica_items");
-        public static final TagKey<Item> HEMATITIC_ITEMS = tag("hematitic_items");
-        public static final TagKey<Item> OLIVINE_ITEMS = tag("olivine_items");
-        public static final TagKey<Item> VOLCANIC_ITEMS = tag("volcanic_items");
-        public static final TagKey<Item> IGNEOUS_INTRUSIVE_ITEMS = tag("igneous_intrusive_items");
-        public static final TagKey<Item> IGNEOUS_EXTRUSIVE_ITEMS = tag("igneous_extrusive_items");
-        public static final TagKey<Item> METAMORPHIC_ITEMS = tag("metamorphic_items");
-        public static final TagKey<Item> SEDIMENTARY_ITEMS = tag("sedimentary_items");
         public static final TagKey<Item> JARS = tag("jars");
-        public static final TagKey<Item> SEALED_JARS = tag("sealed_jars");
-        public static final TagKey<Item> UNSEALED_JARS = tag("unsealed_jars");
         public static final TagKey<Item> SEWING_DARK_CLOTH = tag("sewing_dark_cloth");
         public static final TagKey<Item> SEWING_LIGHT_CLOTH = tag("sewing_light_cloth");
         public static final TagKey<Item> SEWING_NEEDLES = tag("sewing_needles");
@@ -298,6 +294,7 @@ public class TFCTags
 
         // ===== Data Generated ===== //
 
+        public static final TagKey<Item> BOOKS = commonTag("books");
 
         public static final TagKey<Item> FRUITS = Tags.Items.FOODS_FRUIT;
         public static final TagKey<Item> VEGETABLES = Tags.Items.FOODS_VEGETABLE;
@@ -378,6 +375,17 @@ public class TFCTags
         public static final TagKey<Item> DOUBLE_SHEETS = commonTag("double_sheets");
         public static final TagKey<Item> DOUBLE_SHEETS_ANY_BRONZE = commonTag("double_sheets/any_bronze");
 
+        /** Ingots that can be added to piles - the union of all fluid heat tags */
+        public static final TagKey<Item> PILEABLE_INGOTS = tag("pileable_ingots");
+        /** Double ingots that can be added to piles - the union of all fluid heat tags */
+        public static final TagKey<Item> PILEABLE_DOUBLE_INGOTS = tag("pileable_double_ingots");
+        /** Sheets that can be added to piles - the union of all fluid heat tags */
+        public static final TagKey<Item> PILEABLE_SHEETS = tag("pileable_sheets");
+
+        public static final TagKey<Item> FIREPIT_FUEL = tag("firepit_fuel");
+        public static final TagKey<Item> FORGE_FUEL = tag("forge_fuel");
+        public static final TagKey<Item> BLAST_FURNACE_FUEL = tag("blast_furnace_fuel");
+
         public static final TagKey<Item> TOOLS_HAMMER = commonTag("tools/hammer");
         public static final TagKey<Item> TOOLS_SAW = commonTag("tools/saw");
         public static final TagKey<Item> TOOLS_KNIFE = commonTag("tools/knife");
@@ -408,8 +416,10 @@ public class TFCTags
         public static final TagKey<Item> STONES_SMOOTH_SLABS = tag(Blocks.STONES_SMOOTH_SLABS);
         public static final TagKey<Item> STONES_PRESSURE_PLATES = tag(Blocks.STONES_PRESSURE_PLATES);
 
-        public static final Map<RockCategory, TagKey<Item>> STONES_OF_CATEGORY = Helpers.mapOfKeys(RockCategory.class, type -> tag("stones/loose/" + type.getSerializedName()));
+        public static final Map<RockCategory, TagKey<Item>> STONES_OF_CATEGORY = Helpers.mapOf(RockCategory.class, type -> tag("stones/loose/" + type.getSerializedName()));
 
+        public static final TagKey<Item> DIRT = tag(Blocks.DIRT);
+        public static final TagKey<Item> GRASS = tag(Blocks.GRASS);
         public static final TagKey<Item> MUD = tag(Blocks.MUD);
         public static final TagKey<Item> MUD_BRICKS = tag(Blocks.MUD_BRICKS);
 

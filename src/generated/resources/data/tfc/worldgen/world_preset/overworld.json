@@ -1,0 +1,378 @@
+{
+  "dimensions": {
+    "minecraft:overworld": {
+      "type": "minecraft:overworld",
+      "generator": {
+        "type": "tfc:overworld",
+        "biome_source": {
+          "type": "tfc:overworld"
+        },
+        "settings": "minecraft:overworld",
+        "tfc_settings": {
+          "continentalness": 0.5,
+          "flat_bedrock": false,
+          "rainfall_scale": 20000,
+          "rock_layer_settings": {
+            "bottom": [
+              "gneiss",
+              "schist",
+              "diorite",
+              "granite",
+              "gabbro"
+            ],
+            "land": [
+              "igneous_extrusive",
+              "sedimentary"
+            ],
+            "layers": [
+              {
+                "id": "felsic",
+                "layers": {
+                  "granite": "bottom"
+                }
+              },
+              {
+                "id": "intermediate",
+                "layers": {
+                  "diorite": "bottom"
+                }
+              },
+              {
+                "id": "mafic",
+                "layers": {
+                  "gabbro": "bottom"
+                }
+              },
+              {
+                "id": "igneous_extrusive",
+                "layers": {
+                  "andesite": "intermediate",
+                  "basalt": "mafic",
+                  "dacite": "intermediate",
+                  "rhyolite": "felsic"
+                }
+              },
+              {
+                "id": "igneous_extrusive_x2",
+                "layers": {
+                  "andesite": "igneous_extrusive",
+                  "basalt": "igneous_extrusive",
+                  "dacite": "igneous_extrusive",
+                  "rhyolite": "igneous_extrusive"
+                }
+              },
+              {
+                "id": "phyllite",
+                "layers": {
+                  "gneiss": "bottom",
+                  "phyllite": "bottom",
+                  "schist": "bottom"
+                }
+              },
+              {
+                "id": "slate",
+                "layers": {
+                  "phyllite": "phyllite",
+                  "slate": "bottom"
+                }
+              },
+              {
+                "id": "marble",
+                "layers": {
+                  "marble": "bottom"
+                }
+              },
+              {
+                "id": "quartzite",
+                "layers": {
+                  "quartzite": "bottom"
+                }
+              },
+              {
+                "id": "sedimentary",
+                "layers": {
+                  "chalk": "marble",
+                  "chert": "quartzite",
+                  "claystone": "slate",
+                  "conglomerate": "slate",
+                  "dolomite": "marble",
+                  "limestone": "marble",
+                  "shale": "slate"
+                }
+              },
+              {
+                "id": "uplift",
+                "layers": {
+                  "diorite": "sedimentary",
+                  "gabbro": "sedimentary",
+                  "granite": "sedimentary",
+                  "marble": "bottom",
+                  "quartzite": "bottom",
+                  "slate": "phyllite"
+                }
+              }
+            ],
+            "ocean_floor": [
+              "igneous_extrusive"
+            ],
+            "rocks": {
+              "andesite": {
+                "cobble": "tfc:rock/cobble/andesite",
+                "gravel": "tfc:rock/gravel/andesite",
+                "hardened": "tfc:rock/hardened/andesite",
+                "loose": "tfc:rock/loose/andesite",
+                "mossy_loose": "tfc:rock/mossy_loose/andesite",
+                "raw": "tfc:rock/raw/andesite",
+                "sand": "tfc:sand/red",
+                "sandstone": "tfc:raw_sandstone/red",
+                "spike": "tfc:rock/spike/andesite"
+              },
+              "basalt": {
+                "cobble": "tfc:rock/cobble/basalt",
+                "gravel": "tfc:rock/gravel/basalt",
+                "hardened": "tfc:rock/hardened/basalt",
+                "loose": "tfc:rock/loose/basalt",
+                "mossy_loose": "tfc:rock/mossy_loose/basalt",
+                "raw": "tfc:rock/raw/basalt",
+                "sand": "tfc:sand/red",
+                "sandstone": "tfc:raw_sandstone/red",
+                "spike": "tfc:rock/spike/basalt"
+              },
+              "chalk": {
+                "cobble": "tfc:rock/cobble/chalk",
+                "gravel": "tfc:rock/gravel/chalk",
+                "hardened": "tfc:rock/hardened/chalk",
+                "loose": "tfc:rock/loose/chalk",
+                "mossy_loose": "tfc:rock/mossy_loose/chalk",
+                "raw": "tfc:rock/raw/chalk",
+                "sand": "tfc:sand/white",
+                "sandstone": "tfc:raw_sandstone/white",
+                "spike": "tfc:rock/spike/chalk"
+              },
+              "chert": {
+                "cobble": "tfc:rock/cobble/chert",
+                "gravel": "tfc:rock/gravel/chert",
+                "hardened": "tfc:rock/hardened/chert",
+                "loose": "tfc:rock/loose/chert",
+                "mossy_loose": "tfc:rock/mossy_loose/chert",
+                "raw": "tfc:rock/raw/chert",
+                "sand": "tfc:sand/yellow",
+                "sandstone": "tfc:raw_sandstone/yellow",
+                "spike": "tfc:rock/spike/chert"
+              },
+              "claystone": {
+                "cobble": "tfc:rock/cobble/claystone",
+                "gravel": "tfc:rock/gravel/claystone",
+                "hardened": "tfc:rock/hardened/claystone",
+                "loose": "tfc:rock/loose/claystone",
+                "mossy_loose": "tfc:rock/mossy_loose/claystone",
+                "raw": "tfc:rock/raw/claystone",
+                "sand": "tfc:sand/brown",
+                "sandstone": "tfc:raw_sandstone/brown",
+                "spike": "tfc:rock/spike/claystone"
+              },
+              "conglomerate": {
+                "cobble": "tfc:rock/cobble/conglomerate",
+                "gravel": "tfc:rock/gravel/conglomerate",
+                "hardened": "tfc:rock/hardened/conglomerate",
+                "loose": "tfc:rock/loose/conglomerate",
+                "mossy_loose": "tfc:rock/mossy_loose/conglomerate",
+                "raw": "tfc:rock/raw/conglomerate",
+                "sand": "tfc:sand/green",
+                "sandstone": "tfc:raw_sandstone/green",
+                "spike": "tfc:rock/spike/conglomerate"
+              },
+              "dacite": {
+                "cobble": "tfc:rock/cobble/dacite",
+                "gravel": "tfc:rock/gravel/dacite",
+                "hardened": "tfc:rock/hardened/dacite",
+                "loose": "tfc:rock/loose/dacite",
+                "mossy_loose": "tfc:rock/mossy_loose/dacite",
+                "raw": "tfc:rock/raw/dacite",
+                "sand": "tfc:sand/red",
+                "sandstone": "tfc:raw_sandstone/red",
+                "spike": "tfc:rock/spike/dacite"
+              },
+              "diorite": {
+                "cobble": "tfc:rock/cobble/diorite",
+                "gravel": "tfc:rock/gravel/diorite",
+                "hardened": "tfc:rock/hardened/diorite",
+                "loose": "tfc:rock/loose/diorite",
+                "mossy_loose": "tfc:rock/mossy_loose/diorite",
+                "raw": "tfc:rock/raw/diorite",
+                "sand": "tfc:sand/white",
+                "sandstone": "tfc:raw_sandstone/white",
+                "spike": "tfc:rock/spike/diorite"
+              },
+              "dolomite": {
+                "cobble": "tfc:rock/cobble/dolomite",
+                "gravel": "tfc:rock/gravel/dolomite",
+                "hardened": "tfc:rock/hardened/dolomite",
+                "loose": "tfc:rock/loose/dolomite",
+                "mossy_loose": "tfc:rock/mossy_loose/dolomite",
+                "raw": "tfc:rock/raw/dolomite",
+                "sand": "tfc:sand/black",
+                "sandstone": "tfc:raw_sandstone/black",
+                "spike": "tfc:rock/spike/dolomite"
+              },
+              "gabbro": {
+                "cobble": "tfc:rock/cobble/gabbro",
+                "gravel": "tfc:rock/gravel/gabbro",
+                "hardened": "tfc:rock/hardened/gabbro",
+                "loose": "tfc:rock/loose/gabbro",
+                "mossy_loose": "tfc:rock/mossy_loose/gabbro",
+                "raw": "tfc:rock/raw/gabbro",
+                "sand": "tfc:sand/black",
+                "sandstone": "tfc:raw_sandstone/black",
+                "spike": "tfc:rock/spike/gabbro"
+              },
+              "gneiss": {
+                "cobble": "tfc:rock/cobble/gneiss",
+                "gravel": "tfc:rock/gravel/gneiss",
+                "hardened": "tfc:rock/hardened/gneiss",
+                "loose": "tfc:rock/loose/gneiss",
+                "mossy_loose": "tfc:rock/mossy_loose/gneiss",
+                "raw": "tfc:rock/raw/gneiss",
+                "sand": "tfc:sand/green",
+                "sandstone": "tfc:raw_sandstone/green",
+                "spike": "tfc:rock/spike/gneiss"
+              },
+              "granite": {
+                "cobble": "tfc:rock/cobble/granite",
+                "gravel": "tfc:rock/gravel/granite",
+                "hardened": "tfc:rock/hardened/granite",
+                "loose": "tfc:rock/loose/granite",
+                "mossy_loose": "tfc:rock/mossy_loose/granite",
+                "raw": "tfc:rock/raw/granite",
+                "sand": "tfc:sand/brown",
+                "sandstone": "tfc:raw_sandstone/brown",
+                "spike": "tfc:rock/spike/granite"
+              },
+              "limestone": {
+                "cobble": "tfc:rock/cobble/limestone",
+                "gravel": "tfc:rock/gravel/limestone",
+                "hardened": "tfc:rock/hardened/limestone",
+                "loose": "tfc:rock/loose/limestone",
+                "mossy_loose": "tfc:rock/mossy_loose/limestone",
+                "raw": "tfc:rock/raw/limestone",
+                "sand": "tfc:sand/white",
+                "sandstone": "tfc:raw_sandstone/white",
+                "spike": "tfc:rock/spike/limestone"
+              },
+              "marble": {
+                "cobble": "tfc:rock/cobble/marble",
+                "gravel": "tfc:rock/gravel/marble",
+                "hardened": "tfc:rock/hardened/marble",
+                "loose": "tfc:rock/loose/marble",
+                "mossy_loose": "tfc:rock/mossy_loose/marble",
+                "raw": "tfc:rock/raw/marble",
+                "sand": "tfc:sand/white",
+                "sandstone": "tfc:raw_sandstone/white",
+                "spike": "tfc:rock/spike/marble"
+              },
+              "phyllite": {
+                "cobble": "tfc:rock/cobble/phyllite",
+                "gravel": "tfc:rock/gravel/phyllite",
+                "hardened": "tfc:rock/hardened/phyllite",
+                "loose": "tfc:rock/loose/phyllite",
+                "mossy_loose": "tfc:rock/mossy_loose/phyllite",
+                "raw": "tfc:rock/raw/phyllite",
+                "sand": "tfc:sand/brown",
+                "sandstone": "tfc:raw_sandstone/brown",
+                "spike": "tfc:rock/spike/phyllite"
+              },
+              "quartzite": {
+                "cobble": "tfc:rock/cobble/quartzite",
+                "gravel": "tfc:rock/gravel/quartzite",
+                "hardened": "tfc:rock/hardened/quartzite",
+                "loose": "tfc:rock/loose/quartzite",
+                "mossy_loose": "tfc:rock/mossy_loose/quartzite",
+                "raw": "tfc:rock/raw/quartzite",
+                "sand": "tfc:sand/yellow",
+                "sandstone": "tfc:raw_sandstone/yellow",
+                "spike": "tfc:rock/spike/quartzite"
+              },
+              "rhyolite": {
+                "cobble": "tfc:rock/cobble/rhyolite",
+                "gravel": "tfc:rock/gravel/rhyolite",
+                "hardened": "tfc:rock/hardened/rhyolite",
+                "loose": "tfc:rock/loose/rhyolite",
+                "mossy_loose": "tfc:rock/mossy_loose/rhyolite",
+                "raw": "tfc:rock/raw/rhyolite",
+                "sand": "tfc:sand/red",
+                "sandstone": "tfc:raw_sandstone/red",
+                "spike": "tfc:rock/spike/rhyolite"
+              },
+              "schist": {
+                "cobble": "tfc:rock/cobble/schist",
+                "gravel": "tfc:rock/gravel/schist",
+                "hardened": "tfc:rock/hardened/schist",
+                "loose": "tfc:rock/loose/schist",
+                "mossy_loose": "tfc:rock/mossy_loose/schist",
+                "raw": "tfc:rock/raw/schist",
+                "sand": "tfc:sand/green",
+                "sandstone": "tfc:raw_sandstone/green",
+                "spike": "tfc:rock/spike/schist"
+              },
+              "shale": {
+                "cobble": "tfc:rock/cobble/shale",
+                "gravel": "tfc:rock/gravel/shale",
+                "hardened": "tfc:rock/hardened/shale",
+                "loose": "tfc:rock/loose/shale",
+                "mossy_loose": "tfc:rock/mossy_loose/shale",
+                "raw": "tfc:rock/raw/shale",
+                "sand": "tfc:sand/black",
+                "sandstone": "tfc:raw_sandstone/black",
+                "spike": "tfc:rock/spike/shale"
+              },
+              "slate": {
+                "cobble": "tfc:rock/cobble/slate",
+                "gravel": "tfc:rock/gravel/slate",
+                "hardened": "tfc:rock/hardened/slate",
+                "loose": "tfc:rock/loose/slate",
+                "mossy_loose": "tfc:rock/mossy_loose/slate",
+                "raw": "tfc:rock/raw/slate",
+                "sand": "tfc:sand/brown",
+                "sandstone": "tfc:raw_sandstone/brown",
+                "spike": "tfc:rock/spike/slate"
+              }
+            },
+            "uplift": [
+              "sedimentary",
+              "uplift"
+            ],
+            "volcanic": [
+              "igneous_extrusive",
+              "igneous_extrusive_x2"
+            ]
+          },
+          "spawn_center_x": 0,
+          "spawn_center_z": 0,
+          "spawn_distance": 4000,
+          "temperature_scale": 20000
+        }
+      }
+    },
+    "minecraft:the_end": {
+      "type": "minecraft:the_end",
+      "generator": {
+        "type": "minecraft:noise",
+        "biome_source": {
+          "type": "minecraft:the_end"
+        },
+        "settings": "minecraft:end"
+      }
+    },
+    "minecraft:the_nether": {
+      "type": "minecraft:the_nether",
+      "generator": {
+        "type": "minecraft:noise",
+        "biome_source": {
+          "type": "minecraft:multi_noise",
+          "preset": "minecraft:nether"
+        },
+        "settings": "minecraft:nether"
+      }
+    }
+  }
+}

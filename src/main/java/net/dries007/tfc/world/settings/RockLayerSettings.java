@@ -27,9 +27,9 @@ import net.dries007.tfc.world.region.ChooseRocks;
 
 public final class RockLayerSettings
 {
-    public static final Codec<RockLayerSettings> CODEC = Data.CODEC.comapFlatMap(RockLayerSettings::processData, r -> r.data);
+    public static final Codec<RockLayerSettings> CODEC = Data.CODEC.comapFlatMap(RockLayerSettings::decode, r -> r.data);
 
-    private static DataResult<RockLayerSettings> processData(Data data)
+    public static DataResult<RockLayerSettings> decode(Data data)
     {
         final List<Layer> bottom = new ArrayList<>();
         for (String id : data.bottom)
@@ -197,11 +197,6 @@ public final class RockLayerSettings
             Codec.STRING.listOf().fieldOf("volcanic").forGetter(c -> c.volcanic),
             Codec.STRING.listOf().fieldOf("uplift").forGetter(c -> c.uplift)
         ).apply(instance, Data::new));
-
-        public RockLayerSettings parse()
-        {
-            return RockLayerSettings.processData(this).getOrThrow();
-        }
     }
 
     public record LayerData(String id, Map<String, String> layers)

@@ -1,0 +1,23 @@
+{
+  "values": [
+    "#c:glass_blocks",
+    "#c:glass_panes",
+    "tfc:white_poured_glass",
+    "tfc:orange_poured_glass",
+    "tfc:magenta_poured_glass",
+    "tfc:light_blue_poured_glass",
+    "tfc:yellow_poured_glass",
+    "tfc:lime_poured_glass",
+    "tfc:pink_poured_glass",
+    "tfc:gray_poured_glass",
+    "tfc:light_gray_poured_glass",
+    "tfc:cyan_poured_glass",
+    "tfc:purple_poured_glass",
+    "tfc:blue_poured_glass",
+    "tfc:brown_poured_glass",
+    "tfc:green_poured_glass",
+    "tfc:red_poured_glass",
+    "tfc:black_poured_glass",
+    "tfc:poured_glass"
+  ]
+}

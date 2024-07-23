@@ -39,6 +39,11 @@ public final class HeatCapability
         return value != null ? new HeatView(stack, value) : null;
     }
 
+    public static boolean has(ItemStack stack)
+    {
+        return stack.has(TFCComponents.HEAT);
+    }
+
     /**
      * @return The temperature of a given {@code stack}, or {@code 0} if the item is not heatable.
      */
@@ -58,16 +63,6 @@ public final class HeatCapability
         {
             heat.setTemperature(temperature);
         }
-    }
-
-    public static boolean has(ItemStack stack)
-    {
-        return stack.has(TFCComponents.HEAT); // todo: 1.21 porting
-    }
-
-    public static boolean maybeHas(ItemStack stack)
-    {
-        return stack.has(TFCComponents.HEAT); // todo: 1.21 porting
     }
 
     /**

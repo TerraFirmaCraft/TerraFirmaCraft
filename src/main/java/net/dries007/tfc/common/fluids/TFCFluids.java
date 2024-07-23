@@ -45,7 +45,7 @@ public final class TFCFluids
     /**
      * Fluid instances
      */
-    public static final Map<Metal, FluidHolder<BaseFlowingFluid>> METALS = Helpers.mapOfKeys(Metal.class, metal -> register(
+    public static final Map<Metal, FluidHolder<BaseFlowingFluid>> METALS = Helpers.mapOf(Metal.class, metal -> register(
         "metal/" + metal.getSerializedName(),
         properties -> properties
             .block(TFCBlocks.METAL_FLUIDS.get(metal))
@@ -82,7 +82,7 @@ public final class TFCFluids
 
     public static final DeferredHolder<Fluid, RiverWaterFluid> RIVER_WATER = FLUIDS.register("river_water", RiverWaterFluid::new);
 
-    public static final Map<SimpleFluid, FluidHolder<BaseFlowingFluid>> SIMPLE_FLUIDS = Helpers.mapOfKeys(SimpleFluid.class, fluid -> register(
+    public static final Map<SimpleFluid, FluidHolder<BaseFlowingFluid>> SIMPLE_FLUIDS = Helpers.mapOf(SimpleFluid.class, fluid -> register(
         fluid.getId(),
         properties -> properties
             .block(TFCBlocks.SIMPLE_FLUIDS.get(fluid))
@@ -94,7 +94,7 @@ public final class TFCFluids
         MixingFluid.Flowing::new
     ));
 
-    public static final Map<DyeColor, FluidHolder<BaseFlowingFluid>> COLORED_FLUIDS = Helpers.mapOfKeys(DyeColor.class, color -> register(
+    public static final Map<DyeColor, FluidHolder<BaseFlowingFluid>> COLORED_FLUIDS = Helpers.mapOf(DyeColor.class, color -> register(
         color.getName() + "_dye",
         properties -> properties
             .block(TFCBlocks.COLORED_FLUIDS.get(color))

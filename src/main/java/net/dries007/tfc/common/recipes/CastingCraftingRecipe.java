@@ -19,6 +19,7 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.MoldLike;
+import net.dries007.tfc.common.component.mold.IMold;
 
 public class CastingCraftingRecipe extends CustomRecipe
 {
@@ -32,14 +33,14 @@ public class CastingCraftingRecipe extends CustomRecipe
     @Override
     public boolean matches(CraftingInput input, Level level)
     {
-        final MoldLike mold = getMold(input);
+        final IMold mold = getMold(input);
         return mold != null && !mold.isMolten() && CastingRecipe.get(mold) != null;
     }
 
     @Override
     public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries)
     {
-        final MoldLike mold = getMold(input);
+        final IMold mold = getMold(input);
         if (mold != null)
         {
             final CastingRecipe recipe = CastingRecipe.get(mold);
@@ -64,7 +65,7 @@ public class CastingCraftingRecipe extends CustomRecipe
         for (int i = 0; i < input.size(); i++)
         {
             ItemStack item = input.getItem(i);
-            final MoldLike mold = MoldLike.get(item);
+            final IMold mold = IMold.get(item);
             if (!item.isEmpty() && mold != null)
             {
                 final CastingRecipe recipe = CastingRecipe.get(mold);
@@ -94,9 +95,9 @@ public class CastingCraftingRecipe extends CustomRecipe
      * @return The single mold in the crafting container, if one and only exactly one can be found, paired with its ItemStack, otherwise null.
      */
     @Nullable
-    private MoldLike getMold(CraftingInput input)
+    private IMold getMold(CraftingInput input)
     {
-        MoldLike mold = null;
+        IMold mold = null;
         for (int i = 0; i < input.size(); i++)
         {
             ItemStack stack = input.getItem(i);
@@ -104,7 +105,7 @@ public class CastingCraftingRecipe extends CustomRecipe
             {
                 if (mold == null)
                 {
-                    mold = MoldLike.get(stack);
+                    mold = IMold.get(stack);
                     if (mold == null)
                     {
                         return null; // stack that's not a mold

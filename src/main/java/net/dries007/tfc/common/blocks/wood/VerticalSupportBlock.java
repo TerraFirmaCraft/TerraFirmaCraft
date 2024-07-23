@@ -73,7 +73,7 @@ public class VerticalSupportBlock extends Block implements IForgeBlockExtension,
         for (Direction d : Direction.Plane.HORIZONTAL)
         {
             mutablePos.setWithOffset(context.getClickedPos(), d);
-            state = state.setValue(PROPERTY_BY_DIRECTION.get(d), Helpers.isBlock(context.getLevel().getBlockState(mutablePos), TFCTags.Blocks.SUPPORT_BEAM));
+            state = state.setValue(PROPERTY_BY_DIRECTION.get(d), Helpers.isBlock(context.getLevel().getBlockState(mutablePos), TFCTags.Blocks.SUPPORT_BEAMS));
         }
         final FluidState fluid = context.getLevel().getFluidState(context.getClickedPos());
         state = state.setValue(getFluidProperty(), getFluidProperty().keyForOrEmpty(fluid.getType()));
@@ -114,11 +114,11 @@ public class VerticalSupportBlock extends Block implements IForgeBlockExtension,
         FluidHelpers.tickFluid(level, currentPos, state);
         if (facing.getAxis().isHorizontal())
         {
-            state = state.setValue(PROPERTY_BY_DIRECTION.get(facing), Helpers.isBlock(facingState, TFCTags.Blocks.SUPPORT_BEAM));
+            state = state.setValue(PROPERTY_BY_DIRECTION.get(facing), Helpers.isBlock(facingState, TFCTags.Blocks.SUPPORT_BEAMS));
         }
         else if (facing == Direction.DOWN)
         {
-            if (Helpers.isBlock(facingState, TFCTags.Blocks.SUPPORT_BEAM) || facingState.isFaceSturdy(level, facingPos, Direction.UP, SupportType.CENTER))
+            if (Helpers.isBlock(facingState, TFCTags.Blocks.SUPPORT_BEAMS) || facingState.isFaceSturdy(level, facingPos, Direction.UP, SupportType.CENTER))
             {
                 return state;
             }
@@ -132,7 +132,7 @@ public class VerticalSupportBlock extends Block implements IForgeBlockExtension,
     {
         BlockPos belowPos = pos.below();
         BlockState belowState = level.getBlockState(belowPos);
-        return Helpers.isBlock(belowState, TFCTags.Blocks.SUPPORT_BEAM) || belowState.isFaceSturdy(level, belowPos, Direction.UP, SupportType.CENTER);
+        return Helpers.isBlock(belowState, TFCTags.Blocks.SUPPORT_BEAMS) || belowState.isFaceSturdy(level, belowPos, Direction.UP, SupportType.CENTER);
     }
 
     @Override

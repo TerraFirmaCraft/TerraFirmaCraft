@@ -1,5 +1,6 @@
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 
 plugins {
     id("net.neoforged.moddev") version "0.1.126"
@@ -15,7 +16,7 @@ val parchmentMinecraftVersion: String = "1.21"
 
 // Dependency versions
 val jeiVersion: String = "15.2.0.21"
-val patchouliVersion: String = "1.20.1-81-FORGE"
+val patchouliVersion: String = "1.21-87-NEOFORGE-SNAPSHOT"
 val jadeVersion: String = "4614153"
 val topVersion: String = "4629624"
 
@@ -49,6 +50,14 @@ repositories {
     }
 }
 
+sourceSets {
+    main {
+        resources { srcDir(modDataOutput) }
+    }
+    create("data")
+    create("deprecated")
+}
+
 dependencies {
     // JEI
     //compileOnly(fg.deobf("mezz.jei:jei-$minecraftVersion-forge-api:$jeiVersion"))
@@ -57,8 +66,7 @@ dependencies {
 
     // Patchouli
     // We need to compile against the full JAR, not just the API, because we do some egregious hacks.
-    //compileOnly(fg.deobf("vazkii.patchouli:Patchouli:$patchouliVersion"))
-    //runtimeOnly(fg.deobf("vazkii.patchouli:Patchouli:$patchouliVersion"))
+    implementation("vazkii.patchouli:Patchouli:$patchouliVersion")
 
     // Jade / The One Probe
     //compileOnly(fg.deobf("curse.maven:jade-324717:${jadeVersion}"))
@@ -68,23 +76,14 @@ dependencies {
     //runtimeOnly(fg.deobf("curse.maven:jade-324717:${jadeVersion}"))
     // runtimeOnly(fg.deobf("curse.maven:top-245211:${topVersion}"))
 
-    // JUnit
-    // There is not a testImplementation-like configuration, AFAIK, that is available at minecraft runtime, so we use minecraftLibrary
-    //minecraftLibrary("org.junit.jupiter:junit-jupiter-api:5.9.2")
-    //minecraftLibrary("org.junit.jupiter:junit-jupiter-engine:5.9.2")
-}
+    // Data
+    "dataImplementation"(sourceSets["main"].output)
 
-sourceSets.main {
-    resources {
-        srcDir(modDataOutput)
-    }
-}
-val sourceSetsDeprecated = sourceSets.create("deprecated") {} // A source set for compat/test code that is currently not functional
-sourceSets {
-    create("data") {
-        runtimeClasspath += sourceSets.main.get().output
-        compileClasspath += sourceSets.main.get().output
-    }
+    // Test
+    // Use JUnit at runtime, plus depend on data to allow us to mock certain data without having to load a server
+    testImplementation(sourceSets["data"].output)
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.3")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.10.3")
 }
 
 neoForge {
@@ -123,6 +122,11 @@ neoForge {
             sourceSet(sourceSets.main.get())
             sourceSet(sourceSets["data"])
         }
+    }
+
+    unitTest {
+        enable()
+        testedMod = mods[modId];
     }
 }
 
@@ -172,12 +176,7 @@ tasks {
 
     test {
         useJUnitPlatform()
-        testLogging {
-            events("failed")
-
-            showStackTraces = true
-            exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
-        }
+        systemProperty("junit.jupiter.extensions.autodetection.enabled", "true")
     }
 
     jar {
