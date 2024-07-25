@@ -130,7 +130,9 @@ import net.dries007.tfc.client.model.entity.TigerModel;
 import net.dries007.tfc.client.model.entity.TurkeyModel;
 import net.dries007.tfc.client.model.entity.WaterWheelModel;
 import net.dries007.tfc.client.model.entity.WildebeestModel;
+import net.dries007.tfc.client.model.entity.WindmillBladeLatticeModel;
 import net.dries007.tfc.client.model.entity.WindmillBladeModel;
+import net.dries007.tfc.client.model.entity.WindmillBladeRusticModel;
 import net.dries007.tfc.client.model.entity.YakModel;
 import net.dries007.tfc.client.particle.AnimatedParticle;
 import net.dries007.tfc.client.particle.BubbleParticle;
@@ -712,6 +714,8 @@ public final class ClientEventHandler
         event.registerLayerDefinition(RenderHelpers.layerId("bell_body"), BellRenderer::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.layerId("water_wheel"), WaterWheelModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.layerId("windmill_blade"), WindmillBladeModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("windmill_blade_lattice"), WindmillBladeLatticeModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("windmill_blade_rustic"), WindmillBladeRusticModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.layerId("horse_chest"), ChestedHorseModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.layerId("mule"), ChestedHorseModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.layerId("donkey"), ChestedHorseModel::createBodyLayer);

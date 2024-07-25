@@ -20,6 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.BlockItemStateProperties;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -70,10 +71,10 @@ public class BlockItemPlacement implements InteractionManager.OnItemUseAction
         }
     }
 
-    private final Supplier<? extends Item> item;
+    private final ItemLike item;
     private final Supplier<? extends Block> block;
 
-    public BlockItemPlacement(Supplier<? extends Item> item, Supplier<? extends Block> block)
+    public BlockItemPlacement(ItemLike item, Supplier<? extends Block> block)
     {
         this.item = item;
         this.block = block;
@@ -81,12 +82,12 @@ public class BlockItemPlacement implements InteractionManager.OnItemUseAction
 
     public Iterable<Item> getItems()
     {
-        return Collections.singleton(item.get());
+        return Collections.singleton(item.asItem());
     }
 
     public Item getItem()
     {
-        return item.get();
+        return item.asItem();
     }
 
     /**

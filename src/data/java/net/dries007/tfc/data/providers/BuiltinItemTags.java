@@ -190,8 +190,11 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             .add(TFCBlocks.SMALL_ORES);
         tag(WATER_WHEELS).add(TFCBlocks.WOODS, Wood.BlockType.WATER_WHEEL);
         tag(WINDMILL_BLADES)
-            .add(TFCItems.WINDMILL_BLADES.get(DyeColor.WHITE))
-            .addTag(COLORED_WINDMILL_BLADES);
+            .addTag(COLORED_WINDMILL_BLADES)
+            .add(
+                TFCItems.WINDMILL_BLADES.get(DyeColor.WHITE),
+                TFCItems.LATTICE_WINDMILL_BLADE,
+                TFCItems.RUSTIC_WINDMILL_BLADE);
         tag(AXLES).add(TFCBlocks.WOODS, Wood.BlockType.AXLE);
         tag(LUMBER).add(TFCItems.LUMBER);
 

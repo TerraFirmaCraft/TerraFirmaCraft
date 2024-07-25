@@ -240,7 +240,7 @@ public final class InteractionManager
                 final BlockPos offsetPos = blockContext.getClickedPos();
                 final BlockState clickedState = level.getBlockState(clickedPos);
                 final BlockState offsetState = level.getBlockState(offsetPos);
-                final BlockItemPlacement placement = new BlockItemPlacement(() -> Items.CHARCOAL, TFCBlocks.CHARCOAL_PILE);
+                final BlockItemPlacement placement = new BlockItemPlacement(Items.CHARCOAL, TFCBlocks.CHARCOAL_PILE);
 
                 if (Helpers.isBlock(clickedState, TFCBlocks.CHARCOAL_PILE.get()) && clickedState.getValue(CharcoalPileBlock.LAYERS) < 8)
                 {
@@ -280,7 +280,7 @@ public final class InteractionManager
         // - holding log, targeting block, shift click = place log pile
         // - holding log, targeting log pile, shift click = insert all
         // - holding log, targeting log pile, click normally = insert one
-        final BlockItemPlacement logPilePlacement = new BlockItemPlacement(() -> Items.AIR, TFCBlocks.LOG_PILE);
+        final BlockItemPlacement logPilePlacement = new BlockItemPlacement(Items.AIR, TFCBlocks.LOG_PILE);
         register(Ingredient.of(TFCTags.Items.LOG_PILE_LOGS), false, (stack, context) -> {
             final Player player = context.getPlayer();
             if (player != null && player.mayBuild() && player.isShiftKeyDown())
@@ -371,7 +371,7 @@ public final class InteractionManager
             }
         }
 
-        register(new BlockItemPlacement(() -> Items.BOWL, TFCBlocks.WOODEN_BOWL));
+        register(new BlockItemPlacement(Items.BOWL, TFCBlocks.WOODEN_BOWL));
 
         // Knapping
         register(Ingredient.of(TFCTags.Items.ANY_KNAPPING), false, true, (stack, context) -> {
@@ -395,8 +395,8 @@ public final class InteractionManager
         // Piles (Ingots + Sheets)
         // Shift + Click = Add to pile (either on the targeted pile, or create a new one)
         // Removal (Non-Shift Click) is handled by the respective pile block
-        final BlockItemPlacement ingotPilePlacement = new BlockItemPlacement(() -> Items.AIR, TFCBlocks.INGOT_PILE);
-        final BlockItemPlacement doubleIngotPilePlacement = new BlockItemPlacement(() -> Items.AIR, TFCBlocks.DOUBLE_INGOT_PILE);
+        final BlockItemPlacement ingotPilePlacement = new BlockItemPlacement(Items.AIR, TFCBlocks.INGOT_PILE);
+        final BlockItemPlacement doubleIngotPilePlacement = new BlockItemPlacement(Items.AIR, TFCBlocks.DOUBLE_INGOT_PILE);
 
         register(Ingredient.of(TFCTags.Items.PILEABLE_INGOTS), false, (stack, context) -> doIngotPiling(ingotPilePlacement, stack, context, (IngotPileBlock) TFCBlocks.INGOT_PILE.get(), IngotPileBlock.COUNT, 64));
         register(Ingredient.of(TFCTags.Items.PILEABLE_DOUBLE_INGOTS), false, (stack, context) -> doIngotPiling(doubleIngotPilePlacement, stack, context, (IngotPileBlock) TFCBlocks.DOUBLE_INGOT_PILE.get(), DoubleIngotPileBlock.DOUBLE_COUNT, 36));

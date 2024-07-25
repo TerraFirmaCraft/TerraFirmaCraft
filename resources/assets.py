@@ -2015,6 +2015,9 @@ def generate(rm: ResourceManager):
         else:
             rm.item_model('windmill_blade', 'tfc:item/windmill_blade/white').with_lang(lang('windmill blade'))
 
+    rm.item_model('lattice_windmill_blade', 'tfc:item/windmill_blade/lattice').with_lang(lang('lattice windmill blade'))
+    rm.item_model('rustic_windmill_blade', 'tfc:item/windmill_blade/rustic').with_lang(lang('rustic windmill blade'))
+
     rm.blockstate('poured_glass').with_block_model({'all': 'minecraft:block/glass'}, parent='tfc:block/template_poured_glass').with_lang(lang('poured glass')).with_block_loot('minecraft:glass_pane')
     rm.item_model('poured_glass', 'minecraft:block/glass')
     rm.blockstate('hot_poured_glass').with_block_model({'particle': 'tfc:block/glass/1'}, parent=None).with_lang(lang('hot poured glass'))

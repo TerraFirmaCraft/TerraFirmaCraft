@@ -1,6 +1,8 @@
 {
   "values": [
+    "#tfc:colored_windmill_blades",
     "tfc:windmill_blade/white",
-    "#tfc:colored_windmill_blades"
+    "tfc:lattice_windmill_blade",
+    "tfc:rustic_windmill_blade"
   ]
 }

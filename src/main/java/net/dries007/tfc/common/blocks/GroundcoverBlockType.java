@@ -11,6 +11,8 @@ import java.util.function.Supplier;
 
 import net.dries007.tfc.common.items.Powder;
 import net.dries007.tfc.common.items.TFCItems;
+
+import net.minecraft.world.level.ItemLike;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.item.BlockItem;
@@ -21,34 +23,33 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public enum GroundcoverBlockType
 {
-    BONE(GroundcoverBlock.MEDIUM, () -> Items.BONE),
+    BONE(GroundcoverBlock.MEDIUM, Items.BONE),
     CLAM(GroundcoverBlock.SMALL),
     DEAD_GRASS(GroundcoverBlock.PIXEL_HIGH),
     DRIFTWOOD(GroundcoverBlock.FLAT),
-    FEATHER(GroundcoverBlock.FLAT, () -> Items.FEATHER),
-    FLINT(GroundcoverBlock.SMALL, () -> Items.FLINT),
+    FEATHER(GroundcoverBlock.FLAT, Items.FEATHER),
+    FLINT(GroundcoverBlock.SMALL, Items.FLINT),
     GUANO(GroundcoverBlock.PIXEL_HIGH),
     HUMUS(GroundcoverBlock.PIXEL_HIGH),
     MOLLUSK(GroundcoverBlock.SMALL),
     MUSSEL(GroundcoverBlock.SMALL),
     PINECONE(GroundcoverBlock.SMALL),
     PUMICE(GroundcoverBlock.SMALL),
-    ROTTEN_FLESH(GroundcoverBlock.FLAT, () -> Items.ROTTEN_FLESH),
+    ROTTEN_FLESH(GroundcoverBlock.FLAT, Items.ROTTEN_FLESH),
     SALT_LICK(GroundcoverBlock.PIXEL_HIGH, TFCItems.POWDERS.get(Powder.SALT)),
     SEAWEED(GroundcoverBlock.FLAT),
     SEA_URCHIN(GroundcoverBlock.MEDIUM),
-    STICK(GroundcoverBlock.FLAT, () -> Items.STICK);
+    STICK(GroundcoverBlock.FLAT, Items.STICK);
 
     private final VoxelShape shape;
-    @Nullable
-    private final Supplier<? extends Item> vanillaItem; // The vanilla item this corresponds to
+    private final @Nullable ItemLike vanillaItem; // The vanilla item this corresponds to
 
     GroundcoverBlockType(VoxelShape shape)
     {
         this(shape, null);
     }
 
-    GroundcoverBlockType(VoxelShape shape, @Nullable Supplier<? extends Item> vanillaItem)
+    GroundcoverBlockType(VoxelShape shape, @Nullable ItemLike vanillaItem)
     {
         this.shape = shape;
         this.vanillaItem = vanillaItem;
@@ -66,7 +67,7 @@ public enum GroundcoverBlockType
     }
 
     @Nullable
-    public Supplier<? extends Item> getVanillaItem()
+    public ItemLike getVanillaItem()
     {
         return vanillaItem;
     }

@@ -25,17 +25,9 @@ import net.dries007.tfc.util.Helpers;
 
 public class WindmillBladeItem extends Item
 {
-    private final DyeColor color;
-
-    public WindmillBladeItem(Properties properties, DyeColor color)
+    public WindmillBladeItem(Properties properties)
     {
         super(properties);
-        this.color = color;
-    }
-
-    public int getTextureColors()
-    {
-        return color == DyeColor.WHITE ? -1 : color.getTextureDiffuseColor();
     }
 
     @Override

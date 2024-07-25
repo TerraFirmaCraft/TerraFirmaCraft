@@ -45,9 +45,7 @@ import net.dries007.tfc.common.component.food.FoodCapability;
 import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.HideItemType;
 import net.dries007.tfc.common.items.TFCItems;
-import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
 import net.dries007.tfc.util.Metal;
-import net.dries007.tfc.util.SelfTests;
 
 
 @SuppressWarnings("unused")
@@ -56,15 +54,15 @@ public final class TFCCreativeTabs
     public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, TerraFirmaCraft.MOD_ID);
 
 
-    public static final Id EARTH = register("earth", () -> new ItemStack(TFCBlocks.ROCK_BLOCKS.get(Rock.QUARTZITE).get(Rock.BlockType.RAW).get()), TFCCreativeTabs::fillEarthTab);
-    public static final Id ORES = register("ores", () -> new ItemStack(TFCItems.GRADED_ORES.get(Ore.NATIVE_COPPER).get(Ore.Grade.NORMAL).get()), TFCCreativeTabs::fillOresTab);
-    public static final Id ROCKS = register("rock", () -> new ItemStack(TFCBlocks.ROCK_BLOCKS.get(Rock.ANDESITE).get(Rock.BlockType.RAW).get()), TFCCreativeTabs::fillRocksTab);
-    public static final Id METAL = register("metals", () -> new ItemStack(TFCItems.METAL_ITEMS.get(Metal.WROUGHT_IRON).get(Metal.ItemType.INGOT).get()), TFCCreativeTabs::fillMetalTab);
-    public static final Id WOOD = register("wood", () -> new ItemStack(TFCBlocks.WOODS.get(Wood.DOUGLAS_FIR).get(Wood.BlockType.LOG).get()), TFCCreativeTabs::fillWoodTab);
-    public static final Id FOOD = register("food", () -> new ItemStack(TFCItems.FOOD.get(Food.RED_APPLE).get()), TFCCreativeTabs::fillFoodTab);
-    public static final Id FLORA = register("flora", () -> new ItemStack(TFCBlocks.PLANTS.get(Plant.GOLDENROD).get()), TFCCreativeTabs::fillPlantsTab);
-    public static final Id DECORATIONS = register("decorations", () -> new ItemStack(TFCBlocks.ALABASTER_BRICKS.get(DyeColor.CYAN).get()), TFCCreativeTabs::fillDecorationsTab);
-    public static final Id MISC = register("misc", () -> new ItemStack(TFCItems.FIRESTARTER.get()), TFCCreativeTabs::fillMiscTab);
+    public static final Id EARTH = register("earth", () -> new ItemStack(TFCBlocks.ROCK_BLOCKS.get(Rock.QUARTZITE).get(Rock.BlockType.RAW)), TFCCreativeTabs::fillEarthTab);
+    public static final Id ORES = register("ores", () -> new ItemStack(TFCItems.GRADED_ORES.get(Ore.NATIVE_COPPER).get(Ore.Grade.NORMAL)), TFCCreativeTabs::fillOresTab);
+    public static final Id ROCKS = register("rock", () -> new ItemStack(TFCBlocks.ROCK_BLOCKS.get(Rock.ANDESITE).get(Rock.BlockType.RAW)), TFCCreativeTabs::fillRocksTab);
+    public static final Id METAL = register("metals", () -> new ItemStack(TFCItems.METAL_ITEMS.get(Metal.WROUGHT_IRON).get(Metal.ItemType.INGOT)), TFCCreativeTabs::fillMetalTab);
+    public static final Id WOOD = register("wood", () -> new ItemStack(TFCBlocks.WOODS.get(Wood.DOUGLAS_FIR).get(Wood.BlockType.LOG)), TFCCreativeTabs::fillWoodTab);
+    public static final Id FOOD = register("food", () -> new ItemStack(TFCItems.FOOD.get(Food.RED_APPLE)), TFCCreativeTabs::fillFoodTab);
+    public static final Id FLORA = register("flora", () -> new ItemStack(TFCBlocks.PLANTS.get(Plant.GOLDENROD)), TFCCreativeTabs::fillPlantsTab);
+    public static final Id DECORATIONS = register("decorations", () -> new ItemStack(TFCBlocks.ALABASTER_BRICKS.get(DyeColor.CYAN)), TFCCreativeTabs::fillDecorationsTab);
+    public static final Id MISC = register("misc", () -> new ItemStack(TFCItems.FIRESTARTER), TFCCreativeTabs::fillMiscTab);
 
     public static Stream<CreativeModeTab.DisplayItemsGenerator> generators()
     {
@@ -93,66 +91,66 @@ public final class TFCCreativeTabs
                 }
             }
         }
-        accept(out, TFCBlocks.SMOOTH_MUD_BRICKS);
-        accept(out, TFCBlocks.TREE_ROOTS);
-        accept(out, TFCBlocks.PEAT);
-        accept(out, TFCBlocks.PEAT_GRASS);
-        accept(out, TFCBlocks.WHITE_KAOLIN_CLAY);
-        accept(out, TFCBlocks.PINK_KAOLIN_CLAY);
-        accept(out, TFCBlocks.RED_KAOLIN_CLAY);
-        accept(out, TFCBlocks.KAOLIN_CLAY_GRASS);
+        out.accept(TFCBlocks.SMOOTH_MUD_BRICKS);
+        out.accept(TFCBlocks.TREE_ROOTS);
+        out.accept(TFCBlocks.PEAT);
+        out.accept(TFCBlocks.PEAT_GRASS);
+        out.accept(TFCBlocks.WHITE_KAOLIN_CLAY);
+        out.accept(TFCBlocks.PINK_KAOLIN_CLAY);
+        out.accept(TFCBlocks.RED_KAOLIN_CLAY);
+        out.accept(TFCBlocks.KAOLIN_CLAY_GRASS);
 
         TFCBlocks.GROUNDCOVER.forEach((type, reg) -> {
             if (type.getVanillaItem() == null)
             {
-                accept(out, reg);
+                out.accept(reg);
             }
             else
             {
-                accept(out, type.getVanillaItem());
+                out.accept(type.getVanillaItem());
             }
         });
-        TFCBlocks.SMALL_ORES.values().forEach(reg -> accept(out, reg));
+        TFCBlocks.SMALL_ORES.values().forEach(out::accept);
 
         for (SandBlockType type : SandBlockType.values())
         {
             accept(out, TFCBlocks.SAND, type);
-            TFCBlocks.SANDSTONE.get(type).values().forEach(reg -> accept(out, reg));
+            TFCBlocks.SANDSTONE.get(type).values().forEach(out::accept);
             TFCBlocks.SANDSTONE_DECORATIONS.get(type).values().forEach(reg -> accept(out, reg));
         }
 
         out.accept(Blocks.ICE);
-        accept(out, TFCBlocks.SEA_ICE);
+        out.accept(TFCBlocks.SEA_ICE);
         out.accept(Blocks.PACKED_ICE);
         out.accept(Blocks.BLUE_ICE);
 
-        TFCBlocks.MAGMA_BLOCKS.values().forEach(reg -> accept(out, reg));
+        TFCBlocks.MAGMA_BLOCKS.values().forEach(out::accept);
 
         for (Crop crop : Crop.values())
         {
             accept(out, TFCBlocks.WILD_CROPS, crop);
             if (crop == Crop.PUMPKIN)
-                accept(out, TFCBlocks.PUMPKIN);
+                out.accept(TFCBlocks.PUMPKIN);
             else if (crop == Crop.MELON)
-                accept(out, TFCBlocks.MELON);
+                out.accept(TFCBlocks.MELON);
             accept(out, TFCItems.CROP_SEEDS, crop);
         }
-        TFCBlocks.SPREADING_BUSHES.values().forEach(reg -> accept(out, reg));
-        TFCBlocks.STATIONARY_BUSHES.values().forEach(reg -> accept(out, reg));
-        accept(out, TFCBlocks.CRANBERRY_BUSH);
+        TFCBlocks.SPREADING_BUSHES.values().forEach(out::accept);
+        TFCBlocks.STATIONARY_BUSHES.values().forEach(out::accept);
+        out.accept(TFCBlocks.CRANBERRY_BUSH);
 
         for (FruitBlocks.Tree tree : FruitBlocks.Tree.values())
         {
             accept(out, TFCBlocks.FRUIT_TREE_SAPLINGS, tree);
             accept(out, TFCBlocks.FRUIT_TREE_LEAVES, tree);
         }
-        accept(out, TFCBlocks.BANANA_SAPLING);
+        out.accept(TFCBlocks.BANANA_SAPLING);
 
-        accept(out, TFCBlocks.CALCITE);
-        accept(out, TFCBlocks.ICICLE);
+        out.accept(TFCBlocks.CALCITE);
+        out.accept(TFCBlocks.ICICLE);
         for (Coral coral : Coral.values())
         {
-            TFCBlocks.CORAL.get(coral).values().forEach(reg -> accept(out, reg));
+            TFCBlocks.CORAL.get(coral).values().forEach(out::accept);
             accept(out, TFCItems.CORAL_FANS, coral);
             accept(out, TFCItems.DEAD_CORAL_FANS, coral);
         }
@@ -179,25 +177,25 @@ public final class TFCCreativeTabs
             accept(out, TFCItems.METAL_ITEMS, metal, Metal.ItemType.UNFINISHED_LAMP);
 
             if (metal == Metal.BRONZE)
-                accept(out, TFCBlocks.BRONZE_BELL);
+                out.accept(TFCBlocks.BRONZE_BELL);
             else if (metal == Metal.BRASS)
             {
-                accept(out, TFCBlocks.BRASS_BELL);
-                accept(out, TFCItems.BRASS_MECHANISMS);
-                accept(out, TFCItems.JACKS);
+                out.accept(TFCBlocks.BRASS_BELL);
+                out.accept(TFCItems.BRASS_MECHANISMS);
+                out.accept(TFCItems.JACKS);
             }
             else if (metal == Metal.GOLD)
                 out.accept(Blocks.BELL);
             else if (metal == Metal.RED_STEEL)
-                accept(out, TFCItems.RED_STEEL_BUCKET);
+                out.accept(TFCItems.RED_STEEL_BUCKET);
             else if (metal == Metal.BLUE_STEEL)
-                accept(out, TFCItems.BLUE_STEEL_BUCKET);
+                out.accept(TFCItems.BLUE_STEEL_BUCKET);
             else if (metal == Metal.WROUGHT_IRON)
-                accept(out, TFCItems.WROUGHT_IRON_GRILL);
+                out.accept(TFCItems.WROUGHT_IRON_GRILL);
             else if (metal == Metal.STEEL)
             {
-                accept(out, TFCBlocks.STEEL_PIPE);
-                accept(out, TFCBlocks.STEEL_PUMP);
+                out.accept(TFCBlocks.STEEL_PIPE);
+                out.accept(TFCBlocks.STEEL_PUMP);
             }
 
             for (Metal.ItemType itemType : new Metal.ItemType[] {
@@ -261,8 +259,8 @@ public final class TFCCreativeTabs
 
     private static void fillOresTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output out)
     {
-        accept(out, TFCItems.RAW_IRON_BLOOM);
-        accept(out, TFCItems.REFINED_IRON_BLOOM);
+        out.accept(TFCItems.RAW_IRON_BLOOM);
+        out.accept(TFCItems.REFINED_IRON_BLOOM);
         for (Ore ore : Ore.values())
         {
             if (ore.isGraded())
@@ -285,7 +283,7 @@ public final class TFCCreativeTabs
         {
             if (ore.isGraded())
             {
-                TFCBlocks.GRADED_ORES.values().forEach(map -> map.get(ore).values().forEach(reg -> accept(out, reg)));
+                TFCBlocks.GRADED_ORES.values().forEach(map -> map.get(ore).values().forEach(out::accept));
             }
             else
             {
@@ -336,12 +334,12 @@ public final class TFCCreativeTabs
 
     private static void fillFoodTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output out)
     {
-        TFCItems.FOOD.values().forEach(reg -> accept(out, reg));
-        TFCItems.SOUPS.values().forEach(reg -> accept(out, reg));
-        TFCItems.SALADS.values().forEach(reg -> accept(out, reg));
+        TFCItems.FOOD.values().forEach(out::accept);
+        TFCItems.SOUPS.values().forEach(out::accept);
+        TFCItems.SALADS.values().forEach(out::accept);
 
-        accept(out, TFCItems.EMPTY_JAR);
-        accept(out, TFCItems.EMPTY_JAR_WITH_LID);
+        out.accept(TFCItems.EMPTY_JAR);
+        out.accept(TFCItems.EMPTY_JAR_WITH_LID);
 
         for (Food food : Food.values())
         {
@@ -360,85 +358,85 @@ public final class TFCCreativeTabs
             //out.accept(PatchouliIntegration.getFieldGuide(true));
         }
 
-        accept(out, TFCItems.FIRESTARTER);
+        out.accept(TFCItems.FIRESTARTER);
         out.accept(Items.FLINT_AND_STEEL);
-        accept(out, TFCItems.SOOT);
-        accept(out, TFCItems.SANDPAPER);
-        accept(out, TFCItems.BONE_NEEDLE);
-        accept(out, TFCItems.BLANK_DISC);
-        accept(out, TFCItems.BRASS_MECHANISMS);
-        accept(out, TFCItems.BURLAP_CLOTH);
-        accept(out, TFCItems.SILK_CLOTH);
-        accept(out, TFCItems.WOOL_CLOTH);
-        accept(out, TFCItems.WOOL);
-        accept(out, TFCItems.WOOL_YARN);
-        accept(out, TFCItems.SPINDLE);
-        accept(out, TFCItems.COMPOST);
-        accept(out, TFCItems.ROTTEN_COMPOST);
-        accept(out, TFCItems.PURE_NITROGEN);
-        accept(out, TFCItems.PURE_POTASSIUM);
-        accept(out, TFCItems.PURE_PHOSPHORUS);
-        accept(out, TFCItems.DAUB);
-        accept(out, TFCItems.DIRTY_JUTE_NET);
-        accept(out, TFCItems.FIRE_CLAY);
-        accept(out, TFCItems.KAOLIN_CLAY);
-        accept(out, TFCItems.GLUE);
-        accept(out, TFCItems.GOAT_HORN);
-        accept(out, TFCItems.JUTE);
-        accept(out, TFCItems.JUTE_FIBER);
-        accept(out, TFCItems.OLIVE_PASTE);
-        accept(out, TFCItems.JUTE_NET);
-        accept(out, TFCItems.HANDSTONE);
-        accept(out, TFCItems.MORTAR);
-        accept(out, TFCItems.PAPYRUS);
-        accept(out, TFCItems.PAPYRUS_STRIP);
-        accept(out, TFCItems.SOAKED_PAPYRUS_STRIP);
-        accept(out, TFCItems.UNREFINED_PAPER);
-        accept(out, TFCItems.STICK_BUNCH);
-        accept(out, TFCItems.STICK_BUNDLE);
+        out.accept(TFCItems.SOOT);
+        out.accept(TFCItems.SANDPAPER);
+        out.accept(TFCItems.BONE_NEEDLE);
+        out.accept(TFCItems.BLANK_DISC);
+        out.accept(TFCItems.BRASS_MECHANISMS);
+        out.accept(TFCItems.BURLAP_CLOTH);
+        out.accept(TFCItems.SILK_CLOTH);
+        out.accept(TFCItems.WOOL_CLOTH);
+        out.accept(TFCItems.WOOL);
+        out.accept(TFCItems.WOOL_YARN);
+        out.accept(TFCItems.SPINDLE);
+        out.accept(TFCItems.COMPOST);
+        out.accept(TFCItems.ROTTEN_COMPOST);
+        out.accept(TFCItems.PURE_NITROGEN);
+        out.accept(TFCItems.PURE_POTASSIUM);
+        out.accept(TFCItems.PURE_PHOSPHORUS);
+        out.accept(TFCItems.DAUB);
+        out.accept(TFCItems.DIRTY_JUTE_NET);
+        out.accept(TFCItems.FIRE_CLAY);
+        out.accept(TFCItems.KAOLIN_CLAY);
+        out.accept(TFCItems.GLUE);
+        out.accept(TFCItems.GOAT_HORN);
+        out.accept(TFCItems.JUTE);
+        out.accept(TFCItems.JUTE_FIBER);
+        out.accept(TFCItems.OLIVE_PASTE);
+        out.accept(TFCItems.JUTE_NET);
+        out.accept(TFCItems.HANDSTONE);
+        out.accept(TFCItems.MORTAR);
+        out.accept(TFCItems.PAPYRUS);
+        out.accept(TFCItems.PAPYRUS_STRIP);
+        out.accept(TFCItems.SOAKED_PAPYRUS_STRIP);
+        out.accept(TFCItems.UNREFINED_PAPER);
+        out.accept(TFCItems.STICK_BUNCH);
+        out.accept(TFCItems.STICK_BUNDLE);
         out.accept(Items.BOWL);
-        accept(out, TFCItems.STRAW);
-        accept(out, TFCItems.WROUGHT_IRON_GRILL);
-        accept(out, TFCItems.LOAM_MUD_BRICK);
-        accept(out, TFCItems.SANDY_LOAM_MUD_BRICK);
-        accept(out, TFCItems.SILTY_LOAM_MUD_BRICK);
-        accept(out, TFCItems.SILT_MUD_BRICK);
+        out.accept(TFCItems.STRAW);
+        out.accept(TFCItems.WROUGHT_IRON_GRILL);
+        out.accept(TFCItems.LOAM_MUD_BRICK);
+        out.accept(TFCItems.SANDY_LOAM_MUD_BRICK);
+        out.accept(TFCItems.SILTY_LOAM_MUD_BRICK);
+        out.accept(TFCItems.SILT_MUD_BRICK);
 
-        TFCItems.POWDERS.values().forEach(p -> accept(out, p));
-        TFCItems.ORE_POWDERS.values().forEach(p -> accept(out, p));
+        TFCItems.POWDERS.values().forEach(out::accept);
+        TFCItems.ORE_POWDERS.values().forEach(out::accept);
 
-        accept(out, TFCItems.BLUBBER);
+        out.accept(TFCItems.BLUBBER);
         for (HideItemType type : HideItemType.values())
         {
-            TFCItems.HIDES.get(type).values().forEach(reg -> accept(out, reg));
+            TFCItems.HIDES.get(type).values().forEach(out::accept);
         }
-        accept(out, TFCItems.TREATED_HIDE);
+        out.accept(TFCItems.TREATED_HIDE);
         out.accept(Items.INK_SAC);
         out.accept(Items.GLOW_INK_SAC);
-        accept(out, TFCItems.GLOW_ARROW);
+        out.accept(TFCItems.GLOW_ARROW);
 
-        accept(out, TFCItems.ALABASTER_BRICK);
-        accept(out, TFCItems.UNFIRED_BRICK);
+        out.accept(TFCItems.ALABASTER_BRICK);
+        out.accept(TFCItems.UNFIRED_BRICK);
         out.accept(Items.BRICK);
-        accept(out, TFCItems.UNFIRED_FIRE_BRICK);
-        accept(out, TFCItems.FIRE_BRICK);
-        accept(out, TFCItems.UNFIRED_CRUCIBLE);
-        accept(out, TFCBlocks.CRUCIBLE);
-        accept(out, TFCItems.UNFIRED_FLOWER_POT);
+        out.accept(TFCItems.UNFIRED_FIRE_BRICK);
+        out.accept(TFCItems.FIRE_BRICK);
+        out.accept(TFCItems.UNFIRED_CRUCIBLE);
+        out.accept(TFCBlocks.CRUCIBLE);
+        out.accept(TFCItems.UNFIRED_FLOWER_POT);
         out.accept(Items.FLOWER_POT);
-        accept(out, TFCItems.UNFIRED_BOWL);
-        accept(out, TFCBlocks.CERAMIC_BOWL);
-        accept(out, TFCItems.UNFIRED_PAN);
-        accept(out, TFCItems.EMPTY_PAN);
-        accept(out, TFCItems.UNFIRED_SPINDLE_HEAD);
-        accept(out, TFCItems.SPINDLE_HEAD);
-        accept(out, TFCItems.UNFIRED_POT);
-        accept(out, TFCItems.POT);
-        accept(out, TFCItems.UNFIRED_VESSEL);
-        accept(out, TFCItems.VESSEL);
-        accept(out, TFCItems.UNFIRED_LARGE_VESSEL);
-        accept(out, TFCBlocks.LARGE_VESSEL);
-        accept(out, TFCItems.UNFIRED_JUG);
+        out.accept(TFCItems.UNFIRED_BOWL);
+        out.accept(TFCBlocks.CERAMIC_BOWL);
+        out.accept(TFCItems.UNFIRED_PAN);
+        out.accept(TFCItems.EMPTY_PAN);
+        out.accept(TFCItems.UNFIRED_SPINDLE_HEAD);
+        out.accept(TFCItems.SPINDLE_HEAD);
+        out.accept(TFCItems.UNFIRED_POT);
+        out.accept(TFCItems.POT);
+        out.accept(TFCItems.UNFIRED_VESSEL);
+        out.accept(TFCItems.VESSEL);
+        out.accept(TFCItems.UNFIRED_LARGE_VESSEL);
+        out.accept(TFCBlocks.LARGE_VESSEL);
+        out.accept(TFCItems.UNFIRED_JUG);
         for (DyeColor color : DyeColor.values())
         {
             accept(out, TFCItems.UNFIRED_GLAZED_VESSELS, color);
@@ -452,46 +450,48 @@ public final class TFCCreativeTabs
             accept(out, TFCItems.MOLDS, type);
             if (type == Metal.ItemType.INGOT)
             {
-                accept(out, TFCItems.UNFIRED_FIRE_INGOT_MOLD);
-                accept(out, TFCItems.FIRE_INGOT_MOLD);
+                out.accept(TFCItems.UNFIRED_FIRE_INGOT_MOLD);
+                out.accept(TFCItems.FIRE_INGOT_MOLD);
             }
         }
-        accept(out, TFCItems.UNFIRED_BELL_MOLD);
-        accept(out, TFCItems.BELL_MOLD);
+        out.accept(TFCItems.UNFIRED_BELL_MOLD);
+        out.accept(TFCItems.BELL_MOLD);
 
-        accept(out, TFCItems.WOODEN_BUCKET);
-        accept(out, TFCItems.JUG);
-        accept(out, TFCItems.UNFIRED_BLOWPIPE);
-        accept(out, TFCItems.CERAMIC_BLOWPIPE);
-        accept(out, TFCItems.CERAMIC_BLOWPIPE_WITH_GLASS);
-        accept(out, TFCItems.BLOWPIPE);
-        accept(out, TFCItems.BLOWPIPE_WITH_GLASS);
-        accept(out, TFCItems.GEM_SAW);
-        accept(out, TFCItems.JACKS);
-        accept(out, TFCItems.PADDLE);
-        accept(out, TFCItems.SILICA_GLASS_BATCH);
-        accept(out, TFCItems.HEMATITIC_GLASS_BATCH);
-        accept(out, TFCItems.OLIVINE_GLASS_BATCH);
-        accept(out, TFCItems.VOLCANIC_GLASS_BATCH);
-        accept(out, TFCItems.LAMP_GLASS);
-        accept(out, TFCItems.LENS);
-        accept(out, TFCItems.SILICA_GLASS_BOTTLE);
-        accept(out, TFCItems.HEMATITIC_GLASS_BOTTLE);
-        accept(out, TFCItems.OLIVINE_GLASS_BOTTLE);
-        accept(out, TFCItems.VOLCANIC_GLASS_BOTTLE);
-        accept(out, TFCBlocks.HAND_WHEEL_BASE);
-        accept(out, TFCItems.HAND_WHEEL);
-        accept(out, TFCItems.EMPTY_JAR);
-        accept(out, TFCItems.EMPTY_JAR_WITH_LID);
-        accept(out, TFCItems.JAR_LID);
-        TFCItems.WINDMILL_BLADES.values().forEach(blade -> accept(out, blade));
+        out.accept(TFCItems.WOODEN_BUCKET);
+        out.accept(TFCItems.JUG);
+        out.accept(TFCItems.UNFIRED_BLOWPIPE);
+        out.accept(TFCItems.CERAMIC_BLOWPIPE);
+        out.accept(TFCItems.CERAMIC_BLOWPIPE_WITH_GLASS);
+        out.accept(TFCItems.BLOWPIPE);
+        out.accept(TFCItems.BLOWPIPE_WITH_GLASS);
+        out.accept(TFCItems.GEM_SAW);
+        out.accept(TFCItems.JACKS);
+        out.accept(TFCItems.PADDLE);
+        out.accept(TFCItems.SILICA_GLASS_BATCH);
+        out.accept(TFCItems.HEMATITIC_GLASS_BATCH);
+        out.accept(TFCItems.OLIVINE_GLASS_BATCH);
+        out.accept(TFCItems.VOLCANIC_GLASS_BATCH);
+        out.accept(TFCItems.LAMP_GLASS);
+        out.accept(TFCItems.LENS);
+        out.accept(TFCItems.SILICA_GLASS_BOTTLE);
+        out.accept(TFCItems.HEMATITIC_GLASS_BOTTLE);
+        out.accept(TFCItems.OLIVINE_GLASS_BOTTLE);
+        out.accept(TFCItems.VOLCANIC_GLASS_BOTTLE);
+        out.accept(TFCBlocks.HAND_WHEEL_BASE);
+        out.accept(TFCItems.HAND_WHEEL);
+        out.accept(TFCItems.EMPTY_JAR);
+        out.accept(TFCItems.EMPTY_JAR_WITH_LID);
+        out.accept(TFCItems.JAR_LID);
+        TFCItems.WINDMILL_BLADES.values().forEach(out::accept);
+        out.accept(TFCItems.RUSTIC_WINDMILL_BLADE);
+        out.accept(TFCItems.LATTICE_WINDMILL_BLADE);
         consumeOurs(BuiltInRegistries.FLUID, fluid -> out.accept(fluid.getBucket()));
 
-        TFCItems.FRESHWATER_FISH_BUCKETS.values().forEach(reg -> accept(out, reg));
-        accept(out, TFCItems.COD_BUCKET);
-        accept(out, TFCItems.JELLYFISH_BUCKET);
-        accept(out, TFCItems.TROPICAL_FISH_BUCKET);
-        accept(out, TFCItems.PUFFERFISH_BUCKET);
+        TFCItems.FRESHWATER_FISH_BUCKETS.values().forEach(out::accept);
+        out.accept(TFCItems.COD_BUCKET);
+        out.accept(TFCItems.JELLYFISH_BUCKET);
+        out.accept(TFCItems.TROPICAL_FISH_BUCKET);
+        out.accept(TFCItems.PUFFERFISH_BUCKET);
 
         consumeOurs(BuiltInRegistries.ENTITY_TYPE, entity -> {
             final SpawnEggItem item = SpawnEggItem.byId(entity);
@@ -504,41 +504,41 @@ public final class TFCCreativeTabs
 
     private static void fillDecorationsTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output out)
     {
-        accept(out, TFCBlocks.WATTLE);
-        accept(out, TFCBlocks.UNSTAINED_WATTLE);
-        TFCBlocks.STAINED_WATTLE.values().forEach(reg -> accept(out, reg));
-        accept(out, TFCBlocks.THATCH);
-        accept(out, TFCBlocks.THATCH_BED);
-        accept(out, TFCBlocks.FIREPIT);
-        accept(out, TFCBlocks.GRILL);
-        accept(out, TFCBlocks.POT);
-        accept(out, TFCBlocks.BELLOWS);
-        accept(out, TFCBlocks.POWDERKEG);
-        accept(out, TFCBlocks.BARREL_RACK);
-        accept(out, TFCBlocks.CERAMIC_BOWL);
-        accept(out, TFCBlocks.QUERN);
-        accept(out, TFCItems.HANDSTONE);
-        accept(out, TFCBlocks.CRANKSHAFT);
-        accept(out, TFCBlocks.TRIP_HAMMER);
-        accept(out, TFCBlocks.CRUCIBLE);
-        accept(out, TFCBlocks.COMPOSTER);
-        accept(out, TFCBlocks.BLOOMERY);
-        accept(out, TFCBlocks.BLAST_FURNACE);
-        accept(out, TFCBlocks.NEST_BOX);
-        accept(out, TFCBlocks.MELON);
-        accept(out, TFCBlocks.PUMPKIN);
+        out.accept(TFCBlocks.WATTLE);
+        out.accept(TFCBlocks.UNSTAINED_WATTLE);
+        TFCBlocks.STAINED_WATTLE.values().forEach(out::accept);
+        out.accept(TFCBlocks.THATCH);
+        out.accept(TFCBlocks.THATCH_BED);
+        out.accept(TFCBlocks.FIREPIT);
+        out.accept(TFCBlocks.GRILL);
+        out.accept(TFCBlocks.POT);
+        out.accept(TFCBlocks.BELLOWS);
+        out.accept(TFCBlocks.POWDERKEG);
+        out.accept(TFCBlocks.BARREL_RACK);
+        out.accept(TFCBlocks.CERAMIC_BOWL);
+        out.accept(TFCBlocks.QUERN);
+        out.accept(TFCItems.HANDSTONE);
+        out.accept(TFCBlocks.CRANKSHAFT);
+        out.accept(TFCBlocks.TRIP_HAMMER);
+        out.accept(TFCBlocks.CRUCIBLE);
+        out.accept(TFCBlocks.COMPOSTER);
+        out.accept(TFCBlocks.BLOOMERY);
+        out.accept(TFCBlocks.BLAST_FURNACE);
+        out.accept(TFCBlocks.NEST_BOX);
+        out.accept(TFCBlocks.MELON);
+        out.accept(TFCBlocks.PUMPKIN);
         out.accept(Blocks.CARVED_PUMPKIN);
-        accept(out, TFCBlocks.JACK_O_LANTERN);
-        accept(out, TFCItems.TORCH);
-        accept(out, TFCItems.DEAD_TORCH);
-        accept(out, TFCBlocks.BARREL_RACK);
-        accept(out, TFCBlocks.FIRE_BRICKS);
-        accept(out, TFCBlocks.FIRE_CLAY_BLOCK);
+        out.accept(TFCBlocks.JACK_O_LANTERN);
+        out.accept(TFCItems.TORCH);
+        out.accept(TFCItems.DEAD_TORCH);
+        out.accept(TFCBlocks.BARREL_RACK);
+        out.accept(TFCBlocks.FIRE_BRICKS);
+        out.accept(TFCBlocks.FIRE_CLAY_BLOCK);
 
-        accept(out, TFCBlocks.AGGREGATE);
-        accept(out, TFCBlocks.PLAIN_ALABASTER);
-        accept(out, TFCBlocks.PLAIN_ALABASTER_BRICKS);
-        accept(out, TFCBlocks.PLAIN_POLISHED_ALABASTER);
+        out.accept(TFCBlocks.AGGREGATE);
+        out.accept(TFCBlocks.PLAIN_ALABASTER);
+        out.accept(TFCBlocks.PLAIN_ALABASTER_BRICKS);
+        out.accept(TFCBlocks.PLAIN_POLISHED_ALABASTER);
         for (DyeColor color : DyeColor.values())
         {
             accept(out, TFCBlocks.RAW_ALABASTER, color);
@@ -547,10 +547,10 @@ public final class TFCCreativeTabs
             accept(out, TFCBlocks.POLISHED_ALABASTER, color);
             accept(out, TFCBlocks.ALABASTER_POLISHED_DECORATIONS.get(color));
         }
-        accept(out, TFCBlocks.LARGE_VESSEL);
-        TFCBlocks.GLAZED_LARGE_VESSELS.values().forEach(reg -> accept(out, reg));
-        accept(out, TFCBlocks.CANDLE);
-        accept(out, TFCBlocks.CAKE);
+        out.accept(TFCBlocks.LARGE_VESSEL);
+        TFCBlocks.GLAZED_LARGE_VESSELS.values().forEach(out::accept);
+        out.accept(TFCBlocks.CANDLE);
+        out.accept(TFCBlocks.CAKE);
         for (DyeColor color : DyeColor.values())
         {
             accept(out, TFCBlocks.DYED_CANDLE, color);
@@ -564,25 +564,25 @@ public final class TFCCreativeTabs
             TFCBlocks.WOODS.get(wood).forEach((type, reg) -> {
                 if (type.needsItem())
                 {
-                    accept(out, reg);
+                    out.accept(reg);
                 }
                 if (type == Wood.BlockType.SAPLING)
                 {
                     switch (wood)
                     {
-                        case PINE -> accept(out, TFCBlocks.PINE_KRUMMHOLZ);
-                        case SPRUCE -> accept(out, TFCBlocks.SPRUCE_KRUMMHOLZ);
-                        case WHITE_CEDAR -> accept(out, TFCBlocks.WHITE_CEDAR_KRUMMHOLZ);
-                        case DOUGLAS_FIR -> accept(out, TFCBlocks.DOUGLAS_FIR_KRUMMHOLZ);
-                        case ASPEN -> accept(out, TFCBlocks.ASPEN_KRUMMHOLZ);
+                        case PINE -> out.accept(TFCBlocks.PINE_KRUMMHOLZ);
+                        case SPRUCE -> out.accept(TFCBlocks.SPRUCE_KRUMMHOLZ);
+                        case WHITE_CEDAR -> out.accept(TFCBlocks.WHITE_CEDAR_KRUMMHOLZ);
+                        case DOUGLAS_FIR -> out.accept(TFCBlocks.DOUGLAS_FIR_KRUMMHOLZ);
+                        case ASPEN -> out.accept(TFCBlocks.ASPEN_KRUMMHOLZ);
                     }
                 }
             });
             if (wood == Wood.PALM)
             {
-                accept(out, TFCBlocks.PALM_MOSAIC);
-                accept(out, TFCBlocks.PALM_MOSAIC_STAIRS);
-                accept(out, TFCBlocks.PALM_MOSAIC_SLAB);
+                out.accept(TFCBlocks.PALM_MOSAIC);
+                out.accept(TFCBlocks.PALM_MOSAIC_STAIRS);
+                out.accept(TFCBlocks.PALM_MOSAIC_SLAB);
             }
             accept(out, TFCItems.LUMBER, wood);
             accept(out, TFCItems.BOATS, wood);
@@ -602,10 +602,10 @@ public final class TFCCreativeTabs
         TFCBlocks.PLANTS.forEach((plant, reg) -> {
             if (plant.needsItem())
             {
-                accept(out, reg);
+                out.accept(reg);
             }
         });
-        accept(out, TFCBlocks.SEA_PICKLE);
+        out.accept(TFCBlocks.SEA_PICKLE);
     }
     
     
@@ -621,31 +621,20 @@ public final class TFCCreativeTabs
         return new Id(reg, displayItems);
     }
 
-    private static <T extends ItemLike, R extends Supplier<T>, K1, K2> void accept(CreativeModeTab.Output out, Map<K1, Map<K2, R>> map, K1 key1, K2 key2)
+    private static <R extends ItemLike, K1, K2> void accept(CreativeModeTab.Output out, Map<K1, Map<K2, R>> map, K1 key1, K2 key2)
     {
         if (map.containsKey(key1) && map.get(key1).containsKey(key2))
         {
-            out.accept(map.get(key1).get(key2).get());
+            out.accept(map.get(key1).get(key2));
         }
     }
 
-    private static <T extends ItemLike, R extends Supplier<T>, K> void accept(CreativeModeTab.Output out, Map<K, R> map, K key)
+    private static <R extends ItemLike, K> void accept(CreativeModeTab.Output out, Map<K, R> map, K key)
     {
         if (map.containsKey(key))
         {
-            out.accept(map.get(key).get());
+            out.accept(map.get(key));
         }
-    }
-
-    private static <T extends ItemLike, R extends Supplier<T>> void accept(CreativeModeTab.Output out, R reg)
-    {
-        if (reg.get().asItem() == Items.AIR)
-        {
-            TerraFirmaCraft.LOGGER.error("BlockItem with no Item added to creative tab: " + reg);
-            SelfTests.reportExternalError();
-            return;
-        }
-        out.accept(reg.get());
     }
 
     private static void accept(CreativeModeTab.Output out, DecorationBlockHolder decoration)

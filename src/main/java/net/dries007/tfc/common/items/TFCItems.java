@@ -247,8 +247,10 @@ public final class TFCItems
     public static final ItemId EMPTY_PAN = register("pan/empty", () -> new EmptyPanItem(new Properties()));
     public static final ItemId FILLED_PAN = register("pan/filled", () -> new PanItem(new Properties().stacksTo(1)));
 
+    public static final ItemId LATTICE_WINDMILL_BLADE = register("lattice_windmill_blade", () -> new WindmillBladeItem(new Properties()));
+    public static final ItemId RUSTIC_WINDMILL_BLADE = register("rustic_windmill_blade", () -> new WindmillBladeItem(new Properties()));
     public static final Map<DyeColor, ItemId> WINDMILL_BLADES = Helpers.mapOf(DyeColor.class, color ->
-        register("windmill_blade/" + color.getSerializedName(), () -> new WindmillBladeItem(new Properties(), color))
+        register("windmill_blade/" + color.getSerializedName(), () -> new WindmillBladeItem(new Properties()))
     );
     public static final Map<Fish, ItemId> FRESHWATER_FISH_EGGS = Helpers.mapOf(Fish.class, fish -> registerSpawnEgg(TFCEntities.FRESHWATER_FISH.get(fish), fish.getEggColor1(), fish.getEggColor2()));
 

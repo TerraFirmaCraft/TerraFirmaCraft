@@ -167,9 +167,9 @@ public class ExtendedProperties
         return this;
     }
 
-    public ExtendedProperties cloneItem(@Nullable Supplier<? extends ItemLike> cloneItemStack)
+    public ExtendedProperties cloneItem(@Nullable ItemLike cloneItemStack)
     {
-        this.cloneItemStack = cloneItemStack == null ? null : () -> new ItemStack(cloneItemStack.get());
+        this.cloneItemStack = cloneItemStack == null ? null : () -> new ItemStack(cloneItemStack);
         return this;
     }
 
