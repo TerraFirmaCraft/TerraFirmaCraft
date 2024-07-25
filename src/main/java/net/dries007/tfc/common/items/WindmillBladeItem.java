@@ -11,14 +11,12 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
-import net.dries007.tfc.common.blockentities.TFCBlockEntity;
 import net.dries007.tfc.common.blockentities.rotation.WindmillBlockEntity;
 import net.dries007.tfc.common.blocks.rotation.AxleBlock;
 import net.dries007.tfc.common.blocks.rotation.WindmillBlock;
@@ -26,32 +24,9 @@ import net.dries007.tfc.util.Helpers;
 
 public class WindmillBladeItem extends Item
 {
-    private static final float[] NO_COLOR = {1f, 1f, 1f, 1f};
-
-    private final DyeColor color;
-
-    private final BladeModel model;
-
-    public WindmillBladeItem(Properties properties, DyeColor color, BladeModel model)
+    public WindmillBladeItem(Properties properties)
     {
         super(properties);
-        this.color = color;
-        this.model = model;
-    }
-
-    public DyeColor getColor()
-    {
-        return color;
-    }
-
-    public BladeModel getModel()
-    {
-        return model;
-    }
-
-    public float[] getTextureColors()
-    {
-        return color == DyeColor.WHITE ? NO_COLOR : color.getTextureDiffuseColors();
     }
 
     @Override
@@ -90,12 +65,5 @@ public class WindmillBladeItem extends Item
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;
-    }
-
-    public static enum BladeModel
-    {
-        DEFAULT,
-        LATTICE,
-        RUSTIC
     }
 }

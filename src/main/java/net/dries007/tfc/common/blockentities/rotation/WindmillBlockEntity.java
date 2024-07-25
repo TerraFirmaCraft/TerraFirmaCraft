@@ -41,9 +41,6 @@ public class WindmillBlockEntity extends TickableInventoryBlockEntity<ItemStackH
     public static final float MAX_SPEED = Mth.TWO_PI / (8 * 20);
     private static final float LERP_SPEED = MIN_SPEED / (5 * 20);
 
-    // client-only
-    public boolean hasFullIdenticalSet = false;
-
     public static void serverTick(Level level, BlockPos pos, BlockState state, WindmillBlockEntity windmill)
     {
         windmill.checkForLastTickSync();
@@ -74,8 +71,6 @@ public class WindmillBlockEntity extends TickableInventoryBlockEntity<ItemStackH
             : Math.max(targetSpeed, currentSpeed - LERP_SPEED);
 
         rotation.setSpeed(nextSpeed);
-
-        windmill.hasFullIdenticalSet = windmill.hasFullIdenticalSet();
     }
 
     public static boolean isObstructedBySolidBlocks(Level level, BlockPos pos, Direction.Axis axis)
@@ -226,32 +221,5 @@ public class WindmillBlockEntity extends TickableInventoryBlockEntity<ItemStackH
     public Node getRotationNode()
     {
         return node;
-    }
-
-    public boolean hasFullIdenticalSet()
-    {
-        ItemStack stack = inventory.getStackInSlot(0);
-
-        // catch anything that's not a windmill blade
-        for (int i = 1; i < SLOTS; i++)
-        {
-            if (!inventory.getStackInSlot(i).is(TFCTags.Items.ALL_WINDMILL_BLADES))
-            {
-                return false;
-            }
-        }
-
-        WindmillBladeItem item = (WindmillBladeItem) stack.getItem();
-        WindmillBladeItem.BladeModel model = item.getModel();
-
-        for (int i = 1; i < SLOTS; i++)
-        {
-            if (((WindmillBladeItem) inventory.getStackInSlot(i).getItem()).getModel() != model)
-            {
-                return false;
-            }
-        }
-
-        return true;
     }
 }
