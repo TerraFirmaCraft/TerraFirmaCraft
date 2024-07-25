@@ -23,6 +23,7 @@ import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.common.effect.TFCEffects;
 import net.dries007.tfc.common.entities.EntityHelpers;
+import net.dries007.tfc.common.entities.livestock.Age;
 import net.dries007.tfc.common.entities.livestock.MammalProperties;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.util.Helpers;
@@ -123,7 +124,7 @@ public interface HorseProperties extends MammalProperties
     {
         MammalProperties.super.tickAnimalData();
         // legacy breeding behavior
-        if (!getEntity().level().isClientSide() && getGender() == Gender.MALE && isReadyToMate())
+        if (!getEntity().level().isClientSide() && isMale() && isReadyToMate())
         {
             EntityHelpers.findFemaleMate((Animal & TFCAnimalProperties) this);
         }

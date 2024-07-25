@@ -6,9 +6,14 @@
 
 package net.dries007.tfc.common.entities;
 
-public interface BrainBreeder
+import net.dries007.tfc.common.entities.livestock.CommonAnimalBehavior;
+
+public interface BrainAnimalBehavior
 {
     boolean isMale();
 
-    void setMated(long ticks);
+    /**
+     * @see CommonAnimalBehavior#setLastMatedNow
+     */
+    void setLastMatedNow();
 }

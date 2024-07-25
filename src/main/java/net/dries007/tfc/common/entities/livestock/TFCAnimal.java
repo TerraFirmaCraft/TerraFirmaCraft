@@ -12,7 +12,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -44,25 +43,11 @@ import net.dries007.tfc.common.entities.ai.livestock.LivestockAi;
 import net.dries007.tfc.common.entities.ai.prey.PreyAi;
 import net.dries007.tfc.config.animals.AnimalConfig;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.calendar.Calendars;
 
 public abstract class TFCAnimal extends Animal implements TFCAnimalProperties, Temptable
 {
-    private static final EntityDataAccessor<Boolean> GENDER = SynchedEntityData.defineId(TFCAnimal.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Long> BIRTHDAY = SynchedEntityData.defineId(TFCAnimal.class, EntityDataSerializers.LONG);
-    private static final EntityDataAccessor<Float> FAMILIARITY = SynchedEntityData.defineId(TFCAnimal.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Integer> USES = SynchedEntityData.defineId(TFCAnimal.class, EntityDataSerializers.INT);
-    //Is this female fertilized? (in oviparous, the egg laying is fertilized, for mammals this is pregnancy)
-    private static final EntityDataAccessor<Boolean> FERTILIZED = SynchedEntityData.defineId(TFCAnimal.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Long> OLD_DAY = SynchedEntityData.defineId(TFCAnimal.class, EntityDataSerializers.LONG);
-    private static final EntityDataAccessor<Integer> GENETIC_SIZE = SynchedEntityData.defineId(TFCAnimal.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Long> LAST_FED = SynchedEntityData.defineId(TFCAnimal.class, EntityDataSerializers.LONG);
+    private static final CommonAnimalData ANIMAL_DATA = CommonAnimalData.create(TFCAnimal.class);
 
-    private static final CommonAnimalData ANIMAL_DATA = new CommonAnimalData(GENDER, BIRTHDAY, FAMILIARITY, USES, FERTILIZED, OLD_DAY, GENETIC_SIZE, LAST_FED);
-
-    private Age lastAge = Age.CHILD;
-    private long lastFDecay; //Last time(in days) this entity's familiarity had decayed
-    private long matingTime; //The last time(in ticks) this male tried fertilizing females
     private final Supplier<? extends SoundEvent> ambient;
     private final Supplier<? extends SoundEvent> hurt;
     private final Supplier<? extends SoundEvent> death;
@@ -73,8 +58,6 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties, T
     {
         super(type, level);
         getNavigation().setCanFloat(true);
-        this.matingTime = Calendars.get(level).getTicks();
-        this.lastFDecay = Calendars.get(level).getTotalDays();
         this.ambient = sounds.ambient();
         this.hurt = sounds.hurt();
         this.death = sounds.death();
@@ -145,7 +128,7 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties, T
     protected void defineSynchedData(SynchedEntityData.Builder builder)
     {
         super.defineSynchedData(builder);
-        registerCommonData(builder);
+        animalData().define(builder);
     }
 
     @Override
@@ -187,17 +170,6 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties, T
         return TFCAnimalProperties.super.getBreedOffspring(level, other);
     }
 
-    @Override
-    public Age getLastAge()
-    {
-        return lastAge;
-    }
-
-    @Override
-    public void setLastAge(Age lastAge)
-    {
-        this.lastAge = lastAge;
-    }
 
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnData)
@@ -213,34 +185,10 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties, T
     public void onSyncedDataUpdated(EntityDataAccessor<?> data)
     {
         super.onSyncedDataUpdated(data);
-        if (BIRTHDAY.equals(data))
+        if (ANIMAL_DATA.birthTick().equals(data))
         {
             refreshDimensions();
         }
-    }
-
-    @Override
-    public long getLastFamiliarityDecay()
-    {
-        return lastFDecay;
-    }
-
-    @Override
-    public void setLastFamiliarityDecay(long days)
-    {
-        lastFDecay = days;
-    }
-
-    @Override
-    public void setMated(long ticks)
-    {
-        matingTime = ticks;
-    }
-
-    @Override
-    public long getMated()
-    {
-        return matingTime;
     }
 
     @Override

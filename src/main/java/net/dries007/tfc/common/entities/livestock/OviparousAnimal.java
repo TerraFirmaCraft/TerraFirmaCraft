@@ -132,7 +132,7 @@ public abstract class OviparousAnimal extends ProducingAnimal implements Pluckab
         final long time = level().getDayTime() % 24000;
         if (isCrowingBird && !crowed && time > 0 && time < 1000 && random.nextInt(10) == 0)
         {
-            if (getGender().toBool())
+            if (isMale())
             {
                 playSound(TFCSounds.ROOSTER_CRY.get(), getSoundVolume() * 1.2f, getVoicePitch());
             }
@@ -213,7 +213,7 @@ public abstract class OviparousAnimal extends ProducingAnimal implements Pluckab
     @Override
     public boolean hasProduct()
     {
-        return getGender() == Gender.FEMALE && getAgeType() == Age.ADULT && (getProducedTick() <= 0 || getProductsCooldown() <= 0);
+        return isFemale() && getAgeType() == Age.ADULT && (getProducedTick() <= 0 || getProductsCooldown() <= 0);
     }
 
     @Override
@@ -232,7 +232,7 @@ public abstract class OviparousAnimal extends ProducingAnimal implements Pluckab
             if (baby != null)
             {
                 baby.setGender(Gender.valueOf(random.nextBoolean()));
-                baby.setBirthDay(Calendars.SERVER.getTotalDays());
+                baby.setBirthTickNow();
                 baby.setFamiliarity(getFamiliarity() < 0.9F ? getFamiliarity() / 2.0F : getFamiliarity() * 0.9F);
                 stack.set(TFCComponents.EGG, EggComponent.of(baby, Calendars.SERVER.getTotalDays() + hatchDays.get()));
                 FoodCapability.setInvisibleNonDecaying(stack);

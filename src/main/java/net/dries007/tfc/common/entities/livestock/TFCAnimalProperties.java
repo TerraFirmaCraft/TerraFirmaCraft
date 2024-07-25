@@ -14,7 +14,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -43,17 +42,15 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.common.component.ItemStackComponent;
 import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.component.food.FoodCapability;
-import net.dries007.tfc.common.entities.BrainBreeder;
+import net.dries007.tfc.common.entities.BrainAnimalBehavior;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.GenderedRenderAnimal;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.config.animals.AnimalConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
-import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 
-public interface TFCAnimalProperties extends GenderedRenderAnimal, BrainBreeder
+public interface TFCAnimalProperties extends GenderedRenderAnimal, BrainAnimalBehavior, CommonAnimalBehavior
 {
     long MATING_COOLDOWN_DEFAULT_TICKS = ICalendar.TICKS_IN_DAY;
     float READY_TO_MATE_FAMILIARITY = 0.3f;
@@ -71,42 +68,6 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal, BrainBreeder
         return (LivingEntity) this;
     }
 
-    default ICalendar getCalendar()
-    {
-        return Calendars.get(getEntity().level());
-    }
-
-    private SynchedEntityData entityData()
-    {
-        return getEntity().getEntityData();
-    }
-
-    CommonAnimalData animalData();
-
-    AnimalConfig animalConfig();
-
-    long getLastFamiliarityDecay();
-
-    void setLastFamiliarityDecay(long days);
-
-    default void setLastFed(long fed)
-    {
-        entityData().set(animalData().lastFed(), fed);
-    }
-
-    default long getLastFed()
-    {
-        return entityData().get(animalData().lastFed());
-    }
-
-    void setMated(long time);
-
-    long getMated();
-
-    Age getLastAge();
-
-    void setLastAge(Age age);
-
     /**
      * Is this animal hungry?
      *
@@ -114,7 +75,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal, BrainBreeder
      */
     default boolean isHungry()
     {
-        return getLastFed() < getCalendar().getTotalDays();
+        return calendar().getTicks() > getLastFedTick() + ICalendar.TICKS_IN_DAY;
     }
 
     /**
@@ -133,15 +94,20 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal, BrainBreeder
      */
     default void tickAnimalData()
     {
-        if (getLastFamiliarityDecay() > -1 && getLastFamiliarityDecay() + 1 < getCalendar().getTotalDays())
+        final float familiarity = getFamiliarity();
+        final long currentTick = calendar().getTicks();
+        final long familiarityDecayTick = getLastFamiliarityTick();
+
+        if (
+            familiarity > 0 && // There is familiarity to decay,
+            familiarityDecayTick != -1 && // And we have a record of a date
+            currentTick > familiarityDecayTick + ICalendar.TICKS_IN_DAY && // And it's been at least a day since we decayed previously
+            familiarity < TFCConfig.SERVER.familiarityDecayLimit.get() // And our familiarity is below the level where it won't decay
+        )
         {
-            float familiarity = getFamiliarity();
-            if (familiarity < TFCConfig.SERVER.familiarityDecayLimit.get())
-            {
-                familiarity -= 0.02 * (getCalendar().getTotalDays() - getLastFamiliarityDecay());
-                setLastFamiliarityDecay(getCalendar().getTotalDays());
-                this.setFamiliarity(familiarity);
-            }
+            // Then familiarity decays, which is based on the last time this animal was familiarized vs. the current time. Modifying
+            // the familiarity will reset the last decay tick
+            setFamiliarity(familiarity - 0.02f * (currentTick - familiarityDecayTick));
         }
         final Age age = getAgeType();
         if (age != getLastAge())
@@ -150,10 +116,9 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal, BrainBreeder
             getEntity().refreshDimensions();
         }
         // because this is a random value it's not deterministic, we will allow the entity to sync it on its own
-        if (!getEntity().level().isClientSide && age == Age.ADULT && getUses() > getUsesToElderly() && getOldDay() == -1L)
+        if (!level().isClientSide && age == Age.ADULT && getUses() > getUsesToElderly() && getOldTick() == -1L)
         {
-            final long oldDay = getCalendar().getTotalDays() + 1 + getEntity().getRandom().nextInt(5);
-            setOldDay(oldDay);
+            setOldTick(calendar().getTicks() + (1L + getEntity().getRandom().nextInt(5)) * ICalendar.TICKS_IN_DAY);
         }
     }
 
@@ -186,10 +151,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal, BrainBreeder
         return InteractionResult.PASS;
     }
 
-    default void showExtraClickInfo(Player player)
-    {
-
-    }
+    default void showExtraClickInfo(Player player) {}
 
     default InteractionResult eatFood(@Nonnull ItemStack stack, InteractionHand hand, Player player)
     {
@@ -205,9 +167,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal, BrainBreeder
         entity.heal(1f);
         if (!level.isClientSide)
         {
-            final long days = getCalendar().getTotalDays();
-            setLastFed(days);
-            setLastFamiliarityDecay(days); // no decay today
+            setLastFedNow();
             if (!player.isCreative())
             {
                 final @Nullable ItemStackComponent bowl = stack.get(TFCComponents.BOWL);
@@ -244,55 +204,45 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal, BrainBreeder
         return SoundEvents.PLAYER_BURP;
     }
 
-    default void registerCommonData(SynchedEntityData.Builder builder)
-    {
-        builder.define(animalData().gender(), true);
-        builder.define(animalData().birthday(), 0L);
-        builder.define(animalData().familiarity(), 0f);
-        builder.define(animalData().uses(), 0);
-        builder.define(animalData().fertilized(), false);
-        builder.define(animalData().oldDay(), -1L);
-        builder.define(animalData().geneticSize(), 16);
-        builder.define(animalData().lastFed(), Long.MIN_VALUE);
-    }
-
     default void saveCommonAnimalData(CompoundTag nbt)
     {
-        nbt.putBoolean("gender", getGender().toBool());
-        nbt.putLong("birth", getBirthDay());
+        nbt.putBoolean("gender", isMale());
+        nbt.putByte("lastAge", (byte) getLastAge().ordinal());
+        nbt.putInt("geneticSize", getGeneticSize());
+        nbt.putInt("uses", getUses());
         nbt.putBoolean("fertilized", isFertilized());
         nbt.putFloat("familiarity", getFamiliarity());
-        nbt.putInt("uses", getUses());
-        nbt.putLong("fed", getLastFed());
-        nbt.putLong("decay", getLastFamiliarityDecay());
-        nbt.putLong("mating", getMated());
-        nbt.putInt("lastAge", getLastAge().ordinal());
-        nbt.putLong("oldDay", getOldDay());
-        nbt.putInt("geneticSize", getGeneticSize());
+        nbt.putLong("lastFamiliarityTick", getEntityData().get(animalData().lastFamiliarityTick()));
+        nbt.putLong("birthTick", getBirthTick());
+        nbt.putLong("oldTick", getOldTick());
+        nbt.putLong("lastFedTick", getLastFedTick());
+        nbt.putLong("lastMateTick", getLastMateTick());
     }
 
     default void readCommonAnimalData(CompoundTag nbt)
     {
-        setGender(Gender.valueOf(nbt.getBoolean("gender")));
-        setBirthDay(nbt.getLong("birth"));
-        setFertilized(nbt.getBoolean("fertilized"));
-        setFamiliarity(nbt.getFloat("familiarity"));
-        setUses(nbt.getInt("uses"));
-        setLastFed(nbt.getLong("fed"));
-        setLastFamiliarityDecay(nbt.getLong("decay"));
-        setMated(nbt.getLong("mating"));
+        setGender(nbt.getBoolean("gender") ? Gender.MALE : Gender.FEMALE);
         setLastAge(Age.valueOf(nbt.getInt("lastAge")));
-        setOldDay(nbt.getLong("oldDay"));
         setGeneticSize(EntityHelpers.getIntOrDefault(nbt, "geneticSize", 16));
+        setUses(nbt.getInt("uses"));
+        setFertilized(nbt.getBoolean("fertilized"));
+        getEntityData().set(animalData().familiarity(), nbt.getFloat("familiarity")); // Don't use the behavior method, it updates familiarity
+        getEntityData().set(animalData().lastFamiliarityTick(), nbt.getLong("lastFamiliarityTick"));
+        setBirthTick(nbt.getLong("birthTick"));
+        setOldTick(nbt.getLong("oldTick"));
+        getEntityData().set(animalData().lastFedTick(), nbt.getLong("lastFedTick")); // Don't use the behavior method, it updates familiarity
+        getEntityData().set(animalData().lastMateTick(), nbt.getLong("lastMateTick"));
     }
 
     default void initCommonAnimalData(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason)
     {
         final var random = getEntity().getRandom();
+
         setGender(Gender.valueOf(random.nextBoolean()));
-        setBirthDay(EntityHelpers.getRandomGrowth(getEntity(), random, getDaysToAdulthood()));
+        setBirthTick(EntityHelpers.getRandomGrowth(getEntity(), random, getDaysToAdulthood()));
+        setOldTick(-1L);
+
         setFamiliarity(0);
-        setOldDay(-1L);
         setUses(0);
         setGeneticSize(Mth.nextInt(random, 4, 18));
         setFertilized(false);
@@ -304,82 +254,11 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal, BrainBreeder
 
     default boolean isReadyToMate()
     {
-        return getAgeType() == Age.ADULT && getFamiliarity() >= READY_TO_MATE_FAMILIARITY && !isFertilized() && !isHungry() && getMated() + MATING_COOLDOWN_DEFAULT_TICKS <= getCalendar().getTicks();
-    }
-
-    /**
-     * Get this animal gender, female or male
-     *
-     * @return Gender of this animal
-     */
-    default Gender getGender()
-    {
-        return Gender.valueOf(entityData().get(animalData().gender()));
-    }
-
-    default boolean isMale()
-    {
-        return getGender().toBool();
-    }
-
-    /**
-     * Set this animal gender, used on spawn/birth
-     *
-     * @param gender the Gender to set to
-     */
-    default void setGender(Gender gender)
-    {
-        entityData().set(animalData().gender(), gender.toBool());
-    }
-
-    /**
-     * Returns the birth day of this animal. Determines how old this animal is
-     *
-     * @return returns the day this animal has been birth
-     */
-    default long getBirthDay()
-    {
-        return entityData().get(animalData().birthday());
-    }
-
-    /**
-     * Sets the birth day of this animal. Used to determine how old this animal is
-     *
-     * @param value the day this animal has been birth. Used when this animal spawns.
-     */
-    default void setBirthDay(long value)
-    {
-        entityData().set(animalData().birthday(), value);
-    }
-
-    default long getOldDay()
-    {
-        return entityData().get(animalData().oldDay());
-    }
-
-    default void setOldDay(long day)
-    {
-        entityData().set(animalData().oldDay(), day);
-    }
-
-    /**
-     * Returns the familiarity of this animal
-     *
-     * @return float value between 0-1.
-     */
-    default float getFamiliarity()
-    {
-        return entityData().get(animalData().familiarity());
-    }
-
-    /**
-     * Set this animal familiarity
-     *
-     * @param value float value between 0-1.
-     */
-    default void setFamiliarity(float value)
-    {
-        entityData().set(animalData().familiarity(), Mth.clamp(value, 0f, 1f));
+        return getAgeType() == Age.ADULT
+            && getFamiliarity() >= READY_TO_MATE_FAMILIARITY
+            && !isFertilized()
+            && !isHungry()
+            && getLastMateTick() + MATING_COOLDOWN_DEFAULT_TICKS <= calendar().getTicks();
     }
 
     /**
@@ -387,12 +266,12 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal, BrainBreeder
      */
     default int getGeneticSize()
     {
-        return entityData().get(animalData().geneticSize());
+        return getEntityData().get(animalData().geneticSize());
     }
 
     default void setGeneticSize(int size)
     {
-        entityData().set(animalData().geneticSize(), Mth.clamp(size, 1, 32));
+        getEntityData().set(animalData().geneticSize(), (byte) Mth.clamp(size, 1, 32));
         final var instance = getEntity().getAttribute(Attributes.SCALE);
         if (instance != null)
         {
@@ -406,61 +285,20 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal, BrainBreeder
     }
 
     /**
-     * Add a 'use' to the animal
-     */
-    default void addUses(int uses)
-    {
-        setUses(getUses() + uses);
-    }
-
-    default void setUses(int uses)
-    {
-        entityData().set(animalData().uses(), uses);
-    }
-
-    /**
-     * Get the uses this animal has
-     */
-    default int getUses()
-    {
-        return entityData().get(animalData().uses());
-    }
-
-    /**
-     * Returns true if this female is pregnant, or the next time it ovulates, eggs are fertilized.
-     *
-     * @return true if this female has been fertilized.
-     */
-    default boolean isFertilized()
-    {
-        return entityData().get(animalData().fertilized());
-    }
-
-    /**
-     * Set if this female is fertilized
-     *
-     * @param value true on fertilization (mating)
-     */
-    default void setFertilized(boolean value)
-    {
-        entityData().set(animalData().fertilized(), value);
-    }
-
-    /**
      * Do things on fertilization of females (ie: save the male genes for some sort of genetic selection)
      */
     default void onFertilized(TFCAnimalProperties male)
     {
         setFertilized(true);
-        setLastFed(getLastFed() - 1);
-        male.setLastFed(getLastFed() - 1);
+        setLastFedYesterday();
+        male.setLastFedYesterday();
         male.addUses(5); // wear out the male
     }
 
     default void setBabyTraits(TFCAnimalProperties baby)
     {
         baby.setGender(Gender.valueOf(getEntity().getRandom().nextBoolean()));
-        baby.setBirthDay(Calendars.SERVER.getTotalDays());
+        baby.setBirthTickNow();
         baby.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
     }
 
@@ -469,7 +307,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal, BrainBreeder
     {
         // Cancel default vanilla behaviour (immediately spawns children of this animal) and set this female as fertilized
         // This method may be called multiple times from BreedGoal so we need to check !isFertilized to prevent spammy addition of uses
-        if (other != this && this.getGender() == Gender.FEMALE && other instanceof TFCAnimalProperties otherFertile && !isFertilized())
+        if (other != this && other instanceof TFCAnimalProperties otherFertile && !isFertilized())
         {
             this.onFertilized(otherFertile);
         }
@@ -502,53 +340,18 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal, BrainBreeder
      */
     default Age getAgeType()
     {
-        final long totalDays = getCalendar().getTotalDays();
-        final long oldDay = getOldDay();
-        if (oldDay != -1L && totalDays > oldDay)
+        final long currentTick = calendar().getTicks();
+        final long oldTick = getOldTick();
+        if (oldTick != -1 && currentTick > oldTick)
         {
             return Age.OLD;
         }
-        final long adulthoodDays = totalDays - this.getBirthDay();
-        if (adulthoodDays > getDaysToAdulthood())
+        final long adultTick = getBirthTick() + (long) animalConfig().adulthoodDays().getAsInt() * ICalendar.TICKS_IN_DAY;
+        if (currentTick > adultTick)
         {
             return Age.ADULT;
         }
         return Age.CHILD;
-    }
-
-    /**
-     * What is the maximum familiarity obtainable for adults of this animal?
-     *
-     * @return 0 if not familiarizable at all, [0, 1] for a cap
-     */
-    default float getAdultFamiliarityCap()
-    {
-        return animalConfig().familiarityCap().get().floatValue();
-    }
-
-    /**
-     * Get the number of days needed for this animal to be adult
-     *
-     * @return number of days
-     */
-    default int getDaysToAdulthood()
-    {
-        return animalConfig().adulthoodDays().get();
-    }
-
-    /**
-     * Get the number of uses for this animal to become old
-     *
-     * @return number of uses, 0 to disable
-     */
-    default int getUsesToElderly()
-    {
-        return animalConfig().uses().get();
-    }
-
-    default boolean eatsRottenFood()
-    {
-        return animalConfig().eatsRottenFood().get();
     }
 
     /**
@@ -579,9 +382,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal, BrainBreeder
      * Set this animal on produce cooldown
      * This means that you just sheared a sheep, your chicken just laid eggs, or you just milked your cow
      */
-    default void setProductsCooldown()
-    {
-    }
+    default void setProductsCooldown() {}
 
     /**
      * Returns the number of ticks remaining for this animal to finish its produce cooldown
@@ -597,19 +398,18 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal, BrainBreeder
     @Override
     default boolean displayMaleCharacteristics()
     {
-        return !getEntity().isBaby() && getGender() == TFCAnimalProperties.Gender.MALE;
+        return !getEntity().isBaby() && isMale();
     }
 
     @Override
     default boolean displayFemaleCharacteristics()
     {
-        return !getEntity().isBaby() && getGender() == TFCAnimalProperties.Gender.FEMALE;
+        return !getEntity().isBaby() && isFemale();
     }
 
     default boolean isFood(ItemStack stack)
     {
-        return (eatsRottenFood() || !FoodCapability.isRotten(stack))
-            && Helpers.isItem(stack, getFoodTag());
+        return (eatsRottenFood() || !FoodCapability.isRotten(stack)) && Helpers.isItem(stack, getFoodTag());
     }
 
     default Component getGenderedTypeName()
@@ -617,33 +417,9 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal, BrainBreeder
         return Component.translatable(getEntity().getType().getDescriptionId() + "." + getGender().name().toLowerCase(Locale.ROOT));
     }
 
+    @SuppressWarnings("unused") // used by Jade
     default MutableComponent getProductReadyName()
     {
         return Component.translatable("tfc.jade.product.generic");
-    }
-
-    enum Age
-    {
-        CHILD, ADULT, OLD;
-
-        public static Age valueOf(int value)
-        {
-            return value == 0 ? CHILD : value == 1 ? ADULT : OLD;
-        }
-    }
-
-    enum Gender
-    {
-        MALE, FEMALE;
-
-        public static Gender valueOf(boolean value)
-        {
-            return value ? MALE : FEMALE;
-        }
-
-        public boolean toBool()
-        {
-            return this == MALE;
-        }
     }
 }

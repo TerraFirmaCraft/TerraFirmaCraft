@@ -77,13 +77,13 @@ public abstract class DairyAnimal extends ProducingMammal
     @Override
     public boolean hasProduct()
     {
-        return getGender() == Gender.FEMALE && getAgeType() == Age.ADULT && getProductsCooldown() == 0;
+        return isFemale() && getAgeType() == Age.ADULT && getProductsCooldown() == 0;
     }
 
     private void sendTooltip(Level level, Player player)
     {
         MutableComponent component = null;
-        if (getGender() == Gender.MALE)
+        if (isMale())
         {
             component = Component.translatable(MOD_ID + ".tooltip.animal.male_milk", getTypeName().getString());
         }

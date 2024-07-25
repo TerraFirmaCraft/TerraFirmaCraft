@@ -129,7 +129,7 @@ public class TFCOcelot extends Ocelot
                             cat.finalizeSpawn(server, level().getCurrentDifficultyAt(blockPosition()), MobSpawnType.CONVERSION, null);
                             if (!wasBaby)
                             {
-                                cat.setBirthDay(Calendars.get(level()).getTotalDays() - 120);
+                                cat.setBirthTickToALongTimeAgo();
                             }
                         }
                     }
