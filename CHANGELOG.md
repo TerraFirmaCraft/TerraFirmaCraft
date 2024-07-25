@@ -2,22 +2,22 @@ Another small update with some small features and fixes.
 
 ### Changes
 
-- Added JEI recipe click areas to various TFC menus, which when clicked open the list of recipes in JEI for that device (#2730)
-- Kelp in oceans generates less tall on average, and should reach the surface of the ocean less often
+- Added JEI recipe transfer handler functionality (the "+" button to autofill the recipe.) to various TFC menus. (#2735)
+- Add two Rustic and Lattice Windmill Blades for alternative windmill styles (thanks alekiponi!)
+- Update the shape of lake biomes, adding small mid-lake islands that can appear
+- Climate and Biome generation tweaks:
+  - Lakes cause a localized rainfall increase near them
+  - Increase rainfall near-ocean bias, and adjust average rainfall slightly downwards to compensate. Inland areas are more dry, costal areas are more rainy
+  - Add highly localized, potent, rainfall influence from nearby rivers (the splash image above).
+  - Add a max rainfall that badlands biomes appear at
+  - Add a min rainfall that low, freshwater-heavy biomes (lowlands, low canyons) appear at
+- Removed the "place an encased axle on top of an axle" functionality, that was responsible for deleting the axle. This was from an older iteration of axle/encased axles/axle casings and did not make sense with the fact that an "Encased Axle" already contains an axle.
+- Bread, Cooked meat are now heatable, and can burn (be lost) if heated too hot
 
 ### Fixes
 
-- Fixed Distant Horizons' distant world generation causing chunk corruption and crashes (#2661)
-- Fixed food added by addons/packs decaying in creative tabs, and JEI views
-- Fixed nutrition not working properly after death:
-  - In peaceful mode, fast passive regeneration not applying
-  - Rotten food never giving adverse effects when eaten
-  - The "Full Nutrition" advancement not triggering
-- Fixed two missing recipes in the Field Guide
-- Fixed a typo in the "Leather" advancement
-
-
-### Technical Changes
-
-TFC's noise caves are now controllable via [Density Functions](https://minecraft.fandom.com/wiki/Density_function). The defaults are located [here](https://github.com/TerraFirmaCraft/TerraFirmaCraft/tree/1.20.x/src/generated/resources/data/tfc/worldgen/density_function), for anyone who wishes to delve into the realm of noise generation.
-
+- Fix rare climate chunk artifacts at the edge of region borders (typically in deep oceans)
+- Fix pot recipes with item stack providers using input-based modifiers not working (affects addons/datapacks only)
+- Fix stick duplication loop involving fruit tree leaves
+- Fix duplicated recipes showing on the sewing table screen
+- Fix familiarity appearing to decay on client until interacted with, in certain situations (#2736)
