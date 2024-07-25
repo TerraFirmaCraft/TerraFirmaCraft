@@ -183,6 +183,8 @@ def generate(rm: ResourceManager):
 
     rm.crafting_shaped('crafting/crankshaft', ['AM', ' S'], {'A': '#tfc:axles', 'M': 'tfc:brass_mechanisms', 'S': '#forge:sheets/brass'}, 'tfc:crankshaft').with_advancement('#tfc:axles')
     rm.crafting_shaped('crafting/windmill_blade', ['SSS', ' CC'], {'S': '#tfc:lumber', 'C': 'tfc:wool_cloth'}, 'tfc:windmill_blade').with_advancement('#tfc:lumber')
+    rm.crafting_shaped('crafting/lattice_windmill_blade', ['SSS', 'SWS', 'SSS'], {'S': '#forge:rods/wooden', 'W': '#tfc:default_windmill_blades'}, 'tfc:lattice_windmill_blade').with_advancement('#tfc:windmill_blade')
+    rm.crafting_shaped('crafting/rustic_windmill_blade', [' S ', 'SWS', ' S '], {'S': 'tfc:burlap_cloth', 'W': '#tfc:default_windmill_blades'}, 'tfc:rustic_windmill_blade').with_advancement('#tfc:windmill_blade')
     rm.crafting_shaped('crafting/trip_hammer', ['XMZ', 'XMZ'], {'X': '#forge:sheets/steel', 'M': 'tfc:brass_mechanisms', 'Z': '#forge:rods/steel'}, 'tfc:trip_hammer').with_advancement('tfc:brass_mechanisms')
 
     rm.crafting_shaped('crafting/steel_pump', ['PGM', ' P '], {'P': 'tfc:steel_pipe', 'G': 'tfc:glue', 'M': 'tfc:brass_mechanisms'}, 'tfc:steel_pump').with_advancement('tfc:steel_pipe')

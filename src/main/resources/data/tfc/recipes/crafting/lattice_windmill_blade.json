@@ -1,0 +1,20 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "SWS",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "tag": "forge:rods/wooden"
+    },
+    "W": {
+      "tag": "tfc:default_windmill_blades"
+    }
+  },
+  "result": {
+    "item": "tfc:lattice_windmill_blade"
+  }
+}

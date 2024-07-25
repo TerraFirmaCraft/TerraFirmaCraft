@@ -6,11 +6,14 @@
 
 package net.dries007.tfc.common.blockentities.rotation;
 
+import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.common.items.WindmillBladeItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -36,7 +39,6 @@ public class WindmillBlockEntity extends TickableInventoryBlockEntity<ItemStackH
     public static final int SLOTS = 5;
     public static final float MIN_SPEED = Mth.TWO_PI / (20 * 20);
     public static final float MAX_SPEED = Mth.TWO_PI / (8 * 20);
-
     private static final float LERP_SPEED = MIN_SPEED / (5 * 20);
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, WindmillBlockEntity windmill)
@@ -160,7 +162,7 @@ public class WindmillBlockEntity extends TickableInventoryBlockEntity<ItemStackH
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        return Helpers.isItem(stack, TFCTags.Items.WINDMILL_BLADES);
+        return Helpers.isItem(stack, TFCTags.Items.ALL_WINDMILL_BLADES);
     }
 
     @Override

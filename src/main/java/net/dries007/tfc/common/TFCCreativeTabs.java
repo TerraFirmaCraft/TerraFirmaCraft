@@ -488,6 +488,8 @@ public final class TFCCreativeTabs
         accept(out, TFCItems.JAR_LID);
         accept(out, TFCItems.WINDMILL_BLADE);
         TFCItems.COLORED_WINDMILL_BLADES.values().forEach(blade -> accept(out, blade));
+        accept(out, TFCItems.RUSTIC_WINDMILL_BLADE);
+        accept(out, TFCItems.LATTICE_WINDMILL_BLADE);
         consumeOurs(BuiltInRegistries.FLUID, fluid -> out.accept(fluid.getBucket()));
 
         TFCItems.FRESHWATER_FISH_BUCKETS.values().forEach(reg -> accept(out, reg));
