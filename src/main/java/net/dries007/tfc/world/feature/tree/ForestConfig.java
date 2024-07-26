@@ -6,31 +6,24 @@
 
 package net.dries007.tfc.world.feature.tree;
 
-import java.util.Map;
 import java.util.Optional;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.util.ExtraCodecs;
-import net.minecraft.util.RandomSource;
-import net.minecraft.util.valueproviders.IntProvider;
-import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
 import net.dries007.tfc.util.collections.IWeighted;
 import net.dries007.tfc.world.Codecs;
-import net.dries007.tfc.world.chunkdata.ForestType;
 import net.dries007.tfc.world.placement.ClimatePlacement;
 
-public record ForestConfig(HolderSet<ConfiguredFeature<?, ?>> entries, Map<ForestType, Type> typeMap, boolean useWeirdness) implements FeatureConfiguration
+public record ForestConfig(HolderSet<ConfiguredFeature<?, ?>> entries) implements FeatureConfiguration
 {
     public static final Codec<ForestConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        ExtraCodecs.nonEmptyHolderSet(ConfiguredFeature.LIST_CODEC).fieldOf("entries").forGetter(c -> c.entries),
-        Codec.unboundedMap(ForestType.CODEC, Type.CODEC).fieldOf("types").forGetter(c -> c.typeMap),
-        Codec.BOOL.optionalFieldOf("use_weirdness", true).forGetter(c -> c.useWeirdness)
+        ExtraCodecs.nonEmptyHolderSet(ConfiguredFeature.LIST_CODEC).fieldOf("entries").forGetter(c -> c.entries)
     ).apply(instance, ForestConfig::new));
 
     public record Entry(ClimatePlacement climate, Optional<BlockState> bushLog, Optional<BlockState> bushLeaves, Optional<BlockState> fallenLog, Optional<BlockState> fallenLeaves, Optional<IWeighted<BlockState>> groundcover, Holder<ConfiguredFeature<?, ?>> treeFeature, Holder<ConfiguredFeature<?, ?>> deadFeature, Optional<Holder<ConfiguredFeature<?, ?>>> oldGrowthFeature, Optional<Holder<ConfiguredFeature<?, ?>>> krummholz, int oldGrowthChance, int spoilerOldGrowthChance, int fallenChance, int deadChance, boolean floating) implements FeatureConfiguration
@@ -93,21 +86,4 @@ public record ForestConfig(HolderSet<ConfiguredFeature<?, ?>> entries, Map<Fores
         }
     }
 
-    public record Type(IntProvider treeCount, IntProvider groundcoverCount, float perChunkChance, Optional<IntProvider> bushCount, boolean hasSpoilers, boolean allowOldGrowth, IntProvider leafPileCount)
-    {
-        public static final Codec<Type> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            IntProvider.CODEC.optionalFieldOf("tree_count", UniformInt.of(0, 0)).forGetter(c -> c.treeCount),
-            IntProvider.CODEC.optionalFieldOf("groundcover_count", UniformInt.of(0, 0)).forGetter(c -> c.groundcoverCount),
-            Codec.FLOAT.optionalFieldOf("per_chunk_chance", 1f).forGetter(c -> c.perChunkChance),
-            IntProvider.CODEC.optionalFieldOf("bush_count").forGetter(c -> c.bushCount),
-            Codec.BOOL.optionalFieldOf("has_spoiler_old_growth", false).forGetter(c -> c.hasSpoilers),
-            Codec.BOOL.optionalFieldOf("allows_old_growth", false).forGetter(c -> c.allowOldGrowth),
-            IntProvider.CODEC.optionalFieldOf("leaf_pile_count", UniformInt.of(0, 0)).forGetter(c -> c.leafPileCount)
-        ).apply(instance, Type::new));
-
-        public int sampleBushCount(RandomSource random, Optional<IntProvider> count, int treeCount, float density)
-        {
-            return count.map(sampler -> sampler.sample(random)).orElse((int) (treeCount * density));
-        }
-    }
 }

@@ -28,11 +28,11 @@ public class TFCLayers
     /**
      * These are the int IDs that are used for forest layer generation
      */
-    public static final int FOREST_NONE = ForestType.NONE.ordinal();
-    public static final int FOREST_NORMAL = ForestType.NORMAL.ordinal();
-    public static final int FOREST_SPARSE = ForestType.SPARSE.ordinal();
-    public static final int FOREST_EDGE = ForestType.EDGE.ordinal();
-    public static final int FOREST_OLD = ForestType.OLD_GROWTH.ordinal();
+    public static final int FOREST_NONE = 0;
+    public static final int FOREST_SPARSE = 1;
+    public static final int FOREST_EDGE = 2;
+    public static final int FOREST_NORMAL = 3;
+    public static final int FOREST_OLD = 4;
 
     /**
      * These are the int IDs that are used for biome layer generation

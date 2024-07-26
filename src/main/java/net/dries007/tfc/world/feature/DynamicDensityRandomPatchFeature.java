@@ -55,27 +55,24 @@ public class DynamicDensityRandomPatchFeature extends Feature<RandomPatchConfigu
     {
         final ChunkData data = ChunkData.get(level, pos);
         final ForestType forestType = data.getForestType();
+        final int density = forestType.getDensity();
 
         final int seaLevel = context.chunkGenerator().getSeaLevel();
         if (pos.getY() > seaLevel + 25)
         {
             tries *= 1f - Mth.clampedMap(pos.getY(), seaLevel + 25, seaLevel + 100, 0f, 0.8f);
         }
-        if (forestType == ForestType.OLD_GROWTH)
+        switch (density)
         {
-            tries = Math.min(tries, 8);
-        }
-        else if (forestType == ForestType.NORMAL)
-        {
-            tries = Math.min(tries, 14);
-        }
-        else if (forestType == ForestType.EDGE)
-        {
-            tries = Math.min(tries, 40);
-        }
-        if (context.chunkGenerator() instanceof TFCChunkGenerator generator)
-        {
-            tries *= generator.settings().grassDensity() * 2f;
+            case 4 -> tries = Math.min(tries, 8);
+            case 3 -> tries = Math.min(tries, 14);
+            case 2 -> tries = Math.min(tries, 40);
+            default -> {
+                if (context.chunkGenerator() instanceof TFCChunkGenerator generator)
+                {
+                    tries *= generator.settings().grassDensity() * 2f;
+                }
+            }
         }
 
         return tries;
