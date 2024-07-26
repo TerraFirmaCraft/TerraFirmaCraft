@@ -37,9 +37,7 @@ public record RegionChunkDataGenerator(
     ThreadLocal<Area> rockLayerArea,
     Noise2D layerHeightNoise,
     Noise2D layerSkewXNoise,
-    Noise2D layerSkewZNoise,
-    Noise2D forestWeirdnessNoise,
-    Noise2D forestDensityNoise
+    Noise2D layerSkewZNoise
 ) implements ChunkDataGenerator
 {
     private static final int LAYER_OFFSET_BITS = 3;
@@ -83,10 +81,8 @@ public record RegionChunkDataGenerator(
 
         // Flora
         final ConcurrentArea<ForestType> forestTypeLayer = new ConcurrentArea<>(TFCLayers.createOverworldForestLayer(random.nextLong(), IArtist.nope()), ForestType::valueOf);
-        final Noise2D forestWeirdnessNoise = new OpenSimplex2D(random.nextInt()).octaves(4).spread(0.0025f).map(x -> 1.1f * Math.abs(x)).clamped(0, 1);
-        final Noise2D forestDensityNoise = new OpenSimplex2D(random.nextInt()).octaves(4).spread(0.0025f).scaled(-0.2f, 1.2f).clamped(0, 1);
 
-        return new RegionChunkDataGenerator(regionGenerator, rockLayerSettings, forestTypeLayer, rockLayerArea, layerHeightNoise, layerSkewXNoise, layerSkewZNoise, forestWeirdnessNoise, forestDensityNoise);
+        return new RegionChunkDataGenerator(regionGenerator, rockLayerSettings, forestTypeLayer, rockLayerArea, layerHeightNoise, layerSkewXNoise, layerSkewZNoise);
     }
 
     @Override
@@ -163,15 +159,11 @@ public record RegionChunkDataGenerator(
 
         // This layer is sampled per-chunk, to avoid the waste of two additional zoom layers
         final ForestType forestType = forestTypeLayer.get(blockX >> 4, blockZ >> 4);
-        final float forestWeirdness = (float) forestWeirdnessNoise.noise(blockX + 8, blockZ + 8);
-        final float forestDensity = (float) forestDensityNoise.noise(blockX + 8, blockZ + 8);
 
         data.generatePartial(
             rainfallLayer,
             temperatureLayer,
-            forestType,
-            forestWeirdness,
-            forestDensity
+            forestType
         );
 
         return data;

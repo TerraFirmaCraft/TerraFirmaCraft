@@ -172,7 +172,7 @@ public class ClientForgeEventHandler
                 final ChunkData data = ChunkData.get(mc.level, pos);
                 if (data.status() == ChunkData.Status.CLIENT)
                 {
-                    tooltip.add("F: %s Density: %.1f Weird: %.1f".formatted(data.getForestType().getSerializedName(), data.getForestDensity(), data.getForestWeirdness()));
+                    tooltip.add("F: %s".formatted(data.getForestType().getSerializedName()));
                 }
                 else
                 {

@@ -27,9 +27,7 @@ public record ChunkWatchPacket(
     ChunkPos pos,
     LerpFloatLayer rainfall,
     LerpFloatLayer temperature,
-    ForestType forestType,
-    float forestWeirdness,
-    float forestDensity
+    ForestType forestType
 ) implements CustomPacketPayload
 {
     public static final CustomPacketPayload.Type<ChunkWatchPacket> TYPE = PacketHandler.type("chunk_watch");
@@ -38,8 +36,6 @@ public record ChunkWatchPacket(
         LerpFloatLayer.STREAM, c -> c.rainfall,
         LerpFloatLayer.STREAM, c -> c.temperature,
         ForestType.STREAM, c -> c.forestType,
-        ByteBufCodecs.FLOAT, c -> c.forestWeirdness,
-        ByteBufCodecs.FLOAT, c -> c.forestDensity,
         ChunkWatchPacket::new
     );
 
@@ -63,7 +59,7 @@ public record ChunkWatchPacket(
                 data = ChunkData.queueClientChunkDataForLoad(pos);
             }
 
-            data.onUpdatePacket(rainfall, temperature, forestType, forestDensity, forestWeirdness);
+            data.onUpdatePacket(rainfall, temperature, forestType);
             chunk.setData(TFCAttachments.CHUNK_DATA.get(), data);
         }
     }

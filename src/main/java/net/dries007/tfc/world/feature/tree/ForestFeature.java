@@ -54,7 +54,8 @@ public class ForestFeature extends Feature<ForestConfig>
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final ForestType forestType = data.getForestType();
         final ForestConfig.Type typeConfig = config.typeMap().get(forestType);
-        final float density = data.getForestDensity();
+        // todo 1.21: density replacement
+        final float density = random.nextFloat();
 
         if (random.nextFloat() > typeConfig.perChunkChance()) return false;
 
@@ -354,17 +355,18 @@ public class ForestFeature extends Feature<ForestConfig>
         if (config.useWeirdness())
         {
             // remove up to 3 entries from the config based on weirdness, less likely to happen each time
-            float weirdness = chunkData.getForestWeirdness();
-            Collections.rotate(entries, -(int) (weirdness * (entries.size() - 1f)));
-            for (int i = 1; i >= -1; i--)
-            {
-                if (entries.size() <= 1)
-                    break;
-                if (random.nextFloat() > weirdness - (0.15f * i) + 0.1f)
-                {
-                    entries.remove(entries.size() - 1);
-                }
-            }
+            // todo: replacement for weirdness
+//            float weirdness = chunkData.getForestWeirdness();
+//            Collections.rotate(entries, -(int) (weirdness * (entries.size() - 1f)));
+//            for (int i = 1; i >= -1; i--)
+//            {
+//                if (entries.size() <= 1)
+//                    break;
+//                if (random.nextFloat() > weirdness - (0.15f * i) + 0.1f)
+//                {
+//                    entries.remove(entries.size() - 1);
+//                }
+//            }
         }
 
 

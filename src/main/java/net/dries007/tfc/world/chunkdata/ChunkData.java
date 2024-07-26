@@ -100,8 +100,6 @@ public class ChunkData
     @Nullable private LerpFloatLayer temperatureLayer;
     private int @Nullable [] aquiferSurfaceHeight;
     private ForestType forestType;
-    private float forestWeirdness;
-    private float forestDensity;
 
     public ChunkData(ChunkPos pos)
     {
@@ -161,16 +159,6 @@ public class ChunkData
         return forestType;
     }
 
-    public float getForestWeirdness()
-    {
-        return forestWeirdness;
-    }
-
-    public float getForestDensity()
-    {
-        return forestDensity;
-    }
-
     public Status status()
     {
         return status;
@@ -179,15 +167,13 @@ public class ChunkData
     /**
      * Generate the chunk data from empty to {@link Status#PARTIAL}. Populated lazily on first creation, and guaranteed to be done by structure stage.
      */
-    public void generatePartial(LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer, ForestType forestType, float forestWeirdness, float forestDensity)
+    public void generatePartial(LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer, ForestType forestType)
     {
         assert status == Status.EMPTY;
 
         this.rainfallLayer = rainfallLayer;
         this.temperatureLayer = temperatureLayer;
         this.forestType = forestType;
-        this.forestWeirdness = forestWeirdness;
-        this.forestDensity = forestDensity;
         this.status = Status.PARTIAL;
     }
 
@@ -211,21 +197,19 @@ public class ChunkData
         assert status == Status.FULL;
         assert rainfallLayer != null && temperatureLayer != null;
 
-        return new ChunkWatchPacket(pos, rainfallLayer, temperatureLayer, forestType, forestWeirdness, forestDensity);
+        return new ChunkWatchPacket(pos, rainfallLayer, temperatureLayer, forestType);
     }
 
     /**
      * Called on client, sets to received data
      */
-    public void onUpdatePacket(LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer, ForestType forestType, float forestDensity, float forestWeirdness)
+    public void onUpdatePacket(LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer, ForestType forestType)
     {
         assert status == Status.EMPTY || status == Status.CLIENT;
 
         this.rainfallLayer = rainfallLayer;
         this.temperatureLayer = temperatureLayer;
         this.forestType = forestType;
-        this.forestDensity = forestDensity;
-        this.forestWeirdness = forestWeirdness;
         this.status = Status.CLIENT;
     }
 
@@ -248,8 +232,6 @@ public class ChunkData
             nbt.put("rainfall", rainfallLayer.write());
             nbt.put("temperature", temperatureLayer.write());
             nbt.putByte("forestType", (byte) forestType.ordinal());
-            nbt.putFloat("forestWeirdness", forestWeirdness);
-            nbt.putFloat("forestDensity", forestDensity);
         }
         return nbt;
     }
@@ -269,8 +251,6 @@ public class ChunkData
             rainfallLayer = new LerpFloatLayer(nbt.getCompound("rainfall"));
             temperatureLayer = new LerpFloatLayer(nbt.getCompound("temperature"));
             forestType = ForestType.valueOf(nbt.getByte("forestType"));
-            forestWeirdness = nbt.getFloat("forestWeirdness");
-            forestDensity = nbt.getFloat("forestDensity");
         }
     }
 
@@ -308,13 +288,13 @@ public class ChunkData
         }
 
         @Override
-        public void generatePartial(LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer, ForestType forestType, float forestWeirdness, float forestDensity) { error(); }
+        public void generatePartial(LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer, ForestType forestType) { error(); }
 
         @Override
         public void generateFull(int[] surfaceHeight, int[] aquiferSurfaceHeight) { error(); }
 
         @Override
-        public void onUpdatePacket(LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer, ForestType forestType, float forestDensity, float forestWeirdness) { error(); }
+        public void onUpdatePacket(LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer, ForestType forestType) { error(); }
 
         @Override
         public void deserializeNBT(CompoundTag nbt) { error(); }
