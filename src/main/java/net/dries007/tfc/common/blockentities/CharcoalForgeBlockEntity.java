@@ -314,11 +314,15 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
      * Attempts to light the forge. Use over just setting the block state HEAT, as if there is no fuel, that will light the forge for one tick which looks strange
      *
      * @param state The current firepit block state
-     * @return {@code true} if the firepit was lit.
+     * @return {@code true} if the forge was lit.
      */
     public boolean light(BlockState state)
     {
         assert level != null;
+        if (burnTicks > 0)
+        {
+            return true; // Already lit
+        }
         if (consumeFuel())
         {
             level.setBlockAndUpdate(worldPosition, state.setValue(CharcoalForgeBlock.HEAT, 2));

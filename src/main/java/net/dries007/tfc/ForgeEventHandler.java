@@ -705,7 +705,7 @@ public final class ForgeEventHandler
             if (!state.getValue(LampBlock.LIT))
             {
                 level.getBlockEntity(pos, TFCBlockEntities.LAMP.get()).ifPresent(lamp -> {
-                    if (lamp.getFuel() != null)
+                    if (lamp.getFuel() != null && !state.getValue(LampBlock.LIT))
                     {
                         level.setBlock(pos, state.setValue(LampBlock.LIT, true), 3);
                         lamp.resetCounter();

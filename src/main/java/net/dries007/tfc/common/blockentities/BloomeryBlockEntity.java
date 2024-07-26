@@ -193,6 +193,11 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
     {
         assert level != null;
 
+        if (state.getValue(BloomeryBlock.LIT))
+        {
+            return true; // Already lit
+        }
+
         updateCachedRecipe();
         if (cachedRecipe != null)
         {

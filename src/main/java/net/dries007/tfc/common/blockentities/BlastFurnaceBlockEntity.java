@@ -299,6 +299,10 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
 
     public boolean light(Level level, BlockPos pos, BlockState state)
     {
+        if (state.getValue(BlastFurnaceBlock.LIT))
+        {
+            return true; // Already lit
+        }
         if (!fuelStacks.isEmpty())
         {
             level.setBlock(pos, state.setValue(BlastFurnaceBlock.LIT, true), Block.UPDATE_ALL);
