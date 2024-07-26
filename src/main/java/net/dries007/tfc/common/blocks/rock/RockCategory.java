@@ -14,6 +14,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.Tier;
 
+import net.dries007.tfc.common.Lore;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.TFCTiers;
 import net.dries007.tfc.common.items.JavelinItem;
@@ -78,7 +79,7 @@ public enum RockCategory implements StringRepresentable
 
         ItemType()
         {
-            this(rock -> new Item(new Item.Properties()));
+            this(rock -> new Item(new Item.Properties().component(Lore.TYPE, Lore.ROCK_CATEGORIES.get(rock))));
         }
 
         ItemType(Function<RockCategory, Item> itemFactory)

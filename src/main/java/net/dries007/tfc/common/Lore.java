@@ -37,9 +37,8 @@ public final class Lore
     public static final ItemLore UNSEALED = of(Component.translatable("tfc.tooltip.unsealed").withStyle(GRAY, ITALIC));
     public static final ItemLore SEALED = of(Component.translatable("tfc.tooltip.sealed").withStyle(GRAY, ITALIC));
 
-    // todo 1.21: add this to rock based items that need it
-    // todo 1.21: add a variant of this for just rock category that works for rock tools
     public static final Map<RockDisplayCategory, ItemLore> ROCKS = Helpers.mapOf(RockDisplayCategory.class, type -> of(Helpers.translateEnum(type).withStyle(GRAY, ITALIC)));
+    public static final Map<RockCategory, ItemLore> ROCK_CATEGORIES = Helpers.mapOf(RockCategory.class, type -> of(Helpers.translateEnum(type).withStyle(GRAY, ITALIC)));
 
     private static ItemLore of(Component lore)
     {

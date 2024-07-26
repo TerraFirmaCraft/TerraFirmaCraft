@@ -32,6 +32,7 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.GroundcoverBlockType;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.blocks.rock.Ore;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
@@ -149,7 +150,9 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
                 TFCItems.METAL_ITEMS.get(Metal.RED_STEEL).get(Metal.ItemType.FISHING_ROD),
                 TFCItems.METAL_ITEMS.get(Metal.BLUE_STEEL).get(Metal.ItemType.FISHING_ROD));
 
-        tag(PLANTS); // todo
+        // todo
+        tag(PLANTS)
+            .addOnly(TFCBlocks.PLANTS, Plant::needsItem);
 
         tagNotWhite(COLORED_WOOL, "wool");
         tagNotWhite(COLORED_CARPETS, "carpet");

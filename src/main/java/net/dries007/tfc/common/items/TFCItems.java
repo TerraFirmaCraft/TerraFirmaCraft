@@ -93,7 +93,7 @@ public final class TFCItems
     );
 
     public static final Map<Rock, ItemId> BRICKS = Helpers.mapOf(Rock.class, type ->
-        register("brick/" + type.name())
+        register("brick/" + type.name(), type.createItemProperties())
     );
 
     // Metal

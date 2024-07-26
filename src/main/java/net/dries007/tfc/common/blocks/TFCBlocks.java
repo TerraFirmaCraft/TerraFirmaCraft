@@ -230,18 +230,18 @@ public final class TFCBlocks
 
     public static final Map<Rock, Map<Rock.BlockType, DecorationBlockHolder>> ROCK_DECORATIONS = Helpers.mapOf(Rock.class, rock ->
         Helpers.mapOf(Rock.BlockType.class, Rock.BlockType::hasVariants, type -> new DecorationBlockHolder(
-            register(("rock/" + type.name() + "/" + rock.name()) + "_slab", () -> type.createSlab(rock)),
-            register(("rock/" + type.name() + "/" + rock.name()) + "_stairs", () -> type.createStairs(rock)),
-            register(("rock/" + type.name() + "/" + rock.name()) + "_wall", () -> type.createWall(rock))
+            register(("rock/" + type.name() + "/" + rock.name()) + "_slab", () -> type.createSlab(rock), b -> new BlockItem(b, rock.createItemProperties())),
+            register(("rock/" + type.name() + "/" + rock.name()) + "_stairs", () -> type.createStairs(rock), b -> new BlockItem(b, rock.createItemProperties())),
+            register(("rock/" + type.name() + "/" + rock.name()) + "_wall", () -> type.createWall(rock), b -> new BlockItem(b, rock.createItemProperties()))
         ))
     );
 
     public static final Map<Rock, Id<Block>> ROCK_ANVILS = Helpers.mapOf(Rock.class, rock -> rock.category() == RockCategory.IGNEOUS_EXTRUSIVE || rock.category() == RockCategory.IGNEOUS_INTRUSIVE, rock ->
-        register("rock/anvil/" + rock.name(), () -> new RockAnvilBlock(ExtendedProperties.of().mapColor(MapColor.STONE).sound(SoundType.STONE).strength(2, 10).requiresCorrectToolForDrops().cloneItem(TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.RAW)).blockEntity(TFCBlockEntities.ANVIL)))
+        register("rock/anvil/" + rock.name(), () -> new RockAnvilBlock(ExtendedProperties.of().mapColor(MapColor.STONE).sound(SoundType.STONE).strength(2, 10).requiresCorrectToolForDrops().cloneItem(TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.RAW)).blockEntity(TFCBlockEntities.ANVIL)), b -> new BlockItem(b, rock.createItemProperties()))
     );
 
     public static final Map<Rock, Id<Block>> MAGMA_BLOCKS = Helpers.mapOf(Rock.class, rock -> rock.category() == RockCategory.IGNEOUS_EXTRUSIVE || rock.category() == RockCategory.IGNEOUS_INTRUSIVE, rock ->
-        register("rock/magma/" + rock.name(), () -> new TFCMagmaBlock(Properties.of().mapColor(MapColor.NETHER).requiresCorrectToolForDrops().lightLevel(s -> 6).randomTicks().strength(0.5F).isValidSpawn((state, level, pos, type) -> type.fireImmune()).hasPostProcess(TFCBlocks::always)))
+        register("rock/magma/" + rock.name(), () -> new TFCMagmaBlock(Properties.of().mapColor(MapColor.NETHER).requiresCorrectToolForDrops().lightLevel(s -> 6).randomTicks().strength(0.5F).isValidSpawn((state, level, pos, type) -> type.fireImmune()).hasPostProcess(TFCBlocks::always)), b -> new BlockItem(b, rock.createItemProperties()))
     );
 
     // Metals
