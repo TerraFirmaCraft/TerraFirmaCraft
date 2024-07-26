@@ -8,7 +8,6 @@ package net.dries007.tfc.util.data;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
@@ -16,6 +15,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
@@ -45,7 +45,7 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
     private final Codec<T> codec;
     private final @Nullable StreamCodec<RegistryFriendlyByteBuf, T> streamCodec;
 
-    private final Map<ResourceLocation, T> byKey = new HashMap<>();
+    private Map<ResourceLocation, T> byKey = Map.of();
     private final Map<T, ResourceLocation> toKey = new IdentityHashMap<>(); // Allow equal values to map to unique keys
 
     private final Codec<Reference<T>> byIdCodec = ResourceLocation.CODEC.xmap(this::getReference, Reference::id);
@@ -120,7 +120,7 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
 
     public Map<ResourceLocation, T> getElements()
     {
-        return Collections.unmodifiableMap(byKey);
+        return byKey;
     }
 
     public Collection<T> getValues()
@@ -176,8 +176,7 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
     public void bindValues(Map<ResourceLocation, T> elements)
     {
         // Sync received from physical server
-        byKey.clear();
-        byKey.putAll(elements);
+        byKey = ImmutableMap.copyOf(elements);
         updateReferences();
         LOGGER.info("Received {} {}(s) from physical server", byKey.size(), registryName);
     }
@@ -194,15 +193,14 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> elements, ResourceManager resourceManagerIn, ProfilerFiller profilerIn)
     {
-        byKey.clear();
-
+        final ImmutableMap.Builder<ResourceLocation, T> builder = ImmutableMap.builder();
         final RegistryOps<JsonElement> ops = getRegistryLookup().createSerializationContext(JsonOps.INSTANCE);
         for (Map.Entry<ResourceLocation, JsonElement> entry : elements.entrySet())
         {
             final ResourceLocation id = entry.getKey();
             try
             {
-                byKey.put(id, codec.parse(ops, entry.getValue()).getOrThrow(JsonParseException::new));
+                builder.put(id, codec.parse(ops, entry.getValue()).getOrThrow(JsonParseException::new));
             }
             catch (IllegalArgumentException | JsonParseException e)
             {
@@ -211,6 +209,7 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
             }
         }
 
+        byKey = builder.build();
         updateReferences();
 
         LOGGER.info("Loaded {} {}(s).", byKey.size(), registryName);
