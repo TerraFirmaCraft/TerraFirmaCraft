@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -106,11 +107,11 @@ public class ForestFeature extends Feature<ForestConfig>
             {
                 feature = entry.krummholz().get().value();
             }
-            else if (typeConfig.isPrimary() && oldChance > 0 && random.nextInt(oldChance) == 0)
+            else if (typeConfig.isPrimary() && oldChance > 0 && random.nextInt(oldChance) == 0)//todo fix
             {
                 feature = entry.getOldGrowthFeature();
             }
-            else if (deadChance > 0 && random.nextInt(deadChance) == 0)
+            else if (deadChance > 0 && (random.nextInt(deadChance) == 0 || typeConfig.isDead()))
             {
                 feature = entry.getDeadFeature();
             }
@@ -335,7 +336,7 @@ public class ForestFeature extends Feature<ForestConfig>
         final float averageTemperature = OverworldClimateModel.getAdjustedAverageTempByElevation(pos, chunkData);
         final List<ForestConfig.Entry> entries = config.entries().stream().map(configuredFeature -> configuredFeature.value().config()).map(cfg -> (ForestConfig.Entry) cfg)
             .sorted(Comparator.comparingDouble(entry -> entry.distanceFromMean(averageTemperature, rainfall)))
-            .toList();
+            .collect(Collectors.toList());
 
         if (entries.isEmpty()) return null;
         if (entries.size() == 1)

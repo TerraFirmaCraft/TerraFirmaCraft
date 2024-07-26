@@ -2,46 +2,6 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:forest",
   "config": {
-    "entries": "#tfc:mangrove_forest_trees",
-    "types": {
-      "none": {
-        "per_chunk_chance": 0
-      },
-      "sparse": {
-        "tree_count": {
-          "type": "uniform",
-          "min_inclusive": 1,
-          "max_inclusive": 3
-        },
-        "groundcover_count": 6,
-        "per_chunk_chance": 0.08,
-        "bush_count": 0,
-        "has_spoiler_old_growth": true
-      },
-      "edge": {
-        "tree_count": 2,
-        "groundcover_count": 10,
-        "leaf_pile_count": {
-          "type": "uniform",
-          "min_inclusive": 0,
-          "max_inclusive": 1
-        }
-      },
-      "normal": {
-        "tree_count": 5,
-        "groundcover_count": 25,
-        "has_spoiler_old_growth": true
-      },
-      "old_growth": {
-        "tree_count": 7,
-        "groundcover_count": 40,
-        "allows_old_growth": true,
-        "leaf_pile_count": {
-          "type": "uniform",
-          "min_inclusive": 0,
-          "max_inclusive": 1
-        }
-      }
-    }
+    "entries": "#tfc:mangrove_forest_trees"
   }
 }

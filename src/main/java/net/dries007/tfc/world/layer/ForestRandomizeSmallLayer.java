@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.world.layer;
 
+import net.dries007.tfc.world.chunkdata.ForestType;
 import net.dries007.tfc.world.layer.framework.AreaContext;
 import net.dries007.tfc.world.layer.framework.CenterTransformLayer;
 
@@ -23,11 +24,11 @@ public enum ForestRandomizeSmallLayer implements CenterTransformLayer
             final int random = context.random().nextInt((value == FOREST_OLD ? 40 : 25));
             if (random == 0)
             {
-                return FOREST_NONE;
+                value = FOREST_NONE;
             }
             else if (random == 1)
             {
-                return FOREST_SPARSE;
+                value = FOREST_SPARSE;
             }
         }
         else if (value == FOREST_SPARSE || value == FOREST_NONE)
@@ -35,9 +36,16 @@ public enum ForestRandomizeSmallLayer implements CenterTransformLayer
             final int random = context.random().nextInt(30);
             if (random == 0)
             {
-                return value == FOREST_SPARSE ? FOREST_NORMAL : FOREST_EDGE;
+                value = value == FOREST_SPARSE ? FOREST_NORMAL : FOREST_EDGE;
             }
         }
-        return value;
+        return switch (value)
+        {
+            case 0 -> ForestType.GRASSLAND.ordinal();
+            case 1 -> ForestType.getSparseForestType(context.random());
+            case 2 -> ForestType.getEdgeForestType(context.random());
+            case 3 -> ForestType.getNormalForestType(context.random());
+            default -> ForestType.getOldGrowthForestType(context.random());
+        };
     }
 }

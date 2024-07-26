@@ -6,7 +6,10 @@
 
 package net.dries007.tfc.world.chunkdata;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -50,6 +53,16 @@ public enum ForestType implements StringRepresentable
 
     public static final Codec<ForestType> CODEC = StringRepresentable.fromEnum(ForestType::values);
     public static final StreamCodec<ByteBuf, ForestType> STREAM = ByteBufCodecs.BYTE.map(ForestType::valueOf, c -> (byte) c.ordinal());
+
+    // todo: an actual generation model for these forest types
+    private static final List<ForestType> DENSITY_1 = Arrays.stream(ForestType.values()).filter(type -> type.getDensity() == 1).toList();
+    private static final List<ForestType> DENSITY_2 = Arrays.stream(ForestType.values()).filter(type -> type.getDensity() == 2).toList();
+    private static final List<ForestType> DENSITY_3 = Arrays.stream(ForestType.values()).filter(type -> type.getDensity() == 3).toList();
+    private static final List<ForestType> DENSITY_4 = Arrays.stream(ForestType.values()).filter(type -> type.getDensity() == 4).toList();
+    public static int getSparseForestType(RandomSource random) { return DENSITY_1.get(random.nextInt(DENSITY_1.size())).ordinal(); }
+    public static int getEdgeForestType(RandomSource random) { return DENSITY_2.get(random.nextInt(DENSITY_2.size())).ordinal(); }
+    public static int getNormalForestType(RandomSource random) { return DENSITY_3.get(random.nextInt(DENSITY_3.size())).ordinal(); }
+    public static int getOldGrowthForestType(RandomSource random) { return DENSITY_4.get(random.nextInt(DENSITY_4.size())).ordinal(); }
 
     private static final ForestType[] VALUES = values();
 
@@ -108,6 +121,11 @@ public enum ForestType implements StringRepresentable
     public boolean isPrimary()
     {
         return this == PRIMARY_ALTERNATE || this == PRIMARY_DIVERSE || this == PRIMARY_MONOCULTURE;
+    }
+
+    public boolean isDead()
+    {
+        return this == DEAD_ALTERNATE || this == DEAD_DIVERSE || this == DEAD_MONOCULTURE;
     }
 
     public int sampleTrees(RandomSource random)

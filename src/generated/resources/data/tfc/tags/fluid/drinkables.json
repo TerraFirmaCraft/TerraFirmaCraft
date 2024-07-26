@@ -1,10 +1,10 @@
 {
   "values": [
+    "minecraft:water",
+    "tfc:river_water",
+    "tfc:salt_water",
     "#tfc:alcohols",
     "minecraft:milk",
-    "tfc:vinegar",
-    "tfc:salt_water",
-    "minecraft:water",
-    "tfc:river_water"
+    "tfc:vinegar"
   ]
 }

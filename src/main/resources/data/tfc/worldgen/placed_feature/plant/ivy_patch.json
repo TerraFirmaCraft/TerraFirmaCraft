@@ -12,7 +12,7 @@
       "max_temperature": 11.6,
       "min_rainfall": 90,
       "max_rainfall": 450,
-      "min_forest": "normal",
+      "min_forest": 3,
       "fuzzy": true
     },
     {

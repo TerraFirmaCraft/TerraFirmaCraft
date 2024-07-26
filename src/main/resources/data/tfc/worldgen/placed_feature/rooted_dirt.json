@@ -17,7 +17,7 @@
       "type": "tfc:climate",
       "min_rainfall": 100,
       "max_rainfall": 350,
-      "min_forest": "normal",
+      "min_forest": 3,
       "fuzzy": true
     }
   ]

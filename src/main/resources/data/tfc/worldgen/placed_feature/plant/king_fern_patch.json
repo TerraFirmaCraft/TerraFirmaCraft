@@ -19,8 +19,8 @@
       "max_temperature": 38,
       "min_rainfall": 350,
       "max_rainfall": 500,
-      "min_forest": "normal",
-      "max_forest": "old_growth"
+      "min_forest": 3,
+      "max_forest": 4
     }
   ]
 }

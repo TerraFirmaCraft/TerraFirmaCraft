@@ -1,5 +1,5 @@
 {
-  "min_forest": "edge",
+  "min_forest": 2,
   "min_rainfall": 100.0,
   "min_temperature": 13.0
 }

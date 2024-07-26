@@ -8,8 +8,8 @@
       "max_temperature": 17,
       "min_rainfall": 80,
       "max_rainfall": 380,
-      "min_forest": "edge",
-      "max_forest": "old_growth"
+      "min_forest": 2,
+      "max_forest": 4
     },
     {
       "type": "minecraft:in_square"
