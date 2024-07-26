@@ -288,6 +288,10 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
     public boolean light(BlockState state)
     {
         assert level != null;
+        if (burnTicks > 0)
+        {
+            return true; // Already lit
+        }
         if (consumeFuel())
         {
             level.setBlockAndUpdate(worldPosition, state.setValue(FirepitBlock.LIT, true));
