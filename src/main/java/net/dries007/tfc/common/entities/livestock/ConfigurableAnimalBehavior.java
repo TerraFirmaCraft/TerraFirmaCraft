@@ -21,7 +21,7 @@ public interface ConfigurableAnimalBehavior
      */
     default float getAdultFamiliarityCap()
     {
-        return (float) animalConfig().familiarityCap().getAsDouble();
+        return animalConfig().familiarityCap().get().floatValue();
     }
 
     /**
@@ -29,7 +29,7 @@ public interface ConfigurableAnimalBehavior
      */
     default int getDaysToAdulthood()
     {
-        return animalConfig().adulthoodDays().getAsInt();
+        return animalConfig().adulthoodDays().get();
     }
 
     /**
@@ -37,7 +37,7 @@ public interface ConfigurableAnimalBehavior
      */
     default int getUsesToElderly()
     {
-        return animalConfig().uses().getAsInt();
+        return animalConfig().uses().get();
     }
 
     /**
@@ -45,6 +45,6 @@ public interface ConfigurableAnimalBehavior
      */
     default boolean eatsRottenFood()
     {
-        return animalConfig().eatsRottenFood().getAsBoolean();
+        return animalConfig().eatsRottenFood().get();
     }
 }

@@ -346,7 +346,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal, BrainAnimalBe
         {
             return Age.OLD;
         }
-        final long adultTick = getBirthTick() + (long) animalConfig().adulthoodDays().getAsInt() * ICalendar.TICKS_IN_DAY;
+        final long adultTick = getBirthTick() + (long) animalConfig().adulthoodDays().get() * ICalendar.TICKS_IN_DAY;
         if (currentTick > adultTick)
         {
             return Age.ADULT;
