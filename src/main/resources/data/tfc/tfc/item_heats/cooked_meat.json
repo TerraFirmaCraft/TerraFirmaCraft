@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "ingredient": {
-    "tag": "tfc:foods/meats"
+    "tag": "tfc:foods/cooked_meats"
   },
   "heat_capacity": 1.0
 }

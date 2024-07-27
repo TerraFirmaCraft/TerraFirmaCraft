@@ -1,8 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:heating",
   "ingredient": {
-    "tag": "tfc:foods/dough"
+    "tag": "tfc:foods/raw_meats"
   },
-  "temperature": 700
+  "heat_capacity": 1.0
 }

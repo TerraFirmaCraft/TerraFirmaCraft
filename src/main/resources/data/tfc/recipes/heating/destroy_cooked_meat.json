@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:heating",
   "ingredient": {
-    "item": "tfc:food/fresh_seaweed"
+    "tag": "tfc:foods/cooked_meats"
   },
-  "temperature": 700
+  "temperature": 900
 }
