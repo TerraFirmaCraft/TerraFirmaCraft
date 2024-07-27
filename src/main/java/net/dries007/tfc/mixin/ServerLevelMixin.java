@@ -26,7 +26,7 @@ public abstract class ServerLevelMixin
     @Inject(method = "tickPrecipitation", at = @At("HEAD"), cancellable = true)
     private void preventVanillaSnowAndIce(BlockPos blockPos, CallbackInfo ci)
     {
-        if (!TFCConfig.SERVER.enableVanillaWeatherEffects.getAsBoolean())
+        if (!TFCConfig.SERVER.enableVanillaWeatherEffects.get())
         {
             ci.cancel();
         }

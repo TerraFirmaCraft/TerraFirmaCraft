@@ -145,7 +145,7 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
             }
         };
 
-        if (Helpers.getValueOrDefault(TFCConfig.SERVER.quernEnableAutomation))
+        if (TFCConfig.SERVER.quernEnableAutomation.get())
         {
             sidedInventory
                 .on(new PartialItemHandler(inventory).insert(SLOT_INPUT, SLOT_HANDSTONE), Direction.Plane.HORIZONTAL)

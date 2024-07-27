@@ -86,7 +86,7 @@ public interface IFood
     default float getDecayDateModifier()
     {
         // Decay modifiers are higher = shorter
-        float mod = getData().decayModifier() * Helpers.getValueOrDefault(TFCConfig.SERVER.foodDecayModifier).floatValue();
+        float mod = getData().decayModifier() * TFCConfig.SERVER.foodDecayModifier.get().floatValue();
         for (FoodTrait trait : getTraits())
         {
             mod *= trait.getDecayModifier();

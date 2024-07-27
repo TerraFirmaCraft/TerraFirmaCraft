@@ -24,13 +24,15 @@ public abstract class DataManagerProvider<T> implements DataProvider
      * For use in a test environment, sets up all data generated values of a given data manager, via the provided data provider,
      * to initialize the runtime data manager. Requires registries to be setup already.
      */
-    public static <T> void setup(BiFunction<PackOutput, CompletableFuture<HolderLookup.Provider>, ? extends DataManagerProvider<T>> factory)
+    @SuppressWarnings("unchecked")
+    public static <T, P extends DataManagerProvider<T>> P setup(BiFunction<PackOutput, CompletableFuture<HolderLookup.Provider>, P> factory)
     {
         final RegistryAccess.Frozen lookup = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
-        final var provider = factory.apply(new PackOutput(Path.of("")), CompletableFuture.completedFuture(lookup));
+        final DataManagerProvider<T> provider = factory.apply(new PackOutput(Path.of("")), CompletableFuture.completedFuture(lookup));
 
         provider.addData(lookup);
         provider.manager.bindValues(provider.elements.buildOrThrow());
+        return (P) provider;
     }
 
     private final DataManager<T> manager;
@@ -46,6 +48,12 @@ public abstract class DataManagerProvider<T> implements DataProvider
         this.elements = ImmutableMap.builder();
         this.path = output.createPathProvider(PackOutput.Target.DATA_PACK, TerraFirmaCraft.MOD_ID + "/" + manager.getName());
         this.contentDone = new CompletableFuture<>();
+    }
+
+    public void run(HolderLookup.Provider lookup)
+    {
+        addData(lookup);
+        manager.bindValues(elements.buildOrThrow());
     }
 
     @Override

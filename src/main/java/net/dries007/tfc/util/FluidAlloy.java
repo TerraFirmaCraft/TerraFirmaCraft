@@ -8,22 +8,29 @@ package net.dries007.tfc.util;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.common.component.fluid.FluidContainerInfo;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.recipes.AlloyRecipe;
 
@@ -47,78 +54,61 @@ public final class FluidAlloy
      */
     public static final double EPSILON = 1d / (2 + MAX_ALLOY);
 
+    static
+    {
+        assert 1d / (1 + MAX_ALLOY) >= EPSILON;
+    }
+
     public static final Codec<FluidAlloy> CODEC = RecordCodecBuilder.create(i -> i.group(
-        Codec.INT.optionalFieldOf("max_units", MAX_ALLOY).forGetter(c -> c.maxUnits),
-        Codec.INT.fieldOf("units").forGetter(c -> c.totalUnits),
+        Codec.INT.fieldOf("amount").forGetter(c -> c.amount),
         Codec.unboundedMap(BuiltInRegistries.FLUID.byNameCodec(), Codec.DOUBLE)
             .<Object2DoubleMap<Fluid>>xmap(Object2DoubleOpenHashMap::new, e -> e)
             .fieldOf("content")
             .forGetter(c -> c.content)
     ).apply(i, FluidAlloy::new));
 
-    static
-    {
-        assert 1d / (1 + MAX_ALLOY) >= EPSILON;
-    }
+    private static final StreamCodec<RegistryFriendlyByteBuf, Map.Entry<Fluid, Double>> ELEMENT_CODEC = StreamCodec.composite(
+        ByteBufCodecs.registry(Registries.FLUID), Map.Entry::getKey,
+        ByteBufCodecs.DOUBLE, Map.Entry::getValue,
+        Map::entry
+    );
 
-    private static Fluid unknown()
+    public static final StreamCodec<RegistryFriendlyByteBuf, FluidAlloy> STREAM_CODEC = StreamCodec.composite(
+        ByteBufCodecs.VAR_INT, c -> c.amount,
+        ByteBufCodecs.map(
+            Object2DoubleOpenHashMap::new,
+            ByteBufCodecs.registry(Registries.FLUID),
+            ByteBufCodecs.DOUBLE
+        ), c -> c.content,
+        FluidAlloy::new
+    );
+
+    /**
+     * @return A new, empty fluid alloy. This is a new instance and is mutable.
+     */
+    public static FluidAlloy empty()
     {
-        return TFCFluids.METALS.get(Metal.UNKNOWN).getSource();
+        return new FluidAlloy(0, new Object2DoubleOpenHashMap<>());
     }
 
     private Object2DoubleMap<Fluid> content;
-    private int totalUnits;
-    private int maxUnits;
+    private int amount;
 
     private @Nullable Object2DoubleMap<Fluid> cachedContent = null; // The cached content of the alloy > EPSILON, or null if it needs to be recomputed
-    private @Nullable Fluid cachedResult = null; // The cached result of the alloy, or null if it needs to be recomputed
+    private @Nullable FluidStack cachedResult = null; // The cached result of the alloy, or null if it needs to be recomputed
 
-    /**
-     * Constructs a new alloy with a maximum possible capacity
-     */
-    public FluidAlloy()
+    private FluidAlloy(int amount, Object2DoubleMap<Fluid> content)
     {
-        this(MAX_ALLOY);
-    }
-
-    /**
-     * Constructs an alloy with a maximum limit. Anything added over this limit will do nothing
-     *
-     * @param maxUnits The maximum alloy amount (in units)
-     */
-    public FluidAlloy(int maxUnits)
-    {
-        this(maxUnits, 0, new Object2DoubleOpenHashMap<>());
-    }
-
-    private FluidAlloy(int maxUnits, int totalUnits, Object2DoubleMap<Fluid> content)
-    {
-        this.maxUnits = maxUnits;
-        this.totalUnits = totalUnits;
+        this.amount = amount;
         this.content = content;
     }
 
     /**
-     * Add the contents of another alloy {@code other} to this alloy.
+     * @return A copy of this fluid alloy with all the same content
      */
-    public void add(FluidAlloy other)
+    public FluidAlloy copy()
     {
-        final int newTotalAmount = totalUnits + other.totalUnits;
-
-        double keepRatio = 1;
-        if (newTotalAmount > maxUnits)
-        {
-            // Some will overflow - need to add a percentage of the other alloy
-            keepRatio = (double) (maxUnits - totalUnits) / other.totalUnits;
-        }
-
-        // Directly add the other alloy exact values. This is important as it needs to not round floating point alloy amounts
-        totalUnits += other.totalUnits;
-        for (Object2DoubleMap.Entry<Fluid> entry : other.content.object2DoubleEntrySet())
-        {
-            content.mergeDouble(entry.getKey(), keepRatio * entry.getDoubleValue(), Double::sum);
-        }
-        clearCaches();
+        return new FluidAlloy(amount, new Object2DoubleOpenHashMap<>(content));
     }
 
     /**
@@ -126,13 +116,17 @@ public final class FluidAlloy
      * @param action If the action should just be simulated.
      * @return The amount of fluid that has (or would've) been added
      */
-    public int add(FluidStack fluid, FluidAction action)
+    public int fill(FluidStack fluid, FluidAction action, FluidContainerInfo info)
     {
+        if (!info.canContainFluid(fluid))
+        {
+            return 0; // Cannot contain this fluid
+        }
         int amount = fluid.getAmount();
-        if (totalUnits + amount >= maxUnits) // Account for alloy limits
+        if (this.amount + amount >= info.fluidCapacity()) // Account for alloy limits
         {
             // Find the amount that can be added
-            amount = maxUnits - totalUnits;
+            amount = info.fluidCapacity() - this.amount;
             if (amount <= 0)
             {
                 // No more, i.e. totalAmount >= maxAmount
@@ -142,27 +136,37 @@ public final class FluidAlloy
         if (action.execute())
         {
             content.mergeDouble(fluid.getFluid(), amount, Double::sum);
-            totalUnits += amount;
+            this.amount += amount;
             clearCaches();
         }
         return amount;
     }
 
-    public FluidStack extract(RecipeManager recipes, int removeAmount, FluidAction action)
+    public FluidStack drain(int removeAmount, FluidAction action)
     {
-        final Fluid result = getResult(recipes);
+        return drain(Helpers.getUnsafeRecipeManager(), removeAmount, action);
+    }
+
+    public FluidStack drain(Level level, int removeAmount, FluidAction action)
+    {
+        return drain(level.getRecipeManager(), removeAmount, action);
+    }
+
+    private FluidStack drain(RecipeManager recipes, int removeAmount, FluidAction action)
+    {
+        final FluidStack result = getResult(recipes);
         if (action.simulate())
         {
             // If simulating, only return a fluid stack of the provided amount, and current content
-            return new FluidStack(result, Math.min(totalUnits, removeAmount));
+            return result.copyWithAmount(Math.min(amount, removeAmount));
         }
-        if (removeAmount >= totalUnits)
+        if (removeAmount >= amount)
         {
             // If extracting more than the alloy contains, simply clear the alloy content and return the
             // total amount contained before clearing
-            final int total = totalUnits;
+            final int total = amount;
             clear();
-            return new FluidStack(result, total);
+            return result.copyWithAmount(total);
         }
         else
         {
@@ -172,64 +176,57 @@ public final class FluidAlloy
             for (Object2DoubleMap.Entry<Fluid> entry : content.object2DoubleEntrySet())
             {
                 // Remove the amount of metal from each component, add the remainder (if it exists) into the result map
-                final double remove = removeAmount * entry.getDoubleValue() / totalUnits;
+                final double remove = removeAmount * entry.getDoubleValue() / amount;
                 if (entry.getDoubleValue() > remove)
                 {
                     newContent.put(entry.getKey(), entry.getDoubleValue() - remove);
                 }
             }
-            totalUnits -= removeAmount;
+            amount -= removeAmount;
             content = newContent;
             clearCaches();
-            return new FluidStack(result, removeAmount);
+            return result.copyWithAmount(removeAmount);
         }
     }
 
     public FluidStack getResult()
     {
-        return new FluidStack(getResult(Helpers.getUnsafeRecipeManager()), totalUnits);
+        return getResult(Helpers.getUnsafeRecipeManager());
     }
 
     public FluidStack getResult(Level level)
     {
-        return new FluidStack(getResult(level.getRecipeManager()), totalUnits);
+        return getResult(level.getRecipeManager());
     }
 
-    public Fluid getResult(RecipeManager recipes)
+    private FluidStack getResult(RecipeManager recipes)
     {
         if (cachedResult == null)
         {
-            if (content.size() == 1)
+            cachedResult = new FluidStack(switch (content.size())
             {
-                cachedResult = content.keySet()
+                case 0 -> Fluids.EMPTY;
+                case 1 -> content.keySet()
                     .iterator()
                     .next(); // Easy way to get the only metal in the alloy
-            }
-            else
-            {
-                // Invoke a recipe to get the result of this mix
-                final @Nullable AlloyRecipe recipe = AlloyRecipe.get(recipes, this);
-                cachedResult = recipe != null
-                    ? recipe.result()
-                    : unknown();
-            }
+                default -> {
+                    // Invoke a recipe to get the result of this mix
+                    final @Nullable AlloyRecipe recipe = AlloyRecipe.get(recipes, this);
+                    yield recipe != null ? recipe.result() : TFCFluids.METALS.get(Metal.UNKNOWN).getSource();
+                }
+            }, amount);
         }
         return cachedResult;
     }
 
     public int getAmount()
     {
-        return totalUnits;
-    }
-
-    public int getMaxAmount()
-    {
-        return maxUnits;
+        return amount;
     }
 
     public boolean isEmpty()
     {
-        return totalUnits == 0;
+        return amount == 0;
     }
 
     public Object2DoubleMap<Fluid> getContent()
@@ -258,8 +255,7 @@ public final class FluidAlloy
     {
         final FluidAlloy other = CODEC.decode(NbtOps.INSTANCE, nbt).getOrThrow().getFirst();
 
-        maxUnits = other.maxUnits;
-        totalUnits = other.totalUnits;
+        amount = other.amount;
         content = other.content;
         clearCaches();
     }
@@ -270,8 +266,7 @@ public final class FluidAlloy
         {
             // If we contain the result of an alloy, we consider if the content without the result would match the ratios
             // of that alloy.
-            final FluidAlloy other = new FluidAlloy();
-            other.add(this);
+            final FluidAlloy other = copy();
             other.content.removeDouble(recipe.result());
             other.clearCaches();
             return other.matchesExactly(recipe);
@@ -285,7 +280,7 @@ public final class FluidAlloy
     private void clear()
     {
         content.clear();
-        totalUnits = 0;
+        amount = 0;
         clearCaches();
     }
 

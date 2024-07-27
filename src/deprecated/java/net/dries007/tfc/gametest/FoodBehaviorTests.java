@@ -19,7 +19,6 @@ import net.minecraftforge.gametest.GameTestHolder;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
 import net.dries007.tfc.MyTest;
-import net.dries007.tfc.TestAssertions;
 import net.dries007.tfc.TestHelper;
 import net.dries007.tfc.common.capabilities.VesselLike;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;

@@ -1,34 +1,19 @@
 package net.dries007.tfc.test;
 
-import java.nio.file.Path;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import net.minecraft.core.Holder;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.fluids.BaseFlowingFluid;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.component.fluid.FluidComponent;
 import net.dries007.tfc.common.component.mold.IMold;
-import net.dries007.tfc.common.fluids.FluidHolder;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCItems;
-import net.dries007.tfc.data.providers.BuiltinFluidHeat;
-import net.dries007.tfc.data.providers.DataManagerProvider;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.data.FluidHeat;
 

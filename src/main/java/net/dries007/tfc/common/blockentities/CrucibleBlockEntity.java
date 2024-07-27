@@ -18,6 +18,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -31,7 +32,8 @@ import net.dries007.tfc.common.capabilities.InventoryItemHandler;
 import net.dries007.tfc.common.capabilities.PartialFluidHandler;
 import net.dries007.tfc.common.capabilities.PartialItemHandler;
 import net.dries007.tfc.common.capabilities.SidedHandler;
-import net.dries007.tfc.common.capabilities.SimpleFluidHandler;
+import net.dries007.tfc.common.component.fluid.FluidContainer;
+import net.dries007.tfc.common.component.fluid.FluidContainerInfo;
 import net.dries007.tfc.common.component.food.FoodCapability;
 import net.dries007.tfc.common.component.food.FoodTraits;
 import net.dries007.tfc.common.component.heat.HeatCapability;
@@ -227,6 +229,11 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         return inventory.alloy.getResult(level);
     }
 
+    public FluidContainerInfo containerInfo()
+    {
+        return CrucibleInventory.INFO;
+    }
+
     public ContainerData getSyncableData()
     {
         return syncableData;
@@ -321,8 +328,22 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         }
     }
 
-    static class CrucibleInventory implements DelegateItemHandler, SimpleFluidHandler, IHeatConsumer, INBTSerializable<CompoundTag>
+    static class CrucibleInventory implements DelegateItemHandler, FluidContainer, IHeatConsumer, INBTSerializable<CompoundTag>
     {
+        private static final FluidContainerInfo INFO = new FluidContainerInfo() {
+            @Override
+            public boolean canContainFluid(Fluid input)
+            {
+                return FluidHeat.get(input) != null;
+            }
+
+            @Override
+            public int fluidCapacity()
+            {
+                return TFCConfig.SERVER.crucibleCapacity.get();
+            }
+        };
+
         private final CrucibleBlockEntity crucible;
         private final InventoryItemHandler inventory;
         private final FluidAlloy alloy;
@@ -331,7 +352,13 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         {
             this.crucible = (CrucibleBlockEntity) entity;
             this.inventory = new InventoryItemHandler(entity, SLOTS);
-            this.alloy = new FluidAlloy(TFCConfig.SERVER.crucibleCapacity.get());
+            this.alloy = FluidAlloy.empty();
+        }
+
+        @Override
+        public FluidContainerInfo containerInfo()
+        {
+            return INFO;
         }
 
         public boolean isMolten()
@@ -374,7 +401,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         @Override
         public int getTankCapacity(int tank)
         {
-            return alloy.getMaxAmount();
+            return INFO.fluidCapacity();
         }
 
         @Override
@@ -386,7 +413,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         @Override
         public int fill(FluidStack resource, IFluidHandler.FluidAction action)
         {
-            return alloy.add(resource, action);
+            return alloy.fill(resource, action, INFO);
         }
 
         @NotNull
@@ -396,7 +423,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
             if (isMolten())
             {
                 assert crucible.level != null;
-                final FluidStack result = alloy.extract(crucible.level.getRecipeManager(), maxDrain, action);
+                final FluidStack result = alloy.drain(crucible.level, maxDrain, action);
                 if (action.execute())
                 {
                     crucible.markForSync();

@@ -9,11 +9,9 @@ package net.dries007.tfc.common.component;
 import java.lang.reflect.Field;
 import com.mojang.logging.LogUtils;
 import com.mojang.serialization.Codec;
-import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.component.PatchedDataComponentMap;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -26,7 +24,6 @@ import net.neoforged.neoforge.event.ModifyDefaultComponentsEvent;
 import net.neoforged.neoforge.internal.RegistrationEvents;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import net.dries007.tfc.TerraFirmaCraft;
@@ -34,15 +31,12 @@ import net.dries007.tfc.common.TFCTiers;
 import net.dries007.tfc.common.component.fluid.FluidComponent;
 import net.dries007.tfc.common.component.food.FoodCapability;
 import net.dries007.tfc.common.component.food.FoodComponent;
-import net.dries007.tfc.common.component.food.FoodDefinition;
 import net.dries007.tfc.common.component.forge.ForgingBonus;
 import net.dries007.tfc.common.component.forge.ForgingComponent;
 import net.dries007.tfc.common.component.glass.GlassOperations;
-import net.dries007.tfc.common.component.heat.HeatCapability;
 import net.dries007.tfc.common.component.heat.HeatComponent;
-import net.dries007.tfc.common.component.heat.HeatDefinition;
+import net.dries007.tfc.common.component.mold.VesselComponent;
 import net.dries007.tfc.common.component.size.ItemSizeManager;
-import net.dries007.tfc.mixin.accessor.PatchedDataComponentMapAccessor;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.registry.RegistryHolder;
 
@@ -73,7 +67,7 @@ public final class TFCComponents
     public static final Id<EggComponent> EGG = register("egg", EggComponent.CODEC, EggComponent.STREAM_CODEC);
 
     public static final Id<FluidComponent> FLUID = register("fluid", FluidComponent.CODEC, FluidComponent.STREAM_CODEC);
-
+    public static final Id<VesselComponent> VESSEL = register("vessel", VesselComponent.CODEC, VesselComponent.STREAM_CODEC);
 
     /**
      * Modifies the default components of all items. This adds the default components to all items' prototype, so that the default

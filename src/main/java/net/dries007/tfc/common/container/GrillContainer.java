@@ -11,6 +11,7 @@ import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.GrillBlockEntity;
+import net.dries007.tfc.common.container.slot.CallbackSlot;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.common.blockentities.GrillBlockEntity.*;

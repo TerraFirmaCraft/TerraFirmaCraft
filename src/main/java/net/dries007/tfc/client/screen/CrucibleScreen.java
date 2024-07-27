@@ -22,10 +22,8 @@ import net.neoforged.neoforge.network.PacketDistributor;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
-import net.dries007.tfc.common.capabilities.MoldLike;
 import net.dries007.tfc.common.component.heat.Heat;
 import net.dries007.tfc.common.component.mold.IMold;
-import net.dries007.tfc.common.component.mold.Mold;
 import net.dries007.tfc.common.container.CrucibleContainer;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.PourFasterPacket;
@@ -132,7 +130,7 @@ public class CrucibleScreen extends BlockEntityScreen<CrucibleBlockEntity, Cruci
         if (alloy.getAmount() > 0)
         {
             final TextureAtlasSprite sprite = RenderHelpers.getAndBindFluidSprite(alloyResult);
-            final int fillHeight = (int) Math.ceil((float) 31 * alloy.getAmount() / alloy.getMaxAmount());
+            final int fillHeight = (int) Math.ceil((float) 31 * alloy.getAmount() / blockEntity.containerInfo().fluidCapacity());
 
             RenderHelpers.fillAreaWithSprite(graphics, sprite, leftPos + 97, topPos + 124 - fillHeight, 36, fillHeight, 16, 16);
 

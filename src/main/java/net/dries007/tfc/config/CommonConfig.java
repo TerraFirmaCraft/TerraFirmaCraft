@@ -6,10 +6,8 @@
 
 package net.dries007.tfc.config;
 
+import java.util.function.Supplier;
 import net.neoforged.fml.loading.FMLEnvironment;
-import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
-import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
-import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 
 /**
  * Common Config
@@ -19,14 +17,14 @@ import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 public class CommonConfig extends BaseConfig
 {
     // General
-    public final ConfigValue<String> defaultWorldPreset;
+    public final Supplier<String> defaultWorldPreset;
 
     // Calendar
-    public final IntValue defaultMonthLength;
-    public final IntValue defaultCalendarStartDay;
+    public final Supplier<Integer> defaultMonthLength;
+    public final Supplier<Integer> defaultCalendarStartDay;
 
     // Debug
-    public final BooleanValue enableDatapackTests;
+    public final Supplier<Boolean> enableDatapackTests;
 
     CommonConfig(ConfigBuilder builder)
     {

@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.container;
 
-import java.util.Objects;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -19,10 +18,10 @@ import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
-import net.dries007.tfc.common.capabilities.MoldLike;
 import net.dries007.tfc.common.component.heat.HeatCapability;
 import net.dries007.tfc.common.component.heat.IHeat;
 import net.dries007.tfc.common.component.mold.IMold;
+import net.dries007.tfc.common.container.slot.CallbackSlot;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.data.FluidHeat;
 

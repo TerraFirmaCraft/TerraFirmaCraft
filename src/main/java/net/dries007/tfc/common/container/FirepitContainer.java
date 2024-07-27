@@ -10,6 +10,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.common.blockentities.FirepitBlockEntity;
+import net.dries007.tfc.common.container.slot.CallbackSlot;
 
 import static net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity.*;
 

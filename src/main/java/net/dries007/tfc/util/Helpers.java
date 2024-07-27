@@ -103,7 +103,6 @@ import net.neoforged.fml.util.thread.EffectiveSide;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.ItemCapability;
-import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -128,7 +127,6 @@ import net.dries007.tfc.common.component.size.Weight;
 import net.dries007.tfc.common.effect.TFCEffects;
 import net.dries007.tfc.common.entities.ai.prey.PestAi;
 import net.dries007.tfc.common.entities.prey.Pest;
-import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.data.FluidHeat;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
@@ -201,7 +199,6 @@ public final class Helpers
     }
 
     @Nullable
-    @SuppressWarnings("DataFlowIssue") // @Nullable C is not picked up correctly w.r.t getCapability()
     public static <T, C> T getCapability(BlockCapability<T, @Nullable C> capability, Level level, BlockPos pos)
     {
         return level.getCapability(capability, pos, null);
@@ -330,11 +327,6 @@ public final class Helpers
             return level.getLevel(); // Special case for world gen, when we can access the level unsafely
         }
         return null; // A modder has done a strange ass thing
-    }
-
-    public static <T> T getValueOrDefault(ModConfigSpec.ConfigValue<T> value)
-    {
-        return TFCConfig.isServerConfigLoaded() ? value.get() : value.getDefault();
     }
 
     public static BlockHitResult rayTracePlayer(Level level, Player player, ClipContext.Fluid mode)
@@ -467,10 +459,10 @@ public final class Helpers
 
         try
         {
-            final Level level = ClientHelpers.getLevel();
-            if (level != null)
+            final RecipeManager client = ClientHelpers.tryGetSafeRecipeManager();
+            if (client != null)
             {
-                return level.getRecipeManager();
+                return client;
             }
         }
         catch (Throwable t)
@@ -480,7 +472,6 @@ public final class Helpers
 
         if (CACHED_RECIPE_MANAGER != null)
         {
-            LOGGER.info("Successfully captured server recipe manager");
             return CACHED_RECIPE_MANAGER;
         }
 
@@ -928,13 +919,14 @@ public final class Helpers
      */
     public static boolean isEmpty(IItemHandler inventory)
     {
-        for (int i = 0; i < inventory.getSlots(); i++)
-        {
-            if (!inventory.getStackInSlot(i).isEmpty())
-            {
+        return isEmpty(iterate(inventory));
+    }
+
+    public static boolean isEmpty(Iterable<ItemStack> inventory)
+    {
+        for (ItemStack stack : inventory)
+            if (!stack.isEmpty())
                 return false;
-            }
-        }
         return true;
     }
 
@@ -1109,13 +1101,13 @@ public final class Helpers
     public static VoxelShape rotateShape(Direction direction, double x1, double y1, double z1, double x2, double y2, double z2)
     {
         return switch (direction)
-            {
-                case NORTH -> Block.box(x1, y1, z1, x2, y2, z2);
-                case EAST -> Block.box(16 - z2, y1, x1, 16 - z1, y2, x2);
-                case SOUTH -> Block.box(16 - x2, y1, 16 - z2, 16 - x1, y2, 16 - z1);
-                case WEST -> Block.box(z1, y1, 16 - x2, z2, y2, 16 - x1);
-                default -> throw new IllegalArgumentException("Not horizontal!");
-            };
+        {
+            case NORTH -> Block.box(x1, y1, z1, x2, y2, z2);
+            case EAST -> Block.box(16 - z2, y1, x1, 16 - z1, y2, x2);
+            case SOUTH -> Block.box(16 - x2, y1, 16 - z2, 16 - x1, y2, 16 - z1);
+            case WEST -> Block.box(z1, y1, 16 - x2, z2, y2, 16 - x1);
+            default -> throw new IllegalArgumentException("Not horizontal!");
+        };
     }
 
     /**
@@ -1166,7 +1158,7 @@ public final class Helpers
 
     /**
      * Given a list containing {@code [a0, ... aN]} and an element {@code ai}, returns a new, immutable list containing {@code [a0, ... ai-1
-     * , ai+1, ... aN]} in the most efficient manner we can manage (a single data copy).
+     * , ai+1, ... aN]} in the most efficient manner (a single data copy).
      * @return A new list containing one fewer element than the original list
      * @throws IndexOutOfBoundsException if
      */
@@ -1176,6 +1168,33 @@ public final class Helpers
         for (final T t : list)
             if (t != element)
                 builder.add(t);
+        return builder.build();
+    }
+
+    /**
+     * Given a list containing {@code [a0, ... ai, ... aN}, an element {@code bi}, and an index {@code i}, returns a new, immutable list
+     * containing {@code [a0, ... bi, ... aN]} in the most efficient manner (a single data copy). The new list will contain the same
+     * references as the original list - they are assumed to be immutable!
+     */
+    public static <T> List<T> immutableSwap(List<T> list, T element, int index)
+    {
+        final ImmutableList.Builder<T> builder = ImmutableList.builderWithExpectedSize(list.size());
+        for (int i = 0; i < list.size(); i++)
+            builder.add(i == index ? element : list.get(i));
+        return builder.build();
+    }
+
+    /**
+     * Creates a new immutable list containing {@code n} new, seperate instances of {@code T} produced by the given {@code factory}. This is unlike
+     * {@link Collections#nCopies(int, Object)} in that it produces seperate instance, and consumes memory poportional to O(n). However, in
+     * the event the underlying elements are interior mutable, this creates a safe to modify list.
+     * @see Collections#nCopies(int, Object)
+     */
+    public static <T> List<T> immutableCopies(int n, Supplier<T> factory)
+    {
+        final ImmutableList.Builder<T> builder = ImmutableList.builderWithExpectedSize(n);
+        for (int i = 0; i < n; i++)
+            builder.add(factory.get());
         return builder.build();
     }
 
@@ -1446,8 +1465,13 @@ public final class Helpers
      */
     public static void addInventoryTooltipInfo(IItemHandler inventory, List<Component> tooltips)
     {
+        addInventoryTooltipInfo(iterate(inventory), tooltips);
+    }
+
+    public static void addInventoryTooltipInfo(Iterable<ItemStack> inventory, List<Component> tooltips)
+    {
         int maximumItems = 0, totalItems = 0;
-        for (ItemStack stack : iterate(inventory))
+        for (ItemStack stack : inventory)
         {
             if (!stack.isEmpty())
             {

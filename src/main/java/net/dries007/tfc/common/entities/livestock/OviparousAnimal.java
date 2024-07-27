@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.entities.livestock;
 
+import java.util.function.Supplier;
 import com.mojang.serialization.Dynamic;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -29,7 +30,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 import net.neoforged.neoforge.common.NeoForge;
 
 import net.dries007.tfc.client.TFCSounds;
@@ -57,7 +57,7 @@ public abstract class OviparousAnimal extends ProducingAnimal implements Pluckab
     public float oFlapSpeed;
     public float flapSpeed;
     private float nextFlap = 1f;
-    private final IntValue hatchDays;
+    private final Supplier<Integer> hatchDays;
     private long lastPlucked = Long.MIN_VALUE;
     private boolean crowed;
     private final boolean isCrowingBird;

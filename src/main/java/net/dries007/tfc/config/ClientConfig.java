@@ -7,12 +7,9 @@
 package net.dries007.tfc.config;
 
 import java.util.List;
+import java.util.function.Supplier;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.fml.loading.FMLEnvironment;
-import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
-import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
-import net.neoforged.neoforge.common.ModConfigSpec.EnumValue;
-import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 
 /**
  * Client Config
@@ -22,36 +19,36 @@ import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 public class ClientConfig extends BaseConfig
 {
     // General
-    public final BooleanValue ignoreExperimentalWorldGenWarning;
-    public final BooleanValue enableDebug;
+    public final Supplier<Boolean> ignoreExperimentalWorldGenWarning;
+    public final Supplier<Boolean> enableDebug;
     // Display
-    public final BooleanValue enableHungerBar;
-    public final BooleanValue enableHealthBar;
-    public final BooleanValue enableThirstBar;
-    public final BooleanValue enableExperienceBar;
-    public final BooleanValue enableInkSplatter;
-    public final BooleanValue enableScreenParticles;
-    public final BooleanValue enableVanillaTutorialToasts;
-    public final IntValue effectHorizontalAdjustment;
-    public final EnumValue<HealthDisplayStyle> healthDisplayStyle;
-    public final EnumValue<FoodExpiryTooltipStyle> foodExpiryTooltipStyle;
-    public final ConfigValue<Integer> foodExpiryOverlayColor;
-    public final EnumValue<TemperatureDisplayStyle> heatTooltipStyle;
-    public final EnumValue<TemperatureDisplayStyle> climateTooltipStyle;
-    public final EnumValue<TimeDeltaTooltipStyle> timeDeltaTooltipStyle;
-    public final EnumValue<DisabledExperienceBarStyle> disabledExperienceBarStyle;
-    public final BooleanValue sendProspectResultsToActionbar;
-    public final BooleanValue showHoeOverlaysOnlyWhenShifting;
-    public final BooleanValue showHoeOverlaysInInfoMods;
-    public final BooleanValue displayFamiliarityAsPercent;
-    public final BooleanValue showGuideBookLinksAlways;
-    public final BooleanValue showGuideBookTabInInventory;
-    public final BooleanValue displayItemContentsAsImages;
-    public final BooleanValue displayItemHeatBars;
-    public final BooleanValue enableWindParticles;
+    public final Supplier<Boolean> enableHungerBar;
+    public final Supplier<Boolean> enableHealthBar;
+    public final Supplier<Boolean> enableThirstBar;
+    public final Supplier<Boolean> enableExperienceBar;
+    public final Supplier<Boolean> enableInkSplatter;
+    public final Supplier<Boolean> enableScreenParticles;
+    public final Supplier<Boolean> enableVanillaTutorialToasts;
+    public final Supplier<Integer> effectHorizontalAdjustment;
+    public final Supplier<HealthDisplayStyle> healthDisplayStyle;
+    public final Supplier<FoodExpiryTooltipStyle> foodExpiryTooltipStyle;
+    public final Supplier<Integer> foodExpiryOverlayColor;
+    public final Supplier<TemperatureDisplayStyle> heatTooltipStyle;
+    public final Supplier<TemperatureDisplayStyle> climateTooltipStyle;
+    public final Supplier<TimeDeltaTooltipStyle> timeDeltaTooltipStyle;
+    public final Supplier<DisabledExperienceBarStyle> disabledExperienceBarStyle;
+    public final Supplier<Boolean> sendProspectResultsToActionbar;
+    public final Supplier<Boolean> showHoeOverlaysOnlyWhenShifting;
+    public final Supplier<Boolean> showHoeOverlaysInInfoMods;
+    public final Supplier<Boolean> displayFamiliarityAsPercent;
+    public final Supplier<Boolean> showGuideBookLinksAlways;
+    public final Supplier<Boolean> showGuideBookTabInInventory;
+    public final Supplier<Boolean> displayItemContentsAsImages;
+    public final Supplier<Boolean> displayItemHeatBars;
+    public final Supplier<Boolean> enableWindParticles;
 
     // Compatibility
-    public final ConfigValue<List<? extends String>> additionalSpecialModels;
+    public final Supplier<List<String>> additionalSpecialModels;
 
     ClientConfig(ConfigBuilder builder)
     {

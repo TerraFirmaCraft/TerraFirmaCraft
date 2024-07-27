@@ -17,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
 import net.dries007.tfc.common.blocks.devices.PowderkegBlock;
 import net.dries007.tfc.common.blocks.devices.SealableDeviceBlock;
+import net.dries007.tfc.common.container.slot.CallbackSlot;
 
 public class PowderkegContainer extends BlockEntityContainer<PowderkegBlockEntity> implements ButtonHandlerContainer
 {

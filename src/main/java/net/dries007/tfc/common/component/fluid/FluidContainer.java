@@ -8,15 +8,14 @@ package net.dries007.tfc.common.component.fluid;
 
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 
 /**
- * This interface simplifies {@link IFluidHandlerItem} for basic fluid containers, with a single internal tank, and delegates implementation
+ * This interface simplifies {@link IFluidHandler} for basic fluid containers, with a single internal tank, and delegates implementation
  * details to a {@link FluidContainerInfo}, which provides a validity and capacity check for the container.
  */
-public interface FluidContainer extends IFluidHandlerItem
+public interface FluidContainer extends IFluidHandler
 {
-    FluidContainerInfo fluidContainerInfo();
+    FluidContainerInfo containerInfo();
 
     @Override
     default int getTanks()
@@ -27,13 +26,13 @@ public interface FluidContainer extends IFluidHandlerItem
     @Override
     default int getTankCapacity(int tank)
     {
-        return fluidContainerInfo().fluidCapacity();
+        return containerInfo().fluidCapacity();
     }
 
     @Override
     default boolean isFluidValid(int tank, FluidStack stack)
     {
-        return fluidContainerInfo().canContainFluid(stack);
+        return containerInfo().canContainFluid(stack);
     }
 
     @Override

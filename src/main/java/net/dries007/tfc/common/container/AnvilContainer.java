@@ -17,6 +17,7 @@ import net.dries007.tfc.common.blockentities.AnvilBlockEntity;
 import net.dries007.tfc.common.component.forge.ForgeStep;
 import net.dries007.tfc.common.component.forge.Forging;
 import net.dries007.tfc.common.component.forge.ForgingCapability;
+import net.dries007.tfc.common.container.slot.CallbackSlot;
 import net.dries007.tfc.common.recipes.AnvilRecipe;
 import net.dries007.tfc.util.Helpers;
 

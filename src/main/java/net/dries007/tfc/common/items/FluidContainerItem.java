@@ -21,7 +21,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -44,7 +43,7 @@ public class FluidContainerItem extends Item
 
     public FluidContainerItem(Properties properties, IntValue capacity, TagKey<Fluid> whitelist, boolean canPlaceLiquidsInWorld, boolean canPlaceSourceBlocks)
     {
-        this(properties, () -> Helpers.getValueOrDefault(capacity), whitelist, canPlaceLiquidsInWorld, canPlaceSourceBlocks);
+        this(properties, () -> ((Supplier<Integer>) capacity).get(), whitelist, canPlaceLiquidsInWorld, canPlaceSourceBlocks);
     }
 
     protected FluidContainerItem(Properties properties, Supplier<Integer> capacity, TagKey<Fluid> whitelist, boolean canPlaceLiquidsInWorld, boolean canPlaceSourceBlocks)

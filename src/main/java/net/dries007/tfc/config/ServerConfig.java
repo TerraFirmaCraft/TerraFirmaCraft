@@ -7,10 +7,7 @@
 package net.dries007.tfc.config;
 
 import java.util.EnumMap;
-import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
-import net.neoforged.neoforge.common.ModConfigSpec.DoubleValue;
-import net.neoforged.neoforge.common.ModConfigSpec.EnumValue;
-import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
+import java.util.function.Supplier;
 
 import net.dries007.tfc.common.blocks.plant.fruit.FruitBlocks;
 import net.dries007.tfc.common.blocks.wood.Wood;
@@ -28,231 +25,231 @@ import net.dries007.tfc.util.FluidAlloy;
 public class ServerConfig extends BaseConfig
 {
     // General
-    public final BooleanValue enableNetherPortals;
-    public final BooleanValue enableForcedTFCGameRules;
-    public final BooleanValue enableTimeStopWhenServerEmpty;
-    public final BooleanValue enableFireArrowSpreading;
-    public final DoubleValue fireStarterChance;
-    public final BooleanValue enableInfestations;
-    public final BooleanValue enableCalendarSensitiveMoonPhases;
-    public final BooleanValue enableLightning;
-    public final BooleanValue enableLightningStrippingLogs;
-    public final IntValue oceanWindScale;
+    public final Supplier<Boolean> enableNetherPortals;
+    public final Supplier<Boolean> enableForcedTFCGameRules;
+    public final Supplier<Boolean> enableTimeStopWhenServerEmpty;
+    public final Supplier<Boolean> enableFireArrowSpreading;
+    public final Supplier<Double> fireStarterChance;
+    public final Supplier<Boolean> enableInfestations;
+    public final Supplier<Boolean> enableCalendarSensitiveMoonPhases;
+    public final Supplier<Boolean> enableLightning;
+    public final Supplier<Boolean> enableLightningStrippingLogs;
+    public final Supplier<Integer> oceanWindScale;
 
     // Blocks - Farmland
-    public final BooleanValue enableFarmlandCreation;
+    public final Supplier<Boolean> enableFarmlandCreation;
     // Blocks - Grass Path
-    public final BooleanValue enableGrassPathCreation;
+    public final Supplier<Boolean> enableGrassPathCreation;
     // Blocks - Grass
-    public final DoubleValue grassSpawningRocksChance;
+    public final Supplier<Double> grassSpawningRocksChance;
     // Blocks - Rooted Dirt
-    public final BooleanValue enableRootedDirtToDirtCreation;
+    public final Supplier<Boolean> enableRootedDirtToDirtCreation;
     // Blocks - Mud
-    public final BooleanValue enableDirtToMudCreation;
+    public final Supplier<Boolean> enableDirtToMudCreation;
     // Blocks - Snow
-    public final BooleanValue enableSnowSlowEntities;
-    public final IntValue snowAccumulateChance;
-    public final IntValue snowMeltChance;
+    public final Supplier<Boolean> enableSnowSlowEntities;
+    public final Supplier<Integer> snowAccumulateChance;
+    public final Supplier<Integer> snowMeltChance;
     // Blocks - Leaves
-    public final DoubleValue leavesMovementModifier;
+    public final Supplier<Double> leavesMovementModifier;
     // Blocks - Plants
-    public final DoubleValue plantGrowthChance;
-    public final DoubleValue plantLongGrowthChance;
-    public final DoubleValue plantSpreadChance;
-    public final DoubleValue plantsMovementModifier;
+    public final Supplier<Double> plantGrowthChance;
+    public final Supplier<Double> plantLongGrowthChance;
+    public final Supplier<Double> plantSpreadChance;
+    public final Supplier<Double> plantsMovementModifier;
     // Blocks - Cobblestone
-    public final BooleanValue enableMossyRockSpreading;
-    public final IntValue mossyRockSpreadRate;
+    public final Supplier<Boolean> enableMossyRockSpreading;
+    public final Supplier<Integer> mossyRockSpreadRate;
     // Blocks - Chest
-    public final EnumValue<Size> chestMaximumItemSize;
+    public final Supplier<Size> chestMaximumItemSize;
     // Blocks - Large Vessel
-    public final BooleanValue largeVesselEnableAutomation;
+    public final Supplier<Boolean> largeVesselEnableAutomation;
     // Blocks - Quern
-    public final BooleanValue quernEnableAutomation;
+    public final Supplier<Boolean> quernEnableAutomation;
     // Blocks - Torch
-    public final IntValue torchTicks;
+    public final Supplier<Integer> torchTicks;
     // Blocks - Torch
-    public final IntValue candleTicks;
+    public final Supplier<Integer> candleTicks;
     // Blocks - Drying Bricks
-    public final IntValue mudBricksTicks;
+    public final Supplier<Integer> mudBricksTicks;
     // Blocks - Charcoal Pit
-    public final IntValue charcoalTicks;
+    public final Supplier<Integer> charcoalTicks;
     // Blocks - Pit Kiln
-    public final IntValue pitKilnTicks;
-    public final IntValue pitKilnTemperature;
+    public final Supplier<Integer> pitKilnTicks;
+    public final Supplier<Integer> pitKilnTemperature;
     // Blocks - Crucible
-    public final IntValue crucibleCapacity;
-    public final IntValue cruciblePouringRate;
-    public final IntValue crucibleFastPouringRate;
-    public final BooleanValue crucibleEnableAutomation;
+    public final Supplier<Integer> crucibleCapacity;
+    public final Supplier<Integer> cruciblePouringRate;
+    public final Supplier<Integer> crucibleFastPouringRate;
+    public final Supplier<Boolean> crucibleEnableAutomation;
     // Blocks - Anvil
-    public final IntValue anvilAcceptableWorkRange;
-    public final DoubleValue anvilModestlyForgedThreshold;
-    public final DoubleValue anvilWellForgedThreshold;
-    public final DoubleValue anvilExpertForgedThreshold;
-    public final DoubleValue anvilPerfectlyForgedThreshold;
-    public final DoubleValue anvilMaxEfficiencyMultiplier;
-    public final DoubleValue anvilMaxDurabilityMultiplier;
-    public final DoubleValue anvilMaxDamageMultiplier;
+    public final Supplier<Integer> anvilAcceptableWorkRange;
+    public final Supplier<Double> anvilModestlyForgedThreshold;
+    public final Supplier<Double> anvilWellForgedThreshold;
+    public final Supplier<Double> anvilExpertForgedThreshold;
+    public final Supplier<Double> anvilPerfectlyForgedThreshold;
+    public final Supplier<Double> anvilMaxEfficiencyMultiplier;
+    public final Supplier<Double> anvilMaxDurabilityMultiplier;
+    public final Supplier<Double> anvilMaxDamageMultiplier;
     // Blocks - Barrel
-    public final IntValue barrelCapacity;
-    public final BooleanValue barrelEnableAutomation;
-    public final BooleanValue barrelEnableRedstoneSeal;
+    public final Supplier<Integer> barrelCapacity;
+    public final Supplier<Boolean> barrelEnableAutomation;
+    public final Supplier<Boolean> barrelEnableRedstoneSeal;
     // Blocks - Large Vessel
-    public final BooleanValue largeVesselEnableRedstoneSeal;
+    public final Supplier<Boolean> largeVesselEnableRedstoneSeal;
     // Blocks - Composter
-    public final IntValue composterTicks;
-    public final BooleanValue composterEnableAutomation;
+    public final Supplier<Integer> composterTicks;
+    public final Supplier<Boolean> composterEnableAutomation;
     // Blocks - Sluice
-    public final IntValue sluiceTicks;
+    public final Supplier<Integer> sluiceTicks;
     // Blocks - Lamp
-    public final IntValue lampCapacity;
+    public final Supplier<Integer> lampCapacity;
     // Blocks - Pumpkin
-    public final BooleanValue enablePumpkinCarving;
-    public final IntValue jackOLanternTicks;
+    public final Supplier<Boolean> enablePumpkinCarving;
+    public final Supplier<Integer> jackOLanternTicks;
     // Blocks - Bloomery
-    public final IntValue bloomeryCapacity;
-    public final IntValue bloomeryMaxChimneyHeight;
+    public final Supplier<Integer> bloomeryCapacity;
+    public final Supplier<Integer> bloomeryMaxChimneyHeight;
     // Blocks - Blast Furnace
-    public final IntValue blastFurnaceCapacity;
-    public final IntValue blastFurnaceFluidCapacity;
-    public final IntValue blastFurnaceFuelConsumptionMultiplier;
-    public final IntValue blastFurnaceMaxChimneyHeight;
-    public final BooleanValue blastFurnaceEnableAutomation;
+    public final Supplier<Integer> blastFurnaceCapacity;
+    public final Supplier<Integer> blastFurnaceFluidCapacity;
+    public final Supplier<Integer> blastFurnaceFuelConsumptionMultiplier;
+    public final Supplier<Integer> blastFurnaceMaxChimneyHeight;
+    public final Supplier<Boolean> blastFurnaceEnableAutomation;
     // Blocks - Loom
-    public final BooleanValue loomEnableAutomation;
+    public final Supplier<Boolean> loomEnableAutomation;
     // Blocks - Thatch
-    public final DoubleValue thatchMovementMultiplier;
+    public final Supplier<Double> thatchMovementMultiplier;
     // Blocks - Thatch Bed
-    public final BooleanValue enableThatchBedSpawnSetting;
-    public final BooleanValue enableThatchBedSleeping;
-    public final BooleanValue thatchBedNoSleepInThunderstorms;
+    public final Supplier<Boolean> enableThatchBedSpawnSetting;
+    public final Supplier<Boolean> enableThatchBedSleeping;
+    public final Supplier<Boolean> thatchBedNoSleepInThunderstorms;
     // Blocks - Item Size
-    public final EnumValue<Size> maxPlacedItemSize;
-    public final EnumValue<Size> maxPlacedLargeItemSize;
-    public final BooleanValue enablePlacingItems;
-    public final BooleanValue usePlacedItemWhitelist;
+    public final Supplier<Size> maxPlacedItemSize;
+    public final Supplier<Size> maxPlacedLargeItemSize;
+    public final Supplier<Boolean> enablePlacingItems;
+    public final Supplier<Boolean> usePlacedItemWhitelist;
     // Blocks - Leaves
-    public final BooleanValue enableLeavesDecaySlowly;
+    public final Supplier<Boolean> enableLeavesDecaySlowly;
     // Blocks - Charcoal Forge
-    public final BooleanValue charcoalForgeEnableAutomation;
+    public final Supplier<Boolean> charcoalForgeEnableAutomation;
     // Blocks - Fire Pit
-    public final BooleanValue firePitEnableAutomation;
+    public final Supplier<Boolean> firePitEnableAutomation;
     // Blocks - Nest Box
-    public final BooleanValue nestBoxEnableAutomation;
+    public final Supplier<Boolean> nestBoxEnableAutomation;
     // Blocks - Powder Keg
-    public final BooleanValue powderKegEnabled;
-    public final BooleanValue powderKegOnlyBreaksNaturalBlocks;
-    public final BooleanValue powderKegEnableAutomation;
-    public final DoubleValue powderKegStrengthModifier;
-    public final IntValue powderKegFuseTime;
+    public final Supplier<Boolean> powderKegEnabled;
+    public final Supplier<Boolean> powderKegOnlyBreaksNaturalBlocks;
+    public final Supplier<Boolean> powderKegEnableAutomation;
+    public final Supplier<Double> powderKegStrengthModifier;
+    public final Supplier<Integer> powderKegFuseTime;
     // Blocks - Hot Water
-    public final DoubleValue hotWaterHealAmount;
+    public final Supplier<Double> hotWaterHealAmount;
     // Blocks - Sapling
-    public final DoubleValue globalSaplingGrowthModifier;
-    public final DoubleValue globalFruitSaplingGrowthModifier;
-    public final EnumMap<Wood, IntValue> saplingGrowthDays;
-    public final EnumMap<FruitBlocks.Tree, IntValue> fruitSaplingGrowthDays;
-    public final IntValue bananaSaplingGrowthDays;
+    public final Supplier<Double> globalSaplingGrowthModifier;
+    public final Supplier<Double> globalFruitSaplingGrowthModifier;
+    public final EnumMap<Wood, Supplier<Integer>> saplingGrowthDays;
+    public final EnumMap<FruitBlocks.Tree, Supplier<Integer>> fruitSaplingGrowthDays;
+    public final Supplier<Integer> bananaSaplingGrowthDays;
     // Blocks - Crops
-    public final DoubleValue cropGrowthModifier;
-    public final DoubleValue cropExpiryModifier;
+    public final Supplier<Double> cropGrowthModifier;
+    public final Supplier<Double> cropExpiryModifier;
     // Blocks - Dispenser
-    public final BooleanValue dispenserEnableLighting;
+    public final Supplier<Boolean> dispenserEnableLighting;
     // Blocks - Powder Bowl
-    public final BooleanValue powderBowlEnableAutomation;
+    public final Supplier<Boolean> powderBowlEnableAutomation;
 
     // Items - Small Vessel
-    public final IntValue smallVesselCapacity;
-    public final EnumValue<Size> smallVesselMaximumItemSize;
-    public final BooleanValue enableSmallVesselInventoryInteraction;
+    public final Supplier<Integer> smallVesselCapacity;
+    public final Supplier<Size> smallVesselMaximumItemSize;
+    public final Supplier<Boolean> enableSmallVesselInventoryInteraction;
     // Items - Mold(s)
-    public final IntValue moldIngotCapacity;
-    public final IntValue moldFireIngotCapacity;
-    public final IntValue moldPickaxeHeadCapacity;
-    public final IntValue moldPropickHeadCapacity;
-    public final IntValue moldAxeHeadCapacity;
-    public final IntValue moldShovelHeadCapacity;
-    public final IntValue moldHoeHeadCapacity;
-    public final IntValue moldChiselHeadCapacity;
-    public final IntValue moldHammerHeadCapacity;
-    public final IntValue moldSawBladeCapacity;
-    public final IntValue moldJavelinHeadCapacity;
-    public final IntValue moldSwordBladeCapacity;
-    public final IntValue moldMaceHeadCapacity;
-    public final IntValue moldKnifeBladeCapacity;
-    public final IntValue moldScytheBladeCapacity;
-    public final IntValue moldBellCapacity;
+    public final Supplier<Integer> moldIngotCapacity;
+    public final Supplier<Integer> moldFireIngotCapacity;
+    public final Supplier<Integer> moldPickaxeHeadCapacity;
+    public final Supplier<Integer> moldPropickHeadCapacity;
+    public final Supplier<Integer> moldAxeHeadCapacity;
+    public final Supplier<Integer> moldShovelHeadCapacity;
+    public final Supplier<Integer> moldHoeHeadCapacity;
+    public final Supplier<Integer> moldChiselHeadCapacity;
+    public final Supplier<Integer> moldHammerHeadCapacity;
+    public final Supplier<Integer> moldSawBladeCapacity;
+    public final Supplier<Integer> moldJavelinHeadCapacity;
+    public final Supplier<Integer> moldSwordBladeCapacity;
+    public final Supplier<Integer> moldMaceHeadCapacity;
+    public final Supplier<Integer> moldKnifeBladeCapacity;
+    public final Supplier<Integer> moldScytheBladeCapacity;
+    public final Supplier<Integer> moldBellCapacity;
     // Items - Jug
-    public final IntValue jugCapacity;
-    public final DoubleValue jugBreakChance;
+    public final Supplier<Integer> jugCapacity;
+    public final Supplier<Double> jugBreakChance;
     // Items - Glass Bottle
-    public final IntValue silicaGlassBottleCapacity;
-    public final DoubleValue silicaGlassBottleBreakChance;
-    public final IntValue hematiticGlassBottleCapacity;
-    public final DoubleValue hematiticGlassBottleBreakChance;
-    public final IntValue volcanicGlassBottleCapacity;
-    public final DoubleValue volcanicGlassBottleBreakChance;
-    public final IntValue olivineGlassBottleCapacity;
-    public final DoubleValue olivineGlassBottleBreakChance;
+    public final Supplier<Integer> silicaGlassBottleCapacity;
+    public final Supplier<Double> silicaGlassBottleBreakChance;
+    public final Supplier<Integer> hematiticGlassBottleCapacity;
+    public final Supplier<Double> hematiticGlassBottleBreakChance;
+    public final Supplier<Integer> volcanicGlassBottleCapacity;
+    public final Supplier<Double> volcanicGlassBottleBreakChance;
+    public final Supplier<Integer> olivineGlassBottleCapacity;
+    public final Supplier<Double> olivineGlassBottleBreakChance;
     // Items - Wooden Bucket
-    public final IntValue woodenBucketCapacity;
+    public final Supplier<Integer> woodenBucketCapacity;
     // Mechanics - Heat
-    public final DoubleValue deviceHeatingModifier;
-    public final DoubleValue itemHeatingModifier;
-    public final DoubleValue itemCoolingModifier;
-    public final IntValue ticksBeforeItemCool;
-    public final BooleanValue coolHotItemEntities;
+    public final Supplier<Double> deviceHeatingModifier;
+    public final Supplier<Double> itemHeatingModifier;
+    public final Supplier<Double> itemCoolingModifier;
+    public final Supplier<Integer> ticksBeforeItemCool;
+    public final Supplier<Boolean> coolHotItemEntities;
     // Mechanics - Collapses
-    public final BooleanValue enableBlockCollapsing;
-    public final BooleanValue enableExplosionCollapsing;
-    public final BooleanValue enableBlockLandslides;
-    public final BooleanValue enableChiselsStartCollapses;
-    public final DoubleValue collapseTriggerChance;
-    public final DoubleValue collapseFakeTriggerChance;
-    public final DoubleValue collapsePropagateChance;
-    public final DoubleValue collapseExplosionPropagateChance;
-    public final IntValue collapseMinRadius;
-    public final IntValue collapseRadiusVariance;
+    public final Supplier<Boolean> enableBlockCollapsing;
+    public final Supplier<Boolean> enableExplosionCollapsing;
+    public final Supplier<Boolean> enableBlockLandslides;
+    public final Supplier<Boolean> enableChiselsStartCollapses;
+    public final Supplier<Double> collapseTriggerChance;
+    public final Supplier<Double> collapseFakeTriggerChance;
+    public final Supplier<Double> collapsePropagateChance;
+    public final Supplier<Double> collapseExplosionPropagateChance;
+    public final Supplier<Integer> collapseMinRadius;
+    public final Supplier<Integer> collapseRadiusVariance;
     // Mechanics - Player
-    public final BooleanValue enablePeacefulDifficultyPassiveRegeneration;
-    public final DoubleValue passiveExhaustionModifier;
-    public final DoubleValue thirstModifier;
-    public final BooleanValue enableThirstOverheating;
-    public final DoubleValue thirstGainedFromDrinkingInTheRain;
-    public final DoubleValue naturalRegenerationModifier;
-    public final IntValue nutritionRotationHungerWindow;
-    public final BooleanValue keepNutritionAfterDeath;
-    public final IntValue foodDecayStackWindow;
-    public final DoubleValue foodDecayModifier;
-    public final BooleanValue enableOverburdening;
-    public final DoubleValue nutritionMinimumHealthModifier;
-    public final DoubleValue nutritionDefaultHealthModifier;
-    public final DoubleValue nutritionMaximumHealthModifier;
+    public final Supplier<Boolean> enablePeacefulDifficultyPassiveRegeneration;
+    public final Supplier<Double> passiveExhaustionModifier;
+    public final Supplier<Double> thirstModifier;
+    public final Supplier<Boolean> enableThirstOverheating;
+    public final Supplier<Double> thirstGainedFromDrinkingInTheRain;
+    public final Supplier<Double> naturalRegenerationModifier;
+    public final Supplier<Integer> nutritionRotationHungerWindow;
+    public final Supplier<Boolean> keepNutritionAfterDeath;
+    public final Supplier<Integer> foodDecayStackWindow;
+    public final Supplier<Double> foodDecayModifier;
+    public final Supplier<Boolean> enableOverburdening;
+    public final Supplier<Double> nutritionMinimumHealthModifier;
+    public final Supplier<Double> nutritionDefaultHealthModifier;
+    public final Supplier<Double> nutritionMaximumHealthModifier;
     // Mechanics - Food Traits
-    public final DoubleValue traitSaltedModifier;
-    public final DoubleValue traitBrinedModifier;
-    public final DoubleValue traitPickledModifier;
-    public final DoubleValue traitPreservedModifier;
-    public final DoubleValue traitVinegarModifier;
-    public final DoubleValue traitCharcoalGrilledModifier;
-    public final DoubleValue traitWoodGrilledModifier;
-    public final DoubleValue traitBurntToACrispModifier;
-    public final DoubleValue traitWildModifier;
+    public final Supplier<Double> traitSaltedModifier;
+    public final Supplier<Double> traitBrinedModifier;
+    public final Supplier<Double> traitPickledModifier;
+    public final Supplier<Double> traitPreservedModifier;
+    public final Supplier<Double> traitVinegarModifier;
+    public final Supplier<Double> traitCharcoalGrilledModifier;
+    public final Supplier<Double> traitWoodGrilledModifier;
+    public final Supplier<Double> traitBurntToACrispModifier;
+    public final Supplier<Double> traitWildModifier;
     // Mechanics - Fluids
-    public final BooleanValue enableBucketsPlacingSources;
+    public final Supplier<Boolean> enableBucketsPlacingSources;
     // Mechanics - Vanilla Changes
-    public final BooleanValue enableVanillaBonemeal;
-    public final BooleanValue enableVanillaWeatherEffects;
-    public final BooleanValue enableVanillaSkeletonHorseSpawning;
-    public final BooleanValue enableVanillaMobsSpawningWithEnchantments;
-    public final BooleanValue enableVanillaMobsSpawningWithVanillaEquipment;
-    public final BooleanValue enableVanillaGolems;
-    public final BooleanValue enableVanillaMonsters;
-    public final BooleanValue enableVanillaMonstersOnSurface;
-    public final BooleanValue enableChickenJockies;
-    public final BooleanValue enableVanillaEggThrowing;
-    public final BooleanValue enableVanillaDrinkingMilkClearsPotionEffects;
+    public final Supplier<Boolean> enableVanillaBonemeal;
+    public final Supplier<Boolean> enableVanillaWeatherEffects;
+    public final Supplier<Boolean> enableVanillaSkeletonHorseSpawning;
+    public final Supplier<Boolean> enableVanillaMobsSpawningWithEnchantments;
+    public final Supplier<Boolean> enableVanillaMobsSpawningWithVanillaEquipment;
+    public final Supplier<Boolean> enableVanillaGolems;
+    public final Supplier<Boolean> enableVanillaMonsters;
+    public final Supplier<Boolean> enableVanillaMonstersOnSurface;
+    public final Supplier<Boolean> enableChickenJockies;
+    public final Supplier<Boolean> enableVanillaEggThrowing;
+    public final Supplier<Boolean> enableVanillaDrinkingMilkClearsPotionEffects;
 
     // Animals
     public final MammalConfig pigConfig;
@@ -271,10 +268,10 @@ public class ServerConfig extends BaseConfig
     public final ProducingMammalConfig muskOxConfig;
     public final OviparousAnimalConfig duckConfig;
     public final OviparousAnimalConfig quailConfig;
-    public final DoubleValue familiarityDecayLimit;
+    public final Supplier<Double> familiarityDecayLimit;
 
     // Below Everything
-    public final BooleanValue farmlandMakesTheBestRaceTracks;
+    public final Supplier<Boolean> farmlandMakesTheBestRaceTracks;
 
     ServerConfig(ConfigBuilder builder)
     {

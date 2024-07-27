@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.container;
+package net.dries007.tfc.common.container.slot;
 
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -12,10 +12,11 @@ import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 
 import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
+import net.dries007.tfc.common.container.ISlotCallback;
 
 public class CallbackSlot extends SlotItemHandler
 {
-    private final ISlotCallback callback;
+    private final net.dries007.tfc.common.container.ISlotCallback callback;
 
     public CallbackSlot(InventoryBlockEntity<?> inventory, int index, int x, int y)
     {

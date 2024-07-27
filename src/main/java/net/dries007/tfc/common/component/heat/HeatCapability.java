@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.component.heat;
 
 import java.util.Iterator;
+import java.util.Objects;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.Item;
@@ -16,6 +17,7 @@ import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.common.capabilities.TFCCapabilities;
 import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.recipes.RecipeHelpers;
 import net.dries007.tfc.config.TFCConfig;
@@ -32,15 +34,52 @@ public final class HeatCapability
 
     public static final float POTTERY_HEAT_CAPACITY = 1.2f;
 
+    /**
+     * Returns the heat implementation for the given stack. This is (1) mutable, and (2) uses the correct implementation,
+     * including fallbacks to simple {@link HeatView} implementations. Use whenever querying the capability of an external
+     * stack.
+     */
     @Nullable
     public static IHeat get(ItemStack stack)
     {
+        // First, query a heat capability, in case a custom implementation is desired
+        final @Nullable IHeat capability = stack.getCapability(TFCCapabilities.HEAT);
+        if (capability != null)
+        {
+            return capability;
+        }
+        // Then, fallback to a heat component, and use the default implementation (HeatView)
         final @Nullable HeatComponent value = stack.get(TFCComponents.HEAT);
         return value != null ? new HeatView(stack, value) : null;
     }
 
+    /**
+     * Returns an immutable, view-only implementation for a given stack. This uses the correct implementation, but avoids
+     * some overhead of {@link #get(ItemStack)}, and avoids exposing accidental mutability, if that is not desired.
+     */
+    @Nullable
+    public static IHeatView view(ItemStack stack)
+    {
+        // First, query a heat capability, in case a custom implementation is desired
+        // Otherwise, fallback to the view provided from the component
+        final @Nullable IHeat capability = stack.getCapability(TFCCapabilities.HEAT);
+        return capability != null ? capability : stack.get(TFCComponents.HEAT);
+    }
+
+    /**
+     * Returns a mutable view of the <strong>raw, internal, component</strong> of a heat. This is not using the external implementation,
+     * and should ONLY be used in situations where direct, mutable access to the internal component is desired. For example, in the
+     * constructor of a capability implementation, we desire the component, and have reasonable assurances that it must exist.
+     * @throws NullPointerException if the capability does not exist
+     */
+    public static IHeat mutableView(ItemStack stack)
+    {
+        return new HeatView(stack, Objects.requireNonNull(stack.get(TFCComponents.HEAT), () -> "Expected a heat component to be present on" + stack));
+    }
+
     public static boolean has(ItemStack stack)
     {
+        // N.B. Any item providing a heat capability must also provide a heat component, so this check is sufficient
         return stack.has(TFCComponents.HEAT);
     }
 
@@ -49,7 +88,7 @@ public final class HeatCapability
      */
     public static float getTemperature(ItemStack stack)
     {
-        final @Nullable HeatComponent heat = stack.get(TFCComponents.HEAT);
+        final @Nullable IHeatView heat = view(stack);
         return heat != null ? heat.getTemperature() : 0;
     }
 
@@ -59,10 +98,7 @@ public final class HeatCapability
     public static void setTemperature(ItemStack stack, float temperature)
     {
         final @Nullable IHeat heat = get(stack);
-        if (heat != null)
-        {
-            heat.setTemperature(temperature);
-        }
+        if (heat != null) heat.setTemperature(temperature);
     }
 
     /**
@@ -181,14 +217,20 @@ public final class HeatCapability
      *
      * @param modifier the modifier for how much this will heat up: 0 - 1 slows down cooling, 1 = no heating or cooling, > 1 heats, 2 heats at the same rate of normal cooling, 2+ heats faster
      */
-    public static void addTemp(IHeat instance, float target, float modifier)
+    public static void addTemp(IHeat instance, float targetTemperature, float modifier)
     {
-        float temp = instance.getTemperature() + (TFCConfig.SERVER.itemCoolingModifier.get().floatValue() - 1 + modifier * TFCConfig.SERVER.itemHeatingModifier.get().floatValue()) / instance.getHeatCapacity();
-        if (temp > target)
+        modifier = TFCConfig.SERVER.itemCoolingModifier.get().floatValue() - 1 + modifier * TFCConfig.SERVER.itemHeatingModifier.get().floatValue();
+
+        final float initialTemperature = instance.getTemperature();
+        float newTemperature = initialTemperature + modifier / instance.getHeatCapacity();
+        if (newTemperature > targetTemperature)
         {
-            temp = target;
+            newTemperature = targetTemperature;
         }
-        instance.setTemperatureIfWarmer(temp);
+        if (newTemperature > initialTemperature)
+        {
+            instance.setTemperature(newTemperature);
+        }
     }
 
     /**

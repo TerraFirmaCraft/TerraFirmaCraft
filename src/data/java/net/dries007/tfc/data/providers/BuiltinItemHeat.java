@@ -34,11 +34,6 @@ public class BuiltinItemHeat extends DataManagerProvider<HeatDefinition> impleme
     public final List<WithMelting> withMelting = new ArrayList<>();
     private final CompletableFuture<?> before;
 
-    public BuiltinItemHeat(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup)
-    {
-        this(output, lookup, CompletableFuture.completedFuture(null));
-    }
-
     public BuiltinItemHeat(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup, CompletableFuture<?> before)
     {
         super(HeatCapability.MANAGER, output, lookup);

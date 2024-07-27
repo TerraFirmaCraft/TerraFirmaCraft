@@ -25,6 +25,7 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.wood.SewingTableBlock;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
+import net.dries007.tfc.common.container.slot.CallbackSlot;
 import net.dries007.tfc.common.recipes.SewingRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.input.NonEmptyInput;

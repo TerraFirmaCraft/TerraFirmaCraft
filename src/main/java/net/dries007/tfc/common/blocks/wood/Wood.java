@@ -162,7 +162,7 @@ public enum Wood implements RegistryWood
     @Override
     public int daysToGrow()
     {
-        return TFCConfig.SERVER.saplingGrowthDays.get(this).getAsInt();
+        return TFCConfig.SERVER.saplingGrowthDays.get(this).get();
     }
 
     @Override

@@ -40,16 +40,6 @@ public final class ServerCalendar extends Calendar
     private int syncCounter;
 
     /**
-     * Opens a calendar transaction, which allows you to safely manipulate time to perform a sequence of actions, without possibility of distributing the state of the global calendar.
-     * @return A new {@link CalendarTransaction}
-     * @see CalendarTransaction
-     */
-    public CalendarTransaction transaction()
-    {
-        return new Transaction();
-    }
-
-    /**
      * Sets the current player time and calendar time from a calendar timestamp
      *
      * @param calendarTimeToSetTo a calendar ticks time stamp
@@ -256,6 +246,7 @@ public final class ServerCalendar extends Calendar
         PacketDistributor.sendToAllPlayers(new CalendarUpdatePacket(this));
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private MinecraftServer getServer()
     {
         return ServerLifecycleHooks.getCurrentServer();
@@ -265,24 +256,5 @@ public final class ServerCalendar extends Calendar
     {
         final MinecraftServer server = getServer();
         DO_DAYLIGHT_CYCLE.runWithoutTriggeringCallbacks(() -> server.getGameRules().getRule(GameRules.RULE_DAYLIGHT).set(value, server));
-    }
-
-    private class Transaction implements CalendarTransaction
-    {
-        private final long originalPlayerTicks = playerTicks, originalCalendarTicks = calendarTicks;
-
-        @Override
-        public void add(long playerTicks, long calendarTicks)
-        {
-            ServerCalendar.this.playerTicks += playerTicks;
-            ServerCalendar.this.calendarTicks += calendarTicks;
-        }
-
-        @Override
-        public void close()
-        {
-            ServerCalendar.this.playerTicks = originalPlayerTicks;
-            ServerCalendar.this.calendarTicks = originalCalendarTicks;
-        }
     }
 }

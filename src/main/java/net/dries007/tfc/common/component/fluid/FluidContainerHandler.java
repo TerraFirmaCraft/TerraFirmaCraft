@@ -6,10 +6,9 @@
 
 package net.dries007.tfc.common.component.fluid;
 
-import java.util.function.Supplier;
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 
 import net.dries007.tfc.common.component.ComponentView;
 import net.dries007.tfc.common.component.TFCComponents;
@@ -17,7 +16,7 @@ import net.dries007.tfc.common.component.TFCComponents;
 /**
  * This is a capability implemented on pure fluid containers.
  */
-public class FluidContainerHandler extends ComponentView<FluidComponent> implements FluidContainer
+public class FluidContainerHandler extends ComponentView<FluidComponent> implements IFluidHandlerItem, FluidContainer
 {
     private final FluidContainerInfo containerInfo;
 
@@ -28,7 +27,7 @@ public class FluidContainerHandler extends ComponentView<FluidComponent> impleme
     }
 
     @Override
-    public FluidContainerInfo fluidContainerInfo()
+    public FluidContainerInfo containerInfo()
     {
         return containerInfo;
     }

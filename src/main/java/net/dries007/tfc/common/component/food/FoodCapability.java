@@ -337,7 +337,7 @@ public final class FoodCapability
 
     public static long getRoundedCreationDate(long tick)
     {
-        final int window = Helpers.getValueOrDefault(TFCConfig.SERVER.foodDecayStackWindow) * ICalendar.TICKS_IN_HOUR;
+        final int window = TFCConfig.SERVER.foodDecayStackWindow.get() * ICalendar.TICKS_IN_HOUR;
         return ((tick - 1) / window + 1) * window;
     }
 
