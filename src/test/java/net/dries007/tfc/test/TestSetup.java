@@ -48,6 +48,7 @@ import net.dries007.tfc.data.providers.BuiltinBlockTags;
 import net.dries007.tfc.data.providers.BuiltinDrinkables;
 import net.dries007.tfc.data.providers.BuiltinFluidHeat;
 import net.dries007.tfc.data.providers.BuiltinFluidTags;
+import net.dries007.tfc.data.providers.BuiltinFoods;
 import net.dries007.tfc.data.providers.BuiltinItemHeat;
 import net.dries007.tfc.data.providers.BuiltinItemTags;
 import net.dries007.tfc.data.providers.BuiltinRecipes;
@@ -104,6 +105,7 @@ public interface TestSetup
             resolve(itemTagMap, BuiltInRegistries.ITEM);
             resolve(fluidTagMap, BuiltInRegistries.FLUID);
 
+            new BuiltinFoods(output, provider).run(lookup);
             new BuiltinFluidHeat(output, provider).run(lookup);
             final var itemHeat = new BuiltinItemHeat(output, provider, now);
             itemHeat.run(lookup);

@@ -24,18 +24,8 @@ import net.dries007.tfc.util.Helpers;
 
 /**
  * A component attached to items that stores the food, nutrition, and expiry related information.
- *
- * @param holder The parent food definition, which is attached based on the stack
- * @param traits The list of food traits
- * @param food Custom food data for the food, if present. This will take priority over {@code parent}
- * @param creationDate The creation date for the food. This has multiple special values.
  */
-public record FoodComponent(
-    ParentHolder holder,
-    List<FoodTrait> traits,
-    Optional<FoodData> food,
-    long creationDate
-) implements IFood
+public final class FoodComponent implements IFood
 {
     public static final Codec<FoodComponent> CODEC = RecordCodecBuilder.<FoodComponent>create(i -> i.group(
         FoodTrait.CODEC.listOf().optionalFieldOf("traits", List.of()).forGetter(c -> c.traits),
@@ -50,22 +40,39 @@ public record FoodComponent(
         FoodComponent::new
     );
 
+    private @Nullable FoodDefinition parent;
+    private final List<FoodTrait> traits;
+    private final Optional<FoodData> food;
+    private long creationDate;
+
     public FoodComponent(FoodDefinition parent)
     {
-        this(new ParentHolder(parent), List.of(), Optional.empty(), FoodCapability.getRoundedCreationDate());
+        this(parent, List.of(), Optional.empty(), FoodCapability.getRoundedCreationDate());
     }
 
-    FoodComponent(List<FoodTrait> traits, Optional<FoodData> food, long creationDate)
+    private FoodComponent(List<FoodTrait> traits, Optional<FoodData> food, long creationDate)
     {
-        this(new ParentHolder(null), traits, food, creationDate);
+        this(null, traits, food, creationDate);
+    }
+
+    /**
+     * @param parent       The parent food definition, which is attached based on the stack
+     * @param traits       The list of food traits
+     * @param food         Custom food data for the food, if present. This will take priority over {@code parent}
+     * @param creationDate The creation date for the food. This has multiple special values.
+     */
+    private FoodComponent(@Nullable FoodDefinition parent, List<FoodTrait> traits, Optional<FoodData> food, long creationDate)
+    {
+        this.parent = parent;
+        this.traits = traits;
+        this.food = food;
+        this.creationDate = creationDate;
     }
 
     @Override
     public long getCreationDate()
     {
-        return creationDate < 0 || !FoodCapability.isRotten(creationDate, getDecayDateModifier())
-            ? creationDate
-            : ROTTEN_FLAG;
+        return sanitize().creationDate;
     }
 
     @Override
@@ -78,7 +85,7 @@ public record FoodComponent(
     public FoodData getData()
     {
         return food.isPresent() ? food.get()
-            : holder.value != null ? holder.value.food()
+            : parent != null ? parent.food()
             : FoodData.EMPTY;
     }
 
@@ -89,86 +96,87 @@ public record FoodComponent(
     }
 
     /**
-     * Sanitizes this component before saving, so the reported creation date is equal to the current component value
+     * Sanitizes this food component, overwriting interior-mutable values with the most up-to-date values. This should be called upon any access
+     * to the interior values of {@link #creationDate} as it may have reset since being updated, or is equal despite being separate values.
+     *
      * @return A sanitized component value.
      */
     FoodComponent sanitize()
     {
-        final long creationDate = getCreationDate();
-        return this.creationDate != creationDate
-            ? new FoodComponent(holder, traits, food, creationDate)
-            : this;
+        if (creationDate >= 0 && parent != null && FoodCapability.isRotten(creationDate, getDecayDateModifier()))
+        {
+            creationDate = ROTTEN_FLAG;
+        }
+        return this;
     }
 
     FoodComponent with(long creationDate)
     {
-        return new FoodComponent(holder, traits, food, creationDate);
+        return new FoodComponent(parent, traits, food, creationDate);
     }
 
     FoodComponent with(FoodData food, long creationDate)
     {
-        return new FoodComponent(holder, traits, Optional.of(food), creationDate);
+        return new FoodComponent(parent, traits, Optional.of(food), creationDate);
     }
 
     FoodComponent withTraitApplied(FoodTrait trait, long creationDate)
     {
-        return new FoodComponent(holder, Helpers.immutableAdd(traits, trait), food, creationDate);
+        return new FoodComponent(parent, Helpers.immutableAdd(traits, trait), food, creationDate);
     }
 
     FoodComponent withTraitsApplied(List<FoodTrait> others)
     {
-        return new FoodComponent(holder, Helpers.immutableAddAll(traits, others), food, creationDate);
+        return new FoodComponent(parent, Helpers.immutableAddAll(traits, others), food, creationDate);
     }
 
     FoodComponent withTraitRemoved(FoodTrait trait, long creationDate)
     {
-        return new FoodComponent(holder, Helpers.immutableRemove(traits, trait), food, creationDate);
+        return new FoodComponent(parent, Helpers.immutableRemove(traits, trait), food, creationDate);
     }
 
     public void capture(ItemStack stack)
     {
-        if (holder.value == null)
+        if (parent == null)
         {
-            holder.value = FoodCapability.getDefinition(stack);
-            if (holder.value == null)
+            parent = FoodCapability.getDefinition(stack);
+            if (parent == null)
             {
-                holder.value = FoodDefinition.DEFAULT;
+                parent = FoodDefinition.DEFAULT;
             }
         }
         if (creationDate == TRANSIENT_NEVER_DECAY_FLAG)
         {
-            stack.set(TFCComponents.FOOD, new FoodComponent(holder, traits, food, FoodCapability.getRoundedCreationDate()));
+            stack.set(TFCComponents.FOOD, new FoodComponent(parent, traits, food, FoodCapability.getRoundedCreationDate()));
         }
     }
 
     @Override
     public boolean equals(Object obj)
     {
-        return this == obj || (obj instanceof FoodComponent that
-            && traits.equals(that.traits)
-            && food.equals(that.food)
-            && creationDate == that.creationDate);
+        if (obj == this) return true;
+        if (obj instanceof FoodComponent that)
+        {
+            // Sanitize before comparing directly
+            this.sanitize();
+            that.sanitize();
+            return creationDate == that.creationDate
+                && traits.equals(that.traits)
+                && food.equals(that.food);
+        }
+        return false;
     }
 
     @Override
     public int hashCode()
     {
-        return Objects.hash(traits, food, creationDate);
+        // Don't hash creation date, as that is interior mutable and may change
+        return Objects.hash(traits, food);
     }
 
     @Override
     public String toString()
     {
         return "Food[creationDate=%s,rotten=%s,traits=%s%s]".formatted(creationDate, isRotten(), traits, food.isPresent() ? ",food=" + food.get() : "");
-    }
-
-    static class ParentHolder
-    {
-        @Nullable FoodDefinition value;
-
-        ParentHolder(@Nullable FoodDefinition value)
-        {
-            this.value = value;
-        }
     }
 }

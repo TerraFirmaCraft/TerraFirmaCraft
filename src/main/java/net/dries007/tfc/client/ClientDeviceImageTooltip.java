@@ -13,7 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Tooltips;
+import net.dries007.tfc.util.tooltip.Tooltips;
 
 public class ClientDeviceImageTooltip implements ClientTooltipComponent
 {

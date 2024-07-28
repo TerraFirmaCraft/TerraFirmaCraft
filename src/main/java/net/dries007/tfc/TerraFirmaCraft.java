@@ -18,7 +18,6 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
-import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
@@ -53,6 +52,8 @@ import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.ingredients.TFCIngredients;
 import net.dries007.tfc.common.recipes.outputs.ItemStackModifiers;
 import net.dries007.tfc.common.recipes.outputs.PotOutput;
+import net.dries007.tfc.compat.jade.JadeIntegration;
+import net.dries007.tfc.compat.theoneprobe.TheOneProbeIntegration;
 import net.dries007.tfc.compat.patchouli.PatchouliClientEventHandler;
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
 import net.dries007.tfc.config.TFCConfig;
@@ -75,7 +76,6 @@ import net.dries007.tfc.world.carver.TFCCarvers;
 import net.dries007.tfc.world.density.TFCDensityFunctions;
 import net.dries007.tfc.world.feature.TFCFeatures;
 import net.dries007.tfc.world.placement.TFCPlacements;
-import net.dries007.tfc.world.settings.RockSettings;
 import net.dries007.tfc.world.stateprovider.TFCStateProviders;
 import net.dries007.tfc.world.structure.TFCStructureHooks;
 
@@ -87,6 +87,9 @@ public final class TerraFirmaCraft
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public static final ResourceKey<WorldPreset> PRESET = ResourceKey.create(Registries.WORLD_PRESET, Helpers.identifier("overworld"));
+
+    private final boolean hasJade = ModList.get().isLoaded("jade");
+    private final boolean hasTheOneProbe = ModList.get().isLoaded("theoneprobe");
 
     private @Nullable Throwable syncLoadError;
 
@@ -111,7 +114,6 @@ public final class TerraFirmaCraft
         bus.addListener(this::setup);
         bus.addListener(this::registerRegistries);
         bus.addListener(this::loadComplete);
-        bus.addListener(this::onInterModComms);
         bus.addListener(TFCEntities::onEntityAttributeCreation);
         bus.addListener(TFCComponents::onModifyDefaultComponents);
         bus.addListener(TFCCapabilities::onRegisterCapabilities);
@@ -179,6 +181,8 @@ public final class TerraFirmaCraft
             PatchouliClientEventHandler.init();
         }
 
+        if (hasTheOneProbe) TheOneProbeIntegration.init(bus);
+
         NeoForgeMod.enableMilkFluid();
     }
 
@@ -206,12 +210,8 @@ public final class TerraFirmaCraft
             return null;
         });
 
-        // todo 1.21, compat with patchy and jade
         PatchouliIntegration.registerMultiBlocks();
-        /*if (ModList.get().isLoaded("jade"))
-        {
-            JadeIntegration.registerToolHandlers();
-        }*/
+        if (hasJade) JadeIntegration.registerToolHandlers();
     }
 
     public void registerRegistries(NewRegistryEvent event)
@@ -229,15 +229,6 @@ public final class TerraFirmaCraft
         if (syncLoadError != null)
         {
             Helpers.throwAsUnchecked(syncLoadError);
-        }
-    }
-
-    public void onInterModComms(InterModEnqueueEvent event)
-    {
-        if (ModList.get().isLoaded("theoneprobe"))
-        {
-            // todo: 1.21, compat with top
-            //InterModComms.sendTo("theoneprobe", "getTheOneProbe", TheOneProbeIntegration::new);
         }
     }
 }

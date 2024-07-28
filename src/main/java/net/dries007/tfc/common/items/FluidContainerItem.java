@@ -32,7 +32,7 @@ import net.dries007.tfc.common.component.fluid.FluidContainerInfo;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Tooltips;
+import net.dries007.tfc.util.tooltip.Tooltips;
 
 public class FluidContainerItem extends Item
 {

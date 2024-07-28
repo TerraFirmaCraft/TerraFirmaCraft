@@ -22,7 +22,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import net.dries007.tfc.Artist;
-import net.dries007.tfc.TestHelper;
 import net.dries007.tfc.world.region.ChooseRocks;
 import net.dries007.tfc.world.region.Region;
 import net.dries007.tfc.world.region.RegionGenerator;

@@ -25,7 +25,7 @@ import net.dries007.tfc.common.container.BarrelContainer;
 import net.dries007.tfc.common.recipes.BarrelRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Tooltips;
+import net.dries007.tfc.util.tooltip.Tooltips;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 

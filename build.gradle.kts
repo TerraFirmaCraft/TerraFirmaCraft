@@ -1,6 +1,5 @@
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
-import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 
 plugins {
     id("net.neoforged.moddev") version "0.1.126"
@@ -10,15 +9,16 @@ plugins {
 
 // Toolchain versions
 val minecraftVersion: String = "1.21"
-val neoForgeVersion: String = "21.0.113-beta"
+val neoForgeVersion: String = "21.0.143"
 val parchmentVersion: String = "2024.07.07"
 val parchmentMinecraftVersion: String = "1.21"
 
 // Dependency versions
-val jeiVersion: String = "15.2.0.21"
+val emiVersion: String = "1.1.10+1.21"
+val jeiVersion: String = "19.5.2.66"
 val patchouliVersion: String = "1.21-87-NEOFORGE-SNAPSHOT"
-val jadeVersion: String = "4614153"
-val topVersion: String = "4629624"
+val jadeVersion: String = "5529595"
+val topVersion: String = "1.21_neo-12.0.3-5"
 
 val modId: String = "tfc"
 val modVersion: String = System.getenv("VERSION") ?: "0.0.0-indev"
@@ -40,13 +40,25 @@ java {
 repositories {
     mavenCentral()
     mavenLocal()
-    maven(url = "https://dvs1.progwml6.com/files/maven/") // JEI
-    maven(url = "https://modmaven.k-4u.nl") // Mirror for JEI
-    maven(url = "https://maven.blamejared.com") // Patchouli
-    maven(url = "https://www.cursemaven.com") {
-        content {
-            includeGroup("curse.maven")
-        }
+    exclusiveContent {
+        forRepository { maven("https://maven.terraformersmc.com/") }
+        filter { includeGroup("dev.emi") }
+    }
+    exclusiveContent {
+        forRepository { maven("https://maven.blamejared.com/") }
+        filter { includeGroup("mezz.jei") }
+    }
+    exclusiveContent {
+        forRepository { maven("https://maven.k-4u.nl/") }
+        filter { includeGroup("mcjty.theoneprobe") }
+    }
+    exclusiveContent {
+        forRepository { maven("https://maven.blamejared.com") }
+        filter { includeGroup("vazkii.patchouli") }
+    }
+    exclusiveContent {
+        forRepository { maven("https://www.cursemaven.com") }
+        filter { includeGroup("curse.maven") }
     }
 }
 
@@ -59,22 +71,22 @@ sourceSets {
 }
 
 dependencies {
+    // EMI
+    compileOnly("dev.emi:emi-neoforge:${emiVersion}:api")
+    runtimeOnly("dev.emi:emi-neoforge:${emiVersion}")
+
     // JEI
-    //compileOnly(fg.deobf("mezz.jei:jei-$minecraftVersion-forge-api:$jeiVersion"))
-    //compileOnly(fg.deobf("mezz.jei:jei-$minecraftVersion-common-api:$jeiVersion"))
-    //runtimeOnly(fg.deobf("mezz.jei:jei-$minecraftVersion-forge:$jeiVersion"))
+    compileOnly("mezz.jei:jei-${minecraftVersion}-common-api:${jeiVersion}")
+    compileOnly("mezz.jei:jei-${minecraftVersion}-neoforge-api:${jeiVersion}")
+    // runtimeOnly("mezz.jei:jei-${minecraftVersion}-neoforge:${jeiVersion}")
 
     // Patchouli
     // We need to compile against the full JAR, not just the API, because we do some egregious hacks.
     implementation("vazkii.patchouli:Patchouli:$patchouliVersion")
 
     // Jade / The One Probe
-    //compileOnly(fg.deobf("curse.maven:jade-324717:${jadeVersion}"))
-    //compileOnly(fg.deobf("curse.maven:top-245211:${topVersion}"))
-
-    // Only use Jade at runtime
-    //runtimeOnly(fg.deobf("curse.maven:jade-324717:${jadeVersion}"))
-    // runtimeOnly(fg.deobf("curse.maven:top-245211:${topVersion}"))
+    implementation("curse.maven:jade-324717:$jadeVersion")
+    compileOnly("mcjty.theoneprobe:theoneprobe:$topVersion")
 
     // Data
     "dataImplementation"(sourceSets["main"].output)
@@ -176,7 +188,6 @@ tasks {
 
     test {
         useJUnitPlatform()
-        systemProperty("junit.jupiter.extensions.autodetection.enabled", "true")
     }
 
     jar {

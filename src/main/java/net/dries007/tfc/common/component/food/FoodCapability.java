@@ -8,6 +8,7 @@ package net.dries007.tfc.common.component.food;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Consumer;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
@@ -118,12 +119,12 @@ public final class FoodCapability
         return food != null && food.isRotten();
     }
 
-    public static void addTooltipInfo(ItemStack stack, List<Component> text)
+    public static void addTooltipInfo(ItemStack stack, Consumer<Component> tooltip)
     {
         final @Nullable FoodComponent food = stack.get(TFCComponents.FOOD);
         if (food != null)
         {
-            food.addTooltipInfo(stack, text);
+            food.addTooltipInfo(stack, tooltip);
         }
     }
 
@@ -185,9 +186,9 @@ public final class FoodCapability
      * meant to not expire and are player-visible (i.e. golden apples).
      * @see IFood#NEVER_DECAY_FLAG
      */
-    public static void setNonDecaying(ItemStack stack)
+    public static ItemStack setNonDecaying(ItemStack stack)
     {
-        setCreationDate(stack, IFood.NEVER_DECAY_FLAG);
+        return setCreationDate(stack, IFood.NEVER_DECAY_FLAG);
     }
 
     /**

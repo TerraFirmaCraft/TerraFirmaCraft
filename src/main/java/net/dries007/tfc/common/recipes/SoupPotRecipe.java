@@ -34,7 +34,8 @@ import net.dries007.tfc.common.component.food.Nutrient;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.outputs.PotOutput;
-import net.dries007.tfc.compat.jade.common.BlockEntityTooltip;
+import net.dries007.tfc.util.tooltip.BlockEntityTooltip;
+import net.dries007.tfc.util.tooltip.BlockEntityTooltips;
 import net.dries007.tfc.util.Helpers;
 
 public class SoupPotRecipe extends PotRecipe
@@ -106,7 +107,7 @@ public class SoupPotRecipe extends PotRecipe
             soupStack.set(TFCComponents.INGREDIENTS, IngredientsComponent.of(itemIngredients));
             FoodCapability.setFoodForDynamicItemOnCreate(
                 soupStack,
-                FoodData.of(SOUP_HUNGER_VALUE, water, saturation, nutrition, SOUP_DECAY_MODIFIER));
+                new FoodData(SOUP_HUNGER_VALUE, water, saturation, 0, nutrition, SOUP_DECAY_MODIFIER));
         }
 
         return new SoupOutput(soupStack);
@@ -164,11 +165,8 @@ public class SoupPotRecipe extends PotRecipe
         public BlockEntityTooltip getTooltip()
         {
             return ((level, state, pos, entity, tooltip) -> {
-                final List<Component> text = new ArrayList<>();
-                // todo 1.21, when re-enable jade
-                //BlockEntityTooltips.itemWithCount(tooltip, stack);
-                FoodCapability.addTooltipInfo(stack, text);
-                text.forEach(tooltip);
+                BlockEntityTooltips.itemWithCount(tooltip, stack);
+                FoodCapability.addTooltipInfo(stack, tooltip);
             });
         }
     }

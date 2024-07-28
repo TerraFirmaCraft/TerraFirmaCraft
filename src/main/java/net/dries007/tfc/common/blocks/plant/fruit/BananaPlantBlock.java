@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blocks.plant.fruit;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -90,12 +91,12 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock, 
     }
 
     @Override
-    public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, List<Component> text, boolean isDebug)
+    public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, Consumer<Component> text, boolean isDebug)
     {
         final ClimateRange range = climateRange.get();
 
-        text.add(FarmlandBlock.getHydrationTooltip(level, pos, range, false, FruitTreeLeavesBlock.getHydration(level, pos)));
-        text.add(FarmlandBlock.getTemperatureTooltip(level, pos, range, false));
+        text.accept(FarmlandBlock.getHydrationTooltip(level, pos, range, false, FruitTreeLeavesBlock.getHydration(level, pos)));
+        text.accept(FarmlandBlock.getTemperatureTooltip(level, pos, range, false));
     }
 
     @Override

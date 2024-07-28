@@ -169,7 +169,7 @@ public class ChiselRecipe implements INoopInputRecipe
     }
 
     @Override
-    public ItemStack getResultItem(HolderLookup.Provider registries)
+    public ItemStack getResultItem(@Nullable HolderLookup.Provider registries)
     {
         return new ItemStack(output.getBlock());
     }
@@ -194,6 +194,11 @@ public class ChiselRecipe implements INoopInputRecipe
     public Mode getMode()
     {
         return mode;
+    }
+
+    public BlockIngredient getIngredient()
+    {
+        return ingredient;
     }
 
     public ItemStack getItemOutput(ItemStack chisel)

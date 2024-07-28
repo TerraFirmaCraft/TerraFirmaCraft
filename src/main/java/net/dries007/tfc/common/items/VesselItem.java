@@ -34,7 +34,7 @@ import net.dries007.tfc.common.component.size.ItemSizeManager;
 import net.dries007.tfc.common.container.TFCContainerProviders;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Tooltips;
+import net.dries007.tfc.util.tooltip.Tooltips;
 import net.dries007.tfc.util.data.FluidHeat;
 
 public class VesselItem extends Item

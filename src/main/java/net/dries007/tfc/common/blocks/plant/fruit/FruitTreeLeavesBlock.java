@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blocks.plant.fruit;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -173,11 +174,11 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
     }
 
     @Override
-    public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, List<Component> text, boolean isDebug)
+    public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, Consumer<Component> text, boolean isDebug)
     {
         final ClimateRange range = climateRange.get();
-        text.add(FarmlandBlock.getHydrationTooltip(level, pos, range, false, getHydration(level, pos)));
-        text.add(FarmlandBlock.getAverageTemperatureTooltip(level, pos, range, false));
+        text.accept(FarmlandBlock.getHydrationTooltip(level, pos, range, false, getHydration(level, pos)));
+        text.accept(FarmlandBlock.getAverageTemperatureTooltip(level, pos, range, false));
     }
 
     @Override

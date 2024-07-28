@@ -20,9 +20,7 @@ import java.util.function.ToDoubleFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-import com.google.common.base.Preconditions;
 import javax.imageio.ImageIO;
-import net.minecraft.util.Mth;
 
 /**
  * Drawing utility.
@@ -317,11 +315,11 @@ public abstract class Artist<T, A extends Artist<T, A>>
 
         public static DoubleFunction<Color> multiLinearGradient(Color... colors)
         {
-            Preconditions.checkArgument(colors.length > 2, "Must have at least three colors for multi-linear gradient");
+            assert colors.length > 2 : "Must have at least three colors for multi-linear gradient";
             final DoubleFunction<Color>[] parts = IntStream.range(0, colors.length - 1)
                 .mapToObj(i -> linearGradient(colors[i], colors[i + 1]))
                 .toArray(DoubleFunction[]::new);
-            return value -> parts[Mth.floor(value * parts.length)].apply((value * parts.length) % 1);
+            return value -> parts[(int) Math.floor(value * parts.length)].apply((value * parts.length) % 1);
         }
     }
 

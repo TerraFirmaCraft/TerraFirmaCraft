@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blocks.crop;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -51,12 +52,12 @@ public class DeadCropBlock extends TFCBushBlock implements HoeOverlayBlock
     }
 
     @Override
-    public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, List<Component> text, boolean isDebug)
+    public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, Consumer<Component> text, boolean isDebug)
     {
         final ClimateRange range = climateRange.get();
-        text.add(FarmlandBlock.getHydrationTooltip(level, pos.below(), range, false));
-        text.add(FarmlandBlock.getTemperatureTooltip(level, pos, range, false));
-        if (state.getValue(MATURE)) text.add(Component.translatable("tfc.tooltip.farmland.mature"));
+        text.accept(FarmlandBlock.getHydrationTooltip(level, pos.below(), range, false));
+        text.accept(FarmlandBlock.getTemperatureTooltip(level, pos, range, false));
+        if (state.getValue(MATURE)) text.accept(Component.translatable("tfc.tooltip.farmland.mature"));
     }
 
     @Override

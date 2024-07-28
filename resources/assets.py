@@ -2011,10 +2011,9 @@ def generate(rm: ResourceManager):
         rm.block_loot('minecraft:%s_stained_glass_pane' % color, 'minecraft:%s_stained_glass_pane' % color)
 
         if color != 'white':
-            rm.item_model('%s_windmill_blade' % color, 'tfc:item/windmill_blade/%s' % color).with_lang(lang('%s windmill blade', color))
-        else:
-            rm.item_model('windmill_blade', 'tfc:item/windmill_blade/white').with_lang(lang('windmill blade'))
+            rm.item_model('windmill_blade/%s' % color, 'tfc:item/windmill_blade/%s' % color).with_lang(lang('%s windmill blade', color))
 
+    rm.item_model('white_windmill_blade', 'tfc:item/windmill_blade/white').with_lang(lang('windmill blade'))
     rm.item_model('lattice_windmill_blade', 'tfc:item/windmill_blade/lattice').with_lang(lang('lattice windmill blade'))
     rm.item_model('rustic_windmill_blade', 'tfc:item/windmill_blade/rustic').with_lang(lang('rustic windmill blade'))
 

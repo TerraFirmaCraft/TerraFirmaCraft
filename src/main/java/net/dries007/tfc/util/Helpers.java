@@ -128,6 +128,7 @@ import net.dries007.tfc.common.effect.TFCEffects;
 import net.dries007.tfc.common.entities.ai.prey.PestAi;
 import net.dries007.tfc.common.entities.prey.Pest;
 import net.dries007.tfc.util.data.FluidHeat;
+import net.dries007.tfc.util.tooltip.Tooltips;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
 

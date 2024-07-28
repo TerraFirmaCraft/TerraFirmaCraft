@@ -8,6 +8,7 @@ package net.dries007.tfc.common.component;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
@@ -58,19 +59,19 @@ public record EggComponent(
         return new EggComponent(true, hatchDay, Optional.of(entityTag));
     }
 
-    public void addTooltipInfo(List<Component> text)
+    public void addTooltipInfo(Consumer<Component> text)
     {
         if (fertilized())
         {
             final long remainingDays = hatchDay() - Calendars.CLIENT.getTotalDays();
-            text.add(Component.translatable("tfc.tooltip.fertilized"));
+            text.accept(Component.translatable("tfc.tooltip.fertilized"));
             if (remainingDays > 0)
             {
-                text.add(Component.translatable("tfc.tooltip.egg_hatch", remainingDays));
+                text.accept(Component.translatable("tfc.tooltip.egg_hatch", remainingDays));
             }
             else
             {
-                text.add(Component.translatable("tfc.tooltip.egg_hatch_today"));
+                text.accept(Component.translatable("tfc.tooltip.egg_hatch_today"));
             }
         }
     }

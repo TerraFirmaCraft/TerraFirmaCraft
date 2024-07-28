@@ -215,7 +215,7 @@ public class ClientForgeEventHandler
     public static void onItemTooltip(ItemTooltipEvent event)
     {
         final ItemStack stack = event.getItemStack();
-        final List<Component> text = event.getToolTip();
+        final List<Component> tooltip = event.getToolTip();
         if (!stack.isEmpty())
         {
             // These are ordered in a predictable fashion
@@ -223,20 +223,20 @@ public class ClientForgeEventHandler
             // 2. Extra information, that is useful QoL info, but not necessary (such as possible recipes, melting into, etc.)
             // 3. Debug information, that is only available in debug mode.
 
-            ItemSizeManager.addTooltipInfo(stack, text);
-            PhysicalDamageType.addTooltipInfo(stack, text);
-            ForgingBonus.addTooltipInfo(stack, text);
-            ForgingCapability.addTooltipInfo(stack, text);
-            GlassWorking.addTooltipInfo(stack, text);
-            FoodCapability.addTooltipInfo(stack, text);
+            ItemSizeManager.addTooltipInfo(stack, tooltip);
+            PhysicalDamageType.addTooltipInfo(stack, tooltip);
+            ForgingBonus.addTooltipInfo(stack, tooltip);
+            ForgingCapability.addTooltipInfo(stack, tooltip);
+            GlassWorking.addTooltipInfo(stack, tooltip);
+            FoodCapability.addTooltipInfo(stack, tooltip::add);
 
-            stack.getOrDefault(TFCComponents.INGREDIENTS, IngredientsComponent.EMPTY).addTooltipInfo(text);
-            stack.getOrDefault(TFCComponents.EGG, EggComponent.DEFAULT).addTooltipInfo(text);
+            stack.getOrDefault(TFCComponents.INGREDIENTS, IngredientsComponent.EMPTY).addTooltipInfo(tooltip);
+            stack.getOrDefault(TFCComponents.EGG, EggComponent.DEFAULT).addTooltipInfo(tooltip::add);
 
             final @Nullable IHeat heat = HeatCapability.get(stack);
             if (heat != null)
             {
-                heat.addTooltipInfo(stack, text);
+                heat.addTooltipInfo(stack, tooltip::add);
             }
 
             // Fuel information
@@ -247,7 +247,7 @@ public class ClientForgeEventHandler
                 if (heatTooltip != null)
                 {
                     // burns at %s for %s
-                    text.add(Component.translatable("tfc.tooltip.fuel_burns_at", heatTooltip, Calendars.CLIENT.getTimeDelta(fuel.duration())));
+                    tooltip.add(Component.translatable("tfc.tooltip.fuel_burns_at", heatTooltip, Calendars.CLIENT.getTimeDelta(fuel.duration())));
                 }
             }
 
@@ -256,11 +256,11 @@ public class ClientForgeEventHandler
             {
                 final float n = fertilizer.nitrogen(), p = fertilizer.phosphorus(), k = fertilizer.potassium();
                 if (n != 0)
-                    text.add(Component.translatable("tfc.tooltip.fertilizer.nitrogen", String.format("%.1f", n * 100)));
+                    tooltip.add(Component.translatable("tfc.tooltip.fertilizer.nitrogen", String.format("%.1f", n * 100)));
                 if (p != 0)
-                    text.add(Component.translatable("tfc.tooltip.fertilizer.phosphorus", String.format("%.1f", p * 100)));
+                    tooltip.add(Component.translatable("tfc.tooltip.fertilizer.phosphorus", String.format("%.1f", p * 100)));
                 if (k != 0)
-                    text.add(Component.translatable("tfc.tooltip.fertilizer.potassium", String.format("%.1f", k * 100)));
+                    tooltip.add(Component.translatable("tfc.tooltip.fertilizer.potassium", String.format("%.1f", k * 100)));
             }
 
             // Metal content, inferred from a matching heat recipe.
@@ -278,7 +278,7 @@ public class ClientForgeEventHandler
                         if (heatTooltip != null)
                         {
                             // %s mB of %s (at %s)
-                            text.add(Component.translatable("tfc.tooltip.item_melts_into", fluid.getAmount() * stack.getCount(), metal.getDisplayName(), heatTooltip));
+                            tooltip.add(Component.translatable("tfc.tooltip.item_melts_into", fluid.getAmount() * stack.getCount(), metal.getDisplayName(), heatTooltip));
                         }
                     }
                 }
@@ -286,7 +286,7 @@ public class ClientForgeEventHandler
 
             if (Deposit.get(stack) != null)
             {
-                text.add(Component.translatable("tfc.tooltip.usable_in_sluice_and_pan").withStyle(GRAY));
+                tooltip.add(Component.translatable("tfc.tooltip.usable_in_sluice_and_pan").withStyle(GRAY));
             }
 
             if (TFCConfig.CLIENT.enableDebug.get() && event.getFlags().isAdvanced())
@@ -298,10 +298,10 @@ public class ClientForgeEventHandler
                     if (isDefaultComponentWithDefaultValue(component)) continue;
                     if (first)
                     {
-                        text.add(Component.literal(DARK_GRAY + "[Debug] Components:"));
+                        tooltip.add(Component.literal(DARK_GRAY + "[Debug] Components:"));
                         first = false;
                     }
-                    text.add(Component.literal(DARK_GRAY
+                    tooltip.add(Component.literal(DARK_GRAY
                         + typeOfComponent(stack.getComponentsPatch().get(component.type()))
                         + BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(component.type())
                         + " = "
@@ -320,8 +320,8 @@ public class ClientForgeEventHandler
                     ? listOfTags(blockItem.builtInRegistryHolder())
                     : "";
 
-                if (!itemTags.isEmpty()) text.add(Component.literal(DARK_GRAY + "[Debug] Item Tags: " + itemTags));
-                if (!blockTags.isEmpty()) text.add(Component.literal(DARK_GRAY + "[Debug] Block Tags: " + blockTags));
+                if (!itemTags.isEmpty()) tooltip.add(Component.literal(DARK_GRAY + "[Debug] Item Tags: " + itemTags));
+                if (!blockTags.isEmpty()) tooltip.add(Component.literal(DARK_GRAY + "[Debug] Block Tags: " + blockTags));
             }
         }
     }

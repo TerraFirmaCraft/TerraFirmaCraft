@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blocks.plant.fruit;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import net.minecraft.core.BlockPos;
@@ -80,9 +81,9 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
     }
 
     @Override
-    public void addExtraInfo(List<Component> text)
+    public void addExtraInfo(Consumer<Component> text)
     {
-        text.add(Component.translatable("tfc.tooltip.fruit_tree.growing"));
+        text.accept(Component.translatable("tfc.tooltip.fruit_tree.growing"));
     }
 
     public void grow(BlockState state, ServerLevel level, BlockPos pos, RandomSource random, int cyclesLeft)

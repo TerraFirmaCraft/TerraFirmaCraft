@@ -162,22 +162,26 @@ public class Calendar implements ICalendar
         arePlayersLoggedOn = false;
     }
 
-    private class Transaction implements CalendarTransaction
+    final class Transaction implements CalendarTransaction
     {
-        private final long originalPlayerTicks = playerTicks, originalCalendarTicks = calendarTicks;
+        private final long originalPlayerTicks = playerTicks;
 
         @Override
-        public void add(long playerTicks, long calendarTicks)
+        public void add(long ticks)
         {
-            Calendar.this.playerTicks += playerTicks;
-            Calendar.this.calendarTicks += calendarTicks;
+            Calendar.this.playerTicks += ticks;
+        }
+
+        @Override
+        public long ticks()
+        {
+            return Calendar.this.playerTicks - originalPlayerTicks;
         }
 
         @Override
         public void close()
         {
             Calendar.this.playerTicks = originalPlayerTicks;
-            Calendar.this.calendarTicks = originalCalendarTicks;
         }
     }
 }

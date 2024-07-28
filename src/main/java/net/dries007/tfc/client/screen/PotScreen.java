@@ -25,10 +25,10 @@ import net.dries007.tfc.common.component.heat.Heat;
 import net.dries007.tfc.common.container.PotContainer;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.outputs.PotOutput;
-import net.dries007.tfc.compat.jade.common.BlockEntityTooltip;
+import net.dries007.tfc.util.tooltip.BlockEntityTooltip;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Tooltips;
+import net.dries007.tfc.util.tooltip.Tooltips;
 
 public class PotScreen extends BlockEntityScreen<PotBlockEntity, PotContainer>
 {

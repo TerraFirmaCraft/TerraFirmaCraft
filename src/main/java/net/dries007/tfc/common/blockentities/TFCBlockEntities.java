@@ -57,7 +57,7 @@ public final class TFCBlockEntities
     ).<Supplier<? extends Block>>flatMap(Helpers::flatten));
 
     public static final Id<TickCounterBlockEntity> TICK_COUNTER = register("tick_counter", TickCounterBlockEntity::new, Stream.of(
-            TFCBlocks.WOODS.values().stream().map(map -> map.get(Wood.BlockType.SAPLING)),
+            woodBlocks(Wood.BlockType.SAPLING),
             TFCBlocks.FRUIT_TREE_SAPLINGS.values(),
             TFCBlocks.FRUIT_TREE_GROWING_BRANCHES.values(),
             TFCBlocks.TORCH,

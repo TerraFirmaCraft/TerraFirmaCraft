@@ -203,7 +203,7 @@ public class SaladContainer extends Container implements ISlotCallback
                     if (maxNutrient != null)
                     {
                         final ItemStack salad = new ItemStack(TFCItems.SALADS.get(maxNutrient).get(), minIngredientCount);
-                        FoodCapability.setFoodForDynamicItemOnCreate(salad, FoodData.of(4, water, saturation, nutrition, 4.0f));
+                        FoodCapability.setFoodForDynamicItemOnCreate(salad, new FoodData(4, water, saturation, 0, nutrition, 4.0f));
                         salad.set(TFCComponents.INGREDIENTS, IngredientsComponent.of(ingredients));
                         salad.set(TFCComponents.BOWL, Bowl.of(bowlStack));
                         inventory.setStackInSlot(SLOT_OUTPUT, salad);

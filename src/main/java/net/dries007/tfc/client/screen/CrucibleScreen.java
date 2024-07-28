@@ -29,7 +29,7 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.PourFasterPacket;
 import net.dries007.tfc.util.FluidAlloy;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Tooltips;
+import net.dries007.tfc.util.tooltip.Tooltips;
 
 public class CrucibleScreen extends BlockEntityScreen<CrucibleBlockEntity, CrucibleContainer>
 {

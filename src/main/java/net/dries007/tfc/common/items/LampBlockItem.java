@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.fluids.FluidHelpers;
-import net.dries007.tfc.util.Tooltips;
+import net.dries007.tfc.util.tooltip.Tooltips;
 import net.dries007.tfc.util.loot.CopyFluidFunction;
 
 public class LampBlockItem extends BlockItem

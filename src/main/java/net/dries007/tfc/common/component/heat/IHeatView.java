@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.component.heat;
 
 import java.util.List;
+import java.util.function.Consumer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
@@ -72,7 +73,7 @@ public interface IHeatView
      * @param stack The stack to add information to
      * @param text  The list of tooltips
      */
-    default void addTooltipInfo(ItemStack stack, List<Component> text)
+    default void addTooltipInfo(ItemStack stack, Consumer<Component> text)
     {
         final float temperature = getTemperature();
         final MutableComponent tooltip = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(temperature);
@@ -96,7 +97,7 @@ public interface IHeatView
                 tooltip.append(Component.translatable("tfc.tooltip.danger"));
             }
 
-            text.add(tooltip);
+            text.accept(tooltip);
         }
     }
 }

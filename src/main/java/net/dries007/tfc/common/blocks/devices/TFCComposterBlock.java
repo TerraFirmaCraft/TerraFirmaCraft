@@ -8,6 +8,7 @@ package net.dries007.tfc.common.blocks.devices;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -101,12 +102,12 @@ public class TFCComposterBlock extends BottomSupportedDeviceBlock implements Ent
     }
 
     @Override
-    public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, List<Component> text, boolean isDebug)
+    public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, Consumer<Component> text, boolean isDebug)
     {
         if (level.getBlockEntity(pos) instanceof ComposterBlockEntity composter && state.getValue(TYPE) != CompostType.ROTTEN)
         {
-            text.add(Component.translatable("tfc.composter.green_items", composter.getGreen()).withStyle(ChatFormatting.GREEN));
-            text.add(Component.translatable("tfc.composter.brown_items", composter.getBrown()).withStyle(ChatFormatting.GOLD));
+            text.accept(Component.translatable("tfc.composter.green_items", composter.getGreen()).withStyle(ChatFormatting.GREEN));
+            text.accept(Component.translatable("tfc.composter.brown_items", composter.getBrown()).withStyle(ChatFormatting.GOLD));
         }
     }
 

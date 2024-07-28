@@ -16,11 +16,10 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.capabilities.MoldLike;
 import net.dries007.tfc.common.component.mold.IMold;
 import net.dries007.tfc.common.container.MoldLikeAlloyContainer;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.Tooltips;
+import net.dries007.tfc.util.tooltip.Tooltips;
 import net.dries007.tfc.util.data.FluidHeat;
 
 public class MoldLikeAlloyScreen extends TFCContainerScreen<MoldLikeAlloyContainer>

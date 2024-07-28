@@ -143,7 +143,7 @@ public record MealModifier(FoodData baseFood, List<MealPortion> portions) implem
         stack.set(TFCComponents.INGREDIENTS, IngredientsComponent.of(itemIngredients));
         FoodCapability.setFoodForDynamicItemOnCreate(
             stack,
-            FoodData.of(baseFood.hunger(), water, saturation, nutrition, baseFood.decayModifier()));
+            new FoodData(baseFood.hunger(), water, saturation, 0, nutrition, baseFood.decayModifier()));
 
         return stack;
     }

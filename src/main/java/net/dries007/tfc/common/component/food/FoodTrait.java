@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.component.food;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.DoubleSupplier;
 import com.mojang.serialization.Codec;
 import net.minecraft.ChatFormatting;
@@ -41,7 +42,7 @@ public final class FoodTrait
      *
      * @param text  The tooltip strings
      */
-    public void addTooltipInfo(List<Component> text)
+    public void addTooltipInfo(Consumer<Component> text)
     {
         if (translationKey != null)
         {
@@ -50,7 +51,7 @@ public final class FoodTrait
             {
                 component.withStyle(ChatFormatting.RED);
             }
-            text.add(component);
+            text.accept(component);
         }
     }
 }

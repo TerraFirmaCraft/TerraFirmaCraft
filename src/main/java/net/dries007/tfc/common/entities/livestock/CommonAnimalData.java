@@ -73,15 +73,16 @@ public record CommonAnimalData(
 
     public void define(SynchedEntityData.Builder builder)
     {
-        builder.define(gender(), true)
-            .define(lastAge(), (byte) Age.CHILD.ordinal())
-            .define(uses(), 0)
-            .define(geneticSize(), (byte) 16)
-            .define(fertilized(), false)
-            .define(familiarity(), 0f)
-            .define(lastFamiliarityTick(), Long.MIN_VALUE)
-            .define(birthTick(), 0L)
-            .define(oldTick(), -1L)
-            .define(lastFedTick(), Long.MIN_VALUE);
+        builder.define(gender, true)
+            .define(lastAge, (byte) Age.CHILD.ordinal())
+            .define(geneticSize, (byte) 16)
+            .define(uses, 0)
+            .define(fertilized, false)
+            .define(familiarity, 0f)
+            .define(lastFamiliarityTick, Long.MIN_VALUE)
+            .define(birthTick, 0L)
+            .define(oldTick, -1L)
+            .define(lastFedTick, Long.MIN_VALUE)
+            .define(lastMateTick, Long.MIN_VALUE);
     }
 }

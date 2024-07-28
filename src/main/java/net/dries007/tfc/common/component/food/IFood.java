@@ -8,6 +8,7 @@ package net.dries007.tfc.common.component.food;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
@@ -68,6 +69,15 @@ public interface IFood
     long getCreationDate();
 
     /**
+     * The timestamp that this food will rot, assuming that the creation date is not set to one of the provided flags.
+     * @return The tick that this food will rot
+     */
+    default long getRottenDate()
+    {
+        return FoodCapability.getRottenDate(getCreationDate(), getDecayDateModifier());
+    }
+
+    /**
      * @return {@code true} if the food is rotten / decayed.
      */
     boolean isRotten();
@@ -126,24 +136,24 @@ public interface IFood
      * Tooltip added to the food item
      *
      * @param stack the stack in question
-     * @param text  the tooltip
+     * @param tooltip  the tooltip
      */
-    default void addTooltipInfo(ItemStack stack, List<Component> text)
+    default void addTooltipInfo(ItemStack stack, Consumer<Component> tooltip)
     {
         final long creationDate = getCreationDate();
         if (creationDate == ROTTEN_FLAG)
         {
-            text.add(Component.translatable("tfc.tooltip.food_rotten").withStyle(ChatFormatting.RED));
+            tooltip.accept(Component.translatable("tfc.tooltip.food_rotten").withStyle(ChatFormatting.RED));
             if (((stack.hashCode() * 1928634918231L) & 0xFF) == 0)
             {
-                text.add(Component.translatable("tfc.tooltip.food_rotten_special").withStyle(ChatFormatting.RED));
+                tooltip.accept(Component.translatable("tfc.tooltip.food_rotten_special").withStyle(ChatFormatting.RED));
             }
         }
         else if (
             creationDate == NEVER_DECAY_FLAG ||
             (creationDate != TRANSIENT_NEVER_DECAY_FLAG && getDecayDateModifier() == Float.POSITIVE_INFINITY))
         {
-            text.add(Component.translatable("tfc.tooltip.food_infinite_expiry").withStyle(ChatFormatting.GOLD));
+            tooltip.accept(Component.translatable("tfc.tooltip.food_infinite_expiry").withStyle(ChatFormatting.GOLD));
         }
         else if (
             // Both of these flags don't show anything, so don't add expiry tooltips
@@ -154,16 +164,16 @@ public interface IFood
             final long rottenCalendarTime = Calendars.CLIENT.ticksToCalendarTicks(rottenDate); // Date food rots on.
             final long ticksRemaining = rottenDate - Calendars.CLIENT.getTicks(); // Ticks remaining until rotten
 
-            final MutableComponent tooltip = switch (TFCConfig.CLIENT.foodExpiryTooltipStyle.get())
+            final MutableComponent foodExpiry = switch (TFCConfig.CLIENT.foodExpiryTooltipStyle.get())
             {
                 case EXPIRY -> Component.translatable("tfc.tooltip.food_expiry_date", ICalendar.getTimeAndDate(rottenCalendarTime, Calendars.CLIENT.getCalendarDaysInMonth()));
                 case TIME_LEFT -> Component.translatable("tfc.tooltip.food_expiry_left", Calendars.CLIENT.getTimeDelta(ticksRemaining));
                 case BOTH -> Component.translatable("tfc.tooltip.food_expiry_date_and_left", ICalendar.getTimeAndDate(rottenCalendarTime, Calendars.CLIENT.getCalendarDaysInMonth()), Calendars.CLIENT.getTimeDelta(ticksRemaining));
                 default -> null;
             };
-            if (tooltip != null)
+            if (foodExpiry != null)
             {
-                text.add(tooltip.withStyle(ChatFormatting.DARK_GREEN));
+                tooltip.accept(foodExpiry.withStyle(ChatFormatting.DARK_GREEN));
             }
         }
 
@@ -206,12 +216,12 @@ public interface IFood
                 // Otherwise, if we have shift down, include the full tooltip, if not, just the "Hold shift for more"
                 if (ClientHelpers.hasShiftDown())
                 {
-                    text.add(Component.translatable("tfc.tooltip.nutrition").withStyle(ChatFormatting.GRAY));
-                    text.addAll(nutritionText);
+                    tooltip.accept(Component.translatable("tfc.tooltip.nutrition").withStyle(ChatFormatting.GRAY));
+                    nutritionText.forEach(tooltip);
                 }
                 else
                 {
-                    text.add(Component.translatable("tfc.tooltip.hold_shift_for_nutrition_info").withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
+                    tooltip.accept(Component.translatable("tfc.tooltip.hold_shift_for_nutrition_info").withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
                 }
             }
         }
@@ -219,7 +229,7 @@ public interface IFood
         // Finally, show each food trait that has been applied
         for (FoodTrait trait : getTraits())
         {
-            trait.addTooltipInfo(text);
+            trait.addTooltipInfo(tooltip);
         }
     }
 }
