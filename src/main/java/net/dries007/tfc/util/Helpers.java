@@ -15,10 +15,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
-import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -28,6 +26,8 @@ import java.util.stream.Stream;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterators;
+import com.machinezoo.noexception.throwing.ThrowingRunnable;
+import com.machinezoo.noexception.throwing.ThrowingSupplier;
 import com.mojang.logging.LogUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -1073,8 +1073,8 @@ public final class Helpers
                     final @Nullable IHeat mergeHeat = HeatCapability.get(mergeStack);
                     if (mergeHeat != null)
                     {
-                        final FluidHeat metal = Objects.requireNonNullElse(FluidHeat.get(fluidStack.getFluid()), FluidHeat.unknown());
-                        final float heatCapacity = metal.heatCapacity(filled);
+                        final FluidHeat heat = FluidHeat.getOrUnknown(fluidStack);
+                        final float heatCapacity = heat.heatCapacity(filled);
 
                         mergeHeat.addTemperatureFromSourceWithHeatCapacity(temperature, heatCapacity);
                     }
@@ -1202,16 +1202,27 @@ public final class Helpers
     /**
      * For when you want to ignore every possible safety measure in front of you
      */
-    @SuppressWarnings("unchecked")
-    public static <T> T uncheck(Callable<?> action)
+    public static <T> T uncheck(ThrowingSupplier<T> action)
     {
         try
         {
-            return (T) action.call();
+            return action.get();
         }
-        catch (Exception e)
+        catch (Throwable e)
         {
             return throwAsUnchecked(e);
+        }
+    }
+
+    public static void uncheck(ThrowingRunnable action)
+    {
+        try
+        {
+            action.run();
+        }
+        catch (Throwable e)
+        {
+            throwAsUnchecked(e);
         }
     }
 

@@ -132,6 +132,9 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(STONES_PRESSURE_PLATES)
             .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.PRESSURE_PLATE)
             .addOptionalTag(ResourceLocation.withDefaultNamespace("stone_pressure_plates"));
+        tag(STONES_LOOSE)
+            .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.LOOSE)
+            .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.MOSSY_LOOSE);
         tag(INSULATION)
             .addTags(STONES, STONES_SMOOTH, BlockTags.STONE_BRICKS, Tags.Blocks.COBBLESTONES)
             .add(Blocks.BRICKS)
@@ -166,6 +169,8 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(BLOOMERY_INSULATION).addTag(INSULATION);
         tag(BLAST_FURNACE_INSULATION).add(TFCBlocks.FIRE_BRICKS);
         tag(SCRAPING_SURFACE).addTag(BlockTags.LOGS);
+        tag(GLASS_POURING_TABLE).add(TFCBlocks.METALS.get(Metal.BRASS).get(Metal.BlockType.BLOCK));
+        tag(GLASS_BASIN_BLOCKS).add(TFCBlocks.METALS.get(Metal.BRASS).get(Metal.BlockType.BLOCK));
 
         tag(MINEABLE_WITH_PROPICK); // Empty
         tag(MINEABLE_WITH_CHISEL); // Empty

@@ -1,0 +1,17 @@
+{
+  "values": [
+    "tfc:metal/shovel/bismuth_bronze",
+    "tfc:metal/shovel/black_bronze",
+    "tfc:metal/shovel/bronze",
+    "tfc:metal/shovel/copper",
+    "tfc:metal/shovel/wrought_iron",
+    "tfc:metal/shovel/steel",
+    "tfc:metal/shovel/black_steel",
+    "tfc:metal/shovel/blue_steel",
+    "tfc:metal/shovel/red_steel",
+    "tfc:stone/shovel/igneous_extrusive",
+    "tfc:stone/shovel/igneous_intrusive",
+    "tfc:stone/shovel/metamorphic",
+    "tfc:stone/shovel/sedimentary"
+  ]
+}

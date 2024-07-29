@@ -94,7 +94,7 @@ public class JarsBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        return Helpers.isItem(stack, TFCTags.Items.JARS);
+        return Helpers.isItem(stack, TFCTags.Items.SHELF_JARS);
     }
 
     @Override

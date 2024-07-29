@@ -22,7 +22,7 @@ import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
 import net.dries007.tfc.common.blocks.devices.SheetPileBlock;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.data.FluidHeat;
+import net.dries007.tfc.util.MetalItem;
 
 public enum SheetPileBlockModel implements SimpleStaticBlockEntityModel<SheetPileBlockModel, SheetPileBlockEntity>
 {
@@ -40,7 +40,7 @@ public enum SheetPileBlockModel implements SimpleStaticBlockEntityModel<SheetPil
         {
             if (state.getValue(DirectionPropertyBlock.getProperty(direction))) // The properties are authoritative on which sides should be rendered
             {
-                final FluidHeat metal = pile.getOrCacheMetal(direction);
+                final MetalItem metal = pile.getOrCacheMetal(direction);
                 sprite = textureAtlas.apply(metal.textureId());
 
                 renderSheet(poseStack, sprite, buffer, direction, packedLight, packedOverlay);

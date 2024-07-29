@@ -9,6 +9,7 @@ package net.dries007.tfc.common.recipes;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.function.BiPredicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import net.minecraft.core.NonNullList;
@@ -32,8 +33,6 @@ import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.recipes.outputs.ItemStackModifier;
-import net.dries007.tfc.common.recipes.outputs.ItemStackModifier.Context;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.mixin.accessor.RecipeManagerAccessor;
 import net.dries007.tfc.util.Helpers;
@@ -150,9 +149,15 @@ public final class RecipeHelpers
     @Nullable
     public static <R extends IRecipePredicate<C>, C> R getRecipe(Collection<R> recipes, C input)
     {
+        return getRecipe(recipes, input, IRecipePredicate::matches);
+    }
+
+    @Nullable
+    public static <R, C> R getRecipe(Collection<R> recipes, C input, BiPredicate<R, C> test)
+    {
         for (R recipe : recipes)
         {
-            if (recipe.matches(input))
+            if (test.test(recipe, input))
             {
                 return recipe;
             }

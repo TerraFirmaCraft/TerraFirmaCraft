@@ -26,10 +26,8 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.RegistryOps;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
@@ -106,8 +104,8 @@ import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.data.Deposit;
 import net.dries007.tfc.util.data.Fertilizer;
-import net.dries007.tfc.util.data.FluidHeat;
 import net.dries007.tfc.util.data.Fuel;
+import net.dries007.tfc.util.tooltip.Tooltips;
 import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.chunkdata.ChunkData;
@@ -271,15 +269,10 @@ public class ClientForgeEventHandler
                 final FluidStack fluid = recipe.assembleFluid(stack);
                 if (!fluid.isEmpty())
                 {
-                    final FluidHeat metal = FluidHeat.get(fluid.getFluid());
-                    if (metal != null)
+                    final MutableComponent meltsInto = Tooltips.meltsInto(fluid, recipe.getTemperature());
+                    if (meltsInto != null)
                     {
-                        final MutableComponent heatTooltip = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(recipe.getTemperature());
-                        if (heatTooltip != null)
-                        {
-                            // %s mB of %s (at %s)
-                            tooltip.add(Component.translatable("tfc.tooltip.item_melts_into", fluid.getAmount() * stack.getCount(), metal.getDisplayName(), heatTooltip));
-                        }
+                        tooltip.add(meltsInto);
                     }
                 }
             }

@@ -26,7 +26,7 @@ import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.SheetPileBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.devices.SheetPileBlock;
-import net.dries007.tfc.util.data.FluidHeat;
+import net.dries007.tfc.util.MetalItem;
 
 public record SheetPileExtension(Block block) implements IClientBlockExtensions
 {
@@ -66,7 +66,7 @@ public record SheetPileExtension(Block block) implements IClientBlockExtensions
         return true;
     }
 
-    private void addHitEffects(ClientLevel level, BlockPos pos, BlockState state, Direction face, FluidHeat metal)
+    private void addHitEffects(ClientLevel level, BlockPos pos, BlockState state, Direction face, MetalItem metal)
     {
         double x = level.random.nextDouble() * 0.8 + 0.1;
         double y = level.random.nextDouble() * 0.8 + 0.1;

@@ -79,7 +79,7 @@ public class BuiltinFluidTags extends TagsProvider<Fluid> implements Accessors
             fluidOf(RYE_WHISKEY));
         tag(MOLTEN_METALS).add(TFCFluids.METALS);
 
-        Drinkable.MANAGER.getValues().forEach(drink -> tag(DRINKABLES, drink.ingredient()));
+        Drinkable.MANAGER.getValues().forEach(drink -> tag(DRINKABLES).add(drink.ingredient()));
         tag(INGREDIENTS)
             .addTag(DRINKABLES)
             .add(TFCFluids.SIMPLE_FLUIDS)
@@ -109,17 +109,6 @@ public class BuiltinFluidTags extends TagsProvider<Fluid> implements Accessors
     protected FluidTagAppender tag(TagKey<Fluid> tag)
     {
         return new FluidTagAppender(getOrCreateRawBuilder(tag), modId);
-    }
-
-    private void tag(TagKey<Fluid> key, FluidIngredient ingredient)
-    {
-        switch (ingredient)
-        {
-            case TagFluidIngredient tag -> tag(key).addTag(tag.tag());
-            case SingleFluidIngredient item -> tag(key).add(item.fluid().value());
-            case CompoundFluidIngredient comp -> comp.children().forEach(i -> tag(key, i));
-            default -> throw new AssertionError("Unhandled ingredient type: " + ingredient);
-        }
     }
 
     @SuppressWarnings("UnusedReturnValue")

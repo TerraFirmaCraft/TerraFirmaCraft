@@ -394,7 +394,7 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        return Helpers.isItem(stack, TFCTags.Items.TUYERES);
+        return Helpers.isItem(stack, TFCTags.Items.BLAST_FURNACE_TUYERES);
     }
 
     @Override

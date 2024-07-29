@@ -20,7 +20,7 @@
       {
         "type": "tfc:extra_products",
         "stack": {
-          "count": 1,
+          "count": 2,
           "id": "tfc:wool"
         }
       }

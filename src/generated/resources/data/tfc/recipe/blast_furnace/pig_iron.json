@@ -1,7 +1,7 @@
 {
   "type": "tfc:blast_furnace",
   "catalyst": {
-    "tag": "tfc:flux"
+    "item": "tfc:powder/flux"
   },
   "fluid": {
     "amount": 1,

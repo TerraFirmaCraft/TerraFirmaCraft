@@ -188,7 +188,7 @@ public final class DispenserBehaviors
         {
             final Level level = source.level();
             final BlockPos pos = source.pos().relative(source.state().getValue(DispenserBlock.FACING));
-            if (Helpers.isItem(stack, TFCTags.Items.HANDSTONE) && level.getBlockState(pos).getBlock() instanceof QuernBlock)
+            if (Helpers.isItem(stack, TFCTags.Items.QUERN_HANDSTONES) && level.getBlockState(pos).getBlock() instanceof QuernBlock)
             {
                 if (level.getBlockEntity(pos) instanceof QuernBlockEntity quern && !quern.hasHandstone())
                 {

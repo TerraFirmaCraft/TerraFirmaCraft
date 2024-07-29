@@ -145,7 +145,7 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
             {
                 case HANDLE -> attemptGrind(level, pos, quern);
                 case INPUT_SLOT -> insertOrExtract(level, quern, inventory, player, heldStack, SLOT_INPUT);
-                case HANDSTONE -> (player.isShiftKeyDown() || Helpers.isItem(heldStack, TFCTags.Items.HANDSTONE))
+                case HANDSTONE -> (player.isShiftKeyDown() || Helpers.isItem(heldStack, TFCTags.Items.QUERN_HANDSTONES))
                     ? insertOrExtract(level, quern, inventory, player, heldStack, SLOT_HANDSTONE)
                     : attemptGrind(level, pos, quern);
                 case BASE -> insertOrExtract(level, quern, inventory, player, ItemStack.EMPTY, SLOT_OUTPUT);

@@ -293,7 +293,7 @@ public class ComposterBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         {
             return new Compost(AdditionType.BROWN, 1);
         }
-        if (Helpers.isItem(stack, TFCTags.Items.COMPOST_BROWNS))
+        if (Helpers.isItem(stack, TFCTags.Items.COMPOST_BROWNS_MEDIUM))
         {
             return new Compost(AdditionType.BROWN, 2);
         }
@@ -305,7 +305,7 @@ public class ComposterBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         {
             return new Compost(AdditionType.GREEN, 1);
         }
-        if (Helpers.isItem(stack, TFCTags.Items.COMPOST_GREENS))
+        if (Helpers.isItem(stack, TFCTags.Items.COMPOST_GREENS_MEDIUM))
         {
             return new Compost(AdditionType.GREEN, 2);
         }

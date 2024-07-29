@@ -83,7 +83,7 @@ public class BowlBlock extends DeviceBlock
                 return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
 
-            if (Helpers.isItem(held, TFCTags.Items.POWDERS))
+            if (Helpers.isItem(held, TFCTags.Items.BOWL_POWDERS))
             {
                 player.setItemInHand(hand, Helpers.insertAllSlots(inventory, held));
                 Helpers.playSound(level, pos, SoundEvents.SAND_PLACE);

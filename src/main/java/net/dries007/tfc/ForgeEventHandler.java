@@ -967,7 +967,7 @@ public final class ForgeEventHandler
     {
         final ItemStack batch = event.getCarriedItem();
         final ItemStack pipe = event.getStackedOnItem();
-        if (event.getClickAction() == ClickAction.SECONDARY && pipe.getCount() == 1 && Helpers.isItem(pipe, TFCTags.Items.BLOWPIPES) && Helpers.isItem(batch.getItem(), TFCTags.Items.GLASS_BATCHES))
+        if (event.getClickAction() == ClickAction.SECONDARY && pipe.getCount() == 1 && Helpers.isItem(pipe, TFCTags.Items.TOOLS_BLOWPIPE) && Helpers.isItem(batch.getItem(), TFCTags.Items.GLASS_BATCHES))
         {
             final ItemStack newItem = new ItemStack(BlowpipeItem.transform(pipe.getItem()));
             GlassWorking.createNewBatch(newItem, batch);
@@ -1103,9 +1103,9 @@ public final class ForgeEventHandler
             }
         }
 
-        if (entity.getType() == EntityType.SKELETON)
+        if (entity.getType() == EntityType.SKELETON && entity instanceof Skeleton skeleton)
         {
-            ((Skeleton) entity).setItemSlot(EquipmentSlot.MAINHAND, Helpers.randomItem(TFCTags.Items.SKELETON_WEAPONS, entity.level().getRandom()).orElse(Items.BOW).getDefaultInstance());
+            skeleton.setItemSlot(EquipmentSlot.MAINHAND, Helpers.randomItem(TFCTags.Items.SKELETON_WEAPONS, entity.level().getRandom()).orElse(Items.BOW).getDefaultInstance());
         }
         else if (entity.getType() == EntityType.SKELETON_HORSE && !TFCConfig.SERVER.enableVanillaSkeletonHorseSpawning.get())
         {

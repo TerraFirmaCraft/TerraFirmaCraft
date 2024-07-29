@@ -11,18 +11,26 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
+import net.neoforged.neoforge.common.ItemAbility;
 import net.neoforged.neoforge.common.Tags;
 
+import net.dries007.tfc.ForgeEventHandler;
+import net.dries007.tfc.client.render.blockentity.BowlBlockEntityRenderer;
+import net.dries007.tfc.client.render.blockentity.JarsBlockEntityRenderer;
+import net.dries007.tfc.client.render.blockentity.TripHammerBlockEntityRenderer;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.common.recipes.LandslideRecipe;
+import net.dries007.tfc.common.recipes.ingredients.FluidContentIngredient;
+import net.dries007.tfc.config.ServerConfig;
+import net.dries007.tfc.mixin.MobMixin;
 import net.dries007.tfc.util.Helpers;
 
 public class TFCTags
@@ -57,8 +65,6 @@ public class TFCTags
         public static final TagKey<Block> MONSTER_SPAWNS_ON = tag("monster_spawns_on");
         public static final TagKey<Block> BOTTOM_SUPPORT_ACCEPTED = tag("bottom_support_accepted"); // ignored by devices for bottom support
         public static final TagKey<Block> TIDE_POOL_BLOCKS = tag("tide_pool_blocks"); // groundcover blocks that spawn in tide pools
-        public static final TagKey<Block> GLASS_POURING_TABLE = tag("glass_pouring_table");
-        public static final TagKey<Block> GLASS_BASIN_BLOCKS = tag("glass_basin_blocks");
         public static final TagKey<Block> EXPLOSION_PROOF = tag("explosion_proof");
         public static final TagKey<Block> POWDERKEG_BREAKING_BLOCKS = tag("powderkeg_breaking_blocks");
         public static final TagKey<Block> KAOLIN_CLAY_REPLACEABLE = tag("kaolin_clay_replaceable");
@@ -93,6 +99,8 @@ public class TFCTags
         public static final TagKey<Block> STONES_SMOOTH_SLABS = commonTag("stones/smooth_slabs");
         public static final TagKey<Block> STONES_SPIKE = commonTag("stones/spike");
         public static final TagKey<Block> STONES_PRESSURE_PLATES = commonTag("stones/pressure_plate");
+        /** Includes normal and mossy loose stones */
+        public static final TagKey<Block> STONES_LOOSE = commonTag("stones/loose");
         /** Common solid stone blocks, including stone, cobble, bricks, smooth, plus non-stone bricks */
         public static final TagKey<Block> INSULATION = tag("insulation");
 
@@ -113,7 +121,12 @@ public class TFCTags
         public static final TagKey<Block> BLOOMERY_INSULATION = tag("bloomery_insulation");
         /** Blocks that are valid for a blast furnace multiblock structure */
         public static final TagKey<Block> BLAST_FURNACE_INSULATION = tag("blast_furnace_insulation");
-        public static final TagKey<Block> SCRAPING_SURFACE = tag("scraping_surface"); // surfaces you can scrape hides on
+        /** Blocks that can be used for a scraping recipe */
+        public static final TagKey<Block> SCRAPING_SURFACE = tag("scraping_surface");
+        /** Blocks that you can pour hot glass on, to create glass panes */
+        public static final TagKey<Block> GLASS_POURING_TABLE = tag("glass_pouring_table");
+        /** Block that you can pour hot glass in, to create glass blocks*/
+        public static final TagKey<Block> GLASS_BASIN_BLOCKS = tag("glass_basin_blocks");
 
         public static final TagKey<Block> MINEABLE_WITH_PROPICK = tag("mineable/propick");
         public static final TagKey<Block> MINEABLE_WITH_CHISEL = tag("mineable/chisel");
@@ -212,37 +225,50 @@ public class TFCTags
 
     public static class Items
     {
-        public static final TagKey<Item> THATCH_BED_HIDES = tag("thatch_bed_hides");
-        public static final TagKey<Item> FIREPIT_KINDLING = tag("firepit_kindling");
-        public static final TagKey<Item> FIREPIT_STICKS = tag("firepit_sticks");
-        public static final TagKey<Item> FIREPIT_LOGS = tag("firepit_logs");
+        // todo: figure out if we really want to support these, or replace with the tool action and say to hell with fire charges
         public static final TagKey<Item> STARTS_FIRES_WITH_DURABILITY = tag("starts_fires_with_durability");
         public static final TagKey<Item> STARTS_FIRES_WITH_ITEMS = tag("starts_fires_with_items");
-        public static final TagKey<Item> EXTINGUISHER = tag("extinguisher");
-        public static final TagKey<Item> LOG_PILE_LOGS = tag("log_pile_logs");
-        public static final TagKey<Item> PIT_KILN_STRAW = tag("pit_kiln_straw");
-        public static final TagKey<Item> PIT_KILN_LOGS = tag("pit_kiln_logs");
-        public static final TagKey<Item> CAN_BE_LIT_ON_TORCH = tag("can_be_lit_on_torch");
-        public static final TagKey<Item> HANDSTONE = tag("handstone");
+        // todo: probably remove hand wheel, no plan to include it
         public static final TagKey<Item> HAND_WHEEL = tag("hand_wheel");
-        public static final TagKey<Item> SCRAPABLE = tag("scrapable");
-        public static final TagKey<Item> FLUX = tag("flux");
-        public static final TagKey<Item> ANVILS = tag("anvils");
-        public static final TagKey<Item> TUYERES = tag("tuyeres");
-        public static final TagKey<Item> ANY_KNAPPING = tag("any_knapping");
-        public static final TagKey<Item> ROCK_KNAPPING = tag("rock_knapping");
-        public static final TagKey<Item> AXES_THAT_LOG = tag("axes_that_log"); // Axes which cut down entire trees
-        public static final TagKey<Item> INEFFICIENT_LOGGING_AXES = tag("inefficient_logging_axes"); // Axes which are 60% efficient at destroying logs
-        public static final TagKey<Item> COMPOST_GREENS = tag("compost_greens");
-        public static final TagKey<Item> COMPOST_GREENS_LOW = tag("compost_greens_low");
-        public static final TagKey<Item> COMPOST_GREENS_HIGH = tag("compost_greens_high");
-        public static final TagKey<Item> COMPOST_BROWNS = tag("compost_browns");
-        public static final TagKey<Item> COMPOST_BROWNS_LOW = tag("compost_browns_low");
-        public static final TagKey<Item> COMPOST_BROWNS_HIGH = tag("compost_browns_high");
-        public static final TagKey<Item> COMPOST_POISONS = tag("compost_poisons");
-        public static final TagKey<Item> USABLE_ON_TOOL_RACK = tag("usable_on_tool_rack");
-        public static final TagKey<Item> USABLE_IN_POWDER_KEG = tag("usable_in_powder_keg");
-        public static final TagKey<Item> FOODS = tag("foods");
+        // todo: now we have interface mixins, use an inject into IItemStackExtension to make this actually work?
+        // And then, really, this doesn't need to be in TFC anymore >.>
+        public static final TagKey<Item> PIGLIN_BARTERING_INGOTS = tag("piglin_bartering_ingots"); // ingots that piglins will trade for.
+
+
+        // ===== Data Generated ===== //
+
+        // Foods
+        public static final TagKey<Item> FOODS = Tags.Items.FOODS;
+        public static final TagKey<Item> FRUITS = Tags.Items.FOODS_FRUIT;
+        public static final TagKey<Item> VEGETABLES = Tags.Items.FOODS_VEGETABLE;
+        public static final TagKey<Item> RAW_MEATS = Tags.Items.FOODS_RAW_MEAT;
+        public static final TagKey<Item> COOKED_MEATS = Tags.Items.FOODS_COOKED_MEAT;
+        public static final TagKey<Item> MEATS = commonTag("foods/meat");
+        public static final TagKey<Item> RAW_FISH = Tags.Items.FOODS_RAW_FISH;
+        public static final TagKey<Item> COOKED_FISH = Tags.Items.FOODS_COOKED_FISH;
+        public static final TagKey<Item> FISH = commonTag("foods/fish");
+        public static final TagKey<Item> FLOUR = commonTag("foods/flour");
+        public static final TagKey<Item> DOUGH = commonTag("foods/dough");
+        public static final TagKey<Item> GRAINS = commonTag("foods/grains");
+        public static final TagKey<Item> BREAD = commonTag("foods/bread");
+        public static final TagKey<Item> DAIRY = commonTag("foods/dairy");
+        public static final TagKey<Item> SALADS = commonTag("foods/salad");
+        public static final TagKey<Item> SOUPS = Tags.Items.FOODS_SOUP;
+        public static final TagKey<Item> PRESERVES = tag("foods/preserves");
+        public static final TagKey<Item> SEALED_PRESERVES = tag("foods/sealed_preserves");
+        public static final TagKey<Item> SWEETENERS = tag("sweeteners");
+        public static final TagKey<Item> BOWLS = commonTag("bowls");
+        /** Bowls that interact with soup pot recipes */
+        public static final TagKey<Item> SOUP_BOWLS = tag("soup_bowls");
+        /** Bowls that interact with salad recipes */
+        public static final TagKey<Item> SALAD_BOWLS = tag("salad_bowls");
+        public static final TagKey<Item> USABLE_IN_SALAD = tag("usable_in_salad");
+        public static final TagKey<Item> USABLE_IN_SOUP = tag("usable_in_soup");
+        public static final TagKey<Item> USABLE_IN_SANDWICH = tag("usable_in_sandwich");
+        public static final TagKey<Item> USABLE_IN_JAM_SANDWICH = tag("usable_in_jam_sandwich");
+        public static final TagKey<Item> CAN_BE_SALTED = tag("foods/can_be_salted");
+
+        // Animal Foods
         public static final TagKey<Item> PIG_FOOD = tag("pig_food");
         public static final TagKey<Item> COW_FOOD = tag("cow_food");
         public static final TagKey<Item> YAK_FOOD = tag("yak_food");
@@ -262,68 +288,17 @@ public class TFCTags
         public static final TagKey<Item> TURTLE_FOOD = tag("turtle_food");
         public static final TagKey<Item> FROG_FOOD = tag("frog_food");
         public static final TagKey<Item> RABBIT_FOOD = tag("rabbit_food");
-        public static final TagKey<Item> SCRIBING_INK = tag("scribing_ink");
-        public static final TagKey<Item> FOX_SPAWNS_WITH = tag("fox_spawns_with"); // fox has a chance to spawn with this in its mouth
-        public static final TagKey<Item> MOB_FEET_ARMOR = tag("mob_feet_armor"); // armor that mobs can put on their feet
-        public static final TagKey<Item> MOB_LEG_ARMOR = tag("mob_leg_armor"); // armor that mobs can put on their legs
-        public static final TagKey<Item> MOB_CHEST_ARMOR = tag("mob_chest_armor"); // armor that mobs can put on their chest
-        public static final TagKey<Item> MOB_HEAD_ARMOR = tag("mob_head_armor"); // armor that mobs can put on their head
-        public static final TagKey<Item> MOB_MAINHAND_WEAPONS = tag("mob_mainhand_weapons"); // armor that mobs can put on their mainhand
-        public static final TagKey<Item> MOB_OFFHAND_WEAPONS = tag("mob_offhand_weapons"); // armor that mobs can put on their mainhand
-        public static final TagKey<Item> SKELETON_WEAPONS = tag("skeleton_weapons"); // stuff we force skeletons to hold. includes javelins and bows
-        public static final TagKey<Item> DISABLED_MONSTER_HELD_ITEMS = tag("disabled_monster_held_items"); // items Monsters will not spawn holding. also gated with ServerConfig#enableVanillaMobsSpawningWithVanillaEquipment
-        public static final TagKey<Item> DEALS_SLASHING_DAMAGE = tag("deals_slashing_damage");
-        public static final TagKey<Item> DEALS_PIERCING_DAMAGE = tag("deals_piercing_damage");
-        public static final TagKey<Item> DEALS_CRUSHING_DAMAGE = tag("deals_crushing_damage");
-        public static final TagKey<Item> FLUID_ITEM_INGREDIENT_EMPTY_CONTAINERS = tag("fluid_item_ingredient_empty_containers"); // Containers that are filled, as examples for FluidItemIngredient
-        public static final TagKey<Item> PLACED_ITEM_BLACKLIST = tag("placed_item_blacklist"); // items that cannot go in placed items, for whatever reason
-        public static final TagKey<Item> PLACED_ITEM_WHITELIST = tag("placed_item_whitelist"); // items that can go in placed items. not used unless enabled
-        public static final TagKey<Item> DAUB = tag("daub"); // acts like daub on wattle blocks
-        public static final TagKey<Item> PIGLIN_BARTERING_INGOTS = tag("piglin_bartering_ingots"); // ingots that piglins will trade for.
-        public static final TagKey<Item> CARRIED_BY_HORSE = tag("carried_by_horse");
-        public static final TagKey<Item> WAXES_SCRAPING_SURFACE = tag("waxes_scraping_surface");
-        public static final TagKey<Item> POWDERS = tag("powders");
-        public static final TagKey<Item> BLOWPIPES = tag("blowpipes");
-        public static final TagKey<Item> ALL_BLOWPIPES = tag("all_blowpipes");
-        public static final TagKey<Item> JARS = tag("jars");
-        public static final TagKey<Item> SEWING_DARK_CLOTH = tag("sewing_dark_cloth");
-        public static final TagKey<Item> SEWING_LIGHT_CLOTH = tag("sewing_light_cloth");
-        public static final TagKey<Item> SEWING_NEEDLES = tag("sewing_needles");
-        public static final TagKey<Item> TRIP_HAMMERS = tag("trip_hammers");
 
+        // Compost
+        public static final TagKey<Item> COMPOST_GREENS_LOW = tag("compost_greens/low");
+        public static final TagKey<Item> COMPOST_GREENS_MEDIUM = tag("compost_greens/medium");
+        public static final TagKey<Item> COMPOST_GREENS_HIGH = tag("compost_greens/high");
+        public static final TagKey<Item> COMPOST_BROWNS_LOW = tag("compost_browns/low");
+        public static final TagKey<Item> COMPOST_BROWNS_MEDIUM = tag("compost_browns/medium");
+        public static final TagKey<Item> COMPOST_BROWNS_HIGH = tag("compost_browns/high");
+        public static final TagKey<Item> COMPOST_POISONS = tag("compost_poisons");
 
-        // ===== Data Generated ===== //
-
-        public static final TagKey<Item> BOOKS = commonTag("books");
-
-        public static final TagKey<Item> FRUITS = Tags.Items.FOODS_FRUIT;
-        public static final TagKey<Item> VEGETABLES = Tags.Items.FOODS_VEGETABLE;
-        public static final TagKey<Item> RAW_MEATS = Tags.Items.FOODS_RAW_MEAT;
-        public static final TagKey<Item> COOKED_MEATS = Tags.Items.FOODS_COOKED_MEAT;
-        public static final TagKey<Item> MEATS = commonTag("foods/meat");
-        public static final TagKey<Item> RAW_FISH = Tags.Items.FOODS_RAW_FISH;
-        public static final TagKey<Item> COOKED_FISH = Tags.Items.FOODS_COOKED_FISH;
-        public static final TagKey<Item> FISH = commonTag("foods/fish");
-        public static final TagKey<Item> FLOUR = commonTag("foods/flour");
-        public static final TagKey<Item> DOUGH = commonTag("foods/dough");
-        public static final TagKey<Item> BREAD = commonTag("foods/bread");
-        public static final TagKey<Item> DAIRY = commonTag("foods/dairy");
-        public static final TagKey<Item> SALADS = commonTag("foods/salad");
-        public static final TagKey<Item> SOUPS = Tags.Items.FOODS_SOUP;
-        public static final TagKey<Item> PRESERVES = tag("foods/preserves");
-        public static final TagKey<Item> SEALED_PRESERVES = tag("foods/sealed_preserves");
-        public static final TagKey<Item> SWEETENERS = tag("sweeteners");
-        public static final TagKey<Item> BOWLS = commonTag("bowls");
-        /** Bowls that interact with soup pot recipes */
-        public static final TagKey<Item> SOUP_BOWLS = tag("soup_bowls");
-        /** Bowls that interact with salad recipes */
-        public static final TagKey<Item> SALAD_BOWLS = tag("salad_bowls");
-        public static final TagKey<Item> USABLE_IN_SALAD = tag("usable_in_salad");
-        public static final TagKey<Item> USABLE_IN_SOUP = tag("usable_in_soup");
-        public static final TagKey<Item> USABLE_IN_SANDWICH = tag("usable_in_sandwich");
-        public static final TagKey<Item> USABLE_IN_JAM_SANDWICH = tag("usable_in_jam_sandwich");
-        public static final TagKey<Item> CAN_BE_SALTED = tag("foods/can_be_salted");
-
+        // Fishing
         public static final TagKey<Item> SMALL_FISHING_BAIT = tag("small_fishing_bait");
         public static final TagKey<Item> LARGE_FISHING_BAIT = tag("large_fishing_bait");
         public static final TagKey<Item> HOLDS_SMALL_FISHING_BAIT = tag("holds_small_fishing_bait");
@@ -331,6 +306,7 @@ public class TFCTags
 
         public static final TagKey<Item> PLANTS = tag("plants");
 
+        // Colored Items
         public static final TagKey<Item> COLORED_WOOL = tag("colored_wool");
         public static final TagKey<Item> COLORED_CARPETS = tag("colored_carpets");
         public static final TagKey<Item> COLORED_BEDS = tag("colored_beds");
@@ -347,11 +323,14 @@ public class TFCTags
         public static final TagKey<Item> COLORED_VESSELS = tag("colored_vessels");
         public static final TagKey<Item> COLORED_LARGE_VESSELS = tag("colored_large_vessels");
 
+        // Collections of blocks / items
         public static final TagKey<Item> TOOL_RACKS = tag("tool_racks");
         public static final TagKey<Item> SCRIBING_TABLES = tag("scribing_tables");
         public static final TagKey<Item> SEWING_TABLES = tag("sewing_tables");
         public static final TagKey<Item> SLUICES = tag("sluices");
         public static final TagKey<Item> LOOMS = tag("looms");
+        /** Tag for only TFC barrels, unlike {@link Tags.Items#BARRELS} which includes vanilla type barrels */
+        public static final TagKey<Item> BARRELS = tag("barrels");
         public static final TagKey<Item> VESSELS = tag("vessels");
         public static final TagKey<Item> UNFIRED_VESSELS = tag("unfired_vessels");
         public static final TagKey<Item> FIRED_VESSELS = tag("fired_vessels");
@@ -369,35 +348,44 @@ public class TFCTags
         public static final TagKey<Item> WINDMILL_BLADES = tag("windmill_blades");
         public static final TagKey<Item> AXLES = tag("axles");
         public static final TagKey<Item> LUMBER = tag("lumber");
+        public static final TagKey<Item> ANVILS = tag("anvils");
 
-        public static final TagKey<Item> DOUBLE_INGOTS = commonTag("double_sheets");
-        public static final TagKey<Item> SHEETS = commonTag("double_sheets");
+        // Common Tags
+        public static final TagKey<Item> DOUBLE_INGOTS = commonTag("double_ingots");
+        public static final TagKey<Item> SHEETS = commonTag("sheets");
         public static final TagKey<Item> DOUBLE_SHEETS = commonTag("double_sheets");
-        public static final TagKey<Item> DOUBLE_SHEETS_ANY_BRONZE = commonTag("double_sheets/any_bronze");
+        public static final TagKey<Item> DOUBLE_SHEETS_ANY_BRONZE = tag("double_sheets/any_bronze");
 
-        /** Ingots that can be added to piles - the union of all fluid heat tags */
-        public static final TagKey<Item> PILEABLE_INGOTS = tag("pileable_ingots");
-        /** Double ingots that can be added to piles - the union of all fluid heat tags */
-        public static final TagKey<Item> PILEABLE_DOUBLE_INGOTS = tag("pileable_double_ingots");
-        /** Sheets that can be added to piles - the union of all fluid heat tags */
-        public static final TagKey<Item> PILEABLE_SHEETS = tag("pileable_sheets");
-
-        public static final TagKey<Item> FIREPIT_FUEL = tag("firepit_fuel");
-        public static final TagKey<Item> FORGE_FUEL = tag("forge_fuel");
-        public static final TagKey<Item> BLAST_FURNACE_FUEL = tag("blast_furnace_fuel");
-
+        /**
+         * <h3>Tools</h3>
+         * Other tags are defined in {@link ItemTags} for vanilla tool types, and common tag conventions on {@link Tags.Items}. We add
+         * our own tool types here, which are added to the root {@code c:tools} tag, as well as adding to any conventional and vanilla tags.
+         * <p>
+         * If defining in-code behavior, consider using a {@link ItemAbility} instead
+         */
         public static final TagKey<Item> TOOLS_HAMMER = commonTag("tools/hammer");
         public static final TagKey<Item> TOOLS_SAW = commonTag("tools/saw");
+        public static final TagKey<Item> TOOLS_SCYTHE = commonTag("tools/scythe");
         public static final TagKey<Item> TOOLS_KNIFE = commonTag("tools/knife");
         public static final TagKey<Item> TOOLS_CHISEL = commonTag("tools/chisel");
         public static final TagKey<Item> TOOLS_GLASSWORKING = commonTag("tools/glassworking");
+        /** Blowpipes without glass batches */
         public static final TagKey<Item> TOOLS_BLOWPIPE = commonTag("tools/blowpipe");
 
+        // Damage Types
+        public static final TagKey<Item> DEALS_SLASHING_DAMAGE = tag("deals_slashing_damage");
+        public static final TagKey<Item> DEALS_PIERCING_DAMAGE = tag("deals_piercing_damage");
+        public static final TagKey<Item> DEALS_CRUSHING_DAMAGE = tag("deals_crushing_damage");
+
+        // Glass
         public static final TagKey<Item> GLASS_BATCHES = tag("glass_batches");
         public static final TagKey<Item> GLASS_BATCHES_T2 = tag("glass_batches_tier_2");
         public static final TagKey<Item> GLASS_BATCHES_T3 = tag("glass_batches_tier_3");
         public static final TagKey<Item> GLASS_BATCHES_NOT_T1 = tag("glass_batches_not_tier_1");
+        /** Blowpipes with glass batches */
         public static final TagKey<Item> GLASS_BLOWPIPES = tag("glass_blowpipes");
+        /** The union of {@link #TOOLS_BLOWPIPE} and {@link #GLASS_BLOWPIPES} */
+        public static final TagKey<Item> BLOWPIPES = tag("all_blowpipes");
         public static final TagKey<Item> GLASS_POWDERS = tag("glass_powders");
         public static final TagKey<Item> GLASS_BOTTLES = tag("glass_bottles");
         public static final TagKey<Item> GLASS_POTASH = tag("glass_potash");
@@ -407,36 +395,102 @@ public class TFCTags
         public static final TagKey<Item> HEMATITIC_SAND = commonTag("sands/hematitic");
         public static final TagKey<Item> VOLCANIC_SAND = commonTag("sands/volcanic");
 
+        // Misc. Crafting Ingredients
         public static final TagKey<Item> HIGH_QUALITY_CLOTH = tag("high_quality_cloth");
         public static final TagKey<Item> GEM_POWDERS = tag("gem_powders");
+        public static final TagKey<Item> BOOKS = commonTag("books");
 
+        // Device Required Items
+        public static final TagKey<Item> FIREPIT_KINDLING = tag("firepit_kindling");
+        public static final TagKey<Item> FIREPIT_STICKS = tag("firepit_sticks");
+        public static final TagKey<Item> FIREPIT_LOGS = tag("firepit_logs");
+        public static final TagKey<Item> LOG_PILE_LOGS = tag("log_pile_logs");
+        public static final TagKey<Item> PIT_KILN_STRAW = tag("pit_kiln_straw");
+        public static final TagKey<Item> PIT_KILN_LOGS = tag("pit_kiln_logs");
+        /** Axes that are 60% efficient at destroying logs */
+        public static final TagKey<Item> INEFFICIENT_LOGGING_AXES = tag("inefficient_logging_axes");
+        /** Items (sticks) that can be right-clicked on a lit torch to turn themselves into a torch */
+        public static final TagKey<Item> CAN_BE_LIT_ON_TORCH = tag("can_be_lit_on_torch");
+        /** Individual tags, used by knapping types, that define what items can be knapped */
+        public static final TagKey<Item> ROCK_KNAPPING = tag("rock_knapping");
+        public static final TagKey<Item> CLAY_KNAPPING = tag("clay_knapping");
+        public static final TagKey<Item> FIRE_CLAY_KNAPPING = tag("fire_clay_knapping");
+        public static final TagKey<Item> LEATHER_KNAPPING = tag("leather_knapping");
+        public static final TagKey<Item> GOAT_HORN_KNAPPING = tag("goat_horn_knapping");
+        /** Handstones that can be used in the quern */
+        public static final TagKey<Item> QUERN_HANDSTONES = tag("quern_handstones");
+        public static final TagKey<Item> SEWING_DARK_CLOTH = tag("sewing_dark_cloth");
+        public static final TagKey<Item> SEWING_LIGHT_CLOTH = tag("sewing_light_cloth");
+        public static final TagKey<Item> SEWING_NEEDLES = tag("sewing_needles");
+        public static final TagKey<Item> FIREPIT_FUEL = tag("firepit_fuel");
+        public static final TagKey<Item> FORGE_FUEL = tag("forge_fuel");
+        public static final TagKey<Item> BLAST_FURNACE_FUEL = tag("blast_furnace_fuel");
+        public static final TagKey<Item> BLAST_FURNACE_SHEETS = tag("blast_furnace_sheets");
+        public static final TagKey<Item> BLAST_FURNACE_TUYERES = tag("blast_furnace_tuyeres");
+        public static final TagKey<Item> TOOL_RACK_TOOLS = tag("usable_on_tool_rack");
+        public static final TagKey<Item> POWDER_KEG_FUEL = tag("usable_in_powder_keg");
+        /**
+         * Items that can be used in a trip hammer. This is a technical tag, and it must match the items in
+         * {@link TripHammerBlockEntityRenderer#HAMMER_TEXTURES}
+         */
+        public static final TagKey<Item> TRIP_HAMMERS = tag("trip_hammers");
+        public static final TagKey<Item> WELDING_FLUX = tag("welding_flux");
+        public static final TagKey<Item> SCRIBING_INK = tag("scribing_ink");
+        public static final TagKey<Item> THATCH_BED_HIDES = tag("thatch_bed_hides");
+        /**
+         * Jar items that can be placed on a shelf block. This is a technical tag, and it must match the items in
+         * {@link JarsBlockEntityRenderer#MODELS}
+         */
+        public static final TagKey<Item> SHELF_JARS = tag("shelf_jars");
+        /**
+         * Powders that can be placed in a bowl. This is a technical tag, and it must match the items in
+         * {@link BowlBlockEntityRenderer#TEXTURES}
+         */
+        public static final TagKey<Item> BOWL_POWDERS = tag("bowl_powders");
+        /** Items used in scraping recipes that can wax a surface */
+        public static final TagKey<Item> SCRAPING_WAXES = tag("waxes");
+
+        // Technical Tags
+        /** Containers that can be filled, in the display values for {@link FluidContentIngredient} */
+        public static final TagKey<Item> FLUID_ITEM_INGREDIENT_EMPTY_CONTAINERS = tag("fluid_item_ingredient_empty_containers");
+        /**
+         * Items that mobs will not spawn with in hand.
+         * @see ServerConfig#enableVanillaMobsSpawningWithVanillaEquipment
+         */
+        public static final TagKey<Item> DISABLED_MONSTER_HELD_ITEMS = tag("disabled_monster_held_items");
+        /** Items that a fox can spawn with in the mouth */
+        public static final TagKey<Item> FOX_SPAWNS_WITH = tag("fox_spawns_with");
+        /** Chests, barrels, etc. that can be used as a horse saddlebag */
+        public static final TagKey<Item> CARRIED_BY_HORSE = tag("carried_by_horse");
+
+
+        /**
+         * Armor that mobs may randomly spawn with. This replaces vanilla armors if present, and will replace armor if not present
+         * @see MobMixin
+         */
+        public static final TagKey<Item> MOB_FEET_ARMOR = tag("mob_feet_armor");
+        public static final TagKey<Item> MOB_LEG_ARMOR = tag("mob_leg_armor");
+        public static final TagKey<Item> MOB_CHEST_ARMOR = tag("mob_chest_armor");
+        public static final TagKey<Item> MOB_HEAD_ARMOR = tag("mob_head_armor");
+
+        /** Items that skeletons are set to hold, forced by {@link ForgeEventHandler#onEntityJoinLevel} Includes javelins and bows */
+        public static final TagKey<Item> SKELETON_WEAPONS = tag("skeleton_weapons");
+
+        // Block Tags - Stone
         public static final TagKey<Item> STONES_RAW = tag(Blocks.STONES_RAW);
         public static final TagKey<Item> STONES_HARDENED = tag(Blocks.STONES_HARDENED);
         public static final TagKey<Item> STONES_SMOOTH = tag(Blocks.STONES_SMOOTH);
         public static final TagKey<Item> STONES_SMOOTH_SLABS = tag(Blocks.STONES_SMOOTH_SLABS);
         public static final TagKey<Item> STONES_PRESSURE_PLATES = tag(Blocks.STONES_PRESSURE_PLATES);
+        public static final TagKey<Item> STONES_LOOSE = tag(Blocks.STONES_LOOSE);
+        public static final Map<RockCategory, TagKey<Item>> STONES_LOOSE_CATEGORY = Helpers.mapOf(RockCategory.class, type -> tag("stones/loose/" + type.getSerializedName()));
 
-        public static final Map<RockCategory, TagKey<Item>> STONES_OF_CATEGORY = Helpers.mapOf(RockCategory.class, type -> tag("stones/loose/" + type.getSerializedName()));
-
+        // Block Tags - Earth
         public static final TagKey<Item> DIRT = tag(Blocks.DIRT);
         public static final TagKey<Item> GRASS = tag(Blocks.GRASS);
         public static final TagKey<Item> MUD = tag(Blocks.MUD);
         public static final TagKey<Item> MUD_BRICKS = tag(Blocks.MUD_BRICKS);
 
-
-        public static TagKey<Item> mobEquipmentSlotTag(EquipmentSlot slot)
-        {
-            return switch (slot)
-                {
-                    case MAINHAND -> Items.MOB_MAINHAND_WEAPONS;
-                    case OFFHAND -> Items.MOB_OFFHAND_WEAPONS;
-                    case FEET -> Items.MOB_FEET_ARMOR;
-                    case LEGS -> Items.MOB_LEG_ARMOR;
-                    case CHEST -> Items.MOB_CHEST_ARMOR;
-                    case HEAD -> Items.MOB_HEAD_ARMOR;
-                    case BODY -> throw new IllegalStateException("huh?"); // todo: 1.21 porting, do we need this?
-                };
-        }
 
         private static TagKey<Item> tag(TagKey<Block> blockTag)
         {

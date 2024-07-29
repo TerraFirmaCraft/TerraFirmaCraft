@@ -1,15 +1,5 @@
 {
-  "double_ingots": {
-    "tag": "c:double_ingots/black_steel"
-  },
   "fluid": "tfc:metal/black_steel",
-  "ingots": {
-    "tag": "c:ingots/black_steel"
-  },
   "melt_temperature": 1485.0,
-  "sheets": {
-    "tag": "c:sheets/black_steel"
-  },
-  "specific_heat_capacity": 0.008571429,
-  "tier": 5
+  "specific_heat_capacity": 0.008571429
 }

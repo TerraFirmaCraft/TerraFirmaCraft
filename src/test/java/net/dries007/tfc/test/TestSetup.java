@@ -152,7 +152,6 @@ public interface TestSetup
         Helpers.uncheck(() -> {
             TAG_BUILDERS.set(provider, map);
             ((CompletableFuture<?>) TAG_CONTENTS_PROVIDER.invoke(provider)).get();
-            return null;
         });
     }
 

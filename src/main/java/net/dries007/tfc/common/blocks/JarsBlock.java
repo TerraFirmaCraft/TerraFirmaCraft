@@ -154,7 +154,7 @@ public class JarsBlock extends BottomSupportedDeviceBlock implements IHighlightH
     @Override
     public boolean drawHighlight(Level level, BlockPos pos, Player player, BlockHitResult rayTrace, PoseStack stack, MultiBufferSource buffers, Vec3 rendererPosition)
     {
-        if (!Helpers.isItem(player.getItemInHand(InteractionHand.MAIN_HAND), TFCTags.Items.JARS) && !Helpers.isItem(player.getItemInHand(InteractionHand.OFF_HAND), TFCTags.Items.JARS))
+        if (!Helpers.isItem(player.getItemInHand(InteractionHand.MAIN_HAND), TFCTags.Items.SHELF_JARS) && !Helpers.isItem(player.getItemInHand(InteractionHand.OFF_HAND), TFCTags.Items.SHELF_JARS))
         {
             return true;
         }

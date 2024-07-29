@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaTypes;
@@ -30,7 +29,6 @@ import mezz.jei.api.registration.IVanillaCategoryExtensionRegistration;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -61,7 +59,6 @@ import net.dries007.tfc.common.container.FirepitContainer;
 import net.dries007.tfc.common.container.GrillContainer;
 import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.items.TFCItems;
-import net.dries007.tfc.common.recipes.AdvancedShapelessRecipe;
 import net.dries007.tfc.common.recipes.AlloyRecipe;
 import net.dries007.tfc.common.recipes.AnvilRecipe;
 import net.dries007.tfc.common.recipes.BlastFurnaceRecipe;
@@ -259,8 +256,8 @@ public final class JEIIntegration implements IModPlugin
         addRecipeCatalyst(registry, TFCTags.Items.SEWING_DARK_CLOTH, SEWING);
         addRecipeCatalyst(registry, TFCTags.Items.SEWING_LIGHT_CLOTH, SEWING);
         addRecipeCatalyst(registry, Wood.BlockType.SEWING_TABLE, SEWING);
-        addRecipeCatalyst(registry, TFCTags.Items.ALL_BLOWPIPES, GLASSWORKING);
-        addRecipeCatalyst(registry, TFCTags.Items.TUYERES, BLAST_FURNACE);
+        addRecipeCatalyst(registry, TFCTags.Items.BLOWPIPES, GLASSWORKING);
+        addRecipeCatalyst(registry, TFCTags.Items.BLAST_FURNACE_TUYERES, BLAST_FURNACE);
 
         for (var vessel : TFCItems.GLAZED_VESSELS.values())
         {
@@ -268,7 +265,7 @@ public final class JEIIntegration implements IModPlugin
         }
 
         addRecipeCatalyst(registry, TFCTags.Items.TOOLS_KNIFE, SCRAPING);
-        addRecipeCatalyst(registry, TFCTags.Items.HANDSTONE, QUERN);
+        addRecipeCatalyst(registry, TFCTags.Items.QUERN_HANDSTONES, QUERN);
         addRecipeCatalyst(registry, TFCTags.Items.ANVILS, WELDING);
         addRecipeCatalyst(registry, TFCTags.Items.ANVILS, ANVIL);
 
@@ -290,7 +287,7 @@ public final class JEIIntegration implements IModPlugin
     @Override
     public void registerGuiHandlers(IGuiHandlerRegistration registry)
     {
-        registry.addRecipeClickArea(KnappingScreen.class, 97, 44, 22, 15, KNAPPING_TYPES.values().toArray(new RecipeType<?>[0]));
+        registry.addRecipeClickArea(KnappingScreen.class, 97, 44, 22, 15, KNAPPING_TYPES.values().toArray(RecipeType[]::new));
         registry.addRecipeClickArea(AnvilScreen.class, 26, 24, 9, 14, ANVIL, WELDING);
         registry.addRecipeClickArea(BarrelScreen.class, 92, 21, 9, 14, SEALED_BARREL, INSTANT_BARREL, INSTANT_FLUID_BARREL);
         registry.addRecipeClickArea(CrucibleScreen.class, 82, 100, 10, 15, HEATING);
@@ -310,12 +307,12 @@ public final class JEIIntegration implements IModPlugin
     @Override
     public void registerRecipeTransferHandlers(IRecipeTransferRegistration registry)
     {
+        final IRecipeTransferHandlerHelper transferHelper = registry.getTransferHelper();
+
         registry.addRecipeTransferHandler(FirepitContainer.class, TFCContainerTypes.FIREPIT.get(), HEATING, 4, 1, 7, Inventory.INVENTORY_SIZE);
         registry.addRecipeTransferHandler(GrillContainer.class, TFCContainerTypes.GRILL.get(), HEATING, 4, 5, 9, Inventory.INVENTORY_SIZE);
         registry.addRecipeTransferHandler(CrucibleContainer.class, TFCContainerTypes.CRUCIBLE.get(), HEATING, 0, 9, 10, Inventory.INVENTORY_SIZE);
-        IRecipeTransferHandlerHelper transferHelper = registry.getTransferHelper();
-        var basicRecipeTransferInfo = transferHelper.createBasicRecipeTransferInfo(CrucibleContainer.class, TFCContainerTypes.CRUCIBLE.get(), CASTING, 9, 1, 10, Inventory.INVENTORY_SIZE);
-        registry.addRecipeTransferHandler(new FluidIgnoringRecipeTransferHandler<>(transferHelper, transferHelper.createUnregisteredRecipeTransferHandler(basicRecipeTransferInfo)), CASTING);
+        registry.addRecipeTransferHandler(new FluidIgnoringRecipeTransferHandler<>(transferHelper, transferHelper.createUnregisteredRecipeTransferHandler(transferHelper.createBasicRecipeTransferInfo(CrucibleContainer.class, TFCContainerTypes.CRUCIBLE.get(), CASTING, 9, 1, 10, Inventory.INVENTORY_SIZE))), CASTING);
         // Anvil
         registry.addRecipeTransferHandler(new WeldingRecipeTransferInfo(transferHelper));
         registry.addRecipeTransferHandler(new AnvilRecipeTransferHandler<>(transferHelper.createUnregisteredRecipeTransferHandler(new AnvilRecipeTransferInfo(transferHelper))), ANVIL);

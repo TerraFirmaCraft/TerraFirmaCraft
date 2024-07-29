@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.data;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Set;
@@ -32,7 +31,6 @@ import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.internal.RegistrationEvents;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.data.providers.BuiltinBlockTags;
 import net.dries007.tfc.data.providers.BuiltinClimateRanges;
 import net.dries007.tfc.data.providers.BuiltinDensityFunctions;
@@ -155,7 +153,6 @@ public final class DataEntryPoint
             final Method method = RegistrationEvents.class.getDeclaredMethod("modifyComponents");
             method.setAccessible(true);
             method.invoke(null);
-            return null;
         });
     }
 }

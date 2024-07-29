@@ -1,9 +1,5 @@
 {
   "fluid": "tfc:metal/high_carbon_black_steel",
-  "ingots": {
-    "tag": "c:ingots/high_carbon_black_steel"
-  },
   "melt_temperature": 1540.0,
-  "specific_heat_capacity": 0.008571429,
-  "tier": 0
+  "specific_heat_capacity": 0.008571429
 }

@@ -47,7 +47,7 @@ public class ConfigBuilder
         return this;
     }
 
-    public ConfigBuilder comment(String... path)
+    public ConfigBuilder comment(String... text)
     {
         // NightConfig's Toml config formatting is AWFUL
         // - Insert a blank comment as the first comment line
@@ -57,7 +57,7 @@ public class ConfigBuilder
             builder.comment("");
             emptyLineAdded = true;
         }
-        for (String line : path)
+        for (String line : text)
         {
             builder.comment(" " + line);
         }

@@ -12,6 +12,9 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
+import org.jetbrains.annotations.Nullable;
+
+import net.dries007.tfc.config.TFCConfig;
 
 /**
  * Text based tooltips for common situations, such as displaying standardized quantities of a fluid.
@@ -52,6 +55,13 @@ public final class Tooltips
     {
         String key = molten ? "tfc.tooltip.small_vessel.molten" : "tfc.tooltip.small_vessel.solid";
         return Component.translatable(key);
+    }
+
+    @Nullable
+    public static MutableComponent meltsInto(FluidStack stack, float atTemperature)
+    {
+        final MutableComponent heat = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(atTemperature);
+        return heat == null ? null : Component.translatable("tfc.tooltip.melts_into", fluidUnitsOf(stack), heat);
     }
 
     public static MutableComponent countOfItem(ItemStack stack)

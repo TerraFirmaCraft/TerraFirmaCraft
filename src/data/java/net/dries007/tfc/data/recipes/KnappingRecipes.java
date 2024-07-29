@@ -1,7 +1,6 @@
 package net.dries007.tfc.data.recipes;
 
 import java.util.Optional;
-
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -87,7 +86,7 @@ public interface KnappingRecipes extends Recipes
             add(nameOf(TFCItems.ROCK_TOOLS.get(type).get(output)) + (suffix.isEmpty() ? "" : "_" + suffix), new KnappingRecipe(
                 new DataManager.Reference<>(BuiltinKnappingTypes.ROCK),
                 KnappingPattern.from(false, pattern),
-                Optional.of(Ingredient.of(TFCTags.Items.STONES_OF_CATEGORY.get(type))),
+                Optional.of(Ingredient.of(TFCTags.Items.STONES_LOOSE_CATEGORY.get(type))),
                 new ItemStack(TFCItems.ROCK_TOOLS.get(type).get(output), count)
             ));
     }

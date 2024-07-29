@@ -45,7 +45,6 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
@@ -61,7 +60,6 @@ import net.neoforged.bus.api.Event;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
-import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import net.dries007.tfc.common.TFCCreativeTabs;
@@ -94,7 +92,6 @@ import net.dries007.tfc.common.component.heat.HeatCapability;
 import net.dries007.tfc.common.component.mold.IMold;
 import net.dries007.tfc.common.component.size.Size;
 import net.dries007.tfc.common.component.size.Weight;
-import net.dries007.tfc.common.items.MoldItem;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.BarrelRecipe;
 import net.dries007.tfc.common.recipes.RecipeHelpers;
@@ -103,7 +100,6 @@ import net.dries007.tfc.util.calendar.Day;
 import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.util.climate.KoppenClimateClassification;
 import net.dries007.tfc.util.data.Drinkable;
-import net.dries007.tfc.util.data.FluidHeat;
 import net.dries007.tfc.world.chunkdata.ForestType;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
@@ -162,9 +158,6 @@ public final class SelfTests
         throwIfAny(
             validateFoodsAreFoods(),
             validateJugDrinkable(),
-            validateMetalTagsAreCorrect(FluidHeat::ingots, TFCTags.Items.PILEABLE_INGOTS),
-            validateMetalTagsAreCorrect(FluidHeat::doubleIngots, TFCTags.Items.PILEABLE_DOUBLE_INGOTS),
-            validateMetalTagsAreCorrect(FluidHeat::sheets, TFCTags.Items.PILEABLE_SHEETS),
             validatePotFluidUsability(manager),
             validateBarrelFluidUsability(manager),
             validateUniqueBloomeryRecipes(manager),
@@ -453,26 +446,6 @@ public final class SelfTests
             .toList();
 
         return logWarnings("{} fluids were in the tfc:usable_in_jug tag but lack a Drinkable json entry", errors, LOGGER);
-    }
-
-    private static boolean validateMetalTagsAreCorrect(Function<FluidHeat, Optional<Ingredient>> metalItemType, TagKey<Item> containingTag)
-    {
-        boolean error = false;
-        for (FluidHeat metal : FluidHeat.MANAGER.getValues())
-        {
-            final @Nullable Ingredient ingredient = metalItemType.apply(metal).orElse(null);
-            if (ingredient != null)
-            {
-                final Set<Item> metalItems = Arrays.stream(ingredient.getItems())
-                    .map(ItemStack::getItem)
-                    .filter(item -> !Helpers.isItem(item, containingTag))
-                    .collect(Collectors.toSet());
-
-
-                error |= logErrors("{} items defined in the tag for the metal " + metal + " were missing from the #" + containingTag.location() + " tag", metalItems, LOGGER);
-            }
-        }
-        return error;
     }
 
     private static boolean validatePotFluidUsability(RecipeManager manager)

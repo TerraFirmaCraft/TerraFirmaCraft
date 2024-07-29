@@ -78,7 +78,7 @@ dependencies {
     // JEI
     compileOnly("mezz.jei:jei-${minecraftVersion}-common-api:${jeiVersion}")
     compileOnly("mezz.jei:jei-${minecraftVersion}-neoforge-api:${jeiVersion}")
-    // runtimeOnly("mezz.jei:jei-${minecraftVersion}-neoforge:${jeiVersion}")
+    //runtimeOnly("mezz.jei:jei-${minecraftVersion}-neoforge:${jeiVersion}")
 
     // Patchouli
     // We need to compile against the full JAR, not just the API, because we do some egregious hacks.

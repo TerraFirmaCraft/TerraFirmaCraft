@@ -21,7 +21,9 @@ import net.minecraft.tags.TagEntry;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
@@ -40,13 +42,13 @@ import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.component.glass.GlassOperation;
 import net.dries007.tfc.common.items.Food;
+import net.dries007.tfc.common.items.HideItemType;
 import net.dries007.tfc.common.items.Powder;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.data.Accessors;
 import net.dries007.tfc.util.Metal;
 
 import static net.dries007.tfc.common.TFCTags.Items.*;
-import static net.neoforged.neoforge.common.Tags.Items.*;
 
 public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
 {
@@ -66,31 +68,22 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
     {
         // ===== Common Tags ===== //
 
-        tag(PLAYER_WORKSTATIONS_CRAFTING_TABLES).add(TFCBlocks.WOODS, Wood.BlockType.WORKBENCH);
-        tag(STORAGE_BLOCKS_WHEAT).remove(Items.HAY_BLOCK);
-
-        tag(SEEDS).add(TFCItems.CROP_SEEDS);
-        tag(BOOKS).add(
-            Items.BOOK,
-            Items.ENCHANTED_BOOK,
-            Items.WRITABLE_BOOK,
-            Items.WRITTEN_BOOK,
-            Items.KNOWLEDGE_BOOK);
+        tag(Tags.Items.PLAYER_WORKSTATIONS_CRAFTING_TABLES).add(TFCBlocks.WOODS, Wood.BlockType.WORKBENCH);
+        tag(Tags.Items.STORAGE_BLOCKS_WHEAT).remove(Items.HAY_BLOCK);
+        tag(Tags.Items.STRINGS).add(TFCItems.WOOL_YARN);
+        tag(Tags.Items.SEEDS).add(TFCItems.CROP_SEEDS);
 
         // ===== TFC Tags ===== //
 
         for (Metal metal : Metal.values())
         {
             metalTag(metal, Metal.ItemType.INGOT);
-            tag(PILEABLE_INGOTS).addTag(commonTagOf(metal, Metal.ItemType.INGOT));
             if (metal.defaultParts())
             {
                 metalTag(metal, Metal.ItemType.DOUBLE_INGOT);
                 metalTag(metal, Metal.ItemType.SHEET);
                 metalTag(metal, Metal.ItemType.DOUBLE_SHEET);
                 metalTag(metal, Metal.ItemType.ROD);
-                tag(PILEABLE_DOUBLE_INGOTS).addTag(commonTagOf(metal, Metal.ItemType.DOUBLE_INGOT));
-                tag(PILEABLE_SHEETS).addTag(commonTagOf(metal, Metal.ItemType.SHEET));
                 copy(storageBlockTagOf(Registries.BLOCK, metal), storageBlockTagOf(Registries.ITEM, metal));
             }
         }
@@ -110,6 +103,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(FISH).addTags(RAW_FISH, COOKED_FISH);
         tag(FLOUR).add(Food.BARLEY_FLOUR, Food.MAIZE_FLOUR, Food.OAT_FLOUR, Food.RYE_FLOUR, Food.RICE_FLOUR, Food.WHEAT_FLOUR);
         tag(DOUGH).add(Food.BARLEY_DOUGH, Food.MAIZE_DOUGH, Food.OAT_DOUGH, Food.RYE_DOUGH, Food.RICE_DOUGH, Food.WHEAT_DOUGH);
+        tag(GRAINS).add(Food.BARLEY_GRAIN, Food.MAIZE_GRAIN, Food.OAT_GRAIN, Food.RYE_GRAIN, Food.RICE_GRAIN, Food.WHEAT_GRAIN);
         tag(BREAD)
             .add(Food.BARLEY_BREAD, Food.MAIZE_BREAD, Food.OAT_BREAD, Food.RYE_BREAD, Food.RICE_BREAD, Food.WHEAT_BREAD)
             .add(Items.BREAD);
@@ -130,9 +124,56 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(USABLE_IN_SANDWICH).addTags(VEGETABLES, COOKED_MEATS, DAIRY);
         tag(USABLE_IN_JAM_SANDWICH).addTags(COOKED_MEATS, DAIRY, PRESERVES);
         tag(CAN_BE_SALTED);
+        tag(PIG_FOOD).addTag(FOODS);
+        tag(COW_FOOD).addTag(GRAINS);
+        tag(YAK_FOOD).addTag(GRAINS);
+        tag(GOAT_FOOD).addTags(GRAINS, FRUITS, VEGETABLES);
+        tag(ALPACA_FOOD).addTags(GRAINS, FRUITS);
+        tag(SHEEP_FOOD).addTag(GRAINS);
+        tag(MUSK_OX_FOOD).addTag(GRAINS);
+        tag(CHICKEN_FOOD).addTags(GRAINS, FRUITS, VEGETABLES, Tags.Items.SEEDS, BREAD);
+        tag(DUCK_FOOD).addTag(CHICKEN_FOOD);
+        tag(QUAIL_FOOD).addTag(CHICKEN_FOOD);
+        tag(DONKEY_FOOD).addTag(HORSE_FOOD);
+        tag(MULE_FOOD).addTag(HORSE_FOOD);
+        tag(HORSE_FOOD).addTags(GRAINS, FRUITS);
+        tag(CAT_FOOD).addTags(GRAINS, COOKED_MEATS, DAIRY, COOKED_FISH);
+        tag(DOG_FOOD).addTag(MEATS);
+        tag(PENGUIN_FOOD).addTags(TURTLE_FOOD, RAW_FISH);
+        tag(TURTLE_FOOD).add(TFCItems.FOOD.get(Food.DRIED_KELP), TFCItems.FOOD.get(Food.DRIED_SEAWEED));
+        tag(FROG_FOOD).addTags(TURTLE_FOOD, GRAINS);
+        tag(RABBIT_FOOD).addTags(GRAINS, VEGETABLES);
+
+        // todo: isn't there some overlap between green low + brown low with the plants tag?
+        tag(COMPOST_GREENS_LOW).addTag(PLANTS);
+        tag(COMPOST_GREENS_MEDIUM).addTag(GRAINS);
+        tag(COMPOST_GREENS_HIGH).addTags(VEGETABLES, FRUITS);
+        tag(COMPOST_BROWNS_LOW)
+            .addTag(ItemTags.LEAVES)
+            .add(
+                TFCBlocks.PLANTS.get(Plant.HANGING_VINES),
+                TFCBlocks.PLANTS.get(Plant.SPANISH_MOSS),
+                TFCBlocks.PLANTS.get(Plant.LIANA),
+                TFCBlocks.PLANTS.get(Plant.TREE_FERN),
+                TFCBlocks.PLANTS.get(Plant.ARUNDO),
+                TFCBlocks.PLANTS.get(Plant.DRY_PHRAGMITE),
+                TFCBlocks.PLANTS.get(Plant.JUNGLE_VINES),
+                Items.HANGING_ROOTS);
+        tag(COMPOST_BROWNS_MEDIUM).add(
+            TFCItems.POWDERS.get(Powder.WOOD_ASH),
+            TFCItems.JUTE);
+        tag(COMPOST_BROWNS_HIGH).add(
+            TFCBlocks.MELON,
+            TFCBlocks.PUMPKIN,
+            Items.PAPER,
+            TFCItems.JUTE_FIBER,
+            TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.HUMUS),
+            TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.DEAD_GRASS),
+            TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.DRIFTWOOD),
+            TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.PINECONE));
 
         tag(SMALL_FISHING_BAIT)
-            .addTag(SEEDS)
+            .addTag(Tags.Items.SEEDS)
             .add(Food.SHELLFISH);
         tag(LARGE_FISHING_BAIT)
             .add(Food.COD, Food.SALMON, Food.TROPICAL_FISH, Food.BLUEGILL);
@@ -176,9 +217,9 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(SEWING_TABLES).add(TFCBlocks.WOODS, Wood.BlockType.SEWING_TABLE);
         tag(SLUICES).add(TFCBlocks.WOODS, Wood.BlockType.SLUICE);
         tag(LOOMS).add(TFCBlocks.WOODS, Wood.BlockType.LOOM);
-
+        tag(BARRELS).add(TFCBlocks.WOODS, Wood.BlockType.BARREL);
         copy(TFCTags.Blocks.LAMPS, LAMPS);
-        tag(BUCKETS).add(
+        tag(Tags.Items.BUCKETS).add(
             TFCItems.WOODEN_BUCKET,
             TFCItems.RED_STEEL_BUCKET,
             TFCItems.BLUE_STEEL_BUCKET);
@@ -197,7 +238,6 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
                 TFCItems.RUSTIC_WINDMILL_BLADE);
         tag(AXLES).add(TFCBlocks.WOODS, Wood.BlockType.AXLE);
         tag(LUMBER).add(TFCItems.LUMBER);
-
         tag(VESSELS).addTags(UNFIRED_VESSELS, FIRED_VESSELS);
         tag(UNFIRED_VESSELS)
             .add(TFCItems.UNFIRED_VESSEL)
@@ -220,43 +260,83 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             .add(TFCItems.MOLDS)
             .add(TFCItems.FIRE_INGOT_MOLD)
             .add(TFCItems.BELL_MOLD);
+        tag(ANVILS).add(TFCBlocks.METALS, Metal.BlockType.ANVIL);
 
-        tag(FIREPIT_FUEL)
-            .addTags(BOOKS, ItemTags.LEAVES)
-            .add(
-                TFCBlocks.PEAT,
-                TFCBlocks.PEAT_GRASS,
-                TFCItems.STICK_BUNDLE,
-                Items.PAPER,
-                TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.PINECONE),
-                TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.DRIFTWOOD));
-        tag(FORGE_FUEL).addTag(ItemTags.COALS);
-        tag(BLAST_FURNACE_FUEL).add(Items.CHARCOAL);
+        // Vanilla Tool Tags
+        tag(ItemTags.SWORDS).add(TFCItems.METAL_ITEMS, Metal.ItemType.SWORD);
+        tag(ItemTags.AXES)
+            .add(TFCItems.METAL_ITEMS, Metal.ItemType.AXE)
+            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.AXE);
+        tag(ItemTags.HOES)
+            .add(TFCItems.METAL_ITEMS, Metal.ItemType.HOE)
+            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.HOE);
+        tag(ItemTags.PICKAXES).add(TFCItems.METAL_ITEMS, Metal.ItemType.PICKAXE);
+        tag(ItemTags.SHOVELS)
+            .add(TFCItems.METAL_ITEMS, Metal.ItemType.SHOVEL)
+            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.SHOVEL);
 
-        tag(TOOLS).addTags(TOOLS_KNIFE, TOOLS_CHISEL, TOOLS_SHEAR, TOOLS_GLASSWORKING, TOOLS_BLOWPIPE);
-        tag(TOOLS_SHIELD).add(TFCItems.METAL_ITEMS, Metal.ItemType.SHIELD);
-        tag(TOOLS_FISHING_ROD).add(TFCItems.METAL_ITEMS, Metal.ItemType.FISHING_ROD);
-        tag(TOOLS_SPEAR)
+        // Common `#c:tools/???`
+        tag(Tags.Items.TOOLS_SHIELD).add(TFCItems.METAL_ITEMS, Metal.ItemType.SHIELD);
+        tag(Tags.Items.TOOLS_FISHING_ROD).add(TFCItems.METAL_ITEMS, Metal.ItemType.FISHING_ROD);
+        tag(Tags.Items.TOOLS_SPEAR)
             .add(TFCItems.METAL_ITEMS, Metal.ItemType.JAVELIN)
             .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.JAVELIN);
+        tag(Tags.Items.TOOLS_SHEAR).add(TFCItems.METAL_ITEMS, Metal.ItemType.SHEARS);
+        tag(Tags.Items.TOOLS_IGNITER).add(TFCItems.FIRESTARTER);
+        tag(Tags.Items.TOOLS_MACE).add(TFCItems.METAL_ITEMS, Metal.ItemType.MACE);
+        // N.B.
+        // melee_weapons, ranged_weapons, and mining_tool are all poorly defined, their use case is not clear,
+        // and they don't contain other tool tags (???) so it's unclear what the point of them is.
+
+        // TFC Added `#c:tools/`
+        tag(TOOLS_HAMMER).add(TFCItems.METAL_ITEMS, Metal.ItemType.HAMMER);
+        tag(TOOLS_SAW).add(TFCItems.METAL_ITEMS, Metal.ItemType.SAW);
+        tag(TOOLS_SCYTHE).add(TFCItems.METAL_ITEMS, Metal.ItemType.SCYTHE);
         tag(TOOLS_KNIFE)
             .add(TFCItems.METAL_ITEMS, Metal.ItemType.KNIFE)
             .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.KNIFE);
-        tag(TOOLS_SHEAR).add(TFCItems.METAL_ITEMS, Metal.ItemType.SHEARS);
-        tag(TOOLS_IGNITER).add(TFCItems.FIRESTARTER);
-        tag(TOOLS_MACE).add(TFCItems.METAL_ITEMS, Metal.ItemType.MACE);
         tag(TOOLS_CHISEL).add(TFCItems.METAL_ITEMS, Metal.ItemType.CHISEL);
-        tag(TOOLS_HAMMER).add(TFCItems.METAL_ITEMS, Metal.ItemType.HAMMER);
-        tag(TOOLS_SAW).add(TFCItems.METAL_ITEMS, Metal.ItemType.SAW);
-        tag(MINING_TOOL_TOOLS).add(TFCItems.METAL_ITEMS, Metal.ItemType.PICKAXE);
         tag(TOOLS_GLASSWORKING).add(TFCItems.PADDLE, TFCItems.JACKS, TFCItems.GEM_SAW);
         tag(TOOLS_BLOWPIPE).add(TFCItems.BLOWPIPE, TFCItems.CERAMIC_BLOWPIPE);
+
+        // Common `#c:tools`
+        tag(Tags.Items.TOOLS).addTags(
+            TOOLS_HAMMER,
+            TOOLS_SAW,
+            TOOLS_SCYTHE,
+            TOOLS_KNIFE,
+            TOOLS_CHISEL,
+            TOOLS_GLASSWORKING,
+            TOOLS_BLOWPIPE);
+
+        // Tool Damage Types
+        tag(DEALS_SLASHING_DAMAGE).addTags(
+            ItemTags.SWORDS,
+            ItemTags.AXES,
+            ItemTags.HOES,
+            Tags.Items.TOOLS_SHEAR,
+            TOOLS_SAW,
+            TOOLS_SCYTHE);
+        tag(DEALS_PIERCING_DAMAGE).addTags(
+            ItemTags.PICKAXES,
+            Tags.Items.TOOLS_BOW,
+            Tags.Items.TOOLS_CROSSBOW,
+            Tags.Items.TOOLS_SPEAR,
+            TOOLS_KNIFE,
+            TOOLS_CHISEL);
+        tag(DEALS_CRUSHING_DAMAGE).addTags(
+            ItemTags.SHOVELS,
+            Tags.Items.TOOLS_SHIELD,
+            Tags.Items.TOOLS_FISHING_ROD,
+            Tags.Items.TOOLS_MACE,
+            TOOLS_HAMMER);
 
         tag(GLASS_BATCHES_T2).add(TFCItems.SILICA_GLASS_BATCH, TFCItems.HEMATITIC_GLASS_BATCH);
         tag(GLASS_BATCHES_T3).addTag(GLASS_BATCHES_T2).add(TFCItems.OLIVINE_GLASS_BATCH);
         tag(GLASS_BATCHES).addTag(GLASS_BATCHES_T3).add(TFCItems.VOLCANIC_GLASS_BATCH);
         tag(GLASS_BATCHES_NOT_T1).add(TFCItems.HEMATITIC_GLASS_BATCH, TFCItems.OLIVINE_GLASS_BATCH, TFCItems.VOLCANIC_GLASS_BATCH);
         tag(GLASS_BLOWPIPES).add(TFCItems.BLOWPIPE_WITH_GLASS, TFCItems.CERAMIC_BLOWPIPE_WITH_GLASS);
+        tag(BLOWPIPES).addTags(TOOLS_BLOWPIPE, GLASS_BLOWPIPES);
         tag(GLASS_POWDERS).add(GlassOperation.POWDERS.get().keySet().stream());
         tag(GLASS_BOTTLES).add(
             TFCItems.SILICA_GLASS_BOTTLE,
@@ -278,18 +358,129 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             TFCBlocks.SAND.get(SandBlockType.BLACK));
 
         tag(HIGH_QUALITY_CLOTH).add(TFCItems.SILK_CLOTH, TFCItems.WOOL_CLOTH);
-        tag(STRINGS).add(TFCItems.WOOL_YARN);
         tag(GEM_POWDERS).addOnly(TFCItems.ORE_POWDERS, Ore::isGem);
+        tag(BOOKS).add(
+            Items.BOOK,
+            Items.ENCHANTED_BOOK,
+            Items.WRITABLE_BOOK,
+            Items.WRITTEN_BOOK,
+            Items.KNOWLEDGE_BOOK);
 
-        copy(Tags.Blocks.STONES, STONES);
+        tag(FIREPIT_KINDLING)
+            .addTags(ItemTags.LEAVES, BOOKS)
+            .add(TFCItems.STRAW, Items.PAPER);
+        tag(FIREPIT_STICKS).addTag(Tags.Items.RODS_WOODEN);
+        tag(FIREPIT_LOGS).addTag(ItemTags.LOGS_THAT_BURN);
+        tag(LOG_PILE_LOGS).addTag(ItemTags.LOGS);
+        tag(PIT_KILN_STRAW).add(TFCItems.STRAW);
+        tag(PIT_KILN_LOGS).addTags(ItemTags.LOGS_THAT_BURN);
+        tag(INEFFICIENT_LOGGING_AXES).add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.AXE);
+        tag(CAN_BE_LIT_ON_TORCH).addTag(Tags.Items.RODS_WOODEN);
+        tag(ROCK_KNAPPING).addTag(STONES_LOOSE);
+        tag(CLAY_KNAPPING).add(Items.CLAY_BALL);
+        tag(FIRE_CLAY_KNAPPING).add(TFCItems.FIRE_CLAY);
+        tag(LEATHER_KNAPPING).add(Items.LEATHER);
+        tag(GOAT_HORN_KNAPPING).add(Items.GOAT_HORN);
+        tag(QUERN_HANDSTONES).add(TFCItems.HANDSTONE);
+        tag(SEWING_LIGHT_CLOTH).add(TFCItems.WOOL_CLOTH, TFCItems.SILK_CLOTH);
+        tag(SEWING_DARK_CLOTH).add(TFCItems.BURLAP_CLOTH);
+        tag(SEWING_NEEDLES).add(TFCItems.BONE_NEEDLE);
+        tag(FIREPIT_FUEL)
+            .addTags(BOOKS, ItemTags.LEAVES, ItemTags.LOGS_THAT_BURN)
+            .add(
+                TFCBlocks.PEAT,
+                TFCBlocks.PEAT_GRASS,
+                TFCItems.STICK_BUNDLE,
+                Items.PAPER,
+                TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.PINECONE),
+                TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.DRIFTWOOD));
+        tag(FORGE_FUEL).addTag(ItemTags.COALS);
+        tag(BLAST_FURNACE_FUEL).add(Items.CHARCOAL);
+        tag(BLAST_FURNACE_SHEETS)
+            .add(TFCItems.METAL_ITEMS.get(Metal.WROUGHT_IRON).get(Metal.ItemType.SHEET))
+            .add(TFCItems.METAL_ITEMS.get(Metal.STEEL).get(Metal.ItemType.SHEET))
+            .add(TFCItems.METAL_ITEMS.get(Metal.BLACK_STEEL).get(Metal.ItemType.SHEET))
+            .add(TFCItems.METAL_ITEMS.get(Metal.BLUE_STEEL).get(Metal.ItemType.SHEET))
+            .add(TFCItems.METAL_ITEMS.get(Metal.RED_STEEL).get(Metal.ItemType.SHEET));
+        tag(BLAST_FURNACE_TUYERES).add(TFCItems.METAL_ITEMS, Metal.ItemType.TUYERE);
+        tag(TOOL_RACK_TOOLS)
+            .addTags(Tags.Items.TOOLS, SEWING_NEEDLES)
+            .add(TFCItems.SANDPAPER, Items.SPYGLASS);
+        tag(POWDER_KEG_FUEL).add(Items.GUNPOWDER);
+        tag(TRIP_HAMMERS).add(TFCItems.METAL_ITEMS, Metal.ItemType.HAMMER); // N.B. Technical tag, don't include sub-tags
+        tag(THATCH_BED_HIDES).add(TFCItems.HIDES.get(HideItemType.RAW).get(HideItemType.Size.LARGE));
+        tag(SHELF_JARS) // N.B. Technical tag, don't include sub-tags
+            .add(TFCItems.FRUIT_PRESERVES)
+            .add(TFCItems.UNSEALED_FRUIT_PRESERVES)
+            .add(
+                TFCItems.EMPTY_JAR,
+                TFCItems.EMPTY_JAR_WITH_LID);
+        tag(BOWL_POWDERS) // N.B. Technical tag, don't include sub-tags
+            .add(TFCItems.POWDERS)
+            .add(TFCItems.ORE_POWDERS)
+            .add(
+                Items.REDSTONE,
+                Items.GLOWSTONE_DUST,
+                Items.BLAZE_POWDER,
+                Items.GUNPOWDER
+            );
+        tag(SCRAPING_WAXES).add(TFCItems.GLUE, Items.HONEYCOMB);
+
+        tag(FLUID_ITEM_INGREDIENT_EMPTY_CONTAINERS)
+            .addTag(GLASS_BOTTLES)
+            .add(
+                Items.BUCKET,
+                TFCItems.WOODEN_BUCKET,
+                TFCItems.BLUE_STEEL_BUCKET,
+                TFCItems.RED_STEEL_BUCKET,
+                TFCItems.JUG);
+        tag(DISABLED_MONSTER_HELD_ITEMS).add(
+            Items.IRON_SHOVEL,
+            Items.IRON_SWORD,
+            Items.FISHING_ROD,
+            Items.NAUTILUS_SHELL);
+        tag(FOX_SPAWNS_WITH)
+            .add(
+                Items.RABBIT_FOOT,
+                Items.FEATHER,
+                Items.BONE,
+                Items.FLINT,
+                Items.EGG,
+                TFCItems.HIDES.get(HideItemType.RAW).get(HideItemType.Size.SMALL))
+            .add(
+                Food.SALMON,
+                Food.BLUEGILL,
+                Food.CLOUDBERRY,
+                Food.STRAWBERRY,
+                Food.GOOSEBERRY,
+                Food.RABBIT);
+        tag(CARRIED_BY_HORSE).addTags(Tags.Items.CHESTS_WOODEN, BARRELS);
+
+        Stream.of(Metal.COPPER, Metal.BRONZE, Metal.BISMUTH_BRONZE, Metal.BLACK_BRONZE)
+            .map(TFCItems.METAL_ITEMS::get)
+            .forEach(items -> {
+                tag(MOB_HEAD_ARMOR).add(items.get(Metal.ItemType.HELMET));
+                tag(MOB_CHEST_ARMOR).add(items.get(Metal.ItemType.CHESTPLATE));
+                tag(MOB_LEG_ARMOR).add(items.get(Metal.ItemType.GREAVES));
+                tag(MOB_FEET_ARMOR).add(items.get(Metal.ItemType.BOOTS));
+                tag(SKELETON_WEAPONS).add(items.get(Metal.ItemType.JAVELIN));
+            });
+
+        tag(SKELETON_WEAPONS)
+            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.AXE)
+            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.JAVELIN)
+            .add(Items.BOW);
+
+        copy(Tags.Blocks.STONES, Tags.Items.STONES);
         copy(TFCTags.Blocks.STONES_RAW, STONES_RAW);
         copy(TFCTags.Blocks.STONES_HARDENED, STONES_HARDENED);
         copy(TFCTags.Blocks.STONES_SMOOTH, STONES_SMOOTH);
         copy(TFCTags.Blocks.STONES_SMOOTH_SLABS, STONES_SMOOTH_SLABS);
         copy(TFCTags.Blocks.STONES_PRESSURE_PLATES, STONES_PRESSURE_PLATES);
+        copy(TFCTags.Blocks.STONES_LOOSE, STONES_LOOSE);
 
-        pivot(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.LOOSE).forEach((rock, item) -> tag(STONES_OF_CATEGORY.get(rock.category())).add(item));
-        pivot(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.MOSSY_LOOSE).forEach((rock, item) -> tag(STONES_OF_CATEGORY.get(rock.category())).add(item));
+        pivot(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.LOOSE).forEach((rock, item) -> tag(STONES_LOOSE_CATEGORY.get(rock.category())).add(item));
+        pivot(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.MOSSY_LOOSE).forEach((rock, item) -> tag(STONES_LOOSE_CATEGORY.get(rock.category())).add(item));
 
         copy(BlockTags.DIRT, ItemTags.DIRT);
         copy(TFCTags.Blocks.DIRT, DIRT);
@@ -297,8 +488,8 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         copy(TFCTags.Blocks.MUD, MUD);
         copy(TFCTags.Blocks.MUD_BRICKS, MUD_BRICKS);
 
-        copy(Tags.Blocks.COBBLESTONES_NORMAL, COBBLESTONES_NORMAL);
-        copy(Tags.Blocks.COBBLESTONES_MOSSY, COBBLESTONES_MOSSY);
+        copy(Tags.Blocks.COBBLESTONES_NORMAL, Tags.Items.COBBLESTONES_NORMAL);
+        copy(Tags.Blocks.COBBLESTONES_MOSSY, Tags.Items.COBBLESTONES_MOSSY);
     }
 
     @Override
@@ -365,6 +556,18 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         ItemTagAppender add(ItemLike... items)
         {
             for (ItemLike item : items) add(key(item));
+            return this;
+        }
+
+        ItemTagAppender add(Ingredient items)
+        {
+            for (Ingredient.Value value : items.getValues())
+                switch (value)
+                {
+                    case Ingredient.TagValue(TagKey<Item> tag) -> addTag(tag);
+                    case Ingredient.ItemValue(ItemStack item) -> add(item.getItem());
+                    default -> throw new UnsupportedOperationException("Unknown value type");
+                }
             return this;
         }
 

@@ -40,7 +40,7 @@ public class WeldingRecipeCategory extends BaseRecipeCategory<WeldingRecipe>
             .setBackground(slot, -1, -1);
 
         builder.addSlot(RecipeIngredientRole.INPUT, 46, 5)
-            .addIngredients(Ingredient.of(TFCTags.Items.FLUX))
+            .addIngredients(Ingredient.of(TFCTags.Items.WELDING_FLUX))
             .setBackground(slot, -1, -1);
 
         builder.addSlot(RecipeIngredientRole.OUTPUT, 96, 5)

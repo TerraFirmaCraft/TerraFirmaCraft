@@ -26,7 +26,6 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
-import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
 import net.dries007.tfc.common.component.size.ItemSizeManager;
@@ -139,7 +138,6 @@ public class PlacedItemBlockEntity extends InventoryBlockEntity<ItemStackHandler
         // Try and insert an item
         // Check the size of item to determine if insertion is possible, or if it requires the large slot
         Size size = ItemSizeManager.get(stack).getSize(stack);
-        if (Helpers.isItem(stack, TFCTags.Items.PLACED_ITEM_BLACKLIST) || (TFCConfig.SERVER.usePlacedItemWhitelist.get() && !Helpers.isItem(stack, TFCTags.Items.PLACED_ITEM_WHITELIST))) return false;
         if (size.isEqualOrSmallerThan(TFCConfig.SERVER.maxPlacedItemSize.get()) && !isHoldingLargeItem)
         {
             // Normal and smaller can be placed normally

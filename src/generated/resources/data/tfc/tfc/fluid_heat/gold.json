@@ -1,15 +1,5 @@
 {
-  "double_ingots": {
-    "tag": "c:double_ingots/gold"
-  },
   "fluid": "tfc:metal/gold",
-  "ingots": {
-    "tag": "c:ingots/gold"
-  },
   "melt_temperature": 1060.0,
-  "sheets": {
-    "tag": "c:sheets/gold"
-  },
-  "specific_heat_capacity": 0.005,
-  "tier": 0
+  "specific_heat_capacity": 0.005
 }

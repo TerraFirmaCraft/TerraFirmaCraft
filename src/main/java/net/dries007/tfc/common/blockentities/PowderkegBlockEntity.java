@@ -110,7 +110,7 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        return Helpers.isItem(stack, TFCTags.Items.USABLE_IN_POWDER_KEG);
+        return Helpers.isItem(stack, TFCTags.Items.POWDER_KEG_FUEL);
     }
 
     public void onSeal()

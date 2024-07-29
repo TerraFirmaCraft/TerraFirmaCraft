@@ -1,0 +1,17 @@
+{
+  "values": [
+    "tfc:metal/axe/bismuth_bronze",
+    "tfc:metal/axe/black_bronze",
+    "tfc:metal/axe/bronze",
+    "tfc:metal/axe/copper",
+    "tfc:metal/axe/wrought_iron",
+    "tfc:metal/axe/steel",
+    "tfc:metal/axe/black_steel",
+    "tfc:metal/axe/blue_steel",
+    "tfc:metal/axe/red_steel",
+    "tfc:stone/axe/igneous_extrusive",
+    "tfc:stone/axe/igneous_intrusive",
+    "tfc:stone/axe/metamorphic",
+    "tfc:stone/axe/sedimentary"
+  ]
+}

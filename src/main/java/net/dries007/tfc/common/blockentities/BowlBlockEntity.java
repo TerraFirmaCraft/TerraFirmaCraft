@@ -57,6 +57,6 @@ public class BowlBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        return Helpers.isItem(stack, TFCTags.Items.POWDERS);
+        return Helpers.isItem(stack, TFCTags.Items.BOWL_POWDERS);
     }
 }

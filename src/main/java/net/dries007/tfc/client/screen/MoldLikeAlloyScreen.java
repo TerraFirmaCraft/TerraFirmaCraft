@@ -19,8 +19,8 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.common.component.mold.IMold;
 import net.dries007.tfc.common.container.MoldLikeAlloyContainer;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.tooltip.Tooltips;
 import net.dries007.tfc.util.data.FluidHeat;
+import net.dries007.tfc.util.tooltip.Tooltips;
 
 public class MoldLikeAlloyScreen extends TFCContainerScreen<MoldLikeAlloyContainer>
 {
@@ -42,7 +42,7 @@ public class MoldLikeAlloyScreen extends TFCContainerScreen<MoldLikeAlloyContain
             final FluidHeat metal = FluidHeat.get(fluid.getFluid());
             if (metal != null)
             {
-                drawCenteredLine(stack, metal.getDisplayName(), 14);
+                drawCenteredLine(stack, fluid.getHoverName(), 14);
                 drawCenteredLine(stack, Tooltips.fluidUnits(fluid.getAmount()), 23);
 
                 final float temperature = mold.getTemperature();

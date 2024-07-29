@@ -83,8 +83,8 @@ public class CollapseRecipe extends BlockRecipe
         final RandomSource random = level.getRandom();
         if (!level.isClientSide() && level.isAreaLoaded(pos, 32))
         {
-            final boolean realCollapse = random.nextFloat() < TFCConfig.SERVER.collapseTriggerChance.get(),
-                fakeCollapse = !realCollapse && random.nextFloat() < TFCConfig.SERVER.collapseFakeTriggerChance.get();
+            final boolean realCollapse = random.nextFloat() < TFCConfig.SERVER.collapseTriggerChance.get();
+            final boolean fakeCollapse = !realCollapse && random.nextFloat() < TFCConfig.SERVER.collapseFakeTriggerChance.get();
             if (realCollapse || fakeCollapse)
             {
                 // Random radius

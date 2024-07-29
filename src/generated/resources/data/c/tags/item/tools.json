@@ -1,8 +1,10 @@
 {
   "values": [
+    "#c:tools/hammer",
+    "#c:tools/saw",
+    "#c:tools/scythe",
     "#c:tools/knife",
     "#c:tools/chisel",
-    "#c:tools/shear",
     "#c:tools/glassworking",
     "#c:tools/blowpipe"
   ]

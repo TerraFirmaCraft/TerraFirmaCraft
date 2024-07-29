@@ -7,9 +7,9 @@
 package net.dries007.tfc.common.blockentities;
 
 import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.function.Consumer;
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -25,12 +25,12 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 
 import net.dries007.tfc.common.blocks.devices.SheetPileBlock;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.data.FluidHeat;
+import net.dries007.tfc.util.MetalItem;
 
 public class SheetPileBlockEntity extends TFCBlockEntity
 {
     private final ItemStack[] stacks;
-    private final FluidHeat[] cachedMetals;
+    private final MetalItem[] cachedMetals;
 
     private static final DirectionProperty FACING = SheetPileBlock.FACING;
     private static final BooleanProperty MIRROR = SheetPileBlock.MIRROR;
@@ -68,7 +68,7 @@ public class SheetPileBlockEntity extends TFCBlockEntity
         super(TFCBlockEntities.SHEET_PILE.get(), pos, state);
 
         this.stacks = new ItemStack[6];
-        this.cachedMetals = new FluidHeat[6];
+        this.cachedMetals = new MetalItem[6];
 
         Arrays.fill(stacks, ItemStack.EMPTY);
     }
@@ -99,21 +99,17 @@ public class SheetPileBlockEntity extends TFCBlockEntity
     /**
      * Returns a cached metal for the given side, if present, otherwise grabs from the cache.
      * The metal is defined by checking what metal the stack would melt into if heated.
-     * Any other items turn into {@link FluidHeat#unknown()}.
+     * Any other items turn into {@link MetalItem#unknown()}.
      */
-    public FluidHeat getOrCacheMetal(Direction direction)
+    public MetalItem getOrCacheMetal(Direction direction)
     {
         final int index = faceToIndex(direction);
         final ItemStack stack = stacks[index];
 
-        FluidHeat metal = cachedMetals[index];
+        MetalItem metal = cachedMetals[index];
         if (metal == null)
         {
-            metal = FluidHeat.getFromSheet(stack);
-            if (metal == null)
-            {
-                metal = FluidHeat.unknown();
-            }
+            metal = MetalItem.getOrUnknown(stack);
             cachedMetals[index] = metal;
         }
         return metal;
@@ -122,7 +118,7 @@ public class SheetPileBlockEntity extends TFCBlockEntity
     /**
      * Sets the cached metals for a block entity that is not placed in the world
      */
-    public void setAllMetalsFromOutsideWorld(FluidHeat metal)
+    public void setAllMetalsFromOutsideWorld(MetalItem metal)
     {
         Arrays.fill(cachedMetals, metal);
     }
@@ -144,14 +140,30 @@ public class SheetPileBlockEntity extends TFCBlockEntity
 
     public void fillTooltip(Consumer<Component> tooltip)
     {
-        final Object2IntMap<FluidHeat> map = new Object2IntOpenHashMap<>();
-        for (FluidHeat metal : cachedMetals)
+        class Counter
         {
-            if (metal != null)
+            final ItemStack stack;
+            int count = 0;
+
+            Counter(ItemStack stack) { this.stack = stack; }
+        }
+
+        final Map<MetalItem, Counter> counts = new LinkedHashMap<>(); // Deterministic iteration order
+        for (int i = 0; i < cachedMetals.length; i++)
+        {
+            if (cachedMetals[i] != null)
             {
-                map.mergeInt(metal, 1, Integer::sum);
+                final ItemStack stack = stacks[i];
+                counts.compute(cachedMetals[i], (key, old) -> {
+                    if (old == null) old = new Counter(stack);
+                    old.count++;
+                    return old;
+                });
             }
         }
-        map.forEach((metal, ct) -> tooltip.accept(Component.literal(ct + "x ").append(metal.getDisplayName())));
+        for (Counter value : counts.values())
+        {
+            tooltip.accept(Component.literal(value.count + "x ").append(value.stack.getHoverName()));
+        }
     }
 }

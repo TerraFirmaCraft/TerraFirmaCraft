@@ -3,11 +3,11 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "c:storage_blocks/lapis"
+      "tag": "c:storage_blocks/slime"
     }
   ],
   "result": {
     "count": 9,
-    "id": "tfc:ore/lapis_lazuli"
+    "id": "tfc:glue"
   }
 }

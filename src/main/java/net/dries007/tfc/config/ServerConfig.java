@@ -7,6 +7,7 @@
 package net.dries007.tfc.config;
 
 import java.util.EnumMap;
+import java.util.List;
 import java.util.function.Supplier;
 
 import net.dries007.tfc.common.blocks.plant.fruit.FruitBlocks;
@@ -35,6 +36,7 @@ public class ServerConfig extends BaseConfig
     public final Supplier<Boolean> enableLightning;
     public final Supplier<Boolean> enableLightningStrippingLogs;
     public final Supplier<Integer> oceanWindScale;
+    public final Supplier<List<String>> excludedMetalTagNames;
 
     // Blocks - Farmland
     public final Supplier<Boolean> enableFarmlandCreation;
@@ -128,7 +130,6 @@ public class ServerConfig extends BaseConfig
     public final Supplier<Size> maxPlacedItemSize;
     public final Supplier<Size> maxPlacedLargeItemSize;
     public final Supplier<Boolean> enablePlacingItems;
-    public final Supplier<Boolean> usePlacedItemWhitelist;
     // Blocks - Leaves
     public final Supplier<Boolean> enableLeavesDecaySlowly;
     // Blocks - Charcoal Forge
@@ -297,6 +298,11 @@ public class ServerConfig extends BaseConfig
         enableLightning = builder.comment("If false, vanilla lightning will not strike.").define("enableLightning", true);
         enableLightningStrippingLogs = builder.comment("If true, lightning has a chance of stripping bark off of trees.").define("enableLightningStrippingLogs", true);
         oceanWindScale = builder.comment("Every time the z coordinate reaches a multiple of this point, the wind over oceans will switch directions.").define("oceanWindScale", 5000, 128, Integer.MAX_VALUE);
+        excludedMetalTagNames = builder.comment(
+            "TFC will try and infer metals from tags that match the pattern 'c:type/...', where 'type' is one of 'ingots', 'double_ingots', or 'sheets'",
+            "These will be used to determine what metal is an item for the purpose of rendering it in an ingot or sheet pile",
+            "This is a list of tag names (not including the 'c' namespace), that look like the above (so i.e. 'ingots/not_a_real_metal') that should not be included"
+        ).define("", List.of(), e -> true);
 
         builder.swap("blocks").push("farmland");
 
@@ -453,7 +459,6 @@ public class ServerConfig extends BaseConfig
         maxPlacedItemSize = builder.comment("The maximum size of items that can be placed as 4 items on the ground with V. If an item is larger than this, it could still be placed with the 'maxPlacedLargeItemSize' option.").define("maxPlacedItemSize", Size.LARGE);
         maxPlacedLargeItemSize = builder.comment("The maximum size of items that can be placed as a single item on the ground with V. Items are checked to see if they're the right size to be placed in a group of 4 items first.").define("maxPlacedLargeItemSize", Size.HUGE);
         enablePlacingItems = builder.comment("If true, players can place items on the ground with V.").define("enablePlacingItems", true);
-        usePlacedItemWhitelist = builder.comment("If true, the tag 'tfc:placed_item_whitelist' will be checked to allow items to be in placed items and will exclude everything else.").define("usePlacedItemWhitelist", false);
 
         builder.swap("charcoalForge");
 
@@ -636,7 +641,10 @@ public class ServerConfig extends BaseConfig
         enableVanillaWeatherEffects = builder.comment("If true, vanilla's snow and ice formation mechanics will be used, and none of the TFC mechanics (improved snow and ice placement, snow stacking, icicle formation, passive snow or ice melting) will exist.").define("enableVanillaWeatherEffects", false);
         enableVanillaSkeletonHorseSpawning = builder.comment("If true, vanilla will attempt to spawn skeleton 'trap' horses during thunderstorms.").define("enableVanillaSkeletonHorseSpawning", false);
         enableVanillaMobsSpawningWithEnchantments = builder.comment("If true, enables the default vanilla behavior of mobs spawning with enchanted weapons sometimes.").define("enableVanillaMobsSpawningWithEnchantments", false);
-        enableVanillaMobsSpawningWithVanillaEquipment = builder.comment("If true, enables the default behavior of mobs spawning with vanilla armor and weapons").define("enableVanillaMobsSpawningWithVanillaEquipment", false);
+        enableVanillaMobsSpawningWithVanillaEquipment = builder.comment(
+            "If true, mobs will spawn with vanilla armor",
+            "If false, mobs will spawn with TFC armor"
+        ).define("enableVanillaMobsSpawningWithVanillaEquipment", false);
         enableVanillaGolems = builder.comment("If true, golems can be built").define("enableVanillaGolems", false);
         enableVanillaMonsters = builder.comment("If true, vanilla monsters are able to spawn. If false, the 'enableVanillaMonstersOnSurface' config option is not used, and all spawns are denied.").define("enableVanillaMonsters", true);
         enableVanillaMonstersOnSurface = builder.comment("If true, vanilla monsters will spawn on the surface instead of just underground. If false, vanilla monsters will not spawn on the surface.").define("enableVanillaMonstersOnSurface", false);

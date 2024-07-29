@@ -26,6 +26,6 @@ public class QuernRecipeCategory extends SimpleItemRecipeCategory<QuernRecipe>
     @Override
     protected TagKey<Item> getToolTag()
     {
-        return TFCTags.Items.HANDSTONE;
+        return TFCTags.Items.QUERN_HANDSTONES;
     }
 }

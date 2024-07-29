@@ -6,77 +6,51 @@
 
 package net.dries007.tfc.util.data;
 
-import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.Map;
-import java.util.Optional;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.component.heat.IHeat;
-import net.dries007.tfc.network.StreamCodecs;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.Codecs;
 
 
 /**
  * @param fluid The fluid corresponding to this fluid heat
- * @param tier The tier of this fluid
  * @param meltTemperature The temperature at which this fluid melts
  * @param specificHeatCapacity The Specific Heat Capacity of the metal. Units of Energy / (°C * mB)
  */
 public record FluidHeat(
     Fluid fluid,
-
-    int tier,
     float meltTemperature,
-    float specificHeatCapacity,
-
-    ResourceLocation textureId,
-    ResourceLocation softTextureId,
-    String translationKey,
-
-    Optional<Ingredient> ingots,
-    Optional<Ingredient> doubleIngots,
-    Optional<Ingredient> sheets
+    float specificHeatCapacity
 ) {
     public static final Codec<FluidHeat> CODEC = RecordCodecBuilder.create(i -> i.group(
         Codecs.FLUID.fieldOf("fluid").forGetter(c -> c.fluid),
-        Codec.INT.fieldOf("tier").forGetter(c -> c.tier),
         Codec.FLOAT.fieldOf("melt_temperature").forGetter(c -> c.meltTemperature),
-        Codec.FLOAT.fieldOf("specific_heat_capacity").forGetter(c -> c.specificHeatCapacity),
-        Ingredient.CODEC.optionalFieldOf("ingots").forGetter(c -> c.ingots),
-        Ingredient.CODEC.optionalFieldOf("double_ingots").forGetter(c -> c.doubleIngots),
-        Ingredient.CODEC.optionalFieldOf("sheets").forGetter(c -> c.sheets)
+        Codec.FLOAT.fieldOf("specific_heat_capacity").forGetter(c -> c.specificHeatCapacity)
     ).apply(i, FluidHeat::new));
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, FluidHeat> STREAM_CODEC = StreamCodecs.composite(
+    public static final StreamCodec<RegistryFriendlyByteBuf, FluidHeat> STREAM_CODEC = StreamCodec.composite(
         ByteBufCodecs.registry(Registries.FLUID), c -> c.fluid,
-        ByteBufCodecs.VAR_INT, c -> c.tier,
         ByteBufCodecs.FLOAT, c -> c.meltTemperature,
         ByteBufCodecs.FLOAT, c -> c.specificHeatCapacity,
-        ByteBufCodecs.optional(Ingredient.CONTENTS_STREAM_CODEC), c -> c.ingots,
-        ByteBufCodecs.optional(Ingredient.CONTENTS_STREAM_CODEC), c -> c.doubleIngots,
-        ByteBufCodecs.optional(Ingredient.CONTENTS_STREAM_CODEC), c -> c.sheets,
         FluidHeat::new
     );
 
     public static final ResourceLocation UNKNOWN_ID = Helpers.identifier("unknown");
 
     public static final DataManager<FluidHeat> MANAGER = new DataManager<>(Helpers.identifier("fluid_heat"), CODEC, STREAM_CODEC);
-    private static final Map<Fluid, FluidHeat> CACHE = new HashMap<>();
+    private static final Map<Fluid, FluidHeat> BY_FLUID = new IdentityHashMap<>();
 
     /**
      * Reverse lookup for metals attached to fluids.
@@ -88,12 +62,12 @@ public record FluidHeat(
     @Nullable
     public static FluidHeat get(Fluid fluid)
     {
-        return CACHE.get(fluid);
+        return BY_FLUID.get(fluid);
     }
 
     public static FluidHeat getOrUnknown(FluidStack fluid)
     {
-        return CACHE.getOrDefault(fluid.getFluid(), unknown());
+        return BY_FLUID.getOrDefault(fluid.getFluid(), unknown());
     }
 
     /**
@@ -104,45 +78,16 @@ public record FluidHeat(
         return MANAGER.getOrThrow(UNKNOWN_ID);
     }
 
-    /**
-     * @return The matching metal for a given ingot, as defined by the metal itself.
-     */
-    @Nullable
-    public static FluidHeat getFromIngot(ItemStack stack)
-    {
-        for (FluidHeat metal : MANAGER.getValues())
-        {
-            if (metal.isIngot(stack) || metal.isDoubleIngot(stack))
-            {
-                return metal;
-            }
-        }
-        return null;
-    }
-
-    @Nullable
-    public static FluidHeat getFromSheet(ItemStack stack)
-    {
-        for (FluidHeat metal : MANAGER.getValues())
-        {
-            if (metal.isSheet(stack))
-            {
-                return metal;
-            }
-        }
-        return null;
-    }
-
     public static void updateCache()
     {
         // Ensure 'unknown' metal exists
         unknown();
 
         // Reload fluid -> metal map
-        CACHE.clear();
-        for (FluidHeat metal : MANAGER.getValues())
+        BY_FLUID.clear();
+        for (FluidHeat heat : MANAGER.getValues())
         {
-            CACHE.put(metal.fluid(), metal);
+            BY_FLUID.put(heat.fluid(), heat);
         }
     }
 
@@ -151,23 +96,7 @@ public record FluidHeat(
      */
     public FluidHeat(Fluid fluid)
     {
-        this(fluid, 0, 0, 0, Optional.empty(), Optional.empty(), Optional.empty());
-    }
-
-    public FluidHeat(Fluid fluid, int tier, float meltTemperature, float specificHeatCapacity, Optional<Ingredient> ingots, Optional<Ingredient> doubleIngots, Optional<Ingredient> sheets)
-    {
-        this(BuiltInRegistries.FLUID.getKey(fluid), fluid, tier, meltTemperature, specificHeatCapacity, ingots, doubleIngots, sheets);
-    }
-
-    private FluidHeat(ResourceLocation id, Fluid fluid, int tier, float meltTemperature, float specificHeatCapacity, Optional<Ingredient> ingots, Optional<Ingredient> doubleIngots, Optional<Ingredient> sheets)
-    {
-        this(
-            fluid, tier, meltTemperature, specificHeatCapacity,
-            id.withPrefix("block/metal/block/"),
-            id.withPrefix("block/metal/smooth/"),
-            "metal." + id.getNamespace() + "." + id.getPath(),
-            ingots, doubleIngots, sheets
-        );
+        this(fluid, 0, 0);
     }
 
     /**
@@ -177,25 +106,5 @@ public record FluidHeat(
     public float heatCapacity(float mB)
     {
         return specificHeatCapacity() * mB;
-    }
-
-    public MutableComponent getDisplayName()
-    {
-        return Component.translatable(translationKey);
-    }
-
-    public boolean isIngot(ItemStack stack)
-    {
-        return ingots.isPresent() && ingots.get().test(stack);
-    }
-
-    public boolean isDoubleIngot(ItemStack stack)
-    {
-        return ingots.isPresent() && ingots.get().test(stack);
-    }
-
-    public boolean isSheet(ItemStack stack)
-    {
-        return sheets.isPresent() && sheets.get().test(stack);
     }
 }

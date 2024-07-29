@@ -1,0 +1,9 @@
+{
+  "values": [
+    "tfc:metal/sheet/wrought_iron",
+    "tfc:metal/sheet/steel",
+    "tfc:metal/sheet/black_steel",
+    "tfc:metal/sheet/blue_steel",
+    "tfc:metal/sheet/red_steel"
+  ]
+}

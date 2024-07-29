@@ -1,15 +1,5 @@
 {
-  "double_ingots": {
-    "tag": "c:double_ingots/bronze"
-  },
   "fluid": "tfc:metal/bronze",
-  "ingots": {
-    "tag": "c:ingots/bronze"
-  },
   "melt_temperature": 950.0,
-  "sheets": {
-    "tag": "c:sheets/bronze"
-  },
-  "specific_heat_capacity": 0.008571429,
-  "tier": 2
+  "specific_heat_capacity": 0.008571429
 }

@@ -1,0 +1,9 @@
+{
+  "values": [
+    "#c:foods/grains",
+    "#c:foods/fruit",
+    "#c:foods/vegetable",
+    "#c:seeds",
+    "#c:foods/bread"
+  ]
+}

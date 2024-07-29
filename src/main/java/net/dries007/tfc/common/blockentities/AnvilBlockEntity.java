@@ -115,7 +115,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
             {
                 case SLOT_INPUT_MAIN, SLOT_INPUT_SECOND -> true;
                 case SLOT_HAMMER -> Helpers.isItem(stack, TFCTags.Items.TOOLS_HAMMER);
-                case SLOT_CATALYST -> Helpers.isItem(stack, TFCTags.Items.FLUX);
+                case SLOT_CATALYST -> Helpers.isItem(stack, TFCTags.Items.WELDING_FLUX);
                 default -> false;
             };
     }

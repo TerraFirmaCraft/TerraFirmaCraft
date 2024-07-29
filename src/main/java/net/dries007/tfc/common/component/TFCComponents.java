@@ -24,6 +24,7 @@ import net.neoforged.neoforge.event.ModifyDefaultComponentsEvent;
 import net.neoforged.neoforge.internal.RegistrationEvents;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import net.dries007.tfc.TerraFirmaCraft;
@@ -31,6 +32,7 @@ import net.dries007.tfc.common.TFCTiers;
 import net.dries007.tfc.common.component.fluid.FluidComponent;
 import net.dries007.tfc.common.component.food.FoodCapability;
 import net.dries007.tfc.common.component.food.FoodComponent;
+import net.dries007.tfc.common.component.food.FoodDefinition;
 import net.dries007.tfc.common.component.forge.ForgingBonus;
 import net.dries007.tfc.common.component.forge.ForgingComponent;
 import net.dries007.tfc.common.component.glass.GlassOperations;
@@ -87,7 +89,7 @@ public final class TFCComponents
         // Modify eggs to add the egg component's default non-fertilized value
         event.modify(Items.EGG, b -> b.set(EGG.get(), EggComponent.DEFAULT));
 
-        // Bump minecarts' default stack size up, to make them modifiable
+        // Bump minecarts default stack size up, to make them modifiable
         event.modify(Items.MINECART, b -> b.set(DataComponents.MAX_STACK_SIZE, 64));
     }
 
@@ -117,7 +119,8 @@ public final class TFCComponents
             final ItemStack stack = new ItemStack(item);
 
             final boolean hasFood = item.components().has(DataComponents.FOOD);
-            final boolean needsFood = FoodCapability.getDefinition(stack) != null;
+            final @Nullable FoodDefinition foodDef = FoodCapability.getDefinition(stack);
+            final boolean needsFood = foodDef != null && foodDef.edible();
 
             final int prevSize = item.components().getOrDefault(DataComponents.MAX_STACK_SIZE, 1);
             final int requestedSize = ItemSizeManager.getDefinition(stack).weight().stackSize;
@@ -150,15 +153,15 @@ public final class TFCComponents
         item.modifyDefaultComponentsFrom(patch);
     }
 
-    @SuppressWarnings("UnstableApiUsage")
+    private static final Field CAN_MODIFY_COMPONENTS = Helpers.uncheck(() -> {
+        @SuppressWarnings("UnstableApiUsage") final Field field = RegistrationEvents.class.getDeclaredField("canModifyComponents");
+        field.setAccessible(true);
+        return field;
+    });
+
     private static void setAllowComponentModifications(boolean value)
     {
-        Helpers.uncheck(() -> {
-            final Field field = RegistrationEvents.class.getDeclaredField("canModifyComponents");
-            field.setAccessible(true);
-            field.set(null, value);
-            return null;
-        });
+        Helpers.uncheck(() -> CAN_MODIFY_COMPONENTS.set(null, value));
     }
 
     private static <T> Id<T> register(String name, Codec<T> codec, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec)

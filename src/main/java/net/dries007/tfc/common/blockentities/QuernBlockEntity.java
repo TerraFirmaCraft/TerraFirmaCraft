@@ -182,7 +182,7 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        return slot != SLOT_HANDSTONE || Helpers.isItem(stack.getItem(), TFCTags.Items.HANDSTONE);
+        return slot != SLOT_HANDSTONE || Helpers.isItem(stack.getItem(), TFCTags.Items.QUERN_HANDSTONES);
     }
 
     @Override

@@ -1,15 +1,5 @@
 {
-  "double_ingots": {
-    "tag": "c:double_ingots/bismuth_bronze"
-  },
   "fluid": "tfc:metal/bismuth_bronze",
-  "ingots": {
-    "tag": "c:ingots/bismuth_bronze"
-  },
   "melt_temperature": 985.0,
-  "sheets": {
-    "tag": "c:sheets/bismuth_bronze"
-  },
-  "specific_heat_capacity": 0.008571429,
-  "tier": 2
+  "specific_heat_capacity": 0.008571429
 }

@@ -59,7 +59,7 @@ public class BuiltinItemSizes extends DataManagerProvider<ItemSizeDefinition> im
         add("vessels", TFCTags.Items.VESSELS, Size.NORMAL, Weight.HEAVY);
         add("large_vessels", TFCTags.Items.LARGE_VESSELS, Size.HUGE, Weight.HEAVY);
         add("molds", TFCTags.Items.MOLDS, Size.NORMAL, Weight.MEDIUM);
-        add("powders", TFCTags.Items.POWDERS, Size.TINY, Weight.VERY_LIGHT);
+        add("powders", TFCTags.Items.BOWL_POWDERS, Size.TINY, Weight.VERY_LIGHT);
         add("stick_bunch", TFCItems.STICK_BUNCH, Size.NORMAL, Weight.LIGHT);
         add("stick_bundle", TFCItems.STICK_BUNDLE, Size.VERY_LARGE, Weight.MEDIUM);
         add("jute", Ingredient.of(TFCItems.JUTE_FIBER, TFCItems.JUTE), Size.SMALL, Weight.VERY_LIGHT);
@@ -95,10 +95,10 @@ public class BuiltinItemSizes extends DataManagerProvider<ItemSizeDefinition> im
         add("anvils", TFCTags.Items.ANVILS, Size.HUGE, Weight.VERY_HEAVY);
         add("minecarts", TFCTags.Items.MINECARTS, Size.VERY_LARGE, Weight.VERY_HEAVY);
         add("looms", TFCTags.Items.LOOMS, Size.LARGE, Weight.VERY_HEAVY);
-        add("tuyeres", TFCTags.Items.TUYERES, Size.LARGE, Weight.HEAVY);
+        add("tuyeres", TFCTags.Items.BLAST_FURNACE_TUYERES, Size.LARGE, Weight.HEAVY);
         add("ores", TFCTags.Items.ORE_PIECES, Size.SMALL, Weight.MEDIUM);
         add("small_ores", TFCTags.Items.SMALL_ORE_PIECES, Size.SMALL, Weight.LIGHT);
-        add("jars", TFCTags.Items.JARS, Size.NORMAL, Weight.VERY_HEAVY);
+        add("jars", TFCTags.Items.SHELF_JARS, Size.NORMAL, Weight.VERY_HEAVY);
         add("empty_jars", Ingredient.of(TFCItems.EMPTY_JAR, TFCItems.EMPTY_JAR_WITH_LID), Size.NORMAL, Weight.LIGHT);
         add("glass_bottles", TFCTags.Items.GLASS_BOTTLES, Size.NORMAL, Weight.MEDIUM);
         add("windmill_blades", TFCTags.Items.WINDMILL_BLADES, Size.VERY_LARGE, Weight.VERY_HEAVY);
