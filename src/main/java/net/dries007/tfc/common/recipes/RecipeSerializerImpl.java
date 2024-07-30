@@ -12,9 +12,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 
-/**
- * This is simply a convenience class because that extends clause is rather bothersome
- */
 public record RecipeSerializerImpl<R extends Recipe<?>>(
     MapCodec<R> codec,
     StreamCodec<RegistryFriendlyByteBuf, R> streamCodec

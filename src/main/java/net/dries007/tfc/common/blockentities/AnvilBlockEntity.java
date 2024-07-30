@@ -447,6 +447,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
      */
     public void setInventoryFromOutsideWorld(ItemStack main, ItemStack hammer, ItemStack flux)
     {
+        // todo: does this need to use `getInternalStacks` ? Can it not just use `setStackInSlot` ?
         final NonNullList<ItemStack> internalStacks = inventory.getInternalStacks();
         internalStacks.set(SLOT_INPUT_MAIN, main);
         internalStacks.set(SLOT_HAMMER, hammer);

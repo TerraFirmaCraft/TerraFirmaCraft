@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.data;
 
-import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -29,7 +28,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
-import net.neoforged.neoforge.internal.RegistrationEvents;
 
 import net.dries007.tfc.data.providers.BuiltinBlockTags;
 import net.dries007.tfc.data.providers.BuiltinClimateRanges;
@@ -53,7 +51,6 @@ import net.dries007.tfc.data.providers.BuiltinPaintings;
 import net.dries007.tfc.data.providers.BuiltinRecipes;
 import net.dries007.tfc.data.providers.BuiltinSupports;
 import net.dries007.tfc.data.providers.BuiltinWorldPreset;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.PhysicalDamageType;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
@@ -64,8 +61,6 @@ public final class DataEntryPoint
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event)
     {
-        triggerComponentModificationsBeforeDataGen();
-
         final PackOutput output = event.getGenerator().getPackOutput();
 
         final var lookup = add(event, new DatapackBuiltinEntriesProvider(
@@ -143,16 +138,6 @@ public final class DataEntryPoint
             {
                 callback.accept(provider, tag -> tag(tag)::add);
             }
-        });
-    }
-
-    @SuppressWarnings("UnstableApiUsage")
-    private static void triggerComponentModificationsBeforeDataGen()
-    {
-        Helpers.uncheck(() -> {
-            final Method method = RegistrationEvents.class.getDeclaredMethod("modifyComponents");
-            method.setAccessible(true);
-            method.invoke(null);
         });
     }
 }

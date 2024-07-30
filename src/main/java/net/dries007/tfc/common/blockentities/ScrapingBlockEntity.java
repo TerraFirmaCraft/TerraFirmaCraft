@@ -27,7 +27,6 @@ import static net.dries007.tfc.TerraFirmaCraft.*;
 public class ScrapingBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 {
     private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.scraping");
-    private static final float[] NO_COLOR = {1f, 1f, 1f};
     @Nullable private ResourceLocation inputTexture = null;
     @Nullable private ResourceLocation outputTexture = null;
     private short positions = 0; // essentially a boolean[16]
@@ -61,7 +60,7 @@ public class ScrapingBlockEntity extends InventoryBlockEntity<ItemStackHandler>
             if (isComplete())
             {
                 final ItemStack currentItem = inventory.getStackInSlot(0);
-                final ScrapingRecipe recipe = getRecipe(currentItem);
+                final ScrapingRecipe recipe = ScrapingRecipe.getRecipe(currentItem);
                 if (recipe != null)
                 {
                     final ItemStack extraDrop = recipe.getExtraDrop().getSingleStack(currentItem);
@@ -72,7 +71,7 @@ public class ScrapingBlockEntity extends InventoryBlockEntity<ItemStackHandler>
                     inventory.setStackInSlot(0, recipe.assemble(currentItem));
                 }
             }
-            markForBlockUpdate();
+            markForSync();
         }
         level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
     }
@@ -82,13 +81,13 @@ public class ScrapingBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         if (color1 == null)
         {
             color1 = color;
-            markForBlockUpdate();
+            markForSync();
             return true;
         }
         else if (color2 == null)
         {
             color2 = color;
-            markForBlockUpdate();;
+            markForSync();
             return true;
         }
         return false;
@@ -107,7 +106,7 @@ public class ScrapingBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        return getRecipe(stack) != null;
+        return ScrapingRecipe.getRecipe(stack) != null;
     }
 
     @Override
@@ -149,15 +148,9 @@ public class ScrapingBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         if (!isComplete())
         {
             final ItemStack stack = inventory.getStackInSlot(0);
-            final ScrapingRecipe recipe = getRecipe(stack);
+            final ScrapingRecipe recipe = ScrapingRecipe.getRecipe(stack);
             inputTexture = recipe == null ? null : recipe.getInputTexture();
             outputTexture = recipe == null ? null : recipe.getOutputTexture();
         }
-    }
-
-    @Nullable
-    private ScrapingRecipe getRecipe(ItemStack stack)
-    {
-        return ScrapingRecipe.getRecipe(stack);
     }
 }

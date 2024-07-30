@@ -24,7 +24,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blocks.BloomBlock;
@@ -44,7 +43,7 @@ import net.dries007.tfc.util.calendar.ICalendarTickable;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
 
-public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackHandler> implements ICalendarTickable
+public class BloomeryBlockEntity extends TickableBlockEntity implements ICalendarTickable
 {
     private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.bloomery");
 
@@ -110,7 +109,7 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
 
     public BloomeryBlockEntity(BlockPos pos, BlockState state)
     {
-        super(TFCBlockEntities.BLOOMERY.get(), pos, state, defaultInventory(0), NAME);
+        super(TFCBlockEntities.BLOOMERY.get(), pos, state);
 
         inputStacks = new ArrayList<>();
     }
@@ -220,7 +219,7 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
         return inputStacks;
     }
 
-    @Override
+    // todo 1.21: call from onRemove() in the block
     public void ejectInventory()
     {
         dumpItems();

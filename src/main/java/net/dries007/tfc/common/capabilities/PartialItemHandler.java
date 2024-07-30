@@ -7,16 +7,32 @@
 package net.dries007.tfc.common.capabilities;
 
 import java.util.Arrays;
+import java.util.function.Function;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * A partially exposed item handler, implementing the actual handler part of {@link SidedHandler} for {@link net.minecraftforge.items.IItemHandler}s
- * This allows selective slots to be set as valid to insert or extract. Any other operations are denied.
+ * A partial implementation of an {@link IItemHandlerModifiable}, which exposes only access on certain, hardcoded slots
+ * @see SidedHandler
  */
 public class PartialItemHandler implements DelegateItemHandler
 {
+    public static Function<IItemHandlerModifiable, PartialItemHandler> only(int... slots)
+    {
+        return handler -> new PartialItemHandler(handler).insert(slots).extract(slots);
+    }
+
+    public static Function<IItemHandlerModifiable, PartialItemHandler> extractOnly(int... slots)
+    {
+        return handler -> new PartialItemHandler(handler).extract(slots);
+    }
+
+    public static Function<IItemHandlerModifiable, PartialItemHandler> insertOnly(int... slots)
+    {
+        return handler -> new PartialItemHandler(handler).insert(slots);
+    }
+
     private final IItemHandlerModifiable internal;
     private final boolean[] insertSlots;
     private final boolean[] extractSlots;

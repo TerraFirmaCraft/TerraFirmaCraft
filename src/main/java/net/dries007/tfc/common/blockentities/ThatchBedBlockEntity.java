@@ -7,14 +7,13 @@
 package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.ItemStackHandler;
@@ -47,7 +46,6 @@ public class ThatchBedBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     public void destroyBed()
     {
         ejectInventory();
-        invalidateCapabilities();
         if (level instanceof ServerLevel serverLevel)
         {
             Helpers.dropWithContext(serverLevel, headState, worldPosition, ctx -> {}, true);
@@ -66,9 +64,8 @@ public class ThatchBedBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     @Override
     public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
-        HolderGetter<Block> getter = getBlockGetter();
-        headState = NbtUtils.readBlockState(getter, tag.getCompound("HeadBlockState"));
-        footState = NbtUtils.readBlockState(getter, tag.getCompound("FootBlockState"));
+        headState = NbtUtils.readBlockState(provider.lookupOrThrow(Registries.BLOCK), tag.getCompound("HeadBlockState"));
+        footState = NbtUtils.readBlockState(provider.lookupOrThrow(Registries.BLOCK), tag.getCompound("FootBlockState"));
         super.loadAdditional(tag, provider);
     }
 }

@@ -24,7 +24,6 @@ import static net.dries007.tfc.TerraFirmaCraft.*;
 
 public class ToolRackBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 {
-
     private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.tool_rack");
 
     public ToolRackBlockEntity(BlockPos pos, BlockState state)
@@ -49,7 +48,7 @@ public class ToolRackBlockEntity extends InventoryBlockEntity<ItemStackHandler>
                     insertItem(slot, heldItem.split(1));
                     ItemHandlerHelper.giveItemToPlayer(player, extracted, player.getInventory().selected);
                 }
-                markForBlockUpdate();
+                markForSync();
                 return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
             // Just extract
@@ -57,7 +56,7 @@ public class ToolRackBlockEntity extends InventoryBlockEntity<ItemStackHandler>
             {
                 ItemHandlerHelper.giveItemToPlayer(player, inventory.extractItem(slot, 1, false), player.getInventory().selected);
             }
-            markForBlockUpdate();
+            markForSync();
             return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
         else if (shouldInsert)
@@ -66,7 +65,7 @@ public class ToolRackBlockEntity extends InventoryBlockEntity<ItemStackHandler>
             {
                 insertItem(slot, heldItem.split(1));
             }
-            markForBlockUpdate();
+            markForSync();
             return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
 

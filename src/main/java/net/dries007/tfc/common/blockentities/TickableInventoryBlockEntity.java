@@ -14,10 +14,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 
+/**
+ * An extension of {@link InventoryBlockEntity} for block entities that are ticking. This batches sync updates so that they
+ * only occur at most once per tick.
+ */
 public abstract class TickableInventoryBlockEntity<C extends IItemHandlerModifiable & INBTSerializable<CompoundTag>> extends InventoryBlockEntity<C>
 {
-    protected boolean needsClientUpdate;
-    protected boolean isDirty;
+    private boolean needsClientUpdate;
 
     protected TickableInventoryBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, InventoryFactory<C> inventory, Component defaultName)
     {
@@ -28,14 +31,8 @@ public abstract class TickableInventoryBlockEntity<C extends IItemHandlerModifia
     {
         if (needsClientUpdate)
         {
-            // only sync further down when we actually request it to be synced
             needsClientUpdate = false;
             super.markForSync();
-        }
-        if (isDirty)
-        {
-            isDirty = false;
-            super.markDirty();
         }
     }
 
@@ -43,11 +40,5 @@ public abstract class TickableInventoryBlockEntity<C extends IItemHandlerModifia
     public void markForSync()
     {
         needsClientUpdate = true;
-    }
-
-    @Override
-    public void markDirty()
-    {
-        isDirty = true;
     }
 }

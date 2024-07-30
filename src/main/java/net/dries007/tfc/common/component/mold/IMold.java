@@ -11,7 +11,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.capabilities.TFCCapabilities;
+import net.dries007.tfc.common.capabilities.ItemCapabilities;
 import net.dries007.tfc.common.component.heat.IHeat;
 
 /**
@@ -22,7 +22,7 @@ public interface IMold extends IFluidHandlerItem, IHeat
     @Nullable
     static IMold get(ItemStack stack)
     {
-        return stack.getCapability(TFCCapabilities.MOLD);
+        return stack.getCapability(ItemCapabilities.MOLD);
     }
 
     /**

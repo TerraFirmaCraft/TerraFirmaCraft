@@ -18,7 +18,6 @@ import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.capabilities.MoldLike;
 import net.dries007.tfc.common.component.mold.IMold;
 
 public class CastingCraftingRecipe extends CustomRecipe

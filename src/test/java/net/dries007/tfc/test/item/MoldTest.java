@@ -1,23 +1,17 @@
 package net.dries007.tfc.test.item;
 
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import org.junit.jupiter.api.Test;
 
-import net.dries007.tfc.common.capabilities.TFCCapabilities;
-import net.dries007.tfc.common.component.TFCComponents;
-import net.dries007.tfc.common.component.fluid.FluidComponent;
+import net.dries007.tfc.common.capabilities.ItemCapabilities;
 import net.dries007.tfc.common.component.mold.IMold;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.test.TestSetup;
 import net.dries007.tfc.util.Metal;
-import net.dries007.tfc.util.data.FluidHeat;
 
 import static net.dries007.tfc.test.TestAssertions.*;
 
@@ -29,8 +23,8 @@ public class MoldTest implements TestSetup
         final ItemStack stack = new ItemStack(TFCItems.MOLDS.get(Metal.ItemType.INGOT));
 
         assertNotNull(stack.getCapability(Capabilities.FluidHandler.ITEM));
-        assertNotNull(stack.getCapability(TFCCapabilities.HEAT));
-        assertNotNull(stack.getCapability(TFCCapabilities.MOLD));
+        assertNotNull(stack.getCapability(ItemCapabilities.HEAT));
+        assertNotNull(stack.getCapability(ItemCapabilities.MOLD));
     }
 
     @Test

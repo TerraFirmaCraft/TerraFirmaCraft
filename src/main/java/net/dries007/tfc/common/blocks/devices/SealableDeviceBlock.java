@@ -175,7 +175,6 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize, Toolt
         {
             entity.ejectInventory();
         }
-        entity.invalidateCapabilities();
     }
 
     /* Handles block states for redstone changes from neighbors and adjusts the block entities to match */

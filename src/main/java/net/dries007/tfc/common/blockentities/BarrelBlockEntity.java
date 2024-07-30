@@ -172,8 +172,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
     }
 
 
-
-    private final SidedHandler.Builder<IFluidHandler> sidedFluidInventory;
+    private final SidedHandler<IFluidHandler> sidedFluidInventory;
 
     @Nullable private RecipeHolder<SealedBarrelRecipe> recipe;
     private long lastUpdateTick = Integer.MIN_VALUE; // The last tick this barrel was updated in serverTick()
@@ -187,7 +186,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
     {
         super(TFCBlockEntities.BARREL.get(), pos, state, BarrelBlockEntity.BarrelInventory::new, NAME);
 
-        sidedFluidInventory = new SidedHandler.Builder<>(inventory);
+        sidedFluidInventory = new SidedHandler<>(inventory);
 
         if (TFCConfig.SERVER.barrelEnableAutomation.get())
         {
@@ -198,9 +197,15 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
                 .on(new PartialItemHandler(inventory).insert(SLOT_ITEM), facing)
                 .on(new PartialItemHandler(inventory).extract(SLOT_ITEM), facing.getOpposite());
             sidedFluidInventory
-                .on(new PartialFluidHandler(inventory).insert(), vertical ? Direction.UP : facing.getOpposite())
-                .on(new PartialFluidHandler(inventory).extract(), vertical ? d -> d != Direction.UP : d -> d == facing);
+                .on(PartialFluidHandler::insertOnly, vertical ? Direction.UP : facing.getOpposite())
+                .on(PartialFluidHandler::extractOnly, vertical ? d -> d != Direction.UP : d -> d == facing);
         }
+    }
+
+    @Nullable
+    public IFluidHandler getSidedFluidInventory(@Nullable Direction context)
+    {
+        return sidedFluidInventory.get(context);
     }
 
     @Nullable

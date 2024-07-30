@@ -12,6 +12,8 @@ import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.ItemCapability;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
+import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.component.TFCComponents;
@@ -29,7 +31,7 @@ import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.items.VesselItem;
 import net.dries007.tfc.util.Helpers;
 
-public final class TFCCapabilities
+public final class ItemCapabilities
 {
     /**
      * This is a capability provided by items that have custom heating behavior. It is not necessary to provide for the majority
@@ -49,8 +51,11 @@ public final class TFCCapabilities
      */
     public static final ItemCapability<IMold, @Nullable Void> MOLD = ItemCapability.createVoid(Helpers.identifier("mold"), IMold.class);
 
+    public static final ItemCapability<IFluidHandlerItem, @Nullable Void> FLUID = Capabilities.FluidHandler.ITEM;
+    public static final ItemCapability<IItemHandler, @Nullable Void> ITEM = Capabilities.ItemHandler.ITEM;
 
-    public static void onRegisterCapabilities(RegisterCapabilitiesEvent event)
+
+    public static void register(RegisterCapabilitiesEvent event)
     {
         final ItemLike[] molds = Stream.concat(
             TFCItems.MOLDS.values().stream(),
@@ -60,21 +65,21 @@ public final class TFCCapabilities
             )
         ).toArray(ItemLike[]::new);
 
-        event.registerItem(MOLD, TFCCapabilities::forMold, molds);
-        event.registerItem(HEAT, TFCCapabilities::forMold, molds);
-        event.registerItem(Capabilities.FluidHandler.ITEM, TFCCapabilities::forMold, molds);
+        event.registerItem(MOLD, ItemCapabilities::forMold, molds);
+        event.registerItem(HEAT, ItemCapabilities::forMold, molds);
+        event.registerItem(FLUID, ItemCapabilities::forMold, molds);
 
         final ItemLike[] vessels = Stream.concat(
             TFCItems.GLAZED_VESSELS.values().stream(),
             Stream.of(TFCItems.VESSEL)
         ).toArray(ItemLike[]::new);
 
-        event.registerItem(MOLD, TFCCapabilities::forVessel, vessels);
-        event.registerItem(HEAT, TFCCapabilities::forVessel, vessels);
-        event.registerItem(Capabilities.FluidHandler.ITEM, TFCCapabilities::forVessel, vessels);
-        event.registerItem(Capabilities.ItemHandler.ITEM, TFCCapabilities::forVessel, vessels);
+        event.registerItem(MOLD, ItemCapabilities::forVessel, vessels);
+        event.registerItem(HEAT, ItemCapabilities::forVessel, vessels);
+        event.registerItem(FLUID, ItemCapabilities::forVessel, vessels);
+        event.registerItem(ITEM, ItemCapabilities::forVessel, vessels);
 
-        event.registerItem(Capabilities.FluidHandler.ITEM, TFCCapabilities::forBucket,
+        event.registerItem(FLUID, ItemCapabilities::forBucket,
             TFCItems.JUG,
             TFCItems.WOODEN_BUCKET,
             TFCItems.RED_STEEL_BUCKET,

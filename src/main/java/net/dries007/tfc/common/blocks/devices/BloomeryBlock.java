@@ -40,6 +40,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -262,6 +263,12 @@ public class BloomeryBlock extends DeviceBlock implements EntityBlockExtension
                     default -> throw new IllegalArgumentException("Bloomery has no facing direction");
                 };
         }
+    }
+
+    @Override
+    protected void beforeRemove(InventoryBlockEntity<?> entity)
+    {
+        super.beforeRemove(entity);
     }
 
     @Override

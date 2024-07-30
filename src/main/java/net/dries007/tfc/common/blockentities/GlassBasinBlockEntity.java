@@ -11,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.sounds.SoundEvents;
@@ -78,7 +79,7 @@ public class GlassBasinBlockEntity extends TFCBlockEntity
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
         super.loadAdditional(tag, provider);
-        this.state = NbtUtils.readBlockState(getBlockGetter(), tag.getCompound("glassState"));
+        this.state = NbtUtils.readBlockState(provider.lookupOrThrow(Registries.BLOCK), tag.getCompound("glassState"));
     }
 
     @Override

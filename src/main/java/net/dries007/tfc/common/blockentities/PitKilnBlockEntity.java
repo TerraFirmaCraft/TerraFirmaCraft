@@ -80,7 +80,7 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
             {
                 pitKiln.emptyFuelContents();
                 level.setBlockAndUpdate(pos.above(), Blocks.AIR.defaultBlockState());
-                pitKiln.markForBlockUpdate();
+                pitKiln.markForSync();
 
                 convertPitKilnToPlacedItem(level, pos);
             }
@@ -256,12 +256,11 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
         return false;
     }
 
-    @VisibleForTesting
-    public void light()
+    private void light()
     {
         isLit = true;
         litTick = Calendars.SERVER.getTicks();
-        markForBlockUpdate();
+        markForSync();
     }
 
     public void emptyFuelContents()

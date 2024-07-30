@@ -229,7 +229,7 @@ public class PlacedItemBlockEntity extends InventoryBlockEntity<ItemStackHandler
         }
         else
         {
-            markForBlockUpdate();
+            markForSync();
         }
     }
 

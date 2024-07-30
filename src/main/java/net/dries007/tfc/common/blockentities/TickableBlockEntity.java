@@ -12,12 +12,12 @@ import net.minecraft.world.level.block.state.BlockState;
 
 
 /**
- * Like {@link TickableInventoryBlockEntity} for blocks without an inventory
+ * Like {@link TickableInventoryBlockEntity} for blocks without an inventory. Batches sync updates to at most happen once per
+ * tick, because the block entity should be ticking naturally anyway.
  */
 public abstract class TickableBlockEntity extends TFCBlockEntity
 {
-    protected boolean needsClientUpdate;
-    protected boolean isDirty;
+    private boolean needsClientUpdate;
 
     protected TickableBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
@@ -28,14 +28,8 @@ public abstract class TickableBlockEntity extends TFCBlockEntity
     {
         if (needsClientUpdate)
         {
-            // only sync further down when we actually request it to be synced
             needsClientUpdate = false;
             super.markForSync();
-        }
-        if (isDirty)
-        {
-            isDirty = false;
-            super.markDirty();
         }
     }
 
@@ -43,11 +37,5 @@ public abstract class TickableBlockEntity extends TFCBlockEntity
     public void markForSync()
     {
         needsClientUpdate = true;
-    }
-
-    @Override
-    public void markDirty()
-    {
-        isDirty = true;
     }
 }

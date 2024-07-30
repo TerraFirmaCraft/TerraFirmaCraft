@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Ore;
-import net.dries007.tfc.common.capabilities.TFCCapabilities;
+import net.dries007.tfc.common.capabilities.ItemCapabilities;
 import net.dries007.tfc.common.component.food.FoodCapability;
 import net.dries007.tfc.common.component.food.IFood;
 import net.dries007.tfc.common.component.heat.Heat;
@@ -80,8 +80,8 @@ public class VesselTest implements TestSetup
 
         assertNotNull(stack.getCapability(Capabilities.ItemHandler.ITEM));
         assertNotNull(stack.getCapability(Capabilities.FluidHandler.ITEM));
-        assertNotNull(stack.getCapability(TFCCapabilities.MOLD));
-        assertNotNull(stack.getCapability(TFCCapabilities.HEAT));
+        assertNotNull(stack.getCapability(ItemCapabilities.MOLD));
+        assertNotNull(stack.getCapability(ItemCapabilities.HEAT));
     }
 
     @Test

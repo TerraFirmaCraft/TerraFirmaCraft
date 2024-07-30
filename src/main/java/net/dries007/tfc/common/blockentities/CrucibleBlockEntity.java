@@ -162,8 +162,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         }
     }
 
-    private final SidedHandler.Builder<IFluidHandler> sidedFluidInventory;
-    private final SidedHandler.Noop<IHeatConsumer> sidedHeat;
+    private final SidedHandler<IFluidHandler> sidedFluidInventory;
     private final IntArrayBuilder syncableData;
 
     private final HeatingRecipe[] cachedRecipes;
@@ -191,7 +190,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         lastFillTicks = fastPourTicks = fastPourSlot = 0;
         lastUpdateTick = Integer.MIN_VALUE;
 
-        sidedFluidInventory = new SidedHandler.Builder<>(inventory);
+        sidedFluidInventory = new SidedHandler<>(inventory);
 
         // Inputs in top, the output slot is accessed via the sides
         if (TFCConfig.SERVER.crucibleEnableAutomation.get())
@@ -202,15 +201,18 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
 
             // Fluids go in the top and out the sides
             sidedFluidInventory
-                .on(new PartialFluidHandler(inventory).insert(), Direction.UP)
-                .on(new PartialFluidHandler(inventory).extract(), Direction.Plane.HORIZONTAL);
+                .on(PartialFluidHandler::insertOnly, Direction.UP)
+                .on(PartialFluidHandler::extractOnly, Direction.Plane.HORIZONTAL);
         }
-
-        // Heat can be accessed from all sides
-        sidedHeat = new SidedHandler.Noop<>(inventory);
 
         syncableData = new IntArrayBuilder()
             .add(() -> (int) temperature, value -> temperature = value);
+    }
+
+    @Nullable
+    public IFluidHandler getSidedFluidInventory(@Nullable Direction context)
+    {
+        return sidedFluidInventory.get(context);
     }
 
     public float getTemperature()

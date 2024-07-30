@@ -56,7 +56,7 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
 
     private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.pot");
 
-    private final SidedHandler.Builder<IFluidHandler> sidedFluidInventory;
+    private final SidedHandler<IFluidHandler> sidedFluidInventory;
     @Nullable private PotOutput output;
     @Nullable private PotRecipe cachedRecipe;
     private int boilingTicks, preBoilingTicks;
@@ -69,7 +69,7 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
         cachedRecipe = null;
         boilingTicks = preBoilingTicks = 0;
 
-        sidedFluidInventory = new SidedHandler.Builder<>(inventory);
+        sidedFluidInventory = new SidedHandler<>(inventory);
         syncableData.add(() -> boilingTicks, value -> boilingTicks = value);
 
         // Items in top, Fuel and fluid in sides, items and fluid out sides, fluid in top
@@ -80,9 +80,15 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
                 .on(new PartialItemHandler(inventory).insert(4, 5, 6, 7, 8), Direction.UP);
 
             sidedFluidInventory
-                .on(new PartialFluidHandler(inventory).insert(), Direction.UP)
-                .on(new PartialFluidHandler(inventory).extract(), Direction.Plane.HORIZONTAL);
+                .on(PartialFluidHandler::insertOnly, Direction.UP)
+                .on(PartialFluidHandler::extractOnly, Direction.Plane.HORIZONTAL);
         }
+    }
+
+    @Nullable
+    public IFluidHandler getSidedFluidInventory(@Nullable Direction context)
+    {
+        return sidedFluidInventory.get(context);
     }
 
     @Override

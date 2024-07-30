@@ -1,14 +1,10 @@
 package net.dries007.tfc.data.providers;
 
-import java.nio.file.Path;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.BiFunction;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
@@ -20,21 +16,6 @@ import net.dries007.tfc.util.data.DataManager;
 
 public abstract class DataManagerProvider<T> implements DataProvider
 {
-    /**
-     * For use in a test environment, sets up all data generated values of a given data manager, via the provided data provider,
-     * to initialize the runtime data manager. Requires registries to be setup already.
-     */
-    @SuppressWarnings("unchecked")
-    public static <T, P extends DataManagerProvider<T>> P setup(BiFunction<PackOutput, CompletableFuture<HolderLookup.Provider>, P> factory)
-    {
-        final RegistryAccess.Frozen lookup = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
-        final DataManagerProvider<T> provider = factory.apply(new PackOutput(Path.of("")), CompletableFuture.completedFuture(lookup));
-
-        provider.addData(lookup);
-        provider.manager.bindValues(provider.elements.buildOrThrow());
-        return (P) provider;
-    }
-
     private final DataManager<T> manager;
     private final CompletableFuture<HolderLookup.Provider> lookup;
     private final ImmutableMap.Builder<ResourceLocation, T> elements;

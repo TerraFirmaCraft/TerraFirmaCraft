@@ -73,7 +73,6 @@ public class DeviceBlock extends ExtendedBlock implements IForgeBlockExtension, 
         {
             entity.ejectInventory();
         }
-        entity.invalidateCapabilities();
     }
 
     protected enum InventoryRemoveBehavior

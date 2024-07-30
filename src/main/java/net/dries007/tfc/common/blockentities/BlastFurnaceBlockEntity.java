@@ -31,6 +31,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
@@ -209,7 +210,7 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
     private final List<ItemStack> fuelStacks; // Fuel items, consumed sequentially
 
     private final IntArrayBuilder syncedData;
-    private final SidedHandler.Builder<IFluidHandler> sidedFluidInventory;
+    private final SidedHandler<IFluidHandler> sidedFluidInventory;
 
     private final FluidTank outputFluidTank; // The output fluid, after converting from the input fluid. This is dripped into the container below, excess is voided.
     private FluidStack inputFluid; // The fluid, after melting from the input. This is immediately converted to output fluid, unless there isn't enough, in which case it is stored here as excess
@@ -239,13 +240,25 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
             .add(() -> lastKnownCapacity, value -> lastKnownCapacity = value)
             .add(() -> (int) temperature, value -> temperature = value);
 
-        sidedFluidInventory = new SidedHandler.Builder<>(inventory);
+        sidedFluidInventory = new SidedHandler<>(inventory);
 
         if (TFCConfig.SERVER.blastFurnaceEnableAutomation.get())
         {
-            sidedInventory.on(inventory, side -> true); // Insert tuyere from all sides
-            sidedFluidInventory.on(new PartialFluidHandler(inventory).extract(), side -> true); // Allow extracting fluid from all sides
+            sidedInventory.on(inventory, Helpers.DIRECTIONS); // Insert tuyere from all sides
+            sidedFluidInventory.on(PartialFluidHandler::extractOnly, Helpers.DIRECTIONS); // Allow extracting fluid from all sides
         }
+    }
+
+    @Override
+    public IItemHandler getSidedInventory(@Nullable Direction context)
+    {
+        return sidedInventory.get(context);
+    }
+
+    @Nullable
+    public IFluidHandler getSidedFluidInventory(@Nullable Direction context)
+    {
+        return sidedFluidInventory.get(context);
     }
 
     public int getCapacity()
