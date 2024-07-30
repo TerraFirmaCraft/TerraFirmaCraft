@@ -37,6 +37,20 @@ java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(modJavaVersion))
 }
 
+val generateModMetadata = tasks.register<ProcessResources>("generateModMetadata") {
+    val modReplacementProperties = mapOf(
+        "modId" to modId,
+        "modVersion" to modVersion,
+        "minecraftVersionRange" to "[$minecraftVersion,)",
+        "neoForgeVersionRange" to "[$neoForgeVersion,)",
+        "jeiVersionRange" to "[$jeiVersion,)"
+    )
+    inputs.properties(modReplacementProperties)
+    expand(modReplacementProperties)
+    from("src/main/templates")
+    into(layout.buildDirectory.dir("generated/sources/modMetadata"))
+}
+
 repositories {
     mavenCentral()
     mavenLocal()
@@ -64,7 +78,10 @@ repositories {
 
 sourceSets {
     main {
-        resources { srcDir(modDataOutput) }
+        resources {
+            srcDir(modDataOutput)
+            srcDir(generateModMetadata)
+        }
     }
     create("data")
     create("deprecated")
@@ -152,16 +169,6 @@ license {
 
 tasks {
     processResources {
-        val modReplacementProperties = mapOf(
-            "modId" to modId,
-            "modVersion" to modVersion,
-            "minecraftVersionRange" to "[$minecraftVersion,)",
-            "neoForgeVersionRange" to "[$neoForgeVersion,)",
-        )
-
-        inputs.properties(modReplacementProperties)
-        filesMatching(listOf("book.json", "META-INF/neoforge.mods.toml")) { expand(modReplacementProperties) }
-
         if (modIsInCI) {
             doLast {
                 val jsonMinifyStart: Long = System.currentTimeMillis()
@@ -194,6 +201,10 @@ tasks {
         manifest {
             attributes["Implementation-Version"] = project.version
         }
+    }
+
+    named("neoForgeIdeSync") {
+        dependsOn(generateModMetadata)
     }
 }
 

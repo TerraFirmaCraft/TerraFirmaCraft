@@ -24,7 +24,7 @@ issueTrackerURL = "https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues"
 [[dependencies.tfc]]
     modId = "jei"
     type = "optional"
-    versionRange = "[15.1.0.19,)"
+    versionRange = "${jeiVersionRange}"
     ordering = "NONE"
     side = "CLIENT"
 
