@@ -23,7 +23,6 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterators;
 import com.machinezoo.noexception.throwing.ThrowingRunnable;
@@ -98,7 +97,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.fml.ModList;
 import net.neoforged.fml.util.thread.EffectiveSide;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -142,22 +140,10 @@ public final class Helpers
      */
     public static final boolean ASSERTIONS_ENABLED = detectAssertionsEnabled();
 
-    /**
-     * If the current environment is a bootstrapped one, i.e. one outside the transforming class loader, such as /gradlew test launch
-     */
-    public static final boolean BOOTSTRAP_ENVIRONMENT = detectBootstrapEnvironment();
-
-    /**
-     * If the current one includes test source sets, i.e. gametest, indev, or ./gradlew test
-     */
-    public static final boolean TEST_ENVIRONMENT = detectTestSourcesPresent();
-
 
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final int PRIME_X = 501125321;
     private static final int PRIME_Y = 1136930381;
-
-    private static final Supplier<Boolean> JEI = Suppliers.memoize(() -> ModList.get().isLoaded("jei"));
 
     @Nullable private static RecipeManager CACHED_RECIPE_MANAGER = null;
 
@@ -194,11 +180,6 @@ public final class Helpers
         return ResourceLocation.fromNamespaceAndPath(domain, path);
     }
 
-    public static boolean isJEIEnabled()
-    {
-        return JEI.get();
-    }
-
     @Nullable
     public static <T, C> T getCapability(BlockCapability<T, @Nullable C> capability, Level level, BlockPos pos)
     {
@@ -232,12 +213,6 @@ public final class Helpers
     public static <T> boolean mightHaveCapability(ItemStack stack, ItemCapability<T, Void> capability)
     {
         return stack.copyWithCount(1).getCapability(capability) != null;
-    }
-
-    public static <T1, T2> boolean mightHaveCapability(ItemStack stack, ItemCapability<T1, Void> first, ItemCapability<T2, Void> second)
-    {
-        final ItemStack copy = stack.copyWithCount(1);
-        return copy.getCapability(first) != null && copy.getCapability(second) != null;
     }
 
     /**
@@ -301,20 +276,6 @@ public final class Helpers
         return String.join(".", MOD_ID, "enum", enumName, anEnum.name()).toLowerCase(Locale.ROOT);
     }
 
-    /**
-     * Normally, one would just call {@link Level#isClientSide()}
-     * HOWEVER
-     * There exists a BIG HUGE PROBLEM in very specific scenarios with this
-     * Since World's isClientSide() actually returns the isClientSide boolean, which is set AT THE END of the World constructor, many things may happen before this is set correctly. Mostly involving world generation.
-     * At this point, THE CLIENT WORLD WILL RETURN {@code false} to {@link Level#isClientSide()}
-     *
-     * So, this does a roundabout check "is this instanceof ClientWorld or not" without classloading shenanigans.
-     */
-    public static boolean isClientSide(LevelReader world)
-    {
-        return world instanceof Level ? !(world instanceof ServerLevel) : world.isClientSide();
-    }
-
     @Nullable
     @SuppressWarnings("deprecation")
     public static Level getUnsafeLevel(Object maybeLevel)
@@ -332,7 +293,7 @@ public final class Helpers
 
     public static BlockHitResult rayTracePlayer(Level level, Player player, ClipContext.Fluid mode)
     {
-        return ItemProtectedAccessor.invokeGetPlayerPOVHitResult(level, player, mode);
+        return /* protected */ Item.getPlayerPOVHitResult(level, player, mode);
     }
 
     /**
@@ -1186,8 +1147,8 @@ public final class Helpers
     }
 
     /**
-     * Creates a new immutable list containing {@code n} new, seperate instances of {@code T} produced by the given {@code factory}. This is unlike
-     * {@link Collections#nCopies(int, Object)} in that it produces seperate instance, and consumes memory poportional to O(n). However, in
+     * Creates a new immutable list containing {@code n} new, separate instances of {@code T} produced by the given {@code factory}. This is unlike
+     * {@link Collections#nCopies(int, Object)} in that it produces separate instance, and consumes memory proportional to O(n). However, in
      * the event the underlying elements are interior mutable, this creates a safe to modify list.
      * @see Collections#nCopies(int, Object)
      */
@@ -1202,11 +1163,12 @@ public final class Helpers
     /**
      * For when you want to ignore every possible safety measure in front of you
      */
-    public static <T> T uncheck(ThrowingSupplier<T> action)
+    @SuppressWarnings("unchecked")
+    public static <T> T uncheck(ThrowingSupplier<?> action)
     {
         try
         {
-            return action.get();
+            return (T) action.get();
         }
         catch (Throwable e)
         {
@@ -1663,40 +1625,5 @@ public final class Helpers
         boolean enabled = false;
         assert enabled = true;
         return enabled;
-    }
-
-    /**
-     * Detect if we are in a bootstrapped environment - one where transforming and many MC/Forge mechanics are not properly setup
-     * This detects i.e. when running from /gradlew test, and some things have to be avoided (for instance, invoking Forge registry methods)
-     */
-    private static boolean detectBootstrapEnvironment()
-    {
-        return System.getProperty("forge.enabledGameTestNamespaces") == null && detectTestSourcesPresent();
-    }
-
-    /**
-     * Detect if test sources are present, if we're running from an environment which includes TFC's test sources
-     * This can happen through a gametest launch, TFC dev launch (since we include test sources), or through gradle test
-     */
-    private static boolean detectTestSourcesPresent()
-    {
-        try
-        {
-            Class.forName("net.dries007.tfc.test.TestSetup");
-            return true;
-        }
-        catch (ClassNotFoundException e) { /* Guess not */ }
-        return false;
-    }
-
-    static abstract class ItemProtectedAccessor extends Item
-    {
-        static BlockHitResult invokeGetPlayerPOVHitResult(Level level, Player player, ClipContext.Fluid mode)
-        {
-            return /* protected */ Item.getPlayerPOVHitResult(level, player, mode);
-        }
-
-        @SuppressWarnings("ConstantConditions")
-        private ItemProtectedAccessor() { super(null); } // Never called
     }
 }

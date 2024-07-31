@@ -30,7 +30,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.client.sounds.WeighedSoundEvents;
-import net.minecraft.core.Registry;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.locale.Language;
@@ -38,8 +38,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.Bootstrap;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.TagKey;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -47,26 +46,19 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.SlabBlock;
-import net.minecraft.world.level.block.StairBlock;
-import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.bus.api.Event;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.slf4j.Logger;
 
 import net.dries007.tfc.common.TFCCreativeTabs;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.BloomBlock;
-import net.dries007.tfc.common.blocks.EntityBlockExtension;
-import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.IcePileBlock;
 import net.dries007.tfc.common.blocks.MoltenBlock;
 import net.dries007.tfc.common.blocks.PouredGlassBlock;
@@ -83,7 +75,6 @@ import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.blocks.plant.fruit.GrowingFruitTreeBranchBlock;
 import net.dries007.tfc.common.blocks.rock.RockAnvilBlock;
 import net.dries007.tfc.common.blocks.rock.RockDisplayCategory;
-import net.dries007.tfc.common.component.food.FoodCapability;
 import net.dries007.tfc.common.component.food.Nutrient;
 import net.dries007.tfc.common.component.forge.ForgeStep;
 import net.dries007.tfc.common.component.forge.ForgingBonus;
@@ -96,23 +87,26 @@ import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.BarrelRecipe;
 import net.dries007.tfc.common.recipes.RecipeHelpers;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.calendar.Day;
 import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.util.climate.KoppenClimateClassification;
 import net.dries007.tfc.util.data.Drinkable;
 import net.dries007.tfc.world.chunkdata.ForestType;
 
-import static net.dries007.tfc.TerraFirmaCraft.*;
-
 /**
- * Central location for all self tests
- * These are tests that are performed at runtime for various static analysis purposes.
- * None of these are executed unless {@link Helpers#ASSERTIONS_ENABLED} is {@code true}.
+ * These are various tests, including utilities for addons to utilize these if they wish, to execute tests of the mod runtime, for example
+ * validating that translations, models, loot tables, all exist. This also houses a series of datapack validations, which are useful to
+ * provide to pack makers if they so desire.
+ * <p>
+ * Self tests (client and server) are enabled via the system property {@code tfc.enableDebugSelfTests}, which can be set in your {@code build.gradle}
+ * if desired. Datapack self tests are enabled via a config option.
  */
 public final class SelfTests
 {
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final boolean THROW_ON_SELF_TEST_FAIL = false; // todo 1.21, re-enable
+    private static final boolean RUN_SELF_TESTS = Boolean.getBoolean("tfc.enableDebugSelfTests");
 
     private static boolean EXTERNAL_ERROR = false;
 
@@ -125,11 +119,10 @@ public final class SelfTests
     public static void runClientSelfTests()
     {
         NeoForge.EVENT_BUS.post(new ClientSelfTestEvent()); // For other mods, as this is invoked via a tricky mixin
-        if (Helpers.TEST_ENVIRONMENT)
+        if (RUN_SELF_TESTS)
         {
             final Stopwatch tick = Stopwatch.createStarted();
             throwIfAny(
-                validateOwnBlockEntities(),
                 validateModels(),
                 validateTranslationsAndCreativeTabs()
             );
@@ -137,15 +130,13 @@ public final class SelfTests
         }
     }
 
-    public static void runServerSelfTests()
+    public static void runServerSelfTests(MinecraftServer server)
     {
-        if (Helpers.TEST_ENVIRONMENT)
+        if (RUN_SELF_TESTS)
         {
             final Stopwatch tick = Stopwatch.createStarted();
             throwIfAny(
-                validateOwnBlockLootTables(),
-                validateOwnBlockMineableTags(),
-                validateOwnBlockTags(),
+                validateOwnBlockLootTables(server),
                 EXTERNAL_ERROR
             );
             LOGGER.info("Server self tests passed in {}", tick.stop());
@@ -154,67 +145,30 @@ public final class SelfTests
 
     public static void runDataPackTests(RecipeManager manager)
     {
-        final Stopwatch tick = Stopwatch.createStarted();
-        throwIfAny(
-            validateFoodsAreFoods(),
-            validateJugDrinkable(),
-            validatePotFluidUsability(manager),
-            validateBarrelFluidUsability(manager),
-            validateUniqueBloomeryRecipes(manager),
-            validateUniqueLoomRecipes(manager),
-            validateMoldsCanContainCastingIngredients(manager),
-            validateHeatingRecipeIngredientsAreHeatable(manager)
-        );
-        LOGGER.info("Data pack self tests passed in {}", tick.stop());
+        if (TFCConfig.COMMON.enableDatapackTests.get())
+        {
+            final Stopwatch tick = Stopwatch.createStarted();
+            throwIfAny(
+                validateJugDrinkable(),
+                validatePotFluidUsability(manager),
+                validateBarrelFluidUsability(manager),
+                validateUniqueBloomeryRecipes(manager),
+                validateUniqueLoomRecipes(manager),
+                validateMoldsCanContainCastingIngredients(manager),
+                validateHeatingRecipeIngredientsAreHeatable(manager)
+            );
+            LOGGER.info("Data pack self tests passed in {}", tick.stop());
+        }
     }
 
     // Public Self Test API
 
     /**
-     * Iterate the values of a registry, filtered by mod ID
-     */
-    public static <T> Stream<T> stream(Registry<T> registry, String modID)
-    {
-        return registry.stream()
-            .filter(e -> {
-                final var key = registry.getKey(e);
-                assert key != null;
-                return key.getNamespace().equals(modID);
-            });
-    }
-
-    /**
      * Used in {@code stream().flatMap(states(state predicate))} to obtain all blocks matching a state predicate.
      */
-    public static Function<Block, Stream<BlockState>> states(Predicate<BlockState> filter)
+    public static Function<Holder<? extends Block>, Stream<BlockState>> states(Predicate<BlockState> filter)
     {
-        return block -> block.getStateDefinition().getPossibleStates().stream().filter(filter);
-    }
-
-    /**
-     * Validates that blocks declare the right combination of {@link EntityBlock}, {@link EntityBlockExtension} and {@link IForgeBlockExtension}, if they have a block entity.
-     */
-    public static boolean validateBlockEntities(Stream<Block> blocks, Logger logger)
-    {
-        final List<Block> fbeButNoEbe = new ArrayList<>(), ebeButNoFbe = new ArrayList<>(), ebButNoEbe = new ArrayList<>();
-        blocks.forEach(b -> {
-            if (b instanceof IForgeBlockExtension ex && ex.getExtendedProperties().hasBlockEntity() && !(b instanceof EntityBlockExtension))
-            {
-                fbeButNoEbe.add(b);
-            }
-            if (b instanceof EntityBlockExtension && (!(b instanceof IForgeBlockExtension ex) || !ex.getExtendedProperties().hasBlockEntity()))
-            {
-                ebeButNoFbe.add(b);
-            }
-            if (b instanceof EntityBlock && !(b instanceof EntityBlockExtension))
-            {
-                ebButNoEbe.add(b);
-            }
-        });
-
-        return logRegistryErrors("{} blocks found that declare a block entity in IForgeBlockExtension but do not implement EntityBlockExtension", fbeButNoEbe, logger)
-            | logRegistryErrors("{} blocks found that implement EntityBlockExtension but do not declare a block entity in IForgeBlockExtension", ebeButNoFbe, logger)
-            | logRegistryErrors("{} blocks found that implement EntityBlock but do not implement EntityBlockExtension", ebButNoEbe, logger);
+        return block -> block.value().getStateDefinition().getPossibleStates().stream().filter(filter);
     }
 
     /**
@@ -253,24 +207,19 @@ public final class SelfTests
     /**
      * Validates that all blocks have a loot table defined.
      */
-    public static boolean validateBlockLootTables(Stream<Block> blocks, Logger logger)
+    public static boolean validateBlockLootTables(MinecraftServer server, List<Block> blocks, Logger logger)
     {
-        final Collection<ResourceLocation> lootTables = ServerLifecycleHooks.getCurrentServer()
+        final Collection<ResourceLocation> lootTables = server
             .reloadableRegistries()
             .get()
             .registryOrThrow(Registries.LOOT_TABLE)
             .keySet();
-        final List<Block> missingLootTables = blocks
+        final List<Block> missingLootTables = blocks.stream()
             .filter(b -> !lootTables.contains(b.getLootTable().location()))
             .filter(b -> !b.defaultBlockState().isAir())
             .toList();
 
         return logRegistryErrors("{} blocks found with a non-existent loot table:", missingLootTables, logger);
-    }
-
-    public static boolean validateBlocksHaveTag(Stream<Block> blocks, TagKey<Block> tag, Logger logger)
-    {
-        return logRegistryErrors("{} blocks are missing the #" + tag.location() + " tag", blocks.filter(b -> !Helpers.isBlock(b, tag)).toList(), logger);
     }
 
     public static <T> boolean logErrors(String error, Collection<T> errors, Logger logger)
@@ -310,7 +259,7 @@ public final class SelfTests
     {
         for (boolean error : errors)
         {
-            if (error && THROW_ON_SELF_TEST_FAIL && Helpers.ASSERTIONS_ENABLED)
+            if (error && THROW_ON_SELF_TEST_FAIL)
             {
                 throw new AssertionError("Self Tests Failed! Fix the above errors!");
             }
@@ -324,44 +273,17 @@ public final class SelfTests
         EXTERNAL_ERROR = true;
     }
 
-    private static boolean validateOwnBlockEntities()
-    {
-        return validateBlockEntities(stream(BuiltInRegistries.BLOCK, MOD_ID), LOGGER);
-    }
-
-    private static boolean validateOwnBlockLootTables()
+    private static boolean validateOwnBlockLootTables(MinecraftServer server)
     {
         final Set<Block> expectedNoLootTableBlocks = Stream.of(TFCBlocks.PLACED_ITEM, TFCBlocks.PIT_KILN, TFCBlocks.LOG_PILE, TFCBlocks.BURNING_LOG_PILE, TFCBlocks.BLOOM, TFCBlocks.MOLTEN, TFCBlocks.SCRAPING, TFCBlocks.THATCH_BED, TFCBlocks.INGOT_PILE, TFCBlocks.DOUBLE_INGOT_PILE, TFCBlocks.SHEET_PILE, TFCBlocks.PLANTS.get(Plant.GIANT_KELP_PLANT), TFCBlocks.PUMPKIN, TFCBlocks.MELON, TFCBlocks.CAKE, TFCBlocks.CALCITE, TFCBlocks.ICICLE, TFCBlocks.RIVER_WATER, TFCBlocks.SPRING_WATER, TFCBlocks.LIGHT, TFCBlocks.SALTWATER_BUBBLE_COLUMN, TFCBlocks.FRESHWATER_BUBBLE_COLUMN, TFCBlocks.HOT_POURED_GLASS, TFCBlocks.GLASS_BASIN, TFCBlocks.JARS)
             .map(Supplier::get)
             .collect(Collectors.toSet());
         final Set<Class<?>> expectedNoLootTableClasses = ImmutableSet.of(BodyPlantBlock.class, GrowingFruitTreeBranchBlock.class, LiquidBlock.class, BranchingCactusBlock.class, GrowingBranchingCactusBlock.class, PouredGlassBlock.class);
-        return validateBlockLootTables(stream(BuiltInRegistries.BLOCK, MOD_ID)
-            .filter(b -> !expectedNoLootTableBlocks.contains(b)).filter(b -> !expectedNoLootTableClasses.contains(b.getClass())), LOGGER);
-    }
-
-    private static boolean validateOwnBlockMineableTags()
-    {
-        final Set<Block> expectedNotMineableBlocks = Stream.of(TFCBlocks.PLACED_ITEM, TFCBlocks.PIT_KILN, TFCBlocks.SCRAPING, TFCBlocks.CANDLE, TFCBlocks.DYED_CANDLE.values(), TFCBlocks.CANDLE_CAKE, TFCBlocks.CAKE, TFCBlocks.DYED_CANDLE_CAKES.values(), TFCBlocks.HOT_POURED_GLASS, TFCBlocks.GLASS_BASIN, TFCBlocks.POURED_GLASS, TFCBlocks.COLORED_POURED_GLASS.values()).<Supplier<? extends Block>>flatMap(Helpers::flatten).map(Supplier::get).collect(Collectors.toSet());
-        final Set<TagKey<Block>> mineableTags = Set.of(
-            BlockTags.MINEABLE_WITH_AXE, BlockTags.MINEABLE_WITH_HOE, BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.MINEABLE_WITH_SHOVEL,
-            TFCTags.Blocks.MINEABLE_WITH_PROPICK, TFCTags.Blocks.MINEABLE_WITH_HAMMER, TFCTags.Blocks.MINEABLE_WITH_KNIFE, TFCTags.Blocks.MINEABLE_WITH_SCYTHE, TFCTags.Blocks.MINEABLE_WITH_CHISEL
-        );
-        // All non-fluid, non-exceptional, blocks with hardness > 0, < infinity, should define a tool
-        final List<Block> missingTag = stream(BuiltInRegistries.BLOCK, MOD_ID)
-            .filter(b -> !(b instanceof LiquidBlock)
-                && b.defaultDestroyTime() > 0
-                && !expectedNotMineableBlocks.contains(b)
-                && mineableTags.stream().noneMatch(t -> Helpers.isBlock(b, t)))
-            .toList();
-
-        return logRegistryErrors("{} non-fluid blocks have no mineable_with_<tool> tag.", missingTag, LOGGER);
-    }
-
-    private static boolean validateOwnBlockTags()
-    {
-        return validateBlocksHaveTag(stream(BuiltInRegistries.BLOCK, MOD_ID).filter(b -> b instanceof WallBlock), BlockTags.WALLS, LOGGER)
-            | validateBlocksHaveTag(stream(BuiltInRegistries.BLOCK, MOD_ID).filter(b -> b instanceof StairBlock), BlockTags.STAIRS, LOGGER)
-            | validateBlocksHaveTag(stream(BuiltInRegistries.BLOCK, MOD_ID).filter(b -> b instanceof SlabBlock), BlockTags.SLABS, LOGGER);
+        return validateBlockLootTables(server, TFCBlocks.BLOCKS.getEntries()
+            .stream()
+            .map(Holder::value)
+            .filter(b -> !expectedNoLootTableBlocks.contains(b) && !expectedNoLootTableClasses.contains(b.getClass()))
+            .toList(), LOGGER);
     }
 
     /**
@@ -374,10 +296,12 @@ public final class SelfTests
         final BakedModel missingModel = shaper.getModelManager().getMissingModel();
         final TextureAtlasSprite missingParticle = missingModel.getParticleIcon();
 
-        final List<BlockState> missingModelErrors = stream(BuiltInRegistries.BLOCK, MOD_ID)
+        final List<BlockState> missingModelErrors = TFCBlocks.BLOCKS.getEntries()
+            .stream()
             .flatMap(states(s -> s.getRenderShape() == RenderShape.MODEL && shaper.getBlockModel(s) == missingModel))
             .toList();
-        final List<BlockState> missingParticleErrors = stream(BuiltInRegistries.BLOCK, MOD_ID)
+        final List<BlockState> missingParticleErrors = TFCBlocks.BLOCKS.getEntries()
+            .stream()
             .flatMap(states(s -> !s.isAir() && !(s.getBlock() instanceof IngotPileBlock) && !(s.getBlock() instanceof SheetPileBlock) && !(s.getBlock() instanceof ScrapingBlock) && shaper.getParticleIcon(s) == missingParticle))
             .toList();
 
@@ -403,7 +327,9 @@ public final class SelfTests
         }));
 
         final Set<Class<? extends Block>> blocksWithNoCreativeTabItem = Set.of(SnowPileBlock.class, IcePileBlock.class, BloomBlock.class, MoltenBlock.class, TFCLightBlock.class, RockAnvilBlock.class, PouredGlassBlock.class);
-        final List<Item> missingItems = stream(BuiltInRegistries.ITEM, MOD_ID)
+        final List<Item> missingItems = TFCItems.ITEMS.getEntries()
+            .stream()
+            .map(Holder::value)
             .filter(item -> !items.contains(item)
                 && (item != TFCItems.FILLED_PAN.get())
                 && !(item instanceof BlockItem bi && blocksWithNoCreativeTabItem.contains(bi.getBlock().getClass()))
@@ -431,14 +357,6 @@ public final class SelfTests
         return error | logErrors("{} missing translation keys:", missingTranslations, LOGGER);
     }
 
-    private static boolean validateFoodsAreFoods()
-    {
-        final List<Item> errors = Helpers.allItems(TFCTags.Items.FOODS)
-            .filter(item -> !FoodCapability.has(item.getDefaultInstance()))
-            .toList();
-        return logWarnings("{} items were in the tfc:foods tag but lacked a food definition", errors, LOGGER);
-    }
-
     private static boolean validateJugDrinkable()
     {
         final List<Fluid> errors = Helpers.allFluids(TFCTags.Fluids.USABLE_IN_JUG)
@@ -454,7 +372,7 @@ public final class SelfTests
             .flatMap(recipe -> RecipeHelpers.stream(recipe.value().getFluidIngredient()))
             .filter(fluid -> !Helpers.isFluid(fluid, TFCTags.Fluids.USABLE_IN_POT))
             .collect(Collectors.toSet());
-        return logErrors("{} fluids are listed in pot recieps that are not tagged as tfc:usable_in_pot", errors, LOGGER);
+        return logErrors("{} fluids are listed in pot recipes that are not tagged as tfc:usable_in_pot", errors, LOGGER);
     }
 
     private static boolean validateBarrelFluidUsability(RecipeManager manager)

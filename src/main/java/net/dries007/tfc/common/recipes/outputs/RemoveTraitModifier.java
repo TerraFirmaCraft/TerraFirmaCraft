@@ -15,14 +15,14 @@ import net.minecraft.world.item.ItemStack;
 import net.dries007.tfc.common.component.food.FoodCapability;
 import net.dries007.tfc.common.component.food.FoodTrait;
 
-public record RemoveTraitModifier(FoodTrait trait) implements ItemStackModifier
+public record RemoveTraitModifier(Holder<FoodTrait> trait) implements ItemStackModifier
 {
     public static final MapCodec<RemoveTraitModifier> CODEC = FoodTrait.CODEC.fieldOf("trait").xmap(RemoveTraitModifier::new, RemoveTraitModifier::trait);
     public static final StreamCodec<RegistryFriendlyByteBuf, RemoveTraitModifier> STREAM_CODEC = FoodTrait.STREAM_CODEC.map(RemoveTraitModifier::new, RemoveTraitModifier::trait);
 
     public static RemoveTraitModifier of(Holder<FoodTrait> trait)
     {
-        return new RemoveTraitModifier(trait.value());
+        return new RemoveTraitModifier(trait);
     }
 
     @Override

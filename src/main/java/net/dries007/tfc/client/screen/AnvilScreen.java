@@ -15,6 +15,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.screen.button.AnvilPlanButton;
 import net.dries007.tfc.client.screen.button.AnvilStepButton;
 import net.dries007.tfc.common.blockentities.AnvilBlockEntity;
@@ -60,7 +61,7 @@ public class AnvilScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilContai
         final Level level = blockEntity.getLevel();
         final int guiLeft = getGuiLeft(), guiTop = getGuiTop();
 
-        if (Helpers.isJEIEnabled())
+        if (TerraFirmaCraft.JEI)
         {
             graphics.blit(texture, guiLeft + 26, guiTop + 24, 0, 207, 9, 14);
         }

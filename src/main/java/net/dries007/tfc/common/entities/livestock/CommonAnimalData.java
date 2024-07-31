@@ -58,7 +58,7 @@ public record CommonAnimalData(
     private static final ClassTreeIdRegistry ID_REGISTRY = Helpers.uncheck(() -> {
         final Field field = SynchedEntityData.class.getDeclaredField("ID_REGISTRY");
         field.setAccessible(true);
-        return (ClassTreeIdRegistry) field.get(null);
+        return field.get(null);
     });
 
     /**

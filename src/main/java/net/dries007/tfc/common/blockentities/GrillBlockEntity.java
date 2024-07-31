@@ -90,7 +90,7 @@ public class GrillBlockEntity extends AbstractFirepitBlockEntity<ItemStackHandle
                 if (recipe != null && recipe.isValidTemperature(inputHeat.getTemperature()))
                 {
                     ItemStack output = recipe.assembleItem(inputStack);
-                    FoodCapability.applyTrait(output, FoodTraits.WOOD_GRILLED.value());
+                    FoodCapability.applyTrait(output, FoodTraits.WOOD_GRILLED);
                     inventory.setStackInSlot(slot, output);
                     markForSync();
                 }

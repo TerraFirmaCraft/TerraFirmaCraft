@@ -98,7 +98,7 @@ public class BowlBlock extends DeviceBlock
                     final int toSalt = Math.min(held.getCount(), current.getCount());
                     final ItemStack salted = held.split(toSalt);
 
-                    FoodCapability.applyTrait(salted, FoodTraits.SALTED.value());
+                    FoodCapability.applyTrait(salted, FoodTraits.SALTED);
                     ItemHandlerHelper.giveItemToPlayer(player, salted);
                     inventory.getStackInSlot(0).shrink(toSalt);
                     Helpers.playSound(level, pos, SoundEvents.SAND_PLACE);

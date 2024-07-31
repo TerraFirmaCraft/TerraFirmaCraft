@@ -1,20 +1,23 @@
 package net.dries007.tfc.data.providers;
 
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
 import java.util.stream.Stream;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.data.tags.TagsProvider;
+import net.minecraft.data.tags.VanillaItemTagsProvider;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagBuilder;
 import net.minecraft.tags.TagEntry;
@@ -28,6 +31,7 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.data.internal.NeoForgeItemTagsProvider;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 import net.dries007.tfc.TerraFirmaCraft;
@@ -46,26 +50,52 @@ import net.dries007.tfc.common.items.HideItemType;
 import net.dries007.tfc.common.items.Powder;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.data.Accessors;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 
 import static net.dries007.tfc.common.TFCTags.Items.*;
 
 public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
 {
+    private static final Field TAGS_TO_COPY = Helpers.uncheck(() -> {
+        final Field field = ItemTagsProvider.class.getDeclaredField("tagsToCopy");
+        field.setAccessible(true);
+        return field;
+    });
+
     private final ExistingFileHelper.IResourceType resourceType;
+    private final Function<HolderLookup.Provider, ItemTagsProvider> vanillaItemTags;
+    private final Function<HolderLookup.Provider, ItemTagsProvider> neoItemTags;
     private final CompletableFuture<TagsProvider.TagLookup<Block>> blockTags;
     private final Map<TagKey<Block>, TagKey<Item>> tagsToCopy = new HashMap<>();
 
+    @SuppressWarnings("UnstableApiUsage")
     public BuiltinItemTags(GatherDataEvent event, CompletableFuture<HolderLookup.Provider> lookup, CompletableFuture<TagLookup<Block>> blockTags)
     {
         super(event.getGenerator().getPackOutput(), Registries.ITEM, lookup, TerraFirmaCraft.MOD_ID, event.getExistingFileHelper());
         this.blockTags = blockTags;
         this.resourceType = new ExistingFileHelper.ResourceType(PackType.SERVER_DATA, ".json", Registries.tagsDirPath(registryKey));
+        this.vanillaItemTags = provider -> new VanillaItemTagsProvider(event.getGenerator().getPackOutput(), lookup, blockTags)
+        {{
+            addTags(provider);
+        }};
+        this.neoItemTags = provider -> {
+            final var tags = new NeoForgeItemTagsProvider(event.getGenerator().getPackOutput(), lookup, blockTags, event.getExistingFileHelper());
+            tags.addTags(provider);
+            return tags;
+        };
     }
 
     @Override
     protected void addTags(HolderLookup.Provider provider)
     {
+        // ===== Copy BlockTags => ItemTags ===== //
+
+        // Uses the vanilla and neo builders to establish which tags need to be copied,
+        // and our tag provider knows not to copy empty tags, so it saves us some effort
+        this.tagsToCopy.putAll(Helpers.uncheck(() -> TAGS_TO_COPY.get(vanillaItemTags.apply(provider))));
+        this.tagsToCopy.putAll(Helpers.uncheck(() -> TAGS_TO_COPY.get(neoItemTags.apply(provider))));
+
         // ===== Common Tags ===== //
 
         tag(Tags.Items.PLAYER_WORKSTATIONS_CRAFTING_TABLES).add(TFCBlocks.WOODS, Wood.BlockType.WORKBENCH);
@@ -425,6 +455,8 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
                 Items.GUNPOWDER
             );
         tag(SCRAPING_WAXES).add(TFCItems.GLUE, Items.HONEYCOMB);
+        pivot(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.LOOSE).forEach((rock, item) -> tag(STONES_LOOSE_CATEGORY.get(rock.category())).add(item));
+        pivot(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.MOSSY_LOOSE).forEach((rock, item) -> tag(STONES_LOOSE_CATEGORY.get(rock.category())).add(item));
 
         tag(FLUID_ITEM_INGREDIENT_EMPTY_CONTAINERS)
             .addTag(GLASS_BOTTLES)
@@ -471,7 +503,20 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.JAVELIN)
             .add(Items.BOW);
 
-        copy(Tags.Blocks.STONES, Tags.Items.STONES);
+        for (Ore ore : Ore.values())
+        {
+            if (ore.isGraded())
+            {
+                copy(oreBlockTagOf(ore, Ore.Grade.POOR));
+                copy(oreBlockTagOf(ore, Ore.Grade.NORMAL));
+                copy(oreBlockTagOf(ore, Ore.Grade.RICH));
+            }
+            else
+            {
+                copy(oreBlockTagOf(ore, null));
+            }
+        }
+
         copy(TFCTags.Blocks.STONES_RAW, STONES_RAW);
         copy(TFCTags.Blocks.STONES_HARDENED, STONES_HARDENED);
         copy(TFCTags.Blocks.STONES_SMOOTH, STONES_SMOOTH);
@@ -479,17 +524,12 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         copy(TFCTags.Blocks.STONES_PRESSURE_PLATES, STONES_PRESSURE_PLATES);
         copy(TFCTags.Blocks.STONES_LOOSE, STONES_LOOSE);
 
-        pivot(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.LOOSE).forEach((rock, item) -> tag(STONES_LOOSE_CATEGORY.get(rock.category())).add(item));
-        pivot(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.MOSSY_LOOSE).forEach((rock, item) -> tag(STONES_LOOSE_CATEGORY.get(rock.category())).add(item));
-
-        copy(BlockTags.DIRT, ItemTags.DIRT);
         copy(TFCTags.Blocks.DIRT, DIRT);
         copy(TFCTags.Blocks.GRASS, GRASS);
         copy(TFCTags.Blocks.MUD, MUD);
         copy(TFCTags.Blocks.MUD_BRICKS, MUD_BRICKS);
 
-        copy(Tags.Blocks.COBBLESTONES_NORMAL, Tags.Items.COBBLESTONES_NORMAL);
-        copy(Tags.Blocks.COBBLESTONES_MOSSY, Tags.Items.COBBLESTONES_MOSSY);
+        copy(TFCTags.Blocks.WORKBENCHES, WORKBENCHES);
     }
 
     @Override
@@ -525,7 +565,12 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             .map(c -> itemOf(ResourceLocation.withDefaultNamespace(c.getSerializedName() + "_" + itemName))));
     }
 
-    public void copy(TagKey<Block> blockTag, TagKey<Item> itemTag)
+    private void copy(TagKey<Block> blockTag)
+    {
+        this.tagsToCopy.put(blockTag, TagKey.create(Registries.ITEM, blockTag.location()));
+    }
+
+    private void copy(TagKey<Block> blockTag, TagKey<Item> itemTag)
     {
         this.tagsToCopy.put(blockTag, itemTag);
     }
@@ -535,11 +580,18 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
     {
         return super.createContentsProvider().thenCombine(blockTags, (lookup, tagLookup) -> {
             tagsToCopy.forEach((blockTag, itemTag) -> {
-                final TagBuilder builder = getOrCreateRawBuilder(itemTag);
                 tagLookup.apply(blockTag)
-                    .orElseThrow(() -> new IllegalStateException("Missing block tag " + itemTag.location()))
-                    .build()
-                    .forEach(builder::add);
+                    .map(TagBuilder::build)
+                    .filter(e -> !e.isEmpty())
+                    .ifPresentOrElse(content -> {
+                        // N.B. Only copy the tag if the original is non-empty. We do this since we copy all vanilla tags by default,
+                        // and we only really want to include the ones that we are adding to
+                        final TagBuilder builder = getOrCreateRawBuilder(itemTag);
+                        content.forEach(builder::add);
+                    }, () -> {
+                        // Throw an error if we try and copy a TFC tag that didn't exist
+                        if (blockTag.location().getNamespace().equals("tfc")) throw new IllegalArgumentException("Copying empty or missing tag " + blockTag.location());
+                    });
             });
             return lookup;
         });

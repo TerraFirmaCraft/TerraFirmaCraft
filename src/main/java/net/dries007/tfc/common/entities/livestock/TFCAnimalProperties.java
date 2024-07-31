@@ -39,9 +39,9 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.component.ItemStackComponent;
 import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.component.food.FoodCapability;
+import net.dries007.tfc.common.component.item.ItemComponent;
 import net.dries007.tfc.common.entities.BrainAnimalBehavior;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.GenderedRenderAnimal;
@@ -170,7 +170,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal, BrainAnimalBe
             setLastFedNow();
             if (!player.isCreative())
             {
-                final @Nullable ItemStackComponent bowl = stack.get(TFCComponents.BOWL);
+                final @Nullable ItemComponent bowl = stack.get(TFCComponents.BOWL);
                 if (bowl != null)
                 {
                     ItemHandlerHelper.giveItemToPlayer(player, bowl.stack().copy());

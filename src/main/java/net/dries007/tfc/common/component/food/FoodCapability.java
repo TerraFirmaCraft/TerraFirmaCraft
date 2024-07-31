@@ -7,8 +7,8 @@
 package net.dries007.tfc.common.component.food;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.function.Consumer;
+import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
@@ -72,14 +72,14 @@ public final class FoodCapability
     /**
      * Applies {@code trait} to {@code stack}, and updates the creation date to preserve the decay proportion of the food.
      */
-    public static ItemStack applyTrait(ItemStack stack, FoodTrait trait)
+    public static ItemStack applyTrait(ItemStack stack, Holder<FoodTrait> trait)
     {
         final @Nullable FoodComponent food = stack.get(TFCComponents.FOOD);
         if (food != null && !food.hasTrait(trait) && !food.isRotten())
         {
             stack.set(TFCComponents.FOOD, food.withTraitApplied(
                 trait,
-                calculateNewCreationDate(food.getCreationDate(), 1f / trait.getDecayModifier())
+                calculateNewCreationDate(food.getCreationDate(), 1f / trait.value().getDecayModifier())
             ));
         }
         return stack;
@@ -88,14 +88,14 @@ public final class FoodCapability
     /**
      * Removes {@code trait} from {@code stack}, and updates the creation date to preserve the decay proportion of the food.
      */
-    public static ItemStack removeTrait(ItemStack stack, FoodTrait trait)
+    public static ItemStack removeTrait(ItemStack stack, Holder<FoodTrait> trait)
     {
         final @Nullable FoodComponent food = stack.get(TFCComponents.FOOD);
         if (food != null && food.hasTrait(trait) && !food.isRotten())
         {
             stack.set(TFCComponents.FOOD, food.withTraitRemoved(
                 trait,
-                calculateNewCreationDate(food.getCreationDate(), trait.getDecayModifier())
+                calculateNewCreationDate(food.getCreationDate(), trait.value().getDecayModifier())
             ));
         }
         return stack;
@@ -104,7 +104,7 @@ public final class FoodCapability
     /**
      * @return {@code true} if the {@code stack} is a food and has {@code trait}.
      */
-    public static boolean hasTrait(ItemStack stack, FoodTrait trait)
+    public static boolean hasTrait(ItemStack stack, Holder<FoodTrait> trait)
     {
         final @Nullable FoodComponent food = stack.get(TFCComponents.FOOD);
         return food != null && food.hasTrait(trait);

@@ -18,13 +18,11 @@ from mcresources import ResourceManager, utils
 import advancements
 import assets
 import constants
-import data
 import format_lang
 import generate_book
 import generate_textures
 import generate_trees
 import recipes
-import tags
 import validate_assets
 import world_gen
 
@@ -157,6 +155,10 @@ def resources_at(
     world_gen.generate(rm)
     advancements.generate(rm)
 
+    # Tags should be done exclusively via code datagen, but notably right now we're missing world gen datagen
+    validate_no_tags(rm)
+    validate_no_tags(vanilla_rm)
+
     # Flush
     rm.flush()
     vanilla_rm.flush()
@@ -166,6 +168,15 @@ def resources_at(
         rm.modified_files + test_rm.modified_files + vanilla_rm.modified_files,
         rm.unchanged_files + test_rm.unchanged_files + vanilla_rm.unchanged_files,
         rm.error_files + test_rm.error_files + vanilla_rm.error_files))
+
+
+def validate_no_tags(rm: ResourceManager):
+    # Tags should be done exclusively via code datagen, but notably right now we're missing world gen datagen
+    for tag_type, tag_names in rm.tags_buffer.items():
+        if tag_type.startswith('worldgen/'):
+            print('Allowing %d %s tags...' % (len(tag_names), tag_type))
+        else:
+            raise ValueError('Tag datagen is done in java. Tried to generate %s tags:\n%s' % (tag_type, '\n'.join([t.join() for t in tag_names])))
 
 
 class ValidatingResourceManager(ResourceManager):

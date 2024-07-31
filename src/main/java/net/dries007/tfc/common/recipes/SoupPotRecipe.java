@@ -13,7 +13,6 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -25,18 +24,18 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
 import net.dries007.tfc.common.component.Bowl;
-import net.dries007.tfc.common.component.IngredientsComponent;
 import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.component.food.FoodCapability;
 import net.dries007.tfc.common.component.food.FoodData;
 import net.dries007.tfc.common.component.food.IFood;
 import net.dries007.tfc.common.component.food.Nutrient;
+import net.dries007.tfc.common.component.item.ItemListComponent;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.outputs.PotOutput;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.tooltip.BlockEntityTooltip;
 import net.dries007.tfc.util.tooltip.BlockEntityTooltips;
-import net.dries007.tfc.util.Helpers;
 
 public class SoupPotRecipe extends PotRecipe
 {
@@ -104,7 +103,7 @@ public class SoupPotRecipe extends PotRecipe
             }
 
             soupStack = new ItemStack(TFCItems.SOUPS.get(maxNutrient).get(), (int) (ingredientCount / 2f) + 1);
-            soupStack.set(TFCComponents.INGREDIENTS, IngredientsComponent.of(itemIngredients));
+            soupStack.set(TFCComponents.INGREDIENTS, ItemListComponent.of(itemIngredients));
             FoodCapability.setFoodForDynamicItemOnCreate(
                 soupStack,
                 new FoodData(SOUP_HUNGER_VALUE, water, saturation, 0, nutrition, SOUP_DECAY_MODIFIER));

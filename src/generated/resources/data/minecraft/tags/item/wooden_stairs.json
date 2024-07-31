@@ -1,0 +1,24 @@
+{
+  "values": [
+    "tfc:wood/planks/acacia_stairs",
+    "tfc:wood/planks/ash_stairs",
+    "tfc:wood/planks/aspen_stairs",
+    "tfc:wood/planks/birch_stairs",
+    "tfc:wood/planks/blackwood_stairs",
+    "tfc:wood/planks/chestnut_stairs",
+    "tfc:wood/planks/douglas_fir_stairs",
+    "tfc:wood/planks/hickory_stairs",
+    "tfc:wood/planks/kapok_stairs",
+    "tfc:wood/planks/mangrove_stairs",
+    "tfc:wood/planks/maple_stairs",
+    "tfc:wood/planks/oak_stairs",
+    "tfc:wood/planks/palm_stairs",
+    "tfc:wood/planks/pine_stairs",
+    "tfc:wood/planks/rosewood_stairs",
+    "tfc:wood/planks/sequoia_stairs",
+    "tfc:wood/planks/spruce_stairs",
+    "tfc:wood/planks/sycamore_stairs",
+    "tfc:wood/planks/white_cedar_stairs",
+    "tfc:wood/planks/willow_stairs"
+  ]
+}

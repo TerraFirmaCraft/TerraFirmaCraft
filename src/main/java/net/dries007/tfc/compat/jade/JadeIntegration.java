@@ -24,15 +24,13 @@ import snownee.jade.api.JadeIds;
 import snownee.jade.api.WailaPlugin;
 import snownee.jade.api.config.IPluginConfig;
 
-import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
-import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.tooltip.BlockEntityTooltip;
 import net.dries007.tfc.util.tooltip.BlockEntityTooltips;
 import net.dries007.tfc.util.tooltip.EntityTooltip;
 import net.dries007.tfc.util.tooltip.EntityTooltips;
-import net.dries007.tfc.util.Metal;
 
 @WailaPlugin
 public class JadeIntegration implements IWailaPlugin
@@ -48,7 +46,7 @@ public class JadeIntegration implements IWailaPlugin
             metalTool(Metal.COPPER, Metal.ItemType.PICKAXE),
             metalTool(Metal.BRONZE, Metal.ItemType.PICKAXE),
             metalTool(Metal.STEEL, Metal.ItemType.PICKAXE),
-            metalTool(Metal.BLUE_STEEL, Metal.ItemType.PICKAXE)
+            metalTool(Metal.BLACK_STEEL, Metal.ItemType.PICKAXE)
         )));
         register("axe", RockCategory.ItemType.AXE, Metal.ItemType.AXE);
         register("shovel", RockCategory.ItemType.SHOVEL, Metal.ItemType.SHOVEL);

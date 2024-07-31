@@ -90,11 +90,6 @@ public abstract class InventoryBlockEntity<C extends IItemHandlerModifiable & IN
         return customName == null ? defaultName : customName;
     }
 
-    public void setCustomName(Component customName)
-    {
-        this.customName = customName;
-    }
-
     @Override
     protected void applyImplicitComponents(DataComponentInput componentInput)
     {

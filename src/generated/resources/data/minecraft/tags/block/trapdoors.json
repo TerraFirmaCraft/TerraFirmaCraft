@@ -1,0 +1,13 @@
+{
+  "values": [
+    "tfc:metal/trapdoor/bismuth_bronze",
+    "tfc:metal/trapdoor/black_bronze",
+    "tfc:metal/trapdoor/bronze",
+    "tfc:metal/trapdoor/copper",
+    "tfc:metal/trapdoor/wrought_iron",
+    "tfc:metal/trapdoor/steel",
+    "tfc:metal/trapdoor/black_steel",
+    "tfc:metal/trapdoor/blue_steel",
+    "tfc:metal/trapdoor/red_steel"
+  ]
+}

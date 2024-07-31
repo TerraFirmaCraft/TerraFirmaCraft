@@ -19,6 +19,7 @@
     "tfc:wood/planks/spruce_workbench",
     "tfc:wood/planks/sycamore_workbench",
     "tfc:wood/planks/white_cedar_workbench",
-    "tfc:wood/planks/willow_workbench"
+    "tfc:wood/planks/willow_workbench",
+    "#tfc:workbenches"
   ]
 }

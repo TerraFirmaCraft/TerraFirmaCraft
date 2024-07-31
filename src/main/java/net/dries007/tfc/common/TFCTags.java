@@ -59,7 +59,6 @@ public class TFCTags
         public static final TagKey<Block> POWDER_SNOW_REPLACEABLE = tag("powder_snow_replaceable"); // on feature gen, can be replaced by powder snow
         public static final TagKey<Block> RABBIT_RAIDABLE = tag("rabbit_raidable"); // rabbits will break it
         public static final TagKey<Block> FOX_RAIDABLE = tag("fox_raidable"); // foxes will eat the berries. only applies to seasonal plant blocks
-        public static final TagKey<Block> SEASONAL_LEAVES = tag("seasonal_leaves"); // drops fall leaf particles
         public static final TagKey<Block> PET_SITS_ON = tag("pet_sits_on"); // pet prefers to sit here.
         public static final TagKey<Block> MINECART_HOLDABLE = tag("minecart_holdable"); // blocks that carts will hold. this is a block tag to ensure it can render in the cart.
         public static final TagKey<Block> MONSTER_SPAWNS_ON = tag("monster_spawns_on");
@@ -91,6 +90,8 @@ public class TFCTags
         public static final TagKey<Block> TOUGHNESS_3 = tag("toughness_3");
         /** When surrounded on all six sides by air, this block will break and drop itself */
         public static final TagKey<Block> BREAKS_WHEN_ISOLATED = tag("breaks_when_isolated");
+        /** Leaf blocks that spawn leaf particles in the fall */
+        public static final TagKey<Block> SEASONAL_LEAVES = tag("seasonal_leaves");
 
         public static final TagKey<Block> STONES = Tags.Blocks.STONES; // Includes raw + hardened
         public static final TagKey<Block> STONES_RAW = commonTag("stones/raw");
@@ -128,19 +129,22 @@ public class TFCTags
         /** Block that you can pour hot glass in, to create glass blocks*/
         public static final TagKey<Block> GLASS_BASIN_BLOCKS = tag("glass_basin_blocks");
 
+        /** Both these are empty by default, but provided for potential compatibility */
         public static final TagKey<Block> MINEABLE_WITH_PROPICK = tag("mineable/propick");
         public static final TagKey<Block> MINEABLE_WITH_CHISEL = tag("mineable/chisel");
+        /** Includes logs */
         public static final TagKey<Block> MINEABLE_WITH_HAMMER = tag("mineable/hammer");
+        /** Both knives and scythes inherit from the vanilla hoe tag, which we repurpose as "sharp tools" */
         public static final TagKey<Block> MINEABLE_WITH_KNIFE = tag("mineable/knife");
         public static final TagKey<Block> MINEABLE_WITH_SCYTHE = tag("mineable/scythe");
+        /** Includes glass blocks only */
         public static final TagKey<Block> MINEABLE_WITH_GLASS_SAW = tag("mineable/glass_saw");
-
-        public static final TagKey<Block> MINEABLE_WITH_BLUNT_TOOL = tag("mineable/blunt");
-        public static final TagKey<Block> MINEABLE_WITH_SHARP_TOOL = tag("mineable/sharp");
+        /** Unique tag used only for TFC hoes, which doesn't inherit the vanilla hoe tag */
+        public static final TagKey<Block> MINEABLE_WITH_HOE = tag("mineable/hoe");
 
         public static final TagKey<Block> PROSPECTABLE = tag("prospectable"); // can be found with the prospector pick
 
-        /** The vanilla tag {@link BlockTags#DIRT} contains all dirts, grasses, muds. These tags mostly only contain the respective TFC blocks and identical ones */
+        /** The vanilla tag {@link BlockTags#DIRT} contains all dirt, grass, and mud. These tags mostly only contain the respective TFC blocks and identical ones */
         public static final TagKey<Block> DIRT = tag("dirt");
         public static final TagKey<Block> GRASS = tag("grass");
         /** Used for non-wild crop growth. */
@@ -449,6 +453,10 @@ public class TFCTags
         public static final TagKey<Item> BOWL_POWDERS = tag("bowl_powders");
         /** Items used in scraping recipes that can wax a surface */
         public static final TagKey<Item> SCRAPING_WAXES = tag("waxes");
+        /**
+         * Mapping of {@link RockCategory} to tags that are used for rock knapping ingredients
+         */
+        public static final Map<RockCategory, TagKey<Item>> STONES_LOOSE_CATEGORY = Helpers.mapOf(RockCategory.class, type -> tag("stones/loose/" + type.getSerializedName()));
 
         // Technical Tags
         /** Containers that can be filled, in the display values for {@link FluidContentIngredient} */
@@ -483,13 +491,15 @@ public class TFCTags
         public static final TagKey<Item> STONES_SMOOTH_SLABS = tag(Blocks.STONES_SMOOTH_SLABS);
         public static final TagKey<Item> STONES_PRESSURE_PLATES = tag(Blocks.STONES_PRESSURE_PLATES);
         public static final TagKey<Item> STONES_LOOSE = tag(Blocks.STONES_LOOSE);
-        public static final Map<RockCategory, TagKey<Item>> STONES_LOOSE_CATEGORY = Helpers.mapOf(RockCategory.class, type -> tag("stones/loose/" + type.getSerializedName()));
 
         // Block Tags - Earth
         public static final TagKey<Item> DIRT = tag(Blocks.DIRT);
         public static final TagKey<Item> GRASS = tag(Blocks.GRASS);
         public static final TagKey<Item> MUD = tag(Blocks.MUD);
         public static final TagKey<Item> MUD_BRICKS = tag(Blocks.MUD_BRICKS);
+
+        // Block Tags - Misc
+        public static final TagKey<Item> WORKBENCHES = tag(Blocks.WORKBENCHES);
 
 
         private static TagKey<Item> tag(TagKey<Block> blockTag)

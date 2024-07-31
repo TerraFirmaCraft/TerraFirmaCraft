@@ -9,7 +9,9 @@ package net.dries007.tfc.util;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
@@ -322,5 +324,28 @@ public final class FluidAlloy
         // Any excess values that were not matched, but were present in `content`, should have been checked. This makes the alloy
         // invalid at this point. `content` will be filtered to ignore elements that are smaller than `EPSILON`
         return inputsNotMatched.isEmpty();
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        return this == obj || (obj instanceof FluidAlloy that
+            && this.amount == that.amount
+            && this.getContent().equals(that.getContent()));
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(amount, getContent());
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Alloy[%s mb of %s]".formatted(amount, getContent().object2DoubleEntrySet()
+            .stream()
+            .map(e -> "%.2f %s".formatted(e.getDoubleValue(), BuiltInRegistries.FLUID.getKey(e.getKey())))
+            .collect(Collectors.joining(", ")));
     }
 }

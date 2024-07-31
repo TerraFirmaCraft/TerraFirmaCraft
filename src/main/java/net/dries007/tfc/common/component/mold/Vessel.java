@@ -177,7 +177,7 @@ public class Vessel implements IMold, ItemContainer, FluidContainer, HeatContain
         if (isInventory())
         {
             // First, copy the input and apply the preserved trait before inserting
-            final ItemStack input = FoodCapability.applyTrait(stack.copy(), FoodTraits.PRESERVED.value());
+            final ItemStack input = FoodCapability.applyTrait(stack.copy(), FoodTraits.PRESERVED);
 
             // Insert and compute the result plus the remainder. If not simulating, at this point make a copy
             // of the vessel, updating the item in the slot along with clearing the cache
@@ -188,7 +188,7 @@ public class Vessel implements IMold, ItemContainer, FluidContainer, HeatContain
             }
 
             // Before returning the remainder stack, remove the preserved trait, to prevent it from leaking
-            return FoodCapability.removeTrait(result.remainder(), FoodTraits.PRESERVED.value());
+            return FoodCapability.removeTrait(result.remainder(), FoodTraits.PRESERVED);
         }
         return stack;
     }
@@ -206,9 +206,15 @@ public class Vessel implements IMold, ItemContainer, FluidContainer, HeatContain
             }
 
             // Before returning the extracted stack, remove the preserved trait, to prevent it from leaking
-            return FoodCapability.removeTrait(result.extract(), FoodTraits.PRESERVED.value());
+            return FoodCapability.removeTrait(result.extract(), FoodTraits.PRESERVED);
         }
         return ItemStack.EMPTY;
+    }
+
+    @Override
+    public void onTake(ItemStack stack)
+    {
+        FoodCapability.removeTrait(stack, FoodTraits.PRESERVED);
     }
 
     private void updateInventoryOnMelt()

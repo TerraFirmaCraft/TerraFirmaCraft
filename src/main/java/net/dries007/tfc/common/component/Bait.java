@@ -8,9 +8,11 @@ package net.dries007.tfc.common.component;
 
 import net.minecraft.world.item.ItemStack;
 
+import net.dries007.tfc.common.component.item.ItemComponent;
+
 public final class Bait
 {
-    public static final ItemStackComponent EMPTY = ItemStackComponent.EMPTY;
+    public static final ItemComponent EMPTY = ItemComponent.EMPTY;
 
     /**
      * @return The bait currently attached to this {@code fishingRod}, or {@link ItemStack#EMPTY} if no bait exists
@@ -25,6 +27,6 @@ public final class Bait
      */
     public static void setBait(ItemStack fishingRod, ItemStack bait)
     {
-        fishingRod.set(TFCComponents.BAIT, new ItemStackComponent(bait.copyWithCount(1)));
+        fishingRod.set(TFCComponents.BAIT, new ItemComponent(bait.copyWithCount(1)));
     }
 }

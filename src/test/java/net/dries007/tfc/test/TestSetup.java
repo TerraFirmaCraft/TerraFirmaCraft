@@ -147,7 +147,7 @@ public interface TestSetup
         return method;
     });
 
-    private static <T extends TagsProvider<?>> void add(Map<ResourceLocation, TagBuilder> map, T provider)
+    private static <T extends TagsProvider<?>> void add(TagMap map, T provider)
     {
         Helpers.uncheck(() -> {
             TAG_BUILDERS.set(provider, map);
@@ -155,7 +155,7 @@ public interface TestSetup
         });
     }
 
-    private static <T> void resolve(Map<ResourceLocation, TagBuilder> map, Registry<T> registry)
+    private static <T> void resolve(TagMap map, Registry<T> registry)
     {
         final TagResolver<T> resolver = new TagResolver<>(map, registry);
         registry.bindTags(map.keySet()

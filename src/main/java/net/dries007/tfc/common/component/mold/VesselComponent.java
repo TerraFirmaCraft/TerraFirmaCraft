@@ -17,6 +17,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.common.component.CachedMut;
+import net.dries007.tfc.common.component.item.ItemComponent;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.util.FluidAlloy;
 import net.dries007.tfc.util.Helpers;
@@ -76,5 +77,25 @@ public record VesselComponent(
     VesselComponent with(FluidAlloy fluidContent)
     {
         return new VesselComponent(itemContent, cachedRecipes, fluidContent);
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        return obj == this || (obj instanceof VesselComponent that
+            && ItemComponent.equals(this.itemContent, that.itemContent)
+            && fluidContent.equals(that.fluidContent));
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return ItemComponent.hashCode(itemContent) + 31 * fluidContent.hashCode();
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Vessel[itemContent=%s,fluidContent=%s]".formatted(itemContent, fluidContent);
     }
 }

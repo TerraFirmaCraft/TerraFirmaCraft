@@ -76,7 +76,6 @@ import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
 import net.dries007.tfc.common.blockentities.SluiceBlockEntity;
 import net.dries007.tfc.common.blocks.devices.SluiceBlock;
 import net.dries007.tfc.common.component.EggComponent;
-import net.dries007.tfc.common.component.IngredientsComponent;
 import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.component.food.FoodCapability;
 import net.dries007.tfc.common.component.forge.ForgingBonus;
@@ -84,6 +83,7 @@ import net.dries007.tfc.common.component.forge.ForgingCapability;
 import net.dries007.tfc.common.component.glass.GlassWorking;
 import net.dries007.tfc.common.component.heat.HeatCapability;
 import net.dries007.tfc.common.component.heat.IHeat;
+import net.dries007.tfc.common.component.item.ItemListComponent;
 import net.dries007.tfc.common.component.size.ItemSizeManager;
 import net.dries007.tfc.common.items.EmptyPanItem;
 import net.dries007.tfc.common.items.PanItem;
@@ -228,7 +228,7 @@ public class ClientForgeEventHandler
             GlassWorking.addTooltipInfo(stack, tooltip);
             FoodCapability.addTooltipInfo(stack, tooltip::add);
 
-            stack.getOrDefault(TFCComponents.INGREDIENTS, IngredientsComponent.EMPTY).addTooltipInfo(tooltip);
+            stack.getOrDefault(TFCComponents.INGREDIENTS, ItemListComponent.EMPTY).addTooltipInfo(tooltip);
             stack.getOrDefault(TFCComponents.EGG, EggComponent.DEFAULT).addTooltipInfo(tooltip::add);
 
             final @Nullable IHeat heat = HeatCapability.get(stack);

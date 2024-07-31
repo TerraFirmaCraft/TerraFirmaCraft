@@ -87,10 +87,11 @@ public final class TerraFirmaCraft
     public static final String MOD_NAME = "TerraFirmaCraft";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public static final ResourceKey<WorldPreset> PRESET = ResourceKey.create(Registries.WORLD_PRESET, Helpers.identifier("overworld"));
+    public static final boolean JEI = ModList.get().isLoaded("jei");
+    public static final boolean JADE = ModList.get().isLoaded("jade");
+    public static final boolean THE_ONE_PROBE = ModList.get().isLoaded("theoneprobe");
 
-    private final boolean hasJade = ModList.get().isLoaded("jade");
-    private final boolean hasTheOneProbe = ModList.get().isLoaded("theoneprobe");
+    public static final ResourceKey<WorldPreset> PRESET = ResourceKey.create(Registries.WORLD_PRESET, Helpers.identifier("overworld"));
 
     private @Nullable Throwable syncLoadError;
 
@@ -99,9 +100,8 @@ public final class TerraFirmaCraft
         IEventBus bus
     ) {
         LOGGER.info("Initializing TerraFirmaCraft");
-        LOGGER.info("Options: Assertions = {}, Test = {}, Debug = {}, Production = {}, Dist = {}",
+        LOGGER.info("Options: Assertions = {}, Debug = {}, Production = {}, Dist = {}",
             Helpers.ASSERTIONS_ENABLED,
-            Helpers.TEST_ENVIRONMENT,
             LOGGER.isDebugEnabled(),
             FMLEnvironment.production,
             FMLEnvironment.dist);
@@ -183,7 +183,7 @@ public final class TerraFirmaCraft
             PatchouliClientEventHandler.init();
         }
 
-        if (hasTheOneProbe) TheOneProbeIntegration.init(bus);
+        if (THE_ONE_PROBE) TheOneProbeIntegration.init(bus);
 
         NeoForgeMod.enableMilkFluid();
     }
@@ -213,7 +213,7 @@ public final class TerraFirmaCraft
         });
 
         PatchouliIntegration.registerMultiBlocks();
-        if (hasJade) JadeIntegration.registerToolHandlers();
+        if (JADE) JadeIntegration.registerToolHandlers();
     }
 
     public void registerRegistries(NewRegistryEvent event)

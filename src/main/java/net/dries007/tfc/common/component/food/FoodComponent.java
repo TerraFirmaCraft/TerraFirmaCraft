@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Holder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -28,13 +29,13 @@ import net.dries007.tfc.util.Helpers;
 public final class FoodComponent implements IFood
 {
     public static final Codec<FoodComponent> CODEC = RecordCodecBuilder.<FoodComponent>create(i -> i.group(
-        FoodTrait.CODEC.listOf().optionalFieldOf("traits", List.of()).forGetter(c -> c.traits),
+        FoodTraits.REGISTRY.byNameCodec().listOf().optionalFieldOf("traits", List.of()).forGetter(c -> c.traits),
         FoodData.CODEC.optionalFieldOf("food").forGetter(c -> c.food),
         Codec.LONG.fieldOf("creation_date").forGetter(c -> c.creationDate)
     ).apply(i, FoodComponent::new)).xmap(Function.identity(), FoodComponent::sanitize);
 
     public static final StreamCodec<RegistryFriendlyByteBuf, FoodComponent> STREAM_CODEC = StreamCodec.composite(
-        FoodTrait.STREAM_CODEC.apply(ByteBufCodecs.list()), c -> c.traits,
+        ByteBufCodecs.registry(FoodTraits.KEY).apply(ByteBufCodecs.list()), c -> c.traits,
         ByteBufCodecs.optional(FoodData.STREAM_CODEC), c -> c.food,
         ByteBufCodecs.VAR_LONG, c -> c.creationDate,
         FoodComponent::new
@@ -120,9 +121,9 @@ public final class FoodComponent implements IFood
         return new FoodComponent(parent, traits, Optional.of(food), creationDate);
     }
 
-    FoodComponent withTraitApplied(FoodTrait trait, long creationDate)
+    FoodComponent withTraitApplied(Holder<FoodTrait> trait, long creationDate)
     {
-        return new FoodComponent(parent, Helpers.immutableAdd(traits, trait), food, creationDate);
+        return new FoodComponent(parent, Helpers.immutableAdd(traits, trait.value()), food, creationDate);
     }
 
     FoodComponent withTraitsApplied(List<FoodTrait> others)
@@ -130,9 +131,9 @@ public final class FoodComponent implements IFood
         return new FoodComponent(parent, Helpers.immutableAddAll(traits, others), food, creationDate);
     }
 
-    FoodComponent withTraitRemoved(FoodTrait trait, long creationDate)
+    FoodComponent withTraitRemoved(Holder<FoodTrait> trait, long creationDate)
     {
-        return new FoodComponent(parent, Helpers.immutableRemove(traits, trait), food, creationDate);
+        return new FoodComponent(parent, Helpers.immutableRemove(traits, trait.value()), food, creationDate);
     }
 
     public void capture(ItemStack stack)

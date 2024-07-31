@@ -66,7 +66,7 @@ public class LargeVesselBlockEntity extends InventoryBlockEntity<LargeVesselBloc
         assert level != null;
         for (int i = 0; i < SLOTS; i++)
         {
-            inventory.setStackInSlot(i, FoodCapability.removeTrait(inventory.getStackInSlot(i).copy(), FoodTraits.PRESERVED.value()));
+            inventory.setStackInSlot(i, FoodCapability.removeTrait(inventory.getStackInSlot(i).copy(), FoodTraits.PRESERVED));
         }
         Helpers.playSound(level, worldPosition, TFCSounds.OPEN_VESSEL.get());
     }
@@ -76,7 +76,7 @@ public class LargeVesselBlockEntity extends InventoryBlockEntity<LargeVesselBloc
         assert level != null;
         for (int i = 0; i < SLOTS; i++)
         {
-            inventory.setStackInSlot(i, FoodCapability.applyTrait(inventory.getStackInSlot(i).copy(), FoodTraits.PRESERVED.value()));
+            inventory.setStackInSlot(i, FoodCapability.applyTrait(inventory.getStackInSlot(i).copy(), FoodTraits.PRESERVED));
         }
         Helpers.playSound(level, worldPosition, TFCSounds.CLOSE_VESSEL.get());
     }

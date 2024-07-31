@@ -6,11 +6,47 @@
 
 package net.dries007.tfc.common.component.item;
 
+import java.util.List;
+import com.mojang.serialization.Codec;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 
-
-public final class ItemComponent
+/**
+ * An immutable wrapper around an {@link ItemStack} which respects proper equality and hash code functionality, as is
+ * required for any data attached to components.
+ * <p>
+ * This class also includes utility methods for interacting with item stacks in components, including with reference
+ * to item containers.
+ */
+public record ItemComponent(ItemStack stack)
 {
+    public static final Codec<ItemComponent> CODEC = ItemStack.CODEC.xmap(ItemComponent::new, ItemComponent::stack);
+    public static final StreamCodec<RegistryFriendlyByteBuf, ItemComponent> STREAM_CODEC = ItemStack.STREAM_CODEC.map(ItemComponent::new, ItemComponent::stack);
+    public static final ItemComponent EMPTY = new ItemComponent(ItemStack.EMPTY);
+
+    public static boolean equals(ItemStack left, ItemStack right)
+    {
+        return ItemStack.matches(left, right);
+    }
+
+    @SuppressWarnings("deprecation")
+    public static boolean equals(List<ItemStack> left, List<ItemStack> right)
+    {
+        return ItemStack.listMatches(left, right);
+    }
+
+    public static int hashCode(ItemStack content)
+    {
+        return ItemStack.hashItemAndComponents(content);
+    }
+
+    @SuppressWarnings("deprecation")
+    public static int hashCode(List<ItemStack> content)
+    {
+        return ItemStack.hashStackList(content);
+    }
+
     /**
      * Attempt to insert a stack into this container at the given slot.
      * @param stack The stack to insert. Not modified
@@ -60,6 +96,18 @@ public final class ItemComponent
         final ItemStack remainder = content.getCount() > amount ? content.copyWithCount(content.getCount() - amount) : ItemStack.EMPTY;
         final ItemStack extracted = content.getCount() >= amount ? content.copyWithCount(amount) : content;
         return new ExtractInfo(remainder, extracted);
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        return obj == this || (obj instanceof ItemComponent that && equals(stack, that.stack));
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return hashCode(stack);
     }
 
     public record InsertInfo(ItemStack content, ItemStack remainder) {}

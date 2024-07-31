@@ -385,7 +385,7 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
                 if (fluidStack.isEmpty()) break;
             }
 
-            FoodCapability.applyTrait(outputStack, FoodTraits.CHARCOAL_GRILLED.value());
+            FoodCapability.applyTrait(outputStack, FoodTraits.CHARCOAL_GRILLED);
             this.inventory.setStackInSlot(startIndex, outputStack);
         }
     }

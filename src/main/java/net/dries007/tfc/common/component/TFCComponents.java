@@ -37,6 +37,8 @@ import net.dries007.tfc.common.component.forge.ForgingBonus;
 import net.dries007.tfc.common.component.forge.ForgingComponent;
 import net.dries007.tfc.common.component.glass.GlassOperations;
 import net.dries007.tfc.common.component.heat.HeatComponent;
+import net.dries007.tfc.common.component.item.ItemComponent;
+import net.dries007.tfc.common.component.item.ItemListComponent;
 import net.dries007.tfc.common.component.mold.VesselComponent;
 import net.dries007.tfc.common.component.size.ItemSizeManager;
 import net.dries007.tfc.util.Helpers;
@@ -60,10 +62,10 @@ public final class TFCComponents
     public static final Id<FoodComponent> FOOD = register("food", FoodComponent.CODEC, FoodComponent.STREAM_CODEC);
 
     // Added only as extra values, with no default 'empty' state
-    public static final Id<ItemStackComponent> BOWL = register("bowl", ItemStackComponent.CODEC, ItemStackComponent.STREAM_CODEC);
-    public static final Id<IngredientsComponent> INGREDIENTS = register("ingredients", IngredientsComponent.CODEC, IngredientsComponent.STREAM_CODEC);
-    public static final Id<ItemStackComponent> DEPOSIT = register("deposit", ItemStackComponent.CODEC, ItemStackComponent.STREAM_CODEC);
-    public static final Id<ItemStackComponent> BAIT = register("bait", ItemStackComponent.CODEC, ItemStackComponent.STREAM_CODEC);
+    public static final Id<ItemComponent> BOWL = register("bowl", ItemComponent.CODEC, ItemComponent.STREAM_CODEC);
+    public static final Id<ItemListComponent> INGREDIENTS = register("ingredients", ItemListComponent.CODEC, ItemListComponent.STREAM_CODEC);
+    public static final Id<ItemComponent> DEPOSIT = register("deposit", ItemComponent.CODEC, ItemComponent.STREAM_CODEC);
+    public static final Id<ItemComponent> BAIT = register("bait", ItemComponent.CODEC, ItemComponent.STREAM_CODEC);
 
     // Added only to Items.EGG, via modify event
     public static final Id<EggComponent> EGG = register("egg", EggComponent.CODEC, EggComponent.STREAM_CODEC);

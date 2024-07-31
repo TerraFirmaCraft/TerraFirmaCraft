@@ -38,6 +38,6 @@ public class FoodTraits
 
     private static DeferredHolder<FoodTrait, FoodTrait> register(String name, Supplier<Double> decayModifier)
     {
-        return TRAITS.register(name, () -> new FoodTrait(() -> decayModifier.get().floatValue(), "tfc.tooltip.food_trait." + name));
+        return TRAITS.register(name, () -> new FoodTrait(decayModifier, "tfc.tooltip.food_trait." + name));
     }
 }
