@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.world.feature.tree;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,9 +53,6 @@ public class ForestFeature extends Feature<ForestConfig>
         final ChunkData data = ChunkData.get(level, pos);
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final ForestType forestType = data.getForestType();
-//        final ForestConfig.Type typeConfig = config.typeMap().get(forestType);
-        // todo 1.21: density replacement
-//        final float density = random.nextFloat();
 
         if (random.nextFloat() > forestType.getPerChunkChance()) return false;
 
@@ -335,6 +330,7 @@ public class ForestFeature extends Feature<ForestConfig>
         final float rainfall = chunkData.getRainfall(pos);
         final float averageTemperature = OverworldClimateModel.getAdjustedAverageTempByElevation(pos, chunkData);
         final List<ForestConfig.Entry> entries = config.entries().stream().map(configuredFeature -> configuredFeature.value().config()).map(cfg -> (ForestConfig.Entry) cfg)
+            .filter(entry -> entry.isValid(averageTemperature, rainfall))
             .sorted(Comparator.comparingDouble(entry -> entry.distanceFromMean(averageTemperature, rainfall)))
             .collect(Collectors.toList());
 
@@ -342,7 +338,8 @@ public class ForestFeature extends Feature<ForestConfig>
         if (entries.size() == 1)
             return entries.getFirst();
         final int maxSize = type.getMaxTreeTypes();
-        for (int i = maxSize; i < entries.size(); i++)
+        final int originalSize = entries.size();
+        for (int i = maxSize; i < originalSize; i++)
         {
             entries.removeLast();
         }

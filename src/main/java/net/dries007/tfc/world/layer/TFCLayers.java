@@ -26,15 +26,6 @@ import net.dries007.tfc.world.region.Units;
 public class TFCLayers
 {
     /**
-     * These are the int IDs that are used for forest layer generation
-     */
-    public static final int FOREST_NONE = 0;
-    public static final int FOREST_SPARSE = 1;
-    public static final int FOREST_EDGE = 2;
-    public static final int FOREST_NORMAL = 3;
-    public static final int FOREST_OLD = 4;
-
-    /**
      * These are the int IDs that are used for biome layer generation
      * They are mapped to {@link BiomeExtension} through the internal registry
      */

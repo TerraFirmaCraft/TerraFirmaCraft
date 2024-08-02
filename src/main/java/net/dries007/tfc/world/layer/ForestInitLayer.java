@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.world.layer;
 
+import net.dries007.tfc.world.chunkdata.ForestType;
 import net.dries007.tfc.world.layer.framework.AreaContext;
 import net.dries007.tfc.world.layer.framework.SourceLayer;
 import net.dries007.tfc.world.noise.Noise2D;
@@ -25,11 +26,11 @@ public class ForestInitLayer implements SourceLayer
         final float noise = (float) forestBaseNoise.noise(x, z);
         if (noise < 0)
         {
-            return TFCLayers.FOREST_NONE;
+            return ForestType.GRASSLAND.ordinal();
         }
         else
         {
-            return TFCLayers.FOREST_NORMAL;
+            return ForestType.SECONDARY_DIVERSE.ordinal();
         }
     }
 }
