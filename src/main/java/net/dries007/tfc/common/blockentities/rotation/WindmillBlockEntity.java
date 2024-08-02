@@ -95,20 +95,19 @@ public class WindmillBlockEntity extends TickableInventoryBlockEntity<ItemStackH
         return false;
     }
 
-    private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.windmill");
-
     private final SourceNode node;
     private boolean invalid;
     private boolean needsStateUpdate = true;
 
     public WindmillBlockEntity(BlockPos pos, BlockState state)
     {
-        this(TFCBlockEntities.WINDMILL.get(), pos, state, defaultInventory(SLOTS), NAME);
+        this(TFCBlockEntities.WINDMILL.get(), pos, state, defaultInventory(SLOTS));
     }
 
-    public WindmillBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, InventoryFactory<ItemStackHandler> inventory, Component defaultName)
+    public WindmillBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, InventoryFactory<ItemStackHandler> inventory)
     {
-        super(type, pos, state, inventory, defaultName);
+        super(type, pos, state, inventory);
+
         // Windmills can have up to five blades added, which increase their maximum speed.
         // - Rotation speed interpolates as not to have a sharp jump between levels.
         // - Connections are static and only in the horizontal directions specified by the axis

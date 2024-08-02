@@ -79,9 +79,9 @@ public class KnappingRecipe implements INoopInputRecipe, IRecipePredicate<Knappi
         return result.copy();
     }
 
-    public KnappingType knappingType()
+    public DataManager.Reference<KnappingType> knappingType()
     {
-        return knappingType.get();
+        return knappingType;
     }
 
     public KnappingPattern getPattern()

@@ -10,17 +10,17 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:leather_knapping/chestplate",
+      "recipe": "tfc:knapping/leather_chestplate",
       "text": "Кожаная броня $(thing)Выкраивается$() из $(l:mechanics/leather_making)Кожи$(). Она не долговечна, но обеспечивает неплохую защиту, если у вас полный комплект."
     },
     {
       "type": "tfc:anvil_recipe",
-      "recipe": "tfc:anvil/copper_unfinished_helmet",
+      "recipe": "tfc:anvil/metal/unfinished_helmet/copper",
       "text": "$(thing)Металлическая броня$() требует нескольких этапов обработки на $(l:mechanics/anvils)Наковальне$(). Сначала должен быть выкован $(thing)незаконченный$() элемент брони. Для этого требуется $(thing)Двойной лист$() металла, за исключением ботинок, для которых требуется один лист."
     },
     {
       "type": "tfc:welding_recipe",
-      "recipe": "tfc:welding/bismuth_bronze_greaves",
+      "recipe": "tfc:welding/metal/greaves/bismuth_bronze",
       "text": "Затем $(thing)Лист$() должен быть $(l:mechanics/anvils#welding)сварен$() с элементом брони для его завершения. Для завершения нагрудников требуется $(thing)Двойной лист$()."
     },
     {

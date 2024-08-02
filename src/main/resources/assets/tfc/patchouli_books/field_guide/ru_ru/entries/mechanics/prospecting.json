@@ -22,17 +22,17 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/propick_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_propick_head_mold",
       "text": "Чтобы сделать кирку геолога, вы можете $(l:getting_started/pottery)вылепить$() необожженную форму из глины, как показано выше."
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/propick_head_mold",
+      "recipe": "tfc:heating/ceramic/propick_head_mold",
       "text": "После того как форма будет $(l:getting_started/pottery)выколота$(), ее необходимо $(l:mechanics/heating)обжечь$(), чтобы создать $(thing)Форму для головки кирки геолога$().$(br2)Чтобы создать головку инструмента, $(l:getting_started/finding_ores#casting)залейте$() жидкий металл в форму."
     },
     {
       "type": "tfc:anvil_recipe",
-      "recipe": "tfc:anvil/wrought_iron_propick_head",
+      "recipe": "tfc:anvil/metal/propick_head/wrought_iron",
       "text": "Головка кирки геолога также может быть $(l:mechanics/anvils#working)выкована$() из $(thing)слитка$() любого инструментального металла на $(l:mechanics/anvils)Наковальне$().$(br2)Кирка геолога создается путем крафта головки инструмента с палкой."
     },
     {

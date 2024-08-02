@@ -97,7 +97,7 @@ def generate(rm: ResourceManager):
         'horizontal_radius_multiplier': uniform_float(0.7, 1.4),
         'vertical_radius_multiplier': uniform_float(0.8, 1.3),
         'floor_level': uniform_float(-1, -0.4),
-        'replaceable': '#tfc:can_carve',
+        'replaceable': '#minecraft:overworld_carver_replaceables',
     })
 
     rm.configured_carver('canyon', 'tfc:canyon', {
@@ -115,7 +115,7 @@ def generate(rm: ResourceManager):
             'vertical_radius_default_factor': 1.0,
             'vertical_radius_center_factor': 0.0
         },
-        'replaceable': '#tfc:can_carve',
+        'replaceable': '#minecraft:overworld_carver_replaceables',
     })
 
     # Configured and Placed Features
@@ -1374,6 +1374,109 @@ def height_provider(min_y: VerticalAnchor, max_y: VerticalAnchor, height_type: H
     }
 
 
+def spawner(entity: str, weight: int = 1, min_count: int = 1, max_count: int = 4) -> dict[str, Any]:
+    return {
+        'type': entity,
+        'weight': weight,
+        'minCount': min_count,
+        'maxCount': max_count
+    }
+
+SALT_MARSH_AMBIENT: Dict[str, Dict[str, Any]] = {
+    'isopod': spawner('tfc:isopod'),
+    'lobster': spawner('tfc:lobster'),
+    'horseshoe_crab': spawner('tfc:horseshoe_crab'),
+    'salmon': spawner('tfc:salmon')
+}
+
+OCEAN_AMBIENT: Dict[str, Dict[str, Any]] = {
+    'isopod': spawner('tfc:isopod'),
+    'lobster': spawner('tfc:lobster'),
+    'horseshoe_crab': spawner('tfc:horseshoe_crab'),
+    'cod': spawner('tfc:cod', weight=10),
+    'pufferfish': spawner('tfc:pufferfish', max_count=2),
+    'tropical_fish': spawner('tfc:tropical_fish', weight=10, max_count=6),
+    'jellyfish': spawner('tfc:jellyfish', min_count=2, max_count=6)
+}
+
+OCEAN_CREATURES: Dict[str, Dict[str, Any]] = {
+    'orca': spawner('tfc:orca', min_count=1, max_count=3),
+    'dolphin': spawner('tfc:dolphin', min_count=1, max_count=3),
+    'squid': spawner('tfc:squid', min_count=1, max_count=3, weight=2)
+}
+
+UNDERGROUND_WATER_CREATURES: Dict[str, Dict[str, Any]] = {
+    'octopoteuthis': spawner('tfc:octopoteuthis', min_count=1, max_count=2)
+}
+
+LAKE_AMBIENT: Dict[str, Dict[str, Any]] = {
+    **dict(('%s' % fish, spawner('tfc:%s' % fish, min_count=2, max_count=4, weight=10)) for fish in SIMPLE_FRESHWATER_FISH if 'trout' not in fish),
+    'crayfish': spawner('tfc:crayfish', min_count=1, max_count=4, weight=5)
+}
+
+RIVER_AMBIENT: Dict[str, Dict[str, Any]] = {
+    **dict(('%s' % fish, spawner('tfc:%s' % fish, min_count=2, max_count=4, weight=10)) for fish in SIMPLE_FRESHWATER_FISH if 'trout' in fish),
+}
+
+LAKE_CREATURES: Dict[str, Dict[str, Any]] = {
+    'manatee': spawner('tfc:manatee', min_count=1, max_count=2)
+}
+
+SHORE_CREATURES: Dict[str, Dict[str, Any]] = {
+    'penguin': spawner('tfc:penguin', min_count=2, max_count=5, weight=10),
+    'turtle': spawner('tfc:turtle', min_count=2, max_count=5, weight=10)
+}
+
+LAND_CREATURES: Dict[str, Dict[str, Any]] = {
+    'crocodile': spawner('tfc:crocodile', min_count=1, max_count=1, weight=20),
+    'pig': spawner('tfc:pig', min_count=1, max_count=4),
+    'cow': spawner('tfc:cow', min_count=1, max_count=4),
+    'goat': spawner('tfc:goat', min_count=1, max_count=4),
+    'yak': spawner('tfc:yak', min_count=1, max_count=4),
+    'alpaca': spawner('tfc:alpaca', min_count=1, max_count=4),
+    'sheep': spawner('tfc:sheep', min_count=1, max_count=4),
+    'musk_ox': spawner('tfc:musk_ox', min_count=1, max_count=4),
+    'chicken': spawner('tfc:chicken', min_count=2, max_count=6),
+    'duck': spawner('tfc:duck', min_count=2, max_count=6),
+    'quail': spawner('tfc:quail', min_count=2, max_count=6),
+    'polar_bear': spawner('tfc:polar_bear', min_count=1, max_count=1, weight=2),
+    'grizzly_bear': spawner('tfc:grizzly_bear', min_count=1, max_count=1, weight=2),
+    'black_bear': spawner('tfc:black_bear', min_count=1, max_count=1, weight=2),
+    'lion': spawner('tfc:lion', min_count=1, max_count=3, weight=2),
+    'sabertooth': spawner('tfc:sabertooth', min_count=1, max_count=1, weight=2),
+    'tiger': spawner('tfc:tiger', min_count=1, max_count=1, weight=2),
+    'rabbit': spawner('tfc:rabbit', min_count=1, max_count=4, weight=3),
+    'fox': spawner('tfc:fox', min_count=1, max_count=1),
+    'panda': spawner('tfc:panda', min_count=3, max_count=5),
+    'boar': spawner('tfc:boar', min_count=1, max_count=2, weight=2),
+    'wildebeest': spawner('tfc:wildebeest', min_count=1, max_count=2, weight=2),
+    'moose': spawner('tfc:moose', min_count=1, max_count=1),
+    'bongo': spawner('tfc:bongo', min_count=2, max_count=4, weight=3),
+    'caribou': spawner('tfc:caribou', min_count=2, max_count=4, weight=3),
+    'deer': spawner('tfc:deer', min_count=2, max_count=4, weight=3),
+    'gazelle': spawner('tfc:gazelle', min_count=2, max_count=4, weight=3),
+    'grouse': spawner('tfc:grouse', min_count=2, max_count=4),
+    'pheasant': spawner('tfc:pheasant', min_count=2, max_count=4),
+    'turkey': spawner('tfc:turkey', min_count=2, max_count=4),
+    'peafowl': spawner('tfc:peafowl', min_count=2, max_count=4),
+    'wolf': spawner('tfc:wolf', min_count=6, max_count=9),
+    'hyena': spawner('tfc:hyena', min_count=5, max_count=9),
+    'direwolf': spawner('tfc:direwolf', min_count=3, max_count=7),
+    'donkey': spawner('tfc:donkey', min_count=1, max_count=3),
+    'horse': spawner('tfc:horse', min_count=1, max_count=3),
+    'ocelot': spawner('tfc:ocelot', min_count=1, max_count=3),
+    'frog': spawner('tfc:frog', min_count=2, max_count=4),
+}
+
+VANILLA_MONSTERS: Dict[str, Dict[str, Any]] = {
+    'spider': spawner('minecraft:spider', weight=100, min_count=4, max_count=4),
+    'zombie': spawner('minecraft:zombie', weight=95, min_count=4, max_count=4),
+    'skeleton': spawner('minecraft:skeleton', weight=100, min_count=4, max_count=4),
+    'creeper': spawner('minecraft:creeper', weight=100, min_count=4, max_count=4),
+    'slime': spawner('minecraft:slime', weight=100, min_count=4, max_count=4),
+}
+
+
 def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False, ocean_features: Union[bool, Literal['both']] = False, lake_features: Union[bool, Literal['default']] = 'default', volcano_features: bool = False, reef_features: bool = False, hot_spring_features: Union[bool, Literal['empty']] = False):
     spawners = {}
     soil_discs = []
@@ -1522,41 +1625,3 @@ def join_not_empty(c: str, *elements: str) -> str:
 
 def count_weighted_list(*pairs: Tuple[Any, int]) -> List[Any]:
     return [item for item, count in pairs for _ in range(count)]
-
-
-def mcresources_biome(self, name_parts: ResourceIdentifier, has_precipitation: bool, category: str = 'none', temperature: float = 0, temperature_modifier: str = 'none', downfall: float = 0.5, effects: Optional[Json] = None, air_carvers: Optional[Sequence[str]] = None, water_carvers: Optional[Sequence[str]] = None, features: Sequence[Sequence[str]] = None, structures: Sequence[str] = None, spawners: Optional[Json] = None, player_spawn_friendly: bool = True, creature_spawn_probability: float = 0.5, parent: Optional[str] = None, spawn_costs: Optional[Json] = None):
-    """ Creates a biome, with all possible optional parameters filled in to the minimum required state. Parameters are exactly as they appear in the final biome. """
-    if effects is None:
-        effects = {}
-    for required_effect in ('fog_color', 'sky_color', 'water_color', 'water_fog_color'):
-        if required_effect not in effects:
-            effects[required_effect] = 0
-
-    if features is None:
-        features = []
-    if structures is None:
-        structures = []
-    if spawners is None:
-        spawners = {}
-    if spawn_costs is None:
-        spawn_costs = {}
-    res = utils.resource_location(self.domain, name_parts)
-    self.write((*self.resource_dir, 'data', res.domain, 'worldgen', 'biome', res.path), {
-        'has_precipitation': has_precipitation,
-        'category': category,
-        'temperature': temperature,
-        'temperature_modifier': temperature_modifier,
-        'downfall': downfall,
-        'effects': effects,
-        'carvers': {
-            'air': air_carvers,
-            'liquid': water_carvers
-        },
-        'features': features,
-        'starts': structures,
-        'spawners': spawners,
-        'player_spawn_friendly': player_spawn_friendly,
-        'creature_spawn_probability': creature_spawn_probability,
-        'parent': parent,
-        'spawn_costs': spawn_costs
-    })

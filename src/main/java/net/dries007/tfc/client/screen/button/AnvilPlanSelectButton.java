@@ -14,6 +14,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
@@ -30,24 +31,20 @@ public class AnvilPlanSelectButton extends Button
     private final Component component;
     private int currentPage; // The page selected by the root gui
 
-    public AnvilPlanSelectButton(int x, int y, int page, final AnvilRecipe recipe, Component tooltip)
+    public AnvilPlanSelectButton(int x, int y, int page, final RecipeHolder<AnvilRecipe> recipe, Component tooltip)
     {
         super(x, y, 18, 18, tooltip, button -> {
             if (button.active)
             {
-                final @Nullable ResourceLocation recipeId = AnvilRecipe.getId(recipe);
-                if (recipeId != null)
-                {
-                    final CompoundTag tag = new CompoundTag();
-                    tag.putString("recipe", recipeId.toString());
-                    PacketDistributor.sendToServer(new ScreenButtonPacket(0, tag));
-                }
+                final CompoundTag tag = new CompoundTag();
+                tag.putString("recipe", recipe.id().toString());
+                PacketDistributor.sendToServer(new ScreenButtonPacket(0, tag));
             }
         }, RenderHelpers.NARRATION);
         this.component = tooltip;
         setTooltip(Tooltip.create(tooltip));
 
-        this.result = recipe.getResultItem(ClientHelpers.getLevelOrThrow().registryAccess());
+        this.result = recipe.value().getResultItem(ClientHelpers.getLevelOrThrow().registryAccess());
         this.page = page;
         this.currentPage = 0;
     }

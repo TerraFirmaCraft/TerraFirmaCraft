@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.util.calendar.Calendars;
 
 
-public final class HeatComponent
+public final class HeatComponent implements IHeatView
 {
     public static final Codec<HeatComponent> CODEC = RecordCodecBuilder.<HeatComponent>create(i -> i.group(
         Codec.FLOAT.optionalFieldOf("capacity", 0f).forGetter(c -> c.heatCapacity),
@@ -44,6 +44,17 @@ public final class HeatComponent
     public static HeatComponent of(float heatCapacity)
     {
         return new HeatComponent(null, heatCapacity, 0f, 0L);
+    }
+
+    /**
+     * Create a new {@link HeatComponent} from a custom heat capacity value. The component will have no definition applied,
+     * and should not be overwritten by external values.
+     * @param heatCapacity The heat capacity
+     * @param temperatureNow The current temperature
+     */
+    public static HeatComponent of(float heatCapacity, float temperatureNow)
+    {
+        return new HeatComponent(null, heatCapacity, temperatureNow, Calendars.get().getTicks());
     }
 
     /**
@@ -95,7 +106,8 @@ public final class HeatComponent
     /**
      * @return The current temperature, or an estimation of it
      */
-    float getTemperature()
+    @Override
+    public float getTemperature()
     {
         return sanitize().calculateTemperature();
     }
@@ -108,9 +120,22 @@ public final class HeatComponent
     /**
      * @return The current heat capacity, or an estimation of it
      */
-    float getHeatCapacity()
+    @Override
+    public float getHeatCapacity()
     {
         return heatCapacity != 0f ? heatCapacity : parent == null ? Float.POSITIVE_INFINITY : parent.heatCapacity();
+    }
+
+    @Override
+    public float getWorkingTemperature()
+    {
+        return parent == null ? 0f : parent.forgingTemperature();
+    }
+
+    @Override
+    public float getWeldingTemperature()
+    {
+        return parent == null ? 0f : parent.weldingTemperature();
     }
 
     /**
@@ -144,11 +169,6 @@ public final class HeatComponent
         return new HeatComponent(parent, heatCapacity, getTemperature(), Calendars.get().getTicks());
     }
 
-    HeatDefinition parent()
-    {
-        return Objects.requireNonNull(parent);
-    }
-
     @Override
     public boolean equals(Object obj)
     {
@@ -158,7 +178,7 @@ public final class HeatComponent
             // Sanitize before comparing directly
             this.sanitize();
             that.sanitize();
-            return heatCapacity == heatCapacity
+            return heatCapacity == that.heatCapacity
                 && lastTick == that.lastTick
                 && lastTemperature == that.lastTemperature;
         }

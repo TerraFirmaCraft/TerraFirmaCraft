@@ -8,7 +8,7 @@
   },
   "input": {
     "count": 5,
-    "item": "minecraft:clay_ball"
+    "tag": "tfc:clay_knapping"
   },
   "spawns_particles": false
 }

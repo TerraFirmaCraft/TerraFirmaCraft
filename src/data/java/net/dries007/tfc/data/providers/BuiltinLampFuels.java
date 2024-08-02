@@ -31,7 +31,7 @@ public class BuiltinLampFuels extends DataManagerProvider<LampFuel> implements A
         add("lava", Fluids.LAVA, BlockIngredient.of(Stream.of(
             TFCBlocks.METALS.get(Metal.BLUE_STEEL).get(Metal.BlockType.LAMP).get(),
             TFCBlocks.METALS.get(Metal.RED_STEEL).get(Metal.BlockType.LAMP).get()
-            )), -1);
+        )), -1);
     }
 
     private void add(String name, Fluid fluid, BlockIngredient blocks, int burnRate)

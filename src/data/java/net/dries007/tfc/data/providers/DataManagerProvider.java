@@ -1,14 +1,10 @@
 package net.dries007.tfc.data.providers;
 
-import java.nio.file.Path;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.BiFunction;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
@@ -20,19 +16,6 @@ import net.dries007.tfc.util.data.DataManager;
 
 public abstract class DataManagerProvider<T> implements DataProvider
 {
-    /**
-     * For use in a test environment, sets up all data generated values of a given data manager, via the provided data provider,
-     * to initialize the runtime data manager. Requires registries to be setup already.
-     */
-    public static <T> void setup(BiFunction<PackOutput, CompletableFuture<HolderLookup.Provider>, ? extends DataManagerProvider<T>> factory)
-    {
-        final RegistryAccess.Frozen lookup = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
-        final var provider = factory.apply(new PackOutput(Path.of("")), CompletableFuture.completedFuture(lookup));
-
-        provider.addData(lookup);
-        provider.manager.bindValues(provider.elements.buildOrThrow());
-    }
-
     private final DataManager<T> manager;
     private final CompletableFuture<HolderLookup.Provider> lookup;
     private final ImmutableMap.Builder<ResourceLocation, T> elements;
@@ -46,6 +29,12 @@ public abstract class DataManagerProvider<T> implements DataProvider
         this.elements = ImmutableMap.builder();
         this.path = output.createPathProvider(PackOutput.Target.DATA_PACK, TerraFirmaCraft.MOD_ID + "/" + manager.getName());
         this.contentDone = new CompletableFuture<>();
+    }
+
+    public void run(HolderLookup.Provider lookup)
+    {
+        addData(lookup);
+        manager.bindValues(elements.buildOrThrow());
     }
 
     @Override

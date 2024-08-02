@@ -28,8 +28,8 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.component.ItemStackComponent;
 import net.dries007.tfc.common.component.TFCComponents;
+import net.dries007.tfc.common.component.item.ItemComponent;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.data.Deposit;
 
@@ -81,7 +81,7 @@ public class PanItem extends Item
     {
         if (entity instanceof Player player && level instanceof ServerLevel serverLevel)
         {
-            final @Nullable Deposit depositStack = Deposit.get(stack.getOrDefault(TFCComponents.DEPOSIT, ItemStackComponent.EMPTY).stack());
+            final @Nullable Deposit depositStack = Deposit.get(stack.getOrDefault(TFCComponents.DEPOSIT, ItemComponent.EMPTY).stack());
             if (depositStack != null)
             {
                 final var table = level.getServer().reloadableRegistries().getLootTable(depositStack.lootTable());
@@ -101,7 +101,7 @@ public class PanItem extends Item
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag)
     {
-        final @Nullable ItemStack deposit = stack.getOrDefault(TFCComponents.DEPOSIT, ItemStackComponent.EMPTY).stack();
+        final @Nullable ItemStack deposit = stack.getOrDefault(TFCComponents.DEPOSIT, ItemComponent.EMPTY).stack();
         if (deposit != null)
         {
             tooltip.add(Component.translatable("tfc.tooltip.pan.contents").append(deposit.getHoverName()));

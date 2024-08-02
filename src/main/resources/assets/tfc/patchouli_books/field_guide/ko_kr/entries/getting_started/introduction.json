@@ -60,10 +60,10 @@
       "type": "tfc:rock_knapping_recipe",
       "anchor": "knife",
       "recipes": [
-        "tfc:rock_knapping/knife_head_sedimentary",
-        "tfc:rock_knapping/knife_head_metamorphic",
-        "tfc:rock_knapping/knife_head_igneous_extrusive",
-        "tfc:rock_knapping/knife_head_igneous_intrusive"
+        "tfc:knapping/stone/knife_head/sedimentary",
+        "tfc:knapping/stone/knife_head/metamorphic",
+        "tfc:knapping/stone/knife_head/igneous_extrusive",
+        "tfc:knapping/stone/knife_head/igneous_intrusive"
       ],
       "text": "여러 다양한 종류의 돌로 만들 수 있는 칼 날."
     },
@@ -75,50 +75,50 @@
     {
       "type": "tfc:rock_knapping_recipe",
       "recipes": [
-        "tfc:rock_knapping/axe_head_sedimentary",
-        "tfc:rock_knapping/axe_head_metamorphic",
-        "tfc:rock_knapping/axe_head_igneous_extrusive",
-        "tfc:rock_knapping/axe_head_igneous_intrusive"
+        "tfc:knapping/stone/axe_head/sedimentary",
+        "tfc:knapping/stone/axe_head/metamorphic",
+        "tfc:knapping/stone/axe_head/igneous_extrusive",
+        "tfc:knapping/stone/axe_head/igneous_intrusive"
       ],
       "text": "$(thing)도끼$()는 나무 한 그루를 통나무와 나뭇잎까지 통채로 베어낼 수 잇습니다. 다만, 묘목은 잎을 직접 캐야 얻을 수 있습니다."
     },
     {
       "type": "tfc:rock_knapping_recipe",
       "recipes": [
-        "tfc:rock_knapping/shovel_head_sedimentary",
-        "tfc:rock_knapping/shovel_head_metamorphic",
-        "tfc:rock_knapping/shovel_head_igneous_extrusive",
-        "tfc:rock_knapping/shovel_head_igneous_intrusive"
+        "tfc:knapping/stone/shovel_head/sedimentary",
+        "tfc:knapping/stone/shovel_head/metamorphic",
+        "tfc:knapping/stone/shovel_head/igneous_extrusive",
+        "tfc:knapping/stone/shovel_head/igneous_intrusive"
       ],
       "text": "$(thing)삽$()으로는 흙 종류의 블록들을 파낼 수 있습니다. 또한 삽을 $(thing)흙$()이나 $(thing)잔디$() 블록에 대고 $(item)사용$()하여 $(thing)길$()을 만들 수 있습니다."
     },
     {
       "type": "tfc:rock_knapping_recipe",
       "recipes": [
-        "tfc:rock_knapping/hoe_head_sedimentary",
-        "tfc:rock_knapping/hoe_head_metamorphic",
-        "tfc:rock_knapping/hoe_head_igneous_extrusive",
-        "tfc:rock_knapping/hoe_head_igneous_intrusive"
+        "tfc:knapping/stone/hoe_head/sedimentary",
+        "tfc:knapping/stone/hoe_head/metamorphic",
+        "tfc:knapping/stone/hoe_head/igneous_extrusive",
+        "tfc:knapping/stone/hoe_head/igneous_intrusive"
       ],
       "text": "$(thing)괭이$()는 $(l:mechanics/crops)농사$() 짓는 데 효과적인 도구이며, 나뭇잎과 식물들을 캐는 데도 효과적입니다."
     },
     {
       "type": "tfc:rock_knapping_recipe",
       "recipes": [
-        "tfc:rock_knapping/hammer_head_sedimentary",
-        "tfc:rock_knapping/hammer_head_metamorphic",
-        "tfc:rock_knapping/hammer_head_igneous_extrusive",
-        "tfc:rock_knapping/hammer_head_igneous_intrusive"
+        "tfc:knapping/stone/hammer_head/sedimentary",
+        "tfc:knapping/stone/hammer_head/metamorphic",
+        "tfc:knapping/stone/hammer_head/igneous_extrusive",
+        "tfc:knapping/stone/hammer_head/igneous_intrusive"
       ],
       "text": "$(thing)망치$()는 $(l:mechanics/damage_types)충격$() 피해를 주는 무기로도 쓰일 수 있지만, 주 용도는 $(l:getting_started/primitive_anvils)단조$()에 쓰이는 중요한 도구입니다."
     },
     {
       "type": "tfc:rock_knapping_recipe",
       "recipes": [
-        "tfc:rock_knapping/javelin_head_sedimentary",
-        "tfc:rock_knapping/javelin_head_metamorphic",
-        "tfc:rock_knapping/javelin_head_igneous_extrusive",
-        "tfc:rock_knapping/javelin_head_igneous_intrusive"
+        "tfc:knapping/stone/javelin_head/sedimentary",
+        "tfc:knapping/stone/javelin_head/metamorphic",
+        "tfc:knapping/stone/javelin_head/igneous_extrusive",
+        "tfc:knapping/stone/javelin_head/igneous_intrusive"
       ],
       "text": "마지막으로 $(thing)창$()은 기초적인 무기로 표적에게 던지거나, $(l:mechanics/damage_types)관통$() 피해를 주는 무기로 사용할 수 있습니다."
     }

@@ -46,12 +46,12 @@ public final class HeatView extends ComponentView<HeatComponent> implements IHea
     @Override
     public float getWorkingTemperature()
     {
-        return component.parent().forgingTemperature();
+        return component.getWorkingTemperature();
     }
 
     @Override
     public float getWeldingTemperature()
     {
-        return component.parent().weldingTemperature();
+        return component.getWeldingTemperature();
     }
 }

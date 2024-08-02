@@ -15,24 +15,24 @@
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/kaolin_clay",
+      "recipe": "tfc:heating/powder/kaolinite",
       "text": "Kaolinite powder is made by heating $(l:the_world/ores_and_minerals#kaolinite)Kaolin Clay$(). However, the process is not perfect, and only 20%% of clay will form powder!"
     },
     {
       "type": "tfc:knapping_recipe",
       "anchor": "crucible",
-      "recipe": "tfc:fire_clay_knapping/crucible",
+      "recipe": "tfc:knapping/ceramic/unfired_crucible",
       "text": "$(l:mechanics/crucible)Тигель$() у невипаленому стані виготовляється з вогнетривкої глини."
     },
     {
       "type": "tfc:knapping_recipe",
       "anchor": "fire_bricks",
-      "recipe": "tfc:fire_clay_knapping/brick",
+      "recipe": "tfc:knapping/ceramic/unfired_brick",
       "text": "Конструкція $(l:mechanics/blast_furnace)доменної пічі$() будується виключно з вогнетривкої цегли."
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:fire_clay_knapping/fire_ingot_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_fire_ingot_mold",
       "text": "$(thing)Вогнетривка форма злитку$() є міцнішим варіантом $(l:getting_started/pottery#mold)форми для злитку$(), що має лише 1 із 100 шансів зламатись, порівняно з 1 із 10 для звичайної форми."
     }
   ],

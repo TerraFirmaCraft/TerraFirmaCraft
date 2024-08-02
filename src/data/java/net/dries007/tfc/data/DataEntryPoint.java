@@ -6,14 +6,11 @@
 
 package net.dries007.tfc.data;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistrySetBuilder;
@@ -30,11 +27,10 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
-import net.neoforged.neoforge.internal.RegistrationEvents;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.data.providers.BuiltinBlockTags;
 import net.dries007.tfc.data.providers.BuiltinClimateRanges;
+import net.dries007.tfc.data.providers.BuiltinDamageTypes;
 import net.dries007.tfc.data.providers.BuiltinDensityFunctions;
 import net.dries007.tfc.data.providers.BuiltinDeposits;
 import net.dries007.tfc.data.providers.BuiltinDrinkables;
@@ -55,8 +51,8 @@ import net.dries007.tfc.data.providers.BuiltinPaintings;
 import net.dries007.tfc.data.providers.BuiltinRecipes;
 import net.dries007.tfc.data.providers.BuiltinSupports;
 import net.dries007.tfc.data.providers.BuiltinWorldPreset;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.PhysicalDamageType;
+import net.dries007.tfc.util.TFCPaintings;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
 
@@ -66,8 +62,6 @@ public final class DataEntryPoint
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event)
     {
-        triggerComponentModificationsBeforeDataGen();
-
         final PackOutput output = event.getGenerator().getPackOutput();
 
         final var lookup = add(event, new DatapackBuiltinEntriesProvider(
@@ -76,24 +70,24 @@ public final class DataEntryPoint
                 .add(Registries.DENSITY_FUNCTION, BuiltinDensityFunctions::load)
                 .add(Registries.WORLD_PRESET, BuiltinWorldPreset::load)
                 .add(Registries.PAINTING_VARIANT, BuiltinPaintings::new)
+                .add(Registries.DAMAGE_TYPE, BuiltinDamageTypes::new)
             , Set.of(MOD_ID, "minecraft"))).getRegistryProvider();
         final var fluidHeat = add(event, new BuiltinFluidHeat(output, lookup)).output();
         final var itemHeat = add(event, new BuiltinItemHeat(output, lookup, fluidHeat));
 
         final var drinkables = add(event, new BuiltinDrinkables(output, lookup)).output();
+        final var knappingTypes = add(event, new BuiltinKnappingTypes(output, lookup)).output();
 
-        add(event, new BuiltinRecipes(output, lookup, fluidHeat, itemHeat));
+        add(event, new BuiltinRecipes(output, lookup, CompletableFuture.allOf(fluidHeat, knappingTypes), itemHeat));
 
         final var blockTags = add(event, new BuiltinBlockTags(event, lookup)).contentsGetter();
+
         add(event, new BuiltinItemTags(event, lookup, blockTags));
         add(event, new BuiltinFluidTags(event, lookup, drinkables));
-        tags(event, Registries.PAINTING_VARIANT, lookup, (provider, add) -> provider
-            .lookupOrThrow(Registries.PAINTING_VARIANT)
-            .listElementIds()
-            .filter(e -> e.location().getNamespace().equals(MOD_ID))
-            .sorted() // Determinism
-            .forEach(add.apply(PaintingVariantTags.PLACEABLE)));
-        tags(event, Registries.DAMAGE_TYPE, lookup, (provider, add) -> {
+        tags(event, Registries.PAINTING_VARIANT, lookup, (provider, tags) -> TFCPaintings.PAINTING_TYPES
+            .getEntries()
+            .forEach(holder -> tags.tag(PaintingVariantTags.PLACEABLE).accept(holder.getKey())));
+        tags(event, Registries.DAMAGE_TYPE, lookup, (provider, tags) -> {
             List.of(
                 DamageTypes.IN_WALL,
                 DamageTypes.CRAMMING,
@@ -101,7 +95,7 @@ public final class DataEntryPoint
                 DamageTypes.FLY_INTO_WALL,
                 DamageTypes.FALLING_BLOCK,
                 DamageTypes.FALLING_ANVIL
-            ).forEach(add.apply(PhysicalDamageType.IS_CRUSHING));
+            ).forEach(tags.tag(PhysicalDamageType.IS_CRUSHING));
             List.of(
                 DamageTypes.CACTUS,
                 DamageTypes.SWEET_BERRY_BUSH,
@@ -110,11 +104,11 @@ public final class DataEntryPoint
                 DamageTypes.STING,
                 DamageTypes.ARROW,
                 DamageTypes.TRIDENT
-            ).forEach(add.apply(PhysicalDamageType.IS_PIERCING));
-            add.apply(PhysicalDamageType.IS_SLASHING);
+            ).forEach(tags.tag(PhysicalDamageType.IS_PIERCING));
+            tags.tag(PhysicalDamageType.IS_SLASHING);
         });
-        tags(event, Registries.WORLD_PRESET, lookup, (provider, add) ->
-            add.apply(WorldPresetTags.NORMAL).accept(PRESET));
+        tags(event, Registries.WORLD_PRESET, lookup, (provider, tags) ->
+            tags.tag(WorldPresetTags.NORMAL).accept(PRESET));
 
         add(event, new BuiltinDeposits(output, lookup));
         add(event, new BuiltinEntityDamageResist(output, lookup));
@@ -123,7 +117,6 @@ public final class DataEntryPoint
         add(event, new BuiltinFuels(output, lookup));
         add(event, new BuiltinItemDamageResist(output, lookup));
         add(event, new BuiltinItemSizes(output, lookup));
-        add(event, new BuiltinKnappingTypes(output, lookup));
         add(event, new BuiltinLampFuels(output, lookup));
         add(event, new BuiltinSupports(output, lookup));
         add(event, new BuiltinClimateRanges(output, lookup));
@@ -136,7 +129,7 @@ public final class DataEntryPoint
     }
 
     private static <T> void tags(GatherDataEvent event, ResourceKey<Registry<T>> registry, CompletableFuture<HolderLookup.Provider> lookup,
-                                 BiConsumer<HolderLookup.Provider, Function<TagKey<T>, Consumer<ResourceKey<T>>>> callback)
+                                 BiConsumer<HolderLookup.Provider, TagLookup<T>> callback)
     {
         add(event, new TagsProvider<T>(event.getGenerator().getPackOutput(), registry, lookup, MOD_ID, event.getExistingFileHelper())
         {
@@ -148,14 +141,9 @@ public final class DataEntryPoint
         });
     }
 
-    @SuppressWarnings("UnstableApiUsage")
-    private static void triggerComponentModificationsBeforeDataGen()
+    @FunctionalInterface
+    interface TagLookup<T>
     {
-        Helpers.uncheck(() -> {
-            final Method method = RegistrationEvents.class.getDeclaredMethod("modifyComponents");
-            method.setAccessible(true);
-            method.invoke(null);
-            return null;
-        });
+        Consumer<ResourceKey<T>> tag(TagKey<T> tag);
     }
 }

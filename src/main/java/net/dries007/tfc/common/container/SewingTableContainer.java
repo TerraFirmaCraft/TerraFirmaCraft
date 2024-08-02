@@ -16,6 +16,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.ContainerListener;
 import net.minecraft.world.inventory.DataSlot;
+import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.items.IItemHandler;
@@ -25,17 +26,17 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.wood.SewingTableBlock;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
+import net.dries007.tfc.common.container.slot.CallbackSlot;
 import net.dries007.tfc.common.recipes.SewingRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.input.NonEmptyInput;
-import net.dries007.tfc.util.ArrayContainerData;
 import net.dries007.tfc.util.Helpers;
 
 public class SewingTableContainer extends Container implements ISlotCallback, ButtonHandlerContainer
 {
     public static SewingTableContainer create(Inventory playerInventory, int windowId, ContainerLevelAccess access)
     {
-        return new SewingTableContainer(playerInventory, windowId, access).init(playerInventory, 30);
+        return new SewingTableContainer(windowId, access).init(playerInventory, 30);
     }
 
     private static boolean isWool(ItemStack item)
@@ -78,11 +79,10 @@ public class SewingTableContainer extends Container implements ISlotCallback, Bu
     public static final int PLACED_SLOTS_OFFSET = 100;
 
     private final ItemStackHandler inventory;
-    private final Inventory playerInventory;
     private final ContainerLevelAccess access;
     private final DataSlot activeMaterialData = DataSlot.standalone();
-    private final ArrayContainerData placedMaterialData = new ArrayContainerData(MAX_SQUARES);
-    private final ArrayContainerData stitchData = new ArrayContainerData(MAX_STITCHES);
+    private final SimpleContainerData placedMaterialData = new SimpleContainerData(MAX_SQUARES);
+    private final SimpleContainerData stitchData = new SimpleContainerData(MAX_STITCHES);
     private final DataSlot burlapCount = DataSlot.standalone();
     private final DataSlot woolCount = DataSlot.standalone();
     private final DataSlot stringCount = DataSlot.standalone();
@@ -91,15 +91,9 @@ public class SewingTableContainer extends Container implements ISlotCallback, Bu
     private final DataSlot usedString = DataSlot.standalone();
     private final Input input = new Input(this);
 
-    public SewingTableContainer(Inventory playerInventory, int windowId)
-    {
-        this(playerInventory, windowId, ContainerLevelAccess.NULL);
-    }
-
-    public SewingTableContainer(Inventory playerInventory, int windowId, ContainerLevelAccess access)
+    public SewingTableContainer(int windowId, ContainerLevelAccess access)
     {
         super(TFCContainerTypes.SEWING_TABLE.get(), windowId);
-        this.playerInventory = playerInventory;
         this.access = access;
         this.inventory = new InventoryItemHandler(this, NUM_SLOTS);
         addDataSlot(activeMaterialData).set(-1);
@@ -385,12 +379,11 @@ public class SewingTableContainer extends Container implements ISlotCallback, Bu
     {
         public boolean stitchesMatch(SewingRecipe recipe)
         {
-            final int[] array = container.stitchData.getArray();
-            if (array.length != MAX_STITCHES)
+            if (container.stitchData.getCount() != MAX_STITCHES)
                 return false;
             for (int i = 0; i < MAX_STITCHES; i++)
             {
-                if (recipe.getStitch(i) != (array[i] == 1))
+                if (recipe.getStitch(i) != (container.stitchData.get(i) == 1))
                     return false;
             }
             return true;
@@ -398,12 +391,11 @@ public class SewingTableContainer extends Container implements ISlotCallback, Bu
 
         public boolean squaresMatch(SewingRecipe recipe)
         {
-            final int[] array = container.placedMaterialData.getArray();
-            if (array.length != MAX_SQUARES)
+            if (container.placedMaterialData.getCount() != MAX_SQUARES)
                 return false;
             for (int i = 0; i < MAX_SQUARES; i++)
             {
-                if (recipe.getSquare(i) != array[i])
+                if (recipe.getSquare(i) != container.placedMaterialData.get(i))
                     return false;
             }
             return true;

@@ -23,13 +23,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.component.IngredientsComponent;
 import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.component.food.FoodCapability;
 import net.dries007.tfc.common.component.food.FoodData;
 import net.dries007.tfc.common.component.food.IFood;
 import net.dries007.tfc.common.component.food.Nutrient;
 import net.dries007.tfc.common.component.heat.HeatCapability;
+import net.dries007.tfc.common.component.item.ItemListComponent;
 import net.dries007.tfc.common.recipes.RecipeHelpers;
 
 public record MealModifier(FoodData baseFood, List<MealPortion> portions) implements ItemStackModifier
@@ -140,10 +140,10 @@ public record MealModifier(FoodData baseFood, List<MealPortion> portions) implem
             }
         }
 
-        stack.set(TFCComponents.INGREDIENTS, IngredientsComponent.of(itemIngredients));
+        stack.set(TFCComponents.INGREDIENTS, ItemListComponent.of(itemIngredients));
         FoodCapability.setFoodForDynamicItemOnCreate(
             stack,
-            FoodData.of(baseFood.hunger(), water, saturation, nutrition, baseFood.decayModifier()));
+            new FoodData(baseFood.hunger(), water, saturation, 0, nutrition, baseFood.decayModifier()));
 
         return stack;
     }

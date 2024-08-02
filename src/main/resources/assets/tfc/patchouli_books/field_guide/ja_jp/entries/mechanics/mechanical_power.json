@@ -20,7 +20,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/windmill_blade",
+      "recipe": "tfc:crafting/windmill_blade/white",
       "text": "$(thing)Windmill Blades$() can be crafted from cloth. A single windmill can have up to five blades, and the more blades, the faster it will rotate."
     },
     {
@@ -42,7 +42,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/wood/oak_water_wheel",
+      "recipe": "tfc:crafting/wood/water_wheel/oak",
       "title": " ",
       "text": "or if the axle was already connected to another source.$(br2)Water wheels can be crafted simply from lumber."
     },
@@ -60,20 +60,20 @@
     {
       "type": "patchouli:crafting",
       "anchor": "axle",
-      "recipe": "tfc:crafting/wood/oak_axle",
+      "recipe": "tfc:crafting/wood/axle/oak",
       "title": "Axles",
       "text": "Axles are the bread and butter of a rotational network, and are the block that transfers rotational power from one location to the other. They can be connected up to five blocks long, but any longer and they will break!"
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/wood/oak_encased_axle",
+      "recipe": "tfc:crafting/wood/encased_axle/oak",
       "title": "Encased Axles",
       "text": "Axles can also be crafted $(thing)Encased$(). These can either be placed by themselves, or on top of existing axles.$(br2)However, in order to transfer power further, you will need a $(l:mechanics/mechanical_power#gearbox)Gear Box$()"
     },
     {
       "type": "patchouli:crafting",
       "anchor": "gearbox",
-      "recipe": "tfc:crafting/wood/oak_gear_box",
+      "recipe": "tfc:crafting/wood/gear_box/oak",
       "title": "Gear Box",
       "text": "$(thing)Gear Boxes$() are a way of changing the $(thing)Direction$() of rotational power by using $(l:https://en.wikipedia.org/wiki/Gear)Gears$(). They are also useful in order to connect long chains of $(l:mechanics/mechanical_power#axle)Axles$() together without breaking."
     },
@@ -83,7 +83,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/wood/oak_clutch",
+      "recipe": "tfc:crafting/wood/clutch/oak",
       "title": "Clutch",
       "text": "A $(thing)Clutch$() is a way of controlling a rotational network via $(c)Redstone$(). It is an $(l:mechanics/mechanical_power#axle)Encased Axle$(), which disconnects when powered, allowing rotation to pass through only when unpowered."
     },
@@ -116,7 +116,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/wood/oak_bladed_axle",
+      "recipe": "tfc:crafting/wood/bladed_axle/oak",
       "recipe2": "tfc:crafting/trip_hammer"
     },
     {

@@ -1,0 +1,49 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "name": "loot_pool",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:item",
+              "name": "tfc:wood/barrel/mangrove",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "tfc:wood/barrel/mangrove",
+                  "properties": {
+                    "sealed": "true"
+                  }
+                }
+              ],
+              "functions": [
+                {
+                  "function": "minecraft:copy_components",
+                  "source": "block_entity",
+                  "include": [
+                    "minecraft:custom_name",
+                    "tfc:barrel"
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "tfc:wood/barrel/mangrove"
+            }
+          ]
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
+    }
+  ]
+}

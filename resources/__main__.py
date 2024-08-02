@@ -11,7 +11,6 @@ import json
 import os
 import sys
 from argparse import ArgumentParser
-from typing import Optional
 
 from mcresources import ResourceManager, utils
 
@@ -19,12 +18,11 @@ import advancements
 import assets
 import constants
 import data
+import emi_integration
 import format_lang
 import generate_book
 import generate_textures
 import generate_trees
-import recipes
-import tags
 import validate_assets
 import world_gen
 
@@ -38,7 +36,6 @@ def main():
     parser = ArgumentParser(description='Entrypoint for all common scripting infrastructure.')
     parser.add_argument('actions', nargs='+', choices=(
         'all',  # generate all resources (assets / data / book)
-        'clean',  # clean all resources (assets / data), including book
         'validate',  # validate no resources are changed when re-running
         'book',  # generate the book
         'trees',  # generate tree NBT structures from templates
@@ -56,13 +53,11 @@ def main():
     args = parser.parse_args()
 
     for action in args.actions:
-        if action == 'clean':
-            clean(args.local)
-        elif action == 'validate':
+        if action == 'validate':
             validate_resources()
             validate_assets.main()
         elif action == 'all':
-            resources_at(
+            touched: set[str] = resources_at(
                 ResourceManager('tfc', resource_dir=RESOURCE_DIR),
                 ResourceManager('minecraft', resource_dir=RESOURCE_DIR),
                 ResourceManager('tfc', resource_dir=TEST_RESOURCE_DIR)
@@ -73,10 +68,11 @@ def main():
                     ResourceManager('minecraft', resource_dir=args.hotswap_main),
                     ResourceManager('tfc', resource_dir=args.hotswap_test)
                 )
-            format_lang.main(False, 'minecraft', MOD_LANGUAGES)  # format_lang
-            format_lang.main(False, 'tfc', MOD_LANGUAGES)
+            touched |= format_lang.main(False, 'minecraft', MOD_LANGUAGES)  # format_lang
+            touched |= format_lang.main(False, 'tfc', MOD_LANGUAGES)
             for lang in BOOK_LANGUAGES:  # Translate all
-                generate_book.main(lang, args.local, False)
+                touched |= generate_book.main(lang, args.local, False)
+            print('Removed Stale =', utils.clean_generated_resources(RESOURCE_DIR, touched))
         elif action == 'textures':
             generate_textures.main()
         elif action == 'book':
@@ -90,25 +86,6 @@ def main():
         elif action == 'format_lang':
             format_lang.main(False, 'minecraft', MOD_LANGUAGES)
             format_lang.main(False, 'tfc', MOD_LANGUAGES)
-
-
-def clean(local: Optional[str]):
-    """ Cleans all generated resources files """
-    clean_at(RESOURCE_DIR)
-    clean_at(TEST_RESOURCE_DIR)
-    if local:
-        clean_at(local)
-
-
-def clean_at(location: str):
-    for tries in range(1, 1 + 3):
-        try:
-            utils.clean_generated_resources(location)
-            print('Clean %s' % location)
-            return
-        except OSError:
-            print('Failed, retrying (%d / 3)' % tries)
-    print('Clean Aborted')
 
 
 def validate_resources():
@@ -144,18 +121,20 @@ def resources_at(
     rm: ResourceManager,
     vanilla_rm: ResourceManager,
     test_rm: ResourceManager
-):
+) -> set[str]:
     # Do lang keys first, because it's ordered intentionally
     rm.lang(constants.DEFAULT_LANG)
     vanilla_rm.lang(constants.VANILLA_OVERRIDE_LANG)
 
+    data.generate(rm)
     assets.generate(rm)
-    #data.generate(rm)
-    #tags.generate(rm)
-    #recipes.generate(rm)
-    recipes.generate_test(test_rm)
     world_gen.generate(rm)
     advancements.generate(rm)
+    emi_integration.generate(rm)
+
+    # Tags should be done exclusively via code datagen, but notably right now we're missing world gen datagen
+    validate_no_tags(rm)
+    validate_no_tags(vanilla_rm)
 
     # Flush
     rm.flush()
@@ -166,6 +145,17 @@ def resources_at(
         rm.modified_files + test_rm.modified_files + vanilla_rm.modified_files,
         rm.unchanged_files + test_rm.unchanged_files + vanilla_rm.unchanged_files,
         rm.error_files + test_rm.error_files + vanilla_rm.error_files))
+
+    return rm.written_files | vanilla_rm.written_files
+
+
+def validate_no_tags(rm: ResourceManager):
+    # Tags should be done exclusively via code datagen, but notably right now we're missing world gen datagen
+    for tag_type, tag_names in rm.tags_buffer.items():
+        if tag_type.startswith('worldgen/'):
+            print('Allowing %d %s tags...' % (len(tag_names), tag_type))
+        else:
+            raise ValueError('Tag datagen is done in java. Tried to generate %s tags:\n%s' % (tag_type, '\n'.join([t.join() for t in tag_names])))
 
 
 class ValidatingResourceManager(ResourceManager):

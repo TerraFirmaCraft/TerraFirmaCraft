@@ -6,10 +6,11 @@
 
 package net.dries007.tfc.common.component.food;
 
-import java.util.List;
-import java.util.function.DoubleSupplier;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 import com.mojang.serialization.Codec;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.Holder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -19,13 +20,13 @@ import org.jetbrains.annotations.Nullable;
 
 public final class FoodTrait
 {
-    public static final Codec<FoodTrait> CODEC = FoodTraits.REGISTRY.byNameCodec();
-    public static final StreamCodec<RegistryFriendlyByteBuf, FoodTrait> STREAM_CODEC = ByteBufCodecs.registry(FoodTraits.KEY);
+    public static final Codec<Holder<FoodTrait>> CODEC = FoodTraits.REGISTRY.holderByNameCodec();
+    public static final StreamCodec<RegistryFriendlyByteBuf, Holder<FoodTrait>> STREAM_CODEC = ByteBufCodecs.holderRegistry(FoodTraits.KEY);
 
-    private final DoubleSupplier decayModifier;
+    private final Supplier<Double> decayModifier;
     private final @Nullable String translationKey;
 
-    public FoodTrait(DoubleSupplier decayModifier, @Nullable String translationKey)
+    public FoodTrait(Supplier<Double> decayModifier, @Nullable String translationKey)
     {
         this.decayModifier = decayModifier;
         this.translationKey = translationKey;
@@ -33,7 +34,7 @@ public final class FoodTrait
 
     public float getDecayModifier()
     {
-        return (float) decayModifier.getAsDouble();
+        return decayModifier.get().floatValue();
     }
 
     /**
@@ -41,16 +42,16 @@ public final class FoodTrait
      *
      * @param text  The tooltip strings
      */
-    public void addTooltipInfo(List<Component> text)
+    public void addTooltipInfo(Consumer<Component> text)
     {
         if (translationKey != null)
         {
             final MutableComponent component = Component.translatable(translationKey);
-            if (decayModifier.getAsDouble() > 1)
+            if (getDecayModifier() > 1)
             {
                 component.withStyle(ChatFormatting.RED);
             }
-            text.add(component);
+            text.accept(component);
         }
     }
 }

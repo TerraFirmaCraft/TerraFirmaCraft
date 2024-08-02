@@ -35,13 +35,11 @@ public class FirepitBlockEntity extends AbstractFirepitBlockEntity<ItemStackHand
     public static final int SLOT_OUTPUT_1 = 5; // generic output slot
     public static final int SLOT_OUTPUT_2 = 6; // extra output slot
 
-    private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.firepit");
-
     @Nullable protected HeatingRecipe cachedRecipe;
 
     public FirepitBlockEntity(BlockPos pos, BlockState state)
     {
-        super(TFCBlockEntities.FIREPIT.get(), pos, state, defaultInventory(7), NAME);
+        super(TFCBlockEntities.FIREPIT.get(), pos, state, defaultInventory(7));
 
         if (TFCConfig.SERVER.firePitEnableAutomation.get())
         {

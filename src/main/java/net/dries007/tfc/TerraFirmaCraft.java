@@ -18,7 +18,6 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
-import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
@@ -37,7 +36,8 @@ import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.IBellowsConsumer;
 import net.dries007.tfc.common.blocks.wood.Wood;
-import net.dries007.tfc.common.capabilities.TFCCapabilities;
+import net.dries007.tfc.common.capabilities.BlockCapabilities;
+import net.dries007.tfc.common.capabilities.ItemCapabilities;
 import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.component.food.FoodTraits;
 import net.dries007.tfc.common.container.TFCContainerTypes;
@@ -53,11 +53,12 @@ import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.ingredients.TFCIngredients;
 import net.dries007.tfc.common.recipes.outputs.ItemStackModifiers;
 import net.dries007.tfc.common.recipes.outputs.PotOutput;
+import net.dries007.tfc.compat.jade.JadeIntegration;
 import net.dries007.tfc.compat.patchouli.PatchouliClientEventHandler;
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
+import net.dries007.tfc.compat.theoneprobe.TheOneProbeIntegration;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.PacketHandler;
-import net.dries007.tfc.util.CauldronInteractions;
 import net.dries007.tfc.util.DispenserBehaviors;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.InteractionManager;
@@ -70,12 +71,12 @@ import net.dries007.tfc.util.climate.ClimateModels;
 import net.dries007.tfc.util.data.DataManagers;
 import net.dries007.tfc.util.loot.TFCLoot;
 import net.dries007.tfc.world.TFCWorldGen;
+import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.blockpredicate.TFCBlockPredicates;
 import net.dries007.tfc.world.carver.TFCCarvers;
 import net.dries007.tfc.world.density.TFCDensityFunctions;
 import net.dries007.tfc.world.feature.TFCFeatures;
 import net.dries007.tfc.world.placement.TFCPlacements;
-import net.dries007.tfc.world.settings.RockSettings;
 import net.dries007.tfc.world.stateprovider.TFCStateProviders;
 import net.dries007.tfc.world.structure.TFCStructureHooks;
 
@@ -86,6 +87,10 @@ public final class TerraFirmaCraft
     public static final String MOD_NAME = "TerraFirmaCraft";
     public static final Logger LOGGER = LogUtils.getLogger();
 
+    public static final boolean JEI = ModList.get().isLoaded("jei");
+    public static final boolean JADE = ModList.get().isLoaded("jade");
+    public static final boolean THE_ONE_PROBE = ModList.get().isLoaded("theoneprobe");
+
     public static final ResourceKey<WorldPreset> PRESET = ResourceKey.create(Registries.WORLD_PRESET, Helpers.identifier("overworld"));
 
     private @Nullable Throwable syncLoadError;
@@ -95,9 +100,8 @@ public final class TerraFirmaCraft
         IEventBus bus
     ) {
         LOGGER.info("Initializing TerraFirmaCraft");
-        LOGGER.info("Options: Assertions = {}, Test = {}, Debug = {}, Production = {}, Dist = {}",
+        LOGGER.info("Options: Assertions = {}, Debug = {}, Production = {}, Dist = {}",
             Helpers.ASSERTIONS_ENABLED,
-            Helpers.TEST_ENVIRONMENT,
             LOGGER.isDebugEnabled(),
             FMLEnvironment.production,
             FMLEnvironment.dist);
@@ -111,10 +115,10 @@ public final class TerraFirmaCraft
         bus.addListener(this::setup);
         bus.addListener(this::registerRegistries);
         bus.addListener(this::loadComplete);
-        bus.addListener(this::onInterModComms);
         bus.addListener(TFCEntities::onEntityAttributeCreation);
         bus.addListener(TFCComponents::onModifyDefaultComponents);
-        bus.addListener(TFCCapabilities::onRegisterCapabilities);
+        bus.addListener(ItemCapabilities::register);
+        bus.addListener(BlockCapabilities::register);
         bus.addListener(TFCCreativeTabs::setAllTabContentAsNonDecaying);
         bus.addListener(Faunas::registerSpawnPlacements);
         bus.addListener(PacketHandler::setup);
@@ -163,6 +167,7 @@ public final class TerraFirmaCraft
         ClimateModels.TYPES.register(bus);
         DataManagers.MANAGERS.register(bus);
         BarSystem.BARS.register(bus);
+        TFCBiomes.EXTENSIONS.register(bus);
 
         // Custom Registries (neoforge)
         TFCFluids.FLUID_TYPES.register(bus);
@@ -178,6 +183,8 @@ public final class TerraFirmaCraft
             ClientForgeEventHandler.init();
             PatchouliClientEventHandler.init();
         }
+
+        if (THE_ONE_PROBE) TheOneProbeIntegration.init(bus);
 
         NeoForgeMod.enableMilkFluid();
     }
@@ -196,7 +203,6 @@ public final class TerraFirmaCraft
             Wood.registerBlockSetTypes();
             TFCBrain.initializeScheduleContents();
 
-            CauldronInteractions.registerCauldronInteractions();
             TFCBlocks.registerFlowerPotFlowers();
             TFCBlocks.editBlockRequiredTools();
         }).exceptionally(e -> {
@@ -206,12 +212,8 @@ public final class TerraFirmaCraft
             return null;
         });
 
-        // todo 1.21, compat with patchy and jade
         PatchouliIntegration.registerMultiBlocks();
-        /*if (ModList.get().isLoaded("jade"))
-        {
-            JadeIntegration.registerToolHandlers();
-        }*/
+        if (JADE) JadeIntegration.registerToolHandlers();
     }
 
     public void registerRegistries(NewRegistryEvent event)
@@ -222,6 +224,7 @@ public final class TerraFirmaCraft
         event.register(ClimateModels.REGISTRY);
         event.register(DataManagers.REGISTRY);
         event.register(BarSystem.REGISTRY);
+        event.register(TFCBiomes.REGISTRY);
     }
 
     public void loadComplete(FMLLoadCompleteEvent event)
@@ -229,15 +232,6 @@ public final class TerraFirmaCraft
         if (syncLoadError != null)
         {
             Helpers.throwAsUnchecked(syncLoadError);
-        }
-    }
-
-    public void onInterModComms(InterModEnqueueEvent event)
-    {
-        if (ModList.get().isLoaded("theoneprobe"))
-        {
-            // todo: 1.21, compat with top
-            //InterModComms.sendTo("theoneprobe", "getTheOneProbe", TheOneProbeIntegration::new);
         }
     }
 }

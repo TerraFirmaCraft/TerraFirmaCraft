@@ -63,8 +63,8 @@ import org.joml.Matrix4f;
 
 import net.dries007.tfc.common.component.heat.HeatCapability;
 import net.dries007.tfc.common.entities.GenderedRenderAnimal;
+import net.dries007.tfc.common.entities.livestock.Age;
 import net.dries007.tfc.common.entities.livestock.TFCAnimal;
-import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.util.Helpers;
 
 
@@ -75,7 +75,6 @@ public final class RenderHelpers
 
     /**
      * Creates a default {@link ModelResourceLocation} with the TFC namespace using the {@link ModelResourceLocation#STANDALONE_VARIANT}.
-     * todo 1.21: figure out if this is the right one to use in all cases
      */
     public static ModelResourceLocation modelId(String id)
     {
@@ -600,7 +599,7 @@ public final class RenderHelpers
 
     public static ResourceLocation getTextureForAge(TFCAnimal animal, ResourceLocation young, ResourceLocation old)
     {
-        return animal.getAgeType() == TFCAnimalProperties.Age.OLD ? old : young;
+        return animal.getAgeType() == Age.OLD ? old : young;
     }
 
     public static TextureAtlasSprite getAndBindFluidSprite(FluidStack fluid)

@@ -52,24 +52,27 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
 {
     public static final int SLOT_EXTRA_INPUT_START = 4;
     public static final int SLOT_EXTRA_INPUT_END = 8;
+
+    /**
+     * A number of ticks that a recipe needs to start "boiling" before the slots lock. This is to assist players which
+     * add recipe partial ingredients to an already-hot pot, which would otherwise lock immediately.
+     */
     public static final int PRE_BOIL_TIME = 100;
 
-    private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.pot");
-
-    private final SidedHandler.Builder<IFluidHandler> sidedFluidInventory;
+    private final SidedHandler<IFluidHandler> sidedFluidInventory;
     @Nullable private PotOutput output;
     @Nullable private PotRecipe cachedRecipe;
     private int boilingTicks, preBoilingTicks;
 
     public PotBlockEntity(BlockPos pos, BlockState state)
     {
-        super(TFCBlockEntities.POT.get(), pos, state, PotInventory::new, NAME);
+        super(TFCBlockEntities.POT.get(), pos, state, PotInventory::new);
 
         output = null;
         cachedRecipe = null;
         boilingTicks = preBoilingTicks = 0;
 
-        sidedFluidInventory = new SidedHandler.Builder<>(inventory);
+        sidedFluidInventory = new SidedHandler<>(inventory);
         syncableData.add(() -> boilingTicks, value -> boilingTicks = value);
 
         // Items in top, Fuel and fluid in sides, items and fluid out sides, fluid in top
@@ -80,9 +83,15 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
                 .on(new PartialItemHandler(inventory).insert(4, 5, 6, 7, 8), Direction.UP);
 
             sidedFluidInventory
-                .on(new PartialFluidHandler(inventory).insert(), Direction.UP)
-                .on(new PartialFluidHandler(inventory).extract(), Direction.Plane.HORIZONTAL);
+                .on(PartialFluidHandler::insertOnly, Direction.UP)
+                .on(PartialFluidHandler::extractOnly, Direction.Plane.HORIZONTAL);
         }
+    }
+
+    @Nullable
+    public IFluidHandler getSidedFluidInventory(@Nullable Direction context)
+    {
+        return sidedFluidInventory.get(context);
     }
 
     @Override

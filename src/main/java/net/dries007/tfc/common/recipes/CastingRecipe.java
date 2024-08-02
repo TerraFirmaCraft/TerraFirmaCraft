@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.recipes;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
@@ -22,7 +21,6 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.capabilities.MoldLike;
 import net.dries007.tfc.common.component.heat.HeatCapability;
 import net.dries007.tfc.common.component.heat.IHeat;
 import net.dries007.tfc.common.component.mold.IMold;

@@ -22,17 +22,17 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/propick_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_propick_head_mold",
       "text": "To make a Prospector's Pick, you can $(l:getting_started/pottery)knapp$() an unfired mold out of clay as shown above."
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/propick_head_mold",
+      "recipe": "tfc:heating/ceramic/propick_head_mold",
       "text": "Once the mold has been $(l:getting_started/pottery)knapped$(), it needs to be $(l:mechanics/heating)fired$() to create a $(thing)Propick Head Mold.$()$(br2)To create the tool head, $(l:getting_started/finding_ores#casting)cast$() liquid metal into the mold."
     },
     {
       "type": "tfc:anvil_recipe",
-      "recipe": "tfc:anvil/wrought_iron_propick_head",
+      "recipe": "tfc:anvil/metal/propick_head/wrought_iron",
       "text": "A Prospector's Pick Head can also be $(l:mechanics/anvils#working)smithed$() out of an $(thing)ingot$() of any tool metal on an $(l:mechanics/anvils)Anvil$().$(br2)The Prospector's Pick is then created by crafting the tool head with a stick."
     },
     {

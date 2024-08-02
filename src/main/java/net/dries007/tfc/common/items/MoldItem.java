@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.common.items;
 
-import java.util.function.IntSupplier;
+import java.util.function.Supplier;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -21,7 +21,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
-import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 
@@ -43,27 +42,26 @@ import net.dries007.tfc.util.data.FluidHeat;
 
 public class MoldItem extends Item
 {
-    private static IntSupplier mapItemTypeToConfigValue(Metal.ItemType type)
+    private static Supplier<Integer> mapItemTypeToConfigValue(Metal.ItemType type)
     {
-        final IntValue intValue = switch (type)
-            {
-                case INGOT -> TFCConfig.SERVER.moldIngotCapacity;
-                case PICKAXE_HEAD -> TFCConfig.SERVER.moldPickaxeHeadCapacity;
-                case PROPICK_HEAD -> TFCConfig.SERVER.moldPropickHeadCapacity;
-                case AXE_HEAD -> TFCConfig.SERVER.moldAxeHeadCapacity;
-                case SHOVEL_HEAD -> TFCConfig.SERVER.moldShovelHeadCapacity;
-                case HOE_HEAD -> TFCConfig.SERVER.moldHoeHeadCapacity;
-                case CHISEL_HEAD -> TFCConfig.SERVER.moldChiselHeadCapacity;
-                case HAMMER_HEAD -> TFCConfig.SERVER.moldHammerHeadCapacity;
-                case SAW_BLADE -> TFCConfig.SERVER.moldSawBladeCapacity;
-                case JAVELIN_HEAD -> TFCConfig.SERVER.moldJavelinHeadCapacity;
-                case SWORD_BLADE -> TFCConfig.SERVER.moldSwordBladeCapacity;
-                case MACE_HEAD -> TFCConfig.SERVER.moldMaceHeadCapacity;
-                case KNIFE_BLADE -> TFCConfig.SERVER.moldKnifeBladeCapacity;
-                case SCYTHE_BLADE -> TFCConfig.SERVER.moldScytheBladeCapacity;
-                default -> throw new AssertionError("No config value for type: " + type.name());
-            };
-        return () -> Helpers.getValueOrDefault(intValue);
+        return switch (type)
+        {
+            case INGOT -> TFCConfig.SERVER.moldIngotCapacity;
+            case PICKAXE_HEAD -> TFCConfig.SERVER.moldPickaxeHeadCapacity;
+            case PROPICK_HEAD -> TFCConfig.SERVER.moldPropickHeadCapacity;
+            case AXE_HEAD -> TFCConfig.SERVER.moldAxeHeadCapacity;
+            case SHOVEL_HEAD -> TFCConfig.SERVER.moldShovelHeadCapacity;
+            case HOE_HEAD -> TFCConfig.SERVER.moldHoeHeadCapacity;
+            case CHISEL_HEAD -> TFCConfig.SERVER.moldChiselHeadCapacity;
+            case HAMMER_HEAD -> TFCConfig.SERVER.moldHammerHeadCapacity;
+            case SAW_BLADE -> TFCConfig.SERVER.moldSawBladeCapacity;
+            case JAVELIN_HEAD -> TFCConfig.SERVER.moldJavelinHeadCapacity;
+            case SWORD_BLADE -> TFCConfig.SERVER.moldSwordBladeCapacity;
+            case MACE_HEAD -> TFCConfig.SERVER.moldMaceHeadCapacity;
+            case KNIFE_BLADE -> TFCConfig.SERVER.moldKnifeBladeCapacity;
+            case SCYTHE_BLADE -> TFCConfig.SERVER.moldScytheBladeCapacity;
+            default -> throw new AssertionError("No config value for type: " + type.name());
+        };
     }
 
     private final FluidContainerInfo containerInfo;
@@ -74,12 +72,7 @@ public class MoldItem extends Item
         assert type.hasMold(); // Easy sanity check
     }
 
-    public MoldItem(IntValue capacity, TagKey<Fluid> fluidTag, Properties properties)
-    {
-        this(() -> Helpers.getValueOrDefault(capacity), fluidTag, properties);
-    }
-
-    public MoldItem(IntSupplier capacity, TagKey<Fluid> fluidTag, Properties properties)
+    public MoldItem(Supplier<Integer> capacity, TagKey<Fluid> fluidTag, Properties properties)
     {
         super(properties
             .component(TFCComponents.HEAT, HeatComponent.of(HeatCapability.POTTERY_HEAT_CAPACITY))
@@ -95,7 +88,7 @@ public class MoldItem extends Item
             @Override
             public int fluidCapacity()
             {
-                return capacity.getAsInt();
+                return capacity.get();
             }
         };
     }

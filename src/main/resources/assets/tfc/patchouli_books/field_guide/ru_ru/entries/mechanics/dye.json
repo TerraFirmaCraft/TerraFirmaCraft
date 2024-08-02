@@ -17,23 +17,23 @@
     },
     {
       "type": "tfc:sealed_barrel_recipe",
-      "recipe": "tfc:barrel/dye/red_concrete_powder",
+      "recipe": "tfc:barrel/red_concrete_powder",
       "text": "Окрашивание предметов в бочке обходится дешевле, чем использование предметов, требуя всего 25мБ окрашенной жидкости."
     },
     {
       "type": "tfc:sealed_barrel_recipe",
-      "recipe": "tfc:barrel/dye/disc_chirp",
+      "recipe": "tfc:barrel/music_disc_chirp",
       "text": "Жидкие красители можно использовать для окончательной обработки $(item)Музыкальных дисков$()."
     },
     {
       "type": "tfc:sealed_barrel_recipe",
-      "recipe": "tfc:barrel/dye/red_leather",
+      "recipe": "tfc:barrel/red_leather",
       "text": "Жидкие красители даже могут красить кожу, как если бы она была изготовлена!"
     },
     {
       "type": "tfc:sealed_barrel_recipe",
       "anchor": "lye",
-      "recipe": "tfc:barrel/dye/bleach_concrete_powder",
+      "recipe": "tfc:barrel/bleaching_bed",
       "text": "Пять $(item)Древесной золы$() и 1000мБ $(item)Воды$(), вскипяченные в $(l:mechanics/pot)Котле$(), дают щелок. 25мБ Щелока удаляют цвет с окрашенного предмета."
     },
     {

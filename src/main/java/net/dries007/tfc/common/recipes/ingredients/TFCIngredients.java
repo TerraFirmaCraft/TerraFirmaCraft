@@ -9,8 +9,12 @@ package net.dries007.tfc.common.recipes.ingredients;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.crafting.ICustomIngredient;
 import net.neoforged.neoforge.common.crafting.IngredientType;
+import net.neoforged.neoforge.common.crafting.SizedIngredient;
+import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
+import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
@@ -20,6 +24,8 @@ import net.dries007.tfc.util.registry.RegistryHolder;
 
 public final class TFCIngredients
 {
+    public static final SizedIngredient EMPTY_ITEM = new SizedIngredient(Ingredient.EMPTY, 1);
+
     public static final DeferredRegister<IngredientType<?>> TYPES = DeferredRegister.create(NeoForgeRegistries.INGREDIENT_TYPES, TerraFirmaCraft.MOD_ID);
 
     public static final Id<RottenIngredient> ROTTEN = register("rotten", RottenIngredient.CODEC, RottenIngredient.STREAM_CODEC);

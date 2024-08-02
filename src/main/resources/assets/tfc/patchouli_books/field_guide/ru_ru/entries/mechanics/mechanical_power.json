@@ -20,7 +20,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/windmill_blade",
+      "recipe": "tfc:crafting/windmill_blade/white",
       "text": "$(thing)Лопасти ветряной мельницы$() можно изготовить из ткани. Одна ветряная мельница может иметь до пяти лопастей, и чем больше лопастей, тем быстрее она будет вращаться."
     },
     {
@@ -42,7 +42,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/wood/oak_water_wheel",
+      "recipe": "tfc:crafting/wood/water_wheel/oak",
       "title": " ",
       "text": "или если ось уже подключена к другому источнику.$(br2)Водяные колеса можно просто изготовить из пиломатериалов."
     },
@@ -60,20 +60,20 @@
     {
       "type": "patchouli:crafting",
       "anchor": "axle",
-      "recipe": "tfc:crafting/wood/oak_axle",
+      "recipe": "tfc:crafting/wood/axle/oak",
       "title": "Оси",
       "text": "Оси - это основа вращательной сети и блок, который передает вращательную энергию из одного места в другое. Они могут быть соединены на расстоянии до пяти блоков, но если длиннее - они сломаются!"
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/wood/oak_encased_axle",
+      "recipe": "tfc:crafting/wood/encased_axle/oak",
       "title": "Оси в оболочке",
       "text": "Оси также можно изготовить $(thing)В оболочке$(). Их можно установить отдельно или поверх существующих осей.$(br2)Однако, чтобы передать энергию дальше, вам понадобится $(l:mechanics/mechanical_power#gearbox)Коробка передач$()"
     },
     {
       "type": "patchouli:crafting",
       "anchor": "gearbox",
-      "recipe": "tfc:crafting/wood/oak_gear_box",
+      "recipe": "tfc:crafting/wood/gear_box/oak",
       "title": "Коробка передач",
       "text": "$(thing)Коробки передач$() - это способ изменения $(thing)Направления$() вращательной энергии с использованием $(l:https://en.wikipedia.org/wiki/Gear)Шестерен$(). Они также полезны для соединения длинных цепочек $(l:mechanics/mechanical_power#axle)Осей$() вместе без поломки."
     },
@@ -83,7 +83,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/wood/oak_clutch",
+      "recipe": "tfc:crafting/wood/clutch/oak",
       "title": "Муфта",
       "text": "$(thing)Муфта$() - это способ управления вращательной сетью с помощью $(c)Редстоуна$(). Это $(l:mechanics/mechanical_power#axle)Ось в оболочке$(), которая отключается при подаче энергии, позволяя вращению проходить только при отключенной энергии."
     },
@@ -116,7 +116,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/wood/oak_bladed_axle",
+      "recipe": "tfc:crafting/wood/bladed_axle/oak",
       "recipe2": "tfc:crafting/trip_hammer"
     },
     {

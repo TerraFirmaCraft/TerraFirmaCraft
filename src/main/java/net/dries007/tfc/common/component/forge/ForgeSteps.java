@@ -6,54 +6,42 @@
 
 package net.dries007.tfc.common.component.forge;
 
-import java.util.Optional;
+import java.util.List;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import org.jetbrains.annotations.Nullable;
+
+import net.dries007.tfc.util.Helpers;
 
 /**
  * Records the last three steps taken, and also the total number of steps taken since starting working.
+ * @param steps The last three steps, in the order [thirdLast, secondLast, last]. If there are less than three total steps recorded, the list may
+ *              contain up to three elements
+ * @param total The total number of steps taken
  */
-public record ForgeSteps(
-    Optional<ForgeStep> last,
-    Optional<ForgeStep> secondLast,
-    Optional<ForgeStep> thirdLast,
-    int total
-)
+public record ForgeSteps(List<ForgeStep> steps, int total)
 {
     public static final Codec<ForgeSteps> CODEC = RecordCodecBuilder.create(i -> i.group(
-        ForgeStep.CODEC.optionalFieldOf("last").forGetter(c -> c.last),
-        ForgeStep.CODEC.optionalFieldOf("second_last").forGetter(c -> c.secondLast),
-        ForgeStep.CODEC.optionalFieldOf("third_last").forGetter(c -> c.thirdLast),
+        ForgeStep.CODEC.listOf(0, 3).optionalFieldOf("steps", List.of()).forGetter(c -> c.steps),
         Codec.INT.optionalFieldOf("total", 0).forGetter(c -> c.total)
     ).apply(i, ForgeSteps::new));
 
     public static final StreamCodec<ByteBuf, ForgeSteps> STREAM_CODEC = StreamCodec.composite(
-        ForgeStep.STREAM_CODEC, c -> c.last,
-        ForgeStep.STREAM_CODEC, c -> c.secondLast,
-        ForgeStep.STREAM_CODEC, c -> c.thirdLast,
+        ForgeStep.STREAM_CODEC.apply(ByteBufCodecs.list(3)), c -> c.steps,
         ByteBufCodecs.VAR_INT, c -> c.total,
         ForgeSteps::new
     );
 
-    public static final ForgeSteps EMPTY = new ForgeSteps(Optional.empty(), Optional.empty(), Optional.empty(), 0);
+    public static final ForgeSteps EMPTY = new ForgeSteps(List.of(), 0);
 
-    public ForgeSteps withStep(@Nullable ForgeStep step)
+    public ForgeSteps withStep(ForgeStep step)
     {
-        return new ForgeSteps(Optional.ofNullable(step), last, secondLast, total + 1);
-    }
-
-    @Override
-    @SuppressWarnings("OptionalGetWithoutIsPresent") // We know that thirdLast => secondLast => last
-    public String toString()
-    {
-        return thirdLast.isPresent() ? "[" + last.get() + ", " + secondLast.get() + ", " + thirdLast + ", ...]"
-            : secondLast.isPresent() ? "[" + last.get() + ", " + secondLast.get() + ", ...]"
-            : last.isPresent() ? "[" + last.get() + "]"
-            : "[]";
+        return new ForgeSteps(steps.size() == 3
+            ? List.of(steps.get(1), steps.get(2), step)
+            : Helpers.immutableAdd(steps, step),
+            total + 1);
     }
 
     /**
@@ -61,7 +49,7 @@ public record ForgeSteps(
      *
      * @return {@code true} if has been worked at least once, {@code false} otherwise
      */
-    public boolean any()
+    public boolean isWorked()
     {
         return total > 0;
     }

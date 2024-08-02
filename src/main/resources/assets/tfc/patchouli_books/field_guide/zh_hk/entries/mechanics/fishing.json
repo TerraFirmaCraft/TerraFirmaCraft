@@ -10,7 +10,7 @@
     },
     {
       "type": "tfc:anvil_recipe",
-      "recipe": "tfc:anvil/bismuth_bronze_fish_hook",
+      "recipe": "tfc:anvil/metal/fish_hook/bismuth_bronze",
       "text": "首先，你需要在$(l:mechanics/anvils)砧$()上鍛造出一隻魚鈎。"
     },
     {
@@ -38,6 +38,6 @@
   ],
   "read_by_default": true,
   "extra_recipe_mappings": {
-    "tag:forge:fishing_rods": 0
+    "tag:c:tools/fishing_rod": 0
   }
 }

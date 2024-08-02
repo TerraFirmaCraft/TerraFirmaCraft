@@ -10,17 +10,17 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:leather_knapping/chestplate",
+      "recipe": "tfc:knapping/leather_chestplate",
       "text": "革の鎧は $(l:mechanics/leather_making)革$() の $(thing)ナッピング$() で作成できます。 あまり強力ではありませんが、フル装備で着ていればある程度の保護を提供します。"
     },
     {
       "type": "tfc:anvil_recipe",
-      "recipe": "tfc:anvil/copper_unfinished_helmet",
+      "recipe": "tfc:anvil/metal/unfinished_helmet/copper",
       "text": "$(thing)金属の鎧$() には、$(l:mechanics/anvils)金床$() で複数の工程が必要です。 まず、$(thing)未完成$() の鎧を鍛造し作成する必要があります。 これには、金属板を必要とするブーツを除いて、 $(thing)二重金属板$() が必要です。"
     },
     {
       "type": "tfc:welding_recipe",
-      "recipe": "tfc:welding/bismuth_bronze_greaves",
+      "recipe": "tfc:welding/metal/greaves/bismuth_bronze",
       "text": "次に、$(thing)金属板$() を未完成の鎧に $(l:mechanics/anvils#welding)溶接$() して完成させます。 チェストプレートを完成するには $(thing)二重金属板$() が必要です。"
     },
     {

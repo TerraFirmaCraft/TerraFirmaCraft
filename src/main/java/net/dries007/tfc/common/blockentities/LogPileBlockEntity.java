@@ -27,13 +27,12 @@ import static net.dries007.tfc.TerraFirmaCraft.*;
 public class LogPileBlockEntity extends InventoryBlockEntity<ItemStackHandler> implements MenuProvider
 {
     public static final int SLOTS = 4;
-    private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.log_pile");
 
     private int playersUsing;
 
     public LogPileBlockEntity(BlockPos pos, BlockState state)
     {
-        super(TFCBlockEntities.LOG_PILE.get(), pos, state, defaultInventory(SLOTS), NAME);
+        super(TFCBlockEntities.LOG_PILE.get(), pos, state, defaultInventory(SLOTS));
         this.playersUsing = 0;
     }
 

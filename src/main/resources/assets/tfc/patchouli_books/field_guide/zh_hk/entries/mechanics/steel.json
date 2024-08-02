@@ -10,7 +10,7 @@
     },
     {
       "type": "tfc:anvil_recipe",
-      "recipe": "tfc:anvil/high_carbon_steel_ingot",
+      "recipe": "tfc:anvil/metal/ingot/high_carbon_steel",
       "text": "將從高爐中煉出的$(thing)生鐵錠$()在砧上反覆錘鍊就能製成最普通的$(thing)鋼錠$()。具體而言，將$(thing)生鐵錠$()置於砧上後先選擇$(thing)高碳鋼錠$()為目標，成功後再以$(thing)鋼錠$()為目標錘鍊$(thing)高碳鋼錠$()即可獲得。"
     },
     {
@@ -28,7 +28,7 @@
     },
     {
       "type": "tfc:welding_recipe",
-      "recipe": "tfc:welding/high_carbon_black_steel_ingot",
+      "recipe": "tfc:welding/metal/ingot/high_carbon_black_steel",
       "text": "接着，將$(thing)脆鋼錠$()和$(thing)生鐵錠$()焊接在一起便能合成$(thing)高碳黑鋼錠$()。最後，將高碳黑鋼錠在$(l:mechanics/anvils)砧$()上錘鍊成$(thing)黑鋼錠$()即可。"
     },
     {
@@ -50,7 +50,7 @@
     },
     {
       "type": "tfc:welding_recipe",
-      "recipe": "tfc:welding/high_carbon_blue_steel_ingot",
+      "recipe": "tfc:welding/metal/ingot/high_carbon_blue_steel",
       "text": "接着，將$(thing)脆藍鋼錠$()和$(thing)黑鋼錠$()焊接在一起便能合成$(thing)高碳藍鋼錠$()。最後，將高碳藍鋼錠在$(l:mechanics/anvils)砧$()上錘鍊成$(thing)藍鋼錠$()即可。"
     },
     {
@@ -72,7 +72,7 @@
     },
     {
       "type": "tfc:welding_recipe",
-      "recipe": "tfc:welding/high_carbon_red_steel_ingot",
+      "recipe": "tfc:welding/metal/ingot/high_carbon_red_steel",
       "text": "接着，將$(thing)脆紅鋼錠$()和$(thing)黑鋼錠$()焊接在一起便能合成$(thing)高碳紅鋼錠$()。最後，將高碳紅鋼錠在$(l:mechanics/anvils)砧$()上錘鍊成$(thing)紅鋼錠$()即可。"
     },
     {

@@ -29,7 +29,7 @@ public final class SurfaceManager
     private static Map<BiomeExtension, SurfaceBuilder> collectSurfaceBuilders(long seed)
     {
         final ImmutableMap.Builder<BiomeExtension, SurfaceBuilder> builder = ImmutableMap.builder();
-        for (BiomeExtension variant : TFCBiomes.getExtensions())
+        for (BiomeExtension variant : TFCBiomes.REGISTRY)
         {
             builder.put(variant, variant.createSurfaceBuilder(seed));
         }

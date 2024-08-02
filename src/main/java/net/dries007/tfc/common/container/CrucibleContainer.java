@@ -10,8 +10,8 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
-import net.dries007.tfc.common.capabilities.MoldLike;
 import net.dries007.tfc.common.component.mold.IMold;
+import net.dries007.tfc.common.container.slot.CallbackSlot;
 
 public class CrucibleContainer extends BlockEntityContainer<CrucibleBlockEntity>
 {

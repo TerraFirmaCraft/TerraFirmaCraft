@@ -36,6 +36,6 @@
       "min_inclusive": -1,
       "max_exclusive": -0.4
     },
-    "replaceable": "#tfc:can_carve"
+    "replaceable": "#minecraft:overworld_carver_replaceables"
   }
 }

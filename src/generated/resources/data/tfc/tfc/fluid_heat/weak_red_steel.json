@@ -1,9 +1,5 @@
 {
   "fluid": "tfc:metal/weak_red_steel",
-  "ingots": {
-    "tag": "c:ingots/weak_red_steel"
-  },
   "melt_temperature": 1540.0,
-  "specific_heat_capacity": 0.008571429,
-  "tier": 0
+  "specific_heat_capacity": 0.008571429
 }

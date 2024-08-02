@@ -35,9 +35,11 @@ import net.minecraft.world.item.MobBucketItem;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 import net.dries007.tfc.common.entities.ai.TFCAvoidEntityGoal;
+import net.dries007.tfc.common.entities.livestock.Gender;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.calendar.Calendars;
+import net.dries007.tfc.util.calendar.ICalendar;
 
 public final class EntityHelpers
 {
@@ -99,10 +101,10 @@ public final class EntityHelpers
     {
         if (random.nextFloat() < 0.05f) // baby chance
         {
-            return Calendars.get(entity.level()).getTotalDays() + random.nextInt(10);
+            return Calendars.get(entity.level()).getTicks() + random.nextInt(10 * ICalendar.TICKS_IN_DAY);
         }
-        int lifeTimeDays = daysToAdult + random.nextInt(daysToAdult);
-        return Calendars.get(entity.level()).getTotalDays() - lifeTimeDays;
+        int lifeTimeDays = (daysToAdult + random.nextInt(daysToAdult)) * ICalendar.TICKS_IN_DAY;
+        return Calendars.get(entity.level()).getTicks() - lifeTimeDays;
     }
 
     public static void setNullableAttribute(LivingEntity entity, Holder<Attribute> attribute, double baseValue)
@@ -146,7 +148,7 @@ public final class EntityHelpers
         List<? extends Animal> list = maleAnimal.level().getEntitiesOfClass(Animal.class, maleAnimal.getBoundingBox().inflate(8.0D));
         for (Animal femaleAnimal : list)
         {
-            if (femaleAnimal instanceof TFCAnimalProperties femaleData && femaleData.getGender() == TFCAnimalProperties.Gender.FEMALE && !femaleAnimal.isInLove() && femaleData.isReadyToMate() && femaleData.checkExtraBreedConditions(maleAnimal))
+            if (femaleAnimal instanceof TFCAnimalProperties femaleData && femaleData.isFemale() && !femaleAnimal.isInLove() && femaleData.isReadyToMate() && femaleData.checkExtraBreedConditions(maleAnimal))
             {
                 femaleAnimal.setInLove(null);
                 maleAnimal.setInLove(null);

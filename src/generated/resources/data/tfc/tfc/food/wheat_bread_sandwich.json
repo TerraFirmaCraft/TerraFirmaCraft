@@ -1,4 +1,6 @@
 {
+  "decay_modifier": 4.5,
+  "hunger": 4,
   "ingredient": {
     "item": "tfc:food/wheat_bread_sandwich"
   }

@@ -50,13 +50,13 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.ai.TFCAvoidEntityGoal;
 import net.dries007.tfc.common.entities.ai.TFCGroundPathNavigation;
+import net.dries007.tfc.common.entities.livestock.Age;
 import net.dries007.tfc.common.entities.livestock.CommonAnimalData;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.config.animals.AnimalConfig;
 import net.dries007.tfc.config.animals.MammalConfig;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.calendar.Calendars;
 
 public abstract class TFCChestedHorse extends AbstractChestedHorse implements HorseProperties
 {
@@ -65,23 +65,12 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
         return !horse.isVehicle() && !horse.isPassenger() && horse.isTamed() && !horse.isBaby();
     }
 
-    private static final EntityDataAccessor<Boolean> GENDER = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Long> BIRTHDAY = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.LONG);
-    private static final EntityDataAccessor<Float> FAMILIARITY = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Integer> USES = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Boolean> FERTILIZED = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Long> OLD_DAY = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.LONG);
-    private static final EntityDataAccessor<Integer> GENETIC_SIZE = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Long> LAST_FED = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.LONG);
-    private static final CommonAnimalData ANIMAL_DATA = new CommonAnimalData(GENDER, BIRTHDAY, FAMILIARITY, USES, FERTILIZED, OLD_DAY, GENETIC_SIZE, LAST_FED);
+    private static final CommonAnimalData ANIMAL_DATA = CommonAnimalData.create(TFCChestedHorse.class);
     private static final EntityDataAccessor<Long> PREGNANT_TIME = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.LONG);
     private static final EntityDataAccessor<ItemStack> CHEST_ITEM = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.ITEM_STACK);
 
     private boolean overburdened = false;
-    private long lastFDecay; //Last time(in days) this entity's familiarity had decayed
-    private long matingTime; //The last time(in ticks) this male tried fertilizing females
     @Nullable private CompoundTag genes;
-    private Age lastAge = Age.CHILD;
     private final Supplier<? extends SoundEvent> ambient;
     private final Supplier<? extends SoundEvent> hurt;
     private final Supplier<? extends SoundEvent> death;
@@ -94,8 +83,6 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
     public TFCChestedHorse(EntityType<? extends TFCChestedHorse> type, Level level, TFCSounds.EntityId sounds, Supplier<? extends SoundEvent> eatSound, Supplier<? extends SoundEvent> angrySound, MammalConfig config)
     {
         super(type, level);
-        this.matingTime = Calendars.get(level).getTicks();
-        this.lastFDecay = Calendars.get(level).getTotalDays();
         this.ambient = sounds.ambient();
         this.hurt = sounds.hurt();
         this.death = sounds.death();
@@ -320,20 +307,6 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
         return Helpers.isBlock(level().getBlockState(blockPosition()), TFCTags.Blocks.PLANTS) ? 1.0F : super.getBlockSpeedFactor();
     }
 
-    // BEGIN COPY-PASTE FROM TFC ANIMAL
-
-    @Override
-    public Age getLastAge()
-    {
-        return lastAge;
-    }
-
-    @Override
-    public void setLastAge(Age lastAge)
-    {
-        this.lastAge = lastAge;
-    }
-
     @Override
     public boolean canBeLeashed()
     {
@@ -400,7 +373,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
     protected void defineSynchedData(SynchedEntityData.Builder builder)
     {
         super.defineSynchedData(builder);
-        registerCommonData(builder);
+        animalData().define(builder);
         builder.define(PREGNANT_TIME, -1L);
         builder.define(CHEST_ITEM, ItemStack.EMPTY);
     }
@@ -452,34 +425,10 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
     public void onSyncedDataUpdated(EntityDataAccessor<?> data)
     {
         super.onSyncedDataUpdated(data);
-        if (BIRTHDAY.equals(data))
+        if (ANIMAL_DATA.birthTick().equals(data))
         {
             refreshDimensions();
         }
-    }
-
-    @Override
-    public long getLastFamiliarityDecay()
-    {
-        return lastFDecay;
-    }
-
-    @Override
-    public void setLastFamiliarityDecay(long days)
-    {
-        lastFDecay = days;
-    }
-
-    @Override
-    public void setMated(long ticks)
-    {
-        matingTime = ticks;
-    }
-
-    @Override
-    public long getMated()
-    {
-        return matingTime;
     }
 
     @Override

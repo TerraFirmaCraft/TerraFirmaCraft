@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blockentities;
 
 import java.util.List;
+import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -52,13 +53,13 @@ public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland
         super.saveAdditional(nbt, provider);
     }
 
-    public void addHoeOverlayInfo(Level level, BlockPos pos, List<Component> text, boolean includeHydration, boolean includeNutrients)
+    public void addHoeOverlayInfo(Level level, BlockPos pos, Consumer<Component> text, boolean includeHydration, boolean includeNutrients)
     {
         if (includeHydration)
         {
             final int value = FarmlandBlock.getHydration(level, pos);
             final MutableComponent hydration = Component.translatable("tfc.tooltip.farmland.hydration", value);
-            text.add(hydration);
+            text.accept(hydration);
         }
 
         if (includeNutrients)

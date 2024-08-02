@@ -13,6 +13,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
@@ -29,6 +30,14 @@ public final class ClientHelpers
     public static final Direction[] DIRECTIONS_AND_NULL = new Direction[] {Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST, Direction.DOWN, Direction.UP, null};
 
     public static final ResourceLocation GUI_ICONS = Helpers.identifier("textures/gui/icons.png");
+
+    @Nullable
+    @SuppressWarnings("ConstantValue")
+    public static RecipeManager tryGetSafeRecipeManager()
+    {
+        final @Nullable Minecraft mc = Minecraft.getInstance();
+        return mc != null && mc.level != null ? mc.level.getRecipeManager() : null;
+    }
 
     @Nullable
     public static Level getLevel()

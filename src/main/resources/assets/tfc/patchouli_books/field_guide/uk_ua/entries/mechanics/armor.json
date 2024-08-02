@@ -10,17 +10,17 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:leather_knapping/chestplate",
+      "recipe": "tfc:knapping/leather_chestplate",
       "text": "Шкіряну броню треба $(thing)вирізати$() із $(l:mechanics/leather_making)шкіри$(). Вона, хоч і не довго, але забезпечує певний захист, якщо у тебе є повний костюм."
     },
     {
       "type": "tfc:anvil_recipe",
-      "recipe": "tfc:anvil/copper_unfinished_helmet",
+      "recipe": "tfc:anvil/metal/unfinished_helmet/copper",
       "text": "Виготовлення $(thing)металевих обладунків$() вимагає декілька етапів обробки на $(l:mechanics/anvils)ковадлі$(). $(thing)Незакінчений$() обладунок треба викувати. Для нього потрібен $(thing)подвійний лист$() металу, крім чоботів. Для чоботів треба один лист."
     },
     {
       "type": "tfc:welding_recipe",
-      "recipe": "tfc:welding/bismuth_bronze_greaves",
+      "recipe": "tfc:welding/metal/greaves/bismuth_bronze",
       "text": "Далі потрібно цей обладунок $(l:mechanics/anvils#welding)зварити$() із $(thing)листом металу$(), для завершення виробу. Для нагрудника потрібен подвійний лист."
     },
     {

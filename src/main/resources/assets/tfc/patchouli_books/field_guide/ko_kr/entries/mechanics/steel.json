@@ -10,7 +10,7 @@
     },
     {
       "type": "tfc:anvil_recipe",
-      "recipe": "tfc:anvil/high_carbon_steel_ingot",
+      "recipe": "tfc:anvil/metal/ingot/high_carbon_steel",
       "text": "$(thing)선철 주괴$()는 단조하여 $(thing)고탄소강$() 주괴를 만들 수 있으며, 다시 단조하면 $(thing)강철 주괴$()가 됩니다"
     },
     {
@@ -28,7 +28,7 @@
     },
     {
       "type": "tfc:welding_recipe",
-      "recipe": "tfc:welding/high_carbon_black_steel_ingot",
+      "recipe": "tfc:welding/metal/ingot/high_carbon_black_steel",
       "text": "$(thing)약강철 주괴$()는 다시 $(thing)선철 주괴$()와 용접하여 $(thing)고탄소 흑강 주괴$()를 만들 수 있습니다. 마지막으로, 고탄소 흑강 주괴를 $(l:mechanics/anvils)모루$()로 단조하면 $(thing)흑강 주괴$()를 만들 수 있습니다."
     },
     {
@@ -50,7 +50,7 @@
     },
     {
       "type": "tfc:welding_recipe",
-      "recipe": "tfc:welding/high_carbon_blue_steel_ingot",
+      "recipe": "tfc:welding/metal/ingot/high_carbon_blue_steel",
       "text": "$(thing)약한 청강 주괴$()는 $(l:mechanics/steel#black_steel)흑강 주괴$()와 용접하여 $(thing)고탄소 청강 주괴$()를 만들 수 있습니다. 마지막으로, 고탄소 청강 주괴를 $(l:mechanics/anvils)모루$()로 단조하면 $(thing)청강 주괴$()를 얻을 수 있습니다."
     },
     {
@@ -72,7 +72,7 @@
     },
     {
       "type": "tfc:welding_recipe",
-      "recipe": "tfc:welding/high_carbon_red_steel_ingot",
+      "recipe": "tfc:welding/metal/ingot/high_carbon_red_steel",
       "text": "$(thing)약한 적강 주괴는$() $(l:mechanics/steel#black_steel)흑강 주괴$()와 용접하여 $(thing)고탄소 적강 주괴$()를 만들 수 있습니다. 마지막으로, 고탄소 적강 주괴를 $(l:mechanics/anvils)모루$()로 단조하면 $(thing)청강 주괴$()를 얻을 수 있습니다."
     },
     {

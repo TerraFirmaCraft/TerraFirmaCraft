@@ -1,0 +1,17 @@
+{
+  "values": [
+    "tfc:metal/javelin/copper",
+    "tfc:metal/javelin/bronze",
+    "tfc:metal/javelin/bismuth_bronze",
+    "tfc:metal/javelin/black_bronze",
+    "tfc:stone/axe/igneous_extrusive",
+    "tfc:stone/axe/igneous_intrusive",
+    "tfc:stone/axe/metamorphic",
+    "tfc:stone/axe/sedimentary",
+    "tfc:stone/javelin/igneous_extrusive",
+    "tfc:stone/javelin/igneous_intrusive",
+    "tfc:stone/javelin/metamorphic",
+    "tfc:stone/javelin/sedimentary",
+    "minecraft:bow"
+  ]
+}

@@ -154,13 +154,13 @@ import net.dries007.tfc.common.blocks.rock.RockAnvilBlock;
 import net.dries007.tfc.common.blocks.wood.TFCLecternBlock;
 import net.dries007.tfc.common.commands.TFCCommands;
 import net.dries007.tfc.common.component.Bowl;
-import net.dries007.tfc.common.component.ItemStackComponent;
 import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.component.food.FoodCapability;
 import net.dries007.tfc.common.component.forge.ForgingBonus;
 import net.dries007.tfc.common.component.glass.GlassWorking;
 import net.dries007.tfc.common.component.heat.HeatCapability;
 import net.dries007.tfc.common.component.heat.IHeat;
+import net.dries007.tfc.common.component.item.ItemComponent;
 import net.dries007.tfc.common.container.BlockEntityContainer;
 import net.dries007.tfc.common.container.Container;
 import net.dries007.tfc.common.container.PestContainer;
@@ -558,7 +558,7 @@ public final class ForgeEventHandler
             Climate.onWorldLoad(level);
             if (level.dimension() == Level.OVERWORLD)
             {
-                SelfTests.runServerSelfTests();
+                SelfTests.runServerSelfTests(level.getServer());
             }
         }
     }
@@ -967,7 +967,7 @@ public final class ForgeEventHandler
     {
         final ItemStack batch = event.getCarriedItem();
         final ItemStack pipe = event.getStackedOnItem();
-        if (event.getClickAction() == ClickAction.SECONDARY && pipe.getCount() == 1 && Helpers.isItem(pipe, TFCTags.Items.BLOWPIPES) && Helpers.isItem(batch.getItem(), TFCTags.Items.GLASS_BATCHES))
+        if (event.getClickAction() == ClickAction.SECONDARY && pipe.getCount() == 1 && Helpers.isItem(pipe, TFCTags.Items.TOOLS_BLOWPIPE) && Helpers.isItem(batch.getItem(), TFCTags.Items.GLASS_BATCHES))
         {
             final ItemStack newItem = new ItemStack(BlowpipeItem.transform(pipe.getItem()));
             GlassWorking.createNewBatch(newItem, batch);
@@ -1103,9 +1103,9 @@ public final class ForgeEventHandler
             }
         }
 
-        if (entity.getType() == EntityType.SKELETON)
+        if (entity.getType() == EntityType.SKELETON && entity instanceof Skeleton skeleton)
         {
-            ((Skeleton) entity).setItemSlot(EquipmentSlot.MAINHAND, Helpers.randomItem(TFCTags.Items.SKELETON_WEAPONS, entity.level().getRandom()).orElse(Items.BOW).getDefaultInstance());
+            skeleton.setItemSlot(EquipmentSlot.MAINHAND, Helpers.randomItem(TFCTags.Items.SKELETON_WEAPONS, entity.level().getRandom()).orElse(Items.BOW).getDefaultInstance());
         }
         else if (entity.getType() == EntityType.SKELETON_HORSE && !TFCConfig.SERVER.enableVanillaSkeletonHorseSpawning.get())
         {
@@ -1432,7 +1432,7 @@ public final class ForgeEventHandler
     public static void onItemUseFinish(LivingEntityUseItemEvent.Finish event)
     {
         final ItemStack stack = event.getItem();
-        final @Nullable ItemStackComponent bowl = stack.get(TFCComponents.BOWL);
+        final @Nullable ItemComponent bowl = stack.get(TFCComponents.BOWL);
         if (bowl != null)
         {
             event.setResultStack(Bowl.onItemUse(bowl, stack, event.getResultStack(), event.getEntity()));
@@ -1479,10 +1479,7 @@ public final class ForgeEventHandler
             TFCComponents.onModifyDefaultComponentsAfterResourceReload();
             FoodCapability.markRecipeOutputsAsNonDecaying(event.getRegistryAccess(), manager);
 
-            if (TFCConfig.COMMON.enableDatapackTests.get())
-            {
-                SelfTests.runDataPackTests(manager);
-            }
+            SelfTests.runDataPackTests(manager);
 
             final RecipeManagerAccessor accessor = (RecipeManagerAccessor) manager;
             for (RecipeType<?> type : BuiltInRegistries.RECIPE_TYPE)

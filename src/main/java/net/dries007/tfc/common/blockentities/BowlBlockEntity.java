@@ -24,7 +24,6 @@ import static net.dries007.tfc.TerraFirmaCraft.*;
 public class BowlBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 {
     public static final int MAX_POWDER = 16;
-    public static final Component NAME = Component.translatable(MOD_ID + ".block_entity.bowl");
 
     public BowlBlockEntity(BlockPos pos, BlockState state)
     {
@@ -33,7 +32,7 @@ public class BowlBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 
     public BowlBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
-        super(type, pos, state, defaultInventory(1), NAME);
+        super(type, pos, state, defaultInventory(1));
         if (TFCConfig.SERVER.powderBowlEnableAutomation.get())
         {
             sidedInventory
@@ -57,6 +56,6 @@ public class BowlBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        return Helpers.isItem(stack, TFCTags.Items.POWDERS);
+        return Helpers.isItem(stack, TFCTags.Items.BOWL_POWDERS);
     }
 }

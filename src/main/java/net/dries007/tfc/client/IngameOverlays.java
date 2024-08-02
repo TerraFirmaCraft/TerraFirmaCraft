@@ -31,6 +31,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.effect.TFCEffects;
+import net.dries007.tfc.common.entities.livestock.Age;
 import net.dries007.tfc.common.entities.livestock.MammalProperties;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.common.entities.misc.TFCFishingHook;
@@ -426,7 +427,7 @@ public enum IngameOverlays
                     float familiarity = Math.max(0.0F, Math.min(1.0F, animal.getFamiliarity()));
                     int u;
                     int fontColor;
-                    if (familiarity >= animal.getAdultFamiliarityCap() && animal.getAgeType() != TFCAnimalProperties.Age.CHILD)
+                    if (familiarity >= animal.getAdultFamiliarityCap() && animal.getAgeType() != Age.CHILD)
                     {
                         u = 132; // Render a red-ish outline for adults that cannot be familiarized more
                         fontColor = Color.RED.getRGB();

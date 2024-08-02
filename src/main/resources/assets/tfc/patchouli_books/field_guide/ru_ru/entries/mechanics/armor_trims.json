@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/vanilla/smithing_table",
+      "recipe": "minecraft:smithing_table",
       "text": "Кузнечный стол можно использовать для нанесения отделки на броню TFC."
     }
   ],

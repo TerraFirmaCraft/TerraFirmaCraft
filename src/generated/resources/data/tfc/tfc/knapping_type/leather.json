@@ -8,7 +8,7 @@
   },
   "input": {
     "count": 1,
-    "item": "minecraft:leather"
+    "tag": "tfc:leather_knapping"
   },
   "spawns_particles": false
 }

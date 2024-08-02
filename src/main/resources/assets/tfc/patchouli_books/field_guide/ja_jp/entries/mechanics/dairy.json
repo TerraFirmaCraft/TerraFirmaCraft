@@ -15,12 +15,12 @@
     },
     {
       "type": "tfc:sealed_barrel_recipe",
-      "recipe": "tfc:barrel/curdling",
+      "recipe": "tfc:barrel/curdled_milk",
       "text": "酢牛乳を樽に密封して8時間放置すると固まります。 これには時間以外、追加の材料は必要ありません。"
     },
     {
       "type": "tfc:sealed_barrel_recipe",
-      "recipe": "tfc:barrel/cheese",
+      "recipe": "tfc:barrel/food/cheese",
       "text": "固まった牛乳を再び樽の中で8時間密封してチーズが作られます。 チーズは保存性の高い乳製品であり、$(l:mechanics/sandwiches)サンドイッチ$() など、一部の食事に乳製品栄養素を追加するために使用できます。"
     }
   ],

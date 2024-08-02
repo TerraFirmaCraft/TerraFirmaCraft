@@ -45,7 +45,7 @@
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/mutton",
+      "recipe": "tfc:heating/food/cooked_mutton",
       "text": "Instead, a $(l:getting_started/firepit)Firepit$() or a $(l:mechanics/grill)Grill$() can even provide a buff for using it! For example, cooking mutton (pictured above) in a $(thing)Firepit$() will increase its lifetime by 1.33x, and cooking in a $(thing)Grill$() will increase its lifetime by 1.66x!"
     },
     {
@@ -56,7 +56,7 @@
     },
     {
       "type": "tfc:quern_recipe",
-      "recipe": "tfc:quern/salt",
+      "recipe": "tfc:quern/powder/salt",
       "text": "One way of getting salt is through $(l:mechanics/quern)grinding$() $(l:the_world/ores_and_minerals#halite)Halite$(), which is a mineral."
     },
     {

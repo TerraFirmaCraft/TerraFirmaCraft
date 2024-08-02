@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.client.RenderHelpers;
 
 /**
- * Simple implementation of a {@link BakedModel} which delegates to a {@link StaticModelData} provided by the {@link net.minecraftforge.client.model.data.ModelData} mechanism.
+ * Simple implementation of a {@link BakedModel} which delegates to a {@link StaticModelData} provided by the {@link ModelData} mechanism.
  */
 public interface IStaticBakedModel extends IDynamicBakedModel
 {

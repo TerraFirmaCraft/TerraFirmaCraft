@@ -23,7 +23,6 @@ import net.dries007.tfc.common.blockentities.rotation.ClutchBlockEntity;
 import net.dries007.tfc.common.blockentities.rotation.CrankshaftBlockEntity;
 import net.dries007.tfc.common.blockentities.rotation.EncasedAxleBlockEntity;
 import net.dries007.tfc.common.blockentities.rotation.GearBoxBlockEntity;
-import net.dries007.tfc.common.blockentities.rotation.HandWheelBlockEntity;
 import net.dries007.tfc.common.blockentities.rotation.PumpBlockEntity;
 import net.dries007.tfc.common.blockentities.rotation.TripHammerBlockEntity;
 import net.dries007.tfc.common.blockentities.rotation.WaterWheelBlockEntity;
@@ -57,7 +56,7 @@ public final class TFCBlockEntities
     ).<Supplier<? extends Block>>flatMap(Helpers::flatten));
 
     public static final Id<TickCounterBlockEntity> TICK_COUNTER = register("tick_counter", TickCounterBlockEntity::new, Stream.of(
-            TFCBlocks.WOODS.values().stream().map(map -> map.get(Wood.BlockType.SAPLING)),
+            woodBlocks(Wood.BlockType.SAPLING),
             TFCBlocks.FRUIT_TREE_SAPLINGS.values(),
             TFCBlocks.FRUIT_TREE_GROWING_BRANCHES.values(),
             TFCBlocks.TORCH,
@@ -129,7 +128,6 @@ public final class TFCBlockEntities
     public static final Id<BladedAxleBlockEntity> BLADED_AXLE = register("bladed_axle", BladedAxleBlockEntity::new, woodBlocks(Wood.BlockType.BLADED_AXLE));
     public static final Id<AxleBlockEntity> CLUTCH = register("clutch", ClutchBlockEntity::new, woodBlocks(Wood.BlockType.CLUTCH));
     public static final Id<EncasedAxleBlockEntity> ENCASED_AXLE = register("encased_axle", EncasedAxleBlockEntity::new, woodBlocks(Wood.BlockType.ENCASED_AXLE));
-    public static final Id<HandWheelBlockEntity> HAND_WHEEL = register("hand_wheel", HandWheelBlockEntity::new, TFCBlocks.HAND_WHEEL_BASE);
     public static final Id<GearBoxBlockEntity> GEAR_BOX = register("gear_box", GearBoxBlockEntity::new, woodBlocks(Wood.BlockType.GEAR_BOX));
     public static final Id<WindmillBlockEntity> WINDMILL = register("windmill", WindmillBlockEntity::new, woodBlocks(Wood.BlockType.WINDMILL));
     public static final Id<WaterWheelBlockEntity> WATER_WHEEL = register("water_wheel", WaterWheelBlockEntity::new, woodBlocks(Wood.BlockType.WATER_WHEEL));

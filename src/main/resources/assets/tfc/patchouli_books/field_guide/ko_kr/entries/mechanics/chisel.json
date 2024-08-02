@@ -28,7 +28,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/rock/marble_smooth",
+      "recipe": "tfc:crafting/rock/smooth/marble",
       "text": "또한 끌을 제작대에서 사용하면 대량의 블록을 한 번에 다듬을 수도 있습니다."
     },
     {
@@ -38,6 +38,6 @@
   ],
   "read_by_default": true,
   "extra_recipe_mappings": {
-    "tag:tfc:chisels": 0
+    "tag:tfc:tools/chisel": 0
   }
 }

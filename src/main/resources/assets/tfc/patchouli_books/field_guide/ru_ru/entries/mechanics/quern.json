@@ -52,7 +52,7 @@
     },
     {
       "type": "tfc:quern_recipe",
-      "recipe": "tfc:quern/sulfur",
+      "recipe": "tfc:quern/powder/sulfur",
       "text": "Жернов используется для изготовления различных $(thing)порошков$() из руд, например, $(thing)серы$()."
     },
     {
@@ -62,17 +62,17 @@
     },
     {
       "type": "tfc:quern_recipe",
-      "recipe": "tfc:quern/emerald",
+      "recipe": "tfc:quern/powder/emerald",
       "text": "$(thing)Драгоценные камни$() также могут быть измельчены в порошок."
     },
     {
       "type": "tfc:quern_recipe",
-      "recipe": "tfc:quern/barley_grain",
+      "recipe": "tfc:quern/food/barley_flour",
       "text": "$(thing)Мука$() также доступна из жернова."
     },
     {
       "type": "tfc:quern_recipe",
-      "recipe": "tfc:quern/fluxstone",
+      "recipe": "tfc:quern/powder/flux",
       "text": "$(l:mechanics/flux)флюс$() также можно получить из жернова."
     }
   ],

@@ -44,13 +44,12 @@ import net.dries007.tfc.common.blocks.rotation.ClutchBlock;
 import net.dries007.tfc.common.blocks.rotation.CrankshaftBlock;
 import net.dries007.tfc.common.blocks.rotation.WindmillBlock;
 import net.dries007.tfc.common.blocks.wood.Wood;
-import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.Powder;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
-import net.dries007.tfc.util.data.FluidHeat;
+import net.dries007.tfc.util.MetalItem;
 
 public final class PatchouliIntegration
 {
@@ -145,7 +144,7 @@ public final class PatchouliIntegration
         );
 
         sneakIntoMultiblock(multiblock).ifPresent(access -> {
-            final FluidHeat wroughtIron = new FluidHeat(TFCFluids.METALS.get(Metal.WROUGHT_IRON).getSource());
+            final MetalItem wroughtIron = new MetalItem("wrought_iron");
             for (int x = 0; x < 5; x++)
             {
                 for (int z = 0; z < 5; z++)

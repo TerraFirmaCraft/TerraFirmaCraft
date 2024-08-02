@@ -27,7 +27,7 @@
     {
       "type": "patchouli:crafting",
       "anchor": "mud_bricks",
-      "recipe": "tfc:crafting/soil/loam_drying_bricks",
+      "recipe": "tfc:crafting/drying_bricks/loam",
       "title": "壤泥磚",
       "text": "$(thing)壤泥$()會生成在地表、河流和湖底，或大量出現在低窪潮溼的生物群系中。將它們和一束$(thing)乾草$()合成就能製成$()溼壤泥磚$()."
     },
@@ -73,7 +73,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/soil/loam_mud_bricks",
+      "recipe": "tfc:crafting/mud_bricks/loam",
       "title": " ",
       "text": "這些乾燥後的壤泥磚可以做成$(thing)壤泥磚塊$()。它們也可以做成$(thing)樓梯$()、$(thing)臺階$()、或$(thing)牆$()。"
     },

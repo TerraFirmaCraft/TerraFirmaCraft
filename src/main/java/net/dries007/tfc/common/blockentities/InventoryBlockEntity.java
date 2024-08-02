@@ -6,10 +6,13 @@
 
 package net.dries007.tfc.common.blockentities;
 
+import java.util.Objects;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Clearable;
@@ -18,14 +21,18 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.common.capabilities.BlockCapabilities;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
 import net.dries007.tfc.common.capabilities.SidedHandler;
 import net.dries007.tfc.common.container.ISlotCallback;
@@ -43,17 +50,17 @@ public abstract class InventoryBlockEntity<C extends IItemHandlerModifiable & IN
     }
 
     protected final C inventory;
-    protected final SidedHandler.Builder<IItemHandler> sidedInventory;
-    @Nullable protected Component customName;
-    protected Component defaultName;
+    protected final SidedHandler<IItemHandlerModifiable> sidedInventory;
+    protected @Nullable Component customName;
+    protected final Component defaultName;
 
-    public InventoryBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, InventoryFactory<C> inventoryFactory, Component defaultName)
+    protected InventoryBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, InventoryFactory<C> inventoryFactory)
     {
         super(type, pos, state);
 
         this.inventory = inventoryFactory.create(this);
-        this.sidedInventory = new SidedHandler.Builder<>(InventoryBlockEntity.this.inventory);
-        this.defaultName = defaultName;
+        this.sidedInventory = new SidedHandler<>(InventoryBlockEntity.this.inventory);
+        this.defaultName = Component.translatable(TerraFirmaCraft.MOD_ID + ".block_entity." + Objects.requireNonNull(BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(type)).getPath());
     }
 
     /**
@@ -67,8 +74,19 @@ public abstract class InventoryBlockEntity<C extends IItemHandlerModifiable & IN
     }
 
     /**
-     * Returns the display name of this block. This is set when placed by an item with a custom name component, and is accessed as part of the
-     * {@link MenuProvider} that this block entity implements. The mechanic is based on {@link net.minecraft.world.level.block.entity.BaseContainerBlockEntity}
+     * Returns the internal view of the sided capability. This is used to implement capability providers in {@link BlockCapabilities}. Note
+     * that this only returns the internal {@link IItemHandler}, as opposed to {@code C}, as different capabilities exposed by the same
+     * inventory may want to return different handling for different sides.
+     */
+    @Nullable
+    public IItemHandler getSidedInventory(@Nullable Direction context)
+    {
+        return sidedInventory.get(context);
+    }
+
+    /**
+     * Returns the display name of this block. This is set when placed by an item with a custom name component, and is accessed as part
+     * of the {@link MenuProvider} that this block entity implements. The mechanic is based on {@link BaseContainerBlockEntity}
      */
     @Override
     public Component getDisplayName()
@@ -76,21 +94,34 @@ public abstract class InventoryBlockEntity<C extends IItemHandlerModifiable & IN
         return customName == null ? defaultName : customName;
     }
 
-    public void setCustomName(Component customName)
+    /**
+     * Called when this block entity is placed in the world, with components from an item stack. The <strong>implicit components</strong>
+     * are ones that nominally should exist on the block entity, but are constructed and applied only when the entity is constructed (or
+     * broken). This includes something like, the saved content of the block entity (which normally, is in mutable form as the block entity
+     * inventory). This then gets copied to a component when dropped via, for example {@link CopyComponentsFunction}.
+     * <p>
+     * Note that any components <em>referenced</em> here, from {@code components}, will not be added to the block entities' components. Thus,
+     * it is important that any components produced in {@link #collectImplicitComponents} are consumed here.
+     *
+     * @param components The components, containing both original, and new components.
+     */
+    @Override
+    protected void applyImplicitComponents(DataComponentInput components)
     {
-        this.customName = customName;
+        customName = components.get(DataComponents.CUSTOM_NAME);
     }
 
+    /**
+     * Produces any components that are implicitly present on this block entity. This is invoked, typically when dropped as an item via
+     * a particular loot function, or when saved to an item. The components produced here should match exactly the components consumed
+     * in {@link #applyImplicitComponents}.
+     *
+     * @param builder The component builder, to add components to.
+     */
     @Override
-    protected void applyImplicitComponents(DataComponentInput componentInput)
+    protected void collectImplicitComponents(DataComponentMap.Builder builder)
     {
-        this.customName = componentInput.get(DataComponents.CUSTOM_NAME);
-    }
-
-    @Override
-    protected void collectImplicitComponents(DataComponentMap.Builder components)
-    {
-        components.set(DataComponents.CUSTOM_NAME, this.customName);
+        builder.set(DataComponents.CUSTOM_NAME, customName);
     }
 
     @Nullable
@@ -105,7 +136,7 @@ public abstract class InventoryBlockEntity<C extends IItemHandlerModifiable & IN
     {
         if (nbt.contains("CustomName"))
         {
-            customName = Component.Serializer.fromJson(nbt.getString("CustomName"), provider);
+            customName = parseCustomNameSafe(nbt.getString("CustomName"), provider);
         }
         inventory.deserializeNBT(provider, nbt.getCompound("inventory"));
         super.loadAdditional(nbt, provider);

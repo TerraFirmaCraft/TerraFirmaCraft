@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.mixin;
 
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -30,7 +31,17 @@ public abstract class MobMixin
     {
         if (!TFCConfig.SERVER.enableVanillaMobsSpawningWithVanillaEquipment.get())
         {
-            Helpers.randomItem(TFCTags.Items.mobEquipmentSlotTag(slot), RandomSource.create()).ifPresent(cir::setReturnValue);
+            // Disable mobs spawning with
+            final TagKey<Item> tag = switch (slot)
+            {
+                case FEET -> TFCTags.Items.MOB_FEET_ARMOR;
+                case LEGS -> TFCTags.Items.MOB_LEG_ARMOR;
+                case CHEST -> TFCTags.Items.MOB_CHEST_ARMOR;
+                case HEAD -> TFCTags.Items.MOB_HEAD_ARMOR;
+                default -> null;
+            };
+            // Always set the return value, so we prevent vanilla equipment, even if we can't find a replacement
+            cir.setReturnValue(tag == null ? null : Helpers.randomItem(tag, RandomSource.create()).orElse(null));
         }
     }
 

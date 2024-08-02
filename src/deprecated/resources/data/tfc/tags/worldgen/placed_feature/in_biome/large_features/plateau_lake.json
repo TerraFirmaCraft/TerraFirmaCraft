@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "#tfc:feature/boulders",
+    "tfc:forest",
+    "tfc:rare_bamboo",
+    "tfc:bamboo",
+    "tfc:cave_vegetation"
+  ]
+}

@@ -83,7 +83,7 @@ public class BowlBlock extends DeviceBlock
                 return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
 
-            if (Helpers.isItem(held, TFCTags.Items.POWDERS))
+            if (Helpers.isItem(held, TFCTags.Items.BOWL_POWDERS))
             {
                 player.setItemInHand(hand, Helpers.insertAllSlots(inventory, held));
                 Helpers.playSound(level, pos, SoundEvents.SAND_PLACE);
@@ -98,7 +98,7 @@ public class BowlBlock extends DeviceBlock
                     final int toSalt = Math.min(held.getCount(), current.getCount());
                     final ItemStack salted = held.split(toSalt);
 
-                    FoodCapability.applyTrait(salted, FoodTraits.SALTED.value());
+                    FoodCapability.applyTrait(salted, FoodTraits.SALTED);
                     ItemHandlerHelper.giveItemToPlayer(player, salted);
                     inventory.getStackInSlot(0).shrink(toSalt);
                     Helpers.playSound(level, pos, SoundEvents.SAND_PLACE);

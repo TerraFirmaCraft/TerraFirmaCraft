@@ -10,7 +10,7 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:fire_clay_knapping/crucible",
+      "recipe": "tfc:knapping/ceramic/unfired_crucible",
       "text": "$(thing)未焼成るつぼ$()のナッピング。"
     },
     {

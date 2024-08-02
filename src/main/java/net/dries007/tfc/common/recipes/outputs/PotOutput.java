@@ -25,7 +25,7 @@ import net.dries007.tfc.common.blockentities.PotBlockEntity;
 import net.dries007.tfc.common.recipes.JamPotRecipe;
 import net.dries007.tfc.common.recipes.PotRecipe;
 import net.dries007.tfc.common.recipes.SoupPotRecipe;
-import net.dries007.tfc.compat.jade.common.BlockEntityTooltip;
+import net.dries007.tfc.util.tooltip.BlockEntityTooltip;
 import net.dries007.tfc.util.Helpers;
 
 /**

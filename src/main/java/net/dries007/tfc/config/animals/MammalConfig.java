@@ -6,14 +6,14 @@
 
 package net.dries007.tfc.config.animals;
 
-import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
+import java.util.function.Supplier;
 
 import net.dries007.tfc.config.ConfigBuilder;
 
 public record MammalConfig(
     AnimalConfig inner,
-    IntValue gestationDays,
-    IntValue childCount
+    Supplier<Integer> gestationDays,
+    Supplier<Integer> childCount
 ) {
     public static MammalConfig build(ConfigBuilder builder, String name, double familiarityCap, int adulthoodDays, int uses, boolean eatsRottenFood, int gestationDays, int childCount)
     {

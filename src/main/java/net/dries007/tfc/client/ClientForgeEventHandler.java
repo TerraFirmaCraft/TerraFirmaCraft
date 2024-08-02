@@ -26,10 +26,8 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.RegistryOps;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
@@ -78,7 +76,6 @@ import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
 import net.dries007.tfc.common.blockentities.SluiceBlockEntity;
 import net.dries007.tfc.common.blocks.devices.SluiceBlock;
 import net.dries007.tfc.common.component.EggComponent;
-import net.dries007.tfc.common.component.IngredientsComponent;
 import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.component.food.FoodCapability;
 import net.dries007.tfc.common.component.forge.ForgingBonus;
@@ -86,6 +83,7 @@ import net.dries007.tfc.common.component.forge.ForgingCapability;
 import net.dries007.tfc.common.component.glass.GlassWorking;
 import net.dries007.tfc.common.component.heat.HeatCapability;
 import net.dries007.tfc.common.component.heat.IHeat;
+import net.dries007.tfc.common.component.item.ItemListComponent;
 import net.dries007.tfc.common.component.size.ItemSizeManager;
 import net.dries007.tfc.common.items.EmptyPanItem;
 import net.dries007.tfc.common.items.PanItem;
@@ -106,8 +104,8 @@ import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.data.Deposit;
 import net.dries007.tfc.util.data.Fertilizer;
-import net.dries007.tfc.util.data.FluidHeat;
 import net.dries007.tfc.util.data.Fuel;
+import net.dries007.tfc.util.tooltip.Tooltips;
 import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.chunkdata.ChunkData;
@@ -215,7 +213,7 @@ public class ClientForgeEventHandler
     public static void onItemTooltip(ItemTooltipEvent event)
     {
         final ItemStack stack = event.getItemStack();
-        final List<Component> text = event.getToolTip();
+        final List<Component> tooltip = event.getToolTip();
         if (!stack.isEmpty())
         {
             // These are ordered in a predictable fashion
@@ -223,20 +221,20 @@ public class ClientForgeEventHandler
             // 2. Extra information, that is useful QoL info, but not necessary (such as possible recipes, melting into, etc.)
             // 3. Debug information, that is only available in debug mode.
 
-            ItemSizeManager.addTooltipInfo(stack, text);
-            PhysicalDamageType.addTooltipInfo(stack, text);
-            ForgingBonus.addTooltipInfo(stack, text);
-            ForgingCapability.addTooltipInfo(stack, text);
-            GlassWorking.addTooltipInfo(stack, text);
-            FoodCapability.addTooltipInfo(stack, text);
+            ItemSizeManager.addTooltipInfo(stack, tooltip);
+            PhysicalDamageType.addTooltipInfo(stack, tooltip);
+            ForgingBonus.addTooltipInfo(stack, tooltip);
+            ForgingCapability.addTooltipInfo(stack, tooltip);
+            GlassWorking.addTooltipInfo(stack, tooltip);
+            FoodCapability.addTooltipInfo(stack, tooltip::add);
 
-            stack.getOrDefault(TFCComponents.INGREDIENTS, IngredientsComponent.EMPTY).addTooltipInfo(text);
-            stack.getOrDefault(TFCComponents.EGG, EggComponent.DEFAULT).addTooltipInfo(text);
+            stack.getOrDefault(TFCComponents.INGREDIENTS, ItemListComponent.EMPTY).addTooltipInfo(tooltip);
+            stack.getOrDefault(TFCComponents.EGG, EggComponent.DEFAULT).addTooltipInfo(tooltip::add);
 
             final @Nullable IHeat heat = HeatCapability.get(stack);
             if (heat != null)
             {
-                heat.addTooltipInfo(stack, text);
+                heat.addTooltipInfo(stack, tooltip::add);
             }
 
             // Fuel information
@@ -247,7 +245,7 @@ public class ClientForgeEventHandler
                 if (heatTooltip != null)
                 {
                     // burns at %s for %s
-                    text.add(Component.translatable("tfc.tooltip.fuel_burns_at", heatTooltip, Calendars.CLIENT.getTimeDelta(fuel.duration())));
+                    tooltip.add(Component.translatable("tfc.tooltip.fuel_burns_at", heatTooltip, Calendars.CLIENT.getTimeDelta(fuel.duration())));
                 }
             }
 
@@ -256,11 +254,11 @@ public class ClientForgeEventHandler
             {
                 final float n = fertilizer.nitrogen(), p = fertilizer.phosphorus(), k = fertilizer.potassium();
                 if (n != 0)
-                    text.add(Component.translatable("tfc.tooltip.fertilizer.nitrogen", String.format("%.1f", n * 100)));
+                    tooltip.add(Component.translatable("tfc.tooltip.fertilizer.nitrogen", String.format("%.1f", n * 100)));
                 if (p != 0)
-                    text.add(Component.translatable("tfc.tooltip.fertilizer.phosphorus", String.format("%.1f", p * 100)));
+                    tooltip.add(Component.translatable("tfc.tooltip.fertilizer.phosphorus", String.format("%.1f", p * 100)));
                 if (k != 0)
-                    text.add(Component.translatable("tfc.tooltip.fertilizer.potassium", String.format("%.1f", k * 100)));
+                    tooltip.add(Component.translatable("tfc.tooltip.fertilizer.potassium", String.format("%.1f", k * 100)));
             }
 
             // Metal content, inferred from a matching heat recipe.
@@ -271,22 +269,17 @@ public class ClientForgeEventHandler
                 final FluidStack fluid = recipe.assembleFluid(stack);
                 if (!fluid.isEmpty())
                 {
-                    final FluidHeat metal = FluidHeat.get(fluid.getFluid());
-                    if (metal != null)
+                    final MutableComponent meltsInto = Tooltips.meltsInto(fluid, recipe.getTemperature());
+                    if (meltsInto != null)
                     {
-                        final MutableComponent heatTooltip = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(recipe.getTemperature());
-                        if (heatTooltip != null)
-                        {
-                            // %s mB of %s (at %s)
-                            text.add(Component.translatable("tfc.tooltip.item_melts_into", fluid.getAmount() * stack.getCount(), metal.getDisplayName(), heatTooltip));
-                        }
+                        tooltip.add(meltsInto);
                     }
                 }
             }
 
             if (Deposit.get(stack) != null)
             {
-                text.add(Component.translatable("tfc.tooltip.usable_in_sluice_and_pan").withStyle(GRAY));
+                tooltip.add(Component.translatable("tfc.tooltip.usable_in_sluice_and_pan").withStyle(GRAY));
             }
 
             if (TFCConfig.CLIENT.enableDebug.get() && event.getFlags().isAdvanced())
@@ -298,10 +291,10 @@ public class ClientForgeEventHandler
                     if (isDefaultComponentWithDefaultValue(component)) continue;
                     if (first)
                     {
-                        text.add(Component.literal(DARK_GRAY + "[Debug] Components:"));
+                        tooltip.add(Component.literal(DARK_GRAY + "[Debug] Components:"));
                         first = false;
                     }
-                    text.add(Component.literal(DARK_GRAY
+                    tooltip.add(Component.literal(DARK_GRAY
                         + typeOfComponent(stack.getComponentsPatch().get(component.type()))
                         + BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(component.type())
                         + " = "
@@ -320,8 +313,8 @@ public class ClientForgeEventHandler
                     ? listOfTags(blockItem.builtInRegistryHolder())
                     : "";
 
-                if (!itemTags.isEmpty()) text.add(Component.literal(DARK_GRAY + "[Debug] Item Tags: " + itemTags));
-                if (!blockTags.isEmpty()) text.add(Component.literal(DARK_GRAY + "[Debug] Block Tags: " + blockTags));
+                if (!itemTags.isEmpty()) tooltip.add(Component.literal(DARK_GRAY + "[Debug] Item Tags: " + itemTags));
+                if (!blockTags.isEmpty()) tooltip.add(Component.literal(DARK_GRAY + "[Debug] Block Tags: " + blockTags));
             }
         }
     }
@@ -331,8 +324,10 @@ public class ClientForgeEventHandler
         return (component.type() == DataComponents.LORE && component.value().equals(ItemLore.EMPTY))
             || (component.type() == DataComponents.RARITY && component.value().equals(Rarity.COMMON))
             || (component.type() == DataComponents.REPAIR_COST && component.value().equals(0))
-            || (component.type() == DataComponents.ENCHANTMENTS && component.value().equals(ItemEnchantments.EMPTY))
-            || (component.type() == DataComponents.ATTRIBUTE_MODIFIERS && component.value().equals(ItemAttributeModifiers.EMPTY));
+            // Ignore completely, they create HUGE tooltips
+            || component.type() == DataComponents.ENCHANTMENTS
+            || component.type() == DataComponents.ATTRIBUTE_MODIFIERS
+            || component.type() == DataComponents.TOOL;
     }
 
     @SuppressWarnings("OptionalAssignedToNull")

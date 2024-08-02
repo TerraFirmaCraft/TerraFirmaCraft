@@ -15,12 +15,12 @@
     },
     {
       "type": "tfc:sealed_barrel_recipe",
-      "recipe": "tfc:barrel/curdling",
+      "recipe": "tfc:barrel/curdled_milk",
       "text": "Once milk and vinegar are mixed, it will curdle if it is sealed in a barrel for eight hours. This requires no extra ingredients, except time."
     },
     {
       "type": "tfc:sealed_barrel_recipe",
-      "recipe": "tfc:barrel/cheese",
+      "recipe": "tfc:barrel/food/cheese",
       "text": "Cheese is then made by once again sealing the curdled milk in a barrel for eight hours. Cheese is a long-lasting dairy product, and can be used in some meals to add dairy to them, such as $(l:mechanics/sandwiches)Sandwiches$()."
     }
   ],

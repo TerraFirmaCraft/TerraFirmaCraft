@@ -26,7 +26,7 @@ import net.dries007.tfc.world.surface.builder.SurfaceBuilderFactory;
 /**
  * Represents all extra data TFC attaches to biomes, which is not present in the {@link Biome} class, nor is it data driven.
  */
-public class BiomeExtension
+public final class BiomeExtension
 {
     private final ResourceKey<Biome> key;
 

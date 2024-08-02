@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.entities.livestock;
 
+import java.util.function.Supplier;
 import com.mojang.serialization.Dynamic;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -29,7 +30,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 import net.neoforged.neoforge.common.NeoForge;
 
 import net.dries007.tfc.client.TFCSounds;
@@ -57,7 +57,7 @@ public abstract class OviparousAnimal extends ProducingAnimal implements Pluckab
     public float oFlapSpeed;
     public float flapSpeed;
     private float nextFlap = 1f;
-    private final IntValue hatchDays;
+    private final Supplier<Integer> hatchDays;
     private long lastPlucked = Long.MIN_VALUE;
     private boolean crowed;
     private final boolean isCrowingBird;
@@ -132,7 +132,7 @@ public abstract class OviparousAnimal extends ProducingAnimal implements Pluckab
         final long time = level().getDayTime() % 24000;
         if (isCrowingBird && !crowed && time > 0 && time < 1000 && random.nextInt(10) == 0)
         {
-            if (getGender().toBool())
+            if (isMale())
             {
                 playSound(TFCSounds.ROOSTER_CRY.get(), getSoundVolume() * 1.2f, getVoicePitch());
             }
@@ -213,7 +213,7 @@ public abstract class OviparousAnimal extends ProducingAnimal implements Pluckab
     @Override
     public boolean hasProduct()
     {
-        return getGender() == Gender.FEMALE && getAgeType() == Age.ADULT && (getProducedTick() <= 0 || getProductsCooldown() <= 0);
+        return isFemale() && getAgeType() == Age.ADULT && (getProducedTick() <= 0 || getProductsCooldown() <= 0);
     }
 
     @Override
@@ -232,7 +232,7 @@ public abstract class OviparousAnimal extends ProducingAnimal implements Pluckab
             if (baby != null)
             {
                 baby.setGender(Gender.valueOf(random.nextBoolean()));
-                baby.setBirthDay(Calendars.SERVER.getTotalDays());
+                baby.setBirthTickNow();
                 baby.setFamiliarity(getFamiliarity() < 0.9F ? getFamiliarity() / 2.0F : getFamiliarity() * 0.9F);
                 stack.set(TFCComponents.EGG, EggComponent.of(baby, Calendars.SERVER.getTotalDays() + hatchDays.get()));
                 FoodCapability.setInvisibleNonDecaying(stack);

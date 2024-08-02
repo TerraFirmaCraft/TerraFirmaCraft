@@ -33,7 +33,6 @@ import static net.dries007.tfc.TerraFirmaCraft.*;
 
 public class LoomBlockEntity extends TickableInventoryBlockEntity<ItemStackHandler>
 {
-    private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.loom");
     private static final int SLOT_RECIPE = 0;
     private static final int SLOT_OUTPUT = 1;
 
@@ -84,7 +83,7 @@ public class LoomBlockEntity extends TickableInventoryBlockEntity<ItemStackHandl
 
     public LoomBlockEntity(BlockPos pos, BlockState state)
     {
-        super(TFCBlockEntities.LOOM.get(), pos, state, defaultInventory(2), NAME);
+        super(TFCBlockEntities.LOOM.get(), pos, state, defaultInventory(2));
 
         if (TFCConfig.SERVER.loomEnableAutomation.get())
         {

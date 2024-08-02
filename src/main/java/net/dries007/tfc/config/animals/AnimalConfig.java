@@ -6,17 +6,15 @@
 
 package net.dries007.tfc.config.animals;
 
-import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
-import net.neoforged.neoforge.common.ModConfigSpec.DoubleValue;
-import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
+import java.util.function.Supplier;
 
 import net.dries007.tfc.config.ConfigBuilder;
 
 public record AnimalConfig(
-    DoubleValue familiarityCap,
-    IntValue adulthoodDays,
-    IntValue uses,
-    BooleanValue eatsRottenFood
+    Supplier<Double> familiarityCap,
+    Supplier<Integer> adulthoodDays,
+    Supplier<Integer> uses,
+    Supplier<Boolean> eatsRottenFood
 ) {
     public static AnimalConfig build(ConfigBuilder builder, String name, double familiarityCap, int adulthoodDays, int uses, boolean eatsRottenFood)
     {

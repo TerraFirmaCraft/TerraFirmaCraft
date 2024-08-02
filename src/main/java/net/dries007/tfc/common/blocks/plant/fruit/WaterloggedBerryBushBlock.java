@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blocks.plant.fruit;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -43,16 +44,16 @@ public class WaterloggedBerryBushBlock extends StationaryBerryBushBlock implemen
     }
 
     @Override
-    public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, List<Component> text, boolean isDebug)
+    public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, Consumer<Component> text, boolean isDebug)
     {
         final BlockPos sourcePos = pos.below();
         final ClimateRange range = climateRange.get();
 
         if (state.getValue(getFluidProperty()).getFluid() == Fluids.EMPTY)
         {
-            text.add(Component.translatable("tfc.tooltip.berry_bush.not_underwater"));
+            text.accept(Component.translatable("tfc.tooltip.berry_bush.not_underwater"));
         }
-        text.add(FarmlandBlock.getTemperatureTooltip(level, sourcePos, range, false));
+        text.accept(FarmlandBlock.getTemperatureTooltip(level, sourcePos, range, false));
     }
 
     @Override

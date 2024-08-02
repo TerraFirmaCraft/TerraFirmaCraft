@@ -15,16 +15,16 @@
     {
       "type": "tfc:rock_knapping_recipe",
       "recipes": [
-        "tfc:rock_knapping/hoe_head_sedimentary",
-        "tfc:rock_knapping/hoe_head_metamorphic",
-        "tfc:rock_knapping/hoe_head_igneous_extrusive",
-        "tfc:rock_knapping/hoe_head_igneous_intrusive"
+        "tfc:knapping/stone/hoe_head/sedimentary",
+        "tfc:knapping/stone/hoe_head/metamorphic",
+        "tfc:knapping/stone/hoe_head/igneous_extrusive",
+        "tfc:knapping/stone/hoe_head/igneous_intrusive"
       ],
       "text": "To get started, a $(thing)Stone Hoe$() can be $(thing)knapped$() as seen above."
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/stone/hoe_sedimentary",
+      "recipe": "tfc:crafting/stone/hoe/sedimentary",
       "text": "塑型完畢的鋤頭就可以合成鋤了.$(br2)鋤的作用和傳統Minecraft相同, 右鍵點選泥土方塊就可以把它變成$(thing)耕地$(). 他們也可以把$(thing)纏根泥土$()轉換成$(thing)泥土$()."
     },
     {

@@ -1,0 +1,24 @@
+{
+  "values": [
+    "tfc:wood/planks/acacia_door",
+    "tfc:wood/planks/ash_door",
+    "tfc:wood/planks/aspen_door",
+    "tfc:wood/planks/birch_door",
+    "tfc:wood/planks/blackwood_door",
+    "tfc:wood/planks/chestnut_door",
+    "tfc:wood/planks/douglas_fir_door",
+    "tfc:wood/planks/hickory_door",
+    "tfc:wood/planks/kapok_door",
+    "tfc:wood/planks/mangrove_door",
+    "tfc:wood/planks/maple_door",
+    "tfc:wood/planks/oak_door",
+    "tfc:wood/planks/palm_door",
+    "tfc:wood/planks/pine_door",
+    "tfc:wood/planks/rosewood_door",
+    "tfc:wood/planks/sequoia_door",
+    "tfc:wood/planks/spruce_door",
+    "tfc:wood/planks/sycamore_door",
+    "tfc:wood/planks/white_cedar_door",
+    "tfc:wood/planks/willow_door"
+  ]
+}

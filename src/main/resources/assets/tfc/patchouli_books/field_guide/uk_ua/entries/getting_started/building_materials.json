@@ -27,7 +27,7 @@
     {
       "type": "patchouli:crafting",
       "anchor": "mud_bricks",
-      "recipe": "tfc:crafting/soil/loam_drying_bricks",
+      "recipe": "tfc:crafting/drying_bricks/loam",
       "title": "Лимпач",
       "text": "$(thing)Багнистий ґрунт$() можна знайти у землі, під річками та озерами, або на болотяній місцевості на низькій висоті. Змішати його з $(thing)соломою$(), та отримати $()сирі цеглини лимпача$()."
     },
@@ -73,7 +73,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/soil/loam_mud_bricks",
+      "recipe": "tfc:crafting/mud_bricks/loam",
       "title": " ",
       "text": "Ці висушені цеглини можна з'єднати у $(thing)блок лимпача$() для будівництва. З блока можна робити $(thing)сходи$(), $(thing)плити$(), та $(thing)стіни$(), за бажанням."
     },

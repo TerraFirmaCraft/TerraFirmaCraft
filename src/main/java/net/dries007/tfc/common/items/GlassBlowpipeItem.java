@@ -202,7 +202,10 @@ public class GlassBlowpipeItem extends BlowpipeItem
                 }
             }
             player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
-            Helpers.allItems(TFCTags.Items.ALL_BLOWPIPES).forEach(item -> player.getCooldowns().addCooldown(item, 80));
+
+            // Cooldown all blowpipe items
+            player.getCooldowns().addCooldown(TFCItems.BLOWPIPE.asItem(), 80);
+            player.getCooldowns().addCooldown(TFCItems.CERAMIC_BLOWPIPE.asItem(), 80);
         }
     }
 }

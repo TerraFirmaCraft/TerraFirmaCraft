@@ -13,7 +13,6 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.entities.livestock.TFCAnimal;
-import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 
 public class GenderedRenderer<T extends TFCAnimal, M extends EntityModel<T>> extends AnimalRenderer<T, M>
 {
@@ -46,6 +45,6 @@ public class GenderedRenderer<T extends TFCAnimal, M extends EntityModel<T>> ext
     public ResourceLocation getTextureLocation(T entity)
     {
         if (baby != null && entity.isBaby()) return baby;
-        return maleYoung != null && maleOld != null && entity.getGender() == TFCAnimalProperties.Gender.MALE ? RenderHelpers.getTextureForAge(entity, maleYoung, maleOld) : super.getTextureLocation(entity);
+        return maleYoung != null && maleOld != null && entity.isMale() ? RenderHelpers.getTextureForAge(entity, maleYoung, maleOld) : super.getTextureLocation(entity);
     }
 }

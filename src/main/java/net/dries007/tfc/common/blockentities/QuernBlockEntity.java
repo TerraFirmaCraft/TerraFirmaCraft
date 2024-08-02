@@ -50,8 +50,6 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
     private static final float MANUAL_RECIPE_PER_TICK = 1f; // Exactly 90 ticks at 1/tick
     private static final float NETWORK_RECIPE_PER_SPEED = MANUAL_TICKS / Mth.TWO_PI; // progress / radian
 
-    private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.quern");
-
     public static void serverTick(Level level, BlockPos pos, BlockState state, QuernBlockEntity quern)
     {
         final ServerLevel serverLevel = (ServerLevel) level;
@@ -134,7 +132,7 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
 
     public QuernBlockEntity(BlockPos pos, BlockState state)
     {
-        super(TFCBlockEntities.QUERN.get(), pos, state, defaultInventory(3), NAME);
+        super(TFCBlockEntities.QUERN.get(), pos, state, defaultInventory(3));
 
         this.recipeTimer = 0;
         this.node = new SinkNode(pos, Direction.UP) {
@@ -145,7 +143,7 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
             }
         };
 
-        if (Helpers.getValueOrDefault(TFCConfig.SERVER.quernEnableAutomation))
+        if (TFCConfig.SERVER.quernEnableAutomation.get())
         {
             sidedInventory
                 .on(new PartialItemHandler(inventory).insert(SLOT_INPUT, SLOT_HANDSTONE), Direction.Plane.HORIZONTAL)
@@ -182,7 +180,7 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        return slot != SLOT_HANDSTONE || Helpers.isItem(stack.getItem(), TFCTags.Items.HANDSTONE);
+        return slot != SLOT_HANDSTONE || Helpers.isItem(stack.getItem(), TFCTags.Items.QUERN_HANDSTONES);
     }
 
     @Override

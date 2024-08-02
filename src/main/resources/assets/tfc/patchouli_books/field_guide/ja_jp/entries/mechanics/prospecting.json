@@ -22,17 +22,17 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/propick_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_propick_head_mold",
       "text": "探鉱槌を作るには、上に示したように粘土から未焼成の型を $(l:getting_started/pottery)ナッピング$() して作ることができます。"
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/propick_head_mold",
+      "recipe": "tfc:heating/ceramic/propick_head_mold",
       "text": "型を $(l:getting_started/pottery)ナッピング$() したら、 $(l:mechanics/heating)加熱$() して $(thing)探鉱槌の頭$() を作成する必要があります。$(br2)ツールヘッドを作成するには、$(l:getting_started/finding_ores#casting)溶融金属を型に鋳造$() します。"
     },
     {
       "type": "tfc:anvil_recipe",
-      "recipe": "tfc:anvil/wrought_iron_propick_head",
+      "recipe": "tfc:anvil/metal/propick_head/wrought_iron",
       "text": "探鉱槌の頭は、$(l:mechanics/anvils)金床$() で任意の金属の $(thing)インゴット$() から $(l:mechanics/anvils#working)鍛造$() することもできます。 .$(br2)その後、棒でツールヘッドをクラフトすることで探鉱槌が作成されます。"
     },
     {

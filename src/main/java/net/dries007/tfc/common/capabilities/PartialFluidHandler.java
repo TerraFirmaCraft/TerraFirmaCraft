@@ -11,29 +11,29 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * A partially exposed fluid handler, implementing the actual handler part of {@link SidedHandler} for {@link IFluidHandler}s
- * This allows either inserting or extracting to be allowed. Any other operations are denied.
+ * A partial implementation of an {@link IFluidHandler}, which either exposes insert or extract capabilities
+ *
+ * @see SidedHandler
  */
-public class PartialFluidHandler implements DelegateFluidHandler
+public final class PartialFluidHandler implements DelegateFluidHandler
 {
-    private final IFluidHandler internal;
-    private boolean insert, extract;
+    public static IFluidHandler extractOnly(IFluidHandler handler)
+    {
+        return new PartialFluidHandler(handler, false);
+    }
 
-    public PartialFluidHandler(IFluidHandler internal)
+    public static IFluidHandler insertOnly(IFluidHandler handler)
+    {
+        return new PartialFluidHandler(handler, true);
+    }
+
+    private final IFluidHandler internal;
+    private final boolean insert;
+
+    PartialFluidHandler(IFluidHandler internal, boolean insert)
     {
         this.internal = internal;
-    }
-
-    public PartialFluidHandler extract()
-    {
-        this.extract = true;
-        return this;
-    }
-
-    public PartialFluidHandler insert()
-    {
-        this.insert = true;
-        return this;
+        this.insert = insert;
     }
 
     @Override
@@ -52,13 +52,13 @@ public class PartialFluidHandler implements DelegateFluidHandler
     @Override
     public FluidStack drain(FluidStack resource, FluidAction action)
     {
-        return extract ? internal.drain(resource, action) : FluidStack.EMPTY;
+        return !insert ? internal.drain(resource, action) : FluidStack.EMPTY;
     }
 
     @NotNull
     @Override
     public FluidStack drain(int maxDrain, FluidAction action)
     {
-        return extract ? internal.drain(maxDrain, action) : FluidStack.EMPTY;
+        return !insert ? internal.drain(maxDrain, action) : FluidStack.EMPTY;
     }
 }

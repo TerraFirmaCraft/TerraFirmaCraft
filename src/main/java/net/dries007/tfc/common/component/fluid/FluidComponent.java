@@ -29,12 +29,12 @@ public record FluidComponent(FluidStack content)
     }
 
     /**
-     * Attempt to fill a fluid into this container
+     * @param content The content of the container
      * @param input The input attempting to fill into this container
      * @param info Info representing the container
      * @return The result component, plus an amount which indicates how much was filled
      */
-    public FillInfo fill(FluidStack input, FluidContainerInfo info)
+    public static FillInfo fill(FluidStack content, FluidStack input, FluidContainerInfo info)
     {
         // If we cannot contain the input, then return unmodified, and with no fill done
         if (input.isEmpty() || !info.canContainFluid(input))
@@ -61,11 +61,11 @@ public record FluidComponent(FluidStack content)
     }
 
     /**
-     * Attempt to drain an amount of fluid from this container.
+     * @param content The content of the container
      * @param amount The maximum amount to drain
      * @return The result component, plus an amount which indicates how much was drained
      */
-    public DrainInfo drain(int amount)
+    public static DrainInfo drain(FluidStack content, int amount)
     {
         // If we are currently empty, we cannot drain any
         if (content.isEmpty())
@@ -74,7 +74,7 @@ public record FluidComponent(FluidStack content)
         }
         // Otherwise, calculate the remainder after draining, and the amount that was actually drained
         final FluidStack newContent = amount > content.getAmount() ? FluidStack.EMPTY : content.copyWithAmount(content.getAmount() - amount);
-        final FluidStack newAmount = amount > content().getAmount() ? content.copy() : content.copyWithAmount(amount);
+        final FluidStack newAmount = amount > content.getAmount() ? content.copy() : content.copyWithAmount(amount);
         return new DrainInfo(newContent, newAmount);
     }
 

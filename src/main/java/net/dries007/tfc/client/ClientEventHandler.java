@@ -50,6 +50,7 @@ import net.minecraft.client.renderer.entity.SalmonRenderer;
 import net.minecraft.client.renderer.entity.TropicalFishRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -160,7 +161,6 @@ import net.dries007.tfc.client.render.blockentity.CrucibleBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.FirepitBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.GlassBasinBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.GrillBlockEntityRenderer;
-import net.dries007.tfc.client.render.blockentity.HandWheelBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.HotPouredGlassBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.JarsBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.JavelinItemRenderer;
@@ -222,19 +222,20 @@ import net.dries007.tfc.client.screen.SewingTableScreen;
 import net.dries007.tfc.client.screen.SmallVesselInventoryScreen;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.TooltipBlock;
 import net.dries007.tfc.common.blocks.plant.KrummholzBlock;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.blocks.soil.ConnectedGrassBlock;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
+import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.component.heat.Heat;
 import net.dries007.tfc.common.component.heat.HeatCapability;
 import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.entities.aquatic.Fish;
 import net.dries007.tfc.common.entities.aquatic.Jellyfish;
-import net.dries007.tfc.common.fluids.FluidId;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCFishingRodItem;
 import net.dries007.tfc.common.items.TFCItems;
@@ -242,7 +243,6 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.client.accessor.BiomeColorsAccessor;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
-import net.dries007.tfc.util.Tooltips;
 
 import static net.dries007.tfc.common.blocks.wood.Wood.BlockType.*;
 
@@ -332,12 +332,10 @@ public final class ClientEventHandler
 
             ItemProperties.register(TFCItems.HANDSTONE.get(), Helpers.identifier("damaged"), (stack, level, entity, unused) -> stack.getDamageValue() > stack.getMaxDamage() - 10 ? 1F : 0F);
 
-            // todo 1.21, item properties based on item stack tags
-            //TFCBlocks.WOODS.values().forEach(map -> ItemProperties.register(map.get(BARREL).get().asItem(), Helpers.identifier("sealed"), (stack, level, entity, unused) -> stack.hasTag() ? 1.0f : 0f));
-
-            //ItemProperties.register(TFCBlocks.POWDERKEG.get().asItem(), Helpers.identifier("sealed"), (stack, level, entity, unused) -> stack.hasTag() ? 1.0f : 0f);
-
-            //Stream.of(TFCBlocks.LARGE_VESSEL, TFCBlocks.GLAZED_LARGE_VESSELS.values()).<Supplier<? extends Block>>flatMap(Helpers::flatten).forEach(vessel -> ItemProperties.register(vessel.get().asItem(), Helpers.identifier("sealed"), (stack, level, entity, unused) -> stack.hasTag() ? 1.0f : 0f));
+            registerSealedProperty(TFCBlocks.POWDERKEG, TFCComponents.CONTENTS);
+            registerSealedProperty(TFCBlocks.LARGE_VESSEL, TFCComponents.CONTENTS);
+            TFCBlocks.GLAZED_LARGE_VESSELS.values().forEach(item -> registerSealedProperty(item, TFCComponents.CONTENTS));
+            TFCBlocks.WOODS.values().forEach(map -> registerSealedProperty(map.get(BARREL), TFCComponents.BARREL));
 
             /*ItemProperties.register(TFCBlocks.LIGHT.get().asItem(), Helpers.identifierMC("level"), (stack, level, entity, unused) -> {
                 CompoundTag stackTag = stack.getTag();
@@ -347,8 +345,6 @@ public final class ClientEventHandler
                 }
                 return 1.0F;
             });
-
-            TFCBlocks.WOODS.values().forEach(map -> ItemProperties.register(map.get(BARREL).get().asItem(), Helpers.identifier("sealed"), (stack, level, entity, unused) -> stack.hasTag() ? 1.0f : 0f));
 */
             ItemProperties.register(TFCItems.BLOWPIPE_WITH_GLASS.get(), Helpers.identifier("heat"), (stack, level, entity, unused) -> Mth.clamp(HeatCapability.getTemperature(stack) / Heat.maxVisibleTemperature(), 0, 1));
             ItemProperties.register(TFCItems.CERAMIC_BLOWPIPE_WITH_GLASS.get(), Helpers.identifier("heat"), (stack, level, entity, unused) -> Mth.clamp(HeatCapability.getTemperature(stack) / Heat.maxVisibleTemperature(), 0, 1));
@@ -487,6 +483,13 @@ public final class ClientEventHandler
         }
     }
 
+    private static final ResourceLocation SEALED = Helpers.identifier("sealed");
+
+    private static void registerSealedProperty(ItemLike item, Supplier<? extends DataComponentType<?>> type)
+    {
+        ItemProperties.register(item.asItem(), SEALED, (stack, level, entity, unused) -> stack.has(type) ? 1.0f : 0f);
+    }
+
     public static void registerMenuScreens(RegisterMenuScreensEvent event)
     {
         event.register(TFCContainerTypes.CALENDAR.get(), CalendarScreen::new);
@@ -518,7 +521,7 @@ public final class ClientEventHandler
 
     public static void registerTooltipFactories(RegisterClientTooltipComponentFactoriesEvent event)
     {
-        event.register(Tooltips.DeviceImageTooltip.class, ClientDeviceImageTooltip::new);
+        event.register(TooltipBlock.Instance.class, ClientDeviceImageTooltip::new);
     }
 
     public static void registerKeyBindings(RegisterKeyMappingsEvent event)
@@ -640,7 +643,6 @@ public final class ClientEventHandler
         event.registerBlockEntityRenderer(TFCBlockEntities.AXLE.get(), ctx -> new AxleBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.BLADED_AXLE.get(), ctx -> new BladedAxleBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.TRIP_HAMMER.get(), ctx -> new TripHammerBlockEntityRenderer());
-        event.registerBlockEntityRenderer(TFCBlockEntities.HAND_WHEEL.get(), ctx -> new HandWheelBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.WATER_WHEEL.get(), WaterWheelBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(TFCBlockEntities.WINDMILL.get(), WindmillBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(TFCBlockEntities.CRANKSHAFT.get(), ctx -> new CrankshaftBlockEntityRenderer());
@@ -811,10 +813,8 @@ public final class ClientEventHandler
 
         TFCBlocks.WILD_CROPS.forEach((crop, reg) -> event.register(grassColor, reg.get()));
 
-        event.register((state, level, pos, tintIndex) -> TFCColors.getWaterColor(pos), TFCBlocks.SALT_WATER.get(), TFCBlocks.SEA_ICE.get(), TFCBlocks.RIVER_WATER.get(), TFCBlocks.CAULDRONS.get(FluidId.SALT_WATER).get());
-        event.register(blockColor(0x5FB5B8), TFCBlocks.SPRING_WATER.get(), TFCBlocks.CAULDRONS.get(FluidId.SPRING_WATER).get());
-
-        TFCBlocks.CAULDRONS.forEach((type, reg) -> type.color().ifPresent(color -> event.register(blockColor(color), reg.get())));
+        event.register((state, level, pos, tintIndex) -> TFCColors.getWaterColor(pos), TFCBlocks.SALT_WATER.get(), TFCBlocks.SEA_ICE.get(), TFCBlocks.RIVER_WATER.get());
+        event.register(blockColor(0x5FB5B8), TFCBlocks.SPRING_WATER.get());
     }
 
     private static BlockColor blockColor(int color)

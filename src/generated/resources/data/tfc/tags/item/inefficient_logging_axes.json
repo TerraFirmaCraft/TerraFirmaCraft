@@ -1,0 +1,8 @@
+{
+  "values": [
+    "tfc:stone/axe/igneous_extrusive",
+    "tfc:stone/axe/igneous_intrusive",
+    "tfc:stone/axe/metamorphic",
+    "tfc:stone/axe/sedimentary"
+  ]
+}

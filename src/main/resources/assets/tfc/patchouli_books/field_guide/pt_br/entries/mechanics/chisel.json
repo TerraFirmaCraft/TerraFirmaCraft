@@ -28,7 +28,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/rock/marble_smooth",
+      "recipe": "tfc:crafting/rock/smooth/marble",
       "text": "The chisel can also be used in some crafting recipes as a shortcut for large quantities."
     },
     {
@@ -38,6 +38,6 @@
   ],
   "read_by_default": true,
   "extra_recipe_mappings": {
-    "tag:tfc:chisels": 0
+    "tag:tfc:tools/chisel": 0
   }
 }

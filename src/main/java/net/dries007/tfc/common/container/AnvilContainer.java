@@ -17,6 +17,7 @@ import net.dries007.tfc.common.blockentities.AnvilBlockEntity;
 import net.dries007.tfc.common.component.forge.ForgeStep;
 import net.dries007.tfc.common.component.forge.Forging;
 import net.dries007.tfc.common.component.forge.ForgingCapability;
+import net.dries007.tfc.common.container.slot.CallbackSlot;
 import net.dries007.tfc.common.recipes.AnvilRecipe;
 import net.dries007.tfc.util.Helpers;
 
@@ -77,28 +78,18 @@ public class AnvilContainer extends BlockEntityContainer<AnvilBlockEntity> imple
                 case MAIN_INVENTORY, HOTBAR -> !moveItemStackTo(stack, AnvilBlockEntity.SLOT_HAMMER, AnvilBlockEntity.SLOT_CATALYST + 1, false)
                     && !moveItemStackTo(stack, AnvilBlockEntity.SLOT_INPUT_MAIN, AnvilBlockEntity.SLOT_INPUT_SECOND + 1, false);
                 case CONTAINER -> {
-                    final Level level = blockEntity.getLevel();
+                    // Shift clicking needs to attempt to clear the recipe on the stack, then restore it if we fail to transfer out
+                    // 1. Reference the original stack's forging component - this saves the component as part of the view
                     final Forging forge = ForgingCapability.get(stack);
 
-                    // Shift clicking needs to attempt to clear the recipe on the stack, then restore it if we fail to transfer out
-                    AnvilRecipe recipe = null;
-                    int target = -1;
+                    // 2. Clear the recipe on the stack, which may remove the component
+                    ForgingCapability.clearRecipeIfNotWorked(stack);
 
-                    if (level != null)
-                    {
-                        recipe = forge.view().recipe();
-                        target = forge.view().target();
-                        forge.clearRecipeIfNotWorked();
-                    }
-
-                    // Do the stack movement
+                    // 3. Do the stack movement
                     final boolean result = !moveItemStackTo(stack, containerSlots, slots.size(), false);
 
-                    // And then restore the stack
-                    if (!stack.isEmpty() && recipe != null)
-                    {
-                        forge.setRecipe(recipe, target);
-                    }
+                    // 4. If the stack is non-empty, restore the component using the original reference we obtained to the forging component
+                    if (!stack.isEmpty()) forge.restoreRecipeAndWork();
                     yield result;
                 }
             };

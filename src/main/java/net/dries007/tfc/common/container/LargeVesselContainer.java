@@ -18,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.common.blockentities.LargeVesselBlockEntity;
 import net.dries007.tfc.common.blocks.LargeVesselBlock;
 import net.dries007.tfc.common.blocks.devices.SealableDeviceBlock;
+import net.dries007.tfc.common.container.slot.CallbackSlot;
 
 public class LargeVesselContainer extends BlockEntityContainer<LargeVesselBlockEntity> implements ButtonHandlerContainer, PestContainer
 {

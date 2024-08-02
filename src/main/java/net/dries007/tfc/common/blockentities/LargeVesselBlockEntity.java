@@ -6,10 +6,11 @@
 
 package net.dries007.tfc.common.blockentities;
 
+import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -22,22 +23,22 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.blocks.LargeVesselBlock;
+import net.dries007.tfc.common.blocks.devices.SealableDeviceBlock;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
 import net.dries007.tfc.common.capabilities.PartialItemHandler;
+import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.component.food.FoodCapability;
 import net.dries007.tfc.common.component.food.FoodTraits;
+import net.dries007.tfc.common.component.item.ItemListComponent;
 import net.dries007.tfc.common.component.size.ItemSizeManager;
 import net.dries007.tfc.common.component.size.Size;
 import net.dries007.tfc.common.container.LargeVesselContainer;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.TerraFirmaCraft.*;
-
 public class LargeVesselBlockEntity extends InventoryBlockEntity<LargeVesselBlockEntity.VesselInventory>
 {
     public static final int SLOTS = 9;
-    private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.large_vessel");
 
     public LargeVesselBlockEntity(BlockPos pos, BlockState state)
     {
@@ -46,7 +47,7 @@ public class LargeVesselBlockEntity extends InventoryBlockEntity<LargeVesselBloc
 
     public LargeVesselBlockEntity(BlockEntityType<? extends LargeVesselBlockEntity> type, BlockPos pos, BlockState state)
     {
-        super(type, pos, state, VesselInventory::new, NAME);
+        super(type, pos, state, VesselInventory::new);
         if (TFCConfig.SERVER.largeVesselEnableAutomation.get())
         {
             sidedInventory.on(new PartialItemHandler(inventory).insert(0, 1, 2, 3, 4, 5, 6, 7, 8), d -> d != Direction.DOWN);
@@ -61,12 +62,30 @@ public class LargeVesselBlockEntity extends InventoryBlockEntity<LargeVesselBloc
         return LargeVesselContainer.create(this, inv, windowID);
     }
 
+    @Override
+    protected void applyImplicitComponents(DataComponentInput components)
+    {
+        final List<ItemStack> content = components.getOrDefault(TFCComponents.CONTENTS, ItemListComponent.EMPTY).contents();
+        Helpers.copyFrom(content, inventory);
+        super.applyImplicitComponents(components);
+    }
+
+    @Override
+    protected void collectImplicitComponents(DataComponentMap.Builder builder)
+    {
+        if (getBlockState().getValue(SealableDeviceBlock.SEALED))
+        {
+            builder.set(TFCComponents.CONTENTS, ItemListComponent.of(inventory));
+        }
+        super.collectImplicitComponents(builder);
+    }
+
     public void onUnseal()
     {
         assert level != null;
         for (int i = 0; i < SLOTS; i++)
         {
-            inventory.setStackInSlot(i, FoodCapability.removeTrait(inventory.getStackInSlot(i).copy(), FoodTraits.PRESERVED.value()));
+            inventory.setStackInSlot(i, FoodCapability.removeTrait(inventory.getStackInSlot(i).copy(), FoodTraits.PRESERVED));
         }
         Helpers.playSound(level, worldPosition, TFCSounds.OPEN_VESSEL.get());
     }
@@ -76,7 +95,7 @@ public class LargeVesselBlockEntity extends InventoryBlockEntity<LargeVesselBloc
         assert level != null;
         for (int i = 0; i < SLOTS; i++)
         {
-            inventory.setStackInSlot(i, FoodCapability.applyTrait(inventory.getStackInSlot(i).copy(), FoodTraits.PRESERVED.value()));
+            inventory.setStackInSlot(i, FoodCapability.applyTrait(inventory.getStackInSlot(i).copy(), FoodTraits.PRESERVED));
         }
         Helpers.playSound(level, worldPosition, TFCSounds.CLOSE_VESSEL.get());
     }

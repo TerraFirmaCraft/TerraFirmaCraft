@@ -18,6 +18,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.common.TFCDamageTypes;
+import net.dries007.tfc.common.entities.livestock.Age;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
@@ -52,7 +53,7 @@ public interface Pluckable
             if (entity instanceof TFCAnimalProperties properties)
             {
                 // since becoming old is asynchronous it is not enough
-                if (properties.getAgeType() == TFCAnimalProperties.Age.ADULT && properties.getUses() < properties.getUsesToElderly())
+                if (properties.getAgeType() == Age.ADULT && properties.getUses() < properties.getUsesToElderly())
                 {
                     AnimalProductEvent event = new AnimalProductEvent(level, entity.blockPosition(), player, properties, feather, ItemStack.EMPTY, 1);
                     if (!NeoForge.EVENT_BUS.post(event).isCanceled())

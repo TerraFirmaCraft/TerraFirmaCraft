@@ -1,0 +1,8 @@
+{
+  "values": [
+    "#c:foods/grain",
+    "#c:foods/cooked_meat",
+    "#c:foods/dairy",
+    "#c:foods/cooked_fish"
+  ]
+}

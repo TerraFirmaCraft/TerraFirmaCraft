@@ -1,0 +1,13 @@
+{
+  "values": [
+    "#c:gravels",
+    "#c:cobblestones",
+    "tfc:raw_sandstone/brown",
+    "tfc:raw_sandstone/white",
+    "tfc:raw_sandstone/black",
+    "tfc:raw_sandstone/red",
+    "tfc:raw_sandstone/yellow",
+    "tfc:raw_sandstone/green",
+    "tfc:raw_sandstone/pink"
+  ]
+}

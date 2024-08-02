@@ -7,13 +7,11 @@
 package net.dries007.tfc.common.component.mold;
 
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.capabilities.ICapabilityProvider;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
-import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.capabilities.TFCCapabilities;
+import net.dries007.tfc.common.capabilities.ItemCapabilities;
 import net.dries007.tfc.common.component.heat.IHeat;
 
 /**
@@ -24,13 +22,22 @@ public interface IMold extends IFluidHandlerItem, IHeat
     @Nullable
     static IMold get(ItemStack stack)
     {
-        return stack.getCapability(TFCCapabilities.MOLD);
+        return stack.getCapability(ItemCapabilities.MOLD);
     }
 
     /**
      * @return {@code true} if the content of the mold is liquid, i.e. not solidified and can be drained.
      */
     boolean isMolten();
+
+    /**
+     * Default implementation which does not allow draining if the internal fluid is not molten
+     */
+    @Override
+    default FluidStack drain(int maxDrain, FluidAction action)
+    {
+        return isMolten() ? drainIgnoringTemperature(maxDrain, action) : FluidStack.EMPTY;
+    }
 
     /**
      * Like {@link IFluidHandlerItem#drain(int, FluidAction)}, but ignores the effect of {@link #isMolten()}

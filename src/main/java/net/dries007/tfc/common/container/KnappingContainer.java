@@ -17,6 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.common.container.slot.CallbackSlot;
 import net.dries007.tfc.common.recipes.KnappingRecipe;
 import net.dries007.tfc.util.data.KnappingPattern;
 import net.dries007.tfc.util.data.KnappingType;

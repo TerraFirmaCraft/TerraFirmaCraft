@@ -20,19 +20,14 @@ import org.apache.commons.lang3.tuple.Pair;
  */
 public final class TFCConfig
 {
-    public static final CommonConfig COMMON = register(CommonConfig::new, "common");
-    public static final ClientConfig CLIENT = register(ClientConfig::new, "client");
-    public static final ServerConfig SERVER = register(ServerConfig::new, "server");
+    public static final CommonConfig COMMON = register(CommonConfig::new, ConfigBuilder.CommonValue::new, "common");
+    public static final ClientConfig CLIENT = register(ClientConfig::new, ConfigBuilder.ClientValue::new, "client");
+    public static final ServerConfig SERVER = register(ServerConfig::new, ConfigBuilder.ServerValue::new, "server");
 
-    public static boolean isServerConfigLoaded()
-    {
-        return SERVER.spec().isLoaded();
-    }
-
-    private static <C extends BaseConfig> C register(Function<ConfigBuilder, C> factory, String prefix)
+    private static <C extends BaseConfig> C register(Function<ConfigBuilder, C> factory, ConfigBuilder.Factory value, String prefix)
     {
         final Pair<C, ModConfigSpec> pair = new ModConfigSpec.Builder()
-            .configure(builder -> factory.apply(new ConfigBuilder(builder, prefix)));
+            .configure(builder -> factory.apply(new ConfigBuilder(builder, value, prefix)));
         pair.getKey().updateSpec(pair.getValue());
         return pair.getKey();
     }

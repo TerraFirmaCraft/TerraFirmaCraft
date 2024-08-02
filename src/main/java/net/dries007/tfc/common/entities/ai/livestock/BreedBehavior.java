@@ -17,13 +17,12 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.animal.Animal;
 
-import net.dries007.tfc.common.entities.BrainBreeder;
-import net.dries007.tfc.util.calendar.Calendars;
+import net.dries007.tfc.common.entities.BrainAnimalBehavior;
 
 /**
  * {@link net.minecraft.world.entity.ai.behavior.AnimalMakeLove}
  */
-public class BreedBehavior<T extends Animal & BrainBreeder> extends Behavior<T>
+public class BreedBehavior<T extends Animal & BrainAnimalBehavior> extends Behavior<T>
 {
     private final float speedModifier;
 
@@ -87,7 +86,7 @@ public class BreedBehavior<T extends Animal & BrainBreeder> extends Behavior<T>
     @Override
     protected void stop(ServerLevel level, T animal, long speed)
     {
-        animal.setMated(Calendars.get(level).getTicks());
+        animal.setLastMatedNow();
         animal.getBrain().eraseMemory(MemoryModuleType.BREED_TARGET);
         animal.getBrain().eraseMemory(MemoryModuleType.WALK_TARGET);
         animal.getBrain().eraseMemory(MemoryModuleType.LOOK_TARGET);
@@ -100,7 +99,7 @@ public class BreedBehavior<T extends Animal & BrainBreeder> extends Behavior<T>
         if (brain.hasMemoryValue(MemoryModuleType.BREED_TARGET))
         {
             AgeableMob target = brain.getMemory(MemoryModuleType.BREED_TARGET).get();
-            return animal.getType() == target.getType() && target instanceof BrainBreeder brainBreeder && !brainBreeder.isMale();
+            return animal.getType() == target.getType() && target instanceof BrainAnimalBehavior behavior && !behavior.isMale();
         }
         return false;
     }

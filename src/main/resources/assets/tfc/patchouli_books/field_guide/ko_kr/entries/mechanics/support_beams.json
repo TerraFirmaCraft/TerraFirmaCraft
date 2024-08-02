@@ -23,7 +23,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/wood/oak_support",
+      "recipe": "tfc:crafting/wood/support/oak",
       "title": "§l지지대",
       "text": "먼저, $(thing)지지대$()는 $(thing)톱$()과 아무 종류의 $(thing)통나무$()로 만들 수 있습니다.$(br2)$(thing)지지대$()를 설치하면 3블록 높이로 설치됩니다. 지지대를 설치하려면 아래에 완전한 블록이 있어야 합니다."
     },

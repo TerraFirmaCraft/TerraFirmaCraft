@@ -10,17 +10,17 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:leather_knapping/chestplate",
+      "recipe": "tfc:knapping/leather_chestplate",
       "text": "皮革盔甲是通过$(l:mechanics/leather_making)皮革塑形$()制成的。这种盔甲耐久度不高，但如果凑齐一整套，还是能提供少许防护的。"
     },
     {
       "type": "tfc:anvil_recipe",
-      "recipe": "tfc:anvil/copper_unfinished_helmet",
+      "recipe": "tfc:anvil/metal/unfinished_helmet/copper",
       "text": "$(thing)金属盔甲$()需要利用$(l:mechanics/anvils)砧$()经过多重步骤打造而成。首先需要将一个$(thing)双层薄板$()锻造成$(thing)未完成的$()盔甲部件。例外：靴子只需要一个$(thing)薄板$()。"
     },
     {
       "type": "tfc:welding_recipe",
-      "recipe": "tfc:welding/bismuth_bronze_greaves",
+      "recipe": "tfc:welding/metal/greaves/bismuth_bronze",
       "text": "接下来，需要将一个$(thing)薄板$()$(l:mechanics/anvils#welding)焊接$()到部件上来完成制作。例外：胸甲需要一个$(thing)双层薄板$()才能完成。"
     },
     {

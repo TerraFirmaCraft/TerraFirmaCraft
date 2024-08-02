@@ -28,7 +28,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/rock/marble_smooth",
+      "recipe": "tfc:crafting/rock/smooth/marble",
       "text": "Долото також можна використовувати в деяких рецептах крафта, коли треба обробити велику кількість блоків."
     },
     {
@@ -38,6 +38,6 @@
   ],
   "read_by_default": true,
   "extra_recipe_mappings": {
-    "tag:tfc:chisels": 0
+    "tag:tfc:tools/chisel": 0
   }
 }

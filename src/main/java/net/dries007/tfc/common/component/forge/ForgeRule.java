@@ -54,6 +54,7 @@ public enum ForgeRule implements StringRepresentable
     SHRINK_SECOND_LAST(Order.SECOND_LAST, SHRINK),
     SHRINK_THIRD_LAST(Order.THIRD_LAST, SHRINK);
 
+    public static final ForgeRule[] VALUES = values();
     public static final Codec<ForgeRule> CODEC = StringRepresentable.fromValues(ForgeRule::values);
     public static final StreamCodec<ByteBuf, ForgeRule> STREAM_CODEC = StreamCodecs.forEnum(ForgeRule::values);
 
@@ -220,15 +221,15 @@ public enum ForgeRule implements StringRepresentable
         return order.y;
     }
 
-    public boolean matches(ForgeSteps steps)
+    public boolean matches(@Nullable ForgeStep last, @Nullable ForgeStep secondLast, @Nullable ForgeStep thirdLast)
     {
         return switch (order)
             {
-                case ANY -> matches(steps.last()) || matches(steps.secondLast()) || matches(steps.thirdLast());
-                case NOT_LAST -> matches(steps.secondLast()) || matches(steps.thirdLast());
-                case LAST -> matches(steps.last());
-                case SECOND_LAST -> matches(steps.secondLast());
-                case THIRD_LAST -> matches(steps.thirdLast());
+                case ANY -> matches(last) || matches(secondLast) || matches(thirdLast);
+                case NOT_LAST -> matches(secondLast) || matches(thirdLast);
+                case LAST -> matches(last);
+                case SECOND_LAST -> matches(secondLast);
+                case THIRD_LAST -> matches(thirdLast);
             };
     }
 
@@ -239,9 +240,8 @@ public enum ForgeRule implements StringRepresentable
             .append(Helpers.translateEnum(order));
     }
 
-    private boolean matches(Optional<ForgeStep> optional)
+    private boolean matches(@Nullable ForgeStep step)
     {
-        final ForgeStep step = optional.orElse(null);
         if (this.type == HIT_LIGHT)
         {
             return step == HIT_LIGHT || step == HIT_MEDIUM || step == HIT_HARD;

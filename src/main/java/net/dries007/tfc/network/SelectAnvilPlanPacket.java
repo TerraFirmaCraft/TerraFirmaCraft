@@ -22,11 +22,6 @@ public record SelectAnvilPlanPacket(ResourceLocation recipeId) implements Custom
     public static final CustomPacketPayload.Type<SelectAnvilPlanPacket> TYPE = PacketHandler.type("select_anvil_plan");
     public static final StreamCodec<ByteBuf, SelectAnvilPlanPacket> CODEC = ResourceLocation.STREAM_CODEC.map(SelectAnvilPlanPacket::new, c -> c.recipeId);
 
-    public SelectAnvilPlanPacket(AnvilRecipe recipe)
-    {
-        this(Objects.requireNonNull(AnvilRecipe.getId(recipe)));
-    }
-
     @Override
     public Type<? extends CustomPacketPayload> type()
     {
@@ -37,8 +32,7 @@ public record SelectAnvilPlanPacket(ResourceLocation recipeId) implements Custom
     {
         if (player != null && player.containerMenu instanceof AnvilContainer anvilContainer)
         {
-            final @Nullable AnvilRecipe recipe = AnvilRecipe.byId(recipeId);
-            anvilContainer.getBlockEntity().chooseRecipe(recipe);
+            anvilContainer.getBlockEntity().chooseRecipe(recipeId);
         }
     }
 }

@@ -15,17 +15,19 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 
+import net.dries007.tfc.common.component.item.ItemComponent;
+
 
 public final class Bowl
 {
-    public static final ItemStackComponent DISPLAY = of(new ItemStack(Items.BOWL)); // Used for display purposes, in getOrDefault()
+    public static final ItemComponent DISPLAY = of(new ItemStack(Items.BOWL)); // Used for display purposes, in getOrDefault()
 
-    public static ItemStackComponent of(ItemStack stack)
+    public static ItemComponent of(ItemStack stack)
     {
-        return new ItemStackComponent(stack.copyWithCount(1));
+        return new ItemComponent(stack.copyWithCount(1));
     }
 
-    public static ItemStack onItemUse(ItemStackComponent bowl, ItemStack original, ItemStack result, LivingEntity entity)
+    public static ItemStack onItemUse(ItemComponent bowl, ItemStack original, ItemStack result, LivingEntity entity)
     {
         // This is a rare stackable-with-remainder-after-finished-using item
         // See: vanilla honey bottles

@@ -7,11 +7,9 @@
 package net.dries007.tfc.world.layer;
 
 import java.util.Random;
-import java.util.function.Supplier;
 import net.minecraft.util.RandomSource;
 import org.apache.commons.lang3.mutable.MutableInt;
 
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IArtist;
 import net.dries007.tfc.world.biome.BiomeExtension;
 import net.dries007.tfc.world.biome.TFCBiomes;
@@ -25,77 +23,43 @@ import net.dries007.tfc.world.region.Units;
 
 public class TFCLayers
 {
+    private static final BiomeExtension[] BIOME_LAYERS = new BiomeExtension[64];
+    private static final MutableInt BIOME_LAYER_INDEX = new MutableInt(0);
+
     /**
      * These are the int IDs that are used for biome layer generation
      * They are mapped to {@link BiomeExtension} through the internal registry
      */
-    public static final int OCEAN;
-    public static final int OCEAN_REEF;
-    public static final int DEEP_OCEAN;
-    public static final int DEEP_OCEAN_TRENCH;
-    public static final int PLAINS;
-    public static final int HILLS;
-    public static final int LOWLANDS;
-    public static final int SALT_MARSH;
-    public static final int LOW_CANYONS;
-    public static final int ROLLING_HILLS;
-    public static final int HIGHLANDS;
-    public static final int BADLANDS;
-    public static final int INVERTED_BADLANDS;
-    public static final int PLATEAU;
-    public static final int OLD_MOUNTAINS;
-    public static final int MOUNTAINS;
-    public static final int VOLCANIC_MOUNTAINS;
-    public static final int OCEANIC_MOUNTAINS;
-    public static final int VOLCANIC_OCEANIC_MOUNTAINS;
-    public static final int CANYONS;
-    public static final int SHORE;
-    public static final int TIDAL_FLATS;
-    public static final int LAKE;
-    public static final int RIVER;
-    public static final int MOUNTAIN_LAKE;
-    public static final int VOLCANIC_MOUNTAIN_LAKE;
-    public static final int OLD_MOUNTAIN_LAKE;
-    public static final int OCEANIC_MOUNTAIN_LAKE;
-    public static final int VOLCANIC_OCEANIC_MOUNTAIN_LAKE;
-    public static final int PLATEAU_LAKE;
-
-    private static final BiomeExtension[] BIOME_LAYERS = new BiomeExtension[64];
-    private static final MutableInt BIOME_LAYER_INDEX = new MutableInt(0);
-
-    static
-    {
-        OCEAN = register(() -> TFCBiomes.OCEAN);
-        OCEAN_REEF = register(() -> TFCBiomes.OCEAN_REEF);
-        DEEP_OCEAN = register(() -> TFCBiomes.DEEP_OCEAN);
-        DEEP_OCEAN_TRENCH = register(() -> TFCBiomes.DEEP_OCEAN_TRENCH);
-        PLAINS = register(() -> TFCBiomes.PLAINS);
-        HILLS = register(() -> TFCBiomes.HILLS);
-        LOWLANDS = register(() -> TFCBiomes.LOWLANDS);
-        SALT_MARSH = register(() -> TFCBiomes.SALT_MARSH);
-        LOW_CANYONS = register(() -> TFCBiomes.LOW_CANYONS);
-        ROLLING_HILLS = register(() -> TFCBiomes.ROLLING_HILLS);
-        HIGHLANDS = register(() -> TFCBiomes.HIGHLANDS);
-        BADLANDS = register(() -> TFCBiomes.BADLANDS);
-        INVERTED_BADLANDS = register(() -> TFCBiomes.INVERTED_BADLANDS);
-        PLATEAU = register(() -> TFCBiomes.PLATEAU);
-        OLD_MOUNTAINS = register(() -> TFCBiomes.OLD_MOUNTAINS);
-        MOUNTAINS = register(() -> TFCBiomes.MOUNTAINS);
-        VOLCANIC_MOUNTAINS = register(() -> TFCBiomes.VOLCANIC_MOUNTAINS);
-        OCEANIC_MOUNTAINS = register(() -> TFCBiomes.OCEANIC_MOUNTAINS);
-        VOLCANIC_OCEANIC_MOUNTAINS = register(() -> TFCBiomes.VOLCANIC_OCEANIC_MOUNTAINS);
-        CANYONS = register(() -> TFCBiomes.CANYONS);
-        SHORE = register(() -> TFCBiomes.SHORE);
-        TIDAL_FLATS = register(() -> TFCBiomes.TIDAL_FLATS);
-        LAKE = register(() -> TFCBiomes.LAKE);
-        RIVER = register(() -> TFCBiomes.RIVER);
-        MOUNTAIN_LAKE = register(() -> TFCBiomes.MOUNTAIN_LAKE);
-        VOLCANIC_MOUNTAIN_LAKE = register(() -> TFCBiomes.VOLCANIC_MOUNTAIN_LAKE);
-        OLD_MOUNTAIN_LAKE = register(() -> TFCBiomes.OLD_MOUNTAIN_LAKE);
-        OCEANIC_MOUNTAIN_LAKE = register(() -> TFCBiomes.OCEANIC_MOUNTAIN_LAKE);
-        VOLCANIC_OCEANIC_MOUNTAIN_LAKE = register(() -> TFCBiomes.VOLCANIC_OCEANIC_MOUNTAIN_LAKE);
-        PLATEAU_LAKE = register(() -> TFCBiomes.PLATEAU_LAKE);
-    }
+    public static final int OCEAN = idFor(TFCBiomes.OCEAN);
+    public static final int OCEAN_REEF = idFor(TFCBiomes.OCEAN_REEF);
+    public static final int DEEP_OCEAN = idFor(TFCBiomes.DEEP_OCEAN);
+    public static final int DEEP_OCEAN_TRENCH = idFor(TFCBiomes.DEEP_OCEAN_TRENCH);
+    public static final int PLAINS = idFor(TFCBiomes.PLAINS);
+    public static final int HILLS = idFor(TFCBiomes.HILLS);
+    public static final int LOWLANDS = idFor(TFCBiomes.LOWLANDS);
+    public static final int SALT_MARSH = idFor(TFCBiomes.SALT_MARSH);
+    public static final int LOW_CANYONS = idFor(TFCBiomes.LOW_CANYONS);
+    public static final int ROLLING_HILLS = idFor(TFCBiomes.ROLLING_HILLS);
+    public static final int HIGHLANDS = idFor(TFCBiomes.HIGHLANDS);
+    public static final int BADLANDS = idFor(TFCBiomes.BADLANDS);
+    public static final int INVERTED_BADLANDS = idFor(TFCBiomes.INVERTED_BADLANDS);
+    public static final int PLATEAU = idFor(TFCBiomes.PLATEAU);
+    public static final int OLD_MOUNTAINS = idFor(TFCBiomes.OLD_MOUNTAINS);
+    public static final int MOUNTAINS = idFor(TFCBiomes.MOUNTAINS);
+    public static final int VOLCANIC_MOUNTAINS = idFor(TFCBiomes.VOLCANIC_MOUNTAINS);
+    public static final int OCEANIC_MOUNTAINS = idFor(TFCBiomes.OCEANIC_MOUNTAINS);
+    public static final int VOLCANIC_OCEANIC_MOUNTAINS = idFor(TFCBiomes.VOLCANIC_OCEANIC_MOUNTAINS);
+    public static final int CANYONS = idFor(TFCBiomes.CANYONS);
+    public static final int SHORE = idFor(TFCBiomes.SHORE);
+    public static final int TIDAL_FLATS = idFor(TFCBiomes.TIDAL_FLATS);
+    public static final int LAKE = idFor(TFCBiomes.LAKE);
+    public static final int RIVER = idFor(TFCBiomes.RIVER);
+    public static final int MOUNTAIN_LAKE = idFor(TFCBiomes.MOUNTAIN_LAKE);
+    public static final int VOLCANIC_MOUNTAIN_LAKE = idFor(TFCBiomes.VOLCANIC_MOUNTAIN_LAKE);
+    public static final int OLD_MOUNTAIN_LAKE = idFor(TFCBiomes.OLD_MOUNTAIN_LAKE);
+    public static final int OCEANIC_MOUNTAIN_LAKE = idFor(TFCBiomes.OCEANIC_MOUNTAIN_LAKE);
+    public static final int VOLCANIC_OCEANIC_MOUNTAIN_LAKE = idFor(TFCBiomes.VOLCANIC_OCEANIC_MOUNTAIN_LAKE);
+    public static final int PLATEAU_LAKE = idFor(TFCBiomes.PLATEAU_LAKE);
 
     public static BiomeExtension getFromLayerId(int id)
     {
@@ -270,14 +234,14 @@ public class TFCLayers
         return value == PLAINS || value == HILLS || value == LOW_CANYONS || value == LOWLANDS || value == SALT_MARSH;
     }
 
-    public static int register(Supplier<BiomeExtension> variants)
+    public static int idFor(BiomeExtension extension)
     {
         final int index = BIOME_LAYER_INDEX.getAndIncrement();
         if (index >= BIOME_LAYERS.length)
         {
             throw new IllegalStateException("Tried to register layer id " + index + " but only had space for " + BIOME_LAYERS.length + " layers");
         }
-        BIOME_LAYERS[index] = Helpers.BOOTSTRAP_ENVIRONMENT ? null : variants.get();
+        BIOME_LAYERS[index] = extension;
         return index;
     }
 }

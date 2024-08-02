@@ -36,6 +36,7 @@ import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
 
+// todo: don't extend TickableInventory and just extend Tickable, with a saved item stack?
 public class HotPouredGlassBlockEntity extends TickableInventoryBlockEntity<ItemStackHandler>
 {
     public static void tick(Level level, BlockPos pos, BlockState state, HotPouredGlassBlockEntity glass)
@@ -155,8 +156,6 @@ public class HotPouredGlassBlockEntity extends TickableInventoryBlockEntity<Item
         return false;
     }
 
-    private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.hot_poured_glass");
-
     private int capacity = 0;
     private boolean isInitialTransition = true;
     private int animationTicks = 0;
@@ -169,7 +168,7 @@ public class HotPouredGlassBlockEntity extends TickableInventoryBlockEntity<Item
 
     public HotPouredGlassBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
-        super(type, pos, state, defaultInventory(1), NAME);
+        super(type, pos, state, defaultInventory(1));
     }
 
     @Override

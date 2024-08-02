@@ -57,6 +57,11 @@ public record FoodData(
         }
     );
 
+    private static RecordCodecBuilder<float[], Float> nutrientCodec(Nutrient nutrient)
+    {
+        return Codec.FLOAT.optionalFieldOf(nutrient.getSerializedName(), 0f).forGetter(c -> c[nutrient.ordinal()]);
+    }
+
     public static final MapCodec<FoodData> MAP_CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
         Codec.INT.optionalFieldOf("hunger", 0).forGetter(c -> c.hunger),
         Codec.FLOAT.optionalFieldOf("water", 0f).forGetter(c -> c.water),
@@ -78,42 +83,46 @@ public record FoodData(
         FoodData::new
     );
 
-    /** An empty instance of a {@link FoodData} with no values */
-    public static final FoodData EMPTY = of(0, 0, 0, 0, 0, 0, 0);
-    public static final FoodData MILK = of(0, 0, 0, 0, 0, 0, 2.0f);
-    public static final FoodData CAKE = of(2, 2f, 0.8f, 0f, 0f, 0f, 0.5f);
+    /** An empty instance of a {@link FoodData} with no values, but infinite default expiry time */
+    public static final FoodData EMPTY = of(0f);
+    public static final FoodData MILK = of(0, 0).dairy(2f);
+    public static final FoodData CAKE = of(2, 2f).grain(0.8f).dairy(0.5f);
 
-    private static RecordCodecBuilder<float[], Float> nutrientCodec(Nutrient nutrient)
-    {
-        return Codec.FLOAT.optionalFieldOf(nutrient.getSerializedName(), 0f).forGetter(c -> c[nutrient.ordinal()]);
-    }
-
-    public static FoodData of(int hunger, float water, float saturation, float[] nutrients, float decayModifier)
-    {
-        return new FoodData(hunger, water, saturation, 0, nutrients, decayModifier);
-    }
-
-    public static FoodData of(int hunger, float saturation, float... nutrients)
-    {
-        assert nutrients.length == 5;
-        return new FoodData(hunger, 0f, saturation, 0, nutrients, 0);
-    }
-
-    public static FoodData ofDecay(float decayModifier)
+    /**
+     * Creates a new {@link FoodData} with just the provided decay modifier and no other nutritional value.
+     */
+    public static FoodData of(float decayModifier)
     {
         return ofFood(0, 0, decayModifier);
     }
 
+    /**
+     * Creates a new {@link FoodData} with the provided {@code hunger} and {@code saturation} values, no decay modifier and default values otherwise.
+     */
+    public static FoodData of(int hunger, float saturation)
+    {
+        return new FoodData(hunger, 0f, saturation, 0, new float[5], 0);
+    }
+
+    /**
+     * Creates a new {@link FoodData} with a default {@code hunger = 4}, and the provided {@code saturation}, {@code water}, and {@code decayModifier}.
+     */
     public static FoodData ofFood(float saturation, float water, float decayModifier)
     {
         return ofFood(4, saturation, water, decayModifier);
     }
 
+    /**
+     * Creates a new {@link FoodData} with the provided values, and no additional nutrition.
+     */
     public static FoodData ofFood(int hunger, float saturation, float water, float decayModifier)
     {
         return new FoodData(hunger, water, saturation, 0, new float[5], decayModifier);
     }
 
+    /**
+     * Creates a new {@link FoodData} for a (typical) drink with the given {@code water} and {@code intoxication} values.
+     */
     public static FoodData ofDrink(float water, int intoxication)
     {
         return new FoodData(0, water, 0, intoxication, new float[5], 0);
@@ -129,6 +138,12 @@ public record FoodData(
         return nutrients.clone();
     }
 
+    public FoodData grain(float value) { return with(Nutrient.GRAIN, value); }
+    public FoodData vegetables(float value) { return with(Nutrient.VEGETABLES, value); }
+    public FoodData fruit(float value) { return with(Nutrient.FRUIT, value); }
+    public FoodData protein(float value) { return with(Nutrient.PROTEIN, value); }
+    public FoodData dairy(float value) { return with(Nutrient.DAIRY, value); }
+
     /**
      * @return A new {@link FoodData} with values multiplied by the amount consumed
      */
@@ -143,12 +158,6 @@ public record FoodData(
             decayModifier
         );
     }
-
-    public FoodData grain(float value) { return with(Nutrient.GRAIN, value); }
-    public FoodData vegetables(float value) { return with(Nutrient.VEGETABLES, value); }
-    public FoodData fruit(float value) { return with(Nutrient.FRUIT, value); }
-    public FoodData protein(float value) { return with(Nutrient.PROTEIN, value); }
-    public FoodData dairy(float value) { return with(Nutrient.DAIRY, value); }
 
     /**
      * Mutates the current {@code FoodData}, setting the nutrient to the provided value. <strong>Do not use</strong> in contexts where

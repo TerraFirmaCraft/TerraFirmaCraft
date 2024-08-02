@@ -8,6 +8,7 @@ package net.dries007.tfc.common.blocks.crop;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -183,7 +184,7 @@ public abstract class DoubleCropBlock extends CropBlock
     }
 
     @Override
-    public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, List<Component> text, boolean isDebug)
+    public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, Consumer<Component> text, boolean isDebug)
     {
         super.addHoeOverlayInfo(level, state.getValue(PART) == Part.TOP ? pos.below() : pos, state, text, isDebug);
     }

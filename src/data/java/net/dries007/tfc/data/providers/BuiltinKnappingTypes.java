@@ -6,6 +6,8 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -38,34 +40,34 @@ public class BuiltinKnappingTypes extends DataManagerProvider<KnappingType>
     protected void addData(HolderLookup.Provider provider)
     {
         add(ROCK,
-            Ingredient.of(TFCTags.Items.ROCK_KNAPPING), 2, 1,
+            TFCTags.Items.ROCK_KNAPPING, 2, 1,
             TFCSounds.KNAP_STONE,
             false, false, true,
             TFCBlocks.ROCK_BLOCKS.get(Rock.GRANITE).get(Rock.BlockType.LOOSE));
         add(CLAY,
-            Ingredient.of(Items.CLAY_BALL), 5, 5,
+            TFCTags.Items.CLAY_KNAPPING, 5, 5,
             TFCSounds.KNAP_CLAY,
             true, true, false,
             Items.CLAY_BALL);
         add(FIRE_CLAY,
-            Ingredient.of(TFCItems.FIRE_CLAY), 5, 5,
+            TFCTags.Items.FIRE_CLAY_KNAPPING, 5, 5,
             TFCSounds.KNAP_CLAY,
             true, true, false,
             TFCItems.FIRE_CLAY);
         add(LEATHER,
-            Ingredient.of(Items.LEATHER), 1, 1,
+            TFCTags.Items.LEATHER_KNAPPING, 1, 1,
             TFCSounds.KNAP_LEATHER,
             false, false, false,
             Items.LEATHER);
         add(GOAT_HORN,
-            Ingredient.of(TFCItems.GOAT_HORN), 1, 1,
+            TFCTags.Items.GOAT_HORN_KNAPPING, 1, 1,
             TFCSounds.KNAP_STONE,
             false, false, false,
             TFCItems.GOAT_HORN);
     }
 
-    private void add(ResourceLocation name, Ingredient item, int amount, int consumeAmount, HolderHolder<SoundEvent> sound, boolean consumeAfterComplete, boolean useDisabledTexture, boolean spawnsParticles, ItemLike jeiIcon)
+    private void add(ResourceLocation name, TagKey<Item> item, int amount, int consumeAmount, HolderHolder<SoundEvent> sound, boolean consumeAfterComplete, boolean useDisabledTexture, boolean spawnsParticles, ItemLike jeiIcon)
     {
-        add(name, new KnappingType(new SizedIngredient(item, amount), amount == consumeAmount ? Optional.empty() : Optional.of(consumeAmount), sound.holder(), consumeAfterComplete, useDisabledTexture, spawnsParticles, new ItemStack(jeiIcon)));
+        add(name, new KnappingType(new SizedIngredient(Ingredient.of(item), amount), amount == consumeAmount ? Optional.empty() : Optional.of(consumeAmount), sound.holder(), consumeAfterComplete, useDisabledTexture, spawnsParticles, new ItemStack(jeiIcon)));
     }
 }

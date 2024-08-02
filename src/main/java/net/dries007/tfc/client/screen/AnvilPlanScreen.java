@@ -15,6 +15,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.ClientHelpers;
@@ -51,7 +52,7 @@ public class AnvilPlanScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilPl
         final int guiLeft = getGuiLeft(), guiTop = getGuiTop();
 
         final ItemStack inputStack = blockEntity.getInventory().getStackInSlot(AnvilBlockEntity.SLOT_INPUT_MAIN);
-        final List<AnvilRecipe> recipes = AnvilRecipe.getAll(playerInventory.player.level(), inputStack, blockEntity.getTier());
+        final List<RecipeHolder<AnvilRecipe>> recipes = AnvilRecipe.getAll(playerInventory.player.level(), inputStack, blockEntity.getTier());
 
         recipeButtons = new ArrayList<>();
         for (int i = 0; i < recipes.size(); i++)
@@ -61,10 +62,9 @@ public class AnvilPlanScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilPl
             final int posX = 7 + (index % 9) * 18;
             final int posY = 17 + ((index % 18) / 9) * 18;
 
-            final AnvilRecipe recipe = recipes.get(i);
+            final RecipeHolder<AnvilRecipe> recipe = recipes.get(i);
             final RegistryAccess access = ClientHelpers.getLevelOrThrow().registryAccess();
-            final AnvilPlanSelectButton button = new AnvilPlanSelectButton(guiLeft + posX, guiTop + posY, page, recipe, recipe.getResultItem(access).getHoverName());
-            button.setTooltip(Tooltip.create(recipe.getResultItem(access).getHoverName()));
+            final AnvilPlanSelectButton button = new AnvilPlanSelectButton(guiLeft + posX, guiTop + posY, page, recipe, recipe.value().getResultItem(access).getHoverName());
 
             button.setCurrentPage(0);
             recipeButtons.add(button);

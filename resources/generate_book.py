@@ -73,7 +73,6 @@ from argparse import ArgumentParser
 from typing import Optional
 
 from constants import CROPS, METALS, FRUITS, BERRIES, GRAINS
-from data import hydration_from_rainfall
 from patchouli import *
 
 GRADES = ['poor', 'normal', 'rich']  # Sorted so they appear in a nice order for animation
@@ -121,6 +120,8 @@ def main(translate_lang: str, local_minecraft_dir: Optional[str], validate: bool
     if LocalInstance.wrap(rm):
         print('Copying %s book into local instance at: %s' % (translate_lang, LocalInstance.INSTANCE_DIR))
         make_book(rm, I18n(translate_lang, validate), local_instance=True)
+
+    return rm.written_files
 
 
 def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, reverse_translate: bool = False):
@@ -506,13 +507,13 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('In addition to gathering sticks and twigs on the ground, sticks can also be obtained by breaking leaves with your fist. Once you have a number of rocks and sticks, you are ready to start $(thing)Knapping$(). Knapping is a process where two rocks are hit together, to form a particular shape. In order to knap, first hold at least two rocks in your hand, then right click in the air, which will open up the $(thing)Knapping Interface$().'),
             image('tfc:textures/gui/book/gui/rock_knapping.png', text_contents='The Knapping Interface.', border=False),
             text('In order to knap a particular item, you want to remove squares until you form the desired pattern. For example, create a knife blade by matching the recipe shown to the right.$(br2)Like crafting recipes, the location of the desired pattern doesn\'t matter for the output, and some recipes have multiple variants that are valid.'),
-            rock_knapping_typical('tfc:rock_knapping/knife_head_%s', 'A knife blade, crafted from several different rock types.').link(*link_rock_categories('tfc:stone/knife_head/%s'), *link_rock_categories('tfc:stone/knife/%s')).anchor('knife'),
+            rock_knapping_typical('knife_head', 'A knife blade, crafted from several different rock types.').link(*link_rock_categories('tfc:stone/knife_head/%s'), *link_rock_categories('tfc:stone/knife/%s')).anchor('knife'),
             crafting('tfc:crafting/stone/knife_sedimentary', text_contents='All stone tool heads can be crafted with a stick or twig to assemble them into a tool.$(br2)The stone knife can be used to harvest $(thing)Straw$() by breaking plants.'),
-            rock_knapping_typical('tfc:rock_knapping/axe_head_%s', '$(thing)Axes$() can be used to cut down entire trees, logs and leaves included. However, saplings and sticks will only be obtained if leaves were broken individually.').link(*link_rock_categories('tfc:stone/axe_head/%s'), *link_rock_categories('tfc:stone/axe/%s')),
-            rock_knapping_typical('tfc:rock_knapping/shovel_head_%s', '$(thing)Shovels$() can be used to dig soil type blocks. They can also be used to create $(thing)Paths$() by $(item)using$() them on $(thing)Dirt$() or $(thing)Grass$().').link(*link_rock_categories('tfc:stone/shovel_head/%s'), *link_rock_categories('tfc:stone/shovel/%s')),
-            rock_knapping_typical('tfc:rock_knapping/hoe_head_%s', '$(thing)Hoes$() are useful tools for $(l:mechanics/crops)Farming$(), but they can also be used to cut down leaves and other plant matter.').link(*link_rock_categories('tfc:stone/hoe_head/%s'), *link_rock_categories('tfc:stone/hoe/%s')),
-            rock_knapping_typical('tfc:rock_knapping/hammer_head_%s', '$(thing)Hammers$() can be used as $(l:mechanics/damage_types)Crushing$() weapons, but are more important tools used for $(l:getting_started/primitive_anvils)Forging$().').link(*link_rock_categories('tfc:stone/hammer_head/%s'), *link_rock_categories('tfc:stone/hammer/%s')),
-            rock_knapping_typical('tfc:rock_knapping/javelin_head_%s', 'Finally, a $(thing)Javelin$() can be used as a primitive weapon, capable of being thrown at targets, or used as a $(l:mechanics/damage_types)Piercing$() weapon.').link(*link_rock_categories('tfc:stone/javelin_head/%s'), *link_rock_categories('tfc:stone/javelin/%s')),
+            rock_knapping_typical('axe_head', '$(thing)Axes$() can be used to cut down entire trees, logs and leaves included. However, saplings and sticks will only be obtained if leaves were broken individually.').link(*link_rock_categories('tfc:stone/axe_head/%s'), *link_rock_categories('tfc:stone/axe/%s')),
+            rock_knapping_typical('shovel_head', '$(thing)Shovels$() can be used to dig soil type blocks. They can also be used to create $(thing)Paths$() by $(item)using$() them on $(thing)Dirt$() or $(thing)Grass$().').link(*link_rock_categories('tfc:stone/shovel_head/%s'), *link_rock_categories('tfc:stone/shovel/%s')),
+            rock_knapping_typical('hoe_head', '$(thing)Hoes$() are useful tools for $(l:mechanics/crops)Farming$(), but they can also be used to cut down leaves and other plant matter.').link(*link_rock_categories('tfc:stone/hoe_head/%s'), *link_rock_categories('tfc:stone/hoe/%s')),
+            rock_knapping_typical('hammer_head', '$(thing)Hammers$() can be used as $(l:mechanics/damage_types)Crushing$() weapons, but are more important tools used for $(l:getting_started/primitive_anvils)Forging$().').link(*link_rock_categories('tfc:stone/hammer_head/%s'), *link_rock_categories('tfc:stone/hammer/%s')),
+            rock_knapping_typical('javelin_head', 'Finally, a $(thing)Javelin$() can be used as a primitive weapon, capable of being thrown at targets, or used as a $(l:mechanics/damage_types)Piercing$() weapon.').link(*link_rock_categories('tfc:stone/javelin_head/%s'), *link_rock_categories('tfc:stone/javelin/%s')),
         )),
         entry('firepit', 'Pits of Fire', 'tfc:firepit', pages=(
             text('$(thing)Fire$() is an important technological advancement. In order to create fire, you will need a $(thing)Firestarter$(). In order to use, simply hold $(item)$(k:key.use)$() down on the ground. After a few moments, smoke, and then fire will be created. It may take a couple tries to light successfully.').anchor('firestarter').link('tfc:firepit'),
@@ -627,13 +628,13 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('With just a $(l:getting_started/introduction#knife)Stone Knife$(), you are able to obtain $(thing)Straw$() by breaking plant like blocks. This can be used to craft a very simple building material: $(thing)Thatch$(). Thatch is a lightweight block that isn\'t affected by gravity, however players and other entities can pass right through it! It can also be crafted back into $(thing)Straw$() if needed.', title='Thatch').anchor('thatch'),
             crafting('tfc:crafting/thatch', 'tfc:crafting/straw'),
             # Mud Bricks
-            crafting('tfc:crafting/soil/loam_drying_bricks', text_contents='$(thing)Mud$() can be found on the ground, underneath rivers and lakes, or in patches in low elevation swampy environments. With a little bit of $(thing)Straw$(), it can be crafted into $()Wet Mud Bricks$().', title='Mud Bricks').anchor('mud_bricks'),
+            crafting('tfc:crafting/drying_bricks/loam', text_contents='$(thing)Mud$() can be found on the ground, underneath rivers and lakes, or in patches in low elevation swampy environments. With a little bit of $(thing)Straw$(), it can be crafted into $()Wet Mud Bricks$().', title='Mud Bricks').anchor('mud_bricks'),
             multimultiblock(
                 'These can be placed on the ground in a dry location, and after a day they will harden into $(thing)Mud Bricks$().',
                 two_tall_block_spotlight('', '', 'tfc:grass/loam', 'tfc:drying_bricks/loam[count=4,dried=false]'),
                 two_tall_block_spotlight('', '', 'tfc:grass/loam', 'tfc:drying_bricks/loam[count=4,dried=true]'),
             ),
-            crafting('tfc:crafting/soil/loam_mud_bricks', text_contents='These dried mud bricks can then be crafted into $(thing)Mud Brick Blocks$(). They can also be made into $(thing)Stairs$(), $(thing)Slabs$(), or $(thing)Walls$(), if so desired.', title=' '),
+            crafting('tfc:crafting/mud_bricks/loam', text_contents='These dried mud bricks can then be crafted into $(thing)Mud Brick Blocks$(). They can also be made into $(thing)Stairs$(), $(thing)Slabs$(), or $(thing)Walls$(), if so desired.', title=' '),
             block_spotlight('', 'All different varieties of mud bricks.', '#tfc:mud_bricks'),
             page_break(),
             # Wattle and Daub
@@ -776,27 +777,27 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
         )),
         entry('papermaking', 'Papermaking', 'tfc:unrefined_paper', pages=(
             text('$(thing)Paper$() is either made from the processed stalk of the $(l:mechanics/crops#papyrus)Papyrus$() crop, or from $(l:mechanics/papermaking#parchment)Animal Hides$(). Paper is useful for written materials like $(thing)Books$() and $(thing)Maps$().'),
-            crafting('tfc:crafting/papyrus_strips', text_contents='Papyrus must first be cut into strips with a $(thing)Knife$()'),
+            crafting('tfc:crafting/papyrus_strip', text_contents='Papyrus must first be cut into strips with a $(thing)Knife$()'),
             sealed_barrel_recipe('tfc:barrel/soaked_papyrus_strip', 'Then, papyrus strips are soaked in a $(l:mechanics/barrels)Barrel$() of $(thing)Water$().'),
             loom_recipe('tfc:loom/unrefined_paper', 'Then, soaked papyrus strips are woven together in a loom to make $(thing)Unrefined Paper$(). Finally, it must be placed on a log and $(l:mechanics/leather_making#scraping)Scraped$() to make $(thing)Paper$().'),
-            crafting('tfc:crafting/vanilla/map', 'tfc:crafting/vanilla/name_tag'),
+            crafting('minecraft:map', 'minecraft:name_tag'),
             crafting('minecraft:writable_book', 'minecraft:book'),
-            crafting('tfc:crafting/wood/pine_lectern', 'tfc:crafting/wood/kapok_bookshelf'),
+            crafting('tfc:crafting/wood/lectern/kapok', 'tfc:crafting/wood/planks/kapok_bookshelf'),
             text('Flip to the next page for information on papermaking via the parchment process.'),
             page_break(),
             text('$(thing)Parchment Paper$() starts with a scraped hide. Review the $(l:mechanics/leather_making)leather making chapter$() to learn how to make it. Parchment requires treatment with a few different items. First, $(thing)Pumice$() is needed. Pumice is found on the ground near $(l:the_world/geology)Volcanoes$(), or from $(l:mechanics/sluices)Sluicing$() or $(l:mechanics/panning)Panning$() ore deposits with Andesite, Rhyolite, or Dacite in them.', title='Parchment').anchor('parchment'),
             block_spotlight('Pumice', 'A Pumice rock placed on the ground.', 'tfc:groundcover/pumice'),
-            crafting('tfc:crafting/large_treated_hide', text_contents='Crafting pumice, a hammer, and scraped hide gives sections of $(thing)Treated Hide$().'),
-            crafting('tfc:crafting/parchment', text_contents='Treated hide, $(l:mechanics/glassworking#lime)lime powder$(), flour, and a fresh egg will complete the treatment process and yield usable paper.'),
+            crafting('tfc:crafting/treated_hide_from_large', text_contents='Crafting pumice, a hammer, and scraped hide gives sections of $(thing)Treated Hide$().'),
+            crafting('tfc:crafting/paper', text_contents='Treated hide, $(l:mechanics/glassworking#lime)lime powder$(), flour, and a fresh egg will complete the treatment process and yield usable paper.'),
         )),
         entry('glassworking', 'Glassworking', 'tfc:silica_glass_bottle', pages=(
             text('Glassworking is the process of turning sand into glass. To start, you must create a $(thing)Glass Batch$(), of which there are four types:$(br)$(br) 1. $(thing)Silica$(), from white sand.$(br) 2. $(thing)Hematitic$(), from yellow, red, or pink sand.$(br) 3. $(thing)Olivine$(), from green or brown sand.$(br) 4. $(thing)Volcanic$(), from black sand.'),
             crafting('tfc:crafting/silica_glass_batch', text_contents='Glass batches can then be crafted using one of the aforementioned colors of sand, plus $(l:mechanics/glassworking#lime)Lime$() and a type of $(l:mechanics/glassworking#potash)Potash$().'),
-            heat_recipe('tfc:heating/lime', '$(thing)Lime$() is one of the ingredients required to make glass batches. It is a powder obtained by $(l:mechanics/heating)heating$() $(l:mechanics/flux)Flux$().').anchor('lime').link('tfc:powder/lime'),
-            heat_recipe('tfc:heating/soda_ash_from_seaweed', 'A type of $(thing)Potash$() or equivalent is also required for glass batches. $(thing)Soda Ash$() can be used, which is a powder made from heating $(thing)Dried Seaweed$() or $(thing)Kelp$(). $(l:the_world/ores_and_minerals#saltpeter)Saltpeter$() can be used as well.').anchor('potash').link('tfc:powder/soda_ash'),
+            heat_recipe('tfc:heating/powder/lime', '$(thing)Lime$() is one of the ingredients required to make glass batches. It is a powder obtained by $(l:mechanics/heating)heating$() $(l:mechanics/flux)Flux$().').anchor('lime').link('tfc:powder/lime'),
+            heat_recipe('tfc:heating/powder/soda_ash_from_seaweed', 'A type of $(thing)Potash$() or equivalent is also required for glass batches. $(thing)Soda Ash$() can be used, which is a powder made from heating $(thing)Dried Seaweed$() or $(thing)Kelp$(). $(l:the_world/ores_and_minerals#saltpeter)Saltpeter$() can be used as well.').anchor('potash').link('tfc:powder/soda_ash'),
             page_break(),
             text('Glassworking is done by starting with a glass batch, and then completing a series of steps. These steps may require specific tools:$(br)$(li)A $(l:mechanics/glassworking#blowpipe)Blowpipe$(), to $(thing)Blow$() and $(thing)Stretch$()$(li)A $(l:mechanics/glassworking#paddle)Paddle$(), to $(thing)Flatten$()$(li)$(l:mechanics/glassworking#jacks)Jacks$(), to $(thing)Pinch$()$(li)A $(l:mechanics/glassworking#saw)Gem Saw$(), to $(thing)Saw$()', title='Tools of the Trade'),
-            knapping('tfc:clay_knapping/blowpipe', 'The most important tool is the $(thing)Blowpipe$(). It can be $(thing)knapped$() from clay, and then fired into a $(thing)Ceramic Blowpipe$().').anchor('blowpipe'),
+            knapping('tfc:knapping/ceramic/unfired_blowpipe', 'The most important tool is the $(thing)Blowpipe$(). It can be $(thing)knapped$() from clay, and then fired into a $(thing)Ceramic Blowpipe$().').anchor('blowpipe'),
             anvil_recipe('tfc:anvil/blowpipe', 'Ceramic blowpipes are brittle, and have a chance to to break when used. A more sturdy blowpipe can be $(l:mechanics/anvils#working)worked$() from a $(thing)Brass Rod$() on an anvil.'),
             crafting('tfc:crafting/paddle', text_contents='The $(thing)Flatten$() operation can be done with a $(thing)Paddle$(), which is crafted from wood.').anchor('paddle').link('tfc:paddle'),
             welding_recipe('tfc:welding/jacks', 'The $(thing)Pinch$() operation can be done with $(thing)Jacks$(), made from welding two brass rods together.').anchor('jacks').link('tfc:jacks'),
@@ -809,14 +810,14 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('The most simple glass products are $(thing)Glass Panes$() and $(thing)Glass Blocks$(). In order to craft them, you must start with a $(l:mechanics/glassworking#blowpipe)Blowpipe$() with a $(thing)Glass Batch$(), and then perform a $(thing)Pour$().$(br)$(li)$(bold)Table Pours$() are used to create $(thing)Glass Panes$()$(li)$(bold)Basin Pours$() are used to create $(thing)Glass Blocks$()'),
             text('Glass can also be $(thing)dyed$() before it is poured to create colored glass. The color is dependent on the type of glass batch, and any powders that have been added.$(br2)Each type of $(thing)Glass Batch$() has a different natural color of glass that they will create. $(thing)Silica$() glass batches can be made into many colors, $(thing)Olivine$(), and $(thing)Volcanic$() glass can be made into relatively few colors.').link('#tfc:glass_batches'),
             page_break(),
-            text('$(thing)Glass Panes$() are made with a $(thing)Table Pour$(). A pouring table is made by placing up to sixteen $(thing)Brass Plated Blocks$() in a continuous area.$(br2) 1. Add a $(l:mechanics/glassworking)Glass Batch$() to a $(thing)Blowpipe$().$(br) 2. Heat the blowpipe to $(4)$(bold)Faint Red$().$(br) 3. $()$(item)$(k:key.use)$() the $(thing)Blowpipe$() on the top of the table.$(br) 4. Finally $(item)$(k:key.use)$() with a $(l:mechanics/glassworking#paddle)Paddle$() to flatten the glass.', title='Table Pour').link('#forge:glass_panes'),
+            text('$(thing)Glass Panes$() are made with a $(thing)Table Pour$(). A pouring table is made by placing up to sixteen $(thing)Brass Plated Blocks$() in a continuous area.$(br2) 1. Add a $(l:mechanics/glassworking)Glass Batch$() to a $(thing)Blowpipe$().$(br) 2. Heat the blowpipe to $(4)$(bold)Faint Red$().$(br) 3. $()$(item)$(k:key.use)$() the $(thing)Blowpipe$() on the top of the table.$(br) 4. Finally $(item)$(k:key.use)$() with a $(l:mechanics/glassworking#paddle)Paddle$() to flatten the glass.', title='Table Pour').link('#c:glass_panes'),
             image(
                 'tfc:textures/gui/book/tutorial/glass_panes_1.png',
                 'tfc:textures/gui/book/tutorial/glass_panes_2.png',
                 'tfc:textures/gui/book/tutorial/glass_panes_3.png',
                 text_contents='Once the glass is cooled, it can be broken with a $(l:mechanics/glassworking#saw)Gem Saw$() to obtain.'
             ),
-            text('$(thing)Glass Blocks$() are made with a $(thing)Basin Pour$(). A basin is made by surrounding all sides of an air block except the top with $(thing)Brass Plated Blocks$().$(br2) 1. Add a $(l:mechanics/glassworking)Glass Batch$() to a $(thing)Blowpipe$().$(br) 2. Heat the blowpipe to $(4)$(bold)Faint Red$().$(br) 3. $(item)$(k:key.use)$() the $(thing)Blowpipe$() on the top of the table.', title='Basin Pour').link('#forge:glass'),
+            text('$(thing)Glass Blocks$() are made with a $(thing)Basin Pour$(). A basin is made by surrounding all sides of an air block except the top with $(thing)Brass Plated Blocks$().$(br2) 1. Add a $(l:mechanics/glassworking)Glass Batch$() to a $(thing)Blowpipe$().$(br) 2. Heat the blowpipe to $(4)$(bold)Faint Red$().$(br) 3. $(item)$(k:key.use)$() the $(thing)Blowpipe$() on the top of the table.', title='Basin Pour').link('#c:glass_blocks'),
             image(
                 'tfc:textures/gui/book/tutorial/glass_block_1.png',
                 'tfc:textures/gui/book/tutorial/glass_block_2.png',
@@ -843,14 +844,14 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
                 small=True
             ),
             glassworking_recipe('tfc:glassworking/lamp_glass', '$(thing)Lamp Glass$() is a necessary component to craft $(l:mechanics/lamps)Lamps$().').anchor('lamp_glass'),
-            glassworking_recipe('tfc:glassworking/jar', '$(l:mechanics/jarring)Jars$() are also made from blown glass, but only silica or hematitic glass.').anchor('jar'),
-            glassworking_recipe('tfc:glassworking/silica_bottle', '$(thing)Glass Bottles$() can also be made. The quality of the glass bottle depends on the type of glass used to make it.').anchor('glass_bottle'),
+            glassworking_recipe('tfc:glassworking/empty_jar', '$(l:mechanics/jarring)Jars$() are also made from blown glass, but only silica or hematitic glass.').anchor('jar'),
+            glassworking_recipe('tfc:glassworking/silica_glass_bottle', '$(thing)Glass Bottles$() can also be made. The quality of the glass bottle depends on the type of glass used to make it.').anchor('glass_bottle'),
             glassworking_recipe('tfc:glassworking/lens', 'The $(thing)Lens$() is used for crafting the spyglass, compasses, and daylight sensors.'),
         )),
         entry('bowls', 'Bowls', 'tfc:ceramic/bowl', pages=(
             text('$(thing)Bowls$() are a versatile tool which can be used to make $(l:mechanics/salad)Salads$(), to make $(l:mechanics/pot)Soups$(), to $(l:mechanics/decay#salting)Salt$() meat, or to apply $(thing)Powder$() to $(l:mechanics/glassworking_applications#coloring)Glass$() in order to change the resulting glass\'s color.$(br2)Bowls can be made both from $(thing)Ceramic$(), by knapping a bowl out of clay, and then firing them.'),
-            knapping('tfc:clay_knapping/bowl_4', 'Multiple unfired bowls can be made from one knapping.').link('tfc:ceramic/unfired_bowl', 'tfc:ceramic/bowl'),
-            crafting('tfc:crafting/vanilla/bowl', text_contents='Bowls can also be made out of wood via crafting them together with $(thing)Glue$()$(br2)$(thing)Glue$() can be made by soaking $(thing)Bone Meal$() in a barrel of $(l:mechanics/barrels#limewater)Limewater$().', title='Wooden Bowls').link('minecraft:bowl'),
+            knapping('tfc:knapping/ceramic/unfired_bowl_2', 'Multiple unfired bowls can be made from one knapping.').link('tfc:ceramic/unfired_bowl', 'tfc:ceramic/bowl'),
+            crafting('minecraft:bowl', text_contents='Bowls can also be made out of wood via crafting them together with $(thing)Glue$()$(br2)$(thing)Glue$() can be made by soaking $(thing)Bone Meal$() in a barrel of $(l:mechanics/barrels#limewater)Limewater$().', title='Wooden Bowls').link('minecraft:bowl'),
             sealed_barrel_recipe('tfc:barrel/glue', 'Bowls can also be placed on the ground like blocks. When placed, they can be filled with any type of $(thing)Powder$() - the results of grinding ores, minerals, or gems in the $(l:mechanics/quern)Quern$().'),
             item_spotlight('#tfc:powders', 'Powders', text_contents='The Powder Bowl can hold up to 16 of a given powder. To insert items, $(item)$(k:key.use)$() while holding the powder. To extract items, $(item)$(k:key.use)$() with an empty hand.$(br2)$(item)$(k:key.sneak)$() allows extracting the entire contents of the bowl.'),
             item_spotlight('tfc:powder/salt', text_contents='If there is salt in the bowl, clicking with unsalted raw meat will salt the meat. This is the same as crafting the meat with the salt in your inventory.'),
@@ -858,30 +859,30 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
         entry('jarring', 'Jarring', 'tfc:jar/plum', pages=(
             text('$(thing)Jars$() are used to preserve fruit for longer periods of time. Jars start as $(thing)Empty Jars$(), obtained through $(l:mechanics/glassworking_applications#jar)Glassworking$(). Then, a $(thing)Jar Lid$() must be smithed from $(thing)Tin$(). Crafting these together creates an $(thing)Empty Jar With Lid$().'),
             text('In a pot, boil $(thing)Sugar$() with 2-4 pieces of $(thing)Fruit$(). When the recipe is done, $(item)$(k:key.use)$() with the empty jar with lid to create a $(thing)Sealed Jar of Jam$(). The sealed jar will last quite a long time on its own.'),
-            crafting('tfc:crafting/unseal_plum_jar', text_contents='Unsealing a jar is done by crafting. The lid is not able to be retrieved. An unsealed jar only lasts for a few days!'),
-            crafting('tfc:crafting/barley_sandwich_with_jam_1', text_contents='Jam is used for making sandwiches. Jam sandwiches can contain Dairy, Cooked Meats, and Jam. An $(thing)Empty Jar$() is left over.'),
+            crafting('tfc:crafting/jar/plum_unsealed', text_contents='Unsealing a jar is done by crafting. The lid is not able to be retrieved. An unsealed jar only lasts for a few days!'),
+            crafting('tfc:crafting/food/barley_bread_jam_sandwich_1', text_contents='Jam is used for making sandwiches. Jam sandwiches can contain Dairy, Cooked Meats, and Jam. An $(thing)Empty Jar$() is left over.'),
             text('Jars can be placed on solid surfaces with $(item)$(k:key.use)$(). A block can contain four jars of any kind.'),
-            crafting('tfc:crafting/wood/oak_shelf', text_contents='$(thing)Jar Shelves$() can be attached to solid walls. They can be placed directly or by clicking on an existing block of placed jars. The top of the jar shelf counts as a solid surface for placing items, more jars, or other blocks.')
+            crafting('tfc:crafting/wood/jar_shelf/oak', text_contents='$(thing)Jar Shelves$() can be attached to solid walls. They can be placed directly or by clicking on an existing block of placed jars. The top of the jar shelf counts as a solid surface for placing items, more jars, or other blocks.')
         )),
         entry('bread', 'Bread', 'tfc:food/barley_bread', pages=(
-            text('Bread is the processed form of the various grain crops, such as $(l:mechanics/crops#barley)Barley$(). Breaking a grain crop drops a raw, unprocessed grain item, which is not useful on its own. It must be processed into $(thing)Bread$(), which can then be eaten or used in $(l:mechanics/sandwiches)Sandwiches$().').link('#tfc:sandwich_bread', '#tfc:foods/dough', *['tfc:food/%s_grain' % g for g in GRAINS], *['tfc:food/%s_flour' % g for g in GRAINS]),
-            crafting('tfc:crafting/barley_cutting', text_contents='First, cut the straw off of the food with a $(thing)Knife$().'),
+            text('Bread is the processed form of the various grain crops, such as $(l:mechanics/crops#barley)Barley$(). Breaking a grain crop drops a raw, unprocessed grain item, which is not useful on its own. It must be processed into $(thing)Bread$(), which can then be eaten or used in $(l:mechanics/sandwiches)Sandwiches$().').link('#c:foods/bread', '#c:foods/dough', '#c:foods/grain', '#c:foods/flour'),
+            crafting('tfc:crafting/food/barley_grain', text_contents='First, cut the straw off of the food with a $(thing)Knife$().'),
             item_spotlight('tfc:food/rye_grain', text_contents='Grains are the longest-lasting stage of the process, decaying much slower than most foods. On its own, a fresh piece of grain lasts 10 months and 7 days. In a small vessel, it lasts 1 year, 9 months, and 7 days.'),
-            quern_recipe('tfc:quern/oat_grain', 'Grain must then be ground in a $(l:mechanics/quern)Quern$() to make flour.'),
-            crafting('tfc:crafting/dough/barley_dough_1', text_contents='Dough is crafted by adding a bucket of $(thing)Fresh Water$() to flour.'),
-            heat_recipe('tfc:heating/barley_dough', 'Dough is then able to be $(l:mechanics/heating)heated$() to make bread. At this point it can also be used in $(l:mechanics/sandwiches)Sandwiches$().'),
+            quern_recipe('tfc:quern/food/oat_flour', 'Grain must then be ground in a $(l:mechanics/quern)Quern$() to make flour.'),
+            crafting('tfc:crafting/food/barley_dough_1', text_contents='Dough is crafted by adding a bucket of $(thing)Fresh Water$() to flour.'),
+            heat_recipe('tfc:heating/food/barley_bread', 'Dough is then able to be $(l:mechanics/heating)heated$() to make bread. At this point it can also be used in $(l:mechanics/sandwiches)Sandwiches$().'),
         )),
         entry('sandwiches', 'Sandwiches', 'tfc:food/barley_bread_sandwich', pages=(
             text('$(thing)Sandwiches$() are a meal allowing the combination of two $(l:mechanics/bread)Bread$() items and three sandwich foods, which can be any combination of $(l:mechanics/bread)Vegetables$(), $(thing)Cooked Meats$(), and $(l:mechanics/dairy)Cheeses$().').link(*['tfc:food/%s_bread_sandwich' % g for g in GRAINS]),
-            crafting('tfc:crafting/wheat_sandwich', text_contents='The sandwich recipe, which is executed in a $(thing)Workbench$().'),
+            crafting('tfc:crafting/food/wheat_bread_sandwich', text_contents='The sandwich recipe, which is executed in a $(thing)Workbench$().'),
             text('The nutrients, water, and saturation of the food items are all combined into the sandwich\'s nutritional content. The breads are weighted at 50% of their values, whereas the ingredient foods are weighted at 80%. Sandwich ingredients may not be rotten, but once the sandwich is created, it is considered fresh, and decays like it is new.'),
             empty_last_page()
         )),
         entry('dairy', 'Dairy Products', 'tfc:food/cheese', pages=(
             text('$(thing)Dairy$() is a $(l:getting_started/food_and_water#nutrients)Nutrient$() obtained from the milk produced by $(l:mechanics/animal_husbandry#dairy_animals)Dairy Animals$(). It can be drank, or processed into $(thing)Cheese$(). Drinking can be done out of a jug, and always restores $(l:getting_started/food_and_water#thirst)Thirst$(). However, it only adds to nutrition when drank after eating a food. Practically, this means that drinking milk twice in a row is ineffectual. A meal must precede it.', title='Dairy').link('minecraft:milk_bucket'),
             text('To start the $(thing)Cheesemaking$() process, add $(thing)Milk$() and $(thing)Vinegar$() in a $(l:mechanics/barrels)Barrel$() at a ratio of 9:1. This is easiest done by filling 9 buckets of milk in a barrel, and adding a single bucket of vinegar. This produces $(thing)Milk Vinegar$().').link('tfc:food/cheese'),
-            sealed_barrel_recipe('tfc:barrel/curdling', 'Once milk and vinegar are mixed, it will curdle if it is sealed in a barrel for eight hours. This requires no extra ingredients, except time.'),
-            sealed_barrel_recipe('tfc:barrel/cheese', 'Cheese is then made by once again sealing the curdled milk in a barrel for eight hours. Cheese is a long-lasting dairy product, and can be used in some meals to add dairy to them, such as $(l:mechanics/sandwiches)Sandwiches$().')
+            sealed_barrel_recipe('tfc:barrel/curdled_milk', 'Once milk and vinegar are mixed, it will curdle if it is sealed in a barrel for eight hours. This requires no extra ingredients, except time.'),
+            sealed_barrel_recipe('tfc:barrel/food/cheese', 'Cheese is then made by once again sealing the curdled milk in a barrel for eight hours. Cheese is a long-lasting dairy product, and can be used in some meals to add dairy to them, such as $(l:mechanics/sandwiches)Sandwiches$().')
         )),
         entry('scribing_table', 'Scribing Table', 'minecraft:black_dye', pages=(
             text('The $(thing)Scribing Table$() is used to rename items. It requires $(l:mechanics/dye)Black Dye$() to rename items, which can be supplied as the traditional dye item or as a bucket of dye fluid.'),
@@ -892,19 +893,19 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
         entry('sewing_table', 'Sewing Table', 'tfc:wood/sewing_table/oak', pages=(
             text('The $(thing)Sewing Table$() is used to produce banner patterns and smithing templates. It requires $(l:mechanics/weaving#wool_cloth)Wool Cloth$(), $(l:mechanics/weaving#burlap_cloth)Burlap Cloth$(), String or Yarn, as well as a Needle.'),
             crafting('tfc:crafting/bone_needle', text_contents='A needle for sewing can be made from a bone.'),
-            crafting('tfc:crafting/wood/oak_sewing_table', text_contents='The sewing table can be made from wood, leather, and a pair of shears.'),
+            crafting('tfc:crafting/wood/sewing_table/oak', text_contents='The sewing table can be made from wood, leather, and a pair of shears.'),
             text('The sewing table\'s inventory is similar to that of a crafting table. If you ever make a mistake, you can simply exit the inventory, and your items will be returned to you. There is a recipe book available in the GUI. Selecting the book opens a menu where you can select a recipe. This places small indicators of what steps to perform on the working surface.'),
             page_break(),
             image('tfc:textures/gui/book/gui/sewing_table.png', text_contents='The sewing screen.'),
             text('The slots on the left are for the string and the needle. The two bottom slots can hold any combination of burlap and wool cloth. The slot on the right will show the result when it is ready to be taken. Taking the result from the result slot completes the craft, and uses the items.'),
             text('Each cloth item allows placing 8 squares of that material on the sewing surface. Similarly, each yarn item allows placing 16 stitches. When you have selected a recipe, just use the buttons on the top right of the screen to place squares and stitch them together as shown by the guide. Want to remove stitches? Use the red \'X\' button to get rid of squares.'),
-            crafting('tfc:crafting/vanilla/loom', text_contents='The banner loom, for making things with banner patterns, can be crafted to do work with banner patterns.'),
+            crafting('minecraft:loom', text_contents='The banner loom, for making things with banner patterns, can be crafted to do work with banner patterns.'),
             text('For information on the use of smithing templates, see the $(l:mechanics/armor_trims)Armor Trims$() chapter.'),
             empty_last_page()
         )),
         entry('armor_trims', 'Armor Trims', 'minecraft:rib_armor_trim_smithing_template', pages=(
             text('Armor trims are produced with a $(thing)Trim Material$() and a $(l:mechanics/sewing_table)Smithing Template$(). In TFC, all gems, along with Sterling Silver, Gold, Rose Gold, and Bismuth, can be used as trim materials. Armor trims are purely cosmetic.'),
-            crafting('tfc:crafting/vanilla/smithing_table', text_contents='The smithing table can be used to apply armor trims to TFC armor.'),
+            crafting('minecraft:smithing_table', text_contents='The smithing table can be used to apply armor trims to TFC armor.'),
         )),
         entry('advanced_building_materials', 'Advanced Materials', 'tfc:brick/rhyolite', pages=(
             text('In addition to the primitive $(l:getting_started/building_materials)building materials$() of the stone age, the acquisition of metal tools allows the construction of more advanced building materials'),
@@ -939,9 +940,9 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
         )),
         entry('armor', 'Armor', 'tfc:metal/chestplate/copper', pages=(
             text('$(thing)Armor$() provides protection against attacks from predators and monsters. The quality of armor scales with the tier of the $(thing)Metal$(), with $(l:mechanics/leather_making)Leather$() being the weakest and $(l:mechanics/steel)Colored Steels$() being the strongest.'),
-            knapping('tfc:leather_knapping/chestplate', 'Leather armor is $(thing)Knapped$() from $(l:mechanics/leather_making)Leather$(). It does not last long, but provides some decent protection if you have a full suit.').link(*['minecraft:leather_%s' % g for g in ('helmet', 'chestplate', 'leggings', 'boots')]),
-            anvil_recipe('tfc:anvil/copper_unfinished_helmet', '$(thing)Metal Armor$() requires multiple processing steps in an $(l:mechanics/anvils)Anvil$(). First, an $(thing)unfinished$() armor piece must be smithed. These require a $(thing)Double Sheet$() of the metal, except for boots which require a single sheet.'),
-            welding_recipe('tfc:welding/bismuth_bronze_greaves', 'Next, a $(thing)Sheet$() must be $(l:mechanics/anvils#welding)Welded$() to the armor piece to finish it. Chestplates require a $(thing)Double Sheet$() to be finished.'),
+            knapping('tfc:knapping/leather_chestplate', 'Leather armor is $(thing)Knapped$() from $(l:mechanics/leather_making)Leather$(). It does not last long, but provides some decent protection if you have a full suit.').link(*['minecraft:leather_%s' % g for g in ('helmet', 'chestplate', 'leggings', 'boots')]),
+            anvil_recipe('tfc:anvil/metal/unfinished_helmet/copper', '$(thing)Metal Armor$() requires multiple processing steps in an $(l:mechanics/anvils)Anvil$(). First, an $(thing)unfinished$() armor piece must be smithed. These require a $(thing)Double Sheet$() of the metal, except for boots which require a single sheet.'),
+            welding_recipe('tfc:welding/metal/greaves/bismuth_bronze', 'Next, a $(thing)Sheet$() must be $(l:mechanics/anvils#welding)Welded$() to the armor piece to finish it. Chestplates require a $(thing)Double Sheet$() to be finished.'),
             text('Armor that is of the same tier but different metals may be subtly different. These are expressed in durability, as well as $(l:mechanics/damage_types)Damage Resistances$(). In order of increasing durability, the bronzes are ranked $(thing)Bismuth Bronze$(), regular $(thing)Bronze$(), and then $(thing)Black Bronze$(). For colored steels, $(thing)Red Steel$() lasts longer than $(thing)Blue Steel$().'),
             text('Steel armor also provides benefits such as $(thing)Toughness$() and $(thing)Knockback Resistance$(). Regular $(thing)Steel$() has 1 toughness, $(thing)Black Steel$() has 2 toughness, and the $(thing)Colored Steels$() have 3 toughness. $(thing)Black Steel$() has 5% knockback resistance, whereas the $(thing)Colored Steels$() have 10%.')
         )),
@@ -1020,7 +1021,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
         )),
         entry('crucible', 'Crucible', 'tfc:crucible', pages=(
             text('A $(thing)Crucible$() is an advanced device used for the creation of $(l:mechanics/crucible#advanced_alloying)Alloys$(). It is a more precise method than using a $(l:getting_started/primitive_alloys)Small Vessel$() to make alloys.$(br2)To obtain a crucible, you will first need to obtain some $(l:mechanics/fire_clay)Fire Clay$(), which is a stronger material than clay. This fire clay can then be knapped to shape it into an $()Unfired Crucible$().'),
-            knapping('tfc:fire_clay_knapping/crucible', 'Knapping an $(thing)Unfired Crucible$().').link('tfc:ceramic/unfired_crucible'),
+            knapping('tfc:knapping/ceramic/unfired_crucible', 'Knapping an $(thing)Unfired Crucible$().').link('tfc:ceramic/unfired_crucible'),
             heat_recipe('tfc:heating/crucible', 'After the crucible is knapped, it will need to be $(thing)fired$(), like any piece of pottery - a $(l:getting_started/pit_kiln)Pit Kiln$() or $(l:mechanics/charcoal_forge)Charcoal Forge$() would do.$(br2)In order to use the crucible, it needs a source of heat. The crucible can be heated by any heatable block below, usually a $(l:mechanics/charcoal_forge)Charcoal Forge$()').link('tfc:crucible'),
             multiblock('', 'A crucible heated by a charcoal forge below it.', False, (('   ', ' C ', '   '), ('GGG', 'G0G', 'GGG')), {
                 'C': 'tfc:crucible',
@@ -1054,11 +1055,11 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             item_spotlight('tfc:bucket/red_dye', 'Simple Recipes', text_contents='Other pot recipes transform the items and fluid in the pot into something else. For example, boiling five $(thing)ash$() in $(thing)water$() makes $(thing)lye$().')  # todo: better recipe page for the pot
         )),
         entry('chisel', 'Chisel', 'tfc:metal/chisel/wrought_iron', pages=(
-            text('Chisels are a tool for creating decorative forms of other blocks, including slabs and stairs. In order to get started, you will need a $(thing)Chisel$() and any type of $(thing)Hammer$(). Chisels must be cast in molds or forged on an $(l:mechanics/anvils)Anvil$(). In order to start chiseling, hold the chisel in your main hand and a hammer in your off hand, and target a block in the world.').link('#tfc:chisels'),
+            text('Chisels are a tool for creating decorative forms of other blocks, including slabs and stairs. In order to get started, you will need a $(thing)Chisel$() and any type of $(thing)Hammer$(). Chisels must be cast in molds or forged on an $(l:mechanics/anvils)Anvil$(). In order to start chiseling, hold the chisel in your main hand and a hammer in your off hand, and target a block in the world.').link('#tfc:tools/chisel'),
             text('If you can chisel that block, a $(c)red outline$() of the block to be chiseled will be shown based on what $(thing)Mode$() you have selected.$(br2)The chisel has three modes that can be switched by using $(item)$(k:tfc.key.cycle_chisel_mode)$(): $(thing)Slab$(), $(thing)Stair$(), and $(thing)Smooth$(). An indicator of your chisel mode should show up next to the hotbar.'),
             text('Press $(item)$(k:key.use)$() to convert the block to the shape that was highlighted in red. If you chiseled a slab, the half of the block you chiseled will pop off and you can grab it. Change the orientation of your player and your mouse to change the orientation of the chiseled block. As a rule of thumb, the orientation of the chiseled block will be the same as if you placed it in that orientation yourself.'),
             image('tfc:textures/gui/book/tutorial/chisel_block.png', 'tfc:textures/gui/book/tutorial/chisel_stair.png', 'tfc:textures/gui/book/tutorial/chisel_slab.png', text_contents='The three chisel modes usable on a $(thing)Raw Limestone$() block.'),
-            crafting('tfc:crafting/rock/marble_smooth', text_contents='The chisel can also be used in some crafting recipes as a shortcut for large quantities.'),
+            crafting('tfc:crafting/rock/smooth/marble', text_contents='The chisel can also be used in some crafting recipes as a shortcut for large quantities.'),
             text('Be careful! Chiseling in a mineshaft is not safe. Each time you chisel, there is a chance of $(l:mechanics/support_beams)Collapse$().')
         )),
         entry('support_beams', 'Support Beams & Collapses', 'tfc:wood/support/oak', pages=(
@@ -1066,7 +1067,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('Collapses can occur whenever a player $(thing)mines any Raw Rock$() that is near to $(thing)Unsupported Raw Rock$(). Once a collapse has started, however, even previously $(thing)Supported$() rock can start to collapse.$(br2)The rock on the roof of caves is $(thing)Naturally Supported$(). Any raw rock with a non-collapsible solid block beneath it, is also $(thing)Supported$(). Alternatively, $(thing)Support Beams$() can support a wide area at once.'),
             text('When graded $(l:the_world/ores_and_minerals)Ore$() (ore that can be poor, normal, or rich) collapses, it degrades in quality. Rich ore will become normal, normal will become poor, and poor will turn to cobblestone. Mineral ores will turn into cobblestone right away.'),
             text('Dirt, grass, clay, gravel, cobblestone, and sand are also affected by gravity. However, unlike vanilla gravity blocks, these blocks fall down slopes, and cannot be stacked more than one high without supporting blocks around. $(l:mechanics/sluices)Ore Deposits$() also landslide, but do not degrade in quality.'),
-            crafting('tfc:crafting/wood/oak_support', text_contents='To get started, $(thing)Support Beams$() can be crafted with a $(thing)Saw$() and any type of $(thing)Logs$().$(br2)Placing a $(thing)Support Beam$() on top of a block places a column up to three tall. These must have a solid block beneath them to stay upright.', title='Support Beams'),
+            crafting('tfc:crafting/wood/support/oak', text_contents='To get started, $(thing)Support Beams$() can be crafted with a $(thing)Saw$() and any type of $(thing)Logs$().$(br2)Placing a $(thing)Support Beam$() on top of a block places a column up to three tall. These must have a solid block beneath them to stay upright.', title='Support Beams'),
             multimultiblock('$(thing)Horizontal$() beams can be placed between to connect two $(thing)Vertical$() beams that are within five blocks, as in the above diagram.', *[
                 multiblock('', '', False, (
                     ('   ', 'CRD', '   '),
@@ -1092,9 +1093,9 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('You remembered where you picked up those $(l:getting_started/finding_ores)Small Metal Nuggets$(), right? Finding additional ores may require extensive exploration and mining. You should become very familiar with $(l:the_world/ores_and_minerals)Ores and Minerals$(). If you need a specific resource, you must find the rock type it spawns in either under your feet or across the world.'),
             text('When picking up small nuggets becomes unsatisfying, it is time to start prospecting to find ore veins:$(br)$(li)Small nuggets occur when ore is nearby, within 15 blocks horizontally and 35 vertically. If you find the center of a group of nuggets, it\'s likely that the vein is beneath you.$(li)Exposed ore can occur in cliffs and water bodies, which may be seen from farther away.'),
             item_spotlight('tfc:metal/propick/copper', 'Prospector\'s Pick', text_contents='If you\'re looking for metal ores or mineral veins (which have no nuggets), and you can\'t find the vein by guessing, it\'s time to pull out the $(thing)Prospector\'s Pick$(). It searches the 25x25x25 area centered on the block clicked, and reports to the action bar the amount and type of ore located.').link(*['tfc:metal/propick/%s' % m for m in TOOL_METALS]).anchor('propick'),
-            knapping('tfc:clay_knapping/propick_head_mold', 'To make a Prospector\'s Pick, you can $(l:getting_started/pottery)knapp$() an unfired mold out of clay as shown above.'),
-            heat_recipe('tfc:heating/propick_head_mold', 'Once the mold has been $(l:getting_started/pottery)knapped$(), it needs to be $(l:mechanics/heating)fired$() to create a $(thing)Propick Head Mold.$()$(br2)To create the tool head, $(l:getting_started/finding_ores#casting)cast$() liquid metal into the mold.'),
-            anvil_recipe('tfc:anvil/wrought_iron_propick_head', 'A Prospector\'s Pick Head can also be $(l:mechanics/anvils#working)smithed$() out of an $(thing)ingot$() of any tool metal on an $(l:mechanics/anvils)Anvil$().$(br2)The Prospector\'s Pick is then created by crafting the tool head with a stick.'),
+            knapping('tfc:knapping/ceramic/unfired_propick_head_mold', 'To make a Prospector\'s Pick, you can $(l:getting_started/pottery)knapp$() an unfired mold out of clay as shown above.'),
+            heat_recipe('tfc:heating/ceramic/propick_head_mold', 'Once the mold has been $(l:getting_started/pottery)knapped$(), it needs to be $(l:mechanics/heating)fired$() to create a $(thing)Propick Head Mold.$()$(br2)To create the tool head, $(l:getting_started/finding_ores#casting)cast$() liquid metal into the mold.'),
+            anvil_recipe('tfc:anvil/metal/propick_head/wrought_iron', 'A Prospector\'s Pick Head can also be $(l:mechanics/anvils#working)smithed$() out of an $(thing)ingot$() of any tool metal on an $(l:mechanics/anvils)Anvil$().$(br2)The Prospector\'s Pick is then created by crafting the tool head with a stick.'),
             text('The Prospector\'s Pick will never report finding something when nothing is actually there. However, it may incorrectly say nothing is there when a vein is in range. Higher tier tools will reduce or eliminate these false negatives.$(br2)Prospector\'s Picks at the same tier give identical results when used on the same block unless ores were removed.$(br2)If the Prospector\'s Pick finds multiple ores nearby, it will only report one.'),
             text('Right-clicking a Prospector\'s Pick on a block will report finding one of these possible results:$(br)$(li)Nothing (may be false)$(li)Traces$(li)A Small Sample$(li)A Medium Sample$(li)A Large Sample$(li)A Very Large Sample$(br2)Very large samples indicate at least eighty and potentially many more blocks.'),
         )),
@@ -1107,7 +1108,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('The bloomery consumes $(thing)2 Charcoal$(), and $(thing)100 mB of Cast Iron$() to produce one $(thing)Bloom$(). After filling the bloomery with a combination of $(thing)Charcoal$() and $(thing)Ore$(), light the bloomery block, and wait 15 hours for the bloomery to smelt. When the bloomery shuts off, it leaves behind a $(thing)Bloom$() block. This contains $(thing)Raw Iron Blooms$() which can be obtained by mining the $(thing)Bloom$() repeatedly with a pickaxe.'),
             block_spotlight('The Bloom Block', 'A large $(thing)Bloom$().', 'tfc:bloom[layers=8]').link('tfc:bloom'),
             anvil_recipe('tfc:anvil/refined_iron_bloom', 'The $(thing)Raw Iron Bloom$() must be worked in a $(l:mechanics/anvils)anvil$() to make $(thing)Refined Iron Bloom$().').link('tfc:raw_iron_bloom'),
-            anvil_recipe('tfc:anvil/wrought_iron_from_bloom', 'The $(thing)Refined Iron Bloom$() must be worked in a $(l:mechanics/anvils)anvil$() to make $(thing)Wrought Iron Ingots$().').link('tfc:refined_iron_bloom'),
+            anvil_recipe('tfc:anvil/metal/ingot/wrought_iron', 'The $(thing)Refined Iron Bloom$() must be worked in a $(l:mechanics/anvils)anvil$() to make $(thing)Wrought Iron Ingots$().').link('tfc:refined_iron_bloom'),
             text('$(li)If the bloomery finds itself with more items contained than it can handle based on its chimney, it will try to spit them out the front.$()$(li)To retrieve your items from a bloomery that is not lit, do not break the molten block tower. Break the bloomery block.$()$(li)Blooms will only melt into cast iron, not wrought iron. They must be worked!$()', 'Smith\'s Notes'),
         )),
         entry('blast_furnace', 'Blast Furnace', 'tfc:blast_furnace', pages=(
@@ -1127,21 +1128,21 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
         )),
         entry('steel', 'Steel', 'tfc:metal/ingot/steel', pages=(
             text('Steel is an advanced material which can be used to create tools and $(l:mechanics/armor)Armor$(), and comes in a few different varieties: $(thing)Steel$(), $(thing)Black Steel$(), $(thing)Red Steel$(), and $(thing)Blue Steel$().$(br2)In order to create steel, you must first create $(thing)Pig Iron$() in a $(l:mechanics/blast_furnace)Blast Furnace$(), and cast it into $(thing)Ingots$().'),
-            anvil_recipe('tfc:anvil/high_carbon_steel_ingot', 'A $(thing)Pig Iron Ingot$() can then be worked in an anvil to create a $(thing)High Carbon Steel$() ingot, which can be worked again to create a $(thing)Steel Ingot$()').link('tfc:metal/ingot/pig_iron', 'tfc:metal/ingot/high_carbon_steel', 'tfc:metal/ingot/steel'),
+            anvil_recipe('tfc:anvil/metal/ingot/high_carbon_steel', 'A $(thing)Pig Iron Ingot$() can then be worked in an anvil to create a $(thing)High Carbon Steel$() ingot, which can be worked again to create a $(thing)Steel Ingot$()').link('tfc:metal/ingot/pig_iron', 'tfc:metal/ingot/high_carbon_steel', 'tfc:metal/ingot/steel'),
             page_break(),
             text('$(thing)Black Steel$() is an advanced form of steel formed from an alloy of steel and some other metals. In order to create it, you will need to create an alloy called $(thing)Weak Steel$() in a $(l:mechanics/crucible)Crucible$().', title='Black Steel').anchor('black_steel'),
             alloy_recipe('Weak Steel', 'weak_steel', 'Molten $(thing)Weak Steel$() can be cast into ingots.').link('tfc:metal/ingot/weak_steel'),
-            welding_recipe('tfc:welding/high_carbon_black_steel_ingot', '$(thing)Weak Steel Ingots$() can then be welded with $(thing)Pig Iron Ingots$() to create $(thing)High Carbon Black Steel Ingots$(). Finally, these can be worked on an $(l:mechanics/anvils)Anvil$() to create $(thing)Black Steel Ingots$().').link('tfc:metal/ingot/high_carbon_black_steel', 'tfc:metal/ingot/black_steel'),
+            welding_recipe('tfc:welding/metal/ingot/high_carbon_black_steel', '$(thing)Weak Steel Ingots$() can then be welded with $(thing)Pig Iron Ingots$() to create $(thing)High Carbon Black Steel Ingots$(). Finally, these can be worked on an $(l:mechanics/anvils)Anvil$() to create $(thing)Black Steel Ingots$().').link('tfc:metal/ingot/high_carbon_black_steel', 'tfc:metal/ingot/black_steel'),
             text('$(thing)Black Steel$() can be used to craft tools and $(l:mechanics/armor)Armor$(), and also is used as a key ingredient in the creation of $(l:mechanics/steel#blue_steel)Blue Steel$() and $(l:mechanics/steel#red_steel)Red Steel$().'),
             page_break(),
             text('$(thing)Blue Steel$() is one of the two highest tier metals, along with $(l:mechanics/steel#red_steel)Red Steel$(). Similar to $(l:mechanics/steel#black_steel)Black Steel$(), the first step is to create an alloy of $(thing)Weak Blue Steel$() in a $(l:mechanics/crucible)Crucible$().', title='Blue Steel').anchor('blue_steel'),
             alloy_recipe('Weak Blue Steel', 'weak_blue_steel', '').link('tfc:metal/ingot/weak_blue_steel'),
-            welding_recipe('tfc:welding/high_carbon_blue_steel_ingot', '$(thing)Weak Blue Steel Ingots$() can be welded with $(l:mechanics/steel#black_steel)Black Steel Ingots$() to create $(thing)High Carbon Blue Steel Ingots$(). Finally, these can be worked on an $(l:mechanics/anvils)Anvil$() to create $(thing)Blue Steel Ingots$().').link('tfc:metal/ingot/high_carbon_blue_steel', 'tfc:metal/ingot/blue_steel'),
+            welding_recipe('tfc:welding/metal/ingot/high_carbon_blue_steel', '$(thing)Weak Blue Steel Ingots$() can be welded with $(l:mechanics/steel#black_steel)Black Steel Ingots$() to create $(thing)High Carbon Blue Steel Ingots$(). Finally, these can be worked on an $(l:mechanics/anvils)Anvil$() to create $(thing)Blue Steel Ingots$().').link('tfc:metal/ingot/high_carbon_blue_steel', 'tfc:metal/ingot/blue_steel'),
             text('$(thing)Blue Steel$() can be used to create tools and $(l:mechanics/armor)Armor$(), and a $(thing)Blue Steel Bucket$(), which can be used to transport 1000 mB of both liquid fluids, and $(6)Lava$().'),
             page_break(),
             text('$(thing)Red Steel$() is one of the two highest tier metals, along with $(l:mechanics/steel#blue_steel)Blue Steel$(). Similar to $(l:mechanics/steel#black_steel)Black Steel$(), the first step is to create an alloy of $(thing)Weak Red Steel$() in a $(l:mechanics/crucible)Crucible$().', title='Red Steel').anchor('red_steel'),
             alloy_recipe('Weak Red Steel', 'weak_red_steel', '').link('tfc:metal/ingot/weak_red_steel'),
-            welding_recipe('tfc:welding/high_carbon_red_steel_ingot', '$(thing)Weak Red Steel Ingots$() can be welded with $(l:mechanics/steel#black_steel)Black Steel Ingots$() to create $(thing)High Carbon Red Steel Ingots$(). Finally, these can be worked on an $(l:mechanics/anvils)Anvil$() to create $(thing)Red Steel Ingots$().').link('tfc:metal/ingot/high_carbon_red_steel', 'tfc:metal/ingot/red_steel'),
+            welding_recipe('tfc:welding/metal/ingot/high_carbon_red_steel', '$(thing)Weak Red Steel Ingots$() can be welded with $(l:mechanics/steel#black_steel)Black Steel Ingots$() to create $(thing)High Carbon Red Steel Ingots$(). Finally, these can be worked on an $(l:mechanics/anvils)Anvil$() to create $(thing)Red Steel Ingots$().').link('tfc:metal/ingot/high_carbon_red_steel', 'tfc:metal/ingot/red_steel'),
             text('$(thing)Red Steel$() can be used to create tools and $(l:mechanics/armor)Armor$(), and a $(thing)Red Steel Bucket$(), which can be used to transport 1000 mB of both liquid fluids, and $(6)Lava$()'),
         )),
         entry('anvils', 'Anvils', 'tfc:metal/anvil/copper', pages=(
@@ -1167,10 +1168,10 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
         entry('fire_clay', 'Fire Clay', 'tfc:fire_clay', pages=(
             text('The list of uses of fire clay is small, but all of them are important. Fire clay is a stronger variant of clay that has better heat resistance. It is used to make things that have to get very hot!'),
             crafting('tfc:crafting/fire_clay', text_contents='Fire clay is made from $(l:the_world/ores_and_minerals#graphite)graphite$() powder, crushed in a $(l:mechanics/quern)quern$(), as well as $(l:the_world/ores_and_minerals#kaolinite)kaolinite$() powder'),
-            heat_recipe('tfc:heating/kaolin_clay', 'Kaolinite powder is made by heating $(l:the_world/ores_and_minerals#kaolinite)Kaolin Clay$(). However, the process is not perfect, and only 20%% of clay will form powder!'),
-            knapping('tfc:fire_clay_knapping/crucible', 'The $(l:mechanics/crucible)Crucible$() in its unfired state is made from fire clay.').anchor('crucible'),
-            knapping('tfc:fire_clay_knapping/brick', 'The $(l:mechanics/blast_furnace)Blast Furnace$() only accepts fire bricks as insulation.').anchor('fire_bricks'),
-            knapping('tfc:fire_clay_knapping/fire_ingot_mold', '$(thing)Fire Ingot Molds$() are a stronger type of $(l:getting_started/pottery#mold)Ingot Mold$() that has just a 1 in 100 chance of breaking, compared to 1 in 10 for a regular ingot mold.'),
+            heat_recipe('tfc:heating/powder/kaolinite', 'Kaolinite powder is made by heating $(l:the_world/ores_and_minerals#kaolinite)Kaolin Clay$(). However, the process is not perfect, and only 20%% of clay will form powder!'),
+            knapping('tfc:knapping/ceramic/unfired_crucible', 'The $(l:mechanics/crucible)Crucible$() in its unfired state is made from fire clay.').anchor('crucible'),
+            knapping('tfc:knapping/ceramic/unfired_brick', 'The $(l:mechanics/blast_furnace)Blast Furnace$() only accepts fire bricks as insulation.').anchor('fire_bricks'),
+            knapping('tfc:knapping/ceramic/unfired_fire_ingot_mold', '$(thing)Fire Ingot Molds$() are a stronger type of $(l:getting_started/pottery#mold)Ingot Mold$() that has just a 1 in 100 chance of breaking, compared to 1 in 10 for a regular ingot mold.'),
         )),
         entry('quern', 'Quern', 'tfc:quern', pages=(
             text('The $(thing)Quern$() is a device for grinding items. It can make powders, $(l:mechanics/dye)dyes$(), and some other items. It is assembled from a $(thing)Base$() and $(thing)Handstone$().$(br2)The Quern can also be connected to a $(l:mechanics/mechanical_power#quern)Mechanical Power$() network.'),
@@ -1180,15 +1181,15 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             image('tfc:textures/gui/book/tutorial/quern_add_item.png', text_contents='Use $(item)$(k:key.use)$() on the top of the handstone to add items.'),
             image('tfc:textures/gui/book/tutorial/quern_handle.png', text_contents='Use $(item)$(k:key.use)$() the handle to spin the handstone.'),
             image('tfc:textures/gui/book/tutorial/quern_result.png', text_contents='The output should appear on the base of the quern. $(item)$(k:key.use)$() anywhere on the base to retrieve it.'),
-            quern_recipe('tfc:quern/sulfur', 'The quern is used to make various $(thing)Powders$() from ores, like $(thing)Sulfur$().'),
+            quern_recipe('tfc:quern/powder/sulfur', 'The quern is used to make various $(thing)Powders$() from ores, like $(thing)Sulfur$().'),
             quern_recipe('tfc:quern/red_dye', '$(l:mechanics/dye)Dye$() can be obtained from various flowers.'),
-            quern_recipe('tfc:quern/emerald', '$(thing)Gems$() can also be ground into powder.'),
-            quern_recipe('tfc:quern/barley_grain', '$(thing)Flour$() is also obtainable from the quern.'),
-            quern_recipe('tfc:quern/fluxstone', '$(l:mechanics/flux)Flux$() is also obtainable from the quern.'),
+            quern_recipe('tfc:quern/powder/emerald', '$(thing)Gems$() can also be ground into powder.'),
+            quern_recipe('tfc:quern/food/barley_flour', '$(thing)Flour$() is also obtainable from the quern.'),
+            quern_recipe('tfc:quern/powder/flux', '$(l:mechanics/flux)Flux$() is also obtainable from the quern.'),
         )),
         entry('fishing', 'Fishing', 'tfc:metal/fishing_rod/copper', pages=(
-            text('$(thing)Fishing$() is a way of hunting the fish that swim around in rivers, lakes, and oceans. Fishing rods must be baited and cast. Fish attempt to eat the bait, and sometimes succeed. Reeling in a fish takes work, and becomes easier with higher level hooks.').link('#forge:fishing_rods'),
-            anvil_recipe('tfc:anvil/bismuth_bronze_fish_hook', 'First, you have to forge a fishing hook in an $(l:mechanics/anvils)Anvil$().'),
+            text('$(thing)Fishing$() is a way of hunting the fish that swim around in rivers, lakes, and oceans. Fishing rods must be baited and cast. Fish attempt to eat the bait, and sometimes succeed. Reeling in a fish takes work, and becomes easier with higher level hooks.').link('#c:tools/fishing_rod'),
+            anvil_recipe('tfc:anvil/metal/fish_hook/bismuth_bronze', 'First, you have to forge a fishing hook in an $(l:mechanics/anvils)Anvil$().'),
             crafting('tfc:crafting/metal/fishing_rod/bismuth_bronze', text_contents='The fishing rod is crafted with a fishing hook.', title='Fishing Rod'),
             text('Fishing rods are not useful without bait. Bait can be added to rods in a crafting table. To catch normal fish, you need $(thing)Seeds$() or $(thing)Shellfish$(). To catch larger fish, such as $(thing)Dolphins$() and $(thing)Orcas$(), you need $(item)cod$(), $(item)salmon$(), $(item)tropical fish$(), or $(item)bluegills$().'),
             text('To release the bobber, $(item)$(k:key.use)$(). Wait for a fish to spot the hook and bite it. Then $(item)$(k:key.use)$() to pull it in. As you do that, the meter on your hotbar will fill up. Pull too quickly, and the fish will get away with the bait. Each time you fish, the fish has a chance of eating the bait. To catch the fish, pull it up on land and kill it with a tool. You can hold the fishing rod in your off hand to make this easier.'),
@@ -1275,10 +1276,10 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
         entry('dye', 'Dye', 'minecraft:red_dye', pages=(
             text('All 16 vanilla $(thing)Dye Colors$() can be obtained as items. Most flowers and other colorful plants can be ground into dye using a $(l:mechanics/quern)Quern$(). Powders of $(l:the_world/ores_and_minerals)metal ores$() can be crafted directly into dye. $(l:the_world/ores_and_minerals#graphite)Graphite$(), $(l:the_world/ores_and_minerals#kaolinite)Kaolinite$(), $(l:the_world/ores_and_minerals#sylvite)Sylvite$(), $(l:the_world/ores_and_minerals#lapis_lazuli)Lapis$(), Coke, and Charcoal powder can be crafted into dye as well.'),
             item_spotlight('tfc:bucket/red_dye', 'Dye Liquids', text_contents='Dyes can also be made into fluids. A dye item and 1000mB of $(item)Water$() boiled in a $(l:mechanics/pot)Pot$() produces the same amount of $(thing)Dye Fluid$(). Dye fluids are used in $(l:mechanics/barrels)Barrels$() to color items.'),
-            sealed_barrel_recipe('tfc:barrel/dye/red_concrete_powder', 'Dyeing items in a barrel is cheaper than using items, requiring only 25mB of dyed fluid.'),
-            sealed_barrel_recipe('tfc:barrel/dye/disc_chirp', 'Dye fluids can be used to finish $(item)Music Discs$().'),
-            sealed_barrel_recipe('tfc:barrel/dye/red_leather', 'Dye fluids can even dye leather as if it were crafted!'),
-            sealed_barrel_recipe('tfc:barrel/dye/bleach_concrete_powder', 'Five $(item)Wood Ash$() and 1000mB of $(item)Water$() boiled in a $(l:mechanics/pot)Pot$() produces lye. 25mB of Lye removes the color from a colored item.').anchor('lye'),
+            sealed_barrel_recipe('tfc:barrel/red_concrete_powder', 'Dyeing items in a barrel is cheaper than using items, requiring only 25mB of dyed fluid.'),
+            sealed_barrel_recipe('tfc:barrel/music_disc_chirp', 'Dye fluids can be used to finish $(item)Music Discs$().'),
+            sealed_barrel_recipe('tfc:barrel/red_leather', 'Dye fluids can even dye leather as if it were crafted!'),
+            sealed_barrel_recipe('tfc:barrel/bleaching_bed', 'Five $(item)Wood Ash$() and 1000mB of $(item)Water$() boiled in a $(l:mechanics/pot)Pot$() produces lye. 25mB of Lye removes the color from a colored item.').anchor('lye'),
             text('$(li)$(item)Black Dye$() is used for $(l:mechanics/scribing_table)Scribing Tables$().$(li)$(item)Red Dye$() is used for $(l:mechanics/powderkegs)Powderkegs$(). $(li)Unfired $(l:mechanics/decay#small_vessels)Small Vessels$() and $(l:mechanics/decay#large_vessels)Large Vessels$() can be dyed$().', title='Miscellaneous'),
             empty_last_page()
         )),
@@ -1288,9 +1289,9 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('One of the easiest ways to preserve food is to use a $(thing)Vessel$(). $(thing)Large Vessels$() are a block which can store up to nine items, and when $(thing)sealed$() the items inside will gain the $(5)$(bold)Preserved$() status, which extends their remaining lifetime by 2x.$(br2)$(thing)Small Vessels$() are a item which can store up to four other items, and will also apply the $(5)$(bold)Preserved$() status to their contents.', title='Vessels').anchor('small_vessels'),
             block_spotlight('', 'A Sealed Large Vessel.', 'tfc:ceramic/large_vessel[sealed=true]').anchor('large_vessels'),
             text('One other way to easily preserve certain types of food is to cook them. $(thing)Meats$() will all expire slower when they are cooked than when they are raw.$(br2)It is also important to use the correct device for cooking. Certain devices that heat very hot, such as a $(l:mechanics/charcoal_forge)Charcoal Forge$() or a $(l:mechanics/crucible)Crucible$() are $(bold)bad$() for cooking food, which will make them expire faster!', title='Cooking'),
-            heat_recipe('tfc:heating/mutton', 'Instead, a $(l:getting_started/firepit)Firepit$() or a $(l:mechanics/grill)Grill$() can even provide a buff for using it! For example, cooking mutton (pictured above) in a $(thing)Firepit$() will increase its lifetime by 1.33x, and cooking in a $(thing)Grill$() will increase its lifetime by 1.66x!'),
+            heat_recipe('tfc:heating/food/cooked_mutton', 'Instead, a $(l:getting_started/firepit)Firepit$() or a $(l:mechanics/grill)Grill$() can even provide a buff for using it! For example, cooking mutton (pictured above) in a $(thing)Firepit$() will increase its lifetime by 1.33x, and cooking in a $(thing)Grill$() will increase its lifetime by 1.66x!'),
             text('$(thing)Salting$() is a way to make meat last longer. To salt meat, it must be crafted with $(thing)Salt$() in a crafting grid. Only raw meat can be salted. Afterwards, cooking or otherwise preserving the meat does not take away the salted property.', title='Salting').anchor('salting'),
-            quern_recipe('tfc:quern/salt', 'One way of getting salt is through $(l:mechanics/quern)grinding$() $(l:the_world/ores_and_minerals#halite)Halite$(), which is a mineral.'),
+            quern_recipe('tfc:quern/powder/salt', 'One way of getting salt is through $(l:mechanics/quern)grinding$() $(l:the_world/ores_and_minerals#halite)Halite$(), which is a mineral.'),
             block_spotlight('Salt Licks', 'Salt can be found naturally in forests. It can be placed and picked back up.', 'tfc:groundcover/salt_lick'),
             text('$(thing)Vinegar Preservation$() is a way of making fruits, veggies, and meat last longer.$(br2)$(thing)Vinegar$() is made in a $(l:mechanics/barrels)Barrel$(), by sealing a fruit with 250mB of Alcohol. To preserve food in vinegar it must first be $(thing)Pickled$() in $(thing)Brine$(). Brine is made in a barrel with 1 part $(thing)Vinegar$() and 9 parts $(thing)Salt Water$().').anchor('vinegar'),
             text('Once food is pickled, it can be sealed in a Barrel of Vinegar. If there is 125mB of Vinegar per pickled food item, the food will last longer.'),
@@ -1303,8 +1304,8 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
         entry('crops', 'Crops', 'tfc:food/wheat', pages=(
             text('Crops are a source of food and some other materials. While each crop is slightly different, crops all have some similar principles. In order to start growing crops, you will need some $(thing)Seeds$(), which can be obtained by searching for $(l:the_world/wild_crops)Wild Crops$() and breaking them.$(br2)Once you have obtained seeds, you will also need a $(thing)Hoe$(). Seeds are also useful as $(l:mechanics/fishing)bait$().'),
             text('In addition to finding wild crops, seeds can also be produced from existing crops. When a fully mature crop dies - either by weather, or leaving it to rot - it will go to seed, dropping more seeds that can be used to grow even more crops next season.'),
-            rock_knapping_typical('tfc:rock_knapping/hoe_head_%s', 'To get started, a $(thing)Stone Hoe$() can be $(thing)knapped$() as seen above.'),
-            crafting('tfc:crafting/stone/hoe_sedimentary', text_contents='Once the hoe head is knapped, it can be crafted into a Hoe.$(br2)Hoes function as in Vanilla, by right clicking dirt blocks to turn them into $(thing)Farmland$(). They can also be used to convert $(thing)Rooted Dirt$() into $(thing)Dirt$().'),
+            rock_knapping_typical('hoe_head', 'To get started, a $(thing)Stone Hoe$() can be $(thing)knapped$() as seen above.'),
+            crafting('tfc:crafting/stone/hoe/sedimentary', text_contents='Once the hoe head is knapped, it can be crafted into a Hoe.$(br2)Hoes function as in Vanilla, by right clicking dirt blocks to turn them into $(thing)Farmland$(). They can also be used to convert $(thing)Rooted Dirt$() into $(thing)Dirt$().'),
             text('All crops need to be planted on farmland in order to grow. Some crops have additional requirements such as being waterlogged or requiring a stick to grow on.$(br2)Crops do not need $(thing)nutrients$() to grow, but they certainly help. There are three nutrients: $(b)Nitrogen$(), $(6)Phosphorous$(), and $(d)Potassium$(). Each crop has a favorite nutrient.', title='Growing Crops'),
             text('Consuming its favorite nutrient causes a crop to grow faster, and improves the yield of the crop at harvest time. That means that crops that consumed more nutrients drop more food when broken! Consuming a nutrient also has the effect of replenishing the other nutrients around it a small amount.$(br2)The next several pages list all the crops present in TFC'),
             # Listing of all crops, their growth conditions, and how to grow them
@@ -1387,19 +1388,19 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('In order to get started with harnessing mechanical power, you will first need a $(thing)Source$() of power.$(br2)$(l:mechanics/mechanical_power#windmill)Windmills$() are a way of harnessing the wind. They can be built nearly everywhere with enough space.$(br2)$(l:mechanics/mechanical_power#water_wheel)Water Wheels$() are a slightly stronger power source, as they harness the current found in $(thing)Rivers$()'),
             page_break(),
             text('$(thing)Windmills$() are a way of harnessing the power of the wind to rotate an $(l:mechanics/mechanical_power#axle)Axle$(). They are large, and require a completely unobstructed area of 13 x 13 x 1 to be placed. In order to create one, you will first need an $(thing)Axle$(), and then you will need one or more $(thing)Windmill Blades$()', title='Windmills').anchor('windmill'),
-            crafting('tfc:crafting/windmill_blade', text_contents='$(thing)Windmill Blades$() can be crafted from cloth. A single windmill can have up to five blades, and the more blades, the faster it will rotate.'),
+            crafting('tfc:crafting/windmill_blade/white', text_contents='$(thing)Windmill Blades$() can be crafted from cloth. A single windmill can have up to five blades, and the more blades, the faster it will rotate.'),
             text('In order to create a windmill, first place an $(l:mechanics/mechanical_power#axle)Axle$() in any horizontal orientation. Then, $(item)$(k:key.use)$() up to five $(thing)Windmill Blades$() on the axle to create the windmill. It will slowly start spinning.$(br2)The windmill may break if the axle is already connected to another source, or if there is not enough clear space.'),
             multiblock('', '', multiblock_id='tfc:windmill'),
             page_break(),
             text('$(thing)Water Wheels$() are a way of harnessing the power of flowing water in $(3)Rivers$() in order to generate power. When placed optimally, they can rotate at some of the fastest possible speeds available.$(br2)A water wheel requires a 5 x 5 x 1 area of space to be placed. Note that the water wheel may break if there are any obstructions in the area around it,', title='Water Wheels').anchor('water_wheel').link('#tfc:water_wheels'),
-            crafting('tfc:crafting/wood/oak_water_wheel', text_contents='or if the axle was already connected to another source.$(br2)Water wheels can be crafted simply from lumber.', title=' '),
+            crafting('tfc:crafting/wood/water_wheel/oak', text_contents='or if the axle was already connected to another source.$(br2)Water wheels can be crafted simply from lumber.', title=' '),
             text('In order to place a $(thing)Water Wheel$(), simply attach it on the end of any $(thing)Axle$(). The axle should be one or two blocks above a source of flowing water, i.e. a river.$(br2)Water below the height of the axle, when flowing, will cause the wheel to speed up. Any water elsewhere, or stationary water below the axle will impede the wheel\'s movement and cause it to slow down or stop.'),
             multiblock('', 'A $(thing)Water Wheel$()', multiblock_id='tfc:water_wheel'),
-            crafting('tfc:crafting/wood/oak_axle', text_contents='Axles are the bread and butter of a rotational network, and are the block that transfers rotational power from one location to the other. They can be connected up to five blocks long, but any longer and they will break!', title='Axles').anchor('axle').link('#tfc:axles'),
-            crafting('tfc:crafting/wood/oak_encased_axle', text_contents='Axles can also be crafted $(thing)Encased$(). These can either be placed by themselves, or on top of existing axles.$(br2)However, in order to transfer power further, you will need a $(l:mechanics/mechanical_power#gearbox)Gear Box$()', title='Encased Axles'),
-            crafting('tfc:crafting/wood/oak_gear_box', text_contents='$(thing)Gear Boxes$() are a way of changing the $(thing)Direction$() of rotational power by using $(l:https://en.wikipedia.org/wiki/Gear)Gears$(). They are also useful in order to connect long chains of $(l:mechanics/mechanical_power#axle)Axles$() together without breaking.', title='Gear Box').anchor('gearbox').link('#tfc:gear_boxes'),
+            crafting('tfc:crafting/wood/axle/oak', text_contents='Axles are the bread and butter of a rotational network, and are the block that transfers rotational power from one location to the other. They can be connected up to five blocks long, but any longer and they will break!', title='Axles').anchor('axle').link('#tfc:axles'),
+            crafting('tfc:crafting/wood/encased_axle/oak', text_contents='Axles can also be crafted $(thing)Encased$(). These can either be placed by themselves, or on top of existing axles.$(br2)However, in order to transfer power further, you will need a $(l:mechanics/mechanical_power#gearbox)Gear Box$()', title='Encased Axles'),
+            crafting('tfc:crafting/wood/gear_box/oak', text_contents='$(thing)Gear Boxes$() are a way of changing the $(thing)Direction$() of rotational power by using $(l:https://en.wikipedia.org/wiki/Gear)Gears$(). They are also useful in order to connect long chains of $(l:mechanics/mechanical_power#axle)Axles$() together without breaking.', title='Gear Box').anchor('gearbox').link('#tfc:gear_boxes'),
             text('In order to use a gearbox, its sides must be configured. $(item)$(k:key.use)$() while holding a $(thing)Hammer$() on any face of the gearbox to enable input/output through that face.$(br2)Note that due to their internal structure, gear boxes can only have faces enabled on two different axes of rotation at the same time.'),
-            crafting('tfc:crafting/wood/oak_clutch', text_contents='A $(thing)Clutch$() is a way of controlling a rotational network via $(c)Redstone$(). It is an $(l:mechanics/mechanical_power#axle)Encased Axle$(), which disconnects when powered, allowing rotation to pass through only when unpowered.', title='Clutch').link('#tfc:clutches'),
+            crafting('tfc:crafting/wood/clutch/oak', text_contents='A $(thing)Clutch$() is a way of controlling a rotational network via $(c)Redstone$(). It is an $(l:mechanics/mechanical_power#axle)Encased Axle$(), which disconnects when powered, allowing rotation to pass through only when unpowered.', title='Clutch').link('#tfc:clutches'),
             multimultiblock('An example of a $(thing)Clutch$() in use.', *[
                 multiblock('', '', multiblock_id='tfc:clutch_off'),
                 multiblock('', '', multiblock_id='tfc:clutch_on')
@@ -1407,7 +1408,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('One device that can be connected to the mechanical network is a $(l:mechanics/quern)Quern$(), simply by placing a vertical-facing axle above the Quern. While connected, the Quern cannot be turned manually, instead it will grind items automatically as the axle above rotates.$(br2)The Quern will grind faster if the axle above spins faster.', title='Quern Automation').anchor('quern'),
             multiblock('', 'A $(thing)Quern$() connected to an $(l:mechanics/mechanical_power#axle)Axle$().', multiblock_id='tfc:rotating_quern'),
             text('Another mechanical device is the $(thing)Trip Hammer$(). The Trip Hammer automatically performs smithing on an $(l:mechanics/anvils)Anvil$(). The Trip Hammer needs a $(thing)Bladed Axle$() to work. The Bladed Axle works like a regular axle, but has a blade on it that is used to activate the hammer.', title='Trip Hammer').anchor('trip_hammer'),
-            crafting('tfc:crafting/wood/oak_bladed_axle', 'tfc:crafting/trip_hammer'),
+            crafting('tfc:crafting/wood/bladed_axle/oak', 'tfc:crafting/trip_hammer'),
             multiblock('', 'A setup for a trip hammer.', pattern=(('X ',), ('YZ',), ('0 ',)), mapping={
                 'X': 'tfc:wood/bladed_axle/oak[axis=x]',
                 'Y': 'tfc:trip_hammer[facing=north]',
@@ -1423,7 +1424,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
         )),
         entry('pumps', 'Pumps', 'tfc:steel_pipe', pages=(
             text('$(thing)Steel Pumps$() and $(thing)Steel Pipes$() are blocks useful for transporting fluids, such as $(thing)Water$(), $(thing)Salt Water$(), and $(thing)Spring Water$(). They can also be used to move source blocks, and fill small enclosed areas. Unlike $(l:mechanics/aqueducts)Aqueducts$(), they can also be used to transport source blocks upwards.').link('tfc:steel_pipe', 'tfc:steel_pump'),
-            anvil_recipe('tfc:anvil/steel_pump', 'The steel pipe can be crafted from, predictably, $(l:mechanics/steel)Steel$(), on an $(l:mechanics/anvils)Anvil$(). A $(thing)Steel Pump$() can be crafted from some $(thing)Steel Pipes$(), and $(l:getting_started/primitive_alloys#brass)Brass Mechanisms$().'),
+            anvil_recipe('tfc:anvil/steel_pipe', 'The steel pipe can be crafted from, predictably, $(l:mechanics/steel)Steel$(), on an $(l:mechanics/anvils)Anvil$(). A $(thing)Steel Pump$() can be crafted from some $(thing)Steel Pipes$(), and $(l:getting_started/primitive_alloys#brass)Brass Mechanisms$().'),
             crafting('tfc:crafting/steel_pump', text_contents='In order to operate the pump, you will also need a $(l:mechanics/crankshaft)Crankshaft$(), and a source of $(l:mechanics/mechanical_power)Mechanical Power$():$(br)$(li)The pump must be connected on the $(bold)bottom$() to a pipe.'),
             text('$(li)On the narrow side, the pump must be adjacent to the business end of a $(l:mechanics/crankshaft)Crankshaft$().$(li)The pump can reach up to $(bold)16$() blocks. The end of the pipe must be $(bold)submerged$() in the target fluid, and adjacent to a source fluid block.$(li)If the crankshaft is active, fluid will be brought up and appear on the wide end of the $(thing)Pump$().$(li)The pump can fill an enclosed area up to $(bold)32$() blocks with source blocks.'),
         )),
@@ -1496,6 +1497,10 @@ def small_bush_text(fruit: str, title: str, text_contents: str) -> Page:
 def small_bush_multiblock(fruit: str, text_contents: str) -> Page:
     water = ',fluid=water' if fruit == 'cranberry' else ''
     return multimultiblock(text_contents, *[block_spotlight('', '', 'tfc:plant/%s_bush[lifecycle=%s,stage=2%s]' % (fruit, life, water)) for life in ('dormant', 'healthy', 'flowering', 'fruiting')])
+
+
+def hydration_from_rainfall(rainfall: float) -> int:
+    return int(rainfall) * 60 // 500
 
 
 def link_rock_categories(item_name: str) -> List[str]:

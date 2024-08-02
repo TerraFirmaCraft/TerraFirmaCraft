@@ -48,7 +48,7 @@ public class SpreadingCropFeature extends Feature<BlockConfig<WildSpreadingCropB
             if (level.getBlockEntity(offsetPos) instanceof DecayingBlockEntity decaying)
             {
                 final ItemStack food = new ItemStack(block.getFruit());
-                FoodCapability.applyTrait(food, FoodTraits.WILD.value());
+                FoodCapability.applyTrait(food, FoodTraits.WILD);
                 decaying.setStack(food);
             }
             setBlock(level, origin, block.defaultBlockState().setValue(WildSpreadingCropBlock.PROPERTY_BY_DIRECTION.get(direction), true));

@@ -1,10 +1,8 @@
 package net.dries007.tfc.data.providers;
 
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.minecraft.world.item.crafting.Ingredient;
 
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.data.Accessors;
@@ -55,14 +53,6 @@ public class BuiltinFluidHeat extends DataManagerProvider<FluidHeat> implements 
 
     private void add(Metal metal, float baseHeatCapacity, float meltTemperature)
     {
-        add(metal.getSerializedName(), new FluidHeat(
-            TFCFluids.METALS.get(metal).getSource(),
-            metal.tier(),
-            meltTemperature,
-            HEAT_CAPACITY / baseHeatCapacity,
-            Optional.of(Ingredient.of(commonTagOf(metal, Metal.ItemType.INGOT))),
-            metal.defaultParts() ? Optional.of(Ingredient.of(commonTagOf(metal, Metal.ItemType.DOUBLE_INGOT))) : Optional.empty(),
-            metal.defaultParts() ? Optional.of(Ingredient.of(commonTagOf(metal, Metal.ItemType.SHEET))) : Optional.empty()
-        ));
+        add(metal.getSerializedName(), new FluidHeat(TFCFluids.METALS.get(metal).getSource(), meltTemperature, HEAT_CAPACITY / baseHeatCapacity));
     }
 }

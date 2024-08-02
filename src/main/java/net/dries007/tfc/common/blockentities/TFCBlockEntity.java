@@ -7,16 +7,12 @@
 package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -32,7 +28,7 @@ public abstract class TFCBlockEntity extends BlockEntity
      * @return The packet to send to the client upon block update. This is returned in client in {@code onDataPacket()}
      */
     @Override
-    public ClientboundBlockEntityDataPacket getUpdatePacket()
+    public final ClientboundBlockEntityDataPacket getUpdatePacket()
     {
         return ClientboundBlockEntityDataPacket.create(this);
     }
@@ -115,22 +111,8 @@ public abstract class TFCBlockEntity extends BlockEntity
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {}
 
     /**
-     * Syncs the block entity data to client via means of a block update.
-     * Use for stuff that is updated infrequently, for data that is analogous to changing the state.
-     */
-    public void markForBlockUpdate()
-    {
-        if (level != null)
-        {
-            BlockState state = level.getBlockState(worldPosition);
-            level.sendBlockUpdated(worldPosition, state, state, 3);
-            setChanged();
-        }
-    }
-
-    /**
-     * Marks a block entity for syncing without sending a block update. Also internally marks dirty.
-     * Use preferentially over {@link InventoryBlockEntity#markForBlockUpdate()} if there's no reason to have a block update.
+     * Marks a block entity as having changed, and syncs the change to client. Also updates neighbors that this block entity has
+     * changed in some way. Overriden to allow sync batching to prevent attempts to sync more than once a tick.
      */
     public void markForSync()
     {
@@ -139,15 +121,13 @@ public abstract class TFCBlockEntity extends BlockEntity
     }
 
     /**
-     * Marks a block entity as dirty, without updating the comparator output. Use preferentially for updates that want to mark themselves as dirty every tick, and don't require updating comparator output.
-     * Reimplements {@link net.minecraft.world.level.Level#blockEntityChanged(BlockPos)} due to trying to avoid comparator updates, called due to MinecraftForge#9169
+     * Marks a block entity as changed, without syncing or triggering a neighbour update.
      */
-    @SuppressWarnings("deprecation")
-    public void markDirty()
+    public final void markDirty()
     {
-        if (level != null && level.hasChunkAt(worldPosition))
+        if (level != null)
         {
-            level.getChunkAt(worldPosition).setUnsaved(true);
+            level.blockEntityChanged(worldPosition);
         }
     }
 
@@ -159,10 +139,5 @@ public abstract class TFCBlockEntity extends BlockEntity
         {
             serverLevel.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false).forEach(e -> e.connection.send(packet));
         }
-    }
-
-    protected final HolderGetter<Block> getBlockGetter()
-    {
-        return this.level != null ? this.level.holderLookup(Registries.BLOCK) : BuiltInRegistries.BLOCK.asLookup();
     }
 }

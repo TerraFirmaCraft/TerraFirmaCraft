@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blockentities;
 
 import java.util.List;
+import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -117,9 +118,9 @@ public interface IFarmland
      * Add tooltip info which is shown from both the farmland hoe overlay, <strong>and</strong> when looking at a crop planted above this block.
      * This is important, as it should only add information that wouldn't already be visible from the crop itself.
      */
-    default void addTooltipInfo(List<Component> text)
+    default void addTooltipInfo(Consumer<Component> text)
     {
-        text.add(Component.translatable("tfc.tooltip.farmland.nutrients", format(getNutrient(NutrientType.NITROGEN)), format(getNutrient(NutrientType.PHOSPHOROUS)), format(getNutrient(NutrientType.POTASSIUM))));
+        text.accept(Component.translatable("tfc.tooltip.farmland.nutrients", format(getNutrient(NutrientType.NITROGEN)), format(getNutrient(NutrientType.PHOSPHOROUS)), format(getNutrient(NutrientType.POTASSIUM))));
     }
 
     private String format(float value)

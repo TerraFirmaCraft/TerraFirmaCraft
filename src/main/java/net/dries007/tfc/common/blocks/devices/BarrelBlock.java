@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blocks.devices;
 
 import java.util.List;
+import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -18,7 +19,10 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -48,9 +52,14 @@ import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.TooltipBlock;
+import net.dries007.tfc.common.component.TFCComponents;
+import net.dries007.tfc.common.component.block.BarrelComponent;
+import net.dries007.tfc.common.component.item.ItemListComponent;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.tooltip.Tooltips;
 
 public class BarrelBlock extends SealableDeviceBlock
 {
@@ -86,8 +95,6 @@ public class BarrelBlock extends SealableDeviceBlock
     // not down
     public static final EnumProperty<Direction> FACING = TFCBlockStateProperties.FACING_NOT_DOWN;
     public static final BooleanProperty RACK = TFCBlockStateProperties.RACK;
-
-    private static final int[] IMAGE_TOOLTIP = {1, 1, 2, 2};
 
     public BarrelBlock(ExtendedProperties properties)
     {
@@ -155,15 +162,18 @@ public class BarrelBlock extends SealableDeviceBlock
     }
 
     @Override
-    protected void addExtraInfo(List<Component> tooltip, CompoundTag inventoryTag)
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag)
     {
-        // todo 1.21: this whole method needs to be rethought with sealed device components
-        /*final FluidTank tank = new FluidTank(TFCConfig.SERVER.barrelCapacity.get());
-        tank.readFromNBT(inventoryTag.getCompound("tank"));
-        if (!tank.isEmpty())
+        final BarrelComponent barrel = stack.getOrDefault(TFCComponents.BARREL, BarrelComponent.EMPTY);
+        if (!barrel.isEmpty())
         {
-            tooltip.add(Tooltips.fluidUnitsOf(tank.getFluid()));
-        }*/
+            tooltip.add(Tooltips.contents());
+            Helpers.addInventoryTooltipInfo(List.of(barrel.itemContent().get(BarrelBlockEntity.SLOT_ITEM)), tooltip);
+            if (!barrel.fluidContent().isEmpty())
+            {
+                tooltip.add(Tooltips.fluidUnitsOf(barrel.fluidContent()));
+            }
+        }
     }
 
     @Override
@@ -174,12 +184,6 @@ public class BarrelBlock extends SealableDeviceBlock
             return Blocks.AIR.defaultBlockState();
         }
         return state;
-    }
-
-    @Override
-    public int[] getImageTooltipParameters()
-    {
-        return IMAGE_TOOLTIP;
     }
 
     @Nullable

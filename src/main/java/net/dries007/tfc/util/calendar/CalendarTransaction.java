@@ -17,23 +17,19 @@ package net.dries007.tfc.util.calendar;
  * </pre>
  * Do not implement this, prefer getting one by calling {@link ServerCalendar#transaction()} on {@link Calendars#SERVER}.
  */
-public interface CalendarTransaction extends AutoCloseable
+public sealed interface CalendarTransaction extends AutoCloseable permits Calendar.Transaction
 {
     /**
      * Add a certain amount of ticks to the calendar, within the transaction.
-     * @param ticks A number of ticks. <strong>May</strong> be negative, but be careful about accidentally pushing the calendar into negative values, there is no protection against that.
+     * @param ticks A number of ticks. <strong>May</strong> be negative, but be careful about accidentally pushing the
+     *              calendar into negative values, there is no protection against that.
      */
-    default void add(long ticks)
-    {
-        add(ticks, ticks);
-    }
+    void add(long ticks);
 
     /**
-     * Add a certain amount of ticks to the calendar.
-     * @param playerTicks The number of player ticks ({@link ICalendar#getTicks()}) to add.
-     * @param calendarTicks The number of calendar ticks ({@link ICalendar#getCalendarTicks()} to add.
+     * @return The current number of total ticks that have been added from the baseline.
      */
-    void add(long playerTicks, long calendarTicks);
+    long ticks();
 
     @Override
     void close();

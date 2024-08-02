@@ -8,10 +8,11 @@ package net.dries007.tfc.common.blocks.devices;
 
 import java.util.List;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -32,9 +33,13 @@ import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TooltipBlock;
+import net.dries007.tfc.common.component.TFCComponents;
+import net.dries007.tfc.common.component.item.ItemListComponent;
 import net.dries007.tfc.common.component.size.IItemSize;
 import net.dries007.tfc.common.component.size.Size;
 import net.dries007.tfc.common.component.size.Weight;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.tooltip.Tooltips;
 
 public class SealableDeviceBlock extends DeviceBlock implements IItemSize, TooltipBlock
 {
@@ -73,26 +78,19 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize, Toolt
         return defaultBlockState().setValue(POWERED, level.hasNeighborSignal(pos));
     }
 
-    /* todo 1.21, this relies on sealed device components
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag tooltipFlag)
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag)
     {
-        final CompoundTag tag = stack.getTagElement(Helpers.BLOCK_ENTITY_TAG);
-        if (tag != null)
+        final List<ItemStack> contents = stack.getOrDefault(TFCComponents.CONTENTS, ItemListComponent.EMPTY).contents();
+        if (!Helpers.isEmpty(contents))
         {
-            final CompoundTag inventoryTag = tag.getCompound("inventory");
-            final ItemStackHandler inventory = new ItemStackHandler();
-
-            inventory.deserializeNBT(inventoryTag.getCompound("inventory"));
-
-            if (!Helpers.isEmpty(inventory) && !TFCConfig.CLIENT.displayItemContentsAsImages.get())
-            {
-                tooltip.add(Component.translatable("tfc.tooltip.contents").withStyle(ChatFormatting.DARK_GREEN));
-                Helpers.addInventoryTooltipInfo(inventory, tooltip);
-            }
-            addExtraInfo(tooltip, inventoryTag);
+            tooltip.add(Tooltips.contents());
+            Helpers.addInventoryTooltipInfo(contents, tooltip);
         }
     }
+
+    /* todo 1.21, this relies on sealed device components
+
 
     @Override
     public Optional<TooltipComponent> getTooltipImage(ItemStack stack)
@@ -124,8 +122,6 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize, Toolt
     {
         return IMAGE_TOOLTIP;
     }
-
-    protected void addExtraInfo(List<Component> tooltip, CompoundTag inventoryTag) {}
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
@@ -175,7 +171,6 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize, Toolt
         {
             entity.ejectInventory();
         }
-        entity.invalidateCapabilities();
     }
 
     /* Handles block states for redstone changes from neighbors and adjusts the block entities to match */

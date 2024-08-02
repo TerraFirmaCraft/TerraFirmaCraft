@@ -32,11 +32,6 @@ public abstract class ComponentView<T>
         this(stack, stack.getOrDefault(type, defaultValue), type);
     }
 
-    public T view()
-    {
-        return component;
-    }
-
     protected void apply(T newValue)
     {
         if (!stack.isEmpty()) stack.set(type, component = newValue);

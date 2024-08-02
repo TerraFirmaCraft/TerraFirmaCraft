@@ -52,6 +52,21 @@ public class Calendar implements ICalendar
         this.arePlayersLoggedOn = arePlayersLoggedOn;
     }
 
+    /**
+     * Opens a calendar transaction, which allows you to safely manipulate time to perform a sequence of actions, without
+     * possibility of distributing the state of the global calendar. Note that this should generally <strong>only</strong> be used
+     * on {@link Calendars#SERVER}. The only case where this is useful to use on the client is during unit tests, where
+     * the existing calendar will always be inferred to be on client.
+     *
+     * @return A new {@link CalendarTransaction}
+     * @see CalendarTransaction
+     */
+    @Override
+    public CalendarTransaction transaction()
+    {
+        return new Transaction();
+    }
+
     @Override
     public long getTicks()
     {
@@ -145,5 +160,28 @@ public class Calendar implements ICalendar
         calendarTicks = ((long) TFCConfig.COMMON.defaultCalendarStartDay.get() * ICalendar.TICKS_IN_DAY) + (6L * ICalendar.TICKS_IN_HOUR);
         doDaylightCycle = true;
         arePlayersLoggedOn = false;
+    }
+
+    final class Transaction implements CalendarTransaction
+    {
+        private final long originalPlayerTicks = playerTicks;
+
+        @Override
+        public void add(long ticks)
+        {
+            Calendar.this.playerTicks += ticks;
+        }
+
+        @Override
+        public long ticks()
+        {
+            return Calendar.this.playerTicks - originalPlayerTicks;
+        }
+
+        @Override
+        public void close()
+        {
+            Calendar.this.playerTicks = originalPlayerTicks;
+        }
     }
 }

@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.common.blocks;
 
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.EntityBlock;
@@ -15,11 +13,12 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Borrowed from {@link net.minecraft.world.level.block.BaseEntityBlock}
  */
-public interface EntityBlockExtension extends EntityBlock
+public interface EntityBlockExtension extends EntityBlock, IForgeBlockExtension
 {
     /**
      * Implement with {@link net.dries007.tfc.common.blocks.IForgeBlockExtension}

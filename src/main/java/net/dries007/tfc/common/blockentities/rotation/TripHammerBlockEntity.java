@@ -79,8 +79,6 @@ public class TripHammerBlockEntity extends TickableInventoryBlockEntity<ItemStac
 
     private int cooldownTicks = 10;
 
-    private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.trip_hammer");
-
     public TripHammerBlockEntity(BlockPos pos, BlockState state)
     {
         this(TFCBlockEntities.TRIP_HAMMER.get(), pos, state);
@@ -88,7 +86,7 @@ public class TripHammerBlockEntity extends TickableInventoryBlockEntity<ItemStac
 
     public TripHammerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
-        super(type, pos, state, defaultInventory(1), NAME);
+        super(type, pos, state, defaultInventory(1));
     }
 
     @Override

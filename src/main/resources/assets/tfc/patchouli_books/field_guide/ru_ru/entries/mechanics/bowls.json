@@ -10,12 +10,12 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/bowl_4",
+      "recipe": "tfc:knapping/ceramic/unfired_bowl_2",
       "text": "За одну лепку может быть сделано несколько необожженных чаш."
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/vanilla/bowl",
+      "recipe": "minecraft:bowl",
       "title": "Деревянные чаши",
       "text": "Чаши также могут быть сделаны из дерева путем их соединения вместе с $(thing)Клеем$().$(br2)$(thing)Клей$() может быть сделан путем замачивания $(thing)Костной муки$() в бочке с $(l:mechanics/barrels#limewater)Известковой водой$()."
     },

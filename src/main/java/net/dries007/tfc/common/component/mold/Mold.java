@@ -30,7 +30,7 @@ public class Mold implements IMold, FluidContainer, HeatContainer
     {
         this.stack = stack;
         this.containerInfo = containerInfo;
-        this.heat = Objects.requireNonNull(HeatCapability.get(stack));
+        this.heat = HeatCapability.mutableView(stack);
         this.fluid = Objects.requireNonNull(stack.get(TFCComponents.FLUID));
     }
 
@@ -48,22 +48,15 @@ public class Mold implements IMold, FluidContainer, HeatContainer
     @Override
     public int fill(FluidStack resource, FluidAction action)
     {
-        final var remainder = fluid.fill(resource, containerInfo);
+        final var remainder = FluidComponent.fill(fluid.content(), resource, containerInfo);
         if (action.execute()) updateFluid(remainder.content());
         return remainder.filled();
     }
 
     @Override
-    public FluidStack drain(int maxDrain, FluidAction action)
-    {
-        if (!isMolten()) return FluidStack.EMPTY;
-        return drainIgnoringTemperature(maxDrain, action);
-    }
-
-    @Override
     public FluidStack drainIgnoringTemperature(int maxDrain, FluidAction action)
     {
-        final var remainder = fluid.drain(maxDrain);
+        final var remainder = FluidComponent.drain(fluid.content(), maxDrain);
         if (action.execute()) updateFluid(remainder.content());
         return remainder.drained();
     }
@@ -75,7 +68,7 @@ public class Mold implements IMold, FluidContainer, HeatContainer
     }
 
     @Override
-    public FluidContainerInfo fluidContainerInfo()
+    public FluidContainerInfo containerInfo()
     {
         return containerInfo;
     }

@@ -1,13 +1,7 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "category": "misc",
-  "ingredients": [
+  "neoforge:conditions": [
     {
-      "tag": "c:storage_blocks/slime"
+      "type": "neoforge:false"
     }
-  ],
-  "result": {
-    "count": 9,
-    "id": "tfc:glue"
-  }
+  ]
 }

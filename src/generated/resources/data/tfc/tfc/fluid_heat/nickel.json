@@ -1,15 +1,5 @@
 {
-  "double_ingots": {
-    "tag": "c:double_ingots/nickel"
-  },
   "fluid": "tfc:metal/nickel",
-  "ingots": {
-    "tag": "c:ingots/nickel"
-  },
   "melt_temperature": 1453.0,
-  "sheets": {
-    "tag": "c:sheets/nickel"
-  },
-  "specific_heat_capacity": 0.00625,
-  "tier": 0
+  "specific_heat_capacity": 0.00625
 }

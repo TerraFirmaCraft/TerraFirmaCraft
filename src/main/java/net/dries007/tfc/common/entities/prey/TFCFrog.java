@@ -39,7 +39,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.component.food.FoodCapability;
-import net.dries007.tfc.common.entities.BrainBreeder;
+import net.dries007.tfc.common.entities.BrainAnimalBehavior;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.entities.Temptable;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
@@ -48,7 +48,7 @@ import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
-public class TFCFrog extends Frog implements Temptable, BrainBreeder
+public class TFCFrog extends Frog implements Temptable, BrainAnimalBehavior
 {
     public static final EntityDataAccessor<Boolean> DATA_IS_MALE = SynchedEntityData.defineId(TFCFrog.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Float> DATA_FAMILIARITY = SynchedEntityData.defineId(TFCFrog.class, EntityDataSerializers.FLOAT);
@@ -124,9 +124,9 @@ public class TFCFrog extends Frog implements Temptable, BrainBreeder
     }
 
     @Override
-    public void setMated(long ticks)
+    public void setLastMatedNow()
     {
-        lastMated = ticks;
+        lastMated = Calendars.get(level()).getTicks();
     }
 
     @Override

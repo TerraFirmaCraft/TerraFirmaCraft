@@ -10,7 +10,7 @@
     },
     {
       "type": "tfc:anvil_recipe",
-      "recipe": "tfc:anvil/steel_pump",
+      "recipe": "tfc:anvil/steel_pipe",
       "text": "Стальную трубу можно изготовить, как несложно догадаться, из $(l:mechanics/steel)Стали$(), на $(l:mechanics/anvils)Наковальне$(). $(thing)Стальной насос$() можно изготовить из некоторых $(thing)Стальных труб$() и $(l:getting_started/primitive_alloys#brass)Латунных механизмов$()."
     },
     {

@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blocks.plant.fruit;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
@@ -93,24 +94,24 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
     }
 
     @Override
-    public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, List<Component> text, boolean isDebug)
+    public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, Consumer<Component> text, boolean isDebug)
     {
         final ClimateRange range = climateRange.get();
 
-        text.add(FarmlandBlock.getHydrationTooltip(level, pos, range, false, FruitTreeLeavesBlock.getHydration(level, pos)));
-        text.add(FarmlandBlock.getAverageTemperatureTooltip(level, pos, range, false));
+        text.accept(FarmlandBlock.getHydrationTooltip(level, pos, range, false, FruitTreeLeavesBlock.getHydration(level, pos)));
+        text.accept(FarmlandBlock.getAverageTemperatureTooltip(level, pos, range, false));
 
         if (!stages[Calendars.SERVER.getCalendarMonthOfYear().ordinal()].active())
         {
-            text.add(Component.translatable("tfc.tooltip.fruit_tree.sapling_wrong_month"));
+            text.accept(Component.translatable("tfc.tooltip.fruit_tree.sapling_wrong_month"));
         }
         else
         {
-            text.add(Component.translatable("tfc.tooltip.fruit_tree.growing"));
+            text.accept(Component.translatable("tfc.tooltip.fruit_tree.growing"));
         }
         if (maySplice(level, pos, state))
         {
-            text.add(Component.translatable("tfc.tooltip.fruit_tree.sapling_splice"));
+            text.accept(Component.translatable("tfc.tooltip.fruit_tree.sapling_splice"));
         }
     }
 

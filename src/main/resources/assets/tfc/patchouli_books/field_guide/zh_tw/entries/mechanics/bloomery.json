@@ -62,7 +62,7 @@
     },
     {
       "type": "tfc:anvil_recipe",
-      "recipe": "tfc:anvil/wrought_iron_from_bloom",
+      "recipe": "tfc:anvil/metal/ingot/wrought_iron",
       "text": "在$(l:mechanics/anvils)砧$()上進一步打造$(thing)精鐵方坯$()就能獲得$(thing)鍛鐵錠$()了。"
     },
     {

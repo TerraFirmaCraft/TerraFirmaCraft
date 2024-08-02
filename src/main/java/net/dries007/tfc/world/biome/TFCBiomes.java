@@ -18,8 +18,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.CommonLevelAccessor;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.RegistryBuilder;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.river.RiverBlendType;
 import net.dries007.tfc.world.surface.builder.BadlandsSurfaceBuilder;
@@ -34,7 +38,9 @@ import static net.dries007.tfc.world.biome.BiomeBuilder.*;
 
 public final class TFCBiomes
 {
-    private static final Map<ResourceKey<Biome>, BiomeExtension> EXTENSIONS = new IdentityHashMap<>();
+    public static final ResourceKey<Registry<BiomeExtension>> KEY = ResourceKey.createRegistryKey(Helpers.identifier("biome_extension"));
+    public static final Registry<BiomeExtension> REGISTRY = new RegistryBuilder<>(KEY).create();
+    public static final DeferredRegister<BiomeExtension> EXTENSIONS = DeferredRegister.create(KEY, TerraFirmaCraft.MOD_ID);
 
     // Aquatic biomes
     public static final BiomeExtension OCEAN = register("ocean", builder().heightmap(seed -> BiomeNoise.ocean(seed, -26, -12)).surface(OceanSurfaceBuilder.INSTANCE).aquiferHeightOffset(-24).salty().type(BiomeBlendType.OCEAN).noRivers()); // Ocean biome found near continents.
@@ -96,46 +102,28 @@ public final class TFCBiomes
     @SuppressWarnings("ConstantConditions")
     public static BiomeExtension getExtension(CommonLevelAccessor level, Biome biome)
     {
-        return ((BiomeBridge) (Object) biome).tfc$getExtension(() -> findExtension(level, biome));
-    }
-
-    public static Collection<ResourceKey<Biome>> getAllKeys()
-    {
-        return EXTENSIONS.keySet();
-    }
-
-    public static Collection<BiomeExtension> getExtensions()
-    {
-        return EXTENSIONS.values();
-    }
-
-    public static Collection<ResourceLocation> getExtensionKeys()
-    {
-        return EXTENSIONS.keySet().stream().map(ResourceKey::location).toList();
+        return ((BiomeBridge) (Object) biome).tfc$getExtension(level);
     }
 
     @Nullable
-    public static BiomeExtension getById(ResourceLocation id)
+    @ApiStatus.Internal // Use `getExtension`, this is only to find load the cache
+    public static BiomeExtension findExtension(CommonLevelAccessor level, Biome biome)
     {
-        return EXTENSIONS.get(ResourceKey.create(Registries.BIOME, id));
-    }
-
-    @Nullable
-    private static BiomeExtension findExtension(CommonLevelAccessor level, Biome biome)
-    {
-        final RegistryAccess registryAccess = level.registryAccess();
-        final Registry<Biome> registry = registryAccess.registryOrThrow(Registries.BIOME);
-        return registry.getResourceKey(biome).map(EXTENSIONS::get).orElse(null);
+        return level.registryAccess()
+            .registryOrThrow(Registries.BIOME)
+            .getResourceKey(biome)
+            .map(key -> REGISTRY.get(ResourceKey.create(KEY, key.location())))
+            .orElse(null);
     }
 
     private static BiomeExtension register(String name, BiomeBuilder builder)
     {
         final ResourceLocation id = Helpers.identifier(name);
         final ResourceKey<Biome> key = ResourceKey.create(Registries.BIOME, id);
-        final BiomeExtension variants = builder.build(key);
+        final BiomeExtension extension = builder.build(key);
 
-        EXTENSIONS.put(key, variants);
+        EXTENSIONS.register(name, () -> extension);
 
-        return variants;
+        return extension;
     }
 }

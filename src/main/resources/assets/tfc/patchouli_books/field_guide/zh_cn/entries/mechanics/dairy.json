@@ -15,12 +15,12 @@
     },
     {
       "type": "tfc:sealed_barrel_recipe",
-      "recipe": "tfc:barrel/curdling",
+      "recipe": "tfc:barrel/curdled_milk",
       "text": "将醋奶混合之后密封大桶，奶就会开始逐渐凝固成炼乳，只需静待 8 小时即可。"
     },
     {
       "type": "tfc:sealed_barrel_recipe",
-      "recipe": "tfc:barrel/cheese",
+      "recipe": "tfc:barrel/food/cheese",
       "text": "制成炼乳之后先不要开盖，继续静置 8 小时就能将炼乳凝固成奶酪了。奶酪是一种保质期很长的乳制品，且可以作为某些餐点（比如$(l:mechanics/sandwiches)三明治$()）的食材以提供乳制品营养元素。"
     }
   ],

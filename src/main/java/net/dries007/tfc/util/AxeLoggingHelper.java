@@ -19,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.neoforged.neoforge.common.ItemAbilities;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
@@ -37,7 +38,7 @@ public class AxeLoggingHelper
 
     public static void doLogging(LevelAccessor level, BlockPos pos, Player player, ItemStack axe)
     {
-        final boolean inefficient = Helpers.isItem(axe, TFCTags.Items.INEFFICIENT_LOGGING_AXES);
+        final boolean inefficient = isInefficientAxe(axe);
         for (BlockPos log : findLogs(level, pos))
         {
             level.destroyBlock(log, !inefficient || level.getRandom().nextFloat() < 0.6f, player);
@@ -97,7 +98,12 @@ public class AxeLoggingHelper
 
     public static boolean isLoggingAxe(ItemStack stack)
     {
-        return Helpers.isItem(stack.getItem(), TFCTags.Items.AXES_THAT_LOG);
+        return stack.canPerformAction(ItemAbilities.AXE_DIG);
+    }
+
+    public static boolean isInefficientAxe(ItemStack stack)
+    {
+        return Helpers.isItem(stack, TFCTags.Items.INEFFICIENT_LOGGING_AXES);
     }
 
     public static boolean isLoggingBlock(BlockState state)

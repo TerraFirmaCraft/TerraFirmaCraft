@@ -60,10 +60,10 @@
       "type": "tfc:rock_knapping_recipe",
       "anchor": "knife",
       "recipes": [
-        "tfc:rock_knapping/knife_head_sedimentary",
-        "tfc:rock_knapping/knife_head_metamorphic",
-        "tfc:rock_knapping/knife_head_igneous_extrusive",
-        "tfc:rock_knapping/knife_head_igneous_intrusive"
+        "tfc:knapping/stone/knife_head/sedimentary",
+        "tfc:knapping/stone/knife_head/metamorphic",
+        "tfc:knapping/stone/knife_head/igneous_extrusive",
+        "tfc:knapping/stone/knife_head/igneous_intrusive"
       ],
       "text": "一把石刀刃，用各種不同的巖石都可以製作。"
     },
@@ -75,50 +75,50 @@
     {
       "type": "tfc:rock_knapping_recipe",
       "recipes": [
-        "tfc:rock_knapping/axe_head_sedimentary",
-        "tfc:rock_knapping/axe_head_metamorphic",
-        "tfc:rock_knapping/axe_head_igneous_extrusive",
-        "tfc:rock_knapping/axe_head_igneous_intrusive"
+        "tfc:knapping/stone/axe_head/sedimentary",
+        "tfc:knapping/stone/axe_head/metamorphic",
+        "tfc:knapping/stone/axe_head/igneous_extrusive",
+        "tfc:knapping/stone/axe_head/igneous_intrusive"
       ],
       "text": "$(thing)斧$()可以砍倒整棵樹，包括樹幹和樹葉。但只有單獨打碎樹葉才能獲得樹苗和木棍。"
     },
     {
       "type": "tfc:rock_knapping_recipe",
       "recipes": [
-        "tfc:rock_knapping/shovel_head_sedimentary",
-        "tfc:rock_knapping/shovel_head_metamorphic",
-        "tfc:rock_knapping/shovel_head_igneous_extrusive",
-        "tfc:rock_knapping/shovel_head_igneous_intrusive"
+        "tfc:knapping/stone/shovel_head/sedimentary",
+        "tfc:knapping/stone/shovel_head/metamorphic",
+        "tfc:knapping/stone/shovel_head/igneous_extrusive",
+        "tfc:knapping/stone/shovel_head/igneous_intrusive"
       ],
       "text": "$(thing)鏟$()可以用來挖類似土壤材質的方塊。對$(thing)草方塊$()或$(thing)泥土$(item)使用$()鏟子也可以製造$(thing)土徑$()。"
     },
     {
       "type": "tfc:rock_knapping_recipe",
       "recipes": [
-        "tfc:rock_knapping/hoe_head_sedimentary",
-        "tfc:rock_knapping/hoe_head_metamorphic",
-        "tfc:rock_knapping/hoe_head_igneous_extrusive",
-        "tfc:rock_knapping/hoe_head_igneous_intrusive"
+        "tfc:knapping/stone/hoe_head/sedimentary",
+        "tfc:knapping/stone/hoe_head/metamorphic",
+        "tfc:knapping/stone/hoe_head/igneous_extrusive",
+        "tfc:knapping/stone/hoe_head/igneous_intrusive"
       ],
       "text": "$(thing)鋤$()是$(l:mechanics/crops)農耕$()不可或缺的工具。它也可以清理樹葉或其他植物。"
     },
     {
       "type": "tfc:rock_knapping_recipe",
       "recipes": [
-        "tfc:rock_knapping/hammer_head_sedimentary",
-        "tfc:rock_knapping/hammer_head_metamorphic",
-        "tfc:rock_knapping/hammer_head_igneous_extrusive",
-        "tfc:rock_knapping/hammer_head_igneous_intrusive"
+        "tfc:knapping/stone/hammer_head/sedimentary",
+        "tfc:knapping/stone/hammer_head/metamorphic",
+        "tfc:knapping/stone/hammer_head/igneous_extrusive",
+        "tfc:knapping/stone/hammer_head/igneous_intrusive"
       ],
       "text": "$(thing)錘$()可以當作武器使用（造成$(l:mechanics/damage_types)打擊傷害$()），但它最主要的用途還是在$(l:getting_started/primitive_anvils)冶金業$()中。"
     },
     {
       "type": "tfc:rock_knapping_recipe",
       "recipes": [
-        "tfc:rock_knapping/javelin_head_sedimentary",
-        "tfc:rock_knapping/javelin_head_metamorphic",
-        "tfc:rock_knapping/javelin_head_igneous_extrusive",
-        "tfc:rock_knapping/javelin_head_igneous_intrusive"
+        "tfc:knapping/stone/javelin_head/sedimentary",
+        "tfc:knapping/stone/javelin_head/metamorphic",
+        "tfc:knapping/stone/javelin_head/igneous_extrusive",
+        "tfc:knapping/stone/javelin_head/igneous_intrusive"
       ],
       "text": "$(thing)標槍$()是一種原始的一次性遠程武器，也可以當作近戰武器使用（造成$(l:mechanics/damage_types)突刺傷害$()）。"
     }

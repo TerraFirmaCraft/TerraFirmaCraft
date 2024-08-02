@@ -12,16 +12,16 @@ import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
+import net.dries007.tfc.common.blocks.TooltipBlock;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Tooltips;
 
 public class ClientDeviceImageTooltip implements ClientTooltipComponent
 {
     public static final ResourceLocation TEXTURE_LOCATION = Helpers.identifier("textures/gui/device_image_tooltip.png");
 
-    private final Tooltips.DeviceImageTooltip tooltip;
+    private final TooltipBlock.Instance tooltip;
 
-    public ClientDeviceImageTooltip(Tooltips.DeviceImageTooltip tooltip)
+    public ClientDeviceImageTooltip(TooltipBlock.Instance tooltip)
     {
         this.tooltip = tooltip;
     }

@@ -387,13 +387,13 @@
     {
       "type": "tfc:glassworking_recipe",
       "anchor": "jar",
-      "recipe": "tfc:glassworking/jar",
+      "recipe": "tfc:glassworking/empty_jar",
       "text": "$(l:mechanics/jarring)Банки$() также делаются из дутого стекла, но только из силикатного или гематитового стекла."
     },
     {
       "type": "tfc:glassworking_recipe",
       "anchor": "glass_bottle",
-      "recipe": "tfc:glassworking/silica_bottle",
+      "recipe": "tfc:glassworking/silica_glass_bottle",
       "text": "$(thing)Стеклянные бутылки$() также могут быть сделаны. Качество стеклянной бутылки зависит от типа используемого стекла."
     },
     {
@@ -405,7 +405,7 @@
   "read_by_default": true,
   "extra_recipe_mappings": {
     "tag:tfc:glass_batches": 1,
-    "tag:forge:glass_panes": 2,
-    "tag:forge:glass": 4
+    "tag:c:glass_panes": 2,
+    "tag:c:glass_blocks": 4
   }
 }

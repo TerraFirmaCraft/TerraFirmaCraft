@@ -16,14 +16,14 @@ import net.neoforged.neoforge.common.crafting.IngredientType;
 import net.dries007.tfc.common.component.food.FoodCapability;
 import net.dries007.tfc.common.component.food.FoodTrait;
 
-public record HasTraitIngredient(FoodTrait trait) implements PreciseIngredient
+public record HasTraitIngredient(Holder<FoodTrait> trait) implements PreciseIngredient
 {
     public static final MapCodec<HasTraitIngredient> CODEC = FoodTrait.CODEC.fieldOf("trait").xmap(HasTraitIngredient::new, HasTraitIngredient::trait);
     public static final StreamCodec<RegistryFriendlyByteBuf, HasTraitIngredient> STREAM_CODEC = FoodTrait.STREAM_CODEC.map(HasTraitIngredient::new, HasTraitIngredient::trait);
 
     public static HasTraitIngredient of(Holder<FoodTrait> trait)
     {
-        return new HasTraitIngredient(trait.value());
+        return new HasTraitIngredient(trait);
     }
 
     @Override

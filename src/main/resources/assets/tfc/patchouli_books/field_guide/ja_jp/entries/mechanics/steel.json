@@ -10,7 +10,7 @@
     },
     {
       "type": "tfc:anvil_recipe",
-      "recipe": "tfc:anvil/high_carbon_steel_ingot",
+      "recipe": "tfc:anvil/metal/ingot/high_carbon_steel",
       "text": "$(thing)銑鉄インゴット$() を金床で鍛造して $(thing)高炭素鋼$() インゴットを作成し、これを再度鍛造して $(thing)鋼インゴット$() を作成できます。"
     },
     {
@@ -28,7 +28,7 @@
     },
     {
       "type": "tfc:welding_recipe",
-      "recipe": "tfc:welding/high_carbon_black_steel_ingot",
+      "recipe": "tfc:welding/metal/ingot/high_carbon_black_steel",
       "text": "$(thing)軟鋼インゴット$()を$(thing)銑鉄インゴット$()と溶接して、$(thing)高炭素黒鋼インゴット$()を作成できます。 最後に、これを $(l:mechanics/anvils)金床$() で鍛造して $(thing)黒鋼インゴット$() を作成できます。"
     },
     {
@@ -50,7 +50,7 @@
     },
     {
       "type": "tfc:welding_recipe",
-      "recipe": "tfc:welding/high_carbon_blue_steel_ingot",
+      "recipe": "tfc:welding/metal/ingot/high_carbon_blue_steel",
       "text": "$(thing)軟青鋼インゴット$() を $(l:mechanics/steel#black_steel)黒鋼インゴット$() と溶接して、$(thing)高炭素青鋼$() を作成できます。 最後に、これを $(l:mechanics/anvils)金床$() で鍛造して $(thing)青鋼インゴット$() を作成できます。"
     },
     {
@@ -72,7 +72,7 @@
     },
     {
       "type": "tfc:welding_recipe",
-      "recipe": "tfc:welding/high_carbon_red_steel_ingot",
+      "recipe": "tfc:welding/metal/ingot/high_carbon_red_steel",
       "text": "$(thing)軟赤鋼インゴット$() を $(l:mechanics/steel#black_steel)黒鋼インゴット$() と溶接して、$(thing)高炭素赤鋼インゴット$() を作成できます。 最後に、これを $(l:mechanics/anvils)金床$() で鍛造して $(thing)赤鋼インゴット$() を作成できます。"
     },
     {

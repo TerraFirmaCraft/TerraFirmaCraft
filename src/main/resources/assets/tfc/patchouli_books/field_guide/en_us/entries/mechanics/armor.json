@@ -10,17 +10,17 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:leather_knapping/chestplate",
+      "recipe": "tfc:knapping/leather_chestplate",
       "text": "Leather armor is $(thing)Knapped$() from $(l:mechanics/leather_making)Leather$(). It does not last long, but provides some decent protection if you have a full suit."
     },
     {
       "type": "tfc:anvil_recipe",
-      "recipe": "tfc:anvil/copper_unfinished_helmet",
+      "recipe": "tfc:anvil/metal/unfinished_helmet/copper",
       "text": "$(thing)Metal Armor$() requires multiple processing steps in an $(l:mechanics/anvils)Anvil$(). First, an $(thing)unfinished$() armor piece must be smithed. These require a $(thing)Double Sheet$() of the metal, except for boots which require a single sheet."
     },
     {
       "type": "tfc:welding_recipe",
-      "recipe": "tfc:welding/bismuth_bronze_greaves",
+      "recipe": "tfc:welding/metal/greaves/bismuth_bronze",
       "text": "Next, a $(thing)Sheet$() must be $(l:mechanics/anvils#welding)Welded$() to the armor piece to finish it. Chestplates require a $(thing)Double Sheet$() to be finished."
     },
     {

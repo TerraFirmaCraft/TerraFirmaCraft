@@ -71,7 +71,7 @@ public class KnappingComponent extends RecipeComponent<KnappingRecipe>
 
         if (recipe != null)
         {
-            inputs = Arrays.stream(recipe.knappingType().inputItem().ingredient().getItems())
+            inputs = Arrays.stream(recipe.knappingType().get().inputItem().ingredient().getItems())
                 .filter(stack -> recipe.matchesItem(stack))
                 .toArray(ItemStack[]::new);
         }
@@ -90,7 +90,7 @@ public class KnappingComponent extends RecipeComponent<KnappingRecipe>
 
         final ItemStack input = inputs[(context.getTicksInBook() / 20) % inputs.length];
         final ResourceLocation highTexture = KnappingScreen.getHighTexture(input);
-        final ResourceLocation lowTexture = KnappingScreen.getLowTexture(recipe.knappingType(), input);
+        final ResourceLocation lowTexture = KnappingScreen.getLowTexture(recipe.knappingType().get(), input);
         final ItemStack resultStack = recipe.getResultItem(null);
 
         renderSetup(graphics);

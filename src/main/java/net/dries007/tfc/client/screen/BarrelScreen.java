@@ -25,9 +25,9 @@ import net.dries007.tfc.common.container.BarrelContainer;
 import net.dries007.tfc.common.recipes.BarrelRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Tooltips;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.util.tooltip.Tooltips;
 
 public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelContainer>
 {
@@ -88,7 +88,7 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
     {
         super.renderBg(graphics, partialTicks, mouseX, mouseY);
 
-        if (Helpers.isJEIEnabled())
+        if (TerraFirmaCraft.JEI)
         {
             graphics.blit(texture, getGuiLeft() + 92, getGuiTop() + 21, 227, 0, 9, 14);
         }

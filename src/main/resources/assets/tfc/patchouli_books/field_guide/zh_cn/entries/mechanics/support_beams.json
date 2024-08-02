@@ -23,7 +23,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/wood/oak_support",
+      "recipe": "tfc:crafting/wood/support/oak",
       "title": "支撑梁",
       "text": "$(thing)支撑梁$()可以用$(thing)锯$()和任意类型的$(thing)原木$()合成。$(br2)在其他方块上放置$(thing)支撑梁$()就可以产生三格高的垂直支撑梁，在梁的下方必须有固体方块作为支撑。"
     },

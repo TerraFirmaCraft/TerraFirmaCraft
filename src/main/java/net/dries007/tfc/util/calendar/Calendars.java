@@ -8,9 +8,6 @@ package net.dries007.tfc.util.calendar;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.LevelReader;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import net.neoforged.neoforge.event.tick.LevelTickEvent;
-import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 import net.dries007.tfc.client.ClientCalendar;
@@ -21,10 +18,10 @@ import net.dries007.tfc.client.ClientCalendar;
  * <p>
  * Every server tick, the following statements are executed in order:
  * <ol>
- *     <li>{@link CalendarEventHandler#onServerTick(ServerTickEvent.Pre) onServerTick()} increments the {@code playerTick} count of the TFC calendar</li>
+ *     <li>{@link CalendarEventHandler#onServerTick onServerTick()} increments the {@code playerTick} count of the TFC calendar</li>
  *     <li>{@link ServerLevel#tickTime() tickTime()} increments the {@code dayTime} count of the server</li>
- *     <li>{@link CalendarEventHandler#onOverworldTick(LevelTickEvent.Post) onOverworldTick()} of the overworld increments the {@code calendarTick} count of the TFC calendar, if the daylight cycle is not paused</li>
- *     <li>{@link CalendarEventHandler#onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent) onPlayerLoggedIn()} or the inverse may fire, which may adjust if players are logged in, or the daylight cycle.</li>
+ *     <li>{@link CalendarEventHandler#onOverworldTick onOverworldTick()} of the overworld increments the {@code calendarTick} count of the TFC calendar, if the daylight cycle is not paused</li>
+ *     <li>{@link CalendarEventHandler#onPlayerLoggedIn onPlayerLoggedIn()} or the inverse may fire, which may adjust if players are logged in, or the daylight cycle.</li>
  * </ol>
  * There are two separate tick counts implemented by the TFC calendar:
  * <ul>

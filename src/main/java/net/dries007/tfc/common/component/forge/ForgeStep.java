@@ -35,7 +35,7 @@ public enum ForgeStep implements StringRepresentable
     public static final int LIMIT = 150;
 
     public static final Codec<ForgeStep> CODEC = StringRepresentable.fromValues(ForgeStep::values);
-    public static final StreamCodec<ByteBuf, Optional<ForgeStep>> STREAM_CODEC = StreamCodecs.forEnumOptional(ForgeStep::values);
+    public static final StreamCodec<ByteBuf, ForgeStep> STREAM_CODEC = StreamCodecs.forEnum(ForgeStep::values);
 
     public static final ForgeStep[] VALUES = values();
     private static final int[] PATHS;

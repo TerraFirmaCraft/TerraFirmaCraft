@@ -15,16 +15,16 @@
     {
       "type": "tfc:rock_knapping_recipe",
       "recipes": [
-        "tfc:rock_knapping/hoe_head_sedimentary",
-        "tfc:rock_knapping/hoe_head_metamorphic",
-        "tfc:rock_knapping/hoe_head_igneous_extrusive",
-        "tfc:rock_knapping/hoe_head_igneous_intrusive"
+        "tfc:knapping/stone/hoe_head/sedimentary",
+        "tfc:knapping/stone/hoe_head/metamorphic",
+        "tfc:knapping/stone/hoe_head/igneous_extrusive",
+        "tfc:knapping/stone/hoe_head/igneous_intrusive"
       ],
       "text": "To get started, a $(thing)Stone Hoe$() can be $(thing)knapped$() as seen above."
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/stone/hoe_sedimentary",
+      "recipe": "tfc:crafting/stone/hoe/sedimentary",
       "text": "Once the hoe head is knapped, it can be crafted into a Hoe.$(br2)Hoes function as in Vanilla, by right clicking dirt blocks to turn them into $(thing)Farmland$(). They can also be used to convert $(thing)Rooted Dirt$() into $(thing)Dirt$()."
     },
     {

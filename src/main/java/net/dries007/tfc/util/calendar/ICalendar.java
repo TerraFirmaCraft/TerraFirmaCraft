@@ -140,6 +140,17 @@ public interface ICalendar
     }
 
     /**
+     * Opens a calendar transaction, which allows you to safely manipulate time to perform a sequence of actions, without
+     * possibility of distributing the state of the global calendar. Note that this should generally <strong>only</strong> be used
+     * on {@link Calendars#SERVER}. The only case where this is useful to use on the client is during unit tests, where
+     * the existing calendar will always be inferred to be on client.
+     *
+     * @return A new {@link CalendarTransaction}
+     * @see CalendarTransaction
+     */
+    CalendarTransaction transaction();
+
+    /**
      * Gets the absolute amount of ticks passed since the world was created. This stops when no players are logged on.
      * This is safe to store timestamps.
      *

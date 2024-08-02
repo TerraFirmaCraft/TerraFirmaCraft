@@ -8,7 +8,7 @@
   },
   "input": {
     "count": 1,
-    "item": "tfc:goat_horn"
+    "tag": "tfc:goat_horn_knapping"
   },
   "spawns_particles": false
 }

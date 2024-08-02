@@ -10,6 +10,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.common.blockentities.NestBoxBlockEntity;
+import net.dries007.tfc.common.container.slot.CallbackSlot;
 
 public class NestBoxContainer extends BlockEntityContainer<NestBoxBlockEntity> implements PestContainer
 {

@@ -10,6 +10,8 @@ import java.util.List;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
+import net.dries007.tfc.common.component.TFCComponents;
+
 public final class ForgingCapability
 {
     public static Forging get(ItemStack stack)
@@ -20,7 +22,7 @@ public final class ForgingCapability
     public static void addTooltipInfo(ItemStack stack, List<Component> tooltips)
     {
         final Forging forging = get(stack);
-        if (forging.view().steps().any())
+        if (forging.isWorked())
         {
             tooltips.add(Component.translatable("tfc.tooltip.anvil_has_been_worked"));
         }
@@ -28,6 +30,13 @@ public final class ForgingCapability
 
     public static void clearRecipeIfNotWorked(ItemStack stack)
     {
-        get(stack).clearRecipeIfNotWorked();
+        if (!stack.isEmpty())
+        {
+            final ForgingComponent component = stack.get(TFCComponents.FORGING);
+            if (component != null && !component.steps.isWorked())
+            {
+                stack.remove(TFCComponents.FORGING);
+            }
+        }
     }
 }

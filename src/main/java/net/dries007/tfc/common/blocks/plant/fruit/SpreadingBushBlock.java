@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blocks.plant.fruit;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -112,13 +113,13 @@ public class SpreadingBushBlock extends StationaryBerryBushBlock implements IFor
     }
 
     @Override
-    public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, List<Component> text, boolean isDebug)
+    public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, Consumer<Component> text, boolean isDebug)
     {
         final BlockPos sourcePos = pos.below();
         final ClimateRange range = climateRange.get();
 
-        text.add(FarmlandBlock.getHydrationTooltip(level, sourcePos, range, false));
-        text.add(FarmlandBlock.getTemperatureTooltip(level, sourcePos, range, false));
+        text.accept(FarmlandBlock.getHydrationTooltip(level, sourcePos, range, false));
+        text.accept(FarmlandBlock.getTemperatureTooltip(level, sourcePos, range, false));
     }
 
     @Override

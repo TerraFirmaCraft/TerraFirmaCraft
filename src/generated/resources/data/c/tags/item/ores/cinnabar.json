@@ -1,0 +1,24 @@
+{
+  "values": [
+    "tfc:ore/cinnabar/granite",
+    "tfc:ore/cinnabar/diorite",
+    "tfc:ore/cinnabar/gabbro",
+    "tfc:ore/cinnabar/shale",
+    "tfc:ore/cinnabar/claystone",
+    "tfc:ore/cinnabar/limestone",
+    "tfc:ore/cinnabar/conglomerate",
+    "tfc:ore/cinnabar/dolomite",
+    "tfc:ore/cinnabar/chert",
+    "tfc:ore/cinnabar/chalk",
+    "tfc:ore/cinnabar/rhyolite",
+    "tfc:ore/cinnabar/basalt",
+    "tfc:ore/cinnabar/andesite",
+    "tfc:ore/cinnabar/dacite",
+    "tfc:ore/cinnabar/quartzite",
+    "tfc:ore/cinnabar/slate",
+    "tfc:ore/cinnabar/phyllite",
+    "tfc:ore/cinnabar/schist",
+    "tfc:ore/cinnabar/gneiss",
+    "tfc:ore/cinnabar/marble"
+  ]
+}

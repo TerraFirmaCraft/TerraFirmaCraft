@@ -49,13 +49,13 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.ai.TFCAvoidEntityGoal;
 import net.dries007.tfc.common.entities.ai.TFCGroundPathNavigation;
+import net.dries007.tfc.common.entities.livestock.Age;
 import net.dries007.tfc.common.entities.livestock.CommonAnimalData;
 import net.dries007.tfc.common.entities.livestock.MammalProperties;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.config.animals.AnimalConfig;
 import net.dries007.tfc.config.animals.MammalConfig;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
 public class TFCRabbit extends Rabbit implements MammalProperties
@@ -65,21 +65,10 @@ public class TFCRabbit extends Rabbit implements MammalProperties
         return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 12.0D).add(Attributes.MOVEMENT_SPEED, 0.3F).add(Attributes.ATTACK_DAMAGE, 3.0);
     }
 
-    private static final EntityDataAccessor<Boolean> GENDER = SynchedEntityData.defineId(TFCRabbit.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Long> BIRTHDAY = SynchedEntityData.defineId(TFCRabbit.class, EntityDataSerializers.LONG);
-    private static final EntityDataAccessor<Float> FAMILIARITY = SynchedEntityData.defineId(TFCRabbit.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Integer> USES = SynchedEntityData.defineId(TFCRabbit.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Boolean> FERTILIZED = SynchedEntityData.defineId(TFCRabbit.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Long> OLD_DAY = SynchedEntityData.defineId(TFCRabbit.class, EntityDataSerializers.LONG);
-    private static final EntityDataAccessor<Integer> GENETIC_SIZE = SynchedEntityData.defineId(TFCRabbit.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Long> LAST_FED = SynchedEntityData.defineId(TFCRabbit.class, EntityDataSerializers.LONG);
-    private static final CommonAnimalData ANIMAL_DATA = new CommonAnimalData(GENDER, BIRTHDAY, FAMILIARITY, USES, FERTILIZED, OLD_DAY, GENETIC_SIZE, LAST_FED);
+    private static final CommonAnimalData ANIMAL_DATA = CommonAnimalData.create(TFCRabbit.class);
     private static final EntityDataAccessor<Long> PREGNANT_TIME = SynchedEntityData.defineId(TFCRabbit.class, EntityDataSerializers.LONG);
 
-    private long lastFDecay; //Last time(in days) this entity's familiarity had decayed
-    private long matingTime; //The last time(in ticks) this male tried fertilizing females
     @Nullable private CompoundTag genes;
-    private TFCAnimalProperties.Age lastAge = TFCAnimalProperties.Age.CHILD;
     private final AnimalConfig config;
     private final MammalConfig mammalConfig;
     private int moreCarrotTicks;
@@ -89,8 +78,6 @@ public class TFCRabbit extends Rabbit implements MammalProperties
         super(type, level);
         this.config = config.inner();
         this.mammalConfig = config;
-        this.matingTime = Calendars.get(level).getTicks();
-        this.lastFDecay = Calendars.get(level).getTotalDays();
     }
 
     @Override
@@ -178,26 +165,12 @@ public class TFCRabbit extends Rabbit implements MammalProperties
         return TFCTags.Items.RABBIT_FOOD;
     }
 
-    // BEGIN COPY PASTE FROM TFC ANIMAL
-
     @Override
     public boolean canMate(Animal otherAnimal)
     {
         if (otherAnimal.getClass() != this.getClass()) return false;
         TFCRabbit other = (TFCRabbit) otherAnimal;
         return this.getGender() != other.getGender() && this.isReadyToMate() && other.isReadyToMate();
-    }
-
-    @Override
-    public TFCAnimalProperties.Age getLastAge()
-    {
-        return lastAge;
-    }
-
-    @Override
-    public void setLastAge(TFCAnimalProperties.Age lastAge)
-    {
-        this.lastAge = lastAge;
     }
 
     @Nullable
@@ -261,7 +234,7 @@ public class TFCRabbit extends Rabbit implements MammalProperties
     protected void defineSynchedData(SynchedEntityData.Builder builder)
     {
         super.defineSynchedData(builder);
-        registerCommonData(builder);
+        animalData().define(builder);
         builder.define(PREGNANT_TIME, -1L);
     }
 
@@ -284,7 +257,7 @@ public class TFCRabbit extends Rabbit implements MammalProperties
     @Override
     public boolean isBaby()
     {
-        return getAgeType() == TFCAnimalProperties.Age.CHILD;
+        return getAgeType() == Age.CHILD;
     }
 
     @Override
@@ -303,34 +276,10 @@ public class TFCRabbit extends Rabbit implements MammalProperties
     public void onSyncedDataUpdated(EntityDataAccessor<?> data)
     {
         super.onSyncedDataUpdated(data);
-        if (BIRTHDAY.equals(data))
+        if (ANIMAL_DATA.birthTick().equals(data))
         {
             refreshDimensions();
         }
-    }
-
-    @Override
-    public long getLastFamiliarityDecay()
-    {
-        return lastFDecay;
-    }
-
-    @Override
-    public void setLastFamiliarityDecay(long days)
-    {
-        lastFDecay = days;
-    }
-
-    @Override
-    public void setMated(long ticks)
-    {
-        matingTime = ticks;
-    }
-
-    @Override
-    public long getMated()
-    {
-        return matingTime;
     }
 
     @Override
@@ -340,7 +289,7 @@ public class TFCRabbit extends Rabbit implements MammalProperties
         if (level().getGameTime() % 20 == 0)
         {
             // legacy breeding behavior
-            if (!getEntity().level().isClientSide() && getGender() == Gender.MALE && isReadyToMate())
+            if (!getEntity().level().isClientSide() && isMale() && isReadyToMate())
             {
                 EntityHelpers.findFemaleMate((Animal & TFCAnimalProperties) this);
             }

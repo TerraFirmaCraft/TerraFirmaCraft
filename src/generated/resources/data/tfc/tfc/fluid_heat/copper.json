@@ -1,15 +1,5 @@
 {
-  "double_ingots": {
-    "tag": "c:double_ingots/copper"
-  },
   "fluid": "tfc:metal/copper",
-  "ingots": {
-    "tag": "c:ingots/copper"
-  },
   "melt_temperature": 1080.0,
-  "sheets": {
-    "tag": "c:sheets/copper"
-  },
-  "specific_heat_capacity": 0.008571429,
-  "tier": 1
+  "specific_heat_capacity": 0.008571429
 }

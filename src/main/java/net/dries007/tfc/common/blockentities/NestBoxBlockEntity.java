@@ -33,6 +33,8 @@ import static net.dries007.tfc.TerraFirmaCraft.*;
 
 public class NestBoxBlockEntity extends TickableInventoryBlockEntity<ItemStackHandler>
 {
+    public static final int SLOTS = 4;
+
     public static void serverTick(Level level, BlockPos pos, BlockState state, NestBoxBlockEntity nest)
     {
         nest.checkForLastTickSync();
@@ -77,12 +79,9 @@ public class NestBoxBlockEntity extends TickableInventoryBlockEntity<ItemStackHa
         }
     }
 
-    public static final int SLOTS = 4;
-    private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.nest_box");
-
     public NestBoxBlockEntity(BlockPos pos, BlockState state)
     {
-        super(TFCBlockEntities.NEST_BOX.get(), pos, state, defaultInventory(SLOTS), NAME);
+        super(TFCBlockEntities.NEST_BOX.get(), pos, state, defaultInventory(SLOTS));
 
         if (TFCConfig.SERVER.nestBoxEnableAutomation.get())
         {

@@ -41,7 +41,7 @@ import net.dries007.tfc.common.container.CharcoalForgeContainer;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.IntArrayBuilder;
+import net.dries007.tfc.util.SyncableContainerData;
 import net.dries007.tfc.util.calendar.ICalendarTickable;
 import net.dries007.tfc.util.data.Fuel;
 
@@ -55,8 +55,6 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
     public static final int SLOT_INPUT_MAX = 9;
     public static final int SLOT_EXTRA_MIN = 10;
     public static final int SLOT_EXTRA_MAX = 13;
-
-    private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.charcoal_forge");
 
     public static void createFromCharcoalPile(Level level, BlockPos pos)
     {
@@ -158,14 +156,14 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
 
     public CharcoalForgeBlockEntity(BlockPos pos, BlockState state)
     {
-        super(TFCBlockEntities.CHARCOAL_FORGE.get(), pos, state, defaultInventory(14), NAME);
+        super(TFCBlockEntities.CHARCOAL_FORGE.get(), pos, state, defaultInventory(14));
 
         temperature = 0;
         burnTemperature = 0;
         burnTicks = 0;
         airTicks = 0;
         lastPlayerTick = Integer.MIN_VALUE;
-        syncableData = new IntArrayBuilder().add(() -> (int) temperature, value -> temperature = value);
+        syncableData = new SyncableContainerData().add(() -> (int) temperature, value -> temperature = value);
 
         if (TFCConfig.SERVER.charcoalForgeEnableAutomation.get())
         {
@@ -385,7 +383,7 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
                 if (fluidStack.isEmpty()) break;
             }
 
-            FoodCapability.applyTrait(outputStack, FoodTraits.CHARCOAL_GRILLED.value());
+            FoodCapability.applyTrait(outputStack, FoodTraits.CHARCOAL_GRILLED);
             this.inventory.setStackInSlot(startIndex, outputStack);
         }
     }

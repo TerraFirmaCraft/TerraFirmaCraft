@@ -15,19 +15,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
-import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterators;
+import com.machinezoo.noexception.throwing.ThrowingRunnable;
+import com.machinezoo.noexception.throwing.ThrowingSupplier;
 import com.mojang.logging.LogUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -67,7 +66,6 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -98,12 +96,10 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.fml.ModList;
 import net.neoforged.fml.util.thread.EffectiveSide;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.ItemCapability;
-import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -128,8 +124,8 @@ import net.dries007.tfc.common.component.size.Weight;
 import net.dries007.tfc.common.effect.TFCEffects;
 import net.dries007.tfc.common.entities.ai.prey.PestAi;
 import net.dries007.tfc.common.entities.prey.Pest;
-import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.data.FluidHeat;
+import net.dries007.tfc.util.tooltip.Tooltips;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
 
@@ -143,22 +139,10 @@ public final class Helpers
      */
     public static final boolean ASSERTIONS_ENABLED = detectAssertionsEnabled();
 
-    /**
-     * If the current environment is a bootstrapped one, i.e. one outside the transforming class loader, such as /gradlew test launch
-     */
-    public static final boolean BOOTSTRAP_ENVIRONMENT = detectBootstrapEnvironment();
-
-    /**
-     * If the current one includes test source sets, i.e. gametest, indev, or ./gradlew test
-     */
-    public static final boolean TEST_ENVIRONMENT = detectTestSourcesPresent();
-
 
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final int PRIME_X = 501125321;
     private static final int PRIME_Y = 1136930381;
-
-    private static final Supplier<Boolean> JEI = Suppliers.memoize(() -> ModList.get().isLoaded("jei"));
 
     @Nullable private static RecipeManager CACHED_RECIPE_MANAGER = null;
 
@@ -195,13 +179,7 @@ public final class Helpers
         return ResourceLocation.fromNamespaceAndPath(domain, path);
     }
 
-    public static boolean isJEIEnabled()
-    {
-        return JEI.get();
-    }
-
     @Nullable
-    @SuppressWarnings("DataFlowIssue") // @Nullable C is not picked up correctly w.r.t getCapability()
     public static <T, C> T getCapability(BlockCapability<T, @Nullable C> capability, Level level, BlockPos pos)
     {
         return level.getCapability(capability, pos, null);
@@ -234,12 +212,6 @@ public final class Helpers
     public static <T> boolean mightHaveCapability(ItemStack stack, ItemCapability<T, Void> capability)
     {
         return stack.copyWithCount(1).getCapability(capability) != null;
-    }
-
-    public static <T1, T2> boolean mightHaveCapability(ItemStack stack, ItemCapability<T1, Void> first, ItemCapability<T2, Void> second)
-    {
-        final ItemStack copy = stack.copyWithCount(1);
-        return copy.getCapability(first) != null && copy.getCapability(second) != null;
     }
 
     /**
@@ -303,20 +275,6 @@ public final class Helpers
         return String.join(".", MOD_ID, "enum", enumName, anEnum.name()).toLowerCase(Locale.ROOT);
     }
 
-    /**
-     * Normally, one would just call {@link Level#isClientSide()}
-     * HOWEVER
-     * There exists a BIG HUGE PROBLEM in very specific scenarios with this
-     * Since World's isClientSide() actually returns the isClientSide boolean, which is set AT THE END of the World constructor, many things may happen before this is set correctly. Mostly involving world generation.
-     * At this point, THE CLIENT WORLD WILL RETURN {@code false} to {@link Level#isClientSide()}
-     *
-     * So, this does a roundabout check "is this instanceof ClientWorld or not" without classloading shenanigans.
-     */
-    public static boolean isClientSide(LevelReader world)
-    {
-        return world instanceof Level ? !(world instanceof ServerLevel) : world.isClientSide();
-    }
-
     @Nullable
     @SuppressWarnings("deprecation")
     public static Level getUnsafeLevel(Object maybeLevel)
@@ -332,14 +290,9 @@ public final class Helpers
         return null; // A modder has done a strange ass thing
     }
 
-    public static <T> T getValueOrDefault(ModConfigSpec.ConfigValue<T> value)
-    {
-        return TFCConfig.isServerConfigLoaded() ? value.get() : value.getDefault();
-    }
-
     public static BlockHitResult rayTracePlayer(Level level, Player player, ClipContext.Fluid mode)
     {
-        return ItemProtectedAccessor.invokeGetPlayerPOVHitResult(level, player, mode);
+        return /* protected */ Item.getPlayerPOVHitResult(level, player, mode);
     }
 
     /**
@@ -467,10 +420,10 @@ public final class Helpers
 
         try
         {
-            final Level level = ClientHelpers.getLevel();
-            if (level != null)
+            final RecipeManager client = ClientHelpers.tryGetSafeRecipeManager();
+            if (client != null)
             {
-                return level.getRecipeManager();
+                return client;
             }
         }
         catch (Throwable t)
@@ -480,7 +433,6 @@ public final class Helpers
 
         if (CACHED_RECIPE_MANAGER != null)
         {
-            LOGGER.info("Successfully captured server recipe manager");
             return CACHED_RECIPE_MANAGER;
         }
 
@@ -928,13 +880,14 @@ public final class Helpers
      */
     public static boolean isEmpty(IItemHandler inventory)
     {
-        for (int i = 0; i < inventory.getSlots(); i++)
-        {
-            if (!inventory.getStackInSlot(i).isEmpty())
-            {
+        return isEmpty(iterate(inventory));
+    }
+
+    public static boolean isEmpty(Iterable<ItemStack> inventory)
+    {
+        for (ItemStack stack : inventory)
+            if (!stack.isEmpty())
                 return false;
-            }
-        }
         return true;
     }
 
@@ -1080,8 +1033,8 @@ public final class Helpers
                     final @Nullable IHeat mergeHeat = HeatCapability.get(mergeStack);
                     if (mergeHeat != null)
                     {
-                        final FluidHeat metal = Objects.requireNonNullElse(FluidHeat.get(fluidStack.getFluid()), FluidHeat.unknown());
-                        final float heatCapacity = metal.heatCapacity(filled);
+                        final FluidHeat heat = FluidHeat.getOrUnknown(fluidStack);
+                        final float heatCapacity = heat.heatCapacity(filled);
 
                         mergeHeat.addTemperatureFromSourceWithHeatCapacity(temperature, heatCapacity);
                     }
@@ -1109,13 +1062,13 @@ public final class Helpers
     public static VoxelShape rotateShape(Direction direction, double x1, double y1, double z1, double x2, double y2, double z2)
     {
         return switch (direction)
-            {
-                case NORTH -> Block.box(x1, y1, z1, x2, y2, z2);
-                case EAST -> Block.box(16 - z2, y1, x1, 16 - z1, y2, x2);
-                case SOUTH -> Block.box(16 - x2, y1, 16 - z2, 16 - x1, y2, 16 - z1);
-                case WEST -> Block.box(z1, y1, 16 - x2, z2, y2, 16 - x1);
-                default -> throw new IllegalArgumentException("Not horizontal!");
-            };
+        {
+            case NORTH -> Block.box(x1, y1, z1, x2, y2, z2);
+            case EAST -> Block.box(16 - z2, y1, x1, 16 - z1, y2, x2);
+            case SOUTH -> Block.box(16 - x2, y1, 16 - z2, 16 - x1, y2, 16 - z1);
+            case WEST -> Block.box(z1, y1, 16 - x2, z2, y2, 16 - x1);
+            default -> throw new IllegalArgumentException("Not horizontal!");
+        };
     }
 
     /**
@@ -1166,7 +1119,7 @@ public final class Helpers
 
     /**
      * Given a list containing {@code [a0, ... aN]} and an element {@code ai}, returns a new, immutable list containing {@code [a0, ... ai-1
-     * , ai+1, ... aN]} in the most efficient manner we can manage (a single data copy).
+     * , ai+1, ... aN]} in the most efficient manner (a single data copy).
      * @return A new list containing one fewer element than the original list
      * @throws IndexOutOfBoundsException if
      */
@@ -1180,18 +1133,76 @@ public final class Helpers
     }
 
     /**
+     * Given a list containing {@code [a0, ... ai, ... aN}, an element {@code bi}, and an index {@code i}, returns a new, immutable list
+     * containing {@code [a0, ... bi, ... aN]} in the most efficient manner (a single data copy). The new list will contain the same
+     * references as the original list - they are assumed to be immutable!
+     */
+    public static <T> List<T> immutableSwap(List<T> list, T element, int index)
+    {
+        final ImmutableList.Builder<T> builder = ImmutableList.builderWithExpectedSize(list.size());
+        for (int i = 0; i < list.size(); i++)
+            builder.add(i == index ? element : list.get(i));
+        return builder.build();
+    }
+
+    /**
+     * Creates a new immutable list containing {@code n} new, separate instances of {@code T} produced by the given {@code factory}. This is unlike
+     * {@link Collections#nCopies(int, Object)} in that it produces separate instance, and consumes memory proportional to O(n). However, in
+     * the event the underlying elements are interior mutable, this creates a safe to modify list.
+     * @see Collections#nCopies(int, Object)
+     */
+    public static <T> List<T> immutableCopies(int n, Supplier<T> factory)
+    {
+        final ImmutableList.Builder<T> builder = ImmutableList.builderWithExpectedSize(n);
+        for (int i = 0; i < n; i++)
+            builder.add(factory.get());
+        return builder.build();
+    }
+
+    /**
+     * Copies the contents of the inventory {@code inventory} into the builder.
+     */
+    public static void copyTo(ImmutableList.Builder<ItemStack> list, IItemHandler inventory)
+    {
+        for (int i = 0; i < inventory.getSlots(); i++)
+            list.add(inventory.getStackInSlot(i).copy());
+    }
+
+    /**
+     * Copies the contents of the contents list {@code list} into the inventory {@code inventory}. If the {@code list} is empty,
+     * it is assumed to contain no content, otherwise, it must match up exactly with the inventory slot count.
+     */
+    public static void copyFrom(List<ItemStack> list, IItemHandlerModifiable inventory)
+    {
+        for (int i = 0; i < inventory.getSlots(); i++)
+            inventory.setStackInSlot(i, list.get(i).copy());
+    }
+
+    /**
      * For when you want to ignore every possible safety measure in front of you
      */
     @SuppressWarnings("unchecked")
-    public static <T> T uncheck(Callable<?> action)
+    public static <T> T uncheck(ThrowingSupplier<?> action)
     {
         try
         {
-            return (T) action.call();
+            return (T) action.get();
         }
-        catch (Exception e)
+        catch (Throwable e)
         {
             return throwAsUnchecked(e);
+        }
+    }
+
+    public static void uncheck(ThrowingRunnable action)
+    {
+        try
+        {
+            action.run();
+        }
+        catch (Throwable e)
+        {
+            throwAsUnchecked(e);
         }
     }
 
@@ -1446,8 +1457,13 @@ public final class Helpers
      */
     public static void addInventoryTooltipInfo(IItemHandler inventory, List<Component> tooltips)
     {
+        addInventoryTooltipInfo(iterate(inventory), tooltips);
+    }
+
+    public static void addInventoryTooltipInfo(Iterable<ItemStack> inventory, List<Component> tooltips)
+    {
         int maximumItems = 0, totalItems = 0;
-        for (ItemStack stack : iterate(inventory))
+        for (ItemStack stack : inventory)
         {
             if (!stack.isEmpty())
             {
@@ -1455,9 +1471,7 @@ public final class Helpers
                 if (maximumItems <= 4)
                 {
                     ++maximumItems;
-                    tooltips.add(stack.getHoverName().copy()
-                        .append(" x")
-                        .append(String.valueOf(stack.getCount())));
+                    tooltips.add(Tooltips.countOfItem(stack));
                 }
             }
         }
@@ -1466,24 +1480,6 @@ public final class Helpers
         {
             tooltips.add(Component.translatable("container.shulkerBox.more", totalItems - maximumItems).withStyle(ChatFormatting.ITALIC));
         }
-    }
-
-    public static Optional<TooltipComponent> getTooltipImage(IItemHandler inventory, int width, int height, int startIndex, int endIndex)
-    {
-        final List<ItemStack> list = NonNullList.create();
-        boolean empty = true;
-        for (int i = startIndex; i <= endIndex; i++)
-        {
-            final ItemStack stack = inventory.getStackInSlot(i);
-            if (!stack.isEmpty())
-            {
-                empty = false;
-                // we add empty stacks anyway, to preserve how the container is arranged, incl. empty spaces.
-                // but we won't render anything that's empty, as its just clutter.
-            }
-            list.add(stack);
-        }
-        return empty || list.isEmpty() ? Optional.empty() : Optional.of(new Tooltips.DeviceImageTooltip(list, width, height));
     }
 
     public static boolean isItem(ItemStack stack, ItemLike item)
@@ -1627,40 +1623,5 @@ public final class Helpers
         boolean enabled = false;
         assert enabled = true;
         return enabled;
-    }
-
-    /**
-     * Detect if we are in a bootstrapped environment - one where transforming and many MC/Forge mechanics are not properly setup
-     * This detects i.e. when running from /gradlew test, and some things have to be avoided (for instance, invoking Forge registry methods)
-     */
-    private static boolean detectBootstrapEnvironment()
-    {
-        return System.getProperty("forge.enabledGameTestNamespaces") == null && detectTestSourcesPresent();
-    }
-
-    /**
-     * Detect if test sources are present, if we're running from an environment which includes TFC's test sources
-     * This can happen through a gametest launch, TFC dev launch (since we include test sources), or through gradle test
-     */
-    private static boolean detectTestSourcesPresent()
-    {
-        try
-        {
-            Class.forName("net.dries007.tfc.test.TestSetup");
-            return true;
-        }
-        catch (ClassNotFoundException e) { /* Guess not */ }
-        return false;
-    }
-
-    static abstract class ItemProtectedAccessor extends Item
-    {
-        static BlockHitResult invokeGetPlayerPOVHitResult(Level level, Player player, ClipContext.Fluid mode)
-        {
-            return /* protected */ Item.getPlayerPOVHitResult(level, player, mode);
-        }
-
-        @SuppressWarnings("ConstantConditions")
-        private ItemProtectedAccessor() { super(null); } // Never called
     }
 }

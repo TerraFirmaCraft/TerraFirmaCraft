@@ -1,13 +1,7 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "category": "misc",
-  "ingredients": [
+  "neoforge:conditions": [
     {
-      "item": "minecraft:hay_block"
+      "type": "neoforge:false"
     }
-  ],
-  "result": {
-    "count": 9,
-    "id": "tfc:straw"
-  }
+  ]
 }

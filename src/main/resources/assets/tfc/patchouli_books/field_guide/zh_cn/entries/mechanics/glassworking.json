@@ -16,13 +16,13 @@
     {
       "type": "tfc:heat_recipe",
       "anchor": "lime",
-      "recipe": "tfc:heating/lime",
+      "recipe": "tfc:heating/powder/lime",
       "text": "$(thing)Lime$() is one of the ingredients required to make glass batches. It is a powder obtained by $(l:mechanics/heating)heating$() $(l:mechanics/flux)Flux$()."
     },
     {
       "type": "tfc:heat_recipe",
       "anchor": "potash",
-      "recipe": "tfc:heating/soda_ash_from_seaweed",
+      "recipe": "tfc:heating/powder/soda_ash_from_seaweed",
       "text": "A type of $(thing)Potash$() or equivalent is also required for glass batches. $(thing)Soda Ash$() can be used, which is a powder made from heating $(thing)Dried Seaweed$() or $(thing)Kelp$(). $(l:the_world/ores_and_minerals#saltpeter)Saltpeter$() can be used as well."
     },
     {
@@ -33,7 +33,7 @@
     {
       "type": "tfc:knapping_recipe",
       "anchor": "blowpipe",
-      "recipe": "tfc:clay_knapping/blowpipe",
+      "recipe": "tfc:knapping/ceramic/unfired_blowpipe",
       "text": "The most important tool is the $(thing)Blowpipe$(). It can be $(thing)knapped$() from clay, and then fired into a $(thing)Ceramic Blowpipe$()."
     },
     {

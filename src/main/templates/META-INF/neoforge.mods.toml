@@ -1,0 +1,51 @@
+# Loader metadata
+modLoader = "javafml"
+loaderVersion = "[4,)"
+license = "EUPL-1.2"
+issueTrackerURL = "https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues"
+
+# TFC
+[[mods]]
+    modId = "${modId}"
+    version = "${modVersion}"
+    displayName = "TerraFirmaCraft"
+    credits = "By AlcatrazEscapee, Disastermoo, Dries007, Bunsan, Claycorp, DavidTriphon, EERussianguy, Gaelmare, and many others. Based on the original work by Bioxx, Dunk, and Kitty. Music by Mike \"Menoch\" Pelaez"
+    authors = "AlcatrazEscapee"
+    description = '''TerraFirmaCraft - The Next Generation'''
+
+# Dependencies
+[[dependencies.tfc]]
+    modId = "patchouli"
+    type = "optional"
+    versionRange = "[1.20.1-81-FORGE,)"
+    ordering = "NONE"
+    side = "BOTH"
+
+[[dependencies.tfc]]
+    modId = "jei"
+    type = "optional"
+    versionRange = "${jeiVersionRange}"
+    ordering = "NONE"
+    side = "CLIENT"
+
+[[dependencies.tfc]]
+    modId = "neoforge"
+    type = "required"
+    versionRange = "${neoForgeVersionRange}"
+    ordering = "AFTER"
+    side = "BOTH"
+
+[[dependencies.tfc]]
+    modId = "minecraft"
+    type = "required"
+    versionRange = "${minecraftVersionRange}"
+    ordering = "AFTER"
+    side = "BOTH"
+
+[[mixins]]
+    config = "${modId}.mixins.json"
+
+# We do our own biome coloring, see #2279
+[mods."sodium:options"]
+    "mixin.features.fast_biome_colors"=false  # Rubidium
+    "mixin.features.render.world.sky"=false  # Embeddium, probably Sodium as well

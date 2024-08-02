@@ -62,6 +62,6 @@ public class AnvilPlanButton extends Button
     @Nullable
     private AnvilRecipe getRecipe()
     {
-        return anvil.getMainInputForging().view().recipe();
+        return anvil.getMainInputForging().getRecipe();
     }
 }

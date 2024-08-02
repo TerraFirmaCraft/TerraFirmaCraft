@@ -6,11 +6,12 @@
 
 package net.dries007.tfc.common.blockentities;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -18,6 +19,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -31,10 +33,14 @@ import net.dries007.tfc.common.capabilities.InventoryItemHandler;
 import net.dries007.tfc.common.capabilities.PartialFluidHandler;
 import net.dries007.tfc.common.capabilities.PartialItemHandler;
 import net.dries007.tfc.common.capabilities.SidedHandler;
-import net.dries007.tfc.common.capabilities.SimpleFluidHandler;
+import net.dries007.tfc.common.component.TFCComponents;
+import net.dries007.tfc.common.component.block.CrucibleComponent;
+import net.dries007.tfc.common.component.fluid.FluidContainer;
+import net.dries007.tfc.common.component.fluid.FluidContainerInfo;
 import net.dries007.tfc.common.component.food.FoodCapability;
 import net.dries007.tfc.common.component.food.FoodTraits;
 import net.dries007.tfc.common.component.heat.HeatCapability;
+import net.dries007.tfc.common.component.heat.HeatComponent;
 import net.dries007.tfc.common.component.heat.IHeat;
 import net.dries007.tfc.common.component.heat.IHeatConsumer;
 import net.dries007.tfc.common.component.mold.IMold;
@@ -44,7 +50,7 @@ import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.FluidAlloy;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.IntArrayBuilder;
+import net.dries007.tfc.util.SyncableContainerData;
 import net.dries007.tfc.util.calendar.ICalendarTickable;
 import net.dries007.tfc.util.data.FluidHeat;
 
@@ -55,7 +61,6 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
     public static final int SLOT_INPUT_END = 8;
     public static final int SLOT_OUTPUT = 9;
 
-    private static final Component NAME = Component.translatable("tfc.tile_entity.crucible");
     private static final int TARGET_TEMPERATURE_STABILITY_TICKS = 5;
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, CrucibleBlockEntity crucible)
@@ -104,7 +109,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
                         final FluidStack outputFluid = recipe.assembleFluid(inputStack);
 
                         // Output transformations
-                        FoodCapability.applyTrait(outputItem, FoodTraits.BURNT_TO_A_CRISP.value());
+                        FoodCapability.applyTrait(outputItem, FoodTraits.BURNT_TO_A_CRISP);
                         HeatCapability.setTemperature(outputItem, crucible.temperature);
 
                         // Add output to crucible
@@ -160,9 +165,8 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         }
     }
 
-    private final SidedHandler.Builder<IFluidHandler> sidedFluidInventory;
-    private final SidedHandler.Noop<IHeatConsumer> sidedHeat;
-    private final IntArrayBuilder syncableData;
+    private final SidedHandler<IFluidHandler> sidedFluidInventory;
+    private final SyncableContainerData syncableData;
 
     private final HeatingRecipe[] cachedRecipes;
     private float temperature;
@@ -181,7 +185,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
 
     public CrucibleBlockEntity(BlockPos pos, BlockState state)
     {
-        super(TFCBlockEntities.CRUCIBLE.get(), pos, state, CrucibleInventory::new, NAME);
+        super(TFCBlockEntities.CRUCIBLE.get(), pos, state, CrucibleInventory::new);
 
         cachedRecipes = new HeatingRecipe[9];
         needsRecipeUpdate = true;
@@ -189,7 +193,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         lastFillTicks = fastPourTicks = fastPourSlot = 0;
         lastUpdateTick = Integer.MIN_VALUE;
 
-        sidedFluidInventory = new SidedHandler.Builder<>(inventory);
+        sidedFluidInventory = new SidedHandler<>(inventory);
 
         // Inputs in top, the output slot is accessed via the sides
         if (TFCConfig.SERVER.crucibleEnableAutomation.get())
@@ -200,15 +204,19 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
 
             // Fluids go in the top and out the sides
             sidedFluidInventory
-                .on(new PartialFluidHandler(inventory).insert(), Direction.UP)
-                .on(new PartialFluidHandler(inventory).extract(), Direction.Plane.HORIZONTAL);
+                .on(PartialFluidHandler::insertOnly, Direction.UP)
+                .on(PartialFluidHandler::extractOnly, Direction.Plane.HORIZONTAL);
         }
 
-        // Heat can be accessed from all sides
-        sidedHeat = new SidedHandler.Noop<>(inventory);
-
-        syncableData = new IntArrayBuilder()
+        syncableData = new SyncableContainerData()
             .add(() -> (int) temperature, value -> temperature = value);
+    }
+
+
+    @Nullable
+    public IFluidHandler getSidedFluidInventory(@Nullable Direction context)
+    {
+        return sidedFluidInventory.get(context);
     }
 
     public float getTemperature()
@@ -225,6 +233,11 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
     {
         assert level != null;
         return inventory.alloy.getResult(level);
+    }
+
+    public FluidContainerInfo containerInfo()
+    {
+        return CrucibleInventory.INFO;
     }
 
     public ContainerData getSyncableData()
@@ -276,6 +289,31 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
     }
 
     @Override
+    protected void applyImplicitComponents(DataComponentInput components)
+    {
+        final CrucibleComponent crucible = components.getOrDefault(TFCComponents.CRUCIBLE, CrucibleComponent.EMPTY);
+        final HeatComponent heat = components.getOrDefault(TFCComponents.HEAT, HeatComponent.EMPTY);
+        // todo: apply components
+
+        super.applyImplicitComponents(components);
+    }
+
+    @Override
+    protected void collectImplicitComponents(DataComponentMap.Builder builder)
+    {
+        assert level != null;
+
+        final FluidHeat heat = FluidHeat.getOrUnknown(inventory.alloy.getResult(level));
+        final float heatCapacity = heat.heatCapacity(inventory.alloy.getAmount());
+        final ImmutableList.Builder<ItemStack> inventoryList = ImmutableList.builder();
+
+        Helpers.copyTo(inventoryList, inventory);
+        builder.set(TFCComponents.CRUCIBLE, new CrucibleComponent(inventoryList.build(), inventory.alloy.copy()));
+        builder.set(TFCComponents.HEAT, HeatComponent.of(2.0f + heatCapacity, temperature));
+        super.collectImplicitComponents(builder);
+    }
+
+    @Override
     public void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
         temperature = nbt.getFloat("temperature");
@@ -321,8 +359,22 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         }
     }
 
-    static class CrucibleInventory implements DelegateItemHandler, SimpleFluidHandler, IHeatConsumer, INBTSerializable<CompoundTag>
+    static class CrucibleInventory implements DelegateItemHandler, FluidContainer, IHeatConsumer, INBTSerializable<CompoundTag>
     {
+        private static final FluidContainerInfo INFO = new FluidContainerInfo() {
+            @Override
+            public boolean canContainFluid(Fluid input)
+            {
+                return FluidHeat.get(input) != null;
+            }
+
+            @Override
+            public int fluidCapacity()
+            {
+                return TFCConfig.SERVER.crucibleCapacity.get();
+            }
+        };
+
         private final CrucibleBlockEntity crucible;
         private final InventoryItemHandler inventory;
         private final FluidAlloy alloy;
@@ -331,7 +383,13 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         {
             this.crucible = (CrucibleBlockEntity) entity;
             this.inventory = new InventoryItemHandler(entity, SLOTS);
-            this.alloy = new FluidAlloy(TFCConfig.SERVER.crucibleCapacity.get());
+            this.alloy = FluidAlloy.empty();
+        }
+
+        @Override
+        public FluidContainerInfo containerInfo()
+        {
+            return INFO;
         }
 
         public boolean isMolten()
@@ -374,7 +432,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         @Override
         public int getTankCapacity(int tank)
         {
-            return alloy.getMaxAmount();
+            return INFO.fluidCapacity();
         }
 
         @Override
@@ -386,7 +444,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         @Override
         public int fill(FluidStack resource, IFluidHandler.FluidAction action)
         {
-            return alloy.add(resource, action);
+            return alloy.fill(resource, action, INFO);
         }
 
         @NotNull
@@ -396,7 +454,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
             if (isMolten())
             {
                 assert crucible.level != null;
-                final FluidStack result = alloy.extract(crucible.level.getRecipeManager(), maxDrain, action);
+                final FluidStack result = alloy.drain(crucible.level, maxDrain, action);
                 if (action.execute())
                 {
                     crucible.markForSync();

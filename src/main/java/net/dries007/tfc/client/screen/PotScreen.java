@@ -19,16 +19,17 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.neoforged.neoforge.fluids.FluidStack;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
 import net.dries007.tfc.common.component.heat.Heat;
 import net.dries007.tfc.common.container.PotContainer;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.outputs.PotOutput;
-import net.dries007.tfc.compat.jade.common.BlockEntityTooltip;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Tooltips;
+import net.dries007.tfc.util.tooltip.BlockEntityTooltip;
+import net.dries007.tfc.util.tooltip.Tooltips;
 
 public class PotScreen extends BlockEntityScreen<PotBlockEntity, PotContainer>
 {
@@ -106,7 +107,7 @@ public class PotScreen extends BlockEntityScreen<PotBlockEntity, PotContainer>
     {
         super.renderBg(graphics, partialTicks, mouseX, mouseY);
 
-        if (Helpers.isJEIEnabled())
+        if (TerraFirmaCraft.JEI)
         {
             graphics.blit(texture, getGuiLeft() + 77, getGuiTop() + 6, 247, 0, 9, 14);
         }

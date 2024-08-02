@@ -28,7 +28,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/rock/marble_smooth",
+      "recipe": "tfc:crafting/rock/smooth/marble",
       "text": "直接用凿子在合成栏合成以便批量制作方块。"
     },
     {
@@ -38,6 +38,6 @@
   ],
   "read_by_default": true,
   "extra_recipe_mappings": {
-    "tag:tfc:chisels": 0
+    "tag:tfc:tools/chisel": 0
   }
 }

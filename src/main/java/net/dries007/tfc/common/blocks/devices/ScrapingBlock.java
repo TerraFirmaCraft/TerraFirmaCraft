@@ -65,7 +65,7 @@ public class ScrapingBlock extends DeviceBlock
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
-        if (Helpers.isItem(stack, TFCTags.Items.WAXES_SCRAPING_SURFACE) && !state.getValue(WAXED))
+        if (Helpers.isItem(stack, TFCTags.Items.SCRAPING_WAXES) && !state.getValue(WAXED))
         {
             if (!player.isCreative()) stack.shrink(1);
             level.setBlockAndUpdate(pos, state.setValue(WAXED, true));

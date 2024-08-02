@@ -6,14 +6,13 @@
 
 package net.dries007.tfc.common.entities.livestock;
 
+import java.util.function.Supplier;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.common.ModConfigSpec.DoubleValue;
-import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.config.animals.ProducingMammalConfig;
@@ -23,8 +22,8 @@ public abstract class ProducingMammal extends Mammal
 {
     public static final EntityDataAccessor<Long> DATA_PRODUCED = SynchedEntityData.defineId(ProducingMammal.class, EntityDataSerializers.LONG);
 
-    protected final IntValue produceTicks;
-    protected final DoubleValue produceFamiliarity;
+    protected final Supplier<Integer> produceTicks;
+    protected final Supplier<Double> produceFamiliarity;
 
     public ProducingMammal(EntityType<? extends ProducingMammal> animal, Level level, TFCSounds.EntityId sounds, ProducingMammalConfig config)
     {

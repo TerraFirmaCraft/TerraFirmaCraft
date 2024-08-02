@@ -8,7 +8,7 @@
   },
   "input": {
     "count": 5,
-    "item": "tfc:fire_clay"
+    "tag": "tfc:fire_clay_knapping"
   },
   "spawns_particles": false
 }

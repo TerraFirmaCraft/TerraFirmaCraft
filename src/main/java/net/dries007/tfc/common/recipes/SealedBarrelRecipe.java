@@ -18,6 +18,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
@@ -101,12 +102,14 @@ public class SealedBarrelRecipe extends BarrelRecipe
     }
 
     @Nullable
+    @Contract(pure = true)
     public ItemStackProvider onSeal()
     {
         return onSeal.orElse(null);
     }
 
     @Nullable
+    @Contract(pure = true)
     public ItemStackProvider onUnseal()
     {
         return onUnseal.orElse(null);

@@ -15,7 +15,6 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import org.jetbrains.annotations.Nullable;
@@ -71,9 +70,9 @@ public record KnappingType(
     public static final DataManager<KnappingType> MANAGER = new DataManager<>(Helpers.identifier("knapping_type"), CODEC, STREAM_CODEC);
 
     @Nullable
-    public static KnappingType get(Player player)
+    public static KnappingType get(ItemStack stack)
     {
-        return RecipeHelpers.getRecipe(MANAGER.getValues(), player.getMainHandItem());
+        return RecipeHelpers.getRecipe(MANAGER.getValues(), stack);
     }
 
     public KnappingType(SizedIngredient inputItem, Optional<Integer> amountToConsume, Holder<SoundEvent> clickSound, boolean consumeAfterComplete, boolean useDisabledTexture, boolean spawnsParticles, ItemStack jeiIconItem)

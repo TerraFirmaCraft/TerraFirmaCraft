@@ -29,8 +29,8 @@ public final class TFCTiers
     public static final LevelTier WROUGHT_IRON = create("wrought_iron", BlockTags.INCORRECT_FOR_IRON_TOOL, 3, 2200, 8.0f, 4.75f, 12);
     // Steel ~ Vanilla Diamond
     public static final LevelTier STEEL = create("steel", BlockTags.INCORRECT_FOR_DIAMOND_TOOL, 4, 3300, 9.5f, 5.75f, 12);
-    // Black Steel ~ Vanilla Diamond
-    public static final LevelTier BLACK_STEEL = create("black_steel", BlockTags.INCORRECT_FOR_DIAMOND_TOOL, 5, 4200, 11.0f, 7.0f, 17);
+    // Black Steel ~ Vanilla Netherite
+    public static final LevelTier BLACK_STEEL = create("black_steel", BlockTags.INCORRECT_FOR_NETHERITE_TOOL, 5, 4200, 11.0f, 7.0f, 17);
     // Colored Steel ~ Vanilla Netherite
     public static final LevelTier BLUE_STEEL = create("blue_steel", BlockTags.INCORRECT_FOR_NETHERITE_TOOL, 6, 6500, 12.0f, 9.0f, 22);
     public static final LevelTier RED_STEEL = create("red_steel", BlockTags.INCORRECT_FOR_NETHERITE_TOOL, 6, 6500, 12.0f, 9.0f, 22);

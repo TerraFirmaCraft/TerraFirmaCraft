@@ -8,7 +8,6 @@ package net.dries007.tfc.util.collections;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -81,9 +80,10 @@ public class IndirectHashCollection<K, R>
      * Adds a cache to the list of all known caches. this is synchronized and thus threadsafe for parallel mod loading or class loading.
      * @param cache The cache to add
      */
-    private static synchronized void create(Cache cache)
+    public static synchronized <T extends Cache> T create(T cache)
     {
         CACHES.add(cache);
+        return cache;
     }
 
     public static void reloadAllCaches(RecipeManager manager)
@@ -131,7 +131,7 @@ public class IndirectHashCollection<K, R>
      * An interface representing a cache that is aware of its ability to reload, without requiring an external source
      * of values. This is also typesafe with each implementation having refined generic types.
      */
-    interface Cache
+    public interface Cache
     {
         void clear();
         void reload(RecipeManager manager);

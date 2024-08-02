@@ -2,7 +2,7 @@
   "type": "tfc:advanced_shaped_crafting",
   "key": {
     "B": {
-      "tag": "c:double_sheets/any_bronze"
+      "tag": "tfc:double_sheets/any_bronze"
     }
   },
   "pattern": [

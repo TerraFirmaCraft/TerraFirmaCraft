@@ -10,7 +10,7 @@
     },
     {
       "type": "tfc:anvil_recipe",
-      "recipe": "tfc:anvil/high_carbon_steel_ingot",
+      "recipe": "tfc:anvil/metal/ingot/high_carbon_steel",
       "text": "$(thing)Злитки білого чавуну$() необхідно переробити у $(thing)високовуглецеву сталь$() на ковадлі. Злитки високовуглецевої сталі можна перекувати у $(thing)сталеві злитки$()"
     },
     {
@@ -28,7 +28,7 @@
     },
     {
       "type": "tfc:welding_recipe",
-      "recipe": "tfc:welding/high_carbon_black_steel_ingot",
+      "recipe": "tfc:welding/metal/ingot/high_carbon_black_steel",
       "text": "$(thing)Злитки сирої сталі$() треба зварити із $(thing)чувунними злитками$() для отримання $(thing)злитків високовуглецевої чорної сталі$(). Ці злитки необхідно обробити на $(l:mechanics/anvils)ковадлі$() та, нарешті отримати $(thing)злиток чорної сталі$()."
     },
     {
@@ -50,7 +50,7 @@
     },
     {
       "type": "tfc:welding_recipe",
-      "recipe": "tfc:welding/high_carbon_blue_steel_ingot",
+      "recipe": "tfc:welding/metal/ingot/high_carbon_blue_steel",
       "text": "$(thing)Злиток сирої синьої сталі$() треба зварити зі $(l:mechanics/steel#black_steel)злитком чорної сталі$() для отримання $(thing)злитку високовуглецевої синьої сталі$(). Далі цей злиток треба обробити на  $(l:mechanics/anvils)ковадлі$() та, нарешті отримати $(thing)злиток синьої сталі$()."
     },
     {
@@ -72,7 +72,7 @@
     },
     {
       "type": "tfc:welding_recipe",
-      "recipe": "tfc:welding/high_carbon_red_steel_ingot",
+      "recipe": "tfc:welding/metal/ingot/high_carbon_red_steel",
       "text": "$(thing)Злиток сирої червоної сталі$() необхідно зварити зі $(l:mechanics/steel#black_steel)злитком чорної сталі$() для отримання $(thing)злитку високовуглецевої червоної сталі$(). Цей злиток необхідно обробити на $(l:mechanics/anvils)ковадлі$() та, нарешті отримати $(thing)злиток червоної сталі$()."
     },
     {

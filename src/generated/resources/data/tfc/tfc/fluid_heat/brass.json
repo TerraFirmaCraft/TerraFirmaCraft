@@ -1,15 +1,5 @@
 {
-  "double_ingots": {
-    "tag": "c:double_ingots/brass"
-  },
   "fluid": "tfc:metal/brass",
-  "ingots": {
-    "tag": "c:ingots/brass"
-  },
   "melt_temperature": 930.0,
-  "sheets": {
-    "tag": "c:sheets/brass"
-  },
-  "specific_heat_capacity": 0.008571429,
-  "tier": 0
+  "specific_heat_capacity": 0.008571429
 }
