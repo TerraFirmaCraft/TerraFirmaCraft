@@ -1,3 +1,5 @@
+from typing import List
+
 from PIL import Image, ImageDraw, ImageEnhance, ImageOps
 from PIL.Image import Transpose
 

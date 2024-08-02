@@ -13,6 +13,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.world.noise.Metaballs2D;
+
 public class SoilDiscFeature extends Feature<SoilDiscConfig>
 {
     public SoilDiscFeature(Codec<SoilDiscConfig> codec)
@@ -30,7 +33,8 @@ public class SoilDiscFeature extends Feature<SoilDiscConfig>
 
         boolean placed = false;
         final int radius = config.getRadius(random);
-        final int radiusSquared = radius * radius;
+        final Metaballs2D noise = Metaballs2D.simple(Helpers.fork(random), radius * 2);
+
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (int x = pos.getX() - radius; x <= pos.getX() + radius; ++x)
         {
@@ -38,7 +42,7 @@ public class SoilDiscFeature extends Feature<SoilDiscConfig>
             {
                 final int relX = x - pos.getX();
                 final int relZ = z - pos.getZ();
-                if (relX * relX + relZ * relZ <= radiusSquared)
+                if (noise.inside(relX, relZ))
                 {
                     for (int y = pos.getY() - config.getHeight(); y <= pos.getY() + config.getHeight(); ++y)
                     {

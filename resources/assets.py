@@ -2,6 +2,7 @@
 #  See the project README.md and LICENSE.txt for more information.
 
 import itertools
+from typing import List
 
 from mcresources import ResourceManager, ItemContext, utils, block_states, loot_tables, atlases, BlockContext
 from mcresources.type_definitions import ResourceIdentifier, JsonObject
