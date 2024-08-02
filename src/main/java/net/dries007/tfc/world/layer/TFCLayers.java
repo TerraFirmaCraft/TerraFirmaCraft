@@ -77,7 +77,7 @@ public class TFCLayers
 
         AreaFactory layer;
 
-        layer = new ForestInitLayer(new OpenSimplex2D(random.nextInt()).spread(0.3f)).apply(random.nextLong());
+        layer = new ForestInitLayer(new OpenSimplex2D(random.nextInt()).spread(0.25f)).apply(random.nextLong());
         artist.draw("forest", 1, layer);
         layer = ForestRandomizeLayer.INSTANCE.apply(random.nextLong(), layer);
         artist.draw("forest", 2, layer);
