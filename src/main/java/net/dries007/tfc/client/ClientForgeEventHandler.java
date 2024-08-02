@@ -324,8 +324,10 @@ public class ClientForgeEventHandler
         return (component.type() == DataComponents.LORE && component.value().equals(ItemLore.EMPTY))
             || (component.type() == DataComponents.RARITY && component.value().equals(Rarity.COMMON))
             || (component.type() == DataComponents.REPAIR_COST && component.value().equals(0))
-            || (component.type() == DataComponents.ENCHANTMENTS && component.value().equals(ItemEnchantments.EMPTY))
-            || (component.type() == DataComponents.ATTRIBUTE_MODIFIERS && component.value().equals(ItemAttributeModifiers.EMPTY));
+            // Ignore completely, they create HUGE tooltips
+            || component.type() == DataComponents.ENCHANTMENTS
+            || component.type() == DataComponents.ATTRIBUTE_MODIFIERS
+            || component.type() == DataComponents.TOOL;
     }
 
     @SuppressWarnings("OptionalAssignedToNull")

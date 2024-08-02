@@ -16,13 +16,13 @@
                 {
                   "condition": "minecraft:match_tool",
                   "predicate": {
-                    "tag": "tfc:sharp_tools"
+                    "tag": "tfc:tools/sharp"
                   }
                 },
                 {
                   "condition": "minecraft:match_tool",
                   "predicate": {
-                    "tag": "forge:shears"
+                    "tag": "c:tools/shear"
                   }
                 }
               ]

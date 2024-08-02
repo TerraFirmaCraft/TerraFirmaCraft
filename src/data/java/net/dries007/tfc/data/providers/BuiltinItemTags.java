@@ -224,6 +224,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         // todo
         tag(PLANTS)
             .addOnly(TFCBlocks.PLANTS, Plant::needsItem);
+        tag(WILD_CROPS).add(TFCBlocks.WILD_CROPS);
 
         tagNotWhite(COLORED_WOOL, "wool");
         tagNotWhite(COLORED_CARPETS, "carpet");
@@ -267,6 +268,9 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
                 TFCItems.LATTICE_WINDMILL_BLADE,
                 TFCItems.RUSTIC_WINDMILL_BLADE);
         tag(AXLES).add(TFCBlocks.WOODS, Wood.BlockType.AXLE);
+        tag(GEAR_BOXES).add(TFCBlocks.WOODS, Wood.BlockType.GEAR_BOX);
+        tag(CLUTCHES).add(TFCBlocks.WOODS, Wood.BlockType.CLUTCH);
+        tag(SUPPORT_BEAMS).add(TFCItems.SUPPORTS);
         tag(LUMBER).add(TFCItems.LUMBER);
         tag(VESSELS).addTags(UNFIRED_VESSELS, FIRED_VESSELS);
         tag(UNFIRED_VESSELS)
@@ -328,6 +332,11 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(TOOLS_CHISEL).add(TFCItems.METAL_ITEMS, Metal.ItemType.CHISEL);
         tag(TOOLS_GLASSWORKING).add(TFCItems.PADDLE, TFCItems.JACKS, TFCItems.GEM_SAW);
         tag(TOOLS_BLOWPIPE).add(TFCItems.BLOWPIPE, TFCItems.CERAMIC_BLOWPIPE);
+        tag(TOOLS_SHARP).addTags(
+            ItemTags.AXES,
+            TOOLS_KNIFE,
+            TOOLS_SCYTHE,
+            TOOLS_SAW);
 
         // Common `#c:tools`
         tag(Tags.Items.TOOLS).addTags(

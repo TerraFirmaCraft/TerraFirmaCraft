@@ -9,6 +9,7 @@ package net.dries007.tfc.compat.jei.transfer;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.transfer.IRecipeTransferError;
 import mezz.jei.api.recipe.transfer.IRecipeTransferHandler;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -46,7 +47,11 @@ public class AnvilRecipeTransferHandler<C extends AbstractContainerMenu>
 
         if (doTransfer)
         {
-            PacketDistributor.sendToServer(new SelectAnvilPlanPacket(recipe));
+            final @Nullable ResourceLocation recipeId = AnvilRecipe.getId(recipe);
+            if (recipeId != null)
+            {
+                PacketDistributor.sendToServer(new SelectAnvilPlanPacket(recipeId));
+            }
         }
 
         return null;

@@ -52,7 +52,7 @@
     },
     {
       "type": "tfc:quern_recipe",
-      "recipe": "tfc:quern/sulfur",
+      "recipe": "tfc:quern/powder/sulfur",
       "text": "The quern is used to make various $(thing)Powders$() from ores, like $(thing)Sulfur$()."
     },
     {
@@ -62,17 +62,17 @@
     },
     {
       "type": "tfc:quern_recipe",
-      "recipe": "tfc:quern/emerald",
+      "recipe": "tfc:quern/powder/emerald",
       "text": "$(thing)Gems$() can also be ground into powder."
     },
     {
       "type": "tfc:quern_recipe",
-      "recipe": "tfc:quern/barley_grain",
+      "recipe": "tfc:quern/food/barley_flour",
       "text": "$(thing)Flour$() is also obtainable from the quern."
     },
     {
       "type": "tfc:quern_recipe",
-      "recipe": "tfc:quern/fluxstone",
+      "recipe": "tfc:quern/powder/flux",
       "text": "$(l:mechanics/flux)Flux$() is also obtainable from the quern."
     }
   ],

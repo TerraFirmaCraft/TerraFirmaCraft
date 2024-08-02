@@ -43,8 +43,6 @@ public class SluiceBlockEntity extends TickableInventoryBlockEntity<ItemStackHan
 {
     public static final int MAX_SOIL = 32;
 
-    private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.sluice");
-
     public static void serverTick(Level level, BlockPos pos, BlockState state, SluiceBlockEntity sluice)
     {
         if (!state.getValue(SluiceBlock.UPPER))
@@ -134,7 +132,7 @@ public class SluiceBlockEntity extends TickableInventoryBlockEntity<ItemStackHan
 
     public SluiceBlockEntity(BlockPos pos, BlockState state)
     {
-        super(TFCBlockEntities.SLUICE.get(), pos, state, defaultInventory(MAX_SOIL), NAME);
+        super(TFCBlockEntities.SLUICE.get(), pos, state, defaultInventory(MAX_SOIL));
         ticksRemaining = 0;
     }
 

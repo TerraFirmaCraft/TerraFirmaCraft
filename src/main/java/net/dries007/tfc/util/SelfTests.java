@@ -30,6 +30,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.client.sounds.WeighedSoundEvents;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -39,15 +40,14 @@ import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.Bootstrap;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
@@ -58,13 +58,11 @@ import org.slf4j.Logger;
 
 import net.dries007.tfc.common.TFCCreativeTabs;
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blocks.BloomBlock;
-import net.dries007.tfc.common.blocks.IcePileBlock;
-import net.dries007.tfc.common.blocks.MoltenBlock;
+import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blockentities.TFCBlockEntity;
 import net.dries007.tfc.common.blocks.PouredGlassBlock;
-import net.dries007.tfc.common.blocks.SnowPileBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.TFCLightBlock;
 import net.dries007.tfc.common.blocks.devices.IngotPileBlock;
 import net.dries007.tfc.common.blocks.devices.ScrapingBlock;
 import net.dries007.tfc.common.blocks.devices.SheetPileBlock;
@@ -73,7 +71,6 @@ import net.dries007.tfc.common.blocks.plant.BranchingCactusBlock;
 import net.dries007.tfc.common.blocks.plant.GrowingBranchingCactusBlock;
 import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.blocks.plant.fruit.GrowingFruitTreeBranchBlock;
-import net.dries007.tfc.common.blocks.rock.RockAnvilBlock;
 import net.dries007.tfc.common.blocks.rock.RockDisplayCategory;
 import net.dries007.tfc.common.component.food.Nutrient;
 import net.dries007.tfc.common.component.forge.ForgeStep;
@@ -148,16 +145,17 @@ public final class SelfTests
         if (TFCConfig.COMMON.enableDatapackTests.get())
         {
             final Stopwatch tick = Stopwatch.createStarted();
-            throwIfAny(
-                validateJugDrinkable(),
-                validatePotFluidUsability(manager),
-                validateBarrelFluidUsability(manager),
-                validateUniqueBloomeryRecipes(manager),
-                validateUniqueLoomRecipes(manager),
-                validateMoldsCanContainCastingIngredients(manager),
-                validateHeatingRecipeIngredientsAreHeatable(manager)
-            );
-            LOGGER.info("Data pack self tests passed in {}", tick.stop());
+            if (!(validateJugDrinkable()
+                | validatePotFluidUsability(manager)
+                | validateBarrelFluidUsability(manager)
+                | validateUniqueBloomeryRecipes(manager)
+                | validateUniqueLoomRecipes(manager)
+                | validateMoldsCanContainCastingIngredients(manager)
+                | validateHeatingRecipeIngredientsAreHeatable(manager))
+            )
+            {
+                LOGGER.info("Data pack self tests passed in {}", tick.stop());
+            }
         }
     }
 
@@ -169,19 +167,6 @@ public final class SelfTests
     public static Function<Holder<? extends Block>, Stream<BlockState>> states(Predicate<BlockState> filter)
     {
         return block -> block.value().getStateDefinition().getPossibleStates().stream().filter(filter);
-    }
-
-    /**
-     * Validates that a translation exists for all enum constants in the style of {@link Helpers#getEnumTranslationKey(Enum)}
-     */
-    public static <T extends Enum<?>> boolean validateTranslations(Logger logger, Set<String> missingTranslations, Class<? extends T> enumClass)
-    {
-        boolean errors = false;
-        for (T enumConstant : enumClass.getEnumConstants())
-        {
-            errors |= validateTranslation(logger, missingTranslations, Helpers.translateEnum(enumConstant));
-        }
-        return errors;
     }
 
     /**
@@ -326,14 +311,26 @@ public final class SelfTests
             items.add(stack.getItem());
         }));
 
-        final Set<Class<? extends Block>> blocksWithNoCreativeTabItem = Set.of(SnowPileBlock.class, IcePileBlock.class, BloomBlock.class, MoltenBlock.class, TFCLightBlock.class, RockAnvilBlock.class, PouredGlassBlock.class);
+        final Set<Item> technicalItemsWithNoTab = Stream.of(
+            List.of(
+                TFCBlocks.SNOW_PILE,
+                TFCBlocks.ICE_PILE,
+                TFCBlocks.BLOOM,
+                TFCBlocks.MOLTEN,
+                TFCBlocks.LIGHT,
+                TFCBlocks.POURED_GLASS,
+                TFCItems.FILLED_PAN
+            ),
+            TFCBlocks.COLORED_POURED_GLASS.values(),
+            TFCBlocks.ROCK_ANVILS.values()
+        )
+            .<ItemLike>flatMap(Collection::stream)
+            .map(ItemLike::asItem)
+            .collect(Collectors.toSet());
         final List<Item> missingItems = TFCItems.ITEMS.getEntries()
             .stream()
             .map(Holder::value)
-            .filter(item -> !items.contains(item)
-                && (item != TFCItems.FILLED_PAN.get())
-                && !(item instanceof BlockItem bi && blocksWithNoCreativeTabItem.contains(bi.getBlock().getClass()))
-            )
+            .filter(item -> !items.contains(item) && !technicalItemsWithNoTab.contains(item))
             .toList();
 
         error |= logErrors("{} items were not found in any TFC creative tab", missingItems, LOGGER);
@@ -344,15 +341,46 @@ public final class SelfTests
         }
 
         final SoundManager soundManager = Minecraft.getInstance().getSoundManager();
-        BuiltInRegistries.SOUND_EVENT.forEach(sound -> Optional.ofNullable(soundManager.getSoundEvent(sound.getLocation())).map(WeighedSoundEvents::getSubtitle).ifPresent(subtitle -> validateTranslation(LOGGER, missingTranslations, subtitle)));
+        BuiltInRegistries.SOUND_EVENT.forEach(sound -> Optional.ofNullable(soundManager.getSoundEvent(sound.getLocation()))
+            .map(WeighedSoundEvents::getSubtitle)
+            .ifPresent(subtitle -> validateTranslation(LOGGER, missingTranslations, subtitle)));
 
-        for (CreativeModeTab tab : CreativeModeTabs.allTabs())
+        for (var holder : TFCCreativeTabs.CREATIVE_TABS.getEntries())
         {
-            error |= validateTranslation(LOGGER, missingTranslations, tab.getDisplayName());
+            error |= validateTranslation(LOGGER, missingTranslations, holder.value().getDisplayName());
         }
 
-        error |= Stream.of(ForgeStep.class, ForgingBonus.class, Heat.class, Nutrient.class, Size.class, Weight.class, Day.class, Month.class, KoppenClimateClassification.class, ForestType.class, RockDisplayCategory.class, RockDisplayCategory.class)
-            .anyMatch(clazz -> validateTranslations(LOGGER, missingTranslations, clazz));
+        for (Class<? extends Enum<?>> clazz : List.of(
+            ForgeStep.class,
+            ForgingBonus.class,
+            Heat.class,
+            Nutrient.class,
+            Size.class,
+            Weight.class,
+            Day.class,
+            Month.class,
+            KoppenClimateClassification.class,
+            ForestType.class,
+            RockDisplayCategory.class
+        ))
+        {
+            for (Enum<?> enumConstant : clazz.getEnumConstants())
+            {
+                error |= validateTranslation(LOGGER, missingTranslations, Helpers.translateEnum(enumConstant));
+            }
+        }
+
+        error |= TFCBlockEntities.BLOCK_ENTITIES.getEntries()
+            .stream()
+            .anyMatch(type -> {
+                final Block block = type.value().getValidBlocks().stream().findFirst().orElseThrow();
+                final BlockEntity entity = type.value().create(BlockPos.ZERO, block.defaultBlockState());
+                if (entity instanceof InventoryBlockEntity<?> inv)
+                {
+                    return validateTranslation(LOGGER, missingTranslations, inv.getDisplayName());
+                }
+                return false;
+            });
 
         return error | logErrors("{} missing translation keys:", missingTranslations, LOGGER);
     }

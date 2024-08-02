@@ -60,10 +60,10 @@
       "type": "tfc:rock_knapping_recipe",
       "anchor": "knife",
       "recipes": [
-        "tfc:rock_knapping/knife_head_sedimentary",
-        "tfc:rock_knapping/knife_head_metamorphic",
-        "tfc:rock_knapping/knife_head_igneous_extrusive",
-        "tfc:rock_knapping/knife_head_igneous_intrusive"
+        "tfc:knapping/stone/knife_head/sedimentary",
+        "tfc:knapping/stone/knife_head/metamorphic",
+        "tfc:knapping/stone/knife_head/igneous_extrusive",
+        "tfc:knapping/stone/knife_head/igneous_intrusive"
       ],
       "text": "いくつかの異なる種類の岩石から作られたナイフの刃。"
     },
@@ -75,50 +75,50 @@
     {
       "type": "tfc:rock_knapping_recipe",
       "recipes": [
-        "tfc:rock_knapping/axe_head_sedimentary",
-        "tfc:rock_knapping/axe_head_metamorphic",
-        "tfc:rock_knapping/axe_head_igneous_extrusive",
-        "tfc:rock_knapping/axe_head_igneous_intrusive"
+        "tfc:knapping/stone/axe_head/sedimentary",
+        "tfc:knapping/stone/axe_head/metamorphic",
+        "tfc:knapping/stone/axe_head/igneous_extrusive",
+        "tfc:knapping/stone/axe_head/igneous_intrusive"
       ],
       "text": "$(thing)斧$()を使用すると、木全体、丸太、葉を伐採できます。 ただし、苗木と棒は葉を個別に破壊した場合にのみ入手できます。"
     },
     {
       "type": "tfc:rock_knapping_recipe",
       "recipes": [
-        "tfc:rock_knapping/shovel_head_sedimentary",
-        "tfc:rock_knapping/shovel_head_metamorphic",
-        "tfc:rock_knapping/shovel_head_igneous_extrusive",
-        "tfc:rock_knapping/shovel_head_igneous_intrusive"
+        "tfc:knapping/stone/shovel_head/sedimentary",
+        "tfc:knapping/stone/shovel_head/metamorphic",
+        "tfc:knapping/stone/shovel_head/igneous_extrusive",
+        "tfc:knapping/stone/shovel_head/igneous_intrusive"
       ],
       "text": "$(thing)シャベル$()は土系ブロックの破壊に使用できます。$(thing)土$()や$(thing)草$()に$(item)使用$()して$(thing)道$()を作成することもできます。"
     },
     {
       "type": "tfc:rock_knapping_recipe",
       "recipes": [
-        "tfc:rock_knapping/hoe_head_sedimentary",
-        "tfc:rock_knapping/hoe_head_metamorphic",
-        "tfc:rock_knapping/hoe_head_igneous_extrusive",
-        "tfc:rock_knapping/hoe_head_igneous_intrusive"
+        "tfc:knapping/stone/hoe_head/sedimentary",
+        "tfc:knapping/stone/hoe_head/metamorphic",
+        "tfc:knapping/stone/hoe_head/igneous_extrusive",
+        "tfc:knapping/stone/hoe_head/igneous_intrusive"
       ],
       "text": "$(thing)クワ$()は$(l:mechanics/crops)農業$()に使用できます。また、葉や他の植物を破壊するためにも使用できます。"
     },
     {
       "type": "tfc:rock_knapping_recipe",
       "recipes": [
-        "tfc:rock_knapping/hammer_head_sedimentary",
-        "tfc:rock_knapping/hammer_head_metamorphic",
-        "tfc:rock_knapping/hammer_head_igneous_extrusive",
-        "tfc:rock_knapping/hammer_head_igneous_intrusive"
+        "tfc:knapping/stone/hammer_head/sedimentary",
+        "tfc:knapping/stone/hammer_head/metamorphic",
+        "tfc:knapping/stone/hammer_head/igneous_extrusive",
+        "tfc:knapping/stone/hammer_head/igneous_intrusive"
       ],
       "text": "$(thing)ハンマー$()は$(l:mechanics/damage_types)粉砕ダメージ$()を与える武器として使用できます。より重要な用途として$(l:getting_started/primitive_anvils)鍛冶$()にも使用します。"
     },
     {
       "type": "tfc:rock_knapping_recipe",
       "recipes": [
-        "tfc:rock_knapping/javelin_head_sedimentary",
-        "tfc:rock_knapping/javelin_head_metamorphic",
-        "tfc:rock_knapping/javelin_head_igneous_extrusive",
-        "tfc:rock_knapping/javelin_head_igneous_intrusive"
+        "tfc:knapping/stone/javelin_head/sedimentary",
+        "tfc:knapping/stone/javelin_head/metamorphic",
+        "tfc:knapping/stone/javelin_head/igneous_extrusive",
+        "tfc:knapping/stone/javelin_head/igneous_intrusive"
       ],
       "text": "最後に、$(thing)槍$()はターゲットに投げることができる原始的な武器として使用したり、 $(l:mechanics/damage_types)貫通ダメージ$()を与える近接武器として使用できます。石器時代の狩りの主役です。"
     }

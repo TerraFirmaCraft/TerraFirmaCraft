@@ -52,7 +52,7 @@
     },
     {
       "type": "tfc:quern_recipe",
-      "recipe": "tfc:quern/sulfur",
+      "recipe": "tfc:quern/powder/sulfur",
       "text": "手推磨可以將各種礦物磨成$(thing)粉末$()，例如$(thing)硫磺$()。"
     },
     {
@@ -62,17 +62,17 @@
     },
     {
       "type": "tfc:quern_recipe",
-      "recipe": "tfc:quern/emerald",
+      "recipe": "tfc:quern/powder/emerald",
       "text": "$(thing)Gems$() can also be ground into powder."
     },
     {
       "type": "tfc:quern_recipe",
-      "recipe": "tfc:quern/barley_grain",
+      "recipe": "tfc:quern/food/barley_flour",
       "text": "$(thing)麪粉$()也可以用手推磨獲得。"
     },
     {
       "type": "tfc:quern_recipe",
-      "recipe": "tfc:quern/fluxstone",
+      "recipe": "tfc:quern/powder/flux",
       "text": "$(l:mechanics/flux)助焊劑$()也可以用手推磨獲得。"
     }
   ],

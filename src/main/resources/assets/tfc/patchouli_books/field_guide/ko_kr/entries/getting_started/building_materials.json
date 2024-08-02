@@ -27,7 +27,7 @@
     {
       "type": "patchouli:crafting",
       "anchor": "mud_bricks",
-      "recipe": "tfc:crafting/soil/loam_drying_bricks",
+      "recipe": "tfc:crafting/drying_bricks/loam",
       "title": "§l진흙 벽돌",
       "text": "$(thing)진흙$()은 땅 위에서나 강과 호수 바닥, 또는 늪지대의 낮은 곳에서 발견할 수 있습니다. 점토와 $(thing)짚$()이 있다면 $()젖은 진흙 벽돌$()을 만들 수 있습니다."
     },
@@ -73,7 +73,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/soil/loam_mud_bricks",
+      "recipe": "tfc:crafting/mud_bricks/loam",
       "title": " ",
       "text": "마른 진흙 벽돌들로는 $(thing)진흙 벽돌 블록$()을 만들 수 있습니다. 필요하다면 벽돌로 $(thing)계단$()이나 $(thing)반 블록$(), $(thing)벽$() 역시 만들 수 있습니다."
     },

@@ -16,7 +16,11 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
+import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.component.TFCComponents;
+import net.dries007.tfc.common.component.block.Barrel;
 import net.dries007.tfc.common.component.fluid.FluidContainerHandler;
 import net.dries007.tfc.common.component.heat.HeatCapability;
 import net.dries007.tfc.common.component.heat.HeatComponent;
@@ -78,6 +82,13 @@ public final class ItemCapabilities
         event.registerItem(HEAT, ItemCapabilities::forVessel, vessels);
         event.registerItem(FLUID, ItemCapabilities::forVessel, vessels);
         event.registerItem(ITEM, ItemCapabilities::forVessel, vessels);
+
+        final ItemLike[] barrels = TFCBlocks.WOODS.values()
+            .stream()
+            .map(m -> m.get(Wood.BlockType.BARREL).asItem())
+            .toArray(ItemLike[]::new);
+
+        event.registerItem(FLUID, (stack, context) -> new Barrel(stack), barrels);
 
         event.registerItem(FLUID, ItemCapabilities::forBucket,
             TFCItems.JUG,

@@ -6,12 +6,14 @@
 
 package net.dries007.tfc.common.blocks;
 
+import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -34,6 +36,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.dries007.tfc.common.blockentities.LargeVesselBlockEntity;
 import net.dries007.tfc.common.blocks.devices.BottomSupportedDeviceBlock;
 import net.dries007.tfc.common.blocks.devices.SealableDeviceBlock;
+import net.dries007.tfc.common.component.TFCComponents;
+import net.dries007.tfc.common.component.item.ItemListComponent;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
@@ -103,49 +107,13 @@ public class LargeVesselBlock extends SealableDeviceBlock
         return BottomSupportedDeviceBlock.canSurvive(level, pos);
     }
 
-    // todo 1.21 this relies on sealed device components
-    /*
-    @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag)
-    {
-        final CompoundTag tag = stack.getTagElement(Helpers.BLOCK_ENTITY_TAG);
-        if (tag != null)
-        {
-            final CompoundTag inventoryTag = tag.getCompound("inventory");
-            final ItemStackHandler inventory = new ItemStackHandler();
-
-            inventory.deserializeNBT(inventoryTag);
-
-            if (!Helpers.isEmpty(inventory) && !TFCConfig.CLIENT.displayItemContentsAsImages.get())
-            {
-                tooltip.add(Component.translatable("tfc.tooltip.contents").withStyle(ChatFormatting.DARK_GREEN));
-                Helpers.addInventoryTooltipInfo(inventory, tooltip);
-            }
-            addExtraInfo(tooltip, inventoryTag);
-        }
-    }
-
     @Override
     public Optional<TooltipComponent> getTooltipImage(ItemStack stack)
     {
-        if (TFCConfig.CLIENT.displayItemContentsAsImages.get())
-        {
-            final CompoundTag tag = stack.getTagElement(Helpers.BLOCK_ENTITY_TAG);
-            if (tag != null)
-            {
-                final CompoundTag inventoryTag = tag.getCompound("inventory");
-                final ItemStackHandler inventory = new ItemStackHandler();
-
-                inventory.deserializeNBT(inventoryTag);
-
-                if (!Helpers.isEmpty(inventory))
-                {
-                    return Helpers.getTooltipImage(inventory, 3, 3, 0, LargeVesselBlockEntity.SLOTS - 1);
-                }
-            }
-        }
-        return Optional.empty();
-    }*/
+        return TFCConfig.CLIENT.displayItemContentsAsImages.get()
+            ? TooltipBlock.buildInventoryTooltip(stack.getOrDefault(TFCComponents.CONTENTS, ItemListComponent.EMPTY).contents(), 3, 3)
+            : Optional.empty();
+    }
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)

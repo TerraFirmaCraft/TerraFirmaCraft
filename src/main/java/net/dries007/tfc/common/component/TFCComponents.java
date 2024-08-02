@@ -29,6 +29,8 @@ import org.slf4j.Logger;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.TFCTiers;
+import net.dries007.tfc.common.component.block.BarrelComponent;
+import net.dries007.tfc.common.component.block.CrucibleComponent;
 import net.dries007.tfc.common.component.fluid.FluidComponent;
 import net.dries007.tfc.common.component.food.FoodCapability;
 import net.dries007.tfc.common.component.food.FoodComponent;
@@ -73,18 +75,17 @@ public final class TFCComponents
     public static final Id<FluidComponent> FLUID = register("fluid", FluidComponent.CODEC, FluidComponent.STREAM_CODEC);
     public static final Id<VesselComponent> VESSEL = register("vessel", VesselComponent.CODEC, VesselComponent.STREAM_CODEC);
 
+    /** Used by powder kegs and large vessels, to save inventory content and restore it, and to provide tooltips */
+    public static final Id<ItemListComponent> CONTENTS = register("contents", ItemListComponent.CODEC, ItemListComponent.STREAM_CODEC);
+    public static final Id<BarrelComponent> BARREL = register("barrel", BarrelComponent.CODEC, BarrelComponent.STREAM_CODEC);
+    public static final Id<CrucibleComponent> CRUCIBLE = register("crucible", CrucibleComponent.CODEC, CrucibleComponent.STREAM_CODEC);
+
     /**
      * Modifies the default components of all items. This adds the default components to all items' prototype, so that the default
      * values are never serialized.
      */
     public static void onModifyDefaultComponents(ModifyDefaultComponentsEvent event)
     {
-        // Add default component values for various TFC components. Forging and forging bonus can be applied to most arbitrary items,
-        // so we need to modify all items here
-        event.modifyMatching(e -> true, b -> b
-            .set(FORGING.get(), ForgingComponent.DEFAULT)
-            .set(FORGING_BONUS.get(), ForgingBonus.DEFAULT));
-
         // Modify the damage value of flint and steel to match other TFC steel items
         event.modify(Items.FLINT_AND_STEEL, b -> b.set(DataComponents.MAX_DAMAGE, TFCTiers.STEEL.getUses()));
 

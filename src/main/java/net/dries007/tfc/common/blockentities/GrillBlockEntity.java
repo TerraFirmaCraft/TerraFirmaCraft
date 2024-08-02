@@ -34,13 +34,11 @@ public class GrillBlockEntity extends AbstractFirepitBlockEntity<ItemStackHandle
     public static final int SLOT_EXTRA_INPUT_START = 4;
     public static final int SLOT_EXTRA_INPUT_END = 8;
 
-    private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.grill");
-
     private final HeatingRecipe[] cachedRecipes;
 
     public GrillBlockEntity(BlockPos pos, BlockState state)
     {
-        super(TFCBlockEntities.GRILL.get(), pos, state, defaultInventory(9), NAME);
+        super(TFCBlockEntities.GRILL.get(), pos, state, defaultInventory(9));
 
         cachedRecipes = new HeatingRecipe[5];
 

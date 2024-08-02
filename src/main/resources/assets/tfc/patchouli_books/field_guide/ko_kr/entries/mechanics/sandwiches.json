@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/wheat_sandwich",
+      "recipe": "tfc:crafting/food/wheat_bread_sandwich",
       "text": "$(thing)작업대$()에서 제작할 수 있는 샌드위치 제작법."
     },
     {

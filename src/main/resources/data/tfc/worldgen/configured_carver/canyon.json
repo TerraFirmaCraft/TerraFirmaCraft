@@ -43,6 +43,6 @@
       "vertical_radius_default_factor": 1.0,
       "vertical_radius_center_factor": 0.0
     },
-    "replaceable": "#tfc:can_carve"
+    "replaceable": "#minecraft:overworld_carver_replaceables"
   }
 }

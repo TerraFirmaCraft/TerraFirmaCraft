@@ -156,8 +156,6 @@ public class HotPouredGlassBlockEntity extends TickableInventoryBlockEntity<Item
         return false;
     }
 
-    private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.hot_poured_glass");
-
     private int capacity = 0;
     private boolean isInitialTransition = true;
     private int animationTicks = 0;
@@ -170,7 +168,7 @@ public class HotPouredGlassBlockEntity extends TickableInventoryBlockEntity<Item
 
     public HotPouredGlassBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
-        super(type, pos, state, defaultInventory(1), NAME);
+        super(type, pos, state, defaultInventory(1));
     }
 
     @Override

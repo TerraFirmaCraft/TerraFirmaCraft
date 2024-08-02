@@ -62,7 +62,7 @@
     },
     {
       "type": "tfc:anvil_recipe",
-      "recipe": "tfc:anvil/wrought_iron_from_bloom",
+      "recipe": "tfc:anvil/metal/ingot/wrought_iron",
       "text": "$(thing)Очищене залізо$() знов на $(l:mechanics/anvils)ковадлі$() можна перетворити на $(thing)злиток ковкого заліза$()."
     },
     {

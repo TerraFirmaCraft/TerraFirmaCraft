@@ -2,7 +2,7 @@ import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
 plugins {
-    id("net.neoforged.moddev") version "0.1.126"
+    id("net.neoforged.moddev") version "2.0.1-beta"
     id("net.neoforged.licenser") version "0.7.2"
 }
 
@@ -27,16 +27,6 @@ val modIsInCI: Boolean = !modVersion.contains("-indev")
 val modDataOutput: String = "src/generated/resources"
 
 
-base {
-    archivesName.set("TerraFirmaCraft-NeoForge-$minecraftVersion")
-    group = "net.dries007.tfc"
-    version = modVersion
-}
-
-java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(modJavaVersion))
-}
-
 val generateModMetadata = tasks.register<ProcessResources>("generateModMetadata") {
     val modReplacementProperties = mapOf(
         "modId" to modId,
@@ -49,6 +39,17 @@ val generateModMetadata = tasks.register<ProcessResources>("generateModMetadata"
     expand(modReplacementProperties)
     from("src/main/templates")
     into(layout.buildDirectory.dir("generated/sources/modMetadata"))
+}
+
+
+base {
+    archivesName.set("TerraFirmaCraft-NeoForge-$minecraftVersion")
+    group = "net.dries007.tfc"
+    version = modVersion
+}
+
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(modJavaVersion))
 }
 
 repositories {
@@ -158,6 +159,8 @@ neoForge {
         enable()
         testedMod = mods[modId];
     }
+
+    ideSyncTask(generateModMetadata)
 }
 
 // Automatically apply a license header when running checkLicense / updateLicense

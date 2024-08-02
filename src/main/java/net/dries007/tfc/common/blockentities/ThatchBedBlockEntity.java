@@ -24,14 +24,12 @@ import static net.dries007.tfc.TerraFirmaCraft.*;
 
 public class ThatchBedBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 {
-    private static final Component NAME = Component.translatable(MOD_ID + ".tile_entity.thatch_bed");
-
     private BlockState headState;
     private BlockState footState;
 
     public ThatchBedBlockEntity(BlockPos pos, BlockState state)
     {
-        super(TFCBlockEntities.THATCH_BED.get(), pos, state, defaultInventory(1), NAME);
+        super(TFCBlockEntities.THATCH_BED.get(), pos, state, defaultInventory(1));
         headState = footState = Blocks.AIR.defaultBlockState();
     }
 

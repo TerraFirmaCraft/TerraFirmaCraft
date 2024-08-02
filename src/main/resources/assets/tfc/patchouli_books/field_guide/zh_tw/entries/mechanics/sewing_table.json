@@ -15,7 +15,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/wood/oak_sewing_table",
+      "recipe": "tfc:crafting/wood/sewing_table/oak",
       "text": "The sewing table can be made from wood, leather, and a pair of shears."
     },
     {
@@ -40,7 +40,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/vanilla/loom",
+      "recipe": "minecraft:loom",
       "text": "The banner loom, for making things with banner patterns, can be crafted to do work with banner patterns."
     },
     {

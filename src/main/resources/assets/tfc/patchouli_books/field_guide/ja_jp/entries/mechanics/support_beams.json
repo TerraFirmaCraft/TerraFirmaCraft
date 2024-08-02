@@ -23,7 +23,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/wood/oak_support",
+      "recipe": "tfc:crafting/wood/support/oak",
       "title": "梁",
       "text": "まず、$(thing)ノコギリ$() と任意のタイプの $(thing)丸太$() を使用して $(thing)梁$() を作成できます。$(br2)$(thing)梁$() を使用すると、高さ 3 までの列が配置されます。 状態を維持するには、その下にしっかりしたブロックが必要です。"
     },

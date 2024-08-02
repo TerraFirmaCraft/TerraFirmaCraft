@@ -10,7 +10,7 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:fire_clay_knapping/crucible",
+      "recipe": "tfc:knapping/ceramic/unfired_crucible",
       "text": "$(thing)굽지 않은 도가니$()를 만들기."
     },
     {

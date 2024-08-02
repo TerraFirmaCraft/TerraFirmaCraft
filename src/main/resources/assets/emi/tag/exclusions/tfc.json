@@ -1,0 +1,22 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "fluid": [
+    "tfc:any_fresh_water",
+    "tfc:any_infinite_water",
+    "tfc:fresh_water",
+    "tfc:infinite_water",
+    "tfc:ingredients",
+    "tfc:mixable",
+    "tfc:usable_in_barrel",
+    "tfc:usable_in_bell_mold",
+    "tfc:usable_in_blue_steel_bucket",
+    "tfc:usable_in_ingot_mold",
+    "tfc:usable_in_jug",
+    "tfc:usable_in_pot",
+    "tfc:usable_in_red_steel_bucket",
+    "tfc:usable_in_scribing_table",
+    "tfc:usable_in_sluice",
+    "tfc:usable_in_tool_head_mold",
+    "tfc:usable_in_wooden_bucket"
+  ]
+}

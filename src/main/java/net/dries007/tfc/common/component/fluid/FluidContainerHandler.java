@@ -47,7 +47,7 @@ public class FluidContainerHandler extends ComponentView<FluidComponent> impleme
     @Override
     public int fill(FluidStack resource, FluidAction action)
     {
-        final var remainder = component.fill(resource, containerInfo);
+        final var remainder = FluidComponent.fill(component.content(), resource, containerInfo);
         if (action.execute()) apply(new FluidComponent(remainder.content()));
         return remainder.filled();
     }
@@ -55,7 +55,7 @@ public class FluidContainerHandler extends ComponentView<FluidComponent> impleme
     @Override
     public FluidStack drain(int maxDrain, FluidAction action)
     {
-        final var remainder = component.drain(maxDrain);
+        final var remainder = FluidComponent.drain(component.content(), maxDrain);
         if (action.execute()) apply(new FluidComponent(remainder.content()));
         return remainder.drained();
     }

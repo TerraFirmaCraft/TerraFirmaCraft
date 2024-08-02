@@ -128,8 +128,8 @@ class Book:
         self.categories.append(Category(category_id, name, description, icon, parent, is_sorted, entries))
 
     def build(self):
-        # Only generate the book.json if we're in the root language
-        if self.i18n.lang == 'en_us':
+        # Only generate the book.json if we're in the root language, and we're writing to a local instance
+        if self.i18n.lang == 'en_us' and self.local_instance:
             self.rm.data(('patchouli_books', self.root_name, 'book'), {
                 'name': 'tfc.field_guide.book_name',
                 'landing_text': 'tfc.field_guide.book_landing_text',
@@ -139,7 +139,7 @@ class Book:
                 'dont_generate_book': False,
                 'show_progress': False,
                 'macros': self.macros,
-                'use_resource_pack': not self.local_instance,  # Required since 1.20 for mod books
+                'use_resource_pack': False,
             })
 
         # Find all valid link targets
@@ -424,8 +424,9 @@ def instant_barrel_recipe(recipe: str, text_content: TranslatableStr) -> Page: r
 def loom_recipe(recipe: str, text_content: TranslatableStr) -> Page: return recipe_page('loom_recipe', recipe, text_content)
 def glassworking_recipe(recipe: str, text_content: TranslatableStr) -> Page: return recipe_page('glassworking_recipe', recipe, text_content)
 
-def rock_knapping_typical(recipe_with_category_format: str, text_content: TranslatableStr) -> Page:
-    return page('rock_knapping_recipe', {'recipes': [recipe_with_category_format % c for c in ROCK_CATEGORIES], 'text': text_content}, custom=True, translation_keys=('text',))
+
+def rock_knapping_typical(item_type: str, text_content: TranslatableStr) -> Page:
+    return page('rock_knapping_recipe', {'recipes': ['tfc:knapping/stone/%s/%s' % (item_type, c) for c in ROCK_CATEGORIES], 'text': text_content}, custom=True, translation_keys=('text',))
 
 
 def alloy_recipe(title: str, alloy_name: str, text_content: TranslatableStr) -> Page:

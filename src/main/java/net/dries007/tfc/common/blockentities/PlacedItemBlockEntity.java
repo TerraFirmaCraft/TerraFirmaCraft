@@ -69,7 +69,7 @@ public class PlacedItemBlockEntity extends InventoryBlockEntity<ItemStackHandler
     }
 
     public static final int SLOT_LARGE_ITEM = 0;
-    private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.placed_item");
+
     public boolean isHoldingLargeItem;
     private final float[] rotations = new float[] {0f, 0f, 0f, 0f};
 
@@ -80,7 +80,7 @@ public class PlacedItemBlockEntity extends InventoryBlockEntity<ItemStackHandler
 
     protected PlacedItemBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
-        super(type, pos, state, self -> new InventoryItemHandler(self, 4), NAME);
+        super(type, pos, state, self -> new InventoryItemHandler(self, 4));
         this.isHoldingLargeItem = false;
     }
 

@@ -45,7 +45,7 @@
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/mutton",
+      "recipe": "tfc:heating/food/cooked_mutton",
       "text": "대신, $(l:getting_started/firepit)모닥불$()이나 $(l:mechanics/grill)석쇠$()를 사용하면 보존 기간에 보너스를 줍니다! 예를 들면, 위처럼 양고기를 $(thing)모닥불$()에 구우면 보존 기간이 1.33배 증가하며 $(thing)석쇠$()에 구우면 1.66배 증가합니다."
     },
     {
@@ -56,7 +56,7 @@
     },
     {
       "type": "tfc:quern_recipe",
-      "recipe": "tfc:quern/salt",
+      "recipe": "tfc:quern/powder/salt",
       "text": "소금을 얻는 방법에는 광물 $(l:the_world/ores_and_minerals#halite)암염$()을 $(l:mechanics/quern)가는$() 것이 있습니다."
     },
     {

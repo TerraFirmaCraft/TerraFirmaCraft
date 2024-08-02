@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/papyrus_strips",
+      "recipe": "tfc:crafting/papyrus_strip",
       "text": "Спочатку, папірус потрібно розрізати на смужки за допомогою $(thing)ножа$()."
     },
     {
@@ -25,8 +25,8 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/vanilla/map",
-      "recipe2": "tfc:crafting/vanilla/name_tag"
+      "recipe": "minecraft:map",
+      "recipe2": "minecraft:name_tag"
     },
     {
       "type": "patchouli:crafting",
@@ -35,8 +35,8 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/wood/pine_lectern",
-      "recipe2": "tfc:crafting/wood/kapok_bookshelf"
+      "recipe": "tfc:crafting/wood/lectern/kapok",
+      "recipe2": "tfc:crafting/wood/planks/kapok_bookshelf"
     },
     {
       "type": "patchouli:text",
@@ -69,12 +69,12 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/large_treated_hide",
+      "recipe": "tfc:crafting/treated_hide_from_large",
       "text": "Crafting pumice, a hammer, and scraped hide gives sections of $(thing)Treated Hide$()."
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/parchment",
+      "recipe": "tfc:crafting/paper",
       "text": "Treated hide, $(l:mechanics/glassworking#lime)lime powder$(), flour, and a fresh egg will complete the treatment process and yield usable paper."
     }
   ],

@@ -61,6 +61,7 @@ public class DeviceBlock extends ExtendedBlock implements IForgeBlockExtension, 
             final BlockEntity entity = level.getBlockEntity(pos);
             if (entity instanceof InventoryBlockEntity<?> inv)
             {
+                // todo: I don't think this should use saveToItem() if we're saving only via components
                 inv.saveToItem(stack, level.registryAccess());
             }
         }

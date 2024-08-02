@@ -50,8 +50,6 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
     private static final float MANUAL_RECIPE_PER_TICK = 1f; // Exactly 90 ticks at 1/tick
     private static final float NETWORK_RECIPE_PER_SPEED = MANUAL_TICKS / Mth.TWO_PI; // progress / radian
 
-    private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.quern");
-
     public static void serverTick(Level level, BlockPos pos, BlockState state, QuernBlockEntity quern)
     {
         final ServerLevel serverLevel = (ServerLevel) level;
@@ -134,7 +132,7 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
 
     public QuernBlockEntity(BlockPos pos, BlockState state)
     {
-        super(TFCBlockEntities.QUERN.get(), pos, state, defaultInventory(3), NAME);
+        super(TFCBlockEntities.QUERN.get(), pos, state, defaultInventory(3));
 
         this.recipeTimer = 0;
         this.node = new SinkNode(pos, Direction.UP) {

@@ -6,10 +6,10 @@
 
 package net.dries007.tfc.common.blockentities;
 
+import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -22,20 +22,17 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.common.util.INBTSerializable;
 import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.IItemHandlerModifiable;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.devices.PowderkegBlock;
-import net.dries007.tfc.common.capabilities.DelegateItemHandler;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
 import net.dries007.tfc.common.capabilities.PartialItemHandler;
+import net.dries007.tfc.common.component.TFCComponents;
+import net.dries007.tfc.common.component.item.ItemListComponent;
 import net.dries007.tfc.common.container.PowderkegContainer;
-import net.dries007.tfc.common.recipes.input.NonEmptyInput;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.PowderKegExplosion;
@@ -45,8 +42,6 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
 {
     public static final int SLOTS = 12;
     public static final int MAX_STRENGTH = 64;
-
-    private static final Component NAME = Component.translatable("tfc.block_entity.powderkeg");
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, PowderkegBlockEntity powderkeg)
     {
@@ -91,7 +86,7 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
 
     public PowderkegBlockEntity(BlockPos pos, BlockState state)
     {
-        super(TFCBlockEntities.POWDERKEG.get(), pos, state, PowderkegBlockEntity.PowderkegInventory::new, NAME);
+        super(TFCBlockEntities.POWDERKEG.get(), pos, state, PowderkegBlockEntity.PowderkegInventory::new);
 
         if (TFCConfig.SERVER.powderKegEnableAutomation.get())
         {
@@ -99,6 +94,20 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
         }
     }
 
+    @Override
+    protected void applyImplicitComponents(DataComponentInput components)
+    {
+        final List<ItemStack> content = components.getOrDefault(TFCComponents.CONTENTS, ItemListComponent.EMPTY).contents();
+        // todo: apply components
+        super.applyImplicitComponents(components);
+    }
+
+    @Override
+    protected void collectImplicitComponents(DataComponentMap.Builder builder)
+    {
+        builder.set(TFCComponents.CONTENTS, ItemListComponent.of(inventory));
+        super.collectImplicitComponents(builder);
+    }
 
     @Nullable
     @Override
@@ -162,49 +171,28 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
         markForSync();
     }
 
-    public static class PowderkegInventory implements DelegateItemHandler, INBTSerializable<CompoundTag>, NonEmptyInput
+    public static class PowderkegInventory extends InventoryItemHandler
     {
         private final PowderkegBlockEntity powderkeg;
         private final InventoryItemHandler inventory;
 
         PowderkegInventory(InventoryBlockEntity<?> entity)
         {
+            super(entity, SLOTS);
             powderkeg = (PowderkegBlockEntity) entity;
             inventory = new InventoryItemHandler(entity, SLOTS);
         }
 
-        @Override
-        public IItemHandlerModifiable getItemHandler()
-        {
-            return inventory;
-        }
-
-        @NotNull
         @Override
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
         {
             return canModify() ? inventory.insertItem(slot, stack, simulate) : stack;
         }
 
-        @NotNull
         @Override
         public ItemStack extractItem(int slot, int amount, boolean simulate)
         {
             return canModify() ? inventory.extractItem(slot, amount, simulate) : ItemStack.EMPTY;
-        }
-
-        @Override
-        public CompoundTag serializeNBT(HolderLookup.Provider provider)
-        {
-            final CompoundTag nbt = new CompoundTag();
-            nbt.put("inventory", inventory.serializeNBT(provider));
-            return nbt;
-        }
-
-        @Override
-        public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt)
-        {
-            inventory.deserializeNBT(provider, nbt.getCompound("inventory"));
         }
 
         private boolean canModify()
@@ -212,5 +200,4 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
             return !powderkeg.getBlockState().getValue(PowderkegBlock.SEALED);
         }
     }
-
 }

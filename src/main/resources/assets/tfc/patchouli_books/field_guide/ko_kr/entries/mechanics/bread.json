@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/barley_cutting",
+      "recipe": "tfc:crafting/food/barley_grain",
       "text": "일단, $(thing)칼$()로 곡식을 잘라 곡물을 얻으세요."
     },
     {
@@ -21,35 +21,25 @@
     },
     {
       "type": "tfc:quern_recipe",
-      "recipe": "tfc:quern/oat_grain",
+      "recipe": "tfc:quern/food/oat_flour",
       "text": "곡물을 $(l:mechanics/quern)맷돌$()로 갈면 곡물 가루를 얻을 수 있습니다."
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/dough/barley_dough_1",
+      "recipe": "tfc:crafting/food/barley_dough_1",
       "text": "반죽은 곡물 가루에 $(thing)물 양동이$()를 더해 만들 수 있습니다."
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/barley_dough",
+      "recipe": "tfc:heating/food/barley_bread",
       "text": "반죽을 $(l:mechanics/heating)구우면$() 빵을 만들 수 있습니다. 또한 빵은 $(l:mechanics/sandwiches)샌드위치$()를 만드는 데도 쓸 수 있습니다."
     }
   ],
   "read_by_default": true,
   "extra_recipe_mappings": {
-    "tag:tfc:sandwich_bread": 0,
-    "tag:tfc:foods/dough": 0,
-    "tfc:food/barley_grain": 0,
-    "tfc:food/maize_grain": 0,
-    "tfc:food/oat_grain": 0,
-    "tfc:food/rice_grain": 0,
-    "tfc:food/rye_grain": 0,
-    "tfc:food/wheat_grain": 0,
-    "tfc:food/barley_flour": 0,
-    "tfc:food/maize_flour": 0,
-    "tfc:food/oat_flour": 0,
-    "tfc:food/rice_flour": 0,
-    "tfc:food/rye_flour": 0,
-    "tfc:food/wheat_flour": 0
+    "tag:c:foods/bread": 0,
+    "tag:c:foods/dough": 0,
+    "tag:c:foods/grain": 0,
+    "tag:c:foods/flour": 0
   }
 }

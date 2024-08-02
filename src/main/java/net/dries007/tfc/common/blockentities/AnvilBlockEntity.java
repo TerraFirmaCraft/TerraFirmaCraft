@@ -10,6 +10,7 @@ import java.util.Collection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -23,6 +24,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
@@ -62,16 +64,14 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
     public static final int[] SLOTS_BY_HAND_EXTRACT = new int[] {SLOT_INPUT_MAIN, SLOT_INPUT_SECOND};
     public static final int[] SLOTS_BY_HAND_INSERT = new int[] {SLOT_CATALYST, SLOT_INPUT_MAIN, SLOT_INPUT_SECOND};
 
-    private static final Component NAME = Component.translatable("tfc.block_entity.anvil");
-
     public AnvilBlockEntity(BlockPos pos, BlockState state)
     {
-        this(TFCBlockEntities.ANVIL.get(), pos, state, AnvilInventory::new, NAME);
+        this(TFCBlockEntities.ANVIL.get(), pos, state, AnvilInventory::new);
     }
 
-    public AnvilBlockEntity(BlockEntityType<? extends AnvilBlockEntity> type, BlockPos pos, BlockState state, InventoryFactory<AnvilInventory> inventoryFactory, Component defaultName)
+    public AnvilBlockEntity(BlockEntityType<? extends AnvilBlockEntity> type, BlockPos pos, BlockState state, InventoryFactory<AnvilInventory> inventoryFactory)
     {
-        super(type, pos, state, inventoryFactory, defaultName);
+        super(type, pos, state, inventoryFactory);
     }
 
     public Forging getMainInputForging()
@@ -144,20 +144,15 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
         if (!stack.isEmpty())
         {
             final Forging forge = ForgingCapability.get(stack);
-
-            AnvilRecipe recipe = forge.view().recipe();
+            final @Nullable AnvilRecipe recipe = forge.getRecipe();
             if (recipe == null)
             {
                 // Select a default recipe if we only find a single recipe for this item
-                final Collection<AnvilRecipe> all = AnvilRecipe.getAll(level, stack, getTier());
-                if (all.size() == 1)
+                final Collection<RecipeHolder<AnvilRecipe>> all = AnvilRecipe.getAll(level, stack, getTier());
+                if (all.size() == 1 && !level.isClientSide)
                 {
                     // Update the recipe held by the forging item
-                    recipe = all.iterator().next();
-                    if (!level.isClientSide)
-                    {
-                        forge.setRecipe(recipe, inventory);
-                    }
+                    forge.setRecipe(all.iterator().next(), inventory);
                 }
             }
         }
@@ -167,22 +162,19 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
     @Override
     public void ejectInventory()
     {
-        final ItemStack stack = inventory.getStackInSlot(SLOT_INPUT_MAIN);
-        if (!stack.isEmpty())
-        {
-            ForgingCapability.clearRecipeIfNotWorked(stack);
-        }
+        ForgingCapability.clearRecipeIfNotWorked(inventory.getStackInSlot(SLOT_INPUT_MAIN));
         super.ejectInventory();
     }
 
-    public void chooseRecipe(@Nullable AnvilRecipe recipe)
+    public void chooseRecipe(ResourceLocation recipeId)
     {
         assert level != null;
 
+        final @Nullable AnvilRecipe recipe = AnvilRecipe.byId(recipeId);
         final ItemStack stack = inventory.getStackInSlot(SLOT_INPUT_MAIN);
-        if (!stack.isEmpty())
+        if (!stack.isEmpty() && recipe != null)
         {
-            ForgingCapability.get(stack).setRecipe(recipe, inventory);
+            ForgingCapability.get(stack).setRecipe(new RecipeHolder<>(recipeId, recipe), inventory);
         }
     }
 
@@ -195,7 +187,6 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
 
         final ItemStack stack = inventory.getStackInSlot(SLOT_INPUT_MAIN);
         final Forging forge = ForgingCapability.get(stack);
-        final ForgingComponent view = forge.view();
 
         // Check that we have a hammer, either in the anvil or in the player inventory
         ItemStack hammer = inventory.getStackInSlot(SLOT_HAMMER);
@@ -217,12 +208,12 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
         }
 
         // Prevent the player from immediately destroying the item by overworking
-        if (!view.steps().any() && view.work() == 0 && step.step() < 0)
+        if (!forge.isWorked() && forge.work() == 0 && step.step() < 0)
         {
             return InteractionResult.FAIL;
         }
 
-        final AnvilRecipe recipe = view.recipe();
+        final AnvilRecipe recipe = forge.getRecipe();
         if (recipe != null)
         {
             if (!recipe.matches(inventory, level))
@@ -244,7 +235,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
             // Damage the hammer
             Helpers.damageItem(hammer, player, hammerSlot);
 
-            if (view.work() < 0 || view.work() > ForgeStep.LIMIT)
+            if (forge.work() < 0 || forge.work() > ForgeStep.LIMIT)
             {
                 // Destroy the input
                 inventory.setStackInSlot(SLOT_INPUT_MAIN, ItemStack.EMPTY);
@@ -269,7 +260,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
                 // And apply the forging bonus, if the recipe says to do so
                 if (recipe.shouldApplyForgingBonus())
                 {
-                    final float ratio = (float) forge.view().steps().total() / ForgeRule.calculateOptimalStepsToTarget(recipe.computeTarget(inventory), recipe.getRules());
+                    final float ratio = (float) forge.totalWorked() / ForgeRule.calculateOptimalStepsToTarget(recipe.computeTarget(inventory), recipe.getRules());
                     final ForgingBonus bonus = ForgingBonus.byRatio(ratio);
                     ForgingBonus.set(outputStack, bonus);
 
@@ -298,15 +289,14 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
 
         final ItemStack stack = inventory.getStackInSlot(SLOT_INPUT_MAIN);
         final Forging forge = ForgingCapability.get(stack);
-        final ForgingComponent view = forge.view();
 
         // Prevent the player from immediately destroying the item by overworking
-        if (!view.steps().any() && view.work() == 0 && movement < 0)
+        if (!forge.isWorked() && forge.work() == 0 && movement < 0)
         {
             return false;
         }
 
-        final AnvilRecipe recipe = view.recipe();
+        final AnvilRecipe recipe = forge.getRecipe();
         if (recipe != null)
         {
             if (!recipe.matches(inventory, level))
@@ -324,7 +314,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
             if (forceCompletion)
             {
                 final int target = recipe.computeTarget(inventory);
-                final int cursor = view.work();
+                final int cursor = forge.work();
                 if ((movement > 0 && cursor > target) || (movement < 0 && cursor < target))
                 {
                     movement = -movement;
@@ -336,7 +326,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
             }
             forge.addStep(step, movement);
 
-            if (view.work() < 0 || view.work() > ForgeStep.LIMIT)
+            if (forge.work() < 0 || forge.work() > ForgeStep.LIMIT)
             {
                 // Destroy the input
                 inventory.setStackInSlot(SLOT_INPUT_MAIN, ItemStack.EMPTY);

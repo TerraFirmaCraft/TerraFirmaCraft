@@ -79,7 +79,8 @@ public class RegionBiomeSource extends BiomeSource implements BiomeSourceExtensi
     @Override
     protected Stream<Holder<Biome>> collectPossibleBiomes()
     {
-        return TFCBiomes.getAllKeys().stream().map(biomeRegistry::getOrThrow);
+        return TFCBiomes.REGISTRY.stream()
+            .map(e -> biomeRegistry.getOrThrow(e.key()));
     }
 
     @Override

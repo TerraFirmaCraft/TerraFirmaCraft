@@ -59,7 +59,6 @@ import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
 import net.dries007.tfc.compat.theoneprobe.TheOneProbeIntegration;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.PacketHandler;
-import net.dries007.tfc.util.CauldronInteractions;
 import net.dries007.tfc.util.DispenserBehaviors;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.InteractionManager;
@@ -72,6 +71,7 @@ import net.dries007.tfc.util.climate.ClimateModels;
 import net.dries007.tfc.util.data.DataManagers;
 import net.dries007.tfc.util.loot.TFCLoot;
 import net.dries007.tfc.world.TFCWorldGen;
+import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.blockpredicate.TFCBlockPredicates;
 import net.dries007.tfc.world.carver.TFCCarvers;
 import net.dries007.tfc.world.density.TFCDensityFunctions;
@@ -167,6 +167,7 @@ public final class TerraFirmaCraft
         ClimateModels.TYPES.register(bus);
         DataManagers.MANAGERS.register(bus);
         BarSystem.BARS.register(bus);
+        TFCBiomes.EXTENSIONS.register(bus);
 
         // Custom Registries (neoforge)
         TFCFluids.FLUID_TYPES.register(bus);
@@ -202,7 +203,6 @@ public final class TerraFirmaCraft
             Wood.registerBlockSetTypes();
             TFCBrain.initializeScheduleContents();
 
-            CauldronInteractions.registerCauldronInteractions();
             TFCBlocks.registerFlowerPotFlowers();
             TFCBlocks.editBlockRequiredTools();
         }).exceptionally(e -> {
@@ -224,6 +224,7 @@ public final class TerraFirmaCraft
         event.register(ClimateModels.REGISTRY);
         event.register(DataManagers.REGISTRY);
         event.register(BarSystem.REGISTRY);
+        event.register(TFCBiomes.REGISTRY);
     }
 
     public void loadComplete(FMLLoadCompleteEvent event)

@@ -8,6 +8,7 @@ package net.dries007.tfc.world.biome;
 
 import java.util.function.Supplier;
 import net.minecraft.world.level.CommonLevelAccessor;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,5 +21,5 @@ import org.jetbrains.annotations.Nullable;
 public interface BiomeBridge
 {
     @Nullable
-    BiomeExtension tfc$getExtension(Supplier<BiomeExtension> init);
+    BiomeExtension tfc$getExtension(CommonLevelAccessor level);
 }

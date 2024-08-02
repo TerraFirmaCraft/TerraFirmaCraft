@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:clay_disc_with_indicator",
+    "tfc:water_clay_disc_with_indicator",
+    "tfc:peat_disc",
+    "tfc:powder_snow",
+    "tfc:rooted_dirt"
+  ]
+}

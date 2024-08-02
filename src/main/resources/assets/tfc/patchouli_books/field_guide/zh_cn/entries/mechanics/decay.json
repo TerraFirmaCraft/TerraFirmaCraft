@@ -45,7 +45,7 @@
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/mutton",
+      "recipe": "tfc:heating/food/cooked_mutton",
       "text": "相反，用$(l:getting_started/firepit)篝火$()或$(l:mechanics/grill)锻铁烤架$()做出来的食物会获得保质期加成。比如，用$(thing)篝火$()烤制的羊肉保质期会延长 33 %，而用$(thing)锻铁烤架$()烤制的则会延长 66 %！"
     },
     {
@@ -56,7 +56,7 @@
     },
     {
       "type": "tfc:quern_recipe",
-      "recipe": "tfc:quern/salt",
+      "recipe": "tfc:quern/powder/salt",
       "text": "$(l:mechanics/quern)研磨$()$(l:the_world/ores_and_minerals#halite)石盐$()可以得到盐。石盐是一种矿物。"
     },
     {

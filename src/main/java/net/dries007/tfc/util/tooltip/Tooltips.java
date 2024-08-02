@@ -6,10 +6,9 @@
 
 package net.dries007.tfc.util.tooltip;
 
-import java.util.List;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
@@ -64,9 +63,19 @@ public final class Tooltips
         return heat == null ? null : Component.translatable("tfc.tooltip.melts_into", fluidUnitsOf(stack), heat);
     }
 
+    public static MutableComponent contents()
+    {
+        return Component.translatable("tfc.tooltip.contents").withStyle(ChatFormatting.DARK_GREEN);
+    }
+
     public static MutableComponent countOfItem(ItemStack stack)
     {
-        return Component.literal(String.valueOf(stack.getCount()))
+        return countOfItem(stack, stack.getCount());
+    }
+
+    public static MutableComponent countOfItem(ItemStack stack, int count)
+    {
+        return Component.literal(String.valueOf(count))
             .append(" x ")
             .append(stack.getHoverName());
     }
@@ -75,6 +84,4 @@ public final class Tooltips
     {
         return Component.translatable("tfc.tooltip.tier_" + tier);
     }
-
-    public record DeviceImageTooltip(List<ItemStack> items, int width, int height) implements TooltipComponent {}
 }

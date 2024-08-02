@@ -15,24 +15,24 @@
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/kaolin_clay",
+      "recipe": "tfc:heating/powder/kaolinite",
       "text": "Порошок каолинита получают путем нагревания $(l:the_world/ores_and_minerals#kaolinite)каолиновой глины$(). Однако процесс не идеален, и только 20%% глины превращается в порошок!"
     },
     {
       "type": "tfc:knapping_recipe",
       "anchor": "crucible",
-      "recipe": "tfc:fire_clay_knapping/crucible",
+      "recipe": "tfc:knapping/ceramic/unfired_crucible",
       "text": "$(l:mechanics/crucible)Тигель$() в необожженном состоянии изготавливается из огнеупорной глины."
     },
     {
       "type": "tfc:knapping_recipe",
       "anchor": "fire_bricks",
-      "recipe": "tfc:fire_clay_knapping/brick",
+      "recipe": "tfc:knapping/ceramic/unfired_brick",
       "text": "$(l:mechanics/blast_furnace)Доменная печь$() принимает только огнеупорные кирпичи в качестве изоляции."
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:fire_clay_knapping/fire_ingot_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_fire_ingot_mold",
       "text": "$(thing)Формы для слитков из огнеупорной глины$() - это более прочный тип $(l:getting_started/pottery#mold)Формы для слитков$(), у которых всего лишь 1 шанс из 100 на поломку, в отличие от 1 шанса из 10 у обычной формы для слитков."
     }
   ],

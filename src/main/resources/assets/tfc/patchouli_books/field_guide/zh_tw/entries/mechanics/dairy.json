@@ -15,12 +15,12 @@
     },
     {
       "type": "tfc:sealed_barrel_recipe",
-      "recipe": "tfc:barrel/curdling",
+      "recipe": "tfc:barrel/curdled_milk",
       "text": "將醋奶混合之後密封大桶，奶就會開始逐漸凝固成煉乳，只需靜待 8 小時即可。"
     },
     {
       "type": "tfc:sealed_barrel_recipe",
-      "recipe": "tfc:barrel/cheese",
+      "recipe": "tfc:barrel/food/cheese",
       "text": "製成煉乳之後先不要開蓋，繼續靜置 8 小時就能將煉乳凝固成乳酪了。乳酪是一種保質期很長的乳製品，且可以作為某些餐點（比如$(l:mechanics/sandwiches)三明治$()）的食材以提供乳製品營養元素。"
     }
   ],

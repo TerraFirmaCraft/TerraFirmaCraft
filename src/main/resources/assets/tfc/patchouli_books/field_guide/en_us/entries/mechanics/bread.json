@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/barley_cutting",
+      "recipe": "tfc:crafting/food/barley_grain",
       "text": "First, cut the straw off of the food with a $(thing)Knife$()."
     },
     {
@@ -21,35 +21,25 @@
     },
     {
       "type": "tfc:quern_recipe",
-      "recipe": "tfc:quern/oat_grain",
+      "recipe": "tfc:quern/food/oat_flour",
       "text": "Grain must then be ground in a $(l:mechanics/quern)Quern$() to make flour."
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/dough/barley_dough_1",
+      "recipe": "tfc:crafting/food/barley_dough_1",
       "text": "Dough is crafted by adding a bucket of $(thing)Fresh Water$() to flour."
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/barley_dough",
+      "recipe": "tfc:heating/food/barley_bread",
       "text": "Dough is then able to be $(l:mechanics/heating)heated$() to make bread. At this point it can also be used in $(l:mechanics/sandwiches)Sandwiches$()."
     }
   ],
   "read_by_default": true,
   "extra_recipe_mappings": {
-    "tag:tfc:sandwich_bread": 0,
-    "tag:tfc:foods/dough": 0,
-    "tfc:food/barley_grain": 0,
-    "tfc:food/maize_grain": 0,
-    "tfc:food/oat_grain": 0,
-    "tfc:food/rice_grain": 0,
-    "tfc:food/rye_grain": 0,
-    "tfc:food/wheat_grain": 0,
-    "tfc:food/barley_flour": 0,
-    "tfc:food/maize_flour": 0,
-    "tfc:food/oat_flour": 0,
-    "tfc:food/rice_flour": 0,
-    "tfc:food/rye_flour": 0,
-    "tfc:food/wheat_flour": 0
+    "tag:c:foods/bread": 0,
+    "tag:c:foods/dough": 0,
+    "tag:c:foods/grain": 0,
+    "tag:c:foods/flour": 0
   }
 }

@@ -10,7 +10,7 @@
     },
     {
       "type": "tfc:anvil_recipe",
-      "recipe": "tfc:anvil/bismuth_bronze_fish_hook",
+      "recipe": "tfc:anvil/metal/fish_hook/bismuth_bronze",
       "text": "まず、$(l:mechanics/anvils)金床$() で釣り針を鍛造する必要があります。"
     },
     {
@@ -38,6 +38,6 @@
   ],
   "read_by_default": true,
   "extra_recipe_mappings": {
-    "tag:forge:fishing_rods": 0
+    "tag:c:tools/fishing_rod": 0
   }
 }

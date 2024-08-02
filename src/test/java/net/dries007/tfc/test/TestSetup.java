@@ -51,6 +51,7 @@ import net.dries007.tfc.data.providers.BuiltinFluidTags;
 import net.dries007.tfc.data.providers.BuiltinFoods;
 import net.dries007.tfc.data.providers.BuiltinItemHeat;
 import net.dries007.tfc.data.providers.BuiltinItemTags;
+import net.dries007.tfc.data.providers.BuiltinKnappingTypes;
 import net.dries007.tfc.data.providers.BuiltinRecipes;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
@@ -85,7 +86,7 @@ public interface TestSetup
             final TagMap blockTagMap = new TagMap();
             final TagMap fluidTagMap = new TagMap();
 
-            new BuiltinDrinkables(output, provider).run(lookup);
+            new BuiltinDrinkables(output, provider).run(lookup); // Must run before fluid tags
 
             final CompletableFuture<TagsProvider.TagLookup<Block>> blockTagLookup = CompletableFuture.completedFuture(key -> Optional.ofNullable(blockTagMap.get(key.location())));
 
@@ -109,6 +110,7 @@ public interface TestSetup
             new BuiltinFluidHeat(output, provider).run(lookup);
             final var itemHeat = new BuiltinItemHeat(output, provider, now);
             itemHeat.run(lookup);
+            new BuiltinKnappingTypes(output, provider).run(lookup); // Must run before recipes
 
             final RecipeManager recipeManager = new RecipeManager(lookup);
             final List<RecipeHolder<?>> holders = new ArrayList<>();

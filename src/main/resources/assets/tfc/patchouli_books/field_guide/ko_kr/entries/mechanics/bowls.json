@@ -10,12 +10,12 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/bowl_4",
+      "recipe": "tfc:knapping/ceramic/unfired_bowl_2",
       "text": "Multiple unfired bowls can be made from one knapping."
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/vanilla/bowl",
+      "recipe": "minecraft:bowl",
       "title": "Wooden Bowls",
       "text": "Bowls can also be made out of wood via crafting them together with $(thing)Glue$()$(br2)$(thing)Glue$() can be made by soaking $(thing)Bone Meal$() in a barrel of $(l:mechanics/barrels#limewater)Limewater$()."
     },

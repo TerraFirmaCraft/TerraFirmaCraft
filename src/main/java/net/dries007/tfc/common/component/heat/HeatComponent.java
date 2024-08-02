@@ -47,6 +47,17 @@ public final class HeatComponent implements IHeatView
     }
 
     /**
+     * Create a new {@link HeatComponent} from a custom heat capacity value. The component will have no definition applied,
+     * and should not be overwritten by external values.
+     * @param heatCapacity The heat capacity
+     * @param temperatureNow The current temperature
+     */
+    public static HeatComponent of(float heatCapacity, float temperatureNow)
+    {
+        return new HeatComponent(null, heatCapacity, temperatureNow, Calendars.get().getTicks());
+    }
+
+    /**
      * Creates a new {@link HeatComponent} from a {@link HeatDefinition}. This should only be used to create default values
      * on creation of item stacks.
      * @param parent The definition used for this item

@@ -15,7 +15,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/wood/oak_sewing_table",
+      "recipe": "tfc:crafting/wood/sewing_table/oak",
       "text": "Швейный стол можно сделать из дерева, кожи и ножниц."
     },
     {
@@ -40,7 +40,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/vanilla/loom",
+      "recipe": "minecraft:loom",
       "text": "Ткацкий станок для создания вещей с узорами на баннерах можно создать для работы с узорами на баннерах."
     },
     {

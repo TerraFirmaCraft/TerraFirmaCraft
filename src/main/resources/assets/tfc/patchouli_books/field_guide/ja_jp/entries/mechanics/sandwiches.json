@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/wheat_sandwich",
+      "recipe": "tfc:crafting/food/wheat_bread_sandwich",
       "text": "サンドイッチのレシピ。 $(thing)作業台$() で実行できます。"
     },
     {

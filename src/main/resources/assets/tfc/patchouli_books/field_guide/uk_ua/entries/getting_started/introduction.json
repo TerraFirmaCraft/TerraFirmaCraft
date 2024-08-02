@@ -60,10 +60,10 @@
       "type": "tfc:rock_knapping_recipe",
       "anchor": "knife",
       "recipes": [
-        "tfc:rock_knapping/knife_head_sedimentary",
-        "tfc:rock_knapping/knife_head_metamorphic",
-        "tfc:rock_knapping/knife_head_igneous_extrusive",
-        "tfc:rock_knapping/knife_head_igneous_intrusive"
+        "tfc:knapping/stone/knife_head/sedimentary",
+        "tfc:knapping/stone/knife_head/metamorphic",
+        "tfc:knapping/stone/knife_head/igneous_extrusive",
+        "tfc:knapping/stone/knife_head/igneous_intrusive"
       ],
       "text": "Лезо ножа, виготовлене з кількох різних видів гірських порід"
     },
@@ -75,50 +75,50 @@
     {
       "type": "tfc:rock_knapping_recipe",
       "recipes": [
-        "tfc:rock_knapping/axe_head_sedimentary",
-        "tfc:rock_knapping/axe_head_metamorphic",
-        "tfc:rock_knapping/axe_head_igneous_extrusive",
-        "tfc:rock_knapping/axe_head_igneous_intrusive"
+        "tfc:knapping/stone/axe_head/sedimentary",
+        "tfc:knapping/stone/axe_head/metamorphic",
+        "tfc:knapping/stone/axe_head/igneous_extrusive",
+        "tfc:knapping/stone/axe_head/igneous_intrusive"
       ],
       "text": "$(thing)Сокира$() використовується для зрубування цілих дерев, включно колоди та листя. Однак саджанці і палиці випадуть лиш у випадку, якщо листя ламати окремо."
     },
     {
       "type": "tfc:rock_knapping_recipe",
       "recipes": [
-        "tfc:rock_knapping/shovel_head_sedimentary",
-        "tfc:rock_knapping/shovel_head_metamorphic",
-        "tfc:rock_knapping/shovel_head_igneous_extrusive",
-        "tfc:rock_knapping/shovel_head_igneous_intrusive"
+        "tfc:knapping/stone/shovel_head/sedimentary",
+        "tfc:knapping/stone/shovel_head/metamorphic",
+        "tfc:knapping/stone/shovel_head/igneous_extrusive",
+        "tfc:knapping/stone/shovel_head/igneous_intrusive"
       ],
       "text": "$(thing)Лопату$() можна використати для викопування блоків ґрунтового типу. Використовується також для створення $(thing)стежки$() або $(item)доріжки$() на блоках $(thing)землі$() або $(thing)трави$()."
     },
     {
       "type": "tfc:rock_knapping_recipe",
       "recipes": [
-        "tfc:rock_knapping/hoe_head_sedimentary",
-        "tfc:rock_knapping/hoe_head_metamorphic",
-        "tfc:rock_knapping/hoe_head_igneous_extrusive",
-        "tfc:rock_knapping/hoe_head_igneous_intrusive"
+        "tfc:knapping/stone/hoe_head/sedimentary",
+        "tfc:knapping/stone/hoe_head/metamorphic",
+        "tfc:knapping/stone/hoe_head/igneous_extrusive",
+        "tfc:knapping/stone/hoe_head/igneous_intrusive"
       ],
       "text": "$(thing)Мотика$() є корисним інструментом для $(l:mechanics/crops)землеробства$(), але її також можна використати для зрізання листя та інших рослин."
     },
     {
       "type": "tfc:rock_knapping_recipe",
       "recipes": [
-        "tfc:rock_knapping/hammer_head_sedimentary",
-        "tfc:rock_knapping/hammer_head_metamorphic",
-        "tfc:rock_knapping/hammer_head_igneous_extrusive",
-        "tfc:rock_knapping/hammer_head_igneous_intrusive"
+        "tfc:knapping/stone/hammer_head/sedimentary",
+        "tfc:knapping/stone/hammer_head/metamorphic",
+        "tfc:knapping/stone/hammer_head/igneous_extrusive",
+        "tfc:knapping/stone/hammer_head/igneous_intrusive"
       ],
       "text": "$(thing)Молот$() можна використати як $(l:mechanics/damage_types)руйнівну$() зброю, але він більш потрібен для $(l:getting_started/primitive_anvils)ковальства$()."
     },
     {
       "type": "tfc:rock_knapping_recipe",
       "recipes": [
-        "tfc:rock_knapping/javelin_head_sedimentary",
-        "tfc:rock_knapping/javelin_head_metamorphic",
-        "tfc:rock_knapping/javelin_head_igneous_extrusive",
-        "tfc:rock_knapping/javelin_head_igneous_intrusive"
+        "tfc:knapping/stone/javelin_head/sedimentary",
+        "tfc:knapping/stone/javelin_head/metamorphic",
+        "tfc:knapping/stone/javelin_head/igneous_extrusive",
+        "tfc:knapping/stone/javelin_head/igneous_intrusive"
       ],
       "text": "Нарешті, $(thing)спис$(). Він використовується як примітивна зброя. Його можна кидати, а можна використовувати як зброю ближнього $(l:mechanics/damage_types)колольного$() бою."
     }

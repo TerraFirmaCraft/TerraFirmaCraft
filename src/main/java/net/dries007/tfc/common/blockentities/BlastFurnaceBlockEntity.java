@@ -50,7 +50,7 @@ import net.dries007.tfc.common.recipes.BlastFurnaceRecipe;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.IntArrayBuilder;
+import net.dries007.tfc.util.SyncableContainerData;
 import net.dries007.tfc.util.calendar.ICalendarTickable;
 import net.dries007.tfc.util.data.Fuel;
 
@@ -58,8 +58,6 @@ import static net.dries007.tfc.TerraFirmaCraft.*;
 
 public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastFurnaceBlockEntity.BlastFurnaceInventory> implements ICalendarTickable
 {
-    private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.blast_furnace");
-
     public static void serverTick(Level level, BlockPos pos, BlockState state, BlastFurnaceBlockEntity entity)
     {
         entity.checkForLastTickSync();
@@ -209,7 +207,7 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
     private final List<ItemStack> catalystStacks; // Catalyst items, 1-1 with input items
     private final List<ItemStack> fuelStacks; // Fuel items, consumed sequentially
 
-    private final IntArrayBuilder syncedData;
+    private final SyncableContainerData syncedData;
     private final SidedHandler<IFluidHandler> sidedFluidInventory;
 
     private final FluidTank outputFluidTank; // The output fluid, after converting from the input fluid. This is dripped into the container below, excess is voided.
@@ -226,7 +224,7 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
 
     public BlastFurnaceBlockEntity(BlockPos pos, BlockState state)
     {
-        super(TFCBlockEntities.BLAST_FURNACE.get(), pos, state, BlastFurnaceInventory::new, NAME);
+        super(TFCBlockEntities.BLAST_FURNACE.get(), pos, state, BlastFurnaceInventory::new);
 
         inputStacks = new ArrayList<>();
         inputCachedRecipes = new ArrayList<>();
@@ -236,7 +234,7 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
         inputFluid = FluidStack.EMPTY;
         outputFluidTank = new FluidTank(TFCConfig.SERVER.blastFurnaceFluidCapacity.get());
 
-        syncedData = new IntArrayBuilder()
+        syncedData = new SyncableContainerData()
             .add(() -> lastKnownCapacity, value -> lastKnownCapacity = value)
             .add(() -> (int) temperature, value -> temperature = value);
 

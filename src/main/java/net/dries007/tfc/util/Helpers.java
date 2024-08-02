@@ -66,7 +66,6 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -1161,6 +1160,25 @@ public final class Helpers
     }
 
     /**
+     * Copies the contents of the inventory {@code inventory} into the builder.
+     */
+    public static void copyTo(ImmutableList.Builder<ItemStack> list, IItemHandler inventory)
+    {
+        for (int i = 0; i < inventory.getSlots(); i++)
+            list.add(inventory.getStackInSlot(i).copy());
+    }
+
+    /**
+     * Copies the contents of the contents list {@code list} into the inventory {@code inventory}. If the {@code list} is empty,
+     * it is assumed to contain no content, otherwise, it must match up exactly with the inventory slot count.
+     */
+    public static void copyFrom(List<ItemStack> list, IItemHandlerModifiable inventory)
+    {
+        for (int i = 0; i < inventory.getSlots(); i++)
+            inventory.setStackInSlot(i, list.get(i).copy());
+    }
+
+    /**
      * For when you want to ignore every possible safety measure in front of you
      */
     @SuppressWarnings("unchecked")
@@ -1453,9 +1471,7 @@ public final class Helpers
                 if (maximumItems <= 4)
                 {
                     ++maximumItems;
-                    tooltips.add(stack.getHoverName().copy()
-                        .append(" x")
-                        .append(String.valueOf(stack.getCount())));
+                    tooltips.add(Tooltips.countOfItem(stack));
                 }
             }
         }
@@ -1464,24 +1480,6 @@ public final class Helpers
         {
             tooltips.add(Component.translatable("container.shulkerBox.more", totalItems - maximumItems).withStyle(ChatFormatting.ITALIC));
         }
-    }
-
-    public static Optional<TooltipComponent> getTooltipImage(IItemHandler inventory, int width, int height, int startIndex, int endIndex)
-    {
-        final List<ItemStack> list = NonNullList.create();
-        boolean empty = true;
-        for (int i = startIndex; i <= endIndex; i++)
-        {
-            final ItemStack stack = inventory.getStackInSlot(i);
-            if (!stack.isEmpty())
-            {
-                empty = false;
-                // we add empty stacks anyway, to preserve how the container is arranged, incl. empty spaces.
-                // but we won't render anything that's empty, as its just clutter.
-            }
-            list.add(stack);
-        }
-        return empty || list.isEmpty() ? Optional.empty() : Optional.of(new Tooltips.DeviceImageTooltip(list, width, height));
     }
 
     public static boolean isItem(ItemStack stack, ItemLike item)

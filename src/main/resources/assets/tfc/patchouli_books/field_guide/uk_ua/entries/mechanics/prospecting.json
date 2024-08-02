@@ -22,17 +22,17 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/propick_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_propick_head_mold",
       "text": "Щоб вилити геологічний молоток, потрібно $(l:getting_started/pottery)виліпити$() форму з глини"
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/propick_head_mold",
+      "recipe": "tfc:heating/ceramic/propick_head_mold",
       "text": "Потім, як і усі вироби з глини, його треба $(l:mechanics/heating)випалити$(). Отримаєш $(thing)глиняну форму головки геологічного молотка$().$(br2)$(l:getting_started/finding_ores#casting)Влий$() рідкий сплав у цю форму і отримаєш головку інструменту."
     },
     {
       "type": "tfc:anvil_recipe",
-      "recipe": "tfc:anvil/wrought_iron_propick_head",
+      "recipe": "tfc:anvil/metal/propick_head/wrought_iron",
       "text": "Головку геологічного молотка можна викувати на $(l:mechanics/anvils#working)ковадлі$() зі $(thing)злитка$() будь-якого інструментального металу або сплаву.$(br2)Додай до головки паличку та отримай геологічний молоток."
     },
     {

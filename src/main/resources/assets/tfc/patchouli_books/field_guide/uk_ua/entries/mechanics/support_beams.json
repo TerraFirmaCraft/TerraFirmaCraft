@@ -23,7 +23,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/wood/oak_support",
+      "recipe": "tfc:crafting/wood/support/oak",
       "title": "Опорні балки",
       "text": "$(thing)Опорні балки$() можна виготовити за допомогою $(thing)пилки$() з деревних $(thing)колод$().$(br2)$(thing)Опорну балку$() треба встановлювати на тверду поверхню. Вона автоматично стає колоною у три блоки."
     },

@@ -103,10 +103,10 @@ public final class BuiltinRecipes extends VanillaRecipeProvider implements
     RecipeOutput output;
     HolderLookup.Provider lookup;
 
-    public BuiltinRecipes(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup, CompletableFuture<?> fluidHeat, BuiltinItemHeat itemHeat)
+    public BuiltinRecipes(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup, CompletableFuture<?> before, BuiltinItemHeat itemHeat)
     {
         super(output, lookup);
-        this.before = CompletableFuture.allOf(fluidHeat, itemHeat.output());
+        this.before = CompletableFuture.allOf(before, itemHeat.output());
         this.withMelting = itemHeat.withMelting;
     }
 
@@ -183,7 +183,7 @@ public final class BuiltinRecipes extends VanillaRecipeProvider implements
         // Loom Recipes
         add(new LoomRecipe(SizedIngredient.of(TFCItems.JUTE_FIBER, 12), ItemStackProvider.of(TFCItems.BURLAP_CLOTH), 12, Helpers.identifier("block/burlap")));
         add(new LoomRecipe(SizedIngredient.of(TFCItems.WOOL_YARN, 16), ItemStackProvider.of(TFCItems.WOOL_CLOTH), 16, Helpers.identifierMC("block/white_wool")));
-        add(new LoomRecipe(SizedIngredient.of(Tags.Items.STRINGS, 24), ItemStackProvider.of(TFCItems.SILK_CLOTH), 24, Helpers.identifierMC("block/white_wool")));
+        add(new LoomRecipe(SizedIngredient.of(Items.STRING, 24), ItemStackProvider.of(TFCItems.SILK_CLOTH), 24, Helpers.identifierMC("block/white_wool")));
         add(new LoomRecipe(SizedIngredient.of(TFCItems.WOOL_CLOTH, 4), ItemStackProvider.of(Items.WHITE_WOOL, 8), 4, Helpers.identifierMC("block/white_wool")));
         add(new LoomRecipe(SizedIngredient.of(TFCItems.SOAKED_PAPYRUS_STRIP, 4), ItemStackProvider.of(TFCItems.UNREFINED_PAPER), 8, Helpers.identifier("block/unrefined_paper")));
 

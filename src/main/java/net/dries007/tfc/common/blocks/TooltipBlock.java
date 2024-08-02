@@ -6,12 +6,29 @@
 
 package net.dries007.tfc.common.blocks;
 
+import java.util.List;
 import java.util.Optional;
+import net.minecraft.core.NonNullList;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 
+import net.dries007.tfc.util.Helpers;
+
 public interface TooltipBlock
 {
+    /**
+     * Returns the tooltip for an inventory consisting of the given {@code slots}, arranged in a grid of {@code width} by {@code height}.
+     * The {@code slots} are presumed to be immutable, i.e. from an item stack tooltip, and no copy is performed here.
+     */
+    static Optional<TooltipComponent> buildInventoryTooltip(List<ItemStack> inventory, int width, int height)
+    {
+        if (inventory.isEmpty()) return Optional.empty(); // Only called generally on empty, so special case not returning any tooltip here
+        assert inventory.size() == width * height; // Size should match what was provided by width x height otherwise
+        return Helpers.isEmpty(inventory)
+            ? Optional.empty()
+            : Optional.of(new Instance(inventory, width, height));
+    }
+
     default Optional<TooltipComponent> getTooltipImage(ItemStack stack)
     {
         return Optional.empty();
@@ -31,4 +48,6 @@ public interface TooltipBlock
     {
         return false;
     }
+
+    record Instance(List<ItemStack> items, int width, int height) implements TooltipComponent {}
 }

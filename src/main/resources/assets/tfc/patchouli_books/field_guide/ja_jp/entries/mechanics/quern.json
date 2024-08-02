@@ -52,7 +52,7 @@
     },
     {
       "type": "tfc:quern_recipe",
-      "recipe": "tfc:quern/sulfur",
+      "recipe": "tfc:quern/powder/sulfur",
       "text": "石臼は、$(thing)硫黄$() など、鉱石からさまざまな $(thing)粉$() を作るために使用されます。"
     },
     {
@@ -62,17 +62,17 @@
     },
     {
       "type": "tfc:quern_recipe",
-      "recipe": "tfc:quern/emerald",
+      "recipe": "tfc:quern/powder/emerald",
       "text": "$(thing)Gems$() can also be ground into powder."
     },
     {
       "type": "tfc:quern_recipe",
-      "recipe": "tfc:quern/barley_grain",
+      "recipe": "tfc:quern/food/barley_flour",
       "text": "$(thing)小麦粉$()も石臼から入手できます。"
     },
     {
       "type": "tfc:quern_recipe",
-      "recipe": "tfc:quern/fluxstone",
+      "recipe": "tfc:quern/powder/flux",
       "text": "$(l:mechanics/flux)融剤$() は石臼から入手することもできます。"
     }
   ],

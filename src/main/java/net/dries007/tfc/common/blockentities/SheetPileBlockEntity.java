@@ -26,6 +26,7 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.dries007.tfc.common.blocks.devices.SheetPileBlock;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.MetalItem;
+import net.dries007.tfc.util.tooltip.Tooltips;
 
 public class SheetPileBlockEntity extends TFCBlockEntity
 {
@@ -163,6 +164,7 @@ public class SheetPileBlockEntity extends TFCBlockEntity
         }
         for (Counter value : counts.values())
         {
+            tooltip.accept(Tooltips.countOfItem(value.stack, value.count));
             tooltip.accept(Component.literal(value.count + "x ").append(value.stack.getHoverName()));
         }
     }

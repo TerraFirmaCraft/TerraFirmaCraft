@@ -17,23 +17,23 @@
     },
     {
       "type": "tfc:sealed_barrel_recipe",
-      "recipe": "tfc:barrel/dye/red_concrete_powder",
+      "recipe": "tfc:barrel/red_concrete_powder",
       "text": "Dyeing items in a barrel is cheaper than using items, requiring only 25mB of dyed fluid."
     },
     {
       "type": "tfc:sealed_barrel_recipe",
-      "recipe": "tfc:barrel/dye/disc_chirp",
+      "recipe": "tfc:barrel/music_disc_chirp",
       "text": "Dye fluids can be used to finish $(item)Music Discs$()."
     },
     {
       "type": "tfc:sealed_barrel_recipe",
-      "recipe": "tfc:barrel/dye/red_leather",
+      "recipe": "tfc:barrel/red_leather",
       "text": "Dye fluids can even dye leather as if it were crafted!"
     },
     {
       "type": "tfc:sealed_barrel_recipe",
       "anchor": "lye",
-      "recipe": "tfc:barrel/dye/bleach_concrete_powder",
+      "recipe": "tfc:barrel/bleaching_bed",
       "text": "Five $(item)Wood Ash$() and 1000mB of $(item)Water$() boiled in a $(l:mechanics/pot)Pot$() produces lye. 25mB of Lye removes the color from a colored item."
     },
     {

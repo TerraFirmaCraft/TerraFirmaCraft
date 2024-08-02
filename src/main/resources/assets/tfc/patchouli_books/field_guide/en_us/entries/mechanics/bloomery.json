@@ -62,7 +62,7 @@
     },
     {
       "type": "tfc:anvil_recipe",
-      "recipe": "tfc:anvil/wrought_iron_from_bloom",
+      "recipe": "tfc:anvil/metal/ingot/wrought_iron",
       "text": "The $(thing)Refined Iron Bloom$() must be worked in a $(l:mechanics/anvils)anvil$() to make $(thing)Wrought Iron Ingots$()."
     },
     {

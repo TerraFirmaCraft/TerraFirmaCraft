@@ -8,6 +8,7 @@ package net.dries007.tfc.util.data;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
@@ -46,7 +47,7 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
     private final @Nullable StreamCodec<RegistryFriendlyByteBuf, T> streamCodec;
 
     private Map<ResourceLocation, T> byKey = Map.of();
-    private final Map<T, ResourceLocation> toKey = new IdentityHashMap<>(); // Allow equal values to map to unique keys
+    private Map<T, ResourceLocation> toKey = Map.of();
 
     private final Codec<Reference<T>> byIdCodec = ResourceLocation.CODEC.xmap(this::getReference, Reference::id);
     private final StreamCodec<ByteBuf, Reference<T>> byIdStreamCodec = ResourceLocation.STREAM_CODEC.map(this::getReference, Reference::id);
@@ -116,6 +117,14 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
             ref = references.computeIfAbsent(id, key -> new Reference<>(key, byKey.get(key)));
         }
         return ref;
+    }
+
+    /**
+     * Returns a reference to an element of this data manager, by id, only if the element already exists and is loaded.
+     */
+    public Reference<T> getCheckedReference(ResourceLocation id)
+    {
+        return references.computeIfAbsent(id, key -> new Reference<>(key, getOrThrow(id)));
     }
 
     public Map<ResourceLocation, T> getElements()
@@ -239,19 +248,15 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
             }
         }
 
-        toKey.clear();
+        toKey = new IdentityHashMap<>(); // Allow equal values to map to unique keys
         byKey.forEach((id, value) -> toKey.put(value, id));
+        toKey = Collections.unmodifiableMap(toKey);
     }
 
     public static class Reference<T> implements Supplier<T>
     {
         private final ResourceLocation id;
         private Optional<T> value;
-
-        public Reference(ResourceLocation id)
-        {
-            this(id, null);
-        }
 
         Reference(ResourceLocation id, @Nullable T value)
         {

@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:underground_flood_fill_lake",
+    "tfc:flood_fill_lake"
+  ]
+}

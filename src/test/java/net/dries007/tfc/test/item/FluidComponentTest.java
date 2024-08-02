@@ -185,14 +185,14 @@ public class FluidComponentTest implements TestSetup
 
     private void fill(FluidComponent before, Fluid fill, int fillAmount, Fluid after, int afterAmount, int filled)
     {
-        final var result = before.fill(new FluidStack(fill, fillAmount), info);
+        final var result = FluidComponent.fill(before.content(), new FluidStack(fill, fillAmount), info);
         assertEquals(new FluidStack(after, afterAmount), result.content());
         assertEquals(filled, result.filled());
     }
 
     private void drain(FluidComponent before, int drainAmount, Fluid after, int afterAmount, Fluid drain, int drainedAmount)
     {
-        final var result = before.drain(drainAmount);
+        final var result = FluidComponent.drain(before.content(), drainAmount);
         assertEquals(new FluidStack(after, afterAmount), result.content());
         assertEquals(new FluidStack(drain, drainedAmount), result.drained());
     }

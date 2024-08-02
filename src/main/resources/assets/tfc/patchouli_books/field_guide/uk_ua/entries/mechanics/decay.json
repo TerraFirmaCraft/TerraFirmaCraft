@@ -45,7 +45,7 @@
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/mutton",
+      "recipe": "tfc:heating/food/cooked_mutton",
       "text": "Натомість, $(l:getting_started/firepit)багаття$() або $(l:mechanics/grill)гриль$() можуть навіть надати бонус за своє використання! Наприклад, приготування баранини (картинка вище) у $(thing)багатті$() збільшить термін придатності на 1.33x, а на $(thing)грилі$() вже на 1.66x!"
     },
     {
@@ -56,7 +56,7 @@
     },
     {
       "type": "tfc:quern_recipe",
-      "recipe": "tfc:quern/salt",
+      "recipe": "tfc:quern/powder/salt",
       "text": "Одним з варіантів отримання солі є $(l:mechanics/quern)подрібнення$() $(l:the_world/ores_and_minerals#halite)галіту$(), що є мінералом."
     },
     {

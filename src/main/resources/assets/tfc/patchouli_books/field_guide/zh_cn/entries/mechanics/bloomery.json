@@ -62,7 +62,7 @@
     },
     {
       "type": "tfc:anvil_recipe",
-      "recipe": "tfc:anvil/wrought_iron_from_bloom",
+      "recipe": "tfc:anvil/metal/ingot/wrought_iron",
       "text": "在$(l:mechanics/anvils)砧$()上进一步打造$(thing)精铁方坯$()就能获得$(thing)锻铁锭$()了。"
     },
     {

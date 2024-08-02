@@ -1,6 +1,6 @@
 jarowinkler==1.2.1
 Levenshtein==0.20.3
-mcresources==1.7.0
+mcresources==1.7.2
 nbtlib==2.0.4
 numpy==1.23.1
 Pillow==10.4.0

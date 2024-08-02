@@ -32,7 +32,9 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.DecorationBlockHolder;
+import net.dries007.tfc.common.blocks.SandstoneBlockType;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.blocks.rock.Ore;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
@@ -100,6 +102,13 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(BlockTags.TRAPDOORS).add(TFCBlocks.METALS, Metal.BlockType.TRAPDOOR);
         tag(BlockTags.DIRT).addTags(GRASS, DIRT, MUD);
         // todo: continue more here
+
+        tag(BlockTags.BASE_STONE_OVERWORLD)
+            .addTags(STONES_RAW, STONES_HARDENED);
+        tag(BlockTags.OVERWORLD_CARVER_REPLACEABLES)
+            // Already includes base stone overworld, which includes raw and hardened stone
+            .addTags(Tags.Blocks.GRAVELS, Tags.Blocks.COBBLESTONES)
+            .add(TFCBlocks.SANDSTONE, SandstoneBlockType.RAW);
 
         tag(BlockTags.MINEABLE_WITH_AXE)
             .addOnly(TFCBlocks.WOODS, k -> k != Wood.BlockType.LEAVES && k != Wood.BlockType.SAPLING && k != Wood.BlockType.POTTED_SAPLING && k != Wood.BlockType.FALLEN_LEAVES)
@@ -176,7 +185,6 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .add(TFCBlocks.POLISHED_ALABASTER)
             .addAll(TFCBlocks.ALABASTER_POLISHED_DECORATIONS)
             .add(TFCBlocks.GROUNDCOVER)
-            .add(TFCBlocks.CAULDRONS)
             .add(TFCBlocks.GLAZED_LARGE_VESSELS)
             .add(
                 TFCBlocks.ICICLE,
@@ -205,7 +213,6 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
                 TFCBlocks.TRIP_HAMMER,
                 TFCBlocks.BRONZE_BELL,
                 TFCBlocks.BRASS_BELL,
-                TFCBlocks.HAND_WHEEL_BASE,
                 TFCBlocks.LARGE_VESSEL
             );
         tag(BlockTags.MINEABLE_WITH_SHOVEL)
@@ -260,6 +267,11 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(BlockTags.SNOW_LAYER_CAN_SURVIVE_ON).add(TFCBlocks.SOIL.get(SoilBlockType.MUD));
 
         // ===== Common Tags ===== //
+
+        tag(Tags.Blocks.COBBLESTONES_NORMAL).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.COBBLE);
+        tag(Tags.Blocks.COBBLESTONES_MOSSY).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.MOSSY_COBBLE);
+        tag(Tags.Blocks.GRAVELS).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.GRAVEL);
+        tag(Tags.Blocks.SANDS).add(TFCBlocks.SAND);
 
         pivot(TFCBlocks.METALS, Metal.BlockType.BLOCK).forEach((metal, block) ->
             tag(storageBlockTagOf(Registries.BLOCK, metal)).add(block));
@@ -337,11 +349,6 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .add(Blocks.BRICKS)
             .add(TFCBlocks.FIRE_BRICKS);
 
-        tag(Tags.Blocks.COBBLESTONES_NORMAL).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.COBBLE);
-        tag(Tags.Blocks.COBBLESTONES_MOSSY).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.MOSSY_COBBLE);
-        tag(Tags.Blocks.GRAVELS).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.GRAVEL);
-        tag(Tags.Blocks.SANDS).add(TFCBlocks.SAND);
-
         tag(LAMPS).add(TFCBlocks.METALS, Metal.BlockType.LAMP);
 
         tag(LOGS_THAT_LOG).addTag(BlockTags.LOGS);
@@ -371,6 +378,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .addTags(Tags.Blocks.GLASS_BLOCKS, Tags.Blocks.GLASS_PANES)
             .add(TFCBlocks.COLORED_POURED_GLASS)
             .add(TFCBlocks.POURED_GLASS);
+        tag(MINEABLE_WITH_HOE); // Empty
 
         tag(PROSPECTABLE).addTags(Tags.Blocks.ORES);
 
@@ -413,6 +421,14 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(SEA_BUSH_PLANTABLE_ON).addTags(BlockTags.DIRT, Tags.Blocks.GRAVELS, Tags.Blocks.SANDS);
         tag(HALOPHYTE_PLANTABLE_ON).addTag(BlockTags.DIRT);
         tag(CREEPING_STONE_PLANTABLE_ON).addTags(STONES, STONES_SMOOTH, Tags.Blocks.COBBLESTONES);
+
+        tag(CLAY_INDICATORS).add(
+            TFCBlocks.PLANTS.get(Plant.ATHYRIUM_FERN),
+            TFCBlocks.PLANTS.get(Plant.CANNA),
+            TFCBlocks.PLANTS.get(Plant.GOLDENROD),
+            TFCBlocks.PLANTS.get(Plant.PAMPAS_GRASS),
+            TFCBlocks.PLANTS.get(Plant.PEROVSKIA),
+            TFCBlocks.PLANTS.get(Plant.WATER_CANNA));
     }
 
     @Override

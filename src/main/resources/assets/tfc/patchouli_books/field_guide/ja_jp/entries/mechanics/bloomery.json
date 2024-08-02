@@ -62,7 +62,7 @@
     },
     {
       "type": "tfc:anvil_recipe",
-      "recipe": "tfc:anvil/wrought_iron_from_bloom",
+      "recipe": "tfc:anvil/metal/ingot/wrought_iron",
       "text": "ついに$(thing)錬鉄インゴット$() を作ることができます！$(thing)鍛造された塊鉄$() を $(l:mechanics/anvils)金床$() で加工します。"
     },
     {

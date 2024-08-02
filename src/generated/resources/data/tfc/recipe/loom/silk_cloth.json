@@ -2,7 +2,7 @@
   "type": "tfc:loom",
   "ingredient": {
     "count": 24,
-    "tag": "c:strings"
+    "item": "minecraft:string"
   },
   "result": {
     "count": 1,

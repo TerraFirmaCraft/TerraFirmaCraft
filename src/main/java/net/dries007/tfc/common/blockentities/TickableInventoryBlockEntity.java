@@ -8,7 +8,6 @@ package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.util.INBTSerializable;
@@ -22,9 +21,9 @@ public abstract class TickableInventoryBlockEntity<C extends IItemHandlerModifia
 {
     private boolean needsClientUpdate;
 
-    protected TickableInventoryBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, InventoryFactory<C> inventory, Component defaultName)
+    protected TickableInventoryBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, InventoryFactory<C> inventory)
     {
-        super(type, pos, state, inventory, defaultName);
+        super(type, pos, state, inventory);
     }
 
     public void checkForLastTickSync()

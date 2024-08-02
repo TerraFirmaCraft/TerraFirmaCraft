@@ -1,13 +1,13 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "minecraft:item/handheld_rod",
+  "parent": "item/handheld_rod",
   "textures": {
     "layer0": "tfc:item/metal/fishing_rod/steel"
   },
   "overrides": [
     {
       "predicate": {
-        "tfc:cast": 1
+        "tfc:cast": 1.0
       },
       "model": "tfc:item/metal/fishing_rod/steel_cast"
     }

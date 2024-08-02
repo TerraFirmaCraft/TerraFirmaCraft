@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.component;
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -39,22 +40,39 @@ public final class CachedMut<T>
         this.loaded = loaded;
     }
 
+    /**
+     * @return The value of this cache, or {@code null} if the value is empty or unloaded.
+     */
     @Nullable
     public T value()
     {
         return value;
     }
 
-    public boolean isPresent()
-    {
-        return value != null;
-    }
-
+    /**
+     * @return {@code true} if this cache is loaded.
+     */
+    @Contract(pure = true)
     public boolean isLoaded()
     {
         return loaded;
     }
 
+    /**
+     * @return {@code true} if this cache is loaded, and present.
+     * @throws AssertionError if the cache is not loaded.
+     */
+    @Contract(pure = true)
+    public boolean isPresent()
+    {
+        assert loaded;
+        return value != null;
+    }
+
+    /**
+     * Loads this cache with the provided {@code value}.
+     * @throws AssertionError if the cache is already loaded
+     */
     public void load(@Nullable T value)
     {
         assert !this.loaded;
@@ -62,6 +80,9 @@ public final class CachedMut<T>
         this.loaded = true;
     }
 
+    /**
+     * Unloads this cache, resetting it to an unloaded state.
+     */
     public void unload()
     {
         this.value = null;
@@ -71,6 +92,18 @@ public final class CachedMut<T>
     @Override
     public String toString()
     {
-        return isLoaded() ? (isPresent() ? value.toString() : "<empty>") : "<unloaded>";
+        return loaded ? (value != null ? value.toString() : "<empty>") : "<unloaded>";
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        return obj instanceof CachedMut; // We cannot fundamentally compare
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return 0;
     }
 }

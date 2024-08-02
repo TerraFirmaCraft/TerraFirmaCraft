@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/vanilla/smithing_table",
+      "recipe": "minecraft:smithing_table",
       "text": "The smithing table can be used to apply armor trims to TFC armor."
     }
   ],

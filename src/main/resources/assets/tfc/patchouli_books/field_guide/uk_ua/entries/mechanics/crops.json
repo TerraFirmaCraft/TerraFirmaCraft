@@ -15,16 +15,16 @@
     {
       "type": "tfc:rock_knapping_recipe",
       "recipes": [
-        "tfc:rock_knapping/hoe_head_sedimentary",
-        "tfc:rock_knapping/hoe_head_metamorphic",
-        "tfc:rock_knapping/hoe_head_igneous_extrusive",
-        "tfc:rock_knapping/hoe_head_igneous_intrusive"
+        "tfc:knapping/stone/hoe_head/sedimentary",
+        "tfc:knapping/stone/hoe_head/metamorphic",
+        "tfc:knapping/stone/hoe_head/igneous_extrusive",
+        "tfc:knapping/stone/hoe_head/igneous_intrusive"
       ],
       "text": "Для початку, $(thing)кам'яна мотика$() допоможе тобі з грядками."
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/stone/hoe_sedimentary",
+      "recipe": "tfc:crafting/stone/hoe/sedimentary",
       "text": "Мотика працює подібно до ванільної. Тобто правою клавішою миші потрібно нажати на блоці землі для формування $(thing)грядки$(). Мотика перетворить $(thing)вкорінений ґрунт$() на звичайний."
     },
     {

@@ -26,7 +26,6 @@ import static net.dries007.tfc.TerraFirmaCraft.*;
 
 public class ScrapingBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 {
-    private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.scraping");
     @Nullable private ResourceLocation inputTexture = null;
     @Nullable private ResourceLocation outputTexture = null;
     private short positions = 0; // essentially a boolean[16]
@@ -35,7 +34,7 @@ public class ScrapingBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 
     public ScrapingBlockEntity(BlockPos pos, BlockState state)
     {
-        super(TFCBlockEntities.SCRAPING.get(), pos, state, defaultInventory(1), NAME);
+        super(TFCBlockEntities.SCRAPING.get(), pos, state, defaultInventory(1));
     }
 
     public boolean isComplete()

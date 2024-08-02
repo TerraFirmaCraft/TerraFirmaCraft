@@ -111,6 +111,7 @@ public final class TFCCreativeTabs
             }
         });
         TFCBlocks.SMALL_ORES.values().forEach(out::accept);
+        TFCItems.GEMS.values().forEach(out::accept);
 
         for (SandBlockType type : SandBlockType.values())
         {
@@ -477,8 +478,6 @@ public final class TFCCreativeTabs
         out.accept(TFCItems.HEMATITIC_GLASS_BOTTLE);
         out.accept(TFCItems.OLIVINE_GLASS_BOTTLE);
         out.accept(TFCItems.VOLCANIC_GLASS_BOTTLE);
-        out.accept(TFCBlocks.HAND_WHEEL_BASE);
-        out.accept(TFCItems.HAND_WHEEL);
         out.accept(TFCItems.EMPTY_JAR);
         out.accept(TFCItems.EMPTY_JAR_WITH_LID);
         out.accept(TFCItems.JAR_LID);

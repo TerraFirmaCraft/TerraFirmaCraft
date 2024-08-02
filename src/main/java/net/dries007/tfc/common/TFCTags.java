@@ -165,6 +165,9 @@ public class TFCTags
         public static final TagKey<Block> HALOPHYTE_PLANTABLE_ON = tag("halophyte_plantable_on"); // Used for halophyte placement
         public static final TagKey<Block> CREEPING_STONE_PLANTABLE_ON = tag("creeping_stone_plantable_on");
 
+        /** Used in the Field Guide to display indicators in a multiblock */
+        public static final TagKey<Block> CLAY_INDICATORS = tag("clay_indicators");
+
         private static TagKey<Block> tag(String name)
         {
             return TagKey.create(Registries.BLOCK, Helpers.identifier(name));
@@ -253,7 +256,7 @@ public class TFCTags
         public static final TagKey<Item> FISH = commonTag("foods/fish");
         public static final TagKey<Item> FLOUR = commonTag("foods/flour");
         public static final TagKey<Item> DOUGH = commonTag("foods/dough");
-        public static final TagKey<Item> GRAINS = commonTag("foods/grains");
+        public static final TagKey<Item> GRAINS = commonTag("foods/grain");
         public static final TagKey<Item> BREAD = commonTag("foods/bread");
         public static final TagKey<Item> DAIRY = commonTag("foods/dairy");
         public static final TagKey<Item> SALADS = commonTag("foods/salad");
@@ -309,6 +312,7 @@ public class TFCTags
         public static final TagKey<Item> HOLDS_LARGE_FISHING_BAIT = tag("holds_large_fishing_bait");
 
         public static final TagKey<Item> PLANTS = tag("plants");
+        public static final TagKey<Item> WILD_CROPS = tag("wild_crops");
 
         // Colored Items
         public static final TagKey<Item> COLORED_WOOL = tag("colored_wool");
@@ -351,6 +355,9 @@ public class TFCTags
         public static final TagKey<Item> WATER_WHEELS = tag("water_wheels");
         public static final TagKey<Item> WINDMILL_BLADES = tag("windmill_blades");
         public static final TagKey<Item> AXLES = tag("axles");
+        public static final TagKey<Item> GEAR_BOXES = tag("gear_boxes");
+        public static final TagKey<Item> CLUTCHES = tag("clutches");
+        public static final TagKey<Item> SUPPORT_BEAMS = tag("support_beams");
         public static final TagKey<Item> LUMBER = tag("lumber");
         public static final TagKey<Item> ANVILS = tag("anvils");
 
@@ -375,6 +382,8 @@ public class TFCTags
         public static final TagKey<Item> TOOLS_GLASSWORKING = commonTag("tools/glassworking");
         /** Blowpipes without glass batches */
         public static final TagKey<Item> TOOLS_BLOWPIPE = commonTag("tools/blowpipe");
+        /** Used in loot tables to prevent dropping of certain items */
+        public static final TagKey<Item> TOOLS_SHARP = tag("tools/sharp");
 
         // Damage Types
         public static final TagKey<Item> DEALS_SLASHING_DAMAGE = tag("deals_slashing_damage");

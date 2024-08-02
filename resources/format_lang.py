@@ -4,11 +4,14 @@ import json
 from typing import Tuple
 
 
-def main(validate: bool, namespace: str, langs: Tuple[str, ...]):
+def main(validate: bool, namespace: str, langs: Tuple[str, ...]) -> set[str]:
     en_us = load(namespace, 'en_us')
+    touched = set()
     for lang in langs:
         if lang != 'en_us':
             format_lang(namespace, en_us, lang, validate)
+            touched.add(lang_path(namespace, lang))
+    return touched
 
 
 def update(namespace: str, langs: Tuple[str, ...]):
@@ -66,7 +69,7 @@ def format_lang(namespace: str, en_us, lang: str, validate: bool):
 
 
 def load(namespace: str, lang: str):
-    with open('./src/main/resources/assets/%s/lang/%s.json' % (namespace, lang), 'r', encoding='utf-8') as f:
+    with open(lang_path(namespace, lang), 'r', encoding='utf-8') as f:
         return json.load(f)
 
 
@@ -81,9 +84,13 @@ def load_old(namespace: str, lang: str):
 
 def save(namespace: str, lang: str, lang_data, validate: bool):
     if validate:
-        with open('./src/main/resources/assets/%s/lang/%s.json' % (namespace, lang), 'r', encoding='utf-8') as f:
+        with open(lang_path(namespace, lang), 'r', encoding='utf-8') as f:
             old_lang_data = json.load(f)
             assert old_lang_data == lang_data, 'Validation error in mod localization for %s:\n\n=== Diff (expected vs. actual) ===\n\n%s' % (lang, '\n'.join(difflib.unified_diff(json.dumps(lang_data, ensure_ascii=False, indent=2).split('\n'), json.dumps(old_lang_data, ensure_ascii=False, indent=2).split('\n'))))
     else:
-        with open('./src/main/resources/assets/%s/lang/%s.json' % (namespace, lang), 'w', encoding='utf-8') as f:
+        with open(lang_path(namespace, lang), 'w', encoding='utf-8') as f:
             json.dump(lang_data, f, ensure_ascii=False, indent=2)
+
+
+def lang_path(namespace: str, lang: str) -> str:
+    return './src/main/resources/assets/%s/lang/%s.json' % (namespace, lang)

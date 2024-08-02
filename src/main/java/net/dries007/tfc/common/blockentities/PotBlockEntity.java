@@ -52,9 +52,12 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
 {
     public static final int SLOT_EXTRA_INPUT_START = 4;
     public static final int SLOT_EXTRA_INPUT_END = 8;
-    public static final int PRE_BOIL_TIME = 100;
 
-    private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.pot");
+    /**
+     * A number of ticks that a recipe needs to start "boiling" before the slots lock. This is to assist players which
+     * add recipe partial ingredients to an already-hot pot, which would otherwise lock immediately.
+     */
+    public static final int PRE_BOIL_TIME = 100;
 
     private final SidedHandler<IFluidHandler> sidedFluidInventory;
     @Nullable private PotOutput output;
@@ -63,7 +66,7 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
 
     public PotBlockEntity(BlockPos pos, BlockState state)
     {
-        super(TFCBlockEntities.POT.get(), pos, state, PotInventory::new, NAME);
+        super(TFCBlockEntities.POT.get(), pos, state, PotInventory::new);
 
         output = null;
         cachedRecipe = null;

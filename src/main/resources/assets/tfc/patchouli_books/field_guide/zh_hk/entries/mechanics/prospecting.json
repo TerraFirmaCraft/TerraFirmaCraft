@@ -22,17 +22,17 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/propick_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_propick_head_mold",
       "text": "你可以用黏土按上圖$(l:getting_started/pottery)塑形$()成一個未燒製的勘礦鎬頭模具。"
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/propick_head_mold",
+      "recipe": "tfc:heating/ceramic/propick_head_mold",
       "text": "模具$(l:getting_started/pottery)塑形$()完之後還需要$(l:mechanics/heating)燒製$()。$(br2)將液態金屬倒入到燒製好的模具中就能$(l:getting_started/finding_ores#casting)鑄造$()出勘礦鎬了。"
     },
     {
       "type": "tfc:anvil_recipe",
-      "recipe": "tfc:anvil/wrought_iron_propick_head",
+      "recipe": "tfc:anvil/metal/propick_head/wrought_iron",
       "text": "勘礦鎬頭也可以在$(l:mechanics/anvils)砧$()上使用任何可以製造工具的金屬$(thing)錠$()$(l:mechanics/anvils#working)鍛造$()而成。$(br2)最後用木棍和工具頭在合成欄合成就能做出勘礦鎬了。"
     },
     {

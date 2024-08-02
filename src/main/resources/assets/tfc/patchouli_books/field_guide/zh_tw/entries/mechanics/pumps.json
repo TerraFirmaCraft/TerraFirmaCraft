@@ -10,7 +10,7 @@
     },
     {
       "type": "tfc:anvil_recipe",
-      "recipe": "tfc:anvil/steel_pump",
+      "recipe": "tfc:anvil/steel_pipe",
       "text": "The steel pipe can be crafted from, predictably, $(l:mechanics/steel)Steel$(), on an $(l:mechanics/anvils)Anvil$(). A $(thing)Steel Pump$() can be crafted from some $(thing)Steel Pipes$(), and $(l:getting_started/primitive_alloys#brass)Brass Mechanisms$()."
     },
     {

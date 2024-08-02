@@ -45,7 +45,7 @@
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/mutton",
+      "recipe": "tfc:heating/food/cooked_mutton",
       "text": "代わりに、 $(l:getting_started/firepit)焚き火$() または $(l:mechanics/grill)グリル$() を使用すると、腐敗時間を延長するバフを得ることもできます。 たとえば、$(thing)焚き火$() で羊肉を調理すると期限が 1.33 倍に伸び、$(thing)グリル$() で調理すると期限が 1.66 倍に伸びます。"
     },
     {
@@ -56,7 +56,7 @@
     },
     {
       "type": "tfc:quern_recipe",
-      "recipe": "tfc:quern/salt",
+      "recipe": "tfc:quern/powder/salt",
       "text": "塩を入手する方法の 1 つは、鉱物である$(l:the_world/ores_and_minerals#halite)岩塩$() を$(l:mechanics/quern)粉砕$()することです。"
     },
     {

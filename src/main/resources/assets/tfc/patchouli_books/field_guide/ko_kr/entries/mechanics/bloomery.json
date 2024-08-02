@@ -62,7 +62,7 @@
     },
     {
       "type": "tfc:anvil_recipe",
-      "recipe": "tfc:anvil/wrought_iron_from_bloom",
+      "recipe": "tfc:anvil/metal/ingot/wrought_iron",
       "text": "$(thing)제련된 괴철$()을 다시 한번 $(l:mechanics/anvils)모루$()에서 단조하면 $(thing)연철괴$()를 만들 수 있습니다."
     },
     {

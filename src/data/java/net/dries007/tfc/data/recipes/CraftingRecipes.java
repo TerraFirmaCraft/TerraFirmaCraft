@@ -187,6 +187,12 @@ public interface CraftingRecipes extends Recipes
         // todo: re-add recipes for new fancy windmill blades
         // todo: pass over new recipes from 1.21, are there any we need to nuke / replace easily?
 
+        // todo: Need to add
+        // - Loom (used for banner patterns)
+        // - Smithing Table (used for armor trims)
+        // - Lattice / Rustic windmill blades
+        // - Name Tag (replace slimeball with glue in recipe, check 1.20)
+
         TFCItems.GEMS.forEach((gem, item) -> recipe()
             .damageInputs()
             .input(TFCItems.SANDPAPER)

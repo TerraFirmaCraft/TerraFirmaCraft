@@ -10,17 +10,17 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:leather_knapping/chestplate",
+      "recipe": "tfc:knapping/leather_chestplate",
       "text": "皮革盔甲是利用$(l:mechanics/leather_making)皮革$()塑形制成的. 這種盔甲用不久, 但如果湊齊一整套, 還是能提供一些體面的防護的."
     },
     {
       "type": "tfc:anvil_recipe",
-      "recipe": "tfc:anvil/copper_unfinished_helmet",
+      "recipe": "tfc:anvil/metal/unfinished_helmet/copper",
       "text": "$(thing)金屬盔甲$()需要利用$(l:mechanics/anvils)砧$()經過多重步驟打造而成. 首先需要鍛造一個$(thing)未完成的$()盔甲, 這需要一個這種金屬的$(thing)雙層薄板$(), 除了靴子只需要一個$(thing)薄板$()."
     },
     {
       "type": "tfc:welding_recipe",
-      "recipe": "tfc:welding/bismuth_bronze_greaves",
+      "recipe": "tfc:welding/metal/greaves/bismuth_bronze",
       "text": "接下來, 需要將一個$(thing)薄板$() $(l:mechanics/anvils#welding)焊接$()到盔甲上來完成製作, 而胸甲需要一個$(thing)雙層薄板$()才能完成."
     },
     {

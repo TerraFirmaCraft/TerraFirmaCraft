@@ -14,12 +14,12 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/unseal_plum_jar",
+      "recipe": "tfc:crafting/jar/plum_unsealed",
       "text": "Открытие банки производится через крафт. Крышку получить обратно нельзя. Открытая банка хранится всего несколько дней!"
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/barley_sandwich_with_jam_1",
+      "recipe": "tfc:crafting/food/barley_bread_jam_sandwich_1",
       "text": "Джем используется для приготовления бутербродов. Бутерброды с джемом могут содержать молочные продукты, Приготовленное мясо и джем. Остается $(thing)Пустая банка$()."
     },
     {
@@ -28,7 +28,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/wood/oak_shelf",
+      "recipe": "tfc:crafting/wood/jar_shelf/oak",
       "text": "$(thing)Полки для банок$() могут быть прикреплены к твердым стенам. Их можно разместить напрямую или щелкнув по существующему блоку размещенных банок. Верх полки для банок считается твердой поверхностью для размещения предметов, больше банок или других блоков."
     }
   ],

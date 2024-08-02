@@ -45,7 +45,7 @@
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/mutton",
+      "recipe": "tfc:heating/food/cooked_mutton",
       "text": "Вместо этого, $(l:getting_started/firepit)Кострище$() или $(l:mechanics/grill)Гриль$() могут даже предоставить бонус за их использование! Например, приготовление баранины (изображено выше) в $(thing)Кострище$() увеличит ее срок годности на 1, 33x, а приготовление на $(thing)Гриле$() увеличит его на 1, 66x!"
     },
     {
@@ -56,7 +56,7 @@
     },
     {
       "type": "tfc:quern_recipe",
-      "recipe": "tfc:quern/salt",
+      "recipe": "tfc:quern/powder/salt",
       "text": "Один из способов получить соль - это $(l:mechanics/quern)измельчение$() $(l:the_world/ores_and_minerals#halite)галита$(), который является минералом."
     },
     {

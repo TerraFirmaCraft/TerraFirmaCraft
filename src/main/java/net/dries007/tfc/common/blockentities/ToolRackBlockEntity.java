@@ -24,11 +24,9 @@ import static net.dries007.tfc.TerraFirmaCraft.*;
 
 public class ToolRackBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 {
-    private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.tool_rack");
-
     public ToolRackBlockEntity(BlockPos pos, BlockState state)
     {
-        super(TFCBlockEntities.TOOL_RACK.get(), pos, state, defaultInventory(4), NAME);
+        super(TFCBlockEntities.TOOL_RACK.get(), pos, state, defaultInventory(4));
     }
 
     public ItemInteractionResult onRightClick(Player player, int slot)

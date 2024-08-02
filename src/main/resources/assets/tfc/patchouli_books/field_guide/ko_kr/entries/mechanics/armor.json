@@ -10,17 +10,17 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:leather_knapping/chestplate",
+      "recipe": "tfc:knapping/leather_chestplate",
       "text": "가죽 갑옷은 $(l:mechanics/leather_making)가죽$()을 잘라 만들 수 있습니다. 오래 가지는 않지만, 완전히 다 입는다면 어느 정도의 방어력을 제공합니다."
     },
     {
       "type": "tfc:anvil_recipe",
-      "recipe": "tfc:anvil/copper_unfinished_helmet",
+      "recipe": "tfc:anvil/metal/unfinished_helmet/copper",
       "text": "$(thing)금속 갑옷$()을 제작하려면 $(l:mechanics/anvils)모루$()에서 여러 단계를 거쳐야 합니다. 먼저, $(thing)미완성$() 갑옷을 만들어야 합니다. 부츠를 제외한 미완성 갑옷을 만들려면 $(thing)합판$()이 필요하며, 부츠 제작에는 일반 판이 필요합니다."
     },
     {
       "type": "tfc:welding_recipe",
-      "recipe": "tfc:welding/bismuth_bronze_greaves",
+      "recipe": "tfc:welding/metal/greaves/bismuth_bronze",
       "text": "다음으로, $(thing)판$()과 미완성 갑옷을 $(l:mechanics/anvils#welding)용접$()하면 완성할 수 있습니다. 흉갑 제작에는 판 대신 $(thing)합판$()이 필요합니다."
     },
     {

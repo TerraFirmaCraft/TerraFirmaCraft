@@ -69,60 +69,51 @@ public class AnvilScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilContai
         assert level != null;
 
         // Draw rule icons
-        final @Nullable Forging forging = blockEntity.getMainInputForging();
-        if (forging != null)
+        final Forging forging = blockEntity.getMainInputForging();
+
+        // Draw the progress indicators
+        final int progress = forging.work();
+        graphics.blit(texture, guiLeft + 13 + progress, guiTop + 100, 176, 0, 5, 5);
+
+        final int target = forging.target();
+        graphics.blit(texture, guiLeft + 13 + target, guiTop + 94, 181, 0, 5, 5);
+
+        final AnvilRecipe recipe = forging.getRecipe();
+        if (recipe != null)
         {
-            final ForgingComponent view = forging.view();
-
-            // Draw the progress indicators
-            final int progress = view.work();
-            graphics.blit(texture, guiLeft + 13 + progress, guiTop + 100, 176, 0, 5, 5);
-
-            final int target = view.target();
-            graphics.blit(texture, guiLeft + 13 + target, guiTop + 94, 181, 0, 5, 5);
-
-            final ForgeSteps steps = view.steps();
-            final AnvilRecipe recipe = view.recipe();
-            if (recipe != null)
+            final List<ForgeRule> rules = recipe.getRules();
+            for (int i = 0; i < rules.size(); i++)
             {
-                final List<ForgeRule> rules = recipe.getRules();
-                for (int i = 0; i < rules.size(); i++)
-                {
-                    final ForgeRule rule = rules.get(i);
-                    if (rule != null)
-                    {
-                        final int xOffset = i * 19;
-
-                        // The rule icon
-                        graphics.blit(texture, guiLeft + 64 + xOffset, guiTop + 10, 10, 10, rule.iconX(), rule.iconY(), 32, 32, 256, 256);
-
-                        // The overlay
-                        if (rule.matches(steps))
-                        {
-                            RenderSystem.setShaderColor(0f, 0.6f, 0.2f, 1f); // Green
-                        }
-                        else
-                        {
-                            RenderSystem.setShaderColor(1f, 0.4f, 0, 1f); // Red
-                        }
-
-                        graphics.blit(texture, guiLeft + 59 + xOffset, guiTop + 7, 198, rule.overlayY(), 20, 22);
-                        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-                    }
-                }
-            }
-
-            // Draw step icons
-            final ForgeStep[] stepSequence = {steps.last().orElse(null), steps.secondLast().orElse(null), steps.thirdLast().orElse(null)};
-            for (int i = 0; i < 3; i++)
-            {
-                final ForgeStep step = stepSequence[i];
-                if (step != null)
+                final ForgeRule rule = rules.get(i);
+                if (rule != null)
                 {
                     final int xOffset = i * 19;
-                    graphics.blit(texture, guiLeft + 64 + xOffset, guiTop + 31, 10, 10, step.iconX(), step.iconY(), 32, 32, 256, 256);
+
+                    // The rule icon
+                    graphics.blit(texture, guiLeft + 64 + xOffset, guiTop + 10, 10, 10, rule.iconX(), rule.iconY(), 32, 32, 256, 256);
+
+                    // The overlay
+                    if (forging.matches(rule))
+                    {
+                        RenderSystem.setShaderColor(0f, 0.6f, 0.2f, 1f); // Green
+                    }
+                    else
+                    {
+                        RenderSystem.setShaderColor(1f, 0.4f, 0, 1f); // Red
+                    }
+
+                    graphics.blit(texture, guiLeft + 59 + xOffset, guiTop + 7, 198, rule.overlayY(), 20, 22);
+                    RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
                 }
             }
+        }
+
+        // Draw step icons
+        int index = 0;
+        for (ForgeStep step : forging.lastSteps())
+        {
+            graphics.blit(texture, guiLeft + 102 - (index * 19), guiTop + 31, 10, 10, step.iconX(), step.iconY(), 32, 32, 256, 256);
+            index++;
         }
     }
 
@@ -135,7 +126,7 @@ public class AnvilScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilContai
         final Forging forging = blockEntity.getMainInputForging();
         if (level != null)
         {
-            final @Nullable AnvilRecipe recipe = forging.view().recipe();
+            final @Nullable AnvilRecipe recipe = forging.getRecipe();
             if (recipe != null)
             {
                 final List<ForgeRule> rules = recipe.getRules();

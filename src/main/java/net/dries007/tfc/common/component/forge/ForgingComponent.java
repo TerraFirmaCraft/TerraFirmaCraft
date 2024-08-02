@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.component.forge;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import com.mojang.serialization.Codec;
@@ -15,6 +14,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.recipes.AnvilRecipe;
@@ -22,137 +22,95 @@ import net.dries007.tfc.common.recipes.AnvilRecipe;
 /**
  * A mutable view of the anvil working data attached to an item stack. As data components are nominally immutable,
  * and we want to expose mutable-like interfaces, we wrap them in this when queried.
- *
- * @param work the current work value, in the range [0, {@link ForgeStep#LIMIT}]
- * @param target the work target for the current selected recipe, if present, or -1 if there is no recipe.
  */
-public record ForgingComponent(
-    ForgeSteps steps,
-    int work,
-    int target,
-    AnvilRecipeHolder holder
-)
+public final class ForgingComponent
 {
     public static final Codec<ForgingComponent> CODEC = RecordCodecBuilder.create(i -> i.group(
         ForgeSteps.CODEC.optionalFieldOf("steps", ForgeSteps.EMPTY).forGetter(c -> c.steps),
         Codec.INT.optionalFieldOf("work", 0).forGetter(c -> c.work),
         Codec.INT.optionalFieldOf("target", 0).forGetter(c -> c.target),
-        ResourceLocation.CODEC.optionalFieldOf("recipe")
-            .xmap(
-                opt -> new AnvilRecipeHolder(opt.orElse(null), null),
-                holder -> Optional.ofNullable(holder.recipeId))
-            .forGetter(c -> c.holder)
+        ResourceLocation.CODEC.optionalFieldOf("recipe").forGetter(c -> Optional.ofNullable(c.recipeId))
     ).apply(i, ForgingComponent::new));
 
     public static final StreamCodec<ByteBuf, ForgingComponent> STREAM_CODEC = StreamCodec.composite(
         ForgeSteps.STREAM_CODEC, c -> c.steps,
         ByteBufCodecs.VAR_INT, c -> c.work,
         ByteBufCodecs.VAR_INT, c -> c.target,
-        ByteBufCodecs.optional(ResourceLocation.STREAM_CODEC)
-            .map(
-                opt -> new AnvilRecipeHolder(opt.orElse(null), null),
-                holder -> Optional.ofNullable(holder.recipeId)
-            ), c -> c.holder,
+        ByteBufCodecs.optional(ResourceLocation.STREAM_CODEC), c -> Optional.ofNullable(c.recipeId),
         ForgingComponent::new
     );
 
-    public static final ForgingComponent DEFAULT = new ForgingComponent(
-        new ForgeSteps(Optional.empty(), Optional.empty(), Optional.empty(), 0),
-        0, 0,
-        new AnvilRecipeHolder(null, null));
+    public static final ForgingComponent EMPTY = new ForgingComponent(ForgeSteps.EMPTY, 0, 0, Optional.empty());
 
-    /**
-     * @return The current anvil recipe, or {@code null} if none is selected, possibly looking up by ID.
-     */
+    final ForgeSteps steps;
+    final int work;
+    final int target;
+    private @Nullable ResourceLocation recipeId;
+    private @Nullable AnvilRecipe recipe;
+
+    ForgingComponent(ForgeSteps steps, int work, int target, Optional<ResourceLocation> recipeId)
+    {
+        this(steps, work, target, recipeId.orElse(null), null);
+    }
+
+    ForgingComponent(ForgeSteps steps, int work, int target, @Nullable ResourceLocation recipeId, @Nullable AnvilRecipe recipe)
+    {
+        this.steps = steps;
+        this.work = work;
+        this.target = target;
+        this.recipeId = recipeId;
+        this.recipe = recipe;
+    }
+
     @Nullable
-    public AnvilRecipe recipe()
+    AnvilRecipe getRecipe()
     {
-        return holder.recipe();
-    }
-
-    public boolean matches(List<ForgeRule> rules)
-    {
-        for (ForgeRule rule : rules)
+        if (recipeId != null && recipe == null)
         {
-            if (!matches(rule))
+            recipe = AnvilRecipe.byId(recipeId);
+            if (recipe == null)
             {
-                return false;
+                recipeId = null;
             }
         }
-        return true;
+        return recipe;
     }
 
-    public boolean matches(ForgeRule rule)
+    ForgingComponent withRecipe(@Nullable RecipeHolder<AnvilRecipe> recipe, int target)
     {
-        return rule.matches(steps);
+        return recipe == null
+            ? new ForgingComponent(steps, work, -1, null, null)
+            : new ForgingComponent(steps, work, target, recipe.id(), recipe.value());
     }
 
-    ForgingComponent withRecipe(@Nullable AnvilRecipe recipe, int target)
+    ForgingComponent withStep(ForgeStep step, int amount)
     {
-        return new ForgingComponent(steps, work, target, new AnvilRecipeHolder(null, recipe));
+        return new ForgingComponent(steps.withStep(step), work + amount, target, recipeId, recipe);
     }
 
-    ForgingComponent withStep(@Nullable ForgeStep step, int amount)
+    @Override
+    public boolean equals(Object obj)
     {
-        return new ForgingComponent(steps.withStep(step), work + amount, target, holder);
+        return obj == this || (obj instanceof ForgingComponent that
+            && steps.equals(that.steps)
+            && work == that.work
+            && target == that.target
+            && Objects.equals(recipeId, that.recipeId));
     }
 
-    ForgingComponent withNoRecipeIfNotWorked()
+    @Override
+    public int hashCode()
     {
-        return steps.any() ? this : new ForgingComponent(steps, work, target, new AnvilRecipeHolder(null, null));
+        return Objects.hash(steps, work, target, recipeId);
     }
 
-    /**
-     * A small helper to provide interior mutability for the recipe ID and recipe, which need to query the recipe
-     * ID cache on access, and store the cached recipe for future queries.
-     */
-    static class AnvilRecipeHolder
+    @Override
+    public String toString()
     {
-        @Nullable ResourceLocation recipeId;
-        @Nullable AnvilRecipe recipe;
-
-        AnvilRecipeHolder(@Nullable ResourceLocation recipeId, @Nullable AnvilRecipe recipe)
-        {
-            this.recipe = recipe;
-            this.recipeId = recipeId;
-        }
-
-        @Nullable
-        AnvilRecipe recipe()
-        {
-            if (recipe != null)
-            {
-                return recipe;
-            }
-            if (recipeId != null)
-            {
-                recipe = AnvilRecipe.byId(recipeId);
-                if (recipe == null)
-                {
-                    recipeId = null;
-                }
-            }
-            return recipe;
-        }
-
-        @Override
-        public boolean equals(Object obj)
-        {
-            return obj instanceof AnvilRecipeHolder holder
-                && recipe == holder.recipe
-                && Objects.equals(recipeId, holder.recipeId);
-        }
-
-        @Override
-        public int hashCode()
-        {
-            return Objects.hash(recipe, recipeId);
-        }
-
-        @Override
-        public String toString()
-        {
-            return recipeId != null ? recipeId.toString() : (recipe != null ? "???" : "null");
-        }
+        return "ForgingComponent[" +
+            "steps=" + steps + ", " +
+            "work=" + work + ", " +
+            "target=" + target + ", " +
+            "recipe=" + recipeId + ']';
     }
 }

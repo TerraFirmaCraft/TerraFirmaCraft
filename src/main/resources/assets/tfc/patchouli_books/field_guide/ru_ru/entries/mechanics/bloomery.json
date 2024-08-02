@@ -62,7 +62,7 @@
     },
     {
       "type": "tfc:anvil_recipe",
-      "recipe": "tfc:anvil/wrought_iron_from_bloom",
+      "recipe": "tfc:anvil/metal/ingot/wrought_iron",
       "text": "$(thing)Очищенный железный слиток$() должен быть обработан на $(l:mechanics/anvils)наковальне$(), чтобы сделать $(thing)Кованые железные слитки$()."
     },
     {

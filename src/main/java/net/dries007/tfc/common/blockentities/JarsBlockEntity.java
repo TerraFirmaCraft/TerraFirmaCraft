@@ -29,13 +29,6 @@ import static net.dries007.tfc.TerraFirmaCraft.*;
 
 public class JarsBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 {
-    private static final Component NAME = Component.translatable(MOD_ID + ".block_entity.jars");
-
-    public JarsBlockEntity(BlockPos pos, BlockState state)
-    {
-        this(TFCBlockEntities.JARS.get(), pos, state);
-    }
-
     public boolean use(Player player, ItemStack held, BlockHitResult result)
     {
         if (result.getLocation().y - result.getBlockPos().getY() > 15 / 16f)
@@ -86,9 +79,14 @@ public class JarsBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         return false;
     }
 
+    public JarsBlockEntity(BlockPos pos, BlockState state)
+    {
+        this(TFCBlockEntities.JARS.get(), pos, state);
+    }
+
     public JarsBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
-        super(type, pos, state, defaultInventory(4), NAME);
+        super(type, pos, state, defaultInventory(4));
     }
 
     @Override

@@ -44,12 +44,11 @@ public class AnvilRecipe implements ISimpleRecipe<AnvilRecipe.Inventory>
             .anyMatch(r -> r.value().input.test(stack) && tier >= r.value().minTier); // anyMatch() should be faster than calling toList().isEmpty()
     }
 
-    public static List<AnvilRecipe> getAll(Level level, ItemStack stack, int tier)
+    public static List<RecipeHolder<AnvilRecipe>> getAll(Level level, ItemStack stack, int tier)
     {
         return RecipeHelpers.getRecipes(level, TFCRecipeTypes.ANVIL)
             .stream()
             .filter(r -> r.value().input.test(stack) && tier >= r.value().minTier)
-            .map(RecipeHolder::value)
             .toList();
     }
 
@@ -116,8 +115,8 @@ public class AnvilRecipe implements ISimpleRecipe<AnvilRecipe.Inventory>
     public boolean checkComplete(Inventory inventory)
     {
         final Forging forging = ForgingCapability.get(inventory.getItem());
-        return forging.view().matches(rules)
-            && isWorkMatched(forging.view().work(), computeTarget(inventory));
+        return forging.matches(rules)
+            && isWorkMatched(forging.work(), computeTarget(inventory));
     }
 
     public List<ForgeRule> getRules()

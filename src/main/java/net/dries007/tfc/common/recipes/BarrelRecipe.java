@@ -41,6 +41,7 @@ import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
+import net.dries007.tfc.common.recipes.ingredients.TFCIngredients;
 import net.dries007.tfc.common.recipes.input.BarrelInventory;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.config.TFCConfig;
@@ -201,7 +202,7 @@ public class BarrelRecipe implements INoopInputRecipe, IRecipePredicate<BarrelIn
 
     public SizedIngredient getInputItem()
     {
-        return inputItem.orElseThrow();
+        return inputItem.orElse(TFCIngredients.EMPTY_ITEM);
     }
 
     public ItemStackProvider getOutputItem()

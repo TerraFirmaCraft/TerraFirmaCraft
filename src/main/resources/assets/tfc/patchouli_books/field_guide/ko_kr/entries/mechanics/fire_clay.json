@@ -15,24 +15,24 @@
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/kaolin_clay",
+      "recipe": "tfc:heating/powder/kaolinite",
       "text": "Kaolinite powder is made by heating $(l:the_world/ores_and_minerals#kaolinite)Kaolin Clay$(). However, the process is not perfect, and only 20%% of clay will form powder!"
     },
     {
       "type": "tfc:knapping_recipe",
       "anchor": "crucible",
-      "recipe": "tfc:fire_clay_knapping/crucible",
+      "recipe": "tfc:knapping/ceramic/unfired_crucible",
       "text": "내화점토로 만든 굽지 않은 $(l:mechanics/crucible)도가니$()."
     },
     {
       "type": "tfc:knapping_recipe",
       "anchor": "fire_bricks",
-      "recipe": "tfc:fire_clay_knapping/brick",
+      "recipe": "tfc:knapping/ceramic/unfired_brick",
       "text": "$(l:mechanics/blast_furnace)용광로$()의 굴뚝에는 오로지 내화벽돌만 쓸 수 있습니다."
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:fire_clay_knapping/fire_ingot_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_fire_ingot_mold",
       "text": "$(thing)Fire Ingot Molds$() are a stronger type of $(l:getting_started/pottery#mold)Ingot Mold$() that has just a 1 in 100 chance of breaking, compared to 1 in 10 for a regular ingot mold."
     }
   ],

@@ -25,6 +25,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.common.blocks.TooltipBlock;
 import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.component.heat.HeatCapability;
 import net.dries007.tfc.common.component.heat.HeatComponent;
@@ -235,7 +236,7 @@ public class VesselItem extends Item
             final Vessel vessel = Vessel.get(stack);
             if (vessel != null && vessel.isInventory())
             {
-                return Helpers.getTooltipImage(vessel, 2, 2, 0, VesselItem.SLOTS - 1);
+                return TooltipBlock.buildInventoryTooltip(vessel.contents(), 2, 2);
             }
         }
         return super.getTooltipImage(stack);

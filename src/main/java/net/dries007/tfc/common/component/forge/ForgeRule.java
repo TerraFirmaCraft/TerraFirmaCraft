@@ -221,11 +221,6 @@ public enum ForgeRule implements StringRepresentable
         return order.y;
     }
 
-    public boolean matches(ForgeSteps steps)
-    {
-        return matches(steps.last().orElse(null), steps.secondLast().orElse(null), steps.thirdLast().orElse(null));
-    }
-
     public boolean matches(@Nullable ForgeStep last, @Nullable ForgeStep secondLast, @Nullable ForgeStep thirdLast)
     {
         return switch (order)

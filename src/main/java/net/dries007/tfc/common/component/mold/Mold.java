@@ -48,7 +48,7 @@ public class Mold implements IMold, FluidContainer, HeatContainer
     @Override
     public int fill(FluidStack resource, FluidAction action)
     {
-        final var remainder = fluid.fill(resource, containerInfo);
+        final var remainder = FluidComponent.fill(fluid.content(), resource, containerInfo);
         if (action.execute()) updateFluid(remainder.content());
         return remainder.filled();
     }
@@ -56,7 +56,7 @@ public class Mold implements IMold, FluidContainer, HeatContainer
     @Override
     public FluidStack drainIgnoringTemperature(int maxDrain, FluidAction action)
     {
-        final var remainder = fluid.drain(maxDrain);
+        final var remainder = FluidComponent.drain(fluid.content(), maxDrain);
         if (action.execute()) updateFluid(remainder.content());
         return remainder.drained();
     }

@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.util.tooltip;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -80,7 +78,6 @@ import net.dries007.tfc.common.blocks.rotation.ClutchBlock;
 import net.dries007.tfc.common.blocks.rotation.CrankshaftBlock;
 import net.dries007.tfc.common.blocks.rotation.EncasedAxleBlock;
 import net.dries007.tfc.common.blocks.rotation.GearBoxBlock;
-import net.dries007.tfc.common.blocks.rotation.HandWheelBlock;
 import net.dries007.tfc.common.blocks.rotation.WaterWheelBlock;
 import net.dries007.tfc.common.blocks.rotation.WindmillBlock;
 import net.dries007.tfc.common.blocks.soil.HoeOverlayBlock;
@@ -141,7 +138,6 @@ public final class BlockEntityTooltips
         callback.register("axle", ROTATING, AbstractShaftAxleBlock.class);
         callback.register("encased_axle", ROTATING, EncasedAxleBlock.class);
         callback.register("clutch", ROTATING, ClutchBlock.class);
-        callback.register("hand_wheel", ROTATING, HandWheelBlock.class);
         callback.register("gearbox", ROTATING, GearBoxBlock.class);
         callback.register("crankshaft", ROTATING, CrankshaftBlock.class);
         callback.register("quern", ROTATING, QuernBlock.class);

@@ -11,7 +11,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -35,7 +34,7 @@ import net.dries007.tfc.common.component.heat.HeatCapability;
 import net.dries007.tfc.common.items.Powder;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.IntArrayBuilder;
+import net.dries007.tfc.util.SyncableContainerData;
 import net.dries007.tfc.util.calendar.ICalendarTickable;
 import net.dries007.tfc.util.data.Fuel;
 
@@ -148,7 +147,7 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
         }
     }
 
-    protected final IntArrayBuilder syncableData;
+    protected final SyncableContainerData syncableData;
 
     protected boolean needsSlotUpdate = false; // set when fuel needs to be cascaded
     protected boolean needsRecipeUpdate = false; // set when the recipe needs to be re-cached on tick
@@ -161,15 +160,15 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
     private int lastMaxBurnTicks = Integer.MAX_VALUE;
     private int ash = 0;
 
-    public AbstractFirepitBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, InventoryFactory<C> inventoryFactory, Component defaultName)
+    public AbstractFirepitBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, InventoryFactory<C> inventoryFactory)
     {
-        super(type, pos, state, inventoryFactory, defaultName);
+        super(type, pos, state, inventoryFactory);
 
         burnTicks = 0;
         temperature = 0;
         burnTemperature = 0;
 
-        syncableData = new IntArrayBuilder().add(() -> (int) temperature, value -> temperature = value);
+        syncableData = new SyncableContainerData().add(() -> (int) temperature, value -> temperature = value);
     }
 
     @Override

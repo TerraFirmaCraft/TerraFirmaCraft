@@ -15,12 +15,12 @@
     },
     {
       "type": "tfc:sealed_barrel_recipe",
-      "recipe": "tfc:barrel/curdling",
+      "recipe": "tfc:barrel/curdled_milk",
       "text": "우유와 식초를 섞고, 8시간동안 통을 밀봉하면 응고됩니다. 별도의 재료는 필요 없으며 기다리기만 하면 됩니다."
     },
     {
       "type": "tfc:sealed_barrel_recipe",
-      "recipe": "tfc:barrel/cheese",
+      "recipe": "tfc:barrel/food/cheese",
       "text": "치즈는 응고된 우유를 다시 8시간동안 통에서 밀봉하면 만들어집니다. 치즈는 오래 보존되는 유제품이며 $(l:mechanics/sandwiches)샌드위치$() 등의 식품에 첨가되어 유제품 영양소를 추가할 수 있습니다."
     }
   ],

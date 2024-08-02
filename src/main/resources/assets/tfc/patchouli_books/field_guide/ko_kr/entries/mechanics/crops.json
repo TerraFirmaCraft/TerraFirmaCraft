@@ -15,16 +15,16 @@
     {
       "type": "tfc:rock_knapping_recipe",
       "recipes": [
-        "tfc:rock_knapping/hoe_head_sedimentary",
-        "tfc:rock_knapping/hoe_head_metamorphic",
-        "tfc:rock_knapping/hoe_head_igneous_extrusive",
-        "tfc:rock_knapping/hoe_head_igneous_intrusive"
+        "tfc:knapping/stone/hoe_head/sedimentary",
+        "tfc:knapping/stone/hoe_head/metamorphic",
+        "tfc:knapping/stone/hoe_head/igneous_extrusive",
+        "tfc:knapping/stone/hoe_head/igneous_intrusive"
       ],
       "text": "To get started, a $(thing)Stone Hoe$() can be $(thing)knapped$() as seen above."
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/stone/hoe_sedimentary",
+      "recipe": "tfc:crafting/stone/hoe/sedimentary",
       "text": "괭이 머리를 만든 후에는 괭이를 만들 수 있습니다.$(br2)괭이는 바닐라와 흙을 우클릭하여 $(thing)경작지$()로 만들 수 있습니다. 괭이는 또한 $(thing)뿌리내린 흙$()을 $(thing)흙$()으로 바꾸는 데도 사용할 수 있습니다."
     },
     {

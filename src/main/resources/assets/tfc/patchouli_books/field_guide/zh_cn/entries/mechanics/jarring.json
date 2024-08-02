@@ -14,12 +14,12 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/unseal_plum_jar",
+      "recipe": "tfc:crafting/jar/plum_unsealed",
       "text": "Unsealing a jar is done by crafting. The lid is not able to be retrieved. An unsealed jar only lasts for a few days!"
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/barley_sandwich_with_jam_1",
+      "recipe": "tfc:crafting/food/barley_bread_jam_sandwich_1",
       "text": "Jam is used for making sandwiches. Jam sandwiches can contain Dairy, Cooked Meats, and Jam. An $(thing)Empty Jar$() is left over."
     },
     {
@@ -28,7 +28,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/wood/oak_shelf",
+      "recipe": "tfc:crafting/wood/jar_shelf/oak",
       "text": "$(thing)Jar Shelves$() can be attached to solid walls. They can be placed directly or by clicking on an existing block of placed jars. The top of the jar shelf counts as a solid surface for placing items, more jars, or other blocks."
     }
   ],

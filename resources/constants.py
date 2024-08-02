@@ -1,7 +1,7 @@
 #  Work under Copyright. Licensed under the EUPL.
 #  See the project README.md and LICENSE.txt for more information.
 
-from typing import Dict, List, Set, NamedTuple, Sequence, Optional, Tuple, Any
+from typing import Dict, Set, NamedTuple, Sequence, Optional, Tuple, Any
 
 
 class Rock(NamedTuple):
@@ -157,35 +157,10 @@ class Metal(NamedTuple):
     def ingot_heat_capacity(self) -> float: return 1 / self.heat_capacity_base
 
 
-POTTERY_MELT = 1400 - 1
-POTTERY_HEAT_CAPACITY = 1.2  # Heat Capacity
-
-HORIZONTAL_DIRECTIONS: List[str] = ['east', 'west', 'north', 'south']
-
 ROCK_CATEGORIES = ('sedimentary', 'metamorphic', 'igneous_extrusive', 'igneous_intrusive')
 ROCK_CATEGORY_ITEMS = ('axe', 'hammer', 'hoe', 'javelin', 'knife', 'shovel')
 
-TOOL_TAGS: Dict[str, str] = {
-    # Rock
-    'axe': 'axes',
-    'hammer': 'hammers',
-    'hoe': 'hoes',
-    'javelin': 'javelins',
-    'knife': 'knives',
-    'shovel': 'shovels',
-    # Metal Only
-    'pickaxe': 'pickaxes',
-    'chisel': 'chisels',
-    'mace': 'maces',
-    'sword': 'swords',
-    'saw': 'saws',
-    'propick': 'propicks',
-    'scythe': 'scythes',
-    'shears': 'shears',
-    'tuyere': 'tuyeres'
-}
-
-ROCKS: Dict[str, Rock] = {
+ROCKS: dict[str, Rock] = {
     'granite': Rock('igneous_intrusive', 'white'),
     'diorite': Rock('igneous_intrusive', 'white'),
     'gabbro': Rock('igneous_intrusive', 'black'),
@@ -207,7 +182,7 @@ ROCKS: Dict[str, Rock] = {
     'gneiss': Rock('metamorphic', 'green'),
     'marble': Rock('metamorphic', 'yellow')
 }
-METALS: Dict[str, Metal] = {
+METALS: dict[str, Metal] = {
     'bismuth': Metal(1, {'part'}, 0.14, 270, None),
     'bismuth_bronze': Metal(2, {'part', 'tool', 'armor', 'utility'}, 0.35, 985, None),
     'black_bronze': Metal(2, {'part', 'tool', 'armor', 'utility'}, 0.35, 1070, None),
@@ -237,7 +212,7 @@ METALS: Dict[str, Metal] = {
     'high_carbon_red_steel': Metal(5, set(), 0.35, 1540, 'weak_red_steel'),
     'unknown': Metal(0, set(), 0.5, 400, None)
 }
-METAL_BLOCKS: Dict[str, MetalItem] = {
+METAL_BLOCKS: dict[str, MetalItem] = {
     'anvil': MetalItem('utility', 1400, 'tfc:block/anvil', None, False, False),
     'block': MetalItem('part', 100, 'block/block', None, False, False),
     'block_slab': MetalItem('part', 50, 'block/block', None, False, False),
@@ -247,7 +222,7 @@ METAL_BLOCKS: Dict[str, MetalItem] = {
     'lamp': MetalItem('utility', 100, 'tfc:block/lamp', None, False, False),
     'trapdoor': MetalItem('utility', 200, 'tfc:block/trapdoor', None, False, False)
 }
-METAL_ITEMS: Dict[str, MetalItem] = {
+METAL_ITEMS: dict[str, MetalItem] = {
     'ingot': MetalItem('all', 100, 'item/generated', 'forge:ingots', True, False),
     'double_ingot': MetalItem('part', 200, 'item/generated', 'forge:double_ingots', False, False),
     'sheet': MetalItem('part', 200, 'item/generated', 'forge:sheets', False, False),
@@ -298,10 +273,8 @@ METAL_ITEMS: Dict[str, MetalItem] = {
 
     'shield': MetalItem('tool', 400, 'item/handheld', None, False, True)
 }
-METAL_ITEMS_AND_BLOCKS: Dict[str, MetalItem] = {**METAL_ITEMS, **METAL_BLOCKS}
-METAL_TOOL_HEADS = ('chisel', 'hammer', 'hoe', 'javelin', 'knife', 'mace', 'pickaxe', 'propick', 'saw', 'scythe', 'shovel', 'sword', 'axe')
 
-ORES: Dict[str, Ore] = {
+ORES: dict[str, Ore] = {
     'native_copper': Ore('copper', True, 'copper', 'copper', 'orange'),
     'native_gold': Ore('gold', True, 'copper', 'gold'),
     'hematite': Ore('cast_iron', True, 'copper', 'iron', 'red'),
@@ -335,12 +308,7 @@ ORES: Dict[str, Ore] = {
     'sapphire': Ore(None, False, 'black_steel', 'sapphire'),  # Mohs: 9
     'topaz': Ore(None, False, 'steel', 'topaz')  # Mohs: 8
 }
-ORE_GRADES: Dict[str, OreGrade] = {
-    'normal': OreGrade(5),
-    'poor': OreGrade(3),
-    'rich': OreGrade(7)
-}
-DEFAULT_FORGE_ORE_TAGS: Tuple[str, ...] = ('coal', 'diamond', 'emerald', 'gold', 'iron', 'lapis', 'netherite_scrap', 'quartz', 'redstone')
+ORE_GRADES = ('poor', 'normal', 'rich')
 
 POOR = 70, 25, 5  # = 1550
 NORMAL = 35, 40, 25  # = 2400
@@ -447,36 +415,19 @@ DEPOSIT_RARES: Dict[str, str] = {
     'marble': 'lapis_lazuli'
 }
 
-ROCK_BLOCK_TYPES = ('raw', 'hardened', 'bricks', 'cobble', 'gravel', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks', 'chiseled', 'spike', 'loose', 'pressure_plate', 'button')
-ROCK_BLOCKS_IN_JSON = ('raw', 'hardened', 'cobble', 'gravel', 'spike', 'loose')
-CUTTABLE_ROCKS = ('raw', 'bricks', 'cobble', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks')
+ROCK_DECORATIONS = ('raw', 'bricks', 'cobble', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks')
 ROCK_SPIKE_PARTS = ('base', 'middle', 'tip')
 SAND_BLOCK_TYPES = ('brown', 'white', 'black', 'red', 'yellow', 'green', 'pink')
-SANDSTONE_BLOCK_TYPES = ('raw', 'smooth', 'cut')
-SOIL_BLOCK_TYPES = ('dirt', 'grass', 'grass_path', 'clay', 'clay_grass', 'farmland', 'rooted_dirt', 'mud', 'mud_bricks', 'drying_bricks', 'muddy_roots')
 SOIL_BLOCK_VARIANTS = ('silt', 'loam', 'sandy_loam', 'silty_loam')
 KAOLIN_CLAY_TYPES = ('red', 'pink', 'white')
-SOIL_BLOCK_TAGS: Dict[str, List[str]] = {
-    'grass': ['grass'],
-    'dirt': ['dirt'],
-    'rooted_dirt': ['dirt'],
-    'clay_grass': ['clay_grass', 'grass', 'clay'],
-    'clay': ['clay'],
-    'mud': ['mud'],
-    'grass_path': ['paths'],
-    'farmland': ['farmland'],
-    'muddy_roots': ['dirt'],
-    'mud_bricks': ['mud_bricks']
-}
 ORE_DEPOSITS = ('native_copper', 'cassiterite', 'native_silver', 'native_gold')
 GEMS = ('amethyst', 'diamond', 'emerald', 'lapis_lazuli', 'opal', 'pyrite', 'ruby', 'sapphire', 'topaz')
 TRIM_MATERIALS = (*GEMS, 'rose_gold', 'gold', 'silver', 'sterling_silver', 'bismuth')
 MISC_GROUNDCOVER = ('bone', 'clam', 'driftwood', 'mollusk', 'mussel', 'pinecone', 'seaweed', 'stick', 'dead_grass', 'feather', 'flint', 'guano', 'humus', 'rotten_flesh', 'salt_lick', 'sea_urchin', 'pumice')
 COLORS = ('white', 'orange', 'magenta', 'light_blue', 'yellow', 'lime', 'pink', 'gray', 'light_gray', 'cyan', 'purple', 'blue', 'brown', 'green', 'red', 'black')
-SIMPLE_FLUIDS = ('brine', 'curdled_milk', 'limewater', 'lye', 'milk_vinegar', 'olive_oil', 'olive_oil_water', 'tallow', 'tannin', 'vinegar')
-ALCOHOLS = ('beer', 'cider', 'rum', 'sake', 'vodka', 'whiskey', 'corn_whiskey', 'rye_whiskey')
+SIMPLE_FLUIDS = ('brine', 'curdled_milk', 'limewater', 'lye', 'milk_vinegar', 'olive_oil', 'olive_oil_water', 'tallow', 'tannin', 'vinegar', 'beer', 'cider', 'rum', 'sake', 'vodka', 'whiskey', 'corn_whiskey', 'rye_whiskey')
 
-WOODS: Dict[str, Wood] = {
+WOODS: dict[str, Wood] = {
     'acacia': Wood(650, 1000),
     'ash': Wood(696, 1250),
     'aspen': Wood(611, 1000),
@@ -501,7 +452,7 @@ WOODS: Dict[str, Wood] = {
 
 # DO NOT EDIT DIRECTLY - Imported directly from spreadsheet
 # https://docs.google.com/spreadsheets/d/1Ghw3dCmVO5Gv0MMGBydUxox_nwLYmmcZkGSbbf0QSAE/
-CROPS: Dict[str, Crop] = {
+CROPS: dict[str, Crop] = {
     'barley': Crop('default', 8, 'nitrogen', -8, 26, 70, 310, 18, 75, None, 'edge'),
     'oat': Crop('default', 8, 'phosphorus', 3, 40, 140, 400, 35, 100, None, 'edge'),
     'rye': Crop('default', 8, 'phosphorus', -11, 30, 100, 350, 25, 85, None, 'edge'),
@@ -527,7 +478,7 @@ CROPS: Dict[str, Crop] = {
     'yellow_bell_pepper': Crop('pickable', 7, 'potassium', 16, 30, 190, 400, 25, 60, None, None),
 }
 
-PLANTS: Dict[str, Plant] = {
+PLANTS: dict[str, Plant] = {
     'athyrium_fern': Plant(True, -3.9, 15.7, 270, 500, 'standard'),
     'canna': Plant(True, 13.9, 40, 290, 500, 'standard'),
     'goldenrod': Plant(True, -12.9, -2.1, 75, 500, 'standard'),
@@ -641,10 +592,6 @@ PLANTS: Dict[str, Plant] = {
     'yucca': Plant(False, -0.4, 22.9, 0, 75, 'dry'),
 }
 
-SMALL_FLOWERS = ('allium', 'anthurium', 'black_orchid', 'blood_lily', 'blue_orchid', 'blue_ginger', 'butterfly_milkweed', 'calendula', 'canna', 'dandelion', 'desert_flame', 'goldenrod', 'grape_hyacinth', 'guzmania', 'kangaroo_paw', 'labrador_tea', 'lily_of_the_valley', 'lotus', 'nasturtium', 'oxeye_daisy', 'pistia', 'poppy', 'primrose', 'pulsatilla', 'rose', 'sacred_datura', 'sagebrush', 'sapphire_tower', 'sargassum', 'silver_spurflower', 'snapdragon_red', 'snapdragon_pink', 'snapdragon_white', 'snapdragon_yellow', 'strelitzia', 'trillium', 'tropical_milkweed', 'tulip_orange', 'tulip_red', 'tulip_pink', 'tulip_white', 'vriesea', 'water_lily', 'yucca')
-
-TALL_FLOWERS = ('foxglove', 'hibiscus', 'lilac', 'toquilla_palm', 'marigold')
-
 FLOWERPOT_CROSS_PLANTS = {
     'allium': 'allium_2',
     'anthurium': 'anthurium_0',
@@ -704,9 +651,9 @@ FLOWERPOT_CROSS_PLANTS = {
 SIMPLE_TALL_PLANTS = {
     'foxglove': 5
 }
-MISC_POTTED_PLANTS = ['barrel_cactus', 'morning_glory', 'moss', 'reindeer_lichen', 'rose', 'toquilla_palm', 'tree_fern', 'sea_palm', 'philodendron']
+MISC_POTTED_PLANTS = ('barrel_cactus', 'morning_glory', 'moss', 'reindeer_lichen', 'rose', 'toquilla_palm', 'tree_fern', 'sea_palm', 'philodendron')
 
-SIMPLE_STAGE_PLANTS: Dict[str, int] = {
+SIMPLE_STAGE_PLANTS: dict[str, int] = {
     'allium': 8,
     'anthurium': 2,
     'black_orchid': 3,
@@ -738,43 +685,10 @@ SIMPLE_STAGE_PLANTS: Dict[str, int] = {
     'yucca': 4
 }
 
-MODEL_PLANTS: List[str] = ['arundo', 'arundo_plant', 'athyrium_fern', 'dry_phragmite', 'dry_phragmite_plant', 'hanging_vines', 'hanging_vines_plant', 'spanish_moss', 'spanish_moss_plant', 'lady_fern', 'laminaria', 'liana', 'liana_plant', 'milfoil', 'sago', 'sword_fern', 'tree_fern', 'tree_fern_plant', 'winged_kelp', 'winged_kelp_plant', 'sea_palm']
-SEAGRASS: List[str] = ['star_grass', 'manatee_grass', 'eel_grass', 'turtle_grass', 'coontail']
+MODEL_PLANTS = ('arundo', 'arundo_plant', 'athyrium_fern', 'dry_phragmite', 'dry_phragmite_plant', 'hanging_vines', 'hanging_vines_plant', 'spanish_moss', 'spanish_moss_plant', 'lady_fern', 'laminaria', 'liana', 'liana_plant', 'milfoil', 'sago', 'sword_fern', 'tree_fern', 'tree_fern_plant', 'winged_kelp', 'winged_kelp_plant', 'sea_palm')
+SEAGRASS = ('star_grass', 'manatee_grass', 'eel_grass', 'turtle_grass', 'coontail')
 
-UNIQUE_PLANTS: List[str] = ['hanging_vines_plant', 'hanging_vines', 'spanish_moss', 'spanish_moss_plant', 'liana_plant', 'liana', 'tree_fern_plant', 'tree_fern', 'arundo_plant', 'arundo', 'dry_phragmite', 'dry_phragmite_plant', 'winged_kelp_plant', 'winged_kelp', 'leafy_kelp_plant', 'leafy_kelp', 'giant_kelp_plant', 'giant_kelp_flower', 'jungle_vines', 'saguaro', 'saguaro_plant']
-BROWN_COMPOST_PLANTS: List[str] = ['hanging_vines', 'spanish_moss', 'liana', 'tree_fern', 'arundo', 'dry_phragmite', 'jungle_vines']
-SEAWEED: List[str] = ['sago', 'gutweed', 'laminaria', 'milfoil']
-CORALS: List[str] = ['tube', 'brain', 'bubble', 'fire', 'horn']
-CORAL_BLOCKS: List[str] = ['dead_coral', 'dead_coral', 'dead_coral_fan', 'coral_fan', 'dead_coral_wall_fan', 'coral_wall_fan']
-
-PLANT_COLORS: Dict[str, List[str]] = {
-    'white': ['houstonia', 'oxeye_daisy', 'primrose', 'snapdragon_white', 'trillium', 'spanish_moss', 'tulip_white', 'water_lily', 'lily_of_the_valley'],
-    'orange': ['butterfly_milkweed', 'canna', 'nasturtium', 'strelitzia', 'tulip_orange', 'water_canna', 'marigold'],
-    'magenta': ['athyrium_fern', 'morning_glory', 'pulsatilla', 'lilac', 'silver_spurflower'],
-    'light_blue': ['labrador_tea', 'sapphire_tower'],
-    'yellow': ['calendula', 'dandelion', 'meads_milkweed', 'goldenrod', 'snapdragon_yellow', 'desert_flame'],
-    'lime': ['moss'],
-    'pink': ['foxglove', 'sacred_datura', 'tulip_pink', 'snapdragon_pink', 'hibiscus', 'lotus', 'maiden_pink'],
-    'light_gray': ['yucca'],
-    'purple': ['allium', 'black_orchid', 'perovskia', 'blue_ginger', 'pickerelweed', 'heather'],
-    'blue': ['blue_orchid', 'grape_hyacinth'],
-    'brown': ['field_horsetail', 'sargassum'],
-    'green': ['barrel_cactus', 'reindeer_lichen'],
-    'red': ['guzmania', 'poppy', 'rose', 'snapdragon_red', 'tropical_milkweed', 'tulip_red', 'vriesea', 'anthurium', 'blood_lily', 'heliconia', 'kangaroo_paw']
-}
-
-COLOR_COMBOS = [
-    ('red', 'yellow', 'orange'),
-    ('blue', 'white', 'light_blue'),
-    ('purple', 'pink', 'magenta'),
-    ('red', 'white', 'pink'),
-    ('white', 'gray', 'light_gray'),
-    ('white', 'black', 'gray'),
-    ('green', 'white', 'lime'),
-    ('green', 'blue', 'cyan'),
-    ('red', 'blue', 'purple'),
-    ('yellow', 'blue', 'green')
-]
+SEAWEED = ('sago', 'gutweed', 'laminaria', 'milfoil')
 
 VESSEL_TYPES = {
     'blue': 'a',
@@ -795,25 +709,9 @@ VESSEL_TYPES = {
     'green': 'd'
 }
 
-DISC_COLORS = {
-    'yellow': '13',
-    'orange': 'blocks',
-    'lime': 'cat',
-    'red': 'chirp',
-    'green': 'far',
-    'purple': 'mall',
-    'magenta': 'mellohi',
-    'cyan': 'otherside',
-    'black': 'stal',
-    'white': 'strad',
-    'light_blue': 'wait',
-    'blue': 'ward',
-}
-
 SIMPLE_BLOCKS = ('peat', 'aggregate', 'fire_bricks', 'fire_clay_block', 'smooth_mud_bricks')
-SIMPLE_ITEMS = ('alabaster_brick', 'bone_needle', 'blank_disc', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'empty_jar', 'empty_jar_with_lid', 'fire_clay', 'goat_horn', 'gem_saw', 'glow_arrow', 'glue', 'hematitic_glass_batch', 'jacks', 'jar_lid',
-                'jute', 'jute_fiber', 'jute_net', 'kaolin_clay', 'lamp_glass', 'lens', 'mortar', 'olive_paste', 'olivine_glass_batch', 'paddle', 'papyrus', 'papyrus_strip', 'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'sandpaper', 'silica_glass_batch', 'silk_cloth', 'soaked_papyrus_strip', 'soot', 'spindle',
-                'stick_bunch', 'stick_bundle', 'straw', 'treated_hide', 'unrefined_paper', 'volcanic_glass_batch', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
+SIMPLE_ITEMS = ('alabaster_brick', 'bone_needle', 'blank_disc', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'empty_jar', 'empty_jar_with_lid', 'fire_clay', 'goat_horn', 'gem_saw', 'glow_arrow', 'glue', 'hematitic_glass_batch', 'jacks', 'jar_lid', 'jute', 'jute_fiber', 'jute_net', 'kaolin_clay', 'lamp_glass', 'lens', 'mortar', 'olive_paste', 'olivine_glass_batch', 'paddle', 'papyrus', 'papyrus_strip', 'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'sandpaper', 'silica_glass_batch', 'silk_cloth', 'soaked_papyrus_strip', 'soot', 'spindle', 'stick_bunch', 'stick_bundle', 'straw', 'treated_hide', 'unrefined_paper', 'volcanic_glass_batch', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
+
 GENERIC_POWDERS = {
     'charcoal': 'black',
     'coke': 'black',
@@ -823,23 +721,19 @@ GENERIC_POWDERS = {
     'lapis_lazuli': 'blue'
 }
 POWDERS = ('flux', 'lime', 'salt', 'saltpeter', 'soda_ash', 'sulfur', 'wood_ash')
-GLASSWORKING_POWDERS = ('soda_ash', 'sulfur', 'graphite', 'hematite', 'limonite', 'magnetite', 'native_gold', 'native_copper', 'malachite', 'tetrahedrite', 'cassiterite', 'garnierite', 'native_silver', 'amethyst', 'ruby', 'lapis_lazuli', 'pyrite', 'sapphire')
-VANILLA_DYED_ITEMS = ('wool', 'carpet', 'bed', 'terracotta', 'banner', 'glazed_terracotta')
 SIMPLE_POTTERY = ('bowl', 'fire_brick', 'pot', 'spindle_head', 'vessel')
 SIMPLE_UNFIRED_POTTERY = ('brick', 'crucible', 'flower_pot', 'jug', 'pan', 'blowpipe')
 GLASS_TYPES = ('silica', 'hematitic', 'olivine', 'volcanic')
-VANILLA_TOOL_MATERIALS = ('netherite', 'diamond', 'iron', 'stone', 'wooden', 'golden')
 SHORE_DECORATORS = ('driftwood', 'clam', 'mollusk', 'mussel', 'seaweed', 'sticks_shore', 'guano')
 FOREST_DECORATORS = ('sticks_forest', 'pinecone', 'salt_lick', 'dead_grass', 'humus', 'rotten_flesh')
 OCEAN_PLANT_TYPES = ('grass_water', 'floating', 'water', 'emergent', 'tall_water')
 MISC_PLANT_FEATURES = ('hanging_vines', 'hanging_vines_cave', 'spanish_moss', 'saguaro_patch', 'jungle_vines', 'liana', 'moss_cover', 'reindeer_lichen_cover', 'morning_glory_cover', 'philodendron_cover', 'tree_fern', 'arundo')
-SURFACE_GRASS_FEATURES = ('fountain_', 'orchard_', 'rye', 'scutch_', 'timothy_', 'brome', 'blue', 'raddia_')
 UNDERGROUND_FEATURES = ('cave_column', 'cave_spike', 'large_cave_spike', 'water_spring', 'lava_spring', 'calcite', 'mega_calcite', 'icicle', 'underground_loose_rocks', 'underground_guano_patch')
 
 # todo: bush hydration / rainfall separation and proper ranges
 # When this gest updated, it needs to be updated in both the book (generate_book.py) and in the climate range (data.py) to use the new hydration and rainfall values
 # Alternatively, we ditch rainfall and/or hydration entirely.
-BERRIES: Dict[str, Berry] = {
+BERRIES: dict[str, Berry] = {
     'blackberry': Berry(7, 24, 200, 500, 'spreading', 'none', 'edge'),
     'raspberry': Berry(5, 25, 200, 500, 'spreading', 'none', 'edge'),
     'blueberry': Berry(7, 29, 100, 400, 'spreading', 'none', 'edge'),
@@ -855,7 +749,7 @@ BERRIES: Dict[str, Berry] = {
     'cranberry': Berry(-5, 17, 250, 500, 'waterlogged', 'edge', 'old_growth')
 }
 
-FRUITS: Dict[str, Fruit] = {
+FRUITS: dict[str, Fruit] = {
     'banana': Fruit(17, 35, 280, 500),
 
     'cherry': Fruit(5, 25, 100, 350),
@@ -867,8 +761,7 @@ FRUITS: Dict[str, Fruit] = {
     'plum': Fruit(15, 31, 250, 400),
     'red_apple': Fruit(1, 25, 100, 280)
 }
-JAR_FRUITS: List[str] = [*BERRIES.keys(), *FRUITS.keys(), 'pumpkin_chunks', 'melon_slice']
-NORMAL_FRUIT_TREES: List[str] = [k for k in FRUITS.keys() if k != 'banana']
+JAR_FRUITS = tuple([*BERRIES.keys(), *FRUITS.keys(), 'pumpkin_chunks', 'melon_slice'])
 
 SIMPLE_FRESHWATER_FISH = ('bluegill', 'crappie', 'lake_trout', 'largemouth_bass', 'rainbow_trout', 'salmon', 'smallmouth_bass',)
 
@@ -880,130 +773,12 @@ NUTRIENTS = ('grain', 'fruit', 'vegetables', 'protein', 'dairy')
 
 SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'manatee', 'penguin', 'frog', 'turtle', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail', 'rabbit', 'fox', 'boar', 'donkey', 'mule', 'horse', 'deer', 'moose', 'boar', 'rat', 'cat', 'dog', 'wolf', 'panda', 'grouse', 'pheasant', 'turkey', 'ocelot', 'direwolf', 'hyena', 'tiger', 'crocodile', 'bongo', 'caribou', 'gazelle', 'wildebeest', 'peafowl', *SIMPLE_FRESHWATER_FISH)
 BUCKETABLE_FISH = ('cod', 'pufferfish', 'tropical_fish', 'jellyfish', *SIMPLE_FRESHWATER_FISH)
-LAND_PREDATORS = ('polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'wolf', 'direwolf', 'ocelot', 'tiger', 'hyena', 'crocodile')
-AMPHIBIOUS_PREDATORS = 'crocodile'
-OCEAN_PREDATORS = ('dolphin', 'orca')
-OCEAN_PREY = ('isopod', 'lobster', 'crayfish', 'cod', 'tropical_fish', 'horseshoe_crab', *SIMPLE_FRESHWATER_FISH)
-LIVESTOCK = ('pig', 'cow', 'goat', 'yak', 'alpaca', 'sheep', 'musk_ox', 'chicken', 'duck', 'quail', 'horse', 'mule', 'donkey')
-LAND_PREY = ('rabbit', 'fox', 'turtle', 'penguin', 'frog', 'deer', 'bongo', 'panda', 'grouse', 'pheasant', 'turkey', 'ocelot', 'caribou', 'gazelle', 'peafowl')
-LAND_NEUTRALS = ('boar', 'moose', 'wildebeest')
 
-BLOCK_ENTITIES = ('log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter', 'nest_box', 'bloomery', 'bloom', 'anvil', 'ingot_pile', 'sheet_pile', 'blast_furnace', 'large_vessel', 'powderkeg', 'bowl', 'hot_poured_glass', 'glass_basin', 'axle', 'hand_wheel', 'sewing_table')
-TANNIN_WOOD_TYPES = ('oak', 'birch', 'chestnut', 'douglas_fir', 'hickory', 'maple', 'sequoia')
+BLOCK_ENTITIES = ('log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter', 'nest_box', 'bloomery', 'bloom', 'anvil', 'ingot_pile', 'sheet_pile', 'blast_furnace', 'large_vessel', 'powderkeg', 'bowl', 'hot_poured_glass', 'glass_basin', 'axle', 'hand_wheel', 'sewing_table', 'jars', 'thatch_bed', 'trip_hammer', 'windmill')
 
-def spawner(entity: str, weight: int = 1, min_count: int = 1, max_count: int = 4) -> Dict[str, Any]:
-    return {
-        'type': entity,
-        'weight': weight,
-        'minCount': min_count,
-        'maxCount': max_count
-    }
-
-SALT_MARSH_AMBIENT: Dict[str, Dict[str, Any]] = {
-    'isopod': spawner('tfc:isopod'),
-    'lobster': spawner('tfc:lobster'),
-    'horseshoe_crab': spawner('tfc:horseshoe_crab'),
-    'salmon': spawner('tfc:salmon')
-}
-
-OCEAN_AMBIENT: Dict[str, Dict[str, Any]] = {
-    'isopod': spawner('tfc:isopod'),
-    'lobster': spawner('tfc:lobster'),
-    'horseshoe_crab': spawner('tfc:horseshoe_crab'),
-    'cod': spawner('tfc:cod', weight=10),
-    'pufferfish': spawner('tfc:pufferfish', max_count=2),
-    'tropical_fish': spawner('tfc:tropical_fish', weight=10, max_count=6),
-    'jellyfish': spawner('tfc:jellyfish', min_count=2, max_count=6)
-}
-
-OCEAN_CREATURES: Dict[str, Dict[str, Any]] = {
-    'orca': spawner('tfc:orca', min_count=1, max_count=3),
-    'dolphin': spawner('tfc:dolphin', min_count=1, max_count=3),
-    'squid': spawner('tfc:squid', min_count=1, max_count=3, weight=2)
-}
-
-UNDERGROUND_WATER_CREATURES: Dict[str, Dict[str, Any]] = {
-    'octopoteuthis': spawner('tfc:octopoteuthis', min_count=1, max_count=2)
-}
-
-LAKE_AMBIENT: Dict[str, Dict[str, Any]] = {
-    **dict(('%s' % fish, spawner('tfc:%s' % fish, min_count=2, max_count=4, weight=10)) for fish in SIMPLE_FRESHWATER_FISH if 'trout' not in fish),
-    'crayfish': spawner('tfc:crayfish', min_count=1, max_count=4, weight=5)
-}
-
-RIVER_AMBIENT: Dict[str, Dict[str, Any]] = {
-    **dict(('%s' % fish, spawner('tfc:%s' % fish, min_count=2, max_count=4, weight=10)) for fish in SIMPLE_FRESHWATER_FISH if 'trout' in fish),
-}
-
-LAKE_CREATURES: Dict[str, Dict[str, Any]] = {
-    'manatee': spawner('tfc:manatee', min_count=1, max_count=2)
-}
-
-SHORE_CREATURES: Dict[str, Dict[str, Any]] = {
-    'penguin': spawner('tfc:penguin', min_count=2, max_count=5, weight=10),
-    'turtle': spawner('tfc:turtle', min_count=2, max_count=5, weight=10)
-}
-
-LAND_CREATURES: Dict[str, Dict[str, Any]] = {
-    'crocodile': spawner('tfc:crocodile', min_count=1, max_count=1, weight=20),
-    'pig': spawner('tfc:pig', min_count=1, max_count=4),
-    'cow': spawner('tfc:cow', min_count=1, max_count=4),
-    'goat': spawner('tfc:goat', min_count=1, max_count=4),
-    'yak': spawner('tfc:yak', min_count=1, max_count=4),
-    'alpaca': spawner('tfc:alpaca', min_count=1, max_count=4),
-    'sheep': spawner('tfc:sheep', min_count=1, max_count=4),
-    'musk_ox': spawner('tfc:musk_ox', min_count=1, max_count=4),
-    'chicken': spawner('tfc:chicken', min_count=2, max_count=6),
-    'duck': spawner('tfc:duck', min_count=2, max_count=6),
-    'quail': spawner('tfc:quail', min_count=2, max_count=6),
-    'polar_bear': spawner('tfc:polar_bear', min_count=1, max_count=1, weight=2),
-    'grizzly_bear': spawner('tfc:grizzly_bear', min_count=1, max_count=1, weight=2),
-    'black_bear': spawner('tfc:black_bear', min_count=1, max_count=1, weight=2),
-    'lion': spawner('tfc:lion', min_count=1, max_count=3, weight=2),
-    'sabertooth': spawner('tfc:sabertooth', min_count=1, max_count=1, weight=2),
-    'tiger': spawner('tfc:tiger', min_count=1, max_count=1, weight=2),
-    'rabbit': spawner('tfc:rabbit', min_count=1, max_count=4, weight=3),
-    'fox': spawner('tfc:fox', min_count=1, max_count=1),
-    'panda': spawner('tfc:panda', min_count=3, max_count=5),
-    'boar': spawner('tfc:boar', min_count=1, max_count=2, weight=2),
-    'wildebeest': spawner('tfc:wildebeest', min_count=1, max_count=2, weight=2),
-    'moose': spawner('tfc:moose', min_count=1, max_count=1),
-    'bongo': spawner('tfc:bongo', min_count=2, max_count=4, weight=3),
-    'caribou': spawner('tfc:caribou', min_count=2, max_count=4, weight=3),
-    'deer': spawner('tfc:deer', min_count=2, max_count=4, weight=3),
-    'gazelle': spawner('tfc:gazelle', min_count=2, max_count=4, weight=3),
-    'grouse': spawner('tfc:grouse', min_count=2, max_count=4),
-    'pheasant': spawner('tfc:pheasant', min_count=2, max_count=4),
-    'turkey': spawner('tfc:turkey', min_count=2, max_count=4),
-    'peafowl': spawner('tfc:peafowl', min_count=2, max_count=4),
-    'wolf': spawner('tfc:wolf', min_count=6, max_count=9),
-    'hyena': spawner('tfc:hyena', min_count=5, max_count=9),
-    'direwolf': spawner('tfc:direwolf', min_count=3, max_count=7),
-    'donkey': spawner('tfc:donkey', min_count=1, max_count=3),
-    'horse': spawner('tfc:horse', min_count=1, max_count=3),
-    'ocelot': spawner('tfc:ocelot', min_count=1, max_count=3),
-    'frog': spawner('tfc:frog', min_count=2, max_count=4),
-}
-
-VANILLA_MONSTERS: Dict[str, Dict[str, Any]] = {
-    'spider': spawner('minecraft:spider', weight=100, min_count=4, max_count=4),
-    'zombie': spawner('minecraft:zombie', weight=95, min_count=4, max_count=4),
-    'skeleton': spawner('minecraft:skeleton', weight=100, min_count=4, max_count=4),
-    'creeper': spawner('minecraft:creeper', weight=100, min_count=4, max_count=4),
-    'slime': spawner('minecraft:slime', weight=100, min_count=4, max_count=4),
-}
-
-DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet', 'campfire', 'bucket', 'composter', 'tinted_glass', 'glass_pane', 'enchanting_table', 'bowl', 'blaze_rod', 'bone_meal', 'flower_pot', 'painting', 'torch', 'soul_torch', 'sticky_piston', 'clock', 'compass', 'white_wool_from_string', 'hay_block', 'anvil', 'wheat', 'lapis_lazuli', 'leather_horse_armor', 'map', 'furnace', 'jack_o_lantern', 'melon_seeds', 'melon', 'pumpkin_pie', 'chest', 'barrel', 'trapped_chest', 'bricks', 'bookshelf', 'crafting_table', 'lectern', 'chest_minecart', 'rail', 'beetroot_soup', 'mushroom_stew', 'rabbit_stew_from_red_mushroom',
-                            'rabbit_stew_from_brown_mushroom', 'suspicious_stew', 'scaffolding', 'bow', 'glass_bottle', 'fletching_table', 'shield', 'lightning_rod', 'fishing_rod', 'iron_door', 'iron_trapdoor', 'spyglass', 'slime_ball', 'smoker', 'soul_campfire', 'loom', 'lantern', 'soul_lantern', 'flower_banner_pattern', 'skull_banner_pattern', 'creeper_banner_pattern', 'mojang_banner_pattern')
 ARMOR_SECTIONS = ('chestplate', 'leggings', 'boots', 'helmet')
 TFC_ARMOR_SECTIONS = ('helmet', 'chestplate', 'greaves', 'boots')
-VANILLA_ARMOR_TYPES = ('leather', 'golden', 'iron', 'diamond', 'netherite')
-VANILLA_TOOLS = ('sword', 'shovel', 'pickaxe', 'axe', 'hoe')
-MOB_ARMOR_METALS = ('copper', 'bronze', 'black_bronze', 'bismuth_bronze', 'wrought_iron')
-MOB_TOOLS = ('axe', 'sword', 'javelin', 'mace', 'scythe')
-STONE_MOB_TOOLS = ('axe', 'javelin')
 TFC_BIOMES = ('badlands', 'inverted_badlands', 'canyons', 'low_canyons', 'plains', 'plateau', 'hills', 'rolling_hills', 'lake', 'lowlands', 'salt_marsh', 'mountains', 'volcanic_mountains', 'old_mountains', 'oceanic_mountains', 'volcanic_oceanic_mountains', 'ocean', 'ocean_reef', 'deep_ocean', 'deep_ocean_trench', 'river', 'shore', 'tidal_shore', 'mountain_river', 'volcanic_mountain_river', 'old_mountain_river', 'oceanic_mountain_river', 'volcanic_oceanic_mountain_river', 'mountain_lake', 'volcanic_mountain_lake', 'old_mountain_lake', 'oceanic_mountain_lake', 'volcanic_oceanic_mountain_lake', 'plateau_lake')
-PAINTINGS = ('golden_field', 'hot_spring', 'lake', 'supports', 'volcano')
 VANILLA_TRIMS = ('coast', 'sentry', 'dune', 'wild', 'ward', 'eye', 'vex', 'tide', 'snout', 'rib', 'spire', 'wayfinder', 'shaper', 'silence', 'raiser', 'host')
 
 ALLOYS: Dict[str, Tuple[Tuple[str, float, float], ...]] = {
@@ -1017,6 +792,7 @@ ALLOYS: Dict[str, Tuple[Tuple[str, float, float], ...]] = {
     'weak_blue_steel': (('black_steel', 0.5, 0.55), ('steel', 0.2, 0.25), ('bismuth_bronze', 0.1, 0.15), ('sterling_silver', 0.1, 0.15)),
     'weak_red_steel': (('black_steel', 0.5, 0.55), ('steel', 0.2, 0.25), ('brass', 0.1, 0.15), ('rose_gold', 0.1, 0.15))
 }
+
 
 # This is here because it's used all over, and it's easier to import with all constants
 def lang(key: str, *args) -> str:
@@ -1685,10 +1461,10 @@ DEFAULT_LANG = {
     'tfc.enum.nutrient.protein': 'Protein',
     'tfc.enum.nutrient.dairy': 'Dairy',
     'tfc.enum.forgingbonus.none': 'No Forging Bonus',
-    'tfc.enum.forgingbonus.modestly_forged': 'Modestly Forged',
-    'tfc.enum.forgingbonus.well_forged': 'Well Forged',
-    'tfc.enum.forgingbonus.expertly_forged': 'Expertly Forged',
-    'tfc.enum.forgingbonus.perfectly_forged': 'Perfectly Forged!',
+    'tfc.enum.forgingbonus.modest': 'Modestly Forged',
+    'tfc.enum.forgingbonus.well': 'Well Forged',
+    'tfc.enum.forgingbonus.expert': 'Expertly Forged',
+    'tfc.enum.forgingbonus.perfect': 'Perfectly Forged!',
     'tfc.enum.forgestep.hit': 'Hit',
     'tfc.enum.forgestep.hit_light': 'Light Hit',
     'tfc.enum.forgestep.hit_medium': 'Medium Hit',
@@ -1994,7 +1770,6 @@ DEFAULT_LANG = {
     'tfc.config.server.cowEatsRottenFood': 'Eats Rotten Food',
     'tfc.config.server.cowFamiliarityCap': 'Familiarity Cap',
     'tfc.config.server.cowGestationDays': 'Gestation Days',
-    'tfc.config.server.cowAdulthoodDays': 'Adulthood Days',
     'tfc.config.server.cowMinProduceFamiliarity': 'Min Produce Familiarity',
     'tfc.config.server.cowProduceTicks': 'Produce Ticks',
     'tfc.config.server.cowUses': 'Uses',

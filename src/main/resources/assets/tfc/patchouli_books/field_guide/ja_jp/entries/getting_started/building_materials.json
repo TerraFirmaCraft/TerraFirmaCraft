@@ -27,7 +27,7 @@
     {
       "type": "patchouli:crafting",
       "anchor": "mud_bricks",
-      "recipe": "tfc:crafting/soil/loam_drying_bricks",
+      "recipe": "tfc:crafting/drying_bricks/loam",
       "title": "泥レンガ",
       "text": "$(thing)泥$() は地上、川や湖の底、あるいは標高の低い湿地環境の一部で見られます。 少しの$(thing)藁$()を使うことで $()湿った泥レンガ$()を作ることができます。"
     },
@@ -73,7 +73,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/soil/loam_mud_bricks",
+      "recipe": "tfc:crafting/mud_bricks/loam",
       "title": " ",
       "text": "完成した泥レンガは $(thing)泥レンガブロック$()に加工し建材として利用できます。また $(thing)階段$()、 $(thing)ハーフブロック$()、$(thing)壁$()を作成することもできます。"
     },

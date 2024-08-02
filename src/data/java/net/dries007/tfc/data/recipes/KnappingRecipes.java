@@ -84,7 +84,7 @@ public interface KnappingRecipes extends Recipes
     {
         for (RockCategory type : RockCategory.values())
             add(nameOf(TFCItems.ROCK_TOOLS.get(type).get(output)) + (suffix.isEmpty() ? "" : "_" + suffix), new KnappingRecipe(
-                new DataManager.Reference<>(BuiltinKnappingTypes.ROCK),
+                KnappingType.MANAGER.getCheckedReference(BuiltinKnappingTypes.ROCK),
                 KnappingPattern.from(false, pattern),
                 Optional.of(Ingredient.of(TFCTags.Items.STONES_LOOSE_CATEGORY.get(type))),
                 new ItemStack(TFCItems.ROCK_TOOLS.get(type).get(output), count)
@@ -109,7 +109,7 @@ public interface KnappingRecipes extends Recipes
     private void clayKnapping(String suffix, ItemLike output, int count, boolean defaultOn, String... pattern)
     {
         add(nameOf(output) + (suffix.isEmpty() ? "" : "_" + suffix), new KnappingRecipe(
-            new DataManager.Reference<>(BuiltinKnappingTypes.CLAY),
+            KnappingType.MANAGER.getCheckedReference(BuiltinKnappingTypes.CLAY),
             KnappingPattern.from(defaultOn, pattern),
             Optional.empty(),
             new ItemStack(output, count)
@@ -128,6 +128,6 @@ public interface KnappingRecipes extends Recipes
 
     private void knapping(ResourceLocation knappingType, String[] pattern, ItemLike output, int count)
     {
-        add(new KnappingRecipe(KnappingType.MANAGER.getReference(knappingType), KnappingPattern.from(true, pattern), Optional.empty(), new ItemStack(output, count)));
+        add(new KnappingRecipe(KnappingType.MANAGER.getCheckedReference(knappingType), KnappingPattern.from(true, pattern), Optional.empty(), new ItemStack(output, count)));
     }
 }

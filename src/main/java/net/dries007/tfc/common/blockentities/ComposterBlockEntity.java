@@ -31,7 +31,6 @@ import net.dries007.tfc.util.climate.Climate;
 public class ComposterBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 {
     public static final int MAX_AMOUNT = 16;
-    private static final Component NAME = Component.translatable("tfc.block_entity.composter");
 
     protected long lastUpdateTick = Integer.MIN_VALUE;
     private int green, brown;
@@ -43,7 +42,7 @@ public class ComposterBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 
     public ComposterBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
-        super(type, pos, state, defaultInventory(1), NAME);
+        super(type, pos, state, defaultInventory(1));
         if (TFCConfig.SERVER.composterEnableAutomation.get())
         {
             sidedInventory.on(new PartialItemHandler(inventory).extractAll(), Direction.DOWN);
