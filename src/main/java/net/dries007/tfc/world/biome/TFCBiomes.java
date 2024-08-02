@@ -26,6 +26,7 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.river.RiverBlendType;
+import net.dries007.tfc.world.surface.builder.AtollSurfaceBuilder;
 import net.dries007.tfc.world.surface.builder.BadlandsSurfaceBuilder;
 import net.dries007.tfc.world.surface.builder.LowlandsSurfaceBuilder;
 import net.dries007.tfc.world.surface.builder.MountainSurfaceBuilder;
@@ -47,6 +48,7 @@ public final class TFCBiomes
     public static final BiomeExtension OCEAN_REEF = register("ocean_reef", builder().heightmap(seed -> BiomeNoise.ocean(seed, -16, -8)).surface(OceanSurfaceBuilder.INSTANCE).aquiferHeightOffset(-24).salty().type(BiomeBlendType.OCEAN).noRivers()); // Ocean biome with reefs depending on climate. Could be interpreted as either barrier, fringe, or platform reefs.
     public static final BiomeExtension DEEP_OCEAN = register("deep_ocean", builder().heightmap(seed -> BiomeNoise.ocean(seed, -30, -16)).surface(OceanSurfaceBuilder.INSTANCE).aquiferHeightOffset(-24).type(BiomeBlendType.OCEAN).salty().noRivers()); // Deep ocean biome covering most all oceans.
     public static final BiomeExtension DEEP_OCEAN_TRENCH = register("deep_ocean_trench", builder().heightmap(seed -> BiomeNoise.oceanRidge(seed, -30, -16)).surface(OceanSurfaceBuilder.INSTANCE).aquiferHeightOffset(-24).type(BiomeBlendType.OCEAN).salty().noRivers()); // Deeper ocean with sharp relief carving to create very deep trenches
+    public static final BiomeExtension ATOLL = register("atoll", builder().heightmap(seed -> BiomeNoise.canyons(seed, -8, 5)).atoll().surface(AtollSurfaceBuilder.INSTANCE).aquiferHeightOffset(-24).type(BiomeBlendType.LAND).salty().noRivers()); // Sharp, small hills, with lots of water / snaking winding rivers.
 
     // Low biomes
     public static final BiomeExtension PLAINS = register("plains", builder().heightmap(seed -> BiomeNoise.hills(seed, 4, 10)).surface(NormalSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.WIDE)); // Very flat, slightly above sea level.

@@ -60,6 +60,7 @@ public class TFCLayers
     public static final int OCEANIC_MOUNTAIN_LAKE = idFor(TFCBiomes.OCEANIC_MOUNTAIN_LAKE);
     public static final int VOLCANIC_OCEANIC_MOUNTAIN_LAKE = idFor(TFCBiomes.VOLCANIC_OCEANIC_MOUNTAIN_LAKE);
     public static final int PLATEAU_LAKE = idFor(TFCBiomes.PLATEAU_LAKE);
+    public static final int ATOLL = idFor(TFCBiomes.ATOLL);
 
     public static BiomeExtension getFromLayerId(int id)
     {
@@ -169,7 +170,7 @@ public class TFCLayers
 
     public static boolean hasShore(int value)
     {
-        return value != LOWLANDS && value != SALT_MARSH && value != LOW_CANYONS && value != CANYONS && value != OCEANIC_MOUNTAINS && value != VOLCANIC_OCEANIC_MOUNTAINS;
+        return value != LOWLANDS && value != SALT_MARSH && value != LOW_CANYONS && value != CANYONS && value != OCEANIC_MOUNTAINS && value != VOLCANIC_OCEANIC_MOUNTAINS && value != ATOLL;
     }
 
     public static int shoreFor(int value)

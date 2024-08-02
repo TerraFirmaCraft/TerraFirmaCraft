@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.world.biome.BiomeExtension;
 import net.dries007.tfc.world.biome.BiomeSourceExtension;
+import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.region.RegionPartition;
 import net.dries007.tfc.world.region.RiverEdge;
@@ -96,11 +97,11 @@ public class ChunkHeightFiller
     {
         columnBiomeNoiseSamplers.clear();
 
-        double height = 0, normalHeight = 0, shoreHeight = 0;
-        double shoreWeight = 0;
+        double height = 0, normalHeight = 0, shoreHeight = 0, atollHeight = 0;
+        double shoreWeight = 0, atollWeight = 0;
 
-        BiomeExtension biomeAt = null, normalBiomeAt = null, shoreBiomeAt = null;
-        double maxNormalWeight = 0, maxShoreWeight = 0; // Partition on biome type
+        BiomeExtension biomeAt = null, normalBiomeAt = null, shoreBiomeAt = null, atollBiomeAt = null;
+        double maxNormalWeight = 0, maxShoreWeight = 0, maxAtollWeight = 0; // Partition on biome type
 
         for (Object2DoubleMap.Entry<BiomeExtension> entry : biomeWeights.object2DoubleEntrySet())
         {
@@ -133,6 +134,16 @@ public class ChunkHeightFiller
                     maxShoreWeight = biomeWeight;
                 }
             }
+            else if (biome.isAtoll())
+            {
+                atollHeight += biomeHeight;
+                atollWeight += biomeWeight;
+                if (maxAtollWeight < biomeWeight)
+                {
+                    atollBiomeAt = biome;
+                    maxAtollWeight = biomeWeight;
+                }
+            }
             else
             {
                 normalHeight += biomeHeight;
@@ -149,7 +160,26 @@ public class ChunkHeightFiller
         {
             biomeAt = shoreBiomeAt;
         }
+        if (biomeAt == null)
+        {
+            biomeAt = atollBiomeAt;
+        }
 
+        if (atollBiomeAt != null)
+        {
+            if (atollWeight > 0.05 && atollWeight < 0.65)
+            {
+                final double easing = Mth.map(atollWeight, 0.05, 0.65, 0, 1);
+                final double effect = -4 * Mth.square(easing - 0.5) + 1; // 0 -> 1
+                height = Math.min(65, height + effect * 14);
+                if (easing > 0.5)
+                    height = Math.max(height, 63 - 5);
+            }
+            else if (atollWeight > 0.65)
+            {
+                height = Math.max(atollHeight, 63 - 5);
+            }
+        }
         // Adjust shore weights to produce varied cliffs where they intersect landmass
         // Only do this for the height of the shore biome _above_ sea level, to prevent creating cliffs underwater
         if (shoreWeight > 0.5 && shoreBiomeAt != null)

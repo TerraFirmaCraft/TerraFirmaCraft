@@ -42,6 +42,7 @@ public class BiomeBuilder
     private boolean rivers;
     private boolean shore;
     private boolean sandyRiverShores;
+    private boolean atoll;
 
     private BiomeBuilder()
     {
@@ -58,6 +59,7 @@ public class BiomeBuilder
         spawnable = false;
         rivers = true;
         shore = false;
+        atoll = false;
         sandyRiverShores = true;
     }
 
@@ -148,6 +150,12 @@ public class BiomeBuilder
         return this;
     }
 
+    public BiomeBuilder atoll()
+    {
+        this.atoll = true;
+        return this;
+    }
+
     public BiomeBuilder volcanoes(int frequency, int baseHeight, int scaleHeight, int volcanoBasaltHeight)
     {
         this.volcanic = true;
@@ -171,6 +179,6 @@ public class BiomeBuilder
     {
         assert surfaceBuilderFactory != null : "missing surface builder";
 
-        return new BiomeExtension(key, noiseFactory, surfaceBuilderFactory, aquiferSurfaceHeight, biomeBlendType, riverBlendType, salty, volcanic, volcanoFrequency, volcanoBasaltHeight, spawnable, rivers, shore, sandyRiverShores);
+        return new BiomeExtension(key, noiseFactory, surfaceBuilderFactory, aquiferSurfaceHeight, biomeBlendType, riverBlendType, salty, volcanic, volcanoFrequency, volcanoBasaltHeight, spawnable, rivers, shore, sandyRiverShores, atoll);
     }
 }
