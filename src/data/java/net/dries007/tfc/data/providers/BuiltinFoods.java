@@ -117,7 +117,7 @@ public class BuiltinFoods extends DataManagerProvider<FoodDefinition> implements
         add(TFCBlocks.MELON, of(0.5f));
         add(Food.MELON_SLICE, ofFood(0.2f, 5, 2.5f).fruit(0.75f));
         add(Items.PUMPKIN_PIE, ofFood(2, 5, 2.5f).fruit(1.5f).grain(1f));
-        add(Food.PUMPKIN_CHUNKS, ofFood(1, 5, 1.5f).fruit(0.75f));
+        add(Food.PUMPKIN_CHUNKS, ofFood(1, 5, 2.5f).fruit(0.75f));
         add(Food.CHEESE, ofFood(2, 0, 0.3f).dairy(3f));
         add(Food.COOKED_EGG, ofFood(0.5f, 0, 4).protein(1.5f).dairy(0.25f));
         add(Food.BOILED_EGG, ofFood(2, 10, 4).protein(1.5f).dairy(0.25f));

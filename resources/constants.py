@@ -472,8 +472,8 @@ CROPS: dict[str, Crop] = {
     'tomato': Crop('double_stick', 8, 'potassium', 0, 36, 120, 390, 30, 95, 'normal', None),
     'jute': Crop('double', 6, 'potassium', 5, 37, 100, 410, 25, 100, None, None),
     'papyrus': Crop('double', 6, 'potassium', 19, 37, 310, 500, 70, 100, None, None),
-    'pumpkin': Crop('spreading', 8, 'phosphorus', 0, 30, 120, 390, 30, 80, None, None),
-    'melon': Crop('spreading', 8, 'phosphorus', 5, 37, 200, 500, 75, 100, 'normal', None),
+    'pumpkin': Crop('spreading', 8, 'phosphorus', 5, 22, 120, 390, 30, 70, None, None),
+    'melon': Crop('spreading', 8, 'phosphorus', 19, 35, 200, 500, 75, 100, 'normal', None),
     'red_bell_pepper': Crop('pickable', 7, 'potassium', 16, 30, 190, 400, 25, 60, None, None),
     'yellow_bell_pepper': Crop('pickable', 7, 'potassium', 16, 30, 190, 400, 25, 60, None, None),
 }

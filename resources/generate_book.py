@@ -1197,11 +1197,11 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
         )),
         entry('fertilizers', 'Fertilizers', 'tfc:powder/sylvite', pages=(
             text('Fertilizers are used to add nutrients to $(l:mechanics/crops)crops$(). $(item)$(k:key.use)$() with a fertilizer in your hand on some $(thing)Farmland$() or a $(thing)Crop$() to add the nutrients. Particles should appear, indicating the fertilizer was added.', title='Fertilization'),
-            fertilizer('tfc:compost', 'Compost is the product of the $(l:mechanics/composter)Composter$().', 0.4, 0.2, 0.4),
+            fertilizer('tfc:compost', 'Compost is the product of the $(l:mechanics/composter)Composter$().', 0.2, 0, 0.2),
             fertilizer('minecraft:bone_meal', 'Bonemeal is made of crushed bones.', p=0.1),
             fertilizer('tfc:powder/saltpeter', 'Saltpeter is made from its ore.', n=0.1, k=0.4),
             fertilizer('tfc:groundcover/guano', 'Guano is found deep underground and on gravelly shores.', 0.8, 0.5, 0.1),
-            fertilizer('tfc:powder/wood_ash', 'Wood ash is produced by breaking firepits. Throwing a torch item into water also has a chance to produce ash.', p=0.1, k=0.3),
+            fertilizer('tfc:powder/wood_ash', 'Wood ash is produced by breaking firepits. Throwing a torch item into water also has a chance to produce ash.', p=0.1, k=0.2),
             fertilizer('tfc:powder/sylvite', 'Sylvite is made from its ore.', k=0.5),
             empty_last_page()
         )),

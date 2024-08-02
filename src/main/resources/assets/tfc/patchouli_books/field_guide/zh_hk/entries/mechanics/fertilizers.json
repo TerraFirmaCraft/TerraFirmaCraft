@@ -13,7 +13,7 @@
       "type": "patchouli:spotlight",
       "item": "tfc:compost",
       "link_recipes": false,
-      "text": "堆肥是由$(l:mechanics/composter)堆肥桶$()生產的一種肥料。$(br)$(li)$(b)$(bold)氮$()：40$()$(li)$(6)$(bold)磷$()：20$()$(li)$(d)$(bold)鉀$()：40$()"
+      "text": "Compost is the product of the $(l:mechanics/composter)Composter$(). $(br)$(li)$(b)Nitrogen: 20$()$(li)$(d)Potassium: 20$()"
     },
     {
       "type": "patchouli:spotlight",

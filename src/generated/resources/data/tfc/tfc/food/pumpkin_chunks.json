@@ -1,5 +1,5 @@
 {
-  "decay_modifier": 1.5,
+  "decay_modifier": 2.5,
   "fruit": 0.75,
   "hunger": 4,
   "ingredient": {

@@ -1118,9 +1118,7 @@ def generate(rm: ResourceManager):
                     'name': name,
                     'functions': loot_tables.set_count(1, 3),
                     'conditions': [loot_tables.block_state_property('tfc:wild_crop/%s[mature=true]' % crop)]
-                }, {
-                    'name': 'tfc:seeds/%s' % crop
-                })
+                }, 'tfc:seeds/%s' % crop if crop not in GRAINS else '2-3 tfc:seeds/%s' % crop)
 
         elif crop_data.type == 'double':
             half = crop_data.stages // 2
