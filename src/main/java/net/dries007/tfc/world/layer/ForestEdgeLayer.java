@@ -6,10 +6,9 @@
 
 package net.dries007.tfc.world.layer;
 
+import net.dries007.tfc.world.chunkdata.ForestType;
 import net.dries007.tfc.world.layer.framework.AdjacentTransformLayer;
 import net.dries007.tfc.world.layer.framework.AreaContext;
-
-import static net.dries007.tfc.world.layer.TFCLayers.*;
 
 public enum ForestEdgeLayer implements AdjacentTransformLayer
 {
@@ -22,7 +21,7 @@ public enum ForestEdgeLayer implements AdjacentTransformLayer
         {
             if (!isFullForest(north) || !isFullForest(east) || !isFullForest(south) || !isFullForest(west))
             {
-                return FOREST_EDGE;
+                return ForestType.getEdgeForestType(context.random());
             }
         }
         return center;
@@ -30,6 +29,7 @@ public enum ForestEdgeLayer implements AdjacentTransformLayer
 
     private boolean isFullForest(int value)
     {
-        return value == FOREST_NORMAL || value == FOREST_OLD;
+        final ForestType type = ForestType.valueOf(value);
+        return type.isPrimary() || type.isSecondary();
     }
 }

@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.common.entities;
 
+import java.util.ArrayList;
+import java.util.List;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
@@ -38,7 +40,8 @@ public record Fauna(
     {
         float minTemperature = Float.NEGATIVE_INFINITY, maxTemperature = Float.POSITIVE_INFINITY;
         float minRainfall = Float.NEGATIVE_INFINITY, maxRainfall = Float.POSITIVE_INFINITY;
-        ForestType minForest = ForestType.NONE, maxForest = ForestType.OLD_GROWTH;
+        int minForest = 0, maxForest = 4;
+        List<ForestType> forests = new ArrayList<>();
         boolean fuzzy = false;
         int chance = 1;
         int distanceBelowSeaLevel = -1;
@@ -63,12 +66,17 @@ public record Fauna(
             return this;
         }
 
-        public Builder minForest(ForestType min) { return forest(min, ForestType.OLD_GROWTH); }
-        public Builder maxForest(ForestType max) { return forest(ForestType.NONE, max); }
-        public Builder forest(ForestType min, ForestType max)
+        public Builder minForest(int min) { return forest(min, 4); }
+        public Builder maxForest(int max) { return forest(0, max); }
+        public Builder forest(int min, int max)
         {
             minForest = min;
             maxForest = max;
+            return this;
+        }
+        public Builder forestType(ForestType... types)
+        {
+            forests.addAll(List.of(types));
             return this;
         }
 
@@ -81,7 +89,7 @@ public record Fauna(
 
         public Fauna build()
         {
-            return new Fauna(chance, distanceBelowSeaLevel, new ClimatePlacement(minTemperature, maxTemperature, minRainfall, maxRainfall, minForest, maxForest, fuzzy), solidGround, maxBrightness);
+            return new Fauna(chance, distanceBelowSeaLevel, new ClimatePlacement(minTemperature, maxTemperature, minRainfall, maxRainfall, minForest, maxForest, forests, fuzzy), solidGround, maxBrightness);
         }
     }
 }

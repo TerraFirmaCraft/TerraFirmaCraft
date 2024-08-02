@@ -19,7 +19,7 @@
       "max_temperature": 9.8,
       "min_rainfall": 300,
       "max_rainfall": 400,
-      "min_forest": "edge"
+      "min_forest": 2
     }
   ]
 }

@@ -2,36 +2,6 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:forest",
   "config": {
-    "entries": "#tfc:dead_forest_trees",
-    "types": {
-      "none": {
-        "per_chunk_chance": 0
-      },
-      "sparse": {
-        "tree_count": {
-          "type": "uniform",
-          "min_inclusive": 1,
-          "max_inclusive": 2
-        },
-        "groundcover_count": 3,
-        "per_chunk_chance": 0.08,
-        "bush_count": 0,
-        "has_spoiler_old_growth": true
-      },
-      "edge": {
-        "tree_count": 2,
-        "groundcover_count": 5
-      },
-      "normal": {
-        "tree_count": 3,
-        "groundcover_count": 10,
-        "has_spoiler_old_growth": true
-      },
-      "old_growth": {
-        "tree_count": 5,
-        "groundcover_count": 14,
-        "allows_old_growth": true
-      }
-    }
+    "entries": "#tfc:dead_forest_trees"
   }
 }

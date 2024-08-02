@@ -6,9 +6,9 @@
 
 package net.dries007.tfc.world.feature.tree;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -53,37 +53,33 @@ public class ForestFeature extends Feature<ForestConfig>
         final ChunkData data = ChunkData.get(level, pos);
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final ForestType forestType = data.getForestType();
-        final ForestConfig.Type typeConfig = config.typeMap().get(forestType);
-        // todo 1.21: density replacement
-        final float density = random.nextFloat();
 
-        if (random.nextFloat() > typeConfig.perChunkChance()) return false;
+        if (random.nextFloat() > forestType.getPerChunkChance()) return false;
 
-        int treeCount = typeConfig.treeCount().sample(random);
-        final int bushCount = typeConfig.sampleBushCount(random, typeConfig.bushCount(), treeCount, density);
+        int treeCount = forestType.sampleTrees(random);
+        int bushCount = forestType.sampleBushes(random);
 
         boolean placedTrees = false;
         boolean placedBushes = false;
 
-        treeCount = (int) (treeCount * (0.6f + 0.9f * density));
         for (int i = 0; i < treeCount; i++)
         {
-            placedTrees |= placeTree(level, context.chunkGenerator(), random, pos, config, data, mutablePos, typeConfig);
+            placedTrees |= placeTree(level, context.chunkGenerator(), random, pos, config, data, mutablePos, forestType);
         }
         for (int j = 0; j < bushCount; j++)
         {
-            placedBushes |= placeBush(level, random, pos, config, data, mutablePos);
+            placedBushes |= placeBush(level, random, pos, config, data, mutablePos, forestType);
         }
         if (placedTrees)
         {
-            placeGroundcover(level, random, pos, config, data, mutablePos, typeConfig.groundcoverCount().sample(random));
-            placeLeafPile(level, random, pos, config, data, mutablePos, typeConfig.leafPileCount().sample(random));
-            placeFallenTree(level, random, pos, config, data, mutablePos);
+            placeGroundcover(level, random, pos, config, data, mutablePos, forestType.sampleGroundcover(random), forestType);
+            placeLeafPile(level, random, pos, config, data, mutablePos, forestType.sampleLeafPiles(random), forestType);
+            placeFallenTree(level, random, pos, config, data, mutablePos, forestType);
         }
         return placedTrees || placedBushes;
     }
 
-    private boolean placeTree(WorldGenLevel level, ChunkGenerator generator, RandomSource random, BlockPos chunkBlockPos, ForestConfig config, ChunkData data, BlockPos.MutableBlockPos mutablePos, ForestConfig.Type typeConfig)
+    private boolean placeTree(WorldGenLevel level, ChunkGenerator generator, RandomSource random, BlockPos chunkBlockPos, ForestConfig config, ChunkData data, BlockPos.MutableBlockPos mutablePos, ForestType typeConfig)
     {
         final int chunkX = chunkBlockPos.getX();
         final int chunkZ = chunkBlockPos.getZ();
@@ -91,7 +87,7 @@ public class ForestFeature extends Feature<ForestConfig>
         mutablePos.set(chunkX + random.nextInt(16), 0, chunkZ + random.nextInt(16));
         mutablePos.setY(level.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, mutablePos.getX(), mutablePos.getZ()));
 
-        final ForestConfig.Entry entry = getTree(data, random, config, mutablePos);
+        final ForestConfig.Entry entry = getTree(data, random, config, mutablePos, typeConfig);
         if (entry != null)
         {
             if (entry.floating())
@@ -106,18 +102,18 @@ public class ForestFeature extends Feature<ForestConfig>
             {
                 feature = entry.krummholz().get().value();
             }
-            else if (typeConfig.allowOldGrowth() && oldChance > 0 && random.nextInt(oldChance) == 0)
+            else if (typeConfig.isPrimary() && oldChance > 0 && random.nextInt(oldChance) == 0)//todo fix
             {
                 feature = entry.getOldGrowthFeature();
             }
-            else if (deadChance > 0 && random.nextInt(deadChance) == 0)
+            else if (deadChance > 0 && (random.nextInt(deadChance) == 0 || typeConfig.isDead()))
             {
                 feature = entry.getDeadFeature();
             }
             else
             {
                 final int spoilerChance = entry.spoilerOldGrowthChance();
-                if (typeConfig.hasSpoilers() && spoilerChance > 0 && random.nextInt(spoilerChance) == 0)
+                if (spoilerChance > 0 && random.nextInt(spoilerChance) == 0)
                 {
                     feature = entry.getOldGrowthFeature();
                 }
@@ -131,7 +127,7 @@ public class ForestFeature extends Feature<ForestConfig>
         return false;
     }
 
-    private boolean placeBush(WorldGenLevel level, RandomSource random, BlockPos chunkBlockPos, ForestConfig config, ChunkData data, BlockPos.MutableBlockPos mutablePos)
+    private boolean placeBush(WorldGenLevel level, RandomSource random, BlockPos chunkBlockPos, ForestConfig config, ChunkData data, BlockPos.MutableBlockPos mutablePos, ForestType type)
     {
         final int chunkX = chunkBlockPos.getX();
         final int chunkZ = chunkBlockPos.getZ();
@@ -139,7 +135,7 @@ public class ForestFeature extends Feature<ForestConfig>
         mutablePos.set(chunkX + random.nextInt(16), 0, chunkZ + random.nextInt(16));
         mutablePos.setY(level.getHeight(Heightmap.Types.WORLD_SURFACE_WG, mutablePos.getX(), mutablePos.getZ()));
 
-        final ForestConfig.Entry entry = getTree(data, random, config, mutablePos);
+        final ForestConfig.Entry entry = getTree(data, random, config, mutablePos, type);
         if (entry != null && EnvironmentHelpers.canPlaceBushOn(level, mutablePos))
         {
             entry.bushLog().ifPresent(log -> entry.bushLeaves().ifPresent(leaves -> {
@@ -187,7 +183,7 @@ public class ForestFeature extends Feature<ForestConfig>
         }
     }
 
-    private void placeGroundcover(WorldGenLevel level, RandomSource random, BlockPos chunkBlockPos, ForestConfig config, ChunkData data, BlockPos.MutableBlockPos mutablePos, int tries)
+    private void placeGroundcover(WorldGenLevel level, RandomSource random, BlockPos chunkBlockPos, ForestConfig config, ChunkData data, BlockPos.MutableBlockPos mutablePos, int tries, ForestType type)
     {
         if (tries == 0)
             return;
@@ -197,7 +193,7 @@ public class ForestFeature extends Feature<ForestConfig>
         mutablePos.set(chunkX + random.nextInt(16), 0, chunkZ + random.nextInt(16));
         mutablePos.setY(level.getHeight(Heightmap.Types.OCEAN_FLOOR, mutablePos.getX(), mutablePos.getZ()));
 
-        final ForestConfig.Entry entry = getTree(data, random, config, mutablePos);
+        final ForestConfig.Entry entry = getTree(data, random, config, mutablePos, type);
         if (entry != null)
         {
             entry.groundcover().ifPresent(groundcover -> {
@@ -218,7 +214,7 @@ public class ForestFeature extends Feature<ForestConfig>
         }
     }
 
-    private void placeLeafPile(WorldGenLevel level, RandomSource random, BlockPos chunkBlockPos, ForestConfig config, ChunkData data, BlockPos.MutableBlockPos mutablePos, int tries)
+    private void placeLeafPile(WorldGenLevel level, RandomSource random, BlockPos chunkBlockPos, ForestConfig config, ChunkData data, BlockPos.MutableBlockPos mutablePos, int tries, ForestType type)
     {
         final int chunkX = chunkBlockPos.getX();
         final int chunkZ = chunkBlockPos.getZ();
@@ -226,7 +222,7 @@ public class ForestFeature extends Feature<ForestConfig>
         mutablePos.set(chunkX + random.nextInt(16), 0, chunkZ + random.nextInt(16));
         mutablePos.setY(level.getHeight(Heightmap.Types.OCEAN_FLOOR, mutablePos.getX(), mutablePos.getZ()));
 
-        final ForestConfig.Entry entry = getTree(data, random, config, mutablePos);
+        final ForestConfig.Entry entry = getTree(data, random, config, mutablePos, type);
         if (entry != null)
         {
             entry.fallenLeaves().ifPresent(placementState -> {
@@ -251,7 +247,7 @@ public class ForestFeature extends Feature<ForestConfig>
     }
 
 
-    private void placeFallenTree(WorldGenLevel level, RandomSource random, BlockPos chunkBlockPos, ForestConfig config, ChunkData data, BlockPos.MutableBlockPos mutablePos)
+    private void placeFallenTree(WorldGenLevel level, RandomSource random, BlockPos chunkBlockPos, ForestConfig config, ChunkData data, BlockPos.MutableBlockPos mutablePos, ForestType type)
     {
         final int chunkX = chunkBlockPos.getX();
         final int chunkZ = chunkBlockPos.getZ();
@@ -264,7 +260,7 @@ public class ForestFeature extends Feature<ForestConfig>
         mutablePos.move(Direction.UP);
         if (Helpers.isBlock(downState, TFCTags.Blocks.BUSH_PLANTABLE_ON) || Helpers.isBlock(downState, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
         {
-            final ForestConfig.Entry entry = getTree(data, random, config, mutablePos);
+            final ForestConfig.Entry entry = getTree(data, random, config, mutablePos, type);
             if (entry != null)
             {
                 final int fallChance = entry.fallenChance();
@@ -329,46 +325,30 @@ public class ForestFeature extends Feature<ForestConfig>
     }
 
     @Nullable
-    private ForestConfig.Entry getTree(ChunkData chunkData, RandomSource random, ForestConfig config, BlockPos pos)
+    private ForestConfig.Entry getTree(ChunkData chunkData, RandomSource random, ForestConfig config, BlockPos pos, ForestType type)
     {
-        List<ForestConfig.Entry> entries = new ArrayList<>(4);
-        float rainfall = chunkData.getRainfall(pos);
-        float averageTemperature = OverworldClimateModel.getAdjustedAverageTempByElevation(pos, chunkData);
-        config.entries().stream().map(configuredFeature -> configuredFeature.value().config()).map(cfg -> (ForestConfig.Entry) cfg).forEach(entry -> {
-            // silly way to halfway guarantee that stuff is in general order of dominance
-            float lastRain = entry.getAverageRain();
-            float lastTemp = entry.getAverageTemp();
-            if (entry.climate().isValid(chunkData, pos, random))
-            {
-                if (entry.distanceFromMean(lastTemp, lastRain) < entry.distanceFromMean(averageTemperature, rainfall))
-                {
-                    entries.add(entry); // if the last one was closer to it's target, just add it normally
-                }
-                else
-                {
-                    entries.add(0, entry); // if the new one is closer, stick it in front
-                }
-            }
-        });
+        final float rainfall = chunkData.getRainfall(pos);
+        final float averageTemperature = OverworldClimateModel.getAdjustedAverageTempByElevation(pos, chunkData);
+        final List<ForestConfig.Entry> entries = config.entries().stream().map(configuredFeature -> configuredFeature.value().config()).map(cfg -> (ForestConfig.Entry) cfg)
+            .filter(entry -> entry.isValid(averageTemperature, rainfall))
+            .sorted(Comparator.comparingDouble(entry -> entry.distanceFromMean(averageTemperature, rainfall)))
+            .collect(Collectors.toList());
 
         if (entries.isEmpty()) return null;
-        if (config.useWeirdness())
+        if (entries.size() == 1)
+            return entries.getFirst();
+        final int maxSize = type.getMaxTreeTypes();
+        final int originalSize = entries.size();
+        for (int i = maxSize; i < originalSize; i++)
         {
-            // remove up to 3 entries from the config based on weirdness, less likely to happen each time
-            // todo: replacement for weirdness
-//            float weirdness = chunkData.getForestWeirdness();
-//            Collections.rotate(entries, -(int) (weirdness * (entries.size() - 1f)));
-//            for (int i = 1; i >= -1; i--)
-//            {
-//                if (entries.size() <= 1)
-//                    break;
-//                if (random.nextFloat() > weirdness - (0.15f * i) + 0.1f)
-//                {
-//                    entries.remove(entries.size() - 1);
-//                }
-//            }
+            entries.removeLast();
         }
-
+        int alternate = type.getAlternateSize();
+        while (entries.size() > 1 && alternate > 0)
+        {
+            entries.remove(0);
+            alternate--;
+        }
 
         int index = 0;
         while (index < entries.size() - 1 && random.nextFloat() < 0.6f)

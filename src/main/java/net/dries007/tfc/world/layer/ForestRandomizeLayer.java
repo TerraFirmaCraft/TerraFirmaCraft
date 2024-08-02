@@ -6,10 +6,11 @@
 
 package net.dries007.tfc.world.layer;
 
+import net.minecraft.util.RandomSource;
+
+import net.dries007.tfc.world.chunkdata.ForestType;
 import net.dries007.tfc.world.layer.framework.AreaContext;
 import net.dries007.tfc.world.layer.framework.CenterTransformLayer;
-
-import static net.dries007.tfc.world.layer.TFCLayers.*;
 
 public enum ForestRandomizeLayer implements CenterTransformLayer
 {
@@ -18,40 +19,42 @@ public enum ForestRandomizeLayer implements CenterTransformLayer
     @Override
     public int apply(AreaContext context, int value)
     {
-        if (value == FOREST_NONE)
+        final ForestType current = ForestType.valueOf(value);
+        final RandomSource source = context.random();
+        if (current.isNone())
         {
-            final int random = context.random().nextInt(16);
+            final int random = source.nextInt(16);
             if (random <= 2)
             {
-                return FOREST_SPARSE;
+                return ForestType.SECONDARY_SPARSE.ordinal();
             }
             else if (random == 3)
             {
-                return FOREST_NORMAL;
+                return ForestType.getNormalForestType(source);
             }
         }
-        else if (value == FOREST_SPARSE)
+        else if (current.isSparse())
         {
-            final int random = context.random().nextInt(7);
+            final int random = source.nextInt(7);
             if (random <= 3)
             {
-                return FOREST_NORMAL;
+                return ForestType.getNormalForestType(source);
             }
         }
-        else if (value == FOREST_NORMAL || value == FOREST_OLD)
+        else if (current.isPrimary() || current.isSecondary())
         {
-            final int random = context.random().nextInt(24);
-            if (random == 1 && value != FOREST_OLD)
+            final int random = source.nextInt(24);
+            if (random == 1 && !current.isSecondary())
             {
-                return FOREST_SPARSE;
+                return ForestType.SECONDARY_SPARSE.ordinal();
             }
             else if (random == 2)
             {
-                return FOREST_NONE;
+                return ForestType.SHRUBLAND.ordinal();
             }
             else if (random <= 6)
             {
-                return FOREST_OLD;
+                return ForestType.getOldGrowthForestType(source);
             }
         }
         return value;

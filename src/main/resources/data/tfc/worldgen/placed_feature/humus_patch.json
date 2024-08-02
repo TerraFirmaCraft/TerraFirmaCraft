@@ -15,7 +15,7 @@
       "max_temperature": 20,
       "min_rainfall": 180,
       "max_rainfall": 420,
-      "min_forest": "normal",
+      "min_forest": 3,
       "fuzzy": true
     }
   ]

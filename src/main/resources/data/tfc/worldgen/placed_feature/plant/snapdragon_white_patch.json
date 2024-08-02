@@ -19,8 +19,7 @@
       "max_temperature": 15.3,
       "min_rainfall": 150,
       "max_rainfall": 300,
-      "min_forest": "none",
-      "max_forest": "sparse"
+      "max_forest": 1
     }
   ]
 }

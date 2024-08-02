@@ -12,7 +12,7 @@
       "max_temperature": 27.6,
       "min_rainfall": 380,
       "max_rainfall": 500,
-      "min_forest": "edge"
+      "min_forest": 2
     },
     {
       "type": "minecraft:in_square"

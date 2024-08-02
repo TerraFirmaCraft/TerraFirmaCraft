@@ -27,15 +27,6 @@ public class TFCLayers
     private static final MutableInt BIOME_LAYER_INDEX = new MutableInt(0);
 
     /**
-     * These are the int IDs that are used for forest layer generation
-     */
-    public static final int FOREST_NONE = ForestType.NONE.ordinal();
-    public static final int FOREST_NORMAL = ForestType.NORMAL.ordinal();
-    public static final int FOREST_SPARSE = ForestType.SPARSE.ordinal();
-    public static final int FOREST_EDGE = ForestType.EDGE.ordinal();
-    public static final int FOREST_OLD = ForestType.OLD_GROWTH.ordinal();
-
-    /**
      * These are the int IDs that are used for biome layer generation
      * They are mapped to {@link BiomeExtension} through the internal registry
      */
@@ -86,7 +77,7 @@ public class TFCLayers
 
         AreaFactory layer;
 
-        layer = new ForestInitLayer(new OpenSimplex2D(random.nextInt()).spread(0.3f)).apply(random.nextLong());
+        layer = new ForestInitLayer(new OpenSimplex2D(random.nextInt()).spread(0.25f)).apply(random.nextLong());
         artist.draw("forest", 1, layer);
         layer = ForestRandomizeLayer.INSTANCE.apply(random.nextLong(), layer);
         artist.draw("forest", 2, layer);

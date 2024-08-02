@@ -12,8 +12,8 @@
       "max_temperature": 28,
       "min_rainfall": 350,
       "max_rainfall": 500,
-      "min_forest": "edge",
-      "max_forest": "edge",
+      "min_forest": 2,
+      "max_forest": 2,
       "fuzzy": true
     },
     {

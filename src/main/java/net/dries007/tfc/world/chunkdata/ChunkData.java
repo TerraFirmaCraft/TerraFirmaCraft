@@ -112,7 +112,7 @@ public class ChunkData
         this.pos = pos;
         this.status = Status.EMPTY;
         this.rockData = new RockData(generator);
-        this.forestType = ForestType.NONE;
+        this.forestType = ForestType.GRASSLAND;
     }
 
     public ChunkPos getPos()

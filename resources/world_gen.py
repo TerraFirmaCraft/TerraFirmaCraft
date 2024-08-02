@@ -394,70 +394,10 @@ def generate(rm: ResourceManager):
             'height': uniform_int(1, 4),
         })
 
-    standard_cfg = {
-        'entries': '#tfc:forest_trees',
-        'types': {
-            'none': {
-                'per_chunk_chance': 0
-            },
-            'sparse': {
-                'tree_count': uniform_int(1, 3),
-                'groundcover_count': 6,
-                'per_chunk_chance': 0.08,
-                'bush_count': 0,
-                'has_spoiler_old_growth': True
-            },
-            'edge': {
-                'tree_count': 2,
-                'groundcover_count': 10,
-                'leaf_pile_count': uniform_int(0, 1)
-            },
-            'normal': {
-                'tree_count': 5,
-                'groundcover_count': 25,
-                'has_spoiler_old_growth': True
-            },
-            'old_growth': {
-                'tree_count': 7,
-                'groundcover_count': 40,
-                'allows_old_growth': True,
-                'leaf_pile_count': uniform_int(0, 1)
-            }
-        }
-    }
-    configured_placed_feature(rm, 'forest', 'tfc:forest', standard_cfg)
-    standard_cfg['entries'] = '#tfc:mangrove_forest_trees'
-    configured_placed_feature(rm, 'mangrove_forest', 'tfc:forest', standard_cfg)
+    configured_placed_feature(rm, 'forest', 'tfc:forest', {'entries': '#tfc:forest_trees'})
+    configured_placed_feature(rm, 'mangrove_forest', 'tfc:forest', {'entries': '#tfc:mangrove_forest_trees'})
 
-    configured_placed_feature(rm, 'dead_forest', 'tfc:forest', {
-        'entries': '#tfc:dead_forest_trees',
-        'types': {
-            'none': {
-                'per_chunk_chance': 0
-            },
-            'sparse': {
-                'tree_count': uniform_int(1, 2),
-                'groundcover_count': 3,
-                'per_chunk_chance': 0.08,
-                'bush_count': 0,
-                'has_spoiler_old_growth': True
-            },
-            'edge': {
-                'tree_count': 2,
-                'groundcover_count': 5
-            },
-            'normal': {
-                'tree_count': 3,
-                'groundcover_count': 10,
-                'has_spoiler_old_growth': True
-            },
-            'old_growth': {
-                'tree_count': 5,
-                'groundcover_count': 14,
-                'allows_old_growth': True
-            }
-        }
-    })
+    configured_placed_feature(rm, 'dead_forest', 'tfc:forest', {'entries': '#tfc:dead_forest_trees'})
 
     rm.configured_feature_tag('forest_trees', *['tfc:tree/%s_entry' % tree for tree in WOODS.keys() if tree != 'mangrove'])
     rm.configured_feature_tag('dead_forest_trees', *['tfc:tree/dead_%s_entry' % tree for tree in WOODS.keys() if tree != 'mangrove'])
@@ -825,7 +765,7 @@ def generate(rm: ResourceManager):
             'max_temperature': info.max_temp,
             'min_rainfall': info.min_rain,
             'max_rainfall': info.max_rain,
-            'max_forest': 'normal'
+            'max_forest': 3
         }
         feature = 'tfc:fruit_trees'
         state = 'tfc:plant/%s_growing_branch' % fruit
@@ -1294,14 +1234,33 @@ def decorate_carving_mask(min_y: Optional[VerticalAnchor] = None, max_y: Optiona
 
 
 def decorate_climate(min_temp: Optional[float] = None, max_temp: Optional[float] = None, min_rain: Optional[float] = None, max_rain: Optional[float] = None, needs_forest: Optional[bool] = False, fuzzy: Optional[bool] = None, min_forest: Optional[str] = None, max_forest: Optional[str] = None) -> Json:
+    minf = None
+    if min_forest == 'sparse':
+        minf = 1
+    elif min_forest == 'edge':
+        minf = 2
+    elif min_forest == 'normal':
+        minf = 3
+    elif min_forest == 'old_growth':
+        minf = 4
+    maxf = None
+    if max_forest == 'sparse':
+        maxf = 1
+    elif max_forest == 'edge':
+        maxf = 2
+    elif max_forest == 'normal':
+        maxf = 3
+    elif max_forest == 'old_growth':
+        maxf = 4
+
     return {
         'type': 'tfc:climate',
         'min_temperature': min_temp,
         'max_temperature': max_temp,
         'min_rainfall': min_rain,
         'max_rainfall': max_rain,
-        'min_forest': 'normal' if needs_forest else min_forest,
-        'max_forest': max_forest,
+        'min_forest': 3 if needs_forest else minf,
+        'max_forest': maxf,
         'fuzzy': fuzzy
     }
 
