@@ -1187,7 +1187,7 @@ public interface CraftingRecipes extends Recipes
                 .input(notRotten(flour), n)
                 .input(FluidContentIngredient.of(Fluids.WATER, 100))
                 .copyOldestFood()
-                .shapeless(TFCItems.FOOD.get(dough), n * 2);
+                .shapeless(TFCItems.FOOD.get(dough), n);
     }
 
     private void addTools(Metal.ItemType input, Metal.ItemType output)

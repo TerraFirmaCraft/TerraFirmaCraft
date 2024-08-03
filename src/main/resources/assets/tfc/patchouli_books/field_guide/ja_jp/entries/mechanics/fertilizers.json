@@ -13,7 +13,7 @@
       "type": "patchouli:spotlight",
       "item": "tfc:compost",
       "link_recipes": false,
-      "text": "堆肥 は $(l:mechanics/composter)コンポスター$() で作成できる肥料です。以下の栄養素が含まれています。 $(br)$(li)$(b)窒素: 40$()$(li)$(6)リン: 20$()$(li)$(d)カリウム: 40$()"
+      "text": "Compost is the product of the $(l:mechanics/composter)Composter$(). $(br)$(li)$(b)Nitrogen: 20$()$(li)$(d)Potassium: 20$()"
     },
     {
       "type": "patchouli:spotlight",

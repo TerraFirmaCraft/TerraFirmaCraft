@@ -98,7 +98,7 @@ public abstract class SpreadingCropBlock extends DefaultCropBlock implements Hor
                 {
                     decaying.setStack(new ItemStack(fruitBlock));
                 }
-                crop.setGrowth(Mth.nextFloat(level.getRandom(), 0.8f, 0.87f));
+                crop.setGrowth(Mth.nextFloat(level.getRandom(), 0.6f, 0.72f));
             }
         }
     }

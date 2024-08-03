@@ -22,6 +22,7 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.devices.TFCComposterBlock;
 import net.dries007.tfc.common.capabilities.PartialItemHandler;
+import net.dries007.tfc.common.component.food.FoodCapability;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
@@ -284,6 +285,7 @@ public class ComposterBlockEntity extends InventoryBlockEntity<ItemStackHandler>
      */
     public Compost getCompost(ItemStack stack)
     {
+        final boolean rotten = FoodCapability.isRotten(stack);
         if (Helpers.isItem(stack, TFCTags.Items.COMPOST_POISONS))
         {
             return new Compost(AdditionType.POISON, 0);
@@ -298,7 +300,7 @@ public class ComposterBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         }
         if (Helpers.isItem(stack, TFCTags.Items.COMPOST_BROWNS_HIGH))
         {
-            return new Compost(AdditionType.BROWN, 4);
+            return new Compost(AdditionType.BROWN, rotten ? 2 : 4);
         }
         if (Helpers.isItem(stack, TFCTags.Items.COMPOST_GREENS_LOW))
         {
@@ -310,7 +312,7 @@ public class ComposterBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         }
         if (Helpers.isItem(stack, TFCTags.Items.COMPOST_GREENS_HIGH))
         {
-            return new Compost(AdditionType.GREEN, 4);
+            return new Compost(AdditionType.GREEN, rotten ? 2 : 4);
         }
         return new Compost(AdditionType.NONE, 0);
     }

@@ -174,7 +174,8 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(FROG_FOOD).addTags(TURTLE_FOOD, GRAINS);
         tag(RABBIT_FOOD).addTags(GRAINS, VEGETABLES);
 
-        // todo: isn't there some overlap between green low + brown low with the plants tag?
+        // there is intentional overlap between greens and browns
+        // we intentionally check browns first as that is the more restrictive set of items
         tag(COMPOST_GREENS_LOW).addTag(PLANTS);
         tag(COMPOST_GREENS_MEDIUM).addTag(GRAINS);
         tag(COMPOST_GREENS_HIGH).addTags(VEGETABLES, FRUITS);
@@ -193,8 +194,6 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             TFCItems.POWDERS.get(Powder.WOOD_ASH),
             TFCItems.JUTE);
         tag(COMPOST_BROWNS_HIGH).add(
-            TFCBlocks.MELON,
-            TFCBlocks.PUMPKIN,
             Items.PAPER,
             TFCItems.JUTE_FIBER,
             TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.HUMUS),

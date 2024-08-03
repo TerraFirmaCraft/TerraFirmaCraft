@@ -42,7 +42,17 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:seeds/oat"
+          "name": "tfc:seeds/oat",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2,
+                "max": 3
+              }
+            }
+          ]
         }
       ],
       "conditions": [

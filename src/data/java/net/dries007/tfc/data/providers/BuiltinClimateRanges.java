@@ -64,8 +64,8 @@ public class BuiltinClimateRanges extends DataManagerProvider<ClimateRange>
         add(CROPS, TOMATO, b -> b.hydration(30, 95).temperature(0, 36));
         add(CROPS, JUTE, b -> b.hydration(25, 100).temperature(5, 37));
         add(CROPS, PAPYRUS, b -> b.hydration(70, 100).temperature(19, 37));
-        add(CROPS, PUMPKIN, b -> b.hydration(30, 80).temperature(0, 30));
-        add(CROPS, MELON, b -> b.hydration(75, 100).temperature(5, 37));
+        add(CROPS, PUMPKIN, b -> b.hydration(30, 70).temperature(5, 22));
+        add(CROPS, MELON, b -> b.hydration(75, 100).temperature(19, 35));
         add(CROPS, RED_BELL_PEPPER, b -> b.hydration(25, 60).temperature(16, 30));
         add(CROPS, YELLOW_BELL_PEPPER, b -> b.hydration(25, 60).temperature(16, 30));
     }
