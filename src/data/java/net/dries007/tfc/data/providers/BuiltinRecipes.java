@@ -1,5 +1,6 @@
 package net.dries007.tfc.data.providers;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -216,17 +217,15 @@ public final class BuiltinRecipes extends VanillaRecipeProvider implements
         // Collapse Recipes
         TFCBlocks.ROCK_BLOCKS.forEach((rock, blocks) -> {
             add(new CollapseRecipe(BlockIngredient.of(Stream.of(
-                blocks.get(Rock.BlockType.RAW).get(),
-                blocks.get(Rock.BlockType.HARDENED).get(),
-                blocks.get(Rock.BlockType.SMOOTH).get(),
-                blocks.get(Rock.BlockType.CRACKED_BRICKS).get(),
-                TFCBlocks.GRADED_ORES.get(rock).values()
-                    .stream()
-                    .map(m -> m.get(Ore.Grade.POOR).get()),
+                List.of(
+                    blocks.get(Rock.BlockType.RAW),
+                    blocks.get(Rock.BlockType.HARDENED),
+                    blocks.get(Rock.BlockType.SMOOTH),
+                    blocks.get(Rock.BlockType.CRACKED_BRICKS)
+                ),
+                pivot(TFCBlocks.GRADED_ORES.get(rock), Ore.Grade.POOR).values(),
                 TFCBlocks.ORES.get(rock).values()
-                    .stream()
-                    .map(RegistryHolder::get)
-            ).<Block>flatMap(Helpers::flatten)), blocks.get(Rock.BlockType.COBBLE).get().defaultBlockState()));
+            ).flatMap(Collection::stream).map(RegistryHolder::get)), blocks.get(Rock.BlockType.COBBLE).get().defaultBlockState()));
             TFCBlocks.GRADED_ORES.get(rock).forEach((ore, oreBlocks) -> {
                 add(new CollapseRecipe(
                     BlockIngredient.of(oreBlocks.get(Ore.Grade.RICH).get()),

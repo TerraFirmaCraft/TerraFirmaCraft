@@ -6,6 +6,10 @@
 
 package net.dries007.tfc.client;
 
+import java.util.IdentityHashMap;
+import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
@@ -16,6 +20,7 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Axis;
+import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -72,6 +77,13 @@ public final class RenderHelpers
 {
     @SuppressWarnings("deprecation") public static final ResourceLocation BLOCKS_ATLAS = TextureAtlas.LOCATION_BLOCKS;
     public static final Button.CreateNarration NARRATION = Supplier::get;
+
+    public static <K, V, S extends Supplier<? extends K>> Map<K, V> mapOf(Consumer<BiConsumer<S, V>> factory)
+    {
+        final Map<K, V> map = new Reference2ObjectOpenHashMap<>(); // Used with `Block` or `Item` keys
+        factory.accept((s, v) -> map.put(s.get(), v));
+        return map;
+    }
 
     /**
      * Creates a default {@link ModelResourceLocation} with the TFC namespace using the {@link ModelResourceLocation#STANDALONE_VARIANT}.

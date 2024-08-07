@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.blockentities;
 
+import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -93,14 +94,14 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
         level.getBlockEntity(pos, TFCBlockEntities.PIT_KILN.get()).ifPresent(pitKiln -> {
             // Remove inventory items
             // This happens here to stop the block dropping its items in onBreakBlock()
-            NonNullList<ItemStack> items = Helpers.extractAllItems(pitKiln.inventory);
+            List<ItemStack> items = Helpers.copyToAndClear(pitKiln.inventory);
 
             // Replace the block
             level.setBlock(pos, TFCBlocks.PLACED_ITEM.get().defaultBlockState(), 3);
 
             // Replace inventory items
             level.getBlockEntity(pos, TFCBlockEntities.PLACED_ITEM.get()).ifPresent(placedItem -> {
-                Helpers.insertAllItems(placedItem.inventory, items);
+                Helpers.copyFrom(items, placedItem.inventory);
 
                 // Copy misc data
                 placedItem.isHoldingLargeItem = pitKiln.isHoldingLargeItem;

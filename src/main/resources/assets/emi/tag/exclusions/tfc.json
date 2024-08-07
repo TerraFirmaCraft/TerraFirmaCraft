@@ -18,5 +18,28 @@
     "tfc:usable_in_sluice",
     "tfc:usable_in_tool_head_mold",
     "tfc:usable_in_wooden_bucket"
+  ],
+  "item": [
+    "tfc:can_be_lit_on_torch",
+    "tfc:carried_by_horse",
+    "tfc:fluid_item_ingredient_empty_containers",
+    "tfc:fox_spawns_with",
+    "tfc:firepit_logs",
+    "tfc:firepit_sticks",
+    "tfc:pit_kiln_logs",
+    "tfc:pit_kiln_straw",
+    "tfc:compost_browns/low",
+    "tfc:compost_browns/medium",
+    "tfc:compost_browns/high",
+    "tfc:compost_greens/low",
+    "tfc:compost_greens/medium",
+    "tfc:compost_greens/high",
+    "tfc:usable_on_tool_rack",
+    "tfc:disabled_monster_held_items",
+    "tfc:skeleton_weapons",
+    "tfc:mob_chest_armor",
+    "tfc:mob_feet_armor",
+    "tfc:mob_head_armor",
+    "tfc:mob_leg_armor"
   ]
 }

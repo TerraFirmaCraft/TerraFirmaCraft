@@ -16,6 +16,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ClipContext;
@@ -109,7 +110,7 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
     @Nullable
     public static Direction getTargetedFace(Level level, BlockState state, Player player)
     {
-        return getTargetedFace(state, Helpers.rayTracePlayer(level, player, ClipContext.Fluid.NONE));
+        return getTargetedFace(state, Item.getPlayerPOVHitResult(level, player, ClipContext.Fluid.NONE));
     }
 
     @Nullable

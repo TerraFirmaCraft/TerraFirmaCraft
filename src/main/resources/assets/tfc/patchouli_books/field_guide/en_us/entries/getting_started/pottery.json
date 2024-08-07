@@ -53,7 +53,7 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/vessel",
+      "recipe": "tfc:knapping/ceramic/unfired_vessel",
       "text": "Knapping a Clay Small Vessel."
     },
     {
@@ -64,7 +64,7 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/jug",
+      "recipe": "tfc:knapping/ceramic/unfired_jug",
       "text": "Knapping a Clay Jug."
     },
     {
@@ -75,69 +75,69 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/ingot_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_ingot_mold",
       "text": "Knapping a Clay Ingot Mold."
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/ingot_mold",
+      "recipe": "tfc:heating/ceramic/ingot_mold",
       "text": "The mold then needs to be fired, like all clay items, to be usable - likely in a $(l:getting_started/pit_kiln)Pit Kiln$().$(br2)Once it is fired, molten metal can be poured in. Once the metal has cooled enough, it can be extracted."
     },
     {
       "type": "patchouli:spotlight",
-      "item": "tfc:ceramic/ingot_mold{tank:{\"Amount\":100,\"FluidName\":\"tfc:metal/copper\"}}",
+      "item": "tfc:ceramic/ingot_mold[tfc:fluid={id:\"tfc:metal/copper\",amount:100}]",
       "title": "Casting",
       "link_recipes": false,
       "text": "The next few pages show several of the knapping patterns for various tools."
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/propick_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_propick_head_mold",
       "text": "A $(l:mechanics/prospecting#propick)Prospector's Pick$() is an essential tool for locating large quantities of ore."
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/pickaxe_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_pickaxe_head_mold",
       "text": "A $(thing)Pickaxe$()! The bread and butter tool for mining."
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/saw_blade_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_saw_blade_mold",
       "text": "A $(thing)Saw$() is a tool which is required in order to craft advanced wooden components like a $(thing)Workbench$() along with many other devices like $(l:mechanics/support_beams)Supports$()."
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/scythe_blade_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_scythe_blade_mold",
       "text": "A $(thing)Scythe$() is a tool that can harvest plants and leaves in a 3x3x3 area!"
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/chisel_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_chisel_head_mold",
       "text": "A $(l:mechanics/chisel)Chisel$() is a tool used for smoothing blocks as well as creating a large number of decorative blocks."
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/axe_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_axe_head_mold",
       "text": "An $(thing)Axe$() for all your tree chopping purposes. Note that stone axes are less efficient than metal!"
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/hammer_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_hammer_head_mold",
       "text": "A $(thing)Hammer$() is an essential tool to create and work on $(l:mechanics/anvils)Anvils$()."
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/knife_blade_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_knife_blade_mold",
       "text": "A $(thing)Knife$() can be used as a weapon, or as a cutting tool for plant type blocks."
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/hoe_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_hoe_head_mold",
       "text": "A $(thing)Hoe$() used for planting and maintaining $(l:mechanics/crops)Crops$()."
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/shovel_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_shovel_head_mold",
       "text": "A $(thing)Shovel$() for all your digging purposes."
     }
   ],

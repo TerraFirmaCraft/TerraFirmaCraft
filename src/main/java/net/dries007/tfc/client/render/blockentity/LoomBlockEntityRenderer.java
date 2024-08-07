@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.client.render.blockentity;
 
+import java.util.Map;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -15,18 +16,30 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Block;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.LoomBlockEntity;
+import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.wood.TFCLoomBlock;
+import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.recipes.LoomRecipe;
+import net.dries007.tfc.util.Helpers;
 
 public class LoomBlockEntityRenderer implements BlockEntityRenderer<LoomBlockEntity>
 {
+    public static final Map<Block, ResourceLocation> TEXTURES = RenderHelpers.mapOf(map ->
+        TFCBlocks.WOODS.forEach((wood, m) ->
+            map.accept(m.get(Wood.BlockType.LOOM), Helpers.identifier("block/wood/planks/" + wood.getSerializedName()))));
+
     @Override
     public void render(LoomBlockEntity loom, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
-        if (!(loom.getBlockState().getBlock() instanceof TFCLoomBlock loomBlock)) return;
+        final ResourceLocation texture = TEXTURES.get(loom.getBlockState().getBlock());
+        if (texture == null)
+        {
+            return;
+        }
 
         poseStack.pushPose();
         poseStack.translate(0.5D, 0.03125D, 0.5D);
@@ -34,7 +47,7 @@ public class LoomBlockEntityRenderer implements BlockEntityRenderer<LoomBlockEnt
         poseStack.mulPose(Axis.YP.rotationDegrees((float) meta));
         poseStack.popPose();
 
-        final TextureAtlasSprite planksSprite = Minecraft.getInstance().getTextureAtlas(RenderHelpers.BLOCKS_ATLAS).apply(loomBlock.getTextureLocation());
+        final TextureAtlasSprite planksSprite = Minecraft.getInstance().getTextureAtlas(RenderHelpers.BLOCKS_ATLAS).apply(texture);
 
         float tileZ = (float) loom.getAnimPos();
 

@@ -30,17 +30,15 @@ import net.dries007.tfc.util.Helpers;
 
 public class FirepitBlockEntityRenderer<T extends AbstractFirepitBlockEntity<?>> implements BlockEntityRenderer<T>
 {
-    public static final Map<AbstractFirepitBlockEntity.BurnStage, List<ModelResourceLocation>> BURN_STAGE_MODELS = Helpers.mapOf(AbstractFirepitBlockEntity.BurnStage.class, e -> List.of(
-        RenderHelpers.modelId("block/firepit_log_1_" + e.name().toLowerCase(Locale.ROOT)),
-            RenderHelpers.modelId("block/firepit_log_2_" + e.name().toLowerCase(Locale.ROOT)),
-            RenderHelpers.modelId("block/firepit_log_3_" + e.name().toLowerCase(Locale.ROOT)),
-            RenderHelpers.modelId("block/firepit_log_4_" + e.name().toLowerCase(Locale.ROOT))
-    ));
-
-    public static ModelResourceLocation getModelForStage(AbstractFirepitBlockEntity.BurnStage stage, int slot)
-    {
-        return BURN_STAGE_MODELS.get(stage).get(slot);
-    }
+    public static final Map<AbstractFirepitBlockEntity.BurnStage, List<ModelResourceLocation>> BURN_STAGE_MODELS = Helpers.mapOf(AbstractFirepitBlockEntity.BurnStage.class, e -> {
+        final String name = e.name().toLowerCase(Locale.ROOT);
+        return List.of(
+            RenderHelpers.modelId("block/firepit_log_1_" + name),
+            RenderHelpers.modelId("block/firepit_log_2_" + name),
+            RenderHelpers.modelId("block/firepit_log_3_" + name),
+            RenderHelpers.modelId("block/firepit_log_4_" + name)
+        );
+    });
 
     @Override
     public void render(T firepit, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int combinedLight, int combinedOverlay)
@@ -64,7 +62,8 @@ public class FirepitBlockEntityRenderer<T extends AbstractFirepitBlockEntity<?>>
                     poseStack.mulPose(Axis.YP.rotationDegrees(90f));
                     poseStack.translate(-0.5f, -0.5f, -0.5f);
                 }
-                final BakedModel baked = mc.getModelManager().getModel(getModelForStage(firepit.getBurnStage(i), i));
+                AbstractFirepitBlockEntity.BurnStage stage = firepit.getBurnStage(i);
+                final BakedModel baked = mc.getModelManager().getModel(BURN_STAGE_MODELS.get(stage).get(i));
                 final VertexConsumer buffer = bufferSource.getBuffer(RenderType.solid());
                 mc.getBlockRenderer().getModelRenderer().tesselateWithAO(firepit.getLevel(), baked, firepit.getBlockState(), firepit.getBlockPos(), poseStack, buffer, true, random, combinedLight, combinedOverlay, ModelData.EMPTY, RenderType.solid());
                 poseStack.popPose();

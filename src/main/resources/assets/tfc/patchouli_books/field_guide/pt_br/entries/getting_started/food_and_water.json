@@ -73,7 +73,7 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/jug",
+      "recipe": "tfc:knapping/ceramic/unfired_jug",
       "text": "$(l:getting_started/pottery)Escassez$() e disparando a $(l:getting_started/pottery#jug)jug$() é uma maneira de levar água com você. Preencha-o como um balde com $(item)$(k:key.use)$(). Contenção $(item)$(k:key.use)$() bebe a água."
     },
     {

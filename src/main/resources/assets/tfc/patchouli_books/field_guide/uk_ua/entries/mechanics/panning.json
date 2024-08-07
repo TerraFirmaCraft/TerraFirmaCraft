@@ -10,12 +10,12 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/pan",
+      "recipe": "tfc:knapping/ceramic/unfired_pan",
       "text": "Решето треба $(l:getting_started/pottery)виліпити$() з глини згідно схеми"
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/ceramic_pan",
+      "recipe": "tfc:heating/pan/empty",
       "text": "Після $(thing)виліплення$() решета тобі треба його $(l:mechanics/heating)випалити$(). Після випалу ти отримаєш $(thing)решето$().$(br2)Далі потрібно знайти $(thing)рудне родовище$() під водою. Це є гравій з вкрапленням таких руд: самородна мідь, самородне срібло, самородне золото та каситерит."
     },
     {

@@ -49,27 +49,28 @@ public interface SimpleStaticBlockEntityModel<T extends IBakedGeometry<T>, B ext
 
         class Baker extends QuadBakingVertexConsumer
         {
-            boolean first = true;
+            int count = 0;
 
             @Override
             public VertexConsumer addVertex(float x, float y, float z)
             {
-                if (!first)
+                if (count == 4)
                 {
+                    count = 0;
                     quads.add(bakeQuad());
                 }
-                first = false;
+                count++;
                 return super.addVertex(x, y, z);
             }
         }
 
         // Inconveniently, this vertex consumer has to be manually baked after each quad. So, we listen to each
         // addVertex(x, y, z) to empty it, except the first call, and then remember to retrieve the final vertex
-        final Baker buffer = new Baker();
-        final TextureAtlasSprite particle = render(blockEntity, new PoseStack(), buffer, packedLight, packedOverlay);
-        if (!buffer.first) // We baked at least one quad, so get the last one
+        final Baker baker = new Baker();
+        final TextureAtlasSprite particle = render(blockEntity, new PoseStack(), baker, packedLight, packedOverlay);
+        if (baker.count > 0) // We baked at least one quad, so get the last one
         {
-            quads.add(buffer.bakeQuad());
+            quads.add(baker.bakeQuad());
         }
         return new StaticModelData(quads, particle);
     }

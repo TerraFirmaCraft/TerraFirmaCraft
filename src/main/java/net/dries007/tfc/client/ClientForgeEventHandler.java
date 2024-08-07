@@ -40,9 +40,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.component.ItemLore;
-import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -288,7 +286,7 @@ public class ClientForgeEventHandler
                 for (TypedDataComponent<?> component : stack.getComponents())
                 {
                     // Ignore certain default component types
-                    if (isDefaultComponentWithDefaultValue(component)) continue;
+                    if (isIgnoredComponent(component)) continue;
                     if (first)
                     {
                         tooltip.add(Component.literal(DARK_GRAY + "[Debug] Components:"));
@@ -319,15 +317,15 @@ public class ClientForgeEventHandler
         }
     }
 
-    private static boolean isDefaultComponentWithDefaultValue(TypedDataComponent<?> component)
+    private static boolean isIgnoredComponent(TypedDataComponent<?> component)
     {
-        return (component.type() == DataComponents.LORE && component.value().equals(ItemLore.EMPTY))
-            || (component.type() == DataComponents.RARITY && component.value().equals(Rarity.COMMON))
-            || (component.type() == DataComponents.REPAIR_COST && component.value().equals(0))
-            // Ignore completely, they create HUGE tooltips
+        return (component.type() == DataComponents.REPAIR_COST && component.value().equals(0))
+            // Ignore completely, they create HUGE tooltips, or they aren't useful
             || component.type() == DataComponents.ENCHANTMENTS
             || component.type() == DataComponents.ATTRIBUTE_MODIFIERS
-            || component.type() == DataComponents.TOOL;
+            || component.type() == DataComponents.TOOL
+            || component.type() == DataComponents.LORE
+            || component.type() == DataComponents.RARITY;
     }
 
     @SuppressWarnings("OptionalAssignedToNull")

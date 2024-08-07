@@ -42,8 +42,6 @@ public class TFCTags
         public static final TagKey<Block> HALOPHYTE = tag("halophyte"); // Used for all saltwater plants that generate in salt marshes
         public static final TagKey<Block> KELP_TREE = tag("kelp_tree");
         public static final TagKey<Block> KELP_BRANCH = tag("kelp_branch");
-        public static final TagKey<Block> WALL_CORALS = tag("wall_corals");
-        public static final TagKey<Block> CORALS = tag("corals");
         public static final TagKey<Block> SPREADING_BUSH = tag("spreading_bush");
         public static final TagKey<Block> ANY_SPREADING_BUSH = tag("any_spreading_bush");
         public static final TagKey<Block> THORNY_BUSHES = tag("thorny_bushes"); // Bushes that damage entities walking through them
@@ -92,8 +90,16 @@ public class TFCTags
         public static final TagKey<Block> BREAKS_WHEN_ISOLATED = tag("breaks_when_isolated");
         /** Leaf blocks that spawn leaf particles in the fall */
         public static final TagKey<Block> SEASONAL_LEAVES = tag("seasonal_leaves");
+        /**
+         * Used in world generation to select random coral blocks. Seperate from the vanilla tags because we don't want to include vanilla coral blocks
+         * @see BlockTags#CORALS
+         * @see BlockTags#WALL_CORALS
+         */
+        public static final TagKey<Block> SALT_WATER_CORAL_PLANTS = tag("salt_water_coral_plants");
+        public static final TagKey<Block> SALT_WATER_CORALS = tag("salt_water_corals");
+        public static final TagKey<Block> SALT_WATER_WALL_CORALS = tag("salt_water_wall_corals");
 
-        public static final TagKey<Block> STONES = Tags.Blocks.STONES; // Includes raw + hardened
+        // Tags.Blocks.STONES includes raw + hardened
         public static final TagKey<Block> STONES_RAW = commonTag("stones/raw");
         public static final TagKey<Block> STONES_HARDENED = commonTag("stones/hardened");
         public static final TagKey<Block> STONES_SMOOTH = commonTag("stones/smooth");
@@ -106,6 +112,7 @@ public class TFCTags
         public static final TagKey<Block> INSULATION = tag("insulation");
 
         public static final TagKey<Block> LAMPS = tag("lamps");
+        public static final TagKey<Block> ANVILS = tag("anvils");
 
         /** Logs that can be cut down in entire trees via axes */
         public static final TagKey<Block> LOGS_THAT_LOG = tag("logs_that_log");
@@ -297,9 +304,11 @@ public class TFCTags
         public static final TagKey<Item> RABBIT_FOOD = tag("rabbit_food");
 
         // Compost
+        public static final TagKey<Item> COMPOST_GREENS = tag("compost_greens");
         public static final TagKey<Item> COMPOST_GREENS_LOW = tag("compost_greens/low");
         public static final TagKey<Item> COMPOST_GREENS_MEDIUM = tag("compost_greens/medium");
         public static final TagKey<Item> COMPOST_GREENS_HIGH = tag("compost_greens/high");
+        public static final TagKey<Item> COMPOST_BROWNS = tag("compost_browns");
         public static final TagKey<Item> COMPOST_BROWNS_LOW = tag("compost_browns/low");
         public static final TagKey<Item> COMPOST_BROWNS_MEDIUM = tag("compost_browns/medium");
         public static final TagKey<Item> COMPOST_BROWNS_HIGH = tag("compost_browns/high");
@@ -359,7 +368,6 @@ public class TFCTags
         public static final TagKey<Item> CLUTCHES = tag("clutches");
         public static final TagKey<Item> SUPPORT_BEAMS = tag("support_beams");
         public static final TagKey<Item> LUMBER = tag("lumber");
-        public static final TagKey<Item> ANVILS = tag("anvils");
 
         // Common Tags
         public static final TagKey<Item> DOUBLE_INGOTS = commonTag("double_ingots");
@@ -412,6 +420,8 @@ public class TFCTags
         public static final TagKey<Item> HIGH_QUALITY_CLOTH = tag("high_quality_cloth");
         public static final TagKey<Item> GEM_POWDERS = tag("gem_powders");
         public static final TagKey<Item> BOOKS = commonTag("books");
+        /** Used by patchouli */
+        public static final TagKey<Item> ORE_DEPOSITS = tag("ore_deposits");
 
         // Device Required Items
         public static final TagKey<Item> FIREPIT_KINDLING = tag("firepit_kindling");
@@ -508,6 +518,7 @@ public class TFCTags
         public static final TagKey<Item> MUD_BRICKS = tag(Blocks.MUD_BRICKS);
 
         // Block Tags - Misc
+        public static final TagKey<Item> ANVILS = tag(Blocks.ANVILS);
         public static final TagKey<Item> WORKBENCHES = tag(Blocks.WORKBENCHES);
 
 

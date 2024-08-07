@@ -1,0 +1,25 @@
+{
+  "values": [
+    "tfc:raw_sandstone/brown_slab",
+    "tfc:smooth_sandstone/brown_slab",
+    "tfc:cut_sandstone/brown_slab",
+    "tfc:raw_sandstone/white_slab",
+    "tfc:smooth_sandstone/white_slab",
+    "tfc:cut_sandstone/white_slab",
+    "tfc:raw_sandstone/black_slab",
+    "tfc:smooth_sandstone/black_slab",
+    "tfc:cut_sandstone/black_slab",
+    "tfc:raw_sandstone/red_slab",
+    "tfc:smooth_sandstone/red_slab",
+    "tfc:cut_sandstone/red_slab",
+    "tfc:raw_sandstone/yellow_slab",
+    "tfc:smooth_sandstone/yellow_slab",
+    "tfc:cut_sandstone/yellow_slab",
+    "tfc:raw_sandstone/green_slab",
+    "tfc:smooth_sandstone/green_slab",
+    "tfc:cut_sandstone/green_slab",
+    "tfc:raw_sandstone/pink_slab",
+    "tfc:smooth_sandstone/pink_slab",
+    "tfc:cut_sandstone/pink_slab"
+  ]
+}

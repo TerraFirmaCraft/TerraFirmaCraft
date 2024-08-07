@@ -29,12 +29,12 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/pot",
+      "recipe": "tfc:knapping/ceramic/unfired_pot",
       "text": "A ceramic pot must be $(l:getting_started/pottery)Knapped$() out of clay first."
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/fired_pot",
+      "recipe": "tfc:heating/ceramic/pot",
       "text": "It then must be $(l:mechanics/heating)fired$() to create a $(thing)Ceramic Pot$() which can be used on the firepit."
     },
     {

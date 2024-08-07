@@ -144,7 +144,7 @@ public class CharcoalForgeBlock extends DeviceBlock implements IBellowsConsumer
         {
             if (player instanceof ServerPlayer serverPlayer)
             {
-                Helpers.openScreen(serverPlayer, forge, pos);
+                serverPlayer.openMenu(forge, pos);
             }
             return ItemInteractionResult.SUCCESS;
         }

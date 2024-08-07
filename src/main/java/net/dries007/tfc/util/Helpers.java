@@ -24,6 +24,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterators;
 import com.machinezoo.noexception.throwing.ThrowingRunnable;
 import com.machinezoo.noexception.throwing.ThrowingSupplier;
@@ -33,17 +34,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.NonNullList;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -52,7 +50,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -72,7 +69,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeManager;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
@@ -93,10 +89,8 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.fml.util.thread.EffectiveSide;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.ItemCapability;
@@ -133,12 +127,6 @@ public final class Helpers
 {
     public static final Direction[] DIRECTIONS = Direction.values();
     public static final DyeColor[] DYE_COLORS = DyeColor.values();
-
-    /**
-     * If assertions (-ea) are enabled. Used to selectively enable various self-test mechanisms
-     */
-    public static final boolean ASSERTIONS_ENABLED = detectAssertionsEnabled();
-
 
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final int PRIME_X = 501125321;
@@ -234,19 +222,21 @@ public final class Helpers
             .collect(Collectors.toMap(Function.identity(), valueMapper, (v, v2) -> Helpers.throwAsUnchecked(new AssertionError("Merging elements not allowed!")), () -> new EnumMap<>(enumClass)));
     }
 
+    /**
+     * Given a map of {@code K -> V1}, applies the mapping function {@code func: V1 -> V2} to each value, and returns a new, immutable map
+     * consisting of {@code K -> V2}
+     */
+    public static <K, V1, V2> Map<K, V2> mapValue(Map<K, V1> map, Function<V1, V2> func)
+    {
+        final ImmutableMap.Builder<K, V2> builder = ImmutableMap.builderWithExpectedSize(map.size());
+        for (Map.Entry<K, V1> entry : map.entrySet())
+            builder.put(entry.getKey(), func.apply(entry.getValue()));
+        return builder.build();
+    }
+
     public static <K, V> V getRandomValue(Map<K, V> map, RandomSource random)
     {
         return Iterators.get(map.values().iterator(), random.nextInt(map.size()));
-    }
-
-    /**
-     * Flattens a homogeneous stream of {@code Collection<T>}, {@code Stream<T>} and {@code T}s together into a {@code Stream<T>}
-     * Usage: {@code stream.flatMap(Helpers::flatten)}
-     */
-    @SuppressWarnings("unchecked")
-    public static <R> Stream<? extends R> flatten(Object t)
-    {
-        return t instanceof Collection<?> c ? (Stream<? extends R>) c.stream() : (t instanceof Stream<?> s ? (Stream<? extends R>) s : Stream.of((R) t));
     }
 
     public static MutableComponent translateEnum(Enum<?> anEnum)
@@ -288,11 +278,6 @@ public final class Helpers
             return level.getLevel(); // Special case for world gen, when we can access the level unsafely
         }
         return null; // A modder has done a strange ass thing
-    }
-
-    public static BlockHitResult rayTracePlayer(Level level, Player player, ClipContext.Fluid mode)
-    {
-        return /* protected */ Item.getPlayerPOVHitResult(level, player, mode);
     }
 
     /**
@@ -509,14 +494,6 @@ public final class Helpers
         level.setBlock(pos, level.getFluidState(pos).createLegacyBlock(), flags);
     }
 
-    /**
-     * Iterate through all slots in an {@code inventory}.
-     */
-    public static Iterable<ItemStack> iterate(IItemHandler inventory)
-    {
-        return iterate(inventory, 0, inventory.getSlots());
-    }
-
     public static void tickInfestation(Level level, BlockPos pos, int infestation, @Nullable Player player)
     {
         infestation = Mth.clamp(infestation, 0, 5);
@@ -593,6 +570,14 @@ public final class Helpers
     }
 
     /**
+     * Iterate through all slots in an {@code inventory}.
+     */
+    public static Iterable<ItemStack> iterate(IItemHandler inventory)
+    {
+        return iterate(inventory, 0, inventory.getSlots());
+    }
+
+    /**
      * Iterate through all the slots in a {@code inventory}.
      */
     public static Iterable<ItemStack> iterate(RecipeInput inventory)
@@ -649,17 +634,7 @@ public final class Helpers
         final ListTag list = new ListTag();
         for (final ItemStack stack : stacks)
         {
-            list.add(stack.save(provider));
-        }
-        return list;
-    }
-
-    public static ListTag writeItemStacksToNbt(HolderLookup.Provider provider, @Nullable ItemStack[] stacks)
-    {
-        final ListTag list = new ListTag();
-        for (final ItemStack stack : stacks)
-        {
-            list.add((stack == null ? ItemStack.EMPTY : stack).save(provider));
+            list.add(stack.saveOptional(provider));
         }
         return list;
     }
@@ -673,12 +648,11 @@ public final class Helpers
         }
     }
 
-    public static void readItemStacksFromNbt(HolderLookup.Provider provider, ItemStack[] stacks, ListTag list)
+    public static void readFixedSizeItemStacksFromNbt(HolderLookup.Provider provider, List<ItemStack> stacks, ListTag list)
     {
-        assert list.size() == stacks.length;
         for (int i = 0; i < list.size(); i++)
         {
-            stacks[i] = ItemStack.parseOptional(provider, list.getCompound(i));
+            stacks.set(i, ItemStack.parseOptional(provider, list.getCompound(i)));
         }
     }
 
@@ -699,17 +673,12 @@ public final class Helpers
 
     public static void gatherAndConsumeItems(Level level, AABB bounds, IItemHandler inventory, int minSlotInclusive, int maxSlotInclusive)
     {
-        gatherAndConsumeItems(level.getEntitiesOfClass(ItemEntity.class, bounds, EntitySelector.ENTITY_STILL_ALIVE), inventory, minSlotInclusive, maxSlotInclusive);
+        gatherAndConsumeItems(level.getEntitiesOfClass(ItemEntity.class, bounds, EntitySelector.ENTITY_STILL_ALIVE), inventory, minSlotInclusive, maxSlotInclusive, Integer.MAX_VALUE);
     }
 
     public static void gatherAndConsumeItems(Level level, AABB bounds, IItemHandler inventory, int minSlotInclusive, int maxSlotInclusive, int maxItemsOverride)
     {
         gatherAndConsumeItems(level.getEntitiesOfClass(ItemEntity.class, bounds, EntitySelector.ENTITY_STILL_ALIVE), inventory, minSlotInclusive, maxSlotInclusive, maxItemsOverride);
-    }
-
-    public static void gatherAndConsumeItems(Collection<ItemEntity> items, IItemHandler inventory, int minSlotInclusive, int maxSlotInclusive)
-    {
-        gatherAndConsumeItems(items, inventory, minSlotInclusive, maxSlotInclusive, Integer.MAX_VALUE);
     }
 
     public static void gatherAndConsumeItems(Collection<ItemEntity> items, IItemHandler inventory, int minSlotInclusive, int maxSlotInclusive, int maxItemsOverride)
@@ -846,43 +815,8 @@ public final class Helpers
     }
 
     /**
-     * Extracts all items of an {@code inventory}, and copies them into a list, indexed with the slots.
-     *
-     * @see #insertAllItems(IItemHandlerModifiable, NonNullList)
-     */
-    public static NonNullList<ItemStack> extractAllItems(IItemHandlerModifiable inventory)
-    {
-        NonNullList<ItemStack> saved = NonNullList.withSize(inventory.getSlots(), ItemStack.EMPTY);
-        for (int slot = 0; slot < inventory.getSlots(); slot++)
-        {
-            saved.set(slot, inventory.getStackInSlot(slot).copy());
-            inventory.setStackInSlot(slot, ItemStack.EMPTY);
-        }
-        return saved;
-    }
-
-    /**
-     * Given a saved copy of an inventory {@code from}, inserts each stack into the provided {@code inventory}, if possible.
-     *
-     * @see #extractAllItems(IItemHandlerModifiable)
-     */
-    public static void insertAllItems(IItemHandlerModifiable inventory, NonNullList<ItemStack> from)
-    {
-        // We allow the list to have a different size than the new inventory
-        for (int slot = 0; slot < Math.min(inventory.getSlots(), from.size()); slot++)
-        {
-            inventory.setStackInSlot(slot, from.get(slot));
-        }
-    }
-
-    /**
      * @return {@code true} if every slot in the provided inventory is empty.
      */
-    public static boolean isEmpty(IItemHandler inventory)
-    {
-        return isEmpty(iterate(inventory));
-    }
-
     public static boolean isEmpty(Iterable<ItemStack> inventory)
     {
         for (ItemStack stack : inventory)
@@ -1162,19 +1096,42 @@ public final class Helpers
     /**
      * Copies the contents of the inventory {@code inventory} into the builder.
      */
-    public static void copyTo(ImmutableList.Builder<ItemStack> list, IItemHandler inventory)
+    public static void copyTo(ImmutableList.Builder<ItemStack> builder, IItemHandler inventory)
     {
-        for (int i = 0; i < inventory.getSlots(); i++)
-            list.add(inventory.getStackInSlot(i).copy());
+        copyTo(builder, iterate(inventory));
     }
 
     /**
-     * Copies the contents of the contents list {@code list} into the inventory {@code inventory}. If the {@code list} is empty,
-     * it is assumed to contain no content, otherwise, it must match up exactly with the inventory slot count.
+     * Copies the contents of the inventory {@code inventory} into the builder.
+     */
+    public static void copyTo(ImmutableList.Builder<ItemStack> builder, Iterable<ItemStack> stacks)
+    {
+        for (ItemStack stack : stacks)
+            builder.add(stack.copy());
+    }
+
+    /**
+     * Copies the contents of the inventory {@code inventory} into a list, clears the inventory, and returns the list.
+     * @see #copyTo
+     */
+    public static List<ItemStack> copyToAndClear(IItemHandlerModifiable inventory)
+    {
+        final ImmutableList.Builder<ItemStack> builder = ImmutableList.builder();
+        for (int slot = 0; slot < inventory.getSlots(); slot++)
+        {
+            builder.add(inventory.getStackInSlot(slot).copy());
+            inventory.setStackInSlot(slot, ItemStack.EMPTY);
+        }
+        return builder.build();
+    }
+
+    /**
+     * Copies the contents of the contents list {@code list} into the inventory {@code inventory}. This will copy the minimum of
+     * the slot count of the inventory, and the content of the list. If the list is empty, nothing will be copied.
      */
     public static void copyFrom(List<ItemStack> list, IItemHandlerModifiable inventory)
     {
-        for (int i = 0; i < inventory.getSlots(); i++)
+        for (int i = 0; i < Math.min(list.size(), inventory.getSlots()); i++)
             inventory.setStackInSlot(i, list.get(i).copy());
     }
 
@@ -1206,17 +1163,6 @@ public final class Helpers
         }
     }
 
-    /**
-     * Logs a warning and a stacktrace when called from the client thread, heuristically. Used for debugging, and indicates a programming error.
-     */
-    public static void warnWhenCalledFromClientThread()
-    {
-        if (ASSERTIONS_ENABLED && EffectiveSide.get().isClient())
-        {
-            LOGGER.warn("This method should not be called from client thread, this is a bug!", new RuntimeException("Stacktrace"));
-        }
-    }
-
     // Math Functions
     // Some are duplicated from Mth, but kept here as they might have slightly different parameter order or names
 
@@ -1240,13 +1186,6 @@ public final class Helpers
     {
         final float value0 = lerp(delta1, value00, value01);
         final float value1 = lerp(delta1, value10, value11);
-        return lerp(delta0, value0, value1);
-    }
-
-    public static double lerp4(double value00, double value01, double value10, double value11, double delta0, double delta1)
-    {
-        final double value0 = lerp(delta1, value00, value01);
-        final double value1 = lerp(delta1, value10, value11);
         return lerp(delta0, value0, value1);
     }
 
@@ -1359,21 +1298,6 @@ public final class Helpers
         return (num + div - 1) / div;
     }
 
-    public static void openScreen(ServerPlayer player, MenuProvider provider)
-    {
-        player.openMenu(provider);
-    }
-
-    public static void openScreen(ServerPlayer player, MenuProvider provider, BlockPos pos)
-    {
-        player.openMenu(provider, pos);
-    }
-
-    public static void openScreen(ServerPlayer player, MenuProvider provider, Consumer<RegistryFriendlyByteBuf> extraDataWriter)
-    {
-        player.openMenu(provider, extraDataWriter);
-    }
-
     /**
      * Checks the existence of a <a href="https://en.wikipedia.org/wiki/Perfect_matching">perfect matching</a> of a <a href="https://en.wikipedia.org/wiki/Bipartite_graph">bipartite graph</a>.
      * The graph is interpreted as the matches between the set of inputs, and the set of tests.
@@ -1450,16 +1374,10 @@ public final class Helpers
         }
     }
 
-
     /**
      * Adds a tooltip based on an inventory, listing out the items inside.
      * Modified from {@link ShulkerBoxBlock#appendHoverText(ItemStack, Item.TooltipContext, List, TooltipFlag)}
      */
-    public static void addInventoryTooltipInfo(IItemHandler inventory, List<Component> tooltips)
-    {
-        addInventoryTooltipInfo(iterate(inventory), tooltips);
-    }
-
     public static void addInventoryTooltipInfo(Iterable<ItemStack> inventory, List<Component> tooltips)
     {
         int maximumItems = 0, totalItems = 0;
@@ -1615,13 +1533,5 @@ public final class Helpers
     public static <E extends Throwable, T> T throwAsUnchecked(Throwable exception) throws E
     {
         throw (E) exception;
-    }
-
-    @SuppressWarnings({"AssertWithSideEffects", "ConstantConditions"})
-    private static boolean detectAssertionsEnabled()
-    {
-        boolean enabled = false;
-        assert enabled = true;
-        return enabled;
     }
 }

@@ -8,6 +8,7 @@ package net.dries007.tfc.common.blockentities;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
@@ -127,14 +128,14 @@ public class SheetPileBlockEntity extends TFCBlockEntity
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
-        tag.put("stacks", Helpers.writeItemStacksToNbt(provider, stacks));
+        tag.put("stacks", Helpers.writeItemStacksToNbt(provider, Arrays.asList(stacks)));
         super.saveAdditional(tag, provider);
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
-        Helpers.readItemStacksFromNbt(provider, stacks, tag.getList("stacks", Tag.TAG_COMPOUND));
+        Helpers.readFixedSizeItemStacksFromNbt(provider, Arrays.asList(stacks), tag.getList("stacks", Tag.TAG_COMPOUND));
         Arrays.fill(cachedMetals, null); // Invalidate metal cache
         super.loadAdditional(tag, provider);
     }

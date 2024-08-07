@@ -7,10 +7,11 @@
 package net.dries007.tfc.common.blocks.devices;
 
 import java.util.List;
-import java.util.Optional;
+import it.unimi.dsi.fastutil.objects.Object2BooleanArrayMap;
+import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -19,7 +20,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -52,10 +52,9 @@ import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.TooltipBlock;
 import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.component.block.BarrelComponent;
-import net.dries007.tfc.common.component.item.ItemListComponent;
+import net.dries007.tfc.common.component.item.ItemComponent;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
@@ -142,7 +141,7 @@ public class BarrelBlock extends SealableDeviceBlock
             }
             else if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer)
             {
-                Helpers.openScreen(serverPlayer, barrel, barrel.getBlockPos());
+                serverPlayer.openMenu(barrel, barrel.getBlockPos());
             }
             return ItemInteractionResult.SUCCESS;
         }
@@ -167,8 +166,26 @@ public class BarrelBlock extends SealableDeviceBlock
         final BarrelComponent barrel = stack.getOrDefault(TFCComponents.BARREL, BarrelComponent.EMPTY);
         if (!barrel.isEmpty())
         {
+            // Header line
             tooltip.add(Tooltips.contents());
-            Helpers.addInventoryTooltipInfo(List.of(barrel.itemContent().get(BarrelBlockEntity.SLOT_ITEM)), tooltip);
+
+            // Excess typically (almost always) will either be empty, or contain identical stacks (beyond the stack size of the original stack)
+            // In order to neatly handle this, we bundle everything up first. Object2ArrayMap is useful because we (1) preserve iteration
+            // order, and (2) works for the expected 0, 1, maybe 2 types of item. This will display, i.e. "154 x Mortar"
+            //
+            // Use `ItemComponent` as a key here to get proper equality behavior
+            final Object2IntMap<ItemComponent> contents = new Object2IntArrayMap<>();
+            for (ItemStack content : barrel.itemContent())
+            {
+                if (!content.isEmpty())
+                {
+                    contents.mergeInt(new ItemComponent(content.copyWithCount(1)), content.getCount(), Integer::sum);
+                }
+            }
+            for (var entry : contents.object2IntEntrySet())
+            {
+                tooltip.add(Tooltips.countOfItem(entry.getKey().stack(), entry.getIntValue()));
+            }
             if (!barrel.fluidContent().isEmpty())
             {
                 tooltip.add(Tooltips.fluidUnitsOf(barrel.fluidContent()));
@@ -281,5 +298,11 @@ public class BarrelBlock extends SealableDeviceBlock
         {
             handleNeighborChanged(state, level, pos, barrel::onSeal, barrel::onUnseal);
         }
+    }
+
+    @Override
+    protected boolean isStackSealed(ItemStack stack)
+    {
+        return stack.has(TFCComponents.BARREL);
     }
 }

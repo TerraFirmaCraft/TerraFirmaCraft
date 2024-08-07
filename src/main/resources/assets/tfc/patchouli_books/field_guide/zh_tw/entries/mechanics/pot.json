@@ -29,12 +29,12 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/pot",
+      "recipe": "tfc:knapping/ceramic/unfired_pot",
       "text": "陶鍋必須先用粘土$(l:getting_started/pottery)塑形$()。"
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/fired_pot",
+      "recipe": "tfc:heating/ceramic/pot",
       "text": "然後它必須$(l:mechanics/heating)燒製$()成$(thing)陶鍋$()才可以放在篝火上。"
     },
     {

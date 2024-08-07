@@ -10,12 +10,12 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/pan",
+      "recipe": "tfc:knapping/ceramic/unfired_pan",
       "text": "上に示したように、粘土を未焼成のふるいに $(l:getting_started/pottery)ナッピング$() することができます。"
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/ceramic_pan",
+      "recipe": "tfc:heating/pan/empty",
       "text": "ふるいを $(thing)ナッピング$() したら、 $(l:mechanics/heating)焼成$() して $(thing)ふるい$() を作成できます。$(br2)次にある種の $(thing)鉱石の堆積物$() を見つける必要があります。 自然銅、自然銀、自然金、錫石など、いくつかの異なる鉱石が砂利などと混ざって生成されます。"
     },
     {

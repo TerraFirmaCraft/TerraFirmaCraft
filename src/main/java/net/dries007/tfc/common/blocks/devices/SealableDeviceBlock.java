@@ -38,6 +38,7 @@ import net.dries007.tfc.common.component.item.ItemListComponent;
 import net.dries007.tfc.common.component.size.IItemSize;
 import net.dries007.tfc.common.component.size.Size;
 import net.dries007.tfc.common.component.size.Weight;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.tooltip.Tooltips;
 
@@ -47,7 +48,6 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize, Toolt
     public static final BooleanProperty POWERED = TFCBlockStateProperties.POWERED;
     private static final VoxelShape SHAPE = box(2, 0, 2, 14, 16, 14);
     private static final VoxelShape SHAPE_UNSEALED = Shapes.join(SHAPE, box(3, 1, 3, 13, 16, 13), BooleanOp.ONLY_FIRST);
-    private static final int[] IMAGE_TOOLTIP = {1, 1, 0, 0};
 
     public SealableDeviceBlock(ExtendedProperties properties)
     {
@@ -65,8 +65,7 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize, Toolt
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         BlockState state = getStateForPlacement(context.getLevel(), context.getClickedPos());
-        // todo: 1.21 this relies on sealed device components
-        //if (context.getItemInHand().getTag() != null)
+        if (isStackSealed(context.getItemInHand()))
         {
             state = state.setValue(SEALED, true);
         }
@@ -81,46 +80,15 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize, Toolt
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag)
     {
-        final List<ItemStack> contents = stack.getOrDefault(TFCComponents.CONTENTS, ItemListComponent.EMPTY).contents();
-        if (!Helpers.isEmpty(contents))
+        if (!TFCConfig.CLIENT.displayItemContentsAsImages.get())
         {
-            tooltip.add(Tooltips.contents());
-            Helpers.addInventoryTooltipInfo(contents, tooltip);
-        }
-    }
-
-    /* todo 1.21, this relies on sealed device components
-
-
-    @Override
-    public Optional<TooltipComponent> getTooltipImage(ItemStack stack)
-    {
-        if (TFCConfig.CLIENT.displayItemContentsAsImages.get())
-        {
-            final CompoundTag tag = stack.getTagElement(Helpers.BLOCK_ENTITY_TAG);
-            if (tag != null)
+            final List<ItemStack> contents = stack.getOrDefault(TFCComponents.CONTENTS, ItemListComponent.EMPTY).contents();
+            if (!Helpers.isEmpty(contents))
             {
-                final CompoundTag inventoryTag = tag.getCompound("inventory");
-                final ItemStackHandler inventory = new ItemStackHandler();
-
-                inventory.deserializeNBT(inventoryTag.getCompound("inventory"));
-
-                if (!Helpers.isEmpty(inventory))
-                {
-                    final int[] params = getImageTooltipParameters();
-                    return Helpers.getTooltipImage(inventory, params[0], params[1], params[2], params[3]);
-                }
+                tooltip.add(Tooltips.contents());
+                Helpers.addInventoryTooltipInfo(contents, tooltip);
             }
         }
-        return Optional.empty();
-    }*/
-
-    /**
-     * @return an array of four integers: {width, height, startIndex, endIndex}
-     */
-    public int[] getImageTooltipParameters()
-    {
-        return IMAGE_TOOLTIP;
     }
 
     @Override
@@ -138,9 +106,7 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize, Toolt
     @Override
     public Weight getWeight(ItemStack stack)
     {
-        // todo 1.21 this relies on sealed device components
-        return Weight.HEAVY;
-        //return stack.getTag() == null ? Weight.HEAVY : Weight.VERY_HEAVY;
+        return isStackSealed(stack) ? Weight.VERY_HEAVY : Weight.HEAVY;
     }
 
     @Override
@@ -191,5 +157,10 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize, Toolt
                 level.setBlockAndUpdate(pos, state.setValue(POWERED, signal));
             }
         }
+    }
+
+    protected boolean isStackSealed(ItemStack stack)
+    {
+        return stack.has(TFCComponents.CONTENTS);
     }
 }

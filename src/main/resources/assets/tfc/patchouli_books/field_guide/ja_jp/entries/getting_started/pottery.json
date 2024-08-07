@@ -53,7 +53,7 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/vessel",
+      "recipe": "tfc:knapping/ceramic/unfired_vessel",
       "text": "小さな壺のナッピング。"
     },
     {
@@ -64,7 +64,7 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/jug",
+      "recipe": "tfc:knapping/ceramic/unfired_jug",
       "text": "水入れのナッピング。"
     },
     {
@@ -75,69 +75,69 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/ingot_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_ingot_mold",
       "text": "インゴットの型のナッピング。"
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/ingot_mold",
+      "recipe": "tfc:heating/ceramic/ingot_mold",
       "text": "すべての粘土製品と同様に、型を使用できるようにするには、$(l:getting_started/pit_kiln)穴窯$().$(br2)で焼成する必要があります。焼成したら、溶融金属を流し込みます。 金属が十分に冷えたら、抽出することができます。"
     },
     {
       "type": "patchouli:spotlight",
-      "item": "tfc:ceramic/ingot_mold{tank:{\"Amount\":100,\"FluidName\":\"tfc:metal/copper\"}}",
+      "item": "tfc:ceramic/ingot_mold[tfc:fluid={id:\"tfc:metal/copper\",amount:100}]",
       "title": "鋳造",
       "link_recipes": false,
       "text": "次の数ページでは、さまざまなツールの頭のナッピング方法をいくつか示します。"
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/propick_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_propick_head_mold",
       "text": "$(l:mechanics/prospecting#propick)探鉱槌$() は、大量の鉱石を見つけるために不可欠なツールです。"
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/pickaxe_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_pickaxe_head_mold",
       "text": "$(thing)つるはし$()！ 鉱石や石を採掘するためのツールです。"
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/saw_blade_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_saw_blade_mold",
       "text": "$(thing)ノコギリ$()は原木を木材に加工でき、$(thing)作業台$() のような高度な木製コンポーネントや、$(l:mechanics/support_beams)梁$() のような他の多くの木製アイテムを作成するために必要なツールです。"
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/scythe_blade_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_scythe_blade_mold",
       "text": "$(thing)鎌$()はひとクリックで3x3x3のエリアで植物や葉っぱを収穫できるツールです！"
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/chisel_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_chisel_head_mold",
       "text": "$(l:mechanics/chisel)ノミ$()は、ブロックを滑らかにしたり、多数の装飾ブロックを作成したりするために使用されるツールです。石臼の作成に必須です。"
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/axe_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_axe_head_mold",
       "text": "$(thing)斧$()はあらゆる木の伐採に使用できます。 石斧は金属よりも効率が低いことに注意してください。"
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/hammer_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_hammer_head_mold",
       "text": "$(thing)ハンマー$()は$(l:mechanics/anvils)金床$()を作成して作業するために不可欠なツールです。"
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/knife_blade_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_knife_blade_mold",
       "text": "$(thing)短剣$()は武器として、または植物系ブロックの切断ツールとして使用できます。"
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/hoe_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_hoe_head_mold",
       "text": "A $(thing)クワ$()は$(l:mechanics/crops)作物$() の植え付けと維持に使用されます。"
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/shovel_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_shovel_head_mold",
       "text": "$(thing)シャベル$()はあらゆる掘削目的に使用できます。"
     }
   ],

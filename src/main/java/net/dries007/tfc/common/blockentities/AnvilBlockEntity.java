@@ -40,7 +40,6 @@ import net.dries007.tfc.common.component.forge.ForgeStep;
 import net.dries007.tfc.common.component.forge.Forging;
 import net.dries007.tfc.common.component.forge.ForgingBonus;
 import net.dries007.tfc.common.component.forge.ForgingCapability;
-import net.dries007.tfc.common.component.forge.ForgingComponent;
 import net.dries007.tfc.common.component.heat.HeatCapability;
 import net.dries007.tfc.common.component.heat.IHeat;
 import net.dries007.tfc.common.container.AnvilContainer;
@@ -52,6 +51,7 @@ import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.WeldingRecipe;
 import net.dries007.tfc.common.recipes.input.NonEmptyInput;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.SelfTests;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
 
 public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.AnvilInventory> implements ISlotCallback
@@ -481,7 +481,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
         @Override
         public long getSeed()
         {
-            Helpers.warnWhenCalledFromClientThread();
+            SelfTests.warnWhenCalledFromClientThread();
             return anvil.getLevel() instanceof ServerLevel level ? level.getSeed() : 0;
         }
 

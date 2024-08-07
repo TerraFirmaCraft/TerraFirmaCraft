@@ -8,6 +8,7 @@ package net.dries007.tfc.common.container;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -19,7 +20,6 @@ import net.dries007.tfc.common.component.forge.Forging;
 import net.dries007.tfc.common.component.forge.ForgingCapability;
 import net.dries007.tfc.common.container.slot.CallbackSlot;
 import net.dries007.tfc.common.recipes.AnvilRecipe;
-import net.dries007.tfc.util.Helpers;
 
 public class AnvilContainer extends BlockEntityContainer<AnvilBlockEntity> implements ButtonHandlerContainer
 {
@@ -47,7 +47,8 @@ public class AnvilContainer extends BlockEntityContainer<AnvilBlockEntity> imple
                 final ItemStack stack = getSlot(AnvilBlockEntity.SLOT_INPUT_MAIN).getItem();
                 if (AnvilRecipe.hasAny(level, stack, blockEntity.getTier()) && player instanceof ServerPlayer serverPlayer)
                 {
-                    Helpers.openScreen(serverPlayer, blockEntity.planProvider(), blockEntity.getBlockPos());
+                    MenuProvider provider = blockEntity.planProvider();
+                    serverPlayer.openMenu(provider, blockEntity.getBlockPos());
                 }
             }
         }

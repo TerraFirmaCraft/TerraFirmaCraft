@@ -39,7 +39,6 @@ import net.dries007.tfc.common.blocks.devices.SealableDeviceBlock;
 import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.component.item.ItemListComponent;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.Helpers;
 
 public class LargeVesselBlock extends SealableDeviceBlock
 {
@@ -127,7 +126,7 @@ public class LargeVesselBlock extends SealableDeviceBlock
             level.getBlockEntity(pos, getExtendedProperties().<LargeVesselBlockEntity>blockEntity()).ifPresent(vessel -> {
                 if (player instanceof ServerPlayer serverPlayer)
                 {
-                    Helpers.openScreen(serverPlayer, vessel, pos);
+                    serverPlayer.openMenu(vessel, pos);
                 }
             });
         }

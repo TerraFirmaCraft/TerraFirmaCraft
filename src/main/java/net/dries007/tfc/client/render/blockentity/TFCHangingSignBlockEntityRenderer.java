@@ -6,16 +6,12 @@
 
 package net.dries007.tfc.client.render.blockentity;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Supplier;
-import java.util.stream.Stream;
-import com.google.common.collect.ImmutableMap;
+import java.util.function.Function;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.Model;
-import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -26,78 +22,39 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SignBlock;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.WoodType;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.mixin.client.accessor.SignRendererAccessor;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 
 public class TFCHangingSignBlockEntityRenderer extends HangingSignRenderer
 {
-    private static final Map<Block, HangingSignModelData> RENDER_INFO = new HashMap<>();
+    public static final Map<Block, Provider<Function<BlockEntityRendererProvider.Context, HangingSignModel>>> MODELS = RenderHelpers.mapOf(map -> {
+        TFCBlocks.CEILING_HANGING_SIGNS.forEach((wood, m) -> m.forEach((metal, block) -> {
+            final var model = new Provider<Function<BlockEntityRendererProvider.Context, HangingSignModel>>(
+                new Material(
+                    Sheets.SIGN_SHEET,
+                    Helpers.identifier("entity/signs/hanging/" + metal.getSerializedName() + "/" + wood.getSerializedName())
+                ),
+                Helpers.resourceLocation(wood.getSerializedName() + ".png").withPrefix("textures/gui/hanging_signs/" + metal.getSerializedName() + "/"),
+                context -> new HangingSignModel(context.bakeLayer(RenderHelpers.layerId("hanging_sign/" + wood.getSerializedName())))
+            );
 
-    @Nullable
-    public static HangingSignModelData getData(Block block)
-    {
-        return RENDER_INFO.get(block);
-    }
+            map.accept(block, model);
+            map.accept(TFCBlocks.WALL_HANGING_SIGNS.get(wood).get(metal), model);
+        }));
+    });
 
-    public static synchronized void registerData(Block block, HangingSignModelData modelData)
-    {
-        RENDER_INFO.put(block, modelData);
-    }
-
-    /**
-     * Provided as a helper to avoid loading Material early.
-     */
-    public static HangingSignModelData createModelData(ResourceLocation signLocation, ResourceLocation guiLocation)
-    {
-        return new HangingSignModelData(new Material(Sheets.SIGN_SHEET, signLocation), guiLocation);
-    }
-
-    private static HangingSignModelData createModelData(Metal metal, Supplier<? extends SignBlock> reg)
-    {
-        final WoodType type = reg.get().type();
-        final ResourceLocation woodName = Helpers.resourceLocation(type.name());
-        final ResourceLocation metalName = Helpers.identifier(metal.getSerializedName());
-
-        return createModelData(
-            Helpers.resourceLocation(woodName.getNamespace(), "entity/signs/hanging/" + metalName.getPath() + "/" + woodName.getPath()),
-            Helpers.resourceLocation(type.name() + ".png").withPrefix("textures/gui/hanging_signs/" + metalName.getPath() + "/")
-        );
-    }
-
-    static
-    {
-        TFCBlocks.CEILING_HANGING_SIGNS.forEach((wood, map) -> map.forEach((metal, reg) -> RENDER_INFO.put(reg.get(), createModelData(metal, reg))));
-        TFCBlocks.WALL_HANGING_SIGNS.forEach((wood, map) -> map.forEach((metal, reg) -> RENDER_INFO.put(reg.get(), createModelData(metal, reg))));
-    }
-
-    private final Map<WoodType, HangingSignModel> hangingSignModels;
+    private final Map<Block, Provider<HangingSignModel>> hangingSignModels;
 
     public TFCHangingSignBlockEntityRenderer(BlockEntityRendererProvider.Context context)
     {
-        this(context, TFCBlocks.WOODS.keySet()
-            .stream()
-            .map(map -> new TFCSignBlockEntityRenderer.SignModelData(
-                TerraFirmaCraft.MOD_ID,
-                map.getSerializedName(),
-                map.getVanillaWoodType()
-            )));
-    }
-
-    public TFCHangingSignBlockEntityRenderer(BlockEntityRendererProvider.Context context, Stream<TFCSignBlockEntityRenderer.SignModelData> blocks)
-    {
         super(context);
-
-        ImmutableMap.Builder<WoodType, HangingSignModel> modelBuilder = ImmutableMap.builder();
-        blocks.forEach(data -> {
-            modelBuilder.put(data.type(), new HangingSignModel(context.bakeLayer(new ModelLayerLocation(Helpers.resourceLocation(data.domain(), "hanging_sign/" + data.name()), "main"))));
-        });
-        this.hangingSignModels = modelBuilder.build();
+        hangingSignModels = Helpers.mapValue(MODELS, v -> new Provider<>(v.modelMaterial, v.textureLocation, v.model.apply(context)));
     }
 
     @Override
@@ -105,13 +62,14 @@ public class TFCHangingSignBlockEntityRenderer extends HangingSignRenderer
     {
         final BlockState state = sign.getBlockState();
         final SignBlock signBlock = (SignBlock) state.getBlock();
-        final WoodType woodType = SignBlock.getWoodType(signBlock);
-        final HangingSignRenderer.HangingSignModel model = this.hangingSignModels.get(woodType);
-        final HangingSignModelData modelData = Objects.requireNonNull(getData(signBlock));
+        final @Nullable Provider<HangingSignModel> model = hangingSignModels.get(state.getBlock());
+        if (model == null)
+        {
+            return;
+        }
 
-        model.evaluateVisibleParts(state);
-
-        renderSignWithText(sign, poseStack, buffer, light, overlay, state, signBlock, modelData.modelMaterial(), model);
+        model.model.evaluateVisibleParts(state);
+        renderSignWithText(sign, poseStack, buffer, light, overlay, state, signBlock, model.modelMaterial(), model.model);
     }
 
     // behavior copied from SignRenderer#renderSignWithText
@@ -137,5 +95,9 @@ public class TFCHangingSignBlockEntityRenderer extends HangingSignRenderer
         poseStack.popPose();
     }
 
-    public record HangingSignModelData(Material modelMaterial, ResourceLocation textureLocation) {}
+    public record Provider<T>(
+        Material modelMaterial,
+        ResourceLocation textureLocation,
+        T model
+    ) {}
 }

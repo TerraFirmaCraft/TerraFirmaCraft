@@ -53,7 +53,7 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/vessel",
+      "recipe": "tfc:knapping/ceramic/unfired_vessel",
       "text": "粘土塑形小缸。"
     },
     {
@@ -64,7 +64,7 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/jug",
+      "recipe": "tfc:knapping/ceramic/unfired_jug",
       "text": "粘土塑形陶罐。"
     },
     {
@@ -75,69 +75,69 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/ingot_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_ingot_mold",
       "text": "粘土塑形铸锭模具"
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/ingot_mold",
+      "recipe": "tfc:heating/ceramic/ingot_mold",
       "text": "模具和其他陶器一样必须在$(l:getting_started/pit_kiln)坑窑$()中烧制才能使用。$(br2)将熔融的金属浇铸进烧制过后的模具中，等待金属充分冷却，就可以获得模具对应的金属制品。"
     },
     {
       "type": "patchouli:spotlight",
-      "item": "tfc:ceramic/ingot_mold{tank:{\"Amount\":100,\"FluidName\":\"tfc:metal/copper\"}}",
+      "item": "tfc:ceramic/ingot_mold[tfc:fluid={id:\"tfc:metal/copper\",amount:100}]",
       "title": "铸造",
       "link_recipes": false,
       "text": "接下来的几页会教你如何将粘土塑形成各种工具的模具。"
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/propick_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_propick_head_mold",
       "text": "$(l:mechanics/prospecting#propick)勘矿镐$()本身并不能挖掘，但却是寻找矿脉必不可少的工具。"
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/pickaxe_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_pickaxe_head_mold",
       "text": "$(thing)镐$()是挖掘必备的工具。"
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/saw_blade_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_saw_blade_mold",
       "text": "$(thing)锯$()可以将原木切割成木板或$(l:mechanics/support_beams)支撑柱$()等高级木工物品。只有有了锯子你才能制作$(thing)工作台$()！"
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/scythe_blade_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_scythe_blade_mold",
       "text": "$(thing)镰刀$()可以一次性破坏 3x3x3 区域内的所有植物和树叶！"
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/chisel_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_chisel_head_mold",
       "text": "$(l:mechanics/chisel)凿$()可以用来将普通方块转变为平滑方块，还可以用来制作多种装饰性方块。"
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/axe_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_axe_head_mold",
       "text": "$(thing)斧$()是用来砍树的。注意！用石斧砍树掉落的原木数量会比金属制成的斧要低上不少！"
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/hammer_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_hammer_head_mold",
       "text": "$(thing)锤$()是在$(l:mechanics/anvils)砧$()上制作物品不可或缺的工具。"
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/knife_blade_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_knife_blade_mold",
       "text": "$(thing)刀$()可以当作武器使用，不过主要还是用来破坏植物类型的方块。"
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/hoe_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_hoe_head_mold",
       "text": "$(thing)锄$()可以用来种植和管理$(l:mechanics/crops)农作物$()。"
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/shovel_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_shovel_head_mold",
       "text": "$(thing)铲$()可以挖东西。"
     }
   ],

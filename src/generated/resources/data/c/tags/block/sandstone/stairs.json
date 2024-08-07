@@ -1,0 +1,25 @@
+{
+  "values": [
+    "tfc:raw_sandstone/brown_stairs",
+    "tfc:smooth_sandstone/brown_stairs",
+    "tfc:cut_sandstone/brown_stairs",
+    "tfc:raw_sandstone/white_stairs",
+    "tfc:smooth_sandstone/white_stairs",
+    "tfc:cut_sandstone/white_stairs",
+    "tfc:raw_sandstone/black_stairs",
+    "tfc:smooth_sandstone/black_stairs",
+    "tfc:cut_sandstone/black_stairs",
+    "tfc:raw_sandstone/red_stairs",
+    "tfc:smooth_sandstone/red_stairs",
+    "tfc:cut_sandstone/red_stairs",
+    "tfc:raw_sandstone/yellow_stairs",
+    "tfc:smooth_sandstone/yellow_stairs",
+    "tfc:cut_sandstone/yellow_stairs",
+    "tfc:raw_sandstone/green_stairs",
+    "tfc:smooth_sandstone/green_stairs",
+    "tfc:cut_sandstone/green_stairs",
+    "tfc:raw_sandstone/pink_stairs",
+    "tfc:smooth_sandstone/pink_stairs",
+    "tfc:cut_sandstone/pink_stairs"
+  ]
+}

@@ -69,7 +69,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/stone/knife_sedimentary",
+      "recipe": "tfc:crafting/stone/knife/sedimentary",
       "text": "Все головки каменных инструментов можно собрать с палкой или веткой, чтобы собрать их в инструмент.$(br2)Каменный нож можно использовать для сбора $(thing)Соломы$(), разбивая растения."
     },
     {

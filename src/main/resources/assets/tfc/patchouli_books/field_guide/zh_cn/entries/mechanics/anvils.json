@@ -88,7 +88,7 @@
     },
     {
       "type": "patchouli:spotlight",
-      "item": "tfc:metal/pickaxe/wrought_iron{\"tfc:forging_bonus\":4}",
+      "item": "tfc:metal/pickaxe/wrought_iron[tfc:forging_bonus=\"perfect\"]",
       "title": "完美！",
       "link_recipes": false,
       "text": "有四种不同的锻造评价：$(li)粗糙$(li)合格$(li)精良$(li)完美！$(br2)根据工具类型的不同，这些词条会改变工具的耐久度、挖掘速度、和伤害等属性。"

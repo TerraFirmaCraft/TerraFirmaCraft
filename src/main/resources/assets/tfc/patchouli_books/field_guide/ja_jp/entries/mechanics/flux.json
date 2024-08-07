@@ -10,7 +10,7 @@
     },
     {
       "type": "tfc:quern_recipe",
-      "recipe": "tfc:quern/fluxstone",
+      "recipe": "tfc:quern/powder/flux",
       "text": "一部の岩石 - $(thing)石灰石$()、$(thing)苦灰岩$()、$(thing)白亜$()、$(thing)大理石$() - は、粉砕して融剤として使用することもできます。 $(l:mechanics/quern)石臼$() 内。 その他のアイテム: $(thing)亀の甲羅$()、$(thing)二枚貝$()、$(thing)軟体動物$()、$(l:the_world/wild_animals#shellfish)生の貝$() なども融剤の作成にも使用できます。"
     }
   ],

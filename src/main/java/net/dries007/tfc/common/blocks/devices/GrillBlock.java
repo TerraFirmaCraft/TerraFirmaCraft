@@ -153,7 +153,7 @@ public class GrillBlock extends FirepitBlock implements IHighlightHandler
             {
                 if (player instanceof ServerPlayer serverPlayer)
                 {
-                    Helpers.openScreen(serverPlayer, grill, pos);
+                    serverPlayer.openMenu(grill, pos);
                 }
                 return ItemInteractionResult.SUCCESS;
             }

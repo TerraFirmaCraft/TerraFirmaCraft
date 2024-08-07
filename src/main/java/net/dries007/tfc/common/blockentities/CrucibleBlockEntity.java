@@ -330,7 +330,6 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         nbt.putFloat("temperature", temperature);
         nbt.putFloat("targetTemperature", targetTemperature);
         nbt.putInt("targetTemperatureStabilityTicks", targetTemperatureStabilityTicks);
-        nbt.putBoolean("empty", Helpers.isEmpty(inventory) && inventory.alloy.isEmpty()); // We save this in order for the block item to efficiently check if the crucible is empty later
         nbt.putLong("lastUpdateTick", lastUpdateTick);
         super.saveAdditional(nbt, provider);
     }

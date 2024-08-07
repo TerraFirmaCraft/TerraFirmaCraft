@@ -112,7 +112,7 @@ public class PotBlock extends FirepitBlock
                 }
                 if (player instanceof ServerPlayer serverPlayer)
                 {
-                    Helpers.openScreen(serverPlayer, pot, pos);
+                    serverPlayer.openMenu(pot, pos);
                 }
                 return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }

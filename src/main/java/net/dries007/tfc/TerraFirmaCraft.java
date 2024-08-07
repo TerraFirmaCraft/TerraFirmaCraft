@@ -100,11 +100,13 @@ public final class TerraFirmaCraft
         IEventBus bus
     ) {
         LOGGER.info("Initializing TerraFirmaCraft");
-        LOGGER.info("Options: Assertions = {}, Debug = {}, Production = {}, Dist = {}",
-            Helpers.ASSERTIONS_ENABLED,
+        LOGGER.info("Options: Assertions = {}, Debug = {}, Production = {}, Dist = {}, Self Test = {} (Fatal = {})",
+            detectAssertionsEnabled(),
             LOGGER.isDebugEnabled(),
             FMLEnvironment.production,
-            FMLEnvironment.dist);
+            FMLEnvironment.dist,
+            SelfTests.ENABLED,
+            SelfTests.THROW_ON_FAIL);
 
         SelfTests.runWorldVersionTest();
 
@@ -233,5 +235,13 @@ public final class TerraFirmaCraft
         {
             Helpers.throwAsUnchecked(syncLoadError);
         }
+    }
+
+    @SuppressWarnings({"AssertWithSideEffects", "ConstantConditions"})
+    private boolean detectAssertionsEnabled()
+    {
+        boolean enabled = false;
+        assert enabled = true;
+        return enabled;
     }
 }

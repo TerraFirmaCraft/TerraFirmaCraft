@@ -53,7 +53,7 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/vessel",
+      "recipe": "tfc:knapping/ceramic/unfired_vessel",
       "text": "점토로 작은 항아리를 만드는 방법."
     },
     {
@@ -64,7 +64,7 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/jug",
+      "recipe": "tfc:knapping/ceramic/unfired_jug",
       "text": "점토로 주전자를 만드는 방법."
     },
     {
@@ -75,69 +75,69 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/ingot_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_ingot_mold",
       "text": "점토로 주괴 금형을 만드는 방법."
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/ingot_mold",
+      "recipe": "tfc:heating/ceramic/ingot_mold",
       "text": "금형을 사용하기 위해서는 다른 도자기 아이템들과 같이 $(l:getting_started/pit_kiln)구덩이 가마$() 등지에서 구워야 합니다.$(br2)금형을 구우면 녹은 금속을 안에 부을 수 있습니다. 금속이 충분히 식은 후에는 금형에서 다시 꺼낼 수 있습니다."
     },
     {
       "type": "patchouli:spotlight",
-      "item": "tfc:ceramic/ingot_mold{tank:{\"Amount\":100,\"FluidName\":\"tfc:metal/copper\"}}",
+      "item": "tfc:ceramic/ingot_mold[tfc:fluid={id:\"tfc:metal/copper\",amount:100}]",
       "title": "§l주조",
       "link_recipes": false,
       "text": "다음 페이지에서는 다양한 도구를 만들기 위한 점토 제작법을 보여줍니다."
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/propick_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_propick_head_mold",
       "text": "$(l:mechanics/prospecting#propick)탐색기$()는 많은 양의 광석을 찾기 위해서 필수적인 도구입니다."
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/pickaxe_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_pickaxe_head_mold",
       "text": "$(thing)곡괭이$() 입니다! 채굴과 떼려야 뗄 수 없는 도구이죠."
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/saw_blade_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_saw_blade_mold",
       "text": "$(thing)톱$()은 $(thing)작업대$()나 $(l:mechanics/support_beams)지지대$()와 같은 많은 목제 장치를 만드는 데 필요한 도구입니다."
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/scythe_blade_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_scythe_blade_mold",
       "text": "$(thing)낫$()은 3x3x3 공간 주변의 식물과 나뭇잎을 제거하는 도구입니다!"
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/chisel_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_chisel_head_mold",
       "text": "$(l:mechanics/chisel)끌$()은 블록들을 다듬고 많은 장식 블록을 만들 수 있는 도구입니다."
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/axe_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_axe_head_mold",
       "text": "$(thing)도끼$()는 나무를 베어버리는 도구입니다. 참고: 돌 도끼는 금속 도끼보다 효율이 더 낮습니다!"
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/hammer_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_hammer_head_mold",
       "text": "$(thing)망치$()는 $(l:mechanics/anvils)모루$()를 만들고 사용하기 위한 도구입니다."
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/knife_blade_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_knife_blade_mold",
       "text": "$(thing)칼$()은 무기로 사용되거나, 식물을 자르는 데 사용되는 도구입니다."
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/hoe_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_hoe_head_mold",
       "text": "$(thing)괭이$()는 $(l:mechanics/crops)작물$()을 심고 관리하는 데 사용되는 도구입니다."
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/shovel_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_shovel_head_mold",
       "text": "$(thing)삽$()은 오로지 땅을 파기 위해 존재하는 도구입니다."
     }
   ],

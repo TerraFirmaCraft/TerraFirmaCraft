@@ -73,7 +73,7 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/jug",
+      "recipe": "tfc:knapping/ceramic/unfired_jug",
       "text": "$(l:getting_started/pottery)Виліпи$() з глини, та випали собі  $(l:getting_started/pottery#jug)глечик$() - це можливість носити воду із собою. Наповни його, як відро, кліком $(item)$(k:key.use)$(). Як утримувати $(item)$(k:key.use)$() ти з нього питимеш."
     },
     {

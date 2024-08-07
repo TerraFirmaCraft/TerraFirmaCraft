@@ -239,7 +239,7 @@ public class VesselItem extends Item
                 return TooltipBlock.buildInventoryTooltip(vessel.contents(), 2, 2);
             }
         }
-        return super.getTooltipImage(stack);
+        return Optional.empty();
     }
 
     @Override

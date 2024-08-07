@@ -53,7 +53,7 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/vessel",
+      "recipe": "tfc:knapping/ceramic/unfired_vessel",
       "text": "Knapping a Clay Small Vessel."
     },
     {
@@ -64,7 +64,7 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/jug",
+      "recipe": "tfc:knapping/ceramic/unfired_jug",
       "text": "Knapping a Clay Jug."
     },
     {
@@ -75,69 +75,69 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/ingot_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_ingot_mold",
       "text": "Knapping a Clay Ingot Mold."
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/ingot_mold",
+      "recipe": "tfc:heating/ceramic/ingot_mold",
       "text": "O molde então precisa ser disparado, como todos os itens de argila, para ser utilizável - provavelmente em um $(l:getting_started/pit_kiln)Forno do poço$().$(br2)Uma vez que é disparado, o metal fundido pode ser derramado. Depois que o metal esfriar o suficiente, ele pode ser extraído."
     },
     {
       "type": "patchouli:spotlight",
-      "item": "tfc:ceramic/ingot_mold{tank:{\"Amount\":100,\"FluidName\":\"tfc:metal/copper\"}}",
+      "item": "tfc:ceramic/ingot_mold[tfc:fluid={id:\"tfc:metal/copper\",amount:100}]",
       "title": "Elenco",
       "link_recipes": false,
       "text": "As próximas páginas mostram vários dos padrões de troca de várias ferramentas."
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/propick_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_propick_head_mold",
       "text": "Uma $(l:mechanics/prospecting#propick)Escolha do prospector$() é uma ferramenta essencial para localizar grandes quantidades de minério."
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/pickaxe_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_pickaxe_head_mold",
       "text": "A $(thing)Picareta$()! A ferramenta de pão e manteiga para mineração."
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/saw_blade_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_saw_blade_mold",
       "text": "A $(thing)Serra$() é uma ferramenta necessária para criar componentes avançados de madeira como um $(thing)Bancada de Trabalho$() junto com muitos outros dispositivos como $(l:mechanics/support_beams)Apoia$()."
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/scythe_blade_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_scythe_blade_mold",
       "text": "A $(thing)Enxada$() é uma ferramenta que pode colher plantas e folhas em uma área de 3x3x3!"
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/chisel_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_chisel_head_mold",
       "text": "A $(l:mechanics/chisel)Formão$() é uma ferramenta usada para suavizar blocos, além de criar um grande número de blocos decorativos."
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/axe_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_axe_head_mold",
       "text": "Um $(thing)Machado$() Para todas as suas fins de corte de árvores. Observe que os eixos de pedra são menos eficientes que o metal!"
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/hammer_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_hammer_head_mold",
       "text": "O $(thing)Martelo$() é uma ferramenta essencial para criar e trabalhar em $(l:mechanics/anvils)Anvils$()."
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/knife_blade_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_knife_blade_mold",
       "text": "A $(thing)Faca$() pode ser usado como arma ou como uma ferramenta de corte para blocos de tipo de planta."
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/hoe_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_hoe_head_mold",
       "text": "A $(thing)Enxada$() usado para plantar e manter $(l:mechanics/crops)Plantações$()."
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/shovel_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_shovel_head_mold",
       "text": "A $(thing)Pá$() Para todos os seus fins de escavação."
     }
   ],

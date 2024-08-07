@@ -73,7 +73,7 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/jug",
+      "recipe": "tfc:knapping/ceramic/unfired_jug",
       "text": "$(l:getting_started/pottery)ナッピング$() して $(l:getting_started/pottery#jug)水入れ$() を作成・使用することは、適切な飲み水を運ぶ方法です。 バケツのように $(item)$(k:key.use)$() で液体を入れます。 $(item)$(k:key.use)$() を押し続けると中身を飲みます。"
     },
     {

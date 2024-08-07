@@ -73,7 +73,7 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/jug",
+      "recipe": "tfc:knapping/ceramic/unfired_jug",
       "text": "물을 들고 다니려면 $(l:getting_started/pottery)점토$()로 $(l:getting_started/pottery#jug)주전자$()를 만들어야 합니다. 주전자는 양동이처럼 $(item)$(k:key.use)$()을 눌러 채울 수 있습니다. $(item)$(k:key.use)$()을 꾹 누르면 물을 마실 수 있습니다."
     },
     {

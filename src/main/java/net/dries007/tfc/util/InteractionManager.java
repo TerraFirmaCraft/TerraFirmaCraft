@@ -466,7 +466,7 @@ public final class InteractionManager
             {
                 if (context.getPlayer() instanceof ServerPlayer player)
                 {
-                    Helpers.openScreen(player, TFCContainerProviders.SALAD);
+                    player.openMenu(TFCContainerProviders.SALAD);
                 }
                 return InteractionResult.SUCCESS;
             }

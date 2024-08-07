@@ -16,6 +16,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -116,7 +117,8 @@ public class AnvilBlock extends DeviceBlock implements Tiered
             // Not shifting, so attempt to open the anvil gui
             if (player instanceof ServerPlayer serverPlayer)
             {
-                Helpers.openScreen(serverPlayer, anvil.anvilProvider(), pos);
+                MenuProvider provider = anvil.anvilProvider();
+                serverPlayer.openMenu(provider, pos);
             }
             return ItemInteractionResult.SUCCESS;
         }

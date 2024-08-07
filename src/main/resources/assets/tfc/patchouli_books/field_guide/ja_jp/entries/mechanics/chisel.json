@@ -38,6 +38,6 @@
   ],
   "read_by_default": true,
   "extra_recipe_mappings": {
-    "tag:tfc:tools/chisel": 0
+    "tag:c:tools/chisel": 0
   }
 }

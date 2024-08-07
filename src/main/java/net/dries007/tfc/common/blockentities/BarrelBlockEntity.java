@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blockentities;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.BlockPos;
@@ -177,8 +178,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
 
 
     private final SidedHandler<IFluidHandler> sidedFluidInventory;
-
-    private CachedMut<SealedBarrelRecipe> recipe = CachedMut.empty();
+    private final CachedMut<SealedBarrelRecipe> recipe = CachedMut.empty();
     private long lastUpdateTick = Integer.MIN_VALUE; // The last tick this barrel was updated in serverTick()
     private long sealedTick; // The tick this barrel was sealed
     private long recipeTick; // The tick this barrel started working on the current recipe
@@ -329,24 +329,30 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
     protected void applyImplicitComponents(DataComponentInput components)
     {
         final BarrelComponent barrel = components.getOrDefault(TFCComponents.BARREL, BarrelComponent.EMPTY);
-        // todo: load from component
+        if (!barrel.isEmpty())
+        {
+            final Iterator<ItemStack> iter = barrel.itemContent().iterator();
+            inventory.setStackInSlot(SLOT_ITEM, iter.next()); // First slot goes into the item slot
+            while (iter.hasNext()) inventory.excess.add(iter.next()); // Any others go into excess
+            inventory.tank.setFluid(barrel.fluidContent().copy());
+        }
         super.applyImplicitComponents(components);
     }
 
     @Override
     protected void collectImplicitComponents(DataComponentMap.Builder builder)
     {
-        final ImmutableList.Builder<ItemStack> inventoryList = ImmutableList.builderWithExpectedSize(inventory.getSlots() + inventory.excess.size());
-
-        Helpers.copyTo(inventoryList, inventory);
-        for (ItemStack stack : inventory.excess)
+        if (getBlockState().getValue(BarrelBlock.SEALED))
         {
-            inventoryList.add(stack.copy());
+            final ImmutableList.Builder<ItemStack> inventoryList = ImmutableList.builderWithExpectedSize(1 + inventory.excess.size());
+
+            // A sealed barrel can only contain the main slot, and excess. Fluid containers are dumped out on seal
+            // Thus, the first slot here holds the sealed value, the remaining slots are for excess inventory
+            inventoryList.add(inventory.getStackInSlot(SLOT_ITEM).copy());
+            Helpers.copyTo(inventoryList, inventory.excess);
+
+            builder.set(TFCComponents.BARREL, new BarrelComponent(inventoryList.build(), inventory.tank.getFluid().copy(), sealedTick, recipeTick));
         }
-
-        final BarrelComponent barrel = new BarrelComponent(inventoryList.build(), inventory.tank.getFluid(), sealedTick, recipeTick);
-
-        builder.set(TFCComponents.BARREL, barrel);
         super.collectImplicitComponents(builder);
     }
 

@@ -6,10 +6,9 @@
 
 package net.dries007.tfc.common.blockentities;
 
+import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -24,8 +23,6 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.JarShelfBlock;
 import net.dries007.tfc.common.blocks.JarsBlock;
 import net.dries007.tfc.util.Helpers;
-
-import static net.dries007.tfc.TerraFirmaCraft.*;
 
 public class JarsBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 {
@@ -47,13 +44,13 @@ public class JarsBlockEntity extends InventoryBlockEntity<ItemStackHandler>
                 return false;
             if (!(level.getBlockState(pos).getBlock() instanceof JarShelfBlock))
             {
-                final NonNullList<ItemStack> items = Helpers.extractAllItems(inventory);
+                final List<ItemStack> items = Helpers.copyToAndClear(inventory);
                 level.setBlockAndUpdate(pos, shelfState);
                 if (!player.isCreative())
                     held.shrink(1);
                 if (level.getBlockEntity(pos) instanceof JarsBlockEntity shelfBlockEntity)
                 {
-                    Helpers.insertAllItems(shelfBlockEntity.inventory, items);
+                    Helpers.copyFrom(items, shelfBlockEntity.inventory);
                     level.setBlockAndUpdate(pos, JarsBlock.updateStateValues(level, pos, level.getBlockState(pos)));
                 }
                 return true;

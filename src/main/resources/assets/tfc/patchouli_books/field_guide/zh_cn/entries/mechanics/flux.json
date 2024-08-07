@@ -10,7 +10,7 @@
     },
     {
       "type": "tfc:quern_recipe",
-      "recipe": "tfc:quern/fluxstone",
+      "recipe": "tfc:quern/powder/flux",
       "text": "除硼砂外，某些岩石，如$(thing)石灰岩$()、$(thing)白云岩$()、$(thing)白垩岩$()、和$(thing)大理岩$()等，以及$(thing)鳞甲$()、$(thing)蛤蜊$()、$(thing)软体动物$()、和$(l:the_world/wild_animals#shellfish)贝类$()等某些生物产品也可以被研磨成助焊剂。"
     }
   ],

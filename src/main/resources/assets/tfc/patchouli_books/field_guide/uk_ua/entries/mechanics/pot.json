@@ -29,12 +29,12 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/pot",
+      "recipe": "tfc:knapping/ceramic/unfired_pot",
       "text": "Казан $(l:getting_started/pottery)ліпиться$() з глини."
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/fired_pot",
+      "recipe": "tfc:heating/ceramic/pot",
       "text": "Потім його необхідно  $(l:mechanics/heating)випалити$(), щоб створити $(thing)керамічний казан$(), що використовується на багатті."
     },
     {

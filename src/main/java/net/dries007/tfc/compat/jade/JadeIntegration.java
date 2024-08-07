@@ -63,7 +63,7 @@ public class JadeIntegration implements IWailaPlugin
             metalTool(Metal.COPPER, metalType),
             metalTool(Metal.BRONZE, metalType),
             metalTool(Metal.STEEL, metalType),
-            metalTool(Metal.BLUE_STEEL, metalType)
+            metalTool(Metal.BLACK_STEEL, metalType)
         )));
     }
 

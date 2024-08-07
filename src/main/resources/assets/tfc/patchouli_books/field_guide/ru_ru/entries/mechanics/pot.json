@@ -29,12 +29,12 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/pot",
+      "recipe": "tfc:knapping/ceramic/unfired_pot",
       "text": "Керамический котелок сначала должен быть $(l:getting_started/pottery)Выколочен$() из глины."
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/fired_pot",
+      "recipe": "tfc:heating/ceramic/pot",
       "text": "Затем его необходимо $(l:mechanics/heating)обжечь$(), чтобы создать $(thing)Керамический котелок$(), который можно использовать на кострище."
     },
     {

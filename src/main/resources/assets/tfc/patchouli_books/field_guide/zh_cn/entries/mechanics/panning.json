@@ -10,12 +10,12 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/pan",
+      "recipe": "tfc:knapping/ceramic/unfired_pan",
       "text": "粘土可以$(l:getting_started/pottery)塑形$()成淘金盘，如上图所示。"
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/ceramic_pan",
+      "recipe": "tfc:heating/pan/empty",
       "text": "$(thing)塑形$()完成后别忘了$(l:mechanics/heating)烧制$()。$(br2)你找到的$(thing)沉积物$()可能包含几种不同的矿石：原生铜、原生银、原生金或锡石。"
     },
     {

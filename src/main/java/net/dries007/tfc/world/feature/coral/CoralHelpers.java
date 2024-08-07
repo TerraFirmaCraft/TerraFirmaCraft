@@ -8,6 +8,7 @@ package net.dries007.tfc.world.feature.coral;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.SeaPickleBlock;
@@ -33,12 +34,12 @@ public final class CoralHelpers
     {
         BlockPos abovePos = pos.above();
         BlockState blockstate = level.getBlockState(pos);
-        if ((Helpers.isBlock(blockstate, TFCBlocks.SALT_WATER.get()) || Helpers.isBlock(blockstate, TFCTags.Blocks.CORALS)) && Helpers.isBlock(level.getBlockState(abovePos), TFCBlocks.SALT_WATER.get()))
+        if ((Helpers.isBlock(blockstate, TFCBlocks.SALT_WATER.get()) || Helpers.isBlock(blockstate, BlockTags.CORALS)) && Helpers.isBlock(level.getBlockState(abovePos), TFCBlocks.SALT_WATER.get()))
         {
             level.setBlock(pos, coralBlockState, 3);
             if (rand.nextFloat() < 0.25F)
             {
-                Helpers.randomBlock(TFCTags.Blocks.CORALS, rand).ifPresent(block -> {
+                Helpers.randomBlock(TFCTags.Blocks.SALT_WATER_CORALS, rand).ifPresent(block -> {
                     level.setBlock(abovePos, salty(block.defaultBlockState()), 2);
                 });
             }
@@ -54,7 +55,7 @@ public final class CoralHelpers
                     BlockPos relativePos = pos.relative(direction);
                     if (Helpers.isBlock(level.getBlockState(relativePos), TFCBlocks.SALT_WATER.get()))
                     {
-                        Helpers.randomBlock(TFCTags.Blocks.WALL_CORALS, rand).ifPresent(block -> {
+                        Helpers.randomBlock(TFCTags.Blocks.SALT_WATER_WALL_CORALS, rand).ifPresent(block -> {
                             BlockState wallCoralState = block.defaultBlockState();
                             if (wallCoralState.hasProperty(CoralWallFanBlock.FACING))
                             {

@@ -30,7 +30,7 @@ public abstract class HangingSignEditScreenMixin
     @Inject(method = "<init>(Lnet/minecraft/world/level/block/entity/SignBlockEntity;ZZ)V", at = @At("TAIL"))
     public void inject$constructor(SignBlockEntity signBlockEntity, boolean isFrontText, boolean filter, CallbackInfo ci)
     {
-        final var modelData = TFCHangingSignBlockEntityRenderer.getData(signBlockEntity.getBlockState().getBlock());
+        final var modelData = TFCHangingSignBlockEntityRenderer.MODELS.get(signBlockEntity.getBlockState().getBlock());
         if (modelData != null)
         {
             this.texture = modelData.textureLocation();

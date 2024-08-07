@@ -6,10 +6,10 @@
 
 package net.dries007.tfc.common.blockentities;
 
+import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -51,7 +51,7 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
         // Normally, as soon as we set the block, it would eject all contents thanks to DeviceBlock and InventoryBlockEntity
         // So, we need to first copy the inventory into a temporary storage, clear it, then switch blocks, and copy back later
         firepit.ejectMainInventory();
-        NonNullList<ItemStack> saved = Helpers.extractAllItems(firepit.inventory);
+        List<ItemStack> saved = Helpers.copyToAndClear(firepit.inventory);
 
         final BlockState newState = Helpers.copyProperties(newBlock.defaultBlockState(), state);
         level.setBlock(pos, newState, 3);
@@ -60,7 +60,7 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
         final BlockEntity newEntity = level.getBlockEntity(pos);
         if (newEntity instanceof AbstractFirepitBlockEntity<?> newFirepit)
         {
-            Helpers.insertAllItems(newFirepit.inventory, saved);
+            Helpers.copyFrom(saved, newFirepit.inventory);
             newFirepit.copyFrom(firepit);
         }
     }

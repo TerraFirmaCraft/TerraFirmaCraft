@@ -42,6 +42,8 @@ import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.component.food.FoodCapability;
+import net.dries007.tfc.common.entities.TFCEntities;
+import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.HideItemType;
 import net.dries007.tfc.common.items.TFCItems;
@@ -75,7 +77,7 @@ public final class TFCCreativeTabs
         // Otherwise, re-add the mixin from 1.20
         FoodCapability.setTransientNonDecaying(event.getTab().getIconItem());
         event.getParentEntries().forEach(FoodCapability::setTransientNonDecaying);
-        event.getParentEntries().forEach(FoodCapability::setTransientNonDecaying);
+        event.getSearchEntries().forEach(FoodCapability::setTransientNonDecaying);
     }
 
     private static void fillEarthTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output out)
@@ -484,7 +486,7 @@ public final class TFCCreativeTabs
         TFCItems.WINDMILL_BLADES.values().forEach(out::accept);
         out.accept(TFCItems.RUSTIC_WINDMILL_BLADE);
         out.accept(TFCItems.LATTICE_WINDMILL_BLADE);
-        consumeOurs(BuiltInRegistries.FLUID, fluid -> out.accept(fluid.getBucket()));
+        TFCFluids.FLUIDS.getEntries().forEach(fluid -> out.accept(fluid.value().getBucket()));
 
         TFCItems.FRESHWATER_FISH_BUCKETS.values().forEach(out::accept);
         out.accept(TFCItems.COD_BUCKET);
@@ -492,8 +494,8 @@ public final class TFCCreativeTabs
         out.accept(TFCItems.TROPICAL_FISH_BUCKET);
         out.accept(TFCItems.PUFFERFISH_BUCKET);
 
-        consumeOurs(BuiltInRegistries.ENTITY_TYPE, entity -> {
-            final SpawnEggItem item = SpawnEggItem.byId(entity);
+        TFCEntities.ENTITIES.getEntries().forEach(entity -> {
+            final SpawnEggItem item = SpawnEggItem.byId(entity.value());
             if (item != null)
             {
                 out.accept(item);
@@ -612,19 +614,19 @@ public final class TFCCreativeTabs
 
     private static Id register(String name, Supplier<ItemStack> icon, CreativeModeTab.DisplayItemsGenerator displayItems)
     {
-        final DeferredHolder<CreativeModeTab, CreativeModeTab> reg = CREATIVE_TABS.register(name, () -> CreativeModeTab.builder()
+        final var holder = CREATIVE_TABS.register(name, () -> CreativeModeTab.builder()
             .icon(icon)
             .title(Component.translatable("tfc.creative_tab." + name))
             .displayItems(displayItems)
             .build());
-        return new Id(reg, displayItems);
+        return new Id(holder, displayItems);
     }
 
     private static <R extends ItemLike, K1, K2> void accept(CreativeModeTab.Output out, Map<K1, Map<K2, R>> map, K1 key1, K2 key2)
     {
-        if (map.containsKey(key1) && map.get(key1).containsKey(key2))
+        if (map.containsKey(key1))
         {
-            out.accept(map.get(key1).get(key2));
+            accept(out, map.get(key1), key2);
         }
     }
 
@@ -641,17 +643,6 @@ public final class TFCCreativeTabs
         out.accept(decoration.stair().get());
         out.accept(decoration.slab().get());
         out.accept(decoration.wall().get());
-    }
-
-    private static <T> void consumeOurs(Registry<T> registry, Consumer<T> consumer)
-    {
-        for (T value : registry)
-        {
-            if (Objects.requireNonNull(registry.getKey(value)).getNamespace().equals(TerraFirmaCraft.MOD_ID))
-            {
-                consumer.accept(value);
-            }
-        }
     }
 
     public record Id(DeferredHolder<CreativeModeTab, CreativeModeTab> tab, CreativeModeTab.DisplayItemsGenerator generator) {}

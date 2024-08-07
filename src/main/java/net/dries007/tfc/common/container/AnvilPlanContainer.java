@@ -9,11 +9,11 @@ package net.dries007.tfc.common.container;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.AnvilBlockEntity;
-import net.dries007.tfc.common.recipes.AnvilRecipe;
 import net.dries007.tfc.util.Helpers;
 
 public class AnvilPlanContainer extends BlockEntityContainer<AnvilBlockEntity> implements ButtonHandlerContainer
@@ -38,7 +38,8 @@ public class AnvilPlanContainer extends BlockEntityContainer<AnvilBlockEntity> i
             blockEntity.chooseRecipe(recipeId);
             if (player instanceof ServerPlayer serverPlayer)
             {
-                Helpers.openScreen(serverPlayer, blockEntity.anvilProvider(), blockEntity.getBlockPos());
+                MenuProvider provider = blockEntity.anvilProvider();
+                serverPlayer.openMenu(provider, blockEntity.getBlockPos());
             }
         }
     }

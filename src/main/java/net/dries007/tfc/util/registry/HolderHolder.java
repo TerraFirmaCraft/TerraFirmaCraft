@@ -15,14 +15,14 @@ import net.neoforged.neoforge.registries.DeferredHolder;
  * A wrapper that provides access to the {@link Holder} of the registry type while avoiding the double generic
  * when accessing a {@link RegistryHolder}
  *
- * @param <T> The type of the registry
+ * @param <R> The type of the registry
  * @see RegistryHolder
  */
-public interface HolderHolder<T>
+public interface HolderHolder<R>
 {
-    DeferredHolder<T, ? extends T> holder();
+    DeferredHolder<R, ? extends R> holder();
 
-    default ResourceKey<T> key()
+    default ResourceKey<R> key()
     {
         return Objects.requireNonNull(holder().getKey());
     }

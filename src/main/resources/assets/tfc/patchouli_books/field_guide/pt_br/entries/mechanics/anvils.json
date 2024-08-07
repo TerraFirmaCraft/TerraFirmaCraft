@@ -88,7 +88,7 @@
     },
     {
       "type": "patchouli:spotlight",
-      "item": "tfc:metal/pickaxe/wrought_iron{\"tfc:forging_bonus\":4}",
+      "item": "tfc:metal/pickaxe/wrought_iron[tfc:forging_bonus=\"perfect\"]",
       "title": "Perfectly Forged",
       "link_recipes": false,
       "text": "There are four tiers of forging bonus:$(li)Poorly Forged$(li)Well Forged$(li)Expertly Forged$(li)Perfectly Forged$(br2)These bonuses increase the power of your tool - making it break less often, mine faster, and/or do more damage in combat, depending on the tool."

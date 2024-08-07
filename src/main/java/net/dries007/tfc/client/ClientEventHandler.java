@@ -521,7 +521,7 @@ public final class ClientEventHandler
 
     public static void registerTooltipFactories(RegisterClientTooltipComponentFactoriesEvent event)
     {
-        event.register(TooltipBlock.Instance.class, ClientDeviceImageTooltip::new);
+        event.register(TooltipBlock.Instance.class, ClientInventoryTooltip::new);
     }
 
     public static void registerKeyBindings(RegisterKeyMappingsEvent event)

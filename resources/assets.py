@@ -2146,7 +2146,7 @@ def corals(rm: ResourceManager, color: str, dead: bool):
         rm.lang('block.tfc.coral.%s_%s' % (right, variant), lang('%s %s', left, variant))
 
 
-def four_ways(model: str) -> List[Dict[str, Any]]:
+def four_ways(model: str) -> list[dict[str, Any]]:
     return [
         {'model': model, 'y': 90},
         {'model': model},

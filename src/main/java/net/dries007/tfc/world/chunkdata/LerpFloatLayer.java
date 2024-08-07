@@ -33,16 +33,6 @@ public record LerpFloatLayer(
         LerpFloatLayer::new
     );
 
-    public LerpFloatLayer(FriendlyByteBuf buffer)
-    {
-        this(
-            buffer.readFloat(),
-            buffer.readFloat(),
-            buffer.readFloat(),
-            buffer.readFloat()
-        );
-    }
-
     public LerpFloatLayer(CompoundTag nbt)
     {
         this(
@@ -59,9 +49,9 @@ public record LerpFloatLayer(
      * @param deltaX A distance in the X direction.
      * @param deltaZ A distance in the Z direction.
      */
-    public float getValue(double deltaX, double deltaZ)
+    public float getValue(float deltaX, float deltaZ)
     {
-        return (float) Helpers.lerp4(value00, value01, value10, value11, deltaX, deltaZ);
+        return Helpers.lerp4(value00, value01, value10, value11, deltaX, deltaZ);
     }
 
     /**
@@ -73,13 +63,13 @@ public record LerpFloatLayer(
      * @param width   The square width of the sub-square, in {@code [0, 1]}
      * @return A new {@code LerpFloatLayer} with the modified values.
      */
-    public LerpFloatLayer scaled(double originX, double originZ, double width)
+    public LerpFloatLayer scaled(float originX, float originZ, float width)
     {
         return new LerpFloatLayer(
-            (float) Helpers.lerp4(value00, value01, value10, value11, originX, originZ),
-            (float) Helpers.lerp4(value00, value01, value10, value11, originX, originZ + width),
-            (float) Helpers.lerp4(value00, value01, value10, value11, originX + width, originZ),
-            (float) Helpers.lerp4(value00, value01, value10, value11, originX + width, originZ + width)
+            Helpers.lerp4(value00, value01, value10, value11, originX, originZ),
+            Helpers.lerp4(value00, value01, value10, value11, originX, originZ + width),
+            Helpers.lerp4(value00, value01, value10, value11, originX + width, originZ),
+            Helpers.lerp4(value00, value01, value10, value11, originX + width, originZ + width)
         );
     }
 
@@ -105,13 +95,5 @@ public record LerpFloatLayer(
         nbt.putFloat("10", value10);
         nbt.putFloat("11", value11);
         return nbt;
-    }
-
-    public void encode(FriendlyByteBuf buffer)
-    {
-        buffer.writeFloat(value00);
-        buffer.writeFloat(value01);
-        buffer.writeFloat(value10);
-        buffer.writeFloat(value11);
     }
 }

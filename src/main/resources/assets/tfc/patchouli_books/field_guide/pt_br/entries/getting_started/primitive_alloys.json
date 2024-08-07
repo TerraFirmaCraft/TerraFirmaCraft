@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "name": "Ligas primitivas",
   "category": "tfc:getting_started",
-  "icon": "tfc:ceramic/ingot_mold{tank:{\"Amount\":100,\"FluidName\":\"tfc:metal/bronze\"}}",
+  "icon": "tfc:ceramic/ingot_mold[tfc:fluid={id:\"tfc:metal/bronze\",amount:100}]",
   "pages": [
     {
       "type": "patchouli:text",

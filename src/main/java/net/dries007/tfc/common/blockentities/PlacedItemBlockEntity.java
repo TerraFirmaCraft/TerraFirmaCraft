@@ -7,11 +7,10 @@
 package net.dries007.tfc.common.blockentities;
 
 
+import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -33,8 +32,6 @@ import net.dries007.tfc.common.component.size.Size;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.TerraFirmaCraft.*;
-
 public class PlacedItemBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 {
     public static void convertPlacedItemToPitKiln(Level level, BlockPos pos, ItemStack strawStack)
@@ -42,7 +39,7 @@ public class PlacedItemBlockEntity extends InventoryBlockEntity<ItemStackHandler
         level.getBlockEntity(pos, TFCBlockEntities.PLACED_ITEM.get()).ifPresent(placedItem -> {
             // Remove inventory items
             // This happens here to stop the block dropping its items in onBreakBlock()
-            NonNullList<ItemStack> items = Helpers.extractAllItems(placedItem.inventory);
+            List<ItemStack> items = Helpers.copyToAndClear(placedItem.inventory);
 
             // Replace the block
             level.setBlockAndUpdate(pos, TFCBlocks.PIT_KILN.get().defaultBlockState());
@@ -52,7 +49,7 @@ public class PlacedItemBlockEntity extends InventoryBlockEntity<ItemStackHandler
             // Copy TE data
             level.getBlockEntity(pos, TFCBlockEntities.PIT_KILN.get()).ifPresent(pitKiln -> {
                 // Copy inventory
-                Helpers.insertAllItems(pitKiln.inventory, items);
+                Helpers.copyFrom(items, pitKiln.inventory);
                 // Copy misc data
                 pitKiln.isHoldingLargeItem = placedItem.isHoldingLargeItem;
                 pitKiln.addStraw(strawStack, 0);

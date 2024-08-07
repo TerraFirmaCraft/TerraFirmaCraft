@@ -69,7 +69,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/stone/knife_sedimentary",
+      "recipe": "tfc:crafting/stone/knife/sedimentary",
       "text": "Todas as cabeças da ferramenta de pedra podem ser criadas com um bastão ou galho para montá -las em uma ferramenta.$(br2)A faca de pedra pode ser usada para colher $(thing)Straw$() quebrando plantas."
     },
     {

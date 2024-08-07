@@ -10,7 +10,7 @@
     },
     {
       "type": "tfc:quern_recipe",
-      "recipe": "tfc:quern/fluxstone",
+      "recipe": "tfc:quern/powder/flux",
       "text": "$(thing)석회암$(), $(thing)백운암$(), $(thing)백악$(), $(thing)대리암$()을 $(l:mechanics/quern)맷돌$()로 갈아도 플럭스를 얻을 수 있습니다. $(thing)인갑$(), $(thing)조개$(), $(thing)달팽이$(), $(l:the_world/wild_animals#shellfish)가재$() 역시 플럭스 제작에 사용될 수 있습니다."
     }
   ],

@@ -33,10 +33,10 @@ import net.dries007.tfc.util.rotation.Rotation;
 public class TripHammerBlockEntityRenderer implements BlockEntityRenderer<TripHammerBlockEntity>
 {
     public static final ResourceLocation ROD_TEXTURE = Helpers.identifier("block/wood/planks/oak");
-    public static final Map<Item, ResourceLocation> HAMMER_TEXTURES = Util.make(new HashMap<>(), map -> TFCItems.METAL_ITEMS.entrySet()
+    public static final Map<Item, ResourceLocation> HAMMER_TEXTURES = RenderHelpers.mapOf(map -> TFCItems.METAL_ITEMS.entrySet()
         .stream()
         .filter(e -> e.getValue().containsKey(Metal.ItemType.HAMMER))
-        .forEach(e -> map.put(e.getValue().get(Metal.ItemType.HAMMER).get(), Helpers.identifier("block/metal/smooth/" + e.getKey().getSerializedName()))));
+        .forEach(e -> map.accept(e.getValue().get(Metal.ItemType.HAMMER), Helpers.identifier("block/metal/smooth/" + e.getKey().getSerializedName()))));
 
     @Override
     public void render(TripHammerBlockEntity hammer, float partialTick, PoseStack stack, MultiBufferSource buffers, int packedLight, int packedOverlay)

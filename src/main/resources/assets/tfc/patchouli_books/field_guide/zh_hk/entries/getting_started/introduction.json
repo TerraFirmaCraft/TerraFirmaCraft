@@ -69,7 +69,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/stone/knife_sedimentary",
+      "recipe": "tfc:crafting/stone/knife/sedimentary",
       "text": "使用木棍或小樹枝可以把任意的石制工具頭組裝成完整的工具。$(br2)石刀可以破壞植物來收穫$(thing)乾草$()。"
     },
     {

@@ -10,31 +10,31 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/vanilla/redstone/activator_rail",
-      "recipe2": "tfc:crafting/vanilla/redstone/steel_activator_rail"
+      "recipe": "minecraft:activator_rail",
+      "recipe2": "tfc:crafting/activator_rail"
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/vanilla/redstone/detector_rail",
-      "recipe2": "tfc:crafting/vanilla/redstone/steel_detector_rail"
+      "recipe": "minecraft:detector_rail",
+      "recipe2": "tfc:crafting/detector_rail"
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/vanilla/redstone/minecart",
-      "recipe2": "tfc:crafting/vanilla/redstone/steel_minecart"
+      "recipe": "minecraft:minecart",
+      "recipe2": "tfc:crafting/minecart"
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/vanilla/redstone/rail",
-      "recipe2": "tfc:crafting/vanilla/redstone/steel_rail"
+      "recipe": "minecraft:rail",
+      "recipe2": "tfc:crafting/rail"
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/vanilla/redstone/powered_rail"
+      "recipe": "minecraft:powered_rail"
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/wood/kapok_chest_minecart",
+      "recipe": "tfc:crafting/wood/chest_minecart/kapok",
       "text": "$(thing)Chest minecarts$() operate the same as regular TFC chests, in that they only have 18 slots and cannot hold very large items like logs."
     }
   ],

@@ -174,11 +174,12 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(FROG_FOOD).addTags(TURTLE_FOOD, GRAINS);
         tag(RABBIT_FOOD).addTags(GRAINS, VEGETABLES);
 
-        // there is intentional overlap between greens and browns
-        // we intentionally check browns first as that is the more restrictive set of items
+        // Greens and Browns intentionally overlap - we check browns first, then greens, to resolve
+        tag(COMPOST_GREENS).addTags(COMPOST_GREENS_LOW, COMPOST_GREENS_MEDIUM, COMPOST_GREENS_HIGH);
         tag(COMPOST_GREENS_LOW).addTag(PLANTS);
         tag(COMPOST_GREENS_MEDIUM).addTag(GRAINS);
         tag(COMPOST_GREENS_HIGH).addTags(VEGETABLES, FRUITS);
+        tag(COMPOST_BROWNS).addTags(COMPOST_BROWNS_LOW, COMPOST_BROWNS_MEDIUM, COMPOST_BROWNS_HIGH);
         tag(COMPOST_BROWNS_LOW)
             .addTag(ItemTags.LEAVES)
             .add(
@@ -293,7 +294,6 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             .add(TFCItems.MOLDS)
             .add(TFCItems.FIRE_INGOT_MOLD)
             .add(TFCItems.BELL_MOLD);
-        tag(ANVILS).add(TFCBlocks.METALS, Metal.BlockType.ANVIL);
 
         // Vanilla Tool Tags
         tag(ItemTags.SWORDS).add(TFCItems.METAL_ITEMS, Metal.ItemType.SWORD);
@@ -403,6 +403,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             Items.WRITABLE_BOOK,
             Items.WRITTEN_BOOK,
             Items.KNOWLEDGE_BOOK);
+        tag(ORE_DEPOSITS).addAll(TFCBlocks.ORE_DEPOSITS);
 
         tag(FIREPIT_KINDLING)
             .addTags(ItemTags.LEAVES, BOOKS)
@@ -537,6 +538,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         copy(TFCTags.Blocks.MUD, MUD);
         copy(TFCTags.Blocks.MUD_BRICKS, MUD_BRICKS);
 
+        copy(TFCTags.Blocks.ANVILS, ANVILS);
         copy(TFCTags.Blocks.WORKBENCHES, WORKBENCHES);
     }
 

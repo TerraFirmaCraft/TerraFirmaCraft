@@ -28,6 +28,7 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.devices.PowderkegBlock;
+import net.dries007.tfc.common.blocks.devices.SealableDeviceBlock;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
 import net.dries007.tfc.common.capabilities.PartialItemHandler;
 import net.dries007.tfc.common.component.TFCComponents;
@@ -98,14 +99,17 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
     protected void applyImplicitComponents(DataComponentInput components)
     {
         final List<ItemStack> content = components.getOrDefault(TFCComponents.CONTENTS, ItemListComponent.EMPTY).contents();
-        // todo: apply components
+        Helpers.copyFrom(content, inventory);
         super.applyImplicitComponents(components);
     }
 
     @Override
     protected void collectImplicitComponents(DataComponentMap.Builder builder)
     {
-        builder.set(TFCComponents.CONTENTS, ItemListComponent.of(inventory));
+        if (getBlockState().getValue(SealableDeviceBlock.SEALED))
+        {
+            builder.set(TFCComponents.CONTENTS, ItemListComponent.of(inventory));
+        }
         super.collectImplicitComponents(builder);
     }
 

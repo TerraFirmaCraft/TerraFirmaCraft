@@ -29,12 +29,12 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/pot",
+      "recipe": "tfc:knapping/ceramic/unfired_pot",
       "text": "ポットを作るには、まず粘土から $(l:getting_started/pottery)ナッピング$() する必要があります。"
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/fired_pot",
+      "recipe": "tfc:heating/ceramic/pot",
       "text": "次に、焚き火で使用できる $(thing)ポット$() を作成するには、$(l:mechanics/heating)焼成$() する必要があります。"
     },
     {

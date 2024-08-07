@@ -8,7 +8,10 @@ package net.dries007.tfc.common.player;
 
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.common.component.food.FoodCapability;
 import net.dries007.tfc.common.component.food.FoodData;
 import net.dries007.tfc.common.component.food.IFood;
 import net.dries007.tfc.common.component.food.NutritionData;
@@ -96,6 +99,15 @@ public interface IPlayerInfo
             Mth.map(averageNutrition, 0.0f, DEFAULT_AVERAGE_NUTRITION, TFCConfig.SERVER.nutritionMinimumHealthModifier.get().floatValue(), TFCConfig.SERVER.nutritionDefaultHealthModifier.get().floatValue()) :
             // Lerp [default, 1] -> [default, max] modifier
             Mth.map(averageNutrition, DEFAULT_AVERAGE_NUTRITION, 1.0f, TFCConfig.SERVER.nutritionDefaultHealthModifier.get().floatValue(), TFCConfig.SERVER.nutritionMaximumHealthModifier.get().floatValue());
+    }
+
+    default void eat(ItemStack stack)
+    {
+        final @Nullable IFood food = FoodCapability.get(stack);
+        if (food != null)
+        {
+            eat(food);
+        }
     }
 
     /**

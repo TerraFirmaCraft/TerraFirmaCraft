@@ -1,7 +1,6 @@
 package net.dries007.tfc.data.providers;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
@@ -35,6 +34,7 @@ import net.dries007.tfc.common.blocks.DecorationBlockHolder;
 import net.dries007.tfc.common.blocks.SandstoneBlockType;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.plant.Plant;
+import net.dries007.tfc.common.blocks.plant.coral.Coral;
 import net.dries007.tfc.common.blocks.rock.Ore;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
@@ -72,9 +72,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(BlockTags.WOODEN_DOORS).add(TFCBlocks.WOODS, Wood.BlockType.DOOR);
         tag(BlockTags.WOODEN_STAIRS).add(TFCBlocks.WOODS, Wood.BlockType.STAIRS);
         tag(BlockTags.WOODEN_SLABS).add(TFCBlocks.WOODS, Wood.BlockType.SLAB);
-        tag(BlockTags.WOODEN_FENCES)
-            .add(TFCBlocks.WOODS, Wood.BlockType.FENCE)
-            .add(TFCBlocks.WOODS, Wood.BlockType.LOG_FENCE);
+        tag(BlockTags.WOODEN_FENCES).addTag(Tags.Blocks.FENCES_WOODEN); // Include the common tag, which we add to
         tag(BlockTags.WOODEN_PRESSURE_PLATES).add(TFCBlocks.WOODS, Wood.BlockType.PRESSURE_PLATE);
         tag(BlockTags.STONE_PRESSURE_PLATES).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.PRESSURE_PLATE);
         tag(BlockTags.WOODEN_TRAPDOORS).add(TFCBlocks.WOODS, Wood.BlockType.TRAPDOOR);
@@ -101,17 +99,39 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         // Includes wooden trapdoors
         tag(BlockTags.TRAPDOORS).add(TFCBlocks.METALS, Metal.BlockType.TRAPDOOR);
         tag(BlockTags.DIRT).addTags(GRASS, DIRT, MUD);
-        // todo: continue more here
-
+        tag(BlockTags.FLOWER_POTS).add(TFCBlocks.POTTED_PLANTS);
+        tag(BlockTags.ICE).add(
+            TFCBlocks.SEA_ICE,
+            TFCBlocks.ICE_PILE);
+        // Vanilla adds coral blocks, plants, and fans. We add just plants and fans. These are used in worldgen,
+        // specifically to select random ones from a tag. For this, we add our own TFC tags (as not to grab vanilla corals)
+        tag(BlockTags.WALL_CORALS).addTag(SALT_WATER_WALL_CORALS);
+        tag(BlockTags.CORAL_PLANTS).addTag(SALT_WATER_CORAL_PLANTS);
+        tag(BlockTags.CORALS).addTag(SALT_WATER_CORALS);
+        tag(BlockTags.STANDING_SIGNS).add(TFCBlocks.WOODS, Wood.BlockType.SIGN);
+        tag(BlockTags.WALL_SIGNS).add(TFCBlocks.WOODS, Wood.BlockType.WALL_SIGN);
+        tag(BlockTags.CEILING_HANGING_SIGNS).add2(TFCBlocks.CEILING_HANGING_SIGNS);
+        tag(BlockTags.WALL_HANGING_SIGNS).add2(TFCBlocks.WALL_HANGING_SIGNS);
+        tag(BlockTags.CROPS)
+            .add(TFCBlocks.CROPS)
+            .add(TFCBlocks.DEAD_CROPS)
+            .add(TFCBlocks.WILD_CROPS);
+        // todo: other crops?
+        // todo: add vines to climable tag?
+        tag(BlockTags.FENCE_GATES).addTag(Tags.Blocks.FENCE_GATES_WOODEN); // We add to the common tag, then include here
         tag(BlockTags.BASE_STONE_OVERWORLD)
             .addTags(STONES_RAW, STONES_HARDENED);
+        tag(BlockTags.STONE_ORE_REPLACEABLES).addTag(STONES_RAW); // Used for vanilla-like ore generation
         tag(BlockTags.OVERWORLD_CARVER_REPLACEABLES)
             // Already includes base stone overworld, which includes raw and hardened stone
             .addTags(Tags.Blocks.GRAVELS, Tags.Blocks.COBBLESTONES)
             .add(TFCBlocks.SANDSTONE, SandstoneBlockType.RAW);
-
+        tag(BlockTags.CANDLE_CAKES)
+            .add(TFCBlocks.CANDLE_CAKE)
+            .add(TFCBlocks.DYED_CANDLE_CAKES);
+        tag(BlockTags.SNOW).add(TFCBlocks.SNOW_PILE);
         tag(BlockTags.MINEABLE_WITH_AXE)
-            .addOnly(TFCBlocks.WOODS, k -> k != Wood.BlockType.LEAVES && k != Wood.BlockType.SAPLING && k != Wood.BlockType.POTTED_SAPLING && k != Wood.BlockType.FALLEN_LEAVES)
+            .addOnly2(TFCBlocks.WOODS, k -> k != Wood.BlockType.LEAVES && k != Wood.BlockType.SAPLING && k != Wood.BlockType.POTTED_SAPLING && k != Wood.BlockType.FALLEN_LEAVES)
             .add(TFCBlocks.FRUIT_TREE_BRANCHES)
             .add(TFCBlocks.FRUIT_TREE_GROWING_BRANCHES)
             .add(TFCBlocks.STAINED_WATTLE)
@@ -173,7 +193,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .add2(TFCBlocks.ORES)
             .add3(TFCBlocks.GRADED_ORES)
             .add(TFCBlocks.SMALL_ORES)
-            .addOnly(TFCBlocks.ROCK_BLOCKS, k -> k != Rock.BlockType.GRAVEL)
+            .addOnly2(TFCBlocks.ROCK_BLOCKS, k -> k != Rock.BlockType.GRAVEL)
             .addAll2(TFCBlocks.ROCK_DECORATIONS)
             .add(TFCBlocks.ROCK_ANVILS)
             .add(TFCBlocks.MAGMA_BLOCKS)
@@ -256,26 +276,34 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .add(TFCBlocks.ORES, Ore.LAPIS_LAZULI)
             .add(TFCBlocks.ORES, Ore.OPAL);
         // Needs Stone Tool is ~ Copper, which is every TFC pickaxe, so we don't bother here
-
-        // ...
-
-        tag(BlockTags.REPLACEABLE).add(TFCBlocks.BLOCKS.getEntries()
-            .stream()
-            .filter(e -> e.value().defaultBlockState().canBeReplaced()));
-
+        // "Incorrect For Tool" includes the "Needs For Tool", so we don't touch, since we don't add levels
         tag(BlockTags.SNOW_LAYER_CANNOT_SURVIVE_ON).add(TFCBlocks.SEA_ICE, TFCBlocks.ICE_PILE);
         tag(BlockTags.SNOW_LAYER_CAN_SURVIVE_ON).add(TFCBlocks.SOIL.get(SoilBlockType.MUD));
+        tag(BlockTags.REPLACEABLE).addEveryTFC(e -> e.defaultBlockState().canBeReplaced());
 
         // ===== Common Tags ===== //
 
+        tag(Tags.Blocks.CHAINS).add(TFCBlocks.METALS, Metal.BlockType.CHAIN);
+        tag(Tags.Blocks.CHESTS_WOODEN)
+            .add(TFCBlocks.WOODS, Wood.BlockType.CHEST)
+            .add(TFCBlocks.WOODS, Wood.BlockType.TRAPPED_CHEST);
+        tag(Tags.Blocks.CHESTS_TRAPPED).add(TFCBlocks.WOODS, Wood.BlockType.TRAPPED_CHEST);
         tag(Tags.Blocks.COBBLESTONES_NORMAL).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.COBBLE);
         tag(Tags.Blocks.COBBLESTONES_MOSSY).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.MOSSY_COBBLE);
+
+        // Ignore dyed tags, as it seems to imply trivial dye application?
+
+        tag(Tags.Blocks.FENCE_GATES_WOODEN).add(TFCBlocks.WOODS, Wood.BlockType.FENCE_GATE);
+        tag(Tags.Blocks.FENCES_WOODEN)
+            .add(TFCBlocks.WOODS, Wood.BlockType.FENCE)
+            .add(TFCBlocks.WOODS, Wood.BlockType.LOG_FENCE);
         tag(Tags.Blocks.GRAVELS).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.GRAVEL);
-        tag(Tags.Blocks.SANDS).add(TFCBlocks.SAND);
 
-        pivot(TFCBlocks.METALS, Metal.BlockType.BLOCK).forEach((metal, block) ->
-            tag(storageBlockTagOf(Registries.BLOCK, metal)).add(block));
-
+        // Ore Tags
+        // We don't include "ore_bearing_ground/???" tags, because they are specific to stone (or known vanilla stones) only
+        // Also ignore "ore_rates/???" because unsure how they are supposed to apply...
+        // For ores, we group ores by metal, not by ore. So ores/copper, not ores/tetrahedrite
+        // For graded ores, we add ores/<metal>/grade, and include all grades in the main ore tag
         for (Ore ore : Ore.values())
         {
             if (ore.isGraded())
@@ -297,8 +325,19 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             }
         }
 
-        tag(Tags.Blocks.STORAGE_BLOCKS_WHEAT).remove(Blocks.HAY_BLOCK);
+        // Unless there's incentive, I don't know why we would add other workstations here - also why doesn't this just use the vanilla tag?
         tag(Tags.Blocks.PLAYER_WORKSTATIONS_CRAFTING_TABLES).addTag(WORKBENCHES);
+
+        // Don't bother with sands/<color> because it's assuming vanilla red sand only. wtf is "colorless" sand
+        tag(Tags.Blocks.SANDS).add(TFCBlocks.SAND);
+        tag(Tags.Blocks.SANDSTONE_BLOCKS).add2(TFCBlocks.SANDSTONE);
+        tag(Tags.Blocks.SANDSTONE_SLABS).add2(TFCBlocks.SANDSTONE_DECORATIONS, DecorationBlockHolder::slab);
+        tag(Tags.Blocks.SANDSTONE_STAIRS).add2(TFCBlocks.SANDSTONE_DECORATIONS, DecorationBlockHolder::stair);
+
+        tag(Tags.Blocks.STONES).addTags(STONES_RAW, STONES_HARDENED);
+
+        tag(Tags.Blocks.STORAGE_BLOCKS_WHEAT).remove(Blocks.HAY_BLOCK); // We repurpose this as storing straw
+        pivot(TFCBlocks.METALS, Metal.BlockType.BLOCK).forEach((metal, block) -> tag(storageBlockTagOf(Registries.BLOCK, metal)).add(block));
 
         // ===== TFC Tags ===== //
 
@@ -320,16 +359,17 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(SUPPORTS_LANDSLIDE).addTags(FARMLANDS, PATHS);
         tag(NOT_SOLID_SUPPORTING).addTags(STONES_SMOOTH);
         tag(TOUGHNESS_1).add(TFCBlocks.CHARCOAL_PILE, TFCBlocks.CHARCOAL_FORGE);
-        tag(TOUGHNESS_2).addTag(STONES);
+        tag(TOUGHNESS_2).addTag(Tags.Blocks.STONES);
         tag(TOUGHNESS_3).add(Blocks.BEDROCK);
         tag(BREAKS_WHEN_ISOLATED).addTag(STONES_RAW);
-        tag(SEASONAL_LEAVES).add(pivot(TFCBlocks.WOODS, Wood.BlockType.LEAVES)
-            .entrySet()
-            .stream()
-            .filter(e -> !e.getKey().isConifer())
-            .map(Map.Entry::getValue));
+        tag(SEASONAL_LEAVES).addOnly(pivot(TFCBlocks.WOODS, Wood.BlockType.LEAVES), e -> !e.isConifer());
+        // Vanilla "corals" includes coral fans, + "coral_plants" (which includes corals), we mirror the same
+        tag(SALT_WATER_CORAL_PLANTS).add(TFCBlocks.CORAL, Coral.BlockType.CORAL);
+        tag(SALT_WATER_CORALS)
+            .addTags(SALT_WATER_CORAL_PLANTS)
+            .add(TFCBlocks.CORAL, Coral.BlockType.CORAL_FAN);
+        tag(SALT_WATER_WALL_CORALS).add(TFCBlocks.CORAL, Coral.BlockType.CORAL_WALL_FAN);
 
-        tag(STONES).addTags(STONES_RAW, STONES_HARDENED);
         tag(STONES_RAW).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.RAW);
         tag(STONES_HARDENED).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.HARDENED);
         tag(STONES_SMOOTH).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.SMOOTH);
@@ -345,11 +385,12 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.LOOSE)
             .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.MOSSY_LOOSE);
         tag(INSULATION)
-            .addTags(STONES, STONES_SMOOTH, BlockTags.STONE_BRICKS, Tags.Blocks.COBBLESTONES)
+            .addTags(Tags.Blocks.STONES, STONES_SMOOTH, BlockTags.STONE_BRICKS, Tags.Blocks.COBBLESTONES)
             .add(Blocks.BRICKS)
             .add(TFCBlocks.FIRE_BRICKS);
 
         tag(LAMPS).add(TFCBlocks.METALS, Metal.BlockType.LAMP);
+        tag(ANVILS).add(TFCBlocks.METALS, Metal.BlockType.ANVIL);
 
         tag(LOGS_THAT_LOG).addTag(BlockTags.LOGS);
         tag(WORKBENCHES).add(TFCBlocks.WOODS, Wood.BlockType.WORKBENCH);
@@ -420,7 +461,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .add(TFCBlocks.PEAT, TFCBlocks.PEAT_GRASS);
         tag(SEA_BUSH_PLANTABLE_ON).addTags(BlockTags.DIRT, Tags.Blocks.GRAVELS, Tags.Blocks.SANDS);
         tag(HALOPHYTE_PLANTABLE_ON).addTag(BlockTags.DIRT);
-        tag(CREEPING_STONE_PLANTABLE_ON).addTags(STONES, STONES_SMOOTH, Tags.Blocks.COBBLESTONES);
+        tag(CREEPING_STONE_PLANTABLE_ON).addTags(Tags.Blocks.STONES, STONES_SMOOTH, Tags.Blocks.COBBLESTONES);
 
         tag(CLAY_INDICATORS).add(
             TFCBlocks.PLANTS.get(Plant.ATHYRIUM_FERN),
@@ -484,12 +525,6 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             return add(TFCBlocks.BLOCKS.getEntries().stream().filter(e -> predicate.test(e.get())));
         }
 
-        BlockTagAppender add(Collection<DecorationBlockHolder> blocks, Function<DecorationBlockHolder, ? extends Supplier<? extends Block>> type)
-        {
-            blocks.forEach(b -> add(type.apply(b).get()));
-            return this;
-        }
-
         BlockTagAppender add(Map<?, ? extends IdHolder<? extends Block>> blocks)
         {
             blocks.values().forEach(this::add);
@@ -499,6 +534,12 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         BlockTagAppender add2(Map<?, ? extends Map<?, ? extends IdHolder<? extends Block>>> blocks)
         {
             blocks.values().forEach(m -> m.values().forEach(this::add));
+            return this;
+        }
+
+        <V> BlockTagAppender add2(Map<?, ? extends Map<?, V>> blocks, Function<V, ? extends IdHolder<? extends Block>> ap)
+        {
+            blocks.values().forEach(m -> m.values().forEach(v -> add(ap.apply(v))));
             return this;
         }
 
@@ -525,9 +566,15 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             return add(pivot(blocks, key));
         }
 
-        <T1, T2, V extends IdHolder<? extends Block>> BlockTagAppender addOnly(Map<T1, Map<T2, V>> blocks, Predicate<T2> key)
+        <T, V extends IdHolder<? extends Block>> BlockTagAppender addOnly(Map<T, V> blocks, Predicate<T> key)
         {
-            blocks.values().forEach(m -> m.forEach((k, v) -> { if (key.test(k)) add(v); }));
+            blocks.forEach((k, v) -> { if (key.test(k)) add(v); });
+            return this;
+        }
+
+        <T1, T2, V extends IdHolder<? extends Block>> BlockTagAppender addOnly2(Map<T1, Map<T2, V>> blocks, Predicate<T2> key)
+        {
+            blocks.values().forEach(m -> addOnly(m, key));
             return this;
         }
 

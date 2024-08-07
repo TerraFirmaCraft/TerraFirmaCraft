@@ -29,12 +29,12 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/pot",
+      "recipe": "tfc:knapping/ceramic/unfired_pot",
       "text": "도자기 냄비는 먼저 $(l:getting_started/pottery)점토로$() 형태를 만들어야 합니다."
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/fired_pot",
+      "recipe": "tfc:heating/ceramic/pot",
       "text": "모닥불과 사용할 수 있는 $(thing)도자기 냄비$()를 만들기 위해서는 먼저 $(l:mechanics/heating)구워야$() 합니다."
     },
     {

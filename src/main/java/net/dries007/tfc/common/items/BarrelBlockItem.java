@@ -19,7 +19,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -33,7 +32,6 @@ import net.dries007.tfc.common.blocks.devices.BarrelBlock;
 import net.dries007.tfc.common.blocks.devices.SealableDeviceBlock;
 import net.dries007.tfc.common.capabilities.DelegateFluidHandler;
 import net.dries007.tfc.common.capabilities.FluidTankCallback;
-import net.dries007.tfc.common.component.fluid.FluidContainerInfo;
 import net.dries007.tfc.common.container.ISlotCallback;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.BlockItemPlacement;
@@ -104,7 +102,7 @@ public class BarrelBlockItem extends TooltipBlockItem implements Rackable
             return InteractionResult.PASS;
         }
 
-        final BlockHitResult hit = Helpers.rayTracePlayer(level, player, ClipContext.Fluid.SOURCE_ONLY);
+        final BlockHitResult hit = getPlayerPOVHitResult(level, player, ClipContext.Fluid.SOURCE_ONLY);
         if (FluidHelpers.transferBetweenWorldAndItem(stack, level, hit, player, hand, false, false, true))
         {
             return InteractionResult.SUCCESS;

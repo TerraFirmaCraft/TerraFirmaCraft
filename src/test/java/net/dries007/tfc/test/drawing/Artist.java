@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc;
+package net.dries007.tfc.test.drawing;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -28,6 +28,8 @@ import javax.imageio.ImageIO;
 @SuppressWarnings({"unchecked", "unused", "UnusedReturnValue"})
 public abstract class Artist<T, A extends Artist<T, A>>
 {
+    public static final String ARTIST_DIRECTORY = "../../artist";
+
     public static Artist.Raw raw()
     {
         return new Raw(); // An empty artist, for drawing direct pixel -> color objects
@@ -148,9 +150,9 @@ public abstract class Artist<T, A extends Artist<T, A>>
     {
         try
         {
-            new File("artist").mkdirs();
+            new File(ARTIST_DIRECTORY).mkdirs();
 
-            final File outFile = new File("artist/" + name + ".png");
+            final File outFile = new File(ARTIST_DIRECTORY + "/" + name + ".png");
             final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
             final Graphics2D graphics = ((Graphics2D) image.getGraphics());
 

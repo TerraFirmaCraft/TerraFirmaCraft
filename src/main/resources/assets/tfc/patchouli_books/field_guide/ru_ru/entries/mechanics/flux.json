@@ -10,7 +10,7 @@
     },
     {
       "type": "tfc:quern_recipe",
-      "recipe": "tfc:quern/fluxstone",
+      "recipe": "tfc:quern/powder/flux",
       "text": "Некоторые породы - $(thing)известняк$(), $(thing)доломит$(), $(thing)мел$() или $(thing)мрамор$() - также могут использоваться как флюс после измельчения в $(l:mechanics/quern)жернове$(). Другие предметы, включая $(thing)щитки$(), $(thing)моллюски$(), $(thing)мягкотелые$() и съедобные остатки $(l:the_world/wild_animals#shellfish)ракообразных$() также могут использоваться для создания флюса."
     }
   ],

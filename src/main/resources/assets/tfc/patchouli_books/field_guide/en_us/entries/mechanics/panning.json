@@ -10,12 +10,12 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/pan",
+      "recipe": "tfc:knapping/ceramic/unfired_pan",
       "text": "Clay can be $(l:getting_started/pottery)knapped$() into a pan as shown above."
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/ceramic_pan",
+      "recipe": "tfc:heating/pan/empty",
       "text": "Once the pan has been $(thing)knapped$(), it needs to be $(l:mechanics/heating)fired$() to create a $(thing)Ceramic Pan$().$(br2)The next thing you will need to find is some sort of $(thing)Ore Deposit$(). Ore deposits can come in several different ores: Native Copper, Native Silver, Native Gold, and Cassiterite."
     },
     {

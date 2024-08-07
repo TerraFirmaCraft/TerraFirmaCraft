@@ -128,7 +128,7 @@ public class BlastFurnaceBlock extends DeviceBlock implements IBellowsConsumer
         {
             if (player instanceof ServerPlayer serverPlayer)
             {
-                Helpers.openScreen(serverPlayer, blastFurnace, pos);
+                serverPlayer.openMenu(blastFurnace, pos);
             }
             return ItemInteractionResult.SUCCESS;
         }

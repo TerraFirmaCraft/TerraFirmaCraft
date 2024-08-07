@@ -40,11 +40,10 @@ import net.dries007.tfc.util.climate.Climate;
  * <p>
  * Most non-implementation detail can be accessed through the {@code IPlayerInfo} interface, which provides direct access to player information
  * without including implementation details or other {@code FoodData} related methods.
- * todo: in future compatibility interest, it may be possible to split out to an attachment, and a override here, which is as thin as possible and just delegates to the attachment
  */
 public final class PlayerInfo extends net.minecraft.world.food.FoodData implements IPlayerInfo
 {
-    // Vanila constants
+    // Vanilla constants
     public static final int MAX_HUNGER = 20;
     public static final float EXHAUSTION_PER_HUNGER = 4;
 

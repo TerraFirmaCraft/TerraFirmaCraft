@@ -230,7 +230,7 @@ public class FirepitBlock extends BottomSupportedDeviceBlock implements IGhostBl
             {
                 if (player instanceof ServerPlayer serverPlayer)
                 {
-                    Helpers.openScreen(serverPlayer, firepit, pos);
+                    serverPlayer.openMenu(firepit, pos);
                 }
                 return ItemInteractionResult.SUCCESS;
             }

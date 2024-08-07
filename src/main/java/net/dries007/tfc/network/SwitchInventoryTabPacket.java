@@ -8,7 +8,6 @@ package net.dries007.tfc.network;
 
 import net.dries007.tfc.common.container.TFCContainerProviders;
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
-import net.dries007.tfc.util.Helpers;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -36,9 +35,9 @@ public record SwitchInventoryTabPacket(Tab tab) implements CustomPacketPayload
             switch (tab)
             {
                 case INVENTORY -> player.containerMenu = player.inventoryMenu;
-                case CALENDAR -> Helpers.openScreen(player, TFCContainerProviders.CALENDAR);
-                case NUTRITION -> Helpers.openScreen(player, TFCContainerProviders.NUTRITION);
-                case CLIMATE -> Helpers.openScreen(player, TFCContainerProviders.CLIMATE);
+                case CALENDAR -> player.openMenu(TFCContainerProviders.CALENDAR);
+                case NUTRITION -> player.openMenu(TFCContainerProviders.NUTRITION);
+                case CLIMATE -> player.openMenu(TFCContainerProviders.CLIMATE);
                 case BOOK -> PatchouliIntegration.openGui(player);
             }
         }

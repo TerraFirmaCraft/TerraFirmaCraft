@@ -69,7 +69,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/stone/knife_sedimentary",
+      "recipe": "tfc:crafting/stone/knife/sedimentary",
       "text": "До леза або кам’яної головки інструменту треба додати палицю або гілку, щоб отримати готовий інструмент.$(br2)Кам'яний ніж можна використовувати для збору $(thing)соломи$(), просто зрізавши траву ножем."
     },
     {

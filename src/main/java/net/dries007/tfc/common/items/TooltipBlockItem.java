@@ -30,34 +30,4 @@ public class TooltipBlockItem extends BlockItem
         }
         return super.getTooltipImage(stack);
     }
-
-    @Override
-    public int getBarColor(ItemStack stack)
-    {
-        if (getBlock() instanceof TooltipBlock tooltip)
-        {
-            return tooltip.getBarColor(stack);
-        }
-        return super.getBarColor(stack);
-    }
-
-    @Override
-    public int getBarWidth(ItemStack stack)
-    {
-        if (getBlock() instanceof TooltipBlock tooltip)
-        {
-            return tooltip.getBarWidth(stack);
-        }
-        return super.getBarWidth(stack);
-    }
-
-    @Override
-    public boolean isBarVisible(ItemStack stack)
-    {
-        if (getBlock() instanceof TooltipBlock tooltip)
-        {
-            return tooltip.isBarVisible(stack);
-        }
-        return super.isBarVisible(stack);
-    }
 }

@@ -53,7 +53,7 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/vessel",
+      "recipe": "tfc:knapping/ceramic/unfired_vessel",
       "text": "Виготовлення горщика з глини"
     },
     {
@@ -64,7 +64,7 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/jug",
+      "recipe": "tfc:knapping/ceramic/unfired_jug",
       "text": "Виготовлення глечика з глини"
     },
     {
@@ -75,69 +75,69 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/ingot_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_ingot_mold",
       "text": "Виготовлення форми злитку з глини"
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/ingot_mold",
+      "recipe": "tfc:heating/ceramic/ingot_mold",
       "text": "Потім форму потрібно випалити, як і всі глиняні вироби, щоб її можна було використовувати. Це можна зробити у $(l:getting_started/pit_kiln)ямній печі$().$(br2)Після випалу можна влити внеї розплавлений метал. Коли метал достатньо охолоне, виливок можна вийняти."
     },
     {
       "type": "patchouli:spotlight",
-      "item": "tfc:ceramic/ingot_mold{tank:{\"Amount\":100,\"FluidName\":\"tfc:metal/copper\"}}",
+      "item": "tfc:ceramic/ingot_mold[tfc:fluid={id:\"tfc:metal/copper\",amount:100}]",
       "title": "Виливка",
       "link_recipes": false,
       "text": "Наступні кілька сторінок демонструють кілька варіантів глиняних форм для виливки різних інструментів."
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/propick_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_propick_head_mold",
       "text": "$(l:mechanics/prospecting#propick)Геологічний молоток$() є важливим інструментом для пошуку рудних родовищ."
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/pickaxe_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_pickaxe_head_mold",
       "text": "$(thing)Кайло$()! - надзвичайний інструмент для гірничіх робіт."
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/saw_blade_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_saw_blade_mold",
       "text": "$(thing)Пилка$() - це інструмент для виготовлення дерев’яних виробів, таких як $(thing)верстак$() або ж гірничих $(l:mechanics/support_beams)опор$()."
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/scythe_blade_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_scythe_blade_mold",
       "text": "$(thing)Коса$() потрібна для зрізання трави та листя на ділянці 3х3х3 блока!"
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/chisel_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_chisel_head_mold",
       "text": "$(l:mechanics/chisel)Долото$() — це інструмент, який використовується для полірування блоків, а також для створення великої кількості декоративних виробів."
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/axe_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_axe_head_mold",
       "text": "$(thing)Сокира$() застосувується для зрубування не тількі дерев, а й для всіх деревних матеріалів. Зверніть увагу, що кам'яні сокири менш ефективні, ніж металеві!"
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/hammer_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_hammer_head_mold",
       "text": "$(thing)Молот$() - важливий інструмент для роботи на $(l:mechanics/anvils)ковадлі$()."
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/knife_blade_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_knife_blade_mold",
       "text": "$(thing)Ніж$() є багатофункціональним інструментом. Він і в шкірництві, і як зброя, і для взаємодії з рослинністю, тощо."
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/hoe_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_hoe_head_mold",
       "text": "$(thing)Мотика$() використовується для догляду за $(l:mechanics/crops)культурами$() у фермерстві."
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/shovel_head_mold",
+      "recipe": "tfc:knapping/ceramic/unfired_shovel_head_mold",
       "text": "$(thing)Лопата$() найчастіше потрібна для копання. Але ж можна знайти їй ще застосування."
     }
   ],

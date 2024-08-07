@@ -69,7 +69,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/stone/knife_sedimentary",
+      "recipe": "tfc:crafting/stone/knife/sedimentary",
       "text": "すべての石器の頭は、棒や小枝を組み合わせて道具として組み立てることができます。$(br2)石のナイフは、植物を破壊し$(thing)藁$()を得るのに使用できます。"
     },
     {

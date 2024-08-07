@@ -52,6 +52,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.bus.api.Event;
+import net.neoforged.fml.util.thread.EffectiveSide;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.slf4j.Logger;
@@ -60,7 +61,6 @@ import net.dries007.tfc.common.TFCCreativeTabs;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
-import net.dries007.tfc.common.blockentities.TFCBlockEntity;
 import net.dries007.tfc.common.blocks.PouredGlassBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.IngotPileBlock;
@@ -101,10 +101,10 @@ import net.dries007.tfc.world.chunkdata.ForestType;
  */
 public final class SelfTests
 {
-    private static final Logger LOGGER = LogUtils.getLogger();
-    private static final boolean THROW_ON_SELF_TEST_FAIL = false; // todo 1.21, re-enable
-    private static final boolean RUN_SELF_TESTS = Boolean.getBoolean("tfc.enableDebugSelfTests");
+    public static final boolean THROW_ON_FAIL = false; // todo 1.21, re-enable
+    public static final boolean ENABLED = Boolean.getBoolean("tfc.enableDebugSelfTests");
 
+    private static final Logger LOGGER = LogUtils.getLogger();
     private static boolean EXTERNAL_ERROR = false;
 
     @SuppressWarnings({"ConstantConditions", "deprecation"})
@@ -115,9 +115,9 @@ public final class SelfTests
 
     public static void runClientSelfTests()
     {
-        NeoForge.EVENT_BUS.post(new ClientSelfTestEvent()); // For other mods, as this is invoked via a tricky mixin
-        if (RUN_SELF_TESTS)
+        if (ENABLED)
         {
+            NeoForge.EVENT_BUS.post(new ClientSelfTestEvent()); // For other mods, as this is invoked via a tricky mixin
             final Stopwatch tick = Stopwatch.createStarted();
             throwIfAny(
                 validateModels(),
@@ -129,7 +129,7 @@ public final class SelfTests
 
     public static void runServerSelfTests(MinecraftServer server)
     {
-        if (RUN_SELF_TESTS)
+        if (ENABLED)
         {
             final Stopwatch tick = Stopwatch.createStarted();
             throwIfAny(
@@ -244,7 +244,7 @@ public final class SelfTests
     {
         for (boolean error : errors)
         {
-            if (error && THROW_ON_SELF_TEST_FAIL)
+            if (error && THROW_ON_FAIL)
             {
                 throw new AssertionError("Self Tests Failed! Fix the above errors!");
             }
@@ -256,6 +256,17 @@ public final class SelfTests
     public static void reportExternalError()
     {
         EXTERNAL_ERROR = true;
+    }
+
+    /**
+     * Logs a warning and a stacktrace when called from the client thread, heuristically. Used for debugging, and indicates a programming error.
+     */
+    public static void warnWhenCalledFromClientThread()
+    {
+        if (ENABLED && EffectiveSide.get().isClient())
+        {
+            LOGGER.warn("This method should not be called from client thread, this is a bug!", new RuntimeException("Stacktrace"));
+        }
     }
 
     private static boolean validateOwnBlockLootTables(MinecraftServer server)

@@ -44,20 +44,17 @@ import net.dries007.tfc.util.Helpers;
 
 public class WindmillBlockEntityRenderer implements BlockEntityRenderer<WindmillBlockEntity>
 {
-    /**
-     * Model providers for windmill blades. Intentionally mutable in case addons want to provide additional per-item windmill blades.
-     */
-    public static final Map<Item, Provider<Function<BlockEntityRendererProvider.Context, WindmillBladeModel>>> BLADE_MODELS = Util.make(new IdentityHashMap<>(), map -> {
+    public static final Map<Item, Provider<Function<BlockEntityRendererProvider.Context, WindmillBladeModel>>> BLADE_MODELS = RenderHelpers.mapOf(map -> {
         final ResourceLocation defaultTexture = Helpers.identifier("textures/entity/misc/windmill_blade.png");
         final Function<BlockEntityRendererProvider.Context, WindmillBladeModel> defaultModel = defaultModelFactory();
 
-        TFCItems.WINDMILL_BLADES.forEach((color, item) -> map.put(item.get(), new Provider<>(defaultTexture, color, defaultModel)));
-        map.put(TFCItems.LATTICE_WINDMILL_BLADE.get(), new Provider<>(
+        TFCItems.WINDMILL_BLADES.forEach((color, item) -> map.accept(item, new Provider<>(defaultTexture, color, defaultModel)));
+        map.accept(TFCItems.LATTICE_WINDMILL_BLADE, new Provider<>(
             Helpers.identifier("textures/entity/misc/windmill_blade_lattice.png"),
             DyeColor.WHITE,
             context -> new WindmillBladeLatticeModel(context.bakeLayer(RenderHelpers.layerId("windmill_blade_lattice")))
         ));
-        map.put(TFCItems.RUSTIC_WINDMILL_BLADE.get(), new Provider<>(
+        map.accept(TFCItems.RUSTIC_WINDMILL_BLADE, new Provider<>(
             Helpers.identifier("textures/entity/misc/windmill_blade_rustic.png"),
             DyeColor.WHITE,
             context -> new WindmillBladeRusticModel(context.bakeLayer(RenderHelpers.layerId("windmill_blade_rustic")))
@@ -77,15 +74,10 @@ public class WindmillBlockEntityRenderer implements BlockEntityRenderer<Windmill
     }
 
     private final Map<Item, Provider<WindmillBladeModel>> bladeModels;
-    private final Provider<WindmillBladeModel> fallbackModel;
 
     public WindmillBlockEntityRenderer(BlockEntityRendererProvider.Context context)
     {
-        final ImmutableMap.Builder<Item, Provider<WindmillBladeModel>> builder = ImmutableMap.builderWithExpectedSize(BLADE_MODELS.size());
-        BLADE_MODELS.forEach((item, provider) -> builder.put(item, new Provider<>(provider.texture, provider.color, provider.model.apply(context))));
-
-        this.bladeModels = builder.build();
-        this.fallbackModel = Objects.requireNonNull(bladeModels.get(TFCItems.WINDMILL_BLADES.get(DyeColor.WHITE).get())); // Fallback to default windmill blade
+        this.bladeModels = Helpers.mapValue(BLADE_MODELS, v -> new Provider<>(v.texture, v.color, v.model.apply(context)));
     }
 
     @Override
@@ -124,8 +116,8 @@ public class WindmillBlockEntityRenderer implements BlockEntityRenderer<Windmill
             for (int i = 0; i < bladeCount; i++)
             {
                 final ItemStack item = windmill.getInventory().getStackInSlot(i);
-                final var provider = bladeModels.getOrDefault(item.getItem(), fallbackModel);
-                if (item.isEmpty() || (model != null && model != provider.model))
+                final var provider = bladeModels.get(item.getItem());
+                if (item.isEmpty() || provider == null || (model != null && model != provider.model))
                 {
                     hasFullIdenticalSet = false;
                     break;
@@ -138,9 +130,11 @@ public class WindmillBlockEntityRenderer implements BlockEntityRenderer<Windmill
         for (int i = 0; i < bladeCount; i++)
         {
             final ItemStack item = windmill.getInventory().getStackInSlot(i);
-            if (item.isEmpty()) continue;
-
-            final var provider = bladeModels.getOrDefault(item.getItem(), fallbackModel);
+            final var provider = bladeModels.get(item.getItem());
+            if (provider == null)
+            {
+                continue;
+            }
 
             final int color = provider.color == DyeColor.WHITE ? -1 : provider.color.getTextureDiffuseColor();
             final WindmillBladeModel bladeModel = provider.model;
@@ -149,7 +143,7 @@ public class WindmillBlockEntityRenderer implements BlockEntityRenderer<Windmill
             stack.pushPose();
 
             // nudge to avoid Z-fighting
-            stack.translate(0.0001f*i, 0.0001f*i,0.0001f*i);
+            stack.translate(0.0001f * i, 0.0001f * i,0.0001f * i);
             bladeModel.setupAnim(windmill, partialTick, offsetAngle * i);
             bladeModel.renderToBuffer(stack, bufferSource.getBuffer(RenderType.entityCutoutNoCull(bladeTexture)), packedLight, packedOverlay, color);
 

@@ -10,31 +10,31 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/vanilla/redstone/activator_rail",
-      "recipe2": "tfc:crafting/vanilla/redstone/steel_activator_rail"
+      "recipe": "minecraft:activator_rail",
+      "recipe2": "tfc:crafting/activator_rail"
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/vanilla/redstone/detector_rail",
-      "recipe2": "tfc:crafting/vanilla/redstone/steel_detector_rail"
+      "recipe": "minecraft:detector_rail",
+      "recipe2": "tfc:crafting/detector_rail"
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/vanilla/redstone/minecart",
-      "recipe2": "tfc:crafting/vanilla/redstone/steel_minecart"
+      "recipe": "minecraft:minecart",
+      "recipe2": "tfc:crafting/minecart"
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/vanilla/redstone/rail",
-      "recipe2": "tfc:crafting/vanilla/redstone/steel_rail"
+      "recipe": "minecraft:rail",
+      "recipe2": "tfc:crafting/rail"
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/vanilla/redstone/powered_rail"
+      "recipe": "minecraft:powered_rail"
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/wood/kapok_chest_minecart",
+      "recipe": "tfc:crafting/wood/chest_minecart/kapok",
       "text": "$(thing)箱子礦車$()和羣巒傳説中的箱子機制一致 - 它們只有 18 格空格，且不能放入太大的物品（比如原木）。"
     }
   ],

@@ -73,7 +73,7 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/jug",
+      "recipe": "tfc:knapping/ceramic/unfired_jug",
       "text": "$(l:getting_started/pottery)Лепка$() и обжиг $(l:getting_started/pottery#jug)кувшина$() - способ носить воду с собой. Наполняйте его как ведро, используя $(item)$(k:key.use)$(). Держите $(item)$(k:key.use)$(), чтобы пить воду."
     },
     {

@@ -10,12 +10,12 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/pan",
+      "recipe": "tfc:knapping/ceramic/unfired_pan",
       "text": "Глину можно $(l:getting_started/pottery)выколотить$() в лотке, как показано выше."
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/ceramic_pan",
+      "recipe": "tfc:heating/pan/empty",
       "text": "После того как лоток будет $(thing)вылеплен$(), его нужно $(l:mechanics/heating)обжечь$(), чтобы получить $(thing)обожженный лоток$().$(br2)Следующее, что вам нужно найти, — это какое-либо $(thing)рудное месторождение$(). Рудные месторождения могут содержать различные руды: родной медь, родное серебро, родное золото и касситерит."
     },
     {

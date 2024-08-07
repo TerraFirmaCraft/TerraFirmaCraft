@@ -17,8 +17,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.util.Helpers;
-
 /**
  * Handling logic for containers that are opened via item stacks.
  * This represents a factory of {@link MenuProvider}s, which are created on demand for an individual {@link ItemStack}.
@@ -76,7 +74,7 @@ public class ItemStackContainerProvider
         final int encodedSlot = hand == InteractionHand.OFF_HAND ? -1 : player.getInventory().selected;
         final MenuProvider provider = new SimpleMenuProvider((windowId, playerInventory, playerIn) -> factory.create(stack, hand, encodedSlot, playerInventory, windowId), name == null ? stack.getHoverName() : name);
 
-        Helpers.openScreen(player, provider, buffer -> {
+        player.openMenu(provider, buffer -> {
             additionalData.accept(buffer);
             buffer.writeByte(encodedSlot);
         });

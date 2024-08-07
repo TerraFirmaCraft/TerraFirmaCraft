@@ -118,11 +118,11 @@ public record RegionChunkDataGenerator(
 
         // Distance within the grid of this chunk - so a value between [0, 1] representing the top left of this chunk
         // The interpolator will add 16 / <grid width> to obtain the other side of this chunk, and interpolate from the bounding boxes of the grid points.
-        final double deltaX = exactGridX - gridX;
-        final double deltaZ = exactGridZ - gridZ;
+        final float deltaX = (float) (exactGridX - gridX);
+        final float deltaZ = (float) (exactGridZ - gridZ);
 
         // The width of the chunk, in grid coordinates
-        final double dG = Units.blockToGridExact(16);
+        final float dG = (float) Units.blockToGridExact(16);
 
         // The base rainfall and temperature layers, scaled down to chunk resolution
         LerpFloatLayer rainfallLayer = rainfallGridLayer.scaled(deltaX, deltaZ, dG);

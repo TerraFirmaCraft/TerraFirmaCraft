@@ -50,18 +50,10 @@ public class TFCLoomBlock extends BottomSupportedDeviceBlock implements IFluidLo
     private static final VoxelShape SHAPE_SOUTH = box(1, 0, 2, 15, 16, 8);
     private static final VoxelShape SHAPE_NORTH = box(1, 0, 8, 15, 16, 14);
 
-    private final ResourceLocation woodTexture;
-
-    public TFCLoomBlock(ExtendedProperties properties, ResourceLocation woodTexture)
+    public TFCLoomBlock(ExtendedProperties properties)
     {
         super(properties, InventoryRemoveBehavior.DROP);
-        this.woodTexture = woodTexture;
         registerDefaultState(getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
-    }
-
-    public ResourceLocation getTextureLocation()
-    {
-        return woodTexture;
     }
 
     @Override

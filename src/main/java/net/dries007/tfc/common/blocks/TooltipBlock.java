@@ -8,12 +8,18 @@ package net.dries007.tfc.common.blocks;
 
 import java.util.List;
 import java.util.Optional;
-import net.minecraft.core.NonNullList;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 
+import net.dries007.tfc.common.items.TooltipBlockItem;
 import net.dries007.tfc.util.Helpers;
 
+/**
+ * An interface implemented on a block that provides a custom image tooltip. This is typically implemented via an inventory
+ * of slots, and replaces a list-style, component tooltip.
+ *
+ * @see TooltipBlockItem
+ */
 public interface TooltipBlock
 {
     /**
@@ -32,21 +38,6 @@ public interface TooltipBlock
     default Optional<TooltipComponent> getTooltipImage(ItemStack stack)
     {
         return Optional.empty();
-    }
-
-    default int getBarWidth(ItemStack stack)
-    {
-        return 0;
-    }
-
-    default int getBarColor(ItemStack stack)
-    {
-        return 0;
-    }
-
-    default boolean isBarVisible(ItemStack stack)
-    {
-        return false;
     }
 
     record Instance(List<ItemStack> items, int width, int height) implements TooltipComponent {}

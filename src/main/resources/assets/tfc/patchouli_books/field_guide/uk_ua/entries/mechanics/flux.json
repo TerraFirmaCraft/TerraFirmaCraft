@@ -10,7 +10,7 @@
     },
     {
       "type": "tfc:quern_recipe",
-      "recipe": "tfc:quern/fluxstone",
+      "recipe": "tfc:quern/powder/flux",
       "text": "Деякі породи - $(thing)вапняк$(), $(thing)доломіт$(), $(thing)крейда$(), або $(thing)мармур$() також можна використовувати як флюс після подрібнення $(l:mechanics/quern)млином$(). Інші предмети, зокрема $(thing)мушлі$(), $(thing)равлики$(), $(thing)молюски$(), та їстівні залишки $(l:the_world/wild_animals#shellfish)ракоподібних$() також можна використовувати для створення флюсу."
     }
   ],
