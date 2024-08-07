@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/stairs",
+  "textures": {
+    "bottom": "tfc:block/metal/weathered_block/bismuth",
+    "top": "tfc:block/metal/weathered_block/bismuth",
+    "side": "tfc:block/metal/weathered_block/bismuth"
+  }
+}

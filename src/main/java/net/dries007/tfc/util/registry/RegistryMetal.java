@@ -15,6 +15,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.MapColor;
 
 import net.dries007.tfc.common.LevelTier;
+import net.dries007.tfc.common.blocks.IClimateWeatheringBlock;
+import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.WeatheringMetalBlock;
+import net.dries007.tfc.common.blocks.WeatheringMetalSlab;
+import net.dries007.tfc.common.blocks.WeatheringMetalStairs;
 import net.dries007.tfc.util.Metal;
 
 /**
@@ -26,7 +31,17 @@ public interface RegistryMetal extends StringRepresentable
 
     Holder<ArmorMaterial> armorTier();
 
-    Supplier<Block> getFullBlock();
+    default Supplier<Block> getFullBlock(){
+        return getFullBlock(IClimateWeatheringBlock.TFCWeatherState.UNAFFECTED);
+    }
+
+    Supplier<Block> getFullBlock(IClimateWeatheringBlock.TFCWeatherState weatherState);
+
+    Supplier<Block> getSlabBlock(IClimateWeatheringBlock.TFCWeatherState weatherState);
+
+    Supplier<Block> getStairBlock(IClimateWeatheringBlock.TFCWeatherState weatherState);
+
+    Metal.WeatheringType weathering();
 
     MapColor mapColor();
 

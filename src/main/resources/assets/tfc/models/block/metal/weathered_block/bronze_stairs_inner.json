@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/inner_stairs",
+  "textures": {
+    "bottom": "tfc:block/metal/weathered_block/bronze",
+    "top": "tfc:block/metal/weathered_block/bronze",
+    "side": "tfc:block/metal/weathered_block/bronze"
+  }
+}

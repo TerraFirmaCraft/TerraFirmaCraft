@@ -881,13 +881,22 @@ def generate(rm: ResourceManager):
                     for var in ('post_ends', 'post', 'cap', 'cap_alt', 'side', 'side_alt'):
                         rm.block_model('bars/%s_bars_%s' % (metal, var), parent='minecraft:block/iron_bars_%s' % var, textures={'particle': 'tfc:block/metal/bars/%s' % metal, 'bars': 'tfc:block/metal/bars/%s' % metal, 'edge': metal_tex})
                     rm.item_model(bars, 'tfc:block/%s' % bars)
-                elif metal_block == 'block' or metal_block == 'block_stairs' or metal_block == 'block_slab':
-                    block = rm.blockstate(('metal', 'block', metal)).with_block_model().with_lang(lang('%s plated block', metal)).with_item_model().with_block_loot('tfc:metal/block/%s' % metal)
+                elif 'block' in metal_block or 'block_stairs' in metal_block or "block_slab" in metal_block:
+                    weather_state = "block"
+
+                    if "exposed" in metal_block:
+                        weather_state = "exposed_block"
+                    elif "weathered" in metal_block:
+                        weather_state = "weathered_block"
+                    elif "oxidized" in metal_block:
+                        weather_state = "oxidized_block"
+
+                    block = rm.blockstate(('metal', weather_state, metal)).with_block_model().with_lang(lang('%s plated block', metal)).with_item_model().with_block_loot(f'tfc:metal/{weather_state}/%s' % metal)
                     block.make_slab()
-                    rm.block(('metal', 'block', '%s_slab' % metal)).with_lang(lang('%s plated slab', metal))
-                    rm.block(('metal', 'block', '%s_stairs' % metal)).with_lang(lang('%s plated stairs', metal)).with_block_loot('tfc:metal/block/%s_stairs' % metal)
+                    rm.block(('metal', weather_state, '%s_slab' % metal)).with_lang(lang('%s plated slab', metal))
+                    rm.block(('metal', weather_state, '%s_stairs' % metal)).with_lang(lang('%s plated stairs', metal)).with_block_loot(f'tfc:metal/{weather_state}/%s_stairs' % metal)
                     block.make_stairs()
-                    slab_loot(rm, 'tfc:metal/block/%s_slab' % metal)
+                    slab_loot(rm, f'tfc:metal/{weather_state}/%s_slab' % metal)
                 else:
                     block = rm.blockstate(('metal', '%s' % metal_block, metal))
                     block.with_block_model({

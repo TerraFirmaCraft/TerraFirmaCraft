@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/outer_stairs",
+  "textures": {
+    "bottom": "tfc:block/metal/weathered_block/nickel",
+    "top": "tfc:block/metal/weathered_block/nickel",
+    "side": "tfc:block/metal/weathered_block/nickel"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "name": "loot_pool",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tfc:metal/exposed_block/sterling_silver_slab",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "tfc:metal/exposed_block/sterling_silver_slab",
+                  "properties": {
+                    "type": "double"
+                  }
+                }
+              ],
+              "count": 2,
+              "add": false
+            }
+          ]
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
+    }
+  ]
+}

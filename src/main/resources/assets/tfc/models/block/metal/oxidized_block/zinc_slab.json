@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/slab",
+  "textures": {
+    "bottom": "tfc:block/metal/oxidized_block/zinc",
+    "top": "tfc:block/metal/oxidized_block/zinc",
+    "side": "tfc:block/metal/oxidized_block/zinc"
+  }
+}

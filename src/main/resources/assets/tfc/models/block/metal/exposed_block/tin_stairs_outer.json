@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/outer_stairs",
+  "textures": {
+    "bottom": "tfc:block/metal/exposed_block/tin",
+    "top": "tfc:block/metal/exposed_block/tin",
+    "side": "tfc:block/metal/exposed_block/tin"
+  }
+}

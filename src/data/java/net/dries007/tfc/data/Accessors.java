@@ -148,9 +148,9 @@ public interface Accessors
         return switch (type)
         {
             case ANVIL -> 1400;
-            case BLOCK, LAMP -> 100;
-            case BLOCK_SLAB -> 50;
-            case BLOCK_STAIRS -> 75;
+            case BLOCK, EXPOSED_BLOCK, WEATHERED_BLOCK, OXIDIZED_BLOCK, LAMP -> 100;
+            case BLOCK_SLAB, EXPOSED_BLOCK_SLAB, WEATHERED_BLOCK_SLAB, OXIDIZED_BLOCK_SLAB -> 50;
+            case BLOCK_STAIRS, EXPOSED_BLOCK_STAIRS, WEATHERED_BLOCK_STAIRS, OXIDIZED_BLOCK_STAIRS -> 75;
             case BARS -> 25;
             case CHAIN -> 6;
             case TRAPDOOR -> 200;

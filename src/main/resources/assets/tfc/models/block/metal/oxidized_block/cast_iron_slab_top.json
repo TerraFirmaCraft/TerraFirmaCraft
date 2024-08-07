@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/slab_top",
+  "textures": {
+    "bottom": "tfc:block/metal/oxidized_block/cast_iron",
+    "top": "tfc:block/metal/oxidized_block/cast_iron",
+    "side": "tfc:block/metal/oxidized_block/cast_iron"
+  }
+}
