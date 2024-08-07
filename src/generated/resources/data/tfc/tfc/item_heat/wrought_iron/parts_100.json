@@ -1,0 +1,76 @@
+{
+  "forging_temperature": 921.00006,
+  "heat_capacity": 2.857143,
+  "ingredient": [
+    {
+      "item": "tfc:metal/unfinished_lamp/wrought_iron"
+    },
+    {
+      "item": "tfc:metal/pickaxe/wrought_iron"
+    },
+    {
+      "item": "tfc:metal/pickaxe_head/wrought_iron"
+    },
+    {
+      "item": "tfc:metal/propick/wrought_iron"
+    },
+    {
+      "item": "tfc:metal/propick_head/wrought_iron"
+    },
+    {
+      "item": "tfc:metal/axe/wrought_iron"
+    },
+    {
+      "item": "tfc:metal/axe_head/wrought_iron"
+    },
+    {
+      "item": "tfc:metal/shovel/wrought_iron"
+    },
+    {
+      "item": "tfc:metal/shovel_head/wrought_iron"
+    },
+    {
+      "item": "tfc:metal/hoe/wrought_iron"
+    },
+    {
+      "item": "tfc:metal/hoe_head/wrought_iron"
+    },
+    {
+      "item": "tfc:metal/chisel/wrought_iron"
+    },
+    {
+      "item": "tfc:metal/chisel_head/wrought_iron"
+    },
+    {
+      "item": "tfc:metal/hammer/wrought_iron"
+    },
+    {
+      "item": "tfc:metal/hammer_head/wrought_iron"
+    },
+    {
+      "item": "tfc:metal/saw/wrought_iron"
+    },
+    {
+      "item": "tfc:metal/saw_blade/wrought_iron"
+    },
+    {
+      "item": "tfc:metal/javelin/wrought_iron"
+    },
+    {
+      "item": "tfc:metal/javelin_head/wrought_iron"
+    },
+    {
+      "item": "tfc:metal/knife/wrought_iron"
+    },
+    {
+      "item": "tfc:metal/knife_blade/wrought_iron"
+    },
+    {
+      "item": "tfc:metal/scythe/wrought_iron"
+    },
+    {
+      "item": "tfc:metal/scythe_blade/wrought_iron"
+    }
+  ],
+  "welding_temperature": 1228.0
+}

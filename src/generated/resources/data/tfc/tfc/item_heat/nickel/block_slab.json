@@ -1,8 +1,0 @@
-{
-  "forging_temperature": 871.80005,
-  "heat_capacity": 1.0416666,
-  "ingredient": {
-    "item": "tfc:metal/block/nickel_slab"
-  },
-  "welding_temperature": 1162.4
-}

@@ -1,0 +1,76 @@
+{
+  "forging_temperature": 648.0,
+  "heat_capacity": 2.857143,
+  "ingredient": [
+    {
+      "item": "tfc:metal/unfinished_lamp/copper"
+    },
+    {
+      "item": "tfc:metal/pickaxe/copper"
+    },
+    {
+      "item": "tfc:metal/pickaxe_head/copper"
+    },
+    {
+      "item": "tfc:metal/propick/copper"
+    },
+    {
+      "item": "tfc:metal/propick_head/copper"
+    },
+    {
+      "item": "tfc:metal/axe/copper"
+    },
+    {
+      "item": "tfc:metal/axe_head/copper"
+    },
+    {
+      "item": "tfc:metal/shovel/copper"
+    },
+    {
+      "item": "tfc:metal/shovel_head/copper"
+    },
+    {
+      "item": "tfc:metal/hoe/copper"
+    },
+    {
+      "item": "tfc:metal/hoe_head/copper"
+    },
+    {
+      "item": "tfc:metal/chisel/copper"
+    },
+    {
+      "item": "tfc:metal/chisel_head/copper"
+    },
+    {
+      "item": "tfc:metal/hammer/copper"
+    },
+    {
+      "item": "tfc:metal/hammer_head/copper"
+    },
+    {
+      "item": "tfc:metal/saw/copper"
+    },
+    {
+      "item": "tfc:metal/saw_blade/copper"
+    },
+    {
+      "item": "tfc:metal/javelin/copper"
+    },
+    {
+      "item": "tfc:metal/javelin_head/copper"
+    },
+    {
+      "item": "tfc:metal/knife/copper"
+    },
+    {
+      "item": "tfc:metal/knife_blade/copper"
+    },
+    {
+      "item": "tfc:metal/scythe/copper"
+    },
+    {
+      "item": "tfc:metal/scythe_blade/copper"
+    }
+  ],
+  "welding_temperature": 864.0
+}

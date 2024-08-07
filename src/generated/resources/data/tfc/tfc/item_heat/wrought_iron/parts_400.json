@@ -1,0 +1,25 @@
+{
+  "forging_temperature": 921.00006,
+  "heat_capacity": 11.428572,
+  "ingredient": [
+    {
+      "item": "tfc:metal/tuyere/wrought_iron"
+    },
+    {
+      "item": "tfc:metal/unfinished_helmet/wrought_iron"
+    },
+    {
+      "item": "tfc:metal/unfinished_chestplate/wrought_iron"
+    },
+    {
+      "item": "tfc:metal/unfinished_greaves/wrought_iron"
+    },
+    {
+      "item": "tfc:metal/boots/wrought_iron"
+    },
+    {
+      "item": "tfc:metal/shield/wrought_iron"
+    }
+  ],
+  "welding_temperature": 1228.0
+}

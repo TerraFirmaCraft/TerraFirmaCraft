@@ -1,8 +1,0 @@
-{
-  "forging_temperature": 636.0,
-  "heat_capacity": 0.8333333,
-  "ingredient": {
-    "item": "tfc:metal/block/gold_slab"
-  },
-  "welding_temperature": 848.0
-}

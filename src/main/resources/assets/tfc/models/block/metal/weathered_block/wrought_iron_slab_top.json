@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/slab_top",
+  "textures": {
+    "bottom": "tfc:block/metal/weathered_block/wrought_iron",
+    "top": "tfc:block/metal/weathered_block/wrought_iron",
+    "side": "tfc:block/metal/weathered_block/wrought_iron"
+  }
+}

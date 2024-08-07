@@ -1,0 +1,25 @@
+{
+  "forging_temperature": 891.00006,
+  "heat_capacity": 11.428572,
+  "ingredient": [
+    {
+      "item": "tfc:metal/tuyere/black_steel"
+    },
+    {
+      "item": "tfc:metal/unfinished_helmet/black_steel"
+    },
+    {
+      "item": "tfc:metal/unfinished_chestplate/black_steel"
+    },
+    {
+      "item": "tfc:metal/unfinished_greaves/black_steel"
+    },
+    {
+      "item": "tfc:metal/boots/black_steel"
+    },
+    {
+      "item": "tfc:metal/shield/black_steel"
+    }
+  ],
+  "welding_temperature": 1188.0
+}

@@ -1,8 +1,19 @@
 {
   "forging_temperature": 921.00006,
   "heat_capacity": 1.4285715,
-  "ingredient": {
-    "item": "tfc:metal/block/wrought_iron_slab"
-  },
+  "ingredient": [
+    {
+      "item": "tfc:metal/block/wrought_iron_slab"
+    },
+    {
+      "item": "tfc:metal/exposed_block/wrought_iron_slab"
+    },
+    {
+      "item": "tfc:metal/weathered_block/wrought_iron_slab"
+    },
+    {
+      "item": "tfc:metal/oxidized_block/wrought_iron_slab"
+    }
+  ],
   "welding_temperature": 1228.0
 }

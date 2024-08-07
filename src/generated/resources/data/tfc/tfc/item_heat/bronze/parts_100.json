@@ -1,0 +1,76 @@
+{
+  "forging_temperature": 570.0,
+  "heat_capacity": 2.857143,
+  "ingredient": [
+    {
+      "item": "tfc:metal/unfinished_lamp/bronze"
+    },
+    {
+      "item": "tfc:metal/pickaxe/bronze"
+    },
+    {
+      "item": "tfc:metal/pickaxe_head/bronze"
+    },
+    {
+      "item": "tfc:metal/propick/bronze"
+    },
+    {
+      "item": "tfc:metal/propick_head/bronze"
+    },
+    {
+      "item": "tfc:metal/axe/bronze"
+    },
+    {
+      "item": "tfc:metal/axe_head/bronze"
+    },
+    {
+      "item": "tfc:metal/shovel/bronze"
+    },
+    {
+      "item": "tfc:metal/shovel_head/bronze"
+    },
+    {
+      "item": "tfc:metal/hoe/bronze"
+    },
+    {
+      "item": "tfc:metal/hoe_head/bronze"
+    },
+    {
+      "item": "tfc:metal/chisel/bronze"
+    },
+    {
+      "item": "tfc:metal/chisel_head/bronze"
+    },
+    {
+      "item": "tfc:metal/hammer/bronze"
+    },
+    {
+      "item": "tfc:metal/hammer_head/bronze"
+    },
+    {
+      "item": "tfc:metal/saw/bronze"
+    },
+    {
+      "item": "tfc:metal/saw_blade/bronze"
+    },
+    {
+      "item": "tfc:metal/javelin/bronze"
+    },
+    {
+      "item": "tfc:metal/javelin_head/bronze"
+    },
+    {
+      "item": "tfc:metal/knife/bronze"
+    },
+    {
+      "item": "tfc:metal/knife_blade/bronze"
+    },
+    {
+      "item": "tfc:metal/scythe/bronze"
+    },
+    {
+      "item": "tfc:metal/scythe_blade/bronze"
+    }
+  ],
+  "welding_temperature": 760.0
+}

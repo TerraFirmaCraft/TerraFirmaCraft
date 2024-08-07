@@ -1,8 +1,0 @@
-{
-  "forging_temperature": 570.0,
-  "heat_capacity": 5.714286,
-  "ingredient": {
-    "item": "tfc:metal/fishing_rod/bronze"
-  },
-  "welding_temperature": 760.0
-}

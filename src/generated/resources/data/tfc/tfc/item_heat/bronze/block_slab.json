@@ -1,8 +1,19 @@
 {
   "forging_temperature": 570.0,
   "heat_capacity": 1.4285715,
-  "ingredient": {
-    "item": "tfc:metal/block/bronze_slab"
-  },
+  "ingredient": [
+    {
+      "item": "tfc:metal/block/bronze_slab"
+    },
+    {
+      "item": "tfc:metal/exposed_block/bronze_slab"
+    },
+    {
+      "item": "tfc:metal/weathered_block/bronze_slab"
+    },
+    {
+      "item": "tfc:metal/oxidized_block/bronze_slab"
+    }
+  ],
   "welding_temperature": 760.0
 }

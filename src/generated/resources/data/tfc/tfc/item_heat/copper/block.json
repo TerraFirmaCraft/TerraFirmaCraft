@@ -1,8 +1,19 @@
 {
   "forging_temperature": 648.0,
   "heat_capacity": 2.857143,
-  "ingredient": {
-    "tag": "c:storage_blocks/copper"
-  },
+  "ingredient": [
+    {
+      "item": "tfc:metal/block/copper"
+    },
+    {
+      "item": "tfc:metal/exposed_block/copper"
+    },
+    {
+      "item": "tfc:metal/weathered_block/copper"
+    },
+    {
+      "item": "tfc:metal/oxidized_block/copper"
+    }
+  ],
   "welding_temperature": 864.0
 }

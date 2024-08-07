@@ -1,8 +1,19 @@
 {
   "forging_temperature": 648.0,
   "heat_capacity": 2.142857,
-  "ingredient": {
-    "item": "tfc:metal/block/copper_stairs"
-  },
+  "ingredient": [
+    {
+      "item": "tfc:metal/block/copper_stairs"
+    },
+    {
+      "item": "tfc:metal/exposed_block/copper_stairs"
+    },
+    {
+      "item": "tfc:metal/weathered_block/copper_stairs"
+    },
+    {
+      "item": "tfc:metal/oxidized_block/copper_stairs"
+    }
+  ],
   "welding_temperature": 864.0
 }

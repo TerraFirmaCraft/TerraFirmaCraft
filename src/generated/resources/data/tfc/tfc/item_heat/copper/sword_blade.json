@@ -1,8 +1,0 @@
-{
-  "forging_temperature": 648.0,
-  "heat_capacity": 5.714286,
-  "ingredient": {
-    "item": "tfc:metal/sword_blade/copper"
-  },
-  "welding_temperature": 864.0
-}

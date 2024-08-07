@@ -1,3 +1,9 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.data.recipes;
 
 import java.util.Optional;
@@ -13,7 +19,6 @@ import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.KnappingRecipe;
 import net.dries007.tfc.data.providers.BuiltinKnappingTypes;
 import net.dries007.tfc.util.Metal;
-import net.dries007.tfc.util.data.DataManager;
 import net.dries007.tfc.util.data.KnappingPattern;
 import net.dries007.tfc.util.data.KnappingType;
 

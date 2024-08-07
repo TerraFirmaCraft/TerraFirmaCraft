@@ -33,4 +33,15 @@ public interface RegistryMetal extends StringRepresentable
     MapColor mapColor();
 
     Rarity rarity();
+
+    default boolean weatheredParts()
+    {
+        return weatheringResistance() != -1;
+    }
+
+    /**
+     * @return A weathering resistance, either in {@code [0, 1]} indicating a resistance to weathering, or {@code -1} to indicate
+     * no weathering occurs for this block, and weathered block variants are not registered.
+     */
+    float weatheringResistance();
 }

@@ -317,7 +317,6 @@ def generate(rm: ResourceManager):
 
     for name in ('pumpkin', 'melon'):
         # Loot table for the non-rotten block is done via code, as we need to select rotten/not via tile entity
-        # todo: this could be actually adapted to use a loot table + loot function. But I'm lazy, and evidently so was the one that wrote this. So nah
         rm.block_model(name, parent='minecraft:block/%s' % name, no_textures=True)
         rm.blockstate(name, model='tfc:block/%s' % name).with_lang(lang(name))
         rm.item_model(name, 'tfc:item/food/%s' % name)
@@ -517,7 +516,6 @@ def generate(rm: ResourceManager):
         block.with_lang(lang('%s bell', bell)).with_block_loot('tfc:%s' % bell_name)
         rm.item_model('tfc:%s' % bell_name, 'tfc:item/%s' % bell_name)
 
-
     rm.blockstate('firepit', variants={
         'lit=true,axis=x': {'model': 'tfc:block/firepit_lit'},
         'lit=true,axis=z': {'model': 'tfc:block/firepit_lit', 'y': 90},
@@ -563,11 +561,11 @@ def generate(rm: ResourceManager):
     }, 'tfc:powderkeg'))
     block.with_item_model(overrides=[override('tfc:block/powderkeg_sealed', 'tfc:sealed')])
 
-    states = [({'model': 'tfc:block/composter/composter'})]
+    states: list = [({'model': 'tfc:block/composter/composter'})]
     for i in range(1, 9):
         for age in ('normal', 'ready', 'rotten'):
             rm.block_model('tfc:composter/%s_%s' % (age, i), parent='tfc:block/composter/compost_%s' % i, textures={'0': 'tfc:block/devices/composter/%s' % age})
-            states.append(({'type': age, 'stage': i}, {'model': 'tfc:block/composter/%s_%s' % (age, i)}),)
+            states.append(({'type': age, 'stage': i}, {'model': 'tfc:block/composter/%s_%s' % (age, i)}))
     rm.blockstate_multipart('composter', *states).with_lang(lang('composter')).with_block_loot('tfc:composter')
     rm.item_model('composter', parent='tfc:block/composter/composter', no_textures=True)
 
@@ -796,7 +794,7 @@ def generate(rm: ResourceManager):
     for metal, metal_data in METALS.items():
         # Metal Items
         for metal_item, metal_item_data in METAL_ITEMS.items():
-            if metal_item_data.type in metal_data.types or metal_item_data.type == 'all':
+            if metal_data.has(metal_item_data):
                 texture = 'tfc:item/metal/%s/%s' % (metal_item, metal) if metal_item != 'shield' or metal in ('red_steel', 'blue_steel', 'wrought_iron') else 'tfc:item/metal/shield/%s_front' % metal
                 if metal_item == 'fishing_rod':
                     rm.item_model(('metal', metal_item, metal + '_cast'), 'tfc:item/metal/fishing_rod/alt_cast' if metal == 'red_steel' or metal == 'blue_steel' else 'minecraft:item/fishing_rod_cast', parent='minecraft:item/fishing_rod')
@@ -817,85 +815,112 @@ def generate(rm: ResourceManager):
                 else:
                     item.with_lang(lang('%s %s', metal, metal_item))
 
-        # Metal Blocks
-        for metal_block, metal_block_data in METAL_BLOCKS.items():
-            if metal_block_data.type in metal_data.types or metal_block_data.type == 'all':
-                metal_dir = 'tfc:block/metal/%s/%s'
-                metal_tex = 'tfc:block/metal/smooth/%s' % metal
-                if metal_block == 'lamp':
-                    rm.block_model('tfc:metal/lamp/%s_hanging_on' % metal, {'metal': metal_tex, 'chain': 'tfc:block/metal/chain/%s' % metal, 'lamp': 'tfc:block/lamp'}, parent='tfc:block/lamp_hanging')
-                    rm.block_model('tfc:metal/lamp/%s_hanging_off' % metal, {'metal': metal_tex, 'chain': 'tfc:block/metal/chain/%s' % metal, 'lamp': 'tfc:block/lamp_off'}, parent='tfc:block/lamp_hanging')
-                    rm.block_model('tfc:metal/lamp/%s_on' % metal, {'metal': metal_tex, 'lamp': 'tfc:block/lamp'}, parent='tfc:block/lamp')
-                    rm.block_model('tfc:metal/lamp/%s_off' % metal, {'metal': metal_tex, 'lamp': 'tfc:block/lamp_off'}, parent='tfc:block/lamp')
-                    rm.item_model(('metal', 'lamp', metal))
-                    rm.blockstate(('metal', metal_block, metal), variants={
-                        'hanging=false,lit=false': {'model': 'tfc:block/metal/lamp/%s_off' % metal},
-                        'hanging=true,lit=false': {'model': 'tfc:block/metal/lamp/%s_hanging_off' % metal},
-                        'hanging=false,lit=true': {'model': 'tfc:block/metal/lamp/%s_on' % metal},
-                        'hanging=true,lit=true': {'model': 'tfc:block/metal/lamp/%s_hanging_on' % metal},
-                    }).with_lang(lang('%s lamp', metal)).with_block_loot({
-                        'name': 'tfc:metal/lamp/%s' % metal,
-                        'functions': [{'function': 'tfc:copy_fluid'}]
-                    })
-                    rm.lang('block.tfc.metal.lamp.%s.filled' % metal, lang('filled %s lamp', metal))
-                elif metal_block == 'chain':
-                    chain_tex = 'tfc:block/metal/chain/%s' % metal
-                    rm.block_model(('metal', 'chain', metal), {'all': chain_tex, 'particle': chain_tex}, parent='minecraft:block/chain')
-                    rm.blockstate(('metal', 'chain', metal), variants={
-                        'axis=x': {'model': 'tfc:block/metal/chain/%s' % metal, 'x': 90, 'y': 90},
-                        'axis=y': {'model': 'tfc:block/metal/chain/%s' % metal},
-                        'axis=z': {'model': 'tfc:block/metal/chain/%s' % metal, 'x': 90}
-                    }).with_lang(lang('%s chain', metal)).with_block_loot('tfc:metal/chain/%s' % metal)
-                    rm.item_model(('metal', 'chain', metal), 'tfc:item/metal/chain/%s' % metal)
-                elif metal_block == 'trapdoor':
-                    rm.block(('metal', metal_block, metal)).make_trapdoor(trapdoor_suffix='', texture=metal_dir % (metal_block, metal)).with_lang(lang('%s trapdoor', metal)).with_block_loot('tfc:metal/%s/%s' % (metal_block, metal))
-                elif metal_block == 'anvil':
-                    block = rm.blockstate(('metal', '%s' % metal_block, metal), variants={
-                        'facing=north': {'model': 'tfc:block/metal/anvil/%s' % metal, 'y': 90},
-                        'facing=east': {'model': 'tfc:block/metal/anvil/%s' % metal, 'y': 180},
-                        'facing=south': {'model': 'tfc:block/metal/anvil/%s' % metal, 'y': 270},
-                        'facing=west': {'model': 'tfc:block/metal/anvil/%s' % metal}
-                    })
-                    block.with_block_model({
-                        'all': metal_tex,
-                        'particle': metal_tex
-                    }, parent=metal_block_data.parent_model)
-                    block.with_block_loot('tfc:metal/%s/%s' % (metal_block, metal))
-                    block.with_lang(lang('%s %s' % (metal, metal_block)))
-                    block.with_item_model()
-                elif metal_block == 'bars':
-                    bars = 'metal/bars/%s' % metal
-                    rm.blockstate_multipart(bars,
-                        ({'model': 'tfc:block/bars/%s_bars_post_ends' % metal}),
-                        ({'north': False, 'south': False, 'east': False, 'west': False}, {'model': 'tfc:block/bars/%s_bars_post' % metal}),
-                        ({'north': True, 'south': False, 'east': False, 'west': False}, {'model': 'tfc:block/bars/%s_bars_cap' % metal}),
-                        ({'north': False, 'south': False, 'east': True, 'west': False}, {'model': 'tfc:block/bars/%s_bars_cap' % metal, 'y': 90}),
-                        ({'north': False, 'south': True, 'east': False, 'west': False}, {'model': 'tfc:block/bars/%s_bars_cap_alt' % metal}),
-                        ({'north': False, 'south': False, 'east': False, 'west': True}, {'model': 'tfc:block/bars/%s_bars_cap_alt' % metal, 'y': 90}),
-                        ({'north': True}, {'model': 'tfc:block/bars/%s_bars_side' % metal}),
-                        ({'east': True}, {'model': 'tfc:block/bars/%s_bars_side' % metal, 'y': 90}),
-                        ({'south': True}, {'model': 'tfc:block/bars/%s_bars_side_alt' % metal}),
-                        ({'west': True}, {'model': 'tfc:block/bars/%s_bars_side_alt' % metal, 'y': 90}),
-                        ).with_lang(lang(bars)).with_block_loot('tfc:%s' % bars).with_lang(lang('%s bars', metal))
-                    for var in ('post_ends', 'post', 'cap', 'cap_alt', 'side', 'side_alt'):
-                        rm.block_model('bars/%s_bars_%s' % (metal, var), parent='minecraft:block/iron_bars_%s' % var, textures={'particle': 'tfc:block/metal/bars/%s' % metal, 'bars': 'tfc:block/metal/bars/%s' % metal, 'edge': metal_tex})
-                    rm.item_model(bars, 'tfc:block/%s' % bars)
-                elif metal_block == 'block' or metal_block == 'block_stairs' or metal_block == 'block_slab':
-                    block = rm.blockstate(('metal', 'block', metal)).with_block_model().with_lang(lang('%s plated block', metal)).with_item_model().with_block_loot('tfc:metal/block/%s' % metal)
-                    block.make_slab()
-                    rm.block(('metal', 'block', '%s_slab' % metal)).with_lang(lang('%s plated slab', metal))
-                    rm.block(('metal', 'block', '%s_stairs' % metal)).with_lang(lang('%s plated stairs', metal)).with_block_loot('tfc:metal/block/%s_stairs' % metal)
-                    block.make_stairs()
-                    slab_loot(rm, 'tfc:metal/block/%s_slab' % metal)
-                else:
-                    block = rm.blockstate(('metal', '%s' % metal_block, metal))
-                    block.with_block_model({
-                        'all': metal_tex,
-                        'particle': metal_tex
-                    }, parent=metal_block_data.parent_model)
-                    block.with_block_loot('tfc:metal/%s/%s' % (metal_block, metal))
-                    block.with_lang(lang('%s %s' % (metal, metal_block)))
-                    block.with_item_model()
+        texture = 'tfc:block/metal/smooth/%s' % metal
+
+        if metal_data.type == 'all':
+
+            # Anvil
+            block = rm.blockstate('metal/anvil/%s' % metal, variants={
+                'facing=north': {'model': 'tfc:block/metal/anvil/%s' % metal, 'y': 90},
+                'facing=east': {'model': 'tfc:block/metal/anvil/%s' % metal, 'y': 180},
+                'facing=south': {'model': 'tfc:block/metal/anvil/%s' % metal, 'y': 270},
+                'facing=west': {'model': 'tfc:block/metal/anvil/%s' % metal}
+            })
+            block.with_block_model({
+                'all': texture,
+                'particle': texture
+            }, parent='tfc:block/anvil')
+            block.with_block_loot('tfc:metal/anvil/%s' % metal)
+            block.with_lang(lang('%s anvil', metal))
+            block.with_item_model()
+
+            # Chain
+            block = rm.blockstate(('metal', 'chain', metal), variants={
+                'axis=x': {'model': 'tfc:block/metal/chain/%s' % metal, 'x': 90, 'y': 90},
+                'axis=y': {'model': 'tfc:block/metal/chain/%s' % metal},
+                'axis=z': {'model': 'tfc:block/metal/chain/%s' % metal, 'x': 90}
+            })
+            block.with_lang(lang('%s chain', metal))
+            block.with_block_loot('tfc:metal/chain/%s' % metal)
+            rm.block_model(('metal', 'chain', metal), {
+                'all': 'tfc:block/metal/chain/%s' % metal,
+                'particle': 'tfc:block/metal/chain/%s' % metal
+            }, parent='minecraft:block/chain')
+            rm.item_model(('metal', 'chain', metal), 'tfc:item/metal/chain/%s' % metal)
+
+            # Lamp
+            block = rm.blockstate('metal/lamp/%s' % metal, variants={
+                'hanging=false,lit=false': {'model': 'tfc:block/metal/lamp/%s_off' % metal},
+                'hanging=true,lit=false': {'model': 'tfc:block/metal/lamp/%s_hanging_off' % metal},
+                'hanging=false,lit=true': {'model': 'tfc:block/metal/lamp/%s_on' % metal},
+                'hanging=true,lit=true': {'model': 'tfc:block/metal/lamp/%s_hanging_on' % metal},
+            })
+            block.with_lang(lang('%s lamp', metal))
+            block.with_block_loot({
+                'name': 'tfc:metal/lamp/%s' % metal,
+                'functions': [{'function': 'tfc:copy_fluid'}]
+            })
+            rm.lang('block.tfc.metal.lamp.%s.filled' % metal, lang('filled %s lamp', metal))
+            rm.block_model('tfc:metal/lamp/%s_hanging_on' % metal, {'metal': texture, 'chain': 'tfc:block/metal/chain/%s' % metal, 'lamp': 'tfc:block/lamp'}, parent='tfc:block/lamp_hanging')
+            rm.block_model('tfc:metal/lamp/%s_hanging_off' % metal, {'metal': texture, 'chain': 'tfc:block/metal/chain/%s' % metal, 'lamp': 'tfc:block/lamp_off'}, parent='tfc:block/lamp_hanging')
+            rm.block_model('tfc:metal/lamp/%s_on' % metal, {'metal': texture, 'lamp': 'tfc:block/lamp'}, parent='tfc:block/lamp')
+            rm.block_model('tfc:metal/lamp/%s_off' % metal, {'metal': texture, 'lamp': 'tfc:block/lamp_off'}, parent='tfc:block/lamp')
+            rm.item_model(('metal', 'lamp', metal))
+
+            # Trapdoor
+            block = rm.block('metal/trapdoor/%s' % metal)
+            block.make_trapdoor(trapdoor_suffix='', texture='tfc:block/metal/trapdoor/%s' % metal)
+            block.with_lang(lang('%s trapdoor', metal))
+            block.with_block_loot('tfc:metal/trapdoor/%s' % metal)
+
+            # Bars
+            bars = 'metal/bars/%s' % metal
+            block = rm.blockstate_multipart(
+                'metal/bars/%s' % metal,
+                ({'model': 'tfc:block/bars/%s_bars_post_ends' % metal}),
+                ({'north': False, 'south': False, 'east': False, 'west': False}, {'model': 'tfc:block/bars/%s_bars_post' % metal}),
+                ({'north': True, 'south': False, 'east': False, 'west': False}, {'model': 'tfc:block/bars/%s_bars_cap' % metal}),
+                ({'north': False, 'south': False, 'east': True, 'west': False}, {'model': 'tfc:block/bars/%s_bars_cap' % metal, 'y': 90}),
+                ({'north': False, 'south': True, 'east': False, 'west': False}, {'model': 'tfc:block/bars/%s_bars_cap_alt' % metal}),
+                ({'north': False, 'south': False, 'east': False, 'west': True}, {'model': 'tfc:block/bars/%s_bars_cap_alt' % metal, 'y': 90}),
+                ({'north': True}, {'model': 'tfc:block/bars/%s_bars_side' % metal}),
+                ({'east': True}, {'model': 'tfc:block/bars/%s_bars_side' % metal, 'y': 90}),
+                ({'south': True}, {'model': 'tfc:block/bars/%s_bars_side_alt' % metal}),
+                ({'west': True}, {'model': 'tfc:block/bars/%s_bars_side_alt' % metal, 'y': 90}),
+            )
+            block.with_block_loot('tfc:%s' % bars)
+            block.with_lang(lang('%s bars', metal))
+            for var in ('post_ends', 'post', 'cap', 'cap_alt', 'side', 'side_alt'):
+                rm.block_model('bars/%s_bars_%s' % (metal, var), parent='minecraft:block/iron_bars_%s' % var, textures={
+                    'particle': 'tfc:block/metal/bars/%s' % metal,
+                    'bars': 'tfc:block/metal/bars/%s' % metal,
+                    'edge': texture
+                })
+            rm.item_model(bars, 'tfc:block/%s' % bars)
+
+        # Storage Blocks (+ Stair, Slab)
+        # Includes weathering variants for metals that support that
+        for variant, word in (
+            ('block', ''),
+            ('exposed_block', 'exposed'),
+            ('weathered_block', 'weathered'),
+            ('oxidized_block', None)
+        ):
+            if metal_data.has_block(variant):
+                if word is None:
+                    word = OXIDIZED_METAL_NAMES[metal]
+                block = rm.blockstate(('metal', variant, metal))
+                block.with_block_model()
+                block.with_lang(lang('%s %s plated block', word, metal))
+                block.with_item_model()
+                block.with_block_loot('tfc:metal/%s/%s' % (variant, metal))
+                block.make_slab()
+                block.make_stairs()
+                rm.block('metal/%s/%s_slab' % (variant, metal)).with_lang(lang('%s %s plated slab', word, metal))
+                slab_loot(rm, 'tfc:metal/%s/%s_slab' % (variant, metal))
+                stairs = rm.block('metal/%s/%s_stairs' % (variant, metal))
+                stairs.with_lang(lang('%s %s plated stairs', word, metal))
+                stairs.with_block_loot('tfc:metal/%s/%s_stairs' % (variant, metal))
 
     for section in ARMOR_SECTIONS:
         trim_model(rm, 'minecraft:leather_%s' % section, 'minecraft:item/leather_%s' % section, 'tfc:item/%s_trim' % section.replace('leggings', 'greaves'), 'minecraft:item/leather_%s_overlay' % section)
@@ -1555,7 +1580,7 @@ def generate(rm: ResourceManager):
         # Signs + Hanging Signs
         rm.item_model(('wood', 'sign', wood), 'tfc:item/wood/sign/%s' % wood, 'tfc:item/wood/sign_head_%s' % wood, 'tfc:item/wood/sign_head_overlay%s' % ('_white' if wood in ('blackwood', 'willow', 'hickory') else '')).with_lang(lang('%s sign', wood))
         for metal, metal_data in METALS.items():
-            if 'utility' in metal_data.types:
+            if metal_data.type == 'all':
                 rm.item_model(('wood', 'hanging_sign', metal, wood), 'tfc:item/wood/hanging_sign_head_%s' % wood, 'tfc:item/wood/hanging_sign_head_overlay%s' % ('_white' if wood in ('blackwood', 'willow', 'hickory') else ''), 'tfc:item/metal/hanging_sign/%s' % metal).with_lang(lang('%s %s hanging sign', metal, wood))
 
         rm.item_model(('wood', 'boat', wood), 'tfc:item/wood/boat_%s' % wood).with_lang(lang('%s %s', wood, ('boat' if wood != 'palm' else 'raft')))
@@ -1818,7 +1843,7 @@ def generate(rm: ResourceManager):
             block.with_block_loot('tfc:wood/sign/%s' % wood)
 
         for metal, metal_data in METALS.items():
-            if 'utility' in metal_data.types:
+            if metal_data.type == 'all':
                 for variant in ('hanging_sign', 'wall_hanging_sign'):
                     block = rm.blockstate(('wood', variant, metal, wood), model='tfc:block/wood/sign/%s_particle' % wood)
                     block.with_lang(lang('%s %s %s', metal, wood, variant))

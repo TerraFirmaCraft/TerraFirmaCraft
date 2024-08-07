@@ -1,0 +1,193 @@
+{
+  "values": {
+    "tfc:metal/block/brass": {
+      "next_oxidation_stage": "tfc:metal/exposed_block/brass"
+    },
+    "tfc:metal/block/brass_slab": {
+      "next_oxidation_stage": "tfc:metal/exposed_block/brass_slab"
+    },
+    "tfc:metal/block/brass_stairs": {
+      "next_oxidation_stage": "tfc:metal/exposed_block/brass_stairs"
+    },
+    "tfc:metal/block/bronze": {
+      "next_oxidation_stage": "tfc:metal/exposed_block/bronze"
+    },
+    "tfc:metal/block/bronze_slab": {
+      "next_oxidation_stage": "tfc:metal/exposed_block/bronze_slab"
+    },
+    "tfc:metal/block/bronze_stairs": {
+      "next_oxidation_stage": "tfc:metal/exposed_block/bronze_stairs"
+    },
+    "tfc:metal/block/copper": {
+      "next_oxidation_stage": "tfc:metal/exposed_block/copper"
+    },
+    "tfc:metal/block/copper_slab": {
+      "next_oxidation_stage": "tfc:metal/exposed_block/copper_slab"
+    },
+    "tfc:metal/block/copper_stairs": {
+      "next_oxidation_stage": "tfc:metal/exposed_block/copper_stairs"
+    },
+    "tfc:metal/block/silver": {
+      "next_oxidation_stage": "tfc:metal/exposed_block/silver"
+    },
+    "tfc:metal/block/silver_slab": {
+      "next_oxidation_stage": "tfc:metal/exposed_block/silver_slab"
+    },
+    "tfc:metal/block/silver_stairs": {
+      "next_oxidation_stage": "tfc:metal/exposed_block/silver_stairs"
+    },
+    "tfc:metal/block/steel": {
+      "next_oxidation_stage": "tfc:metal/exposed_block/steel"
+    },
+    "tfc:metal/block/steel_slab": {
+      "next_oxidation_stage": "tfc:metal/exposed_block/steel_slab"
+    },
+    "tfc:metal/block/steel_stairs": {
+      "next_oxidation_stage": "tfc:metal/exposed_block/steel_stairs"
+    },
+    "tfc:metal/block/sterling_silver": {
+      "next_oxidation_stage": "tfc:metal/exposed_block/sterling_silver"
+    },
+    "tfc:metal/block/sterling_silver_slab": {
+      "next_oxidation_stage": "tfc:metal/exposed_block/sterling_silver_slab"
+    },
+    "tfc:metal/block/sterling_silver_stairs": {
+      "next_oxidation_stage": "tfc:metal/exposed_block/sterling_silver_stairs"
+    },
+    "tfc:metal/block/wrought_iron": {
+      "next_oxidation_stage": "tfc:metal/exposed_block/wrought_iron"
+    },
+    "tfc:metal/block/wrought_iron_slab": {
+      "next_oxidation_stage": "tfc:metal/exposed_block/wrought_iron_slab"
+    },
+    "tfc:metal/block/wrought_iron_stairs": {
+      "next_oxidation_stage": "tfc:metal/exposed_block/wrought_iron_stairs"
+    },
+    "tfc:metal/exposed_block/brass": {
+      "next_oxidation_stage": "tfc:metal/weathered_block/brass"
+    },
+    "tfc:metal/exposed_block/brass_slab": {
+      "next_oxidation_stage": "tfc:metal/weathered_block/brass_slab"
+    },
+    "tfc:metal/exposed_block/brass_stairs": {
+      "next_oxidation_stage": "tfc:metal/weathered_block/brass_stairs"
+    },
+    "tfc:metal/exposed_block/bronze": {
+      "next_oxidation_stage": "tfc:metal/weathered_block/bronze"
+    },
+    "tfc:metal/exposed_block/bronze_slab": {
+      "next_oxidation_stage": "tfc:metal/weathered_block/bronze_slab"
+    },
+    "tfc:metal/exposed_block/bronze_stairs": {
+      "next_oxidation_stage": "tfc:metal/weathered_block/bronze_stairs"
+    },
+    "tfc:metal/exposed_block/copper": {
+      "next_oxidation_stage": "tfc:metal/weathered_block/copper"
+    },
+    "tfc:metal/exposed_block/copper_slab": {
+      "next_oxidation_stage": "tfc:metal/weathered_block/copper_slab"
+    },
+    "tfc:metal/exposed_block/copper_stairs": {
+      "next_oxidation_stage": "tfc:metal/weathered_block/copper_stairs"
+    },
+    "tfc:metal/exposed_block/silver": {
+      "next_oxidation_stage": "tfc:metal/weathered_block/silver"
+    },
+    "tfc:metal/exposed_block/silver_slab": {
+      "next_oxidation_stage": "tfc:metal/weathered_block/silver_slab"
+    },
+    "tfc:metal/exposed_block/silver_stairs": {
+      "next_oxidation_stage": "tfc:metal/weathered_block/silver_stairs"
+    },
+    "tfc:metal/exposed_block/steel": {
+      "next_oxidation_stage": "tfc:metal/weathered_block/steel"
+    },
+    "tfc:metal/exposed_block/steel_slab": {
+      "next_oxidation_stage": "tfc:metal/weathered_block/steel_slab"
+    },
+    "tfc:metal/exposed_block/steel_stairs": {
+      "next_oxidation_stage": "tfc:metal/weathered_block/steel_stairs"
+    },
+    "tfc:metal/exposed_block/sterling_silver": {
+      "next_oxidation_stage": "tfc:metal/weathered_block/sterling_silver"
+    },
+    "tfc:metal/exposed_block/sterling_silver_slab": {
+      "next_oxidation_stage": "tfc:metal/weathered_block/sterling_silver_slab"
+    },
+    "tfc:metal/exposed_block/sterling_silver_stairs": {
+      "next_oxidation_stage": "tfc:metal/weathered_block/sterling_silver_stairs"
+    },
+    "tfc:metal/exposed_block/wrought_iron": {
+      "next_oxidation_stage": "tfc:metal/weathered_block/wrought_iron"
+    },
+    "tfc:metal/exposed_block/wrought_iron_slab": {
+      "next_oxidation_stage": "tfc:metal/weathered_block/wrought_iron_slab"
+    },
+    "tfc:metal/exposed_block/wrought_iron_stairs": {
+      "next_oxidation_stage": "tfc:metal/weathered_block/wrought_iron_stairs"
+    },
+    "tfc:metal/weathered_block/brass": {
+      "next_oxidation_stage": "tfc:metal/oxidized_block/brass"
+    },
+    "tfc:metal/weathered_block/brass_slab": {
+      "next_oxidation_stage": "tfc:metal/oxidized_block/brass_slab"
+    },
+    "tfc:metal/weathered_block/brass_stairs": {
+      "next_oxidation_stage": "tfc:metal/oxidized_block/brass_stairs"
+    },
+    "tfc:metal/weathered_block/bronze": {
+      "next_oxidation_stage": "tfc:metal/oxidized_block/bronze"
+    },
+    "tfc:metal/weathered_block/bronze_slab": {
+      "next_oxidation_stage": "tfc:metal/oxidized_block/bronze_slab"
+    },
+    "tfc:metal/weathered_block/bronze_stairs": {
+      "next_oxidation_stage": "tfc:metal/oxidized_block/bronze_stairs"
+    },
+    "tfc:metal/weathered_block/copper": {
+      "next_oxidation_stage": "tfc:metal/oxidized_block/copper"
+    },
+    "tfc:metal/weathered_block/copper_slab": {
+      "next_oxidation_stage": "tfc:metal/oxidized_block/copper_slab"
+    },
+    "tfc:metal/weathered_block/copper_stairs": {
+      "next_oxidation_stage": "tfc:metal/oxidized_block/copper_stairs"
+    },
+    "tfc:metal/weathered_block/silver": {
+      "next_oxidation_stage": "tfc:metal/oxidized_block/silver"
+    },
+    "tfc:metal/weathered_block/silver_slab": {
+      "next_oxidation_stage": "tfc:metal/oxidized_block/silver_slab"
+    },
+    "tfc:metal/weathered_block/silver_stairs": {
+      "next_oxidation_stage": "tfc:metal/oxidized_block/silver_stairs"
+    },
+    "tfc:metal/weathered_block/steel": {
+      "next_oxidation_stage": "tfc:metal/oxidized_block/steel"
+    },
+    "tfc:metal/weathered_block/steel_slab": {
+      "next_oxidation_stage": "tfc:metal/oxidized_block/steel_slab"
+    },
+    "tfc:metal/weathered_block/steel_stairs": {
+      "next_oxidation_stage": "tfc:metal/oxidized_block/steel_stairs"
+    },
+    "tfc:metal/weathered_block/sterling_silver": {
+      "next_oxidation_stage": "tfc:metal/oxidized_block/sterling_silver"
+    },
+    "tfc:metal/weathered_block/sterling_silver_slab": {
+      "next_oxidation_stage": "tfc:metal/oxidized_block/sterling_silver_slab"
+    },
+    "tfc:metal/weathered_block/sterling_silver_stairs": {
+      "next_oxidation_stage": "tfc:metal/oxidized_block/sterling_silver_stairs"
+    },
+    "tfc:metal/weathered_block/wrought_iron": {
+      "next_oxidation_stage": "tfc:metal/oxidized_block/wrought_iron"
+    },
+    "tfc:metal/weathered_block/wrought_iron_slab": {
+      "next_oxidation_stage": "tfc:metal/oxidized_block/wrought_iron_slab"
+    },
+    "tfc:metal/weathered_block/wrought_iron_stairs": {
+      "next_oxidation_stage": "tfc:metal/oxidized_block/wrought_iron_stairs"
+    }
+  }
+}

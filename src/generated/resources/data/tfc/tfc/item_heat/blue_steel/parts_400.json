@@ -1,0 +1,25 @@
+{
+  "forging_temperature": 924.00006,
+  "heat_capacity": 11.428572,
+  "ingredient": [
+    {
+      "item": "tfc:metal/tuyere/blue_steel"
+    },
+    {
+      "item": "tfc:metal/unfinished_helmet/blue_steel"
+    },
+    {
+      "item": "tfc:metal/unfinished_chestplate/blue_steel"
+    },
+    {
+      "item": "tfc:metal/unfinished_greaves/blue_steel"
+    },
+    {
+      "item": "tfc:metal/boots/blue_steel"
+    },
+    {
+      "item": "tfc:metal/shield/blue_steel"
+    }
+  ],
+  "welding_temperature": 1232.0
+}

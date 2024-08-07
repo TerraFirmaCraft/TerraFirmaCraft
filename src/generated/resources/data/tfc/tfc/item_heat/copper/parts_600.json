@@ -1,0 +1,13 @@
+{
+  "forging_temperature": 648.0,
+  "heat_capacity": 17.142857,
+  "ingredient": [
+    {
+      "item": "tfc:metal/helmet/copper"
+    },
+    {
+      "item": "tfc:metal/greaves/copper"
+    }
+  ],
+  "welding_temperature": 864.0
+}

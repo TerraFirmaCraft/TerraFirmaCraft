@@ -1,3 +1,9 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.data.providers;
 
 import java.util.concurrent.CompletableFuture;
@@ -8,7 +14,6 @@ import net.minecraft.data.PackOutput;
 import net.dries007.tfc.common.entities.Fauna;
 import net.dries007.tfc.common.entities.Faunas;
 import net.dries007.tfc.common.entities.aquatic.Fish;
-import net.dries007.tfc.world.chunkdata.ForestType;
 
 public class BuiltinFauna extends DataManagerProvider<Fauna>
 {

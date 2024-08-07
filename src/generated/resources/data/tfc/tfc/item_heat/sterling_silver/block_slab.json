@@ -1,8 +1,19 @@
 {
   "forging_temperature": 570.0,
   "heat_capacity": 1.4285715,
-  "ingredient": {
-    "item": "tfc:metal/block/sterling_silver_slab"
-  },
+  "ingredient": [
+    {
+      "item": "tfc:metal/block/sterling_silver_slab"
+    },
+    {
+      "item": "tfc:metal/exposed_block/sterling_silver_slab"
+    },
+    {
+      "item": "tfc:metal/weathered_block/sterling_silver_slab"
+    },
+    {
+      "item": "tfc:metal/oxidized_block/sterling_silver_slab"
+    }
+  ],
   "welding_temperature": 760.0
 }

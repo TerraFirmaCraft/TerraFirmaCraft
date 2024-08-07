@@ -1,3 +1,9 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.data;
 
 import java.util.Locale;
@@ -41,7 +47,7 @@ public interface Accessors
 {
     default Ingredient ingredientOf(Metal metal, Metal.ItemType type)
     {
-        return type.isDefault()
+        return type.isCommonTagPart()
             ? Ingredient.of(commonTagOf(metal, type))
             : Ingredient.of(TFCItems.METAL_ITEMS.get(metal).get(type).get());
     }
@@ -60,7 +66,7 @@ public interface Accessors
 
     default TagKey<Item> commonTagOf(Metal metal, Metal.ItemType type)
     {
-        assert type.isDefault() : "Non-typical use of tag for " + metal.getSerializedName() + " / " + type.name();
+        assert type.isCommonTagPart() : "Non-typical use of tag for " + metal.getSerializedName() + " / " + type.name();
         assert type.has(metal) : "Non-typical use of " + metal.getSerializedName() + " / " + type.name();
         return commonTagOf(Registries.ITEM, type.name() + "s/" + metal.name());
     }
@@ -153,9 +159,9 @@ public interface Accessors
         return switch (type)
         {
             case ANVIL -> 1400;
-            case BLOCK, LAMP -> 100;
-            case BLOCK_SLAB -> 50;
-            case BLOCK_STAIRS -> 75;
+            case BLOCK, EXPOSED_BLOCK, WEATHERED_BLOCK, OXIDIZED_BLOCK, LAMP -> 100;
+            case BLOCK_SLAB, EXPOSED_BLOCK_SLAB, WEATHERED_BLOCK_SLAB, OXIDIZED_BLOCK_SLAB -> 50;
+            case BLOCK_STAIRS, EXPOSED_BLOCK_STAIRS, WEATHERED_BLOCK_STAIRS, OXIDIZED_BLOCK_STAIRS -> 75;
             case BARS -> 25;
             case CHAIN -> 6;
             case TRAPDOOR -> 200;

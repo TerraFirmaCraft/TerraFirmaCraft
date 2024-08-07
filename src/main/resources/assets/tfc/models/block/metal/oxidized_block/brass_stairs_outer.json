@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/outer_stairs",
+  "textures": {
+    "bottom": "tfc:block/metal/oxidized_block/brass",
+    "top": "tfc:block/metal/oxidized_block/brass",
+    "side": "tfc:block/metal/oxidized_block/brass"
+  }
+}

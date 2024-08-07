@@ -1,8 +1,19 @@
 {
   "forging_temperature": 570.0,
   "heat_capacity": 2.857143,
-  "ingredient": {
-    "tag": "c:storage_blocks/bronze"
-  },
+  "ingredient": [
+    {
+      "item": "tfc:metal/block/bronze"
+    },
+    {
+      "item": "tfc:metal/exposed_block/bronze"
+    },
+    {
+      "item": "tfc:metal/weathered_block/bronze"
+    },
+    {
+      "item": "tfc:metal/oxidized_block/bronze"
+    }
+  ],
   "welding_temperature": 760.0
 }

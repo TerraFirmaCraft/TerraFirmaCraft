@@ -1,0 +1,76 @@
+{
+  "forging_temperature": 924.00006,
+  "heat_capacity": 2.857143,
+  "ingredient": [
+    {
+      "item": "tfc:metal/unfinished_lamp/blue_steel"
+    },
+    {
+      "item": "tfc:metal/pickaxe/blue_steel"
+    },
+    {
+      "item": "tfc:metal/pickaxe_head/blue_steel"
+    },
+    {
+      "item": "tfc:metal/propick/blue_steel"
+    },
+    {
+      "item": "tfc:metal/propick_head/blue_steel"
+    },
+    {
+      "item": "tfc:metal/axe/blue_steel"
+    },
+    {
+      "item": "tfc:metal/axe_head/blue_steel"
+    },
+    {
+      "item": "tfc:metal/shovel/blue_steel"
+    },
+    {
+      "item": "tfc:metal/shovel_head/blue_steel"
+    },
+    {
+      "item": "tfc:metal/hoe/blue_steel"
+    },
+    {
+      "item": "tfc:metal/hoe_head/blue_steel"
+    },
+    {
+      "item": "tfc:metal/chisel/blue_steel"
+    },
+    {
+      "item": "tfc:metal/chisel_head/blue_steel"
+    },
+    {
+      "item": "tfc:metal/hammer/blue_steel"
+    },
+    {
+      "item": "tfc:metal/hammer_head/blue_steel"
+    },
+    {
+      "item": "tfc:metal/saw/blue_steel"
+    },
+    {
+      "item": "tfc:metal/saw_blade/blue_steel"
+    },
+    {
+      "item": "tfc:metal/javelin/blue_steel"
+    },
+    {
+      "item": "tfc:metal/javelin_head/blue_steel"
+    },
+    {
+      "item": "tfc:metal/knife/blue_steel"
+    },
+    {
+      "item": "tfc:metal/knife_blade/blue_steel"
+    },
+    {
+      "item": "tfc:metal/scythe/blue_steel"
+    },
+    {
+      "item": "tfc:metal/scythe_blade/blue_steel"
+    }
+  ],
+  "welding_temperature": 1232.0
+}

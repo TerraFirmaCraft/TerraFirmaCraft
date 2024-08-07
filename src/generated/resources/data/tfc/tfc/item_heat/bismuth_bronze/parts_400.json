@@ -1,0 +1,25 @@
+{
+  "forging_temperature": 591.0,
+  "heat_capacity": 11.428572,
+  "ingredient": [
+    {
+      "item": "tfc:metal/tuyere/bismuth_bronze"
+    },
+    {
+      "item": "tfc:metal/unfinished_helmet/bismuth_bronze"
+    },
+    {
+      "item": "tfc:metal/unfinished_chestplate/bismuth_bronze"
+    },
+    {
+      "item": "tfc:metal/unfinished_greaves/bismuth_bronze"
+    },
+    {
+      "item": "tfc:metal/boots/bismuth_bronze"
+    },
+    {
+      "item": "tfc:metal/shield/bismuth_bronze"
+    }
+  ],
+  "welding_temperature": 788.0
+}

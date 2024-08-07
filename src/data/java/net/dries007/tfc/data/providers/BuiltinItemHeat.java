@@ -1,8 +1,16 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.data.providers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -49,10 +57,58 @@ public class BuiltinItemHeat extends DataManagerProvider<HeatDefinition> impleme
     @Override
     protected void addData(HolderLookup.Provider provider)
     {
-        TFCBlocks.METALS.forEach((metal, map) -> map.forEach((type, block) ->
-            add(metal, type.name(), ingredientOf(metal, type), units(type))));
-        TFCItems.METAL_ITEMS.forEach((metal, map) -> map.forEach((type, item) ->
-            add(metal, type.name(), ingredientOf(metal, type), units(type))));
+        TFCBlocks.METALS.forEach((metal, blocks) -> {
+            if (metal.weatheredParts())
+            {
+                add(metal, "block", Ingredient.of(
+                    blocks.get(Metal.BlockType.BLOCK),
+                    blocks.get(Metal.BlockType.EXPOSED_BLOCK),
+                    blocks.get(Metal.BlockType.WEATHERED_BLOCK),
+                    blocks.get(Metal.BlockType.OXIDIZED_BLOCK)
+                ), units(Metal.BlockType.BLOCK));
+                add(metal, "block_slab", Ingredient.of(
+                    blocks.get(Metal.BlockType.BLOCK_SLAB),
+                    blocks.get(Metal.BlockType.EXPOSED_BLOCK_SLAB),
+                    blocks.get(Metal.BlockType.WEATHERED_BLOCK_SLAB),
+                    blocks.get(Metal.BlockType.OXIDIZED_BLOCK_SLAB)
+                ), units(Metal.BlockType.BLOCK_SLAB));
+                add(metal, "block_stairs", Ingredient.of(
+                    blocks.get(Metal.BlockType.BLOCK_STAIRS),
+                    blocks.get(Metal.BlockType.EXPOSED_BLOCK_STAIRS),
+                    blocks.get(Metal.BlockType.WEATHERED_BLOCK_STAIRS),
+                    blocks.get(Metal.BlockType.OXIDIZED_BLOCK_STAIRS)
+                ), units(Metal.BlockType.BLOCK_STAIRS));
+            }
+            else
+            {
+                add(metal, Metal.BlockType.BLOCK);
+                add(metal, Metal.BlockType.BLOCK_SLAB);
+                add(metal, Metal.BlockType.BLOCK_STAIRS);
+            }
+
+            add(metal, Metal.BlockType.ANVIL);
+            add(metal, Metal.BlockType.BARS);
+            add(metal, Metal.BlockType.CHAIN);
+            add(metal, Metal.BlockType.LAMP);
+            add(metal, Metal.BlockType.TRAPDOOR);
+        });
+        TFCItems.METAL_ITEMS.forEach((metal, items) -> {
+            add(metal, Metal.ItemType.INGOT);
+            add(metal, Metal.ItemType.DOUBLE_INGOT);
+            add(metal, Metal.ItemType.SHEET);
+            add(metal, Metal.ItemType.DOUBLE_SHEET);
+            add(metal, Metal.ItemType.ROD);
+
+            for (int amount : new int[] {50, 100, 200, 400, 600, 800, 1200})
+            {
+                final ItemLike[] parts = Arrays.stream(Metal.ItemType.values())
+                    .filter(type -> !type.isCommonTagPart() && units(type) == amount)
+                    .map(items::get)
+                    .filter(Objects::nonNull)
+                    .toArray(ItemLike[]::new);
+                if (parts.length > 0) add(metal, "parts_" + amount, Ingredient.of(parts), amount);
+            }
+        });
 
         TFCItems.GRADED_ORES.forEach((ore, blocks) ->
             add(ore.name(), Ingredient.of(
@@ -137,6 +193,16 @@ public class BuiltinItemHeat extends DataManagerProvider<HeatDefinition> impleme
     private void add(Ingredient item, float heatCapacity)
     {
         add(nameOf(item), new HeatDefinition(item, heatCapacity, 0f, 0f));
+    }
+
+    private void add(Metal metal, Metal.ItemType type)
+    {
+        if (type.has(metal)) add(metal.getSerializedName() + "/" + type.name().toLowerCase(Locale.ROOT), ingredientOf(metal, type), metal, units(type));
+    }
+
+    private void add(Metal metal, Metal.BlockType type)
+    {
+        if (type.has(metal)) add(metal.getSerializedName() + "/" + type.name().toLowerCase(Locale.ROOT), ingredientOf(metal, type), metal, units(type));
     }
 
     private void add(Metal metal, String typeName, Ingredient ingredient, int units)

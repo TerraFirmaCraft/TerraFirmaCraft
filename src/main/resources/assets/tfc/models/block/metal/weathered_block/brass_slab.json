@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/slab",
+  "textures": {
+    "bottom": "tfc:block/metal/weathered_block/brass",
+    "top": "tfc:block/metal/weathered_block/brass",
+    "side": "tfc:block/metal/weathered_block/brass"
+  }
+}

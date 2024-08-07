@@ -49,7 +49,7 @@ def generate(rm: ResourceManager):
 
     for metal, info in METALS.items():
         c_item('ingots/%s' % metal, lang('%s ingots', metal))
-        if 'part' in info.types:
+        if info.type == 'part' or info.type == 'all':
             c_item('double_ingots/%s' % metal, lang('%s double ingots', metal))
             c_item('sheets/%s' % metal, lang('%s double ingots', metal))
             c_item('double_sheets/%s' % metal, lang('%s double sheets', metal))

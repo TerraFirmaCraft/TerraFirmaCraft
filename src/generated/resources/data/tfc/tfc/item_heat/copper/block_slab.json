@@ -1,8 +1,19 @@
 {
   "forging_temperature": 648.0,
   "heat_capacity": 1.4285715,
-  "ingredient": {
-    "item": "tfc:metal/block/copper_slab"
-  },
+  "ingredient": [
+    {
+      "item": "tfc:metal/block/copper_slab"
+    },
+    {
+      "item": "tfc:metal/exposed_block/copper_slab"
+    },
+    {
+      "item": "tfc:metal/weathered_block/copper_slab"
+    },
+    {
+      "item": "tfc:metal/oxidized_block/copper_slab"
+    }
+  ],
   "welding_temperature": 864.0
 }

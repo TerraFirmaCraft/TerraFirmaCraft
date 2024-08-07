@@ -1,0 +1,31 @@
+{
+  "forging_temperature": 921.00006,
+  "heat_capacity": 5.714286,
+  "ingredient": [
+    {
+      "item": "tfc:metal/fish_hook/wrought_iron"
+    },
+    {
+      "item": "tfc:metal/fishing_rod/wrought_iron"
+    },
+    {
+      "item": "tfc:metal/sword/wrought_iron"
+    },
+    {
+      "item": "tfc:metal/sword_blade/wrought_iron"
+    },
+    {
+      "item": "tfc:metal/mace/wrought_iron"
+    },
+    {
+      "item": "tfc:metal/mace_head/wrought_iron"
+    },
+    {
+      "item": "tfc:metal/shears/wrought_iron"
+    },
+    {
+      "item": "tfc:metal/unfinished_boots/wrought_iron"
+    }
+  ],
+  "welding_temperature": 1228.0
+}

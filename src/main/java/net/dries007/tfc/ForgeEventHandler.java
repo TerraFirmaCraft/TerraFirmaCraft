@@ -1308,7 +1308,8 @@ public final class ForgeEventHandler
         if (event.getUsePhase() == UseItemOnBlockEvent.UsePhase.ITEM_AFTER_BLOCK)
         {
             InteractionManager.onItemUse(event.getItemStack(), event.getUseOnContext(), false).ifPresent(result -> {
-                event.cancelWithResult(switch (result) {
+                event.cancelWithResult(switch (result)
+                {
                     // This is the inverse of ItemInteractionResult.result()
                     case SUCCESS, SUCCESS_NO_ITEM_USED -> ItemInteractionResult.SUCCESS;
                     case CONSUME, CONSUME_PARTIAL -> ItemInteractionResult.CONSUME;

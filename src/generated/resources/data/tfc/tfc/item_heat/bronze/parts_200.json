@@ -1,0 +1,31 @@
+{
+  "forging_temperature": 570.0,
+  "heat_capacity": 5.714286,
+  "ingredient": [
+    {
+      "item": "tfc:metal/fish_hook/bronze"
+    },
+    {
+      "item": "tfc:metal/fishing_rod/bronze"
+    },
+    {
+      "item": "tfc:metal/sword/bronze"
+    },
+    {
+      "item": "tfc:metal/sword_blade/bronze"
+    },
+    {
+      "item": "tfc:metal/mace/bronze"
+    },
+    {
+      "item": "tfc:metal/mace_head/bronze"
+    },
+    {
+      "item": "tfc:metal/shears/bronze"
+    },
+    {
+      "item": "tfc:metal/unfinished_boots/bronze"
+    }
+  ],
+  "welding_temperature": 760.0
+}

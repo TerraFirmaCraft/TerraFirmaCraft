@@ -1,0 +1,76 @@
+{
+  "forging_temperature": 891.00006,
+  "heat_capacity": 2.857143,
+  "ingredient": [
+    {
+      "item": "tfc:metal/unfinished_lamp/black_steel"
+    },
+    {
+      "item": "tfc:metal/pickaxe/black_steel"
+    },
+    {
+      "item": "tfc:metal/pickaxe_head/black_steel"
+    },
+    {
+      "item": "tfc:metal/propick/black_steel"
+    },
+    {
+      "item": "tfc:metal/propick_head/black_steel"
+    },
+    {
+      "item": "tfc:metal/axe/black_steel"
+    },
+    {
+      "item": "tfc:metal/axe_head/black_steel"
+    },
+    {
+      "item": "tfc:metal/shovel/black_steel"
+    },
+    {
+      "item": "tfc:metal/shovel_head/black_steel"
+    },
+    {
+      "item": "tfc:metal/hoe/black_steel"
+    },
+    {
+      "item": "tfc:metal/hoe_head/black_steel"
+    },
+    {
+      "item": "tfc:metal/chisel/black_steel"
+    },
+    {
+      "item": "tfc:metal/chisel_head/black_steel"
+    },
+    {
+      "item": "tfc:metal/hammer/black_steel"
+    },
+    {
+      "item": "tfc:metal/hammer_head/black_steel"
+    },
+    {
+      "item": "tfc:metal/saw/black_steel"
+    },
+    {
+      "item": "tfc:metal/saw_blade/black_steel"
+    },
+    {
+      "item": "tfc:metal/javelin/black_steel"
+    },
+    {
+      "item": "tfc:metal/javelin_head/black_steel"
+    },
+    {
+      "item": "tfc:metal/knife/black_steel"
+    },
+    {
+      "item": "tfc:metal/knife_blade/black_steel"
+    },
+    {
+      "item": "tfc:metal/scythe/black_steel"
+    },
+    {
+      "item": "tfc:metal/scythe_blade/black_steel"
+    }
+  ],
+  "welding_temperature": 1188.0
+}

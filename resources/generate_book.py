@@ -77,7 +77,7 @@ from patchouli import *
 
 GRADES = ['poor', 'normal', 'rich']  # Sorted so they appear in a nice order for animation
 GRADES_ALL = ['small', 'poor', 'normal', 'rich']
-TOOL_METALS = [key for key, val in METALS.items() if 'tool' in val.types]
+TOOL_METALS = [metal for metal, data in METALS.items() if data.type == 'all']
 ANIMAL_NBT = '{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}'
 
 

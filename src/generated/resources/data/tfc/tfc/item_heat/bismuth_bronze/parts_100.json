@@ -1,0 +1,76 @@
+{
+  "forging_temperature": 591.0,
+  "heat_capacity": 2.857143,
+  "ingredient": [
+    {
+      "item": "tfc:metal/unfinished_lamp/bismuth_bronze"
+    },
+    {
+      "item": "tfc:metal/pickaxe/bismuth_bronze"
+    },
+    {
+      "item": "tfc:metal/pickaxe_head/bismuth_bronze"
+    },
+    {
+      "item": "tfc:metal/propick/bismuth_bronze"
+    },
+    {
+      "item": "tfc:metal/propick_head/bismuth_bronze"
+    },
+    {
+      "item": "tfc:metal/axe/bismuth_bronze"
+    },
+    {
+      "item": "tfc:metal/axe_head/bismuth_bronze"
+    },
+    {
+      "item": "tfc:metal/shovel/bismuth_bronze"
+    },
+    {
+      "item": "tfc:metal/shovel_head/bismuth_bronze"
+    },
+    {
+      "item": "tfc:metal/hoe/bismuth_bronze"
+    },
+    {
+      "item": "tfc:metal/hoe_head/bismuth_bronze"
+    },
+    {
+      "item": "tfc:metal/chisel/bismuth_bronze"
+    },
+    {
+      "item": "tfc:metal/chisel_head/bismuth_bronze"
+    },
+    {
+      "item": "tfc:metal/hammer/bismuth_bronze"
+    },
+    {
+      "item": "tfc:metal/hammer_head/bismuth_bronze"
+    },
+    {
+      "item": "tfc:metal/saw/bismuth_bronze"
+    },
+    {
+      "item": "tfc:metal/saw_blade/bismuth_bronze"
+    },
+    {
+      "item": "tfc:metal/javelin/bismuth_bronze"
+    },
+    {
+      "item": "tfc:metal/javelin_head/bismuth_bronze"
+    },
+    {
+      "item": "tfc:metal/knife/bismuth_bronze"
+    },
+    {
+      "item": "tfc:metal/knife_blade/bismuth_bronze"
+    },
+    {
+      "item": "tfc:metal/scythe/bismuth_bronze"
+    },
+    {
+      "item": "tfc:metal/scythe_blade/bismuth_bronze"
+    }
+  ],
+  "welding_temperature": 788.0
+}
