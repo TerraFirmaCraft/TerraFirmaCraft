@@ -11,6 +11,7 @@ import net.dries007.tfc.util.registry.RegistryMetal;
 
 public class WeatheringMetalBlock extends Block implements IClimateWeatheringBlock
 {
+    static final float BASE_METAL_CHANCE = 0.015f;
     TFCWeatherState weatherState;
     RegistryMetal metal;
 
@@ -22,8 +23,10 @@ public class WeatheringMetalBlock extends Block implements IClimateWeatheringBlo
     }
 
     @Override
-    public void randomTick(BlockState state, ServerLevel serverLevel, BlockPos pos, RandomSource source) {
-        this.applyChangeOverTime(state, serverLevel, pos, source);
+    public void randomTick(BlockState state, ServerLevel serverLevel, BlockPos pos, RandomSource random) {
+        if (random.nextFloat() < BASE_METAL_CHANCE) {
+            this.applyChangeOverTime(state, serverLevel, pos, random);
+        }
     }
 
     public boolean isRandomlyTicking(BlockState state) {

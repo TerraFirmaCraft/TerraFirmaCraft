@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "parent": "block/outer_stairs",
-  "textures": {
-    "bottom": "tfc:block/metal/weathered_block/rose_gold",
-    "top": "tfc:block/metal/weathered_block/rose_gold",
-    "side": "tfc:block/metal/weathered_block/rose_gold"
-  }
-}

@@ -10,6 +10,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.registry.RegistryMetal;
 
+import static net.dries007.tfc.common.blocks.WeatheringMetalBlock.*;
+
 public class WeatheringMetalStairs extends StairBlock implements IClimateWeatheringBlock
 {
     TFCWeatherState weatherState;
@@ -23,8 +25,10 @@ public class WeatheringMetalStairs extends StairBlock implements IClimateWeather
     }
 
     @Override
-    public void randomTick(BlockState state, ServerLevel serverLevel, BlockPos pos, RandomSource source) {
-        this.applyChangeOverTime(state, serverLevel, pos, source);
+    public void randomTick(BlockState state, ServerLevel serverLevel, BlockPos pos, RandomSource random) {
+        if (random.nextFloat() < BASE_METAL_CHANCE) {
+            this.applyChangeOverTime(state, serverLevel, pos, random);
+        }
     }
 
     public boolean isRandomlyTicking(BlockState state) {

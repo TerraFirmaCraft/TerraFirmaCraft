@@ -14,7 +14,7 @@ import net.dries007.tfc.util.climate.Climate;
 
 public interface IClimateWeatheringBlock
 {
-    static float[] AGE_MODIFIERS = {0.2f, 0.5f, 0.7f, 1.0f};
+    float[] AGE_MODIFIERS = {0.5f, 1.0f, 1.0f, 1.0f};
 
     Block getNext();
 
@@ -29,17 +29,7 @@ public interface IClimateWeatheringBlock
             return;
         }
 
-        boolean topExposed = true;
-
-        for (int y = 1; y < 3; y++)
-        {
-            if (!serverLevel.getBlockState(pos.relative(Direction.UP, y)).isAir())
-            {
-                topExposed = false;
-                break;
-            }
-        }
-
+        // designed to slow weathering after most blocks are exposed
         Iterator<BlockPos> var8 = BlockPos.withinManhattan(pos, 4, 4, 4).iterator();
         float count = 0;
         float overall = 0;
@@ -54,8 +44,6 @@ public interface IClimateWeatheringBlock
                 overall++;
             }
         }
-
-
         float neighborModifier = 1;
         if ((count) / (overall) > 0.4f)
         {
@@ -64,7 +52,18 @@ public interface IClimateWeatheringBlock
 
         float randomFloat = random.nextFloat();
 
-        if (!(serverLevel.getBlockState(pos.below()).getBlock() instanceof IClimateWeatheringBlock) || topExposed)
+        // do climate-affected weathering when blocks are exposed to > 5 blocks of air
+        boolean topExposed = true;
+        for (int y = 1; y < 5; y++)
+        {
+            if (!serverLevel.getBlockState(pos.above(y)).getCollisionShape(serverLevel, pos.above(y)).isEmpty())
+            {
+                topExposed = false;
+                break;
+            }
+        }
+
+        if (topExposed)
         {
             float overallChance = getAgeAffectedModifier(this.getAge()) * getClimateAffectedModifier(serverLevel, pos);
             if (this.getAge() != TFCWeatherState.UNAFFECTED)
@@ -79,30 +78,41 @@ public interface IClimateWeatheringBlock
         }
 
         // do "drip" weathering
-        float drip = 0;
-        for (int y = 1; y < 5; y++)
+        int adjacentCount = 0;
+        for (Direction direction : Direction.Plane.HORIZONTAL.stream().toList())
         {
-            if (serverLevel.getBlockState(pos.above(y)).getBlock() instanceof IClimateWeatheringBlock weatheringBlock && weatheringBlock.getAge().ordinal() > this.getAge().ordinal())
+            if (serverLevel.getBlockState(pos.relative(direction)).getBlock() instanceof IClimateWeatheringBlock)
             {
-                drip += 0.2f;
+                adjacentCount++;
             }
-            else
+        }
+        if(adjacentCount <= 2){
+            float drip = 0;
+            for (int y = 1; y < 5; y++)
             {
-                break;
+                if (serverLevel.getBlockState(pos.above(y)).getBlock() instanceof IClimateWeatheringBlock weatheringBlock && weatheringBlock.getAge().ordinal() > this.getAge().ordinal())
+                {
+                    drip += 0.2f;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            float overallChance = getAgeAffectedModifier(this.getAge()) * drip;
+            if (this.getAge() != TFCWeatherState.UNAFFECTED)
+            {
+                overallChance *= neighborModifier;
+            }
+            if (randomFloat < overallChance && randomFloat < getMaterialModifier())
+            {
+                serverLevel.setBlockAndUpdate(pos, getNext(blockState));
+                return;
             }
         }
 
-        float overallChance = getAgeAffectedModifier(this.getAge()) * drip;
-        if (this.getAge() != TFCWeatherState.UNAFFECTED)
-        {
-            overallChance *= neighborModifier;
-        }
-        if (randomFloat < overallChance && randomFloat < getMaterialModifier())
-        {
-            serverLevel.setBlockAndUpdate(pos, getNext(blockState));
-            return;
-        }
-        overallChance = getAgeAffectedModifier(this.getAge()) * 0.006f;
+        // do slow random weathering
+        float overallChance = getAgeAffectedModifier(this.getAge()) * 0.006f;
         if (randomFloat < overallChance && randomFloat < getMaterialModifier())
         {
             serverLevel.setBlockAndUpdate(pos, getNext(blockState));

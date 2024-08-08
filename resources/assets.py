@@ -883,18 +883,26 @@ def generate(rm: ResourceManager):
                     rm.item_model(bars, 'tfc:block/%s' % bars)
                 elif 'block' in metal_block or 'block_stairs' in metal_block or "block_slab" in metal_block:
                     weather_state = "block"
+                    langword = ""
 
-                    if "exposed" in metal_block:
-                        weather_state = "exposed_block"
-                    elif "weathered" in metal_block:
-                        weather_state = "weathered_block"
-                    elif "oxidized" in metal_block:
-                        weather_state = "oxidized_block"
+                    if metal_data.weatherable:
+                        if "exposed" in metal_block:
+                            weather_state = "exposed_block"
+                            langword = "exposed"
+                        elif "weathered" in metal_block:
+                            weather_state = "weathered_block"
+                            langword = "weathered"
+                        elif "oxidized" in metal_block:
+                            weather_state = "oxidized_block"
+                            if "bronze" in metal or "brass" in metal or "silver" in metal:
+                                langword = "patinaed"
+                            if "iron" in metal or "steel" in metal:
+                                langword = "rusted"
 
-                    block = rm.blockstate(('metal', weather_state, metal)).with_block_model().with_lang(lang('%s plated block', metal)).with_item_model().with_block_loot(f'tfc:metal/{weather_state}/%s' % metal)
+                    block = rm.blockstate(('metal', weather_state, metal)).with_block_model().with_lang(lang(langword + ' %s plated block', metal)).with_item_model().with_block_loot(f'tfc:metal/{weather_state}/%s' % metal)
                     block.make_slab()
-                    rm.block(('metal', weather_state, '%s_slab' % metal)).with_lang(lang('%s plated slab', metal))
-                    rm.block(('metal', weather_state, '%s_stairs' % metal)).with_lang(lang('%s plated stairs', metal)).with_block_loot(f'tfc:metal/{weather_state}/%s_stairs' % metal)
+                    rm.block(('metal', weather_state, '%s_slab' % metal)).with_lang(lang(langword + ' %s plated slab', metal))
+                    rm.block(('metal', weather_state, '%s_stairs' % metal)).with_lang(lang(langword + ' %s plated stairs', metal)).with_block_loot(f'tfc:metal/{weather_state}/%s_stairs' % metal)
                     block.make_stairs()
                     slab_loot(rm, f'tfc:metal/{weather_state}/%s_slab' % metal)
                 else:

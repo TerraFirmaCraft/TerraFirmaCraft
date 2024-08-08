@@ -152,6 +152,7 @@ class Metal(NamedTuple):
     heat_capacity_base: float  # Do not access directly, use one of specific or ingot heat capacity.
     melt_temperature: float
     melt_metal: Optional[str]
+    weatherable: bool # whether to register aged blocks
 
     def specific_heat_capacity(self) -> float: return round(300 / self.heat_capacity_base) / 100_000
     def ingot_heat_capacity(self) -> float: return 1 / self.heat_capacity_base
@@ -183,34 +184,34 @@ ROCKS: dict[str, Rock] = {
     'marble': Rock('metamorphic', 'yellow')
 }
 METALS: dict[str, Metal] = {
-    'bismuth': Metal(1, {'part'}, 0.14, 270, None),
-    'bismuth_bronze': Metal(2, {'part', 'tool', 'armor', 'utility'}, 0.35, 985, None),
-    'black_bronze': Metal(2, {'part', 'tool', 'armor', 'utility'}, 0.35, 1070, None),
-    'bronze': Metal(2, {'part', 'tool', 'armor', 'utility'}, 0.35, 950, None),
-    'brass': Metal(2, {'part'}, 0.35, 930, None),
-    'copper': Metal(1, {'part', 'tool', 'armor', 'utility'}, 0.35, 1080, None),
-    'gold': Metal(1, {'part'}, 0.6, 1060, None),
-    'nickel': Metal(1, {'part'}, 0.48, 1453, None),
-    'rose_gold': Metal(1, {'part'}, 0.35, 960, None),
-    'silver': Metal(1, {'part'}, 0.48, 961, None),
-    'tin': Metal(1, {'part'}, 0.14, 230, None),
-    'zinc': Metal(1, {'part'}, 0.21, 420, None),
-    'sterling_silver': Metal(1, {'part'}, 0.35, 950, None),
-    'wrought_iron': Metal(3, {'part', 'tool', 'armor', 'utility'}, 0.35, 1535, 'cast_iron'),
-    'cast_iron': Metal(1, {'part'}, 0.35, 1535, None),
-    'pig_iron': Metal(3, set(), 0.35, 1535, None),
-    'steel': Metal(4, {'part', 'tool', 'armor', 'utility'}, 0.35, 1540, None),
-    'black_steel': Metal(5, {'part', 'tool', 'armor', 'utility'}, 0.35, 1485, None),
-    'blue_steel': Metal(6, {'part', 'tool', 'armor', 'utility'}, 0.35, 1540, None),
-    'red_steel': Metal(6, {'part', 'tool', 'armor', 'utility'}, 0.35, 1540, None),
-    'weak_steel': Metal(4, set(), 0.35, 1540, None),
-    'weak_blue_steel': Metal(5, set(), 0.35, 1540, None),
-    'weak_red_steel': Metal(5, set(), 0.35, 1540, None),
-    'high_carbon_steel': Metal(3, set(), 0.35, 1540, 'pig_iron'),
-    'high_carbon_black_steel': Metal(4, set(), 0.35, 1540, 'weak_steel'),
-    'high_carbon_blue_steel': Metal(5, set(), 0.35, 1540, 'weak_blue_steel'),
-    'high_carbon_red_steel': Metal(5, set(), 0.35, 1540, 'weak_red_steel'),
-    'unknown': Metal(0, set(), 0.5, 400, None)
+    'bismuth': Metal(1, {'part'}, 0.14, 270, None, False),
+    'bismuth_bronze': Metal(2, {'part', 'tool', 'armor', 'utility'}, 0.35, 985, None, False),
+    'black_bronze': Metal(2, {'part', 'tool', 'armor', 'utility'}, 0.35, 1070, None, False),
+    'bronze': Metal(2, {'part', 'tool', 'armor', 'utility'}, 0.35, 950, None, True),
+    'brass': Metal(2, {'part'}, 0.35, 930, None, True),
+    'copper': Metal(1, {'part', 'tool', 'armor', 'utility'}, 0.35, 1080, None, True),
+    'gold': Metal(1, {'part'}, 0.6, 1060, None, False),
+    'nickel': Metal(1, {'part'}, 0.48, 1453, None, False),
+    'rose_gold': Metal(1, {'part'}, 0.35, 960, None, False),
+    'silver': Metal(1, {'part'}, 0.48, 961, None, True),
+    'tin': Metal(1, {'part'}, 0.14, 230, None, False),
+    'zinc': Metal(1, {'part'}, 0.21, 420, None, False),
+    'sterling_silver': Metal(1, {'part'}, 0.35, 950, None, True),
+    'wrought_iron': Metal(3, {'part', 'tool', 'armor', 'utility'}, 0.35, 1535, 'cast_iron', True),
+    'cast_iron': Metal(1, {'part'}, 0.35, 1535, None, False),
+    'pig_iron': Metal(3, set(), 0.35, 1535, None, False),
+    'steel': Metal(4, {'part', 'tool', 'armor', 'utility'}, 0.35, 1540, None, True),
+    'black_steel': Metal(5, {'part', 'tool', 'armor', 'utility'}, 0.35, 1485, None, False),
+    'blue_steel': Metal(6, {'part', 'tool', 'armor', 'utility'}, 0.35, 1540, None, False),
+    'red_steel': Metal(6, {'part', 'tool', 'armor', 'utility'}, 0.35, 1540, None, False),
+    'weak_steel': Metal(4, set(), 0.35, 1540, None, False),
+    'weak_blue_steel': Metal(5, set(), 0.35, 1540, None, False),
+    'weak_red_steel': Metal(5, set(), 0.35, 1540, None, False),
+    'high_carbon_steel': Metal(3, set(), 0.35, 1540, 'pig_iron', False),
+    'high_carbon_black_steel': Metal(4, set(), 0.35, 1540, 'weak_steel', False),
+    'high_carbon_blue_steel': Metal(5, set(), 0.35, 1540, 'weak_blue_steel', False),
+    'high_carbon_red_steel': Metal(5, set(), 0.35, 1540, 'weak_red_steel', False),
+    'unknown': Metal(0, set(), 0.5, 400, None, False)
 }
 METAL_BLOCKS: dict[str, MetalItem] = {
     'anvil': MetalItem('utility', 1400, 'tfc:block/anvil', None, False, False),

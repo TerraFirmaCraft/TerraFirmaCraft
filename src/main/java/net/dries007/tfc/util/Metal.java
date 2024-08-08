@@ -72,22 +72,22 @@ import net.dries007.tfc.util.registry.RegistryMetal;
  */
 public enum Metal implements StringRepresentable, RegistryMetal
 {
-    BISMUTH(0xFF486B72, MapColor.TERRACOTTA_GREEN, Rarity.COMMON, PartType.DEFAULT, WeatheringType.BRONZE),
-    BISMUTH_BRONZE(0xFF418E4F, MapColor.TERRACOTTA_BLUE, Rarity.COMMON, TFCTiers.BISMUTH_BRONZE, TFCArmorMaterials.BISMUTH_BRONZE, WeatheringType.BRONZE),
-    BLACK_BRONZE(0xFF3B2636, MapColor.TERRACOTTA_PINK, Rarity.COMMON, TFCTiers.BLACK_BRONZE, TFCArmorMaterials.BLACK_BRONZE, WeatheringType.BRONZE),
+    BISMUTH(0xFF486B72, MapColor.TERRACOTTA_GREEN, Rarity.COMMON, PartType.DEFAULT),
+    BISMUTH_BRONZE(0xFF418E4F, MapColor.TERRACOTTA_BLUE, Rarity.COMMON, TFCTiers.BISMUTH_BRONZE, TFCArmorMaterials.BISMUTH_BRONZE),
+    BLACK_BRONZE(0xFF3B2636, MapColor.TERRACOTTA_PINK, Rarity.COMMON, TFCTiers.BLACK_BRONZE, TFCArmorMaterials.BLACK_BRONZE),
     BRONZE(0xFF96892E, MapColor.TERRACOTTA_ORANGE, Rarity.COMMON, TFCTiers.BRONZE, TFCArmorMaterials.BRONZE, WeatheringType.BRONZE),
     BRASS(0xFF7C5E33, MapColor.GOLD, Rarity.COMMON, PartType.DEFAULT, WeatheringType.BRONZE),
     COPPER(0xFFB64027, MapColor.COLOR_ORANGE, Rarity.COMMON, TFCTiers.COPPER, TFCArmorMaterials.COPPER, WeatheringType.COPPER),
     GOLD(0xFFDCBF1B, MapColor.GOLD, Rarity.COMMON, PartType.DEFAULT),
     NICKEL(0xFF4E4E3C, MapColor.STONE, Rarity.COMMON, PartType.DEFAULT),
     ROSE_GOLD(0xFFEB7137, MapColor.COLOR_PINK, Rarity.COMMON, PartType.DEFAULT),
-    SILVER(0xFF949495, MapColor.COLOR_LIGHT_GRAY, Rarity.COMMON, PartType.DEFAULT, WeatheringType.SILVER),
+    SILVER(0xFF949495, MapColor.COLOR_LIGHT_GRAY, Rarity.COMMON, PartType.DEFAULT_WEATHERING, WeatheringType.SILVER),
     TIN(0xFF90A4BB, MapColor.COLOR_LIGHT_GRAY, Rarity.COMMON, PartType.DEFAULT),
     ZINC(0xFFBBB9C4, MapColor.COLOR_LIGHT_GRAY, Rarity.COMMON, PartType.DEFAULT),
-    STERLING_SILVER(0xFFAC927B, MapColor.COLOR_LIGHT_GRAY, Rarity.COMMON, PartType.DEFAULT, WeatheringType.SILVER),
+    STERLING_SILVER(0xFFAC927B, MapColor.COLOR_LIGHT_GRAY, Rarity.COMMON, PartType.DEFAULT_WEATHERING, WeatheringType.SILVER),
     WROUGHT_IRON(0xFF989897, MapColor.METAL, Rarity.COMMON, TFCTiers.WROUGHT_IRON, TFCArmorMaterials.WROUGHT_IRON, WeatheringType.IRON),
-    CAST_IRON(0xFF989897, MapColor.COLOR_BROWN, Rarity.COMMON, PartType.DEFAULT, WeatheringType.IRON),
-    PIG_IRON(0xFF6A595C, MapColor.COLOR_GRAY, Rarity.COMMON, PartType.INGOT_ONLY, WeatheringType.IRON),
+    CAST_IRON(0xFF989897, MapColor.COLOR_BROWN, Rarity.COMMON, PartType.DEFAULT),
+    PIG_IRON(0xFF6A595C, MapColor.COLOR_GRAY, Rarity.COMMON, PartType.INGOT_ONLY),
     STEEL(0xFF5F5F5F, MapColor.COLOR_LIGHT_GRAY, Rarity.UNCOMMON, TFCTiers.STEEL, TFCArmorMaterials.STEEL, WeatheringType.STEEL),
     BLACK_STEEL(0xFF111111, MapColor.COLOR_BLACK, Rarity.RARE, TFCTiers.BLACK_STEEL, TFCArmorMaterials.BLACK_STEEL),
     BLUE_STEEL(0xFF2D5596, MapColor.COLOR_BLUE, Rarity.EPIC, TFCTiers.BLUE_STEEL, TFCArmorMaterials.BLUE_STEEL),
@@ -117,7 +117,7 @@ public enum Metal implements StringRepresentable, RegistryMetal
 
     Metal(int color, MapColor mapColor, Rarity rarity, LevelTier toolTier, TFCArmorMaterials.Id armorTier, WeatheringType weathering)
     {
-        this(color, mapColor, rarity, toolTier, armorTier, PartType.ALL, weathering);
+        this(color, mapColor, rarity, toolTier, armorTier, PartType.ALL_WEATHERING, weathering);
     }
 
     Metal(int color, MapColor mapColor, Rarity rarity, PartType partType)
@@ -163,19 +163,19 @@ public enum Metal implements StringRepresentable, RegistryMetal
         return partType != PartType.INGOT_ONLY;
     }
 
-    public boolean weatheringParts()
-    {
-        return partType == PartType.WEATHERING;
-    }
-
     public WeatheringType weathering()
     {
         return weathering;
     }
 
+    public boolean isWeathering()
+    {
+        return weathering == WeatheringType.NONE;
+    }
+
     public boolean allParts()
     {
-        return partType == PartType.ALL;
+        return partType == PartType.ALL || partType == PartType.ALL_WEATHERING;
     }
 
     @Override
@@ -195,8 +195,6 @@ public enum Metal implements StringRepresentable, RegistryMetal
     {
         return mapColor;
     }
-
-
 
     @Override
     public Supplier<Block> getFullBlock()
@@ -231,17 +229,17 @@ public enum Metal implements StringRepresentable, RegistryMetal
     {
         ANVIL(PartType.ALL, metal -> new AnvilBlock(ExtendedProperties.of().mapColor(metal.mapColor()).noOcclusion().sound(SoundType.ANVIL).strength(10, 10).requiresCorrectToolForDrops().blockEntity(TFCBlockEntities.ANVIL), metal.toolTier().level())),
         BLOCK(PartType.DEFAULT, metal -> new WeatheringMetalBlock(BlockBehaviour.Properties.of().mapColor(metal.mapColor()).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL), IClimateWeatheringBlock.TFCWeatherState.UNAFFECTED, metal)),
-        EXPOSED_BLOCK(PartType.WEATHERING, metal -> new WeatheringMetalBlock(BlockBehaviour.Properties.of().mapColor(metal.mapColor()).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL), IClimateWeatheringBlock.TFCWeatherState.EXPOSED, metal)),
-        WEATHERED_BLOCK(PartType.WEATHERING, metal -> new WeatheringMetalBlock(BlockBehaviour.Properties.of().mapColor(metal.mapColor()).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL), IClimateWeatheringBlock.TFCWeatherState.WEATHERED, metal)),
-        OXIDIZED_BLOCK(PartType.WEATHERING, metal -> new WeatheringMetalBlock(BlockBehaviour.Properties.of().mapColor(metal.mapColor()).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL), IClimateWeatheringBlock.TFCWeatherState.FULLY_WEATHERED, metal)),
+        EXPOSED_BLOCK(PartType.DEFAULT, metal -> new WeatheringMetalBlock(BlockBehaviour.Properties.of().mapColor(metal.mapColor()).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL), IClimateWeatheringBlock.TFCWeatherState.EXPOSED, metal)),
+        WEATHERED_BLOCK(PartType.DEFAULT, metal -> new WeatheringMetalBlock(BlockBehaviour.Properties.of().mapColor(metal.mapColor()).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL), IClimateWeatheringBlock.TFCWeatherState.WEATHERED, metal)),
+        OXIDIZED_BLOCK(PartType.DEFAULT, metal -> new WeatheringMetalBlock(BlockBehaviour.Properties.of().mapColor(metal.mapColor()).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL), IClimateWeatheringBlock.TFCWeatherState.FULLY_WEATHERED, metal)),
         BLOCK_SLAB(PartType.DEFAULT, metal -> new WeatheringMetalSlab(BlockBehaviour.Properties.of().mapColor(metal.mapColor()).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL), IClimateWeatheringBlock.TFCWeatherState.UNAFFECTED, metal)),
-        EXPOSED_BLOCK_SLAB(PartType.WEATHERING, metal -> new WeatheringMetalSlab(BlockBehaviour.Properties.of().mapColor(metal.mapColor()).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL), IClimateWeatheringBlock.TFCWeatherState.EXPOSED, metal)),
-        WEATHERED_BLOCK_SLAB(PartType.WEATHERING, metal -> new WeatheringMetalSlab(BlockBehaviour.Properties.of().mapColor(metal.mapColor()).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL), IClimateWeatheringBlock.TFCWeatherState.WEATHERED, metal)),
-        OXIDIZED_BLOCK_SLAB(PartType.WEATHERING, metal -> new WeatheringMetalSlab(BlockBehaviour.Properties.of().mapColor(metal.mapColor()).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL), IClimateWeatheringBlock.TFCWeatherState.FULLY_WEATHERED, metal)),
+        EXPOSED_BLOCK_SLAB(PartType.DEFAULT, metal -> new WeatheringMetalSlab(BlockBehaviour.Properties.of().mapColor(metal.mapColor()).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL), IClimateWeatheringBlock.TFCWeatherState.EXPOSED, metal)),
+        WEATHERED_BLOCK_SLAB(PartType.DEFAULT, metal -> new WeatheringMetalSlab(BlockBehaviour.Properties.of().mapColor(metal.mapColor()).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL), IClimateWeatheringBlock.TFCWeatherState.WEATHERED, metal)),
+        OXIDIZED_BLOCK_SLAB(PartType.DEFAULT, metal -> new WeatheringMetalSlab(BlockBehaviour.Properties.of().mapColor(metal.mapColor()).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL), IClimateWeatheringBlock.TFCWeatherState.FULLY_WEATHERED, metal)),
         BLOCK_STAIRS(PartType.DEFAULT, metal -> new WeatheringMetalStairs(metal.getFullBlock(IClimateWeatheringBlock.TFCWeatherState.UNAFFECTED).get().defaultBlockState(), BlockBehaviour.Properties.of().mapColor(metal.mapColor()).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL), IClimateWeatheringBlock.TFCWeatherState.UNAFFECTED, metal)),
-        EXPOSED_BLOCK_STAIRS(PartType.WEATHERING, metal -> new WeatheringMetalStairs(metal.getFullBlock(IClimateWeatheringBlock.TFCWeatherState.EXPOSED).get().defaultBlockState(), BlockBehaviour.Properties.of().mapColor(metal.mapColor()).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL), IClimateWeatheringBlock.TFCWeatherState.EXPOSED, metal)),
-        WEATHERED_BLOCK_STAIRS(PartType.WEATHERING, metal -> new WeatheringMetalStairs(metal.getFullBlock(IClimateWeatheringBlock.TFCWeatherState.WEATHERED).get().defaultBlockState(), BlockBehaviour.Properties.of().mapColor(metal.mapColor()).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL), IClimateWeatheringBlock.TFCWeatherState.WEATHERED, metal)),
-        OXIDIZED_BLOCK_STAIRS(PartType.WEATHERING, metal -> new WeatheringMetalStairs(metal.getFullBlock(IClimateWeatheringBlock.TFCWeatherState.FULLY_WEATHERED).get().defaultBlockState(), BlockBehaviour.Properties.of().mapColor(metal.mapColor()).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL), IClimateWeatheringBlock.TFCWeatherState.FULLY_WEATHERED, metal)),
+        EXPOSED_BLOCK_STAIRS(PartType.DEFAULT, metal -> new WeatheringMetalStairs(metal.getFullBlock(IClimateWeatheringBlock.TFCWeatherState.EXPOSED).get().defaultBlockState(), BlockBehaviour.Properties.of().mapColor(metal.mapColor()).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL), IClimateWeatheringBlock.TFCWeatherState.EXPOSED, metal)),
+        WEATHERED_BLOCK_STAIRS(PartType.DEFAULT, metal -> new WeatheringMetalStairs(metal.getFullBlock(IClimateWeatheringBlock.TFCWeatherState.WEATHERED).get().defaultBlockState(), BlockBehaviour.Properties.of().mapColor(metal.mapColor()).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL), IClimateWeatheringBlock.TFCWeatherState.WEATHERED, metal)),
+        OXIDIZED_BLOCK_STAIRS(PartType.DEFAULT, metal -> new WeatheringMetalStairs(metal.getFullBlock(IClimateWeatheringBlock.TFCWeatherState.FULLY_WEATHERED).get().defaultBlockState(), BlockBehaviour.Properties.of().mapColor(metal.mapColor()).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL), IClimateWeatheringBlock.TFCWeatherState.FULLY_WEATHERED, metal)),
         BARS(PartType.ALL, metal -> new IronBarsBlock(BlockBehaviour.Properties.of().mapColor(metal.mapColor()).requiresCorrectToolForDrops().strength(6.0F, 7.0F).sound(SoundType.METAL).noOcclusion())),
         CHAIN(PartType.ALL, metal -> new TFCChainBlock(Block.Properties.of().mapColor(metal.mapColor()).requiresCorrectToolForDrops().strength(5, 6).sound(SoundType.CHAIN).lightLevel(TFCBlocks.lavaLoggedBlockEmission()))),
         LAMP(PartType.ALL, metal -> new LampBlock(ExtendedProperties.of().mapColor(metal.mapColor()).noOcclusion().sound(SoundType.LANTERN).strength(4, 10).randomTicks().pushReaction(PushReaction.DESTROY).lightLevel(state -> state.getValue(LampBlock.LIT) ? 15 : 0).blockEntity(TFCBlockEntities.LAMP)), (block, properties) -> new LampBlockItem(block, properties.stacksTo(1))),
@@ -286,6 +284,16 @@ public enum Metal implements StringRepresentable, RegistryMetal
 
         public String createName(RegistryMetal metal)
         {
+            String slab = "_slab";
+            if (serializedName.contains(slab))
+            {
+                return "metal/" + serializedName.split(slab)[0] + "/" + metal.getSerializedName() + slab;
+            }
+            String stairs = "_stairs";
+            if (serializedName.contains(stairs))
+            {
+                return "metal/" + serializedName.split(stairs)[0] + "/" + metal.getSerializedName() + stairs;
+            }
             return "metal/" + serializedName + "/" + metal.getSerializedName();
         }
     }
@@ -383,7 +391,7 @@ public enum Metal implements StringRepresentable, RegistryMetal
 
         public boolean has(Metal metal)
         {
-            return metal.partType.ordinal() >= type.ordinal();
+            return type.hasMetal(metal.partType);
         }
 
         public boolean hasMold()
@@ -393,19 +401,36 @@ public enum Metal implements StringRepresentable, RegistryMetal
 
         public boolean isDefault()
         {
-            return type != PartType.ALL;
+            return type == PartType.DEFAULT || type == PartType.DEFAULT_WEATHERING;
         }
+
     }
 
     enum PartType
     {
-        INGOT_ONLY, DEFAULT, ALL, WEATHERING
-    }
+        // TODO not quite working yet?
+        INGOT_ONLY, DEFAULT, DEFAULT_WEATHERING, ALL, ALL_WEATHERING, WEATHERED;
+
+        boolean hasMetal(PartType metal)
+        {
+            return switch (this)
+            {
+                case WEATHERED -> metal == DEFAULT_WEATHERING || metal == ALL_WEATHERING;
+                case ALL -> metal.ordinal() >= ALL.ordinal();
+                case DEFAULT -> metal.ordinal() >= DEFAULT.ordinal();
+                case INGOT_ONLY -> true;
+                default -> throw new AssertionError("Invalid choice for a metal type " + this);
+            };
+        }
+        }
+
     public enum WeatheringType
     {
         COPPER(0), IRON(0), BRONZE(0.5f), STEEL(0.8f), SILVER(0.9f), NONE(1);
         private final float resistance;
-        WeatheringType(float resistance){
+
+        WeatheringType(float resistance)
+        {
             this.resistance = resistance;
         }
 
