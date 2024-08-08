@@ -894,10 +894,12 @@ def generate(rm: ResourceManager):
                             langword = "weathered"
                         elif "oxidized" in metal_block:
                             weather_state = "oxidized_block"
-                            if "bronze" in metal or "brass" in metal or "silver" in metal:
+                            if "bronze" in metal or "brass" in metal:
                                 langword = "patinaed"
-                            if "iron" in metal or "steel" in metal:
+                            elif "iron" in metal or "steel" in metal:
                                 langword = "rusted"
+                            elif "silver" in metal:
+                                langword = "tarnished"
 
                     block = rm.blockstate(('metal', weather_state, metal)).with_block_model().with_lang(lang(langword + ' %s plated block', metal)).with_item_model().with_block_loot(f'tfc:metal/{weather_state}/%s' % metal)
                     block.make_slab()

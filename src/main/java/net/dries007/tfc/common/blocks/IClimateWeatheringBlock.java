@@ -3,13 +3,25 @@ package net.dries007.tfc.common.blocks;
 import java.util.Iterator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.util.ParticleUtils;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 
+import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.climate.Climate;
 
 public interface IClimateWeatheringBlock
@@ -18,7 +30,9 @@ public interface IClimateWeatheringBlock
 
     Block getNext();
 
-    BlockState getNext(BlockState var1);
+    BlockState getNext(BlockState state);
+
+    BlockState getPrevious(BlockState state);
 
     Block getPrevious();
 
@@ -86,7 +100,8 @@ public interface IClimateWeatheringBlock
                 adjacentCount++;
             }
         }
-        if(adjacentCount <= 2){
+        if (adjacentCount <= 2)
+        {
             float drip = 0;
             for (int y = 1; y < 5; y++)
             {
@@ -154,12 +169,12 @@ public interface IClimateWeatheringBlock
             return TFCWeatherState.values()[ordinal];
         }
 
-        boolean hasNext()
+        public boolean hasNext()
         {
             return this.ordinal() < 3;
         }
 
-        boolean hasPrevious()
+        public boolean hasPrevious()
         {
             return this.ordinal() > 0;
         }

@@ -3,9 +3,16 @@ package net.dries007.tfc.common.blocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.registry.RegistryMetal;
 
@@ -30,7 +37,7 @@ public class WeatheringMetalBlock extends Block implements IClimateWeatheringBlo
     }
 
     public boolean isRandomlyTicking(BlockState state) {
-        return this.getAge().hasNext() && getMaterialModifier() > 0;
+        return this.getAge().hasNext() && metal.weathering() != Metal.WeatheringType.NONE;
     }
 
     @Override
@@ -71,6 +78,12 @@ public class WeatheringMetalBlock extends Block implements IClimateWeatheringBlo
     public BlockState getNext(BlockState blockState)
     {
         return this.getNext().defaultBlockState();
+    }
+
+    @Override
+    public BlockState getPrevious(BlockState state)
+    {
+        return this.getPrevious().defaultBlockState();
     }
 
     @Override

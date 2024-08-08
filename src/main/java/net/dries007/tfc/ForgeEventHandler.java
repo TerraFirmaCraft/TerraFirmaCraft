@@ -20,9 +20,12 @@ import net.minecraft.server.level.PlayerRespawnLogic;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
+import net.minecraft.util.ParticleUtils;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
@@ -134,6 +137,7 @@ import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
+import net.dries007.tfc.common.blocks.IClimateWeatheringBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.TFCCandleBlock;
 import net.dries007.tfc.common.blocks.TFCCandleCakeBlock;
@@ -270,6 +274,7 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onCropsGrow);
         bus.addListener(ForgeEventHandler::onMount);
         bus.addListener(ForgeEventHandler::onEntityInteract);
+        bus.addListener(ForgeEventHandler::onScrapeWeatherable);
     }
 
     /**
@@ -437,7 +442,6 @@ public final class ForgeEventHandler
             generator.chunkDataProvider().loadPartial(chunk, event.getData().getCompound("tfc_protochunk_data"));
         }
     }*/
-
     public static void registerCommands(RegisterCommandsEvent event)
     {
         LOGGER.debug("Registering TFC Commands");
@@ -1418,7 +1422,8 @@ public final class ForgeEventHandler
         if (event.getUsePhase() == UseItemOnBlockEvent.UsePhase.ITEM_AFTER_BLOCK)
         {
             InteractionManager.onItemUse(event.getItemStack(), event.getUseOnContext(), false).ifPresent(result -> {
-                event.cancelWithResult(switch (result) {
+                event.cancelWithResult(switch (result)
+                {
                     // This is the inverse of ItemInteractionResult.result()
                     case SUCCESS, SUCCESS_NO_ITEM_USED -> ItemInteractionResult.SUCCESS;
                     case CONSUME, CONSUME_PARTIAL -> ItemInteractionResult.CONSUME;
@@ -1584,6 +1589,30 @@ public final class ForgeEventHandler
             if (level instanceof ServerLevel server && server.random.nextFloat() > TFCConfig.SERVER.plantLongGrowthChance.get())
             {
                 event.setResult(CropGrowEvent.Pre.Result.DO_NOT_GROW);
+            }
+        }
+    }
+
+    public static void onScrapeWeatherable(BlockEvent.BlockToolModificationEvent event)
+    {
+        ItemStack stack = event.getHeldItemStack();
+        if (!stack.is(TFCTags.Items.TOOLS_SHARP))
+        {
+            return;
+        }
+        Player player = event.getPlayer();
+        BlockState state = event.getState();
+        if (state.getBlock() instanceof IClimateWeatheringBlock weatheringBlock && weatheringBlock.getAge().hasPrevious() && player.level() instanceof Level level)
+        {
+            BlockPos blockPos = event.getPos();
+
+            ParticleUtils.spawnParticlesOnBlockFaces(level, blockPos, ParticleTypes.SCRAPE, UniformInt.of(3, 5)); // TODO match block color
+            level.playLocalSound(blockPos, SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1.0F, 1.0F, false);
+
+            event.setFinalState(weatheringBlock.getPrevious(state));
+
+            if (!player.getAbilities().instabuild){
+                Helpers.damageItem(stack, level);
             }
         }
     }
