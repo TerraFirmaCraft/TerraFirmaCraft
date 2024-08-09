@@ -212,15 +212,8 @@ public class ChiselRecipe implements INoopInputRecipe
         STAIR,
         SLAB;
 
-        public static Mode valueOf(int i)
-        {
-            return i >= 0 && i < VALUES.length ? VALUES[i] : SMOOTH;
-        }
-
         public static final Codec<Mode> CODEC = StringRepresentable.fromValues(Mode::values);
         public static final StreamCodec<ByteBuf, Mode> STREAM_CODEC = StreamCodecs.forEnum(Mode::values);
-
-        private static final Mode[] VALUES = values();
 
         @Override
         public String getSerializedName()
@@ -230,7 +223,12 @@ public class ChiselRecipe implements INoopInputRecipe
 
         public Mode next()
         {
-            return valueOf(ordinal() + 1);
+            return switch (this)
+            {
+                case SMOOTH -> STAIR;
+                case STAIR -> SLAB;
+                case SLAB -> SMOOTH;
+            };
         }
     }
 }

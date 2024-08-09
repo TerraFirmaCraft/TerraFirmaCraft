@@ -28,7 +28,9 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterators;
 import com.machinezoo.noexception.throwing.ThrowingRunnable;
 import com.machinezoo.noexception.throwing.ThrowingSupplier;
+import com.mojang.datafixers.util.Pair;
 import com.mojang.logging.LogUtils;
+import com.mojang.serialization.Codec;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -37,6 +39,8 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -627,6 +631,11 @@ public final class Helpers
                 Helpers.removeStack(inventory, slot - 1); // Remove the previous slot = previous call to next()
             }
         };
+    }
+
+    public static <T> T readFromNbt(Codec<T> codec, @Nullable Tag tag, T defaultValue)
+    {
+        return codec.decode(NbtOps.INSTANCE, tag).result().map(Pair::getFirst).orElse(defaultValue);
     }
 
     public static ListTag writeItemStacksToNbt(HolderLookup.Provider provider, List<ItemStack> stacks)

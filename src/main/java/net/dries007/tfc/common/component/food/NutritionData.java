@@ -13,6 +13,7 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.common.player.PlayerInfo;
 import net.dries007.tfc.config.TFCConfig;
 
 /**
@@ -29,6 +30,7 @@ public class NutritionData
     private final float[] nutrients;
     private float averageNutrients;
     private int hungerWindow;
+    private int hunger;
 
     public NutritionData(float defaultNutritionValue, float defaultDairyNutritionValue)
     {
@@ -37,13 +39,8 @@ public class NutritionData
         this.defaultDairyNutritionValue = defaultDairyNutritionValue;
         this.nutrients = new float[5];
         this.hungerWindow = 0;
+        this.hunger = PlayerInfo.MAX_HUNGER;
 
-        calculateNutrition();
-    }
-
-    public void reset()
-    {
-        this.records.clear();
         calculateNutrition();
     }
 
@@ -63,6 +60,16 @@ public class NutritionData
     public float[] getNutrients()
     {
         return nutrients;
+    }
+
+    /**
+     * Set the current {@code hunger} value of the player, in {@code [0, PlayerInfo.MAX_HUNGER]}. This may update
+     * the nutrition of the player.
+     */
+    public void setHunger(int hunger)
+    {
+        this.hunger = hunger;
+        calculateNutrition();
     }
 
     /**
@@ -104,7 +111,13 @@ public class NutritionData
     {
         // Reset
         Arrays.fill(this.nutrients, 0);
-        int runningHungerTotal = 0;
+
+        // Consider any hunger that isn't currently satisfied (i.e. < 20) to be a zero-nutrient gap in the current window. This has the effect
+        // of pushing nutrient decay forward, into the time when hunger decays, and making food consumption always push total nutrients positively
+        //
+        // This does make it almost impossible to stay at "peak nutrition", so we re-weight the average nutrients, so values above 0.95 are
+        // effectively 1.0, as far as health is concerned.
+        int runningHungerTotal = Math.max(PlayerInfo.MAX_HUNGER - hunger, 0);
 
         // Reload from config
         hungerWindow = TFCConfig.SERVER.nutritionRotationHungerWindow.get();

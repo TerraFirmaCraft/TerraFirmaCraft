@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.player;
 
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.server.level.ServerPlayer;
@@ -25,6 +26,7 @@ import net.dries007.tfc.common.component.food.NutritionData;
 import net.dries007.tfc.common.recipes.ChiselRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.PlayerInfoPacket;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
@@ -326,8 +328,9 @@ public final class PlayerInfo extends net.minecraft.world.food.FoodData implemen
         food.readAdditionalSaveData(root);
         lastDrinkTick = tag.getLong("lastDrinkTick");
         thirst = tag.getFloat("thirst");
-        chiselMode = ChiselRecipe.Mode.CODEC.decode(NbtOps.INSTANCE, tag.get("chiselMode")).getOrThrow().getFirst();
+        chiselMode = Helpers.readFromNbt(ChiselRecipe.Mode.CODEC, tag.get("chiselMode"), ChiselRecipe.Mode.SMOOTH);
         nutrition.readFromNbt(tag.get("nutrition"));
+        nutrition.setHunger(getFoodLevel());
         intoxicationTick = tag.getLong("intoxication");
     }
 
@@ -393,6 +396,8 @@ public final class PlayerInfo extends net.minecraft.world.food.FoodData implemen
     @Override
     public void setFoodLevel(int foodLevel)
     {
+        modified = true;
+        nutrition.setHunger(foodLevel);
         food.setFoodLevel(foodLevel);
     }
 
