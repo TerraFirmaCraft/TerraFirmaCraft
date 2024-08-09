@@ -1,5 +1,6 @@
 {
-  "type": "tfc:advanced_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "#": {
       "item": "tfc:smooth_sandstone/green"

@@ -12,6 +12,7 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -31,7 +32,6 @@ import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.ItemAbility;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.plant.PlantRegrowth;
@@ -78,7 +78,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     {
         if (facing == Direction.UP)
         {
-            return stateIn.setValue(SNOWY, Helpers.isBlock(facingState, TFCTags.Blocks.SNOW));
+            return stateIn.setValue(SNOWY, Helpers.isBlock(facingState, BlockTags.SNOW));
         }
         else if (facing != Direction.DOWN)
         {

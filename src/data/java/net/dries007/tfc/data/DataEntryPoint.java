@@ -35,6 +35,7 @@ import net.dries007.tfc.data.providers.BuiltinDensityFunctions;
 import net.dries007.tfc.data.providers.BuiltinDeposits;
 import net.dries007.tfc.data.providers.BuiltinDrinkables;
 import net.dries007.tfc.data.providers.BuiltinEntityDamageResist;
+import net.dries007.tfc.data.providers.BuiltinEntityTags;
 import net.dries007.tfc.data.providers.BuiltinFauna;
 import net.dries007.tfc.data.providers.BuiltinFertilizers;
 import net.dries007.tfc.data.providers.BuiltinFluidHeat;
@@ -84,6 +85,7 @@ public final class DataEntryPoint
 
         add(event, new BuiltinItemTags(event, lookup, blockTags));
         add(event, new BuiltinFluidTags(event, lookup, drinkables));
+        add(event, new BuiltinEntityTags(event, lookup));
         tags(event, Registries.PAINTING_VARIANT, lookup, (provider, tags) -> TFCPaintings.PAINTING_TYPES
             .getEntries()
             .forEach(holder -> tags.tag(PaintingVariantTags.PLACEABLE).accept(holder.getKey())));

@@ -1,6 +1,7 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
+  "type": "tfc:advanced_shaped_crafting",
+  "input_column": 1,
+  "input_row": 2,
   "key": {
     "L": {
       "tag": "c:strings"
@@ -18,7 +19,14 @@
     "SXL"
   ],
   "result": {
-    "count": 1,
-    "id": "tfc:metal/fishing_rod/black_steel"
+    "modifiers": [
+      {
+        "type": "tfc:copy_forging_bonus"
+      }
+    ],
+    "stack": {
+      "count": 1,
+      "id": "tfc:metal/fishing_rod/black_steel"
+    }
   }
 }

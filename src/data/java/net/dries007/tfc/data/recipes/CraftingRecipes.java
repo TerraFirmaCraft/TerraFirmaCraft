@@ -9,6 +9,7 @@ import java.util.function.Function;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.Holder;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
@@ -447,7 +448,7 @@ public interface CraftingRecipes extends Recipes
                 .shaped(blocks.get(Wood.BlockType.LOOM));
             recipe("from_logs")
                 .input(TFCTags.Items.TOOLS_SAW)
-                .input(logsTagOf(wood))
+                .input(logsTagOf(Registries.ITEM, wood))
                 .damageInputs()
                 .shapeless(lumber, 8);
             recipe("from_planks")
@@ -499,7 +500,7 @@ public interface CraftingRecipes extends Recipes
                 .pattern("  S", " SL", "SLL")
                 .shaped(blocks.get(Wood.BlockType.SLUICE));
             recipe()
-                .input('L', logsTagOf(wood))
+                .input('L', logsTagOf(Registries.ITEM, wood))
                 .input('S', TFCTags.Items.TOOLS_SAW)
                 .pattern("LS", "L ")
                 .shaped(TFCItems.SUPPORTS.get(wood), 8);
@@ -1315,7 +1316,7 @@ public interface CraftingRecipes extends Recipes
             assert !outputs.isEmpty() || !output.isEmpty() : "Either non-empty output, or output modifiers must be present";
 
             onFinish.accept(name, isAdvanced()
-                ? new AdvancedShapelessRecipe("", CraftingBookCategory.MISC, ingredients, ItemStackProvider.of(output, outputs), remainder(), Optional.ofNullable(primaryInput))
+                ? new AdvancedShapelessRecipe(ingredients, ItemStackProvider.of(output, outputs), remainder(), Optional.ofNullable(primaryInput))
                 : new ShapelessRecipe("", CraftingBookCategory.MISC, output, ingredients));
         }
 
@@ -1330,8 +1331,8 @@ public interface CraftingRecipes extends Recipes
 
             final ShapedRecipePattern pattern = ShapedRecipePattern.of(keys.build(), this.pattern);
             onFinish.accept(name, isAdvanced()
-                ? new ShapedRecipe("", CraftingBookCategory.MISC, pattern, output)
-                : new AdvancedShapedRecipe("", CraftingBookCategory.MISC, pattern, true, ItemStackProvider.of(output, outputs), remainder(), inputRow, inputCol));
+                ? new AdvancedShapedRecipe(pattern, true, ItemStackProvider.of(output, outputs), remainder(), inputRow, inputCol)
+                : new ShapedRecipe("", CraftingBookCategory.MISC, pattern, output));
         }
 
         private Optional<ItemStackProvider> remainder()

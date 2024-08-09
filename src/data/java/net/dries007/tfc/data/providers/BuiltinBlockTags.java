@@ -8,6 +8,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import com.google.common.base.Preconditions;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -19,22 +20,30 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagBuilder;
 import net.minecraft.tags.TagEntry;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.data.ExistingFileHelper.ResourceType;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.DecorationBlockHolder;
+import net.dries007.tfc.common.blocks.GroundcoverBlockType;
 import net.dries007.tfc.common.blocks.SandstoneBlockType;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.crop.Crop;
 import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.blocks.plant.coral.Coral;
+import net.dries007.tfc.common.blocks.plant.fruit.FruitBlocks;
 import net.dries007.tfc.common.blocks.rock.Ore;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
@@ -79,11 +88,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(BlockTags.SAPLINGS).add(TFCBlocks.WOODS, Wood.BlockType.SAPLING);
         // Minecraft logs tags contain all log, stripped log, wood, and stripped wood
         // logs contains logs_that_burn + nether logs
-        tag(BlockTags.LOGS_THAT_BURN)
-            .add(TFCBlocks.WOODS, Wood.BlockType.LOG)
-            .add(TFCBlocks.WOODS, Wood.BlockType.STRIPPED_LOG)
-            .add(TFCBlocks.WOODS, Wood.BlockType.WOOD)
-            .add(TFCBlocks.WOODS, Wood.BlockType.STRIPPED_WOOD);
+        tag(BlockTags.LOGS_THAT_BURN).addTags(w -> logsTagOf(Registries.BLOCK, w), Wood.values());
         // Only includes logs that spawn naturally, we have both wood and logs that spawn naturally, so include both
         tag(BlockTags.OVERWORLD_NATURAL_LOGS)
             .add(TFCBlocks.WOODS, Wood.BlockType.LOG)
@@ -94,7 +99,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(BlockTags.WALLS).addEveryTFC(b -> b instanceof SlabBlock);
         tag(BlockTags.LEAVES)
             .add(TFCBlocks.WOODS, Wood.BlockType.LEAVES)
-            .add(TFCBlocks.WOODS, Wood.BlockType.FALLEN_LEAVES)
+            .addTags(FALLEN_LEAVES)
             .add(TFCBlocks.FRUIT_TREE_LEAVES);
         // Includes wooden trapdoors
         tag(BlockTags.TRAPDOORS).add(TFCBlocks.METALS, Metal.BlockType.TRAPDOOR);
@@ -129,7 +134,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(BlockTags.CANDLE_CAKES)
             .add(TFCBlocks.CANDLE_CAKE)
             .add(TFCBlocks.DYED_CANDLE_CAKES);
-        tag(BlockTags.SNOW).add(TFCBlocks.SNOW_PILE);
+        tag(BlockTags.SNOW).add(TFCBlocks.SNOW_PILE); // Includes snow layers, blocks, and powder snow
         tag(BlockTags.MINEABLE_WITH_AXE)
             .addOnly2(TFCBlocks.WOODS, k -> k != Wood.BlockType.LEAVES && k != Wood.BlockType.SAPLING && k != Wood.BlockType.POTTED_SAPLING && k != Wood.BlockType.FALLEN_LEAVES)
             .add(TFCBlocks.FRUIT_TREE_BRANCHES)
@@ -341,6 +346,15 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
 
         // ===== TFC Tags ===== //
 
+        for (Wood wood : Wood.VALUES)
+        {
+            tag(logsTagOf(Registries.BLOCK, wood)).add(
+                TFCBlocks.WOODS.get(wood).get(Wood.BlockType.LOG),
+                TFCBlocks.WOODS.get(wood).get(Wood.BlockType.STRIPPED_LOG),
+                TFCBlocks.WOODS.get(wood).get(Wood.BlockType.WOOD),
+                TFCBlocks.WOODS.get(wood).get(Wood.BlockType.STRIPPED_WOOD));
+        }
+
         tag(CAN_TRIGGER_COLLAPSE).addTags(Tags.Blocks.ORES, Tags.Blocks.STONES);
         tag(CAN_START_COLLAPSE).addTags(Tags.Blocks.ORES, TFCTags.Blocks.STONES_RAW);
         tag(CAN_COLLAPSE).addTags(Tags.Blocks.ORES, Tags.Blocks.STONES, STONES_SMOOTH, STONES_SPIKE);
@@ -362,13 +376,8 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(TOUGHNESS_2).addTag(Tags.Blocks.STONES);
         tag(TOUGHNESS_3).add(Blocks.BEDROCK);
         tag(BREAKS_WHEN_ISOLATED).addTag(STONES_RAW);
+        tag(FALLEN_LEAVES).add(TFCBlocks.WOODS, Wood.BlockType.FALLEN_LEAVES);
         tag(SEASONAL_LEAVES).addOnly(pivot(TFCBlocks.WOODS, Wood.BlockType.LEAVES), e -> !e.isConifer());
-        // Vanilla "corals" includes coral fans, + "coral_plants" (which includes corals), we mirror the same
-        tag(SALT_WATER_CORAL_PLANTS).add(TFCBlocks.CORAL, Coral.BlockType.CORAL);
-        tag(SALT_WATER_CORALS)
-            .addTags(SALT_WATER_CORAL_PLANTS)
-            .add(TFCBlocks.CORAL, Coral.BlockType.CORAL_FAN);
-        tag(SALT_WATER_WALL_CORALS).add(TFCBlocks.CORAL, Coral.BlockType.CORAL_WALL_FAN);
 
         tag(STONES_RAW).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.RAW);
         tag(STONES_HARDENED).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.HARDENED);
@@ -409,6 +418,45 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(SCRAPING_SURFACE).addTag(BlockTags.LOGS);
         tag(GLASS_POURING_TABLE).add(TFCBlocks.METALS.get(Metal.BRASS).get(Metal.BlockType.BLOCK));
         tag(GLASS_BASIN_BLOCKS).add(TFCBlocks.METALS.get(Metal.BRASS).get(Metal.BlockType.BLOCK));
+        tag(THATCH_BED_THATCH).add(TFCBlocks.THATCH);
+        tag(FRUIT_TREE_BRANCH)
+            .add(TFCBlocks.BANANA_PLANT, TFCBlocks.DEAD_BANANA_PLANT)
+            .add(TFCBlocks.FRUIT_TREE_BRANCHES)
+            .add(TFCBlocks.FRUIT_TREE_GROWING_BRANCHES);
+        tag(FRUIT_TREE_LEAVES).add(TFCBlocks.FRUIT_TREE_LEAVES);
+        tag(FRUIT_TREE_SAPLING).add(TFCBlocks.FRUIT_TREE_SAPLINGS);
+        tag(KELP_TREE).add(
+            TFCBlocks.PLANTS.get(Plant.GIANT_KELP_PLANT),
+            TFCBlocks.PLANTS.get(Plant.GIANT_KELP_FLOWER));
+        tag(KELP_BRANCH).add(TFCBlocks.PLANTS.get(Plant.GIANT_KELP_PLANT));
+        tag(LIVING_SPREADING_BUSHES)
+            .add(TFCBlocks.SPREADING_BUSHES)
+            .add(TFCBlocks.SPREADING_CANES);
+        tag(SPREADING_BUSHES)
+            .addTags(LIVING_SPREADING_BUSHES)
+            .add(TFCBlocks.DEAD_BERRY_BUSH, TFCBlocks.DEAD_CANE);
+        tag(THORNY_BUSHES).add(
+            TFCBlocks.SPREADING_BUSHES.get(FruitBlocks.SpreadingBush.RASPBERRY),
+            TFCBlocks.SPREADING_BUSHES.get(FruitBlocks.SpreadingBush.BLACKBERRY));
+        tag(POWDERKEG_CANNOT_BREAK).add(Blocks.BEDROCK); // todo: this shouldn't be necessary, these blocks should already be explosion proof?
+        tag(POWDERKEG_CAN_BREAK).addTags(BlockTags.DIRT, Tags.Blocks.STONES, Tags.Blocks.ORES, Tags.Blocks.GRAVELS);
+        tag(CAN_BE_SNOW_PILED)
+            .addTags(FALLEN_LEAVES, STONES_LOOSE)
+            .add(TFCBlocks.SMALL_ORES)
+            .add(TFCBlocks.GROUNDCOVER)
+            .add(TFCBlocks.WILD_CROPS)
+            .add(TFCBlocks.WOODS, Wood.BlockType.TWIG)
+            .addOnly(TFCBlocks.PLANTS, Plant::canBeSnowPiled);
+        tag(CAN_BE_ICE_PILED).addOnly(TFCBlocks.PLANTS, Plant::canBeIcePiled);
+        tag(CONVERTS_TO_HUMUS).addTag(FALLEN_LEAVES);
+        tag(SOLID_TOP_FACE).add(Blocks.HOPPER);
+        tag(LIT_BY_DROPPED_TORCH)
+            .addTag(BlockTags.LEAVES)
+            .add(
+                TFCBlocks.THATCH,
+                TFCBlocks.LOG_PILE,
+                TFCBlocks.PIT_KILN
+            );
 
         tag(MINEABLE_WITH_PROPICK); // Empty
         tag(MINEABLE_WITH_CHISEL); // Empty
@@ -463,6 +511,40 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(HALOPHYTE_PLANTABLE_ON).addTag(BlockTags.DIRT);
         tag(CREEPING_STONE_PLANTABLE_ON).addTags(Tags.Blocks.STONES, STONES_SMOOTH, Tags.Blocks.COBBLESTONES);
 
+        tag(RABBIT_RAIDABLE)
+            .add(Blocks.CARROTS)
+            .add(
+                TFCBlocks.CROPS.get(Crop.CARROT),
+                TFCBlocks.CROPS.get(Crop.CABBAGE)
+            );
+        tag(FOX_RAIDABLE)
+            .add(TFCBlocks.STATIONARY_BUSHES)
+            .add(TFCBlocks.CRANBERRY_BUSH);
+        tag(PET_SITS_ON)
+            .addTags(
+                BlockTags.WOOL_CARPETS,
+                BlockTags.WOOL,
+                Tags.Blocks.CHESTS
+            )
+            .add(TFCBlocks.LARGE_VESSEL)
+            .add(TFCBlocks.GLAZED_LARGE_VESSELS)
+            .add(TFCBlocks.QUERN);
+        tag(MONSTER_SPAWNS_ON)
+            .addTags(
+                BlockTags.DIRT,
+                Tags.Blocks.STONES,
+                Tags.Blocks.GRAVELS,
+                Tags.Blocks.ORES
+            )
+            .add(Blocks.OBSIDIAN);
+        tag(CONSUMES_TOOL_DURABILITY).add(TFCBlocks.PLANTS.values()
+            .stream()
+            .filter(b -> b.get().defaultBlockState().getDestroySpeed(empty(), BlockPos.ZERO) == 0f));
+        tag(NATURAL_REGROWING_PLANTS).add(TFCBlocks.PLANTS);
+        tag(ANIMAL_IGNORED_PLANTS).add(TFCBlocks.PLANTS.values()
+            .stream()
+            .filter(b -> b.get().getSpeedFactor() != 1.0f));
+
         tag(CLAY_INDICATORS).add(
             TFCBlocks.PLANTS.get(Plant.ATHYRIUM_FERN),
             TFCBlocks.PLANTS.get(Plant.CANNA),
@@ -470,6 +552,26 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             TFCBlocks.PLANTS.get(Plant.PAMPAS_GRASS),
             TFCBlocks.PLANTS.get(Plant.PEROVSKIA),
             TFCBlocks.PLANTS.get(Plant.WATER_CANNA));
+
+        // Vanilla "corals" includes coral fans, + "coral_plants" (which includes corals), we mirror the same
+        tag(SALT_WATER_CORAL_PLANTS).add(TFCBlocks.CORAL, Coral.BlockType.CORAL);
+        tag(SALT_WATER_CORALS)
+            .addTags(SALT_WATER_CORAL_PLANTS)
+            .add(TFCBlocks.CORAL, Coral.BlockType.CORAL_FAN);
+        tag(SALT_WATER_WALL_CORALS).add(TFCBlocks.CORAL, Coral.BlockType.CORAL_WALL_FAN);
+        tag(HALOPHYTE).add(
+            TFCBlocks.PLANTS.get(Plant.SEA_LAVENDER),
+            TFCBlocks.PLANTS.get(Plant.CORDGRASS));
+        tag(SINGLE_BLOCK_REPLACEABLE); // todo
+        tag(TIDE_POOL_BLOCKS).add(
+            TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.CLAM),
+            TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.MOLLUSK),
+            TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.MUSSEL),
+            TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.SEA_URCHIN));
+        tag(KAOLIN_CLAY_REPLACEABLE).addTags(DIRT, Tags.Blocks.STONES, Tags.Blocks.GRAVELS);
+        tag(KAOLIN_CLAY_REPLACEABLE)
+            .addTags(DIRT, Tags.Blocks.GRAVELS)
+            .add(Blocks.SNOW_BLOCK);
     }
 
     @Override
@@ -576,6 +678,19 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         {
             blocks.values().forEach(m -> addOnly(m, key));
             return this;
+        }
+
+        @SafeVarargs
+        @SuppressWarnings("unchecked")
+        final <K> BlockTagAppender addTags(Function<K, TagKey<Block>> apply, K... values)
+        {
+            return addTags(Arrays.stream(values).map(apply).toArray(TagKey[]::new));
+        }
+
+        @Override
+        public BlockTagAppender addTag(TagKey<Block> tag)
+        {
+            return (BlockTagAppender) super.addTag(tag);
         }
 
         @Override

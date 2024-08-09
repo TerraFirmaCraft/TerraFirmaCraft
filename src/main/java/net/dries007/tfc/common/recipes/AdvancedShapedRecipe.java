@@ -23,7 +23,6 @@ import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
 
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
-import net.dries007.tfc.network.StreamCodecs;
 
 /**
  * A shaped recipe type which uses {@link ItemStackProvider} as it's output mechanism
@@ -33,8 +32,6 @@ public class AdvancedShapedRecipe extends ShapedRecipe
 {
     public static final MapCodec<AdvancedShapedRecipe> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
         // Copied from ShapedRecipe.Serializer.CODEC, as we want to avoid the "result" field as a strict item stack
-        Codec.STRING.optionalFieldOf("group", "").forGetter(ShapedRecipe::getGroup),
-        CraftingBookCategory.CODEC.optionalFieldOf("category", CraftingBookCategory.MISC).forGetter(ShapedRecipe::category),
         ShapedRecipePattern.MAP_CODEC.forGetter(c -> c.pattern),
         Codec.BOOL.optionalFieldOf("show_notification", true).forGetter(ShapedRecipe::showNotification),
         ItemStackProvider.CODEC.fieldOf("result").forGetter(c -> c.result),
@@ -43,9 +40,7 @@ public class AdvancedShapedRecipe extends ShapedRecipe
         Codec.INT.optionalFieldOf("input_column", 0).forGetter(c -> c.inputColumn)
     ).apply(i, AdvancedShapedRecipe::new));
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, AdvancedShapedRecipe> STREAM_CODEC = StreamCodecs.composite(
-        ByteBufCodecs.STRING_UTF8, ShapedRecipe::getGroup,
-        CraftingBookCategory.STREAM_CODEC, ShapedRecipe::category,
+    public static final StreamCodec<RegistryFriendlyByteBuf, AdvancedShapedRecipe> STREAM_CODEC = StreamCodec.composite(
         ShapedRecipePattern.STREAM_CODEC, c -> c.pattern,
         ByteBufCodecs.BOOL, ShapedRecipe::showNotification,
         ItemStackProvider.STREAM_CODEC, c -> c.result,
@@ -59,9 +54,9 @@ public class AdvancedShapedRecipe extends ShapedRecipe
     private final Optional<ItemStackProvider> remainder;
     private final int inputSlot, inputRow, inputColumn;
 
-    public AdvancedShapedRecipe(String group, CraftingBookCategory category, ShapedRecipePattern pattern, boolean showNotification, ItemStackProvider result, Optional<ItemStackProvider> remainder, int inputRow, int inputColumn)
+    public AdvancedShapedRecipe(ShapedRecipePattern pattern, boolean showNotification, ItemStackProvider result, Optional<ItemStackProvider> remainder, int inputRow, int inputColumn)
     {
-        super(group, category, pattern, ItemStack.EMPTY, showNotification);
+        super("", CraftingBookCategory.MISC, pattern, ItemStack.EMPTY, showNotification);
 
         this.result = result;
         this.remainder = remainder;

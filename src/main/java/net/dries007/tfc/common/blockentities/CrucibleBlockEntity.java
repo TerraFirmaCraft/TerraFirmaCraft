@@ -358,7 +358,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         }
     }
 
-    static class CrucibleInventory implements DelegateItemHandler, FluidContainer, IHeatConsumer, INBTSerializable<CompoundTag>
+    public static class CrucibleInventory implements DelegateItemHandler, FluidContainer, IHeatConsumer, INBTSerializable<CompoundTag>
     {
         private static final FluidContainerInfo INFO = new FluidContainerInfo() {
             @Override

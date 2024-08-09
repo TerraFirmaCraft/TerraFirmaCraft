@@ -88,12 +88,12 @@ public class PowderKegExplosion extends Explosion
 
             if (!easyMode)
             {
-                if (Helpers.isBlock(state, TFCTags.Blocks.EXPLOSION_PROOF))
+                if (Helpers.isBlock(state, TFCTags.Blocks.POWDERKEG_CANNOT_BREAK))
                     continue;
             }
             else
             {
-                if (!Helpers.isBlock(state, TFCTags.Blocks.POWDERKEG_BREAKING_BLOCKS))
+                if (!Helpers.isBlock(state, TFCTags.Blocks.POWDERKEG_CAN_BREAK))
                     continue;
             }
 

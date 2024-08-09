@@ -1,0 +1,9 @@
+{
+  "values": [
+    "#minecraft:dirt",
+    "#c:stones",
+    "#c:gravels",
+    "#c:ores",
+    "minecraft:obsidian"
+  ]
+}

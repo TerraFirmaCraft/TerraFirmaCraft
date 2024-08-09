@@ -38,7 +38,7 @@ public class DeadCaneBlock extends SpreadingCaneBlock implements EntityBlockExte
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
-        if (random.nextInt(15) == 0 && !level.getBlockState(pos.above()).is(TFCTags.Blocks.ANY_SPREADING_BUSH))
+        if (random.nextInt(15) == 0 && !level.getBlockState(pos.above()).is(TFCTags.Blocks.SPREADING_BUSHES))
         {
             if (level.getBlockEntity(pos) instanceof TickCounterBlockEntity counter)
             {

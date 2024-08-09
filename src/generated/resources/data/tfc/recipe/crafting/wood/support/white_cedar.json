@@ -1,8 +1,9 @@
 {
-  "type": "tfc:advanced_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "L": {
-      "tag": "tfc:white_cedar"
+      "tag": "tfc:white_cedar_logs"
     },
     "S": {
       "tag": "c:tools/saw"

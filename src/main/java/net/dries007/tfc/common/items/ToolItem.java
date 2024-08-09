@@ -56,7 +56,7 @@ public class ToolItem extends DiggerItem
      */
     public static boolean willConsumeDurability(Level level, BlockPos pos, BlockState state)
     {
-        return Helpers.isBlock(state.getBlock(), TFCTags.Blocks.PLANTS) || state.getDestroySpeed(level, pos) != 0.0F;
+        return Helpers.isBlock(state.getBlock(), TFCTags.Blocks.CONSUMES_TOOL_DURABILITY) || state.getDestroySpeed(level, pos) != 0.0F;
     }
 
     public ToolItem(Tier tier, TagKey<Block> mineableBlocks, Properties properties)

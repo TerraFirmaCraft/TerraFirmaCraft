@@ -25,7 +25,9 @@ import net.dries007.tfc.ForgeEventHandler;
 import net.dries007.tfc.client.render.blockentity.BowlBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.JarsBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.TripHammerBlockEntityRenderer;
+import net.dries007.tfc.common.blocks.plant.PlantRegrowth;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
+import net.dries007.tfc.common.entities.misc.HoldingMinecart;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.common.recipes.LandslideRecipe;
 import net.dries007.tfc.common.recipes.ingredients.FluidContentIngredient;
@@ -37,37 +39,6 @@ public class TFCTags
 {
     public static class Blocks
     {
-        public static final TagKey<Block> PLANTS = tag("plants"); // for some decoration placement
-        public static final TagKey<Block> SINGLE_BLOCK_REPLACEABLE = tag("single_block_replaceable"); // blocks that features can safely destroy
-        public static final TagKey<Block> HALOPHYTE = tag("halophyte"); // Used for all saltwater plants that generate in salt marshes
-        public static final TagKey<Block> KELP_TREE = tag("kelp_tree");
-        public static final TagKey<Block> KELP_BRANCH = tag("kelp_branch");
-        public static final TagKey<Block> SPREADING_BUSH = tag("spreading_bush");
-        public static final TagKey<Block> ANY_SPREADING_BUSH = tag("any_spreading_bush");
-        public static final TagKey<Block> THORNY_BUSHES = tag("thorny_bushes"); // Bushes that damage entities walking through them
-        public static final TagKey<Block> FRUIT_TREE_BRANCH = tag("fruit_tree_branch");
-        public static final TagKey<Block> FRUIT_TREE_LEAVES = tag("fruit_tree_leaves");
-        public static final TagKey<Block> FRUIT_TREE_SAPLING = tag("fruit_tree_sapling");
-        public static final TagKey<Block> THATCH_BED_THATCH = tag("thatch_bed_thatch");
-        public static final TagKey<Block> SNOW = tag("snow"); // Blocks that cover grass with snow.
-        public static final TagKey<Block> CAN_BE_SNOW_PILED = tag("can_be_snow_piled"); // Blocks that can be replaced with snow piles
-        public static final TagKey<Block> CAN_BE_ICE_PILED = tag("can_be_ice_piled"); // Blocks that need to be replaced with ice piles, either from ice freezing below it, or ice freezing inside the block itself.
-        public static final TagKey<Block> LIT_BY_DROPPED_TORCH = tag("lit_by_dropped_torch"); // Causes dropped torches to start fires on them
-        public static final TagKey<Block> CONVERTS_TO_HUMUS = tag("converts_to_humus");
-        public static final TagKey<Block> POWDER_SNOW_REPLACEABLE = tag("powder_snow_replaceable"); // on feature gen, can be replaced by powder snow
-        public static final TagKey<Block> RABBIT_RAIDABLE = tag("rabbit_raidable"); // rabbits will break it
-        public static final TagKey<Block> FOX_RAIDABLE = tag("fox_raidable"); // foxes will eat the berries. only applies to seasonal plant blocks
-        public static final TagKey<Block> PET_SITS_ON = tag("pet_sits_on"); // pet prefers to sit here.
-        public static final TagKey<Block> MINECART_HOLDABLE = tag("minecart_holdable"); // blocks that carts will hold. this is a block tag to ensure it can render in the cart.
-        public static final TagKey<Block> MONSTER_SPAWNS_ON = tag("monster_spawns_on");
-        public static final TagKey<Block> BOTTOM_SUPPORT_ACCEPTED = tag("bottom_support_accepted"); // ignored by devices for bottom support
-        public static final TagKey<Block> TIDE_POOL_BLOCKS = tag("tide_pool_blocks"); // groundcover blocks that spawn in tide pools
-        public static final TagKey<Block> EXPLOSION_PROOF = tag("explosion_proof");
-        public static final TagKey<Block> POWDERKEG_BREAKING_BLOCKS = tag("powderkeg_breaking_blocks");
-        public static final TagKey<Block> KAOLIN_CLAY_REPLACEABLE = tag("kaolin_clay_replaceable");
-
-        // ===== Data Generated ===== //
-
         /** If the block can trigger collapses to start nearby when mined */
         public static final TagKey<Block> CAN_TRIGGER_COLLAPSE = tag("can_trigger_collapse");
         /** If the block can form the epicenter of a collapse */
@@ -88,16 +59,9 @@ public class TFCTags
         public static final TagKey<Block> TOUGHNESS_3 = tag("toughness_3");
         /** When surrounded on all six sides by air, this block will break and drop itself */
         public static final TagKey<Block> BREAKS_WHEN_ISOLATED = tag("breaks_when_isolated");
+        public static final TagKey<Block> FALLEN_LEAVES = tag("fallen_leaves");
         /** Leaf blocks that spawn leaf particles in the fall */
         public static final TagKey<Block> SEASONAL_LEAVES = tag("seasonal_leaves");
-        /**
-         * Used in world generation to select random coral blocks. Seperate from the vanilla tags because we don't want to include vanilla coral blocks
-         * @see BlockTags#CORALS
-         * @see BlockTags#WALL_CORALS
-         */
-        public static final TagKey<Block> SALT_WATER_CORAL_PLANTS = tag("salt_water_coral_plants");
-        public static final TagKey<Block> SALT_WATER_CORALS = tag("salt_water_corals");
-        public static final TagKey<Block> SALT_WATER_WALL_CORALS = tag("salt_water_wall_corals");
 
         // Tags.Blocks.STONES includes raw + hardened
         public static final TagKey<Block> STONES_RAW = commonTag("stones/raw");
@@ -135,6 +99,41 @@ public class TFCTags
         public static final TagKey<Block> GLASS_POURING_TABLE = tag("glass_pouring_table");
         /** Block that you can pour hot glass in, to create glass blocks*/
         public static final TagKey<Block> GLASS_BASIN_BLOCKS = tag("glass_basin_blocks");
+        /** Thatch blocks that can be used to create a thatch bed */
+        public static final TagKey<Block> THATCH_BED_THATCH = tag("thatch_bed_thatch");
+        /** Used for fruit tree growth mechanics */
+        public static final TagKey<Block> FRUIT_TREE_BRANCH = tag("fruit_tree_branches");
+        public static final TagKey<Block> FRUIT_TREE_LEAVES = tag("fruit_tree_leaves");
+        public static final TagKey<Block> FRUIT_TREE_SAPLING = tag("fruit_tree_saplings");
+        /** Used for kelp growth mechanics */
+        public static final TagKey<Block> KELP_TREE = tag("kelp_trees");
+        public static final TagKey<Block> KELP_BRANCH = tag("kelp_branches");
+        /** Used for spreading bush growth mechanics. */
+        public static final TagKey<Block> LIVING_SPREADING_BUSHES = tag("spreading_bushes/living");
+        /** Used for spreading bush growth mechanics. Includes both living and dead bushes. */
+        public static final TagKey<Block> SPREADING_BUSHES = tag("spreading_bushes");
+        /** Bushes that damage entities walking through them */
+        public static final TagKey<Block> THORNY_BUSHES = tag("thorny_bushes");
+        /** One of either can_break or cannot_break is used, depending on if powder kegs are restricted to only natural blocks or not in the config */
+        public static final TagKey<Block> POWDERKEG_CANNOT_BREAK = tag("explosion_proof");
+        public static final TagKey<Block> POWDERKEG_CAN_BREAK = tag("powderkeg_breaking_blocks");
+        /** Blocks that can be replaced with snow piles */
+        public static final TagKey<Block> CAN_BE_SNOW_PILED = tag("can_be_snow_piled");
+        /** Blocks that can be replaced with ice piles. */
+        public static final TagKey<Block> CAN_BE_ICE_PILED = tag("can_be_ice_piled");
+        /** Blocks that, when covered by a snow pile, will be replaced with humus */
+        public static final TagKey<Block> CONVERTS_TO_HUMUS = tag("converts_to_humus");
+        /**
+         * Blocks that are considered to have a solid top face, despite the block itself not having one. Currently, this only
+         * applies to hoppers, and is pretty much used only for allowing automation to interact with nest boxes.
+         */
+        public static final TagKey<Block> SOLID_TOP_FACE = tag("solid_top_face");
+        /**
+         * Blocks that will start fires, if a torch entity is dropped on them. This includes pit kilns and log piles, but also
+         * highly flammable blocks such as leaves or thatch.
+         */
+        public static final TagKey<Block> LIT_BY_DROPPED_TORCH = tag("lit_by_dropped_torch");
+
 
         /** Both these are empty by default, but provided for potential compatibility */
         public static final TagKey<Block> MINEABLE_WITH_PROPICK = tag("mineable/propick");
@@ -151,7 +150,10 @@ public class TFCTags
 
         public static final TagKey<Block> PROSPECTABLE = tag("prospectable"); // can be found with the prospector pick
 
-        /** The vanilla tag {@link BlockTags#DIRT} contains all dirt, grass, and mud. These tags mostly only contain the respective TFC blocks and identical ones */
+        /**
+         * The vanilla tag {@link BlockTags#DIRT} contains all dirt, grass, and mud. These tags mostly
+         * only contain the respective TFC blocks and identical ones
+         */
         public static final TagKey<Block> DIRT = tag("dirt");
         public static final TagKey<Block> GRASS = tag("grass");
         /** Used for non-wild crop growth. */
@@ -163,17 +165,63 @@ public class TFCTags
         public static final TagKey<Block> CLAYS = tag("clays");
         public static final TagKey<Block> KAOLIN_CLAYS = tag("clays/kaolin");
 
-        public static final TagKey<Block> TREE_GROWS_ON = tag("tree_grows_on"); // Used for tree growth
-        public static final TagKey<Block> WILD_CROP_GROWS_ON = tag("wild_crop_grows_on"); // Used for wild crops
-        public static final TagKey<Block> SPREADING_FRUIT_GROWS_ON = tag("spreading_fruit_grows_on"); // pumpkins and melons will grow here
-        public static final TagKey<Block> BUSH_PLANTABLE_ON = tag("bush_plantable_on"); // Used for plant placement
-        public static final TagKey<Block> GRASS_PLANTABLE_ON = tag("grass_plantable_on"); // Grass has a slightly expanded placing allowance
-        public static final TagKey<Block> SEA_BUSH_PLANTABLE_ON = tag("sea_bush_plantable_on"); // Used for sea plant placement
-        public static final TagKey<Block> HALOPHYTE_PLANTABLE_ON = tag("halophyte_plantable_on"); // Used for halophyte placement
+        /**
+         * These are all used for various types of plants, as the block that they grow on. They can also be used during world generation,
+         * for blocks that these will spawn on (typically the difference between "grows on" and "plantable on").
+         */
+        public static final TagKey<Block> TREE_GROWS_ON = tag("tree_grows_on");
+        public static final TagKey<Block> WILD_CROP_GROWS_ON = tag("wild_crop_grows_on");
+        public static final TagKey<Block> SPREADING_FRUIT_GROWS_ON = tag("spreading_fruit_grows_on");
+        public static final TagKey<Block> BUSH_PLANTABLE_ON = tag("bush_plantable_on");
+        public static final TagKey<Block> GRASS_PLANTABLE_ON = tag("grass_plantable_on");
+        public static final TagKey<Block> SEA_BUSH_PLANTABLE_ON = tag("sea_bush_plantable_on");
+        public static final TagKey<Block> HALOPHYTE_PLANTABLE_ON = tag("halophyte_plantable_on");
         public static final TagKey<Block> CREEPING_STONE_PLANTABLE_ON = tag("creeping_stone_plantable_on");
+
+        /** Crops that rabbits will eat / break. Includes cabbage and carrots. */
+        public static final TagKey<Block> RABBIT_RAIDABLE = tag("rabbit_raidable");
+        /** Crops / plants that foxes will eat and break. Only includes seasonal berries. */
+        public static final TagKey<Block> FOX_RAIDABLE = tag("fox_raidable");
+        /** Pets like to troll their owners and sit on inconvenient blocks. */
+        public static final TagKey<Block> PET_SITS_ON = tag("pet_sits_on");
+        /**
+         * In TFC, by default, monsters only spawn on natural blocks. This is to prevent the unfortunate case where a house is built with
+         * torches, which may go out, creating accidental mob farms. In general, we don't want hostile mobs spawning elsewhere than underground
+         */
+        public static final TagKey<Block> MONSTER_SPAWNS_ON = tag("monster_spawns_on");
+
+        /** Blocks that when broken, always consume tool durability, even if these are instant-break (plants fall into this category) */
+        public static final TagKey<Block> CONSUMES_TOOL_DURABILITY = tag("consumes_tool_durability");
+        /**
+         * Blocks that will prevent natural growth nearby. This is used to prevent an area from overpopulating itself with plants.
+         * @see PlantRegrowth
+         */
+        public static final TagKey<Block> NATURAL_REGROWING_PLANTS = tag("natural_regrowing_plants");
+        /** Blocks that most animals will be able to move through without getting slowed, as would a player. */
+        public static final TagKey<Block> ANIMAL_IGNORED_PLANTS = tag("animal_ignored_plants");
 
         /** Used in the Field Guide to display indicators in a multiblock */
         public static final TagKey<Block> CLAY_INDICATORS = tag("clay_indicators");
+
+        /**
+         * Used in world generation to select random coral blocks. Separate from the vanilla tags because we don't want to include vanilla coral blocks
+         * @see BlockTags#CORALS
+         * @see BlockTags#WALL_CORALS
+         */
+        public static final TagKey<Block> SALT_WATER_CORAL_PLANTS = tag("salt_water_coral_plants");
+        public static final TagKey<Block> SALT_WATER_CORALS = tag("salt_water_corals");
+        public static final TagKey<Block> SALT_WATER_WALL_CORALS = tag("salt_water_wall_corals");
+        /** Saltwater plants that generate in salt marsh biomes */
+        public static final TagKey<Block> HALOPHYTE = tag("halophyte");
+        /** Single blocks that other features can safely destroy / replace */
+        public static final TagKey<Block> SINGLE_BLOCK_REPLACEABLE = tag("single_block_replaceable");
+        /** Decoration blocks that spawn in tide pools */
+        public static final TagKey<Block> TIDE_POOL_BLOCKS = tag("tide_pool_blocks");
+        /** Blocks that can be replaced with kaolin clay */
+        public static final TagKey<Block> KAOLIN_CLAY_REPLACEABLE = tag("kaolin_clay_replaceable");
+        /** Blocks that can be replaced with powder snow */
+        public static final TagKey<Block> POWDER_SNOW_REPLACEABLE = tag("powder_snow_replaceable");
+
 
         private static TagKey<Block> tag(String name)
         {
@@ -189,7 +237,8 @@ public class TFCTags
     public static class Fluids
     {
         /**
-         * These vanilla tags, historically, were required for <strong>any</strong> fluid behavior, and so may still be used that way. Do not rely on them only containing water or lava, instead, reference the below tags for more specific fluid grouping.
+         * These vanilla tags, historically, were required for <strong>any</strong> fluid behavior, and so may still be used that way.
+         * Do not rely on them only containing water or lava, instead, reference the below tags for more specific fluid grouping.
          */
         public static final TagKey<Fluid> WATER_LIKE = FluidTags.WATER;
         public static final TagKey<Fluid> LAVA_LIKE = FluidTags.LAVA;
@@ -242,12 +291,6 @@ public class TFCTags
         // todo: figure out if we really want to support these, or replace with the tool action and say to hell with fire charges
         public static final TagKey<Item> STARTS_FIRES_WITH_DURABILITY = tag("starts_fires_with_durability");
         public static final TagKey<Item> STARTS_FIRES_WITH_ITEMS = tag("starts_fires_with_items");
-        // todo: probably remove hand wheel, no plan to include it
-        public static final TagKey<Item> HAND_WHEEL = tag("hand_wheel");
-        // todo: now we have interface mixins, use an inject into IItemStackExtension to make this actually work?
-        // And then, really, this doesn't need to be in TFC anymore >.>
-        public static final TagKey<Item> PIGLIN_BARTERING_INGOTS = tag("piglin_bartering_ingots"); // ingots that piglins will trade for.
-
 
         // ===== Data Generated ===== //
 
@@ -453,6 +496,11 @@ public class TFCTags
         public static final TagKey<Item> TOOL_RACK_TOOLS = tag("usable_on_tool_rack");
         public static final TagKey<Item> POWDER_KEG_FUEL = tag("usable_in_powder_keg");
         /**
+         * Items that can be placed in a {@link HoldingMinecart}. Items present here must be block items, in order to
+         * be able to render them.
+         */
+        public static final TagKey<Item> MINECART_HOLDABLE = tag("minecart_holdable");
+        /**
          * Items that can be used in a trip hammer. This is a technical tag, and it must match the items in
          * {@link TripHammerBlockEntityRenderer#HAMMER_TEXTURES}
          */
@@ -520,6 +568,7 @@ public class TFCTags
         // Block Tags - Misc
         public static final TagKey<Item> ANVILS = tag(Blocks.ANVILS);
         public static final TagKey<Item> WORKBENCHES = tag(Blocks.WORKBENCHES);
+        public static final TagKey<Item> FALLEN_LEAVES = tag(Blocks.FALLEN_LEAVES);
 
 
         private static TagKey<Item> tag(TagKey<Block> blockTag)
@@ -540,27 +589,32 @@ public class TFCTags
 
     public static class Entities
     {
-        public static final TagKey<EntityType<?>> TURTLE_FRIENDS = create("turtle_friends");
-        public static final TagKey<EntityType<?>> SPAWNS_ON_COLD_BLOCKS = create("spawns_on_cold_blocks"); // if ice is a valid spawn
-        public static final TagKey<EntityType<?>> BUBBLE_COLUMN_IMMUNE = create("bubble_column_immune");
-        public static final TagKey<EntityType<?>> NEEDS_LARGE_FISHING_BAIT = create("needs_large_fishing_bait");
-        public static final TagKey<EntityType<?>> HUNTS_LAND_PREY = create("hunts_land_prey");
-        public static final TagKey<EntityType<?>> HUNTED_BY_LAND_PREDATORS = create("hunted_by_land_predators");
-        public static final TagKey<EntityType<?>> OCEAN_PREDATORS = create("ocean_predators");
-        public static final TagKey<EntityType<?>> HUNTED_BY_OCEAN_PREDATORS = create("hunted_by_ocean_predators");
-        public static final TagKey<EntityType<?>> VANILLA_MONSTERS = create("vanilla_monsters");
-        public static final TagKey<EntityType<?>> DEALS_SLASHING_DAMAGE = create("deals_slashing_damage");
-        public static final TagKey<EntityType<?>> DEALS_PIERCING_DAMAGE = create("deals_piercing_damage");
-        public static final TagKey<EntityType<?>> DEALS_CRUSHING_DAMAGE = create("deals_crushing_damage");
-        public static final TagKey<EntityType<?>> HORSES = create("horses");
-        public static final TagKey<EntityType<?>> DESTROYED_BY_LEAVES = create("destroyed_by_leaves");
-        public static final TagKey<EntityType<?>> LEASHABLE_WILD_ANIMALS = create("leashable_wild_animals"); // entities that can be leashed that aren't normally leashable. default empty
-        public static final TagKey<EntityType<?>> PESTS = create("pests"); // spawned during infestations
-        public static final TagKey<EntityType<?>> HUNTED_BY_CATS = create("hunted_by_cats");
-        public static final TagKey<EntityType<?>> HUNTED_BY_DOGS = create("hunted_by_dogs");
-        public static final TagKey<EntityType<?>> SMALL_FISH = create("small_fish");
+        public static final TagKey<EntityType<?>> TURTLE_FRIENDS = tag("turtle_friends");
+        public static final TagKey<EntityType<?>> SPAWNS_ON_COLD_BLOCKS = tag("spawns_on_cold_blocks"); // if ice is a valid spawn
+        public static final TagKey<EntityType<?>> BUBBLE_COLUMN_IMMUNE = tag("bubble_column_immune");
+        public static final TagKey<EntityType<?>> NEEDS_LARGE_FISHING_BAIT = tag("needs_large_fishing_bait");
+        public static final TagKey<EntityType<?>> HUNTS_LAND_PREY = tag("hunts_land_prey");
+        public static final TagKey<EntityType<?>> HUNTED_BY_LAND_PREDATORS = tag("hunted_by_land_predators");
+        public static final TagKey<EntityType<?>> OCEAN_PREDATORS = tag("ocean_predators");
+        public static final TagKey<EntityType<?>> HUNTED_BY_OCEAN_PREDATORS = tag("hunted_by_ocean_predators");
+        public static final TagKey<EntityType<?>> DEALS_SLASHING_DAMAGE = tag("deals_slashing_damage");
+        public static final TagKey<EntityType<?>> DEALS_PIERCING_DAMAGE = tag("deals_piercing_damage");
+        public static final TagKey<EntityType<?>> DEALS_CRUSHING_DAMAGE = tag("deals_crushing_damage");
+        public static final TagKey<EntityType<?>> HORSES = tag("horses");
+        public static final TagKey<EntityType<?>> DESTROYED_BY_LEAVES = tag("destroyed_by_leaves");
+        public static final TagKey<EntityType<?>> LEASHABLE_WILD_ANIMALS = tag("leashable_wild_animals"); // entities that can be leashed that aren't normally leashable. default empty
+        public static final TagKey<EntityType<?>> PESTS = tag("pests"); // spawned during infestations
+        public static final TagKey<EntityType<?>> HUNTED_BY_CATS = tag("hunted_by_cats");
+        public static final TagKey<EntityType<?>> HUNTED_BY_DOGS = tag("hunted_by_dogs");
+        public static final TagKey<EntityType<?>> SMALL_FISH = tag("small_fish");
 
-        private static TagKey<EntityType<?>> create(String id)
+        // ===== Data Generated ====== //
+
+        /** Monsters in vanilla that we restrict to spawning underground */
+        public static final TagKey<EntityType<?>> MONSTERS = tag("monsters");
+
+
+        private static TagKey<EntityType<?>> tag(String id)
         {
             return TagKey.create(Registries.ENTITY_TYPE, Helpers.identifier(id));
         }

@@ -1,8 +1,9 @@
 {
-  "type": "tfc:advanced_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "L": {
-      "tag": "tfc:acacia"
+      "tag": "tfc:acacia_logs"
     },
     "S": {
       "tag": "c:tools/saw"

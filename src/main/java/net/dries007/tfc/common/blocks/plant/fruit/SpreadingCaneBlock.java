@@ -101,7 +101,7 @@ public class SpreadingCaneBlock extends SpreadingBushBlock implements IBushBlock
     protected boolean mayDie(Level level, BlockPos pos, BlockState state, int monthsSpentDying)
     {
         BlockState parent = level.getBlockState(pos.relative(state.getValue(FACING).getOpposite()));
-        if (Helpers.isBlock(parent, TFCTags.Blocks.SPREADING_BUSH))
+        if (Helpers.isBlock(parent, TFCTags.Blocks.LIVING_SPREADING_BUSHES))
         {
             return false; // if the parent is alive we shouldn't die
         }
@@ -124,7 +124,7 @@ public class SpreadingCaneBlock extends SpreadingBushBlock implements IBushBlock
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
-        return Helpers.isBlock(level.getBlockState(pos.relative(state.getValue(FACING).getOpposite())), TFCTags.Blocks.ANY_SPREADING_BUSH);
+        return Helpers.isBlock(level.getBlockState(pos.relative(state.getValue(FACING).getOpposite())), TFCTags.Blocks.SPREADING_BUSHES);
     }
 
     @Override

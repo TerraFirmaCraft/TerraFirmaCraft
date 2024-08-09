@@ -43,7 +43,6 @@ import net.dries007.tfc.util.registry.RegistryPlant;
  * Water grass/plants: 0.8f
  * Epiphytes: 1.0f
  */
-
 public enum Plant implements RegistryPlant
 {
     // Clay Indicators
@@ -190,7 +189,7 @@ public enum Plant implements RegistryPlant
     private static final EnumSet<Plant> FLOWERPOT_TINTED_PLANTS = EnumSet.of(PHILODENDRON, MOSS, TREE_FERN);
 
     private final float speedFactor;
-    @Nullable private final IntegerProperty property;
+    private final @Nullable IntegerProperty property;
     private final int @Nullable[] stagesByMonth;
     private final BlockType type;
 
@@ -242,6 +241,16 @@ public enum Plant implements RegistryPlant
     public boolean needsItem()
     {
         return !BlockType.NO_ITEM_TYPES.contains(type);
+    }
+
+    public boolean canBeSnowPiled()
+    {
+        return type == BlockType.STANDARD || type == BlockType.SHORT_GRASS || type == BlockType.TALL_GRASS || type == BlockType.CREEPING || type == BlockType.CREEPING_STONE || type == BlockType.BEACH_GRASS;
+    }
+
+    public boolean canBeIcePiled()
+    {
+        return type == BlockType.TALL_WATER || type == BlockType.TALL_WATER_FRESH || type == BlockType.FLOATING || type == BlockType.FLOATING_FRESH;
     }
 
     public boolean isFoliage()

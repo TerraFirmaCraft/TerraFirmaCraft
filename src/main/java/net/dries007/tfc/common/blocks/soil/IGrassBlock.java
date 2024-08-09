@@ -8,12 +8,11 @@ package net.dries007.tfc.common.blocks.soil;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.lighting.LightEngine;
 
-import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.util.Helpers;
 
 /**
@@ -31,7 +30,7 @@ public interface IGrassBlock extends ISoilBlock
     {
         BlockPos posUp = new BlockPos(pos.getX(), pos.getY() + 1, pos.getZ());
         BlockState stateUp = world.getBlockState(posUp);
-        if (Helpers.isBlock(stateUp, TFCTags.Blocks.SNOW))
+        if (Helpers.isBlock(stateUp, BlockTags.SNOW))
         {
             return true;
         }

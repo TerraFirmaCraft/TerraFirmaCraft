@@ -48,7 +48,7 @@ public final class PlantRegrowth
     @Nullable
     public static BlockPos spreadSelf(BlockState state, ServerLevel level, BlockPos pos, RandomSource random, int selfSpreadRange, int radius, int maxPlants)
     {
-        return spreadSelf(state, level, pos, random, selfSpreadRange, radius, maxPlants, (s, p) -> Helpers.isBlock(s, TFCTags.Blocks.PLANTS), DEFAULT_PLACEMENT_TEST);
+        return spreadSelf(state, level, pos, random, selfSpreadRange, radius, maxPlants, (s, p) -> Helpers.isBlock(s, TFCTags.Blocks.NATURAL_REGROWING_PLANTS), DEFAULT_PLACEMENT_TEST);
     }
 
     @Nullable

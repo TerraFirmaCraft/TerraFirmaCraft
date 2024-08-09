@@ -3,6 +3,7 @@ package net.dries007.tfc.data;
 import java.util.Locale;
 import java.util.Map;
 import com.google.common.collect.ImmutableMap;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -14,9 +15,14 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.common.crafting.CompoundIngredient;
 import org.jetbrains.annotations.Nullable;
@@ -47,10 +53,9 @@ public interface Accessors
             : Ingredient.of(TFCBlocks.METALS.get(metal).get(type).get());
     }
 
-
-    default TagKey<Item> logsTagOf(Wood wood)
+    default <T> TagKey<T> logsTagOf(ResourceKey<Registry<T>> registry, Wood wood)
     {
-        return TagKey.create(Registries.ITEM, Helpers.identifier(wood.getSerializedName()));
+        return TagKey.create(registry, Helpers.identifier(wood.getSerializedName() + "_logs"));
     }
 
     default TagKey<Item> commonTagOf(Metal metal, Metal.ItemType type)
@@ -176,5 +181,41 @@ public interface Accessors
             if (entry.getValue().containsKey(key))
                 builder.put(entry.getKey(), entry.getValue().get(key));
         return builder.build();
+    }
+
+    default BlockGetter empty()
+    {
+        return new BlockGetter() {
+            @Nullable
+            @Override
+            public BlockEntity getBlockEntity(BlockPos pos)
+            {
+                return null;
+            }
+
+            @Override
+            public BlockState getBlockState(BlockPos pos)
+            {
+                return Blocks.AIR.defaultBlockState();
+            }
+
+            @Override
+            public FluidState getFluidState(BlockPos pos)
+            {
+                return Fluids.EMPTY.defaultFluidState();
+            }
+
+            @Override
+            public int getHeight()
+            {
+                return 0;
+            }
+
+            @Override
+            public int getMinBuildHeight()
+            {
+                return 0;
+            }
+        };
     }
 }

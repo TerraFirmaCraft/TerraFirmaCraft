@@ -1,6 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
+  "type": "tfc:advanced_shaped_crafting",
   "key": {
     "S": {
       "tag": "c:rods/wooden"
@@ -14,7 +13,14 @@
     "S"
   ],
   "result": {
-    "count": 1,
-    "id": "tfc:metal/hoe/copper"
+    "modifiers": [
+      {
+        "type": "tfc:copy_forging_bonus"
+      }
+    ],
+    "stack": {
+      "count": 1,
+      "id": "tfc:metal/hoe/copper"
+    }
   }
 }

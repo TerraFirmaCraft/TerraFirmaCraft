@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.blocks.plant.fruit;
 
-import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
@@ -15,6 +14,7 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ParticleUtils;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -110,7 +110,7 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
             {
                 final BlockState aboveState = level.getBlockState(pos.above());
                 ParticleOptions particle;
-                if (Helpers.isBlock(aboveState, TFCTags.Blocks.SNOW) && random.nextBoolean())
+                if (Helpers.isBlock(aboveState, BlockTags.SNOW) && random.nextBoolean())
                 {
                     particle = TFCParticles.SNOWFLAKE.get();
                 }

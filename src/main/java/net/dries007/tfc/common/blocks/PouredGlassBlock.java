@@ -87,6 +87,6 @@ public class PouredGlassBlock extends ExtendedBlock
     @Override
     protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        return facing == Direction.DOWN && (!facingState.isFaceSturdy(level, facingPos, Direction.UP) && !Helpers.isBlock(facingState, TFCTags.Blocks.BOTTOM_SUPPORT_ACCEPTED)) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+        return facing == Direction.DOWN && (!facingState.isFaceSturdy(level, facingPos, Direction.UP) && !Helpers.isBlock(facingState, TFCTags.Blocks.SOLID_TOP_FACE)) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, level, currentPos, facingPos);
     }
 }

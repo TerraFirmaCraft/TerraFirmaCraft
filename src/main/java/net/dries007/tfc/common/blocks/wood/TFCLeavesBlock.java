@@ -168,7 +168,7 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
                 {
                     final BlockState aboveState = level.getBlockState(pos.above());
                     ParticleOptions particle;
-                    if (Helpers.isBlock(aboveState, TFCTags.Blocks.SNOW) && random.nextBoolean())
+                    if (Helpers.isBlock(aboveState, BlockTags.SNOW) && random.nextBoolean())
                     {
                         particle = TFCParticles.SNOWFLAKE.get();
                     }

@@ -1,5 +1,6 @@
 {
-  "type": "tfc:advanced_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "R": {
       "tag": "c:rods/wrought_iron"

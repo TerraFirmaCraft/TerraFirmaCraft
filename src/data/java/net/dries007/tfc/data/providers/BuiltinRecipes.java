@@ -132,7 +132,6 @@ public final class BuiltinRecipes extends VanillaRecipeProvider implements
     }
 
     @Override
-    @SuppressWarnings("RedundantTypeArguments") // Actually necessary, IDEA is wrong
     public void buildRecipes(RecipeOutput output)
     {
         this.output = output;

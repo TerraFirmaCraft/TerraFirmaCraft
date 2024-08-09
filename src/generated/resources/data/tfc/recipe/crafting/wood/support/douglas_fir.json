@@ -1,8 +1,9 @@
 {
-  "type": "tfc:advanced_shaped_crafting",
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "L": {
-      "tag": "tfc:douglas_fir"
+      "tag": "tfc:douglas_fir_logs"
     },
     "S": {
       "tag": "c:tools/saw"

@@ -35,6 +35,8 @@ import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 
 import net.dries007.tfc.common.blocks.devices.PowderkegBlock;
+import net.dries007.tfc.common.blocks.devices.SealableDeviceBlock;
+import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.config.TFCConfig;
@@ -134,24 +136,21 @@ public class HoldingMinecart extends AbstractMinecart
     @Override
     public BlockState getDisplayBlockState()
     {
-        if (getHoldItem().getItem() instanceof BlockItem blockItem)
+        final ItemStack stack = getHoldItem();
+        if (stack.getItem() instanceof BlockItem blockItem)
         {
             BlockState state = blockItem.getBlock().defaultBlockState();
-            /* todo 1.21: relies on sealed block entity tags
-            if (state.hasProperty(SealableDeviceBlock.SEALED) && getHoldItem().hasTag())
+            if (state.hasProperty(SealableDeviceBlock.SEALED) && (stack.has(TFCComponents.BARREL) || stack.has(TFCComponents.CONTENTS)))
             {
                 state = state.setValue(SealableDeviceBlock.SEALED, true);
             }
-            if (state.getBlock() instanceof PowderkegBlock && isPrimed())
+            if (state.hasProperty(PowderkegBlock.LIT) && isPrimed())
             {
                 state = state.setValue(PowderkegBlock.LIT, true);
-            }*/
+            }
             return state;
         }
-        else
-        {
-            return Blocks.AIR.defaultBlockState();
-        }
+        return Blocks.AIR.defaultBlockState();
     }
 
     @Override

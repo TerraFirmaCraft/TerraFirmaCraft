@@ -72,7 +72,7 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
         for (int i = 1; i <= distance; i++)
         {
             mutablePos.move(Direction.DOWN);
-            if (!Helpers.isBlock(level.getBlockState(mutablePos), TFCTags.Blocks.ANY_SPREADING_BUSH))
+            if (!Helpers.isBlock(level.getBlockState(mutablePos), TFCTags.Blocks.SPREADING_BUSHES))
             {
                 return i;
             }

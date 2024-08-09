@@ -70,7 +70,7 @@ public class DeadBerryBushBlock extends SeasonalPlantBlock implements IFluidLogg
     @Override
     protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
-        if (random.nextInt(15) == 0 && !Helpers.isBlock(level.getBlockState(pos.above()), TFCTags.Blocks.ANY_SPREADING_BUSH))
+        if (random.nextInt(15) == 0 && !Helpers.isBlock(level.getBlockState(pos.above()), TFCTags.Blocks.SPREADING_BUSHES))
         {
             randomDestroyTick(level, pos, 80);
         }

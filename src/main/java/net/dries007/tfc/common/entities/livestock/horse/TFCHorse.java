@@ -278,7 +278,7 @@ public class TFCHorse extends Horse implements HorseProperties
     @Override
     protected float getBlockSpeedFactor()
     {
-        return Helpers.isBlock(level().getBlockState(blockPosition()), TFCTags.Blocks.PLANTS) ? 1.0F : super.getBlockSpeedFactor();
+        return Helpers.isBlock(level().getBlockState(blockPosition()), TFCTags.Blocks.ANIMAL_IGNORED_PLANTS) ? 1.0F : super.getBlockSpeedFactor();
     }
 
     @Nullable

@@ -12,6 +12,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -84,7 +85,7 @@ public class ComposterBlockEntity extends InventoryBlockEntity<ItemStackHandler>
             readyTicks *= (long) ((rainfall - 350f) / 50f + 1f);
         }
         cursor.move(0, 1, 0);
-        if (Helpers.isBlock(level.getBlockState(cursor), TFCTags.Blocks.SNOW))
+        if (Helpers.isBlock(level.getBlockState(cursor), BlockTags.SNOW))
         {
             readyTicks *= 0.9f;
         }

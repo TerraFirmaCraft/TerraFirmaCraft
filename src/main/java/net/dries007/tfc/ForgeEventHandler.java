@@ -46,7 +46,6 @@ import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -203,7 +202,6 @@ import net.dries007.tfc.util.tracker.WeatherHelpers;
 import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.RockData;
 
 
 public final class ForgeEventHandler
@@ -217,14 +215,7 @@ public final class ForgeEventHandler
         final IEventBus bus = NeoForge.EVENT_BUS;
 
         bus.addListener(ForgeEventHandler::onCreateWorldSpawn);
-        // todo 1.21: remove
-        //bus.addGenericListener(LevelChunk.class, ForgeEventHandler::attachChunkCapabilities);
-        //bus.addGenericListener(Level.class, ForgeEventHandler::attachWorldCapabilities);
-        //bus.addGenericListener(ItemStack.class, ForgeEventHandler::attachItemCapabilities);
-        //bus.addGenericListener(Entity.class, ForgeEventHandler::attachEntityCapabilities);
         bus.addListener(ForgeEventHandler::onChunkWatch);
-        //bus.addListener(ForgeEventHandler::onChunkDataSave);
-        //bus.addListener(ForgeEventHandler::onChunkDataLoad);
         bus.addListener(ForgeEventHandler::registerCommands);
         bus.addListener(ForgeEventHandler::onBlockBroken);
         bus.addListener(ForgeEventHandler::onBlockPlace);
@@ -329,77 +320,6 @@ public final class ForgeEventHandler
         }
     }
 
-    // todo 1.21: all these are probably not needed, but need to be ported to attachments somehow
-    /*
-    public static void attachChunkCapabilities(AttachCapabilitiesEvent<LevelChunk> event)
-    {
-        final LevelChunk chunk = event.getObject();
-        if (!chunk.isEmpty())
-        {
-            final Level level = event.getObject().getLevel();
-            final ChunkPos chunkPos = event.getObject().getPos();
-
-            final ChunkData data;
-            if (level.isClientSide())
-            {
-                // Retrieve either a new chunk data instance, or a populated instance that has already been synced through an earlier chunk watch packet.
-                data = ChunkData.dequeueClientChunkData(chunkPos);
-            }
-            else
-            {
-                // Chunk was created on server thread. This may be for several reasons
-                // - loading from disk (chunk data will be read separately, by chunk serializer), we just need to initialize correctly
-                // - promoting a proto chunk to level chunk (we initialize here, and then copy the proto chunk after)
-                // - other mods may create chunks, in which case we copy data if we have it or skip if we don't
-                data = level instanceof ServerLevel serverLevel && serverLevel.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension ex
-                    ? ex.chunkDataProvider().create(chunkPos)
-                    : new ChunkData(chunkPos);
-            }
-            event.addCapability(ChunkDataCapability.KEY, new ChunkDataCapability(data));
-        }
-    }
-
-    public static void attachWorldCapabilities(AttachCapabilitiesEvent<Level> event)
-    {
-        event.addCapability(WorldTrackerCapability.KEY, new WorldTracker(event.getObject()));
-    }
-
-    public static void attachItemCapabilities(AttachCapabilitiesEvent<ItemStack> event)
-    {
-        ItemStack stack = event.getObject();
-        if (!stack.isEmpty())
-        {
-            // Attach mandatory capabilities
-            event.addCapability(ForgingCapability.KEY, new Forging(stack));
-
-            // Optional capabilities
-            HeatDefinition def = HeatCapability.getDefinition(stack);
-            if (def != null)
-            {
-                event.addCapability(HeatCapability.KEY, def.create());
-            }
-
-            FoodDefinition food = FoodCapability.getDefinition(stack);
-            if (food != null)
-            {
-                event.addCapability(FoodCapability.KEY, FoodDefinition.getHandler(food, stack));
-            }
-
-            if (stack.getItem() == Items.EGG)
-            {
-                event.addCapability(EggCapability.KEY, new EggHandler(stack));
-            }
-        }
-    }
-
-    public static void attachEntityCapabilities(AttachCapabilitiesEvent<Entity> event)
-    {
-        if (event.getObject() instanceof Player player)
-        {
-            event.addCapability(PlayerDataCapability.KEY, new PlayerData(player));
-        }
-    }*/
-
     public static void onChunkWatch(ChunkWatchEvent.Sent event)
     {
         // When we watch a chunk, the chunk data should already be generated on server, and have FULL status, (with a TFC chunk generator)
@@ -410,33 +330,6 @@ public final class ForgeEventHandler
             PacketDistributor.sendToPlayer(event.getPlayer(), chunkData.getUpdatePacket());
         }
     }
-
-    /**
-     * Serialize chunk data on chunk primers, before the chunk data capability is present.
-     * - This saves the effort of re-generating the same data for proto chunks
-     * - And, due to the late setting of part of chunk data ({@link RockData#setSurfaceHeight(int[])}, avoids that being nullified when saving and reloading during the noise phase of generation
-     */
-    // todo 1.21: probably not needed, since they are serialized and saved on proto chunks via attachments
-    /*
-    public static void onChunkDataSave(ChunkDataEvent.Save event)
-    {
-        if (event.getChunk().getStatus().getChunkType() == ChunkStatus.ChunkType.PROTOCHUNK && event.getChunk() instanceof ProtoChunk chunk && ((ServerChunkCache) event.getLevel().getChunkSource()).getGenerator() instanceof ChunkGeneratorExtension ex)
-        {
-            CompoundTag nbt = ex.chunkDataProvider().savePartial(chunk);
-            if (nbt != null)
-            {
-                event.getData().put("tfc_protochunk_data", nbt);
-            }
-        }
-    }
-
-    public static void onChunkDataLoad(ChunkDataEvent.Load event)
-    {
-        if (event.getChunk().getStatus().getChunkType() == ChunkStatus.ChunkType.PROTOCHUNK && event.getData().contains("tfc_protochunk_data", Tag.TAG_COMPOUND) && event.getChunk() instanceof ProtoChunk chunk && ((ChunkAccessAccessor) chunk).accessor$getLevelHeightAccessor() instanceof ServerLevel level && level.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension generator)
-        {
-            generator.chunkDataProvider().loadPartial(chunk, event.getData().getCompound("tfc_protochunk_data"));
-        }
-    }*/
 
     public static void registerCommands(RegisterCommandsEvent event)
     {
@@ -827,11 +720,7 @@ public final class ForgeEventHandler
         }
         else if (blockEntity instanceof CrucibleBlockEntity crucible)
         {
-            // todo 1.21, make block heat work
-            /*
-            final var cap = Helpers.getCapability(crucible, HeatCapability.BLOCK_CAPABILITY);
-            if (cap != null)
-                cap.setTemperature(0f);*/
+            crucible.getInventory().setTemperature(0f);
         }
     }
 
@@ -985,10 +874,11 @@ public final class ForgeEventHandler
         final LivingEntity entity = event.getEntity();
         final LevelAccessor level = event.getLevel();
         final MobSpawnType spawn = event.getSpawnType();
+
         // we only care about "natural" spawns
         if (spawn == MobSpawnType.NATURAL || spawn == MobSpawnType.CHUNK_GENERATION || spawn == MobSpawnType.REINFORCEMENT)
         {
-            if (Helpers.isEntity(entity, TFCTags.Entities.VANILLA_MONSTERS))
+            if (Helpers.isEntity(entity, TFCTags.Entities.MONSTERS))
             {
                 if (TFCConfig.SERVER.enableVanillaMonsters.get())
                 {
@@ -1517,7 +1407,7 @@ public final class ForgeEventHandler
         if (event.getTarget().getType() == EntityType.MINECART && event.getTarget() instanceof Minecart oldCart && player.isShiftKeyDown() && player.isSecondaryUseActive())
         {
             ItemStack held = player.getItemInHand(event.getHand());
-            if (held.getItem() instanceof BlockItem bi && Helpers.isBlock(bi.getBlock(), TFCTags.Blocks.MINECART_HOLDABLE))
+            if (Helpers.isItem(held, TFCTags.Items.MINECART_HOLDABLE))
             {
                 final ItemStack holdingItem = held.split(1);
                 if (!player.level().isClientSide)

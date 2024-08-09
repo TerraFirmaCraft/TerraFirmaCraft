@@ -63,6 +63,6 @@ public class TFCPufferfish extends Pufferfish implements AquaticMob
     @Override
     protected float getBlockSpeedFactor()
     {
-        return Helpers.isBlock(level().getBlockState(blockPosition()), TFCTags.Blocks.PLANTS) ? 1.0F : super.getBlockSpeedFactor();
+        return Helpers.isBlock(level().getBlockState(blockPosition()), TFCTags.Blocks.ANIMAL_IGNORED_PLANTS) ? 1.0F : super.getBlockSpeedFactor();
     }
 }

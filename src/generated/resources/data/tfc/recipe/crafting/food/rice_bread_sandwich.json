@@ -1,6 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
+  "type": "tfc:advanced_shaped_crafting",
   "key": {
     "B": {
       "type": "tfc:and",
@@ -34,7 +33,35 @@
     " B "
   ],
   "result": {
-    "count": 2,
-    "id": "tfc:food/rice_bread_sandwich"
+    "modifiers": [
+      {
+        "type": "tfc:meal",
+        "food": {
+          "decay_modifier": 4.5,
+          "hunger": 4,
+          "saturation": 1.0,
+          "water": 0.5
+        },
+        "portions": [
+          {
+            "ingredient": {
+              "item": "tfc:food/rice_bread"
+            },
+            "nutrient_modifier": 0.5,
+            "saturation_modifier": 0.5,
+            "water_modifier": 0.5
+          },
+          {
+            "nutrient_modifier": 0.8,
+            "saturation_modifier": 0.8,
+            "water_modifier": 0.8
+          }
+        ]
+      }
+    ],
+    "stack": {
+      "count": 2,
+      "id": "tfc:food/rice_bread_sandwich"
+    }
   }
 }

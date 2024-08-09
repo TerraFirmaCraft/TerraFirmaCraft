@@ -446,6 +446,16 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             .addTags(Tags.Items.TOOLS, SEWING_NEEDLES)
             .add(TFCItems.SANDPAPER, Items.SPYGLASS);
         tag(POWDER_KEG_FUEL).add(Items.GUNPOWDER);
+        tag(MINECART_HOLDABLE)
+            // Don't use tags, as this is technically restricted to only having blocks, so we don't want it to include other values accidentally
+            .add(TFCBlocks.WOODS, Wood.BlockType.BARREL)
+            .add(TFCBlocks.METALS, Metal.BlockType.ANVIL)
+            .add(TFCBlocks.GLAZED_LARGE_VESSELS)
+            .add(
+                TFCBlocks.LARGE_VESSEL,
+                TFCBlocks.CRUCIBLE,
+                TFCBlocks.POWDERKEG
+            );
         tag(TRIP_HAMMERS).add(TFCItems.METAL_ITEMS, Metal.ItemType.HAMMER); // N.B. Technical tag, don't include sub-tags
         tag(THATCH_BED_HIDES).add(TFCItems.HIDES.get(HideItemType.RAW).get(HideItemType.Size.LARGE));
         tag(SHELF_JARS) // N.B. Technical tag, don't include sub-tags
@@ -526,6 +536,11 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             }
         }
 
+        for (Wood wood : Wood.VALUES)
+        {
+            copy(logsTagOf(Registries.BLOCK, wood), logsTagOf(Registries.ITEM, wood));
+        }
+
         copy(TFCTags.Blocks.STONES_RAW, STONES_RAW);
         copy(TFCTags.Blocks.STONES_HARDENED, STONES_HARDENED);
         copy(TFCTags.Blocks.STONES_SMOOTH, STONES_SMOOTH);
@@ -540,6 +555,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
 
         copy(TFCTags.Blocks.ANVILS, ANVILS);
         copy(TFCTags.Blocks.WORKBENCHES, WORKBENCHES);
+        copy(TFCTags.Blocks.FALLEN_LEAVES, FALLEN_LEAVES);
     }
 
     @Override
@@ -618,18 +634,6 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         ItemTagAppender add(ItemLike... items)
         {
             for (ItemLike item : items) add(key(item));
-            return this;
-        }
-
-        ItemTagAppender add(Ingredient items)
-        {
-            for (Ingredient.Value value : items.getValues())
-                switch (value)
-                {
-                    case Ingredient.TagValue(TagKey<Item> tag) -> addTag(tag);
-                    case Ingredient.ItemValue(ItemStack item) -> add(item.getItem());
-                    default -> throw new UnsupportedOperationException("Unknown value type");
-                }
             return this;
         }
 

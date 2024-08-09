@@ -1,6 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
+  "type": "tfc:advanced_shaped_crafting",
   "key": {
     "H": {
       "tag": "c:tools/hammer"
@@ -17,6 +16,13 @@
     "SWS",
     " S "
   ],
+  "remainder": {
+    "modifiers": [
+      {
+        "type": "tfc:damage_crafting_remainder"
+      }
+    ]
+  },
   "result": {
     "count": 1,
     "id": "tfc:metal/block/blue_steel"

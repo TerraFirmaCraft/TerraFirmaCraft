@@ -66,7 +66,7 @@ public class TFCTropicalFish extends TropicalFish implements AquaticMob
     @Override
     protected float getBlockSpeedFactor()
     {
-        return Helpers.isBlock(level().getBlockState(blockPosition()), TFCTags.Blocks.PLANTS) ? 1.0F : super.getBlockSpeedFactor();
+        return Helpers.isBlock(level().getBlockState(blockPosition()), TFCTags.Blocks.ANIMAL_IGNORED_PLANTS) ? 1.0F : super.getBlockSpeedFactor();
     }
 
     @Override

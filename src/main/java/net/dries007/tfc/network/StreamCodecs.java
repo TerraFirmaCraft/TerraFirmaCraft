@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.network;
 
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import com.mojang.datafixers.util.Function7;
@@ -43,15 +42,6 @@ public interface StreamCodecs
         final E[] valuesArray = values.get();
         assert valuesArray.length <= Byte.MAX_VALUE;
         return ByteBufCodecs.BYTE.map(e -> valuesArray[e], e -> (byte) e.ordinal());
-    }
-
-    static <E extends Enum<E>> StreamCodec<ByteBuf, Optional<E>> forEnumOptional(Supplier<E[]> values)
-    {
-        final E[] valuesArray = values.get();
-        assert valuesArray.length <= Byte.MAX_VALUE;
-        return ByteBufCodecs.BYTE.map(
-            e -> e == Byte.MIN_VALUE ? Optional.empty() : Optional.of(valuesArray[e]),
-            e -> e.isEmpty() ? Byte.MIN_VALUE : (byte) e.get().ordinal());
     }
 
     static <B, C, T1, T2, T3, T4, T5, T6, T7> StreamCodec<B, C> composite(

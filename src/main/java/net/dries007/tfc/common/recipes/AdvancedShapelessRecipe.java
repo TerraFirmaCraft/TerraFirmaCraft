@@ -39,8 +39,6 @@ public class AdvancedShapelessRecipe extends ShapelessRecipe
 {
     public static final MapCodec<AdvancedShapelessRecipe> CODEC = RecordCodecBuilder.<AdvancedShapelessRecipe>mapCodec(i -> i.group(
         // This part of the codec is identical to the shapeless recipe codec
-        Codec.STRING.optionalFieldOf("group", "").forGetter(ShapelessRecipe::getGroup),
-        CraftingBookCategory.CODEC.optionalFieldOf("category", CraftingBookCategory.MISC).forGetter(ShapelessRecipe::category),
         Ingredient.CODEC_NONEMPTY
             .listOf()
             .fieldOf("ingredients")
@@ -60,8 +58,6 @@ public class AdvancedShapelessRecipe extends ShapelessRecipe
     ).apply(i, AdvancedShapelessRecipe::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, AdvancedShapelessRecipe> STREAM_CODEC = StreamCodec.composite(
-        ByteBufCodecs.STRING_UTF8, ShapelessRecipe::getGroup,
-        CraftingBookCategory.STREAM_CODEC, ShapelessRecipe::category,
         Ingredient.CONTENTS_STREAM_CODEC
             .apply(ByteBufCodecs.list())
             .map(NonNullList::copyOf, Function.identity()), ShapelessRecipe::getIngredients,
@@ -75,9 +71,9 @@ public class AdvancedShapelessRecipe extends ShapelessRecipe
     private final Optional<ItemStackProvider> remainder;
     private final Optional<Ingredient> primaryIngredient;
 
-    public AdvancedShapelessRecipe(String group, CraftingBookCategory category, NonNullList<Ingredient> ingredients, ItemStackProvider result, Optional<ItemStackProvider> remainder, Optional<Ingredient> primaryIngredient)
+    public AdvancedShapelessRecipe(NonNullList<Ingredient> ingredients, ItemStackProvider result, Optional<ItemStackProvider> remainder, Optional<Ingredient> primaryIngredient)
     {
-        super(group, category, ItemStack.EMPTY, ingredients);
+        super("", CraftingBookCategory.MISC, ItemStack.EMPTY, ingredients);
 
         this.result = result;
         this.remainder = remainder;

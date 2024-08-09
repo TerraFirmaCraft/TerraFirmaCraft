@@ -49,7 +49,6 @@ import net.dries007.tfc.common.blocks.TFCChainBlock;
 import net.dries007.tfc.common.blocks.devices.AnvilBlock;
 import net.dries007.tfc.common.blocks.devices.LampBlock;
 import net.dries007.tfc.common.items.ChiselItem;
-import net.dries007.tfc.common.items.IngotItem;
 import net.dries007.tfc.common.items.JavelinItem;
 import net.dries007.tfc.common.items.LampBlockItem;
 import net.dries007.tfc.common.items.MaceItem;
@@ -248,7 +247,7 @@ public enum Metal implements StringRepresentable, RegistryMetal
     public enum ItemType
     {
         // Generic
-        INGOT(PartType.INGOT_ONLY, true, metal -> new IngotItem(base(metal))),
+        INGOT(PartType.INGOT_ONLY, true),
         DOUBLE_INGOT(PartType.DEFAULT, false),
         SHEET(PartType.DEFAULT, false),
         DOUBLE_SHEET(PartType.DEFAULT, false),

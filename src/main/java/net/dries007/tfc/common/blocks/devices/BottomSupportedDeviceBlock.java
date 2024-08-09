@@ -29,7 +29,7 @@ public abstract class BottomSupportedDeviceBlock extends DeviceBlock
     {
         final BlockPos below = pos.below();
         final BlockState state = level.getBlockState(below);
-        return state.isFaceSturdy(level, below, Direction.UP) || Helpers.isBlock(state, TFCTags.Blocks.BOTTOM_SUPPORT_ACCEPTED);
+        return state.isFaceSturdy(level, below, Direction.UP) || Helpers.isBlock(state, TFCTags.Blocks.SOLID_TOP_FACE);
     }
 
     private final VoxelShape shape;
