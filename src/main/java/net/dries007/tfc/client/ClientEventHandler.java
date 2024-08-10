@@ -753,7 +753,7 @@ public final class ClientEventHandler
 
     public static void registerModelLoaders(ModelEvent.RegisterGeometryLoaders event)
     {
-        event.register(Helpers.identifier("contained_fluid"), new ContainedFluidModel.Loader());
+        event.register(Helpers.identifier("fluid_container"), new ContainedFluidModel.Loader());
         event.register(Helpers.identifier("trim"), new TrimmedItemModel.Loader());
         event.register(Helpers.identifier("ingot_pile"), IngotPileBlockModel.INSTANCE);
         event.register(Helpers.identifier("double_ingot_pile"), DoubleIngotPileBlockModel.INSTANCE);
@@ -853,8 +853,8 @@ public final class ClientEventHandler
             }
         }
 
-        TFCItems.MOLDS.values().forEach(reg -> event.register(new ContainedFluidModel.Colors(), reg.get()));
-        event.register(new ContainedFluidModel.Colors(), TFCItems.WOODEN_BUCKET.get(), TFCItems.BELL_MOLD.get(), TFCItems.FIRE_INGOT_MOLD.get(), TFCItems.JUG.get(), TFCItems.SILICA_GLASS_BOTTLE.get(), TFCItems.HEMATITIC_GLASS_BOTTLE.get(), TFCItems.VOLCANIC_GLASS_BOTTLE.get(), TFCItems.OLIVINE_GLASS_BOTTLE.get());
+        TFCItems.MOLDS.values().forEach(reg -> event.register(ContainedFluidModel.COLOR, reg.get()));
+        event.register(ContainedFluidModel.COLOR, TFCItems.WOODEN_BUCKET.get(), TFCItems.BELL_MOLD.get(), TFCItems.FIRE_INGOT_MOLD.get(), TFCItems.JUG.get(), TFCItems.SILICA_GLASS_BOTTLE.get(), TFCItems.HEMATITIC_GLASS_BOTTLE.get(), TFCItems.VOLCANIC_GLASS_BOTTLE.get(), TFCItems.OLIVINE_GLASS_BOTTLE.get());
     }
 
     public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event)

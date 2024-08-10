@@ -1,0 +1,20 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "facing=east": {
+      "model": "tfc:block/wood/tool_rack/rosewood",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "tfc:block/wood/tool_rack/rosewood",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "tfc:block/wood/tool_rack/rosewood"
+    },
+    "facing=west": {
+      "model": "tfc:block/wood/tool_rack/rosewood",
+      "y": 90
+    }
+  }
+}

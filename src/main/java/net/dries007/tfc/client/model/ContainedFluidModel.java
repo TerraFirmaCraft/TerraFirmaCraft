@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.client.model;
 
+import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.function.Function;
 import com.google.common.collect.Maps;
@@ -13,6 +15,7 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.mojang.math.Transformation;
+import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
@@ -53,19 +56,19 @@ import net.dries007.tfc.util.Helpers;
  * fluid query in a way that avoids trying to simulate drain a container, because of containers like molds, which contain a fluid but don't
  * allow it to be drained when solid.
  */
-public class ContainedFluidModel implements IUnbakedGeometry<ContainedFluidModel>
+public record ContainedFluidModel(Fluid fluid) implements IUnbakedGeometry<ContainedFluidModel>
 {
     // Depth offsets to prevent Z-fighting
     // Make public since we use them elsewhere
     public static final Transformation FLUID_TRANSFORM = new Transformation(new Vector3f(), new Quaternionf(), new Vector3f(1, 1, 1.002f), new Quaternionf());
     public static final Transformation COVER_TRANSFORM = new Transformation(new Vector3f(), new Quaternionf(), new Vector3f(1, 1, 1.004f), new Quaternionf());
 
-    private final Fluid fluid;
-
-    public ContainedFluidModel(Fluid fluid)
-    {
-        this.fluid = fluid;
-    }
+    public static final ItemColor COLOR = (stack, tintIndex) -> {
+        if (tintIndex != 1) return 0xFFFFFFFF;
+        final FluidStack fluid = FluidHelpers.getContainedFluidInTank(stack);
+        if (fluid.isEmpty()) return 0xFFFFFFFF;
+        return IClientFluidTypeExtensions.of(fluid.getFluid()).getTintColor(fluid);
+    };
 
     public ContainedFluidModel withFluid(Fluid newFluid)
     {
@@ -91,7 +94,10 @@ public class ContainedFluidModel implements IUnbakedGeometry<ContainedFluidModel
         }
 
         // We need to disable GUI 3D and block lighting for this to render properly
-        var itemContext = StandaloneGeometryBakingContext.builder(context).withGui3d(false).withUseBlockLight(false).build(ResourceLocation.fromNamespaceAndPath("neoforge", "dynamic_fluid_container"));
+        var itemContext = StandaloneGeometryBakingContext.builder(context)
+            .withGui3d(false)
+            .withUseBlockLight(false)
+            .build(ResourceLocation.fromNamespaceAndPath("neoforge", "dynamic_fluid_container"));
         var modelBuilder = CompositeModel.Baked.builder(itemContext, particleSprite, new ContainedFluidOverrideHandler(overrides, baker, itemContext, this), context.getTransforms());
         var normalRenderTypes = DynamicFluidContainerModel.getLayerRenderTypes(false);
 
@@ -146,7 +152,7 @@ public class ContainedFluidModel implements IUnbakedGeometry<ContainedFluidModel
 
     private static final class ContainedFluidOverrideHandler extends ItemOverrides
     {
-        private final Map<String, BakedModel> cache = Maps.newHashMap(); // contains all the baked models since they'll never change
+        private final Map<Fluid, BakedModel> cache = new Reference2ObjectOpenHashMap<>(); // contains all the baked models since they'll never change
         private final ItemOverrides nested;
         private final ModelBaker baker;
         private final IGeometryBakingContext owner;
@@ -169,30 +175,16 @@ public class ContainedFluidModel implements IUnbakedGeometry<ContainedFluidModel
             if (fluidStack.isEmpty()) return originalModel;
 
             Fluid fluid = fluidStack.getFluid();
-            String name = BuiltInRegistries.FLUID.getKey(fluid).toString();
 
-            if (!cache.containsKey(name))
+            if (!cache.containsKey(fluid))
             {
                 ContainedFluidModel unbaked = this.parent.withFluid(fluid);
                 BakedModel bakedModel = unbaked.bake(owner, baker, Material::sprite, BlockModelRotation.X0_Y0, this);
-                cache.put(name, bakedModel);
+                cache.put(fluid, bakedModel);
                 return bakedModel;
             }
 
-            return cache.get(name);
+            return cache.get(fluid);
         }
     }
-
-    public static class Colors implements ItemColor
-    {
-        @Override
-        public int getColor(@NotNull ItemStack stack, int tintIndex)
-        {
-            if (tintIndex != 1) return 0xFFFFFFFF;
-            final FluidStack fluid = FluidHelpers.getContainedFluidInTank(stack);
-            if (fluid.isEmpty()) return 0xFFFFFFFF;
-            return IClientFluidTypeExtensions.of(fluid.getFluid()).getTintColor(fluid);
-        }
-    }
-
 }

@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/door_bottom_right",
+  "textures": {
+    "top": "tfc:block/wood/door/birch_top",
+    "bottom": "tfc:block/wood/door/birch_bottom"
+  }
+}

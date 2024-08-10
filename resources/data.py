@@ -1,40 +1,9 @@
 #  Work under Copyright. Licensed under the EUPL.
 #  See the project README.md and LICENSE.txt for more information.
 
-from enum import Enum, auto
-
 from mcresources import ResourceManager, utils, loot_tables
-
 from constants import *
 
-
-class Size(Enum):
-    tiny = auto()
-    very_small = auto()
-    small = auto()
-    normal = auto()
-    large = auto()
-    very_large = auto()
-    huge = auto()
-
-
-class Weight(Enum):
-    very_light = auto()
-    light = auto()
-    medium = auto()
-    heavy = auto()
-    very_heavy = auto()
-
-
-class Category(Enum):
-    fruit = auto()
-    vegetable = auto()
-    grain = auto()
-    bread = auto()
-    dairy = auto()
-    meat = auto()
-    cooked_meat = auto()
-    other = auto()
 
 
 def generate(rm: ResourceManager):

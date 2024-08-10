@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/door_bottom_left_open",
+  "textures": {
+    "top": "tfc:block/wood/door/chestnut_top",
+    "bottom": "tfc:block/wood/door/chestnut_bottom"
+  }
+}

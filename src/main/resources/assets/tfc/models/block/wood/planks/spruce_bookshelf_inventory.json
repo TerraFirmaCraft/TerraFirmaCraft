@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "parent": "minecraft:block/chiseled_bookshelf_inventory",
-  "textures": {
-    "top": "tfc:block/wood/planks/bookshelf_top_spruce",
-    "side": "tfc:block/wood/planks/bookshelf_side_spruce",
-    "front": "tfc:block/wood/planks/spruce_bookshelf_empty"
-  }
-}

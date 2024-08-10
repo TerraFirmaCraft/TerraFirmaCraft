@@ -142,19 +142,4 @@ public final class Codecs extends ExtraCodecs
             map -> map.entrySet().stream().map(e -> Pair.of(e.getKey(), e.getValue())).toList()
         );
     }
-
-    public static <T> Codec<T> presetIdOrDirectCodec(Codec<T> directCodec, Map<ResourceLocation, T> presets)
-    {
-        return Codec.either(ResourceLocation.CODEC, directCodec).comapFlatMap(
-            e -> e.map(
-                id -> {
-                    final T element = presets.get(id);
-                    return element == null ? DataResult.error(() -> "No element with id: " + id) : DataResult.success(element);
-                },
-                DataResult::success
-            ),
-            Either::right
-        );
-    }
-
 }

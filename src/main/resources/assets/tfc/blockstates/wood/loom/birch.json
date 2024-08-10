@@ -1,0 +1,20 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "facing=east": {
+      "model": "tfc:block/wood/loom/birch",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "tfc:block/wood/loom/birch",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "tfc:block/wood/loom/birch"
+    },
+    "facing=west": {
+      "model": "tfc:block/wood/loom/birch",
+      "y": 90
+    }
+  }
+}

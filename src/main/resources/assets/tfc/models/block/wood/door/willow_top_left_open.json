@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/door_top_left_open",
+  "textures": {
+    "top": "tfc:block/wood/door/willow_top",
+    "bottom": "tfc:block/wood/door/willow_bottom"
+  }
+}

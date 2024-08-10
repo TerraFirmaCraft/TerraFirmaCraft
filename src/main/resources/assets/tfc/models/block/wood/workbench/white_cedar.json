@@ -1,0 +1,13 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "tfc:block/wood/workbench/white_cedar_front",
+    "north": "tfc:block/wood/workbench/white_cedar_front",
+    "south": "tfc:block/wood/workbench/white_cedar_side",
+    "east": "tfc:block/wood/workbench/white_cedar_side",
+    "west": "tfc:block/wood/workbench/white_cedar_front",
+    "up": "tfc:block/wood/workbench/white_cedar_top",
+    "down": "tfc:block/wood/planks/white_cedar"
+  }
+}

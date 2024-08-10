@@ -1,0 +1,7 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "minecraft:block/chiseled_bookshelf_empty_slot_top_left",
+  "textures": {
+    "texture": "tfc:block/wood/bookshelf/acacia_empty"
+  }
+}

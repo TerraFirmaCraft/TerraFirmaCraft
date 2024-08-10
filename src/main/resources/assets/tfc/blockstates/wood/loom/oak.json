@@ -1,0 +1,20 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "facing=east": {
+      "model": "tfc:block/wood/loom/oak",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "tfc:block/wood/loom/oak",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "tfc:block/wood/loom/oak"
+    },
+    "facing=west": {
+      "model": "tfc:block/wood/loom/oak",
+      "y": 90
+    }
+  }
+}

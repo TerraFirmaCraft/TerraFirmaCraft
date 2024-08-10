@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "minecraft:block/chiseled_bookshelf_inventory",
+  "textures": {
+    "top": "tfc:block/wood/bookshelf/top_white_cedar",
+    "side": "tfc:block/wood/bookshelf/side_white_cedar",
+    "front": "tfc:block/wood/bookshelf/white_cedar_empty"
+  }
+}

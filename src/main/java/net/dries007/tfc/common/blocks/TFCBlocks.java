@@ -260,6 +260,17 @@ public final class TFCBlocks
     public static final Map<Wood, Map<Metal, Id<TFCCeilingHangingSignBlock>>> CEILING_HANGING_SIGNS = registerHangingSigns("hanging_sign", TFCCeilingHangingSignBlock::new);
     public static final Map<Wood, Map<Metal, Id<TFCWallHangingSignBlock>>> WALL_HANGING_SIGNS = registerHangingSigns("wall_hanging_sign", TFCWallHangingSignBlock::new);
 
+    private static <B extends SignBlock> Map<Wood, Map<Metal, Id<B>>> registerHangingSigns(String variant, BiFunction<ExtendedProperties, WoodType, B> factory)
+    {
+        return Helpers.mapOf(Wood.class, wood ->
+            Helpers.mapOf(Metal.class, Metal::allParts, metal -> register(
+                "wood/" + variant + "/" + metal.getSerializedName() + "/" + wood.getSerializedName(),
+                () -> factory.apply(ExtendedProperties.of(wood.woodColor()).sound(SoundType.WOOD).noCollission().strength(1F).flammableLikePlanks().blockEntity(TFCBlockEntities.HANGING_SIGN).ticks(SignBlockEntity::tick), wood.getVanillaWoodType()),
+                (Function<B, BlockItem>) null)
+            )
+        );
+    }
+
     public static final Id<Block> PALM_MOSAIC = register("wood/planks/palm_mosaic", () -> new Block(Properties.ofFullCopy(Blocks.BAMBOO_MOSAIC)));
     public static final Id<Block> PALM_MOSAIC_STAIRS = register("wood/planks/palm_mosaic_stairs", () -> new TFCStairBlock(() -> PALM_MOSAIC.get().defaultBlockState(), ExtendedProperties.of(Blocks.BAMBOO_MOSAIC_STAIRS).flammableLikePlanks()));
     public static final Id<Block> PALM_MOSAIC_SLAB = register("wood/planks/palm_mosaic_slab", () -> new TFCSlabBlock(ExtendedProperties.of(Blocks.BAMBOO_MOSAIC_SLAB).flammableLikePlanks()));
@@ -538,17 +549,6 @@ public final class TFCBlocks
         return (state) -> state.getValue(BlockStateProperties.LIT) ? lightValue : 0;
     }
 
-
-    private static <B extends SignBlock> Map<Wood, Map<Metal, Id<B>>> registerHangingSigns(String variant, BiFunction<ExtendedProperties, WoodType, B> factory)
-    {
-        return Helpers.mapOf(Wood.class, wood ->
-            Helpers.mapOf(Metal.class, Metal::allParts, metal -> register(
-                    "wood/" + variant + "/" + metal.getSerializedName() + "/" + wood.getSerializedName(),
-                    () -> factory.apply(ExtendedProperties.of(wood.woodColor()).sound(SoundType.WOOD).noCollission().strength(1F).flammableLikePlanks().blockEntity(TFCBlockEntities.HANGING_SIGN).ticks(SignBlockEntity::tick), wood.getVanillaWoodType()),
-                    (Function<B, BlockItem>) null)
-            )
-        );
-    }
 
     private static <T extends Block> Id<T> registerNoItem(String name, Supplier<T> blockSupplier)
     {

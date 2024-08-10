@@ -1,10 +1,9 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "loader": "neoforge:fluid_container",
+  "loader": "tfc:fluid_container",
   "parent": "neoforge:item/default",
   "textures": {
     "base": "tfc:item/bucket/volcanic_glass_bottle",
     "fluid": "tfc:item/bucket/glass_bottle_overlay"
-  },
-  "fluid": "minecraft:water"
+  }
 }

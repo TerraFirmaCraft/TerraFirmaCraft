@@ -1,0 +1,13 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "tfc:block/wood/workbench/blackwood_front",
+    "north": "tfc:block/wood/workbench/blackwood_front",
+    "south": "tfc:block/wood/workbench/blackwood_side",
+    "east": "tfc:block/wood/workbench/blackwood_side",
+    "west": "tfc:block/wood/workbench/blackwood_front",
+    "up": "tfc:block/wood/workbench/blackwood_top",
+    "down": "tfc:block/wood/planks/blackwood"
+  }
+}

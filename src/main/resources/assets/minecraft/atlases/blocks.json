@@ -5,8 +5,8 @@
       "type": "paletted_permutations",
       "palette_key": "tfc:color_palettes/wood/planks/palette",
       "textures": [
-        "tfc:block/wood/planks/bookshelf_top",
-        "tfc:block/wood/planks/bookshelf_side"
+        "tfc:block/wood/bookshelf/top",
+        "tfc:block/wood/bookshelf/side"
       ],
       "permutations": {
         "acacia": "tfc:color_palettes/wood/planks/acacia",

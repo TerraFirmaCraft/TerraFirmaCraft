@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/door_top_left",
+  "textures": {
+    "top": "tfc:block/wood/door/kapok_top",
+    "bottom": "tfc:block/wood/door/kapok_bottom"
+  }
+}
