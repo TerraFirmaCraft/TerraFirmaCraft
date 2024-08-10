@@ -3,6 +3,6 @@
   "ingredient": [
     "tfc:wood/planks/rosewood"
   ],
-  "mode": "stair",
+  "mode": "tfc:stair",
   "result": "tfc:wood/planks/rosewood_stairs"
 }

@@ -4,6 +4,6 @@
     "tfc:rock/raw/andesite",
     "tfc:rock/hardened/andesite"
   ],
-  "mode": "smooth",
+  "mode": "tfc:smooth",
   "result": "tfc:rock/smooth/andesite"
 }

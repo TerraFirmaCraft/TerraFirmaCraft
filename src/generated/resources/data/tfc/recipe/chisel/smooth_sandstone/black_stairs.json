@@ -3,6 +3,6 @@
   "ingredient": [
     "tfc:smooth_sandstone/black"
   ],
-  "mode": "stair",
+  "mode": "tfc:stair",
   "result": "tfc:smooth_sandstone/black_stairs"
 }

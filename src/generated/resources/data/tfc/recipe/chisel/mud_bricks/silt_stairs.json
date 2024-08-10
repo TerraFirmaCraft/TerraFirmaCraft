@@ -3,6 +3,6 @@
   "ingredient": [
     "tfc:mud_bricks/silt"
   ],
-  "mode": "stair",
+  "mode": "tfc:stair",
   "result": "tfc:mud_bricks/silt_stairs"
 }

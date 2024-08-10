@@ -7,6 +7,6 @@
     "count": 1,
     "id": "tfc:alabaster/bricks/lime_slab"
   },
-  "mode": "slab",
+  "mode": "tfc:slab",
   "result": "tfc:alabaster/bricks/lime_slab"
 }

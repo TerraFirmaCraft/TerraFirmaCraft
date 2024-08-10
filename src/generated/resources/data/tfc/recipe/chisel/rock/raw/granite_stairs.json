@@ -4,6 +4,6 @@
     "tfc:rock/raw/granite",
     "tfc:rock/hardened/granite"
   ],
-  "mode": "stair",
+  "mode": "tfc:stair",
   "result": "tfc:rock/raw/granite_stairs"
 }

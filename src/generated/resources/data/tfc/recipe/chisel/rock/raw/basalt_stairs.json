@@ -4,6 +4,6 @@
     "tfc:rock/raw/basalt",
     "tfc:rock/hardened/basalt"
   ],
-  "mode": "stair",
+  "mode": "tfc:stair",
   "result": "tfc:rock/raw/basalt_stairs"
 }

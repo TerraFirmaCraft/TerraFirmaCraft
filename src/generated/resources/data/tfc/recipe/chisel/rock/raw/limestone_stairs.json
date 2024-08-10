@@ -4,6 +4,6 @@
     "tfc:rock/raw/limestone",
     "tfc:rock/hardened/limestone"
   ],
-  "mode": "stair",
+  "mode": "tfc:stair",
   "result": "tfc:rock/raw/limestone_stairs"
 }

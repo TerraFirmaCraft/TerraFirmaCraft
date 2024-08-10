@@ -4,6 +4,6 @@
     "tfc:rock/raw/claystone",
     "tfc:rock/hardened/claystone"
   ],
-  "mode": "smooth",
+  "mode": "tfc:smooth",
   "result": "tfc:rock/smooth/claystone"
 }

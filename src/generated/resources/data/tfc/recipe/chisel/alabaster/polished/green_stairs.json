@@ -3,6 +3,6 @@
   "ingredient": [
     "tfc:alabaster/polished/green"
   ],
-  "mode": "stair",
+  "mode": "tfc:stair",
   "result": "tfc:alabaster/polished/green_stairs"
 }

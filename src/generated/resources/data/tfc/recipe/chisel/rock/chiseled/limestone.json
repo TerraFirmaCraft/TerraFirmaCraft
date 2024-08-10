@@ -3,6 +3,6 @@
   "ingredient": [
     "tfc:rock/bricks/limestone"
   ],
-  "mode": "smooth",
+  "mode": "tfc:smooth",
   "result": "tfc:rock/chiseled/limestone"
 }

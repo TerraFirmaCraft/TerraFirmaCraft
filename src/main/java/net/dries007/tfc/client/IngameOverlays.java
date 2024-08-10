@@ -231,13 +231,17 @@ public enum IngameOverlays
             final Player player = ClientHelpers.getPlayer();
             if (player != null && Helpers.isItem(player.getItemInHand(InteractionHand.MAIN_HAND), TFCTags.Items.TOOLS_CHISEL))
             {
-                int u = 60;
+                stack.pushPose();
                 if (Helpers.isItem(player.getItemInHand(InteractionHand.OFF_HAND), TFCTags.Items.TOOLS_HAMMER))
                 {
-                    u = IPlayerInfo.get(player).chiselMode().ordinal() * 20;
+                    graphics.blit(TEXTURE, graphics.guiWidth() / 2 + 100, graphics.guiHeight() - 21, 60, 58, 20, 20);
+
                 }
-                stack.pushPose();
-                graphics.blit(TEXTURE, graphics.guiWidth() / 2 + 100, graphics.guiHeight() - 21, u, 58, 20, 20);
+                else
+                {
+                    // Delegate to the chisel mode
+                    IPlayerInfo.get(player).chiselMode().createHotbarIcon((texture, u, v) -> graphics.blit(texture, graphics.guiWidth() / 2 + 100, graphics.guiHeight() - 21, u, v, 20, 20));
+                }
                 stack.popPose();
             }
         }

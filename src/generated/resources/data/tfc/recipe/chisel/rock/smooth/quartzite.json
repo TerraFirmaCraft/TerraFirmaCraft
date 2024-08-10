@@ -4,6 +4,6 @@
     "tfc:rock/raw/quartzite",
     "tfc:rock/hardened/quartzite"
   ],
-  "mode": "smooth",
+  "mode": "tfc:smooth",
   "result": "tfc:rock/smooth/quartzite"
 }

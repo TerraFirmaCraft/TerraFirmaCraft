@@ -4,6 +4,6 @@
     "tfc:rock/raw/schist",
     "tfc:rock/hardened/schist"
   ],
-  "mode": "stair",
+  "mode": "tfc:stair",
   "result": "tfc:rock/raw/schist_stairs"
 }

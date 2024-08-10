@@ -4,6 +4,6 @@
     "tfc:rock/raw/marble",
     "tfc:rock/hardened/marble"
   ],
-  "mode": "smooth",
+  "mode": "tfc:smooth",
   "result": "tfc:rock/smooth/marble"
 }

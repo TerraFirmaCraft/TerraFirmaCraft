@@ -3,6 +3,6 @@
   "ingredient": [
     "tfc:rock/bricks/andesite"
   ],
-  "mode": "smooth",
+  "mode": "tfc:smooth",
   "result": "tfc:rock/chiseled/andesite"
 }

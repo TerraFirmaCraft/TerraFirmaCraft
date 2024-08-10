@@ -3,6 +3,6 @@
   "ingredient": [
     "tfc:wood/planks/pine"
   ],
-  "mode": "stair",
+  "mode": "tfc:stair",
   "result": "tfc:wood/planks/pine_stairs"
 }

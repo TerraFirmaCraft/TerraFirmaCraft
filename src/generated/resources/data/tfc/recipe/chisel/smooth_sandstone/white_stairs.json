@@ -3,6 +3,6 @@
   "ingredient": [
     "tfc:smooth_sandstone/white"
   ],
-  "mode": "stair",
+  "mode": "tfc:stair",
   "result": "tfc:smooth_sandstone/white_stairs"
 }

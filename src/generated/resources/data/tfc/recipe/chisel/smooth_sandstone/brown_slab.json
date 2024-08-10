@@ -7,6 +7,6 @@
     "count": 1,
     "id": "tfc:smooth_sandstone/brown_slab"
   },
-  "mode": "slab",
+  "mode": "tfc:slab",
   "result": "tfc:smooth_sandstone/brown_slab"
 }

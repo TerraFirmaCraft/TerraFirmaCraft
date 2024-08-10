@@ -3,6 +3,6 @@
   "ingredient": [
     "tfc:cut_sandstone/red"
   ],
-  "mode": "stair",
+  "mode": "tfc:stair",
   "result": "tfc:cut_sandstone/red_stairs"
 }

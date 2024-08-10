@@ -3,6 +3,6 @@
   "ingredient": [
     "tfc:rock/bricks/schist"
   ],
-  "mode": "smooth",
+  "mode": "tfc:smooth",
   "result": "tfc:rock/chiseled/schist"
 }

@@ -3,6 +3,6 @@
   "ingredient": [
     "tfc:wood/planks/douglas_fir"
   ],
-  "mode": "stair",
+  "mode": "tfc:stair",
   "result": "tfc:wood/planks/douglas_fir_stairs"
 }

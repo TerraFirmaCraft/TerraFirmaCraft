@@ -3,6 +3,6 @@
   "ingredient": [
     "tfc:rock/bricks/chalk"
   ],
-  "mode": "smooth",
+  "mode": "tfc:smooth",
   "result": "tfc:rock/chiseled/chalk"
 }

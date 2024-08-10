@@ -7,6 +7,6 @@
     "count": 1,
     "id": "tfc:raw_sandstone/red_slab"
   },
-  "mode": "slab",
+  "mode": "tfc:slab",
   "result": "tfc:raw_sandstone/red_slab"
 }

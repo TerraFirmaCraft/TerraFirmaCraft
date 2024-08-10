@@ -4,6 +4,6 @@
     "tfc:rock/raw/chalk",
     "tfc:rock/hardened/chalk"
   ],
-  "mode": "stair",
+  "mode": "tfc:stair",
   "result": "tfc:rock/raw/chalk_stairs"
 }

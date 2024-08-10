@@ -3,6 +3,6 @@
   "ingredient": [
     "tfc:wood/planks/acacia"
   ],
-  "mode": "stair",
+  "mode": "tfc:stair",
   "result": "tfc:wood/planks/acacia_stairs"
 }

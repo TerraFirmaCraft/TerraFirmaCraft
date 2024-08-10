@@ -3,6 +3,6 @@
   "ingredient": [
     "tfc:wood/planks/ash"
   ],
-  "mode": "stair",
+  "mode": "tfc:stair",
   "result": "tfc:wood/planks/ash_stairs"
 }

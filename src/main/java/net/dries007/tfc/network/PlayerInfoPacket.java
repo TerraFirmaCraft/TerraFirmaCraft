@@ -7,6 +7,7 @@
 package net.dries007.tfc.network;
 
 import io.netty.buffer.ByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -14,22 +15,23 @@ import net.minecraft.world.entity.player.Player;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.component.food.FoodData;
+import net.dries007.tfc.common.player.ChiselMode;
 import net.dries007.tfc.common.player.IPlayerInfo;
 import net.dries007.tfc.common.recipes.ChiselRecipe;
 
 public record PlayerInfoPacket(
     long lastDrinkTick,
     float thirst,
-    ChiselRecipe.Mode chiselMode,
+    ChiselMode chiselMode,
     long intoxication,
     float[] nutrients
 ) implements CustomPacketPayload
 {
     public static final CustomPacketPayload.Type<PlayerInfoPacket> TYPE = PacketHandler.type("player_info");
-    public static final StreamCodec<ByteBuf, PlayerInfoPacket> CODEC = StreamCodec.composite(
+    public static final StreamCodec<RegistryFriendlyByteBuf, PlayerInfoPacket> CODEC = StreamCodec.composite(
         ByteBufCodecs.VAR_LONG, c -> c.lastDrinkTick,
         ByteBufCodecs.FLOAT, c -> c.thirst,
-        ChiselRecipe.Mode.STREAM_CODEC, c -> c.chiselMode,
+        ByteBufCodecs.registry(ChiselMode.KEY), c -> c.chiselMode,
         ByteBufCodecs.VAR_LONG, c -> c.intoxication,
         FoodData.NUTRITION_STREAM_CODEC, c -> c.nutrients,
         PlayerInfoPacket::new

@@ -7,6 +7,6 @@
     "count": 1,
     "id": "tfc:cut_sandstone/yellow_slab"
   },
-  "mode": "slab",
+  "mode": "tfc:slab",
   "result": "tfc:cut_sandstone/yellow_slab"
 }

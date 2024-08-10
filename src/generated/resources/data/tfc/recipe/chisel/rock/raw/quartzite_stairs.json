@@ -4,6 +4,6 @@
     "tfc:rock/raw/quartzite",
     "tfc:rock/hardened/quartzite"
   ],
-  "mode": "stair",
+  "mode": "tfc:stair",
   "result": "tfc:rock/raw/quartzite_stairs"
 }

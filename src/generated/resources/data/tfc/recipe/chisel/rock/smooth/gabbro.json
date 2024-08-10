@@ -4,6 +4,6 @@
     "tfc:rock/raw/gabbro",
     "tfc:rock/hardened/gabbro"
   ],
-  "mode": "smooth",
+  "mode": "tfc:smooth",
   "result": "tfc:rock/smooth/gabbro"
 }

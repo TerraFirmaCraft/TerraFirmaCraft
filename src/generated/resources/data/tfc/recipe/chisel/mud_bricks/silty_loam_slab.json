@@ -7,6 +7,6 @@
     "count": 1,
     "id": "tfc:mud_bricks/silty_loam_slab"
   },
-  "mode": "slab",
+  "mode": "tfc:slab",
   "result": "tfc:mud_bricks/silty_loam_slab"
 }

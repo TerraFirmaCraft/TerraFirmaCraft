@@ -4,6 +4,6 @@
     "tfc:rock/raw/chalk",
     "tfc:rock/hardened/chalk"
   ],
-  "mode": "smooth",
+  "mode": "tfc:smooth",
   "result": "tfc:rock/smooth/chalk"
 }

@@ -3,6 +3,6 @@
   "ingredient": [
     "tfc:rock/bricks/phyllite"
   ],
-  "mode": "smooth",
+  "mode": "tfc:smooth",
   "result": "tfc:rock/chiseled/phyllite"
 }

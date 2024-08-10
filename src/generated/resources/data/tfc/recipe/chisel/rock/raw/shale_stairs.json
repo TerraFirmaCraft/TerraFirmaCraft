@@ -4,6 +4,6 @@
     "tfc:rock/raw/shale",
     "tfc:rock/hardened/shale"
   ],
-  "mode": "stair",
+  "mode": "tfc:stair",
   "result": "tfc:rock/raw/shale_stairs"
 }

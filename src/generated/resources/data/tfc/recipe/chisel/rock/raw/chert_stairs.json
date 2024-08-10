@@ -4,6 +4,6 @@
     "tfc:rock/raw/chert",
     "tfc:rock/hardened/chert"
   ],
-  "mode": "stair",
+  "mode": "tfc:stair",
   "result": "tfc:rock/raw/chert_stairs"
 }

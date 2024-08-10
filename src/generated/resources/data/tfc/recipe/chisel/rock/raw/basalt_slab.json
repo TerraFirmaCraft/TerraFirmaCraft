@@ -8,6 +8,6 @@
     "count": 1,
     "id": "tfc:rock/raw/basalt_slab"
   },
-  "mode": "slab",
+  "mode": "tfc:slab",
   "result": "tfc:rock/raw/basalt_slab"
 }

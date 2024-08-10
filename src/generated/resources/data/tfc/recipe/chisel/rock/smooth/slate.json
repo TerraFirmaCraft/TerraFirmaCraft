@@ -4,6 +4,6 @@
     "tfc:rock/raw/slate",
     "tfc:rock/hardened/slate"
   ],
-  "mode": "smooth",
+  "mode": "tfc:smooth",
   "result": "tfc:rock/smooth/slate"
 }

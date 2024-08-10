@@ -4,6 +4,6 @@
     "tfc:rock/raw/claystone",
     "tfc:rock/hardened/claystone"
   ],
-  "mode": "stair",
+  "mode": "tfc:stair",
   "result": "tfc:rock/raw/claystone_stairs"
 }

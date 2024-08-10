@@ -3,6 +3,6 @@
   "ingredient": [
     "tfc:rock/bricks/slate"
   ],
-  "mode": "smooth",
+  "mode": "tfc:smooth",
   "result": "tfc:rock/chiseled/slate"
 }

@@ -53,7 +53,7 @@ public interface IPlayerInfo
     /**
      * @return The player's currently selected chisel mode
      */
-    ChiselRecipe.Mode chiselMode();
+    ChiselMode chiselMode();
 
     /**
      * Cycle the currently selected chisel mode between the available values

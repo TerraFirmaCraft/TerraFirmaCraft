@@ -3,6 +3,6 @@
   "ingredient": [
     "tfc:wood/planks/kapok"
   ],
-  "mode": "stair",
+  "mode": "tfc:stair",
   "result": "tfc:wood/planks/kapok_stairs"
 }

@@ -4,6 +4,6 @@
     "tfc:rock/raw/dacite",
     "tfc:rock/hardened/dacite"
   ],
-  "mode": "stair",
+  "mode": "tfc:stair",
   "result": "tfc:rock/raw/dacite_stairs"
 }

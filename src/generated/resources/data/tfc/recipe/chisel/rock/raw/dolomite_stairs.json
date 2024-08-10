@@ -4,6 +4,6 @@
     "tfc:rock/raw/dolomite",
     "tfc:rock/hardened/dolomite"
   ],
-  "mode": "stair",
+  "mode": "tfc:stair",
   "result": "tfc:rock/raw/dolomite_stairs"
 }

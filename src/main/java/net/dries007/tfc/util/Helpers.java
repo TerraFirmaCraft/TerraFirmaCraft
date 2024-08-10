@@ -633,11 +633,6 @@ public final class Helpers
         };
     }
 
-    public static <T> T readFromNbt(Codec<T> codec, @Nullable Tag tag, T defaultValue)
-    {
-        return codec.decode(NbtOps.INSTANCE, tag).result().map(Pair::getFirst).orElse(defaultValue);
-    }
-
     public static ListTag writeItemStacksToNbt(HolderLookup.Provider provider, List<ItemStack> stacks)
     {
         final ListTag list = new ListTag();

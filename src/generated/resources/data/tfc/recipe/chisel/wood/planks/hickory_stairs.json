@@ -3,6 +3,6 @@
   "ingredient": [
     "tfc:wood/planks/hickory"
   ],
-  "mode": "stair",
+  "mode": "tfc:stair",
   "result": "tfc:wood/planks/hickory_stairs"
 }

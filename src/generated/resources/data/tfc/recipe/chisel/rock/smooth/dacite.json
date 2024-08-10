@@ -4,6 +4,6 @@
     "tfc:rock/raw/dacite",
     "tfc:rock/hardened/dacite"
   ],
-  "mode": "smooth",
+  "mode": "tfc:smooth",
   "result": "tfc:rock/smooth/dacite"
 }

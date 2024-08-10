@@ -3,6 +3,6 @@
   "ingredient": [
     "tfc:rock/bricks/dacite"
   ],
-  "mode": "smooth",
+  "mode": "tfc:smooth",
   "result": "tfc:rock/chiseled/dacite"
 }

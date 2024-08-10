@@ -3,6 +3,6 @@
   "ingredient": [
     "tfc:rock/bricks/gabbro"
   ],
-  "mode": "smooth",
+  "mode": "tfc:smooth",
   "result": "tfc:rock/chiseled/gabbro"
 }

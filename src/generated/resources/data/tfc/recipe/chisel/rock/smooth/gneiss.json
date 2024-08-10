@@ -4,6 +4,6 @@
     "tfc:rock/raw/gneiss",
     "tfc:rock/hardened/gneiss"
   ],
-  "mode": "smooth",
+  "mode": "tfc:smooth",
   "result": "tfc:rock/smooth/gneiss"
 }

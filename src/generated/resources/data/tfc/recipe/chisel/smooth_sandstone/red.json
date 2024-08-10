@@ -3,6 +3,6 @@
   "ingredient": [
     "tfc:raw_sandstone/red"
   ],
-  "mode": "smooth",
+  "mode": "tfc:smooth",
   "result": "tfc:smooth_sandstone/red"
 }

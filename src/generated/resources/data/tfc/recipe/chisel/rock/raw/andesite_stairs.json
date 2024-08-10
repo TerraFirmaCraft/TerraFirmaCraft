@@ -4,6 +4,6 @@
     "tfc:rock/raw/andesite",
     "tfc:rock/hardened/andesite"
   ],
-  "mode": "stair",
+  "mode": "tfc:stair",
   "result": "tfc:rock/raw/andesite_stairs"
 }

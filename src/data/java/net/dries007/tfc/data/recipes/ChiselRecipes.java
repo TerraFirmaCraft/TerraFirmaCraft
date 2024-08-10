@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import net.minecraft.core.Holder;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
@@ -14,6 +15,7 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
+import net.dries007.tfc.common.player.ChiselMode;
 import net.dries007.tfc.common.recipes.ChiselRecipe;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
@@ -62,14 +64,14 @@ public interface ChiselRecipes extends Recipes
 
     private void stairSlab(List<? extends Supplier<? extends Block>> input, DecorationBlockHolder output)
     {
-        chisel(input, output.stair(), ChiselRecipe.Mode.STAIR, ItemStackProvider.empty());
-        chisel(input, output.slab(), ChiselRecipe.Mode.SLAB, ItemStackProvider.of(output.slab().get()));
+        chisel(input, output.stair(), ChiselMode.STAIR, ItemStackProvider.empty());
+        chisel(input, output.slab(), ChiselMode.SLAB, ItemStackProvider.of(output.slab().get()));
     }
 
     private void stairSlab(Supplier<? extends Block> input, Supplier<? extends Block> stair, Supplier<? extends Block> slab)
     {
-        chisel(List.of(input), stair, ChiselRecipe.Mode.STAIR, ItemStackProvider.empty());
-        chisel(List.of(input), slab, ChiselRecipe.Mode.SLAB, ItemStackProvider.of(slab.get()));
+        chisel(List.of(input), stair, ChiselMode.STAIR, ItemStackProvider.empty());
+        chisel(List.of(input), slab, ChiselMode.SLAB, ItemStackProvider.of(slab.get()));
     }
 
     private void chisel(Supplier<? extends Block> input, Supplier<? extends Block> output)
@@ -79,15 +81,15 @@ public interface ChiselRecipes extends Recipes
 
     private void chisel(List<? extends Supplier<? extends Block>> input, Supplier<? extends Block> output)
     {
-        chisel(input, output, ChiselRecipe.Mode.SMOOTH, ItemStackProvider.empty());
+        chisel(input, output, ChiselMode.SMOOTH, ItemStackProvider.empty());
     }
 
-    private void chisel(List<? extends Supplier<? extends Block>> input, Supplier<? extends Block> output, ChiselRecipe.Mode mode, ItemStackProvider outputItem)
+    private void chisel(List<? extends Supplier<? extends Block>> input, Supplier<? extends Block> output, Holder<ChiselMode> mode, ItemStackProvider outputItem)
     {
         add(new ChiselRecipe(
             BlockIngredient.of(input.stream().map(Supplier::get)),
             output.get().defaultBlockState(),
-            mode,
+            mode.value(),
             outputItem
         ));
     }

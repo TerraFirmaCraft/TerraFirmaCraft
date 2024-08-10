@@ -4,6 +4,6 @@
     "tfc:rock/raw/gneiss",
     "tfc:rock/hardened/gneiss"
   ],
-  "mode": "stair",
+  "mode": "tfc:stair",
   "result": "tfc:rock/raw/gneiss_stairs"
 }

@@ -8,6 +8,6 @@
     "count": 1,
     "id": "tfc:rock/raw/conglomerate_slab"
   },
-  "mode": "slab",
+  "mode": "tfc:slab",
   "result": "tfc:rock/raw/conglomerate_slab"
 }

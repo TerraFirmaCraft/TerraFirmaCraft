@@ -3,6 +3,6 @@
   "ingredient": [
     "tfc:smooth_sandstone/pink"
   ],
-  "mode": "smooth",
+  "mode": "tfc:smooth",
   "result": "tfc:cut_sandstone/pink"
 }

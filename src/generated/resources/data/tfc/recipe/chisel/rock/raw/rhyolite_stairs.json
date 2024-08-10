@@ -4,6 +4,6 @@
     "tfc:rock/raw/rhyolite",
     "tfc:rock/hardened/rhyolite"
   ],
-  "mode": "stair",
+  "mode": "tfc:stair",
   "result": "tfc:rock/raw/rhyolite_stairs"
 }

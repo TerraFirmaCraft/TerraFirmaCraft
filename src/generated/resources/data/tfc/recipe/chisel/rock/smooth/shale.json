@@ -4,6 +4,6 @@
     "tfc:rock/raw/shale",
     "tfc:rock/hardened/shale"
   ],
-  "mode": "smooth",
+  "mode": "tfc:smooth",
   "result": "tfc:rock/smooth/shale"
 }

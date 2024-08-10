@@ -3,6 +3,6 @@
   "ingredient": [
     "tfc:rock/bricks/diorite"
   ],
-  "mode": "smooth",
+  "mode": "tfc:smooth",
   "result": "tfc:rock/chiseled/diorite"
 }

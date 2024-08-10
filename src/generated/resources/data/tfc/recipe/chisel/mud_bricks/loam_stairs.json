@@ -3,6 +3,6 @@
   "ingredient": [
     "tfc:mud_bricks/loam"
   ],
-  "mode": "stair",
+  "mode": "tfc:stair",
   "result": "tfc:mud_bricks/loam_stairs"
 }

@@ -4,6 +4,6 @@
     "tfc:rock/raw/chert",
     "tfc:rock/hardened/chert"
   ],
-  "mode": "smooth",
+  "mode": "tfc:smooth",
   "result": "tfc:rock/smooth/chert"
 }

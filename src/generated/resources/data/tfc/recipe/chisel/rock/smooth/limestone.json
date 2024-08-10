@@ -4,6 +4,6 @@
     "tfc:rock/raw/limestone",
     "tfc:rock/hardened/limestone"
   ],
-  "mode": "smooth",
+  "mode": "tfc:smooth",
   "result": "tfc:rock/smooth/limestone"
 }

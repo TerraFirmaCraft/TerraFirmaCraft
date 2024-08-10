@@ -7,6 +7,6 @@
     "count": 1,
     "id": "tfc:wood/planks/rosewood_slab"
   },
-  "mode": "slab",
+  "mode": "tfc:slab",
   "result": "tfc:wood/planks/rosewood_slab"
 }

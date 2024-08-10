@@ -3,6 +3,6 @@
   "ingredient": [
     "tfc:wood/planks/mangrove"
   ],
-  "mode": "stair",
+  "mode": "tfc:stair",
   "result": "tfc:wood/planks/mangrove_stairs"
 }

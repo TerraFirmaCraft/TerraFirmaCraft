@@ -7,6 +7,6 @@
     "count": 1,
     "id": "tfc:alabaster/polished/yellow_slab"
   },
-  "mode": "slab",
+  "mode": "tfc:slab",
   "result": "tfc:alabaster/polished/yellow_slab"
 }

@@ -3,6 +3,6 @@
   "ingredient": [
     "tfc:raw_sandstone/brown"
   ],
-  "mode": "stair",
+  "mode": "tfc:stair",
   "result": "tfc:raw_sandstone/brown_stairs"
 }

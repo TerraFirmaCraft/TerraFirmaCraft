@@ -4,6 +4,6 @@
     "tfc:rock/raw/gabbro",
     "tfc:rock/hardened/gabbro"
   ],
-  "mode": "stair",
+  "mode": "tfc:stair",
   "result": "tfc:rock/raw/gabbro_stairs"
 }

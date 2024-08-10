@@ -3,6 +3,6 @@
   "ingredient": [
     "tfc:rock/bricks/shale"
   ],
-  "mode": "smooth",
+  "mode": "tfc:smooth",
   "result": "tfc:rock/chiseled/shale"
 }

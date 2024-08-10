@@ -48,6 +48,7 @@ import net.dries007.tfc.common.entities.ai.TFCBrain;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.PropickItem;
 import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.common.player.ChiselMode;
 import net.dries007.tfc.common.recipes.TFCRecipeSerializers;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.ingredients.TFCIngredients;
@@ -170,6 +171,7 @@ public final class TerraFirmaCraft
         DataManagers.MANAGERS.register(bus);
         BarSystem.BARS.register(bus);
         TFCBiomes.EXTENSIONS.register(bus);
+        ChiselMode.MODES.register(bus);
 
         // Custom Registries (neoforge)
         TFCFluids.FLUID_TYPES.register(bus);
@@ -198,6 +200,7 @@ public final class TerraFirmaCraft
         PropickItem.registerDefaultRepresentativeBlocks();
         InteractionManager.registerDefaultInteractions();
         ServerCalendar.overrideDoDaylightCycleCallback();
+        ChiselMode.setupOrdering();
 
         event.enqueueWork(() -> {
             DispenserBehaviors.registerDispenserBehaviors();
@@ -227,6 +230,7 @@ public final class TerraFirmaCraft
         event.register(DataManagers.REGISTRY);
         event.register(BarSystem.REGISTRY);
         event.register(TFCBiomes.REGISTRY);
+        event.register(ChiselMode.REGISTRY);
     }
 
     public void loadComplete(FMLLoadCompleteEvent event)

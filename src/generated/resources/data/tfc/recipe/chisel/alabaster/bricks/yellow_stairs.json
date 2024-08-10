@@ -3,6 +3,6 @@
   "ingredient": [
     "tfc:alabaster/bricks/yellow"
   ],
-  "mode": "stair",
+  "mode": "tfc:stair",
   "result": "tfc:alabaster/bricks/yellow_stairs"
 }

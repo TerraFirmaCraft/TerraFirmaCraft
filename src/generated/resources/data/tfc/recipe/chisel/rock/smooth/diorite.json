@@ -4,6 +4,6 @@
     "tfc:rock/raw/diorite",
     "tfc:rock/hardened/diorite"
   ],
-  "mode": "smooth",
+  "mode": "tfc:smooth",
   "result": "tfc:rock/smooth/diorite"
 }

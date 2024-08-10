@@ -4,6 +4,6 @@
     "tfc:rock/raw/slate",
     "tfc:rock/hardened/slate"
   ],
-  "mode": "stair",
+  "mode": "tfc:stair",
   "result": "tfc:rock/raw/slate_stairs"
 }

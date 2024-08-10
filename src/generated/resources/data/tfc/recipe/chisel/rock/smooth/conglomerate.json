@@ -4,6 +4,6 @@
     "tfc:rock/raw/conglomerate",
     "tfc:rock/hardened/conglomerate"
   ],
-  "mode": "smooth",
+  "mode": "tfc:smooth",
   "result": "tfc:rock/smooth/conglomerate"
 }

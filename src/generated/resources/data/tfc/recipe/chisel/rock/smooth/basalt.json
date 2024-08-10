@@ -4,6 +4,6 @@
     "tfc:rock/raw/basalt",
     "tfc:rock/hardened/basalt"
   ],
-  "mode": "smooth",
+  "mode": "tfc:smooth",
   "result": "tfc:rock/smooth/basalt"
 }

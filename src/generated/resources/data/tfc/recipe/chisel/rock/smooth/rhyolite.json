@@ -4,6 +4,6 @@
     "tfc:rock/raw/rhyolite",
     "tfc:rock/hardened/rhyolite"
   ],
-  "mode": "smooth",
+  "mode": "tfc:smooth",
   "result": "tfc:rock/smooth/rhyolite"
 }

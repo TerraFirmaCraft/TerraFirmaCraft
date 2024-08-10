@@ -3,6 +3,6 @@
   "ingredient": [
     "tfc:rock/bricks/dolomite"
   ],
-  "mode": "smooth",
+  "mode": "tfc:smooth",
   "result": "tfc:rock/chiseled/dolomite"
 }

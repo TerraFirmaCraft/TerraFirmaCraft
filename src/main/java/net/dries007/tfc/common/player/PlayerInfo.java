@@ -9,6 +9,7 @@ package net.dries007.tfc.common.player;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -67,7 +68,7 @@ public final class PlayerInfo extends net.minecraft.world.food.FoodData implemen
     private float thirst = MAX_THIRST; // The current thirst of the player
     private long lastDrinkTick = Long.MIN_VALUE;
     private long intoxicationTick = Long.MIN_VALUE; // A future tick that the player is intoxicated until
-    private ChiselRecipe.Mode chiselMode = ChiselRecipe.Mode.SMOOTH;
+    private ChiselMode chiselMode = ChiselMode.SMOOTH.value();
     private NutritionData nutrition = new NutritionData(0.5f, 0f); // Nutrition information
 
     private boolean modified = false;
@@ -94,7 +95,7 @@ public final class PlayerInfo extends net.minecraft.world.food.FoodData implemen
     }
 
     @Override
-    public ChiselRecipe.Mode chiselMode()
+    public ChiselMode chiselMode()
     {
         return chiselMode;
     }
@@ -328,7 +329,7 @@ public final class PlayerInfo extends net.minecraft.world.food.FoodData implemen
         food.readAdditionalSaveData(root);
         lastDrinkTick = tag.getLong("lastDrinkTick");
         thirst = tag.getFloat("thirst");
-        chiselMode = Helpers.readFromNbt(ChiselRecipe.Mode.CODEC, tag.get("chiselMode"), ChiselRecipe.Mode.SMOOTH);
+        chiselMode = ChiselMode.REGISTRY.get(ResourceLocation.tryParse(tag.getString("chiselMode")));
         nutrition.readFromNbt(tag.get("nutrition"));
         nutrition.setHunger(getFoodLevel());
         intoxicationTick = tag.getLong("intoxication");
@@ -343,7 +344,7 @@ public final class PlayerInfo extends net.minecraft.world.food.FoodData implemen
         food.addAdditionalSaveData(root);
         tag.putLong("lastDrinkTick", lastDrinkTick);
         tag.putFloat("thirst", thirst);
-        tag.put("chiselMode", ChiselRecipe.Mode.CODEC.encodeStart(NbtOps.INSTANCE, chiselMode).getOrThrow());
+        tag.putString("chiselMode", ChiselMode.REGISTRY.getKey(chiselMode).toString());
         tag.put("nutrition", nutrition.writeToNbt());
         tag.putLong("intoxication", intoxicationTick);
     }
