@@ -2,7 +2,6 @@
 #  See the project README.md and LICENSE.txt for more information.
 
 import itertools
-from typing import List
 
 from mcresources import ResourceManager, ItemContext, utils, block_states, loot_tables, atlases, BlockContext
 from mcresources.type_definitions import ResourceIdentifier, JsonObject
@@ -1633,24 +1632,34 @@ def generate(rm: ResourceManager):
 
         flower_pot_cross(rm, '%s sapling' % wood, 'tfc:wood/potted_sapling/%s' % wood, 'wood/potted_sapling/%s' % wood, 'tfc:block/wood/sapling/%s' % wood, 'tfc:wood/sapling/%s' % wood)
 
-        # Planks and variant blocks
+        # Planks
         block = rm.block(('wood', 'planks', wood))
         block.with_blockstate()
         block.with_block_model()
         block.with_item_model()
         block.with_block_loot('tfc:wood/planks/%s' % wood)
         block.with_lang(lang('%s planks', wood))
+
+        # Slabs, Stairs
+        # N.B. These use the naming convention of `tfc:wood/planks/<wood>_<slab>`. This is for general consistency with
+        # how we label slabs and stairs across the mod, and also to indicate that these are slabs of wood planks
         block.make_slab()
         block.make_stairs()
-        block.make_button()
-        block.make_pressure_plate()
-        block.make_trapdoor()
-        block.make_fence()
-        block.make_fence_gate()
 
-        for block_type in ('button', 'fence', 'fence_gate', 'pressure_plate', 'stairs', 'trapdoor'):
-            rm.block_loot('wood/planks/%s_%s' % (wood, block_type), 'tfc:wood/planks/%s_%s' % (wood, block_type))
-        slab_loot(rm, 'tfc:wood/planks/%s_slab' % wood)
+        rm.block_loot('wood/planks/%s_stairs' % wood, 'tfc:wood/planks/%s_stairs' % wood).with_lang(lang('%s stairs', wood))
+        slab_loot(rm, 'tfc:wood/planks/%s_slab' % wood).with_lang(lang('%s slab', wood))
+
+        # Pressure Plate
+        block = rm.block('wood/pressure_plate/%s' % wood)
+        block.make_pressure_plate('', 'tfc:block/wood/planks/%s' % wood)
+        block.with_lang(lang('%s pressure plate', wood))
+        block.with_block_loot('tfc:wood/pressure_plate/%s' % wood)
+
+        # Button
+        block = rm.block('wood/button/%s' % wood)
+        block.make_button('', 'tfc:block/wood/planks/%s' % wood)
+        block.with_lang(lang('%s button', wood))
+        block.with_block_loot('tfc:wood/button/%s' % wood)
 
         # Tool Rack
         block = rm.blockstate('tfc:wood/tool_rack/%s' % wood, model='tfc:block/wood/tool_rack/%s' % wood, variants=four_rotations('tfc:block/wood/tool_rack/%s' % wood, (270, 180, None, 90)))
@@ -1733,15 +1742,36 @@ def generate(rm: ResourceManager):
                 'bottom': 'tfc:block/wood/door/%s_bottom' % wood
             }, parent='block/door_%s' % model)
 
-        # Log Fences
-        log_fence_namespace = 'tfc:wood/planks/' + wood + '_log_fence'
-        rm.blockstate_multipart(log_fence_namespace, *block_states.fence_multipart('tfc:block/wood/planks/' + wood + '_log_fence_post', 'tfc:block/wood/planks/' + wood + '_log_fence_side'))
-        rm.block_model(log_fence_namespace + '_post', textures={'texture': 'tfc:block/wood/log/' + wood}, parent='block/fence_post')
-        rm.block_model(log_fence_namespace + '_side', textures={'texture': 'tfc:block/wood/planks/' + wood}, parent='block/fence_side')
-        rm.block_model(log_fence_namespace + '_inventory', textures={'log': 'tfc:block/wood/log/' + wood, 'planks': 'tfc:block/wood/planks/' + wood}, parent='tfc:block/log_fence_inventory')
-        rm.item_model('tfc:wood/planks/' + wood + '_log_fence', parent='tfc:block/wood/planks/' + wood + '_log_fence_inventory', no_textures=True)
-        rm.block_loot(log_fence_namespace, log_fence_namespace)
+        # Trapdoor
+        block = rm.block('wood/trapdoor/%s' % wood)
+        block.make_trapdoor('', 'tfc:block/wood/trapdoor/%s' % wood)
+        block.with_lang(lang('%s trapdoor', wood))
+        block.with_block_loot('tfc:wood/trapdoor/%s' % wood)
 
+        # Fences, Log Fences, Fence Gates
+        block = rm.block('wood/fence/%s' % wood)
+        block.make_fence('', 'tfc:block/wood/planks/%s' % wood)
+        block.with_lang(lang('%s fence', wood))
+        block.with_block_loot('tfc:wood/fence/%s' % wood)
+
+        block = rm.block('wood/fence_gate/%s' % wood)
+        block.make_fence_gate('', 'tfc:block/wood/planks/%s' % wood)
+        block.with_lang(lang('%s fence gate', wood))
+        block.with_block_loot('tfc:wood/fence_gate/%s' % wood)
+
+        # Log Fences - need to copy `make_fence()` because we have separate textures for post and side
+        block = rm.blockstate_multipart('wood/log_fence/%s' % wood, *block_states.fence_multipart('tfc:block/wood/log_fence/%s_post' % wood, 'tfc:block/wood/log_fence/%s_side' % wood))
+        block.with_lang(lang('%s log fence', wood))
+        block.with_block_loot('tfc:wood/log_fence/%s' % wood)
+        rm.block_model('wood/log_fence/%s_post' % wood, textures={'texture': 'tfc:block/wood/log/' + wood}, parent='block/fence_post')
+        rm.block_model('wood/log_fence/%s_side' % wood, textures={'texture': 'tfc:block/wood/planks/' + wood}, parent='block/fence_side')
+        rm.block_model('wood/log_fence/%s_inventory' % wood, textures={
+            'log': 'tfc:block/wood/log/' + wood,
+            'planks': 'tfc:block/wood/planks/' + wood
+        }, parent='tfc:block/wood/log_fence/inventory')
+        rm.item_model('wood/log_fence/%s' % wood, parent='tfc:block/wood/log_fence/%s_inventory' % wood, no_textures=True)
+
+        # Support Beams
         texture = 'tfc:block/wood/sheet/%s' % wood
         connection = 'tfc:block/wood/support/%s_connection' % wood
         rm.blockstate_multipart(('wood', 'vertical_support', wood),
@@ -1765,6 +1795,7 @@ def generate(rm: ResourceManager):
         rm.block_model('tfc:wood/support/%s_horizontal' % wood, textures={'texture': texture, 'particle': texture}, parent='tfc:block/wood/support/horizontal')
         rm.item_model(('wood', 'support', wood), no_textures=True, parent='tfc:block/wood/support/%s_inventory' % wood).with_lang(lang('%s Support', wood))
 
+        # Chests / Trapped Chests
         for chest in ('chest', 'trapped_chest'):
             rm.blockstate(('wood', chest, wood), model='tfc:block/wood/%s/%s' % (chest, wood)).with_lang(lang('%s %s', wood, chest))
             rm.block_model(('wood', chest, wood), textures={'particle': 'tfc:block/wood/planks/%s' % wood}, parent=None)
@@ -1946,10 +1977,6 @@ def generate(rm: ResourceManager):
         block.with_lang(lang('%s water wheel', wood))
         block.with_block_loot('tfc:wood/water_wheel/%s' % wood)
         rm.item_model('tfc:wood/water_wheel/%s' % wood, 'tfc:item/wood/water_wheel_%s' % wood)
-
-        # Lang
-        for variant in ('trapdoor', 'fence', 'log_fence', 'fence_gate', 'button', 'pressure_plate', 'slab', 'stairs'):
-            rm.lang('block.tfc.wood.planks.' + wood + '_' + variant, lang('%s %s', wood, variant))
 
     # Extra Wood Stuff
     rm.blockstate(('wood', 'planks', 'palm_mosaic')).with_block_model().with_block_loot('tfc:wood/planks/palm_mosaic').with_lang(lang('palm mosaic')).with_item_model().make_slab().make_stairs()
@@ -2276,7 +2303,8 @@ def trim_model(rm: ResourceManager, name_parts: utils.ResourceIdentifier, base: 
         }
     })
 
-def slab_loot(rm: ResourceManager, loot: str):
+
+def slab_loot(rm: ResourceManager, loot: str) -> BlockContext:
     return rm.block_loot(loot, {
         'name': loot,
         'functions': [{

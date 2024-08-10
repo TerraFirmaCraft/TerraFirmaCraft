@@ -149,10 +149,12 @@ public final class TFCBlocks
         )
     );
 
-    public static final Map<SoilBlockType.Variant, DecorationBlockHolder> MUD_BRICK_DECORATIONS = Helpers.mapOf(SoilBlockType.Variant.class, variant -> new DecorationBlockHolder(
-        register(("mud_bricks/" + variant.name() + "_slab"), () -> new SlabBlock(Properties.of().mapColor(MapColor.DIRT).strength(2.6f).sound(SoundType.WART_BLOCK))),
-        register(("mud_bricks/" + variant.name() + "_stairs"), () -> new StairBlock(SOIL.get(SoilBlockType.MUD_BRICKS).get(variant).get().defaultBlockState(), Properties.of().mapColor(MapColor.DIRT).strength(2.6f).sound(SoundType.WART_BLOCK).instrument(NoteBlockInstrument.BASEDRUM))),
-        register(("mud_bricks/" + variant.name() + "_wall"), () -> new WallBlock(Properties.of().mapColor(MapColor.DIRT).strength(2.6f).sound(SoundType.WART_BLOCK)))
+    public static final Map<SoilBlockType.Variant, DecorationBlockHolder> MUD_BRICK_DECORATIONS = Helpers.mapOf(SoilBlockType.Variant.class, variant -> registerDecorations(
+        "mud_bricks/" + variant.name(),
+        () -> new SlabBlock(Properties.of().mapColor(MapColor.DIRT).strength(2.6f).sound(SoundType.WART_BLOCK)),
+        () -> new StairBlock(SOIL.get(SoilBlockType.MUD_BRICKS).get(variant).get().defaultBlockState(), Properties.of().mapColor(MapColor.DIRT).strength(2.6f).sound(SoundType.WART_BLOCK).instrument(NoteBlockInstrument.BASEDRUM)),
+        () -> new WallBlock(Properties.of().mapColor(MapColor.DIRT).strength(2.6f).sound(SoundType.WART_BLOCK)),
+        new Item.Properties()
     ));
 
     public static final Id<Block> SMOOTH_MUD_BRICKS = register("smooth_mud_bricks", () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.DIRT).sound(SoundType.MUD_BRICKS).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(2.6f)));
@@ -175,10 +177,12 @@ public final class TFCBlocks
     );
 
     public static final Map<SandBlockType, Map<SandstoneBlockType, DecorationBlockHolder>> SANDSTONE_DECORATIONS = Helpers.mapOf(SandBlockType.class, color ->
-        Helpers.mapOf(SandstoneBlockType.class, type -> new DecorationBlockHolder(
-            register((type.name() + "_sandstone/" + color.name() + "_slab"), () -> new SlabBlock(type.properties(color))),
-            register((type.name() + "_sandstone/" + color.name() + "_stairs"), () -> new StairBlock(SANDSTONE.get(color).get(type).get().defaultBlockState(), type.properties(color))),
-            register((type.name() + "_sandstone/" + color.name() + "_wall"), () -> new WallBlock(type.properties(color)))
+        Helpers.mapOf(SandstoneBlockType.class, type -> registerDecorations(
+            type.name() + "_sandstone/" + color.name(),
+            () -> new SlabBlock(type.properties(color)),
+            () -> new StairBlock(SANDSTONE.get(color).get(type).get().defaultBlockState(), type.properties(color)),
+            () -> new WallBlock(type.properties(color)),
+            new Item.Properties()
         ))
     );
 
@@ -226,10 +230,12 @@ public final class TFCBlocks
     );
 
     public static final Map<Rock, Map<Rock.BlockType, DecorationBlockHolder>> ROCK_DECORATIONS = Helpers.mapOf(Rock.class, rock ->
-        Helpers.mapOf(Rock.BlockType.class, Rock.BlockType::hasVariants, type -> new DecorationBlockHolder(
-            register(("rock/" + type.name() + "/" + rock.name()) + "_slab", () -> type.createSlab(rock), b -> new BlockItem(b, rock.createItemProperties())),
-            register(("rock/" + type.name() + "/" + rock.name()) + "_stairs", () -> type.createStairs(rock), b -> new BlockItem(b, rock.createItemProperties())),
-            register(("rock/" + type.name() + "/" + rock.name()) + "_wall", () -> type.createWall(rock), b -> new BlockItem(b, rock.createItemProperties()))
+        Helpers.mapOf(Rock.BlockType.class, Rock.BlockType::hasVariants, type -> registerDecorations(
+            "rock/" + type.name() + "/" + rock.name(),
+            () -> type.createSlab(rock),
+            () -> type.createStairs(rock),
+            () -> type.createWall(rock),
+            rock.createItemProperties()
         ))
     );
 
@@ -358,19 +364,21 @@ public final class TFCBlocks
         register(("alabaster/polished/" + color.getName()), () -> new Block(Properties.of().mapColor(color.getMapColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)))
     );
 
-    public static final Map<DyeColor, DecorationBlockHolder> ALABASTER_BRICK_DECORATIONS = Helpers.mapOf(DyeColor.class, color -> new DecorationBlockHolder(
-            register(("alabaster/bricks/" + color.getName() + "_slab"), () -> new SlabBlock(Properties.of().mapColor(color.getMapColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F))),
-            register(("alabaster/bricks/" + color.getName() + "_stairs"), () -> new StairBlock(ALABASTER_BRICKS.get(color).get().defaultBlockState(), Properties.of().mapColor(color.getMapColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F))),
-            register(("alabaster/bricks/" + color.getName() + "_wall"), () -> new WallBlock(Properties.of().mapColor(color.getMapColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)))
-        )
-    );
+    public static final Map<DyeColor, DecorationBlockHolder> ALABASTER_BRICK_DECORATIONS = Helpers.mapOf(DyeColor.class, color -> registerDecorations(
+        "alabaster/bricks/" + color.getName(),
+        () -> new SlabBlock(Properties.of().mapColor(color.getMapColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)),
+        () -> new StairBlock(ALABASTER_BRICKS.get(color).get().defaultBlockState(), Properties.of().mapColor(color.getMapColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)),
+        () -> new WallBlock(Properties.of().mapColor(color.getMapColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)),
+        new Item.Properties()
+    ));
 
-    public static final Map<DyeColor, DecorationBlockHolder> ALABASTER_POLISHED_DECORATIONS = Helpers.mapOf(DyeColor.class, color -> new DecorationBlockHolder(
-            register(("alabaster/polished/" + color.getName() + "_slab"), () -> new SlabBlock(Properties.of().mapColor(color.getMapColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F))),
-            register(("alabaster/polished/" + color.getName() + "_stairs"), () -> new StairBlock(ALABASTER_BRICKS.get(color).get().defaultBlockState(), Properties.of().mapColor(color.getMapColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F))),
-            register(("alabaster/polished/" + color.getName() + "_wall"), () -> new WallBlock(Properties.of().mapColor(color.getMapColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)))
-        )
-    );
+    public static final Map<DyeColor, DecorationBlockHolder> ALABASTER_POLISHED_DECORATIONS = Helpers.mapOf(DyeColor.class, color -> registerDecorations(
+        "alabaster/polished/" + color.getName(),
+        () -> new SlabBlock(Properties.of().mapColor(color.getMapColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)),
+        () -> new StairBlock(ALABASTER_BRICKS.get(color).get().defaultBlockState(), Properties.of().mapColor(color.getMapColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)),
+        () -> new WallBlock(Properties.of().mapColor(color.getMapColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)),
+        new Item.Properties()
+    ));
 
     public static final Map<DyeColor, Id<Block>> COLORED_POURED_GLASS = Helpers.mapOf(DyeColor.class, color -> register(color.getSerializedName() + "_poured_glass", () -> new PouredGlassBlock(ExtendedProperties.of().pushReaction(PushReaction.DESTROY).strength(0.3F).sound(SoundType.GLASS).noOcclusion().requiresCorrectToolForDrops(), () -> PouredGlassBlock.getStainedGlass(color))));
     public static final Id<Block> POURED_GLASS = register("poured_glass", () -> new PouredGlassBlock(ExtendedProperties.of().strength(0.3F).sound(SoundType.GLASS).pushReaction(PushReaction.DESTROY).noOcclusion().requiresCorrectToolForDrops(), () -> Items.GLASS_PANE));
@@ -568,6 +576,15 @@ public final class TFCBlocks
     private static <T extends Block> Id<T> register(String name, Supplier<T> blockSupplier, @Nullable Function<T, ? extends BlockItem> blockItemFactory)
     {
         return new Id<>(RegistrationHelpers.registerBlock(TFCBlocks.BLOCKS, TFCItems.ITEMS, name, blockSupplier, blockItemFactory));
+    }
+
+    private static <T1 extends SlabBlock, T2 extends StairBlock, T3 extends WallBlock> DecorationBlockHolder registerDecorations(String baseName, Supplier<T1> slab, Supplier<T2> stair, Supplier<T3> wall, Item.Properties properties)
+    {
+        return new DecorationBlockHolder(
+            register(baseName + "_slab", slab, b -> new BlockItem(b, properties)),
+            register(baseName + "_stairs", stair, b -> new BlockItem(b, properties)),
+            register(baseName + "_wall", wall, b -> new BlockItem(b, properties))
+        );
     }
     
     public record Id<T extends Block>(DeferredHolder<Block, T> holder) implements RegistryHolder<Block, T>, ItemLike

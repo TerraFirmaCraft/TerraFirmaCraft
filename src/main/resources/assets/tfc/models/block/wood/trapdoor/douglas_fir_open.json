@@ -1,0 +1,7 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/template_orientable_trapdoor_open",
+  "textures": {
+    "texture": "tfc:block/wood/trapdoor/douglas_fir"
+  }
+}

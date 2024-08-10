@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "tfc:wood/planks/palm"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:wood/button/palm"
+  }
+}

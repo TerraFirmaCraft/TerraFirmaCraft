@@ -1,0 +1,81 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "facing=south,in_wall=false,open=false": {
+      "model": "tfc:block/wood/fence_gate/acacia",
+      "uvlock": true
+    },
+    "facing=west,in_wall=false,open=false": {
+      "model": "tfc:block/wood/fence_gate/acacia",
+      "uvlock": true,
+      "y": 90
+    },
+    "facing=north,in_wall=false,open=false": {
+      "model": "tfc:block/wood/fence_gate/acacia",
+      "uvlock": true,
+      "y": 180
+    },
+    "facing=east,in_wall=false,open=false": {
+      "model": "tfc:block/wood/fence_gate/acacia",
+      "uvlock": true,
+      "y": 270
+    },
+    "facing=south,in_wall=false,open=true": {
+      "model": "tfc:block/wood/fence_gate/acacia_open",
+      "uvlock": true
+    },
+    "facing=west,in_wall=false,open=true": {
+      "model": "tfc:block/wood/fence_gate/acacia_open",
+      "uvlock": true,
+      "y": 90
+    },
+    "facing=north,in_wall=false,open=true": {
+      "model": "tfc:block/wood/fence_gate/acacia_open",
+      "uvlock": true,
+      "y": 180
+    },
+    "facing=east,in_wall=false,open=true": {
+      "model": "tfc:block/wood/fence_gate/acacia_open",
+      "uvlock": true,
+      "y": 270
+    },
+    "facing=south,in_wall=true,open=false": {
+      "model": "tfc:block/wood/fence_gate/acacia_wall",
+      "uvlock": true
+    },
+    "facing=west,in_wall=true,open=false": {
+      "model": "tfc:block/wood/fence_gate/acacia_wall",
+      "uvlock": true,
+      "y": 90
+    },
+    "facing=north,in_wall=true,open=false": {
+      "model": "tfc:block/wood/fence_gate/acacia_wall",
+      "uvlock": true,
+      "y": 180
+    },
+    "facing=east,in_wall=true,open=false": {
+      "model": "tfc:block/wood/fence_gate/acacia_wall",
+      "uvlock": true,
+      "y": 270
+    },
+    "facing=south,in_wall=true,open=true": {
+      "model": "tfc:block/wood/fence_gate/acacia_wall_open",
+      "uvlock": true
+    },
+    "facing=west,in_wall=true,open=true": {
+      "model": "tfc:block/wood/fence_gate/acacia_wall_open",
+      "uvlock": true,
+      "y": 90
+    },
+    "facing=north,in_wall=true,open=true": {
+      "model": "tfc:block/wood/fence_gate/acacia_wall_open",
+      "uvlock": true,
+      "y": 180
+    },
+    "facing=east,in_wall=true,open=true": {
+      "model": "tfc:block/wood/fence_gate/acacia_wall_open",
+      "uvlock": true,
+      "y": 270
+    }
+  }
+}

@@ -1,7 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "parent": "block/template_orientable_trapdoor_bottom",
-  "textures": {
-    "texture": "tfc:block/wood/planks/palm_trapdoor"
-  }
-}

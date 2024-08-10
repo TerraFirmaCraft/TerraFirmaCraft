@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/wood/log_fence/inventory",
+  "textures": {
+    "log": "tfc:block/wood/log/willow",
+    "planks": "tfc:block/wood/planks/willow"
+  }
+}

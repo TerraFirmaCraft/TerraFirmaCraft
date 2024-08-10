@@ -1,12 +1,9 @@
 package net.dries007.tfc.data.recipes;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 import net.minecraft.core.Holder;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
 import net.dries007.tfc.common.blocks.DecorationBlockHolder;
@@ -19,7 +16,6 @@ import net.dries007.tfc.common.player.ChiselMode;
 import net.dries007.tfc.common.recipes.ChiselRecipe;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
-import net.dries007.tfc.util.registry.HolderHolder;
 
 public interface ChiselRecipes extends Recipes
 {

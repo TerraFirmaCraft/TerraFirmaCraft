@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "L": {
+      "item": "tfc:wood/lumber/douglas_fir"
+    },
+    "P": {
+      "item": "tfc:wood/planks/douglas_fir"
+    }
+  },
+  "pattern": [
+    "PLP",
+    "PLP"
+  ],
+  "result": {
+    "count": 8,
+    "id": "tfc:wood/fence/douglas_fir"
+  }
+}
