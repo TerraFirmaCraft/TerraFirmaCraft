@@ -101,7 +101,7 @@ public enum Metal implements StringRepresentable, RegistryMetal
     private final String serializedName;
     private final PartType partType;
     @Nullable private final LevelTier toolTier;
-    @Nullable private final TFCArmorMaterials.Id armorTier;
+    @Nullable private final TFCArmorMaterials.Id armorMaterial;
     private final MapColor mapColor;
     private final Rarity rarity;
     private final int color;
@@ -120,7 +120,7 @@ public enum Metal implements StringRepresentable, RegistryMetal
     {
         this.serializedName = name().toLowerCase(Locale.ROOT);
         this.toolTier = toolTier;
-        this.armorTier = armorTier;
+        this.armorMaterial = armorTier;
         this.rarity = rarity;
         this.mapColor = mapColor;
         this.color = color;
@@ -160,9 +160,22 @@ public enum Metal implements StringRepresentable, RegistryMetal
     }
 
     @Override
-    public Holder<ArmorMaterial> armorTier()
+    public Holder<ArmorMaterial> armorMaterial()
     {
-        return Objects.requireNonNull(armorTier, "Tried to get non-existent armor tier from " + name()).holder();
+        return Objects.requireNonNull(armorMaterial).holder();
+    }
+
+    @Override
+    public int armorDurability(ArmorItem.Type type)
+    {
+        Objects.requireNonNull(armorMaterial);
+        return switch (type)
+        {
+            case HELMET -> armorMaterial.headDamage();
+            case BODY, CHESTPLATE -> armorMaterial.chestDamage();
+            case LEGGINGS -> armorMaterial.legDamage();
+            case BOOTS -> armorMaterial.feetDamage();
+        };
     }
 
     @Override
@@ -172,9 +185,9 @@ public enum Metal implements StringRepresentable, RegistryMetal
     }
 
     @Override
-    public Supplier<Block> getFullBlock()
+    public Block getBlock(BlockType type)
     {
-        return TFCBlocks.METALS.get(this).get(BlockType.BLOCK);
+        return TFCBlocks.METALS.get(this).get(type).get();
     }
 
     public int tier()
@@ -187,7 +200,7 @@ public enum Metal implements StringRepresentable, RegistryMetal
         ANVIL(PartType.ALL, metal -> new AnvilBlock(ExtendedProperties.of().mapColor(metal.mapColor()).noOcclusion().sound(SoundType.ANVIL).strength(10, 10).requiresCorrectToolForDrops().blockEntity(TFCBlockEntities.ANVIL), metal.toolTier().level())),
         BLOCK(PartType.DEFAULT, metal -> new Block(BlockBehaviour.Properties.of().mapColor(metal.mapColor()).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL))),
         BLOCK_SLAB(PartType.DEFAULT, metal -> new SlabBlock(BlockBehaviour.Properties.of().mapColor(metal.mapColor()).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL))),
-        BLOCK_STAIRS(PartType.DEFAULT, metal -> new StairBlock(metal.getFullBlock().get().defaultBlockState(), BlockBehaviour.Properties.of().mapColor(metal.mapColor()).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL))),
+        BLOCK_STAIRS(PartType.DEFAULT, metal -> new StairBlock(metal.getBlock(BlockType.BLOCK).defaultBlockState(), BlockBehaviour.Properties.of().mapColor(metal.mapColor()).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL))),
         BARS(PartType.ALL, metal -> new IronBarsBlock(BlockBehaviour.Properties.of().mapColor(metal.mapColor()).requiresCorrectToolForDrops().strength(6.0F, 7.0F).sound(SoundType.METAL).noOcclusion())),
         CHAIN(PartType.ALL, metal -> new TFCChainBlock(Block.Properties.of().mapColor(metal.mapColor()).requiresCorrectToolForDrops().strength(5, 6).sound(SoundType.CHAIN).lightLevel(TFCBlocks.lavaLoggedBlockEmission()))),
         LAMP(PartType.ALL, metal -> new LampBlock(ExtendedProperties.of().mapColor(metal.mapColor()).noOcclusion().sound(SoundType.LANTERN).strength(4, 10).randomTicks().pushReaction(PushReaction.DESTROY).lightLevel(state -> state.getValue(LampBlock.LIT) ? 15 : 0).blockEntity(TFCBlockEntities.LAMP)), (block, properties) -> new LampBlockItem(block, properties.stacksTo(1))),
@@ -288,14 +301,14 @@ public enum Metal implements StringRepresentable, RegistryMetal
 
         // Armor
         UNFINISHED_HELMET(PartType.ALL, false),
-        HELMET(PartType.ALL, metal -> new ArmorItem(metal.armorTier(), ArmorItem.Type.HELMET, base(metal))),
+        HELMET(PartType.ALL, armor(ArmorItem.Type.HELMET)),
         UNFINISHED_CHESTPLATE(PartType.ALL, false),
-        CHESTPLATE(PartType.ALL, metal -> new ArmorItem(metal.armorTier(), ArmorItem.Type.CHESTPLATE, base(metal))),
+        CHESTPLATE(PartType.ALL, armor(ArmorItem.Type.CHESTPLATE)),
         UNFINISHED_GREAVES(PartType.ALL, false),
-        GREAVES(PartType.ALL, metal -> new ArmorItem(metal.armorTier(), ArmorItem.Type.LEGGINGS, base(metal))),
+        GREAVES(PartType.ALL, armor(ArmorItem.Type.LEGGINGS)),
         UNFINISHED_BOOTS(PartType.ALL, false),
-        BOOTS(PartType.ALL, metal -> new ArmorItem(metal.armorTier(), ArmorItem.Type.BOOTS, base(metal))),
-        HORSE_ARMOR(PartType.ALL, metal -> new AnimalArmorItem(metal.armorTier(), AnimalArmorItem.BodyType.EQUESTRIAN, false, base(metal))),
+        BOOTS(PartType.ALL, armor(ArmorItem.Type.BOOTS)),
+        HORSE_ARMOR(PartType.ALL, metal -> new AnimalArmorItem(metal.armorMaterial(), AnimalArmorItem.BodyType.EQUESTRIAN, false, base(metal).durability(metal.armorDurability(ArmorItem.Type.BODY)))),
 
         SHIELD(PartType.ALL, metal -> new TFCShieldItem(metal.toolTier(), base(metal)));
 
@@ -307,6 +320,11 @@ public enum Metal implements StringRepresentable, RegistryMetal
         private static Item.Properties tool(RegistryMetal metal, float attackDamageFactor, float attackSpeed)
         {
             return base(metal).attributes(ToolItem.productAttributes(metal.toolTier(), attackDamageFactor, attackSpeed));
+        }
+
+        private static Function<RegistryMetal, Item> armor(ArmorItem.Type type)
+        {
+            return metal -> new ArmorItem(metal.armorMaterial(), type, base(metal).durability(metal.armorDurability(type)));
         }
 
         private final Function<RegistryMetal, Item> itemFactory;

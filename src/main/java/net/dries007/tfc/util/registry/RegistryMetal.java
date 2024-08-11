@@ -6,9 +6,9 @@
 
 package net.dries007.tfc.util.registry;
 
-import java.util.function.Supplier;
 import net.minecraft.core.Holder;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.Block;
@@ -24,9 +24,11 @@ public interface RegistryMetal extends StringRepresentable
 {
     LevelTier toolTier();
 
-    Holder<ArmorMaterial> armorTier();
+    Holder<ArmorMaterial> armorMaterial();
 
-    Supplier<Block> getFullBlock();
+    int armorDurability(ArmorItem.Type type);
+
+    Block getBlock(Metal.BlockType type);
 
     MapColor mapColor();
 

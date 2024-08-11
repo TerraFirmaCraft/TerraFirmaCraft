@@ -84,6 +84,11 @@ public interface IPlayerInfo
     void setThirst(float value);
 
     /**
+     * @return The thirst loss from the ambient temperature on top of regular loss
+     */
+    float getThirstContributionFromTemperature();
+
+    /**
      * @return The players nutrition information
      */
     NutritionData nutrition();

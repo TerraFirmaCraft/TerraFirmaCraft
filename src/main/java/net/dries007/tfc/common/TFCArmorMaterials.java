@@ -9,6 +9,7 @@ package net.dries007.tfc.common;
 import java.util.EnumMap;
 import java.util.List;
 import net.minecraft.Util;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.ArmorItem;
@@ -62,7 +63,10 @@ public final class TFCArmorMaterials
     }
 
     public record Id(
-        DeferredHolder<ArmorMaterial, ArmorMaterial> holder,
-        int feetDamage, int legDamage, int chestDamage, int headDamage
-    ) implements RegistryHolder<ArmorMaterial, ArmorMaterial> {}
+        Holder<ArmorMaterial> holder,
+        int feetDamage,
+        int legDamage,
+        int chestDamage,
+        int headDamage
+    ) {}
 }

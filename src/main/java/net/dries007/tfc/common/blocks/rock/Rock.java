@@ -71,7 +71,7 @@ public enum Rock implements RegistryRock
 
     public Item.Properties createItemProperties()
     {
-        return new Item.Properties().component(Lore.TYPE, Lore.ROCKS.get(category));
+        return new Item.Properties().component(Lore.TYPE, Lore.ROCK_DISPLAY_CATEGORIES.get(category));
     }
 
     @Override

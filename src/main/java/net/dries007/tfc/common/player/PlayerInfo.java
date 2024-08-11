@@ -6,9 +6,7 @@
 
 package net.dries007.tfc.common.player;
 
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -24,10 +22,8 @@ import net.dries007.tfc.common.TFCDamageTypes;
 import net.dries007.tfc.common.component.food.FoodData;
 import net.dries007.tfc.common.component.food.IFood;
 import net.dries007.tfc.common.component.food.NutritionData;
-import net.dries007.tfc.common.recipes.ChiselRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.PlayerInfoPacket;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
@@ -143,6 +139,17 @@ public final class PlayerInfo extends net.minecraft.world.food.FoodData implemen
     }
 
     @Override
+    public float getThirstContributionFromTemperature()
+    {
+        if (TFCConfig.SERVER.enableThirstOverheating.get())
+        {
+            final float temp = Climate.getTemperature(player.level(), player.blockPosition());
+            return Mth.clampedMap(temp, 22f, 34f, 0f, MAX_TEMPERATURE_THIRST_DECAY);
+        }
+        return 0;
+    }
+
+    @Override
     public NutritionData nutrition()
     {
         return nutrition;
@@ -249,7 +256,7 @@ public final class PlayerInfo extends net.minecraft.world.food.FoodData implemen
             // Same check as the original food stats, so hunger and thirst loss are synced
             if (food.getExhaustionLevel() >= 4.0F)
             {
-                addThirst(-getThirstModifier(player));
+                addThirst(-(TFCConfig.SERVER.thirstModifier.get().floatValue() * (1 + getThirstContributionFromTemperature())));
 
                 // Vanilla will consume exhaustion and saturation in peaceful, but won't modify hunger.
                 // We mimic the same checks that are about to happen in tick(), and if needed, consume hunger in advance
@@ -419,26 +426,5 @@ public final class PlayerInfo extends net.minecraft.world.food.FoodData implemen
     private ICalendar calendar()
     {
         return Calendars.get(player.level());
-    }
-
-    /**
-     * @return The total thirst loss per tick, on a scale of [0, 100], 100 being the entire thirst bar
-     */
-    private float getThirstModifier(Player player)
-    {
-        return TFCConfig.SERVER.thirstModifier.get().floatValue() * (1 + getThirstContributionFromTemperature(player));
-    }
-
-    /**
-     * @return The thirst loss from the ambient temperature on top of regular loss
-     */
-    private float getThirstContributionFromTemperature(Player player)
-    {
-        if (TFCConfig.SERVER.enableThirstOverheating.get())
-        {
-            final float temp = Climate.getTemperature(player.level(), player.blockPosition());
-            return Mth.clampedMap(temp, 22f, 34f, 0f, MAX_TEMPERATURE_THIRST_DECAY);
-        }
-        return 0;
     }
 }

@@ -203,8 +203,7 @@ public enum IngameOverlays
             int x = graphics.guiWidth() / 2;
             int y = graphics.guiHeight() - gui.rightHeight;
             float percentThirst = info.getThirst() / PlayerInfo.MAX_THIRST;
-//            float overheat = info.getThirstContributionFromTemperature(player);
-            float overheat = 0;
+            float overheat = info.getThirstContributionFromTemperature();
 
             stack.pushPose();
             stack.translate(x + 1, y + 4, 0);
