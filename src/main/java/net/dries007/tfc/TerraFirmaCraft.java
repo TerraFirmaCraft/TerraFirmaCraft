@@ -89,6 +89,7 @@ public final class TerraFirmaCraft
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public static final boolean JEI = ModList.get().isLoaded("jei");
+    public static final boolean EMI = ModList.get().isLoaded("emi");
     public static final boolean JADE = ModList.get().isLoaded("jade");
     public static final boolean THE_ONE_PROBE = ModList.get().isLoaded("theoneprobe");
 

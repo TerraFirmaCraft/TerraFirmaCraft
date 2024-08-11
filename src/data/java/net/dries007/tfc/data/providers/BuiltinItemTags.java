@@ -1,7 +1,6 @@
 package net.dries007.tfc.data.providers;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -24,9 +23,7 @@ import net.minecraft.tags.TagEntry;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
@@ -226,14 +223,14 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             .addOnly(TFCBlocks.PLANTS, Plant::needsItem);
         tag(WILD_CROPS).add(TFCBlocks.WILD_CROPS);
 
-        tagNotWhite(COLORED_WOOL, "wool");
-        tagNotWhite(COLORED_CARPETS, "carpet");
-        tagNotWhite(COLORED_BEDS, "bed");
-        tagNotWhite(COLORED_BANNERS, "banner");
-        tagNotWhite(COLORED_TERRACOTTA, "terracotta");
-        tagNotWhite(COLORED_GLAZED_TERRACOTTA, "glazed_terracotta");
-        tagNotWhite(COLORED_SHULKER_BOXES, "shulker_box");
-        tagNotWhite(COLORED_CONCRETE_POWDER, "concrete_powder");
+        tag(COLORED_WOOL).addNotWhite("wool");
+        tag(COLORED_CARPETS).addNotWhite("carpet");
+        tag(COLORED_BEDS).addNotWhite("bed");
+        tag(COLORED_BANNERS).addNotWhite("banner");
+        tag(COLORED_TERRACOTTA).addNotWhite("terracotta");
+        tag(COLORED_GLAZED_TERRACOTTA).addNotWhite("glazed_terracotta");
+        tag(COLORED_SHULKER_BOXES).addNotWhite("shulker_box");
+        tag(COLORED_CONCRETE_POWDER).addNotWhite("concrete_powder");
         tag(COLORED_CANDLES).add(TFCBlocks.DYED_CANDLE);
         tag(COLORED_WINDMILL_BLADES)
             .addOnly(TFCItems.WINDMILL_BLADES, c -> c != DyeColor.WHITE);
@@ -584,13 +581,6 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(commonTagOf(metal, type)).add(TFCItems.METAL_ITEMS.get(metal).get(type));
     }
 
-    private void tagNotWhite(TagKey<Item> tag, String itemName)
-    {
-        tag(tag).add(Arrays.stream(DyeColor.values())
-            .filter(c -> c != DyeColor.WHITE)
-            .map(c -> itemOf(ResourceLocation.withDefaultNamespace(c.getSerializedName() + "_" + itemName))));
-    }
-
     private void copy(TagKey<Block> blockTag)
     {
         this.tagsToCopy.put(blockTag, TagKey.create(Registries.ITEM, blockTag.location()));
@@ -651,6 +641,12 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         <T> ItemTagAppender addOnly(Map<T, ? extends ItemLike> items, Predicate<T> only)
         {
             return add(items.entrySet().stream().filter(e -> only.test(e.getKey())).map(Map.Entry::getValue));
+        }
+
+        ItemTagAppender addNotWhite(String itemName)
+        {
+            for (DyeColor c : Helpers.DYE_COLORS_NOT_WHITE) add(itemOf(ResourceLocation.withDefaultNamespace(c.getSerializedName() + "_" + itemName)));
+            return this;
         }
 
         ItemTagAppender addAll(Map<?, ? extends Map<?, ? extends ItemLike>> items)

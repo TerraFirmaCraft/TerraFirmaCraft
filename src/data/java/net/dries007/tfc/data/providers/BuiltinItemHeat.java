@@ -31,7 +31,7 @@ import net.dries007.tfc.util.data.FluidHeat;
 
 public class BuiltinItemHeat extends DataManagerProvider<HeatDefinition> implements Accessors
 {
-    public final List<WithMelting> withMelting = new ArrayList<>();
+    public final List<MeltingRecipe> meltingRecipes = new ArrayList<>();
     private final CompletableFuture<?> before;
 
     public BuiltinItemHeat(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup, CompletableFuture<?> before)
@@ -114,13 +114,13 @@ public class BuiltinItemHeat extends DataManagerProvider<HeatDefinition> impleme
 
     private void addAndMeltIron(ItemLike item, int units)
     {
-        withMelting.add(new WithMelting(item, Metal.CAST_IRON, units));
+        meltingRecipes.add(new MeltingRecipe(item, Metal.CAST_IRON, units));
         add(nameOf(item), Ingredient.of(item), Metal.WROUGHT_IRON, units);
     }
 
     private void addAndMelt(ItemLike item, Metal metal, int units)
     {
-        withMelting.add(new WithMelting(item, metal, units));
+        meltingRecipes.add(new MeltingRecipe(item, metal, units));
         add(nameOf(item), Ingredient.of(item), metal, units);
     }
 
@@ -154,5 +154,5 @@ public class BuiltinItemHeat extends DataManagerProvider<HeatDefinition> impleme
             fluidHeat.meltTemperature() * 0.8f));
     }
 
-    public record WithMelting(ItemLike item, Metal metal, int units) {}
+    record MeltingRecipe(ItemLike item, Metal metal, int units) {}
 }

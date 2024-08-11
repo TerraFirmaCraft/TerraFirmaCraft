@@ -24,8 +24,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.conditions.ICondition;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -42,6 +40,7 @@ import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.BlastFurnaceRecipe;
 import net.dries007.tfc.common.recipes.BloomeryRecipe;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
+import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.LandslideRecipe;
 import net.dries007.tfc.common.recipes.LoomRecipe;
 import net.dries007.tfc.common.recipes.ScrapingRecipe;
@@ -99,7 +98,7 @@ public final class BuiltinRecipes extends VanillaRecipeProvider implements
         .codec();
 
     final CompletableFuture<?> before;
-    final List<BuiltinItemHeat.WithMelting> withMelting;
+    final List<BuiltinItemHeat.MeltingRecipe> meltingRecipes;
 
     RecipeOutput output;
     HolderLookup.Provider lookup;
@@ -108,7 +107,7 @@ public final class BuiltinRecipes extends VanillaRecipeProvider implements
     {
         super(output, lookup);
         this.before = CompletableFuture.allOf(before, itemHeat.output());
-        this.withMelting = itemHeat.withMelting;
+        this.meltingRecipes = itemHeat.meltingRecipes;
     }
 
     @Override
@@ -164,6 +163,18 @@ public final class BuiltinRecipes extends VanillaRecipeProvider implements
         quernRecipes();
         sewingRecipes();
         weldingRecipes();
+
+        // Heat Recipes from Melting
+        for (BuiltinItemHeat.MeltingRecipe melt : meltingRecipes)
+        {
+            add(nameOf(melt.item()), new HeatingRecipe(
+                Ingredient.of(melt.item()),
+                ItemStackProvider.empty(),
+                new FluidStack(fluidOf(melt.metal()), melt.units()),
+                temperatureOf(melt.metal()),
+                false
+            ));
+        }
 
         // Bloomery Recipes
         add(new BloomeryRecipe(
@@ -264,12 +275,6 @@ public final class BuiltinRecipes extends VanillaRecipeProvider implements
     }
 
     @Override
-    public List<BuiltinItemHeat.WithMelting> withMelting()
-    {
-        return withMelting;
-    }
-
-    @Override
     public void add(String prefix, String name, Recipe<?> recipe)
     {
         output.accept(Helpers.identifier((prefix + "/" + name).toLowerCase(Locale.ROOT)), recipe, null);
@@ -296,6 +301,7 @@ public final class BuiltinRecipes extends VanillaRecipeProvider implements
         assert vanillaRecipes.containsKey(id) : "Recipe " + id + " was not a legal vanilla recipe to replace";
         assert !removedRecipes.contains(id) && !replacedRecipes.contains(id) : "Recipe " + id + " was already replaced or removed";
         assert ItemStack.isSameItemSameComponents(before = recipe.getResultItem(lookup), after = vanillaRecipes.get(id).getResultItem(lookup)) : "Recipe " + id + " is replacing a recipe that outputs " + before + " with " + after + " - it should use a different recipe";
+
         replacedRecipes.add(id);
         output.accept(id, recipe, null);
     }

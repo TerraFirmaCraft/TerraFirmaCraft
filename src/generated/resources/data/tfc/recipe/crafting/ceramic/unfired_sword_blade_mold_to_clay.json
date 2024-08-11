@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "tfc:ceramic/unfired_sword_blade_mold"
+    }
+  ],
+  "result": {
+    "count": 5,
+    "id": "minecraft:clay"
+  }
+}

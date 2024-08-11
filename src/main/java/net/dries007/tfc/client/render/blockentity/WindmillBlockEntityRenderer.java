@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.client.render.blockentity;
 
-import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;

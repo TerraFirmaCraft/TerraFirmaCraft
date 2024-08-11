@@ -7,5 +7,6 @@
     "amount": 1200,
     "id": "tfc:metal/black_steel"
   },
-  "temperature": 1485.0
+  "temperature": 1485.0,
+  "use_durability": true
 }

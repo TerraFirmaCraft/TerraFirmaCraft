@@ -7,5 +7,6 @@
     "amount": 1200,
     "id": "tfc:metal/bismuth_bronze"
   },
-  "temperature": 985.0
+  "temperature": 985.0,
+  "use_durability": true
 }

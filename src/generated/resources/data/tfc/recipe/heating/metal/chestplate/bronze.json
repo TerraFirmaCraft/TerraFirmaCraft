@@ -7,5 +7,6 @@
     "amount": 800,
     "id": "tfc:metal/bronze"
   },
-  "temperature": 950.0
+  "temperature": 950.0,
+  "use_durability": true
 }

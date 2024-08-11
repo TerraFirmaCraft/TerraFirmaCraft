@@ -14,7 +14,6 @@ import net.dries007.tfc.util.data.FluidHeat;
 
 public interface Recipes extends Accessors
 {
-    List<BuiltinItemHeat.WithMelting> withMelting();
     HolderLookup.Provider lookup();
 
     default float temperatureOf(Metal metal)

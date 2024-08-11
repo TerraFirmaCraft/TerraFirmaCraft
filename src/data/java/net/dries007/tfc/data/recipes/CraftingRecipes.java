@@ -178,21 +178,7 @@ public interface CraftingRecipes extends Recipes
 
         // ===== Crafting Recipes =====
 
-        // todo: remaining recipes
-        // todo: re-evaluate cauldron - do we need it? should we add it?
-        // todo: re-evaluate crafting recipes for vanilla devices (i.e. crafting table, loom, smithing table) Which do we need?
-        // todo: auto-generate clay knapping remainder / uncrafting recipes from inputs
-        // todo: are uncrafing (i.e. slab, stair) recipes really wanted? or make sense?
-        // todo: no crafting recipe for flux? (only quern)
-        // todo: lingering water bottles, what?
-        // todo: re-add recipes for new fancy windmill blades
         // todo: pass over new recipes from 1.21, are there any we need to nuke / replace easily?
-
-        // todo: Need to add
-        // - Loom (used for banner patterns)
-        // - Smithing Table (used for armor trims)
-        // - Lattice / Rustic windmill blades
-        // - Name Tag (replace slimeball with glue in recipe, check 1.20)
 
         TFCItems.GEMS.forEach((gem, item) -> recipe()
             .damageInputs()
@@ -668,8 +654,12 @@ public interface CraftingRecipes extends Recipes
             .input('R', Tags.Items.RODS_WOODEN)
             .pattern("S", "L", "R")
             .shaped(Items.TRIPWIRE_HOOK);
-
-
+        replace("smithing_table")
+            .input('D', Tags.Items.DYES_BLACK)
+            .input('S', ingredientOf(Metal.WROUGHT_IRON, Metal.ItemType.SHEET))
+            .input('W', Tags.Items.PLAYER_WORKSTATIONS_CRAFTING_TABLES)
+            .pattern("DD", "WS")
+            .shaped(Items.SMITHING_TABLE);
         replace("armor_stand")
             .input('R', Tags.Items.RODS_WOODEN)
             .input('S', TFCTags.Items.STONES_SMOOTH_SLABS)
@@ -761,9 +751,10 @@ public interface CraftingRecipes extends Recipes
             .pattern("PPP", "PLP", "PPP")
             .shaped(Items.MAP);
         recipe()
-            .input(Items.PAPER)
-            .input(Tags.Items.STRINGS)
-            .shapeless(Items.NAME_TAG);
+            .input('P', Items.PAPER)
+            .input('S', Tags.Items.STRINGS)
+            .pattern("PP", "PS", "PP")
+            .shaped(Items.NAME_TAG);
         recipe()
             .input(Ingredient.of(TFCItems.ORE_POWDERS.get(Ore.NATIVE_COPPER), TFCItems.ORE_POWDERS.get(Ore.SYLVITE)))
             .shapeless(Items.ORANGE_DYE);
@@ -1088,6 +1079,16 @@ public interface CraftingRecipes extends Recipes
             .input('C', TFCItems.WOOL_CLOTH)
             .pattern("LLL", " CC")
             .shaped(TFCItems.WINDMILL_BLADES.get(DyeColor.WHITE));
+        recipe()
+            .input('S', Tags.Items.RODS_WOODEN)
+            .input('W', TFCItems.WINDMILL_BLADES.get(DyeColor.WHITE))
+            .pattern("SSS", "SWS", "SSS")
+            .shaped(TFCItems.LATTICE_WINDMILL_BLADE);
+        recipe()
+            .input('B', TFCItems.BURLAP_CLOTH)
+            .input('W', TFCItems.WINDMILL_BLADES.get(DyeColor.WHITE))
+            .pattern(" B ", "BWB", " B ")
+            .shaped(TFCItems.RUSTIC_WINDMILL_BLADE);
         recipe()
             .input('L', TFCTags.Items.LUMBER)
             .pattern("L L", " L ")

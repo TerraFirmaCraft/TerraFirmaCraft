@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "tfc:ceramic/unfired_flower_pot"
+    }
+  ],
+  "result": {
+    "count": 2,
+    "id": "minecraft:clay"
+  }
+}

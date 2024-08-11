@@ -69,12 +69,6 @@ public final class FluidAlloy
             .forGetter(c -> c.content)
     ).apply(i, FluidAlloy::new));
 
-    private static final StreamCodec<RegistryFriendlyByteBuf, Map.Entry<Fluid, Double>> ELEMENT_CODEC = StreamCodec.composite(
-        ByteBufCodecs.registry(Registries.FLUID), Map.Entry::getKey,
-        ByteBufCodecs.DOUBLE, Map.Entry::getValue,
-        Map::entry
-    );
-
     public static final StreamCodec<RegistryFriendlyByteBuf, FluidAlloy> STREAM_CODEC = StreamCodec.composite(
         ByteBufCodecs.VAR_INT, c -> c.amount,
         ByteBufCodecs.map(

@@ -114,11 +114,19 @@ public interface KnappingRecipes extends Recipes
             Optional.empty(),
             new ItemStack(output, count)
         ));
+        // Un-crafting, only for non-suffixed recipes
+        if (suffix.isEmpty()) new CraftingRecipes.Builder((name, r) -> add(nameOf(output) + "_to_clay", r))
+            .input(output)
+            .shapeless(Items.CLAY, 5 / count);
     }
 
     private void fireClayKnapping(ItemLike output, int count, String... pattern)
     {
         knapping(BuiltinKnappingTypes.FIRE_CLAY, pattern, output, count);
+        // Un-crafting, only for non-suffixed recipes
+        new CraftingRecipes.Builder((name, r) -> add(nameOf(output) + "_to_fire_clay", r))
+            .input(output)
+            .shapeless(TFCItems.FIRE_CLAY, 5 / count);
     }
 
     private void leatherKnapping(ItemLike output, String... pattern)

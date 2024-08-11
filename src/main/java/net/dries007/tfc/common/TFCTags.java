@@ -366,7 +366,11 @@ public class TFCTags
         public static final TagKey<Item> PLANTS = tag("plants");
         public static final TagKey<Item> WILD_CROPS = tag("wild_crops");
 
-        // Colored Items
+        /**
+         * Colored Tags
+         * These only include non-white versions of the item - this is mostly used for recipes that remove color,
+         * i.e. bleaching in a barrel.
+         */
         public static final TagKey<Item> COLORED_WOOL = tag("colored_wool");
         public static final TagKey<Item> COLORED_CARPETS = tag("colored_carpets");
         public static final TagKey<Item> COLORED_BEDS = tag("colored_beds");
@@ -405,6 +409,9 @@ public class TFCTags
         public static final TagKey<Item> ORE_PIECES = tag("ore_pieces");
         public static final TagKey<Item> SMALL_ORE_PIECES = tag("small_ore_pieces");
         public static final TagKey<Item> WATER_WHEELS = tag("water_wheels");
+        /**
+         * Includes all windmill blades that are capable of being placed on a windmill.
+         */
         public static final TagKey<Item> WINDMILL_BLADES = tag("windmill_blades");
         public static final TagKey<Item> AXLES = tag("axles");
         public static final TagKey<Item> GEAR_BOXES = tag("gear_boxes");

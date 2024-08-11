@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "tfc:burlap_cloth"
+    },
+    "W": {
+      "item": "tfc:windmill_blade/white"
+    }
+  },
+  "pattern": [
+    " B ",
+    "BWB",
+    " B "
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:rustic_windmill_blade"
+  }
+}

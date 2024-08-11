@@ -7,5 +7,6 @@
     "amount": 600,
     "id": "tfc:metal/red_steel"
   },
-  "temperature": 1540.0
+  "temperature": 1540.0,
+  "use_durability": true
 }

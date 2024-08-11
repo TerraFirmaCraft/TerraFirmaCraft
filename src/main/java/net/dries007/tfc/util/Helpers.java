@@ -131,6 +131,7 @@ public final class Helpers
 {
     public static final Direction[] DIRECTIONS = Direction.values();
     public static final DyeColor[] DYE_COLORS = DyeColor.values();
+    public static final DyeColor[] DYE_COLORS_NOT_WHITE = Arrays.stream(DYE_COLORS).filter(e -> e != DyeColor.WHITE).toArray(DyeColor[]::new);
 
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final int PRIME_X = 501125321;

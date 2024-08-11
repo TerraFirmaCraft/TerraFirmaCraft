@@ -127,11 +127,6 @@ public interface HeatRecipes extends Recipes
             ItemStackProvider.empty(),
             new FluidStack(meltFluidFor(metal), units(type)),
             temperatureOf(metal), new ItemStack(item).isDamageableItem()))));
-
-        for (BuiltinItemHeat.WithMelting melt : withMelting())
-        {
-            add(Ingredient.of(melt.item()), new FluidStack(fluidOf(melt.metal()), melt.units()), temperatureOf(melt.metal()));
-        }
     }
 
     private Fluid meltFluidFor(Metal metal)
