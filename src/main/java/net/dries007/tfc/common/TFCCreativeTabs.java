@@ -7,12 +7,8 @@
 package net.dries007.tfc.common;
 
 import java.util.Map;
-import java.util.Objects;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -640,9 +636,9 @@ public final class TFCCreativeTabs
 
     private static void accept(CreativeModeTab.Output out, DecorationBlockHolder decoration)
     {
-        out.accept(decoration.stair().get());
-        out.accept(decoration.slab().get());
-        out.accept(decoration.wall().get());
+        out.accept(decoration.stair());
+        out.accept(decoration.slab());
+        out.accept(decoration.wall());
     }
 
     public record Id(DeferredHolder<CreativeModeTab, CreativeModeTab> tab, CreativeModeTab.DisplayItemsGenerator generator) {}

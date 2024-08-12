@@ -76,7 +76,9 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(BlockTags.WOODEN_DOORS).add(TFCBlocks.WOODS, Wood.BlockType.DOOR);
         tag(BlockTags.WOODEN_STAIRS).add(TFCBlocks.WOODS, Wood.BlockType.STAIRS);
         tag(BlockTags.WOODEN_SLABS).add(TFCBlocks.WOODS, Wood.BlockType.SLAB);
-        tag(BlockTags.WOODEN_FENCES).addTag(Tags.Blocks.FENCES_WOODEN); // Include the common tag, which we add to
+        tag(BlockTags.WOODEN_FENCES)
+            .add(TFCBlocks.WOODS, Wood.BlockType.FENCE)
+            .add(TFCBlocks.WOODS, Wood.BlockType.LOG_FENCE);
         tag(BlockTags.WOODEN_PRESSURE_PLATES).add(TFCBlocks.WOODS, Wood.BlockType.PRESSURE_PLATE);
         tag(BlockTags.STONE_PRESSURE_PLATES).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.PRESSURE_PLATE);
         tag(BlockTags.WOODEN_TRAPDOORS).add(TFCBlocks.WOODS, Wood.BlockType.TRAPDOOR);
@@ -118,7 +120,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .add(TFCBlocks.WILD_CROPS);
         // todo: other crops?
         // todo: add vines to climable tag?
-        tag(BlockTags.FENCE_GATES).addTag(Tags.Blocks.FENCE_GATES_WOODEN); // We add to the common tag, then include here
+        tag(BlockTags.FENCE_GATES).add(TFCBlocks.WOODS, Wood.BlockType.FENCE_GATE);
         tag(BlockTags.BASE_STONE_OVERWORLD)
             .addTags(STONES_RAW, STONES_HARDENED);
         tag(BlockTags.STONE_ORE_REPLACEABLES).addTag(STONES_RAW); // Used for vanilla-like ore generation
@@ -293,10 +295,9 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
 
         // Ignore dyed tags, as it seems to imply trivial dye application?
 
+        // fences/wooden includes minecraft:wooden_fences - we only add to the minecraft tag
+        // fence_gates/wooden and minecraft:fence_gates don't have any relationship - we need to add to both
         tag(Tags.Blocks.FENCE_GATES_WOODEN).add(TFCBlocks.WOODS, Wood.BlockType.FENCE_GATE);
-        tag(Tags.Blocks.FENCES_WOODEN)
-            .add(TFCBlocks.WOODS, Wood.BlockType.FENCE)
-            .add(TFCBlocks.WOODS, Wood.BlockType.LOG_FENCE);
         tag(Tags.Blocks.GRAVELS).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.GRAVEL);
 
         // Ore Tags

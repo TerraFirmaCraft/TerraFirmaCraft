@@ -8,7 +8,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:wood/planks/spruce_tool_rack"
+          "name": "tfc:wood/tool_rack/spruce"
         }
       ],
       "conditions": [

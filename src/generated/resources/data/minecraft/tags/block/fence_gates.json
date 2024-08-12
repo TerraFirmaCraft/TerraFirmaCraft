@@ -1,5 +1,24 @@
 {
   "values": [
-    "#c:fence_gates/wooden"
+    "tfc:wood/fence_gate/acacia",
+    "tfc:wood/fence_gate/ash",
+    "tfc:wood/fence_gate/aspen",
+    "tfc:wood/fence_gate/birch",
+    "tfc:wood/fence_gate/blackwood",
+    "tfc:wood/fence_gate/chestnut",
+    "tfc:wood/fence_gate/douglas_fir",
+    "tfc:wood/fence_gate/hickory",
+    "tfc:wood/fence_gate/kapok",
+    "tfc:wood/fence_gate/mangrove",
+    "tfc:wood/fence_gate/maple",
+    "tfc:wood/fence_gate/oak",
+    "tfc:wood/fence_gate/palm",
+    "tfc:wood/fence_gate/pine",
+    "tfc:wood/fence_gate/rosewood",
+    "tfc:wood/fence_gate/sequoia",
+    "tfc:wood/fence_gate/spruce",
+    "tfc:wood/fence_gate/sycamore",
+    "tfc:wood/fence_gate/white_cedar",
+    "tfc:wood/fence_gate/willow"
   ]
 }

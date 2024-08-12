@@ -6,7 +6,10 @@
 
 package net.dries007.tfc.common.items;
 
-public enum Food
+import java.util.Locale;
+import net.minecraft.util.StringRepresentable;
+
+public enum Food implements StringRepresentable
 {
     // Berries
     BLACKBERRY(true),
@@ -173,6 +176,7 @@ public enum Food
     ;
     
     private final boolean fruit;
+    private final String serializedName;
 
     Food()
     {
@@ -181,7 +185,14 @@ public enum Food
 
     Food(boolean fruit)
     {
+        this.serializedName = name().toLowerCase(Locale.ROOT);
         this.fruit = fruit;
+    }
+
+    @Override
+    public String getSerializedName()
+    {
+        return serializedName;
     }
 
     public boolean isFruit()

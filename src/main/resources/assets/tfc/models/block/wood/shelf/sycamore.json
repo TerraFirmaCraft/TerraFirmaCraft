@@ -1,0 +1,7 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/wood/shelf",
+  "textures": {
+    "0": "tfc:block/wood/planks/sycamore"
+  }
+}

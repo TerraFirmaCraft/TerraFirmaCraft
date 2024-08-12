@@ -326,6 +326,15 @@ public interface CraftingRecipes extends Recipes
                 .shapeless(blocks.apply(SoilBlockType.DRYING_BRICKS));
             recipe().to2x2(soil.mudBrick(), blocks.apply(SoilBlockType.MUD_BRICKS), 1);
             addDecorations(blocks.apply(SoilBlockType.MUD_BRICKS), TFCBlocks.MUD_BRICK_DECORATIONS.get(soil));
+            // Mud Bricks have 2x2 crafting recipes as alternatives - but allow making slabs/stairs (not walls) before wood (saws)
+            recipe("small")
+                .input('#', blocks.apply(SoilBlockType.MUD_BRICKS))
+                .pattern("##")
+                .shaped(TFCBlocks.MUD_BRICK_DECORATIONS.get(soil).slab(), 4);
+            recipe("small")
+                .input('#', blocks.apply(SoilBlockType.MUD_BRICKS))
+                .pattern("# ", "##")
+                .shaped(TFCBlocks.MUD_BRICK_DECORATIONS.get(soil).stair(), 8);
             recipe()
                 .input(blocks.apply(SoilBlockType.MUD))
                 .input(TFCBlocks.TREE_ROOTS)
@@ -466,7 +475,7 @@ public interface CraftingRecipes extends Recipes
                 .input('P', planks)
                 .input('S', Tags.Items.RODS_WOODEN)
                 .pattern("PPP", "L L", "S S")
-                .shaped(blocks.get(Wood.BlockType.JAR_SHELF), 2);
+                .shaped(blocks.get(Wood.BlockType.SHELF), 2);
             recipe()
                 .input('L', lumber)
                 .input('S', Tags.Items.RODS_WOODEN)
@@ -1139,15 +1148,15 @@ public interface CraftingRecipes extends Recipes
         recipe()
             .input('#', input)
             .pattern("###")
-            .shaped(output.slab().get(), 6);
+            .shaped(output.slab(), 6);
         recipe()
             .input('#', input)
             .pattern("#  ", "## ", "###")
-            .shaped(output.stair().get(), 8);
+            .shaped(output.stair(), 8);
         recipe()
             .input('#', input)
             .pattern("###", "###")
-            .shaped(output.wall().get(), 6);
+            .shaped(output.wall(), 6);
     }
 
     private void addGrains(Food crop, Food grain, Food flour, Food dough, Food bread, Food sandwich, Food jamSandwich)

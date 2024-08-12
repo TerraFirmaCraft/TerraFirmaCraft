@@ -2,7 +2,6 @@ package net.dries007.tfc.data.recipes;
 
 import java.util.List;
 import java.util.function.Supplier;
-
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.block.Block;
 
@@ -61,7 +60,7 @@ public interface ChiselRecipes extends Recipes
     private void stairSlab(List<? extends Supplier<? extends Block>> input, DecorationBlockHolder output)
     {
         chisel(input, output.stair(), ChiselMode.STAIR, ItemStackProvider.empty());
-        chisel(input, output.slab(), ChiselMode.SLAB, ItemStackProvider.of(output.slab().get()));
+        chisel(input, output.slab(), ChiselMode.SLAB, ItemStackProvider.of(output.slab()));
     }
 
     private void stairSlab(Supplier<? extends Block> input, Supplier<? extends Block> stair, Supplier<? extends Block> slab)

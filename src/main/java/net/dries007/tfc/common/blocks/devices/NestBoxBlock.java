@@ -46,7 +46,7 @@ public class NestBoxBlock extends BottomSupportedDeviceBlock
     }
 
     @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
     {
         super.onRemove(state, level, pos, newState, isMoving);
         final Entity sitter = Seat.getSittingEntity(level, pos);

@@ -42,7 +42,7 @@ public class DeviceBlock extends ExtendedBlock implements IForgeBlockExtension, 
     }
 
     @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
     {
         final BlockEntity entity = level.getBlockEntity(pos);
         if (entity instanceof InventoryBlockEntity<?> inv && !(Helpers.isBlock(state, newState.getBlock())))

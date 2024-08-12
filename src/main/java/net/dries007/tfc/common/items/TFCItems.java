@@ -126,14 +126,16 @@ public final class TFCItems
 
     // Food
 
+    public static final ItemId EMPTY_JAR = register("empty_jar"); // Must register before used as crafting remainder
+
     public static final Map<Food, ItemId> FOOD = Helpers.mapOf(Food.class, food ->
         register("food/" + food.name(), () -> new Item(new Properties()))
     );
     public static final Map<Food, ItemId> FRUIT_PRESERVES = Helpers.mapOf(Food.class, Food::isFruit, food ->
-        register("jar/" + food.name(), () -> new JarItem(new Properties().component(Lore.TYPE, Lore.SEALED), false))
+        register("jar/" + food.name(), () -> new Item(new Properties().component(Lore.TYPE, Lore.SEALED)))
     );
     public static final Map<Food, ItemId> UNSEALED_FRUIT_PRESERVES = Helpers.mapOf(Food.class, Food::isFruit, food ->
-        register("jar/" + food.name() + "_unsealed", () -> new JarItem(new Properties().component(Lore.TYPE, Lore.UNSEALED), true))
+        register("jar/" + food.name() + "_unsealed", () -> new Item(new Properties().component(Lore.TYPE, Lore.UNSEALED).craftRemainder(TFCItems.EMPTY_JAR.asItem())))
     );
     public static final Map<Nutrient, ItemId> SOUPS = Helpers.mapOf(Nutrient.class, nutrient ->
         register("food/" + nutrient.name() + "_soup", () -> new Item(new Properties()))
@@ -195,10 +197,9 @@ public final class TFCItems
     public static final ItemId HEMATITIC_GLASS_BOTTLE = register("hematitic_glass_bottle", () -> new GlassBottleItem(new Properties().component(Lore.TYPE, Lore.HEMATITIC), TFCConfig.SERVER.hematiticGlassBottleCapacity, TFCConfig.SERVER.hematiticGlassBottleBreakChance, TFCTags.Fluids.USABLE_IN_JUG));
     public static final ItemId VOLCANIC_GLASS_BOTTLE = register("volcanic_glass_bottle", () -> new GlassBottleItem(new Properties().component(Lore.TYPE, Lore.VOLCANIC), TFCConfig.SERVER.volcanicGlassBottleCapacity, TFCConfig.SERVER.volcanicGlassBottleBreakChance, TFCTags.Fluids.USABLE_IN_JUG));
     public static final ItemId OLIVINE_GLASS_BOTTLE = register("olivine_glass_bottle", () -> new GlassBottleItem(new Properties().component(Lore.TYPE, Lore.OLIVINE), TFCConfig.SERVER.olivineGlassBottleCapacity, TFCConfig.SERVER.olivineGlassBottleBreakChance, TFCTags.Fluids.USABLE_IN_JUG));
-    public static final ItemId EMPTY_JAR = register("empty_jar", () -> new JarItem(new Properties(), false));
-    public static final ItemId EMPTY_JAR_WITH_LID = register("empty_jar_with_lid", () -> new JarItem(new Properties(), false));
-    public static final ItemId JAR_LID = register("jar_lid", () -> new Item(new Properties()));
 
+    public static final ItemId EMPTY_JAR_WITH_LID = register("empty_jar_with_lid");
+    public static final ItemId JAR_LID = register("jar_lid");
     public static final ItemId BONE_NEEDLE = register("bone_needle", () -> new Item(new Properties().durability(64)));
     public static final ItemId BLANK_DISC = register("blank_disc");
     public static final ItemId BLUBBER = register("blubber");

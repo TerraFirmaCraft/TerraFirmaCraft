@@ -6,11 +6,9 @@
 
 package net.dries007.tfc.data;
 
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistrySetBuilder;
@@ -53,7 +51,6 @@ import net.dries007.tfc.data.providers.BuiltinRecipes;
 import net.dries007.tfc.data.providers.BuiltinSupports;
 import net.dries007.tfc.data.providers.BuiltinWorldPreset;
 import net.dries007.tfc.util.PhysicalDamageType;
-import net.dries007.tfc.util.TFCPaintings;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
 
@@ -86,19 +83,23 @@ public final class DataEntryPoint
         add(event, new BuiltinItemTags(event, lookup, blockTags));
         add(event, new BuiltinFluidTags(event, lookup, drinkables));
         add(event, new BuiltinEntityTags(event, lookup));
-        tags(event, Registries.PAINTING_VARIANT, lookup, (provider, tags) -> TFCPaintings.PAINTING_TYPES
-            .getEntries()
-            .forEach(holder -> tags.tag(PaintingVariantTags.PLACEABLE).accept(holder.getKey())));
+        tags(event, Registries.PAINTING_VARIANT, lookup, (provider, tags) -> tags.tag(PaintingVariantTags.PLACEABLE).add(
+            BuiltinPaintings.GOLDEN_FIELD,
+            BuiltinPaintings.HOT_SPRING,
+            BuiltinPaintings.LAKE,
+            BuiltinPaintings.SUPPORTS,
+            BuiltinPaintings.VOLCANO
+        ));
         tags(event, Registries.DAMAGE_TYPE, lookup, (provider, tags) -> {
-            List.of(
+            tags.tag(PhysicalDamageType.IS_CRUSHING).add(
                 DamageTypes.IN_WALL,
                 DamageTypes.CRAMMING,
                 DamageTypes.FALL,
                 DamageTypes.FLY_INTO_WALL,
                 DamageTypes.FALLING_BLOCK,
                 DamageTypes.FALLING_ANVIL
-            ).forEach(tags.tag(PhysicalDamageType.IS_CRUSHING));
-            List.of(
+            );
+            tags.tag(PhysicalDamageType.IS_PIERCING).add(
                 DamageTypes.CACTUS,
                 DamageTypes.SWEET_BERRY_BUSH,
                 DamageTypes.STALAGMITE,
@@ -106,11 +107,10 @@ public final class DataEntryPoint
                 DamageTypes.STING,
                 DamageTypes.ARROW,
                 DamageTypes.TRIDENT
-            ).forEach(tags.tag(PhysicalDamageType.IS_PIERCING));
+            );
             tags.tag(PhysicalDamageType.IS_SLASHING);
         });
-        tags(event, Registries.WORLD_PRESET, lookup, (provider, tags) ->
-            tags.tag(WorldPresetTags.NORMAL).accept(PRESET));
+        tags(event, Registries.WORLD_PRESET, lookup, (provider, tags) -> tags.tag(WorldPresetTags.NORMAL).add(PRESET));
 
         add(event, new BuiltinDeposits(output, lookup));
         add(event, new BuiltinEntityDamageResist(output, lookup));
@@ -130,15 +130,14 @@ public final class DataEntryPoint
         return event.getGenerator().addProvider(true, provider);
     }
 
-    private static <T> void tags(GatherDataEvent event, ResourceKey<Registry<T>> registry, CompletableFuture<HolderLookup.Provider> lookup,
-                                 BiConsumer<HolderLookup.Provider, TagLookup<T>> callback)
+    private static <T> void tags(GatherDataEvent event, ResourceKey<Registry<T>> registry, CompletableFuture<HolderLookup.Provider> lookup, BiConsumer<HolderLookup.Provider, TagLookup<T>> callback)
     {
         add(event, new TagsProvider<T>(event.getGenerator().getPackOutput(), registry, lookup, MOD_ID, event.getExistingFileHelper())
         {
             @Override
             protected void addTags(HolderLookup.Provider provider)
             {
-                callback.accept(provider, tag -> tag(tag)::add);
+                callback.accept(provider, this::tag);
             }
         });
     }
@@ -146,6 +145,6 @@ public final class DataEntryPoint
     @FunctionalInterface
     interface TagLookup<T>
     {
-        Consumer<ResourceKey<T>> tag(TagKey<T> tag);
+        TagsProvider.TagAppender<T> tag(TagKey<T> tag);
     }
 }

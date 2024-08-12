@@ -1373,7 +1373,6 @@ def generate(rm: ResourceManager):
         rm.item_model(('food', '%s_soup' % nutrient)).with_lang(lang('%s soup', funny_soup_name))
         rm.item_model(('food', '%s_salad' % nutrient)).with_lang(lang('%s salad', funny_salad_name))
 
-    rm.blockstate('jars').with_block_model({'particle': 'minecraft:block/glass'}, parent=None).with_lang(lang('jars'))
     rm.block_model('jar/empty', textures={'2': 'tfc:block/jar_no_lid'}, parent='tfc:block/jar')
     for fruit in JAR_FRUITS:
         rm.block_model('jar/%s' % fruit, textures={'1': 'tfc:block/jar/%s' % fruit}, parent='tfc:block/jar')
@@ -1668,7 +1667,7 @@ def generate(rm: ResourceManager):
             'particle': 'tfc:block/wood/planks/%s' % wood
         }, parent='tfc:block/tool_rack')
         block.with_lang(lang('%s Tool Rack', wood))
-        block.with_block_loot('tfc:wood/planks/%s_tool_rack' % wood)
+        block.with_block_loot('tfc:wood/tool_rack/%s' % wood)
         block.with_item_model()
 
         # Loom
@@ -1869,8 +1868,14 @@ def generate(rm: ResourceManager):
         rm.block_model(('wood', 'sewing_table', wood), {'0': 'tfc:block/wood/log/%s' % wood, '1': 'tfc:block/wood/planks/%s' % wood}, 'tfc:block/sewing_table')
         block.with_lang(lang('%s sewing table', wood)).with_block_loot('tfc:wood/sewing_table/%s' % wood)
 
-        block = rm.blockstate('wood/jar_shelf/%s' % wood, variants=four_rotations('tfc:block/wood/jar_shelf/%s' % wood, (90, None, 180, 270)))
-        block.with_block_model(textures={'0': 'tfc:block/wood/planks/%s' % wood}, parent='tfc:block/jar_shelf').with_item_model().with_lang(lang('%s jar shelf', wood)).with_block_loot('tfc:wood/jar_shelf/%s' % wood)
+        # Shelf
+        block = rm.blockstate('wood/shelf/%s' % wood, variants=four_rotations('tfc:block/wood/shelf/%s' % wood, (90, None, 180, 270)))
+        block.with_block_model(textures={
+            '0': 'tfc:block/wood/planks/%s' % wood
+        }, parent='tfc:block/wood/shelf')
+        block.with_item_model()
+        block.with_lang(lang('%s shelf', wood))
+        block.with_block_loot('tfc:wood/shelf/%s' % wood)
 
         # Axle
         block = rm.blockstate('tfc:wood/axle/%s' % wood, 'tfc:block/empty')
@@ -2145,8 +2150,6 @@ def generate(rm: ResourceManager):
     rm.custom_block_model('double_ingot_pile', 'tfc:double_ingot_pile', {})
     rm.custom_block_model('sheet_pile', 'tfc:sheet_pile', {})
 
-    for be in BLOCK_ENTITIES:
-        rm.lang('tfc.block_entity.%s' % be, lang(be))
 
     for fluid in SIMPLE_FLUIDS:
         water_based_fluid(rm, fluid)

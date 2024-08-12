@@ -6,19 +6,16 @@
 
 package net.dries007.tfc.common.blocks;
 
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
-import net.dries007.tfc.util.registry.RegistryHolder;
-
 /**
  * A triple of {@link DeferredHolder}s for slabs, stairs, and walls
  */
 public record DecorationBlockHolder(
-    RegistryHolder<Block, ? extends SlabBlock> slab,
-    RegistryHolder<Block, ? extends StairBlock> stair,
-    RegistryHolder<Block, ? extends WallBlock> wall
+    TFCBlocks.Id<? extends SlabBlock> slab,
+    TFCBlocks.Id<? extends StairBlock> stair,
+    TFCBlocks.Id<? extends WallBlock> wall
 ) {}

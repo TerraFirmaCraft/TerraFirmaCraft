@@ -6,10 +6,8 @@
 
 package net.dries007.tfc.client.render.blockentity;
 
-import java.util.HashMap;
 import java.util.Map;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.Util;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -26,13 +24,13 @@ import net.dries007.tfc.util.Helpers;
 public class BowlBlockEntityRenderer implements BlockEntityRenderer<BowlBlockEntity>
 {
     private static final ResourceLocation FALLBACK = Helpers.identifier("block/powder/salt");
-    private static final Map<Item, ResourceLocation> TEXTURES = Util.make(new HashMap<>(), map -> {
-        TFCItems.POWDERS.forEach((type, item) -> map.put(item.asItem(), item.getId().withPrefix("block/")));
-        TFCItems.ORE_POWDERS.forEach((type, item) -> map.put(item.asItem(), item.getId().withPrefix("block/")));
-        map.put(Items.REDSTONE, Helpers.identifier("block/powder/redstone"));
-        map.put(Items.GLOWSTONE_DUST, Helpers.identifier("block/powder/glowstone"));
-        map.put(Items.BLAZE_POWDER, Helpers.identifier("block/powder/blaze_powder"));
-        map.put(Items.GUNPOWDER, Helpers.identifier("block/powder/gunpowder"));
+    private static final Map<Item, ResourceLocation> TEXTURES = RenderHelpers.mapOf(map -> {
+        TFCItems.POWDERS.forEach((type, item) -> map.accept(item, item.getId().withPrefix("block/")));
+        TFCItems.ORE_POWDERS.forEach((type, item) -> map.accept(item, item.getId().withPrefix("block/")));
+        map.accept(() -> Items.REDSTONE, Helpers.identifier("block/powder/redstone"));
+        map.accept(() -> Items.GLOWSTONE_DUST, Helpers.identifier("block/powder/glowstone"));
+        map.accept(() -> Items.BLAZE_POWDER, Helpers.identifier("block/powder/blaze_powder"));
+        map.accept(() -> Items.GUNPOWDER, Helpers.identifier("block/powder/gunpowder"));
     });
 
     @Override

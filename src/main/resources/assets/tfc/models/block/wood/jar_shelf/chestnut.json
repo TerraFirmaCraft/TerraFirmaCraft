@@ -1,7 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "parent": "tfc:block/jar_shelf",
-  "textures": {
-    "0": "tfc:block/wood/planks/chestnut"
-  }
-}

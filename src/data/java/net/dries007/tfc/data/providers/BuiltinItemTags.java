@@ -139,6 +139,12 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(SOUPS).add(TFCItems.SOUPS);
         tag(PRESERVES).add(TFCItems.UNSEALED_FRUIT_PRESERVES);
         tag(SEALED_PRESERVES).add(TFCItems.FRUIT_PRESERVES);
+        tag(JARS)
+            .addTags(SEALED_PRESERVES, PRESERVES)
+            .add(
+                TFCItems.EMPTY_JAR,
+                TFCItems.EMPTY_JAR_WITH_LID
+            );
         tag(SWEETENERS).add(Items.SUGAR);
         tag(BOWLS).add(Items.BOWL, TFCBlocks.CERAMIC_BOWL);
         tag(SALAD_BOWLS).addTag(BOWLS);
@@ -455,12 +461,6 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             );
         tag(TRIP_HAMMERS).add(TFCItems.METAL_ITEMS, Metal.ItemType.HAMMER); // N.B. Technical tag, don't include sub-tags
         tag(THATCH_BED_HIDES).add(TFCItems.HIDES.get(HideItemType.RAW).get(HideItemType.Size.LARGE));
-        tag(SHELF_JARS) // N.B. Technical tag, don't include sub-tags
-            .add(TFCItems.FRUIT_PRESERVES)
-            .add(TFCItems.UNSEALED_FRUIT_PRESERVES)
-            .add(
-                TFCItems.EMPTY_JAR,
-                TFCItems.EMPTY_JAR_WITH_LID);
         tag(BOWL_POWDERS) // N.B. Technical tag, don't include sub-tags
             .add(TFCItems.POWDERS)
             .add(TFCItems.ORE_POWDERS)

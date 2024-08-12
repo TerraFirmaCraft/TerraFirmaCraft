@@ -108,7 +108,7 @@ public class BellowsBlockEntityRenderer implements BlockEntityRenderer<BellowsBl
             {
                 // Texture needs to the reversed due to the direction the planes are rendered in
                 // Otherwise the texture is cut up and displayed out of order
-                RenderHelpers.renderTexturedVertex(poseStack, buffer, packedLight, packedOverlay, v[0], v[1], v[2], sprite.getU(v[3] * -texWidth + (texWidth * (i + 1))), sprite.getV(v[4] * 16f), 1, 0, 0); // todo: incorrect normal
+                RenderHelpers.renderTexturedVertex(poseStack, buffer, packedLight, packedOverlay, v[0], v[1], v[2], sprite.getU(((v[3] * -texWidth) + (texWidth * (i + 1))) * (1f / 16f)), sprite.getV(v[4]), 1, 0, 0); // todo: incorrect normal
             }
             lastWidth = currentWidth;
         }

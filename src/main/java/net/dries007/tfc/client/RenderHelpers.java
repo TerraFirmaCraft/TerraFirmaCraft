@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.client;
 
-import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -121,6 +120,18 @@ public final class RenderHelpers
         return Minecraft.getInstance().getTextureAtlas(BLOCKS_ATLAS).apply(textureLocation);
     }
 
+    public static ResourceLocation animalTexture(String name)
+    {
+        return Helpers.identifier("textures/entity/animal/" + name + ".png");
+    }
+
+    public static <T> ResourceLocation getGenderedTexture(GenderedRenderAnimal animal, String name)
+    {
+        return animal.displayMaleCharacteristics()
+            ? animalTexture(name + "_male")
+            : animalTexture(name + "_female");
+    }
+
     /**
      * Renders a fully textured, solid cuboid described by the provided {@link AABB}, usually obtained from {@link VoxelShape#bounds()}.
      * Texture widths (in pixels) are inferred to be 16 x the width of the quad, which matches normal block pixel texture sizes.
@@ -189,7 +200,7 @@ public final class RenderHelpers
     {
         for (float[] v : vertices)
         {
-            renderTexturedVertex(poseStack, buffer, packedLight, packedOverlay, v[0], v[1], v[2], sprite.getU(v[3] * uSize), sprite.getV(v[4] * vSize), v[5] * normalX, v[5] * normalY, v[5] * normalZ, doShade);
+            renderTexturedVertex(poseStack, buffer, packedLight, packedOverlay, v[0], v[1], v[2], sprite.getU(v[3] * uSize * 1f / 16f), sprite.getV(v[4] * vSize * 1f / 16f), v[5] * normalX, v[5] * normalY, v[5] * normalZ, doShade);
         }
     }
 
@@ -436,22 +447,27 @@ public final class RenderHelpers
 
     public static void setShaderColor(int color)
     {
-        float a = ((color >> 24) & 0xFF) / 255f;
-        float r = ((color >> 16) & 0xFF) / 255f;
-        float g = ((color >> 8) & 0xFF) / 255f;
-        float b = ((color) & 0xFF) / 255f;
-
-        RenderSystem.setShaderColor(r, g, b, a);
+        setColor(RenderSystem::setShaderColor, color);
     }
 
     public static void setShaderColor(GuiGraphics graphics, int color)
     {
-        float a = ((color >> 24) & 0xFF) / 255f;
-        float r = ((color >> 16) & 0xFF) / 255f;
-        float g = ((color >> 8) & 0xFF) / 255f;
-        float b = ((color) & 0xFF) / 255f;
+        setColor(graphics::setColor, color);
+    }
 
-        graphics.setColor(r, g, b, a);
+    private static void setColor(ARGBColorProvider provider, int color)
+    {
+        final float a = ((color >> 24) & 0xFF) / 255f;
+        final float r = ((color >> 16) & 0xFF) / 255f;
+        final float g = ((color >> 8) & 0xFF) / 255f;
+        final float b = ((color) & 0xFF) / 255f;
+
+        provider.setColor(r, g, b, a);
+    }
+
+    interface ARGBColorProvider
+    {
+        void setColor(float alpha, float red, float green, float blue);
     }
 
     /**
@@ -506,9 +522,9 @@ public final class RenderHelpers
         poseStack.popPose();
     }
 
-    public static ModelPart bakeSimple(EntityRendererProvider.Context ctx, String layerName)
+    public static ModelPart bakeSimple(EntityRendererProvider.Context context, String layerName)
     {
-        return ctx.bakeLayer(layerId(layerName));
+        return context.bakeLayer(layerId(layerName));
     }
 
     public static float itemTimeRotation()
@@ -520,14 +536,6 @@ public final class RenderHelpers
     {
         final float heat = Math.min(HeatCapability.getTemperature(stack) / 400f, 1f);
         return Math.max(combinedLight, (int) (heat * LightTexture.FULL_BRIGHT));
-    }
-
-    /**
-     * Basic rotation speed for rendering rotating objects, in order for visual sync.
-     */
-    public static float getRotationSpeed(int ticks, float partialTicks)
-    {
-        return (ticks + partialTicks) * 4f;
     }
 
     public static int getFluidColor(FluidStack fluid)
@@ -545,32 +553,29 @@ public final class RenderHelpers
         renderFluidFace(poseStack, fluidStack, buffer, getFluidColor(fluidStack), minX, minZ, maxX, maxZ, y, combinedOverlay, combinedLight);
     }
 
-    public static void renderFluidFace(PoseStack poseStack, FluidStack fluidStack, MultiBufferSource buffer, int color, float minX, float minZ, float maxX, float maxZ, float y, int packedOverlay, int packedLight)
+    public static void renderFluidFace(PoseStack poseStack, FluidStack fluidStack, MultiBufferSource buffers, int color, float minX, float minZ, float maxX, float maxZ, float y, int packedOverlay, int packedLight)
     {
-        final Fluid fluid = fluidStack.getFluid();
-        final IClientFluidTypeExtensions extension = IClientFluidTypeExtensions.of(fluid);
-        final ResourceLocation texture = extension.getStillTexture(fluidStack);
+        final ResourceLocation texture = IClientFluidTypeExtensions.of(fluidStack.getFluid()).getStillTexture(fluidStack);
         final TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(RenderHelpers.BLOCKS_ATLAS).apply(texture);
+        final VertexConsumer buffer = buffers.getBuffer(RenderType.entityTranslucentCull(BLOCKS_ATLAS));
 
-        final VertexConsumer builder = buffer.getBuffer(RenderType.entityTranslucentCull(BLOCKS_ATLAS));
-        final Matrix4f pose = poseStack.last().pose();
-
-        builder.addVertex(pose, minX, y, minZ).setColor(color).setUv(sprite.getU(minX * 16), sprite.getV(minZ * 16)).setOverlay(packedOverlay).setLight(packedLight).setNormal(0, 1, 0);
-        builder.addVertex(pose, minX, y, maxZ).setColor(color).setUv(sprite.getU(minX * 16), sprite.getV(maxZ * 16)).setOverlay(packedOverlay).setLight(packedLight).setNormal(0, 1, 0);
-        builder.addVertex(pose, maxX, y, maxZ).setColor(color).setUv(sprite.getU(maxX * 16), sprite.getV(maxZ * 16)).setOverlay(packedOverlay).setLight(packedLight).setNormal(0, 1, 0);
-        builder.addVertex(pose, maxX, y, minZ).setColor(color).setUv(sprite.getU(maxX * 16), sprite.getV(minX * 16)).setOverlay(packedOverlay).setLight(packedLight).setNormal(0, 1, 0);
+        renderTexturedFace(poseStack.last(), buffer, color, minX, minZ, maxX, maxZ, y, packedOverlay, packedLight, sprite);
     }
 
-    public static void renderTexturedFace(PoseStack poseStack, MultiBufferSource buffer, int color, float minX, float minZ, float maxX, float maxZ, float y, int packedOverlay, int packedLight, ResourceLocation texture)
+    public static void renderTexturedFace(PoseStack poseStack, MultiBufferSource buffers, int color, float minX, float minZ, float maxX, float maxZ, float y, int packedOverlay, int packedLight, ResourceLocation texture)
     {
+        final VertexConsumer buffer = buffers.getBuffer(RenderType.solid());
         final TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(RenderHelpers.BLOCKS_ATLAS).apply(texture);
-        final VertexConsumer builder = buffer.getBuffer(RenderType.solid());
-        final PoseStack.Pose pose = poseStack.last();
 
-        builder.addVertex(pose, minX, y, minZ).setColor(color).setUv(sprite.getU(minX * 16), sprite.getV(minZ * 16)).setOverlay(packedOverlay).setLight(packedLight).setNormal(pose, 0, 1, 0);
-        builder.addVertex(pose, minX, y, maxZ).setColor(color).setUv(sprite.getU(minX * 16), sprite.getV(maxZ * 16)).setOverlay(packedOverlay).setLight(packedLight).setNormal(pose, 0, 1, 0);
-        builder.addVertex(pose, maxX, y, maxZ).setColor(color).setUv(sprite.getU(maxX * 16), sprite.getV(maxZ * 16)).setOverlay(packedOverlay).setLight(packedLight).setNormal(pose, 0, 1, 0);
-        builder.addVertex(pose, maxX, y, minZ).setColor(color).setUv(sprite.getU(maxX * 16), sprite.getV(minX * 16)).setOverlay(packedOverlay).setLight(packedLight).setNormal(pose, 0, 1, 0);
+        renderTexturedFace(poseStack.last(), buffer, color, minX, minZ, maxX, maxZ, y, packedOverlay, packedLight, sprite);
+    }
+
+    private static void renderTexturedFace(PoseStack.Pose pose, VertexConsumer buffer, int color, float minX, float minZ, float maxX, float maxZ, float y, int packedOverlay, int packedLight, TextureAtlasSprite sprite)
+    {
+        buffer.addVertex(pose, minX, y, minZ).setColor(color).setUv(sprite.getU(minX), sprite.getV(minZ)).setOverlay(packedOverlay).setLight(packedLight).setNormal(pose, 0, 1, 0);
+        buffer.addVertex(pose, minX, y, maxZ).setColor(color).setUv(sprite.getU(minX), sprite.getV(maxZ)).setOverlay(packedOverlay).setLight(packedLight).setNormal(pose, 0, 1, 0);
+        buffer.addVertex(pose, maxX, y, maxZ).setColor(color).setUv(sprite.getU(maxX), sprite.getV(maxZ)).setOverlay(packedOverlay).setLight(packedLight).setNormal(pose, 0, 1, 0);
+        buffer.addVertex(pose, maxX, y, minZ).setColor(color).setUv(sprite.getU(maxX), sprite.getV(minX)).setOverlay(packedOverlay).setLight(packedLight).setNormal(pose, 0, 1, 0);
     }
 
     public static boolean renderGhostBlock(Level level, BlockState state, BlockPos lookPos, PoseStack stack, MultiBufferSource buffer, boolean shouldGrowSlightly, int alpha)
@@ -676,18 +681,6 @@ public final class RenderHelpers
     public static boolean isInside(int mouseX, int mouseY, int leftX, int topY, int width, int height)
     {
         return mouseX >= leftX && mouseX <= leftX + width && mouseY >= topY && mouseY <= topY + height;
-    }
-
-    public static ResourceLocation animalTexture(String name)
-    {
-        return Helpers.identifier("textures/entity/animal/" + name + ".png");
-    }
-
-    public static <T> ResourceLocation getGenderedTexture(GenderedRenderAnimal animal, String name)
-    {
-        final ResourceLocation male = animalTexture(name + "_male");
-        final ResourceLocation female = animalTexture(name + "_female");
-        return animal.displayMaleCharacteristics() ? male : female;
     }
 
     private static float calculateTilt(float pitch)

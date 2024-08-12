@@ -8,6 +8,7 @@ package net.dries007.tfc.common.blockentities;
 
 
 import java.util.List;
+import com.google.errorprone.annotations.DoNotCall;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -26,6 +27,7 @@ import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.devices.PlacedItemBlock;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
 import net.dries007.tfc.common.component.size.ItemSizeManager;
 import net.dries007.tfc.common.component.size.Size;
@@ -67,7 +69,7 @@ public class PlacedItemBlockEntity extends InventoryBlockEntity<ItemStackHandler
 
     public static final int SLOT_LARGE_ITEM = 0;
 
-    public boolean isHoldingLargeItem;
+    boolean isHoldingLargeItem;
     private final float[] rotations = new float[] {0f, 0f, 0f, 0f};
 
     public PlacedItemBlockEntity(BlockPos pos, BlockState state)
@@ -156,7 +158,10 @@ public class PlacedItemBlockEntity extends InventoryBlockEntity<ItemStackHandler
                 return true;
             }
         }
-        else if (!size.isEqualOrSmallerThan(TFCConfig.SERVER.maxPlacedItemSize.get()) && size.isEqualOrSmallerThan(TFCConfig.SERVER.maxPlacedLargeItemSize.get())) // Very Large or Huge
+        else if (!size.isEqualOrSmallerThan(TFCConfig.SERVER.maxPlacedItemSize.get())
+            && size.isEqualOrSmallerThan(TFCConfig.SERVER.maxPlacedLargeItemSize.get())
+            && PlacedItemBlock.isFullContents(getBlockState())
+        ) // Very Large or Huge
         {
             // Large items are placed in the single center slot
             if (isEmpty())
@@ -179,6 +184,42 @@ public class PlacedItemBlockEntity extends InventoryBlockEntity<ItemStackHandler
             }
         }
         return false;
+    }
+
+    /**
+     * Ejects any inventory slots that are not supported by the {@code newState}. This
+     */
+    public void ejectInventoryIfNeeded(BlockState newState)
+    {
+        assert level != null;
+        if (getBlockState().getBlock() != newState.getBlock())
+        {
+            // Can't eject by slots, so we need to eject everything, since this block is being replaced
+            super.ejectInventory();
+            return;
+        }
+        for (int slot = 0; slot < getInventory().getSlots(); slot++)
+        {
+            if (!newState.getValue(PlacedItemBlock.ITEM_PROPERTIES[slot]))
+            {
+                final ItemStack stack = Helpers.removeStack(inventory, slot);
+                if (!stack.isEmpty())
+                {
+                    Helpers.spawnItem(level, worldPosition, stack);
+                }
+            }
+        }
+    }
+
+    /**
+     * Use {@link #ejectInventoryIfNeeded(BlockState)} instead.
+     */
+    @Override
+    @DoNotCall
+    @Deprecated
+    public void ejectInventory()
+    {
+        throw new AssertionError();
     }
 
     public float getRotations(int slot)
@@ -220,7 +261,8 @@ public class PlacedItemBlockEntity extends InventoryBlockEntity<ItemStackHandler
 
     protected void updateBlock()
     {
-        if (isEmpty() && level != null)
+        // Only delete the block if it's a placed item - leave blocks like shelves which use a different type
+        if (isEmpty() && level != null && getType() == TFCBlockEntities.PLACED_ITEM.get())
         {
             level.setBlockAndUpdate(worldPosition, Blocks.AIR.defaultBlockState());
         }

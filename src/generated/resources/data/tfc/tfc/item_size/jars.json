@@ -1,6 +1,6 @@
 {
   "ingredient": {
-    "tag": "tfc:shelf_jars"
+    "tag": "tfc:foods/jars"
   },
   "size": "normal",
   "weight": "very_heavy"

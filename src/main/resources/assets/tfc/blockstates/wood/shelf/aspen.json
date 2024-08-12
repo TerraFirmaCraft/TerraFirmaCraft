@@ -1,0 +1,20 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "facing=east": {
+      "model": "tfc:block/wood/shelf/aspen",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "tfc:block/wood/shelf/aspen"
+    },
+    "facing=south": {
+      "model": "tfc:block/wood/shelf/aspen",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "tfc:block/wood/shelf/aspen",
+      "y": 270
+    }
+  }
+}

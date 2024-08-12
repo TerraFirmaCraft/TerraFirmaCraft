@@ -32,6 +32,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
 import net.dries007.tfc.common.blockentities.PitKilnBlockEntity;
 import net.dries007.tfc.common.blockentities.PlacedItemBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
@@ -44,15 +45,43 @@ import net.dries007.tfc.util.Helpers;
 public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension, EntityBlockExtension
 {
     /**
-     * @return if there is, given the current state values, no way this block can be supported.
+     * @return If the given {@code state} has all {@code ITEM_[n]} properties set to {@code false}. This is used to detect
+     * if the block is empty, and must be removed (or in the case of a shelf, cannot have items placed underneath it).
      */
     public static boolean isEmptyContents(BlockState state)
     {
-        for (int i = 0; i < 4; i++)
-        {
-            if (state.getValue(ITEM_PROPERTIES[i])) return false;
-        }
+        for (BooleanProperty property : ITEM_PROPERTIES)
+            if (state.getValue(property))
+                return false;
         return true;
+    }
+
+    /**
+     * @return If the given {@code state} has all {@code ITEM_[n]} properties set to {@code true}. This is required in order
+     * for a large item to be held.
+     */
+    public static boolean isFullContents(BlockState state)
+    {
+        for (BooleanProperty property : ITEM_PROPERTIES)
+            if (!state.getValue(property))
+                return false;
+        return true;
+    }
+
+    /**
+     * Pos refers to below block, state refers to the placed item state.
+     * @param pos The position below the placed item
+     * @param state The current state
+     * @return The new placed item state, after updating for change in the shape of the below block
+     */
+    public static BlockState updateStateValues(LevelAccessor level, BlockPos pos, BlockState state)
+    {
+        final VoxelShape shapeBelow = level.getBlockState(pos).getBlockSupportShape(level, pos).getFaceShape(Direction.UP);
+        for (int slot = 0; slot < 4; slot++)
+        {
+            state = state.setValue(ITEM_PROPERTIES[slot], !Shapes.joinIsNotEmpty(shapeBelow, SHAPES[slot], BooleanOp.ONLY_SECOND));
+        }
+        return state;
     }
 
     public static final BooleanProperty ITEM_0 = TFCBlockStateProperties.ITEM_0;
@@ -62,40 +91,19 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
 
     public static final BooleanProperty[] ITEM_PROPERTIES = new BooleanProperty[] {ITEM_0, ITEM_1, ITEM_2, ITEM_3};
 
-    private static final VoxelShape SHAPE_0 = box(0, 0, 0, 8.0D, 1.0D, 8.0D);
-    private static final VoxelShape SHAPE_1 = box(8.0D, 0, 0, 16.0D, 1.0D, 8.0D); // x
-    private static final VoxelShape SHAPE_2 = box(0, 0, 8.0D, 8.0D, 1.0D, 16.0D); // z
-    private static final VoxelShape SHAPE_3 = box(8.0D, 0, 8.0D, 16.0D, 1.0D, 16.0D); // xz
+    private static final VoxelShape SHAPE_0 = box(8, 0, 8, 16, 1, 16); // xz
+    private static final VoxelShape SHAPE_1 = box(0, 0, 8, 8, 1, 16); // z
+    private static final VoxelShape SHAPE_2 = box(8, 0, 0, 16, 1, 8); // x
+    private static final VoxelShape SHAPE_3 = box(0, 0, 0, 8, 1, 8);
 
     private static final VoxelShape[] SHAPES = new VoxelShape[] {SHAPE_0, SHAPE_1, SHAPE_2, SHAPE_3};
 
-    /**
-     * Pos refers to below block, state refers to the placed item state.
-     */
-    public static BlockState updateStateValues(LevelAccessor level, BlockPos pos, BlockState state)
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            state = state.setValue(ITEM_PROPERTIES[i], isSlotSupportedOn(level, pos, level.getBlockState(pos), i));
-        }
-        return state;
-    }
-
-    /**
-     * Pos and state refer to the below block
-     */
-    public static boolean isSlotSupportedOn(LevelAccessor level, BlockPos pos, BlockState state, int slot)
-    {
-        VoxelShape supportShape = state.getBlockSupportShape(level, pos).getFaceShape(Direction.UP);
-        return !Shapes.joinIsNotEmpty(supportShape, SHAPES[slot], BooleanOp.ONLY_SECOND);
-    }
-
-    private static Map<BlockState, VoxelShape> makeShapes(ImmutableList<BlockState> possibleStates)
+    private static Map<BlockState, VoxelShape> makeShapes(ImmutableList<BlockState> possibleStates, VoxelShape emptyShape)
     {
         final ImmutableMap.Builder<BlockState, VoxelShape> builder = ImmutableMap.builder();
         for (BlockState state : possibleStates)
         {
-            VoxelShape shape = Shapes.empty();
+            VoxelShape shape = emptyShape;
             for (int i = 0; i < 4; i++)
             {
                 if (state.getValue(ITEM_PROPERTIES[i]))
@@ -108,28 +116,61 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
         return builder.build();
     }
 
+    private final boolean persistentWhenEmpty;
     private final Map<BlockState, VoxelShape> cachedShapes;
 
     public PlacedItemBlock(ExtendedProperties properties)
     {
+        this(properties, Shapes.empty(), false);
+    }
+
+    protected PlacedItemBlock(ExtendedProperties properties, VoxelShape emptyShape, boolean persistentWhenEmpty)
+    {
         super(properties, InventoryRemoveBehavior.DROP);
-        registerDefaultState(getStateDefinition().any().setValue(ITEM_0, true).setValue(ITEM_1, true).setValue(ITEM_2, true).setValue(ITEM_3, true));
-        cachedShapes = makeShapes(getStateDefinition().getPossibleStates());
+
+        this.cachedShapes = makeShapes(getStateDefinition().getPossibleStates(), emptyShape);
+        this.persistentWhenEmpty = persistentWhenEmpty;
+
+        registerDefaultState(getStateDefinition().any()
+            .setValue(ITEM_0, true)
+            .setValue(ITEM_1, true)
+            .setValue(ITEM_2, true)
+            .setValue(ITEM_3, true));
     }
 
     @Override
     protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos pos, BlockPos facingPos)
     {
-        BlockState updateState = updateStateValues(level, pos.below(), state);
-        PlacedItemBlockEntity placedItem = level.getBlockEntity(pos, TFCBlockEntities.PLACED_ITEM.get()).orElse(null);
-        if (placedItem != null)
+        final BlockState updateState = updateStateValues(level, pos.below(), state);
+        if (!persistentWhenEmpty && isEmptyContents(updateState))
         {
-            if (isEmptyContents(updateState))
-            {
-                return Blocks.AIR.defaultBlockState();
-            }
+            return Blocks.AIR.defaultBlockState();
         }
         return updateState;
+    }
+
+    @Override
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
+    {
+        // By default, this properly handles when a block is replaced with another block (dumping all contents)
+        // However, we also need to handle when the state updates, and the inventory slots are no longer available.
+        // So, rather than calling `beforeRemove` -> `ejectInventory` in the super method, we call `ejectIfNeeded`.
+        //
+        // N.B. Use the extension block entity, since we want both shelves and placed items to use this functionality
+        level.getBlockEntity(pos, getExtendedProperties().<PlacedItemBlockEntity>blockEntity())
+            .ifPresent(entity -> entity.ejectInventoryIfNeeded(newState));
+
+        // Default super() behavior
+        if (state.hasBlockEntity() && (!state.is(newState.getBlock()) || !newState.hasBlockEntity()))
+        {
+            level.removeBlockEntity(pos);
+        }
+    }
+
+    @Override
+    protected void beforeRemove(InventoryBlockEntity<?> entity)
+    {
+        // No-op - we don't want to call ejectInventory()
     }
 
     @Override
@@ -177,7 +218,9 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
     {
         if (result instanceof BlockHitResult blockResult)
         {
-            return level.getBlockEntity(pos, TFCBlockEntities.PLACED_ITEM.get()).map(placedItem -> placedItem.getCloneItemStack(state, blockResult)).orElse(ItemStack.EMPTY);
+            return level.getBlockEntity(pos, TFCBlockEntities.PLACED_ITEM.get())
+                .map(placedItem -> placedItem.getCloneItemStack(state, blockResult))
+                .orElse(ItemStack.EMPTY);
         }
         return ItemStack.EMPTY;
     }

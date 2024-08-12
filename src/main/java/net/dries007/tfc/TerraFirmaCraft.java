@@ -64,7 +64,6 @@ import net.dries007.tfc.util.DispenserBehaviors;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.InteractionManager;
 import net.dries007.tfc.util.SelfTests;
-import net.dries007.tfc.util.TFCPaintings;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
 import net.dries007.tfc.util.calendar.CalendarEventHandler;
 import net.dries007.tfc.util.calendar.ServerCalendar;
@@ -148,7 +147,6 @@ public final class TerraFirmaCraft
         TFCBrain.SCHEDULES.register(bus);
         TFCBrain.SENSOR_TYPES.register(bus);
         TFCBrain.POI_TYPES.register(bus);
-        TFCPaintings.PAINTING_TYPES.register(bus);
         TFCAdvancements.TRIGGERS.register(bus);
         TFCComponents.COMPONENTS.register(bus);
         TFCArmorMaterials.ARMOR_MATERIALS.register(bus);

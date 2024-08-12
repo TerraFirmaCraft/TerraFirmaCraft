@@ -23,7 +23,6 @@ import net.neoforged.neoforge.common.Tags;
 
 import net.dries007.tfc.ForgeEventHandler;
 import net.dries007.tfc.client.render.blockentity.BowlBlockEntityRenderer;
-import net.dries007.tfc.client.render.blockentity.JarsBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.TripHammerBlockEntityRenderer;
 import net.dries007.tfc.common.blocks.plant.PlantRegrowth;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
@@ -311,8 +310,12 @@ public class TFCTags
         public static final TagKey<Item> DAIRY = commonTag("foods/dairy");
         public static final TagKey<Item> SALADS = commonTag("foods/salad");
         public static final TagKey<Item> SOUPS = Tags.Items.FOODS_SOUP;
+        /** Includes only unsealed preserves with fruit in them (not empty jars) */
         public static final TagKey<Item> PRESERVES = tag("foods/preserves");
+        /** Includes only sealed jars with fruit in them */
         public static final TagKey<Item> SEALED_PRESERVES = tag("foods/sealed_preserves");
+        /* Includes preserves, sealed preserves, and also empty jars (with and without lid) */
+        public static final TagKey<Item> JARS = tag("foods/jars");
         public static final TagKey<Item> SWEETENERS = tag("sweeteners");
         public static final TagKey<Item> BOWLS = commonTag("bowls");
         /** Bowls that interact with soup pot recipes */
@@ -515,11 +518,7 @@ public class TFCTags
         public static final TagKey<Item> WELDING_FLUX = tag("welding_flux");
         public static final TagKey<Item> SCRIBING_INK = tag("scribing_ink");
         public static final TagKey<Item> THATCH_BED_HIDES = tag("thatch_bed_hides");
-        /**
-         * Jar items that can be placed on a shelf block. This is a technical tag, and it must match the items in
-         * {@link JarsBlockEntityRenderer#MODELS}
-         */
-        public static final TagKey<Item> SHELF_JARS = tag("shelf_jars");
+
         /**
          * Powders that can be placed in a bowl. This is a technical tag, and it must match the items in
          * {@link BowlBlockEntityRenderer#TEXTURES}
