@@ -7,18 +7,12 @@
 package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ShelfBlockEntity extends PlacedItemBlockEntity
 {
     public ShelfBlockEntity(BlockPos pos, BlockState state)
     {
-        this(TFCBlockEntities.SHELF.get(), pos, state);
-    }
-
-    public ShelfBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
-    {
-        super(type, pos, state);
+        super(TFCBlockEntities.SHELF.get(), pos, state);
     }
 }

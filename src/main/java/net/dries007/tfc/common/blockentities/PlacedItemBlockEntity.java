@@ -187,7 +187,7 @@ public class PlacedItemBlockEntity extends InventoryBlockEntity<ItemStackHandler
     }
 
     /**
-     * Ejects any inventory slots that are not supported by the {@code newState}. This
+     * Ejects any inventory slots that are not supported by the {@code newState}. This should be used over {@link #ejectInventory()}
      */
     public void ejectInventoryIfNeeded(BlockState newState)
     {
