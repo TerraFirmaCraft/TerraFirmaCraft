@@ -183,6 +183,8 @@ def generate(rm: ResourceManager):
 
     rm.crafting_shaped('crafting/crankshaft', ['AM', ' S'], {'A': '#tfc:axles', 'M': 'tfc:brass_mechanisms', 'S': '#forge:sheets/brass'}, 'tfc:crankshaft').with_advancement('#tfc:axles')
     rm.crafting_shaped('crafting/windmill_blade', ['SSS', ' CC'], {'S': '#tfc:lumber', 'C': 'tfc:wool_cloth'}, 'tfc:windmill_blade').with_advancement('#tfc:lumber')
+    rm.crafting_shaped('crafting/lattice_windmill_blade', ['SSS', 'SWS', 'SSS'], {'S': '#forge:rods/wooden', 'W': '#tfc:default_windmill_blades'}, 'tfc:lattice_windmill_blade').with_advancement('#tfc:windmill_blade')
+    rm.crafting_shaped('crafting/rustic_windmill_blade', [' S ', 'SWS', ' S '], {'S': 'tfc:burlap_cloth', 'W': '#tfc:default_windmill_blades'}, 'tfc:rustic_windmill_blade').with_advancement('#tfc:windmill_blade')
     rm.crafting_shaped('crafting/trip_hammer', ['XMZ', 'XMZ'], {'X': '#forge:sheets/steel', 'M': 'tfc:brass_mechanisms', 'Z': '#forge:rods/steel'}, 'tfc:trip_hammer').with_advancement('tfc:brass_mechanisms')
 
     rm.crafting_shaped('crafting/steel_pump', ['PGM', ' P '], {'P': 'tfc:steel_pipe', 'G': 'tfc:glue', 'M': 'tfc:brass_mechanisms'}, 'tfc:steel_pump').with_advancement('tfc:steel_pipe')
@@ -1330,6 +1332,10 @@ def generate(rm: ResourceManager):
         welding_recipe(rm, '%s_ingot' % metal_out, '#forge:ingots/%s' % metal_in_1, '#forge:ingots/%s' % metal_in_2, 'tfc:metal/ingot/%s' % metal_out, METALS[metal_out].tier - 1)
 
     welding_recipe(rm, 'jacks', '#forge:rods/brass', '#forge:rods/brass', 'tfc:jacks', brass.tier)
+
+
+def generate_test(rm: ResourceManager):
+    simple_pot_recipe(rm, 'test_boiling_ore', [utils.ingredient('#tfc:small_ore_pieces')] * 5, '1000 minecraft:water', None, [item_stack_provider(copy_input=True, add_heat=300)] * 5, 100)
 
 
 def simple_pot_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredients: Json, fluid: str, output_fluid: str = None, output_items: Json = None, duration: int = 2000, temp: int = 300):

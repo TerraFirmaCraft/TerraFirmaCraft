@@ -9,6 +9,7 @@ package net.dries007.tfc.world.chunkdata;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
@@ -23,7 +24,9 @@ import net.dries007.tfc.world.noise.OpenSimplex2D;
 import net.dries007.tfc.world.region.ChooseRocks;
 import net.dries007.tfc.world.region.Region;
 import net.dries007.tfc.world.region.RegionGenerator;
+import net.dries007.tfc.world.region.RiverEdge;
 import net.dries007.tfc.world.region.Units;
+import net.dries007.tfc.world.river.MidpointFractal;
 import net.dries007.tfc.world.settings.RockLayerSettings;
 import net.dries007.tfc.world.settings.RockSettings;
 
@@ -44,6 +47,10 @@ public record RegionChunkDataGenerator(
     private static final int[] LAYER_OFFSETS = new int[1 << (LAYER_OFFSET_BITS + 1)];
 
     private static final float DELTA_Y_OFFSET = 12;
+
+    private static final int MIN_RIVER_WIDTH = 12; // Rivers must be this wide to influence rainfall
+    private static final float RIVER_INFLUENCE = (float) Units.blockToGridExact(40);
+    private static final float RIVER_INFLUENCE_SQ = RIVER_INFLUENCE * RIVER_INFLUENCE;
 
     static
     {
@@ -91,18 +98,60 @@ public record RegionChunkDataGenerator(
         final int gridX = Units.blockToGrid(blockX);
         final int gridZ = Units.blockToGrid(blockZ);
 
+        // In this formulation, the value represented by a grid point's rainfall / temperature is interpreted to be at the 0,0 exact grid position,
+        // meaning if we want smooth interpolation, we need to sample a 2x2 grid of points and compute the local values within the grid square
         final Region.Point point00 = regionGenerator.getOrCreateRegionPoint(gridX, gridZ);
         final Region.Point point01 = regionGenerator.getOrCreateRegionPoint(gridX, gridZ + 1);
         final Region.Point point10 = regionGenerator.getOrCreateRegionPoint(gridX + 1, gridZ);
         final Region.Point point11 = regionGenerator.getOrCreateRegionPoint(gridX + 1, gridZ + 1);
 
+        final LerpFloatLayer rainfallGridLayer = new LerpFloatLayer(point00.rainfall, point01.rainfall, point10.rainfall, point11.rainfall);
+        final LerpFloatLayer temperatureGridLayer = new LerpFloatLayer(point00.temperature, point01.temperature, point10.temperature, point11.temperature);
+
+        // The exact grid coordinates of the bottom (00) value of this chunk
+        final double exactGridX = Units.blockToGridExact(blockX);
+        final double exactGridZ = Units.blockToGridExact(blockZ);
+
         // Distance within the grid of this chunk - so a value between [0, 1] representing the top left of this chunk
         // The interpolator will add 16 / <grid width> to obtain the other side of this chunk, and interpolate from the bounding boxes of the grid points.
-        final double deltaX = Units.blockToGridExact(blockX) - gridX;
-        final double deltaZ = Units.blockToGridExact(blockZ) - gridZ;
+        final double deltaX = exactGridX - gridX;
+        final double deltaZ = exactGridZ - gridZ;
 
-        final LerpFloatLayer rainfallLayer = ChunkDataGenerator.sampleInterpolatedGridLayer(point00.rainfall, point01.rainfall, point10.rainfall, point11.rainfall, deltaX, deltaZ);
-        final LerpFloatLayer temperatureLayer = ChunkDataGenerator.sampleInterpolatedGridLayer(point00.temperature, point01.temperature, point10.temperature, point11.temperature, deltaX, deltaZ);
+        // The width of the chunk, in grid coordinates
+        final double dG = Units.blockToGridExact(16);
+
+        // The base rainfall and temperature layers, scaled down to chunk resolution
+        LerpFloatLayer rainfallLayer = rainfallGridLayer.scaled(deltaX, deltaZ, dG);
+        LerpFloatLayer temperatureLayer = temperatureGridLayer.scaled(deltaX, deltaZ, dG);
+
+        // Calculate local influence of rivers - when they are wide enough (which should happen only with large rivers near shores),
+        // rivers will influence the rainfall of the nearby area, thus creating a bit of a humid area in the immediate vicinity of the river
+        //
+        // The radius that the partition point will find rivers is approx ~5 grid distance (~500 blocks), so we should be fine to influence
+        // on a smaller scale of ~100 blocks around the river
+        float rainfall00 = rainfallLayer.value00();
+        float rainfall01 = rainfallLayer.value01();
+        float rainfall10 = rainfallLayer.value10();
+        float rainfall11 = rainfallLayer.value11();
+
+        for (RiverEdge edge : regionGenerator.getOrCreatePartitionPoint(gridX, gridZ).rivers())
+        {
+            final MidpointFractal fractal = edge.fractal();
+            if (edge.width >= MIN_RIVER_WIDTH && // Note that all downstream segments will always be the same or larger width
+                fractal.maybeIntersect(exactGridX, exactGridZ, RIVER_INFLUENCE))
+            {
+                final float widthInfluence = Mth.map(edge.width, MIN_RIVER_WIDTH, RiverEdge.MAX_WIDTH, 0f, 1.0f);
+
+                rainfall00 = adjustRiverRainfall(rainfall00, rainfallLayer.value00(), widthInfluence, fractal, exactGridX, exactGridZ);
+                rainfall01 = adjustRiverRainfall(rainfall01, rainfallLayer.value01(), widthInfluence, fractal, exactGridX, exactGridZ + dG);
+                rainfall10 = adjustRiverRainfall(rainfall10, rainfallLayer.value10(), widthInfluence, fractal, exactGridX + dG, exactGridZ);
+                rainfall11 = adjustRiverRainfall(rainfall11, rainfallLayer.value11(), widthInfluence, fractal, exactGridX + dG, exactGridZ + dG);
+            }
+        }
+
+        // Update the rainfall layer with the new influenced values, and then clamp to within the target range
+        rainfallLayer = new LerpFloatLayer(rainfall00, rainfall01, rainfall10, rainfall11)
+            .apply(value -> Mth.clamp(value, 0, 500));
 
         // This layer is sampled per-chunk, to avoid the waste of two additional zoom layers
         final ForestType forestType = forestTypeLayer.get(blockX >> 4, blockZ >> 4);
@@ -116,6 +165,16 @@ public record RegionChunkDataGenerator(
             forestWeirdness,
             forestDensity
         );
+    }
+
+    private float adjustRiverRainfall(float currentRainfall, float originalRainfall, float widthInfluence, MidpointFractal fractal, double gridX, double gridZ)
+    {
+        final float distance = (float) fractal.intersectDistance(gridX, gridZ);
+        final float distanceInfluence = Mth.clampedMap(distance, 0f, RIVER_INFLUENCE_SQ, 1f, 0f);
+        final float targetRainfall = Math.min(originalRainfall + 275f, 500f);
+
+        // Take the max of any influence with adjacent rivers
+        return Math.max(currentRainfall, Mth.lerp(distanceInfluence * widthInfluence, originalRainfall, targetRainfall));
     }
 
     @Override

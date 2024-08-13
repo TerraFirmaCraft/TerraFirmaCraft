@@ -28,7 +28,7 @@ public class WindmillBladeModel extends Model
         this.main = root.getChild("main");
     }
 
-    @SuppressWarnings("unused")
+
     public static LayerDefinition createBodyLayer()
     {
         MeshDefinition meshdefinition = new MeshDefinition();
@@ -53,4 +53,7 @@ public class WindmillBladeModel extends Model
         main.render(poseStack, vertexConsumer, packedLight, packedOverlay, 1f, 1f, 1f, alpha);
         blade.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
     }
+
+    public void renderWindmillExtras(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha){}
+    
 }

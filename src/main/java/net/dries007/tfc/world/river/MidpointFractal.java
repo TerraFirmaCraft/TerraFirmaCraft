@@ -101,13 +101,13 @@ public class MidpointFractal
     }
 
     /**
-     * Checks if a given point (x, y) comes within a minimum {@code distance} of the bounding box of the fractal.
-     * Faster and more efficient than checking {@link #intersect(double, double, double)}.
+     * Checks if a given point (x, y) comes within a minimum {@code distance} of the bounding box of the fractal, using a heuristic to estimate
+     * if this is remotely possible. This is an overestimation vs {@link #intersect(double, double, double)}, and is much faster to compute.
      */
     public boolean maybeIntersect(double x, double y, double distance)
     {
-        double d = RiverHelpers.distancePointToLineSq(segments[0], segments[1], segments[segments.length - 2], segments[segments.length - 1], x, y);
-        double t = distance + norm;
+        final double d = RiverHelpers.distancePointToLineSq(segments[0], segments[1], segments[segments.length - 2], segments[segments.length - 1], x, y);
+        final double t = distance + norm;
         return d <= t * t;
     }
 
@@ -116,7 +116,7 @@ public class MidpointFractal
      */
     public boolean intersect(double x, double y, double distance)
     {
-        return intersectIndex(x, y, distance * distance) != -1;
+        return maybeIntersect(x, y, distance) && intersectIndex(x, y, distance * distance) != -1;
     }
 
     /**
@@ -137,7 +137,8 @@ public class MidpointFractal
     }
 
     /**
-     * @return The best approximation of the flow near a point to this edge. Note that this will not return {@code Flow.NONE} if a suitable flow cannot be found, rather, it needs to be pre-tested that this edge is the nearest edge to the target point.
+     * @return The best approximation of the flow near a point to this edge. Note that this will not return {@code Flow.NONE}
+     * if a suitable flow cannot be found, rather, it needs to be pre-tested that this edge is the nearest edge to the target point.
      */
     public Flow calculateFlow(double x, double y)
     {

@@ -47,4 +47,3 @@ jobs:
     - name: Validate Resources
       run: |
         python resources validate
-        python resources validate_assets

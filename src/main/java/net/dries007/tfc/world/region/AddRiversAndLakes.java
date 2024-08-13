@@ -131,12 +131,12 @@ public enum AddRiversAndLakes implements RegionTask
         {
             if (!edge.sourceEdge())
             {
-                int width = 8;
+                int width = RiverEdge.MIN_WIDTH;
                 while (edge != null)
                 {
                     edge.width = Math.max(edge.width, width);
                     edge = edge.drainEdge();
-                    width = Math.min(width + 2, 24);
+                    width = Math.min(width + 2, RiverEdge.MAX_WIDTH);
                 }
             }
         }
@@ -164,6 +164,7 @@ public enum AddRiversAndLakes implements RegionTask
         if (point != null && point.land() && point.distanceToOcean >= 2 && point.distanceToEdge >= 2 && TFCLayers.hasLake(point.biome))
         {
             point.biome = TFCLayers.lakeFor(point.biome);
+            point.rainfall += 0.09f * (500f - point.rainfall); // Small, localized rainfall increase around lakes of ~45mm max
         }
     }
 

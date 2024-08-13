@@ -7,7 +7,7 @@ from mcresources import ResourceManager, utils, loot_tables
 from mcresources.type_definitions import ResourceIdentifier
 
 from constants import *
-from recipes import fluid_ingredient
+from recipes import fluid_ingredient, heat_recipe
 
 
 class Size(Enum):
@@ -90,13 +90,15 @@ def generate(rm: ResourceManager):
     item_heat(rm, 'kaolin_clay', 'tfc:kaolin_clay', 2.0)
     item_heat(rm, 'terracotta', ['minecraft:terracotta', *['minecraft:%s_terracotta' % color for color in COLORS]], 0.5)
     item_heat(rm, 'dough', '#tfc:foods/dough', 1.0)
-    item_heat(rm, 'meat', ['tfc:food/%s' % meat for meat in MEATS], 1.0)
+    item_heat(rm, 'bread', '#tfc:foods/breads', 1.0, destroy_at=700)
+    item_heat(rm, 'raw_meat', '#tfc:foods/raw_meats', 1.0)
+    item_heat(rm, 'cooked_meat', '#tfc:foods/cooked_meats', 1.0, destroy_at=900)
     item_heat(rm, 'seaweed', 'tfc:food/fresh_seaweed', 1.0)
-    item_heat(rm, 'dried_seaweed', 'tfc:food/dried_seaweed', 1.0)
+    item_heat(rm, 'dried_seaweed', 'tfc:food/dried_seaweed', 1.0, destroy_at=700)
     item_heat(rm, 'potato', 'tfc:food/potato', 1.0)
     item_heat(rm, 'giant_kelp_flower', 'tfc:plant/giant_kelp_flower', 1.0)
     item_heat(rm, 'dried_kelp', 'tfc:food/dried_kelp', 1.0)
-    item_heat(rm, 'egg', 'minecraft:egg', 1.0)
+    item_heat(rm, 'egg', 'minecraft:egg', 1.0, destroy_at=1050)
     item_heat(rm, 'blooms', '#tfc:blooms', wrought_iron.ingot_heat_capacity(), wrought_iron.melt_temperature, mb=100)
     item_heat(rm, 'flux', 'tfc:powder/flux', 0.7)
 
@@ -197,7 +199,7 @@ def generate(rm: ResourceManager):
     item_size(rm, 'jars', '#tfc:jars', Size.very_large, Weight.heavy)
     item_size(rm, 'empty_jar', ['tfc:empty_jar', 'tfc:empty_jar_with_lid'], Size.tiny, Weight.medium)
     item_size(rm, 'glass_bottles', '#tfc:glass_bottles', Size.large, Weight.heavy)
-    item_size(rm, 'windmill_blades', '#tfc:windmill_blades', Size.very_large, Weight.very_heavy)
+    item_size(rm, 'windmill_blades', '#tfc:all_windmill_blades', Size.very_large, Weight.very_heavy)
     item_size(rm, 'water_wheels', '#tfc:water_wheels', Size.very_large, Weight.very_heavy)
 
     # Food
@@ -720,7 +722,7 @@ def item_size(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredi
     })
 
 
-def item_heat(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, heat_capacity: float, melt_temperature: Optional[float] = None, mb: Optional[int] = None):
+def item_heat(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, heat_capacity: float, melt_temperature: Optional[float] = None, mb: Optional[int] = None, destroy_at: Optional[int] = None):
     if melt_temperature is not None:
         forging_temperature = round(melt_temperature * 0.6)
         welding_temperature = round(melt_temperature * 0.8)
@@ -736,6 +738,8 @@ def item_heat(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredi
         'forging_temperature': forging_temperature,
         'welding_temperature': welding_temperature
     })
+    if destroy_at is not None:
+        heat_recipe(rm, 'destroy_' + name_parts, ingredient, destroy_at)
 
 
 def fuel_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, duration: int, temperature: float, purity: float = None):

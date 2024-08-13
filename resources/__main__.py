@@ -9,9 +9,7 @@ Where actions can be any list of actions to take.
 import difflib
 import json
 import os
-import shutil
 import sys
-import zipfile
 from argparse import ArgumentParser
 from typing import Optional
 
@@ -21,70 +19,64 @@ import advancements
 import assets
 import constants
 import data
-import tags
 import format_lang
 import generate_book
 import generate_textures
 import generate_trees
 import recipes
+import tags
 import validate_assets
 import world_gen
 
 BOOK_LANGUAGES = ('en_us', 'ja_jp', 'ko_kr', 'pt_br', 'ru_ru', 'uk_ua', 'zh_cn', 'zh_tw', 'zh_hk')
 MOD_LANGUAGES = ('en_us', 'es_es', 'de_de', 'ja_jp', 'ko_kr', 'pl_pl', 'pt_br', 'ru_ru', 'tr_tr', 'uk_ua', 'zh_cn', 'zh_tw', 'zh_hk')
+RESOURCE_DIR = 'src/main/resources'
+TEST_RESOURCE_DIR = 'src/test/resources'
 
 
 def main():
     parser = ArgumentParser(description='Entrypoint for all common scripting infrastructure.')
     parser.add_argument('actions', nargs='+', choices=(
+        'all',  # generate all resources (assets / data / book)
         'clean',  # clean all resources (assets / data), including book
         'validate',  # validate no resources are changed when re-running
-        'validate_assets',  # manual validation for certain important resources
-        'all',  # generate all resources (assets / data / book)
-        'assets',  # only assets.py
-        'data',  # only data.py
-        'recipes',  # only recipes.py
-        'worldgen',  # only world gen data (excluding tags)
-        'advancements',  # only advancements.py (which excludes recipe advancements)
         'book',  # generate the book
         'trees',  # generate tree NBT structures from templates
         'format_lang',  # format language files
         'textures',  # generate textures
-        'zip',  # zips resources for faster loading in dev
     ))
     parser.add_argument('--translate', type=str, default='en_us', help='Runs the book translation using a single provided language')
     parser.add_argument('--translate-all', action='store_true', dest='translate_all', help='Runs the book against all provided translations')
     parser.add_argument('--reverse-translate', action='store_true', dest='reverse_translate', help='Reverses a book translation, creating a <lang>.json from translated book files')
     parser.add_argument('--local', type=str, default=None, help='Points to a local minecraft instance. Used for \'book\', to generate a hot reloadable book, and used for \'clean\', to clean said instance\'s book')
     parser.add_argument('--hotswap', action='store_true', dest='hotswap', help='Causes resource generation to also generate to --hotswap-dir')
-    parser.add_argument('--hotswap-dir', type=str, default='./out/production/resources', help='Used for \'--hotswap\'')
+    parser.add_argument('--hotswap-main', type=str, default='./out/production/resources', help='Used for \'--hotswap\'')
+    parser.add_argument('--hotswap-test', type=str, default='./out/test/resources', help='Used for \'--hotswap\'')
 
     args = parser.parse_args()
-    hotswap = args.hotswap_dir if args.hotswap else None
 
     for action in args.actions:
         if action == 'clean':
             clean(args.local)
         elif action == 'validate':
             validate_resources()
-        elif action == 'validate_assets':
             validate_assets.main()
         elif action == 'all':
-            resources(hotswap=hotswap, do_assets=True, do_data=True, do_recipes=True, do_worldgen=True, do_advancements=True)
+            resources_at(
+                ResourceManager('tfc', resource_dir=RESOURCE_DIR),
+                ResourceManager('minecraft', resource_dir=RESOURCE_DIR),
+                ResourceManager('tfc', resource_dir=TEST_RESOURCE_DIR)
+            )
+            if args.hotswap:
+                resources_at(
+                    ResourceManager('tfc', resource_dir=args.hotswap_main),
+                    ResourceManager('minecraft', resource_dir=args.hotswap_main),
+                    ResourceManager('tfc', resource_dir=args.hotswap_test)
+                )
             format_lang.main(False, 'minecraft', MOD_LANGUAGES)  # format_lang
             format_lang.main(False, 'tfc', MOD_LANGUAGES)
             for lang in BOOK_LANGUAGES:  # Translate all
                 generate_book.main(lang, args.local, False)
-        elif action == 'assets':
-            resources(hotswap=hotswap, do_assets=True)
-        elif action == 'data':
-            resources(hotswap=hotswap, do_data=True)
-        elif action == 'recipes':
-            resources(hotswap=hotswap, do_recipes=True)
-        elif action == 'worldgen':
-            resources(hotswap=hotswap, do_worldgen=True)
-        elif action == 'advancements':
-            resources(hotswap=hotswap, do_advancements=True)
         elif action == 'textures':
             generate_textures.main()
         elif action == 'book':
@@ -98,14 +90,15 @@ def main():
         elif action == 'format_lang':
             format_lang.main(False, 'minecraft', MOD_LANGUAGES)
             format_lang.main(False, 'tfc', MOD_LANGUAGES)
-        elif action == 'zip':
-            zip_resources()
+
 
 def clean(local: Optional[str]):
     """ Cleans all generated resources files """
-    clean_at('./src/main/resources')
+    clean_at(RESOURCE_DIR)
+    clean_at(TEST_RESOURCE_DIR)
     if local:
         clean_at(local)
+
 
 def clean_at(location: str):
     for tries in range(1, 1 + 3):
@@ -120,9 +113,13 @@ def clean_at(location: str):
 
 def validate_resources():
     """ Validates all resources are unchanged. """
-    rm = ValidatingResourceManager('tfc', './src/main/resources')
-    resources_at(rm, True, True, True, True, True)
-    error = rm.error_files != 0
+    resources_at(
+        rm := ValidatingResourceManager('tfc', RESOURCE_DIR),
+        vanilla_rm := ValidatingResourceManager('minecraft', RESOURCE_DIR),
+        test_rm := ValidatingResourceManager('tfc', TEST_RESOURCE_DIR)
+    )
+
+    error = rm.error_files != 0 or vanilla_rm.error_files != 0 or test_rm.error_files != 0
 
     for lang in BOOK_LANGUAGES:
         try:
@@ -142,74 +139,33 @@ def validate_resources():
 
     assert not error, 'Validation Errors Were Present'
 
-def zip_resources():
-    asset_count = zip_asset_type('assets')
-    data_count = zip_asset_type('data')
 
-    rescue_folder('META-INF')
-    rescue_folder('data/tfc/patchouli_books')
-    rescue_asset('tfc.mixins.json')
-    rescue_asset('assets_zipped.zip')
-    rescue_asset('data_zipped.zip')
-
-    print(f'Zipped {asset_count} asset files, {data_count} data files.')
-
-def zip_asset_type(asset_type: str):
-    count = 0
-    with zipfile.ZipFile(f'./src/main/resources/{asset_type}_zipped.zip', 'w') as zf:
-        for dirname, subdirs, files in os.walk('./src/main/resources'):
-            if asset_type in dirname:
-                arcname = dirname.replace('./src/main/resources\\', '')
-                zf.write(dirname, arcname=arcname)
-                for fn in files:
-                    fn_file_name = os.path.join(dirname, fn)
-                    fn_arcname = fn_file_name.replace('./src/main/resources\\', '')
-                    zf.write(fn_file_name, arcname=fn_arcname)
-                    count += 1
-        zf.write('./src/main/resources/pack.mcmeta', arcname='pack.mcmeta')
-    return count
-
-def rescue_asset(path: str):
-    shutil.copy('./src/main/resources/%s' % path, './out/production/resources/%s' % path)
-
-def rescue_folder(path: str):
-    shutil.copytree('./src/main/resources/%s' % path, './out/production/resources/%s' % path, dirs_exist_ok=True)
-
-
-def resources(hotswap: str = None, do_assets: bool = False, do_data: bool = False, do_recipes: bool = False, do_worldgen: bool = False, do_advancements: bool = False):
-    """ Generates resource files, or a subset of them """
-    resources_at(ResourceManager('tfc', resource_dir='./src/main/resources'), do_assets, do_data, do_recipes, do_worldgen, do_advancements)
-    if hotswap:
-        resources_at(ResourceManager('tfc', resource_dir=hotswap), do_assets, do_data, do_recipes, do_worldgen, do_advancements)
-
-
-def resources_at(rm: ResourceManager, do_assets: bool, do_data: bool, do_recipes: bool, do_worldgen: bool, do_advancements: bool):
-    # do simple lang keys first, because it's ordered intentionally
+def resources_at(
+    rm: ResourceManager,
+    vanilla_rm: ResourceManager,
+    test_rm: ResourceManager
+):
+    # Do lang keys first, because it's ordered intentionally
     rm.lang(constants.DEFAULT_LANG)
+    vanilla_rm.lang(constants.VANILLA_OVERRIDE_LANG)
 
-    # generic assets / data
-    if do_assets:
-        assets.generate(rm)
-    if do_data:
-        data.generate(rm)
-        tags.generate(rm)
-    if do_recipes:
-        recipes.generate(rm)
-    if do_worldgen:
-        world_gen.generate(rm)
-    if do_advancements:
-        advancements.generate(rm)
+    assets.generate(rm)
+    data.generate(rm)
+    tags.generate(rm)
+    recipes.generate(rm)
+    recipes.generate_test(test_rm)
+    world_gen.generate(rm)
+    advancements.generate(rm)
 
-    if all((do_assets, do_data, do_worldgen, do_recipes, do_advancements)):
-        # Only generate this when generating all, as it's shared
-        rm.flush()
+    # Flush
+    rm.flush()
+    vanilla_rm.flush()
 
-        # Separate generation for vanilla override lang
-        vanilla_rm = ResourceManager('minecraft', resource_dir=rm.resource_dir)
-        vanilla_rm.lang(constants.VANILLA_OVERRIDE_LANG)
-        vanilla_rm.flush()
-
-    print('New = %d, Modified = %d, Unchanged = %d, Errors = %d' % (rm.new_files, rm.modified_files, rm.unchanged_files, rm.error_files))
+    print('New = %d, Modified = %d, Unchanged = %d, Errors = %d' % (
+        rm.new_files + test_rm.new_files + vanilla_rm.new_files,
+        rm.modified_files + test_rm.modified_files + vanilla_rm.modified_files,
+        rm.unchanged_files + test_rm.unchanged_files + vanilla_rm.unchanged_files,
+        rm.error_files + test_rm.error_files + vanilla_rm.error_files))
 
 
 class ValidatingResourceManager(ResourceManager):

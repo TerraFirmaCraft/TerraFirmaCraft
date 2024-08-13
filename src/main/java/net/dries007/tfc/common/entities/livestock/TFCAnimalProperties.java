@@ -131,8 +131,9 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal, BrainBreeder
      */
     default void tickAnimalData()
     {
-        if (getLastFamiliarityDecay() > -1 && getLastFamiliarityDecay() + 1 < getCalendar().getTotalDays())
+        if (getLastFamiliarityDecay() > -1 && getLastFamiliarityDecay() + 1 < getCalendar().getTotalDays() && !getEntity().level().isClientSide)
         {
+            // Decay must only occur on server, as the last familiarity decay is not synced, so this produces invalid results on client
             float familiarity = getFamiliarity();
             if (familiarity < TFCConfig.SERVER.familiarityDecayLimit.get())
             {

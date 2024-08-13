@@ -47,8 +47,13 @@ public enum AnnotateClimate implements RegionTask
                         bias = 0;
                     }
 
-                    point.temperature = 0.77f * point.temperature + 0.23f * Mth.lerp(bias, 5f, point.temperature);
-                    point.rainfall = Mth.clamp(0.85f * point.rainfall + 0.15f * Mth.lerp(bias, point.rainfall + 350f, point.rainfall), 0f, 500f);
+                    // Calculate targets to bias towards
+                    final float biasTargetTemperature = Mth.lerp(bias, 5f, point.temperature);
+                    final float biasTargetRainfall = Mth.lerp(bias, Math.min(point.rainfall + 350f, 500f), point.rainfall);
+
+                    // And apply some influence towards those targets
+                    point.temperature = Mth.lerp(0.23f, point.temperature, biasTargetTemperature);
+                    point.rainfall = Mth.lerp(0.23f, point.rainfall, biasTargetRainfall);
                 }
             }
         }

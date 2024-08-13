@@ -21,7 +21,6 @@ import net.dries007.tfc.world.region.RegionGenerator;
 import net.dries007.tfc.world.region.RegionPartition;
 import net.dries007.tfc.world.region.RiverEdge;
 import net.dries007.tfc.world.region.Units;
-import net.dries007.tfc.world.river.MidpointFractal;
 import net.dries007.tfc.world.settings.Settings;
 
 public interface BiomeSourceExtension
@@ -45,10 +44,7 @@ public interface BiomeSourceExtension
 
             for (RiverEdge edge : partitionPoint.rivers())
             {
-                // This is a heuristic, and doesn't need to be super accurate
-                // maybeIntersect will skip the more expensive calculation if it fails
-                final MidpointFractal fractal = edge.fractal();
-                if (fractal.maybeIntersect(exactGridX, exactGridZ, 0.08f) && fractal.intersect(exactGridX, exactGridZ, 0.08f))
+                if (edge.fractal().intersect(exactGridX, exactGridZ, 0.08f))
                 {
                     return TFCBiomes.RIVER;
                 }

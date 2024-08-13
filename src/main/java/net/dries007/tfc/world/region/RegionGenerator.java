@@ -85,7 +85,7 @@ public class RegionGenerator
             .add(new OpenSimplex2D(random.nextInt())
                 .octaves(2)
                 .spread(0.15f)
-                .scaled(-40f, 40f));
+                .scaled(-80f, 40f)); // Bias slightly negative, as we bias near-ocean areas to be positive rainfall, so this encourages deserts inland
 
         final AreaFactory biomeAreaFactory = TFCLayers.createUniformLayer(random, 2);
         final AreaFactory rockAreaFactory = TFCLayers.createUniformLayer(random, 3);

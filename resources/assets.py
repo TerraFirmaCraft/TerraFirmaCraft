@@ -8,6 +8,16 @@ from mcresources.type_definitions import ResourceIdentifier, JsonObject
 
 from constants import *
 
+STICKS_WHEN_NOT_SHEARED = loot_tables.alternatives({
+    'name': 'minecraft:stick',
+    'conditions': [loot_tables.match_tag('tfc:sharp_tools'), loot_tables.random_chance(0.2)],
+    'functions': [loot_tables.set_count(1, 2)]
+}, {
+    'name': 'minecraft:stick',
+    'conditions': [loot_tables.random_chance(0.05)],
+    'functions': [loot_tables.set_count(1, 2)]
+}, conditions=[loot_tables.inverted(loot_tables.any_of(loot_tables.match_tag('forge:shears'), loot_tables.silk_touch()))])
+
 
 def generate(rm: ResourceManager):
 
@@ -131,17 +141,16 @@ def generate(rm: ResourceManager):
                     'functions': [loot_tables.set_count(1, 4)]
                 }))
             elif block_type == 'gravel':
-                block.with_block_loot(({
-                    'conditions': [loot_tables.silk_touch()],
-                    'name': 'tfc:rock/gravel/%s' % rock
-                }, loot_tables.alternatives({
-                    'type': 'minecraft:item',
-                    'conditions': [loot_tables.fortune_table((0.1, 0.14285715, 0.25, 1.0))],
-                    'name': 'minecraft:flint'
-                }, {
-                    'type': 'minecraft:item',
-                    'name': 'tfc:rock/gravel/%s' % rock
-                }, conditions=['minecraft:survives_explosion'])))
+                block.with_block_loot((
+                    when_silk_touch('tfc:rock/gravel/%s' % rock),
+                    loot_tables.alternatives({
+                        'type': 'minecraft:item',
+                        'conditions': [loot_tables.fortune_table((0.1, 0.14285715, 0.25, 1.0))],
+                        'name': 'minecraft:flint'
+                    }, {
+                        'type': 'minecraft:item',
+                        'name': 'tfc:rock/gravel/%s' % rock
+                    }, conditions=['minecraft:survives_explosion'])))
             else:
                 block.with_block_loot('tfc:rock/%s/%s' % (block_type, rock))
 
@@ -729,18 +738,15 @@ def generate(rm: ResourceManager):
     rm.item_model('snow_pile', parent='minecraft:block/snow_height2', no_textures=True)
 
     block = rm.blockstate('ice_pile', 'minecraft:block/ice').with_lang(lang('ice pile')).with_tag('minecraft:ice')
-    block.with_block_loot({
-        'name': 'minecraft:ice',
-        'conditions': [loot_tables.silk_touch()]
-    })
+    block.with_block_loot(when_silk_touch('minecraft:ice'))
     rm.item_model('ice_pile', parent='minecraft:item/ice', no_textures=True)
 
     # Loot table for snow blocks and snow piles - override the vanilla one to only return one snowball per layer
     def snow_block_loot_table(block: str):
-        rm.block_loot(block, loot_tables.pool(loot_tables.alternatives({
-            'conditions': [loot_tables.silk_touch()],
-            'name': 'minecraft:snow'
-        }, 'minecraft:snowball'), conditions=({
+        rm.block_loot(block, loot_tables.pool(loot_tables.alternatives(
+            when_silk_touch('minecraft:snow'),
+            'minecraft:snowball'
+        ), conditions=({
             'condition': 'minecraft:entity_properties',
             'predicate': {},
             'entity': 'this'
@@ -751,10 +757,7 @@ def generate(rm: ResourceManager):
 
     # Sea Ice
     block = rm.blockstate('sea_ice').with_block_model().with_item_model().with_lang(lang('sea ice')).with_tag('minecraft:ice')
-    block.with_block_loot({
-        'name': 'minecraft:ice',
-        'conditions': [loot_tables.silk_touch()]
-    })
+    block.with_block_loot(when_silk_touch('minecraft:ice'))
 
     # Hides
     for size in ('small', 'medium', 'large'):
@@ -1464,18 +1467,10 @@ def generate(rm: ResourceManager):
             }).with_item_model().with_lang(lang('%s Leaves', fruit)).with_block_loot({
                 'name': 'tfc:food/%s' % fruit,
                 'conditions': [loot_tables.block_state_property('tfc:plant/%s_leaves[lifecycle=fruiting]' % fruit)]
-            }, {
-                'name': 'tfc:plant/%s_leaves' % fruit,
-                'conditions': [loot_tables.any_of(loot_tables.match_tag('forge:shears'), loot_tables.silk_touch())]
-            }, {
-                'name': 'minecraft:stick',
-                'conditions': [loot_tables.match_tag('tfc:sharp_tools'), loot_tables.random_chance(0.2)],
-                'functions': [loot_tables.set_count(1, 2)]
-            }, {
-                'name': 'minecraft:stick',
-                'conditions': [loot_tables.random_chance(0.05)],
-                'functions': [loot_tables.set_count(1, 2)]
-            })
+            },
+                when_sheared('tfc:plant/%s_leaves' % fruit),
+                STICKS_WHEN_NOT_SHEARED)
+
             for life in ('', '_fruiting', '_flowering', '_dry'):
                 rm.block_model('tfc:plant/%s%s_leaves' % (fruit, life), parent='block/leaves', textures={'all': 'tfc:block/fruit_tree/%s%s_leaves' % (fruit, life)})
 
@@ -1609,7 +1604,7 @@ def generate(rm: ResourceManager):
 
         # Leaves
         block = rm.blockstate(('wood', 'leaves', wood), model='tfc:block/wood/leaves/%s' % wood).with_lang(lang('%s leaves', wood))
-        if (wood == 'palm' or wood == 'willow' or wood == 'mangrove'):
+        if wood == 'palm' or wood == 'willow' or wood == 'mangrove':
             block.with_block_model({
                 'side': 'tfc:block/wood/leaves/%s' % wood,
                 'end': 'tfc:block/wood/leaves/%s_top' % wood
@@ -1617,24 +1612,13 @@ def generate(rm: ResourceManager):
         else:
             block.with_block_model('tfc:block/wood/leaves/%s' % wood, parent='block/leaves')
         block.with_item_model()
-        shear_drop = {
-            'name': 'tfc:wood/leaves/%s' % wood,
-            'conditions': [loot_tables.any_of(loot_tables.match_tag('forge:shears'), loot_tables.silk_touch())]
-        }
-        sapling_drop = {
-            'name': 'tfc:wood/sapling/%s' % wood,
-            'conditions': ['minecraft:survives_explosion', loot_tables.random_chance(TREE_SAPLING_DROP_CHANCES[wood])]
-        }
-        basic_loot = (shear_drop, sapling_drop) if TREE_SAPLING_DROP_CHANCES[wood] > 0 else (shear_drop,)
-        block.with_block_loot(basic_loot, loot_tables.alternatives({
-            'name': 'minecraft:stick',
-            'conditions': [loot_tables.match_tag('tfc:sharp_tools'), loot_tables.random_chance(0.2)],
-            'functions': [loot_tables.set_count(1, 2)]
-        }, {
-            'name': 'minecraft:stick',
-            'conditions': [loot_tables.random_chance(0.05)],
-            'functions': [loot_tables.set_count(1, 2)]
-        }, conditions=[loot_tables.inverted(loot_tables.any_of(loot_tables.match_tag('forge:shears'), loot_tables.silk_touch()))]))
+        block.with_block_loot(
+            when_sheared('tfc:wood/leaves/%s' % wood),
+            {
+                'name': 'tfc:wood/sapling/%s' % wood,
+                'conditions': ['minecraft:survives_explosion', loot_tables.random_chance(TREE_SAPLING_DROP_CHANCES[wood])]
+            },
+            STICKS_WHEN_NOT_SHEARED)
 
         # Sapling
         block = rm.blockstate(('wood', 'sapling', wood), 'tfc:block/wood/sapling/%s' % wood).with_lang(lang('%s %s', wood, 'propagule' if wood == 'mangrove' else 'seed' if wood == 'palm' else 'sapling'))
@@ -2030,6 +2014,9 @@ def generate(rm: ResourceManager):
         else:
             rm.item_model('windmill_blade', 'tfc:item/windmill_blade/white').with_lang(lang('windmill blade'))
 
+    rm.item_model('lattice_windmill_blade', 'tfc:item/windmill_blade/lattice').with_lang(lang('lattice windmill blade'))
+    rm.item_model('rustic_windmill_blade', 'tfc:item/windmill_blade/rustic').with_lang(lang('rustic windmill blade'))
+
     rm.blockstate('poured_glass').with_block_model({'all': 'minecraft:block/glass'}, parent='tfc:block/template_poured_glass').with_lang(lang('poured glass')).with_block_loot('minecraft:glass_pane')
     rm.item_model('poured_glass', 'minecraft:block/glass')
     rm.blockstate('hot_poured_glass').with_block_model({'particle': 'tfc:block/glass/1'}, parent=None).with_lang(lang('hot poured glass'))
@@ -2356,3 +2343,14 @@ def door_blockstate(base: str) -> JsonObject:
         'facing=west,half=upper,hinge=right,open=false': {'model': top_right, 'y': 180},
         'facing=west,half=upper,hinge=right,open=true': {'model': top_right_open, 'y': 90}
     }
+
+
+def when_silk_touch(item: str):
+    return {'name': item, 'conditions': [loot_tables.silk_touch()]}
+
+
+def when_sheared(item: str):
+    return {'name': item, 'conditions': [loot_tables.any_of(
+        loot_tables.match_tag('forge:shears'),
+        loot_tables.silk_touch()
+    )]}

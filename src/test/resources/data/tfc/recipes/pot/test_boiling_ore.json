@@ -1,0 +1,74 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:pot",
+  "ingredients": [
+    {
+      "tag": "tfc:small_ore_pieces"
+    },
+    {
+      "tag": "tfc:small_ore_pieces"
+    },
+    {
+      "tag": "tfc:small_ore_pieces"
+    },
+    {
+      "tag": "tfc:small_ore_pieces"
+    },
+    {
+      "tag": "tfc:small_ore_pieces"
+    }
+  ],
+  "fluid_ingredient": {
+    "ingredient": "minecraft:water",
+    "amount": 1000
+  },
+  "duration": 100,
+  "temperature": 300,
+  "item_output": [
+    {
+      "modifiers": [
+        "tfc:copy_input",
+        {
+          "type": "tfc:add_heat",
+          "temperature": 300
+        }
+      ]
+    },
+    {
+      "modifiers": [
+        "tfc:copy_input",
+        {
+          "type": "tfc:add_heat",
+          "temperature": 300
+        }
+      ]
+    },
+    {
+      "modifiers": [
+        "tfc:copy_input",
+        {
+          "type": "tfc:add_heat",
+          "temperature": 300
+        }
+      ]
+    },
+    {
+      "modifiers": [
+        "tfc:copy_input",
+        {
+          "type": "tfc:add_heat",
+          "temperature": 300
+        }
+      ]
+    },
+    {
+      "modifiers": [
+        "tfc:copy_input",
+        {
+          "type": "tfc:add_heat",
+          "temperature": 300
+        }
+      ]
+    }
+  ]
+}
