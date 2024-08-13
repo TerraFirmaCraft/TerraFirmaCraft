@@ -10,11 +10,15 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
 import net.dries007.tfc.common.container.LogPileContainer;
+import net.dries007.tfc.util.Helpers;
 
 public class LogPileScreen extends TFCContainerScreen<LogPileContainer>
 {
     public LogPileScreen(LogPileContainer container, Inventory playerInventory, Component name)
     {
-        super(container, playerInventory, name, INVENTORY_2x2);
+        super(container, playerInventory, name, Helpers.identifier("textures/gui/log_pile.png"));
+        inventoryLabelY += 20;
+        imageHeight += 20;
     }
+
 }

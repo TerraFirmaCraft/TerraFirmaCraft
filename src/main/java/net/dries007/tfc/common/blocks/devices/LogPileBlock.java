@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.blocks.devices;
 
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -17,32 +18,80 @@ import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import org.spongepowered.asm.mixin.Shadow;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.LogPileBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
+import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.container.slot.CallbackSlot;
 import net.dries007.tfc.util.Helpers;
 
-public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, EntityBlockExtension
+public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, EntityBlockExtension, SimpleWaterloggedBlock
 {
     public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
+
+    public static final IntegerProperty COUNT = TFCBlockStateProperties.COUNT_1_16;
+    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+
+    public static final VoxelShape[][] SHAPES_BY_DIR_BY_COUNT = Util.make(new VoxelShape[2][16], shapes -> {
+        double[][] box2ByCount = new double[16][6];
+        double[][] box1ByCount = new double[16][6];
+        int layer;
+        int row;
+        for (int i = 0; i < 16; i++)
+        {
+            layer = i / 4;
+            row = i % 4 + 1;
+            box2ByCount[i] = new double[] {0, 4 * layer, 0, 16, 4 * layer + 4, 4 * row};
+            box1ByCount[i] = new double[] {0, 0, 0, 16, 4 * (layer), 16};
+        }
+
+        for (int dir = 0; dir < 2; dir++)
+        {
+            Direction direction = Direction.SOUTH;
+            if (dir == 1)
+            {
+                direction = Direction.EAST;
+            }
+
+            for (int count = 0; count < 16; count++)
+            {
+                VoxelShape box1 = Helpers.rotateShape(direction, box1ByCount[count][0], box1ByCount[count][1], box1ByCount[count][2], box1ByCount[count][3], box1ByCount[count][4], box1ByCount[count][5]);
+                VoxelShape box2 = Helpers.rotateShape(direction, box2ByCount[count][0], box2ByCount[count][1], box2ByCount[count][2], box2ByCount[count][3], box2ByCount[count][4], box2ByCount[count][5]);
+                shapes[dir][count] = Shapes.or(box1, box2);
+            }
+        }
+    });
 
     public LogPileBlock(ExtendedProperties properties)
     {
         super(properties, InventoryRemoveBehavior.DROP);
-        registerDefaultState(getStateDefinition().any().setValue(AXIS, Direction.Axis.X));
+        registerDefaultState(getStateDefinition().any().setValue(AXIS, Direction.Axis.X).setValue(COUNT, 1).setValue(WATERLOGGED, false));
     }
 
     @Override
@@ -54,13 +103,13 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
-        return defaultBlockState().setValue(AXIS, context.getHorizontalDirection().getAxis());
+        return defaultBlockState().setValue(AXIS, context.getHorizontalDirection().getAxis()).setValue(COUNT, 1).setValue(WATERLOGGED, false);
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder.add(AXIS));
+        super.createBlockStateDefinition(builder.add(AXIS).add(COUNT).add(WATERLOGGED));
     }
 
     @Override
@@ -68,6 +117,10 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
     {
         if (!levelAccess.isClientSide() && levelAccess instanceof Level level)
         {
+            if ((facing == Direction.DOWN && !facingState.isFaceSturdy(levelAccess, facingPos, Direction.UP)) && !(facingState.getBlock() instanceof LogPileBlock))
+            {
+                return Blocks.AIR.defaultBlockState();
+            }
             if (Helpers.isBlock(facingState, BlockTags.FIRE))
             {
                 BurningLogPileBlock.lightLogPile(level, currentPos);
@@ -121,5 +174,40 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
                 }
                 return ItemStack.EMPTY;
             }).orElse(ItemStack.EMPTY);
+    }
+
+    @Override
+    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
+    {
+        BlockState blockstate = level.getBlockState(pos.below());
+        return Block.isFaceFull(blockstate.getCollisionShape(level, pos.below()), Direction.UP) || blockstate.getBlock() instanceof LogPileBlock;
+    }
+
+    protected VoxelShape getShapeByDirByCount(Direction.Axis axis, int count)
+    {
+        count--;
+        if (axis == Direction.Axis.X)
+        {
+            return SHAPES_BY_DIR_BY_COUNT[0][count];
+        }
+        return SHAPES_BY_DIR_BY_COUNT[1][count];
+    }
+
+    @Override
+    protected VoxelShape getShape(BlockState state, BlockGetter levle, BlockPos pos, CollisionContext context)
+    {
+        return getShapeByDirByCount(state.getValue(AXIS), state.getValue(COUNT));
+    }
+
+    @Override
+    protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    {
+        return getShapeByDirByCount(state.getValue(AXIS), state.getValue(COUNT));
+    }
+
+    @Override
+    protected VoxelShape getVisualShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    {
+        return getShapeByDirByCount(state.getValue(AXIS), state.getValue(COUNT));
     }
 }

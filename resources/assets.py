@@ -488,9 +488,14 @@ def generate(rm: ResourceManager):
 
     rm.blockstate('charcoal_pile', variants=dict((('layers=%d' % i), {'model': 'tfc:block/charcoal_pile/charcoal_height%d' % (i * 2) if i != 8 else 'tfc:block/charcoal_pile/charcoal_block'}) for i in range(1, 1 + 8))).with_lang(lang('Charcoal Pile')).with_block_loot('minecraft:charcoal')
     rm.blockstate('charcoal_forge', variants=dict((('heat_level=%d' % i), {'model': 'tfc:block/charcoal_forge/heat_%d' % i}) for i in range(0, 7 + 1))).with_lang(lang('Forge')).with_block_loot('7 minecraft:charcoal')
-    rm.blockstate('log_pile', variants={'axis=x': {'model': 'tfc:block/log_pile', 'y': 90, 'x': 90}, 'axis=z': {'model': 'tfc:block/log_pile', 'x': 90}}) \
-        .with_block_model(textures={'side': 'tfc:block/log_pile_side', 'end': 'tfc:block/log_pile_front'}, parent='minecraft:block/cube_column_horizontal').with_lang(lang('Log Pile'))
-    rm.blockstate('burning_log_pile', model='tfc:block/burning_log_pile').with_block_model(parent='minecraft:block/cube_all', textures={'all': 'tfc:block/devices/charcoal_forge/lit'}).with_lang(lang('Burning Log Pile'))
+
+    #rm.blockstate('log_pile', variants=dict((('count=%d' % i), ('axis='+a), {'y': ('90' if a == 'x' else '0'), 'model': 'tfc:block/log_pile/log_pile_%d' % i}) for i in range(1, 1 + 16) for a in ['x','z'])).with_lang(lang('Log Pile'))
+
+    #rm.blockstate('burning_log_pile', variants=dict((('count=%d' % i), ('axis='+a), {'y': ('90' if a == 'x' else '0'), 'model': 'tfc:block/log_pile/log_pile_%d' % i}) for i in range(1, 1 + 16) for a in ['x','z'])).with_lang(lang('Burning Log Pile'))
+
+    rm.blockstate('log_pile', variants=log_pile_blockstate()).with_lang(lang('Log Pile'))
+
+    rm.blockstate('burning_log_pile', variants=log_pile_blockstate()).with_lang(lang('Burning Log Pile'))
 
     for stage in range(0, 7 + 1):
         rm.block_model('charcoal_forge/heat_%d' % stage, parent='tfc:block/charcoal_forge/template_forge', textures={'top': 'tfc:block/devices/charcoal_forge/%d' % stage})
@@ -2386,6 +2391,43 @@ def door_blockstate(base: str) -> JsonObject:
         'facing=west,half=upper,hinge=left,open=true': {'model': top_left_open, 'y': 270},
         'facing=west,half=upper,hinge=right,open=false': {'model': top_right, 'y': 180},
         'facing=west,half=upper,hinge=right,open=true': {'model': top_right_open, 'y': 90}
+    }
+
+def log_pile_blockstate() -> JsonObject:
+
+    return {
+        'axis=z,count=1': {'model': 'tfc:block/log_pile/log_pile_1'},
+        'axis=x,count=1': {'model': 'tfc:block/log_pile/log_pile_1', 'y': 90},
+        'axis=z,count=2': {'model': 'tfc:block/log_pile/log_pile_2'},
+        'axis=x,count=2': {'model': 'tfc:block/log_pile/log_pile_2', 'y': 90},
+        'axis=z,count=3': {'model': 'tfc:block/log_pile/log_pile_3'},
+        'axis=x,count=3': {'model': 'tfc:block/log_pile/log_pile_3', 'y': 90},
+        'axis=z,count=4': {'model': 'tfc:block/log_pile/log_pile_4'},
+        'axis=x,count=4': {'model': 'tfc:block/log_pile/log_pile_4', 'y': 90},
+        'axis=z,count=5': {'model': 'tfc:block/log_pile/log_pile_5'},
+        'axis=x,count=5': {'model': 'tfc:block/log_pile/log_pile_5', 'y': 90},
+        'axis=z,count=6': {'model': 'tfc:block/log_pile/log_pile_6'},
+        'axis=x,count=6': {'model': 'tfc:block/log_pile/log_pile_6', 'y': 90},
+        'axis=z,count=7': {'model': 'tfc:block/log_pile/log_pile_7'},
+        'axis=x,count=7': {'model': 'tfc:block/log_pile/log_pile_7', 'y': 90},
+        'axis=z,count=8': {'model': 'tfc:block/log_pile/log_pile_8'},
+        'axis=x,count=8': {'model': 'tfc:block/log_pile/log_pile_8', 'y': 90},
+        'axis=z,count=9': {'model': 'tfc:block/log_pile/log_pile_9'},
+        'axis=x,count=9': {'model': 'tfc:block/log_pile/log_pile_9', 'y': 90},
+        'axis=z,count=10': {'model': 'tfc:block/log_pile/log_pile_10'},
+        'axis=x,count=10': {'model': 'tfc:block/log_pile/log_pile_10', 'y': 90},
+        'axis=z,count=11': {'model': 'tfc:block/log_pile/log_pile_11'},
+        'axis=x,count=11': {'model': 'tfc:block/log_pile/log_pile_11', 'y': 90},
+        'axis=z,count=12': {'model': 'tfc:block/log_pile/log_pile_12'},
+        'axis=x,count=12': {'model': 'tfc:block/log_pile/log_pile_12', 'y': 90},
+        'axis=z,count=13': {'model': 'tfc:block/log_pile/log_pile_13'},
+        'axis=x,count=13': {'model': 'tfc:block/log_pile/log_pile_13', 'y': 90},
+        'axis=z,count=14': {'model': 'tfc:block/log_pile/log_pile_14'},
+        'axis=x,count=14': {'model': 'tfc:block/log_pile/log_pile_14', 'y': 90},
+        'axis=z,count=15': {'model': 'tfc:block/log_pile/log_pile_15'},
+        'axis=x,count=15': {'model': 'tfc:block/log_pile/log_pile_15', 'y': 90},
+        'axis=z,count=16': {'model': 'tfc:block/log_pile/log_pile_16'},
+        'axis=x,count=16': {'model': 'tfc:block/log_pile/log_pile_16', 'y': 90},
     }
 
 
