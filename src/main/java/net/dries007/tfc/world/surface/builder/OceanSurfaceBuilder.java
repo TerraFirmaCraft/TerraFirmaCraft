@@ -20,6 +20,8 @@ import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.util.climate.OverworldClimateModel;
 import net.dries007.tfc.world.surface.SurfaceBuilderContext;
+import net.dries007.tfc.world.surface.SurfaceState;
+import net.dries007.tfc.world.surface.SurfaceStates;
 
 public class OceanSurfaceBuilder implements SurfaceBuilder
 {
@@ -45,7 +47,8 @@ public class OceanSurfaceBuilder implements SurfaceBuilder
     @Override
     public void buildSurface(SurfaceBuilderContext context, int startY, int endY)
     {
-        NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY);
+        final SurfaceState topState = context.averageTemperature() > 0f ? SurfaceStates.SANDY_WHEN_NEAR_SEA_LEVEL : SurfaceStates.GRAVEL;
+        NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY, context.getSlope() < 5 ? SurfaceStates.GRASS : topState, SurfaceStates.DIRT, SurfaceStates.SANDSTONE_OR_GRAVEL);
         frozenOceanExtension(context, startY, endY);
     }
 

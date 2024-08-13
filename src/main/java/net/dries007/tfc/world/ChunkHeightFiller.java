@@ -169,15 +169,17 @@ public class ChunkHeightFiller
         {
             if (atollWeight > 0.05 && atollWeight < 0.65)
             {
+                final double noise = Mth.map(shoreSampler.noise(blockX, blockZ), -0.1, 1.1, -3, 0);
                 final double easing = Mth.map(atollWeight, 0.05, 0.65, 0, 1);
                 final double effect = -4 * Mth.square(easing - 0.5) + 1; // 0 -> 1
-                height = Math.min(65, height + effect * 14);
+                final double originalHeight = height;
+                height = Math.min(seaLevel + 3, height + effect * 14 + noise);
                 if (easing > 0.5)
-                    height = Math.max(height, 63 - 5);
+                    height = Math.max(originalHeight, Math.max(height, seaLevel - 5));
             }
             else if (atollWeight > 0.65)
             {
-                height = Math.max(atollHeight, 63 - 5);
+                height = Math.max(atollHeight, seaLevel - 5);
             }
         }
         // Adjust shore weights to produce varied cliffs where they intersect landmass
