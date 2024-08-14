@@ -52,7 +52,7 @@ public class LogPileBlockEntity extends InventoryBlockEntity<ItemStackHandler> i
             // if there's room above and this pile is full, try and push the logs up
             if (level.getBlockState(pos.above()).isAir() && logPile.logCount() == SLOTS)
             {
-                // TODO this is NOT the ideal way to handle this behavior
+                // TODO this is NOT the ideal way to handle this behavior, very gross and prototype-y
                 level.setBlockAndUpdate(pos.above(), TFCBlocks.LOG_PILE.get().defaultBlockState());
                 if (level.getBlockEntity(pos.above()) instanceof LogPileBlockEntity pileAbove)
                 {
