@@ -13,11 +13,19 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.BurningLogPileBlockEntity;
@@ -25,18 +33,23 @@ import net.dries007.tfc.common.blockentities.LogPileBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
+import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.util.Helpers;
 
 public class BurningLogPileBlock extends Block implements IForgeBlockExtension, EntityBlockExtension
 {
+    public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
+
+    public static final IntegerProperty COUNT = TFCBlockStateProperties.COUNT_1_16;
     public static void lightLogPile(Level level, BlockPos pos)
     {
         if (level.getBlockEntity(pos) instanceof LogPileBlockEntity pile)
         {
             final int logs = pile.logCount();
+            BlockState state = level.getBlockState(pos);
             pile.clearContent();
-            level.setBlockAndUpdate(pos, TFCBlocks.BURNING_LOG_PILE.get().defaultBlockState());
+            level.setBlockAndUpdate(pos, Helpers.copyProperties(TFCBlocks.BURNING_LOG_PILE.get().defaultBlockState(), state));
             Helpers.playSound(level, pos, SoundEvents.BLAZE_SHOOT);
             if (level.getBlockEntity(pos) instanceof BurningLogPileBlockEntity burningPile)
             {
@@ -52,6 +65,41 @@ public class BurningLogPileBlock extends Block implements IForgeBlockExtension, 
         {
             level.scheduleTick(pos, level.getBlockState(pos).getBlock(), TICK_DELAY);
         }
+    }
+
+    protected VoxelShape getShapeByDirByCount(Direction.Axis axis, int count)
+    {
+        count--;
+        if (axis == Direction.Axis.X)
+        {
+            return LogPileBlock.SHAPES_BY_DIR_BY_COUNT[0][count];
+        }
+        return LogPileBlock.SHAPES_BY_DIR_BY_COUNT[1][count];
+    }
+
+    @Override
+    protected VoxelShape getShape(BlockState state, BlockGetter levle, BlockPos pos, CollisionContext context)
+    {
+        return getShapeByDirByCount(state.getValue(AXIS), state.getValue(COUNT));
+    }
+
+    @Override
+    protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    {
+        return getShapeByDirByCount(state.getValue(AXIS), state.getValue(COUNT));
+    }
+
+    @Override
+    protected VoxelShape getVisualShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    {
+        return getShapeByDirByCount(state.getValue(AXIS), state.getValue(COUNT));
+    }
+
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
+    {
+        super.createBlockStateDefinition(builder.add(AXIS).add(COUNT));
     }
 
     private static boolean isValidCoverBlock(BlockState offsetState, Level level, BlockPos pos, Direction side)
@@ -101,6 +149,7 @@ public class BurningLogPileBlock extends Block implements IForgeBlockExtension, 
     {
         super(properties.properties());
         this.properties = properties;
+        registerDefaultState(getStateDefinition().any().setValue(AXIS, Direction.Axis.X).setValue(COUNT, 1));
     }
 
     @Override

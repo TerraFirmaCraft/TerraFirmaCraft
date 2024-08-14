@@ -47,12 +47,11 @@ import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.util.Helpers;
 
-public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, EntityBlockExtension, SimpleWaterloggedBlock
+public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, EntityBlockExtension
 {
     public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
 
     public static final IntegerProperty COUNT = TFCBlockStateProperties.COUNT_1_16;
-    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public static final VoxelShape[][] SHAPES_BY_DIR_BY_COUNT = Util.make(new VoxelShape[2][16], shapes -> {
         double[][] box2ByCount = new double[16][6];
@@ -87,7 +86,7 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
     public LogPileBlock(ExtendedProperties properties)
     {
         super(properties, InventoryRemoveBehavior.DROP);
-        registerDefaultState(getStateDefinition().any().setValue(AXIS, Direction.Axis.X).setValue(COUNT, 1).setValue(WATERLOGGED, false));
+        registerDefaultState(getStateDefinition().any().setValue(AXIS, Direction.Axis.X).setValue(COUNT, 1));
     }
 
     @Override
@@ -99,13 +98,13 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
-        return defaultBlockState().setValue(AXIS, context.getHorizontalDirection().getAxis()).setValue(COUNT, 1).setValue(WATERLOGGED, false);
+        return defaultBlockState().setValue(AXIS, context.getHorizontalDirection().getAxis()).setValue(COUNT, 1);
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder.add(AXIS).add(COUNT).add(WATERLOGGED));
+        super.createBlockStateDefinition(builder.add(AXIS).add(COUNT));
     }
 
     @Override
