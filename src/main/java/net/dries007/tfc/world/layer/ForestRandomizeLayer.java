@@ -23,22 +23,34 @@ public enum ForestRandomizeLayer implements CenterTransformLayer
         final RandomSource source = context.random();
         if (current.isNone())
         {
+            final int random = source.nextInt(20);
+            if (random <= 2)
+            {
+                return ForestType.SHRUBLAND.ordinal();
+            }
+            else if (random <= 5)
+            {
+                return ForestType.getSavannaForestType(source);
+            }
+            else if (random == 6)
+            {
+                return ForestType.getSecondaryForestType(source);
+            }
+        }
+        else if (current.isSavanna())
+        {
             final int random = source.nextInt(16);
             if (random <= 2)
             {
-                return ForestType.SECONDARY_SPARSE.ordinal();
+                return ForestType.getSecondaryForestType(source);
             }
-            else if (random == 3)
+            else if (random <= 6)
             {
-                return ForestType.getNormalForestType(source);
+                return ForestType.SPARSE.ordinal();
             }
-        }
-        else if (current.isSparse())
-        {
-            final int random = source.nextInt(7);
-            if (random <= 3)
+            else if (random <= 8)
             {
-                return ForestType.getNormalForestType(source);
+                return ForestType.SHRUBLAND.ordinal();
             }
         }
         else if (current.isPrimary() || current.isSecondary())
@@ -46,7 +58,7 @@ public enum ForestRandomizeLayer implements CenterTransformLayer
             final int random = source.nextInt(24);
             if (random == 1 && !current.isSecondary())
             {
-                return ForestType.SECONDARY_SPARSE.ordinal();
+                return ForestType.getSavannaForestType(source);
             }
             else if (random == 2)
             {
@@ -54,7 +66,7 @@ public enum ForestRandomizeLayer implements CenterTransformLayer
             }
             else if (random <= 6)
             {
-                return ForestType.getOldGrowthForestType(source);
+                return ForestType.getPrimaryForestType(source);
             }
         }
         return value;
