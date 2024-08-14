@@ -485,6 +485,8 @@ def generate(rm: ResourceManager):
         rm.block_model('tfc:ceramic/%s_large_vessel_opened' % color, textures=normal_tex, parent=parent_model + '_opened')
         rm.item_model(block.res, parent='tfc:block/ceramic/%s_large_vessel_opened' % color, no_textures=True, overrides=[override('tfc:block/ceramic/%s_large_vessel_sealed' % color, 'tfc:sealed')])
         rm.item_model('tfc:ceramic/unfired_large_vessel/%s' % color, clay_tex, parent=parent_model + '_sealed').with_lang(lang('%s unfired large vessel', color))
+        rm.block_model('ceramic/%s_small_vessel' % color, textures=normal_tex, parent='tfc:block/ceramic/glazed_small_vessel')
+        rm.block_model('ceramic/%s_small_vessel_unfired' % color, textures=clay_tex, parent='tfc:block/ceramic/glazed_small_vessel')
 
     rm.blockstate('charcoal_pile', variants=dict((('layers=%d' % i), {'model': 'tfc:block/charcoal_pile/charcoal_height%d' % (i * 2) if i != 8 else 'tfc:block/charcoal_pile/charcoal_block'}) for i in range(1, 1 + 8))).with_lang(lang('Charcoal Pile')).with_block_loot('minecraft:charcoal')
     rm.blockstate('charcoal_forge', variants=dict((('heat_level=%d' % i), {'model': 'tfc:block/charcoal_forge/heat_%d' % i}) for i in range(0, 7 + 1))).with_lang(lang('Forge')).with_block_loot('7 minecraft:charcoal')

@@ -34,9 +34,17 @@ public class PlacedItemBlockEntityRenderer<T extends PlacedItemBlockEntity> impl
     /**
      * Custom models, on a per-item basis, when rendered in a placed item. If an item is not present here, it will be rendered using
      * a static item renderer.
-     * todo: add models for small vessels
      */
     public static final Map<Item, Provider> MODELS = RenderHelpers.mapOf(map -> {
+        map.accept(TFCItems.WROUGHT_IRON_GRILL, cutout("block/firepit_grill"));
+        map.accept(TFCItems.POT, cutout("block/firepit_pot_placed"));
+        map.accept(TFCItems.UNFIRED_POT, cutout("block/firepit_pot_placed_unfired"));
+        map.accept(TFCItems.JUG, cutout("block/ceramic/jug"));
+        map.accept(TFCItems.UNFIRED_JUG, cutout("block/ceramic/unfired_jug"));
+        map.accept(TFCItems.VESSEL, cutout("block/ceramic/small_vessel"));
+        map.accept(TFCItems.UNFIRED_VESSEL, cutout("block/ceramic/unfired_small_vessel"));
+        TFCItems.GLAZED_VESSELS.forEach((color, item) -> map.accept(item, cutout("block/ceramic/" + color.getSerializedName() + "_small_vessel")));
+        TFCItems.UNFIRED_GLAZED_VESSELS.forEach((color, item) -> map.accept(item, cutout("block/ceramic/" + color.getSerializedName() + "_small_vessel_unfired")));
         map.accept(TFCItems.EMPTY_JAR, translucent("block/jar/empty"));
         map.accept(TFCItems.EMPTY_JAR_WITH_LID, translucent("block/jar"));
         TFCItems.FRUIT_PRESERVES.forEach((fruit, item) -> map.accept(item, translucent("block/jar/" + fruit.getSerializedName())));
@@ -47,6 +55,12 @@ public class PlacedItemBlockEntityRenderer<T extends PlacedItemBlockEntity> impl
     {
         return new Provider(RenderHelpers.modelId(model), RenderType.translucent());
     }
+
+    private static Provider cutout(String model)
+    {
+        return new Provider(RenderHelpers.modelId(model), RenderType.cutout());
+    }
+
 
     @Override
     public void render(T placedItem, float partialTicks, PoseStack pose, MultiBufferSource buffers, int packedLight, int packedOverlay)
@@ -94,15 +108,12 @@ public class PlacedItemBlockEntityRenderer<T extends PlacedItemBlockEntity> impl
             final ModelBlockRenderer blockRenderer = mc.getBlockRenderer().getModelRenderer();
 
             // Rendering block models is relative to the (0, 0) position, so we translate to the corner of where we want to render
-            // We don't scale or rotate for block models. We don't lift them, because we assume block models are positioned correctly
-            if (isLarge)
-            {
-                pose.translate(0.25, 0, 0.25);
-            }
-            else
+            // We don't scale or rotate for block models. We don't lift them (beyond a slight amount to prevent z fighting in pit kilns), because we assume block models are positioned correctly
+            if (!isLarge)
             {
                 pose.translate(slotX * 0.5, 0, slotZ * 0.5);
             }
+            pose.translate(0, -0.05, 0);
 
             blockRenderer.tesselateWithAO(entity.getLevel(), baked, entity.getBlockState(), entity.getBlockPos(), pose, buffer, true, random, packedLight, packedOverlay, ModelData.EMPTY, RenderType.translucent());
         }

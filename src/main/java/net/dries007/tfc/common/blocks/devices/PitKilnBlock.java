@@ -35,6 +35,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
 import net.dries007.tfc.common.blockentities.PitKilnBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
@@ -204,5 +205,11 @@ public class PitKilnBlock extends DeviceBlock
             return placedItem.getCloneItemStack(state, blockResult);
         }
         return ItemStack.EMPTY;
+    }
+
+    @Override
+    protected void beforeRemove(InventoryBlockEntity<?> entity)
+    {
+        // No-op - we don't want to call ejectInventory()
     }
 }

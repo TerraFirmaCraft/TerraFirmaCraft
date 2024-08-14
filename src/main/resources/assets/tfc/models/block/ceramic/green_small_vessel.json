@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/ceramic/glazed_small_vessel",
+  "textures": {
+    "top": "tfc:block/ceramic/large_vessel/glazed/green/top",
+    "side": "tfc:block/ceramic/large_vessel/glazed/green/side",
+    "bottom": "tfc:block/ceramic/large_vessel/glazed/green/bottom",
+    "back": "tfc:block/ceramic/large_vessel/glazed/green/back",
+    "front": "tfc:block/ceramic/large_vessel/glazed/green/front"
+  }
+}

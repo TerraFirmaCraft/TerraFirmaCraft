@@ -1,0 +1,12 @@
+{
+  "ingredient": [
+    {
+      "item": "tfc:ceramic/pot"
+    },
+    {
+      "item": "tfc:wrought_iron_grill"
+    }
+  ],
+  "size": "very_large",
+  "weight": "heavy"
+}
