@@ -202,7 +202,7 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
         return Block.isFaceFull(blockstate.getCollisionShape(level, pos.below()), Direction.UP) || blockstate.getBlock() instanceof LogPileBlock;
     }
 
-    protected VoxelShape getShapeByDirByCount(Direction.Axis axis, int count)
+    public static VoxelShape getShapeByDirByCount(Direction.Axis axis, int count)
     {
         count--;
         if (axis == Direction.Axis.X)
