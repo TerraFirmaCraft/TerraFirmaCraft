@@ -31,14 +31,11 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.spongepowered.asm.mixin.Shadow;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.LogPileBlockEntity;
@@ -48,7 +45,6 @@ import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.container.slot.CallbackSlot;
 import net.dries007.tfc.util.Helpers;
 
 public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, EntityBlockExtension, SimpleWaterloggedBlock
@@ -143,6 +139,30 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
                         {
                             Helpers.playPlaceSound(level, pos, state);
                             stack.shrink(1);
+                        }
+
+                        // TODO gross and protoype-y, should act like ingot piles
+                        else if (level.getBlockState(pos.above()).isAir())
+                        {
+                            level.setBlockAndUpdate(pos.above(), TFCBlocks.LOG_PILE.get().defaultBlockState());
+                            if (level.getBlockEntity(pos.above()) instanceof LogPileBlockEntity pileAbove)
+                            {
+                                BlockState stateAbove = level.getBlockState(pos.above());
+                                if (Helpers.insertOne(pileAbove, stack))
+                                {
+                                    Helpers.playPlaceSound(level, pos.above(), stateAbove);
+                                    stack.shrink(1);
+                                }
+                                else
+                                {
+                                    level.removeBlock(pos.above(), false);
+                                }
+                            }
+                        }
+                        else if (level.getBlockState(pos.above()).getBlock() instanceof LogPileBlock pileBlockAbove)
+                        {
+                            BlockState stateAbove = level.getBlockState(pos.above());
+                            pileBlockAbove.useItemOn(stack, stateAbove, level, pos.above(), player, hand, hitResult);
                         }
                     }
                 }
