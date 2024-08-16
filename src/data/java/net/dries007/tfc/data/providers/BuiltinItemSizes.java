@@ -37,15 +37,19 @@ public class BuiltinItemSizes extends DataManagerProvider<ItemSizeDefinition> im
     @Override
     protected void addData(HolderLookup.Provider provider)
     {
+        // Vanilla Tags
         add("logs", ItemTags.LOGS, Size.VERY_LARGE, Weight.MEDIUM);
-        add("chests", Tags.Items.CHESTS, Size.LARGE, Weight.LIGHT);
         add("slabs", ItemTags.SLABS, Size.SMALL, Weight.VERY_LIGHT);
         add("stairs", ItemTags.STAIRS, Size.SMALL, Weight.LIGHT);
         add("doors", ItemTags.DOORS, Size.VERY_LARGE, Weight.HEAVY);
         add("trapdoors", ItemTags.TRAPDOORS, Size.LARGE, Weight.HEAVY);
-        add("signs", ItemTags.SIGNS, Size.VERY_SMALL, Weight.HEAVY);
+        add("signs", ItemTags.SIGNS, Size.VERY_SMALL, Weight.MEDIUM);
         add("hanging_signs", ItemTags.HANGING_SIGNS, Size.VERY_SMALL, Weight.HEAVY);
         add("boats", ItemTags.BOATS, Size.VERY_LARGE, Weight.HEAVY);
+        add("rails", ItemTags.RAILS, Size.LARGE, Weight.VERY_LIGHT);
+
+        // Common Tags
+        add("chests", Tags.Items.CHESTS, Size.LARGE, Weight.LIGHT);
         add("ingots", Tags.Items.INGOTS, Size.LARGE, Weight.MEDIUM);
         add("double_ingots", TFCTags.Items.DOUBLE_INGOTS, Size.LARGE, Weight.MEDIUM);
         add("sheets", TFCTags.Items.SHEETS, Size.LARGE, Weight.MEDIUM);
@@ -54,10 +58,12 @@ public class BuiltinItemSizes extends DataManagerProvider<ItemSizeDefinition> im
         add("dyes", Tags.Items.DYES, Size.TINY, Weight.LIGHT);
         add("foods", Tags.Items.FOODS, Size.SMALL, Weight.LIGHT);
         add("dusts", Tags.Items.DUSTS, Size.VERY_SMALL, Weight.VERY_LIGHT);
+        add("buckets", Tags.Items.BUCKETS, Size.LARGE, Weight.MEDIUM);
 
+        // TFC Tags
         add("quern", TFCBlocks.QUERN, Size.VERY_LARGE, Weight.MEDIUM);
         add("tool_racks", TFCTags.Items.TOOL_RACKS, Size.LARGE, Weight.VERY_HEAVY);
-        add("scribing_tables", CompoundIngredient.of(
+        add("scribing_tables", ingredientOf(
             Ingredient.of(TFCTags.Items.SCRIBING_TABLES),
             Ingredient.of(TFCTags.Items.SEWING_TABLES),
             Ingredient.of(Items.LOOM)
@@ -80,14 +86,14 @@ public class BuiltinItemSizes extends DataManagerProvider<ItemSizeDefinition> im
         add("soups", TFCTags.Items.SOUPS, Size.VERY_SMALL, Weight.MEDIUM);
         add("salads", TFCTags.Items.SALADS, Size.VERY_SMALL, Weight.MEDIUM);
         add("bloomery", TFCBlocks.BLOOMERY, Size.LARGE, Weight.VERY_HEAVY);
-        add("small_tools", CompoundIngredient.of(
+        add("small_tools", ingredientOf(
             Ingredient.of(TFCTags.Items.TOOLS_CHISEL),
             Ingredient.of(TFCTags.Items.TOOLS_KNIFE),
             Ingredient.of(Tags.Items.TOOLS_SHEAR),
             Ingredient.of(TFCTags.Items.TOOLS_GLASSWORKING),
             Ingredient.of(TFCTags.Items.TOOLS_BLOWPIPE)
         ), Size.LARGE, Weight.MEDIUM);
-        add("tools", CompoundIngredient.of(
+        add("tools", ingredientOf(
             Ingredient.of(Tags.Items.TOOLS_FISHING_ROD),
             Ingredient.of(Tags.Items.MINING_TOOL_TOOLS),
             Ingredient.of(Tags.Items.MELEE_WEAPON_TOOLS),
@@ -97,7 +103,6 @@ public class BuiltinItemSizes extends DataManagerProvider<ItemSizeDefinition> im
         add("plants", TFCTags.Items.PLANTS, Size.TINY, Weight.VERY_LIGHT);
         add("sluices", TFCTags.Items.SLUICES, Size.VERY_LARGE, Weight.VERY_HEAVY);
         add("lamps", TFCTags.Items.LAMPS, Size.NORMAL, Weight.MEDIUM);
-        add("buckets", Tags.Items.BUCKETS, Size.LARGE, Weight.MEDIUM);
         add("anvils", TFCTags.Items.ANVILS, Size.HUGE, Weight.VERY_HEAVY);
         add("minecarts", TFCTags.Items.MINECARTS, Size.VERY_LARGE, Weight.VERY_HEAVY);
         add("looms", TFCTags.Items.LOOMS, Size.LARGE, Weight.VERY_HEAVY);

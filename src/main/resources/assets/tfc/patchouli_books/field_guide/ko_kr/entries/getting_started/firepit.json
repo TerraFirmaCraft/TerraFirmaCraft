@@ -57,7 +57,7 @@
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/cod",
+      "recipe": "tfc:heating/food/cooked_cod",
       "text": "모닥불은 $(thing)음식을 요리$()하기도 좋습니다. 모든 날고기와 반죽들은 모닥불에서 익힐 수 있고, 익히면 상하기까지 남은 기간이 늘어납니다. (자세한 내용은 $(l:mechanics/decay)여기$()에서 확인하실 수 있습니다.)"
     },
     {

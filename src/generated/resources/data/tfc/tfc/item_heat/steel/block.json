@@ -3,7 +3,7 @@
   "heat_capacity": 2.857143,
   "ingredient": [
     {
-      "item": "tfc:metal/block/steel"
+      "tag": "c:storage_blocks/steel"
     },
     {
       "item": "tfc:metal/exposed_block/steel"

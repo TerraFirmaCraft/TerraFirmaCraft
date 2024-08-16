@@ -57,7 +57,7 @@
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/cod",
+      "recipe": "tfc:heating/food/cooked_cod",
       "text": "Кострище также хорошо подходит для $(thing)приготовления пищи$(). Все сырые мяса и тесто можно готовить в кострище, что увеличит их срок годности. (Подробнее об этом $(l:mechanics/decay)здесь$())"
     },
     {

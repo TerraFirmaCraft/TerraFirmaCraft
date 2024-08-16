@@ -57,7 +57,7 @@
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/cod",
+      "recipe": "tfc:heating/food/cooked_cod",
       "text": "篝火还可以用来$(thing)加热食物$()。生肉和面团之类的东西都可以在篝火中烧制以延长其保质期。有关保质期的知识请参考$(l:mechanics/decay)这一章节$()。"
     },
     {

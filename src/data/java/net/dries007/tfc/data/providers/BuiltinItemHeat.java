@@ -60,11 +60,11 @@ public class BuiltinItemHeat extends DataManagerProvider<HeatDefinition> impleme
         TFCBlocks.METALS.forEach((metal, blocks) -> {
             if (metal.weatheredParts())
             {
-                add(metal, "block", Ingredient.of(
-                    blocks.get(Metal.BlockType.BLOCK),
-                    blocks.get(Metal.BlockType.EXPOSED_BLOCK),
-                    blocks.get(Metal.BlockType.WEATHERED_BLOCK),
-                    blocks.get(Metal.BlockType.OXIDIZED_BLOCK)
+                add(metal, "block", ingredientOf(
+                    ingredientOf(metal, Metal.BlockType.BLOCK),
+                    Ingredient.of(blocks.get(Metal.BlockType.EXPOSED_BLOCK)),
+                    Ingredient.of(blocks.get(Metal.BlockType.WEATHERED_BLOCK)),
+                    Ingredient.of(blocks.get(Metal.BlockType.OXIDIZED_BLOCK))
                 ), units(Metal.BlockType.BLOCK));
                 add(metal, "block_slab", Ingredient.of(
                     blocks.get(Metal.BlockType.BLOCK_SLAB),
@@ -148,7 +148,7 @@ public class BuiltinItemHeat extends DataManagerProvider<HeatDefinition> impleme
         add(TFCTags.Items.UNFIRED_MOLDS, 1.5f);
         add(Items.CLAY, 0.5f);
         add(TFCItems.KAOLIN_CLAY, 2.0f);
-        add(CompoundIngredient.of(
+        add(ingredientOf(
             Ingredient.of(Items.TERRACOTTA),
             Ingredient.of(Items.WHITE_TERRACOTTA),
             Ingredient.of(TFCTags.Items.COLORED_TERRACOTTA)

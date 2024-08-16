@@ -7,6 +7,7 @@
 package net.dries007.tfc.data.providers;
 
 import java.lang.reflect.Field;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -413,6 +414,10 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             Items.WRITTEN_BOOK,
             Items.KNOWLEDGE_BOOK);
         tag(ORE_DEPOSITS).addAll(TFCBlocks.ORE_DEPOSITS);
+        final var tannin = EnumSet.of(Wood.BIRCH, Wood.CHESTNUT, Wood.DOUGLAS_FIR, Wood.HICKORY, Wood.MAPLE, Wood.OAK, Wood.SEQUOIA);
+        tag(TANNIN_LOGS)
+            .addOnly(pivot(TFCBlocks.WOODS, Wood.BlockType.LOG), tannin::contains)
+            .addOnly(pivot(TFCBlocks.WOODS, Wood.BlockType.WOOD), tannin::contains);
 
         tag(FIREPIT_KINDLING)
             .addTags(ItemTags.LEAVES, BOOKS)
@@ -558,7 +563,10 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
 
         copy(TFCTags.Blocks.ANVILS, ANVILS);
         copy(TFCTags.Blocks.WORKBENCHES, WORKBENCHES);
+        copy(TFCTags.Blocks.AQUEDUCTS, AQUEDUCTS);
+
         copy(TFCTags.Blocks.FALLEN_LEAVES, FALLEN_LEAVES);
+        copy(TFCTags.Blocks.CLAY_INDICATORS, CLAY_INDICATORS);
     }
 
     @Override

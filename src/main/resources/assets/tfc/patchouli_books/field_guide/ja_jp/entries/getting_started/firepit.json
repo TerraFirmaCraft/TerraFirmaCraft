@@ -57,7 +57,7 @@
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/cod",
+      "recipe": "tfc:heating/food/cooked_cod",
       "text": "焚き火は$(thing)料理$()にも最適です。 生の肉や生地などは焚き火で調理でき、保存性や腹持ちがよくなります。 (詳しくは $(l:mechanics/decay)こちら$())"
     },
     {

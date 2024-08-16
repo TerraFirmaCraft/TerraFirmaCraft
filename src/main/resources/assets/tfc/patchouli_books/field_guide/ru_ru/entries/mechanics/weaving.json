@@ -10,7 +10,7 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/spindle_head",
+      "recipe": "tfc:knapping/unfired_spindle_head",
       "text": "$(thing)Необожженная головка веретена$() высекается из глины. Затем ее можно $(l:mechanics/heating)обжечь$(), чтобы сделать $(thing)Головку веретена$(). Чтобы завершить веретено, соберите его с $(thing)Палкой$()."
     },
     {
@@ -20,7 +20,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/wood/acacia_loom",
+      "recipe": "tfc:crafting/wood/loom/acacia",
       "text": "Ткацкий станок изготавливается из $(thing)Пиломатериалов$() и $(thing)Палки$()."
     },
     {
@@ -42,7 +42,7 @@
     },
     {
       "type": "tfc:loom_recipe",
-      "recipe": "tfc:loom/wool_block",
+      "recipe": "tfc:loom/white_wool",
       "text": "$(thing)Шерстяную ткань$() можно переткать в $(thing)Шерстяные блоки$(). Шерстяные блоки можно $(l:mechanics/dye)окрасить$()."
     },
     {
@@ -58,8 +58,8 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/vanilla/color/light_blue_bed",
-      "recipe2": "tfc:crafting/vanilla/painting"
+      "recipe": "minecraft:light_blue_bed",
+      "recipe2": "minecraft:painting"
     }
   ],
   "read_by_default": true,

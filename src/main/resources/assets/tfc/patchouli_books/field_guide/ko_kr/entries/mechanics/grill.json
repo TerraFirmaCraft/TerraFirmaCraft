@@ -29,7 +29,7 @@
     },
     {
       "type": "tfc:anvil_recipe",
-      "recipe": "tfc:anvil/wrought_iron_grill",
+      "recipe": "tfc:anvil/grill",
       "text": "석쇠는 $(l:mechanics/anvils)모루$()에서 $(thing)연철 합판$()을 단조하여 만들 수 있습니다.$(br2)다음 페이지에는 석쇠의 인터페이스가 있습니다. 모닥불과 마찬가지로 맨 위 칸에 연료를 넣는 4개의 연료 슬롯과 온도 게이지가 있고, 모닥불과 달리 1개가 아닌 5개의 가열되는 아이템 슬롯이 있습니다."
     },
     {

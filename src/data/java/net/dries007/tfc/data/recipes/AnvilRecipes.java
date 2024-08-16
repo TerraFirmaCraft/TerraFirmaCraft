@@ -65,7 +65,7 @@ public interface AnvilRecipes extends Recipes
                 anvil(metal, ItemType.INGOT, ItemType.UNFINISHED_LAMP, false, BEND_LAST, BEND_SECOND_LAST, DRAW_THIRD_LAST);
                 anvil(metal, ItemType.INGOT, BlockType.CHAIN, 16, HIT_ANY, DRAW_THIRD_LAST);
                 anvil(metal, ItemType.SHEET, BlockType.BARS, 8, UPSET_LAST, PUNCH_SECOND_LAST, PUNCH_THIRD_LAST);
-                add("metal/bars/" + metal.name() + "_double", new AnvilRecipe(
+                add("metal/bars/" + metal.getSerializedName() + "_double", new AnvilRecipe(
                     ingredientOf(metal, ItemType.DOUBLE_SHEET),
                     metal.tier(), List.of(UPSET_LAST, PUNCH_SECOND_LAST, PUNCH_THIRD_LAST), false,
                     ItemStackProvider.of(TFCBlocks.METALS.get(metal).get(BlockType.BARS), 16)));

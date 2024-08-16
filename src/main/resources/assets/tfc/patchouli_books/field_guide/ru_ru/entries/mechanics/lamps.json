@@ -39,7 +39,7 @@
     {
       "type": "tfc:quern_recipe",
       "anchor": "olives",
-      "recipe": "tfc:quern/olive",
+      "recipe": "tfc:quern/olive_paste",
       "text": "Одним из видов топлива для ламп является $(thing)Оливковое масло$(). Первым шагом в его производстве является изготовление оливковой пасты."
     },
     {
@@ -77,7 +77,7 @@
     },
     {
       "type": "tfc:anvil_recipe",
-      "recipe": "tfc:anvil/black_steel_chain",
+      "recipe": "tfc:anvil/metal/chain/black_steel",
       "text": "$(thing)Цепи$() - отличный способ повесить ваши лампы, и их можно ковать на $(l:mechanics/anvils)Наковальне$()."
     }
   ],

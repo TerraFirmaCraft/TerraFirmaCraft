@@ -134,6 +134,5 @@
   "output_fluid": {
     "amount": 1000,
     "id": "tfc:tannin"
-  },
-  "tooltip": ""
+  }
 }

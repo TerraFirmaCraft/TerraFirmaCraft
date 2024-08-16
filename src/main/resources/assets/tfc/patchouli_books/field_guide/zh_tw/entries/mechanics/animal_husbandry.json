@@ -72,13 +72,13 @@
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/cooked_egg",
+      "recipe": "tfc:heating/food/cooked_egg",
       "text": "$(thing)蛋$()可以煎來吃或煮來吃。雄性動物可以讓雌性受精，使其產下的下一枚卵變為受精卵。受精卵會在其工具提示裡顯示它們還需要多久才能孵化。"
     },
     {
       "type": "tfc:knapping_recipe",
       "anchor": "horses",
-      "recipe": "tfc:leather_knapping/saddle",
+      "recipe": "tfc:knapping/saddle",
       "text": "$(thing)騎乘動物$()是$(l:mechanics/animal_husbandry#mammals)哺乳動物$()的一種，可以在親密度到達 15% 之後騎乘。"
     },
     {

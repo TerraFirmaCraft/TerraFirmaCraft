@@ -55,8 +55,7 @@ public class BarrelRecipe implements INoopInputRecipe, IRecipePredicate<BarrelIn
         SizedFluidIngredient.FLAT_CODEC.fieldOf("input_fluid").forGetter(c -> c.inputFluid),
         ItemStackProvider.CODEC.optionalFieldOf("output_item", ItemStackProvider.empty()).forGetter(c -> c.outputItem),
         FluidStack.CODEC.optionalFieldOf("output_fluid", FluidStack.EMPTY).forGetter(c -> c.outputFluid),
-        SoundEvent.CODEC.optionalFieldOf("sound", Holder.direct(SoundEvents.BREWING_STAND_BREW)).forGetter(c -> c.sound),
-        Codec.STRING.fieldOf("tooltip").forGetter(c -> c.tooltip)
+        SoundEvent.CODEC.optionalFieldOf("sound", Holder.direct(SoundEvents.BREWING_STAND_BREW)).forGetter(c -> c.sound)
     ).apply(i, BarrelRecipe::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, BarrelRecipe> STREAM_CODEC = StreamCodec.composite(
@@ -65,7 +64,6 @@ public class BarrelRecipe implements INoopInputRecipe, IRecipePredicate<BarrelIn
         ItemStackProvider.STREAM_CODEC, c -> c.outputItem,
         FluidStack.OPTIONAL_STREAM_CODEC, c -> c.outputFluid,
         ByteBufCodecs.holderRegistry(Registries.SOUND_EVENT), c -> c.sound,
-        ByteBufCodecs.STRING_UTF8, c -> c.tooltip,
         BarrelRecipe::new
     );
 
@@ -80,21 +78,19 @@ public class BarrelRecipe implements INoopInputRecipe, IRecipePredicate<BarrelIn
     protected final ItemStackProvider outputItem;
     protected final FluidStack outputFluid;
     protected final Holder<SoundEvent> sound;
-    protected final String tooltip;
 
     protected BarrelRecipe(BarrelRecipe parent)
     {
-        this(parent.inputItem, parent.inputFluid, parent.outputItem, parent.outputFluid, parent.sound, parent.tooltip);
+        this(parent.inputItem, parent.inputFluid, parent.outputItem, parent.outputFluid, parent.sound);
     }
 
-    protected BarrelRecipe(Optional<SizedIngredient> inputItem, SizedFluidIngredient inputFluid, ItemStackProvider outputItem, FluidStack outputFluid, Holder<SoundEvent> sound, String tooltip)
+    protected BarrelRecipe(Optional<SizedIngredient> inputItem, SizedFluidIngredient inputFluid, ItemStackProvider outputItem, FluidStack outputFluid, Holder<SoundEvent> sound)
     {
         this.inputItem = inputItem;
         this.inputFluid = inputFluid;
         this.outputItem = outputItem;
         this.outputFluid = outputFluid;
         this.sound = sound;
-        this.tooltip = tooltip;
     }
 
     public boolean matches(BarrelInventory input)
@@ -225,11 +221,6 @@ public class BarrelRecipe implements INoopInputRecipe, IRecipePredicate<BarrelIn
         return sound.value();
     }
 
-    public MutableComponent getTranslationComponent()
-    {
-        return Component.translatable("tfc.recipe.barrel." + tooltip);
-    }
-
     /**
      * A builder capable of building all types of barrel recipes currently implemented by TFC
      */
@@ -241,7 +232,6 @@ public class BarrelRecipe implements INoopInputRecipe, IRecipePredicate<BarrelIn
         private ItemStackProvider outputItem = ItemStackProvider.empty();
         private FluidStack outputFluid = FluidStack.EMPTY;
         private Holder<SoundEvent> sound = Holder.direct(SoundEvents.BREWING_STAND_BREW);
-        private String tooltip = ""; // todo: see if this is actually necessary
 
         public Builder(Consumer<BarrelRecipe> onFinish)
         {
@@ -293,7 +283,7 @@ public class BarrelRecipe implements INoopInputRecipe, IRecipePredicate<BarrelIn
         public void instantOnAdd(Fluid fluid) { instantOnAdd(SizedFluidIngredient.of(fluid, 1)); }
         public void instantOnAdd(SizedFluidIngredient addedFluid)
         {
-            onFinish.accept(new InstantFluidBarrelRecipe(Objects.requireNonNull(inputFluid, "Missing input fluid"), addedFluid, outputFluid, sound, tooltip));
+            onFinish.accept(new InstantFluidBarrelRecipe(Objects.requireNonNull(inputFluid, "Missing input fluid"), addedFluid, outputFluid, sound));
         }
 
         public void sealed(int duration)
@@ -308,7 +298,7 @@ public class BarrelRecipe implements INoopInputRecipe, IRecipePredicate<BarrelIn
 
         private BarrelRecipe parent()
         {
-            return new BarrelRecipe(inputItem, Objects.requireNonNull(inputFluid, "Missing input fluid"), outputItem, outputFluid, sound, tooltip);
+            return new BarrelRecipe(inputItem, Objects.requireNonNull(inputFluid, "Missing input fluid"), outputItem, outputFluid, sound);
         }
     }
 }

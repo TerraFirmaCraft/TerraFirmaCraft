@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/rock/shale_aqueduct",
+      "recipe": "tfc:crafting/rock/aqueduct/shale",
       "text": "Один блок акведука можно изготовить из некоторого количества $(l:mechanics/advanced_building_materials#bricks_and_mortar)Кирпича и раствора$()."
     },
     {
@@ -58,6 +58,6 @@
   ],
   "read_by_default": true,
   "extra_recipe_mappings": {
-    "tag:tfc:rock/aqueducts": 0
+    "tag:tfc:aqueducts": 0
   }
 }

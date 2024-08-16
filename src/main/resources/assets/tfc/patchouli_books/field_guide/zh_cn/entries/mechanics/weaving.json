@@ -10,7 +10,7 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/spindle_head",
+      "recipe": "tfc:knapping/unfired_spindle_head",
       "text": "$(thing)纺锤头$()可以通过粘土塑形来制作。先将粘土如图捏成$(thing)未烧制的纺锤头$()$，然后在将其$(l:mechanics/heating)加热$()即可。将纺锤头与$(thing)木棍$()合成便能做出纺锤了"
     },
     {
@@ -20,7 +20,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/wood/acacia_loom",
+      "recipe": "tfc:crafting/wood/loom/acacia",
       "text": "可以用$(thing)木材$()和$(thing)木棍$()制作织机。"
     },
     {
@@ -42,7 +42,7 @@
     },
     {
       "type": "tfc:loom_recipe",
-      "recipe": "tfc:loom/wool_block",
+      "recipe": "tfc:loom/white_wool",
       "text": "$(thing)Wool Cloth$() can be re-woven into $(thing)Wool Blocks$(). Wool blocks can be $(l:mechanics/dye)dyed$()."
     },
     {
@@ -58,8 +58,8 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/vanilla/color/light_blue_bed",
-      "recipe2": "tfc:crafting/vanilla/painting"
+      "recipe": "minecraft:light_blue_bed",
+      "recipe2": "minecraft:painting"
     }
   ],
   "read_by_default": true,

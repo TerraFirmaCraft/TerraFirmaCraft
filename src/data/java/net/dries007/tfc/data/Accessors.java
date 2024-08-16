@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.data;
 
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
 import com.google.common.collect.ImmutableMap;
@@ -21,6 +22,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
@@ -42,6 +44,7 @@ import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.util.data.FluidHeat;
 
 public interface Accessors
 {
@@ -57,6 +60,11 @@ public interface Accessors
         return type == Metal.BlockType.BLOCK
             ? Ingredient.of(storageBlockTagOf(Registries.ITEM, metal))
             : Ingredient.of(TFCBlocks.METALS.get(metal).get(type).get());
+    }
+
+    default Ingredient ingredientOf(Ingredient... values)
+    {
+        return CompoundIngredient.of(values);
     }
 
     default <T> TagKey<T> logsTagOf(ResourceKey<Registry<T>> registry, Wood wood)
@@ -166,6 +174,11 @@ public interface Accessors
             case CHAIN -> 6;
             case TRAPDOOR -> 200;
         };
+    }
+
+    default float temperatureOf(Metal metal)
+    {
+        return FluidHeat.MANAGER.getOrThrow(Helpers.identifier(metal.getSerializedName())).meltTemperature();
     }
 
     default int hours(int hours)
