@@ -123,18 +123,18 @@ def resources_at(
     test_rm: ResourceManager
 ) -> set[str]:
     # Do lang keys first, because it's ordered intentionally
-    rm.lang(constants.DEFAULT_LANG)
-    vanilla_rm.lang(constants.VANILLA_OVERRIDE_LANG)
-
-    data.generate(rm)
-    assets.generate(rm)
+    # rm.lang(constants.DEFAULT_LANG)
+    # vanilla_rm.lang(constants.VANILLA_OVERRIDE_LANG)
+    #
+    # data.generate(rm)
+    # assets.generate(rm)
     world_gen.generate(rm)
-    advancements.generate(rm)
-    emi_integration.generate(rm)
+    # advancements.generate(rm)
+    # emi_integration.generate(rm)
 
     # Tags should be done exclusively via code datagen, but notably right now we're missing world gen datagen
-    validate_no_tags(rm)
-    validate_no_tags(vanilla_rm)
+    # validate_no_tags(rm)
+    # validate_no_tags(vanilla_rm)
 
     # Flush
     rm.flush()
