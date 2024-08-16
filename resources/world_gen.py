@@ -781,7 +781,7 @@ def generate(rm: ResourceManager):
         'noise_factor': 80.0,
         'noise_offset': 0.3
     }), decorate_square(), decorate_heightmap('world_surface_wg'))
-    configured_placed_feature(rm, 'bamboo', 'tfc:bamboo', {'probability': 0.18}, decorate_chance(3), decorate_climate(18, 28, 350, 500, fuzzy=True, min_forest='edge', max_forest='edge'), ('minecraft:noise_based_count', {
+    configured_placed_feature(rm, 'bamboo', 'tfc:bamboo', {'probability': 0.9}, decorate_chance(3), decorate_climate_forest_list(0, 28, 350, 500, fuzzy=True, forest_types=['dead_bamboo', 'edge_bamboo', 'secondary_bamboo']), ('minecraft:noise_based_count', {
         'noise_to_count_ratio': 160,
         'noise_factor': 80.0,
         'noise_offset': 0.3
@@ -1261,6 +1261,17 @@ def decorate_climate(min_temp: Optional[float] = None, max_temp: Optional[float]
         'max_rainfall': max_rain,
         'min_forest': 3 if needs_forest else minf,
         'max_forest': maxf,
+        'fuzzy': fuzzy
+    }
+
+def decorate_climate_forest_list(min_temp: Optional[float] = None, max_temp: Optional[float] = None, min_rain: Optional[float] = None, max_rain: Optional[float] = None, fuzzy: Optional[bool] = None, forest_types: Optional[List[str]] = None) -> Json:
+    return {
+        'type': 'tfc:climate',
+        'min_temperature': min_temp,
+        'max_temperature': max_temp,
+        'min_rainfall': min_rain,
+        'max_rainfall': max_rain,
+        'forest_types': forest_types,
         'fuzzy': fuzzy
     }
 

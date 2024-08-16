@@ -1,31 +1,23 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "feature": "tfc:plant/dry_phragmite",
+  "feature": "tfc:plant/arundo",
   "placement": [
     {
-      "type": "minecraft:height_range",
-      "height": {
-        "type": "uniform",
-        "min_inclusive": {
-          "absolute": 62
-        },
-        "max_inclusive": {
-          "absolute": 66
-        }
-      }
+      "type": "minecraft:heightmap",
+      "heightmap": "WORLD_SURFACE_WG"
     },
-	{
+    {
       "type": "minecraft:count",
-      "count": 5
+      "count": 2
     },
     {
       "type": "minecraft:in_square"
     },
     {
       "type": "tfc:climate",
-      "min_temperature": -7.4,
-      "max_temperature": 27.6,
-      "min_rainfall": 100,
+      "min_temperature": 6,
+      "max_temperature": 19.6,
+      "min_rainfall": 150,
       "max_rainfall": 370,
       "forest_types": [
           "secondary_bamboo",
@@ -36,7 +28,7 @@
     {
       "type": "block_predicate_filter",
       "predicate": {
-        "type": "tfc:dry_replaceable"
+        "type": "tfc:air_or_empty_fluid"
       }
     }
   ]

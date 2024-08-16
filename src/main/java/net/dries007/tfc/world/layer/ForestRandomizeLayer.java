@@ -56,6 +56,10 @@ public enum ForestRandomizeLayer implements CenterTransformLayer
         else if (current.isPrimary() || current.isSecondary())
         {
             final int random = source.nextInt(24);
+            if (random == 0)
+            {
+                return ForestType.SECONDARY_BAMBOO.ordinal();
+            }
             if (random == 1 && !current.isSecondary())
             {
                 return ForestType.getSavannaForestType(source);

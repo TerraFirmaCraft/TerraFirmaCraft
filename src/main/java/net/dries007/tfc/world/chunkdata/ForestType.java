@@ -35,7 +35,7 @@ public enum ForestType implements StringRepresentable
     SECONDARY_MONOCULTURE(ForestSubType.SECONDARY, 3, value(5), value(25), zero(), range(1, 2), 1, 1, 0),
     SECONDARY_MONOCULTURE_TALL(ForestSubType.SECONDARY, 3, value(5), value(25), zero(), range(1, 2), 1, 1, 0),
     SECONDARY_DIVERSE(ForestSubType.SECONDARY, 3, value(5), value(25), zero(), range(1, 2), 2, 1, 0),
-    SECONDARY_BAMBOO(ForestSubType.SECONDARY, 3, value(1), value(25), range(0, 1), range(0, 1), 2, 1, 0),
+    SECONDARY_BAMBOO(ForestSubType.SECONDARY, 3, value(1), value(25), range(0, 1), range(0, 1), 2, 0.3f, 0),
     SECONDARY_DIVERSE_TALL(ForestSubType.SECONDARY, 3, value(5), value(25), zero(), range(1, 2), 2, 1, 0),
     SECONDARY_DENSE(ForestSubType.SECONDARY, 4, value(7), value(40), range(0, 1), value(3), 2, 1, 0),
     SECONDARY_DENSE_TALL(ForestSubType.SECONDARY, 4, value(7), value(40), range(0, 1), value(3), 2, 1, 0),
@@ -43,11 +43,11 @@ public enum ForestType implements StringRepresentable
     EDGE_MONOCULTURE(ForestSubType.EDGE, 2, value(2), value(10), range(0, 1), range(0, 1), 1, 1, 0),
     EDGE_DIVERSE(ForestSubType.EDGE, 2, value(2), value(10), range(0, 1), range(0, 1), 2, 1, 0),
     EDGE_ALTERNATE(ForestSubType.EDGE, 2, value(2), value(10), range(0, 1), range(0, 1), 3, 1, 2),
-    EDGE_BAMBOO(ForestSubType.EDGE, 2, value(2), value(10), range(0, 1), range(0, 1), 1, 1, 0),
+    EDGE_BAMBOO(ForestSubType.EDGE, 2, value(1), value(10), range(0, 1), range(0, 1), 1, 0.7f, 0),
     DEAD_MONOCULTURE(ForestSubType.DEAD, 3, value(5), value(25), zero(), range(2, 4), 1, 1, 0),
     DEAD_DIVERSE(ForestSubType.DEAD, 3, value(5), value(25), zero(), range(2, 4), 2, 1, 0),
-    DEAD_ALTERNATE(ForestSubType.DEAD, 4, value(7), value(40), range(0, 1), range(0, 3), 3, 1, 2),
-    DEAD_BAMBOO(ForestSubType.DEAD, 3, value(5), value(25), range(0, 1), range(2, 4), 2, 1, 0),
+    DEAD_ALTERNATE(ForestSubType.DEAD, 4, value(4), value(40), range(0, 1), range(0, 3), 3, 1, 2),
+    DEAD_BAMBOO(ForestSubType.DEAD, 3, value(4), value(25), range(0, 1), range(2, 4), 2, 1, 0),
     ;
 
     public static final Codec<ForestType> CODEC = StringRepresentable.fromEnum(ForestType::values);
@@ -58,7 +58,6 @@ public enum ForestType implements StringRepresentable
     private static final List<ForestType> PRIMARY_FORESTS = List.of(PRIMARY_DIVERSE, PRIMARY_MONOCULTURE);
     private static final List<ForestType> DEAD_FORESTS = List.of(DEAD_MONOCULTURE, DEAD_DIVERSE, DEAD_ALTERNATE, DEAD_BAMBOO);
     private static final List<ForestType> SAVANNA_FORESTS = List.of(SAVANNA_MONOCULTURE, SAVANNA_ALTERNATE, SAVANNA_DIVERSE, SAVANNA_SHRUB_MONOCULTURE, SAVANNA_SHRUB_ALTERNATE, SAVANNA_SHRUB_DIVERSE);
-    private static final List<ForestType> BAMBOO_FORESTS = List.of(SECONDARY_BAMBOO, EDGE_BAMBOO, DEAD_BAMBOO);
     public static int getEdgeForestType(RandomSource random) { return EDGE_DENSITY.get(random.nextInt(EDGE_DENSITY.size())).ordinal(); }
     public static int getSecondaryForestType(RandomSource random) { return SECONDARY_FORESTS.get(random.nextInt(SECONDARY_FORESTS.size())).ordinal(); }
     public static int getPrimaryForestType(RandomSource random) { return PRIMARY_FORESTS.get(random.nextInt(PRIMARY_FORESTS.size())).ordinal(); }
@@ -209,11 +208,6 @@ public enum ForestType implements StringRepresentable
     public int getAlternateSize()
     {
         return alternateSize;
-    }
-
-    public static List<ForestType> getBambooForests()
-    {
-        return BAMBOO_FORESTS;
     }
 
     public enum ForestSubType

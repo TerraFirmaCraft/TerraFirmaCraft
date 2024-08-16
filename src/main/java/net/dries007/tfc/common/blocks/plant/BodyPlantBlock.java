@@ -27,6 +27,7 @@ import net.dries007.tfc.util.Helpers;
 
 public class BodyPlantBlock extends GrowingPlantBodyBlock implements IForgeBlockExtension
 {
+
     public static final VoxelShape BODY_SHAPE = box(1.0D, 0.0D, 1.0D, 15.0D, 16.0D, 15.0D);
     public static final VoxelShape THIN_BODY_SHAPE = box(5.0D, 0.0D, 5.0D, 11.0D, 16.0D, 11.0D);
     public static final VoxelShape WEEPING_SHAPE = box(4.0D, 9.0D, 4.0D, 12.0D, 16.0D, 12.0D);
@@ -38,7 +39,7 @@ public class BodyPlantBlock extends GrowingPlantBodyBlock implements IForgeBlock
 
     public BodyPlantBlock(ExtendedProperties properties, Supplier<? extends Block> headBlock, VoxelShape shape, Direction direction)
     {
-        super(properties.properties(), direction, shape, true);
+        super(properties.properties().dynamicShape().offsetType(OffsetType.XZ), direction, shape, true);
         this.headBlock = headBlock;
         this.properties = properties;
     }
