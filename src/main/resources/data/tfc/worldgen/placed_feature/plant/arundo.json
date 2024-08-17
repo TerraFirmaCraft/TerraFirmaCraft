@@ -18,7 +18,7 @@
       "min_temperature": 2.5,
       "max_temperature": 19.6,
       "min_rainfall": 150,
-      "max_rainfall": 500
+      "max_rainfall": 400
     },
     {
       "type": "tfc:near_fluid",

@@ -4,18 +4,19 @@
   "placement": [
     {
       "type": "minecraft:count",
-      "count": 8
+      "count": 6
     },
     {
       "type": "tfc:climate",
-      "min_temperature": 18,
+      "min_temperature": 14,
+      "max_temperature": 40,
       "min_rainfall": 320,
       "max_rainfall": 500,
       "forest_types": [
-          "secondary_bamboo",
-          "edge_bamboo",
-          "dead_bamboo"
-        ],
+        "dead_bamboo",
+        "edge_bamboo",
+        "secondary_bamboo"
+      ],
       "fuzzy": true
     },
     {

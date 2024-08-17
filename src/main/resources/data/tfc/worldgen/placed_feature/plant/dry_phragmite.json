@@ -28,10 +28,10 @@
       "min_rainfall": 100,
       "max_rainfall": 370,
       "forest_types": [
-          "secondary_bamboo",
-          "edge_bamboo",
-          "dead_bamboo"
-        ]
+        "dead_bamboo",
+        "edge_bamboo",
+        "secondary_bamboo"
+      ]
     },
     {
       "type": "block_predicate_filter",

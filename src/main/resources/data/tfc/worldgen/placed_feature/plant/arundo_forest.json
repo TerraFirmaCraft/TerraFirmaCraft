@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "feature": "tfc:plant/arundo",
+  "feature": "tfc:plant/arundo_forest",
   "placement": [
     {
       "type": "minecraft:heightmap",
@@ -17,13 +17,13 @@
       "type": "tfc:climate",
       "min_temperature": 6,
       "max_temperature": 19.6,
-      "min_rainfall": 150,
+      "min_rainfall": 220,
       "max_rainfall": 370,
       "forest_types": [
-          "secondary_bamboo",
-          "edge_bamboo",
-          "dead_bamboo"
-        ]
+        "dead_bamboo",
+        "edge_bamboo",
+        "secondary_bamboo"
+      ]
     },
     {
       "type": "block_predicate_filter",
