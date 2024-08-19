@@ -39,7 +39,6 @@ def generate(rm: ResourceManager):
         '#tfc:feature/crops',
         '#tfc:feature/forest_plants',
         'tfc:plant/arundo_forest',
-        'tfc:plant/dry_phragmite_forest',
         'tfc:surface_grasses',  # Special, because it uses noise to select which to place
         *['tfc:plant/%s_patch' % plant for plant, data in PLANTS.items() if data.type not in OCEAN_PLANT_TYPES and not data.clay and data.worldgen],
         '#tfc:feature/berry_bushes',
