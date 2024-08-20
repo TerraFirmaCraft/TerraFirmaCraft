@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.drawing;
+package net.dries007.tfc.test.drawing;
 
 import java.awt.Color;
 import java.util.EnumSet;
@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import net.dries007.tfc.Artist;
+import net.dries007.tfc.test.TestSetup;
 import net.dries007.tfc.world.region.ChooseRocks;
 import net.dries007.tfc.world.region.Region;
 import net.dries007.tfc.world.region.RegionGenerator;
@@ -34,7 +34,7 @@ import static net.dries007.tfc.world.region.RegionGenerator.Task.*;
 
 @Disabled
 @SuppressWarnings("SameParameterValue")
-public class RegionGeneratorTest extends TestHelper
+public class RegionGeneratorTests implements TestSetup
 {
     final DoubleFunction<Color> blue = Artist.Colors.linearGradient(
         new Color(50, 50, 150),
