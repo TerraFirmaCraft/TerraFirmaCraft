@@ -674,8 +674,8 @@ def generate(rm: ResourceManager):
     configured_placed_feature(rm, ('plant', 'liana'), 'tfc:weeping_vines', tall_plant_config('tfc:plant/liana_plant', 'tfc:plant/liana', 40, 10, 8, 16), decorate_carving_mask(30, 100), decorate_chance(0.003), decorate_climate(13.6, 29.6, 150, 470, True, fuzzy=True))
     configured_placed_feature(rm, ('plant', 'tree_fern'), 'tfc:twisting_vines', tall_plant_config('tfc:plant/tree_fern_plant', 'tfc:plant/tree_fern', 8, 7, 2, 6), decorate_heightmap('world_surface_wg'), decorate_chance(5), decorate_square(), decorate_climate(16.6, 47.6, 300, 500), decorate_air_or_empty_fluid())
     configured_placed_feature(rm, ('plant', 'arundo'), 'tfc:twisting_vines', tall_plant_config('tfc:plant/arundo_plant', 'tfc:plant/arundo', 70, 7, 5, 8), decorate_heightmap('world_surface_wg'), decorate_chance(3), decorate_square(), decorate_climate(2.5, 19.6, 150, 400), decorate_near_water(radius=6), decorate_air_or_empty_fluid())
-    configured_placed_feature(rm, ('plant', 'arundo_forest'), 'tfc:twisting_vines', tall_plant_config('tfc:plant/arundo_plant', 'tfc:plant/arundo', 70, 7, 5, 8), decorate_heightmap('world_surface_wg'), decorate_count(2), decorate_square(), decorate_climate_forest_list(6, 19.6, 220, 370, forest_types=['dead_bamboo', 'edge_bamboo', 'secondary_bamboo']), decorate_air_or_empty_fluid())
-    configured_placed_feature(rm, ('plant', 'dry_phragmite'), 'tfc:twisting_vines', tall_plant_config('tfc:plant/dry_phragmite_plant', 'tfc:plant/dry_phragmite', 70, 7, 3, 5), decorate_range(62, 66), decorate_count(5), decorate_square(), decorate_climate_forest_list(-7.4, 27.6, 100, 370, forest_types=['dead_bamboo', 'edge_bamboo', 'secondary_bamboo']), decorate_dry_replaceable())
+    configured_placed_feature(rm, ('plant', 'arundo_forest'), 'tfc:twisting_vines', tall_plant_config('tfc:plant/arundo_plant', 'tfc:plant/arundo', 70, 7, 5, 8), decorate_heightmap('world_surface_wg'), decorate_count(2), decorate_square(), decorate_climate(6, 19.6, 220, 370, forest_types=['dead_bamboo', 'edge_bamboo', 'secondary_bamboo']), decorate_air_or_empty_fluid())
+    configured_placed_feature(rm, ('plant', 'dry_phragmite'), 'tfc:twisting_vines', tall_plant_config('tfc:plant/dry_phragmite_plant', 'tfc:plant/dry_phragmite', 70, 7, 3, 5), decorate_range(62, 66), decorate_count(5), decorate_square(), decorate_climate(-7.4, 27.6, 100, 370, forest_types=['dead_bamboo', 'edge_bamboo', 'secondary_bamboo']), decorate_dry_replaceable())
 
     configured_placed_feature(rm, ('plant', 'winged_kelp'), 'tfc:kelp', tall_plant_config('tfc:plant/winged_kelp_plant', 'tfc:plant/winged_kelp', 64, 12, 7, 14), decorate_heightmap('ocean_floor_wg'), decorate_square(), decorate_chance(2), decorate_climate(-17.4, 12.6, 0, 450, fuzzy=True), decorate_air_or_empty_fluid())
     configured_placed_feature(rm, ('plant', 'leafy_kelp'), 'tfc:kelp', tall_plant_config('tfc:plant/leafy_kelp_plant', 'tfc:plant/leafy_kelp', 64, 12, 7, 14), decorate_heightmap('ocean_floor_wg'), decorate_square(), decorate_chance(2), decorate_climate(-22.4, 17.6, 0, 500, fuzzy=True), decorate_air_or_empty_fluid())
@@ -783,7 +783,7 @@ def generate(rm: ResourceManager):
         'noise_factor': 80.0,
         'noise_offset': 0.3
     }), decorate_square(), decorate_heightmap('world_surface_wg'))
-    configured_placed_feature(rm, 'bamboo', 'tfc:bamboo', {'probability': 0.25}, decorate_count(6), decorate_climate_forest_list(14, 40, 320, 500, fuzzy=True, forest_types=['dead_bamboo', 'edge_bamboo', 'secondary_bamboo']), ('minecraft:noise_based_count', {
+    configured_placed_feature(rm, 'bamboo', 'tfc:bamboo', {'probability': 0.25}, decorate_count(6), decorate_climate(14, 40, 320, 500, fuzzy=True, forest_types=['dead_bamboo', 'edge_bamboo', 'secondary_bamboo']), ('minecraft:noise_based_count', {
         'noise_to_count_ratio': 160,
         'noise_factor': 80.0,
         'noise_offset': 0.3
@@ -1235,7 +1235,7 @@ def decorate_carving_mask(min_y: Optional[VerticalAnchor] = None, max_y: Optiona
     }
 
 
-def decorate_climate(min_temp: Optional[float] = None, max_temp: Optional[float] = None, min_rain: Optional[float] = None, max_rain: Optional[float] = None, needs_forest: Optional[bool] = False, fuzzy: Optional[bool] = None, min_forest: Optional[str] = None, max_forest: Optional[str] = None) -> Json:
+def decorate_climate(min_temp: Optional[float] = None, max_temp: Optional[float] = None, min_rain: Optional[float] = None, max_rain: Optional[float] = None, needs_forest: Optional[bool] = False, fuzzy: Optional[bool] = None, min_forest: Optional[str] = None, max_forest: Optional[str] = None, forest_types: Optional[List[str]] = None) -> Json:
     minf = None
     if min_forest == 'sparse':
         minf = 1
@@ -1263,16 +1263,6 @@ def decorate_climate(min_temp: Optional[float] = None, max_temp: Optional[float]
         'max_rainfall': max_rain,
         'min_forest': 3 if needs_forest else minf,
         'max_forest': maxf,
-        'fuzzy': fuzzy
-    }
-
-def decorate_climate_forest_list(min_temp: Optional[float] = None, max_temp: Optional[float] = None, min_rain: Optional[float] = None, max_rain: Optional[float] = None, fuzzy: Optional[bool] = None, forest_types: Optional[List[str]] = None) -> Json:
-    return {
-        'type': 'tfc:climate',
-        'min_temperature': min_temp,
-        'max_temperature': max_temp,
-        'min_rainfall': min_rain,
-        'max_rainfall': max_rain,
         'forest_types': forest_types,
         'fuzzy': fuzzy
     }
