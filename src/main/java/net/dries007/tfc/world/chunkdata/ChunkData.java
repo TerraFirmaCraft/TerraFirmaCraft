@@ -29,6 +29,7 @@ public class ChunkData
 
     private static final float UNKNOWN_RAINFALL = 250;
     private static final float UNKNOWN_TEMPERATURE = 10;
+    private static final float UNKNOWN_RAIN_VARIANCE = 0;
 
     /**
      * Accesses the chunk data from a given level, at a given position. This method <strong>may deadlock</strong> if called on a {@link ServerLevel}
@@ -97,6 +98,7 @@ public class ChunkData
 
     private final RockData rockData;
     @Nullable private LerpFloatLayer rainfallLayer;
+    @Nullable private LerpFloatLayer rainVarianceLayer;
     @Nullable private LerpFloatLayer temperatureLayer;
     private int @Nullable [] aquiferSurfaceHeight;
     private ForestType forestType;
@@ -144,6 +146,16 @@ public class ChunkData
         return rainfallLayer == null ? UNKNOWN_RAINFALL : rainfallLayer.getValue((x & 15) / 16f, (z & 15) / 16f);
     }
 
+    public float getRainVariance(BlockPos pos)
+    {
+        return getRainVariance(pos.getX(), pos.getZ());
+    }
+
+    public float getRainVariance(int x, int z)
+    {
+        return rainVarianceLayer == null ? UNKNOWN_RAIN_VARIANCE : rainVarianceLayer.getValue((x & 15) / 16f, (z & 15) / 16f);
+    }
+
     public float getAverageTemp(BlockPos pos)
     {
         return getAverageTemp(pos.getX(), pos.getZ());
@@ -167,11 +179,12 @@ public class ChunkData
     /**
      * Generate the chunk data from empty to {@link Status#PARTIAL}. Populated lazily on first creation, and guaranteed to be done by structure stage.
      */
-    public void generatePartial(LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer, ForestType forestType)
+    public void generatePartial(LerpFloatLayer rainfallLayer, LerpFloatLayer rainVarianceLayer, LerpFloatLayer temperatureLayer, ForestType forestType)
     {
         assert status == Status.EMPTY;
 
         this.rainfallLayer = rainfallLayer;
+        this.rainVarianceLayer = rainVarianceLayer;
         this.temperatureLayer = temperatureLayer;
         this.forestType = forestType;
         this.status = Status.PARTIAL;
@@ -195,19 +208,20 @@ public class ChunkData
     public ChunkWatchPacket getUpdatePacket()
     {
         assert status == Status.FULL;
-        assert rainfallLayer != null && temperatureLayer != null;
+        assert rainfallLayer != null && temperatureLayer != null && rainVarianceLayer != null;
 
-        return new ChunkWatchPacket(pos, rainfallLayer, temperatureLayer, forestType);
+        return new ChunkWatchPacket(pos, rainfallLayer, rainVarianceLayer, temperatureLayer, forestType);
     }
 
     /**
      * Called on client, sets to received data
      */
-    public void onUpdatePacket(LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer, ForestType forestType)
+    public void onUpdatePacket(LerpFloatLayer rainfallLayer, LerpFloatLayer rainVarianceLayer, LerpFloatLayer temperatureLayer, ForestType forestType)
     {
         assert status == Status.EMPTY || status == Status.CLIENT;
 
         this.rainfallLayer = rainfallLayer;
+        this.rainVarianceLayer = rainVarianceLayer;
         this.temperatureLayer = temperatureLayer;
         this.forestType = forestType;
         this.status = Status.CLIENT;
@@ -227,9 +241,11 @@ public class ChunkData
         if (status == Status.FULL || status == Status.PARTIAL)
         {
             assert rainfallLayer != null;
+            assert rainVarianceLayer != null;
             assert temperatureLayer != null;
 
             nbt.put("rainfall", rainfallLayer.write());
+            nbt.put("rainVariance", rainVarianceLayer.write());
             nbt.put("temperature", temperatureLayer.write());
             nbt.putByte("forestType", (byte) forestType.ordinal());
         }
@@ -249,6 +265,7 @@ public class ChunkData
         if (status == Status.FULL || status == Status.PARTIAL)
         {
             rainfallLayer = new LerpFloatLayer(nbt.getCompound("rainfall"));
+            rainVarianceLayer = new LerpFloatLayer(nbt.getCompound("rainVariance"));
             temperatureLayer = new LerpFloatLayer(nbt.getCompound("temperature"));
             forestType = ForestType.valueOf(nbt.getByte("forestType"));
         }
@@ -288,13 +305,13 @@ public class ChunkData
         }
 
         @Override
-        public void generatePartial(LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer, ForestType forestType) { error(); }
+        public void generatePartial(LerpFloatLayer rainfallLayer, LerpFloatLayer rainVarianceLayer, LerpFloatLayer temperatureLayer, ForestType forestType) { error(); }
 
         @Override
         public void generateFull(int[] surfaceHeight, int[] aquiferSurfaceHeight) { error(); }
 
         @Override
-        public void onUpdatePacket(LerpFloatLayer rainfallLayer, LerpFloatLayer temperatureLayer, ForestType forestType) { error(); }
+        public void onUpdatePacket(LerpFloatLayer rainfallLayer, LerpFloatLayer rainVarianceLayer, LerpFloatLayer temperatureLayer, ForestType forestType) { error(); }
 
         @Override
         public void deserializeNBT(CompoundTag nbt) { error(); }

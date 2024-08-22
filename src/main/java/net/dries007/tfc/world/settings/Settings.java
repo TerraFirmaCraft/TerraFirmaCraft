@@ -16,6 +16,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
  * @param temperatureScale Distance between temperature 'poles'. Default 20km
  * @param temperatureConstant If {@code temperatureScale} is equal to zero, then the constant between [-1, 1] temperature input value.
  * @param rainfallScale Distance between rainfall 'poles'. Default 20km
+ * @param rainfallVarianceScale Distance between rainfall seasonal variance 'poles'. Default 10km
  * @param rainfallConstant If {@code rainfallScale} is equal to zero, then the constant between [-1, 1] rainfall input value.
  */
 public record Settings(
@@ -26,6 +27,7 @@ public record Settings(
     int temperatureScale,
     float temperatureConstant,
     int rainfallScale,
+    int rainfallVarianceScale,
     float rainfallConstant,
     RockLayerSettings rockLayerSettings,
     float continentalness,
@@ -39,6 +41,7 @@ public record Settings(
         Codec.INT.fieldOf("temperature_scale").forGetter(c -> c.temperatureScale),
         Codec.FLOAT.optionalFieldOf("temperature_constant", 0f).forGetter(c -> c.temperatureConstant),
         Codec.INT.fieldOf("rainfall_scale").forGetter(c -> c.rainfallScale),
+        Codec.INT.fieldOf("rainfall_variance_scale").forGetter(c -> c.rainfallVarianceScale),
         Codec.FLOAT.optionalFieldOf("rainfall_constant", 0f).forGetter(c -> c.rainfallConstant),
         RockLayerSettings.CODEC.fieldOf("rock_layer_settings").forGetter(c -> c.rockLayerSettings),
         Codec.FLOAT.fieldOf("continentalness").forGetter(c -> c.continentalness),

@@ -169,6 +169,7 @@ public final class Region
         public byte biomeAltitude = 0;
 
         public float rainfall;
+        public float rainfallVariance;
         public float temperature;
 
         public int biome = TFCLayers.OCEAN;

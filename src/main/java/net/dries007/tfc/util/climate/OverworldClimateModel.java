@@ -85,26 +85,6 @@ public class OverworldClimateModel implements ClimateModel
         OverworldClimateModel::new
     );
 
-    public static float getAdjustedAverageTempByElevation(BlockPos pos, ChunkData chunkData)
-    {
-        return getAdjustedAverageTempByElevation(pos.getY(), chunkData.getAverageTemp(pos));
-    }
-
-    public static float getAdjustedAverageTempByElevation(int y, float averageTemperature)
-    {
-        if (y > SEA_LEVEL)
-        {
-            // -1.6 C / 10 blocks above sea level
-            float elevationTemperature = Mth.clamp((y - SEA_LEVEL) * 0.16225f, 0, 17.822f);
-            return averageTemperature - elevationTemperature;
-        }
-        else
-        {
-            // Not a lot of trees should generate below sea level
-            return averageTemperature;
-        }
-    }
-
     @Override
     public ClimateModelType<?> type()
     {
@@ -180,10 +160,34 @@ public class OverworldClimateModel implements ClimateModel
     }
 
     @Override
+    public float getElevationAdjustedAverageTemperature(LevelReader level, BlockPos pos)
+    {
+        return EnvironmentHelpers.adjustAvgTempForElev(pos.getY(), getAverageTemperature(level, pos), SEA_LEVEL);
+    }
+
+    @Override
     public float getRainfall(LevelReader level, BlockPos pos)
     {
         final ChunkData data = ChunkData.get(level, pos);
         return data.getRainfall(pos);
+    }
+
+    @Override
+    public float getRainVariance(LevelReader level, BlockPos pos)
+    {
+        final ChunkData data = ChunkData.get(level, pos);
+        return data.getRainVariance(pos);
+    }
+
+    @Override
+    public float getMonthlyRainfall(LevelReader level, BlockPos pos, float fractionOfYear)
+    {
+        final ChunkData data = ChunkData.get(level, pos);
+
+        float rainVariance = data.getRainVariance(pos);
+        float rainAverage = data.getRainfall(pos);
+        //For positive values of variance, drought in winter, rain in summer, reverse for negative values
+        return rainVariance == 0 ? 0 : Helpers.triangle(rainVariance, rainAverage, 1f , fractionOfYear + 0.75f);
     }
 
     @Override

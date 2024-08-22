@@ -48,7 +48,7 @@ public class FallingLeafParticle extends CherryParticle
             }
             else if (block instanceof TFCLeavesBlock leaves && Helpers.isBlock(state, TFCTags.Blocks.SEASONAL_LEAVES))
             {
-                color = TFCColors.getSeasonalFoliageColor(pos, 0, level, leaves.getAutumnIndex());
+                color = TFCColors.getSeasonalFoliageColor(pos, 0, leaves.getAutumnIndex());
             }
             else if (tinted)
             {

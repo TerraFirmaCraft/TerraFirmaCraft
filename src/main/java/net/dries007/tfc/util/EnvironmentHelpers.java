@@ -40,6 +40,8 @@ import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.OverworldClimateModel;
 import net.dries007.tfc.util.tracker.WorldTracker;
 
+import static net.dries007.tfc.util.climate.OverworldClimateModel.*;
+
 /**
  * This is a helper class which handles environment effects
  * It would be called by <a href="https://github.com/MinecraftForge/MinecraftForge/pull/7235">MinecraftForge#7235</a>, until then we simply mixin the call to our handler
@@ -138,6 +140,26 @@ public final class EnvironmentHelpers
     public static boolean isRainingOrSnowing(Level level, BlockPos pos)
     {
         return level.isRaining() && WorldTracker.get(level).isRaining(level, pos);
+    }
+
+    public static float adjustAvgTempForElev(int y, float averageTemp)
+    {
+        return adjustAvgTempForElev(y, averageTemp, SEA_LEVEL);
+    }
+
+    public static float adjustAvgTempForElev(int y, float averageTemp, float seaLevel)
+    {
+        if (y > seaLevel)
+        {
+            // -1.6 C / 10 blocks above sea level
+            float elevationTemperature = Mth.clamp((y - seaLevel) * 0.16225f, 0, 17.822f);
+            return averageTemp - elevationTemperature;
+        }
+        else
+        {
+            //Average temp doesn't vary below sea level
+            return averageTemp;
+        }
     }
 
     /**
@@ -391,4 +413,6 @@ public final class EnvironmentHelpers
         }
         return foundPos;
     }
+
+
 }

@@ -26,6 +26,7 @@ import net.dries007.tfc.world.chunkdata.LerpFloatLayer;
 public record ChunkWatchPacket(
     ChunkPos pos,
     LerpFloatLayer rainfall,
+    LerpFloatLayer rainVariance,
     LerpFloatLayer temperature,
     ForestType forestType
 ) implements CustomPacketPayload
@@ -34,6 +35,7 @@ public record ChunkWatchPacket(
     public static final StreamCodec<ByteBuf, ChunkWatchPacket> CODEC = StreamCodec.composite(
         StreamCodecs.CHUNK_POS, c -> c.pos,
         LerpFloatLayer.STREAM, c -> c.rainfall,
+        LerpFloatLayer.STREAM, c -> c.rainVariance,
         LerpFloatLayer.STREAM, c -> c.temperature,
         ForestType.STREAM, c -> c.forestType,
         ChunkWatchPacket::new
@@ -59,7 +61,7 @@ public record ChunkWatchPacket(
                 data = ChunkData.queueClientChunkDataForLoad(pos);
             }
 
-            data.onUpdatePacket(rainfall, temperature, forestType);
+            data.onUpdatePacket(rainfall, rainVariance, temperature, forestType);
             chunk.setData(TFCAttachments.CHUNK_DATA.get(), data);
         }
     }

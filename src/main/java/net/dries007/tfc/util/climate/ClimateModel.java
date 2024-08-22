@@ -38,11 +38,18 @@ public interface ClimateModel
     float getTemperature(LevelReader level, BlockPos pos, long calendarTicks, int daysInMonth);
 
     /**
-     * Get the average annual temperature for a given position.
+     * Get the base average annual temperature for a given XZ position.
      *
      * @return A temperature, in degrees Celsius. Typically in the range [-25, 25]
      */
     float getAverageTemperature(LevelReader level, BlockPos pos);
+
+    /**
+     * Get the average annual temperature for a given XYZ position.
+     *
+     * @return A temperature, in degrees Celsius. Typically in the range [-25, 25]
+     */
+    float getElevationAdjustedAverageTemperature(LevelReader level, BlockPos pos);
 
     /**
      * Get the average annual rainfall for a given position.
@@ -50,9 +57,24 @@ public interface ClimateModel
      * <p>
      * <strong>Note:</strong> Cannot be called from a world generation context!
      *
-     * @return The average annual rainfall, roughly equivalent to mm/year. Should be in the range [0, 500]
+     * @return The average annual rainfall, roughly equivalent to mm/year in temperate latitudes. Should be in the range [0, 500]
      */
     float getRainfall(LevelReader level, BlockPos pos);
+
+    /**
+     * Get the annual varaince in rainfall for a given position.
+     * Positive values indicate wet summers, Negative values indicate wet winters.
+     *
+     * @return The annual variance in the immediate rate of rainfall, in mm/year. Should be in the range [-500, 500]
+     */
+    float getRainVariance(LevelReader level, BlockPos pos);
+
+    /**
+     * Get the average rainfall for the current time of year.
+     *
+     * @return the immediate rainfall, in mm/year. Should be in the range [0, 1000]
+     */
+    float getMonthlyRainfall(LevelReader level, BlockPos pos, float fractionOfYear);
 
     /**
      * @return A value in the range [0, 1] scaling the sky fog as a % of the render distance

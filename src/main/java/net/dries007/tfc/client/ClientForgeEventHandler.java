@@ -150,10 +150,15 @@ public class ClientForgeEventHandler
                 tooltip.add("");
                 tooltip.add(AQUA + TerraFirmaCraft.MOD_NAME);
                 tooltip.add(Component.translatable("tfc.tooltip.calendar_date", Calendars.CLIENT.getCalendarTimeAndDate()).getString());
-                tooltip.add("Avg: %.3f Actual: %.3f Rain: %.3f".formatted(
+                tooltip.add("Avg: %.3f Adj: %.3f Actual: %.3f".formatted(
                     ClimateRenderCache.INSTANCE.getAverageTemperature(),
-                    ClimateRenderCache.INSTANCE.getTemperature(),
-                    ClimateRenderCache.INSTANCE.getRainfall()
+                    ClimateRenderCache.INSTANCE.getHeightAdjustedAverageTemperature(),
+                    ClimateRenderCache.INSTANCE.getTemperature()
+                ));
+                tooltip.add("Rain: %.3f Var: %.3f Now: %.3f".formatted(
+                    ClimateRenderCache.INSTANCE.getRainfall(),
+                    ClimateRenderCache.INSTANCE.getRainVariance(),
+                    ClimateRenderCache.INSTANCE.getMonthlyRainfall()
                 ));
                 final Vec2 wind = ClimateRenderCache.INSTANCE.getWind();
                 tooltip.add(Component.translatable("tfc.tooltip.wind_speed",

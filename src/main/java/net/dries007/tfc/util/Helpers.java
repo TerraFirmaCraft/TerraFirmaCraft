@@ -1225,7 +1225,7 @@ public final class Helpers
      */
     public static float triangle(float amplitude, float midpoint, float frequency, float value)
     {
-        return midpoint + amplitude * (Math.abs(4f * frequency * value + 1f - 4f * Mth.floor(frequency * value + 0.75f)) - 1f);
+        return midpoint + amplitude * (Math.abs( 4f * frequency * value + 1f - 4f * Mth.floor(frequency * value + 0.75f)) - 1f);
     }
 
     /**

@@ -22,12 +22,15 @@ import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.util.calendar.Season;
 import net.dries007.tfc.util.climate.Climate;
+import net.dries007.tfc.util.climate.ClimateModel;
 import net.dries007.tfc.util.climate.OverworldClimateModel;
 import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
 import org.jetbrains.annotations.Nullable;
+
+import static net.dries007.tfc.util.climate.Climate.*;
 
 public final class TFCColors
 {
@@ -129,21 +132,11 @@ public final class TFCColors
         return TFCBiomes.hasExtension(level, biome) ? getClimateColor(WATER_FOG_COLORS_CACHE, pos) : biome.getWaterFogColor();
     }
 
-    public static int getSeasonalFoliageColor(@Nullable BlockPos pos, int tintIndex, int autumnIndex)
-    {
-        final Level level = ClientHelpers.getLevel();
-        if (level != null && pos != null)
-        {
-            return getSeasonalFoliageColor(pos, tintIndex, level, autumnIndex);
-        }
-        return -1;
-    }
-
-    public static int getSeasonalFoliageColor(BlockPos pos, int tintIndex, Level level, int autumnIndex)
+    public static int getSeasonalFoliageColor(BlockPos pos, int tintIndex, int autumnIndex)
     {
         if (tintIndex == 0)
         {
-            return getSeasonalFoliageColor(pos, level, autumnIndex);
+            return getSeasonalFoliageColor(pos, autumnIndex);
         }
         return -1;
     }
@@ -151,10 +144,10 @@ public final class TFCColors
     /**
      * Gets a color based on average temperature and time of year. Autumn occurs at different times of the year at height-adjusted average temperatures from the poles to 12c
      */
-    private static int getSeasonalFoliageColor(BlockPos pos, LevelAccessor level, int autumnIndex)
+    private static int getSeasonalFoliageColor(BlockPos pos, int autumnIndex)
     {
-        ChunkData data = ChunkData.get(level, pos);
-        float temp = OverworldClimateModel.getAdjustedAverageTempByElevation(pos, data);
+        final Level level = ClientHelpers.getLevel();
+        float temp = Climate.getAverageTempElevationAdjusted(level, pos);
         float timeOfYear = Calendars.CLIENT.getCalendarFractionOfYear();
         final float tempClamped = temp > 12f ? 12f : Math.max(temp, -20f);
 

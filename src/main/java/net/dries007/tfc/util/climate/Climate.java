@@ -61,9 +61,29 @@ public final class Climate
         return model(level).getAverageTemperature(level, pos);
     }
 
+    public static float getAverageTempElevationAdjusted(Level level, BlockPos pos)
+    {
+        return  model(level).getElevationAdjustedAverageTemperature(level, pos);
+    }
+
     public static float getRainfall(Level level, BlockPos pos)
     {
         return model(level).getRainfall(level, pos);
+    }
+
+    public static float getRainVariance(Level level, BlockPos pos)
+    {
+        return model(level).getRainVariance(level, pos);
+    }
+
+    public static float getMonthlyRainfall(Level level, BlockPos pos, ICalendar calendar)
+    {
+        return model(level).getMonthlyRainfall(level, pos, calendar.getCalendarFractionOfYear());
+    }
+
+    public static float getMonthlyRainfall(Level level, BlockPos pos)
+    {
+        return getMonthlyRainfall(level, pos, Calendars.get(level));
     }
 
     public static float getFogginess(Level level, BlockPos pos)

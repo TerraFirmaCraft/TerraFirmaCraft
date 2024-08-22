@@ -150,7 +150,7 @@ public final class WorldTracker
 
     public boolean isRaining(Level level, BlockPos pos)
     {
-        return isRaining(Calendars.get(level).getTicks(), Climate.getRainfall(level, pos));
+        return isRaining(Calendars.get(level).getTicks(), Climate.getMonthlyRainfall(level, pos));
     }
 
     /**

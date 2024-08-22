@@ -47,6 +47,7 @@ public class RegionGenerator
     public final Noise2D continentNoise;
     public final Noise2D temperatureNoise;
     public final Noise2D rainfallNoise;
+    public final Noise2D rainfallVarianceNoise;
 
     public final ThreadLocal<Area> biomeArea;
     public final ThreadLocal<Area> rockArea;
@@ -86,6 +87,13 @@ public class RegionGenerator
                 .octaves(2)
                 .spread(0.15f)
                 .scaled(-80f, 40f)); // Bias slightly negative, as we bias near-ocean areas to be positive rainfall, so this encourages deserts inland
+
+        this.rainfallVarianceNoise = baseNoise(true, settings.rainfallVarianceScale(), settings.rainfallConstant())
+            .scaled(-500f, 500f)
+            .add(new OpenSimplex2D(random.nextInt())
+                .octaves(2)
+                .spread(0.3f)
+                .scaled(-60f, 60f));
 
         final AreaFactory biomeAreaFactory = TFCLayers.createUniformLayer(random, 2);
         final AreaFactory rockAreaFactory = TFCLayers.createUniformLayer(random, 3);
@@ -212,6 +220,7 @@ public class RegionGenerator
         ANNOTATE_BIOME_ALTITUDE(AnnotateBiomeAltitude.INSTANCE),
         ANNOTATE_CLIMATE(AnnotateClimate.INSTANCE),
         ANNOTATE_RAINFALL(c -> {}),
+        ANNOTATE_RAINFALL_VARIANCE(c -> {}),
         CHOOSE_BIOMES(ChooseBiomes.INSTANCE),
         CHOOSE_ROCKS(ChooseRocks.INSTANCE),
         ADD_RIVERS_AND_LAKES(AddRiversAndLakes.INSTANCE),

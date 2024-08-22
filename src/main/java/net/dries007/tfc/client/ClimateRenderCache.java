@@ -26,8 +26,11 @@ public enum ClimateRenderCache
 
     private long ticks;
     private float averageTemperature;
+    private float heightAdjustedAverageTemperature;
     private float temperature;
     private float rainfall;
+    private float rainVariance;
+    private float monthlyRainfall;
     private Vec2 wind = Vec2.ZERO;
 
     private float lastRainLevel, currRainLevel;
@@ -45,8 +48,11 @@ public enum ClimateRenderCache
 
             ticks = Calendars.CLIENT.getTicks();
             averageTemperature = Climate.getAverageTemperature(level, pos);
+            heightAdjustedAverageTemperature = Climate.getAverageTempElevationAdjusted(level, pos);
             temperature = Climate.getTemperature(level, pos);
             rainfall = Climate.getRainfall(level, pos);
+            rainVariance = Climate.getRainVariance(level, pos);
+            monthlyRainfall = Climate.getMonthlyRainfall(level, pos);
             wind = Climate.getWindVector(level, pos);
 
             // Can't call level.getRainLevel() because it's redirected to exactly this
@@ -83,14 +89,29 @@ public enum ClimateRenderCache
         return temperature;
     }
 
+    public float getMonthlyRainfall()
+    {
+        return monthlyRainfall;
+    }
+
     public float getRainfall()
     {
         return rainfall;
     }
 
+    public float getRainVariance()
+    {
+        return rainVariance;
+    }
+
     public float getRainLevel(float partialTick)
     {
         return Mth.lerp(partialTick, lastRainLevel, currRainLevel);
+    }
+
+    public float getHeightAdjustedAverageTemperature()
+    {
+        return heightAdjustedAverageTemperature;
     }
 
     public Vec2 getWind()

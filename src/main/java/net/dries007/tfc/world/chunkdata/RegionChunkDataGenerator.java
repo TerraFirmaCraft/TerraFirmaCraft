@@ -110,6 +110,7 @@ public record RegionChunkDataGenerator(
         final Region.Point point11 = regionGenerator.getOrCreateRegionPoint(gridX + 1, gridZ + 1);
 
         final LerpFloatLayer rainfallGridLayer = new LerpFloatLayer(point00.rainfall, point01.rainfall, point10.rainfall, point11.rainfall);
+        final LerpFloatLayer rainfallVarianceGridLayer = new LerpFloatLayer(point00.rainfallVariance, point01.rainfallVariance, point10.rainfallVariance, point11.rainfallVariance);
         final LerpFloatLayer temperatureGridLayer = new LerpFloatLayer(point00.temperature, point01.temperature, point10.temperature, point11.temperature);
 
         // The exact grid coordinates of the bottom (00) value of this chunk
@@ -126,6 +127,7 @@ public record RegionChunkDataGenerator(
 
         // The base rainfall and temperature layers, scaled down to chunk resolution
         LerpFloatLayer rainfallLayer = rainfallGridLayer.scaled(deltaX, deltaZ, dG);
+        LerpFloatLayer rainfallVarianceLayer = rainfallVarianceGridLayer.scaled(deltaX, deltaZ, dG);
         LerpFloatLayer temperatureLayer = temperatureGridLayer.scaled(deltaX, deltaZ, dG);
 
         // Calculate local influence of rivers - when they are wide enough (which should happen only with large rivers near shores),
@@ -162,6 +164,7 @@ public record RegionChunkDataGenerator(
 
         data.generatePartial(
             rainfallLayer,
+            rainfallVarianceLayer,
             temperatureLayer,
             forestType
         );

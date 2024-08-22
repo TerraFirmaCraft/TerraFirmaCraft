@@ -28,6 +28,7 @@ public enum AnnotateClimate implements RegionTask
                     // This keeps the large-scale climate which we want
                     point.temperature = (float) context.generator().temperatureNoise.noise(x, z);
                     point.rainfall = (float) context.generator().rainfallNoise.noise(x, z);
+                    point.rainfallVariance = (float) context.generator().rainfallVarianceNoise.noise(x, z);
 
                     // [0, 1], where higher = more inland
                     final float bias;

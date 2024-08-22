@@ -27,4 +27,5 @@ public interface TimeInvariantClimateModel extends ClimateModel
     {
         return getTemperature(level, pos);
     }
+
 }

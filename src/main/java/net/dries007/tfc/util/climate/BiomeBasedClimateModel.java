@@ -29,6 +29,12 @@ public class BiomeBasedClimateModel implements TimeInvariantClimateModel
     }
 
     @Override
+    public float getElevationAdjustedAverageTemperature(LevelReader level, BlockPos pos)
+    {
+        return getAverageTemperature(level, pos);
+    }
+
+    @Override
     public float getTemperature(LevelReader level, BlockPos pos)
     {
         return Climate.toActualTemperature(((BiomeAccessor) (Object) level.getBiome(pos).value()).invoke$getTemperature(pos));
@@ -38,5 +44,17 @@ public class BiomeBasedClimateModel implements TimeInvariantClimateModel
     public float getRainfall(LevelReader level, BlockPos pos)
     {
         return level.getBiome(pos).value().getPrecipitationAt(pos) != Biome.Precipitation.NONE ? 300f : 0f;
+    }
+
+    @Override
+    public float getRainVariance(LevelReader level, BlockPos pos)
+    {
+        return 0;
+    }
+
+    @Override
+    public float getMonthlyRainfall(LevelReader level, BlockPos pos, float fractionOfYear)
+    {
+        return getRainfall(level, pos);
     }
 }
