@@ -51,7 +51,7 @@ public class AqueductBlock extends HorizontalDirectionalBlock implements IFluidL
     public static final BooleanProperty SOUTH = BlockStateProperties.SOUTH;
     public static final BooleanProperty WEST = BlockStateProperties.WEST;
 
-    public static final FluidProperty FLUID = TFCBlockStateProperties.ALL_WATER;
+    public static final FluidProperty FLUID = TFCBlockStateProperties.ALL_WATER_AND_LAVA;
 
     private static final VoxelShape[] SHAPES = new VoxelShape[16];
 
@@ -140,11 +140,22 @@ public class AqueductBlock extends HorizontalDirectionalBlock implements IFluidL
         }
     }
 
+    private static int getLightEmission(BlockState state)
+    {
+        return state.getValue(((AqueductBlock) state.getBlock()).getFluidProperty()).is(Fluids.LAVA) ? 15 : 0;
+    }
+
     public AqueductBlock(Properties properties)
     {
         super(properties);
 
-        registerDefaultState(getStateDefinition().any().setValue(NORTH, false).setValue(EAST, false).setValue(SOUTH, false).setValue(WEST, false).setValue(FACING, Direction.NORTH).setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
+        registerDefaultState(getStateDefinition().any()
+            .setValue(NORTH, false)
+            .setValue(EAST, false)
+            .setValue(SOUTH, false)
+            .setValue(WEST, false)
+            .setValue(FACING, Direction.NORTH)
+            .setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
     }
 
     @Nullable
@@ -214,7 +225,12 @@ public class AqueductBlock extends HorizontalDirectionalBlock implements IFluidL
     @Override
     public ItemStack pickupBlock(@Nullable Player player, LevelAccessor level, BlockPos pos, BlockState state)
     {
-        if (state.getValue(getFluidProperty()).getFluid() != Fluids.EMPTY)
+        final Fluid containedFluid = state.getValue(getFluidProperty()).getFluid();
+        if (containedFluid == Fluids.LAVA)
+        {
+            return ItemStack.EMPTY; // Deny picking up lava
+        }
+        if (containedFluid != Fluids.EMPTY)
         {
             level.scheduleTick(pos, this, LONG_TICK_DELAY);
         }
@@ -322,6 +338,18 @@ public class AqueductBlock extends HorizontalDirectionalBlock implements IFluidL
                 tickAllAdjacentAqueducts(level, pos, LONG_TICK_DELAY, state.getValue(FACING));
             }
         }
+    }
+
+    @Override
+    protected boolean isRandomlyTicking(BlockState state)
+    {
+        return state.getFluidState().isRandomlyTicking();
+    }
+
+    @Override
+    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
+    {
+        state.getFluidState().randomTick(level, pos, random);
     }
 
     @Override

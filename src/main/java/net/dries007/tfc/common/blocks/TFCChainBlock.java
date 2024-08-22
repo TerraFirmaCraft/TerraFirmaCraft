@@ -27,7 +27,7 @@ import net.dries007.tfc.common.fluids.IFluidLoggable;
 
 public class TFCChainBlock extends RotatedPillarBlock implements IFluidLoggable
 {
-    public static final FluidProperty FLUID = TFCBlockStateProperties.WATER_AND_LAVA;
+    public static final FluidProperty FLUID = TFCBlockStateProperties.ALL_WATER;
 
     public TFCChainBlock(Properties properties)
     {
