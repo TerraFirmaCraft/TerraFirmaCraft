@@ -45,22 +45,17 @@ public enum AddRiversAndLakes implements RegionTask
 
     private void createInitialDrains(RegionGenerator.Context context, Region region, RegionRiverGenerator riverGenerator)
     {
-        for (int dx = 0; dx < region.sizeX(); dx++)
+        for (final var point : region.points())
         {
-            for (int dz = 0; dz < region.sizeZ(); dz++)
+            if (point.shore())
             {
-                final int index = dx + region.sizeX() * dz;
-                final Region.Point point = region.data()[index];
-                if (point != null && point.shore())
+                // Mark as a possible river source
+                float bestAngle = findBestStartingAngle(region, context.random, point.index);
+                if (!Float.isNaN(bestAngle))
                 {
-                    // Mark as a possible river source
-                    float bestAngle = findBestStartingAngle(region, context.random, index);
-                    if (!Float.isNaN(bestAngle))
-                    {
-                        final XoroshiroRandomSource rng = new XoroshiroRandomSource(context.random.nextLong());
-                        riverGenerator.add(new River.Builder(rng, region.minX() + dx + 0.5f, region.minZ() + dz + 0.5f, bestAngle, RIVER_LENGTH, RIVER_DEPTH, RIVER_FEATHER));
-                        point.setRiver();
-                    }
+                    final XoroshiroRandomSource rng = new XoroshiroRandomSource(context.random.nextLong());
+                    riverGenerator.add(new River.Builder(rng, point.x + 0.5f, point.z + 0.5f, bestAngle, RIVER_LENGTH, RIVER_DEPTH, RIVER_FEATHER));
+                    point.setRiver();
                 }
             }
         }
@@ -81,26 +76,21 @@ public enum AddRiversAndLakes implements RegionTask
             {
                 if (dirX == 0 && dirZ == 0) continue;
 
-                final int dirIndex = region.offset(index, 4 * dirX, 4 * dirZ);
-                if (dirIndex != -1)
+                final @Nullable Region.Point dirPoint = region.atOffset(index, 4 * dirX, 4 * dirZ);
+                if (dirPoint != null && dirPoint.land())
                 {
-                    final Region.Point dirPoint = region.data()[dirIndex];
-                    if (dirPoint != null && dirPoint.land())
+                    final float dirDistanceMetric = dirPoint.distanceToOcean - Math.abs(dirX) - Math.abs(dirZ);
+                    if (dirDistanceMetric > bestDistanceMetric || (dirDistanceMetric == bestDistanceMetric && random.nextInt(1 + bestDistanceCount) == 0))
                     {
-                        final float dirDistanceMetric = dirPoint.distanceToOcean - Math.abs(dirX) - Math.abs(dirZ);
-                        if (dirDistanceMetric > bestDistanceMetric || (dirDistanceMetric == bestDistanceMetric && random.nextInt(1 + bestDistanceCount) == 0))
+                        if (dirDistanceMetric > bestDistanceMetric)
                         {
-                            if (dirDistanceMetric > bestDistanceMetric)
-                            {
-                                bestDistanceMetric = dirDistanceMetric;
-                                bestDistanceCount = 0;
-                            }
-                            bestDistanceCount += 1;
-                            bestAngle = (float) Math.atan2(dirZ, dirX);
+                            bestDistanceMetric = dirDistanceMetric;
+                            bestDistanceCount = 0;
                         }
+                        bestDistanceCount += 1;
+                        bestAngle = (float) Math.atan2(dirZ, dirX);
                     }
                 }
-
             }
         }
         if (!Float.isNaN(bestAngle))
@@ -160,7 +150,7 @@ public enum AddRiversAndLakes implements RegionTask
         final int gridX = (int) (edge.source().x() + 0.3f * offsetX);
         final int gridZ = (int) (edge.source().y() + 0.3f * offsetZ);
 
-        final Region.Point point = region.maybeAt(gridX, gridZ);
+        final Region.Point point = region.at(gridX, gridZ);
         if (point != null && point.land() && point.distanceToOcean >= 2 && point.distanceToEdge >= 2 && TFCLayers.hasLake(point.biome))
         {
             point.biome = TFCLayers.lakeFor(point.biome);
@@ -192,7 +182,7 @@ public enum AddRiversAndLakes implements RegionTask
         {
             final int gridX = (int) Math.round(vertex.x());
             final int gridZ = (int) Math.round(vertex.y());
-            return region.maybeAt(gridX, gridZ);
+            return region.at(gridX, gridZ);
         }
     }
 }
