@@ -157,7 +157,7 @@ public class RegionGeneratorTests implements TestSetup
                         new Color(100, 100, 200);
                 case ANNOTATE_CLIMATE -> blue.apply(Mth.clampedMap(point.temperature, -35f, 35f, 0f, 0.999f));
                 case ANNOTATE_RAINFALL -> blue.apply(Mth.clampedMap(point.rainfall, 0f, 500f, 0f, 0.999f));
-                case ANNOTATE_RAINFALL_VARIANCE -> blue.apply(Mth.clampedMap(point.rainfallVariance, -500f, 500f, 0f, 0.999f));
+                case ANNOTATE_RAINFALL_VARIANCE -> blue.apply(Mth.clampedMap(point.rainfallVariance, -1f, 1f, 0f, 0.999f));
                 default -> point.shore() ?
                     (point.river() ?
                         new Color(150, 160, 255) :
@@ -175,12 +175,13 @@ public class RegionGeneratorTests implements TestSetup
                         new Color(150, 150, 150)) :
                     green.apply(point.baseLandHeight / 24f);
                 case ANNOTATE_DISTANCE_TO_OCEAN -> green.apply(point.distanceToOcean / 20f);
+                case ANNOTATE_DISTANCE_TO_WEST_COAST -> green.apply(point.distanceToWestCoast / 100f);
                 case ADD_RIVERS_AND_LAKES -> point.lake() ? new Color(150, 160, 255) : green.apply(point.baseLandHeight / 24f);
                 case ANNOTATE_BASE_LAND_HEIGHT -> green.apply(point.baseLandHeight / 24f);
                 case ANNOTATE_BIOME_ALTITUDE -> green.apply(Mth.clampedMap(point.discreteBiomeAltitude(), 0, 3, 0, 1));
                 case ANNOTATE_CLIMATE -> temperature.apply(Mth.clampedMap(point.temperature, -35f, 35f, 0f, 0.999f));
                 case ANNOTATE_RAINFALL -> temperature.apply(Mth.clampedMap(point.rainfall, 0f, 500f, 0f, 0.999f));
-                case ANNOTATE_RAINFALL_VARIANCE -> temperature.apply(Mth.clampedMap(point.rainfallVariance, -500f, 500f, 0f, 0.999f));
+                case ANNOTATE_RAINFALL_VARIANCE -> temperature.apply(Mth.clampedMap(point.rainfallVariance, -1f, 1f, 0f, 0.999f));
             };
     }
 

@@ -65,7 +65,7 @@ public interface ClimateModel
      * Get the annual varaince in rainfall for a given position.
      * Positive values indicate wet summers, Negative values indicate wet winters.
      *
-     * @return The annual variance in the immediate rate of rainfall, in mm/year. Should be in the range [-500, 500]
+     * @return The annual variance in the immediate rate of rainfall, in percentage of annual. Should be in the range [-1, 1]
      */
     float getRainVariance(LevelReader level, BlockPos pos);
 

@@ -187,7 +187,7 @@ public class OverworldClimateModel implements ClimateModel
         float rainVariance = data.getRainVariance(pos);
         float rainAverage = data.getRainfall(pos);
         //For positive values of variance, drought in winter, rain in summer, reverse for negative values
-        return rainVariance == 0 ? 0 : Helpers.triangle(rainVariance, rainAverage, 1f , fractionOfYear + 0.75f);
+        return rainVariance == 0 ? 0 : Helpers.triangle(rainVariance * rainAverage, rainAverage, 1f , fractionOfYear + 0.75f);
     }
 
     @Override
