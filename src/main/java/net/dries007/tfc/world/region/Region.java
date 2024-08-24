@@ -173,13 +173,13 @@ public final class Region
      */
     void setRegionArea(int minX, int minZ, int maxX, int maxZ)
     {
+        this.sizeX = 1 + maxX - minX;
+        this.sizeZ = 1 + maxZ - minZ;
         this.data = new Point[sizeX * sizeZ];
         this.minX = minX;
         this.minZ = minZ;
         this.maxX = maxX;
         this.maxZ = maxZ;
-        this.sizeX = 1 + maxX - minX;
-        this.sizeZ = 1 + maxZ - minZ;
     }
 
     /**
