@@ -7,7 +7,6 @@
 package net.dries007.tfc.network;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.level.ChunkPos;
@@ -27,6 +26,7 @@ public record ChunkWatchPacket(
     ChunkPos pos,
     LerpFloatLayer rainfall,
     LerpFloatLayer rainVariance,
+    LerpFloatLayer baseGroundwater,
     LerpFloatLayer temperature,
     ForestType forestType
 ) implements CustomPacketPayload
@@ -36,6 +36,7 @@ public record ChunkWatchPacket(
         StreamCodecs.CHUNK_POS, c -> c.pos,
         LerpFloatLayer.STREAM, c -> c.rainfall,
         LerpFloatLayer.STREAM, c -> c.rainVariance,
+        LerpFloatLayer.STREAM, c -> c.baseGroundwater,
         LerpFloatLayer.STREAM, c -> c.temperature,
         ForestType.STREAM, c -> c.forestType,
         ChunkWatchPacket::new
@@ -61,7 +62,7 @@ public record ChunkWatchPacket(
                 data = ChunkData.queueClientChunkDataForLoad(pos);
             }
 
-            data.onUpdatePacket(rainfall, rainVariance, temperature, forestType);
+            data.onUpdatePacket(rainfall, rainVariance, baseGroundwater, temperature, forestType);
             chunk.setData(TFCAttachments.CHUNK_DATA.get(), data);
         }
     }

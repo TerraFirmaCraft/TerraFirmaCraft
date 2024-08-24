@@ -31,6 +31,9 @@ public enum ClimateRenderCache
     private float rainfall;
     private float rainVariance;
     private float monthlyRainfall;
+    private float baseGroundwater;
+    private float groundwater;
+    private float monthlyGroundwater;
     private Vec2 wind = Vec2.ZERO;
 
     private float lastRainLevel, currRainLevel;
@@ -53,6 +56,9 @@ public enum ClimateRenderCache
             rainfall = Climate.getRainfall(level, pos);
             rainVariance = Climate.getRainVariance(level, pos);
             monthlyRainfall = Climate.getMonthlyRainfall(level, pos);
+            baseGroundwater = Climate.getBaseGroundwater(level, pos);
+            groundwater = Climate.getGroundwater(level, pos);
+            monthlyGroundwater = Climate.getMonthlyGroundwater(level, pos);
             wind = Climate.getWindVector(level, pos);
 
             // Can't call level.getRainLevel() because it's redirected to exactly this
@@ -107,6 +113,21 @@ public enum ClimateRenderCache
     public float getRainLevel(float partialTick)
     {
         return Mth.lerp(partialTick, lastRainLevel, currRainLevel);
+    }
+
+    public float getBaseGroundwater()
+    {
+        return baseGroundwater;
+    }
+
+    public float getGroundwater()
+    {
+        return groundwater;
+    }
+
+    public float getMonthlyGroundwater()
+    {
+        return monthlyGroundwater;
     }
 
     public float getHeightAdjustedAverageTemperature()

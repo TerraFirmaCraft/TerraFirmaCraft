@@ -63,7 +63,7 @@ public final class Climate
 
     public static float getAverageTempElevationAdjusted(Level level, BlockPos pos)
     {
-        return  model(level).getElevationAdjustedAverageTemperature(level, pos);
+        return model(level).getElevationAdjustedAverageTemperature(level, pos);
     }
 
     public static float getRainfall(Level level, BlockPos pos)
@@ -84,6 +84,26 @@ public final class Climate
     public static float getMonthlyRainfall(Level level, BlockPos pos)
     {
         return getMonthlyRainfall(level, pos, Calendars.get(level));
+    }
+
+    public static float getBaseGroundwater(Level level, BlockPos pos)
+    {
+        return model(level).getBaseGroundwater(level, pos);
+    }
+
+    public static float getGroundwater(Level level, BlockPos pos)
+    {
+        return model(level).getGroundwater(level, pos);
+    }
+
+    public static float getMonthlyGroundwater(Level level, BlockPos pos, ICalendar calendar)
+    {
+        return model(level).getMonthlyGroundwater(level, pos, calendar.getCalendarFractionOfYear());
+    }
+
+    public static float getMonthlyGroundwater(Level level, BlockPos pos)
+    {
+        return getMonthlyGroundwater(level, pos, Calendars.get(level));
     }
 
     public static float getFogginess(Level level, BlockPos pos)
@@ -116,6 +136,7 @@ public final class Climate
 
     /**
      * Defensive version, when it's unknown if we're in world generation or not
+     *
      * @see Biome#warmEnoughToRain(BlockPos)
      */
     public static boolean warmEnoughToRain(LevelReader level, BlockPos pos, Biome fallback)

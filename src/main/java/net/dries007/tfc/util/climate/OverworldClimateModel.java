@@ -180,6 +180,30 @@ public class OverworldClimateModel implements ClimateModel
     }
 
     @Override
+    public float getBaseGroundwater(LevelReader level, BlockPos pos)
+    {
+        final ChunkData data = ChunkData.get(level, pos);
+        return data.getBaseGroundwater(pos);
+    }
+
+    @Override
+    public float getGroundwater(LevelReader level, BlockPos pos)
+    {
+        final ChunkData data = ChunkData.get(level, pos);
+        return Math.clamp(data.getBaseGroundwater(pos) + data.getRainfall(pos), 0f, 500f);
+    }
+
+
+    @Override
+    public float getMonthlyGroundwater(LevelReader level, BlockPos pos, float fractionOfYear)
+    {
+        final ChunkData data = ChunkData.get(level, pos);
+        final float monthlyRainfall = getMonthlyRainfall(level, pos, fractionOfYear);
+
+        return Math.clamp(data.getBaseGroundwater(pos) + monthlyRainfall, 0f, 1000f);
+    }
+
+    @Override
     public float getMonthlyRainfall(LevelReader level, BlockPos pos, float fractionOfYear)
     {
         final ChunkData data = ChunkData.get(level, pos);
@@ -187,7 +211,7 @@ public class OverworldClimateModel implements ClimateModel
         float rainVariance = data.getRainVariance(pos);
         float rainAverage = data.getRainfall(pos);
         //For positive values of variance, drought in winter, rain in summer, reverse for negative values
-        return rainVariance == 0 ? 0 : Helpers.triangle(rainVariance * rainAverage, rainAverage, 1f , fractionOfYear + 0.75f);
+        return rainVariance == 0 ? 0 : Helpers.triangle(rainVariance * rainAverage, rainAverage, 1f, fractionOfYear + 0.75f);
     }
 
     @Override

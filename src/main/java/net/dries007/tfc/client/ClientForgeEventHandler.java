@@ -39,8 +39,6 @@ import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -159,6 +157,11 @@ public class ClientForgeEventHandler
                     ClimateRenderCache.INSTANCE.getRainfall(),
                     ClimateRenderCache.INSTANCE.getRainVariance(),
                     ClimateRenderCache.INSTANCE.getMonthlyRainfall()
+                ));
+                tooltip.add("BGW: %.3f GW: %.3f Now: %.3f".formatted(
+                    ClimateRenderCache.INSTANCE.getBaseGroundwater(),
+                    ClimateRenderCache.INSTANCE.getGroundwater(),
+                    ClimateRenderCache.INSTANCE.getMonthlyGroundwater()
                 ));
                 final Vec2 wind = ClimateRenderCache.INSTANCE.getWind();
                 tooltip.add(Component.translatable("tfc.tooltip.wind_speed",

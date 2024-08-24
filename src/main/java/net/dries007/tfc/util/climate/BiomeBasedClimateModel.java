@@ -53,8 +53,27 @@ public class BiomeBasedClimateModel implements TimeInvariantClimateModel
     }
 
     @Override
+    public float getBaseGroundwater(LevelReader level, BlockPos pos)
+    {
+        return 0;
+    }
+
+    @Override
+    public float getGroundwater(LevelReader level, BlockPos pos)
+    {
+        return getRainfall(level, pos);
+    }
+
+
+    @Override
     public float getMonthlyRainfall(LevelReader level, BlockPos pos, float fractionOfYear)
     {
         return getRainfall(level, pos);
+    }
+
+    @Override
+    public float getMonthlyGroundwater(LevelReader level, BlockPos pos, float fractionOfYear)
+    {
+        return getGroundwater(level, pos);
     }
 }

@@ -62,7 +62,7 @@ public interface ClimateModel
     float getRainfall(LevelReader level, BlockPos pos);
 
     /**
-     * Get the annual varaince in rainfall for a given position.
+     * Get the annual variance in rainfall for a given position.
      * Positive values indicate wet summers, Negative values indicate wet winters.
      *
      * @return The annual variance in the immediate rate of rainfall, in percentage of annual. Should be in the range [-1, 1]
@@ -70,11 +70,32 @@ public interface ClimateModel
     float getRainVariance(LevelReader level, BlockPos pos);
 
     /**
+     * Get the base average annual groundwater level, based on proximity to freshwater bodies.
+     *
+     * @return The annual base groundwater in mm. Should be in the range [0, 500]
+     */
+    float getBaseGroundwater(LevelReader level, BlockPos pos);
+
+    /**
+     * Get the average annual groundwater level, typically the sum of rainfall and base groundwater.
+     *
+     * @return The annual groundwater in mm. Should be in the range [0, 500]
+     */
+    float getGroundwater(LevelReader level, BlockPos pos);
+
+    /**
      * Get the average rainfall for the current time of year.
      *
      * @return the immediate rainfall, in mm/year. Should be in the range [0, 1000]
      */
     float getMonthlyRainfall(LevelReader level, BlockPos pos, float fractionOfYear);
+
+    /**
+     * Get the average groundwater level for the current time of year, typically the sum of the base groundwater level and the monthly rainfall
+     *
+     * @return the immediate rainfall, in mm/year. Should be in the range [0, 1000]
+     */
+    float getMonthlyGroundwater(LevelReader level, BlockPos pos, float fractionOfYear);
 
     /**
      * @return A value in the range [0, 1] scaling the sky fog as a % of the render distance

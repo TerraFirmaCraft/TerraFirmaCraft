@@ -111,6 +111,7 @@ public record RegionChunkDataGenerator(
 
         final LerpFloatLayer rainfallGridLayer = new LerpFloatLayer(point00.rainfall, point01.rainfall, point10.rainfall, point11.rainfall);
         final LerpFloatLayer rainfallVarianceGridLayer = new LerpFloatLayer(point00.rainfallVariance, point01.rainfallVariance, point10.rainfallVariance, point11.rainfallVariance);
+        final LerpFloatLayer baseGroundwaterGridLayer = new LerpFloatLayer(0f, 0f, 0f, 0f);
         final LerpFloatLayer temperatureGridLayer = new LerpFloatLayer(point00.temperature, point01.temperature, point10.temperature, point11.temperature);
 
         // The exact grid coordinates of the bottom (00) value of this chunk
@@ -128,17 +129,19 @@ public record RegionChunkDataGenerator(
         // The base rainfall and temperature layers, scaled down to chunk resolution
         LerpFloatLayer rainfallLayer = rainfallGridLayer.scaled(deltaX, deltaZ, dG);
         LerpFloatLayer rainfallVarianceLayer = rainfallVarianceGridLayer.scaled(deltaX, deltaZ, dG);
+        LerpFloatLayer baseGroundwaterLayer = baseGroundwaterGridLayer.scaled(deltaX, deltaZ, dG);
         LerpFloatLayer temperatureLayer = temperatureGridLayer.scaled(deltaX, deltaZ, dG);
 
         // Calculate local influence of rivers - when they are wide enough (which should happen only with large rivers near shores),
-        // rivers will influence the rainfall of the nearby area, thus creating a bit of a humid area in the immediate vicinity of the river
+        // rivers will influence the groundwater of the nearby area, thus creating a bit of a humid area in the immediate vicinity of the river
+        // groundwater is used instead of rainfall in order to avoid strange rain effects
         //
         // The radius that the partition point will find rivers is approx ~5 grid distance (~500 blocks), so we should be fine to influence
         // on a smaller scale of ~100 blocks around the river
-        float rainfall00 = rainfallLayer.value00();
-        float rainfall01 = rainfallLayer.value01();
-        float rainfall10 = rainfallLayer.value10();
-        float rainfall11 = rainfallLayer.value11();
+        float groundwater00 = baseGroundwaterLayer.value00();
+        float groundwater01 = baseGroundwaterLayer.value01();
+        float groundwater10 = baseGroundwaterLayer.value10();
+        float groundwater11 = baseGroundwaterLayer.value11();
 
         for (RiverEdge edge : regionGenerator.getOrCreatePartitionPoint(gridX, gridZ).rivers())
         {
@@ -148,15 +151,15 @@ public record RegionChunkDataGenerator(
             {
                 final float widthInfluence = Mth.map(edge.width, MIN_RIVER_WIDTH, RiverEdge.MAX_WIDTH, 0f, 1.0f);
 
-                rainfall00 = adjustRiverRainfall(rainfall00, rainfallLayer.value00(), widthInfluence, fractal, exactGridX, exactGridZ);
-                rainfall01 = adjustRiverRainfall(rainfall01, rainfallLayer.value01(), widthInfluence, fractal, exactGridX, exactGridZ + dG);
-                rainfall10 = adjustRiverRainfall(rainfall10, rainfallLayer.value10(), widthInfluence, fractal, exactGridX + dG, exactGridZ);
-                rainfall11 = adjustRiverRainfall(rainfall11, rainfallLayer.value11(), widthInfluence, fractal, exactGridX + dG, exactGridZ + dG);
+                groundwater00 = adjustGroundwaterNearRiver(groundwater00, baseGroundwaterLayer.value00(), widthInfluence, fractal, exactGridX, exactGridZ);
+                groundwater01 = adjustGroundwaterNearRiver(groundwater01, baseGroundwaterLayer.value01(), widthInfluence, fractal, exactGridX, exactGridZ + dG);
+                groundwater10 = adjustGroundwaterNearRiver(groundwater10, baseGroundwaterLayer.value10(), widthInfluence, fractal, exactGridX + dG, exactGridZ);
+                groundwater11 = adjustGroundwaterNearRiver(groundwater11, baseGroundwaterLayer.value11(), widthInfluence, fractal, exactGridX + dG, exactGridZ + dG);
             }
         }
 
-        // Update the rainfall layer with the new influenced values, and then clamp to within the target range
-        rainfallLayer = new LerpFloatLayer(rainfall00, rainfall01, rainfall10, rainfall11)
+        // Update the groundwater layer with the new influenced values, and then clamp to within the target range
+        baseGroundwaterLayer = new LerpFloatLayer(groundwater00, groundwater01, groundwater10, groundwater11)
             .apply(value -> Mth.clamp(value, 0, 500));
 
         // This layer is sampled per-chunk, to avoid the waste of two additional zoom layers
@@ -165,6 +168,7 @@ public record RegionChunkDataGenerator(
         data.generatePartial(
             rainfallLayer,
             rainfallVarianceLayer,
+            baseGroundwaterLayer,
             temperatureLayer,
             forestType
         );
@@ -172,14 +176,15 @@ public record RegionChunkDataGenerator(
         return data;
     }
 
-    private float adjustRiverRainfall(float currentRainfall, float originalRainfall, float widthInfluence, MidpointFractal fractal, double gridX, double gridZ)
+    // River effects on groundwater are more pronounced at low rainfalls
+    private float adjustGroundwaterNearRiver(float currentValue, float originalValue, float widthInfluence, MidpointFractal fractal, double gridX, double gridZ)
     {
         final float distance = (float) fractal.intersectDistance(gridX, gridZ);
         final float distanceInfluence = Mth.clampedMap(distance, 0f, RIVER_INFLUENCE_SQ, 1f, 0f);
-        final float targetRainfall = Math.min(originalRainfall + 275f, 500f);
+        final float targetValue = Math.min(originalValue + 300f, 500f);
 
         // Take the max of any influence with adjacent rivers
-        return Math.max(currentRainfall, Mth.lerp(distanceInfluence * widthInfluence, originalRainfall, targetRainfall));
+        return Math.max(currentValue, Mth.lerp(distanceInfluence * widthInfluence, originalValue, targetValue));
     }
 
     @Override

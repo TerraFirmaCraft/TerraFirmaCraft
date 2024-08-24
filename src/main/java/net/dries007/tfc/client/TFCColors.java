@@ -14,7 +14,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.ColorResolver;
 import net.minecraft.world.level.CommonLevelAccessor;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 
 import net.dries007.tfc.util.Helpers;
@@ -22,15 +21,10 @@ import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.util.calendar.Season;
 import net.dries007.tfc.util.climate.Climate;
-import net.dries007.tfc.util.climate.ClimateModel;
-import net.dries007.tfc.util.climate.OverworldClimateModel;
 import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.biome.TFCBiomes;
-import net.dries007.tfc.world.chunkdata.ChunkData;
 
 import org.jetbrains.annotations.Nullable;
-
-import static net.dries007.tfc.util.climate.Climate.*;
 
 public final class TFCColors
 {
@@ -159,7 +153,7 @@ public final class TFCColors
 
         if (timeOfYear > autumnEnd)
         {
-            return getAverageTempClimateColor(FOLIAGE_WINTER_COLORS_CACHE, pos, temp);
+            return getAverageClimateColor(FOLIAGE_WINTER_COLORS_CACHE, pos, temp);
         }
         else if (timeOfYear > autumnStart)
         {
@@ -171,7 +165,7 @@ public final class TFCColors
         }
         else
         {
-            return getAverageTempClimateColor(FOLIAGE_WINTER_COLORS_CACHE, pos, temp);
+            return getAverageClimateColor(FOLIAGE_WINTER_COLORS_CACHE, pos, temp);
         }
     }
 
@@ -250,43 +244,43 @@ public final class TFCColors
         if (level != null)
         {
             final float temperature = Climate.getTemperature(level, pos);
-            final float rainfall = Climate.getRainfall(level, pos);
-            return getClimateColor(colorCache, temperature, rainfall);
+            final float groundwater = Climate.getMonthlyGroundwater(level, pos);
+            return getClimateColor(colorCache, temperature, groundwater);
         }
         return 0;
     }
 
-    private static int getAverageTempClimateColor(int[] colorCache, BlockPos pos)
+    private static int getAverageClimateColor(int[] colorCache, BlockPos pos)
     {
         final Level level = ClientHelpers.getLevel();
         if (level != null)
         {
             final float averageTemperature = Climate.getAverageTemperature(level, pos);
-            final float rainfall = Climate.getRainfall(level, pos);
-            return getClimateColor(colorCache, averageTemperature, rainfall);
+            final float groundwater = Climate.getGroundwater(level, pos);
+            return getClimateColor(colorCache, averageTemperature, groundwater);
         }
         return 0;
     }
 
-    private static int getAverageTempClimateColor(int[] colorCache, BlockPos pos, float averageTemperature)
+    private static int getAverageClimateColor(int[] colorCache, BlockPos pos, float averageTemperature)
     {
         final Level level = ClientHelpers.getLevel();
         if (level != null)
         {
-            final float rainfall = Climate.getRainfall(level, pos);
-            return getClimateColor(colorCache, averageTemperature, rainfall);
+            final float groundwater = Climate.getGroundwater(level, pos);
+            return getClimateColor(colorCache, averageTemperature, groundwater);
         }
         return 0;
     }
 
 
     /**
-     * Queries a color map based on temperature and rainfall parameters. Temperature is horizontal, left is high. Rainfall is vertical, up is high.
+     * Queries a color map based on temperature and groundwater parameters. Temperature is horizontal, left is high. Groundwater is vertical, up is high.
      */
-    private static int getClimateColor(int[] colorCache, float temperature, float rainfall)
+    private static int getClimateColor(int[] colorCache, float temperature, float groundwater)
     {
         final int temperatureIndex = 255 - Mth.clamp((int) ((temperature + 20f) * 255f / 50f), 0, 255);
-        final int rainfallIndex = 255 - Mth.clamp((int) (rainfall * 255f / 500f), 0, 255);
+        final int rainfallIndex = 255 - Mth.clamp((int) (groundwater * 255f / 500f), 0, 255);
         return colorCache[temperatureIndex | (rainfallIndex << 8)];
     }
 
