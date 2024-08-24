@@ -43,6 +43,7 @@ import net.dries007.tfc.util.tracker.WorldTracker;
 /**
  * This is a helper class which handles environment effects
  * It would be called by <a href="https://github.com/MinecraftForge/MinecraftForge/pull/7235">MinecraftForge#7235</a>, until then we simply mixin the call to our handler
+ * todo: change pretty much all of this
  */
 public final class EnvironmentHelpers
 {
@@ -135,9 +136,10 @@ public final class EnvironmentHelpers
         return level.getBlockState(pos).isFaceSturdy(level, pos, Direction.UP);
     }
 
+    @Deprecated
     public static boolean isRainingOrSnowing(Level level, BlockPos pos)
     {
-        return level.isRaining() && WorldTracker.get(level).isRaining(level, pos);
+        return level.isRainingAt(pos); // todo: verify that this in fact works, and is redirected to include local rainfall effects properly
     }
 
     /**

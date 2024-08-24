@@ -175,8 +175,6 @@ public class ClientForgeEventHandler
                     tooltip.add("[Waiting for chunk data]");
                 }
 
-                WorldTracker.get(mc.level).addDebugTooltip(tooltip);
-
                 final MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
                 if (server != null && server.overworld().getChunkSource().getGenerator() instanceof ChunkGeneratorExtension ex)
                 {

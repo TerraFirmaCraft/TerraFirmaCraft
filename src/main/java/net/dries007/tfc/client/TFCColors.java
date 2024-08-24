@@ -222,33 +222,6 @@ public final class TFCColors
     }
 
     /**
-     * Gets a season for the current time and position, adjusting for noise based on the position.
-     */
-    private static Season getAdjustedNoisySeason(BlockPos pos)
-    {
-        Month currentMonth = Calendars.CLIENT.getCalendarMonthOfYear();
-        Season season = currentMonth.getSeason();
-        float seasonDelta = 0;
-        float monthDelta = Calendars.CLIENT.getCalendarFractionOfMonth();
-        switch (currentMonth)
-        {
-            case FEBRUARY, MAY, AUGUST, NOVEMBER -> seasonDelta = 0.5f * monthDelta;
-            case MARCH, JUNE, SEPTEMBER, DECEMBER -> {
-                season = season.previous();
-                seasonDelta = 0.5f + 0.5f * monthDelta;
-            }
-        }
-
-        // Smoothly transition - based on when the chunk updates - from one season to the next
-        int positionDeltaHash = (Helpers.hash(836494186029734123L, pos) & 255);
-        if (positionDeltaHash < 256 * seasonDelta)
-        {
-            season = season.next();
-        }
-        return season;
-    }
-
-    /**
      * Queries a color map based on temperature and rainfall parameters, by sampling the client temperature and rainfall at a given position. Temperature is horizontal, left is high. Rainfall is vertical, up is high.
      */
     private static int getClimateColor(int[] colorCache, BlockPos pos)
@@ -259,18 +232,6 @@ public final class TFCColors
             final float temperature = Climate.getTemperature(level, pos);
             final float rainfall = Climate.getRainfall(level, pos);
             return getClimateColor(colorCache, temperature, rainfall);
-        }
-        return 0;
-    }
-
-    private static int getAverageTempClimateColor(int[] colorCache, BlockPos pos)
-    {
-        final Level level = ClientHelpers.getLevel();
-        if (level != null)
-        {
-            final float averageTemperature = Climate.getAverageTemperature(level, pos);
-            final float rainfall = Climate.getRainfall(level, pos);
-            return getClimateColor(colorCache, averageTemperature, rainfall);
         }
         return 0;
     }

@@ -17,9 +17,10 @@ import net.dries007.tfc.mixin.accessor.BiomeAccessor;
 /**
  * A default climate model, for dimensions that are entirely biome determined (i.e. vanilla).
  */
-public class BiomeBasedClimateModel implements TimeInvariantClimateModel
+public enum BiomeBasedClimateModel implements ClimateModel
 {
-    public static final BiomeBasedClimateModel INSTANCE = new BiomeBasedClimateModel();
+    INSTANCE;
+
     public static final StreamCodec<ByteBuf, BiomeBasedClimateModel> STREAM_CODEC = StreamCodec.unit(INSTANCE);
 
     @Override
@@ -29,9 +30,9 @@ public class BiomeBasedClimateModel implements TimeInvariantClimateModel
     }
 
     @Override
-    public float getTemperature(LevelReader level, BlockPos pos)
+    public float getAverageTemperature(LevelReader level, BlockPos pos)
     {
-        return Climate.toActualTemperature(((BiomeAccessor) (Object) level.getBiome(pos).value()).invoke$getTemperature(pos));
+        return Climate.fromVanilla(((BiomeAccessor) (Object) level.getBiome(pos).value()).invoke$getTemperature(pos));
     }
 
     @Override

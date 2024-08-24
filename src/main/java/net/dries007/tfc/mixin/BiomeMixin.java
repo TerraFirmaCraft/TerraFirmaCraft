@@ -44,25 +44,4 @@ public abstract class BiomeMixin implements BiomeBridge
         }
         return tfc$cachedExtension.value();
     }
-
-    /**
-     * Use climate for weather, bypassing {@link Biome#warmEnoughToRain(BlockPos)}, and also use world tracker for additional rain check.
-     */
-    @Redirect(method = "shouldSnow", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/biome/Biome;warmEnoughToRain(Lnet/minecraft/core/BlockPos;)Z"))
-    private boolean betterShouldSnowCheck(Biome biome, BlockPos pos, LevelReader level)
-    {
-        return Climate.warmEnoughToRain(level, pos, biome);
-    }
-
-    /**
-     * Redirect a call to {@link Biome#warmEnoughToRain(BlockPos)} with one that has a world and position context
-     * <p>
-     * In vanilla this is either called from ServerWorld, or from world generation with ISeedReader - both of which are able to cast up to IWorld.
-     * FFor cases where this cast is not valid we just default to the vanilla temperature.
-     */
-    @Redirect(method = "shouldFreeze(Lnet/minecraft/world/level/LevelReader;Lnet/minecraft/core/BlockPos;Z)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/biome/Biome;warmEnoughToRain(Lnet/minecraft/core/BlockPos;)Z"))
-    private boolean shouldFreezeWithClimate(Biome biome, BlockPos pos, LevelReader level)
-    {
-        return Climate.warmEnoughToRain(level, pos, biome);
-    }
 }

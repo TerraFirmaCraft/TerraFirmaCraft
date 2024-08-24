@@ -16,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.EnvironmentHelpers;
+import net.dries007.tfc.util.tracker.WeatherHelpers;
 
 @Mixin(ServerLevel.class)
 public abstract class ServerLevelMixin
@@ -39,6 +40,15 @@ public abstract class ServerLevelMixin
         {
             final ServerLevel level = (ServerLevel) (Object) this;
             EnvironmentHelpers.tickChunk(level, chunk, level.getProfiler());
+        }
+    }
+
+    @Inject(method = "advanceWeatherCycle", at = @At("HEAD"), cancellable = true)
+    private void doClimateBasedWeatherCycle(CallbackInfo ci)
+    {
+        if (WeatherHelpers.doClimateBasedWeatherCycle((ServerLevel) (Object) this))
+        {
+            ci.cancel();
         }
     }
 }

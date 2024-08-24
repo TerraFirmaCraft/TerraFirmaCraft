@@ -37,7 +37,6 @@ public final class PacketHandler
         register.playToClient(ProspectedPacket.TYPE, ProspectedPacket.CODEC, onClient(ProspectedPacket::handle));
         register.playToClient(EffectExpirePacket.TYPE, EffectExpirePacket.CODEC, onClient(EffectExpirePacket::handle));
         register.playToClient(UpdateClimateModelPacket.TYPE, UpdateClimateModelPacket.CODEC, onClient(UpdateClimateModelPacket::handle));
-        register.playToClient(RainfallUpdatePacket.TYPE, RainfallUpdatePacket.CODEC, onClient(RainfallUpdatePacket::handle));
         register.playToClient(DataManagerSyncPacket.TYPE, DataManagerSyncPacket.CODEC, (packet, context) -> context.enqueueWork(() -> packet.handle(context.connection().isMemoryConnection())));
 
         // Client -> Server
