@@ -44,20 +44,6 @@ public class SealedBarrelRecipe extends BarrelRecipe
         SealedBarrelRecipe::new
     );
 
-    private static final BiMap<ResourceLocation, SealedBarrelRecipe> CACHE = IndirectHashCollection.createForRecipeId(TFCRecipeTypes.BARREL_SEALED);
-
-    @Nullable
-    public static SealedBarrelRecipe byId(ResourceLocation id)
-    {
-        return CACHE.get(id);
-    }
-
-    @Nullable
-    public static ResourceLocation getId(SealedBarrelRecipe recipe)
-    {
-        return CACHE.inverse().get(recipe);
-    }
-
     private final int duration;
     private final Optional<ItemStackProvider> onSeal;
     private final Optional<ItemStackProvider> onUnseal;

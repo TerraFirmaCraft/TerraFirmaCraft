@@ -29,7 +29,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/wood/birch_scribing_table",
+      "recipe": "tfc:crafting/wood/scribing_table/birch",
       "text": "Рецепт виготовлення столу писаря"
     },
     {

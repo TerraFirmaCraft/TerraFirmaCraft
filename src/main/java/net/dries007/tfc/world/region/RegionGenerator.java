@@ -166,7 +166,7 @@ public class RegionGenerator
 
     public Region.Point getOrCreateRegionPoint(int gridX, int gridZ)
     {
-        return getOrCreateRegion(gridX, gridZ).requireAt(gridX, gridZ);
+        return getOrCreateRegion(gridX, gridZ).atOrThrow(gridX, gridZ);
     }
 
     @VisibleForTesting
@@ -208,9 +208,8 @@ public class RegionGenerator
     @VisibleForTesting
     public enum Task
     {
-        INIT(c -> {}),
+        INIT(Init.INSTANCE),
         ADD_CONTINENTS(AddContinents.INSTANCE),
-        SHRINK_TO_CELL(ShrinkToCell.INSTANCE),
         ANNOTATE_DISTANCE_TO_CELL_EDGE(AnnotateDistanceToCellEdge.INSTANCE),
         FLOOD_FILL_SMALL_OCEANS(FloodFillSmallOceans.INSTANCE),
         ADD_ISLANDS(AddIslands.INSTANCE),
@@ -245,7 +244,6 @@ public class RegionGenerator
         public final RandomSource random;
 
         public final Region region;
-        public int minX, maxX, minZ, maxZ;
 
         Context(BiConsumer<Task, Region> viewer, Cellular2D.Cell regionCell, long seed)
         {
@@ -255,11 +253,6 @@ public class RegionGenerator
 
             final long regionSeed = seed ^ Float.floatToIntBits((float) regionCell.noise()) * 7189234123L;
             this.random = new XoroshiroRandomSource(regionSeed);
-
-            this.minX = Integer.MAX_VALUE;
-            this.minZ = Integer.MAX_VALUE;
-            this.maxX = Integer.MIN_VALUE;
-            this.maxZ = Integer.MIN_VALUE;
         }
 
         Context runTasks()

@@ -116,6 +116,7 @@ import net.dries007.tfc.common.blocks.wood.TFCSlabBlock;
 import net.dries007.tfc.common.blocks.wood.TFCStairBlock;
 import net.dries007.tfc.common.blocks.wood.TFCWallHangingSignBlock;
 import net.dries007.tfc.common.blocks.wood.Wood;
+import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.common.fluids.SimpleFluid;
 import net.dries007.tfc.common.fluids.TFCFluids;
@@ -544,13 +545,12 @@ public final class TFCBlocks
 
     public static ToIntFunction<BlockState> lavaLoggedBlockEmission()
     {
-        // This is resolved only at registration time, so we can't use the fast check (.getFluid() == Fluids.LAVA) and we have to use the slow check instead
-        return state -> state.getValue(TFCBlockStateProperties.WATER_AND_LAVA).is(((IFluidLoggable) state.getBlock()).getFluidProperty().keyFor(Fluids.LAVA)) ? 15 : 0;
+        return state -> state.getValue(((IFluidLoggable) state.getBlock()).getFluidProperty()).is(Fluids.LAVA) ? 15 : 0;
     }
 
     public static ToIntFunction<BlockState> litBlockEmission(int lightValue)
     {
-        return (state) -> state.getValue(BlockStateProperties.LIT) ? lightValue : 0;
+        return state -> state.getValue(BlockStateProperties.LIT) ? lightValue : 0;
     }
 
 

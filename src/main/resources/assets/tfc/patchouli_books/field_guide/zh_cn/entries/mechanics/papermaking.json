@@ -26,7 +26,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "minecraft:map",
-      "recipe2": "minecraft:name_tag"
+      "recipe2": "tfc:crafting/name_tag"
     },
     {
       "type": "patchouli:crafting",
@@ -36,7 +36,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/lectern/kapok",
-      "recipe2": "tfc:crafting/wood/planks/kapok_bookshelf"
+      "recipe2": "tfc:crafting/wood/bookshelf/kapok"
     },
     {
       "type": "patchouli:text",

@@ -25,6 +25,5 @@
   "output_fluid": {
     "amount": 500,
     "id": "tfc:cider"
-  },
-  "tooltip": ""
+  }
 }

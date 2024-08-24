@@ -29,7 +29,7 @@
     },
     {
       "type": "tfc:anvil_recipe",
-      "recipe": "tfc:anvil/wrought_iron_grill",
+      "recipe": "tfc:anvil/grill",
       "text": "烤架是通过在$(l:mechanics/anvils)砧$()上锻造$(thing)锻铁双层薄板$()制成的。$(br2)下一页展示了烤架界面。和篝火类似，它有四个燃料槽，必须在顶部空格中添加燃料。温度指示器也和篝火相同。唯一不同的是用于加热物品的槽的数量变成了五个。"
     },
     {

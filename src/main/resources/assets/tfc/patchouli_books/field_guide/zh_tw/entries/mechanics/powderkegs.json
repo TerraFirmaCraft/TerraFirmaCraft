@@ -39,7 +39,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/gunpowder",
-      "recipe2": "tfc:crafting/gunpowder_graphite"
+      "recipe2": "tfc:crafting/gunpowder_with_graphite"
     },
     {
       "type": "patchouli:text",

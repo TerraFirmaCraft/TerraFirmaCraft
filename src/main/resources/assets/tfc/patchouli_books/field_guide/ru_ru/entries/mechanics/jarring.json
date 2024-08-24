@@ -28,8 +28,8 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/wood/jar_shelf/oak",
-      "text": "$(thing)Полки для банок$() могут быть прикреплены к твердым стенам. Их можно разместить напрямую или щелкнув по существующему блоку размещенных банок. Верх полки для банок считается твердой поверхностью для размещения предметов, больше банок или других блоков."
+      "recipe": "tfc:crafting/wood/shelf/oak",
+      "text": "$(thing)Shelves$() can be attached to solid walls. Items, including jars, can be placed on top of them by using the item - including jars - on the shelf, or underneath."
     }
   ],
   "read_by_default": true

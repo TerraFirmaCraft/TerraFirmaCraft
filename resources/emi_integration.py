@@ -27,11 +27,17 @@ def generate(rm: ResourceManager):
     c_item('foods/salad', 'Salads')
     tfc_item('foods/preserves', 'Preserves')
     tfc_item('foods/sealed_preserves', 'Sealed Preserves')
+    tfc_item('foods/sweeteners', 'Sweeteners')
+    tfc_item('foods/jars', 'Jars')
     c_item('minecarts')
     c_item('sands/hematitic', 'Hematitic Sands')
     c_item('sands/olivine', 'Olivine Sands')
     c_item('sands/silica', 'Silica Sands')
     c_item('sands/volcanic', 'Volcanic Sands')
+    tfc_item('glass_batches')
+    tfc_item('glass_batches_not_tier_1', 'Tier II-IV Glass Batches')
+    tfc_item('glass_batches_tier_2', 'Tier I-II Glass Batches')
+    tfc_item('glass_batches_tier_3', 'Tier I-III Glass Batches')
     c_item('tools/blowpipe', 'Blowpipe')
     c_item('tools/chisel', 'Chisels')
     c_item('tools/glassworking', 'Glass Working Tools')
@@ -87,7 +93,6 @@ def generate(rm: ResourceManager):
     tfc_item('usable_in_salad', 'Salad Ingredients')
     tfc_item('usable_in_sandwich', 'Sandwich Ingredients')
     tfc_item('usable_in_soup', 'Soup Ingredients')
-    tfc_item('salad_bowls')
 
     tfc_item('anvils')
     tfc_item('axles')
@@ -111,6 +116,29 @@ def generate(rm: ResourceManager):
     tfc_item('unfired_vessels')
     tfc_item('tool_racks')
     tfc_item('sluices')
+    tfc_item('wild_crops')
+    tfc_item('support_beams')
+    tfc_item('fallen_leaves')
+    tfc_item('glass_bottles')
+    tfc_item('grass')
+    tfc_item('high_quality_cloth')
+    tfc_item('mud')
+    tfc_item('mud_bricks')
+    tfc_item('ore_deposits')
+    tfc_item('ore_pieces', 'Ores')
+    tfc_item('small_ore_pieces', 'Small Ores')
+    tfc_item('plants')
+    tfc_item('scribing_tables')
+    tfc_item('aqueducts')
+    tfc_item('dirt')
+    tfc_item('clay_indicators')
+    tfc_item('sewing_dark_cloth', 'Dark Cloths')
+    tfc_item('sewing_light_cloth', 'Light Cloths')
+    tfc_item('sewing_needles')
+    tfc_item('sewing_tables')
+    tfc_item('small_fishing_bait')
+    tfc_item('large_fishing_bait')
+    tfc_item('tannin_logs', 'Tannin Ingredients')
 
     tfc_item('blast_furnace_fuel', 'Blast Furnace Fuels')
     tfc_item('blast_furnace_sheets', 'Blast Furnace Sheets')
@@ -120,6 +148,9 @@ def generate(rm: ResourceManager):
     tfc_item('firepit_kindling', 'Firepit Kindling')
     tfc_item('forge_fuel', 'Charcoal Forge Fuels')
     tfc_item('gem_powders', 'Gemstone Powders')
+    tfc_item('scraping_waxes', 'Waxes')
+    tfc_item('inefficient_logging_axes', 'Inefficient Axes')
+    tfc_item('quern_handstones', 'Handstones')
 
     tfc_item('colored_alabaster_bricks')
     tfc_item('colored_banners')
@@ -148,6 +179,9 @@ def generate(rm: ResourceManager):
                 c_item('ores/%s/%s' % (info.metal, grade), lang('%s %s ores', grade, info.metal))
         else:
             c_item('ores/%s' % ore, lang('%s ores', ore))
+
+    for wood in WOODS:
+        tfc_item('%s_logs' % wood)
 
     rm.data('emi:tag/exclusions/tfc', {
         'fluid': ignore_tfc(
@@ -192,6 +226,21 @@ def generate(rm: ResourceManager):
             'mob_feet_armor',
             'mob_head_armor',
             'mob_leg_armor',
+            'trip_hammers',
+            'thatch_bed_hides',
+            'soup_bowls',
+            'salad_bowls',
+            'all_blowpipes',
+            'glass_powders',
+            'log_pile_logs',
+            'rock_knapping',
+            'clay_knapping',
+            'fire_clay_knapping',
+            'goat_horn_knapping',
+            'leather_knapping',
+            'holds_small_fishing_bait',
+            'holds_large_fishing_bait',
+            'minecart_holdable',
         )
     }, root_domain='assets')
 

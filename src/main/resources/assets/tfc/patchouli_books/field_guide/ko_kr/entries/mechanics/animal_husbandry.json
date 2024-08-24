@@ -72,13 +72,13 @@
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/cooked_egg",
+      "recipe": "tfc:heating/food/cooked_egg",
       "text": "$(thing)알$()은 굽거나 삶아 먹을 수 있습니다. 수컷 난생동물은 암컷을 수정시킬 수 있으며, 수정된 암컷은 둥지 상자에 알을 낳습니다. 알에는 부화하기까지 얼마나 걸리는지에 대한 툴팁이 있습니다."
     },
     {
       "type": "tfc:knapping_recipe",
       "anchor": "horses",
-      "recipe": "tfc:leather_knapping/saddle",
+      "recipe": "tfc:knapping/saddle",
       "text": "$(thing)말속$() 동물들은 타거나 길들일 수 있습니다. 그들을 타기 위해서는 15% 이상의 친밀도가 필요합니다."
     },
     {

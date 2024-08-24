@@ -57,7 +57,7 @@
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/cod",
+      "recipe": "tfc:heating/food/cooked_cod",
       "text": "A fogueira também é um bom dispositivo para $(thing)cozinhar comida$(). Todas as carnes e massas cruas podem ser cozidas em uma fogueira, que prolongará sua vida útil. (Mais sobre isso $(l:mechanics/decay)aqui$())"
     },
     {

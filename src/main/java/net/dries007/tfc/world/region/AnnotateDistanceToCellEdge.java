@@ -8,6 +8,7 @@ package net.dries007.tfc.world.region;
 
 import java.util.BitSet;
 import it.unimi.dsi.fastutil.ints.IntArrayFIFOQueue;
+import org.jetbrains.annotations.Nullable;
 
 public enum AnnotateDistanceToCellEdge implements RegionTask
 {
@@ -17,7 +18,7 @@ public enum AnnotateDistanceToCellEdge implements RegionTask
     public void apply(RegionGenerator.Context context)
     {
         final Region region = context.region;
-        final BitSet explored = new BitSet(region.sizeX() * region.sizeZ());
+        final BitSet explored = new BitSet(region.size());
         final IntArrayFIFOQueue queue = new IntArrayFIFOQueue();
 
         for (int dx = 0; dx < region.sizeX(); dx++)
@@ -25,7 +26,7 @@ public enum AnnotateDistanceToCellEdge implements RegionTask
             for (int dz = 0; dz < region.sizeZ(); dz++)
             {
                 final int index = dx + region.sizeX() * dz;
-                final Region.Point point = region.maybeAt(dx + region.minX(), dz + region.minZ());
+                final Region.Point point = region.at(dx + region.minX(), dz + region.minZ());
                 if (point == null || isUnbounded(region, dx, dz))
                 {
                     explored.set(index);
@@ -41,29 +42,24 @@ public enum AnnotateDistanceToCellEdge implements RegionTask
         while (!queue.isEmpty())
         {
             final int last = queue.dequeueInt();
-            final Region.Point lastPoint = region.data()[last];
+            final Region.Point lastPoint = region.atIndex(last);
             final int nextDistance = lastPoint == null ? 0 : lastPoint.distanceToEdge + 1;
 
             for (int dx = -1; dx <= 1; dx++)
             {
                 for (int dz = -1; dz <= 1; dz++)
                 {
-                    final int next = region.offset(last, dx, dz);
-                    if (next == -1)
-                    {
-                        continue;
-                    }
-                    final Region.Point point = region.data()[next];
+                    final @Nullable Region.Point point = region.atOffset(last, dx, dz);
                     if (point != null && point.distanceToEdge == 0)
                     {
-                        if (!explored.get(next))
+                        if (!explored.get(point.index))
                         {
                             point.distanceToEdge = (byte) nextDistance;
-                            explored.set(next);
-                            queue.enqueue(next);
+                            explored.set(point.index);
+                            queue.enqueue(point.index);
                         }
+                        explored.set(point.index);
                     }
-                    explored.set(next);
                 }
             }
         }
@@ -73,5 +69,4 @@ public enum AnnotateDistanceToCellEdge implements RegionTask
     {
         return dx == 0 || dz == 0 || dx == region.sizeX() - 1 || dz == region.sizeZ() - 1;
     }
-
 }

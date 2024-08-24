@@ -57,7 +57,7 @@
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/cod",
+      "recipe": "tfc:heating/food/cooked_cod",
       "text": "У багатті також можна $(thing)приготувати їжу$(). Сире м’ясо, рибу, тісто можна готувати у багатті, що подовжить термін їх зберігання. (Докладніше про це - $(l:mechanics/decay)тут$())."
     },
     {

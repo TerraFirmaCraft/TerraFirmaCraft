@@ -186,11 +186,10 @@ public final class BlockEntityTooltips
                 final long tickLeft = barrel.getRemainingTicks();
                 if (tickLeft > 0)
                 {
-                    BarrelRecipe recipe = barrel.getRecipe();
+                    final Component recipe = barrel.getRecipeTooltip();
                     if (recipe != null)
                     {
-                        tooltip.accept(recipe.getTranslationComponent());
-                        // this is the translation key used in the barrel class, if that changes we should change it in barrel screen too.
+                        tooltip.accept(recipe);
                         tooltip.accept(Component.translatable("tfc.jade.sealed_date", ICalendar.getTimeAndDate(Calendars.get(level).ticksToCalendarTicks(barrel.getSealedTick()), Calendars.get(level).getCalendarDaysInMonth())));
                         timeLeft(level, tooltip, tickLeft);
                     }

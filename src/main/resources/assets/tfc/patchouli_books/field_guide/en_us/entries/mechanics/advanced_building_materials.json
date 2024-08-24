@@ -22,7 +22,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/alabaster_brick",
-      "recipe2": "tfc:crafting/alabaster_bricks",
+      "recipe2": "tfc:crafting/alabaster/bricks",
       "title": "Alabaster Bricks"
     },
     {
@@ -32,8 +32,8 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/alabaster/magenta_bricks_stairs",
-      "recipe2": "tfc:crafting/alabaster/magenta_polished_slab",
+      "recipe": "tfc:crafting/alabaster/bricks/magenta_stairs",
+      "recipe2": "tfc:crafting/alabaster/polished/magenta_slab",
       "title": "Stairs and Slabs"
     },
     {
@@ -44,8 +44,8 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/rock/gneiss_brick",
-      "recipe2": "tfc:crafting/rock/gneiss_bricks"
+      "recipe": "tfc:crafting/brick/gneiss",
+      "recipe2": "tfc:crafting/rock/bricks/gneiss"
     },
     {
       "type": "patchouli:text",
@@ -53,8 +53,8 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/rock/gneiss_chiseled",
-      "recipe2": "tfc:crafting/rock/gneiss_cracked"
+      "recipe": "tfc:crafting/rock/chiseled/gneiss",
+      "recipe2": "tfc:crafting/rock/cracked_bricks/gneiss"
     }
   ],
   "read_by_default": true,

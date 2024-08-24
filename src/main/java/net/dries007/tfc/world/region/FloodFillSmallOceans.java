@@ -10,6 +10,7 @@ import java.util.BitSet;
 import it.unimi.dsi.fastutil.ints.IntArrayFIFOQueue;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import it.unimi.dsi.fastutil.ints.IntSet;
+import org.jetbrains.annotations.Nullable;
 
 public enum FloodFillSmallOceans implements RegionTask
 {
@@ -21,18 +22,13 @@ public enum FloodFillSmallOceans implements RegionTask
     public void apply(RegionGenerator.Context context)
     {
         final Region region = context.region;
-        final BitSet explored = new BitSet(region.sizeX() * region.sizeZ());
+        final BitSet explored = new BitSet(region.size());
 
-        for (int dx = 0; dx < region.sizeX(); dx++)
+        for (final var point : region.points())
         {
-            for (int dz = 0; dz < region.sizeZ(); dz++)
+            if (point != null && !point.land() && !explored.get(point.index))
             {
-                final int index = dx + region.sizeX() * dz;
-                final Region.Point point = region.data()[index];
-                if (!explored.get(index) && point != null && !point.land())
-                {
-                    floodFillSmallOcean(explored, index, region);
-                }
+                floodFillSmallOcean(explored, point.index, region);
             }
         }
     }
@@ -41,8 +37,10 @@ public enum FloodFillSmallOceans implements RegionTask
     {
         final IntSet values = new IntOpenHashSet();
         final IntArrayFIFOQueue queue = new IntArrayFIFOQueue();
+
         queue.enqueue(index);
         values.add(index);
+
         boolean unbounded = false;
         while (!queue.isEmpty())
         {
@@ -51,33 +49,27 @@ public enum FloodFillSmallOceans implements RegionTask
             {
                 for (int dz = -1; dz <= 1; dz++)
                 {
-                    final int next = region.offset(last, dx, dz);
-                    if (next == -1)
-                    {
-                        unbounded = true;
-                        continue;
-                    }
-                    final Region.Point point = region.data()[next];
+                    final @Nullable Region.Point point = region.atOffset(last, dx, dz);
                     if (point == null)
                     {
                         unbounded = true;
                         continue;
                     }
-                    if (point.land() || explored.get(next))
+                    if (point.land() || explored.get(point.index))
                     {
                         continue;
                     }
 
-                    explored.set(next);
-                    queue.enqueue(next);
-                    values.add(next);
+                    explored.set(point.index);
+                    queue.enqueue(point.index);
+                    values.add(point.index);
                 }
             }
         }
 
         if (values.size() < SMALL_OCEAN_FILL_THRESHOLD && !unbounded)
         {
-            values.forEach(i -> region.data()[i].setLand());
+            values.forEach(i -> region.atIndex(i).setLand());
         }
     }
 }

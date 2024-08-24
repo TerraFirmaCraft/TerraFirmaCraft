@@ -7,6 +7,9 @@
 package net.dries007.tfc.world.region;
 
 import java.util.List;
+import java.util.Objects;
+import com.google.common.collect.AbstractIterator;
+import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.world.layer.TFCLayers;
@@ -44,73 +47,79 @@ public final class Region
         this.sizeX = 1 + maxX - minX;
         this.sizeZ = 1 + maxZ - minZ;
 
-        this.data = new Point[Units.REGION_WIDTH_IN_GRID * Units.REGION_WIDTH_IN_GRID];
-    }
-
-    public Point atInit(int gridX, int gridZ)
-    {
-        final int index = index(gridX, gridZ);
-        final Point point = new Point();
-
-        assert data[index] == null;
-        data[index] = point;
-        return point;
-    }
-
-    public Point requireAt(int gridX, int gridZ)
-    {
-        final Point point = at(gridX, gridZ);
-        assert point != null : "Region %s does not contain point at (%d, %d)".formatted(this, gridX, gridZ);
-        return point;
+        this.data = new Point[0]; // Must initialize via `setRegionArea()` first
     }
 
     /**
-     * @return The {@link Point} at the specified grid coordinates. Errors if the coordinates are out of range of this {@link Region}'s bounding box and returns {@code null} if they are outside this {@link Region}.
+     * @return An iterator through all points present within this region.
+     */
+    public Iterable<Point> points()
+    {
+        return () -> new AbstractIterator<>()
+        {
+            int index = -1;
+
+            @Override
+            protected Point computeNext()
+            {
+                do { index++; } while (index < data.length && data[index] == null);
+                return index < data.length ? data[index] : endOfData();
+            }
+        };
+    }
+
+    /**
+     * @return A randomly chosen point within the region, possibly null.
+     */
+    @Nullable
+    public Point random(RandomSource random)
+    {
+        return data[random.nextInt(data.length)];
+    }
+
+    /**
+     * @return The {@link Point} at the specified grid coordinates. Returns {@code null} if the coordinates are out of the
+     * region's bounding box.
      */
     @Nullable
     public Point at(int gridX, int gridZ)
-    {
-        return data[index(gridX, gridZ)];
-    }
-
-    /**
-     * @return The {@link Point} at the specified grid coordinates. Returns {@code null} if the coordinates are out of range of this {@link Region}'s bounding box or outside this {@link Region}.
-     */
-    @Nullable
-    public Point maybeAt(int gridX, int gridZ)
     {
         return isIn(gridX, gridZ) ? data[index(gridX, gridZ)] : null;
     }
 
     /**
-     * @return {@code true} if the specified grid coordinates {@code (gridX, gridZ)} are within this {@link Region}'s bounding box.
+     * This is similar to {@link #atOffset} except with a zero offset, simply returns the point within the region
+     * for a known point and index.
      */
-    public boolean isIn(int gridX, int gridZ)
+    public Point atIndex(int index)
     {
-        return gridX >= minX && gridX <= maxX && gridZ >= minZ && gridZ <= maxZ;
+        return data[index];
     }
 
     /**
-     * @return An index into {@link #data()}, based on the target index, plus a coordinate offset of {@code (offsetX, offsetZ)}. Returns {@code -1} if this is out of this {@link Region}'s bounding box.
+     * @param index An index obtained from {@link Point#index} representing a point within this region.
+     * @return The point at a given {@code index}, offset by {@code (dx, dz)}, or {@code null} if the point is out of the
+     * region's bounding box.
      */
-    public int offset(int index, int offsetX, int offsetZ)
+    @Nullable
+    public Point atOffset(int index, int dx, int dz)
     {
-        final int localX = offsetX + (index % sizeX);
-        final int localZ = offsetZ + (index / sizeX);
-        return localX >= 0 && localX < sizeX && localZ >= 0 && localZ < sizeZ ? localX + sizeX * localZ : -1;
+        final int localX = dx + (index % sizeX);
+        final int localZ = dz + (index / sizeX);
+        return localX >= 0 && localX < sizeX && localZ >= 0 && localZ < sizeZ
+            ? data[localX + sizeX * localZ]
+            : null;
     }
 
-    /**
-     * @return An index into {@link #data()}, based on the global grid coordinates.
-     */
-    public int index(int gridX, int gridZ)
+    public void setRivers(List<RiverEdge> rivers)
     {
-        assert isIn(gridX, gridZ) : "Point (" + gridX + ", " + gridZ + ") not in region [" + minX + ", " + maxX + "] x [" + minZ + ", " + maxZ + "]";
+        assert this.rivers == null;
+        this.rivers = rivers;
+    }
 
-        final int localX = gridX - minX;
-        final int localZ = gridZ - minZ;
-
-        return localX + sizeX * localZ;
+    public List<RiverEdge> rivers()
+    {
+        return Objects.requireNonNull(rivers);
     }
 
     public double noise() { return noise; }
@@ -122,33 +131,72 @@ public final class Region
     public int sizeX() { return sizeX; }
     public int sizeZ() { return sizeZ; }
 
-    public void setRegionArea(Point[] data, int minX, int minZ, int maxX, int maxZ)
+    /**
+     * @return An estimate for the region's size, useful for pre-allocating bitsets to the correct capacity.
+     */
+    public int size()
     {
-        this.data = data;
+        return sizeX * sizeZ;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Region [%d, %d] x [%d, %d] at cell (%f, %f)".formatted(minX, maxX, minZ, maxZ, cellX, cellY);
+    }
+
+    /**
+     * Used by region generation, ensures that the queried point is present within the region
+     */
+    Point atOrThrow(int gridX, int gridZ)
+    {
+        final Point point = data[index(gridX, gridZ)];
+        assert point != null : "Region %s does not contain point at (%d, %d)".formatted(this, gridX, gridZ);
+        return point;
+    }
+
+    /**
+     * @return An index into {@link #data}, based on the global grid coordinates.
+     */
+    int index(int gridX, int gridZ)
+    {
+        assert isIn(gridX, gridZ) : "Point (" + gridX + ", " + gridZ + ") not in region [" + minX + ", " + maxX + "] x [" + minZ + ", " + maxZ + "]";
+
+        final int localX = gridX - minX;
+        final int localZ = gridZ - minZ;
+
+        return localX + sizeX * localZ;
+    }
+
+    /**
+     * Used by the initialization step to first initialize the point array
+     */
+    void setRegionArea(int minX, int minZ, int maxX, int maxZ)
+    {
+        this.data = new Point[sizeX * sizeZ];
         this.minX = minX;
         this.minZ = minZ;
         this.maxX = maxX;
         this.maxZ = maxZ;
         this.sizeX = 1 + maxX - minX;
         this.sizeZ = 1 + maxZ - minZ;
-
-        assert data.length == sizeX * sizeZ : "setRegionArea() data.length = %d != sizeX (%d) * sizeZ (%d)".formatted(data.length, sizeX, sizeZ);
     }
 
-    public void setRivers(List<RiverEdge> rivers)
+    /**
+     * Initializes the point at the given x, z, marking it as within the region.
+     */
+    void init(int gridX, int gridZ)
     {
-        assert this.rivers == null;
-        this.rivers = rivers;
+        final int index = index(gridX, gridZ);
+        data[index] = new Point(gridX, gridZ, index);
     }
 
-
-    public Point[] data() { return data; }
-    public List<RiverEdge> rivers() { assert rivers != null; return rivers; }
-
-    @Override
-    public String toString()
+    /**
+     * @return {@code true} if the specified grid coordinates {@code (gridX, gridZ)} are within this {@link Region}'s bounding box.
+     */
+    private boolean isIn(int gridX, int gridZ)
     {
-        return "Region [%d, %d] x [%d, %d] at cell (%f, %f)".formatted(minX, maxX, minZ, maxZ, cellX, cellY);
+        return gridX >= minX && gridX <= maxX && gridZ >= minZ && gridZ <= maxZ;
     }
 
     public static class Point
@@ -177,6 +225,16 @@ public final class Region
         public int rock = 0;
 
         private short flags;
+
+        public final int x, z;
+        public final int index;
+
+        Point(int x, int z, int index)
+        {
+            this.x = x;
+            this.z = z;
+            this.index = index;
+        }
 
         public boolean land() { return (flags & FLAG_LAND) != 0; }
         public boolean island() { return (flags & FLAG_ISLAND) != 0; }

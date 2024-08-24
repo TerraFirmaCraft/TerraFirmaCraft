@@ -20,6 +20,5 @@
       }
     ]
   },
-  "sound": "minecraft:block.fire.extinguish",
-  "tooltip": ""
+  "sound": "minecraft:block.fire.extinguish"
 }

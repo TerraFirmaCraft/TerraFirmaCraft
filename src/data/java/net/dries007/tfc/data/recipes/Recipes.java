@@ -20,14 +20,14 @@ public interface Recipes extends Accessors
 {
     HolderLookup.Provider lookup();
 
-    default float temperatureOf(Metal metal)
+    default String nameOf(Recipe<?> recipe)
     {
-        return FluidHeat.MANAGER.getOrThrow(Helpers.identifier(metal.getSerializedName())).meltTemperature();
+        return nameOf(recipe.getResultItem(lookup()).getItem());
     }
 
     default void add(Recipe<?> recipe)
     {
-        add(nameOf(recipe.getResultItem(lookup()).getItem()), recipe);
+        add(nameOf(recipe), recipe);
     }
 
     default void add(String name, Recipe<?> recipe)

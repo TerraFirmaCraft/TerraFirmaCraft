@@ -117,7 +117,7 @@ public interface BarrelRecipes extends Recipes
             .output(fluidOf(SimpleFluid.VINEGAR), 250)
             .sealed(hours(8));
 
-        final Ingredient foods = CompoundIngredient.of(
+        final Ingredient foods = ingredientOf(
             Ingredient.of(TFCTags.Items.FRUITS),
             Ingredient.of(TFCTags.Items.VEGETABLES),
             Ingredient.of(TFCTags.Items.MEATS),
@@ -254,7 +254,7 @@ public interface BarrelRecipes extends Recipes
         cooling(TFCFluids.SALT_WATER.getSource(), -5f);
         cooling(fluidOf(SimpleFluid.OLIVE_OIL), -40f);
         barrel("clean_bowl")
-            .input(CompoundIngredient.of(
+            .input(ingredientOf(
                 Ingredient.of(TFCTags.Items.SOUPS),
                 Ingredient.of(TFCTags.Items.SALADS)
             ))
@@ -262,7 +262,7 @@ public interface BarrelRecipes extends Recipes
             .output(ItemStackProvider.of(EmptyBowlModifier.INSTANCE))
             .instant();
         barrel("clean_jar")
-            .input(CompoundIngredient.of(
+            .input(ingredientOf(
                 Ingredient.of(TFCTags.Items.PRESERVES),
                 Ingredient.of(TFCTags.Items.SEALED_PRESERVES)
             ))
@@ -354,8 +354,8 @@ public interface BarrelRecipes extends Recipes
     private BarrelRecipe.Builder barrel()
     {
         return new BarrelRecipe.Builder(r -> {
-            if (!r.getResultItem().isEmpty()) add("barrel", BuiltInRegistries.ITEM.getKey(r.getResultItem().getItem()).getPath(), r);
-            else if (!r.getOutputFluid().isEmpty()) add("barrel", BuiltInRegistries.FLUID.getKey(r.getOutputFluid().getFluid()).getPath(), r);
+            if (!r.getResultItem().isEmpty()) add("barrel", nameOf(r.getResultItem().getItem()), r);
+            else if (!r.getOutputFluid().isEmpty()) add("barrel", nameOf(r.getOutputFluid().getFluid()), r);
             else throw new IllegalStateException("Barrel recipe requires a custom name!");
         });
     }

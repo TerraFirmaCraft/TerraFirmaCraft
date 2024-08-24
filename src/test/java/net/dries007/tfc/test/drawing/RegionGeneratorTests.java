@@ -76,14 +76,12 @@ public class RegionGeneratorTests implements TestSetup
             generator.visualizeRegion(pos.x, pos.z, (task, region) -> {
                 if (!tasksToDraw.contains(task)) return;
                 final Map<Pos, Color> drawnTask = drawn.computeIfAbsent(task, key -> new HashMap<>());
-                for (int rx = region.minX(); rx <= region.maxX(); rx++)
-                    for (int rz = region.minZ(); rz <= region.maxZ(); rz++)
-                        if (region.at(rx, rz) != null)
-                        {
-                            final Pos at = new Pos(rx, rz);
-                            points.remove(at);
-                            drawnTask.put(at, taskColor(task, region, rx, rz));
-                        }
+                for (final var point : region.points())
+                {
+                    final Pos at = new Pos(point.x, point.z);
+                    points.remove(at);
+                    drawnTask.put(at, taskColor(task, region, point.x, point.z));
+                }
             });
         }
 
@@ -121,7 +119,6 @@ public class RegionGeneratorTests implements TestSetup
 
     private Color taskColor(RegionGenerator.Task task, Region region, int x, int y)
     {
-        if (!region.isIn(x, y)) return new Color(100, 100, 100);
         final Region.Point point = region.at(x, y);
         if (point == null) return new Color(160, 160, 160);
         if (task == ANNOTATE_DISTANCE_TO_CELL_EDGE)

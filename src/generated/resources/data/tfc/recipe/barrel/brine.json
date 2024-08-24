@@ -11,6 +11,5 @@
   "primary_fluid": {
     "amount": 9,
     "fluid": "tfc:salt_water"
-  },
-  "tooltip": ""
+  }
 }

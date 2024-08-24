@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.world.region;
 
+import org.jetbrains.annotations.Nullable;
+
 import net.dries007.tfc.world.layer.framework.Area;
 
 public enum ChooseRocks implements RegionTask
@@ -26,19 +28,10 @@ public enum ChooseRocks implements RegionTask
         final Region region = context.region;
         final Area rockArea = context.generator().rockArea.get();
 
-        for (int dx = 0; dx < region.sizeX(); dx++)
+        for (final var point : region.points())
         {
-            for (int dz = 0; dz < region.sizeZ(); dz++)
-            {
-                final int index = dx + region.sizeX() * dz;
-                final Region.Point point = region.data()[index];
-                if (point != null)
-                {
-                    // Lower two bits are the supertype, upper bits are seed
-                    point.rock = (rockArea.get(region.minX() + dx, region.minZ() + dz) << TYPE_BITS)
-                        | findClosestType(region, point, index);
-                }
-            }
+            // Lower two bits are the supertype, upper bits are seed
+            point.rock = (rockArea.get(point.x, point.z) << TYPE_BITS) | findClosestType(region, point, point.index);
         }
     }
 
@@ -49,23 +42,19 @@ public enum ChooseRocks implements RegionTask
         {
             for (int dz = 0; dz <= 2; dz++)
             {
-                final int offset = region.offset(index, dx, dz);
+                final @Nullable Region.Point point = region.atOffset(index, dx, dz);
                 final int dist = Math.abs(dx) + Math.abs(dz);
-                if (offset != -1 && dist < minDist)
+                if (point != null && dist < minDist)
                 {
-                    final Region.Point point = region.data()[offset];
-                    if (point != null)
+                    if (point.island() && dist < 4)
                     {
-                        if (point.island() && dist < 4)
-                        {
-                            type = VOLCANIC;
-                            minDist = dist;
-                        }
-                        else if ((point.mountain() || point.coastalMountain()) && dist < 3)
-                        {
-                            type = UPLIFT;
-                            minDist = dist;
-                        }
+                        type = VOLCANIC;
+                        minDist = dist;
+                    }
+                    else if ((point.mountain() || point.coastalMountain()) && dist < 3)
+                    {
+                        type = UPLIFT;
+                        minDist = dist;
                     }
                 }
             }

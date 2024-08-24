@@ -33,27 +33,13 @@ public class FluidProperty extends Property<FluidProperty.FluidKey>
 {
     public static FluidProperty create(String name, Stream<Object> fluids)
     {
-        return new FluidProperty(name, fluids.map(obj -> {
-            if (obj instanceof ResourceLocation id)
-            {
-                return id; // Direct references to fluid IDs are allowed
-            }
-            else if (obj instanceof Fluid fluid)
-            {
-                return BuiltInRegistries.FLUID.getKey(fluid);
-            }
-            else if (obj instanceof IdHolder<?> reg)
-            {
-                return reg.getId(); // Registry objects are allowed, we assume they're fluids
-            }
-            else if (obj instanceof FluidHolder<?> pair)
-            {
-                return pair.source().getId(); // Fluid pairs are allowed (we know how to obtain the ID from it without loading the fluid)
-            }
-            else
-            {
-                throw new IllegalArgumentException("FluidProperty#create called with a weird thing: " + obj);
-            }
+        return new FluidProperty(name, fluids.map(obj -> switch (obj)
+        {
+            case ResourceLocation id -> id; // Direct references to fluid IDs are allowed
+            case Fluid fluid -> BuiltInRegistries.FLUID.getKey(fluid);
+            case IdHolder<?> reg -> reg.getId(); // Registry objects are allowed, we assume they're fluids
+            case FluidHolder<?> pair -> pair.source().getId(); // Fluid pairs are allowed (we know how to obtain the ID from it without loading the fluid)
+            default -> throw new IllegalArgumentException("FluidProperty#create called with a weird thing: " + obj);
         }));
     }
 
@@ -151,6 +137,11 @@ public class FluidProperty extends Property<FluidProperty.FluidKey>
         public Fluid getFluid()
         {
             return fluid.get();
+        }
+
+        public boolean is(Fluid other)
+        {
+            return fluid.get() == other;
         }
 
         public boolean is(FluidKey other)

@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/wood/sequoia_sluice",
+      "recipe": "tfc:crafting/wood/sluice/sequoia",
       "text": "세광통은 막대기와 목재로 만듭니다."
     },
     {
