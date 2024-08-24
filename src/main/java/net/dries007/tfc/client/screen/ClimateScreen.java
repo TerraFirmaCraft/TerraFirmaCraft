@@ -55,7 +55,7 @@ public class ClimateScreen extends TFCContainerScreen<Container>
         super.renderLabels(stack, mouseX, mouseY);
 
         // Climate at the current player
-        final float averageTemp = ClimateRenderCache.INSTANCE.getHeightAdjustedAverageTemperature();
+        final float averageTemp = ClimateRenderCache.INSTANCE.getAverageTemperature();
         final float rainfall = ClimateRenderCache.INSTANCE.getRainfall();
         final float currentTemp = ClimateRenderCache.INSTANCE.getTemperature();
 

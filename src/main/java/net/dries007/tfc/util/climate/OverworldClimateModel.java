@@ -85,26 +85,6 @@ public class OverworldClimateModel implements ClimateModel
         OverworldClimateModel::new
     );
 
-    public static float getAdjustedAverageTempByElevation(BlockPos pos, ChunkData chunkData)
-    {
-        return getAdjustedAverageTempByElevation(pos.getY(), chunkData.getAverageTemp(pos));
-    }
-
-    public static float getAdjustedAverageTempByElevation(int y, float averageTemperature)
-    {
-        if (y > SEA_LEVEL)
-        {
-            // -1.6 C / 10 blocks above sea level
-            float elevationTemperature = Mth.clamp((y - SEA_LEVEL) * 0.16225f, 0, 17.822f);
-            return averageTemperature - elevationTemperature;
-        }
-        else
-        {
-            // Not a lot of trees should generate below sea level
-            return averageTemperature;
-        }
-    }
-
     /**
      * Obtain the climate model for the current dimension, assuming it is an {@link OverworldClimateModel}
      * This is intended for use in select world generation, which is fine with only functioning in an overworld climate model like scenario
@@ -176,12 +156,6 @@ public class OverworldClimateModel implements ClimateModel
     }
 
     // todo: override getRainfall() with a current timestamp
-
-    @Override
-    public float getElevationAdjustedAverageTemperature(LevelReader level, BlockPos pos)
-    {
-        return EnvironmentHelpers.adjustAvgTempForElev(pos.getY(), getAverageTemperature(level, pos), SEA_LEVEL);
-    }
 
     @Override
     public float getRainfall(LevelReader level, BlockPos pos)

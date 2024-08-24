@@ -30,8 +30,6 @@ public enum BiomeBasedClimateModel implements ClimateModel
     }
 
     @Override
-    public float getTemperature(LevelReader level, BlockPos pos)
-
     public float getAverageTemperature(LevelReader level, BlockPos pos)
     {
         return Climate.fromVanilla(((BiomeAccessor) (Object) level.getBiome(pos).value()).invoke$getTemperature(pos));

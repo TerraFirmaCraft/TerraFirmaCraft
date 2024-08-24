@@ -141,7 +141,7 @@ public final class TFCColors
     private static int getSeasonalFoliageColor(BlockPos pos, int autumnIndex)
     {
         final Level level = ClientHelpers.getLevel();
-        float temp = Climate.getAverageTempElevationAdjusted(level, pos);
+        float temp = Climate.getAverageTemperature(level, pos);
         float timeOfYear = Calendars.CLIENT.getCalendarFractionOfYear();
         final float tempClamped = temp > 12f ? 12f : Math.max(temp, -20f);
 

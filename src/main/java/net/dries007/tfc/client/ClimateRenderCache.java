@@ -27,7 +27,6 @@ public enum ClimateRenderCache
     INSTANCE;
 
     private float averageTemperature;
-    private float heightAdjustedAverageTemperature;
     private float temperature;
     private float rainfall;
     private float rainVariance;
@@ -125,11 +124,6 @@ public enum ClimateRenderCache
     public float getMonthlyGroundwater()
     {
         return monthlyGroundwater;
-    }
-
-    public float getHeightAdjustedAverageTemperature()
-    {
-        return heightAdjustedAverageTemperature;
     }
 
     public Vec2 getWind()

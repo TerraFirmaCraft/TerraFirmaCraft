@@ -70,11 +70,6 @@ public final class Climate
         return get(level).getAverageTemperature(level, pos);
     }
 
-    public static float getAverageTempElevationAdjusted(Level level, BlockPos pos)
-    {
-        return model(level).getElevationAdjustedAverageTemperature(level, pos);
-    }
-
     public static float getRainfall(Level level, BlockPos pos)
     {
         return get(level).getRainfall(level, pos);
@@ -82,12 +77,12 @@ public final class Climate
 
     public static float getRainVariance(Level level, BlockPos pos)
     {
-        return model(level).getRainVariance(level, pos);
+        return get(level).getRainVariance(level, pos);
     }
 
     public static float getMonthlyRainfall(Level level, BlockPos pos, ICalendar calendar)
     {
-        return model(level).getMonthlyRainfall(level, pos, calendar.getCalendarFractionOfYear());
+        return get(level).getMonthlyRainfall(level, pos, calendar.getCalendarFractionOfYear());
     }
 
     public static float getMonthlyRainfall(Level level, BlockPos pos)
@@ -97,17 +92,17 @@ public final class Climate
 
     public static float getBaseGroundwater(Level level, BlockPos pos)
     {
-        return model(level).getBaseGroundwater(level, pos);
+        return get(level).getBaseGroundwater(level, pos);
     }
 
     public static float getGroundwater(Level level, BlockPos pos)
     {
-        return model(level).getGroundwater(level, pos);
+        return get(level).getGroundwater(level, pos);
     }
 
     public static float getMonthlyGroundwater(Level level, BlockPos pos, ICalendar calendar)
     {
-        return model(level).getMonthlyGroundwater(level, pos, calendar.getCalendarFractionOfYear());
+        return get(level).getMonthlyGroundwater(level, pos, calendar.getCalendarFractionOfYear());
     }
 
     public static float getMonthlyGroundwater(Level level, BlockPos pos)
