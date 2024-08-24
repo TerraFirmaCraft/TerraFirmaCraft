@@ -43,6 +43,11 @@ public class RegionGenerator
             (x, z) -> triangle(frequency, z);
     }
 
+    private static Noise2D simpleBaseNoise()
+    {
+        return (x, z) -> 0;
+    }
+
     public final Cellular2D cellNoise;
     public final Noise2D continentNoise;
     public final Noise2D temperatureNoise;
@@ -88,12 +93,11 @@ public class RegionGenerator
                 .spread(0.15f)
                 .scaled(-80f, 40f)); // Bias slightly negative, as we bias near-ocean areas to be positive rainfall, so this encourages deserts inland
 
-        this.rainfallVarianceNoise = baseNoise(true, settings.rainfallVarianceScale(), settings.rainfallConstant())
-            .scaled(-0.0f, 0.0f)
+        this.rainfallVarianceNoise = simpleBaseNoise()
             .add(new OpenSimplex2D(random.nextInt())
                 .octaves(2)
                 .spread(0.3f)
-                .scaled(-.512f, 0.512f));
+                .scaled(-.2f, 0.2f));
 
         final AreaFactory biomeAreaFactory = TFCLayers.createUniformLayer(random, 2);
         final AreaFactory rockAreaFactory = TFCLayers.createUniformLayer(random, 3);

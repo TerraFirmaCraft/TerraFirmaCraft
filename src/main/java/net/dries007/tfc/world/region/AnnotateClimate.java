@@ -21,7 +21,6 @@ public enum AnnotateClimate implements RegionTask
             // This keeps the large-scale climate which we want
             point.temperature = (float) context.generator().temperatureNoise.noise(point.x, point.z);
             point.rainfall = (float) context.generator().rainfallNoise.noise(point.x, point.z);
-            point.rainfallVariance = (float) context.generator().rainfallVarianceNoise.noise(point.x, point.z);
 
             // [0, 1], where higher = more inland
             final float bias;
@@ -53,11 +52,13 @@ public enum AnnotateClimate implements RegionTask
             point.rainfall = Mth.lerp(0.23f, point.rainfall, biasTargetRainfall);
 
             //Bias rainfall variance by distance from west coast
-            point.rainfallVariance = Mth.lerp(0.9f, point.rainfallVariance, biasTargetVariance);
+            point.rainfallVariance = Mth.lerp(1f, point.rainfallVariance, biasTargetVariance);
 
             //Reduce rainfall variance near cell borders
             final float edgeBiasScale = Mth.clampedMap(point.distanceToEdge, 0, 12, 1, 0);
             point.rainfallVariance = Mth.lerp(edgeBiasScale, point.rainfallVariance, 0);
+
+            point.rainfallVariance = Mth.clamp(point.rainfallVariance + (float) context.generator().rainfallVarianceNoise.noise(point.x, point.z), -1, 1);
         }
     }
 }
