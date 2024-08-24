@@ -23,39 +23,57 @@ public enum AnnotateDistanceToWestCoast implements RegionTask
                 final Region.Point point = region.atIndex(index);
                 if (point != null)
                 {
-                    if (!point.land() || dx == 0)
+                    if (dx == 0)
                     {
-                        point.distanceToWestCoast = -1;
+                        point.distanceToWestCoast = 0;
                     }
                     else
                     {
                         final Region.Point lastCenterPoint = region.atIndex(index - 1);
-                        if (lastCenterPoint == null) {
+                        if (lastCenterPoint == null)
+                        {
                             //Sets a little starting bonus when a point in on the eastern border of a cell. The cusp will be smoothed out in the actual rain map
-                            point.distanceToWestCoast = (byte) (25 + point.distanceToOcean);
+                            point.distanceToWestCoast = point.land() ? (byte) (25 + point.distanceToOcean) : 0;
                         }
                         else
                         {
                             final int lastCenterVal = lastCenterPoint.distanceToWestCoast;
-                            int sum = 0;
-                            //Can adjust the start and end point of this loop arbitrarily, just change the denominator of the average function too
-                            for (int dz2 = -2; dz2 <= 2; dz2++)
+                            if (!point.land())
                             {
-                                final Region.Point lastPoint = region.atOffset(point.index, -1, dz2);
-                                if (lastPoint != null)
-                                {
-                                    sum = sum + lastPoint.distanceToWestCoast;
-                                }
-                                else
-                                {
-                                    sum = sum + lastCenterVal;
-                                }
+                                //Ocean east of a shore will decrease in value faster than the land gains in value, and never below zero
+                                point.distanceToWestCoast = (byte) Math.max(lastCenterVal - 2, 0);
                             }
-                            point.distanceToWestCoast = (byte) (Mth.ceil(sum / 5f) + 1);
+                            else
+                            {
+                                int sum = 0;
+                                //Can adjust the start and end point of this loop arbitrarily, just change the denominator of the average function too
+                                for (int dz2 = -2; dz2 <= 1; dz2++)
+                                {
+                                    final Region.Point lastPoint = region.atOffset(point.index, -1, dz2);
+                                    if (lastPoint != null)
+                                    {
+                                        sum = sum + lastPoint.distanceToWestCoast;
+                                    }
+                                    else
+                                    {
+                                        sum = sum + lastCenterVal;
+                                    }
+                                }
+                                point.distanceToWestCoast = (byte) (Mth.ceil(sum / 4f) + 1);
+                            }
                         }
                     }
                 }
             }
         }
+
+//        //Right now this just draws bright lines at shores!
+//        for (final var point : region.points())
+//        {
+//            if(point.baseLandHeight == 0)
+//            {
+//                point.distanceToWestCoast = 100;
+//            }
+//        }
     }
 }

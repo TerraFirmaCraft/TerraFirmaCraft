@@ -89,11 +89,11 @@ public class RegionGenerator
                 .scaled(-80f, 40f)); // Bias slightly negative, as we bias near-ocean areas to be positive rainfall, so this encourages deserts inland
 
         this.rainfallVarianceNoise = baseNoise(true, settings.rainfallVarianceScale(), settings.rainfallConstant())
-            .scaled(-1f, 1f)
+            .scaled(-0.0f, 0.0f)
             .add(new OpenSimplex2D(random.nextInt())
                 .octaves(2)
                 .spread(0.3f)
-                .scaled(-.12f, 0.12f));
+                .scaled(-.512f, 0.512f));
 
         final AreaFactory biomeAreaFactory = TFCLayers.createUniformLayer(random, 2);
         final AreaFactory rockAreaFactory = TFCLayers.createUniformLayer(random, 3);
