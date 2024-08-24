@@ -19,7 +19,8 @@ public enum AnnotateDistanceToWestCoast implements RegionTask
         {
             for (int dz = 0; dz < region.sizeZ(); dz++)
             {
-                final Region.Point point = region.at(dx, dz);
+                final int index = dx + region.sizeX() * dz;
+                final Region.Point point = region.atIndex(index);
                 if (point != null)
                 {
                     if (!point.land() || dx == 0)
@@ -28,7 +29,7 @@ public enum AnnotateDistanceToWestCoast implements RegionTask
                     }
                     else
                     {
-                        final Region.Point lastCenterPoint = region.at(dx - 1, dz);
+                        final Region.Point lastCenterPoint = region.atIndex(index - 1);
                         if (lastCenterPoint == null) {
                             //Sets a little starting bonus when a point in on the eastern border of a cell. The cusp will be smoothed out in the actual rain map
                             point.distanceToWestCoast = (byte) (25 + point.distanceToOcean);
