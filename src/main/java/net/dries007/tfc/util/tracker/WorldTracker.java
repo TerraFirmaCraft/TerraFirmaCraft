@@ -24,9 +24,12 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.RandomSupport;
+import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
@@ -38,7 +41,6 @@ import net.dries007.tfc.common.entities.misc.TFCFallingBlockEntity;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.common.recipes.LandslideRecipe;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.network.RainfallUpdatePacket;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.climate.BiomeBasedClimateModel;
@@ -64,29 +66,21 @@ public final class WorldTracker
     }
 
     private final Level level;
-    private final Random random;
+    private final RandomSource random;
 
-    private final BufferedList<TickEntry> landslideTicks;
-    private final BufferedList<BlockPos> isolatedPositions;
-    private final List<Collapse> collapsesInProgress;
+    private final BufferedList<TickEntry> landslideTicks = new BufferedList<>();
+    private final BufferedList<BlockPos> isolatedPositions = new BufferedList<>();
+    private final List<Collapse> collapsesInProgress = new ArrayList<>();
 
-    private final ClimateModel defaultClimateModel = new BiomeBasedClimateModel();
-    @Nullable private ClimateModel climateModel;
+    private final RotationNetworkManager rotationManager = new RotationNetworkManager();
 
-    private final RotationNetworkManager rotationManager;
-
-    private long rainStartTick, rainEndTick;
-    private float rainIntensity;
+    private ClimateModel climateModel = BiomeBasedClimateModel.INSTANCE;
+    private boolean weatherEnabled = true;
 
     public WorldTracker(Level level)
     {
         this.level = level;
-        this.random = new Random();
-        this.climateModel = null;
-        this.landslideTicks = new BufferedList<>();
-        this.isolatedPositions = new BufferedList<>();
-        this.collapsesInProgress = new ArrayList<>();
-        this.rotationManager = new RotationNetworkManager();
+        this.random = new XoroshiroRandomSource(RandomSupport.generateUniqueSeed());
     }
 
     public void addLandslidePos(BlockPos pos)
@@ -112,7 +106,7 @@ public final class WorldTracker
 
     public ClimateModel getClimateModel()
     {
-        return climateModel == null ? defaultClimateModel : climateModel;
+        return climateModel;
     }
 
     public void addCollapsePositions(BlockPos centerPos, Collection<BlockPos> positions)
@@ -134,31 +128,14 @@ public final class WorldTracker
         addCollapseData(new Collapse(centerPos, collapsePositions, maxRadiusSquared));
     }
 
-    public void setWeatherData(long rainDuration, float rainIntensity)
+    public boolean isWeatherEnabled()
     {
-        final long tick = Calendars.get(level).getTicks();
-        setWeatherData(tick, tick + rainDuration, rainIntensity);
+        return weatherEnabled;
     }
 
-    public void setWeatherData(long rainStartTick, long rainEndTick, float rainIntensity)
+    public void setWeatherEnabled(boolean weatherEnabled)
     {
-        this.rainStartTick = rainStartTick;
-        this.rainEndTick = rainEndTick;
-        this.rainIntensity = rainIntensity;
-        sync();
-    }
-
-    public boolean isRaining(Level level, BlockPos pos)
-    {
-        return isRaining(Calendars.get(level).getTicks(), Climate.getMonthlyRainfall(level, pos));
-    }
-
-    /**
-     * @return If it should be raining at a given tick and rainfall value
-     */
-    public boolean isRaining(long tick, float rainfall)
-    {
-        return exactRainfallIntensity(tick) > Mth.clampedMap(rainfall, ClimateModel.MINIMUM_RAINFALL, ClimateModel.MAXIMUM_RAINFALL, 1, 0);
+        this.weatherEnabled = weatherEnabled;
     }
 
     public RotationNetworkManager getRotationManager()
@@ -230,24 +207,6 @@ public final class WorldTracker
         }
     }
 
-    public void addDebugTooltip(List<String> tooltips)
-    {
-        tooltips.add("R [%d, %d] I (%.2f) %.2f".formatted(rainStartTick, rainEndTick, rainIntensity, exactRainfallIntensity(Calendars.CLIENT.getTicks())));
-    }
-
-    public void sync()
-    {
-        if (level instanceof ServerLevel serverLevel)
-        {
-            PacketDistributor.sendToPlayersInDimension(serverLevel, new RainfallUpdatePacket(rainStartTick, rainEndTick, rainIntensity));
-        }
-    }
-
-    public void syncTo(ServerPlayer player)
-    {
-        PacketDistributor.sendToPlayer(player, new RainfallUpdatePacket(rainStartTick, rainEndTick, rainIntensity));
-    }
-
     public CompoundTag serializeNBT()
     {
         landslideTicks.flush();
@@ -271,9 +230,7 @@ public final class WorldTracker
         }
         nbt.put("collapsesInProgress", collapseNbt);
 
-        nbt.putLong("rainStartTick", rainStartTick);
-        nbt.putLong("rainEndTick", rainEndTick);
-        nbt.putFloat("rainIntensity", rainIntensity);
+        nbt.putBoolean("weatherEnabled", weatherEnabled);
 
         return nbt;
     }
@@ -301,17 +258,8 @@ public final class WorldTracker
                 collapsesInProgress.add(new Collapse(collapseNbt.getCompound(i)));
             }
 
-            rainStartTick = nbt.getLong("rainStartTick");
-            rainEndTick = nbt.getLong("rainEndTick");
-            rainIntensity = nbt.getFloat("rainIntensity");
+            weatherEnabled = nbt.getBoolean("weatherEnabled");
         }
-    }
-
-    private float exactRainfallIntensity(long tick)
-    {
-        final float progress = Mth.clamp(Helpers.inverseLerp(tick, rainStartTick, rainEndTick), 0, 1);
-        final float progressFactor = progress > 0.5f ? 1 - progress : progress;
-        return rainIntensity * 0.5f + progressFactor;
     }
 
     private boolean isIsolated(LevelAccessor level, BlockPos pos)

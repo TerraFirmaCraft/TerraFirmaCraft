@@ -6,17 +6,16 @@
 
 package net.dries007.tfc.util.climate;
 
-import java.util.Random;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.LinearCongruentialGenerator;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -28,6 +27,7 @@ import net.minecraft.world.level.block.SnowyDirtBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec2;
 import org.jetbrains.annotations.Nullable;
@@ -85,10 +85,24 @@ public class OverworldClimateModel implements ClimateModel
         OverworldClimateModel::new
     );
 
-    @Override
-    public ClimateModelType<?> type()
+    public static float getAdjustedAverageTempByElevation(BlockPos pos, ChunkData chunkData)
     {
-        return ClimateModels.OVERWORLD.get();
+        return getAdjustedAverageTempByElevation(pos.getY(), chunkData.getAverageTemp(pos));
+    }
+
+    public static float getAdjustedAverageTempByElevation(int y, float averageTemperature)
+    {
+        if (y > SEA_LEVEL)
+        {
+            // -1.6 C / 10 blocks above sea level
+            float elevationTemperature = Mth.clamp((y - SEA_LEVEL) * 0.16225f, 0, 17.822f);
+            return averageTemperature - elevationTemperature;
+        }
+        else
+        {
+            // Not a lot of trees should generate below sea level
+            return averageTemperature;
+        }
     }
 
     /**
@@ -101,7 +115,7 @@ public class OverworldClimateModel implements ClimateModel
         final Level unsafeLevel = Helpers.getUnsafeLevel(maybeLevel);
         if (unsafeLevel != null)
         {
-            final ClimateModel model = Climate.model(unsafeLevel);
+            final ClimateModel model = Climate.get(unsafeLevel);
             if (model instanceof OverworldClimateModel overworldClimateModel)
             {
                 return overworldClimateModel;
@@ -110,31 +124,39 @@ public class OverworldClimateModel implements ClimateModel
         return null;
     }
 
-    private long climateSeed;
-    private float temperatureScale;
+    protected final long climateSeed;
+    protected final float temperatureScale;
 
-    // For world generation climate
-    private Noise2D snowPatchNoise = (x, z) -> 0;
-    private Noise2D icePatchNoise = (x, z) -> 0;
+    // todo: remove
+    @Deprecated private final Noise2D snowPatchNoise;
+    @Deprecated private final Noise2D icePatchNoise;
 
-    public OverworldClimateModel()
+    public OverworldClimateModel(ServerLevel level, ChunkGeneratorExtension extension)
     {
-        this(0, 20_000f);
+        this(
+            extension.settings().temperatureScale(),
+            LinearCongruentialGenerator.next(level.getSeed(), 719283741234L)
+        );
     }
 
-    public OverworldClimateModel(long climateSeed, float temperatureScale)
+    protected OverworldClimateModel(long climateSeed, float temperatureScale)
     {
         this.climateSeed = climateSeed;
         this.temperatureScale = temperatureScale;
+        this.snowPatchNoise = new OpenSimplex2D(climateSeed + 72397489123L).octaves(2).spread(0.3f).scaled(-1, 1);
+        this.icePatchNoise = new OpenSimplex2D(climateSeed + 192639412341L).octaves(3).spread(0.6f);
     }
 
-    /**
-     * Calculates the average monthly temperature for a location and given month.
-     */
-    public float getAverageMonthlyTemperature(int z, int y, float averageTemperature, float monthFactor)
+    @Override
+    public ClimateModelType<?> type()
     {
-        final float monthlyTemperature = calculateMonthlyTemperature(z, monthFactor);
-        return adjustTemperatureByElevation(y, averageTemperature, monthlyTemperature, 0);
+        return ClimateModels.OVERWORLD.get();
+    }
+
+    @Override
+    public float getAverageTemperature(LevelReader level, BlockPos pos)
+    {
+        return ChunkData.get(level, pos).getAverageTemp(pos);
     }
 
     @Override
@@ -153,11 +175,7 @@ public class OverworldClimateModel implements ClimateModel
         return adjustTemperatureByElevation(pos.getY(), data.getAverageTemp(pos), monthTemperature, dailyTemperature);
     }
 
-    @Override
-    public float getAverageTemperature(LevelReader level, BlockPos pos)
-    {
-        return ChunkData.get(level, pos).getAverageTemp(pos);
-    }
+    // todo: override getRainfall() with a current timestamp
 
     @Override
     public float getElevationAdjustedAverageTemperature(LevelReader level, BlockPos pos)
@@ -168,8 +186,77 @@ public class OverworldClimateModel implements ClimateModel
     @Override
     public float getRainfall(LevelReader level, BlockPos pos)
     {
-        final ChunkData data = ChunkData.get(level, pos);
-        return data.getRainfall(pos);
+        return ChunkData.get(level, pos).getRainfall(pos);
+    }
+
+    /**
+     * In vanilla, rain is simulated as {@code [12_000, 24_000]} ticks on, {@code [12_000, 180_000]} ticks off.
+     */
+    @Override
+    public float getRain(long calendarTicks)
+    {
+        final long salt = 8917234598231321L;
+        final long segmentLength = 66_000;
+        final long segmentId = Math.floorDiv(calendarTicks, segmentLength);
+        final long segmentLeft = segmentId * segmentLength;
+
+        // This works by breaking up the entire timeline into "segments", of exactly 66_000 in length. We generate exactly
+        // one rainfall section into each segment, of a random length between 12_000 and 24_000. This mirrors vanilla behavior
+        // fairly well, although is a bit more regular overall. It is roughly twice vanilla P(rain), which we scale down
+        // based on rainfall and intensity.
+        //
+        // Vanilla has rain as [12_000, 24_000] ticks on, [12_000, 180_000] ticks off. Our baseline here is 2x vanilla,
+        // and then we interpolate based on the rainfall at a given position to know if it is truly raining.
+
+        // Infer the default position of the next segment rainfall, in order to apply boundary conditions
+        final RandomSource nextSegment = seededRandom(segmentId + 1, salt);
+        final int nextLength = nextSegment.nextIntBetweenInclusive(12_000, 24_000);
+        final int nextLeft = (int) (nextSegment.nextFloat() * (segmentLength - 12_000 - nextLength)); // Need to use `nextFloat()` here for stability
+
+        // The boundary we leave on the right, in order to prevent merging
+        final int boundaryRight = Math.min(0, 12_000 - nextLeft);
+
+        // Calculate the current segment
+        final RandomSource segment = seededRandom(segmentId, salt);
+        final int length = segment.nextIntBetweenInclusive(12_000, 24_000);
+        final int left = (int) (segment.nextFloat() * (segmentLength - boundaryRight - nextLength));
+
+        if (calendarTicks < segmentLeft + left || calendarTicks > segmentLeft + left + length)
+        {
+            return -1; // Not raining, since we're not within the target segment
+        }
+
+        // We are raining, so calculate intensity, and distance to center
+        final int halfLength = length / 2;
+        final float rainIntensity = segment.nextFloat();
+        final float timeIntensity = 1f - Math.abs((segmentLeft + left + halfLength) - calendarTicks) / (float) halfLength;
+
+        // Average the two factors
+        return 0.5f * (rainIntensity + timeIntensity);
+    }
+
+    @Override
+    public boolean getThunder(long calendarTicks)
+    {
+        // Thunder is simulated using a similar segment system, and checking for overlap with rain. In vanilla, thunder is
+        // [3600, 15600] ticks on, [12000, 180000] ticks off, or 9600 on / 96000 off. P(thunder | rain) = 0.1, and P(thunder) = 0.01875
+        final long salt = 9871293851234123L;
+        final int segmentLength = 105_600;
+        final long segmentId = Math.floorDiv(calendarTicks, segmentLength);
+        final long segmentLeft = segmentId * segmentLength;
+
+        final RandomSource segment = seededRandom(segmentId, salt);
+        final int length = segment.nextIntBetweenInclusive(3600, 15_600);
+        final int left = segment.nextInt(segmentLength - length);
+
+        // Thunder|Rain if we are within the segment
+        return calendarTicks >= segmentLeft + left && calendarTicks <= segmentLeft + left + length;
+    }
+
+    @Override
+    public boolean supportsRain()
+    {
+        return true;
     }
 
     @Override
@@ -219,7 +306,7 @@ public class OverworldClimateModel implements ClimateModel
     {
         // seed as if we're 2 hours in the future, in order to start the cycle at 4am (2 hours before sunrise)
         final long day = ICalendar.getTotalDays(calendarTime + (2 * ICalendar.TICKS_IN_HOUR));
-        final Random random = seededRandom(day, 129341623413L);
+        final RandomSource random = seededRandom(day, 129341623413L);
         if (random.nextInt(FOGGY_DAY_RARITY) != 0)
         {
             return 0;
@@ -264,12 +351,13 @@ public class OverworldClimateModel implements ClimateModel
     }
 
     @Override
-    public Vec2 getWindVector(Level level, BlockPos pos, long calendarTime)
+    public Vec2 getWind(Level level, BlockPos pos, long calendarTicks)
     {
+        // todo: the fact this is querying rain level directly is pretty problematic, it should not be
         final int y = pos.getY();
         if (y < SEA_LEVEL - 6)
             return Vec2.ZERO;
-        final Random random = seededRandom(ICalendar.getTotalDays(calendarTime), 129341623413L);
+        final RandomSource random = seededRandom(ICalendar.getTotalDays(calendarTicks), 129341623413L);
 
         final Holder<Biome> biome = level.getBiome(pos);
         if (biome.is(TFCTags.Biomes.HAS_PREDICTABLE_WINDS))
@@ -301,7 +389,9 @@ public class OverworldClimateModel implements ClimateModel
         return new Vec2(Mth.cos(angle), Mth.sin(angle)).scale(intensity);
     }
 
+    // todo: remove/replace
     @Override
+    @Deprecated
     public void onChunkLoad(WorldGenLevel level, ChunkAccess chunk, ChunkData chunkData)
     {
         // todo: this is BROKEN and DOESN'T WORK and is FUCKING AWFUL
@@ -414,64 +504,44 @@ public class OverworldClimateModel implements ClimateModel
         }
     }
 
-    @Override
-    public void onWorldLoad(ServerLevel level)
+    /**
+     * Calculates the average monthly temperature for a location and given month.
+     */
+    public float getAverageMonthlyTemperature(int z, int y, float averageTemperature, float monthFactor)
     {
-        final ChunkGeneratorExtension extension = (ChunkGeneratorExtension) level.getChunkSource().getGenerator();
-
-        temperatureScale = extension.settings().temperatureScale();
-        climateSeed = LinearCongruentialGenerator.next(level.getSeed(), 719283741234L);
-
-        updateNoise();
-    }
-
-    @Override
-    public void onSyncToClient(FriendlyByteBuf buffer)
-    {
-        buffer.writeFloat(temperatureScale);
-        buffer.writeLong(climateSeed);
-    }
-
-    @Override
-    public void onReceiveOnClient(FriendlyByteBuf buffer)
-    {
-        temperatureScale = buffer.readFloat();
-        climateSeed = buffer.readLong();
-    }
-
-    protected void updateNoise()
-    {
-        this.snowPatchNoise = new OpenSimplex2D(climateSeed + 72397489123L).octaves(2).spread(0.3f).scaled(-1, 1);
-        this.icePatchNoise = new OpenSimplex2D(climateSeed + 192639412341L).octaves(3).spread(0.6f);
+        final float monthlyTemperature = calculateMonthlyTemperature(z, monthFactor);
+        return adjustTemperatureByElevation(y, averageTemperature, monthlyTemperature, 0);
     }
 
     /**
      * Adjusts a series of temperature factors by elevation. Returns the sum temperature after adjustment.
+     * <ul>
+     *     <li>Above sea level, temperature lowers linearly with y.</li>
+     *     <li>Below sea level, temperature tends towards the average temperature for the area (having less influence from
+     *     daily and monthly temperature)</li>
+     *     <li>Towards the bottom of the world, temperature tends towards a constant as per the existence of "lava level"</li>
+     * </ul>
      */
     protected float adjustTemperatureByElevation(int y, float averageTemperature, float monthTemperature, float dailyTemperature)
     {
-        // Adjust temperature based on elevation
-        // Above sea level, temperature lowers linearly with y.
-        // Below sea level, temperature tends towards the average temperature for the area (having less influence from daily and monthly temperature)
-        // Towards the bottom of the world, temperature tends towards a constant as per the existence of "lava level"
         if (y > SEA_LEVEL)
         {
             // -1.6 C / 10 blocks above sea level
-            float elevationTemperature = Mth.clamp((y - SEA_LEVEL) * 0.16225f, 0, 17.822f);
+            final float elevationTemperature = Mth.clamp((y - SEA_LEVEL) * 0.16225f, 0, 17.822f);
             return averageTemperature + monthTemperature - elevationTemperature + dailyTemperature;
         }
         else if (y > 0)
         {
             // The influence of daily and monthly temperature is reduced as depth increases
-            float monthInfluence = Helpers.inverseLerp(y, 0, SEA_LEVEL);
-            float dailyInfluence = Mth.clamp(monthInfluence * 3f - 2f, 0, 1); // Range 0 - 1, decays faster than month influence
+            final float monthInfluence = Helpers.inverseLerp(y, 0, SEA_LEVEL);
+            final float dailyInfluence = Mth.clamp(monthInfluence * 3f - 2f, 0, 1); // Range 0 - 1, decays faster than month influence
             return averageTemperature + Mth.lerp(monthInfluence, (float) 0, monthTemperature) + Mth.lerp(dailyInfluence, (float) 0, dailyTemperature);
         }
         else
         {
             // At y = 0, there will be no influence from either month or daily temperature
             // Between this and the bottom of the world, linearly scale average temperature towards depth temperature
-            float depthInfluence = Helpers.inverseLerp(y, DEPTH_LEVEL, 0);
+            final float depthInfluence = Helpers.inverseLerp(y, DEPTH_LEVEL, 0);
             return Mth.lerp(depthInfluence, LAVA_LEVEL_TEMPERATURE, averageTemperature);
         }
     }
@@ -485,9 +555,8 @@ public class OverworldClimateModel implements ClimateModel
     }
 
     /**
-     * Calculates the daily variation temperature at a given time.
-     * Influenced by both random variation day by day, and the time of day.
-     * Range: -3.9 - 3.9
+     * Calculates the daily variation temperature at a given time. Influenced by both random variation day by day, and the time of day.
+     * @return A value in the range {@code [-4.0, 4.0]}
      */
     protected float calculateDailyTemperature(long calendarTime)
     {
@@ -499,18 +568,16 @@ public class OverworldClimateModel implements ClimateModel
             hourOfDay = 24 - hourOfDay;
         }
         // Range: -1 - 1
-        float hourModifier = (hourOfDay / 6f) - 1f;
+        final float hourModifier = (hourOfDay / 6f) - 1f;
 
         // Note: this does not use world seed, as that is not synced from server - client, resulting in the seed being different
-        long day = ICalendar.getTotalDays(calendarTime);
-        final Random random = seededRandom(day, 1986239412341L);
+        final long day = ICalendar.getTotalDays(calendarTime);
+        final RandomSource random = seededRandom(day, 1986239412341L);
         return ((random.nextFloat() - random.nextFloat()) + 0.3f * hourModifier) * 3f;
     }
 
-    protected Random seededRandom(long day, long salt)
+    protected RandomSource seededRandom(long day, long salt)
     {
-        long seed = LinearCongruentialGenerator.next(climateSeed, day);
-        seed = LinearCongruentialGenerator.next(seed, salt);
-        return new Random(seed);
+        return new XoroshiroRandomSource(LinearCongruentialGenerator.next(day, climateSeed), salt);
     }
 }

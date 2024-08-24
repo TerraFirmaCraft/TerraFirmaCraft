@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.mixin.client;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.core.BlockPos;
@@ -14,6 +16,7 @@ import net.minecraft.world.level.biome.Biome;
 
 import net.dries007.tfc.common.blocks.IBlockRain;
 import net.dries007.tfc.util.climate.Climate;
+import net.dries007.tfc.util.tracker.WeatherHelpers;
 
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -29,22 +32,22 @@ public abstract class LevelRendererMixin
 {
     @Shadow private ClientLevel level;
 
-    /**
-     * Redirect the call to {@link Biome#getPrecipitationAt(BlockPos)}.
-     */
-    @Redirect(method = "renderSnowAndRain", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/biome/Biome;getPrecipitationAt(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/biome/Biome$Precipitation;"))
-    private Biome.Precipitation renderSnowAndRainUseClimate(Biome biome, BlockPos pos)
+    @WrapOperation(
+        method = "renderSnowAndRain",
+        at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/biome/Biome;getPrecipitationAt(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/biome/Biome$Precipitation;")
+    )
+    private Biome.Precipitation renderSnowAndRainUseClimate(Biome instance, BlockPos pos, Operation<Biome.Precipitation> original)
     {
-        return Climate.getPrecipitation(level, pos);
+        return WeatherHelpers.getPrecipitationAt(level, pos, original.call(instance, pos));
     }
 
-    /**
-     * Redirect the call to {@link Biome#getPrecipitationAt(BlockPos)}.
-     */
-    @Redirect(method = "tickRain", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/biome/Biome;getPrecipitationAt(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/biome/Biome$Precipitation;"))
-    private Biome.Precipitation tickRainUseClimate(Biome biome, BlockPos pos)
+    @WrapOperation(
+        method = "tickRain",
+        at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/biome/Biome;getPrecipitationAt(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/biome/Biome$Precipitation;")
+    )
+    private Biome.Precipitation tickRainUseClimate(Biome instance, BlockPos pos, Operation<Biome.Precipitation> original)
     {
-        return Climate.getPrecipitation(level, pos);
+        return WeatherHelpers.getPrecipitationAt(level, pos, original.call(instance, pos));
     }
 
     @Redirect(method = "tickRain", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getCollisionShape(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/phys/shapes/VoxelShape;"))

@@ -35,7 +35,7 @@ public enum RequestClimateModelPacket implements CustomPacketPayload
         if (player != null)
         {
             final ServerLevel level = player.serverLevel();
-            final ClimateModel model = Climate.model(level);
+            final ClimateModel model = Climate.get(level);
             PacketDistributor.sendToPlayer(player, new UpdateClimateModelPacket(model));
         }
     }

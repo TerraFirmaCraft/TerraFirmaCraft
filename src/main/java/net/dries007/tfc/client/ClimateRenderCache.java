@@ -15,6 +15,8 @@ import net.minecraft.world.phys.Vec2;
 
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.climate.Climate;
+import net.dries007.tfc.util.climate.ClimateModel;
+import net.dries007.tfc.util.tracker.WeatherHelpers;
 import net.dries007.tfc.util.tracker.WorldTracker;
 
 /**
@@ -24,7 +26,6 @@ public enum ClimateRenderCache
 {
     INSTANCE;
 
-    private long ticks;
     private float averageTemperature;
     private float heightAdjustedAverageTemperature;
     private float temperature;
@@ -48,41 +49,37 @@ public enum ClimateRenderCache
         if (level != null && player != null)
         {
             final BlockPos pos = player.blockPosition();
+            final ClimateModel model = Climate.get(level);
 
-            ticks = Calendars.CLIENT.getTicks();
-            averageTemperature = Climate.getAverageTemperature(level, pos);
-            heightAdjustedAverageTemperature = Climate.getAverageTempElevationAdjusted(level, pos);
-            temperature = Climate.getTemperature(level, pos);
-            rainfall = Climate.getRainfall(level, pos);
+            averageTemperature = model.getAverageTemperature(level, pos);
+            temperature = model.getTemperature(level, pos);
+            rainfall = model.getRainfall(level, pos);
+            wind = model.getWind(level, pos);
             rainVariance = Climate.getRainVariance(level, pos);
             monthlyRainfall = Climate.getMonthlyRainfall(level, pos);
             baseGroundwater = Climate.getBaseGroundwater(level, pos);
             groundwater = Climate.getGroundwater(level, pos);
             monthlyGroundwater = Climate.getMonthlyGroundwater(level, pos);
-            wind = Climate.getWindVector(level, pos);
 
-            // Can't call level.getRainLevel() because it's redirected to exactly this
-            final float targetRainLevel = level instanceof ClientLevel clientLevel ? clientLevel.rainLevel : 0;
-
-            // We can't invoke EnvironmentHelpers.isRainingOrSnowing() either, because it goes through isRaining() -> getRainLevel()
-            final float adjustedTargetRainLevel = WorldTracker.get(level).isRaining(level, pos) ? targetRainLevel : 0f;
-
-            lastRainLevel = currRainLevel;
-            if (currRainLevel < adjustedTargetRainLevel)
+            // Calculate a real rain level to interpolate from on client. This reads the level's rain level, which includes influence
+            // from climate, but doesn't include local influences.
+            if (model.supportsRain())
             {
-                currRainLevel += 0.01f;
+                final boolean isRaining = WeatherHelpers.isPrecipitating(
+                    model.getRain(Calendars.CLIENT.getCalendarTicks()),
+                    rainfall
+                );
+
+                lastRainLevel = currRainLevel;
+                currRainLevel = Mth.clamp(currRainLevel + (isRaining ? 0.01f : -0.01f), 0, 1);
             }
-            else if (currRainLevel > adjustedTargetRainLevel)
+            else
             {
-                currRainLevel -= 0.01f;
+                // Default vanilla behavior, just redirected
+                lastRainLevel = level.oRainLevel;
+                currRainLevel = level.rainLevel;
             }
-            currRainLevel = Mth.clamp(currRainLevel, 0f, 1f);
         }
-    }
-
-    public long getTicks()
-    {
-        return ticks;
     }
 
     public float getAverageTemperature()
