@@ -19,8 +19,7 @@ public enum AnnotateDistanceToWestCoast implements RegionTask
         {
             for (int dz = 0; dz < region.sizeZ(); dz++)
             {
-                final int index = dx + region.sizeX() * dz;
-                final Region.Point point = region.data()[index];
+                final Region.Point point = region.at(dx, dz);
                 if (point != null)
                 {
                     if (!point.land() || dx == 0)
@@ -29,7 +28,7 @@ public enum AnnotateDistanceToWestCoast implements RegionTask
                     }
                     else
                     {
-                        final Region.Point lastCenterPoint = region.data()[index - 1];
+                        final Region.Point lastCenterPoint = region.at(dx - 1, dz);
                         if (lastCenterPoint == null) {
                             //Sets a little starting bonus when a point in on the eastern border of a cell. The cusp will be smoothed out in the actual rain map
                             point.distanceToWestCoast = (byte) (25 + point.distanceToOcean);
@@ -41,18 +40,14 @@ public enum AnnotateDistanceToWestCoast implements RegionTask
                             //Can adjust the start and end point of this loop arbitrarily, just change the denominator of the average function too
                             for (int dz2 = -2; dz2 <= 2; dz2++)
                             {
-                                if (dz < 1 - dz2 || dz >= region.sizeZ() - dz2 - 1)
+                                final Region.Point lastPoint = region.atOffset(point.index, -1, dz2);
+                                if (lastPoint != null)
                                 {
-                                    sum = sum + lastCenterVal;
+                                    sum = sum + lastPoint.distanceToWestCoast;
                                 }
                                 else
                                 {
-                                    final int lastIndex = region.offset(index, -1, dz2);
-                                    final Region.Point lastPoint = region.data()[lastIndex];
-                                    if (lastPoint != null)
-                                    {
-                                        sum = sum + lastPoint.distanceToWestCoast;
-                                    }
+                                    sum = sum + lastCenterVal;
                                 }
                             }
                             point.distanceToWestCoast = (byte) (Mth.ceil(sum / 5f) + 1);
