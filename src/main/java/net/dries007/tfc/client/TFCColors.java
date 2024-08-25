@@ -7,27 +7,21 @@
 package net.dries007.tfc.client;
 
 import java.util.function.ToIntFunction;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ColorResolver;
 import net.minecraft.world.level.CommonLevelAccessor;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
-import net.dries007.tfc.util.calendar.Month;
-import net.dries007.tfc.util.calendar.Season;
 import net.dries007.tfc.util.climate.Climate;
-import net.dries007.tfc.util.climate.OverworldClimateModel;
+import net.dries007.tfc.util.climate.ClimateModel;
 import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.biome.TFCBiomes;
-import net.dries007.tfc.world.chunkdata.ChunkData;
-
-import org.jetbrains.annotations.Nullable;
 
 public final class TFCColors
 {
@@ -129,21 +123,11 @@ public final class TFCColors
         return TFCBiomes.hasExtension(level, biome) ? getClimateColor(WATER_FOG_COLORS_CACHE, pos) : biome.getWaterFogColor();
     }
 
-    public static int getSeasonalFoliageColor(@Nullable BlockPos pos, int tintIndex, int autumnIndex)
-    {
-        final Level level = ClientHelpers.getLevel();
-        if (level != null && pos != null)
-        {
-            return getSeasonalFoliageColor(pos, tintIndex, level, autumnIndex);
-        }
-        return -1;
-    }
-
-    public static int getSeasonalFoliageColor(BlockPos pos, int tintIndex, Level level, int autumnIndex)
+    public static int getSeasonalFoliageColor(BlockPos pos, int tintIndex, int autumnIndex)
     {
         if (tintIndex == 0)
         {
-            return getSeasonalFoliageColor(pos, level, autumnIndex);
+            return getSeasonalFoliageColor(pos, autumnIndex);
         }
         return -1;
     }
@@ -151,10 +135,10 @@ public final class TFCColors
     /**
      * Gets a color based on average temperature and time of year. Autumn occurs at different times of the year at height-adjusted average temperatures from the poles to 12c
      */
-    private static int getSeasonalFoliageColor(BlockPos pos, LevelAccessor level, int autumnIndex)
+    private static int getSeasonalFoliageColor(BlockPos pos, int autumnIndex)
     {
-        ChunkData data = ChunkData.get(level, pos);
-        float temp = OverworldClimateModel.getAdjustedAverageTempByElevation(pos, data);
+        final Level level = ClientHelpers.getLevel();
+        float temp = Climate.getAverageTemperature(level, pos);
         float timeOfYear = Calendars.CLIENT.getCalendarFractionOfYear();
         final float tempClamped = temp > 12f ? 12f : Math.max(temp, -20f);
 
@@ -166,7 +150,7 @@ public final class TFCColors
 
         if (timeOfYear > autumnEnd)
         {
-            return getAverageTempClimateColor(FOLIAGE_WINTER_COLORS_CACHE, pos, temp);
+            return getAverageClimateColor(FOLIAGE_WINTER_COLORS_CACHE, pos, temp);
         }
         else if (timeOfYear > autumnStart)
         {
@@ -178,7 +162,7 @@ public final class TFCColors
         }
         else
         {
-            return getAverageTempClimateColor(FOLIAGE_WINTER_COLORS_CACHE, pos, temp);
+            return getAverageClimateColor(FOLIAGE_WINTER_COLORS_CACHE, pos, temp);
         }
     }
 
@@ -229,32 +213,33 @@ public final class TFCColors
         final Level level = ClientHelpers.getLevel();
         if (level != null)
         {
-            final float temperature = Climate.getTemperature(level, pos);
-            final float rainfall = Climate.getRainfall(level, pos);
-            return getClimateColor(colorCache, temperature, rainfall);
+            final ClimateModel model = Climate.get(level);
+            final float temperature = model.getTemperature(level, pos);
+            final float groundwater = model.getGroundwater(level, pos);
+            return getClimateColor(colorCache, temperature, groundwater);
         }
         return 0;
     }
 
-    private static int getAverageTempClimateColor(int[] colorCache, BlockPos pos, float averageTemperature)
+    private static int getAverageClimateColor(int[] colorCache, BlockPos pos, float averageTemperature)
     {
         final Level level = ClientHelpers.getLevel();
         if (level != null)
         {
-            final float rainfall = Climate.getRainfall(level, pos);
-            return getClimateColor(colorCache, averageTemperature, rainfall);
+            final float groundwater = Climate.getGroundwater(level, pos);
+            return getClimateColor(colorCache, averageTemperature, groundwater);
         }
         return 0;
     }
 
 
     /**
-     * Queries a color map based on temperature and rainfall parameters. Temperature is horizontal, left is high. Rainfall is vertical, up is high.
+     * Queries a color map based on temperature and groundwater parameters. Temperature is horizontal, left is high. Groundwater is vertical, up is high.
      */
-    private static int getClimateColor(int[] colorCache, float temperature, float rainfall)
+    private static int getClimateColor(int[] colorCache, float temperature, float groundwater)
     {
         final int temperatureIndex = 255 - Mth.clamp((int) ((temperature + 20f) * 255f / 50f), 0, 255);
-        final int rainfallIndex = 255 - Mth.clamp((int) (rainfall * 255f / 500f), 0, 255);
+        final int rainfallIndex = 255 - Mth.clamp((int) (groundwater * 255f / 500f), 0, 255);
         return colorCache[temperatureIndex | (rainfallIndex << 8)];
     }
 

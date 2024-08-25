@@ -212,11 +212,13 @@ public final class Region
         public byte distanceToOcean = 0;
         /** Distance to the nearest edge of the region. This is important because certain tasks need to not go too near to the edge to avoid continuity issues */
         public byte distanceToEdge = 0;
+        public byte distanceToWestCoast = 0;
         public byte baseOceanDepth = 0;
         public byte baseLandHeight = 0;
         public byte biomeAltitude = 0;
 
         public float rainfall;
+        public float rainfallVariance;
         public float temperature;
 
         public int biome = TFCLayers.OCEAN;

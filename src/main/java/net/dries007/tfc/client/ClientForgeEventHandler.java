@@ -39,8 +39,6 @@ import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -104,7 +102,6 @@ import net.dries007.tfc.util.data.Deposit;
 import net.dries007.tfc.util.data.Fertilizer;
 import net.dries007.tfc.util.data.Fuel;
 import net.dries007.tfc.util.tooltip.Tooltips;
-import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
@@ -149,11 +146,24 @@ public class ClientForgeEventHandler
 
                 tooltip.add("");
                 tooltip.add(AQUA + TerraFirmaCraft.MOD_NAME);
-                tooltip.add(Component.translatable("tfc.tooltip.calendar_date", Calendars.CLIENT.getCalendarTimeAndDate()).getString());
-                tooltip.add("Avg: %.3f Actual: %.3f Rain: %.3f".formatted(
+                tooltip.add("Date: %s Tick: %d Calendar: %d".formatted(
+                    Calendars.CLIENT.getCalendarTimeAndDate().getString(),
+                    Calendars.CLIENT.getTicks(),
+                    Calendars.CLIENT.getCalendarTicks()
+                ));
+                tooltip.add("Temperature: Avg: %.3f Now: %.3f".formatted(
                     ClimateRenderCache.INSTANCE.getAverageTemperature(),
-                    ClimateRenderCache.INSTANCE.getTemperature(),
+                    ClimateRenderCache.INSTANCE.getTemperature()
+                ));
+                tooltip.add("Rain: Avg: %.3f Var: %.3f Now: %.3f".formatted(
+                    ClimateRenderCache.INSTANCE.getAverageRainfall(),
+                    ClimateRenderCache.INSTANCE.getRainVariance(),
                     ClimateRenderCache.INSTANCE.getRainfall()
+                ));
+                tooltip.add("Water: Avg: %.3f Base: %.3f Now: %.3f".formatted(
+                    ClimateRenderCache.INSTANCE.getAverageGroundwater(),
+                    ClimateRenderCache.INSTANCE.getBaseGroundwater(),
+                    ClimateRenderCache.INSTANCE.getGroundwater()
                 ));
                 final Vec2 wind = ClimateRenderCache.INSTANCE.getWind();
                 tooltip.add(Component.translatable("tfc.tooltip.wind_speed",
@@ -163,7 +173,6 @@ public class ClientForgeEventHandler
                     String.format("%.0f", Mth.abs(wind.y * 100)),
                     Helpers.translateEnum(wind.y > 0 ? Direction.SOUTH : Direction.NORTH))
                     .getString());
-                tooltip.add("Tick: %d Calendar: %d Day: %d".formatted(Calendars.CLIENT.getTicks(), Calendars.CLIENT.getCalendarTicks(), camera.level().getDayTime()));
 
                 final ChunkData data = ChunkData.get(mc.level, pos);
                 if (data.status() == ChunkData.Status.CLIENT)

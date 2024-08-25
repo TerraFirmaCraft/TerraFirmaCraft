@@ -57,26 +57,6 @@ public class OverworldClimateModel implements ClimateModel
         OverworldClimateModel::new
     );
 
-    public static float getAdjustedAverageTempByElevation(BlockPos pos, ChunkData chunkData)
-    {
-        return getAdjustedAverageTempByElevation(pos.getY(), chunkData.getAverageTemp(pos));
-    }
-
-    public static float getAdjustedAverageTempByElevation(int y, float averageTemperature)
-    {
-        if (y > SEA_LEVEL)
-        {
-            // -1.6 C / 10 blocks above sea level
-            float elevationTemperature = Mth.clamp((y - SEA_LEVEL) * 0.16225f, 0, 17.822f);
-            return averageTemperature - elevationTemperature;
-        }
-        else
-        {
-            // Not a lot of trees should generate below sea level
-            return averageTemperature;
-        }
-    }
-
     /**
      * Obtain the climate model for the current dimension, assuming it is an {@link OverworldClimateModel}
      * This is intended for use in select world generation, which is fine with only functioning in an overworld climate model like scenario
@@ -142,12 +122,50 @@ public class OverworldClimateModel implements ClimateModel
         return adjustTemperatureByElevation(pos.getY(), data.getAverageTemp(pos), monthTemperature, dailyTemperature);
     }
 
-    // todo: override getRainfall() with a current timestamp
-
     @Override
-    public float getRainfall(LevelReader level, BlockPos pos)
+    public float getAverageRainfall(LevelReader level, BlockPos pos)
     {
         return ChunkData.get(level, pos).getRainfall(pos);
+    }
+
+    @Override
+    public float getRainfallVariance(LevelReader level, BlockPos pos)
+    {
+        return ChunkData.get(level, pos).getRainVariance(pos);
+    }
+
+    @Override
+    public float getRainfall(LevelReader level, BlockPos pos, long calendarTicks, int daysInMonth)
+    {
+        final ChunkData data = ChunkData.get(level, pos);
+        final float rainVariance = data.getRainVariance(pos);
+        final float rainAverage = data.getRainfall(pos);
+        final float fractionOfYear = ICalendar.getFractionOfYear(calendarTicks, daysInMonth);
+
+        // For positive values of variance, drought in winter, rain in summer, reverse for negative values
+        return rainVariance == 0 ? 0 : Helpers.triangle(rainVariance * rainAverage, rainAverage, 1f, fractionOfYear + 0.75f);
+    }
+
+    @Override
+    public float getBaseGroundwater(LevelReader level, BlockPos pos)
+    {
+        return ChunkData.get(level, pos).getBaseGroundwater(pos);
+    }
+
+    @Override
+    public float getAverageGroundwater(LevelReader level, BlockPos pos)
+    {
+        final ChunkData data = ChunkData.get(level, pos);
+        return Math.clamp(data.getBaseGroundwater(pos) + data.getRainfall(pos), MIN_RAINFALL, MAX_RAINFALL);
+    }
+
+    @Override
+    public float getGroundwater(LevelReader level, BlockPos pos, long calendarTicks, int daysInMonth)
+    {
+        final float baseGroundwater = getBaseGroundwater(level, pos);
+        final float monthlyRainfall = getRainfall(level, pos, calendarTicks, daysInMonth);
+
+        return Math.clamp(baseGroundwater + monthlyRainfall, 0f, 1000f);
     }
 
     /**
@@ -252,7 +270,7 @@ public class OverworldClimateModel implements ClimateModel
             scaledTime = 0;
         }
 
-        final float rainfall = getRainfall(level, pos);
+        final float rainfall = getAverageRainfall(level, pos);
         final float rainfallModifier = Mth.clampedMap(rainfall, FOGGY_RAINFALL_MINIMUM, FOGGY_RAINFALL_PEAK, 0, 1);
         final float skylightModifier = Mth.clampedMap(level.getBrightness(LightLayer.SKY, pos), 0f, 10f, 0f, 1f);
 

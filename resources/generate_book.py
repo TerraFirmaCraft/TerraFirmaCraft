@@ -1443,7 +1443,7 @@ def make_crop_table(start_index: int, end_index: int) -> List[str | Dict[str, An
             crop_table += [
                 {'text': lang(crop)},
                 '%3s - %s' % (data.min_temp, data.max_temp),
-                '%3s - %s' % (data.min_rain, data.max_rain)
+                '%3s - %s' % (data.min_water, data.max_water)
             ]
     return crop_table
 
@@ -1455,7 +1455,7 @@ def detail_crop(crop: str) -> str:
 
 def fruit_tree_text(fruit: str, title: str, text_contents: str) -> Page:
     data = FRUITS[fruit]
-    return text(defer('$(bold)$(l:the_world/climate#temperature)Temperature$(): {0} - {1} °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): {2} - {3}mm' + text_contents, data.min_temp, data.max_temp, data.min_rain, data.max_rain), title=title).anchor(fruit).link('tfc:food/%s' % fruit, 'tfc:plant/%s_sapling' % fruit)
+    return text(defer('$(bold)$(l:the_world/climate#temperature)Temperature$(): {0} - {1} °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): {2} - {3}mm' + text_contents, data.min_temp, data.max_temp, data.min_water, data.max_water), title=title).anchor(fruit).link('tfc:food/%s' % fruit, 'tfc:plant/%s_sapling' % fruit)
 
 
 def fruit_tree_multiblock(fruit: str, text_contents: str) -> Page:
@@ -1477,7 +1477,7 @@ def fruit_tree_multiblock(fruit: str, text_contents: str) -> Page:
 
 def tall_bush_text(fruit: str, title: str, text_contents: str) -> Page:
     data = BERRIES[fruit]
-    return text(defer('$(bold)$(l:the_world/climate#temperature)Temperature$(): {0} - {1} °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): {2} - {3}mm' + text_contents, data.min_temp, data.max_temp, hydration_from_rainfall(data.min_rain), 100), title=title).anchor(fruit).link('tfc:food/%s' % fruit, 'tfc:plant/%s_bush' % fruit)
+    return text(defer('$(bold)$(l:the_world/climate#temperature)Temperature$(): {0} - {1} °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): {2} - {3}mm' + text_contents, data.min_temp, data.max_temp, hydration_from_rainfall(data.min_water), 100), title=title).anchor(fruit).link('tfc:food/%s' % fruit, 'tfc:plant/%s_bush' % fruit)
 
 
 def tall_bush_multiblock(fruit: str, text_contents: str) -> Page:
@@ -1491,7 +1491,7 @@ def tall_bush_multiblock(fruit: str, text_contents: str) -> Page:
 
 def small_bush_text(fruit: str, title: str, text_contents: str) -> Page:
     data = BERRIES[fruit]
-    return text(defer('$(bold)$(l:the_world/climate#temperature)Temperature$(): {0} - {1} °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): {2} - {3} %' + text_contents, data.min_temp, data.max_temp, hydration_from_rainfall(data.min_rain), 100), title=title).anchor(fruit).link('tfc:food/%s' % fruit, 'tfc:plant/%s_bush' % fruit)
+    return text(defer('$(bold)$(l:the_world/climate#temperature)Temperature$(): {0} - {1} °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): {2} - {3} %' + text_contents, data.min_temp, data.max_temp, hydration_from_rainfall(data.min_water), 100), title=title).anchor(fruit).link('tfc:food/%s' % fruit, 'tfc:plant/%s_bush' % fruit)
 
 
 def small_bush_multiblock(fruit: str, text_contents: str) -> Page:

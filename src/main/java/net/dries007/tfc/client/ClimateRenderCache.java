@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.client;
 
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
@@ -17,7 +16,6 @@ import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateModel;
 import net.dries007.tfc.util.tracker.WeatherHelpers;
-import net.dries007.tfc.util.tracker.WorldTracker;
 
 /**
  * This stores the climate parameters at the current client player location, for quick lookup in rendering purposes
@@ -28,7 +26,12 @@ public enum ClimateRenderCache
 
     private float averageTemperature;
     private float temperature;
+    private float averageRainfall;
+    private float rainVariance;
     private float rainfall;
+    private float baseGroundwater;
+    private float averageGroundwater;
+    private float groundwater;
     private Vec2 wind = Vec2.ZERO;
 
     private float lastRainLevel, currRainLevel;
@@ -47,7 +50,12 @@ public enum ClimateRenderCache
 
             averageTemperature = model.getAverageTemperature(level, pos);
             temperature = model.getTemperature(level, pos);
+            averageRainfall = model.getAverageRainfall(level, pos);
+            rainVariance = model.getRainfallVariance(level, pos);
             rainfall = model.getRainfall(level, pos);
+            baseGroundwater = model.getBaseGroundwater(level, pos);
+            averageGroundwater = model.getAverageGroundwater(level, pos);
+            groundwater = model.getGroundwater(level, pos);
             wind = model.getWind(level, pos);
 
             // Calculate a real rain level to interpolate from on client. This reads the level's rain level, which includes influence
@@ -86,9 +94,34 @@ public enum ClimateRenderCache
         return rainfall;
     }
 
+    public float getAverageRainfall()
+    {
+        return averageRainfall;
+    }
+
+    public float getRainVariance()
+    {
+        return rainVariance;
+    }
+
     public float getRainLevel(float partialTick)
     {
         return Mth.lerp(partialTick, lastRainLevel, currRainLevel);
+    }
+
+    public float getBaseGroundwater()
+    {
+        return baseGroundwater;
+    }
+
+    public float getAverageGroundwater()
+    {
+        return averageGroundwater;
+    }
+
+    public float getGroundwater()
+    {
+        return groundwater;
     }
 
     public Vec2 getWind()

@@ -147,7 +147,7 @@ public interface IWeatheringBlock
         final ClimateModel model = Climate.get(level);
 
         float temp = Mth.abs(-0.5f + (Mth.clamp(model.getTemperature(level, pos), -40, 40) + 40) / 80f) * 2;
-        float rainfall = Mth.clamp(model.getRainfall(level, pos), 0, 500) / 500f;
+        float rainfall = Mth.clamp(model.getAverageRainfall(level, pos), 0, 500) / 500f;
         float wind = Mth.clamp(model.getWind(level, pos).length(), 0, 1);
         float raining = level.isRainingAt(pos) ? 1 : 0.5f;
 

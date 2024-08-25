@@ -46,11 +46,11 @@ public final class SurfaceStates
         @Override
         public BlockState getState(SurfaceBuilderContext context)
         {
-            if (context.rainfall() > 300f && context.averageTemperature() > 15f)
+            if (context.groundwater() > 300f && context.averageTemperature() > 15f)
             {
                 return pinkSand.get().defaultBlockState();
             }
-            else if (context.rainfall() > 300f)
+            else if (context.groundwater() > 300f)
             {
                 return blackSand.get().defaultBlockState();
             }
@@ -69,11 +69,11 @@ public final class SurfaceStates
         @Override
         public BlockState getState(SurfaceBuilderContext context)
         {
-            if (context.rainfall() > 300f && context.averageTemperature() > 15f)
+            if (context.groundwater() > 300f && context.averageTemperature() > 15f)
             {
                 return pinkSandstone.get().defaultBlockState();
             }
-            else if (context.rainfall() > 300f)
+            else if (context.groundwater() > 300f)
             {
                 return blackSandstone.get().defaultBlockState();
             }

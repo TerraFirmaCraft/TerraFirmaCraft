@@ -90,18 +90,23 @@ public final class WeatherHelpers
 
         final long calendarTicks = Calendars.get(level).getCalendarTicks();
         final float rainIntensity = tracker.isWeatherEnabled() ? model.getRain(calendarTicks) : -1;
-        final float rainAverage = model.getRainfall(level, pos);
+        final float rainValue = model.getRainfall(level, pos);
 
-        return isPrecipitating(rainIntensity, rainAverage)
+        return isPrecipitating(rainIntensity, rainValue)
             ? model.getTemperature(level, pos) > 0f
                 ? Biome.Precipitation.RAIN
                 : Biome.Precipitation.SNOW
             : Biome.Precipitation.NONE;
     }
 
-    public static boolean isPrecipitating(float rainIntensity, float rainAverage)
+    /**
+     * @param rainIntensity The rainfall intensity, i.e. {@link ClimateModel#getRain}
+     * @param rainfall The time-variant average rainfall, i.e. {@link ClimateModel#getRainfall}
+     * @return {@code true} if it is precipitating (rain or snow) with the provided values.
+     */
+    public static boolean isPrecipitating(float rainIntensity, float rainfall)
     {
-        return rainIntensity > Mth.clampedMap(rainAverage, ClimateModel.MINIMUM_RAINFALL, ClimateModel.MAXIMUM_RAINFALL, 1, 0);
+        return rainIntensity > Mth.clampedMap(rainfall, ClimateModel.MIN_RAINFALL, ClimateModel.MAX_RAINFALL, 1, 0);
     }
 
     /**
@@ -206,7 +211,7 @@ public final class WeatherHelpers
 
         final ChunkPos chunkPos = chunk.getPos();
         final BlockPos surfacePos = getRandomSurfacePos(level, chunkPos);
-        final float rainAverage = model.getRainfall(level, surfacePos);
+        final float rainfall = model.getRainfall(level, surfacePos);
 
         if (timeSinceTick > 1_000)
         {
@@ -225,7 +230,7 @@ public final class WeatherHelpers
                 {
                     netChangeInSnow = Math.max(netChangeInSnow - UPDATES_PER_SNOW_MELT_HOUR, -MAX_UPDATES_PER_TICK);
                 }
-                else if (estimatedTemperature < -2f && isPrecipitating(model.getRain(calendarTick), rainAverage))
+                else if (estimatedTemperature < -2f && isPrecipitating(model.getRain(calendarTick), rainfall))
                 {
                     netChangeInSnow = Math.min(netChangeInSnow + UPDATES_PER_SNOW_ACCUMULATION_HOUR, MAX_UPDATES_PER_TICK);
                 }
@@ -255,7 +260,7 @@ public final class WeatherHelpers
                 // Trigger melting
                 handleSnowMelting(level, chunkPos, 1);
             }
-            else if (realTemperature < -2f && isPrecipitating(model.getRain(currentCalendarTick), rainAverage))
+            else if (realTemperature < -2f && isPrecipitating(model.getRain(currentCalendarTick), rainfall))
             {
                 // Trigger accumulation
                 handleSnowAccumulation(level, surfacePos);

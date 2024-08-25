@@ -69,7 +69,12 @@ public final class Climate
 
     public static float getRainfall(Level level, BlockPos pos)
     {
-        return get(level).getRainfall(level, pos);
+        return get(level).getAverageRainfall(level, pos);
+    }
+
+    public static float getGroundwater(Level level, BlockPos pos)
+    {
+        return get(level).getAverageGroundwater(level, pos);
     }
 
     public static float getFogginess(Level level, BlockPos pos)

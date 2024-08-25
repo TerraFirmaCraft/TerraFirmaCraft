@@ -43,8 +43,9 @@ import net.dries007.tfc.util.events.SelectClimateModelEvent;
  */
 public interface ClimateModel
 {
-    float MINIMUM_RAINFALL = 0f;
-    float MAXIMUM_RAINFALL = 500f;
+    // N.B. These min-max values are only for rainfall values that are average annual, not time-variant or groundwater-inclusive
+    float MIN_RAINFALL = 0f;
+    float MAX_RAINFALL = 500f;
 
     /**
      * The type of this climate model. Must be registered through {@link ClimateModels#REGISTRY}
@@ -52,19 +53,12 @@ public interface ClimateModel
     ClimateModelType<?> type();
 
     /**
+     * Get the base average annual temperature for a given XZ position.
+     *
      * @return The average annual temperature at the given {@code pos} for this climate model. Should be time-invariant, and
      * typically in the range {@code [-25, 25]} but is not required to be.
      */
     float getAverageTemperature(LevelReader level, BlockPos pos);
-
-    /**
-     * @return The temperature at the given {@code pos} and timestamp given by {@code calendarTicks} and {@code daysInMonth}.
-     * This is typically in the range {@code [-40, 40]} but is not required to be.
-     */
-    default float getTemperature(LevelReader level, BlockPos pos, long calendarTicks, int daysInMonth)
-    {
-        return getAverageTemperature(level, pos);
-    }
 
     /**
      * @return The current temperature at the given {@code pos}.
@@ -76,22 +70,91 @@ public interface ClimateModel
     }
 
     /**
+     * @return The temperature at the given {@code pos} and timestamp given by {@code calendarTicks} and {@code daysInMonth}.
+     * This is typically in the range {@code [-40, 40]} but is not required to be.
+     */
+    default float getTemperature(LevelReader level, BlockPos pos, long calendarTicks, int daysInMonth)
+    {
+        return getAverageTemperature(level, pos);
+    }
+
+    /**
+     * @return The average annual rainfall, in {@code mm/year} at the given {@code pos}. Should be time-invariant, and
+     * <strong>must</strong> be in the range {@code [0, 500]}
+     */
+    float getAverageRainfall(LevelReader level, BlockPos pos);
+
+    /**
+     * Get the annual variance in rainfall for a given position.
+     * Positive values indicate wet summers, Negative values indicate wet winters.
+     *
+     * @return The annual variance in the immediate rate of rainfall, in percentage of annual. Should be in the range {@code [-1, 1]}.
+     */
+    default float getRainfallVariance(LevelReader level, BlockPos pos)
+    {
+        return 0;
+    }
+
+    /**
+     * @return The average rainfall, in {@code mm/year}, at the given {@code pos} at the current time.
+     */
+    default float getRainfall(LevelReader level, BlockPos pos)
+    {
+        final ICalendar calendar = Calendars.get(level);
+        return getRainfall(level, pos, calendar.getCalendarTicks(), calendar.getCalendarDaysInMonth());
+    }
+
+    /**
      * @return The average rainfall, in {@code mm/year}, at the given {@code pos} and timestamp given by {@code calendarTicks} and
      * {@code daysInMonth}. Note that this is allowed to vary with seasonal effects, but still returns an average.
      * <strong>Must</strong> be within the range {@code [0, 500]}.
      */
     default float getRainfall(LevelReader level, BlockPos pos, long calendarTicks, int daysInMonth)
     {
-        return getRainfall(level, pos);
+        return getAverageRainfall(level, pos);
     }
 
     /**
-     * @return The average annual rainfall, in {@code mm/year} at the given {@code pos}. Should be time-invariant, and
-     * <strong>must</strong> be in the range {@code [-25, 25]}
+     * Get the base average annual groundwater level, based on proximity to freshwater bodies. This is an additional contribution
+     * from local influences to rainfall. In TFC it is only used (so far) for rivers, to create gallery forests.
+     *
+     * @return The annual base groundwater in mm. Should be in the range [0, 500]
      */
-    float getRainfall(LevelReader level, BlockPos pos);
+    default float getBaseGroundwater(LevelReader level, BlockPos pos)
+    {
+        return 0;
+    }
 
     /**
+     * Get the average annual groundwater level, typically the sum of rainfall and base groundwater.
+     *
+     * @return The annual groundwater in mm. Should be in the range [0, 500]
+     */
+    default float getAverageGroundwater(LevelReader level, BlockPos pos)
+    {
+        return getAverageRainfall(level, pos);
+    }
+
+    /**
+     * @return The groundwater - sum of base groundwater and the time-varying rainfall, at the provided {@code pos} and current time.
+     * Should be in the range {@code [0, 100]}, in {@code mm/year}.
+     */
+    default float getGroundwater(LevelReader level, BlockPos pos)
+    {
+        final ICalendar calendar = Calendars.get(level);
+        return getGroundwater(level, pos, calendar.getCalendarTicks(), calendar.getCalendarDaysInMonth());
+    }
+
+    /**
+     * @return The groundwater - sum of base groundwater and the time-varying rainfall, at the provided {@code pos} and the timestamp
+     * provided by {@code calendarTicks} and {@code daysInMonth}. Should be in the range {@code [0, 100]}, in {@code mm/year}.
+     */
+    default float getGroundwater(LevelReader level, BlockPos pos, long calendarTicks, int daysInMonth)
+    {
+        return getRainfall(level, pos, calendarTicks, daysInMonth);
+    }
+
+     /**
      * Check if it is raining at the timestamp given by {@code calendarTicks} - not annual average
      * rainfall. This is used for purposes of simulation, because we want to be able to query the exact rainfall
      * patterns historically for an area.

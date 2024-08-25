@@ -24,6 +24,7 @@ public enum AnnotateClimate implements RegionTask
 
             // [0, 1], where higher = more inland
             final float bias;
+            final float biasTargetVariance;
             if (point.land())
             {
                 assert point.distanceToOcean >= 0;
@@ -34,10 +35,12 @@ public enum AnnotateClimate implements RegionTask
                 final float oceanProximityBias = Mth.clampedMap(point.distanceToOcean, 2f, 6f, 0f, 1f);
 
                 bias = Math.min(potentialBias, oceanProximityBias);
+                biasTargetVariance = Mth.clampedMap(point.distanceToWestCoast, 0f, 80f, -1, 1);
             }
             else
             {
                 bias = 0;
+                biasTargetVariance = 0;
             }
 
             // Calculate targets to bias towards
@@ -47,6 +50,15 @@ public enum AnnotateClimate implements RegionTask
             // And apply some influence towards those targets
             point.temperature = Mth.lerp(0.23f, point.temperature, biasTargetTemperature);
             point.rainfall = Mth.lerp(0.23f, point.rainfall, biasTargetRainfall);
+
+            //Bias rainfall variance by distance from west coast
+            point.rainfallVariance = Mth.lerp(1f, point.rainfallVariance, biasTargetVariance);
+
+            //Reduce rainfall variance near cell borders
+            final float edgeBiasScale = Mth.clampedMap(point.distanceToEdge, 0, 12, 1, 0);
+            point.rainfallVariance = Mth.lerp(edgeBiasScale, point.rainfallVariance, 0);
+
+            point.rainfallVariance = Mth.clamp(point.rainfallVariance + (float) context.generator().rainfallVarianceNoise.noise(point.x, point.z), -1, 1);
         }
     }
 }
