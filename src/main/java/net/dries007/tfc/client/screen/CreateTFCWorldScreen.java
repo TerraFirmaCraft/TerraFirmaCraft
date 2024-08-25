@@ -50,7 +50,7 @@ public class CreateTFCWorldScreen extends Screen
 
     private OptionsList options;
     private OptionInstance<Boolean> flatBedrock;
-    private OptionInstance<Integer> spawnDistance, spawnCenterX, spawnCenterZ, temperatureScale, rainfallScale, rainfallVarianceScale;
+    private OptionInstance<Integer> spawnDistance, spawnCenterX, spawnCenterZ, temperatureScale, rainfallScale;
     private OptionInstance<Double> temperatureConstant, rainfallConstant, continentalness, grassDensity;
 
     public CreateTFCWorldScreen(CreateWorldScreen parent, WorldCreationContext context)
@@ -97,8 +97,7 @@ public class CreateTFCWorldScreen extends Screen
         );
         options.addSmall(
             temperatureScale = kmOption("tfc.create_world.temperature_scale", 0, 40_000, settings.temperatureScale()),
-            rainfallScale = kmOption("tfc.create_world.rainfall_scale", 0, 40_000, settings.rainfallScale()),
-            rainfallVarianceScale = kmOption("tfc.create_world.rainfall_variance_scale", 0, 40_000, settings.rainfallScale())
+            rainfallScale = kmOption("tfc.create_world.rainfall_scale", 0, 40_000, settings.rainfallScale())
         );
         options.addSmall(
             temperatureConstant = constOption("tfc.create_world.temperature_constant", settings.temperatureConstant()),
@@ -133,7 +132,6 @@ public class CreateTFCWorldScreen extends Screen
                 0.49 < temperatureConstant.get() && temperatureConstant.get() < 0.51 ? temperatureScale.get() : 0,
                 (float) (temperatureConstant.get() * 2.0 - 1.0),
                 0.49 < rainfallConstant.get() && rainfallConstant.get() < 0.51 ? rainfallScale.get() : 0,
-                rainfallVarianceScale.get(),
                 (float) (rainfallConstant.get() * 2.0 - 1.0),
                 old.rockLayerSettings(),
                 continentalness.get().floatValue(),

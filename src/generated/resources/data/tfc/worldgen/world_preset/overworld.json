@@ -12,7 +12,6 @@
           "continentalness": 0.5,
           "flat_bedrock": false,
           "rainfall_scale": 20000,
-          "rainfall_variance_scale": 10000,
           "rock_layer_settings": {
             "bottom": [
               "gneiss",
