@@ -7,14 +7,9 @@
 package net.dries007.tfc.world.feature;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-
-import net.dries007.tfc.util.climate.Climate;
-import net.dries007.tfc.world.chunkdata.ChunkData;
 
 public class IceAndSnowFeature extends Feature<NoneFeatureConfiguration>
 {
@@ -26,10 +21,7 @@ public class IceAndSnowFeature extends Feature<NoneFeatureConfiguration>
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context)
     {
-        final WorldGenLevel level = context.level();
-        final BlockPos pos = context.origin();
-        final ChunkData chunkData = ChunkData.get(level, pos);
-        Climate.onChunkLoad(level, level.getChunk(pos), chunkData);
+        // todo: do something properly here
         return true;
     }
 }

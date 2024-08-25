@@ -7,7 +7,6 @@
 package net.dries007.tfc.network;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.level.ChunkPos;
@@ -15,7 +14,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.LevelChunk;
 
 import net.dries007.tfc.client.ClientHelpers;
-import net.dries007.tfc.common.TFCAttachments;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ForestType;
 import net.dries007.tfc.world.chunkdata.LerpFloatLayer;
@@ -51,16 +49,11 @@ public record ChunkWatchPacket(
         if (level != null)
         {
             final LevelChunk chunk = level.getChunk(pos.x, pos.z);
-            ChunkData data = ChunkData.get(chunk);
-            if (data.status() == ChunkData.Status.INVALID)
+            final ChunkData data = ChunkData.get(chunk);
+            if (data.status() != ChunkData.Status.INVALID)
             {
-                // The chunk has not been loaded yet on client, but we have data we need to get to the chunk,
-                // so we store it to be populated later.
-                data = ChunkData.queueClientChunkDataForLoad(pos);
+                data.onUpdatePacket(rainfall, temperature, forestType);
             }
-
-            data.onUpdatePacket(rainfall, temperature, forestType);
-            chunk.setData(TFCAttachments.CHUNK_DATA.get(), data);
         }
     }
 }

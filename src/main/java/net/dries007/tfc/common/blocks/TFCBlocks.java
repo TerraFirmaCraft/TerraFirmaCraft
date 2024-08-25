@@ -116,7 +116,6 @@ import net.dries007.tfc.common.blocks.wood.TFCSlabBlock;
 import net.dries007.tfc.common.blocks.wood.TFCStairBlock;
 import net.dries007.tfc.common.blocks.wood.TFCWallHangingSignBlock;
 import net.dries007.tfc.common.blocks.wood.Wood;
-import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.common.fluids.SimpleFluid;
 import net.dries007.tfc.common.fluids.TFCFluids;
@@ -195,7 +194,7 @@ public final class TFCBlocks
 
     public static final Id<SnowPileBlock> SNOW_PILE = register("snow_pile", () -> new SnowPileBlock(ExtendedProperties.of(Blocks.SNOW).randomTicks().blockEntity(TFCBlockEntities.PILE).cloneItem(Blocks.SNOW)));
     public static final Id<IcePileBlock> ICE_PILE = register("ice_pile", () -> new IcePileBlock(ExtendedProperties.of(Blocks.ICE).randomTicks().blockEntity(TFCBlockEntities.PILE).cloneItem(Blocks.ICE)));
-    public static final Id<ThinSpikeBlock> ICICLE = register("icicle", () -> new IcicleBlock(Properties.of().mapColor(MapColor.ICE).pushReaction(PushReaction.DESTROY).noLootTable().strength(0.4f).sound(SoundType.GLASS).noOcclusion().randomTicks()));
+    public static final Id<ThinSpikeBlock> ICICLE = register("icicle", () -> new IcicleBlock(Properties.of().mapColor(MapColor.ICE).pushReaction(PushReaction.DESTROY).noLootTable().strength(0.4f).sound(SoundType.GLASS).noOcclusion()));
 
     public static final Id<ThinSpikeBlock> CALCITE = register("calcite", () -> new ThinSpikeBlock(Properties.of().mapColor(MapColor.ICE).pushReaction(PushReaction.DESTROY).noLootTable().strength(0.2f).sound(TFCSounds.THIN)));
 

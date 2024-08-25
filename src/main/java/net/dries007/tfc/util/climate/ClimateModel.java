@@ -7,20 +7,14 @@
 package net.dries007.tfc.util.climate;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.phys.Vec2;
 
 import net.dries007.tfc.client.ClimateRenderCache;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.events.SelectClimateModelEvent;
-import net.dries007.tfc.world.chunkdata.ChunkData;
 
 /**
  * <h1>Climate Models</h1>
@@ -166,10 +160,4 @@ public interface ClimateModel
     {
         return 1f;
     }
-
-    /**
-     * Update a chunk on load with climate specific modifications, such as melting or freezing blocks.
-     */
-    @Deprecated
-    default void onChunkLoad(WorldGenLevel level, ChunkAccess chunk, ChunkData chunkData) {}
 }

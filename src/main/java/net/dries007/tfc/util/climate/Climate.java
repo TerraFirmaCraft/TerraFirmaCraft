@@ -9,15 +9,12 @@ package net.dries007.tfc.util.climate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkAccess;
 import net.neoforged.neoforge.common.NeoForge;
 
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.events.SelectClimateModelEvent;
 import net.dries007.tfc.util.tracker.WorldTracker;
-import net.dries007.tfc.world.chunkdata.ChunkData;
 
 /**
  * Provides access on a per-world basis to the underlying {@link ClimateModel}, along with additional utility methods for interacting
@@ -84,12 +81,6 @@ public final class Climate
     public static float getWaterFogginess(Level level, BlockPos pos)
     {
         return get(level).getWaterFogginess(level, pos, Calendars.get(level).getTicks());
-    }
-
-    @Deprecated
-    public static void onChunkLoad(WorldGenLevel level, ChunkAccess chunk, ChunkData chunkData)
-    {
-        get(level.getLevel()).onChunkLoad(level, chunk, chunkData);
     }
 
     /**

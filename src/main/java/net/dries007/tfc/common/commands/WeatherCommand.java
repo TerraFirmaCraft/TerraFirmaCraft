@@ -7,12 +7,9 @@
 package net.dries007.tfc.common.commands;
 
 import com.mojang.brigadier.Command;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-
-import com.mojang.brigadier.arguments.FloatArgumentType;
-import com.mojang.brigadier.arguments.IntegerArgumentType;
-import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.network.chat.Component;
 
 import net.dries007.tfc.util.tracker.WorldTracker;
@@ -33,7 +30,7 @@ public class WeatherCommand
     private static int setEnabled(CommandSourceStack source, boolean enabled)
     {
         WorldTracker.get(source.getLevel()).setWeatherEnabled(enabled);
-        source.sendSuccess(() -> Component.translatable("tfc.commands.weather_enabled", String.valueOf(enabled)), true);
+        source.sendSuccess(() -> Component.translatable("tfc.commands.weather_enabled." + enabled), true);
         return Command.SINGLE_SUCCESS;
     }
 }

@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.world.chunkdata;
 
-import java.util.Map;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -75,31 +73,18 @@ public class ChunkData
             : chunk.getData(TFCAttachments.CHUNK_DATA);
     }
 
-    private static final Map<ChunkPos, ChunkData> CLIENT_CHUNK_QUEUE = new Object2ObjectOpenHashMap<>(128);
-
-    public static ChunkData queueClientChunkDataForLoad(ChunkPos pos)
-    {
-        final ChunkData data = new ChunkData(pos);
-        CLIENT_CHUNK_QUEUE.put(pos, data);
-        return data;
-    }
-
-    public static ChunkData dequeueClientChunkData(ChunkPos pos)
-    {
-        final @Nullable ChunkData data = CLIENT_CHUNK_QUEUE.remove(pos);
-        return data == null ? new ChunkData(pos) : data;
-    }
-
-    @Nullable private final ChunkDataGenerator generator;
+    private final @Nullable ChunkDataGenerator generator;
     private final ChunkPos pos;
 
     private Status status;
 
     private final RockData rockData;
-    @Nullable private LerpFloatLayer rainfallLayer;
-    @Nullable private LerpFloatLayer temperatureLayer;
+    private @Nullable LerpFloatLayer rainfallLayer;
+    private @Nullable LerpFloatLayer temperatureLayer;
     private int @Nullable [] aquiferSurfaceHeight;
     private ForestType forestType;
+
+    private long lastRandomTick;
 
     public ChunkData(ChunkPos pos)
     {
@@ -113,6 +98,7 @@ public class ChunkData
         this.status = Status.EMPTY;
         this.rockData = new RockData(generator);
         this.forestType = ForestType.GRASSLAND;
+        this.lastRandomTick = -1;
     }
 
     public ChunkPos getPos()
@@ -162,6 +148,17 @@ public class ChunkData
     public Status status()
     {
         return status;
+    }
+
+    public long getLastRandomTick()
+    {
+        return lastRandomTick;
+    }
+
+    public void setLastRandomTick(ChunkAccess chunk, long lastRandomTick)
+    {
+        this.lastRandomTick = lastRandomTick;
+        chunk.setUnsaved(true); // Flag the chunk, since we need to re-save the data
     }
 
     /**

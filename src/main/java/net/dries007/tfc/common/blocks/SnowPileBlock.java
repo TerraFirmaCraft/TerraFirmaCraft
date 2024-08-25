@@ -8,13 +8,10 @@ package net.dries007.tfc.common.blocks;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SnowLayerBlock;
@@ -25,10 +22,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
-import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.climate.Climate;
-import net.dries007.tfc.util.climate.OverworldClimateModel;
 
 /**
  * This block is a snow layer block that hides / covers a block underneath
@@ -184,15 +178,5 @@ public class SnowPileBlock extends SnowLayerBlock implements IForgeBlockExtensio
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         return defaultBlockState();
-    }
-
-    @Override
-    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
-    {
-        // Heavily reduced chance, as most snow melting happens through EnvironmentHelpers, this is only really to account for overhangs and hidden snow
-        if ((level.getRandom().nextInt(EnvironmentHelpers.SNOW_MELT_RANDOM_TICK_CHANCE) == 0 && Climate.getTemperature(level, pos) > OverworldClimateModel.SNOW_MELT_TEMPERATURE) || level.getBrightness(LightLayer.BLOCK, pos) > 11)
-        {
-            removePileOrSnow(level, pos, state);
-        }
     }
 }
