@@ -130,7 +130,7 @@ def generate(rm: ResourceManager):
     configured_placed_feature(rm, 'clay_disc_with_indicator', 'tfc:if_then', {
         'if': 'tfc:clay_disc',
         'then': 'tfc:clay_indicator'
-    }, decorate_chance(20), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(min_rain=175))
+    }, decorate_chance(20), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(min_water=175))
     configured_placed_feature(rm, 'water_clay_disc_with_indicator', 'tfc:if_then', {
         'if': 'tfc:water_clay_disc',
         'then': 'tfc:clay_indicator'
@@ -158,7 +158,7 @@ def generate(rm: ResourceManager):
             'replace': 'tfc:%s/%s' % (variant, soil),
             'with': 'tfc:rooted_dirt/%s' % soil
         } for soil in SOIL_BLOCK_VARIANTS for variant in ('grass', 'dirt')]
-    }, decorate_chance(4), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(min_forest='normal', min_rain=100, max_rain=350, fuzzy=True))
+    }, decorate_chance(4), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(min_forest='normal', min_water=100, max_water=350, fuzzy=True))
 
     # Individual indicator plants are invoked through multiple, which has decorators attached already
     configured_placed_feature(rm, 'clay_indicator', 'tfc:multiple', {'features': '#tfc:feature/clay_indicators'})
@@ -199,7 +199,7 @@ def generate(rm: ResourceManager):
                   [{'replace': 'tfc:grass/%s' % soil, 'with': 'tfc:peat_grass'} for soil in SOIL_BLOCK_VARIANTS] +
                   [{'replace': 'tfc:mud/%s' % soil, 'with': 'tfc:peat'} for soil in SOIL_BLOCK_VARIANTS]
     })
-    rm.placed_feature('peat_disc', 'tfc:peat_disc', decorate_chance(40), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(min_rain=350, min_temp=12))
+    rm.placed_feature('peat_disc', 'tfc:peat_disc', decorate_chance(40), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(min_water=350, min_temp=12))
 
     for ore in ORE_DEPOSITS:
         configured_placed_feature(rm, '%s_deposit' % ore, 'tfc:soil_disc', {
@@ -510,7 +510,7 @@ def generate(rm: ResourceManager):
             'blocks': [{'block': 'tfc:plant/blood_lily'}]
         },
         'blocks': [],
-    }, decorate_climate(min_rain=300, min_temp=18))
+    }, decorate_climate(min_water=300, min_temp=18))
     rm.biome_tag('kaolin_clay_spawns_in', 'tfc:plateau', 'tfc:highlands', 'tfc:old_mountains')
 
     configured_placed_feature(rm, ('vein', 'gravel'), 'tfc:disc_vein', {
@@ -579,7 +579,7 @@ def generate(rm: ResourceManager):
         'replaceable': '#minecraft:base_stone_overworld',
         'ground_state': simple_state_provider('tfc:rooted_dirt/silt')
     })
-    rm.placed_feature('hanging_roots_patch', 'tfc:hanging_roots_patch', decorate_count(10), decorate_square(), decorate_range(40, 72), decorate_scanner('up', 12), decorate_random_offset(0, -1), decorate_climate(min_rain=300, min_temp=0), decorate_biome())
+    rm.placed_feature('hanging_roots_patch', 'tfc:hanging_roots_patch', decorate_count(10), decorate_square(), decorate_range(40, 72), decorate_scanner('up', 12), decorate_random_offset(0, -1), decorate_climate(min_water=300, min_temp=0), decorate_biome())
 
     # Plants
     configured_plant_patch_feature(rm, ('plant', 'allium'), plant_config('tfc:plant/allium[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(-8.4, -1.1, 150, 400, min_forest='edge', max_forest='normal'))
@@ -747,24 +747,24 @@ def generate(rm: ResourceManager):
 
         rm.configured_feature(patch_feature, 'minecraft:random_patch', {'tries': 6, 'xz_spread': 5, 'y_spread': 1, 'feature': singular_feature.join()})
         rm.configured_feature(singular_feature, *feature)
-        rm.placed_feature(patch_feature, patch_feature, decorate_chance(90), decorate_square(), decorate_climate(crop_data.min_temp, crop_data.max_temp, crop_data.min_rain, crop_data.max_rain, min_forest=crop_data.min_forest, max_forest=crop_data.max_forest))
+        rm.placed_feature(patch_feature, patch_feature, decorate_chance(90), decorate_square(), decorate_climate(crop_data.min_temp, crop_data.max_temp, crop_data.min_water, crop_data.max_water, min_forest=crop_data.min_forest, max_forest=crop_data.max_forest))
         rm.placed_feature(singular_feature, singular_feature, decorate_heightmap(heightmap), replaceable, decorate_would_survive(name))
 
     for berry, info in BERRIES.items():
         if info.type == 'spreading':
-            configured_placed_feature(rm, ('plant', berry + '_bush'), 'tfc:spreading_bush', {'block': 'tfc:plant/%s_bush' % berry}, decorate_climate(info.min_temp, info.max_temp, info.min_rain, info.max_rain, min_forest=info.min_forest, max_forest=info.max_forest), decorate_heightmap('world_surface_wg'), decorate_square(), decorate_chance(22))
+            configured_placed_feature(rm, ('plant', berry + '_bush'), 'tfc:spreading_bush', {'block': 'tfc:plant/%s_bush' % berry}, decorate_climate(info.min_temp, info.max_temp, info.min_water, info.max_water, min_forest=info.min_forest, max_forest=info.max_forest), decorate_heightmap('world_surface_wg'), decorate_square(), decorate_chance(22))
             rm.placed_feature_tag('feature/berry_bushes', 'tfc:plant/%s_bush' % berry)
         else:
             bush_block = 'tfc:plant/%s_bush[lifecycle=healthy,stage=0%s]' % (berry, ',fluid=empty' if info.type == 'waterlogged' else '')
-            configured_patch_feature(rm, ('plant', berry + '_bush'), patch_config(bush_block, 1, 4, 4, 'fresh' if info.type == 'waterlogged' else False), decorate_climate(info.min_temp, info.max_temp, info.min_rain, info.max_rain, min_forest=info.min_forest, max_forest=info.max_forest), decorate_square(), decorate_chance(30), biome_check=False)
+            configured_patch_feature(rm, ('plant', berry + '_bush'), patch_config(bush_block, 1, 4, 4, 'fresh' if info.type == 'waterlogged' else False), decorate_climate(info.min_temp, info.max_temp, info.min_water, info.max_water, min_forest=info.min_forest, max_forest=info.max_forest), decorate_square(), decorate_chance(30), biome_check=False)
             rm.placed_feature_tag('feature/berry_bushes', 'tfc:plant/%s_bush_patch' % berry)
 
     for fruit, info in FRUITS.items():
         config = {
             'min_temperature': info.min_temp,
             'max_temperature': info.max_temp,
-            'min_rainfall': info.min_rain,
-            'max_rainfall': info.max_rain,
+            'min_groundwater': info.min_water,
+            'max_groundwater': info.max_water,
             'max_forest': 3
         }
         feature = 'tfc:fruit_trees'
@@ -1060,13 +1060,13 @@ def vein_density(density: int) -> float:
 
 # Tree Helper Functions
 
-def forest_config(rm: ResourceManager, min_rain: float, max_rain: float, min_temp: float, max_temp: float, tree: str, old_growth: bool, old_growth_chance: int = None, spoiler_chance: int = None, krum: bool = False, floating: bool = None):
+def forest_config(rm: ResourceManager, min_water: float, max_water: float, min_temp: float, max_temp: float, tree: str, old_growth: bool, old_growth_chance: int = None, spoiler_chance: int = None, krum: bool = False, floating: bool = None):
     cfg = {
         'climate': {
             'min_temperature': min_temp,
             'max_temperature': max_temp,
-            'min_rainfall': min_rain,
-            'max_rainfall': max_rain
+            'min_groundwater': min_water,
+            'max_groundwater': max_water
         },
         'groundcover': [{'block': 'tfc:wood/twig/%s' % tree}],
         'normal_tree': 'tfc:tree/%s' % tree,
@@ -1233,7 +1233,7 @@ def decorate_carving_mask(min_y: Optional[VerticalAnchor] = None, max_y: Optiona
     }
 
 
-def decorate_climate(min_temp: Optional[float] = None, max_temp: Optional[float] = None, min_rain: Optional[float] = None, max_rain: Optional[float] = None, needs_forest: Optional[bool] = False, fuzzy: Optional[bool] = None, min_forest: Optional[str] = None, max_forest: Optional[str] = None) -> Json:
+def decorate_climate(min_temp: Optional[float] = None, max_temp: Optional[float] = None, min_water: Optional[float] = None, max_water: Optional[float] = None, needs_forest: Optional[bool] = False, fuzzy: Optional[bool] = None, min_forest: Optional[str] = None, max_forest: Optional[str] = None) -> Json:
     minf = None
     if min_forest == 'sparse':
         minf = 1
@@ -1257,8 +1257,8 @@ def decorate_climate(min_temp: Optional[float] = None, max_temp: Optional[float]
         'type': 'tfc:climate',
         'min_temperature': min_temp,
         'max_temperature': max_temp,
-        'min_rainfall': min_rain,
-        'max_rainfall': max_rain,
+        'min_groundwater': min_water,
+        'max_groundwater': max_water,
         'min_forest': 3 if needs_forest else minf,
         'max_forest': maxf,
         'fuzzy': fuzzy

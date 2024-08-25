@@ -168,6 +168,16 @@ public class ChunkData
         return baseGroundwaterLayer == null ? UNKNOWN_BASE_GROUNDWATER : baseGroundwaterLayer.getValue((x & 15) / 16f, (z & 15) / 16f);
     }
 
+    public float getGroundwater(BlockPos pos)
+    {
+        return getGroundwater(pos.getX(), pos.getZ());
+    }
+
+    public float getGroundwater(int x, int z)
+    {
+        return getBaseGroundwater(x, z) + getRainfall(x, z);
+    }
+
     public float getAverageTemp(BlockPos pos)
     {
         return getAverageTemp(pos.getX(), pos.getZ());

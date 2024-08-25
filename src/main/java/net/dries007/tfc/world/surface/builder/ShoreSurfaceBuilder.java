@@ -37,7 +37,7 @@ public class ShoreSurfaceBuilder implements SurfaceBuilder
         }
         else
         {
-            SurfaceState top = context.rainfall() > 400 && variantNoiseValue > 0.4f ? SurfaceStates.SHORE_MUD : SurfaceStates.SHORE_SAND;
+            SurfaceState top = context.groundwater() > 400 && variantNoiseValue > 0.4f ? SurfaceStates.SHORE_MUD : SurfaceStates.SHORE_SAND;
             NormalSurfaceBuilder.ROCKY.buildSurface(context, startY, endY, top, top, SurfaceStates.SHORE_SANDSTONE);
         }
     }

@@ -31,8 +31,8 @@
       "type": "tfc:climate",
       "min_temperature": 200,
       "max_temperature": 500,
-      "min_rainfall": 15.7,
-      "max_rainfall": 28.2,
+      "min_groundwater": 15.7,
+      "max_groundwater": 28.2,
       "min_forest": 3,
       "fuzzy": true
     }

@@ -329,11 +329,11 @@ public class ForestFeature extends Feature<ForestConfig>
     @Nullable
     private ForestConfig.Entry getTree(ChunkData chunkData, RandomSource random, ForestConfig config, BlockPos pos, ForestType type)
     {
-        final float rainfall = chunkData.getRainfall(pos);
+        final float groundwater = chunkData.getGroundwater(pos);
         final float averageTemperature = EnvironmentHelpers.adjustAvgTempForElev(pos.getY(), chunkData.getAverageTemp(pos));
         final List<ForestConfig.Entry> entries = config.entries().stream().map(configuredFeature -> configuredFeature.value().config()).map(cfg -> (ForestConfig.Entry) cfg)
-            .filter(entry -> entry.isValid(averageTemperature, rainfall))
-            .sorted(Comparator.comparingDouble(entry -> entry.distanceFromMean(averageTemperature, rainfall)))
+            .filter(entry -> entry.isValid(averageTemperature, groundwater))
+            .sorted(Comparator.comparingDouble(entry -> entry.distanceFromMean(averageTemperature, groundwater)))
             .collect(Collectors.toList());
 
         if (entries.isEmpty()) return null;

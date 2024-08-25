@@ -19,7 +19,6 @@ import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 
 import net.dries007.tfc.util.EnvironmentHelpers;
-import net.dries007.tfc.util.climate.OverworldClimateModel;
 import net.dries007.tfc.world.Codecs;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ForestType;
@@ -29,8 +28,8 @@ public class ClimatePlacement extends PlacementModifier
     public static final MapCodec<ClimatePlacement> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
         Codec.FLOAT.optionalFieldOf("min_temperature", Float.NEGATIVE_INFINITY).forGetter(c -> c.minTemp),
         Codec.FLOAT.optionalFieldOf("max_temperature", Float.POSITIVE_INFINITY).forGetter(c -> c.maxTemp),
-        Codec.FLOAT.optionalFieldOf("min_rainfall", Float.NEGATIVE_INFINITY).forGetter(c -> c.minRainfall),
-        Codec.FLOAT.optionalFieldOf("max_rainfall", Float.POSITIVE_INFINITY).forGetter(c -> c.maxRainfall),
+        Codec.FLOAT.optionalFieldOf("min_groundwater", Float.NEGATIVE_INFINITY).forGetter(c -> c.minGroundwater),
+        Codec.FLOAT.optionalFieldOf("max_groundwater", Float.POSITIVE_INFINITY).forGetter(c -> c.maxGroundwater),
         Codecs.POSITIVE_INT.optionalFieldOf("min_forest", 0).forGetter(c -> c.minForest),
         Codecs.POSITIVE_INT.optionalFieldOf("max_forest", 4).forGetter(c -> c.maxForest),
         ForestType.CODEC.listOf().optionalFieldOf("forest_types", Collections.emptyList()).forGetter(c -> c.types),
@@ -42,22 +41,22 @@ public class ClimatePlacement extends PlacementModifier
     private final float maxTemp;
     private final List<ForestType> types;
     private final float targetTemp;
-    private final float minRainfall;
-    private final float maxRainfall;
-    private final float targetRainfall;
+    private final float minGroundwater;
+    private final float maxGroundwater;
+    private final float targetGroundwater;
     private final int minForest;
     private final int maxForest;
     private final boolean fuzzy;
 
-    public ClimatePlacement(float minTemp, float maxTemp, float minRainfall, float maxRainfall, int minForest, int maxForest, List<ForestType> types, boolean fuzzy)
+    public ClimatePlacement(float minTemp, float maxTemp, float minGroundwater, float maxGroundwater, int minForest, int maxForest, List<ForestType> types, boolean fuzzy)
     {
         this.minTemp = minTemp;
         this.maxTemp = maxTemp;
         this.types = types;
         this.targetTemp = (minTemp + maxTemp) / 2f;
-        this.minRainfall = minRainfall;
-        this.maxRainfall = maxRainfall;
-        this.targetRainfall = (minRainfall + maxRainfall) / 2f;
+        this.minGroundwater = minGroundwater;
+        this.maxGroundwater = maxGroundwater;
+        this.targetGroundwater = (minGroundwater + maxGroundwater) / 2f;
         this.minForest = minForest;
         this.maxForest = maxForest;
         this.fuzzy = fuzzy;
@@ -73,14 +72,14 @@ public class ClimatePlacement extends PlacementModifier
         return maxTemp;
     }
 
-    public float getMinRainfall()
+    public float getMinGroundwater()
     {
-        return minRainfall;
+        return minGroundwater;
     }
 
-    public float getMaxRainfall()
+    public float getMaxGroundwater()
     {
-        return maxRainfall;
+        return maxGroundwater;
     }
 
     @Override
@@ -92,17 +91,17 @@ public class ClimatePlacement extends PlacementModifier
     public boolean isValid(ChunkData data, BlockPos pos, RandomSource random)
     {
         final float temperature = EnvironmentHelpers.adjustAvgTempForElev(pos.getY(), data.getAverageTemp(pos));
-        final float rainfall = data.getRainfall(pos);
+        final float groundwater = data.getGroundwater(pos);
         final ForestType forestType = data.getForestType();
 
-        if (minTemp <= temperature && temperature <= maxTemp && minRainfall <= rainfall && rainfall <= maxRainfall &&
+        if (minTemp <= temperature && temperature <= maxTemp && minGroundwater <= groundwater && groundwater <= maxGroundwater &&
             minForest <= forestType.getDensity() && forestType.getDensity() <= maxForest)
         {
             if (fuzzy)
             {
                 float normTempDelta = Math.abs(temperature - targetTemp) / (maxTemp - minTemp);
-                float normRainfallDelta = Math.abs(rainfall - targetRainfall) / (maxRainfall - minRainfall);
-                return random.nextFloat() * random.nextFloat() > Math.max(normTempDelta, normRainfallDelta);
+                float normGroundwaterDelta = Math.abs(groundwater - targetGroundwater) / (maxGroundwater - minGroundwater);
+                return random.nextFloat() * random.nextFloat() > Math.max(normTempDelta, normGroundwaterDelta);
             }
             return true;
         }

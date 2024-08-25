@@ -43,7 +43,7 @@
     {
       "type": "tfc:climate",
       "min_temperature": 0,
-      "min_rainfall": 300
+      "min_groundwater": 300
     },
     {
       "type": "tfc:biome"

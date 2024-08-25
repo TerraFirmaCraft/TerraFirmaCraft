@@ -264,6 +264,7 @@ public class OverworldClimateModel implements ClimateModel
         return Math.clamp(data.getBaseGroundwater(pos) + monthlyRainfall, 0f, 1000f);
     }
 
+    //TODO: connect this to the new rain system
     @Override
     public float getMonthlyRainfall(LevelReader level, BlockPos pos, float fractionOfYear)
     {
