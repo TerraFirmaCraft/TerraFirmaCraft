@@ -9,91 +9,203 @@ package net.dries007.tfc.util.climate;
 /**
  * This is purely used for decoration
  * Loosely based on https://en.wikipedia.org/wiki/K%C3%B6ppen_climate_classification
- * We do not have a measure of monthly rainfall variance (only average annual), and in interest of "who cares" this is quite simplified from the actual classification.
+ * But not nearly as loosely as it was in 1.20 and before because we not have seasonal rainfall.
  */
 public enum KoppenClimateClassification
 {
-    ARCTIC,
-    TUNDRA,
-    SUBARCTIC,
-    COLD_DESERT,
-    HOT_DESERT,
-    TEMPERATE,
-    SUBTROPICAL,
-    HUMID_SUBTROPICAL,
-    HUMID_OCEANIC,
-    HUMID_SUBARCTIC,
-    TROPICAL_SAVANNA,
-    TROPICAL_RAINFOREST;
+    AF,
+    AM,
+    AW,
+    AS,
+    BWH,
+    BWK,
+    BSH,
+    BSK,
+    CSA,
+    CSB,
+    CSC,
+    CWA,
+    CWB,
+    CWC,
+    CFA,
+    CFB,
+    CFC,
+    DSA,
+    DSB,
+    DSC,
+    DSD,
+    DWA,
+    DWB,
+    DWC,
+    DWD,
+    DFA,
+    DFB,
+    DFC,
+    DFD,
+    ET,
+    EF;
 
-    public static KoppenClimateClassification classify(float averageTemperature, float rainfall)
+    public static KoppenClimateClassification classify(float averageTemperature, float rainfall, float rainVar)
     {
-        if (averageTemperature < -20)
+        // True Koppen: When none of the year is above freezing, temp var when avg = -17C ~= 17C
+        if (averageTemperature < -17f)
         {
-            return ARCTIC;
+            return EF;
         }
-        else if (rainfall < 150)
+        // True Koppen: When summer temps don't exceed 10C, but this would be avg temp = -1C which would make for massive tundras
+        else if (averageTemperature <= -12f)
         {
-            if (averageTemperature > 4)
+            return ET;
+        }
+        else if (rainfall < 75f)
+        {
+            if (averageTemperature > 18f)
             {
-                return HOT_DESERT;
+                return BWH;
             }
             else
             {
-                return COLD_DESERT;
+                return BWK;
             }
         }
-        else if (averageTemperature < -14)
+        else if (rainfall < 150f)
         {
-            if (rainfall > 300)
+            if (averageTemperature > 18)
             {
-                return SUBARCTIC;
+                return BSH;
             }
             else
             {
-                return TUNDRA;
+                return BSK;
             }
         }
-        else if (averageTemperature > 18)
+        // True Koppen: Lowest monthly temp > 18C, temp var when avg = 21C ~= 3C
+        else if (averageTemperature > 21f)
         {
-            if (rainfall > 300)
+            if (rainfall * (1 + rainVar) > 900f)
             {
-                return TROPICAL_RAINFOREST;
+                return AM;
+            }
+            else if (rainVar > 0.5f)
+            {
+                return AW;
+            }
+            else if (rainVar < -0.5f)
+            {
+                return AS;
             }
             else
             {
-                return TROPICAL_SAVANNA;
+                return AF;
             }
         }
-        else if (rainfall > 350)
+        // True Koppen: Lowest monthly temp > 0C, temp var when avg = 8C ~= 8C
+        else if (averageTemperature > 8f)
         {
-            if (averageTemperature > 12)
+            if (averageTemperature > 17f)
             {
-                return HUMID_SUBTROPICAL;
+                if (rainVar > 0.5f)
+                {
+                    return CWA;
+                }
+                else if (rainVar < -0.5f)
+                {
+                    return CSA;
+                }
+                else
+                {
+                    return CFA;
+                }
             }
-            else if (averageTemperature > -5)
+            else if (averageTemperature > 12f)
             {
-                return HUMID_OCEANIC;
+                if (rainVar > 0.5f)
+                {
+                    return CWB;
+                }
+                else if (rainVar < -0.5f)
+                {
+                    return CSB;
+                }
+                else
+                {
+                    return CFB;
+                }
             }
             else
             {
-                return HUMID_SUBARCTIC;
+                if (rainVar > 0.5f)
+                {
+                    return CWC;
+                }
+                else if (rainVar < -0.5f)
+                {
+                    return CSC;
+                }
+                else
+                {
+                    return CFC;
+                }
             }
+
+        }
+        // Otherwise, has to be in Group D
+        else if (averageTemperature > 3f)
+        {
+            if (rainVar > 0.5f)
+            {
+                return DWA;
+            }
+            else if (rainVar < -0.5f)
+            {
+                return DSA;
+            }
+            else
+            {
+                return DFA;
+            }
+        }
+        else if (averageTemperature > -2f)
+        {
+            if (rainVar > 0.5f)
+            {
+                return DWB;
+            }
+            else if (rainVar < -0.5f)
+            {
+                return DSB;
+            }
+            else
+            {
+                return DFB;
+            }
+        }
+        else if (averageTemperature > -8f)
+        {
+            if (rainVar > 0.5f)
+            {
+                return DWC;
+            }
+            else if (rainVar < -0.5f)
+            {
+                return DSC;
+            }
+            else
+            {
+                return DFC;
+            }
+        }
+        else if (rainVar > 0.5f)
+        {
+            return DWD;
+        }
+        else if (rainVar < -0.5f)
+        {
+            return DSD;
         }
         else
         {
-            if (averageTemperature > 12)
-            {
-                return SUBTROPICAL;
-            }
-            else if (averageTemperature > -5)
-            {
-                return TEMPERATE;
-            }
-            else
-            {
-                return SUBARCTIC;
-            }
+            return DFD;
         }
     }
 }
