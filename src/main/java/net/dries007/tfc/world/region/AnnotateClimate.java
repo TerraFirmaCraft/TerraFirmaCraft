@@ -51,10 +51,10 @@ public enum AnnotateClimate implements RegionTask
             point.temperature = Mth.lerp(0.23f, point.temperature, biasTargetTemperature);
             point.rainfall = Mth.lerp(0.23f, point.rainfall, biasTargetRainfall);
 
-            //Bias rainfall variance by distance from west coast
+            // Bias rainfall variance by distance from west coast
             point.rainfallVariance = Mth.lerp(1f, point.rainfallVariance, biasTargetVariance);
 
-            //Reduce rainfall variance near cell borders
+            // Reduce rainfall variance near cell borders
             final float edgeBiasScale = Mth.clampedMap(point.distanceToEdge, 0, 12, 1, 0);
             point.rainfallVariance = Mth.lerp(edgeBiasScale, point.rainfallVariance, 0);
 

@@ -217,6 +217,6 @@ public class RegionGeneratorTests implements TestSetup
     //Set startup arguments, including seed, here
     private RegionGenerator newRegionGenerator()
     {
-        return new RegionGenerator(new Settings(false, 0, 0, 0, 20_000, 0, 20_000, 10_000, 0, null, 0.5f, 0.5f), new XoroshiroRandomSource(1798237841231L));
+        return new RegionGenerator(new Settings(false, 0, 0, 0, 20_000, 0, 20_000, 10_000, null, 0.5f, 0.5f), new XoroshiroRandomSource(1798237841231L));
     }
 }

@@ -179,10 +179,9 @@ public record RegionChunkDataGenerator(
     {
         final float distance = (float) fractal.intersectDistance(gridX, gridZ);
         final float distanceInfluence = Mth.clampedMap(distance, 0f, RIVER_INFLUENCE_SQ, 1f, 0f);
-        final float targetValue = Math.min(300f, 500f);
 
         // Take the max of any influence with adjacent rivers
-        return Math.max(currentValue, distanceInfluence * widthInfluence * targetValue);
+        return Math.max(currentValue, distanceInfluence * widthInfluence * 300f);
     }
 
     @Override
