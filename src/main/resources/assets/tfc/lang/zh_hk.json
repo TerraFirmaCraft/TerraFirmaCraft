@@ -237,7 +237,6 @@
   "tfc.tooltip.calendar_day": "星期：%s",
   "tfc.tooltip.calendar_birthday": "%s的生日！",
   "tfc.tooltip.calendar_date": "日期：%s",
-  "tfc.tooltip.climate_koppen_climate_classification": "氣候：%s",
   "tfc.tooltip.climate_average_temperature": "平均温度：%s°C",
   "tfc.tooltip.climate_annual_rainfall": "年降雨量：%s毫米",
   "tfc.tooltip.climate_peak_rainfall_summer": "Peak Rainfall: %smm/yr in Summer",

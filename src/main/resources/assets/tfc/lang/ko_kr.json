@@ -231,7 +231,6 @@
   "tfc.tooltip.calendar_day": "요일 : %s",
   "tfc.tooltip.calendar_birthday": "%s의 생일!",
   "tfc.tooltip.calendar_date": "날짜 : %s",
-  "tfc.tooltip.climate_koppen_climate_classification": "기후: %s",
   "tfc.tooltip.climate_average_temperature": "연평균 기온: %s°C",
   "tfc.tooltip.climate_annual_rainfall": "연강수량: %smm",
   "tfc.tooltip.climate_peak_rainfall_summer": "Peak Rainfall: %smm/yr in Summer",

@@ -230,7 +230,6 @@
   "tfc.tooltip.calendar_day": "曜日 : %s",
   "tfc.tooltip.calendar_birthday": "%s の誕生日です！",
   "tfc.tooltip.calendar_date": "日付 : %s",
-  "tfc.tooltip.climate_koppen_climate_classification": "気候: %s",
   "tfc.tooltip.climate_average_temperature": "平均気温: %s°C",
   "tfc.tooltip.climate_annual_rainfall": "年間降水量: %smm",
   "tfc.tooltip.climate_peak_rainfall_summer": "Peak Rainfall: %smm/yr in Summer",

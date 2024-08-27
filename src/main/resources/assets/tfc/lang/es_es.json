@@ -230,7 +230,6 @@
   "tfc.tooltip.calendar_day": "Day : %s",
   "tfc.tooltip.calendar_birthday": "¡Cumpleaños de %s!",
   "tfc.tooltip.calendar_date": "Date : %s",
-  "tfc.tooltip.climate_koppen_climate_classification": "Climate: %s",
   "tfc.tooltip.climate_average_temperature": "Temperatura media: %s°C",
   "tfc.tooltip.climate_annual_rainfall": "Precipitaciones anuales: %smm",
   "tfc.tooltip.climate_peak_rainfall_summer": "Peak Rainfall: %smm/yr in Summer",

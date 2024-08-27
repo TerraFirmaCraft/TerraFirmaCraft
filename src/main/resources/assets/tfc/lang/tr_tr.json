@@ -230,7 +230,6 @@
   "tfc.tooltip.calendar_day": "Gün : %s",
   "tfc.tooltip.calendar_birthday": "%s'nin doğum günü!",
   "tfc.tooltip.calendar_date": "Tarih : %s",
-  "tfc.tooltip.climate_koppen_climate_classification": "İklim: %s",
   "tfc.tooltip.climate_average_temperature": "Ort. Sıcaklık: %s°C",
   "tfc.tooltip.climate_annual_rainfall": "Yıllık Yağış: %smm",
   "tfc.tooltip.climate_peak_rainfall_summer": "Peak Rainfall: %smm/yr in Summer",

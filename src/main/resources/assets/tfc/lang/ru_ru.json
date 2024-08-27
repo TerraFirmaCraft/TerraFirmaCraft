@@ -235,7 +235,6 @@
   "tfc.tooltip.calendar_day": "День : %s",
   "tfc.tooltip.calendar_birthday": "С днём рождения %s!",
   "tfc.tooltip.calendar_date": "Дата : %s",
-  "tfc.tooltip.climate_koppen_climate_classification": "Климат: %s",
   "tfc.tooltip.climate_average_temperature": "Средняя температура: %s",
   "tfc.tooltip.climate_annual_rainfall": "Годовые осадки: %sмм",
   "tfc.tooltip.climate_peak_rainfall_summer": "Peak Rainfall: %smm/yr in Summer",
