@@ -82,7 +82,7 @@ public enum KoppenClimateClassification
         // True Koppen: Lowest monthly temp > 18C, temp var when avg = 21C ~= 3C
         else if (averageTemperature > 21f)
         {
-            if (rainfall * (1 + rainVar) > 900f)
+            if (rainfall * (1 + rainVar) > 750f)
             {
                 return AM;
             }

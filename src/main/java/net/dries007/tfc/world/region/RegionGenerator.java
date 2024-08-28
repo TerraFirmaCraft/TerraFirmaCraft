@@ -49,6 +49,9 @@ public class RegionGenerator
     public final Noise2D rainfallNoise;
     public final Noise2D rainfallVarianceNoise;
 
+    private final float rainfallScale;
+    private final float temperatureScale;
+
     public final ThreadLocal<Area> biomeArea;
     public final ThreadLocal<Area> rockArea;
 
@@ -67,6 +70,9 @@ public class RegionGenerator
         this.cellCache = new FastConcurrentCache<>(256);
         this.partitionCache = new FastConcurrentCache<>(256);
 
+        this.rainfallScale = settings.rainfallScale();
+        this.temperatureScale = settings.temperatureScale();
+
         float min = settings.continentalness() * 10f - 2.5f; // range [0, 1], default 0.5 -> 2.5 continentalness
         this.continentNoise = cellNoise.then(c -> 1 - c.f1() / (0.37f + c.f2()))
             .lazyProduct(new OpenSimplex2D(random.nextLong())
@@ -74,14 +80,14 @@ public class RegionGenerator
                 .scaled(min, 8.7f)
                 .octaves(4));
 
-        this.temperatureNoise = baseNoise(false, settings.temperatureScale(), settings.temperatureConstant())
+        this.temperatureNoise = baseNoise(false, temperatureScale, settings.temperatureConstant())
             .scaled(-20f, 30f)
             .add(new OpenSimplex2D(random.nextInt())
                 .octaves(2)
                 .spread(0.15f)
                 .scaled(-3f, 3f));
 
-        this.rainfallNoise = baseNoise(true, settings.rainfallScale(), settings.rainfallConstant())
+        this.rainfallNoise = baseNoise(true, rainfallScale, settings.rainfallConstant())
             .scaled(0f, 500f)
             .add(new OpenSimplex2D(random.nextInt())
                 .octaves(2)
@@ -103,6 +109,16 @@ public class RegionGenerator
     public long seed()
     {
         return seed;
+    }
+
+    public float getRainfallScale()
+    {
+        return rainfallScale;
+    }
+
+    public float getTemperatureScale()
+    {
+        return temperatureScale;
     }
 
     public RegionPartition.Point getOrCreatePartitionPoint(int gridX, int gridZ)
