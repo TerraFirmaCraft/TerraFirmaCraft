@@ -26,6 +26,7 @@ import org.junit.jupiter.api.Test;
 
 import net.dries007.tfc.data.providers.BuiltinWorldPreset;
 import net.dries007.tfc.test.TestSetup;
+import net.dries007.tfc.util.climate.KoppenClimateClassification;
 import net.dries007.tfc.world.region.ChooseRocks;
 import net.dries007.tfc.world.region.Region;
 import net.dries007.tfc.world.region.RegionGenerator;
@@ -159,6 +160,9 @@ public class RegionGeneratorTests implements TestSetup
             case TEMPERATURE -> temperatureGradient(point, point.temperature, -25f, 35f);
             case RAINFALL, RAINFALL_AFTER_RIVERS -> temperatureGradient(point, point.rainfall, 0, 500);
             case RAINFALL_VARIANCE -> temperatureGradient(point, point.rainfallVariance, -1, 1);
+            case KOPPEN, KOPPEN_AFTER_RIVERS -> point.land()
+                ? koppenClimateColor(KoppenClimateClassification.classify(point.temperature, point.rainfall, point.rainfallVariance))
+                : continentColor(point);
             case CHOOSE_BIOMES -> biomeColor(point.biome);
             case CHOOSE_ROCKS -> {
                 final double value = new Random(point.rock >> 2).nextDouble();
@@ -231,6 +235,47 @@ public class RegionGeneratorTests implements TestSetup
     }
 
     /**
+     * Colors matched to the map on the <a href="https://en.wikipedia.org/wiki/K%C3%B6ppen_climate_classification#/media/File:Koppen-Geiger_Map_v2_World_1991%E2%80%932020.svg">Koppen Climate Wikipedia</a> page.
+     */
+    private Color koppenClimateColor(KoppenClimateClassification koppen)
+    {
+        return switch (koppen)
+        {
+            case AF -> new Color(0, 0, 220);
+            case AS -> new Color(0, 100, 240);
+            case AW -> new Color(0, 150, 220);
+            case AM -> new Color(40, 80, 200);
+            case BWH -> new Color(210, 0, 0);
+            case BSH -> new Color(210, 120, 0);
+            case BWK -> new Color(200, 80, 80);
+            case BSK -> new Color(200, 120, 60);
+            case CSA -> new Color(250, 250, 0);
+            case CSB -> new Color(180, 180, 0);
+            case CSC -> new Color(120, 120, 0);
+            case CWA -> new Color(100, 240, 130);
+            case CWB -> new Color(80, 210, 120);
+            case CWC -> new Color(70, 160, 110);
+            case CFA -> new Color(170, 240, 90);
+            case CFB -> new Color(140, 200, 80);
+            case CFC -> new Color(110, 170, 70);
+            case DSA -> new Color(190, 20, 190);
+            case DSB -> new Color(160, 20, 180);
+            case DSC -> new Color(130, 20, 170);
+            case DSD -> new Color(100, 20, 160);
+            case DFA -> new Color(40, 190, 190);
+            case DFB -> new Color(30, 170, 170);
+            case DFC -> new Color(20, 150, 140);
+            case DFD -> new Color(10, 130, 110);
+            case DWA -> new Color(80, 80, 220);
+            case DWB -> new Color(70, 70, 190);
+            case DWC -> new Color(60, 60, 160);
+            case DWD -> new Color(60, 60, 130);
+            case ET -> new Color(190, 190, 190);
+            case EF -> new Color(80, 80, 80);
+        };
+    }
+
+    /**
      * Allows drawing additional visualizations between generation tasks.
      */
     enum DrawnTask
@@ -248,12 +293,14 @@ public class RegionGeneratorTests implements TestSetup
         TEMPERATURE(Task.ANNOTATE_CLIMATE),
         RAINFALL(Task.ANNOTATE_CLIMATE),
         RAINFALL_VARIANCE(Task.ANNOTATE_CLIMATE),
+        KOPPEN(Task.ANNOTATE_CLIMATE),
 
         CHOOSE_BIOMES(Task.CHOOSE_BIOMES),
         CHOOSE_ROCKS(Task.CHOOSE_ROCKS),
         ADD_RIVERS_AND_LAKES(Task.ADD_RIVERS_AND_LAKES),
         // Draw climate visualizations again after rivers, which modify rainfall
         RAINFALL_AFTER_RIVERS(Task.ADD_RIVERS_AND_LAKES),
+        KOPPEN_AFTER_RIVERS(Task.ADD_RIVERS_AND_LAKES),
         ;
 
         final Task root;

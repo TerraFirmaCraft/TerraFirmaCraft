@@ -7,9 +7,7 @@
 package net.dries007.tfc.util.climate;
 
 /**
- * This is purely used for decoration
- * Loosely based on https://en.wikipedia.org/wiki/K%C3%B6ppen_climate_classification
- * But not nearly as loosely as it was in 1.20 and before because we not have seasonal rainfall.
+ * This is purely used for decoration and visualization purposes. Based on <a href="https://en.wikipedia.org/wiki/K%C3%B6ppen_climate_classification> Koppen Climate Classification</a>
  */
 public enum KoppenClimateClassification
 {
