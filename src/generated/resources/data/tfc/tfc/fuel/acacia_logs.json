@@ -1,19 +1,8 @@
 {
   "duration": 650,
-  "ingredient": [
-    {
-      "item": "tfc:wood/log/acacia"
-    },
-    {
-      "item": "tfc:wood/stripped_log/acacia"
-    },
-    {
-      "item": "tfc:wood/wood/acacia"
-    },
-    {
-      "item": "tfc:wood/stripped_wood/acacia"
-    }
-  ],
+  "ingredient": {
+    "tag": "tfc:acacia_logs"
+  },
   "purity": 0.95,
   "temperature": 1000.0
 }

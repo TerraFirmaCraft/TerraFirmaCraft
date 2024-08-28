@@ -1,19 +1,8 @@
 {
   "duration": 652,
-  "ingredient": [
-    {
-      "item": "tfc:wood/log/birch"
-    },
-    {
-      "item": "tfc:wood/stripped_log/birch"
-    },
-    {
-      "item": "tfc:wood/wood/birch"
-    },
-    {
-      "item": "tfc:wood/stripped_wood/birch"
-    }
-  ],
+  "ingredient": {
+    "tag": "tfc:birch_logs"
+  },
   "purity": 0.95,
   "temperature": 1750.0
 }

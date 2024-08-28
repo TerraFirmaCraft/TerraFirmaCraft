@@ -1,19 +1,8 @@
 {
   "duration": 611,
-  "ingredient": [
-    {
-      "item": "tfc:wood/log/aspen"
-    },
-    {
-      "item": "tfc:wood/stripped_log/aspen"
-    },
-    {
-      "item": "tfc:wood/wood/aspen"
-    },
-    {
-      "item": "tfc:wood/stripped_wood/aspen"
-    }
-  ],
+  "ingredient": {
+    "tag": "tfc:aspen_logs"
+  },
   "purity": 0.95,
   "temperature": 1000.0
 }

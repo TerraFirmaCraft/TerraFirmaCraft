@@ -1,19 +1,8 @@
 {
   "duration": 653,
-  "ingredient": [
-    {
-      "item": "tfc:wood/log/sycamore"
-    },
-    {
-      "item": "tfc:wood/stripped_log/sycamore"
-    },
-    {
-      "item": "tfc:wood/wood/sycamore"
-    },
-    {
-      "item": "tfc:wood/stripped_wood/sycamore"
-    }
-  ],
+  "ingredient": {
+    "tag": "tfc:sycamore_logs"
+  },
   "purity": 0.95,
   "temperature": 1750.0
 }

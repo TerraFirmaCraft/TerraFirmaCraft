@@ -77,6 +77,11 @@ public final class BuiltinWorldPreset
             )));
     }
 
+    public static Settings defaultSettings()
+    {
+        return new Settings(false, 4_000, 0, 0, 20_000, 0, 20_000, 0, rockLayerSettings(), 0.5f, 0.5f);
+    }
+
     private static final Map<Rock, SandBlockType> ROCK_TO_SAND_COLOR = ImmutableMap.<Rock, SandBlockType>builder()
         .put(GRANITE, SandBlockType.BROWN)
         .put(DIORITE, SandBlockType.WHITE)

@@ -1,19 +1,8 @@
 {
   "duration": 730,
-  "ingredient": [
-    {
-      "item": "tfc:wood/log/palm"
-    },
-    {
-      "item": "tfc:wood/stripped_log/palm"
-    },
-    {
-      "item": "tfc:wood/wood/palm"
-    },
-    {
-      "item": "tfc:wood/stripped_wood/palm"
-    }
-  ],
+  "ingredient": {
+    "tag": "tfc:palm_logs"
+  },
   "purity": 0.95,
   "temperature": 1250.0
 }

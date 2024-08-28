@@ -1,19 +1,8 @@
 {
   "duration": 655,
-  "ingredient": [
-    {
-      "item": "tfc:wood/log/mangrove"
-    },
-    {
-      "item": "tfc:wood/stripped_log/mangrove"
-    },
-    {
-      "item": "tfc:wood/wood/mangrove"
-    },
-    {
-      "item": "tfc:wood/stripped_wood/mangrove"
-    }
-  ],
+  "ingredient": {
+    "tag": "tfc:mangrove_logs"
+  },
   "purity": 0.95,
   "temperature": 1000.0
 }

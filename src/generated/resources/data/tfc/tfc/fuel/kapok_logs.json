@@ -1,19 +1,8 @@
 {
   "duration": 645,
-  "ingredient": [
-    {
-      "item": "tfc:wood/log/kapok"
-    },
-    {
-      "item": "tfc:wood/stripped_log/kapok"
-    },
-    {
-      "item": "tfc:wood/wood/kapok"
-    },
-    {
-      "item": "tfc:wood/stripped_wood/kapok"
-    }
-  ],
+  "ingredient": {
+    "tag": "tfc:kapok_logs"
+  },
   "purity": 0.95,
   "temperature": 1000.0
 }

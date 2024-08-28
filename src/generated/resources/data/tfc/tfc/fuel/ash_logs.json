@@ -1,19 +1,8 @@
 {
   "duration": 696,
-  "ingredient": [
-    {
-      "item": "tfc:wood/log/ash"
-    },
-    {
-      "item": "tfc:wood/stripped_log/ash"
-    },
-    {
-      "item": "tfc:wood/wood/ash"
-    },
-    {
-      "item": "tfc:wood/stripped_wood/ash"
-    }
-  ],
+  "ingredient": {
+    "tag": "tfc:ash_logs"
+  },
   "purity": 0.95,
   "temperature": 1250.0
 }

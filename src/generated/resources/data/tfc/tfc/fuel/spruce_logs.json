@@ -1,19 +1,8 @@
 {
   "duration": 608,
-  "ingredient": [
-    {
-      "item": "tfc:wood/log/spruce"
-    },
-    {
-      "item": "tfc:wood/stripped_log/spruce"
-    },
-    {
-      "item": "tfc:wood/wood/spruce"
-    },
-    {
-      "item": "tfc:wood/stripped_wood/spruce"
-    }
-  ],
+  "ingredient": {
+    "tag": "tfc:spruce_logs"
+  },
   "purity": 0.6,
   "temperature": 1500.0
 }

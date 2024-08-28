@@ -1,19 +1,8 @@
 {
   "duration": 603,
-  "ingredient": [
-    {
-      "item": "tfc:wood/log/willow"
-    },
-    {
-      "item": "tfc:wood/stripped_log/willow"
-    },
-    {
-      "item": "tfc:wood/wood/willow"
-    },
-    {
-      "item": "tfc:wood/stripped_wood/willow"
-    }
-  ],
+  "ingredient": {
+    "tag": "tfc:willow_logs"
+  },
   "purity": 0.95,
   "temperature": 1000.0
 }

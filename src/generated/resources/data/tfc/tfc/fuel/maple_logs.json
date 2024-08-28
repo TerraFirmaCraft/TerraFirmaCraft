@@ -1,19 +1,8 @@
 {
   "duration": 745,
-  "ingredient": [
-    {
-      "item": "tfc:wood/log/maple"
-    },
-    {
-      "item": "tfc:wood/stripped_log/maple"
-    },
-    {
-      "item": "tfc:wood/wood/maple"
-    },
-    {
-      "item": "tfc:wood/stripped_wood/maple"
-    }
-  ],
+  "ingredient": {
+    "tag": "tfc:maple_logs"
+  },
   "purity": 0.95,
   "temperature": 2000.0
 }

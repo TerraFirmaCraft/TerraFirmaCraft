@@ -1,19 +1,8 @@
 {
   "duration": 627,
-  "ingredient": [
-    {
-      "item": "tfc:wood/log/pine"
-    },
-    {
-      "item": "tfc:wood/stripped_log/pine"
-    },
-    {
-      "item": "tfc:wood/wood/pine"
-    },
-    {
-      "item": "tfc:wood/stripped_wood/pine"
-    }
-  ],
+  "ingredient": {
+    "tag": "tfc:pine_logs"
+  },
   "purity": 0.6,
   "temperature": 1250.0
 }

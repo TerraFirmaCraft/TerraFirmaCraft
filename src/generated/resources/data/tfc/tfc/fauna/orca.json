@@ -2,5 +2,5 @@
   "chance": 10,
   "distance_below_sea_level": 6,
   "max_temperature": 19.0,
-  "min_rainfall": 100.0
+  "min_groundwater": 100.0
 }

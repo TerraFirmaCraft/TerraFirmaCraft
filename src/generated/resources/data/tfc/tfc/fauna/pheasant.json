@@ -1,7 +1,7 @@
 {
-  "max_rainfall": 300.0,
+  "max_groundwater": 300.0,
   "max_temperature": 17.0,
   "min_forest": 2,
-  "min_rainfall": 100.0,
+  "min_groundwater": 100.0,
   "min_temperature": -5.0
 }
