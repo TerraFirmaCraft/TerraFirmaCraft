@@ -27,19 +27,19 @@ public enum ForestRandomizeSmallLayer implements CenterTransformLayer
             }
             else if (random == 1)
             {
-                return ForestType.SECONDARY_SPARSE.ordinal();
+                return ForestType.SPARSE.ordinal();
             }
             else if (random == 3)
             {
                 return ForestType.getDeadForestType(context.random());
             }
         }
-        else if (current.isSparse() || current.isNone())
+        else if (current.isSavanna() || current.isNone())
         {
             final int random = context.random().nextInt(30);
             if (random == 0)
             {
-                return current.isSparse() ? ForestType.getNormalForestType(context.random()) : ForestType.getEdgeForestType(context.random());
+                return current.isSavanna() ? ForestType.getSecondaryForestType(context.random()) : ForestType.getEdgeForestType(context.random());
             }
         }
         if (context.random().nextInt(10) == 0)

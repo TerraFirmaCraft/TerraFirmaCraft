@@ -82,6 +82,21 @@ public class ClimatePlacement extends PlacementModifier
         return maxGroundwater;
     }
 
+    public int getMinForest()
+    {
+        return minForest;
+    }
+
+    public int getMaxForest()
+    {
+        return maxForest;
+    }
+
+    public List<ForestType> getTypes()
+    {
+        return types;
+    }
+
     @Override
     public PlacementModifierType<?> type()
     {
@@ -94,8 +109,9 @@ public class ClimatePlacement extends PlacementModifier
         final float groundwater = data.getGroundwater(pos);
         final ForestType forestType = data.getForestType();
 
+        //Empty list of Forest Types defaults to generating everywhere
         if (minTemp <= temperature && temperature <= maxTemp && minGroundwater <= groundwater && groundwater <= maxGroundwater &&
-            minForest <= forestType.getDensity() && forestType.getDensity() <= maxForest)
+            minForest <= forestType.getDensity() && forestType.getDensity() <= maxForest && (types.contains(forestType) || types.isEmpty()))
         {
             if (fuzzy)
             {

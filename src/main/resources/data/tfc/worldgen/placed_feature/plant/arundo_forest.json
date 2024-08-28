@@ -1,33 +1,29 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "feature": "tfc:plant/arundo",
+  "feature": "tfc:plant/arundo_forest",
   "placement": [
     {
       "type": "minecraft:heightmap",
       "heightmap": "WORLD_SURFACE_WG"
     },
     {
-      "type": "minecraft:rarity_filter",
-      "chance": 3
+      "type": "minecraft:count",
+      "count": 2
     },
     {
       "type": "minecraft:in_square"
     },
     {
       "type": "tfc:climate",
-      "min_temperature": 2.5,
+      "min_temperature": 6,
       "max_temperature": 19.6,
-      "min_groundwater": 150,
-      "max_groundwater": 400
-    },
-    {
-      "type": "tfc:near_fluid",
-      "fluids": [
-        "tfc:salt_water",
-        "minecraft:water",
-        "tfc:spring_water"
-      ],
-      "radius": 6
+      "min_rainfall": 220,
+      "max_rainfall": 370,
+      "forest_types": [
+        "dead_bamboo",
+        "edge_bamboo",
+        "secondary_bamboo"
+      ]
     },
     {
       "type": "block_predicate_filter",

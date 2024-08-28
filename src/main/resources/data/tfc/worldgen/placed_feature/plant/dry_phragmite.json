@@ -10,9 +10,13 @@
           "absolute": 62
         },
         "max_inclusive": {
-          "absolute": 64
+          "absolute": 66
         }
       }
+    },
+	{
+      "type": "minecraft:count",
+      "count": 5
     },
     {
       "type": "minecraft:in_square"
@@ -23,7 +27,11 @@
       "max_temperature": 27.6,
       "min_groundwater": 100,
       "max_groundwater": 370,
-      "min_forest": 1
+      "forest_types": [
+        "dead_bamboo",
+        "edge_bamboo",
+        "secondary_bamboo"
+      ]
     },
     {
       "type": "block_predicate_filter",

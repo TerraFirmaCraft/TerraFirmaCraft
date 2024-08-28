@@ -3,17 +3,20 @@
   "feature": "tfc:bamboo",
   "placement": [
     {
-      "type": "minecraft:rarity_filter",
-      "chance": 3
+      "type": "minecraft:count",
+      "count": 6
     },
     {
       "type": "tfc:climate",
-      "min_temperature": 18,
-      "max_temperature": 28,
-      "min_groundwater": 350,
+      "min_temperature": 14,
+      "max_temperature": 40,
+      "min_groundwater": 320,
       "max_groundwater": 500,
-      "min_forest": 2,
-      "max_forest": 2,
+      "forest_types": [
+        "dead_bamboo",
+        "edge_bamboo",
+        "secondary_bamboo"
+      ],
       "fuzzy": true
     },
     {

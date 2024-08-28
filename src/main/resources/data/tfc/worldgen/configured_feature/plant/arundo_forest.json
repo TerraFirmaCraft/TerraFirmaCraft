@@ -1,0 +1,12 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:twisting_vines",
+  "config": {
+    "body": "tfc:plant/arundo_plant",
+    "head": "tfc:plant/arundo",
+    "tries": 70,
+    "radius": 7,
+    "min_height": 5,
+    "max_height": 8
+  }
+}
