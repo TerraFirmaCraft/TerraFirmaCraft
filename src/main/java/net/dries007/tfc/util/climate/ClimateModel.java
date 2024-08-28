@@ -195,14 +195,15 @@ public interface ClimateModel
      */
     default Vec2 getWind(Level level, BlockPos pos)
     {
-        return getWind(level, pos, Calendars.get(level).getCalendarTicks());
+        final ICalendar calendar = Calendars.get(level);
+        return getWind(level, pos, calendar.getCalendarTicks(), calendar.getCalendarDaysInMonth());
     }
 
     /**
      * @return A unit vector representing the horizontal strength of the wind at the given {@code pos} and
      * timestamp given by {@code calendarTicks}
      */
-    default Vec2 getWind(Level level, BlockPos pos, long calendarTicks)
+    default Vec2 getWind(Level level, BlockPos pos, long calendarTicks, int daysInMonth)
     {
         return Vec2.ZERO;
     }
@@ -210,17 +211,8 @@ public interface ClimateModel
     /**
      * @return A value in the range [0, 1] scaling the sky fog as a % of the render distance
      */
-    default float getFogginess(LevelReader level, BlockPos pos, long calendarTime)
+    default float getFog(LevelReader level, BlockPos pos, long calendarTime)
     {
         return 0f;
-    }
-
-    /**
-     * @return A value in the range [0, 1] scaling the water fog as a % of render distance
-     */
-    @Deprecated // todo: why is this here, this shouldn't exist
-    default float getWaterFogginess(LevelReader level, BlockPos pos, long calendarTime)
-    {
-        return 1f;
     }
 }
