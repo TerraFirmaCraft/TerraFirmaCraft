@@ -11,6 +11,5 @@
   "output_fluid": {
     "amount": 125,
     "id": "tfc:salt_water"
-  },
-  "tooltip": ""
+  }
 }

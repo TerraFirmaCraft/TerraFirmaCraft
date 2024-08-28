@@ -29,7 +29,7 @@
     },
     {
       "type": "tfc:anvil_recipe",
-      "recipe": "tfc:anvil/wrought_iron_grill",
+      "recipe": "tfc:anvil/grill",
       "text": "グリルは、$(l:mechanics/anvils)金床$() 上で $(thing)錬鉄の二重金属板$() を鍛造することによって作成されます。$(br2)グリルを使用するとグリルGUIが開きます。 焚き火と同様に、上部のスロットに追加する必要がある燃料用のスロットが 4 つ、温度バー、加熱するアイテム用のスロットが焚き火の 1 つではなく 5 つあります。"
     },
     {

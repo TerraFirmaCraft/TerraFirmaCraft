@@ -241,7 +241,6 @@ public class ServerConfig extends BaseConfig
     public final Supplier<Boolean> enableBucketsPlacingSources;
     // Mechanics - Vanilla Changes
     public final Supplier<Boolean> enableVanillaBonemeal;
-    public final Supplier<Boolean> enableVanillaWeatherEffects;
     public final Supplier<Boolean> enableVanillaSkeletonHorseSpawning;
     public final Supplier<Boolean> enableVanillaMobsSpawningWithEnchantments;
     public final Supplier<Boolean> enableVanillaMobsSpawningWithVanillaEquipment;
@@ -638,7 +637,6 @@ public class ServerConfig extends BaseConfig
         builder.swap("vanillaChanges");
 
         enableVanillaBonemeal = builder.comment("If vanilla bonemeal's instant-growth effect should be enabled.").define("enableVanillaBonemeal", false);
-        enableVanillaWeatherEffects = builder.comment("If true, vanilla's snow and ice formation mechanics will be used, and none of the TFC mechanics (improved snow and ice placement, snow stacking, icicle formation, passive snow or ice melting) will exist.").define("enableVanillaWeatherEffects", false);
         enableVanillaSkeletonHorseSpawning = builder.comment("If true, vanilla will attempt to spawn skeleton 'trap' horses during thunderstorms.").define("enableVanillaSkeletonHorseSpawning", false);
         enableVanillaMobsSpawningWithEnchantments = builder.comment("If true, enables the default vanilla behavior of mobs spawning with enchanted weapons sometimes.").define("enableVanillaMobsSpawningWithEnchantments", false);
         enableVanillaMobsSpawningWithVanillaEquipment = builder.comment(

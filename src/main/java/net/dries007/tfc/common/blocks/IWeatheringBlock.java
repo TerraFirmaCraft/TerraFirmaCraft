@@ -18,6 +18,7 @@ import net.neoforged.neoforge.common.DataMapHooks;
 
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.Climate;
+import net.dries007.tfc.util.climate.ClimateModel;
 
 public interface IWeatheringBlock
 {
@@ -143,13 +144,15 @@ public interface IWeatheringBlock
 
     private float climateModifier(Level level, BlockPos pos)
     {
-        float temp = Mth.abs(-0.5f + (Mth.clamp(Climate.getTemperature(level, pos), -40, 40) + 40) / 80f) * 2;
-        float rainfall = Mth.clamp(Climate.getRainfall(level, pos), 0, 500) / 500f;
-        float windspeed = Mth.clamp(Climate.getWindVector(level, pos).length(), 0, 1);
-        float raining = level.isRaining() ? 1 : 0.5f;
+        final ClimateModel model = Climate.get(level);
+
+        float temp = Mth.abs(-0.5f + (Mth.clamp(model.getTemperature(level, pos), -40, 40) + 40) / 80f) * 2;
+        float rainfall = Mth.clamp(model.getAverageRainfall(level, pos), 0, 500) / 500f;
+        float wind = Mth.clamp(model.getWind(level, pos).length(), 0, 1);
+        float raining = level.isRainingAt(pos) ? 1 : 0.5f;
 
         float climate = temp * rainfall; // range 0 - 1
-        float weather = raining * windspeed; // range 0 - 1
+        float weather = raining * wind; // range 0 - 1
 
         return (Mth.clamp(climate, 0, 1) + 0.2f) * 0.6f + (Mth.clamp(weather, 0, 1) + 0.2f) * 0.4f; // weight immediate weather and overall climate
     }

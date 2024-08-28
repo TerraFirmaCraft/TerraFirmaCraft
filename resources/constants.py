@@ -101,8 +101,8 @@ class Plant(NamedTuple):
     clay: bool
     min_temp: float
     max_temp: float
-    min_rain: float
-    max_rain: float
+    min_water: float
+    max_water: float
     type: str
     worldgen: bool = True
 
@@ -115,8 +115,8 @@ class Wood(NamedTuple):
 class Berry(NamedTuple):
     min_temp: float
     max_temp: float
-    min_rain: float
-    max_rain: float
+    min_water: float
+    max_water: float
     type: str
     min_forest: str
     max_forest: str
@@ -125,8 +125,8 @@ class Berry(NamedTuple):
 class Fruit(NamedTuple):
     min_temp: float
     max_temp: float
-    min_rain: float
-    max_rain: float
+    min_water: float
+    max_water: float
 
 
 class Crop(NamedTuple):
@@ -135,8 +135,8 @@ class Crop(NamedTuple):
     nutrient: str
     min_temp: float
     max_temp: float
-    min_rain: float
-    max_rain: float
+    min_water: float
+    max_water: float
     min_hydration: int
     max_hydration: int
     min_forest: Optional[str]
@@ -742,7 +742,8 @@ OCEAN_PLANT_TYPES = ('grass_water', 'floating', 'water', 'emergent', 'tall_water
 MISC_PLANT_FEATURES = ('hanging_vines', 'hanging_vines_cave', 'spanish_moss', 'saguaro_patch', 'jungle_vines', 'liana', 'moss_cover', 'reindeer_lichen_cover', 'morning_glory_cover', 'philodendron_cover', 'tree_fern', 'arundo')
 UNDERGROUND_FEATURES = ('cave_column', 'cave_spike', 'large_cave_spike', 'water_spring', 'lava_spring', 'calcite', 'mega_calcite', 'icicle', 'underground_loose_rocks', 'underground_guano_patch')
 
-# todo: bush hydration / rainfall separation and proper ranges
+# todo: bush hydration / groundwater separation and proper ranges
+# Note, this may be worth moving entirely to groundwater now that we have that system
 # When this gest updated, it needs to be updated in both the book (generate_book.py) and in the climate range (data.py) to use the new hydration and rainfall values
 # Alternatively, we ditch rainfall and/or hydration entirely.
 BERRIES: dict[str, Berry] = {
@@ -1280,6 +1281,9 @@ DEFAULT_LANG = {
     'tfc.commands.time.query.day': 'The day is %s',
     'tfc.commands.time.query.player_ticks': 'The player ticks is %s',
     'tfc.commands.time.query.calendar_ticks': 'The calendar ticks is %s',
+    'tfc.commands.time.skip_forward': 'Skipping forward %s ticks',
+    'tfc.commands.weather_enabled.true': 'Weather is enabled',
+    'tfc.commands.weather_enabled.false': 'Weather is disabled',
     'tfc.commands.heat.set_heat': 'Held item heat set to %s',
     'tfc.commands.clear_world.starting': 'Clearing world. Prepare for lag...',
     'tfc.commands.clear_world.done': 'Cleared %d Block(s).',

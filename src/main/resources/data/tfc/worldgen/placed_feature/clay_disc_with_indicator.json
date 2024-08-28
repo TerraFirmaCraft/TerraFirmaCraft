@@ -15,7 +15,7 @@
     },
     {
       "type": "tfc:climate",
-      "min_rainfall": 175
+      "min_groundwater": 175
     }
   ]
 }

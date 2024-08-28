@@ -20,6 +20,5 @@
   "output_fluid": {
     "amount": 250,
     "id": "tfc:vinegar"
-  },
-  "tooltip": ""
+  }
 }

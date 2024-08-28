@@ -32,6 +32,7 @@ import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCArmorMaterials;
 import net.dries007.tfc.common.TFCAttachments;
 import net.dries007.tfc.common.TFCCreativeTabs;
+import net.dries007.tfc.common.TFCPoiTypes;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.IBellowsConsumer;
@@ -150,6 +151,7 @@ public final class TerraFirmaCraft
         TFCAdvancements.TRIGGERS.register(bus);
         TFCComponents.COMPONENTS.register(bus);
         TFCArmorMaterials.ARMOR_MATERIALS.register(bus);
+        TFCPoiTypes.TYPES.register(bus);
 
         // World Generation (vanilla)
         TFCBlockPredicates.BLOCK_PREDICATES.register(bus);

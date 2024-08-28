@@ -13,7 +13,6 @@
     "FlowingFluidMixin",
     "GameTestInfoMixin",
     "HeightmapMixin",
-    "IceBlockMixin",
     "ItemStackMixin",
     "LevelMixin",
     "MainMixin",
@@ -44,7 +43,9 @@
     "accessor.HorseAccessor",
     "accessor.OcelotAccessor",
     "accessor.PatchedDataComponentMapAccessor",
+    "accessor.PoiSectionAccessor",
     "accessor.RecipeManagerAccessor",
+    "accessor.SectionStorageAccessor",
     "accessor.StructureTemplateAccessor"
   ],
   "client": [

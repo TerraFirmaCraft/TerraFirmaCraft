@@ -255,7 +255,7 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onDataPackSync);
         bus.addListener(ForgeEventHandler::onTagsUpdated);
         bus.addListener(ForgeEventHandler::onBoneMeal);
-        bus.addListener(ForgeEventHandler::onSelectClimateModel);
+        bus.addListener(EventPriority.HIGHEST, ForgeEventHandler::onSelectClimateModel);
         bus.addListener(ForgeEventHandler::onAnimalTame);
         bus.addListener(ForgeEventHandler::onContainerOpen);
         bus.addListener(ForgeEventHandler::onCropsGrow);
@@ -425,7 +425,6 @@ public final class ForgeEventHandler
     {
         if (event.getLevel() instanceof ServerLevel level)
         {
-            WeatherHelpers.preAdvancedWeatherCycle(level);
             WorldTracker.get(level).tick();
         }
     }
@@ -448,7 +447,8 @@ public final class ForgeEventHandler
                 LOGGER.info("Updating TFC Relevant Game Rules for level {}.", level.dimension().location());
             }
 
-            Climate.onWorldLoad(level);
+            Climate.chooseModelForWorld(level);
+
             if (level.dimension() == Level.OVERWORLD)
             {
                 SelfTests.runServerSelfTests(level.getServer());
@@ -1138,9 +1138,7 @@ public final class ForgeEventHandler
     {
         if (player instanceof ServerPlayer serverPlayer)
         {
-            WorldTracker.get(serverPlayer.serverLevel()).syncTo(serverPlayer);
-
-            final ClimateModel model = Climate.model(serverPlayer.level());
+            final ClimateModel model = Climate.get(serverPlayer.level());
             PacketDistributor.sendToPlayer(serverPlayer, new UpdateClimateModelPacket(model));
         }
     }
@@ -1395,10 +1393,10 @@ public final class ForgeEventHandler
     public static void onSelectClimateModel(SelectClimateModelEvent event)
     {
         final ServerLevel level = event.level();
-        if (event.level().dimension() == Level.OVERWORLD && level.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension)
+        if (event.level().dimension() == Level.OVERWORLD && level.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension ex)
         {
             // TFC decides to select the climate model for the overworld, if we're using a TFC enabled chunk generator
-            event.setModel(new OverworldClimateModel());
+            event.setModel(new OverworldClimateModel(level, ex));
         }
     }
 

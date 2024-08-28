@@ -15,8 +15,8 @@
     },
     {
       "type": "tfc:climate",
-      "min_rainfall": 100,
-      "max_rainfall": 350,
+      "min_groundwater": 100,
+      "max_groundwater": 350,
       "min_forest": 3,
       "fuzzy": true
     }

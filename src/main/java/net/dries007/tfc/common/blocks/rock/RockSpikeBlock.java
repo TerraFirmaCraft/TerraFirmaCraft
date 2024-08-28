@@ -92,6 +92,18 @@ public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBl
     }
 
     @Override
+    protected boolean isRandomlyTicking(BlockState state)
+    {
+        return state.getFluidState().isRandomlyTicking();
+    }
+
+    @Override
+    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
+    {
+        state.getFluidState().randomTick(level, pos, random);
+    }
+
+    @Override
     public void onceFinishedFalling(Level level, BlockPos pos, FallingBlockEntity fallingBlock)
     {
         // Don't play the break sound, so don't call destroyBlock()

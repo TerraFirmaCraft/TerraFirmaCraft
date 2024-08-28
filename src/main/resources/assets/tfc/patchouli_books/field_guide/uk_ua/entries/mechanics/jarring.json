@@ -28,8 +28,8 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/wood/jar_shelf/oak",
-      "text": "$(thing)Jar Shelves$() can be attached to solid walls. They can be placed directly or by clicking on an existing block of placed jars. The top of the jar shelf counts as a solid surface for placing items, more jars, or other blocks."
+      "recipe": "tfc:crafting/wood/shelf/oak",
+      "text": "$(thing)Shelves$() can be attached to solid walls. Items, including jars, can be placed on top of them by using the item - including jars - on the shelf, or underneath."
     }
   ],
   "read_by_default": true

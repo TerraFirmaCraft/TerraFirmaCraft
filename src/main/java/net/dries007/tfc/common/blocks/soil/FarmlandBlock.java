@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.blocks.soil;
 
-import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
@@ -103,7 +102,7 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
         final ChunkData data = ChunkData.get(level, pos);
         final float rainfall = data.getRainfall(pos); // Rainfall forms a baseline, providing up to 60% hydration
         final int waterCost = findMinCostWater(level, pos); // Nearby water contributes an additional 0 - 80% hydration based on proximity
-        return Mth.clamp((int) (60 * rainfall / ClimateModel.MAXIMUM_RAINFALL) + 20 * (5 - waterCost), 0, 100);
+        return Mth.clamp((int) (60 * rainfall / ClimateModel.MAX_RAINFALL) + 20 * (5 - waterCost), 0, 100);
     }
 
     public static void turnToDirt(BlockState state, Level level, BlockPos pos)

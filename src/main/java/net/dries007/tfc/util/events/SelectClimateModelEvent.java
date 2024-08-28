@@ -9,13 +9,13 @@ package net.dries007.tfc.util.events;
 import net.minecraft.server.level.ServerLevel;
 import net.neoforged.bus.api.Event;
 
+import net.dries007.tfc.util.climate.BiomeBasedClimateModel;
 import net.dries007.tfc.util.climate.ClimateModel;
 import net.dries007.tfc.util.climate.ClimateModels;
 
 /**
- * An event which is posted while a world is loading or selecting its climate model
- * This provides access to the level, and is fired during world load.
- * It is only fired on server, and the climate model will to synced to client automatically.
+ * An event which is posted while a world is loading or selecting its climate model. This provides access to the level, and
+ * is fired during world load. It is only fired on server, and the climate model will to synced to client automatically.
  */
 public final class SelectClimateModelEvent extends Event
 {
@@ -25,14 +25,20 @@ public final class SelectClimateModelEvent extends Event
     public SelectClimateModelEvent(ServerLevel level)
     {
         this.level = level;
-        this.model = ClimateModels.BIOME_BASED.get().create();
+        this.model = BiomeBasedClimateModel.INSTANCE;
     }
 
+    /**
+     * @return The server level that we are selecting for.
+     */
     public ServerLevel level()
     {
         return level;
     }
 
+    /**
+     * @return the currently selected climate model, or {@link BiomeBasedClimateModel} by default.
+     */
     public ClimateModel getModel()
     {
         return model;

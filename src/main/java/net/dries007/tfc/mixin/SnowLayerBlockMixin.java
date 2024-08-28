@@ -6,12 +6,8 @@
 
 package net.dries007.tfc.mixin;
 
-import java.util.Random;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
@@ -22,21 +18,15 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
-
-import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blocks.SnowPileBlock;
-import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.wood.ILeavesBlock;
-import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.EnvironmentHelpers;
-import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.climate.Climate;
-import net.dries007.tfc.util.climate.OverworldClimateModel;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.wood.ILeavesBlock;
+import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.Helpers;
 
 @Mixin(SnowLayerBlock.class)
 public abstract class SnowLayerBlockMixin extends Block
@@ -100,17 +90,6 @@ public abstract class SnowLayerBlockMixin extends Block
         {
             // Similar to how snow layers modifies their placement state when targeting other snow layers, we do the same for snow piles
             cir.setReturnValue(state.setValue(SnowLayerBlock.LAYERS, Math.min(8, state.getValue(SnowLayerBlock.LAYERS) + 1)));
-        }
-    }
-
-    @Inject(method = "randomTick", at = @At(value = "HEAD"), cancellable = true)
-    private void meltRarelyDueToTemperature(BlockState state, ServerLevel level, BlockPos pos, RandomSource random, CallbackInfo ci)
-    {
-        // Heavily reduced chance, as most snow melting happens through EnvironmentHelpers, this is only really to account for overhangs and hidden snow
-        if (random.nextInt(EnvironmentHelpers.SNOW_MELT_RANDOM_TICK_CHANCE) == 0 && Climate.getTemperature(level, pos) > OverworldClimateModel.SNOW_MELT_TEMPERATURE)
-        {
-            SnowPileBlock.removePileOrSnow(level, pos, state);
-            ci.cancel();
         }
     }
 }

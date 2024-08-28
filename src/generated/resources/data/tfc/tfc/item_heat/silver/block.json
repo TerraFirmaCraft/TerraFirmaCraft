@@ -3,7 +3,7 @@
   "heat_capacity": 2.0833333,
   "ingredient": [
     {
-      "item": "tfc:metal/block/silver"
+      "tag": "c:storage_blocks/silver"
     },
     {
       "item": "tfc:metal/exposed_block/silver"

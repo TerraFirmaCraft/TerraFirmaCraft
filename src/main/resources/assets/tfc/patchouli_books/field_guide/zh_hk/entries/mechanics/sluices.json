@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/wood/sequoia_sluice",
+      "recipe": "tfc:crafting/wood/sluice/sequoia",
       "text": "使用木棍和木材製作洗礦槽。"
     },
     {

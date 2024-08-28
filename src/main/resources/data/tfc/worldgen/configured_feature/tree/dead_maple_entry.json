@@ -5,8 +5,8 @@
     "climate": {
       "min_temperature": -8.4,
       "max_temperature": 8,
-      "min_rainfall": 240,
-      "max_rainfall": 470
+      "min_groundwater": 240,
+      "max_groundwater": 470
     },
     "groundcover": [
       {

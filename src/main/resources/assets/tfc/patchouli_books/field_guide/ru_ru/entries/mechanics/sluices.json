@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/wood/sequoia_sluice",
+      "recipe": "tfc:crafting/wood/sluice/sequoia",
       "text": "Рудопромывочный желоб изготавливается из палок и досок."
     },
     {

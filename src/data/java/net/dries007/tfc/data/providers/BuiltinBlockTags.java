@@ -408,6 +408,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(SUPPORT_BEAMS)
             .add(TFCBlocks.WOODS, Wood.BlockType.HORIZONTAL_SUPPORT)
             .add(TFCBlocks.WOODS, Wood.BlockType.VERTICAL_SUPPORT);
+        tag(AQUEDUCTS).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.AQUEDUCT);
 
         tag(CHARCOAL_PIT_INSULATION).add(
             TFCBlocks.LOG_PILE,

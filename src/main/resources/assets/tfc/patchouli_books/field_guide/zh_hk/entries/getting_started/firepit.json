@@ -57,7 +57,7 @@
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/cod",
+      "recipe": "tfc:heating/food/cooked_cod",
       "text": "篝火還可以用來$(thing)加熱食物$()。生肉和麪團之類的東西都可以在篝火中燒製以延長其保質期。有關保質期的知識請參考$(l:mechanics/decay)這一章節$()。"
     },
     {

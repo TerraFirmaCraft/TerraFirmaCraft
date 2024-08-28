@@ -72,13 +72,13 @@
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:heating/cooked_egg",
+      "recipe": "tfc:heating/food/cooked_egg",
       "text": "$(thing)Яйця$() можна варити або смажити для їжі. Самці яйцекладних тварин можуть запліднювати самок, що призводить до запліднення наступного яйця, відкладеного в гніздовий ящик. Запліднені яйця матимуть підказку про те, скільки часу вони будуть готові до вилуплення."
     },
     {
       "type": "tfc:knapping_recipe",
       "anchor": "horses",
-      "recipe": "tfc:leather_knapping/saddle",
+      "recipe": "tfc:knapping/saddle",
       "text": "$(thing)Коні$() - це $(l:mechanics/animal_husbandry#mammals)ссавці$(), на яких можна їздити верхи, якщо приручити їх більш за 15%."
     },
     {

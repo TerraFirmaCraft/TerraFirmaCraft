@@ -9,6 +9,7 @@ package net.dries007.tfc.world.region;
 import java.util.BitSet;
 import it.unimi.dsi.fastutil.ints.IntArrayFIFOQueue;
 import net.minecraft.util.RandomSource;
+import org.jetbrains.annotations.Nullable;
 
 public enum AnnotateBiomeAltitude implements RegionTask
 {
@@ -29,28 +30,23 @@ public enum AnnotateBiomeAltitude implements RegionTask
         // Begin a basic BFS out from mountain blobs, stepping down
         final Region region = context.region;
         final RandomSource random = context.random;
-        final BitSet explored = new BitSet(region.sizeX() * region.sizeZ());
+        final BitSet explored = new BitSet(region.size());
         final IntArrayFIFOQueue queue = new IntArrayFIFOQueue();
 
-        for (int dx = 0; dx < region.sizeX(); dx++)
+        for (final var point : region.points())
         {
-            for (int dz = 0; dz < region.sizeZ(); dz++)
+            if (point.land() && point.mountain())
             {
-                final int index = dx + region.sizeX() * dz;
-                final Region.Point point = region.data()[index];
-                if (point != null && point.land() && point.mountain())
-                {
-                    point.biomeAltitude = 3 * WIDTH;
-                    queue.enqueue(index);
-                    explored.set(index);
-                }
+                point.biomeAltitude = 3 * WIDTH;
+                queue.enqueue(point.index);
+                explored.set(point.index);
             }
         }
 
         while (!queue.isEmpty())
         {
             final int last = queue.dequeueInt();
-            final Region.Point lastPoint = region.data()[last];
+            final Region.Point lastPoint = region.atIndex(last);
             final int nextAltitude = lastPoint.biomeAltitude - 1;
             if (nextAltitude < 0)
             {
@@ -61,48 +57,38 @@ public enum AnnotateBiomeAltitude implements RegionTask
             {
                 for (int dz = -1; dz <= 1; dz++)
                 {
-                    final int next = region.offset(last, dx, dz);
-                    if (next == -1)
-                    {
-                        continue;
-                    }
-                    final Region.Point point = region.data()[next];
-                    if (point != null && point.land() && point.biomeAltitude == 0 && !explored.get(next))
+                    final @Nullable Region.Point point = region.atOffset(last, dx, dz);
+                    if (point != null && point.land() && point.biomeAltitude == 0 && !explored.get(point.index))
                     {
                         // Minor non-uniformity, makes regions a bit messier
                         if (random.nextInt(13) == 0 && lastPoint.biomeAltitude != 3 * WIDTH)
                         {
                             point.biomeAltitude = lastPoint.biomeAltitude;
-                            queue.enqueueFirst(next);
+                            queue.enqueueFirst(point.index);
                         }
                         else
                         {
                             point.biomeAltitude = (byte) nextAltitude;
-                            queue.enqueue(next);
+                            queue.enqueue(point.index);
                         }
+                        explored.set(point.index);
                     }
-                    explored.set(next);
                 }
             }
         }
 
         // Run another pass over the entire region, this time raising land from low -> mid
-        for (int dx = 0; dx < region.sizeX(); dx++)
+        for (final var point : region.points())
         {
-            for (int dz = 0; dz < region.sizeZ(); dz++)
+            if (point.land() && point.discreteBiomeAltitude() == 0 && point.baseLandHeight >= 4)
             {
-                final int index = dx + region.sizeX() * dz;
-                final Region.Point point = region.data()[index];
-                if (point != null && point.land() && point.discreteBiomeAltitude() == 0 && point.baseLandHeight >= 4)
+                if (point.discreteBiomeAltitude() == 0 && point.baseLandHeight >= 4)
                 {
-                    if (point.discreteBiomeAltitude() == 0 && point.baseLandHeight >= 4)
-                    {
-                        point.biomeAltitude = WIDTH;
-                    }
-                    if (point.discreteBiomeAltitude() == 1 && point.baseLandHeight >= 11)
-                    {
-                        point.biomeAltitude = 2 * WIDTH;
-                    }
+                    point.biomeAltitude = WIDTH;
+                }
+                if (point.discreteBiomeAltitude() == 1 && point.baseLandHeight >= 11)
+                {
+                    point.biomeAltitude = 2 * WIDTH;
                 }
             }
         }

@@ -20,10 +20,7 @@ public enum AddIslands implements RegionTask
 
         for (int attempt = 0, placed = 0; attempt < 130 && placed < 15; attempt++)
         {
-            int x = region.minX() + random.nextInt(region.sizeX());
-            int z = region.minZ() + random.nextInt(region.sizeZ());
-
-            Region.Point point = region.maybeAt(x, z);
+            Region.Point point = region.random(random);
             if (point != null && !point.land() && !point.shore() && point.distanceToEdge > 2)
             {
                 // Place a small island chain
@@ -31,11 +28,10 @@ public enum AddIslands implements RegionTask
                 {
                     point.setLand();
                     point.setIsland();
-
-                    x += random.nextInt(4) - random.nextInt(4);
-                    z += random.nextInt(4) - random.nextInt(4);
-
-                    point = region.maybeAt(x, z);
+                    point = region.at(
+                        point.x + random.nextInt(4) - random.nextInt(4),
+                        point.z + random.nextInt(4) - random.nextInt(4)
+                    );
                     if (point == null || (point.land() && !point.island()) || point.distanceToEdge <= 2)
                     {
                         break;

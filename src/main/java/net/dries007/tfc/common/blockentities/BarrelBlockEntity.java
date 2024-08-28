@@ -16,6 +16,8 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
@@ -178,7 +180,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
 
 
     private final SidedHandler<IFluidHandler> sidedFluidInventory;
-    private final CachedMut<SealedBarrelRecipe> recipe = CachedMut.empty();
+    private final CachedMut<RecipeHolder<SealedBarrelRecipe>> recipe = CachedMut.empty();
     private long lastUpdateTick = Integer.MIN_VALUE; // The last tick this barrel was updated in serverTick()
     private long sealedTick; // The tick this barrel was sealed
     private long recipeTick; // The tick this barrel started working on the current recipe
@@ -482,7 +484,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         assert level != null;
         assert recipe.isLoaded(); // Updates rely on the recipe cache being valid, so we can detect when it changes
 
-        final @Nullable SealedBarrelRecipe oldRecipe = recipe.value();
+        final @Nullable SealedBarrelRecipe oldRecipe = RecipeHelpers.unbox(recipe.value());
         final @Nullable SealedBarrelRecipe newRecipe = getRecipe(); // Trigger the update
 
         if (oldRecipe != newRecipe && newRecipe != null)
@@ -504,10 +506,19 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         {
             // Only find a recipe if we have an empty excess inventory
             recipe.load(inventory.excess.isEmpty()
-                ? RecipeHelpers.unbox(BarrelRecipe.get(level, TFCRecipeTypes.BARREL_SEALED, inventory))
+                ? BarrelRecipe.get(level, TFCRecipeTypes.BARREL_SEALED, inventory)
                 : null);
         }
-        return recipe.value();
+        return RecipeHelpers.unbox(recipe.value());
+    }
+
+    @Nullable
+    public Component getRecipeTooltip()
+    {
+        getRecipe(); // Load recipe if present
+        return recipe.value() != null
+            ? Component.translatable("tfc.recipe.barrel." + recipe.value().id())
+            : null;
     }
 
     public long getSealedTick()

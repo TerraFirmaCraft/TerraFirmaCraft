@@ -100,7 +100,7 @@ public class BadlandsSurfaceBuilder implements SurfaceBuilder
     {
         final double heightVariation = grassHeightVariationNoise.noise(context.pos().getX(), context.pos().getZ());
         final double weightVariation = (1.0 - context.weight()) * 23.0;
-        final double rainfallVariation = Mth.clampedMap(context.rainfall(), 100, 500, 0, 22);
+        final double rainfallVariation = Mth.clampedMap(context.groundwater(), 100, 500, 0, 22);
 
         if (inverted
             ? startY + 5 < heightVariation + weightVariation + rainfallVariation

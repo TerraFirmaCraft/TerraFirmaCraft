@@ -39,7 +39,7 @@
     {
       "type": "tfc:quern_recipe",
       "anchor": "olives",
-      "recipe": "tfc:quern/olive",
+      "recipe": "tfc:quern/olive_paste",
       "text": "$(thing)橄榄油$()就可以作为灯的燃料。要获得橄榄油，首先要制作橄榄糊。"
     },
     {
@@ -77,7 +77,7 @@
     },
     {
       "type": "tfc:anvil_recipe",
-      "recipe": "tfc:anvil/black_steel_chain",
+      "recipe": "tfc:anvil/metal/chain/black_steel",
       "text": "$(thing)链子$()可以用来挂灯，在$(l:mechanics/anvils)砧$()上就能锻造。"
     }
   ],

@@ -10,7 +10,7 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:clay_knapping/spindle_head",
+      "recipe": "tfc:knapping/unfired_spindle_head",
       "text": "The $(thing)Unfired Spindle Head$() is knapped from clay. It can then be $(l:mechanics/heating)fired$() to make a $(thing)Spindle Head$(). To complete the spindle, craft it with a $(thing)Stick$()."
     },
     {
@@ -20,7 +20,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/wood/acacia_loom",
+      "recipe": "tfc:crafting/wood/loom/acacia",
       "text": "The loom is crafted from just $(thing)Lumber$() and a $(thing)Stick$()."
     },
     {
@@ -42,7 +42,7 @@
     },
     {
       "type": "tfc:loom_recipe",
-      "recipe": "tfc:loom/wool_block",
+      "recipe": "tfc:loom/white_wool",
       "text": "$(thing)Wool Cloth$() can be re-woven into $(thing)Wool Blocks$(). Wool blocks can be $(l:mechanics/dye)dyed$()."
     },
     {
@@ -58,8 +58,8 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/vanilla/color/light_blue_bed",
-      "recipe2": "tfc:crafting/vanilla/painting"
+      "recipe": "minecraft:light_blue_bed",
+      "recipe2": "minecraft:painting"
     }
   ],
   "read_by_default": true,

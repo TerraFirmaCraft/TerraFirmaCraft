@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
@@ -27,6 +28,8 @@ import org.junit.jupiter.api.Test;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.fluids.FluidProperty;
+import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.test.TestSetup;
 import net.dries007.tfc.util.Helpers;
 
@@ -58,6 +61,15 @@ public class BlocksTest implements TestSetup
                 assertInstanceOf(EntityBlockExtension.class, block);
                 assertNotNull(method);
                 assertFalse(method.getDeclaringClass().getSimpleName().startsWith("net.minecraft"), "Block " + holder.getId() + " declared newBlockEntity() in " + method.getDeclaringClass());
+            }
+            if (block instanceof IFluidLoggable fluidBlock)
+            {
+                final FluidProperty property = fluidBlock.getFluidProperty();
+                if (property.canContain(Fluids.LAVA))
+                {
+                    // Lava must randomly tick
+                    assertTrue(block.defaultBlockState().setValue(property, property.keyFor(Fluids.LAVA)).isRandomlyTicking(), "Block " + holder.getId() + " can contain lava but does not support random ticks on the state");
+                }
             }
         }
     }

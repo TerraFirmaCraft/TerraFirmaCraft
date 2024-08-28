@@ -39,7 +39,7 @@
     {
       "type": "tfc:quern_recipe",
       "anchor": "olives",
-      "recipe": "tfc:quern/olive",
+      "recipe": "tfc:quern/olive_paste",
       "text": "ランプの燃料の 1 つは $(thing)オリーブオイル$() です。 製造の最初のステップは、オリーブペーストを作ることです。"
     },
     {
@@ -77,7 +77,7 @@
     },
     {
       "type": "tfc:anvil_recipe",
-      "recipe": "tfc:anvil/black_steel_chain",
+      "recipe": "tfc:anvil/metal/chain/black_steel",
       "text": "$(thing)鎖$() はランプを吊るすのに最適な方法で、$(l:mechanics/anvils)金床$() で鍛造できます。"
     }
   ],

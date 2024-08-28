@@ -6,18 +6,21 @@
 
 package net.dries007.tfc.common.commands;
 
+import com.mojang.brigadier.Command;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 
-import com.mojang.brigadier.Command;
-import com.mojang.brigadier.arguments.IntegerArgumentType;
-import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.util.climate.Climate;
+import net.dries007.tfc.util.climate.ClimateModel;
+import net.dries007.tfc.util.tracker.WeatherHelpers;
 
 public final class TimeCommand
 {
@@ -72,6 +75,12 @@ public final class TimeCommand
                     )
                 )
             )
+            .then(Commands.literal("skip-to-weather-rain")
+                .executes(context -> skipTo(context.getSource(), true))
+            )
+            .then(Commands.literal("skip-to-weather-clear")
+                .executes(context -> skipTo(context.getSource(), false))
+            )
             .then(Commands.literal("query")
                 .then(Commands.literal("daytime")
                     .executes(context -> sendQueryResults(context.getSource(), DAYTIME, Calendars.SERVER.getCalendarDayTime()))
@@ -116,6 +125,24 @@ public final class TimeCommand
     {
         Calendars.SERVER.setTimeFromCalendarTime(Calendars.SERVER.getCalendarTicks() + ticksToAdd);
         return Command.SINGLE_SUCCESS;
+    }
+
+    private static int skipTo(CommandSourceStack source, boolean rain)
+    {
+        final ClimateModel model = Climate.get(source.getLevel());
+        final long calendarTick = Calendars.SERVER.getCalendarTicks();
+        final float rainfall = model.getRainfall(source.getLevel(), BlockPos.containing(source.getPosition()));
+        for (int tick = 0; tick < 400_000; tick += 1_000)
+        {
+            if (WeatherHelpers.isPrecipitating(model.getRain(calendarTick + tick), rainfall) == rain)
+            {
+                final Component feedback = Component.translatable("tfc.commands.time.skip_forward", tick);
+                Calendars.SERVER.setTimeFromCalendarTime(calendarTick + tick);
+                source.sendSuccess(() -> feedback, true);
+                return Command.SINGLE_SUCCESS;
+            }
+        }
+        return 0;
     }
 
     private static int sendQueryResults(CommandSourceStack source, String translationKey, long value)

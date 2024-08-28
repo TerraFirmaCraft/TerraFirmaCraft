@@ -81,6 +81,7 @@ public class TFCTags
         public static final TagKey<Block> LOGS_THAT_LOG = tag("logs_that_log");
         public static final TagKey<Block> WORKBENCHES = tag("workbenches");
         public static final TagKey<Block> SUPPORT_BEAMS = tag("support_beams");
+        public static final TagKey<Block> AQUEDUCTS = tag("aqueducts");
 
         /** Blocks that are valid for covering a charcoal pit, in addition to the default non-flammable solid blocks */
         public static final TagKey<Block> CHARCOAL_PIT_INSULATION = tag("charcoal_pit_insulation");
@@ -316,7 +317,7 @@ public class TFCTags
         public static final TagKey<Item> SEALED_PRESERVES = tag("foods/sealed_preserves");
         /* Includes preserves, sealed preserves, and also empty jars (with and without lid) */
         public static final TagKey<Item> JARS = tag("foods/jars");
-        public static final TagKey<Item> SWEETENERS = tag("sweeteners");
+        public static final TagKey<Item> SWEETENERS = tag("foods/sweeteners");
         public static final TagKey<Item> BOWLS = commonTag("bowls");
         /** Bowls that interact with soup pot recipes */
         public static final TagKey<Item> SOUP_BOWLS = tag("soup_bowls");
@@ -475,6 +476,7 @@ public class TFCTags
         public static final TagKey<Item> BOOKS = commonTag("books");
         /** Used by patchouli */
         public static final TagKey<Item> ORE_DEPOSITS = tag("ore_deposits");
+        public static final TagKey<Item> TANNIN_LOGS = tag("tannin_logs");
 
         // Device Required Items
         public static final TagKey<Item> FIREPIT_KINDLING = tag("firepit_kindling");
@@ -525,7 +527,7 @@ public class TFCTags
          */
         public static final TagKey<Item> BOWL_POWDERS = tag("bowl_powders");
         /** Items used in scraping recipes that can wax a surface */
-        public static final TagKey<Item> SCRAPING_WAXES = tag("waxes");
+        public static final TagKey<Item> SCRAPING_WAXES = tag("scraping_waxes");
         /**
          * Mapping of {@link RockCategory} to tags that are used for rock knapping ingredients
          */
@@ -574,7 +576,10 @@ public class TFCTags
         // Block Tags - Misc
         public static final TagKey<Item> ANVILS = tag(Blocks.ANVILS);
         public static final TagKey<Item> WORKBENCHES = tag(Blocks.WORKBENCHES);
+        public static final TagKey<Item> AQUEDUCTS = tag(Blocks.AQUEDUCTS);
         public static final TagKey<Item> FALLEN_LEAVES = tag(Blocks.FALLEN_LEAVES);
+
+        public static final TagKey<Item> CLAY_INDICATORS = tag(Blocks.CLAY_INDICATORS);
 
 
         private static TagKey<Item> tag(TagKey<Block> blockTag)

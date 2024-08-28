@@ -194,7 +194,7 @@ public final class TFCBlocks
 
     public static final Id<SnowPileBlock> SNOW_PILE = register("snow_pile", () -> new SnowPileBlock(ExtendedProperties.of(Blocks.SNOW).randomTicks().blockEntity(TFCBlockEntities.PILE).cloneItem(Blocks.SNOW)));
     public static final Id<IcePileBlock> ICE_PILE = register("ice_pile", () -> new IcePileBlock(ExtendedProperties.of(Blocks.ICE).randomTicks().blockEntity(TFCBlockEntities.PILE).cloneItem(Blocks.ICE)));
-    public static final Id<ThinSpikeBlock> ICICLE = register("icicle", () -> new IcicleBlock(Properties.of().mapColor(MapColor.ICE).pushReaction(PushReaction.DESTROY).noLootTable().strength(0.4f).sound(SoundType.GLASS).noOcclusion().randomTicks()));
+    public static final Id<ThinSpikeBlock> ICICLE = register("icicle", () -> new IcicleBlock(Properties.of().mapColor(MapColor.ICE).pushReaction(PushReaction.DESTROY).noLootTable().strength(0.4f).sound(SoundType.GLASS).noOcclusion()));
 
     public static final Id<ThinSpikeBlock> CALCITE = register("calcite", () -> new ThinSpikeBlock(Properties.of().mapColor(MapColor.ICE).pushReaction(PushReaction.DESTROY).noLootTable().strength(0.2f).sound(TFCSounds.THIN)));
 
@@ -544,13 +544,12 @@ public final class TFCBlocks
 
     public static ToIntFunction<BlockState> lavaLoggedBlockEmission()
     {
-        // This is resolved only at registration time, so we can't use the fast check (.getFluid() == Fluids.LAVA) and we have to use the slow check instead
-        return state -> state.getValue(TFCBlockStateProperties.WATER_AND_LAVA).is(((IFluidLoggable) state.getBlock()).getFluidProperty().keyFor(Fluids.LAVA)) ? 15 : 0;
+        return state -> state.getValue(((IFluidLoggable) state.getBlock()).getFluidProperty()).is(Fluids.LAVA) ? 15 : 0;
     }
 
     public static ToIntFunction<BlockState> litBlockEmission(int lightValue)
     {
-        return (state) -> state.getValue(BlockStateProperties.LIT) ? lightValue : 0;
+        return state -> state.getValue(BlockStateProperties.LIT) ? lightValue : 0;
     }
 
 

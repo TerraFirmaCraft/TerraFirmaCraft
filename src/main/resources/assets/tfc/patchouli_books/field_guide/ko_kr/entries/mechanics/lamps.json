@@ -39,7 +39,7 @@
     {
       "type": "tfc:quern_recipe",
       "anchor": "olives",
-      "recipe": "tfc:quern/olive",
+      "recipe": "tfc:quern/olive_paste",
       "text": "램프 연료에는 $(thing)올리브유$()가 있습니다. 올리브유를 제작하려면 먼저 으깬 올리브를 만들어야 합니다."
     },
     {
@@ -77,7 +77,7 @@
     },
     {
       "type": "tfc:anvil_recipe",
-      "recipe": "tfc:anvil/black_steel_chain",
+      "recipe": "tfc:anvil/metal/chain/black_steel",
       "text": "$(thing)사슬$()을 이용하면 램프를 근사하게 걸 수 있습니다. 사슬은 $(l:mechanics/anvils)모루$()에서 만들 수 있습니다."
     }
   ],

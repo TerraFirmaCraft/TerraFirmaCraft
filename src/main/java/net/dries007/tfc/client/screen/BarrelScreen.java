@@ -60,14 +60,14 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
             drawDisabled(graphics, BarrelBlockEntity.SLOT_FLUID_CONTAINER_IN, BarrelBlockEntity.SLOT_ITEM);
 
             // Draw the text displaying both the seal date, and the recipe name
-            final @Nullable BarrelRecipe recipe = blockEntity.getRecipe();
+            final @Nullable Component recipe = blockEntity.getRecipeTooltip();
             if (recipe != null)
             {
-                FormattedText resultText = recipe.getTranslationComponent();
-                if (font.width(resultText) > MAX_RECIPE_NAME_LENGTH)
+                // todo 1.21: isn't there a method that draws a fixed-width string but moving back and forth for overlong strings?
+                if (font.width(recipe) > MAX_RECIPE_NAME_LENGTH)
                 {
                     int line = 0;
-                    for (FormattedCharSequence text : font.split(resultText, MAX_RECIPE_NAME_LENGTH))
+                    for (FormattedCharSequence text : font.split(recipe, MAX_RECIPE_NAME_LENGTH))
                     {
                         graphics.drawString(font, text, 70 + Math.floorDiv(MAX_RECIPE_NAME_LENGTH - font.width(text), 2), titleLabelY + (line * font.lineHeight), 0x404040, false);
                         line++;
@@ -75,7 +75,7 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
                 }
                 else
                 {
-                    graphics.drawString(font, resultText.getString(), 70 + Math.floorDiv(MAX_RECIPE_NAME_LENGTH - font.width(resultText), 2), 61, 0x404040, false);
+                    graphics.drawString(font, recipe.getString(), 70 + Math.floorDiv(MAX_RECIPE_NAME_LENGTH - font.width(recipe), 2), 61, 0x404040, false);
                 }
             }
             String date = ICalendar.getTimeAndDate(Calendars.CLIENT.ticksToCalendarTicks(blockEntity.getSealedTick()), Calendars.CLIENT.getCalendarDaysInMonth()).getString();

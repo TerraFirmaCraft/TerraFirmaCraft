@@ -47,6 +47,7 @@ public class RegionGenerator
     public final Noise2D continentNoise;
     public final Noise2D temperatureNoise;
     public final Noise2D rainfallNoise;
+    public final Noise2D rainfallVarianceNoise;
 
     public final ThreadLocal<Area> biomeArea;
     public final ThreadLocal<Area> rockArea;
@@ -86,6 +87,11 @@ public class RegionGenerator
                 .octaves(2)
                 .spread(0.15f)
                 .scaled(-80f, 40f)); // Bias slightly negative, as we bias near-ocean areas to be positive rainfall, so this encourages deserts inland
+
+        this.rainfallVarianceNoise = new OpenSimplex2D(random.nextInt())
+            .octaves(2)
+            .spread(0.3f)
+            .scaled(-.2f, 0.2f);
 
         final AreaFactory biomeAreaFactory = TFCLayers.createUniformLayer(random, 2);
         final AreaFactory rockAreaFactory = TFCLayers.createUniformLayer(random, 3);
@@ -158,7 +164,7 @@ public class RegionGenerator
 
     public Region.Point getOrCreateRegionPoint(int gridX, int gridZ)
     {
-        return getOrCreateRegion(gridX, gridZ).requireAt(gridX, gridZ);
+        return getOrCreateRegion(gridX, gridZ).atOrThrow(gridX, gridZ);
     }
 
     @VisibleForTesting
@@ -200,18 +206,19 @@ public class RegionGenerator
     @VisibleForTesting
     public enum Task
     {
-        INIT(c -> {}),
+        INIT(Init.INSTANCE),
         ADD_CONTINENTS(AddContinents.INSTANCE),
-        SHRINK_TO_CELL(ShrinkToCell.INSTANCE),
         ANNOTATE_DISTANCE_TO_CELL_EDGE(AnnotateDistanceToCellEdge.INSTANCE),
         FLOOD_FILL_SMALL_OCEANS(FloodFillSmallOceans.INSTANCE),
         ADD_ISLANDS(AddIslands.INSTANCE),
         ANNOTATE_DISTANCE_TO_OCEAN(AnnotateDistanceToOcean.INSTANCE),
         ANNOTATE_BASE_LAND_HEIGHT(AnnotateBaseLandHeight.INSTANCE),
+        ANNOTATE_DISTANCE_TO_WEST_COAST(AnnotateDistanceToWestCoast.INSTANCE),
         ADD_MOUNTAINS(AddMountains.INSTANCE),
         ANNOTATE_BIOME_ALTITUDE(AnnotateBiomeAltitude.INSTANCE),
         ANNOTATE_CLIMATE(AnnotateClimate.INSTANCE),
         ANNOTATE_RAINFALL(c -> {}),
+        ANNOTATE_RAINFALL_VARIANCE(c -> {}),
         CHOOSE_BIOMES(ChooseBiomes.INSTANCE),
         CHOOSE_ROCKS(ChooseRocks.INSTANCE),
         ADD_RIVERS_AND_LAKES(AddRiversAndLakes.INSTANCE),
@@ -235,7 +242,6 @@ public class RegionGenerator
         public final RandomSource random;
 
         public final Region region;
-        public int minX, maxX, minZ, maxZ;
 
         Context(BiConsumer<Task, Region> viewer, Cellular2D.Cell regionCell, long seed)
         {
@@ -245,11 +251,6 @@ public class RegionGenerator
 
             final long regionSeed = seed ^ Float.floatToIntBits((float) regionCell.noise()) * 7189234123L;
             this.random = new XoroshiroRandomSource(regionSeed);
-
-            this.minX = Integer.MAX_VALUE;
-            this.minZ = Integer.MAX_VALUE;
-            this.maxX = Integer.MIN_VALUE;
-            this.maxZ = Integer.MIN_VALUE;
         }
 
         Context runTasks()

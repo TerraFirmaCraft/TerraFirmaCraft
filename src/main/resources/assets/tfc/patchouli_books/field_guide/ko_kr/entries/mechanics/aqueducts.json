@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/rock/shale_aqueduct",
+      "recipe": "tfc:crafting/rock/aqueduct/shale",
       "text": "수로 블록은 $(l:mechanics/advanced_building_materials#bricks_and_mortar)벽돌과 회반죽$()으로 만들 수 있습니다."
     },
     {
@@ -58,6 +58,6 @@
   ],
   "read_by_default": true,
   "extra_recipe_mappings": {
-    "tag:tfc:rock/aqueducts": 0
+    "tag:tfc:aqueducts": 0
   }
 }

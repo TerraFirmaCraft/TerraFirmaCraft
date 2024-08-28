@@ -25,12 +25,12 @@ public final class ClimateModels
     public static final Registry<ClimateModelType<?>> REGISTRY = new RegistryBuilder<>(KEY).sync(true).create();
     public static final DeferredRegister<ClimateModelType<?>> TYPES = DeferredRegister.create(KEY, TerraFirmaCraft.MOD_ID);
 
-    public static final Id<OverworldClimateModel> OVERWORLD = register("overworld", OverworldClimateModel::new, OverworldClimateModel.STREAM_CODEC);
-    public static final Id<BiomeBasedClimateModel> BIOME_BASED = register("biome_based", BiomeBasedClimateModel::new, BiomeBasedClimateModel.STREAM_CODEC);
+    public static final Id<OverworldClimateModel> OVERWORLD = register("overworld", OverworldClimateModel.STREAM_CODEC);
+    public static final Id<BiomeBasedClimateModel> BIOME_BASED = register("biome_based", BiomeBasedClimateModel.STREAM_CODEC);
 
-    private static <T extends ClimateModel> Id<T> register(String id, Supplier<T> model, StreamCodec<ByteBuf, T> codec)
+    private static <T extends ClimateModel> Id<T> register(String id, StreamCodec<ByteBuf, T> codec)
     {
-        return new Id<>(TYPES.register(id, () -> new ClimateModelType<>(model, codec)));
+        return new Id<>(TYPES.register(id, () -> new ClimateModelType<>(codec)));
     }
 
     public record Id<T extends ClimateModel>(DeferredHolder<ClimateModelType<?>, ClimateModelType<T>> holder)
