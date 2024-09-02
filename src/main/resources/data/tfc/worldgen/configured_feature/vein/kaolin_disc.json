@@ -2,8 +2,8 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:kaolin_disc_vein",
   "config": {
-    "rarity": 10,
-    "min_y": -8,
+    "rarity": 50,
+    "min_y": -7,
     "max_y": 1,
     "size": 18,
     "height": 6,

@@ -182,7 +182,7 @@ public class RegionGeneratorTests implements TestSetup
                 yield continentColor(point);
             }
             case KAOLINITE_CAN_SPAWN -> point.temperature > 18f && point.rainfall > 300 && point.land()
-                ? point.biome == HIGHLANDS || point.biome == PLATEAU || point.biome == OLD_MOUNTAINS
+                ? point.biome == HIGHLANDS || point.biome == PLATEAU || point.biome == OLD_MOUNTAINS || point.biome == ROLLING_HILLS
                     ? Color.MAGENTA
                     : Color.PINK
                 : continentColor(point);

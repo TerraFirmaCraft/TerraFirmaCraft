@@ -494,7 +494,7 @@ def generate(rm: ResourceManager):
             })
 
     configured_placed_feature(rm, ('vein', 'kaolin_disc'), 'tfc:kaolin_disc_vein', {
-        'rarity': 10,
+        'rarity': 50,
         'min_y': -7,
         'max_y': 1,
         'size': 18,
