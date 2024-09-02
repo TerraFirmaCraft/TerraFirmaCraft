@@ -2,12 +2,13 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:kaolin_disc_vein",
   "config": {
-    "rarity": 40,
-    "min_y": 75,
-    "max_y": 110,
+    "rarity": 10,
+    "min_y": -8,
+    "max_y": 1,
     "size": 18,
     "height": 6,
     "density": 1.0,
+    "project": true,
     "random_name": "kaolin",
     "biomes": "#tfc:kaolin_clay_spawns_in",
     "indicator": {
