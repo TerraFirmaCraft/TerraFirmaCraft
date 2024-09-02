@@ -43,6 +43,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.FogType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec2;
@@ -530,7 +531,7 @@ public class ClientForgeEventHandler
             final BlockPos pos = event.getCamera().getBlockPosition();
             if (fluid == FogType.NONE)
             {
-                final float fog = Climate.getFogginess(mc.level, pos);
+                final float fog = Climate.getFog(mc.level, pos);
                 if (fog != 0)
                 {
                     final float renderDistance = mc.gameRenderer.getRenderDistance();
@@ -543,8 +544,12 @@ public class ClientForgeEventHandler
             }
             else if (fluid == FogType.WATER)
             {
+                // Custom water fog for TFC (?) - water gets foggier at low brightness
                 final Player player = mc.player;
-                final float fog = Climate.getWaterFogginess(mc.level, pos);
+                final float fog = Helpers.isFluid(mc.level.getFluidState(pos), Fluids.WATER)
+                    ? Mth.clampedMap(mc.level.getRawBrightness(pos, 0), 0f, 15f, 0.6f, 1.0f)
+                    : 1f;
+
                 if (fog != 1f)
                 {
                     waterFogLevel = player != null && player.hasEffect(MobEffects.NIGHT_VISION) ? 1f : Mth.lerp(0.01f, waterFogLevel, fog);
@@ -556,7 +561,6 @@ public class ClientForgeEventHandler
                     waterFogLevel = 1f;
                 }
             }
-
         }
     }
 

@@ -58,6 +58,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -67,6 +68,7 @@ import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.RegisterClientTooltipComponentFactoriesEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
+import net.neoforged.neoforge.client.event.RegisterDimensionSpecialEffectsEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
@@ -277,6 +279,7 @@ public final class ClientEventHandler
         bus.addListener(ClientEventHandler::registerLayerDefinitions);
         bus.addListener(ClientEventHandler::registerPresetEditors);
         bus.addListener(ClientEventHandler::registerExtensions);
+        bus.addListener(ClientEventHandler::registerDimensionEffects);
         bus.addListener(IngameOverlays::registerOverlays);
 
         mod.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
@@ -954,5 +957,10 @@ public final class ClientEventHandler
     private static <T> void registerCustomItemRenderer(RegisterClientExtensionsEvent event, @Nullable Supplier<? extends ItemLike> item, Function<T, BlockEntityWithoutLevelRenderer> renderer)
     {
         if (item != null) event.registerItem(ItemRendererExtension.cached(() -> renderer.apply((T) item.get().asItem())), item.get().asItem());
+    }
+
+    public static void registerDimensionEffects(RegisterDimensionSpecialEffectsEvent event)
+    {
+        event.register(BuiltinDimensionTypes.OVERWORLD_EFFECTS, new OverworldWeatherEffects());
     }
 }

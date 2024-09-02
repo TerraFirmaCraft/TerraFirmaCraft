@@ -106,7 +106,12 @@ public final class WeatherHelpers
      */
     public static boolean isPrecipitating(float rainIntensity, float rainfall)
     {
-        return rainIntensity > Mth.clampedMap(rainfall, ClimateModel.MIN_RAINFALL, ClimateModel.MAX_RAINFALL, 1, 0);
+        return calculateRealRainIntensity(rainIntensity, rainfall) > 0;
+    }
+
+    public static float calculateRealRainIntensity(float rainIntensity, float rainfall)
+    {
+        return rainIntensity - Mth.clampedMap(rainfall, ClimateModel.MIN_RAINFALL, ClimateModel.MAX_RAINFALL, 1, 0);
     }
 
     /**

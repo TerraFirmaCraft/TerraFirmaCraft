@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.mixin.client;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.client.particle.WaterDropParticle;
@@ -16,7 +18,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
 import net.dries007.tfc.common.blocks.IBlockRain;
 
@@ -28,9 +29,12 @@ public abstract class WaterDropParticleMixin extends TextureSheetParticle
         super(level, x, y, z);
     }
 
-    @Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getCollisionShape(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/phys/shapes/VoxelShape;"))
-    private VoxelShape getCollisionShapeIgnoreLeaves(BlockState state, BlockGetter level, BlockPos pos)
+    @WrapOperation(
+        method = "tick",
+        at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getCollisionShape(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/phys/shapes/VoxelShape;")
+    )
+    private VoxelShape getCollisionShapeIgnoreLeaves(BlockState state, BlockGetter level, BlockPos pos, Operation<VoxelShape> original)
     {
-        return state.getBlock() instanceof IBlockRain ? Shapes.block() : state.getCollisionShape(level, pos);
+        return state.getBlock() instanceof IBlockRain ? Shapes.block() : original.call(state, level, pos);
     }
 }

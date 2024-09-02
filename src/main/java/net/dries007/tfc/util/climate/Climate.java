@@ -77,15 +77,9 @@ public final class Climate
         return get(level).getAverageGroundwater(level, pos);
     }
 
-    public static float getFogginess(Level level, BlockPos pos)
+    public static float getFog(Level level, BlockPos pos)
     {
-        return get(level).getFogginess(level, pos, Calendars.get(level).getTicks());
-    }
-
-    @Deprecated
-    public static float getWaterFogginess(Level level, BlockPos pos)
-    {
-        return get(level).getWaterFogginess(level, pos, Calendars.get(level).getTicks());
+        return get(level).getFog(level, pos, Calendars.get(level).getTicks());
     }
 
     /**
