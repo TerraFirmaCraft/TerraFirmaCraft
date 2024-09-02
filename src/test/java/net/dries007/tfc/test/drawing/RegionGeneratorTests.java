@@ -181,6 +181,11 @@ public class RegionGeneratorTests implements TestSetup
                 if (point.lake()) yield new Color(150, 160, 255);
                 yield continentColor(point);
             }
+            case KAOLINITE_CAN_SPAWN -> point.temperature > 18f && point.rainfall > 300 && point.land()
+                ? point.biome == HIGHLANDS || point.biome == PLATEAU || point.biome == OLD_MOUNTAINS
+                    ? Color.MAGENTA
+                    : Color.PINK
+                : continentColor(point);
         };
     }
 
@@ -301,6 +306,8 @@ public class RegionGeneratorTests implements TestSetup
         // Draw climate visualizations again after rivers, which modify rainfall
         RAINFALL_AFTER_RIVERS(Task.ADD_RIVERS_AND_LAKES),
         KOPPEN_AFTER_RIVERS(Task.ADD_RIVERS_AND_LAKES),
+        // Visualize where things can spawn
+        KAOLINITE_CAN_SPAWN(Task.ADD_RIVERS_AND_LAKES),
         ;
 
         final Task root;
