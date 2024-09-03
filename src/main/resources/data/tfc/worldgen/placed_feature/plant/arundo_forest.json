@@ -17,8 +17,8 @@
       "type": "tfc:climate",
       "min_temperature": 6,
       "max_temperature": 19.6,
-      "min_rainfall": 220,
-      "max_rainfall": 370,
+      "min_groundwater": 220,
+      "max_groundwater": 370,
       "forest_types": [
         "dead_bamboo",
         "edge_bamboo",

@@ -1,0 +1,10 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "": [
+      {
+        "model": "tfc:block/salted_earth/silty_loam"
+      }
+    ]
+  }
+}

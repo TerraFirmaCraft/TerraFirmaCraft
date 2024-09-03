@@ -54,6 +54,7 @@ def generate(rm: ResourceManager):
     rm.placed_feature_tag('feature/boulders', 'tfc:raw_boulder', 'tfc:cobble_boulder', 'tfc:mossy_boulder', 'tfc:raw_boulder_small_patch', 'tfc:cobble_boulder_small_patch', 'tfc:mossy_boulder_small_patch')
     rm.placed_feature_tag('feature/soil_discs', 'tfc:clay_disc_with_indicator', 'tfc:water_clay_disc_with_indicator', 'tfc:peat_disc', 'tfc:powder_snow', 'tfc:rooted_dirt')
     rm.placed_feature_tag('feature/volcanoes', 'tfc:volcano_rivulet', 'tfc:volcano_caldera', 'tfc:random_volcano_fissure', 'tfc:pumice_patch')
+    rm.placed_feature_tag('feature/salt_flats', 'tfc:salt_flats_lick_patch')
 
     # Biomes
     biome(rm, 'badlands', 'mesa', lake_features=False)
@@ -80,6 +81,8 @@ def generate(rm: ResourceManager):
     biome(rm, 'river', 'river')
     biome(rm, 'shore', 'beach', ocean_features=True)
     biome(rm, 'tidal_flats', 'beach', ocean_features=True)
+    biome(rm, 'salt_flats', 'plains', salt_flat_features=True)
+    biome(rm, 'mud_flats', 'plains')
 
     biome(rm, 'mountain_lake', 'extreme_hills')
     biome(rm, 'volcanic_mountain_lake', 'extreme_hills', volcano_features=True)
@@ -814,6 +817,8 @@ def generate(rm: ResourceManager):
     configured_patch_feature(rm, 'seaweed', patch_config('tfc:groundcover/seaweed[fluid=empty]', 1, 15, 8, True), decorate_chance(5), decorate_square(), decorate_climate(-20, 50, 150, 500))
     configured_patch_feature(rm, 'guano', patch_config('tfc:groundcover/guano[fluid=empty]', 1, 10, 10), decorate_chance(15), decorate_square(), decorate_climate(-30, 10, 100, 500), decorate_on_top_of('tfc:creeping_stone_plantable_on'))
 
+    configured_patch_feature(rm, 'salt_flats_lick', patch_config('tfc:groundcover/salt_lick[fluid=empty]', 1, 10, 100), decorate_square(), decorate_range(63, 65), biome_check=False)
+
     # Forest Only
     configured_patch_feature(rm, 'sticks_forest', patch_config('tfc:groundcover/stick[fluid=empty]', 1, 15, 20), decorate_chance(3), decorate_square(), decorate_climate(-20, 50, 70, 500, True), biome_check=False)
     configured_patch_feature(rm, 'pinecone', patch_config('tfc:groundcover/pinecone[fluid=empty]', 1, 15, 10), decorate_chance(5), decorate_square(), decorate_climate(-14, 0, 60, 320, True), biome_check=False)
@@ -1480,7 +1485,7 @@ VANILLA_MONSTERS: Dict[str, Dict[str, Any]] = {
 }
 
 
-def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False, ocean_features: Union[bool, Literal['both']] = False, lake_features: Union[bool, Literal['default']] = 'default', volcano_features: bool = False, reef_features: bool = False, hot_spring_features: Union[bool, Literal['empty']] = False):
+def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False, ocean_features: Union[bool, Literal['both']] = False, lake_features: Union[bool, Literal['default']] = 'default', volcano_features: bool = False, reef_features: bool = False, salt_flat_features: bool = False, hot_spring_features: Union[bool, Literal['empty']] = False):
     spawners = {}
     soil_discs = []
     large_features = []
@@ -1541,7 +1546,8 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
         large_features.append('tfc:coral_reef')
 
     # Continental / Land Features
-    if land_features:
+    # Exclude these features from salt flat biomes
+    if land_features and not salt_flat_features:
         soil_discs.append('#tfc:feature/soil_discs')
         if 'salt_marsh' not in name:
             large_features += ['tfc:forest']
@@ -1553,6 +1559,9 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
         large_features += ['tfc:rare_bamboo', 'tfc:bamboo', 'tfc:cave_vegetation']
         surface_decorations.append('#tfc:feature/land_plants')
         spawners['creature'] = [entity for entity in LAND_CREATURES.values()]
+
+    if salt_flat_features:
+        surface_decorations.append('#tfc:feature/salt_flats')
 
     if volcano_features:
         large_features.append('#tfc:feature/volcanoes')

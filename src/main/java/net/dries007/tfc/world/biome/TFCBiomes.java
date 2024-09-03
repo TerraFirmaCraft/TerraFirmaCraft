@@ -29,9 +29,11 @@ import net.dries007.tfc.world.river.RiverBlendType;
 import net.dries007.tfc.world.surface.builder.BadlandsSurfaceBuilder;
 import net.dries007.tfc.world.surface.builder.LowlandsSurfaceBuilder;
 import net.dries007.tfc.world.surface.builder.MountainSurfaceBuilder;
+import net.dries007.tfc.world.surface.builder.MudFlatsSurfaceBuilder;
 import net.dries007.tfc.world.surface.builder.NormalSurfaceBuilder;
 import net.dries007.tfc.world.surface.builder.OceanSurfaceBuilder;
 import net.dries007.tfc.world.surface.builder.RiverSurfaceBuilder;
+import net.dries007.tfc.world.surface.builder.SaltFlatsSurfaceBuilder;
 import net.dries007.tfc.world.surface.builder.ShoreSurfaceBuilder;
 
 import static net.dries007.tfc.world.biome.BiomeBuilder.*;
@@ -87,6 +89,9 @@ public final class TFCBiomes
 
     public static final BiomeExtension PLATEAU_LAKE = register("plateau_lake", builder().heightmap(seed -> BiomeNoise.hills(seed, 20, 30)).surface(MountainSurfaceBuilder.INSTANCE).carving(BiomeNoise::undergroundLakes).type(BiomeBlendType.LAKE).noRivers());
 
+    // Dry Biomes
+    public static final BiomeExtension MUD_FLATS = register("mud_flats", builder().heightmap(BiomeNoise::flats).surface(MudFlatsSurfaceBuilder.INSTANCE).aquiferHeightOffset(-16).spawnable().type(RiverBlendType.WIDE).noSandyRiverShores());
+    public static final BiomeExtension SALT_FLATS = register("salt_flats", builder().heightmap(BiomeNoise::saltFlats).surface(SaltFlatsSurfaceBuilder.INSTANCE).aquiferHeightOffset(-16).salty().spawnable().type(RiverBlendType.WIDE).noSandyRiverShores());
 
     public static BiomeExtension getExtensionOrThrow(LevelAccessor level, Biome biome)
     {

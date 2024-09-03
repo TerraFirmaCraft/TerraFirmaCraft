@@ -39,6 +39,17 @@ public class SoilSurfaceState implements SurfaceState
         return type == SoilBlockType.GRASS ? new SoilSurfaceState.NeedsPostProcessing(regions) : new SoilSurfaceState(regions);
     }
 
+    public static SurfaceState buildDryDirt(SoilBlockType type)
+    {
+        final ImmutableList<SurfaceState> regions = ImmutableList.of(
+            soil(type, SoilBlockType.Variant.SANDY_LOAM),
+            soil(type, SoilBlockType.Variant.LOAM),
+            soil(type, SoilBlockType.Variant.SILTY_LOAM),
+            soil(type, SoilBlockType.Variant.SILT)
+        );
+        return new SoilSurfaceState(regions);
+    }
+
     public static SurfaceState buildSandOrGravel(boolean sandIsSandstone)
     {
         final SurfaceState sand = sandIsSandstone ? sandstone() : sand();

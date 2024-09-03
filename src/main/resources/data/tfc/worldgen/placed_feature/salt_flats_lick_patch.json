@@ -1,0 +1,21 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:salt_flats_lick_patch",
+  "placement": [
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:height_range",
+      "height": {
+        "type": "uniform",
+        "min_inclusive": {
+          "absolute": 63
+        },
+        "max_inclusive": {
+          "absolute": 65
+        }
+      }
+    }
+  ]
+}

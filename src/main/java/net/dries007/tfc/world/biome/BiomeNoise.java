@@ -170,6 +170,30 @@ public final class BiomeNoise
             );
     }
 
+    /**
+     * Very flat biome
+     */
+    public static Noise2D flats(long seed)
+    {
+        return new OpenSimplex2D(seed)
+                .octaves(4)
+                .spread(0.03f)
+                .scaled(SEA_LEVEL_Y - 12, SEA_LEVEL_Y + 8)
+                .clamped(SEA_LEVEL_Y, SEA_LEVEL_Y + 2);
+    }
+
+    /**
+     * Noise just above sea level
+     */
+    public static Noise2D saltFlats(long seed)
+    {
+        return new OpenSimplex2D(seed)
+            .octaves(4)
+            .spread(0.05f)
+            .scaled(SEA_LEVEL_Y - 16, SEA_LEVEL_Y + 10)
+            .clamped(SEA_LEVEL_Y - 2, SEA_LEVEL_Y);
+    }
+
     public static Noise2D mountains(long seed, int baseHeight, int scaleHeight)
     {
         final Noise2D baseNoise = new OpenSimplex2D(seed) // A simplex noise forms the majority of the base

@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.drawing;
+package net.dries007.tfc.test.drawing;
 
 import java.awt.Color;
 import java.util.function.DoubleFunction;
@@ -12,15 +12,14 @@ import net.minecraft.util.Mth;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import net.dries007.tfc.Artist;
-import net.dries007.tfc.world.biome.BiomeNoise;
+import net.dries007.tfc.test.TestSetup;
 import net.dries007.tfc.world.noise.Noise2D;
 
 import static net.dries007.tfc.world.TFCChunkGenerator.*;
 import static net.dries007.tfc.world.biome.BiomeNoise.*;
 
 @Disabled
-public class BiomeNoiseTest extends TestHelper
+public class BiomeNoiseTest implements TestSetup
 {
     private final DoubleFunction<Color> green = Artist.Colors.linearGradient(
         new Color(0, 90, 0),
@@ -42,30 +41,42 @@ public class BiomeNoiseTest extends TestHelper
     @Test
     public void testRollingHills()
     {
-        terrain.draw("noise_rolling_hills", BiomeNoise.hills(seed(), -5, 28));
+        terrain.draw("noise_rolling_hills", hills(TestSetup.seed(), -5, 28));
     }
 
     @Test
     public void testLowCanyons()
     {
-        terrain.draw("noise_low_canyons", BiomeNoise.canyons(seed(), -8, 21));
+        terrain.draw("noise_low_canyons", canyons(TestSetup.seed(), -8, 21));
     }
 
     @Test
     public void testCanyons()
     {
-        terrain.draw("noise_canyons", BiomeNoise.canyons(seed(), -2, 40));
+        terrain.draw("noise_canyons", canyons(TestSetup.seed(), -2, 40));
     }
 
     @Test
     public void testSharpHills()
     {
-        terrain.draw("noise_sharp_hills", BiomeNoise.sharpHills(seed()));
+        terrain.draw("noise_sharp_hills", sharpHills(TestSetup.seed()));
     }
 
     @Test
     public void testLakes()
     {
-        terrain.draw("noise_lakes", BiomeNoise.lake(seed()));
+        terrain.draw("noise_lakes", lake(TestSetup.seed()));
+    }
+
+    @Test
+    public void testFlats()
+    {
+        terrain.draw("noise_flats", flats(TestSetup.seed()));
+    }
+
+    @Test
+    public void testSaltFlats()
+    {
+        terrain.draw("noise_salt_flats", saltFlats(TestSetup.seed()));
     }
 }

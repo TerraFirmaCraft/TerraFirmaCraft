@@ -23,6 +23,8 @@ public enum ChooseBiomes implements RegionTask
     };
     private static final int[] ISLAND_BIOMES = {PLAINS, HILLS, ROLLING_HILLS, VOLCANIC_OCEANIC_MOUNTAINS, VOLCANIC_OCEANIC_MOUNTAINS};
     private static final int[] MID_DEPTH_OCEAN_BIOMES = {DEEP_OCEAN, OCEAN, OCEAN, OCEAN_REEF, OCEAN_REEF, OCEAN_REEF};
+    private static final int[] DRY_LOWLANDS_REPLACEMENT_BIOMES = {MUD_FLATS, MUD_FLATS, MUD_FLATS, SALT_FLATS};
+    private static final int[] DRY_LOW_CANYONS_REPLACEMENT_BIOMES = {CANYONS, PLAINS, PLAINS, MUD_FLATS};
 
     @Override
     public void apply(RegionGenerator.Context context)
@@ -71,8 +73,18 @@ public enum ChooseBiomes implements RegionTask
             final float minRainForLowFreshWaterBiomes = 90f + Math.floorMod(areaSeed ^ climateSeed, 40);
             if (point.rainfall < minRainForLowFreshWaterBiomes)
             {
-                if (point.biome == LOWLANDS) point.biome = PLAINS;
-                else if (point.biome == LOW_CANYONS) point.biome = CANYONS;
+                if (point.biome == LOWLANDS)
+                {
+                    if (point.rainfall <= 45 && point.distanceToOcean > 2)
+                    {
+                        point.biome = SALT_FLATS;
+                    }
+                    else
+                    {
+                        point.biome = randomSeededFrom(rngSeed, areaSeed, DRY_LOWLANDS_REPLACEMENT_BIOMES);
+                    }
+                }
+                else if (point.biome == LOW_CANYONS) point.biome = randomSeededFrom(rngSeed, areaSeed, DRY_LOW_CANYONS_REPLACEMENT_BIOMES);
             }
 
             // Prevent badlands from appearing in very high rainfall environments

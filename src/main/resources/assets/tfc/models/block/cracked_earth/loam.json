@@ -1,0 +1,7 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "tfc:block/cracked_earth/loam"
+  }
+}

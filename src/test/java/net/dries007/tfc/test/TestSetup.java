@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -193,5 +194,12 @@ public interface TestSetup
     {
         @Override
         public void clear() {} // No-op
+    }
+
+    public static long seed()
+    {
+        final long seed = new Random().nextLong();
+        System.out.printf("Seed: %d\n", seed);
+        return seed;
     }
 }

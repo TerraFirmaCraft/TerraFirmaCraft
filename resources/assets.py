@@ -13,6 +13,7 @@ TAG_SHARP = 'tfc:tools/sharp'
 
 STICKS_WHEN_NOT_SHEARED = loot_tables.alternatives({
     'name': 'minecraft:stick',
+    'name': 'minecraft:stick',
     'conditions': [loot_tables.match_tag(TAG_SHARP), loot_tables.random_chance(0.2)],
     'functions': [loot_tables.set_count(1, 2)]
 }, {
@@ -618,6 +619,10 @@ def generate(rm: ResourceManager):
         # Regular Dirt
         block = rm.blockstate(('dirt', soil), variants={'': [{'model': 'tfc:block/dirt/%s' % soil}]}, use_default_model=False)
         block.with_block_model().with_item_model().with_block_loot('tfc:dirt/%s' % soil).with_lang(lang('%s Dirt', soil))
+        block = rm.blockstate(('cracked_earth', soil), variants={'': [{'model': 'tfc:block/cracked_earth/%s' % soil}]}, use_default_model=False)
+        block.with_block_model().with_item_model().with_block_loot('tfc:cracked_earth/%s' % soil).with_lang(lang('%s Cracked Mud', soil))
+        block = rm.blockstate(('salted_earth', soil), variants={'': [{'model': 'tfc:block/salted_earth/%s' % soil}]}, use_default_model=False)
+        block.with_block_model().with_item_model().with_lang(lang('%s Salted Earth' % soil)).with_block_loot('tfc:cracked_earth/%s' % soil, '1-3 tfc:powder/salt')
         for variant in ('mud', 'rooted_dirt', 'mud_bricks'):
             rm.blockstate((variant, soil)).with_block_model().with_item_model().with_block_loot('tfc:%s/%s' % (variant, soil)).with_lang(lang('%s %s', soil, variant))
 
