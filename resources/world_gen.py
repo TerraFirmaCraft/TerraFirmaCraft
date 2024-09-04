@@ -83,6 +83,8 @@ def generate(rm: ResourceManager):
     biome(rm, 'tidal_flats', 'beach', ocean_features=True)
     biome(rm, 'salt_flats', 'plains', salt_flat_features=True)
     biome(rm, 'mud_flats', 'plains')
+    biome(rm, 'dune_sea', 'plains')
+    biome(rm, 'high_dunes', 'extreme_hills')
 
     biome(rm, 'mountain_lake', 'extreme_hills')
     biome(rm, 'volcanic_mountain_lake', 'extreme_hills', volcano_features=True)
@@ -816,8 +818,6 @@ def generate(rm: ResourceManager):
     configured_patch_feature(rm, 'sticks_shore', patch_config('tfc:groundcover/stick[fluid=empty]', 1, 15, 18, True), decorate_chance(2), decorate_square(), decorate_climate(-50, 50, 50, 500))
     configured_patch_feature(rm, 'seaweed', patch_config('tfc:groundcover/seaweed[fluid=empty]', 1, 15, 8, True), decorate_chance(5), decorate_square(), decorate_climate(-20, 50, 150, 500))
     configured_patch_feature(rm, 'guano', patch_config('tfc:groundcover/guano[fluid=empty]', 1, 10, 10), decorate_chance(15), decorate_square(), decorate_climate(-30, 10, 100, 500), decorate_on_top_of('tfc:creeping_stone_plantable_on'))
-
-    configured_patch_feature(rm, 'salt_flats_lick', patch_config('tfc:groundcover/salt_lick[fluid=empty]', 1, 10, 100), decorate_square(), decorate_range(63, 65), biome_check=False)
 
     # Forest Only
     configured_patch_feature(rm, 'sticks_forest', patch_config('tfc:groundcover/stick[fluid=empty]', 1, 15, 20), decorate_chance(3), decorate_square(), decorate_climate(-20, 50, 70, 500, True), biome_check=False)

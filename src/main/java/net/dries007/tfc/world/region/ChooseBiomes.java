@@ -85,6 +85,11 @@ public enum ChooseBiomes implements RegionTask
                     }
                 }
                 else if (point.biome == LOW_CANYONS) point.biome = randomSeededFrom(rngSeed, areaSeed, DRY_LOW_CANYONS_REPLACEMENT_BIOMES);
+                else if (point.rainfall <= 65)
+                {
+                    if (point.biome == HILLS || point.biome == ROLLING_HILLS) point.biome = DUNE_SEA;
+                    else if (point.biome == PLATEAU || point.biome == HIGHLANDS) point.biome = HIGH_DUNES;
+                }
             }
 
             // Prevent badlands from appearing in very high rainfall environments
