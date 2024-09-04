@@ -1,0 +1,7 @@
+{
+  "type": "tfc:landslide",
+  "ingredient": [
+    "tfc:salted_earth/silt"
+  ],
+  "result": "tfc:salted_earth/silt"
+}

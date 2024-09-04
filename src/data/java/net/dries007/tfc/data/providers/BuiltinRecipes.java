@@ -271,6 +271,12 @@ public final class BuiltinRecipes extends VanillaRecipeProvider implements
             add(new LandslideRecipe(BlockIngredient.of(
                 blocks.get(SoilBlockType.MUD).get()
             ), blocks.get(SoilBlockType.MUD).get().defaultBlockState()));
+            add(new LandslideRecipe(BlockIngredient.of(
+                blocks.get(SoilBlockType.CRACKED_EARTH).get()
+            ), blocks.get(SoilBlockType.CRACKED_EARTH).get().defaultBlockState()));
+            add(new LandslideRecipe(BlockIngredient.of(
+                blocks.get(SoilBlockType.SALTED_EARTH).get()
+            ), blocks.get(SoilBlockType.SALTED_EARTH).get().defaultBlockState()));
         }
     }
 
