@@ -498,12 +498,13 @@ def generate(rm: ResourceManager):
             })
 
     configured_placed_feature(rm, ('vein', 'kaolin_disc'), 'tfc:kaolin_disc_vein', {
-        'rarity': 40,
-        'min_y': 75,
-        'max_y': 110,
+        'rarity': 50,
+        'min_y': -7,
+        'max_y': 1,
         'size': 18,
         'height': 6,
         'density': 1.0,
+        'project': True,
         'random_name': 'kaolin',
         'biomes': '#tfc:kaolin_clay_spawns_in',
         'indicator': {
@@ -516,7 +517,7 @@ def generate(rm: ResourceManager):
         },
         'blocks': [],
     }, decorate_climate(min_water=300, min_temp=18))
-    rm.biome_tag('kaolin_clay_spawns_in', 'tfc:plateau', 'tfc:highlands', 'tfc:old_mountains')
+    rm.biome_tag('kaolin_clay_spawns_in', 'tfc:plateau', 'tfc:highlands', 'tfc:old_mountains', 'tfc:rolling_hills')
 
     configured_placed_feature(rm, ('vein', 'gravel'), 'tfc:disc_vein', {
         'rarity': 30,

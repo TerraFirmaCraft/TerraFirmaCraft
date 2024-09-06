@@ -32,11 +32,11 @@ public class KaolinDiscVeinFeature extends DiscVeinFeature
         }
         else if (Helpers.isBlock(stoneState, TFCTags.Blocks.KAOLIN_CLAY_REPLACEABLE))
         {
-            if (y > config.height() / 3f)
+            if (y > -2)
             {
                 return TFCBlocks.RED_KAOLIN_CLAY.get().defaultBlockState();
             }
-            if (y > -config.height() / 3f)
+            if (y > -4)
             {
                 return TFCBlocks.PINK_KAOLIN_CLAY.get().defaultBlockState();
             }

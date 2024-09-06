@@ -55,7 +55,6 @@
     "client.FogRendererMixin",
     "client.HangingSignEditScreenMixin",
     "client.ItemColorsMixin",
-    "client.LevelRendererMixin",
     "client.LiquidBlockRendererMixin",
     "client.MinecraftMixin",
     "client.PlayerItemInHandLayerMixin",
