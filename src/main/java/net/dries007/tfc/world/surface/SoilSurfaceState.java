@@ -67,6 +67,23 @@ public class SoilSurfaceState implements SurfaceState
         ));
     }
 
+    public static SurfaceState buildSand(boolean hasSandstone)
+    {
+        final SurfaceState sand = sand();
+        final SurfaceState sandstone = hasSandstone ? sandstone() : sand();
+        return new SoilSurfaceState(ImmutableList.of(
+            sand,
+            sand,
+            sand,
+            sand,
+            sand,
+            transition(sand, sandstone),
+            sandstone,
+            sandstone,
+            sandstone
+        ));
+    }
+
     private static SurfaceState transition(SurfaceState first, SurfaceState second)
     {
         return context -> {

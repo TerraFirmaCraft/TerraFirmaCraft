@@ -9,17 +9,19 @@ public class MudFlatsSurfaceBuilder implements SurfaceBuilder
 {
     public static final SurfaceBuilderFactory INSTANCE = MudFlatsSurfaceBuilder::new;
 
-    private final Noise2D surfaceMaterialNoise;
 
-    public MudFlatsSurfaceBuilder(long seed)
-    {
-        surfaceMaterialNoise = new OpenSimplex2D(seed).octaves(2).spread(0.04f);
-    }
+    public MudFlatsSurfaceBuilder(long seed) {}
 
     @Override
     public void buildSurface(SurfaceBuilderContext context, int startY, int endY)
     {
-        final float noise = (float) surfaceMaterialNoise.noise(context.pos().getX(), context.pos().getZ()) * 0.9f + context.random().nextFloat() * 0.1f;
-        NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY, SurfaceStates.DRY_MUD, SurfaceStates.DRY_MUD, SurfaceStates.DIRT, SurfaceStates.MUD, SurfaceStates.MUD);
+        if (context.getBlockState(66).canBeReplaced())
+        {
+            NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY, SurfaceStates.DRY_MUD, SurfaceStates.DRY_MUD, SurfaceStates.DIRT, SurfaceStates.MUD, SurfaceStates.MUD);
+        }
+        else
+        {
+            NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY);
+        }
     }
 }

@@ -205,7 +205,7 @@ public final class BiomeNoise
                 .octaves(4)
                 .spread(0.1)
                 .scaled(-1, 2)
-                .clamped(0.2, 1))
+                .clamped(0.4, 1))
             .scaled(SEA_LEVEL_Y + minHeight, SEA_LEVEL_Y + maxHeight);
     }
 

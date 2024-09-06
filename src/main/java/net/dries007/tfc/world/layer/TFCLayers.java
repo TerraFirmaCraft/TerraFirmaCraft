@@ -63,7 +63,7 @@ public class TFCLayers
     public static final int MUD_FLATS = idFor(TFCBiomes.MUD_FLATS);
     public static final int SALT_FLATS = idFor(TFCBiomes.SALT_FLATS);
     public static final int DUNE_SEA = idFor(TFCBiomes.DUNE_SEA);
-    public static final int HIGH_DUNES = idFor(TFCBiomes.HIGH_DUNES);
+    public static final int GRASSY_DUNES = idFor(TFCBiomes.GRASSY_DUNES);
 
     public static BiomeExtension getFromLayerId(int id)
     {
@@ -236,6 +236,11 @@ public class TFCLayers
     public static boolean isLow(int value)
     {
         return value == PLAINS || value == HILLS || value == LOW_CANYONS || value == LOWLANDS || value == SALT_MARSH || value == MUD_FLATS || value == SALT_FLATS || value == DUNE_SEA;
+    }
+
+    public static boolean isFlats(int value)
+    {
+        return value == MUD_FLATS || value == SALT_FLATS;
     }
 
     public static int idFor(BiomeExtension extension)

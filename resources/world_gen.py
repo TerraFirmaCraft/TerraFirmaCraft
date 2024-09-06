@@ -83,7 +83,7 @@ def generate(rm: ResourceManager):
     biome(rm, 'salt_flats', 'plains', barren=True)
     biome(rm, 'mud_flats', 'plains', barren=True)
     biome(rm, 'dune_sea', 'plains', barren=True)
-    biome(rm, 'high_dunes', 'extreme_hills', barren=True)
+    biome(rm, 'grassy_dunes', 'plains')
 
     biome(rm, 'mountain_lake', 'extreme_hills')
     biome(rm, 'volcanic_mountain_lake', 'extreme_hills', volcano_features=True)
@@ -186,7 +186,7 @@ def generate(rm: ResourceManager):
         'replace_fluids': [],
     })
 
-    rm.placed_feature('flood_fill_lake', 'tfc:flood_fill_lake', decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'))
+    rm.placed_feature('flood_fill_lake', 'tfc:flood_fill_lake', decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(min_water=125))
     rm.placed_feature('underground_flood_fill_lake', 'tfc:flood_fill_lake', decorate_chance(3), decorate_square(), decorate_range(-56, 63))
 
     for spring_cfg in (('water', 110), ('lava', 50)):
