@@ -13,7 +13,6 @@ TAG_SHARP = 'tfc:tools/sharp'
 
 STICKS_WHEN_NOT_SHEARED = loot_tables.alternatives({
     'name': 'minecraft:stick',
-    'name': 'minecraft:stick',
     'conditions': [loot_tables.match_tag(TAG_SHARP), loot_tables.random_chance(0.2)],
     'functions': [loot_tables.set_count(1, 2)]
 }, {

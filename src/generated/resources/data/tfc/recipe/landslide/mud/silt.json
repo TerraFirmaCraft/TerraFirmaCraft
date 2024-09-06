@@ -1,7 +1,0 @@
-{
-  "type": "tfc:landslide",
-  "ingredient": [
-    "tfc:mud/silt"
-  ],
-  "result": "tfc:mud/silt"
-}

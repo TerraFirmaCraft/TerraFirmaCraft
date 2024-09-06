@@ -176,10 +176,10 @@ public final class BiomeNoise
     public static Noise2D flats(long seed)
     {
         return new OpenSimplex2D(seed)
-                .octaves(4)
-                .spread(0.03f)
-                .scaled(SEA_LEVEL_Y - 12, SEA_LEVEL_Y + 8)
-                .clamped(SEA_LEVEL_Y, SEA_LEVEL_Y + 2);
+            .octaves(4)
+            .spread(0.03f)
+            .scaled(SEA_LEVEL_Y - 12, SEA_LEVEL_Y + 8)
+            .clamped(SEA_LEVEL_Y, SEA_LEVEL_Y + 2);
     }
 
     /**

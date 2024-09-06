@@ -43,6 +43,7 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.levelgen.RandomSupport;
 import net.neoforged.neoforge.common.conditions.ICondition;
 import net.neoforged.neoforge.common.data.internal.NeoForgeBlockTagsProvider;
 import net.neoforged.neoforge.common.data.internal.NeoForgeFluidTagsProvider;
@@ -196,9 +197,9 @@ public interface TestSetup
         public void clear() {} // No-op
     }
 
-    public static long seed()
+    default long seed()
     {
-        final long seed = new Random().nextLong();
+        final long seed = RandomSupport.generateUniqueSeed();
         System.out.printf("Seed: %d\n", seed);
         return seed;
     }

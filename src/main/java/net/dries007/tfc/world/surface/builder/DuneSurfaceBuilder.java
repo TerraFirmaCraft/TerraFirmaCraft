@@ -20,7 +20,7 @@ public class DuneSurfaceBuilder implements SurfaceBuilder
     @Override
     public void buildSurface(SurfaceBuilderContext context, int startY, int endY)
     {
-        context.setSlope(0);
+        context.setSlope(context.getSlope() * (1 - context.weight()));
         SurfaceState sand = SoilSurfaceState.buildSand(false);
         NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY, sand, sand, sand, sand, sand);
     }

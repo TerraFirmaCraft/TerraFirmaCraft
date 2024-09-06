@@ -1,7 +1,0 @@
-{
-  "type": "tfc:landslide",
-  "ingredient": [
-    "tfc:cracked_earth/silt"
-  ],
-  "result": "tfc:cracked_earth/silt"
-}
