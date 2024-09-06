@@ -36,18 +36,18 @@ public class GrassyDunesSurfaceBuilder implements SurfaceBuilder
     {
         final Random random = new Random(seed);
 
-        grassHeightVariationNoise = new OpenSimplex2D(random.nextLong()).octaves(2).scaled(SEA_LEVEL_Y + 8, SEA_LEVEL_Y + 12).spread(0.3f);
+        grassHeightVariationNoise = new OpenSimplex2D(random.nextLong()).octaves(2).scaled(SEA_LEVEL_Y + 8, SEA_LEVEL_Y + 14).spread(0.08f);
     }
 
     @Override
     public void buildSurface(SurfaceBuilderContext context, int startY, int endY)
     {
         final double heightVariation = grassHeightVariationNoise.noise(context.pos().getX(), context.pos().getZ());
-
-        context.setSlope(0);
+        final double trueSlope = context.getSlope();
+        context.setSlope(trueSlope * (1 - context.weight()));
         SurfaceState sand = SoilSurfaceState.buildSand(false);
 
-        if (startY > heightVariation)
+        if (startY > heightVariation && trueSlope < 5)
         {
             SurfaceState grass = SoilSurfaceState.buildDryDirt(SoilBlockType.GRASS);
             NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY, grass, sand, sand, sand, sand);

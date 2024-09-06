@@ -43,8 +43,11 @@ public class SoilSurfaceState implements SurfaceState
     {
         final ImmutableList<SurfaceState> regions = ImmutableList.of(
             soil(type, SoilBlockType.Variant.SANDY_LOAM),
+            transition(soil(type, SoilBlockType.Variant.SANDY_LOAM), soil(type, SoilBlockType.Variant.LOAM)),
             soil(type, SoilBlockType.Variant.LOAM),
+            transition(soil(type, SoilBlockType.Variant.LOAM), soil(type, SoilBlockType.Variant.SILTY_LOAM)),
             soil(type, SoilBlockType.Variant.SILTY_LOAM),
+            transition(soil(type, SoilBlockType.Variant.SILTY_LOAM), soil(type, SoilBlockType.Variant.SILT)),
             soil(type, SoilBlockType.Variant.SILT)
         );
         return new SoilSurfaceState(regions);

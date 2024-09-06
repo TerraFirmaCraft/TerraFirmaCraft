@@ -1,7 +1,0 @@
-{
-  "type": "tfc:landslide",
-  "ingredient": [
-    "tfc:cracked_earth/loam"
-  ],
-  "result": "tfc:cracked_earth/loam"
-}

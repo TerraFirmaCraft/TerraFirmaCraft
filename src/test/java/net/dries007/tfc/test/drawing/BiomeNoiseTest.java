@@ -41,48 +41,48 @@ public class BiomeNoiseTest implements TestSetup
     @Test
     public void testRollingHills()
     {
-        terrain.draw("noise_rolling_hills", hills(TestSetup.seed(), -5, 28));
+        terrain.draw("noise_rolling_hills", hills(seed(), -5, 28));
     }
 
     @Test
     public void testLowCanyons()
     {
-        terrain.draw("noise_low_canyons", canyons(TestSetup.seed(), -8, 21));
+        terrain.draw("noise_low_canyons", canyons(seed(), -8, 21));
     }
 
     @Test
     public void testCanyons()
     {
-        terrain.draw("noise_canyons", canyons(TestSetup.seed(), -2, 40));
+        terrain.draw("noise_canyons", canyons(seed(), -2, 40));
     }
 
     @Test
     public void testSharpHills()
     {
-        terrain.draw("noise_sharp_hills", sharpHills(TestSetup.seed()));
+        terrain.draw("noise_sharp_hills", sharpHills(seed()));
     }
 
     @Test
     public void testLakes()
     {
-        terrain.draw("noise_lakes", lake(TestSetup.seed()));
+        terrain.draw("noise_lakes", lake(seed()));
     }
 
     @Test
     public void testFlats()
     {
-        terrain.draw("noise_flats", flats(TestSetup.seed()));
+        terrain.draw("noise_flats", flats(seed()));
     }
 
     @Test
     public void testSaltFlats()
     {
-        terrain.draw("noise_salt_flats", saltFlats(TestSetup.seed()));
+        terrain.draw("noise_salt_flats", saltFlats(seed()));
     }
 
     @Test
     public void testDunes()
     {
-        terrain.draw("noise_dunes", dunes(TestSetup.seed(), 2, 16));
+        terrain.draw("noise_dunes", dunes(seed(), 2, 16));
     }
 }
