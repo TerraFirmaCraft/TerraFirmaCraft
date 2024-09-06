@@ -165,19 +165,4 @@ public interface Noise2D
     {
         return (x, y) -> mappingFunction.applyAsDouble(Noise2D.this.noise(x, y));
     }
-
-    /**
-     * Creates a dune-like pattern
-     *
-     * @return a new noise function
-     */
-    default Noise2D dunes()
-    {
-        return (x, z) -> {
-            final double noise = Noise2D.this.noise(x / 50, z / 50);
-            final double offset = 20 * Math.sin(z / 240) + 3 * noise;
-            x = x / 8 + offset;
-            return Math.clamp(1.3 * (Math.abs((x % 5) - 1) * ((x % 5) - (x % 1) > 0 ? 0.5 : 2) - 1), -1, 1);
-        };
-    }
 }

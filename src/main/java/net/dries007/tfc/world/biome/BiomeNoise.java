@@ -200,7 +200,11 @@ public final class BiomeNoise
     public static Noise2D dunes(long seed, int minHeight, int maxHeight)
     {
         return new OpenSimplex2D(seed)
-            .dunes()
+            .spread(0.02)
+            .scaled(-3, 3)
+            .add((x, z) -> x / 6 + 20 * Math.sin(z / 240))
+            .map(value -> 1.3 * (Math.abs((value % 5) - 1) * ((value % 5) - (value % 1) > 0 ? 0.5 : 2) - 1))
+            .clamped(-1, 1)
             .lazyProduct(new OpenSimplex2D(seed)
                 .octaves(4)
                 .spread(0.1)
