@@ -1,0 +1,21 @@
+{
+  "loader": "tfc:plant",
+  "blooming": {
+    "parent": "tfc:block/plant/bluegrass_short_tuft"
+  },
+  "seeding": {
+    "parent": "tfc:block/plant/bluegrass_short_tuft"
+  },
+  "dying": {
+    "parent": "tfc:block/plant/bluegrass_short"
+  },
+  "dormant": {
+    "parent": "tfc:block/plant/bluegrass_short"
+  },
+  "sprouting": {
+    "parent": "tfc:block/plant/bluegrass_short"
+  },
+  "budding": {
+    "parent": "tfc:block/plant/bluegrass_short_tuft"
+  }
+}

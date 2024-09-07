@@ -1,0 +1,21 @@
+{
+  "loader": "tfc:plant",
+  "blooming": {
+    "parent": "tfc:block/plant/snapdragon_red_0"
+  },
+  "seeding": {
+    "parent": "tfc:block/plant/snapdragon_1"
+  },
+  "dying": {
+    "parent": "tfc:block/plant/snapdragon_2"
+  },
+  "dormant": {
+    "parent": "tfc:block/plant/snapdragon_3"
+  },
+  "sprouting": {
+    "parent": "tfc:block/plant/snapdragon_4"
+  },
+  "budding": {
+    "parent": "tfc:block/plant/snapdragon_5"
+  }
+}

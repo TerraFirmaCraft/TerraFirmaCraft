@@ -4,26 +4,10 @@
 		{
 		"when": {"stage":"0", "part":"upper"},
 		"apply":[
-			{"model":"tfc:block/plant/pickerelweed_0"},
-			{"model": "tfc:block/plant/pickerelweed_0", "y": 90 },
-			{"model": "tfc:block/plant/pickerelweed_0", "y": 180 },
-			{"model": "tfc:block/plant/pickerelweed_0", "y": 270 }
-		]},
-		{
-		"when": {"stage":"1", "part":"upper"},
-		"apply":[
-			{"model":"tfc:block/plant/pickerelweed_1"},
-			{"model": "tfc:block/plant/pickerelweed_1", "y": 90 },
-			{"model": "tfc:block/plant/pickerelweed_1", "y": 180 },
-			{"model": "tfc:block/plant/pickerelweed_1", "y": 270 }
-		]},
-		{
-		"when": {"stage":"2", "part":"upper"},
-		"apply":[
-			{"model":"tfc:block/plant/pickerelweed_2"},
-			{"model": "tfc:block/plant/pickerelweed_2", "y": 90 },
-			{"model": "tfc:block/plant/pickerelweed_2", "y": 180 },
-			{"model": "tfc:block/plant/pickerelweed_2", "y": 270 }
+			{"model":"tfc:block/plant/pickerelweed_dynamic"},
+			{"model": "tfc:block/plant/pickerelweed_dynamic", "y": 90 },
+			{"model": "tfc:block/plant/pickerelweed_dynamic", "y": 180 },
+			{"model": "tfc:block/plant/pickerelweed_dynamic", "y": 270 }
 		]}
 	]
 }

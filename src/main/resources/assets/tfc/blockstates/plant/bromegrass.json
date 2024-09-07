@@ -5,7 +5,7 @@
         "age": "0"
       },
       "apply": {
-        "model": "tfc:block/plant/bromegrass_shortest_0"
+        "model": "tfc:block/plant/bromegrass_shortest_dynamic"
       }
     },
     {
@@ -13,7 +13,7 @@
         "age": "1"
       },
       "apply": {
-        "model": "tfc:block/plant/bromegrass_shorter_0"
+        "model": "tfc:block/plant/bromegrass_shorter_dynamic"
       }
     },
     {
@@ -21,7 +21,7 @@
         "age": "2"
       },
       "apply": {
-        "model": "tfc:block/plant/bromegrass_short_0"
+        "model": "tfc:block/plant/bromegrass_short_dynamic"
       }
     },
     {
@@ -29,43 +29,7 @@
         "age": "3"
       },
       "apply": {
-        "model": "tfc:block/plant/bromegrass_0"
-      }
-    },
-    {
-      "when": {
-        "stage": "1",
-        "age": "0"
-      },
-      "apply": {
-        "model": "tfc:block/plant/bromegrass_shortest_tuft"
-      }
-    },
-    {
-      "when": {
-        "stage": "1",
-        "age": "1"
-      },
-      "apply": {
-        "model": "tfc:block/plant/bromegrass_shorter_tuft"
-      }
-    },
-    {
-      "when": {
-        "stage": "1",
-        "age": "2"
-      },
-      "apply": {
-        "model": "tfc:block/plant/bromegrass_short_tuft"
-      }
-    },
-    {
-      "when": {
-        "stage": "1",
-        "age": "3"
-      },
-      "apply": {
-        "model": "tfc:block/plant/bromegrass_tuft"
+        "model": "tfc:block/plant/bromegrass_dynamic"
       }
     }
   ]

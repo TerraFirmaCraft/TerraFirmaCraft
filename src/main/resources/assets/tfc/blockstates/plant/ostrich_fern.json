@@ -2,56 +2,11 @@
   "multipart": [
     {
       "when": {
-        "part": "lower",
-        "stage": "0"
+        "part": "lower"
       },
       "apply": [
         {
-          "model": "tfc:block/plant/ostrich_fern_0"
-        }
-      ]
-    },
-    {
-      "when": {
-        "part": "lower",
-        "stage": "1"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/ostrich_fern_1"
-        }
-      ]
-    },
-    {
-      "when": {
-        "part": "lower",
-        "stage": "2"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/ostrich_fern_2"
-        }
-      ]
-    },
-    {
-      "when": {
-        "part": "lower",
-        "stage": "3"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/ostrich_fern_3"
-        }
-      ]
-    },
-    {
-      "when": {
-        "part": "lower",
-        "stage": "4"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/ostrich_fern_3"
+          "model": "tfc:block/plant/ostrich_fern_dynamic"
         }
       ]
     }

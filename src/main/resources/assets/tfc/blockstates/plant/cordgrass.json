@@ -4,12 +4,7 @@
 		{
 		"when": {"stage":"0", "part":"upper"},
 		"apply":[
-			{"model":"tfc:block/plant/cordgrass_0"}
-		]},
-		{
-		"when": {"stage":"1", "part":"upper"},
-		"apply":[
-			{"model":"tfc:block/plant/cordgrass_1"}
+			{"model":"tfc:block/plant/cordgrass_dynamic"}
 		]}
 	]
 }

@@ -2,203 +2,43 @@
   "multipart": [
     {
       "when": {
-        "age": "0",
         "facing": "east"
       },
       "apply": [
         {
-          "model": "tfc:block/plant/guzmania_0"
+          "model": "tfc:block/plant/guzmania_dynamic"
         }
       ]
     },
     {
       "when": {
-        "age": "1",
-        "facing": "east"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/guzmania_1"
-        }
-      ]
-    },
-    {
-      "when": {
-        "age": "2",
-        "facing": "east"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/guzmania_1"
-        },
-        {
-          "model": "tfc:block/plant/guzmania_2"
-        }
-      ]
-    },
-    {
-      "when": {
-        "age": "3",
-        "facing": "east"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/guzmania_2"
-        }
-      ]
-    },
-    {
-      "when": {
-        "age": "0",
         "facing": "south"
       },
       "apply": [
         {
-          "model": "tfc:block/plant/guzmania_0",
+          "model": "tfc:block/plant/guzmania_dynamic",
           "y": 90
         }
       ]
     },
     {
       "when": {
-        "age": "1",
-        "facing": "south"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/guzmania_1",
-          "y": 90
-        }
-      ]
-    },
-    {
-      "when": {
-        "age": "2",
-        "facing": "south"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/guzmania_1",
-          "y": 90
-        },
-        {
-          "model": "tfc:block/plant/guzmania_2",
-          "y": 90
-        }
-      ]
-    },
-    {
-      "when": {
-        "age": "3",
-        "facing": "south"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/guzmania_2",
-          "y": 90
-        }
-      ]
-    },
-    {
-      "when": {
-        "age": "0",
         "facing": "west"
       },
       "apply": [
         {
-          "model": "tfc:block/plant/guzmania_0",
+          "model": "tfc:block/plant/guzmania_dynamic",
           "y": 180
         }
       ]
     },
     {
       "when": {
-        "age": "1",
-        "facing": "west"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/guzmania_1",
-          "y": 180
-        }
-      ]
-    },
-    {
-      "when": {
-        "age": "2",
-        "facing": "west"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/guzmania_1",
-          "y": 180
-        },
-        {
-          "model": "tfc:block/plant/guzmania_2",
-          "y": 180
-        }
-      ]
-    },
-    {
-      "when": {
-        "age": "3",
-        "facing": "west"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/guzmania_2",
-          "y": 180
-        }
-      ]
-    },
-    {
-      "when": {
-        "age": "0",
         "facing": "north"
       },
       "apply": [
         {
-          "model": "tfc:block/plant/guzmania_0",
-          "y": 270
-        }
-      ]
-    },
-    {
-      "when": {
-        "age": "1",
-        "facing": "north"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/guzmania_1",
-          "y": 270
-        }
-      ]
-    },
-    {
-      "when": {
-        "age": "2",
-        "facing": "north"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/guzmania_1",
-          "y": 270
-        },
-        {
-          "model": "tfc:block/plant/guzmania_2",
-          "y": 270
-        }
-      ]
-    },
-    {
-      "when": {
-        "age": "3",
-        "facing": "north"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/guzmania_2",
+          "model": "tfc:block/plant/guzmania_dynamic",
           "y": 270
         }
       ]

@@ -2,74 +2,34 @@
   "multipart": [
     {
       "when": {
-        "stage": "0",
         "age": "0"
       },
       "apply": {
-        "model": "tfc:block/plant/ryegrass_shortest_0"
+        "model": "tfc:block/plant/ryegrass_shortest_dynamic"
       }
     },
     {
       "when": {
-        "stage": "0",
         "age": "1"
       },
       "apply": {
-        "model": "tfc:block/plant/ryegrass_shorter_0"
+        "model": "tfc:block/plant/ryegrass_shorter_dynamic"
       }
     },
     {
       "when": {
-        "stage": "0",
         "age": "2"
       },
       "apply": {
-        "model": "tfc:block/plant/ryegrass_short_0"
+        "model": "tfc:block/plant/ryegrass_short_dynamic"
       }
     },
     {
       "when": {
-        "stage": "0",
         "age": "3"
       },
       "apply": {
-        "model": "tfc:block/plant/ryegrass_0"
-      }
-    },
-    {
-      "when": {
-        "stage": "1",
-        "age": "0"
-      },
-      "apply": {
-        "model": "tfc:block/plant/ryegrass_shortest_0b"
-      }
-    },
-    {
-      "when": {
-        "stage": "1",
-        "age": "1"
-      },
-      "apply": {
-        "model": "tfc:block/plant/ryegrass_shorter_0b"
-      }
-    },
-    {
-      "when": {
-        "stage": "1",
-        "age": "2"
-      },
-      "apply": {
-        "model": "tfc:block/plant/ryegrass_short_0b"
-      }
-    },
-    {
-      "when": {
-        "stage": "1",
-        "age": "3"
-      },
-      "apply": {
-        "model": "tfc:block/plant/ryegrass_0b"
+        "model": "tfc:block/plant/ryegrass_dynamic"
       }
     }
   ]

@@ -4,22 +4,7 @@
 		{
 		"when": {"stage":"0", "part":"upper"},
 		"apply":[
-			{"model":"tfc:block/plant/phragmite_0"}
-		]},
-		{
-		"when": {"stage":"1", "part":"upper"},
-		"apply":[
-			{"model":"tfc:block/plant/phragmite_1"}
-		]},
-		{
-		"when": {"stage":"2", "part":"upper"},
-		"apply":[
-			{"model":"tfc:block/plant/phragmite_2"}
-		]},
-		{
-		"when": {"stage":"3", "part":"upper"},
-		"apply":[
-			{"model":"tfc:block/plant/phragmite_3"}
+			{"model":"tfc:block/plant/phragmite_dynamic"}
 		]}
 	]
 }

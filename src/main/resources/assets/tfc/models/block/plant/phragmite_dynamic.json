@@ -1,0 +1,21 @@
+{
+  "loader": "tfc:plant",
+  "blooming": {
+    "parent": "tfc:block/plant/phragmite_0"
+  },
+  "seeding": {
+    "parent": "tfc:block/plant/phragmite_1"
+  },
+  "dying": {
+    "parent": "tfc:block/plant/phragmite_2"
+  },
+  "dormant": {
+    "parent": "tfc:block/plant/phragmite_2"
+  },
+  "sprouting": {
+    "parent": "tfc:block/plant/phragmite_2"
+  },
+  "budding": {
+    "parent": "tfc:block/plant/phragmite_3"
+  }
+}

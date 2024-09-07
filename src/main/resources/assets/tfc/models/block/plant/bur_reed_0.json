@@ -2,6 +2,7 @@
 	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
 	"textures": {
 		"0": "tfc:block/plant/bur_reed/bur_reed",
+		"1": "tfc:block/plant/bur_reed/bur_reed_overlay_blooming",
 		"particle": "tfc:block/plant/bur_reed/bur_reed"
 	},
 	"elements": [
@@ -47,6 +48,34 @@
 				"origin": [8, 8, 8],
 				"axis": "y",
 				"angle": -45
+			}
+		},
+		{
+			"name": "tuft",
+			"from": [8, -16, -8],
+			"to": [8, 16, 24],
+			"faces": {
+				"east": {"uv": [0, 0, 16, 16], "texture": "#1"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#1"}
+			},
+			"rotation": {
+				"origin": [8, 8, 8],
+				"axis": "y",
+				"angle": -45
+			}
+		},
+		{
+			"name": "tuft",
+			"from": [8, -16, -8],
+			"to": [8, 16, 24],
+			"faces": {
+				"east": {"uv": [0, 0, 16, 16], "texture": "#1"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#1"}
+			},
+			"rotation": {
+				"origin": [8, 8, 8],
+				"axis": "y",
+				"angle": 45
 			}
 		}
 	]
