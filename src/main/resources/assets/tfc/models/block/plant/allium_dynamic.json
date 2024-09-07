@@ -1,0 +1,22 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "loader": "tfc:plant",
+  "dormant": {
+    "parent": "tfc:block/plant/allium_7"
+  },
+  "sprouting": {
+    "parent": "tfc:block/plant/allium_0"
+  },
+  "budding": {
+    "parent": "tfc:block/plant/allium_1"
+  },
+  "blooming": {
+    "parent": "tfc:block/plant/allium_2"
+  },
+  "seeding": {
+    "parent": "tfc:block/plant/allium_3"
+  },
+  "dying": {
+    "parent": "tfc:block/plant/allium_4"
+  }
+}
