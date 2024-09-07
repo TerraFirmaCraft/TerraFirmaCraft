@@ -53,6 +53,15 @@ public interface ClimateModel
     ClimateModelType<?> type();
 
     /**
+     * @return A scaling value for hemispheres. This represents, effectively, the distance between a polar and equatorial region, in blocks.
+     * This is primarily used for day time scaling based effects.
+     */
+    default float hemisphereScale()
+    {
+        return 20_000;
+    }
+
+    /**
      * Get the base average annual temperature for a given XZ position.
      *
      * @return The average annual temperature at the given {@code pos} for this climate model. Should be time-invariant, and

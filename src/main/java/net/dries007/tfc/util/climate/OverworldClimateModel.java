@@ -101,6 +101,12 @@ public class OverworldClimateModel implements ClimateModel
     }
 
     @Override
+    public float hemisphereScale()
+    {
+        return temperatureScale;
+    }
+
+    @Override
     public float getAverageTemperature(LevelReader level, BlockPos pos)
     {
         return ChunkData.get(level, pos).getAverageTemp(pos);

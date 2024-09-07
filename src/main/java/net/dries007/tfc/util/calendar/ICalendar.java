@@ -83,6 +83,11 @@ public interface ICalendar
         return 1 + (int) ((time / TICKS_IN_DAY) % daysInMonth);
     }
 
+    static float getFractionOfDay(long time)
+    {
+        return (float) (time % TICKS_IN_DAY) / TICKS_IN_DAY;
+    }
+
     static float getFractionOfMonth(long time, long daysInMonth)
     {
         long ticksInMonth = daysInMonth * TICKS_IN_DAY;
@@ -260,6 +265,11 @@ public interface ICalendar
     default int getCalendarDayOfMonth()
     {
         return ICalendar.getDayOfMonth(getCalendarTicks(), getCalendarDaysInMonth());
+    }
+
+    default float getCalendarFractionOfDay()
+    {
+        return ICalendar.getFractionOfDay(getCalendarTicks());
     }
 
     /**
