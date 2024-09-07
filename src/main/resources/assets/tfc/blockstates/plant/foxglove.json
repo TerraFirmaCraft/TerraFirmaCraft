@@ -1,5 +1,4 @@
 {
-  "__comment__": "This file was automatically created by mcresources",
   "variants": {
     "part=lower": {
       "model": "tfc:block/plant/foxglove_lower_dynamic"

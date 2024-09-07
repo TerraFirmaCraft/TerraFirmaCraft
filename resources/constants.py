@@ -660,9 +660,6 @@ FLOWERPOT_CROSS_PLANTS = {
     'yucca': 'potted'
 }
 
-SIMPLE_TALL_PLANTS = {
-    'foxglove': 5
-}
 MISC_POTTED_PLANTS = ('barrel_cactus', 'morning_glory', 'moss', 'reindeer_lichen', 'rose', 'toquilla_palm', 'tree_fern', 'sea_palm', 'philodendron')
 
 SIMPLE_STAGE_PLANTS: dict[str, int] = {

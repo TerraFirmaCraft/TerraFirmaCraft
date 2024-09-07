@@ -1339,11 +1339,6 @@ def generate(rm: ResourceManager):
         flower_pot_cross(rm, plant, 'tfc:plant/potted/%s' % plant, 'plant/flowerpot/%s' % plant, 'tfc:block/plant/%s/%s' % (plant_folder, texture), 'tfc:plant/%s' % plant)
     for plant in MISC_POTTED_PLANTS:
         rm.blockstate('plant/potted/%s' % plant, model='tfc:block/plant/flowerpot/%s' % plant).with_lang(lang('potted %s', plant)).with_block_loot('tfc:plant/%s' % plant, 'minecraft:flower_pot')
-    for plant, stages in SIMPLE_TALL_PLANTS.items():
-        for i in range(0, stages):
-            for part in ('lower', 'upper'):
-                rm.block_model('plant/%s_%s_%s' % (plant, part, i), parent='minecraft:block/cross', textures={'cross': 'tfc:block/plant/%s/%s_%s' % (plant, i, part)})
-    rm.blockstate('plant/%s' % plant, variants=dict(('stage=%d,part=%s' % (i, part), {'model': 'tfc:block/plant/%s_%s_%s' % (plant, part, i)}) for i in range(0, stages) for part in ('lower', 'upper')))
     for plant, stages in SIMPLE_STAGE_PLANTS.items():
         if plant not in ('kangaroo_paw', 'trillium'):
             for i in range(0, stages):
