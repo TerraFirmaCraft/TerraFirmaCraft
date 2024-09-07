@@ -666,22 +666,22 @@ SIMPLE_TALL_PLANTS = {
 MISC_POTTED_PLANTS = ('barrel_cactus', 'morning_glory', 'moss', 'reindeer_lichen', 'rose', 'toquilla_palm', 'tree_fern', 'sea_palm', 'philodendron')
 
 SIMPLE_STAGE_PLANTS: dict[str, int] = {
-    'allium': 8,
+    'allium': 6,
     'anthurium': 2,
     'black_orchid': 3,
     'blood_lily': 4,
     'blue_ginger': 2,
     'blue_orchid': 3,
-    'butterfly_milkweed': 7,
+    'butterfly_milkweed': 6,
     'desert_flame': 2,
     'heliconia': 3,
     'houstonia': 3,
     'goldenrod': 5,
     'grape_hyacinth': 4,
     'kangaroo_paw': 2,  # tinted
-    'labrador_tea': 7,
+    'labrador_tea': 6,
     'lily_of_the_valley': 6,
-    'meads_milkweed': 7,
+    'meads_milkweed': 6,
     'nasturtium': 5,
     'oxeye_daisy': 6,
     'perovskia': 6,
@@ -695,6 +695,41 @@ SIMPLE_STAGE_PLANTS: dict[str, int] = {
     'trillium': 6,  # different
     'tropical_milkweed': 4,
     'yucca': 4
+}
+
+# TODO Stage Plants: Barrel Cactus (Manual), Tufted Grasses, 2-tall blocks
+# Blooming, Seeding, Dying, Dormant, Sprouting, Budding, Some single block stage plants like tulips for some reason
+SINGLE_BLOCK_STAGE_PLANTS: dict[str, list[int, int, int, int, int, int]] = {
+    'allium': [0, 1, 2, 3, 4, 5, 6],
+    'anthurium': [0, 1, 1, 1, 1, 1],
+    'black_orchid': [0, 1, 1, 1, 1, 2],
+    'blood_lily': [0, 1, 2, 2, 2, 3],
+    'blue_ginger': [0, 1, 1, 1, 1, 1],
+    'blue_orchid': [0, 1, 2, 2, 2, 2],
+    'butterfly_milkweed': [0, 1, 2, 3, 4, 5, 6],
+    'desert_flame': [0, 0, 1, 1, 1, 0],
+    'heather': [0, 0, 1, 1, 1, 0],
+    'heliconia': [0, 0, 1, 1, 1, 2],
+    'houstonia': [0, 0, 1, 1, 1, 2],
+    'goldenrod': [0, 0, 1, 2, 3, 4],
+    'grape_hyacinth': [0, 1, 2, 2, 2, 3],
+    'kangaroo_paw': [0, 1, 1, 1, 1, 1, 1],  # tinted
+    'labrador_tea': [0, 1, 2, 3, 4, 5],
+    'lily_of_the_valley': [0, 1, 2, 3, 4, 5],
+    'meads_milkweed': [0, 1, 2, 3, 4, 5,],
+    'nasturtium': [0, 1, 1, 2, 3, 4],
+    'oxeye_daisy': [0, 1, 2, 3, 4, 5],
+    'perovskia': [0, 1, 2, 3, 4, 5],
+    'poppy': [0, 1, 1, 1, 2, 3],
+    'primrose': [0, 1, 1, 2, 2, 2],
+    'pulsatilla': [0, 1, 2, 3, 4, 5],
+    'sacred_datura': [0, 1, 1, 2, 3, 4],  # different
+    'saguaro_fruit': [0, 1, 1, 1, 1, 1],
+    'silver_spurflower': [0, 1, 1, 1, 1, 2],
+    'strelitzia': [0, 1, 1, 1, 1, 2],
+    'trillium': [0, 1, 2, 3, 4, 5],  # different
+    'tropical_milkweed': [0, 1, 1, 1, 2, 3],
+    'yucca': [0, 1, 2, 2, 2, 3]
 }
 
 MODEL_PLANTS = ('arundo', 'arundo_plant', 'athyrium_fern', 'dry_phragmite', 'dry_phragmite_plant', 'hanging_vines', 'hanging_vines_plant', 'spanish_moss', 'spanish_moss_plant', 'lady_fern', 'laminaria', 'liana', 'liana_plant', 'milfoil', 'sago', 'sword_fern', 'tree_fern', 'tree_fern_plant', 'winged_kelp', 'winged_kelp_plant', 'sea_palm')

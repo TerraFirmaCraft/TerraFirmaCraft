@@ -1345,10 +1345,12 @@ def generate(rm: ResourceManager):
                 rm.block_model('plant/%s_%s_%s' % (plant, part, i), parent='minecraft:block/cross', textures={'cross': 'tfc:block/plant/%s/%s_%s' % (plant, i, part)})
     rm.blockstate('plant/%s' % plant, variants=dict(('stage=%d,part=%s' % (i, part), {'model': 'tfc:block/plant/%s_%s_%s' % (plant, part, i)}) for i in range(0, stages) for part in ('lower', 'upper')))
     for plant, stages in SIMPLE_STAGE_PLANTS.items():
-        rm.blockstate('plant/%s' % plant, variants=dict({'stage=%d' % i: {'model': 'tfc:block/plant/%s_%s' % (plant, i)} for i in range(0, stages)}))
         if plant not in ('kangaroo_paw', 'trillium'):
             for i in range(0, stages):
                 rm.block_model(f'plant/{plant}_{i}', parent='block/cross', textures={'cross': f'tfc:block/plant/{plant}/{plant}_{i}'})
+    for plant, list in SINGLE_BLOCK_STAGE_PLANTS.items():
+        rm.blockstate('plant/%s' % plant, variants=dict({'model': 'tfc:block/plant/%s_dynamic' % (plant)}))
+        rm.custom_block_model('plant/%s_dynamic' % plant, 'tfc:plant', {'blooming': {'parent': 'tfc:block/%s_%s' % (plant, list[0])}, 'seeding': {'parent': 'tfc:block/%s_%s' % (plant, list[1])}, 'dying': {'parent': 'tfc:block/%s_%s' % (plant, list[2])}, 'dormant': {'parent': 'tfc:block/%s_%s' % (plant, list[3])}, 'sprouting': {'parent': 'tfc:block/%s_%s' % (plant, list[4])}, 'budding': {'parent': 'tfc:block/%s_%s' % (plant, list[5])}})
     for plant in MODEL_PLANTS:
         rm.blockstate('plant/%s' % plant, model='tfc:block/plant/%s' % plant)
     for plant in SEAGRASS:
