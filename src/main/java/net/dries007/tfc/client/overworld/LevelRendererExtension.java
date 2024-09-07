@@ -163,12 +163,7 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
 
                     // In vanilla, this either rotates by 180°, or 0° for morning or evening, respectively, which positions it west or east
                     // We just rotate based on the sun azimuth angle
-                    //
-                    // todo: verify this is correct
-                    // float f3 = Mth.sin(level.getSunAngle(partialTick)) < 0.0F ? 180.0F : 0.0F;
-                    // stack.mulPose(Axis.ZP.rotation(f3));
-                    // stack.mulPose(Axis.ZP.rotationDegrees(90.0F));
-                    stack.mulPose(Axis.ZP.rotation(sunPos.azimuth()));
+                    stack.mulPose(Axis.ZP.rotation(sunPos.azimuth() + Mth.PI));
 
                     final Matrix4f pose = stack.last().pose();
                     final BufferBuilder buffer = tesselator.begin(VertexFormat.Mode.TRIANGLE_FAN, DefaultVertexFormat.POSITION_COLOR);
@@ -200,14 +195,14 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
                 stack.mulPose(Axis.YN.rotation(sunPos.azimuth() + Mth.PI));
                 stack.mulPose(Axis.XP.rotation(sunPos.zenith()));
 
-                Matrix4f sunAndMoonPose = stack.last().pose();
+                final Matrix4f sunMoonAndSky = stack.last().pose();
                 RenderSystem.setShader(GameRenderer::getPositionTexShader);
                 RenderSystem.setShaderTexture(0, SUN_LOCATION);
                 BufferBuilder buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-                buffer.addVertex(sunAndMoonPose, -30.0F, 100.0F, -30.0F).setUv(0.0F, 0.0F);
-                buffer.addVertex(sunAndMoonPose, 30.0F, 100.0F, -30.0F).setUv(1.0F, 0.0F);
-                buffer.addVertex(sunAndMoonPose, 30.0F, 100.0F, 30.0F).setUv(1.0F, 1.0F);
-                buffer.addVertex(sunAndMoonPose, -30.0F, 100.0F, 30.0F).setUv(0.0F, 1.0F);
+                buffer.addVertex(sunMoonAndSky, -30.0F, 100.0F, -30.0F).setUv(0.0F, 0.0F);
+                buffer.addVertex(sunMoonAndSky, 30.0F, 100.0F, -30.0F).setUv(1.0F, 0.0F);
+                buffer.addVertex(sunMoonAndSky, 30.0F, 100.0F, 30.0F).setUv(1.0F, 1.0F);
+                buffer.addVertex(sunMoonAndSky, -30.0F, 100.0F, 30.0F).setUv(0.0F, 1.0F);
                 BufferUploader.drawWithShader(buffer.buildOrThrow());
 
                 // Moon
@@ -219,10 +214,10 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
                 final int moonV = moonPhase / 4 % 2;
 
                 buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-                buffer.addVertex(sunAndMoonPose, -20.0F, -100.0F, 20.0F).setUv((moonU + 1) / 4.0F, (moonV + 1) / 2.0F);
-                buffer.addVertex(sunAndMoonPose, 20.0F, -100.0F, 20.0F).setUv(moonU / 4.0F, (moonV + 1) / 2.0F);
-                buffer.addVertex(sunAndMoonPose, 20.0F, -100.0F, -20.0F).setUv(moonU / 4.0F, moonV / 2.0F);
-                buffer.addVertex(sunAndMoonPose, -20.0F, -100.0F, -20.0F).setUv((moonU + 1) / 4.0F, moonV / 2.0F);
+                buffer.addVertex(sunMoonAndSky, -20.0F, -100.0F, 20.0F).setUv((moonU + 1) / 4.0F, (moonV + 1) / 2.0F);
+                buffer.addVertex(sunMoonAndSky, 20.0F, -100.0F, 20.0F).setUv(moonU / 4.0F, (moonV + 1) / 2.0F);
+                buffer.addVertex(sunMoonAndSky, 20.0F, -100.0F, -20.0F).setUv(moonU / 4.0F, moonV / 2.0F);
+                buffer.addVertex(sunMoonAndSky, -20.0F, -100.0F, -20.0F).setUv((moonU + 1) / 4.0F, moonV / 2.0F);
 
                 // todo: do something with star rotation?
                 BufferUploader.drawWithShader(buffer.buildOrThrow());
@@ -234,7 +229,7 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
                     final ShaderInstance positionShader = GameRenderer.getPositionShader();
                     assert positionShader != null;
                     starBuffer.bind();
-                    starBuffer.drawWithShader(stack.last().pose(), projectionMatrix, positionShader);
+                    starBuffer.drawWithShader(sunMoonAndSky, projectionMatrix, positionShader);
                     VertexBuffer.unbind();
                     skyFogSetup.run();
                 }

@@ -41,8 +41,8 @@ import net.dries007.tfc.util.Helpers;
 public final class SolarCalculator
 {
     /**
-     * Using the position of the sun, computes a relative "day time", of a kind that vanilla expects (i.e. with a total range of 24_000,
-     * where 0 = midnight).
+     * Using the position of the sun, computes a relative "day time", of a kind that vanilla expects (i.e. where noon = 6_000,
+     * midnight = 18_000, with a total range of {@code [0, 24_000]}).
      *
      * @param z The z location in blocks, used to determine the latitude
      * @param temperatureScale The temperature scale, in blocks. This is used to determine where the poles are. Default 10km.
@@ -55,34 +55,38 @@ public final class SolarCalculator
         final float zenith = getSunPosition(z, temperatureScale, fractionOfYear, fractionOfDay).zenith();
         if (fractionOfDay < 0.5)
         {
-            // Between midnight - noon
+            // Midnight -> Noon
             // If the zenith angle is below the horizon, interpolate from the lowest zenith angle to 0 as the [0, 6_000] range
             // If the zenith angle is above the horizon, interpolate from the horizon to the highest zenith angle as the [6_000, 12_000] range
             if (zenith > Mth.HALF_PI)
             {
+                // Midnight -> Sunrise
                 final float minZenith = getSunPosition(z, temperatureScale, fractionOfYear, 0f).zenith();
-                return (int) Mth.clampedMap(zenith, minZenith, Mth.HALF_PI, 0, 6_000);
+                return (int) Mth.clampedMap(zenith, minZenith, Mth.HALF_PI, 18_000, 24_000);
             }
             else
             {
+                // Sunrise -> Noon
                 final float maxZenith = getSunPosition(z, temperatureScale, fractionOfYear, 0.5f).zenith();
-                return (int) Mth.clampedMap(zenith, Mth.HALF_PI, maxZenith, 6_000, 12_000);
+                return (int) Mth.clampedMap(zenith, Mth.HALF_PI, maxZenith, 0, 6_000);
             }
         }
         else
         {
-            // Between noon - midnight
+            // Noon -> Midnight
             // Note, if the zenith never reaches above the horizon at noon, this will never advance >6_000, and will instead create a "time skip",
             // from < 6_000 to > 18_000. This is... probably acceptable.
             if (zenith < Mth.HALF_PI)
             {
+                // Noon -> Sunset
                 final float maxZenith = getSunPosition(z, temperatureScale, fractionOfYear, 0.5f).zenith();
-                return (int) Mth.clampedMap(zenith, maxZenith, Mth.HALF_PI, 12_000, 18_000);
+                return (int) Mth.clampedMap(zenith, maxZenith, Mth.HALF_PI, 6_000, 12_000);
             }
             else
             {
+                // Sunset -> Midnight
                 final float minZenith = getSunPosition(z, temperatureScale, fractionOfYear, 1f).zenith();
-                return (int) Mth.clampedMap(zenith, Mth.HALF_PI, minZenith, 18_000, 24_000);
+                return (int) Mth.clampedMap(zenith, Mth.HALF_PI, minZenith, 12_000, 18_000);
             }
         }
     }
