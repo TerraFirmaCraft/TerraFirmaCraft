@@ -1,0 +1,22 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "loader": "tfc:plant",
+  "blooming": {
+    "parent": "tfc:block/plant/oxeye_daisy_0"
+  },
+  "seeding": {
+    "parent": "tfc:block/plant/oxeye_daisy_1"
+  },
+  "dying": {
+    "parent": "tfc:block/plant/oxeye_daisy_2"
+  },
+  "dormant": {
+    "parent": "tfc:block/plant/oxeye_daisy_3"
+  },
+  "sprouting": {
+    "parent": "tfc:block/plant/oxeye_daisy_4"
+  },
+  "budding": {
+    "parent": "tfc:block/plant/oxeye_daisy_5"
+  }
+}

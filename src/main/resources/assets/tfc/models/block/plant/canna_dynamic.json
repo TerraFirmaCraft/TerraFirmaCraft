@@ -1,0 +1,21 @@
+{
+  "loader": "tfc:plant",
+  "blooming": {
+    "parent": "tfc:block/plant/canna_0"
+  },
+  "seeding": {
+    "parent": "tfc:block/plant/canna_1"
+  },
+  "dying": {
+    "parent": "tfc:block/plant/canna_1"
+  },
+  "dormant": {
+    "parent": "tfc:block/plant/canna_1"
+  },
+  "sprouting": {
+    "parent": "tfc:block/plant/canna_2"
+  },
+  "budding": {
+    "parent": "tfc:block/plant/canna_3"
+  }
+}

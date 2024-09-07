@@ -1,20 +1,8 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "stage=0": {
-      "model": "tfc:block/plant/sacred_datura_0"
-    },
-    "stage=1": {
-      "model": "tfc:block/plant/sacred_datura_1"
-    },
-    "stage=2": {
-      "model": "tfc:block/plant/sacred_datura_2"
-    },
-    "stage=3": {
-      "model": "tfc:block/plant/sacred_datura_3"
-    },
-    "stage=4": {
-      "model": "tfc:block/plant/sacred_datura_4"
+    "": {
+      "model": "tfc:block/plant/sacred_datura_dynamic"
     }
   }
 }

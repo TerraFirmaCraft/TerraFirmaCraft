@@ -1,0 +1,22 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "loader": "tfc:plant",
+  "blooming": {
+    "parent": "tfc:block/plant/blue_ginger_0"
+  },
+  "seeding": {
+    "parent": "tfc:block/plant/blue_ginger_1"
+  },
+  "dying": {
+    "parent": "tfc:block/plant/blue_ginger_1"
+  },
+  "dormant": {
+    "parent": "tfc:block/plant/blue_ginger_1"
+  },
+  "sprouting": {
+    "parent": "tfc:block/plant/blue_ginger_1"
+  },
+  "budding": {
+    "parent": "tfc:block/plant/blue_ginger_1"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "loader": "tfc:plant",
+  "blooming": {
+    "parent": "tfc:block/plant/strelitzia_0"
+  },
+  "seeding": {
+    "parent": "tfc:block/plant/strelitzia_1"
+  },
+  "dying": {
+    "parent": "tfc:block/plant/strelitzia_1"
+  },
+  "dormant": {
+    "parent": "tfc:block/plant/strelitzia_1"
+  },
+  "sprouting": {
+    "parent": "tfc:block/plant/strelitzia_1"
+  },
+  "budding": {
+    "parent": "tfc:block/plant/strelitzia_2"
+  }
+}

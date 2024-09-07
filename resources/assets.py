@@ -563,7 +563,7 @@ def generate(rm: ResourceManager):
     }, 'tfc:powderkeg'))
     block.with_item_model(overrides=[override('tfc:block/powderkeg_sealed', 'tfc:sealed')])
 
-    states: list = [({'model': 'tfc:block/composter/composter'})]
+    states: stages = [({'model': 'tfc:block/composter/composter'})]
     for i in range(1, 9):
         for age in ('normal', 'ready', 'rotten'):
             rm.block_model('tfc:composter/%s_%s' % (age, i), parent='tfc:block/composter/compost_%s' % i, textures={'0': 'tfc:block/devices/composter/%s' % age})
@@ -1348,9 +1348,9 @@ def generate(rm: ResourceManager):
         if plant not in ('kangaroo_paw', 'trillium'):
             for i in range(0, stages):
                 rm.block_model(f'plant/{plant}_{i}', parent='block/cross', textures={'cross': f'tfc:block/plant/{plant}/{plant}_{i}'})
-    for plant, list in SINGLE_BLOCK_STAGE_PLANTS.items():
-        rm.blockstate('plant/%s' % plant, variants=dict({'model': 'tfc:block/plant/%s_dynamic' % (plant)}))
-        rm.custom_block_model('plant/%s_dynamic' % plant, 'tfc:plant', {'blooming': {'parent': 'tfc:block/%s_%s' % (plant, list[0])}, 'seeding': {'parent': 'tfc:block/%s_%s' % (plant, list[1])}, 'dying': {'parent': 'tfc:block/%s_%s' % (plant, list[2])}, 'dormant': {'parent': 'tfc:block/%s_%s' % (plant, list[3])}, 'sprouting': {'parent': 'tfc:block/%s_%s' % (plant, list[4])}, 'budding': {'parent': 'tfc:block/%s_%s' % (plant, list[5])}})
+    for plant, states in SINGLE_BLOCK_STAGE_PLANTS.items():
+        rm.blockstate('plant/%s' % plant,  model= 'tfc:block/plant/%s_dynamic' % plant)
+        rm.custom_block_model('plant/%s_dynamic' % plant, 'tfc:plant', {'blooming': {'parent': 'tfc:block/plant/%s_%s' % (plant, states[0])}, 'seeding': {'parent': 'tfc:block/plant/%s_%s' % (plant, states[1])}, 'dying': {'parent': 'tfc:block/plant/%s_%s' % (plant, states[2])}, 'dormant': {'parent': 'tfc:block/plant/%s_%s' % (plant, states[3])}, 'sprouting': {'parent': 'tfc:block/plant/%s_%s' % (plant, states[4])}, 'budding': {'parent': 'tfc:block/plant/%s_%s' % (plant, states[5])}})
     for plant in MODEL_PLANTS:
         rm.blockstate('plant/%s' % plant, model='tfc:block/plant/%s' % plant)
     for plant in SEAGRASS:
@@ -1508,7 +1508,7 @@ def generate(rm: ResourceManager):
             rm.blockstate(('plant', '%s_sapling' % fruit), variants={'saplings=%d' % i: {'model': 'tfc:block/plant/%s_sapling_%d' % (fruit, i)} for i in range(1, 4 + 1)}).with_lang(lang('%s Sapling', fruit))
             rm.block_loot(('plant', '%s_sapling' % fruit), {
                 'name': 'tfc:plant/%s_sapling' % fruit,
-                'functions': [list({**loot_tables.set_count(i), 'conditions': [loot_tables.block_state_property('tfc:plant/%s_sapling[saplings=%s]' % (fruit, i))]} for i in range(1, 5)), loot_tables.explosion_decay()]
+                'functions': [stages({**loot_tables.set_count(i), 'conditions': [loot_tables.block_state_property('tfc:plant/%s_sapling[saplings=%s]' % (fruit, i))]} for i in range(1, 5)), loot_tables.explosion_decay()]
             })
             for stage in range(2, 4 + 1):
                 rm.block_model(('plant', '%s_sapling_%d' % (fruit, stage)), parent='tfc:block/plant/cross_%s' % stage, textures={'cross': 'tfc:block/fruit_tree/%s_sapling' % fruit})

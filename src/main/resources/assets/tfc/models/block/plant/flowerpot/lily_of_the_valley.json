@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "parent": "minecraft:block/flower_pot_cross",
   "textures": {
-    "plant": "tfc:block/plant/lily_of_the_valley/lily_of_the_valley_3",
+    "plant": "tfc:block/plant/lily_of_the_valley/lily_of_the_valley_0",
     "dirt": "tfc:block/dirt/loam"
   }
 }

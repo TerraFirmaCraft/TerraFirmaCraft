@@ -1,23 +1,8 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "stage=0": {
-      "model": "tfc:block/plant/oxeye_daisy_0"
-    },
-    "stage=1": {
-      "model": "tfc:block/plant/oxeye_daisy_1"
-    },
-    "stage=2": {
-      "model": "tfc:block/plant/oxeye_daisy_2"
-    },
-    "stage=3": {
-      "model": "tfc:block/plant/oxeye_daisy_3"
-    },
-    "stage=4": {
-      "model": "tfc:block/plant/oxeye_daisy_4"
-    },
-    "stage=5": {
-      "model": "tfc:block/plant/oxeye_daisy_5"
+    "": {
+      "model": "tfc:block/plant/oxeye_daisy_dynamic"
     }
   }
 }

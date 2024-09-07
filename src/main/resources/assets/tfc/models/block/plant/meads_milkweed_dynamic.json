@@ -1,0 +1,22 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "loader": "tfc:plant",
+  "blooming": {
+    "parent": "tfc:block/plant/meads_milkweed_0"
+  },
+  "seeding": {
+    "parent": "tfc:block/plant/meads_milkweed_1"
+  },
+  "dying": {
+    "parent": "tfc:block/plant/meads_milkweed_2"
+  },
+  "dormant": {
+    "parent": "tfc:block/plant/meads_milkweed_3"
+  },
+  "sprouting": {
+    "parent": "tfc:block/plant/meads_milkweed_4"
+  },
+  "budding": {
+    "parent": "tfc:block/plant/meads_milkweed_5"
+  }
+}

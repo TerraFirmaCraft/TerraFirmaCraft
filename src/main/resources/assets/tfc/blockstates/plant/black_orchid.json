@@ -1,14 +1,8 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "stage=0": {
-      "model": "tfc:block/plant/black_orchid_0"
-    },
-    "stage=1": {
-      "model": "tfc:block/plant/black_orchid_1"
-    },
-    "stage=2": {
-      "model": "tfc:block/plant/black_orchid_2"
+    "": {
+      "model": "tfc:block/plant/black_orchid_dynamic"
     }
   }
 }

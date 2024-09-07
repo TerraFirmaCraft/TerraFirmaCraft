@@ -6,7 +6,7 @@
       },
       "apply": [
         {
-          "model": "tfc:block/plant/tulip_0"
+          "model": "tfc:block/plant/tulip_white_0"
         }
       ]
     },
@@ -16,7 +16,7 @@
       },
       "apply": [
         {
-          "model": "tfc:block/plant/tulip_white_1"
+          "model": "tfc:block/plant/tulip_1"
         }
       ]
     },

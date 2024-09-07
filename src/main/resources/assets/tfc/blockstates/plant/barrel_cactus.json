@@ -16,53 +16,17 @@
       },
       "apply": [
         {
+          "model": "tfc:block/plant/barrel_cactus_flower_dynamic"
+        }
+      ]
+    },
+    {
+      "when": {
+        "part": "upper"
+      },
+      "apply": [
+		{
           "model": "tfc:block/plant/barrel_cactus_upper"
-        }
-      ]
-    },
-    {
-      "when": {
-        "part": "upper",
-        "stage": "1"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/barrel_cactus_flower_0"
-        }
-      ]
-    },
-    {
-      "when": {
-        "age": "0|1",
-        "part": "upper",
-        "stage": "2"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/barrel_cactus_flower_1"
-        }
-      ]
-    },
-    {
-      "when": {
-        "age": "2|3",
-        "part": "upper",
-        "stage": "2"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/barrel_cactus_flower_2"
-        }
-      ]
-    },
-    {
-      "when": {
-        "part": "upper",
-        "stage": "3"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/barrel_cactus_flower_3"
         }
       ]
     }
