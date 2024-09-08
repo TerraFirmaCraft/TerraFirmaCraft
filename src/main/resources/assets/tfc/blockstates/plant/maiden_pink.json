@@ -3,9 +3,6 @@
     {
       "apply": {
         "model": "tfc:block/plant/maiden_pink_1"
-      },
-      "when": {
-        "age": "1|2|3|0"
       }
     },
     {

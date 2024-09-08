@@ -1,7 +1,15 @@
 {
-  "variants": {
-    "": [
-		{
+  "multipart": [
+	{
+      "apply": [
+        {
+          "model": "tfc:block/plant/sagebrush_empty"
+        }
+      ]
+    },
+	{
+      "apply": [
+        {
 		  "model": "tfc:block/plant/sagebrush_dynamic_0",
 		  "weight": 5
 		},
@@ -33,6 +41,7 @@
 		  "model": "tfc:block/plant/sagebrush_dynamic_7",
 		  "weight": 2
 		}
-    ]
-  }
+      ]
+    }
+  ]
 }

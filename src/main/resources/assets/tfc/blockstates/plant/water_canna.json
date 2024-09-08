@@ -1,9 +1,6 @@
 {
   "multipart": [
     {
-      "when": {
-        "age": "0|1|2|3"
-      },
       "apply": [
         {
           "model": "tfc:block/plant/canna_base"
@@ -23,9 +20,6 @@
       ]
     },
 	{
-	  "when": {
-		"age": "0|1|2|3"
-	  },
 	  "apply": [
 		{
 		  "model": "tfc:block/plant/canna_stem"
@@ -33,9 +27,6 @@
 	  ]
     },
 	{
-      "when": {
-        "age": "0|1|2|3"
-      },
       "apply": [
         {
           "model": "tfc:block/plant/canna_dynamic"

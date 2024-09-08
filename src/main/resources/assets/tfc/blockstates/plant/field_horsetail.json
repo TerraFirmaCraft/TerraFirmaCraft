@@ -3,18 +3,6 @@
     "": [
       {
         "model": "tfc:block/plant/field_horsetail_dynamic"
-      },
-      {
-        "model": "tfc:block/plant/field_horsetail_dynamic",
-        "y": 90
-      },
-      {
-        "model": "tfc:block/plant/field_horsetail_dynamic",
-        "y": 180
-      },
-      {
-        "model": "tfc:block/plant/field_horsetail_dynamic",
-        "y": 270
       }
     ]
   }

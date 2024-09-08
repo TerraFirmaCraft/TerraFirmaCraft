@@ -30,7 +30,6 @@ import net.minecraft.client.renderer.block.model.BlockModel;
 import net.neoforged.neoforge.client.model.IDynamicBakedModel;
 import net.neoforged.neoforge.client.model.geometry.IUnbakedGeometry;
 
-import net.dries007.tfc.client.ClimateRenderCache;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.util.calendar.Calendars;
 
@@ -62,36 +61,48 @@ public class PlantBlockModel implements IDynamicBakedModel, IUnbakedGeometry<Pla
 
     public ModelData getModelData(BlockAndTintGetter level, BlockPos pos, BlockState state, ModelData data)
     {
-        //TODO: Finish logic for what model is displayed
-        float timeOfYear = Calendars.CLIENT.getCalendarFractionOfYear();
+        return data.derive().with(BakedModelData.PROPERTY, new BakedModelData(getModelFromCalendar())).build();
+    }
 
+    private BakedModel getModelFromCalendar()
+    {
+        //TODO: Finish logic for what model is displayed
+
+        float timeOfYear = Calendars.CLIENT.getCalendarFractionOfYear();
         if (timeOfYear < 0.1)
         {
-            return data.derive().with(BakedModelData.PROPERTY, new BakedModelData(dormantBakedModel)).build();
+            assert dormantBakedModel != null;
+            return dormantBakedModel;
         }
         else if (timeOfYear < 0.25)
         {
-            return data.derive().with(BakedModelData.PROPERTY, new BakedModelData(sproutingBakedModel)).build();
+            assert sproutingBakedModel != null;
+            return sproutingBakedModel;
         }
         else if (timeOfYear < 0.4)
         {
-            return data.derive().with(BakedModelData.PROPERTY, new BakedModelData(buddingBakedModel)).build();
+            assert buddingBakedModel != null;
+            return buddingBakedModel;
         }
         else if (timeOfYear < 0.6)
         {
-            return data.derive().with(BakedModelData.PROPERTY, new BakedModelData(bloomingBakedModel)).build();
+            assert bloomingBakedModel != null;
+            return bloomingBakedModel;
         }
         else if (timeOfYear < 0.75)
         {
-            return data.derive().with(BakedModelData.PROPERTY, new BakedModelData(seedingBakedModel)).build();
+            assert seedingBakedModel != null;
+            return seedingBakedModel;
         }
         else if (timeOfYear < 0.9)
         {
-            return data.derive().with(BakedModelData.PROPERTY, new BakedModelData(dyingBakedModel)).build();
+            assert dyingBakedModel != null;
+            return dyingBakedModel;
         }
         else
         {
-            return data.derive().with(BakedModelData.PROPERTY, new BakedModelData(dormantBakedModel)).build();
+            assert dormantBakedModel != null;
+            return dormantBakedModel;
         }
     }
 
@@ -115,8 +126,8 @@ public class PlantBlockModel implements IDynamicBakedModel, IUnbakedGeometry<Pla
         {
             return bakedData.toRender.getQuads(state, direction, random, modelData, renderType);
         }
-        assert bloomingBakedModel != null;
-        return bloomingBakedModel.getQuads(state, direction, random, modelData, renderType);
+
+        return getModelFromCalendar().getQuads(state, direction, random, modelData, renderType);
     }
 
     @Override

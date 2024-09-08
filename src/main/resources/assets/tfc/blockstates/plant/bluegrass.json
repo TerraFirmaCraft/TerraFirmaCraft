@@ -1,36 +1,16 @@
 {
-  "multipart": [
-    {
-      "when": {
-        "age": "0"
-      },
-      "apply": {
-        "model": "tfc:block/plant/bluegrass_shortest_dynamic"
-      }
+  "variants": {
+    "age=0": {
+      "model": "tfc:block/plant/bluegrass_shortest_dynamic"
     },
-    {
-      "when": {
-        "age": "1"
-      },
-      "apply": {
-        "model": "tfc:block/plant/bluegrass_shorter_dynamic"
-      }
+    "age=1": {
+      "model": "tfc:block/plant/bluegrass_shorter_dynamic"
     },
-    {
-      "when": {
-        "age": "2"
-      },
-      "apply": {
-        "model": "tfc:block/plant/bluegrass_short_dynamic"
-      }
+	"age=2": {
+      "model": "tfc:block/plant/bluegrass_short_dynamic"
     },
-    {
-      "when": {
-        "age": "3"
-      },
-      "apply": {
-        "model": "tfc:block/plant/bluegrass_dynamic"
-      }
+	"age=3": {
+      "model": "tfc:block/plant/bluegrass_dynamic"
     }
-  ]
+  }
 }

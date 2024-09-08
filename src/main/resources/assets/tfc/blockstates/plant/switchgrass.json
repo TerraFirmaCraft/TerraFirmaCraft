@@ -1,40 +1,28 @@
 {
-  "multipart": [
-    {
-      "when": {
-        "part": "lower",
-        "age": "0"
-      },
-      "apply": {
-        "model": "tfc:block/plant/switchgrass_shortest_dynamic"
-      }
+  "variants": {
+    "age=0,part=lower": {
+      "model": "tfc:block/plant/switchgrass_shortest_dynamic"
     },
-	{
-      "when": {
-        "part": "lower",
-        "age": "1"
-      },
-      "apply": {
-        "model": "tfc:block/plant/switchgrass_shorter_dynamic"
-      }
+    "age=1,part=lower": {
+      "model": "tfc:block/plant/switchgrass_shorter_dynamic"
     },
-	{
-      "when": {
-        "part": "lower",
-        "age": "2"
-      },
-      "apply": {
-        "model": "tfc:block/plant/switchgrass_short_dynamic"
-      }
+	"age=2,part=lower": {
+      "model": "tfc:block/plant/switchgrass_short_dynamic"
     },
-	{
-      "when": {
-        "part": "lower",
-        "age": "3"
-      },
-      "apply": {
-        "model": "tfc:block/plant/switchgrass_dynamic"
-      }
+	"age=3,part=lower": {
+      "model": "tfc:block/plant/switchgrass_dynamic"
+    },
+	"age=0,part=upper": {
+      "model": "tfc:block/empty"
+    },
+    "age=1,part=upper": {
+      "model": "tfc:block/empty"
+    },
+	"age=2,part=upper": {
+      "model": "tfc:block/empty"
+    },
+	"age=3,part=upper": {
+      "model": "tfc:block/empty"
     }
-  ]
+  }
 }
