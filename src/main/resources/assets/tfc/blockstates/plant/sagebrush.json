@@ -1,43 +1,38 @@
 {
-  "multipart": [
-    {
-      "when": {
-        "stage": "0"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/sagebrush_dynamic_0",
-          "weight": 5
-        },
-        {
-          "model": "tfc:block/plant/sagebrush_dynamic_1",
-          "weight": 5
-        },
-        {
-          "model": "tfc:block/plant/sagebrush_dynamic_2",
-          "weight": 5
-        },
-        {
-          "model": "tfc:block/plant/sagebrush_dynamic_3",
-          "weight": 5
-        },
-        {
-          "model": "tfc:block/plant/sagebrush_dynamic_4",
-          "weight": 5
-        },
-        {
-          "model": "tfc:block/plant/sagebrush_dynamic_5",
-          "weight": 2
-        },
-        {
-          "model": "tfc:block/plant/sagebrush_dynamic_6",
-          "weight": 2
-        },
-        {
-          "model": "tfc:block/plant/sagebrush_dynamic_7",
-          "weight": 2
-        }
-      ]
-    }
-  ]
+  "variants": {
+    "": [
+		{
+		  "model": "tfc:block/plant/sagebrush_dynamic_0",
+		  "weight": 5
+		},
+		{
+		  "model": "tfc:block/plant/sagebrush_dynamic_1",
+		  "weight": 5
+		},
+		{
+		  "model": "tfc:block/plant/sagebrush_dynamic_2",
+		  "weight": 5
+		},
+		{
+		  "model": "tfc:block/plant/sagebrush_dynamic_3",
+		  "weight": 5
+		},
+		{
+		  "model": "tfc:block/plant/sagebrush_dynamic_4",
+		  "weight": 5
+		},
+		{
+		  "model": "tfc:block/plant/sagebrush_dynamic_5",
+		  "weight": 2
+		},
+		{
+		  "model": "tfc:block/plant/sagebrush_dynamic_6",
+		  "weight": 2
+		},
+		{
+		  "model": "tfc:block/plant/sagebrush_dynamic_7",
+		  "weight": 2
+		}
+    ]
+  }
 }

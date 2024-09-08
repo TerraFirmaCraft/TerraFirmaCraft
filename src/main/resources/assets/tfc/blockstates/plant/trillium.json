@@ -1,8 +1,22 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "": {
-      "model": "tfc:block/plant/trillium_dynamic"
-    }
+    "": [
+		{
+		  "model": "tfc:block/plant/trillium_dynamic"
+		},
+		{
+		  "model": "tfc:block/plant/trillium_dynamic",
+		  "y": 90
+		},
+		{
+		  "model": "tfc:block/plant/trillium_dynamic",
+		  "y": 180
+		},
+		{
+		  "model": "tfc:block/plant/trillium_dynamic",
+		  "y": 270
+		}
+	]
   }
 }

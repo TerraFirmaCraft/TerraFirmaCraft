@@ -2,10 +2,10 @@
   "multipart": [
     {
       "when": {
-        "stage": "0|1|2|3"
+        "age": "0|1|2|3"
       },
       "apply": [
-		{
+        {
           "model": "tfc:block/plant/canna_base"
         },
         {
@@ -22,12 +22,12 @@
         }
       ]
     },
-    {
+	{
       "when": {
-        "stage": "0|1|2|3"
+        "age": "0|1|2|3"
       },
       "apply": [
-		{
+        {
           "model": "tfc:block/plant/canna_dynamic"
         }
       ]

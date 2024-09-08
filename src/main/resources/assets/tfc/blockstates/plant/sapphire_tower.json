@@ -1,24 +1,10 @@
 {
-  "multipart": [
-    {
-      "when": {
-        "part": "lower"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/sapphire_tower_lower_dynamic"
-        }
-      ]
+  "variants": {
+    "part=lower": {
+      "model": "tfc:block/plant/sapphire_tower_lower_dynamic"
+    },
+    "part=upper": {
+      "model": "tfc:block/plant/sapphire_tower_upper_dynamic"
     }
-    {
-      "when": {
-        "part": "upper"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/sapphire_tower_upper_dynamic"
-        }
-      ]
-    }
-  ]
+  }
 }

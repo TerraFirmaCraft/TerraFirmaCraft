@@ -10,12 +10,12 @@
     "parent": "tfc:block/plant/marigold_2"
   },
   "dormant": {
-    "parent": "tfc:block/plant/marigold_3"
+    "parent": "tfc:block/plant/marigold_2"
   },
   "sprouting": {
-    "parent": "tfc:block/plant/marigold_4"
+    "parent": "tfc:block/plant/marigold_2"
   },
   "budding": {
-    "parent": "tfc:block/plant/marigold_5"
+    "parent": "tfc:block/plant/marigold_3"
   }
 }

@@ -1,26 +1,10 @@
 {
-  "multipart": [
-    {
-      "when": {
-        "part": "lower"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/marigold_dynamic"
-        },
-        {
-          "model": "tfc:block/plant/marigold_dynamic",
-          "y": 90
-        },
-        {
-          "model": "tfc:block/plant/marigold_dynamic",
-          "y": 180
-        },
-        {
-          "model": "tfc:block/plant/marigold_dynamic",
-          "y": 270
-        }
-      ]
+  "variants": {
+    "part=upper": {
+      "model": "tfc:block/empty"
+    },
+    "part=lower": {
+      "model": "tfc:block/plant/marigold_dynamic"
     }
-  ]
+  }
 }

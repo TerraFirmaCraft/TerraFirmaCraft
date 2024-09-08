@@ -1,26 +1,21 @@
 {
-  "multipart": [
-    {
-      "when": {
-        "stage": "0"
+  "variants": {
+    "": [
+      {
+        "model": "tfc:block/plant/field_horsetail_dynamic"
       },
-      "apply": [
-        {
-          "model": "tfc:block/plant/field_horsetail_dynamic"
-        },
-        {
-          "model": "tfc:block/plant/field_horsetail_dynamic",
-          "y": 90
-        },
-        {
-          "model": "tfc:block/plant/field_horsetail_dynamic",
-          "y": 180
-        },
-        {
-          "model": "tfc:block/plant/field_horsetail_dynamic",
-          "y": 270
-        }
-      ]
-    }
-  ]
+      {
+        "model": "tfc:block/plant/field_horsetail_dynamic",
+        "y": 90
+      },
+      {
+        "model": "tfc:block/plant/field_horsetail_dynamic",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/plant/field_horsetail_dynamic",
+        "y": 270
+      }
+    ]
+  }
 }

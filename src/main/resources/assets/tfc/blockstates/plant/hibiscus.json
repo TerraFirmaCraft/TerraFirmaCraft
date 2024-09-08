@@ -1,14 +1,10 @@
 {
-  "multipart": [
-    {
-      "when": {
-        "part": "lower"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/hibiscus_dynamic"
-        }
-      ]
+  "variants": {
+    "part=upper": {
+      "model": "tfc:block/empty"
+    },
+    "part=lower": {
+      "model": "tfc:block/plant/hibiscus_dynamic"
     }
-  ]
+  }
 }

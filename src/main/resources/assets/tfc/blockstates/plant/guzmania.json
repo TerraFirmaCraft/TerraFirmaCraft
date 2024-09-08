@@ -1,47 +1,16 @@
 {
-  "multipart": [
-    {
-      "when": {
-        "facing": "east"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/guzmania_dynamic"
-        }
-      ]
+  "variants": {
+    "facing=east": {
+      "model": "tfc:block/plant/guzmania_dynamic"
     },
-    {
-      "when": {
-        "facing": "south"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/guzmania_dynamic",
-          "y": 90
-        }
-      ]
+    "facing=south": {
+      "model": "tfc:block/plant/guzmania_dynamic", "y": 90
     },
-    {
-      "when": {
-        "facing": "west"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/guzmania_dynamic",
-          "y": 180
-        }
-      ]
+    "facing=west": {
+      "model": "tfc:block/plant/guzmania_dynamic", "y": 180
     },
-    {
-      "when": {
-        "facing": "north"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/guzmania_dynamic",
-          "y": 270
-        }
-      ]
+    "facing=north": {
+      "model": "tfc:block/plant/guzmania_dynamic", "y": 270
     }
-  ]
+  }
 }

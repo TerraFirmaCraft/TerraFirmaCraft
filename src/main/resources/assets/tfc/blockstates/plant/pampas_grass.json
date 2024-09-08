@@ -10,7 +10,7 @@
     },
     {
       "when": {
-        "part": "upper",
+        "part": "upper"
       },
       "apply": {
         "model": "tfc:block/plant/pampas_grass_dynamic"

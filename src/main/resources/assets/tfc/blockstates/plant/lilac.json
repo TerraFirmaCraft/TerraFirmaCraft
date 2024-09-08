@@ -1,24 +1,10 @@
 {
-  "multipart": [
-    {
-      "when": {
-        "part": "lower",
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/lilac_lower_dynamic"
-        }
-      ]
+  "variants": {
+    "part=lower": {
+      "model": "tfc:block/plant/lilac_lower_dynamic"
     },
-    {
-      "when": {
-        "part": "upper",
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/lilac_upper_dynamic"
-        }
-      ]
+    "part=upper": {
+      "model": "tfc:block/plant/lilac_upper_dynamic"
     }
-  ]
+  }
 }
