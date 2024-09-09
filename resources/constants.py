@@ -726,7 +726,6 @@ SINGLE_BLOCK_STAGE_PLANTS: dict[str, list[int, int, int, int, int, int]] = {
     'saguaro_fruit': [0, 1, 1, 1, 1, 1],
     'silver_spurflower': [0, 1, 1, 1, 1, 2],
     'strelitzia': [0, 1, 1, 1, 1, 2],
-    'trillium': [0, 1, 2, 3, 4, 5],  # different
     'tropical_milkweed': [0, 1, 1, 1, 2, 3],
     'yucca': [0, 1, 2, 2, 2, 3]
 }
@@ -761,7 +760,6 @@ SINGLE_BLOCK_STAGE_PLANTS: dict[str, list[int, int, int, int, int, int]] = {
     'saguaro_fruit': [0, 1, 1, 1, 1, 1],
     'silver_spurflower': [0, 1, 1, 1, 1, 2],
     'strelitzia': [0, 1, 1, 1, 1, 2],
-    'trillium': [0, 1, 2, 3, 4, 5],  # different
     'tropical_milkweed': [0, 1, 1, 1, 2, 3],
     'yucca': [0, 1, 2, 2, 2, 3]
 }
