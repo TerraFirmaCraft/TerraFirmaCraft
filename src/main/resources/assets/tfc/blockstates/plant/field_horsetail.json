@@ -1,9 +1,27 @@
 {
-  "variants": {
-    "": [
-      {
-        "model": "tfc:block/plant/field_horsetail_dynamic"
-      }
-    ]
-  }
+  "multipart": [
+	{
+      "apply": [
+        {
+          "model": "tfc:block/plant/field_horsetail_empty"
+        }
+      ]
+    },
+	{
+      "apply": [
+        {
+		  "model": "tfc:block/plant/field_horsetail_dynamic_east"
+		},
+		{
+		  "model": "tfc:block/plant/field_horsetail_dynamic_south", "y": 90
+		},
+		{
+		  "model": "tfc:block/plant/field_horsetail_dynamic_west", "y": 180
+		},
+		{
+		  "model": "tfc:block/plant/field_horsetail_dynamic_north", "y": 270
+		}
+      ]
+    }
+  ]
 }

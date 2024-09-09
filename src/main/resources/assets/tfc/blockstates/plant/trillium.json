@@ -1,9 +1,27 @@
 {
-  "variants": {
-    "": [
+  "multipart": [
+	{
+      "apply": [
+        {
+          "model": "tfc:block/plant/trillium_empty"
+        }
+      ]
+    },
+	{
+      "apply": [
+        {
+		  "model": "tfc:block/plant/trillium_dynamic_east"
+		},
 		{
-		  "model": "tfc:block/plant/trillium_dynamic"
+		  "model": "tfc:block/plant/trillium_dynamic_south", "y": 90
+		},
+		{
+		  "model": "tfc:block/plant/trillium_dynamic_west", "y": 180
+		},
+		{
+		  "model": "tfc:block/plant/trillium_dynamic_north", "y": 270
 		}
-	]
-  }
+      ]
+    }
+  ]
 }

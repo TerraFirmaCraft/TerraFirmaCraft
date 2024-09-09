@@ -1,16 +1,17 @@
 {
   "variants": {
     "facing=east": {
-      "model": "tfc:block/plant/guzmania_dynamic"
+      "model": "tfc:block/plant/guzmania_dynamic_east"
     },
     "facing=south": {
-      "model": "tfc:block/plant/guzmania_dynamic", "y": 90
+      "model": "tfc:block/plant/guzmania_dynamic_south", "y": 90
     },
     "facing=west": {
-      "model": "tfc:block/plant/guzmania_dynamic", "y": 180
+      "model": "tfc:block/plant/guzmania_dynamic_west", "y": 180
     },
     "facing=north": {
-      "model": "tfc:block/plant/guzmania_dynamic", "y": 270
+      "model": "tfc:block/plant/guzmania_dynamic_north", "y": 270
+	  
     }
   }
 }

@@ -1,60 +1,155 @@
 {
   "multipart": [
     {
+	  "apply": {
+        "model": "tfc:block/plant/morning_glory_empty"
+      }
+    },
+    {
       "when": {
         "down": "true"
       },
-      "apply": {
-        "model": "tfc:block/plant/morning_glory"
-      }
+      "apply": [
+		  {
+			"model": "tfc:block/plant/morning_glory_dynamic_down_a"
+		  },
+		  {
+			"model": "tfc:block/plant/morning_glory_dynamic_down_b"
+		  },
+		  {
+			"model": "tfc:block/plant/morning_glory_dynamic_down_c"
+		  },
+		  {
+			"model": "tfc:block/plant/morning_glory_dynamic_down_d"
+		  }
+	  ]
     },
     {
       "when": {
         "east": "true"
       },
-      "apply": {
-        "model": "tfc:block/plant/morning_glory",
-        "x": 270,
-        "y": 90
-      }
+      "apply": [
+		  {
+			"model": "tfc:block/plant/morning_glory_dynamic_east_a",
+			"x": 270,
+			"y": 90
+		  },
+		  {
+			"model": "tfc:block/plant/morning_glory_dynamic_east_b",
+			"x": 270,
+			"y": 90
+		  },
+		  {
+			"model": "tfc:block/plant/morning_glory_dynamic_east_c",
+			"x": 270,
+			"y": 90
+		  },
+		  {
+			"model": "tfc:block/plant/morning_glory_dynamic_east_d",
+			"x": 270,
+			"y": 90
+		  }
+	  ]
     },
     {
       "when": {
         "north": "true"
       },
-      "apply": {
-        "model": "tfc:block/plant/morning_glory",
-        "x": 270
-      }
+      "apply": [
+		  {
+			"model": "tfc:block/plant/morning_glory_dynamic_north_a",
+			"x": 270
+		  },
+		  {
+			"model": "tfc:block/plant/morning_glory_dynamic_north_b",
+			"x": 270
+		  },
+		  {
+			"model": "tfc:block/plant/morning_glory_dynamic_north_c",
+			"x": 270
+		  },
+		  {
+			"model": "tfc:block/plant/morning_glory_dynamic_north_d",
+			"x": 270
+		  }
+	  ]
     },
     {
       "when": {
         "south": "true"
       },
-      "apply": {
-        "model": "tfc:block/plant/morning_glory",
-        "x": 270,
-        "y": 180
-      }
+      "apply": [
+		  {
+			"model": "tfc:block/plant/morning_glory_dynamic_south_a",
+			"x": 270,
+			"y": 180
+		  },
+		  {
+			"model": "tfc:block/plant/morning_glory_dynamic_south_b",
+			"x": 270,
+			"y": 180
+		  },
+		  {
+			"model": "tfc:block/plant/morning_glory_dynamic_south_c",
+			"x": 270,
+			"y": 180
+		  },
+		  {
+			"model": "tfc:block/plant/morning_glory_dynamic_south_d",
+			"x": 270,
+			"y": 180
+		  }
+	  ]
     },
     {
       "when": {
         "up": "true"
       },
-      "apply": {
-        "model": "tfc:block/plant/morning_glory",
-        "x": 180
-      }
+      "apply": [
+		  {
+			"model": "tfc:block/plant/morning_glory_dynamic_up_a",
+			"x": 180
+		  },
+		  {
+			"model": "tfc:block/plant/morning_glory_dynamic_up_b",
+			"x": 180
+		  },
+		  {
+			"model": "tfc:block/plant/morning_glory_dynamic_up_c",
+			"x": 180
+		  },
+		  {
+			"model": "tfc:block/plant/morning_glory_dynamic_up_d",
+			"x": 180
+		  }
+	  ]
     },
     {
       "when": {
         "west": "true"
       },
-      "apply": {
-        "model": "tfc:block/plant/morning_glory",
-        "x": 270,
-        "y": 270
-      }
+      "apply": [
+		  {
+			"model": "tfc:block/plant/morning_glory_dynamic_west_a",
+			"x": 270,
+			"y": 270
+		  },
+		  {
+			"model": "tfc:block/plant/morning_glory_dynamic_west_b",
+			"x": 270,
+			"y": 270
+		  },
+		  {
+			"model": "tfc:block/plant/morning_glory_dynamic_west_c",
+			"x": 270,
+			"y": 270
+		  },
+		  {
+			"model": "tfc:block/plant/morning_glory_dynamic_west_d",
+			"x": 270,
+			"y": 270
+		  }
+	  ]
     }
   ]
 }
