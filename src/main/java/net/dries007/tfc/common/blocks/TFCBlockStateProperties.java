@@ -121,15 +121,6 @@ public class TFCBlockStateProperties
     private static final IntegerProperty[] STAGES = {STAGE_1, STAGE_2, STAGE_3, STAGE_4, STAGE_5, STAGE_6, STAGE_7, STAGE_8, STAGE_9, STAGE_10, STAGE_11, STAGE_12};
     private static final IntegerProperty[] AGES = {AGE_1, AGE_2, AGE_3, AGE_4, AGE_5, AGE_6, AGE_7, AGE_8};
 
-    public static IntegerProperty getStageProperty(int maxStage)
-    {
-        if (maxStage > 0 && maxStage <= STAGES.length)
-        {
-            return STAGES[maxStage - 1];
-        }
-        throw new IllegalArgumentException("No stage property for stages [0, " + maxStage + "]");
-    }
-
     public static IntegerProperty getAgeProperty(int maxAge)
     {
         if (maxAge > 0 && maxAge <= AGES.length)

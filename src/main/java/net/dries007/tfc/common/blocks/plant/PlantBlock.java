@@ -116,13 +116,7 @@ public abstract class PlantBlock extends TFCBushBlock
     {
         super(properties);
 
-        BlockState stateDefinition = getStateDefinition().any().setValue(AGE, 0);
-        IntegerProperty stageProperty = getPlant().getStageProperty();
-        if (stageProperty != null)
-        {
-            stateDefinition = stateDefinition.setValue(stageProperty, 0);
-        }
-        registerDefaultState(stateDefinition);
+        registerDefaultState(getStateDefinition().any().setValue(AGE, 0));
     }
 
     @Override
@@ -143,29 +137,13 @@ public abstract class PlantBlock extends TFCBushBlock
     @Override
     protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
-        boolean dirty = false;
+        //TODO: Remove age property from most plants
         final int age = state.getValue(AGE);
         if (random.nextDouble() < TFCConfig.SERVER.plantGrowthChance.get() && age < 3)
         {
             state = state.setValue(AGE, age + 1);
-            dirty = true;
+            level.setBlockAndUpdate(pos, state);
         }
-        final var stageProp = getPlant().getStageProperty();
-        if (stageProp != null)
-        {
-            final int stage = state.getValue(stageProp);
-            final int newStage = getPlant().stageFor(Calendars.SERVER.getCalendarMonthOfYear());
-            if (stage != newStage)
-            {
-                state = state.setValue(stageProp, newStage);
-                dirty = true;
-            }
-        }
-        if (dirty)
-        {
-            level.setBlockAndUpdate(pos, updateStateWithCurrentMonth(state));
-        }
-
     }
 
     /**
@@ -180,16 +158,12 @@ public abstract class PlantBlock extends TFCBushBlock
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
-        return updateStateWithCurrentMonth(defaultBlockState());
+        return defaultBlockState();
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        if (getPlant().getStageProperty() != null)
-        {
-            builder.add(getPlant().getStageProperty());
-        }
         builder.add(AGE);
     }
 
@@ -200,8 +174,4 @@ public abstract class PlantBlock extends TFCBushBlock
         return Helpers.lerp(modifier, speedFactor, 1.0f);
     }
 
-    public BlockState updateStateWithCurrentMonth(BlockState state)
-    {
-        return getPlant().getStageProperty() != null ? state.setValue(getPlant().getStageProperty(), getPlant().stageFor(Calendars.SERVER.getCalendarMonthOfYear())) : state;
-    }
 }

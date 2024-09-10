@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.blocks.plant;
 
-import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -18,7 +17,6 @@ import net.minecraft.world.item.PlaceOnWaterBlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
@@ -29,7 +27,6 @@ import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.fluids.TFCFluids;
-import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.util.registry.RegistryPlant;
 
 /*
@@ -111,7 +108,7 @@ public enum Plant implements RegistryPlant
     MARIGOLD(BlockType.TALL_WATER_FRESH, 0.6F),
     MEADS_MILKWEED(BlockType.STANDARD, 1F),
     MILFOIL(BlockType.WATER_FRESH, 0.8F),
-    MORNING_GLORY(BlockType.CREEPING, 0.8F),
+    MORNING_GLORY(BlockType.CREEPING, 0.8F, false, -0.083F, 0.333F, 0.417F, 0.5F, 0.75F, 0.917F, 21000, 5000),
     PHILODENDRON(BlockType.CREEPING, 0.7F),
     MOSS(BlockType.CREEPING, 1F),
     NASTURTIUM(BlockType.STANDARD, 1F),
@@ -127,7 +124,7 @@ public enum Plant implements RegistryPlant
     REINDEER_LICHEN(BlockType.CREEPING, 1F),
     RED_SEALING_WAX_PALM(BlockType.TALL_GRASS, 0.4F),
     ROSE(BlockType.TALL_GRASS, 0.6F),
-    SACRED_DATURA(BlockType.STANDARD, 1F),
+    SACRED_DATURA(BlockType.STANDARD, 1F, false, -0.2f, 0.4f, 0.5f, 0.6f, 0.8f, 0.95f, 12000, 0),
     SAGEBRUSH(BlockType.DRY, 0.5F),
     SAGO(BlockType.WATER_FRESH, 0.8F),
     SAGUARO_FRUIT(BlockType.CACTUS_FLOWER, 0.7F),
@@ -189,28 +186,40 @@ public enum Plant implements RegistryPlant
     private static final EnumSet<Plant> FLOWERPOT_TINTED_PLANTS = EnumSet.of(PHILODENDRON, MOSS, TREE_FERN);
 
     private final float speedFactor;
-    private final @Nullable IntegerProperty property;
-    private final int @Nullable[] stagesByMonth;
+    private final boolean isWetSeasonBlooming;
+    private final float bloomOffset;
+    private final float bloomingEnd;
+    private final float seedingEnd;
+    private final float dyingEnd;
+    private final float dormantEnd;
+    private final float sproutingEnd;
+    private final int startTime;
+    private final int endTime;
     private final BlockType type;
 
     Plant(BlockType type, float speedFactor)
     {
-        this(type, speedFactor, null);
+        this(type, speedFactor, false, 0f, 0.25f, 0.4f, 0.5f, 0.7f, 0.9f);
     }
 
-    Plant(BlockType type, float speedFactor, int @Nullable[] stagesByMonth)
+    Plant(BlockType type, float speedFactor, boolean bloomsWetSeason, float bloomOffset, float bloomingEnd, float seedingEnd, float dyingEnd, float dormantEnd, float sproutingEnd)
+    {
+        this(type, speedFactor, false, 0f, 0.25f, 0.4f, 0.5f, 0.7f, 0.9f, 0, 0);
+    }
+
+    Plant(BlockType type, float speedFactor, boolean isWetSeasonBlooming, float bloomOffset, float bloomingEnd, float seedingEnd, float dyingEnd, float dormantEnd, float sproutingEnd, int startTime, int endTime)
     {
         this.type = type;
         this.speedFactor = speedFactor;
-        this.stagesByMonth = stagesByMonth;
-
-        int maxStage = 0;
-        if (stagesByMonth != null)
-        {
-            maxStage = Arrays.stream(stagesByMonth).max().orElse(0);
-        }
-
-        this.property = maxStage > 0 ? TFCBlockStateProperties.getStageProperty(maxStage) : null;
+        this.isWetSeasonBlooming = isWetSeasonBlooming;
+        this.bloomOffset = bloomOffset;
+        this.bloomingEnd = bloomingEnd;
+        this.seedingEnd = seedingEnd;
+        this.dyingEnd = dyingEnd;
+        this.dormantEnd = dormantEnd;
+        this.sproutingEnd = sproutingEnd;
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
 
     public Block create()
@@ -224,18 +233,49 @@ public enum Plant implements RegistryPlant
         return needsItem() ? block -> type.blockItemFactory.apply(block, properties) : null;
     }
 
-    @Override
-    public int stageFor(Month month)
+    public boolean isWetSeasonBlooming()
     {
-        assert stagesByMonth != null;
-        return stagesByMonth.length < month.ordinal() ? 0 : stagesByMonth[month.ordinal()];
+        return isWetSeasonBlooming;
     }
 
-    @Override
-    @Nullable
-    public IntegerProperty getStageProperty()
+    public int getStartTime()
     {
-        return property;
+        return startTime;
+    }
+
+    public int getEndTime()
+    {
+        return endTime;
+    }
+
+    public float getBloomOffset()
+    {
+        return bloomOffset;
+    }
+
+    public float getBloomingEnd()
+    {
+        return bloomingEnd;
+    }
+
+    public float getSeedingEnd()
+    {
+        return seedingEnd;
+    }
+
+    public float getDyingEnd()
+    {
+        return dyingEnd;
+    }
+
+    public float getDormantEnd()
+    {
+        return dormantEnd;
+    }
+
+    public float getSproutingEnd()
+    {
+        return sproutingEnd;
     }
 
     public boolean needsItem()

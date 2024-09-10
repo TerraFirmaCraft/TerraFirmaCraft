@@ -74,7 +74,7 @@ public abstract class ShortGrassBlock extends PlantBlock implements ISpecialPile
             final BlockPos newPos = PlantRegrowth.spreadSelf(state, level, pos, random, 2, 2, 4);
             if (newPos != null)
             {
-                level.setBlockAndUpdate(newPos, updateStateWithCurrentMonth(state.setValue(AGE, 0)));
+                level.setBlockAndUpdate(newPos, state.setValue(AGE, 0));
             }
         }
     }

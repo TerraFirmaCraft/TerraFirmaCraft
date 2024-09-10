@@ -95,7 +95,7 @@ public abstract class TallWaterPlantBlock extends TFCTallGrassBlock implements I
     {
         BlockPos pos = context.getClickedPos();
         FluidState fluidState = context.getLevel().getFluidState(pos);
-        BlockState state = updateStateWithCurrentMonth(defaultBlockState());
+        BlockState state = defaultBlockState();
 
         if (getFluidProperty().canContain(fluidState.getType()))
         {

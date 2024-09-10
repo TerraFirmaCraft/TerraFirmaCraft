@@ -155,7 +155,7 @@ public abstract class CreepingPlantBlock extends PlantBlock implements Direction
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
-        return updateStateFromSides(context.getLevel(), context.getClickedPos(), updateStateWithCurrentMonth(defaultBlockState()));
+        return updateStateFromSides(context.getLevel(), context.getClickedPos(), defaultBlockState());
     }
 
     @Override

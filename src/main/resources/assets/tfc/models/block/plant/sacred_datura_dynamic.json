@@ -8,15 +8,15 @@
     "parent": "tfc:block/plant/sacred_datura_1"
   },
   "dying": {
-    "parent": "tfc:block/plant/sacred_datura_1"
-  },
-  "dormant": {
     "parent": "tfc:block/plant/sacred_datura_2"
   },
-  "sprouting": {
+  "dormant": {
     "parent": "tfc:block/plant/sacred_datura_3"
   },
-  "budding": {
+  "sprouting": {
     "parent": "tfc:block/plant/sacred_datura_4"
+  },
+  "budding": {
+    "parent": "tfc:block/plant/sacred_datura_5"
   }
 }
