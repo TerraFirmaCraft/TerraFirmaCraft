@@ -13,10 +13,12 @@ import net.minecraft.world.level.LevelAccessor;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.util.calendar.Calendars;
+import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
 
 /**
- * Bridge methods from common code to client code that needs to calculate day time
+ * Bridge methods from common code to client code that needs to calculate day time, and also to encapsulate passing in
+ * the correct parameters for a client-sided context.
  */
 public final class ClientSolarCalculatorBridge
 {
@@ -44,5 +46,24 @@ public final class ClientSolarCalculatorBridge
             Climate.get(level).hemisphereScale(),
             Calendars.CLIENT.getCalendarFractionOfYear(),
             Calendars.CLIENT.getCalendarFractionOfDay());
+    }
+
+    public static int getMoonPhase()
+    {
+        return SolarCalculator.getMoonPhase(Calendars.CLIENT.getCalendarTicks(), getMoonOrbitTicks());
+    }
+
+    public static SkyPos getMoonPosition(Level level, BlockPos pos)
+    {
+        return SolarCalculator.getMoonPosition(
+            pos.getZ(),
+            Climate.get(level).hemisphereScale(),
+            Calendars.CLIENT.getCalendarTicks(),
+            getMoonOrbitTicks());
+    }
+
+    public static int getMoonOrbitTicks()
+    {
+        return (int) (16.13 * ICalendar.TICKS_IN_DAY); // This is not quite a nice clean multiple, to introduce some additional variation into the moon's orbit
     }
 }

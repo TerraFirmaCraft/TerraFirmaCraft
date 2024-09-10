@@ -41,6 +41,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -183,53 +184,51 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
                 }
 
                 RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-                stack.pushPose();
 
                 // Rain darkening, this is redirected on client to use the client-side rain level
                 final float rainDarkenAlpha = 1.0F - level.getRainLevel(partialTick);
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, rainDarkenAlpha);
 
-                // Sun Position
-                //
-                // We calculated the sun position above, now we just need to position it correctly, using the zenith/azimuth angle
-                stack.mulPose(Axis.YN.rotation(sunPos.azimuth() + Mth.PI));
-                stack.mulPose(Axis.XP.rotation(sunPos.zenith()));
+                // Sun
+                final Matrix4f sun = rotateTo(stack, sunPos);
 
-                final Matrix4f sunMoonAndSky = stack.last().pose();
                 RenderSystem.setShader(GameRenderer::getPositionTexShader);
                 RenderSystem.setShaderTexture(0, SUN_LOCATION);
                 BufferBuilder buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-                buffer.addVertex(sunMoonAndSky, -30.0F, 100.0F, -30.0F).setUv(0.0F, 0.0F);
-                buffer.addVertex(sunMoonAndSky, 30.0F, 100.0F, -30.0F).setUv(1.0F, 0.0F);
-                buffer.addVertex(sunMoonAndSky, 30.0F, 100.0F, 30.0F).setUv(1.0F, 1.0F);
-                buffer.addVertex(sunMoonAndSky, -30.0F, 100.0F, 30.0F).setUv(0.0F, 1.0F);
+                buffer.addVertex(sun, -30.0F, 100.0F, -30.0F).setUv(0.0F, 0.0F);
+                buffer.addVertex(sun, 30.0F, 100.0F, -30.0F).setUv(1.0F, 0.0F);
+                buffer.addVertex(sun, 30.0F, 100.0F, 30.0F).setUv(1.0F, 1.0F);
+                buffer.addVertex(sun, -30.0F, 100.0F, 30.0F).setUv(0.0F, 1.0F);
                 BufferUploader.drawWithShader(buffer.buildOrThrow());
 
                 // Moon
-                RenderSystem.setShaderTexture(0, MOON_LOCATION);
-
-                // todo: use a custom moon phase calculation
-                final int moonPhase = level.getMoonPhase();
+                final SkyPos moonPos = ClientSolarCalculatorBridge.getMoonPosition(level, camera.getBlockPosition());
+                final int moonPhase = ClientSolarCalculatorBridge.getMoonPhase();
                 final int moonU = moonPhase % 4;
                 final int moonV = moonPhase / 4 % 2;
+                final Matrix4f moon = rotateTo(stack, moonPos);
 
+                RenderSystem.setShaderTexture(0, MOON_LOCATION);
                 buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-                buffer.addVertex(sunMoonAndSky, -20.0F, -100.0F, 20.0F).setUv((moonU + 1) / 4.0F, (moonV + 1) / 2.0F);
-                buffer.addVertex(sunMoonAndSky, 20.0F, -100.0F, 20.0F).setUv(moonU / 4.0F, (moonV + 1) / 2.0F);
-                buffer.addVertex(sunMoonAndSky, 20.0F, -100.0F, -20.0F).setUv(moonU / 4.0F, moonV / 2.0F);
-                buffer.addVertex(sunMoonAndSky, -20.0F, -100.0F, -20.0F).setUv((moonU + 1) / 4.0F, moonV / 2.0F);
-
-                // todo: do something with star rotation?
+                buffer.addVertex(moon, -20.0F, 100.0F, -20.0F).setUv((moonU + 1) / 4.0F, (moonV + 1) / 2.0F);
+                buffer.addVertex(moon, 20.0F, 100.0F, -20.0F).setUv(moonU / 4.0F, (moonV + 1) / 2.0F);
+                buffer.addVertex(moon, 20.0F, 100.0F, 20.0F).setUv(moonU / 4.0F, moonV / 2.0F);
+                buffer.addVertex(moon, -20.0F, 100.0F, 20.0F).setUv((moonU + 1) / 4.0F, moonV / 2.0F);
                 BufferUploader.drawWithShader(buffer.buildOrThrow());
+
+                // Stars
                 final float nightDarken = level.getStarBrightness(partialTick) * rainDarkenAlpha;
                 if (nightDarken > 0.0F)
                 {
                     RenderSystem.setShaderColor(nightDarken, nightDarken, nightDarken, nightDarken);
                     FogRenderer.setupNoFog();
+
+                    // todo: come up with a star rotation schematic that's accurate
+                    final Matrix4f stars = rotateTo(stack, SkyPos.ZERO);
                     final ShaderInstance positionShader = GameRenderer.getPositionShader();
                     assert positionShader != null;
                     starBuffer.bind();
-                    starBuffer.drawWithShader(sunMoonAndSky, projectionMatrix, positionShader);
+                    starBuffer.drawWithShader(stars, projectionMatrix, positionShader);
                     VertexBuffer.unbind();
                     skyFogSetup.run();
                 }
@@ -237,7 +236,6 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
                 RenderSystem.disableBlend();
                 RenderSystem.defaultBlendFunc();
-                stack.popPose();
                 RenderSystem.setShaderColor(0.0F, 0.0F, 0.0F, 1.0F);
 
                 final double distanceAboveHorizon = camera.getEntity().getEyePosition(partialTick).y - level.getLevelData().getHorizonHeight(level);
@@ -256,6 +254,16 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
             }
         }
         return true;
+    }
+
+    private Matrix4f rotateTo(PoseStack stack, SkyPos pos)
+    {
+        stack.pushPose();
+        stack.mulPose(Axis.YN.rotation(pos.azimuth() + Mth.PI));
+        stack.mulPose(Axis.XP.rotation(pos.zenith()));
+        final Matrix4f pose = stack.last().pose();
+        stack.popPose();
+        return pose;
     }
 
     /**
@@ -481,11 +489,7 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
             final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
 
             // Calculate rainfall via the climate
-            final ClimateModel model = Climate.get(level);
-            final long calendarTick = Calendars.get(level).getCalendarTicks();
-            final float climateRain = model.getRain(calendarTick);
-            final float climateRainfall = model.getRainfall(level, cameraPos);
-            final float rainIntensity = WeatherHelpers.calculateRealRainIntensity(climateRain, climateRainfall);
+            final float rainIntensity = calculateRainIntensity(level, cameraPos);
 
             // Include all factors that vanilla does (fancy graphics, particle settings, rain level), but also include rain intensity
             final float adjustedRainIntensity = rainLevel
@@ -563,6 +567,15 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
         }
 
         return true;
+    }
+
+    private float calculateRainIntensity(Level level, BlockPos cameraPos)
+    {
+        final ClimateModel model = Climate.get(level);
+        final long calendarTick = Calendars.get(level).getCalendarTicks();
+        final float climateRain = model.getRain(calendarTick);
+        final float climateRainfall = model.getRainfall(level, cameraPos);
+        return WeatherHelpers.calculateRealRainIntensity(climateRain, climateRainfall);
     }
 
     private boolean doesMobEffectBlockSky(Camera camera)
