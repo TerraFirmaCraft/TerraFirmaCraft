@@ -8,15 +8,15 @@
     "parent": "tfc:block/plant/strelitzia_1"
   },
   "dying": {
-    "parent": "tfc:block/plant/strelitzia_1"
+    "parent": "tfc:block/plant/strelitzia_2"
   },
   "dormant": {
-    "parent": "tfc:block/plant/strelitzia_1"
+    "parent": "tfc:block/plant/strelitzia_3"
   },
   "sprouting": {
-    "parent": "tfc:block/plant/strelitzia_1"
+    "parent": "tfc:block/plant/strelitzia_4"
   },
   "budding": {
-    "parent": "tfc:block/plant/strelitzia_2"
+    "parent": "tfc:block/plant/strelitzia_5"
   }
 }

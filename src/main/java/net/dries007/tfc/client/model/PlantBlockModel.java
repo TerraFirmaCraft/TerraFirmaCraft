@@ -1,10 +1,13 @@
 package net.dries007.tfc.client.model;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.function.Function;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemOverride;
@@ -18,8 +21,10 @@ import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.model.data.ModelData;
@@ -37,8 +42,13 @@ import net.dries007.tfc.client.ClimateRenderCache;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.blocks.plant.PlantBlock;
+import net.dries007.tfc.util.EnvironmentHelpers;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
+import net.dries007.tfc.util.climate.Climate;
+import net.dries007.tfc.util.climate.OverworldClimateModel;
 import net.dries007.tfc.util.registry.RegistryPlant;
+import net.dries007.tfc.world.settings.Settings;
 
 public class PlantBlockModel implements IDynamicBakedModel, IUnbakedGeometry<PlantBlockModel>
 {
@@ -66,13 +76,18 @@ public class PlantBlockModel implements IDynamicBakedModel, IUnbakedGeometry<Pla
         this.dying = dying;
     }
 
+    @Override
     public ModelData getModelData(BlockAndTintGetter level, BlockPos pos, BlockState state, ModelData data)
     {
-        return data.derive().with(BakedModelData.PROPERTY, new BakedModelData(getModelFromBlockState(state))).build();
+        return data.derive().with(BakedModelData.PROPERTY, new BakedModelData(getModelFromBlockState(state, pos))).build();
     }
 
-    private BakedModel getModelFromBlockState(@Nullable BlockState state)
+    private BakedModel getModelFromBlockState(@Nullable BlockState state, @Nullable BlockPos pos)
     {
+        if (pos == null)
+        {
+            pos = BlockPos.ZERO;
+        }
         if (state == null)
         {
             return getModelFromCalendar();
@@ -85,33 +100,47 @@ public class PlantBlockModel implements IDynamicBakedModel, IUnbakedGeometry<Pla
         else
         {
             final RegistryPlant plant = ((PlantBlock) block).getPlant();
-            final float start = plant.getBloomOffset() + (plant.isWetSeasonBlooming() ? ClimateRenderCache.INSTANCE.getRainVariance() < 0f ? 0f : 0.5f : 0.5f) % 1f;
+            float start = plant.getBloomOffset();
+            Random random = new Random();
+            Level level = ClientHelpers.getLevel();
+            final BlockPos posXZ = new BlockPos(pos.getX(), 0, pos.getZ());
+            final float randomScale;
+
+            random.setSeed(Helpers.hash(836494186029734123L, posXZ));
+            assert level != null;
+            if (plant.isWetSeasonBlooming())
+            {
+                final float rainVariance = Climate.getRainfallVariance(level, pos);
+                randomScale = Mth.clampedMap(Math.abs(rainVariance), 0.0f, 0.3f, 0.5f, 0.03f);
+                start = start + rainVariance < 0f ? 0f : 0.5f;
+            }
+            else
+            {
+                randomScale = Mth.clampedMap(Climate.getAverageTemperature(level, pos), 16f, 26f, 0.03f, 0.5f);
+                //TODO: Needs to be updated for hemispheral model
+                start = start + 0.5f;
+            }
+            start = (start + random.nextFloat(-randomScale, randomScale)) % 1;
             return getModelFromCalendar(start, start + plant.getBloomingEnd(), start + plant.getSeedingEnd(), start + plant.getDyingEnd(),
-                start + plant.getDormantEnd(), start + plant.getSproutingEnd(), plant.getStartTime(), plant.getEndTime());
+                start + plant.getDormantEnd(), start + plant.getSproutingEnd(), plant.getStartTime(), plant.getEndTime(), randomScale > 0.25f);
         }
     }
 
     private BakedModel getModelFromCalendar()
     {
-        return getModelFromCalendar(0.4f, 0.6f, 0.75f, 0.9f, 1.1f, 1.25f, 0, 0);
+        return getModelFromCalendar(0.4f, 0.6f, 0.75f, 0.9f, 1.1f, 1.25f, 0, 0, false);
     }
 
-    private BakedModel getModelFromCalendar(float bloomingStart, float bloomingEnd, float seedingEnd, float dyingEnd, float dormantEnd, float sproutingEnd, int startTime, int endTime)
+    private BakedModel getModelFromCalendar(float bloomingStart, float bloomingEnd, float seedingEnd, float dyingEnd, float dormantEnd, float sproutingEnd, int startTime, int endTime, boolean nonDormant)
     {
         final float timeOfYear = Calendars.CLIENT.getCalendarFractionOfYear();
         final float adjustedTimeOfYear = timeOfYear < bloomingStart ? timeOfYear + 1f : timeOfYear;
 
         if (adjustedTimeOfYear < bloomingEnd)
         {
-            //TODO: Revisit with variable day lengths
             if (startTime != endTime)
             {
-                final int dayTime = (int) Calendars.CLIENT.getCalendarDayTime();
-                if ((endTime < dayTime && dayTime < startTime) || (startTime < endTime && (dayTime < startTime || endTime < dayTime)))
-                {
-                    assert buddingBakedModel != null;
-                    return buddingBakedModel;
-                }
+                return getModelByDayTime(startTime, endTime);
             }
             assert bloomingBakedModel != null;
             return bloomingBakedModel;
@@ -123,16 +152,35 @@ public class PlantBlockModel implements IDynamicBakedModel, IUnbakedGeometry<Pla
         }
         else if (adjustedTimeOfYear < dyingEnd)
         {
+            if (nonDormant)
+            {
+                assert buddingBakedModel != null;
+                return buddingBakedModel;
+            }
             assert dyingBakedModel != null;
             return dyingBakedModel;
         }
         if (adjustedTimeOfYear < dormantEnd)
         {
+            if (nonDormant)
+            {
+                if (startTime != endTime)
+                {
+                    return getModelByDayTime(startTime, endTime);
+                }
+                assert bloomingBakedModel != null;
+                return bloomingBakedModel;
+            }
             assert dormantBakedModel != null;
             return dormantBakedModel;
         }
         else if (adjustedTimeOfYear < sproutingEnd)
         {
+            if (nonDormant)
+            {
+                assert seedingBakedModel != null;
+                return seedingBakedModel;
+            }
             assert sproutingBakedModel != null;
             return sproutingBakedModel;
         }
@@ -142,6 +190,21 @@ public class PlantBlockModel implements IDynamicBakedModel, IUnbakedGeometry<Pla
             return buddingBakedModel;
         }
     }
+
+
+    //TODO: Revisit with variable day lengths
+    public BakedModel getModelByDayTime(float startTime, float endTime)
+    {
+        final int dayTime = (int) Calendars.CLIENT.getCalendarDayTime();
+        if ((endTime < dayTime && dayTime < startTime) || (startTime < endTime && (dayTime < startTime || endTime < dayTime)))
+        {
+            assert buddingBakedModel != null;
+            return buddingBakedModel;
+        }
+        assert bloomingBakedModel != null;
+        return bloomingBakedModel;
+    }
+
 
     @Override
     public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> atlas, ModelState modelState, ItemOverrides overrides)
@@ -164,7 +227,7 @@ public class PlantBlockModel implements IDynamicBakedModel, IUnbakedGeometry<Pla
             return bakedData.toRender.getQuads(state, direction, random, modelData, renderType);
         }
 
-        return getModelFromBlockState(state).getQuads(state, direction, random, modelData, renderType);
+        return getModelFromBlockState(state, null).getQuads(state, direction, random, modelData, renderType);
     }
 
     @Override
@@ -229,6 +292,10 @@ public class PlantBlockModel implements IDynamicBakedModel, IUnbakedGeometry<Pla
 
     public static class Loader implements IGeometryLoader<PlantBlockModel>
     {
+        public static final Loader INSTANCE = new Loader();
+
+        private Loader() {}
+
         @Override
         public PlantBlockModel read(JsonObject json, JsonDeserializationContext context) throws JsonParseException
         {

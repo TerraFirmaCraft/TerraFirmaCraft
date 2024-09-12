@@ -137,7 +137,7 @@ public enum Plant implements RegistryPlant
     SNAPDRAGON_RED(BlockType.STANDARD, 1F),
     SNAPDRAGON_WHITE(BlockType.STANDARD, 1F),
     SNAPDRAGON_YELLOW(BlockType.STANDARD, 1F),
-    STRELITZIA(BlockType.STANDARD, 1F),
+    STRELITZIA(BlockType.STANDARD, 1F, true, -0.333F, 0.417F, 0.5F, 0.61f, 0.75f, 0.9f),
     SWITCHGRASS(BlockType.TALL_GRASS, 0.8F),
     SWORD_FERN(BlockType.STANDARD, 0.6F),
     TALL_FESCUE_GRASS(BlockType.TALL_GRASS, 0.5F),
@@ -202,9 +202,9 @@ public enum Plant implements RegistryPlant
         this(type, speedFactor, false, 0f, 0.25f, 0.4f, 0.5f, 0.7f, 0.9f);
     }
 
-    Plant(BlockType type, float speedFactor, boolean bloomsWetSeason, float bloomOffset, float bloomingEnd, float seedingEnd, float dyingEnd, float dormantEnd, float sproutingEnd)
+    Plant(BlockType type, float speedFactor, boolean isWetSeasonBlooming, float bloomOffset, float bloomingEnd, float seedingEnd, float dyingEnd, float dormantEnd, float sproutingEnd)
     {
-        this(type, speedFactor, false, 0f, 0.25f, 0.4f, 0.5f, 0.7f, 0.9f, 0, 0);
+        this(type, speedFactor, isWetSeasonBlooming, bloomOffset, bloomingEnd, seedingEnd, dyingEnd, dormantEnd, sproutingEnd, 0, 0);
     }
 
     Plant(BlockType type, float speedFactor, boolean isWetSeasonBlooming, float bloomOffset, float bloomingEnd, float seedingEnd, float dyingEnd, float dormantEnd, float sproutingEnd, int startTime, int endTime)

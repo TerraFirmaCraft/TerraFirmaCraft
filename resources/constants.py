@@ -688,7 +688,7 @@ SIMPLE_STAGE_PLANTS: dict[str, int] = {
     'sacred_datura': 6,  # different
     'saguaro_fruit': 2,
     'silver_spurflower': 3,
-    'strelitzia': 3,
+    'strelitzia': 6,
     'trillium': 6,  # different
     'tropical_milkweed': 4,
     'yucca': 4

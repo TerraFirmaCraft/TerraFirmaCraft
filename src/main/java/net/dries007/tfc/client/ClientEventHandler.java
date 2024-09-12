@@ -762,7 +762,7 @@ public final class ClientEventHandler
         event.register(Helpers.identifier("double_ingot_pile"), DoubleIngotPileBlockModel.INSTANCE);
         event.register(Helpers.identifier("sheet_pile"), SheetPileBlockModel.INSTANCE);
         event.register(Helpers.identifier("scraping"), ScrapingBlockModel.INSTANCE);
-        event.register(Helpers.identifier("plant"), new PlantBlockModel.Loader());
+        event.register(Helpers.identifier("plant"), PlantBlockModel.Loader.INSTANCE);
     }
 
     public static void registerColorHandlerBlocks(RegisterColorHandlersEvent.Block event)
