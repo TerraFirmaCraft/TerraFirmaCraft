@@ -66,4 +66,13 @@ public final class ClientSolarCalculatorBridge
     {
         return (int) (16.13 * ICalendar.TICKS_IN_DAY); // This is not quite a nice clean multiple, to introduce some additional variation into the moon's orbit
     }
+
+    public static SkyPos getStarPosition(Level level, BlockPos pos)
+    {
+        return SolarCalculator.getStarPosition(
+            pos.getZ(),
+            Climate.get(level).hemisphereScale(),
+            Calendars.CLIENT.getCalendarFractionOfDay(),
+            Calendars.CLIENT.getCalendarFractionOfYear());
+    }
 }

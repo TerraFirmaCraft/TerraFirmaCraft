@@ -122,6 +122,11 @@ public final class SolarCalculator
         // By convention, this angle should be zero at solar noon (where the fraction of day = 0.5)
         final double hourAngle = Mth.TWO_PI * (0.5f - fractionOfDay);
 
+        final double sinL = Math.sin(latitude);
+        final double cosL = cosFromSin(latitude, sinL);
+        final double sinD = Math.sin(declination);
+        final double cosD = cosFromSin(declination, sinD);
+
         // Solar Zenith Angle
         //   cos(z) = sin(L)sin(d) + cos(L)cos(d)cos(h)
         // where
@@ -129,13 +134,16 @@ public final class SolarCalculator
         //   L := Latitude (angle -90° south, 0° at the equator, and 90° north)
         //   d := Declination of the Sun
         //   h := Hour Angle, in the local Solar Time
-        final double solarZenithAngle = Math.acos(Mth.clamp(Math.sin(latitude) * Math.sin(declination) + Math.cos(latitude) * Math.cos(declination) * Math.cos(hourAngle), -1,1));
+        final double solarZenithAngle = Math.acos(Mth.clamp(sinL * sinD + cosL * cosD * Math.cos(hourAngle), -1,1));
+
+        final double sinZ = Math.sin(solarZenithAngle);
+        final double cosZ = cosFromSin(solarZenithAngle, sinZ);
 
         // Solar Azimuth Angle
         //   cos(a) = (sin(d) - cos(z)sin(L)) / sin(z)cos(L)
         //
         // with the assumption that this indicates an angle between [0, 180°] in morning, and [180°, 360°] in afternoon
-        final double absSolarAzimuthAngle = Math.acos(Mth.clamp((Math.sin(declination) - Math.cos(solarZenithAngle) * Math.sin(latitude)) / (Math.sin(solarZenithAngle) * Math.cos(latitude)), -1, 1));
+        final double absSolarAzimuthAngle = Math.acos(Mth.clamp((sinD - cosZ * sinL) / (sinZ * cosL), -1, 1));
         final double solarAzimuthAngle = hourAngle < 0
             ? absSolarAzimuthAngle
             : Mth.TWO_PI - absSolarAzimuthAngle;
@@ -196,12 +204,12 @@ public final class SolarCalculator
         // Rotation around the zenith angle require some computation. Ry(-observerZenith) . moon
         // Theta = Zenith, Phi = Azimuth, P = Observer, M = Moon, D = Delta
         // The formulation of the rotation matrix and resultant matrix multiplication was done with wolfram alpha
-        final double cosPhiD = Math.cos(deltaAzimuth);
         final double sinPhiD = Math.sin(deltaAzimuth);
-        final double cosThetaP = Math.cos(observerZenith);
+        final double cosPhiD = cosFromSin(deltaAzimuth, sinPhiD);
         final double sinThetaP = Math.sin(observerZenith);
-        final double cosThetaM = Math.cos(lunarZenith);
+        final double cosThetaP = cosFromSin(observerZenith, sinThetaP);
         final double sinThetaM = Math.sin(lunarZenith);
+        final double cosThetaM = cosFromSin(lunarZenith, sinThetaM);
 
         final double lunarX = cosPhiD * cosThetaP * sinThetaM - cosThetaM * sinThetaP;
         final double lunarY = sinThetaM * sinPhiD;
@@ -211,6 +219,31 @@ public final class SolarCalculator
         final double relativeLunarAzimuth = Mth.PI - Math.atan2(lunarY, lunarX);
 
         return SkyPos.of(relativeLunarZenith, relativeLunarAzimuth);
+    }
+
+    /**
+     * Calculates the position describing the position of a star oriented at the pole (at {@link SkyPos#ZERO}) in the sky. With other stars positioned
+     * relative to that star, this can be used to orient the entirety of star rendering. This actually is just calculating the relative position on earth,
+     * of an observer relative to the surrounding solar system, and inverting it.
+     * <p>
+     * Right-ascension in stars is measured where zero is at the march equinox, using a right-hand rule from the (north) pole.
+     */
+    public static SkyPos getStarPosition(int z, float hemisphereScale, float fractionOfDay, float fractionOfYear)
+    {
+        // The zenith position is just based on the latitude, not inverted
+        // The azimuth position is based on both the rotation of the earth, and the rotation of earth around the sun - different stars will be seen
+        // on opposite years, during day and night.
+        final double starZenith = Mth.HALF_PI - getNorthHemisphereLatitude(z, hemisphereScale);
+        final double starAzimuth = Mth.TWO_PI * Mth.frac(fractionOfYear + fractionOfDay + 0.5f);
+        return SkyPos.of(starZenith, starAzimuth);
+    }
+
+    /**
+     * Use the identity {@code sin^2(x) + cos^2(x) = 1} which is faster - one sqrt - than a call to {@link Math#cos}.
+     */
+    private static double cosFromSin(double angle, double sin)
+    {
+        return org.joml.Math.cosFromSin(sin, angle);
     }
 
     private SolarCalculator() {}

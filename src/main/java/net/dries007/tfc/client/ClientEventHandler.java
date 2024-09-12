@@ -138,6 +138,7 @@ import net.dries007.tfc.client.model.entity.WindmillBladeModel;
 import net.dries007.tfc.client.model.entity.WindmillBladeRusticModel;
 import net.dries007.tfc.client.model.entity.YakModel;
 import net.dries007.tfc.client.overworld.LevelRendererExtension;
+import net.dries007.tfc.client.overworld.StarsReloadListener;
 import net.dries007.tfc.client.particle.AnimatedParticle;
 import net.dries007.tfc.client.particle.BubbleParticle;
 import net.dries007.tfc.client.particle.FallingLeafParticle;
@@ -876,6 +877,8 @@ public final class ClientEventHandler
         event.registerReloadListener(new ColorMapReloadListener(TFCColors::setFoliageColors, TFCColors.FOLIAGE_COLORS_LOCATION));
         event.registerReloadListener(new ColorMapReloadListener(TFCColors::setFoliageFallColors, TFCColors.FOLIAGE_FALL_COLORS_LOCATION));
         event.registerReloadListener(new ColorMapReloadListener(TFCColors::setFoliageWinterColors, TFCColors.FOLIAGE_WINTER_COLORS_LOCATION));
+
+        event.registerReloadListener(new StarsReloadListener());
     }
 
     public static void registerParticleFactories(RegisterParticleProvidersEvent event)
@@ -962,6 +965,6 @@ public final class ClientEventHandler
 
     public static void registerDimensionEffects(RegisterDimensionSpecialEffectsEvent event)
     {
-        event.register(BuiltinDimensionTypes.OVERWORLD_EFFECTS, new LevelRendererExtension());
+        event.register(BuiltinDimensionTypes.OVERWORLD_EFFECTS, LevelRendererExtension.INSTANCE);
     }
 }

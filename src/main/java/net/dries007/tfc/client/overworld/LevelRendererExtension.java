@@ -8,12 +8,14 @@ package net.dries007.tfc.client.overworld;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.List;
 import com.machinezoo.noexception.throwing.ThrowingSupplier;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.MeshData;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexBuffer;
@@ -51,7 +53,10 @@ import net.minecraft.world.level.material.FogType;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import net.dries007.tfc.client.ClimateRenderCache;
 import net.dries007.tfc.common.blocks.IBlockRain;
@@ -67,6 +72,8 @@ import net.dries007.tfc.util.tracker.WeatherHelpers;
  */
 public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEffects
 {
+    public static final LevelRendererExtension INSTANCE = new LevelRendererExtension();
+
     // Most of this is copied from LevelRenderer
     private static final ResourceLocation RAIN_LOCATION = ResourceLocation.withDefaultNamespace("textures/environment/rain.png");
     private static final ResourceLocation SNOW_LOCATION = ResourceLocation.withDefaultNamespace("textures/environment/snow.png");
@@ -86,20 +93,19 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
     private final float[] rainSizeZ;
     private int rainSoundTime;
 
-    private final VertexBuffer starBuffer;
+    private @Nullable VertexBuffer starBuffer = null;
     private final VertexBuffer skyBuffer;
     private final VertexBuffer darkBuffer;
 
+    private LevelRendererExtension()
     {
         // Reflect into LevelRenderer to avoid copying (both at runtime, and code)
         final Field rainSizeX = Helpers.uncheck(() -> LevelRenderer.class.getDeclaredField("rainSizeX"));
         final Field rainSizeZ = Helpers.uncheck(() -> LevelRenderer.class.getDeclaredField("rainSizeZ"));
-        final Method drawStars = Helpers.uncheck(() -> LevelRenderer.class.getDeclaredMethod("drawStars", Tesselator.class));
         final Method buildSkyDisc = Helpers.uncheck(() -> LevelRenderer.class.getDeclaredMethod("buildSkyDisc", Tesselator.class, float.class));
 
         rainSizeX.setAccessible(true);
         rainSizeZ.setAccessible(true);
-        drawStars.setAccessible(true);
         buildSkyDisc.setAccessible(true);
 
         final LevelRenderer instance = Minecraft.getInstance().levelRenderer;
@@ -107,9 +113,50 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
         this.rainSizeX = Helpers.uncheck(() -> rainSizeX.get(instance));
         this.rainSizeZ = Helpers.uncheck(() -> rainSizeZ.get(instance));
 
-        this.starBuffer = createBuffer(() -> drawStars.invoke(instance, Tesselator.getInstance()));
         this.skyBuffer = createBuffer(() -> buildSkyDisc.invoke(null, Tesselator.getInstance(), 16.0F));
         this.darkBuffer = createBuffer(() -> buildSkyDisc.invoke(null, Tesselator.getInstance(), -16.0F));
+    }
+
+    public void updateStars(List<Star> stars)
+    {
+        if (starBuffer != null) starBuffer.close();
+        starBuffer = new VertexBuffer(VertexBuffer.Usage.STATIC);
+        starBuffer.bind();
+        starBuffer.upload(drawStars(stars));
+        VertexBuffer.unbind();
+    }
+
+    private MeshData drawStars(List<Star> stars)
+    {
+        final Tesselator tesselator = Tesselator.getInstance();
+        final BufferBuilder buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+        final RandomSource random = RandomSource.create(42L);
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        for (Star star : stars) drawStar(buffer, star, random);
+        return buffer.buildOrThrow();
+    }
+
+    private void drawStar(BufferBuilder buffer, Star star, RandomSource random)
+    {
+        final float zenith = star.zenith();
+        final float azimuth = star.azimuth();
+        final int color = 0xff000000 | star.color();
+        final float size = Mth.clampedMap(star.apparentMagnitude(), -1, 6, 0.4f, 0.1f);
+
+        final float sinZenith = Mth.sin(zenith);
+        final float x = 100f * sinZenith * Mth.cos(azimuth);
+        final float z = 100f * sinZenith * Mth.sin(azimuth);
+        final float y = 100f * Mth.cos(zenith);
+
+        final Vector3f pos = new Vector3f(x, y, z);
+        final Quaternionf q = new Quaternionf()
+            .rotateTo(new Vector3f(0.0F, 0.0F, -1.0F), pos)
+            .rotateZ(random.nextFloat() * Mth.TWO_PI);
+
+        buffer.addVertex(pos.add(new Vector3f(size, -size, 0).rotate(q))).setColor(color);
+        buffer.addVertex(pos.add(new Vector3f(size, size, 0).rotate(q))).setColor(color);
+        buffer.addVertex(pos.add(new Vector3f(-size, size, 0).rotate(q))).setColor(color);
+        buffer.addVertex(pos.add(new Vector3f(-size, -size, 0).rotate(q))).setColor(color);
     }
 
     /**
@@ -158,21 +205,17 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
                 if (sunriseColor != null)
                 {
                     RenderSystem.setShader(GameRenderer::getPositionColorShader);
-                    RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-                    stack.pushPose();
-                    stack.mulPose(Axis.XP.rotationDegrees(90.0F));
+                    RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
 
-                    // In vanilla, this either rotates by 180°, or 0° for morning or evening, respectively, which positions it west or east
-                    // We just rotate based on the sun azimuth angle
-                    stack.mulPose(Axis.ZP.rotation(sunPos.azimuth() + Mth.PI));
-
-                    final Matrix4f pose = stack.last().pose();
+                    // Position the sunrise colors based on the sun azimuth position, but fixed at the horizon
+                    // The offsets + negative here are to not have to deal with the weirdness that is the default rendering code
+                    final Matrix4f pose = rotateTo(stack, SkyPos.of(-Mth.HALF_PI, sunPos.azimuth() + Mth.PI));
                     final BufferBuilder buffer = tesselator.begin(VertexFormat.Mode.TRIANGLE_FAN, DefaultVertexFormat.POSITION_COLOR);
                     buffer.addVertex(pose, 0.0F, 100.0F, 0.0F).setColor(sunriseColor[0], sunriseColor[1], sunriseColor[2], sunriseColor[3]);
 
                     for (int i = 0; i <= 16; i++)
                     {
-                        final float angle = i * (Mth.PI * 2f) / 16.0F;
+                        final float angle = i * Mth.TWO_PI / 16.0F;
                         final float sin = Mth.sin(angle);
                         final float cos = Mth.cos(angle);
                         buffer.addVertex(pose, sin * 120.0F, cos * 120.0F, -cos * 40.0F * sunriseColor[3])
@@ -180,18 +223,23 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
                     }
 
                     BufferUploader.drawWithShader(buffer.buildOrThrow());
-                    stack.popPose();
                 }
 
                 RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 
                 // Rain darkening, this is redirected on client to use the client-side rain level
-                final float rainDarkenAlpha = 1.0F - level.getRainLevel(partialTick);
-                RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, rainDarkenAlpha);
+                final float rainAlpha = 1.0F - level.getRainLevel(partialTick);
+                final float starAlpha = level.getStarBrightness(partialTick);
+                final float nightAlpha = starAlpha * rainAlpha;
+
+                // The moon uses a separate shader color, that alpha's out the moon somewhat when it's during the day, just to make it
+                // seem a little less prominent than in night
+                final float moonAlpha = (0.2f + 0.8f * starAlpha) * rainAlpha;
 
                 // Sun
                 final Matrix4f sun = rotateTo(stack, sunPos);
 
+                RenderSystem.setShaderColor(1f, 1f, 1f, rainAlpha);
                 RenderSystem.setShader(GameRenderer::getPositionTexShader);
                 RenderSystem.setShaderTexture(0, SUN_LOCATION);
                 BufferBuilder buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
@@ -208,6 +256,7 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
                 final int moonV = moonPhase / 4 % 2;
                 final Matrix4f moon = rotateTo(stack, moonPos);
 
+                RenderSystem.setShaderColor(1f, 1f, 1f, moonAlpha);
                 RenderSystem.setShaderTexture(0, MOON_LOCATION);
                 buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
                 buffer.addVertex(moon, -20.0F, 100.0F, -20.0F).setUv((moonU + 1) / 4.0F, (moonV + 1) / 2.0F);
@@ -217,26 +266,26 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
                 BufferUploader.drawWithShader(buffer.buildOrThrow());
 
                 // Stars
-                final float nightDarken = level.getStarBrightness(partialTick) * rainDarkenAlpha;
-                if (nightDarken > 0.0F)
+                if (nightAlpha > 0.0F && starBuffer != null)
                 {
-                    RenderSystem.setShaderColor(nightDarken, nightDarken, nightDarken, nightDarken);
+                    final SkyPos starPos = ClientSolarCalculatorBridge.getStarPosition(level, camera.getBlockPosition());
+
+                    RenderSystem.setShaderColor(nightAlpha, nightAlpha, nightAlpha, nightAlpha);
                     FogRenderer.setupNoFog();
 
-                    // todo: come up with a star rotation schematic that's accurate
-                    final Matrix4f stars = rotateTo(stack, SkyPos.ZERO);
-                    final ShaderInstance positionShader = GameRenderer.getPositionShader();
-                    assert positionShader != null;
+                    final Matrix4f stars = rotateSkyTo(stack, starPos);
+                    final ShaderInstance starShader = GameRenderer.getPositionColorShader();
+                    assert starShader != null;
                     starBuffer.bind();
-                    starBuffer.drawWithShader(stars, projectionMatrix, positionShader);
+                    starBuffer.drawWithShader(stars, projectionMatrix, starShader);
                     VertexBuffer.unbind();
                     skyFogSetup.run();
                 }
 
-                RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+                RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
                 RenderSystem.disableBlend();
                 RenderSystem.defaultBlendFunc();
-                RenderSystem.setShaderColor(0.0F, 0.0F, 0.0F, 1.0F);
+                RenderSystem.setShaderColor(0f, 0f, 0f, 0f);
 
                 final double distanceAboveHorizon = camera.getEntity().getEyePosition(partialTick).y - level.getLevelData().getHorizonHeight(level);
                 if (distanceAboveHorizon < 0.0)
@@ -259,8 +308,18 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
     private Matrix4f rotateTo(PoseStack stack, SkyPos pos)
     {
         stack.pushPose();
-        stack.mulPose(Axis.YN.rotation(pos.azimuth() + Mth.PI));
-        stack.mulPose(Axis.XP.rotation(pos.zenith()));
+        stack.mulPose(Axis.YP.rotation(pos.azimuth()));
+        stack.mulPose(Axis.XN.rotation(pos.zenith()));
+        final Matrix4f pose = stack.last().pose();
+        stack.popPose();
+        return pose;
+    }
+
+    private Matrix4f rotateSkyTo(PoseStack stack, SkyPos pos)
+    {
+        stack.pushPose();
+        stack.mulPose(Axis.XN.rotation(pos.zenith()));
+        stack.mulPose(Axis.YN.rotation(pos.azimuth()));
         final Matrix4f pose = stack.last().pose();
         stack.popPose();
         return pose;

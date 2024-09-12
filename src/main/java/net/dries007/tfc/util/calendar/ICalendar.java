@@ -8,7 +8,9 @@ package net.dries007.tfc.util.calendar;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.level.Level;
 
+import net.dries007.tfc.client.overworld.SolarCalculator;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.config.TimeDeltaTooltipStyle;
 import net.dries007.tfc.util.Helpers;
@@ -40,11 +42,6 @@ public interface ICalendar
     }
 
     /* Total Calculation Methods */
-
-    static float getTotalMinutes(long time)
-    {
-        return time / TICKS_IN_MINUTE;
-    }
 
     static long getTotalHours(long time)
     {
@@ -185,22 +182,6 @@ public interface ICalendar
     }
 
     /**
-     * Gets the total amount of hours passed
-     */
-    default long getTotalHours()
-    {
-        return ICalendar.getTotalHours(getTicks());
-    }
-
-    /**
-     * Gets the total amount of hours passed since Jan 1, 1000
-     */
-    default long getTotalCalendarHours()
-    {
-        return ICalendar.getTotalHours(getCalendarTicks());
-    }
-
-    /**
      * Gets the total amount of days passed
      */
     default long getTotalDays()
@@ -217,27 +198,11 @@ public interface ICalendar
     }
 
     /**
-     * Gets the total amount of months passed
-     */
-    default long getTotalMonths()
-    {
-        return ICalendar.getTotalMonths(getTicks(), getCalendarDaysInMonth());
-    }
-
-    /**
      * Gets the total amount of months passed since Jan 1, 1000
      */
     default long getTotalCalendarMonths()
     {
         return ICalendar.getTotalMonths(getCalendarTicks(), getCalendarDaysInMonth());
-    }
-
-    /**
-     * Gets the total amount of years passed
-     */
-    default long getTotalYears()
-    {
-        return ICalendar.getTotalYears(getTicks(), getCalendarDaysInMonth());
     }
 
     /**
@@ -252,8 +217,20 @@ public interface ICalendar
      * Get the equivalent total world time
      * World time 0 = 6:00 AM, which is calendar time 6000
      *
-     * @return a value in [0, 24000) which should match the result of {@link net.minecraft.world.level.Level#getDayTime()}
+     * @return a value in [0, 24000) which should match the result of {@link Level#getDayTime()}
+     *
+     * @deprecated This should not be used, as it will not be accurate on client (which has variable daytime), and will not be
+     * accurate to what the name is on server (as daytime is variable depending on the location). Instead, consider the use case
+     * and switch to using one of the other methods:
+     * <ul>
+     *     <li>If you want to calculate "is the sun in the sky", or vanilla-equivalent day time on client at a given position,
+     *     supply a position-dependent calculation to {@link SolarCalculator}</li>
+     *     <li>If you want to know the vanilla-equivalent day time on client, simply use {@link Level#getDayTime()}</li>
+     *     <li>If you simply want to know the fraction of a day (as a 24-hour period) and do not care about sun positioning,
+     *     then use {@link #getCalendarFractionOfDay()}</li>
+     * </ul>
      */
+    @Deprecated
     default long getCalendarDayTime()
     {
         return (getCalendarTicks() - (6 * ICalendar.TICKS_IN_HOUR)) % ICalendar.TICKS_IN_DAY;
