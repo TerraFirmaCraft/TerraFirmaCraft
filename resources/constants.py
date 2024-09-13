@@ -599,7 +599,9 @@ PLANTS: dict[str, Plant] = {
     'turtle_grass': Plant(False, 15.7, 40, 240, 500, 'grass_water'),
     'vriesea': Plant(False, 15.7, 40, 200, 400, 'epiphyte'),
     'water_canna': Plant(True, 13.9, 40, 150, 500, 'floating_fresh'),
-    'water_lily': Plant(False, -7.5, 40, 0, 500, 'floating_fresh'),
+    'yellow_water_lily': Plant(False, -12.5, 8, 0, 500, 'floating_fresh'),
+    'white_water_lily': Plant(False, -2.5, 16, 0, 500, 'floating_fresh'),
+    'purple_water_lily': Plant(False, 9.5, 40, 0, 500, 'floating_fresh'),
     'water_taro': Plant(False, 13.9, 40, 260, 500, 'emergent_fresh'),
     'yucca': Plant(False, -0.4, 22.9, 0, 75, 'dry'),
 }

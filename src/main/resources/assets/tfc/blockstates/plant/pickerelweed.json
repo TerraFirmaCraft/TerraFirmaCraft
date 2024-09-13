@@ -3,8 +3,19 @@
     "part=lower": {
       "model": "tfc:block/empty"
     },
-    "part=upper": {
-      "model": "tfc:block/plant/pickerelweed_dynamic"
-    }
+    "part=upper": [
+		{
+			"model": "tfc:block/plant/pickerelweed_dynamic_east"
+		},
+		{
+			"model": "tfc:block/plant/pickerelweed_dynamic_south", "y": 90
+		},
+		{
+			"model": "tfc:block/plant/pickerelweed_dynamic_west", "y": 180
+		},
+		{
+			"model": "tfc:block/plant/pickerelweed_dynamic_north", "y": 270
+		}
+    ]
   }
 }
