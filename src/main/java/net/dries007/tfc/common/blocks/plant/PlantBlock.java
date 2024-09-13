@@ -147,7 +147,7 @@ public abstract class PlantBlock extends TFCBushBlock
         if (ageProp != null)
         {
             final int age = state.getValue(ageProp);
-            if (age < 3)
+            if (random.nextDouble() < TFCConfig.SERVER.plantGrowthChance.get() && age < 3)
             {
                 state = state.setValue(AGE, age + 1);
                 level.setBlockAndUpdate(pos, state);

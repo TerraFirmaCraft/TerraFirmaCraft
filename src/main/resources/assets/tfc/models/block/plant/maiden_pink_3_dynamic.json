@@ -1,0 +1,21 @@
+{
+  "loader": "tfc:plant",
+  "blooming": {
+    "parent": "tfc:block/plant/maiden_pink_0_3"
+  },
+  "seeding": {
+    "parent": "tfc:block/plant/maiden_pink_1_3"
+  },
+  "dying": {
+    "parent": "tfc:block/plant/maiden_pink_1_3"
+  },
+  "dormant": {
+    "parent": "tfc:block/plant/maiden_pink_1_3"
+  },
+  "sprouting": {
+    "parent": "tfc:block/plant/maiden_pink_1_3"
+  },
+  "budding": {
+    "parent": "tfc:block/plant/maiden_pink_1_3"
+  }
+}

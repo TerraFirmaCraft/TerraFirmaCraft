@@ -1355,8 +1355,6 @@ def generate(rm: ResourceManager):
     rm.blockstate('plant/dead_bush', variants={"": [{'model': 'tfc:block/plant/dead_bush_large'}, *[{'model': 'tfc:block/plant/dead_bush%s' % i} for i in range(0, 7)]]}, use_default_model=False)
     for i in range(0, 7):
         rm.block_model('plant/dead_bush%s' % i, parent='minecraft:block/cross', textures={'cross': 'tfc:block/plant/dead_bush/dead_bush%s' % i})
-    for i in range(1, 5):
-        rm.block_model('plant/maiden_pink_%s' % i, parent='tfc:block/plant/flowerbed_%s' % i, textures={'flowerbed': 'tfc:block/plant/maiden_pink/petals', 'stem': 'tfc:block/plant/maiden_pink/stem'})
 
     rm.block('sea_pickle').with_lang(lang('sea pickle')).with_block_loot([{
         'name': 'tfc:sea_pickle',

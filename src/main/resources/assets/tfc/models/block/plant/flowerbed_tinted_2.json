@@ -8,24 +8,24 @@
       "from": [0, 2.99, 0],
       "to": [8, 2.99, 8],
       "faces": {
-        "up": {"uv": [0, 0, 8, 8], "texture": "#flowerbed"},
-        "down": {"uv": [0, 8, 8, 0], "texture": "#flowerbed"}
+        "up": {"uv": [0, 0, 8, 8], "texture": "#flowerbed", "tintindex": 1},
+        "down": {"uv": [0, 8, 8, 0], "texture": "#flowerbed", "tintindex": 1}
       }
     },
     {
       "from": [0, 1, 8],
       "to": [8, 1, 16],
       "faces": {
-        "up": {"uv": [0, 8, 8, 16], "texture": "#flowerbed"},
-        "down": {"uv": [0, 16, 8, 8], "texture": "#flowerbed"}
+        "up": {"uv": [0, 8, 8, 16], "texture": "#flowerbed", "tintindex": 1},
+        "down": {"uv": [0, 16, 8, 8], "texture": "#flowerbed", "tintindex": 1}
       }
     },
     {
       "from": [0, 1, 8],
       "to": [8, 1, 16],
       "faces": {
-        "up": {"uv": [0, 8, 8, 16], "texture": "#flowerbed"},
-        "down": {"uv": [0, 16, 8, 8], "texture": "#flowerbed"}
+        "up": {"uv": [0, 8, 8, 16], "texture": "#flowerbed", "tintindex": 1},
+        "down": {"uv": [0, 16, 8, 8], "texture": "#flowerbed", "tintindex": 1}
       }
     },
     {
