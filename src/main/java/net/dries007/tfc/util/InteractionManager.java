@@ -41,6 +41,7 @@ import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent;
 import org.jetbrains.annotations.NotNull;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.LogPileBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
 import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
@@ -50,6 +51,7 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.ThatchBedBlock;
 import net.dries007.tfc.common.blocks.devices.DoubleIngotPileBlock;
 import net.dries007.tfc.common.blocks.devices.IngotPileBlock;
+import net.dries007.tfc.common.blocks.devices.LogPileBlock;
 import net.dries007.tfc.common.blocks.devices.SheetPileBlock;
 import net.dries007.tfc.common.container.ItemStackContainerProvider;
 import net.dries007.tfc.common.container.KnappingContainer;
@@ -64,6 +66,7 @@ import net.dries007.tfc.util.data.KnappingType;
 import net.dries007.tfc.util.events.DouseFireEvent;
 import net.dries007.tfc.util.events.StartFireEvent;
 
+import static net.minecraft.world.level.block.state.properties.BlockStateProperties.*;
 import static net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.*;
 
 /**
@@ -283,14 +286,16 @@ public final class InteractionManager
                 final BlockPos posClicked = context.getClickedPos();
                 final BlockState stateClicked = level.getBlockState(posClicked);
                 final BlockPos relativePos = posClicked.relative(direction);
+                final Block blockClicked = stateClicked.getBlock();
 
                 // If we're targeting a log pile, we can do one of two insertion operations
                 if (Helpers.isBlock(stateClicked, TFCBlocks.LOG_PILE.get()))
                 {
                     return level.getBlockEntity(posClicked, TFCBlockEntities.LOG_PILE.get())
-                        .map(entity -> {
+                        .map(logPileBlockEntity -> {
+
                             ItemStack insertStack = stack.copy();
-                            insertStack = Helpers.insertAllSlots(entity.getInventory(), insertStack);
+                            insertStack = Helpers.insertAllSlots(logPileBlockEntity.getInventory(), insertStack);
                             if (insertStack.getCount() < stack.getCount()) // Some logs were inserted
                             {
                                 if (!level.isClientSide())
@@ -300,9 +305,10 @@ public final class InteractionManager
                                 }
                                 return InteractionResult.SUCCESS;
                             }
+                            final InteractionResult result = logPilePlacement.onItemUse(stack, context);
 
                             // if we placed instead, insert logs at the RELATIVE position using the mutated stack
-                            final InteractionResult result = logPilePlacement.onItemUse(stack, context);
+
                             if (result.consumesAction())
                             {
                                 // shrinking is handled by the item placement

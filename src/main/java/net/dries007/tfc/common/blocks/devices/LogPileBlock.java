@@ -47,9 +47,11 @@ import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.util.Helpers;
 
+import static net.minecraft.world.level.block.state.properties.BlockStateProperties.*;
+
 public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, EntityBlockExtension
 {
-    public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
+    public static final EnumProperty<Direction.Axis> AXIS = HORIZONTAL_AXIS;
 
     public static final IntegerProperty COUNT = TFCBlockStateProperties.COUNT_1_16;
 
@@ -139,43 +141,50 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
                             Helpers.playPlaceSound(level, pos, state);
                             stack.shrink(1);
                         }
-
-                        // TODO gross and protoype-y, should act like ingot piles
-                        else if (level.getBlockState(pos.above()).isAir())
-                        {
-                            level.setBlockAndUpdate(pos.above(), TFCBlocks.LOG_PILE.get().defaultBlockState());
-                            if (level.getBlockEntity(pos.above()) instanceof LogPileBlockEntity pileAbove)
-                            {
-                                BlockState stateAbove = level.getBlockState(pos.above());
-                                if (Helpers.insertOne(pileAbove, stack))
-                                {
-                                    Helpers.playPlaceSound(level, pos.above(), stateAbove);
-                                    stack.shrink(1);
-                                }
-                                else
-                                {
-                                    level.removeBlock(pos.above(), false);
-                                }
-                            }
-                        }
-                        else if (level.getBlockState(pos.above()).getBlock() instanceof LogPileBlock pileBlockAbove)
-                        {
-                            BlockState stateAbove = level.getBlockState(pos.above());
-                            pileBlockAbove.useItemOn(stack, stateAbove, level, pos.above(), player, hand, hitResult);
-                        }
-                    }
-                }
-                else
-                {
-                    if (player instanceof ServerPlayer serverPlayer)
-                    {
-                        serverPlayer.openMenu(logPile, pos);
+                        passToAbove(stack, state, level, pos, logPile, false);
                     }
                 }
             });
             return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+    }
+
+    public void passToAbove(ItemStack stack, BlockState state, Level level, BlockPos pos, LogPileBlockEntity logPile, boolean all)
+    {
+        if (Helpers.insertOne(logPile, stack))
+        {
+            Helpers.playPlaceSound(level, pos, state);
+            stack.shrink(1);
+        }
+        if (level.getBlockState(pos.above()).isAir() && logPile.logCount() == 16 && !stack.isEmpty())
+        {
+            level.setBlockAndUpdate(pos.above(), TFCBlocks.LOG_PILE.get().defaultBlockState().setValue(HORIZONTAL_AXIS, state.getValue(HORIZONTAL_AXIS)));
+            if (level.getBlockEntity(pos.above()) instanceof LogPileBlockEntity pileAbove)
+            {
+                BlockState stateAbove = level.getBlockState(pos.above());
+                if (Helpers.insertOne(pileAbove, stack))
+                {
+                    Helpers.playPlaceSound(level, pos.above(), stateAbove);
+                    stack.shrink(1);
+                }
+                else
+                {
+                    level.removeBlock(pos.above(), false);
+                }
+            }
+        }
+        if (level.getBlockState(pos.above()).getBlock() instanceof LogPileBlock pileBlockAbove && logPile.logCount() == 16)
+        {
+            level.getBlockEntity(pos.above(), TFCBlockEntities.LOG_PILE.get()).ifPresent(
+                logPileBlockEntityAbove -> {
+                    BlockState stateAbove = level.getBlockState(pos.above());
+
+                    pileBlockAbove.passToAbove(stack, stateAbove, level, pos.above(), logPileBlockEntityAbove, all);
+                }
+            );
+
+        }
     }
 
     @Override
