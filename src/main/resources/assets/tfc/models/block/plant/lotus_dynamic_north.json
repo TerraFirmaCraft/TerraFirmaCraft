@@ -1,0 +1,21 @@
+{
+  "loader": "tfc:plant",
+  "blooming": {
+    "parent": "tfc:block/plant/lotus_0"
+  },
+  "seeding": {
+    "parent": "tfc:block/plant/lotus_1"
+  },
+  "dying": {
+    "parent": "tfc:block/plant/lotus_1"
+  },
+  "dormant": {
+    "parent": "tfc:block/plant/lotus_1"
+  },
+  "sprouting": {
+    "parent": "tfc:block/plant/lotus_1"
+  },
+  "budding": {
+    "parent": "tfc:block/plant/lotus_2"
+  }
+}

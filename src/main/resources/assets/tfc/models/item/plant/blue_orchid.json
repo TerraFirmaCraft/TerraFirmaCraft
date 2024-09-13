@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "tfc:block/plant/blue_orchid/blue_orchid_1"
+    "layer0": "tfc:block/plant/blue_orchid/blue_orchid_0"
   }
 }

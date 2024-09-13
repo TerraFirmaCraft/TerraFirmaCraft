@@ -696,7 +696,7 @@ SIMPLE_STAGE_PLANTS: dict[str, int] = {
     'yucca': 4
 }
 
-# Blooming, Seeding, Dying, Dormant, Sprouting, Budding, Some single block stage plants like tulips for some reason
+# Blooming, Seeding, Dying, Dormant, Sprouting, Budding
 SINGLE_BLOCK_STAGE_PLANTS: dict[str, list[int, int, int, int, int, int]] = {
     'allium': [0, 1, 2, 3, 4, 5],
     'anthurium': [0, 1, 1, 1, 1, 1],

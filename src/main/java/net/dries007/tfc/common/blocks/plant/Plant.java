@@ -234,7 +234,7 @@ public enum Plant implements RegistryPlant
         if (type == BlockType.GRASS_WATER || type == BlockType.GRASS_WATER_FRESH || type == BlockType.BEACH_GRASS || type == BlockType.SHORT_GRASS
             || type == BlockType.TALL_GRASS || type == BlockType.FLOWERBED || type == BlockType.FLOATING_FRESH || type == BlockType.FLOATING
             || type == BlockType.KELP_TREE || type == BlockType.KELP_TREE_FLOWER || type == BlockType.TWISTING_TOP || type == BlockType.TWISTING_SOLID_TOP
-            || type == BlockType.BRANCHING_CACTUS_TOP || type == BlockType.KELP_TOP || type == BlockType.WEEPING_TOP)
+            || type == BlockType.BRANCHING_CACTUS_TOP || type == BlockType.KELP_TOP || type == BlockType.WEEPING_TOP || type == BlockType.TALL_WATER_FRESH)
         {
             return 3;
         }

@@ -13,9 +13,9 @@
     "parent": "tfc:block/plant/phragmite_2"
   },
   "sprouting": {
-    "parent": "tfc:block/plant/phragmite_2"
+    "parent": "tfc:block/plant/phragmite_3"
   },
   "budding": {
-    "parent": "tfc:block/plant/phragmite_3"
+    "parent": "tfc:block/plant/phragmite_4"
   }
 }

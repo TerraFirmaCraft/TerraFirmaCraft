@@ -4,7 +4,7 @@
 	"textures": {
 		"0": "tfc:block/plant/ostrich_fern/ostrich_fern_cross_furled",
 		"1": "tfc:block/plant/ostrich_fern/ostrich_fern_fronds_furled",
-		"particle": "tfc:block/plant/ostrich_fern/ostrich_fern_cross_furled"
+		"particle": "tfc:item/plant/ostrich_fern"
 	},
 	"elements": [
 		{
