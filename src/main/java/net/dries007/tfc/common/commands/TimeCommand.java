@@ -9,13 +9,13 @@ package net.dries007.tfc.common.commands;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerLevel;
 
+import net.dries007.tfc.util.calendar.Calendar;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
@@ -24,111 +24,87 @@ import net.dries007.tfc.util.tracker.WeatherHelpers;
 
 public final class TimeCommand
 {
-    private static final String DAYTIME = "tfc.commands.time.query.daytime";
-    private static final String GAME_TIME = "tfc.commands.time.query.game_time";
-    private static final String DAY = "tfc.commands.time.query.day";
-    private static final String PLAYER_TICKS = "tfc.commands.time.query.player_ticks";
-    private static final String CALENDAR_TICKS = "tfc.commands.time.query.calendar_ticks";
-
     public static LiteralArgumentBuilder<CommandSourceStack> create()
     {
         return Commands.literal("time")
             .requires(source -> source.hasPermission(2))
             .then(Commands.literal("set")
-                .then(Commands.literal("monthlength")
-                    .then(Commands.argument("value", IntegerArgumentType.integer(1))
-                        .executes(context -> setMonthLength(IntegerArgumentType.getInteger(context, "value")))
+                .then(Commands.literal("dayLength")
+                    .then(Commands.literal("vanilla").executes(c -> setDayLength(c, 20))) // Default Vanilla
+                    .then(Commands.literal("default").executes(c -> setDayLength(c, 24))) // Default TFC
+                    .then(Commands.literal("disabled").executes(c -> setDayLength(c, -1)))
+                    .then(Commands.literal("realtime").executes(c -> setDayLength(c, 24 * 60)))
+                    .then(Commands.argument("minutes", IntegerArgumentType.integer(1))
+                        .executes(c -> setDayLength(c, IntegerArgumentType.getInteger(c, "minutes")))
                     )
                 )
-                .then(Commands.literal("day")
-                    .executes(context -> setTime(context.getSource().getServer(), 1000))
+                .then(Commands.literal("monthLength")
+                    .then(Commands.literal("default").executes(c -> setMonthLength(c, Calendar.DEFAULT_MONTH_LENGTH)))
+                    .then(Commands.literal("realtime").executes(c -> setMonthLength(c, 30)))
+                    .then(Commands.argument("days", IntegerArgumentType.integer(1, 1000))
+                        .executes(c -> setMonthLength(c, IntegerArgumentType.getInteger(c, "days")))
+                    )
                 )
-                .then(Commands.literal("noon")
-                    .executes(context -> setTime(context.getSource().getServer(), 6000))
-                )
-                .then(Commands.literal("night")
-                    .executes(context -> setTime(context.getSource().getServer(), 13000))
-                )
-                .then(Commands.literal("midnight")
-                    .executes(context -> setTime(context.getSource().getServer(), 18000))
-                )
+                .then(Commands.literal("day").executes(c -> setTimeFromDayTime(c, 0.3f)))
+                .then(Commands.literal("noon").executes(c -> setTimeFromDayTime(c, 0.5f)))
+                .then(Commands.literal("night").executes(c -> setTimeFromDayTime(c, 0.8f)))
+                .then(Commands.literal("midnight").executes(c -> setTimeFromDayTime(c, 0f)))
+                .then(Commands.literal("rain").executes(c -> setTimeFromWeather(c, true)))
+                .then(Commands.literal("clear").executes(c -> setTimeFromWeather(c, false)))
             )
             .then(Commands.literal("add")
                 .then(Commands.literal("years")
-                    .then(Commands.argument("value", IntegerArgumentType.integer(1))
-                        .executes(context -> addTime(IntegerArgumentType.getInteger(context, "value") * Calendars.SERVER.getCalendarTicksInYear()))
+                    .then(Commands.argument("years", IntegerArgumentType.integer(1))
+                        .executes(context -> addTime(context, IntegerArgumentType.getInteger(context, "years") * Calendars.SERVER.getCalendarTicksInYear()))
                     )
                 )
                 .then(Commands.literal("months")
-                    .then(Commands.argument("value", IntegerArgumentType.integer(1))
-                        .executes(context -> addTime(IntegerArgumentType.getInteger(context, "value") * Calendars.SERVER.getCalendarTicksInMonth()))
+                    .then(Commands.argument("months", IntegerArgumentType.integer(1))
+                        .executes(context -> addTime(context, IntegerArgumentType.getInteger(context, "months") * Calendars.SERVER.getCalendarTicksInMonth()))
                     )
                 )
                 .then(Commands.literal("days")
-                    .then(Commands.argument("value", IntegerArgumentType.integer(1))
-                        .executes(context -> addTime(IntegerArgumentType.getInteger(context, "value") * (long) ICalendar.TICKS_IN_DAY))
+                    .then(Commands.argument("days", IntegerArgumentType.integer(1))
+                        .executes(context -> addTime(context, IntegerArgumentType.getInteger(context, "days") * (long) ICalendar.TICKS_IN_DAY))
                     )
                 )
-                .then(Commands.literal("ticks")
-                    .then(Commands.argument("value", IntegerArgumentType.integer(1))
-                        .executes(context -> addTime(IntegerArgumentType.getInteger(context, "value")))
-                    )
-                )
-            )
-            .then(Commands.literal("skip-to-weather-rain")
-                .executes(context -> skipTo(context.getSource(), true))
-            )
-            .then(Commands.literal("skip-to-weather-clear")
-                .executes(context -> skipTo(context.getSource(), false))
-            )
-            .then(Commands.literal("query")
-                .then(Commands.literal("daytime")
-                    .executes(context -> sendQueryResults(context.getSource(), DAYTIME, Calendars.SERVER.getCalendarDayTime()))
-                )
-                .then(Commands.literal("gametime")
-                    .executes(context -> sendQueryResults(context.getSource(), GAME_TIME, context.getSource().getLevel().getGameTime()))
-                )
-                .then(Commands.literal("day")
-                    .executes(context -> sendQueryResults(context.getSource(), DAY, Calendars.SERVER.getTotalDays()))
-                )
-                .then(Commands.literal("ticks")
-                    .executes(context -> sendQueryResults(context.getSource(), PLAYER_TICKS, Calendars.SERVER.getTicks()))
-                )
-                .then(Commands.literal("calendarticks")
-                    .executes(context -> sendQueryResults(context.getSource(), CALENDAR_TICKS, Calendars.SERVER.getCalendarTicks()))
+                .then(Commands.argument("ticks", IntegerArgumentType.integer(1))
+                    .executes(context -> addTime(context, IntegerArgumentType.getInteger(context, "ticks")))
                 )
             );
     }
 
-    private static int setMonthLength(int months)
+    private static int setDayLength(CommandContext<CommandSourceStack> context, final int dayLengthInMinutes)
     {
-        Calendars.SERVER.setMonthLength(months);
+        // TPS = 20 t/s = 1200 t/m
+        // 1 Day = 24_000 ct
+        // 1 ct = rate (ct / t) x t
+        // => 1 Day = 20 x rate^-1 = Minutes
+        // => rate = 20 / Minutes
+        Calendars.SERVER.setCalendarTickRate(dayLengthInMinutes == -1 ? 0f : 20f / dayLengthInMinutes);
+        context.getSource().sendSuccess(() -> dayLengthInMinutes != -1
+            ? Component.translatable("tfc.commands.time.set_day_length", dayLengthInMinutes)
+            : Component.translatable("tfc.commands.time.set_day_length_disabled"), true);
         return Command.SINGLE_SUCCESS;
     }
 
-    private static int setTime(MinecraftServer server, int dayTime)
+    private static int setMonthLength(CommandContext<CommandSourceStack> context, int monthLengthInDays)
     {
-        for (ServerLevel world : server.getAllLevels())
-        {
-            long dayTimeJump = dayTime - (world.getDayTime() % ICalendar.TICKS_IN_DAY);
-            if (dayTimeJump < 0)
-            {
-                dayTimeJump += ICalendar.TICKS_IN_DAY;
-            }
-            world.setDayTime(world.getDayTime() + dayTimeJump);
-        }
-        Calendars.SERVER.setTimeFromDayTime(dayTime);
+        Calendars.SERVER.setMonthLength(monthLengthInDays);
+        context.getSource().sendSuccess(() -> Component.translatable("tfc.commands.time.set_month_length", monthLengthInDays), true);
         return Command.SINGLE_SUCCESS;
     }
 
-    private static int addTime(long ticksToAdd)
+    private static int setTimeFromDayTime(CommandContext<CommandSourceStack> context, float fractionOfDay)
     {
-        Calendars.SERVER.setTimeFromCalendarTime(Calendars.SERVER.getCalendarTicks() + ticksToAdd);
-        return Command.SINGLE_SUCCESS;
+        final float currentFractionOfDay = Calendars.SERVER.getCalendarFractionOfDay();
+        final float targetFraction = fractionOfDay > currentFractionOfDay ? fractionOfDay : 1 + fractionOfDay;
+        return addTime(context, (long) ((targetFraction - currentFractionOfDay) * ICalendar.TICKS_IN_DAY));
     }
 
-    private static int skipTo(CommandSourceStack source, boolean rain)
+    private static int setTimeFromWeather(CommandContext<CommandSourceStack> context, boolean rain)
     {
+        final CommandSourceStack source = context.getSource();
         final ClimateModel model = Climate.get(source.getLevel());
         final long calendarTick = Calendars.SERVER.getCalendarTicks();
         final float rainfall = model.getRainfall(source.getLevel(), BlockPos.containing(source.getPosition()));
@@ -136,18 +112,16 @@ public final class TimeCommand
         {
             if (WeatherHelpers.isPrecipitating(model.getRain(calendarTick + tick), rainfall) == rain)
             {
-                final Component feedback = Component.translatable("tfc.commands.time.skip_forward", tick);
-                Calendars.SERVER.setTimeFromCalendarTime(calendarTick + tick);
-                source.sendSuccess(() -> feedback, true);
-                return Command.SINGLE_SUCCESS;
+                return addTime(context, tick);
             }
         }
-        return 0;
+        return Command.SINGLE_SUCCESS;
     }
 
-    private static int sendQueryResults(CommandSourceStack source, String translationKey, long value)
+    private static int addTime(CommandContext<CommandSourceStack> context, long ticksToAdd)
     {
-        source.sendSuccess(() -> Component.translatable(translationKey, (int) value), false);
+        Calendars.SERVER.skipForwardBy(ticksToAdd);
+        context.getSource().sendSuccess(() -> Component.translatable("tfc.commands.time.add_time", Calendars.SERVER.getTimeDelta(ticksToAdd), ticksToAdd), true);
         return Command.SINGLE_SUCCESS;
     }
 }

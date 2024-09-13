@@ -9,6 +9,8 @@ package net.dries007.tfc.config;
 import java.util.function.Supplier;
 import net.neoforged.fml.loading.FMLEnvironment;
 
+import net.dries007.tfc.util.calendar.Calendar;
+
 /**
  * Common Config
  * - not synced, saved per instance
@@ -39,7 +41,7 @@ public class CommonConfig extends BaseConfig
         defaultMonthLength = builder.comment(
             "The number of days in a month, for newly created worlds.",
             "This can be modified in existing worlds using the /time command"
-        ).define("defaultMonthLength", 8, 1, Integer.MAX_VALUE);
+        ).define("defaultMonthLength", Calendar.DEFAULT_MONTH_LENGTH, 1, Integer.MAX_VALUE);
         defaultCalendarStartDay = builder.comment(
             "The start date for newly created worlds, in a number of ticks, for newly created worlds",
             "This represents a number of days offset from January 1, 1000",

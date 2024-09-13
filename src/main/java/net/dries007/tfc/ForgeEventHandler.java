@@ -198,7 +198,6 @@ import net.dries007.tfc.util.events.DouseFireEvent;
 import net.dries007.tfc.util.events.LoggingEvent;
 import net.dries007.tfc.util.events.SelectClimateModelEvent;
 import net.dries007.tfc.util.events.StartFireEvent;
-import net.dries007.tfc.util.tracker.WeatherHelpers;
 import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.chunkdata.ChunkData;
@@ -216,7 +215,7 @@ public final class ForgeEventHandler
 
         bus.addListener(ForgeEventHandler::onCreateWorldSpawn);
         bus.addListener(ForgeEventHandler::onChunkWatch);
-        bus.addListener(ForgeEventHandler::registerCommands);
+        bus.addListener(EventPriority.LOW, ForgeEventHandler::registerCommands); // Must come after neo, since we take over `/neoforge day`
         bus.addListener(ForgeEventHandler::onBlockBroken);
         bus.addListener(ForgeEventHandler::onBlockPlace);
         bus.addListener(ForgeEventHandler::onBreakSpeed);

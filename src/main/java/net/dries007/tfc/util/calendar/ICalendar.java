@@ -244,6 +244,10 @@ public interface ICalendar
         return ICalendar.getDayOfMonth(getCalendarTicks(), getCalendarDaysInMonth());
     }
 
+    /**
+     * @return The progress through the current day from the calendar time. A value between {@code [0, 1]} where {@code 0} indicates midnight,
+     * and {@code 0.5} indicates noon.
+     */
     default float getCalendarFractionOfDay()
     {
         return ICalendar.getFractionOfDay(getCalendarTicks());
