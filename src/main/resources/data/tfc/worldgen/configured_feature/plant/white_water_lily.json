@@ -5,11 +5,7 @@
     "to_place": {
       "type": "tfc:random_property",
       "state": {
-        "Name": "tfc:plant/water_lily",
-        "Properties": {
-          "age": "1",
-          "stage": "1"
-        }
+        "Name": "tfc:plant/white_water_lily"
       },
       "property": "age"
     }

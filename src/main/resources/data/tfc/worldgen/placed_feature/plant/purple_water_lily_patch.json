@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "feature": "tfc:plant/water_lily_patch",
+  "feature": "tfc:plant/purple_water_lily_patch",
   "placement": [
     {
       "type": "minecraft:rarity_filter",
@@ -15,7 +15,7 @@
     },
     {
       "type": "tfc:climate",
-      "min_temperature": -10.3,
+      "min_temperature": 9.5,
       "max_temperature": 38,
       "min_groundwater": 0,
       "max_groundwater": 500

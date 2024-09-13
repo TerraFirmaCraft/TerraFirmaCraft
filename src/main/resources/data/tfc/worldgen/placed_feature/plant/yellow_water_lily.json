@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "feature": "tfc:plant/water_lily",
+  "feature": "tfc:plant/yellow_water_lily",
   "placement": [
     {
       "type": "minecraft:heightmap",
@@ -17,11 +17,7 @@
       "predicate": {
         "type": "would_survive",
         "state": {
-          "Name": "tfc:plant/water_lily",
-          "Properties": {
-            "age": "1",
-            "stage": "1"
-          }
+          "Name": "tfc:plant/yellow_water_lily"
         }
       }
     }

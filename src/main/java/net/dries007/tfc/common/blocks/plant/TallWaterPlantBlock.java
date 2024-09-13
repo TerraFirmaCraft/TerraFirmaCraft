@@ -116,13 +116,12 @@ public abstract class TallWaterPlantBlock extends TFCTallGrassBlock implements I
     public void placeTwoHalves(LevelAccessor level, BlockPos pos, int flags, RandomSource random)
     {
         final BlockPos posAbove = pos.above();
-        final int age = random.nextInt(4);
         final Fluid fluidBottom = level.getFluidState(pos).getType();
         final Fluid fluidTop = level.getFluidState(posAbove).getType();
         if (!fluidBottom.isSame(Fluids.EMPTY))
         {
-            final BlockState state = FluidHelpers.fillWithFluid(defaultBlockState().setValue(AGE, age).setValue(PART, Part.LOWER), fluidBottom);
-            final BlockState stateUp = FluidHelpers.fillWithFluid(defaultBlockState().setValue(AGE, age).setValue(PART, Part.UPPER), fluidTop);
+            final BlockState state = FluidHelpers.fillWithFluid(defaultBlockState().setValue(PART, Part.LOWER), fluidBottom);
+            final BlockState stateUp = FluidHelpers.fillWithFluid(defaultBlockState().setValue(PART, Part.UPPER), fluidTop);
             if (state != null && stateUp != null)
             {
                 level.setBlock(pos, state, flags);

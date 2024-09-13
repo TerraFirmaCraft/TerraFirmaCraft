@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "block/cross",
+  "parent": "item/generated",
   "textures": {
-    "cross": "tfc:block/plant/meads_milkweed/meads_milkweed_6"
+    "layer0": "tfc:item/plant/yellow_water_lily"
   }
 }
