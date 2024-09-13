@@ -6,6 +6,9 @@
 
 package net.dries007.tfc.util.registry;
 
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import org.jetbrains.annotations.Nullable;
+
 import net.dries007.tfc.common.blocks.plant.PlantBlock;
 
 /**
@@ -58,4 +61,6 @@ public interface RegistryPlant
      */
     float getSproutingEnd();
 
+    @Nullable
+    IntegerProperty getAgeProperty();
 }

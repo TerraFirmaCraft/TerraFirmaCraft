@@ -724,7 +724,7 @@ SINGLE_BLOCK_STAGE_PLANTS: dict[str, list[int, int, int, int, int, int]] = {
     'sacred_datura': [0, 1, 2, 3, 4, 5],
     'saguaro_fruit': [0, 1, 1, 1, 1, 1],
     'silver_spurflower': [0, 1, 1, 1, 1, 2],
-    'strelitzia': [0, 1, 1, 1, 1, 2],
+    'strelitzia': [0, 1, 2, 3, 4, 5],
     'tropical_milkweed': [0, 1, 1, 1, 2, 3],
     'yucca': [0, 1, 2, 2, 2, 3]
 }

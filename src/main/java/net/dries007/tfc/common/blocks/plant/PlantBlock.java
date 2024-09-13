@@ -116,7 +116,13 @@ public abstract class PlantBlock extends TFCBushBlock
     {
         super(properties);
 
-        registerDefaultState(getStateDefinition().any().setValue(AGE, 0));
+        BlockState stateDefinition = getStateDefinition().any();
+        IntegerProperty ageProperty = getPlant().getAgeProperty();
+        if (ageProperty != null)
+        {
+            stateDefinition = stateDefinition.setValue(ageProperty, 0);
+        }
+        registerDefaultState(stateDefinition);
     }
 
     @Override
@@ -137,20 +143,20 @@ public abstract class PlantBlock extends TFCBushBlock
     @Override
     protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
-        //TODO: Remove age property from most plants
-        final int age = state.getValue(AGE);
-        if (random.nextDouble() < TFCConfig.SERVER.plantGrowthChance.get() && age < 3)
+        final var ageProp = getPlant().getAgeProperty();
+        if (ageProp != null)
         {
-            state = state.setValue(AGE, age + 1);
-            level.setBlockAndUpdate(pos, state);
+            final int age = state.getValue(ageProp);
+            if (age < 3)
+            {
+                state = state.setValue(AGE, age + 1);
+                level.setBlockAndUpdate(pos, state);
+            }
         }
     }
 
     /**
      * Gets the plant metadata for this block.
-     * <p>
-     * The stage property is isolated and referenced via this as it is needed in the {@link Block} constructor - which builds the state container, and requires all property references to be computed in {@link Block#createBlockStateDefinition(StateDefinition.Builder)}.
-     * <p>
      * See the various {@link PlantBlock#create(RegistryPlant, ExtendedProperties)} methods and subclass versions for how to use.
      */
     public abstract RegistryPlant getPlant();
@@ -164,7 +170,10 @@ public abstract class PlantBlock extends TFCBushBlock
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        builder.add(AGE);
+        if (getPlant().getAgeProperty() != null)
+        {
+            builder.add(AGE);
+        }
     }
 
     @Override

@@ -17,6 +17,7 @@ import net.minecraft.world.item.PlaceOnWaterBlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
@@ -185,6 +186,7 @@ public enum Plant implements RegistryPlant
     private static final EnumSet<Plant> ITEM_TINTED_PLANTS = EnumSet.of(BLUEGRASS, BROMEGRASS, FOUNTAIN_GRASS, ORCHARD_GRASS, RYEGRASS, SCUTCH_GRASS, TIMOTHY_GRASS, RADDIA_GRASS, KING_FERN, MOSS, SAGO, SWITCHGRASS, TALL_FESCUE_GRASS, IVY, JUNGLE_VINES, HANGING_VINES, GUTWEED);
     private static final EnumSet<Plant> FLOWERPOT_TINTED_PLANTS = EnumSet.of(PHILODENDRON, MOSS, TREE_FERN);
 
+    private final @Nullable IntegerProperty ageProperty;
     private final float speedFactor;
     private final boolean isWetSeasonBlooming;
     private final float bloomOffset;
@@ -220,6 +222,21 @@ public enum Plant implements RegistryPlant
         this.sproutingEnd = sproutingEnd;
         this.startTime = startTime;
         this.endTime = endTime;
+
+        final int maxAge = getMaxAgeForType(type);
+        this.ageProperty = maxAge > 0 ? TFCBlockStateProperties.getAgeProperty(maxAge) : null;
+    }
+
+    private int getMaxAgeForType(BlockType type)
+    {
+        if (type == BlockType.GRASS_WATER || type == BlockType.GRASS_WATER_FRESH || type == BlockType.BEACH_GRASS || type == BlockType.SHORT_GRASS || type == BlockType.TALL_GRASS || type == BlockType.FLOWERBED)
+        {
+            return 3;
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     public Block create()
@@ -326,6 +343,12 @@ public enum Plant implements RegistryPlant
     public boolean hasFlowerPot()
     {
         return type == BlockType.STANDARD || type == BlockType.FLOWERBED || type == BlockType.DRY || type == BlockType.CACTUS_FLOWER || SPECIAL_POTTED_PLANTS.contains(this);
+    }
+
+    @Nullable
+    public IntegerProperty getAgeProperty()
+    {
+        return ageProperty;
     }
 
     /**
