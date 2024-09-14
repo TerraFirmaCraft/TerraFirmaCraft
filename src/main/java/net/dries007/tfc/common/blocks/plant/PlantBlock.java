@@ -162,12 +162,6 @@ public abstract class PlantBlock extends TFCBushBlock
     public abstract RegistryPlant getPlant();
 
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext context)
-    {
-        return defaultBlockState();
-    }
-
-    @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         if (getPlant().getAgeProperty() != null)
