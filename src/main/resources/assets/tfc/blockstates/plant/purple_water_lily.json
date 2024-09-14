@@ -1,21 +1,31 @@
 {
-  "variants": {
-    "": [
-      {
-        "model": "tfc:block/plant/purple_water_lily_dynamic_east"
-      },
-      {
-        "model": "tfc:block/plant/purple_water_lily_dynamic_south",
-        "y": 90
-      },
-      {
-        "model": "tfc:block/plant/purple_water_lily_dynamic_west",
-        "y": 180
-      },
-      {
-        "model": "tfc:block/plant/purple_water_lily_dynamic_north",
-        "y": 270
-      }
-    ]
-  }
+  "multipart": [
+	{
+      "apply": [
+        {
+          "model": "tfc:block/plant/water_lily_empty"
+        }
+      ]
+    },
+	{
+      "apply": [
+          {
+			"model": "tfc:block/plant/purple_water_lily_dynamic_east"
+          },
+		  {
+			"model": "tfc:block/plant/purple_water_lily_dynamic_south",
+			"y": 90
+		  },
+		  {
+			"model": "tfc:block/plant/purple_water_lily_dynamic_west",
+			"y": 180
+		  },
+		  {
+			"model": "tfc:block/plant/purple_water_lily_dynamic_north",
+			"y": 270
+		  }
+      ]
+    }
+  ]
 }
+

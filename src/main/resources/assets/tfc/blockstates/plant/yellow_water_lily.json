@@ -1,6 +1,14 @@
 {
-  "variants": {
-    "": [
+  "multipart": [
+	{
+      "apply": [
+        {
+          "model": "tfc:block/plant/water_lily_empty"
+        }
+      ]
+    },
+	{
+      "apply": [
       {
         "model": "tfc:block/plant/yellow_water_lily_dynamic_east"
       },
@@ -16,6 +24,7 @@
         "model": "tfc:block/plant/yellow_water_lily_dynamic_north",
         "y": 270
       }
-    ]
-  }
+      ]
+    }
+  ]
 }

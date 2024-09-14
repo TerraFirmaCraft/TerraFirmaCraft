@@ -117,7 +117,8 @@ public class PlantBlockModel implements IDynamicBakedModel, IUnbakedGeometry<Pla
             else
             {
                 randomScale = Mth.clampedMap(Climate.getAverageTemperature(level, pos), 16f, 26f, 0.03f, 0.5f);
-                //TODO: Needs to be updated for hemispheral model
+
+                //This line is all that should need to change to support hemispheral seasons
                 start = start + 0.5f;
             }
             start = (start + random.nextFloat(-randomScale, randomScale)) % 1;
@@ -191,8 +192,6 @@ public class PlantBlockModel implements IDynamicBakedModel, IUnbakedGeometry<Pla
         }
     }
 
-
-    //TODO: Revisit with variable day lengths
     public BakedModel getModelByDayTime(float startTime, float endTime)
     {
         final int dayTime = (int) Calendars.CLIENT.getCalendarDayTime();
@@ -204,7 +203,6 @@ public class PlantBlockModel implements IDynamicBakedModel, IUnbakedGeometry<Pla
         assert bloomingBakedModel != null;
         return bloomingBakedModel;
     }
-
 
     @Override
     public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> atlas, ModelState modelState, ItemOverrides overrides)
@@ -265,11 +263,10 @@ public class PlantBlockModel implements IDynamicBakedModel, IUnbakedGeometry<Pla
         return false;
     }
 
-    //TODO: This probably needs to return an actual texture... Could probably be a generic "plant" texture though
     @Override
     public TextureAtlasSprite getParticleIcon()
     {
-        return RenderHelpers.missingTexture();
+        return bloomingBakedModel != null ? bloomingBakedModel.getParticleIcon() : RenderHelpers.missingTexture();
     }
 
     @Override
