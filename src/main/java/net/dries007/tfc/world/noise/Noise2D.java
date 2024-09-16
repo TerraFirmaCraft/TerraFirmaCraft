@@ -151,6 +151,22 @@ public interface Noise2D
     }
 
     /**
+     * Minimum of two noises.
+     */
+    default Noise2D min(Noise2D other)
+    {
+        return (x, y) -> Math.min(Noise2D.this.noise(x, y), other.noise(x, y));
+    }
+
+    /**
+     * Maximum of two noises.
+     */
+    default Noise2D max(Noise2D other)
+    {
+        return (x, y) -> Math.max(Noise2D.this.noise(x, y), other.noise(x, y));
+    }
+
+    /**
      * Product of two noises - lazily evaluates the second if the first evaluates to zero.
      */
     default Noise2D lazyProduct(Noise2D other)

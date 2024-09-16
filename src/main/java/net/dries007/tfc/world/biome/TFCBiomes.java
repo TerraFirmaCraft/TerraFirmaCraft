@@ -25,6 +25,7 @@ import net.dries007.tfc.world.river.RiverBlendType;
 import net.dries007.tfc.world.surface.builder.BadlandsSurfaceBuilder;
 import net.dries007.tfc.world.surface.builder.DuneSurfaceBuilder;
 import net.dries007.tfc.world.surface.builder.GrassyDunesSurfaceBuilder;
+import net.dries007.tfc.world.surface.builder.KarrenSurfaceBuilder;
 import net.dries007.tfc.world.surface.builder.LowlandsSurfaceBuilder;
 import net.dries007.tfc.world.surface.builder.MountainSurfaceBuilder;
 import net.dries007.tfc.world.surface.builder.FlatsSurfaceBuilder;
@@ -59,7 +60,7 @@ public final class TFCBiomes
     public static final BiomeExtension HIGHLANDS = register("highlands", builder().heightmap(BiomeNoise::sharpHills).surface(NormalSurfaceBuilder.ROCKY).spawnable().type(RiverBlendType.CANYON)); // Hills with sharp, exposed rocky areas.
     public static final BiomeExtension BADLANDS = register("badlands", builder().heightmap(BiomeNoise::badlands).surface(BadlandsSurfaceBuilder.NORMAL).spawnable().type(RiverBlendType.CANYON)); // Very high flat area with steep relief carving, similar to vanilla mesas.
     public static final BiomeExtension INVERTED_BADLANDS = register("inverted_badlands", builder().heightmap(BiomeNoise::bryceCanyon).surface(BadlandsSurfaceBuilder.INVERTED).spawnable().type(RiverBlendType.CANYON)); // Inverted badlands: hills with additive ridges, similar to vanilla bryce canyon mesas.
-    public static final BiomeExtension PLATEAU = register("plateau", builder().heightmap(seed -> BiomeNoise.hills(seed, 20, 30)).surface(MountainSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.TALL_CANYON).noSandyRiverShores()); // Very high area, very flat top.
+    public static final BiomeExtension PLATEAU = register("plateau", builder().heightmap(seed -> BiomeNoise.karren(seed, BiomeNoise.hills(seed, 22, 32), 0.15, 0.4, 1.5)).surface(KarrenSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.TALL_CANYON).noSandyRiverShores()); // Very high area, very flat top.
     public static final BiomeExtension CANYONS = register("canyons", builder().heightmap(seed -> BiomeNoise.canyons(seed, -2, 40)).surface(NormalSurfaceBuilder.INSTANCE).volcanoes(6, 14, 30, 28).spawnable().type(RiverBlendType.CANYON).noSandyRiverShores()); // Medium height with snake like ridges, minor volcanic activity
 
     // High biomes

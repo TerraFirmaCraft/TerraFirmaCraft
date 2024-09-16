@@ -127,6 +127,30 @@ public final class BiomeNoise
             .scaled(-0.75f, 0.7f, SEA_LEVEL_Y - 3, SEA_LEVEL_Y + 28);
     }
 
+    // Inspired by the bare Karst at Burren, Ireland
+    // Can be applied over any base terrain noise map
+    public static Noise2D karren(long seed, Noise2D baseTerrainNoise, double widthBot, double widthTop, double scale)
+    {
+        final int minHeight = SEA_LEVEL_Y + 2;
+
+        //TODO: This function should actually be moved somewhere that both this and KarrenSurfaceBuilder can use it
+        //TODO: Also maybe should use world seed if that can be accessed from both places?
+        final Noise2D crevices = new OpenSimplex2D(398767567L)
+            .octaves(2)
+            .spread(0.08f)
+            .map(
+                y -> {
+                    y = Math.abs(y);
+                    y = y < widthBot ? -1 : y < widthTop ? y - widthTop : 0;
+                    y = y * scale;
+
+                    return y;
+                }
+            );
+
+        return crevices.add(baseTerrainNoise).map(y -> Math.max(y, minHeight));
+    }
+
     public static double sharpHillsMap(double in)
     {
         final double in0 = 1.0f, in1 = 0.67f, in2 = 0.15f, in3 = -0.15f, in4 = -0.67f, in5 = -1.0f;
