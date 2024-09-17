@@ -98,4 +98,10 @@ public class BiomeNoiseTest implements TestSetup
     {
         terrain.draw("noise_shilin", shilin(seed(), BiomeNoise.hills(seed(), 22, 32)));
     }
+
+    @Test
+    public void testFengcong()
+    {
+        terrain.draw("noise_fengcong", fengcong(seed(), BiomeNoise.hills(seed(), 22, 32)));
+    }
 }

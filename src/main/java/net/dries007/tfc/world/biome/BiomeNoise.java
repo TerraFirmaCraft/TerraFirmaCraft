@@ -191,6 +191,22 @@ public final class BiomeNoise
         return ridges.lazyProduct(cuts).lazyProduct(bumps).add(baseTerrainNoise).map(y -> Math.max(y, minHeight));
     }
 
+    public static Noise2D fengcong(long seed, Noise2D baseTerrainNoise)
+    {
+        final double scale = 45;
+
+        final Noise2D cones = new OpenSimplex2D(seed)
+            .octaves(3)
+            .spread(0.06)
+            .map(x -> {
+                x = -0.5 * Math.cos(Math.PI * Math.sqrt(Math.abs(x))) + 0.5;
+                x = scale * x * x * x;
+                return x; // Re-add +sea level here if you want to take the min again
+            });
+
+        return baseTerrainNoise.add(cones);
+    }
+
     public static double sharpHillsMap(double in)
     {
 
