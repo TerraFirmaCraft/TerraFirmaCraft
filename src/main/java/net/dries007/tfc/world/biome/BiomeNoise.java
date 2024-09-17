@@ -151,8 +151,49 @@ public final class BiomeNoise
         return crevices.add(baseTerrainNoise).map(y -> Math.max(y, minHeight));
     }
 
+    // Can be applied over any base terrain noise map
+    public static Noise2D shilin(long seed, Noise2D baseTerrainNoise)
+    {
+        final int minHeight = SEA_LEVEL_Y + 2;
+        final double widthTop = 0.1;
+        final double widthBot = 0.25;
+        final double scale = 15;
+
+        //TODO: This function should actually be moved somewhere that both this and ShilinSurfaceBuilder can use it
+        //TODO: Also maybe should use world seed if that can be accessed from both places?
+        final Noise2D ridges = new OpenSimplex2D(398767567L)
+            .octaves(2)
+            .spread(0.08f)
+            .map(
+                y -> {
+                    y = Math.abs(y);
+                    y = y < widthTop ? 1 : y < widthBot ? 1 + (0.67 * (y - widthTop) / (widthTop - widthBot)) : 0;
+                    y = y * scale;
+
+                    return y;
+                }
+            );
+
+        final Noise2D cuts = new OpenSimplex2D(45764379L)
+            .octaves(2)
+            .spread(0.04f)
+            .map(
+                y -> {
+                    y = Math.abs(y);
+                    y = y < widthTop * 0.65 ? 1 : y < widthBot * 1.2 ? 1 + ((y - widthTop * 0.65) / (widthTop * 0.65 - widthBot * 1.2)) : 0;
+
+                    return 1 - y;
+                }
+            );
+
+        final Noise2D bumps = new OpenSimplex2D(83436545633L).spread(0.16).scaled(0.6, 1.0);
+
+        return ridges.lazyProduct(cuts).lazyProduct(bumps).add(baseTerrainNoise).map(y -> Math.max(y, minHeight));
+    }
+
     public static double sharpHillsMap(double in)
     {
+
         final double in0 = 1.0f, in1 = 0.67f, in2 = 0.15f, in3 = -0.15f, in4 = -0.67f, in5 = -1.0f;
         final double out0 = 1.0f, out1 = 0.7f, out2 = 0.5f, out3 = -0.5f, out4 = -0.7f, out5 = -1.0f;
 

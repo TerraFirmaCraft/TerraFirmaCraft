@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import net.dries007.tfc.test.TestSetup;
+import net.dries007.tfc.world.biome.BiomeNoise;
 import net.dries007.tfc.world.noise.Noise2D;
 
 import static net.dries007.tfc.world.TFCChunkGenerator.*;
@@ -89,6 +90,12 @@ public class BiomeNoiseTest implements TestSetup
     @Test
     public void testKarren()
     {
-        terrain.draw("noise_karren", karren(seed()));
+        terrain.draw("noise_karren", karren(seed(), BiomeNoise.hills(seed(), 22, 32), 0.15, 0.4, 1.5));
+    }
+
+    @Test
+    public void testShilin()
+    {
+        terrain.draw("noise_shilin", shilin(seed(), BiomeNoise.hills(seed(), 22, 32)));
     }
 }
