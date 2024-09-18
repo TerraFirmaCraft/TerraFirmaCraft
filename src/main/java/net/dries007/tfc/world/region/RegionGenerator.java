@@ -12,12 +12,12 @@ import java.util.function.BiConsumer;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.TestOnly;
 import org.jetbrains.annotations.VisibleForTesting;
 
 import net.dries007.tfc.world.FastConcurrentCache;
-import net.dries007.tfc.world.chunkdata.RockGenerator;
+import net.dries007.tfc.world.chunkdata.ChunkDataGenerator;
+import net.dries007.tfc.world.chunkdata.RegionChunkDataGenerator;
 import net.dries007.tfc.world.layer.TFCLayers;
 import net.dries007.tfc.world.layer.framework.Area;
 import net.dries007.tfc.world.layer.framework.AreaFactory;
@@ -32,7 +32,7 @@ import net.dries007.tfc.world.settings.Settings;
  * class need to support concurrent access, either by being concurrent i.e. {@link FastConcurrentCache}, thread local {@link ThreadLocal},
  * or immutable / stateless i.e. {@link Noise2D}
  */
-public class RegionGenerator
+public final class RegionGenerator
 {
     private static double triangle(double frequency, double value)
     {
@@ -62,7 +62,7 @@ public class RegionGenerator
     private final FastConcurrentCache<Region> cellCache;
     private final FastConcurrentCache<RegionPartition> partitionCache;
 
-    private @Nullable RockGenerator rockGenerator;
+    private final ChunkDataGenerator chunkDataGenerator;
 
     public RegionGenerator(Settings settings, RandomSource random)
     {
@@ -107,6 +107,8 @@ public class RegionGenerator
 
         biomeArea = ThreadLocal.withInitial(biomeAreaFactory);
         rockArea = ThreadLocal.withInitial(rockAreaFactory);
+
+        this.chunkDataGenerator = new RegionChunkDataGenerator(this, settings.rockLayerSettings(), random);
     }
 
     public long seed()
@@ -114,9 +116,9 @@ public class RegionGenerator
         return seed;
     }
 
-    public void setRockGenerator(RockGenerator generator)
+    public ChunkDataGenerator chunkDataGenerator()
     {
-        rockGenerator = generator;
+        return chunkDataGenerator;
     }
 
     /**
@@ -124,8 +126,7 @@ public class RegionGenerator
      */
     public RockSettings getSurfaceRock(int gridX, int gridZ)
     {
-        assert rockGenerator != null;
-        return rockGenerator.generateSurfaceRock(Units.gridToBlock(gridX), Units.gridToBlock(gridZ));
+        return chunkDataGenerator.generateSurfaceRock(Units.gridToBlock(gridX), Units.gridToBlock(gridZ));
     }
 
     public RegionPartition.Point getOrCreatePartitionPoint(int gridX, int gridZ)

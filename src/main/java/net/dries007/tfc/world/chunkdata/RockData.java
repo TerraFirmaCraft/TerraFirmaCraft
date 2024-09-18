@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.world.region.Units;
 import net.dries007.tfc.world.settings.RockSettings;
 
-public class RockData
+public final class RockData
 {
     private final @Nullable ChunkDataGenerator generator;
     private int @Nullable [] surfaceHeight;
