@@ -23,7 +23,7 @@
     {
       "type": "tfc:sealed_barrel_recipe",
       "recipe": "tfc:barrel/dye/disc_chirp",
-      "text": "Жидкие красители можно использовать для окончательной обработки $(item)Музыкальных дисков$()."
+      "text": "Жидкие красители можно использовать для финишной обработки $(item)Музыкальных дисков$()."
     },
     {
       "type": "tfc:sealed_barrel_recipe",
@@ -34,7 +34,7 @@
       "type": "tfc:sealed_barrel_recipe",
       "anchor": "lye",
       "recipe": "tfc:barrel/dye/bleach_concrete_powder",
-      "text": "Пять $(item)Древесной золы$() и 1000мБ $(item)Воды$(), вскипяченные в $(l:mechanics/pot)Котле$(), дают щелок. 25мБ Щелока удаляют цвет с окрашенного предмета."
+      "text": "Пять единиц $(item)Древесной золы$() и 1000мБ $(item)Воды$(), вскипяченные в $(l:mechanics/pot)Котле$(), дают щелок. 25мБ Щелока удаляют цвет с окрашенного предмета."
     },
     {
       "type": "patchouli:text",

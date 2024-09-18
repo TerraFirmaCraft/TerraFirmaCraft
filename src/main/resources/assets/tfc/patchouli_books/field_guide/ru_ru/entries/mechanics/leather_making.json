@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Кожа$() - это прочный материал, получаемый из шкур животных. Она необходима для изготовления $(l:mechanics/armor)Доспехов$(), $(thing)Седел$() или $(l:mechanics/bellows)Меха$(). $()Сырые шкуры$() должны быть обработаны несколькими процессами: $(l:mechanics/leather_making#soaking)замачиванием$(), $(l:mechanics/leather_making#scraping)скоблением$(), $(l:mechanics/leather_making#preparing)подготовкой$() и $(l:mechanics/leather_making#tanning)дублением$(), чтобы превратить их в $(thing)Кожу$()."
+      "text": "$(thing)Кожа$() - это прочный материал, получаемый из шкур животных. Она необходима для изготовления $(l:mechanics/armor)Доспехов$(), $(thing)Сёдел$() или $(l:mechanics/bellows)Кузнечных мехов$(). $()Сырые шкуры$() должны быть обработаны несколькими процессами: $(l:mechanics/leather_making#soaking)замачиванием$(), $(l:mechanics/leather_making#scraping)скоблением$(), $(l:mechanics/leather_making#preparing)подготовкой$() и $(l:mechanics/leather_making#tanning)дублением$(), чтобы превратить их в $(thing)Кожу$()."
     },
     {
       "type": "patchouli:spotlight",
@@ -54,7 +54,7 @@
       "type": "tfc:sealed_barrel_recipe",
       "anchor": "tanning",
       "recipe": "tfc:barrel/medium_leather",
-      "text": "Наконец, $(thing)Подготовленные шкуры$() должны быть запечатаны в $(l:mechanics/barrels#tannin)Бочке с дубильной кислотой$(), которая является кислым химическим соединением, помогающим превратить шкуру в $(thing)Кожу$(). После еще восьми часов вы можете извлечь $(thing)Кожу$() из бочки."
+      "text": "Наконец, $(thing)Подготовленные шкуры$() должны быть запечатаны в $(l:mechanics/barrels#tannin)Бочке с дубильной кислотой$(), которая является кислотным химическим соединением, помогающим превратить шкуру в $(thing)Кожу$(). По прошествии восьми часов вы можете извлечь $(thing)Кожу$() из бочки."
     }
   ],
   "read_by_default": true,
