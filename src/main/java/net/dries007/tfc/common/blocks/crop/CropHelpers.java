@@ -76,8 +76,8 @@ public final class CropHelpers
         final ICalendar calendar = Calendars.get(level);
         final BlockPos sourcePos = pos.below();
         final int hydration = FarmlandBlock.getHydration(level, sourcePos);
-        final float startTemperature = Climate.getTemperature(level, pos, calendar, Calendars.SERVER.ticksToCalendarTicks(fromTick));
-        final float endTemperature = Climate.getTemperature(level, pos, calendar, Calendars.SERVER.ticksToCalendarTicks(toTick));
+        final float startTemperature = Climate.getTemperature(level, pos, calendar, Calendars.SERVER.getFixedCalendarTicksFromTick(fromTick));
+        final float endTemperature = Climate.getTemperature(level, pos, calendar, Calendars.SERVER.getFixedCalendarTicksFromTick(toTick));
         final long tickDelta = toTick - fromTick;
 
         final ICropBlock cropBlock = (ICropBlock) state.getBlock();

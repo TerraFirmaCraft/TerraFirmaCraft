@@ -9,7 +9,6 @@ package net.dries007.tfc.client.screen;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.FormattedText;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
@@ -22,11 +21,9 @@ import net.dries007.tfc.client.screen.button.BarrelSealButton;
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
 import net.dries007.tfc.common.blocks.devices.BarrelBlock;
 import net.dries007.tfc.common.container.BarrelContainer;
-import net.dries007.tfc.common.recipes.BarrelRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
-import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.tooltip.Tooltips;
 
 public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelContainer>
@@ -78,7 +75,7 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
                     graphics.drawString(font, recipe.getString(), 70 + Math.floorDiv(MAX_RECIPE_NAME_LENGTH - font.width(recipe), 2), 61, 0x404040, false);
                 }
             }
-            String date = ICalendar.getTimeAndDate(Calendars.CLIENT.ticksToCalendarTicks(blockEntity.getSealedTick()), Calendars.CLIENT.getCalendarDaysInMonth()).getString();
+            final String date = Calendars.CLIENT.getExactTimeAndDate(blockEntity.getSealedTick()).getString();
             graphics.drawString(font, date, imageWidth / 2 - font.width(date) / 2, 74, 0x404040, false);
         }
     }

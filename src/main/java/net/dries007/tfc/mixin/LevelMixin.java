@@ -11,14 +11,14 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
-
-import net.dries007.tfc.client.ClimateRenderCache;
-import net.dries007.tfc.util.tracker.WeatherHelpers;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import net.dries007.tfc.client.ClimateRenderCache;
+import net.dries007.tfc.client.overworld.ClientSolarCalculatorBridge;
+import net.dries007.tfc.util.tracker.WeatherHelpers;
 
 @Mixin(Level.class)
 public abstract class LevelMixin
@@ -47,6 +47,16 @@ public abstract class LevelMixin
         if (((Level) (Object) this).isClientSide())
         {
             cir.setReturnValue(ClimateRenderCache.INSTANCE.getRainLevel(partialTick));
+        }
+    }
+
+    @Inject(method = "getDayTime", at = @At("HEAD"), cancellable = true)
+    private void getSolarAdjustedDayTimeOnClient(CallbackInfoReturnable<Long> cir)
+    {
+        final Level level = (Level) (Object) this;
+        if (level.isClientSide())
+        {
+            cir.setReturnValue(ClientSolarCalculatorBridge.getDayTime(level));
         }
     }
 }

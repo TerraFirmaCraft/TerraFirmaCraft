@@ -148,7 +148,7 @@ public class ClientForgeEventHandler
                 tooltip.add("");
                 tooltip.add(AQUA + TerraFirmaCraft.MOD_NAME);
                 tooltip.add("Date: %s Tick: %d Calendar: %d".formatted(
-                    Calendars.CLIENT.getCalendarTimeAndDate().getString(),
+                    Calendars.CLIENT.getTimeAndDate().getString(),
                     Calendars.CLIENT.getTicks(),
                     Calendars.CLIENT.getCalendarTicks()
                 ));
@@ -250,7 +250,6 @@ public class ClientForgeEventHandler
                 final MutableComponent heatTooltip = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(fuel.temperature());
                 if (heatTooltip != null)
                 {
-                    // burns at %s for %s
                     tooltip.add(Component.translatable("tfc.tooltip.fuel_burns_at", heatTooltip, Calendars.CLIENT.getTimeDelta(fuel.duration())));
                 }
             }
@@ -531,7 +530,7 @@ public class ClientForgeEventHandler
             final BlockPos pos = event.getCamera().getBlockPosition();
             if (fluid == FogType.NONE)
             {
-                final float fog = Climate.getFog(mc.level, pos);
+                final float fog = Climate.get(mc.level).getFog(mc.level, pos);
                 if (fog != 0)
                 {
                     final float renderDistance = mc.gameRenderer.getRenderDistance();

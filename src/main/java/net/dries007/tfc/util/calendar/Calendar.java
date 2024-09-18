@@ -9,10 +9,9 @@ package net.dries007.tfc.util.calendar;
 import com.mojang.logging.LogUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.util.Mth;
 import org.slf4j.Logger;
 
 import net.dries007.tfc.config.TFCConfig;
@@ -24,31 +23,40 @@ import net.dries007.tfc.config.TFCConfig;
  */
 public class Calendar implements ICalendar
 {
+    public static final int DEFAULT_MONTH_LENGTH = 8;
+
     public static final Logger LOGGER = LogUtils.getLogger();
     public static final StreamCodec<ByteBuf, Calendar> STREAM_CODEC = StreamCodec.composite(
         ByteBufCodecs.VAR_INT, c -> c.daysInMonth,
         ByteBufCodecs.VAR_LONG, c -> c.playerTicks,
         ByteBufCodecs.VAR_LONG, c -> c.calendarTicks,
-        ByteBufCodecs.BOOL, c -> c.doDaylightCycle,
+        ByteBufCodecs.FLOAT, c -> c.calendarTickRate,
+        ByteBufCodecs.FLOAT, c -> c.calendarPartialTick,
         ByteBufCodecs.BOOL, c -> c.arePlayersLoggedOn,
         Calendar::new
     );
 
     protected long playerTicks, calendarTicks;
     protected int daysInMonth;
-    protected boolean doDaylightCycle, arePlayersLoggedOn;
+    /** The tick rate (in {@code calendarTicks/playerTick}) of the calendar. Used for ticking and projections */
+    protected float calendarTickRate;
+    /** The fractional partial calendar tick that has accumulated since the last player tick. */
+    protected float calendarPartialTick;
+    /** {@code true} if either players are logged on (which forces calendar ticking), OR, we want to act as if they are (config-based). */
+    protected boolean arePlayersLoggedOn;
 
     public Calendar()
     {
         resetToDefault();
     }
 
-    private Calendar(int daysInMonth, long playerTicks, long calendarTicks, boolean doDaylightCycle, boolean arePlayersLoggedOn)
+    private Calendar(int daysInMonth, long playerTicks, long calendarTicks, float calendarTickRate, float calendarPartialTick, boolean arePlayersLoggedOn)
     {
         this.daysInMonth = daysInMonth;
         this.playerTicks = playerTicks;
         this.calendarTicks = calendarTicks;
-        this.doDaylightCycle = doDaylightCycle;
+        this.calendarTickRate = calendarTickRate;
+        this.calendarPartialTick = calendarPartialTick;
         this.arePlayersLoggedOn = arePlayersLoggedOn;
     }
 
@@ -85,69 +93,51 @@ public class Calendar implements ICalendar
         return daysInMonth;
     }
 
+    @Override
+    public long getCalendarTickFromOffset(long offsetTick)
+    {
+        return calendarTicks + (long) ((double) calendarPartialTick + (double) calendarTickRate * offsetTick);
+    }
+
+    @Override
+    public long getFixedCalendarTicksFromTick(long playerTick)
+    {
+        return (long) ((double) calendarTickRate * playerTick);
+    }
+
     public CompoundTag write()
     {
-        CompoundTag nbt = new CompoundTag();
-
+        final CompoundTag nbt = new CompoundTag();
         nbt.putInt("daysInMonth", daysInMonth);
-
         nbt.putLong("playerTime", playerTicks);
         nbt.putLong("calendarTime", calendarTicks);
-
-        nbt.putBoolean("doDaylightCycle", doDaylightCycle);
+        nbt.putFloat("calendarTickRate", calendarTickRate);
+        nbt.putFloat("calendarPartialTick", calendarPartialTick);
         nbt.putBoolean("arePlayersLoggedOn", arePlayersLoggedOn);
-
         return nbt;
     }
 
-    public void read(@Nullable CompoundTag nbt)
+    public void read(CompoundTag nbt)
     {
-        if (nbt != null)
-        {
-            daysInMonth = nbt.getInt("daysInMonth");
-
-            playerTicks = nbt.getLong("playerTime");
-            calendarTicks = nbt.getLong("calendarTime");
-
-            doDaylightCycle = nbt.getBoolean("doDaylightCycle");
-            arePlayersLoggedOn = nbt.getBoolean("arePlayersLoggedOn");
-        }
-    }
-
-    public void write(FriendlyByteBuf buffer)
-    {
-        buffer.writeVarInt(daysInMonth);
-
-        buffer.writeVarLong(playerTicks);
-        buffer.writeVarLong(calendarTicks);
-
-        buffer.writeBoolean(doDaylightCycle);
-        buffer.writeBoolean(arePlayersLoggedOn);
-    }
-
-    public void read(FriendlyByteBuf buffer)
-    {
-        daysInMonth = buffer.readVarInt();
-
-        playerTicks = buffer.readVarLong();
-        calendarTicks = buffer.readVarLong();
-
-        doDaylightCycle = buffer.readBoolean();
-        arePlayersLoggedOn = buffer.readBoolean();
+        daysInMonth = nbt.getInt("daysInMonth");
+        playerTicks = nbt.getLong("playerTime");
+        calendarTicks = nbt.getLong("calendarTime");
+        calendarTickRate = nbt.getFloat("calendarTickRate");
+        calendarPartialTick = nbt.getFloat("calendarPartialTick");
+        arePlayersLoggedOn = nbt.getBoolean("arePlayersLoggedOn");
     }
 
     /**
      * Resets to the value of the provided calendar
      */
-    public void resetTo(Calendar resetTo)
+    public void resetTo(Calendar other)
     {
-        this.daysInMonth = resetTo.daysInMonth;
-
-        this.playerTicks = resetTo.playerTicks;
-        this.calendarTicks = resetTo.calendarTicks;
-
-        this.doDaylightCycle = resetTo.doDaylightCycle;
-        this.arePlayersLoggedOn = resetTo.arePlayersLoggedOn;
+        this.daysInMonth = other.daysInMonth;
+        this.playerTicks = other.playerTicks;
+        this.calendarTicks = other.calendarTicks;
+        this.calendarTickRate = other.calendarTickRate;
+        this.calendarPartialTick = other.calendarPartialTick;
+        this.arePlayersLoggedOn = other.arePlayersLoggedOn;
     }
 
     /**
@@ -157,9 +147,17 @@ public class Calendar implements ICalendar
     {
         daysInMonth = TFCConfig.COMMON.defaultMonthLength.get();
         playerTicks = 0;
-        calendarTicks = ((long) TFCConfig.COMMON.defaultCalendarStartDay.get() * ICalendar.TICKS_IN_DAY) + (6L * ICalendar.TICKS_IN_HOUR);
-        doDaylightCycle = true;
+        calendarTicks = ((long) TFCConfig.COMMON.defaultCalendarStartDay.get() * ICalendar.CALENDAR_TICKS_IN_DAY) + (6L * ICalendar.CALENDAR_TICKS_IN_HOUR);
+        calendarTickRate = 20f / TFCConfig.COMMON.defaultCalendarDayLength.get();
+        calendarPartialTick = 0f;
         arePlayersLoggedOn = false;
+    }
+
+    protected final void advanceCalendarTick()
+    {
+        calendarPartialTick += calendarTickRate;
+        calendarTicks += Mth.floor(calendarPartialTick);
+        calendarPartialTick = Mth.frac(calendarPartialTick);
     }
 
     final class Transaction implements CalendarTransaction

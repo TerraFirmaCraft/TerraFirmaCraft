@@ -67,7 +67,6 @@ import net.dries007.tfc.data.recipes.SewingRecipes;
 import net.dries007.tfc.data.recipes.WeldingRecipes;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
-import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.registry.RegistryHolder;
 
 @SuppressWarnings("NotNullFieldNotInitialized")
@@ -187,7 +186,7 @@ public final class BuiltinRecipes extends VanillaRecipeProvider implements
             SizedFluidIngredient.of(fluidOf(Metal.CAST_IRON), 100),
             SizedIngredient.of(Items.CHARCOAL, 2),
             ItemStackProvider.of(TFCItems.RAW_IRON_BLOOM),
-            15 * ICalendar.TICKS_IN_HOUR
+            hours(15)
         ));
 
         // Blast Furnace Recipes

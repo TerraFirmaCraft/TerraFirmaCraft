@@ -366,9 +366,9 @@ public final class FoodCapability
     /**
      * @return The date, given a {@code creationDate} and a {@code decayDateModifier} which is not positive infinity, that the food will rot.
      */
-    public static long getRottenDate(long creationDate, float decayDateModifier)
+    public static long getRemainingTime(float decayDateModifier)
     {
-        return creationDate + (long) (decayDateModifier * DEFAULT_DECAY_TICKS);
+        return (long) (decayDateModifier * DEFAULT_DECAY_TICKS);
     }
 
     private static long calculateNewRoundedCreationDate(long ci, float p)

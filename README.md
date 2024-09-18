@@ -30,28 +30,19 @@ In order to understand all of these new features, TerraFirmaCraft comes with a d
 - Before creating a Pull Request, run `gradlew updateLicenses`. This will apply the correct license header to all project files.
 - We use python for data and asset generation, among other things. In order to run the generation scripts (all found in `/resources`), you will need to install the python modules `mcresources`, `pillow`, `nbtlib`, and `Levenshtein` (see `resources/requirements.txt`).
 
-### Copyright
+### Legal
 
-Primarily Copyright (c) Dries007, AlcatrazEscapee 2018 - ...
+Licensed under the [EUPL, Version 1.2](LICENSE.txt) unless otherwise noted.
 
-For a full list of contributors, see the git commit log.
+- `FastNoiseLite.java` is licensed under the [MIT License](https://github.com/Auburn/FastNoiseLite/blob/72d212e005e62c886c06f55f740571116f361571/LICENSE) and is modified from [FastNoiseLite](https://github.com/Auburn/FastNoiseLite)
+- `resources/bsc5p_radec_min.json` is a catalog and is used under the [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.en) unmodified from [BSC5P-JSON-XYZ](https://github.com/frostoven/BSC5P-JSON-XYZ)
+- Sounds are used under [CC0](https://creativecommons.org/publicdomain/zero/1.0/) unless otherwise noted.
+- `rock_slide_long_3` is licensed under [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/), and has been modified from the [original work](https://freesound.org/people/Benboncan/sounds/60085/).
 
-### License
-
-Please do read the full license. It's less than 300 lines of 80 characters long.
-
-Licensed under the EUPL, Version 1.2.
-You may obtain a copy of the Licence at: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
-It is also included in [LICENSE.txt](LICENSE.txt)
-
-### Credit
+### Acknowledgments
 
 Based on original work by Robert "Bioxx" Anthony, Amanda "Kittychanley" Halek and others.
 
 Music by Mike "Menoch" Pelaez
 
 Parts of this project are edited source code from the original TerraFirmaCraft for 1.7.10 mod. They are used under a different license with permission from the original author (Bioxx).
-
-Sounds are used under [CC0](https://creativecommons.org/publicdomain/zero/1.0/) unless otherwise noted.
-
-- `rock_slide_long_3` is licensed under [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/), and has been modified from the [original work](https://freesound.org/people/Benboncan/sounds/60085/).

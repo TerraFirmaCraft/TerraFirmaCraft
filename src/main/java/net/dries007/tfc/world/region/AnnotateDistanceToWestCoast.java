@@ -42,7 +42,7 @@ public enum AnnotateDistanceToWestCoast implements RegionTask
                             else
                             {
                                 int sum = 0;
-                                final float scale = context.generator().getTemperatureScale();
+                                final float scale = context.generator().settings.temperatureScale();
                                 final float frequency = Units.GRID_WIDTH_IN_BLOCK / (2f * scale);
                                 final float function = Math.abs(4f * frequency * point.z - 4f * Mth.floor(frequency * point.z + 0.75f)) - 1f;
                                 final int start = -2 + (function > 0.1 ? 1 : 0);
