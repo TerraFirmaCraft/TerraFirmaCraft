@@ -19,6 +19,7 @@
 !/resources/structure_templates/**/*.nbt
 !/resources/lang/**/*.json
 !/resources/requirements.txt
+!/resources/bsc5p_radec_min.json
 
 # Metadata
 !/build.gradle.kts

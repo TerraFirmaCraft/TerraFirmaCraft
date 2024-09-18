@@ -64,6 +64,7 @@ public final class PlayerInfo extends net.minecraft.world.food.FoodData implemen
     private float thirst = MAX_THIRST; // The current thirst of the player
     private long lastDrinkTick = Long.MIN_VALUE;
     private long intoxicationTick = Long.MIN_VALUE; // A future tick that the player is intoxicated until
+    private long sleepTick = Long.MIN_VALUE; // The last tick this player slept
     private ChiselMode chiselMode = ChiselMode.SMOOTH.value();
     private NutritionData nutrition = new NutritionData(0.5f, 0f); // Nutrition information
 
@@ -112,7 +113,7 @@ public final class PlayerInfo extends net.minecraft.world.food.FoodData implemen
     @Override
     public void addIntoxication(long ticks)
     {
-        long currentTick = Calendars.SERVER.getTicks();
+        final long currentTick = calendar().getTicks();
         if (intoxicationTick < currentTick)
         {
             intoxicationTick = currentTick;
@@ -123,6 +124,19 @@ public final class PlayerInfo extends net.minecraft.world.food.FoodData implemen
             intoxicationTick = currentTick + MAX_INTOXICATED_TICKS;
         }
         modified = true;
+    }
+
+    @Override
+    public int getPossibleSleepDuration()
+    {
+        final long sleepTicks = calendar().getFixedCalendarTicksFromTick((calendar().getTicks() - sleepTick) / 2);
+        return sleepTicks < ICalendar.CALENDAR_TICKS_IN_HOUR ? 0 : (int) sleepTicks;
+    }
+
+    @Override
+    public void resetSleepRestoration()
+    {
+        sleepTick = calendar().getTicks();
     }
 
     @Override
@@ -340,6 +354,7 @@ public final class PlayerInfo extends net.minecraft.world.food.FoodData implemen
         nutrition.readFromNbt(tag.get("nutrition"));
         nutrition.setHunger(getFoodLevel());
         intoxicationTick = tag.getLong("intoxication");
+        sleepTick = tag.getLong("sleep");
     }
 
     @Override
@@ -354,6 +369,7 @@ public final class PlayerInfo extends net.minecraft.world.food.FoodData implemen
         tag.putString("chiselMode", ChiselMode.REGISTRY.getKey(chiselMode).toString());
         tag.put("nutrition", nutrition.writeToNbt());
         tag.putLong("intoxication", intoxicationTick);
+        tag.putLong("sleep", sleepTick);
     }
 
     // ===== Forward FoodData to original ===== //

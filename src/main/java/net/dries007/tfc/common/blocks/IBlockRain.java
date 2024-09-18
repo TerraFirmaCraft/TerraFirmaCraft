@@ -6,11 +6,13 @@
 
 package net.dries007.tfc.common.blocks;
 
+import net.dries007.tfc.client.overworld.LevelRendererExtension;
+
 /**
  * Marker interface for blocks that have no collision, but should block rain. This is done via,
  * <ul>
  *     <li>{@link net.dries007.tfc.mixin.HeightmapMixin} makes this block appear opaque to the {@code MOTION_BLOCKING} heightmap</li>
- *     <li>{@link net.dries007.tfc.client.OverworldWeatherEffects} handles making rain particles appear on top of the block,
+ *     <li>{@link LevelRendererExtension} handles making rain particles appear on top of the block,
  *     rather than underneath, by querying a unique collision shape, and the same collision shape replacement code is done in
  *     {@link net.dries007.tfc.mixin.client.WaterDropParticleMixin}.</li>
  * </ul>
