@@ -94,7 +94,7 @@ def generate(rm: ResourceManager):
     item_heat(rm, 'raw_meat', '#tfc:foods/raw_meats', 1.0)
     item_heat(rm, 'cooked_meat', '#tfc:foods/cooked_meats', 1.0, destroy_at=900)
     item_heat(rm, 'seaweed', 'tfc:food/fresh_seaweed', 1.0)
-    item_heat(rm, 'dried_seaweed', 'tfc:food/dried_seaweed', 1.0, destroy_at=700)
+    item_heat(rm, 'dried_seaweed', 'tfc:food/dried_seaweed', 1.0)
     item_heat(rm, 'potato', 'tfc:food/potato', 1.0)
     item_heat(rm, 'giant_kelp_flower', 'tfc:plant/giant_kelp_flower', 1.0)
     item_heat(rm, 'dried_kelp', 'tfc:food/dried_kelp', 1.0)
