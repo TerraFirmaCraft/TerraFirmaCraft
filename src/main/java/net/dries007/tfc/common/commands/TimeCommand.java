@@ -65,7 +65,7 @@ public final class TimeCommand
                 )
                 .then(Commands.literal("days")
                     .then(Commands.argument("days", IntegerArgumentType.integer(1))
-                        .executes(context -> addTime(context, IntegerArgumentType.getInteger(context, "days") * (long) ICalendar.TICKS_IN_DAY))
+                        .executes(context -> addTime(context, IntegerArgumentType.getInteger(context, "days") * (long) ICalendar.CALENDAR_TICKS_IN_DAY))
                     )
                 )
                 .then(Commands.argument("ticks", IntegerArgumentType.integer(1))
@@ -99,7 +99,7 @@ public final class TimeCommand
     {
         final float currentFractionOfDay = Calendars.SERVER.getCalendarFractionOfDay();
         final float targetFraction = fractionOfDay > currentFractionOfDay ? fractionOfDay : 1 + fractionOfDay;
-        return addTime(context, (long) ((targetFraction - currentFractionOfDay) * ICalendar.TICKS_IN_DAY));
+        return addTime(context, (long) ((targetFraction - currentFractionOfDay) * ICalendar.CALENDAR_TICKS_IN_DAY));
     }
 
     private static int setTimeFromWeather(CommandContext<CommandSourceStack> context, boolean rain)
@@ -121,7 +121,7 @@ public final class TimeCommand
     private static int addTime(CommandContext<CommandSourceStack> context, long ticksToAdd)
     {
         Calendars.SERVER.skipForwardBy(ticksToAdd);
-        context.getSource().sendSuccess(() -> Component.translatable("tfc.commands.time.add_time", Calendars.SERVER.getTimeDelta(ticksToAdd), ticksToAdd), true);
+        context.getSource().sendSuccess(() -> Component.translatable("tfc.commands.time.add_time", Calendars.SERVER.getCalendarTimeDelta(ticksToAdd), ticksToAdd), true);
         return Command.SINGLE_SUCCESS;
     }
 }

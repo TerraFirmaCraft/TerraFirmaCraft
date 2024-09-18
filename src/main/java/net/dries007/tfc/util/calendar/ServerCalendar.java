@@ -61,42 +61,19 @@ public final class ServerCalendar extends Calendar
         sendUpdatePacket();
     }
 
-    /**
-     * Sets the current player time and calendar time from an overworld day time timestamp, e.g. sleeping will set the time to morning.
-     *
-     * @param worldTimeToSetTo a world time, obtained from {@link ServerLevel#getDayTime()}. Must be in [0, ICalendar.TICKS_IN_DAY]
-     * @return the number of ticks skipped (in world time)
-     * @deprecated use {@link #skipForwardBy(long)} instead.
-     */
-    @Deprecated
-    public long setTimeFromDayTime(long worldTimeToSetTo)
-    {
-        // Calculate the offset to jump to
-        long worldTimeJump = (worldTimeToSetTo % ICalendar.TICKS_IN_DAY) - getCalendarDayTime();
-        if (worldTimeJump < 0)
-        {
-            worldTimeJump += ICalendar.TICKS_IN_DAY;
-        }
-
-        calendarTicks += worldTimeJump;
-        playerTicks += worldTimeJump;
-
-        return worldTimeJump;
-    }
-
     public void setMonthLength(int newMonthLength)
     {
         // Recalculate the new calendar time
         // Preserve the current month, time of day, and position within the month
-        final long baseMonths = getTotalCalendarMonths();
-        final long baseDayTime = calendarTicks - (getTotalCalendarDays() * ICalendar.TICKS_IN_DAY);
 
-        // Minus one here because `getDayOfMonth` returns the player visible one (which adds one)
-        final float monthPercent = (float) (getCalendarDayOfMonth() - 1) / daysInMonth;
-        final int newDayOfMonth = (int) (monthPercent * newMonthLength);
+        final long baseMonths = calendarTicks / getCalendarTicksInMonth();
+        final double baseFractionOfMonth = getCalendarFractionOfMonth();
+        final long baseDayTime = calendarTicks % CALENDAR_TICKS_IN_DAY;
 
         this.daysInMonth = newMonthLength;
-        this.calendarTicks = (baseMonths * daysInMonth + newDayOfMonth) * ICalendar.TICKS_IN_DAY + baseDayTime;
+        this.calendarTicks = baseMonths * daysInMonth * CALENDAR_TICKS_IN_DAY // Advance to the new month
+            + ((long) (baseFractionOfMonth * daysInMonth)) * CALENDAR_TICKS_IN_HOUR // At a representative day of month
+            + baseDayTime; // With the same day time
 
         updateDayTime(getServer().overworld());
         sendUpdatePacket();
@@ -160,10 +137,7 @@ public final class ServerCalendar extends Calendar
     {
         if (arePlayersLoggedOn)
         {
-            calendarPartialTick += calendarTickRate;
-            calendarTicks += Mth.floor(calendarPartialTick);
-            calendarPartialTick = Mth.frac(calendarPartialTick);
-
+            advanceCalendarTick();
             if ((calendarTicks & 0x100) == 0) checkIfInTheFuture(level);
         }
         updateDayTime(level);
@@ -173,7 +147,7 @@ public final class ServerCalendar extends Calendar
     {
         final LocalDate date = LocalDate.now();
         final LocalDate calendarDate = LocalDate.of(
-            Mth.clamp((int) getTotalCalendarYears(), Year.MIN_VALUE, Year.MAX_VALUE),
+            Mth.clamp((int) getCalendarYear(), Year.MIN_VALUE, Year.MAX_VALUE),
             getCalendarMonthOfYear().ordinal() + 1,
             Mth.clamp(getCalendarDayOfMonth(), 1, 28)
         );

@@ -24,6 +24,7 @@ public class CommonConfig extends BaseConfig
     // Calendar
     public final Supplier<Integer> defaultMonthLength;
     public final Supplier<Integer> defaultCalendarStartDay;
+    public final Supplier<Integer> defaultCalendarDayLength;
 
     // Debug
     public final Supplier<Boolean> enableDatapackTests;
@@ -40,6 +41,7 @@ public class CommonConfig extends BaseConfig
 
         defaultMonthLength = builder.comment(
             "The number of days in a month, for newly created worlds.",
+            "",
             "This can be modified in existing worlds using the /time command"
         ).define("defaultMonthLength", Calendar.DEFAULT_MONTH_LENGTH, 1, Integer.MAX_VALUE);
         defaultCalendarStartDay = builder.comment(
@@ -47,6 +49,12 @@ public class CommonConfig extends BaseConfig
             "This represents a number of days offset from January 1, 1000",
             "The default is (5 * daysInMonth) = 40, which starts at June 1, 1000 (with the default daysInMonth = 8)"
         ).define("defaultCalendarStartDay", (5 * 8), -1, Integer.MAX_VALUE);
+        defaultCalendarDayLength = builder.comment(
+            "The month length (in minutes) for newly created worlds",
+            "The default (in TFC) is 24, which at 20 TPS makes one in-game hour equal to exactly one minute of real time.",
+            "",
+            "This can be modified in existing worlds using the /time command"
+        ).define("defaultCalendarDayLength", 24);
 
         builder.swap("debug");
 

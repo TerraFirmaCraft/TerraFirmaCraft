@@ -245,33 +245,33 @@ public class OverworldClimateModel implements ClimateModel
     }
 
     @Override
-    public float getFog(LevelReader level, BlockPos pos, long calendarTime)
+    public float getFog(LevelReader level, BlockPos pos)
     {
         // seed as if we're 2 hours in the future, in order to start the cycle at 4am (2 hours before sunrise)
-        final long day = ICalendar.getTotalDays(calendarTime + (2 * ICalendar.TICKS_IN_HOUR));
-        final RandomSource random = seededRandom(day, 129341623413L);
+        final ICalendar calendar = Calendars.get(level);
+        final RandomSource random = seededRandom(calendar.getTotalDays(), 129341623413L);
         if (random.nextInt(FOGGY_DAY_RARITY) != 0)
         {
             return 0;
         }
 
         final float fogModifier = random.nextFloat(); // untransformed value of the fog
+        final float hourOfDay = 24 * calendar.getCalendarFractionOfDay();
 
-        final long dayTime = Calendars.get(level).getCalendarDayTime();
-        final float scaledTime; // a value between 0 and 1
-        if (dayTime > 22000) // 4am to 6am
+        final float scaledTime;
+        if (4 <= hourOfDay && hourOfDay < 6) // 4am to 6am => [0 -> 1]
         {
-            scaledTime = Mth.map(dayTime, 22000, 24000, 0, 1);
+            scaledTime = Mth.map(hourOfDay, 4, 6, 0, 1);
         }
-        else if (dayTime >= 0 && dayTime < 4000) // 6am to 10am
+        else if (6 <= hourOfDay && hourOfDay < 10) // 6am to 10am => 1
         {
             scaledTime = 1;
         }
-        else if (dayTime >= 4000 && dayTime < 6000) // 10am to 12pm
+        else if (10 <= hourOfDay && hourOfDay < 12) // 10am to 12pm => [1 -> 0]
         {
-            scaledTime = Mth.map(dayTime, 4000, 6000, 1, 0);
+            scaledTime = Mth.map(hourOfDay, 10, 12, 1, 0);
         }
-        else // 12pm to 4am
+        else // 12pm - 4am => 0
         {
             scaledTime = 0;
         }
@@ -293,7 +293,7 @@ public class OverworldClimateModel implements ClimateModel
             return Vec2.ZERO;
         }
 
-        final RandomSource random = seededRandom(ICalendar.getTotalDays(calendarTicks), 129341623413L);
+        final RandomSource random = seededRandom(ICalendar.getTotalCalendarDays(calendarTicks), 129341623413L);
         final boolean isRaining = WeatherHelpers.isPrecipitating(getRain(calendarTicks), getRainfall(level, pos, calendarTicks, daysInMonth));
         final Holder<Biome> biome = level.getBiome(pos);
 
@@ -389,18 +389,14 @@ public class OverworldClimateModel implements ClimateModel
      */
     protected float calculateDailyTemperature(long calendarTime)
     {
-        // Hottest part of the day at 12, coldest at 0
-        int hourOfDay = ICalendar.getHourOfDay(calendarTime);
-        if (hourOfDay > 12)
-        {
-            // Range: 0 - 12
-            hourOfDay = 24 - hourOfDay;
-        }
-        // Range: -1 - 1
-        final float hourModifier = (hourOfDay / 6f) - 1f;
+        // Hottest part of the day at noon, coldest at midnight, range [-1, 1]
+        final float fractionOfDay = ICalendar.getFractionOfDay(calendarTime);
+        final float hourModifier = fractionOfDay < 0.5f
+            ? Mth.map(fractionOfDay, 0f, 0.5f, -1, 1)
+            : Mth.map(fractionOfDay, 0.5f, 1f, 1, -1);
 
         // Note: this does not use world seed, as that is not synced from server - client, resulting in the seed being different
-        final long day = ICalendar.getTotalDays(calendarTime);
+        final long day = ICalendar.getTotalCalendarDays(calendarTime);
         final RandomSource random = seededRandom(day, 1986239412341L);
         return ((random.nextFloat() - random.nextFloat()) + 0.3f * hourModifier) * 3f;
     }

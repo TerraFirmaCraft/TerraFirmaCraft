@@ -8,9 +8,7 @@ package net.dries007.tfc.util.calendar;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.level.Level;
 
-import net.dries007.tfc.client.overworld.SolarCalculator;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.config.TimeDeltaTooltipStyle;
 import net.dries007.tfc.util.Helpers;
@@ -20,125 +18,118 @@ import net.dries007.tfc.util.Helpers;
  */
 public interface ICalendar
 {
-    /* Constants */
-    int TICKS_IN_HOUR = 1000;
+    /** The number of calendar hours in the day. */
     int HOURS_IN_DAY = 24;
-    int TICKS_IN_DAY = TICKS_IN_HOUR * HOURS_IN_DAY;
+
+    /** The number of months in a year. */
     int MONTHS_IN_YEAR = 12;
 
-    /* This needs to be a float, otherwise there are ~62 minutes per hour */
-    float TICKS_IN_MINUTE = TICKS_IN_HOUR / 60f;
+    /**
+     * For both these measurements, there is a distinction between the default value of an hour and a player-tick hour.
+     * @deprecated because uses need to be audited to make sure they want calendar or player tick values
+     */
+    @Deprecated int TICKS_IN_HOUR = 1000;
+    @Deprecated int TICKS_IN_DAY = TICKS_IN_HOUR * HOURS_IN_DAY;
 
-    /* Delta Calculation Methods */
+    /** Use if you're specifically trying to measure calendar ticks in a day, not player ticks. */
+    int CALENDAR_TICKS_IN_HOUR = 1000;
+    int CALENDAR_TICKS_IN_DAY = CALENDAR_TICKS_IN_HOUR * HOURS_IN_DAY;
 
-    static long getCalendarTicksInMonth(int daysInMonth)
+    static MutableComponent getTimeAndDate(long calendarTick, long daysInMonth)
     {
-        return (long) TICKS_IN_DAY * daysInMonth;
+        return Component.translatable("tfc.tooltip.calendar_hour_minute_month_day_year",
+            String.format("%d:%02d", getHourOfDay(calendarTick), getMinuteOfHour(calendarTick)),
+            Helpers.translateEnum(getMonthOfYear(calendarTick, daysInMonth)),
+            getDayOfMonth(calendarTick, daysInMonth),
+            getCalendarYear(calendarTick, daysInMonth));
     }
 
-    static long getCalendarTicksInYear(int daysInMonth)
+    static MutableComponent getTimeDelta(long calendarTick, int daysInMonth)
     {
-        return (long) TICKS_IN_DAY * daysInMonth * MONTHS_IN_YEAR;
-    }
-
-    /* Total Calculation Methods */
-
-    static long getTotalHours(long time)
-    {
-        return time / TICKS_IN_HOUR;
-    }
-
-    static long getTotalDays(long time)
-    {
-        return time / TICKS_IN_DAY;
-    }
-
-    static long getTotalMonths(long time, long daysInMonth)
-    {
-        return time / (daysInMonth * TICKS_IN_DAY);
-    }
-
-    static long getTotalYears(long time, long daysInMonth)
-    {
-        return 1000 + (time / (MONTHS_IN_YEAR * daysInMonth * TICKS_IN_DAY));
-    }
-
-    /* Fraction Calculation Methods */
-
-    static int getMinuteOfHour(long time)
-    {
-        return (int) ((time % TICKS_IN_HOUR) / TICKS_IN_MINUTE);
-    }
-
-    static int getHourOfDay(long time)
-    {
-        return (int) ((time / TICKS_IN_HOUR) % HOURS_IN_DAY);
-    }
-
-    static int getDayOfMonth(long time, long daysInMonth)
-    {
-        return 1 + (int) ((time / TICKS_IN_DAY) % daysInMonth);
-    }
-
-    static float getFractionOfDay(long time)
-    {
-        return (float) (time % TICKS_IN_DAY) / TICKS_IN_DAY;
-    }
-
-    static float getFractionOfMonth(long time, long daysInMonth)
-    {
-        long ticksInMonth = daysInMonth * TICKS_IN_DAY;
-        return (float) (time % ticksInMonth) / ticksInMonth;
-    }
-
-    static float getFractionOfYear(long time, long daysInMonth)
-    {
-        long ticksInYear = MONTHS_IN_YEAR * daysInMonth * TICKS_IN_DAY;
-        return (float) (time % ticksInYear) / ticksInYear;
-    }
-
-    static Month getMonthOfYear(long time, long daysInMonth)
-    {
-        long ticksInMonth = daysInMonth * TICKS_IN_DAY;
-        return Month.valueOf((int) ((time / ticksInMonth) % MONTHS_IN_YEAR));
-    }
-
-    /* Format Methods */
-
-    static MutableComponent getTimeAndDate(long time, long daysInMonth)
-    {
-        return ICalendar.getTimeAndDate(ICalendar.getHourOfDay(time), ICalendar.getMinuteOfHour(time), ICalendar.getMonthOfYear(time, daysInMonth), ICalendar.getDayOfMonth(time, daysInMonth), ICalendar.getTotalYears(time, daysInMonth));
-    }
-
-    static MutableComponent getTimeAndDate(int hour, int minute, Month month, int day, long years)
-    {
-        return Component.translatable("tfc.tooltip.calendar_hour_minute_month_day_year", String.format("%d:%02d", hour, minute), Helpers.translateEnum(month), day, years);
-    }
-
-    static MutableComponent getTimeDelta(long ticks, int daysInMonth)
-    {
-        final long hours = getTotalHours(ticks);
+        final long hours = getTotalCalendarHours(calendarTick);
         if (hours < 1)
         {
-            return Component.translatable("tfc.tooltip.time_delta_hours_minutes", "00", String.format("%02d", getMinuteOfHour(ticks)));
+            return Component.translatable("tfc.tooltip.time_delta_hours_minutes", "00", String.format("%02d", getMinuteOfHour(calendarTick)));
         }
-        final long days = getTotalDays(ticks);
+        final long days = getTotalCalendarDays(calendarTick);
         if (days < 1)
         {
-            return Component.translatable("tfc.tooltip.time_delta_hours_minutes", hours, String.format("%02d", getMinuteOfHour(ticks)));
+            return Component.translatable("tfc.tooltip.time_delta_hours_minutes", hours, String.format("%02d", getMinuteOfHour(calendarTick)));
         }
-        final long months = getTotalMonths(ticks, daysInMonth);
+        final long months = getTotalMonths(calendarTick, daysInMonth);
         final TimeDeltaTooltipStyle style = TFCConfig.CLIENT.timeDeltaTooltipStyle.get();
         if (months < 1 || style == TimeDeltaTooltipStyle.DAYS)
         {
             return Component.translatable("tfc.tooltip.time_delta_days", days);
         }
-        final long years = getTotalYears(ticks, daysInMonth) - 1000; // Since years starts at 1k
+        final long years = getCalendarYear(calendarTick, daysInMonth) - 1000; // Since years starts at 1k
         if (years < 1 || style == TimeDeltaTooltipStyle.DAYS_MONTHS)
         {
             return Component.translatable("tfc.tooltip.time_delta_months_days", months, days % daysInMonth);
         }
         return Component.translatable("tfc.tooltip.time_delta_years_months_days", years, months % MONTHS_IN_YEAR, days % daysInMonth);
+    }
+
+    // NOTE: These are private right now so I can prevent things from using them WITHOUT fully checkin everything that uses them
+    // They can be made public later, I just don't want to use them accidentally while porting all this to the new calendar ticks
+
+    private static int getMinuteOfHour(long calendarTick)
+    {
+        // N.B. The floating point calculation is here because a minute is not a precise number of calendar ticks
+        return (int) (60f * (calendarTick % CALENDAR_TICKS_IN_HOUR) / CALENDAR_TICKS_IN_HOUR);
+    }
+
+    private static int getHourOfDay(long calendarTick)
+    {
+        return (int) ((calendarTick / CALENDAR_TICKS_IN_HOUR) % HOURS_IN_DAY);
+    }
+
+    private static int getDayOfMonth(long calendarTick, long daysInMonth)
+    {
+        return 1 + (int) ((calendarTick / CALENDAR_TICKS_IN_DAY) % daysInMonth);
+    }
+
+    private static long getTotalCalendarHours(long calendarTick)
+    {
+        return calendarTick / CALENDAR_TICKS_IN_HOUR;
+    }
+
+    private static long getTotalMonths(long calendarTick, long daysInMonth)
+    {
+        return calendarTick / (daysInMonth * CALENDAR_TICKS_IN_DAY);
+    }
+
+    private static long getCalendarYear(long calendarTick, long daysInMonth)
+    {
+        return 1000 + (calendarTick / (MONTHS_IN_YEAR * daysInMonth * CALENDAR_TICKS_IN_DAY));
+    }
+
+    static long getTotalCalendarDays(long calendarTick)
+    {
+        return calendarTick / CALENDAR_TICKS_IN_DAY;
+    }
+
+    static float getFractionOfDay(long calendarTick)
+    {
+        return (float) (calendarTick % CALENDAR_TICKS_IN_DAY) / CALENDAR_TICKS_IN_DAY;
+    }
+
+    static float getFractionOfMonth(long calendarTick, long daysInMonth)
+    {
+        long ticksInMonth = daysInMonth * CALENDAR_TICKS_IN_DAY;
+        return (float) (calendarTick % ticksInMonth) / ticksInMonth;
+    }
+
+    static float getFractionOfYear(long calendarTick, long daysInMonth)
+    {
+        long ticksInYear = MONTHS_IN_YEAR * daysInMonth * CALENDAR_TICKS_IN_DAY;
+        return (float) (calendarTick % ticksInYear) / ticksInYear;
+    }
+
+    static Month getMonthOfYear(long calendarTick, long daysInMonth)
+    {
+        long ticksInMonth = daysInMonth * TICKS_IN_DAY;
+        return Month.valueOf((int) ((calendarTick / ticksInMonth) % MONTHS_IN_YEAR));
     }
 
     /**
@@ -161,6 +152,14 @@ public interface ICalendar
     long getTicks();
 
     /**
+     * @return The number of <strong>player ticks</strong> in a single calendar tick hour.
+     */
+    default long getTicksInHour()
+    {
+        return getFixedCalendarTicksFromTick(CALENDAR_TICKS_IN_HOUR);
+    }
+
+    /**
      * Gets the amount of ticks since the current date.
      * DO NOT store this in a timestamp, EVER.
      *
@@ -174,19 +173,33 @@ public interface ICalendar
     int getCalendarDaysInMonth();
 
     /**
-     * @return The corresponding calendar tick of the player tick passed
+     * Return the expected calendar tick at now + {@code offsetTick}. This must be stable (so {@code f(x) + a = f(x + a)}, so that it can be
+     * relied upon to return an accurate estimated timestamp without jitter.
+     * @param offsetTick The offset (forwards = positive) from the current calendar tick, in a number of player ticks)
+     * @return The future calendar tick
      */
-    default long ticksToCalendarTicks(long tick)
-    {
-        return getCalendarTicks() - getTicks() + tick;
-    }
+    long getCalendarTickFromOffset(long offsetTick);
+
+    /**
+     * Return the expected amount of calendar ticks represented by the fixed number of player ticks. This must be stable w.r.t time (so {@code f(x)}
+     * is independent of time), but should <strong>NOT</strong> be used to increment from the calendar tick, due to the presence of partial ticks
+     * (it is not stable for that purpose).
+     * <p>
+     * Use {@link #getCalendarTickFromOffset} if you are using a measure of now + {@code offsetTick} instead.
+     *
+     * @param playerTick The fixed amount of player ticks that should be represented.
+     * @return The calendar tick closest to representing the target player tick
+     */
+    long getFixedCalendarTicksFromTick(long playerTick);
 
     /**
      * Gets the total amount of days passed
+     * @deprecated almost everything counting days in player ticks is now wrong.
      */
+    @Deprecated
     default long getTotalDays()
     {
-        return ICalendar.getTotalDays(getTicks());
+        return ICalendar.getTotalCalendarDays(getTicks());
     }
 
     /**
@@ -194,46 +207,15 @@ public interface ICalendar
      */
     default long getTotalCalendarDays()
     {
-        return ICalendar.getTotalDays(getCalendarTicks());
+        return ICalendar.getTotalCalendarDays(getCalendarTicks());
     }
 
     /**
-     * Gets the total amount of months passed since Jan 1, 1000
+     * @return The display year, starting at {@code 1000}.
      */
-    default long getTotalCalendarMonths()
+    default long getCalendarYear()
     {
-        return ICalendar.getTotalMonths(getCalendarTicks(), getCalendarDaysInMonth());
-    }
-
-    /**
-     * Gets the total amount of years passed since Jan 1, 1000
-     */
-    default long getTotalCalendarYears()
-    {
-        return ICalendar.getTotalYears(getCalendarTicks(), getCalendarDaysInMonth());
-    }
-
-    /**
-     * Get the equivalent total world time
-     * World time 0 = 6:00 AM, which is calendar time 6000
-     *
-     * @return a value in [0, 24000) which should match the result of {@link Level#getDayTime()}
-     *
-     * @deprecated This should not be used, as it will not be accurate on client (which has variable daytime), and will not be
-     * accurate to what the name is on server (as daytime is variable depending on the location). Instead, consider the use case
-     * and switch to using one of the other methods:
-     * <ul>
-     *     <li>If you want to calculate "is the sun in the sky", or vanilla-equivalent day time on client at a given position,
-     *     supply a position-dependent calculation to {@link SolarCalculator}</li>
-     *     <li>If you want to know the vanilla-equivalent day time on client, simply use {@link Level#getDayTime()}</li>
-     *     <li>If you simply want to know the fraction of a day (as a 24-hour period) and do not care about sun positioning,
-     *     then use {@link #getCalendarFractionOfDay()}</li>
-     * </ul>
-     */
-    @Deprecated
-    default long getCalendarDayTime()
-    {
-        return (getCalendarTicks() - (6 * ICalendar.TICKS_IN_HOUR)) % ICalendar.TICKS_IN_DAY;
+        return ICalendar.getCalendarYear(getCalendarTicks(), getCalendarDaysInMonth());
     }
 
     /**
@@ -290,7 +272,7 @@ public interface ICalendar
      */
     default long getCalendarTicksInMonth()
     {
-        return ICalendar.getCalendarTicksInMonth(getCalendarDaysInMonth());
+        return (long) CALENDAR_TICKS_IN_DAY * getCalendarDaysInMonth();
     }
 
     /**
@@ -298,23 +280,49 @@ public interface ICalendar
      */
     default long getCalendarTicksInYear()
     {
-        return ICalendar.getCalendarTicksInYear(getCalendarDaysInMonth());
+        return MONTHS_IN_YEAR * getCalendarTicksInMonth();
     }
 
     /**
-     * @return A formatted component for displaying an exact time stamp. Like "00:00 January 1, 1000"
+     * @return A formatted component for displaying an exact time stamp of the current tick. Like "00:00 January 1, 1000"
      */
-    default MutableComponent getCalendarTimeAndDate()
+    default MutableComponent getTimeAndDate()
     {
-        return ICalendar.getTimeAndDate(getCalendarTicks(), getCalendarDaysInMonth());
+        return getOffsetTimeAndDate(0);
     }
 
     /**
-     * @param ticks An amount of ticks
-     * @return A formatted component for displaying a length of time. Exact format depends on the length of time, using a dynamic precision. May display minutes, hours, days, months, or years.
+     * @return A formatted component for displaying an exact timestamp of the specified player tick, scaled relative to the current calendar tick.
      */
-    default MutableComponent getTimeDelta(long ticks)
+    default MutableComponent getExactTimeAndDate(long playerTick)
     {
-        return ICalendar.getTimeDelta(ticks, getCalendarDaysInMonth());
+        return getOffsetTimeAndDate(playerTick - getTicks());
+    }
+
+    /**
+     * @return A formatted component for displaying an exact timestamp of the current tick, plus a number of player ticks (scaled to the appropriate
+     * calendar tick).
+     */
+    default MutableComponent getOffsetTimeAndDate(long offsetTick)
+    {
+        return ICalendar.getTimeAndDate(getCalendarTickFromOffset(offsetTick), getCalendarDaysInMonth());
+    }
+
+    /**
+     * @return A formatted component for displaying a time-independent, arbitrary length of time measured in {@code playerTicks}. The returned component
+     * has dynamic precision depending on the length of time.
+     */
+    default MutableComponent getTimeDelta(long playerTick)
+    {
+        return ICalendar.getTimeDelta(getFixedCalendarTicksFromTick(playerTick), getCalendarDaysInMonth());
+    }
+
+    /**
+     * @return A formatted component for displaying a length of time <strong>from the current calendar tick</strong>, plus an {@code offsetTick}
+     * measured in player ticks. The returned component has dynamic precision depending on the length of time.
+     */
+    default MutableComponent getCalendarTimeDelta(long offsetTick)
+    {
+        return ICalendar.getTimeDelta(getCalendarTickFromOffset(offsetTick), getCalendarDaysInMonth());
     }
 }

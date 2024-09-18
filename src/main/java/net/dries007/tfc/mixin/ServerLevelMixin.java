@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import net.dries007.tfc.util.calendar.CalendarEventHandler;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.tracker.WeatherHelpers;
 
@@ -39,5 +40,11 @@ public abstract class ServerLevelMixin
     {
         // If we handle rain via the climate model, then prevent vanilla weather cycle handling
         if (WeatherHelpers.advanceWeatherCycle((ServerLevel) (Object) this)) ci.cancel();
+    }
+
+    @Inject(method = "wakeUpAllPlayers", at = @At("HEAD"))
+    private void onWakeUpAllPlayers(CallbackInfo ci)
+    {
+        CalendarEventHandler.onPlayersFinishedSleeping((ServerLevel) (Object) this);
     }
 }

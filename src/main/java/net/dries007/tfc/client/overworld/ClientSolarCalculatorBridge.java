@@ -64,7 +64,7 @@ public final class ClientSolarCalculatorBridge
 
     public static int getMoonOrbitTicks()
     {
-        return (int) (16.13 * ICalendar.TICKS_IN_DAY); // This is not quite a nice clean multiple, to introduce some additional variation into the moon's orbit
+        return (int) (16.13 * ICalendar.CALENDAR_TICKS_IN_DAY); // This is not quite a nice clean multiple, to introduce some additional variation into the moon's orbit
     }
 
     public static SkyPos getStarPosition(Level level, BlockPos pos)

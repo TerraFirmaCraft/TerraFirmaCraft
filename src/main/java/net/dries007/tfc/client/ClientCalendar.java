@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.client;
 
-import net.minecraft.util.Mth;
-
 import net.dries007.tfc.util.calendar.Calendar;
 
 public final class ClientCalendar extends Calendar
@@ -19,8 +17,6 @@ public final class ClientCalendar extends Calendar
     void onClientTick()
     {
         playerTicks++;
-        calendarPartialTick += calendarTickRate;
-        calendarTicks += Mth.floor(calendarPartialTick);
-        calendarPartialTick = Mth.frac(calendarPartialTick);
+        advanceCalendarTick();
     }
 }

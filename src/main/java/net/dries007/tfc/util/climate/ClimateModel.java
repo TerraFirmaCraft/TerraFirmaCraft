@@ -220,7 +220,7 @@ public interface ClimateModel
     /**
      * @return A value in the range [0, 1] scaling the sky fog as a % of the render distance
      */
-    default float getFog(LevelReader level, BlockPos pos, long calendarTime)
+    default float getFog(LevelReader level, BlockPos pos)
     {
         return 0f;
     }

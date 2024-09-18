@@ -90,7 +90,6 @@ import net.dries007.tfc.common.component.heat.HeatCapability;
 import net.dries007.tfc.common.component.heat.IHeatView;
 import net.dries007.tfc.common.items.Powder;
 import net.dries007.tfc.common.items.TFCItems;
-import net.dries007.tfc.common.recipes.BarrelRecipe;
 import net.dries007.tfc.common.recipes.BloomeryRecipe;
 import net.dries007.tfc.common.recipes.LoomRecipe;
 import net.dries007.tfc.config.TFCConfig;
@@ -190,7 +189,7 @@ public final class BlockEntityTooltips
                     if (recipe != null)
                     {
                         tooltip.accept(recipe);
-                        tooltip.accept(Component.translatable("tfc.jade.sealed_date", ICalendar.getTimeAndDate(Calendars.get(level).ticksToCalendarTicks(barrel.getSealedTick()), Calendars.get(level).getCalendarDaysInMonth())));
+                        tooltip.accept(Component.translatable("tfc.jade.sealed_date", Calendars.get(level).getExactTimeAndDate(barrel.getSealedTick())));
                         timeLeft(level, tooltip, tickLeft);
                     }
                 }

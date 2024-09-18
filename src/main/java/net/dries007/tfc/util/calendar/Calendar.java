@@ -11,6 +11,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.util.Mth;
 import org.slf4j.Logger;
 
 import net.dries007.tfc.config.TFCConfig;
@@ -92,6 +93,18 @@ public class Calendar implements ICalendar
         return daysInMonth;
     }
 
+    @Override
+    public long getCalendarTickFromOffset(long offsetTick)
+    {
+        return calendarTicks + (long) ((double) calendarPartialTick + (double) calendarTickRate * offsetTick);
+    }
+
+    @Override
+    public long getFixedCalendarTicksFromTick(long playerTick)
+    {
+        return (long) ((double) calendarTickRate * playerTick);
+    }
+
     public CompoundTag write()
     {
         final CompoundTag nbt = new CompoundTag();
@@ -134,10 +147,17 @@ public class Calendar implements ICalendar
     {
         daysInMonth = TFCConfig.COMMON.defaultMonthLength.get();
         playerTicks = 0;
-        calendarTicks = ((long) TFCConfig.COMMON.defaultCalendarStartDay.get() * ICalendar.TICKS_IN_DAY) + (6L * ICalendar.TICKS_IN_HOUR);
-        calendarTickRate = 20f / 24f;
+        calendarTicks = ((long) TFCConfig.COMMON.defaultCalendarStartDay.get() * ICalendar.CALENDAR_TICKS_IN_DAY) + (6L * ICalendar.CALENDAR_TICKS_IN_HOUR);
+        calendarTickRate = 20f / TFCConfig.COMMON.defaultCalendarDayLength.get();
         calendarPartialTick = 0f;
         arePlayersLoggedOn = false;
+    }
+
+    protected final void advanceCalendarTick()
+    {
+        calendarPartialTick += calendarTickRate;
+        calendarTicks += Mth.floor(calendarPartialTick);
+        calendarPartialTick = Mth.frac(calendarPartialTick);
     }
 
     final class Transaction implements CalendarTransaction
