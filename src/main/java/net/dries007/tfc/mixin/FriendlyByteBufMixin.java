@@ -6,12 +6,12 @@
 
 package net.dries007.tfc.mixin;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
 import net.dries007.tfc.common.capabilities.ItemStackCapabilitySync;
 
@@ -23,15 +23,22 @@ import net.dries007.tfc.common.capabilities.ItemStackCapabilitySync;
 @Mixin(FriendlyByteBuf.class)
 public abstract class FriendlyByteBufMixin
 {
-    @Inject(method = "writeItemStack", at = @At("RETURN"), remap = false)
-    private void writeSyncableCapabilityData(ItemStack stack, boolean limitedTag, CallbackInfoReturnable<FriendlyByteBuf> cir)
+    @Redirect(
+        method = "writeItemStack",
+        at = @At(value = "INVOKE", target = "Lnet/minecraft/network/FriendlyByteBuf;writeNbt(Lnet/minecraft/nbt/CompoundTag;)Lnet/minecraft/network/FriendlyByteBuf;"),
+        remap = false
+    )
+    private FriendlyByteBuf writeSyncableCapabilityData(FriendlyByteBuf buffer, CompoundTag tag, ItemStack stack)
     {
-        ItemStackCapabilitySync.writeToNetwork(stack, (FriendlyByteBuf) (Object) this);
+        return buffer.writeNbt(ItemStackCapabilitySync.writeToNetwork(stack, tag));
     }
 
-    @Inject(method = "readItem", at = @At("RETURN"))
-    private void readSyncableCapabilityData(CallbackInfoReturnable<ItemStack> cir)
+    @Redirect(
+        method = "readItem",
+        at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;readShareTag(Lnet/minecraft/nbt/CompoundTag;)V", remap = false)
+    )
+    private void readSyncableCapabilityData(ItemStack stack, CompoundTag tag)
     {
-        ItemStackCapabilitySync.readFromNetwork(cir.getReturnValue(), (FriendlyByteBuf) (Object) this);
+        stack.readShareTag(ItemStackCapabilitySync.readFromNetwork(stack, tag));
     }
 }
