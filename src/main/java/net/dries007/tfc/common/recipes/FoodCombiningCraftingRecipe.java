@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.recipes;
 
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
@@ -101,6 +102,13 @@ public class FoodCombiningCraftingRecipe extends CustomRecipe implements ISimple
         final long date = minCreationDate;
         FoodCapability.setCreationDate(resultStack, date);
         return resultStack;
+    }
+
+    @Override
+    public NonNullList<ItemStack> getRemainingItems(CraftingContainer container)
+    {
+        // Avoid container items since they should have been moved to output (see TerraFirmaCraft#2788)
+        return NonNullList.withSize(container.getContainerSize(), ItemStack.EMPTY);
     }
 
     @Override
