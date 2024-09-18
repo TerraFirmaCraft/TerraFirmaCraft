@@ -39,7 +39,6 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.blockentities.ComposterBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
-import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
@@ -51,8 +50,7 @@ public class TFCComposterBlock extends BottomSupportedDeviceBlock implements Ent
     public static final EnumProperty<CompostType> TYPE = TFCBlockStateProperties.COMPOST_TYPE;
 
     private static final VoxelShape[] SHAPES = Util.make(new VoxelShape[9], shapes -> {
-        shapes[0] = Block.box(1D, 1D, 1D, 15D, 16D, 15D);
-        for (int i = 1; i < 9; ++i)
+        for (int i = 0; i < 9; ++i)
         {
             shapes[i] = Shapes.join(Shapes.block(), Block.box(1.0D, Math.max(2, i * 2), 1.0D, 15.0D, 16.0D, 15.0D), BooleanOp.ONLY_FIRST);
         }
