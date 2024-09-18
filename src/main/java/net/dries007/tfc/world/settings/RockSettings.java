@@ -6,20 +6,13 @@
 
 package net.dries007.tfc.world.settings;
 
-import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
-import net.dries007.tfc.common.blocks.SandstoneBlockType;
-import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.registry.IdHolder;
 import net.dries007.tfc.world.Codecs;
 
 public record RockSettings(Block raw, Block hardened, Block gravel, Block cobble, Block sand, Block sandstone, Optional<Block> spike, Optional<Block> loose, Optional<Block> mossyLoose)

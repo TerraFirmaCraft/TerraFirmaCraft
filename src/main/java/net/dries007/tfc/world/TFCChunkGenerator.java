@@ -205,6 +205,8 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         final AreaFactory factory = TFCLayers.createRegionBiomeLayer(regionGenerator, random.nextLong());
         final ConcurrentArea<BiomeExtension> biomeLayer = new ConcurrentArea<>(factory, TFCLayers::getFromLayerId);
 
+        regionGenerator.setRockGenerator(chunkDataGenerator);
+
         this.noiseSamplerSeed = seed;
         this.noiseSampler = new NoiseSampler(random.nextLong(), level.registryAccess().lookupOrThrow(Registries.NOISE), level.registryAccess().lookupOrThrow(Registries.DENSITY_FUNCTION));
         this.chunkDataGenerator = chunkDataGenerator;

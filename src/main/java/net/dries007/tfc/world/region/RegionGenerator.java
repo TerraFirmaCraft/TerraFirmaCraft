@@ -12,20 +12,25 @@ import java.util.function.BiConsumer;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.TestOnly;
 import org.jetbrains.annotations.VisibleForTesting;
 
 import net.dries007.tfc.world.FastConcurrentCache;
+import net.dries007.tfc.world.chunkdata.RockGenerator;
 import net.dries007.tfc.world.layer.TFCLayers;
 import net.dries007.tfc.world.layer.framework.Area;
 import net.dries007.tfc.world.layer.framework.AreaFactory;
 import net.dries007.tfc.world.noise.Cellular2D;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
+import net.dries007.tfc.world.settings.RockSettings;
 import net.dries007.tfc.world.settings.Settings;
 
 /**
- * This is a single-instance, threadsafe (accessible from multiple threads concurrently), generator. As such, all query-able fields of this class need to support concurrent access, either by being concurrent i.e. {@link FastConcurrentCache}, thread local {@link ThreadLocal}, or immutable / stateless i.e. {@link Noise2D}
+ * This is a single-instance, threadsafe (accessible from multiple threads concurrently), generator. As such, all query-able fields of this
+ * class need to support concurrent access, either by being concurrent i.e. {@link FastConcurrentCache}, thread local {@link ThreadLocal},
+ * or immutable / stateless i.e. {@link Noise2D}
  */
 public class RegionGenerator
 {
@@ -48,9 +53,7 @@ public class RegionGenerator
     public final Noise2D temperatureNoise;
     public final Noise2D rainfallNoise;
     public final Noise2D rainfallVarianceNoise;
-
-    private final float rainfallScale;
-    private final float temperatureScale;
+    public final Settings settings;
 
     public final ThreadLocal<Area> biomeArea;
     public final ThreadLocal<Area> rockArea;
@@ -59,8 +62,11 @@ public class RegionGenerator
     private final FastConcurrentCache<Region> cellCache;
     private final FastConcurrentCache<RegionPartition> partitionCache;
 
+    private @Nullable RockGenerator rockGenerator;
+
     public RegionGenerator(Settings settings, RandomSource random)
     {
+        this.settings = settings;
         this.seed = random.nextLong();
 
         this.cellNoise = new Cellular2D(random.nextLong()).spread(1f / Units.CELL_WIDTH_IN_GRID);
@@ -70,9 +76,6 @@ public class RegionGenerator
         this.cellCache = new FastConcurrentCache<>(256);
         this.partitionCache = new FastConcurrentCache<>(256);
 
-        this.rainfallScale = settings.rainfallScale();
-        this.temperatureScale = settings.temperatureScale();
-
         float min = settings.continentalness() * 10f - 2.5f; // range [0, 1], default 0.5 -> 2.5 continentalness
         this.continentNoise = cellNoise.then(c -> 1 - c.f1() / (0.37f + c.f2()))
             .lazyProduct(new OpenSimplex2D(random.nextLong())
@@ -80,14 +83,14 @@ public class RegionGenerator
                 .scaled(min, 8.7f)
                 .octaves(4));
 
-        this.temperatureNoise = baseNoise(false, temperatureScale, settings.temperatureConstant())
+        this.temperatureNoise = baseNoise(false, settings.temperatureScale(), settings.temperatureConstant())
             .scaled(-20f, 30f)
             .add(new OpenSimplex2D(random.nextInt())
                 .octaves(2)
                 .spread(0.15f)
                 .scaled(-3f, 3f));
 
-        this.rainfallNoise = baseNoise(true, rainfallScale, settings.rainfallConstant())
+        this.rainfallNoise = baseNoise(true, settings.rainfallScale(), settings.rainfallConstant())
             .scaled(0f, 500f)
             .add(new OpenSimplex2D(random.nextInt())
                 .octaves(2)
@@ -111,14 +114,18 @@ public class RegionGenerator
         return seed;
     }
 
-    public float getRainfallScale()
+    public void setRockGenerator(RockGenerator generator)
     {
-        return rainfallScale;
+        rockGenerator = generator;
     }
 
-    public float getTemperatureScale()
+    /**
+     * @return The estimated surface rock type at the given grid coordinates. This should only be used during region point generation!
+     */
+    public RockSettings getSurfaceRock(int gridX, int gridZ)
     {
-        return temperatureScale;
+        assert rockGenerator != null;
+        return rockGenerator.generateSurfaceRock(Units.gridToBlock(gridX), Units.gridToBlock(gridZ));
     }
 
     public RegionPartition.Point getOrCreatePartitionPoint(int gridX, int gridZ)
