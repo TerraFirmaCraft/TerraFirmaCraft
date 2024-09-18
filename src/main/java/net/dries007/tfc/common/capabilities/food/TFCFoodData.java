@@ -232,6 +232,7 @@ public class TFCFoodData extends net.minecraft.world.food.FoodData
     public void readAdditionalSaveData(CompoundTag vanillaNbt)
     {
         delegate.readAdditionalSaveData(vanillaNbt);
+        nutritionData.setHunger(getFoodLevel());
     }
 
     @Override
@@ -269,6 +270,7 @@ public class TFCFoodData extends net.minecraft.world.food.FoodData
     public void setFoodLevel(int food)
     {
         delegate.setFoodLevel(food);
+        nutritionData.setHunger(food);
     }
 
     @Override
@@ -351,8 +353,9 @@ public class TFCFoodData extends net.minecraft.world.food.FoodData
         return averageNutrition < DEFAULT_AVERAGE_NUTRITION ?
             // Lerp [0, default] -> [min, default] modifier
             Mth.map(averageNutrition, 0.0f, DEFAULT_AVERAGE_NUTRITION, TFCConfig.SERVER.nutritionMinimumHealthModifier.get().floatValue(), TFCConfig.SERVER.nutritionDefaultHealthModifier.get().floatValue()) :
-            // Lerp [default, 1] -> [default, max] modifier
-            Mth.map(averageNutrition, DEFAULT_AVERAGE_NUTRITION, 1.0f, TFCConfig.SERVER.nutritionDefaultHealthModifier.get().floatValue(), TFCConfig.SERVER.nutritionMaximumHealthModifier.get().floatValue());
+            // Lerp [default, 0.95] -> [default, max] modifier
+            // We only lerp to 0.95, because we don't want hunger-based nutrition decay to be too penalizing for high nutrition
+            Mth.clampedMap(averageNutrition, DEFAULT_AVERAGE_NUTRITION, 0.95f, TFCConfig.SERVER.nutritionDefaultHealthModifier.get().floatValue(), TFCConfig.SERVER.nutritionMaximumHealthModifier.get().floatValue());
     }
 
     /**
