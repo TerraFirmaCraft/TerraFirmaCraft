@@ -242,6 +242,7 @@ public class RegionGenerator
         ANNOTATE_CLIMATE(AnnotateClimate.INSTANCE),
         CHOOSE_BIOMES(ChooseBiomes.INSTANCE),
         CHOOSE_ROCKS(ChooseRocks.INSTANCE),
+        SURFACE_ROCKS(SurfaceRocks.INSTANCE),
         ADD_RIVERS_AND_LAKES(AddRiversAndLakes.INSTANCE),
         ;
 

@@ -35,36 +35,38 @@ import net.dries007.tfc.util.registry.RegistryRock;
  */
 public enum Rock implements RegistryRock
 {
-    GRANITE(RockDisplayCategory.FELSIC_IGNEOUS_INTRUSIVE, MapColor.STONE),
-    DIORITE(RockDisplayCategory.INTERMEDIATE_IGNEOUS_INTRUSIVE, MapColor.METAL),
-    GABBRO(RockDisplayCategory.MAFIC_IGNEOUS_INTRUSIVE, MapColor.COLOR_GRAY),
-    SHALE(RockDisplayCategory.SEDIMENTARY, MapColor.COLOR_GRAY),
-    CLAYSTONE(RockDisplayCategory.SEDIMENTARY, MapColor.TERRACOTTA_YELLOW),
-    LIMESTONE(RockDisplayCategory.SEDIMENTARY, MapColor.TERRACOTTA_WHITE),
-    CONGLOMERATE(RockDisplayCategory.SEDIMENTARY, MapColor.TERRACOTTA_LIGHT_GRAY),
-    DOLOMITE(RockDisplayCategory.SEDIMENTARY, MapColor.COLOR_GRAY),
-    CHERT(RockDisplayCategory.SEDIMENTARY, MapColor.TERRACOTTA_ORANGE),
-    CHALK(RockDisplayCategory.SEDIMENTARY, MapColor.QUARTZ),
-    RHYOLITE(RockDisplayCategory.FELSIC_IGNEOUS_EXTRUSIVE, MapColor.TERRACOTTA_LIGHT_GRAY),
-    BASALT(RockDisplayCategory.MAFIC_IGNEOUS_EXTRUSIVE, MapColor.COLOR_BLACK),
-    ANDESITE(RockDisplayCategory.INTERMEDIATE_IGNEOUS_EXTRUSIVE, MapColor.TERRACOTTA_CYAN),
-    DACITE(RockDisplayCategory.INTERMEDIATE_IGNEOUS_EXTRUSIVE, MapColor.STONE),
-    QUARTZITE(RockDisplayCategory.METAMORPHIC, MapColor.TERRACOTTA_WHITE),
-    SLATE(RockDisplayCategory.METAMORPHIC, MapColor.WOOD),
-    PHYLLITE(RockDisplayCategory.METAMORPHIC, MapColor.TERRACOTTA_LIGHT_BLUE),
-    SCHIST(RockDisplayCategory.METAMORPHIC, MapColor.TERRACOTTA_LIGHT_GREEN),
-    GNEISS(RockDisplayCategory.METAMORPHIC, MapColor.TERRACOTTA_LIGHT_GRAY),
-    MARBLE(RockDisplayCategory.METAMORPHIC, MapColor.WOOL);
+    GRANITE(RockDisplayCategory.FELSIC_IGNEOUS_INTRUSIVE, MapColor.STONE, false),
+    DIORITE(RockDisplayCategory.INTERMEDIATE_IGNEOUS_INTRUSIVE, MapColor.METAL, false),
+    GABBRO(RockDisplayCategory.MAFIC_IGNEOUS_INTRUSIVE, MapColor.COLOR_GRAY, false),
+    SHALE(RockDisplayCategory.SEDIMENTARY, MapColor.COLOR_GRAY, false),
+    CLAYSTONE(RockDisplayCategory.SEDIMENTARY, MapColor.TERRACOTTA_YELLOW, false),
+    LIMESTONE(RockDisplayCategory.SEDIMENTARY, MapColor.TERRACOTTA_WHITE, true),
+    CONGLOMERATE(RockDisplayCategory.SEDIMENTARY, MapColor.TERRACOTTA_LIGHT_GRAY, false),
+    DOLOMITE(RockDisplayCategory.SEDIMENTARY, MapColor.COLOR_GRAY, true),
+    CHERT(RockDisplayCategory.SEDIMENTARY, MapColor.TERRACOTTA_ORANGE, false),
+    CHALK(RockDisplayCategory.SEDIMENTARY, MapColor.QUARTZ, true),
+    RHYOLITE(RockDisplayCategory.FELSIC_IGNEOUS_EXTRUSIVE, MapColor.TERRACOTTA_LIGHT_GRAY, false),
+    BASALT(RockDisplayCategory.MAFIC_IGNEOUS_EXTRUSIVE, MapColor.COLOR_BLACK, false),
+    ANDESITE(RockDisplayCategory.INTERMEDIATE_IGNEOUS_EXTRUSIVE, MapColor.TERRACOTTA_CYAN, false),
+    DACITE(RockDisplayCategory.INTERMEDIATE_IGNEOUS_EXTRUSIVE, MapColor.STONE, false),
+    QUARTZITE(RockDisplayCategory.METAMORPHIC, MapColor.TERRACOTTA_WHITE, false),
+    SLATE(RockDisplayCategory.METAMORPHIC, MapColor.WOOD, false),
+    PHYLLITE(RockDisplayCategory.METAMORPHIC, MapColor.TERRACOTTA_LIGHT_BLUE, false),
+    SCHIST(RockDisplayCategory.METAMORPHIC, MapColor.TERRACOTTA_LIGHT_GREEN, false),
+    GNEISS(RockDisplayCategory.METAMORPHIC, MapColor.TERRACOTTA_LIGHT_GRAY, false),
+    MARBLE(RockDisplayCategory.METAMORPHIC, MapColor.WOOL, true);
 
     public static final Rock[] VALUES = values();
 
     private final String serializedName;
+    private final boolean isKarst;
     private final RockDisplayCategory category;
     private final MapColor color;
 
-    Rock(RockDisplayCategory category, MapColor color)
+    Rock(RockDisplayCategory category, MapColor color, boolean isKarst)
     {
         this.serializedName = name().toLowerCase(Locale.ROOT);
+        this.isKarst = isKarst;
         this.category = category;
         this.color = color;
     }
@@ -78,6 +80,11 @@ public enum Rock implements RegistryRock
     public RockDisplayCategory displayCategory()
     {
         return category;
+    }
+
+    public boolean isKarst()
+    {
+        return isKarst;
     }
 
     @Override

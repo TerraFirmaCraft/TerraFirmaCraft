@@ -201,7 +201,8 @@ public final class BuiltinWorldPreset
             TFCBlocks.SANDSTONE.get(color).get(SandstoneBlockType.RAW).get(),
             Optional.of(blocks.get(BlockType.SPIKE).get()),
             Optional.of(blocks.get(BlockType.LOOSE).get()),
-            Optional.of(blocks.get(BlockType.MOSSY_LOOSE).get())
+            Optional.of(blocks.get(BlockType.MOSSY_LOOSE).get()),
+            Optional.of(rock.isKarst())
         );
     }
 }

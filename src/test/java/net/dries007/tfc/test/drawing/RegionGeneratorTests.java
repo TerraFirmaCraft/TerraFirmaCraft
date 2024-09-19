@@ -175,6 +175,22 @@ public class RegionGeneratorTests implements TestSetup
                     default -> throw new RuntimeException("value: " + point.rock);
                 };
             }
+            case SURFACE_ROCKS -> {
+                if (point.surfaceRock == 1)
+                {
+                    // Non-karst
+                    yield new Color(200, 200, 10);
+                }
+                else if (point.surfaceRock == 2)
+                {
+                    //Karst
+                    yield new Color(50, 200, 100);
+                }
+                else
+                {
+                    yield new Color(250, 100, 100);
+                }
+            }
             case ADD_RIVERS_AND_LAKES -> {
                 if (point.river()) yield new Color(120, 120, 240);
                 if (point.shore()) yield new Color(120, 120, 240);
@@ -302,6 +318,7 @@ public class RegionGeneratorTests implements TestSetup
 
         CHOOSE_BIOMES(Task.CHOOSE_BIOMES),
         CHOOSE_ROCKS(Task.CHOOSE_ROCKS),
+        SURFACE_ROCKS(Task.SURFACE_ROCKS),
         ADD_RIVERS_AND_LAKES(Task.ADD_RIVERS_AND_LAKES),
         // Draw climate visualizations again after rivers, which modify rainfall
         RAINFALL_AFTER_RIVERS(Task.ADD_RIVERS_AND_LAKES),

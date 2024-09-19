@@ -223,6 +223,7 @@ public final class Region
 
         public int biome = TFCLayers.OCEAN;
         public int rock = 0;
+        public int surfaceRock = 0;
 
         private short flags;
 
