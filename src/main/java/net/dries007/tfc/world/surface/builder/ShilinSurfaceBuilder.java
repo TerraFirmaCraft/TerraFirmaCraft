@@ -30,14 +30,14 @@ public class ShilinSurfaceBuilder implements SurfaceBuilder
         final NormalSurfaceBuilder surfaceBuilder = NormalSurfaceBuilder.ROCKY;
 
         final double widthTop = 0.1;
-        final double widthBot = 0.25;
-        final double scale = 15;
+        final double widthBot = 0.2;
+        final double scale = 17;
 
         //TODO: This function should actually be moved somewhere that both this and ShilinSurfaceBuilder can use it
         //TODO: Also maybe should use world seed if that can be accessed from both places?
         final Noise2D ridges = new OpenSimplex2D(398767567L)
             .octaves(2)
-            .spread(0.08f)
+            .spread(0.06f)
             .map(
                 y -> {
                     y = Math.abs(y);
@@ -50,7 +50,7 @@ public class ShilinSurfaceBuilder implements SurfaceBuilder
 
         final Noise2D cuts = new OpenSimplex2D(45764379L)
             .octaves(2)
-            .spread(0.04f)
+            .spread(0.03f)
             .map(
                 y -> {
                     y = Math.abs(y);

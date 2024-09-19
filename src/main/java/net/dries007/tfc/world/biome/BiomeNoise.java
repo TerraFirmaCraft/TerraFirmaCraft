@@ -151,19 +151,20 @@ public final class BiomeNoise
         return crevices.add(baseTerrainNoise).map(y -> Math.max(y, minHeight));
     }
 
+    // Inspired by the "Stone Forests" of Shilin, China
     // Can be applied over any base terrain noise map
     public static Noise2D shilin(long seed, Noise2D baseTerrainNoise)
     {
         final int minHeight = SEA_LEVEL_Y + 2;
         final double widthTop = 0.1;
-        final double widthBot = 0.25;
-        final double scale = 15;
+        final double widthBot = 0.2;
+        final double scale = 17;
 
         //TODO: This function should actually be moved somewhere that both this and ShilinSurfaceBuilder can use it
         //TODO: Also maybe should use world seed if that can be accessed from both places?
         final Noise2D ridges = new OpenSimplex2D(398767567L)
             .octaves(2)
-            .spread(0.08f)
+            .spread(0.06f)
             .map(
                 y -> {
                     y = Math.abs(y);
@@ -176,7 +177,7 @@ public final class BiomeNoise
 
         final Noise2D cuts = new OpenSimplex2D(45764379L)
             .octaves(2)
-            .spread(0.04f)
+            .spread(0.03f)
             .map(
                 y -> {
                     y = Math.abs(y);
@@ -191,6 +192,7 @@ public final class BiomeNoise
         return ridges.lazyProduct(cuts).lazyProduct(bumps).add(baseTerrainNoise).map(y -> Math.max(y, minHeight));
     }
 
+    // Fengcong, aka "Cone Karsts"
     public static Noise2D fengcong(long seed, Noise2D baseTerrainNoise)
     {
         final double scale = 45;
@@ -200,11 +202,68 @@ public final class BiomeNoise
             .spread(0.06)
             .map(x -> {
                 x = -0.5 * Math.cos(Math.PI * Math.sqrt(Math.abs(x))) + 0.5;
+                x = (Math.max(x, 0.1) - 0.1) / 0.9;
                 x = scale * x * x * x;
-                return x; // Re-add +sea level here if you want to take the min again
+                return x;
             });
 
         return baseTerrainNoise.add(cones);
+    }
+
+    // Fenglin, aka "Tower Karsts"
+    public static Noise2D fenglin(long seed, Noise2D baseTerrainNoise, double scale)
+    {
+        final Noise2D cliffScale = new OpenSimplex2D(seed + 78535267L)
+            .spread(0.06)
+            .scaled(0, 0.25);
+
+        final Noise2D cliffStartHeight = new OpenSimplex2D(seed + 390798L)
+            .spread(0.06)
+            .scaled(0, 0.7);
+
+        final Noise2D towers = new OpenSimplex2D(seed)
+            .octaves(2)
+            .spread(0.05)
+            .map(y -> {
+                y = Math.abs(y) - 0.45;
+                y = y > 0 ? Math.sqrt(y / 0.55) : 0;
+                return y;
+            })
+            .fenglinCliffMap(cliffStartHeight, cliffScale, cliffScale.map(x -> 1 - x))
+            .map(y -> scale * y);
+
+        return baseTerrainNoise.add(towers);
+    }
+
+    public static Noise2D bowlDolines(long seed, Noise2D baseTerrainNoise, double scale)
+    {
+        return baseTerrainNoise;
+    }
+
+    public static Noise2D uluru(long seed, Noise2D baseTerrainNoise, double scale)
+    {
+        //TODO: Remove, but needed for surface builder for now
+        seed = 898763258L;
+
+        final Noise2D rockLocationNoise = new OpenSimplex2D(seed)
+            .octaves(2)
+            .spread(0.012)
+            //The min(), and dividing by a smaller number is intended to reduce the number of formations where the center doesn't reach at least one
+            .map(x -> Math.min((Math.max(x, 0.2) - 0.2) / 0.4, 1));
+
+        final Noise2D rockNoise = rockLocationNoise
+            .map(Math::sqrt);
+
+        final Noise2D erosionNoise = new OpenSimplex2D(seed)
+            .octaves(4)
+            .spread(0.18)
+            .map(x -> 1 - Math.sqrt(Math.abs(x)))
+            // Not safe against x < 0 but rockLocation noise should be non-negative
+            .lazyProduct(rockLocationNoise.map(x -> Math.max(1 - x, 0)));
+
+        final Noise2D combined = rockNoise.add(erosionNoise.map(x -> -x));
+
+        return combined.map(x -> x * 0.8 * scale + SEA_LEVEL_Y + 0.2 * scale).max(baseTerrainNoise);
     }
 
     public static double sharpHillsMap(double in)
