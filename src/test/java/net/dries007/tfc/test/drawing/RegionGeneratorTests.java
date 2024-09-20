@@ -32,6 +32,7 @@ import net.dries007.tfc.world.region.Region;
 import net.dries007.tfc.world.region.RegionGenerator;
 import net.dries007.tfc.world.region.RegionGenerator.Task;
 import net.dries007.tfc.world.region.RiverEdge;
+import net.dries007.tfc.world.settings.Settings;
 
 import static net.dries007.tfc.world.layer.TFCLayers.*;
 
@@ -70,7 +71,8 @@ public class RegionGeneratorTests implements TestSetup
             .stream()
             .collect(Collectors.groupingBy(t -> t.root));
 
-        final RegionGenerator generator = new RegionGenerator(BuiltinWorldPreset.defaultSettings(), new XoroshiroRandomSource(seed));
+        final Settings settings = BuiltinWorldPreset.defaultSettings();
+        final RegionGenerator generator = new RegionGenerator(settings, new XoroshiroRandomSource(seed));
         final Set<Pos> points = new HashSet<>();
         final Map<DrawnTask, Map<Pos, Color>> drawn = new HashMap<>();
 

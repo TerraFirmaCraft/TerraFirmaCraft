@@ -86,7 +86,6 @@ import net.dries007.tfc.world.biome.BiomeSourceExtension;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataGenerator;
-import net.dries007.tfc.world.chunkdata.RegionChunkDataGenerator;
 import net.dries007.tfc.world.chunkdata.RockData;
 import net.dries007.tfc.world.layer.TFCLayers;
 import net.dries007.tfc.world.layer.framework.AreaFactory;
@@ -184,7 +183,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
      * See: <a href="https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues/2591">TerraFirmaCraft#2591</a>
      */
     @Override
-    @SuppressWarnings("ConstantConditions") // this.chunkDataProvider is null
+    @SuppressWarnings("ConstantConditions") // this.chunkDataGenerator is null
     public void initRandomState(ChunkMap chunkMap, ServerLevel level)
     {
         if (chunkDataGenerator != null)
@@ -201,15 +200,12 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         final RandomSource random = new XoroshiroRandomSource(seed);
 
         final RegionGenerator regionGenerator = new RegionGenerator(settings, random);
-        final ChunkDataGenerator chunkDataGenerator = RegionChunkDataGenerator.create(random.nextLong(), settings.rockLayerSettings(), regionGenerator);
         final AreaFactory factory = TFCLayers.createRegionBiomeLayer(regionGenerator, random.nextLong());
         final ConcurrentArea<BiomeExtension> biomeLayer = new ConcurrentArea<>(factory, TFCLayers::getFromLayerId);
 
-        regionGenerator.setRockGenerator(chunkDataGenerator);
-
         this.noiseSamplerSeed = seed;
         this.noiseSampler = new NoiseSampler(random.nextLong(), level.registryAccess().lookupOrThrow(Registries.NOISE), level.registryAccess().lookupOrThrow(Registries.DENSITY_FUNCTION));
-        this.chunkDataGenerator = chunkDataGenerator;
+        this.chunkDataGenerator = regionGenerator.chunkDataGenerator();
         this.surfaceManager = new SurfaceManager(seed);
 
         this.customBiomeSource.initRandomState(regionGenerator, biomeLayer);

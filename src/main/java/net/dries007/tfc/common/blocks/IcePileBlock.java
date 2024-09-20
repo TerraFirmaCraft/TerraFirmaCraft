@@ -84,10 +84,12 @@ public class IcePileBlock extends IceBlock implements IForgeBlockExtension, Enti
                 level.getBlockEntity(pos, TFCBlockEntities.PILE.get()).ifPresent(pile -> {
                     if (!level.isClientSide())
                     {
+                        final BlockPos above = pos.above();
+
                         level.setBlock(pos, pile.getInternalState(), Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
-                        if (pile.getAboveState() != null)
+                        if (pile.getAboveState() != null && level.isEmptyBlock(above))
                         {
-                            level.setBlock(pos.above(), pile.getAboveState(), Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
+                            level.setBlock(above, pile.getAboveState(), Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
                         }
 
                         // Block ticks after both blocks are placed
@@ -95,7 +97,7 @@ public class IcePileBlock extends IceBlock implements IForgeBlockExtension, Enti
                         level.scheduleTick(pos, Fluids.WATER, 1);
                         if (pile.getAboveState() != null)
                         {
-                            level.blockUpdated(pos.above(), pile.getAboveState().getBlock());
+                            level.blockUpdated(above, pile.getAboveState().getBlock());
                         }
                     }
                 });

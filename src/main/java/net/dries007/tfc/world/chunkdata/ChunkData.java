@@ -21,7 +21,7 @@ import net.dries007.tfc.common.TFCAttachments;
 import net.dries007.tfc.network.ChunkWatchPacket;
 
 
-public class ChunkData
+public sealed class ChunkData
 {
     public static final ChunkData EMPTY = new ChunkData.Immutable();
 
@@ -329,16 +329,16 @@ public class ChunkData
         }
 
         @Override
-        public void generatePartial(LerpFloatLayer rainfallLayer, LerpFloatLayer rainVarianceLayer, LerpFloatLayer baseGroundwaterLayer, LerpFloatLayer temperatureLayer, ForestType forestType) {error();}
+        public void generatePartial(LerpFloatLayer rainfallLayer, LerpFloatLayer rainVarianceLayer, LerpFloatLayer baseGroundwaterLayer, LerpFloatLayer temperatureLayer, ForestType forestType) { error(); }
 
         @Override
-        public void generateFull(int[] surfaceHeight, int[] aquiferSurfaceHeight) {error();}
+        public void generateFull(int[] surfaceHeight, int[] aquiferSurfaceHeight) { error(); }
 
         @Override
-        public void onUpdatePacket(LerpFloatLayer rainfallLayer, LerpFloatLayer rainVarianceLayer, LerpFloatLayer baseGroundwaterLayer, LerpFloatLayer temperatureLayer, ForestType forestType) {error();}
+        public void onUpdatePacket(LerpFloatLayer rainfallLayer, LerpFloatLayer rainVarianceLayer, LerpFloatLayer baseGroundwaterLayer, LerpFloatLayer temperatureLayer, ForestType forestType) { error(); }
 
         @Override
-        public void deserializeNBT(CompoundTag nbt) {error();}
+        public void deserializeNBT(CompoundTag nbt) { error(); }
 
         @Override
         public Status status()
