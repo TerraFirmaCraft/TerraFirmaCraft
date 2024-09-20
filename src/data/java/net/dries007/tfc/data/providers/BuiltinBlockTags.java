@@ -432,6 +432,9 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             TFCBlocks.PLANTS.get(Plant.GIANT_KELP_PLANT),
             TFCBlocks.PLANTS.get(Plant.GIANT_KELP_FLOWER));
         tag(KELP_BRANCH).add(TFCBlocks.PLANTS.get(Plant.GIANT_KELP_PLANT));
+        tag(BAMBOO).add(TFCBlocks.PLANTS.get(Plant.GOLDEN_BAMBOO)).add(Blocks.BAMBOO);
+        tag(BAMBOO_SAPLING).add(TFCBlocks.PLANTS.get(Plant.GOLDEN_BAMBOO_SAPLING)).add(Blocks.BAMBOO_SAPLING);
+        tag(BlockTags.BAMBOO_PLANTABLE_ON).add(TFCBlocks.PLANTS.get(Plant.GOLDEN_BAMBOO_SAPLING), TFCBlocks.PLANTS.get(Plant.GOLDEN_BAMBOO));
         tag(LIVING_SPREADING_BUSHES)
             .add(TFCBlocks.SPREADING_BUSHES)
             .add(TFCBlocks.SPREADING_CANES);
@@ -441,7 +444,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(THORNY_BUSHES).add(
             TFCBlocks.SPREADING_BUSHES.get(FruitBlocks.SpreadingBush.RASPBERRY),
             TFCBlocks.SPREADING_BUSHES.get(FruitBlocks.SpreadingBush.BLACKBERRY));
-        tag(POWDERKEG_CANNOT_BREAK).add(Blocks.BEDROCK); // todo: this shouldn't be necessary, these blocks should already be explosion proof?
+        tag(POWDERKEG_CANNOT_BREAK).add(Blocks.BEDROCK); // unfortunately bedrock is breakable via large enough explosions so this is necessary
         tag(POWDERKEG_CAN_BREAK).addTags(BlockTags.DIRT, Tags.Blocks.STONES, Tags.Blocks.ORES, Tags.Blocks.GRAVELS);
         tag(CAN_BE_SNOW_PILED)
             .addTags(FALLEN_LEAVES, STONES_LOOSE)

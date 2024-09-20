@@ -1,0 +1,32 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:rare_bamboo_golden",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 30
+    },
+    {
+      "type": "tfc:climate",
+      "min_temperature": 11,
+      "max_temperature": 21.5,
+      "min_groundwater": 300,
+      "max_groundwater": 500,
+      "min_forest": 3,
+      "fuzzy": true
+    },
+    {
+      "type": "minecraft:noise_based_count",
+      "noise_to_count_ratio": 160,
+      "noise_factor": 80.0,
+      "noise_offset": 0.3
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "WORLD_SURFACE_WG"
+    }
+  ]
+}

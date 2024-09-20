@@ -663,7 +663,7 @@ FLOWERPOT_CROSS_PLANTS = {
 SIMPLE_TALL_PLANTS = {
     'foxglove': 5
 }
-MISC_POTTED_PLANTS = ('barrel_cactus', 'morning_glory', 'moss', 'reindeer_lichen', 'rose', 'toquilla_palm', 'tree_fern', 'sea_palm', 'philodendron')
+MISC_POTTED_PLANTS = ('barrel_cactus', 'morning_glory', 'moss', 'reindeer_lichen', 'rose', 'toquilla_palm', 'tree_fern', 'sea_palm', 'philodendron', 'golden_bamboo')
 
 SIMPLE_STAGE_PLANTS: dict[str, int] = {
     'allium': 8,

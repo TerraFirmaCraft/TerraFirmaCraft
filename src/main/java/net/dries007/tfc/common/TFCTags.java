@@ -108,6 +108,9 @@ public class TFCTags
         /** Used for kelp growth mechanics */
         public static final TagKey<Block> KELP_TREE = tag("kelp_trees");
         public static final TagKey<Block> KELP_BRANCH = tag("kelp_branches");
+        /** Used for bamboo growth mechanics */
+        public static final TagKey<Block> BAMBOO = tag("bamboo");
+        public static final TagKey<Block> BAMBOO_SAPLING = tag("bamboo_sapling");
         /** Used for spreading bush growth mechanics. */
         public static final TagKey<Block> LIVING_SPREADING_BUSHES = tag("spreading_bushes/living");
         /** Used for spreading bush growth mechanics. Includes both living and dead bushes. */

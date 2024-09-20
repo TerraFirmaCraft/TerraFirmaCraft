@@ -128,6 +128,8 @@
     "tfc:plant/ivy",
     "tfc:plant/jungle_vines",
     "tfc:plant/saguaro_plant",
-    "tfc:plant/saguaro"
+    "tfc:plant/saguaro",
+    "tfc:plant/golden_bamboo",
+    "tfc:plant/golden_bamboo_sapling"
   ]
 }
