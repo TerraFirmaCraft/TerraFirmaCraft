@@ -21,7 +21,8 @@ public enum AddContinents implements RegionTask
         {
             double continent = context.generator().continentNoise.noise(point.x, point.z);
 
-            if (context.generator().settings.finiteContinents()){
+            if (context.generator().settings.finiteContinents())
+            {
 
                 final int rainfallScale = context.generator().settings.rainfallConstant() != 0 ? 20000 : context.generator().settings.rainfallScale();
                 final int temperatureScale = context.generator().settings.temperatureConstant() != 0 ? 20000 : context.generator().settings.temperatureScale();
@@ -45,8 +46,9 @@ public enum AddContinents implements RegionTask
         }
     }
 
-    public static float falloff(float distance)
+    private static float falloff(float distance)
     {
-        return (float) Mth.clamp(Math.pow(-distance,15.0f)+1f,0f,1f);
+        int order = 5;
+        return (float) Mth.clamp(Math.pow(-distance, order) + 1f, 0f, 1f);
     }
 }
