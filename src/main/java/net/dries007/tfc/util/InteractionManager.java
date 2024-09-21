@@ -286,7 +286,6 @@ public final class InteractionManager
                 final BlockPos posClicked = context.getClickedPos();
                 final BlockState stateClicked = level.getBlockState(posClicked);
                 final BlockPos relativePos = posClicked.relative(direction);
-                final Block blockClicked = stateClicked.getBlock();
 
                 // If we're targeting a log pile, we can do one of two insertion operations
                 if (Helpers.isBlock(stateClicked, TFCBlocks.LOG_PILE.get()))

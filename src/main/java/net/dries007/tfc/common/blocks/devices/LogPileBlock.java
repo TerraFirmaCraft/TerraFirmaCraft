@@ -177,7 +177,7 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
                 }
             }
         }
-        if (level.getBlockState(pos.above()).getBlock() instanceof LogPileBlock pileBlockAbove && logPile.logCount() == LogPileBlockEntity.SLOTS)
+        if (level.getBlockState(pos.above()).getBlock() instanceof LogPileBlock && logPile.logCount() == LogPileBlockEntity.SLOTS)
         {
             level.getBlockEntity(pos.above(), TFCBlockEntities.LOG_PILE.get()).ifPresent(
                 pileAbove -> {
@@ -199,7 +199,7 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
             if (insertStack.getCount() < stack.getCount()) // Some logs were inserted
             {
                 Helpers.playPlaceSound(level, pos, SoundType.WOOD);
-                stack.setCount(insertStack.getCount());
+                stack.setCount(insertStack.getCount()); // modify original stack
                 logPile.setAndUpdateSlots(-1);
                 return true;
             }
