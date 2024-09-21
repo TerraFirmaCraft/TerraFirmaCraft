@@ -165,7 +165,6 @@ public class RegionGeneratorTests implements TestSetup
             case KOPPEN, KOPPEN_AFTER_RIVERS -> point.land()
                 ? koppenClimateColor(KoppenClimateClassification.classify(point.temperature, point.rainfall, point.rainfallVariance))
                 : continentColor(point);
-            case CHOOSE_BIOMES -> biomeColor(point.biome);
             case CHOOSE_ROCKS -> {
                 final double value = new Random(point.rock >> 2).nextDouble();
                 yield switch (point.rock & 0b11)
@@ -191,6 +190,7 @@ public class RegionGeneratorTests implements TestSetup
                     yield new Color(200, 200, 10);
                 }
             }
+            case CHOOSE_BIOMES -> biomeColor(point.biome);
             case ADD_RIVERS_AND_LAKES -> {
                 if (point.river()) yield new Color(120, 120, 240);
                 if (point.shore()) yield new Color(120, 120, 240);
@@ -315,10 +315,9 @@ public class RegionGeneratorTests implements TestSetup
         RAINFALL(Task.ANNOTATE_CLIMATE),
         RAINFALL_VARIANCE(Task.ANNOTATE_CLIMATE),
         KOPPEN(Task.ANNOTATE_CLIMATE),
-
-        CHOOSE_BIOMES(Task.CHOOSE_BIOMES),
         CHOOSE_ROCKS(Task.CHOOSE_ROCKS),
         ANNOTATE_KARST_SURFACE(Task.ANNOTATE_KARST_SURFACE),
+        CHOOSE_BIOMES(Task.CHOOSE_BIOMES),
         ADD_RIVERS_AND_LAKES(Task.ADD_RIVERS_AND_LAKES),
         // Draw climate visualizations again after rivers, which modify rainfall
         RAINFALL_AFTER_RIVERS(Task.ADD_RIVERS_AND_LAKES),

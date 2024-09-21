@@ -241,9 +241,9 @@ public final class RegionGenerator
         ADD_MOUNTAINS(AddMountains.INSTANCE),
         ANNOTATE_BIOME_ALTITUDE(AnnotateBiomeAltitude.INSTANCE),
         ANNOTATE_CLIMATE(AnnotateClimate.INSTANCE),
-        CHOOSE_BIOMES(ChooseBiomes.INSTANCE),
         CHOOSE_ROCKS(ChooseRocks.INSTANCE),
         ANNOTATE_KARST_SURFACE(KarstSurfaceRocks.INSTANCE),
+        CHOOSE_BIOMES(ChooseBiomes.INSTANCE),
         ADD_RIVERS_AND_LAKES(AddRiversAndLakes.INSTANCE),
         ;
 
