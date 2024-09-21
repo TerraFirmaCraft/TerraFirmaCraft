@@ -29,12 +29,10 @@ public enum AddContinents implements RegionTask
 
                 // keep temperature and rainfall falloff as independent functions since it won't always be square
 
-                float tempDistance = (Math.abs(gridToBlock(point.z) - temperatureScale / 2) / (temperatureScale * 1.2f));
-                float rainfallDistance = (Math.abs(gridToBlock(point.x)) / (rainfallScale * 1.2f));
+                final float tempDistance = (Math.abs(gridToBlock(point.z) - temperatureScale / 2) / (temperatureScale * 1.2f));
+                final float rainfallDistance = (Math.abs(gridToBlock(point.x)) / (rainfallScale * 1.2f));
 
-                // little logarithmic falloff function
-
-                float falloff = falloff(tempDistance) * falloff(rainfallDistance);
+                final float falloff = falloff(tempDistance) * falloff(rainfallDistance);
 
                 continent *= falloff;
             }
