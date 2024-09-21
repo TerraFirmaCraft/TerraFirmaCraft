@@ -122,7 +122,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
 
             if (canFill)
             {
-                // Re-query the input stack, as it may have changed.
+                // Re-query the input unsealedStack, as it may have changed.
                 // Try to handle draining from a mold-like item
                 final ItemStack drainStack = crucible.inventory.getStackInSlot(slot);
                 IMold mold = IMold.get(drainStack);

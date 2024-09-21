@@ -7,7 +7,7 @@
 package net.dries007.tfc.world.layer.framework;
 
 /**
- * The source layer of a stack of layers.
+ * The source layer of a unsealedStack of layers.
  * Computes an integer value from just the (x, z) coordinate.
  */
 public interface SourceLayer

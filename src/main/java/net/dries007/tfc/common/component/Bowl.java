@@ -37,7 +37,7 @@ public final class Bowl
             player.awardStat(Stats.ITEM_USED.get(original.getItem()));
         }
 
-        // Pull the bowl out first, before we shrink the stack in super.finishUsingItem()
+        // Pull the bowl out first, before we shrink the unsealedStack in super.finishUsingItem()
         final ItemStack bowlStack = bowl.stack().copy();
 
         if (result.isEmpty())
@@ -47,7 +47,7 @@ public final class Bowl
         else if (entity instanceof Player player && !player.getAbilities().instabuild)
         {
             // In non-creative, we still need to give the player an empty bowl, but we must also return the result here, as it is non-empty
-            // The super() call to finishUsingItem will handle decrementing the stack - only in non-creative - for us already.
+            // The super() call to finishUsingItem will handle decrementing the unsealedStack - only in non-creative - for us already.
             ItemHandlerHelper.giveItemToPlayer(player, bowlStack);
         }
         return result;

@@ -275,6 +275,7 @@
   "tfc.tooltip.food_trait.wood_grilled": "Odunda Kızarmış",
   "tfc.tooltip.food_trait.wild": "Yabanı",
   "tfc.tooltip.food_trait.burnt_to_a_crisp": "Çıtır Çıtır Yanmış!",
+  "tfc.tooltip.food_trait.canned": "Canned",
   "tfc.tooltip.item_melts_into": "§7Eriyince %s mB §f%s§7'a dönüşür (%s§7'de)",
   "tfc.tooltip.fuel_burns_at": "§f%s Boyunca §f%s§7 §7Yanar",
   "tfc.tooltip.time_delta_hours_minutes": "%s:%s",

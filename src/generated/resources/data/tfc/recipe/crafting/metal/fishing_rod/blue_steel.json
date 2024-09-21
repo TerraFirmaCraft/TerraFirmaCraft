@@ -24,7 +24,7 @@
         "type": "tfc:copy_forging_bonus"
       }
     ],
-    "stack": {
+    "unsealedStack": {
       "count": 1,
       "id": "tfc:metal/fishing_rod/blue_steel"
     }

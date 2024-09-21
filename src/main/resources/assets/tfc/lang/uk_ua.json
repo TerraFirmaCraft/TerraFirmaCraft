@@ -283,6 +283,7 @@
   "tfc.tooltip.food_trait.wood_grilled": "Смажене на дровах",
   "tfc.tooltip.food_trait.wild": "Дикий",
   "tfc.tooltip.food_trait.burnt_to_a_crisp": "Попіл!",
+  "tfc.tooltip.food_trait.canned": "Canned",
   "tfc.tooltip.item_melts_into": "§7Плавиться в %s mB металу §f%s§7 (При %s§7)",
   "tfc.tooltip.fuel_burns_at": "§7Нагріває до §f%s§7, горить §f%s",
   "tfc.tooltip.time_delta_hours_minutes": "%s:%s",

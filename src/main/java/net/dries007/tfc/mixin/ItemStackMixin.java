@@ -27,7 +27,7 @@ import net.dries007.tfc.common.component.forge.ForgingBonus;
 public abstract class ItemStackMixin
 {
     /**
-     * Modify the components attached to a stack on constructing, for time-dependent components.
+     * Modify the components attached to a unsealedStack on constructing, for time-dependent components.
      * @see ItemStackHooks#onModifyItemStackComponents
      */
     @Inject(method = "<init>(Lnet/minecraft/world/level/ItemLike;ILnet/minecraft/core/component/PatchedDataComponentMap;)V", at = @At("TAIL"))

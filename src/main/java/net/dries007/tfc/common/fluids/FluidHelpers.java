@@ -243,11 +243,11 @@ public final class FluidHelpers
     }
 
     /**
-     * After a fluid transfer has occurred involving an item fluid container, get the new stack that replaces the original stack.
-     * This method also handles giving the player the excess container, in the event we had a stack size > 1 container that was modified.
+     * After a fluid transfer has occurred involving an item fluid container, get the new unsealedStack that replaces the original unsealedStack.
+     * This method also handles giving the player the excess container, in the event we had a unsealedStack size > 1 container that was modified.
      *
-     * @param originalStack The item stack <strong>before</strong> any modifications were made to the fluid handler.
-     * @param itemHandler   The fluid handler <strong>after</strong> modifications were made. This fluid handler was obtained from a copy of {@code originalStack} with stack size = 1.
+     * @param originalStack The item unsealedStack <strong>before</strong> any modifications were made to the fluid handler.
+     * @param itemHandler   The fluid handler <strong>after</strong> modifications were made. This fluid handler was obtained from a copy of {@code originalStack} with unsealedStack size = 1.
      */
     public static void updateContainerItem(ItemStack originalStack, IFluidHandlerItem itemHandler, AfterTransfer after)
     {
@@ -257,14 +257,14 @@ public final class FluidHelpers
         }
         else if (originalStack.getCount() == 1)
         {
-            // Single stack size, so get the current container of the modified fluid handler.
+            // Single unsealedStack size, so get the current container of the modified fluid handler.
             after.updateContainerItem(itemHandler.getContainer());
         }
         else
         {
-            // Decrement the original stack by one, but then we need to *also* return the container - which typically will involve dumping it into the player's inventory.
-            // Note that in practice, a vanilla bucket **does not return a fluid handler** if there is a stack size > 1
-            // This is just really annoyingly complicated, because stack size > 1 capabilities in general, don't make any sense and are ripe for dupe glitches.
+            // Decrement the original unsealedStack by one, but then we need to *also* return the container - which typically will involve dumping it into the player's inventory.
+            // Note that in practice, a vanilla bucket **does not return a fluid handler** if there is a unsealedStack size > 1
+            // This is just really annoyingly complicated, because unsealedStack size > 1 capabilities in general, don't make any sense and are ripe for dupe glitches.
             originalStack.shrink(1);
             after.updateContainerItem(originalStack, itemHandler.getContainer());
         }
@@ -565,7 +565,7 @@ public final class FluidHelpers
     }
 
     /**
-     * @return The contained fluid in a fluid stack with a single tank. This is implementation-specific, but works for cases like molds
+     * @return The contained fluid in a fluid unsealedStack with a single tank. This is implementation-specific, but works for cases like molds
      * that have potential to have a contained fluid but be solid
      */
     public static FluidStack getContainedFluidInTank(ItemStack stack)
@@ -753,15 +753,15 @@ public final class FluidHelpers
     public static AfterTransfer with(Player player, InteractionHand hand)
     {
         return (newOriginalStack, newContainerStack) -> {
-            // If we're creative, then we don't modify the original stack (in our current hand)
-            // We always accept the new container stack, by adding it to our inventory
+            // If we're creative, then we don't modify the original unsealedStack (in our current hand)
+            // We always accept the new container unsealedStack, by adding it to our inventory
             if (!player.isCreative())
             {
                 player.setItemInHand(hand, newOriginalStack);
             }
             if (!newContainerStack.isEmpty())
             {
-                // Always ensure that we've only created one new container stack.
+                // Always ensure that we've only created one new container unsealedStack.
                 ItemHandlerHelper.giveItemToPlayer(player, newContainerStack.copyWithCount(1));
             }
         };

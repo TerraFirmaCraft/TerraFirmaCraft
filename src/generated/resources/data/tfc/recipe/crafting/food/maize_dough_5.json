@@ -70,7 +70,7 @@
         "type": "tfc:copy_oldest_food"
       }
     ],
-    "stack": {
+    "unsealedStack": {
       "count": 5,
       "id": "tfc:food/maize_dough"
     }

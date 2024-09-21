@@ -86,7 +86,7 @@ public class BarrelRecipeCategory<T extends BarrelRecipe> extends BaseRecipeCate
         }
 
         // Link inputs and outputs when focused
-        // Only dependent if the item stack provider output internally depends on the input
+        // Only dependent if the item unsealedStack provider output internally depends on the input
         if (recipe.getOutputItem().dependsOnInput() && inputItemSlot != null && outputItemSlot != null)
         {
             builder.createFocusLink(inputItemSlot, outputItemSlot);

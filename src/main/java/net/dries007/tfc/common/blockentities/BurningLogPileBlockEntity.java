@@ -84,7 +84,7 @@ public class BurningLogPileBlockEntity extends TickCounterBlockEntity
         // Set the current position to the bottom of the pile
         currentPos.set(worldPosition).move(0, 1 - height, 0);
 
-        // If the block below is charcoal stack that first
+        // If the block below is charcoal unsealedStack that first
         BlockState belowState = level.getBlockState(currentPos.below());
         if (belowState.is(TFCBlocks.CHARCOAL_PILE.get()))
         {

@@ -1,5 +1,5 @@
 {
-  "decay_modifier": 0.1,
+  "decay_modifier": 0.75,
   "edible": false,
   "ingredient": {
     "tag": "tfc:foods/sealed_preserves"

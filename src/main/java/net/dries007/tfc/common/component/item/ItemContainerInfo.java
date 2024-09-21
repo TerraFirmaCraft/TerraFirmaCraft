@@ -14,12 +14,12 @@ import net.minecraft.world.item.ItemStack;
 public interface ItemContainerInfo
 {
     /**
-     * @return {@code true} the container can hold the given item {@code stack}.
+     * @return {@code true} the container can hold the given item {@code unsealedStack}.
      */
     boolean canContainItem(ItemStack stack);
 
     /**
-     * @return The capacity (maximum stack size) of each individual slot in the container. Excess amounts past this will prevent insertion.
+     * @return The capacity (maximum unsealedStack size) of each individual slot in the container. Excess amounts past this will prevent insertion.
      */
     int slotCapacity();
 }

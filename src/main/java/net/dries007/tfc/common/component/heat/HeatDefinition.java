@@ -17,7 +17,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.dries007.tfc.common.recipes.IRecipePredicate;
 
 /**
- * This is a definition (reloaded via {@link HeatCapability}) of a heat that is applied to an item stack.
+ * This is a definition (reloaded via {@link HeatCapability}) of a heat that is applied to an item unsealedStack.
  */
 public record HeatDefinition(
     Ingredient ingredient,

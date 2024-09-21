@@ -92,7 +92,7 @@
         "type": "tfc:copy_oldest_food"
       }
     ],
-    "stack": {
+    "unsealedStack": {
       "count": 7,
       "id": "tfc:food/rye_dough"
     }

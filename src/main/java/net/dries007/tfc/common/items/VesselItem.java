@@ -100,7 +100,7 @@ public class VesselItem extends Item
                     if (!leftover.isEmpty())
                     {
                         // We can't simulate the `safeInsert` above, so we have to revert whatever leftover was obtained here
-                        // Insert should be safe, because the previous extract extracted a full stack, and so should leave the slot empty
+                        // Insert should be safe, because the previous extract extracted a full unsealedStack, and so should leave the slot empty
                         vessel.insertItem(i, leftover, false);
 
                         // Update slots, if we're in a crafting menu, to update output slots. See #2378

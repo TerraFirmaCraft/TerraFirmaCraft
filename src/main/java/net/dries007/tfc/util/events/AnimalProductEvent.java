@@ -26,7 +26,7 @@ import net.dries007.tfc.util.Helpers;
  * This event fires when a sheep is sheared or a cow is milked.
  * Cancelling this event prevents the default behavior, which is controlled by each entity's implementation.
  * <p>
- * While the 'tool' stack (bucket, shears) is provided, expect that entities can operate it outside this event. You should almost always copy it before modifying it.
+ * While the 'tool' unsealedStack (bucket, shears) is provided, expect that entities can operate it outside this event. You should almost always copy it before modifying it.
  * This event does *not* control if an animal can give products, it is for the sole purpose of modifying / blocking what happens when products are made.
  * If you wish to control that, use {@link net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.EntityInteract}
  * <p>

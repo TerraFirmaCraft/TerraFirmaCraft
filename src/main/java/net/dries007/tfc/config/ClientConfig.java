@@ -82,7 +82,7 @@ public class ClientConfig extends BaseConfig
         ).define("healthDisplayStyle", HealthDisplayStyle.TFC);
 
         foodExpiryTooltipStyle = builder.comment(
-            "Food expiry tooltip display style. This affects what information is shown on the food item stack tooltips.",
+            "Food expiry tooltip display style. This affects what information is shown on the food item unsealedStack tooltips.",
             "  NONE - Shows nothing. Maximum mystery!",
             "  EXPIRY - e.g. 'Expires on June 3, 05:00",
             "  TIME_LEFT - e.g. 'Expires in about 3 day(s)",

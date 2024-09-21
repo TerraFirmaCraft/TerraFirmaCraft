@@ -11,8 +11,8 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.world.item.ItemStack;
 
 /**
- * Provides a mutable view of a specific component attached to an item stack. This <strong>assumes ownership</strong> over any
- * changes to the component, and you should never create multiple separate views for the same stack at a time.
+ * Provides a mutable view of a specific component attached to an item unsealedStack. This <strong>assumes ownership</strong> over any
+ * changes to the component, and you should never create multiple separate views for the same unsealedStack at a time.
  */
 public abstract class ComponentView<T>
 {

@@ -107,12 +107,12 @@ public class CastingCraftingRecipe extends CustomRecipe
                     mold = IMold.get(stack);
                     if (mold == null)
                     {
-                        return null; // stack that's not a mold
+                        return null; // unsealedStack that's not a mold
                     }
                 }
                 else
                 {
-                    return null; // more than one non-empty stack
+                    return null; // more than one non-empty unsealedStack
                 }
             }
         }

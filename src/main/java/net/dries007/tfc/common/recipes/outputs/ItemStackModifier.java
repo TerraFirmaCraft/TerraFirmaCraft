@@ -23,14 +23,14 @@ public interface ItemStackModifier
         .dispatch(ItemStackModifier::type, ItemStackModifierType::streamCodec);
 
     /**
-     * Apply the modifier to the stack and input pair. This only supports single input -> output relations, for modifiers that
+     * Apply the modifier to the unsealedStack and input pair. This only supports single input -> output relations, for modifiers that
      * wish to consider all possible inputs, they must use {@link RecipeHelpers#getCraftingInput()}
      *
-     * @param stack   The current output stack, which is passed between modifiers. A no-op modifier would just return this stack.
-     * @param input   The provided 'input' stack - do not modify this stack during the modifier.
+     * @param stack   The current output unsealedStack, which is passed between modifiers. A no-op modifier would just return this unsealedStack.
+     * @param input   The provided 'input' unsealedStack - do not modify this unsealedStack during the modifier.
      * @param context Represents a contextual ask for the caller. The default is {@link Context#DEFAULT}, with options as documented
      *                in the {@link Context} values
-     * @return The stack, after modification. Modifying the {@code stack} parameter directly without copying is allowed.
+     * @return The unsealedStack, after modification. Modifying the {@code unsealedStack} parameter directly without copying is allowed.
      * @see RecipeHelpers#getCraftingInput()
      */
     ItemStack apply(ItemStack stack, ItemStack input, Context context);
@@ -47,7 +47,7 @@ public interface ItemStackModifier
     ItemStackModifierType<?> type();
 
     /**
-     * Indicates a contextual ask of an item stack modifier.
+     * Indicates a contextual ask of an item unsealedStack modifier.
      * <ul>
      *     <li>{@link #DEFAULT} is the default context, where everything should operate as per normal</li>
      *     <li>{@link #NO_RANDOM_CHANCE} is a context used when querying for the purposes of inventory display, or other non-gameplay

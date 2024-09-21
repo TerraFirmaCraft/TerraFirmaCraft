@@ -46,8 +46,6 @@ import net.dries007.tfc.common.recipes.outputs.PotOutput;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.TerraFirmaCraft.*;
-
 public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.PotInventory>
 {
     public static final int SLOT_EXTRA_INPUT_START = 4;

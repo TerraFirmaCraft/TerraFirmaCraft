@@ -223,7 +223,7 @@ public class ClientForgeEventHandler
         if (!stack.isEmpty())
         {
             // These are ordered in a predictable fashion
-            // 1. Common information, that is important to know about the item stack itself (such as size, food, heat, etc.). Static (unchanging) information is ordered before dynamic (changing) information.
+            // 1. Common information, that is important to know about the item unsealedStack itself (such as size, food, heat, etc.). Static (unchanging) information is ordered before dynamic (changing) information.
             // 2. Extra information, that is useful QoL info, but not necessary (such as possible recipes, melting into, etc.)
             // 3. Debug information, that is only available in debug mode.
 

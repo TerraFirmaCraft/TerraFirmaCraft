@@ -28,8 +28,8 @@ public class CopyFluidFunction extends LootItemConditionalFunction
     public static final MapCodec<CopyFluidFunction> CODEC = RecordCodecBuilder.mapCodec(i -> commonFields(i).apply(i, CopyFluidFunction::new));
 
     /**
-     * Copies the fluid contained in {@code entity} into the {@code stack}. This does not mutate the block entity's content.
-     * @return The {@code stack} but with the fluid contained within the block entity
+     * Copies the fluid contained in {@code entity} into the {@code unsealedStack}. This does not mutate the block entity's content.
+     * @return The {@code unsealedStack} but with the fluid contained within the block entity
      */
     public static ItemStack copyToItem(ItemStack stack, @Nullable BlockEntity entity)
     {
@@ -47,7 +47,7 @@ public class CopyFluidFunction extends LootItemConditionalFunction
     }
 
     /**
-     * Copies the fluid contained in {@code stack} into the {@code entity}. This does not modify the stack, only the block entity.
+     * Copies the fluid contained in {@code unsealedStack} into the {@code entity}. This does not modify the unsealedStack, only the block entity.
      */
     public static void copyFromItem(ItemStack stack, @Nullable BlockEntity entity)
     {

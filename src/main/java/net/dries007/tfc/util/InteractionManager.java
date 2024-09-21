@@ -238,7 +238,7 @@ public final class InteractionManager
                 if (Helpers.isBlock(clickedState, TFCBlocks.CHARCOAL_PILE.get()) && clickedState.getValue(CharcoalPileBlock.LAYERS) < 8)
                 {
                     // If you target the charcoal pile, and it's less than 8, we add to the charcoal pile
-                    // We still have to check can place, since the stack grows in size
+                    // We still have to check can place, since the unsealedStack grows in size
                     final BlockState placementState = clickedState.setValue(CharcoalPileBlock.LAYERS, clickedState.getValue(CharcoalPileBlock.LAYERS) + 1);
                     if (BlockItemPlacement.canPlace(blockContext, placementState, clickedPos))
                     {
@@ -301,7 +301,7 @@ public final class InteractionManager
                                 return InteractionResult.SUCCESS;
                             }
 
-                            // if we placed instead, insert logs at the RELATIVE position using the mutated stack
+                            // if we placed instead, insert logs at the RELATIVE position using the mutated unsealedStack
                             final InteractionResult result = logPilePlacement.onItemUse(stack, context);
                             if (result.consumesAction())
                             {
@@ -510,7 +510,7 @@ public final class InteractionManager
                 }
                 else
                 {
-                    // Iterate upwards until we find a non-full ingot pile in the stack
+                    // Iterate upwards until we find a non-full ingot pile in the unsealedStack
                     BlockPos topPos = posClicked;
                     BlockState topState;
                     do
@@ -540,7 +540,7 @@ public final class InteractionManager
                         final InteractionResult result = ingotPilePlacement.onItemUse(stack, topOfIngotPileContext);
                         if (result.consumesAction())
                         {
-                            // Shrinking is already handled by the placement onItemUse() call, we just need to insert the stack
+                            // Shrinking is already handled by the placement onItemUse() call, we just need to insert the unsealedStack
                             stackBefore.setCount(1);
                             level.getBlockEntity(topPos, TFCBlockEntities.INGOT_PILE.get()).ifPresent(topPile -> topPile.addIngot(stackBefore));
                         }
@@ -552,7 +552,7 @@ public final class InteractionManager
             else
             {
                 // We clicked on a non-ingot pile, so we want to try and place an ingot pile at the current location.
-                // Shrinking is already handled by the placement onItemUse() call, we just need to insert the stack
+                // Shrinking is already handled by the placement onItemUse() call, we just need to insert the unsealedStack
                 final ItemStack stackBefore = stack.copyWithCount(1);
 
                 // The block as set through onItemUse() might be set at either the clicked, or relative position.

@@ -276,6 +276,7 @@
   "tfc.tooltip.food_trait.wood_grilled": "석쇠구이",
   "tfc.tooltip.food_trait.wild": "Wild",
   "tfc.tooltip.food_trait.burnt_to_a_crisp": "바삭하게 타버림!",
+  "tfc.tooltip.food_trait.canned": "Canned",
   "tfc.tooltip.item_melts_into": "§f%3$s§7에서 %2$s %1$s mB§7(으)로 녹음",
   "tfc.tooltip.fuel_burns_at": "§f%s§7(으)로 §f%s§7동안 탐",
   "tfc.tooltip.time_delta_hours_minutes": "%s:%s",

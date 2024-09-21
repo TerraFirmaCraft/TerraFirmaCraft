@@ -97,7 +97,7 @@ public class FirepitBlockEntity extends AbstractFirepitBlockEntity<ItemStackHand
     }
 
     /**
-     * Merge an item stack into the two output slots
+     * Merge an item unsealedStack into the two output slots
      */
     private void mergeOutputStack(ItemStack outputStack)
     {
@@ -117,7 +117,7 @@ public class FirepitBlockEntity extends AbstractFirepitBlockEntity<ItemStackHand
     }
 
     /**
-     * Merge a fluid stack into the two output slots, treating them as fluid containers, and optionally heat containers
+     * Merge a fluid unsealedStack into the two output slots, treating them as fluid containers, and optionally heat containers
      */
     private void mergeOutputFluids(FluidStack fluidStack, float temperature)
     {

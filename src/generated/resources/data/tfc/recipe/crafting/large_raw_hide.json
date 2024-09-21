@@ -19,13 +19,13 @@
     "modifiers": [
       {
         "type": "tfc:extra_products",
-        "stack": {
+        "unsealedStack": {
           "count": 3,
           "id": "tfc:wool"
         }
       }
     ],
-    "stack": {
+    "unsealedStack": {
       "count": 1,
       "id": "tfc:large_raw_hide"
     }

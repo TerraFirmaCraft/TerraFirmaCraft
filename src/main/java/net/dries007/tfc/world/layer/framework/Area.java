@@ -12,7 +12,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 
 /**
- * A caching wrapper around a {@link AreaSource}. Created from the result of a stack of layers.
+ * A caching wrapper around a {@link AreaSource}. Created from the result of a unsealedStack of layers.
  * Note that this wrapper is not synchronized, meaning that access from multiple threads might result in cache corruption
  * Additionally - and more importantly - is that most {@link AreaSource}s which use a {@link AreaContext} will throw on concurrent modification to the underlying random instance.
  *

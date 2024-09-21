@@ -284,6 +284,7 @@
   "tfc.tooltip.food_trait.wood_grilled": "原木烤制",
   "tfc.tooltip.food_trait.wild": "野生原味",
   "tfc.tooltip.food_trait.burnt_to_a_crisp": "一堆黑灰，恶心死了",
+  "tfc.tooltip.food_trait.canned": "Canned",
   "tfc.tooltip.item_melts_into": "§7在%3$s温度下可熔化成 %1$s mB 的§f%2$s§7",
   "tfc.tooltip.fuel_burns_at": "§7可燃烧至§f%1$s§7，持续§f%2$s",
   "tfc.tooltip.time_delta_hours_minutes": "%s:%s",

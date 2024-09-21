@@ -236,6 +236,7 @@ public class ServerConfig extends BaseConfig
     public final Supplier<Double> traitWoodGrilledModifier;
     public final Supplier<Double> traitBurntToACrispModifier;
     public final Supplier<Double> traitWildModifier;
+    public final Supplier<Double> traitCannedModifier;
     // Mechanics - Fluids
     public final Supplier<Boolean> enableBucketsPlacingSources;
     // Mechanics - Vanilla Changes
@@ -600,8 +601,8 @@ public class ServerConfig extends BaseConfig
         keepNutritionAfterDeath = builder.comment(
             "If player's nutrition should be kept even after death. Hunger and thirst are not affected and will be reset.").define("keepNutritionAfterDeath", true);
         foodDecayStackWindow = builder.comment(
-            "How many hours should different foods ignore when trying to stack together automatically?",
-            "Food made with different creation dates doesn't stack by default, unless it's within a specific window. This is the number of hours that different foods will try and stack together at the loss of a little extra expiry time.").define("foodDecayStackWindow", 6, 1, 100);
+            "How many hours should different foods ignore when trying to unsealedStack together automatically?",
+            "Food made with different creation dates doesn't unsealedStack by default, unless it's within a specific window. This is the number of hours that different foods will try and unsealedStack together at the loss of a little extra expiry time.").define("foodDecayStackWindow", 6, 1, 100);
         foodDecayModifier = builder.comment(
             "A multiplier for food decay, or expiration times. Larger values will result in naturally shorter expiration times.",
             "Setting this to zero will cause decay not to apply.",
@@ -627,7 +628,8 @@ public class ServerConfig extends BaseConfig
         traitWoodGrilledModifier = builder.comment("The modifier for the 'Wood Grilled' food trait. Values less than 1 extend food lifetime, values greater than one decrease it. A value of zero stops decay.").define("traitWoodGrilledModifier", 0.8, 0, Double.MAX_VALUE);
         traitBurntToACrispModifier = builder.comment("The modifier for the 'Burnt To A Crisp' food trait. Values less than 1 extend food lifetime, values greater than one decrease it. A value of zero stops decay.").define("traitBurntToACrispModifier", 2.5, 0, Double.MAX_VALUE);
         traitWildModifier = builder.comment("The modifier for the 'Wild' food trait. Values less than 1 extend food lifetime, values greater than one decrease it. A value of zero stops decay.").define("traitWildModifier", 0.5, 0, Double.MAX_VALUE);
-        
+        traitCannedModifier = builder.comment("The modifier for the 'Canned' food trait. Values less than 1 extend food lifetime, values greater than one decrease it. A value of zero stops decay.").define("traitCannedModifier", 0.00001, 0, Double.MAX_VALUE);
+
         builder.swap("fluids");
 
         enableBucketsPlacingSources = builder.comment("If true, TFC buckets that naturally place sources (colored steel) will place sources. If false, this behavior is disabled.").define("enableBucketsPlacingSources", true);

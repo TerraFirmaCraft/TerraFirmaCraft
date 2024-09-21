@@ -276,6 +276,7 @@
   "tfc.tooltip.food_trait.wood_grilled": "Mit Holz gegrillt",
   "tfc.tooltip.food_trait.wild": "Wild",
   "tfc.tooltip.food_trait.burnt_to_a_crisp": "Knusprig verbrannt!",
+  "tfc.tooltip.food_trait.canned": "Canned",
   "tfc.tooltip.item_melts_into": "§7Schmilzt zu %s mB von §f%s§7 (bei %s§7)",
   "tfc.tooltip.fuel_burns_at": "§7Brennt mit §f%s§7 für §f%s",
   "tfc.tooltip.time_delta_hours_minutes": "%s:%s",

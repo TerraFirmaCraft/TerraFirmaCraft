@@ -15,7 +15,7 @@ import net.minecraft.world.item.ItemStack;
 public interface ISlotCallback
 {
     /**
-     * Gets the slot stack size
+     * Gets the slot unsealedStack size
      */
     default int getSlotStackLimit(int slot)
     {

@@ -341,8 +341,8 @@ public final class ClientEventHandler
             TFCBlocks.GLAZED_LARGE_VESSELS.values().forEach(item -> registerSealedProperty(item, TFCComponents.CONTENTS));
             TFCBlocks.WOODS.values().forEach(map -> registerSealedProperty(map.get(BARREL), TFCComponents.BARREL));
 
-            /*ItemProperties.register(TFCBlocks.LIGHT.get().asItem(), Helpers.identifierMC("level"), (stack, level, entity, unused) -> {
-                CompoundTag stackTag = stack.getTag();
+            /*ItemProperties.register(TFCBlocks.LIGHT.get().asItem(), Helpers.identifierMC("level"), (unsealedStack, level, entity, unused) -> {
+                CompoundTag stackTag = unsealedStack.getTag();
                 if (stackTag != null && stackTag.contains("level", Tag.TAG_INT))
                 {
                     return stackTag.getInt("level") / 16F;

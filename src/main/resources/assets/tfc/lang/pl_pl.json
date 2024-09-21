@@ -275,6 +275,7 @@
   "tfc.tooltip.food_trait.wood_grilled": "Grillowane na drewnie",
   "tfc.tooltip.food_trait.wild": "Dzikie",
   "tfc.tooltip.food_trait.burnt_to_a_crisp": "Spalone na wiór!",
+  "tfc.tooltip.food_trait.canned": "Canned",
   "tfc.tooltip.item_melts_into": "§7roztopi się w %s mB §f%s§7 (w temp. %s§7)",
   "tfc.tooltip.fuel_burns_at": "§7płonie w temp. §f%s§7 przez §f%s",
   "tfc.tooltip.time_delta_hours_minutes": "%s:%s",

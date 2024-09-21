@@ -66,7 +66,7 @@ public enum PlaceBlockSpecialPacket implements CustomPacketPayload
                 }
                 else if (!stack.isEmpty())
                 {
-                    // Otherwise, if we're not interacting with an existing placed item, we must be placing a new stack
+                    // Otherwise, if we're not interacting with an existing placed item, we must be placing a new unsealedStack
                     // The block we clicked on must be a solid surface (which includes shelves), and the block above must be empty,
                     // or a shelf. First, check for a shelf which we can place beneath.
                     placedItem = level.getBlockEntity(above, TFCBlockEntities.SHELF.get())

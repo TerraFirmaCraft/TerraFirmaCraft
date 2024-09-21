@@ -168,7 +168,7 @@ public class BarrelBlock extends SealableDeviceBlock
             // Header line
             tooltip.add(Tooltips.contents());
 
-            // Excess typically (almost always) will either be empty, or contain identical stacks (beyond the stack size of the original stack)
+            // Excess typically (almost always) will either be empty, or contain identical stacks (beyond the unsealedStack size of the original unsealedStack)
             // In order to neatly handle this, we bundle everything up first. Object2ArrayMap is useful because we (1) preserve iteration
             // order, and (2) works for the expected 0, 1, maybe 2 types of item. This will display, i.e. "154 x Mortar"
             //

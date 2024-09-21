@@ -57,7 +57,7 @@ public final class FoodComponent implements IFood
     }
 
     /**
-     * @param parent       The parent food definition, which is attached based on the stack
+     * @param parent       The parent food definition, which is attached based on the unsealedStack
      * @param traits       The list of food traits
      * @param food         Custom food data for the food, if present. This will take priority over {@code parent}
      * @param creationDate The creation date for the food. This has multiple special values.

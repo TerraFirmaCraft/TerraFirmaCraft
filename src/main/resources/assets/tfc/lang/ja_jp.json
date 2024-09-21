@@ -275,6 +275,7 @@
   "tfc.tooltip.food_trait.wood_grilled": "木材焼き",
   "tfc.tooltip.food_trait.wild": "Wild",
   "tfc.tooltip.food_trait.burnt_to_a_crisp": "焦げてしまった！",
+  "tfc.tooltip.food_trait.canned": "Canned",
   "tfc.tooltip.item_melts_into": "§7溶かして %s mB の §f%s§7 にする (融点: %s§7)",
   "tfc.tooltip.fuel_burns_at": "§7燃焼温度: §f%s§7 燃焼時間: §f%s",
   "tfc.tooltip.time_delta_hours_minutes": "%s:%s",

@@ -22,7 +22,7 @@ public interface BarrelInventory extends IItemHandlerModifiable, IFluidHandler, 
     /**
      * Insert ItemStacks with overflow storage
      *
-     * @param stack stack to insert
+     * @param stack unsealedStack to insert
      */
     void insertItemWithOverflow(ItemStack stack);
 }

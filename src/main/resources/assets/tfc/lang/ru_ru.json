@@ -280,6 +280,7 @@
   "tfc.tooltip.food_trait.wood_grilled": "Жареный на брёвнах",
   "tfc.tooltip.food_trait.wild": "Дикорастущий",
   "tfc.tooltip.food_trait.burnt_to_a_crisp": "Сгоревший до тла!",
+  "tfc.tooltip.food_trait.canned": "Canned",
   "tfc.tooltip.item_melts_into": "§7Плавится в %s mB металла §f%s§7 (При %s§7)",
   "tfc.tooltip.fuel_burns_at": "§7Нагревает до §f%s§7, горит §f%s",
   "tfc.tooltip.time_delta_hours_minutes": "%s:%s",
