@@ -291,28 +291,23 @@ public final class InteractionManager
                 // If we're targeting a log pile, we can do one of two insertion operations
                 if (Helpers.isBlock(stateClicked, TFCBlocks.LOG_PILE.get()))
                 {
+                    // TODO getting some client ghost blocks that I don't 100% understand
+
                     return level.getBlockEntity(posClicked, TFCBlockEntities.LOG_PILE.get())
                         .map(logPileBlockEntity -> {
-
-                            ItemStack insertStack = stack.copy();
-                            insertStack = Helpers.insertAllSlots(logPileBlockEntity.getInventory(), insertStack);
-                            if (insertStack.getCount() < stack.getCount()) // Some logs were inserted
+                            if (!level.isClientSide())
                             {
-                                if (!level.isClientSide())
-                                {
-                                    Helpers.playPlaceSound(level, relativePos, SoundType.WOOD);
-                                    stack.setCount(insertStack.getCount());
-                                }
+                                LogPileBlock.insertAndPushUp(stack, stateClicked, level, posClicked, logPileBlockEntity, true);
                                 return InteractionResult.SUCCESS;
                             }
                             final InteractionResult result = logPilePlacement.onItemUse(stack, context);
 
                             // if we placed instead, insert logs at the RELATIVE position using the mutated stack
 
-                            if (result.consumesAction())
+                            if (!result.consumesAction())
                             {
                                 // shrinking is handled by the item placement
-                                Helpers.insertOne(level, relativePos, TFCBlockEntities.LOG_PILE, insertStack);
+                                Helpers.insertOne(level, relativePos, TFCBlockEntities.LOG_PILE, stack);
                             }
                             return result;
                         }).orElse(InteractionResult.PASS);

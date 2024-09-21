@@ -10,7 +10,6 @@ import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -24,11 +23,9 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
@@ -36,6 +33,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.LogPileBlockEntity;
@@ -132,41 +130,46 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
         if (!player.isShiftKeyDown())
         {
             level.getBlockEntity(pos, TFCBlockEntities.LOG_PILE.get()).ifPresent(logPile -> {
-                if (Helpers.isItem(stack.getItem(), TFCTags.Items.LOG_PILE_LOGS))
+                if (!level.isClientSide)
                 {
-                    if (!level.isClientSide)
+                    if (Helpers.isItem(stack.getItem(), TFCTags.Items.LOG_PILE_LOGS))
                     {
-                        if (Helpers.insertOne(logPile, stack))
+                        insertAndPushUp(stack, state, level, pos, logPile, false);
+                    }
+                    else if (stack.isEmpty())
+                    {
+                        for (int i = 0; i < LogPileBlockEntity.SLOTS; i++)
                         {
-                            Helpers.playPlaceSound(level, pos, state);
-                            stack.shrink(1);
+                            if (!logPile.getInventory().getStackInSlot(i).isEmpty())
+                            {
+                                ItemHandlerHelper.giveItemToPlayer(player, logPile.getInventory().getStackInSlot(i).split(1));
+                                logPile.setAndUpdateSlots(-1);
+                                break;
+                            }
                         }
-                        passToAbove(stack, state, level, pos, logPile, false);
+
                     }
                 }
+
             });
             return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
+
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
-    public void passToAbove(ItemStack stack, BlockState state, Level level, BlockPos pos, LogPileBlockEntity logPile, boolean all)
+    public static void insertAndPushUp(ItemStack stack, BlockState state, Level level, BlockPos pos, LogPileBlockEntity logPile, boolean all)
     {
-        if (Helpers.insertOne(logPile, stack))
-        {
-            Helpers.playPlaceSound(level, pos, state);
-            stack.shrink(1);
-        }
-        if (level.getBlockState(pos.above()).isAir() && logPile.logCount() == 16 && !stack.isEmpty())
+        dumbInsert(stack, state, level, pos, logPile, all);
+        if (level.getBlockState(pos.above()).isAir() && logPile.logCount() == LogPileBlockEntity.SLOTS && !stack.isEmpty())
         {
             level.setBlockAndUpdate(pos.above(), TFCBlocks.LOG_PILE.get().defaultBlockState().setValue(HORIZONTAL_AXIS, state.getValue(HORIZONTAL_AXIS)));
             if (level.getBlockEntity(pos.above()) instanceof LogPileBlockEntity pileAbove)
             {
                 BlockState stateAbove = level.getBlockState(pos.above());
-                if (Helpers.insertOne(pileAbove, stack))
+                if (dumbInsert(stack, stateAbove, level, pos.above(), pileAbove, all))
                 {
-                    Helpers.playPlaceSound(level, pos.above(), stateAbove);
-                    stack.shrink(1);
+                    return;
                 }
                 else
                 {
@@ -174,17 +177,41 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
                 }
             }
         }
-        if (level.getBlockState(pos.above()).getBlock() instanceof LogPileBlock pileBlockAbove && logPile.logCount() == 16)
+        if (level.getBlockState(pos.above()).getBlock() instanceof LogPileBlock pileBlockAbove && logPile.logCount() == LogPileBlockEntity.SLOTS)
         {
             level.getBlockEntity(pos.above(), TFCBlockEntities.LOG_PILE.get()).ifPresent(
-                logPileBlockEntityAbove -> {
+                pileAbove -> {
                     BlockState stateAbove = level.getBlockState(pos.above());
 
-                    pileBlockAbove.passToAbove(stack, stateAbove, level, pos.above(), logPileBlockEntityAbove, all);
+                    LogPileBlock.insertAndPushUp(stack, stateAbove, level, pos.above(), pileAbove, all);
                 }
             );
 
         }
+    }
+
+    private static boolean dumbInsert(ItemStack stack, BlockState state, Level level, BlockPos pos, LogPileBlockEntity logPile, boolean all)
+    {
+        if (all)
+        {
+            ItemStack insertStack = stack.copy();
+            insertStack = Helpers.insertAllSlots(logPile.getInventory(), insertStack);
+            if (insertStack.getCount() < stack.getCount()) // Some logs were inserted
+            {
+                Helpers.playPlaceSound(level, pos, SoundType.WOOD);
+                stack.setCount(insertStack.getCount());
+                logPile.setAndUpdateSlots(-1);
+                return true;
+            }
+        }
+        else if (Helpers.insertOne(logPile, stack))
+        {
+            Helpers.playPlaceSound(level, pos, state);
+            stack.shrink(1);
+            logPile.setAndUpdateSlots(-1);
+            return true;
+        }
+        return false;
     }
 
     @Override
