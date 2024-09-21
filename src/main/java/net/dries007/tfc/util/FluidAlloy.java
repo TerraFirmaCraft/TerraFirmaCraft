@@ -153,7 +153,7 @@ public final class FluidAlloy
         final FluidStack result = getResult(recipes);
         if (action.simulate())
         {
-            // If simulating, only return a fluid stack of the provided amount, and current content
+            // If simulating, only return a fluid unsealedStack of the provided amount, and current content
             return result.copyWithAmount(Math.min(amount, removeAmount));
         }
         if (removeAmount >= amount)
@@ -167,7 +167,7 @@ public final class FluidAlloy
         else
         {
             // If extracting a portion, we need to extract the relevant portion from each of the input fluids in the map,
-            // remove the total amount, and then return a fluid stack of the extracted amount
+            // remove the total amount, and then return a fluid unsealedStack of the extracted amount
             final Object2DoubleMap<Fluid> newContent = new Object2DoubleOpenHashMap<>(content.size());
             for (Object2DoubleMap.Entry<Fluid> entry : content.object2DoubleEntrySet())
             {

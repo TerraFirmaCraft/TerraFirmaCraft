@@ -32,7 +32,6 @@ public class ServerConfig extends BaseConfig
     public final Supplier<Boolean> enableFireArrowSpreading;
     public final Supplier<Double> fireStarterChance;
     public final Supplier<Boolean> enableInfestations;
-    public final Supplier<Boolean> enableCalendarSensitiveMoonPhases;
     public final Supplier<Boolean> enableLightning;
     public final Supplier<Boolean> enableLightningStrippingLogs;
     public final Supplier<Integer> oceanWindScale;
@@ -237,6 +236,7 @@ public class ServerConfig extends BaseConfig
     public final Supplier<Double> traitWoodGrilledModifier;
     public final Supplier<Double> traitBurntToACrispModifier;
     public final Supplier<Double> traitWildModifier;
+    public final Supplier<Double> traitCannedModifier;
     // Mechanics - Fluids
     public final Supplier<Boolean> enableBucketsPlacingSources;
     // Mechanics - Vanilla Changes
@@ -293,7 +293,6 @@ public class ServerConfig extends BaseConfig
         enableFireArrowSpreading = builder.comment("Enable fire arrows and fireballs to spread fire and light blocks.").define("enableFireArrowSpreading", true);
         fireStarterChance = builder.comment("Base probability for a firestarter to start a fire. May change based on circumstances").define("fireStarterChance", 0.5, 0, 1);
         enableInfestations = builder.comment("Enable rat infestations for improperly stored food.").define("enableInfestations", true);
-        enableCalendarSensitiveMoonPhases = builder.comment("Enables TFC setting the moon phase based on the progress of the month. The etymology of the English word 'month' is in fact related to the word 'moon'.").define("enableCalendarSensitiveMoonPhases", true);
         enableLightning = builder.comment("If false, vanilla lightning will not strike.").define("enableLightning", true);
         enableLightningStrippingLogs = builder.comment("If true, lightning has a chance of stripping bark off of trees.").define("enableLightningStrippingLogs", true);
         oceanWindScale = builder.comment("Every time the z coordinate reaches a multiple of this point, the wind over oceans will switch directions.").define("oceanWindScale", 5000, 128, Integer.MAX_VALUE);
@@ -602,8 +601,8 @@ public class ServerConfig extends BaseConfig
         keepNutritionAfterDeath = builder.comment(
             "If player's nutrition should be kept even after death. Hunger and thirst are not affected and will be reset.").define("keepNutritionAfterDeath", true);
         foodDecayStackWindow = builder.comment(
-            "How many hours should different foods ignore when trying to stack together automatically?",
-            "Food made with different creation dates doesn't stack by default, unless it's within a specific window. This is the number of hours that different foods will try and stack together at the loss of a little extra expiry time.").define("foodDecayStackWindow", 6, 1, 100);
+            "How many hours should different foods ignore when trying to unsealedStack together automatically?",
+            "Food made with different creation dates doesn't unsealedStack by default, unless it's within a specific window. This is the number of hours that different foods will try and unsealedStack together at the loss of a little extra expiry time.").define("foodDecayStackWindow", 6, 1, 100);
         foodDecayModifier = builder.comment(
             "A multiplier for food decay, or expiration times. Larger values will result in naturally shorter expiration times.",
             "Setting this to zero will cause decay not to apply.",
@@ -629,7 +628,8 @@ public class ServerConfig extends BaseConfig
         traitWoodGrilledModifier = builder.comment("The modifier for the 'Wood Grilled' food trait. Values less than 1 extend food lifetime, values greater than one decrease it. A value of zero stops decay.").define("traitWoodGrilledModifier", 0.8, 0, Double.MAX_VALUE);
         traitBurntToACrispModifier = builder.comment("The modifier for the 'Burnt To A Crisp' food trait. Values less than 1 extend food lifetime, values greater than one decrease it. A value of zero stops decay.").define("traitBurntToACrispModifier", 2.5, 0, Double.MAX_VALUE);
         traitWildModifier = builder.comment("The modifier for the 'Wild' food trait. Values less than 1 extend food lifetime, values greater than one decrease it. A value of zero stops decay.").define("traitWildModifier", 0.5, 0, Double.MAX_VALUE);
-        
+        traitCannedModifier = builder.comment("The modifier for the 'Canned' food trait. Values less than 1 extend food lifetime, values greater than one decrease it. A value of zero stops decay.").define("traitCannedModifier", 0.00001, 0, Double.MAX_VALUE);
+
         builder.swap("fluids");
 
         enableBucketsPlacingSources = builder.comment("If true, TFC buckets that naturally place sources (colored steel) will place sources. If false, this behavior is disabled.").define("enableBucketsPlacingSources", true);

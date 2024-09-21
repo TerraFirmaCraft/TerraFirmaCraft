@@ -30,13 +30,13 @@
       },
       {
         "type": "tfc:extra_products",
-        "stack": {
+        "unsealedStack": {
           "count": 1,
           "id": "tfc:straw"
         }
       }
     ],
-    "stack": {
+    "unsealedStack": {
       "count": 1,
       "id": "tfc:food/rice_grain"
     }

@@ -34,6 +34,7 @@ public class FoodTraits
     public static final DeferredHolder<FoodTrait, FoodTrait> WOOD_GRILLED = register("wood_grilled", TFCConfig.SERVER.traitWoodGrilledModifier); // Slight buff when cooking in a grill
     public static final DeferredHolder<FoodTrait, FoodTrait> BURNT_TO_A_CRISP = register("burnt_to_a_crisp", TFCConfig.SERVER.traitBurntToACrispModifier); // Cooking food in something that's WAY TOO HOT too cook food in you fool!
     public static final DeferredHolder<FoodTrait, FoodTrait> WILD = register("wild", TFCConfig.SERVER.traitWildModifier); // wild pumpkins last a bit longer, just in case you don't see them right away.
+    public static final DeferredHolder<FoodTrait, FoodTrait> CANNED = register("canned", TFCConfig.SERVER.traitCannedModifier); // modifier for canned goods that have been 'sealed' via boiling
 
 
     private static DeferredHolder<FoodTrait, FoodTrait> register(String name, Supplier<Double> decayModifier)

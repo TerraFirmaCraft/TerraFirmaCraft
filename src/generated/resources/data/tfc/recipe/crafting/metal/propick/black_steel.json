@@ -18,7 +18,7 @@
         "type": "tfc:copy_forging_bonus"
       }
     ],
-    "stack": {
+    "unsealedStack": {
       "count": 1,
       "id": "tfc:metal/propick/black_steel"
     }

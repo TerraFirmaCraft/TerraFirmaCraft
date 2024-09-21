@@ -45,7 +45,7 @@ public record AndIngredient(List<Ingredient> children) implements ICustomIngredi
     {
         for (Ingredient child : children)
         {
-            if (child.test(stack)) return false;
+            if (!child.test(stack)) return false;
         }
         return true;
     }

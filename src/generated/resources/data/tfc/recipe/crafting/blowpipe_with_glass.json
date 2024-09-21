@@ -17,7 +17,7 @@
         "type": "tfc:add_glass"
       }
     ],
-    "stack": {
+    "unsealedStack": {
       "count": 1,
       "id": "tfc:blowpipe_with_glass"
     }

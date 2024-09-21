@@ -41,7 +41,7 @@ public record BlastFurnaceRecipe(
     );
 
     /**
-     * @return A recipe matching a primary input item stack.
+     * @return A recipe matching a primary input item unsealedStack.
      */
     @Nullable
     public static BlastFurnaceRecipe get(Level level, ItemStack stack)

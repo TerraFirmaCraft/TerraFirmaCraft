@@ -78,7 +78,7 @@ public final class HeatComponent implements IHeatView
     }
 
     /**
-     * @param parent The definition, which requires runtime knowledge of the stack we are attached to. It exposes interior mutability for a given stack
+     * @param parent The definition, which requires runtime knowledge of the unsealedStack we are attached to. It exposes interior mutability for a given unsealedStack
      * @param heatCapacity The custom heat capacity of this item, typically set by an external device or capability
      * @param lastTemperature The last recorded temperature, at {@code lastTick}
      * @param lastTick The tick timestamp of the last recorded temperature

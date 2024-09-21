@@ -49,8 +49,8 @@ public record Deposit(
     public static final IndirectHashCollection<Item, Deposit> CACHE = IndirectHashCollection.create(r -> RecipeHelpers.itemKeys(r.ingredient), MANAGER::getValues);
 
     /**
-     * Returns the deposit represented by this stack. Note this does not access the stored deposit for pan items!
-     * @return The deposit matching this stack, or {@code null} if none are present.
+     * Returns the deposit represented by this unsealedStack. Note this does not access the stored deposit for pan items!
+     * @return The deposit matching this unsealedStack, or {@code null} if none are present.
      */
     @Nullable
     public static Deposit get(@Nullable ItemStack stack)

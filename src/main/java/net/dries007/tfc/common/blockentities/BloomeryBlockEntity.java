@@ -328,7 +328,7 @@ public class BloomeryBlockEntity extends TickableBlockEntity implements ICalenda
             loop:
             for (ItemEntity entity : itemEntities)
             {
-                // Optimization: pre-melt each input stack, and only check against the bloomery recipe's fluid input
+                // Optimization: pre-melt each input unsealedStack, and only check against the bloomery recipe's fluid input
                 final @Nullable HeatingRecipe heat = HeatingRecipe.getRecipe(entity.getItem());
                 if (heat != null)
                 {
@@ -468,7 +468,7 @@ public class BloomeryBlockEntity extends TickableBlockEntity implements ICalenda
         final Collection<RecipeHolder<BloomeryRecipe>> recipes = RecipeHelpers.getRecipes(level, TFCRecipeTypes.BLOOMERY);
         for (ItemStack stack : inputStacks)
         {
-            // Optimization: pre-melt each input stack, and only check against the bloomery recipe's fluid input
+            // Optimization: pre-melt each input unsealedStack, and only check against the bloomery recipe's fluid input
             final @Nullable HeatingRecipe heat = HeatingRecipe.getRecipe(stack);
             if (heat != null)
             {

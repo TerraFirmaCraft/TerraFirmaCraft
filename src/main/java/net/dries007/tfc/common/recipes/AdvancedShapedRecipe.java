@@ -26,12 +26,12 @@ import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 
 /**
  * A shaped recipe type which uses {@link ItemStackProvider} as it's output mechanism
- * It also requires that the recipe specify which (of the crafting grid) inputs is responsible for the item stack provider's "input" stack.
+ * It also requires that the recipe specify which (of the crafting grid) inputs is responsible for the item unsealedStack provider's "input" unsealedStack.
  */
 public class AdvancedShapedRecipe extends ShapedRecipe
 {
     public static final MapCodec<AdvancedShapedRecipe> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
-        // Copied from ShapedRecipe.Serializer.CODEC, as we want to avoid the "result" field as a strict item stack
+        // Copied from ShapedRecipe.Serializer.CODEC, as we want to avoid the "result" field as a strict item unsealedStack
         ShapedRecipePattern.MAP_CODEC.forGetter(c -> c.pattern),
         Codec.BOOL.optionalFieldOf("show_notification", true).forGetter(ShapedRecipe::showNotification),
         ItemStackProvider.CODEC.fieldOf("result").forGetter(c -> c.result),

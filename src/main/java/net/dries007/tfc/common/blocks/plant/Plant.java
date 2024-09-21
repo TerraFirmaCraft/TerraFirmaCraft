@@ -15,6 +15,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.PlaceOnWaterBlockItem;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
@@ -180,7 +181,9 @@ public enum Plant implements RegistryPlant
     IVY(BlockType.CREEPING, 1.0F),
     JUNGLE_VINES(BlockType.VINE, 1.0F),
     SAGUARO_PLANT(BlockType.BRANCHING_CACTUS, 1f),
-    SAGUARO(BlockType.BRANCHING_CACTUS_TOP, 1f)
+    SAGUARO(BlockType.BRANCHING_CACTUS_TOP, 1f),
+    GOLDEN_BAMBOO(BlockType.BAMBOO, 1.0F),
+    GOLDEN_BAMBOO_SAPLING(BlockType.BAMBOO_SAPLING, 1.0F),
     ;
 
     private static final EnumSet<Plant> SPECIAL_POTTED_PLANTS = EnumSet.of(BARREL_CACTUS, FOXGLOVE, MORNING_GLORY, MOSS, OSTRICH_FERN, REINDEER_LICHEN, ROSE, SAPPHIRE_TOWER, TOQUILLA_PALM, TREE_FERN, PHILODENDRON);
@@ -352,7 +355,7 @@ public enum Plant implements RegistryPlant
 
     public boolean hasFlowerPot()
     {
-        return type == BlockType.STANDARD || type == BlockType.FLOWERBED || type == BlockType.DRY || type == BlockType.CACTUS_FLOWER || SPECIAL_POTTED_PLANTS.contains(this);
+        return type == BlockType.STANDARD || type == BlockType.FLOWERBED || type == BlockType.DRY || type == BlockType.CACTUS_FLOWER || type == BlockType.BAMBOO || SPECIAL_POTTED_PLANTS.contains(this);
     }
 
     @Nullable
@@ -367,28 +370,30 @@ public enum Plant implements RegistryPlant
     private Supplier<? extends Block> transform()
     {
         return TFCBlocks.PLANTS.get(switch (this)
-            {
-                case HANGING_VINES -> HANGING_VINES_PLANT;
-                case HANGING_VINES_PLANT -> HANGING_VINES;
-                case TREE_FERN -> TREE_FERN_PLANT;
-                case TREE_FERN_PLANT -> TREE_FERN;
-                case WINGED_KELP_PLANT -> WINGED_KELP;
-                case WINGED_KELP -> WINGED_KELP_PLANT;
-                case GIANT_KELP_FLOWER -> GIANT_KELP_PLANT;
-                case LEAFY_KELP -> LEAFY_KELP_PLANT;
-                case LEAFY_KELP_PLANT -> LEAFY_KELP;
-                case ARUNDO -> ARUNDO_PLANT;
-                case ARUNDO_PLANT -> ARUNDO;
-                case DRY_PHRAGMITE -> DRY_PHRAGMITE_PLANT;
-                case DRY_PHRAGMITE_PLANT -> DRY_PHRAGMITE;
-                case LIANA -> LIANA_PLANT;
-                case LIANA_PLANT -> LIANA;
-                case SPANISH_MOSS_PLANT -> SPANISH_MOSS;
-                case SPANISH_MOSS -> SPANISH_MOSS_PLANT;
-                case SAGUARO_PLANT -> SAGUARO;
-                case SAGUARO -> SAGUARO_PLANT;
-                default -> throw new IllegalStateException("Uhh why did you try to transform something that's not a tall plant?");
-            });
+        {
+            case HANGING_VINES -> HANGING_VINES_PLANT;
+            case HANGING_VINES_PLANT -> HANGING_VINES;
+            case TREE_FERN -> TREE_FERN_PLANT;
+            case TREE_FERN_PLANT -> TREE_FERN;
+            case WINGED_KELP_PLANT -> WINGED_KELP;
+            case WINGED_KELP -> WINGED_KELP_PLANT;
+            case GIANT_KELP_FLOWER -> GIANT_KELP_PLANT;
+            case LEAFY_KELP -> LEAFY_KELP_PLANT;
+            case LEAFY_KELP_PLANT -> LEAFY_KELP;
+            case ARUNDO -> ARUNDO_PLANT;
+            case ARUNDO_PLANT -> ARUNDO;
+            case DRY_PHRAGMITE -> DRY_PHRAGMITE_PLANT;
+            case DRY_PHRAGMITE_PLANT -> DRY_PHRAGMITE;
+            case LIANA -> LIANA_PLANT;
+            case LIANA_PLANT -> LIANA;
+            case SPANISH_MOSS_PLANT -> SPANISH_MOSS;
+            case SPANISH_MOSS -> SPANISH_MOSS_PLANT;
+            case SAGUARO_PLANT -> SAGUARO;
+            case SAGUARO -> SAGUARO_PLANT;
+            case GOLDEN_BAMBOO -> GOLDEN_BAMBOO_SAPLING;
+            case GOLDEN_BAMBOO_SAPLING -> GOLDEN_BAMBOO;
+            default -> throw new IllegalStateException("Uhh why did you try to transform something that's not a tall plant?");
+        });
     }
 
     private Supplier<? extends Block> secondTransform()
@@ -434,9 +439,11 @@ public enum Plant implements RegistryPlant
         WATER((plant, type) -> WaterPlantBlock.create(plant, TFCBlockStateProperties.SALT_WATER, nonSolid(plant).offsetType(BlockBehaviour.OffsetType.XZ))),
         WATER_FRESH((plant, type) -> WaterPlantBlock.create(plant, TFCBlockStateProperties.FRESH_WATER, nonSolid(plant).offsetType(BlockBehaviour.OffsetType.XZ))),
         GRASS_WATER((plant, type) -> TFCSeagrassBlock.create(plant, TFCBlockStateProperties.SALT_WATER, nonSolid(plant).offsetType(BlockBehaviour.OffsetType.XZ))),
-        GRASS_WATER_FRESH((plant, type) -> TFCSeagrassBlock.create(plant, TFCBlockStateProperties.FRESH_WATER, nonSolid(plant).offsetType(BlockBehaviour.OffsetType.XZ)));
+        GRASS_WATER_FRESH((plant, type) -> TFCSeagrassBlock.create(plant, TFCBlockStateProperties.FRESH_WATER, nonSolid(plant).offsetType(BlockBehaviour.OffsetType.XZ))),
+        BAMBOO_SAPLING((plant, type) -> new TFCBambooSaplingBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BAMBOO_SAPLING), plant.transform())),
+        BAMBOO((plant, type) -> new TFCBambooStalkBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BAMBOO), plant.transform()));
 
-        private static final EnumSet<BlockType> NO_ITEM_TYPES = EnumSet.of(WEEPING, TWISTING_SOLID, KELP, KELP_TREE, TWISTING, BRANCHING_CACTUS);
+        private static final EnumSet<BlockType> NO_ITEM_TYPES = EnumSet.of(WEEPING, TWISTING_SOLID, KELP, KELP_TREE, TWISTING, BRANCHING_CACTUS, BAMBOO_SAPLING);
         private static final EnumSet<BlockType> FOLIAGE_TYPES = EnumSet.of(WEEPING, WEEPING_TOP, FLOATING_FRESH, FLOATING, WATER_FRESH, GRASS_WATER_FRESH, GRASS_WATER);
 
         /**

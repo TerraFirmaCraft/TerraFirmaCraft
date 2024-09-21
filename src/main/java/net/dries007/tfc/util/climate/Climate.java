@@ -82,11 +82,6 @@ public final class Climate
         return get(level).getAverageGroundwater(level, pos);
     }
 
-    public static float getFog(Level level, BlockPos pos)
-    {
-        return get(level).getFog(level, pos, Calendars.get(level).getTicks());
-    }
-
     /**
      * Converts a vanilla biome temperature into a TFC temperature in degrees Celsius.
      * <p>

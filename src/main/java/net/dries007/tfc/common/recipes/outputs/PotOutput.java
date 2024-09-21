@@ -122,7 +122,7 @@ public interface PotOutput
     default void onFinish(PotBlockEntity.PotInventory inventory) {}
 
     /**
-     * Called when a player interacts with the pot inventory, using the specific item stack, to try and extract output.
+     * Called when a player interacts with the pot inventory, using the specific item unsealedStack, to try and extract output.
      */
     default ItemInteractionResult onInteract(PotBlockEntity entity, Player player, ItemStack clickedWith)
     {

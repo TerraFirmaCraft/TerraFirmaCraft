@@ -465,7 +465,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
             FluidHelpers.transferBetweenBlockEntityAndItem(input, this, level, worldPosition, (newOriginalStack, newContainerStack) -> {
                 if (newContainerStack.isEmpty())
                 {
-                    // No new container was produced, so shove the first stack in the output, and clear the input
+                    // No new container was produced, so shove the first unsealedStack in the output, and clear the input
                     inventory.setStackInSlot(SLOT_FLUID_CONTAINER_IN, ItemStack.EMPTY);
                     inventory.setStackInSlot(SLOT_FLUID_CONTAINER_OUT, newOriginalStack);
                 }

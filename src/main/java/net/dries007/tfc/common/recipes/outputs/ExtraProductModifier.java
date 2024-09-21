@@ -19,7 +19,7 @@ import net.dries007.tfc.common.recipes.RecipeHelpers;
 
 public record ExtraProductModifier(ItemStack stack) implements ItemStackModifier
 {
-    public static final MapCodec<ExtraProductModifier> CODEC = ItemStack.CODEC.fieldOf("stack").xmap(ExtraProductModifier::of, ExtraProductModifier::stack);
+    public static final MapCodec<ExtraProductModifier> CODEC = ItemStack.CODEC.fieldOf("unsealedStack").xmap(ExtraProductModifier::of, ExtraProductModifier::stack);
     public static final StreamCodec<RegistryFriendlyByteBuf, ExtraProductModifier> STREAM_CODEC = ItemStack.STREAM_CODEC.map(ExtraProductModifier::of, ExtraProductModifier::stack);
 
     public static ExtraProductModifier of(ItemStack stack)

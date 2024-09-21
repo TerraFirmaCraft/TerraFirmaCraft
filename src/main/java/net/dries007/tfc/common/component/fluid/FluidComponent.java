@@ -14,7 +14,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 
 /**
  * An immutable representation of a fluid container which holds a certain fluid, restricted by a given predicate and capacity.
- * @param content The content of the fluid stack. <strong>Never</strong> modify this content, it should be treated as immutable!
+ * @param content The content of the fluid unsealedStack. <strong>Never</strong> modify this content, it should be treated as immutable!
  */
 public record FluidComponent(FluidStack content)
 {

@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.recipes;
 
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
@@ -44,15 +45,15 @@ public class FoodCombiningCraftingRecipe extends CustomRecipe
                 {
                     return false;
                 }
-                // If there's more than one stack, keep count of the previous ones
+                // If there's more than one unsealedStack, keep count of the previous ones
                 if (foodStack.isEmpty())
                 {
-                    // First stack, so save and move on
+                    // First unsealedStack, so save and move on
                     foodStack = stack;
                 }
                 else
                 {
-                    // Another stack, so compare. If not equal, or one is not a food, the recipe is invalid
+                    // Another unsealedStack, so compare. If not equal, or one is not a food, the recipe is invalid
                     if (!FoodCapability.areStacksStackableExceptCreationDate(stack, foodStack))
                     {
                         return false;
@@ -88,7 +89,7 @@ public class FoodCombiningCraftingRecipe extends CustomRecipe
                         minCreationDate = cap.getCreationDate();
                     }
 
-                    // And save the stack
+                    // And save the unsealedStack
                     if (resultStack.isEmpty())
                     {
                         resultStack = stack.copy();
@@ -102,6 +103,13 @@ public class FoodCombiningCraftingRecipe extends CustomRecipe
         final long date = minCreationDate;
         FoodCapability.setCreationDate(resultStack, date);
         return resultStack;
+    }
+
+    @Override
+    public NonNullList<ItemStack> getRemainingItems(CraftingInput input)
+    {
+        // Avoid container items since they should have been moved to output (see TerraFirmaCraft#2788)
+        return NonNullList.withSize(input.size(), ItemStack.EMPTY);
     }
 
     @Override

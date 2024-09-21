@@ -50,7 +50,7 @@ public record GlassworkingRecipe(
     }
 
     /**
-     * @return {@code true} if the recipe matches the input stack
+     * @return {@code true} if the recipe matches the input unsealedStack
      */
     @Override
     public boolean matches(ItemStack input)

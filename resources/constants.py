@@ -662,7 +662,7 @@ FLOWERPOT_CROSS_PLANTS = {
     'yucca': 'potted'
 }
 
-MISC_POTTED_PLANTS = ('barrel_cactus', 'morning_glory', 'moss', 'reindeer_lichen', 'rose', 'toquilla_palm', 'tree_fern', 'sea_palm', 'philodendron')
+MISC_POTTED_PLANTS = ('barrel_cactus', 'morning_glory', 'moss', 'reindeer_lichen', 'rose', 'toquilla_palm', 'tree_fern', 'sea_palm', 'philodendron', 'golden_bamboo')
 
 SIMPLE_STAGE_PLANTS: dict[str, int] = {
     'allium': 6,
@@ -1112,6 +1112,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.food_trait.wood_grilled': 'Wood Grilled',
     'tfc.tooltip.food_trait.wild': 'Wild',
     'tfc.tooltip.food_trait.burnt_to_a_crisp': 'Burnt to a crisp!',
+    'tfc.tooltip.food_trait.canned': 'Canned',
     'tfc.tooltip.item_melts_into': '§7Melts into %s mB of §f%s§7 (at %s§7)',
     'tfc.tooltip.fuel_burns_at': '§7Burns at §f%s§7 for §f%s',
     'tfc.tooltip.time_delta_hours_minutes': '%s:%s',
@@ -1311,11 +1312,11 @@ DEFAULT_LANG = {
 
     # Commands
 
-    'tfc.commands.time.query.daytime': 'The day time is %s',
-    'tfc.commands.time.query.game_time': 'The game time is %s',
-    'tfc.commands.time.query.day': 'The day is %s',
-    'tfc.commands.time.query.player_ticks': 'The player ticks is %s',
-    'tfc.commands.time.query.calendar_ticks': 'The calendar ticks is %s',
+    'tfc.commands.disabled_by_tfc': 'This command has been disabled by TerraFirmaCraft, use /time instead',
+    'tfc.commands.time.set_day_length': 'Day length has been set to %s minutes/day',
+    'tfc.commands.time.set_day_length_disabled': 'Daylight cycle has been disabled',
+    'tfc.commands.time.set_month_length': 'Month length has been set to %s days/month',
+    'tfc.commands.time.add_time': 'Skipping ahead %s (%s ticks)',
     'tfc.commands.time.skip_forward': 'Skipping forward %s ticks',
     'tfc.commands.weather_enabled.true': 'Weather is enabled',
     'tfc.commands.weather_enabled.false': 'Weather is disabled',

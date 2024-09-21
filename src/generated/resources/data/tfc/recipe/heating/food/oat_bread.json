@@ -17,7 +17,7 @@
         "type": "tfc:copy_food"
       }
     ],
-    "stack": {
+    "unsealedStack": {
       "count": 1,
       "id": "tfc:food/oat_bread"
     }

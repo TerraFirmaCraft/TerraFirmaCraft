@@ -198,7 +198,6 @@ import net.dries007.tfc.util.events.DouseFireEvent;
 import net.dries007.tfc.util.events.LoggingEvent;
 import net.dries007.tfc.util.events.SelectClimateModelEvent;
 import net.dries007.tfc.util.events.StartFireEvent;
-import net.dries007.tfc.util.tracker.WeatherHelpers;
 import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.chunkdata.ChunkData;
@@ -216,7 +215,7 @@ public final class ForgeEventHandler
 
         bus.addListener(ForgeEventHandler::onCreateWorldSpawn);
         bus.addListener(ForgeEventHandler::onChunkWatch);
-        bus.addListener(ForgeEventHandler::registerCommands);
+        bus.addListener(EventPriority.LOW, ForgeEventHandler::registerCommands); // Must come after neo, since we take over `/neoforge day`
         bus.addListener(ForgeEventHandler::onBlockBroken);
         bus.addListener(ForgeEventHandler::onBlockPlace);
         bus.addListener(ForgeEventHandler::onBreakSpeed);
@@ -434,11 +433,10 @@ public final class ForgeEventHandler
         if (event.getLevel() instanceof final ServerLevel level)
         {
             final MinecraftServer server = level.getServer();
+            final GameRules rules = level.getGameRules();
 
             if (TFCConfig.SERVER.enableForcedTFCGameRules.get())
             {
-                final GameRules rules = level.getGameRules();
-
                 rules.getRule(GameRules.RULE_NATURAL_REGENERATION).set(false, server);
                 rules.getRule(GameRules.RULE_DOINSOMNIA).set(false, server);
                 rules.getRule(GameRules.RULE_DO_PATROL_SPAWNING).set(false, server);
@@ -446,6 +444,9 @@ public final class ForgeEventHandler
 
                 LOGGER.info("Updating TFC Relevant Game Rules for level {}.", level.dimension().location());
             }
+
+            // This one is non-negotiable, it's required in order for the calendar to function
+            rules.getRule(GameRules.RULE_DAYLIGHT).set(false, server);
 
             Climate.chooseModelForWorld(level);
 

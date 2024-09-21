@@ -83,7 +83,7 @@ public enum ForgingBonus implements StringRepresentable
     }
 
     /**
-     * Get the forging bonus currently attached to an item stack.
+     * Get the forging bonus currently attached to an item unsealedStack.
      */
     public static ForgingBonus get(ItemStack stack)
     {
@@ -91,7 +91,7 @@ public enum ForgingBonus implements StringRepresentable
     }
 
     /**
-     * Set the forging bonus on an item stack
+     * Set the forging bonus on an item unsealedStack
      */
     public static void set(ItemStack stack, ForgingBonus bonus)
     {

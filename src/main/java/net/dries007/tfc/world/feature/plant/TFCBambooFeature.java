@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.world.feature;
+package net.dries007.tfc.world.feature.plant;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
@@ -18,39 +18,59 @@ import net.minecraft.world.level.block.state.properties.BambooLeaves;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.ProbabilityFeatureConfiguration;
 
 import net.dries007.tfc.common.blocks.soil.DirtBlock;
 import net.dries007.tfc.common.blocks.soil.IGrassBlock;
 
-public class TFCBambooFeature extends Feature<ProbabilityFeatureConfiguration>
+public class TFCBambooFeature extends Feature<TFCBambooConfig>
 {
-    private static final BlockState BAMBOO_TRUNK = Blocks.BAMBOO.defaultBlockState().setValue(BambooStalkBlock.AGE, 1).setValue(BambooStalkBlock.LEAVES, BambooLeaves.NONE).setValue(BambooStalkBlock.STAGE, 0);
-    private static final BlockState BAMBOO_FINAL_LARGE = BAMBOO_TRUNK.setValue(BambooStalkBlock.LEAVES, BambooLeaves.LARGE).setValue(BambooStalkBlock.STAGE, 1);
-    private static final BlockState BAMBOO_TOP_LARGE = BAMBOO_TRUNK.setValue(BambooStalkBlock.LEAVES, BambooLeaves.LARGE);
-    private static final BlockState BAMBOO_TOP_SMALL = BAMBOO_TRUNK.setValue(BambooStalkBlock.LEAVES, BambooLeaves.SMALL);
-
-    public TFCBambooFeature(Codec<ProbabilityFeatureConfiguration> codec)
+    public TFCBambooFeature(Codec<TFCBambooConfig> codec)
     {
         super(codec);
     }
 
+    private BlockState trunk(TFCBambooConfig config)
+    {
+        return config.state().setValue(BambooStalkBlock.AGE, 1).setValue(BambooStalkBlock.LEAVES, BambooLeaves.NONE).setValue(BambooStalkBlock.STAGE, 0);
+    }
+
+    private BlockState finalLarge(TFCBambooConfig config)
+    {
+        return trunk(config).setValue(BambooStalkBlock.LEAVES, BambooLeaves.LARGE).setValue(BambooStalkBlock.STAGE, 1);
+    }
+
+    private BlockState topLarge(TFCBambooConfig config)
+    {
+        return trunk(config).setValue(BambooStalkBlock.LEAVES, BambooLeaves.LARGE);
+    }
+
+    private BlockState topSmall(TFCBambooConfig config)
+    {
+        return trunk(config).setValue(BambooStalkBlock.LEAVES, BambooLeaves.SMALL);
+    }
+
     @Override
-    public boolean place(FeaturePlaceContext<ProbabilityFeatureConfiguration> context)
+    public boolean place(FeaturePlaceContext<TFCBambooConfig> context)
     {
         int placed = 0;
         final BlockPos blockpos = context.origin();
         final WorldGenLevel level = context.level();
         final var random = context.random();
-        final ProbabilityFeatureConfiguration config = context.config();
+        final TFCBambooConfig config = context.config();
         final BlockPos.MutableBlockPos cursor = blockpos.mutable();
         final BlockPos.MutableBlockPos cursor2 = blockpos.mutable();
+
+        final BlockState trunk = trunk(config);
+        final BlockState finalLarge = finalLarge(config);
+        final BlockState topLarge = topLarge(config);
+        final BlockState topSmall = topSmall(config);
+
         if (level.isEmptyBlock(cursor))
         {
             if (Blocks.BAMBOO.defaultBlockState().canSurvive(level, cursor))
             {
                 final int trunkSize = random.nextInt(12) + 5;
-                if (random.nextFloat() < config.probability)
+                if (random.nextFloat() < config.probability())
                 {
                     final int radius = random.nextInt(4) + 1;
 
@@ -79,15 +99,15 @@ public class TFCBambooFeature extends Feature<ProbabilityFeatureConfiguration>
 
                 for (int j = 0; j < trunkSize && level.isEmptyBlock(cursor); ++j)
                 {
-                    level.setBlock(cursor, BAMBOO_TRUNK, 2);
+                    level.setBlock(cursor, trunk, 2);
                     cursor.move(Direction.UP, 1);
                 }
 
                 if (cursor.getY() - blockpos.getY() >= 3)
                 {
-                    level.setBlock(cursor, BAMBOO_FINAL_LARGE, 2);
-                    level.setBlock(cursor.move(Direction.DOWN, 1), BAMBOO_TOP_LARGE, 2);
-                    level.setBlock(cursor.move(Direction.DOWN, 1), BAMBOO_TOP_SMALL, 2);
+                    level.setBlock(cursor, finalLarge, 2);
+                    level.setBlock(cursor.move(Direction.DOWN, 1), topLarge, 2);
+                    level.setBlock(cursor.move(Direction.DOWN, 1), topSmall, 2);
                 }
             }
 

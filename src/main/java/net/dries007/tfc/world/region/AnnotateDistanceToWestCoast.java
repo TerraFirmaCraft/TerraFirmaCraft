@@ -1,3 +1,9 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.world.region;
 
 import net.minecraft.util.Mth;
@@ -42,7 +48,7 @@ public enum AnnotateDistanceToWestCoast implements RegionTask
                             else
                             {
                                 int sum = 0;
-                                final float scale = context.generator().getTemperatureScale();
+                                final float scale = context.generator().settings.temperatureScale();
                                 final float frequency = Units.GRID_WIDTH_IN_BLOCK / (2f * scale);
                                 final float function = Math.abs(4f * frequency * point.z - 4f * Mth.floor(frequency * point.z + 0.75f)) - 1f;
                                 final int start = -2 + (function > 0.1 ? 1 : 0);

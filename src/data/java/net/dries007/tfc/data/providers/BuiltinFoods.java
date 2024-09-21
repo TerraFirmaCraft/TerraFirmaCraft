@@ -193,7 +193,7 @@ public class BuiltinFoods extends DataManagerProvider<FoodDefinition> implements
         add(Food.COOKED_CHEVON, ofFood(1, 0, 2.25f).protein(2f));
         add(Food.COOKED_GRAN_FELINE, ofFood(2, 0, 2.25f).protein(2.5f));
         add(Food.COOKED_CAMELIDAE, ofFood(2, 0, 2.25f).protein(2.5f));
-        add(TFCTags.Items.SEALED_PRESERVES, ofFood(0, 0, 0, 0.1f), false);
+        add(TFCTags.Items.SEALED_PRESERVES, ofFood(0, 0, 0, 0.75f), false);
         add(TFCTags.Items.PRESERVES, ofFood(0, 0, 0, 5).fruit(0.75f), true);
         add(TFCTags.Items.SALADS, of(4.5f), true);
         add(TFCTags.Items.SOUPS, of(4.5f), true);

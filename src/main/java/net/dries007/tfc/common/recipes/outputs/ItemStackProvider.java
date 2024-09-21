@@ -25,7 +25,7 @@ public record ItemStackProvider(
 ) {
     public static final Codec<ItemStackProvider> CODEC = Codec.either(
         RecordCodecBuilder.<ItemStackProvider>create(i -> i.group(
-            ItemStack.CODEC.optionalFieldOf("stack", ItemStack.EMPTY).forGetter(c -> c.stack),
+            ItemStack.CODEC.optionalFieldOf("unsealedStack", ItemStack.EMPTY).forGetter(c -> c.stack),
             ItemStackModifier.CODEC.listOf().fieldOf("modifiers").forGetter(c -> c.modifiers)
         ).apply(i, ItemStackProvider::new)),
         ItemStack.CODEC
@@ -84,10 +84,10 @@ public record ItemStackProvider(
     }
 
     /**
-     * Gets the output stack for this provider, for the given input stack, assuming the input is a single item.
+     * Gets the output unsealedStack for this provider, for the given input unsealedStack, assuming the input is a single item.
      *
-     * @param input The input stack. <strong>Important:</strong> the input stack will be treated as if it has count = 1.
-     * @return A new stack, independent of the input stack size.
+     * @param input The input unsealedStack. <strong>Important:</strong> the input unsealedStack will be treated as if it has count = 1.
+     * @return A new unsealedStack, independent of the input unsealedStack size.
      */
     public ItemStack getSingleStack(ItemStack input)
     {
@@ -95,9 +95,9 @@ public record ItemStackProvider(
     }
 
     /**
-     * Gets the output stack from this provider, without taking into consideration the input
+     * Gets the output unsealedStack from this provider, without taking into consideration the input
      *
-     * @return A new stack, possibly invalid if the provider is dependent on the input stack.
+     * @return A new unsealedStack, possibly invalid if the provider is dependent on the input unsealedStack.
      */
     public ItemStack getEmptyStack()
     {
@@ -105,12 +105,12 @@ public record ItemStackProvider(
     }
 
     /**
-     * Gets the output stack from this provider, for the given input stack.
+     * Gets the output unsealedStack from this provider, for the given input unsealedStack.
      *
-     * @param input The input stack. <strong>Important:</strong> The input stack will be treated as an entire stack, including count, and the
-     *              returned stack may be the same count as the input due to the presence of {@link CopyInputModifier}s. If this behavior is
+     * @param input The input unsealedStack. <strong>Important:</strong> The input unsealedStack will be treated as an entire unsealedStack, including count, and the
+     *              returned unsealedStack may be the same count as the input due to the presence of {@link CopyInputModifier}s. If this behavior is
      *              not desired, use {@link #getSingleStack(ItemStack)}.
-     * @return A new stack, possibly dependent on the input stack size.
+     * @return A new unsealedStack, possibly dependent on the input unsealedStack size.
      */
     public ItemStack getStack(ItemStack input)
     {
@@ -118,9 +118,9 @@ public record ItemStackProvider(
     }
 
     /**
-     * Gets the output stack from this provider, for the given input stack, and allows providing a non-typical
+     * Gets the output unsealedStack from this provider, for the given input unsealedStack, and allows providing a non-typical
      * context to the provider.
-     * @return A new stack, possibly dependent on the input stack
+     * @return A new unsealedStack, possibly dependent on the input unsealedStack
      */
     public ItemStack getStack(ItemStack input, ItemStackModifier.Context context)
     {
@@ -133,7 +133,7 @@ public record ItemStackProvider(
     }
 
     /**
-     * @return {@code true} if the item stack provider is dependent on it's input in such a way that would render the output meaningless without proper inputs.
+     * @return {@code true} if the item unsealedStack provider is dependent on it's input in such a way that would render the output meaningless without proper inputs.
      */
     public boolean dependsOnInput()
     {

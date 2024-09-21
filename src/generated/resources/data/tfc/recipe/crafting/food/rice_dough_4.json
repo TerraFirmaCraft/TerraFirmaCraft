@@ -59,7 +59,7 @@
         "type": "tfc:copy_oldest_food"
       }
     ],
-    "stack": {
+    "unsealedStack": {
       "count": 4,
       "id": "tfc:food/rice_dough"
     }

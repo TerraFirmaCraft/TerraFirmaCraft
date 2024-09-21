@@ -21,7 +21,6 @@ import net.dries007.tfc.common.player.IPlayerInfo;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
-import net.dries007.tfc.util.calendar.ICalendar;
 
 /**
  * Implementation of food mechanics, including decay (rot) through the creation date system, food traits (modifiers),
@@ -29,7 +28,7 @@ import net.dries007.tfc.util.calendar.ICalendar;
  * overwrite of vanilla's food handler with {@link IPlayerInfo}, and overwrite edible food components in {@link TFCComponents}
  * <p>
  * Foods can be added via a {@link FoodDefinition} which is loaded via {@link FoodCapability#MANAGER}. A food component is
- * attached to every item stack, and updated on creation (constructor) if necessary.
+ * attached to every item unsealedStack, and updated on creation (constructor) if necessary.
  */
 public interface IFood
 {
@@ -74,7 +73,7 @@ public interface IFood
      */
     default long getRottenDate()
     {
-        return FoodCapability.getRottenDate(getCreationDate(), getDecayDateModifier());
+        return getCreationDate() + FoodCapability.getRemainingTime(getDecayDateModifier());
     }
 
     /**
@@ -135,7 +134,7 @@ public interface IFood
     /**
      * Tooltip added to the food item
      *
-     * @param stack the stack in question
+     * @param stack the unsealedStack in question
      * @param tooltip  the tooltip
      */
     default void addTooltipInfo(ItemStack stack, Consumer<Component> tooltip)
@@ -160,15 +159,12 @@ public interface IFood
             creationDate != TRANSIENT_NEVER_DECAY_FLAG &&
             creationDate != INVISIBLE_NEVER_DECAY_FLAG)
         {
-            final long rottenDate = FoodCapability.getRottenDate(creationDate, getDecayDateModifier());
-            final long rottenCalendarTime = Calendars.CLIENT.ticksToCalendarTicks(rottenDate); // Date food rots on.
-            final long ticksRemaining = rottenDate - Calendars.CLIENT.getTicks(); // Ticks remaining until rotten
-
+            final long remainingTime = FoodCapability.getRemainingTime(getDecayDateModifier()); // Player ticks
             final MutableComponent foodExpiry = switch (TFCConfig.CLIENT.foodExpiryTooltipStyle.get())
             {
-                case EXPIRY -> Component.translatable("tfc.tooltip.food_expiry_date", ICalendar.getTimeAndDate(rottenCalendarTime, Calendars.CLIENT.getCalendarDaysInMonth()));
-                case TIME_LEFT -> Component.translatable("tfc.tooltip.food_expiry_left", Calendars.CLIENT.getTimeDelta(ticksRemaining));
-                case BOTH -> Component.translatable("tfc.tooltip.food_expiry_date_and_left", ICalendar.getTimeAndDate(rottenCalendarTime, Calendars.CLIENT.getCalendarDaysInMonth()), Calendars.CLIENT.getTimeDelta(ticksRemaining));
+                case EXPIRY -> Component.translatable("tfc.tooltip.food_expiry_date", Calendars.CLIENT.getOffsetTimeAndDate(remainingTime));
+                case TIME_LEFT -> Component.translatable("tfc.tooltip.food_expiry_left", Calendars.CLIENT.getCalendarTimeDelta(remainingTime));
+                case BOTH -> Component.translatable("tfc.tooltip.food_expiry_date_and_left", Calendars.CLIENT.getOffsetTimeAndDate(remainingTime), Calendars.CLIENT.getCalendarTimeDelta(remainingTime));
                 default -> null;
             };
             if (foodExpiry != null)

@@ -145,7 +145,7 @@ public class SaladContainer extends Container implements ISlotCallback
                 float water = 0, saturation = 0;
                 float[] nutrition = new float[Nutrient.TOTAL];
                 int ingredientCount = 0; // The number of unique ingredients
-                int minIngredientCount = 64; // The minimum stack size of the ingredients
+                int minIngredientCount = 64; // The minimum unsealedStack size of the ingredients
                 final List<ItemStack> ingredients = new ArrayList<>();
                 for (int i = SLOT_INPUT_START; i <= SLOT_INPUT_END; i++)
                 {

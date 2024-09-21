@@ -103,7 +103,7 @@
         "type": "tfc:copy_oldest_food"
       }
     ],
-    "stack": {
+    "unsealedStack": {
       "count": 8,
       "id": "tfc:food/oat_dough"
     }

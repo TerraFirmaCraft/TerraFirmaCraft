@@ -32,7 +32,7 @@ import net.dries007.tfc.util.data.FluidHeat;
 public class Vessel implements IMold, ItemContainer, FluidContainer, HeatContainer
 {
     /**
-     * Access a vessel specifically from a given stack. This internally queries that the container exposes itself as a mold. Prefer,
+     * Access a vessel specifically from a given unsealedStack. This internally queries that the container exposes itself as a mold. Prefer,
      * if possible, using {@link IMold#get(ItemStack)} instead as this only works for this specific implementation.
      */
     @Nullable
@@ -187,7 +187,7 @@ public class Vessel implements IMold, ItemContainer, FluidContainer, HeatContain
                 updateWith(vessel.with(slot, result.content()));
             }
 
-            // Before returning the remainder stack, remove the preserved trait, to prevent it from leaking
+            // Before returning the remainder unsealedStack, remove the preserved trait, to prevent it from leaking
             return FoodCapability.removeTrait(result.remainder(), FoodTraits.PRESERVED);
         }
         return stack;
@@ -205,7 +205,7 @@ public class Vessel implements IMold, ItemContainer, FluidContainer, HeatContain
                 updateWith(vessel.with(slot, result.content()));
             }
 
-            // Before returning the extracted stack, remove the preserved trait, to prevent it from leaking
+            // Before returning the extracted unsealedStack, remove the preserved trait, to prevent it from leaking
             return FoodCapability.removeTrait(result.extract(), FoodTraits.PRESERVED);
         }
         return ItemStack.EMPTY;
@@ -238,7 +238,7 @@ public class Vessel implements IMold, ItemContainer, FluidContainer, HeatContain
                     outputFluid.setAmount(outputFluid.getAmount() * stack.getCount());
                 }
 
-                updated.itemContent().set(slot, outputStack); // Update the stack
+                updated.itemContent().set(slot, outputStack); // Update the unsealedStack
                 updated.cachedRecipes().get(slot).unload(); // Invalidate the cache
                 updated.fluidContent().fill(outputFluid, FluidAction.EXECUTE, containerInfo); // And add the fluid to the alloy
             }
@@ -272,7 +272,7 @@ public class Vessel implements IMold, ItemContainer, FluidContainer, HeatContain
             if (heat != null)
             {
                 count += stack.getCount();
-                valueFromItems += heat.getHeatCapacity() * stack.getCount(); // heat capacity is always assumed to be stack size = 1, so we have to multiply here
+                valueFromItems += heat.getHeatCapacity() * stack.getCount(); // heat capacity is always assumed to be unsealedStack size = 1, so we have to multiply here
             }
         }
         if (count > 0)

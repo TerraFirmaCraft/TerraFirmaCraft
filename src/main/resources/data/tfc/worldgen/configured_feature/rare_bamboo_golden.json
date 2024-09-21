@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:bamboo",
+  "config": {
+    "probability": 0.2,
+    "state": "tfc:plant/golden_bamboo"
+  }
+}
