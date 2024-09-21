@@ -1,3 +1,9 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.client.model;
 
 import java.util.ArrayList;
@@ -101,8 +107,8 @@ public class PlantBlockModel implements IDynamicBakedModel, IUnbakedGeometry<Pla
         {
             final RegistryPlant plant = ((PlantBlock) block).getPlant();
             float start = plant.getBloomOffset();
-            Random random = new Random();
-            Level level = ClientHelpers.getLevel();
+            final Random random = new Random();
+            final Level level = ClientHelpers.getLevel();
             final BlockPos posXZ = new BlockPos(pos.getX(), 0, pos.getZ());
             final float randomScale;
 
@@ -194,7 +200,7 @@ public class PlantBlockModel implements IDynamicBakedModel, IUnbakedGeometry<Pla
 
     public BakedModel getModelByDayTime(float startTime, float endTime)
     {
-        final int dayTime = (int) Calendars.CLIENT.getCalendarDayTime();
+        final int dayTime = (int) Calendars.CLIENT.getCalendarFractionOfDay() * 24000;
         if ((endTime < dayTime && dayTime < startTime) || (startTime < endTime && (dayTime < startTime || endTime < dayTime)))
         {
             assert buddingBakedModel != null;
