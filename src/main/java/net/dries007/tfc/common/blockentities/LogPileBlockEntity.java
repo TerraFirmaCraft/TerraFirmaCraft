@@ -72,26 +72,6 @@ public class LogPileBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         return count;
     }
 
-    private void cascadeLogSlots()
-    {
-        // This will cascade all logs down to the lowest available slot
-        int lowestAvailSlot = 0;
-        for (int i = 0; i < SLOTS; i++)
-        {
-            ItemStack stack = inventory.getStackInSlot(i);
-            if (!stack.isEmpty())
-            {
-                // Move to lowest available slot
-                if (i > lowestAvailSlot)
-                {
-                    inventory.setStackInSlot(lowestAvailSlot, stack.copy());
-                    inventory.setStackInSlot(i, ItemStack.EMPTY);
-                }
-                lowestAvailSlot++;
-            }
-        }
-    }
-
     private void suckLogsFromAbove()
     {
         if (level != null && !level.isClientSide())
