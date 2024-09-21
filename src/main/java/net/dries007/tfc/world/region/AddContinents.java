@@ -22,10 +22,14 @@ public enum AddContinents implements RegionTask
             double continent = context.generator().continentNoise.noise(point.x, point.z);
 
             if (context.generator().settings.finiteContinents()){
+
+                final int rainfallScale = context.generator().settings.rainfallConstant() != 0 ? 20000 : context.generator().settings.rainfallScale();
+                final int temperatureScale = context.generator().settings.temperatureConstant() != 0 ? 20000 : context.generator().settings.temperatureScale();
+
                 // keep temperature and rainfall falloff as independent functions since it won't always be square
 
-                float tempDistance = (float) Math.abs(gridToBlock(point.z) - context.generator().settings.temperatureScale() / 2) / (context.generator().settings.temperatureScale() * 1.2f);
-                float rainfallDistance = (float) Math.abs(gridToBlock(point.x)) / (context.generator().settings.rainfallScale() * 1.2f);
+                float tempDistance = (Math.abs(gridToBlock(point.z) - temperatureScale / 2) / (temperatureScale * 1.2f));
+                float rainfallDistance = (Math.abs(gridToBlock(point.x)) / (rainfallScale * 1.2f));
 
                 // little logarithmic falloff function
 
@@ -43,6 +47,6 @@ public enum AddContinents implements RegionTask
 
     public static float falloff(float distance)
     {
-        return Math.abs(Mth.clamp((0.16f * (float) Math.log((-(distance) + 1.02f)) + 1f), 0, 1));
+        return (float) Mth.clamp(Math.pow(-distance,15.0f)+1f,0f,1f);
     }
 }
