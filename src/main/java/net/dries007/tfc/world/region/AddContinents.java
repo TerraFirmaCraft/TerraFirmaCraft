@@ -21,16 +21,18 @@ public enum AddContinents implements RegionTask
         {
             double continent = context.generator().continentNoise.noise(point.x, point.z);
 
-            // keep temperature and rainfall falloff as independent functions since it won't always be square
+            if (context.generator().settings.finiteContinents()){
+                // keep temperature and rainfall falloff as independent functions since it won't always be square
 
-            float tempDistance = (float) Math.abs(gridToBlock(point.z) - context.generator().settings.temperatureScale() / 2) / (context.generator().settings.temperatureScale() * 1.2f);
-            float rainfallDistance = (float) Math.abs(gridToBlock(point.x)) / (context.generator().settings.rainfallScale() * 1.2f);
+                float tempDistance = (float) Math.abs(gridToBlock(point.z) - context.generator().settings.temperatureScale() / 2) / (context.generator().settings.temperatureScale() * 1.2f);
+                float rainfallDistance = (float) Math.abs(gridToBlock(point.x)) / (context.generator().settings.rainfallScale() * 1.2f);
 
-            // little logarithmic falloff function
+                // little logarithmic falloff function
 
-            float falloff = falloff(tempDistance) * falloff(rainfallDistance);
+                float falloff = falloff(tempDistance) * falloff(rainfallDistance);
 
-            continent *= falloff;
+                continent *= falloff;
+            }
 
             if (continent > 4.4)
             {

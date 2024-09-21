@@ -28,19 +28,23 @@ public enum AddIslands implements RegionTask
             {
                 continue;
             }
-            final int maxX = context.generator().settings.rainfallScale() + context.generator().settings.rainfallScale() / 8;
 
-            final int maxZ = context.generator().settings.temperatureScale() + context.generator().settings.temperatureScale() / 2 + context.generator().settings.temperatureScale() / 8;
-            final int minX = -context.generator().settings.rainfallScale() - context.generator().settings.rainfallScale() / 8;
-            final int minZ = -(context.generator().settings.temperatureScale() - context.generator().settings.temperatureScale() / 2) - context.generator().settings.temperatureScale() / 8;
-            final int pointX = gridToBlock(point.x);
-            final int pointZ = gridToBlock(point.z);
+            if (context.generator().settings.finiteContinents()){
+                final int maxX = context.generator().settings.rainfallScale() + context.generator().settings.rainfallScale() / 8;
 
-            if (!(pointX < maxX && pointX > minX
-                && pointZ < maxZ && pointZ > minZ))
-            {
-                continue;
+                final int maxZ = context.generator().settings.temperatureScale() + context.generator().settings.temperatureScale() / 2 + context.generator().settings.temperatureScale() / 8;
+                final int minX = -context.generator().settings.rainfallScale() - context.generator().settings.rainfallScale() / 8;
+                final int minZ = -(context.generator().settings.temperatureScale() - context.generator().settings.temperatureScale() / 2) - context.generator().settings.temperatureScale() / 8;
+                final int pointX = gridToBlock(point.x);
+                final int pointZ = gridToBlock(point.z);
+
+                if (!(pointX < maxX && pointX > minX
+                    && pointZ < maxZ && pointZ > minZ))
+                {
+                    continue;
+                }
             }
+
             if (!point.land() && !point.shore() && point.distanceToEdge > 2)
             {
                 // Place a small island chain
