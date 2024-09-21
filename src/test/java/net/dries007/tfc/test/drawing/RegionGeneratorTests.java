@@ -36,7 +36,6 @@ import net.dries007.tfc.world.settings.Settings;
 
 import static net.dries007.tfc.world.layer.TFCLayers.*;
 
-@Disabled
 @SuppressWarnings("SameParameterValue")
 public class RegionGeneratorTests implements TestSetup
 {
@@ -60,7 +59,7 @@ public class RegionGeneratorTests implements TestSetup
     public void testRegionGenerator()
     {
         // Coordinates are given in grid scale, so 1 px = 128 blocks, 150 ~ 20km
-        drawStitchedRegions("", EnumSet.allOf(DrawnTask.class), RandomSupport.generateUniqueSeed(), 0, 0, 150);
+        drawStitchedRegions("", EnumSet.allOf(DrawnTask.class), RandomSupport.generateUniqueSeed(), 0, 75, 200);
     }
 
     private void drawStitchedRegions(String name, Set<DrawnTask> tasksToDraw, long seed, int centerX, int centerZ, int radius)

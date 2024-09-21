@@ -49,7 +49,7 @@ public class CreateTFCWorldScreen extends Screen
     private final WorldCreationContext context;
 
     private OptionsList options;
-    private OptionInstance<Boolean> flatBedrock;
+    private OptionInstance<Boolean> flatBedrock, finiteContinents;
     private OptionInstance<Integer> spawnDistance, spawnCenterX, spawnCenterZ, temperatureScale, rainfallScale;
     private OptionInstance<Double> temperatureConstant, rainfallConstant, continentalness, grassDensity;
 
@@ -135,7 +135,8 @@ public class CreateTFCWorldScreen extends Screen
                 (float) (rainfallConstant.get() * 2.0 - 1.0),
                 old.rockLayerSettings(),
                 continentalness.get().floatValue(),
-                grassDensity.get().floatValue()
+                grassDensity.get().floatValue(),
+                finiteContinents.get()
             ));
         }
     }
