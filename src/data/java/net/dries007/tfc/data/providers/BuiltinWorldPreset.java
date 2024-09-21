@@ -105,6 +105,29 @@ public final class BuiltinWorldPreset
         .put(MARBLE, SandBlockType.WHITE)
         .build();
 
+    private static final Map<Rock, Boolean> ROCK_SET_KARST = ImmutableMap.<Rock,Boolean>builder()
+        .put(GRANITE, Boolean.FALSE)
+        .put(DIORITE, Boolean.FALSE)
+        .put(GABBRO, Boolean.FALSE)
+        .put(SHALE, Boolean.FALSE)
+        .put(CLAYSTONE, Boolean.FALSE)
+        .put(LIMESTONE, Boolean.TRUE)
+        .put(CONGLOMERATE, Boolean.FALSE)
+        .put(DOLOMITE, Boolean.TRUE)
+        .put(CHERT, Boolean.FALSE)
+        .put(CHALK, Boolean.TRUE)
+        .put(RHYOLITE, Boolean.FALSE)
+        .put(BASALT, Boolean.FALSE)
+        .put(ANDESITE, Boolean.FALSE)
+        .put(DACITE, Boolean.FALSE)
+        .put(QUARTZITE, Boolean.FALSE)
+        .put(SLATE, Boolean.FALSE)
+        .put(PHYLLITE, Boolean.FALSE)
+        .put(SCHIST, Boolean.FALSE)
+        .put(GNEISS, Boolean.FALSE)
+        .put(MARBLE, Boolean.TRUE)
+        .build();
+
     private static final String BOTTOM = "bottom";
     private static final String IGNEOUS_EXTRUSIVE = "igneous_extrusive";
     private static final String IGNEOUS_EXTRUSIVE_X2 = "igneous_extrusive_x2";
@@ -192,6 +215,7 @@ public final class BuiltinWorldPreset
     {
         final var blocks = TFCBlocks.ROCK_BLOCKS.get(rock);
         final var color = ROCK_TO_SAND_COLOR.get(rock);
+        final var karst = ROCK_SET_KARST.get(rock);
         return new RockSettings(
             blocks.get(BlockType.RAW).get(),
             blocks.get(BlockType.HARDENED).get(),
@@ -202,7 +226,7 @@ public final class BuiltinWorldPreset
             Optional.of(blocks.get(BlockType.SPIKE).get()),
             Optional.of(blocks.get(BlockType.LOOSE).get()),
             Optional.of(blocks.get(BlockType.MOSSY_LOOSE).get()),
-            Optional.of(rock.isKarst())
+            Optional.of(karst)
         );
     }
 }

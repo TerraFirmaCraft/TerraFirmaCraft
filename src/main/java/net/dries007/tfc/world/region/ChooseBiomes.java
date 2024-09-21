@@ -68,7 +68,7 @@ public enum ChooseBiomes implements RegionTask
             }
 
             // Adjust certain biome placements by climate. Low, freshwater biomes don't make much sense appearing in
-            // very low rainfall areas, so replace them with slightly higher biomes
+            // Replacements for very low rainfall areas
             final float minRainForLowFreshWaterBiomes = 90f + Math.floorMod(areaSeed ^ climateSeed, 40);
             if (point.rainfall < minRainForLowFreshWaterBiomes)
             {
