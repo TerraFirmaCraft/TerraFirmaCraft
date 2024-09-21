@@ -291,7 +291,6 @@ public final class InteractionManager
                 // If we're targeting a log pile, we can do one of two insertion operations
                 if (Helpers.isBlock(stateClicked, TFCBlocks.LOG_PILE.get()))
                 {
-                    // TODO getting some client ghost blocks that I don't 100% understand
 
                     return level.getBlockEntity(posClicked, TFCBlockEntities.LOG_PILE.get())
                         .map(logPileBlockEntity -> {
@@ -300,16 +299,7 @@ public final class InteractionManager
                                 LogPileBlock.insertAndPushUp(stack, stateClicked, level, posClicked, logPileBlockEntity, true);
                                 return InteractionResult.SUCCESS;
                             }
-                            final InteractionResult result = logPilePlacement.onItemUse(stack, context);
-
-                            // if we placed instead, insert logs at the RELATIVE position using the mutated stack
-
-                            if (!result.consumesAction())
-                            {
-                                // shrinking is handled by the item placement
-                                Helpers.insertOne(level, relativePos, TFCBlockEntities.LOG_PILE, stack);
-                            }
-                            return result;
+                            return InteractionResult.SUCCESS;
                         }).orElse(InteractionResult.PASS);
                 }
                 else if (level.getBlockState(relativePos.below()).isFaceSturdy(level, relativePos.below(), Direction.UP))
