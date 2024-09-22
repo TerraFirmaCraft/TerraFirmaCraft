@@ -1,0 +1,67 @@
+{
+  "type": "tfc:pot_jam",
+  "duration": 500,
+  "fluid_ingredient": {
+    "amount": 100,
+    "fluid": "minecraft:water"
+  },
+  "ingredients": [
+    {
+      "type": "tfc:and",
+      "children": [
+        {
+          "item": "tfc:food/snowberry"
+        },
+        {
+          "type": "tfc:not_rotten"
+        }
+      ]
+    },
+    {
+      "type": "tfc:and",
+      "children": [
+        {
+          "item": "tfc:food/snowberry"
+        },
+        {
+          "type": "tfc:not_rotten"
+        }
+      ]
+    },
+    {
+      "type": "tfc:and",
+      "children": [
+        {
+          "item": "tfc:food/snowberry"
+        },
+        {
+          "type": "tfc:not_rotten"
+        }
+      ]
+    },
+    {
+      "type": "tfc:and",
+      "children": [
+        {
+          "item": "tfc:food/snowberry"
+        },
+        {
+          "type": "tfc:not_rotten"
+        }
+      ]
+    },
+    {
+      "tag": "tfc:foods/sweeteners"
+    }
+  ],
+  "sealed_result": {
+    "count": 4,
+    "id": "tfc:jar/snowberry"
+  },
+  "temperature": 300.0,
+  "texture": "tfc:block/jar/snowberry",
+  "unsealed_result": {
+    "count": 4,
+    "id": "tfc:jar/snowberry_unsealed"
+  }
+}

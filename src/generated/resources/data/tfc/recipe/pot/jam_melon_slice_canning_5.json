@@ -1,0 +1,143 @@
+{
+  "type": "tfc:pot",
+  "duration": 300,
+  "fluid_ingredient": {
+    "amount": 100,
+    "fluid": "minecraft:water"
+  },
+  "ingredients": [
+    {
+      "type": "tfc:and",
+      "children": [
+        {
+          "item": "tfc:jar/melon_slice"
+        },
+        {
+          "type": "tfc:lacks_trait",
+          "trait": "tfc:canned"
+        },
+        {
+          "type": "tfc:not_rotten"
+        }
+      ]
+    },
+    {
+      "type": "tfc:and",
+      "children": [
+        {
+          "item": "tfc:jar/melon_slice"
+        },
+        {
+          "type": "tfc:lacks_trait",
+          "trait": "tfc:canned"
+        },
+        {
+          "type": "tfc:not_rotten"
+        }
+      ]
+    },
+    {
+      "type": "tfc:and",
+      "children": [
+        {
+          "item": "tfc:jar/melon_slice"
+        },
+        {
+          "type": "tfc:lacks_trait",
+          "trait": "tfc:canned"
+        },
+        {
+          "type": "tfc:not_rotten"
+        }
+      ]
+    },
+    {
+      "type": "tfc:and",
+      "children": [
+        {
+          "item": "tfc:jar/melon_slice"
+        },
+        {
+          "type": "tfc:lacks_trait",
+          "trait": "tfc:canned"
+        },
+        {
+          "type": "tfc:not_rotten"
+        }
+      ]
+    },
+    {
+      "type": "tfc:and",
+      "children": [
+        {
+          "item": "tfc:jar/melon_slice"
+        },
+        {
+          "type": "tfc:lacks_trait",
+          "trait": "tfc:canned"
+        },
+        {
+          "type": "tfc:not_rotten"
+        }
+      ]
+    }
+  ],
+  "item_output": [
+    {
+      "modifiers": [
+        {
+          "type": "tfc:copy_input"
+        },
+        {
+          "type": "tfc:add_trait",
+          "trait": "tfc:canned"
+        }
+      ]
+    },
+    {
+      "modifiers": [
+        {
+          "type": "tfc:copy_input"
+        },
+        {
+          "type": "tfc:add_trait",
+          "trait": "tfc:canned"
+        }
+      ]
+    },
+    {
+      "modifiers": [
+        {
+          "type": "tfc:copy_input"
+        },
+        {
+          "type": "tfc:add_trait",
+          "trait": "tfc:canned"
+        }
+      ]
+    },
+    {
+      "modifiers": [
+        {
+          "type": "tfc:copy_input"
+        },
+        {
+          "type": "tfc:add_trait",
+          "trait": "tfc:canned"
+        }
+      ]
+    },
+    {
+      "modifiers": [
+        {
+          "type": "tfc:copy_input"
+        },
+        {
+          "type": "tfc:add_trait",
+          "trait": "tfc:canned"
+        }
+      ]
+    }
+  ],
+  "temperature": 300.0
+}
