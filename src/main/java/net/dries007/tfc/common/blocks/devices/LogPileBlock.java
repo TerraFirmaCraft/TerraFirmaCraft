@@ -138,19 +138,9 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
                     }
                     else if (stack.isEmpty())
                     {
-                        for (int i = 0; i < LogPileBlockEntity.SLOTS; i++)
-                        {
-                            if (!logPile.getInventory().getStackInSlot(i).isEmpty())
-                            {
-                                ItemHandlerHelper.giveItemToPlayer(player, logPile.getInventory().getStackInSlot(i).split(1));
-                                logPile.setAndUpdateSlots(-1);
-                                break;
-                            }
-                        }
-
+                        extractFromTop(level, pos, player, false);
                     }
                 }
-
             });
             return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
@@ -158,9 +148,40 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
+    public static void extractFromTop(Level level, BlockPos pos, Player player, boolean all)
+    {
+        if (level.getBlockState(pos.above()).is(TFCBlocks.LOG_PILE.get()))
+        {
+            extractFromTop(level, pos.above(), player, all);
+        }
+        else
+        {
+            level.getBlockEntity(pos, TFCBlockEntities.LOG_PILE.get()).ifPresent(logPile -> {
+                if (!level.isClientSide)
+                {
+                    for (int i = 0; i < LogPileBlockEntity.SLOTS; i++)
+                    {
+                        if (!logPile.getInventory().getStackInSlot(i).isEmpty())
+                        {
+                            ItemHandlerHelper.giveItemToPlayer(player, logPile.getInventory().getStackInSlot(i).split(1));
+                            logPile.setAndUpdateSlots(-1);
+                            if (!all)
+                            {
+                                break;
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    }
+
     public static void insertAndPushUp(ItemStack stack, BlockState state, Level level, BlockPos pos, LogPileBlockEntity logPile, boolean all)
     {
-        dumbInsert(stack, state, level, pos, logPile, all);
+        if (dumbInsert(stack, state, level, pos, logPile, all) && !all)
+        {
+            return;
+        }
         if (level.getBlockState(pos.above()).isAir() && logPile.logCount() == LogPileBlockEntity.SLOTS && !stack.isEmpty())
         {
             level.setBlockAndUpdate(pos.above(), TFCBlocks.LOG_PILE.get().defaultBlockState().setValue(HORIZONTAL_AXIS, state.getValue(HORIZONTAL_AXIS)));
