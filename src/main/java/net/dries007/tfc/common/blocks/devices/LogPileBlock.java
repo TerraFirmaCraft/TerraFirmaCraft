@@ -53,7 +53,7 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
 
     public static final IntegerProperty COUNT = TFCBlockStateProperties.COUNT_1_16;
 
-    public static final VoxelShape[][] SHAPES_BY_DIR_BY_COUNT = Util.make(new VoxelShape[2][16], shapes -> {
+    private static final VoxelShape[][] SHAPES_BY_DIR_BY_COUNT = Util.make(new VoxelShape[2][16], shapes -> {
         double[][] box2ByCount = new double[16][6];
         double[][] box1ByCount = new double[16][6];
         int layer;
