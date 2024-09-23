@@ -88,9 +88,9 @@ public class BiomeNoiseTest implements TestSetup
     }
 
     @Test
-    public void testKarren()
+    public void testBurren()
     {
-        terrain.draw("noise_karren", karren(seed(), BiomeNoise.hills(seed(), 22, 32), 0.15, 0.4, 1.5));
+        terrain.draw("noise_karren", burren(seed(), BiomeNoise.hills(seed(), 22, 32), 0.15, 0.4, 1.5));
     }
 
     @Test

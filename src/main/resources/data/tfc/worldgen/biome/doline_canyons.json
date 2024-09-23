@@ -18,7 +18,7 @@
   },
   "features": [
     "#tfc:in_biome/erosion",
-    "#tfc:in_biome/all_lakes",
+    "#tfc:in_biome/underground_lakes",
     "#tfc:in_biome/soil_discs/doline_canyons",
     "#tfc:in_biome/underground_structures",
     "#tfc:in_biome/surface_structures",

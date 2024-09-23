@@ -11,14 +11,14 @@ import net.dries007.tfc.world.noise.OpenSimplex2D;
 import net.dries007.tfc.world.surface.SurfaceBuilderContext;
 import net.dries007.tfc.world.surface.SurfaceStates;
 
-public class KarrenSurfaceBuilder implements SurfaceBuilder
+public class BurrenSurfaceBuilder implements SurfaceBuilder
 {
-    public static final SurfaceBuilderFactory INSTANCE = KarrenSurfaceBuilder::new;
+    public static final SurfaceBuilderFactory INSTANCE = BurrenSurfaceBuilder::new;
 
     private final Noise2D surfaceMaterialNoise;
     private final Noise2D heightNoise;
 
-    public KarrenSurfaceBuilder(long seed)
+    public BurrenSurfaceBuilder(long seed)
     {
         surfaceMaterialNoise = new OpenSimplex2D(seed).octaves(2).spread(0.02f);
         heightNoise = new OpenSimplex2D(seed + 71829341L).octaves(2).spread(0.1f);

@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:burren_plains",
+    "tfc:burren_drumlins",
+    "tfc:burren_badlands",
+    "tfc:burren_badlands_tall",
+    "tfc:burren_plateau"
+  ]
+}

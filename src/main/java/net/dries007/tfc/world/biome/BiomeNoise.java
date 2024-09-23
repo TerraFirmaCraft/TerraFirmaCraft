@@ -101,7 +101,7 @@ public final class BiomeNoise
      *     <li>{@code noiseC} is added on top to provide additional variance (in places where the piecewise function would otherwise flatten areas.</li>
      * </ul>
      */
-    public static Noise2D sharpHills(long seed)
+    public static Noise2D sharpHills(long seed, float minMeight, float maxHeight)
     {
         final Noise2D base = new OpenSimplex2D(seed)
             .octaves(4)
@@ -124,12 +124,12 @@ public final class BiomeNoise
 
         return lerpMapped
             .add(variance)
-            .scaled(-0.75f, 0.7f, SEA_LEVEL_Y - 3, SEA_LEVEL_Y + 28);
+            .scaled(-0.75f, 0.7f, SEA_LEVEL_Y - minMeight, SEA_LEVEL_Y + maxHeight);
     }
 
     // Inspired by the bare Karst at Burren, Ireland
     // Can be applied over any base terrain noise map
-    public static Noise2D karren(long seed, Noise2D baseTerrainNoise, double widthBot, double widthTop, double scale)
+    public static Noise2D burren(long seed, Noise2D baseTerrainNoise, double widthBot, double widthTop, double scale)
     {
         final int minHeight = SEA_LEVEL_Y + 2;
 
@@ -153,12 +153,11 @@ public final class BiomeNoise
 
     // Inspired by the "Stone Forests" of Shilin, China
     // Can be applied over any base terrain noise map
-    public static Noise2D shilin(long seed, Noise2D baseTerrainNoise)
+    public static Noise2D shilin(long seed, Noise2D baseTerrainNoise, double scale)
     {
         final int minHeight = SEA_LEVEL_Y + 2;
         final double widthTop = 0.1;
         final double widthBot = 0.2;
-        final double scale = 17;
 
         //TODO: This function should actually be moved somewhere that both this and ShilinSurfaceBuilder can use it
         //TODO: Also maybe should use world seed if that can be accessed from both places?
@@ -189,7 +188,7 @@ public final class BiomeNoise
 
         final Noise2D bumps = new OpenSimplex2D(83436545633L).spread(0.16).scaled(0.6, 1.0);
 
-        return ridges.lazyProduct(cuts).lazyProduct(bumps).add(baseTerrainNoise).map(y -> Math.max(y, minHeight));
+        return ridges.lazyProduct(cuts).lazyProduct(bumps).map(y -> y + SEA_LEVEL_Y).max(baseTerrainNoise).map(y -> Math.max(y, minHeight));
     }
 
     // Fengcong, aka "Cone Karsts"
@@ -236,6 +235,11 @@ public final class BiomeNoise
     }
 
     public static Noise2D bowlDolines(long seed, Noise2D baseTerrainNoise, double scale)
+    {
+        return baseTerrainNoise;
+    }
+
+    public static Noise2D cenotes(long seed, Noise2D baseTerrainNoise, double vertScake, double horizScake)
     {
         return baseTerrainNoise;
     }
