@@ -161,9 +161,10 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
                 {
                     for (int i = 0; i < LogPileBlockEntity.SLOTS; i++)
                     {
-                        if (!logPile.getInventory().getStackInSlot(i).isEmpty())
+                        ItemStack slotStack = logPile.getInventory().getStackInSlot(i);
+                        if (!slotStack.isEmpty())
                         {
-                            ItemHandlerHelper.giveItemToPlayer(player, logPile.getInventory().getStackInSlot(i).split(1));
+                            ItemHandlerHelper.giveItemToPlayer(player, slotStack.split(1));
                             logPile.setAndUpdateSlots(-1);
                             if (!all)
                             {
