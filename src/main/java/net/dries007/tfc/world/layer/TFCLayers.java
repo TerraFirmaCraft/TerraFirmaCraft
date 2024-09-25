@@ -74,7 +74,6 @@ public class TFCLayers
     public static final int BURREN_PLATEAU = idFor(TFCBiomes.BURREN_PLATEAU);
     public static final int BURREN_BADLANDS = idFor(TFCBiomes.BURREN_BADLANDS);
     public static final int BURREN_BADLANDS_TALL = idFor(TFCBiomes.BURREN_BADLANDS_TALL);
-    public static final int BURREN_DRUMLINS = idFor(TFCBiomes.BURREN_DRUMLINS);
     public static final int BURREN_PLAINS = idFor(TFCBiomes.BURREN_PLAINS);
     public static final int SHILIN_PLAINS = idFor(TFCBiomes.SHILIN_PLAINS);
     public static final int SHILIN_CANYONS = idFor(TFCBiomes.SHILIN_CANYONS);

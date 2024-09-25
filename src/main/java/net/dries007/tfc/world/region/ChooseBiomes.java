@@ -175,9 +175,7 @@ public enum ChooseBiomes implements RegionTask
     {
         if (biome == PLAINS || biome == CANYONS)
             return BURREN_PLAINS;
-        if (biome == HILLS || biome == ROLLING_HILLS)
-            return BURREN_DRUMLINS;
-        if (biome == BADLANDS)
+        if (biome == BADLANDS || biome == HILLS || biome == ROLLING_HILLS)
             return BURREN_BADLANDS;
         if (biome == INVERTED_BADLANDS || biome == HIGHLANDS)
             return BURREN_BADLANDS_TALL;
