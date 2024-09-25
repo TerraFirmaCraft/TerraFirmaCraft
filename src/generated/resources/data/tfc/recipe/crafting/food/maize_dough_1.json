@@ -26,7 +26,7 @@
         "type": "tfc:copy_oldest_food"
       }
     ],
-    "unsealedStack": {
+    "stack": {
       "count": 1,
       "id": "tfc:food/maize_dough"
     }

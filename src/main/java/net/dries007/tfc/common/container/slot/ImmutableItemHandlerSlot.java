@@ -29,14 +29,14 @@ public class ImmutableItemHandlerSlot extends Slot
     }
 
     /**
-     * Called when an item unsealedStack is taken by a player. This can apply effects such as removing food traits that are container specific.
-     * The unsealedStack is mutable and modifications will be reflected in the player's currently held unsealedStack.
+     * Called when an item stack is taken by a player. This can apply effects such as removing food traits that are container specific.
+     * The stack is mutable and modifications will be reflected in the player's currently held stack.
      * <p>
      * By default, calls {@link #setChanged()} which notifies the underlying container that the slot content has changed, and forwards to
-     * {@link IItemHandlerInteractable#onTake(ItemStack)} to notify the item handler that a unsealedStack is no longer owned by the container.
+     * {@link IItemHandlerInteractable#onTake(ItemStack)} to notify the item handler that a stack is no longer owned by the container.
      *
      * @param player The player interacting with the slot
-     * @param stack The item unsealedStack that was removed from the slot
+     * @param stack The item stack that was removed from the slot
      */
     @Override
     public void onTake(Player player, ItemStack stack)
@@ -46,7 +46,7 @@ public class ImmutableItemHandlerSlot extends Slot
     }
 
     /**
-     * @return {@code true} if the unsealedStack can be placed in the slot. Queries the underlying container info
+     * @return {@code true} if the stack can be placed in the slot. Queries the underlying container info
      */
     @Override
     public boolean mayPlace(ItemStack stack)
@@ -58,10 +58,10 @@ public class ImmutableItemHandlerSlot extends Slot
      * Returns a <strong>mutable</strong> view of the item within a slot. This is crucial, and can lead to issues such as
      * <a href="https://github.com/neoforged/NeoForge/issues/1206">NeoForge#1206</a> if not handled correctly.
      * <p>
-     * This method must return a mutable view of a unsealedStack, however, after the unsealedStack has been mutated, {@link #setChanged()} must
+     * This method must return a mutable view of a stack, however, after the stack has been mutated, {@link #setChanged()} must
      * be called. Thus, in this method, we return a copy, and forward the actual changes back to the underlying container whenever
      * {@link #setChanged()} gets called.
-     * @return A mutable view of the item unsealedStack within this slot
+     * @return A mutable view of the item stack within this slot
      */
     @Override
     public ItemStack getItem()
@@ -76,10 +76,10 @@ public class ImmutableItemHandlerSlot extends Slot
     }
 
     /**
-     * Called to directly set the provided {@code unsealedStack} in the slot. Note that the caller still retains ownership of the unsealedStack,
+     * Called to directly set the provided {@code stack} in the slot. Note that the caller still retains ownership of the stack,
      * and may mutate it, but that must be followed by a call to {@link #setChanged()} in order for the changes to be reflected
      * in the underlying item handler.
-     * @param stack The unsealedStack, which the container takes ownership of via copy.
+     * @param stack The stack, which the container takes ownership of via copy.
      */
     @Override
     public void set(ItemStack stack)
@@ -97,7 +97,7 @@ public class ImmutableItemHandlerSlot extends Slot
      * having precise contracts, and thus we do not need to trigger any updates.
      * <p>
      * There is another concern, related to {@link #getItem()}'s mutable semantics, which means that we also use {@code setChanged()} in order to
-     * trigger a write back of the modified mutable unsealedStack to the internal item handler.
+     * trigger a write back of the modified mutable stack to the internal item handler.
      */
     @Override
     public void setChanged()
@@ -112,10 +112,10 @@ public class ImmutableItemHandlerSlot extends Slot
     }
 
     /**
-     * Removes {@code amount} from the underlying slot. This is essentially a direct extract. The returned unsealedStack is owned by
+     * Removes {@code amount} from the underlying slot. This is essentially a direct extract. The returned stack is owned by
      * the caller.
      * @param amount The amount to extract.
-     * @return The unsealedStack extracted, owned by the caller.
+     * @return The stack extracted, owned by the caller.
      */
     @Override
     public ItemStack remove(int amount)

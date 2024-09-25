@@ -112,8 +112,8 @@ public class FluidContainerItem extends Item
     @Override
     public int getMaxStackSize(ItemStack stack)
     {
-        // We cannot just query the unsealedStack size to see if it has a contained fluid, as that would be self-referential
-        // So we have to query a handler that *would* return a capability here, which means copying with unsealedStack size = 1
+        // We cannot just query the stack size to see if it has a contained fluid, as that would be self-referential
+        // So we have to query a handler that *would* return a capability here, which means copying with stack size = 1
         return FluidHelpers.getContainedFluid(stack.copyWithCount(1)).isEmpty() ? super.getMaxStackSize(stack) : 1;
     }
 

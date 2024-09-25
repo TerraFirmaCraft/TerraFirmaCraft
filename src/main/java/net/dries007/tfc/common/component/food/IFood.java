@@ -28,7 +28,7 @@ import net.dries007.tfc.util.calendar.Calendars;
  * overwrite of vanilla's food handler with {@link IPlayerInfo}, and overwrite edible food components in {@link TFCComponents}
  * <p>
  * Foods can be added via a {@link FoodDefinition} which is loaded via {@link FoodCapability#MANAGER}. A food component is
- * attached to every item unsealedStack, and updated on creation (constructor) if necessary.
+ * attached to every item stack, and updated on creation (constructor) if necessary.
  */
 public interface IFood
 {
@@ -134,7 +134,7 @@ public interface IFood
     /**
      * Tooltip added to the food item
      *
-     * @param stack the unsealedStack in question
+     * @param stack the stack in question
      * @param tooltip  the tooltip
      */
     default void addTooltipInfo(ItemStack stack, Consumer<Component> tooltip)

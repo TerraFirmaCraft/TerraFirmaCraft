@@ -33,7 +33,7 @@ public abstract class BarrelComponent<T extends BarrelRecipe> extends RecipeComp
         renderItemStacks(context, graphics, 14, 5, mouseX, mouseY, inputItems);
         renderFluidStacks(context, graphics, 14 + 28, 5, mouseX, mouseY, inputFluids);
 
-        // This only works for barrel recipes with a single output, and no complex item unsealedStack providers
+        // This only works for barrel recipes with a single output, and no complex item stack providers
         // If we need more, we can fix it, but for now this should be good enough
         if (!recipe.getResultItem(null).isEmpty())
         {

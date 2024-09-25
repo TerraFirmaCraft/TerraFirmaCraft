@@ -60,8 +60,8 @@ public class ItemStackContainer extends Container
     }
 
     /**
-     * Note: on a server side container, the target unsealedStack is never overwritten (in general).
-     * However, on a client side container, the target unsealedStack can be overwritten due to synchronization, for example, as triggered from a NBT change, which was caused by a capability instance. As a result, we cannot cache the unsealedStack in a way visible to the client side container, or screen. So we need to re-query it.
+     * Note: on a server side container, the target stack is never overwritten (in general).
+     * However, on a client side container, the target stack can be overwritten due to synchronization, for example, as triggered from a NBT change, which was caused by a capability instance. As a result, we cannot cache the stack in a way visible to the client side container, or screen. So we need to re-query it.
      * <p>
      * <strong>Do not cache the result of this function!</strong> It may not be valid!
      *
@@ -79,7 +79,7 @@ public class ItemStackContainer extends Container
     }
 
     /**
-     * Prevent any movement of the item unsealedStack from which this container was opened.
+     * Prevent any movement of the item stack from which this container was opened.
      */
     @Override
     public void clicked(int slot, int dragType, ClickType clickType, Player player)

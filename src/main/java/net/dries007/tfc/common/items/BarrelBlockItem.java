@@ -144,7 +144,7 @@ public class BarrelBlockItem extends TooltipBlockItem implements Rackable
         public boolean canModify()
         {
             return true; // todo 1.21, sealed barrel block entity components
-            //return unsealedStack.getTag() == null || !hasActiveRecipe; // As long as not sealed, or sealed but with no active recipe.
+            //return stack.getTag() == null || !hasActiveRecipe; // As long as not sealed, or sealed but with no active recipe.
         }
 
         @Override

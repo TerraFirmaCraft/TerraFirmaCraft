@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.common.recipes.AnvilRecipe;
 
 /**
- * A mutable view of the anvil working data attached to an item unsealedStack. As data components are nominally immutable,
+ * A mutable view of the anvil working data attached to an item stack. As data components are nominally immutable,
  * and we want to expose mutable-like interfaces, we wrap them in this when queried.
  */
 public final class ForgingComponent

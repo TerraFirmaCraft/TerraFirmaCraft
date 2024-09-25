@@ -78,7 +78,7 @@ public class IngotPileBlock extends ExtendedBlock implements EntityBlockExtensio
         if (!player.isShiftKeyDown())
         {
             // Attempt to remove from the ingot pile, or one above
-            // First, climb up the current unsealedStack until we locate the top ingot pile
+            // First, climb up the current stack until we locate the top ingot pile
             BlockPos topPos = pos;
             while (Helpers.isBlock(level.getBlockState(topPos.above()), this))
             {

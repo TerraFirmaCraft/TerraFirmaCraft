@@ -89,7 +89,7 @@ public class KnappingContainer extends ItemStackContainer implements ButtonHandl
     @Override
     public boolean stillValid(Player player)
     {
-        // For containers that consume on modification, we need to not close if the target unsealedStack is empty
+        // For containers that consume on modification, we need to not close if the target stack is empty
         return !getTargetStack().isEmpty() || (hasBeenModified && !knappingType.consumeAfterComplete());
     }
 

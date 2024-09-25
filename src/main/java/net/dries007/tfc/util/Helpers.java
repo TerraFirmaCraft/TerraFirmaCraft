@@ -192,14 +192,14 @@ public final class Helpers
     }
 
     /**
-     * Tests if a unsealedStack *might* have a capability, either by virtue of it already having said capability, <strong>or</strong> if a single
-     * item spliced off of the unsealedStack would have that capability. This is necessary because there's a lot of places where we need to only accept
+     * Tests if a stack *might* have a capability, either by virtue of it already having said capability, <strong>or</strong> if a single
+     * item spliced off of the stack would have that capability. This is necessary because there's a lot of places where we need to only accept
      * items with a certain capability, for instances, "all items that are heatable" are valid in most heating devices.
      * <p>
      * However, when we're in an inventory or container, there's a lot of code that is completely unaware of this restriction, for example {@link net.neoforged.neoforge.items.SlotItemHandler#getMaxStackSize(ItemStack)}.
-     * This method will try and determine the unsealedStack size, by inserting a maximum size unsealedStack... which means i.e. if you try and insert a unsealedStack of 16 x empty molds, you will discover they don't, in fact, have a heat capability and as a result cannot be heated.
+     * This method will try and determine the stack size, by inserting a maximum size stack... which means i.e. if you try and insert a stack of 16 x empty molds, you will discover they don't, in fact, have a heat capability and as a result cannot be heated.
      * <p>
-     * N.B. The requirement that item unsealedStack capabilities only return a capability with unsealedStack size == 1 is essential to prevent duplication glitches
+     * N.B. The requirement that item stack capabilities only return a capability with stack size == 1 is essential to prevent duplication glitches
      * or other inaccuracies in other, external code that isn't aware of the intricacies of how our capabilities work.
      */
     public static <T> boolean mightHaveCapability(ItemStack stack, ItemCapability<T, Void> capability)
@@ -435,7 +435,7 @@ public final class Helpers
     }
 
     /**
-     * Damages {@code unsealedStack} by one point, when held by {@code entity} in {@code slot}
+     * Damages {@code stack} by one point, when held by {@code entity} in {@code slot}
      */
     public static void damageItem(ItemStack stack, LivingEntity entity, EquipmentSlot slot)
     {
@@ -443,7 +443,7 @@ public final class Helpers
     }
 
     /**
-     * Damages {@code unsealedStack} by {@code amount}, when held by {@code entity} in {@code hand}
+     * Damages {@code stack} by {@code amount}, when held by {@code entity} in {@code hand}
      */
     public static void damageItem(ItemStack stack, int amount, LivingEntity entity, InteractionHand hand)
     {
@@ -451,7 +451,7 @@ public final class Helpers
     }
 
     /**
-     * Damages {@code unsealedStack} by one point, when held by {@code entity} in {@code hand}
+     * Damages {@code stack} by one point, when held by {@code entity} in {@code hand}
      */
     public static void damageItem(ItemStack stack, LivingEntity entity, InteractionHand hand)
     {
@@ -459,7 +459,7 @@ public final class Helpers
     }
 
     /**
-     * Damages {@code unsealedStack} without an entity present.
+     * Damages {@code stack} without an entity present.
      */
     public static void damageItem(ItemStack stack, Level level)
     {
@@ -470,7 +470,7 @@ public final class Helpers
     }
 
     /**
-     * Damages {@code unsealedStack} without a level present. Note that this <strong>is not correct!</strong> as it doesn't account for enchantments,
+     * Damages {@code stack} without a level present. Note that this <strong>is not correct!</strong> as it doesn't account for enchantments,
      * but in this case it is the closest approximation we can do.
      * @deprecated Prefer using any other overload than this
      */
@@ -662,7 +662,7 @@ public final class Helpers
     }
 
     /**
-     * Given a theoretical item unsealedStack, of count {@code totalCount}, splits it into optimally sized stacks, up to the unsealedStack size limit and feeds these new stacks to {@code consumer}
+     * Given a theoretical item stack, of count {@code totalCount}, splits it into optimally sized stacks, up to the stack size limit and feeds these new stacks to {@code consumer}
      */
     public static void consumeInStackSizeIncrements(ItemStack stack, int totalCount, Consumer<ItemStack> consumer)
     {
@@ -707,7 +707,7 @@ public final class Helpers
 
     /**
      * Removes / Consumes item entities from a list up to a maximum number of items (taking into account the count of each item)
-     * Passes each item unsealedStack, with unsealedStack size = 1, to the provided consumer
+     * Passes each item stack, with stack size = 1, to the provided consumer
      * This method expects the consumption to always succeed (such as when simply adding the items to a list)
      */
     public static void consumeItemsFromEntitiesIndividually(Collection<ItemEntity> entities, int maximum, Consumer<ItemStack> consumer)
@@ -730,9 +730,9 @@ public final class Helpers
 
     /**
      * Removes / Consumes item entities from a list up to a maximum number of items (taking into account the count of each item)
-     * Passes each item unsealedStack, with unsealedStack size = 1, to the provided consumer
+     * Passes each item stack, with stack size = 1, to the provided consumer
      *
-     * @param consumer consumes each unsealedStack. Returns {@code true} if the unsealedStack was consumed, and {@code false} if it failed, in which case we stop trying.
+     * @param consumer consumes each stack. Returns {@code true} if the stack was consumed, and {@code false} if it failed, in which case we stop trying.
      */
     public static void safelyConsumeItemsFromEntitiesIndividually(Collection<ItemEntity> entities, int maximum, Predicate<ItemStack> consumer)
     {
@@ -758,7 +758,7 @@ public final class Helpers
     }
 
     /**
-     * Remove and return a unsealedStack in {@code slot}, replacing it with empty.
+     * Remove and return a stack in {@code slot}, replacing it with empty.
      */
     public static ItemStack removeStack(IItemHandler inventory, int slot)
     {
@@ -766,25 +766,25 @@ public final class Helpers
     }
 
     /**
-     * Inserts {@code unsealedStack} into the inventory ignoring any difference in creation date.
+     * Inserts {@code stack} into the inventory ignoring any difference in creation date.
      *
-     * @param stack The unsealedStack to insert. Will be modified (and returned).
-     * @return The remainder of {@code unsealedStack} after inserting.
+     * @param stack The stack to insert. Will be modified (and returned).
+     * @return The remainder of {@code stack} after inserting.
      */
     public static ItemStack mergeInsertStack(IItemHandler inventory, int slot, ItemStack stack)
     {
         final ItemStack existing = removeStack(inventory, slot);
         final ItemStack remainder = stack.copy();
-        final ItemStack merged = FoodCapability.mergeItemStacks(existing, remainder); // unsealedStack is now remainder
+        final ItemStack merged = FoodCapability.mergeItemStacks(existing, remainder); // stack is now remainder
         inventory.insertItem(slot, merged, false); // Should be no remainder because we removed it all to start with
         return remainder;
     }
 
     /**
-     * Attempts to insert a unsealedStack across all slots of an item handler
+     * Attempts to insert a stack across all slots of an item handler
      *
-     * @param stack The unsealedStack to be inserted
-     * @return The remainder after the unsealedStack is inserted, if any
+     * @param stack The stack to be inserted
+     * @return The remainder after the stack is inserted, if any
      */
     public static ItemStack insertAllSlots(IItemHandler inventory, ItemStack stack)
     {
@@ -810,8 +810,8 @@ public final class Helpers
     }
 
     /**
-     * Inserts one item of the provided {@code unsealedStack} to the inventory of the block entity {@code entity}. Note that this method
-     * will not modify the input unsealedStack or consume another item!
+     * Inserts one item of the provided {@code stack} to the inventory of the block entity {@code entity}. Note that this method
+     * will not modify the input stack or consume another item!
      * @return {@code true} if the insertion was successful
      */
     public static boolean insertOne(InventoryBlockEntity<?> entity, ItemStack stack)

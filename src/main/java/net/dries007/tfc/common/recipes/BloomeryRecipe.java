@@ -69,7 +69,7 @@ public class BloomeryRecipe implements INoopInputRecipe
     }
 
     /**
-     * @return {@code true} if {@code unsealedStack} could be melted down to form part of the primary (fluid) input to this recipe.
+     * @return {@code true} if {@code stack} could be melted down to form part of the primary (fluid) input to this recipe.
      */
     public boolean matchesInput(ItemStack stack)
     {
@@ -77,7 +77,7 @@ public class BloomeryRecipe implements INoopInputRecipe
     }
 
     /**
-     * @return {@code true} if {@code unsealedStack} could form part of the primary (fluid) input to this recipe.
+     * @return {@code true} if {@code stack} could form part of the primary (fluid) input to this recipe.
      */
     public boolean matchesInput(FluidStack stack)
     {
@@ -85,7 +85,7 @@ public class BloomeryRecipe implements INoopInputRecipe
     }
 
     /**
-     * @return {@code true} if {@code unsealedStack} is the correct catalyst for this recipe.
+     * @return {@code true} if {@code stack} is the correct catalyst for this recipe.
      */
     public boolean matchesCatalyst(ItemStack stack)
     {
@@ -93,14 +93,14 @@ public class BloomeryRecipe implements INoopInputRecipe
     }
 
     /**
-     * @return The fluid that would be produced by the primary input {@code unsealedStack}, or {@code null} if {@code unsealedStack} is not a primary input.
+     * @return The fluid that would be produced by the primary input {@code stack}, or {@code null} if {@code stack} is not a primary input.
      */
     public @Nullable FluidStack consumeInput(ItemStack stack)
     {
         final HeatingRecipe heat = HeatingRecipe.getRecipe(stack);
         if (heat != null)
         {
-            // Don't test amount here, because we just want to know if this unsealedStack melts into the correct metal - not how much
+            // Don't test amount here, because we just want to know if this stack melts into the correct metal - not how much
             final FluidStack fluid = heat.assembleFluid(stack);
             if (matchesInput(fluid))
             {

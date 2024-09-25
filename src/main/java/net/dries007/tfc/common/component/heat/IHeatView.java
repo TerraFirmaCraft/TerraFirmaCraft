@@ -70,7 +70,7 @@ public interface IHeatView
     /**
      * Adds the heat info tooltip when hovering over.
      *
-     * @param stack The unsealedStack to add information to
+     * @param stack The stack to add information to
      * @param text  The list of tooltips
      */
     default void addTooltipInfo(ItemStack stack, Consumer<Component> text)

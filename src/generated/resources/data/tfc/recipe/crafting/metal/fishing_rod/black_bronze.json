@@ -24,7 +24,7 @@
         "type": "tfc:copy_forging_bonus"
       }
     ],
-    "unsealedStack": {
+    "stack": {
       "count": 1,
       "id": "tfc:metal/fishing_rod/black_bronze"
     }

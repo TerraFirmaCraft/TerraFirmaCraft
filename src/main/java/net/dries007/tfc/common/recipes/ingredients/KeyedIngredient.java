@@ -22,7 +22,7 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 /**
- * This is an interface representing a minimal object which can be constructed, tested against a unsealedStack, and has deferred loading and
+ * This is an interface representing a minimal object which can be constructed, tested against a stack, and has deferred loading and
  * initialization of all possible {@link Item}s that match the ingredient. Obviously, {@link Ingredient} satisfies this requirement,
  * but this interface exists for multiple possible scenarios that don't fully fall under that (i.e. "all items which match any input
  * to this ingredient")

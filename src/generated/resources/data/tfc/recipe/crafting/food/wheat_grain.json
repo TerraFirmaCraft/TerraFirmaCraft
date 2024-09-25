@@ -30,13 +30,13 @@
       },
       {
         "type": "tfc:extra_products",
-        "unsealedStack": {
+        "stack": {
           "count": 1,
           "id": "tfc:straw"
         }
       }
     ],
-    "unsealedStack": {
+    "stack": {
       "count": 1,
       "id": "tfc:food/wheat_grain"
     }

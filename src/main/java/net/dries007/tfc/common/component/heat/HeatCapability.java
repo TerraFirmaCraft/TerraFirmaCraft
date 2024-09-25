@@ -34,9 +34,9 @@ public final class HeatCapability
     public static final float POTTERY_HEAT_CAPACITY = 1.2f;
 
     /**
-     * Returns the heat implementation for the given unsealedStack. This is (1) mutable, and (2) uses the correct implementation,
+     * Returns the heat implementation for the given stack. This is (1) mutable, and (2) uses the correct implementation,
      * including fallbacks to simple {@link HeatView} implementations. Use whenever querying the capability of an external
-     * unsealedStack.
+     * stack.
      */
     @Nullable
     public static IHeat get(ItemStack stack)
@@ -53,7 +53,7 @@ public final class HeatCapability
     }
 
     /**
-     * Returns an immutable, view-only implementation for a given unsealedStack. This uses the correct implementation, but avoids
+     * Returns an immutable, view-only implementation for a given stack. This uses the correct implementation, but avoids
      * some overhead of {@link #get(ItemStack)}, and avoids exposing accidental mutability, if that is not desired.
      */
     @Nullable
@@ -83,7 +83,7 @@ public final class HeatCapability
     }
 
     /**
-     * @return The temperature of a given {@code unsealedStack}, or {@code 0} if the item is not heatable.
+     * @return The temperature of a given {@code stack}, or {@code 0} if the item is not heatable.
      */
     public static float getTemperature(ItemStack stack)
     {
@@ -92,7 +92,7 @@ public final class HeatCapability
     }
 
     /**
-     * Sets the temperature of a given {@code unsealedStack} to {@code temperature}, if the unsealedStack has a heat capability.
+     * Sets the temperature of a given {@code stack} to {@code temperature}, if the stack has a heat capability.
      */
     public static void setTemperature(ItemStack stack, float temperature)
     {
@@ -101,7 +101,7 @@ public final class HeatCapability
     }
 
     /**
-     * @return {@code true} if {@code unsealedStack} has a heat capability, and is currently hot, i.e. nonzero temperature.
+     * @return {@code true} if {@code stack} has a heat capability, and is currently hot, i.e. nonzero temperature.
      */
     public static boolean isHot(ItemStack stack)
     {
@@ -277,7 +277,7 @@ public final class HeatCapability
             final Fuel fuel = Fuel.get(fuelStack);
             if (fuel != null)
             {
-                iterator.remove(); // Consume fuel item unsealedStack
+                iterator.remove(); // Consume fuel item stack
                 if (fuel.duration() > ticks)
                 {
                     burnTicks = (int) (fuel.duration() - ticks);

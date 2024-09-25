@@ -142,10 +142,10 @@ public class TFCLightBlock extends Block implements IFluidLoggable
     @Override
     public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player)
     {
-        /*ItemStack unsealedStack = super.getCloneItemStack(state, target, level, pos, player);
-        CompoundTag tag = unsealedStack.getOrCreateTag();
+        /*ItemStack stack = super.getCloneItemStack(state, target, level, pos, player);
+        CompoundTag tag = super.getOrCreateTag();
         tag.putInt("level", state.getValue(LEVEL));
-        return unsealedStack;*/
+        return super;*/
         return ItemStack.EMPTY; // todo: light block implementation
     }
 }

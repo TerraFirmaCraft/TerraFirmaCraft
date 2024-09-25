@@ -17,7 +17,7 @@
         "type": "tfc:copy_food"
       }
     ],
-    "unsealedStack": {
+    "stack": {
       "count": 1,
       "id": "tfc:food/cooked_duck"
     }

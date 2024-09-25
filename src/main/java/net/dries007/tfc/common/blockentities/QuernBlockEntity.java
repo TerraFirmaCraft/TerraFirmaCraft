@@ -298,7 +298,7 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
                     Helpers.spawnItem(level, worldPosition, outputStack);
                 }
 
-                // Shrink the input unsealedStack after the recipe is done assembling
+                // Shrink the input stack after the recipe is done assembling
                 inputStack.shrink(1);
                 markForSync();
             }

@@ -24,7 +24,7 @@ public interface TooltipBlock
 {
     /**
      * Returns the tooltip for an inventory consisting of the given {@code slots}, arranged in a grid of {@code width} by {@code height}.
-     * The {@code slots} are presumed to be immutable, i.e. from an item unsealedStack tooltip, and no copy is performed here.
+     * The {@code slots} are presumed to be immutable, i.e. from an item stack tooltip, and no copy is performed here.
      */
     static Optional<TooltipComponent> buildInventoryTooltip(List<ItemStack> inventory, int width, int height)
     {

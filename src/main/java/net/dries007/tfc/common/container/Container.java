@@ -99,10 +99,10 @@ public class Container extends AbstractContainerMenu
     }
 
     /**
-     * In {@link net.minecraft.world.inventory.AbstractContainerMenu#doClick(int, int, ClickType, Player)} there is a call path through which {@link net.minecraft.world.inventory.Slot#onTake(Player, ItemStack)} is not called. It just directly sets the slot, and the carried in the container.
+     * In {@link AbstractContainerMenu#doClick} there is a call path through which {@link Slot#onTake} is not called. It just directly sets the slot, and the carried in the container.
      * We call the callback's slotless version here, as it's all we can realistically do.
      *
-     * @param stack The unsealedStack that is set to be carried.
+     * @param stack The stack that is set to be carried.
      */
     @Override
     public void setCarried(ItemStack stack)

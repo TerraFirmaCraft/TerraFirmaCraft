@@ -28,19 +28,19 @@ public final class ItemStackHooks
     static boolean ENABLED = false;
 
     /**
-     * Modifies components attached to an item unsealedStack on the creation of the item unsealedStack. This is done as some components <strong>need</strong> a reference
+     * Modifies components attached to an item stack on the creation of the item stack. This is done as some components <strong>need</strong> a reference
      * to the owning object to know if it should attach or not. Note that these cannot be added as default components, as the default value would then
-     * not be able to be item-unsealedStack-agnostic.
+     * not be able to be item-stack-agnostic.
      * <p>
      * This mainly occurs from two places:
      * <ul>
-     *     <li>When stacks are created from serialization - the components may or may not be present, but will be missing a unsealedStack reference. We update
+     *     <li>When stacks are created from serialization - the components may or may not be present, but will be missing a stack reference. We update
      *     them in this case</li>
-     *     <li>When the unsealedStack is copied - we just validate that the component is present, and then do no further modifications</li>
+     *     <li>When the stack is copied - we just validate that the component is present, and then do no further modifications</li>
      * </ul>
      * Note: this is isolated to {@link TFCComponents} via class-load because it involves (1) querying component types potentially before they are
      * registered, and (2) querying about components before they are
-     * @param stack A new item unsealedStack, freshly constructed
+     * @param stack A new item stack, freshly constructed
      */
     public static void onModifyItemStackComponents(ItemStack stack)
     {
@@ -88,13 +88,13 @@ public final class ItemStackHooks
     }
 
     /**
-     * Modifies the attached components whenever an item unsealedStack is copied
+     * Modifies the attached components whenever an item stack is copied
      * <p>
-     * Since we edit the default components of item stacks on the fly, we also want to ensure that the unsealedStack reflects the updated {@code prototype}
+     * Since we edit the default components of item stacks on the fly, we also want to ensure that the stack reflects the updated {@code prototype}
      * components of the item. This will work properly for newly created stacks, but stacks created through a {@link ItemStack#copy()} just copy the
      * prototype directly. So we have to (potentially) perform this modification.
-     * @param stack The original unsealedStack - we do not modify this unsealedStack
-     * @param map The patched components of the original unsealedStack
+     * @param stack The original stack - we do not modify this stack
+     * @param map The patched components of the original stack
      */
     public static PatchedDataComponentMap onCopyItemStackComponents(ItemStack stack, PatchedDataComponentMap map)
     {

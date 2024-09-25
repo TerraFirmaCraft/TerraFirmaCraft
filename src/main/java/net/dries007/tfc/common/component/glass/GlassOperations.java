@@ -20,7 +20,7 @@ import net.dries007.tfc.util.Helpers;
 
 /**
  * A component for glassworking operations that are attached to an item. This consists of a glassworking {@code batch},
- * and any possible operations. If {@code batch} is an empty unsealedStack, then {@code steps} <strong>must</strong> be empty as well.
+ * and any possible operations. If {@code batch} is an empty stack, then {@code steps} <strong>must</strong> be empty as well.
  */
 public record GlassOperations(
     List<GlassOperation> steps,
@@ -32,7 +32,7 @@ public record GlassOperations(
 
     public static final Codec<GlassOperations> CODEC = RecordCodecBuilder.create(i -> i.group(
         GlassOperation.CODEC.listOf(0, LIMIT).fieldOf("steps").forGetter(c -> c.steps),
-        ItemStack.CODEC.optionalFieldOf("unsealedStack", ItemStack.EMPTY).forGetter(c -> c.batch)
+        ItemStack.CODEC.optionalFieldOf("stack", ItemStack.EMPTY).forGetter(c -> c.batch)
     ).apply(i, GlassOperations::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, GlassOperations> STREAM_CODEC = StreamCodec.composite(
