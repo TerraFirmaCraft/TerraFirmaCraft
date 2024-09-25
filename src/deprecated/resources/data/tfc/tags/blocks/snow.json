@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "replace": false,
-  "values": [
-    "minecraft:snow",
-    "minecraft:snow_block",
-    "tfc:snow_pile"
-  ]
-}

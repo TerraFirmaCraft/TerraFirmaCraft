@@ -85,7 +85,6 @@ sourceSets {
         }
     }
     create("data")
-    create("deprecated")
 }
 
 dependencies {

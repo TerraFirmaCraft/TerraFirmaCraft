@@ -1,8 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "replace": false,
-  "values": [
-    "tfc:metal/pig_iron",
-    "tfc:metal/flowing_pig_iron"
-  ]
-}
