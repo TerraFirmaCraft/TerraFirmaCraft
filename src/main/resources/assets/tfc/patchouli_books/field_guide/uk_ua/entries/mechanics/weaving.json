@@ -10,7 +10,7 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:knapping/unfired_spindle_head",
+      "recipe": "tfc:knapping/ceramic/unfired_spindle_head",
       "text": "$(thing)Невипалена головка веретена$() формується з глини. Потім її треба $(l:mechanics/heating)випалити$(), щоб отримати $(thing)головку веретена$(). Для завершення треба додати до неї $(thing)паличку$()."
     },
     {

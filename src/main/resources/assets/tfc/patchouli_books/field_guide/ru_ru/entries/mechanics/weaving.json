@@ -10,7 +10,7 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:knapping/unfired_spindle_head",
+      "recipe": "tfc:knapping/ceramic/unfired_spindle_head",
       "text": "$(thing)Необожженная головка веретена$() высекается из глины. Затем ее можно $(l:mechanics/heating)обжечь$(), чтобы сделать $(thing)Головку веретена$(). Чтобы завершить веретено, соберите его с $(thing)Палкой$()."
     },
     {

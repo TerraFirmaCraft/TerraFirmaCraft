@@ -482,12 +482,11 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
     private void updateRecipe()
     {
         assert level != null;
-        assert recipe.isLoaded(); // Updates rely on the recipe cache being valid, so we can detect when it changes
 
         final @Nullable SealedBarrelRecipe oldRecipe = RecipeHelpers.unbox(recipe.value());
         final @Nullable SealedBarrelRecipe newRecipe = getRecipe(); // Trigger the update
 
-        if (oldRecipe != newRecipe && newRecipe != null)
+        if (oldRecipe != null && newRecipe != null && oldRecipe != newRecipe)
         {
             // The recipe has changed to a new one, so update the recipe ticks
             recipeTick = Calendars.get(level).getTicks();

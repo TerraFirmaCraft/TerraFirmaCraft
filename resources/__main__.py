@@ -52,6 +52,13 @@ def main():
 
     args = parser.parse_args()
 
+    # Validate the working directory is correct (we should find `build.gradle.kts`)
+    if not os.path.exists('build.gradle.kts'):
+        print('ERROR')
+        print('Unable to verify that working directory contains TFC sources')
+        print('Working directory must be /TerraFirmaCraft/, not /TerraFirmaCraft/resources/ !')
+        return
+
     for action in args.actions:
         if action == 'validate':
             validate_resources()

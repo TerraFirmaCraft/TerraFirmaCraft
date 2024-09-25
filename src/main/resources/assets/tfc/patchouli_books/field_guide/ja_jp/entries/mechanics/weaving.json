@@ -10,7 +10,7 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:knapping/unfired_spindle_head",
+      "recipe": "tfc:knapping/ceramic/unfired_spindle_head",
       "text": "$(thing)焼成前の紡錘の頭$() は粘土から作ることができます。 その後、$(l:mechanics/heating)焼成$() して $(thing)紡錘の頭$() を作成できます。 紡錘を完成させるには、$(thing)棒$() を使ってクラフトします。"
     },
     {
