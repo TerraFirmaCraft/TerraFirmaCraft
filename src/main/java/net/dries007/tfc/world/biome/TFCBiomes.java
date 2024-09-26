@@ -112,7 +112,6 @@ public final class TFCBiomes
     public static final BiomeExtension BURREN_PLAINS = register("burren_plains", builder().heightmap(seed -> BiomeNoise.burren(seed, BiomeNoise.hills(seed, 6, 12), 1.5)).surface(BurrenSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.WIDE).noSandyRiverShores()); // Plains
 
     // Dense, sharp ridges inspired by "Stone Forests" in China
-    //TODO: fix surface builder to make sense of max-combination
     public static final BiomeExtension SHILIN_PLAINS = register("shilin_plains", builder().heightmap(seed -> BiomeNoise.shilin(seed, BiomeNoise.hills(seed, 4, 10), 28)).surface(ShilinSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.WIDE));
     public static final BiomeExtension SHILIN_CANYONS = register("shilin_canyons", builder().heightmap(seed -> BiomeNoise.shilin(seed, BiomeNoise.canyons(seed, -2, 30), 26)).surface(ShilinSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.WIDE));
     public static final BiomeExtension SHILIN_HILLS = register("shilin_hills", builder().heightmap(seed -> BiomeNoise.shilin(seed, BiomeNoise.hills(seed, -2, 16), 26)).surface(ShilinSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.WIDE));

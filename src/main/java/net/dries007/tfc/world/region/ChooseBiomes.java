@@ -99,12 +99,12 @@ public enum ChooseBiomes implements RegionTask
                 if (rainfall > 350)
                 {
                     // Check for hot, wet climates to place tower karsts
-                    if (rainfall + 10 * temperature > 500)
+                    if (rainfall > 400 && rainfall + 10 * temperature > 500)
                     {
                         point.biome = getTowerKarstBiome(point.biome);
                     }
                     //Tropical/Subtropical wet areas not filled in by towers are Shilin
-                    else if (temperature > 12)
+                    else if (temperature > 9)
                     {
                         point.biome = getShilinBiome(point.biome);
                     }

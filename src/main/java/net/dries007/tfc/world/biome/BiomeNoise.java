@@ -135,13 +135,13 @@ public final class BiomeNoise
     {
         final int minHeight = SEA_LEVEL_Y + 2;
 
-        final Noise2D crevices = burrenCrevices(seed).map(y -> y * scale);
+        final Noise2D crevices = burrenCrevices(seed).map(y -> y < 0.15 ? -scale : y < 0.4 ? (y - 0.4) * scale : 0);
 
         return crevices.add(baseTerrainNoise).map(y -> Math.max(y, minHeight));
     }
 
     /**
-     * Unscaled burren noise, not applied to terrain
+     * The seeded, absolute value noise used by the Burren Biome
      * Used by surface builder as well as Burren noise
      */
     public static Noise2D burrenCrevices(long seed)
@@ -151,8 +151,7 @@ public final class BiomeNoise
             .spread(0.08f)
             .map(
                 y -> {
-                    y = Math.abs(y);
-                    return y < 0.15 ? -1 : y < 0.4 ? y - 0.4 : 0;
+                    return y = Math.abs(y);
                 }
             );
     }

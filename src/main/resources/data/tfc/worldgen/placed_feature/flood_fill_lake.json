@@ -16,6 +16,9 @@
     {
       "type": "tfc:climate",
       "min_groundwater": 125
+    },
+    {
+      "type": "tfc:biome"
     }
   ]
 }

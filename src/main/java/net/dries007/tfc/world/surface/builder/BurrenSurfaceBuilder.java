@@ -24,7 +24,7 @@ public class BurrenSurfaceBuilder implements SurfaceBuilder
         final NormalSurfaceBuilder surfaceBuilder = NormalSurfaceBuilder.ROCKY;
         final Noise2D crevices = BiomeNoise.burrenCrevices(context.getSeed());
 
-        if (-1 == crevices.noise(context.pos().getX(), context.pos().getZ()))
+        if (crevices.noise(context.pos().getX(), context.pos().getZ()) + 0.3 * context.weight() <= 0.40)
         {
             surfaceBuilder.buildSurface(context, startY, endY);
         }

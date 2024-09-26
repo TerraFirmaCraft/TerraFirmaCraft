@@ -32,38 +32,26 @@
   "spawners": {
     "water_ambient": [
       {
-        "type": "tfc:bluegill",
-        "weight": 10,
-        "minCount": 2,
+        "type": "tfc:isopod",
+        "weight": 1,
+        "minCount": 1,
         "maxCount": 4
       },
       {
-        "type": "tfc:crappie",
-        "weight": 10,
-        "minCount": 2,
+        "type": "tfc:lobster",
+        "weight": 1,
+        "minCount": 1,
         "maxCount": 4
       },
       {
-        "type": "tfc:largemouth_bass",
-        "weight": 10,
-        "minCount": 2,
+        "type": "tfc:horseshoe_crab",
+        "weight": 1,
+        "minCount": 1,
         "maxCount": 4
       },
       {
         "type": "tfc:salmon",
-        "weight": 10,
-        "minCount": 2,
-        "maxCount": 4
-      },
-      {
-        "type": "tfc:smallmouth_bass",
-        "weight": 10,
-        "minCount": 2,
-        "maxCount": 4
-      },
-      {
-        "type": "tfc:crayfish",
-        "weight": 5,
+        "weight": 1,
         "minCount": 1,
         "maxCount": 4
       }

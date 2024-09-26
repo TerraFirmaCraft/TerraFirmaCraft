@@ -191,6 +191,8 @@ public class RegionGeneratorTests implements TestSetup
                 }
             }
             case CHOOSE_BIOMES -> biomeColor(point.biome);
+            case ANNOTATE_KARST_BIOMES -> karstBiomeColor(point.biome);
+            case ANNOTATE_BIOMES_BY_HEIGHT -> heightBiomeColor(point.biome);
             case ADD_RIVERS_AND_LAKES -> {
                 if (point.river()) yield new Color(120, 120, 240);
                 if (point.shore()) yield new Color(120, 120, 240);
@@ -223,6 +225,7 @@ public class RegionGeneratorTests implements TestSetup
         return (point.land() ? temperature : blue).apply(Mth.clampedMap(value, min, max, 0f, 0.999f));
     }
 
+    // Default biome color scheme, Karst Biomes invisible
     private Color biomeColor(int biome)
     {
         if (biome == OCEAN) return new Color(0, 0, 220);
@@ -230,27 +233,123 @@ public class RegionGeneratorTests implements TestSetup
         if (biome == DEEP_OCEAN) return new Color(0, 0, 160);
         if (biome == DEEP_OCEAN_TRENCH) return new Color(0, 0, 80);
         if (biome == LAKE) return new Color(30, 30, 255);
-        if (biome == MOUNTAIN_LAKE || biome == OCEANIC_MOUNTAIN_LAKE || biome == OLD_MOUNTAIN_LAKE || biome == VOLCANIC_MOUNTAIN_LAKE || biome == PLATEAU_LAKE) return new Color(180, 180, 255);
+        if (biome == MOUNTAIN_LAKE || biome == OCEANIC_MOUNTAIN_LAKE || biome == OLD_MOUNTAIN_LAKE || biome == VOLCANIC_MOUNTAIN_LAKE || biome == PLATEAU_LAKE) return new Color(20, 180, 255);
         if (biome == RIVER) return new Color(0, 200, 255);
 
         if (biome == OCEANIC_MOUNTAINS || biome == VOLCANIC_OCEANIC_MOUNTAINS) return new Color(255, 0, 255);
-        if (biome == CANYONS) return new Color(180, 60, 255);
+        if (biome == CANYONS || biome == TOWER_KARST_CANYONS || biome == SHILIN_CANYONS || biome == DOLINE_CANYONS || biome == CENOTE_CANYONS) return new Color(180, 60, 255);
         if (biome == LOW_CANYONS) return new Color(200, 110, 255);
-        if (biome == LOWLANDS) return new Color(220, 150, 230);
+        if (biome == LOWLANDS || biome == TOWER_KARST_BAY || biome == SALT_MARSH || biome == TOWER_KARST_LAKE) return new Color(220, 150, 230);
 
         if (biome == MOUNTAINS || biome == VOLCANIC_MOUNTAINS) return new Color(255, 50, 50);
-        if (biome == OLD_MOUNTAINS) return new Color(240, 100, 100);
-        if (biome == PLATEAU) return new Color(210, 120, 120);
+        if (biome == OLD_MOUNTAINS || biome == EXTREME_DOLINE_MOUNTAINS) return new Color(240, 100, 100);
+        if (biome == PLATEAU || biome == EXTREME_DOLINE_PLATEAU || biome == CENOTE_PLATEAU || biome == DOLINE_PLATEAU || biome == SHILIN_PLATEAU || biome == BURREN_PLATEAU) return new Color(190, 120, 120);
 
-        if (biome == BADLANDS) return new Color(255, 150, 0);
-        if (biome == INVERTED_BADLANDS) return new Color(240, 180, 0);
+        if (biome == BADLANDS || biome == BURREN_BADLANDS) return new Color(255, 150, 0);
+        if (biome == INVERTED_BADLANDS || biome == BURREN_BADLANDS_TALL) return new Color(240, 180, 0);
+        if (biome == DUNE_SEA || biome == GRASSY_DUNES) return new Color(190, 150, 0);
+
+        if (biome == SALT_FLATS) return new Color(190, 190, 190);
+        if (biome == MUD_FLATS) return new Color(190, 120, 100);
 
         if (biome == SHORE) return new Color(230, 210, 130);
 
-        if (biome == HIGHLANDS) return new Color(20, 80, 30);
-        if (biome == ROLLING_HILLS) return new Color(50, 100, 50);
-        if (biome == HILLS) return new Color(80, 130, 80);
-        if (biome == PLAINS) return new Color(100, 200, 100);
+        if (biome == HIGHLANDS || biome == SHILIN_HIGHLANDS || biome == TOWER_KARST_HIGHLANDS || biome == DOLINE_HIGHLANDS || biome == CENOTE_HIGHLANDS) return new Color(20, 80, 30);
+        if (biome == ROLLING_HILLS || biome == DOLINE_ROLLING_HILLS || biome == CENOTE_ROLLING_HILLS) return new Color(50, 100, 50);
+        if (biome == HILLS || biome == SHILIN_HILLS || biome == TOWER_KARST_HILLS || biome == DOLINE_HILLS || biome == CENOTE_HILLS) return new Color(80, 130, 80);
+        if (biome == PLAINS || biome == BURREN_PLAINS || biome == TOWER_KARST_PLAINS || biome == DOLINE_PLAINS || biome == CENOTE_PLAINS || biome == SHILIN_PLAINS) return new Color(100, 200, 100);
+
+        return Color.BLACK;
+    }
+
+    // Only shows Karst biomes and water biomes, color coded by Karst Variety
+    private Color karstBiomeColor(int biome)
+    {
+        if (biome == OCEAN || biome == OCEAN_REEF || biome == DEEP_OCEAN || biome == DEEP_OCEAN_TRENCH || biome == LAKE || biome == RIVER || biome == MOUNTAIN_LAKE || biome == OCEANIC_MOUNTAIN_LAKE || biome == OLD_MOUNTAIN_LAKE || biome == VOLCANIC_MOUNTAIN_LAKE || biome == PLATEAU_LAKE) return Color.GRAY;
+
+        if (biome == TOWER_KARST_BAY) return new Color(230, 120, 220);
+        if (biome == TOWER_KARST_LAKE) return new Color(230, 100, 220);
+        if (biome == TOWER_KARST_PLAINS) return new Color(230, 100, 100);
+        if (biome == TOWER_KARST_CANYONS) return new Color(200, 80, 80);
+        if (biome == TOWER_KARST_HILLS) return new Color(180, 60, 60);
+        if (biome == TOWER_KARST_HIGHLANDS) return new Color(160, 40, 40);
+        if (biome == EXTREME_DOLINE_PLATEAU) return new Color(140, 40, 90);
+        if (biome == EXTREME_DOLINE_MOUNTAINS) return new Color(120, 20, 80);
+
+        if (biome == SHILIN_PLAINS) return new Color(100, 250, 180);
+        if (biome == SHILIN_CANYONS) return new Color(90, 220, 160);
+        if (biome == SHILIN_HILLS) return new Color(80, 190, 140);
+        if (biome == SHILIN_HIGHLANDS) return new Color(70, 170, 120);
+        if (biome == SHILIN_PLATEAU) return new Color(60, 140, 100);
+
+        if (biome == BURREN_PLAINS) return new Color(140, 190, 255);
+        if (biome == BURREN_BADLANDS) return new Color(120, 160, 210);
+        if (biome == BURREN_BADLANDS_TALL) return new Color(100, 130, 180);
+        if (biome == BURREN_PLATEAU) return new Color(80, 100, 150);
+
+        if (biome == DOLINE_PLAINS) return new Color(255, 255, 170);
+        if (biome == DOLINE_CANYONS) return new Color(220, 220, 150);
+        if (biome == DOLINE_HILLS) return new Color(190, 190, 120);
+        if (biome == DOLINE_ROLLING_HILLS) return new Color(160, 160, 90);
+        if (biome == DOLINE_HIGHLANDS) return new Color(140, 140, 70);
+        if (biome == DOLINE_PLATEAU) return new Color(120, 120, 50);
+
+        if (biome == CENOTE_PLAINS) return new Color(255, 220, 40);
+        if (biome == CENOTE_CANYONS) return new Color(220, 200, 30);
+        if (biome == CENOTE_HILLS) return new Color(190, 170, 25);
+        if (biome == CENOTE_ROLLING_HILLS) return new Color(170, 150, 20);
+        if (biome == CENOTE_HIGHLANDS) return new Color(150, 130, 10);
+        if (biome == CENOTE_PLATEAU) return new Color(140, 110, 0);
+
+        return Color.BLACK;
+    }
+
+    // Default biome color scheme, Karst Biomes invisible
+    private Color heightBiomeColor(int biome)
+    {
+        // Oceans
+        if (biome == OCEAN) return new Color(0, 0, 220);
+        if (biome == OCEAN_REEF) return new Color(0, 80, 250);
+        if (biome == DEEP_OCEAN) return new Color(0, 0, 160);
+        if (biome == DEEP_OCEAN_TRENCH) return new Color(0, 0, 80);
+        if (biome == LAKE) return new Color(30, 30, 255);
+
+        if (biome == SHORE) return new Color(255, 230, 200);
+
+        // Freshwater
+        if (biome == MOUNTAIN_LAKE || biome == OCEANIC_MOUNTAIN_LAKE || biome == OLD_MOUNTAIN_LAKE || biome == VOLCANIC_MOUNTAIN_LAKE || biome == PLATEAU_LAKE) return new Color(120, 170, 200);
+        if (biome == RIVER) return new Color(100, 140, 180);
+
+        // Lowland / Mixed Water
+        if (biome == LOWLANDS || biome == TOWER_KARST_LAKE) return new Color(80, 170, 200);
+        if (biome == TOWER_KARST_BAY || biome == SALT_MARSH) return new Color(60, 140, 220);
+        if (biome == LOW_CANYONS) return new Color(110, 220, 255);
+
+        // Low lands without water
+        if (biome == SALT_FLATS) return new Color(190, 250, 190);
+        if (biome == MUD_FLATS) return new Color(150, 200, 130);
+        if (biome == PLAINS || biome == BURREN_PLAINS || biome == TOWER_KARST_PLAINS || biome == DOLINE_PLAINS || biome == CENOTE_PLAINS || biome == SHILIN_PLAINS) return new Color(110, 190, 110);
+
+        // Hills
+        if (biome == HILLS || biome == SHILIN_HILLS || biome == TOWER_KARST_HILLS || biome == DOLINE_HILLS || biome == CENOTE_HILLS) return new Color(80, 130, 90);
+        if (biome == DUNE_SEA || biome == GRASSY_DUNES) return new Color(80, 130, 90);
+        if (biome == BADLANDS || biome == BURREN_BADLANDS) return new Color(30, 190, 30);
+
+        // Rolling Hills
+        if (biome == CANYONS || biome == TOWER_KARST_CANYONS || biome == SHILIN_CANYONS || biome == DOLINE_CANYONS || biome == CENOTE_CANYONS) return new Color(200, 150, 10);
+        if (biome == ROLLING_HILLS || biome == DOLINE_ROLLING_HILLS || biome == CENOTE_ROLLING_HILLS) return new Color(240, 230, 10);
+
+        // Highlands
+        if (biome == INVERTED_BADLANDS || biome == BURREN_BADLANDS_TALL) return new Color(200, 90, 0);
+        if (biome == HIGHLANDS || biome == SHILIN_HIGHLANDS || biome == TOWER_KARST_HIGHLANDS || biome == DOLINE_HIGHLANDS || biome == CENOTE_HIGHLANDS) return new Color(250, 120, 0);
+
+        // Plateau
+        if (biome == PLATEAU || biome == EXTREME_DOLINE_PLATEAU || biome == CENOTE_PLATEAU || biome == DOLINE_PLATEAU || biome == SHILIN_PLATEAU || biome == BURREN_PLATEAU) return new Color(200, 60, 60);
+
+        // Mountains
+        if (biome == OCEANIC_MOUNTAINS || biome == VOLCANIC_OCEANIC_MOUNTAINS) return new Color(160, 30, 160);
+        if (biome == OLD_MOUNTAINS || biome == EXTREME_DOLINE_MOUNTAINS) return new Color(200, 50, 200);
+        if (biome == MOUNTAINS || biome == VOLCANIC_MOUNTAINS) return new Color(250, 10, 250);
 
         return Color.BLACK;
     }
@@ -318,6 +417,8 @@ public class RegionGeneratorTests implements TestSetup
         CHOOSE_ROCKS(Task.CHOOSE_ROCKS),
         ANNOTATE_KARST_SURFACE(Task.ANNOTATE_KARST_SURFACE),
         CHOOSE_BIOMES(Task.CHOOSE_BIOMES),
+        ANNOTATE_KARST_BIOMES(Task.CHOOSE_BIOMES),
+        ANNOTATE_BIOMES_BY_HEIGHT(Task.CHOOSE_BIOMES),
         ADD_RIVERS_AND_LAKES(Task.ADD_RIVERS_AND_LAKES),
         // Draw climate visualizations again after rivers, which modify rainfall
         RAINFALL_AFTER_RIVERS(Task.ADD_RIVERS_AND_LAKES),

@@ -54,6 +54,7 @@ def generate(rm: ResourceManager):
     rm.placed_feature_tag('feature/boulders', 'tfc:raw_boulder', 'tfc:cobble_boulder', 'tfc:mossy_boulder', 'tfc:raw_boulder_small_patch', 'tfc:cobble_boulder_small_patch', 'tfc:mossy_boulder_small_patch')
     rm.placed_feature_tag('feature/soil_discs', 'tfc:clay_disc_with_indicator', 'tfc:water_clay_disc_with_indicator', 'tfc:peat_disc', 'tfc:powder_snow', 'tfc:rooted_dirt')
     rm.placed_feature_tag('feature/volcanoes', 'tfc:volcano_rivulet', 'tfc:volcano_caldera', 'tfc:random_volcano_fissure', 'tfc:pumice_patch')
+    rm.placed_feature_tag('feature/surface_flood_fill_lakes', 'tfc:flood_fill_lake')
 
     # Biomes
     biome(rm, 'badlands', 'mesa', lake_features=False)
@@ -216,7 +217,7 @@ def generate(rm: ResourceManager):
         'replace_fluids': [],
     })
 
-    rm.placed_feature('flood_fill_lake', 'tfc:flood_fill_lake', decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(min_water=125))
+    rm.placed_feature('flood_fill_lake', 'tfc:flood_fill_lake', decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(min_water=125), decorate_biome())
     rm.placed_feature('underground_flood_fill_lake', 'tfc:flood_fill_lake', decorate_chance(3), decorate_square(), decorate_range(-56, 63))
 
     for spring_cfg in (('water', 110), ('lava', 50)):
@@ -1575,7 +1576,7 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
         spawners['water_creature'] = [entity for entity in LAKE_CREATURES.values()]
     if 'swamp' == category:
         spawners['water_ambient'] = [entity for entity in LAKE_AMBIENT.values()]
-    if 'salt_marsh' == name:
+    if 'salt_marsh' == name or 'tower_karst_bay' == name:
         spawners['water_ambient'] = [entity for entity in SALT_MARSH_AMBIENT.values()]
     spawners['monster'] = [entity for entity in VANILLA_MONSTERS.values()]
 
@@ -1605,6 +1606,9 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
             large_features.append('tfc:random_empty_hot_spring')
         else:
             large_features.append('tfc:random_active_hot_spring')
+
+        if not ('shilin' in name or 'burren'):
+            large_features.append('#tfc:feature/surface_flood_fill_lakes')
 
     # Feature Tags
     # We don't directly use vanilla's generation step, but we line this up *approximately* with it, so that mods that add features add them in roughly the right location
