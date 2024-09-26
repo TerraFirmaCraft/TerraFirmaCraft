@@ -34,7 +34,7 @@ public abstract class TFCBlockEntity extends BlockEntity
     }
 
     /**
-     * Handle a packet sent from {@link #getUpdatePacket()}. Calls {@link #loadWithComponents(CompoundTag, HolderLookup.Provider)}
+     * Handle a packet sent from {@link #getUpdatePacket}. Calls {@link #loadWithComponents}
      */
     @Override
     public final void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet, HolderLookup.Provider provider)
@@ -44,9 +44,9 @@ public abstract class TFCBlockEntity extends BlockEntity
 
     /**
      * Returns the tag containing information needed to send to the client, either on block update or on bulk chunk update.
-     * This tag is either returned with the packet in {@link #getUpdatePacket()} or {@link #handleUpdateTag(CompoundTag, HolderLookup.Provider)} based on where it was called from.
+     * This tag is either returned with the packet in {@link #getUpdatePacket} or {@link #handleUpdateTag} based on where it was called from.
      * <p>
-     * Delegates to {@link #saveCustomOnly(HolderLookup.Provider)} which calls {@link #saveAdditional(CompoundTag, HolderLookup.Provider)}
+     * Delegates to {@link #saveCustomOnly} which calls {@link #saveAdditional}
      */
     @Override
     public final CompoundTag getUpdateTag(HolderLookup.Provider provider)
@@ -57,12 +57,14 @@ public abstract class TFCBlockEntity extends BlockEntity
     /**
      * Handles an update tag sent from the server.
      * <p>
-     * Delegates to {@link #loadWithComponents(CompoundTag, HolderLookup.Provider)} which calls {@link #loadAdditional(CompoundTag, HolderLookup.Provider)}
+     * Delegates to {@link #loadWithComponents} which calls {@link #loadAdditional}. Also invokes {@link #loadAdditionalOnClient} after both other
+     * methods are loaded.
      */
     @Override
     public final void handleUpdateTag(CompoundTag tag, HolderLookup.Provider provider)
     {
         super.handleUpdateTag(tag, provider);
+        loadAdditionalOnClient(tag, provider);
     }
 
     @Override
@@ -99,16 +101,28 @@ public abstract class TFCBlockEntity extends BlockEntity
 
 
     /**
-     * Override to save block entity specific data.
+     * Override to save block entity specific data. Superclass call is to save NeoForge attachments and persistent data.
      */
     @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {}
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider)
+    {
+        super.saveAdditional(tag, provider);
+    }
 
     /**
-     * Override to load block entity specific data.
+     * Override to load block entity specific data. Superclass call is to load NeoForge attachments and persistent data.
      */
     @Override
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {}
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider)
+    {
+        super.loadAdditional(tag, provider);
+    }
+
+    /**
+     * Override to load block entity specific data that is only used for synchronization with client, but not serialized. This is used for
+     * data that is persisted through other means on server, but still needs to be present on client.
+     */
+    protected void loadAdditionalOnClient(CompoundTag tag, HolderLookup.Provider provider) {}
 
     /**
      * Marks a block entity as having changed, and syncs the change to client. Also updates neighbors that this block entity has

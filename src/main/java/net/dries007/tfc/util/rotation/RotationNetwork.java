@@ -27,13 +27,12 @@ final class RotationNetwork
 {
     private final long id;
     private final Node source;
-    private final Long2ObjectMap<Node> nodes;
+    private final Long2ObjectMap<Node> nodes = new Long2ObjectOpenHashMap<>();
 
     RotationNetwork(long id, Node source)
     {
         this.id = id;
         this.source = source;
-        this.nodes = new Long2ObjectOpenHashMap<>();
     }
 
     /**
