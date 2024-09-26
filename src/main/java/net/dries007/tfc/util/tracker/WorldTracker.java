@@ -73,6 +73,7 @@ public final class WorldTracker
     private final List<Collapse> collapsesInProgress = new ArrayList<>();
 
     private final RotationNetworkManager rotationManager = new RotationNetworkManager();
+    private final net.dries007.tfc.util.network.RotationNetworkManager rotationManager2 = new net.dries007.tfc.util.network.RotationNetworkManager();
 
     private ClimateModel climateModel = BiomeBasedClimateModel.INSTANCE;
     private boolean weatherEnabled = true;
@@ -138,9 +139,15 @@ public final class WorldTracker
         this.weatherEnabled = weatherEnabled;
     }
 
+    @Deprecated
     public RotationNetworkManager getRotationManager()
     {
         return rotationManager;
+    }
+
+    public net.dries007.tfc.util.network.RotationNetworkManager getRotationManager2()
+    {
+        return rotationManager2;
     }
 
     /**
@@ -205,6 +212,8 @@ public final class WorldTracker
             }
             isolatedIterator.remove();
         }
+
+        rotationManager2.tick((ServerLevel) level);
     }
 
     public CompoundTag serializeNBT()

@@ -15,6 +15,9 @@ import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.network.RotationNetworkUpdatePacket;
+import net.dries007.tfc.util.tracker.WorldTracker;
+
 
 public class RotationNetworkManager extends NetworkManager<RotationNode, RotationNetwork>
 {
@@ -26,7 +29,7 @@ public class RotationNetworkManager extends NetworkManager<RotationNode, Rotatio
 
     public static RotationNetworkManager get(ServerLevel level)
     {
-        return null; // todo
+        return WorldTracker.get(level).getRotationManager2();
     }
 
     public void tick(ServerLevel level)
@@ -36,9 +39,10 @@ public class RotationNetworkManager extends NetworkManager<RotationNode, Rotatio
             network.tick();
         }
 
+        // todo: migrate to a "sync all initially, sync only on changes" model
         if (level.getGameTime() % 20 == 0)
         {
-            /*final List<RotationNetworkUpdatePacket.Network> payload = new ArrayList<>(networks.size());
+            final List<RotationNetworkUpdatePacket.Network> payload = new ArrayList<>(networks.size());
             for (RotationNetwork network : networks.values())
             {
                 payload.add(new RotationNetworkUpdatePacket.Network(
@@ -48,7 +52,7 @@ public class RotationNetworkManager extends NetworkManager<RotationNode, Rotatio
                     network.targetSpeed
                 ));
             }
-            PacketDistributor.sendToPlayersInDimension(level, new RotationNetworkUpdatePacket(payload));*/
+            PacketDistributor.sendToPlayersInDimension(level, new RotationNetworkUpdatePacket(payload));
         }
     }
 
@@ -59,9 +63,9 @@ public class RotationNetworkManager extends NetworkManager<RotationNode, Rotatio
     }
 
     @Override
-    protected RotationNetwork createNetwork(long networkId)
+    protected RotationNetwork createNetwork(@Nullable RotationNetwork parentNetwork, long networkId)
     {
-        return new RotationNetwork(networkId);
+        return new RotationNetwork(parentNetwork, networkId);
     }
 
     @Override
@@ -69,6 +73,7 @@ public class RotationNetworkManager extends NetworkManager<RotationNode, Rotatio
     {
         super.addNodeToNetwork(network, node);
         network.addNodeToNetwork(node);
+        node.owner.markForSync();
     }
 
     @Override
@@ -86,5 +91,6 @@ public class RotationNetworkManager extends NetworkManager<RotationNode, Rotatio
     {
         super.removeNodeFromNetwork(network, node);
         network.removeNodeFromNetwork(node);
+        node.owner.markForSync();
     }
 }

@@ -17,6 +17,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
+import net.dries007.tfc.client.ClientRotationNetworkHandler;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.rotation.AxleBlockEntity;
 import net.dries007.tfc.common.blocks.rotation.AxleBlock;
@@ -66,6 +67,6 @@ public class AxleBlockEntityRenderer implements BlockEntityRenderer<AxleBlockEnt
 
         final Direction.Axis axis = state.getValue(AxleBlock.AXIS);
 
-        renderAxle(stack, bufferSource, axleBlock, axis, packedLight, packedOverlay, -axle.getRotationAngle(partialTick));
+        renderAxle(stack, bufferSource, axleBlock, axis, packedLight, packedOverlay, -ClientRotationNetworkHandler.getRotationAngle(axle, partialTick));
     }
 }

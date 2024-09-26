@@ -119,7 +119,7 @@ public class TripHammerBlockEntity extends TickableInventoryBlockEntity<ItemStac
         assert level != null;
         if (level.getBlockEntity(worldPosition.above()) instanceof BladedAxleBlockEntity axle)
         {
-            return axle.getRotationNode().rotation();
+            return Rotation.ofFake(); // todo: should use the rotation from the axle above it
         }
         return null;
     }

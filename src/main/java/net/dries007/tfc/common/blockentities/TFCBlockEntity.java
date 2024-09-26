@@ -34,12 +34,12 @@ public abstract class TFCBlockEntity extends BlockEntity
     }
 
     /**
-     * Handle a packet sent from {@link #getUpdatePacket}. Calls {@link #loadWithComponents}
+     * Handle a packet sent from {@link #getUpdatePacket}. Calls {@link #handleUpdateTag}
      */
     @Override
     public final void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet, HolderLookup.Provider provider)
     {
-        super.onDataPacket(net, packet, provider);
+        handleUpdateTag(packet.getTag(), provider);
     }
 
     /**

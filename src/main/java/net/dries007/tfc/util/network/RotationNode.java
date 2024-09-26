@@ -26,6 +26,16 @@ public abstract class RotationNode extends Node
         tag.putByte(key, (byte) direction.ordinal());
     }
 
+    public static Direction readAxis(CompoundTag tag, String key, Direction.Axis axis)
+    {
+        return Direction.fromAxisAndDirection(axis, tag.getByte(key) > 0 ? Direction.AxisDirection.POSITIVE : Direction.AxisDirection.NEGATIVE);
+    }
+
+    public static void saveAxis(CompoundTag tag, String key, Direction direction)
+    {
+        tag.putByte(key, (byte) direction.getAxisDirection().getStep());
+    }
+
     protected final RotationOwner owner;
     protected boolean valid = true;
 
@@ -70,21 +80,25 @@ public abstract class RotationNode extends Node
         return 0;
     }
 
-    public void loadFromTag(CompoundTag tag)
+    public void loadAdditional(CompoundTag tag)
     {
         valid = tag.getBoolean("valid");
+    }
+
+    public void loadAdditionalOnClient(CompoundTag tag)
+    {
         connectToNetwork(tag.getLong("networkId"));
     }
 
-    public void saveToTag(CompoundTag tag)
+    public void saveAdditional(CompoundTag tag)
     {
         tag.putBoolean("valid", valid);
         tag.putLong("networkId", networkId());
     }
 
-    public float convention()
+    public void setRotationFromOutsideWorld()
     {
-        return 1;
+        // todo: need to connect this to a "fake" network, and handle that properly on client with a fixed rotation
     }
 
     public static class Axle extends RotationNode
@@ -96,6 +110,11 @@ public abstract class RotationNode extends Node
         {
             super(owner, Node.ofAxis(axis), requiredTorque);
             this.axis = axis;
+        }
+
+        public Direction rotation()
+        {
+            return rotation;
         }
 
         @Override
@@ -118,23 +137,17 @@ public abstract class RotationNode extends Node
         }
 
         @Override
-        public void saveToTag(CompoundTag tag)
+        public void saveAdditional(CompoundTag tag)
         {
-            super.saveToTag(tag);
-            saveDirection(tag, "rotation", rotation);
+            super.saveAdditional(tag);
+            saveAxis(tag, "sign", rotation);
         }
 
         @Override
-        public void loadFromTag(CompoundTag tag)
+        public void loadAdditional(CompoundTag tag)
         {
-            super.loadFromTag(tag);
-            rotation = readDirection(tag, "rotation");
-        }
-
-        @Override
-        public float convention()
-        {
-            return rotation.getAxisDirection().getStep();
+            super.loadAdditional(tag);
+            rotation = readAxis(tag, "sign", axis);
         }
 
         @Override

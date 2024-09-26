@@ -299,6 +299,28 @@ public class RotationNetworkTest
             """, dsl.toString());
     }
 
+    @Test
+    public void testRemoveReplaceAndRemove()
+    {
+        final var dsl = dsl();
+
+        assertTrue(dsl.axle(0, 0, 0, Axis.Y));
+        assertTrue(dsl.axle(0, 1, 0, Axis.Y));
+        assertTrue(dsl.axle(0, 2, 0, Axis.Y));
+        assertTrue(dsl.remove(0, 1, 0));
+        assertTrue(dsl.remove(0, 0, 0));
+        assertTrue(dsl.axle(0, 0, 0, Axis.Y));
+        assertTrue(dsl.axle(0, 1, 0, Axis.Y));
+        assertTrue(dsl.remove(0, 0, 0));
+        assertTrue(dsl.axle(0, 0, 0, Axis.Y));
+        assertEquals("""
+            [network=2]
+            Axle[connections=[down, up], pos=[0, 0, 0], network=2, axis=y, rotation=north]
+            Axle[connections=[down, up], pos=[0, 1, 0], network=2, axis=y, rotation=north]
+            Axle[connections=[down, up], pos=[0, 2, 0], network=2, axis=y, rotation=north]
+            """, dsl.toString());
+    }
+
 
     // ===== Rotation ===== //
 

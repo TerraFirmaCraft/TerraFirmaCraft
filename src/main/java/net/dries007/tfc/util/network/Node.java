@@ -73,7 +73,7 @@ public class Node
         return networkId != NO_NETWORK;
     }
 
-    final long networkId()
+    public final long networkId()
     {
         return networkId;
     }

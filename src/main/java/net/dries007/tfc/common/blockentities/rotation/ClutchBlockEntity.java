@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.rotation.AxleBlock;
 import net.dries007.tfc.common.blocks.rotation.ClutchBlock;
+import net.dries007.tfc.util.network.Action;
 import net.dries007.tfc.util.rotation.NetworkAction;
 import net.dries007.tfc.util.rotation.Node;
 
@@ -58,7 +59,7 @@ public class ClutchBlockEntity extends AxleBlockEntity
 
         if (level != null)
         {
-            performNetworkAction(NetworkAction.UPDATE);
+            performNetworkAction(Action.UPDATE);
             if (!level.isClientSide)
             {
                 markForSync();

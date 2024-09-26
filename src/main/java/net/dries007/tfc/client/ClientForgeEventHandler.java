@@ -394,6 +394,7 @@ public class ClientForgeEventHandler
         {
             Calendars.CLIENT.onClientTick();
             ClimateRenderCache.INSTANCE.onClientTick();
+            ClientRotationNetworkHandler.onClientTick();
             tickWind();
         }
     }

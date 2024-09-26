@@ -31,6 +31,7 @@ import org.apache.commons.lang3.mutable.Mutable;
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.client.ClientRotationNetworkHandler;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.model.entity.WindmillBladeLatticeModel;
 import net.dries007.tfc.client.model.entity.WindmillBladeModel;
@@ -92,8 +93,9 @@ public class WindmillBlockEntityRenderer implements BlockEntityRenderer<Windmill
 
         final Direction.Axis axis = state.getValue(WindmillBlock.AXIS);
         final int bladeCount = state.getValue(WindmillBlock.COUNT);
+        final float angle = ClientRotationNetworkHandler.getRotationAngle(windmill, partialTick);
 
-        AxleBlockEntityRenderer.renderAxle(stack, bufferSource, windmillBlock, axis, packedLight, packedOverlay, -windmill.getRotationAngle(partialTick));
+        AxleBlockEntityRenderer.renderAxle(stack, bufferSource, windmillBlock, axis, packedLight, packedOverlay, -angle);
 
         stack.pushPose();
 

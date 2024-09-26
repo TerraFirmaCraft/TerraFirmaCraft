@@ -83,7 +83,7 @@ public class NetworkManager<T extends Node, N extends Network<T>>
         {
             // The node is valid, but it was not connected to any existing networks. In this case, we have to add a new network
             // for this node itself. It has already been added to the global nodes map
-            addNodeToNetwork(createAndAddNetwork(), node);
+            addNodeToNetwork(createAndAddNetwork(null), node);
         }
         if (isValid)
         {
@@ -127,18 +127,29 @@ public class NetworkManager<T extends Node, N extends Network<T>>
         assert node.isConnectedToNetwork();
         assert originNetwork != null;
 
-        if (originNetwork.nodes.size() == 1)
-        {
-            // Special case - if we are removing a network where this is the only node, we can skip everything else,
-            // and just remove the network
-            networks.remove(node.networkId());
-            return;
-        }
+        // Disconnect this node and remove it
+        node.connectToNetwork(Node.NO_NETWORK);
+        nodes.remove(node.key());
 
-        // Otherwise, remove this node from the origin network, and then update connectivity after removing (possibly
-        // involving splitting the network)
-        originNetwork.nodes.remove(node.key());
-        updateExistingNetworkAfterRemovingConnectivity(originNetwork);
+        // Two special cases for small networks sizes
+        switch (originNetwork.nodes.size())
+        {
+            case 1:
+                // Network only containing this node, which we can remove outright
+                networks.remove(originNetwork.networkId);
+                break;
+            case 2:
+                // Network containing two nodes. The only possible resolution after, is
+                // a network containing just one node, so we can remove without any other considerations
+                originNetwork.nodes.remove(node.key());
+                break;
+            default:
+                // For any other cases, we need to properly handle the possibility of splitting a network
+                // So, we remove the node from the network first, and then update existing networks
+                originNetwork.nodes.remove(node.key());
+                updateExistingNetworkAfterRemovingConnectivity(originNetwork);
+                break;
+        }
     }
 
     /**
@@ -280,7 +291,7 @@ public class NetworkManager<T extends Node, N extends Network<T>>
             else
             {
                 // If we create a new network, then immediately add the origin node to it as the first node
-                resultNetwork = createAndAddNetwork();
+                resultNetwork = createAndAddNetwork(network);
                 network.nodes.remove(origin);
                 addNodeToNetwork(resultNetwork, originNode);
             }
@@ -365,10 +376,10 @@ public class NetworkManager<T extends Node, N extends Network<T>>
         }
     }
 
-    private N createAndAddNetwork()
+    private N createAndAddNetwork(@Nullable N parentNetwork)
     {
         final long networkId = nextNetworkId;
-        final N network = createNetwork(networkId);
+        final N network = createNetwork(parentNetwork, networkId);
 
         networks.put(networkId, network);
         nextNetworkId++;
@@ -412,7 +423,7 @@ public class NetworkManager<T extends Node, N extends Network<T>>
     }
 
     @SuppressWarnings("unchecked")
-    protected N createNetwork(long networkId)
+    protected N createNetwork(@Nullable N parentNetwork, long networkId)
     {
         return (N) new Network<>(networkId);
     }

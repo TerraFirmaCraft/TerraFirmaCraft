@@ -18,6 +18,7 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMaps;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import net.minecraft.network.codec.StreamCodec;
+import org.jetbrains.annotations.Nullable;
 
 public class RotationNetwork extends Network<RotationNode>
 {
@@ -38,9 +39,15 @@ public class RotationNetwork extends Network<RotationNode>
     float targetSpeed = 0;
     float requiredTorque = 0;
 
-    RotationNetwork(long networkId)
+    RotationNetwork(@Nullable RotationNetwork parent, long networkId)
     {
         super(networkId);
+        if (parent != null)
+        {
+            currentSpeed = parent.currentSpeed;
+            targetSpeed = parent.targetSpeed;
+            requiredTorque = parent.requiredTorque;
+        }
     }
 
     void tick()

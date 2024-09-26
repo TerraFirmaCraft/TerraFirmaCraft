@@ -17,6 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
+import net.dries007.tfc.client.ClientRotationNetworkHandler;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.rotation.BladedAxleBlockEntity;
 import net.dries007.tfc.common.blocks.rotation.BladedAxleBlock;
@@ -52,8 +53,9 @@ public class BladedAxleBlockEntityRenderer implements BlockEntityRenderer<Bladed
         }
 
         final Direction.Axis axis = state.getValue(BladedAxleBlock.AXIS);
+        final float angle = ClientRotationNetworkHandler.getRotationAngle(axle, partialTick);
 
-        AxleBlockEntityRenderer.renderAxle(stack, bufferSource, axleBlock, axis, packedLight, packedOverlay, -axle.getRotationAngle(partialTick));
-        renderBlade(stack, bufferSource, axis, packedLight, packedOverlay, -axle.getRotationAngle(partialTick));
+        AxleBlockEntityRenderer.renderAxle(stack, bufferSource, axleBlock, axis, packedLight, packedOverlay, -angle);
+        renderBlade(stack, bufferSource, axis, packedLight, packedOverlay, -angle);
     }
 }
