@@ -9,9 +9,11 @@ package net.dries007.tfc.util.network;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
+import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
@@ -32,6 +34,9 @@ public class RotationNetworkManager extends NetworkManager<RotationNode, Rotatio
         return WorldTracker.get(level).getRotationManager2();
     }
 
+    private final List<RotationNetwork> pendingRemovals = new ArrayList<>(20);
+    private final List<RotationNetwork> pendingUpdates = new ArrayList<>(20);
+
     public void tick(ServerLevel level)
     {
         for (RotationNetwork network : networks.values())
@@ -39,21 +44,44 @@ public class RotationNetworkManager extends NetworkManager<RotationNode, Rotatio
             network.tick();
         }
 
-        // todo: migrate to a "sync all initially, sync only on changes" model
-        if (level.getGameTime() % 20 == 0)
+        if (!pendingUpdates.isEmpty() || !pendingRemovals.isEmpty())
         {
-            final List<RotationNetworkUpdatePacket.Network> payload = new ArrayList<>(networks.size());
-            for (RotationNetwork network : networks.values())
+            final List<RotationNetworkPayload> payload = new ArrayList<>(pendingUpdates.size() + pendingRemovals.size());
+            final LongSet updated = new LongOpenHashSet(pendingUpdates.size() + pendingRemovals.size());
+
+            // Do removals first, so any networks that have both a pending update and removal queued get properly removed
+            // in practice this is only done on network update, which shouldn't be that frequent anyway
+            for (RotationNetwork network : pendingRemovals)
             {
-                payload.add(new RotationNetworkUpdatePacket.Network(
-                    network.networkId,
-                    network.requiredTorque,
-                    network.currentSpeed,
-                    network.targetSpeed
-                ));
+                if (updated.add(network.networkId))
+                {
+                    payload.add(RotationNetworkPayload.remove(network.networkId));
+                }
+            }
+            for (RotationNetwork network : pendingUpdates)
+            {
+                if (network.isActive() && updated.add(network.networkId))
+                {
+                    payload.add(new RotationNetworkPayload(network));
+                }
             }
             PacketDistributor.sendToPlayersInDimension(level, new RotationNetworkUpdatePacket(payload));
+            pendingRemovals.clear();
+            pendingUpdates.clear();
         }
+    }
+
+    public void syncTo(ServerPlayer player)
+    {
+        final List<RotationNetworkPayload> payload = new ArrayList<>(networks.size());
+        for (RotationNetwork network : networks.values())
+        {
+            if (network.isActive())
+            {
+                payload.add(new RotationNetworkPayload(network));
+            }
+        }
+        PacketDistributor.sendToPlayer(player, new RotationNetworkUpdatePacket(payload));
     }
 
     @Override
@@ -65,7 +93,15 @@ public class RotationNetworkManager extends NetworkManager<RotationNode, Rotatio
     @Override
     protected RotationNetwork createNetwork(@Nullable RotationNetwork parentNetwork, long networkId)
     {
-        return new RotationNetwork(parentNetwork, networkId);
+        final RotationNetwork network = new RotationNetwork(parentNetwork, networkId);
+        pendingUpdates.add(network);
+        return network;
+    }
+
+    @Override
+    protected void removeNetwork(RotationNetwork network)
+    {
+        pendingRemovals.add(network);
     }
 
     @Override
@@ -74,16 +110,20 @@ public class RotationNetworkManager extends NetworkManager<RotationNode, Rotatio
         super.addNodeToNetwork(network, node);
         network.addNodeToNetwork(node);
         node.owner.markForSync();
+        pendingUpdates.add(network);
     }
 
     @Override
     protected void updateInNetwork(RotationNode node)
     {
-        final RotationNetwork network = networks.get(node.networkId());
-        if (network != null)
-        {
-            network.updateTargetSpeed();
-        }
+        super.updateInNetwork(node);
+    }
+
+    @Override
+    protected void updateNetwork(RotationNetwork network)
+    {
+        network.updateTargetSpeed();
+        pendingUpdates.add(network);
     }
 
     @Override
@@ -92,5 +132,6 @@ public class RotationNetworkManager extends NetworkManager<RotationNode, Rotatio
         super.removeNodeFromNetwork(network, node);
         network.removeNodeFromNetwork(node);
         node.owner.markForSync();
+        pendingUpdates.add(network);
     }
 }

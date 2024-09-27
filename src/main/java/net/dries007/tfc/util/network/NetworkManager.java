@@ -116,6 +116,7 @@ public class NetworkManager<T extends Node, N extends Network<T>>
 
         // After updating, we need to re-check connectivity of the origin network, if valid or not
         updateExistingNetworkAfterRemovingConnectivity(originNetwork);
+        updateNetwork(originNetwork);
 
         return isValid;
     }
@@ -127,8 +128,7 @@ public class NetworkManager<T extends Node, N extends Network<T>>
         assert node.isConnectedToNetwork();
         assert originNetwork != null;
 
-        // Disconnect this node and remove it
-        node.connectToNetwork(Node.NO_NETWORK);
+        // First, always remove this node from the global node map
         nodes.remove(node.key());
 
         // Two special cases for small networks sizes
@@ -136,18 +136,21 @@ public class NetworkManager<T extends Node, N extends Network<T>>
         {
             case 1:
                 // Network only containing this node, which we can remove outright
+                // Note that we don't trigger a "remove node from network" update here, because the network is removed anyway
                 networks.remove(originNetwork.networkId);
+                removeNetwork(originNetwork);
                 break;
             case 2:
-                // Network containing two nodes. The only possible resolution after, is
-                // a network containing just one node, so we can remove without any other considerations
-                originNetwork.nodes.remove(node.key());
+                // Network containing two nodes. The only possible resolution after, is a network containing just one node,
+                // so we can remove without any other considerations.
+                removeNodeFromNetwork(originNetwork, node);
                 break;
             default:
                 // For any other cases, we need to properly handle the possibility of splitting a network
                 // So, we remove the node from the network first, and then update existing networks
-                originNetwork.nodes.remove(node.key());
+                removeNodeFromNetwork(originNetwork, node);
                 updateExistingNetworkAfterRemovingConnectivity(originNetwork);
+                updateNetwork(originNetwork);
                 break;
         }
     }
@@ -242,7 +245,7 @@ public class NetworkManager<T extends Node, N extends Network<T>>
             for (LongIterator it = queuedNetworksForMerge.iterator(); it.hasNext(); )
             {
                 final long networkId = it.nextLong();
-                final Network<T> networkToMerge = networks.remove(networkId);
+                final N networkToMerge = networks.remove(networkId);
 
                 assert networkToMerge != null;
 
@@ -250,6 +253,8 @@ public class NetworkManager<T extends Node, N extends Network<T>>
                 {
                     addNodeToNetwork(network, entry.getValue());
                 }
+
+                removeNetwork(networkToMerge);
             }
         }
 
@@ -325,7 +330,7 @@ public class NetworkManager<T extends Node, N extends Network<T>>
                             // If we have created a new network, then move the node to the new network
                             if (resultNetwork.networkId != network.networkId)
                             {
-                                network.nodes.remove(nextKey);
+                                removeNodeFromNetwork(network, nextNode);
                                 addNodeToNetwork(resultNetwork, nextNode);
                             }
                         }
@@ -399,7 +404,16 @@ public class NetworkManager<T extends Node, N extends Network<T>>
         network.nodes.put(node.key(), node);
     }
 
-    protected void updateInNetwork(T node) {}
+    protected void updateInNetwork(T node)
+    {
+        final N network = networks.get(node.networkId());
+        if (network != null)
+        {
+            updateNetwork(network);
+        }
+    }
+
+    protected void updateNetwork(N network) {}
 
     protected void removeNodeFromNetwork(N network, T node)
     {
@@ -427,4 +441,6 @@ public class NetworkManager<T extends Node, N extends Network<T>>
     {
         return (N) new Network<>(networkId);
     }
+
+    protected void removeNetwork(N network) {}
 }

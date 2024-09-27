@@ -18,14 +18,14 @@ import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.TFCBlockEntity;
 import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.rotation.NetworkAction;
-import net.dries007.tfc.util.rotation.Node;
-import net.dries007.tfc.util.rotation.Rotation;
+import net.dries007.tfc.util.network.Action;
+import net.dries007.tfc.util.network.RotationNetworkManager;
+import net.dries007.tfc.util.network.RotationNode;
+import net.dries007.tfc.util.network.RotationOwner;
 
-public class GearBoxBlockEntity extends TFCBlockEntity implements RotatingBlockEntity
+public class GearBoxBlockEntity extends TFCBlockEntity implements RotationOwner
 {
-    private final Node node;
-    private boolean invalid;
+    private final RotationNode node;
 
     public GearBoxBlockEntity(BlockPos pos, BlockState state)
     {
@@ -51,32 +51,7 @@ public class GearBoxBlockEntity extends TFCBlockEntity implements RotatingBlockE
             }
         }
 
-        this.invalid = false;
-        this.node = new Node(pos, connections) {
-            @Override
-            public Rotation rotation(Rotation sourceRotation, Direction sourceDirection, Direction exitDirection)
-            {
-                // Same axis as source direction -> opposite handed-ness, but same axis
-                if (sourceDirection.getAxis() == exitDirection.getAxis())
-                {
-                    return Rotation.of(sourceRotation, sourceRotation.direction().getOpposite());
-                }
-
-                // Otherwise, we must be on a perpendicular axis
-                // The convention gets reversed, relative to the source direction.
-                // If the source (outgoing convention) and rotation direction are the same, the need to _not_ be the same as the exit, and vice versa
-                final Direction outputDirection = sourceDirection == sourceRotation.direction()
-                    ? exitDirection.getOpposite()
-                    : exitDirection;
-                return Rotation.of(sourceRotation, outputDirection);
-            }
-
-            @Override
-            public String toString()
-            {
-                return "GearBox[pos=%s, connections=%s, source=%s]".formatted(pos(), connections(), source());
-            }
-        };
+        this.node = new RotationNode.GearBox(this, connections, RotationNetworkManager.GEARBOX_TORQUE);
     }
 
     public void updateDirection(Direction direction, boolean value)
@@ -90,49 +65,43 @@ public class GearBoxBlockEntity extends TFCBlockEntity implements RotatingBlockE
         {
             node.connections().remove(direction);
         }
-        performNetworkAction(NetworkAction.UPDATE);
+        performNetworkAction(Action.UPDATE);
     }
 
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
         super.saveAdditional(tag, provider);
-        tag.putBoolean("invalid", invalid);
+        node.saveAdditional(tag);
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
         super.loadAdditional(tag, provider);
-        invalid = tag.getBoolean("invalid");
+        node.loadAdditional(tag);
+    }
+
+    @Override
+    protected void loadAdditionalOnClient(CompoundTag tag, HolderLookup.Provider provider)
+    {
+        node.loadAdditionalOnClient(tag);
     }
 
     @Override
     protected void onLoadAdditional()
     {
-        performNetworkAction(NetworkAction.ADD);
+        performNetworkAction(Action.ADD);
     }
 
     @Override
     protected void onUnloadAdditional()
     {
-        performNetworkAction(NetworkAction.REMOVE);
+        performNetworkAction(Action.REMOVE);
     }
 
     @Override
-    public void markAsInvalidInNetwork()
-    {
-        invalid = true;
-    }
-
-    @Override
-    public boolean isInvalidInNetwork()
-    {
-        return invalid;
-    }
-
-    @Override
-    public Node getRotationNode()
+    public RotationNode getRotationNode()
     {
         return node;
     }

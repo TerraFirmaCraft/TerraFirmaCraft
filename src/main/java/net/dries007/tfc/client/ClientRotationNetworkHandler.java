@@ -8,34 +8,32 @@ package net.dries007.tfc.client;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
-import net.minecraft.util.Mth;
 
 import net.dries007.tfc.network.RotationNetworkUpdatePacket;
 import net.dries007.tfc.util.network.RotationNetwork;
+import net.dries007.tfc.util.network.RotationNetworkPayload;
 import net.dries007.tfc.util.network.RotationOwner;
 
 public class ClientRotationNetworkHandler
 {
     private static final Long2ObjectMap<Rotation> NETWORKS = new Long2ObjectOpenHashMap<>();
-    private static int NETWORK_GENERATION = 0;
 
     public static void handlePacket(RotationNetworkUpdatePacket packet)
     {
-        final int prevGeneration = NETWORK_GENERATION;
-
-        NETWORK_GENERATION++;
-        for (RotationNetworkUpdatePacket.Network network : packet.networks())
+        for (RotationNetworkPayload payload : packet.networks())
         {
-            final Rotation rotation = NETWORKS.computeIfAbsent(network.networkId(), key -> new Rotation());
-
-            rotation.generation = NETWORK_GENERATION;
-            rotation.requiredTorque = network.torque();
-            rotation.currentSpeed = network.currentSpeed();
-            rotation.targetSpeed = network.targetSpeed();
-        }
-        if (NETWORKS.size() != packet.networks().size())
-        {
-            NETWORKS.values().removeIf(r -> r.generation == prevGeneration);
+            if (payload.isRemoving())
+            {
+                NETWORKS.remove(payload.networkId());
+            }
+            else
+            {
+                final Rotation rotation = NETWORKS.computeIfAbsent(payload.networkId(), key -> new Rotation());
+                rotation.requiredTorque = payload.torqueFlag();
+                rotation.currentAngle = payload.currentAngle();
+                rotation.currentSpeed = payload.currentSpeed();
+                rotation.targetSpeed = payload.targetSpeed();
+            }
         }
     }
 
@@ -43,9 +41,18 @@ public class ClientRotationNetworkHandler
     {
         for (Rotation rotation : NETWORKS.values())
         {
-            rotation.targetSpeed = RotationNetwork.lerpTowardsTarget(rotation.currentSpeed, rotation.targetSpeed, rotation.requiredTorque);
-            rotation.currentAngle = clampToTwoPi(rotation.currentAngle + rotation.currentSpeed);
+            rotation.currentSpeed = RotationNetwork.lerpTowardsTarget(rotation.currentSpeed, rotation.targetSpeed, rotation.requiredTorque);
+            rotation.currentAngle = RotationNetwork.wrapToTwoPi(rotation.currentAngle + rotation.currentSpeed);
         }
+    }
+
+    /**
+     * @return The rotation speed of the network, in {@code radians/tick}
+     */
+    public static float getRotationSpeed(RotationOwner owner)
+    {
+        final var network = NETWORKS.get(owner.getRotationNode().networkId());
+        return network != null ? network.currentSpeed : 0;
     }
 
     public static float getRotationAngle(RotationOwner owner, float partialTick)
@@ -57,13 +64,8 @@ public class ClientRotationNetworkHandler
     {
         final var network = NETWORKS.get(networkId);
         return network != null
-            ? clampToTwoPi(network.currentAngle + network.currentSpeed * partialTick)
+            ? RotationNetwork.clampToTwoPi(network.currentAngle + network.currentSpeed * partialTick)
             : 0;
-    }
-
-    private static float clampToTwoPi(float angle)
-    {
-        return angle < 0 ? Mth.TWO_PI + angle : angle;
     }
 
     static class Rotation
@@ -72,6 +74,5 @@ public class ClientRotationNetworkHandler
         float currentAngle = 0;
         float currentSpeed = 0;
         float targetSpeed = 0;
-        int generation = 0;
     }
 }

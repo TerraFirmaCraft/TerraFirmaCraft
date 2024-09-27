@@ -33,15 +33,14 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 
-import net.dries007.tfc.common.blockentities.rotation.RotatingBlockEntity;
 import net.dries007.tfc.common.blockentities.rotation.WindmillBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.devices.DeviceBlock;
 import net.dries007.tfc.common.items.TFCItems;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
+import net.dries007.tfc.util.network.RotationOwner;
 
 public class WindmillBlock extends DeviceBlock implements EntityBlockExtension, ConnectedAxleBlock
 {
@@ -68,7 +67,7 @@ public class WindmillBlock extends DeviceBlock implements EntityBlockExtension, 
     @Override
     protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
-        if (level.getBlockEntity(pos) instanceof RotatingBlockEntity entity)
+        if (level.getBlockEntity(pos) instanceof RotationOwner entity)
         {
             entity.destroyIfInvalid(level, pos);
         }
@@ -80,15 +79,15 @@ public class WindmillBlock extends DeviceBlock implements EntityBlockExtension, 
         final int count = state.getValue(COUNT);
         if (level.getBlockEntity(pos) instanceof WindmillBlockEntity windmill)
         {
-            final IItemHandler inv = windmill.getInventory();
-            if (count < WindmillBlockEntity.SLOTS && !stack.isEmpty())
+            final IItemHandler inventory = windmill.getInventory();
+            if (!stack.isEmpty())
             {
-                final ItemStack leftover = Helpers.insertAllSlots(inv, player.isCreative() ? stack.copyWithCount(1) : stack.split(1));
-                if (!leftover.isEmpty())
+                if (count == WindmillBlockEntity.SLOTS)
                 {
-                    ItemHandlerHelper.giveItemToPlayer(player, leftover);
-                    return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+                    return ItemInteractionResult.FAIL; // Inventory already full, so fail, rather than trying to extract
                 }
+                inventory.insertItem(count, stack.copyWithCount(1), false);
+                if (!player.isCreative()) stack.shrink(1); // Consume the item that was inserted, if not creative
                 final int newCount = windmill.updateState();
                 if (newCount == WindmillBlockEntity.SLOTS && player instanceof ServerPlayer server)
                 {
@@ -96,9 +95,10 @@ public class WindmillBlock extends DeviceBlock implements EntityBlockExtension, 
                 }
                 return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
-            if (count == WindmillBlockEntity.SLOTS || stack.isEmpty())
+            else
             {
-                ItemHandlerHelper.giveItemToPlayer(player, inv.extractItem(count - 1, 1, false));
+                final ItemStack removed = inventory.extractItem(count - 1, 1, false);
+                if (!player.isCreative()) ItemHandlerHelper.giveItemToPlayer(player, removed);
                 return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
         }

@@ -25,6 +25,7 @@ import net.dries007.tfc.util.rotation.RotationNetworkManager;
  *     <li>If this is not a {@link RotationSinkBlockEntity}, it needs to react to possible add/update events causing this node to become invalid, and break itself. This is handled through {@link #destroyIfInvalid(Level, BlockPos)} called when the block is ticked.</li>
  * </ul>
  */
+@Deprecated
 public interface RotatingBlockEntity
 {
     int DELAY_FOR_INVALID_IN_NETWORK = 4;

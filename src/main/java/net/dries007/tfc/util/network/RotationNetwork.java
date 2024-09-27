@@ -6,18 +6,11 @@
 
 package net.dries007.tfc.util.network;
 
-import io.netty.buffer.ByteBuf;
-import it.unimi.dsi.fastutil.doubles.Double2DoubleLinkedOpenHashMap;
-import it.unimi.dsi.fastutil.doubles.Double2DoubleMaps;
-import it.unimi.dsi.fastutil.doubles.Double2DoubleSortedMap;
 import it.unimi.dsi.fastutil.floats.Float2FloatLinkedOpenHashMap;
-import it.unimi.dsi.fastutil.floats.Float2FloatMap;
 import it.unimi.dsi.fastutil.floats.Float2FloatMaps;
 import it.unimi.dsi.fastutil.floats.Float2FloatSortedMap;
-import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMaps;
-import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 
 public class RotationNetwork extends Network<RotationNode>
@@ -35,24 +28,47 @@ public class RotationNetwork extends Network<RotationNode>
         return currentSpeed;
     }
 
+    public static float clampToTwoPi(float angle)
+    {
+        return angle < 0 ? Mth.TWO_PI + angle : angle;
+    }
+
+    public static float wrapToTwoPi(float angle)
+    {
+        return angle > Mth.TWO_PI ? angle - Mth.TWO_PI : angle;
+    }
+
+    float currentAngle = 0;
     float currentSpeed = 0;
     float targetSpeed = 0;
     float requiredTorque = 0;
+
+    private boolean active = false;
 
     RotationNetwork(@Nullable RotationNetwork parent, long networkId)
     {
         super(networkId);
         if (parent != null)
         {
+            // This is a new network, with no nodes, which has been split off from the parent
+            // Preserve the active state (as we're copying fields), along with the angle and current speed, in order to make
+            // animations as seamless as possible. Don't preserve torque or target speed, since those are derived from this own
+            // network's state
+            active = parent.active;
+            currentAngle = parent.currentAngle;
             currentSpeed = parent.currentSpeed;
-            targetSpeed = parent.targetSpeed;
-            requiredTorque = parent.requiredTorque;
         }
+    }
+
+    boolean isActive()
+    {
+        return active;
     }
 
     void tick()
     {
         currentSpeed = lerpTowardsTarget(currentSpeed, targetSpeed, requiredTorque);
+        currentAngle = wrapToTwoPi(currentAngle + currentSpeed);
     }
 
     void addNodeToNetwork(RotationNode node)
@@ -73,12 +89,19 @@ public class RotationNetwork extends Network<RotationNode>
         float availableTorque = 0;
         for (var entry : Long2ObjectMaps.fastIterable(nodes))
         {
-            final RotationNode source = entry.getValue();
-            if (source.providedSpeed() != 0)
+            final RotationNode node = entry.getValue();
+            if (node.providedSpeed() != 0)
             {
-                providedTorqueBySpeed.put(source.providedSpeed(), source.providedTorque());
-                availableTorque += source.providedTorque();
+                providedTorqueBySpeed.put(node.providedSpeed(), node.providedTorque());
+                availableTorque += node.providedTorque();
             }
+        }
+
+        // No provided torque, so set speed to zero
+        if (providedTorqueBySpeed.isEmpty())
+        {
+            targetSpeed = 0;
+            return;
         }
 
         float minimumAchievableSpeed = 0;
@@ -101,6 +124,13 @@ public class RotationNetwork extends Network<RotationNode>
             // It also means we definitely can achieve at least this speed, so adjust for next iteration
             availableTorque -= nextTorque;
             targetSpeed = minimumAchievableSpeed = nextAchievableSpeed;
+        }
+
+        // The first time we record a non-zero target speed, we set the networks' "active" flag. This ensures that the network is synced,
+        // as any future possible updates need to consider this an active network, as it may have speed or leftover rotation.
+        if (targetSpeed > 0)
+        {
+            active = true;
         }
     }
 }

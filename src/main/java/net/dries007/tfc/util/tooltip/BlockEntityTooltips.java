@@ -46,7 +46,6 @@ import net.dries007.tfc.common.blockentities.PotBlockEntity;
 import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
 import net.dries007.tfc.common.blockentities.SheetPileBlockEntity;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
-import net.dries007.tfc.common.blockentities.rotation.RotatingBlockEntity;
 import net.dries007.tfc.common.blocks.BloomBlock;
 import net.dries007.tfc.common.blocks.HotPouredGlassBlock;
 import net.dries007.tfc.common.blocks.TFCCandleBlock;
@@ -97,7 +96,7 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.data.LampFuel;
-import net.dries007.tfc.util.rotation.Rotation;
+import net.dries007.tfc.util.network.RotationOwner;
 
 /**
  * Common tooltips that can be displayed for various block entities via external sources.
@@ -153,13 +152,9 @@ public final class BlockEntityTooltips
     };
 
     public static final BlockEntityTooltip ROTATING = (level, state, pos, entity, tooltip) -> {
-        if (entity instanceof RotatingBlockEntity rotating)
+        if (entity instanceof RotationOwner owner)
         {
-            final Rotation rotation = rotating.getRotationNode().rotation();
-            if (rotation != null && rotation.speed() != 0)
-            {
-                tooltip.accept(Component.translatable("tfc.tooltip.rotation.angular_velocity", String.format("%.2f", Math.abs(rotation.positiveSpeed()) * 20f)));
-            }
+            tooltip.accept(Tooltips.rpm(owner));
         }
     };
 

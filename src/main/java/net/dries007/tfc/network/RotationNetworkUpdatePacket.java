@@ -7,22 +7,18 @@
 package net.dries007.tfc.network;
 
 import java.util.List;
-import io.netty.buffer.ByteBuf;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
+import net.dries007.tfc.util.network.RotationNetworkPayload;
 
-public record RotationNetworkUpdatePacket(List<Network> networks) implements CustomPacketPayload
+
+public record RotationNetworkUpdatePacket(List<RotationNetworkPayload> networks) implements CustomPacketPayload
 {
     public static final Type<RotationNetworkUpdatePacket> TYPE = PacketHandler.type("rotation_update");
-    public static final StreamCodec<ByteBuf, RotationNetworkUpdatePacket> CODEC = StreamCodec.composite(
-            ByteBufCodecs.VAR_LONG, c -> c.networkId,
-            ByteBufCodecs.FLOAT, c -> c.torque,
-            ByteBufCodecs.FLOAT, c -> c.currentSpeed,
-            ByteBufCodecs.FLOAT, c -> c.targetSpeed,
-            Network::new
-        )
+    public static final StreamCodec<FriendlyByteBuf, RotationNetworkUpdatePacket> CODEC = RotationNetworkPayload.CODEC
         .apply(ByteBufCodecs.list())
         .map(RotationNetworkUpdatePacket::new, RotationNetworkUpdatePacket::networks);
 
@@ -31,11 +27,4 @@ public record RotationNetworkUpdatePacket(List<Network> networks) implements Cus
     {
         return TYPE;
     }
-
-    public record Network(
-        long networkId,
-        float torque,
-        float currentSpeed,
-        float targetSpeed
-    ) {}
 }
