@@ -96,10 +96,10 @@ public enum ChooseBiomes implements RegionTask
             if (point.isSurfaceRockKarst)
             {
                 // High rainfall karst biomes
-                if (rainfall > 350)
+                if (rainfall > 375)
                 {
                     // Check for hot, wet climates to place tower karsts
-                    if (rainfall > 400 && rainfall + 10 * temperature > 500)
+                    if (rainfall > 425 && rainfall + 10 * temperature > 500)
                     {
                         point.biome = getTowerKarstBiome(point.biome);
                     }
@@ -118,7 +118,7 @@ public enum ChooseBiomes implements RegionTask
                         point.biome = getDolineBiome(point.biome);
                     }
                 }
-                else if (rainfall > 225)
+                else if (rainfall > 250)
                 {
                     if (temperature > 5)
                     {

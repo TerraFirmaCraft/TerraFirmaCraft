@@ -109,8 +109,8 @@ def generate(rm: ResourceManager):
     biome(rm, 'shilin_plateau', 'extreme_hills')
     biome(rm, 'doline_plateau', 'extreme_hills')
     biome(rm, 'cenote_plateau', 'extreme_hills')
-    biome(rm, 'tower_karst_lake', 'swamp')
-    biome(rm, 'tower_karst_bay', 'swamp')
+    biome(rm, 'tower_karst_lake', 'river', lake_features=False, ocean_features='both')
+    biome(rm, 'tower_karst_bay', 'river', lake_features=False, ocean_features='both')
     biome(rm, 'extreme_doline_mountains', 'extreme_hills')
     biome(rm, 'burren_badlands', 'mesa')
     biome(rm, 'doline_rolling_hills', 'plains')
@@ -554,7 +554,7 @@ def generate(rm: ResourceManager):
     rm.biome_tag('shilins', 'tfc:shilin_plains', 'tfc:shilin_canyons', 'tfc:shilin_hills', 'tfc:shilin_highlands', 'tfc:shilin_plateau')
     rm.biome_tag('burrens', 'tfc:burren_plains', 'tfc:burren_badlands', 'tfc:burren_badlands_tall', 'tfc:burren_plateau')
     rm.biome_tag('karsts', '#tfc:tower_karsts', '#tfc:dolines', '#tfc:cenotes', '#tfc:shilins', '#tfc:burrens', '#tfc:karsts')
-    rm.biome_tag('kaolin_clay_spawns_in', 'tfc:plateau', 'tfc:highlands', 'tfc:old_mountains', 'tfc:rolling_hills', 'tfc:tower_karst_hills', 'tfc:tower_karst_highlands', 'tfc:extreme_doline_plateau', 'tfc:extreme_doline_mountains', 'tfc:doline_hills', 'tfc:doline_highlands', 'tfc:doline_plateau', 'tfc:cenote_hills', 'tfc:cenote_highlands', 'tfc:cenote_plateau', 'tfc:shilin_hills', 'tfc:shilin_highlands', 'tfc:shilin_plateau')
+    rm.biome_tag('kaolin_clay_spawns_in', 'tfc:plateau', 'tfc:highlands', 'tfc:old_mountains', 'tfc:rolling_hills', 'tfc:tower_karst_hills', 'tfc:tower_karst_highlands', 'tfc:extreme_doline_plateau', 'tfc:extreme_doline_mountains', 'tfc:doline_rolling_hills', 'tfc:doline_highlands', 'tfc:doline_plateau', 'tfc:cenote_rolling_hills', 'tfc:cenote_highlands', 'tfc:cenote_plateau', 'tfc:shilin_hills', 'tfc:shilin_highlands', 'tfc:shilin_plateau')
 
     configured_placed_feature(rm, ('vein', 'gravel'), 'tfc:disc_vein', {
         'rarity': 30,
@@ -1562,6 +1562,7 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
         costs['tfc:octopoteuthis'] = {'energy_budget': 0.12, 'charge': 1.0}
 
     if category in ('river', 'lake'):
+        soil_discs.append('#tfc:feature/ore_deposits')
         soil_discs.append('#tfc:feature/ore_deposits')
     if category in ('lake', 'swamp', 'river'):
         surface_decorations.append('tfc:plant/dry_phragmite')

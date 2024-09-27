@@ -18,7 +18,7 @@
   },
   "features": [
     "#tfc:in_biome/erosion",
-    "#tfc:in_biome/all_lakes",
+    "#tfc:in_biome/underground_lakes",
     "#tfc:in_biome/soil_discs/tower_karst_lake",
     "#tfc:in_biome/underground_structures",
     "#tfc:in_biome/surface_structures",
@@ -71,6 +71,14 @@
     "water_creature": [
       {
         "type": "tfc:manatee",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ],
+    "underground_water_creature": [
+      {
+        "type": "tfc:octopoteuthis",
         "weight": 1,
         "minCount": 1,
         "maxCount": 2
@@ -340,5 +348,10 @@
     ]
   },
   "creature_spawn_probability": 0.08,
-  "spawn_costs": {}
+  "spawn_costs": {
+    "tfc:octopoteuthis": {
+      "energy_budget": 0.12,
+      "charge": 1.0
+    }
+  }
 }
