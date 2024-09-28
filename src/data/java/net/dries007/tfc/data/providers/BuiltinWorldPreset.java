@@ -57,7 +57,7 @@ public final class BuiltinWorldPreset
                     new TFCChunkGenerator(
                         new RegionBiomeSource(context.lookup(Registries.BIOME)),
                         noiseSettings.getOrThrow(NoiseGeneratorSettings.OVERWORLD),
-                        new Settings(false, 4_000, 0, 0, 20_000, 0, 20_000, 0, rockLayerSettings(), 0.5f, 0.5f)
+                        new Settings(false, 4_000, 0, 0, 20_000, 0, 20_000, 0, rockLayerSettings(), 0.5f, 0.5f, false)
                     )
                 ),
                 LevelStem.NETHER, new LevelStem(
@@ -79,7 +79,7 @@ public final class BuiltinWorldPreset
 
     public static Settings defaultSettings()
     {
-        return new Settings(false, 4_000, 0, 0, 20_000, 0, 20_000, 0, rockLayerSettings(), 0.5f, 0.5f);
+        return new Settings(false, 4_000, 0, 0, 20_000, 0, 20_000, 0, rockLayerSettings(), 0.5f, 0.5f, false);
     }
 
     private static final Map<Rock, SandBlockType> ROCK_TO_SAND_COLOR = ImmutableMap.<Rock, SandBlockType>builder()
