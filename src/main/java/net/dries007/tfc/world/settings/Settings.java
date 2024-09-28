@@ -44,6 +44,6 @@ public record Settings(
         RockLayerSettings.CODEC.fieldOf("rock_layer_settings").forGetter(c -> c.rockLayerSettings),
         Codec.FLOAT.fieldOf("continentalness").forGetter(c -> c.continentalness),
         Codec.FLOAT.optionalFieldOf("grassDensity", 0.5f).forGetter(c -> c.grassDensity),
-        Codec.BOOL.optionalFieldOf("finiteContinents", true).forGetter(c -> c.finiteContinents)
+        Codec.BOOL.optionalFieldOf("finiteContinents", false).forGetter(c -> c.finiteContinents)
     ).apply(instance, Settings::new));
 }
