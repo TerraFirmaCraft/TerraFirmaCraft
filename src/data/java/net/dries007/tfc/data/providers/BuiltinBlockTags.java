@@ -367,6 +367,9 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.GRAVEL)
             .add(TFCBlocks.SAND)
             .add2(TFCBlocks.ORE_DEPOSITS)
+            .add(TFCBlocks.SOIL.get(SoilBlockType.MUD))
+            .add(TFCBlocks.SOIL.get(SoilBlockType.CRACKED_EARTH))
+            .add(TFCBlocks.SOIL.get(SoilBlockType.SALTED_EARTH))
             .add(
                 TFCBlocks.WHITE_KAOLIN_CLAY,
                 TFCBlocks.PINK_KAOLIN_CLAY,

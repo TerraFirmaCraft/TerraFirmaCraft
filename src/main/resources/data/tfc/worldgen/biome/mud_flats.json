@@ -1,0 +1,68 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "has_precipitation": true,
+  "temperature": 0.5,
+  "downfall": 0.5,
+  "effects": {
+    "fog_color": 12638463,
+    "sky_color": 8709887,
+    "water_color": 4159204,
+    "water_fog_color": 329011
+  },
+  "carvers": {
+    "air": [
+      "tfc:cave",
+      "tfc:canyon"
+    ],
+    "liquid": []
+  },
+  "features": [
+    "#tfc:in_biome/erosion",
+    "#tfc:in_biome/all_lakes",
+    "#tfc:in_biome/soil_discs/mud_flats",
+    "#tfc:in_biome/underground_structures",
+    "#tfc:in_biome/surface_structures",
+    "#tfc:in_biome/strongholds",
+    "#tfc:in_biome/veins",
+    "#tfc:in_biome/underground_decoration",
+    "#tfc:in_biome/large_features/mud_flats",
+    "#tfc:in_biome/surface_decoration/mud_flats",
+    "#tfc:in_biome/top_layer_modification"
+  ],
+  "spawners": {
+    "monster": [
+      {
+        "type": "minecraft:spider",
+        "weight": 100,
+        "minCount": 4,
+        "maxCount": 4
+      },
+      {
+        "type": "minecraft:zombie",
+        "weight": 95,
+        "minCount": 4,
+        "maxCount": 4
+      },
+      {
+        "type": "minecraft:skeleton",
+        "weight": 100,
+        "minCount": 4,
+        "maxCount": 4
+      },
+      {
+        "type": "minecraft:creeper",
+        "weight": 100,
+        "minCount": 4,
+        "maxCount": 4
+      },
+      {
+        "type": "minecraft:slime",
+        "weight": 100,
+        "minCount": 4,
+        "maxCount": 4
+      }
+    ]
+  },
+  "creature_spawn_probability": 0.08,
+  "spawn_costs": {}
+}

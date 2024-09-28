@@ -80,6 +80,10 @@ def generate(rm: ResourceManager):
     biome(rm, 'river', 'river')
     biome(rm, 'shore', 'beach', ocean_features=True)
     biome(rm, 'tidal_flats', 'beach', ocean_features=True)
+    biome(rm, 'salt_flats', 'plains', barren=True)
+    biome(rm, 'mud_flats', 'plains', barren=True)
+    biome(rm, 'dune_sea', 'plains', barren=True)
+    biome(rm, 'grassy_dunes', 'plains')
 
     biome(rm, 'mountain_lake', 'extreme_hills')
     biome(rm, 'volcanic_mountain_lake', 'extreme_hills', volcano_features=True)
@@ -182,7 +186,7 @@ def generate(rm: ResourceManager):
         'replace_fluids': [],
     })
 
-    rm.placed_feature('flood_fill_lake', 'tfc:flood_fill_lake', decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'))
+    rm.placed_feature('flood_fill_lake', 'tfc:flood_fill_lake', decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(min_water=125))
     rm.placed_feature('underground_flood_fill_lake', 'tfc:flood_fill_lake', decorate_chance(3), decorate_square(), decorate_range(-56, 63))
 
     for spring_cfg in (('water', 110), ('lava', 50)):
@@ -1494,7 +1498,7 @@ VANILLA_MONSTERS: Dict[str, Dict[str, Any]] = {
 }
 
 
-def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False, ocean_features: Union[bool, Literal['both']] = False, lake_features: Union[bool, Literal['default']] = 'default', volcano_features: bool = False, reef_features: bool = False, hot_spring_features: Union[bool, Literal['empty']] = False):
+def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False, ocean_features: Union[bool, Literal['both']] = False, lake_features: Union[bool, Literal['default']] = 'default', volcano_features: bool = False, reef_features: bool = False, barren: bool = False, hot_spring_features: Union[bool, Literal['empty']] = False):
     spawners = {}
     soil_discs = []
     large_features = []
@@ -1557,7 +1561,8 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
         large_features.append('tfc:coral_reef')
 
     # Continental / Land Features
-    if land_features:
+    # Exclude these features from salt flat biomes
+    if land_features and not barren:
         soil_discs.append('#tfc:feature/soil_discs')
         if 'salt_marsh' not in name:
             large_features += ['tfc:forest']

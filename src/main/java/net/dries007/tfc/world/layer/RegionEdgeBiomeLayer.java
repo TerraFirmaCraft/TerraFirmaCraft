@@ -36,6 +36,15 @@ public enum RegionEdgeBiomeLayer implements AdjacentTransformLayer
             }
         }
 
+        // No mud/salt flats near oceans
+        if (TFCLayers.isFlats(center))
+        {
+            if (matcher.test(TFCLayers::isOcean) && matcher.test(TFCLayers::isFlats))
+            {
+                return CANYONS;
+            }
+        }
+
         if (center == PLATEAU || center == BADLANDS || center == INVERTED_BADLANDS)
         {
             if (matcher.test(i -> i == LOW_CANYONS || i == LOWLANDS))
