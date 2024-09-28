@@ -6,17 +6,14 @@
 
 package net.dries007.tfc.client.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.ItemOverride;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
@@ -42,19 +39,14 @@ import net.minecraft.client.renderer.block.model.BlockModel;
 import net.neoforged.neoforge.client.model.IDynamicBakedModel;
 import net.neoforged.neoforge.client.model.geometry.IUnbakedGeometry;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.ClientHelpers;
-import net.dries007.tfc.client.ClimateRenderCache;
 import net.dries007.tfc.client.RenderHelpers;
-import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.blocks.plant.PlantBlock;
-import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.calendar.Calendar;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.climate.Climate;
-import net.dries007.tfc.util.climate.OverworldClimateModel;
 import net.dries007.tfc.util.registry.RegistryPlant;
-import net.dries007.tfc.world.settings.Settings;
 
 public class PlantBlockModel implements IDynamicBakedModel, IUnbakedGeometry<PlantBlockModel>
 {
@@ -129,7 +121,7 @@ public class PlantBlockModel implements IDynamicBakedModel, IUnbakedGeometry<Pla
             }
             start = (start + random.nextFloat(-randomScale, randomScale)) % 1;
             return getModelFromCalendar(start, start + plant.getBloomingEnd(), start + plant.getSeedingEnd(), start + plant.getDyingEnd(),
-                start + plant.getDormantEnd(), start + plant.getSproutingEnd(), plant.getStartTime(), plant.getEndTime(), randomScale > 0.25f);
+                start + plant.getDormantEnd(), start + plant.getSproutingEnd(), plant.getStartHour(), plant.getEndHour(), randomScale > 0.25f);
         }
     }
 
@@ -200,7 +192,7 @@ public class PlantBlockModel implements IDynamicBakedModel, IUnbakedGeometry<Pla
 
     public BakedModel getModelByDayTime(float startTime, float endTime)
     {
-        final int dayTime = (int) Calendars.CLIENT.getCalendarFractionOfDay() * 24000;
+        final int dayTime = (int) Calendars.CLIENT.getCalendarFractionOfDay() * 24;
         if ((endTime < dayTime && dayTime < startTime) || (startTime < endTime && (dayTime < startTime || endTime < dayTime)))
         {
             assert buddingBakedModel != null;

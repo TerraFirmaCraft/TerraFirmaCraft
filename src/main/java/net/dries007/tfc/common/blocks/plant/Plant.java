@@ -106,12 +106,12 @@ public enum Plant implements RegistryPlant
     ARTISTS_CONK(BlockType.EPIPHYTE, 1F),
     LILY_OF_THE_VALLEY(BlockType.STANDARD, 1F, false, -0.167F, 0.18F, 0.29F, 0.5F, 0.72F, 0.9F),
     LILAC(BlockType.TALL_GRASS, 0.6F, false, -0.21F, 0.18F, 0.29F, 0.45F, 0.73F, 0.9F),
-    LOTUS(BlockType.FLOATING_FRESH, 0.7F, true, -0.12F, 0.25F, 0.35F, 0.5F, 0.75F, 0.92F, 1000, 12500),
+    LOTUS(BlockType.FLOATING_FRESH, 0.7F, true, -0.12F, 0.25F, 0.35F, 0.5F, 0.75F, 0.92F, 1, 13),
     MAIDEN_PINK(BlockType.FLOWERBED, 1f, false, -0.333F, 0.5F, 0.6F, 0.7F, 0.8F, 0.9F),
     MARIGOLD(BlockType.TALL_WATER_FRESH, 0.6F, false, 0.14F, 0.18F, 0.26F, 0.35F, 0.58F, 0.86F),
     MEADS_MILKWEED(BlockType.STANDARD, 1F, false, -0.17F, 0.18F, 0.29F, 0.5F, 0.72F, 0.93F),
     MILFOIL(BlockType.WATER_FRESH, 0.8F),
-    MORNING_GLORY(BlockType.CREEPING, 0.8F, false, -0.083F, 0.333F, 0.417F, 0.5F, 0.75F, 0.917F, 21000, 5000),
+    MORNING_GLORY(BlockType.CREEPING, 0.8F, false, -0.083F, 0.333F, 0.417F, 0.5F, 0.75F, 0.917F, 21, 5),
     PHILODENDRON(BlockType.CREEPING, 0.7F),
     MOSS(BlockType.CREEPING, 1F),
     NASTURTIUM(BlockType.STANDARD, 1F, true),
@@ -126,7 +126,7 @@ public enum Plant implements RegistryPlant
     RED_ALGAE(BlockType.FLOATING, 0.7F),
     REINDEER_LICHEN(BlockType.CREEPING, 1F),
     RED_SEALING_WAX_PALM(BlockType.TALL_GRASS, 0.4F),
-    SACRED_DATURA(BlockType.STANDARD, 1F, false, -0.2f, 0.4f, 0.5f, 0.6f, 0.8f, 0.95f, 12000, 0),
+    SACRED_DATURA(BlockType.STANDARD, 1F, false, -0.2f, 0.4f, 0.5f, 0.6f, 0.8f, 0.95f, 12, 0),
     SAGEBRUSH(BlockType.DRY, 0.5F, false, -0.09F, 0.48F, 0.54F, 0.6F, 0.72F, 0.91F),
     SAGO(BlockType.WATER_FRESH, 0.8F),
     SAGUARO_FRUIT(BlockType.CACTUS_FLOWER, 0.7F, true, -0.2F, 0.22F, 0.3F, 0.5F, 0.73F, 0.9F),
@@ -200,8 +200,8 @@ public enum Plant implements RegistryPlant
     private final float dyingEnd;
     private final float dormantEnd;
     private final float sproutingEnd;
-    private final int startTime;
-    private final int endTime;
+    private final int startHour;
+    private final int endHour;
     private final BlockType type;
 
     Plant(BlockType type, float speedFactor)
@@ -219,7 +219,7 @@ public enum Plant implements RegistryPlant
         this(type, speedFactor, isWetSeasonBlooming, bloomOffset, bloomingEnd, seedingEnd, dyingEnd, dormantEnd, sproutingEnd, 0, 0);
     }
 
-    Plant(BlockType type, float speedFactor, boolean isWetSeasonBlooming, float bloomOffset, float bloomingEnd, float seedingEnd, float dyingEnd, float dormantEnd, float sproutingEnd, int startTime, int endTime)
+    Plant(BlockType type, float speedFactor, boolean isWetSeasonBlooming, float bloomOffset, float bloomingEnd, float seedingEnd, float dyingEnd, float dormantEnd, float sproutingEnd, int startHour, int endHour)
     {
         this.type = type;
         this.speedFactor = speedFactor;
@@ -230,8 +230,8 @@ public enum Plant implements RegistryPlant
         this.dyingEnd = dyingEnd;
         this.dormantEnd = dormantEnd;
         this.sproutingEnd = sproutingEnd;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.startHour = startHour;
+        this.endHour = endHour;
 
         final int maxAge = getMaxAgeForType(type);
         this.ageProperty = maxAge > 0 ? TFCBlockStateProperties.getAgeProperty(maxAge) : null;
@@ -268,14 +268,14 @@ public enum Plant implements RegistryPlant
         return isWetSeasonBlooming;
     }
 
-    public int getStartTime()
+    public int getStartHour()
     {
-        return startTime;
+        return startHour;
     }
 
-    public int getEndTime()
+    public int getEndHour()
     {
-        return endTime;
+        return endHour;
     }
 
     public float getBloomOffset()

@@ -24,12 +24,12 @@ public interface RegistryPlant
     /**
      * What time of day this plant starts blooming. Set equal to end time to always bloom.
      */
-    int getStartTime();
+    int getStartHour();
 
     /**
      * What time of day this plant stops blooming. Set equal to start time to always bloom.
      */
-    int getEndTime();
+    int getEndHour();
 
     /**
      * The year fraction after the hottest/wettest day of the year to start displaying blooming model
