@@ -1,0 +1,10 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:random_patch",
+  "config": {
+    "feature": "tfc:sea_stacks",
+    "tries": 6,
+    "xz_spread": 8,
+    "y_spread": 2
+  }
+}

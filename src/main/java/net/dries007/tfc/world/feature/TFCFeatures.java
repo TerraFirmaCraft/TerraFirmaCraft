@@ -97,6 +97,7 @@ public class TFCFeatures
     public static final Id<BouldersFeature> BOULDER = register("boulder", BouldersFeature::new, BoulderConfig.CODEC);
     public static final Id<BabyBoulderFeature> BABY_BOULDER = register("baby_boulder", BabyBoulderFeature::new, BoulderConfig.CODEC);
     public static final Id<LooseRockFeature> LOOSE_ROCK = register("loose_rock", LooseRockFeature::new, NoneFeatureConfiguration.CODEC);
+    public static final Id<SeaStacksFeature> SEA_STACKS = register("sea_stacks", SeaStacksFeature::new, NoneFeatureConfiguration.CODEC);
 
     public static final Id<TFCWeepingVinesFeature> HANGING_VINES = register("weeping_vines", TFCWeepingVinesFeature::new, ColumnPlantConfig.CODEC);
     public static final Id<TFCTwistingVinesFeature> TWISTING_VINES = register("twisting_vines", TFCTwistingVinesFeature::new, ColumnPlantConfig.CODEC);

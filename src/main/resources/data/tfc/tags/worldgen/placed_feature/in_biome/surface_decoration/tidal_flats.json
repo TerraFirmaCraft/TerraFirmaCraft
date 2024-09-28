@@ -2,6 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
+    "tfc:sea_stacks_patch",
     "#tfc:feature/shore_decorations"
   ]
 }

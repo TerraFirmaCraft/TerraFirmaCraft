@@ -554,6 +554,9 @@ def generate(rm: ResourceManager):
                     'with': [{'block': 'tfc:rock/hardened/%s' % rock}]
                 }],
             })
+    configured_placed_feature(rm, 'sea_stacks', 'tfc:sea_stacks', {}, decorate_heightmap('ocean_floor_wg'), decorate_replaceable())
+    configured_placed_feature(rm, 'sea_stacks_patch', 'minecraft:random_patch', {'feature': 'tfc:sea_stacks', 'tries': 6, 'xz_spread': 8, 'y_spread': 2}, decorate_chance(120), decorate_square(), decorate_heightmap('ocean_floor_wg'))
+
 
     rm.configured_feature('cave_vegetation', 'tfc:cave_vegetation', {
         'blocks': [{
@@ -1514,6 +1517,8 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
         large_features.append('#tfc:feature/icebergs')
         if name != 'tidal_flats':
             surface_decorations.append('#tfc:feature/ocean_plants')
+        else:
+            surface_decorations.append('tfc:sea_stacks_patch')
         if name == 'shore':
             surface_decorations.append('tfc:plant/beachgrass_patch')
             surface_decorations.append('tfc:plant/sea_palm_patch')
