@@ -65,7 +65,7 @@ public class SealedBarrelRecipe extends BarrelRecipe
 
     /**
      * Sealed <strong>infinite</strong> recipes should only match if they have more fluid than items. This is done because {@code onSeal},
-     * and {@code onUnseal}, by definition, operate independently of unsealedStack size, and since infinite recipes have no other outputs, they
+     * and {@code onUnseal}, by definition, operate independently of stack size, and since infinite recipes have no other outputs, they
      * must satisfy the fluid requirement in order to be valid.
      * <p>
      * N.B. This is the <em>opposite</em> ratio requirement of instant barrel recipes, which is kind of poetic.

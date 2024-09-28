@@ -297,7 +297,7 @@ public class HoldingMinecart extends AbstractMinecart
         if (stack.getItem() instanceof BlockItem bi && bi.getBlock() instanceof PowderkegBlock)
         {
             /* todo 1.21, needs saved block entity components
-            final CompoundTag tag = unsealedStack.getTagElement(Helpers.BLOCK_ENTITY_TAG);
+            final CompoundTag tag = stack.getTagElement(Helpers.BLOCK_ENTITY_TAG);
             if (tag != null)
             {
                 final CompoundTag inventoryTag = tag.getCompound("inventory");

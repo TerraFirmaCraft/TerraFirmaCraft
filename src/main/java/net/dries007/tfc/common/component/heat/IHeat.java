@@ -61,4 +61,14 @@ public interface IHeat extends IHeatView
     }
 
     void setHeatCapacity(float value);
+
+    /**
+     * Sets the stack to have a static, unchanging temperature, and prevents displaying tooltips for temperature.
+     * @see #FLAG_STATIC_TEMPERATURE
+     */
+    default void setStaticTemperature(float value)
+    {
+        setHeatCapacity(FLAG_STATIC_TEMPERATURE);
+        setTemperature(value);
+    }
 }

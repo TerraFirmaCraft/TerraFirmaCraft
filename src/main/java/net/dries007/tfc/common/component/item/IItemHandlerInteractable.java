@@ -14,7 +14,7 @@ public interface IItemHandlerInteractable extends IItemHandlerModifiable
     /**
      * Called by slots or containers that want to report slot modifications back to the underlying container,
      * to prevent i.e. traits specific to the container from leaking.
-     * @param stack A unsealedStack that has been taken from the container, and no longer belongs to the container. Mutable.
+     * @param stack A stack that has been taken from the container, and no longer belongs to the container. Mutable.
      */
     default void onTake(ItemStack stack) {}
 }

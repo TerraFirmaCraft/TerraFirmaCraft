@@ -27,7 +27,6 @@ import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.RecipeHelpers;
 import net.dries007.tfc.util.Helpers;
 
-// todo 1.21 implement the getItems() with tag values
 public record FluidContentIngredient(SizedFluidIngredient fluid) implements ICustomIngredient
 {
     public static final MapCodec<FluidContentIngredient> CODEC = SizedFluidIngredient.FLAT_CODEC.fieldOf("fluid").xmap(FluidContentIngredient::new, FluidContentIngredient::fluid);

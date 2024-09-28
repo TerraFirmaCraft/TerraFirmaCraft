@@ -54,7 +54,7 @@ public class VesselTest implements TestSetup
         assertEquals(ItemStack.EMPTY, vessel.getStackInSlot(0));
 
         assertEquals(ItemStack.EMPTY, vessel.insertItem(0, stick5, false)); // Actually insert less than capacity
-        assertEquals(stick5, vessel.getStackInSlot(0)); // The unsealedStack in slot should equal
+        assertEquals(stick5, vessel.getStackInSlot(0)); // The stack in slot should equal
         assertNotSame(stick5, vessel.getStackInSlot(0)); // But they should not be the same instance (mutable guarding)
 
         assertEquals(stick5, vessel.insertItem(0, stick16, true)); // Insert over capacity (with content inside)
@@ -391,7 +391,7 @@ public class VesselTest implements TestSetup
             {
                 HeatCapability.addTemp(heat, Heat.maxVisibleTemperature());
                 tr.add(1);
-                assertNotEquals(tr.ticks(), 1_000_000, "Loop did not terminate with unsealedStack " + stack);
+                assertNotEquals(tr.ticks(), 1_000_000, "Loop did not terminate with stack " + stack);
             }
 
             assertEquals(expectedTicks, tr.ticks(), "Expected " + expectedTicks + " to heat " + stack + " to " + targetTemperature + "C, got " + tr.ticks());
@@ -449,8 +449,8 @@ public class VesselTest implements TestSetup
     {
         final IHeat heat = HeatCapability.get(stack);
 
-        assertNotNull(heat, "Heat missing for unsealedStack: " + heat);
-        assertNotNull(recipe, "Recipe missing for unsealedStack: " + stack);
+        assertNotNull(heat, "Heat missing for stack: " + heat);
+        assertNotNull(recipe, "Recipe missing for stack: " + stack);
 
         try (CalendarTransaction tr = Calendars.get().transaction())
         {
@@ -459,7 +459,7 @@ public class VesselTest implements TestSetup
                 HeatCapability.addTemp(heat, Heat.maxVisibleTemperature());
                 tr.add(1);
 
-                assertNotEquals(tr.ticks(), 1_000_000, "Loop did not terminate with unsealedStack " + stack);
+                assertNotEquals(tr.ticks(), 1_000_000, "Loop did not terminate with stack " + stack);
             }
             return tr.ticks();
         }
@@ -470,8 +470,8 @@ public class VesselTest implements TestSetup
         final IHeat heat = HeatCapability.get(stack);
         final HeatingRecipe recipe = HeatingRecipe.getRecipe(stack);
 
-        assertNotNull(heat, "Heat missing for unsealedStack: " + heat);
-        assertNotNull(recipe, "Recipe missing for unsealedStack: " + stack);
+        assertNotNull(heat, "Heat missing for stack: " + heat);
+        assertNotNull(recipe, "Recipe missing for stack: " + stack);
 
         try (CalendarTransaction tr = Calendars.get().transaction())
         {
@@ -479,7 +479,7 @@ public class VesselTest implements TestSetup
             while (heat.getWorkingTemperature() < heat.getTemperature())
             {
                 tr.add(1);
-                assertNotEquals(tr.ticks(), 1_000_000, "Loop did not terminate with unsealedStack " + stack);
+                assertNotEquals(tr.ticks(), 1_000_000, "Loop did not terminate with stack " + stack);
             }
             return tr.ticks();
         }

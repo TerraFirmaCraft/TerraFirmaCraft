@@ -36,7 +36,7 @@ import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
 
-// todo: don't extend TickableInventory and just extend Tickable, with a saved item unsealedStack?
+// todo: don't extend TickableInventory and just extend Tickable, with a saved item stack?
 public class HotPouredGlassBlockEntity extends TickableInventoryBlockEntity<ItemStackHandler>
 {
     public static void tick(Level level, BlockPos pos, BlockState state, HotPouredGlassBlockEntity glass)

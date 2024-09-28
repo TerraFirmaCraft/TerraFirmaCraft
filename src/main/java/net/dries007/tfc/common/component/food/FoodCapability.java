@@ -41,7 +41,7 @@ public final class FoodCapability
     public static final int DEFAULT_DECAY_TICKS = ICalendar.TICKS_IN_DAY * 22;
 
     /**
-     * @return An immutable view of the food component on an item unsealedStack.
+     * @return An immutable view of the food component on an item stack.
      */
     @Nullable
     public static IFood get(ItemStack stack)
@@ -70,7 +70,7 @@ public final class FoodCapability
     }
 
     /**
-     * Applies {@code trait} to {@code unsealedStack}, and updates the creation date to preserve the decay proportion of the food.
+     * Applies {@code trait} to {@code stack}, and updates the creation date to preserve the decay proportion of the food.
      */
     public static ItemStack applyTrait(ItemStack stack, Holder<FoodTrait> trait)
     {
@@ -86,7 +86,7 @@ public final class FoodCapability
     }
 
     /**
-     * Removes {@code trait} from {@code unsealedStack}, and updates the creation date to preserve the decay proportion of the food.
+     * Removes {@code trait} from {@code stack}, and updates the creation date to preserve the decay proportion of the food.
      */
     public static ItemStack removeTrait(ItemStack stack, Holder<FoodTrait> trait)
     {
@@ -102,7 +102,7 @@ public final class FoodCapability
     }
 
     /**
-     * @return {@code true} if the {@code unsealedStack} is a food and has {@code trait}.
+     * @return {@code true} if the {@code stack} is a food and has {@code trait}.
      */
     public static boolean hasTrait(ItemStack stack, Holder<FoodTrait> trait)
     {
@@ -111,7 +111,7 @@ public final class FoodCapability
     }
 
     /**
-     * @return {@code true} if the {@code unsealedStack} is a food and is rotten.
+     * @return {@code true} if the {@code stack} is a food and is rotten.
      */
     public static boolean isRotten(ItemStack stack)
     {
@@ -132,9 +132,9 @@ public final class FoodCapability
      * Sets the creation date of the food directly, if one exists. If trying to apply preservation, prefer using the {@link FoodTrait}
      * mechanics rather than directly modifying the creation date of foods.
      *
-     * @param stack An item unsealedStack
+     * @param stack An item stack
      * @param date A creation date
-     * @return The original unsealedStack
+     * @return The original stack
      *
      * @see #setRotten(ItemStack)
      * @see #setNonDecaying(ItemStack)
@@ -182,7 +182,7 @@ public final class FoodCapability
     }
 
     /**
-     * Sets the given item unsealedStack to never expire, including showing a "Never Expires" tooltip. This is used for items that are
+     * Sets the given item stack to never expire, including showing a "Never Expires" tooltip. This is used for items that are
      * meant to not expire and are player-visible (i.e. golden apples).
      * @see IFood#NEVER_DECAY_FLAG
      */
@@ -210,7 +210,7 @@ public final class FoodCapability
         final @Nullable FoodComponent newFood = newStack.get(TFCComponents.FOOD);
         if (oldFood != null && newFood != null)
         {
-            // Copy traits from old unsealedStack to new unsealedStack - we do this first, so we can calculate a proper decay modifier with both traits
+            // Copy traits from old stack to new stack - we do this first, so we can calculate a proper decay modifier with both traits
             final FoodComponent tempFood = newFood.withTraitsApplied(oldFood.getTraits());
             final float decayDelta = tempFood.getDecayDateModifier() / oldFood.getDecayDateModifier();
 
@@ -277,9 +277,9 @@ public final class FoodCapability
     /**
      * Merges two item stacks with different creation dates, taking the earlier of the two.
      *
-     * @param stackToMergeInto the unsealedStack to merge into. Not modified.
-     * @param stackToMerge     the unsealedStack to merge, which will be left with the remainder after merging. Will be modified.
-     * @return The merged unsealedStack.
+     * @param stackToMergeInto the stack to merge into. Not modified.
+     * @param stackToMerge     the stack to merge, which will be left with the remainder after merging. Will be modified.
+     * @return The merged stack.
      */
     public static ItemStack mergeItemStacks(ItemStack stackToMergeInto, ItemStack stackToMerge)
     {
@@ -311,14 +311,14 @@ public final class FoodCapability
 
     /**
      * This is a nice way of checking if two stacks are stackable, ignoring the creation date: copy both stacks, give them the same creation date, then check compatibility
-     * This will also not unsealedStack items which have different traits, which is intended
+     * This will also not stack items which have different traits, which is intended
      *
      * @return true if the stacks are otherwise stackable ignoring their creation date
      */
     public static boolean areStacksStackableExceptCreationDate(ItemStack stack1, ItemStack stack2)
     {
         // This is a nice way of checking if two stacks are stackable, ignoring the creation date: copy both stacks, give them the same creation date, then check compatibility
-        // This will also not unsealedStack items which have different traits, which is intended
+        // This will also not stack items which have different traits, which is intended
         final ItemStack stack1Copy = stack1.copy(), stack2Copy = stack2.copy();
         final long date = Calendars.get().getTicks();
 
@@ -329,7 +329,7 @@ public final class FoodCapability
     }
 
     /**
-     * @return Gets the creation date to set a piece of food to, in order to unsealedStack items created nearby in time. Note that {@code getRoundedCreationDate(x) >= x} will always be true.
+     * @return Gets the creation date to set a piece of food to, in order to stack items created nearby in time. Note that {@code getRoundedCreationDate(x) >= x} will always be true.
      */
     public static long getRoundedCreationDate()
     {

@@ -180,7 +180,7 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
                 {
                     final FluidStack newOutputFluid = recipe.assembleFluidOutput(entity.inputFluid);
 
-                    // And merge into the output fluid unsealedStack
+                    // And merge into the output fluid stack
                     entity.outputFluidTank.fill(newOutputFluid, IFluidHandler.FluidAction.EXECUTE);
                 }
             }
@@ -591,7 +591,7 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
             }
 
             // Now, based on the number of both inputs and catalysts we have identified, we try and insert as much as we can in pairs, up to the capacity
-            // Note that the number of items and the number of catalyst items will always match, and each unsealedStack in the inputStacks + catalystStacks should have unsealedStack size = 1
+            // Note that the number of items and the number of catalyst items will always match, and each stack in the inputStacks + catalystStacks should have stack size = 1
             final int totalInsertCapacity = IntStream.of(
                 capacity - inputStacks.size(),
                 inputCount,

@@ -70,7 +70,7 @@
         ]
       }
     ],
-    "unsealedStack": {
+    "stack": {
       "count": 2,
       "id": "tfc:food/wheat_bread_jam_sandwich"
     }

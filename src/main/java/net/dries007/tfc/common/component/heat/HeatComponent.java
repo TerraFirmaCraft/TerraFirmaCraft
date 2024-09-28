@@ -78,7 +78,7 @@ public final class HeatComponent implements IHeatView
     }
 
     /**
-     * @param parent The definition, which requires runtime knowledge of the unsealedStack we are attached to. It exposes interior mutability for a given unsealedStack
+     * @param parent The definition, which requires runtime knowledge of the stack we are attached to. It exposes interior mutability for a given stack
      * @param heatCapacity The custom heat capacity of this item, typically set by an external device or capability
      * @param lastTemperature The last recorded temperature, at {@code lastTick}
      * @param lastTick The tick timestamp of the last recorded temperature
@@ -117,13 +117,14 @@ public final class HeatComponent implements IHeatView
         return HeatCapability.adjustTemp(lastTemperature, getHeatCapacity(), Calendars.get().getTicks() - lastTick);
     }
 
-    /**
-     * @return The current heat capacity, or an estimation of it
-     */
     @Override
     public float getHeatCapacity()
     {
-        return heatCapacity != 0f ? heatCapacity : parent == null ? Float.POSITIVE_INFINITY : parent.heatCapacity();
+        return heatCapacity != 0f && heatCapacity != FLAG_STATIC_TEMPERATURE
+            ? heatCapacity
+            : parent == null
+                ? Float.POSITIVE_INFINITY
+                : parent.heatCapacity();
     }
 
     @Override

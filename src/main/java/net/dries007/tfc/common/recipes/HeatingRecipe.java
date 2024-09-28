@@ -79,7 +79,7 @@ public class HeatingRecipe implements INoopInputRecipe, IRecipePredicate<ItemSta
     }
 
     /**
-     * Returns the item component of the recipe output. Note that {@code input} must be a single count unsealedStack. Use
+     * Returns the item component of the recipe output. Note that {@code input} must be a single count stack. Use
      * {@link #assembleStacked(ItemStack, int)} for outputs operating on stacked inputs.
      */
     public ItemStack assembleItem(ItemStack input)
@@ -124,7 +124,7 @@ public class HeatingRecipe implements INoopInputRecipe, IRecipePredicate<ItemSta
             HeatCapability.setTemperature(outputStack, inputHeat.getTemperature());
         }
 
-        // Set the unsealedStack size to the best possible (output count * input count), then limit to unsealedStack size / inventory limit
+        // Set the stack size to the best possible (output count * input count), then limit to stack size / inventory limit
         outputStack.setCount(Math.min(
             outputStack.getCount() * inputStack.getCount(),
             Math.min(outputStack.getMaxStackSize(), stackSizeCap)

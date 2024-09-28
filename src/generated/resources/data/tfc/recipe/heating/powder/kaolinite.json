@@ -10,7 +10,7 @@
         "chance": 0.2
       }
     ],
-    "unsealedStack": {
+    "stack": {
       "count": 1,
       "id": "tfc:powder/kaolinite"
     }

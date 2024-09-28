@@ -28,6 +28,12 @@ public enum NotRottenIngredient implements PreciseIngredient
     }
 
     @Override
+    public ItemStack modifyStackForDisplay(ItemStack stack)
+    {
+        return FoodCapability.setInvisibleNonDecaying(stack);
+    }
+
+    @Override
     public IngredientType<?> getType()
     {
         return TFCIngredients.NOT_ROTTEN.get();

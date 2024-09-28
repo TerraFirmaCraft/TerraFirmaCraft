@@ -19,24 +19,24 @@ import net.minecraft.world.level.block.Block;
  *     <li>Any matching {@code item_size} that is loaded from JSON, that matches the given item</li>
  *     <li>A default size/weight combination based on a very simple heuristic using different classes of items</li>
  * </ol>
- * TFC will attempt to override the constant unsealedStack size of each item unsealedStack, using the value returned by {@link #getDefaultStackSize(ItemStack)}.
+ * TFC will attempt to override the constant stack size of each item stack, using the value returned by {@link #getDefaultStackSize(ItemStack)}.
  * Containers are responsible for determining if items can fit in the container by checking the size.
  */
 public interface IItemSize
 {
     /**
-     * @return the size of this {@code unsealedStack}, determining what size containers this item can be placed within.
+     * @return the size of this {@code stack}, determining what size containers this item can be placed within.
      */
     Size getSize(ItemStack stack);
 
     /**
-     * @return the weight of this {@code unsealedStack}, determining the unsealedStack size of this item.
+     * @return the weight of this {@code stack}, determining the stack size of this item.
      */
     Weight getWeight(ItemStack stack);
 
     /**
-     * Get the unsealedStack size of this item.
-     * This may be inconsistent for implementations that want to modify their weight in order to selectively trigger overburdening, but want to have a consistent unsealedStack size.
+     * Get the stack size of this item.
+     * This may be inconsistent for implementations that want to modify their weight in order to selectively trigger overburdening, but want to have a consistent stack size.
      */
     default int getDefaultStackSize(ItemStack stack)
     {

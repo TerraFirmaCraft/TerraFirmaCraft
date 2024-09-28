@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "replace": false,
-  "values": [
-    "#tfc:ores/gold/poor",
-    "#tfc:ores/gold/normal",
-    "#tfc:ores/gold/rich"
-  ]
-}

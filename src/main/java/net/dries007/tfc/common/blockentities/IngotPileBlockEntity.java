@@ -63,7 +63,7 @@ public class IngotPileBlockEntity extends TFCBlockEntity
 
     /**
      * Returns a cached metal for the given side, if present, otherwise grabs from the cache.
-     * The metal is defined by checking what metal the unsealedStack would melt into if heated.
+     * The metal is defined by checking what metal the stack would melt into if heated.
      * Any other items turn into {@link MetalItem#unknown()}.
      */
     public MetalItem getOrCacheMetal(int index)

@@ -11,6 +11,9 @@ import java.util.Map;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemLore;
 
 import net.dries007.tfc.common.blocks.rock.RockCategory;
@@ -39,6 +42,17 @@ public final class Lore
 
     public static final Map<RockDisplayCategory, ItemLore> ROCK_DISPLAY_CATEGORIES = Helpers.mapOf(RockDisplayCategory.class, type -> of(Helpers.translateEnum(type).withStyle(GRAY, ITALIC)));
     public static final Map<RockCategory, ItemLore> ROCK_CATEGORIES = Helpers.mapOf(RockCategory.class, type -> of(Helpers.translateEnum(type).withStyle(GRAY, ITALIC)));
+
+    private static final Style REMOVE_LORE_STYLE = Style.EMPTY.withColor(GRAY).withItalic(false);
+
+    /**
+     * Appends an additional line of text to an existing stack's lore, or creates new lore if it does not exist. This will also override the default
+     * style of the component with one that effectively "cancels" the item lore auto-applied style.
+     */
+    public static void append(ItemStack stack, MutableComponent text)
+    {
+        stack.update(TYPE, ItemLore.EMPTY, old -> old.withLineAdded(text.withStyle(REMOVE_LORE_STYLE)));
+    }
 
     private static ItemLore of(Component lore)
     {

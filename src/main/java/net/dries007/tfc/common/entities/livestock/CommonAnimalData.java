@@ -53,7 +53,7 @@ public record CommonAnimalData(
 
     /**
      * Since we batch things into helper methods (due to the aforementioned class tree hierarchy problem which vanilla doesn't have),
-     * we just access the id registry directly, rather than going through {@link SynchedEntityData#defineId}, because of unsealedStack trace checks
+     * we just access the id registry directly, rather than going through {@link SynchedEntityData#defineId}, because of stack trace checks
      */
     private static final ClassTreeIdRegistry ID_REGISTRY = Helpers.uncheck(() -> {
         final Field field = SynchedEntityData.class.getDeclaredField("ID_REGISTRY");

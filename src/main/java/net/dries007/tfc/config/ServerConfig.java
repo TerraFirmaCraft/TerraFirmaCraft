@@ -601,8 +601,8 @@ public class ServerConfig extends BaseConfig
         keepNutritionAfterDeath = builder.comment(
             "If player's nutrition should be kept even after death. Hunger and thirst are not affected and will be reset.").define("keepNutritionAfterDeath", true);
         foodDecayStackWindow = builder.comment(
-            "How many hours should different foods ignore when trying to unsealedStack together automatically?",
-            "Food made with different creation dates doesn't unsealedStack by default, unless it's within a specific window. This is the number of hours that different foods will try and unsealedStack together at the loss of a little extra expiry time.").define("foodDecayStackWindow", 6, 1, 100);
+            "How many hours should different foods ignore when trying to stack together automatically?",
+            "Food made with different creation dates doesn't stack by default, unless it's within a specific window. This is the number of hours that different foods will try and stack together at the loss of a little extra expiry time.").define("foodDecayStackWindow", 6, 1, 100);
         foodDecayModifier = builder.comment(
             "A multiplier for food decay, or expiration times. Larger values will result in naturally shorter expiration times.",
             "Setting this to zero will cause decay not to apply.",

@@ -84,7 +84,7 @@ public class VerticalSupportBlock extends Block implements IForgeBlockExtension,
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
     {
         if (level.isClientSide() || placer == null) return;
-        if (stack.getCount() > 2 && !placer.isShiftKeyDown()) // need two because the item block hasn't shrunk the unsealedStack yet
+        if (stack.getCount() > 2 && !placer.isShiftKeyDown()) // need two because the item block hasn't shrunk the stack yet
         {
             final BlockPos above = pos.above(), above2 = above.above();
             final BlockState stateAbove = level.getBlockState(above), stateAbove2 = level.getBlockState(above2);

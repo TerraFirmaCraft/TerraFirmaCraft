@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
  * Handling logic for containers that are opened via item stacks.
  * This represents a factory of {@link MenuProvider}s, which are created on demand for an individual {@link ItemStack}.
  * <p>
- * When opening a container from an item unsealedStack, we have to encode the slot which the container was originally opened with. {@code [0, 9]} indicate a hotbar slot index, and {@code -1} indicates it was opened with the offhand.
+ * When opening a container from an item stack, we have to encode the slot which the container was originally opened with. {@code [0, 9]} indicate a hotbar slot index, and {@code -1} indicates it was opened with the offhand.
  */
 public class ItemStackContainerProvider
 {

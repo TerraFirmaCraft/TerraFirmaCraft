@@ -38,7 +38,7 @@ public final class FoodTrait
     }
 
     /**
-     * Adds information about the trait to the food unsealedStack
+     * Adds information about the trait to the food stack
      *
      * @param text  The tooltip strings
      */

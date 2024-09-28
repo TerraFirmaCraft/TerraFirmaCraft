@@ -163,7 +163,7 @@ public final class BarSystem
         int getBarWidth(ItemStack stack);
 
         /**
-         * On a copy of the item unsealedStack, reverses changes that would have caused this bar to show up.
+         * On a copy of the item stack, reverses changes that would have caused this bar to show up.
          * Example: for the 'heat' bar, set the item's heat to zero.
          */
         ItemStack createDefaultItem(ItemStack stack);

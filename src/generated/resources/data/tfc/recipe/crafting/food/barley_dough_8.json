@@ -103,7 +103,7 @@
         "type": "tfc:copy_oldest_food"
       }
     ],
-    "unsealedStack": {
+    "stack": {
       "count": 8,
       "id": "tfc:food/barley_dough"
     }

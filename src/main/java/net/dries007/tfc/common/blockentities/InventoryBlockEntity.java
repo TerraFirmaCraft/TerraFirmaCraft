@@ -95,7 +95,7 @@ public abstract class InventoryBlockEntity<C extends IItemHandlerModifiable & IN
     }
 
     /**
-     * Called when this block entity is placed in the world, with components from an item unsealedStack. The <strong>implicit components</strong>
+     * Called when this block entity is placed in the world, with components from an item stack. The <strong>implicit components</strong>
      * are ones that nominally should exist on the block entity, but are constructed and applied only when the entity is constructed (or
      * broken). This includes something like, the saved content of the block entity (which normally, is in mutable form as the block entity
      * inventory). This then gets copied to a component when dropped via, for example {@link CopyComponentsFunction}.

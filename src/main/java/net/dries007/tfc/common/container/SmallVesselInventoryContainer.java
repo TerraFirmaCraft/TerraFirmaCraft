@@ -48,7 +48,7 @@ public class SmallVesselInventoryContainer extends ItemStackContainer
      * <p>
      * We call the callback's slotless version here, as it's all we can realistically do.
      *
-     * @param stack The unsealedStack that is set to be carried.
+     * @param stack The stack that is set to be carried.
      */
     @Override
     public void setCarried(ItemStack stack)
@@ -64,7 +64,7 @@ public class SmallVesselInventoryContainer extends ItemStackContainer
         {
             case MAIN_INVENTORY, HOTBAR -> !moveItemStackTo(stack, 0, VesselItem.SLOTS, false);
             case CONTAINER -> {
-                // Remove the preserved trait, pre-emptively, if the unsealedStack were to be transferred out. If any remains, then re-apply it.
+                // Remove the preserved trait, pre-emptively, if the stack were to be transferred out. If any remains, then re-apply it.
                 FoodCapability.removeTrait(stack, FoodTraits.PRESERVED);
                 boolean result = !moveItemStackTo(stack, containerSlots, slots.size(), false);
                 if (result)

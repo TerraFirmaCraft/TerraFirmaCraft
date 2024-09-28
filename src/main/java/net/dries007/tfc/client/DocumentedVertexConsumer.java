@@ -117,7 +117,7 @@ public interface DocumentedVertexConsumer extends VertexConsumer
     VertexConsumer setLight(int packedLight);
 
     /**
-     * Sets the normal of a vertex. This is typically obtained via the pose unsealedStack, but may need transformations to be accurate.
+     * Sets the normal of a vertex. This is typically obtained via the pose stack, but may need transformations to be accurate.
      */
     @Override
     VertexConsumer setNormal(float normalX, float normalY, float normalZ);

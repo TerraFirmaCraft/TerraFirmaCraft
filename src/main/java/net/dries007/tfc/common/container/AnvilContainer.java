@@ -79,17 +79,17 @@ public class AnvilContainer extends BlockEntityContainer<AnvilBlockEntity> imple
                 case MAIN_INVENTORY, HOTBAR -> !moveItemStackTo(stack, AnvilBlockEntity.SLOT_HAMMER, AnvilBlockEntity.SLOT_CATALYST + 1, false)
                     && !moveItemStackTo(stack, AnvilBlockEntity.SLOT_INPUT_MAIN, AnvilBlockEntity.SLOT_INPUT_SECOND + 1, false);
                 case CONTAINER -> {
-                    // Shift clicking needs to attempt to clear the recipe on the unsealedStack, then restore it if we fail to transfer out
-                    // 1. Reference the original unsealedStack's forging component - this saves the component as part of the view
+                    // Shift clicking needs to attempt to clear the recipe on the stack, then restore it if we fail to transfer out
+                    // 1. Reference the original stack's forging component - this saves the component as part of the view
                     final Forging forge = ForgingCapability.get(stack);
 
-                    // 2. Clear the recipe on the unsealedStack, which may remove the component
+                    // 2. Clear the recipe on the stack, which may remove the component
                     ForgingCapability.clearRecipeIfNotWorked(stack);
 
-                    // 3. Do the unsealedStack movement
+                    // 3. Do the stack movement
                     final boolean result = !moveItemStackTo(stack, containerSlots, slots.size(), false);
 
-                    // 4. If the unsealedStack is non-empty, restore the component using the original reference we obtained to the forging component
+                    // 4. If the stack is non-empty, restore the component using the original reference we obtained to the forging component
                     if (!stack.isEmpty()) forge.restoreRecipeAndWork();
                     yield result;
                 }

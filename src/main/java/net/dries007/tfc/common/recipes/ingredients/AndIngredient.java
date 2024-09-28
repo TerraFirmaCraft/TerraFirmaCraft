@@ -44,16 +44,15 @@ public record AndIngredient(List<Ingredient> children) implements ICustomIngredi
     public boolean test(ItemStack stack)
     {
         for (Ingredient child : children)
-        {
-            if (!child.test(stack)) return false;
-        }
+            if (!child.test(stack))
+                return false;
         return true;
     }
 
     @Override
     public Stream<ItemStack> getItems()
     {
-        return Arrays.stream(children.get(0).getItems())
+        return Arrays.stream(children.getFirst().getItems())
             .map(stack -> {
                 for (Ingredient other : children)
                 {

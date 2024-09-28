@@ -11,6 +11,7 @@ import net.minecraft.network.chat.MutableComponent;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.component.heat.Heat;
+import net.dries007.tfc.util.Helpers;
 
 public enum TemperatureDisplayStyle
 {
@@ -18,7 +19,7 @@ public enum TemperatureDisplayStyle
         final Heat heat = Heat.getHeat(temperature);
         if (heat != null)
         {
-            final MutableComponent base = heat.getDisplayName();
+            final MutableComponent base = Helpers.translateEnum(heat);
             if (heat != Heat.BRILLIANT_WHITE)
             {
                 for (int i = 1; i <= 4; i++)
@@ -44,32 +45,38 @@ public enum TemperatureDisplayStyle
         this.formatter = formatter;
     }
 
+    /**
+     * Format a temperature, if <strong>positive (hot)</strong>
+     */
     @Nullable
     public MutableComponent format(float temperature)
     {
-        return format(temperature, false);
+        return temperature > 0 ? formatter.format(temperature) : null;
     }
 
+    /**
+     * Format a temperature, if <strong>positive (hot)</strong>, and with a color dependent on the heat.
+     */
     @Nullable
-    public MutableComponent format(float temperature, boolean fullRange)
+    public MutableComponent formatColored(float temperature)
     {
-        if (temperature > 1 || fullRange)
+        final Heat heat = Heat.getHeat(temperature);
+        if (heat != null)
         {
-            return formatter.format(temperature);
+            final MutableComponent tooltip = formatter.format(temperature);
+            if (tooltip != null) tooltip.withStyle(heat.getColor());
+            return tooltip;
         }
         return null;
     }
 
+    /**
+     * Format a temperature, including the whole display range possible of the temperature.
+     */
     @Nullable
-    public MutableComponent formatColored(float temperature)
+    public MutableComponent formatRange(float temperature)
     {
-        Heat heat = Heat.getHeat(temperature);
-        MutableComponent tooltip = format(temperature, false);
-        if (tooltip != null && heat != null)
-        {
-            tooltip.withStyle(heat.getColor());
-        }
-        return tooltip;
+        return formatter.format(temperature);
     }
 
     @FunctionalInterface

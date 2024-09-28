@@ -87,7 +87,7 @@ public class InstantFluidBarrelRecipe extends BarrelRecipe
             // Extract input fluid - this will be converted, so we need to unconditionally drain all of it, and void excess.
             final FluidStack primaryFluid = inventory.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
 
-            // This can be invoked either with the unsealedStack in the primary input slot, or the unsealedStack in the fluid input slot, and the behavior will change accordingly
+            // This can be invoked either with the stack in the primary input slot, or the stack in the fluid input slot, and the behavior will change accordingly
             // If we match a slot in the input slot, we continue, otherwise we assume matching the fluid IO slots
             final boolean inputIsItemSlot = matches(inventory.getStackInSlot(BarrelBlockEntity.SLOT_ITEM), primaryFluid);
             final ItemStack originalStack = Helpers.removeStack(inventory, inputIsItemSlot ? BarrelBlockEntity.SLOT_ITEM : BarrelBlockEntity.SLOT_FLUID_CONTAINER_IN);

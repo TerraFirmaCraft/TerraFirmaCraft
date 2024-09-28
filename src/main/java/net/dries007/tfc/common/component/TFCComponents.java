@@ -92,13 +92,13 @@ public final class TFCComponents
         // Modify eggs to add the egg component's default non-fertilized value
         event.modify(Items.EGG, b -> b.set(EGG.get(), EggComponent.DEFAULT));
 
-        // Bump minecarts default unsealedStack size up, to make them modifiable
+        // Bump minecarts default stack size up, to make them modifiable
         event.modify(Items.MINECART, b -> b.set(DataComponents.MAX_STACK_SIZE, 64));
     }
 
     /**
-     * Modify the default food, and unsealedStack size components after a resource reload. This is not allowed in Neo because it will not modify
-     * the prototype maps of existing item stacks. In TFC, this is a reasonable tradeoff to make - we are only modifying unsealedStack size and presence
+     * Modify the default food, and stack size components after a resource reload. This is not allowed in Neo because it will not modify
+     * the prototype maps of existing item stacks. In TFC, this is a reasonable tradeoff to make - we are only modifying stack size and presence
      * of food, and in normal gameplay, these will only miss stacks created before the initial resource reload, which in TFC of the past, would not
      * have had correct food/size properties anyway.
      * <p>
@@ -129,7 +129,7 @@ public final class TFCComponents
             final int requestedSize = ItemSizeManager.getDefinition(stack).weight().stackSize;
 
             // Only perform the modification if we want to do any modifications, to avoid otherwise expensive operations
-            // Only perform item size modifications if the original item doesn't request "1" unsealedStack size
+            // Only perform item size modifications if the original item doesn't request "1" stack size
             if (hasFood != needsFood || (prevSize != 1 && prevSize != requestedSize))
             {
                 final DataComponentPatch.Builder builder = DataComponentPatch.builder();

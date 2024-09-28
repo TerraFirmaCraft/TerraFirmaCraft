@@ -129,6 +129,6 @@ public class GlowArrow extends AbstractArrow implements IGlow
     @Override
     protected ItemStack getDefaultPickupItem()
     {
-        return new ItemStack(Items.ARROW); // This is not used unless we don't have a pickup unsealedStack
+        return new ItemStack(Items.ARROW); // This is not used unless we don't have a pickup stack
     }
 }

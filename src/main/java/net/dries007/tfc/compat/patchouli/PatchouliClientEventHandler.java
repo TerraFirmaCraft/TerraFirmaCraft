@@ -112,7 +112,7 @@ public final class PatchouliClientEventHandler
 
                 if (lexiconLookupTime >= time)
                 {
-                    // Change: don't move the selected slot, because we're not opening from a unsealedStack
+                    // Change: don't move the selected slot, because we're not opening from a stack
                     // minecraft.player.getInventory().selected = lexSlot;
                     final int spread = entry.getSecond();
 

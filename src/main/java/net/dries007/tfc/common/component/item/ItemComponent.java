@@ -48,28 +48,28 @@ public record ItemComponent(ItemStack stack)
     }
 
     /**
-     * Attempt to insert a unsealedStack into this container at the given slot.
-     * @param stack The unsealedStack to insert. Not modified
+     * Attempt to insert a stack into this container at the given slot.
+     * @param stack The stack to insert. Not modified
      * @param info Info representing the container
-     * @return A pair of the resulting component, and the remainder after inserting. This may be the original unsealedStack, unmodified.
+     * @return A pair of the resulting component, and the remainder after inserting. This may be the original stack, unmodified.
      */
     public static InsertInfo insert(ItemStack contentInSlot, ItemStack stack, ItemContainerInfo info)
     {
-        // If the unsealedStack is empty, or we cannot contain the item, then return unmodified with a full remainder
+        // If the stack is empty, or we cannot contain the item, then return unmodified with a full remainder
         if (stack.isEmpty() || !info.canContainItem(stack))
         {
             return new InsertInfo(contentInSlot, stack);
         }
 
-        // The slot capacity is restricted to the minimum of the slot capacity, and unsealedStack capacity. If both the content in the slot is not empty,
-        // and the content and insert unsealedStack are not the same, we cannot insert
+        // The slot capacity is restricted to the minimum of the slot capacity, and stack capacity. If both the content in the slot is not empty,
+        // and the content and insert stack are not the same, we cannot insert
         if (!contentInSlot.isEmpty() && !ItemStack.isSameItemSameComponents(contentInSlot, stack))
         {
             return new InsertInfo(contentInSlot, stack);
         }
 
-        // If not, we can contain this unsealedStack. Calculate the total amount that we can insert - for items, the capacity is the minimum
-        // of the unsealedStack max size, and the slot capacity. Note that the content in slot may be empty, but the unsealedStack to insert is not
+        // If not, we can contain this stack. Calculate the total amount that we can insert - for items, the capacity is the minimum
+        // of the stack max size, and the slot capacity. Note that the content in slot may be empty, but the stack to insert is not
         final int slotCapacity = Math.min(stack.getMaxStackSize(), info.slotCapacity());
         final int slotTotal = contentInSlot.getCount() + stack.getCount();
         final ItemStack content = stack.copyWithCount(Math.min(slotCapacity, slotTotal));
@@ -80,9 +80,9 @@ public record ItemComponent(ItemStack stack)
     }
 
     /**
-     * Attempt to extract a unsealedStack from the container in the given slot.
+     * Attempt to extract a stack from the container in the given slot.
      * @param amount A maximum amount to extract.
-     * @return A pair of the resulting component, and the extracted unsealedStack
+     * @return A pair of the resulting component, and the extracted stack
      */
     public static ExtractInfo extract(ItemStack content, int amount)
     {
@@ -92,7 +92,7 @@ public record ItemComponent(ItemStack stack)
             return new ExtractInfo(content, ItemStack.EMPTY);
         }
 
-        // Otherwise, compute the remainder and the extracted unsealedStack
+        // Otherwise, compute the remainder and the extracted stack
         final ItemStack remainder = content.getCount() > amount ? content.copyWithCount(content.getCount() - amount) : ItemStack.EMPTY;
         final ItemStack extracted = content.getCount() >= amount ? content.copyWithCount(amount) : content;
         return new ExtractInfo(remainder, extracted);

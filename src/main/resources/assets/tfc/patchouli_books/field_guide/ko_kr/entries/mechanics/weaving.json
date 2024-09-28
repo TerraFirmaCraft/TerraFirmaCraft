@@ -10,7 +10,7 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:knapping/unfired_spindle_head",
+      "recipe": "tfc:knapping/ceramic/unfired_spindle_head",
       "text": "$(thing)굽지 않은 물레가락 머리$()는 점토로 만들어집니다. $(thing)물레가락 머리$()를 만들기 위해서는 $(l:mechanics/heating)구워$()야 합니다. 물레가락을 완성하기 위해서는 $(thing)막대기$()와 조합해야 합니다."
     },
     {

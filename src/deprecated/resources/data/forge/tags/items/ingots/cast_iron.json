@@ -1,8 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "replace": false,
-  "values": [
-    "minecraft:iron_ingot",
-    "tfc:metal/ingot/cast_iron"
-  ]
-}

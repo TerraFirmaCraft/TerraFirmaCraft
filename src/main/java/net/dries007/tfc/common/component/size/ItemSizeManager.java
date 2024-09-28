@@ -28,10 +28,10 @@ public final class ItemSizeManager
     public static final IndirectHashCollection<Item, ItemSizeDefinition> CACHE = IndirectHashCollection.create(r -> RecipeHelpers.itemKeys(r.ingredient()), MANAGER::getValues);
 
 
-    private static final ItemSizeDefinition TOOL_SIZE = new ItemSizeDefinition(Size.LARGE, Weight.MEDIUM); // Stored only in chests, unsealedStack size should be limited to 1 since it is a tool
-    private static final ItemSizeDefinition ARMOR_SIZE = new ItemSizeDefinition(Size.LARGE, Weight.VERY_HEAVY); // Stored only in chests and unsealedStack size = 1
-    private static final ItemSizeDefinition BLOCK_SIZE = new ItemSizeDefinition(Size.SMALL, Weight.LIGHT); // Fits small vessels and unsealedStack size = 32
-    private static final ItemSizeDefinition DEFAULT_SIZE = new ItemSizeDefinition(Size.VERY_SMALL, Weight.VERY_LIGHT); // Stored anywhere and unsealedStack size = 64
+    private static final ItemSizeDefinition TOOL_SIZE = new ItemSizeDefinition(Size.LARGE, Weight.MEDIUM); // Stored only in chests, stack size should be limited to 1 since it is a tool
+    private static final ItemSizeDefinition ARMOR_SIZE = new ItemSizeDefinition(Size.LARGE, Weight.VERY_HEAVY); // Stored only in chests and stack size = 1
+    private static final ItemSizeDefinition BLOCK_SIZE = new ItemSizeDefinition(Size.SMALL, Weight.LIGHT); // Fits small vessels and stack size = 32
+    private static final ItemSizeDefinition DEFAULT_SIZE = new ItemSizeDefinition(Size.VERY_SMALL, Weight.VERY_LIGHT); // Stored anywhere and stack size = 64
 
     public static void addTooltipInfo(ItemStack stack, List<Component> text)
     {
@@ -44,7 +44,7 @@ public final class ItemSizeManager
     }
 
     /**
-     * @return the {@link IItemSize} for a given {@code unsealedStack}.
+     * @return the {@link IItemSize} for a given {@code stack}.
      */
     public static IItemSize get(ItemStack stack)
     {
