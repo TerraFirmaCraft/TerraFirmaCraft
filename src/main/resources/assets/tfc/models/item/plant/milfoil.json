@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "tfc:block/plant/milfoil/milfoil"
+    "layer0": "tfc:item/plant/milfoil"
   }
 }

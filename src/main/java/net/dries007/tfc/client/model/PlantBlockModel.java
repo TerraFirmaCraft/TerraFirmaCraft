@@ -262,6 +262,7 @@ public class PlantBlockModel implements IDynamicBakedModel, IUnbakedGeometry<Pla
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public TextureAtlasSprite getParticleIcon()
     {
         return bloomingBakedModel != null ? bloomingBakedModel.getParticleIcon() : RenderHelpers.missingTexture();

@@ -553,10 +553,10 @@ public final class ClientEventHandler
         }
         event.registerEntityRenderer(TFCEntities.COD.get(), CodRenderer::new);
         event.registerEntityRenderer(TFCEntities.FRESHWATER_FISH.get(Fish.SALMON).get(), SalmonRenderer::new);
-        event.registerEntityRenderer(TFCEntities.FRESHWATER_FISH.get(Fish.LARGEMOUTH_BASS).get(), ctx -> new SalmonLikeRenderer(ctx, "largemouth_bass"));
-        event.registerEntityRenderer(TFCEntities.FRESHWATER_FISH.get(Fish.SMALLMOUTH_BASS).get(), ctx -> new SalmonLikeRenderer(ctx, "smallmouth_bass"));
-        event.registerEntityRenderer(TFCEntities.FRESHWATER_FISH.get(Fish.LAKE_TROUT).get(), ctx -> new SalmonLikeRenderer(ctx, "lake_trout"));
-        event.registerEntityRenderer(TFCEntities.FRESHWATER_FISH.get(Fish.RAINBOW_TROUT).get(), ctx -> new SalmonLikeRenderer(ctx, "rainbow_trout"));
+        event.registerEntityRenderer(TFCEntities.FRESHWATER_FISH.get(Fish.LARGEMOUTH_BASS).get(),  ctx -> new SimpleMobRenderer.Builder<>(ctx, CodModel::new, "largemouth_bass").flops().build());
+        event.registerEntityRenderer(TFCEntities.FRESHWATER_FISH.get(Fish.SMALLMOUTH_BASS).get(),  ctx -> new SimpleMobRenderer.Builder<>(ctx, CodModel::new, "smallmouth_bass").flops().build());
+        event.registerEntityRenderer(TFCEntities.FRESHWATER_FISH.get(Fish.LAKE_TROUT).get(),  ctx -> new SimpleMobRenderer.Builder<>(ctx, CodModel::new, "lake_trout").flops().build());
+        event.registerEntityRenderer(TFCEntities.FRESHWATER_FISH.get(Fish.RAINBOW_TROUT).get(),  ctx -> new SimpleMobRenderer.Builder<>(ctx, CodModel::new, "rainbow_trout").flops().build());
         event.registerEntityRenderer(TFCEntities.FRESHWATER_FISH.get(Fish.CRAPPIE).get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, CodModel::new, "crappie").flops().build());
         event.registerEntityRenderer(TFCEntities.FRESHWATER_FISH.get(Fish.BLUEGILL).get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, BluegillModel::new, "bluegill").flops().build());
         event.registerEntityRenderer(TFCEntities.TROPICAL_FISH.get(), TropicalFishRenderer::new);
@@ -667,6 +667,10 @@ public final class ClientEventHandler
         }
         event.registerLayerDefinition(RenderHelpers.layerId("bluegill"), BluegillModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.layerId("crappie"), CodModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("smallmouth_bass"), CodModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("largemouth_bass"), CodModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("rainbow_trout"), CodModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("lake_trout"), CodModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.layerId("jellyfish"), JellyfishModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.layerId("lobster"), LobsterModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.layerId("crayfish"), LobsterModel::createBodyLayer);
