@@ -3,7 +3,8 @@
 	"ambientocclusion": false,
 	"textures": {
 		"particle": "tfc:block/plant/cattail/cattail_0",
-		"cattail": "tfc:block/plant/cattail/cattail_0"
+		"cattail": "tfc:block/plant/cattail/cattail_0",
+		"bloom": "tfc:block/plant/cattail/cattail_0b"
 	},
 	"elements": [
 		{
@@ -24,6 +25,26 @@
 			"faces": {
 				"east": {"uv": [0, 0, 16, 16], "texture": "#cattail", "tintindex": 0},
 				"west": {"uv": [0, 0, 16, 16], "texture": "#cattail", "tintindex": 0}
+			}
+		},
+		{
+			"from": [-8, 0, 8],
+			"to": [24, 32, 8],
+			"shade": false,
+			"rotation": {"angle": 22.5, "axis": "y", "origin": [8, 8, 8], "rescale": true},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#bloom"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#bloom"}
+			}
+		},
+		{
+			"from": [8, 0, -8],
+			"to": [8, 32, 24],
+			"shade": false,
+			"rotation": {"angle": 22.5, "axis": "y", "origin": [8, 8, 8], "rescale": true},
+			"faces": {
+				"east": {"uv": [0, 0, 16, 16], "texture": "#bloom"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#bloom"}
 			}
 		}
 	]

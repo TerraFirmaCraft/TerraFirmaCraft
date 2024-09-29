@@ -1,0 +1,21 @@
+{
+  "loader": "tfc:plant",
+  "blooming": {
+    "parent": "tfc:block/plant/morning_glory_0b"
+  },
+  "seeding": {
+    "parent": "tfc:block/plant/morning_glory_2"
+  },
+  "dying": {
+    "parent": "tfc:block/plant/morning_glory_1"
+  },
+  "dormant": {
+    "parent": "tfc:block/plant/morning_glory_1"
+  },
+  "sprouting": {
+    "parent": "tfc:block/plant/morning_glory_2"
+  },
+  "budding": {
+    "parent": "tfc:block/plant/morning_glory_2"
+  }
+}

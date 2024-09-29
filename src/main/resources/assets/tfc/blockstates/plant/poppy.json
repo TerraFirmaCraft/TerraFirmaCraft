@@ -1,20 +1,8 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "stage=0": {
-      "model": "tfc:block/plant/poppy_0"
-    },
-    "stage=1": {
-      "model": "tfc:block/plant/poppy_1"
-    },
-    "stage=2": {
-      "model": "tfc:block/plant/poppy_2"
-    },
-    "stage=3": {
-      "model": "tfc:block/plant/poppy_3"
-    },
-    "stage=4": {
-      "model": "tfc:block/plant/poppy_4"
+    "": {
+      "model": "tfc:block/plant/poppy_dynamic"
     }
   }
 }

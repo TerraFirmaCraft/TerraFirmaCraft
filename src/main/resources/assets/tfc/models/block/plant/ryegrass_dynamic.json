@@ -1,0 +1,21 @@
+{
+  "loader": "tfc:plant",
+  "blooming": {
+    "parent": "tfc:block/plant/ryegrass_tuft"
+  },
+  "seeding": {
+    "parent": "tfc:block/plant/ryegrass_tuft"
+  },
+  "dying": {
+    "parent": "tfc:block/plant/ryegrass"
+  },
+  "dormant": {
+    "parent": "tfc:block/plant/ryegrass"
+  },
+  "sprouting": {
+    "parent": "tfc:block/plant/ryegrass"
+  },
+  "budding": {
+    "parent": "tfc:block/plant/ryegrass_tuft"
+  }
+}

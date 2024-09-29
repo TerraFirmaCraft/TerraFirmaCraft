@@ -42,7 +42,7 @@ public class EpiphytePlantFeature extends Feature<BlockConfig<EpiphytePlantBlock
             state = state.setValue(EpiphytePlantBlock.FACING, direction);
             if (state.canSurvive(level, pos))
             {
-                setBlock(level, pos, context.config().block().updateStateWithCurrentMonth(state));
+                setBlock(level, pos, state);
                 return true;
             }
         }

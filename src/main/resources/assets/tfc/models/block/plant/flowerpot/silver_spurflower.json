@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "parent": "minecraft:block/flower_pot_cross",
   "textures": {
-    "plant": "tfc:block/plant/silver_spurflower/silver_spurflower_2",
+    "plant": "tfc:block/plant/silver_spurflower/silver_spurflower_0",
     "dirt": "tfc:block/dirt/loam"
   }
 }

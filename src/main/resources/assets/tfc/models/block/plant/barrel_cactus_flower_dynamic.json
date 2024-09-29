@@ -1,0 +1,21 @@
+{
+  "loader": "tfc:plant",
+  "blooming": {
+    "parent": "tfc:block/plant/barrel_cactus_flower_0"
+  },
+  "seeding": {
+    "parent": "tfc:block/plant/barrel_cactus_flower_1"
+  },
+  "dying": {
+    "parent": "tfc:block/plant/barrel_cactus_flower_2"
+  },
+  "dormant": {
+    "parent": "tfc:block/plant/barrel_cactus_flower_2"
+  },
+  "sprouting": {
+    "parent": "tfc:block/plant/barrel_cactus_flower_3"
+  },
+  "budding": {
+    "parent": "tfc:block/plant/barrel_cactus_flower_4"
+  }
+}

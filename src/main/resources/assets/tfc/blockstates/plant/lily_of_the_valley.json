@@ -1,23 +1,8 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "stage=0": {
-      "model": "tfc:block/plant/lily_of_the_valley_0"
-    },
-    "stage=1": {
-      "model": "tfc:block/plant/lily_of_the_valley_1"
-    },
-    "stage=2": {
-      "model": "tfc:block/plant/lily_of_the_valley_2"
-    },
-    "stage=3": {
-      "model": "tfc:block/plant/lily_of_the_valley_3"
-    },
-    "stage=4": {
-      "model": "tfc:block/plant/lily_of_the_valley_4"
-    },
-    "stage=5": {
-      "model": "tfc:block/plant/lily_of_the_valley_5"
+    "": {
+      "model": "tfc:block/plant/lily_of_the_valley_dynamic"
     }
   }
 }

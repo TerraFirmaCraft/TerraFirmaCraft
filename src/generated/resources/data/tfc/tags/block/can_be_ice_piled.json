@@ -16,7 +16,9 @@
     "tfc:plant/sargassum",
     "tfc:plant/sea_lavender",
     "tfc:plant/water_canna",
-    "tfc:plant/water_lily",
+    "tfc:plant/white_water_lily",
+    "tfc:plant/purple_water_lily",
+    "tfc:plant/yellow_water_lily",
     "tfc:plant/water_taro"
   ]
 }

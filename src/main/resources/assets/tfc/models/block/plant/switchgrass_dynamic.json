@@ -1,0 +1,21 @@
+{
+  "loader": "tfc:plant",
+  "blooming": {
+    "parent": "tfc:block/plant/switchgrass_tuft"
+  },
+  "seeding": {
+    "parent": "tfc:block/plant/switchgrass_tuft"
+  },
+  "dying": {
+    "parent": "tfc:block/plant/switchgrass"
+  },
+  "dormant": {
+    "parent": "tfc:block/plant/switchgrass"
+  },
+  "sprouting": {
+    "parent": "tfc:block/plant/switchgrass"
+  },
+  "budding": {
+    "parent": "tfc:block/plant/switchgrass_tuft"
+  }
+}

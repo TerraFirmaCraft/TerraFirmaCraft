@@ -1,10 +1,8 @@
 {
+  "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "stage=0": {
-      "model": "tfc:block/plant/heather_0"
-    },
-    "stage=1": {
-      "model": "tfc:block/plant/heather_1"
+    "": {
+      "model": "tfc:block/plant/heather_dynamic"
     }
   }
 }

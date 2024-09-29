@@ -1,0 +1,7 @@
+{
+  "parent": "tfc:block/plant/flowerbed_tinted_2",
+  "textures": {
+    "flowerbed": "tfc:block/plant/maiden_pink/leaves",
+    "stem": "tfc:block/plant/maiden_pink/stem"
+  }
+}

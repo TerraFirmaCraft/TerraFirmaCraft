@@ -59,7 +59,7 @@ public abstract class WaterPlantBlock extends PlantBlock implements IFluidLoggab
     {
         BlockPos pos = context.getClickedPos();
         FluidState fluidState = context.getLevel().getFluidState(pos);
-        BlockState state = updateStateWithCurrentMonth(defaultBlockState());
+        BlockState state = defaultBlockState();
         if (getFluidProperty().canContain(fluidState.getType()))
         {
             state = state.setValue(getFluidProperty(), getFluidProperty().keyFor(fluidState.getType()));

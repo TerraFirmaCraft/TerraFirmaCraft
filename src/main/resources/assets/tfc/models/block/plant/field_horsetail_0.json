@@ -1,17 +1,19 @@
 {
 	"credit": "Made with Blockbench, a free, modern block model editor made by JannisX11",
 	"textures": {
-		"0": "tfc:block/plant/field_horsetail/horsetail_0",
-		"particle": "tfc:block/plant/field_horsetail/horsetail_0"
+		"0": "tfc:block/plant/field_horsetail/horsetail_1",
+		"1": "tfc:block/plant/field_horsetail/horsetail_2",
+		"2": "tfc:block/plant/field_horsetail/horsetail_3",
+		"particle": "tfc:block/plant/field_horsetail/horsetail_1"
 	},
 	"elements": [
 		{
-			"from": [4, 0, 0],
+			"from": [4, 0, 8],
 			"to": [4, 16, 16],
 			"rotation": {"angle": 45, "axis": "y", "origin": [8, 8, 8]},
 			"faces": {
-				"east": {"uv": [0, 0, 16, 16], "texture": "#0" },
-				"west": {"uv": [0, 0, 16, 16], "texture": "#0" }
+				"east": {"uv": [0, 0, 8, 16], "texture": "#1", "tintindex": 0},
+				"west": {"uv": [0, 0, 8, 16], "texture": "#1", "tintindex": 0}
 			}
 		},
 		{
@@ -19,8 +21,8 @@
 			"to": [12, 16, 16],
 			"rotation": {"angle": 45, "axis": "y", "origin": [8, 8, 8]},
 			"faces": {
-				"east": {"uv": [0, 0, 16, 16], "texture": "#0" },
-				"west": {"uv": [0, 0, 16, 16], "texture": "#0" }
+				"east": {"uv": [0, 0, 16, 16], "texture": "#2", "tintindex": 0},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#0", "tintindex": 0}
 			}
 		},
 		{
@@ -28,17 +30,17 @@
 			"to": [12, 16, 16],
 			"rotation": {"angle": -45, "axis": "y", "origin": [8, 8, 8]},
 			"faces": {
-				"east": {"uv": [0, 0, 16, 16], "texture": "#0" },
-				"west": {"uv": [0, 0, 16, 16], "texture": "#0" }
+				"east": {"uv": [0, 0, 16, 16], "texture": "#0", "tintindex": 0},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#2", "tintindex": 0}
 			}
 		},
 		{
 			"from": [4, 0, 0],
-			"to": [4, 16, 16],
+			"to": [4, 16, 8],
 			"rotation": {"angle": -45, "axis": "y", "origin": [8, 8, 8]},
 			"faces": {
-				"east": {"uv": [0, 0, 16, 16], "texture": "#0" },
-				"west": {"uv": [0, 0, 16, 16], "texture": "#0" }
+				"east": {"uv": [0, 0, 8, 16], "texture": "#1", "tintindex": 0},
+				"west": {"uv": [0, 0, 8, 16], "texture": "#1", "tintindex": 0}
 			}
 		}
 	]

@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "tfc:block/plant/labrador_tea/labrador_tea_4"
+    "layer0": "tfc:block/plant/labrador_tea/labrador_tea_0"
   }
 }

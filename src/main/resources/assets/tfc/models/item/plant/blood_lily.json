@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "tfc:item/plant/blood_lily"
+    "layer0": "tfc:block/plant/blood_lily/blood_lily_0"
   }
 }

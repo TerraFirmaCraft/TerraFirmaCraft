@@ -1,26 +1,8 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "stage=0": {
-      "model": "tfc:block/plant/labrador_tea_0"
-    },
-    "stage=1": {
-      "model": "tfc:block/plant/labrador_tea_1"
-    },
-    "stage=2": {
-      "model": "tfc:block/plant/labrador_tea_2"
-    },
-    "stage=3": {
-      "model": "tfc:block/plant/labrador_tea_3"
-    },
-    "stage=4": {
-      "model": "tfc:block/plant/labrador_tea_4"
-    },
-    "stage=5": {
-      "model": "tfc:block/plant/labrador_tea_5"
-    },
-    "stage=6": {
-      "model": "tfc:block/plant/labrador_tea_6"
+    "": {
+      "model": "tfc:block/plant/labrador_tea_dynamic"
     }
   }
 }

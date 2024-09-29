@@ -1,15 +1,10 @@
 {
-"multipart":
-	[
-		{
-		"when": {"stage":"0", "part":"upper"},
-		"apply":[
-			{"model":"tfc:block/plant/sea_lavender_0"}
-		]},
-		{
-		"when": {"stage":"1", "part":"upper"},
-		"apply":[
-			{"model":"tfc:block/plant/sea_lavender_1"}
-		]}
-	]
+  "variants": {
+    "part=lower": {
+      "model": "tfc:block/empty"
+    },
+    "part=upper": {
+      "model": "tfc:block/plant/sea_lavender_dynamic"
+    }
+  }
 }

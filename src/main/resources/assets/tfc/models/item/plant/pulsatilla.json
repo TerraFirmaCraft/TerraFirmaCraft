@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "tfc:block/plant/pulsatilla/pulsatilla_3"
+    "layer0": "tfc:block/plant/pulsatilla/pulsatilla_0"
   }
 }

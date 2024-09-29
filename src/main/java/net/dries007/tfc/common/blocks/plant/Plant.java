@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.blocks.plant;
 
-import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -30,7 +29,6 @@ import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.fluids.TFCFluids;
-import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.util.registry.RegistryPlant;
 
 /*
@@ -48,116 +46,118 @@ public enum Plant implements RegistryPlant
 {
     // Clay Indicators
     ATHYRIUM_FERN(BlockType.STANDARD, 0.7F),
-    CANNA(BlockType.STANDARD, 0.7F, new int[] {0, 0, 0, 0, 0, 1, 2, 3, 3, 3, 3, 0}),
-    GOLDENROD(BlockType.STANDARD, 1.0F, new int[] {4, 4, 4, 0, 0, 0, 1, 2, 2, 2, 2, 3}),
-    PAMPAS_GRASS(BlockType.TALL_GRASS, 0.8F),
-    PEROVSKIA(BlockType.DRY, 1.0F, new int[] {5, 5, 0, 0, 1, 2, 2, 3, 3, 3, 3, 4}),
+    CANNA(BlockType.STANDARD, 0.7F, false, -0.1F, 0.43F, 0.51F, 0.6F, 0.74F, 0.93F),
+    GOLDENROD(BlockType.STANDARD, 1.0F, false, -0.06F, 0.38F, 0.45F, 0.51F, 0.72F, 0.89F),
+    PAMPAS_GRASS(BlockType.TALL_GRASS, 0.8F, true, 0F, 0.4F, 0.45F, 0.5F, 0.8F, 0.9F),
+    PEROVSKIA(BlockType.DRY, 1.0F, false, 0.03F, 0.33F, 0.42F, 0.5F, 0.66F, 0.87F),
+    ROSE(BlockType.TALL_GRASS, 0.6F, false, -0.167F, 0.42F, 0.5F, 0.61F, 0.76F, 0.92F),
 
     // Short Grasses
     BEACHGRASS(BlockType.BEACH_GRASS, 0.9f),
-    BLUEGRASS(BlockType.SHORT_GRASS, 0.9F, new int[] {0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0}),
-    BROMEGRASS(BlockType.SHORT_GRASS, 0.9F, new int[] {0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0}),
+    BLUEGRASS(BlockType.SHORT_GRASS, 0.9F, false, -0.08F, 0.5F, 0.55F, 0.6F, 0.75F, 0.89F),
+    BROMEGRASS(BlockType.SHORT_GRASS, 0.9F, false, -0.14F, 0.5F, 0.55F, 0.6F, 0.75F, 0.89F),
     FOUNTAIN_GRASS(BlockType.SHORT_GRASS, 0.9F),
-    MANATEE_GRASS(BlockType.GRASS_WATER, 0.8F, new int[] {3, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2}),
+    MANATEE_GRASS(BlockType.GRASS_WATER, 0.8F),
     ORCHARD_GRASS(BlockType.SHORT_GRASS, 0.9F),
-    RYEGRASS(BlockType.SHORT_GRASS, 0.9F, new int[] {0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0}),
+    RYEGRASS(BlockType.SHORT_GRASS, 0.9F, false, -0.19F, 0.46F, 0.55F, 0.6F, 0.75F, 0.89F),
     SCUTCH_GRASS(BlockType.SHORT_GRASS, 0.9F),
-    STAR_GRASS(BlockType.GRASS_WATER, 0.8F, new int[] {3, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2}),
+    STAR_GRASS(BlockType.GRASS_WATER, 0.8F),
     TIMOTHY_GRASS(BlockType.SHORT_GRASS, 0.9F),
-    RADDIA_GRASS(BlockType.SHORT_GRASS, 0.9F, new int[] {3, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2}),
+    RADDIA_GRASS(BlockType.SHORT_GRASS, 0.9F),
 
     // Other Plants
-    ALLIUM(BlockType.STANDARD, 1.0F, new int[] {6, 6, 7, 0, 1, 1, 2, 2, 3, 4, 5, 6}),
-    ANTHURIUM(BlockType.STANDARD, 1.0F, new int[] {0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1}),
+    ALLIUM(BlockType.STANDARD, 1.0F, false, -0.15F, 0.2F, 0.3F, 0.4F, 0.64F, 0.92F),
+    ANTHURIUM(BlockType.STANDARD, 1.0F),
     ARROWHEAD(BlockType.TALL_WATER_FRESH, 0.6F),
     BADDERLOCKS(BlockType.TALL_WATER, 0.8F),
-    BARREL_CACTUS(BlockType.CACTUS, 0F, new int[] {0, 0, 0, 0, 1, 2, 2, 2, 2, 3, 3, 0}),
-    BLOOD_LILY(BlockType.STANDARD, 1.0F, new int[] {3, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2}),
-    BLUE_GINGER(BlockType.STANDARD, 1.0F, new int[] {1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1}),
-    BLUE_ORCHID(BlockType.STANDARD, 1.0F, new int[] {2, 2, 2, 0, 1, 1, 1, 2, 2, 2, 2, 2}),
-    BUR_REED(BlockType.TALL_WATER_FRESH, 0.6F, new int[] {0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0}),
-    BUTTERFLY_MILKWEED(BlockType.STANDARD, 1.0F, new int[] {6, 6, 6, 0, 1, 2, 3, 3, 3, 3, 4, 5}),
-    BLACK_ORCHID(BlockType.STANDARD, 1.0F, new int[] {2, 2, 2, 0, 1, 1, 1, 2, 2, 2, 2, 2}),
-    CALENDULA(BlockType.STANDARD, 1F, new int[] {6, 6, 6, 0, 1, 2, 3, 3, 3, 3, 4, 5}),
-    CATTAIL(BlockType.TALL_WATER_FRESH, 0.6F),
+    BARREL_CACTUS(BlockType.CACTUS, 0F, false, -0.25F, 0.24F, 0.36F, 0.5F, 0.73F, 0.9F),
+    BLOOD_LILY(BlockType.STANDARD, 1.0F, false, -0.167F, 0.333F, 0.431F, 0.523F, 0.845F, 0.878F),
+    BLUE_GINGER(BlockType.STANDARD, 1.0F),
+    BLUE_ORCHID(BlockType.STANDARD, 1.0F),
+    BUR_REED(BlockType.TALL_WATER_FRESH, 0.6F, false, 0F, 0.19F, 0.27F, 0.5F, 0.72F, 0.88F),
+    BUTTERFLY_MILKWEED(BlockType.STANDARD, 1.0F, false, -0.11F, 0.378F, 0.49F, 0.62F, 0.78F, 0.94F),
+    BLACK_ORCHID(BlockType.STANDARD, 1.0F),
+    CALENDULA(BlockType.STANDARD, 1F, false, -0.074F, 0.31F, 0.43F, 0.56F, 0.7F, 0.92F),
+    CATTAIL(BlockType.TALL_WATER_FRESH, 0.6F, false, -0.21F, 0.28F, 0.41F, 0.52F, 0.73F, 0.9F),
     COBBLESTONE_LICHEN(BlockType.CREEPING_STONE, 1f),
-    COONTAIL(BlockType.GRASS_WATER_FRESH, 0.8F, new int[] {3, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2}),
-    CORDGRASS(BlockType.TALL_WATER, 0.6F, new int[] {0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0}),
-    DANDELION(BlockType.STANDARD, 1F, new int[] {9, 9, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8}),
+    COONTAIL(BlockType.GRASS_WATER_FRESH, 0.8F),
+    CORDGRASS(BlockType.TALL_WATER, 0.6F, false, 0F, 0.27F, 0.39F, 0.5F, 0.666F, 0.92F),
+    DANDELION(BlockType.STANDARD, 1F, false, -0.15F, 0.28F, 0.46F, 0.57F, 0.71F, 0.93F),
     DEAD_BUSH(BlockType.DRY, 0.7F),
-    DESERT_FLAME(BlockType.STANDARD, 1F, new int[] {1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1}),
+    DESERT_FLAME(BlockType.STANDARD, 1F, true, -0.5F, 0.33F, 0.420F, 0.5F, 0.833F, 0.92F),
     DUCKWEED(BlockType.FLOATING_FRESH, 0.7F),
-    EEL_GRASS(BlockType.GRASS_WATER_FRESH, 0.8F, new int[] {3, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2}),
-    FIELD_HORSETAIL(BlockType.STANDARD, 0.9F, new int[] {1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1}),
-    FOXGLOVE(BlockType.TALL_GRASS, 0.6F, new int[] {0, 0, 0, 0, 0, 1, 1, 2, 3, 3, 3, 4}),
-    GRAPE_HYACINTH(BlockType.STANDARD, 1F, new int[] {3, 3, 3, 0, 1, 1, 2, 3, 3, 3, 3, 3}),
+    EEL_GRASS(BlockType.GRASS_WATER_FRESH, 0.8F),
+    FIELD_HORSETAIL(BlockType.STANDARD, 0.9F),
+    FOXGLOVE(BlockType.TALL_GRASS, 0.6F, false, -0.087F, 0.333F, 0.43F, 0.5F, 0.072F, 0.091F),
+    GRAPE_HYACINTH(BlockType.STANDARD, 1F, false, -0.333F, 0.25F, 0.38F, 0.63F, 0.72F, 0.93F),
     GREEN_ALGAE(BlockType.FLOATING_FRESH, 0.7F),
     GUTWEED(BlockType.WATER, 0.8F),
     GUZMANIA(BlockType.EPIPHYTE, 1F),
-    HELICONIA(BlockType.STANDARD, 1F, new int[] {0, 0, 1, 2, 0, 0, 0, 0, 1, 2, 0, 0}),
-    HEATHER(BlockType.STANDARD, 0.6F, new int[] {1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1}),
-    HIBISCUS(BlockType.TALL_GRASS, 0.6F, new int[] {2, 2, 2, 0, 0, 0, 0, 0, 0, 1, 2, 2}),
-    HOUSTONIA(BlockType.STANDARD, 1F, new int[] {2, 2, 2, 0, 1, 1, 1, 2, 2, 2, 2, 2}),
-    KANGAROO_PAW(BlockType.STANDARD, 1F, new int[] {1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1}),
+    HELICONIA(BlockType.STANDARD, 1F),
+    HEATHER(BlockType.STANDARD, 0.6F, false, -0.065F, 0.42F, 0.53F, 0.59F, 0.74F, 0.9F),
+    HIBISCUS(BlockType.TALL_GRASS, 0.6F, false, -0.12F, 0.41F, 0.52F, 0.61F, 0.74F, 0.89F),
+    HOUSTONIA(BlockType.STANDARD, 1F, false, -0.25F, 0.29F, 0.41F, 0.62F, 0.76F, 0.92F),
+    KANGAROO_PAW(BlockType.STANDARD, 1F, true, -0.25F, 0.32F, 0.44F, 0.55F, 0.68F, 0.88F),
     KING_FERN(BlockType.TALL_GRASS, 0.4F),
-    LABRADOR_TEA(BlockType.STANDARD, 1F, new int[] {0, 0, 1, 2, 3, 4, 4, 5, 6, 0, 0, 0}),
+    LABRADOR_TEA(BlockType.STANDARD, 1F, false, -0.15F, 0.2F, 0.3F, 0.4F, 0.74F, 0.9F),
     LADY_FERN(BlockType.STANDARD, 0.6F),
     LAMINARIA(BlockType.WATER, 0.9F),
     LICORICE_FERN(BlockType.EPIPHYTE, 1F),
     ARTISTS_CONK(BlockType.EPIPHYTE, 1F),
-    LILY_OF_THE_VALLEY(BlockType.STANDARD, 1F, new int[] {0, 0, 1, 2, 3, 3, 4, 4, 5, 5, 5, 5}),
-    LILAC(BlockType.TALL_GRASS, 0.6F, new int[] {0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0}),
-    LOTUS(BlockType.FLOATING_FRESH, 0.7F, new int[] {0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 0, 0}),
-    MAIDEN_PINK(BlockType.FLOWERBED, 1f),
-    MARIGOLD(BlockType.TALL_WATER_FRESH, 0.6F),
-    MEADS_MILKWEED(BlockType.STANDARD, 1F, new int[] {6, 6, 6, 0, 1, 2, 3, 3, 3, 3, 4, 5}),
+    LILY_OF_THE_VALLEY(BlockType.STANDARD, 1F, false, -0.167F, 0.18F, 0.29F, 0.5F, 0.72F, 0.9F),
+    LILAC(BlockType.TALL_GRASS, 0.6F, false, -0.21F, 0.18F, 0.29F, 0.45F, 0.73F, 0.9F),
+    LOTUS(BlockType.FLOATING_FRESH, 0.7F, true, -0.12F, 0.25F, 0.35F, 0.5F, 0.75F, 0.92F, 1, 13),
+    MAIDEN_PINK(BlockType.FLOWERBED, 1f, false, -0.333F, 0.5F, 0.6F, 0.7F, 0.8F, 0.9F),
+    MARIGOLD(BlockType.TALL_WATER_FRESH, 0.6F, false, 0.14F, 0.18F, 0.26F, 0.35F, 0.58F, 0.86F),
+    MEADS_MILKWEED(BlockType.STANDARD, 1F, false, -0.17F, 0.18F, 0.29F, 0.5F, 0.72F, 0.93F),
     MILFOIL(BlockType.WATER_FRESH, 0.8F),
-    MORNING_GLORY(BlockType.CREEPING, 0.8F, new int[] {2, 2, 2, 0, 0, 1, 1, 1, 1, 1, 2, 2}),
+    MORNING_GLORY(BlockType.CREEPING, 0.8F, false, -0.083F, 0.333F, 0.417F, 0.5F, 0.75F, 0.917F, 21, 5),
     PHILODENDRON(BlockType.CREEPING, 0.7F),
     MOSS(BlockType.CREEPING, 1F),
-    NASTURTIUM(BlockType.STANDARD, 1F, new int[] {4, 4, 4, 0, 1, 2, 2, 2, 2, 2, 3, 3}),
-    OSTRICH_FERN(BlockType.TALL_GRASS, 0.6F, new int[] {0, 0, 0, 0, 1, 2, 3, 3, 3, 3, 4, 0}),
-    OXEYE_DAISY(BlockType.STANDARD, 0.9F, new int[] {5, 5, 5, 0, 1, 2, 3, 3, 3, 4, 4, 5}),
-    PHRAGMITE(BlockType.TALL_WATER_FRESH, 0.6F, new int[] {0, 0, 0, 1, 1, 1, 2, 2, 3, 1, 1, 0}),
-    PICKERELWEED(BlockType.TALL_WATER_FRESH, 0.6F, new int[] {0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 0, 0}),
+    NASTURTIUM(BlockType.STANDARD, 1F, true),
+    OSTRICH_FERN(BlockType.TALL_GRASS, 0.6F),
+    OXEYE_DAISY(BlockType.STANDARD, 0.9F, false, 0.09F, 0.31F, 0.42F, 0.52F, 0.73F, 0.92F),
+    PHRAGMITE(BlockType.TALL_WATER_FRESH, 0.6F, false, 0.06F, 0.23F, 0.34F, 0.43F, 0.66F, 0.88F),
+    PICKERELWEED(BlockType.TALL_WATER_FRESH, 0.6F, false, -0.9F, 0.32F, 0.43F, 0.52F, 0.77F, 0.91F),
     PISTIA(BlockType.FLOATING_FRESH, 0.8F),
-    POPPY(BlockType.STANDARD, 1F, new int[] {4, 4, 4, 0, 1, 2, 2, 3, 3, 3, 3, 4}),
-    PRIMROSE(BlockType.STANDARD, 1F, new int[] {0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2}),
-    PULSATILLA(BlockType.STANDARD, 1F, new int[] {0, 1, 2, 3, 3, 4, 5, 5, 5, 0, 0, 0}),
+    POPPY(BlockType.STANDARD, 1F, false, -0.25F, 0.23F, 0.33F, 0.58F, 0.79F, 0.92F),
+    PRIMROSE(BlockType.STANDARD, 1F, false, -0.4F, 0.34F, 0.41F, 0.8F, 0.89F, 0.95F),
+    PULSATILLA(BlockType.STANDARD, 1F, false, -0.31F, 0.168F, 0.25F, 0.73F, 0.84F, 0.93F),
     RED_ALGAE(BlockType.FLOATING, 0.7F),
     REINDEER_LICHEN(BlockType.CREEPING, 1F),
     RED_SEALING_WAX_PALM(BlockType.TALL_GRASS, 0.4F),
-    ROSE(BlockType.TALL_GRASS, 0.6F, new int[] {0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0}),
-    SACRED_DATURA(BlockType.STANDARD, 1F, new int[] {4, 4, 4, 0, 1, 2, 2, 2, 2, 2, 2, 3}),
-    SAGEBRUSH(BlockType.DRY, 0.5F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0}),
+    SACRED_DATURA(BlockType.STANDARD, 1F, false, -0.2f, 0.4f, 0.5f, 0.6f, 0.8f, 0.95f, 12, 0),
+    SAGEBRUSH(BlockType.DRY, 0.5F, false, -0.09F, 0.48F, 0.54F, 0.6F, 0.72F, 0.91F),
     SAGO(BlockType.WATER_FRESH, 0.8F),
-    SAGUARO_FRUIT(BlockType.CACTUS_FLOWER, 0.7F, new int[] {0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0}),
-    SAPPHIRE_TOWER(BlockType.TALL_GRASS, 0.6F, new int[] {2, 3, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2}),
+    SAGUARO_FRUIT(BlockType.CACTUS_FLOWER, 0.7F, true, -0.2F, 0.22F, 0.3F, 0.5F, 0.73F, 0.9F),
+    SAPPHIRE_TOWER(BlockType.TALL_GRASS, 0.6F, true, -0.05F, 0.1F, 0.2F, 0.52F, 0.76F, 0.92F),
     SARGASSUM(BlockType.FLOATING, 0.7F),
-    SEA_LAVENDER(BlockType.TALL_WATER, 0.6F, new int[] {0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0}),
+    SEA_LAVENDER(BlockType.TALL_WATER, 0.6F, false, 0.08F, 0.18F, 0.31F, 0.4F, 0.7F, 0.91F),
     SEA_PALM(BlockType.DRY, 0.6f),
-    SILVER_SPURFLOWER(BlockType.STANDARD, 1F, new int[] {0, 0, 0, 0, 1, 2, 2, 2, 0, 0, 0, 0}),
-    SNAPDRAGON_PINK(BlockType.STANDARD, 1F, new int[] {6, 6, 6, 0, 1, 1, 2, 3, 4, 1, 1, 5}),
-    SNAPDRAGON_RED(BlockType.STANDARD, 1F, new int[] {6, 6, 6, 0, 1, 1, 2, 3, 4, 1, 1, 5}),
-    SNAPDRAGON_WHITE(BlockType.STANDARD, 1F, new int[] {6, 6, 6, 0, 1, 1, 2, 3, 4, 1, 1, 5}),
-    SNAPDRAGON_YELLOW(BlockType.STANDARD, 1F, new int[] {6, 6, 6, 0, 1, 1, 2, 3, 4, 1, 1, 5}),
-    STRELITZIA(BlockType.STANDARD, 1F, new int[] {0, 0, 1, 1, 2, 2, 0, 0, 1, 1, 2, 2}),
-    SWITCHGRASS(BlockType.TALL_GRASS, 0.8F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0}),
+    SILVER_SPURFLOWER(BlockType.STANDARD, 1F, false, 0.02F, 0.17F, 0.26F, 0.39F, 0.65F, 0.9F),
+    SNAPDRAGON_PINK(BlockType.STANDARD, 1F, false, -0.08F, 0.28F, 0.4F, 0.5F, 0.72F, 0.89F),
+    SNAPDRAGON_RED(BlockType.STANDARD, 1F, false, -0.09F, 0.28F, 0.4F, 0.5F, 0.72F, 0.89F),
+    SNAPDRAGON_WHITE(BlockType.STANDARD, 1F, false, -0.04F, 0.28F, 0.4F, 0.5F, 0.72F, 0.89F),
+    SNAPDRAGON_YELLOW(BlockType.STANDARD, 1F, false, -0.06F, 0.28F, 0.4F, 0.5F, 0.72F, 0.89F),
+    STRELITZIA(BlockType.STANDARD, 1F, true, -0.333F, 0.417F, 0.5F, 0.61f, 0.75f, 0.9f),
+    SWITCHGRASS(BlockType.TALL_GRASS, 0.8F, false, -0.14F, 0.38F, 0.49F, 0.58F, 0.77F, 0.93F),
     SWORD_FERN(BlockType.STANDARD, 0.6F),
     TALL_FESCUE_GRASS(BlockType.TALL_GRASS, 0.5F),
     TOQUILLA_PALM(BlockType.TALL_GRASS, 0.6F),
-    TRILLIUM(BlockType.STANDARD, 1F, new int[] {5, 5, 5, 0, 1, 2, 3, 3, 4, 4, 4, 4}),
-    TROPICAL_MILKWEED(BlockType.STANDARD, 1F, new int[] {0, 0, 0, 0, 1, 2, 3, 3, 3, 3, 3, 0}),
-    TULIP_ORANGE(BlockType.STANDARD, 1F, new int[] {4, 4, 5, 0, 1, 1, 2, 2, 2, 2, 3, 4}),
-    TULIP_PINK(BlockType.STANDARD, 1F, new int[] {4, 4, 5, 0, 1, 1, 2, 2, 2, 2, 3, 4}),
-    TULIP_RED(BlockType.STANDARD, 1F, new int[] {4, 4, 5, 0, 1, 1, 2, 2, 2, 2, 3, 4}),
-    TULIP_WHITE(BlockType.STANDARD, 1F, new int[] {4, 4, 5, 0, 1, 1, 2, 2, 2, 2, 3, 4}),
-    TURTLE_GRASS(BlockType.GRASS_WATER, 0.8F, new int[] {3, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2}),
-    VRIESEA(BlockType.EPIPHYTE, 1F, new int[] {1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0}),
-    WATER_CANNA(BlockType.FLOATING_FRESH, 0.8F, new int[] {0, 0, 0, 0, 0, 1, 2, 3, 3, 3, 3, 0}),
-    WATER_LILY(BlockType.FLOATING_FRESH, 0.7F, new int[] {5, 5, 6, 0, 1, 2, 2, 2, 2, 3, 4, 5}),
+    TRILLIUM(BlockType.STANDARD, 1F, false, -0.27F, 0.24F, 0.32F, 0.61F, 0.83F, 0.92F),
+    TROPICAL_MILKWEED(BlockType.STANDARD, 1F),
+    TULIP_ORANGE(BlockType.STANDARD, 1F, false, -0.21F, 0.12F, 0.2F, 0.62F, 0.86F, 0.94F),
+    TULIP_PINK(BlockType.STANDARD, 1F, false, -0.2F, 0.12F, 0.2F, 0.62F, 0.86F, 0.94F),
+    TULIP_RED(BlockType.STANDARD, 1F, false, -0.24F, 0.12F, 0.2F, 0.62F, 0.86F, 0.94F),
+    TULIP_WHITE(BlockType.STANDARD, 1F, false, -0.23F, 0.12F, 0.2F, 0.62F, 0.86F, 0.94F),
+    TURTLE_GRASS(BlockType.GRASS_WATER, 0.8F),
+    VRIESEA(BlockType.EPIPHYTE, 1F),
+    WATER_CANNA(BlockType.FLOATING_FRESH, 0.8F),
+    WHITE_WATER_LILY(BlockType.FLOATING_FRESH, 0.7F, false, -0.11F, 0.33F, 0.42F, 0.5F, 0.8F, 0.92F),
+    PURPLE_WATER_LILY(BlockType.FLOATING_FRESH, 0.7F, false, -0.05F, 0.32F, 0.41F, 0.5F, 0.8F, 0.92F),
+    YELLOW_WATER_LILY(BlockType.FLOATING_FRESH, 0.7F, false, -0.083F, 0.32F, 0.41F, 0.5F, 0.8F, 0.92F),
     WATER_TARO(BlockType.TALL_WATER_FRESH, 0.6F),
-    YUCCA(BlockType.DRY, 0.8F, new int[] {0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 3}),
+    YUCCA(BlockType.DRY, 0.8F, true, -0.12F, 0.31F, 0.42F, 0.51F, 0.72F, 0.9F),
 
     // Unique
     HANGING_VINES_PLANT(BlockType.WEEPING, 1.0F),
@@ -187,33 +187,69 @@ public enum Plant implements RegistryPlant
     ;
 
     private static final EnumSet<Plant> SPECIAL_POTTED_PLANTS = EnumSet.of(BARREL_CACTUS, FOXGLOVE, MORNING_GLORY, MOSS, OSTRICH_FERN, REINDEER_LICHEN, ROSE, SAPPHIRE_TOWER, TOQUILLA_PALM, TREE_FERN, PHILODENDRON);
-    private static final EnumSet<Plant> BLOCK_TINTED_PLANTS = EnumSet.of(PAMPAS_GRASS, BLUEGRASS, BROMEGRASS, FOUNTAIN_GRASS, ORCHARD_GRASS, RYEGRASS, SCUTCH_GRASS, TIMOTHY_GRASS, RADDIA_GRASS, ARROWHEAD, BUR_REED, CATTAIL, DUCKWEED, FIELD_HORSETAIL, GUTWEED, KANGAROO_PAW, KING_FERN, LADY_FERN, LICORICE_FERN, LOTUS, MORNING_GLORY, PHILODENDRON, MOSS, OSTRICH_FERN, PHRAGMITE, PICKERELWEED, PISTIA, SAGO, SEA_LAVENDER, SWITCHGRASS, SWORD_FERN, TALL_FESCUE_GRASS, TOQUILLA_PALM, WATER_LILY, WATER_TARO, HANGING_VINES_PLANT, HANGING_VINES, SPANISH_MOSS_PLANT, SPANISH_MOSS, TREE_FERN_PLANT, TREE_FERN, IVY, JUNGLE_VINES);
+    private static final EnumSet<Plant> BLOCK_TINTED_PLANTS = EnumSet.of(PAMPAS_GRASS, BLUEGRASS, BROMEGRASS, FOUNTAIN_GRASS, ORCHARD_GRASS, RYEGRASS, SCUTCH_GRASS, TIMOTHY_GRASS, RADDIA_GRASS, ARROWHEAD, BUR_REED, CATTAIL, DUCKWEED, FIELD_HORSETAIL, GUTWEED, KANGAROO_PAW, KING_FERN, LADY_FERN, LICORICE_FERN, LOTUS, MORNING_GLORY, PHILODENDRON, MOSS, OSTRICH_FERN, PHRAGMITE, PICKERELWEED, PISTIA, SAGO, SEA_LAVENDER, SWITCHGRASS, SWORD_FERN, TALL_FESCUE_GRASS, TOQUILLA_PALM, WHITE_WATER_LILY, YELLOW_WATER_LILY, PURPLE_WATER_LILY, WATER_TARO, HANGING_VINES_PLANT, HANGING_VINES, SPANISH_MOSS_PLANT, SPANISH_MOSS, TREE_FERN_PLANT, TREE_FERN, IVY, JUNGLE_VINES, MAIDEN_PINK);
     private static final EnumSet<Plant> ITEM_TINTED_PLANTS = EnumSet.of(BLUEGRASS, BROMEGRASS, FOUNTAIN_GRASS, ORCHARD_GRASS, RYEGRASS, SCUTCH_GRASS, TIMOTHY_GRASS, RADDIA_GRASS, KING_FERN, MOSS, SAGO, SWITCHGRASS, TALL_FESCUE_GRASS, IVY, JUNGLE_VINES, HANGING_VINES, GUTWEED);
     private static final EnumSet<Plant> FLOWERPOT_TINTED_PLANTS = EnumSet.of(PHILODENDRON, MOSS, TREE_FERN);
 
+    private final @Nullable IntegerProperty ageProperty;
     private final float speedFactor;
-    private final @Nullable IntegerProperty property;
-    private final int @Nullable [] stagesByMonth;
+    private final boolean isWetSeasonBlooming;
+    private final float bloomOffset;
+    private final float bloomingEnd;
+    private final float seedingEnd;
+    private final float dyingEnd;
+    private final float dormantEnd;
+    private final float sproutingEnd;
+    private final int startHour;
+    private final int endHour;
     private final BlockType type;
 
     Plant(BlockType type, float speedFactor)
     {
-        this(type, speedFactor, null);
+        this(type, speedFactor, false);
     }
 
-    Plant(BlockType type, float speedFactor, int @Nullable [] stagesByMonth)
+    Plant(BlockType type, float speedFactor, boolean isWetSeasonBlooming)
+    {
+        this(type, speedFactor, isWetSeasonBlooming, -0.124f, 0.25f, 0.42f, 0.5f, 0.75f, 0.88f);
+    }
+
+    Plant(BlockType type, float speedFactor, boolean isWetSeasonBlooming, float bloomOffset, float bloomingEnd, float seedingEnd, float dyingEnd, float dormantEnd, float sproutingEnd)
+    {
+        this(type, speedFactor, isWetSeasonBlooming, bloomOffset, bloomingEnd, seedingEnd, dyingEnd, dormantEnd, sproutingEnd, 0, 0);
+    }
+
+    Plant(BlockType type, float speedFactor, boolean isWetSeasonBlooming, float bloomOffset, float bloomingEnd, float seedingEnd, float dyingEnd, float dormantEnd, float sproutingEnd, int startHour, int endHour)
     {
         this.type = type;
         this.speedFactor = speedFactor;
-        this.stagesByMonth = stagesByMonth;
+        this.isWetSeasonBlooming = isWetSeasonBlooming;
+        this.bloomOffset = bloomOffset;
+        this.bloomingEnd = bloomingEnd;
+        this.seedingEnd = seedingEnd;
+        this.dyingEnd = dyingEnd;
+        this.dormantEnd = dormantEnd;
+        this.sproutingEnd = sproutingEnd;
+        this.startHour = startHour;
+        this.endHour = endHour;
 
-        int maxStage = 0;
-        if (stagesByMonth != null)
+        final int maxAge = getMaxAgeForType(type);
+        this.ageProperty = maxAge > 0 ? TFCBlockStateProperties.getAgeProperty(maxAge) : null;
+    }
+
+    private int getMaxAgeForType(BlockType type)
+    {
+        if (type == BlockType.GRASS_WATER || type == BlockType.GRASS_WATER_FRESH || type == BlockType.BEACH_GRASS || type == BlockType.SHORT_GRASS
+            || type == BlockType.TALL_GRASS || type == BlockType.FLOWERBED || type == BlockType.FLOATING_FRESH || type == BlockType.FLOATING
+            || type == BlockType.KELP_TREE || type == BlockType.KELP_TREE_FLOWER || type == BlockType.TWISTING_TOP || type == BlockType.TWISTING_SOLID_TOP
+            || type == BlockType.BRANCHING_CACTUS_TOP || type == BlockType.KELP_TOP || type == BlockType.WEEPING_TOP || type == BlockType.TALL_WATER_FRESH)
         {
-            maxStage = Arrays.stream(stagesByMonth).max().orElse(0);
+            return 3;
         }
-
-        this.property = maxStage > 0 ? TFCBlockStateProperties.getStageProperty(maxStage) : null;
+        else
+        {
+            return 0;
+        }
     }
 
     public Block create()
@@ -227,18 +263,49 @@ public enum Plant implements RegistryPlant
         return needsItem() ? block -> type.blockItemFactory.apply(block, properties) : null;
     }
 
-    @Override
-    public int stageFor(Month month)
+    public boolean isWetSeasonBlooming()
     {
-        assert stagesByMonth != null;
-        return stagesByMonth.length < month.ordinal() ? 0 : stagesByMonth[month.ordinal()];
+        return isWetSeasonBlooming;
     }
 
-    @Override
-    @Nullable
-    public IntegerProperty getStageProperty()
+    public int getStartHour()
     {
-        return property;
+        return startHour;
+    }
+
+    public int getEndHour()
+    {
+        return endHour;
+    }
+
+    public float getBloomOffset()
+    {
+        return bloomOffset;
+    }
+
+    public float getBloomingEnd()
+    {
+        return bloomingEnd;
+    }
+
+    public float getSeedingEnd()
+    {
+        return seedingEnd;
+    }
+
+    public float getDyingEnd()
+    {
+        return dyingEnd;
+    }
+
+    public float getDormantEnd()
+    {
+        return dormantEnd;
+    }
+
+    public float getSproutingEnd()
+    {
+        return sproutingEnd;
     }
 
     public boolean needsItem()
@@ -289,6 +356,12 @@ public enum Plant implements RegistryPlant
     public boolean hasFlowerPot()
     {
         return type == BlockType.STANDARD || type == BlockType.FLOWERBED || type == BlockType.DRY || type == BlockType.CACTUS_FLOWER || type == BlockType.BAMBOO || SPECIAL_POTTED_PLANTS.contains(this);
+    }
+
+    @Nullable
+    public IntegerProperty getAgeProperty()
+    {
+        return ageProperty;
     }
 
     /**

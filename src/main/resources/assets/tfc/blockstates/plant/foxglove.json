@@ -1,35 +1,10 @@
 {
-  "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "stage=0,part=lower": {
-      "model": "tfc:block/plant/foxglove_lower_0"
+    "part=lower": {
+      "model": "tfc:block/plant/foxglove_lower_dynamic"
     },
-    "stage=0,part=upper": {
-      "model": "tfc:block/plant/foxglove_upper_0"
-    },
-    "stage=1,part=lower": {
-      "model": "tfc:block/plant/foxglove_lower_1"
-    },
-    "stage=1,part=upper": {
-      "model": "tfc:block/plant/foxglove_upper_1"
-    },
-    "stage=2,part=lower": {
-      "model": "tfc:block/plant/foxglove_lower_2"
-    },
-    "stage=2,part=upper": {
-      "model": "tfc:block/plant/foxglove_upper_2"
-    },
-    "stage=3,part=lower": {
-      "model": "tfc:block/plant/foxglove_lower_3"
-    },
-    "stage=3,part=upper": {
-      "model": "tfc:block/plant/foxglove_upper_3"
-    },
-    "stage=4,part=lower": {
-      "model": "tfc:block/plant/foxglove_lower_4"
-    },
-    "stage=4,part=upper": {
-      "model": "tfc:block/plant/foxglove_upper_4"
+    "part=upper": {
+      "model": "tfc:block/plant/foxglove_upper_dynamic"
     }
   }
 }

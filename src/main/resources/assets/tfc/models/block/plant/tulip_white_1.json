@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/cross",
-  "textures": {
-    "cross": "tfc:block/plant/tulip/tulip_white_1",
-    "particle": "tfc:block/plant/tulip/tulip_white_1"
-  }
-}

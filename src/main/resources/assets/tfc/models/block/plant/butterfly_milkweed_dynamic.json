@@ -1,0 +1,22 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "loader": "tfc:plant",
+  "blooming": {
+    "parent": "tfc:block/plant/butterfly_milkweed_0"
+  },
+  "seeding": {
+    "parent": "tfc:block/plant/butterfly_milkweed_1"
+  },
+  "dying": {
+    "parent": "tfc:block/plant/butterfly_milkweed_2"
+  },
+  "dormant": {
+    "parent": "tfc:block/plant/butterfly_milkweed_3"
+  },
+  "sprouting": {
+    "parent": "tfc:block/plant/butterfly_milkweed_4"
+  },
+  "budding": {
+    "parent": "tfc:block/plant/butterfly_milkweed_5"
+  }
+}

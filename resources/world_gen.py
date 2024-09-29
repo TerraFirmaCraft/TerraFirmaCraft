@@ -642,7 +642,6 @@ def generate(rm: ResourceManager):
     configured_plant_patch_feature(rm, ('plant', 'poppy'), plant_config('tfc:plant/poppy[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(-10.3, 13.4, 150, 250))
     configured_plant_patch_feature(rm, ('plant', 'primrose'), plant_config('tfc:plant/primrose[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(-6.6, 9.8, 150, 300, min_forest='edge', max_forest='normal'))
     configured_plant_patch_feature(rm, ('plant', 'pulsatilla'), plant_config('tfc:plant/pulsatilla[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(-8.4, 2.5, 50, 200))
-    configured_plant_patch_feature(rm, ('plant', 'rose'), plant_config('tfc:plant/rose[age=1,stage=1,part=lower]', 1, 15, 10, True, tall_plant=True, limit_density=True), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(-7.4, 17.6, 150, 300))
     configured_noise_plant_feature(rm, ('plant', 'red_algae'), plant_config('tfc:plant/red_algae[age=1,stage=1]', 1, 7, 100), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(-22.4, 27.6, 215, 450), decorate_range(0, 70), water_depth=8, min_water_depth=5)
     configured_plant_patch_feature(rm, ('plant', 'red_sealing_wax_palm'), plant_config('tfc:plant/red_sealing_wax_palm[age=1,stage=1,part=lower]', 1, 15, 10, tall_plant=True, no_solid_neighbors=True, limit_density=True), decorate_chance(10), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(17.1, 38, 280, 500, min_forest='edge', max_forest='old_growth'))
     configured_plant_patch_feature(rm, ('plant', 'sacred_datura'), plant_config('tfc:plant/sacred_datura[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(4.3, 17.1, 75, 150))
@@ -672,7 +671,9 @@ def generate(rm: ResourceManager):
     configured_plant_patch_feature(rm, ('plant', 'turtle_grass'), plant_config('tfc:plant/turtle_grass[age=1,stage=1,fluid=empty]', 1, 15, 128, water_plant=True), decorate_chance(1), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(13.4, 38, 240, 500))
     configured_plant_patch_feature(rm, ('plant', 'vriesea'), plant_config('tfc:plant/vriesea[age=1,stage=1,facing=north]', 6, 5, epiphyte_plant=True), decorate_chance(2), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(13.4, 38, 200, 400, min_forest='edge'))
 
-    configured_plant_patch_feature(rm, ('plant', 'water_lily'), plant_config('tfc:plant/water_lily[age=1,stage=1]', 1, 7, 100), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(-10.3, 38, 0, 500))
+    configured_plant_patch_feature(rm, ('plant', 'white_water_lily'), plant_config('tfc:plant/white_water_lily', 1, 7, 100), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(-12.5, 8, 0, 500))
+    configured_plant_patch_feature(rm, ('plant', 'yellow_water_lily'), plant_config('tfc:plant/yellow_water_lily', 1, 7, 100), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(-2.5, 16, 0, 500))
+    configured_plant_patch_feature(rm, ('plant', 'purple_water_lily'), plant_config('tfc:plant/purple_water_lily', 1, 7, 100), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(9.5, 38, 0, 500))
     configured_plant_patch_feature(rm, ('plant', 'water_taro'), plant_config('tfc:plant/water_taro[age=1,stage=1,fluid=empty,part=lower]', 1, 7, 100, emergent_plant=True), decorate_chance(2), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(11.6, 38, 260, 500))
     configured_plant_patch_feature(rm, ('plant', 'yucca'), plant_config('tfc:plant/yucca[age=1,stage=1]', 1, 15, 10), decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(-3, 20.7, 0, 75))
 
@@ -728,6 +729,7 @@ def generate(rm: ResourceManager):
     configured_plant_patch_feature(rm, ('plant', 'goldenrod'), plant_config('tfc:plant/goldenrod[age=1,stage=1]', 1, 6, 16, requires_clay=True), decorate_climate(-15.7, -4.8, 75, 500))
     configured_plant_patch_feature(rm, ('plant', 'pampas_grass'), plant_config('tfc:plant/pampas_grass[age=1,stage=1,part=lower]', 1, 6, 16, requires_clay=True, tall_plant=True), decorate_climate(8, 38, 0, 300))
     configured_plant_patch_feature(rm, ('plant', 'perovskia'), plant_config('tfc:plant/perovskia[age=1,stage=1]', 1, 6, 16, requires_clay=True), decorate_climate(-8.4, 11.6, 0, 280))
+    configured_plant_patch_feature(rm, ('plant', 'rose'), plant_config('tfc:plant/rose[age=1,stage=1,part=lower]', 1, 15, 10, True, tall_plant=True, limit_density=True), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(-7.4, 17.6, 150, 300))
     configured_noise_plant_feature(rm, ('plant', 'water_canna'), plant_config('tfc:plant/water_canna[age=1,stage=1]', 1, 6, 16, requires_clay=True), decorate_climate(11.6, 38, 150, 500))
 
     # Crops

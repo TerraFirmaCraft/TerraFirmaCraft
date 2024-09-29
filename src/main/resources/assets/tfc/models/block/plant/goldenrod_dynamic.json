@@ -1,0 +1,22 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "loader": "tfc:plant",
+  "blooming": {
+    "parent": "tfc:block/plant/goldenrod_0"
+  },
+  "seeding": {
+    "parent": "tfc:block/plant/goldenrod_0"
+  },
+  "dying": {
+    "parent": "tfc:block/plant/goldenrod_1"
+  },
+  "dormant": {
+    "parent": "tfc:block/plant/goldenrod_2"
+  },
+  "sprouting": {
+    "parent": "tfc:block/plant/goldenrod_3"
+  },
+  "budding": {
+    "parent": "tfc:block/plant/goldenrod_4"
+  }
+}

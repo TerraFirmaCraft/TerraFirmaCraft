@@ -1,0 +1,22 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "loader": "tfc:plant",
+  "blooming": {
+    "parent": "tfc:block/plant/black_orchid_0"
+  },
+  "seeding": {
+    "parent": "tfc:block/plant/black_orchid_1"
+  },
+  "dying": {
+    "parent": "tfc:block/plant/black_orchid_1"
+  },
+  "dormant": {
+    "parent": "tfc:block/plant/black_orchid_1"
+  },
+  "sprouting": {
+    "parent": "tfc:block/plant/black_orchid_1"
+  },
+  "budding": {
+    "parent": "tfc:block/plant/black_orchid_2"
+  }
+}

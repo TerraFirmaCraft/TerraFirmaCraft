@@ -1,0 +1,21 @@
+{
+  "loader": "tfc:plant",
+  "blooming": {
+    "parent": "tfc:block/plant/ryegrass_shortest_tuft"
+  },
+  "seeding": {
+    "parent": "tfc:block/plant/ryegrass_shortest_tuft"
+  },
+  "dying": {
+    "parent": "tfc:block/plant/ryegrass_shortest"
+  },
+  "dormant": {
+    "parent": "tfc:block/plant/ryegrass_shortest"
+  },
+  "sprouting": {
+    "parent": "tfc:block/plant/ryegrass_shortest"
+  },
+  "budding": {
+    "parent": "tfc:block/plant/ryegrass_shortest_tuft"
+  }
+}

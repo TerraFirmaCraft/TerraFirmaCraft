@@ -1,71 +1,10 @@
 {
-  "multipart": [
-    {
-      "when": {
-        "part": "lower"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/marigold_double_0"
-        },
-        {
-          "model": "tfc:block/plant/marigold_double_0",
-          "y": 90
-        },
-        {
-          "model": "tfc:block/plant/marigold_double_0",
-          "y": 180
-        },
-        {
-          "model": "tfc:block/plant/marigold_double_0",
-          "y": 270
-        },
-        {
-          "model": "tfc:block/plant/marigold_double_1"
-        },
-        {
-          "model": "tfc:block/plant/marigold_double_1",
-          "y": 90
-        },
-        {
-          "model": "tfc:block/plant/marigold_double_1",
-          "y": 180
-        },
-        {
-          "model": "tfc:block/plant/marigold_double_1",
-          "y": 270
-        },
-        {
-          "model": "tfc:block/plant/marigold_double_2"
-        },
-        {
-          "model": "tfc:block/plant/marigold_double_2",
-          "y": 90
-        },
-        {
-          "model": "tfc:block/plant/marigold_double_2",
-          "y": 180
-        },
-        {
-          "model": "tfc:block/plant/marigold_double_2",
-          "y": 270
-        },
-        {
-          "model": "tfc:block/plant/marigold_double_3"
-        },
-        {
-          "model": "tfc:block/plant/marigold_double_3",
-          "y": 90
-        },
-        {
-          "model": "tfc:block/plant/marigold_double_3",
-          "y": 180
-        },
-        {
-          "model": "tfc:block/plant/marigold_double_3",
-          "y": 270
-        }
-      ]
+  "variants": {
+    "part=upper": {
+      "model": "tfc:block/empty"
+    },
+    "part=lower": {
+      "model": "tfc:block/plant/marigold_dynamic"
     }
-  ]
+  }
 }
