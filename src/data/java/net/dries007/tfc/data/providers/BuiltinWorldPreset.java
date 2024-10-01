@@ -57,7 +57,7 @@ public final class BuiltinWorldPreset
                     new TFCChunkGenerator(
                         new RegionBiomeSource(context.lookup(Registries.BIOME)),
                         noiseSettings.getOrThrow(NoiseGeneratorSettings.OVERWORLD),
-                        new Settings(false, 4_000, 0, 0, 20_000, 0, 20_000, 0, rockLayerSettings(), 0.5f, 0.5f, false)
+                        defaultSettings()
                     )
                 ),
                 LevelStem.NETHER, new LevelStem(

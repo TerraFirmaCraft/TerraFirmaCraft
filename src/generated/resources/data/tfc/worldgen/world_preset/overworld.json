@@ -10,7 +10,9 @@
         "settings": "minecraft:overworld",
         "tfc_settings": {
           "continentalness": 0.5,
+          "finite_continents": false,
           "flat_bedrock": false,
+          "grass_density": 0.5,
           "rainfall_scale": 20000,
           "rock_layer_settings": {
             "bottom": [

@@ -122,6 +122,25 @@ public final class RegionGenerator
     }
 
     /**
+     * @return A smoothly interpolated value in {@code [0, 1]} representing if we are within the finite continent region or not. Higher values
+     * are within the finite continent region.
+     */
+    public float continentFactor(Region.Point point)
+    {
+        if (settings.finiteContinents())
+        {
+            // Finite continent area is within one pole-pole area. Interpolate from 1 -> 0 to 1.2x scale for smooth borders
+            final int scaleX = settings.rainfallScale();
+            final int scaleZ = settings.temperatureScale();
+            return Math.min(
+                scaleX == 0 ? 1f : Mth.clampedMap(Math.abs(Units.gridToBlock(point.x)), scaleX, 1.2f * scaleX, 1, 0),
+                scaleZ == 0 ? 1f : Mth.clampedMap(Math.abs(Units.gridToBlock(point.z) - 0.5f * scaleZ), scaleZ, 1.2f * scaleZ, 1, 0)
+            );
+        }
+        return 1f;
+    }
+
+    /**
      * @return The estimated surface rock type at the given grid coordinates. This should only be used during region point generation!
      */
     public RockSettings getSurfaceRock(int gridX, int gridZ)
