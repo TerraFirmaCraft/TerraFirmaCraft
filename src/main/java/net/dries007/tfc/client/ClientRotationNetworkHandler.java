@@ -46,6 +46,19 @@ public class ClientRotationNetworkHandler
         }
     }
 
+    public static void clear()
+    {
+        NETWORKS.clear();
+    }
+
+    public static String getNetworkDebugTooltip(long networkId)
+    {
+        final var network = NETWORKS.get(networkId);
+        return network != null
+            ? "[speed=%.1f -> %.1f torque=%.1f id=%d]".formatted(NetworkHelpers.SPEED_TO_RPM * network.currentSpeed, NetworkHelpers.SPEED_TO_RPM * network.targetSpeed, network.requiredTorque, networkId)
+            : "[unknown id=%d]".formatted(networkId);
+    }
+
     /**
      * @return The rotation speed of the network, in {@code radians/tick}
      */

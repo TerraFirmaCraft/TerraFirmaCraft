@@ -17,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.ClientRotationNetworkHandler;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.network.NetworkHelpers;
 import net.dries007.tfc.util.network.RotationOwner;
 
 /**
@@ -99,7 +100,6 @@ public final class Tooltips
 
     public static MutableComponent rpm(RotationOwner owner)
     {
-        // radians/tick x 20 ticks/second x 60 seconds/minute div 2pi radians/rotation
-        return Component.translatable("tfc.tooltip.rpm", String.format("%.1f", (20 * 60 / Mth.TWO_PI) * ClientRotationNetworkHandler.getRotationSpeed(owner)));
+        return Component.translatable("tfc.tooltip.rpm", String.format("%.1f", NetworkHelpers.SPEED_TO_RPM * ClientRotationNetworkHandler.getRotationSpeed(owner)));
     }
 }

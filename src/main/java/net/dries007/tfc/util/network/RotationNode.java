@@ -241,7 +241,7 @@ public abstract class RotationNode extends Node
                 if (!connects) convention = convention.getOpposite();
                 return true;
             }
-            return rotation(connection) == rotation;
+            return connects;
         }
 
         @Override
@@ -254,6 +254,44 @@ public abstract class RotationNode extends Node
                     .stream()
                     .map(c -> rotation(c).getSerializedName())
                     .collect(Collectors.joining(", ")));
+        }
+    }
+
+    @Deprecated // decided not to use this
+    public static class Sink extends RotationNode
+    {
+        Direction rotation;
+
+        public Sink(RotationOwner owner, Direction connection, float requiredTorque)
+        {
+            super(owner, EnumSet.of(connection), requiredTorque);
+            this.rotation = connection;
+        }
+
+        @Override
+        public Direction rotation(Direction direction)
+        {
+            assert connections().contains(direction); // Should only query in the exposed directions
+            return rotation;
+        }
+
+        @Override
+        boolean updateFrom(RotationNode node, Direction connection, Direction rotation, boolean force)
+        {
+            assert connections().contains(connection); // Should only query in the exposed directions
+            if (force)
+            {
+                this.rotation = rotation;
+                this.owner.onUpdate();
+                return true;
+            }
+            return this.rotation == rotation;
+        }
+
+        @Override
+        public String toString()
+        {
+            return "Sink[%s, rotation=%s]".formatted(toStringInternal(), rotation);
         }
     }
 }

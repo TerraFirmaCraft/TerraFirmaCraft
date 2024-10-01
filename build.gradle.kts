@@ -129,7 +129,7 @@ neoForge {
     runs {
         configureEach {
             // Only JBR allows enhanced class redefinition, so ignore the option for any other JDKs
-            jvmArguments.addAll("-XX:+IgnoreUnrecognizedVMOptions", "-XX:+AllowEnhancedClassRedefinition", "-ea")
+            jvmArguments.addAll("-XX:+IgnoreUnrecognizedVMOptions", "-XX:+AllowEnhancedClassRedefinition", "-ea", "-XX:ReservedCodeCacheSize=400M")
             systemProperty("tfc.enableDebugSelfTests", "true")
         }
         register("client") {

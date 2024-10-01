@@ -26,11 +26,11 @@ import net.minecraft.world.phys.BlockHitResult;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
-import net.dries007.tfc.common.blockentities.rotation.RotatingBlockEntity;
 import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.devices.DeviceBlock;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.network.RotationOwner;
 
 public class GearBoxBlock extends DeviceBlock implements DirectionPropertyBlock, ConnectedAxleBlock
 {
@@ -89,10 +89,7 @@ public class GearBoxBlock extends DeviceBlock implements DirectionPropertyBlock,
     @Override
     protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
-        if (level.getBlockEntity(pos) instanceof RotatingBlockEntity entity)
-        {
-            entity.destroyIfInvalid(level, pos);
-        }
+        RotationOwner.onTick(level, pos);
     }
 
     @Override

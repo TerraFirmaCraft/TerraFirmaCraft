@@ -16,6 +16,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 public abstract class TFCBlockEntity extends BlockEntity
 {
@@ -104,6 +105,7 @@ public abstract class TFCBlockEntity extends BlockEntity
      * Override to save block entity specific data. Superclass call is to save NeoForge attachments and persistent data.
      */
     @Override
+    @MustBeInvokedByOverriders
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
         super.saveAdditional(tag, provider);
@@ -113,6 +115,7 @@ public abstract class TFCBlockEntity extends BlockEntity
      * Override to load block entity specific data. Superclass call is to load NeoForge attachments and persistent data.
      */
     @Override
+    @MustBeInvokedByOverriders
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
         super.loadAdditional(tag, provider);

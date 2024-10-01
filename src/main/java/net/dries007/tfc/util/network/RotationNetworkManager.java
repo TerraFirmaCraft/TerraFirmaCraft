@@ -8,7 +8,6 @@ package net.dries007.tfc.util.network;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.core.Direction;
@@ -26,6 +25,7 @@ public class RotationNetworkManager extends NetworkManager<RotationNode, Rotatio
     public static final float AXLE_TORQUE = 1;
     public static final float GEARBOX_TORQUE = 1.5f;
     public static final float WINDMILL_TORQUE = 2.5f;
+    public static final float CRANKSHAFT_TORQUE = 4f;
 
     public static final float WINDMILL_PROVIDED_TORQUE = 40;
 
@@ -36,6 +36,13 @@ public class RotationNetworkManager extends NetworkManager<RotationNode, Rotatio
 
     private final List<RotationNetwork> pendingRemovals = new ArrayList<>(20);
     private final List<RotationNetwork> pendingUpdates = new ArrayList<>(20);
+
+    @Nullable
+    public RotationNetwork getNetwork(RotationOwner owner)
+    {
+        final RotationNode node = owner.getRotationNode();
+        return node.isConnectedToNetwork() ? networks.get(node.networkId()) : null;
+    }
 
     public void tick(ServerLevel level)
     {

@@ -36,6 +36,11 @@ public class RotationNetwork extends Network<RotationNode>
         }
     }
 
+    public float speed()
+    {
+        return currentSpeed;
+    }
+
     boolean isActive()
     {
         return active;

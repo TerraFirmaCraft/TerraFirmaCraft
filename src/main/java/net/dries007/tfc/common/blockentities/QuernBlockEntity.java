@@ -12,110 +12,87 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.ItemStackHandler;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blockentities.rotation.RotationSinkBlockEntity;
 import net.dries007.tfc.common.blocks.devices.QuernBlock;
 import net.dries007.tfc.common.capabilities.PartialItemHandler;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.QuernRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.rotation.NetworkAction;
-import net.dries007.tfc.util.rotation.Node;
-import net.dries007.tfc.util.rotation.SinkNode;
+import net.dries007.tfc.util.network.RotationOwner;
 
-import static net.dries007.tfc.TerraFirmaCraft.*;
-
-public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHandler> implements RotationSinkBlockEntity
+public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHandler>
 {
     public static final int SLOT_HANDSTONE = 0;
     public static final int SLOT_INPUT = 1;
     public static final int SLOT_OUTPUT = 2;
 
     public static final int MANUAL_TICKS = 90;
-    public static final float MANUAL_SPEED = Mth.TWO_PI / MANUAL_TICKS; // In radians / tick
-
-    private static final float MANUAL_RECIPE_PER_TICK = 1f; // Exactly 90 ticks at 1/tick
-    private static final float NETWORK_RECIPE_PER_SPEED = MANUAL_TICKS / Mth.TWO_PI; // progress / radian
+    private static final float MANUAL_PROGRESS_PER_TICK = 1f / MANUAL_TICKS; // Exactly 90 ticks
+    private static final float NETWORK_PROGRESS_PER_SPEED_PER_TICK = MANUAL_PROGRESS_PER_TICK / Mth.TWO_PI; // progress / radian
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, QuernBlockEntity quern)
     {
         final ServerLevel serverLevel = (ServerLevel) level;
+        final @Nullable RotationOwner owner = quern.getConnectedNetworkOwner(level);
 
         quern.checkForLastTickSync();
         if (quern.needsStateUpdate)
         {
-            quern.updateHandstone();
-        }
-
-        final boolean wasGrinding = quern.recipeTimer > 0;
-
-        clientTick(level, pos, state, quern);
-
-        if (wasGrinding)
-        {
-            final ItemStack inputStack = quern.inventory.getStackInSlot(SLOT_INPUT);
-            if (!inputStack.isEmpty())
+            quern.updateBlockState();
+            if (owner != null && quern.progress == 0)
             {
-                sendParticle(serverLevel, pos, inputStack, 1);
+                // If there is a rotation owner, re-check the recipe, and if so, set the progress to active
+                quern.tryStartGrinding();
             }
         }
 
-        if (wasGrinding && quern.recipeTimer <= 0)
+        if (tickProgress(level, quern, owner))
         {
-            quern.finishGrinding();
-            Helpers.playSound(level, pos, SoundEvents.ARMOR_STAND_FALL);
-
-            final ItemStack handstone = quern.inventory.getStackInSlot(SLOT_HANDSTONE);
-            final ItemStack undamagedHandstoneStack = handstone.copy();
-            Helpers.damageItem(handstone, level);
-
-            if (!quern.hasHandstone())
+            quern.completeRecipeAndUpdateInventory(serverLevel, pos);
+            if (owner != null)
             {
-                Helpers.playSound(level, pos, SoundEvents.STONE_BREAK);
-                Helpers.playSound(level, pos, SoundEvents.ITEM_BREAK);
-                sendParticle(serverLevel, pos, undamagedHandstoneStack, 15);
+                // Immediately start grinding with another recipe, if we are connected to a network.
+                quern.tryStartGrinding();
             }
-            quern.setAndUpdateSlots(SLOT_HANDSTONE);
-
-            if (quern.isConnectedToNetwork())
-            {
-                // If possible, immediately restart
-                quern.startGrinding();
-            }
-        }
-
-        if (quern.isConnectedToNetwork() && !quern.isGrinding() && level.getGameTime() % 10 == 0)
-        {
-            quern.startGrinding();
         }
     }
 
     public static void clientTick(Level level, BlockPos pos, BlockState state, QuernBlockEntity quern)
     {
-        if (quern.recipeTimer > 0)
+        tickProgress(level, quern, quern.getConnectedNetworkOwner(level));
+    }
+
+    private static boolean tickProgress(Level level, QuernBlockEntity quern, @Nullable RotationOwner owner)
+    {
+        final float rotationSpeed = owner != null
+            ? NETWORK_PROGRESS_PER_SPEED_PER_TICK * RotationOwner.getRotationSpeed(owner)
+            : quern.powered
+                ? MANUAL_PROGRESS_PER_TICK
+                : 0f;
+
+        if (quern.progress > 0 && rotationSpeed > 0)
         {
-            if (quern.node.rotation() != null)
+            quern.progress -= rotationSpeed;
+            if (quern.progress <= 0)
             {
-                quern.previousRotationDirection = quern.node.rotation().direction() == Direction.UP ? 1 : -1;
-                quern.previousRotationSpeed = quern.getRotationSpeed();
+                quern.powered = false;
+                quern.progress = 0;
+                return true;
             }
-            quern.recipeTimer -= quern.isConnectedToNetwork()
-                ? quern.getRotationSpeed() * NETWORK_RECIPE_PER_SPEED
-                : MANUAL_RECIPE_PER_TICK;
         }
+        return false;
     }
 
     private static void sendParticle(ServerLevel level, BlockPos pos, ItemStack item, int count)
@@ -123,25 +100,13 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
         level.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, item), pos.getX() + 0.5D, pos.getY() + 0.875D, pos.getZ() + 0.5D, count, Helpers.triangle(level.random) / 2.0D, level.random.nextDouble() / 4.0D, Helpers.triangle(level.random) / 2.0D, 0.15f);
     }
 
-    private final SinkNode node;
-
-    private float recipeTimer;
     private boolean needsStateUpdate = false;
-    private float previousRotationDirection = 1;
-    private float previousRotationSpeed = MANUAL_SPEED;
+    private boolean powered = false; // If true, the quern was hand powered and will continue grinding until the item is complete
+    private float progress = 0; // [1, 0] indicating the progress grinding the current item
 
     public QuernBlockEntity(BlockPos pos, BlockState state)
     {
         super(TFCBlockEntities.QUERN.get(), pos, state, defaultInventory(3));
-
-        this.recipeTimer = 0;
-        this.node = new SinkNode(pos, Direction.UP) {
-            @Override
-            public String toString()
-            {
-                return "Quern[pos=%s]".formatted(pos());
-            }
-        };
 
         if (TFCConfig.SERVER.quernEnableAutomation.get())
         {
@@ -149,18 +114,6 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
                 .on(new PartialItemHandler(inventory).insert(SLOT_INPUT, SLOT_HANDSTONE), Direction.Plane.HORIZONTAL)
                 .on(new PartialItemHandler(inventory).extract(SLOT_OUTPUT), Direction.DOWN);
         }
-    }
-
-    public void updateHandstone()
-    {
-        assert level != null;
-        BlockState state = level.getBlockState(worldPosition);
-        BlockState newState = Helpers.setProperty(state, QuernBlock.HAS_HANDSTONE, hasHandstone());
-        if (hasHandstone() != state.getValue(QuernBlock.HAS_HANDSTONE))
-        {
-            level.setBlockAndUpdate(worldPosition, newState);
-        }
-        needsStateUpdate = false;
     }
 
     @Override
@@ -184,32 +137,30 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
     }
 
     @Override
-    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider)
+    public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
-        recipeTimer = nbt.getFloat("recipeTimer");
-        super.loadAdditional(nbt, provider);
+        super.loadAdditional(tag, provider);
+        progress = tag.getFloat("progress");
+        powered = tag.getBoolean("powered");
         needsStateUpdate = true;
     }
 
     @Override
-    public void saveAdditional(CompoundTag nbt, HolderLookup.Provider provider)
+    public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
-        nbt.putFloat("recipeTimer", recipeTimer);
-        super.saveAdditional(nbt, provider);
-    }
-
-    @Override
-    public boolean canInteractWith(Player player)
-    {
-        return super.canInteractWith(player) && recipeTimer <= 0 && !isConnectedToNetwork();
+        super.saveAdditional(tag, provider);
+        tag.putFloat("progress", progress);
+        tag.putBoolean("powered", powered);
     }
 
     /**
-     * @return if a recipe is being executed
+     * @return {@code true} if the quern handle can be interacted with, because it has no connected network, and it is not currently powered
+     * by a previous interaction
      */
-    public boolean isGrinding()
+    public boolean canInteractWithHandle()
     {
-        return recipeTimer > 0;
+        assert level != null;
+        return !powered && getConnectedNetworkOwner(level) == null;
     }
 
     public boolean hasHandstone()
@@ -218,63 +169,19 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
     }
 
     /**
-     * Attempts to start grinding. Returns {@code true} if it did.
+     * Attempts to start grinding manually. Returns {@code true} if it did.
      */
     public boolean startGrinding()
     {
         assert level != null;
-        final ItemStack inputStack = inventory.getStackInSlot(SLOT_INPUT);
 
-        if (!inputStack.isEmpty() && hasHandstone())
+        if (tryStartGrinding())
         {
-            final QuernRecipe recipe = QuernRecipe.getRecipe(inputStack);
-            if (recipe != null && recipe.matches(inputStack))
-            {
-                recipeTimer = MANUAL_TICKS;
-                level.playSound(null, worldPosition, TFCSounds.QUERN_DRAG.get(), SoundSource.BLOCKS, 1, 1 + ((level.random.nextFloat() - level.random.nextFloat()) / 16));
-                markForSync();
-                previousRotationDirection = 1;
-                previousRotationSpeed = MANUAL_SPEED;
-                return true;
-            }
+            powered = true; // This was manual
+            level.playSound(null, worldPosition, TFCSounds.QUERN_DRAG.get(), SoundSource.BLOCKS, 1, 1 + ((level.random.nextFloat() - level.random.nextFloat()) / 16)); // And play the sound
+            return true;
         }
         return false;
-    }
-
-    @Override
-    protected void onLoadAdditional()
-    {
-        performNetworkAction(NetworkAction.ADD);
-    }
-
-    @Override
-    protected void onUnloadAdditional()
-    {
-        performNetworkAction(NetworkAction.REMOVE);
-    }
-
-    @Override
-    public Node getRotationNode()
-    {
-        return node;
-    }
-
-    public float getRotationSpeed()
-    {
-        return node.rotation() != null ? Mth.abs(node.rotation().speed()) : (isGrinding() ? previousRotationSpeed : 0f);
-    }
-
-    @Override
-    public float getRotationAngle(float partialTick)
-    {
-        return isConnectedToNetwork()
-            ? RotationSinkBlockEntity.super.getRotationAngle(partialTick)
-            : -recipeTimer * previousRotationSpeed * previousRotationDirection;
-    }
-
-    public boolean isConnectedToNetwork()
-    {
-        return node.rotation() != null && hasHandstone();
     }
 
     public void setHandstoneFromOutsideWorld()
@@ -282,9 +189,58 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
         inventory.setStackInSlot(SLOT_HANDSTONE, new ItemStack(TFCItems.HANDSTONE.get()));
     }
 
-    private void finishGrinding()
+    /**
+     * @param owner The owner identified by {@link #getConnectedNetworkOwner}
+     * @return The current rotation angle, including partial tick, of the quern at this position. Will use either network, or non-network rotation
+     * as necessary.
+     */
+    public float getRotationAngle(@Nullable RotationOwner owner, float partialTick)
+    {
+        return owner != null
+            ? RotationOwner.getRotationAngle(owner, partialTick)
+            : Mth.TWO_PI * (1f - progress);
+    }
+
+    /**
+     * @return A network owner, connected above this quern, if it exists. This queries the world, so it is viable on both sides.
+     */
+    @Nullable
+    public RotationOwner getConnectedNetworkOwner(Level level)
+    {
+        return level.getBlockEntity(worldPosition.above()) instanceof RotationOwner owner
+            && owner.getRotationNode().connections().contains(Direction.DOWN)
+                ? owner
+                : null;
+    }
+
+    private boolean tryStartGrinding()
     {
         assert level != null;
+
+        final ItemStack inputStack = inventory.getStackInSlot(SLOT_INPUT);
+        if (!inputStack.isEmpty() && hasHandstone())
+        {
+            final QuernRecipe recipe = QuernRecipe.getRecipe(inputStack);
+            if (recipe != null && recipe.matches(inputStack))
+            {
+                progress = 1f;
+                markForSync();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void updateBlockState()
+    {
+        assert level != null;
+
+        level.setBlockAndUpdate(worldPosition, getBlockState().setValue(QuernBlock.HAS_HANDSTONE, hasHandstone()));
+        needsStateUpdate = false;
+    }
+
+    private void completeRecipeAndUpdateInventory(ServerLevel level, BlockPos pos)
+    {
         final ItemStack inputStack = inventory.getStackInSlot(SLOT_INPUT);
         if (!inputStack.isEmpty())
         {
@@ -295,15 +251,31 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
                 outputStack = Helpers.mergeInsertStack(inventory, SLOT_OUTPUT, outputStack);
                 if (!outputStack.isEmpty() && !level.isClientSide)
                 {
-                    Helpers.spawnItem(level, worldPosition, outputStack);
+                    Helpers.spawnItem(level, pos, outputStack);
                 }
 
                 // Shrink the input stack after the recipe is done assembling
                 inputStack.shrink(1);
-                markForSync();
+
+                // Play "clunk" sound
+                Helpers.playSound(level, pos, SoundEvents.ARMOR_STAND_FALL);
+
+                // Damage the handstone, possibly breaking it
+                final ItemStack handstone = inventory.getStackInSlot(SLOT_HANDSTONE);
+                final ItemStack undamagedHandstoneStack = handstone.copy();
+
+                Helpers.damageItem(handstone, level);
+
+                if (handstone.isEmpty())
+                {
+                    Helpers.playSound(level, pos, SoundEvents.STONE_BREAK);
+                    Helpers.playSound(level, pos, SoundEvents.ITEM_BREAK);
+                    sendParticle(level, pos, undamagedHandstoneStack, 15);
+                }
+
+                // Update slots, mark for state update, and also marks for sync
+                setAndUpdateSlots(SLOT_HANDSTONE);
             }
         }
-
-        recipeTimer = 0f;
     }
 }

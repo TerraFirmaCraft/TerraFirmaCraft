@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
 
+@Deprecated
 interface RotationAccess
 {
     /**

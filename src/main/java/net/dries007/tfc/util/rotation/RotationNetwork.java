@@ -23,6 +23,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * A single network, consisting of a rotation source, plus any connected components. Forms a <em>directed tree</em>.
  */
+@Deprecated
 final class RotationNetwork
 {
     private final long id;

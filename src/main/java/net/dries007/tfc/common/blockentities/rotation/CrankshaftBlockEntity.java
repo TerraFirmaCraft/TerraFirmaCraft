@@ -17,12 +17,12 @@ import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.TFCBlockEntity;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rotation.CrankshaftBlock;
-import net.dries007.tfc.util.rotation.NetworkAction;
-import net.dries007.tfc.util.rotation.Node;
-import net.dries007.tfc.util.rotation.Rotation;
-import net.dries007.tfc.util.rotation.SinkNode;
+import net.dries007.tfc.util.network.Action;
+import net.dries007.tfc.util.network.RotationNetworkManager;
+import net.dries007.tfc.util.network.RotationNode;
+import net.dries007.tfc.util.network.RotationOwner;
 
-public class CrankshaftBlockEntity extends TFCBlockEntity implements RotationSinkBlockEntity
+public class CrankshaftBlockEntity extends TFCBlockEntity implements RotationOwner
 {
     /**
      * The radius (in pixels / 16f) from the center of the wheel, to the center of the connecting point with the shaft.
@@ -86,7 +86,7 @@ public class CrankshaftBlockEntity extends TFCBlockEntity implements RotationSin
 
     public static float calculateRealRotationAngle(CrankshaftBlockEntity entity, Direction face, float partialTick)
     {
-        float angle = entity.getRotationAngle(partialTick);
+        float angle = RotationOwner.getRotationAngle(entity, partialTick);
 
         if (face == Direction.NORTH || face == Direction.EAST)
         {
@@ -135,7 +135,7 @@ public class CrankshaftBlockEntity extends TFCBlockEntity implements RotationSin
         return state.getBlock() == TFCBlocks.CRANKSHAFT.get() && state.getValue(CrankshaftBlock.PART) == part && state.getValue(CrankshaftBlock.FACING) == direction.getOpposite();
     }
 
-    private final Node node;
+    private final RotationNode node;
 
     public CrankshaftBlockEntity(BlockPos pos, BlockState state)
     {
@@ -143,15 +143,7 @@ public class CrankshaftBlockEntity extends TFCBlockEntity implements RotationSin
 
         // Crank shafts have a single connection, to the CW of their facing, and are thus a sink
         // The piston moves forward in the direction of their facing
-        final Direction connection = state.getValue(CrankshaftBlock.FACING).getCounterClockWise();
-
-        this.node = new SinkNode(pos, connection) {
-            @Override
-            public String toString()
-            {
-                return "Crankshaft[pos=%s]".formatted(pos());
-            }
-        };
+        this.node = new RotationNode.Sink(this, state.getValue(CrankshaftBlock.FACING).getCounterClockWise(), RotationNetworkManager.CRANKSHAFT_TORQUE);
     }
 
     @Override
@@ -159,7 +151,7 @@ public class CrankshaftBlockEntity extends TFCBlockEntity implements RotationSin
     {
         if (getBlockState().getValue(CrankshaftBlock.PART) == CrankshaftBlock.Part.BASE)
         {
-            performNetworkAction(NetworkAction.ADD);
+            performNetworkAction(Action.ADD);
         }
     }
 
@@ -168,12 +160,12 @@ public class CrankshaftBlockEntity extends TFCBlockEntity implements RotationSin
     {
         if (getBlockState().getValue(CrankshaftBlock.PART) == CrankshaftBlock.Part.BASE)
         {
-            performNetworkAction(NetworkAction.REMOVE);
+            performNetworkAction(Action.REMOVE);
         }
     }
 
     @Override
-    public Node getRotationNode()
+    public RotationNode getRotationNode()
     {
         return node;
     }
@@ -183,8 +175,7 @@ public class CrankshaftBlockEntity extends TFCBlockEntity implements RotationSin
      */
     public float getExtensionLength(float partialTick)
     {
-        final Rotation rotation = node.rotation();
-        if (rotation != null)
+        if (isConnectedToNetwork())
         {
             final Direction face = getBlockState().getValue(CrankshaftBlock.FACING);
             final float rotationAngle = calculateRealRotationAngle(this, face, partialTick);

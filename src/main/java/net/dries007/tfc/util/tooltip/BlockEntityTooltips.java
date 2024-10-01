@@ -26,6 +26,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.client.ClientRotationNetworkHandler;
 import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
 import net.dries007.tfc.common.blockentities.BellowsBlockEntity;
@@ -155,6 +156,12 @@ public final class BlockEntityTooltips
         if (entity instanceof RotationOwner owner)
         {
             tooltip.accept(Tooltips.rpm(owner));
+            if (owner.isConnectedToNetwork() && TFCConfig.CLIENT.enableDebug.get())
+            {
+                // Only display tooltips for nodes that are synced, which includes syncing their networkId
+                tooltip.accept(Component.literal("[Debug] " + owner.getRotationNode()));
+                tooltip.accept(Component.literal("[Debug] " + ClientRotationNetworkHandler.getNetworkDebugTooltip(owner.getRotationNode().networkId())));
+            }
         }
     };
 
@@ -273,7 +280,7 @@ public final class BlockEntityTooltips
     };
 
     public static final BlockEntityTooltip COMPOSTER = (level, state, pos, entity, tooltip) -> {
-        if (state.getBlock() instanceof TFCComposterBlock block && entity instanceof ComposterBlockEntity composter)
+        if (state.getBlock() instanceof TFCComposterBlock && entity instanceof ComposterBlockEntity composter)
         {
             if (composter.isRotten())
             {
@@ -290,7 +297,7 @@ public final class BlockEntityTooltips
     };
 
     public static final BlockEntityTooltip CROP = (level, state, pos, entity, tooltip) -> {
-        if (entity instanceof CropBlockEntity crop && state.getBlock() instanceof CropBlock block)
+        if (entity instanceof CropBlockEntity crop && state.getBlock() instanceof CropBlock)
         {
             tooltip.accept(Component.translatable("tfc.jade.yield", String.format("%.0f", crop.getYield() * 100)));
         }

@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.util.rotation;
 
+@Deprecated
 public enum NetworkAction
 {
     ADD, ADD_SOURCE, UPDATE, REMOVE

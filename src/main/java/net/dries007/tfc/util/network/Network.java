@@ -40,6 +40,11 @@ public class Network<T extends Node>
         return nodes.values();
     }
 
+    public final int size()
+    {
+        return nodes.size();
+    }
+
     @Nullable
     final T getNode(long key)
     {
@@ -54,10 +59,5 @@ public class Network<T extends Node>
     final void addNode(T node)
     {
         nodes.put(node.key(), node);
-    }
-
-    final int size()
-    {
-        return nodes.size();
     }
 }

@@ -22,6 +22,7 @@ import net.dries007.tfc.util.calendar.Calendars;
 /**
  * The core element of a rotation network. This is supplied as a capability from a {@link net.minecraft.world.level.block.entity.BlockEntity} to expose that entity as connected to the rotation network.
  */
+@Deprecated
 public abstract class Node
 {
     public static final int NO_NETWORK = -1;

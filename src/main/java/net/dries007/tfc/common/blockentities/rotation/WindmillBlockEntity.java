@@ -27,12 +27,6 @@ import net.dries007.tfc.util.network.Action;
 import net.dries007.tfc.util.network.RotationNetworkManager;
 import net.dries007.tfc.util.network.RotationNode;
 import net.dries007.tfc.util.network.RotationOwner;
-import net.dries007.tfc.util.rotation.NetworkAction;
-import net.dries007.tfc.util.rotation.Node;
-import net.dries007.tfc.util.rotation.Rotation;
-import net.dries007.tfc.util.rotation.SourceNode;
-
-import static net.dries007.tfc.TerraFirmaCraft.*;
 
 
 public class WindmillBlockEntity extends TickableInventoryBlockEntity<ItemStackHandler> implements RotationOwner

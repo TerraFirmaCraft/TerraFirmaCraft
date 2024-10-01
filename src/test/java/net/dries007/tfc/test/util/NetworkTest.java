@@ -327,8 +327,14 @@ public class NetworkTest
             final Long2ObjectMap<Node> nodes = (Long2ObjectMap<Node>) nodesField.get(manager);
             final Long2ObjectMap<Network<?>> networks = (Long2ObjectMap<Network<?>>) networksField.get(manager);
 
-            networks.forEach((networkId, networkNodes) -> networkNodes.getNodes().forEach(node -> assertEquals(networkId, node.networkId(), "Node with incorrect network:\n" + manager)));
-            nodes.forEach((key, node) -> assertTrue(node.isConnectedToNetwork(), "Node without network:\n" + manager));
+            networks.forEach((networkId, networkNodes) -> networkNodes.getNodes().forEach(node -> {
+                assertEquals(networkId, node.networkId(), "Node with incorrect network:\n" + manager);
+                assertTrue(nodes.containsValue(node), "Node orphaned in network:\n" + manager);
+            }));
+            nodes.forEach((key, node) -> {
+                assertTrue(node.isConnectedToNetwork(), "Node without network:\n" + manager);
+                assertTrue(networks.get(node.networkId()).getNodes().contains(node), "Node not present in network:\n" + manager);
+            });
         });
     }
 

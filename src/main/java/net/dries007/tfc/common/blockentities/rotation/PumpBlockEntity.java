@@ -69,8 +69,8 @@ public class PumpBlockEntity extends TFCBlockEntity
     {
         if (shaft != null)
         {
-            final Rotation rotation = shaft.getRotationNode().rotation();
-            return rotation != null && rotation.speed() != 0;
+            // todo: make pump work
+            return false;
         }
         return false;
     }

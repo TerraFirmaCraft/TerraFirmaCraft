@@ -20,6 +20,7 @@ import net.dries007.tfc.util.calendar.ICalendar;
  * One primary instance of {@link Rotation.Tickable} is meant to be created by a source within a mechanical network.
  * Other components that only transfer rotations, should create non-tickable instances that simply refer to the origin rotation, but modify the direction (i.e. if the handedness changes).
  */
+@Deprecated
 public interface Rotation
 {
     static Rotation.Tickable of(Direction direction, float initialSpeed)
@@ -180,6 +181,7 @@ public interface Rotation
         return speed() < 0 ? direction().getOpposite() : direction();
     }
 
+    @Deprecated
     interface Tickable extends Rotation
     {
         void tick();

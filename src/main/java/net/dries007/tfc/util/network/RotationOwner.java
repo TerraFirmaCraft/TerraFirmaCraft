@@ -8,8 +8,10 @@ package net.dries007.tfc.util.network;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
+import net.dries007.tfc.client.ClientRotationNetworkHandler;
 import net.dries007.tfc.common.blockentities.TFCBlockEntity;
 
 /**
@@ -38,6 +40,45 @@ public interface RotationOwner
         }
     }
 
+    static float getRotationSpeed(RotationOwner owner)
+    {
+        final RotationNode node = owner.getRotationNode();
+        if (!node.valid || !node.isConnectedToNetwork())
+        {
+            return 0f;
+        }
+
+        final Level level = owner.self().getLevel();
+        if (level instanceof ServerLevel serverLevel)
+        {
+            final var network = RotationNetworkManager.get(serverLevel).getNetwork(owner);
+            return network == null ? 0f : network.currentSpeed;
+        }
+        return ClientRotationNetworkHandler.getRotationSpeed(owner);
+    }
+
+    static float getRotationAngle(RotationOwner owner, float partialTick)
+    {
+        final RotationNode node = owner.getRotationNode();
+        if (!node.valid || !node.isConnectedToNetwork())
+        {
+            return 0f;
+        }
+
+        final Level level = owner.self().getLevel();
+        if (level instanceof ServerLevel serverLevel)
+        {
+            final RotationNetworkManager manager = RotationNetworkManager.get(serverLevel);
+            final RotationNetwork network = manager.networks.get(node.networkId());
+            return network == null ? 0f : network.currentAngle + partialTick * network.currentSpeed;
+        }
+        if (level != null && level.isClientSide)
+        {
+            return ClientRotationNetworkHandler.getRotationAngle(owner, partialTick);
+        }
+        return 0f;
+    }
+
     /**
      * Handles updates to the rotation network. Must be called through methods which update the block entity's state within the network.
      * <ul>
@@ -63,6 +104,10 @@ public interface RotationOwner
                 getRotationNode().valid = false;
                 level.scheduleTick(entity.getBlockPos(), entity.getBlockState().getBlock(), DELAY_FOR_INVALID_IN_NETWORK);
             }
+            if (action == Action.REMOVE)
+            {
+                getRotationNode().valid = false; // Don't allow reentrant remove() calls
+            }
         }
     }
 
@@ -75,8 +120,20 @@ public interface RotationOwner
         }
     }
 
+    @Deprecated // This probably doesn't mean what it used to mean
+    default boolean isConnectedToNetwork()
+    {
+        return getRotationNode().isConnectedToNetwork();
+    }
+
+    /**
+     * @return The rotation node this block entity controls.
+     */
     RotationNode getRotationNode();
 
+    /**
+     * @implNote Indirectly implemented by {@link BlockEntity#getBlockPos()}
+     */
     BlockPos getBlockPos();
 
     private TFCBlockEntity self()

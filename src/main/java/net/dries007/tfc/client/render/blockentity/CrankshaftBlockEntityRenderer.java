@@ -61,7 +61,7 @@ public class CrankshaftBlockEntityRenderer implements BlockEntityRenderer<Cranks
         // Normally, rotation is never set on the shaft part, as that node never connects itself to the network
         // However when we render via Patchouli's multiblock system, we can't query the world for adjacent blocks,
         // So we have to rely on the rotation set via hacks directly onto the shaft.
-        if (part == CrankshaftBlock.Part.SHAFT && crankshaft.getRotationNode().rotation() == null)
+        if (part == CrankshaftBlock.Part.SHAFT && false) // todo: fix this rotation
         {
             final BlockEntity mainPart = level.getBlockEntity(pos.relative(face, -1));
             if ((!(mainPart instanceof CrankshaftBlockEntity mainEntity)))
@@ -93,7 +93,7 @@ public class CrankshaftBlockEntityRenderer implements BlockEntityRenderer<Cranks
 
             // Render an extension of the axle
             final BlockState adjacentAxleState = level.getBlockState(crankshaft.getBlockPos().relative(face.getCounterClockWise()));
-            if (adjacentAxleState.getBlock() instanceof ConnectedAxleBlock axleBlock && crankshaft.getRotationNode().isConnectedToNetwork())
+            if (adjacentAxleState.getBlock() instanceof ConnectedAxleBlock axleBlock && crankshaft.isConnectedToNetwork())
             {
                 final ResourceLocation axleTexture = axleBlock.getAxleTextureLocation();
                 final TextureAtlasSprite axleSprite = RenderHelpers.blockTexture(axleTexture);

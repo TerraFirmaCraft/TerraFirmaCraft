@@ -35,13 +35,6 @@ public class GearBoxBlockEntity extends TFCBlockEntity implements RotationOwner
     public GearBoxBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
         super(type, pos, state);
-
-        // Gearboxes start with no connections initially set, and by hammer, we enable or disable certain connections
-        // To model what a gearbox does to rotation direction, we model gearboxes as having a set of four gears, all interlocking
-        // - This model of gearbox must have one axis of rotation which is unused
-        // - When the output direction is the same axis as the input direction, the rotation is inverted
-        // - When the output direction is in any perpendicular axis, the rotation angle is the opposite _convention_ (so an incoming rotation hand -> an outgoing perpendicular hand)
-
         final EnumSet<Direction> connections = EnumSet.noneOf(Direction.class);
         for (Direction direction : Helpers.DIRECTIONS)
         {
@@ -73,7 +66,7 @@ public class GearBoxBlockEntity extends TFCBlockEntity implements RotationOwner
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
         super.saveAdditional(tag, provider);
-        node.saveAdditional(tag);
+        node.saveAdditionalNoClient(tag);
     }
 
     @Override
@@ -81,12 +74,6 @@ public class GearBoxBlockEntity extends TFCBlockEntity implements RotationOwner
     {
         super.loadAdditional(tag, provider);
         node.loadAdditional(tag);
-    }
-
-    @Override
-    protected void loadAdditionalOnClient(CompoundTag tag, HolderLookup.Provider provider)
-    {
-        node.loadAdditionalOnClient(tag);
     }
 
     @Override

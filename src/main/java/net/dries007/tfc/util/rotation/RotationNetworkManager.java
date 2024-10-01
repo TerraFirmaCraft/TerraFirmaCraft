@@ -23,6 +23,7 @@ import net.dries007.tfc.util.tracker.WorldTracker;
  * <p>
  * A single {@link RotationNetworkManager} is maintained per-world, on both sides.
  */
+@Deprecated
 public final class RotationNetworkManager implements RotationAccess
 {
     public static RotationNetworkManager get(Level level)
@@ -47,7 +48,6 @@ public final class RotationNetworkManager implements RotationAccess
     /**
      * Performs the given action on the network. Note that if {@code action} is {@link NetworkAction#ADD_SOURCE}, then {@code node} <strong>must</strong> be a {@link SourceNode}
      *
-     * @see net.dries007.tfc.common.blockentities.rotation.RotatingBlockEntity#performNetworkAction(NetworkAction)
      */
     public boolean performAction(Node node, NetworkAction action)
     {

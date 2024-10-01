@@ -15,6 +15,12 @@ import net.minecraft.util.Mth;
 public final class NetworkHelpers
 {
     /**
+     * Conversion factor from radians/tick to rotations/minute:
+     * {@code radians/tick x 20 ticks/second x 60 seconds/minute div 2pi radians/rotation}
+     */
+    public static final float SPEED_TO_RPM = (20 * 60 / Mth.TWO_PI);
+
+    /**
      * @return The set of connections in a given axis
      */
     public static EnumSet<Direction> ofAxis(Direction.Axis axis)

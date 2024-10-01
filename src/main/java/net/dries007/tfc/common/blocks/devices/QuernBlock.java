@@ -69,12 +69,14 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
             final Vec3 hit = result.getLocation();
             if (quern.hasHandstone())
             {
-                if (!quern.isGrinding() && HANDLE_AABB.move(pos).contains(hit))
+                if (quern.canInteractWithHandle() && HANDLE_AABB.move(pos).contains(hit))
                 {
                     return SelectionPlace.HANDLE;
                 }
-                else if (!quern.isGrinding() && !held.isEmpty() || !inventory.getStackInSlot(SLOT_INPUT).isEmpty() && INPUT_SLOT_AABB.move(pos).contains(hit))
-                {
+                else if (
+                    (quern.canInteractWithHandle() || inventory.getStackInSlot(SLOT_INPUT).isEmpty()) &&
+                    INPUT_SLOT_AABB.move(pos).contains(hit)
+                ) {
                     return SelectionPlace.INPUT_SLOT;
                 }
             }
@@ -124,7 +126,8 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
     {
         if (level.getBlockEntity(pos) instanceof QuernBlockEntity quern)
         {
-            final float rotationSpeed = quern.getRotationSpeed();
+            // todo: quern rotation speed
+            final float rotationSpeed = 0f;//quern.getRotationSpeed();
             if (rotationSpeed != 0f && HANDSTONE_AABB.move(pos).contains(entity.position()) && !BASE_AABB.contains(entity.position()))
             {
                 Helpers.rotateEntity(level, entity, HANDSTONE_CENTER.add(pos.getX(), pos.getY(), pos.getZ()), -rotationSpeed * Constants.RAD_TO_DEG);
@@ -136,7 +139,7 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
         final QuernBlockEntity quern = level.getBlockEntity(pos, TFCBlockEntities.QUERN.get()).orElse(null);
-        if (quern != null && !quern.isGrinding())
+        if (quern != null)
         {
             final IItemHandler inventory = quern.getInventory();
             final ItemStack heldStack = player.getItemInHand(hand);
@@ -156,7 +159,7 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
 
     private ItemInteractionResult attemptGrind(Level level, BlockPos pos, QuernBlockEntity quern)
     {
-        return !quern.isConnectedToNetwork() && quern.startGrinding()
+        return quern.canInteractWithHandle() && quern.startGrinding()
             ? ItemInteractionResult.sidedSuccess(level.isClientSide)
             : ItemInteractionResult.FAIL;
     }

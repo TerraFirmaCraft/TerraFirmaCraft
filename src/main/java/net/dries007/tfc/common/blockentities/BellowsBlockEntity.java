@@ -29,7 +29,6 @@ import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.blockentities.rotation.CrankshaftBlockEntity;
 import net.dries007.tfc.common.blocks.devices.BellowsBlock;
 import net.dries007.tfc.common.blocks.devices.IBellowsConsumer;
-import net.dries007.tfc.util.rotation.Rotation;
 
 public class BellowsBlockEntity extends TFCBlockEntity
 {
@@ -42,17 +41,18 @@ public class BellowsBlockEntity extends TFCBlockEntity
 
     public static void tickBoth(Level level, BlockPos pos, BlockState state, BellowsBlockEntity bellows)
     {
-        final @Nullable Rotation networkRotation = bellows.getCrankRotation();
+        final @Nullable CrankshaftBlockEntity shaft = bellows.getCrankBlockEntity();
         final float extension = bellows.getExtensionLength(1f);
-        if (extension > MAX_EXTENSION - 0.05f && !bellows.justPushed && bellows.lastPushed + 20 < level.getGameTime() && networkRotation != null)
+        if (extension > MAX_EXTENSION - 0.05f && !bellows.justPushed && bellows.lastPushed + 20 < level.getGameTime() && shaft != null && shaft.isConnectedToNetwork())
         {
             bellows.doPush();
 
             // Calculate a 'last pushed' time based on how fast the bellows is currently being operated,
             // which we can infer from the speed (assuming it does not speed up or slow down significantly
             // This prevents really slow moving bellows from triggering this push twice
+            // todo: figure out what needs to happen here
             bellows.justPushed = true;
-            bellows.lastPushed = level.getGameTime() - 20 + Math.max(20, (int) (0.8f * Mth.TWO_PI / networkRotation.speed()));
+            bellows.lastPushed = level.getGameTime() - 15;
         }
         else if (bellows.justPushed)
         {
@@ -95,14 +95,8 @@ public class BellowsBlockEntity extends TFCBlockEntity
 
     public boolean isConnectedToNetwork()
     {
-        return getCrankRotation() != null;
-    }
-
-    @Nullable
-    public Rotation getCrankRotation()
-    {
-        final CrankshaftBlockEntity crank = getCrankBlockEntity();
-        return crank == null ? null : crank.getRotationNode().rotation();
+        final CrankshaftBlockEntity entity = getCrankBlockEntity();
+        return entity != null && entity.isConnectedToNetwork();
     }
 
     @Nullable
@@ -224,11 +218,5 @@ public class BellowsBlockEntity extends TFCBlockEntity
 
         level.playSound(null, worldPosition, TFCSounds.BELLOWS_BLOW.get(), SoundSource.BLOCKS, 1, 1 + ((level.random.nextFloat() - level.random.nextFloat()) / 16));
         level.addParticle(ParticleTypes.POOF, facingPos.getX() + 0.5f - 0.3f * direction.getStepX(), facingPos.getY() + 0.5f, facingPos.getZ() + 0.5f - 0.3f * direction.getStepZ(), 0, 0.005D, 0);
-    }
-
-    public int getTicksSincePushed()
-    {
-        assert level != null;
-        return (int) (level.getGameTime() - lastPushed);
     }
 }
