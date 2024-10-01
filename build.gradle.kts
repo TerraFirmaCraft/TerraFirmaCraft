@@ -17,8 +17,6 @@ val parchmentMinecraftVersion: String = "1.21"
 val emiVersion: String = "1.1.10+1.21"
 val jeiVersion: String = "19.5.2.66"
 val patchouliVersion: String = "1.21-87-NEOFORGE-SNAPSHOT"
-val jadeVersion: String = "5529595"
-val topVersion: String = "1.21_neo-12.0.3-5"
 
 val modId: String = "tfc"
 val modVersion: String = System.getenv("VERSION") ?: "0.0.0-indev"
@@ -102,8 +100,11 @@ dependencies {
     implementation("vazkii.patchouli:Patchouli:$patchouliVersion")
 
     // Jade / The One Probe
-    implementation("curse.maven:jade-324717:$jadeVersion")
-    compileOnly("mcjty.theoneprobe:theoneprobe:$topVersion")
+    implementation(group = "curse.maven", name = "jade-324717", version = "5529595")
+    compileOnly(group = "mcjty.theoneprobe", name = "theoneprobe", version = "1.21_neo-12.0.3-5")
+
+    // ModernFix - useful at runtime for significant memory savings in TFC in dev (see i.e. wall block shape caches)
+    runtimeOnly(group = "curse.maven", name = "modernfix-790626", version = "5659985")
 
     // Data
     "dataImplementation"(sourceSets["main"].output)
