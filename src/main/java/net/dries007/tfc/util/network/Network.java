@@ -10,11 +10,13 @@ import java.util.Comparator;
 import java.util.stream.Collectors;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
-import net.minecraft.core.BlockPos;
+import it.unimi.dsi.fastutil.objects.ObjectCollection;
 import org.jetbrains.annotations.Nullable;
 
 public class Network<T extends Node>
 {
+    // Prefer not doing direct modification to this map, rather, access through
+    // the methods in NetworkManager, which allow for listening to updates
     final Long2ObjectMap<T> nodes = new Long2ObjectOpenHashMap<>();
     final long networkId;
 
@@ -31,5 +33,31 @@ public class Network<T extends Node>
             .sorted(Comparator.comparing(Node::pos))
             .map(e -> e + "\n")
             .collect(Collectors.joining()));
+    }
+
+    public ObjectCollection<T> getNodes()
+    {
+        return nodes.values();
+    }
+
+    @Nullable
+    final T getNode(long key)
+    {
+        return nodes.get(key);
+    }
+
+    final void removeNode(T node)
+    {
+        nodes.remove(node.key());
+    }
+
+    final void addNode(T node)
+    {
+        nodes.put(node.key(), node);
+    }
+
+    final int size()
+    {
+        return nodes.size();
     }
 }

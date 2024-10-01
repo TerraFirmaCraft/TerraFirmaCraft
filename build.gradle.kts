@@ -199,6 +199,7 @@ tasks {
 
     test {
         useJUnitPlatform()
+        jvmArgs("-ea")
     }
 
     jar {

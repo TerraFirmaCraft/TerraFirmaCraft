@@ -67,10 +67,7 @@ public class WindmillBlock extends DeviceBlock implements EntityBlockExtension, 
     @Override
     protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
-        if (level.getBlockEntity(pos) instanceof RotationOwner entity)
-        {
-            entity.destroyIfInvalid(level, pos);
-        }
+        RotationOwner.onTick(level, pos);
     }
 
     @Override

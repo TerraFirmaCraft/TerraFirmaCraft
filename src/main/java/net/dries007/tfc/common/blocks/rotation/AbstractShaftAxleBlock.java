@@ -30,6 +30,7 @@ import net.dries007.tfc.common.blocks.wood.ExtendedRotatedPillarBlock;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
+import net.dries007.tfc.util.network.RotationOwner;
 
 public abstract class AbstractShaftAxleBlock extends ExtendedRotatedPillarBlock implements IFluidLoggable, EntityBlockExtension, ConnectedAxleBlock
 {
@@ -59,10 +60,7 @@ public abstract class AbstractShaftAxleBlock extends ExtendedRotatedPillarBlock 
     @Override
     protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
-        if (level.getBlockEntity(pos) instanceof RotatingBlockEntity entity)
-        {
-            entity.destroyIfInvalid(level, pos);
-        }
+        RotationOwner.onTick(level, pos);
     }
 
     @Override

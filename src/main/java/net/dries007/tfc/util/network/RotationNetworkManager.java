@@ -65,7 +65,10 @@ public class RotationNetworkManager extends NetworkManager<RotationNode, Rotatio
                     payload.add(new RotationNetworkPayload(network));
                 }
             }
-            PacketDistributor.sendToPlayersInDimension(level, new RotationNetworkUpdatePacket(payload));
+            if (!payload.isEmpty())
+            {
+                PacketDistributor.sendToPlayersInDimension(level, new RotationNetworkUpdatePacket(payload));
+            }
             pendingRemovals.clear();
             pendingUpdates.clear();
         }
@@ -87,7 +90,7 @@ public class RotationNetworkManager extends NetworkManager<RotationNode, Rotatio
     @Override
     protected boolean updateNodeFrom(RotationNode node, RotationNode adjNode, Direction connection, boolean force)
     {
-        return node.updateFrom(adjNode, connection, Objects.requireNonNull(adjNode.rotation(connection.getOpposite())), force);
+        return node.updateFrom(adjNode, connection, adjNode.rotation(connection.getOpposite()), force);
     }
 
     @Override
@@ -109,14 +112,8 @@ public class RotationNetworkManager extends NetworkManager<RotationNode, Rotatio
     {
         super.addNodeToNetwork(network, node);
         network.addNodeToNetwork(node);
-        node.owner.markForSync();
+        node.owner.onUpdate();
         pendingUpdates.add(network);
-    }
-
-    @Override
-    protected void updateInNetwork(RotationNode node)
-    {
-        super.updateInNetwork(node);
     }
 
     @Override
@@ -131,7 +128,17 @@ public class RotationNetworkManager extends NetworkManager<RotationNode, Rotatio
     {
         super.removeNodeFromNetwork(network, node);
         network.removeNodeFromNetwork(node);
-        node.owner.markForSync();
+        node.owner.onUpdate();
         pendingUpdates.add(network);
+    }
+
+    @Override
+    protected void moveNodeBetweenNetworks(RotationNetwork oldNetwork, RotationNetwork newNetwork, RotationNode node)
+    {
+        super.moveNodeBetweenNetworks(oldNetwork, newNetwork, node);
+        oldNetwork.updateTargetSpeed();
+        newNetwork.updateTargetSpeed();
+        node.owner.onUpdate(); // Only triggers a single markForSync()
+        pendingUpdates.add(oldNetwork);
     }
 }

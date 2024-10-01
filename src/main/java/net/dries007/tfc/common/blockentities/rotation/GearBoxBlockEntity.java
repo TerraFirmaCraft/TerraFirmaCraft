@@ -25,7 +25,7 @@ import net.dries007.tfc.util.network.RotationOwner;
 
 public class GearBoxBlockEntity extends TFCBlockEntity implements RotationOwner
 {
-    private final RotationNode node;
+    private final RotationNode.GearBox node;
 
     public GearBoxBlockEntity(BlockPos pos, BlockState state)
     {
@@ -65,6 +65,7 @@ public class GearBoxBlockEntity extends TFCBlockEntity implements RotationOwner
         {
             node.connections().remove(direction);
         }
+        node.updateConvention();
         performNetworkAction(Action.UPDATE);
     }
 

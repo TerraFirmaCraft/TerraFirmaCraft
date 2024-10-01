@@ -33,8 +33,8 @@ public record RotationNetworkPayload(
     }, buffer -> {
         final long networkId = buffer.readVarLong();
         final float torqueFlag = buffer.readFloat();
-        return torqueFlag > 0 ?
-            new RotationNetworkPayload(networkId, torqueFlag, buffer.readFloat(), buffer.readFloat(), buffer.readFloat())
+        return torqueFlag > 0
+            ? new RotationNetworkPayload(networkId, torqueFlag, buffer.readFloat(), buffer.readFloat(), buffer.readFloat())
             : new RotationNetworkPayload(networkId, torqueFlag, 0, 0, 0);
     });
 

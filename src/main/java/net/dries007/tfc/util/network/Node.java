@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.util.network;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Set;
 import net.minecraft.core.BlockPos;
@@ -16,25 +14,6 @@ import net.minecraft.core.Direction;
 public class Node
 {
     public static final int NO_NETWORK = -1;
-
-    /**
-     * @return The set of connections in a given axis
-     */
-    public static EnumSet<Direction> ofAxis(Direction.Axis axis)
-    {
-        return EnumSet.of(
-            Direction.fromAxisAndDirection(axis, Direction.AxisDirection.POSITIVE),
-            Direction.fromAxisAndDirection(axis, Direction.AxisDirection.NEGATIVE)
-        );
-    }
-
-    /**
-     * @return The set of connections (possibly empty) of {@code directions}.
-     */
-    public static EnumSet<Direction> of(Direction... directions)
-    {
-        return directions.length == 0 ? EnumSet.noneOf(Direction.class) : EnumSet.copyOf(Arrays.asList(directions));
-    }
 
     private final BlockPos pos;
     private final long posKey;
@@ -68,7 +47,7 @@ public class Node
         this.networkId = networkId;
     }
 
-    final boolean isConnectedToNetwork()
+    public final boolean isConnectedToNetwork()
     {
         return networkId != NO_NETWORK;
     }

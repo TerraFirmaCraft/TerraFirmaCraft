@@ -19,6 +19,7 @@ import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.MustBeInvokedByOverriders;
 import org.jetbrains.annotations.Nullable;
 
 
@@ -48,7 +49,11 @@ public class NetworkManager<T extends Node, N extends Network<T>>
             case ADD -> add(node);
             case UPDATE -> update(node);
             case UPDATE_IN_NETWORK -> {
-                updateInNetwork(node);
+                final N network = networks.get(node.networkId());
+                if (network != null)
+                {
+                    updateNetwork(network);
+                }
                 yield true;
             }
             case REMOVE -> {
@@ -104,9 +109,15 @@ public class NetworkManager<T extends Node, N extends Network<T>>
         // This may involve splitting networks into connected components.
         final N originNetwork = getOwningNetwork(node);
 
+        // The node should belong to a network already, for it to be updated.
         assert node.isConnectedToNetwork();
         assert originNetwork != null;
 
+        // First, remove the node from the network it currently is in. We do this so we get a new updated state, if we happen to connect
+        // to adjacent networks.
+        removeNodeFromNetwork(originNetwork, node);
+
+        final boolean originNetworkOnlyHadSingleNode = originNetwork.size() == 0;
         final boolean isValid = updateConnectionsToAdjacentNetworks(node, originNetwork);
         if (!isValid)
         {
@@ -114,9 +125,38 @@ public class NetworkManager<T extends Node, N extends Network<T>>
             nodes.remove(node.key());
         }
 
-        // After updating, we need to re-check connectivity of the origin network, if valid or not
-        updateExistingNetworkAfterRemovingConnectivity(originNetwork);
-        updateNetwork(originNetwork);
+        // After updating, consider special cases
+        if (originNetworkOnlyHadSingleNode)
+        {
+            if (node.isConnectedToNetwork())
+            {
+                // This node connected to a different network, via updating adjacent connections. Remove the orphaned network
+                networks.remove(originNetwork.networkId);
+                removeNetwork(originNetwork);
+            }
+            else
+            {
+                // This node did not make any adjacent connections, so re-add to the origin network, leaving the node unchanged
+                addNodeToNetwork(originNetwork, node);
+            }
+        }
+        else
+        {
+            // The origin network had more than one node, meaning it will persist even if we disconnect this node
+            // It also means we have to re-check connectivity within the remainder of the network
+            updateExistingNetworkAfterRemovingConnectivity(originNetwork);
+
+            // Additionally, if the new node was not connected to any network, then we need to recreate a new,
+            // empty network containing only this node. It must always be valid because single-node networks are valid,
+            // and it was already noted above that it connects to no other nodes. It will already be present in the
+            // global node list
+            //
+            // This is identical to the add() call path, assuming connections() is empty.
+            if (!node.isConnectedToNetwork())
+            {
+                addNodeToNetwork(createAndAddNetwork(null), node);
+            }
+        }
 
         return isValid;
     }
@@ -132,7 +172,7 @@ public class NetworkManager<T extends Node, N extends Network<T>>
         nodes.remove(node.key());
 
         // Two special cases for small networks sizes
-        switch (originNetwork.nodes.size())
+        switch (originNetwork.size())
         {
             case 1:
                 // Network only containing this node, which we can remove outright
@@ -150,7 +190,6 @@ public class NetworkManager<T extends Node, N extends Network<T>>
                 // So, we remove the node from the network first, and then update existing networks
                 removeNodeFromNetwork(originNetwork, node);
                 updateExistingNetworkAfterRemovingConnectivity(originNetwork);
-                updateNetwork(originNetwork);
                 break;
         }
     }
@@ -285,7 +324,9 @@ public class NetworkManager<T extends Node, N extends Network<T>>
             // Find all connected components from an arbitrary unvisited node
             final LongArrayFIFOQueue queue = new LongArrayFIFOQueue(unvisited.size());
             final long origin = unvisited.firstLong();
-            final T originNode = network.nodes.get(origin);
+            final T originNode = network.getNode(origin);
+
+            assert originNode != null;
 
             // First time, we use the existing network. Any other times, we create a new network
             if (resultNetwork == null)
@@ -297,8 +338,7 @@ public class NetworkManager<T extends Node, N extends Network<T>>
             {
                 // If we create a new network, then immediately add the origin node to it as the first node
                 resultNetwork = createAndAddNetwork(network);
-                network.nodes.remove(origin);
-                addNodeToNetwork(resultNetwork, originNode);
+                moveNodeBetweenNetworks(network, resultNetwork, originNode);
             }
 
             unvisited.remove(origin);
@@ -308,7 +348,10 @@ public class NetworkManager<T extends Node, N extends Network<T>>
             {
                 // Dequeue the current node, which belongs to our already visited network, hence using `resultNetwork` here
                 final long current = queue.dequeueLong();
-                final T currentNode = resultNetwork.nodes.get(current);
+                final T currentNode = resultNetwork.getNode(current);
+
+                assert currentNode != null;
+
                 for (Direction direction : currentNode.connections())
                 {
                     cursor.setWithOffset(currentNode.pos(), direction);
@@ -319,7 +362,9 @@ public class NetworkManager<T extends Node, N extends Network<T>>
                     final long nextKey = cursor.asLong();
                     if (unvisited.contains(nextKey))
                     {
-                        final T nextNode = network.nodes.get(nextKey);
+                        final T nextNode = network.getNode(nextKey);
+
+                        assert nextNode != null;
                         if (nextNode.connections().contains(direction.getOpposite()))
                         {
                             // Both nodes connect, so we remove that node from the unvisited set, and enqueue for further
@@ -330,8 +375,7 @@ public class NetworkManager<T extends Node, N extends Network<T>>
                             // If we have created a new network, then move the node to the new network
                             if (resultNetwork.networkId != network.networkId)
                             {
-                                removeNodeFromNetwork(network, nextNode);
-                                addNodeToNetwork(resultNetwork, nextNode);
+                                moveNodeBetweenNetworks(network, resultNetwork, nextNode);
                             }
                         }
                     }
@@ -348,7 +392,7 @@ public class NetworkManager<T extends Node, N extends Network<T>>
         assert network != null;
 
         final LongArrayFIFOQueue queue = new LongArrayFIFOQueue();
-        final LongOpenHashSet visited = new LongOpenHashSet(network.nodes.size());
+        final LongOpenHashSet visited = new LongOpenHashSet(network.size());
         final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
 
         queue.enqueue(origin.key());
@@ -357,7 +401,7 @@ public class NetworkManager<T extends Node, N extends Network<T>>
         while (!queue.isEmpty())
         {
             final long current = queue.dequeueLong();
-            final T currentNode = network.nodes.get(current);
+            final T currentNode = network.getNode(current);
 
             assert currentNode != null; // Node should belong to the network
 
@@ -366,7 +410,7 @@ public class NetworkManager<T extends Node, N extends Network<T>>
                 cursor.setWithOffset(currentNode.pos(), connection);
 
                 final long nextKey = cursor.asLong();
-                final T nextNode = network.nodes.get(nextKey);
+                final T nextNode = network.getNode(nextKey);
                 if (nextNode != null && // There is a node at this position in this network
                     nextNode.connections().contains(connection.getOpposite()) && // Which connects in the requested direction
                     !visited.contains(nextKey) // Which we have not visited yet
@@ -398,30 +442,58 @@ public class NetworkManager<T extends Node, N extends Network<T>>
         return networks.get(node.networkId());
     }
 
+    /**
+     * Adds a node to a network. Implementations may override this to listen to network modifications, but should invoke {@code super}
+     * before doing any logic.
+     * @param network The network to add to.
+     * @param node The node, which <strong>may</strong> be connected to an existing network. This is allowed to support easy merging of
+     *             networks. In this case, the merged network is disposed through {@link #removeNetwork}, rather than needing updates.
+     */
+    @MustBeInvokedByOverriders
     protected void addNodeToNetwork(N network, T node)
     {
         node.connectToNetwork(network.networkId);
-        network.nodes.put(node.key(), node);
+        network.addNode(node);
     }
 
-    protected void updateInNetwork(T node)
-    {
-        final N network = networks.get(node.networkId());
-        if (network != null)
-        {
-            updateNetwork(network);
-        }
-    }
-
-    protected void updateNetwork(N network) {}
-
+    /**
+     * Removes a node from a network. Implementations may override this to listen to network modifications, but should invoke {@code super}
+     * before doing any logic.
+     * @param network The network the node currently belongs to, that it is being removed from.
+     * @param node The node being removed form this network.
+     */
+    @MustBeInvokedByOverriders
     protected void removeNodeFromNetwork(N network, T node)
     {
-        assert node.networkId() == network.networkId;
+        assert node.networkId() == network.networkId; // Node should already belong to the network is it being removed from
 
         node.connectToNetwork(Node.NO_NETWORK);
-        network.nodes.remove(node.key());
+        network.removeNode(node);
     }
+
+    /**
+     * Performs both {@link #removeNodeFromNetwork} and {@link #addNodeToNetwork}, but with the efficiency of knowing we are only being
+     * called once. Implementations may override this to listen to network modifications, but should invoke {@code super} before doing any
+     * logic. Note that by default, this does <strong>not</strong> simply invoke add/remove.
+     *
+     * @param oldNetwork The network the node currently belongs to.
+     * @param newNetwork The new network the node should be connected to.
+     * @param node The node being moved.
+     */
+    @MustBeInvokedByOverriders
+    protected void moveNodeBetweenNetworks(N oldNetwork, N newNetwork, T node)
+    {
+        assert node.networkId() == oldNetwork.networkId;
+
+        oldNetwork.removeNode(node);
+        newNetwork.addNode(node);
+        node.connectToNetwork(newNetwork.networkId);
+    }
+
+    /**
+     * Updates a network, not modifying the contents, but after other modifications may have been made.
+     */
+    protected void updateNetwork(N network) {}
 
     /**
      * @param node The node that is being updated

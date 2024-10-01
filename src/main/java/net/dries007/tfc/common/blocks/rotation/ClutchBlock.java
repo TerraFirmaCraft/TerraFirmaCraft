@@ -26,6 +26,7 @@ import net.dries007.tfc.common.blockentities.rotation.ClutchBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.wood.ExtendedRotatedPillarBlock;
+import net.dries007.tfc.util.network.RotationOwner;
 
 public class ClutchBlock extends ExtendedRotatedPillarBlock implements EntityBlockExtension, ConnectedAxleBlock
 {
@@ -98,9 +99,6 @@ public class ClutchBlock extends ExtendedRotatedPillarBlock implements EntityBlo
     @Override
     protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
-        if (level.getBlockEntity(pos) instanceof ClutchBlockEntity entity)
-        {
-            entity.destroyIfInvalid(level, pos);
-        }
+        RotationOwner.onTick(level, pos);
     }
 }

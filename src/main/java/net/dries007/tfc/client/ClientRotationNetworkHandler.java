@@ -10,7 +10,7 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 
 import net.dries007.tfc.network.RotationNetworkUpdatePacket;
-import net.dries007.tfc.util.network.RotationNetwork;
+import net.dries007.tfc.util.network.NetworkHelpers;
 import net.dries007.tfc.util.network.RotationNetworkPayload;
 import net.dries007.tfc.util.network.RotationOwner;
 
@@ -41,8 +41,8 @@ public class ClientRotationNetworkHandler
     {
         for (Rotation rotation : NETWORKS.values())
         {
-            rotation.currentSpeed = RotationNetwork.lerpTowardsTarget(rotation.currentSpeed, rotation.targetSpeed, rotation.requiredTorque);
-            rotation.currentAngle = RotationNetwork.wrapToTwoPi(rotation.currentAngle + rotation.currentSpeed);
+            rotation.currentSpeed = NetworkHelpers.lerpTowardsTarget(rotation.currentSpeed, rotation.targetSpeed, rotation.requiredTorque);
+            rotation.currentAngle = NetworkHelpers.wrapToTwoPi(rotation.currentAngle + rotation.currentSpeed);
         }
     }
 
@@ -64,7 +64,7 @@ public class ClientRotationNetworkHandler
     {
         final var network = NETWORKS.get(networkId);
         return network != null
-            ? RotationNetwork.clampToTwoPi(network.currentAngle + network.currentSpeed * partialTick)
+            ? NetworkHelpers.clampToTwoPi(network.currentAngle + network.currentSpeed * partialTick)
             : 0;
     }
 

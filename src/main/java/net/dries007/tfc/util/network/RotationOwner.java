@@ -8,7 +8,6 @@ package net.dries007.tfc.util.network;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 import net.dries007.tfc.common.blockentities.TFCBlockEntity;
@@ -19,7 +18,25 @@ import net.dries007.tfc.common.blockentities.TFCBlockEntity;
  */
 public interface RotationOwner
 {
+    int DELAY_FOR_UPDATE = 1;
     int DELAY_FOR_INVALID_IN_NETWORK = 4;
+
+    static void onTick(ServerLevel level, BlockPos pos)
+    {
+        if (level.getBlockEntity(pos) instanceof RotationOwner owner)
+        {
+            if (!owner.getRotationNode().valid)
+            {
+                level.destroyBlock(pos, true);
+            }
+            else
+            {
+                // On an update that does not destroy the block, we sync. This is one-tick delayed to avoid syncing repeat updates,
+                // as will happen during network calculations.
+                ((TFCBlockEntity) owner).markForSync();
+            }
+        }
+    }
 
     /**
      * Handles updates to the rotation network. Must be called through methods which update the block entity's state within the network.
@@ -49,17 +66,13 @@ public interface RotationOwner
         }
     }
 
-    default void destroyIfInvalid(Level level, BlockPos pos)
+    default void onUpdate()
     {
-        if (!getRotationNode().valid)
+        final BlockEntity entity = self();
+        if (entity.getLevel() instanceof ServerLevel level)
         {
-            level.destroyBlock(pos, true);
+            level.scheduleTick(entity.getBlockPos(), entity.getBlockState().getBlock(), DELAY_FOR_UPDATE);
         }
-    }
-
-    default void markForSync()
-    {
-        self().markForSync();
     }
 
     RotationNode getRotationNode();

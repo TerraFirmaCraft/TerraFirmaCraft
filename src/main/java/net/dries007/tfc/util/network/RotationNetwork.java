@@ -10,34 +10,10 @@ import it.unimi.dsi.fastutil.floats.Float2FloatLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.floats.Float2FloatMaps;
 import it.unimi.dsi.fastutil.floats.Float2FloatSortedMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMaps;
-import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 
 public class RotationNetwork extends Network<RotationNode>
 {
-    public static float lerpTowardsTarget(float currentSpeed, float targetSpeed, float requiredTorque)
-    {
-        if (currentSpeed < targetSpeed)
-        {
-            return Math.min(targetSpeed, currentSpeed + 0.01f * (1.0f / (1.0f + requiredTorque)));
-        }
-        else if (currentSpeed > targetSpeed)
-        {
-            return Math.max(targetSpeed, currentSpeed - 0.03f * (1.0f / (1.0f + requiredTorque)));
-        }
-        return currentSpeed;
-    }
-
-    public static float clampToTwoPi(float angle)
-    {
-        return angle < 0 ? Mth.TWO_PI + angle : angle;
-    }
-
-    public static float wrapToTwoPi(float angle)
-    {
-        return angle > Mth.TWO_PI ? angle - Mth.TWO_PI : angle;
-    }
-
     float currentAngle = 0;
     float currentSpeed = 0;
     float targetSpeed = 0;
@@ -67,8 +43,8 @@ public class RotationNetwork extends Network<RotationNode>
 
     void tick()
     {
-        currentSpeed = lerpTowardsTarget(currentSpeed, targetSpeed, requiredTorque);
-        currentAngle = wrapToTwoPi(currentAngle + currentSpeed);
+        currentSpeed = NetworkHelpers.lerpTowardsTarget(currentSpeed, targetSpeed, requiredTorque);
+        currentAngle = NetworkHelpers.wrapToTwoPi(currentAngle + currentSpeed);
     }
 
     void addNodeToNetwork(RotationNode node)
@@ -85,7 +61,7 @@ public class RotationNetwork extends Network<RotationNode>
 
     void updateTargetSpeed()
     {
-        final Float2FloatSortedMap providedTorqueBySpeed = new Float2FloatLinkedOpenHashMap(nodes.size() >> 2);
+        final Float2FloatSortedMap providedTorqueBySpeed = new Float2FloatLinkedOpenHashMap(size() >> 2);
         float availableTorque = 0;
         for (var entry : Long2ObjectMaps.fastIterable(nodes))
         {
