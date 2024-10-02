@@ -1631,7 +1631,7 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
         air_carvers=['tfc:cave', 'tfc:canyon'],
         water_carvers=[],
         features=feature_tags,
-        creature_spawn_probability=0.08,
+        creature_spawn_probability=0.1,
         spawn_costs=costs
     )
 

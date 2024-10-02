@@ -331,6 +331,6 @@
       }
     ]
   },
-  "creature_spawn_probability": 0.08,
+  "creature_spawn_probability": 0.1,
   "spawn_costs": {}
 }
