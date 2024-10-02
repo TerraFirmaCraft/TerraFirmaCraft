@@ -1,4 +1,12 @@
 {
   "max_temperature": 26.0,
-  "min_temperature": -10.0
+  "min_temperature": -10.0,
+  "months": [
+    "may",
+    "june",
+    "july",
+    "august",
+    "september",
+    "october"
+  ]
 }

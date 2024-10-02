@@ -1,4 +1,12 @@
 {
   "max_temperature": 23.0,
-  "min_groundwater": 250.0
+  "min_groundwater": 250.0,
+  "months": [
+    "may",
+    "june",
+    "july",
+    "august",
+    "september",
+    "october"
+  ]
 }
