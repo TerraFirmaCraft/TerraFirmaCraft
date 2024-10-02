@@ -10,6 +10,7 @@ package net.dries007.tfc.world.surface.builder;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 import net.dries007.tfc.world.surface.SurfaceBuilderContext;
+import net.dries007.tfc.world.surface.SurfaceState;
 import net.dries007.tfc.world.surface.SurfaceStates;
 
 public class LowlandsSurfaceBuilder implements SurfaceBuilder
@@ -27,6 +28,7 @@ public class LowlandsSurfaceBuilder implements SurfaceBuilder
     public void buildSurface(SurfaceBuilderContext context, int startY, int endY)
     {
         final float noise = (float) surfaceMaterialNoise.noise(context.pos().getX(), context.pos().getZ()) * 0.9f + context.random().nextFloat() * 0.1f;
-        NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY, noise < 0f ? SurfaceStates.GRASS : SurfaceStates.MUD, SurfaceStates.MUD, SurfaceStates.DIRT, noise > 0 ? SurfaceStates.DIRT : SurfaceStates.MUD, SurfaceStates.MUD);
+        final SurfaceState mud = context.groundwater() < 130f ? SurfaceStates.DRY_MUD : SurfaceStates.MUD;
+        NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY, noise < 0f ? SurfaceStates.GRASS : mud, mud, SurfaceStates.DIRT, noise > 0 ? SurfaceStates.DIRT : mud, mud);
     }
 }
