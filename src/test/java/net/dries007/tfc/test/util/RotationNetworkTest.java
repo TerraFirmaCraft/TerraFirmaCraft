@@ -548,6 +548,38 @@ public class RotationNetworkTest
             """, dsl.toString());
     }
 
+    @Test
+    public void testMergingNetworkUpdatesAllNewRotations()
+    {
+        final var dsl = dsl();
+
+        assertTrue(dsl.axle(0, 0, 0, Axis.Y)); // Lower network
+        assertTrue(dsl.axle(0, 1, 0, Axis.Y));
+        assertTrue(dsl.axle(0, 5, 0, Axis.Y)); // Upper network
+        assertTrue(dsl.gearBox(0, 4, 0, UP, DOWN));
+        assertTrue(dsl.axle(0, 3, 0, Axis.Y));
+        assertEquals("""
+            [network=0]
+            Axle[connections=[down, up], pos=[0, 0, 0], network=0, axis=y, rotation=up]
+            Axle[connections=[down, up], pos=[0, 1, 0], network=0, axis=y, rotation=up]
+            
+            [network=1]
+            Axle[connections=[down, up], pos=[0, 3, 0], network=1, axis=y, rotation=down]
+            GearBox[connections=[down, up], pos=[0, 4, 0], network=1, convention=east, rotation=[down, up]]
+            Axle[connections=[down, up], pos=[0, 5, 0], network=1, axis=y, rotation=up]
+            """, dsl.toString()); // Before merging - adjacent axles are opposite convention
+        assertTrue(dsl.axle(0, 2, 0, Axis.Y));
+        assertEquals("""
+            [network=0]
+            Axle[connections=[down, up], pos=[0, 0, 0], network=0, axis=y, rotation=up]
+            Axle[connections=[down, up], pos=[0, 1, 0], network=0, axis=y, rotation=up]
+            Axle[connections=[down, up], pos=[0, 2, 0], network=0, axis=y, rotation=up]
+            Axle[connections=[down, up], pos=[0, 3, 0], network=0, axis=y, rotation=up]
+            GearBox[connections=[down, up], pos=[0, 4, 0], network=0, convention=west, rotation=[up, down]]
+            Axle[connections=[down, up], pos=[0, 5, 0], network=0, axis=y, rotation=down]
+            """, dsl.toString()); // After merging - both networks have aligned
+    }
+
     private static BlockPos pos(int x, int y, int z)
     {
         return new BlockPos(x, y, z);

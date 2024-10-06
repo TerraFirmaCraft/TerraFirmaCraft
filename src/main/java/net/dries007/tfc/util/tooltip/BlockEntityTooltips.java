@@ -156,7 +156,7 @@ public final class BlockEntityTooltips
         if (entity instanceof RotationOwner owner)
         {
             tooltip.accept(Tooltips.rpm(owner));
-            if (owner.isConnectedToNetwork() && TFCConfig.CLIENT.enableDebug.get())
+            if (TFCConfig.CLIENT.enableDebug.get())
             {
                 // Only display tooltips for nodes that are synced, which includes syncing their networkId
                 tooltip.accept(Component.literal("[Debug] " + owner.getRotationNode()));

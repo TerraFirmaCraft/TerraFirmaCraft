@@ -308,8 +308,8 @@ public final class PatchouliIntegration
 
         sneakIntoMultiblock(multiblock).ifPresent(access -> {
             access.getBlockEntity(new BlockPos(0, 0, 1), TFCBlockEntities.AXLE.get()).ifPresent(axle -> axle.getRotationNode().setRotationFromOutsideWorld());
-            access.getBlockEntity(new BlockPos(1, 0, 1), TFCBlockEntities.CRANKSHAFT.get()).ifPresent(shaft -> shaft.getRotationNode().setRotationFromOutsideWorld());
-            access.getBlockEntity(new BlockPos(1, 0, 0), TFCBlockEntities.CRANKSHAFT.get()).ifPresent(shaft -> shaft.getRotationNode().setRotationFromOutsideWorld());
+            access.getBlockEntity(new BlockPos(1, 0, 1), TFCBlockEntities.CRANKSHAFT.get()).ifPresent(shaft -> shaft.setRotationFromOutsideWorld());
+            access.getBlockEntity(new BlockPos(1, 0, 0), TFCBlockEntities.CRANKSHAFT.get()).ifPresent(shaft -> shaft.setRotationFromOutsideWorld());
         });
 
         return multiblock;

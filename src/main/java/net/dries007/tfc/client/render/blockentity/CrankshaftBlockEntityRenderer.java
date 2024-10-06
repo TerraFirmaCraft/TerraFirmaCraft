@@ -27,6 +27,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.client.model.data.ModelData;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.rotation.CrankshaftBlockEntity;
@@ -35,6 +36,7 @@ import net.dries007.tfc.common.blocks.rotation.ConnectedAxleBlock;
 import net.dries007.tfc.common.blocks.rotation.CrankshaftBlock;
 import net.dries007.tfc.common.blocks.rotation.FluidPumpBlock;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.network.RotationOwner;
 
 
 public class CrankshaftBlockEntityRenderer implements BlockEntityRenderer<CrankshaftBlockEntity>
@@ -61,7 +63,7 @@ public class CrankshaftBlockEntityRenderer implements BlockEntityRenderer<Cranks
         // Normally, rotation is never set on the shaft part, as that node never connects itself to the network
         // However when we render via Patchouli's multiblock system, we can't query the world for adjacent blocks,
         // So we have to rely on the rotation set via hacks directly onto the shaft.
-        if (part == CrankshaftBlock.Part.SHAFT && false) // todo: fix this rotation
+        if (part == CrankshaftBlock.Part.SHAFT) // todo: fix this rotation
         {
             final BlockEntity mainPart = level.getBlockEntity(pos.relative(face, -1));
             if ((!(mainPart instanceof CrankshaftBlockEntity mainEntity)))
@@ -71,9 +73,10 @@ public class CrankshaftBlockEntityRenderer implements BlockEntityRenderer<Cranks
             crankshaft = mainEntity;
         }
 
+        final @Nullable RotationOwner owner = crankshaft.getConnectedNetworkOwner();
+        final float rotationAngle = owner == null ? 0f : CrankshaftBlockEntity.calculateRealRotationAngle(owner, face, partialTick);
 
         final VertexConsumer buffer = bufferSource.getBuffer(RenderType.cutout());
-        final float rotationAngle = CrankshaftBlockEntity.calculateRealRotationAngle(crankshaft, face, partialTick);
         final RandomSource random = RandomSource.create();
 
         stack.pushPose();
@@ -93,7 +96,7 @@ public class CrankshaftBlockEntityRenderer implements BlockEntityRenderer<Cranks
 
             // Render an extension of the axle
             final BlockState adjacentAxleState = level.getBlockState(crankshaft.getBlockPos().relative(face.getCounterClockWise()));
-            if (adjacentAxleState.getBlock() instanceof ConnectedAxleBlock axleBlock && crankshaft.isConnectedToNetwork())
+            if (adjacentAxleState.getBlock() instanceof ConnectedAxleBlock axleBlock && owner != null)
             {
                 final ResourceLocation axleTexture = axleBlock.getAxleTextureLocation();
                 final TextureAtlasSprite axleSprite = RenderHelpers.blockTexture(axleTexture);

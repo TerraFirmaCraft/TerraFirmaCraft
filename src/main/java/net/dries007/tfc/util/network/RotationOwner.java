@@ -40,6 +40,9 @@ public interface RotationOwner
         }
     }
 
+    /**
+     * @return The rotation speed of a given node. This is valid on both server and client.
+     */
     static float getRotationSpeed(RotationOwner owner)
     {
         final RotationNode node = owner.getRotationNode();
@@ -57,6 +60,9 @@ public interface RotationOwner
         return ClientRotationNetworkHandler.getRotationSpeed(owner);
     }
 
+    /**
+     * @return The current rotation angle, at the current partial tick. This is valid on both server and client.
+     */
     static float getRotationAngle(RotationOwner owner, float partialTick)
     {
         final RotationNode node = owner.getRotationNode();
@@ -118,12 +124,6 @@ public interface RotationOwner
         {
             level.scheduleTick(entity.getBlockPos(), entity.getBlockState().getBlock(), DELAY_FOR_UPDATE);
         }
-    }
-
-    @Deprecated // This probably doesn't mean what it used to mean
-    default boolean isConnectedToNetwork()
-    {
-        return getRotationNode().isConnectedToNetwork();
     }
 
     /**

@@ -31,7 +31,7 @@ public class RotationNetworkManager extends NetworkManager<RotationNode, Rotatio
 
     public static RotationNetworkManager get(ServerLevel level)
     {
-        return WorldTracker.get(level).getRotationManager2();
+        return WorldTracker.get(level).getRotationManager();
     }
 
     private final List<RotationNetwork> pendingRemovals = new ArrayList<>(20);

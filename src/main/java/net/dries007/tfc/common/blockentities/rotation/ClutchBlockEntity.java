@@ -18,8 +18,7 @@ import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.rotation.AxleBlock;
 import net.dries007.tfc.common.blocks.rotation.ClutchBlock;
 import net.dries007.tfc.util.network.Action;
-import net.dries007.tfc.util.rotation.NetworkAction;
-import net.dries007.tfc.util.rotation.Node;
+import net.dries007.tfc.util.network.NetworkHelpers;
 
 public class ClutchBlockEntity extends AxleBlockEntity
 {
@@ -54,7 +53,7 @@ public class ClutchBlockEntity extends AxleBlockEntity
         }
         else
         {
-            connections.addAll(Node.ofAxis(state.getValue(AxleBlock.AXIS)));
+            connections.addAll(NetworkHelpers.ofAxis(state.getValue(AxleBlock.AXIS)));
         }
 
         if (level != null)

@@ -26,7 +26,7 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rotation.FluidPumpBlock;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.rotation.Rotation;
+
 
 public class PumpBlockEntity extends TFCBlockEntity
 {
