@@ -1,7 +1,0 @@
-{
-  "parent": "tfc:block/plant/template_floating_tinted_flower",
-  "textures": {
-    "pad": "tfc:block/plant/water_lily/water_lily",
-	"flower": "tfc:block/plant/water_lily/water_lily_2_yellow"
-  }
-}

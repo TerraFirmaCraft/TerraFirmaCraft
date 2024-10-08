@@ -1,0 +1,21 @@
+{
+  "loader": "tfc:plant",
+  "blooming": {
+    "parent": "tfc:block/plant/ostrich_fern_1"
+  },
+  "seeding": {
+    "parent": "tfc:block/plant/ostrich_fern_1"
+  },
+  "dying": {
+    "parent": "tfc:block/plant/ostrich_fern_2"
+  },
+  "dormant": {
+    "parent": "tfc:block/plant/ostrich_fern_3"
+  },
+  "sprouting": {
+    "parent": "tfc:block/plant/ostrich_fern_3"
+  },
+  "budding": {
+    "parent": "tfc:block/plant/ostrich_fern_0"
+  }
+}

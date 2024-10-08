@@ -47,6 +47,8 @@ import net.dries007.tfc.world.feature.plant.GiantKelpFeature;
 import net.dries007.tfc.world.feature.plant.SpreadingBushFeature;
 import net.dries007.tfc.world.feature.plant.SpreadingCropFeature;
 import net.dries007.tfc.world.feature.plant.SubmergedTallPlantFeature;
+import net.dries007.tfc.world.feature.plant.TFCBambooConfig;
+import net.dries007.tfc.world.feature.plant.TFCBambooFeature;
 import net.dries007.tfc.world.feature.plant.TFCKelpFeature;
 import net.dries007.tfc.world.feature.plant.TFCTwistingVinesFeature;
 import net.dries007.tfc.world.feature.plant.TFCVinesFeature;
@@ -95,6 +97,7 @@ public class TFCFeatures
     public static final Id<BouldersFeature> BOULDER = register("boulder", BouldersFeature::new, BoulderConfig.CODEC);
     public static final Id<BabyBoulderFeature> BABY_BOULDER = register("baby_boulder", BabyBoulderFeature::new, BoulderConfig.CODEC);
     public static final Id<LooseRockFeature> LOOSE_ROCK = register("loose_rock", LooseRockFeature::new, NoneFeatureConfiguration.CODEC);
+    public static final Id<SeaStacksFeature> SEA_STACKS = register("sea_stacks", SeaStacksFeature::new, NoneFeatureConfiguration.CODEC);
 
     public static final Id<TFCWeepingVinesFeature> HANGING_VINES = register("weeping_vines", TFCWeepingVinesFeature::new, ColumnPlantConfig.CODEC);
     public static final Id<TFCTwistingVinesFeature> TWISTING_VINES = register("twisting_vines", TFCTwistingVinesFeature::new, ColumnPlantConfig.CODEC);
@@ -121,7 +124,7 @@ public class TFCFeatures
     public static final Id<TidePoolFeature> TIDE_POOL = register("tide_pool", TidePoolFeature::new, NoneFeatureConfiguration.CODEC);
     public static final Id<FruitTreeFeature> FRUIT_TREES = register("fruit_trees", FruitTreeFeature::new, Codecs.BLOCK_STATE_CONFIG);
     public static final Id<BananaFeature> BANANAS = register("bananas", BananaFeature::new, Codecs.BLOCK_STATE_CONFIG);
-    public static final Id<TFCBambooFeature> BAMBOO = register("bamboo", TFCBambooFeature::new, ProbabilityFeatureConfiguration.CODEC);
+    public static final Id<TFCBambooFeature> BAMBOO = register("bamboo", TFCBambooFeature::new, TFCBambooConfig.CODEC);
 
     public static final Id<ForestFeature> FOREST = register("forest", ForestFeature::new, ForestConfig.CODEC);
     public static final Id<ForestFeature.Entry> FOREST_ENTRY = register("forest_entry", ForestFeature.Entry::new, ForestConfig.Entry.CODEC);

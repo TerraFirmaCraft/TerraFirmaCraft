@@ -1,0 +1,22 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "loader": "tfc:plant",
+  "blooming": {
+    "parent": "tfc:block/plant/nasturtium_0"
+  },
+  "seeding": {
+    "parent": "tfc:block/plant/nasturtium_1"
+  },
+  "dying": {
+    "parent": "tfc:block/plant/nasturtium_1"
+  },
+  "dormant": {
+    "parent": "tfc:block/plant/nasturtium_2"
+  },
+  "sprouting": {
+    "parent": "tfc:block/plant/nasturtium_3"
+  },
+  "budding": {
+    "parent": "tfc:block/plant/nasturtium_4"
+  }
+}

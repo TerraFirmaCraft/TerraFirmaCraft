@@ -15,7 +15,7 @@ public enum AddContinents implements RegionTask
     {
         for (final var point : context.region.points())
         {
-            final double continent = context.generator().continentNoise.noise(point.x, point.z);
+            final double continent = context.generator().continentNoise.noise(point.x, point.z) * context.generator().continentFactor(point);
             if (continent > 4.4)
             {
                 point.setLand();

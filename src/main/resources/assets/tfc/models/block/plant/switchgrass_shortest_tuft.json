@@ -1,0 +1,7 @@
+{
+  "parent": "tfc:block/mixed_cross",
+  "textures": {
+    "cross": "tfc:block/plant/switchgrass/switchgrass_shortest_tuft",
+	"tinted_cross": "tfc:block/plant/switchgrass/switchgrass_shortest"
+  }
+}

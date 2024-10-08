@@ -1,6 +1,7 @@
 {
-  "parent": "minecraft:block/cross",
+  "parent": "tfc:block/mixed_cross",
   "textures": {
-    "cross": "tfc:block/plant/bluegrass/bluegrass_tuft"
+    "cross": "tfc:block/plant/bluegrass/bluegrass_tuft",
+	"tinted_cross": "tfc:block/plant/bluegrass/bluegrass"
   }
 }

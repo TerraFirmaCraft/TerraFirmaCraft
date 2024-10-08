@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "replace": false,
-  "values": [
-    "#tfc:foods/preserves",
-    "tfc:empty_jar",
-    "tfc:empty_jar_with_lid"
-  ]
-}

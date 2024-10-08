@@ -1,0 +1,22 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "loader": "tfc:plant",
+  "blooming": {
+    "parent": "tfc:block/plant/yucca_0"
+  },
+  "seeding": {
+    "parent": "tfc:block/plant/yucca_1"
+  },
+  "dying": {
+    "parent": "tfc:block/plant/yucca_2"
+  },
+  "dormant": {
+    "parent": "tfc:block/plant/yucca_2"
+  },
+  "sprouting": {
+    "parent": "tfc:block/plant/yucca_2"
+  },
+  "budding": {
+    "parent": "tfc:block/plant/yucca_3"
+  }
+}

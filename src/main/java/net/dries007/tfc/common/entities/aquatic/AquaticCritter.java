@@ -43,7 +43,8 @@ public class AquaticCritter extends WaterAnimal implements AquaticMob
         return new AquaticCritter(type, level, false);
     }
 
-    public final AnimationState swimmingAnimation = new AnimationState();
+    public final AnimationState idleAnimation = new AnimationState();
+    public final AnimationState hurtAnimation = new AnimationState();
     private final Predicate<Fluid> fluidTest;
 
     public AquaticCritter(EntityType<? extends WaterAnimal> type, Level level, boolean salty)
@@ -57,7 +58,8 @@ public class AquaticCritter extends WaterAnimal implements AquaticMob
     {
         if (level().isClientSide)
         {
-            EntityHelpers.startOrStop(swimmingAnimation, !onGround(), tickCount);
+            EntityHelpers.startOrStop(idleAnimation, getDeltaMovement().lengthSqr() < 1.0E-6D, tickCount);
+            EntityHelpers.startOrStop(hurtAnimation, hurtTime > 0, tickCount);
         }
         super.tick();
     }

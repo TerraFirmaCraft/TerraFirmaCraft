@@ -1,7 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "parent": "tfc:block/plant/template_floating_tinted",
-  "textures": {
-    "pad": "tfc:block/plant/water_lily/water_lily"
-  }
-}

@@ -10,7 +10,7 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:knapping/unfired_spindle_head",
+      "recipe": "tfc:knapping/ceramic/unfired_spindle_head",
       "text": "$(thing)紡錘頭$()可以通過黏土塑形來製作。先將黏土如圖捏成$(thing)未燒製的紡錘頭$()$，然後在將其$(l:mechanics/heating)加熱$()即可。將紡錘頭與$(thing)木棍$()合成便能做出紡錘了"
     },
     {

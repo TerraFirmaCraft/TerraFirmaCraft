@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "tfc:block/plant/tall_fescue_grass/placeholder"
+    "layer0": "tfc:block/plant/tall_fescue_grass/shorter"
   }
 }

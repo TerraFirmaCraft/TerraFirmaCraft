@@ -13,8 +13,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.crafting.ICustomIngredient;
 import net.neoforged.neoforge.common.crafting.IngredientType;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
-import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
-import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
@@ -42,6 +40,6 @@ public final class TFCIngredients
         return new Id<>(TYPES.register(name, () -> new IngredientType<>(codec, streamCodec)));
     }
 
-    record Id<T extends ICustomIngredient>(DeferredHolder<IngredientType<?>, IngredientType<T>> holder)
+    public record Id<T extends ICustomIngredient>(DeferredHolder<IngredientType<?>, IngredientType<T>> holder)
         implements RegistryHolder<IngredientType<?>, IngredientType<T>> {}
 }

@@ -1,0 +1,21 @@
+{
+  "loader": "tfc:plant",
+  "blooming": {
+    "parent": "tfc:block/plant/sagebrush_5b"
+  },
+  "seeding": {
+    "parent": "tfc:block/plant/sagebrush_5"
+  },
+  "dying": {
+    "parent": "tfc:block/plant/sagebrush_5"
+  },
+  "dormant": {
+    "parent": "tfc:block/plant/sagebrush_5"
+  },
+  "sprouting": {
+    "parent": "tfc:block/plant/sagebrush_5"
+  },
+  "budding": {
+    "parent": "tfc:block/plant/sagebrush_5"
+  }
+}

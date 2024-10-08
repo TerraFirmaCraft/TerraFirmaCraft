@@ -11,6 +11,9 @@
       "children": [
         {
           "item": "tfc:food/rice_grain"
+        },
+        {
+          "type": "tfc:not_rotten"
         }
       ]
     },
@@ -19,6 +22,9 @@
       "children": [
         {
           "item": "tfc:food/rice_grain"
+        },
+        {
+          "type": "tfc:not_rotten"
         }
       ]
     },
@@ -27,6 +33,9 @@
       "children": [
         {
           "item": "tfc:food/rice_grain"
+        },
+        {
+          "type": "tfc:not_rotten"
         }
       ]
     },
@@ -35,6 +44,9 @@
       "children": [
         {
           "item": "tfc:food/rice_grain"
+        },
+        {
+          "type": "tfc:not_rotten"
         }
       ]
     }

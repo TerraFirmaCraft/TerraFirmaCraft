@@ -1,72 +1,16 @@
 {
-  "multipart": [
-    {
-      "when": {
-        "age": "0"
-      },
-      "apply": {
-        "model": "tfc:block/plant/bluegrass_shortest"
-      }
+  "variants": {
+    "age=0": {
+      "model": "tfc:block/plant/bluegrass_shortest_dynamic"
     },
-    {
-      "when": {
-        "age": "1"
-      },
-      "apply": {
-        "model": "tfc:block/plant/bluegrass_shorter"
-      }
+    "age=1": {
+      "model": "tfc:block/plant/bluegrass_shorter_dynamic"
     },
-    {
-      "when": {
-        "age": "2"
-      },
-      "apply": {
-        "model": "tfc:block/plant/bluegrass_short"
-      }
+	"age=2": {
+      "model": "tfc:block/plant/bluegrass_short_dynamic"
     },
-    {
-      "when": {
-        "age": "3"
-      },
-      "apply": {
-        "model": "tfc:block/plant/bluegrass"
-      }
-    },
-    {
-      "when": {
-        "stage": "1",
-        "age": "0"
-      },
-      "apply": {
-        "model": "tfc:block/plant/bluegrass_shortest_tuft"
-      }
-    },
-    {
-      "when": {
-        "stage": "1",
-        "age": "1"
-      },
-      "apply": {
-        "model": "tfc:block/plant/bluegrass_shorter_tuft"
-      }
-    },
-    {
-      "when": {
-        "stage": "1",
-        "age": "2"
-      },
-      "apply": {
-        "model": "tfc:block/plant/bluegrass_short_tuft"
-      }
-    },
-    {
-      "when": {
-        "stage": "1",
-        "age": "3"
-      },
-      "apply": {
-        "model": "tfc:block/plant/bluegrass_tuft"
-      }
+	"age=3": {
+      "model": "tfc:block/plant/bluegrass_dynamic"
     }
-  ]
+  }
 }

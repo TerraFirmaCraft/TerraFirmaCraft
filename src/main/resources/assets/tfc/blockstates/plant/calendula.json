@@ -1,77 +1,8 @@
 {
-  "multipart": [
-    {
-      "when": {
-        "stage": "0"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/calendula_0"
-        }
-      ]
-    },
-    {
-      "when": {
-        "stage": "1"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/calendula_1"
-        }
-      ]
-    },
-    {
-      "when": {
-        "stage": "2"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/calendula_2"
-        }
-      ]
-    },
-    {
-      "when": {
-        "stage": "3"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/calendula_3"
-        }
-      ]
-    },
-    {
-      "when": {
-        "stage": "4"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/calendula_2"
-        },
-        {
-          "model": "tfc:block/plant/calendula_3"
-        }
-      ]
-    },
-    {
-      "when": {
-        "stage": "5"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/calendula_4"
-        }
-      ]
-    },
-    {
-      "when": {
-        "stage": "6"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/calendula_5"
-        }
-      ]
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "": {
+      "model": "tfc:block/plant/calendula_dynamic"
     }
-  ]
+  }
 }

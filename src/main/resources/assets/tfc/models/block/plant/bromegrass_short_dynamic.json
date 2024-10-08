@@ -1,0 +1,21 @@
+{
+  "loader": "tfc:plant",
+  "blooming": {
+    "parent": "tfc:block/plant/bromegrass_short_tuft"
+  },
+  "seeding": {
+    "parent": "tfc:block/plant/bromegrass_short_tuft"
+  },
+  "dying": {
+    "parent": "tfc:block/plant/bromegrass_short"
+  },
+  "dormant": {
+    "parent": "tfc:block/plant/bromegrass_short"
+  },
+  "sprouting": {
+    "parent": "tfc:block/plant/bromegrass_short"
+  },
+  "budding": {
+    "parent": "tfc:block/plant/bromegrass_short_tuft"
+  }
+}

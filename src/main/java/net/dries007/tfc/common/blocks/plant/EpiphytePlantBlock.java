@@ -102,7 +102,7 @@ public abstract class EpiphytePlantBlock extends PlantBlock
         Direction direction = context.getClickedFace();
         if (direction.getAxis() != Direction.Axis.Y)
         {
-            return updateStateWithCurrentMonth(defaultBlockState()).setValue(FACING, direction);
+            return defaultBlockState().setValue(FACING, direction);
         }
         return null;
     }

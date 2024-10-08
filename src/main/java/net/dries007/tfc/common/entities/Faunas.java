@@ -52,6 +52,7 @@ import net.dries007.tfc.common.entities.prey.TFCPanda;
 import net.dries007.tfc.common.entities.prey.TFCRabbit;
 import net.dries007.tfc.common.entities.prey.WingedPrey;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.data.DataManager;
 import net.dries007.tfc.util.registry.IdHolder;
 import net.dries007.tfc.world.chunkdata.ChunkData;
@@ -226,6 +227,10 @@ public class Faunas
 
             final BlockPos below = pos.below();
             if (fauna.solidGround() && !Helpers.isBlock(level.getBlockState(below), BlockTags.VALID_SPAWN))
+            {
+                return false;
+            }
+            if (!fauna.months().isEmpty() && !fauna.months().contains(Calendars.SERVER.getCalendarMonthOfYear()))
             {
                 return false;
             }

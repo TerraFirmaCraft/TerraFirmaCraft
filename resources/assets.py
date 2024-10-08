@@ -1310,15 +1310,16 @@ def generate(rm: ResourceManager):
         else:
             rm.block_loot(p, {'name': p, 'conditions': [shears_or_knife]})
     # todo this is a mess
-    for plant in ('hanging_vines', 'jungle_vines', 'ivy', 'liana', 'tree_fern', 'arundo', 'spanish_moss'):
+    for plant in ('hanging_vines', 'jungle_vines', 'ivy', 'liana', 'tree_fern', 'arundo', 'spanish_moss', 'golden_bamboo_sapling'):
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))
-    for plant in ('tree_fern', 'arundo', 'winged_kelp', 'leafy_kelp', 'giant_kelp_flower', 'dry_phragmite'):
+    for plant in ('tree_fern', 'arundo', 'winged_kelp', 'leafy_kelp', 'giant_kelp_flower', 'dry_phragmite', 'golden_bamboo'):
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))
         rm.block_loot('tfc:plant/%s' % plant, 'tfc:plant/%s' % plant)
     for plant in ('tree_fern', 'arundo', 'winged_kelp', 'leafy_kelp', 'giant_kelp', 'hanging_vines', 'spanish_moss', 'liana', 'dry_phragmite'):
         rm.lang('block.tfc.plant.%s_plant' % plant, lang(plant))
     for plant in ('hanging_vines', 'jungle_vines', 'liana', 'spanish_moss'):
         rm.block_loot('tfc:plant/%s' % plant, {'name': 'tfc:plant/%s' % plant, 'conditions': [loot_tables.match_tag(TAG_SHARP)]})
+    rm.block_loot('plant/golden_bamboo_sapling', 'tfc:plant/golden_bamboo')
 
     cactus = 'saguaro'
     for variation in ('', '_plant'):
@@ -1343,16 +1344,13 @@ def generate(rm: ResourceManager):
         flower_pot_cross(rm, plant, 'tfc:plant/potted/%s' % plant, 'plant/flowerpot/%s' % plant, 'tfc:block/plant/%s/%s' % (plant_folder, texture), 'tfc:plant/%s' % plant)
     for plant in MISC_POTTED_PLANTS:
         rm.blockstate('plant/potted/%s' % plant, model='tfc:block/plant/flowerpot/%s' % plant).with_lang(lang('potted %s', plant)).with_block_loot('tfc:plant/%s' % plant, 'minecraft:flower_pot')
-    for plant, stages in SIMPLE_TALL_PLANTS.items():
-        for i in range(0, stages):
-            for part in ('lower', 'upper'):
-                rm.block_model('plant/%s_%s_%s' % (plant, part, i), parent='minecraft:block/cross', textures={'cross': 'tfc:block/plant/%s/%s_%s' % (plant, i, part)})
-    rm.blockstate('plant/%s' % plant, variants=dict(('stage=%d,part=%s' % (i, part), {'model': 'tfc:block/plant/%s_%s_%s' % (plant, part, i)}) for i in range(0, stages) for part in ('lower', 'upper')))
     for plant, stages in SIMPLE_STAGE_PLANTS.items():
-        rm.blockstate('plant/%s' % plant, variants=dict({'stage=%d' % i: {'model': 'tfc:block/plant/%s_%s' % (plant, i)} for i in range(0, stages)}))
         if plant not in ('kangaroo_paw', 'trillium'):
             for i in range(0, stages):
                 rm.block_model(f'plant/{plant}_{i}', parent='block/cross', textures={'cross': f'tfc:block/plant/{plant}/{plant}_{i}'})
+    for plant, states in SINGLE_BLOCK_STAGE_PLANTS.items():
+        rm.blockstate('plant/%s' % plant,  model= 'tfc:block/plant/%s_dynamic' % plant)
+        rm.custom_block_model('plant/%s_dynamic' % plant, 'tfc:plant', {'blooming': {'parent': 'tfc:block/plant/%s_%s' % (plant, states[0])}, 'seeding': {'parent': 'tfc:block/plant/%s_%s' % (plant, states[1])}, 'dying': {'parent': 'tfc:block/plant/%s_%s' % (plant, states[2])}, 'dormant': {'parent': 'tfc:block/plant/%s_%s' % (plant, states[3])}, 'sprouting': {'parent': 'tfc:block/plant/%s_%s' % (plant, states[4])}, 'budding': {'parent': 'tfc:block/plant/%s_%s' % (plant, states[5])}})
     for plant in MODEL_PLANTS:
         rm.blockstate('plant/%s' % plant, model='tfc:block/plant/%s' % plant)
     for plant in SEAGRASS:
@@ -1362,8 +1360,6 @@ def generate(rm: ResourceManager):
     rm.blockstate('plant/dead_bush', variants={"": [{'model': 'tfc:block/plant/dead_bush_large'}, *[{'model': 'tfc:block/plant/dead_bush%s' % i} for i in range(0, 7)]]}, use_default_model=False)
     for i in range(0, 7):
         rm.block_model('plant/dead_bush%s' % i, parent='minecraft:block/cross', textures={'cross': 'tfc:block/plant/dead_bush/dead_bush%s' % i})
-    for i in range(1, 5):
-        rm.block_model('plant/maiden_pink_%s' % i, parent='tfc:block/plant/flowerbed_%s' % i, textures={'flowerbed': 'tfc:block/plant/maiden_pink/petals', 'stem': 'tfc:block/plant/maiden_pink/stem'})
 
     rm.block('sea_pickle').with_lang(lang('sea pickle')).with_block_loot([{
         'name': 'tfc:sea_pickle',
@@ -1371,8 +1367,8 @@ def generate(rm: ResourceManager):
         'functions': [loot_tables.set_count(i)]
     } for i in (1, 2, 3, 4)])
 
-    for plant in ('duckweed', 'lotus', 'sargassum', 'water_lily', 'green_algae', 'red_algae'):
-        if plant not in ('water_lily', 'lotus'):
+    for plant in ('duckweed', 'lotus', 'sargassum', 'white_water_lily', 'yellow_water_lily', 'purple_water_lily', 'green_algae', 'red_algae'):
+        if plant not in ('purple_water_lily', 'yellow_water_lily', 'white_water_lily', 'lotus'):
             rm.blockstate(('plant', plant), variants={'': four_ways('tfc:block/plant/%s' % plant)}, use_default_model=False)
         tinted = plant not in ('green_algae', 'sargassum', 'red_algae')
         rm.block_model(('plant', plant), parent='tfc:block/plant/template_floating%s' % ('_tinted' if tinted else ''), textures={'pad': 'tfc:block/plant/%s/%s' % (plant, plant)})

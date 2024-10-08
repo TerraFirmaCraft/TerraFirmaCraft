@@ -1,17 +1,8 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "stage=0": {
-      "model": "tfc:block/plant/grape_hyacinth_0"
-    },
-    "stage=1": {
-      "model": "tfc:block/plant/grape_hyacinth_1"
-    },
-    "stage=2": {
-      "model": "tfc:block/plant/grape_hyacinth_2"
-    },
-    "stage=3": {
-      "model": "tfc:block/plant/grape_hyacinth_3"
+    "": {
+      "model": "tfc:block/plant/grape_hyacinth_dynamic"
     }
   }
 }

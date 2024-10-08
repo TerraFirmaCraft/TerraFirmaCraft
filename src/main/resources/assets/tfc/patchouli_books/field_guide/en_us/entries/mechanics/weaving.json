@@ -10,7 +10,7 @@
     },
     {
       "type": "tfc:knapping_recipe",
-      "recipe": "tfc:knapping/unfired_spindle_head",
+      "recipe": "tfc:knapping/ceramic/unfired_spindle_head",
       "text": "The $(thing)Unfired Spindle Head$() is knapped from clay. It can then be $(l:mechanics/heating)fired$() to make a $(thing)Spindle Head$(). To complete the spindle, craft it with a $(thing)Stick$()."
     },
     {

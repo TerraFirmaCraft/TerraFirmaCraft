@@ -100,6 +100,12 @@ public final class HeatCapability
         if (heat != null) heat.setTemperature(temperature);
     }
 
+    public static void setStaticTemperature(ItemStack stack, float temperature)
+    {
+        final @Nullable IHeat heat = get(stack);
+        if (heat != null) heat.setStaticTemperature(temperature);
+    }
+
     /**
      * @return {@code true} if {@code stack} has a heat capability, and is currently hot, i.e. nonzero temperature.
      */

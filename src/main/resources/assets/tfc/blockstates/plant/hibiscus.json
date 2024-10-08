@@ -1,37 +1,10 @@
 {
-  "multipart": [
-    {
-      "when": {
-        "part": "lower",
-        "stage": "0"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/hibiscus_0"
-        }
-      ]
+  "variants": {
+    "part=upper": {
+      "model": "tfc:block/empty"
     },
-    {
-      "when": {
-        "part": "lower",
-        "stage": "1"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/hibiscus_1"
-        }
-      ]
-    },
-	    {
-      "when": {
-        "part": "lower",
-        "stage": "2"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/hibiscus_2"
-        }
-      ]
+    "part=lower": {
+      "model": "tfc:block/plant/hibiscus_dynamic"
     }
-  ]
+  }
 }

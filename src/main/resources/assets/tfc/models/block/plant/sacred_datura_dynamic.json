@@ -1,0 +1,22 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "loader": "tfc:plant",
+  "blooming": {
+    "parent": "tfc:block/plant/sacred_datura_0"
+  },
+  "seeding": {
+    "parent": "tfc:block/plant/sacred_datura_1"
+  },
+  "dying": {
+    "parent": "tfc:block/plant/sacred_datura_2"
+  },
+  "dormant": {
+    "parent": "tfc:block/plant/sacred_datura_3"
+  },
+  "sprouting": {
+    "parent": "tfc:block/plant/sacred_datura_4"
+  },
+  "budding": {
+    "parent": "tfc:block/plant/sacred_datura_5"
+  }
+}

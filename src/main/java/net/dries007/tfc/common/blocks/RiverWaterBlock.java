@@ -90,4 +90,5 @@ public class RiverWaterBlock extends LiquidBlock implements BucketPickupExtensio
     {
         super.createBlockStateDefinition(builder.add(FLOW));
     }
+
 }

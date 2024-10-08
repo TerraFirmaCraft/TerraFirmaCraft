@@ -1,0 +1,22 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "loader": "tfc:plant",
+  "blooming": {
+    "parent": "tfc:block/plant/blood_lily_0"
+  },
+  "seeding": {
+    "parent": "tfc:block/plant/blood_lily_1"
+  },
+  "dying": {
+    "parent": "tfc:block/plant/blood_lily_2"
+  },
+  "dormant": {
+    "parent": "tfc:block/plant/blood_lily_2"
+  },
+  "sprouting": {
+    "parent": "tfc:block/plant/blood_lily_2"
+  },
+  "budding": {
+    "parent": "tfc:block/plant/blood_lily_3"
+  }
+}

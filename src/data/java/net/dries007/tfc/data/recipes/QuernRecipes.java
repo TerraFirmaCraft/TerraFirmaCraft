@@ -74,15 +74,15 @@ public interface QuernRecipes extends Recipes
             add("rich", items.get(Ore.Grade.RICH), TFCItems.ORE_POWDERS.get(ore), 7);
         });
         TFCItems.GEMS.forEach((gem, item) -> add(Ingredient.of(item, TFCItems.ORES.get(gem)), TFCItems.ORE_POWDERS.get(gem), 4));
-        addDye(Items.WHITE_DYE, Plant.HOUSTONIA, Plant.OXEYE_DAISY, Plant.PRIMROSE, Plant.SNAPDRAGON_WHITE, Plant.TRILLIUM, Plant.SPANISH_MOSS, Plant.TULIP_WHITE, Plant.WATER_LILY, Plant.LILY_OF_THE_VALLEY);
+        addDye(Items.WHITE_DYE, Plant.HOUSTONIA, Plant.OXEYE_DAISY, Plant.PRIMROSE, Plant.SNAPDRAGON_WHITE, Plant.TRILLIUM, Plant.SPANISH_MOSS, Plant.TULIP_WHITE, Plant.WHITE_WATER_LILY, Plant.LILY_OF_THE_VALLEY);
         addDye(Items.ORANGE_DYE, Plant.BUTTERFLY_MILKWEED, Plant.CANNA, Plant.NASTURTIUM, Plant.STRELITZIA, Plant.TULIP_ORANGE, Plant.WATER_CANNA, Plant.MARIGOLD);
         addDye(Items.MAGENTA_DYE, Plant.ATHYRIUM_FERN, Plant.MORNING_GLORY, Plant.PULSATILLA, Plant.LILAC, Plant.SILVER_SPURFLOWER);
         addDye(Items.LIGHT_BLUE_DYE, Plant.LABRADOR_TEA, Plant.SAPPHIRE_TOWER);
-        addDye(Items.YELLOW_DYE, Plant.CALENDULA, Plant.DANDELION, Plant.MEADS_MILKWEED, Plant.GOLDENROD, Plant.SNAPDRAGON_YELLOW, Plant.DESERT_FLAME);
+        addDye(Items.YELLOW_DYE, Plant.CALENDULA, Plant.DANDELION, Plant.MEADS_MILKWEED, Plant.GOLDENROD, Plant.SNAPDRAGON_YELLOW, Plant.DESERT_FLAME, Plant.YELLOW_WATER_LILY);
         addDye(Items.LIME_DYE, Plant.MOSS);
         addDye(Items.PINK_DYE, Plant.FOXGLOVE, Plant.SACRED_DATURA, Plant.TULIP_PINK, Plant.SNAPDRAGON_PINK, Plant.HIBISCUS, Plant.LOTUS, Plant.MAIDEN_PINK);
         addDye(Items.LIGHT_GRAY_DYE, Plant.YUCCA);
-        addDye(Items.PURPLE_DYE, Plant.ALLIUM, Plant.BLACK_ORCHID, Plant.PEROVSKIA, Plant.BLUE_GINGER, Plant.PICKERELWEED, Plant.HEATHER);
+        addDye(Items.PURPLE_DYE, Plant.ALLIUM, Plant.BLACK_ORCHID, Plant.PEROVSKIA, Plant.BLUE_GINGER, Plant.PICKERELWEED, Plant.HEATHER, Plant.PURPLE_WATER_LILY);
         addDye(Items.BLUE_DYE, Plant.BLUE_ORCHID, Plant.GRAPE_HYACINTH);
         addDye(Items.BROWN_DYE, Plant.FIELD_HORSETAIL, Plant.SARGASSUM);
         addDye(Items.GREEN_DYE, Plant.BARREL_CACTUS, Plant.REINDEER_LICHEN);

@@ -30,6 +30,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.registry.RegistryPlant;
 
 public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITallPlant
@@ -167,10 +168,10 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
         return SHORTER_PLANT_SHAPE;
     }
 
-    public void placeTwoHalves(LevelAccessor world, BlockPos pos, int flags, RandomSource random)
+    public void placeTwoHalves(LevelAccessor level, BlockPos pos, int flags, RandomSource random)
     {
         int age = random.nextInt(3) + 1;
-        world.setBlock(pos, updateStateWithCurrentMonth(defaultBlockState().setValue(TFCBlockStateProperties.TALL_PLANT_PART, Part.LOWER).setValue(TFCBlockStateProperties.AGE_3, age)), flags);
-        world.setBlock(pos.above(), updateStateWithCurrentMonth(defaultBlockState().setValue(TFCBlockStateProperties.TALL_PLANT_PART, Part.UPPER).setValue(TFCBlockStateProperties.AGE_3, age)), flags);
+        level.setBlock(pos, Helpers.setProperty(defaultBlockState().setValue(TFCBlockStateProperties.TALL_PLANT_PART, Part.LOWER), PlantBlock.AGE, age), flags);
+        level.setBlock(pos.above(), Helpers.setProperty(defaultBlockState().setValue(TFCBlockStateProperties.TALL_PLANT_PART, Part.UPPER), PlantBlock.AGE, age), flags);
     }
 }

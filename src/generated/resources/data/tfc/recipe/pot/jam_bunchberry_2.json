@@ -1,0 +1,45 @@
+{
+  "type": "tfc:pot_jam",
+  "duration": 500,
+  "fluid_ingredient": {
+    "amount": 100,
+    "fluid": "minecraft:water"
+  },
+  "ingredients": [
+    {
+      "type": "tfc:and",
+      "children": [
+        {
+          "item": "tfc:food/bunchberry"
+        },
+        {
+          "type": "tfc:not_rotten"
+        }
+      ]
+    },
+    {
+      "type": "tfc:and",
+      "children": [
+        {
+          "item": "tfc:food/bunchberry"
+        },
+        {
+          "type": "tfc:not_rotten"
+        }
+      ]
+    },
+    {
+      "tag": "tfc:foods/sweeteners"
+    }
+  ],
+  "sealed_result": {
+    "count": 2,
+    "id": "tfc:jar/bunchberry"
+  },
+  "temperature": 300.0,
+  "texture": "tfc:block/jar/bunchberry",
+  "unsealed_result": {
+    "count": 2,
+    "id": "tfc:jar/bunchberry_unsealed"
+  }
+}

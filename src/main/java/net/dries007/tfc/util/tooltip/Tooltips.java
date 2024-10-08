@@ -11,6 +11,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.config.TFCConfig;
@@ -52,8 +53,7 @@ public final class Tooltips
 
     public static MutableComponent moltenOrSolid(boolean molten)
     {
-        String key = molten ? "tfc.tooltip.small_vessel.molten" : "tfc.tooltip.small_vessel.solid";
-        return Component.translatable(key);
+        return Component.translatable(molten ? "tfc.tooltip.molten" : "tfc.tooltip.solid");
     }
 
     @Nullable
@@ -83,5 +83,14 @@ public final class Tooltips
     public static MutableComponent tier(int tier)
     {
         return Component.translatable("tfc.tooltip.tier_" + tier);
+    }
+
+    @Contract("null, null -> fail")
+    public static MutableComponent require(@Nullable Component min, @Nullable Component max)
+    {
+        if (min != null && max != null) return Component.translatable("tfc.tooltip.required_range", min, max);
+        if (min != null) return Component.translatable("tfc.tooltip.required_greater_than", min);
+        if (max != null) return Component.translatable("tfc.tooltip.required_less_than", max);
+        throw new IllegalArgumentException("One of min or max must be non-null");
     }
 }

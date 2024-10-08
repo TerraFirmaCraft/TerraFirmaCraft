@@ -20,6 +20,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.component.food.FoodTraits;
 import net.dries007.tfc.common.fluids.SimpleFluid;
 import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.Powder;
@@ -29,7 +30,10 @@ import net.dries007.tfc.common.recipes.PotRecipe;
 import net.dries007.tfc.common.recipes.SimplePotRecipe;
 import net.dries007.tfc.common.recipes.SoupPotRecipe;
 import net.dries007.tfc.common.recipes.ingredients.AndIngredient;
+import net.dries007.tfc.common.recipes.ingredients.LacksTraitIngredient;
 import net.dries007.tfc.common.recipes.ingredients.NotRottenIngredient;
+import net.dries007.tfc.common.recipes.outputs.AddTraitModifier;
+import net.dries007.tfc.common.recipes.outputs.CopyInputModifier;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.util.Helpers;
 
@@ -57,11 +61,18 @@ public interface PotRecipes extends Recipes
             hours(2), 600f);
 
         potX5(AndIngredient.of(Ingredient.of(Items.EGG), NotRottenIngredient.INSTANCE), TFCItems.FOOD.get(Food.BOILED_EGG), hours(1));
-        potX5(AndIngredient.of(Ingredient.of(TFCItems.FOOD.get(Food.RICE_GRAIN))), TFCItems.FOOD.get(Food.COOKED_RICE), hours(1));
+        potX5(AndIngredient.of(Ingredient.of(TFCItems.FOOD.get(Food.RICE_GRAIN)), NotRottenIngredient.INSTANCE), TFCItems.FOOD.get(Food.COOKED_RICE), hours(1));
 
         soup(3);
         soup(4);
         soup(5);
+        for (Food food : Food.values())
+        {
+            if (food.isFruit())
+            {
+                jam(food);
+            }
+        }
     }
 
     private void pot(ItemLike item, int count, Fluid outputFluid, int duration, float temperature)
@@ -94,7 +105,18 @@ public interface PotRecipes extends Recipes
                     Ingredient.of(TFCTags.Items.SWEETENERS)),
                 SizedFluidIngredient.of(Fluids.WATER, 100),
                 500, 300f
-            ), new ItemStack(TFCItems.FRUIT_PRESERVES.get(fruit), n), Helpers.identifier("block/jar/" + name)));
+            ), new ItemStack(TFCItems.UNSEALED_FRUIT_PRESERVES.get(fruit), n), new ItemStack(TFCItems.FRUIT_PRESERVES.get(fruit), n), Helpers.identifier("block/jar/" + name)));
+        for (int n = 1; n <= 5; n++)
+        {
+            final Ingredient ingredient = AndIngredient.of(Ingredient.of(new ItemStack(TFCItems.FRUIT_PRESERVES.get(fruit))), LacksTraitIngredient.of(FoodTraits.CANNED), NotRottenIngredient.INSTANCE);
+            add("jam_" + name + "_canning_" + n, new SimplePotRecipe(new PotRecipe(
+                Collections.nCopies(n, ingredient),
+                SizedFluidIngredient.of(Fluids.WATER, 100),
+                300, 300f),
+                FluidStack.EMPTY,
+                Collections.nCopies(n, ItemStackProvider.of(CopyInputModifier.INSTANCE, AddTraitModifier.of(FoodTraits.CANNED))
+            )));
+        }
     }
 
     private void soup(int count)

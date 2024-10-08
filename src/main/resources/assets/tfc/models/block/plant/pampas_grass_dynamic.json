@@ -1,0 +1,21 @@
+{
+  "loader": "tfc:plant",
+  "blooming": {
+    "parent": "tfc:block/plant/pampas_grass_top"
+  },
+  "seeding": {
+    "parent": "tfc:block/plant/pampas_grass_top"
+  },
+  "dying": {
+    "parent": "tfc:block/plant/pampas_grass_short"
+  },
+  "dormant": {
+    "parent": "tfc:block/plant/pampas_grass_short"
+  },
+  "sprouting": {
+    "parent": "tfc:block/plant/pampas_grass_short"
+  },
+  "budding": {
+    "parent": "tfc:block/plant/pampas_grass_top"
+  }
+}

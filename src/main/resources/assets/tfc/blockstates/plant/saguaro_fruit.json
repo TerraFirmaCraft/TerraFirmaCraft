@@ -1,11 +1,8 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "stage=0": {
-      "model": "tfc:block/plant/saguaro_fruit_0"
-    },
-    "stage=1": {
-      "model": "tfc:block/plant/saguaro_fruit_1"
+    "": {
+      "model": "tfc:block/plant/saguaro_fruit_dynamic"
     }
   }
 }

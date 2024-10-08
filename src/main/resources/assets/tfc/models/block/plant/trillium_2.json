@@ -1,45 +1,7 @@
 {
-	"credit": "Made with Blockbench",
-	"ambientocclusion": false,
-	"textures": {
-		"2": "tfc:block/plant/trillium/trillium_bud_back",
-		"cross": "tfc:block/plant/trillium/trillium_2",
-		"particle": "tfc:block/plant/trillium/trillium_bud",
-		"top": "tfc:block/plant/trillium/trillium_bud"
-	},
-	"elements": [
-		{
-			"name": "cross",
-			"from": [0, 0, 8],
-			"to": [16, 16, 8],
-			"shade": false,
-			"rotation": {"angle": 45, "axis": "y", "origin": [8, 8, 8], "rescale": true},
-			"faces": {
-				"north": {"uv": [0, 0, 16, 16], "texture": "#cross"},
-				"south": {"uv": [0, 0, 16, 16], "texture": "#cross"}
-			}
-		},
-		{
-			"name": "cross",
-			"from": [0, 0, 8],
-			"to": [16, 16, 8],
-			"shade": false,
-			"rotation": {"angle": -45, "axis": "y", "origin": [8, 8, 8], "rescale": true},
-			"faces": {
-				"north": {"uv": [0, 0, 16, 16], "texture": "#cross"},
-				"south": {"uv": [0, 0, 16, 16], "texture": "#cross"}
-			}
-		},
-		{
-			"name": "top",
-			"from": [0, 4, 8],
-			"to": [16, 20, 8],
-			"shade": false,
-			"rotation": {"angle": -22.5, "axis": "x", "origin": [8, 12, 8], "rescale": true},
-			"faces": {
-				"north": {"uv": [0, 0, 16, 16], "rotation": 180, "texture": "#2"},
-				"south": {"uv": [0, 0, 16, 16], "texture": "#top"}
-			}
-		}
-	]
+  "parent": "block/cross",
+  "textures": {
+    "cross": "tfc:block/plant/trillium/trillium_5",
+    "particle": "tfc:block/plant/trillium/trillium_5"
+  }
 }

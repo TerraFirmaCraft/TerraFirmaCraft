@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench",
 	"textures": {
 		"0": "tfc:block/plant/pickerelweed/pickerelweed_stem_2",
-		"1": "tfc:block/plant/pickerelweed/pickerelweed_flower",
+		"1": "tfc:block/plant/pickerelweed/pickerelweed_bud",
 		"2": "tfc:block/plant/pickerelweed/pickerelweed_leaf",
 		"particle": "tfc:block/plant/pickerelweed/pickerelweed_leaf"
 	},

@@ -21,7 +21,12 @@ public enum AddIslands implements RegionTask
         for (int attempt = 0, placed = 0; attempt < 130 && placed < 15; attempt++)
         {
             Region.Point point = region.random(random);
-            if (point != null && !point.land() && !point.shore() && point.distanceToEdge > 2)
+            if (point == null)
+            {
+                continue;
+            }
+
+            if (!point.land() && !point.shore() && point.distanceToEdge > 2 && context.generator().continentFactor(point) > 0.5f)
             {
                 // Place a small island chain
                 for (int island = 0; island < 12; island++)

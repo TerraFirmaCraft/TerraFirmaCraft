@@ -1,0 +1,21 @@
+{
+  "loader": "tfc:plant",
+  "blooming": {
+    "parent": "tfc:block/plant/rose_lower_0"
+  },
+  "seeding": {
+    "parent": "tfc:block/plant/rose_lower_1"
+  },
+  "dying": {
+    "parent": "tfc:block/plant/rose_lower_1"
+  },
+  "dormant": {
+    "parent": "tfc:block/plant/rose_lower_1"
+  },
+  "sprouting": {
+    "parent": "tfc:block/plant/rose_lower_1"
+  },
+  "budding": {
+    "parent": "tfc:block/plant/rose_lower_1"
+  }
+}

@@ -1,51 +1,7 @@
 {
-	"credit": "Made with Blockbench",
-	"ambientocclusion": false,
-	"textures": {
-		"particle": "tfc:block/plant/kangaroo_paw/kangaroo_paw_0",
-		"tintedcross": "tfc:block/plant/kangaroo_paw/kangaroo_paw_0",
-		"cross": "tfc:block/plant/kangaroo_paw/kangaroo_paw_0b"
-	},
-	"elements": [
-		{
-			"from": [0.8, 0, 8],
-			"to": [15.2, 16, 8],
-			"shade": false,
-			"rotation": {"angle": 45, "axis": "y", "origin": [8, 8, 8], "rescale": true},
-			"faces": {
-				"north": {"uv": [0, 0, 16, 16], "texture": "#tintedcross", "tintindex": 0},
-				"south": {"uv": [0, 0, 16, 16], "texture": "#tintedcross", "tintindex": 0}
-			}
-		},
-		{
-			"from": [8, 0, 0.8],
-			"to": [8, 16, 15.2],
-			"shade": false,
-			"rotation": {"angle": 45, "axis": "y", "origin": [8, 8, 8], "rescale": true},
-			"faces": {
-				"east": {"uv": [0, 0, 16, 16], "texture": "#tintedcross", "tintindex": 0},
-				"west": {"uv": [0, 0, 16, 16], "texture": "#tintedcross", "tintindex": 0}
-			}
-		},
-		{
-			"from": [0.8, 0, 8],
-			"to": [15.2, 16, 8],
-			"shade": false,
-			"rotation": {"angle": 45, "axis": "y", "origin": [8, 8, 8], "rescale": true},
-			"faces": {
-				"north": {"uv": [0, 0, 16, 16], "texture": "#cross"},
-				"south": {"uv": [0, 0, 16, 16], "texture": "#cross"}
-			}
-		},
-		{
-			"from": [8, 0, 0.8],
-			"to": [8, 16, 15.2],
-			"shade": false,
-			"rotation": {"angle": 45, "axis": "y", "origin": [8, 8, 8], "rescale": true},
-			"faces": {
-				"east": {"uv": [0, 0, 16, 16], "texture": "#cross"},
-				"west": {"uv": [0, 0, 16, 16], "texture": "#cross"}
-			}
-		}
-	]
+  "parent": "tfc:block/mixed_cross",
+  "textures": {
+    "cross": "tfc:block/plant/kangaroo_paw/kangaroo_paw_0b",
+	"tinted_cross": "tfc:block/plant/kangaroo_paw/kangaroo_paw_0"
+  }
 }

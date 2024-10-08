@@ -7,6 +7,7 @@
 package net.dries007.tfc.test.drawing;
 
 import java.awt.Color;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -20,8 +21,6 @@ import java.util.stream.Collectors;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.RandomSupport;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
-import org.jetbrains.annotations.Nullable;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import net.dries007.tfc.data.providers.BuiltinWorldPreset;
@@ -36,8 +35,6 @@ import net.dries007.tfc.world.settings.Settings;
 
 import static net.dries007.tfc.world.layer.TFCLayers.*;
 
-@Disabled
-@SuppressWarnings("SameParameterValue")
 public class RegionGeneratorTests implements TestSetup
 {
     final DoubleFunction<Color> blue = Artist.Colors.linearGradient(
@@ -60,53 +57,52 @@ public class RegionGeneratorTests implements TestSetup
     public void testRegionGenerator()
     {
         // Coordinates are given in grid scale, so 1 px = 128 blocks, 150 ~ 20km
-        drawStitchedRegions("", EnumSet.allOf(DrawnTask.class), RandomSupport.generateUniqueSeed(), 0, 0, 150);
+        drawStitchedRegions("", EnumSet.allOf(DrawnTask.class), RandomSupport.generateUniqueSeed(), 0, 75, 200);
     }
 
+    @SuppressWarnings("SameParameterValue")
     private void drawStitchedRegions(String name, Set<DrawnTask> tasksToDraw, long seed, int centerX, int centerZ, int radius)
     {
-        record Pos(int x, int z) {}
-
-        final Map<Task, List<DrawnTask>> taskParentMap = tasksToDraw
+        final Map<Task, List<DrawnTask>> taskParent = tasksToDraw
             .stream()
             .collect(Collectors.groupingBy(t -> t.root));
 
+        final int taskIndex = tasksToDraw.size();
+        final int[] taskOffset = new int[DrawnTask.values().length]; // DrawnTask.ordinal -> (Ascending) Index
+        int index = -1;
+        for (DrawnTask task : tasksToDraw)
+            taskOffset[task.ordinal()] = ++index;
+
+        final int size = radius * 2;
+        final int[] taskData = new int[tasksToDraw.size() * radius * radius * 4]; // Color[(x + z * size) * taskIndex + taskOffset[task]]
+
+        Arrays.fill(taskData, -1);
+
         final Settings settings = BuiltinWorldPreset.defaultSettings();
         final RegionGenerator generator = new RegionGenerator(settings, new XoroshiroRandomSource(seed));
-        final Set<Pos> points = new HashSet<>();
-        final Map<DrawnTask, Map<Pos, Color>> drawn = new HashMap<>();
 
-        for (int x = centerX - radius; x <= centerX + radius; x++)
-            for (int z = centerZ - radius; z <= centerZ + radius; z++)
-                points.add(new Pos(x, z));
+        for (int dx = 0; dx < size; dx++)
+            for (int dz = 0; dz < size; dz++)
+                if (taskData[(dx + size * dz) * taskIndex] == -1)
+                    generator.visualizeRegion(centerX - radius + dx, centerZ - radius + dz, (task, region) -> {
+                        for (DrawnTask drawnTask : taskParent.getOrDefault(task, List.of()))
+                            for (Region.Point point : region.points())
+                            {
+                                final int pointX = point.x - centerX + radius;
+                                final int pointZ = point.z - centerZ + radius;
+                                if (pointX >= 0 && pointX < size && pointZ >= 0 && pointZ < size)
+                                    taskData[(pointX + size * pointZ) * taskIndex + taskOffset[drawnTask.ordinal()]]
+                                        = taskColor(drawnTask, region, point.x, point.z).getRGB();
+                            }
+                    });
 
-        @Nullable Pos pos;
-        while ((pos = points.stream().findFirst().orElse(null)) != null)
-        {
-            generator.visualizeRegion(pos.x, pos.z, (task, region) -> {
-                for (DrawnTask drawnTask : taskParentMap.getOrDefault(task, List.of()))
-                {
-                    final Map<Pos, Color> drawnTaskData = drawn.computeIfAbsent(drawnTask, key -> new HashMap<>());
-                    for (final var point : region.points())
-                    {
-                        final Pos at = new Pos(point.x, point.z);
-                        points.remove(at);
-                        drawnTaskData.put(at, taskColor(drawnTask, region, point.x, point.z));
-                    }
-                }
-            });
-        }
-
-        drawn.forEach((task, drawnTask) -> Artist.raw()
-            .center(centerX, centerZ, radius)
-            .size(radius * 2 * (task == DrawnTask.ADD_RIVERS_AND_LAKES ? 5 : 1))
-            .draw(taskName(name, task), task == DrawnTask.ADD_RIVERS_AND_LAKES
-                ? drawWithRivers(generator, task)
-                : Artist.Pixel.coerceInt((x, z) -> drawnTask.get(new Pos(x, z)))));
+        for (DrawnTask task : tasksToDraw)
+            Draw.draw(taskName(name, task), size, size, (x, z) -> taskData[(x + size * z) * taskIndex + taskOffset[task.ordinal()]]);
     }
 
     private Artist.Pixel<Color> drawWithRivers(RegionGenerator generator, DrawnTask task)
     {
+        // Unused for now until I figure out a better way to hook it into drawing that doesn't explode memory usage
         return (xi, zi) -> {
             final int x = (int) xi, z = (int) zi;
             final float xf = (float) xi, zf = (float) zi;

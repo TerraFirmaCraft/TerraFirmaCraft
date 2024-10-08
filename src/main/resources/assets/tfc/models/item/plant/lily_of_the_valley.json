@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "tfc:block/plant/lily_of_the_valley/lily_of_the_valley_3"
+    "layer0": "tfc:block/plant/lily_of_the_valley/lily_of_the_valley_0"
   }
 }

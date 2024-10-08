@@ -1,0 +1,21 @@
+{
+  "loader": "tfc:plant",
+  "blooming": {
+    "parent": "tfc:block/plant/bur_reed_0"
+  },
+  "seeding": {
+    "parent": "tfc:block/plant/bur_reed_0"
+  },
+  "dying": {
+    "parent": "tfc:block/plant/bur_reed_1"
+  },
+  "dormant": {
+    "parent": "tfc:block/plant/bur_reed_1"
+  },
+  "sprouting": {
+    "parent": "tfc:block/plant/bur_reed_1"
+  },
+  "budding": {
+    "parent": "tfc:block/plant/bur_reed_0"
+  }
+}

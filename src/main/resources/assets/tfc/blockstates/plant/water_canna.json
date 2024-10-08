@@ -1,9 +1,6 @@
 {
   "multipart": [
     {
-      "when": {
-        "stage": "0|1|2|3"
-      },
       "apply": [
         {
           "model": "tfc:block/plant/canna_base"
@@ -23,42 +20,16 @@
       ]
     },
 	{
-      "when": {
-        "stage": "0|1|2|3"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/canna_stem"
-        }
-      ]
-    },
-    {
-      "when": {
-        "stage": "1" 
-      },
-      "apply": [
-        {
-		  "model": "tfc:block/plant/canna_1"
+	  "apply": [
+		{
+		  "model": "tfc:block/plant/canna_stem"
 		}
-      ]
+	  ]
     },
-    {
-      "when": {
-        "stage": "2"
-      },
+	{
       "apply": [
         {
-          "model": "tfc:block/plant/canna_2"
-        }
-      ]
-    },
-    {
-      "when": {
-        "stage": "3"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/canna_3"
+          "model": "tfc:block/plant/canna_dynamic"
         }
       ]
     }

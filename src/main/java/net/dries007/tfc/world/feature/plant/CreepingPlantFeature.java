@@ -47,7 +47,7 @@ public class CreepingPlantFeature extends Feature<CreepingPlantConfig>
                             final BlockState newState = CreepingPlantBlock.updateStateFromSides(level, cursor, state);
                             if (!newState.isAir())
                             {
-                                setBlock(level, cursor, ((CreepingPlantBlock) newState.getBlock()).updateStateWithCurrentMonth(newState));
+                                setBlock(level, cursor, newState);
                             }
                         }
                     }

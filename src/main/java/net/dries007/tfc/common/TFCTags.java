@@ -108,6 +108,9 @@ public class TFCTags
         /** Used for kelp growth mechanics */
         public static final TagKey<Block> KELP_TREE = tag("kelp_trees");
         public static final TagKey<Block> KELP_BRANCH = tag("kelp_branches");
+        /** Used for bamboo growth mechanics */
+        public static final TagKey<Block> BAMBOO = tag("bamboo");
+        public static final TagKey<Block> BAMBOO_SAPLING = tag("bamboo_sapling");
         /** Used for spreading bush growth mechanics. */
         public static final TagKey<Block> LIVING_SPREADING_BUSHES = tag("spreading_bushes/living");
         /** Used for spreading bush growth mechanics. Includes both living and dead bushes. */
@@ -221,6 +224,8 @@ public class TFCTags
         public static final TagKey<Block> KAOLIN_CLAY_REPLACEABLE = tag("kaolin_clay_replaceable");
         /** Blocks that can be replaced with powder snow */
         public static final TagKey<Block> POWDER_SNOW_REPLACEABLE = tag("powder_snow_replaceable");
+        /** Hardened rock blocks only. Used in worldgen to determine in what rock types sea stacks can generate. **/
+        public static final TagKey<Block> SEA_STACK_ROCKS = tag("sea_stack_rocks");
 
 
         private static TagKey<Block> tag(String name)

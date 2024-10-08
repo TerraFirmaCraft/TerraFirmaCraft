@@ -228,7 +228,7 @@ public class GrowingBranchingCactusBlock extends BranchingCactusBlock
         if (level.getBlockState(pos).canBeReplaced())
         {
             PlantBlock plant = (PlantBlock) flower.get();
-            level.setBlock(pos, plant.updateStateWithCurrentMonth(plant.defaultBlockState()), 3);
+            level.setBlock(pos, plant.defaultBlockState(), 3);
         }
     }
 }

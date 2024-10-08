@@ -7,26 +7,28 @@
 package net.dries007.tfc.common.recipes.ingredients;
 
 import java.util.stream.Stream;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.crafting.ICustomIngredient;
 
 /**
- * This is a type of {@link ICustomIngredient} which represents a precise condition that is intended to only
- * be used in conjunction with an intersection ingredient, and as such makes some compromises:
- * <ul>
- *     <li>{@link #getItems()} is overridden to return a single, nonsensical item (to prevent from being seen as empty), even though the ingredient *technically* accepts any items</li>
- *     <li>{@link #isSimple()} is obviously {@code false}</li>
- * </ul>
- * Note that for most precise ingredients, they don't function correctly w.r.t {@link #getItems()} showing all possible available items. The solution
- * for ingredients like heat, or food, is to use {@link AndIngredient} which uses {@link #modifyStackForDisplay(ItemStack)} to produce "display" stacks,
- * based on a primary ingredient, plus additional custom ingredients.
+ * This is a type of {@link ICustomIngredient} which represents a precise condition that has non-simple behavior, and wants to modify displayed stacks
+ * to convey additional information about the ingredient.
+ *
+ * @see AndIngredient
  */
 public interface PreciseIngredient extends ICustomIngredient
 {
     @Override
     default Stream<ItemStack> getItems()
     {
-        return Stream.of(ItemStack.EMPTY);
+        // By default, we accept every item, once modified through this ingredient.
+        // This should only be used rarely, when we have a top-level precise ingredient which actually accepts all items
+        return BuiltInRegistries.ITEM.stream()
+            .map(Item::getDefaultInstance)
+            .filter(e -> !e.isEmpty())
+            .map(this::modifyStackForDisplay);
     }
 
     @Override
@@ -35,6 +37,11 @@ public interface PreciseIngredient extends ICustomIngredient
         return false;
     }
 
+    /**
+     * Modifies the given stack for display purposes. This consists of item stacks returned by the parent {@link AndIngredient}'s {@link #getItems()},
+     * and is used over invoking each sub-ingredient and merging their output items.
+     * @return The modified stack.
+     */
     default ItemStack modifyStackForDisplay(ItemStack stack)
     {
         return stack;

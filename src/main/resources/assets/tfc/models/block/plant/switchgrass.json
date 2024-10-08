@@ -1,0 +1,6 @@
+{
+	"parent": "tfc:block/large_tinted_cross",
+	"textures": {
+		"cross": "tfc:block/plant/switchgrass/switchgrass"
+	}
+}

@@ -116,11 +116,11 @@ public abstract class PlantBlock extends TFCBushBlock
     {
         super(properties);
 
-        BlockState stateDefinition = getStateDefinition().any().setValue(AGE, 0);
-        IntegerProperty stageProperty = getPlant().getStageProperty();
-        if (stageProperty != null)
+        BlockState stateDefinition = getStateDefinition().any();
+        IntegerProperty ageProperty = getPlant().getAgeProperty();
+        if (ageProperty != null)
         {
-            stateDefinition = stateDefinition.setValue(stageProperty, 0);
+            stateDefinition = stateDefinition.setValue(ageProperty, 0);
         }
         registerDefaultState(stateDefinition);
     }
@@ -143,54 +143,31 @@ public abstract class PlantBlock extends TFCBushBlock
     @Override
     protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
-        boolean dirty = false;
-        final int age = state.getValue(AGE);
-        if (random.nextDouble() < TFCConfig.SERVER.plantGrowthChance.get() && age < 3)
+        final var ageProp = getPlant().getAgeProperty();
+        if (ageProp != null)
         {
-            state = state.setValue(AGE, age + 1);
-            dirty = true;
-        }
-        final var stageProp = getPlant().getStageProperty();
-        if (stageProp != null)
-        {
-            final int stage = state.getValue(stageProp);
-            final int newStage = getPlant().stageFor(Calendars.SERVER.getCalendarMonthOfYear());
-            if (stage != newStage)
+            final int age = state.getValue(ageProp);
+            if (random.nextDouble() < TFCConfig.SERVER.plantGrowthChance.get() && age < 3)
             {
-                state = state.setValue(stageProp, newStage);
-                dirty = true;
+                state = state.setValue(AGE, age + 1);
+                level.setBlockAndUpdate(pos, state);
             }
         }
-        if (dirty)
-        {
-            level.setBlockAndUpdate(pos, updateStateWithCurrentMonth(state));
-        }
-
     }
 
     /**
      * Gets the plant metadata for this block.
-     * <p>
-     * The stage property is isolated and referenced via this as it is needed in the {@link Block} constructor - which builds the state container, and requires all property references to be computed in {@link Block#createBlockStateDefinition(StateDefinition.Builder)}.
-     * <p>
      * See the various {@link PlantBlock#create(RegistryPlant, ExtendedProperties)} methods and subclass versions for how to use.
      */
     public abstract RegistryPlant getPlant();
 
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext context)
-    {
-        return updateStateWithCurrentMonth(defaultBlockState());
-    }
-
-    @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        if (getPlant().getStageProperty() != null)
+        if (getPlant().getAgeProperty() != null)
         {
-            builder.add(getPlant().getStageProperty());
+            builder.add(AGE);
         }
-        builder.add(AGE);
     }
 
     @Override
@@ -200,8 +177,4 @@ public abstract class PlantBlock extends TFCBushBlock
         return Helpers.lerp(modifier, speedFactor, 1.0f);
     }
 
-    public BlockState updateStateWithCurrentMonth(BlockState state)
-    {
-        return getPlant().getStageProperty() != null ? state.setValue(getPlant().getStageProperty(), getPlant().stageFor(Calendars.SERVER.getCalendarMonthOfYear())) : state;
-    }
 }

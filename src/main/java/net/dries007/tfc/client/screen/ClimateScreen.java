@@ -63,10 +63,10 @@ public class ClimateScreen extends TFCContainerScreen<Container>
         final TemperatureDisplayStyle style = TFCConfig.CLIENT.climateTooltipStyle.get();
 
         drawCenteredLine(stack, Helpers.translateEnum(KoppenClimateClassification.classify(averageTemp, rainfall, rainVar)), 17);
-        drawCenteredLine(stack, Component.translatable("tfc.tooltip.climate_average_temperature", style.format(averageTemp, true)), 28);
+        drawCenteredLine(stack, Component.translatable("tfc.tooltip.climate_average_temperature", style.formatRange(averageTemp)), 28);
         drawCenteredLine(stack, Component.translatable("tfc.tooltip.climate_annual_rainfall", String.format("%.0f", rainfall)), 39);
         drawCenteredLine(stack, Component.translatable(rainVar > 0 ? "tfc.tooltip.climate_peak_rainfall_summer" : "tfc.tooltip.climate_peak_rainfall_winter", String.format("%.0f", rainfall * (1 + Math.abs(rainVar)))), 50);
-        drawCenteredLine(stack, Component.translatable("tfc.tooltip.climate_current_temp", style.format(currentTemp, true)), 61);
+        drawCenteredLine(stack, Component.translatable("tfc.tooltip.climate_current_temp", style.formatRange(currentTemp)), 61);
     }
 
 }
