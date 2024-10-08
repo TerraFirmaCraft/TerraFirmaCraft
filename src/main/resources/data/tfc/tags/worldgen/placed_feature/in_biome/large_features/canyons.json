@@ -10,6 +10,7 @@
     "tfc:bamboo_golden",
     "tfc:cave_vegetation",
     "#tfc:feature/volcanoes",
-    "tfc:random_active_hot_spring"
+    "tfc:random_active_hot_spring",
+    "#tfc:feature/surface_flood_fill_lakes"
   ]
 }

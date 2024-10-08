@@ -10,7 +10,6 @@ import java.util.Random;
 import net.minecraft.util.RandomSource;
 import org.apache.commons.lang3.mutable.MutableInt;
 
-import net.dries007.tfc.common.blockentities.rotation.PumpBlockEntity;
 import net.dries007.tfc.util.IArtist;
 import net.dries007.tfc.world.biome.BiomeExtension;
 import net.dries007.tfc.world.biome.TFCBiomes;

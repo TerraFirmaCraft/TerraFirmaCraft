@@ -1625,8 +1625,8 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
         else:
             large_features.append('tfc:random_active_hot_spring')
 
-        if not ('shilin' in name or 'burren'):
-            large_features.append('#tfc:feature/surface_flood_fill_lakes')
+    if not ('shilin' in name or 'burren' in name):
+        large_features.append('#tfc:feature/surface_flood_fill_lakes')
 
     # Feature Tags
     # We don't directly use vanilla's generation step, but we line this up *approximately* with it, so that mods that add features add them in roughly the right location
