@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)大桶$()是一种可以容纳物品和液体的设备。大桶中央的空格是用来放置物品的，液体则显示在左侧的水槽中。将$(thing)桶$()或$(thing)罐$()放在左上角的空格中可以将其中的液体添加到大桶、或将大桶中的液体盛出。拿着容器对着装有液体的大桶按下$(item)$(k:key.use)$()也有同样的效果。"
+      "text": "$(thing)大桶$()是一种可以容纳物品和液体的设备。大桶中央的空格是用来放置物品的，液体则显示在左侧的水槽中。将$(thing)桶$()或$(thing)壶$()放在左上角的空格中可以将其中的液体添加到大桶、或将大桶中的液体盛出。拿着容器对着装有液体的大桶按下$(item)$(k:key.use)$()也有同样的效果。"
     },
     {
       "type": "patchouli:image",
@@ -48,7 +48,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "某些大桶配方需要以一定比例混合两种液体。例如，以 9:1 的比例将$(thing)奶$()与$(thing)醋$()混合可以得到$(thing)醋奶$()；醋和$(thing)咸水$()以相同比例混合可以得到$(thing)卤水$()。这种配方只能通过先在大桶里装一种液体，然后把装有另一种液体的陶罐或桶放在左上角的液体添加格内来完成。"
+      "text": "某些大桶配方需要以一定比例混合两种液体。例如，以 9:1 的比例将$(thing)奶$()与$(thing)醋$()混合可以得到$(thing)醋奶$()；醋和$(thing)咸水$()以相同比例混合可以得到$(thing)卤水$()。这种配方只能通过先在大桶里装一种液体，然后把装有另一种液体的陶壶或桶放在左上角的液体添加格内来完成。"
     },
     {
       "type": "patchouli:text",
@@ -56,7 +56,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Barrels have the ability to $(l:mechanics/dye)Dye$() and $(l:mechanics/dye#lye)Bleach$() items. Most color-able things, like carpet, candles, and $(l:mechanics/advanced_building_materials#alabaster)Alabaster$() can be dyed by sealing them in a barrel of dye or bleached by sealing them in a barrel of lye. See the dye chapter for more information."
+      "text": "大桶可以用来给物品$(l:mechanics/dye)染色$()或$(l:mechanics/dye#lye)漂白$()物品。大多数可染色物品，如地毯、蜡烛和$(l:mechanics/advanced_building_materials#alabaster)雪花石膏$()都可以通过在大桶中与染料封装的方式染色，或与碱液封装的方式漂白。"
     },
     {
       "type": "patchouli:text",
@@ -65,7 +65,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/barrel_rack",
-      "text": "Barrels placed against the side of a block work the same as vertical barrels, but have restrictions on placement. For example, they must have a $(thing)Barrel Rack$() added to them with $(item)$(k:key.use)$() in order to have another sideways barrel above them."
+      "text": "水平放置的大桶与垂直的大桶功能一致，但是摆放方式有所限制：若想在水平大桶上方放置一只水平大桶，则必须放置一个$(thing)大桶架$()。"
     },
     {
       "type": "patchouli:multiblock",
@@ -86,20 +86,20 @@
           "Y": "tfc:wood/barrel/kapok[facing=north,rack=true,sealed=false]"
         }
       },
-      "name": "Sideways Barrels",
-      "text": "Sideways barrels show their sealed state using the $(thing)Tap$(). If the tap is sideways, it is sealed.",
+      "name": "水平放置大桶",
+      "text": "水平放置的大桶会用一只$(thing)龙头$()的方式显示开启状态。如果龙头是横向的，则说明已关闭。",
       "enable_visualize": false
     },
     {
       "type": "patchouli:text",
-      "text": "Unsealed sideways barrels automatically drain their fluid into open barrels (and other fluid containers) placed below the tap. The block the tap extends into must be a free air block in order for fluid to be able to drain."
+      "text": "水平大桶开启时，若龙头下方无其他方块阻挡，会自动将内容流体输出至龙头下其他开启的大桶或其他流体容器中。"
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/tutorial/barrel_drip.png"
       ],
-      "text": "A barrel dripping.",
+      "text": "大桶滴答。",
       "border": true
     }
   ],

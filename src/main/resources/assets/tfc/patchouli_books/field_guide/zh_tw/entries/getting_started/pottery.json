@@ -59,13 +59,13 @@
     {
       "type": "patchouli:text",
       "anchor": "jug",
-      "text": "另一個很有用的陶器是$(thing)陶罐$()。你可以用它來盛裝或從中飲用各種液體，比如$(thing)淡水$()。$(br2)要使用它，只需拿著壺對著水源方塊按$(item)$(k:key.use)$()就行。長按$(item)$(k:key.use)$()便可以用它喝水。陶罐一次可以容納 $(thing)100 mB$() 的液體。",
-      "title": "陶罐"
+      "text": "另一個很有用的陶器是$(thing)陶壺$()。你可以用它來盛裝或從中飲用各種液體，比如$(thing)淡水$()。$(br2)要使用它，只需拿著壺對著水源方塊按$(item)$(k:key.use)$()就行。長按$(item)$(k:key.use)$()便可以用它喝水。陶壺一次可以容納 $(thing)100 mB$() 的液體。",
+      "title": "陶壺"
     },
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:clay_knapping/jug",
-      "text": "粘土塑形陶罐。"
+      "text": "粘土塑形陶壺。"
     },
     {
       "type": "patchouli:text",
@@ -128,7 +128,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:clay_knapping/knife_blade_mold",
-      "text": "$(thing)刀$()可以當作武器使用，不過主要還是用來破壞植物型別的方塊."
+      "text": "$(thing)刀$()可以當作武器使用，不過主要還是用來破壞植物型別的方塊。"
     },
     {
       "type": "tfc:knapping_recipe",

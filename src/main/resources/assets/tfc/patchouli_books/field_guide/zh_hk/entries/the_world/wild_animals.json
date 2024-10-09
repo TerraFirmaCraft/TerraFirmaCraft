@@ -64,8 +64,8 @@
       "type": "patchouli:entity",
       "entity": "tfc:tiger",
       "scale": 0.55,
-      "name": "Tiger",
-      "text": "The tiger spawns in forests with an average $(l:the_world/climate#temperature)temperature$() of at least 13°C, and $(l:the_world/climate#rainfall)rainfall$() above 100mm."
+      "name": "老虎",
+      "text": "老虎生活在$(l:the_world/climate#temperature)温度$()不低於 13°C、$(l:the_world/climate#rainfall)降雨量$()不低於 100mm 的森林中。"
     },
     {
       "type": "patchouli:entity",
@@ -84,32 +84,32 @@
       "type": "patchouli:entity",
       "entity": "tfc:direwolf",
       "scale": 0.7,
-      "text": "冰原狼生活在$(l:the_world/climate#temperature)氣温$()低於冰點，且$(l:the_world/climate#rainfall)降雨量$()在 150 到 420mm 的地區。冰原狼由集羣狩獵的習性，體型比普通的狼更大，且不可馴服。"
+      "text": "冰原狼生活在$(l:the_world/climate#temperature)低於冰點的温度$()、$(l:the_world/climate#rainfall)降雨量$()在 150 到 420mm 的地區。它們集羣狩獵，體型比普通狼更大，無法被馴化。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:hyena",
       "scale": 0.7,
-      "text": "The hyena spawns at any $(l:the_world/climate#temperature)temperature$() warmer than 15°C, and $(l:the_world/climate#rainfall)rainfall$() between 80 and 380mm. They hunt in packs. They are not tamable."
+      "text": "鬣狗生活在$(l:the_world/climate#temperature)温度$()高於 15°C、$(l:the_world/climate#rainfall)降雨量$()在 80 到 380mm 的地區。它們集羣狩獵，無法被馴化。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:crocodile",
       "scale": 0.7,
-      "name": "Crocodile",
-      "text": "The crocodile spawns near rivers, lakes, and marshes at any $(l:the_world/climate#temperature)temperature$() warmer than 15°C, and at any $(l:the_world/climate#rainfall)rainfall$(). They are nocturnal, and most dangerous in the water."
+      "name": "鱷魚",
+      "text": "鱷魚生活在$(l:the_world/climate#temperature)温度$()高於 15°C 的河流、湖泊和沼澤附近，適應任何$(l:the_world/climate#rainfall)降雨量$()。它們是夜行動物，在水中最具威脅。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:ocelot",
       "scale": 0.7,
-      "text": "The ocelot attacks small animals. It spawns at any $(l:the_world/climate#temperature)temperature$() from 15 to 30°C, and $(l:the_world/climate#rainfall)rainfall$() between 300 and 500mm, in forests. Feeding an ocelot enough times will tame it into a $(l:mechanics/pets)Cat$(). Ocelots can eat raw fish"
+      "text": "豹貓會攻擊小型動物。它生活在$(l:the_world/climate#temperature)温度$()在 15 到 30°C、$(l:the_world/climate#rainfall)降雨量$()在 300 到 500mm 的森林中。餵食豹貓足夠多次可以將其馴化為$(l:mechanics/pets)貓$()。豹貓可以吃生魚。"
     },
     {
       "type": "patchouli:text",
       "anchor": "ramming_prey",
-      "text": "$(thing)Ramming$() animals occasionally attempt to charge nearby creatures, including the player. Their attacks are powerful, but can be dodged. They will ram more frequently if attacked.",
-      "title": "Ramming"
+      "text": "某些動物偶爾會試圖$(thing)衝撞$()附近的生物，包括玩家。這種攻擊的傷害很高，但有機會躲開。如果受到攻擊，它們會更頻繁地進行衝撞。",
+      "title": "衝撞"
     },
     {
       "type": "patchouli:entity",
@@ -128,7 +128,7 @@
       "type": "patchouli:entity",
       "entity": "tfc:wildebeest",
       "scale": 0.7,
-      "text": "The wildebeest spawns in open plains at any $(l:the_world/climate#temperature)temperature$() above 13°C, and $(l:the_world/climate#rainfall)rainfall$() between 90 and 380mm."
+      "text": "牛羚生活在$(l:the_world/climate#temperature)温度$()不低於 13°C、$(l:the_world/climate#rainfall)降雨量$()在 90 到 380mm 之間的開闊平原上。"
     },
     {
       "type": "patchouli:text",
@@ -154,52 +154,52 @@
       "type": "patchouli:entity",
       "entity": "tfc:deer",
       "scale": 0.7,
-      "text": "野豬生活在$(l:the_world/climate#temperature)温度$()不高於 25°C，且$(l:the_world/climate#rainfall)降雨量$()在 130 到 400mm 的平原上。"
+      "text": "鹿生活在$(l:the_world/climate#temperature)温度$()在 -15°C 到 25°C 之間，且$(l:the_world/climate#rainfall)降雨量$()在 130 到 400mm 的森林中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:caribou",
       "scale": 0.6,
-      "name": "Caribou",
-      "text": "The caribou spawns at any $(l:the_world/climate#temperature)temperature$() below -9°C, and $(l:the_world/climate#rainfall)rainfall$() between 110 and 500mm."
+      "name": "馴鹿",
+      "text": "馴鹿生活在$(l:the_world/climate#temperature)温度$()低於 -9°C，且$(l:the_world/climate#rainfall)降雨量$()在 110 到 500mm 的地區。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:gazelle",
       "scale": 0.7,
-      "text": "The gazelle spawns in open plains at any $(l:the_world/climate#temperature)temperature$() above 12°C, and $(l:the_world/climate#rainfall)rainfall$() between 90 and 380mm."
+      "text": "羚羊生活在$(l:the_world/climate#temperature)温度$()高於 12°C 且$(l:the_world/climate#rainfall)降雨量$()在 90 到 380mm 的開闊平原上。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:bongo",
       "scale": 0.9,
-      "name": "Bongo",
-      "text": "The bongo spawns in forests at any $(l:the_world/climate#temperature)temperature$() above 15°C, and $(l:the_world/climate#rainfall)rainfall$() between 230 and 500mm."
+      "name": "羚羊",
+      "text": "羚羊生活在$(l:the_world/climate#temperature)温度$()高於 15°C 且$(l:the_world/climate#rainfall)降雨量$()在 230 到 500mm 的森林中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:grouse",
       "scale": 0.7,
-      "text": "松雞生活在$(l:the_world/climate#temperature)温度$()在 -12 到 13°C 之間，且$(l:the_world/climate#rainfall)降雨量$()在 150 到 400mm 的任何氣候中。"
+      "text": "松雞生活在$(l:the_world/climate#temperature)温度$()在 -12°C 到 13°C 之間，且$(l:the_world/climate#rainfall)降雨量$()在 150 到 400mm 的地區。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:pheasant",
       "scale": 0.7,
-      "text": "雉雞生活在$(l:the_world/climate#temperature)温度$()在 -5 到 17°C 之間，且$(l:the_world/climate#rainfall)降雨量$()在 100 到 300mm 的任何氣候中。"
+      "text": "雉雞生活在$(l:the_world/climate#temperature)温度$()在 -5°C 到 17°C 之間，且$(l:the_world/climate#rainfall)降雨量$()在 100 到 300mm 的森林中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:turkey",
       "scale": 0.7,
-      "text": "火雞生活在$(l:the_world/climate#temperature)温度$()在 0 到 17°C 之間，且$(l:the_world/climate#rainfall)降雨量$()在 250 到 450mm 的任何氣候中。"
+      "text": "火雞生活在$(l:the_world/climate#temperature)温度$()在 0°C 到 17°C 之間，且$(l:the_world/climate#rainfall)降雨量$()在 250 到 450mm 的森林中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:peafowl",
       "scale": 0.8,
-      "name": "Peafowl",
-      "text": "The peafowl spawns in forests at any $(l:the_world/climate#temperature)temperature$() above 14°C, and $(l:the_world/climate#rainfall)rainfall$() between 190 and 500mm."
+      "name": "孔雀",
+      "text": "孔雀生活在$(l:the_world/climate#temperature)温度$()高於 14°C 且$(l:the_world/climate#rainfall)降雨量$()在 190 到 500mm 的森林中。"
     },
     {
       "type": "patchouli:empty"

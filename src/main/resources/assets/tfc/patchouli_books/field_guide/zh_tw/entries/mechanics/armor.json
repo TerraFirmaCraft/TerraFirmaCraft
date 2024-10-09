@@ -6,30 +6,30 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)盔甲$()可以在捕食者和怪物的攻擊下保護我們. $(thing)金屬$()的等級越高, 盔甲的質量也就越好. 也就是說$(l:mechanics/leather_making)皮革$()盔甲是最弱的, $(l:mechanics/steel)彩鋼$()盔甲是最強的."
+      "text": "$(thing)盔甲$()可以抵禦捕食者和怪物的攻擊。製作盔甲所用$(thing)金屬$()的等級越高，盔甲的質量也就越好。$(l:mechanics/leather_making)皮革$()盔甲是最弱的，而$(l:mechanics/steel)彩鋼$()盔甲是最強的。"
     },
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:leather_knapping/chestplate",
-      "text": "皮革盔甲是利用$(l:mechanics/leather_making)皮革$()塑形制成的. 這種盔甲用不久, 但如果湊齊一整套, 還是能提供一些體面的防護的."
+      "text": "皮革盔甲是透過$(l:mechanics/leather_making)皮革塑形$()製成的。這種盔甲耐久度不高，但如果湊齊一整套，還是能提供少許防護的。"
     },
     {
       "type": "tfc:anvil_recipe",
       "recipe": "tfc:anvil/copper_unfinished_helmet",
-      "text": "$(thing)金屬盔甲$()需要利用$(l:mechanics/anvils)砧$()經過多重步驟打造而成. 首先需要鍛造一個$(thing)未完成的$()盔甲, 這需要一個這種金屬的$(thing)雙層薄板$(), 除了靴子只需要一個$(thing)薄板$()."
+      "text": "$(thing)金屬盔甲$()需要利用$(l:mechanics/anvils)砧$()經過多重步驟打造而成。首先需要將一個$(thing)雙層薄板$()鍛造成$(thing)未完成的$()盔甲部件。例外：靴子只需要一個$(thing)薄板$()。"
     },
     {
       "type": "tfc:welding_recipe",
       "recipe": "tfc:welding/bismuth_bronze_greaves",
-      "text": "接下來, 需要將一個$(thing)薄板$() $(l:mechanics/anvils#welding)焊接$()到盔甲上來完成製作, 而胸甲需要一個$(thing)雙層薄板$()才能完成."
+      "text": "接下來，需要將一個$(thing)薄板$()$(l:mechanics/anvils#welding)焊接$()到部件上來完成製作。例外：胸甲需要一個$(thing)雙層薄板$()才能完成。"
     },
     {
       "type": "patchouli:text",
-      "text": "同等級的不同金屬製成的盔甲可能略有不同, 這體現在耐久度和對不同$(l:mechanics/damage_types)傷害型別$()的防禦上. 對於耐久度來說, 青銅家族的排名是: $(thing)鉍銅$()最好, 普通$(thing)青銅$(), 最後是$(thing)黑銅$(). 對於彩鋼, $(thing)紅鋼$()的耐久比$(thing)藍鋼$()好一些."
+      "text": "同等級的不同金屬製成的盔甲可能在耐久度和對不同$(l:mechanics/damage_types)傷害型別$()的防禦上略有不同。三種不同的青銅中，$(thing)黑銅$()的耐久度最高、普通$(thing)青銅$()次之、$(thing)鉍銅$()最弱。對於彩鋼來說，$(thing)紅鋼$()的耐久比$(thing)藍鋼$()好一些。"
     },
     {
       "type": "patchouli:text",
-      "text": "鋼製盔甲還能提供更多的好處, 例如 $(thing)盔甲韌性$() 和 $(thing)擊退抗性$(). 普通$(thing)鋼$()的盔甲韌性是1, $(thing)黑鋼$()是2, 而$(thing)彩鋼$()有3點韌性. $(thing)黑鋼$()有5%的擊退抗性, 而$(thing)彩鋼$()有10%."
+      "text": "鋼製盔甲還有一些額外效果：例如$(thing)盔甲韌性$()和$(thing)擊退抗性$()。普通$(thing)鋼$()盔甲的盔甲韌性是1，$(thing)黑鋼$()的是2，而$(thing)彩鋼$()則有3點韌性。此外，$(thing)黑鋼$()有 5% 的擊退抗性，而$(thing)彩鋼$()有 10%。"
     }
   ],
   "read_by_default": true,

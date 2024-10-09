@@ -59,13 +59,13 @@
     {
       "type": "patchouli:text",
       "anchor": "jug",
-      "text": "另一个很有用的陶器是$(thing)陶罐$()。你可以用它来盛装或从中饮用各种液体，比如$(thing)淡水$()。$(br2)要使用它，只需拿着壶对着水源方块按$(item)$(k:key.use)$()就行。长按$(item)$(k:key.use)$()便可以用它喝水。陶罐一次可以容纳 $(thing)100 mB$() 的液体。",
-      "title": "陶罐"
+      "text": "另一个很有用的陶器是$(thing)陶壶$()。你可以用它来盛装或从中饮用各种液体，比如$(thing)淡水$()。$(br2)要使用它，只需拿着壶对着水源方块按$(item)$(k:key.use)$()就行。长按$(item)$(k:key.use)$()便可以用它喝水。陶壶一次可以容纳 $(thing)100 mB$() 的液体。",
+      "title": "陶壶"
     },
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:clay_knapping/jug",
-      "text": "粘土塑形陶罐。"
+      "text": "粘土塑形陶壶。"
     },
     {
       "type": "patchouli:text",

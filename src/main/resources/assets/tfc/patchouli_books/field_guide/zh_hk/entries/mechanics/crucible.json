@@ -6,12 +6,12 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)坩堝$()是一種用來製作$(l:mechanics/crucible#advanced_alloying)合金$()的高級設備。用坩堝製作合金比用$(l:getting_started/primitive_alloys)小缸$()更精確也更方便，$(br2)要製作坩堝，首先你得先獲取一些比普通黏土更強的$(l:mechanics/fire_clay)耐火黏土$()。耐火黏土可以通過黏土塑形制作成$()未燒製的坩堝$()。"
+      "text": "$(thing)坩堝$()是一種用來製作$(l:mechanics/crucible#advanced_alloying)合金$()的高級設備。用坩堝製作合金比用$(l:getting_started/primitive_alloys)小缸$()更精確也更方便，$(br2)要製作坩堝，首先你得先獲取一些比普通粘土更強的$(l:mechanics/fire_clay)耐火粘土$()。耐火粘土可以通過粘土塑形制作成$()未燒製的坩堝$()。"
     },
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:fire_clay_knapping/crucible",
-      "text": "黏土塑形制作$(thing)未燒製的坩堝$()。"
+      "text": "粘土塑形制作$(thing)未燒製的坩堝$()。"
     },
     {
       "type": "tfc:heat_recipe",
@@ -39,7 +39,7 @@
           "G": "tfc:rock/bricks/granite"
         }
       },
-      "name": "",
+      "name": "-",
       "text": "用木炭爐加熱坩堝",
       "enable_visualize": false
     },
@@ -59,7 +59,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "使用坩堝混合合金配比比用小缸更精確也更方便。坩堝界面中有9個可以放入並加熱物品的格，放入其中的容器的內容物會自動流入坩堝，比如$(l:getting_started/pottery#mold)模具$()等。將鼠標懸浮在容器上方並按住$(item)$(k:key.sneak)$()就可以讓金屬更快流入坩堝$(br2)也可以把模具或其他容器放入坩堝的出料格，坩堝內的金屬會緩慢流入其中。"
+      "text": "坩鍋有九個用來熔化物品的格子，物品熔化之後的液體會直接流入坩鍋。$(l:getting_started/pottery#mold)模具$()等可以盛裝熔融金屬的容器也可以放置在這裏，其中的金屬會慢慢流入坩鍋。將光標置於容器上按住$(item)$(k:key.sneak)$()可以加速金屬流入的速度。$(br2)模具和容器也可以放置在輸出格，慢慢接收坩鍋內的當前金屬。"
     },
     {
       "type": "patchouli:text",

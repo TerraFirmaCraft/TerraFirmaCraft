@@ -1,28 +1,28 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Crankshafts",
+  "name": "曲軸",
   "category": "tfc:mechanics",
   "icon": "tfc:crankshaft",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "A $(thing)Crankshaft$() is a way of turning $(l:mechanics/mechanical_power)Rotational Power$() into $(thing)Moving-back-and-forth Power$(). This can be useful in order to power devices such as the $(l:mechanics/bellows)Bellows$(), or $(l:mechanics/pumps)Water Pumps$().$(br2)The $(thing)Crankshaft$() consists of two parts: the base, and the shaft. The base must be connected to an $(l:mechanics/mechanical_power#axle)Axle$(), and devices can be connected to the end of the shaft."
+      "text": "$(thing)曲軸$()是一種將$(l:mechanics/mechanical_power)旋轉運動$()轉化為$(thing)往返運動$()的機械裝置。這對於為$(l:mechanics/bellows)風箱$()或$(l:mechanics/pumps)水泵$()等設備提供動力非常有用。$(br2)$(thing)曲軸$()由兩個部分組成：基座和連桿。基座必須連接到一處$(l:mechanics/mechanical_power#axle)傳動杆$()上，要驅動的設備則需要連接到連桿的末端。"
     },
     {
       "type": "patchouli:multiblock",
       "multiblock_id": "tfc:crankshaft",
-      "name": "",
-      "text": "A $(thing)Crankshaft$() being powered by an $(l:mechanics/mechanical_power#axle)Axle$()",
+      "name": "-",
+      "text": "由$(l:mechanics/mechanical_power#axle)傳動杆$()提供動力的$(thing)曲軸$()",
       "enable_visualize": false
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/crankshaft",
-      "text": "The base can be crafted from $(l:getting_started/primitive_alloys#brass)Brass$(). Once a base is placed, a shaft can be added to it by using a $(thing)Steel Rod$() on the base. If there is an empty space to the side of the crankshaft, the rod will be placed."
+      "text": "基座可以由$(l:getting_started/primitive_alloys#brass)黃銅$()製成。基座放置後，可以將一根$(thing)鋼棒$()作為連桿添加到基座上。"
     },
     {
       "type": "patchouli:text",
-      "text": "The crankshaft can be connected to a $(l:mechanics/bellows)Bellows$() by placing one adjacent to the shaft. This will then push automatically every time the shaft extends then contracts. When connected to a crankshaft it cannot be operated manually.$(br2)The crankshaft can also be connected to a $(l:mechanics/pumps)Pump$(), which can be used to transport fluids."
+      "text": "曲軸可以通過將$(l:mechanics/bellows)風箱$()放置在連桿旁邊與其連接。連桿每次伸展和收縮時，風箱會自動推動。連接到曲軸時，風箱不能手動操作。$(br2)曲軸還可以連接到$(l:mechanics/pumps)水泵$()，用於輸送流體。"
     }
   ],
   "read_by_default": true

@@ -32,17 +32,17 @@
     },
     {
       "type": "patchouli:text",
-      "text": "To get saplings from a fruit tree, break the 'elbow' blocks (branch blocks that are attached to a block on one side and above) tree with an $(thing)Axe$(). Saplings can also be placed on these 'elbow' sections, if they are not too high up in the tree. This allows one fruit tree to grow multiple fruits. Harvesting fruit is done with $(item)$(k:key.use)$() when the leaf block is bearing fruit. This will give one fruit, and revert the plant back to its growing stage, until it goes dormant for the winter."
+      "text": "要從果樹上獲得樹苗，可以用$(thing)斧子$()砍掉“肘形”的那一塊樹枝（即一側和上方都連線著其他方塊的樹枝方塊）。也可以把樹苗種在這些“肘形”樹枝上，前提是它們不在樹上太高的位置。這樣可以讓一棵果樹結出多種水果。收穫水果時，當葉子方塊結出果即時，使用$(item)$(k:key.use)$()即可收穫一顆果實，這會使這一格樹葉恢復到生長階段，直到冬天進入休眠期前都可再次結果。"
     },
     {
       "type": "patchouli:text",
       "anchor": "cherry",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 100 - 350mm$(br2)Cherry trees grow in the months of January through March, start flowering in April and May, and bear fruit in June.",
+      "text": "$(bold)$(l:the_world/climate#temperature)溫度$()：5 - 25 °C$(br)$(bold)$(l:mechanics/hydration)降雨量$()：100 - 350毫米$(br2)櫻桃樹在1月至3月間生長，4月和5月開始開花，並於6月結果。",
       "title": "櫻桃樹"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "An example cherry tree.",
+      "text": "一棵櫻桃樹。",
       "multiblocks": [
         {
           "pattern": [
@@ -261,12 +261,12 @@
     {
       "type": "patchouli:text",
       "anchor": "green_apple",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 1 - 25 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 110 - 280mm$(br2)Green apple trees grow from March to July, start flowering in August and September, and bear fruit in October.",
-      "title": "Green Apple Tree"
+      "text": "$(bold)$(l:the_world/climate#temperature)溫度$()：1 - 25 °C$(br)$(bold)$(l:mechanics/hydration)降雨量$()：110 - 280毫米$(br2)青蘋果樹從3月到7月生長，8月和9月開始開花，並在10月結果。",
+      "title": "青蘋果樹"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "An example green apple tree.",
+      "text": "一棵青蘋果樹。",
       "multiblocks": [
         {
           "pattern": [
@@ -485,12 +485,12 @@
     {
       "type": "patchouli:text",
       "anchor": "lemon",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 10 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 180 - 470mm$(br2)Lemon trees grow from February to May, start flowering in June and July, and bear fruit in August.",
-      "title": "Lemon Tree"
+      "text": "$(bold)$(l:the_world/climate#temperature)溫度$()：10 - 30 °C$(br)$(bold)$(l:mechanics/hydration)降雨量$()：180 - 470毫米$(br2)檸檬樹從2月到5月生長，6月和7月開始開花，並在8月結果。",
+      "title": "檸檬樹"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "An example lemon tree.",
+      "text": "一棵檸檬樹。",
       "multiblocks": [
         {
           "pattern": [
@@ -709,12 +709,12 @@
     {
       "type": "patchouli:text",
       "anchor": "olive",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 150 - 500mm$(br2)Olive trees grow from March to July, start flowering in August and September, and bear fruit in October.$(br2)Olives can be used to produce $(l:mechanics/lamps#olives)Olive Oil$(), which can be used as a fuel for lamps.",
-      "title": "Olive Tree"
+      "text": "$(bold)$(l:the_world/climate#temperature)溫度$()：5 - 30 °C$(br)$(bold)$(l:mechanics/hydration)降雨量$()：150 - 500毫米$(br2)橄欖樹從3月到7月生長，8月和9月開始開花，並在10月結果。$(br2)橄欖可以用來生產$(l:mechanics/lamps#olives)橄欖油$()，而橄欖油可以用作燈的燃料。",
+      "title": "橄欖樹"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "An example olive tree.",
+      "text": "一棵橄欖樹。",
       "multiblocks": [
         {
           "pattern": [
@@ -933,12 +933,12 @@
     {
       "type": "patchouli:text",
       "anchor": "orange",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 15 - 36 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 250 - 500mm$(br2)Orange trees grow from March to June, start flowering in July and August, and bear fruit in September.",
-      "title": "Orange Tree"
+      "text": "$(bold)$(l:the_world/climate#temperature)溫度$()：15 - 36 °C$(br)$(bold)$(l:mechanics/hydration)降雨量$()：250 - 500毫米$(br2)橙子樹從3月到6月生長，7月和8月開始開花，並在9月結果。",
+      "title": "橙子樹"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "An example orange tree.",
+      "text": "一棵橙子樹。",
       "multiblocks": [
         {
           "pattern": [
@@ -1157,12 +1157,12 @@
     {
       "type": "patchouli:text",
       "anchor": "peach",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 4 - 27 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 60 - 230mm$(br2)Peach trees grow from December to March, start flowering in April and May, and bear fruit in June.",
-      "title": "Peach Tree"
+      "text": "$(bold)$(l:the_world/climate#temperature)溫度$()：4 - 27 °C$(br)$(bold)$(l:mechanics/hydration)降雨量$()：60 - 230毫米$(br2)桃樹從12月到3月生長，4月和5月開始開花，並在6月結果。",
+      "title": "桃樹"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "An example peach tree.",
+      "text": "一棵桃樹。",
       "multiblocks": [
         {
           "pattern": [
@@ -1381,12 +1381,12 @@
     {
       "type": "patchouli:text",
       "anchor": "plum",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 15 - 31 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 250 - 400mm$(br2)Plum trees grow from January to April, start flowering in May and June, and bear fruit in July.",
-      "title": "Plum Tree"
+      "text": "$(bold)$(l:the_world/climate#temperature)溫度$()：15 - 31 °C$(br)$(bold)$(l:mechanics/hydration)降雨量$()：250 - 400毫米$(br2)李子樹從1月到4月生長，5月和6月開始開花，並在7月結果。",
+      "title": "李子樹"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "An example plum tree.",
+      "text": "一棵李子樹。",
       "multiblocks": [
         {
           "pattern": [
@@ -1605,12 +1605,12 @@
     {
       "type": "patchouli:text",
       "anchor": "red_apple",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 1 - 25 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 100 - 280mm$(br2)Red Apple trees grow from March to July, start flowering in August and September, and bear fruit in October.",
-      "title": "Red Apple Tree"
+      "text": "$(bold)$(l:the_world/climate#temperature)溫度$()：1 - 25 °C$(br)$(bold)$(l:mechanics/hydration)降雨量$()：100 - 280毫米$(br2)紅蘋果樹從3月到7月生長，8月和9月開始開花，並在10月結果。",
+      "title": "紅蘋果樹"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "An example red apple tree.",
+      "text": "一棵紅蘋果樹。",
       "multiblocks": [
         {
           "pattern": [
@@ -1829,12 +1829,12 @@
     {
       "type": "patchouli:text",
       "anchor": "banana",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 17 - 35 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 280 - 500mm$(br2)Bananas are a special kind of fruit tree. They grow only vertically, lack leaves, and only fruit at the topmost block. Saplings are dropped from the flowering part of the plant. Once a banana plant is harvested, it dies, and will not produce any more fruit. It must be replanted in the spring.",
-      "title": "Banana Tree"
+      "text": "$(bold)$(l:the_world/climate#temperature)溫度$()：17 - 35 °C$(br)$(bold)$(l:mechanics/hydration)降雨量$()：280 - 500毫米$(br2)香蕉樹是一種特殊的果樹。它們只會垂直生長，沒有葉子，並且只在最上面的方塊結出果實。樹苗從植株開花部分掉落。一旦香蕉植株被收穫，它將死亡，不會再產生果實。必須在春天重新種植。",
+      "title": "香蕉樹"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "An example banana tree.",
+      "text": "一棵香蕉樹。",
       "multiblocks": [
         {
           "pattern": [
@@ -2289,7 +2289,7 @@
           "fill": "0xa8986a"
         }
       ],
-      "text": "The fruiting calendar for fruit trees.",
+      "text": "果樹的果季。",
       "title": "果樹",
       "legend": [
         {
@@ -2332,7 +2332,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/berry_bush.png"
       ],
-      "text": "A wild tall bush.",
+      "text": "一株野生高草。",
       "border": true
     },
     {
@@ -2346,12 +2346,12 @@
     {
       "type": "patchouli:text",
       "anchor": "blackberry",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 7 - 24 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 24 - 100mm$(br2)Blackberry bushes grow from February to May, start flowering in June and July, and bear fruit in August.$(br2)They can be found in areas with few trees.",
+      "text": "$(bold)$(l:the_world/climate#temperature)溫度$()：7 - 24 °C$(br)$(bold)$(l:mechanics/hydration)降雨量$()：24 - 100毫米$(br2)黑莓灌木從2月到5月生長，6月和7月開始開花，並在8月結果。$(br2)它們通常出現在樹木稀少的區域。",
       "title": "黑莓灌木"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "An example blackberry bush.",
+      "text": "一株黑莓灌木。",
       "multiblocks": [
         {
           "pattern": [
@@ -2446,12 +2446,12 @@
     {
       "type": "patchouli:text",
       "anchor": "raspberry",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 24 - 100mm$(br2)Raspberry bushes grow from April to July, start flowering in August and September, and bear fruit in October.$(br2)They can be found in areas with few trees.",
+      "text": "$(bold)$(l:the_world/climate#temperature)溫度$()：5 - 25 °C$(br)$(bold)$(l:mechanics/hydration)降雨量$()：24 - 100毫米$(br2)樹莓灌木從4月到7月生長，8月和9月開始開花，並在10月結果。$(br2)它們通常出現在樹木稀少的區域。",
       "title": "樹莓灌木"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "An example raspberry bush.",
+      "text": "一株樹莓灌木。",
       "multiblocks": [
         {
           "pattern": [
@@ -2546,12 +2546,12 @@
     {
       "type": "patchouli:text",
       "anchor": "blueberry",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 7 - 29 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 12 - 100mm$(br2)Blueberry bushes grow from February to May, start flowering in June and July, and bear fruit in August.$(br2)They can be found in areas with few trees.",
+      "text": "$(bold)$(l:the_world/climate#temperature)溫度$()：7 - 29 °C$(br)$(bold)$(l:mechanics/hydration)降雨量$()：12 - 100毫米$(br2)藍莓灌木從2月到5月生長，6月和7月開始開花，並在8月結果。$(br2)它們通常出現在樹木稀少的區域。",
       "title": "藍莓灌木"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "An example blueberry bush.",
+      "text": "一株藍莓灌木。",
       "multiblocks": [
         {
           "pattern": [
@@ -2646,12 +2646,12 @@
     {
       "type": "patchouli:text",
       "anchor": "elderberry",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 10 - 33 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 12 - 100mm$(br2)Elderberry bushes grow from February to May, start flowering in June and July, and bear fruit in August.$(br2)They can be found in areas with few trees.",
-      "title": "接骨木灌木"
+      "text": "$(bold)$(l:the_world/climate#temperature)溫度$()：10 - 33 °C$(br)$(bold)$(l:mechanics/hydration)降雨量$()：12 - 100毫米$(br2)接骨木果灌木從2月到5月生長，6月和7月開始開花，並在8月結果。$(br2)它們通常出現在樹木稀少的區域。",
+      "title": "接骨木果灌木"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "An example elderberry bush.",
+      "text": "一株接骨木灌木。",
       "multiblocks": [
         {
           "pattern": [
@@ -2746,12 +2746,12 @@
     {
       "type": "patchouli:text",
       "anchor": "small_bushes",
-      "text": "$(thing)Small Bushes$() are a kind of low lying fruit block that spawns in forests. Small bushes occasionally will spread to surrounding blocks, if there aren't too many other bushes nearby.$(br2)Small bushes will go through three sizes, and when grown, they are harvested just with $(item)$(k:key.use)$().",
+      "text": "$(thing)小型灌木$()是一種生長在森林中的低矮果實方塊。如果附近沒有太多其他灌木，小型灌木會偶爾向周圍擴散。$(br2)小型灌木會經歷三種大小的生長階段，成熟後只需點選$(item)$(k:key.use)$()即可採摘。",
       "title": "小型灌木"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Three different sizes of a healthy small bush",
+      "text": "健康的小型灌木的三種不同大小。",
       "multiblocks": [
         {
           "pattern": [
@@ -2797,12 +2797,12 @@
     {
       "type": "patchouli:text",
       "anchor": "bunchberry",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 15 - 35 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 24 - 100 %$(br2)Bunchberry bushes grow from May to July, start flowering in August and September, and bear fruit in October.$(br2)They can be found in forests.",
-      "title": "Bunchberry Bush"
+      "text": "$(bold)$(l:the_world/climate#temperature)溫度$()：15 - 35 °C$(br)$(bold)$(l:mechanics/hydration)溼度$()：24 - 100 %$(br2)御膳橘灌木從5月到7月生長，8月和9月開始開花，並在10月結果。$(br2)它們通常出現在森林中。",
+      "title": "御膳橘灌木"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "The monthly stages of a bunchberry bush.",
+      "text": "御膳橘灌木的每月生長階段。",
       "multiblocks": [
         {
           "pattern": [
@@ -2861,12 +2861,12 @@
     {
       "type": "patchouli:text",
       "anchor": "gooseberry",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 27 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 24 - 100 %$(br2)Gooseberry bushes grow from April to July, start flowering in August and September, and bear fruit in October.$(br2)They can be found in forests.",
-      "title": "Gooseberry Bush"
+      "text": "$(bold)$(l:the_world/climate#temperature)溫度$()：5 - 27 °C$(br)$(bold)$(l:mechanics/hydration)溼度$()：24 - 100 %$(br2)醋栗灌木從4月到7月生長，8月和9月開始開花，並在10月結果。$(br2)它們通常出現在森林中。",
+      "title": "醋栗灌木"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "The monthly stages of a gooseberry bush.",
+      "text": "醋栗灌木的每月生長階段。",
       "multiblocks": [
         {
           "pattern": [
@@ -2925,12 +2925,12 @@
     {
       "type": "patchouli:text",
       "anchor": "snowberry",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -7 - 18 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 24 - 100 %$(br2)Snowberry bushes grow from March to June, start flowering in July and August, and bear fruit in September.$(br2)They can be found in forests.",
-      "title": "Snowberry Bush"
+      "text": "$(bold)$(l:the_world/climate#temperature)溫度$()：-7 - 18 °C$(br)$(bold)$(l:mechanics/hydration)溼度$()：24 - 100 %$(br2)雪果灌木從3月到6月生長，7月和8月開始開花，並在9月結果。$(br2)它們通常出現在森林中。",
+      "title": "雪果灌木"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "The monthly stages of a snowberry bush.",
+      "text": "雪果灌木的每月生長階段。",
       "multiblocks": [
         {
           "pattern": [
@@ -2989,12 +2989,12 @@
     {
       "type": "patchouli:text",
       "anchor": "cloudberry",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -2 - 17 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 9 - 100 %$(br2)Cloudberry bushes grow from February to May, start flowering in June to August, and bear fruit in September.$(br2)They can be found in forests.",
-      "title": "Cloudberry Bush"
+      "text": "$(bold)$(l:the_world/climate#temperature)溫度$()：-2 - 17 °C$(br)$(bold)$(l:mechanics/hydration)溼度$()：9 - 100 %$(br2)雲莓灌木從2月到5月生長，6月到8月開始開花，並在9月結果。$(br2)它們通常出現在森林中。",
+      "title": "雲莓灌木"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "The monthly stages of a cloudberry bush.",
+      "text": "雲莓灌木的每月生長階段。",
       "multiblocks": [
         {
           "pattern": [
@@ -3053,12 +3053,12 @@
     {
       "type": "patchouli:text",
       "anchor": "strawberry",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 28 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 12 - 100 %$(br2)Strawberry bushes grow from October to December, start flowering in January and February, and bear fruit in March.$(br2)They can be found in forests.",
-      "title": "Strawberry Bush"
+      "text": "$(bold)$(l:the_world/climate#temperature)溫度$()：5 - 28 °C$(br)$(bold)$(l:mechanics/hydration)溼度$()：12 - 100 %$(br2)草莓灌木從10月到12月生長，1月和2月開始開花，並在3月結果。$(br2)它們通常出現在森林中。",
+      "title": "草莓灌木"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "The monthly stages of a strawberry bush.",
+      "text": "草莓灌木的每月生長階段。",
       "multiblocks": [
         {
           "pattern": [
@@ -3117,12 +3117,12 @@
     {
       "type": "patchouli:text",
       "anchor": "wintergreen_berry",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -6 - 17 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 12 - 100 %$(br2)Wintergreen berry bushes grow from May to September, start flowering in October and November, and bear fruit in December.$(br2)They can be found in forests.",
-      "title": "Wintergreen Berry Bush"
+      "text": "$(bold)$(l:the_world/climate#temperature)溫度$()：-6 - 17 °C$(br)$(bold)$(l:mechanics/hydration)溼度$()：12 - 100 %$(br2)冬青莓灌木從5月到9月生長，10月和11月開始開花，並在12月結果。$(br2)它們通常出現在森林中。",
+      "title": "冬青莓灌木"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "The monthly stages of a wintergreen berry bush.",
+      "text": "冬青莓灌木的每月生長階段。",
       "multiblocks": [
         {
           "pattern": [
@@ -3181,12 +3181,12 @@
     {
       "type": "patchouli:text",
       "anchor": "cranberry",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -5 - 17 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 30 - 100 %$(br2)Cranberry bushes grow from March to June, start flowering in July and August, and bear fruit in September.$(br2)They can be found in forests. Unlike most small bushes, cranberry bushes are grown underwater.",
-      "title": "Cranberry Bush"
+      "text": "$(bold)$(l:the_world/climate#temperature)溫度$()：-5 - 17 °C$(br)$(bold)$(l:mechanics/hydration)溼度$()：30 - 100 %$(br2)蔓越莓灌木從3月到6月生長，7月和8月開始開花，並在9月結果。$(br2)它們通常出現在森林中。與大多數小型灌木不同，蔓越莓灌木生長在水下。",
+      "title": "蔓越莓灌木"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "The monthly stages of a cranberry bush.",
+      "text": "蔓越莓灌木的每月生長階段。",
       "multiblocks": [
         {
           "pattern": [
@@ -3558,8 +3558,8 @@
           "fill": "0xa8986a"
         }
       ],
-      "text": "The fruiting calendar for berry bushes.",
-      "title": "Berry Bushes",
+      "text": "灌木的果季。",
+      "title": "結果灌木叢",
       "legend": [
         {
           "text": "Dormant",

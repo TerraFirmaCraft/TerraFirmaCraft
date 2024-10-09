@@ -6,41 +6,41 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The $(thing)Sluice$() is a device that is used to process $(thing)Ore Deposits$(), producing the same results that $(l:mechanics/panning)Panning$() does, with different probabilities."
+      "text": "$(thing)洗礦槽$()是一種用來處理$(thing)礦石沉積物$()的裝置，其產物和$(l:mechanics/panning)淘金盤$()一致，但產出各物品的機率不同。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/sequoia_sluice",
-      "text": "洗礦槽使用木棍和木材製作."
+      "text": "使用木棍和木材製作洗礦槽。"
     },
     {
       "type": "patchouli:text",
-      "text": "洗礦槽被放置後會佔據兩個方塊。為了讓它正常工作, 水必須流過洗礦槽的頂部並從底部流出。如果水看起來流過了整個洗礦槽, 它就在正常工作. 流進洗礦槽的水必須是水流的最後一格水, 並且在洗礦槽的底下必須有一個空方塊讓水能夠流進去."
+      "text": "洗礦槽被放置後會佔據兩個方塊。為了讓它正常工作，水必須流過洗礦槽的頂部並從底部流出。如果水看起來流過了整個洗礦槽，就表示它在正常工作。流進洗礦槽的水必須是水流的最後一格水，且在洗礦槽的出口處必須有一個空方塊讓水能夠流進去。"
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/tutorial/sluice_cross.png"
       ],
-      "text": "一個正確安裝的洗礦槽.",
+      "text": "一個正確安裝的洗礦槽。",
       "border": true
     },
     {
       "type": "patchouli:text",
-      "text": "要使用洗礦槽, 你需要把沉積物的物品丟棄到水流中, 並且讓水流將物品衝進去. 沉積物會出現在洗礦槽中, 然後過一段時間, 洗礦的產物就有可能從底部吐出."
+      "text": "要使用洗礦槽，只需要把礦石沉積物方塊以物品形式丟到上游水流中，讓水流把物品衝進洗礦槽，沉積物會出現在洗礦槽中。一段時間之後，洗礦的產物就有可能從下游吐出。"
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/tutorial/sluice_in_use.png"
       ],
-      "text": "一個正常工作的, 裡面有沉積物的洗礦槽.",
+      "text": "一個正常工作的、裡面有沉積物的洗礦槽。",
       "border": true
     },
     {
       "type": "patchouli:text",
-      "text": "Sluicing can give three possible products: $(thing)Ore$(), $(thing)Loose Rocks$(), and $(l:mechanics/gems)Gems$(). The probabilities are as follows:$(br)$(li)Ore: 55%%$(li)Loose Rock: 22.5%%$(li)Gem: 0.9%%$()Each rock type has a specific gem that it will drop, that is exclusive to that rock type.",
-      "title": "Products of Panning"
+      "text": "洗礦槽會產出三種不同的產物：$(thing)礦石$()、$(thing)石子$()和$(l:mechanics/gems)寶石$()。$(br)$(li)礦石：55%機率$(li)石子：22.5%機率$(li)寶石：0.9%機率$()，每種岩石型別都會有一種獨有的寶石可能出現。",
+      "title": "洗礦產物"
     }
   ],
   "read_by_default": true,

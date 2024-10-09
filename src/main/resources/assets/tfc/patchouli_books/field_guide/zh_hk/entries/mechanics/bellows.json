@@ -11,7 +11,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/bellows",
-      "title": "",
+      "title": "-",
       "text": "要拉動風箱，$(item)$(k:key.use)$()點擊即可。在一段時間內，目標設備的最大燃燒温度會獲得提升。"
     }
   ],

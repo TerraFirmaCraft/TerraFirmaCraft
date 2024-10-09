@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "A pit kiln is an early game method of $(l:mechanics/heating)heating$() items up. It can be used to $(thing)fire$() clay into ceramic, for example. The pit kiln, over the time period of about eight hours, will heat its contents up to 1400 °C, or $(bold)$(e)$(t:Yellow White)Yellow White$()."
+      "text": "坑窯是遊戲早期為數不多的$(l:mechanics/heating)加熱$()物品的手段。坑窯的主要用途是將黏土$(thing)燒製$()成陶器。坑窯點燃後會花費8小時時間逐漸將溫度提升至 1400 °C，即$(bold)$(e)$(t:Yellow White)黃白$()。"
     },
     {
       "type": "patchouli:text",

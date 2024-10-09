@@ -51,7 +51,7 @@
     {
       "type": "patchouli:multiblock",
       "multiblock_id": "tfc:full_blast_furnace",
-      "name": "",
+      "name": "-",
       "text": "一個最大的完整高爐結構，包含風箱。",
       "enable_visualize": true
     },

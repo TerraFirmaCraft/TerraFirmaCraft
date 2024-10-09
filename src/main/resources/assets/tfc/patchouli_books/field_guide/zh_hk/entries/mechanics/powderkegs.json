@@ -34,7 +34,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/powderkeg",
-      "text": "Powderkegs can be made from adding $(l:mechanics/dye)Red Dye$() and string to the crafting shape of a barrel."
+      "text": "在製作大桶時使用$(l:mechanics/dye)紅色染料$()和線，會得到火藥桶。"
     },
     {
       "type": "patchouli:crafting",

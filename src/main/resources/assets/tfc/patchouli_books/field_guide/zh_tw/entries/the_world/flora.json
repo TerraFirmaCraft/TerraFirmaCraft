@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "There are many, many, $(italic)many$() different types of plants in TerraFirmaCraft.$(br2)Different plants appear in different $(l:the_world/climate)Climates$(), and their appearance may change over the current season - going through cycles of flowering and laying dormant, or changing color as the local temperature changes. Colorful flowers can typically be crushed in a $(l:mechanics/quern)Quern$() for $(l:mechanics/dye)Dye$()."
+      "text": "在群巒傳說中，存在著許許多多、各式各樣的植物。$(br2)不同的植物會出現在不同的$(l:the_world/climate)氣候$()中，並且它們會隨著四季變化經歷從開花到休眠的生長迴圈，其外觀也會相應改變。它們也會隨著當地溫度的變化而變色。顏色豔麗的花朵通常可以在$(l:mechanics/quern)手推磨$()中碾碎，用於製作$(l:mechanics/dye)染料$()。"
     },
     {
       "type": "patchouli:multiblock",
@@ -237,7 +237,7 @@
         }
       },
       "name": "普通水生植物",
-      "text": "用$(thing)刀$()割普通水生植物可以獲得$(thing)海草$().",
+      "text": "用$(thing)刀$()割普通水生植物可以獲得$(thing)海草$()。",
       "enable_visualize": false
     },
     {
@@ -279,7 +279,7 @@
         }
       },
       "name": "高大水生植物",
-      "text": "只要下面那格有水就可以活。用$(thing)刀$()割$(thing)水生芋頭$()和$()闊葉香蒲$()可以獲得它們的$(thing)根$().",
+      "text": "只要下面那格有水就可以活。用$(thing)刀$()割$(thing)水生芋頭$()和$()闊葉香蒲$()可以獲得它們的$(thing)根$()。",
       "enable_visualize": false
     },
     {

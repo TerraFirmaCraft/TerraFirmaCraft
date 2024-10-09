@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)黏土$()是一種特別有用的材料，你可以用它製作陶器。一開始你可能難以找到黏土，因為它們總是隱藏在草皮之下。但簡而言之，有兩種獲取它們的手段。首先，黏土會在$(l:the_world/climate#rainfall)年降雨量$()大於 175mm 的區域中成片地大量生成，而且有幾種特殊的$(thing)植物$()會生長在黏土之上。"
+      "text": "$(thing)粘土$()是一種特別有用的材料，你可以用它製作陶器。一開始你可能難以找到粘土，因為它們總是隱藏在草皮之下。但簡而言之，有兩種獲取它們的手段。首先，粘土會在$(l:the_world/climate#rainfall)年降雨量$()大於 175mm 的區域中成片地大量生成，而且有幾種特殊的$(thing)植物$()會生長在粘土之上。"
     },
     {
       "type": "patchouli:multiblock",
@@ -29,13 +29,13 @@
           "C": "#tfc:clay_indicators"
         }
       },
-      "name": "黏土指示植物",
-      "text": "黏土草方塊，其上生長的是黏土指示植物。",
+      "name": "粘土指示植物",
+      "text": "粘土草方塊，其上生長的是粘土指示植物。",
       "enable_visualize": false
     },
     {
       "type": "patchouli:text",
-      "text": "有幾種植物指示了附近可能存在黏土，它們是：$(thing)蹄蓋蕨$()、$(thing)美人蕉$()、$(thing)一枝黃花$()、$(thing)蒲葦$()、$(thing)分藥花$()、和$(thing)水生美人蕉$()。其次，黏土也會在水源附近，比如河流、湖泊、或水池邊，以小塊的形式生成。$(br2)和石子類似，黏土也可以被塑形成有用的物品。需要手持五個黏土球才能塑形。不同於石子塑形，捏壞了的黏土並不會消失，只要關閉黏土塑形界面重新嘗試即可。"
+      "text": "有幾種植物指示了附近可能存在粘土，它們是：$(thing)蹄蓋蕨$()、$(thing)美人蕉$()、$(thing)一枝黃花$()、$(thing)蒲葦$()、$(thing)分藥花$()、和$(thing)水生美人蕉$()。其次，粘土也會在水源附近，比如河流、湖泊、或水池邊，以小塊的形式生成。$(br2)和石子類似，粘土也可以被塑形成有用的物品。需要手持五個粘土球才能塑形。不同於石子塑形，捏壞了的粘土並不會消失，只要關閉粘土塑形界面重新嘗試即可。"
     },
     {
       "type": "patchouli:image",
@@ -48,35 +48,35 @@
     {
       "type": "patchouli:text",
       "anchor": "vessel",
-      "text": "黏土可以用來做成小缸。你捏出來的小缸還需要燒製才能使用。燒製是指將黏土置於 1200°C（$(e)$(bold)$(t:Yellow)黃色$()）以上的高温中$(l:mechanics/heating)加熱$()，直到它變成$(thing)瓷$()。$(br2)篝火的温度並不足以燒製瓷器，你得使用$(l:getting_started/pit_kiln)坑窯$()才行。",
+      "text": "粘土可以用來做成小缸。你捏出來的小缸還需要燒製才能使用。燒製是指將粘土置於 1200°C（$(e)$(bold)$(t:Yellow)黃色$()）以上的高温中$(l:mechanics/heating)加熱$()，直到它變成$(thing)瓷$()。$(br2)篝火的温度並不足以燒製瓷器，你得使用$(l:getting_started/pit_kiln)坑窯$()才行。",
       "title": "小缸"
     },
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:clay_knapping/vessel",
-      "text": "黏土塑形小缸。"
+      "text": "粘土塑形小缸。"
     },
     {
       "type": "patchouli:text",
       "anchor": "jug",
-      "text": "另一個很有用的陶器是$(thing)陶罐$()。你可以用它來盛裝或從中飲用各種液體，比如$(thing)淡水$()。$(br2)要使用它，只需拿着壺對着水源方塊按$(item)$(k:key.use)$()就行。長按$(item)$(k:key.use)$()便可以用它喝水。陶罐一次可以容納 $(thing)100 mB$() 的液體。",
-      "title": "陶罐"
+      "text": "另一個很有用的陶器是$(thing)陶壺$()。你可以用它來盛裝或從中飲用各種液體，比如$(thing)淡水$()。$(br2)要使用它，只需拿着壺對着水源方塊按$(item)$(k:key.use)$()就行。長按$(item)$(k:key.use)$()便可以用它喝水。陶壺一次可以容納 $(thing)100 mB$() 的液體。",
+      "title": "陶壺"
     },
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:clay_knapping/jug",
-      "text": "黏土塑形陶罐。"
+      "text": "粘土塑形陶壺。"
     },
     {
       "type": "patchouli:text",
       "anchor": "mold",
-      "text": "黏土的另一大作用是用來製作$(thing)模具$()。將熔融金屬澆鑄進模具中並冷卻就能將其製成各種有用的工具或物品。金屬冷卻後，手持模具並按下$(item)$(k:key.use)$()就可以將其取出了。$(br2)最簡單的模具是$(thing)鑄錠模具$()，可以按右側所示的方法塑形出來。",
+      "text": "粘土的另一大作用是用來製作$(thing)模具$()。將熔融金屬澆鑄進模具中並冷卻就能將其製成各種有用的工具或物品。金屬冷卻後，手持模具並按下$(item)$(k:key.use)$()就可以將其取出了。$(br2)最簡單的模具是$(thing)鑄錠模具$()，可以按右側所示的方法塑形出來。",
       "title": "模具"
     },
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:clay_knapping/ingot_mold",
-      "text": "黏土塑形鑄錠模具"
+      "text": "粘土塑形鑄錠模具"
     },
     {
       "type": "tfc:heat_recipe",
@@ -88,7 +88,7 @@
       "item": "tfc:ceramic/ingot_mold{tank:{\"Amount\":100,\"FluidName\":\"tfc:metal/copper\"}}",
       "title": "鑄造",
       "link_recipes": false,
-      "text": "接下來的幾頁會教你如何將黏土塑形成各種工具的模具。"
+      "text": "接下來的幾頁會教你如何將粘土塑形成各種工具的模具。"
     },
     {
       "type": "tfc:knapping_recipe",

@@ -1,45 +1,45 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Dye",
+  "name": "染料",
   "category": "tfc:mechanics",
   "icon": "minecraft:red_dye",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "All 16 vanilla $(thing)Dye Colors$() can be obtained as items. Most flowers and other colorful plants can be ground into dye using a $(l:mechanics/quern)Quern$(). Powders of $(l:the_world/ores_and_minerals)metal ores$() can be crafted directly into dye. $(l:the_world/ores_and_minerals#graphite)Graphite$(), $(l:the_world/ores_and_minerals#kaolinite)Kaolinite$(), $(l:the_world/ores_and_minerals#sylvite)Sylvite$(), $(l:the_world/ores_and_minerals#lapis_lazuli)Lapis$(), Coke, and Charcoal powder can be crafted into dye as well."
+      "text": "所有 16 种原版的$(thing)染料颜色$()都可以作为物品获得。大多数花卉和其他彩色植物可以使用$(l:mechanics/quern)手推磨$()研磨成染料。$(l:the_world/ores_and_minerals)金属矿石$()粉末可以直接制作成染料。$(l:the_world/ores_and_minerals#graphite)石墨$()、$(l:the_world/ores_and_minerals#kaolinite)高岭土$()、$(l:the_world/ores_and_minerals#sylvite)钾石盐$()、$(l:the_world/ores_and_minerals#lapis_lazuli)青金石$()、焦炭和木炭粉末也可以制作成染料。"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:bucket/red_dye",
-      "title": "Dye Liquids",
+      "title": "染液",
       "link_recipes": false,
-      "text": "Dyes can also be made into fluids. A dye item and 1000mB of $(item)Water$() boiled in a $(l:mechanics/pot)Pot$() produces the same amount of $(thing)Dye Fluid$(). Dye fluids are used in $(l:mechanics/barrels)Barrels$() to color items."
+      "text": "染料也可以制成液体。将染料物品和 1000mB 的$(item)水$()放入$(l:mechanics/pot)锅$()中煮沸，可以制成等量的$(thing)染液$()。染液可在$(l:mechanics/barrels)大桶$()中为物品染色。"
     },
     {
       "type": "tfc:sealed_barrel_recipe",
       "recipe": "tfc:barrel/dye/red_concrete_powder",
-      "text": "Dyeing items in a barrel is cheaper than using items, requiring only 25mB of dyed fluid."
+      "text": "在桶中给物品染色比直接使用物品更节省染料。染一件物品只需要 25mB 的染料液体。"
     },
     {
       "type": "tfc:sealed_barrel_recipe",
       "recipe": "tfc:barrel/dye/disc_chirp",
-      "text": "Dye fluids can be used to finish $(item)Music Discs$()."
+      "text": "染料液体可以用于蚀刻$(item)音乐唱片$()。"
     },
     {
       "type": "tfc:sealed_barrel_recipe",
       "recipe": "tfc:barrel/dye/red_leather",
-      "text": "Dye fluids can even dye leather as if it were crafted!"
+      "text": "染料液体甚至可以为皮革染色！"
     },
     {
       "type": "tfc:sealed_barrel_recipe",
       "anchor": "lye",
       "recipe": "tfc:barrel/dye/bleach_concrete_powder",
-      "text": "Five $(item)Wood Ash$() and 1000mB of $(item)Water$() boiled in a $(l:mechanics/pot)Pot$() produces lye. 25mB of Lye removes the color from a colored item."
+      "text": "将五个$(item)草木灰$()和 1000mB 的$(item)水$()在$(l:mechanics/pot)锅$()中煮沸可以制成碱液。每 25mB 的碱液可以为一件物品漂白。"
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)$(item)Black Dye$() is used for $(l:mechanics/scribing_table)Scribing Tables$().$(li)$(item)Red Dye$() is used for $(l:mechanics/powderkegs)Powderkegs$(). $(li)Unfired $(l:mechanics/decay#small_vessels)Small Vessels$() and $(l:mechanics/decay#large_vessels)Large Vessels$() can be dyed$().",
-      "title": "Miscellaneous"
+      "text": "$(li)$(item)黑色染料$()可用于合成$(l:mechanics/scribing_table)书写桌$()。$(li)$(item)红色染料$()可用于合成$(l:mechanics/powderkegs)火药桶$()。$(li)未烧制的$(l:mechanics/decay#small_vessels)小缸$()和$(l:mechanics/decay#large_vessels)大缸$()都可以被染色。",
+      "title": "杂项"
     }
   ],
   "read_by_default": true

@@ -14,7 +14,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "例如, 如果要製造 1000 mB 的$(thing)青銅$()(如右圖所示), 你需要 880-920 mB 的$(thing)銅$(), 加上 80-120 mB 的$(thing)錫$().$(br2)下面的三頁展示了三種青銅的合成方法, 每一種青銅都可以用來製作工具, $(l:mechanics/armor)盔甲$(), 和其他的金屬製品. 這幾種青銅還是稍有區別, 因此製成的工具的耐久度, 效率, 和攻擊傷害會有所不同."
+      "text": "例如，要合成 1000 mB 的$(thing)青銅$()（右側所示），你需要加入 880~920 mB 的$(thing)銅$()以及 80~120 mB 的$(thing)錫$()。$(br2)接下來的幾頁展示了三種不同的銅合金。每種銅合金都可以做成工具、$(l:mechanics/armor)盔甲$()、和其他金屬物品，但它們的耐久度、效率、和傷害有些微小的差異。"
     },
     {
       "type": "patchouli:spotlight",
@@ -39,30 +39,30 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Other alloys are not suitable for creating tools. These are $(thing)Brass$(), $(thing)Rose Gold$(), and $(thing)Sterling Silver$().$(br2)$(thing)Brass$() is a useful alloy for all sorts of contraptions, including $(l:mechanics/mechanical_power)Mechanical Power$().$(br2)$(thing)Rose Gold$() and $(thing)Sterling Silver$() are used for crafting $(l:mechanics/steel#red_steel)Red Steel$() and $(l:mechanics/steel#blue_steel)Blue Steel$().",
-      "title": "Utility Alloys"
+      "text": "還有一些其他不適合製成工具的合金，比如$(thing)黃銅$()、$(thing)玫瑰金$()和$(thing)紋銀$()。$(br2)$(thing)黃銅$()的主要作用是製作各種小裝置，如$(l:mechanics/mechanical_power)自動化機械$()。$(br2)$(thing)玫瑰金$()和$(thing)紋銀$()則是熔鍊$(l:mechanics/steel#red_steel)紅鋼$()和$(l:mechanics/steel#blue_steel)藍鋼$()時必須的原料。",
+      "title": "功能性合金"
     },
     {
       "type": "patchouli:spotlight",
       "anchor": "brass",
       "item": "tfc:metal/ingot/brass",
-      "title": "Brass",
+      "title": "黃銅",
       "link_recipes": false,
       "text": "$(br)$(bold)條件：$()$(br)$(li)$(thing)銅$()：88 - 92 %$(li)$(thing)錫$()：8 - 12 %$(br2)"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:metal/ingot/rose_gold",
-      "title": "Rose Gold",
+      "title": "玫瑰金",
       "link_recipes": false,
-      "text": "$(br)$(bold)Requirements:$()$(br)$(li)15 - 30 % : $(thing)Copper$()$(li)70 - 85 % : $(thing)Gold$()$(br2)"
+      "text": "$(br)$(bold)條件：$()$(br)$(li)15 - 30 % : $(thing)銅$()$(li)70 - 85 % : $(thing)金$()$(br2)"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:metal/ingot/sterling_silver",
-      "title": "Sterling Silver",
+      "title": "紋銀",
       "link_recipes": false,
-      "text": "$(br)$(bold)Requirements:$()$(br)$(li)20 - 40 % : $(thing)Copper$()$(li)60 - 80 % : $(thing)Silver$()$(br2)"
+      "text": "$(br)$(bold)條件：$()$(br)$(li)20 - 40 % : $(thing)銅$()$(li)60 - 80 % : $(thing)銀$()$(br2)"
     }
   ],
   "read_by_default": true,

@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The $(thing)Sluice$() is a device that is used to process $(thing)Ore Deposits$(), producing the same results that $(l:mechanics/panning)Panning$() does, with different probabilities."
+      "text": "$(thing)洗礦槽$()是一種用來處理$(thing)礦石沉積物$()的裝置，其產物和$(l:mechanics/panning)淘金盤$()一致，但產出各物品的幾率不同。"
     },
     {
       "type": "patchouli:crafting",
@@ -39,8 +39,8 @@
     },
     {
       "type": "patchouli:text",
-      "text": "洗礦槽會產出三種物品：$(thing)礦石$()、$(thing)小石子$()、和$(l:mechanics/gems)寶石$()。概率如下：$(br)$(li)礦石：55%$(li)小石子：22.5%$(li)寶石：0.9%$()$(br2)每一種巖石類型會且只會產出其特有的一種寶石。",
-      "title": "產物概率"
+      "text": "洗礦槽會產出三種不同的產物：$(thing)礦石$()、$(thing)石子$()和$(l:mechanics/gems)寶石$()。$(br)$(li)礦石：55%幾率$(li)石子：22.5%幾率$(li)寶石：0.9%幾率$()，每種岩石類型都會有一種獨有的寶石可能出現。",
+      "title": "洗礦產物"
     }
   ],
   "read_by_default": true,

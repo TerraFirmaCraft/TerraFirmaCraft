@@ -23,14 +23,14 @@
           "X": "tfc:pot"
         }
       },
-      "name": "",
+      "name": "-",
       "text": "附有陶鍋的篝火。",
       "enable_visualize": false
     },
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:clay_knapping/pot",
-      "text": "陶鍋必須先用黏土$(l:getting_started/pottery)塑形$()。"
+      "text": "陶鍋必須先用粘土$(l:getting_started/pottery)塑形$()。"
     },
     {
       "type": "tfc:heat_recipe",

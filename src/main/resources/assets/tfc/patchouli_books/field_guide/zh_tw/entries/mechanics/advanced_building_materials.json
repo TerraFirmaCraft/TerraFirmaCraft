@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "除了石器時代的基礎$(l:getting_started/building_materials)建築材料$(), 金屬工具可以幫你生產更多的高階建築材料"
+      "text": "除了石器時代的基礎$(l:getting_started/building_materials)建築材料$()，金屬工具可以幫你生產更多的高階建築材料"
     },
     {
       "type": "patchouli:text",
@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "anchor": "alabaster",
-      "text": "雪花石膏是一種由$(l:the_world/ores_and_minerals#gypsum)石膏$()製成的建築方塊. 它可以直接由$(l:the_world/ores_and_minerals#gypsum)石膏$()合成得到, 但你可以把一些$(l:the_world/ores_and_minerals#gypsum)石膏$()和 100 mB 的$(thing)石灰水$()密封在大桶裡來更高效的製造雪花石膏.",
+      "text": "雪花石膏是一種用$(l:the_world/ores_and_minerals#gypsum)石膏$()礦做成的建築材料。石膏可以直接在物品欄中做成雪花石膏，不過等以後有了$(l:mechanics/barrels)桶$()會有更高效的製作方法。",
       "title": "雪花石膏"
     },
     {
@@ -27,7 +27,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Alabaster can be $(l:mechanics/dye)dyed$() in a $(l:mechanics/barrels)Barrel$() of dye into any color. Raw Alabaster blocks can also be $(l:mechanics/chisel)chiseled$() into $(thing)Polished Alabaster$() using the $(thing)Smooth$() chisel mode, or crafted into stairs, slabs, or walls.",
+      "text": "雪花石膏可以在$(l:mechanics/barrels)大桶$()中$(l:mechanics/dye)染色$()。未加工的雪花石膏磚可以被$(l:mechanics/chisel)鑿制$()成$(thing)平滑雪花石膏磚$()，或是做成樓梯、臺階、圍牆等方塊。",
       "title": "雪花石膏裝飾品"
     },
     {
@@ -39,7 +39,7 @@
     {
       "type": "patchouli:text",
       "anchor": "bricks_and_mortar",
-      "text": "將一些小石子$(l:mechanics/chisel)鑿制$()可以得到這種岩石的$(thing)磚$(). 然後需要使用$(thing)砂漿$()來形成一個堅固的磚方塊.$(br2)砂漿可以透過將$(thing)沙子$()加入裝有$(l:mechanics/barrels#limewater)石灰水$()的大桶得到.",
+      "text": "將一些小石子與$(l:mechanics/chisel)鑿子$()在合成欄中合成就可以得到這種岩石的$(thing)磚$()。將磚與$(thing)砂漿$()合成就能做成堅固的建築方塊。$(br2)砂漿可以透過將$(thing)沙子$()加入裝有$(l:mechanics/barrels#limewater)石灰水$()的大桶得到。",
       "title": "石磚和砂漿"
     },
     {
@@ -49,7 +49,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "也可以製作出其他的石頭裝飾方塊, 例如$(thing)裂紋磚$()和$(thing)雕刻過的石磚$(). 將圓石或石磚方塊放在水下的其他苔石旁, 苔蘚就會擴散到鄰近方塊, 得到更多的$(thing)苔石$()或苔石磚."
+      "text": "你還可以製作其他的石頭裝飾方塊，例如$(thing)裂紋磚$()和$(thing)雕刻過的石磚$()。將圓石或石磚方塊放在水下的其他苔石旁，苔蘚就會擴散，將其轉換為$(thing)苔石$()或苔石磚。"
     },
     {
       "type": "patchouli:crafting",

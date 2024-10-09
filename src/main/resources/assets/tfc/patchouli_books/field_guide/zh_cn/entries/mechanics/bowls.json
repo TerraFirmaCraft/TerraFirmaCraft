@@ -1,41 +1,41 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Bowls",
+  "name": "碗",
   "category": "tfc:mechanics",
   "icon": "tfc:ceramic/bowl",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Bowls$() are a versatile tool which can be used to make $(l:mechanics/salad)Salads$(), to make $(l:mechanics/pot)Soups$(), to $(l:mechanics/decay#salting)Salt$() meat, or to apply $(thing)Powder$() to $(l:mechanics/glassworking_applications#coloring)Glass$() in order to change the resulting glass's color.$(br2)Bowls can be made both from $(thing)Ceramic$(), by knapping a bowl out of clay, and then firing them."
+      "text": "$(thing)碗$()是一种用途广泛的工具，可以用来制作$(l:mechanics/salad)色拉$()、盛$(l:mechanics/pot)汤$()、制作$(l:mechanics/decay#salting)咸肉$()或在$(l:mechanics/glassworking_applications#coloring)玻璃染色$()的工艺中为玻璃原料$(thing)参杂$()。$(br2)$(thing)陶碗$()可以通过黏土塑形，再烧制获得。"
     },
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:clay_knapping/bowl_4",
-      "text": "Multiple unfired bowls can be made from one knapping."
+      "text": "可以在一次黏土塑形中制作数只碗。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/vanilla/bowl",
-      "title": "Wooden Bowls",
-      "text": "Bowls can also be made out of wood via crafting them together with $(thing)Glue$()$(br2)$(thing)Glue$() can be made by soaking $(thing)Bone Meal$() in a barrel of $(l:mechanics/barrels#limewater)Limewater$()."
+      "title": "木碗",
+      "text": "$(thing)木碗$()是通过将木材与$(thing)胶水$()合成得到的。$(br2)$(thing)胶水$()可通过将$(thing)骨粉$()浸入装有$(l:mechanics/barrels#limewater)石灰水$()的大桶中获得。"
     },
     {
       "type": "tfc:sealed_barrel_recipe",
       "recipe": "tfc:barrel/glue",
-      "text": "Bowls can also be placed on the ground like blocks. When placed, they can be filled with any type of $(thing)Powder$() - the results of grinding ores, minerals, or gems in the $(l:mechanics/quern)Quern$()."
+      "text": "可以将碗放置在地上。放在地上的碗可以盛装各种$(thing)粉末$()——$(l:mechanics/quern)手推磨$()中得到的各种矿石、矿物或宝石的粉末都可以。"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tag:tfc:powders",
-      "title": "Powders",
+      "title": "粉末",
       "link_recipes": false,
-      "text": "The Powder Bowl can hold up to 16 of a given powder. To insert items, $(item)$(k:key.use)$() while holding the powder. To extract items, $(item)$(k:key.use)$() with an empty hand.$(br2)$(item)$(k:key.sneak)$() allows extracting the entire contents of the bowl."
+      "text": "放置的碗可以盛装最多16份单一粉末。手持粉末$(item)$(k:key.use)$()点击以放入。空手$(item)$(k:key.use)$()以取出。$(br2)按住$(item)$(k:key.sneak)$()可以一次装满或清空碗中的所有粉末。"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:powder/salt",
       "link_recipes": false,
-      "text": "If there is salt in the bowl, clicking with unsalted raw meat will salt the meat. This is the same as crafting the meat with the salt in your inventory."
+      "text": "手持生肉点击装有盐的碗可以制作出咸肉。这与直接在合成格中制作效果相同。"
     }
   ],
   "read_by_default": true,

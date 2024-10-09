@@ -83,7 +83,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "They need a $(thing)Saddle$() to ride, which can be $(thing)Knapped$(). This includes $(l:mechanics/animal_husbandry#mule)Mules$(), $(l:mechanics/animal_husbandry#donkey)Donkeys$(), and $(l:mechanics/animal_husbandry#horses)Horses$(). Mules and Donkeys can hold any chest or barrel. If holding a barrel, $(item)$(k:key.use)$() while holding $(item)$(k:key.sneak)$() can be used to remove it. The same keys while holding a bucket can be used to drain fluid from the barrel. $(br2)The next few pages will go over all livestock types."
+      "text": "骑乘需要$(thing)鞍$()，鞍是通过$(thing)皮革塑形$()制作的。不管是$(l:mechanics/animal_husbandry#mule)骡$()、$(l:mechanics/animal_husbandry#donkey)驴$()还是$(l:mechanics/animal_husbandry#horses)马$()都需要鞍。此外，骡和驴还可以携带箱子或大桶。携带大桶时，按住$(item)$(k:key.sneak)$()的同时$(item)$(k:key.use)$()就可以取下，或手持木桶时按同样的键就可以存取液体。$(br2)以下几页将介绍所有的牲畜种类。"
     },
     {
       "type": "patchouli:text",
@@ -95,7 +95,7 @@
       "type": "patchouli:entity",
       "entity": "tfc:pig{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.6,
-      "name": " ",
+      "name": "-",
       "text": "猪"
     },
     {
@@ -108,7 +108,7 @@
       "type": "patchouli:entity",
       "entity": "tfc:cow{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.75,
-      "name": " ",
+      "name": "-",
       "text": "牛"
     },
     {
@@ -121,7 +121,7 @@
       "type": "patchouli:entity",
       "entity": "tfc:goat{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.75,
-      "name": " ",
+      "name": "-",
       "text": "山羊"
     },
     {
@@ -134,46 +134,46 @@
       "type": "patchouli:entity",
       "entity": "tfc:yak{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.75,
-      "name": " ",
+      "name": "-",
       "text": "牦牛"
     },
     {
       "type": "patchouli:text",
       "anchor": "alpaca",
-      "text": "$(thing)羊驼$()是一种会在$(l:the_world/climate#temperature)温度$()在 -8 到 20°C 之间、$(l:the_world/climate#rainfall)降雨量$()至少 250 毫米的温和的气候中生成的$(l:mechanics/animal_husbandry#wooly_animals)产毛动物$()。它们会吃$(thing)谷物$()和$(thing)水果$()。他们一胎能生产 1-2 个幼崽，怀孕 36 天，98 天成年。若从未剪过毛，衰老前它们可以产仔 13 次。若从未产过仔，衰老前它们可以剪毛 180 次，且每 6 天长出一次羊毛。",
+      "text": "$(thing)羊驼$()是一种会在$(l:the_world/climate#temperature)温度$()在 -8 到 20°C 之间、$(l:the_world/climate#rainfall)降雨量$()至少 250 毫米的温和的气候中生成的$(l:mechanics/animal_husbandry#wooly_animals)产毛动物$()。它们会吃$(thing)谷物$()和$(thing)水果$()。他们一胎能生产 1-2 个幼崽，怀孕 36 天，98 天成年。若从未剪过毛，衰老前它们可以产仔 13 次。若从未产过仔，衰老前它们可以剪毛 180 次，且每 6 天产出一次毛。",
       "title": "羊驼"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:alpaca{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.75,
-      "name": " ",
-      "text": "羊驼"
+      "name": "-",
+      "text": "一只羊驼。"
     },
     {
       "type": "patchouli:text",
       "anchor": "sheep",
-      "text": "$(thing)绵羊$()是一种会在$(l:the_world/climate#temperature)温度$()在 0 到 35°C 之间、$(l:the_world/climate#rainfall)降雨量$() 70 到 300 毫米的较干燥的气候中生成的$(l:mechanics/animal_husbandry#wooly_animals)产毛动物$()。它们会吃$(thing)谷物$()。它们一胎能生产 1-2 个幼崽，怀孕 32 天，56 天成年。若从未剪过毛，衰老前它们可以产仔 6 次。若从未产过仔，衰老前它们可以剪毛 60 次，且每 9 天长出一次羊毛。",
+      "text": "$(thing)绵羊$()是一种会在$(l:the_world/climate#temperature)温度$()在 0 到 35°C 之间、$(l:the_world/climate#rainfall)降雨量$()在 70 到 300 毫米的较干燥气候中生成的$(l:mechanics/animal_husbandry#wooly_animals)产毛动物$()。它们会吃$(thing)谷物$()。它们一胎能产 1-2 只幼崽，怀孕 32 天，56 天成年。若从未剪过毛，衰老前它们可以产仔 6 次。若从未产仔，衰老前它们可以剪毛 60 次，每 9 天产一次毛。",
       "title": "绵羊"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:sheep{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.75,
-      "name": " ",
-      "text": "绵羊"
+      "name": "-",
+      "text": "一只绵羊。"
     },
     {
       "type": "patchouli:text",
       "anchor": "musk_ox",
-      "text": "$(thing)Musk Oxen$() spawn in cold climates, with $(l:the_world/climate#temperature)temperature$() between -25 and 0°C, and at least 100mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#wooly_animals)Wooly Animals$(). They eat $(thing)grains$(). They always have 1 child, are pregnant for 64 days, and reach adulthood in 168 days. They can have children 16 times, if they are never sheared, or be sheared 160 times if they are never bred. They grow wool every 96 hours.",
+      "text": "$(thing)麝牛$()生活在$(l:the_world/climate#temperature)温度$()在 -25°C 到 0°C 的寒冷气候中，$(l:the_world/climate#rainfall)降雨量$()至少为 100 毫米。它们是$(l:mechanics/animal_husbandry#wooly_animals)产毛动物$()，以$(thing)谷物$()为食。它们通常只生一个幼崽，怀孕期为 64 天，168 天后成年。若从未剪过毛，衰老前可以产仔 16 次；若从未产仔，衰老前可以剪毛 160 次。它们每 96 小时产出一次毛。",
       "title": "麝牛"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:musk_ox{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.75,
-      "name": " ",
+      "name": "-",
       "text": "麝牛"
     },
     {
@@ -186,7 +186,7 @@
       "type": "patchouli:entity",
       "entity": "tfc:chicken{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.7,
-      "name": " ",
+      "name": "-",
       "text": "鸡"
     },
     {
@@ -199,7 +199,7 @@
       "type": "patchouli:entity",
       "entity": "tfc:duck{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.7,
-      "name": " ",
+      "name": "-",
       "text": "鸭"
     },
     {
@@ -212,7 +212,7 @@
       "type": "patchouli:entity",
       "entity": "tfc:quail{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.7,
-      "name": " ",
+      "name": "-",
       "text": "鹌鹑"
     },
     {
@@ -225,7 +225,7 @@
       "type": "patchouli:entity",
       "entity": "tfc:donkey{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.6,
-      "name": " ",
+      "name": "-",
       "text": "驴"
     },
     {
@@ -238,7 +238,7 @@
       "type": "patchouli:entity",
       "entity": "tfc:mule{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.6,
-      "name": " ",
+      "name": "-",
       "text": "骡子"
     },
     {
@@ -251,7 +251,7 @@
       "type": "patchouli:entity",
       "entity": "tfc:horse{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.6,
-      "name": " ",
+      "name": "-",
       "text": "马"
     }
   ],

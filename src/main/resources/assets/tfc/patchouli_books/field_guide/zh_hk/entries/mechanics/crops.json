@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "In addition to finding wild crops, seeds can also be produced from existing crops. When a fully mature crop dies - either by weather, or leaving it to rot - it will go to seed, dropping more seeds that can be used to grow even more crops next season."
+      "text": "除了從野生作物獲取種子，栽培作物也會產出種子。當一株完全成熟的作物不論是因為天氣原因，或是過了收穫時節而枯萎時就會轉變為種子，為下一季種植更多作物提供了保障。"
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -20,21 +20,21 @@
         "tfc:rock_knapping/hoe_head_igneous_extrusive",
         "tfc:rock_knapping/hoe_head_igneous_intrusive"
       ],
-      "text": "To get started, a $(thing)Stone Hoe$() can be $(thing)knapped$() as seen above."
+      "text": "要開始，首先通過$(thing)石子塑形$()做一把$(thing)石鋤$()"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/stone/hoe_sedimentary",
-      "text": "用鋤頭和木棍製作鋤。$(br2)鋤和原版一樣，$(item)$(k:key.use)$()點擊泥土方塊就能將它們變成$(thing)耕地$()。除此之外，它還可以用來將$(thing)纏根泥土$()轉化為普通$(thing)泥土$()。"
+      "text": "將鋤頭與木棍合成一把鋤。$(br2)鋤的功能與原版相同，$(item)$(k:key.use)$()點擊泥土方塊即可將其轉化為$(thing)耕地$()。它還可以用於將$(thing)纏根泥土$()轉化為$(thing)土$()。"
     },
     {
       "type": "patchouli:text",
-      "text": "All crops need to be planted on farmland in order to grow. Some crops have additional requirements such as being waterlogged or requiring a stick to grow on.$(br2)Crops do not need $(thing)nutrients$() to grow, but they certainly help. There are three nutrients: $(b)Nitrogen$(), $(6)Phosphorous$(), and $(d)Potassium$(). Each crop has a favorite nutrient.",
-      "title": "Growing Crops"
+      "text": "所有作物都需要種植在耕地上才能生長。有些作物還有額外的要求，比如只能種在水裏或者需要插一根木棍才能生長。$(br2)作物不需要$(thing)營養物質$()就能生長，但營養物質能加速其成熟。營養物質分為三種：$(b)氮$()、$(6)磷$()和$(d)鉀$()。每種作物都有一種偏愛的養分。",
+      "title": "種植作物"
     },
     {
       "type": "patchouli:text",
-      "text": "Consuming its favorite nutrient causes a crop to grow faster, and improves the yield of the crop at harvest time. That means that crops that consumed more nutrients drop more food when broken! Consuming a nutrient also has the effect of replenishing the other nutrients around it a small amount.$(br2)The next several pages list all the crops present in TFC"
+      "text": "消耗偏愛的營養物質可以加速作物的生長，並提高收穫時的產量。作物消耗耕地中的某種營養物質的同時，會小幅產出其他兩種營養物質。$(br2)接下來的幾頁會列出羣巒傳説中所有的作物。"
     },
     {
       "type": "patchouli:text",
@@ -44,7 +44,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [
@@ -192,7 +192,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [
@@ -340,7 +340,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [
@@ -488,7 +488,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [
@@ -626,7 +626,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [
@@ -922,7 +922,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [
@@ -1036,7 +1036,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [
@@ -1150,7 +1150,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [
@@ -1247,7 +1247,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [
@@ -1524,7 +1524,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [
@@ -1655,7 +1655,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [
@@ -1827,7 +1827,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [
@@ -1994,12 +1994,12 @@
     {
       "type": "patchouli:text",
       "anchor": "red_bell_pepper",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 16 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 25 - 60 %$(br)$(bold)Nutrient$(): Potassium$(br2)Red Bell Peppers are a pickable crop. When they are near mature, they can be harvested with $(item)$(k:key.use)$() to obtain Green Bell Peppers. Harvesting with $(item)$(k:key.use)$() allows the plant to grow more peppers in the future rather than destroying the plant.",
-      "title": "Red Bell Peppers"
+      "text": "$(bold)$(l:the_world/climate#temperature)温度$()：16 - 30 °C$(br)$(bold)$(l:mechanics/hydration)濕度$()：25 - 60 %$(br)$(bold)營養物質$()：鉀$(br2)紅甜椒是一種可採摘作物。在接近成熟時，可以使用$(item)$(k:key.use)$()採摘青甜椒。採摘時不破壞植株，允許植物在未來長出更多的甜椒。",
+      "title": "紅甜椒"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [
@@ -2125,12 +2125,12 @@
     {
       "type": "patchouli:text",
       "anchor": "yellow_bell_pepper",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 16 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 25 - 60 %$(br)$(bold)Nutrient$(): Potassium$(br2)Yellow Bell Peppers are a pickable crop. When they are near mature, they can be harvested with $(item)$(k:key.use)$() to obtain Green Bell Peppers. Harvesting with $(item)$(k:key.use)$() allows the plant to grow more peppers in the future rather than destroying the plant.",
-      "title": "Yellow Bell Peppers"
+      "text": "$(bold)$(l:the_world/climate#temperature)温度$()：16 - 30 °C$(br)$(bold)$(l:mechanics/hydration)濕度$()：25 - 60 %$(br)$(bold)營養物質$()：鉀$(br2)黃甜椒是一種可採摘作物。在接近成熟時，可以使用$(item)$(k:key.use)$()採摘青甜椒。採摘時不破壞植株，允許植物在未來長出更多的甜椒。",
+      "title": "黃甜椒"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [
@@ -2261,7 +2261,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [
@@ -2392,7 +2392,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [
@@ -2523,7 +2523,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [
@@ -2671,7 +2671,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [
@@ -3031,7 +3031,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [
@@ -3164,12 +3164,12 @@
     {
       "type": "patchouli:text",
       "anchor": "papyrus",
-      "text": "$(bold)$(l:the_world/climate#temperature)温度$()：19 - 37 °C$(br)$(bold)$(l:mechanics/hydration)濕度$()：70 - 100 %$(br)$(bold)營養物質$()：鉀$(br2)紙莎草是一種兩格高的農作物。種植紙莎草會產出$(l:mechanics/papermaking)紙莎草$()和$(thing)紙莎草種子$()。",
+      "text": "$(bold)$(l:the_world/climate#temperature)温度$()：19 - 37 °C$(br)$(bold)$(l:mechanics/hydration)濕度$()：70 - 100 %$(br)$(bold)營養物質$()：鉀$(br2)紙莎草是一種兩格高的作物。紙莎草種子可以種植在耕地上，生長到兩格高，並生產$(l:mechanics/papermaking)紙莎草$()和$(thing)紙莎草種子$()作為產物。",
       "title": "紙莎草"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [

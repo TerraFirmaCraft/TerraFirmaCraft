@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)礦車$()是一種運輸玩家、實體、和大型方塊的工具。所有會導致玩家$(l:getting_started/size_and_weight#overburdening)負擔過重$()方塊都可以用礦車運輸：$(l:mechanics/decay#large_vessels)大缸$()、$(l:mechanics/barrels)大桶$()、$(l:mechanics/powderkegs)炸藥桶$()、$(l:mechanics/anvils)砧$()、和$(l:mechanics/crucible)熔爐$()。手持這類方塊按住$(item)$(k:key.sneak)$()和$(item)$(k:key.use)$()就能把它們放進礦車。空手對着礦車按$(item)$(k:key.sneak)$()$(item)$(k:key.use)$()可以移除方塊。礦車可以用$(thing)鍛鐵$()或$(thing)鋼$()合成，用鋼合成效率會更高。"
+      "text": "$(thing)礦車$()可以用來運輸玩家、動物和一些大型方塊。那些平時會導致你$(l:getting_started/size_and_weight#overburdening)負擔過重$()的方塊可以在礦車上運輸。$(l:mechanics/decay#large_vessels)大缸$()、$(l:mechanics/barrels)大桶$()、$(l:mechanics/powderkegs)火藥桶$()、$(l:mechanics/anvils)砧$()和$(l:mechanics/crucible)坩鍋$()可以通過$(item)$(k:key.sneak)$()$(item)$(k:key.use$()的方式裝到礦車上。空手$(item)$(k:key.sneak)$()便能取出方塊。$(thing)鐵$()或$(thing)鋼$()都能用於合成礦車，用鋼合成時材料效率更高。"
     },
     {
       "type": "patchouli:crafting",
@@ -35,7 +35,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/kapok_chest_minecart",
-      "text": "$(thing)箱子礦車$()和羣巒傳説中的箱子機制一致 - 它們只有 18 格空格，且不能放入太大的物品（比如原木）。"
+      "text": "$(thing)箱子礦車$()與羣巒傳説的箱子一樣只有18格，且不能存放類似原木那樣的極大物品。"
     }
   ],
   "read_by_default": true

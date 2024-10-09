@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Lamps are a long term source of light. They burn liquid fuel. Lamps retain their fuel content when broken. Using a bucket, $(item)$(k:key.use)$() on a lamp to add fuel to it. It can then be lit with a $(thing)firestarter$() or anything capable of lighting fires. $(thing)Olive Oil$() and $(thing)Tallow$() are lamp fuels. Shooting a lit lamp with an arrow can cause a fire."
+      "text": "灯是一种使用液体燃料的长期光源。挖掘灯时不会令其损失其中的燃料。手持装有燃料的桶$(item)$(k:key.use)$()点击灯就可以向其添加燃料，随后使用$(thing)起火器$()或任何生火工具就能点燃了。$(thing)橄榄油$()和$(thing)鲸脂$()可作为灯的燃料。用箭射点燃的灯可能会引起火灾。"
     },
     {
       "type": "patchouli:multiblock",
@@ -28,13 +28,13 @@
         }
       },
       "name": "灯",
-      "text": "A lit lamp hanging from a chain.",
+      "text": "铁链悬挂着的灯。",
       "enable_visualize": false
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/metal/lamp/bronze",
-      "text": "Lamps are smithed in the $(l:mechanics/anvils)Anvil$() and crafted with $(l:mechanics/glassworking_applications#lamp_glass)Lamp Glass$() to be completed."
+      "text": "灯是在$(l:mechanics/anvils)砧$()上用金属打造，再与$(l:mechanics/glassworking_applications#lamp_glass)灯罩$()合成得到的。"
     },
     {
       "type": "tfc:quern_recipe",

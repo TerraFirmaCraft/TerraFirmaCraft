@@ -1,12 +1,12 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "命名台",
+  "name": "書寫桌",
   "category": "tfc:mechanics",
   "icon": "minecraft:black_dye",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)命名台$()是用來給物品重命名的。重命名需要消耗$(thing)黑色染料$()。可以直接用染料物品，也可以用一桶黑色染液代替。"
+      "text": "$(thing)書寫桌$()是用來給物品重命名的。重命名需要消耗$(thing)黑色染料$()。可以直接用染料物品，也可以用一桶黑色染液代替。"
     },
     {
       "type": "patchouli:multiblock",
@@ -23,21 +23,21 @@
           "X": "tfc:wood/scribing_table/kapok"
         }
       },
-      "name": "",
-      "text": "命名台",
+      "name": "-",
+      "text": "書寫桌",
       "enable_visualize": false
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/birch_scribing_table",
-      "text": "命名台的合成配方"
+      "text": "書寫桌的合成配方"
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/gui/scribing.png"
       ],
-      "text": "在命名台的上方輸入文字，將要重命名的物品放在左側，中間放置染料。右側的格子就會輸出物品。",
+      "text": "在書寫桌的上方輸入文字，將要重命名的物品放在左側，中間放置染料。右側的格子就會輸出物品。",
       "border": false
     }
   ],

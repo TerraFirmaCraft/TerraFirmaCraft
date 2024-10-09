@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "name": "进阶内容",
-  "description": "Advanced sections of the tech tree, from the first pickaxe, all the way to colored steel.$(br2)$(br)$(bold)Note:$() you can search entries simply by starting to type anywhere!",
+  "description": "科技书的进阶部分。从你的第一把镐，直到彩钢。$(br2)$(br)$(bold)备注：$()在本书的任意页面直接键入文字即可进行搜素！",
   "icon": "tfc:metal/axe/red_steel",
   "sortnum": 2
 }

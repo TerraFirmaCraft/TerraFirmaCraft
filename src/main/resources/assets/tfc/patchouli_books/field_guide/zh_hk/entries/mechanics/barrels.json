@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)大桶$()是一種可以容納物品和液體的設備。大桶中央的空格是用來放置物品的，液體則顯示在左側的水槽中。將$(thing)桶$()或$(thing)罐$()放在左上角的空格中可以將其中的液體添加到大桶、或將大桶中的液體盛出。拿着容器對着裝有液體的大桶按下$(item)$(k:key.use)$()也有同樣的效果。"
+      "text": "$(thing)大桶$()是一種可以容納物品和液體的設備。大桶中央的空格是用來放置物品的，液體則顯示在左側的水槽中。將$(thing)桶$()或$(thing)壺$()放在左上角的空格中可以將其中的液體添加到大桶、或將大桶中的液體盛出。拿着容器對着裝有液體的大桶按下$(item)$(k:key.use)$()也有同樣的效果。"
     },
     {
       "type": "patchouli:image",
@@ -22,7 +22,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)手持空的大桶點擊水源方塊可以盛裝液體。$()$(li)啟封的大桶會在雨中慢慢地裝滿水。$()$(li)大桶會接住上方融化的冰柱。$()$(li)密封大桶會彈出不在中心空格的物品。$()",
+      "text": "$(li)手持空的大桶點擊水源方塊可以盛裝液體。$()$(li)啓封的大桶會在雨中慢慢地裝滿水。$()$(li)大桶會接住上方融化的冰柱。$()$(li)密封大桶會彈出不在中心空格的物品。$()",
       "title": "用桶小貼士"
     },
     {
@@ -44,11 +44,11 @@
       "type": "tfc:sealed_barrel_recipe",
       "anchor": "tannin",
       "recipe": "tfc:barrel/tannin",
-      "text": "$(bold)鞣酸$()是一種將某些$(thing)原木$()的樹皮溶於$(thing)淡水$()中製得的酸性溶液。$(thing)橡木$()、$(thing)白樺木$()、$(thing)慄木$()、$(thing)花旗松木$()、$(thing)山核桃木$()、$(thing)楓木$()和$(thing)紅杉木$()都可以用來合成$(thing)鞣酸$()。"
+      "text": "$(bold)鞣酸$()是一種將某些$(thing)原木$()的樹皮溶於$(thing)淡水$()中製得的酸性溶液。$(thing)橡木$()、$(thing)白樺木$()、$(thing)栗木$()、$(thing)花旗松木$()、$(thing)山核桃木$()、$(thing)楓木$()和$(thing)紅杉木$()都可以用來合成$(thing)鞣酸$()。"
     },
     {
       "type": "patchouli:text",
-      "text": "某些大桶配方需要以一定比例混合兩種液體。例如，以 9:1 的比例將$(thing)奶$()與$(thing)醋$()混合可以得到$(thing)醋奶$()；醋和$(thing)鹹水$()以相同比例混合可以得到$(thing)滷水$()。這種配方只能通過先在大桶裏裝一種液體，然後把裝有另一種液體的陶罐或桶放在左上角的液體添加格內來完成。"
+      "text": "某些大桶配方需要以一定比例混合兩種液體。例如，以 9:1 的比例將$(thing)奶$()與$(thing)醋$()混合可以得到$(thing)醋奶$()；醋和$(thing)鹹水$()以相同比例混合可以得到$(thing)滷水$()。這種配方只能通過先在大桶裏裝一種液體，然後把裝有另一種液體的陶壺或桶放在左上角的液體添加格內來完成。"
     },
     {
       "type": "patchouli:text",
@@ -56,7 +56,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Barrels have the ability to $(l:mechanics/dye)Dye$() and $(l:mechanics/dye#lye)Bleach$() items. Most color-able things, like carpet, candles, and $(l:mechanics/advanced_building_materials#alabaster)Alabaster$() can be dyed by sealing them in a barrel of dye or bleached by sealing them in a barrel of lye. See the dye chapter for more information."
+      "text": "大桶可以用來給物品$(l:mechanics/dye)染色$()或$(l:mechanics/dye#lye)漂白$()物品。大多數可染色物品，如地毯、蠟燭和$(l:mechanics/advanced_building_materials#alabaster)雪花石膏$()都可以通過在大桶中與染料封裝的方式染色，或與鹼液封裝的方式漂白。"
     },
     {
       "type": "patchouli:text",
@@ -65,7 +65,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/barrel_rack",
-      "text": "橫放的大桶和豎放的大桶功能相同，但不能直接疊加擺放。必須先製作$(thing)大桶櫃$()並用$(item)$(k:key.use)$()放在下面那格木桶上。"
+      "text": "水平放置的大桶與垂直的大桶功能一致，但是擺放方式有所限制：若想在水平大桶上方放置一隻水平大桶，則必須放置一個$(thing)大桶架$()。"
     },
     {
       "type": "patchouli:multiblock",
@@ -86,20 +86,20 @@
           "Y": "tfc:wood/barrel/kapok[facing=north,rack=true,sealed=false]"
         }
       },
-      "name": "橫放大桶",
-      "text": "橫放的大桶的密封狀態會由其上的$(thing)籠頭$()朝向表示 - 籠頭橫過來表示已密封。",
+      "name": "水平放置大桶",
+      "text": "水平放置的大桶會用一隻$(thing)龍頭$()的方式顯示開啓狀態。如果龍頭是橫向的，則説明已關閉。",
       "enable_visualize": false
     },
     {
       "type": "patchouli:text",
-      "text": "未密封的橫放大桶會自動將其所含液體從籠頭處滴入下方的其他啟封大桶或其他液體容器，前提是籠頭所在的方塊沒有任何其他方塊阻擋。"
+      "text": "水平大桶開啓時，若龍頭下方無其他方塊阻擋，會自動將內容流體輸出至龍頭下其他開啓的大桶或其他流體容器中。"
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/tutorial/barrel_drip.png"
       ],
-      "text": "大桶滴水。",
+      "text": "大桶滴答。",
       "border": true
     }
   ],

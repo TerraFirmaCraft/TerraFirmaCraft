@@ -27,7 +27,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Alabaster can be $(l:mechanics/dye)dyed$() in a $(l:mechanics/barrels)Barrel$() of dye into any color. Raw Alabaster blocks can also be $(l:mechanics/chisel)chiseled$() into $(thing)Polished Alabaster$() using the $(thing)Smooth$() chisel mode, or crafted into stairs, slabs, or walls.",
+      "text": "雪花石膏可以在$(l:mechanics/barrels)大桶$()中$(l:mechanics/dye)染色$()。未加工的雪花石膏磚可以被$(l:mechanics/chisel)鑿制$()成$(thing)平滑雪花石膏磚$()，或是做成樓梯、台階、圍牆等方塊。",
       "title": "雪花石膏裝飾品"
     },
     {
@@ -39,7 +39,7 @@
     {
       "type": "patchouli:text",
       "anchor": "bricks_and_mortar",
-      "text": "將一些小石子與$(l:mechanics/chisel)鑿子$()在合成欄中合成就可以得到這種巖石的$(thing)磚$()。將磚與$(thing)砂漿$()合成就能做成堅固的建築方塊。$(br2)砂漿可以通過將$(thing)沙子$()加入裝有$(l:mechanics/barrels#limewater)石灰水$()的大桶得到。",
+      "text": "將一些小石子與$(l:mechanics/chisel)鑿子$()在合成欄中合成就可以得到這種岩石的$(thing)磚$()。將磚與$(thing)砂漿$()合成就能做成堅固的建築方塊。$(br2)砂漿可以通過將$(thing)沙子$()加入裝有$(l:mechanics/barrels#limewater)石灰水$()的大桶得到。",
       "title": "石磚和砂漿"
     },
     {

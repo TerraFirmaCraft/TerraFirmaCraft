@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "鋼是一類可以用來製作工具和$(l:mechanics/armor)盔甲$()的高階金屬, 並且存在幾種變種: $(thing)鋼$(), $(thing)黑鋼$(), $(thing)紅鋼$(), 和$(thing)藍鋼$().$(br2)為了製造鋼, 你需要先在$(l:mechanics/blast_furnace)高爐$()中製造出$(thing)生鐵$(), 並且把它製作成金屬$(thing)錠$()."
+      "text": "$(l:mechanics/blast_furnace)高爐$()燒煉出的$(thing)生鐵$()並不能直接使用，必須先將其轉化為$(thing)鋼$()後才能進一步加工成工具或$(l:mechanics/armor)盔甲$()。根據生產工藝的不同，可以將生鐵鍛造成幾種不同的鋼：普通$(thing)鋼$()、$(thing)黑鋼$()、$(thing)紅鋼$()和$(thing)藍鋼$()。"
     },
     {
       "type": "tfc:anvil_recipe",
@@ -33,7 +33,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)黑鋼$()可以用來製造工具和$(l:mechanics/armor)盔甲$(), 同時也是製造$(l:mechanics/steel#blue_steel)藍鋼$()和$(l:mechanics/steel#red_steel)紅鋼$()的關鍵原材料."
+      "text": "$(thing)黑鋼$()可以用來製造工具和$(l:mechanics/armor)盔甲$(), 同時也是製造$(l:mechanics/steel#blue_steel)藍鋼$()和$(l:mechanics/steel#red_steel)紅鋼$()的關鍵原材料。"
     },
     {
       "type": "patchouli:text",
@@ -55,7 +55,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Blue Steel$() can be used to create tools and $(l:mechanics/armor)Armor$(), and a $(thing)Blue Steel Bucket$(), which can be used to transport 1000 mB of both liquid fluids, and $(6)Lava$()."
+      "text": "$(thing)藍鋼$()可用來合成工具與$(l:mechanics/armor)盔甲$()……以及$(thing)藍鋼桶$()。藍鋼桶可以用來舀起並轉移 1000 mB 的流體源方塊，以及$(6)熔岩$()。"
     },
     {
       "type": "patchouli:text",
@@ -77,7 +77,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Red Steel$() can be used to create tools and $(l:mechanics/armor)Armor$(), and a $(thing)Red Steel Bucket$(), which can be used to transport 1000 mB of both liquid fluids, and $(6)Lava$()"
+      "text": "$(thing)藍鋼$()可用來合成工具與$(l:mechanics/armor)盔甲$()……以及$(thing)紅鋼桶$()。紅鋼桶可以用來舀起並轉移 1000 mB 的流體源方塊，以及$(6)熔岩$()。"
     }
   ],
   "read_by_default": true,

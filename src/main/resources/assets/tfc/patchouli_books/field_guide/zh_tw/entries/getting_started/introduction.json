@@ -80,7 +80,7 @@
         "tfc:rock_knapping/axe_head_igneous_extrusive",
         "tfc:rock_knapping/axe_head_igneous_intrusive"
       ],
-      "text": "$(thing)斧頭$()可以砍倒整棵樹, 包括樹幹和樹葉. 但只有單獨打碎樹葉才能獲得樹苗和木棍."
+      "text": "$(thing)斧$()可以砍倒整棵樹，包括樹幹和樹葉。但只有單獨打碎樹葉才能獲得樹苗和木棍。"
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -90,7 +90,7 @@
         "tfc:rock_knapping/shovel_head_igneous_extrusive",
         "tfc:rock_knapping/shovel_head_igneous_intrusive"
       ],
-      "text": "$(thing)鏟子$()可以用來挖類似土壤材質的方塊. 對$(thing)草方塊$()或$(thing)泥土$(item)使用$()鏟子也可以製造$(thing)土徑$()."
+      "text": "$(thing)鏟$()可以用來挖類似土壤材質的方塊。對$(thing)草方塊$()或$(thing)泥土$(item)使用$()鏟子也可以製造$(thing)土徑$()。"
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -100,7 +100,7 @@
         "tfc:rock_knapping/hoe_head_igneous_extrusive",
         "tfc:rock_knapping/hoe_head_igneous_intrusive"
       ],
-      "text": "$(thing)鋤頭$()是很有用的$(l:mechanics/crops)農業$()工具, 它也可以清理樹葉或其他植物."
+      "text": "$(thing)鋤$()是$(l:mechanics/crops)農耕$()不可或缺的工具。它也可以清理樹葉或其他植物。"
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -110,7 +110,7 @@
         "tfc:rock_knapping/hammer_head_igneous_extrusive",
         "tfc:rock_knapping/hammer_head_igneous_intrusive"
       ],
-      "text": "$(thing)錘子$()可以當作造成$(l:mechanics/damage_types)打擊傷害$()的武器, 但更重要的是, 它是開展$(l:getting_started/primitive_anvils)冶金業$()的重要工具."
+      "text": "$(thing)錘$()可以當作武器使用（造成$(l:mechanics/damage_types)打擊傷害$()），但它最主要的用途還是在$(l:getting_started/primitive_anvils)冶金業$()中。"
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -120,7 +120,7 @@
         "tfc:rock_knapping/javelin_head_igneous_extrusive",
         "tfc:rock_knapping/javelin_head_igneous_intrusive"
       ],
-      "text": "$(thing)標槍$()可以像設計的那樣投向目標, 也可以用作造成$(l:mechanics/damage_types)突刺傷害$()的近戰武器."
+      "text": "$(thing)標槍$()是一種原始的一次性遠端武器，也可以當作近戰武器使用（造成$(l:mechanics/damage_types)突刺傷害$()）。"
     }
   ],
   "read_by_default": true,

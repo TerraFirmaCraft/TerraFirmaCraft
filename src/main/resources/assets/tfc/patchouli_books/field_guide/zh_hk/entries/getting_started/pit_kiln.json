@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "坑窯是遊戲早期的一種$(l:mechanics/heating)加熱$()物品的設備。比如，坑窯可以用來將黏土$(thing)燒製$()成陶瓷。坑窯需要 8 小時左右的時間來將放置在其中的物品加熱至 1400 °C（$(bold)$(e)$(t:Yellow White)黃白$()）。"
+      "text": "坑窯是遊戲早期為數不多的$(l:mechanics/heating)加熱$()物品的手段。坑窯的主要用途是將黏土$(thing)燒製$()成陶器。坑窯點燃後會花費8小時時間逐漸將温度提升至 1400 °C，即$(bold)$(e)$(t:Yellow White)黃白$()。"
     },
     {
       "type": "patchouli:text",

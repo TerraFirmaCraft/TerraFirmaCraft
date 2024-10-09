@@ -16,7 +16,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wool_yarn",
-      "text": "將$(thing)羊毛$()與紡錘合成，得到$(thing)羊毛紗$()."
+      "text": "將$(thing)羊毛$()與紡錘合成，得到$(thing)羊毛紗$()。"
     },
     {
       "type": "patchouli:crafting",
@@ -43,7 +43,7 @@
     {
       "type": "tfc:loom_recipe",
       "recipe": "tfc:loom/wool_block",
-      "text": "$(thing)Wool Cloth$() can be re-woven into $(thing)Wool Blocks$(). Wool blocks can be $(l:mechanics/dye)dyed$()."
+      "text": "$(thing)羊毛布$()可重新合成為$(thing)羊毛塊$()。可以對羊毛塊$(l:mechanics/dye)染色$()。"
     },
     {
       "type": "tfc:loom_recipe",

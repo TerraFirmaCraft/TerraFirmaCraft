@@ -1,12 +1,12 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Minecarts",
+  "name": "礦車",
   "category": "tfc:mechanics",
   "icon": "tfc:wood/chest_minecart/kapok",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Minecarts$() are a means of transporting players, entities, and large blocks. Blocks that would normally $(l:getting_started/size_and_weight#overburdening)overburden$() the player can be transported in minecarts. $(l:mechanics/decay#large_vessels)Large Vessels$(), $(l:mechanics/barrels)Barrels$(), $(l:mechanics/powderkegs)Powderkegs$(), $(l:mechanics/anvils)Anvils$(), and $(l:mechanics/crucible)Crucibles$() can be added to carts by pressing both $(item)$(k:key.use)$() and $(item)$(k:key.sneak)$(). Using $(item)$(k:key.sneak)$() with an empty hand removes the block. Crafting recipes for minecart items can either be done with $(thing)Iron$() or $(thing)Steel$(), with the steel-based recipes being more productive."
+      "text": "$(thing)礦車$()可以用來運輸玩家、動物和一些大型方塊。那些平時會導致你$(l:getting_started/size_and_weight#overburdening)負擔過重$()的方塊可以在礦車上運輸。$(l:mechanics/decay#large_vessels)大缸$()、$(l:mechanics/barrels)大桶$()、$(l:mechanics/powderkegs)火藥桶$()、$(l:mechanics/anvils)砧$()和$(l:mechanics/crucible)坩鍋$()可以透過$(item)$(k:key.sneak)$()$(item)$(k:key.use$()的方式裝到礦車上。空手$(item)$(k:key.sneak)$()便能取出方塊。$(thing)鐵$()或$(thing)鋼$()都能用於合成礦車，用鋼合成時材料效率更高。"
     },
     {
       "type": "patchouli:crafting",
@@ -35,7 +35,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/kapok_chest_minecart",
-      "text": "$(thing)Chest minecarts$() operate the same as regular TFC chests, in that they only have 18 slots and cannot hold very large items like logs."
+      "text": "$(thing)箱子礦車$()與群巒傳說的箱子一樣只有18格，且不能存放類似原木那樣的極大物品。"
     }
   ],
   "read_by_default": true

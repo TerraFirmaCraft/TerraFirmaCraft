@@ -1,28 +1,28 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "耐火黏土",
+  "name": "耐火粘土",
   "category": "tfc:mechanics",
   "icon": "tfc:fire_clay",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "耐火黏土能做成的東西不多，但每個都是科技進步上不可或缺的要素！耐火黏土比普通黏土能承受更高的高温，因此某些高級設備只能用耐火黏土建造。"
+      "text": "耐火粘土能做成的東西不多，但每個都是科技進步上不可或缺的要素！耐火粘土比普通粘土能承受更高的高温，因此某些高級設備只能用耐火粘土建造。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/fire_clay",
-      "text": "Fire clay is made from $(l:the_world/ores_and_minerals#graphite)graphite$() powder, crushed in a $(l:mechanics/quern)quern$(), as well as $(l:the_world/ores_and_minerals#kaolinite)kaolinite$() powder"
+      "text": "耐火黏土是通過$(l:the_world/ores_and_minerals#graphite)石墨粉$()和$(l:the_world/ores_and_minerals#kaolinite)高嶺石粉$()合成得到的"
     },
     {
       "type": "tfc:heat_recipe",
       "recipe": "tfc:heating/kaolin_clay",
-      "text": "Kaolinite powder is made by heating $(l:the_world/ores_and_minerals#kaolinite)Kaolin Clay$(). However, the process is not perfect, and only 20%% of clay will form powder!"
+      "text": "高嶺石粉是通過加熱$(l:the_world/ores_and_minerals#kaolinite)高嶺土$()得到的。然而現在這種工藝並不成熟，導致其產率只有20%左右。"
     },
     {
       "type": "tfc:knapping_recipe",
       "anchor": "crucible",
       "recipe": "tfc:fire_clay_knapping/crucible",
-      "text": "用耐火黏土塑形成未燒製的$(l:mechanics/crucible)坩堝$()。"
+      "text": "用耐火粘土塑形成未燒製的$(l:mechanics/crucible)坩堝$()。"
     },
     {
       "type": "tfc:knapping_recipe",
@@ -33,7 +33,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:fire_clay_knapping/fire_ingot_mold",
-      "text": "$(thing)耐火鑄錠模具$()是$(l:getting_started/pottery#mold)鑄錠模具$()的升級版。普通的鑄錠模具在使用時有十分之一的概率損壞，而耐火鑄錠模具則只有百分之一。"
+      "text": "$(thing)耐火鑄錠模具$()是一種更強版本的$(l:getting_started/pottery#mold)鑄錠模具$()。相比普通的鑄錠模具，耐火鑄錠模具僅有1%的概率會在使用時破碎；普通模具則是10%。"
     }
   ],
   "read_by_default": true

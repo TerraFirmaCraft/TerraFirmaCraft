@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "在遊戲的早期階段, 由於很多堅固的建築方塊需要金屬工具才能獲得, 建造房屋是比較困難的. 有一些建築方塊僅用石制工具就能獲得, $(br2)但$(l:mechanics/advanced_building_materials)更高階的建築材料$()就需要金屬工具了."
+      "text": "在遊戲早期，由於很多堅固的建築方塊需要金屬工具才能獲得，建造房屋是比較困難的。不過仍然有一些建築方塊僅用石制工具就能獲得。$(br2)等有了金屬工具之後，才能考慮製作$(l:mechanics/advanced_building_materials)更高階的建築材料$()。"
     },
     {
       "type": "patchouli:text",
@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "anchor": "thatch",
-      "text": "僅用一個$(l:getting_started/introduction#knife)石刀$(), 你就可以打碎草叢等植物來獲取$(thing)乾草$(). 它可以用於合成一種非常簡單的建築材料: $(thing)乾草塊$(). 乾草塊是一種輕量的建築材料, 不受重力影響, 但是玩家或其他生物可以穿過它! 如果必要, 乾草塊也可以合成回$(thing)乾草$().",
+      "text": "手持$(l:getting_started/introduction#knife)石刀$()就能透過破壞草叢等植物來獲取$(thing)乾草$()。乾草可以用於合成一種非常原始的建築材料：$(thing)乾草塊$()。乾草塊是一種很輕的建築材料，不受重力影響，但同樣也沒有碰撞體積！如果必要，乾草塊也可以反向合成$(thing)乾草$()。",
       "title": "乾草塊"
     },
     {
@@ -29,7 +29,7 @@
       "anchor": "mud_bricks",
       "recipe": "tfc:crafting/soil/loam_drying_bricks",
       "title": "壤泥磚",
-      "text": "$(thing)壤泥$()會生成在地表、河流和湖底，或大量出現在低窪潮溼的生物群系中。將它們和一束$(thing)乾草$()合成就能製成$()溼壤泥磚$()."
+      "text": "$(thing)壤泥$()會生成在地表、河流和湖底，或大量出現在低窪潮溼的生物群系中。將它們和一束$(thing)乾草$()合成就能製成$()溼壤泥磚$()。"
     },
     {
       "type": "tfc:multimultiblock",
@@ -74,7 +74,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/soil/loam_mud_bricks",
-      "title": " ",
+      "title": "-",
       "text": "這些乾燥後的壤泥磚可以做成$(thing)壤泥磚塊$()。它們也可以做成$(thing)樓梯$()、$(thing)臺階$()、或$(thing)牆$()。"
     },
     {
@@ -92,7 +92,7 @@
           "X": "#tfc:mud_bricks"
         }
       },
-      "name": "",
+      "name": "-",
       "text": "所有不同品種的泥磚",
       "enable_visualize": false
     },
@@ -111,7 +111,7 @@
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/daub",
       "recipe2": "tfc:crafting/daub_from_mud",
-      "text": ""
+      "text": "-"
     },
     {
       "type": "patchouli:image",
@@ -146,7 +146,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/wattle_stained.png"
       ],
-      "text": "It can then be $(thing)stained$() by using $(l:mechanics/dye)Dye$() on it.",
+      "text": "手持$(l:mechanics/dye)染料$()右鍵點選可以對其進行$(thing)染色$()。",
       "border": true
     },
     {

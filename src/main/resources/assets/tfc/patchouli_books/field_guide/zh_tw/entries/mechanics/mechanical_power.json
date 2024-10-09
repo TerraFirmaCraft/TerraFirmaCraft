@@ -1,95 +1,95 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Mechanical Power",
+  "name": "機械動力",
   "category": "tfc:mechanics",
   "icon": "tfc:wood/water_wheel/oak",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Mechanical power is the art of making things rotate or move, by harnessing the elemental power of either wind or water.$(br2)Practically, many devices can be hooked up to mechanical power networks either to automate their movement, or provide power for other functionality"
+      "text": "機械動力就是將風能與水能轉化為動力驅動各種機械的藝術。$(br2)許多裝置可以接入機械動力網中以令其自動運作，或是解鎖其他功能。"
     },
     {
       "type": "patchouli:text",
-      "text": "In order to get started with harnessing mechanical power, you will first need a $(thing)Source$() of power.$(br2)$(l:mechanics/mechanical_power#windmill)Windmills$() are a way of harnessing the wind. They can be built nearly everywhere with enough space.$(br2)$(l:mechanics/mechanical_power#water_wheel)Water Wheels$() are a slightly stronger power source, as they harness the current found in $(thing)Rivers$()"
+      "text": "要利用自然界中的機械動力，首先需要一種$(thing)動力源$()。$(br2)風能可以透過$(l:mechanics/mechanical_power#windmill)風車$()收集，風車幾乎可以放置在任何有足夠空間的地方。$(br2)$(l:mechanics/mechanical_power#water_wheel)水車$()是一種更強的動力源，它們能夠收集$(thing)河流$()中的水流動能。"
     },
     {
       "type": "patchouli:text",
       "anchor": "windmill",
-      "text": "$(thing)Windmills$() are a way of harnessing the power of the wind to rotate an $(l:mechanics/mechanical_power#axle)Axle$(). They are large, and require a completely unobstructed area of 13 x 13 x 1 to be placed. In order to create one, you will first need an $(thing)Axle$(), and then you will need one or more $(thing)Windmill Blades$()",
-      "title": "Windmills"
+      "text": "$(thing)風車$()透過捕捉風能來轉動$(l:mechanics/mechanical_power#axle)傳動杆$()。風車體積龐大，安裝時需要一個 13 x 13 x 1 的完全無遮擋區域。製作風車時，首先需要一個$(thing)傳動杆$()，然後需要一個或多個$(thing)風車葉片$()。",
+      "title": "風車"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/windmill_blade",
-      "text": "$(thing)Windmill Blades$() can be crafted from cloth. A single windmill can have up to five blades, and the more blades, the faster it will rotate."
+      "text": "$(thing)風車葉片$()可以用布製作。每個風車最多可以安裝五片葉片，葉片越多，旋轉速度越快。"
     },
     {
       "type": "patchouli:text",
-      "text": "In order to create a windmill, first place an $(l:mechanics/mechanical_power#axle)Axle$() in any horizontal orientation. Then, $(item)$(k:key.use)$() up to five $(thing)Windmill Blades$() on the axle to create the windmill. It will slowly start spinning.$(br2)The windmill may break if the axle is already connected to another source, or if there is not enough clear space."
+      "text": "要製作風車，首先將一個$(l:mechanics/mechanical_power#axle)傳動杆$()水平放置。然後，使用$(item)$(k:key.use)$()將最多五片$(thing)風車葉片$()安裝在傳動杆上，風車便會開始緩慢旋轉。$(br2)如果傳動杆已經連線到其他動力源，或周圍空間不足，風車可能會損壞。"
     },
     {
       "type": "patchouli:multiblock",
       "multiblock_id": "tfc:windmill",
-      "name": "",
-      "text": "",
+      "name": "-",
+      "text": "-",
       "enable_visualize": false
     },
     {
       "type": "patchouli:text",
       "anchor": "water_wheel",
-      "text": "$(thing)Water Wheels$() are a way of harnessing the power of flowing water in $(3)Rivers$() in order to generate power. When placed optimally, they can rotate at some of the fastest possible speeds available.$(br2)A water wheel requires a 5 x 5 x 1 area of space to be placed. Note that the water wheel may break if there are any obstructions in the area around it,",
-      "title": "Water Wheels"
+      "text": "$(thing)水車$()是一種利用$(3)河流$()中流水動能來驅動機械的方式。最優條件下，它們可以產出極大的機械能。$(br2)安裝水車需要一個 5 x 5 x 1 的區域。請注意，如果水車周圍有任何障礙物，它可能會損壞。",
+      "title": "水車"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/oak_water_wheel",
-      "title": " ",
-      "text": "or if the axle was already connected to another source.$(br2)Water wheels can be crafted simply from lumber."
+      "title": "-",
+      "text": "或者如果傳動杆已經連線到其他動力源。$(br2)水車可以用木材製作。"
     },
     {
       "type": "patchouli:text",
-      "text": "In order to place a $(thing)Water Wheel$(), simply attach it on the end of any $(thing)Axle$(). The axle should be one or two blocks above a source of flowing water, i.e. a river.$(br2)Water below the height of the axle, when flowing, will cause the wheel to speed up. Any water elsewhere, or stationary water below the axle will impede the wheel's movement and cause it to slow down or stop."
+      "text": "要安裝$(thing)水車$()，只需將其連線到任何$(thing)傳動杆$()的末端。傳動杆應位於流水源（如河流）上方一到兩格高度。$(br2)當流水位於傳動杆以下時，會使水車加速旋轉。其他位置的水或靜止的水會阻礙水車的運動，導致其減速或停止。"
     },
     {
       "type": "patchouli:multiblock",
       "multiblock_id": "tfc:water_wheel",
-      "name": "",
-      "text": "A $(thing)Water Wheel$()",
+      "name": "-",
+      "text": "一臺$(thing)水車$()",
       "enable_visualize": false
     },
     {
       "type": "patchouli:crafting",
       "anchor": "axle",
       "recipe": "tfc:crafting/wood/oak_axle",
-      "title": "Axles",
-      "text": "Axles are the bread and butter of a rotational network, and are the block that transfers rotational power from one location to the other. They can be connected up to five blocks long, but any longer and they will break!"
+      "title": "傳動杆",
+      "text": "傳動杆是傳動網路的基石，用於將機械能從一個位置傳輸到另一個位置。傳動杆可以連線至最多五格長，超過這個長度時傳動杆就會折斷！"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/oak_encased_axle",
-      "title": "Encased Axles",
-      "text": "Axles can also be crafted $(thing)Encased$(). These can either be placed by themselves, or on top of existing axles.$(br2)However, in order to transfer power further, you will need a $(l:mechanics/mechanical_power#gearbox)Gear Box$()"
+      "title": "封閉式傳動杆",
+      "text": "傳動杆也可以製作成$(thing)封閉式$()的，可以單獨放置，也可以放置在已有的傳動杆上。$(br2)不過，要將動力傳輸得更遠，你需要一個$(l:mechanics/mechanical_power#gearbox)齒輪箱$()。"
     },
     {
       "type": "patchouli:crafting",
       "anchor": "gearbox",
       "recipe": "tfc:crafting/wood/oak_gear_box",
-      "title": "Gear Box",
-      "text": "$(thing)Gear Boxes$() are a way of changing the $(thing)Direction$() of rotational power by using $(l:https://en.wikipedia.org/wiki/Gear)Gears$(). They are also useful in order to connect long chains of $(l:mechanics/mechanical_power#axle)Axles$() together without breaking."
+      "title": "齒輪箱",
+      "text": "$(thing)齒輪箱$()可以透過使用$(l:https://zh.wikipedia.org/wiki/齒輪)齒輪$()改變機械能的$(thing)方向$()。它們也可以用於中繼$(l:mechanics/mechanical_power#axle)傳動杆$()，防止其由於過長斷裂。"
     },
     {
       "type": "patchouli:text",
-      "text": "In order to use a gearbox, its sides must be configured. $(item)$(k:key.use)$() while holding a $(thing)Hammer$() on any face of the gearbox to enable input/output through that face.$(br2)Note that due to their internal structure, gear boxes can only have faces enabled on two different axes of rotation at the same time."
+      "text": "要使用齒輪箱，必須為其設定各個面的配置。手持$(thing)錘$()並$(item)$(k:key.use)$()點選齒輪箱的任何一面，可以啟用該面的機械能輸入/輸出功能。$(br2)請注意，由於齒輪箱的內部構造，它同時只能在兩個不同的旋轉軸上啟用面。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/oak_clutch",
-      "title": "Clutch",
-      "text": "A $(thing)Clutch$() is a way of controlling a rotational network via $(c)Redstone$(). It is an $(l:mechanics/mechanical_power#axle)Encased Axle$(), which disconnects when powered, allowing rotation to pass through only when unpowered."
+      "title": "離合器",
+      "text": "$(thing)離合器$()是一種透過$(c)紅石$()控制傳動網路的方式。它是一種$(l:mechanics/mechanical_power#axle)封閉式傳動杆$()，在通電時斷開，只有在斷電時才允許旋轉透過。"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "An example of a $(thing)Clutch$() in use.",
+      "text": "一個$(thing)離合器$()的使用示例。",
       "multiblocks": [
         "tfc:clutch_off",
         "tfc:clutch_on"
@@ -98,21 +98,21 @@
     {
       "type": "patchouli:text",
       "anchor": "quern",
-      "text": "One device that can be connected to the mechanical network is a $(l:mechanics/quern)Quern$(), simply by placing a vertical-facing axle above the Quern. While connected, the Quern cannot be turned manually, instead it will grind items automatically as the axle above rotates.$(br2)The Quern will grind faster if the axle above spins faster.",
-      "title": "Quern Automation"
+      "text": "可以連線到機械網路的裝置之一是$(l:mechanics/quern)手推磨$()，只需在手推磨上方放置一個垂直朝下的傳動杆。連線後，手推磨將無法手動轉動，而是隨著上方的傳動杆旋轉自動研磨物品。$(br2)如果上方的傳動杆旋轉得更快，手推磨的研磨速度也會更快。",
+      "title": "手推磨自動化"
     },
     {
       "type": "patchouli:multiblock",
       "multiblock_id": "tfc:rotating_quern",
-      "name": "",
-      "text": "A $(thing)Quern$() connected to an $(l:mechanics/mechanical_power#axle)Axle$().",
+      "name": "-",
+      "text": "一個連線到$(l:mechanics/mechanical_power#axle)傳動杆$()的$(thing)手推磨$()。",
       "enable_visualize": false
     },
     {
       "type": "patchouli:text",
       "anchor": "trip_hammer",
-      "text": "Another mechanical device is the $(thing)Trip Hammer$(). The Trip Hammer automatically performs smithing on an $(l:mechanics/anvils)Anvil$(). The Trip Hammer needs a $(thing)Bladed Axle$() to work. The Bladed Axle works like a regular axle, but has a blade on it that is used to activate the hammer.",
-      "title": "Trip Hammer"
+      "text": "另一種機械裝置是$(thing)杵錘$()。杵錘會自動在$(l:mechanics/anvils)砧$()上進行鍛造作業。杵錘需要一個$(thing)卡口傳動杆$()才能工作。卡口傳動杆的工作方式類似於普通傳動杆，但它上面有一個用於啟用錘子的開關。",
+      "title": "杵錘"
     },
     {
       "type": "patchouli:crafting",
@@ -139,13 +139,13 @@
           "Z": "tfc:metal/anvil/copper[facing=west]"
         }
       },
-      "name": "",
-      "text": "A setup for a trip hammer.",
+      "name": "-",
+      "text": "一個杵錘的設定示例。",
       "enable_visualize": false
     },
     {
       "type": "patchouli:text",
-      "text": "Place a trip hammer below the axle, and $(item)$(k:key.use)$() to add a hammer to it. The hammer must be a metal hammer. Make sure the trip hammer is oriented such that the bladed axle will push the hammer handle down. The hammer will then hit an anvil placed in front of it. The trip hammer always records the $(thing)'Light Hit'$() action, and always moves the cursor closer towards the target, requiring no input from the player. If an ingot is not hot enough or the anvil is the incorrect tier, a deep metal banging sound will alert you. "
+      "text": "將杵錘放置在傳動杆下方，並使用$(item)$(k:key.use)$()為其安裝一個錘子。錘子必須是金屬製的，還要確保杵錘的方向正確，卡口傳動杆可以壓下錘柄。錘子隨後會擊打放置在其前方的砧。杵錘始終執行$(thing)'輕擊'$()操作，並始終將游標朝向目標移動，無需玩家輸入。如果錠的溫度不夠高或砧的等級不正確，杵錘會發出一聲沉悶的金屬撞擊的聲音作為警告。"
     }
   ],
   "read_by_default": true,

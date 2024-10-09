@@ -11,12 +11,12 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/fire_clay",
-      "text": "Fire clay is made from $(l:the_world/ores_and_minerals#graphite)graphite$() powder, crushed in a $(l:mechanics/quern)quern$(), as well as $(l:the_world/ores_and_minerals#kaolinite)kaolinite$() powder"
+      "text": "耐火黏土是透過$(l:the_world/ores_and_minerals#graphite)石墨粉$()和$(l:the_world/ores_and_minerals#kaolinite)高嶺石粉$()合成得到的"
     },
     {
       "type": "tfc:heat_recipe",
       "recipe": "tfc:heating/kaolin_clay",
-      "text": "Kaolinite powder is made by heating $(l:the_world/ores_and_minerals#kaolinite)Kaolin Clay$(). However, the process is not perfect, and only 20%% of clay will form powder!"
+      "text": "高嶺石粉是透過加熱$(l:the_world/ores_and_minerals#kaolinite)高嶺土$()得到的。然而現在這種工藝並不成熟，導致其產率只有20%左右。"
     },
     {
       "type": "tfc:knapping_recipe",
@@ -33,7 +33,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:fire_clay_knapping/fire_ingot_mold",
-      "text": "$(thing)Fire Ingot Molds$() are a stronger type of $(l:getting_started/pottery#mold)Ingot Mold$() that has just a 1 in 100 chance of breaking, compared to 1 in 10 for a regular ingot mold."
+      "text": "$(thing)耐火鑄錠模具$()是一種更強版本的$(l:getting_started/pottery#mold)鑄錠模具$()。相比普通的鑄錠模具，耐火鑄錠模具僅有1%的機率會在使用時破碎；普通模具則是10%。"
     }
   ],
   "read_by_default": true
