@@ -293,10 +293,6 @@ public class TFCTags
 
     public static class Items
     {
-        // todo: figure out if we really want to support these, or replace with the tool action and say to hell with fire charges
-        public static final TagKey<Item> STARTS_FIRES_WITH_DURABILITY = tag("starts_fires_with_durability");
-        public static final TagKey<Item> STARTS_FIRES_WITH_ITEMS = tag("starts_fires_with_items");
-
         // ===== Data Generated ===== //
 
         // Foods

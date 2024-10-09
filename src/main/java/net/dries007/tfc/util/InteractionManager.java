@@ -13,10 +13,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -143,40 +143,6 @@ public final class InteractionManager
                         }
 
                     }
-                }
-            }
-            return InteractionResult.FAIL;
-        });
-
-        register(Ingredient.of(TFCTags.Items.STARTS_FIRES_WITH_DURABILITY), (stack, context) -> {
-            final Player player = context.getPlayer();
-            final Level level = context.getLevel();
-            final BlockPos pos = context.getClickedPos();
-            if (player != null && StartFireEvent.startFire(level, pos, level.getBlockState(pos), context.getClickedFace(), player, stack))
-            {
-                level.playSound(player, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.4F + 0.8F);
-                if (!player.isCreative())
-                {
-                    Helpers.damageItem(stack, player, context.getHand());
-                }
-                return InteractionResult.SUCCESS;
-            }
-            return InteractionResult.PASS;
-        });
-
-        register(Ingredient.of(TFCTags.Items.STARTS_FIRES_WITH_ITEMS), (stack, context) -> {
-            final Player playerEntity = context.getPlayer();
-            if (playerEntity instanceof final ServerPlayer player)
-            {
-                final Level level = context.getLevel();
-                final BlockPos pos = context.getClickedPos();
-                if (StartFireEvent.startFire(level, pos, level.getBlockState(pos), context.getClickedFace(), player, stack))
-                {
-                    if (!player.isCreative())
-                    {
-                        stack.shrink(1);
-                    }
-                    return InteractionResult.SUCCESS;
                 }
             }
             return InteractionResult.FAIL;
@@ -482,7 +448,27 @@ public final class InteractionManager
             return InteractionResult.PASS;
         });
 
-        register(ItemAbilities.SHOVEL_DOUSE, Target.BLOCKS, (stack, context) -> DouseFireEvent.douse(context.getLevel(), context.getClickedPos(), context.getPlayer()) ? InteractionResult.SUCCESS : InteractionResult.PASS);
+        register(ItemAbilities.FIRESTARTER_LIGHT, Target.BLOCKS, (stack, context) -> {
+            final Player player = context.getPlayer();
+            if (StartFireEvent.startFire(context.getLevel(), context.getClickedPos(), context.getLevel().getBlockState(context.getClickedPos()), context.getClickedFace(), player, stack))
+            {
+                if (player != null && !player.isCreative())
+                    stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(context.getHand()));
+                return InteractionResult.SUCCESS;
+            }
+
+            return InteractionResult.PASS;
+        });
+        register(ItemAbilities.SHOVEL_DOUSE, Target.BLOCKS, (stack, context) -> {
+            final Player player = context.getPlayer();
+            if (DouseFireEvent.douse(context.getLevel(), context.getClickedPos(), player))
+            {
+                if (player != null && !player.isCreative())
+                    stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(context.getHand()));
+                return InteractionResult.SUCCESS;
+            }
+            return InteractionResult.PASS;
+        });
     }
 
     @NotNull
