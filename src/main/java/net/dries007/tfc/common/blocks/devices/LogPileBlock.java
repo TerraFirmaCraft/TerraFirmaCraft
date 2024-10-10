@@ -6,10 +6,10 @@
 
 package net.dries007.tfc.common.blocks.devices;
 
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -17,32 +17,76 @@ import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.LogPileBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
+import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.util.Helpers;
+
+import static net.minecraft.world.level.block.state.properties.BlockStateProperties.*;
 
 public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, EntityBlockExtension
 {
-    public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
+    public static final EnumProperty<Direction.Axis> AXIS = HORIZONTAL_AXIS;
+
+    public static final IntegerProperty COUNT = TFCBlockStateProperties.COUNT_1_16;
+
+    private static final VoxelShape[][] SHAPES_BY_DIR_BY_COUNT = Util.make(new VoxelShape[2][16], shapes -> {
+        double[][] box2ByCount = new double[16][6];
+        double[][] box1ByCount = new double[16][6];
+        int layer;
+        int row;
+        for (int i = 0; i < 16; i++)
+        {
+            layer = i / 4;
+            row = i % 4 + 1;
+            box2ByCount[i] = new double[] {0, 4 * layer, 0, 16, 4 * layer + 4, 4 * row};
+            box1ByCount[i] = new double[] {0, 0, 0, 16, 4 * (layer), 16};
+        }
+
+        for (int dir = 0; dir < 2; dir++)
+        {
+            Direction direction = Direction.SOUTH;
+            if (dir == 1)
+            {
+                direction = Direction.EAST;
+            }
+
+            for (int count = 0; count < 16; count++)
+            {
+                VoxelShape box1 = Helpers.rotateShape(direction, box1ByCount[count][0], box1ByCount[count][1], box1ByCount[count][2], box1ByCount[count][3], box1ByCount[count][4], box1ByCount[count][5]);
+                VoxelShape box2 = Helpers.rotateShape(direction, box2ByCount[count][0], box2ByCount[count][1], box2ByCount[count][2], box2ByCount[count][3], box2ByCount[count][4], box2ByCount[count][5]);
+                shapes[dir][count] = Shapes.or(box1, box2);
+            }
+        }
+    });
 
     public LogPileBlock(ExtendedProperties properties)
     {
         super(properties, InventoryRemoveBehavior.DROP);
-        registerDefaultState(getStateDefinition().any().setValue(AXIS, Direction.Axis.X));
+        registerDefaultState(getStateDefinition().any().setValue(AXIS, Direction.Axis.X).setValue(COUNT, 1));
     }
 
     @Override
@@ -54,13 +98,13 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
-        return defaultBlockState().setValue(AXIS, context.getHorizontalDirection().getAxis());
+        return defaultBlockState().setValue(AXIS, context.getHorizontalDirection().getAxis()).setValue(COUNT, 1);
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder.add(AXIS));
+        super.createBlockStateDefinition(builder.add(AXIS).add(COUNT));
     }
 
     @Override
@@ -68,6 +112,10 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
     {
         if (!levelAccess.isClientSide() && levelAccess instanceof Level level)
         {
+            if ((facing == Direction.DOWN && !facingState.isFaceSturdy(levelAccess, facingPos, Direction.UP)) && !(facingState.getBlock() instanceof LogPileBlock))
+            {
+                return Blocks.AIR.defaultBlockState();
+            }
             if (Helpers.isBlock(facingState, BlockTags.FIRE))
             {
                 BurningLogPileBlock.lightLogPile(level, currentPos);
@@ -82,28 +130,110 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
         if (!player.isShiftKeyDown())
         {
             level.getBlockEntity(pos, TFCBlockEntities.LOG_PILE.get()).ifPresent(logPile -> {
-                if (Helpers.isItem(stack.getItem(), TFCTags.Items.LOG_PILE_LOGS))
+                if (!level.isClientSide)
                 {
-                    if (!level.isClientSide)
+                    if (Helpers.isItem(stack.getItem(), TFCTags.Items.LOG_PILE_LOGS))
                     {
-                        if (Helpers.insertOne(logPile, stack))
-                        {
-                            Helpers.playPlaceSound(level, pos, state);
-                            stack.shrink(1);
-                        }
+                        insertAndPushUp(stack, state, level, pos, logPile, false);
                     }
-                }
-                else
-                {
-                    if (player instanceof ServerPlayer serverPlayer)
+                    else if (stack.isEmpty())
                     {
-                        serverPlayer.openMenu(logPile, pos);
+                        extractFromTop(level, pos, player, false);
                     }
                 }
             });
             return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
+
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+    }
+
+    public static void extractFromTop(Level level, BlockPos pos, Player player, boolean all)
+    {
+        if (level.getBlockState(pos.above()).is(TFCBlocks.LOG_PILE.get()))
+        {
+            extractFromTop(level, pos.above(), player, all);
+        }
+        else
+        {
+            level.getBlockEntity(pos, TFCBlockEntities.LOG_PILE.get()).ifPresent(logPile -> {
+                if (!level.isClientSide)
+                {
+                    for (int i = 0; i < LogPileBlockEntity.SLOTS; i++)
+                    {
+                        ItemStack slotStack = logPile.getInventory().getStackInSlot(i);
+                        if (!slotStack.isEmpty())
+                        {
+                            ItemHandlerHelper.giveItemToPlayer(player, slotStack.split(1));
+                            logPile.setAndUpdateSlots(-1);
+                            if (!all)
+                            {
+                                break;
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    public static void insertAndPushUp(ItemStack stack, BlockState state, Level level, BlockPos pos, LogPileBlockEntity logPile, boolean all)
+    {
+        if (dumbInsert(stack, state, level, pos, logPile, all) && !all)
+        {
+            return;
+        }
+        if (level.getBlockState(pos.above()).isAir() && logPile.logCount() == LogPileBlockEntity.SLOTS && !stack.isEmpty())
+        {
+            level.setBlockAndUpdate(pos.above(), TFCBlocks.LOG_PILE.get().defaultBlockState().setValue(HORIZONTAL_AXIS, state.getValue(HORIZONTAL_AXIS)));
+            if (level.getBlockEntity(pos.above()) instanceof LogPileBlockEntity pileAbove)
+            {
+                BlockState stateAbove = level.getBlockState(pos.above());
+                if (dumbInsert(stack, stateAbove, level, pos.above(), pileAbove, all))
+                {
+                    return;
+                }
+                else
+                {
+                    level.removeBlock(pos.above(), false);
+                }
+            }
+        }
+        if (level.getBlockState(pos.above()).getBlock() instanceof LogPileBlock && logPile.logCount() == LogPileBlockEntity.SLOTS)
+        {
+            level.getBlockEntity(pos.above(), TFCBlockEntities.LOG_PILE.get()).ifPresent(
+                pileAbove -> {
+                    BlockState stateAbove = level.getBlockState(pos.above());
+
+                    LogPileBlock.insertAndPushUp(stack, stateAbove, level, pos.above(), pileAbove, all);
+                }
+            );
+
+        }
+    }
+
+    private static boolean dumbInsert(ItemStack stack, BlockState state, Level level, BlockPos pos, LogPileBlockEntity logPile, boolean all)
+    {
+        if (all)
+        {
+            ItemStack insertStack = stack.copy();
+            insertStack = Helpers.insertAllSlots(logPile.getInventory(), insertStack);
+            if (insertStack.getCount() < stack.getCount()) // Some logs were inserted
+            {
+                Helpers.playPlaceSound(level, pos, SoundType.WOOD);
+                stack.setCount(insertStack.getCount()); // modify original stack
+                logPile.setAndUpdateSlots(-1);
+                return true;
+            }
+        }
+        else if (Helpers.insertOne(logPile, stack))
+        {
+            Helpers.playPlaceSound(level, pos, state);
+            stack.shrink(1);
+            logPile.setAndUpdateSlots(-1);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -121,5 +251,40 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
                 }
                 return ItemStack.EMPTY;
             }).orElse(ItemStack.EMPTY);
+    }
+
+    @Override
+    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
+    {
+        BlockState blockstate = level.getBlockState(pos.below());
+        return Block.isFaceFull(blockstate.getCollisionShape(level, pos.below()), Direction.UP) || blockstate.getBlock() instanceof LogPileBlock;
+    }
+
+    public static VoxelShape getShapeByDirByCount(Direction.Axis axis, int count)
+    {
+        count--;
+        if (axis == Direction.Axis.X)
+        {
+            return SHAPES_BY_DIR_BY_COUNT[0][count];
+        }
+        return SHAPES_BY_DIR_BY_COUNT[1][count];
+    }
+
+    @Override
+    protected VoxelShape getShape(BlockState state, BlockGetter levle, BlockPos pos, CollisionContext context)
+    {
+        return getShapeByDirByCount(state.getValue(AXIS), state.getValue(COUNT));
+    }
+
+    @Override
+    protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    {
+        return getShapeByDirByCount(state.getValue(AXIS), state.getValue(COUNT));
+    }
+
+    @Override
+    protected VoxelShape getVisualShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    {
+        return getShapeByDirByCount(state.getValue(AXIS), state.getValue(COUNT));
     }
 }

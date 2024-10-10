@@ -1,0 +1,22 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "tfc:block/log_pile_front",
+		"1": "tfc:block/log_pile_side",
+		"particle": "tfc:block/log_pile_front"
+	},
+	"elements": [
+		{
+			"from": [12, 0, 0],
+			"to": [16, 4, 16],
+			"faces": {
+				"north": {"uv": [0, 12, 4, 16], "texture": "#0"},
+				"east": {"uv": [12, 0, 16, 16], "rotation": 90, "texture": "#1"},
+				"south": {"uv": [12, 12, 16, 16], "texture": "#0"},
+				"west": {"uv": [12, 0, 16, 16], "rotation": 90, "texture": "#1"},
+				"up": {"uv": [12, 0, 16, 16], "texture": "#1"},
+				"down": {"uv": [12, 0, 16, 16], "texture": "#1"}
+			}
+		}
+	]
+}

@@ -7,33 +7,25 @@
 package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.ItemStackHandler;
-import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.container.LogPileContainer;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.TerraFirmaCraft.*;
+import static net.dries007.tfc.common.blocks.devices.LogPileBlock.*;
 
-public class LogPileBlockEntity extends InventoryBlockEntity<ItemStackHandler> implements MenuProvider
+public class LogPileBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 {
-    public static final int SLOTS = 4;
+    public static final int SLOTS = 16;
 
-    private int playersUsing;
+    private boolean needsLogDispersion = true;
 
     public LogPileBlockEntity(BlockPos pos, BlockState state)
     {
         super(TFCBlockEntities.LOG_PILE.get(), pos, state, defaultInventory(SLOTS));
-        this.playersUsing = 0;
     }
 
     @Override
@@ -42,31 +34,15 @@ public class LogPileBlockEntity extends InventoryBlockEntity<ItemStackHandler> i
         super.setAndUpdateSlots(slot);
         if (level != null && !level.isClientSide())
         {
-            if (playersUsing == 0 && isEmpty())
+            suckLogsFromAbove();
+            if (isEmpty())
             {
                 level.setBlockAndUpdate(worldPosition, Blocks.AIR.defaultBlockState());
             }
-        }
-    }
-
-    public void onOpen(Player player)
-    {
-        if (!player.isSpectator())
-        {
-            playersUsing++;
-        }
-    }
-
-    public void onClose(Player player)
-    {
-        if (!player.isSpectator())
-        {
-            playersUsing--;
-            if (playersUsing < 0)
+            else if (!isEmpty())
             {
-                playersUsing = 0;
+                level.setBlockAndUpdate(worldPosition, this.getBlockState().setValue(COUNT, logCount()));
             }
-            setAndUpdateSlots(-1);
         }
     }
 
@@ -87,15 +63,77 @@ public class LogPileBlockEntity extends InventoryBlockEntity<ItemStackHandler> i
         int count = 0;
         for (ItemStack stack : Helpers.iterate(inventory))
         {
-            count += stack.getCount();
+            if (!stack.isEmpty())
+            {
+                count++;
+            }
+
         }
         return count;
+    }
+
+    private void suckLogsFromAbove()
+    {
+        if (level != null && !level.isClientSide())
+        {
+            if (level.getBlockEntity(this.getBlockPos().above()) instanceof LogPileBlockEntity logPileAbove && !logPileAbove.isEmpty())
+            {
+                for (int i = 0; i < SLOTS; i++)
+                {
+                    ItemStack stack = logPileAbove.inventory.getStackInSlot(i);
+                    if (!stack.isEmpty())
+                    {
+                        // Move to an available empty slot
+                        for (int j = 0; j < SLOTS; j++)
+                        {
+                            ItemStack moveToStack = inventory.getStackInSlot(j);
+                            if (moveToStack.isEmpty())
+                            {
+                                inventory.setStackInSlot(j, stack.split(1));
+                            }
+                        }
+                    }
+                }
+                logPileAbove.setAndUpdateSlots(-1);
+            }
+
+        }
+    }
+
+    private void disperseLogsToNewSlots()
+    {
+        for (int i = 0; i < SLOTS; i++)
+        {
+            ItemStack stack = inventory.getStackInSlot(i);
+            while (stack.getCount() > getSlotStackLimit(i))
+            {
+                // Move to an available empty slot
+                for (int j = 0; j < SLOTS; j++)
+                {
+                    ItemStack moveToStack = inventory.getStackInSlot(j);
+                    if (moveToStack.isEmpty())
+                    {
+                        inventory.setStackInSlot(j, stack.split(1));
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    protected void onLoadAdditional()
+    {
+        if (needsLogDispersion)
+        {
+            disperseLogsToNewSlots();
+            needsLogDispersion = false;
+        }
     }
 
     @Override
     public int getSlotStackLimit(int slot)
     {
-        return SLOTS;
+        return 1;
     }
 
     @Override
@@ -104,10 +142,5 @@ public class LogPileBlockEntity extends InventoryBlockEntity<ItemStackHandler> i
         return Helpers.isItem(stack.getItem(), TFCTags.Items.LOG_PILE_LOGS);
     }
 
-    @Nullable
-    @Override
-    public AbstractContainerMenu createMenu(int windowID, Inventory inv, Player player)
-    {
-        return LogPileContainer.create(this, inv, windowID);
-    }
+
 }
