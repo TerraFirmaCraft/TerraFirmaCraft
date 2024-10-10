@@ -17,6 +17,7 @@ import net.neoforged.neoforge.network.handling.IPayloadHandler;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.client.ClientRotationNetworkHandler;
 import net.dries007.tfc.util.Helpers;
 
 public final class PacketHandler
@@ -38,6 +39,7 @@ public final class PacketHandler
         register.playToClient(EffectExpirePacket.TYPE, EffectExpirePacket.CODEC, onClient(EffectExpirePacket::handle));
         register.playToClient(UpdateClimateModelPacket.TYPE, UpdateClimateModelPacket.CODEC, onClient(UpdateClimateModelPacket::handle));
         register.playToClient(DataManagerSyncPacket.TYPE, DataManagerSyncPacket.CODEC, (packet, context) -> context.enqueueWork(() -> packet.handle(context.connection().isMemoryConnection())));
+        register.playToClient(RotationNetworkUpdatePacket.TYPE, RotationNetworkUpdatePacket.CODEC, onClient(ClientRotationNetworkHandler::handlePacket));
 
         // Client -> Server
         register.playToServer(SwitchInventoryTabPacket.TYPE, SwitchInventoryTabPacket.CODEC, onServer(SwitchInventoryTabPacket::handle));

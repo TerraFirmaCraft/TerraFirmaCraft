@@ -8,6 +8,8 @@ package net.dries007.tfc.client.model.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+
+import net.dries007.tfc.client.ClientRotationNetworkHandler;
 import net.dries007.tfc.common.blockentities.rotation.WindmillBlockEntity;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -44,8 +46,9 @@ public class WindmillBladeLatticeModel extends WindmillBladeModel
 
     public void setupAnim(WindmillBlockEntity windmill, float partialTick, float offsetAngle)
     {
-        main.xRot = -(windmill.getRotationAngle(partialTick) + offsetAngle);
-        blade.xRot = -(windmill.getRotationAngle(partialTick) + offsetAngle);
+        final float angle = ClientRotationNetworkHandler.getRotationAngle(windmill, partialTick);
+        main.xRot = -(angle + offsetAngle);
+        blade.xRot = -(angle + offsetAngle);
     }
 
     @Override

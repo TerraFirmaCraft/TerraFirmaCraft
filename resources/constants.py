@@ -1079,6 +1079,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.required_range': 'Required: %s - %s',
     'tfc.tooltip.required_less_than': 'Required: < %s',
     'tfc.tooltip.required_greater_than': 'Required: > %s',
+    'tfc.tooltip.rpm': '%s RPM',
     # Tooltips
     'tfc.tooltip.forging': '§f - Can Work',
     'tfc.tooltip.welding': '§f - Can Weld',
@@ -1219,7 +1220,6 @@ DEFAULT_LANG = {
     'tfc.tooltip.chance': '%s%% chance',
     'tfc.tooltip.wind_speed': '%s km/h, %s%% %s, %s%% %s',
     'tfc.tooltip.javelin.thrown_damage': '%s Thrown Damage',
-    'tfc.tooltip.rotation.angular_velocity': 'Rotating at \u03c9=%s rad/s',
     'tfc.tooltip.sewing.dark_cloth': 'Dark Cloth',
     'tfc.tooltip.sewing.light_cloth': 'Light Cloth',
     'tfc.tooltip.sewing.stitch': 'Stitch',

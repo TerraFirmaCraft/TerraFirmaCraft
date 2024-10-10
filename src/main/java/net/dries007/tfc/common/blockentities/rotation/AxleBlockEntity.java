@@ -16,14 +16,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.TFCBlockEntity;
 import net.dries007.tfc.common.blocks.rotation.AxleBlock;
-import net.dries007.tfc.util.rotation.AxleNode;
-import net.dries007.tfc.util.rotation.NetworkAction;
-import net.dries007.tfc.util.rotation.Node;
+import net.dries007.tfc.util.network.Action;
+import net.dries007.tfc.util.network.RotationNetworkManager;
+import net.dries007.tfc.util.network.RotationNode;
+import net.dries007.tfc.util.network.RotationOwner;
 
-public class AxleBlockEntity extends TFCBlockEntity implements RotatingBlockEntity
+public class AxleBlockEntity extends TFCBlockEntity implements RotationOwner
 {
-    private final Node node;
-    private boolean invalid;
+    private final RotationNode.Axle node;
 
     public AxleBlockEntity(BlockPos pos, BlockState state)
     {
@@ -33,76 +33,44 @@ public class AxleBlockEntity extends TFCBlockEntity implements RotatingBlockEnti
     protected AxleBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
         super(type, pos, state);
-
-        final Direction.Axis axis = state.getValue(AxleBlock.AXIS);
-
-        this.invalid = false;
-        this.node = new AxleNode(pos, Node.ofAxis(axis)) {
-
-            @Override
-            protected void onInvalidConnection()
-            {
-                AxleBlockEntity.this.onInvalidConnection();
-            }
-
-            @Override
-            public String toString()
-            {
-                return "Axle[pos=%s, axis=%s]".formatted(axis, pos());
-            }
-        };
+        this.node = new RotationNode.Axle(this, state.getValue(AxleBlock.AXIS), RotationNetworkManager.AXLE_TORQUE);
     }
 
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
         super.saveAdditional(tag, provider);
-        tag.putBoolean("invalid", invalid);
+        node.saveAdditional(tag);
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
         super.loadAdditional(tag, provider);
-        invalid = tag.getBoolean("invalid");
+        node.loadAdditional(tag);
+    }
+
+    @Override
+    protected void loadAdditionalOnClient(CompoundTag tag, HolderLookup.Provider provider)
+    {
+        node.loadAdditionalOnClient(tag);
     }
 
     @Override
     protected void onLoadAdditional()
     {
-        performNetworkAction(NetworkAction.ADD);
+        performNetworkAction(Action.ADD);
     }
 
     @Override
     protected void onUnloadAdditional()
     {
-        performNetworkAction(NetworkAction.REMOVE);
+        performNetworkAction(Action.REMOVE);
     }
 
     @Override
-    public void markAsInvalidInNetwork()
-    {
-        invalid = true;
-    }
-
-    @Override
-    public boolean isInvalidInNetwork()
-    {
-        return invalid;
-    }
-
-    @Override
-    public Node getRotationNode()
+    public RotationNode.Axle getRotationNode()
     {
         return node;
-    }
-
-    private void onInvalidConnection()
-    {
-        if (level != null)
-        {
-            markAsInvalidInNetwork();
-            level.scheduleTick(getBlockPos(), getBlockState().getBlock(), DELAY_FOR_INVALID_IN_NETWORK);
-        }
     }
 }

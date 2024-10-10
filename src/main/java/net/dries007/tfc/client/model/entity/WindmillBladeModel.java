@@ -18,6 +18,7 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
 
+import net.dries007.tfc.client.ClientRotationNetworkHandler;
 import net.dries007.tfc.common.blockentities.rotation.WindmillBlockEntity;
 
 public class WindmillBladeModel extends Model
@@ -47,8 +48,9 @@ public class WindmillBladeModel extends Model
 
     public void setupAnim(WindmillBlockEntity windmill, float partialTick, float offsetAngle)
     {
-        main.xRot = -(windmill.getRotationAngle(partialTick) + offsetAngle);
-        blade.xRot = -(windmill.getRotationAngle(partialTick) + offsetAngle);
+        final float angle = ClientRotationNetworkHandler.getRotationAngle(windmill, partialTick);
+        main.xRot = -(angle + offsetAngle);
+        blade.xRot = -(angle + offsetAngle);
     }
 
     @Override

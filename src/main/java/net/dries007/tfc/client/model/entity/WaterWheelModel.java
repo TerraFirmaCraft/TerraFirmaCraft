@@ -18,6 +18,7 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
 
+import net.dries007.tfc.client.ClientRotationNetworkHandler;
 import net.dries007.tfc.common.blockentities.rotation.WaterWheelBlockEntity;
 
 public class WaterWheelModel extends Model
@@ -166,6 +167,6 @@ public class WaterWheelModel extends Model
 
     public void setupAnim(WaterWheelBlockEntity wheel, float partialTick)
     {
-        main.xRot = -wheel.getRotationAngle(partialTick);
+        main.xRot = -ClientRotationNetworkHandler.getRotationAngle(wheel, partialTick);
     }
 }

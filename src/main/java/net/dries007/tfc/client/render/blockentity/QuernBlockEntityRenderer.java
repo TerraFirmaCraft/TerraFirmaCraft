@@ -17,15 +17,17 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.QuernBlockEntity;
 import net.dries007.tfc.common.blocks.rotation.ConnectedAxleBlock;
+import net.dries007.tfc.util.network.RotationOwner;
 
 public class QuernBlockEntityRenderer implements BlockEntityRenderer<QuernBlockEntity>
 {
     @Override
-    public void render(QuernBlockEntity quern, float partialTicks, PoseStack stack, MultiBufferSource bufferSource, int packedLight, int packedOverlay)
+    public void render(QuernBlockEntity quern, float partialTick, PoseStack stack, MultiBufferSource bufferSource, int packedLight, int packedOverlay)
     {
         final Level level = quern.getLevel();
 
@@ -72,7 +74,7 @@ public class QuernBlockEntityRenderer implements BlockEntityRenderer<QuernBlockE
                     default ->
                     {
                         stack.translate(0.5D, 1.0D, 0.5D);
-                        float degrees = (level.getGameTime() + partialTicks) * 4F;
+                        float degrees = (level.getGameTime() + partialTick) * 4F;
                         stack.mulPose(Axis.YP.rotationDegrees(degrees));
                     }
                 }
@@ -84,11 +86,11 @@ public class QuernBlockEntityRenderer implements BlockEntityRenderer<QuernBlockE
             }
         }
 
-        final boolean isConnectedToNetwork = quern.isConnectedToNetwork();
-        final float rotationAngle = quern.getRotationAngle(partialTicks);
+        final @Nullable RotationOwner owner = quern.getConnectedNetworkOwner(level);
+        final float rotationAngle = quern.getRotationAngle(owner, partialTick);
 
         // If connected to the network, with a connected axle above, then render the axle connection to the quern
-        if (isConnectedToNetwork && level.getBlockState(quern.getBlockPos().above()).getBlock() instanceof ConnectedAxleBlock axleBlock)
+        if (owner != null && level.getBlockState(quern.getBlockPos().above()).getBlock() instanceof ConnectedAxleBlock axleBlock)
         {
             final VertexConsumer buffer = bufferSource.getBuffer(RenderType.cutout());
             final TextureAtlasSprite sprite = RenderHelpers.blockTexture(axleBlock.getAxleTextureLocation());
@@ -106,7 +108,8 @@ public class QuernBlockEntityRenderer implements BlockEntityRenderer<QuernBlockE
 
         if (!handstone.isEmpty())
         {
-            final float center = !isConnectedToNetwork ? 0.498f + (level.random.nextFloat() * 0.004f) : 0.5f;
+            // Cause the handstone to shake a little, if being manually moved
+            final float center = owner == null ? 0.498f + (level.random.nextFloat() * 0.004f) : 0.5f;
 
             stack.pushPose();
             stack.translate(center, 0.705D, center);
@@ -125,7 +128,7 @@ public class QuernBlockEntityRenderer implements BlockEntityRenderer<QuernBlockE
 
             stack.pushPose();
             stack.translate(0.5f, height, 0.5f);
-            if (quern.isConnectedToNetwork())
+            if (owner != null)
             {
                 stack.mulPose(Axis.ZP.rotationDegrees(90F));
                 stack.scale(0.8f, 0.8f, 0.8f);

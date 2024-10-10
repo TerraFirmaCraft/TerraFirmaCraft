@@ -520,8 +520,10 @@ public class TFCTags
         public static final TagKey<Item> TRIP_HAMMERS = tag("trip_hammers");
         public static final TagKey<Item> WELDING_FLUX = tag("welding_flux");
         public static final TagKey<Item> SCRIBING_INK = tag("scribing_ink");
+        /** Hides that can be used to make a thatch bed. These will be stored on the block entity and dropped exactly. */
         public static final TagKey<Item> THATCH_BED_HIDES = tag("thatch_bed_hides");
-
+        /** Rods that can be used to make a crankshaft. These will always be dropped as TFC steel rods via loot table. */
+        public static final TagKey<Item> CRANKSHAFT_RODS = tag("crankshaft_rods");
         /**
          * Powders that can be placed in a bowl. This is a technical tag, and it must match the items in
          * {@link BowlBlockEntityRenderer#TEXTURES}

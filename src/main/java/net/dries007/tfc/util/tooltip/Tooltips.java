@@ -9,12 +9,16 @@ package net.dries007.tfc.util.tooltip;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.client.ClientRotationNetworkHandler;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.network.NetworkHelpers;
+import net.dries007.tfc.util.network.RotationOwner;
 
 /**
  * Text based tooltips for common situations, such as displaying standardized quantities of a fluid.
@@ -92,5 +96,10 @@ public final class Tooltips
         if (min != null) return Component.translatable("tfc.tooltip.required_greater_than", min);
         if (max != null) return Component.translatable("tfc.tooltip.required_less_than", max);
         throw new IllegalArgumentException("One of min or max must be non-null");
+    }
+
+    public static MutableComponent rpm(RotationOwner owner)
+    {
+        return Component.translatable("tfc.tooltip.rpm", String.format("%.1f", NetworkHelpers.SPEED_TO_RPM * ClientRotationNetworkHandler.getRotationSpeed(owner)));
     }
 }

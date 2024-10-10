@@ -12,7 +12,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
+import java.util.Objects;
 import java.util.Set;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -21,9 +21,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.LongArrayTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -31,7 +29,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.RandomSupport;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
@@ -42,14 +39,12 @@ import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.common.recipes.LandslideRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.climate.BiomeBasedClimateModel;
-import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateModel;
 import net.dries007.tfc.util.collections.BufferedList;
 import net.dries007.tfc.util.events.CollapseEvent;
 import net.dries007.tfc.util.loot.TFCLoot;
-import net.dries007.tfc.util.rotation.RotationNetworkManager;
+import net.dries007.tfc.util.network.RotationNetworkManager;
 
 public final class WorldTracker
 {
@@ -72,7 +67,7 @@ public final class WorldTracker
     private final BufferedList<BlockPos> isolatedPositions = new BufferedList<>();
     private final List<Collapse> collapsesInProgress = new ArrayList<>();
 
-    private final RotationNetworkManager rotationManager = new RotationNetworkManager();
+    private final @Nullable RotationNetworkManager rotationManager;
 
     private ClimateModel climateModel = BiomeBasedClimateModel.INSTANCE;
     private boolean weatherEnabled = true;
@@ -81,6 +76,7 @@ public final class WorldTracker
     {
         this.level = level;
         this.random = new XoroshiroRandomSource(RandomSupport.generateUniqueSeed());
+        this.rotationManager = level.isClientSide ? null : new RotationNetworkManager();
     }
 
     public void addLandslidePos(BlockPos pos)
@@ -140,7 +136,7 @@ public final class WorldTracker
 
     public RotationNetworkManager getRotationManager()
     {
-        return rotationManager;
+        return Objects.requireNonNull(rotationManager, "RotationNetworkManager access only present on server");
     }
 
     /**
@@ -205,6 +201,8 @@ public final class WorldTracker
             }
             isolatedIterator.remove();
         }
+
+        rotationManager.tick((ServerLevel) level);
     }
 
     public CompoundTag serializeNBT()

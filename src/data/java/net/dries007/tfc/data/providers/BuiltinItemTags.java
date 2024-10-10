@@ -472,6 +472,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             );
         tag(TRIP_HAMMERS).add(TFCItems.METAL_ITEMS, Metal.ItemType.HAMMER); // N.B. Technical tag, don't include sub-tags
         tag(THATCH_BED_HIDES).add(TFCItems.HIDES.get(HideItemType.RAW).get(HideItemType.Size.LARGE));
+        tag(CRANKSHAFT_RODS).addTag(commonTagOf(Metal.STEEL, Metal.ItemType.ROD));
         tag(BOWL_POWDERS) // N.B. Technical tag, don't include sub-tags
             .add(TFCItems.POWDERS)
             .add(TFCItems.ORE_POWDERS)

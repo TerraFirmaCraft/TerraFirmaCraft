@@ -4,9 +4,9 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.util.rotation;
+package net.dries007.tfc.util.network;
 
-public enum NetworkAction
+public enum Action
 {
-    ADD, ADD_SOURCE, UPDATE, REMOVE
+    ADD, UPDATE, UPDATE_IN_NETWORK, REMOVE
 }

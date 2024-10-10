@@ -6,584 +6,637 @@
 
 package net.dries007.tfc.test.util;
 
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.BiFunction;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import org.junit.jupiter.api.Test;
 
-import net.dries007.tfc.util.rotation.AxleNode;
-import net.dries007.tfc.util.rotation.Node;
-import net.dries007.tfc.util.rotation.Rotation;
-import net.dries007.tfc.util.rotation.RotationNetworkManager;
-import net.dries007.tfc.util.rotation.SourceNode;
+import net.dries007.tfc.util.network.Action;
+import net.dries007.tfc.util.network.NetworkHelpers;
+import net.dries007.tfc.util.network.RotationNetworkManager;
+import net.dries007.tfc.util.network.RotationNode;
+import net.dries007.tfc.util.network.RotationOwner;
 
 import static net.minecraft.core.Direction.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class RotationNetworkTest
 {
+    // ===== Connectivity Tests - add ===== //
+
     @Test
     public void testEmpty()
     {
-        assertEquals(mock().manager.toString(), "");
+        assertEquals("", dsl().toString());
     }
 
     @Test
-    public void testSingleSource()
+    public void testSingleAxle()
     {
-        final RotationMock mock = mock();
+        final var dsl = dsl();
 
-        assertTrue(mock.addSource(0, 0, 0, NORTH));
+        assertTrue(dsl.axle(0, 0, 0, Axis.Z));
         assertEquals("""
             [network=0]
-            Node[connections=[north], pos=[0, 0, 0], network=0, rotation=null]
-            """, mock.toString());
+            Axle[connections=[north, south], pos=[0, 0, 0], network=0, axis=z, rotation=south]
+            """, dsl.toString());
     }
 
     @Test
-    public void testConnectedSourcesCausesOtherToBreak()
+    public void testSingleAxleInYAxis()
     {
-        final RotationMock mock = mock();
+        final var dsl = dsl();
 
-        assertTrue(mock.addSource(0, 0, 0, NORTH, SOUTH));
-        assertFalse(mock.addSource(0, 0, 1, NORTH, SOUTH));
+        assertTrue(dsl.axle(0, 0, 0, Axis.Y));
         assertEquals("""
             [network=0]
-            Node[connections=[north, south], pos=[0, 0, 0], network=0, rotation=null]
-            """, mock.toString());
+            Axle[connections=[down, up], pos=[0, 0, 0], network=0, axis=y, rotation=up]
+            """, dsl.toString());
     }
 
     @Test
-    public void testSingleNodeNoSource()
+    public void testTwoAxlesNotConnected()
     {
-        final RotationMock mock = mock();
+        final var dsl = dsl();
 
-        assertTrue(mock.add(0, 0, 0, EAST, WEST));
-        assertEquals("", mock.toString());
-    }
-
-    @Test
-    public void testSourceAndDisconnectedNodes()
-    {
-        final RotationMock mock = mock();
-
-        assertTrue(mock.addSource(0, 0, 0, NORTH));
-        assertTrue(mock.add(0, 0, 0, EAST, WEST));
-        assertTrue(mock.add(0, 0, 1, NORTH, SOUTH));
-        assertTrue(mock.add(1, 0, 0, NORTH, SOUTH));
-        assertTrue(mock.add(1, 0, 1, NORTH, SOUTH));
+        assertTrue(dsl.axle(0, 0, 0, Axis.Z));
+        assertTrue(dsl.axle(0, 0, 2, Axis.Z));
         assertEquals("""
             [network=0]
-            Node[connections=[north], pos=[0, 0, 0], network=0, rotation=null]
-            """, mock.toString());
-    }
-
-    @Test
-    public void testSourceAndConnectedNodes()
-    {
-        final RotationMock mock = mock();
-
-        assertTrue(mock.addSource(0, 0, 0, NORTH));
-        assertTrue(mock.add(0, 0, -1, NORTH, SOUTH));
-        assertTrue(mock.add(0, 0, -2, NORTH, SOUTH));
-        assertEquals("""
-            [network=0]
-            Node[connections=[north], pos=[0, 0, 0], network=0, rotation=null]
-            Node[connections=[north, south], pos=[0, 0, -2], network=0, rotation=[south, Rotation[direction=north, speed=1.0]]]
-            Node[connections=[north, south], pos=[0, 0, -1], network=0, rotation=[south, Rotation[direction=north, speed=1.0]]]
-            """, mock.toString());
-    }
-
-    @Test
-    public void testSourceAndConnectedNodesInWrongOrder()
-    {
-        final RotationMock mock = mock();
-
-        assertTrue(mock.addSource(0, 0, 0, NORTH));
-        assertTrue(mock.add(0, 0, -2, NORTH, SOUTH));
-        assertTrue(mock.add(0, 0, -1, NORTH, SOUTH));
-        assertEquals("""
-            [network=0]
-            Node[connections=[north], pos=[0, 0, 0], network=0, rotation=null]
-            Node[connections=[north, south], pos=[0, 0, -2], network=0, rotation=[south, Rotation[direction=north, speed=1.0]]]
-            Node[connections=[north, south], pos=[0, 0, -1], network=0, rotation=[south, Rotation[direction=north, speed=1.0]]]
-            """, mock.toString());
-    }
-
-    @Test
-    public void testSourceAndConnectedNodesWithSourceLast()
-    {
-        final RotationMock mock = mock();
-
-        assertTrue(mock.add(0, 0, -1, NORTH, SOUTH));
-        assertTrue(mock.add(0, 0, -2, NORTH, SOUTH));
-        assertTrue(mock.addSource(0, 0, 0, NORTH));
-        assertEquals("""
-            [network=0]
-            Node[connections=[north], pos=[0, 0, 0], network=0, rotation=null]
-            Node[connections=[north, south], pos=[0, 0, -2], network=0, rotation=[south, Rotation[direction=north, speed=1.0]]]
-            Node[connections=[north, south], pos=[0, 0, -1], network=0, rotation=[south, Rotation[direction=north, speed=1.0]]]
-            """, mock.toString());
-    }
-
-    @Test
-    public void testRemovingNodeAtLeaf()
-    {
-        final RotationMock mock = mock();
-
-        assertTrue(mock.addSource(0, 0, 0, NORTH));
-        assertTrue(mock.add(0, 0, -1, NORTH, SOUTH));
-        assertTrue(mock.add(0, 0, -2, NORTH, SOUTH));
-        mock.remove(0, 0, -2);
-        assertEquals("""
-            [network=0]
-            Node[connections=[north], pos=[0, 0, 0], network=0, rotation=null]
-            Node[connections=[north, south], pos=[0, 0, -1], network=0, rotation=[south, Rotation[direction=north, speed=1.0]]]
-            """, mock.toString());
-    }
-
-    @Test
-    public void testRemovingNodeAtBranch()
-    {
-        final RotationMock mock = mock();
-
-        assertTrue(mock.addSource(0, 0, 0, NORTH));
-        assertTrue(mock.add(0, 0, -1, NORTH, SOUTH));
-        assertTrue(mock.add(0, 0, -2, NORTH, SOUTH));
-        assertTrue(mock.add(0, 0, -3, NORTH, SOUTH));
-        mock.remove(0, 0, -2);
-        assertEquals("""
-            [network=0]
-            Node[connections=[north], pos=[0, 0, 0], network=0, rotation=null]
-            Node[connections=[north, south], pos=[0, 0, -1], network=0, rotation=[south, Rotation[direction=north, speed=1.0]]]
-            """, mock.toString());
-    }
-
-    @Test
-    public void testMultipleSources()
-    {
-        final RotationMock mock = mock();
-
-        assertTrue(mock.addSource(0, 0, 0, EAST));
-        assertTrue(mock.addSource(2, 0, 0, WEST));
-        assertEquals("""
-            [network=0]
-            Node[connections=[east], pos=[0, 0, 0], network=0, rotation=null]
+            Axle[connections=[north, south], pos=[0, 0, 0], network=0, axis=z, rotation=south]
             
             [network=1]
-            Node[connections=[west], pos=[2, 0, 0], network=1, rotation=null]
-            """, mock.toString());
+            Axle[connections=[north, south], pos=[0, 0, 2], network=1, axis=z, rotation=south]
+            """, dsl.toString());
     }
 
     @Test
-    public void testAddingAndRemovingSources()
+    public void testTwoAxlesAdjacentNotConnected()
     {
-        final RotationMock mock = mock();
+        final var dsl = dsl();
 
-        assertTrue(mock.addSource(0, 0, 0, EAST));
-        mock.remove(0, 0, 0);
-        assertTrue(mock.addSource(2, 0, 0, WEST));
-        assertTrue(mock.addSource(0, 0, 0, EAST));
-        mock.remove(2, 0, 0);
-        assertTrue(mock.addSource(2, 0, 0, WEST));
+        assertTrue(dsl.axle(0, 0, 0, Axis.X));
+        assertTrue(dsl.axle(0, 0, 1, Axis.X));
         assertEquals("""
+            [network=0]
+            Axle[connections=[west, east], pos=[0, 0, 0], network=0, axis=x, rotation=east]
+            
+            [network=1]
+            Axle[connections=[west, east], pos=[0, 0, 1], network=1, axis=x, rotation=east]
+            """, dsl.toString());
+    }
+
+    @Test
+    public void testTwoAxlesConnected()
+    {
+        final var dsl = dsl();
+
+        assertTrue(dsl.axle(0, 0, 0, Axis.Z));
+        assertTrue(dsl.axle(0, 0, 1, Axis.Z));
+        assertEquals("""
+            [network=0]
+            Axle[connections=[north, south], pos=[0, 0, 0], network=0, axis=z, rotation=south]
+            Axle[connections=[north, south], pos=[0, 0, 1], network=0, axis=z, rotation=south]
+            """, dsl.toString());
+    }
+
+    @Test
+    public void testTwoAxlesConnectedInYAxis()
+    {
+        final var dsl = dsl();
+
+        assertTrue(dsl.axle(0, 0, 0, Axis.Y));
+        assertTrue(dsl.axle(0, 1, 0, Axis.Y));
+        assertEquals("""
+            [network=0]
+            Axle[connections=[down, up], pos=[0, 0, 0], network=0, axis=y, rotation=up]
+            Axle[connections=[down, up], pos=[0, 1, 0], network=0, axis=y, rotation=up]
+            """, dsl.toString());
+    }
+
+    @Test
+    public void testThreeAxlesConnected()
+    {
+        final var dsl = dsl();
+
+        assertTrue(dsl.axle(0, 0, 0, Axis.Z));
+        assertTrue(dsl.axle(0, 0, 1, Axis.Z));
+        assertTrue(dsl.axle(0, 0, 2, Axis.Z));
+        assertEquals("""
+            [network=0]
+            Axle[connections=[north, south], pos=[0, 0, 0], network=0, axis=z, rotation=south]
+            Axle[connections=[north, south], pos=[0, 0, 1], network=0, axis=z, rotation=south]
+            Axle[connections=[north, south], pos=[0, 0, 2], network=0, axis=z, rotation=south]
+            """, dsl.toString());
+    }
+
+    @Test
+    public void testThreeAxlesConnectingInMiddle()
+    {
+        final var dsl = dsl();
+
+        assertTrue(dsl.axle(0, 0, 0, Axis.Z));
+        assertTrue(dsl.axle(0, 0, 2, Axis.Z));
+        assertTrue(dsl.axle(0, 0, 1, Axis.Z));
+        assertEquals("""
+            [network=0]
+            Axle[connections=[north, south], pos=[0, 0, 0], network=0, axis=z, rotation=south]
+            Axle[connections=[north, south], pos=[0, 0, 1], network=0, axis=z, rotation=south]
+            Axle[connections=[north, south], pos=[0, 0, 2], network=0, axis=z, rotation=south]
+            """, dsl.toString());
+    }
+
+    @Test
+    public void testThreeAxlesConnectingInMiddleReversed()
+    {
+        final var dsl = dsl();
+
+        assertTrue(dsl.axle(0, 0, 2, Axis.Z));
+        assertTrue(dsl.axle(0, 0, 0, Axis.Z));
+        assertTrue(dsl.axle(0, 0, 1, Axis.Z));
+        assertEquals("""
+            [network=1]
+            Axle[connections=[north, south], pos=[0, 0, 0], network=1, axis=z, rotation=south]
+            Axle[connections=[north, south], pos=[0, 0, 1], network=1, axis=z, rotation=south]
+            Axle[connections=[north, south], pos=[0, 0, 2], network=1, axis=z, rotation=south]
+            """, dsl.toString());
+    }
+
+    // ===== Connectivity - update ===== //
+
+    @Test
+    public void testUpdateConnectsToLeaf()
+    {
+        final var dsl = dsl();
+
+        assertTrue(dsl.axle(0, 0, 0, Axis.Y));
+        assertTrue(dsl.gearBox(0, 1, 0));
+        assertTrue(dsl.update(0, 1, 0, c -> c.add(DOWN)));
+        assertEquals("""
+            [network=0]
+            Axle[connections=[down, up], pos=[0, 0, 0], network=0, axis=y, rotation=up]
+            GearBox[connections=[down], pos=[0, 1, 0], network=0, convention=west, rotation=[up]]
+            """, dsl.toString());
+    }
+
+    @Test
+    public void testUpdateDisconnectsToLeaf()
+    {
+        final var dsl = dsl();
+
+        assertTrue(dsl.axle(0, 0, 0, Axis.Y));
+        assertTrue(dsl.gearBox(0, 1, 0, DOWN));
+        assertTrue(dsl.update(0, 1, 0, c -> c.remove(DOWN)));
+        assertEquals("""
+            [network=0]
+            Axle[connections=[down, up], pos=[0, 0, 0], network=0, axis=y, rotation=up]
+            
+            [network=1]
+            GearBox[connections=[], pos=[0, 1, 0], network=1, convention=west, rotation=[]]
+            """, dsl.toString());
+    }
+
+    @Test
+    public void testUpdateConnectsTwoNetworks()
+    {
+        final var dsl = dsl();
+
+        assertTrue(dsl.axle(0, 0, 0, Axis.Y));
+        assertTrue(dsl.axle(0, 2, 0, Axis.Y));
+        assertTrue(dsl.gearBox(0, 1, 0));
+        assertTrue(dsl.update(0, 1, 0, c -> c.addAll(List.of(DOWN, UP))));
+        assertEquals("""
+            [network=0]
+            Axle[connections=[down, up], pos=[0, 0, 0], network=0, axis=y, rotation=up]
+            GearBox[connections=[down, up], pos=[0, 1, 0], network=0, convention=west, rotation=[up, down]]
+            Axle[connections=[down, up], pos=[0, 2, 0], network=0, axis=y, rotation=down]
+            """, dsl.toString());
+    }
+
+    @Test
+    public void testUpdateDisconnectsTwoNetworks()
+    {
+        final var dsl = dsl();
+
+        assertTrue(dsl.axle(0, 0, 0, Axis.Y));
+        assertTrue(dsl.axle(0, 2, 0, Axis.Y));
+        assertTrue(dsl.gearBox(0, 1, 0, DOWN, UP));
+        assertTrue(dsl.update(0, 1, 0, Collection::clear));
+        assertEquals("""
+            [network=0]
+            Axle[connections=[down, up], pos=[0, 0, 0], network=0, axis=y, rotation=up]
+            
             [network=2]
-            Node[connections=[east], pos=[0, 0, 0], network=2, rotation=null]
+            Axle[connections=[down, up], pos=[0, 2, 0], network=2, axis=y, rotation=down]
             
             [network=3]
-            Node[connections=[west], pos=[2, 0, 0], network=3, rotation=null]
-            """, mock.toString());
+            GearBox[connections=[], pos=[0, 1, 0], network=3, convention=west, rotation=[]]
+            """, dsl.toString());
     }
 
     @Test
-    public void testConnectingTwoSourcesShouldFail()
+    public void testUpdateChangesNetworkConnected()
     {
-        final RotationMock mock = mock();
+        final var dsl = dsl();
 
-        assertTrue(mock.addSource(0, 0, 0, EAST));
-        assertTrue(mock.addSource(2, 0, 0, WEST));
-        assertFalse(mock.add(1, 0, 0, EAST, WEST));
+        assertTrue(dsl.axle(0, 0, 0, Axis.Y));
+        assertTrue(dsl.axle(0, 2, 0, Axis.Y));
+        assertTrue(dsl.gearBox(0, 1, 0, DOWN));
+        assertTrue(dsl.update(0, 1, 0, c -> { c.remove(DOWN); c.add(UP); }));
         assertEquals("""
             [network=0]
-            Node[connections=[east], pos=[0, 0, 0], network=0, rotation=null]
+            Axle[connections=[down, up], pos=[0, 0, 0], network=0, axis=y, rotation=up]
             
             [network=1]
-            Node[connections=[west], pos=[2, 0, 0], network=1, rotation=null]
-            """, mock.toString());
-    }
-    
-    @Test
-    public void testUpdatingConnectivityToConnectAtLeaf()
-    {
-        final RotationMock mock = mock();
-
-        assertTrue(mock.addSource(0, 0, 0, EAST));
-        assertTrue(mock.add(1, 0, 0, EAST, WEST));
-        assertTrue(mock.add(2, 0, 0));
-        assertTrue(mock.update(2, 0, 0, n -> n.connections().add(WEST)));
-        assertEquals("""
-            [network=0]
-            Node[connections=[east], pos=[0, 0, 0], network=0, rotation=null]
-            Node[connections=[west, east], pos=[1, 0, 0], network=0, rotation=[west, Rotation[direction=east, speed=1.0]]]
-            Node[connections=[west], pos=[2, 0, 0], network=0, rotation=[west, Rotation[direction=east, speed=1.0]]]
-            """, mock.toString());
+            GearBox[connections=[up], pos=[0, 1, 0], network=1, convention=east, rotation=[up]]
+            Axle[connections=[down, up], pos=[0, 2, 0], network=1, axis=y, rotation=up]
+            """, dsl.toString());
     }
 
     @Test
-    public void testUpdatingConnectivityToConnectAtBranch()
+    public void testGearBoxConnectInThreeAxiesSequentially()
     {
-        final RotationMock mock = mock();
+        final var dsl = dsl();
 
-        assertTrue(mock.addSource(0, 0, 0, EAST));
-        assertTrue(mock.add(1, 0, 0, EAST, WEST));
-        assertTrue(mock.add(2, 0, 0, EAST));
-        assertTrue(mock.add(3, 0, 0, EAST, WEST));
-        assertTrue(mock.update(2, 0, 0, n -> n.connections().add(WEST)));
+        assertTrue(dsl.axle(1, 0, 0, Axis.X));
+        assertTrue(dsl.axle(0, 1, 0, Axis.Y));
+        assertTrue(dsl.axle(0, 0, 1, Axis.Z));
+        assertTrue(dsl.gearBox(0, 0, 0, UP));
+        assertTrue(dsl.update(0, 0, 0, c -> c.add(SOUTH)));
+        assertTrue(dsl.update(0, 0, 0, c -> c.remove(UP)));
+        assertTrue(dsl.update(0, 0, 0, c -> c.add(EAST)));
         assertEquals("""
-            [network=0]
-            Node[connections=[east], pos=[0, 0, 0], network=0, rotation=null]
-            Node[connections=[west, east], pos=[1, 0, 0], network=0, rotation=[west, Rotation[direction=east, speed=1.0]]]
-            Node[connections=[west, east], pos=[2, 0, 0], network=0, rotation=[west, Rotation[direction=east, speed=1.0]]]
-            Node[connections=[west, east], pos=[3, 0, 0], network=0, rotation=[west, Rotation[direction=east, speed=1.0]]]
-            """, mock.toString());
+            [network=1]
+            GearBox[connections=[south, east], pos=[0, 0, 0], network=1, convention=down, rotation=[north, east]]
+            Axle[connections=[west, east], pos=[1, 0, 0], network=1, axis=x, rotation=east]
+            Axle[connections=[north, south], pos=[0, 0, 1], network=1, axis=z, rotation=north]
+            
+            [network=3]
+            Axle[connections=[down, up], pos=[0, 1, 0], network=3, axis=y, rotation=up]
+            """, dsl.toString());
+    }
+
+    // ===== Connectivity - remove ===== //
+
+    @Test
+    public void testRemoveOnlyNode()
+    {
+        final var dsl = dsl();
+
+        assertTrue(dsl.axle(0, 0, 0, Axis.Y));
+        assertTrue(dsl.remove(0, 0, 0));
+        assertEquals("", dsl.toString());
     }
 
     @Test
-    public void testUpdatingDownstreamConnectivityToConnectAtBranch()
+    public void testRemoveNodeNotConnected()
     {
-        final RotationMock mock = mock();
+        final var dsl = dsl();
 
-        assertTrue(mock.addSource(0, 0, 0, EAST));
-        assertTrue(mock.add(1, 0, 0, EAST, WEST));
-        assertTrue(mock.add(2, 0, 0, WEST));
-        assertTrue(mock.add(3, 0, 0, EAST, WEST));
-        assertTrue(mock.update(2, 0, 0, n -> n.connections().add(EAST)));
-        assertEquals("""
-            [network=0]
-            Node[connections=[east], pos=[0, 0, 0], network=0, rotation=null]
-            Node[connections=[west, east], pos=[1, 0, 0], network=0, rotation=[west, Rotation[direction=east, speed=1.0]]]
-            Node[connections=[west, east], pos=[2, 0, 0], network=0, rotation=[west, Rotation[direction=east, speed=1.0]]]
-            Node[connections=[west, east], pos=[3, 0, 0], network=0, rotation=[west, Rotation[direction=east, speed=1.0]]]
-            """, mock.toString());
+        assertTrue(dsl.axle(0, 0, 0, Axis.X));
+        assertTrue(dsl.axle(0, 1, 0, Axis.Z));
+        assertTrue(dsl.remove(0, 0, 0));
+        assertTrue(dsl.remove(0, 1, 0));
+        assertEquals("", dsl.toString());
     }
 
     @Test
-    public void testUpdatingConnectivityToDisconnectAtLeaf()
+    public void testRemoveConnectedNodes()
     {
-        final RotationMock mock = mock();
+        final var dsl = dsl();
 
-        assertTrue(mock.addSource(0, 0, 0, EAST));
-        assertTrue(mock.add(1, 0, 0, EAST, WEST));
-        assertTrue(mock.add(2, 0, 0, EAST, WEST));
-        assertTrue(mock.update(2, 0, 0, n -> n.connections().clear()));
-        assertEquals("""
-            [network=0]
-            Node[connections=[east], pos=[0, 0, 0], network=0, rotation=null]
-            Node[connections=[west, east], pos=[1, 0, 0], network=0, rotation=[west, Rotation[direction=east, speed=1.0]]]
-            """, mock.toString());
+        assertTrue(dsl.axle(0, 0, 0, Axis.Y));
+        assertTrue(dsl.axle(0, 1, 0, Axis.Y));
+        assertTrue(dsl.remove(0, 1, 0));
+        assertTrue(dsl.remove(0, 0, 0));
+        assertEquals("", dsl.toString());
     }
 
     @Test
-    public void testUpdatingConnectivityToDisconnectAtBranch()
+    public void testRemoveLeafNodeOfNetwork()
     {
-        final RotationMock mock = mock();
+        final var dsl = dsl();
 
-        assertTrue(mock.addSource(0, 0, 0, EAST));
-        assertTrue(mock.add(1, 0, 0, EAST, WEST));
-        assertTrue(mock.add(2, 0, 0, EAST, WEST));
-        assertTrue(mock.add(3, 0, 0, EAST, WEST));
-        assertTrue(mock.update(2, 0, 0, n -> n.connections().clear()));
+        assertTrue(dsl.axle(0, 0, 0, Axis.Y));
+        assertTrue(dsl.axle(0, 1, 0, Axis.Y));
+        assertTrue(dsl.axle(0, 2, 0, Axis.Y));
+        assertTrue(dsl.remove(0, 2, 0));
         assertEquals("""
             [network=0]
-            Node[connections=[east], pos=[0, 0, 0], network=0, rotation=null]
-            Node[connections=[west, east], pos=[1, 0, 0], network=0, rotation=[west, Rotation[direction=east, speed=1.0]]]
-            """, mock.toString());
+            Axle[connections=[down, up], pos=[0, 0, 0], network=0, axis=y, rotation=up]
+            Axle[connections=[down, up], pos=[0, 1, 0], network=0, axis=y, rotation=up]
+            """, dsl.toString());
     }
 
     @Test
-    public void testConnectingTwoSourcesViaUpdate()
+    public void testRemoveNodeSplitsNetwork()
     {
-        final RotationMock mock = mock();
+        final var dsl = dsl();
 
-        assertTrue(mock.addSource(0, 0, 0, EAST));
-        assertTrue(mock.addSource(2, 0, 0, WEST));
-        assertTrue(mock.add(1, 0, 0, WEST));
-        assertFalse(mock.update(1, 0, 0, n -> n.connections().add(EAST)));
+        assertTrue(dsl.axle(0, 0, 0, Axis.Y));
+        assertTrue(dsl.axle(0, 1, 0, Axis.Y));
+        assertTrue(dsl.axle(0, 2, 0, Axis.Y));
+        assertTrue(dsl.remove(0, 1, 0));
         assertEquals("""
             [network=0]
-            Node[connections=[east], pos=[0, 0, 0], network=0, rotation=null]
+            Axle[connections=[down, up], pos=[0, 0, 0], network=0, axis=y, rotation=up]
             
             [network=1]
-            Node[connections=[west], pos=[2, 0, 0], network=1, rotation=null]
-            """, mock.toString());
+            Axle[connections=[down, up], pos=[0, 2, 0], network=1, axis=y, rotation=up]
+            """, dsl.toString());
     }
 
     @Test
-    public void testConnectingTwoSourcesViaUpdateAndDisconnectingLeaf()
+    public void testRemoveReplaceAndRemove()
     {
-        final RotationMock mock = mock();
+        final var dsl = dsl();
 
-        assertTrue(mock.addSource(0, 0, 0, EAST));
-        assertTrue(mock.addSource(2, 0, 0, WEST));
-        assertTrue(mock.add(1, 0, 0, WEST, UP));
-        assertTrue(mock.add(1, 1, 0, DOWN));
-        assertFalse(mock.update(1, 0, 0, n -> n.connections().add(EAST)));
+        assertTrue(dsl.axle(0, 0, 0, Axis.Y));
+        assertTrue(dsl.axle(0, 1, 0, Axis.Y));
+        assertTrue(dsl.axle(0, 2, 0, Axis.Y));
+        assertTrue(dsl.remove(0, 1, 0));
+        assertTrue(dsl.remove(0, 0, 0));
+        assertTrue(dsl.axle(0, 0, 0, Axis.Y));
+        assertTrue(dsl.axle(0, 1, 0, Axis.Y));
+        assertTrue(dsl.remove(0, 0, 0));
+        assertTrue(dsl.axle(0, 0, 0, Axis.Y));
+        assertEquals("""
+            [network=2]
+            Axle[connections=[down, up], pos=[0, 0, 0], network=2, axis=y, rotation=up]
+            Axle[connections=[down, up], pos=[0, 1, 0], network=2, axis=y, rotation=up]
+            Axle[connections=[down, up], pos=[0, 2, 0], network=2, axis=y, rotation=up]
+            """, dsl.toString());
+    }
+
+    // ===== Rotation ===== //
+
+    @Test
+    public void testGearBoxConnectsToAxlesInYAxis()
+    {
+        final var dsl = dsl();
+
+        assertTrue(dsl.axle(0, 0, 0, Axis.Y));
+        assertTrue(dsl.axle(0, 1, 0, Axis.Y));
+        assertTrue(dsl.gearBox(0, 2, 0, DOWN, UP));
         assertEquals("""
             [network=0]
-            Node[connections=[east], pos=[0, 0, 0], network=0, rotation=null]
+            Axle[connections=[down, up], pos=[0, 0, 0], network=0, axis=y, rotation=up]
+            Axle[connections=[down, up], pos=[0, 1, 0], network=0, axis=y, rotation=up]
+            GearBox[connections=[down, up], pos=[0, 2, 0], network=0, convention=west, rotation=[up, down]]
+            """, dsl.toString());
+    }
+
+    @Test
+    public void testGearBoxReversesRotationInLine()
+    {
+        final var dsl = dsl();
+
+        assertTrue(dsl.axle(0, 0, 0, Axis.Z));
+        assertTrue(dsl.gearBox(0, 0, 1, NORTH, SOUTH));
+        assertTrue(dsl.axle(0, 0, 2, Axis.Z));
+        assertEquals("""
+            [network=0]
+            Axle[connections=[north, south], pos=[0, 0, 0], network=0, axis=z, rotation=south]
+            GearBox[connections=[north, south], pos=[0, 0, 1], network=0, convention=east, rotation=[south, north]]
+            Axle[connections=[north, south], pos=[0, 0, 2], network=0, axis=z, rotation=north]
+            """, dsl.toString());
+    }
+
+    @Test
+    public void testGearBoxReversesRotationInLineOpposite()
+    {
+        final var dsl = dsl();
+
+        assertTrue(dsl.axle(0, 0, 2, Axis.Z));
+        assertTrue(dsl.gearBox(0, 0, 1, NORTH, SOUTH));
+        assertTrue(dsl.axle(0, 0, 0, Axis.Z));
+        assertEquals("""
+            [network=0]
+            Axle[connections=[north, south], pos=[0, 0, 0], network=0, axis=z, rotation=north]
+            GearBox[connections=[north, south], pos=[0, 0, 1], network=0, convention=west, rotation=[north, south]]
+            Axle[connections=[north, south], pos=[0, 0, 2], network=0, axis=z, rotation=south]
+            """, dsl.toString());
+    }
+
+    @Test
+    public void testGearBoxReversesRotationInLineInMiddle()
+    {
+        final var dsl = dsl();
+
+        assertTrue(dsl.axle(0, 0, 0, Axis.Z));
+        assertTrue(dsl.axle(0, 0, 2, Axis.Z));
+        assertTrue(dsl.gearBox(0, 0, 1, NORTH, SOUTH));
+        assertEquals("""
+            [network=0]
+            Axle[connections=[north, south], pos=[0, 0, 0], network=0, axis=z, rotation=south]
+            GearBox[connections=[north, south], pos=[0, 0, 1], network=0, convention=east, rotation=[south, north]]
+            Axle[connections=[north, south], pos=[0, 0, 2], network=0, axis=z, rotation=north]
+            """, dsl.toString());
+    }
+
+    @Test
+    public void testGearBoxReversesRotationInLine5xInMiddle()
+    {
+        final var dsl = dsl();
+
+        assertTrue(dsl.axle(0, 0, 0, Axis.Z));
+        assertTrue(dsl.axle(0, 0, 1, Axis.Z));
+        assertTrue(dsl.axle(0, 0, 3, Axis.Z));
+        assertTrue(dsl.axle(0, 0, 4, Axis.Z));
+        assertTrue(dsl.gearBox(0, 0, 2, NORTH, SOUTH));
+        assertEquals("""
+            [network=0]
+            Axle[connections=[north, south], pos=[0, 0, 0], network=0, axis=z, rotation=south]
+            Axle[connections=[north, south], pos=[0, 0, 1], network=0, axis=z, rotation=south]
+            GearBox[connections=[north, south], pos=[0, 0, 2], network=0, convention=east, rotation=[south, north]]
+            Axle[connections=[north, south], pos=[0, 0, 3], network=0, axis=z, rotation=north]
+            Axle[connections=[north, south], pos=[0, 0, 4], network=0, axis=z, rotation=north]
+            """, dsl.toString());
+    }
+
+    @Test
+    public void testGearBoxReversesConventionInPerpendicularDirection()
+    {
+        final var dsl = dsl();
+
+        assertTrue(dsl.axle(0, 0, 0, Axis.Z));
+        assertTrue(dsl.gearBox(0, 0, 1, NORTH, SOUTH, EAST, WEST));
+        assertTrue(dsl.axle(0, 0, 2, Axis.Z));
+        assertTrue(dsl.axle(1, 0, 1, Axis.X));
+        assertTrue(dsl.axle(-1, 0, 1, Axis.X));
+        assertEquals("""
+            [network=0]
+            Axle[connections=[north, south], pos=[0, 0, 0], network=0, axis=z, rotation=south]
+            Axle[connections=[west, east], pos=[-1, 0, 1], network=0, axis=x, rotation=west]
+            GearBox[connections=[north, south, west, east], pos=[0, 0, 1], network=0, convention=down, rotation=[south, north, west, east]]
+            Axle[connections=[west, east], pos=[1, 0, 1], network=0, axis=x, rotation=east]
+            Axle[connections=[north, south], pos=[0, 0, 2], network=0, axis=z, rotation=north]
+            """, dsl.toString());
+    }
+
+    @Test
+    public void testGearBoxPropagatesReversedDirectionThroughGearBox()
+    {
+        final var dsl = dsl();
+
+        // ...5
+        // 17234
+        // ...6.
+        // where 3, 7 are boxes
+        assertTrue(dsl.axle(0, 0, 0, Axis.Z)); // network=0
+        assertTrue(dsl.axle(0, 0, 2, Axis.Z)); // network=1
+        assertTrue(dsl.gearBox(0, 0, 3, NORTH, SOUTH, EAST, WEST));
+        assertTrue(dsl.axle(0, 0, 4, Axis.Z));
+        assertTrue(dsl.axle(1, 0, 3, Axis.X));
+        assertTrue(dsl.axle(-1, 0, 3, Axis.X));
+        assertTrue(dsl.gearBox(0, 0, 1, NORTH, SOUTH)); // merge 0 <- 1
+        assertEquals("""
+            [network=0]
+            Axle[connections=[north, south], pos=[0, 0, 0], network=0, axis=z, rotation=south]
+            GearBox[connections=[north, south], pos=[0, 0, 1], network=0, convention=east, rotation=[south, north]]
+            Axle[connections=[north, south], pos=[0, 0, 2], network=0, axis=z, rotation=north]
+            Axle[connections=[west, east], pos=[-1, 0, 3], network=0, axis=x, rotation=east]
+            GearBox[connections=[north, south, west, east], pos=[0, 0, 3], network=0, convention=up, rotation=[north, south, east, west]]
+            Axle[connections=[west, east], pos=[1, 0, 3], network=0, axis=x, rotation=west]
+            Axle[connections=[north, south], pos=[0, 0, 4], network=0, axis=z, rotation=south]
+            """, dsl.toString());
+    }
+
+    @Test
+    public void testTwoConnectionsToSameNetworkCompatible()
+    {
+        final var dsl = dsl();
+
+        assertTrue(dsl.gearBox(0, 0, 0, NORTH, SOUTH, EAST, WEST));
+        assertTrue(dsl.gearBox(1, 0, 0, NORTH, SOUTH, EAST, WEST));
+        assertTrue(dsl.axle(1, 0, 1, Axis.Z));
+        assertTrue(dsl.gearBox(1, 0, 2, NORTH, SOUTH, EAST, WEST));
+        assertTrue(dsl.gearBox(0, 0, 2, NORTH, SOUTH, EAST, WEST));
+        assertTrue(dsl.axle(0, 0, 1, Axis.Z));
+        assertEquals("""
+            [network=0]
+            GearBox[connections=[north, south, west, east], pos=[0, 0, 0], network=0, convention=up, rotation=[north, south, east, west]]
+            GearBox[connections=[north, south, west, east], pos=[1, 0, 0], network=0, convention=down, rotation=[south, north, west, east]]
+            Axle[connections=[north, south], pos=[0, 0, 1], network=0, axis=z, rotation=south]
+            Axle[connections=[north, south], pos=[1, 0, 1], network=0, axis=z, rotation=north]
+            GearBox[connections=[north, south, west, east], pos=[0, 0, 2], network=0, convention=down, rotation=[south, north, west, east]]
+            GearBox[connections=[north, south, west, east], pos=[1, 0, 2], network=0, convention=up, rotation=[north, south, east, west]]
+            """, dsl.toString());
+    }
+
+    @Test
+    public void testTwoConnectionsToSameNetworkIncompatible()
+    {
+        final var dsl = dsl();
+
+        assertTrue(dsl.gearBox(0, 0, 0, NORTH, SOUTH, EAST, WEST));
+        assertTrue(dsl.gearBox(1, 0, 0, NORTH, SOUTH, EAST, WEST));
+        assertTrue(dsl.axle(1, 0, 1, Axis.Z));
+        assertTrue(dsl.gearBox(1, 0, 2, NORTH, SOUTH, EAST, WEST));
+        assertTrue(dsl.gearBox(0, 0, 2, NORTH, SOUTH, EAST, WEST));
+        assertFalse(dsl.gearBox(0, 0, 1, NORTH, SOUTH));
+        assertEquals("""
+            [network=0]
+            GearBox[connections=[north, south, west, east], pos=[0, 0, 0], network=0, convention=up, rotation=[north, south, east, west]]
+            GearBox[connections=[north, south, west, east], pos=[1, 0, 0], network=0, convention=down, rotation=[south, north, west, east]]
+            Axle[connections=[north, south], pos=[1, 0, 1], network=0, axis=z, rotation=north]
+            GearBox[connections=[north, south, west, east], pos=[0, 0, 2], network=0, convention=down, rotation=[south, north, west, east]]
+            GearBox[connections=[north, south, west, east], pos=[1, 0, 2], network=0, convention=up, rotation=[north, south, east, west]]
+            """, dsl.toString());
+    }
+
+    @Test
+    public void testMergingNetworkUpdatesAllNewRotations()
+    {
+        final var dsl = dsl();
+
+        assertTrue(dsl.axle(0, 0, 0, Axis.Y)); // Lower network
+        assertTrue(dsl.axle(0, 1, 0, Axis.Y));
+        assertTrue(dsl.axle(0, 5, 0, Axis.Y)); // Upper network
+        assertTrue(dsl.gearBox(0, 4, 0, UP, DOWN));
+        assertTrue(dsl.axle(0, 3, 0, Axis.Y));
+        assertEquals("""
+            [network=0]
+            Axle[connections=[down, up], pos=[0, 0, 0], network=0, axis=y, rotation=up]
+            Axle[connections=[down, up], pos=[0, 1, 0], network=0, axis=y, rotation=up]
             
             [network=1]
-            Node[connections=[west], pos=[2, 0, 0], network=1, rotation=null]
-            """, mock.toString());
-    }
-
-    @Test
-    public void testRemovingSource()
-    {
-        final RotationMock mock = mock();
-
-        assertTrue(mock.addSource(0, 0, 0, EAST));
-        assertTrue(mock.add(1, 0, 0, WEST, UP));
-        assertTrue(mock.add(1, 1, 0, DOWN));
-        mock.remove(0, 0, 0);
-        assertEquals("", mock.toString());
-    }
-
-    @Test
-    public void testSourceConnectedToCycle()
-    {
-        final RotationMock mock = mock();
-
-        assertTrue(mock.addSource(0, 0, 0, UP));
-        assertTrue(mock.add(0, 1, 0, DOWN, NORTH, EAST, SOUTH, WEST));
-        assertTrue(mock.add(1, 1, 0, NORTH, EAST, SOUTH, WEST));
-        assertTrue(mock.add(0, 1, 1, NORTH, EAST, SOUTH, WEST));
-        assertTrue(mock.add(1, 1, 1, NORTH, EAST, SOUTH, WEST));
+            Axle[connections=[down, up], pos=[0, 3, 0], network=1, axis=y, rotation=down]
+            GearBox[connections=[down, up], pos=[0, 4, 0], network=1, convention=east, rotation=[down, up]]
+            Axle[connections=[down, up], pos=[0, 5, 0], network=1, axis=y, rotation=up]
+            """, dsl.toString()); // Before merging - adjacent axles are opposite convention
+        assertTrue(dsl.axle(0, 2, 0, Axis.Y));
         assertEquals("""
             [network=0]
-            Node[connections=[up], pos=[0, 0, 0], network=0, rotation=null]
-            Node[connections=[down, north, south, west, east], pos=[0, 1, 0], network=0, rotation=[down, Rotation[direction=up, speed=1.0]]]
-            Node[connections=[north, south, west, east], pos=[1, 1, 0], network=0, rotation=[west, Rotation[direction=east, speed=1.0]]]
-            Node[connections=[north, south, west, east], pos=[0, 1, 1], network=0, rotation=[north, Rotation[direction=south, speed=1.0]]]
-            Node[connections=[north, south, west, east], pos=[1, 1, 1], network=0, rotation=[north, Rotation[direction=south, speed=1.0]]]
-            """, mock.toString());
+            Axle[connections=[down, up], pos=[0, 0, 0], network=0, axis=y, rotation=up]
+            Axle[connections=[down, up], pos=[0, 1, 0], network=0, axis=y, rotation=up]
+            Axle[connections=[down, up], pos=[0, 2, 0], network=0, axis=y, rotation=up]
+            Axle[connections=[down, up], pos=[0, 3, 0], network=0, axis=y, rotation=up]
+            GearBox[connections=[down, up], pos=[0, 4, 0], network=0, convention=west, rotation=[up, down]]
+            Axle[connections=[down, up], pos=[0, 5, 0], network=0, axis=y, rotation=down]
+            """, dsl.toString()); // After merging - both networks have aligned
     }
 
-    @Test
-    public void testRemovingBranchInCycle()
+    private static BlockPos pos(int x, int y, int z)
     {
-        final RotationMock mock = mock();
-
-        assertTrue(mock.addSource(0, 0, 0, UP));
-        assertTrue(mock.add(0, 1, 0, DOWN, NORTH, EAST, SOUTH, WEST));
-        assertTrue(mock.add(1, 1, 0, NORTH, EAST, SOUTH, WEST));
-        assertTrue(mock.add(0, 1, 1, NORTH, EAST, SOUTH, WEST));
-        assertTrue(mock.add(1, 1, 1, NORTH, EAST, SOUTH, WEST));
-        mock.remove(1, 1, 0);
-        assertEquals("""
-            [network=0]
-            Node[connections=[up], pos=[0, 0, 0], network=0, rotation=null]
-            Node[connections=[down, north, south, west, east], pos=[0, 1, 0], network=0, rotation=[down, Rotation[direction=up, speed=1.0]]]
-            Node[connections=[north, south, west, east], pos=[0, 1, 1], network=0, rotation=[north, Rotation[direction=south, speed=1.0]]]
-            Node[connections=[north, south, west, east], pos=[1, 1, 1], network=0, rotation=[west, Rotation[direction=east, speed=1.0]]]
-            """, mock.toString());
+        return new BlockPos(x, y, z);
     }
 
-    @Test
-    public void testConnectTwoDifferentHandRotationsInCycle()
+    private static DSL dsl()
     {
-        final RotationMock mock = mock();
-
-        assertTrue(mock.addSource(0, 0, 0, UP));
-        assertTrue(mock.add(0, 1, 0, EAST, DOWN, UP));
-        assertTrue(mock.add(1, 1, 0, WEST, UP));
-        assertTrue(mock.add(1, 2, 0, InvertNode::new, WEST, DOWN, UP));
-        assertTrue(mock.add(1, 3, 0, DOWN));
-        assertFalse(mock.add(0, 2, 0, EAST, DOWN));
-        assertEquals("""
-            [network=0]
-            Node[connections=[up], pos=[0, 0, 0], network=0, rotation=null]
-            Node[connections=[down, up, east], pos=[0, 1, 0], network=0, rotation=[down, Rotation[direction=up, speed=1.0]]]
-            Node[connections=[up, west], pos=[1, 1, 0], network=0, rotation=[west, Rotation[direction=east, speed=1.0]]]
-            Node[connections=[down, up, west], pos=[1, 2, 0], network=0, rotation=[down, Rotation[direction=up, speed=1.0]]]
-            Node[connections=[down], pos=[1, 3, 0], network=0, rotation=[down, Rotation[direction=down, speed=1.0]]]
-            """, mock.toString());
+        return new DSL(new RotationNetworkManager(), new ArrayList<>());
     }
 
-    @Test
-    public void testConnectTwoDifferentHandRotationsInCycleFromUpdate()
+    record DSL(RotationNetworkManager manager, List<BlockPos> updates)
     {
-        final RotationMock mock = mock();
-
-        assertTrue(mock.addSource(0, 0, 0, UP));
-        assertTrue(mock.add(0, 1, 0, EAST, DOWN, UP));
-        assertTrue(mock.add(1, 1, 0, WEST, UP));
-        assertTrue(mock.add(1, 2, 0, InvertNode::new, WEST, DOWN, UP));
-        assertTrue(mock.add(1, 3, 0, DOWN));
-        assertTrue(mock.add(0, 2, 0, DOWN));
-        assertFalse(mock.update(0, 2, 0, n -> n.connections().add(EAST)));
-        assertEquals("""
-            [network=0]
-            Node[connections=[up], pos=[0, 0, 0], network=0, rotation=null]
-            Node[connections=[down, up, east], pos=[0, 1, 0], network=0, rotation=[down, Rotation[direction=up, speed=1.0]]]
-            Node[connections=[up, west], pos=[1, 1, 0], network=0, rotation=[west, Rotation[direction=east, speed=1.0]]]
-            Node[connections=[down, up, west], pos=[1, 2, 0], network=0, rotation=[down, Rotation[direction=up, speed=1.0]]]
-            Node[connections=[down], pos=[1, 3, 0], network=0, rotation=[down, Rotation[direction=down, speed=1.0]]]
-            """, mock.toString());
-    }
-
-    @Test
-    public void testExactRightLengthAxleWorks()
-    {
-        final RotationMock mock = mock();
-
-        assertTrue(mock.addSource(0, 0, 0, SOUTH));
-        assertTrue(mock.add(0, 0, 1, AxleNode::new, NORTH, SOUTH));
-        assertTrue(mock.add(0, 0, 2, AxleNode::new, NORTH, SOUTH));
-        assertTrue(mock.add(0, 0, 3, AxleNode::new, NORTH, SOUTH));
-        assertTrue(mock.add(0, 0, 4, AxleNode::new, NORTH, SOUTH));
-        assertTrue(mock.add(0, 0, 5, AxleNode::new, NORTH, SOUTH));
-        assertEquals("""
-            [network=0]
-            Node[connections=[south], pos=[0, 0, 0], network=0, rotation=null]
-            Node[connections=[north, south], pos=[0, 0, 1], network=0, rotation=[north, Rotation[direction=south, speed=1.0]]]
-            Node[connections=[north, south], pos=[0, 0, 2], network=0, rotation=[north, Rotation[direction=south, speed=1.0]]]
-            Node[connections=[north, south], pos=[0, 0, 3], network=0, rotation=[north, Rotation[direction=south, speed=1.0]]]
-            Node[connections=[north, south], pos=[0, 0, 4], network=0, rotation=[north, Rotation[direction=south, speed=1.0]]]
-            Node[connections=[north, south], pos=[0, 0, 5], network=0, rotation=[north, Rotation[direction=south, speed=1.0]]]
-            """, mock.toString());
-    }
-
-    @Test
-    public void testTooLongAxleFailsToAdd()
-    {
-        final RotationMock mock = mock();
-
-        assertTrue(mock.addSource(0, 0, 0, SOUTH));
-        assertTrue(mock.add(0, 0, 1, AxleNode::new, NORTH, SOUTH));
-        assertTrue(mock.add(0, 0, 2, AxleNode::new, NORTH, SOUTH));
-        assertTrue(mock.add(0, 0, 3, AxleNode::new, NORTH, SOUTH));
-        assertTrue(mock.add(0, 0, 4, AxleNode::new, NORTH, SOUTH));
-        assertTrue(mock.add(0, 0, 5, AxleNode::new, NORTH, SOUTH));
-        assertFalse(mock.add(0, 0, 6, AxleNode::new, NORTH, SOUTH));
-        assertEquals("""
-            [network=0]
-            Node[connections=[south], pos=[0, 0, 0], network=0, rotation=null]
-            Node[connections=[north, south], pos=[0, 0, 1], network=0, rotation=[north, Rotation[direction=south, speed=1.0]]]
-            Node[connections=[north, south], pos=[0, 0, 2], network=0, rotation=[north, Rotation[direction=south, speed=1.0]]]
-            Node[connections=[north, south], pos=[0, 0, 3], network=0, rotation=[north, Rotation[direction=south, speed=1.0]]]
-            Node[connections=[north, south], pos=[0, 0, 4], network=0, rotation=[north, Rotation[direction=south, speed=1.0]]]
-            Node[connections=[north, south], pos=[0, 0, 5], network=0, rotation=[north, Rotation[direction=south, speed=1.0]]]
-            """, mock.toString());
-    }
-
-    @Test
-    public void testTooLongAxleFailsWhenAddedInMiddle()
-    {
-        final RotationMock mock = mock();
-
-        assertTrue(mock.addSource(0, 0, 0, SOUTH));
-        assertTrue(mock.add(0, 0, 1, AxleNode::new, NORTH, SOUTH));
-        assertTrue(mock.add(0, 0, 2, AxleNode::new, NORTH, SOUTH));
-        assertTrue(mock.add(0, 0, 4, AxleNode::new, NORTH, SOUTH));
-        assertTrue(mock.add(0, 0, 5, AxleNode::new, NORTH, SOUTH));
-        assertTrue(mock.add(0, 0, 6, AxleNode::new, NORTH, SOUTH));
-        assertTrue(mock.add(0, 0, 3, AxleNode::new, NORTH, SOUTH));
-        assertEquals("""
-            [network=0]
-            Node[connections=[south], pos=[0, 0, 0], network=0, rotation=null]
-            Node[connections=[north, south], pos=[0, 0, 1], network=0, rotation=[north, Rotation[direction=south, speed=1.0]]]
-            Node[connections=[north, south], pos=[0, 0, 2], network=0, rotation=[north, Rotation[direction=south, speed=1.0]]]
-            Node[connections=[north, south], pos=[0, 0, 3], network=0, rotation=[north, Rotation[direction=south, speed=1.0]]]
-            Node[connections=[north, south], pos=[0, 0, 4], network=0, rotation=[north, Rotation[direction=south, speed=1.0]]]
-            Node[connections=[north, south], pos=[0, 0, 5], network=0, rotation=[north, Rotation[direction=south, speed=1.0]]]
-            """, mock.toString());
-    }
-
-
-    
-    private RotationMock mock()
-    {
-        return new RotationMock(new RotationNetworkManager(), new HashMap<>());
-    }
-
-
-    record RotationMock(RotationNetworkManager manager, Map<BlockPos, Node> sourceNodes)
-    {
-        boolean add(int x, int y, int z) { return add(x, y, z, MockNode::new, EnumSet.noneOf(Direction.class)); }
-        boolean add(int x, int y, int z, Direction first, Direction... rest) { return add(x, y, z, MockNode::new, EnumSet.of(first, rest)); }
-        boolean add(int x, int y, int z, BiFunction<BlockPos, EnumSet<Direction>, Node> factory, Direction first, Direction... rest) { return add(x, y, z, factory, EnumSet.of(first, rest)); }
-        boolean addSource(int x, int y, int z, Direction dir, Direction... rest) { return add(x, y, z, (p, c) -> new SourceNode(p, c, dir, 1.0f) {}, EnumSet.of(dir, rest)); }
-
-        boolean add(int x, int y, int z, BiFunction<BlockPos, EnumSet<Direction>, Node> factory, EnumSet<Direction> connections)
+        boolean axle(int x, int y, int z, Direction.Axis axis)
         {
-            final BlockPos pos = new BlockPos(x, y, z);
-            final Node node = factory.apply(pos, connections);
-            if (node instanceof SourceNode srcNode)
-            {
-                sourceNodes.put(pos, srcNode);
-                return manager.addSource(srcNode);
-            }
-            else return manager.add(node);
+            return manager.performAction(new RotationNode.Axle(owner(x, y, z), axis, 0f), Action.ADD);
         }
 
-        boolean update(int x, int y, int z, Consumer<Node> apply)
+        boolean gearBox(int x, int y, int z, Direction... connections)
         {
-            final BlockPos pos = new BlockPos(x, y, z);
-            final Node node = manager.getNode(pos);
+            return manager.performAction(new RotationNode.GearBox(owner(x, y, z), NetworkHelpers.of(connections), 0f), Action.ADD);
+        }
+
+        boolean update(int x, int y, int z, Consumer<Collection<Direction>> updater)
+        {
+            final var node = (RotationNode.GearBox) manager.nodeAt(pos(x, y, z));
             assertNotNull(node);
-            apply.accept(node);
-            return manager.update(node);
+            updater.accept(node.connections());
+            node.updateConvention();
+            return manager.performAction(node, Action.UPDATE);
         }
 
-        void remove(int x, int y, int z)
+        boolean remove(int x, int y, int z)
         {
-            final BlockPos pos = new BlockPos(x, y, z);
-            final Node removed = sourceNodes.containsKey(pos) ? sourceNodes.get(pos) : manager.getNode(pos);
-            assertNotNull(removed);
-            manager.remove(removed);
+            final RotationNode node = manager.nodeAt(pos(x, y, z));
+            assertNotNull(node);
+            return manager.performAction(node, Action.REMOVE);
+        }
+
+        RotationOwner owner(int x, int y, int z)
+        {
+            return new RotationOwner() {
+                @Override
+                public BlockPos getBlockPos()
+                {
+                    return pos(x, y, z);
+                }
+
+                @Override public RotationNode getRotationNode() { throw new AssertionError(); }
+                @Override public void onUpdate() { DSL.this.updates.add(getBlockPos()); }
+            };
         }
 
         @Override
         public String toString()
         {
+            NetworkTest.validateNetworkManagerIntegrity(manager);
             return manager.toString();
-        }
-    }
-    
-    static class MockNode extends Node
-    {
-        MockNode(BlockPos pos, EnumSet<Direction> connections)
-        {
-            super(pos, connections);
-        }
-
-        @Override
-        public Rotation rotation(Rotation sourceRotation, Direction sourceDirection, Direction exitDirection)
-        {
-            // This node acts as a passthrough
-            // It conveys the input rotation through unmodified, and keeps the same axis direction (handedness) in other directions
-            return Rotation.of(fromAxisAndDirection(exitDirection.getAxis(), sourceRotation.direction().getAxisDirection()), 1.0f);
-        }
-    }
-
-    static class InvertNode extends MockNode
-    {
-        InvertNode(BlockPos pos, EnumSet<Direction> connections)
-        {
-            super(pos, connections);
-        }
-
-        @Override
-        public Rotation rotation(Rotation sourceRotation, Direction sourceDirection, Direction exitDirection)
-        {
-            // This is the inverse of MockNode
-            // It inverts the rotation in all connected directions
-            return Rotation.of(fromAxisAndDirection(exitDirection.getAxis(), sourceRotation.direction().getAxisDirection()).getOpposite(), 1.0f);
         }
     }
 }

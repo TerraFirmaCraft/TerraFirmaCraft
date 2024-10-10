@@ -308,8 +308,8 @@ public final class PatchouliIntegration
 
         sneakIntoMultiblock(multiblock).ifPresent(access -> {
             access.getBlockEntity(new BlockPos(0, 0, 1), TFCBlockEntities.AXLE.get()).ifPresent(axle -> axle.getRotationNode().setRotationFromOutsideWorld());
-            access.getBlockEntity(new BlockPos(1, 0, 1), TFCBlockEntities.CRANKSHAFT.get()).ifPresent(shaft -> shaft.getRotationNode().setRotationFromOutsideWorld());
-            access.getBlockEntity(new BlockPos(1, 0, 0), TFCBlockEntities.CRANKSHAFT.get()).ifPresent(shaft -> shaft.getRotationNode().setRotationFromOutsideWorld());
+            access.getBlockEntity(new BlockPos(1, 0, 1), TFCBlockEntities.CRANKSHAFT.get()).ifPresent(shaft -> shaft.setRotationFromOutsideWorld());
+            access.getBlockEntity(new BlockPos(1, 0, 0), TFCBlockEntities.CRANKSHAFT.get()).ifPresent(shaft -> shaft.setRotationFromOutsideWorld());
         });
 
         return multiblock;
@@ -325,7 +325,8 @@ public final class PatchouliIntegration
 
         sneakIntoMultiblock(multiblock).ifPresent(access -> {
             access.getBlockEntity(new BlockPos(0, 1, 0), TFCBlockEntities.QUERN.get()).ifPresent(quern -> {
-                quern.getRotationNode().setRotationFromOutsideWorld();
+                // todo: set the rotation as well
+                //quern.getRotationNode().setRotationFromOutsideWorld();
                 quern.setHandstoneFromOutsideWorld();
             });
             access.getBlockEntity(new BlockPos(0, 2, 0), TFCBlockEntities.AXLE.get()).ifPresent(axle -> axle.getRotationNode().setRotationFromOutsideWorld());

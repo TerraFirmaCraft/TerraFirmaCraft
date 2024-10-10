@@ -26,6 +26,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.client.ClientRotationNetworkHandler;
 import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
 import net.dries007.tfc.common.blockentities.BellowsBlockEntity;
@@ -46,7 +47,6 @@ import net.dries007.tfc.common.blockentities.PotBlockEntity;
 import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
 import net.dries007.tfc.common.blockentities.SheetPileBlockEntity;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
-import net.dries007.tfc.common.blockentities.rotation.RotatingBlockEntity;
 import net.dries007.tfc.common.blocks.BloomBlock;
 import net.dries007.tfc.common.blocks.HotPouredGlassBlock;
 import net.dries007.tfc.common.blocks.TFCCandleBlock;
@@ -97,7 +97,7 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.data.LampFuel;
-import net.dries007.tfc.util.rotation.Rotation;
+import net.dries007.tfc.util.network.RotationOwner;
 
 /**
  * Common tooltips that can be displayed for various block entities via external sources.
@@ -153,12 +153,14 @@ public final class BlockEntityTooltips
     };
 
     public static final BlockEntityTooltip ROTATING = (level, state, pos, entity, tooltip) -> {
-        if (entity instanceof RotatingBlockEntity rotating)
+        if (entity instanceof RotationOwner owner)
         {
-            final Rotation rotation = rotating.getRotationNode().rotation();
-            if (rotation != null && rotation.speed() != 0)
+            tooltip.accept(Tooltips.rpm(owner));
+            if (TFCConfig.CLIENT.enableDebug.get())
             {
-                tooltip.accept(Component.translatable("tfc.tooltip.rotation.angular_velocity", String.format("%.2f", Math.abs(rotation.positiveSpeed()) * 20f)));
+                // Only display tooltips for nodes that are synced, which includes syncing their networkId
+                tooltip.accept(Component.literal("[Debug] " + owner.getRotationNode()));
+                tooltip.accept(Component.literal("[Debug] " + ClientRotationNetworkHandler.getNetworkDebugTooltip(owner.getRotationNode().networkId())));
             }
         }
     };
@@ -278,7 +280,7 @@ public final class BlockEntityTooltips
     };
 
     public static final BlockEntityTooltip COMPOSTER = (level, state, pos, entity, tooltip) -> {
-        if (state.getBlock() instanceof TFCComposterBlock block && entity instanceof ComposterBlockEntity composter)
+        if (state.getBlock() instanceof TFCComposterBlock && entity instanceof ComposterBlockEntity composter)
         {
             if (composter.isRotten())
             {
@@ -295,7 +297,7 @@ public final class BlockEntityTooltips
     };
 
     public static final BlockEntityTooltip CROP = (level, state, pos, entity, tooltip) -> {
-        if (entity instanceof CropBlockEntity crop && state.getBlock() instanceof CropBlock block)
+        if (entity instanceof CropBlockEntity crop && state.getBlock() instanceof CropBlock)
         {
             tooltip.accept(Component.translatable("tfc.jade.yield", String.format("%.0f", crop.getYield() * 100)));
         }

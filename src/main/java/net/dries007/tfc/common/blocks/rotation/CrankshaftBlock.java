@@ -34,6 +34,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
@@ -51,7 +52,6 @@ public class CrankshaftBlock extends HorizontalDirectionalBlock implements IForg
     ));
 
     private static final VoxelShape[] SHAFT_SHAPES = Helpers.computeHorizontalShapes(dir -> Helpers.rotateShape(dir, 0, 7, 8, 16, 9, 10));
-    private static final TagKey<Item> STEEL_RODS = TagKey.create(Registries.ITEM, Helpers.resourceLocation("forge", "rods/steel"));
 
     private final ExtendedProperties properties;
 
@@ -67,7 +67,7 @@ public class CrankshaftBlock extends HorizontalDirectionalBlock implements IForg
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
         final ItemStack held = player.getItemInHand(hand);
-        if (state.getValue(PART) == Part.BASE && Helpers.isItem(held.getItem(), STEEL_RODS))
+        if (state.getValue(PART) == Part.BASE && Helpers.isItem(held.getItem(), TFCTags.Items.CRANKSHAFT_RODS))
         {
             final BlockPos partnerPos = getPartnerPos(pos, state);
             final BlockState stateAt = level.getBlockState(partnerPos);

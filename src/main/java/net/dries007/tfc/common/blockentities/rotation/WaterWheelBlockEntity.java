@@ -22,24 +22,20 @@ import net.dries007.tfc.common.blockentities.TickableBlockEntity;
 import net.dries007.tfc.common.blocks.RiverWaterBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rotation.WaterWheelBlock;
-import net.dries007.tfc.util.rotation.NetworkAction;
-import net.dries007.tfc.util.rotation.Node;
-import net.dries007.tfc.util.rotation.Rotation;
-import net.dries007.tfc.util.rotation.SourceNode;
+import net.dries007.tfc.util.network.Action;
+import net.dries007.tfc.util.network.RotationNetworkManager;
+import net.dries007.tfc.util.network.RotationNode;
+import net.dries007.tfc.util.network.RotationOwner;
 import net.dries007.tfc.world.river.Flow;
 
-public class WaterWheelBlockEntity extends TickableBlockEntity implements RotatingBlockEntity
+public class WaterWheelBlockEntity extends TickableBlockEntity implements RotationOwner
 {
-    public static final float MAX_SPEED = Mth.TWO_PI / (4 * 20);
-    public static final float LERP_SPEED = MAX_SPEED / (20 * 20);
-
+    private static final float MAX_SPEED = Mth.TWO_PI / (4 * 20);
     private static final float MAX_FLOW = 10f;
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, WaterWheelBlockEntity wheel)
     {
         wheel.checkForLastTickSync();
-
-        clientTick(level, pos, state, wheel);
 
         if (level.getGameTime() % 40 == 0)
         {
@@ -51,24 +47,15 @@ public class WaterWheelBlockEntity extends TickableBlockEntity implements Rotati
             }
             else
             {
-                wheel.targetSpeed = maybeFlowRate * MAX_SPEED / MAX_FLOW;
-                wheel.markForSync();
+                final float newTargetSpeed = maybeFlowRate * MAX_SPEED / MAX_FLOW;
+                if (newTargetSpeed != wheel.targetSpeed)
+                {
+                    wheel.targetSpeed = newTargetSpeed;
+                    wheel.performNetworkAction(Action.UPDATE_IN_NETWORK);
+                    wheel.markForSync();
+                }
             }
         }
-    }
-
-    public static void clientTick(Level level, BlockPos pos, BlockState state, WaterWheelBlockEntity wheel)
-    {
-        final Rotation.Tickable rotation = wheel.node.rotation();
-        final float currentSpeed = rotation.speed();
-        final float targetSpeed = wheel.targetSpeed;
-
-        final float nextSpeed = targetSpeed > currentSpeed
-            ? Math.min(targetSpeed, currentSpeed + LERP_SPEED)
-            : Math.max(targetSpeed, currentSpeed - LERP_SPEED);
-
-        rotation.tick();
-        rotation.setSpeed(nextSpeed);
     }
 
     /**
@@ -147,9 +134,7 @@ public class WaterWheelBlockEntity extends TickableBlockEntity implements Rotati
         }
     }
 
-    private final SourceNode node;
-    private boolean invalid;
-
+    private final RotationNode node;
     private float targetSpeed;
 
     public WaterWheelBlockEntity(BlockPos pos, BlockState state)
@@ -161,18 +146,23 @@ public class WaterWheelBlockEntity extends TickableBlockEntity implements Rotati
     {
         super(type, pos, state);
 
-
         // The water wheel is unique in that it may turn in both directions
         // It does not switch the rotation direction when it does this, rather, it just rotates in reverse and accumulates angle in negative values.
         final Direction.Axis axis = state.getValue(WaterWheelBlock.AXIS);
 
         this.targetSpeed = 0f;
-        this.invalid = false;
-        this.node = new SourceNode(pos, Node.ofAxis(axis), Direction.fromAxisAndDirection(axis, Direction.AxisDirection.POSITIVE), 0f) {
+        this.node = new RotationNode.Axle(this, axis, RotationNetworkManager.WINDMILL_TORQUE)
+        {
             @Override
-            public String toString()
+            protected float providedSpeed()
             {
-                return "WaterWheel[pos=%s, axis=%s]".formatted(pos(), axis);
+                return WaterWheelBlockEntity.this.targetSpeed;
+            }
+
+            @Override
+            protected float providedTorque()
+            {
+                return RotationNetworkManager.WINDMILL_PROVIDED_TORQUE;
             }
         };
     }
@@ -181,46 +171,36 @@ public class WaterWheelBlockEntity extends TickableBlockEntity implements Rotati
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
         super.saveAdditional(tag, provider);
-        node.rotation().saveToTag(tag);
-        tag.putBoolean("invalid", invalid);
-        tag.putFloat("targetSpeed", targetSpeed);
+        node.saveAdditional(tag);
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
         super.loadAdditional(tag, provider);
-        node.rotation().loadFromTag(tag);
-        invalid = tag.getBoolean("invalid");
-        targetSpeed = tag.getFloat("targetSpeed");
+        node.loadAdditional(tag);
+    }
+
+    @Override
+    protected void loadAdditionalOnClient(CompoundTag tag, HolderLookup.Provider provider)
+    {
+        node.loadAdditionalOnClient(tag);
     }
 
     @Override
     protected void onLoadAdditional()
     {
-        performNetworkAction(NetworkAction.ADD_SOURCE);
+        performNetworkAction(Action.ADD);
     }
 
     @Override
     protected void onUnloadAdditional()
     {
-        performNetworkAction(NetworkAction.REMOVE);
+        performNetworkAction(Action.REMOVE);
     }
 
     @Override
-    public void markAsInvalidInNetwork()
-    {
-        invalid = true;
-    }
-
-    @Override
-    public boolean isInvalidInNetwork()
-    {
-        return invalid;
-    }
-
-    @Override
-    public Node getRotationNode()
+    public RotationNode getRotationNode()
     {
         return node;
     }
