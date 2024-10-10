@@ -1,4 +1,8 @@
 {
+  "__note_on_opencc_1__": "Use the following commands to generate zh_hk and zh_tw langs",
+  "__note_on_opencc_2__": "opencc -i zh_cn.json -o zh_hk.json -c s2hk.json",
+  "__note_on_opencc_3__": "opencc -i zh_cn.json -o zh_tw.json -c s2twp.json",
+  "__note_on_opencc_4__": "Don't forget to run the same commands for lang files under the minecraft namespace as well.",
   "__comment1__": "This file was originally created by HeartyYF, updated to 1.18.2 by gaogao-qwq, and updated to 1.20.1 by Minecraft Community of Zhejiang University of Water Resources and Electric Power",
   "__comment2__": "Simplified Chinese translation for version 1.20.1 TFC-TNG",
   "__comment3__": "1.20.1汉化由Minecraft高校联盟的多所高校MC组织成员参与制作，包括浙江水利水电学院、西安交通大学、云南大学、长沙医学院等",
