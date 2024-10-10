@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:doline_plains",
+    "tfc:doline_canyons",
+    "tfc:doline_hills",
+    "tfc:doline_highlands",
+    "tfc:doline_plateau"
+  ]
+}

@@ -54,6 +54,7 @@ def generate(rm: ResourceManager):
     rm.placed_feature_tag('feature/boulders', 'tfc:raw_boulder', 'tfc:cobble_boulder', 'tfc:mossy_boulder', 'tfc:raw_boulder_small_patch', 'tfc:cobble_boulder_small_patch', 'tfc:mossy_boulder_small_patch')
     rm.placed_feature_tag('feature/soil_discs', 'tfc:clay_disc_with_indicator', 'tfc:water_clay_disc_with_indicator', 'tfc:peat_disc', 'tfc:powder_snow', 'tfc:rooted_dirt')
     rm.placed_feature_tag('feature/volcanoes', 'tfc:volcano_rivulet', 'tfc:volcano_caldera', 'tfc:random_volcano_fissure', 'tfc:pumice_patch')
+    rm.placed_feature_tag('feature/surface_flood_fill_lakes', 'tfc:flood_fill_lake')
 
     # Biomes
     biome(rm, 'badlands', 'mesa', lake_features=False)
@@ -84,6 +85,36 @@ def generate(rm: ResourceManager):
     biome(rm, 'mud_flats', 'plains', barren=True)
     biome(rm, 'dune_sea', 'plains', barren=True)
     biome(rm, 'grassy_dunes', 'plains')
+
+    biome(rm, 'tower_karst_plains', 'plains')
+    biome(rm, 'burren_plains', 'plains')
+    biome(rm, 'shilin_plains', 'plains')
+    biome(rm, 'doline_plains', 'plains')
+    biome(rm, 'cenote_plains', 'plains')
+    biome(rm, 'tower_karst_canyons', 'plains')
+    biome(rm, 'doline_canyons', 'plains')
+    biome(rm, 'cenote_canyons', 'plains')
+    biome(rm, 'shilin_canyons', 'plains')
+    biome(rm, 'tower_karst_hills', 'plains')
+    biome(rm, 'shilin_hills', 'plains')
+    biome(rm, 'doline_hills', 'plains')
+    biome(rm, 'cenote_hills', 'plains')
+    biome(rm, 'tower_karst_highlands', 'plains')
+    biome(rm, 'burren_badlands_tall', 'mesa')
+    biome(rm, 'shilin_highlands', 'plains')
+    biome(rm, 'doline_highlands', 'plains')
+    biome(rm, 'cenote_highlands', 'plains')
+    biome(rm, 'extreme_doline_plateau', 'extreme_hills')
+    biome(rm, 'burren_plateau', 'extreme_hills')
+    biome(rm, 'shilin_plateau', 'extreme_hills')
+    biome(rm, 'doline_plateau', 'extreme_hills')
+    biome(rm, 'cenote_plateau', 'extreme_hills')
+    biome(rm, 'tower_karst_lake', 'river', lake_features=False, ocean_features='both')
+    biome(rm, 'tower_karst_bay', 'river', lake_features=False, ocean_features='both')
+    biome(rm, 'extreme_doline_mountains', 'extreme_hills')
+    biome(rm, 'burren_badlands', 'mesa')
+    biome(rm, 'doline_rolling_hills', 'plains')
+    biome(rm, 'cenote_rolling_hills', 'plains')
 
     biome(rm, 'mountain_lake', 'extreme_hills')
     biome(rm, 'volcanic_mountain_lake', 'extreme_hills', volcano_features=True)
@@ -186,7 +217,7 @@ def generate(rm: ResourceManager):
         'replace_fluids': [],
     })
 
-    rm.placed_feature('flood_fill_lake', 'tfc:flood_fill_lake', decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(min_water=125))
+    rm.placed_feature('flood_fill_lake', 'tfc:flood_fill_lake', decorate_chance(5), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(min_water=125), decorate_biome())
     rm.placed_feature('underground_flood_fill_lake', 'tfc:flood_fill_lake', decorate_chance(3), decorate_square(), decorate_range(-56, 63))
 
     for spring_cfg in (('water', 110), ('lava', 50)):
@@ -517,7 +548,13 @@ def generate(rm: ResourceManager):
         },
         'blocks': [],
     }, decorate_climate(min_water=300, min_temp=18))
-    rm.biome_tag('kaolin_clay_spawns_in', 'tfc:plateau', 'tfc:highlands', 'tfc:old_mountains', 'tfc:rolling_hills')
+    rm.biome_tag('tower_karsts', 'tfc:tower_karst_plains', 'tfc:tower_karst_canyons', 'tfc:tower_karst_hills', 'tower_karst_highlands', 'tfc:extreme_doline_plateau', 'tfc:extreme_doline_mountains', 'tfc:tower_karst_lake', 'tfc:tower_karst_bay')
+    rm.biome_tag('dolines', 'tfc:doline_plains', 'tfc:doline_canyons', 'tfc:doline_hills', 'tfc:doline_highlands', 'tfc:doline_plateau')
+    rm.biome_tag('cenotes', 'tfc:cenote_plains', 'tfc:cenote_canyons', 'tfc:cenote_hills', 'tfc:cenote_highlands', 'tfc:cenote_plateau')
+    rm.biome_tag('shilins', 'tfc:shilin_plains', 'tfc:shilin_canyons', 'tfc:shilin_hills', 'tfc:shilin_highlands', 'tfc:shilin_plateau')
+    rm.biome_tag('burrens', 'tfc:burren_plains', 'tfc:burren_badlands', 'tfc:burren_badlands_tall', 'tfc:burren_plateau')
+    rm.biome_tag('karsts', '#tfc:tower_karsts', '#tfc:dolines', '#tfc:cenotes', '#tfc:shilins', '#tfc:burrens', '#tfc:karsts')
+    rm.biome_tag('kaolin_clay_spawns_in', 'tfc:plateau', 'tfc:highlands', 'tfc:old_mountains', 'tfc:rolling_hills', 'tfc:tower_karst_hills', 'tfc:tower_karst_highlands', 'tfc:extreme_doline_plateau', 'tfc:extreme_doline_mountains', 'tfc:doline_rolling_hills', 'tfc:doline_highlands', 'tfc:doline_plateau', 'tfc:cenote_rolling_hills', 'tfc:cenote_highlands', 'tfc:cenote_plateau', 'tfc:shilin_hills', 'tfc:shilin_highlands', 'tfc:shilin_plateau')
 
     configured_placed_feature(rm, ('vein', 'gravel'), 'tfc:disc_vein', {
         'rarity': 30,
@@ -542,6 +579,7 @@ def generate(rm: ResourceManager):
                 'max_y': 180,
                 'density': 0.98,
                 'random_name': rock,
+                'biomes': '#tfc:karsts',
                 'height': 150,
                 'radius': 18,
                 'min_skew': 7,
@@ -1542,6 +1580,7 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
 
     if category in ('river', 'lake'):
         soil_discs.append('#tfc:feature/ore_deposits')
+        soil_discs.append('#tfc:feature/ore_deposits')
     if category in ('lake', 'swamp', 'river'):
         surface_decorations.append('tfc:plant/dry_phragmite')
     if category == 'river':
@@ -1555,7 +1594,7 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
         spawners['water_creature'] = [entity for entity in LAKE_CREATURES.values()]
     if 'swamp' == category:
         spawners['water_ambient'] = [entity for entity in LAKE_AMBIENT.values()]
-    if 'salt_marsh' == name:
+    if 'salt_marsh' == name or 'tower_karst_bay' == name:
         spawners['water_ambient'] = [entity for entity in SALT_MARSH_AMBIENT.values()]
     spawners['monster'] = [entity for entity in VANILLA_MONSTERS.values()]
 
@@ -1585,6 +1624,9 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
             large_features.append('tfc:random_empty_hot_spring')
         else:
             large_features.append('tfc:random_active_hot_spring')
+
+    if not ('shilin' in name or 'burren' in name):
+        large_features.append('#tfc:feature/surface_flood_fill_lakes')
 
     # Feature Tags
     # We don't directly use vanilla's generation step, but we line this up *approximately* with it, so that mods that add features add them in roughly the right location

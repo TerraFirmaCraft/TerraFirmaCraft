@@ -8,6 +8,7 @@
     "tfc:bamboo",
     "tfc:rare_bamboo_golden",
     "tfc:bamboo_golden",
-    "tfc:cave_vegetation"
+    "tfc:cave_vegetation",
+    "#tfc:feature/surface_flood_fill_lakes"
   ]
 }

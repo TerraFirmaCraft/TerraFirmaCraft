@@ -143,9 +143,9 @@ public final class RegionGenerator
     /**
      * @return The estimated surface rock type at the given grid coordinates. This should only be used during region point generation!
      */
-    public RockSettings getSurfaceRock(int gridX, int gridZ)
+    public RockSettings getSurfaceRock(Region.Point point)
     {
-        return chunkDataGenerator.generateSurfaceRock(Units.gridToBlock(gridX), Units.gridToBlock(gridZ));
+        return settings.rockLayerSettings().sampleAtLayer(point.rock, 0);
     }
 
     public RegionPartition.Point getOrCreatePartitionPoint(int gridX, int gridZ)
@@ -260,8 +260,9 @@ public final class RegionGenerator
         ADD_MOUNTAINS(AddMountains.INSTANCE),
         ANNOTATE_BIOME_ALTITUDE(AnnotateBiomeAltitude.INSTANCE),
         ANNOTATE_CLIMATE(AnnotateClimate.INSTANCE),
-        CHOOSE_BIOMES(ChooseBiomes.INSTANCE),
         CHOOSE_ROCKS(ChooseRocks.INSTANCE),
+        ANNOTATE_KARST_SURFACE(KarstSurfaceRocks.INSTANCE),
+        CHOOSE_BIOMES(ChooseBiomes.INSTANCE),
         ADD_RIVERS_AND_LAKES(AddRiversAndLakes.INSTANCE),
         ;
 

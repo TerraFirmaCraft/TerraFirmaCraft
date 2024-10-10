@@ -1,0 +1,14 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:tower_karst_plains",
+    "tfc:tower_karst_canyons",
+    "tfc:tower_karst_hills",
+    "tfc:tower_karst_highlands",
+    "tfc:extreme_doline_plateau",
+    "tfc:extreme_doline_mountains",
+    "tfc:tower_karst_lake",
+    "tfc:tower_karst_bay"
+  ]
+}

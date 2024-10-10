@@ -25,12 +25,14 @@ import net.dries007.tfc.world.river.RiverBlendType;
 import net.dries007.tfc.world.surface.builder.BadlandsSurfaceBuilder;
 import net.dries007.tfc.world.surface.builder.DuneSurfaceBuilder;
 import net.dries007.tfc.world.surface.builder.GrassyDunesSurfaceBuilder;
+import net.dries007.tfc.world.surface.builder.BurrenSurfaceBuilder;
 import net.dries007.tfc.world.surface.builder.LowlandsSurfaceBuilder;
 import net.dries007.tfc.world.surface.builder.MountainSurfaceBuilder;
 import net.dries007.tfc.world.surface.builder.FlatsSurfaceBuilder;
 import net.dries007.tfc.world.surface.builder.NormalSurfaceBuilder;
 import net.dries007.tfc.world.surface.builder.OceanSurfaceBuilder;
 import net.dries007.tfc.world.surface.builder.RiverSurfaceBuilder;
+import net.dries007.tfc.world.surface.builder.ShilinSurfaceBuilder;
 import net.dries007.tfc.world.surface.builder.ShoreSurfaceBuilder;
 
 import static net.dries007.tfc.world.biome.BiomeBuilder.*;
@@ -56,8 +58,8 @@ public final class TFCBiomes
 
     // Mid biomes
     public static final BiomeExtension ROLLING_HILLS = register("rolling_hills", builder().heightmap(seed -> BiomeNoise.hills(seed, -5, 28)).surface(NormalSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.CANYON)); // Higher hills, above sea level. Some larger / steeper hills.
-    public static final BiomeExtension HIGHLANDS = register("highlands", builder().heightmap(BiomeNoise::sharpHills).surface(NormalSurfaceBuilder.ROCKY).spawnable().type(RiverBlendType.CANYON)); // Hills with sharp, exposed rocky areas.
-    public static final BiomeExtension BADLANDS = register("badlands", builder().heightmap(BiomeNoise::badlands).surface(BadlandsSurfaceBuilder.NORMAL).spawnable().type(RiverBlendType.CANYON)); // Very high flat area with steep relief carving, similar to vanilla mesas.
+    public static final BiomeExtension HIGHLANDS = register("highlands", builder().heightmap(seed -> BiomeNoise.sharpHills(seed, -3, 28)).surface(NormalSurfaceBuilder.ROCKY).spawnable().type(RiverBlendType.CANYON)); // Hills with sharp, exposed rocky areas.
+    public static final BiomeExtension BADLANDS = register("badlands", builder().heightmap(seed -> BiomeNoise.badlands(seed, 22, 19.5f)).surface(BadlandsSurfaceBuilder.NORMAL).spawnable().type(RiverBlendType.CANYON)); // Very high flat area with steep relief carving, similar to vanilla mesas.
     public static final BiomeExtension INVERTED_BADLANDS = register("inverted_badlands", builder().heightmap(BiomeNoise::bryceCanyon).surface(BadlandsSurfaceBuilder.INVERTED).spawnable().type(RiverBlendType.CANYON)); // Inverted badlands: hills with additive ridges, similar to vanilla bryce canyon mesas.
     public static final BiomeExtension PLATEAU = register("plateau", builder().heightmap(seed -> BiomeNoise.hills(seed, 20, 30)).surface(MountainSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.TALL_CANYON).noSandyRiverShores()); // Very high area, very flat top.
     public static final BiomeExtension CANYONS = register("canyons", builder().heightmap(seed -> BiomeNoise.canyons(seed, -2, 40)).surface(NormalSurfaceBuilder.INSTANCE).volcanoes(6, 14, 30, 28).spawnable().type(RiverBlendType.CANYON).noSandyRiverShores()); // Medium height with snake like ridges, minor volcanic activity
@@ -91,6 +93,51 @@ public final class TFCBiomes
     public static final BiomeExtension SALT_FLATS = register("salt_flats", builder().heightmap(BiomeNoise::saltFlats).surface(FlatsSurfaceBuilder.SALTY).aquiferHeightOffset(-16).salty().spawnable().type(RiverBlendType.WIDE).noSandyRiverShores());
     public static final BiomeExtension DUNE_SEA = register("dune_sea", builder().heightmap(seed -> BiomeNoise.dunes(seed, 2, 16)).surface(DuneSurfaceBuilder.INSTANCE).aquiferHeightOffset(-16).spawnable().type(RiverBlendType.WIDE));
     public static final BiomeExtension GRASSY_DUNES = register("grassy_dunes", builder().heightmap(seed -> BiomeNoise.dunes(seed, 2, 16)).surface(GrassyDunesSurfaceBuilder.INSTANCE).aquiferHeightOffset(-16).spawnable().type(RiverBlendType.WIDE));
+
+    // Karst Biomes
+
+    // Tower Karsts (Fenglin / Fengcong)
+    public static final BiomeExtension TOWER_KARST_PLAINS= register("tower_karst_plains", builder().heightmap(seed -> BiomeNoise.fenglin(seed, BiomeNoise.hills(seed, 4, 8), 40)).surface(NormalSurfaceBuilder.ROCKY).spawnable().type(RiverBlendType.TALL_CANYON)); // Plains, fenglin karsts
+    public static final BiomeExtension TOWER_KARST_CANYONS = register("tower_karst_canyons", builder().heightmap(seed -> BiomeNoise.fengcong(seed, BiomeNoise.canyons(seed, -2, 30))).surface(NormalSurfaceBuilder.ROCKY).spawnable().type(RiverBlendType.TALL_CANYON).noSandyRiverShores()); // Canyons, fengcong karsts
+    public static final BiomeExtension TOWER_KARST_HILLS = register("tower_karst_hills", builder().heightmap(seed -> BiomeNoise.fengcong(seed, BiomeNoise.hills(seed, -5, 22))).surface(NormalSurfaceBuilder.ROCKY).spawnable().type(RiverBlendType.TALL_CANYON)); // Rolling hills, fengcong karsts.
+    public static final BiomeExtension TOWER_KARST_HIGHLANDS = register("tower_karst_highlands", builder().heightmap(seed -> BiomeNoise.fengcong(seed, BiomeNoise.sharpHills(seed, 0, 20))).surface(NormalSurfaceBuilder.ROCKY).spawnable().type(RiverBlendType.TALL_CANYON)); // Modified "weathered" highlands, fengcong karsts
+    public static final BiomeExtension TOWER_KARST_LAKE = register("tower_karst_lake", builder().heightmap(seed -> BiomeNoise.fenglin(seed, BiomeNoise.hills(seed, -12, -4), 50)).surface(NormalSurfaceBuilder.ROCKY).aquiferHeightOffset(-16).spawnable().type(RiverBlendType.TALL_CANYON).noSandyRiverShores()); // Shallow fresh water, fenglin karsts
+    public static final BiomeExtension TOWER_KARST_BAY = register("tower_karst_bay", builder().heightmap(seed -> BiomeNoise.fenglin(seed, BiomeNoise.hills(seed, -18, -8), 50)).surface(NormalSurfaceBuilder.ROCKY).aquiferHeightOffset(-16).spawnable().salty().type(RiverBlendType.TALL_CANYON).noSandyRiverShores()); // Salt water, fenglin karsts
+
+    // Karren Karsts
+    // Bare, flat karst inspired by Burren, Ireland
+    public static final BiomeExtension BURREN_PLATEAU = register("burren_plateau", builder().heightmap(seed -> BiomeNoise.burren(seed, BiomeNoise.hills(seed, 22, 32), 1.4)).surface(BurrenSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.TALL_CANYON).noSandyRiverShores()); // Plateau
+    public static final BiomeExtension BURREN_BADLANDS = register("burren_badlands", builder().heightmap(seed -> BiomeNoise.burren(seed, BiomeNoise.badlands(seed, 22, 19.5f), 1.0)).surface(BurrenSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.CANYON).noSandyRiverShores()); // Badlands shape, custom surface builder
+    public static final BiomeExtension BURREN_BADLANDS_TALL = register("burren_badlands_tall", builder().heightmap(seed -> BiomeNoise.burren(seed, BiomeNoise.badlands(seed, 35, 33f), 1.0)).surface(BurrenSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.TALL_CANYON).noSandyRiverShores()); // Vertically scaled badlands, custom surface builder
+    public static final BiomeExtension BURREN_PLAINS = register("burren_plains", builder().heightmap(seed -> BiomeNoise.burren(seed, BiomeNoise.hills(seed, 6, 12), 1.5)).surface(BurrenSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.WIDE).noSandyRiverShores()); // Plains
+
+    // Dense, sharp ridges inspired by "Stone Forests" in China
+    public static final BiomeExtension SHILIN_PLAINS = register("shilin_plains", builder().heightmap(seed -> BiomeNoise.shilin(seed, BiomeNoise.hills(seed, 4, 10), 28)).surface(ShilinSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.WIDE));
+    public static final BiomeExtension SHILIN_CANYONS = register("shilin_canyons", builder().heightmap(seed -> BiomeNoise.shilin(seed, BiomeNoise.canyons(seed, -2, 30), 26)).surface(ShilinSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.WIDE));
+    public static final BiomeExtension SHILIN_HILLS = register("shilin_hills", builder().heightmap(seed -> BiomeNoise.shilin(seed, BiomeNoise.hills(seed, -2, 16), 26)).surface(ShilinSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.WIDE));
+    public static final BiomeExtension SHILIN_HIGHLANDS = register("shilin_highlands", builder().heightmap(seed -> BiomeNoise.shilin(seed, BiomeNoise.sharpHills(seed, 0, 32), 32)).surface(ShilinSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.WIDE)); // Modified "weathered" highlands.
+    public static final BiomeExtension SHILIN_PLATEAU = register("shilin_plateau", builder().heightmap(seed -> BiomeNoise.shilin(seed, BiomeNoise.hills(seed, 12, 22), 32)).surface(ShilinSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.WIDE));
+
+    // Doline (Sinkhole) Karsts
+    // Small, bowl-shaped dolines
+    public static final BiomeExtension DOLINE_PLAINS = register("doline_plains", builder().heightmap(seed -> BiomeNoise.bowlDolines(seed, BiomeNoise.hills(seed, 4, 10), 6)).surface(NormalSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.WIDE));
+    public static final BiomeExtension DOLINE_HILLS = register("doline_hills", builder().heightmap(seed -> BiomeNoise.bowlDolines(seed, BiomeNoise.hills(seed, -5, 16), 10)).surface(NormalSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.WIDE));
+    public static final BiomeExtension DOLINE_ROLLING_HILLS = register("doline_rolling_hills", builder().heightmap(seed -> BiomeNoise.bowlDolines(seed, BiomeNoise.hills(seed, -5, 28), 18)).surface(NormalSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.CANYON));
+    public static final BiomeExtension DOLINE_HIGHLANDS = register("doline_highlands", builder().heightmap(seed -> BiomeNoise.bowlDolines(seed, BiomeNoise.sharpHills(seed, -3, 20), 22)).surface(NormalSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.CANYON)); // Modified "weathered" highlands.
+    public static final BiomeExtension DOLINE_PLATEAU = register("doline_plateau", builder().heightmap(seed -> BiomeNoise.bowlDolines(seed, BiomeNoise.hills(seed, 22, 32), 22)).surface(NormalSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.TALL_CANYON).noSandyRiverShores());
+    public static final BiomeExtension DOLINE_CANYONS = register("doline_canyons", builder().heightmap(seed -> BiomeNoise.bowlDolines(seed, BiomeNoise.canyons(seed, -2, 34), 15)).surface(NormalSurfaceBuilder.INSTANCE).volcanoes(6, 14, 30, 28).spawnable().type(RiverBlendType.CANYON).noSandyRiverShores());
+
+    // Small-medium cylindrical dolines
+    public static final BiomeExtension CENOTE_PLAINS = register("cenote_plains", builder().heightmap(seed -> BiomeNoise.cenotes(seed, BiomeNoise.hills(seed, 4, 10), 11, 8)).surface(NormalSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.WIDE));
+    public static final BiomeExtension CENOTE_HILLS = register("cenote_hills", builder().heightmap(seed -> BiomeNoise.cenotes(seed, BiomeNoise.hills(seed, -5, 16), 16, 10)).surface(NormalSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.WIDE));
+    public static final BiomeExtension CENOTE_ROLLING_HILLS = register("cenote_rolling_hills", builder().heightmap(seed -> BiomeNoise.cenotes(seed, BiomeNoise.hills(seed, -5, 28), 22, 14)).surface(NormalSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.CANYON));
+    public static final BiomeExtension CENOTE_CANYONS = register("cenote_canyons", builder().heightmap(seed -> BiomeNoise.cenotes(seed, BiomeNoise.canyons(seed, 2, 28), 18, 10)).surface(NormalSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.CANYON).noSandyRiverShores());
+    public static final BiomeExtension CENOTE_HIGHLANDS = register("cenote_highlands", builder().heightmap(seed -> BiomeNoise.cenotes(seed, BiomeNoise.sharpHills(seed, 0, 24), 20, 10)).surface(NormalSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.TALL_CANYON).noSandyRiverShores());  // Modified "weathered" highlands. Cenotes may not reach water level.
+    public static final BiomeExtension CENOTE_PLATEAU = register("cenote_plateau", builder().heightmap(seed -> BiomeNoise.cenotes(seed, BiomeNoise.hills(seed, 20, 30), 22, 20)).surface(NormalSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.TALL_CANYON).noSandyRiverShores()); // Very high area, dry cenotes.
+
+    // Large dolines with steep sides
+    public static final BiomeExtension EXTREME_DOLINE_PLATEAU = register("extreme_doline_plateau", builder().heightmap(seed -> BiomeNoise.tiankeng(seed, BiomeNoise.hills(seed, 24, 34))).surface(NormalSurfaceBuilder.ROCKY).spawnable().type(RiverBlendType.TALL_CANYON));
+    public static final BiomeExtension EXTREME_DOLINE_MOUNTAINS = register("extreme_doline_mountains", builder().heightmap(seed -> BiomeNoise.tiankeng(seed, BiomeNoise.mountains(seed, 16, 40))).surface(MountainSurfaceBuilder.INSTANCE).spawnable().type(RiverBlendType.CAVE));
 
     public static BiomeExtension getExtensionOrThrow(LevelAccessor level, Biome biome)
     {
