@@ -76,15 +76,20 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
     public static final LevelRendererExtension INSTANCE = new LevelRendererExtension();
 
     // Most of this is copied from LevelRenderer
-    private static final ResourceLocation RAIN_0 = Helpers.identifier("textures/environment/rain_0.png");
-    private static final ResourceLocation RAIN_1 = Helpers.identifier("textures/environment/rain_1.png");
-    private static final ResourceLocation RAIN_2 = Helpers.identifier("textures/environment/rain_2.png");
-    private static final ResourceLocation RAIN_3 = Helpers.identifier("textures/environment/rain_3.png");
 
-    private static final ResourceLocation SNOW_0 = Helpers.identifier("textures/environment/snow_0.png");
-    private static final ResourceLocation SNOW_1 = Helpers.identifier("textures/environment/snow_1.png");
-    private static final ResourceLocation SNOW_2 = Helpers.identifier("textures/environment/snow_2.png");
-    private static final ResourceLocation SNOW_3 = Helpers.identifier("textures/environment/snow_3.png");
+    private static final ResourceLocation[] RAIN_LOCATIONS = new ResourceLocation[] {
+        Helpers.identifier("textures/environment/rain_0.png"),
+        Helpers.identifier("textures/environment/rain_1.png"),
+        Helpers.identifier("textures/environment/rain_2.png"),
+        Helpers.identifier("textures/environment/rain_3.png"),
+    };
+
+    private static final ResourceLocation[] SNOW_LOCATIONS = new ResourceLocation[] {
+        Helpers.identifier("textures/environment/snow_0.png"),
+        Helpers.identifier("textures/environment/snow_1.png"),
+        Helpers.identifier("textures/environment/snow_2.png"),
+        Helpers.identifier("textures/environment/snow_3.png"),
+    };
     private static final ResourceLocation MOON_LOCATION = ResourceLocation.withDefaultNamespace("textures/environment/moon_phases.png");
     private static final ResourceLocation SUN_LOCATION = ResourceLocation.withDefaultNamespace("textures/environment/sun.png");
 
@@ -433,24 +438,7 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
 
 
                                 // select the texture based on the amount of rain
-                                if (rainIntensity >= 0.75f)
-                                {
-                                    RenderSystem.setShaderTexture(0, RAIN_3);
-                                }
-                                else if (rainIntensity >= 0.5f)
-                                {
-                                    RenderSystem.setShaderTexture(0, RAIN_2);
-                                }
-                                else if (rainIntensity >= 0.25f)
-                                {
-                                    RenderSystem.setShaderTexture(0, RAIN_1);
-                                }
-                                else
-                                {
-                                    RenderSystem.setShaderTexture(0, RAIN_0);
-                                }
-
-                                TerraFirmaCraft.LOGGER.debug(rainIntensity + "");
+                                RenderSystem.setShaderTexture(0, RAIN_LOCATIONS[Mth.clamp(Mth.floor(rainIntensity * 4.0f), 0,3)]);
 
                                 buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
                             }
@@ -506,23 +494,7 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
 
                                 stateFlag = 1;
 
-                                if (rainIntensity >= 0.75f)
-                                {
-                                    RenderSystem.setShaderTexture(0, SNOW_3);
-                                }
-                                else if (rainIntensity >= 0.5f)
-                                {
-                                    RenderSystem.setShaderTexture(0, SNOW_2);
-                                }
-                                else if (rainIntensity >= 0.25f)
-                                {
-                                    RenderSystem.setShaderTexture(0, SNOW_1);
-                                }
-                                else
-                                {
-                                    RenderSystem.setShaderTexture(0, SNOW_3);
-                                }
-
+                                RenderSystem.setShaderTexture(0, SNOW_LOCATIONS[Mth.clamp(Mth.floor(rainIntensity * 4.0f), 0,3)]);
 
                                 buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
                             }
