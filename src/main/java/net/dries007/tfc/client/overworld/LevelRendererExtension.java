@@ -50,6 +50,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.FogType;
+import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -80,7 +81,11 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
     private static final ResourceLocation RAIN_1 = Helpers.identifier("textures/environment/rain_1.png");
     private static final ResourceLocation RAIN_2 = Helpers.identifier("textures/environment/rain_2.png");
     private static final ResourceLocation RAIN_3 = Helpers.identifier("textures/environment/rain_3.png");
-    private static final ResourceLocation SNOW_LOCATION = Helpers.resourceLocation("textures/environment/snow.png");
+
+    private static final ResourceLocation SNOW_0 = Helpers.identifier("textures/environment/snow_0.png");
+    private static final ResourceLocation SNOW_1 = Helpers.identifier("textures/environment/snow_1.png");
+    private static final ResourceLocation SNOW_2 = Helpers.identifier("textures/environment/snow_2.png");
+    private static final ResourceLocation SNOW_3 = Helpers.identifier("textures/environment/snow_3.png");
     private static final ResourceLocation MOON_LOCATION = ResourceLocation.withDefaultNamespace("textures/environment/moon_phases.png");
     private static final ResourceLocation SUN_LOCATION = ResourceLocation.withDefaultNamespace("textures/environment/sun.png");
 
@@ -351,6 +356,7 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
             final float camX = (float) sourceCameraX;
             final float camY = (float) sourceCameraY;
             final float camZ = (float) sourceCameraZ;
+
             final int blockX = Mth.floor(camX);
             final int blockY = Mth.floor(camY);
             final int blockZ = Mth.floor(camZ);
@@ -500,7 +506,25 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
                                 }
 
                                 stateFlag = 1;
-                                RenderSystem.setShaderTexture(0, SNOW_LOCATION);
+
+                                if (rainIntensity >= 0.75f)
+                                {
+                                    RenderSystem.setShaderTexture(0, SNOW_3);
+                                }
+                                else if (rainIntensity >= 0.5f)
+                                {
+                                    RenderSystem.setShaderTexture(0, SNOW_2);
+                                }
+                                else if (rainIntensity >= 0.25f)
+                                {
+                                    RenderSystem.setShaderTexture(0, SNOW_1);
+                                }
+                                else
+                                {
+                                    RenderSystem.setShaderTexture(0, SNOW_3);
+                                }
+
+
                                 buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
                             }
 
