@@ -6,14 +6,11 @@
 
 package net.dries007.tfc.common.blockentities.rotation;
 
-import net.dries007.tfc.common.items.TFCItems;
-import net.dries007.tfc.common.items.WindmillBladeItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -24,6 +21,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.TickableInventoryBlockEntity;
+import net.dries007.tfc.common.blocks.rotation.AxleBlock;
 import net.dries007.tfc.common.blocks.rotation.WindmillBlock;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.rotation.NetworkAction;
@@ -141,8 +139,11 @@ public class WindmillBlockEntity extends TickableInventoryBlockEntity<ItemStackH
         }
         if (count == 0)
         {
-            BlockState axleState = ((WindmillBlock) getBlockState().getBlock()).getAxle().defaultBlockState();
-            axleState = Helpers.copyProperties(axleState, getBlockState());
+            final BlockState currentState = getBlockState();
+            final BlockState axleState = ((WindmillBlock) currentState.getBlock())
+                .getAxle()
+                .defaultBlockState()
+                .setValue(AxleBlock.AXIS, currentState.getValue(WindmillBlock.AXIS)); // Copy from windmill axis (horizontal axis) to axle (any axis)
             level.setBlockAndUpdate(worldPosition, axleState);
         }
         else
