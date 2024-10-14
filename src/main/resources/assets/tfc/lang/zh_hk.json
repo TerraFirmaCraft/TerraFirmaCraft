@@ -249,6 +249,7 @@
   "tfc.tooltip.required_range": "Required: %s - %s",
   "tfc.tooltip.required_less_than": "Required: < %s",
   "tfc.tooltip.required_greater_than": "Required: > %s",
+  "tfc.tooltip.author": "§a%s§7 by %s",
   "tfc.tooltip.forging": "§f - 可加工",
   "tfc.tooltip.welding": "§f - 可焊接",
   "tfc.tooltip.danger": "§f - 危險！！",

@@ -36,6 +36,7 @@ import net.dries007.tfc.common.component.food.FoodCapability;
 import net.dries007.tfc.common.component.food.FoodComponent;
 import net.dries007.tfc.common.component.food.FoodDefinition;
 import net.dries007.tfc.common.component.forge.ForgingBonus;
+import net.dries007.tfc.common.component.forge.ForgingBonusComponent;
 import net.dries007.tfc.common.component.forge.ForgingComponent;
 import net.dries007.tfc.common.component.glass.GlassOperations;
 import net.dries007.tfc.common.component.heat.HeatComponent;
@@ -54,7 +55,7 @@ public final class TFCComponents
 
     // Added to all stacks
     public static final Id<ForgingComponent> FORGING = register("forging", ForgingComponent.CODEC, ForgingComponent.STREAM_CODEC);
-    public static final Id<ForgingBonus> FORGING_BONUS = register("forging_bonus", ForgingBonus.CODEC, ForgingBonus.STREAM_CODEC);
+    public static final Id<ForgingBonusComponent> FORGING_BONUS = register("forging_bonus", ForgingBonusComponent.CODEC, ForgingBonusComponent.STREAM_CODEC);
 
     // Added to TFC-added blowpipes with glass, via item constructor
     public static final Id<GlassOperations> GLASS = register("glass", GlassOperations.CODEC, GlassOperations.STREAM_CODEC);

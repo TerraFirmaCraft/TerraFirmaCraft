@@ -471,6 +471,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
                 TFCBlocks.POWDERKEG
             );
         tag(TRIP_HAMMERS).add(TFCItems.METAL_ITEMS, Metal.ItemType.HAMMER); // N.B. Technical tag, don't include sub-tags
+        tag(WELDING_FLUX).add(TFCItems.POWDERS.get(Powder.FLUX));
         tag(THATCH_BED_HIDES).add(TFCItems.HIDES.get(HideItemType.RAW).get(HideItemType.Size.LARGE));
         tag(BOWL_POWDERS) // N.B. Technical tag, don't include sub-tags
             .add(TFCItems.POWDERS)

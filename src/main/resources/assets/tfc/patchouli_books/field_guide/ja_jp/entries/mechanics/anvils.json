@@ -88,7 +88,7 @@
     },
     {
       "type": "patchouli:spotlight",
-      "item": "tfc:metal/pickaxe/wrought_iron[tfc:forging_bonus=\"perfect\"]",
+      "item": "tfc:metal/pickaxe/wrought_iron[tfc:forging_bonus={type:\"perfect\"}]",
       "title": "Perfectly Forged",
       "link_recipes": false,
       "text": "鍛造ボーナスには 4 つの段階があります:$(li)不十分な鍛造$(li)よくできた鍛造$(li)熟練した鍛造$(li)完璧な鍛造$(br2)これらのボーナスにより、ツールの能力が向上し、壊れる頻度が減ります。 ツールに応じて、より速く採掘したり、戦闘でより多くのダメージを与えたりできます。"

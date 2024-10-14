@@ -8,7 +8,7 @@ package net.dries007.tfc.common.recipes.outputs;
 
 import net.minecraft.world.item.ItemStack;
 
-import net.dries007.tfc.common.component.forge.ForgingBonus;
+import net.dries007.tfc.common.component.forge.ForgingBonusComponent;
 
 public enum CopyForgingBonusModifier implements ItemStackModifier
 {
@@ -17,8 +17,7 @@ public enum CopyForgingBonusModifier implements ItemStackModifier
     @Override
     public ItemStack apply(ItemStack stack, ItemStack input, Context context)
     {
-        ForgingBonus.set(stack, ForgingBonus.get(input));
-        return stack;
+        return ForgingBonusComponent.copy(input, stack);
     }
 
     @Override

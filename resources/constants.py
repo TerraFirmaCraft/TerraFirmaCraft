@@ -1079,6 +1079,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.required_range': 'Required: %s - %s',
     'tfc.tooltip.required_less_than': 'Required: < %s',
     'tfc.tooltip.required_greater_than': 'Required: > %s',
+    'tfc.tooltip.author': '§a%s§7 by %s',
     # Tooltips
     'tfc.tooltip.forging': '§f - Can Work',
     'tfc.tooltip.welding': '§f - Can Weld',

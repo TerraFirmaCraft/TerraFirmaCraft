@@ -93,4 +93,9 @@ public final class Tooltips
         if (max != null) return Component.translatable("tfc.tooltip.required_less_than", max);
         throw new IllegalArgumentException("One of min or max must be non-null");
     }
+
+    public static MutableComponent author(Component source, String author)
+    {
+        return Component.translatable("tfc.tooltip.author", source, author);
+    }
 }

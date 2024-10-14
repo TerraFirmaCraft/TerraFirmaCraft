@@ -156,6 +156,7 @@ import net.dries007.tfc.common.component.Bowl;
 import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.component.food.FoodCapability;
 import net.dries007.tfc.common.component.forge.ForgingBonus;
+import net.dries007.tfc.common.component.forge.ForgingBonusComponent;
 import net.dries007.tfc.common.component.glass.GlassWorking;
 import net.dries007.tfc.common.component.heat.HeatCapability;
 import net.dries007.tfc.common.component.heat.IHeat;
@@ -381,7 +382,7 @@ public final class ForgeEventHandler
     public static void onBreakSpeed(PlayerEvent.BreakSpeed event)
     {
         // Apply mining speed modifiers from forging bonuses
-        final ForgingBonus bonus = ForgingBonus.get(event.getEntity().getMainHandItem());
+        final ForgingBonus bonus = ForgingBonusComponent.get(event.getEntity().getMainHandItem());
         if (bonus != ForgingBonus.NONE)
         {
             event.setNewSpeed(event.getNewSpeed() * bonus.efficiency());
@@ -820,7 +821,7 @@ public final class ForgeEventHandler
         final Entity attackerEntity = event.getSource().getEntity();
         if (attackerEntity instanceof LivingEntity livingEntity)
         {
-            amount *= ForgingBonus.get(livingEntity.getMainHandItem()).damage();
+            amount *= ForgingBonusComponent.get(livingEntity.getMainHandItem()).damage();
         }
 
         // Physical Damage Type Modifiers

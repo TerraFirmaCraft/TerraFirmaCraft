@@ -16,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.server.command.EnumArgument;
 
 import net.dries007.tfc.common.component.forge.ForgingBonus;
+import net.dries007.tfc.common.component.forge.ForgingBonusComponent;
 
 public final class ForgeCommand
 {
@@ -33,7 +34,7 @@ public final class ForgeCommand
         final ItemStack stack = player.getMainHandItem();
         if (!stack.isEmpty())
         {
-            ForgingBonus.set(stack, bonus);
+            ForgingBonusComponent.set(stack, bonus, player);
         }
         return Command.SINGLE_SUCCESS;
     }
