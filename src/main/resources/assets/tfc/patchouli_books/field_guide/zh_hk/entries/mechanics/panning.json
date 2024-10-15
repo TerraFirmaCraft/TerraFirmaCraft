@@ -6,12 +6,12 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Panning$() is a method of obtaining small pieces of certain native ores by searching in rivers and other waterways.$(br2)Panning makes use of $(thing)Ore Deposits$() which are found in gravel patches in the bottom of lakes and rivers.$(br2)In order to get started panning, you will need an empty pan."
+      "text": "$(thing)淘金$()是早期通過河牀或其他水體底部的$(thing)沉積物$()獲取某些原生礦石的方法。$(br2)開始淘金前，需要先製作一隻淘金盤。"
     },
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:clay_knapping/pan",
-      "text": "黏土可以$(l:getting_started/pottery)塑形$()成淘金盤，如上圖所示。"
+      "text": "粘土可以$(l:getting_started/pottery)塑形$()成淘金盤，如上圖所示。"
     },
     {
       "type": "tfc:heat_recipe",
@@ -34,7 +34,7 @@
         }
       },
       "name": "示例",
-      "text": "板巖地貌中的原生金沉積物。",
+      "text": "板岩地貌中的原生金沉積物。",
       "enable_visualize": false
     },
     {
@@ -50,8 +50,8 @@
     },
     {
       "type": "patchouli:text",
-      "text": "淘金有可能得到三種物品：$(thing)礦石$()、$(thing)小石子$()、和$(l:mechanics/gems)寶石$()。概率如下：$(br)$(li)礦石：50%$(li)小石子：25%$(li)寶石：1%$()$(br2)每一種巖石類型會且只會產出其特有的一種寶石。",
-      "title": "產物概率"
+      "text": "淘金盤會產出三種不同的產物：$(thing)礦石$()、$(thing)石子$()和$(l:mechanics/gems)寶石$()。$(br)$(li)礦石：50%幾率$(li)石子：25%幾率$(li)寶石：1%幾率$()，每種岩石類型都會有一種獨有的寶石可能出現。",
+      "title": "洗礦產物"
     }
   ],
   "read_by_default": true,

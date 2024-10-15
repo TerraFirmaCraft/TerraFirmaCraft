@@ -6,26 +6,26 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "肥料是用來給$(l:mechanics/crops)農作物$()提供額外營養物質的物品。手持肥料對着$(thing)耕地$()或$(thing)農作物$()$(item)$(k:key.use)$()就可以施肥。若出現粒子效果就説明成功了。",
+      "text": "肥料是用來給$(l:mechanics/crops)作物$()提供營養的物品。手持肥料$(item)$(k:key.use)$()點擊一塊$(thing)耕地$()或$(thing)作物$()就能向其添加營養物質。如果成功，應會出現粒子效果。",
       "title": "施肥"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:compost",
       "link_recipes": false,
-      "text": "堆肥是由$(l:mechanics/composter)堆肥桶$()生產的一種肥料。$(br)$(li)$(b)$(bold)氮$()：40$()$(li)$(6)$(bold)磷$()：20$()$(li)$(d)$(bold)鉀$()：40$()"
+      "text": "堆肥是由$(l:mechanics/composter)堆肥桶$()生產的。$(br)$(li)$(b)$(bold)氮$()：40$()$(li)$(6)$(bold)磷$()：20$()$(li)$(d)$(bold)鉀$()：40$()"
     },
     {
       "type": "patchouli:spotlight",
       "item": "minecraft:bone_meal",
       "link_recipes": false,
-      "text": "骨粉是將骨頭研磨後製成的。$(br)$(li)$(6)$(bold)磷$()：10$()"
+      "text": "骨粉是由骨頭製成的。$(br)$(li)$(6)$(bold)磷$()：10$()"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:powder/saltpeter",
       "link_recipes": false,
-      "text": "硝石粉是由同名的礦石製成的。$(br)$(li)$(b)$(bold)氮$()：10$()$(li)$(d)$(bold)鉀$()：40$()"
+      "text": "硝石粉是由它的礦石製成的。$(br)$(li)$(b)$(bold)氮$()：10$()$(li)$(d)$(bold)鉀$()：40$()"
     },
     {
       "type": "patchouli:spotlight",
@@ -37,13 +37,13 @@
       "type": "patchouli:spotlight",
       "item": "tfc:powder/wood_ash",
       "link_recipes": false,
-      "text": "草木灰可以通過挖掉篝火堆獲得。把火把扔進水裏偶爾也會產生草木灰$(br)$(li)$(6)$(bold)磷$()：10$()$(li)$(d)$(bold)鉀$()：30$()"
+      "text": "草木灰可以通過挖掉熄滅的篝火獲得。將火把投入水中也有一定幾率可以得到草木灰。$(br)$(li)$(6)$(bold)磷$()：10$()$(li)$(d)$(bold)鉀$()：30$()"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:powder/sylvite",
       "link_recipes": false,
-      "text": "鉀石鹽粉是由同名的礦石製成的。$(br)$(li)$(d)$(bold)鉀$()：50$()"
+      "text": "鉀石鹽粉是由它的對應礦石磨成的。$(br)$(li)$(d)$(bold)鉀$()：50$()"
     }
   ],
   "read_by_default": true

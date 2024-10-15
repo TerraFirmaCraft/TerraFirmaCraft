@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Support Beams & Collapses",
+  "name": "支撑梁及塌方",
   "category": "tfc:mechanics",
   "icon": "tfc:wood/support/oak",
   "pages": [
@@ -15,11 +15,11 @@
     },
     {
       "type": "patchouli:text",
-      "text": "When graded $(l:the_world/ores_and_minerals)Ore$() (ore that can be poor, normal, or rich) collapses, it degrades in quality. Rich ore will become normal, normal will become poor, and poor will turn to cobblestone. Mineral ores will turn into cobblestone right away."
+      "text": "有等级的$(l:the_world/ores_and_minerals)矿石$()发生塌方时，其品质会降低一级——富集矿会变为普通矿，普通矿会变为贫瘠矿，而贫瘠矿会变为圆石。矿物则会直接转变为圆石。"
     },
     {
       "type": "patchouli:text",
-      "text": "Dirt, grass, clay, gravel, cobblestone, and sand are also affected by gravity. However, unlike vanilla gravity blocks, these blocks fall down slopes, and cannot be stacked more than one high without supporting blocks around. $(l:mechanics/sluices)Ore Deposits$() also landslide, but do not degrade in quality."
+      "text": "土、草方块、黏土、沙砾、圆石、沙子等方块会受到重力影响。和原版不同，这些方块不仅会垂直下落，还会从过陡的坡上滑落，除非周围有支撑方块。$(l:mechanics/sluices)矿石沉积物$()也会发生滑坡，不过不会因此损失品质。"
     },
     {
       "type": "patchouli:crafting",

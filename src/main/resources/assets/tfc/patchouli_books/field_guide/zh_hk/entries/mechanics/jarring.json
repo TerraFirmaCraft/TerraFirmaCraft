@@ -1,35 +1,35 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Jarring",
+  "name": "罐裝",
   "category": "tfc:mechanics",
   "icon": "tfc:jar/plum",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Jars$() are used to preserve fruit for longer periods of time. Jars start as $(thing)Empty Jars$(), obtained through $(l:mechanics/glassworking_applications#jar)Glassworking$(). Then, a $(thing)Jar Lid$() must be smithed from $(thing)Tin$(). Crafting these together creates an $(thing)Empty Jar With Lid$()."
+      "text": "$(thing)玻璃罐$()可以將水果長期保存，是一種十分有用的工具。通過$(l:mechanics/glassworking_applications#jar)玻璃工藝$()製作出$(thing)空玻璃罐$()，再用$(thing)錫$()鍛造出一隻$(thing)罐蓋$()，將兩者組合在一起就能做出$(thing)蓋子與空罐$()."
     },
     {
       "type": "patchouli:text",
-      "text": "In a pot, boil $(thing)Sugar$() with 2-4 pieces of $(thing)Fruit$(). When the recipe is done, $(item)$(k:key.use)$() with the empty jar with lid to create a $(thing)Sealed Jar of Jam$(). The sealed jar will last quite a long time on its own."
+      "text": "在鍋中將$(thing)糖$()與2-4顆$(thing)水果$()混合，小火慢燉。待湯汁半乾，準備完畢後，手持蓋子與空罐$(item)$(k:key.use)$()點擊便能將果醬裝入$(thing)果醬瓶$()。直到啓封前，其保質期將極大幅度延長。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/unseal_plum_jar",
-      "text": "Unsealing a jar is done by crafting. The lid is not able to be retrieved. An unsealed jar only lasts for a few days!"
+      "text": "要啓封果醬，只需在合成格內合成一次即可。此過程中蓋子會消失，無法重新使用。啓封后的果醬的保質期只有幾天！"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/barley_sandwich_with_jam_1",
-      "text": "Jam is used for making sandwiches. Jam sandwiches can contain Dairy, Cooked Meats, and Jam. An $(thing)Empty Jar$() is left over."
+      "text": "果醬可以用來製作果醬三明治。果醬三明治可以包含奶製品、熟肉和果醬。製作完成後會留下$(thing)空玻璃罐$()。"
     },
     {
       "type": "patchouli:text",
-      "text": "Jars can be placed on solid surfaces with $(item)$(k:key.use)$(). A block can contain four jars of any kind."
+      "text": "手持玻璃罐$(item)$(k:key.use)$()點擊可以將它放置下來。同一格內可以放置4只玻璃罐。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/oak_shelf",
-      "text": "$(thing)Jar Shelves$() can be attached to solid walls. They can be placed directly or by clicking on an existing block of placed jars. The top of the jar shelf counts as a solid surface for placing items, more jars, or other blocks."
+      "text": "$(thing)櫥櫃$()可以放置在實心的牆面上或已經存在玻璃罐的格子中。櫥櫃的頂面算作實心面，可以放置更多物品。"
     }
   ],
   "read_by_default": true

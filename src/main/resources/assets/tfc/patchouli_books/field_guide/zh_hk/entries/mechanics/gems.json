@@ -6,17 +6,17 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Gems are a kind of mineral that spawns in a variety of different places, such as $(thing)under rivers$() and in $(l:the_world/geology)Volcanoes$(). For information on the precise conditions, see $(l:the_world/ores_and_minerals)the ores and minerals chapter$()."
+      "text": "寶石是一類在各種環境，如$(thing)河低$()或$(l:the_world/geology)火山$()中，生成的特殊礦物。關於每種寶石生成的具體條件，請參閲$(l:the_world/ores_and_minerals)礦石與礦物$()章節。"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tag:tfc:gem_powders",
       "link_recipes": false,
-      "text": "Gems can be ground into powder using a $(l:mechanics/quern)Quern$(). Gem powders are particularly useful in $(l:mechanics/glassworking_applications#coloring)Coloring Glass$()."
+      "text": "寶石可以在$(l:mechanics/quern)手推磨$()中磨製成粉，在玻璃加工中用於$(l:mechanics/glassworking_applications#coloring)染色$()。"
     },
     {
       "type": "patchouli:text",
-      "text": "通過$(l:mechanics/sluices)洗礦$()和$(l:mechanics/panning)淘金$()可以獲得$(thing)切制寶石$()。洗礦槽可能獲得的寶石種類取決於所用的原材料的巖石種類。"
+      "text": "通過$(l:mechanics/sluices)洗礦$()和$(l:mechanics/panning)淘金$()可以獲得$(thing)切制寶石$()。洗礦槽可能獲得的寶石種類取決於所用的原材料的岩石種類。"
     },
     {
       "type": "patchouli:text",
@@ -24,7 +24,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "To cut a gem, you must craft $(thing)Sandpaper$(). Sandpaper is made from Black Sand, Flux, Glue, any Gem Powder, and Paper. Crafting an uncut gem with sandpaper cuts the gem."
+      "text": "要切制寶石，需要先製作一張$(thing)砂紙$()。砂紙是通過合成黑沙、助焊劑、任意寶石粉和紙得到的。將未切制的寶石與砂紙合成便能得到切制寶石。"
     },
     {
       "type": "patchouli:crafting",

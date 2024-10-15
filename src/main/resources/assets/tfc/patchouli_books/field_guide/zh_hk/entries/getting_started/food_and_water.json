@@ -74,7 +74,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:clay_knapping/jug",
-      "text": "將黏土$(l:getting_started/pottery)塑形$()並燒製成一隻$(l:getting_started/pottery#jug)罐$()便能將水帶在身邊了。手持空罐用$(item)$(k:key.use)$()點擊水源就能盛水。按住$(item)$(k:key.use)$()便能從中喝水。"
+      "text": "將粘土$(l:getting_started/pottery)塑形$()並燒製成一隻$(l:getting_started/pottery#jug)壺$()便能將水帶在身邊了。手持空壺用$(item)$(k:key.use)$()點擊水源就能盛水。按住$(item)$(k:key.use)$()便能從中喝水。"
     },
     {
       "type": "patchouli:text",

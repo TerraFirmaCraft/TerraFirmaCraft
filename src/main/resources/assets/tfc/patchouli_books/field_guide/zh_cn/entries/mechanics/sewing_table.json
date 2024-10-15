@@ -1,51 +1,51 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Sewing Table",
+  "name": "缝纫桌",
   "category": "tfc:mechanics",
   "icon": "tfc:wood/sewing_table/oak",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The $(thing)Sewing Table$() is used to produce banner patterns and smithing templates. It requires $(l:mechanics/weaving#wool_cloth)Wool Cloth$(), $(l:mechanics/weaving#burlap_cloth)Burlap Cloth$(), String or Yarn, as well as a Needle."
+      "text": "$(thing)缝纫桌$()是用来制作旗帜图案和锻造模板的工作站。除此之外，还需要$(l:mechanics/weaving#wool_cloth)羊毛布$()、$(l:mechanics/weaving#burlap_cloth)粗麻布$()、线或羊毛纱、以及一根缝衣针。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/bone_needle",
-      "text": "A needle for sewing can be made from a bone."
+      "text": "可以用骨头打磨一根骨针作为缝衣针。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/oak_sewing_table",
-      "text": "The sewing table can be made from wood, leather, and a pair of shears."
+      "text": "缝纫桌是用木材、皮革和一把剪刀合成的。"
     },
     {
       "type": "patchouli:text",
-      "text": "The sewing table's inventory is similar to that of a crafting table. If you ever make a mistake, you can simply exit the inventory, and your items will be returned to you. There is a recipe book available in the GUI. Selecting the book opens a menu where you can select a recipe. This places small indicators of what steps to perform on the working surface."
+      "text": "缝纫桌与工作台类似，如果不小心做错了，直接退出界面就会返还所有材料。缝纫桌的界面中有一本合成配方书。点击这本书会打开所有可合成的配方一览，点击某一种配方就会在缝纫界面出现虚化的提示。"
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/gui/sewing_table.png"
       ],
-      "text": "The sewing screen.",
+      "text": "缝纫界面。",
       "border": true
     },
     {
       "type": "patchouli:text",
-      "text": "The slots on the left are for the string and the needle. The two bottom slots can hold any combination of burlap and wool cloth. The slot on the right will show the result when it is ready to be taken. Taking the result from the result slot completes the craft, and uses the items."
+      "text": "左侧的两格是用来放置线和针的，底部的两格可以放置粗麻布或羊毛布。右侧的格子则会在缝纫可完成时出现产物。拿取产物后就会消耗相应的材料。"
     },
     {
       "type": "patchouli:text",
-      "text": "Each cloth item allows placing 8 squares of that material on the sewing surface. Similarly, each yarn item allows placing 16 stitches. When you have selected a recipe, just use the buttons on the top right of the screen to place squares and stitch them together as shown by the guide. Want to remove stitches? Use the red 'X' button to get rid of squares."
+      "text": "每一份布匹的面积相当于界面中8块方格的用量，每一份线则可以用来缝制16只针脚。选择了某一种配方后，只需要根据提示使用右上角的按钮放置布料和针脚即可。用红色的 X 按钮即可移除不想要的布料或针脚。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/vanilla/loom",
-      "text": "The banner loom, for making things with banner patterns, can be crafted to do work with banner patterns."
+      "text": "旗帜织机可用来将旗帜图案织成旗帜。"
     },
     {
       "type": "patchouli:text",
-      "text": "For information on the use of smithing templates, see the $(l:mechanics/armor_trims)Armor Trims$() chapter."
+      "text": "关于如何使用锻造模板，请参阅$(l:mechanics/armor_trims)锻造纹饰$()章节。"
     }
   ],
   "read_by_default": true

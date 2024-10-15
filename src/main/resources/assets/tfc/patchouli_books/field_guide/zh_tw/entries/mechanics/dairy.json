@@ -6,12 +6,12 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)乳製品$()這種$(l:getting_started/food_and_water#nutrients)營養$()可以從$(l:mechanics/animal_husbandry#dairy_animals)產奶動物$()的奶獲得. 奶可以直接飲用, 或者加工成$(thing)乳酪$(). 奶可以直接從罐中飲用, 這樣肯定會回覆$(l:getting_started/food_and_water#thirst)口渴值$(), 但是隻有在飯後飲用才會增加營養值. 這就意味著連喝兩次奶是浪費的, 你必須先吃頓飯.",
+      "text": "$(thing)乳製品$()是一種主要由$(l:mechanics/animal_husbandry#dairy_animals)產奶動物$()提供的$(l:getting_started/food_and_water#nutrients)營養元素$()。可以直接用陶壺喝奶，會回覆$(l:the_world/food_and_water#thirst)口渴度$()，也可以將奶做成$(thing)乳酪$()。需要注意的是，空腹喝奶並不能攝入多少營養元素，只有在吃過其他食物之後再喝奶才能吸收營養。換句話說，連續多次喝奶的效率比吃一頓飯、喝一口奶的效率要差。",
       "title": "乳製品"
     },
     {
       "type": "patchouli:text",
-      "text": "想要製作$(thing)乳酪$()，第一步是將$(thing)奶$()和$(thing)醋$()以 9 比 1 的比例在$(l:mechanics/barrels)大桶$()裡混合。最簡單的方法是先往桶裡倒 9 桶奶，然後再倒 1 桶醋。這樣就能得到$(thing)醋奶$()."
+      "text": "想要製作$(thing)乳酪$()，第一步是將$(thing)奶$()和$(thing)醋$()以 9 比 1 的比例在$(l:mechanics/barrels)大桶$()裡混合。最簡單的方法是先往桶裡倒 9 桶奶，然後再倒 1 桶醋。這樣就能得到$(thing)醋奶$()。"
     },
     {
       "type": "tfc:sealed_barrel_recipe",

@@ -6,22 +6,22 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Paper$() is either made from the processed stalk of the $(l:mechanics/crops#papyrus)Papyrus$() crop, or from $(l:mechanics/papermaking#parchment)Animal Hides$(). Paper is useful for written materials like $(thing)Books$() and $(thing)Maps$()."
+      "text": "$(thing)紙$()有兩種獲取方式：通過加工$(l:mechanics/crops#papyrus)紙莎草$()的莖來製作莎草紙，或通過加工$(l:mechanics/papermaking#parchment)獸皮$()來製作羊皮紙。要製作$(thing)書$()或是$(thing)地圖$()一類的文字記錄體都離不開大量的紙。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/papyrus_strips",
-      "text": "首先得用$(thing)刀$()將紙莎草切成條"
+      "text": "先用$(thing)刀$()將紙莎草切成條。"
     },
     {
       "type": "tfc:sealed_barrel_recipe",
       "recipe": "tfc:barrel/soaked_papyrus_strip",
-      "text": "然後，需要將莎草條浸入裝有$(thing)淡水$()的$(l:mechanics/barrels)大桶$()中。"
+      "text": "然後，將紙莎草條浸入裝有$(thing)淡水$()$(l:mechanics/barrels)大桶$()中。"
     },
     {
       "type": "tfc:loom_recipe",
       "recipe": "tfc:loom/unrefined_paper",
-      "text": "將浸泡好的莎草條在織機上編織成$(thing)粗製紙$()。最後再將粗紙放在原木上$(l:mechanics/leather_making#scraping)剖層$()便能製成$(thing)紙$()。"
+      "text": "將浸泡好的紙莎草條用織布機編織成$(thing)粗製紙$()。最後，將粗製紙在一根原木上展開，用小刀$(l:mechanics/leather_making#scraping)颳去$()其表層進行剖光，就能得到可以使用的$(thing)紙$()了。"
     },
     {
       "type": "patchouli:crafting",
@@ -40,13 +40,13 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Flip to the next page for information on papermaking via the parchment process."
+      "text": "下一頁會講述如何製作羊皮紙。"
     },
     {
       "type": "patchouli:text",
       "anchor": "parchment",
-      "text": "$(thing)Parchment Paper$() starts with a scraped hide. Review the $(l:mechanics/leather_making)leather making chapter$() to learn how to make it. Parchment requires treatment with a few different items. First, $(thing)Pumice$() is needed. Pumice is found on the ground near $(l:the_world/geology)Volcanoes$(), or from $(l:mechanics/sluices)Sluicing$() or $(l:mechanics/panning)Panning$() ore deposits with Andesite, Rhyolite, or Dacite in them.",
-      "title": "Parchment"
+      "text": "$(thing)羊皮紙$()是以$(l:mechanics/leather_making)刮制獸皮$()為主要原料，以及幾種其他材料製成的紙。首先，需要先收集$(thing)浮石$()以便軟化獸皮。浮石會生成在$(l:the_world/geology)火山$()四周，也可以通過在安山岩、流紋岩或英安巖地區的河流中收集礦物沉積物，並用$(l:mechanics/sluices)洗礦槽$()或$(l:mechanics/panning)淘金盤$()處理獲得。",
+      "title": "羊皮紙"
     },
     {
       "type": "patchouli:multiblock",
@@ -63,19 +63,19 @@
           "X": "tfc:groundcover/pumice"
         }
       },
-      "name": "Pumice",
-      "text": "A Pumice rock placed on the ground.",
+      "name": "浮石",
+      "text": "地上的浮石",
       "enable_visualize": false
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/large_treated_hide",
-      "text": "Crafting pumice, a hammer, and scraped hide gives sections of $(thing)Treated Hide$()."
+      "text": "將浮石、刮制獸皮與一把錘合成就能得到$(thing)糊化獸皮$()。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/parchment",
-      "text": "Treated hide, $(l:mechanics/glassworking#lime)lime powder$(), flour, and a fresh egg will complete the treatment process and yield usable paper."
+      "text": "最後，將糊化獸皮、$(l:mechanics/glassworking#lime)石灰粉$()、麪粉和一隻新鮮雞蛋打在一起就能生產出可用的羊皮紙了。"
     }
   ],
   "read_by_default": true

@@ -1,26 +1,26 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Pumps",
+  "name": "水泵",
   "category": "tfc:mechanics",
   "icon": "tfc:steel_pipe",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Steel Pumps$() and $(thing)Steel Pipes$() are blocks useful for transporting fluids, such as $(thing)Water$(), $(thing)Salt Water$(), and $(thing)Spring Water$(). They can also be used to move source blocks, and fill small enclosed areas. Unlike $(l:mechanics/aqueducts)Aqueducts$(), they can also be used to transport source blocks upwards."
+      "text": "$(thing)钢制水泵$()和$(thing)钢制管道$()可用于输送流体，如$(thing)淡水$()、$(thing)咸水$()和$(thing)温泉水$()。它们还可以用于移动水源方块，并填充小型的封闭区域。与$(l:mechanics/aqueducts)水渠$()不同，它们还可以将水源方块向高处输送。"
     },
     {
       "type": "tfc:anvil_recipe",
       "recipe": "tfc:anvil/steel_pump",
-      "text": "The steel pipe can be crafted from, predictably, $(l:mechanics/steel)Steel$(), on an $(l:mechanics/anvils)Anvil$(). A $(thing)Steel Pump$() can be crafted from some $(thing)Steel Pipes$(), and $(l:getting_started/primitive_alloys#brass)Brass Mechanisms$()."
+      "text": "钢制管道是由$(l:mechanics/steel)钢$()在$(l:mechanics/anvils)砧$()上锻造而成的。$(thing)钢制水泵$()可以通过一些$(thing)钢制管道$()和$(l:getting_started/primitive_alloys#brass)黄铜机件$()合成。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/steel_pump",
-      "text": "In order to operate the pump, you will also need a $(l:mechanics/crankshaft)Crankshaft$(), and a source of $(l:mechanics/mechanical_power)Mechanical Power$():$(br)$(li)The pump must be connected on the $(bold)bottom$() to a pipe."
+      "text": "要操作水泵，你还需要一个$(l:mechanics/crankshaft)曲轴$()和一个$(l:mechanics/mechanical_power)机械动力$()源：$(br)$(li)水泵的$(bold)底部$()必须连接到管道。"
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)On the narrow side, the pump must be adjacent to the business end of a $(l:mechanics/crankshaft)Crankshaft$().$(li)The pump can reach up to $(bold)16$() blocks. The end of the pipe must be $(bold)submerged$() in the target fluid, and adjacent to a source fluid block.$(li)If the crankshaft is active, fluid will be brought up and appear on the wide end of the $(thing)Pump$().$(li)The pump can fill an enclosed area up to $(bold)32$() blocks with source blocks."
+      "text": "$(li)在窄的一侧，水泵必须与$(l:mechanics/crankshaft)曲轴$()的工作端相邻。$(li)水泵的作用范围可达$(bold)16$()格。管道末端必须$(bold)浸没$()在目标液体中，并与之少一块水源方块相邻。$(li)如果曲轴处于活动状态，液体将被抽出并出现在$(thing)水泵$()的宽端。$(li)水泵可以为最多$(bold)32$()格的封闭区域填充水源方块。"
     }
   ],
   "read_by_default": true,

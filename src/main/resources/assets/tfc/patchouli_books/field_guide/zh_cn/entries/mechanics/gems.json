@@ -6,13 +6,13 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Gems are a kind of mineral that spawns in a variety of different places, such as $(thing)under rivers$() and in $(l:the_world/geology)Volcanoes$(). For information on the precise conditions, see $(l:the_world/ores_and_minerals)the ores and minerals chapter$()."
+      "text": "宝石是一类在各种环境，如$(thing)河低$()或$(l:the_world/geology)火山$()中，生成的特殊矿物。关于每种宝石生成的具体条件，请参阅$(l:the_world/ores_and_minerals)矿石与矿物$()章节。"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tag:tfc:gem_powders",
       "link_recipes": false,
-      "text": "Gems can be ground into powder using a $(l:mechanics/quern)Quern$(). Gem powders are particularly useful in $(l:mechanics/glassworking_applications#coloring)Coloring Glass$()."
+      "text": "宝石可以在$(l:mechanics/quern)手推磨$()中磨制成粉，在玻璃加工中用于$(l:mechanics/glassworking_applications#coloring)染色$()。"
     },
     {
       "type": "patchouli:text",
@@ -24,7 +24,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "To cut a gem, you must craft $(thing)Sandpaper$(). Sandpaper is made from Black Sand, Flux, Glue, any Gem Powder, and Paper. Crafting an uncut gem with sandpaper cuts the gem."
+      "text": "要切制宝石，需要先制作一张$(thing)砂纸$()。砂纸是通过合成黑沙、助焊剂、任意宝石粉和纸得到的。将未切制的宝石与砂纸合成便能得到切制宝石。"
     },
     {
       "type": "patchouli:crafting",

@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "In addition to finding wild crops, seeds can also be produced from existing crops. When a fully mature crop dies - either by weather, or leaving it to rot - it will go to seed, dropping more seeds that can be used to grow even more crops next season."
+      "text": "除了从野生作物获取种子，栽培作物也会产出种子。当一株完全成熟的作物不论是因为天气原因，或是过了收获时节而枯萎时就会转变为种子，为下一季种植更多作物提供了保障。"
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -20,21 +20,21 @@
         "tfc:rock_knapping/hoe_head_igneous_extrusive",
         "tfc:rock_knapping/hoe_head_igneous_intrusive"
       ],
-      "text": "To get started, a $(thing)Stone Hoe$() can be $(thing)knapped$() as seen above."
+      "text": "要开始，首先通过$(thing)石子塑形$()做一把$(thing)石锄$()"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/stone/hoe_sedimentary",
-      "text": "用锄头和木棍制作锄。$(br2)锄和原版一样，$(item)$(k:key.use)$()点击泥土方块就能将它们变成$(thing)耕地$()。除此之外，它还可以用来将$(thing)缠根泥土$()转化为普通$(thing)泥土$()。"
+      "text": "将锄头与木棍合成一把锄。$(br2)锄的功能与原版相同，$(item)$(k:key.use)$()点击泥土方块即可将其转化为$(thing)耕地$()。它还可以用于将$(thing)缠根泥土$()转化为$(thing)土$()。"
     },
     {
       "type": "patchouli:text",
-      "text": "All crops need to be planted on farmland in order to grow. Some crops have additional requirements such as being waterlogged or requiring a stick to grow on.$(br2)Crops do not need $(thing)nutrients$() to grow, but they certainly help. There are three nutrients: $(b)Nitrogen$(), $(6)Phosphorous$(), and $(d)Potassium$(). Each crop has a favorite nutrient.",
-      "title": "Growing Crops"
+      "text": "所有作物都需要种植在耕地上才能生长。有些作物还有额外的要求，比如只能种在水里或者需要插一根木棍才能生长。$(br2)作物不需要$(thing)营养物质$()就能生长，但营养物质能加速其成熟。营养物质分为三种：$(b)氮$()、$(6)磷$()和$(d)钾$()。每种作物都有一种偏爱的养分。",
+      "title": "种植作物"
     },
     {
       "type": "patchouli:text",
-      "text": "Consuming its favorite nutrient causes a crop to grow faster, and improves the yield of the crop at harvest time. That means that crops that consumed more nutrients drop more food when broken! Consuming a nutrient also has the effect of replenishing the other nutrients around it a small amount.$(br2)The next several pages list all the crops present in TFC"
+      "text": "消耗偏爱的营养物质可以加速作物的生长，并提高收获时的产量。作物消耗耕地中的某种营养物质的同时，会小幅产出其他两种营养物质。$(br2)接下来的几页会列出群峦传说中所有的作物。"
     },
     {
       "type": "patchouli:text",
@@ -44,7 +44,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [
@@ -192,7 +192,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [
@@ -340,7 +340,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [
@@ -488,7 +488,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [
@@ -626,7 +626,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [
@@ -922,7 +922,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [
@@ -1036,7 +1036,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [
@@ -1150,7 +1150,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [
@@ -1247,7 +1247,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [
@@ -1524,7 +1524,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [
@@ -1655,7 +1655,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [
@@ -1827,7 +1827,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [
@@ -1994,12 +1994,12 @@
     {
       "type": "patchouli:text",
       "anchor": "red_bell_pepper",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 16 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 25 - 60 %$(br)$(bold)Nutrient$(): Potassium$(br2)Red Bell Peppers are a pickable crop. When they are near mature, they can be harvested with $(item)$(k:key.use)$() to obtain Green Bell Peppers. Harvesting with $(item)$(k:key.use)$() allows the plant to grow more peppers in the future rather than destroying the plant.",
-      "title": "Red Bell Peppers"
+      "text": "$(bold)$(l:the_world/climate#temperature)温度$()：16 - 30 °C$(br)$(bold)$(l:mechanics/hydration)湿度$()：25 - 60 %$(br)$(bold)营养物质$()：钾$(br2)红甜椒是一种可采摘作物。在接近成熟时，可以使用$(item)$(k:key.use)$()采摘青甜椒。采摘时不破坏植株，允许植物在未来长出更多的甜椒。",
+      "title": "红甜椒"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [
@@ -2125,12 +2125,12 @@
     {
       "type": "patchouli:text",
       "anchor": "yellow_bell_pepper",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 16 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 25 - 60 %$(br)$(bold)Nutrient$(): Potassium$(br2)Yellow Bell Peppers are a pickable crop. When they are near mature, they can be harvested with $(item)$(k:key.use)$() to obtain Green Bell Peppers. Harvesting with $(item)$(k:key.use)$() allows the plant to grow more peppers in the future rather than destroying the plant.",
-      "title": "Yellow Bell Peppers"
+      "text": "$(bold)$(l:the_world/climate#temperature)温度$()：16 - 30 °C$(br)$(bold)$(l:mechanics/hydration)湿度$()：25 - 60 %$(br)$(bold)营养物质$()：钾$(br2)黄甜椒是一种可采摘作物。在接近成熟时，可以使用$(item)$(k:key.use)$()采摘青甜椒。采摘时不破坏植株，允许植物在未来长出更多的甜椒。",
+      "title": "黄甜椒"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [
@@ -2261,7 +2261,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [
@@ -2392,7 +2392,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [
@@ -2523,7 +2523,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [
@@ -2671,7 +2671,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [
@@ -3031,7 +3031,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [
@@ -3164,12 +3164,12 @@
     {
       "type": "patchouli:text",
       "anchor": "papyrus",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 19 - 37 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 70 - 100 %$(br)$(bold)Nutrient$(): Potassium$(br2)Papyrus is a two block tall crop. Papyrus seeds can be planted on farmland, will grow two blocks tall, and will produce $(l:mechanics/papermaking)Papyrus$() and $(thing)Papyrus Seeds$() as a product.",
-      "title": "Papyrus"
+      "text": "$(bold)$(l:the_world/climate#temperature)温度$()：19 - 37 °C$(br)$(bold)$(l:mechanics/hydration)湿度$()：70 - 100 %$(br)$(bold)营养物质$()：钾$(br2)纸莎草是一种两格高的作物。纸莎草种子可以种植在耕地上，生长到两格高，并生产$(l:mechanics/papermaking)纸莎草$()和$(thing)纸莎草种子$()作为产物。",
+      "title": "纸莎草"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "",
+      "text": "-",
       "multiblocks": [
         {
           "pattern": [

@@ -16,7 +16,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "With a firestarter, it is now possible to make a $(thing)Firepit$(). In order to make one, you will need one $(thing)log$(), three $(thing)sticks$(), and optionally up to five pieces of $(thing)kindling$(). Kindling can be items such as paper products, straw, or pinecones, and will increase the chance of successfully creating a firepit by 10 percent per item used. Throw ($(item)$(k:key.drop)$()) all the items on the ground, on the same block. Then use the firestarter on the block with the items floating above it.",
+      "text": "有了起火器，就可以試著點燃你的第一束$(thing)篝火$()了。要搭建篝火，需要將一根$(thing)原木$()、三根$(thing)樹枝$()丟在同一格內，並且可以額外加入最多五塊$(thing)引火物$()。引火物可以是紙製品、稻草或松果等物品，每使用一件引火物都會使成功生火的機率增加10%。將所有物品丟在同一個方塊上（使用$(item)$(k:key.drop)$()鍵丟棄物品），然後用起火器對著物品所在的方塊點火。",
       "title": "篝火"
     },
     {
@@ -34,8 +34,8 @@
           "X": "tfc:firepit[lit=true]"
         }
       },
-      "name": "",
-      "text": "如果成功的話，就能建立一個篝火。",
+      "name": "-",
+      "text": "如果成功的話，就能點燃一束篝火。",
       "enable_visualize": false
     },
     {
@@ -111,7 +111,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Firepit fuels have different levels of purity. Adding impure fuels to fires makes them more smokey. If the fire burns very impurely, smoke will start to fly very high in the air. The most pure fuels are logs, with pine being the least pure log. Fuels like pinecones and fallen leaves do not hot enough to do much cooking, and are very impure."
+      "text": "不同燃料的雜質含量並不一致。新增不純淨的燃料會使篝火產生更多煙塵。如果使用的燃料雜質含量越多，篝火產生的煙塵會飄得越高。所有燃料中，原木的雜質含量最少，而原木中雜質含量最多的種類是松木。松果和落葉之類的燃料雜質含量非常高以至於無法產生足夠的熱量來烹飪食物。"
     }
   ],
   "read_by_default": true,

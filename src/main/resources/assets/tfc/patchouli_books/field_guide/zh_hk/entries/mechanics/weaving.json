@@ -11,7 +11,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:clay_knapping/spindle_head",
-      "text": "$(thing)紡錘頭$()可以通過黏土塑形來製作。先將黏土如圖捏成$(thing)未燒製的紡錘頭$()$，然後在將其$(l:mechanics/heating)加熱$()即可。將紡錘頭與$(thing)木棍$()合成便能做出紡錘了"
+      "text": "$(thing)紡錘頭$()可以通過粘土塑形來製作。先將粘土如圖捏成$(thing)未燒製的紡錘頭$()$，然後在將其$(l:mechanics/heating)加熱$()即可。將紡錘頭與$(thing)木棍$()合成便能做出紡錘了"
     },
     {
       "type": "patchouli:crafting",
@@ -43,7 +43,7 @@
     {
       "type": "tfc:loom_recipe",
       "recipe": "tfc:loom/wool_block",
-      "text": "$(thing)Wool Cloth$() can be re-woven into $(thing)Wool Blocks$(). Wool blocks can be $(l:mechanics/dye)dyed$()."
+      "text": "$(thing)羊毛布$()可重新合成為$(thing)羊毛塊$()。可以對羊毛塊$(l:mechanics/dye)染色$()。"
     },
     {
       "type": "tfc:loom_recipe",

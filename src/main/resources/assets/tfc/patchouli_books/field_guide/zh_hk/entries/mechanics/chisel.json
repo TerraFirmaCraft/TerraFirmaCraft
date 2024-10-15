@@ -23,7 +23,7 @@
         "tfc:textures/gui/book/tutorial/chisel_stair.png",
         "tfc:textures/gui/book/tutorial/chisel_slab.png"
       ],
-      "text": "在$(thing)天然石灰巖$()上使用三種鑿子模式（注意觀察紅色輪廓的位置）。",
+      "text": "在$(thing)天然石灰岩$()上使用三種鑿子模式（注意觀察紅色輪廓的位置）。",
       "border": true
     },
     {

@@ -6,47 +6,47 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)寵物$()是與$(l:mechanics/animal_husbandry)牲畜$()很類似的動物, 但是它們不會生產有用的資源. 它們會聽從你的指令, 跟著你, 並且幫你做捕獵和捕殺害蟲等事情."
+      "text": "$(thing)寵物$()是一種與$(l:mechanics/animal_husbandry)牲畜$()行為類似的動物。它們不會產出資源，但會聽從玩家的指令、跟隨玩家、並且幫你做捕獵和捕殺害蟲等事情。"
     },
     {
       "type": "patchouli:text",
-      "text": "Pets recognize a certain player as their $(thing)Owner$(). To become a pet's owner, feed it to raise its familiarity above 15%%. Pets will only obey commands that come from their owner.$(br2)Clicking on a pet with $(l:mechanics/dye)dye$() changes its collar color."
+      "text": "寵物會選擇一位玩家作為自己的$(thing)主人$()。要成為一隻寵物的主人，需要透過不斷餵養將其親密度提升至 15% 以上。寵物只會聽從來自其主人的命令。$(br2)手持$(l:mechanics/dye)染料$()點選寵物可改變它們項圈的顏色。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:dog{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.7,
-      "text": "一隻狗."
+      "text": "狗"
     },
     {
       "type": "patchouli:text",
-      "text": "狗是一種喜歡吃穀物, 蔬菜和肉類(無論是否腐敗)的寵物. 它會幫助你狩獵大多數的陸地捕食者或獵物."
+      "text": "狗是一種喜歡吃穀物、蔬菜和肉類（無論是否腐敗）的寵物。它會幫助你狩獵大多數的陸地捕食者或獵物。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:cat{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.7,
-      "text": "一隻貓."
+      "text": "貓"
     },
     {
       "type": "patchouli:text",
-      "text": "貓是一種喜歡吃穀物, 熟肉以及乳製品的寵物. 它們會幫助你狩獵陸地獵物和小型魚類. 在家裡的時候, 貓會自動的捕殺害蟲, 不需要命令. 當被要求坐下的時候, 貓可能不總是會聽話."
+      "text": "貓是一種喜歡吃穀物、熟肉以及乳製品的寵物。它們會幫助你狩獵陸地獵物和小型魚類。在家裡的時候，貓會自行捕殺害蟲，不需要命令。當被要求坐下的時候，貓可能不總是會聽話。"
     },
     {
       "type": "patchouli:text",
-      "text": "負責人的寵物主人需要學習如何管理自己的寵物. 幸運的是, 這並不是件難事. 在空手的狀態下按住$(item)$(k:key.sneak)$()並按下$(item)$(k:key.use)$(), 就可以開啟$(thing)寵物面板$(). 這個面板包含了一系列可以命令寵物做的事情, 例如$(thing)休息$(), $(thing)我們到家了$(), $(thing)坐下$(), $(thing)跟隨我$(), 以及$(thing)跟我打獵$()."
+      "text": "負責任的寵物主人需要學習如何管理自己的寵物。好在這並不是件難事。在空手的狀態下按住$(item)$(k:key.sneak)$()並按下$(item)$(k:key.use)$()就可以開啟$(thing)寵物面板$()。這個面板包含了一系列可以命令寵物做的事情，例如$(thing)休息$()、$(thing)我們到家了$()、$(thing)坐下$()、$(thing)跟著我$()、以及$(thing)跟我打獵$()。"
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)休息$()是寵物的預設狀態, 並且commanding them returns them to this state. 在這個狀態下, 在家裡的寵物會繞著房子散步, 但是不會跑遠, 並且會每天睡一次覺. 如果它離家很遠, 它就會毫無目的的散步."
+      "text": "$(thing)休息$()是寵物的預設狀態，點選這個命令就能讓寵物回到這個狀態。在休息狀態下，在家裡的寵物會繞著家閒逛，但是不會跑遠，並且會每天睡一次覺。如果寵物離家很遠，它就會毫無目的的閒逛。"
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)我們到家了$()會設定這個寵物的'家'的位置. 這樣就可以告訴寵物, 在休息的時候呆在這附近, 不要跑太遠. 這個命令不會改變寵物現在正在做的事情.$(br2)$(thing)坐下$()會命令寵物原地坐下. 然而寵物會有自己的想法, 坐久了就會感覺無聊, 自己站起來溜達!"
+      "text": "$(thing)我們到家了$()會設定這個寵物的“家”的位置。這樣就可以告訴寵物，在休息的時候呆在這附近，不要跑太遠。這個命令不會改變寵物現在正在做的事情。$(br2)$(thing)坐下$()會命令寵物原地坐下。然而寵物會有自己的想法，坐久了感覺無聊，就會自己站起來溜達！"
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)跟我打獵$()會告訴寵物跟著你, 並且在你發動攻擊或被攻擊的時候參加戰鬥. 寵物只會攻擊他們力所能及的敵人(例如, 貓肯定不會幫你獵殺熊!).$(br2)$(thing)跟隨我$()和'跟我打獵'是類似的, 唯一的不同點是寵物不會冒險參加你的戰鬥."
+      "text": "$(thing)跟我打獵$()會告訴寵物跟著你，並且在你發動攻擊或被攻擊的時候參加戰鬥。寵物只會攻擊他們力所能及的敵人（例如, 貓肯定不會幫你獵殺熊！）。$(br2)$(thing)跟著我$()和“跟我打獵”類似，不同之處在於寵物不會冒險加入你的戰鬥。"
     }
   ],
   "read_by_default": true

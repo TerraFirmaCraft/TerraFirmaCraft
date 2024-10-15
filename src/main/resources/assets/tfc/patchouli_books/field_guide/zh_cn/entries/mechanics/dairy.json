@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)乳制品$()是一种主要由$(l:mechanics/animal_husbandry#dairy_animals)产奶动物$()提供的$(l:getting_started/food_and_water#nutrients)营养元素$()。可以直接用陶罐喝奶，会回复$(l:the_world/food_and_water#thirst)口渴度$()，也可以将奶做成$(thing)奶酪$()。需要注意的是，空腹喝奶并不能摄入多少营养元素，只有在吃过其他食物之后再喝奶才能吸收营养。换句话说，连续多次喝奶的效率比吃一顿饭、喝一口奶的效率要差。",
+      "text": "$(thing)乳制品$()是一种主要由$(l:mechanics/animal_husbandry#dairy_animals)产奶动物$()提供的$(l:getting_started/food_and_water#nutrients)营养元素$()。可以直接用陶壶喝奶，会回复$(l:the_world/food_and_water#thirst)口渴度$()，也可以将奶做成$(thing)奶酪$()。需要注意的是，空腹喝奶并不能摄入多少营养元素，只有在吃过其他食物之后再喝奶才能吸收营养。换句话说，连续多次喝奶的效率比吃一顿饭、喝一口奶的效率要差。",
       "title": "乳制品"
     },
     {

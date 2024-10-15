@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Panning$() is a method of obtaining small pieces of certain native ores by searching in rivers and other waterways.$(br2)Panning makes use of $(thing)Ore Deposits$() which are found in gravel patches in the bottom of lakes and rivers.$(br2)In order to get started panning, you will need an empty pan."
+      "text": "$(thing)淘金$()是早期通过河床或其他水体底部的$(thing)沉积物$()获取某些原生矿石的方法。$(br2)开始淘金前，需要先制作一只淘金盘。"
     },
     {
       "type": "tfc:knapping_recipe",
@@ -50,8 +50,8 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Panning can give three possible products: $(thing)Ore$(), $(thing)Loose Rocks$(), and $(l:mechanics/gems)Gems$(). The probabilities are as follows:$(br)$(li)Ore: 50%%$(li)Loose Rock: 25%%$(li)Gem: 1%%$()Each rock type has a specific gem that it will drop, that is exclusive to that rock type.",
-      "title": "Products of Panning"
+      "text": "淘金盘会产出三种不同的产物：$(thing)矿石$()、$(thing)石子$()和$(l:mechanics/gems)宝石$()。$(br)$(li)矿石：50%几率$(li)石子：25%几率$(li)宝石：1%几率$()，每种岩石类型都会有一种独有的宝石可能出现。",
+      "title": "洗矿产物"
     }
   ],
   "read_by_default": true,

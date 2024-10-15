@@ -1,35 +1,35 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Support Beams & Collapses",
+  "name": "支撐梁及塌方",
   "category": "tfc:mechanics",
   "icon": "tfc:wood/support/oak",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "在TerraFirmaCraft中, 天然岩石並不穩定, 有發生$(thing)塌方$()的危險. 在某些情形下, 多種石頭可能像下雨一樣同時落向你的頭頂, 包括$(thing)未加工岩石$(), $(thing)礦石$(), $(thing)平滑岩石$() 和 鍾乳$(thing)石錐$().$(br2)$(thing)支撐梁$()可以用於預防塌方.",
+      "text": "群巒傳說中，天然岩石並不穩定，有發生$(thing)塌方$()的危險。如果不加防範，$(thing)天然岩石$()、$(thing)礦石$()、$(thing)平滑岩石$()、和鍾乳$(thing)石錐$()等方塊都可能從天而降，把你砸成肉餅！$(br2)為了防止發生這等慘劇，你必須確保周圍的方塊都$(thing)受到支撐$()。",
       "title": "支撐梁"
     },
     {
       "type": "patchouli:text",
-      "text": "只要玩家$(thing)挖掘任何未加工岩石$(), 附近的$(thing)未被支撐的未加工岩石$()就可能發生塌方. 一旦塌方發生了, $(thing)有支撐的$()岩石也會開始塌方.$(br2)在天然洞穴頂部的岩石是$(thing)天然被支撐的$(). 如果未加工岩石的下方有一個無法發生塌方的固體方塊(詳見下文), 那麼這$(thing)一個$()岩石方塊也是$(thing)被支撐的$(). 與此不同的是, $(thing)支撐梁$()可以一次支撐一大片區域."
+      "text": "每次玩家挖掘任何$(thing)天然岩石$()時，若附近存在$(thing)未被支撐的$()天然岩石，就有可能發生塌方。一旦塌方開始，即便是已經$(thing)有支撐的$()岩石也可能開始塌方。$(br2)自然生成的洞穴頂部的岩石$(thing)自然承重$()，無需人工支撐。若天然岩石的正下方存在無法發生塌方的固體方塊，那麼這個方塊也被算作是$(thing)被支撐的$()。此外，使用$(thing)支撐梁$()可以一次支撐一大片區域。"
     },
     {
       "type": "patchouli:text",
-      "text": "When graded $(l:the_world/ores_and_minerals)Ore$() (ore that can be poor, normal, or rich) collapses, it degrades in quality. Rich ore will become normal, normal will become poor, and poor will turn to cobblestone. Mineral ores will turn into cobblestone right away."
+      "text": "有等級的$(l:the_world/ores_and_minerals)礦石$()發生塌方時，其品質會降低一級——富集礦會變為普通礦，普通礦會變為貧瘠礦，而貧瘠礦會變為圓石。礦物則會直接轉變為圓石。"
     },
     {
       "type": "patchouli:text",
-      "text": "Dirt, grass, clay, gravel, cobblestone, and sand are also affected by gravity. However, unlike vanilla gravity blocks, these blocks fall down slopes, and cannot be stacked more than one high without supporting blocks around. $(l:mechanics/sluices)Ore Deposits$() also landslide, but do not degrade in quality."
+      "text": "土、草方塊、黏土、沙礫、圓石、沙子等方塊會受到重力影響。和原版不同，這些方塊不僅會垂直下落，還會從過陡的坡上滑落，除非周圍有支撐方塊。$(l:mechanics/sluices)礦石沉積物$()也會發生滑坡，不過不會因此損失品質。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/oak_support",
       "title": "支撐梁",
-      "text": "$(thing)支撐梁$()可以用$(thing)鋸$()和任意型別的$(thing)原木$()合成.$(br2)在其他方塊上放置$(thing)支撐梁$()就可以產生三格高的垂直支撐梁, 在梁的下方必須有固體方塊作為支撐."
+      "text": "$(thing)支撐梁$()可以用$(thing)鋸$()和任意型別的$(thing)原木$()合成。$(br2)在其他方塊上放置$(thing)支撐梁$()就可以產生三格高的垂直支撐梁，在梁的下方必須有固體方塊作為支撐。"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "放置$(thing)水平$()支撐梁可以連線距離不超過5個方塊的兩個$(thing)垂直$()支撐梁.",
+      "text": "放置$(thing)水平$()支撐梁可以連線距離不超過 5 個方塊的兩個$(thing)垂直$()支撐梁（如上圖所示）。",
       "multiblocks": [
         {
           "pattern": [
@@ -225,11 +225,11 @@
     },
     {
       "type": "patchouli:text",
-      "text": "只有$(thing)水平支撐梁$()才能讓附近的方塊$(thing)被支撐$(). 以水平支撐梁為中心, 在$(bold)9 x 5 x 9$()範圍內的任何方塊都是$(thing)被支撐的$().$(br2)除了可以用支撐梁作為支撐, 也可以在岩石下面放一個固體方塊(例如更多的岩石)來支撐它. 但是需要注意的是, $(thing)樓梯$()和$(thing)臺階$()等$(thing)非固體方塊$(), 以及$(thing)平滑岩石$(), 是$(bold)無法$()提供支撐的."
+      "text": "只有$(thing)水平支撐梁$()才能起到$(thing)支撐$()效果，垂直的和轉角的都不行。每一根水平支撐梁可以支撐以自身為中心，$(bold)9 x 5 x 9$()範圍內的任何方塊。$(br2)除了可以用支撐梁作為支撐，岩石下面的其他固體方塊（例如其他有支撐的岩石）也會提供支撐。但是需要注意的是，$(thing)樓梯$()和$(thing)臺階$()等$(thing)非固體方塊$()，以及$(thing)平滑岩石$()，是$(bold)無法$()提供支撐的。"
     },
     {
       "type": "patchouli:text",
-      "text": "最後還有一個重要的事項, $(l:mechanics/chisel)鑿制$()岩石也可能導致塌方. 正如挖掘岩石那樣, 對$(thing)未加工岩石$()進行鑿制有可能導致附近發生塌方.$(br2)$(br2)記住: 挖礦要注意安全!",
+      "text": "最後注意，$(l:mechanics/chisel)鑿制$()岩石和挖掘岩石一樣可能導致塌方。$(br2)$(br2)北京第三區礦業委提醒您：礦道千萬條，安全第一條。承重不規範，親人兩行淚！",
       "title": "鑿制"
     }
   ],

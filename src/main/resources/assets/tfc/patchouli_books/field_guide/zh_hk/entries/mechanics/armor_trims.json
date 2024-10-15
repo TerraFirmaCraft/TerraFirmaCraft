@@ -1,17 +1,17 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Armor Trims",
+  "name": "鍛造紋飾",
   "category": "tfc:mechanics",
   "icon": "minecraft:rib_armor_trim_smithing_template",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Armor trims are produced with a $(thing)Trim Material$() and a $(l:mechanics/sewing_table)Smithing Template$(). In TFC, all gems, along with Sterling Silver, Gold, Rose Gold, and Bismuth, can be used as trim materials. Armor trims are purely cosmetic."
+      "text": "鍛造紋飾是通過將$(thing)紋飾材料$()和$(l:mechanics/sewing_table)鍛造模板$()合成得到的。羣巒傳説中所有寶石，以及紋銀、金、玫瑰金和鉍都能作為紋飾材料使用。盔甲紋飾是純裝飾作用的。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/vanilla/smithing_table",
-      "text": "The smithing table can be used to apply armor trims to TFC armor."
+      "text": "鍛造台可以將紋飾材料打入盔甲。"
     }
   ],
   "read_by_default": true

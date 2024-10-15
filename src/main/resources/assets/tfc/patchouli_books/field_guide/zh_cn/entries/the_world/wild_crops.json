@@ -29,7 +29,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Every $(l:mechanics/crops)crop$() that can be cultivated can also be found in the wild. Wild crops will look similar to their cultivated counterparts, but are more hidden within the grass. Wild crops are only mature from June to October. Otherwise, they appear dead until the next Summer."
+      "text": "每一种可以种植的$(l:mechanics/crops)作物$()也会在野外生成。野生作物看起来与栽培作物相似，但它们的外观更隐蔽，在草丛中不容易被发现。野生作物只有在6月至10月之间成熟，其他时间则看起来像是枯萎的，直到下一年夏天才会重新复苏。"
     },
     {
       "type": "tfc:multimultiblock",
@@ -319,12 +319,12 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Wild crops will spawn in climates near where the crop itself can be cultivated, so if looking for a specific crop, look in the climate where the crop can be cultivated. However, unlike $(l:mechanics/crops)Crops$() that the player has planted, wild crops do not require $(l:mechanics/hydration)Hydration$(). Instead, they are found in areas depending on the average $()Temperature$() and $()Rainfall$().",
-      "title": "Finding Wild Crops"
+      "text": "野生作物会生成在接近其自身适宜的气候中，因此如果想寻找特定作物，就应该前往适合种植该作物的气候中寻找。不过，与玩家种植的$(l:mechanics/crops)作物$()不同，野生作物不需要$(l:mechanics/hydration)灌溉$()，它们的用水需求是由该地区的$()温度$()和$()降雨量$()提供的。",
+      "title": "寻找野生作物"
     },
     {
       "type": "patchouli:text",
-      "text": "The next pages show a table of the environments where wild crops can be found."
+      "text": "下一页的表格展示了所有野生作物生成的条件。"
     },
     {
       "type": "tfc:table",
@@ -450,8 +450,8 @@
           "text": "200 - 500"
         }
       ],
-      "text": "",
-      "title": "Wild Crop Requirements",
+      "text": "-",
+      "title": "野生作物生成条件",
       "legend": [],
       "columns": 2,
       "first_column_width": 80,
@@ -580,8 +580,8 @@
           "text": "190 - 400"
         }
       ],
-      "text": "",
-      "title": "Wild Crop Requirements",
+      "text": "-",
+      "title": "野生作物生成条件",
       "legend": [],
       "columns": 2,
       "first_column_width": 80,

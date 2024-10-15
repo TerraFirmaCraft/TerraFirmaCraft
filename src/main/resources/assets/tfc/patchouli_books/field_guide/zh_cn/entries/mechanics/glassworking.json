@@ -1,72 +1,72 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Glassworking",
+  "name": "玻璃工艺",
   "category": "tfc:mechanics",
   "icon": "tfc:silica_glass_bottle",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Glassworking is the process of turning sand into glass. To start, you must create a $(thing)Glass Batch$(), of which there are four types:$(br)$(br) 1. $(thing)Silica$(), from white sand.$(br) 2. $(thing)Hematitic$(), from yellow, red, or pink sand.$(br) 3. $(thing)Olivine$(), from green or brown sand.$(br) 4. $(thing)Volcanic$(), from black sand."
+      "text": "玻璃工艺是把沙子变为玻璃的艺术。首先，你必须决定制作哪一种$(thing)玻璃原料$()：$(br)$(br) 1、$(thing)二氧化硅玻璃$()：由白沙制成。$(br) 2、$(thing)赤铁矿玻璃$()：由黄沙、红沙或粉红沙制成。$(br) 3、$(thing)橄榄岩玻璃$()：由绿沙或棕沙制成。$(br) 4、$(thing)火山岩玻璃$()：由黑沙制成。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/silica_glass_batch",
-      "text": "Glass batches can then be crafted using one of the aforementioned colors of sand, plus $(l:mechanics/glassworking#lime)Lime$() and a type of $(l:mechanics/glassworking#potash)Potash$()."
+      "text": "除了对应颜色的沙子以外，还需要准备$(l:mechanics/glassworking#lime)石灰粉$()和任意一种$(l:mechanics/glassworking#potash)钾盐添加物$()。"
     },
     {
       "type": "tfc:heat_recipe",
       "anchor": "lime",
       "recipe": "tfc:heating/lime",
-      "text": "$(thing)Lime$() is one of the ingredients required to make glass batches. It is a powder obtained by $(l:mechanics/heating)heating$() $(l:mechanics/flux)Flux$()."
+      "text": "$(thing)石灰粉$()是制作玻璃原料的必要原料之一，可以通过$(l:mechanics/heating)加热$()$(l:mechanics/flux)助焊剂$()获得。"
     },
     {
       "type": "tfc:heat_recipe",
       "anchor": "potash",
       "recipe": "tfc:heating/soda_ash_from_seaweed",
-      "text": "A type of $(thing)Potash$() or equivalent is also required for glass batches. $(thing)Soda Ash$() can be used, which is a powder made from heating $(thing)Dried Seaweed$() or $(thing)Kelp$(). $(l:the_world/ores_and_minerals#saltpeter)Saltpeter$() can be used as well."
+      "text": "制作玻璃原料还需要加入一些$(thing)钾盐$()，可以选用$(thing)海草灰$()（通过加热$(thing)干海草$()或$(thing)海带$()获得）或$(l:the_world/ores_and_minerals#saltpeter)硝石$()。"
     },
     {
       "type": "patchouli:text",
-      "text": "Glassworking is done by starting with a glass batch, and then completing a series of steps. These steps may require specific tools:$(br)$(li)A $(l:mechanics/glassworking#blowpipe)Blowpipe$(), to $(thing)Blow$() and $(thing)Stretch$()$(li)A $(l:mechanics/glassworking#paddle)Paddle$(), to $(thing)Flatten$()$(li)$(l:mechanics/glassworking#jacks)Jacks$(), to $(thing)Pinch$()$(li)A $(l:mechanics/glassworking#saw)Gem Saw$(), to $(thing)Saw$()",
-      "title": "Tools of the Trade"
+      "text": "进行玻璃加工前，还需要准备多种工具：$(br)$(li)一支用来$(thing)吹气$()和$(thing)拉伸$()的$(l:mechanics/glassworking#blowpipe)吹风管$()；$(li)一支用来$(thing)平整$()的$(l:mechanics/glassworking#paddle)玻璃压板$()；$(li)一对用来$(thing)挤压$()的$(l:mechanics/glassworking#jacks)夹钳$()；$(li)和一把用来$(thing)锯割$()的$(l:mechanics/glassworking#saw)宝石锯$()。",
+      "title": "加工工具"
     },
     {
       "type": "tfc:knapping_recipe",
       "anchor": "blowpipe",
       "recipe": "tfc:clay_knapping/blowpipe",
-      "text": "The most important tool is the $(thing)Blowpipe$(). It can be $(thing)knapped$() from clay, and then fired into a $(thing)Ceramic Blowpipe$()."
+      "text": "最重要的工具是$(thing)吹风管$()。通过$(thing)黏土塑形$()制作出模具后在烧制成$(thing)陶瓷吹风管$()即可。"
     },
     {
       "type": "tfc:anvil_recipe",
       "recipe": "tfc:anvil/blowpipe",
-      "text": "Ceramic blowpipes are brittle, and have a chance to to break when used. A more sturdy blowpipe can be $(l:mechanics/anvils#working)worked$() from a $(thing)Brass Rod$() on an anvil."
+      "text": "陶瓷吹风管易碎，使用时有概率破损。更可靠的选择是在砧上$(l:mechanics/anvils#working)锻造$()一支$(thing)黄铜$()吹风管。"
     },
     {
       "type": "patchouli:crafting",
       "anchor": "paddle",
       "recipe": "tfc:crafting/paddle",
-      "text": "The $(thing)Flatten$() operation can be done with a $(thing)Paddle$(), which is crafted from wood."
+      "text": "$(thing)玻璃压板$()可以用来将玻璃$(thing)压平$()，可用木材制作。"
     },
     {
       "type": "tfc:welding_recipe",
       "anchor": "jacks",
       "recipe": "tfc:welding/jacks",
-      "text": "The $(thing)Pinch$() operation can be done with $(thing)Jacks$(), made from welding two brass rods together."
+      "text": "$(thing)玻璃夹钳$()可进行$(thing)挤压$()，需要将两根黄铜棒焊接在一起。"
     },
     {
       "type": "patchouli:crafting",
       "anchor": "saw",
       "recipe": "tfc:crafting/gem_saw",
-      "text": "The $(thing)Saw$() operation can be done with a $(thing)Gem Saw$(). The gem saw is also used to break both $(thing)Glass Blocks$() and $(thing)Glass Panes$() and obtain them."
+      "text": "$(thing)宝石锯$()是用来执行$(thing)锯割$()操作的。宝石锯还可以用来挖掘$(thing)玻璃块$()和$(thing)玻璃板$()而不使其损坏。"
     },
     {
       "type": "patchouli:text",
-      "text": "First, glass on the blowpipe must be heated to $(4)$(bold)Faint Red$().Then, hold the blowpipe and hold $(item)$(k:key.use)$() to perform each step$().$(br2)$(bold)Blow$()$(br)Use the $(thing)Blowpipe$() while facing straight ahead.$(br2)$(bold)Stretch$()$(br)Use the $(thing)Blowpipe$() while facing straight down.",
-      "title": "How to Glass"
+      "text": "首先，将装有玻璃原料的吹风管加热到至少$(4)$(bold)淡红$()。然后手持吹风管时按$(item)$(k:key.use)$()来一步一步将玻璃加工成想要的形状$().$(br2)$(bold)吹气$()$(br)平视时使用$(thing)吹风管$()。$(br2)$(bold)拉伸$()$(br)面朝下时使用$(thing)吹风管$()。",
+      "title": "如何制作玻璃"
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Flatten$()$(br)Use the $(thing)Blowpipe$() while holding a $(l:mechanics/glassworking#paddle)Paddle$() in your offhand.$(br2)$(bold)Pinch$()$(br)Use the $(thing)Blowpipe$() while holding $(l:mechanics/glassworking#jacks)Jacks$() in your offhand.$(br2)$(bold)Saw$()$(br)Use the $(thing)Blowpipe$() while holding a $(l:mechanics/glassworking#saw)Gem Saw$() in your offhand.$(br2)$(bold)Roll$()$(br)Use the $(thing)Blowpipe$() with a $(l:mechanics/weaving#wool_cloth)Wool Cloth$() in your offhand."
+      "text": "$(bold)平整$()$(br)副手持有$(l:mechanics/glassworking#paddle)玻璃压板$()时使用$(thing)吹风管$()。$(br2)$(bold)挤压$()$(br)副手持有$(l:mechanics/glassworking#jacks)玻璃夹钳$()时使用$(thing)吹风管$()。$(br2)$(bold)锯割$()$(br)副手持有$(l:mechanics/glassworking#saw)宝石锯$()时使用$(thing)吹风管$()。$(br2)$(bold)翻转$()$(br)副手持有$(l:mechanics/weaving#wool_cloth)羊毛布$()时使用$(thing)吹风管$()。"
     }
   ],
   "read_by_default": true,

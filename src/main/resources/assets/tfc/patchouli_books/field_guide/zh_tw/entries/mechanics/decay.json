@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "把滑鼠懸停在食物上就能看到食物的保質期。比如：$(br2)$(bold)$(2)保質期: 5:30 七月 5日，1000（約5天）$()$(br2)透過使用各種保鮮手段，可延長食物的保質期。"
+      "text": "把滑鼠懸停在食物上就能看到食物的保質期。比如：$(br2)$(bold)$(2)保質期: 1000年 七月5日 5:30（約5天）$()$(br2)透過使用各種保鮮手段，可延長食物的保質期。"
     },
     {
       "type": "patchouli:text",
@@ -34,7 +34,7 @@
           "X": "tfc:ceramic/large_vessel[sealed=true]"
         }
       },
-      "name": "",
+      "name": "-",
       "text": "一個密封的大缸。",
       "enable_visualize": false
     },
@@ -90,7 +90,7 @@
     {
       "type": "patchouli:text",
       "anchor": "pests",
-      "text": "Food should be stored in either sealed large vessels or in $(l:getting_started/pottery#vessel)Small Vessels$(). Food that is left sitting in chests or other devices can attract $(thing)Rats$(). Rats are able to open containers and eat the food out of them, but will despawn if they can't find something for a few minutes. You will be alerted to a rat's presence by the message $(thing)'This container has a foul smell'$(). It is important to note that unsealing and resealing a large vessel before you leave the screen will never attract pests."
+      "text": "食物應儲存在大缸或$(l:getting_started/pottery#vessel)小缸$()中。放置在箱子或其他容器中的食物會吸引$(thing)老鼠$()。老鼠可以開啟容器並將其中的食物吃掉，不過如果它們在幾分鐘內沒有找到可以吃的東西就會消失。當你開啟被老鼠光顧過的容器時會看到“這個容器裡傳來一股惡臭”的提示資訊。提示：如果你在不關閉容器介面的情況下啟封再密封大缸就不會招引害蟲。"
     }
   ],
   "read_by_default": true

@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(br)  1. $(l:getting_started/building_materials#thatch)乾草塊$()$(br)  2. $(l:getting_started/building_materials#mud_bricks)壤泥磚$()$(br)  3. $(l:getting_started/building_materials#wattle_and_daub)板條與塗料$()$(br)  4. $(l:getting_started/building_materials#clay_and_peat)黏土塊和泥炭$()$(br)",
+      "text": "$(br)  1. $(l:getting_started/building_materials#thatch)乾草塊$()$(br)  2. $(l:getting_started/building_materials#mud_bricks)壤泥磚$()$(br)  3. $(l:getting_started/building_materials#wattle_and_daub)板條與塗料$()$(br)  4. $(l:getting_started/building_materials#clay_and_peat)粘土塊和泥炭$()$(br)",
       "title": "材料目錄"
     },
     {
@@ -74,7 +74,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/soil/loam_mud_bricks",
-      "title": " ",
+      "title": "-",
       "text": "這些乾燥後的壤泥磚可以做成$(thing)壤泥磚塊$()。它們也可以做成$(thing)樓梯$()、$(thing)台階$()、或$(thing)牆$()。"
     },
     {
@@ -92,7 +92,7 @@
           "X": "#tfc:mud_bricks"
         }
       },
-      "name": "",
+      "name": "-",
       "text": "所有不同品種的泥磚",
       "enable_visualize": false
     },
@@ -111,7 +111,7 @@
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/daub",
       "recipe2": "tfc:crafting/daub_from_mud",
-      "text": ""
+      "text": "-"
     },
     {
       "type": "patchouli:image",
@@ -146,19 +146,19 @@
       "images": [
         "tfc:textures/gui/book/tutorial/wattle_stained.png"
       ],
-      "text": "It can then be $(thing)stained$() by using $(l:mechanics/dye)Dye$() on it.",
+      "text": "手持$(l:mechanics/dye)染料$()右鍵點擊可以對其進行$(thing)染色$()。",
       "border": true
     },
     {
       "type": "patchouli:text",
       "anchor": "clay_and_peat",
-      "text": "黏土球可以做成黏土塊。將黏土塊放在地上再挖掉就可以把它變回黏土球。雖然談不上美觀，它們至少很好獲得。$(br2)泥炭也是一種不受重力影響的方塊，常常會在水邊生成。有些植物也會生長在泥炭上。$(br2)然而，泥炭很容易着火。",
-      "title": "黏土塊和泥炭"
+      "text": "粘土球可以做成粘土塊。將粘土塊放在地上再挖掉就可以把它變回粘土球。雖然談不上美觀，它們至少很好獲得。$(br2)泥炭也是一種不受重力影響的方塊，常常會在水邊生成。有些植物也會生長在泥炭上。$(br2)然而，泥炭很容易着火。",
+      "title": "粘土塊和泥炭"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "minecraft:clay",
-      "title": "黏土塊"
+      "title": "粘土塊"
     }
   ],
   "read_by_default": true,

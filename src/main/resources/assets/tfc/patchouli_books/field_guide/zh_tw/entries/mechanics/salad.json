@@ -6,14 +6,14 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Salads$() are a meal prepared in a $(thing)Bowl$() from up to five $(thing)Fruits$(), $(thing)Vegetables$(), or $(thing)Cooked Meats$().$(br2)Salads are one of the simplest meals to make, and just require a $(l:mechanics/bowls)Bowl$(). First, hold the $(thing)Bowl$() and press $(item)$(k:key.use)$() while holding $(item)$(k:key.sneak)$(). This will open the salad screen."
+      "text": "$(thing)沙拉$()是一種將至多五種$(thing)水果$()、$(thing)蔬菜$()或$(thing)熟肉$()在$(thing)碗$()中製作的餐點。$(br2)製作沙拉只需要一隻$(l:mechanics/bowls)碗$()就能製作，是一種製作非常方便的餐點。手持$(thing)碗$()時$(item)$(k:key.sneak)$()$(item)$(k:key.use)$()以開啟沙拉制作介面。"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tag:tfc:salads",
-      "title": "",
+      "title": "-",
       "link_recipes": false,
-      "text": "Up to five ingredients can be added in the top slots. $(thing)Bowls$() can be added in the left bottom slot. When you are done, the salad can be taken out from the right bottom slot."
+      "text": "在介面上方的格子中放置最多五種食材。在左下角的格子中放置$(thing)碗$()。完成時，可以在右側格子中取出製作好的沙拉。"
     }
   ],
   "read_by_default": true,

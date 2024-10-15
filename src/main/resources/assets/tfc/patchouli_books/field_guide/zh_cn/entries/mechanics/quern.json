@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The $(thing)Quern$() is a device for grinding items. It can make powders, $(l:mechanics/dye)dyes$(), and some other items. It is assembled from a $(thing)Base$() and $(thing)Handstone$().$(br2)The Quern can also be connected to a $(l:mechanics/mechanical_power#quern)Mechanical Power$() network."
+      "text": "$(thing)手推磨$()是一种用来制作粉末、$(l:mechanics/dye)染料$()及一些其他物品的装置。它是由$(thing)底座$()部分和$(thing)磨盘$()部分组合而成的。$(br2)手推磨还可以通过$(l:mechanics/mechanical_power#quern)机械动力$()驱动。"
     },
     {
       "type": "patchouli:crafting",
@@ -58,12 +58,12 @@
     {
       "type": "tfc:quern_recipe",
       "recipe": "tfc:quern/red_dye",
-      "text": "$(l:mechanics/dye)Dye$() can be obtained from various flowers."
+      "text": "$(l:mechanics/dye)染料$()可以从花中提取得到。"
     },
     {
       "type": "tfc:quern_recipe",
       "recipe": "tfc:quern/emerald",
-      "text": "$(thing)Gems$() can also be ground into powder."
+      "text": "$(thing)宝石$()可以被研磨成宝石粉。"
     },
     {
       "type": "tfc:quern_recipe",

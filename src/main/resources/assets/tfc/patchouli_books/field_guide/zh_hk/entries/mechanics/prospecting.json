@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "你還記得你是在哪裏撿到那些$(l:getting_started/finding_ores)小礦粒$()的，對吧？尋找更多礦石需要花費大量精力來勘探和開採。現在，你應該已經通讀$(l:the_world/ores_and_minerals)礦石和礦物$()這一章節。你應該明白，如果你在尋找特定的礦石，則必須先找到它生成的巖石類型——不論是就在你家門口，或是千里之外。"
+      "text": "你還記得你是在哪裏撿到那些$(l:getting_started/finding_ores)小礦粒$()的，對吧？尋找更多礦石需要花費大量精力來勘探和開採。現在，你應該已經通讀$(l:the_world/ores_and_minerals)礦石和礦物$()這一章節。你應該明白，如果你在尋找特定的礦石，則必須先找到它生成的岩石類型——不論是就在你家門口，或是千里之外。"
     },
     {
       "type": "patchouli:text",
@@ -23,7 +23,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:clay_knapping/propick_head_mold",
-      "text": "你可以用黏土按上圖$(l:getting_started/pottery)塑形$()成一個未燒製的勘礦鎬頭模具。"
+      "text": "你可以用粘土按上圖$(l:getting_started/pottery)塑形$()成一個未燒製的勘礦鎬頭模具。"
     },
     {
       "type": "tfc:heat_recipe",

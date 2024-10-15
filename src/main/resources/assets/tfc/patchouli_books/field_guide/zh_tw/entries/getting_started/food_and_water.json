@@ -6,11 +6,11 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "在TerraFirmaCraft中, 你不但要留意你的飢餓程度, 還要留意你的口渴程度. 飢餓和傳統Minecraft很類似, 大多數的食物會回覆大概五分之一的飢餓條, 有一些食物回覆的更少些, 例如$(thing)闊葉香蒲的根$(). 吃東西也會回覆你的$(thing)飽和度$(), 這可以理解為你吃的有多飽."
+      "text": "在群巒傳說中，你不僅需要注意你的飢餓度，還需要管理你的口渴度。飢餓度的機制和原版類似。大部分的食物會為你回覆五分之一飢餓條，其他一些食物（比如$(thing)香蒲根$()）則會少回覆些。進食還會使你回覆一些$(thing)飽和度$()，也就是飽腹感。"
     },
     {
       "type": "patchouli:text",
-      "text": "有些食物非常的佔肚子, 會讓你更長時間不會飢餓. 而一些食物也可能有短暫的特殊效果.$(br2)你在遊玩遊戲的過程中會失去飢餓值, 如果你快跑, 游泳, 或者$(l:getting_started/size_and_weight#overburdening)負擔過重$(), 就會讓飢餓值減少的更快. 把滑鼠懸停在食物上就能看到食物的$(thing)飽和度$(), $(thing)含水量$(), 以及$(thing)營養成分$(). 按住$(item)$(k:key.sneak)$()就可以看到完整的工具提示."
+      "text": "幾乎任何動作都會消耗飢餓度。疾跑、游泳、或$(l:getting_started/size_and_weight#overburdening)負擔過重$()都會更快消耗飢餓度。有關某樣食物可以為你回覆的$(thing)飽和度$()、$(thing)口渴度$()、和$(thing)營養元素$()可以透過在物品欄中將滑鼠放置在其上並按住$(item)$(k:key.sneak)$()檢視。"
     },
     {
       "type": "patchouli:text",
@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "食物的工具提示一般看起來像這樣:$(br2)$(bold)橙子$()$(br)  $(2)$(bold)保質期: 1000年 六月4日 11:59 (約 1月 2天)$()$(br)  $(8)營養:$(br)  - 飽和度: 2%$(br)  - 口渴值: 10%$(br)$(a)  - 水果: 0.5"
+      "text": "以下是一個食物的工具提示的示例：$(br2)橙子$(br)$(2)保質期：1004年 七月6日 11:59（約1月1天）$()$(br)營養：$(br)- 飽和度：2%$(br)- 口渴值：2%$(br)$(a)- 水果：0.5"
     },
     {
       "type": "patchouli:image",
@@ -31,7 +31,7 @@
     {
       "type": "patchouli:text",
       "anchor": "nutrients",
-      "text": "群巒傳說中有五種營養元素。它們都可以透過吃東西攝入：$(l)$(a)水果$()$()、$(l)$(2)蔬菜$()$()、$(l)$(c)蛋白質$()$()、$(l)$(6)穀物$()$()、和$(l)$(5)乳製品$()$()。保持每種營養元素都處於較高水平會增加你的最大生命值，反之則會降低生命值。食用食物就能攝入它所蘊含的營養元素了。透過製作$(l:mechanics/pot#soup)湯$()之類的$(thing)餐點$()可以將多種食材組合成為一頓食物。$(thing)用餐$()比分開吃烹飪材料更好，因為你的營養元素水平是根據你吃的最後幾個食物決定的。",
+      "text": "群巒傳說中有五種營養元素。它們都可以透過吃東西攝入：$(l)$(a)水果$()$()、$(l)$(2)蔬菜$()$()、$(l)$(c)蛋白質$()$()、$(l)$(6)穀物$()$()、和$(l)$(5)乳製品$()$()。保持每種營養元素都處於較高水平會增加你的最大生命值，反之則會降低生命值。食用食物就能攝入它所蘊含的營養元素。透過製作$(l:mechanics/pot#soup)湯$()之類的$(thing)餐點$()可以將多種食材組合成為一頓食物。$(thing)用餐$()比分開吃烹飪材料更好，因為你的營養元素水平是根據你吃的最後幾個食物決定的。",
       "title": "營養元素"
     },
     {
@@ -40,7 +40,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(l)$(6)穀物$()$()：穀物元素是由……呃，穀物提供的。比如$(l:mechanics/crops#barley)大麥$()。如何將穀物變成有用的食物主要寫在$(l:mechanics/bread)烤麵包$()章節。$(thing)香蒲根$()和$(thing)芋頭根$()也算穀物。$(br2)$(l)$(5)乳製品$()$()：所有乳製品都是用$(thing)奶$()製成的。想要獲得奶，就必須繁殖$(l:mechanics/animal_husbandry#dairy_animals)產奶動物$()。如何將生奶變成有用的食物主要寫在$(l:mechanics/dairy)奶製品$()章節。$(br2)食物一旦腐敗便完全不能吃了。關於防止食物腐敗的知識，請閱讀$(l:mechanics/decay)食物保鮮$()章節。"
+      "text": "$(l)$(6)穀物$()$()：穀物元素是由……呃，穀物提供的。比如$(l:mechanics/crops#barley)大麥$()。如何將穀物變成有用的食物主要寫在$(l:mechanics/bread)烤麵包$()章節。$(thing)香蒲根$()和$(thing)芋頭根$()也算穀物。$(br2)$(l)$(5)乳製品$()$()：所有乳製品都是用$(thing)奶$()製成的。想要獲得奶，就必須繁殖$(l:mechanics/animal_husbandry#dairy_animals)產奶動物$()。如何將生奶變成有用的食物主要寫在$(l:mechanics/dairy)乳製品$()章節。$(br2)食物一旦腐敗便完全不能吃了。關於防止食物腐敗的知識，請閱讀$(l:mechanics/decay)食物保鮮$()章節。"
     },
     {
       "type": "patchouli:text",
@@ -74,7 +74,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:clay_knapping/jug",
-      "text": "將粘土$(l:getting_started/pottery)塑形$()並燒製成一隻$(l:getting_started/pottery#jug)罐$()便能將水帶在身邊了。手持空罐用$(item)$(k:key.use)$()點選水源就能盛水。按住$(item)$(k:key.use)$()便能從中喝水。"
+      "text": "將粘土$(l:getting_started/pottery)塑形$()並燒製成一隻$(l:getting_started/pottery#jug)壺$()便能將水帶在身邊了。手持空壺用$(item)$(k:key.use)$()點選水源就能盛水。按住$(item)$(k:key.use)$()便能從中喝水。"
     },
     {
       "type": "patchouli:text",

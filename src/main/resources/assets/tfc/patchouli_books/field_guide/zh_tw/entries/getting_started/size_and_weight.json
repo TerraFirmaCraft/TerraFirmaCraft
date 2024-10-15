@@ -15,7 +15,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)只有$(thing)大$()及以下的物品可以裝在箱子裡。$(li)$(thing)非常大$()的物品只能單獨在$(l:getting_started/pit_kiln)坑窯$()中燒製。$(li)$(thing)巨大$()的物品不能裝進任何普通容器中，而且攜帶它們會導致你負擔過重。"
+      "text": "$(li)只有$(thing)大$()及以下的物品可以裝在箱子裡。$(li)$(thing)非常大$()的物品只能單獨在$(l:getting_started/pit_kiln)坑窯$()中燒製。$(li)$(thing)極大$()的物品不能裝進任何普通容器中，而且攜帶它們會導致你負擔過重。"
     },
     {
       "type": "patchouli:text",
@@ -24,12 +24,12 @@
     },
     {
       "type": "patchouli:text",
-      "text": "當你帶著$(thing)巨大$()又$(thing)非常重$()的物品時, 你會$(thing)負擔過重$(). 只帶一件$(thing)巨大, 非常重$()的物品會導致你疲憊, 同時飢餓值消耗的更快. 如果帶兩件以上, 就會導致你進入$(thing)負擔過重$()狀態, 導致行動極其緩慢."
+      "text": "物品欄中存在$(thing)極大$()且$(thing)非常重$()的物品會使你$(thing)負擔過重$()。只要攜帶一件$(thing)極大、非常重$()的物品就會導致你變得疲憊，飢餓值也會消耗得更快。攜帶兩件以上就會使你進入$(thing)負擔過重$()狀態，行動也會變得極其緩慢。"
     },
     {
       "type": "patchouli:text",
       "anchor": "overburdening",
-      "text": "會導致負擔過重的物品有$(thing)砧$(), $(thing)密封的大桶$(), 裝有物品的$(thing)坩堝$()$(br2)提示: $(l:mechanics/animal_husbandry#horses)馬$()也會負擔過重.",
+      "text": "會導致負擔過重的物品有$(thing)砧$()、$(thing)密封的大桶$()、裝有物品的$(thing)坩堝等。$()$(br2)提示: $(l:mechanics/animal_husbandry#horses)馬$()也會負擔過重。",
       "title": "負擔過重"
     }
   ],

@@ -39,7 +39,7 @@
           "G": "tfc:rock/bricks/granite"
         }
       },
-      "name": "",
+      "name": "-",
       "text": "用木炭炉加热坩埚",
       "enable_visualize": false
     },
@@ -59,7 +59,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "The crucible has nine slots where items can be added to be melted, and their liquefied contents will be directly added to the crucible. Molten metal containers such as $(l:getting_started/pottery#mold)Molds$() can also be placed here and they will be slowly drained into the crucible, allowing for precise control over your alloy's content. Holding $(item)$(k:key.sneak)$() while hovering over a draining mold or vessel makes it drain faster. $(br2)Molds or other fluid containers can also be placed in the output slot, and will be slowly filled with the current content of the crucible."
+      "text": "坩锅有九个用来熔化物品的格子，物品熔化之后的液体会直接流入坩锅。$(l:getting_started/pottery#mold)模具$()等可以盛装熔融金属的容器也可以放置在这里，其中的金属会慢慢流入坩锅。将光标置于容器上按住$(item)$(k:key.sneak)$()可以加速金属流入的速度。$(br2)模具和容器也可以放置在输出格，慢慢接收坩锅内的当前金属。"
     },
     {
       "type": "patchouli:text",

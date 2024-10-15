@@ -1,19 +1,19 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "堆肥",
+  "name": "肥料",
   "category": "tfc:mechanics",
   "icon": "tfc:powder/sylvite",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Fertilizers are used to add nutrients to $(l:mechanics/crops)crops$(). $(item)$(k:key.use)$() with a fertilizer in your hand on some $(thing)Farmland$() or a $(thing)Crop$() to add the nutrients. Particles should appear, indicating the fertilizer was added.",
+      "text": "肥料是用来给$(l:mechanics/crops)作物$()提供营养的物品。手持肥料$(item)$(k:key.use)$()点击一块$(thing)耕地$()或$(thing)作物$()就能向其添加营养物质。如果成功，应会出现粒子效果。",
       "title": "施肥"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:compost",
       "link_recipes": false,
-      "text": "Compost is the product of the $(l:mechanics/composter)Composter$(). $(br)$(li)$(b)Nitrogen: 40$()$(li)$(6)Phosphorous: 20$()$(li)$(d)Potassium: 40$()"
+      "text": "堆肥是由$(l:mechanics/composter)堆肥桶$()生产的。$(br)$(li)$(b)$(bold)氮$()：40$()$(li)$(6)$(bold)磷$()：20$()$(li)$(d)$(bold)钾$()：40$()"
     },
     {
       "type": "patchouli:spotlight",
@@ -37,7 +37,7 @@
       "type": "patchouli:spotlight",
       "item": "tfc:powder/wood_ash",
       "link_recipes": false,
-      "text": "Wood ash is produced by breaking firepits. Throwing a torch item into water also has a chance to produce ash. $(br)$(li)$(6)Phosphorous: 10$()$(li)$(d)Potassium: 30$()"
+      "text": "草木灰可以通过挖掉熄灭的篝火获得。将火把投入水中也有一定几率可以得到草木灰。$(br)$(li)$(6)$(bold)磷$()：10$()$(li)$(d)$(bold)钾$()：30$()"
     },
     {
       "type": "patchouli:spotlight",

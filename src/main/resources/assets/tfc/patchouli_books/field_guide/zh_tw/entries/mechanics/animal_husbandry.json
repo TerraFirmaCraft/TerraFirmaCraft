@@ -29,7 +29,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/unfamiliarized_pig.png"
       ],
-      "text": "牲畜有一個$(thing)親密度$()指標, 顯示它們對您的熟悉程度. 按住$(item)$(k:key.sneak)$()並指向這個動物來檢視親密度.",
+      "text": "按住$(item)$(k:key.sneak)$()並看著牲畜時會在頭上顯示其$(thing)親密度$()。",
       "border": true
     },
     {
@@ -37,7 +37,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/no_familiarity_decay_pig.png"
       ],
-      "text": "如果不餵食, 親密度每天都會減少一點. 但如果親密度高到一定程度(出現一個白色輪廓的心), 親密度就不會因此減少了.",
+      "text": "如果不餵食，親密度每天都會減少一點。但如果親密度高到一定程度（出現一個白色輪廓的心），親密度就不會因此減少了。",
       "border": true
     },
     {
@@ -45,7 +45,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/familiarity_limit_pig.png"
       ],
-      "text": "成年牲畜無法達到100%的親密度(也就是出現紅色輪廓的心), 只有幼年牲畜可能達到100%的親密度。",
+      "text": "成年牲畜無法達到 100% 的親密度（出現紅色輪廓的心），只有幼年牲畜可能達到 100% 的親密度。",
       "border": true
     },
     {
@@ -83,7 +83,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "They need a $(thing)Saddle$() to ride, which can be $(thing)Knapped$(). This includes $(l:mechanics/animal_husbandry#mule)Mules$(), $(l:mechanics/animal_husbandry#donkey)Donkeys$(), and $(l:mechanics/animal_husbandry#horses)Horses$(). Mules and Donkeys can hold any chest or barrel. If holding a barrel, $(item)$(k:key.use)$() while holding $(item)$(k:key.sneak)$() can be used to remove it. The same keys while holding a bucket can be used to drain fluid from the barrel. $(br2)The next few pages will go over all livestock types."
+      "text": "騎乘需要$(thing)鞍$()，鞍是透過$(thing)皮革塑形$()製作的。不管是$(l:mechanics/animal_husbandry#mule)騾$()、$(l:mechanics/animal_husbandry#donkey)驢$()還是$(l:mechanics/animal_husbandry#horses)馬$()都需要鞍。此外，騾和驢還可以攜帶箱子或大桶。攜帶大桶時，按住$(item)$(k:key.sneak)$()的同時$(item)$(k:key.use)$()就可以取下，或手持木桶時按同樣的鍵就可以存取液體。$(br2)以下幾頁將介紹所有的牲畜種類。"
     },
     {
       "type": "patchouli:text",
@@ -95,8 +95,8 @@
       "type": "patchouli:entity",
       "entity": "tfc:pig{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.6,
-      "name": " ",
-      "text": "一隻豬."
+      "name": "-",
+      "text": "豬"
     },
     {
       "type": "patchouli:text",
@@ -108,8 +108,8 @@
       "type": "patchouli:entity",
       "entity": "tfc:cow{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.75,
-      "name": " ",
-      "text": "一隻牛."
+      "name": "-",
+      "text": "牛"
     },
     {
       "type": "patchouli:text",
@@ -121,8 +121,8 @@
       "type": "patchouli:entity",
       "entity": "tfc:goat{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.75,
-      "name": " ",
-      "text": "一隻山羊."
+      "name": "-",
+      "text": "山羊"
     },
     {
       "type": "patchouli:text",
@@ -134,47 +134,47 @@
       "type": "patchouli:entity",
       "entity": "tfc:yak{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.75,
-      "name": " ",
-      "text": "一隻犛牛."
+      "name": "-",
+      "text": "犛牛"
     },
     {
       "type": "patchouli:text",
       "anchor": "alpaca",
-      "text": "$(thing)羊駝$()是一種會在$(l:the_world/climate#temperature)溫度$()在 -8 到 20°C 之間、$(l:the_world/climate#rainfall)降雨量$()至少 250 毫米的溫和的氣候中生成的$(l:mechanics/animal_husbandry#wooly_animals)產毛動物$()。它們會吃$(thing)穀物$()和$(thing)水果。他們一胎能生產 1-2 個幼崽，懷孕 36 天，98 天成年。若從未剪過毛，衰老前它們可以產仔 13 次。若從未產過仔，衰老前它們可以剪毛 180 次，且每 6 天長出一次羊毛。",
+      "text": "$(thing)羊駝$()是一種會在$(l:the_world/climate#temperature)溫度$()在 -8 到 20°C 之間、$(l:the_world/climate#rainfall)降雨量$()至少 250 毫米的溫和的氣候中生成的$(l:mechanics/animal_husbandry#wooly_animals)產毛動物$()。它們會吃$(thing)穀物$()和$(thing)水果$()。他們一胎能生產 1-2 個幼崽，懷孕 36 天，98 天成年。若從未剪過毛，衰老前它們可以產仔 13 次。若從未產過仔，衰老前它們可以剪毛 180 次，且每 6 天產出一次毛。",
       "title": "羊駝"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:alpaca{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.75,
-      "name": " ",
-      "text": "一隻羊駝."
+      "name": "-",
+      "text": "一隻羊駝。"
     },
     {
       "type": "patchouli:text",
       "anchor": "sheep",
-      "text": "$(thing)綿羊$()是一種會在$(l:the_world/climate#temperature)溫度$()在 0 到 35°C 之間、$(l:the_world/climate#rainfall)降雨量$() 70 到 300 毫米的較乾燥的氣候中生成的$(l:mechanics/animal_husbandry#wooly_animals)產毛動物$()。它們會吃$(thing)穀物$()。它們一胎能生產 1-2 個幼崽，懷孕 32 天，56 天成年。若從未剪過毛，衰老前它們可以產仔 6 次。若從未產過仔，衰老前它們可以剪毛 60 次，且每 9 天長出一次羊毛。",
+      "text": "$(thing)綿羊$()是一種會在$(l:the_world/climate#temperature)溫度$()在 0 到 35°C 之間、$(l:the_world/climate#rainfall)降雨量$()在 70 到 300 毫米的較乾燥氣候中生成的$(l:mechanics/animal_husbandry#wooly_animals)產毛動物$()。它們會吃$(thing)穀物$()。它們一胎能產 1-2 只幼崽，懷孕 32 天，56 天成年。若從未剪過毛，衰老前它們可以產仔 6 次。若從未產仔，衰老前它們可以剪毛 60 次，每 9 天產一次毛。",
       "title": "綿羊"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:sheep{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.75,
-      "name": " ",
-      "text": "一隻綿羊."
+      "name": "-",
+      "text": "一隻綿羊。"
     },
     {
       "type": "patchouli:text",
       "anchor": "musk_ox",
-      "text": "$(thing)Musk Oxen$() spawn in cold climates, with $(l:the_world/climate#temperature)temperature$() between -25 and 0°C, and at least 100mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#wooly_animals)Wooly Animals$(). They eat $(thing)grains$(). They always have 1 child, are pregnant for 64 days, and reach adulthood in 168 days. They can have children 16 times, if they are never sheared, or be sheared 160 times if they are never bred. They grow wool every 96 hours.",
+      "text": "$(thing)麝牛$()生活在$(l:the_world/climate#temperature)溫度$()在 -25°C 到 0°C 的寒冷氣候中，$(l:the_world/climate#rainfall)降雨量$()至少為 100 毫米。它們是$(l:mechanics/animal_husbandry#wooly_animals)產毛動物$()，以$(thing)穀物$()為食。它們通常只生一個幼崽，懷孕期為 64 天，168 天后成年。若從未剪過毛，衰老前可以產仔 16 次；若從未產仔，衰老前可以剪毛 160 次。它們每 96 小時產出一次毛。",
       "title": "麝牛"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:musk_ox{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.75,
-      "name": " ",
-      "text": "一隻麝牛."
+      "name": "-",
+      "text": "麝牛"
     },
     {
       "type": "patchouli:text",
@@ -186,8 +186,8 @@
       "type": "patchouli:entity",
       "entity": "tfc:chicken{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.7,
-      "name": " ",
-      "text": "一隻雞."
+      "name": "-",
+      "text": "雞"
     },
     {
       "type": "patchouli:text",
@@ -199,8 +199,8 @@
       "type": "patchouli:entity",
       "entity": "tfc:duck{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.7,
-      "name": " ",
-      "text": "一隻鴨."
+      "name": "-",
+      "text": "鴨"
     },
     {
       "type": "patchouli:text",
@@ -212,8 +212,8 @@
       "type": "patchouli:entity",
       "entity": "tfc:quail{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.7,
-      "name": " ",
-      "text": "一隻鵪鶉."
+      "name": "-",
+      "text": "鵪鶉"
     },
     {
       "type": "patchouli:text",
@@ -225,8 +225,8 @@
       "type": "patchouli:entity",
       "entity": "tfc:donkey{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.6,
-      "name": " ",
-      "text": "一隻驢."
+      "name": "-",
+      "text": "驢"
     },
     {
       "type": "patchouli:text",
@@ -238,8 +238,8 @@
       "type": "patchouli:entity",
       "entity": "tfc:mule{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.6,
-      "name": " ",
-      "text": "一隻騾子."
+      "name": "-",
+      "text": "騾子"
     },
     {
       "type": "patchouli:text",
@@ -251,8 +251,8 @@
       "type": "patchouli:entity",
       "entity": "tfc:horse{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.6,
-      "name": " ",
-      "text": "一隻馬."
+      "name": "-",
+      "text": "馬"
     }
   ],
   "read_by_default": true

@@ -27,7 +27,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Alabaster can be $(l:mechanics/dye)dyed$() in a $(l:mechanics/barrels)Barrel$() of dye into any color. Raw Alabaster blocks can also be $(l:mechanics/chisel)chiseled$() into $(thing)Polished Alabaster$() using the $(thing)Smooth$() chisel mode, or crafted into stairs, slabs, or walls.",
+      "text": "雪花石膏可以在$(l:mechanics/barrels)大桶$()中$(l:mechanics/dye)染色$()。未加工的雪花石膏砖可以被$(l:mechanics/chisel)凿制$()成$(thing)平滑雪花石膏砖$()，或是做成楼梯、台阶、围墙等方块。",
       "title": "雪花石膏装饰品"
     },
     {

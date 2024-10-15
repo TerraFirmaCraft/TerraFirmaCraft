@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "There are many, many, $(italic)many$() different types of plants in TerraFirmaCraft.$(br2)Different plants appear in different $(l:the_world/climate)Climates$(), and their appearance may change over the current season - going through cycles of flowering and laying dormant, or changing color as the local temperature changes. Colorful flowers can typically be crushed in a $(l:mechanics/quern)Quern$() for $(l:mechanics/dye)Dye$()."
+      "text": "在羣巒傳説中，存在着許許多多、各式各樣的植物。$(br2)不同的植物會出現在不同的$(l:the_world/climate)氣候$()中，並且它們會隨着四季變化經歷從開花到休眠的生長循環，其外觀也會相應改變。它們也會隨着當地温度的變化而變色。顏色豔麗的花朵通常可以在$(l:mechanics/quern)手推磨$()中碾碎，用於製作$(l:mechanics/dye)染料$()。"
     },
     {
       "type": "patchouli:multiblock",

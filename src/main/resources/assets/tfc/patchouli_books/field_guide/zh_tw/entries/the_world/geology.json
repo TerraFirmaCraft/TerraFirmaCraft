@@ -6,14 +6,14 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The world of TerraFirmaCraft is divided into large continents - landmasses many kilometers wide and seperated by oceans. In these, you may find mountain ranges, rivers, and many other environments."
+      "text": "群巒傳說的世界由遼闊的大陸和廣袤的海洋組成。幾千米寬的大陸上分佈著連綿的群山，蜿蜒的河流從山頂流向海洋，形成獨特的自然景觀。"
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/biomes/regions.png"
       ],
-      "text": "A typical TFC world viewed at a large scale.",
+      "text": "一幅群巒傳說世界的參考用大地圖。",
       "border": true
     },
     {
@@ -27,59 +27,59 @@
       "images": [
         "tfc:textures/gui/book/biomes/rock_layers.png"
       ],
-      "text": "The cross-section of a TFC world.",
+      "text": "一幅群巒傳說世界的參考用縱截面圖。",
       "border": true
     },
     {
       "type": "patchouli:text",
-      "text": "Ocean floors are composed of $(l:the_world/geology#igneous_extrusive)igneous extrusive$() rock - rocks that are formed by magma which cools quickly. Underneath igneous extrusive rock will likely be a $(l:the_world/geology)igneous intrusive$() rock of the same $(item)grade$().$(br2)For example, under $(thing)Basalt$() (a mafic, igneous extrusive rock), will likely be $(thing)Gabbro$() (a mafic, igneous intrusive rock).",
-      "title": "Ocean Floors"
+      "text": "群巒傳說的大洋底由$(l:the_world/geology#igneous_extrusive)噴出巖$()組成的——這些岩石是由迅速冷卻的岩漿形成的。在噴出巖的下方，很可能存在同一$(item)構成元素$()的$(l:the_world/geology)侵入岩$()。$(br2)例如，在$(thing)玄武岩$()（一種鎂鐵質的噴出巖）之下，很可能是$(thing)輝長岩$()（一種鎂鐵質的侵入岩）。",
+      "title": "大洋底"
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)$(l:https://en.wikipedia.org/wiki/Felsic)Felsic$() rocks are $(thing)Granite$() and $(thing)Rhyolite$().$(li)$(l:https://en.wikipedia.org/wiki/Intermediate_composition)Intermediate$() rocks are $(thing)Andesite$(), $(thing)Dacite$(), and $(thing)Diorite$().$(li)$(l:https://en.wikipedia.org/wiki/Mafic)Mafic$() rocks are $(thing)Basalt$() and $(thing)Gabbro$().",
-      "title": "Igneous Rock Grades"
+      "text": "$(li)$(l:https://zh.wikipedia.org/wiki/長英質)長英質$()岩石包括$(thing)花崗岩$()和$(thing)流紋岩$()。$(li)$(l:https://zh.wikipedia.org/wiki/中性巖)中性巖$()包括$(thing)安山岩$()、$(thing)英安巖$()和$(thing)閃長巖$()。$(li)$(l:https://zh.wikipedia.org/wiki/鎂鐵質)鎂鐵質$()岩石包括$(thing)玄武岩$()和$(thing)輝長岩$()。",
+      "title": "火成岩的不同構成元素"
     },
     {
       "type": "patchouli:text",
-      "text": "The top layer of rock on a continent will either be igneous extrusive, or $(l:the_world/geology#sedimentary)sedimentary$(). Underneath sedimentary rocks will likely be $(l:the_world/geology#metamorphic)metamorphosed$() forms of the rock above.$(br2)For example, $(thing)Marble$() (a metamorphic rock) will likely be found under $(thing)Limestone$() or $(thing)Chalk$(). High grade metamorphic rocks are found deep under other metamorphic or igneous rocks."
+      "text": "大陸的頂層岩石通常是噴出巖或$(l:the_world/geology#sedimentary)沉積岩$()。在沉積岩的下方，有極大機率會是上層岩石的$(l:the_world/geology#metamorphic)變質$()版本。$(br2)例如，$(thing)大理岩$()（一種變質岩）很可能位於$(thing)石灰岩$()或$(thing)白堊巖$()的下方。高變質程度的變質岩通常位於其他變質岩或火成岩的深處。"
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)$(thing)Slate$() forms under $(thing)Shale$(), $(thing)Claystone$(), and $(thing)Conglomerate$().$(li)$(thing)Marble$() forms under $(thing)Limestone$(), $(thing)Dolomite$(), and $(thing)Chalk$().$(li)$(thing)Quartzite$() forms under $(thing)Chert$().$(li)$(thing)Phyllite$() forms under $(thing)Slate$()$(li)$(thing)Schist$() and $(thing)Gneiss$() form under $(thing)Phyllite$(), or other igneous intrusive rocks.",
-      "title": "Metamorphic Rocks"
+      "text": "$(li)$(thing)板岩$()形成於$(thing)頁岩$()、$(thing)泥岩$()和$(thing)礫岩$()之下。$(li)$(thing)大理岩$()形成於$(thing)石灰岩$()、$(thing)白雲岩$()和$(thing)白堊巖$()之下。$(li)$(thing)石英岩$()形成於$(thing)矽質岩$()之下。$(li)$(thing)千枚巖$()形成於$(thing)板岩$()之下。$(li)$(thing)片岩$()和$(thing)片麻岩$()形成於$(thing)千枚巖$()或其他侵入岩之下。",
+      "title": "變質岩"
     },
     {
       "type": "patchouli:text",
-      "text": "Finally, in mountainous regions you might also see $(thing)uplift$(), where a metamorphic or igneous intrusive rock is found on the surface. Uplift rocks can be found above other continental sedimentary or higher-grade metamorphic rocks.$(br2)In addition, $(l:https://en.wikipedia.org/wiki/Dike_%28geology%29)Dikes$() - small vertical slices of igneous intrusive rock - may appear scattered around the world,",
-      "title": "Uplift Regions"
+      "text": "最後，山地地區可能會出現一種叫$(thing)隆起$()的現象。在那裡，變質岩或侵入岩會反常地出現在地表，出現在其他大陸沉積岩或較高等級的變質岩之上。$(br2)此外，一種叫$(l:https://zh.wikipedia.org/wiki/巖脈)岩脈$()的地質構造可能零散地分佈於世界各地，生成一小片垂直的侵入岩地區。",
+      "title": "隆起現象"
     },
     {
       "type": "patchouli:text",
-      "text": "protruding through the upper layers of rocks.$(br2)With all that in mind, the next few pages list the rocks of all four categories: $(thing)Sedimentary$(), $(thing)Metamorphic$(), $(thing)Igneous Extrusive$(), and $(thing)Igneous Intrusive$(). These categories determine where the rock can spawn (see the previous pages), and also what ores may spawn in this rock."
+      "text": "接下來的幾頁將列出四個岩石類別：$(thing)沉積岩$()、$(thing)變質岩$()、$(thing)火成噴出巖$()和$(thing)火成侵入岩$()所包含的具體岩石型別。岩石的類別決定了它可能的地理位置（請參閱前幾頁），以及哪些礦石可能在這些岩石中生成。"
     },
     {
       "type": "patchouli:text",
       "anchor": "sedimentary",
-      "text": "$(l:https://en.wikipedia.org/wiki/Sedimentary_rock)Sedimentary$() rocks are formed by the accumulation or deposition of mineral or organic particles. They are typically found on the top layers of rock in continental areas. They are:$(br)$(li)Shale$(li)Claystone$(li)Limestone$(li)Conglomerate$(li)Dolomite$(li)Chert$(li)Chalk",
+      "text": "$(l:https://zh.wikipedia.org/wiki/沉積岩)沉積岩$()是由礦物或有機顆粒的積累或沉積形成的。它們通常位於大陸地區的岩石頂層。沉積岩包括：$(br)$(li)頁岩$(li)泥岩$(li)石灰岩$(li)礫岩$(li)白雲岩$(li)矽質岩$(li)白堊巖",
       "title": "沉積岩"
     },
     {
       "type": "patchouli:text",
       "anchor": "metamorphic",
-      "text": "$(l:https://en.wikipedia.org/wiki/Metamorphic_rock)Metamorphic$() rocks are created by a process called metamorphism. They can be found underneath corresponding sedimentary or igneous rock, or in uplift areas. They are:$(br)$(li)Quartzite$(li)Slate$(li)Phyllite$(li)Schist$(li)Gneiss$(li)Marble",
+      "text": "$(l:https://zh.wikipedia.org/wiki/變質岩)變質岩$()是透過一種稱為變質作用的過程形成的。它們可以在相應的沉積岩或火成岩的下方，或在隆起地區找到。變質岩包括：$(br)$(li)石英岩$(li)板岩$(li)千枚巖$(li)片岩$(li)片麻岩$(li)大理岩",
       "title": "變質岩"
     },
     {
       "type": "patchouli:text",
       "anchor": "igneous_extrusive",
-      "text": "$(l:https://en.wikipedia.org/wiki/Igneous_rock#Extrusive)Igneous Extrusive$() rocks are formed from magma cooling on the Earth's surface. They can be found on the top layer of rock in continental areas, or on the floor of oceans. They are:$(br)$(li)Rhyolite$(li)Basalt$(li)Andesite$(li)Dacite",
+      "text": "$(l:https://zh.wikipedia.org/wiki/火成岩#分類方式)火成噴出巖$()是由地表的岩漿冷卻形成的。它們可以在大陸地區的岩石頂層或海洋底部找到。火成噴出巖包括：$(br)$(li)流紋岩$(li)玄武岩$(li)安山岩$(li)英安巖",
       "title": "噴出巖"
     },
     {
       "type": "patchouli:text",
       "anchor": "igneous_intrusive",
-      "text": "$(l:https://en.wikipedia.org/wiki/Igneous_rock#Intrusive)Igneous Intrusive$() rocks are formed from magma which cooled under the Earth's crust. They can be found deep underground, or rarely in dikes or uplift areas. They are:$(br)$(li)Granite$(li)Diorite$(li)Gabbro",
+      "text": "$(l:https://zh.wikipedia.org/wiki/火成岩#分類方式)火成侵入岩$()是由地殼下的岩漿冷卻形成的。它們通常位於地下深處，或偶爾在岩脈或隆起地區出現。火成侵入岩包括：$(br)$(li)花崗岩$(li)閃長巖$(li)輝長岩",
       "title": "侵入岩"
     }
   ],

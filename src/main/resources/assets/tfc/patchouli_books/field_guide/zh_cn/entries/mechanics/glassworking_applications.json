@@ -1,21 +1,21 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Glass Products",
+  "name": "玻璃制品",
   "category": "tfc:mechanics",
   "icon": "minecraft:glass",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The most simple glass products are $(thing)Glass Panes$() and $(thing)Glass Blocks$(). In order to craft them, you must start with a $(l:mechanics/glassworking#blowpipe)Blowpipe$() with a $(thing)Glass Batch$(), and then perform a $(thing)Pour$().$(br)$(li)$(bold)Table Pours$() are used to create $(thing)Glass Panes$()$(li)$(bold)Basin Pours$() are used to create $(thing)Glass Blocks$()"
+      "text": "最基础的玻璃制品是$(thing)玻璃板$()和$(thing)玻璃块$()。将$(thing)玻璃原料$()装在$(l:mechanics/glassworking#blowpipe)吹风管$()上，就可以进行$(thing)浇筑$()了。$(br)$(li)$(bold)台式浇筑$()法可制作$(thing)玻璃板$()$(li)$(bold)盆式浇筑$()法可制作$(thing)玻璃块$()"
     },
     {
       "type": "patchouli:text",
-      "text": "Glass can also be $(thing)dyed$() before it is poured to create colored glass. The color is dependent on the type of glass batch, and any powders that have been added.$(br2)Each type of $(thing)Glass Batch$() has a different natural color of glass that they will create. $(thing)Silica$() glass batches can be made into many colors, $(thing)Olivine$(), and $(thing)Volcanic$() glass can be made into relatively few colors."
+      "text": "在进行浇筑之前，可以先对玻璃进行$(thing)染色$()。玻璃的颜色是由所用玻璃原料的类型，以及加工时加入的添加剂粉末决定的。$(br2)每种类型的$(thing)玻璃原料$()都拥有自己的自然颜色，且只能染成某些特定的颜色。$(thing)二氧化硅$()和$(thing)赤铁矿$()玻璃可以被染成许多颜色，而$(thing)橄榄岩$()和$(thing)火山岩$()玻璃则只能被染成较少的几种颜色。"
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Glass Panes$() are made with a $(thing)Table Pour$(). A pouring table is made by placing up to sixteen $(thing)Brass Plated Blocks$() in a continuous area.$(br2) 1. Add a $(l:mechanics/glassworking)Glass Batch$() to a $(thing)Blowpipe$().$(br) 2. Heat the blowpipe to $(4)$(bold)Faint Red$().$(br) 3. $()$(item)$(k:key.use)$() the $(thing)Blowpipe$() on the top of the table.$(br) 4. Finally $(item)$(k:key.use)$() with a $(l:mechanics/glassworking#paddle)Paddle$() to flatten the glass.",
-      "title": "Table Pour"
+      "text": "$(thing)玻璃板$()是用$(thing)台式浇筑$()法制成的。将最多16块$(thing)镀黄铜块$()放置在统一平面以形成一块浇筑平台后：$(br) 1、将$(l:mechanics/glassworking)玻璃原料$()装入$(thing)吹风管$()；$(br) 2、将吹风管加热至至少$(4)$(bold)淡红$()；$(br) 3、$()对准浇筑平台$(item)$(k:key.use)$()点击$(thing)吹风管$()；$(br) 4、手持$(l:mechanics/glassworking#paddle)玻璃压板$()$(item)$(k:key.use)$()点击平台上的玻璃原料以将玻璃平铺在整个平台表面。",
+      "title": "台式浇筑"
     },
     {
       "type": "patchouli:image",
@@ -24,13 +24,13 @@
         "tfc:textures/gui/book/tutorial/glass_panes_2.png",
         "tfc:textures/gui/book/tutorial/glass_panes_3.png"
       ],
-      "text": "Once the glass is cooled, it can be broken with a $(l:mechanics/glassworking#saw)Gem Saw$() to obtain.",
+      "text": "待玻璃冷却之后，用$(l:mechanics/glassworking#saw)宝石锯$()就能将其从平台上收集下来了。",
       "border": true
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Glass Blocks$() are made with a $(thing)Basin Pour$(). A basin is made by surrounding all sides of an air block except the top with $(thing)Brass Plated Blocks$().$(br2) 1. Add a $(l:mechanics/glassworking)Glass Batch$() to a $(thing)Blowpipe$().$(br) 2. Heat the blowpipe to $(4)$(bold)Faint Red$().$(br) 3. $(item)$(k:key.use)$() the $(thing)Blowpipe$() on the top of the table.",
-      "title": "Basin Pour"
+      "text": "$(thing)玻璃块$()则需要用$(thing)盆式浇筑$()法制作。用5块$(thing)镀黄铜块$()将一块空气围起来后：$(br) 1、将$(l:mechanics/glassworking)玻璃原料$()装入$(thing)吹风管$()；$(br) 2、将吹风管加热至至少$(4)$(bold)淡红$()；$(br) 3、对准盆内部$(item)$(k:key.use)$()点击$(thing)吹风管$()。",
+      "title": "盆式浇筑"
     },
     {
       "type": "patchouli:image",
@@ -39,27 +39,27 @@
         "tfc:textures/gui/book/tutorial/glass_block_2.png",
         "tfc:textures/gui/book/tutorial/glass_block_3.png"
       ],
-      "text": "Once the glass is cooled, it can be broken with a $(l:mechanics/glassworking#saw)Gem Saw$() to obtain.",
+      "text": "待玻璃冷却之后，用$(l:mechanics/glassworking#saw)宝石锯$()就能将其从平台上收集下来了。",
       "border": true
     },
     {
       "type": "patchouli:text",
       "anchor": "coloring",
-      "text": "Glass has a natural color based on the type of $(l:mechanics/glassworking)Glass Batch$() that was used. Other colors can be made using a $(l:mechanics/bowls)Bowl$().$(br2)To use, place the $(l:mechanics/bowls)Bowl$() on the ground, then $(item)$(k:key.use)$() the required $(thing)Powder$(). Before $(thing)Pouring$(), use the $(thing)Blowpipe$() on the bowl to add the powder to the batch.",
-      "title": "Coloring Glass"
+      "text": "根据所选$(l:mechanics/glassworking)玻璃原料$()性质，玻璃会拥有一种自然的颜色。要将玻璃染成其他颜色，需要准备一只$(l:mechanics/bowls)碗$()。$(br2)将$(l:mechanics/bowls)碗$()放在地上，加入所需的$(thing)粉末$()，随后用装在$(thing)吹风管$()上的玻璃原料蘸取一些粉末。",
+      "title": "玻璃染色"
     },
     {
       "type": "patchouli:text",
-      "text": "$(br2)The next pages show the different combinations of glass types and powder materials to create each color."
+      "text": "$(br2)下面几页会说明制作每一种颜色的玻璃需要哪些材料。"
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)$(bold)$(7)White$(): Silica or Hematitic Glass + $(thing)Soda Ash$()$(li)$(bold)$(0)Black$(): Any Glass + $(thing)Graphite$()$(li)$(bold)$(8)Gray$(): Any + $(thing)Graphite$() + $(thing)Soda Ash$()$(li)$(bold)$(7)Light Gray$(): Any + $(thing)Graphite$() + 2x $(thing)Soda Ash$()$(li)$(bold)$(5)Purple$(): Any + $(thing)Iron$() + $(thing)Copper$()$(li)$(bold)$(#964b00)Brown$(): Any + $(thing)Nickel$()$(li)$(bold)$(3)Cyan$(): Non-Volcanic Glass + $(thing)Copper$() + $(thing)Sapphire$()$(li)$(bold)$(2)Green$(): Silica or Hematitic Glass + $(thing)Iron$()",
-      "title": "Dye Colors"
+      "text": "$(li)$(bold)$(7)白色$()：二氧化硅/赤铁矿玻璃+$(thing)海草粉$()$(li)$(bold)$(0)黑色$()：任何玻璃+$(thing)石墨粉$()$(li)$(bold)$(8)灰色$()：任何玻璃+$(thing)石墨$()+$(thing)海草粉$()$(li)$(bold)$(7)淡灰色$()：任何玻璃+$(thing)石墨粉$()+2x$(thing)海草粉$()$(li)$(bold)$(5)紫色$()：任何玻璃+$(thing)铁粉$()+$(thing)铜粉$()$(li)$(bold)$(#964b00)棕色$()：任何玻璃+$(thing)镍粉$()$(li)$(bold)$(3)青色$()：非火山岩玻璃+$(thing)铜粉$()+$(thing)蓝宝石粉$()$(li)$(bold)$(2)绿色$()：二氧化硅/赤铁矿玻璃+$(thing)铁粉$()",
+      "title": "染料粉末"
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)$(bold)$(a)Lime$(): Silica or Hematitic Glass + $(thing)Iron$() + $(thing)Soda Ash$()$(li)$(bold)$(b)Light Blue$(): Silica Glass + $(thing)Lapis Lazuli$()$(li)$(bold)$(1)Blue$(): Silica Glass + $(thing)Copper$()$(li)$(bold)$(4)Red$(): Silica or Hematitic Glass + $(thing)Tin$()$(li)$(bold)$(6)Yellow$(): Silica or Hematitic Glass + $(thing)Silver$()$(li)$(bold)$(#ef8e38)Orange$(): Silica Glass + $(thing)Pyrite$()$(li)$(bold)$(5)Magenta$(): Silica or Hematitic Glass + $(thing)Ruby$()$(li)$(bold)$(d)Pink$(): Silica Glass + $(thing)Gold$()$(li)$(bold)$(0)Tinted$(): Non-Silica Glass + $(thing)Amethyst$()"
+      "text": "$(li)$(bold)$(a)黄绿色$()：二氧化硅/赤铁矿玻璃+$(thing)铁粉$()+$(thing)海草粉$()$(li)$(bold)$(b)淡蓝色$()：二氧化硅玻璃+$(thing)青金石粉$()$(li)$(bold)$(1)蓝色$()：二氧化硅玻璃+$(thing)铜粉$()$(li)$(bold)$(4)红色$()：二氧化硅/赤铁矿玻璃+$(thing)锡粉$()$(li)$(bold)$(6)黄色$()：二氧化硅/赤铁矿玻璃+$(thing)银粉$()$(li)$(bold)$(#ef8e38)橙色$()：二氧化硅玻璃+$(thing)黄铁矿粉$()$(li)$(bold)$(5)品红色$()：二氧化硅/赤铁矿玻璃+$(thing)红宝石粉$()$(li)$(bold)$(d)粉红色$()：二氧化硅玻璃+$(thing)金粉$()$(li)$(bold)$(0)遮光$()：非二氧化硅玻璃+$(thing)紫水晶粉$()"
     },
     {
       "type": "tfc:table_small",
@@ -350,8 +350,8 @@
           "fill": "0x3eb340"
         }
       ],
-      "text": "The availability of glass colors. 'C' is clear, 'T' is tinted. Colors can only be crafted with certain glass batches.",
-      "title": "Glass Color Availability",
+      "text": "每种原料可制成的所有玻璃颜色。C表示透明玻璃，T表示遮光玻璃。",
+      "title": "可制成的玻璃颜色",
       "legend": [
         {
           "text": "Can be Crafted",
@@ -382,24 +382,24 @@
       "type": "tfc:glassworking_recipe",
       "anchor": "lamp_glass",
       "recipe": "tfc:glassworking/lamp_glass",
-      "text": "$(thing)Lamp Glass$() is a necessary component to craft $(l:mechanics/lamps)Lamps$()."
+      "text": "$(thing)灯罩$()是$(l:mechanics/lamps)灯$()的必要部件。"
     },
     {
       "type": "tfc:glassworking_recipe",
       "anchor": "jar",
       "recipe": "tfc:glassworking/jar",
-      "text": "$(l:mechanics/jarring)Jars$() are also made from blown glass, but only silica or hematitic glass."
+      "text": "$(l:mechanics/jarring)玻璃罐$()只能使用二氧化硅玻璃或赤铁矿玻璃制成。"
     },
     {
       "type": "tfc:glassworking_recipe",
       "anchor": "glass_bottle",
       "recipe": "tfc:glassworking/silica_bottle",
-      "text": "$(thing)Glass Bottles$() can also be made. The quality of the glass bottle depends on the type of glass used to make it."
+      "text": "$(thing)玻璃瓶$()的强度取决于制作玻璃瓶所用的玻璃种类。"
     },
     {
       "type": "tfc:glassworking_recipe",
       "recipe": "tfc:glassworking/lens",
-      "text": "The $(thing)Lens$() is used for crafting the spyglass, compasses, and daylight sensors."
+      "text": "$(thing)透镜$()可用于制作望远镜、指南针和阳光传感器。"
     }
   ],
   "read_by_default": true,

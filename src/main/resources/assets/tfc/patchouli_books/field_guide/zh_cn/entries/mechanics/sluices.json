@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The $(thing)Sluice$() is a device that is used to process $(thing)Ore Deposits$(), producing the same results that $(l:mechanics/panning)Panning$() does, with different probabilities."
+      "text": "$(thing)洗矿槽$()是一种用来处理$(thing)矿石沉积物$()的装置，其产物和$(l:mechanics/panning)淘金盘$()一致，但产出各物品的几率不同。"
     },
     {
       "type": "patchouli:crafting",
@@ -39,8 +39,8 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Sluicing can give three possible products: $(thing)Ore$(), $(thing)Loose Rocks$(), and $(l:mechanics/gems)Gems$(). The probabilities are as follows:$(br)$(li)Ore: 55%%$(li)Loose Rock: 22.5%%$(li)Gem: 0.9%%$()Each rock type has a specific gem that it will drop, that is exclusive to that rock type.",
-      "title": "Products of Panning"
+      "text": "洗矿槽会产出三种不同的产物：$(thing)矿石$()、$(thing)石子$()和$(l:mechanics/gems)宝石$()。$(br)$(li)矿石：55%几率$(li)石子：22.5%几率$(li)宝石：0.9%几率$()，每种岩石类型都会有一种独有的宝石可能出现。",
+      "title": "洗矿产物"
     }
   ],
   "read_by_default": true,

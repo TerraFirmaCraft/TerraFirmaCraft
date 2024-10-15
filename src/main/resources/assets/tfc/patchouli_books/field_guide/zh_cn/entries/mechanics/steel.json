@@ -55,7 +55,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Blue Steel$() can be used to create tools and $(l:mechanics/armor)Armor$(), and a $(thing)Blue Steel Bucket$(), which can be used to transport 1000 mB of both liquid fluids, and $(6)Lava$()."
+      "text": "$(thing)蓝钢$()可用来合成工具与$(l:mechanics/armor)盔甲$()……以及$(thing)蓝钢桶$()。蓝钢桶可以用来舀起并转移 1000 mB 的流体源方块，以及$(6)熔岩$()。"
     },
     {
       "type": "patchouli:text",
@@ -77,7 +77,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Red Steel$() can be used to create tools and $(l:mechanics/armor)Armor$(), and a $(thing)Red Steel Bucket$(), which can be used to transport 1000 mB of both liquid fluids, and $(6)Lava$()"
+      "text": "$(thing)蓝钢$()可用来合成工具与$(l:mechanics/armor)盔甲$()……以及$(thing)红钢桶$()。红钢桶可以用来舀起并转移 1000 mB 的流体源方块，以及$(6)熔岩$()。"
     }
   ],
   "read_by_default": true,
