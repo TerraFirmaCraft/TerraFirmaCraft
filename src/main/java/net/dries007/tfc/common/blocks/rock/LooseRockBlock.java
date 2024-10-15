@@ -65,13 +65,13 @@ public class LooseRockBlock extends GroundcoverBlock implements IFluidLoggable
                     final BlockState newState = state.setValue(COUNT, count + 1);
                     if (newState.canSurvive(level, pos))
                     {
-                        Helpers.playPlaceSound(level, pos, state);
+                        Helpers.playPlaceSound(player, level, pos, state);
                         level.setBlockAndUpdate(pos, newState);
                         if (!player.isCreative())
                         {
                             stack.shrink(1);
                         }
-                        return ItemInteractionResult.SUCCESS;
+                        return ItemInteractionResult.sidedSuccess(level.isClientSide);
                     }
                 }
             }

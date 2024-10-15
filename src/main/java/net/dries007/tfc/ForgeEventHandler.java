@@ -1208,7 +1208,7 @@ public final class ForgeEventHandler
             if (state.getBlock() instanceof TFCLecternBlock && LecternBlock.tryPlaceBook(event.getEntity(), level, event.getPos(), state, stack))
             {
                 event.setCanceled(true);
-                event.setCancellationResult(InteractionResult.SUCCESS);
+                event.setCancellationResult(InteractionResult.sidedSuccess(level.isClientSide));
             }
         }
 
@@ -1294,8 +1294,8 @@ public final class ForgeEventHandler
         if (event.getHand() == InteractionHand.MAIN_HAND && event.getItemStack().isEmpty())
         {
             // Cannot be cancelled, only fired on client.
-            InteractionResult result = Drinkable.attemptDrink(event.getLevel(), event.getEntity(), false);
-            if (result == InteractionResult.SUCCESS)
+            final InteractionResult result = Drinkable.attemptDrink(event.getLevel(), event.getEntity(), false);
+            if (result.consumesAction())
             {
                 PacketDistributor.sendToServer(PlayerDrinkPacket.PACKET);
             }
@@ -1418,7 +1418,7 @@ public final class ForgeEventHandler
                     oldCart.discard();
                     player.level().addFreshEntity(minecart);
                 }
-                event.setCancellationResult(InteractionResult.SUCCESS);
+                event.setCancellationResult(InteractionResult.sidedSuccess(player.level().isClientSide));
             }
         }
     }

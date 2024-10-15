@@ -55,7 +55,7 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
 
         final BlockState newState = Helpers.copyProperties(newBlock.defaultBlockState(), state);
         level.setBlock(pos, newState, 3);
-        Helpers.playPlaceSound(level, pos, newState);
+        Helpers.playPlaceSound(null, level, pos, newState);
 
         final BlockEntity newEntity = level.getBlockEntity(pos);
         if (newEntity instanceof AbstractFirepitBlockEntity<?> newFirepit)

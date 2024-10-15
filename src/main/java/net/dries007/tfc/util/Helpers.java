@@ -67,6 +67,7 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -927,20 +928,29 @@ public final class Helpers
         }
     }
 
+    /**
+     * Plays the standard sound that is used when a block of a given state is placed.
+     * @param state The state corresponding to the block or sound type that was placed.
+     */
+    public static void playPlaceSound(@Nullable Player player, LevelAccessor level, BlockPos pos, BlockState state)
+    {
+        playPlaceSound(player, level, pos, state.getSoundType(level, pos, player));
+    }
+
+    /**
+     * Plays the standard sound that is used when a block of a given sound type is placed.
+     * @param player The player which is ignored on server, but plays for on client. This should either be invoked on server with {@code null}, or
+     *               invoked on both sides with the same {@code player}.
+     * @implNote The exact volume and pitch are copied from the sound in {@link BlockItem#place}.
+     */
+    public static void playPlaceSound(@Nullable Player player, LevelAccessor level, BlockPos pos, SoundType sound)
+    {
+        level.playSound(player, pos, sound.getPlaceSound(), SoundSource.BLOCKS, (sound.getVolume() + 1.0F) / 2.0F, sound.getPitch() * 0.8F);
+    }
+
     public static void playSound(Level level, BlockPos pos, SoundEvent sound)
     {
-        var rand = level.getRandom();
-        level.playSound(null, pos, sound, SoundSource.BLOCKS, 1.0F + rand.nextFloat(), rand.nextFloat() + 0.7F + 0.3F);
-    }
-
-    public static void playPlaceSound(LevelAccessor level, BlockPos pos, BlockState state)
-    {
-        playPlaceSound(level, pos, state.getSoundType(level, pos, null));
-    }
-
-    public static void playPlaceSound(LevelAccessor level, BlockPos pos, SoundType st)
-    {
-        level.playSound(null, pos, st.getPlaceSound(), SoundSource.BLOCKS, (st.getVolume() + 1.0F) / 2.0F, st.getPitch() * 0.8F);
+        level.playSound(null, pos, sound, SoundSource.BLOCKS, 1.0F + level.getRandom().nextFloat(), level.getRandom().nextFloat() + 0.7F + 0.3F);
     }
 
     public static boolean spawnItem(Level level, Vec3 pos, ItemStack stack)

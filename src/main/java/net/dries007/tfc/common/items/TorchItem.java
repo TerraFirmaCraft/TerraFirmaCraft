@@ -42,7 +42,7 @@ public class TorchItem extends StandingAndWallBlockItem
         final BlockPos pos = context.getClickedPos();
         if (StartFireEvent.startFire(level, pos, level.getBlockState(pos), context.getClickedFace(), context.getPlayer(), context.getItemInHand(), StartFireEvent.FireStrength.WEAK))
         {
-            return InteractionResult.SUCCESS;
+            return InteractionResult.sidedSuccess(level.isClientSide);
         }
         return super.useOn(context);
     }

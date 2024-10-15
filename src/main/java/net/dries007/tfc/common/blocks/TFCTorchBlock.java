@@ -69,7 +69,7 @@ public class TFCTorchBlock extends TorchBlock implements IForgeBlockExtension, E
                 ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFCBlocks.TORCH.get()));
             }
         }
-        return ItemInteractionResult.SUCCESS;
+        return ItemInteractionResult.sidedSuccess(level.isClientSide);
     }
 
     @Override

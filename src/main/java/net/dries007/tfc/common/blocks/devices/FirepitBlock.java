@@ -65,7 +65,7 @@ public class FirepitBlock extends BottomSupportedDeviceBlock implements IGhostBl
             {
                 if (inventory.getStackInSlot(i).isEmpty() && inventory.isItemValid(AbstractFirepitBlockEntity.SLOT_FUEL_INPUT, held))
                 {
-                    Helpers.playPlaceSound(player.level(), player.blockPosition(), SoundType.WOOD);
+                    Helpers.playPlaceSound(player, player.level(), player.blockPosition(), SoundType.WOOD);
                     inventory.setStackInSlot(i, player.isCreative() ? held.copy().split(1) : held.split(1));
                     firepit.markForSync();
                     return true;
@@ -213,7 +213,7 @@ public class FirepitBlock extends BottomSupportedDeviceBlock implements IGhostBl
                     if (!player.isCreative())
                         stack.shrink(1);
                 }
-                return ItemInteractionResult.SUCCESS;
+                return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
             else if (tryInsertLog(player, stack, firepit, true))
             {
@@ -232,7 +232,7 @@ public class FirepitBlock extends BottomSupportedDeviceBlock implements IGhostBl
                 {
                     serverPlayer.openMenu(firepit, pos);
                 }
-                return ItemInteractionResult.SUCCESS;
+                return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
         }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;

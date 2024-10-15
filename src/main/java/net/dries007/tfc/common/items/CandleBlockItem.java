@@ -58,7 +58,7 @@ public class CandleBlockItem extends BlockItem
                 level.playSound(null, pos, SoundEvents.CAKE_ADD_CANDLE, SoundSource.BLOCKS, 1.0F, 1.0F);
                 level.setBlockAndUpdate(pos, candleCakeBlock.get().defaultBlockState());
                 level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
-                return InteractionResult.SUCCESS;
+                return InteractionResult.sidedSuccess(level.isClientSide);
             }
         }
         return super.useOn(context);

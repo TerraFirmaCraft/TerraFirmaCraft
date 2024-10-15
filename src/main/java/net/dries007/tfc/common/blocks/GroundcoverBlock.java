@@ -134,7 +134,7 @@ public class GroundcoverBlock extends ExtendedBlock implements IFluidLoggable
             getDrops(state, serverLevel, pos, entity, null, ItemStack.EMPTY).forEach(stackToSpawn -> ItemHandlerHelper.giveItemToPlayer(player, stackToSpawn));
         }
         level.removeBlock(pos, false);
-        return ItemInteractionResult.SUCCESS;
+        return ItemInteractionResult.sidedSuccess(level.isClientSide);
     }
 
     @Override

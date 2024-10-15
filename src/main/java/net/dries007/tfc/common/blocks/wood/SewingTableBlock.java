@@ -61,15 +61,11 @@ public class SewingTableBlock extends HorizontalDirectionalBlock implements IFor
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
-        if (level.isClientSide)
-        {
-            return ItemInteractionResult.SUCCESS;
-        }
-        else
+        if (!level.isClientSide)
         {
             player.openMenu(state.getMenuProvider(level, pos));
-            return ItemInteractionResult.CONSUME;
         }
+        return ItemInteractionResult.sidedSuccess(level.isClientSide);
     }
 
     @Nullable

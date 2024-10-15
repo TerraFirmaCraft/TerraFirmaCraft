@@ -237,7 +237,7 @@ public class PackPredator extends Predator implements Temptable
                     }
                 }
             }
-            return InteractionResult.SUCCESS;
+            return InteractionResult.sidedSuccess(level().isClientSide);
         }
         return super.mobInteract(player, hand);
     }

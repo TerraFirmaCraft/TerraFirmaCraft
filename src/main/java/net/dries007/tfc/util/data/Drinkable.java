@@ -119,7 +119,7 @@ public record Drinkable(
                     {
                         doDrink(level, player, state, pos, info, drinkable);
                     }
-                    return InteractionResult.SUCCESS;
+                    return InteractionResult.sidedSuccess(level.isClientSide);
                 }
             }
             else

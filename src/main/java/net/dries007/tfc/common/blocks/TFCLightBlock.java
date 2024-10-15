@@ -88,9 +88,8 @@ public class TFCLightBlock extends Block implements IFluidLoggable
             if (!level.isClientSide)
             {
                 level.setBlock(pos, state.cycle(LEVEL), 2);
-                return ItemInteractionResult.SUCCESS;
             }
-            return ItemInteractionResult.CONSUME;
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
