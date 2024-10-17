@@ -917,7 +917,7 @@ def generate(rm: ResourceManager):
                     word = OXIDIZED_METAL_NAMES[metal]
                 block = rm.blockstate(('metal', variant, metal))
                 block.with_block_model()
-                block.with_lang(lang('%s %s plated block', word, metal))
+                block.with_lang(lang('%s%s plated block', word + ' ' if word != '' else word, metal))
                 block.with_item_model()
                 block.with_block_loot('tfc:metal/%s/%s' % (variant, metal))
                 block.make_slab()

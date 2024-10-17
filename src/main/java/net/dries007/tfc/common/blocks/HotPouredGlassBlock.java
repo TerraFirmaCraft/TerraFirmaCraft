@@ -56,7 +56,7 @@ public class HotPouredGlassBlock extends BottomSupportedDeviceBlock
     @Override
     public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity)
     {
-        if (entity instanceof LivingEntity living)
+        if (entity instanceof LivingEntity)
         {
             entity.hurt(level.damageSources().hotFloor(), 1.0F);
         }
