@@ -1146,11 +1146,12 @@ public final class ForgeEventHandler
 
     public static void onServerChat(ServerChatEvent event)
     {
-        // Apply intoxication after six hours
-        final long intoxicatedTicks = IPlayerInfo.get(event.getPlayer()).getIntoxication() - 6 * ICalendar.TICKS_IN_HOUR;
-        if (intoxicatedTicks > 0)
+        // Apply intoxication effects at >20% intoxication
+        final float intoxicationChance = Mth.clampedMap(
+            IPlayerInfo.get(event.getPlayer()).getIntoxication(),
+            0.2f, 1f, 0f, 0.7f);
+        if (intoxicationChance > 0)
         {
-            final float intoxicationChance = Mth.clamp((float) (intoxicatedTicks - 6 * ICalendar.TICKS_IN_HOUR) / PlayerInfo.MAX_INTOXICATED_TICKS, 0, 0.7f);
             final RandomSource random = event.getPlayer().getRandom();
             final String originalMessage = event.getMessage().getString();
             final String[] words = originalMessage.split(" ");

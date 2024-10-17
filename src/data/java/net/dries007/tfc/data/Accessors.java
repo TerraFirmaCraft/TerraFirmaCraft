@@ -183,7 +183,7 @@ public interface Accessors
 
     default int hours(int hours)
     {
-        return hours * ICalendar.TICKS_IN_HOUR;
+        return hours * ICalendar.CALENDAR_TICKS_IN_HOUR;
     }
 
     /**

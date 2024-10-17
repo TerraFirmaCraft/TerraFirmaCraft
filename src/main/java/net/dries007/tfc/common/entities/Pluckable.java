@@ -26,7 +26,7 @@ import net.dries007.tfc.util.events.AnimalProductEvent;
 
 public interface Pluckable
 {
-    int PLUCKING_COOLDOWN = ICalendar.TICKS_IN_HOUR;
+    int PLUCKING_COOLDOWN = ICalendar.CALENDAR_TICKS_IN_HOUR;
 
     long getLastPluckedTick();
 
@@ -39,9 +39,10 @@ public interface Pluckable
             return false;
         if (player.getItemInHand(hand).isEmpty() && player.isShiftKeyDown() && (entity.getHealth() / entity.getMaxHealth() > 0.15001f))
         {
-            if (Calendars.SERVER.getTicks() < getLastPluckedTick() + PLUCKING_COOLDOWN)
+            final long remainingTicks = getLastPluckedTick() + PLUCKING_COOLDOWN - Calendars.SERVER.getTicks();
+            if (remainingTicks > 0)
             {
-                player.displayClientMessage(Component.translatable("tfc.tooltip.animal.cannot_pluck", ICalendar.getTimeDelta(PLUCKING_COOLDOWN - (Calendars.SERVER.getTicks() -  getLastPluckedTick()), Calendars.SERVER.getCalendarDaysInMonth())), true);
+                player.displayClientMessage(Component.translatable("tfc.tooltip.animal.cannot_pluck", Calendars.SERVER.getTimeDelta(remainingTicks)), true);
                 return false;
             }
             if (entity.getHealth() / entity.getMaxHealth() <= 0.15f)
