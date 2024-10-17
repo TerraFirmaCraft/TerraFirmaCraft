@@ -130,7 +130,7 @@ public class LargeVesselBlock extends SealableDeviceBlock
                 }
             });
         }
-        return ItemInteractionResult.SUCCESS;
+        return ItemInteractionResult.sidedSuccess(level.isClientSide);
     }
 
     @Override

@@ -104,7 +104,7 @@ public class JamPotRecipe extends PotRecipe
                 clickedWith.shrink(1);
                 sealedStack.shrink(1);
                 ItemHandlerHelper.giveItemToPlayer(player, unsealedStack.split(1));
-                return ItemInteractionResult.SUCCESS;
+                return ItemInteractionResult.sidedSuccess(player.level().isClientSide);
             }
             if (Helpers.isItem(clickedWith, TFCItems.EMPTY_JAR_WITH_LID) && !sealedStack.isEmpty())
             {
@@ -112,7 +112,7 @@ public class JamPotRecipe extends PotRecipe
                 clickedWith.shrink(1);
                 unsealedStack.shrink(1);
                 ItemHandlerHelper.giveItemToPlayer(player, sealedStack.split(1));
-                return ItemInteractionResult.SUCCESS;
+                return ItemInteractionResult.sidedSuccess(player.level().isClientSide);
             }
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }

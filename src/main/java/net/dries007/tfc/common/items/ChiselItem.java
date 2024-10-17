@@ -56,7 +56,7 @@ public class ChiselItem extends ToolItem
                     {
                         if (Helpers.isBlock(state, TFCTags.Blocks.CAN_TRIGGER_COLLAPSE) && CollapseRecipe.tryTriggerCollapse(level, pos))
                         {
-                            return InteractionResult.SUCCESS; // Abort chiseling
+                            return InteractionResult.CONSUME; // Abort chiseling
                         }
                     }
 

@@ -159,7 +159,7 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
         return CropHelpers.useFertilizer(level, player, hand, pos)
-            ? ItemInteractionResult.SUCCESS
+            ? ItemInteractionResult.sidedSuccess(level.isClientSide)
             : ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 

@@ -10,6 +10,7 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.MenuProvider;
@@ -81,15 +82,11 @@ public class ScribingTableBlock extends HorizontalDirectionalBlock implements IF
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
-        if (level.isClientSide)
-        {
-            return ItemInteractionResult.SUCCESS;
-        }
-        else
+        if (!level.isClientSide)
         {
             player.openMenu(state.getMenuProvider(level, pos));
-            return ItemInteractionResult.CONSUME;
         }
+        return ItemInteractionResult.sidedSuccess(level.isClientSide);
     }
 
     @Override

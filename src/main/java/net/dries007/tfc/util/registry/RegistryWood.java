@@ -27,7 +27,7 @@ public interface RegistryWood extends StringRepresentable
 
     TreeGrower tree();
 
-    int daysToGrow();
+    Supplier<Integer> ticksToGrow();
 
     /**
      * @return The vertical coordinate (from 0-255) on the foliage_fall colormap for this wood type's leaves.

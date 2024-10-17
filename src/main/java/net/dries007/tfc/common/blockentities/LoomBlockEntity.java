@@ -116,7 +116,7 @@ public class LoomBlockEntity extends TickableInventoryBlockEntity<ItemStackHandl
             inventory.setStackInSlot(SLOT_OUTPUT, ItemStack.EMPTY);
             markForSync();
             clearRecipe();
-            return ItemInteractionResult.SUCCESS;
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
 
         // Loom is empty, initialize

@@ -106,7 +106,7 @@ public class IngotPileBlock extends ExtendedBlock implements EntityBlockExtensio
             {
                 level.setBlock(topPos, topState.setValue(getCountProperty(), topIngots - 1), Block.UPDATE_CLIENTS);
             }
-            return ItemInteractionResult.SUCCESS;
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }

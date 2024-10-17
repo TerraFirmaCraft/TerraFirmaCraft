@@ -74,7 +74,7 @@ public class CrucibleBlock extends DeviceBlock implements EntityBlockExtension, 
             {
                 level.getBlockEntity(pos, TFCBlockEntities.CRUCIBLE.get()).ifPresent(crucible -> serverPlayer.openMenu(crucible, crucible.getBlockPos()));
             }
-            return ItemInteractionResult.SUCCESS;
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }

@@ -137,7 +137,7 @@ public class SoupPotRecipe extends PotRecipe
                 // take the player's bowl, give a soup
                 clickedWith.shrink(1);
                 ItemHandlerHelper.giveItemToPlayer(player, stack.split(1));
-                return ItemInteractionResult.SUCCESS;
+                return ItemInteractionResult.sidedSuccess(player.level().isClientSide);
             }
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }

@@ -14,7 +14,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -82,17 +81,17 @@ public final class InteractionManager
 
     // Public API
 
-    public static void register(BlockItemPlacement placement)
+    public static void registerBlock(BlockItemPlacement placement)
     {
         register(Ingredient.of(placement.getItem()), Target.BLOCKS, placement);
     }
 
-    public static void register(Ingredient item, OnItemUseAction action)
+    public static void registerBlock(Ingredient item, OnItemUseAction action)
     {
         register(item, Target.BLOCKS, action);
     }
 
-    public static void register(KeyedIngredient ingredient, OnItemUseAction action)
+    public static void registerBlock(KeyedIngredient ingredient, OnItemUseAction action)
     {
         register(ingredient, Target.BLOCKS, action);
     }
@@ -118,7 +117,7 @@ public final class InteractionManager
      */
     public static void registerDefaultInteractions()
     {
-        register(Ingredient.of(TFCTags.Items.THATCH_BED_HIDES), (stack, context) -> {
+        registerBlock(Ingredient.of(TFCTags.Items.THATCH_BED_HIDES), (stack, context) -> {
             final Level level = context.getLevel();
             final Player player = context.getPlayer();
             if (!level.isClientSide() && player != null)
@@ -139,17 +138,17 @@ public final class InteractionManager
                             level.setBlock(basePos, bed.setValue(ThatchBedBlock.PART, BedPart.FOOT).setValue(ThatchBedBlock.FACING, direction), 18);
                             level.setBlock(headPos, bed.setValue(ThatchBedBlock.PART, BedPart.HEAD).setValue(ThatchBedBlock.FACING, direction), 18);
                             level.getBlockEntity(headPos, TFCBlockEntities.THATCH_BED.get()).ifPresent(entity -> entity.setBed(headState, baseState, stack.split(1)));
-                            return InteractionResult.SUCCESS;
+                            return InteractionResult.sidedSuccess(level.isClientSide);
                         }
 
                     }
                 }
             }
-            return InteractionResult.FAIL;
+            return InteractionResult.CONSUME;
         });
 
-        register(Ingredient.of(Items.SNOW), (stack, context) -> {
-            Player player = context.getPlayer();
+        registerBlock(Ingredient.of(Items.SNOW), (stack, context) -> {
+            final Player player = context.getPlayer();
             if (player != null && !player.getAbilities().mayBuild)
             {
                 return InteractionResult.PASS;
@@ -163,33 +162,27 @@ public final class InteractionManager
                 if (SnowPileBlock.canPlaceSnowPile(level, pos, stateAt))
                 {
                     SnowPileBlock.placeSnowPile(level, pos, stateAt, true);
+
                     final BlockState placedState = level.getBlockState(pos);
                     final SoundType placementSound = placedState.getSoundType(level, pos, player);
+
+                    Helpers.playPlaceSound(player, level, pos, placedState);
                     level.playSound(player, pos, placedState.getSoundType(level, pos, player).getPlaceSound(), SoundSource.BLOCKS, (placementSound.getVolume() + 1.0F) / 2.0F, placementSound.getPitch() * 0.8F);
                     if (player == null || !player.getAbilities().instabuild)
                     {
                         stack.shrink(1);
                     }
 
-                    InteractionResult result = InteractionResult.sidedSuccess(level.isClientSide);
-                    if (player != null && result.consumesAction())
-                    {
-                        player.awardStat(Stats.ITEM_USED.get(Items.SNOW));
-                    }
-                    return result;
+                    return InteractionResult.sidedSuccess(level.isClientSide);
                 }
 
                 // Default behavior
                 // Handles layering behavior of both snow piles and snow layers via the blocks replacement / getStateForPlacement
-                if (Items.SNOW instanceof BlockItem blockItem)
-                {
-                    return blockItem.place(blockContext);
-                }
-                return InteractionResult.FAIL;
+                return ((BlockItem) Items.SNOW).place(blockContext);
             }
         });
 
-        register(Ingredient.of(Items.CHARCOAL), (stack, context) -> {
+        registerBlock(Ingredient.of(Items.CHARCOAL), (stack, context) -> {
             final Player player = context.getPlayer();
             if (player != null && player.mayBuild())
             {
@@ -240,7 +233,7 @@ public final class InteractionManager
         // - holding log, targeting log pile, shift click = insert all
         // - holding log, targeting log pile, click normally = insert one
         final BlockItemPlacement logPilePlacement = new BlockItemPlacement(Items.AIR, TFCBlocks.LOG_PILE);
-        register(Ingredient.of(TFCTags.Items.LOG_PILE_LOGS), (stack, context) -> {
+        registerBlock(Ingredient.of(TFCTags.Items.LOG_PILE_LOGS), (stack, context) -> {
             final Player player = context.getPlayer();
             if (player != null && player.mayBuild() && player.isShiftKeyDown())
             {
@@ -259,12 +252,12 @@ public final class InteractionManager
                             insertStack = Helpers.insertAllSlots(entity.getInventory(), insertStack);
                             if (insertStack.getCount() < stack.getCount()) // Some logs were inserted
                             {
+                                Helpers.playPlaceSound(player, level, relativePos, SoundType.WOOD);
                                 if (!level.isClientSide())
                                 {
-                                    Helpers.playPlaceSound(level, relativePos, SoundType.WOOD);
                                     stack.setCount(insertStack.getCount());
                                 }
-                                return InteractionResult.SUCCESS;
+                                return InteractionResult.sidedSuccess(level.isClientSide);
                             }
 
                             // if we placed instead, insert logs at the RELATIVE position using the mutated stack
@@ -296,7 +289,7 @@ public final class InteractionManager
             return InteractionResult.PASS;
         });
 
-        register(KeyedIngredient.ofMatchingAnyRecipeInput(TFCRecipeTypes.SCRAPING, ScrapingRecipe.CACHE, ScrapingRecipe::getIngredient), (stack, context) -> {
+        registerBlock(KeyedIngredient.ofMatchingAnyRecipeInput(TFCRecipeTypes.SCRAPING, ScrapingRecipe.CACHE, ScrapingRecipe::getIngredient), (stack, context) -> {
             Level level = context.getLevel();
             ScrapingRecipe recipe = ScrapingRecipe.getRecipe(stack);
             if (recipe != null)
@@ -314,7 +307,7 @@ public final class InteractionManager
                             stack.setCount(stack.getCount() + entity.getInventory().insertItem(0, insertStack, false).getCount());
                             entity.updateDisplayCache();
                             level.sendBlockUpdated(abovePos, state, state, Block.UPDATE_CLIENTS);
-                            return InteractionResult.SUCCESS;
+                            return InteractionResult.sidedSuccess(level.isClientSide);
                         }).orElse(InteractionResult.PASS);
                 }
             }
@@ -326,11 +319,11 @@ public final class InteractionManager
         {
             if (type.getVanillaItem() != null)
             {
-                register(new BlockItemPlacement(type.getVanillaItem(), TFCBlocks.GROUNDCOVER.get(type)));
+                registerBlock(new BlockItemPlacement(type.getVanillaItem(), TFCBlocks.GROUNDCOVER.get(type)));
             }
         }
 
-        register(new BlockItemPlacement(Items.BOWL, TFCBlocks.WOODEN_BOWL));
+        registerBlock(new BlockItemPlacement(Items.BOWL, TFCBlocks.WOODEN_BOWL));
 
         // Knapping
         final KeyedIngredient knapping = KeyedIngredient.of(
@@ -353,7 +346,7 @@ public final class InteractionManager
                         provider.openScreen(serverPlayer, context.getHand(), buffer -> buffer.writeResourceLocation(KnappingType.MANAGER.getIdOrThrow(type)));
                     }
                 }
-                return InteractionResult.SUCCESS;
+                return InteractionResult.sidedSuccess(context.getLevel().isClientSide);
             }
             return InteractionResult.PASS;
         });
@@ -364,10 +357,10 @@ public final class InteractionManager
         final BlockItemPlacement ingotPilePlacement = new BlockItemPlacement(Items.AIR, TFCBlocks.INGOT_PILE);
         final BlockItemPlacement doubleIngotPilePlacement = new BlockItemPlacement(Items.AIR, TFCBlocks.DOUBLE_INGOT_PILE);
 
-        register(Ingredient.of(Tags.Items.INGOTS), (stack, context) -> doIngotPiling(ingotPilePlacement, stack, context, (IngotPileBlock) TFCBlocks.INGOT_PILE.get(), IngotPileBlock.COUNT, 64));
-        register(Ingredient.of(TFCTags.Items.DOUBLE_INGOTS), (stack, context) -> doIngotPiling(doubleIngotPilePlacement, stack, context, (IngotPileBlock) TFCBlocks.DOUBLE_INGOT_PILE.get(), DoubleIngotPileBlock.DOUBLE_COUNT, 36));
+        registerBlock(Ingredient.of(Tags.Items.INGOTS), (stack, context) -> doIngotPiling(ingotPilePlacement, stack, context, (IngotPileBlock) TFCBlocks.INGOT_PILE.get(), IngotPileBlock.COUNT, 64));
+        registerBlock(Ingredient.of(TFCTags.Items.DOUBLE_INGOTS), (stack, context) -> doIngotPiling(doubleIngotPilePlacement, stack, context, (IngotPileBlock) TFCBlocks.DOUBLE_INGOT_PILE.get(), DoubleIngotPileBlock.DOUBLE_COUNT, 36));
 
-        register(Ingredient.of(TFCTags.Items.SHEETS), (stack, context) -> {
+        registerBlock(Ingredient.of(TFCTags.Items.SHEETS), (stack, context) -> {
             final Player player = context.getPlayer();
             if (player != null && player.mayBuild() && player.isShiftKeyDown())
             {
@@ -400,7 +393,7 @@ public final class InteractionManager
                         // Add to an existing sheet pile
                         final ItemStack insertStack = stack.split(1);
                         SheetPileBlock.addSheet(level, relativePos, relativeState, sheetFace, insertStack);
-                        return InteractionResult.SUCCESS;
+                        return InteractionResult.sidedSuccess(level.isClientSide);
                     }
                     else
                     {
@@ -417,7 +410,7 @@ public final class InteractionManager
                     {
                         final ItemStack insertStack = stack.split(1);
                         SheetPileBlock.addSheet(level, relativePos, placingState, sheetFace, insertStack);
-                        return InteractionResult.SUCCESS;
+                        return InteractionResult.sidedSuccess(level.isClientSide);
                     }
                 }
             }
@@ -434,7 +427,7 @@ public final class InteractionManager
                 {
                     player.openMenu(TFCContainerProviders.SALAD);
                 }
-                return InteractionResult.SUCCESS;
+                return InteractionResult.sidedSuccess(context.getLevel().isClientSide);
             }
             return InteractionResult.PASS;
         });
@@ -454,7 +447,7 @@ public final class InteractionManager
             {
                 if (player != null && !player.isCreative())
                     stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(context.getHand()));
-                return InteractionResult.SUCCESS;
+                return InteractionResult.sidedSuccess(context.getLevel().isClientSide);
             }
 
             return InteractionResult.PASS;
@@ -465,7 +458,7 @@ public final class InteractionManager
             {
                 if (player != null && !player.isCreative())
                     stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(context.getHand()));
-                return InteractionResult.SUCCESS;
+                return InteractionResult.sidedSuccess(context.getLevel().isClientSide);
             }
             return InteractionResult.PASS;
         });
@@ -489,10 +482,10 @@ public final class InteractionManager
                 {
                     final ItemStack insertStack = stack.split(1);
 
-                    Helpers.playPlaceSound(level, posClicked, stateClicked);
+                    Helpers.playPlaceSound(player, level, posClicked, stateClicked);
                     level.setBlock(posClicked, stateClicked.setValue(countProperty, currentIngots + 1), Block.UPDATE_CLIENTS);
                     level.getBlockEntity(posClicked, TFCBlockEntities.INGOT_PILE.get()).ifPresent(pile -> pile.addIngot(insertStack));
-                    return InteractionResult.SUCCESS;
+                    return InteractionResult.sidedSuccess(level.isClientSide);
                 }
                 else
                 {
@@ -511,10 +504,10 @@ public final class InteractionManager
                         final ItemStack insertStack = stack.split(1);
                         final int topIngots = topState.getValue(countProperty);
 
-                        Helpers.playPlaceSound(level, topPos, topState);
+                        Helpers.playPlaceSound(player, level, topPos, topState);
                         level.setBlock(topPos, topState.setValue(countProperty, topIngots + 1), Block.UPDATE_CLIENTS);
                         level.getBlockEntity(topPos, TFCBlockEntities.INGOT_PILE.get()).ifPresent(topPile -> topPile.addIngot(insertStack));
-                        return InteractionResult.SUCCESS;
+                        return InteractionResult.sidedSuccess(level.isClientSide);
                     }
                     else if (topState.isAir())
                     {
@@ -530,7 +523,7 @@ public final class InteractionManager
                             stackBefore.setCount(1);
                             level.getBlockEntity(topPos, TFCBlockEntities.INGOT_PILE.get()).ifPresent(topPile -> topPile.addIngot(stackBefore));
                         }
-                        return InteractionResult.SUCCESS;
+                        return InteractionResult.sidedSuccess(level.isClientSide);
                     }
                     return InteractionResult.FAIL;
                 }
@@ -595,9 +588,6 @@ public final class InteractionManager
         return result;
     }
 
-    /**
-     * Return {@link InteractionResult#PASS} to allow normal right click handling
-     */
     @FunctionalInterface
     public interface OnItemUseAction
     {

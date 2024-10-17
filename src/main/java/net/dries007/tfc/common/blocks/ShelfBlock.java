@@ -60,7 +60,7 @@ public class ShelfBlock extends PlacedItemBlock
                 {
                     level.setBlockAndUpdate(above, toPlace);
                     level.getBlockEntity(above, TFCBlockEntities.PLACED_ITEM.get()).ifPresent(e -> e.insertItem(player, stack, hitResult));
-                    return ItemInteractionResult.SUCCESS;
+                    return ItemInteractionResult.sidedSuccess(level.isClientSide);
                 }
             }
         }
@@ -71,7 +71,7 @@ public class ShelfBlock extends PlacedItemBlock
             final PlacedItemBlockEntity placedItem = level.getBlockEntity(pos, TFCBlockEntities.SHELF.get()).orElse(null);
             if (placedItem != null && placedItem.onRightClick(player, player.getItemInHand(hand), hitResult))
             {
-                return ItemInteractionResult.SUCCESS;
+                return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
         }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;

@@ -60,9 +60,10 @@ public interface IPlayerInfo
     void cycleChiselMode();
 
     /**
-     * @return The number of ticks that the player is intoxicated for.
+     * @return The amount the player is intoxicated, in the range {@code [0, 1]}, with higher values indicating higher intoxication. This linearly
+     * decreases over time as the player gets less intoxicated.
      */
-    long getIntoxication();
+    float getIntoxication();
 
     /**
      * Adds an amount of ticks for the player to continue to be intoxicated for

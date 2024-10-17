@@ -82,7 +82,7 @@ public class HoldingMinecart extends AbstractMinecart
             copyMinecart(this, minecart);
             discard();
             level().addFreshEntity(minecart);
-            return InteractionResult.SUCCESS;
+            return InteractionResult.sidedSuccess(level().isClientSide);
         }
         return InteractionResult.PASS;
     }

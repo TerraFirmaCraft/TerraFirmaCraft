@@ -85,9 +85,7 @@ public final class FoodComponent implements IFood
     @Override
     public FoodData getData()
     {
-        return food.isPresent() ? food.get()
-            : parent != null ? parent.food()
-            : FoodData.EMPTY;
+        return food.orElseGet(() -> parent != null ? parent.food() : FoodData.EMPTY);
     }
 
     @Override
@@ -178,6 +176,6 @@ public final class FoodComponent implements IFood
     @Override
     public String toString()
     {
-        return "Food[creationDate=%s,rotten=%s,traits=%s%s]".formatted(creationDate, isRotten(), traits, food.isPresent() ? ",food=" + food.get() : "");
+        return "Food[creationDate=%s,rotten=%s,traits=%s%s]".formatted(creationDate, isRotten(), traits, food.map(d -> ",food=" + d).orElse(""));
     }
 }

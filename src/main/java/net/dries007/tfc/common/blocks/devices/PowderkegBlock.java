@@ -86,7 +86,7 @@ public class PowderkegBlock extends SealableDeviceBlock
                 else
                 {
                     toggleSeal(level, pos, state);
-                    Helpers.playPlaceSound(level, pos, state);
+                    Helpers.playPlaceSound(player, level, pos, state);
                 }
                 return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }

@@ -6,8 +6,8 @@
 
 package net.dries007.tfc.config;
 
-import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
 import net.dries007.tfc.common.blocks.plant.fruit.FruitBlocks;
@@ -17,6 +17,8 @@ import net.dries007.tfc.config.animals.MammalConfig;
 import net.dries007.tfc.config.animals.OviparousAnimalConfig;
 import net.dries007.tfc.config.animals.ProducingMammalConfig;
 import net.dries007.tfc.util.FluidAlloy;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.calendar.ICalendar;
 
 /**
  * Server Config
@@ -146,11 +148,10 @@ public class ServerConfig extends BaseConfig
     // Blocks - Hot Water
     public final Supplier<Double> hotWaterHealAmount;
     // Blocks - Sapling
-    public final Supplier<Double> globalSaplingGrowthModifier;
-    public final Supplier<Double> globalFruitSaplingGrowthModifier;
-    public final EnumMap<Wood, Supplier<Integer>> saplingGrowthDays;
-    public final EnumMap<FruitBlocks.Tree, Supplier<Integer>> fruitSaplingGrowthDays;
-    public final Supplier<Integer> bananaSaplingGrowthDays;
+    public final Supplier<Double> saplingGrowthModifier;
+    public final Map<Wood, Supplier<Integer>> saplingGrowthTicks;
+    public final Map<FruitBlocks.Tree, Supplier<Integer>> fruitSaplingGrowthTicks;
+    public final Supplier<Integer> bananaSaplingGrowthTicks;
     // Blocks - Crops
     public final Supplier<Double> cropGrowthModifier;
     public final Supplier<Double> cropExpiryModifier;
@@ -194,6 +195,7 @@ public class ServerConfig extends BaseConfig
     public final Supplier<Double> olivineGlassBottleBreakChance;
     // Items - Wooden Bucket
     public final Supplier<Integer> woodenBucketCapacity;
+
     // Mechanics - Heat
     public final Supplier<Double> deviceHeatingModifier;
     public final Supplier<Double> itemHeatingModifier;
@@ -220,12 +222,13 @@ public class ServerConfig extends BaseConfig
     public final Supplier<Double> naturalRegenerationModifier;
     public final Supplier<Integer> nutritionRotationHungerWindow;
     public final Supplier<Boolean> keepNutritionAfterDeath;
-    public final Supplier<Integer> foodDecayStackWindow;
+    public final Supplier<Integer> foodDecayStackTicks;
     public final Supplier<Double> foodDecayModifier;
     public final Supplier<Boolean> enableOverburdening;
     public final Supplier<Double> nutritionMinimumHealthModifier;
     public final Supplier<Double> nutritionDefaultHealthModifier;
     public final Supplier<Double> nutritionMaximumHealthModifier;
+    public final Supplier<Integer> maxIntoxicationTicks;
     // Mechanics - Food Traits
     public final Supplier<Double> traitSaltedModifier;
     public final Supplier<Double> traitBrinedModifier;
@@ -484,22 +487,20 @@ public class ServerConfig extends BaseConfig
 
         builder.swap("saplings");
 
-        globalSaplingGrowthModifier = builder.comment("Modifier applied to the growth time of every (non-fruit) sapling. The modifier multiplies the ticks it takes to grow, so larger values cause longer growth times. For example, a value of 2 doubles the growth time.").define("globalSaplingGrowthModifier", 1d, 0d, Double.MAX_VALUE);
-        globalFruitSaplingGrowthModifier = builder.comment("Modifier applied to the growth time of every fruit tree sapling. The modifier multiplies the ticks it takes to grow, so larger values cause longer growth times. For example, a value of 2 doubles the growth time.").define("globalFruitSaplingGrowthModifier", 1d, 0d, Double.MAX_VALUE);
-
-        saplingGrowthDays = new EnumMap<>(Wood.class);
-        for (Wood wood : Wood.VALUES)
-        {
-            final String valueName = String.format("%sSaplingGrowthDays", wood.getSerializedName());
-            saplingGrowthDays.put(wood, builder.comment(String.format("Days for a %s tree sapling to be ready to grow into a full tree.", wood.getSerializedName())).define(valueName, wood.defaultDaysToGrow(), 0, Integer.MAX_VALUE));
-        }
-        fruitSaplingGrowthDays = new EnumMap<>(FruitBlocks.Tree.class);
-        for (FruitBlocks.Tree tree : FruitBlocks.Tree.values())
-        {
-            final String valueName = String.format("%sSaplingGrowthDays", tree.getSerializedName());
-            fruitSaplingGrowthDays.put(tree, builder.comment(String.format("Days for a %s tree sapling to be eligible to grow", tree.getSerializedName())).define(valueName, tree.defaultDaysToGrow(), 0, Integer.MAX_VALUE));
-        }
-        bananaSaplingGrowthDays = builder.comment("Days for a banana tree sapling to be eligible to grow").define("bananaSaplingGrowthDays", 6, 0, Integer.MAX_VALUE);
+        saplingGrowthModifier = builder
+            .comment(
+                "Modifier for how fast all saplings grow.",
+                "Larger values will cause slower growth"
+            ).define("saplingGrowthModifier", 1d, 0d, Double.MAX_VALUE);
+        saplingGrowthTicks = Helpers.mapOf(Wood.class, type -> builder
+            .comment("Ticks required before a %s sapling can grow into a tree".formatted(getUserFriendlyName(type)))
+            .define(getConfigName(type, "SaplingGrowthTicks"), type.defaultTicksToGrow(), 0, Integer.MAX_VALUE));
+        fruitSaplingGrowthTicks = Helpers.mapOf(FruitBlocks.Tree.class, type -> builder
+            .comment("Ticks required before a %s sapling can grow into a tree".formatted(getUserFriendlyName(type)))
+            .define(getConfigName(type, "SaplingGrowthTicks"), type.defaultTicksToGrow(), 0, Integer.MAX_VALUE));
+        bananaSaplingGrowthTicks = builder
+            .comment("Ticks required before a banana sapling can grow into a tree")
+            .define("bananaSaplingGrowthTicks", 6 * ICalendar.CALENDAR_TICKS_IN_DAY, 0, Integer.MAX_VALUE);
 
         builder.swap("crops");
 
@@ -600,9 +601,10 @@ public class ServerConfig extends BaseConfig
             "Player nutrition in TFC is calculated based on nutrition of the last few foods eaten - this is how many foods are used to calculate nutrition. By default, all TFC foods restore 4 hunger.").define("nutritionRotationHungerWindow", 80, 1, Integer.MAX_VALUE);
         keepNutritionAfterDeath = builder.comment(
             "If player's nutrition should be kept even after death. Hunger and thirst are not affected and will be reset.").define("keepNutritionAfterDeath", true);
-        foodDecayStackWindow = builder.comment(
-            "How many hours should different foods ignore when trying to stack together automatically?",
-            "Food made with different creation dates doesn't stack by default, unless it's within a specific window. This is the number of hours that different foods will try and stack together at the loss of a little extra expiry time.").define("foodDecayStackWindow", 6, 1, 100);
+        foodDecayStackTicks = builder.comment(
+            "How many ticks should different foods ignore when trying to stack together automatically?",
+            "Food made with different creation dates doesn't stack by default, unless it's within a specific window. This is the number of ticks that different foods will try and stack together at the loss of a little extra expiry time."
+        ).define("foodDecayStackTicks", 6 * ICalendar.CALENDAR_TICKS_IN_DAY, 1, Integer.MAX_VALUE);
         foodDecayModifier = builder.comment(
             "A multiplier for food decay, or expiration times. Larger values will result in naturally shorter expiration times.",
             "Setting this to zero will cause decay not to apply.",
@@ -616,6 +618,9 @@ public class ServerConfig extends BaseConfig
             "Nutrition below this value will linearly scale to the minimum multiplier."
         ).define("nutritionDefaultHealthModifier", 0.85, 0.001, 1000);
         nutritionMaximumHealthModifier = builder.comment("A multiplier for the maximum health that the player will obtain, based on their nutrition").define("nutritionMaximumHealthModifier", 3.0, 0.001, 1000);
+        maxIntoxicationTicks = builder
+            .comment("The maximum number of ticks that a player is allowed to be intoxicated for.")
+            .define("maxIntoxicationTicks", 36 * ICalendar.CALENDAR_TICKS_IN_DAY, 1000, Integer.MAX_VALUE);
 
         builder.swap("foodTraits");
 

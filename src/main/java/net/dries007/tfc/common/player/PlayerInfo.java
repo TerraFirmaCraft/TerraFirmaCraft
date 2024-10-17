@@ -51,12 +51,19 @@ public final class PlayerInfo extends net.minecraft.world.food.FoodData implemen
     public static final float EXHAUSTION_MULTIPLIER = 0.4f; // Multiplier for all sources of exhaustion. Vanilla sources get reduced, while passive exhaustion factors in this multiplier.
 
     public static final float PASSIVE_HEALING_PER_TEN_TICKS = 20 * 0.0002f; // On the display: 1 HP / 5 seconds
-    public static final float PASSIVE_EXHAUSTION_PER_TICK = MAX_HUNGER * EXHAUSTION_PER_HUNGER / (2.5f * ICalendar.TICKS_IN_DAY * EXHAUSTION_MULTIPLIER); // Passive exhaustion will deplete your food bar once every 2.5 days. Food bar holds ~5 "meals", this requires two per day
+
+    /**
+     * The amount of passive exhaustion to apply per each player tick. This is used in several locations:
+     * <ul>
+     *     <li>It is applied on each tick of the player, while loaded</li>
+     *     <li>While sleeping, a larger amount of passive exhaustion is applied based on the duration slept</li>
+     *     <li>While exhausted, this is applied every tick at 20x potency</li>
+     * </ul>
+     * Passive exhaustion will deplete your food bar once every 2.5 (default) calendar days. Food bar holds ~5 "meals", this requires two per day
+     */
+    public static final float PASSIVE_EXHAUSTION_PER_TICK = MAX_HUNGER * EXHAUSTION_PER_HUNGER / (2.5f * ICalendar.CALENDAR_TICKS_IN_DAY * EXHAUSTION_MULTIPLIER);
 
     public static final float MAX_TEMPERATURE_THIRST_DECAY = 0.4f;
-
-    public static final long MAX_INTOXICATED_TICKS = 36 * ICalendar.TICKS_IN_HOUR; // A day and a half. Each drink gives you 4 hours of time
-
 
     private final Player player; // The player associated with this object
     private final net.minecraft.world.food.FoodData food; // The original player's food data
@@ -105,9 +112,9 @@ public final class PlayerInfo extends net.minecraft.world.food.FoodData implemen
     }
 
     @Override
-    public long getIntoxication()
+    public float getIntoxication()
     {
-        return Math.max(0, intoxicationTick - calendar().getTicks());
+        return (float) Math.max(0, intoxicationTick - calendar().getTicks()) / TFCConfig.SERVER.maxIntoxicationTicks.get();
     }
 
     @Override
@@ -119,9 +126,9 @@ public final class PlayerInfo extends net.minecraft.world.food.FoodData implemen
             intoxicationTick = currentTick;
         }
         intoxicationTick += ticks;
-        if (intoxicationTick > currentTick + MAX_INTOXICATED_TICKS)
+        if (intoxicationTick > currentTick + TFCConfig.SERVER.maxIntoxicationTicks.get())
         {
-            intoxicationTick = currentTick + MAX_INTOXICATED_TICKS;
+            intoxicationTick = currentTick + TFCConfig.SERVER.maxIntoxicationTicks.get();
         }
         modified = true;
     }
