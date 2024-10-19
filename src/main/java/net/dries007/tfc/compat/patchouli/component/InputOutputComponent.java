@@ -6,11 +6,10 @@
 
 package net.dries007.tfc.compat.patchouli.component;
 
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
-
-import net.minecraft.client.gui.GuiGraphics;
 import vazkii.patchouli.api.IComponentRenderContext;
 
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
@@ -24,10 +23,9 @@ public abstract class InputOutputComponent<T extends Recipe<?>> extends RecipeCo
 
         renderSetup(graphics);
 
-        graphics.blit(PatchouliIntegration.TEXTURE, 9, 0, 0, 90, 98, 26, 256, 256);
-
-        context.renderIngredient(graphics, 14, 5, mouseX, mouseY, getIngredient(recipe));
-        context.renderItemStack(graphics, 86, 5, mouseX, mouseY, getOutput(recipe));
+        graphics.blit(PatchouliIntegration.TEXTURE, x + 9, y, 0, 90, 98, 26, 256, 256);
+        context.renderIngredient(graphics, x + 14, y + 5, mouseX, mouseY, getIngredient(recipe));
+        context.renderItemStack(graphics, x + 86, y + 5, mouseX, mouseY, getOutput(recipe));
 
         graphics.pose().popPose();
     }

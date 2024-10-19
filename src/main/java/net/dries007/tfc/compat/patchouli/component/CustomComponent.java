@@ -83,7 +83,6 @@ public abstract class CustomComponent implements ICustomComponent
     protected void renderSetup(GuiGraphics graphics)
     {
         graphics.pose().pushPose();
-        graphics.pose().translate(x, y, 0);
 
         RenderSystem.enableBlend();
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
