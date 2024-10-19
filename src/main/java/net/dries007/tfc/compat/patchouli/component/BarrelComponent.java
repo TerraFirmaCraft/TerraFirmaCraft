@@ -8,16 +8,13 @@ package net.dries007.tfc.compat.patchouli.component;
 
 import java.util.Collections;
 import java.util.List;
-
-import net.minecraft.world.item.ItemStack;
-
-import net.minecraftforge.fluids.FluidStack;
-
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+import vazkii.patchouli.api.IComponentRenderContext;
+
 import net.dries007.tfc.common.recipes.BarrelRecipe;
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
-
-import vazkii.patchouli.api.IComponentRenderContext;
 
 public abstract class BarrelComponent<T extends BarrelRecipe> extends RecipeComponent<T>
 {
@@ -31,20 +28,20 @@ public abstract class BarrelComponent<T extends BarrelRecipe> extends RecipeComp
 
         renderSetup(graphics);
 
-        graphics.blit(PatchouliIntegration.TEXTURE, 9, 0, 0, 116, 98, 26, 256, 256);
+        graphics.blit(PatchouliIntegration.TEXTURE, x + 9, y, 0, 116, 98, 26, 256, 256);
 
-        renderItemStacks(context, graphics, 14, 5, mouseX, mouseY, inputItems);
-        renderFluidStacks(context, graphics, 14 + 28, 5, mouseX, mouseY, inputFluids);
+        renderItemStacks(context, graphics, x + 14, y + 5, mouseX, mouseY, inputItems);
+        renderFluidStacks(context, graphics, x + 14 + 28, y + 5, mouseX, mouseY, inputFluids);
 
         // This only works for barrel recipes with a single output, and no complex item stack providers
         // If we need more, we can fix it, but for now this should be good enough
         if (!recipe.getResultItem(null).isEmpty())
         {
-            context.renderItemStack(graphics, 86, 5, mouseX, mouseY, recipe.getResultItem(null));
+            context.renderItemStack(graphics, x + 86, y + 5, mouseX, mouseY, recipe.getResultItem(null));
         }
         else if (!recipe.getOutputFluid().isEmpty())
         {
-            renderFluidStack(context, graphics, 86, 5, mouseX, mouseY, recipe.getOutputFluid());
+            renderFluidStack(context, graphics, x + 86, y + 5, mouseX, mouseY, recipe.getOutputFluid());
         }
 
         renderAdditional(graphics, context, partialTicks, mouseX, mouseY);

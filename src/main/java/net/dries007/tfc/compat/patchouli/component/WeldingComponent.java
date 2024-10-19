@@ -6,14 +6,13 @@
 
 package net.dries007.tfc.compat.patchouli.component;
 
-import net.minecraft.world.item.crafting.RecipeType;
-
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.world.item.crafting.RecipeType;
+import vazkii.patchouli.api.IComponentRenderContext;
+
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.WeldingRecipe;
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
-
-import vazkii.patchouli.api.IComponentRenderContext;
 
 public class WeldingComponent extends RecipeComponent<WeldingRecipe>
 {
@@ -24,11 +23,11 @@ public class WeldingComponent extends RecipeComponent<WeldingRecipe>
 
         renderSetup(graphics);
 
-        graphics.blit(PatchouliIntegration.TEXTURE, 9, 0, 0, 116, 98, 26, 256, 256);
+        graphics.blit(PatchouliIntegration.TEXTURE, x + 9, y, 0, 116, 98, 26, 256, 256);
 
-        context.renderIngredient(graphics, 14, 5, mouseX, mouseY, recipe.getFirstInput());
-        context.renderIngredient(graphics, 42, 5, mouseX, mouseY, recipe.getSecondInput());
-        context.renderItemStack(graphics, 86, 5, mouseX, mouseY, recipe.getResultItem(null));
+        context.renderIngredient(graphics, x + 14, y + 5, mouseX, mouseY, recipe.getFirstInput());
+        context.renderIngredient(graphics, x + 42, y + 5, mouseX, mouseY, recipe.getSecondInput());
+        context.renderItemStack(graphics, x + 86, y + 5, mouseX, mouseY, recipe.getResultItem(null));
 
         graphics.pose().popPose();
     }

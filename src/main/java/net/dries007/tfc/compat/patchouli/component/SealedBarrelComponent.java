@@ -8,15 +8,14 @@ package net.dries007.tfc.compat.patchouli.component;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.crafting.RecipeType;
+import vazkii.patchouli.api.IComponentRenderContext;
 
-import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.common.recipes.SealedBarrelRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.util.calendar.Calendars;
-import net.dries007.tfc.util.calendar.ICalendar;
-import vazkii.patchouli.api.IComponentRenderContext;
 
 public class SealedBarrelComponent extends BarrelComponent<SealedBarrelRecipe>
 {
@@ -30,7 +29,7 @@ public class SealedBarrelComponent extends BarrelComponent<SealedBarrelRecipe>
             final Component tooltip = Calendars.CLIENT.getTimeDelta(recipe.getDuration());
             final Font font = Minecraft.getInstance().font;
             final int centerX = 64 - 8 - font.width(tooltip.getString()) / 2; // Page width = 64, Offset = 8,
-            graphics.drawString(font, tooltip, centerX, 28, 0x404040, false);
+            graphics.drawString(font, tooltip, x + centerX, y + 28, 0x404040, false);
         }
     }
 

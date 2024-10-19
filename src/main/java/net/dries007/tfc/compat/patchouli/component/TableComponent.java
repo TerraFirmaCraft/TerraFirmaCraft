@@ -130,6 +130,7 @@ public class TableComponent extends CustomComponent
         if (entries != null && !entries.isEmpty())
         {
             renderSetup(graphics);
+            graphics.pose().translate(x, y, 0);
 
             final Font font = Minecraft.getInstance().font;
             final int leftStart = leftBuffer;

@@ -8,17 +8,15 @@ package net.dries007.tfc.compat.patchouli.component;
 
 import java.util.Collections;
 import java.util.List;
-
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
+import vazkii.patchouli.api.IComponentRenderContext;
 
-import net.minecraft.client.gui.GuiGraphics;
 import net.dries007.tfc.common.recipes.LoomRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
-
-import vazkii.patchouli.api.IComponentRenderContext;
 
 public class LoomComponent extends RecipeComponent<LoomRecipe>
 {
@@ -31,10 +29,10 @@ public class LoomComponent extends RecipeComponent<LoomRecipe>
 
         renderSetup(graphics);
 
-        graphics.blit(PatchouliIntegration.TEXTURE, 9, 0, 0, 90, 98, 26, 256, 256);
+        graphics.blit(PatchouliIntegration.TEXTURE, x + 9, y, 0, 90, 98, 26, 256, 256);
 
-        renderItemStacks(context, graphics, 14, 5, mouseX, mouseY, inputItems);
-        context.renderItemStack(graphics, 86, 5, mouseX, mouseY, recipe.getResultItem(null));
+        renderItemStacks(context, graphics, x + 14, y + 5, mouseX, mouseY, inputItems);
+        context.renderItemStack(graphics, x + 86, y + 5, mouseX, mouseY, recipe.getResultItem(null));
 
         graphics.pose().popPose();
     }
