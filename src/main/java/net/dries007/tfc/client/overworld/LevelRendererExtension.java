@@ -58,6 +58,7 @@ import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.ClimateRenderCache;
 import net.dries007.tfc.common.blocks.IBlockRain;
 import net.dries007.tfc.util.Helpers;
@@ -75,8 +76,20 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
     public static final LevelRendererExtension INSTANCE = new LevelRendererExtension();
 
     // Most of this is copied from LevelRenderer
-    private static final ResourceLocation RAIN_LOCATION = ResourceLocation.withDefaultNamespace("textures/environment/rain.png");
-    private static final ResourceLocation SNOW_LOCATION = ResourceLocation.withDefaultNamespace("textures/environment/snow.png");
+
+    private static final ResourceLocation[] RAIN_LOCATIONS = new ResourceLocation[] {
+        Helpers.identifier("textures/environment/rain_0.png"),
+        Helpers.identifier("textures/environment/rain_1.png"),
+        Helpers.identifier("textures/environment/rain_2.png"),
+        Helpers.identifier("textures/environment/rain_3.png"),
+    };
+
+    private static final ResourceLocation[] SNOW_LOCATIONS = new ResourceLocation[] {
+        Helpers.identifier("textures/environment/snow_0.png"),
+        Helpers.identifier("textures/environment/snow_1.png"),
+        Helpers.identifier("textures/environment/snow_2.png"),
+        Helpers.identifier("textures/environment/snow_3.png"),
+    };
     private static final ResourceLocation MOON_LOCATION = ResourceLocation.withDefaultNamespace("textures/environment/moon_phases.png");
     private static final ResourceLocation SUN_LOCATION = ResourceLocation.withDefaultNamespace("textures/environment/sun.png");
 
@@ -164,6 +177,7 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
      * <ul>
      *     <li>We don't implement End-dimension rendering, as this is only used for the overworld</li>
      * </ul>
+     *
      * @return {@code true} to prevent vanilla sky rendering
      */
     @Override
@@ -331,6 +345,7 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
      *     <li>Uses a modified function to query for current precipitation including climate</li>
      *     <li>Renders a different amount of rain and snow based on the current intensity of the weather event</li>
      * </ul>
+     *
      * @return {@code true} to prevent vanilla rendering
      */
     @Override
@@ -345,6 +360,7 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
             final float camX = (float) sourceCameraX;
             final float camY = (float) sourceCameraY;
             final float camZ = (float) sourceCameraZ;
+
             final int blockX = Mth.floor(camX);
             final int blockY = Mth.floor(camY);
             final int blockZ = Mth.floor(camZ);
@@ -419,7 +435,11 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
                                 }
 
                                 stateFlag = 0;
-                                RenderSystem.setShaderTexture(0, RAIN_LOCATION);
+
+
+                                // select the texture based on the amount of rain
+                                RenderSystem.setShaderTexture(0, RAIN_LOCATIONS[Mth.clamp(Mth.floor(rainIntensity * 4.0f), 0,3)]);
+
                                 buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
                             }
 
@@ -439,8 +459,7 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
                             // far-away blocks. This affects us more as we have more distant rainfall (15 vs. 10 max in vanilla)
                             float f6 = (float) Math.sqrt(d2 * d2 + d3 * d3) / blockRadius;
                             final float alpha = Mth.clamp((1.0F - f6 * f6) * 0.5F + 0.5F, 0f, 1f)
-                                * rainLevel
-                                * Mth.clampedMap(rainIntensity, 0f, 0.4f, 0, 1);
+                                * rainLevel;
 
                             cursor.set(x, y, z);
 
@@ -474,7 +493,9 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
                                 }
 
                                 stateFlag = 1;
-                                RenderSystem.setShaderTexture(0, SNOW_LOCATION);
+
+                                RenderSystem.setShaderTexture(0, SNOW_LOCATIONS[Mth.clamp(Mth.floor(rainIntensity * 4.0f), 0,3)]);
+
                                 buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
                             }
 
@@ -534,6 +555,7 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
      *     <li>Uses a modified function to query for current precipitation including climate</li>
      *     <li>Makes rain sounds quieter and reduce particles in less intense rainfall</li>
      * </ul>
+     *
      * @return {@code true} to prevent vanilla rain ticking
      */
     @Override
