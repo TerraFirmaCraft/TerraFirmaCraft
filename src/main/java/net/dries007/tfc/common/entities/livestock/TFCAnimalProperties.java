@@ -107,7 +107,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal, BrainAnimalBe
         {
             // Then familiarity decays, which is based on the last time this animal was familiarized vs. the current time. Modifying
             // the familiarity will reset the last decay tick
-            setFamiliarity(familiarity - 0.02f * (currentTick - familiarityDecayTick));
+            setFamiliarity(familiarity - 0.02f * (currentTick - familiarityDecayTick) / ICalendar.TICKS_IN_DAY);
         }
         final Age age = getAgeType();
         if (age != getLastAge())
