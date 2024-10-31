@@ -71,7 +71,7 @@ public interface HorseProperties extends MammalProperties
         tag.putDouble("jumpStrength1", male.getAttributeBaseValue(Attributes.JUMP_STRENGTH));
         tag.putDouble("jumpStrength2", female.getAttributeBaseValue(Attributes.JUMP_STRENGTH));
         tag.putDouble("movementSpeed1", male.getAttributeBaseValue(Attributes.MOVEMENT_SPEED));
-        tag.putDouble("movementSpeed2", male.getAttributeBaseValue(Attributes.MOVEMENT_SPEED));
+        tag.putDouble("movementSpeed2", female.getAttributeBaseValue(Attributes.MOVEMENT_SPEED));
     }
 
     @Override
