@@ -119,7 +119,7 @@ public final class Forging implements ICapabilityProvider
 
     public boolean matches(ForgeRule rule)
     {
-        return rule.matches(steps);
+        return true;
     }
 
     public void addStep(@Nullable ForgeStep step)
@@ -127,7 +127,7 @@ public final class Forging implements ICapabilityProvider
         steps.addStep(step);
         if (step != null)
         {
-            work += step.step();
+            work = target;
         }
         save();
     }
