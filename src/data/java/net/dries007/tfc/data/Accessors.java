@@ -43,7 +43,6 @@ import static net.dries007.tfc.util.Helpers.identifier;
 import static net.minecraft.core.registries.Registries.BLOCK;
 import static net.minecraft.core.registries.Registries.ITEM;
 
-import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
 
@@ -51,13 +50,9 @@ public interface Accessors {
 
     default Ingredient ingredientOf(Metal metal, Object type) {
         if (type instanceof Metal.ItemType) {
-            return ((Metal.ItemType) type).isCommonTagPart()
-                ? Ingredient.of(commonTagOf(metal, (Metal.ItemType) type))
-                : Ingredient.of(TFCItems.METAL_ITEMS.get(metal).get(type).get());
+            return ((Metal.ItemType) type).isCommonTagPart() ? Ingredient.of(commonTagOf(metal, (Metal.ItemType) type)) : Ingredient.of(TFCItems.METAL_ITEMS.get(metal).get(type).get());
         } else if (type instanceof Metal.BlockType) {
-            return type == Metal.BlockType.BLOCK
-                ? Ingredient.of(storageBlockTagOf(ITEM, metal))
-                : Ingredient.of(TFCBlocks.METALS.get(metal).get(type).get());
+            return type == Metal.BlockType.BLOCK ? Ingredient.of(storageBlockTagOf(ITEM, metal)) : Ingredient.of(TFCBlocks.METALS.get(metal).get(type).get());
         }
         throw new IllegalArgumentException("Unsupported type: " + type);
     }
@@ -82,8 +77,7 @@ public interface Accessors {
     }
 
     default TagKey<Block> oreBlockTagOf(Ore ore, @Nullable Ore.Grade grade) {
-        return commonTagOf(BLOCK, "ores/" + (ore.isGraded() ?
-            ore.metal().name() : ore.name()) + (grade == null ? "" : "/" + grade.name()));
+        return commonTagOf(BLOCK, "ores/" + (ore.isGraded() ? ore.metal().name() : ore.name()) + (grade == null ? "" : "/" + grade.name()));
     }
 
     default <T> TagKey<T> commonTagOf(ResourceKey<Registry<T>> key, String name) {
@@ -115,47 +109,25 @@ public interface Accessors {
         return TFCFluids.METALS.get(metal).getSource();
     }
 
-//    default String nameOf(Ingredient ingredient) {
-//        if (ingredient.getCustomIngredient() instanceof CompoundIngredient(
-//            java.util.List<Ingredient> children
-//        )) return nameOf(children.getFirst());
-//        final Ingredient.Value value = ingredient.getValues()[0];
-//        if (value instanceof Ingredient.TagValue(TagKey<Item> tag)) return tag.location().getPath();
-//        if (value instanceof Ingredient.ItemValue(ItemStack item)) return nameOf(item.getItem());
-//        throw new AssertionError("Unknown ingredient value");
-//    }
-//
-//    default String nameOf(Fluid fluid) {
-//        assert fluid != Fluids.EMPTY : "Should never get name of Items.AIR";
-//        return BuiltInRegistries.FLUID.getKey(fluid).getPath();
-//    }
-//
-//    default String nameOf(ItemLike item) {
-//        assert item.asItem() != Items.AIR : "Should never get name of Items.AIR";
-//        assert item.asItem() != Items.BARRIER : "Should never get name of Items.BARRIER";
-//        return BuiltInRegistries.ITEM.getKey(item.asItem()).getPath();
-//    }
-    default String nameOf(Object orIngredient_orFluid_orItem) {
-        if (orIngredient_orFluid_orItem instanceof Ingredient ingredient) {
-            return Arrays.stream(ingredient.getValues())
-                .map(this::nameOfValue)
-                .findFirst()
-                .orElseThrow(() -> new AssertionError("Unknown ingredient value"));
-        } else if (orIngredient_orFluid_orItem instanceof Fluid fluid) {
+    default String nameOf(Ingredient ingredient) {
+        if (ingredient.getCustomIngredient() instanceof CompoundIngredient(java.util.List<Ingredient> children))
+            return nameOf(children.getFirst());
 
-        }
-
-        throw new IllegalArgumentException("Unsupported object type: " + orIngredient_orFluid_orItem);
+        final Ingredient.Value value = ingredient.getValues()[0];
+        if (value instanceof Ingredient.TagValue(TagKey<Item> tag)) return tag.location().getPath();
+        if (value instanceof Ingredient.ItemValue(ItemStack item)) return nameOf(item.getItem());
+        throw new AssertionError("Unknown ingredient value");
     }
 
-    private String nameOfValue(Ingredient.Value value) {
-        if (value instanceof Ingredient.TagValue(TagKey<Item> tag)){
-            return tag.location().getPath();
-        } else if (value instanceof Ingredient.ItemValue(ItemStack item)) {
-            return BuiltInRegistries.ITEM.getKey(item.getItem().asItem()).getPath();
-        }
+    default String nameOf(Fluid fluid) {
+        assert fluid != Fluids.EMPTY : "Should never get name of Items.AIR";
+        return BuiltInRegistries.FLUID.getKey(fluid).getPath();
+    }
 
-        throw new AssertionError("Unknown ingredient value");
+    default String nameOf(ItemLike item) {
+        assert item.asItem() != Items.AIR : "Should never get name of Items.AIR";
+        assert item.asItem() != Items.BARRIER : "Should never get name of Items.BARRIER";
+        return BuiltInRegistries.ITEM.getKey(item.asItem()).getPath();
     }
 
     default int units(Metal.ItemType type) {
@@ -200,11 +172,12 @@ public interface Accessors {
      */
     // This method must maintain a consistent, deterministic ordering, so we can't collect into a typical
     // hash map - we must use an order-preserving map here - immutable map is the easiest way to do that
-    default <T1, T2, V> Map<T1, V> pivot(Map<T1, Map<T2, V>> map , T2 key) {
+    default <T1, T2, V> Map<T1, V> pivot(Map<T1, Map<T2, V>> map, T2 key) {
         return map.entrySet().stream()
-            .filter(entry -> entry.getValue().containsKey(key))
-            .collect(ImmutableMap.toImmutableMap(Map.Entry::getKey,
-                entry -> entry.getValue().get(key)));
+            .filter(entry -> entry.getValue()
+                .containsKey(key))
+            .collect(ImmutableMap.toImmutableMap(Map.Entry::getKey, entry -> entry.getValue()
+                .get(key)));
     }
 
     default BlockGetter empty() {
