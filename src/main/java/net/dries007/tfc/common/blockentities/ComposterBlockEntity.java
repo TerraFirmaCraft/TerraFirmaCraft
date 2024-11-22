@@ -29,6 +29,7 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.climate.Climate;
+import org.jetbrains.annotations.NotNull;
 
 public class ComposterBlockEntity extends InventoryBlockEntity<ItemStackHandler> {
     public static final int MAX_AMOUNT = 16;
@@ -65,16 +66,14 @@ public class ComposterBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         assert level != null;
         final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
         cursor.set(getBlockPos());
-        final float rainfall = Climate.getRainfall(level, cursor);
+        float rainfall = Climate.getRainfall(level, cursor);
         long readyTicks = TFCConfig.SERVER.composterTicks.get();
-        readyTicks *= (long) getRainfallAdjustmentFactor(rainfall);
+        readyTicks = (long) (readyTicks * getRainfallAdjustmentFactor(rainfall));
         cursor.move(0, 1, 0);
         if (Helpers.isBlock(level.getBlockState(cursor), BlockTags.SNOW)) {
             readyTicks = (long) (readyTicks * 0.9f);
         }
-        readyTicks = adjustForNearbyComposters(cursor, readyTicks);
-
-        return readyTicks;
+        return adjustForNearbyComposters(cursor, readyTicks);
     }
 
     private long adjustForNearbyComposters(BlockPos.MutableBlockPos cursor, long readyTicks) {
@@ -121,49 +120,80 @@ public class ComposterBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         final BlockPos pos = getBlockPos();
         if (player.blockPosition().equals(pos)) return ItemInteractionResult.FAIL;
         final Compost compost = getCompost(stack);
-        if (stack.isEmpty() && player.isShiftKeyDown()) // extract compost
-        {
-            if (brown == MAX_AMOUNT && green == MAX_AMOUNT) {
-                Helpers.spawnItem(level, pos.above(), inventory.extractItem(0, 1, false));
-            }
-            reset();
-            Helpers.playSound(level, pos, SoundEvents.ROOTED_DIRT_BREAK);
-            return finishUse(client);
-        } else if (rotten) {
+        if (stack.isEmpty() && player.isShiftKeyDown()) {
+            return handleExtractCompost(client, pos);
+        }else if (rotten) {
             if (!client) player.displayClientMessage(Component.translatable("tfc.composter.rotten"), true);
             return finishUse(client);
-        } else if (compost.type == AdditionType.POISON) {
-            if (!client) setState(TFCComposterBlock.CompostType.ROTTEN);
-            if (!player.isCreative()) stack.shrink(1);
-            inventory.setStackInSlot(0, new ItemStack(TFCItems.ROTTEN_COMPOST.get()));
-            Helpers.playSound(level, pos, SoundEvents.HOE_TILL);
-            return finishUse(client);
-        } else if (green <= MAX_AMOUNT && compost.type == AdditionType.GREEN) {
+        }
+
+        return handleCompostAddition(stack, player, client, compost, pos);
+    }
+
+    private @NotNull ItemInteractionResult handleCompostAddition(ItemStack stack, Player player, boolean client, Compost compost, BlockPos pos) {
+        assert level != null;
+        if (canAddCompose(AdditionType.POISON, 0)) {
+            return setPoisonState(stack, player, client, pos);
+        }
+        if (canAddCompose(AdditionType.GREEN, green)) {
             if (green == MAX_AMOUNT) {
-                if (!client) player.displayClientMessage(Component.translatable("tfc.composter.too_many_greens"), true);
+                if (!client) getTooManyMessage(AdditionType.GREEN, player);
             } else {
-                green = Math.min(green + compost.amount, MAX_AMOUNT);
-                if (!client) {
-                    if (!player.isCreative()) stack.shrink(1);
-                    Helpers.playSound(level, pos, SoundEvents.HOE_TILL);
-                    resetCounter();
-                }
+                green = Math.min((green + compost.amount), MAX_AMOUNT);
+                shrinkAndSoundEffect(stack, player, client, pos);
             }
             return finishUse(client);
-        } else if (brown <= MAX_AMOUNT && compost.type == AdditionType.BROWN) {
+        }
+        if (brown <= MAX_AMOUNT && compost.type == AdditionType.BROWN) {
             if (brown == MAX_AMOUNT) {
-                if (!client) player.displayClientMessage(Component.translatable("tfc.composter.too_many_browns"), true);
+                if (!client) getTooManyMessage(AdditionType.BROWN, player);
             } else {
                 brown = Math.min(brown + compost.amount, MAX_AMOUNT);
-                if (!client) {
-                    if (!player.isCreative()) stack.shrink(1);
-                    Helpers.playSound(level, pos, SoundEvents.HOE_TILL);
-                    resetCounter();
-                }
+                shrinkAndSoundEffect(stack, player, client, pos);
             }
             return finishUse(client);
         }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+    }
+    private void getTooManyMessage(AdditionType type, Player player) {
+        if (type == AdditionType.GREEN) {
+            player.displayClientMessage(Component.translatable("tfc.composter.too_many_greens"), true);
+        }
+        player.displayClientMessage(Component.translatable("tfc.composter.too_many_browns"), true);
+    }
+
+    private @NotNull ItemInteractionResult setPoisonState(ItemStack stack, Player player, boolean client, BlockPos pos) {
+        assert level != null;
+        if (!client) setState(TFCComposterBlock.CompostType.ROTTEN);
+        if (!player.isCreative()) stack.shrink(1);
+        inventory.setStackInSlot(0, new ItemStack(TFCItems.ROTTEN_COMPOST.get()));
+        Helpers.playSound(level, pos, SoundEvents.HOE_TILL);
+        return finishUse(client);
+    }
+
+    private boolean canAddCompose(AdditionType type, int amount) {
+        return (type == AdditionType.GREEN && amount < MAX_AMOUNT) ||
+            (type == AdditionType.BROWN && amount < MAX_AMOUNT) ||
+            (type == AdditionType.POISON && amount == 0);
+    }
+
+    private void shrinkAndSoundEffect(ItemStack stack, Player player, boolean client, BlockPos pos) {
+        assert level != null;
+        if (!client && !player.isCreative()) {
+            stack.shrink(1);
+            Helpers.playSound(level, pos, SoundEvents.HOE_TILL);
+            resetCounter();
+        }
+    }
+
+    private @NotNull ItemInteractionResult handleExtractCompost(boolean client, BlockPos pos) {
+        assert level != null;
+        if (brown == MAX_AMOUNT && green == MAX_AMOUNT) {
+            Helpers.spawnItem(level, pos.above(), inventory.extractItem(0, 1, false));
+        }
+        reset();
+        Helpers.playSound(level, pos, SoundEvents.ROOTED_DIRT_BREAK);
+        return finishUse(client);
     }
 
     public void resetCounter() {
