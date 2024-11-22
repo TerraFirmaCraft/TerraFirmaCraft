@@ -74,7 +74,7 @@ public class LeafParticle extends TextureSheetParticle
 
         if (onGround)
         {
-            alpha += 0.04;
+            alpha += 0.04f;
             if (alpha >= 1)
             {
                 remove();

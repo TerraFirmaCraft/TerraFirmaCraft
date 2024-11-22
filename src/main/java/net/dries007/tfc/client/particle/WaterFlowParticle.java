@@ -46,7 +46,7 @@ public class WaterFlowParticle extends TextureSheetParticle
             xd = (vec.x * 0.18) + (xd * 0.02);
             zd = (vec.z * 0.18) + (zd * 0.02);
             oRoll = roll;
-            roll += particleRandom * 0.01;
+            roll += particleRandom * 0.01f;
         }
         else
         {
