@@ -6,6 +6,15 @@
 
 package net.dries007.tfc.common.blockentities;
 
+import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.devices.TFCComposterBlock;
+import net.dries007.tfc.common.capabilities.PartialItemHandler;
+import net.dries007.tfc.common.component.food.FoodCapability;
+import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.calendar.Calendars;
+import net.dries007.tfc.util.climate.Climate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -20,22 +29,11 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
-import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blocks.devices.TFCComposterBlock;
-import net.dries007.tfc.common.capabilities.PartialItemHandler;
-import net.dries007.tfc.common.component.food.FoodCapability;
-import net.dries007.tfc.common.items.TFCItems;
-import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.calendar.Calendars;
-import net.dries007.tfc.util.climate.Climate;
-import org.jetbrains.annotations.NotNull;
-
 public class ComposterBlockEntity extends InventoryBlockEntity<ItemStackHandler> {
-    public static final int MAX_AMOUNT = 16;
+    public static final byte MAX_AMOUNT = 16;
 
     protected long lastUpdateTick = Integer.MIN_VALUE;
-    private int green, brown;
+    private byte green, brown;
 
     public ComposterBlockEntity(BlockPos pos, BlockState state) {
         this(TFCBlockEntities.COMPOSTER.get(), pos, state);
@@ -50,34 +48,39 @@ public class ComposterBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 
     public void randomTick() {
         assert level != null;
-        if (green >= MAX_AMOUNT && brown >= MAX_AMOUNT && !isRotten()) {
+        boolean rotten = isRotten();
+        if (rotten) {
+            Helpers.tickInfestation(level, getBlockPos(), 5, null);
+            return;
+        }
+
+        if (green >= MAX_AMOUNT && brown >= MAX_AMOUNT) {
             if (getTicksSinceUpdate() > getReadyTicks()) {
                 inventory.setStackInSlot(0, new ItemStack(TFCItems.COMPOST.get()));
                 setState(TFCComposterBlock.CompostType.READY);
                 markForSync();
             }
         }
-        if (isRotten()) {
-            Helpers.tickInfestation(level, getBlockPos(), 5, null);
-        }
     }
-//  fix Implicit cast from 'float' to 'long'
+
     public long getReadyTicks() {
         assert level != null;
         final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
-        cursor.set(getBlockPos());
-        float rainfall = Climate.getRainfall(level, cursor);
+        final float rainfall = Climate.getRainfall(level, cursor);
         long readyTicks = TFCConfig.SERVER.composterTicks.get();
-        readyTicks = (long) (readyTicks * getRainfallAdjustmentFactor(rainfall));
-        cursor.move(0, 1, 0);
+
+        // inverted trapezoid wave
+        if (rainfall < 150f) {
+            readyTicks *= (long) ((150f - rainfall) / 50f + 1f);
+        } else if (rainfall > 350f) {
+            readyTicks *= (long) ((rainfall - 350f) / 50f + 1f);
+        }
+
+        cursor.set(getBlockPos()).move(Direction.UP);
         if (Helpers.isBlock(level.getBlockState(cursor), BlockTags.SNOW)) {
             readyTicks = (long) (readyTicks * 0.9f);
         }
-        return adjustForNearbyComposters(cursor, readyTicks);
-    }
 
-    private long adjustForNearbyComposters(BlockPos.MutableBlockPos cursor, long readyTicks) {
-        assert level != null;
         for (Direction direction : Direction.Plane.HORIZONTAL) {
             cursor.setWithOffset(getBlockPos(), direction);
             if (level.getBlockState(cursor).getBlock() instanceof TFCComposterBlock) {
@@ -87,29 +90,18 @@ public class ComposterBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         return readyTicks;
     }
 
-    // inverted trapezoid wave
-    // extracted and fix converting to long
-    private float getRainfallAdjustmentFactor(float rainfall) {
-        if (rainfall < 150f) {
-            return (150f - rainfall) / 50f + 1f;
-        } else if (rainfall > 350f) {
-            return (rainfall - 350f) / 50f + 1f;
-        }
-        return 1f;
-    }
-
     @Override
     public void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider) {
-        green = nbt.getInt("green");
-        brown = nbt.getInt("brown");
+        green = nbt.getByte("green");
+        brown = nbt.getByte("brown");
         lastUpdateTick = nbt.getLong("tick");
         super.loadAdditional(nbt, provider);
     }
 
     @Override
     public void saveAdditional(CompoundTag nbt, HolderLookup.Provider provider) {
-        nbt.putInt("green", getGreen());
-        nbt.putInt("brown", getBrown());
+        nbt.putByte("green", getGreen());
+        nbt.putByte("brown", getBrown());
         nbt.putLong("tick", lastUpdateTick);
         super.saveAdditional(nbt, provider);
     }
@@ -118,82 +110,67 @@ public class ComposterBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         assert level != null;
         final boolean rotten = isRotten();
         final BlockPos pos = getBlockPos();
-        if (player.blockPosition().equals(pos)) return ItemInteractionResult.FAIL;
         final Compost compost = getCompost(stack);
-        if (stack.isEmpty() && player.isShiftKeyDown()) {
-            return handleExtractCompost(client, pos);
-        }else if (rotten) {
+
+        if (player.blockPosition().equals(pos)) return ItemInteractionResult.FAIL;
+
+        if (rotten) {
             if (!client) player.displayClientMessage(Component.translatable("tfc.composter.rotten"), true);
             return finishUse(client);
         }
 
-        return handleCompostAddition(stack, player, client, compost, pos);
-    }
-
-    private @NotNull ItemInteractionResult handleCompostAddition(ItemStack stack, Player player, boolean client, Compost compost, BlockPos pos) {
-        assert level != null;
-        if (canAddCompose(AdditionType.POISON, 0)) {
-            return setPoisonState(stack, player, client, pos);
-        }
-        if (canAddCompose(AdditionType.GREEN, green)) {
-            if (green == MAX_AMOUNT) {
-                if (!client) getTooManyMessage(AdditionType.GREEN, player);
-            } else {
-                green = Math.min((green + compost.amount), MAX_AMOUNT);
-                shrinkAndSoundEffect(stack, player, client, pos);
+        // extract compost
+        if (stack.isEmpty() && player.isShiftKeyDown()) {
+            if (brown == MAX_AMOUNT && green == MAX_AMOUNT) {
+                Helpers.spawnItem(level, pos.above(), inventory.extractItem(0, 1, false));
             }
+            reset();
+            Helpers.playSound(level, pos, SoundEvents.ROOTED_DIRT_BREAK);
             return finishUse(client);
         }
-        if (brown <= MAX_AMOUNT && compost.type == AdditionType.BROWN) {
-            if (brown == MAX_AMOUNT) {
-                if (!client) getTooManyMessage(AdditionType.BROWN, player);
-            } else {
-                brown = Math.min(brown + compost.amount, MAX_AMOUNT);
-                shrinkAndSoundEffect(stack, player, client, pos);
+
+        return switch (compost.type) {
+            case POISON -> {
+                handlePoisonCompost(client, player, stack, pos);
+                yield finishUse(client);
             }
-            return finishUse(client);
-        }
-        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-    }
-    private void getTooManyMessage(AdditionType type, Player player) {
-        if (type == AdditionType.GREEN) {
-            player.displayClientMessage(Component.translatable("tfc.composter.too_many_greens"), true);
-        }
-        player.displayClientMessage(Component.translatable("tfc.composter.too_many_browns"), true);
+            case BROWN -> {
+                handleCompostAddition(player, stack, client, "tfc.composter.too_many_browns",
+                    () -> brown += compost.amount, pos, brown);
+                yield finishUse(client);
+            }
+            case GREEN -> {
+                handleCompostAddition(player, stack, client, "tfc.composter.too_many_greens",
+                    () -> green += compost.amount, pos, green);
+                yield finishUse(client);
+            }
+            default -> finishUse(client);
+        };
     }
 
-    private @NotNull ItemInteractionResult setPoisonState(ItemStack stack, Player player, boolean client, BlockPos pos) {
+    private void handleCompostAddition(Player player, ItemStack stack, boolean client, String tooManyMessage,
+                                       Runnable incrementAction, BlockPos pos, byte currentAmount) {
         assert level != null;
-        if (!client) setState(TFCComposterBlock.CompostType.ROTTEN);
+        if (currentAmount == MAX_AMOUNT) {
+            if (!client) player.displayClientMessage(Component.translatable(tooManyMessage), true);
+        } else {
+            if (!client) {
+                if (!player.isCreative()) stack.shrink(1);
+                incrementAction.run();
+                Helpers.playSound(level, pos, SoundEvents.HOE_TILL);
+                resetCounter();
+            }
+        }
+    }
+
+    private void handlePoisonCompost(boolean client, Player player, ItemStack stack, BlockPos pos) {
+        assert level != null;
+        if (!client) {
+            setState(TFCComposterBlock.CompostType.ROTTEN);
+            inventory.setStackInSlot(0, new ItemStack(TFCItems.ROTTEN_COMPOST.get()));
+        }
         if (!player.isCreative()) stack.shrink(1);
-        inventory.setStackInSlot(0, new ItemStack(TFCItems.ROTTEN_COMPOST.get()));
         Helpers.playSound(level, pos, SoundEvents.HOE_TILL);
-        return finishUse(client);
-    }
-
-    private boolean canAddCompose(AdditionType type, int amount) {
-        return (type == AdditionType.GREEN && amount < MAX_AMOUNT) ||
-            (type == AdditionType.BROWN && amount < MAX_AMOUNT) ||
-            (type == AdditionType.POISON && amount == 0);
-    }
-
-    private void shrinkAndSoundEffect(ItemStack stack, Player player, boolean client, BlockPos pos) {
-        assert level != null;
-        if (!client && !player.isCreative()) {
-            stack.shrink(1);
-            Helpers.playSound(level, pos, SoundEvents.HOE_TILL);
-            resetCounter();
-        }
-    }
-
-    private @NotNull ItemInteractionResult handleExtractCompost(boolean client, BlockPos pos) {
-        assert level != null;
-        if (brown == MAX_AMOUNT && green == MAX_AMOUNT) {
-            Helpers.spawnItem(level, pos.above(), inventory.extractItem(0, 1, false));
-        }
-        reset();
-        Helpers.playSound(level, pos, SoundEvents.ROOTED_DIRT_BREAK);
-        return finishUse(client);
     }
 
     public void resetCounter() {
@@ -225,11 +202,11 @@ public class ComposterBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         return ItemInteractionResult.sidedSuccess(client);
     }
 
-    public int getGreen() {
+    public byte getGreen() {
         return green;
     }
 
-    public int getBrown() {
+    public byte getBrown() {
         return brown;
     }
 
@@ -238,30 +215,35 @@ public class ComposterBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         resetCounter();
         setState(TFCComposterBlock.CompostType.NORMAL, 0);
     }
+    //Caching the block state
+    private BlockState getCurrentState() {
+        assert level != null;
+        return level.getBlockState(getBlockPos());
+    }
 
     public boolean isRotten() {
         assert level != null;
-        return level.getBlockState(getBlockPos()).getValue(TFCComposterBlock.TYPE) == TFCComposterBlock.CompostType.ROTTEN;
+        return getCurrentState().getValue(TFCComposterBlock.TYPE) == TFCComposterBlock.CompostType.ROTTEN;
     }
 
     public boolean isReady() {
         assert level != null;
-        return level.getBlockState(getBlockPos()).getValue(TFCComposterBlock.TYPE) == TFCComposterBlock.CompostType.READY;
+        return getCurrentState().getValue(TFCComposterBlock.TYPE) == TFCComposterBlock.CompostType.READY;
     }
 
     public void setState(TFCComposterBlock.CompostType type) {
         assert level != null;
-        level.setBlockAndUpdate(getBlockPos(), level.getBlockState(getBlockPos()).setValue(TFCComposterBlock.TYPE, type));
+        level.setBlockAndUpdate(getBlockPos(),getCurrentState().setValue(TFCComposterBlock.TYPE, type));
     }
 
     public void setState(TFCComposterBlock.CompostType type, int stage) {
         assert level != null;
-        level.setBlockAndUpdate(getBlockPos(), level.getBlockState(getBlockPos()).setValue(TFCComposterBlock.TYPE, type).setValue(TFCComposterBlock.STAGE, stage));
+        level.setBlockAndUpdate(getBlockPos(), getCurrentState().setValue(TFCComposterBlock.TYPE, type).setValue(TFCComposterBlock.STAGE, stage));
     }
 
     public void setState(int stage) {
         assert level != null;
-        level.setBlockAndUpdate(getBlockPos(), level.getBlockState(getBlockPos()).setValue(TFCComposterBlock.STAGE, stage));
+        level.setBlockAndUpdate(getBlockPos(),getCurrentState().setValue(TFCComposterBlock.STAGE, stage));
     }
 
     @Override
@@ -280,30 +262,30 @@ public class ComposterBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     public Compost getCompost(ItemStack stack) {
         final boolean rotten = FoodCapability.isRotten(stack);
         if (Helpers.isItem(stack, TFCTags.Items.COMPOST_POISONS)) {
-            return new Compost(AdditionType.POISON, 0);
+            return new Compost(AdditionType.POISON, (byte) 0);
         }
         if (Helpers.isItem(stack, TFCTags.Items.COMPOST_BROWNS_LOW)) {
-            return new Compost(AdditionType.BROWN, 1);
+            return new Compost(AdditionType.BROWN, (byte) 1);
         }
         if (Helpers.isItem(stack, TFCTags.Items.COMPOST_BROWNS_MEDIUM)) {
-            return new Compost(AdditionType.BROWN, 2);
+            return new Compost(AdditionType.BROWN, (byte) 2);
         }
         if (Helpers.isItem(stack, TFCTags.Items.COMPOST_BROWNS_HIGH)) {
-            return new Compost(AdditionType.BROWN, rotten ? 2 : 4);
+            return new Compost(AdditionType.BROWN, (byte) (rotten ? 2 : 4));
         }
         if (Helpers.isItem(stack, TFCTags.Items.COMPOST_GREENS_LOW)) {
-            return new Compost(AdditionType.GREEN, 1);
+            return new Compost(AdditionType.GREEN, (byte) 1);
         }
         if (Helpers.isItem(stack, TFCTags.Items.COMPOST_GREENS_MEDIUM)) {
-            return new Compost(AdditionType.GREEN, 2);
+            return new Compost(AdditionType.GREEN, (byte) 2);
         }
         if (Helpers.isItem(stack, TFCTags.Items.COMPOST_GREENS_HIGH)) {
-            return new Compost(AdditionType.GREEN, rotten ? 2 : 4);
+            return new Compost(AdditionType.GREEN, (byte) (rotten ? 2 : 4));
         }
-        return new Compost(AdditionType.NONE, 0);
+        return new Compost(AdditionType.NONE, (byte) 0);
     }
 
-    public record Compost(AdditionType type, int amount) {
+    public record Compost(AdditionType type, byte amount) {
     }
 
     public enum AdditionType {
