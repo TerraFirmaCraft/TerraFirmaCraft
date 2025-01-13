@@ -1,0 +1,346 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Wild Animals",
+  "category": "tfc:the_world",
+  "icon": "tfc:medium_raw_hide",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The world of TFC is full of animal life. Some animals are here to help, and some are incredibly dangerous. This section is about wild animals. For information on livestock, animals that can give you items you need, see the $(l:mechanics/animal_husbandry)Animal Husbandry$() page."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Animals can be grouped into a few different categories: $(l:the_world/wild_animals#predators)Predators$(), $(l:the_world/wild_animals#prey)Prey$(), and $(l:the_world/wild_animals#aquatic)Aquatic$() animals.$(br2)The next few pages will detail each of these categories of animals."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "predators",
+      "text": "$(thing)Predators$() are animals that can attack the player. They are either $(thing)Nocturnal$(), only hunting at night, or $(thing)Diurnal$(), only hunting during the day. Predators can be neutral or hostile, depending on if they have killed a target recently. Predators have a home territory that they will defend - if you run far enough away, the predator will stop chasing and return home.",
+      "title": "Predators"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:polar_bear",
+      "scale": 0.55,
+      "name": "Polar Bear",
+      "text": "The polar bear spawns in only the coldest regions, $(l:the_world/climate#temperature)temperature$() at most 10°C, with a $(l:the_world/climate#rainfall)rainfall$() of at least 100mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:grizzly_bear",
+      "scale": 0.55,
+      "name": "Grizzly Bear",
+      "text": "The grizzly bear spawns in forests of moderate climates, with a $(l:the_world/climate#temperature)temperature$() range of -15 to 15°C and at least 200mm of $(l:the_world/climate#rainfall)rainfall$()."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:black_bear",
+      "scale": 0.55,
+      "name": "Black Bear",
+      "text": "The black bear spawns in forests of warmer, wetter climates, of $(l:the_world/climate#temperature)temperature$() 5 to 20°C and at least 250mm of $(l:the_world/climate#rainfall)rainfall$()."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:cougar",
+      "scale": 0.6,
+      "name": "Cougar",
+      "text": "The cougar prefers most moderate climates, with $(l:the_world/climate#temperature)temperature$() from -10 to 21°C and at least 150mm of $(l:the_world/climate#rainfall)rainfall$()."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:panther",
+      "scale": 0.6,
+      "name": "Panther",
+      "text": "The panther prefers most moderate climates, with $(l:the_world/climate#temperature)temperature$() from -10 to 21°C and at least 150mm of $(l:the_world/climate#rainfall)rainfall$()."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:lion",
+      "scale": 0.55,
+      "name": "Lion",
+      "text": "The lion spawns in plains with an average $(l:the_world/climate#temperature)temperature$() of at least 16°C, and $(l:the_world/climate#rainfall)rainfall$() between 50 and 300mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:tiger",
+      "scale": 0.55,
+      "name": "Tiger",
+      "text": "The tiger spawns in forests with an average $(l:the_world/climate#temperature)temperature$() of at least 13°C, and $(l:the_world/climate#rainfall)rainfall$() above 100mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:sabertooth",
+      "scale": 0.6,
+      "name": "Sabertooth",
+      "text": "The sabertooth spawns at any $(l:the_world/climate#temperature)temperature$() above 0°C, and any $(l:the_world/climate#rainfall)rainfall$() above 250mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:wolf",
+      "scale": 0.7,
+      "text": "The wolf spawns at any $(l:the_world/climate#temperature)temperature$() below 22°C, and $(l:the_world/climate#rainfall)rainfall$() between 150 and 420mm. They hunt in packs. Feeding a wolf enough times will tame it into a $(l:mechanics/pets)Dog$()."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:direwolf",
+      "scale": 0.7,
+      "text": "The direwolf spawns at any $(l:the_world/climate#temperature)temperature$() below freezing, and $(l:the_world/climate#rainfall)rainfall$() between 150 and 420mm. They hunt in packs. They are larger than regular wolves, and are not tamable."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:hyena",
+      "scale": 0.7,
+      "text": "The hyena spawns at any $(l:the_world/climate#temperature)temperature$() warmer than 15°C, and $(l:the_world/climate#rainfall)rainfall$() between 80 and 380mm. They hunt in packs. They are not tamable."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:crocodile",
+      "scale": 0.7,
+      "name": "Crocodile",
+      "text": "The crocodile spawns near rivers, lakes, and marshes at any $(l:the_world/climate#temperature)temperature$() warmer than 15°C, and at any $(l:the_world/climate#rainfall)rainfall$(). They are nocturnal, and most dangerous in the water."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:ocelot",
+      "scale": 0.7,
+      "text": "The ocelot attacks small animals. It spawns at any $(l:the_world/climate#temperature)temperature$() from 15 to 30°C, and $(l:the_world/climate#rainfall)rainfall$() between 300 and 500mm, in forests. Feeding an ocelot enough times will tame it into a $(l:mechanics/pets)Cat$(). Ocelots can eat raw fish"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "ramming_prey",
+      "text": "$(thing)Ramming$() animals occasionally attempt to charge nearby creatures, including the player. Their attacks are powerful, but can be dodged. They will ram more frequently if attacked.",
+      "title": "Ramming"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:boar",
+      "scale": 0.7,
+      "name": "Boar",
+      "text": "The boar spawns at $(l:the_world/climate#temperature)temperature$() below 25°C and above -5°C, and $(l:the_world/climate#rainfall)rainfall$() between 130 and 400mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:moose",
+      "scale": 0.7,
+      "text": "The moose spawns in forests at $(l:the_world/climate#temperature)temperature$() below 10°C and above -15°C, and $(l:the_world/climate#rainfall)rainfall$() between 150 and 300mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:wildebeest",
+      "scale": 0.7,
+      "text": "The wildebeest spawns in open plains at any $(l:the_world/climate#temperature)temperature$() above 13°C, and $(l:the_world/climate#rainfall)rainfall$() between 90 and 380mm."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "prey",
+      "text": "$(thing)Prey$() animals fear players and predators. They are adept at fleeing from danger, but generally cannot fight back. Some prey animals enjoy snacking on crops.",
+      "title": "Prey"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:rabbit",
+      "scale": 0.7,
+      "name": "Rabbit",
+      "text": "The rabbit is known to chew on carrots and cabbage. They are ubiquitous in the world, changing their coat based on climate. They only need 15mm of $(l:the_world/climate#rainfall)rainfall$() to spawn."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:fox",
+      "scale": 0.7,
+      "name": "Fox",
+      "text": "The fox likes to eat the berries off of bushes. It can be found in forests with $(l:the_world/climate#temperature)temperature$() below 25°C, and $(l:the_world/climate#rainfall)rainfall$() between 130 and 400mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:deer",
+      "scale": 0.7,
+      "text": "The deer spawns in forests at any $(l:the_world/climate#temperature)temperature$() below 25°C and above -15°C, and $(l:the_world/climate#rainfall)rainfall$() between 130 and 400mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:caribou",
+      "scale": 0.6,
+      "name": "Caribou",
+      "text": "The caribou spawns at any $(l:the_world/climate#temperature)temperature$() below -9°C, and $(l:the_world/climate#rainfall)rainfall$() between 110 and 500mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:gazelle",
+      "scale": 0.7,
+      "text": "The gazelle spawns in open plains at any $(l:the_world/climate#temperature)temperature$() above 12°C, and $(l:the_world/climate#rainfall)rainfall$() between 90 and 380mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:bongo",
+      "scale": 0.9,
+      "name": "Bongo",
+      "text": "The bongo spawns in forests at any $(l:the_world/climate#temperature)temperature$() above 15°C, and $(l:the_world/climate#rainfall)rainfall$() between 230 and 500mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:grouse",
+      "scale": 0.7,
+      "text": "The grouse spawns at any $(l:the_world/climate#temperature)temperature$() below 13°C and above -12°C, and $(l:the_world/climate#rainfall)rainfall$() between 150 and 400mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:pheasant",
+      "scale": 0.7,
+      "text": "The pheasant spawns in forests at any $(l:the_world/climate#temperature)temperature$() below 17°C and above -5°C, and $(l:the_world/climate#rainfall)rainfall$() between 100 and 300mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:turkey",
+      "scale": 0.7,
+      "text": "The turkey spawns in forests at any $(l:the_world/climate#temperature)temperature$() below 17°C and above 0°C, and $(l:the_world/climate#rainfall)rainfall$() between 250 and 450mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:peafowl",
+      "scale": 0.8,
+      "name": "Peafowl",
+      "text": "The peafowl spawns in forests at any $(l:the_world/climate#temperature)temperature$() above 14°C, and $(l:the_world/climate#rainfall)rainfall$() between 190 and 500mm."
+    },
+    {
+      "type": "patchouli:empty"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "aquatic",
+      "text": "$(thing)Aquatic Animals$() are a broad category which covers a number of different behaviors. They may be $(thing)Shore Dwellers$(), $(thing)Fish$(), $(thing)Shellfish$(), or $(thing)Large Aquatic Creatures$()",
+      "title": "Aquatic Animals"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Shore Animals$() only spawn on sea shores and spend some of their day swimming, and some walking on the beach. They are curious creatures, and will follow the player around, but cannot be tamed."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:penguin",
+      "scale": 0.7,
+      "name": "Penguin",
+      "text": "The penguin spawns in only the coldest beaches, with $(l:the_world/climate#temperature)temperature$() of at most -14°C and $(l:the_world/climate#rainfall)rainfall$() of at least 75mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:turtle",
+      "scale": 0.7,
+      "name": "Sea Turtle",
+      "text": "The sea turtle likes warm water. It spawns in $(l:the_world/climate#temperature)temperature$() of at least 21°C and $(l:the_world/climate#rainfall)rainfall$() of at least 250mm."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Fish$() are small creatures that swim in water. Most of them can be $(l:mechanics/fishing)fished$(). Some prefer oceans, rivers, or lakes.",
+      "title": "Fish"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:cod",
+      "scale": 0.7,
+      "name": "Cod",
+      "text": "Cod prefer colder oceans, $(l:the_world/climate#temperature)temperature$() at most 18°C. They can be fished."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:pufferfish",
+      "scale": 0.7,
+      "name": "Pufferfish",
+      "text": "Pufferfish live in any ocean with at least a $(l:the_world/climate#temperature)temperature$() of 10°C."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:jellyfish",
+      "scale": 0.7,
+      "name": "Jellyfish",
+      "text": "Jellyfish live in warmer oceans, with a $(l:the_world/climate#temperature)temperature$() of at least 18°C."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:tropical_fish",
+      "scale": 0.7,
+      "name": "Tropical Fish",
+      "text": "Tropical fish prefer warmer oceans, with a $(l:the_world/climate#temperature)temperature$() of at least 18°C."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:salmon",
+      "scale": 0.7,
+      "name": "Salmon",
+      "text": "Salmon spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -5°C."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:bluegill",
+      "scale": 0.7,
+      "name": "Bluegill",
+      "text": "Bluegill spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -10°C and at most 26°C."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "shellfish",
+      "text": "$(thing)Shellfish$() are small animals that live on the floor of bodies of water. They cannot be fished, but drop shells that can be eaten or made into $(l:mechanics/flux)flux$(). Shellfish can be $(l:mechanics/fishing)bait$() for fish.",
+      "title": "Shellfish"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:isopod",
+      "scale": 0.7,
+      "name": "Isopod",
+      "text": "Isopods spawn in deeper sections of oceans of $(l:the_world/climate#temperature)temperature$() at most 14°C."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:lobster",
+      "scale": 0.7,
+      "name": "Lobster",
+      "text": "Lobster spawn in any ocean that is at most of a $(l:the_world/climate#temperature)temperature$() of 21°C."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:crayfish",
+      "scale": 0.7,
+      "name": "Crayfish",
+      "text": "Crayfish are like lobster, but spawn in rivers and lakes. They need a $(l:the_world/climate#temperature)temperature$() of at least 5°C and a $(l:the_world/climate#rainfall)rainfall$() of at least 125mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:horseshoe_crab",
+      "scale": 0.7,
+      "name": "Horseshoe Crab",
+      "text": "Horseshoe crabs spawn in oceans of moderate climate, $(l:the_world/climate#temperature)temperature$() between 10 and 21°C and with a $(l:the_world/climate#rainfall)rainfall$() of at most 400mm."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Large Water Creatures$() are larger animals that live in the bigger bodies of water. Some of them hunt fish. They drop $(l:mechanics/lamps#tallow)blubber$(), which can be made into lamp fuel.",
+      "title": "Large Water Creatures"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:orca",
+      "scale": 0.25,
+      "name": "Orca",
+      "text": "Orca whales live in deep oceans with $(l:the_world/climate#temperature)temperature$() of at most 19°C and $(l:the_world/climate#rainfall)rainfall$() of at least 100mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:dolphin",
+      "scale": 0.4,
+      "name": "Dolphin",
+      "text": "Dolphins live in deep oceans with $(l:the_world/climate#temperature)temperature$() of at least 10°C and $(l:the_world/climate#rainfall)rainfall$() of at least 200mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:manatee",
+      "scale": 0.25,
+      "name": "Manatee",
+      "text": "Manatees live in any warm lake, with $(l:the_world/climate#temperature)temperature$() of at least 20°C and $(l:the_world/climate#rainfall)rainfall$() of at most 300mm."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Squid can spawn in any deep ocean. They drop $(thing)Ink Sacs$(), and ink any player that gets too close. Some say that squids in deep, unexplored caves have strange properties.",
+      "title": "Squid"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 6
+}

@@ -1,0 +1,132 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Composter",
+  "category": "tfc:mechanics",
+  "icon": "tfc:textures/gui/book/icons/composter.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The composter is an essential tool for making fertilizer. It needs both $(2)Green$() and $(4)Brown$() items to work. Different items contribute more to the amount of compost produced than others. To add an item to it, $(item)$(k:key.use)$(). The items that can be added are described on later pages."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/composter",
+      "text": "The composter just requires some $(thing)Lumber$() and $(thing)Dirt$() to make!"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Composters operate better in certain conditions. Composters that have a block of snow on top work slightly faster. Composters in regions of less than 150mm or greater than 350mm of rainfall operate much slower, with that effect getting stronger closer to the maximum and minimum rainfall. Also, composters that are touching other composters work slower."
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "The composter at its empty, working, and complete stage.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:composter[stage=0,type=normal]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:composter[stage=8,type=normal]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:composter[stage=8,type=ready]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The composter takes 12 days to complete in average conditions. When it is ready, it will have a dirt-like color and gray particles will be emitted from the top of it. The compost can then be retrieved with  $(item)$(k:key.use)$() and  $(item)$(k:key.sneak)$() with an empty hand. Adding things like $(c)meat$() and $(c)bones$() to compost spoils it, turning it reddish and causing it to emit gross particles. The rotten compost can be removed in the same way as good compost. When used on a crop, it instantly kills it."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:composter[stage=8,type=rotten]"
+        }
+      },
+      "name": "Rotten Compost",
+      "text": "A rotten composter.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_greens_low",
+      "link_recipes": false,
+      "text": "Some $(2)green$() items contribute little to the composter, such as plants. To fill a composter's appetite of green items, you need 16 of them."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_greens",
+      "link_recipes": false,
+      "text": "Some $(2)green$() items contribute moderately to the composter, such as grains. To fill a composter's appetite of green items, you need 8 of them."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_greens_high",
+      "link_recipes": false,
+      "text": "Some $(2)green$() items contribute a great amount to the composter, such as fruits and vegetables. To fill a composter's appetite of green items, you need 4 of them."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_browns_low",
+      "link_recipes": false,
+      "text": "Some $(4)brown$() items contribute little to the composter, such as tall plants like dry phragmite, tree ferns, and vines, as well as fallen leaves. To fill a composter's appetite of brown items, you need 16 of them."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_browns",
+      "link_recipes": false,
+      "text": "Some $(4)brown$() items contribute moderately to the composter, such as wood ash and jute. To fill a composter's appetite of brown items, you need 8 of them."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_browns_high",
+      "link_recipes": false,
+      "text": "Some $(4)brown$() items contribute a great amount to the composter, such as melons, pumpkins, dead grass, pinecones, humus, and driftwood. To fill a composter's appetite of brown items, you need 4 of them."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:compost_poisons",
+      "link_recipes": false,
+      "text": "Some items will $(c)poison$() your compost. These include $(c)meat$() and $(c)bones$(). Poison compost, when used on a crop, instantly kills it."
+    }
+  ],
+  "read_by_default": true
+}

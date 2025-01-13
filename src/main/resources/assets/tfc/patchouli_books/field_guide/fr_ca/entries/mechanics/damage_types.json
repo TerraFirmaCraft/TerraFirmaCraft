@@ -1,0 +1,37 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Damage Types",
+  "category": "tfc:mechanics",
+  "icon": "tfc:metal/sword/red_steel",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Physical Damage Types$() describe the nature of the damage that can be dealt by players and mobs. There are three types: $(thing)Piercing$(), $(thing)Slashing$(), and $(thing)Crushing$(). Some entities are able to resist certain damage types, making it difficult or impossible to kill them with certain methods."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Piercing$() damage is dealt by pointy weapons such as $(thing)Knives$(), projectiles like $(thing)Arrows$() and $(thing)Javelins$(), fanged monsters like $(thing)Spiders$(), and $(l:the_world/flora#cacti)Cacti$(). $(thing)Skeletons$() are invulnerable to piercing damage, and $(thing)Zombies$() are slightly vulnerable to it.",
+      "title": "Piercing"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Slashing$() damage is dealt by weapons with long sharp edges like $(thing)Axes$() and $(thing)Swords$(), as well as large $(l:the_world/wild_animals#predators)Predators$() like bears and cougars. $(thing)Creepers$() are vulnerable to slashing damage.",
+      "title": "Slashing"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Crushing$() damage is dealt by blunt weapons like $(thing)Hammers$() and $(thing)Maces$(). $(thing)Zombies$() deal crushing damage, and are somewhat resistant to it. $(thing)Creepers$() also resist some crushing damage$(). $(thing)Skeletons$() are vulnerable to it.",
+      "title": "Crushing"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "armor",
+      "text": "$(l:mechanics/armor)Armor$() has its own set of damage resistances. These resistances scale with the quality of armor, but may differ among armors of the same tier. Among bronzes, $(thing)Bismuth Bronze$() armor is best at resisting $(thing)Crushing$(), $(thing)Black Bronze$() is best at resisting $(thing)Piercing$() and regular $(thing)Bronze$() does moderately well with any damage."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "For $(thing)Colored Steel$(), $(thing)Blue Steel$() is better at resisting $(thing)Crushing$() damage, whereas $(thing)Red Steel$() is better at resisting $(thing)Piercing$() damage."
+    }
+  ],
+  "read_by_default": true
+}

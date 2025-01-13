@@ -1,0 +1,88 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Géologie",
+  "category": "tfc:the_world",
+  "icon": "tfc:rock/raw/shale",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The world of TerraFirmaCraft is divided into large continents - landmasses many kilometers wide and seperated by oceans. In these, you may find mountain ranges, rivers, and many other environments."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/regions.png"
+      ],
+      "text": "Un monde typique de TFC, dans une grande échelle.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "rocks",
+      "text": "Le monde est aussi divisé en plusieurs types de $(thing)Roches$(). Les régions géologiques peuvent être de plusieurs kilomètres de long, et il y aura généralement deux ou trois couches de roches différentes sous vos pieds en tout temps. Puisque certains types de minerais sont souvent présents uniquement dans certains types de roches, trouver ces types spécifiques de roches peut être très important pour trouver des ressources, comme les $(l:the_world/ores_and_minerals)Minerais$().",
+      "title": "Couches de roches"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/rock_layers.png"
+      ],
+      "text": "Une section transversale d'un monde TFC.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Les sols océaniques sont composés de roches $(l:the_world/geology#igneous_extrusive)ignées extrusives$() - Des roches formées par du magma refroidi rapidement. Sous des roches ignées intrusives, il y aura généralement des roches $(l:the_world/geology) ignées intrusive$() du même $(item)Type$().$(br2)Par exemple, le $(thing)Basalte$() (une roche ignée extrusive mafique), aura probablement du $(thing)Gabbro$() (une roche ignée intrusive mafique).",
+      "title": "Sols océaniques"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)Les roches $(l:https://fr.wikipedia.org/wiki/Roche_felsique)felsiques$() sont le $(thing)Granite$() et la $(thing)Rhyolite$().$(li)Les roches $(l:https://fr.wikipedia.org/wiki/Roche_magmatique)intermédiaires$() sont l'$(thing)Andésite$(), la $(thing)Dacite$() et la $(thing)Diorite$().$(li)Les roches $(l:https://fr.wikipedia.org/wiki/Mafique)mafiques$() sont le $(thing)Basalte$() et le $(thing)Gabbro$().",
+      "title": "Grades de roches ignées"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "La couche de surface sur un continent sera soit igéne extrusive, soit $(l:the_world/geology#sedimentary)sédimentaire$(). Sous les roches sédimentaires, il y aura généralement une forme $(l:the_world/geology#metamorphic)métamorphosée$() de roche du type de roche au dessus. $(br2)Par exemple, le $(thing)marbre$() (une roche métamorphique) sera probablement trouvé sous du $(thing)calcaire$() ou de la $(thing)craie$(). Des roches métamorphiques de haut grade se trouvent profondément sous d'autres couches de roches métamorphiques ou ignées."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)L'$(thing)ardoise$() se forme sous le $(thing)schiste$(), les $(thing)claystones$() et les $(thing)Conglomérats$().$(li)Le $(thing)marbre$() se forme sous le $(thing)calcaire$(), la $(thing)dolomite$() et la $(thing)craie$().$(li)La $(thing)quartzite$() se frome sous le $(thing)chaille$().$(li)La $(thing)phyllite$() se forme sous l$(thing)ardoise$()$(li)Le $(thing)schiste$() et le $(thing)gneiss$() se froment sous la $(thing)phyllite$() ou d'autres roches ignées intrusives.",
+      "title": "Roches métamorphiques"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Finalement, dans les r   oégions montagneuses, vous pourriez aussi voir des $(thing)surrections$(), où des roches métamorphiques ou ignées intrusives peuvent se retrouver en surface. Des roches issues de la surrection peuvent être trouvées au-dessus d'autres couches sédimentaires ou de roches métamorphiques de haut grade.$(br2)De plus, les $(l:https://fr.wikipedia.org/wiki/Dyke)dykes$() - petites tranches verticales de roches ignées intrusives - peuvent apparaître un peu partout dans le monde,",
+      "title": "Uplift Regions"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "s'injectant dans les couches supérieures de roches.$(br2)Avec tout cela en esprit, les prochaines pages listeront les roches des quatre grandes catégories: $(thing)sédimentaire$(), $(thing)métamorphique$(), $(thing)ignée extrusive$() et $(thing)ignée intrusive$(). Ces catégories déterminent là où les roches peuvent apparaître (voir la page précédente), et également quels minéraux peuvent apparaître dans ces roches."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "sedimentary",
+      "text": "Les roches $(l:https://fr.wikipedia.org/wiki/Roche_s%C3%A9dimentaire)Sédimentaires$() sont formées par l'accumulation ou le dépôt de minéraux ou matières organiques. Elles se trouvent typiquement sur les couches supérieures de roches dans les zones continentales. Celles-ci sont:$(br)$(li)Le schiste;$(li)Le claystone;$(li)Le calcaire;$(li)Les conglomérats;$(li)La dolomite;$(li)Le chaille;$(li)La craie.",
+      "title": "Sédimentaires"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "metamorphic",
+      "text": "$(l:https://en.wikipedia.org/wiki/Metamorphic_rock)Metamorphic$() rocks are created by a process called metamorphism. They can be found underneath corresponding sedimentary or igneous rock, or in uplift areas. They are:$(br)$(li)Quartzite$(li)Slate$(li)Phyllite$(li)Schist$(li)Gneiss$(li)Marble",
+      "title": "Metamorphic"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "igneous_extrusive",
+      "text": "$(l:https://en.wikipedia.org/wiki/Igneous_rock#Extrusive)Igneous Extrusive$() rocks are formed from magma cooling on the Earth's surface. They can be found on the top layer of rock in continental areas, or on the floor of oceans. They are:$(br)$(li)Rhyolite$(li)Basalt$(li)Andesite$(li)Dacite",
+      "title": "Igneous Extrusive"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "igneous_intrusive",
+      "text": "$(l:https://en.wikipedia.org/wiki/Igneous_rock#Intrusive)Igneous Intrusive$() rocks are formed from magma which cooled under the Earth's crust. They can be found deep underground, or rarely in dikes or uplift areas. They are:$(br)$(li)Granite$(li)Diorite$(li)Gabbro",
+      "title": "Igneous Intrusive"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 0
+}

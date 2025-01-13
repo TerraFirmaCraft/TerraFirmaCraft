@@ -1,0 +1,110 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Barrels",
+  "category": "tfc:mechanics",
+  "icon": "tfc:wood/barrel/palm",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The $(thing)Barrel$() is a device that can hold both items and fluids. The central slot is used to hold items. Fluids are shown in the tank on the left side, and can be added to the barrel by placing a filled $(thing)bucket$() or $(thing)jug$() in the top left slot. They can be removed by placing an empty fluid container in the same slot. Using $(item)$(k:key.use)$() on the block with a bucket also works."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/barrel.png"
+      ],
+      "text": "The barrel interface.",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Barrels can be $(thing)Sealed$(). Sealing allows the barrel to be broken while keeping its contents stored. It also allows for the execution of some recipes. In the interface, sealing can be toggled with the grey button on the right side. Using $(item)$(k:key.use)$() on the barrel with an empty hand while holding $(item)$(k:key.sneak)$() also toggles the seal."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)Barrels can be filled by clicking an empty one on a fluid block in the world.$()$(li)Barrels will slowly fill up with water in the rain.$()$(li)Icicles melting above barrels also adds water to them.$()$(li)Sealing a barrel will eject items that are not in the center slot.$()",
+      "title": "Barrel Tips"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Barrels are an important device used for mixing various fluids and items together. To use a $(thing)Barrel$() recipe, the barrel must be filled with the correct ratio of fluid and items required. Depending on the recipe, it may need to be $(thing)Sealed$() for a period of time to allow the contents to transform.",
+      "title": "Crafting"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "If the contents of a barrel does not match the ratio required for the recipe, any excess fluid or items will be lost. If the recipe is one which converts instantly, however, you will always need at least enough items to fully convert the fluid, according to the recipe."
+    },
+    {
+      "type": "tfc:instant_barrel_recipe",
+      "anchor": "limewater",
+      "recipe": "tfc:barrel/limewater",
+      "text": "$(bold)Limewater$() is made by adding $(l:mechanics/flux)Flux$() to a barrel of $(thing)Water$(). A single $(l:mechanics/flux)Flux$() is required for every $(thing) 500 mB$() of $(thing)Water$(). $(thing)Limewater$() is a reagent used in $(l:mechanics/leather_making)Leather Making$(), and is used to make $(thing)Mortar$()."
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "anchor": "tannin",
+      "recipe": "tfc:barrel/tannin",
+      "text": "$(bold)Tannin$() is an acidic fluid, made by dissolving bark from certain $(thing)Logs$() in a barrel of $(thing)Water$(). $(thing)Oak$(), $(thing)Birch$(), $(thing)Chestnut$(), $(thing)Douglas Fir$(), $(thing)Hickory$(), $(thing)Maple$(), and $()Sequoia$() are all able to be used to create $(thing)Tannin$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "A couple barrel recipes operate by mixing two fluids at a certain ratio. This is done by taking a filled bucket of one of the ingredients, and putting it in the fluid addition slot of a barrel that has the required amount of the other fluid. This is done for making $(thing)Milk Vinegar$(), where $(thing)Vinegar$() is added to $(thing)Milk$() at a 9:1 ratio. Vinegar is also added in the same ratio to $(thing)Salt Water$() to make $(thing)Brine$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Barrels have the ability to cool $(l:mechanics/heating)hot$() items. Put a hot item in a barrel of $(thing)Water$(), $(thing)Olive Oil$(), or $(thing)Salt Water$(), and it will quickly bring its temperature down."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Barrels have the ability to $(l:mechanics/dye)Dye$() and $(l:mechanics/dye#lye)Bleach$() items. Most color-able things, like carpet, candles, and $(l:mechanics/advanced_building_materials#alabaster)Alabaster$() can be dyed by sealing them in a barrel of dye or bleached by sealing them in a barrel of lye. See the dye chapter for more information."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Barrels can preserve items in $(thing)Vinegar$(). Vinegar is made by sealing $(thing)Fruit$() in a barrel of $(thing)Alcohol$(). For information on how that process works, see the relevant $(l:mechanics/decay#vinegar)page$()."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/barrel_rack",
+      "text": "Barrels placed against the side of a block work the same as vertical barrels, but have restrictions on placement. For example, they must have a $(thing)Barrel Rack$() added to them with $(item)$(k:key.use)$() in order to have another sideways barrel above them."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:wood/barrel/kapok[facing=north,rack=false,sealed=true]",
+          "Y": "tfc:wood/barrel/kapok[facing=north,rack=true,sealed=false]"
+        }
+      },
+      "name": "Sideways Barrels",
+      "text": "Sideways barrels show their sealed state using the $(thing)Tap$(). If the tap is sideways, it is sealed.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Unsealed sideways barrels automatically drain their fluid into open barrels (and other fluid containers) placed below the tap. The block the tap extends into must be a free air block in order for fluid to be able to drain."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/barrel_drip.png"
+      ],
+      "text": "A barrel dripping.",
+      "border": true
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:tfc:barrels": 0
+  }
+}

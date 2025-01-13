@@ -1,0 +1,17 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Keeping Hydrated",
+  "category": "tfc:mechanics",
+  "icon": "tfc:textures/gui/book/icons/hydrated.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "One challenge when farming is keeping your crops hydrated. Based on the $(l:the_world/climate#rainfall)Rainfall$() in the area, the ground may have some latent moisture. However, this may not be enough especially for particularly water-intensive crops.$(br2)In order to see the hydration of any specific block, you must have a $(thing)Hoe$() in hand."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Then simply look at any $(thing)Farmland$() block, or any crop which requires hydration. You will see a tooltip which shows the current hydration as a percentage from 0% to 100%.$(br2)Hydration cannot be decreased except by moving to an area with less rainfall - however, it can be increased by the proximity to nearby $(thing)water$() blocks, much like Vanilla farmland."
+    }
+  ],
+  "read_by_default": true
+}

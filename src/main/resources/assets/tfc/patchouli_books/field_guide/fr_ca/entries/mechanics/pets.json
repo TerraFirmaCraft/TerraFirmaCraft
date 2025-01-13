@@ -1,0 +1,53 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Pets",
+  "category": "tfc:mechanics",
+  "icon": "minecraft:lead",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Pets$() are animals that function quite similar to $(l:mechanics/animal_husbandry)Livestock$(), but have no useful products. Instead, they can obey commands, follow you around your home, control pests, and help you hunt."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Pets recognize a certain player as their $(thing)Owner$(). To become a pet's owner, feed it to raise its familiarity above 15%%. Pets will only obey commands that come from their owner.$(br2)Clicking on a pet with $(l:mechanics/dye)dye$() changes its collar color."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:dog{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.7,
+      "text": "A dog."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Dogs are a pet that eats grains, vegetables, and meat, rotten or not rotten. They will help you hunt most any land predator or prey."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:cat{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.7,
+      "text": "A cat."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Cats are a pet that eats grains, cooked meats, and dairy products. They will help you hunt land prey and small fish. When at home, they will kill pests without being asked to. Cats do not always listen when being told to sit."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Responsible pet owners must learn to control their pet. Luckily, this is easy. By pressing $(item)$(k:key.use)$() while holding $(item)$(k:key.sneak)$() with an empty hand, the $(thing)Pet Screen$() may be opened. This screen contains a number of commands that can be used to tell the pet what to do: $(thing)Relax$(), $(thing)We're Home$(), $(thing)Sit$(), $(thing)Follow Me$(), and $(thing)Hunt With Me$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Relax$() is the default state of pets, and commanding them returns them to this state. If a pet it at home, it will wander around the property, but not leave, and sleep once a day. If it is too far from home, it will walk aimlessly."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)We're Home$() sets the home position of the pet. This tells the animal that it should, when relaxing, stay in that general area. Telling an animal that it is at home does not change the activity it is currently doing.$(br2)$(thing)Sit$() tells the pet to sit where it is. However, animals have minds of their own, and will eventually get bored and stand up!"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Hunt With Me$() tells the pet to follow you, and engage in combat when you attack or are attacked. Pets will only attack animals that they are able to (for example, cats cannot help attack bears!).$(br2)$(thing)Follow Me$() is the same as Hunt With Me, but the pet will not risk itself in combat."
+    }
+  ],
+  "read_by_default": true
+}

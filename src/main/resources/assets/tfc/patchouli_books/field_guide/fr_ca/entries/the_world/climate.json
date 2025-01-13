@@ -1,0 +1,64 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Calendar and Climate",
+  "category": "tfc:the_world",
+  "icon": "tfc:textures/gui/book/icons/thermometer.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "anchor": "calendar",
+      "text": "In TerraFirmaCraft, the climate and the time are both very important factors. Let's start with the $(thing)Calendar$().$(br2)At any time, you can view the calendar by pressing $(item)$(k:key.inventory)$(), and clicking on the calendar tab. This will show the $(thing)Season$(), the $(thing)Day$(), and the $(thing)Date$()."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/calendar.png"
+      ],
+      "text": "The Calendar Screen",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "There are seasons, and the weather and climate will change along with them! There are four seasons in TerraFirmaCraft, each divided up into $(thing)Early$(), $(thing)Mid$() and $(thing)Late$() months. The four seasons are:$(br)$(li)$(bold)Spring$(): March - May$(li)$(bold)Summer$(): June - August$(li)$(bold)Autumn$(): September - November$(li)$(bold)Winter$(): December - February"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The current season can influence the temperature of the area, the precipitation (if it will rain or snow), among other things. Pay attention to the calendar tab, it will be useful!$(br2)Now, onto the climate..."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "climate",
+      "text": "Another tab on the main inventory screen is the $(thing)Climate$() screen. This one shows information about the current location$(br2)The first line shows the overall $(l:https://en.wikipedia.org/wiki/K%C3%B6ppen_climate_classification)Climate$() .$(br2)The second line shows the $(l:the_world/geology)Geologic Province$().$(br2)The third line shows the $(thing)Average Annual Temperature$().",
+      "title": "Climate"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/climate.png"
+      ],
+      "text": "The Climate Screen",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "temperature",
+      "text": "Temperature in TerraFirmaCraft is influenced by a number of factors:$(br)$(li)Firstly, the region, especially the latitude (Z coordinate) will play the largest role.$(li)Secondly, the current season will influence the temperature - it will be hottest during Summer, and coldest during Winter.$(li)Finally, the temperature can be different day to day as well as varying from hour to hour."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The last line shows the current temperature, including all these aforementioned factors.$(br2)Temperature can influence many things: if crops and plants will grow, if snow and ice will form or melt, and more."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "rainfall",
+      "text": "Rainfall is another climate value that can vary depending on where you are in the world. The annual rainfall is measured in millimeters (mm) and can be between 0mm - 500mm. Rainfall affects the types of flora that are found in an area, and also the types of soil, from sand and cacti, to loam, to silt and kapok trees.",
+      "title": "Rainfall"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Rainfall is also important as it affects what things can be grown in an area. Rainfall is one of the main contributors to $(l:mechanics/hydration)Hydration$(), which is an exact measure of how wet the soil is in a given location, and is used by $(l:mechanics/crops)Crops$(), $(l:the_world/wild_fruits#fruit_trees)Fruit Trees$(), and $(l:the_world/wild_fruits#tall_bushes)Berry Bushes$() to determine if they can grow."
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 2
+}

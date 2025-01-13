@@ -1,0 +1,27 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Salads",
+  "category": "tfc:mechanics",
+  "icon": "tfc:textures/item/food/protein_salad.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Salads$() are a meal prepared in a $(thing)Bowl$() from up to five $(thing)Fruits$(), $(thing)Vegetables$(), or $(thing)Cooked Meats$().$(br2)Salads are one of the simplest meals to make, and just require a $(l:mechanics/bowls)Bowl$(). First, hold the $(thing)Bowl$() and press $(item)$(k:key.use)$() while holding $(item)$(k:key.sneak)$(). This will open the salad screen."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tag:tfc:salads",
+      "title": "",
+      "link_recipes": false,
+      "text": "Up to five ingredients can be added in the top slots. $(thing)Bowls$() can be added in the left bottom slot. When you are done, the salad can be taken out from the right bottom slot."
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:food/fruit_salad": 0,
+    "tfc:food/dairy_salad": 0,
+    "tfc:food/vegetables_salad": 0,
+    "tfc:food/protein_salad": 0,
+    "tfc:food/grain_salad": 0
+  }
+}

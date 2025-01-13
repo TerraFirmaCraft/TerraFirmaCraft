@@ -1,0 +1,82 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Light Sources",
+  "category": "tfc:mechanics",
+  "icon": "tfc:candle",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "There are a number of ways to produce light in TFC. One way is the use of $(l:mechanics/lamps)Lamps$(), but they require fuel. Some light sources only require a spark."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(br) 1. $(l:mechanics/lighting#torches)Torches$()$(br) 2. $(l:mechanics/lighting#candles)Candles$()$(br) 3. $(l:mechanics/lighting#jack_o_lanterns)Jack 'o Lanterns$()",
+      "title": "Table of Contents"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "anchor": "torches",
+      "recipe": "tfc:heating/torch_from_stick",
+      "text": "Torches can be made by heating sticks or stick bunches in a $(l:getting_started/firepit)Firepit$() or other heating device."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Torches last for 3 days, and then become $(thing)Dead Torches$(), which may be relit by clicking them with a torch, or by using a fire starting tool on them. Sticks can also be clicked on torches to light them. Torches dropped in water turn into $(thing)Wood Ash$() and $(thing)Sticks$()."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "anchor": "candles",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:candle[candles=3,lit=true]"
+        }
+      },
+      "name": "Candles",
+      "text": "Candles last for 11 days, and may also be relit.",
+      "enable_visualize": false
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "recipe": "tfc:barrel/candle",
+      "text": "Candles can be made by sealing $(thing)String$() in a $(l:mechanics/barrels)Barrel$() of $(l:mechanics/lamps#tallow)Tallow$()."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "anchor": "jack_o_lanterns",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:jack_o_lantern"
+        }
+      },
+      "name": "Jack 'o Lanterns",
+      "text": "Jack 'o Lanterns are the lit version of $(thing)Carved Pumpkins$(), and last for 4.5 days, before reverting to carved pumpkins.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Carved Pumpkins$() are made by clicking $(item)$(k:key.use)$() with $(thing)Shears$() or a $(thing)Knife$() on a fresh $(l:mechanics/crops#pumpkin)Pumpkin$(). Carved pumpkins do not rot, and can be worn on your head."
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:candle": 4,
+    "tag:tfc:colored_candles": 4,
+    "tfc:jack_o_lantern": 6
+  }
+}

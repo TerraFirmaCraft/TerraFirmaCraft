@@ -1,0 +1,18 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Wooden Buckets",
+  "category": "tfc:mechanics",
+  "icon": "tfc:wooden_bucket",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Wooden Buckets$() are an early game fluid container. They can contain 1000 mB of fluid. They can pick up any kind of fluid that is used for recipes, such as those in a $(l:mechanics/pot)Pot$() or $(l:mechanics/barrels)Barrel$(). However, wooden buckets cannot place source blocks. Dumping its fluid on the ground results in a small amount of fluid that quickly disappears."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wooden_bucket",
+      "text": "The wooden bucket is made of $(thing)Lumber$()."
+    }
+  ],
+  "read_by_default": true
+}

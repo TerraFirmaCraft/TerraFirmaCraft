@@ -1,0 +1,38 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Size and Weight",
+  "category": "tfc:getting_started",
+  "icon": "tfc:textures/gui/book/icons/size_and_weight.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Every item has a $(thing)Size ⇲$() and $(thing)Weight ⚖$(). An item's size and weight is shown on the $(thing)tooltip$(), which appears when you hover over it with your mouse."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Size determines what storage blocks an item can fit inside of.$(br)$(li)$(thing)Tiny$() items fit in anything.$(li)$(thing)Very Small$() items fit in anything.$(li)$(thing)Small$() items are the largest item that will fit in $(l:mechanics/decay#small_vessels)Small Vessels$()$().$(li)$(thing)Normal$() items are the largest that will fit in $(l:mechanics/decay#small_vessels)Large Vessels$().",
+      "title": "Size ⇲"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)$(thing)Large$() items are the largest that will fit in Chests. $(l:getting_started/pit_kiln)Pit Kilns$() can hold four.$(li)$(thing)Very Large$() items are placed alone in Pit Kilns.$(li)$(thing)Huge$() items do not fit in any normal storage device. They also count towards overburdening."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Weight determines the max stack size of items.$(br)$(li)$(thing)Very Light$(): 64$(li)$(thing)Light$(): 32$(li)$(thing)Medium$(): 16$(li)$(thing)Heavy$(): 4$(li)$(thing)Very Heavy$(): 1$(br2)Most items are $(thing)Very Light$() by default. Blocks are usually $(thing)Medium$().",
+      "title": "Weight ⚖"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Overburdening$() happens when you carry items that are both $(thing)Huge$() and $(thing)Very Heavy$(). Carrying just one $(thing)Huge, Very Heavy$() item causes you to become exhausted, making your food burn quicker. Carrying two or more gives you the $(thing)Overburdened$() status effect, which makes movement very slow."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "overburdening",
+      "text": "Items that count towards overburdening include $(thing)Anvils$(), $(thing)Sealed Barrels$(), $(thing)Crucibles$() (with contents)$(br2)Note: $(l:mechanics/animal_husbandry#horses)Horses$() can also be overburdened.",
+      "title": "Overburdening"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 9
+}
