@@ -6,7 +6,9 @@
 
 package net.dries007.tfc.world.river;
 
-import it.unimi.dsi.fastutil.longs.Long2ObjectFunction;
+import java.util.function.Function;
+
+import net.dries007.tfc.world.Seed;
 
 public enum RiverBlendType
 {
@@ -19,14 +21,14 @@ public enum RiverBlendType
     public static final RiverBlendType[] ALL = values();
     public static final int SIZE = ALL.length;
 
-    private final Long2ObjectFunction<RiverNoiseSampler> factory;
+    private final Function<Seed, RiverNoiseSampler> factory;
 
-    RiverBlendType(Long2ObjectFunction<RiverNoiseSampler> factory)
+    RiverBlendType(Function<Seed, RiverNoiseSampler> factory)
     {
         this.factory = factory;
     }
 
-    public RiverNoiseSampler createNoiseSampler(long seed)
+    public RiverNoiseSampler createNoiseSampler(Seed seed)
     {
         return factory.apply(seed);
     }

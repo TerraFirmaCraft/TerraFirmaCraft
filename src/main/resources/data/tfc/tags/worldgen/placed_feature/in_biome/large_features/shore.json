@@ -2,6 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "#tfc:feature/icebergs"
+    "#tfc:feature/icebergs",
+    "#tfc:feature/surface_flood_fill_lakes"
   ]
 }

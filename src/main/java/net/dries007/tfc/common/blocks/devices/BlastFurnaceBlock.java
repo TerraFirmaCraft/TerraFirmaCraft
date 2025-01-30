@@ -130,7 +130,7 @@ public class BlastFurnaceBlock extends DeviceBlock implements IBellowsConsumer
             {
                 serverPlayer.openMenu(blastFurnace, pos);
             }
-            return ItemInteractionResult.SUCCESS;
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }

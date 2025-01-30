@@ -29,11 +29,9 @@ public final class TFCCommands
         // Register all new commands as sub commands of the `tfc` root
         dispatcher.register(Commands.literal("tfc")
             .then(ClearWorldCommand.create())
-            .then(HeatCommand.create())
             .then(PlayerCommand.create())
             .then(CountBlockCommand.create(context))
             .then(PropickCommand.create())
-            .then(ForgeCommand.create())
             .then(AddTrimCommand.create(context))
         );
 

@@ -1,0 +1,78 @@
+{
+  "type": "tfc:advanced_shaped_crafting",
+  "key": {
+    "B": {
+      "type": "tfc:and",
+      "children": [
+        {
+          "item": "tfc:food/rye_bread"
+        },
+        {
+          "type": "tfc:not_rotten"
+        }
+      ]
+    },
+    "J": {
+      "type": "tfc:and",
+      "children": [
+        {
+          "tag": "tfc:foods/jam"
+        },
+        {
+          "type": "tfc:not_rotten"
+        }
+      ]
+    },
+    "K": {
+      "tag": "c:tools/knife"
+    },
+    "S": {
+      "type": "tfc:and",
+      "children": [
+        {
+          "tag": "tfc:usable_in_jam_sandwich"
+        },
+        {
+          "type": "tfc:not_rotten"
+        }
+      ]
+    }
+  },
+  "pattern": [
+    "KB ",
+    "SSJ",
+    " B "
+  ],
+  "result": {
+    "modifiers": [
+      {
+        "type": "tfc:meal",
+        "food": {
+          "decay_modifier": 4.5,
+          "hunger": 4,
+          "saturation": 1.0,
+          "water": 0.5
+        },
+        "portions": [
+          {
+            "ingredient": {
+              "item": "tfc:food/rye_bread"
+            },
+            "nutrient_modifier": 0.5,
+            "saturation_modifier": 0.5,
+            "water_modifier": 0.5
+          },
+          {
+            "nutrient_modifier": 0.8,
+            "saturation_modifier": 0.8,
+            "water_modifier": 0.8
+          }
+        ]
+      }
+    ],
+    "stack": {
+      "count": 2,
+      "id": "tfc:food/rye_bread_jam_sandwich"
+    }
+  }
+}

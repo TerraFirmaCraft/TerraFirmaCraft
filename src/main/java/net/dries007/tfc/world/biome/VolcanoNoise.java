@@ -10,13 +10,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.world.Seed;
 import net.dries007.tfc.world.noise.Cellular2D;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 
 import static net.dries007.tfc.world.TFCChunkGenerator.*;
 
-public final class VolcanoNoise
+public final class VolcanoNoise implements CenterOrDistanceNoise
 {
     private static float calculateEasing(float f1)
     {
@@ -48,13 +49,22 @@ public final class VolcanoNoise
     private final Cellular2D cellNoise;
     private final Noise2D jitterNoise;
 
-    /**
-     * @param seed The level seed - important, this is used from multiple different locations (base noise, surface builder, placement/decorator), and must have the same seed.
-     */
-    public VolcanoNoise(long seed)
+    public VolcanoNoise(Seed seed)
     {
-        cellNoise = new Cellular2D(seed).spread(0.009f);
-        jitterNoise = new OpenSimplex2D(seed + 1234123L).octaves(2).scaled(-0.0016f, 0.0016f).spread(0.128f);
+        cellNoise = new Cellular2D(seed.seed()).spread(0.009f);
+        jitterNoise = new OpenSimplex2D(seed.seed() + 8179234123L).octaves(2).scaled(-0.0016f, 0.0016f).spread(0.128f);
+    }
+
+    @Override
+    public boolean isValidBiome(BiomeExtension biome)
+    {
+        return biome.isVolcanic();
+    }
+
+    @Override
+    public int getRarity(BiomeExtension biome)
+    {
+        return biome.getVolcanoRarity();
     }
 
     public double modifyHeight(double x, double z, double baseHeight, int rarity, int baseVolcanoHeight, int scaleVolcanoHeight)
@@ -74,6 +84,7 @@ public final class VolcanoNoise
     /**
      * Calculate the closeness value to a volcano, in the range [0, 1]. 1 = Center of a volcano, 0 = Nowhere near.
      */
+    @Override
     public float calculateEasing(int x, int z, int rarity)
     {
         final Cellular2D.Cell cell = sampleCell(x, z, rarity);
@@ -87,6 +98,7 @@ public final class VolcanoNoise
     /**
      * Calculate the center of the nearest volcano, if one exists, to the given x, z, at the given y.
      */
+    @Override
     @Nullable
     public BlockPos calculateCenter(int x, int y, int z, int rarity)
     {

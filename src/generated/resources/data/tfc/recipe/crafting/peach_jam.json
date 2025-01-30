@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "tfc:jar/peach_unsealed"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:peach_jam"
+  }
+}

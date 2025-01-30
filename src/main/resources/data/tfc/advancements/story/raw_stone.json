@@ -2,12 +2,12 @@
   "__comment__": "This file was automatically created by mcresources",
   "parent": "tfc:story/smooth_stone",
   "criteria": {
-    "stone": {
+    "stones": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "forge:stone"
+            "tag": "c:stones"
           }
         ]
       }
@@ -31,7 +31,7 @@
   },
   "requirements": [
     [
-      "stone"
+      "stones"
     ]
   ]
 }

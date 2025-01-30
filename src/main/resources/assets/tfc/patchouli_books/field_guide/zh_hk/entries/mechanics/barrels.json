@@ -9,6 +9,11 @@
       "text": "$(thing)大桶$()是一種可以容納物品和液體的設備。大桶中央的空格是用來放置物品的，液體則顯示在左側的水槽中。將$(thing)桶$()或$(thing)罐$()放在左上角的空格中可以將其中的液體添加到大桶、或將大桶中的液體盛出。拿着容器對着裝有液體的大桶按下$(item)$(k:key.use)$()也有同樣的效果。"
     },
     {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wood/barrel/oak",
+      "text": "The barrel is made from seven $(thing)lumber$()."
+    },
+    {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/gui/barrel.png"

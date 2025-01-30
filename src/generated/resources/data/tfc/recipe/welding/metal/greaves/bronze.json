@@ -1,5 +1,6 @@
 {
   "type": "tfc:welding",
+  "bonus": "copy_best",
   "first_input": {
     "item": "tfc:metal/unfinished_greaves/bronze"
   },

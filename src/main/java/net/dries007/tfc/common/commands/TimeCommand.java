@@ -121,7 +121,7 @@ public final class TimeCommand
     private static int addTime(CommandContext<CommandSourceStack> context, long ticksToAdd)
     {
         Calendars.SERVER.skipForwardBy(ticksToAdd);
-        context.getSource().sendSuccess(() -> Component.translatable("tfc.commands.time.add_time", Calendars.SERVER.getCalendarTimeDelta(ticksToAdd), ticksToAdd), true);
+        context.getSource().sendSuccess(() -> Component.translatable("tfc.commands.time.add_time", ICalendar.getTimeDelta(ticksToAdd, Calendars.SERVER.getCalendarDaysInMonth()), ticksToAdd), true);
         return Command.SINGLE_SUCCESS;
     }
 }

@@ -7,6 +7,7 @@
 package net.dries007.tfc.world.surface.builder;
 
 
+import net.dries007.tfc.world.Seed;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 import net.dries007.tfc.world.surface.SurfaceBuilderContext;
@@ -19,9 +20,9 @@ public class LowlandsSurfaceBuilder implements SurfaceBuilder
 
     private final Noise2D surfaceMaterialNoise;
 
-    public LowlandsSurfaceBuilder(long seed)
+    public LowlandsSurfaceBuilder(Seed seed)
     {
-        surfaceMaterialNoise = new OpenSimplex2D(seed).octaves(2).spread(0.04f);
+        surfaceMaterialNoise = new OpenSimplex2D(seed.next()).octaves(2).spread(0.04f);
     }
 
     @Override

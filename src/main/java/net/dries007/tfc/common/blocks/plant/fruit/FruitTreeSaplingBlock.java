@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.blocks.plant.fruit;
 
-import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import com.mojang.serialization.MapCodec;
@@ -72,23 +71,19 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
     }
 
     private static final IntegerProperty SAPLINGS = TFCBlockStateProperties.SAPLINGS;
+
     protected final Supplier<? extends Block> block;
-    protected final Supplier<Integer> treeGrowthDays;
+    private final Supplier<Integer> ticksToGrow;
     private final ExtendedProperties properties;
     private final Supplier<ClimateRange> climateRange;
     private final Lifecycle[] stages;
 
-    public FruitTreeSaplingBlock(ExtendedProperties properties, Supplier<? extends Block> block, int treeGrowthDays, Supplier<ClimateRange> climateRange, Lifecycle[] stages)
-    {
-        this(properties, block, () -> treeGrowthDays, climateRange, stages);
-    }
-
-    public FruitTreeSaplingBlock(ExtendedProperties properties, Supplier<? extends Block> block, Supplier<Integer> treeGrowthDays, Supplier<ClimateRange> climateRange, Lifecycle[] stages)
+    public FruitTreeSaplingBlock(ExtendedProperties properties, Supplier<? extends Block> block, Supplier<Integer> ticksToGrow, Supplier<ClimateRange> climateRange, Lifecycle[] stages)
     {
         super(properties.properties());
         this.properties = properties;
         this.block = block;
-        this.treeGrowthDays = treeGrowthDays;
+        this.ticksToGrow = ticksToGrow;
         this.climateRange = climateRange;
         this.stages = stages;
     }
@@ -144,7 +139,7 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
         {
             if (level.getBlockEntity(pos) instanceof TickCounterBlockEntity counter)
             {
-                if (counter.getTicksSinceUpdate() > ICalendar.TICKS_IN_DAY * getTreeGrowthDays() * TFCConfig.SERVER.globalFruitSaplingGrowthModifier.get())
+                if (counter.getTicksSinceUpdate() > getTicksToGrow())
                 {
                     final int hydration = FruitTreeLeavesBlock.getHydration(level, pos);
                     final float temp = Climate.getAverageTemperature(level, pos);
@@ -207,11 +202,6 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
         super.createBlockStateDefinition(builder.add(SAPLINGS));
     }
 
-    public int getTreeGrowthDays()
-    {
-        return treeGrowthDays.get();
-    }
-
     @Override
     public ExtendedProperties getExtendedProperties()
     {
@@ -222,5 +212,13 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
     protected MapCodec<? extends BushBlock> codec()
     {
         return fakeBlockCodec();
+    }
+
+    /**
+     * @return The minimum number of player ticks before this sapling will grow. Affected by per-sapling and global configuration values
+     */
+    public final long getTicksToGrow()
+    {
+        return (long) (ticksToGrow.get() * TFCConfig.SERVER.saplingGrowthModifier.get());
     }
 }

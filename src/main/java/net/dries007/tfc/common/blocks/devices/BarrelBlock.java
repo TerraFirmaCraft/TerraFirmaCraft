@@ -122,7 +122,7 @@ public class BarrelBlock extends SealableDeviceBlock
                     toggleSeal(level, pos, state);
                 }
                 level.playSound(null, pos, SoundEvents.WOOD_PLACE, SoundSource.BLOCKS, 1.0f, 0.85f);
-                return ItemInteractionResult.SUCCESS;
+                return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
             else if (Helpers.isItem(stack, TFCBlocks.BARREL_RACK.get().asItem()) && state.getValue(FACING) != Direction.UP && !state.getValue(RACK))
             {
@@ -131,18 +131,18 @@ public class BarrelBlock extends SealableDeviceBlock
                     stack.shrink(1);
                 }
                 level.setBlockAndUpdate(pos, state.setValue(RACK, true).setValue(FACING, player.getDirection().getOpposite()));
-                Helpers.playPlaceSound(level, pos, state);
+                Helpers.playPlaceSound(player, level, pos, state);
                 return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
             else if (FluidHelpers.transferBetweenBlockEntityAndItem(stack, barrel, player, hand))
             {
-                return ItemInteractionResult.SUCCESS;
+                return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
             else if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer)
             {
                 serverPlayer.openMenu(barrel, barrel.getBlockPos());
             }
-            return ItemInteractionResult.SUCCESS;
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }

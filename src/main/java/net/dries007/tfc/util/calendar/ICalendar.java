@@ -28,8 +28,7 @@ public interface ICalendar
      * For both these measurements, there is a distinction between the default value of an hour and a player-tick hour.
      * @deprecated because uses need to be audited to make sure they want calendar or player tick values
      */
-    @Deprecated int TICKS_IN_HOUR = 1000;
-    @Deprecated int TICKS_IN_DAY = TICKS_IN_HOUR * HOURS_IN_DAY;
+    @Deprecated int TICKS_IN_DAY = 1000 * HOURS_IN_DAY;
 
     /** Use if you're specifically trying to measure calendar ticks in a day, not player ticks. */
     int CALENDAR_TICKS_IN_HOUR = 1000;
@@ -128,7 +127,7 @@ public interface ICalendar
 
     static Month getMonthOfYear(long calendarTick, long daysInMonth)
     {
-        long ticksInMonth = daysInMonth * TICKS_IN_DAY;
+        long ticksInMonth = daysInMonth * CALENDAR_TICKS_IN_DAY;
         return Month.valueOf((int) ((calendarTick / ticksInMonth) % MONTHS_IN_YEAR));
     }
 

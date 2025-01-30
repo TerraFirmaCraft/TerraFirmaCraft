@@ -56,7 +56,7 @@ public class FruitTreeFeature extends Feature<BlockStateConfiguration>
             branch = Helpers.setProperty(branch, GrowingFruitTreeBranchBlock.NATURAL, true);
             branch = Helpers.setProperty(branch, GrowingFruitTreeBranchBlock.SAPLINGS, Mth.nextInt(random, 2, 4));
             setBlock(level, mutablePos, branch);
-            level.getBlockEntity(mutablePos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(entity -> entity.reduceCounter(-1 * ICalendar.TICKS_IN_DAY * 300));
+            level.getBlockEntity(mutablePos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(entity -> entity.reduceCounter(-1 * ICalendar.CALENDAR_TICKS_IN_DAY * 300));
             level.scheduleTick(mutablePos, branch.getBlock(), 1);
             return true;
         }

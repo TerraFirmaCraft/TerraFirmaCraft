@@ -33,14 +33,6 @@ public final class FoodCapability
     public static final IndirectHashCollection<Item, FoodDefinition> CACHE = IndirectHashCollection.create(r -> RecipeHelpers.itemKeys(r.ingredient()), MANAGER::getValues);
 
     /**
-     * Most TFC foods have decay modifiers in the range [1, 4] (high = faster decay)
-     * That puts decay times at 25% - 100% of this value
-     * So meat / fruit will decay in ~5 days, grains take ~20 days
-     * Other modifiers are applied on top of that
-     */
-    public static final int DEFAULT_DECAY_TICKS = ICalendar.TICKS_IN_DAY * 22;
-
-    /**
      * @return An immutable view of the food component on an item stack.
      */
     @Nullable
@@ -338,7 +330,7 @@ public final class FoodCapability
 
     public static long getRoundedCreationDate(long tick)
     {
-        final int window = TFCConfig.SERVER.foodDecayStackWindow.get() * ICalendar.TICKS_IN_HOUR;
+        final long window = TFCConfig.SERVER.foodDecayStackTicks.get();
         return ((tick - 1) / window + 1) * window;
     }
 
@@ -351,7 +343,7 @@ public final class FoodCapability
         {
             return false; // Food can never be rotten
         }
-        if (creationDate == IFood.ROTTEN_FLAG)
+        if (decayDateModifier == 0 || creationDate == IFood.ROTTEN_FLAG)
         {
             return true; // Food is permanently rotten
         }
@@ -359,9 +351,19 @@ public final class FoodCapability
         {
             return false; // Food can never decay, because it's infinitely preserved
         }
-        final long rottenDate = creationDate + (long) (decayDateModifier * DEFAULT_DECAY_TICKS);
+        final long rottenDate = creationDate + getRemainingTime(decayDateModifier);
         return rottenDate <= Calendars.get().getTicks(); // Otherwise, if it is before the rotten date, it is not rotten
     }
+
+    /**
+     * Most TFC foods have decay modifiers in the range {@code [1, 4]}, where high = faster decay. That puts decay times at, on average,
+     * {@code 25% - 100%} of this value. So meat and fruit will decay in ~5 days, grains will take ~20 days. Other modifiers are applied
+     * on top of these baselines.
+     * <p>
+     * This should never need to be adjusted, as decay date modifiers (which this is multiplied by) are affected by the food decay modifier,
+     * which is configurable and affects all foods.
+     */
+    private static final int DEFAULT_DECAY_TICKS = ICalendar.CALENDAR_TICKS_IN_DAY * 22;
 
     /**
      * @return The date, given a {@code creationDate} and a {@code decayDateModifier} which is not positive infinity, that the food will rot.
@@ -399,7 +401,7 @@ public final class FoodCapability
      * @param p  The decay date modifier (1 / standard decay modifier)
      * @return cf the final creation date, rounded to the nearest hour, for ease of stackability.
      */
-    public static long calculateNewCreationDate(long ci, float p)
+    private static long calculateNewCreationDate(long ci, float p)
     {
         // Cf = (1 - p) * T + p * Ci
         return (long) ((1 - p) * Calendars.get().getTicks() + p * ci);

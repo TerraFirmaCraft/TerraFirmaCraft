@@ -11,6 +11,7 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import com.google.common.base.CaseFormat;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -58,6 +59,7 @@ import net.dries007.tfc.common.items.BarrelBlockItem;
 import net.dries007.tfc.common.items.ChestBlockItem;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.registry.RegistryWood;
 
 /**
@@ -95,7 +97,7 @@ public enum Wood implements RegistryWood
     private final MapColor woodColor;
     private final MapColor barkColor;
     private final TreeGrower tree;
-    private final int daysToGrow;
+    private final int defaultTicksToGrow;
     private final BlockSetType blockSet;
     private final WoodType woodType;
     private final int autumnIndex;
@@ -112,7 +114,7 @@ public enum Wood implements RegistryWood
             Optional.of(ResourceKey.create(Registries.CONFIGURED_FEATURE, Helpers.identifier("tree/" + serializedName))),
             Optional.empty()
         );
-        this.daysToGrow = daysToGrow;
+        this.defaultTicksToGrow = daysToGrow * ICalendar.CALENDAR_TICKS_IN_DAY;
         this.autumnIndex = autumnIndex;
         this.blockSet = new BlockSetType(serializedName);
         this.woodType = new WoodType(Helpers.identifier(serializedName).toString(), blockSet);
@@ -160,9 +162,9 @@ public enum Wood implements RegistryWood
     }
 
     @Override
-    public int daysToGrow()
+    public Supplier<Integer> ticksToGrow()
     {
-        return TFCConfig.SERVER.saplingGrowthDays.get(this).get();
+        return TFCConfig.SERVER.saplingGrowthTicks.get(this);
     }
 
     @Override
@@ -171,9 +173,9 @@ public enum Wood implements RegistryWood
         return autumnIndex;
     }
 
-    public int defaultDaysToGrow()
+    public int defaultTicksToGrow()
     {
-        return daysToGrow;
+        return defaultTicksToGrow;
     }
 
     @Override
@@ -190,7 +192,7 @@ public enum Wood implements RegistryWood
         STRIPPED_WOOD(wood -> new LogBlock(properties(wood).strength(7.5f).requiresCorrectToolForDrops().flammableLikeLogs(), null)),
         LEAVES((self, wood) -> new TFCLeavesBlock(ExtendedProperties.of().mapColor(MapColor.PLANT).strength(0.5F).sound(SoundType.GRASS).defaultInstrument().randomTicks().noOcclusion().isViewBlocking(TFCBlocks::never).flammableLikeLeaves(), wood.autumnIndex(), wood.getBlock(self.fallenLeaves()), wood.getBlock(self.twig()))),
         PLANKS(wood -> new ExtendedBlock(properties(wood).strength(1.5f, 3.0F).flammableLikePlanks())),
-        SAPLING(wood -> new TFCSaplingBlock(wood.tree(), ExtendedProperties.of(MapColor.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS).flammableLikeLeaves().blockEntity(TFCBlockEntities.TICK_COUNTER), wood::daysToGrow, wood == Wood.PALM)),
+        SAPLING(wood -> new TFCSaplingBlock(wood.tree(), ExtendedProperties.of(MapColor.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS).flammableLikeLeaves().blockEntity(TFCBlockEntities.TICK_COUNTER), wood.ticksToGrow(), wood == Wood.PALM)),
         POTTED_SAPLING(wood -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, wood.getBlock(SAPLING), BlockBehaviour.Properties.ofFullCopy(Blocks.POTTED_ACACIA_SAPLING))),
         BOOKSHELF(wood -> new BookshelfBlock(properties(wood).strength(2.0F, 3.0F).flammable(20, 30).enchantPower(BookshelfBlock::getEnchantPower).blockEntity(TFCBlockEntities.BOOKSHELF))),
         DOOR(wood -> new TFCDoorBlock(properties(wood).strength(3.0F).noOcclusion().flammableLikePlanks(), wood.getBlockSet())),

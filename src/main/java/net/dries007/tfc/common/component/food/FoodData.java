@@ -7,7 +7,9 @@
 package net.dries007.tfc.common.component.food;
 
 import java.util.List;
+import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
@@ -62,13 +64,28 @@ public record FoodData(
         return Codec.FLOAT.optionalFieldOf(nutrient.getSerializedName(), 0f).forGetter(c -> c[nutrient.ordinal()]);
     }
 
+    private static final String INFINITY = "infinity";
+
     public static final MapCodec<FoodData> MAP_CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
         Codec.INT.optionalFieldOf("hunger", 0).forGetter(c -> c.hunger),
         Codec.FLOAT.optionalFieldOf("water", 0f).forGetter(c -> c.water),
         Codec.FLOAT.optionalFieldOf("saturation", 0f).forGetter(c -> c.saturation),
         Codec.INT.optionalFieldOf("intoxication", 0).forGetter(c -> c.intoxication),
         NUTRITION_CODEC.forGetter(c -> c.nutrients),
-        Codec.FLOAT.optionalFieldOf("decay_modifier", 0f).forGetter(c -> c.decayModifier)
+        Codec.either(
+            Codec.FLOAT,
+            Codec.STRING
+        ).comapFlatMap(
+            e -> e.map(
+                DataResult::success,
+                r -> r.equals(INFINITY)
+                    ? DataResult.success(Float.POSITIVE_INFINITY)
+                    : DataResult.error(() -> "Expected either a number or 'infinity' for decay_modifier")
+            ),
+            e -> e == Float.POSITIVE_INFINITY
+                ? Either.right(INFINITY)
+                : Either.left(e)
+        ).optionalFieldOf("decay_modifier", 0f).forGetter(c -> c.decayModifier)
     ).apply(i, FoodData::new));
     public static final Codec<FoodData> CODEC = MAP_CODEC.codec();
     public static final Codec<List<FoodData>> LIST_CODEC = CODEC.listOf();
@@ -84,7 +101,8 @@ public record FoodData(
     );
 
     /** An empty instance of a {@link FoodData} with no values, but infinite default expiry time */
-    public static final FoodData EMPTY = of(0f);
+    public static final FoodData EMPTY = ofFood(0, 0, 0, 0f);
+    public static final FoodData ROTTEN = ofFood(0, 0, 0, Float.POSITIVE_INFINITY);
     public static final FoodData MILK = of(0, 0).dairy(2f);
     public static final FoodData CAKE = of(2, 2f).grain(0.8f).dairy(0.5f);
 

@@ -27,6 +27,18 @@ public interface IHeatView
     float FLAG_STATIC_TEMPERATURE = -1f;
 
     /**
+     * When reading a serialized heat component with this flag set as the {@code tick} value, this will read the current tick into
+     * that field. This is useful in order to support custom /give commands providing heat, or modifying heat conveniently via components
+     * <p>
+     * E.g.
+     * <ul>
+     *     <li>{@code /give @p stick[tfc:heat={tick:-1,temperature:600}]}</li>
+     *     <li>{@code /item modify entity @p container.0 {function:"set_components",components:{'tfc:heat':{tick:-1,temperature:1500}}}}</li>
+     * </ul>
+     */
+    long FLAG_NOW = -1;
+
+    /**
      * Gets the current temperature. Should call {@link HeatCapability#adjustTemp(float, float, long)} internally
      *
      * @return the temperature.
@@ -77,12 +89,6 @@ public interface IHeatView
      */
     default void addTooltipInfo(ItemStack stack, Consumer<Component> text)
     {
-        // First, avoid showing any tooltip in the event that we set a static temperature
-        if (getHeatCapacity() == FLAG_STATIC_TEMPERATURE)
-        {
-            return;
-        }
-
         final float temperature = getTemperature();
         final MutableComponent tooltip = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(temperature);
         if (tooltip != null)

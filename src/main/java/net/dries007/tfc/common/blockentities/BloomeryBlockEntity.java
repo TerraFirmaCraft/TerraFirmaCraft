@@ -14,7 +14,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.Containers;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -40,8 +39,6 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTransaction;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendarTickable;
-
-import static net.dries007.tfc.TerraFirmaCraft.*;
 
 public class BloomeryBlockEntity extends TickableBlockEntity implements ICalendarTickable
 {
@@ -217,7 +214,6 @@ public class BloomeryBlockEntity extends TickableBlockEntity implements ICalenda
         return inputStacks;
     }
 
-    // todo 1.21: call from onRemove() in the block
     public void ejectInventory()
     {
         dumpItems();

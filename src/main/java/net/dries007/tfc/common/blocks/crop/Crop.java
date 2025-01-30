@@ -9,6 +9,7 @@ package net.dries007.tfc.common.blocks.crop;
 import java.util.Locale;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import javax.annotation.Nullable;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -47,7 +48,7 @@ public enum Crop implements StringRepresentable
     SOYBEAN(NutrientType.NITROGEN, 7), // Default, 7
     SQUASH(NutrientType.POTASSIUM, 8), // Default , 8
     SUGARCANE(NutrientType.POTASSIUM, 4, 4, false), // Double, 4 -> 4
-    TOMATO(NutrientType.POTASSIUM, 4, 4, true), // Double, Stick, 4 -> 4
+    TOMATO(NutrientType.POTASSIUM, 4, 4, true, null, () -> TFCItems.FOOD.get(Food.TOMATO)), // Double, Stick, 4 -> 4
     JUTE(NutrientType.POTASSIUM, 3, 3, false), // Double, 3 -> 3
     PAPYRUS(NutrientType.POTASSIUM, 3, 3, false),
     PUMPKIN(NutrientType.PHOSPHOROUS, 8, () -> TFCBlocks.PUMPKIN), // Spreading, 8
@@ -86,7 +87,7 @@ public enum Crop implements StringRepresentable
         this(primaryNutrient, self -> SpreadingCropBlock.create(crop(), spreadingSingleBlockStages, self, fruit), self -> new DeadCropBlock(dead(), self.getClimateRange()), self -> new WildSpreadingCropBlock(dead().randomTicks(), fruit));
     }
 
-    Crop(NutrientType primaryNutrient, int spreadingSingleBlockStages, Supplier<Supplier<? extends Item>> fruit1, Supplier<Supplier<? extends Item>> fruit2)
+    Crop(NutrientType primaryNutrient, int spreadingSingleBlockStages, @Nullable Supplier<Supplier<? extends Item>> fruit1, Supplier<Supplier<? extends Item>> fruit2)
     {
         this(primaryNutrient, self -> PickableCropBlock.create(crop(), spreadingSingleBlockStages, self, fruit1, fruit2), self -> new DeadCropBlock(dead(), self.getClimateRange()), self -> new WildCropBlock(dead().randomTicks()));
     }
@@ -95,6 +96,15 @@ public enum Crop implements StringRepresentable
     {
         this(primaryNutrient, self -> FloodedCropBlock.create(crop(), floodedSingleBlockStages, self), self -> new FloodedDeadCropBlock(dead(), self.getClimateRange()), self -> new FloodedWildCropBlock(dead().randomTicks()));
         assert flooded;
+    }
+
+    Crop(NutrientType primaryNutrient, int doubleBlockBottomStages, int doubleBlockTopStages, boolean requiresStick, @Nullable Supplier<Supplier<? extends Item>> fruit1, Supplier<Supplier<? extends Item>> fruit2)
+    {
+        this(primaryNutrient, requiresStick ?
+                self -> PickableClimbingCropBlock.create(doubleCrop(), doubleBlockBottomStages, doubleBlockTopStages, self, fruit1, fruit2) :
+                self -> DoubleCropBlock.create(doubleCrop(), doubleBlockBottomStages, doubleBlockTopStages, self),
+            self -> new DeadClimbingCropBlock(dead(), self.getClimateRange()), self -> new WildDoubleCropBlock(dead().randomTicks())
+        );
     }
 
     Crop(NutrientType primaryNutrient, int doubleBlockBottomStages, int doubleBlockTopStages, boolean requiresStick)

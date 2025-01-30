@@ -39,6 +39,7 @@ import net.dries007.tfc.common.component.forge.ForgeRule;
 import net.dries007.tfc.common.component.forge.ForgeStep;
 import net.dries007.tfc.common.component.forge.Forging;
 import net.dries007.tfc.common.component.forge.ForgingBonus;
+import net.dries007.tfc.common.component.forge.ForgingBonusComponent;
 import net.dries007.tfc.common.component.forge.ForgingCapability;
 import net.dries007.tfc.common.component.heat.HeatCapability;
 import net.dries007.tfc.common.component.heat.IHeat;
@@ -181,7 +182,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
     /**
      * Sends feedback to the chat, as the action bar is obscured by the anvil gui
      */
-    public InteractionResult work(ServerPlayer player, ForgeStep step)
+    public void work(ServerPlayer player, ForgeStep step)
     {
         assert level != null;
 
@@ -204,13 +205,13 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
         if (hammerSlot == null || hammer.isEmpty() || !Helpers.isItem(hammer, TFCTags.Items.TOOLS_HAMMER))
         {
             player.displayClientMessage(Component.translatable("tfc.tooltip.hammer_required_to_work"), false);
-            return InteractionResult.FAIL;
+            return;
         }
 
         // Prevent the player from immediately destroying the item by overworking
         if (!forge.isWorked() && forge.work() == 0 && step.step() < 0)
         {
-            return InteractionResult.FAIL;
+            return;
         }
 
         final AnvilRecipe recipe = forge.getRecipe();
@@ -219,14 +220,14 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
             if (!recipe.matches(inventory, level))
             {
                 player.displayClientMessage(Component.translatable("tfc.tooltip.anvil_is_too_low_tier_to_work"), false);
-                return InteractionResult.FAIL;
+                return;
             }
 
             final @Nullable IHeat heat = HeatCapability.get(stack);
             if (heat != null && !heat.canWork())
             {
                 player.displayClientMessage(Component.translatable("tfc.tooltip.not_hot_enough_to_work"), false);
-                return InteractionResult.FAIL;
+                return;
             }
 
             // Proceed with working
@@ -240,7 +241,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
                 // Destroy the input
                 inventory.setStackInSlot(SLOT_INPUT_MAIN, ItemStack.EMPTY);
                 level.playSound(null, worldPosition, SoundEvents.ANVIL_DESTROY, SoundSource.PLAYERS, 0.4f, 1.0f);
-                return InteractionResult.FAIL;
+                return;
             }
             createForgingEffects();
 
@@ -262,8 +263,8 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
                 {
                     final float ratio = (float) forge.totalWorked() / ForgeRule.calculateOptimalStepsToTarget(recipe.computeTarget(inventory), recipe.getRules());
                     final ForgingBonus bonus = ForgingBonus.byRatio(ratio);
-                    ForgingBonus.set(outputStack, bonus);
 
+                    ForgingBonusComponent.set(outputStack, bonus, player);
                     if (bonus == ForgingBonus.PERFECT)
                     {
                         TFCAdvancements.PERFECTLY_FORGED.trigger(player);
@@ -272,12 +273,13 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
 
                 inventory.setStackInSlot(SLOT_INPUT_MAIN, outputStack);
             }
-
             markForSync();
         }
-        return InteractionResult.SUCCESS;
     }
 
+    /**
+     * @return {@code true} if working was successful
+     */
     public boolean workRemotely(ForgeStep step, int movement, boolean forceCompletion)
     {
         assert level != null;
@@ -371,7 +373,8 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
     }
 
     /**
-     * Sends feedback to the action bar, as the anvil gui will be closed
+     * Sends feedback to the action bar, as the anvil gui will be closed.
+     * @return {@code SUCCESS} if welding was successful, {@code FAIL} if it failed, and {@code PASS} if it was not attempted.
      */
     public InteractionResult weld(Player player)
     {
@@ -422,7 +425,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
             }
 
             markForSync();
-            return InteractionResult.SUCCESS;
+            return InteractionResult.sidedSuccess(level.isClientSide);
         }
         return InteractionResult.PASS;
     }

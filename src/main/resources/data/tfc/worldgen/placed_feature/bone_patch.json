@@ -1,0 +1,20 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:bone_patch",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 100
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "tfc:climate",
+      "min_temperature": -30,
+      "max_temperature": 30,
+      "min_groundwater": 0,
+      "max_groundwater": 400
+    }
+  ]
+}

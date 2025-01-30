@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "tfc:jar/pumpkin_chunks_unsealed"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:pumpkin_chunks_jam"
+  }
+}

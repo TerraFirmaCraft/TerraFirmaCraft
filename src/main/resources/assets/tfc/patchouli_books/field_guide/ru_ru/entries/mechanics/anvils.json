@@ -88,7 +88,7 @@
     },
     {
       "type": "patchouli:spotlight",
-      "item": "tfc:metal/pickaxe/wrought_iron[tfc:forging_bonus=\"perfect\"]",
+      "item": "tfc:metal/pickaxe/wrought_iron[tfc:forging_bonus={type:\"perfect\"}]",
       "title": "Идеально выковано",
       "link_recipes": false,
       "text": "Существует четыре уровня бонуса ковки: $(li)Плохо выковано$(li)Хорошо выковано$(li)Мастерски выковано$(li)Идеально выковано$(br2)Эти бонусы увеличивают мощность вашего инструмента - делая его менее ломким, добывающим быстрее и/или наносящим больше урона в бою, в зависимости от инструмента."

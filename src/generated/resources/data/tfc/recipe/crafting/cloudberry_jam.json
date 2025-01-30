@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "tfc:jar/cloudberry_unsealed"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:cloudberry_jam"
+  }
+}

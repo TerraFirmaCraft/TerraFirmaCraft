@@ -186,10 +186,10 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
                 {
                     PlacedItemBlockEntity.convertPlacedItemToPitKiln(level, pos, held.split(1));
                 }
-                return ItemInteractionResult.SUCCESS;
+                return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
             return placedItem.onRightClick(player, held, hitResult)
-                ? ItemInteractionResult.SUCCESS
+                ? ItemInteractionResult.sidedSuccess(level.isClientSide)
                 : ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;

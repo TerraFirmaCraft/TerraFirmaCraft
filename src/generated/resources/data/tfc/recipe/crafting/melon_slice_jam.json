@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "tfc:jar/melon_slice_unsealed"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:melon_slice_jam"
+  }
+}

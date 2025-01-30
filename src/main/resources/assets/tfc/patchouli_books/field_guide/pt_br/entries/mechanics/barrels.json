@@ -9,6 +9,11 @@
       "text": "The $(thing)Barrel$() is a device that can hold both items and fluids. The central slot is used to hold items. Fluids are shown in the tank on the left side, and can be added to the barrel by placing a filled $(thing)bucket$() or $(thing)jug$() in the top left slot. They can be removed by placing an empty fluid container in the same slot. Using $(item)$(k:key.use)$() on the block with a bucket also works."
     },
     {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wood/barrel/oak",
+      "text": "The barrel is made from seven $(thing)lumber$()."
+    },
+    {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/gui/barrel.png"

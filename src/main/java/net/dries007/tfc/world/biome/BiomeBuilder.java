@@ -8,12 +8,14 @@ package net.dries007.tfc.world.biome;
 
 import java.util.Objects;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.function.LongFunction;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.world.BiomeNoiseSampler;
+import net.dries007.tfc.world.Seed;
 import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.river.RiverBlendType;
@@ -27,8 +29,8 @@ public class BiomeBuilder
         return new BiomeBuilder();
     }
 
-    @Nullable private LongFunction<Noise2D> heightNoiseFactory;
-    @Nullable private LongFunction<BiomeNoiseSampler> noiseFactory;
+    @Nullable private Function<Seed, Noise2D> heightNoiseFactory;
+    @Nullable private Function<Seed, BiomeNoiseSampler> noiseFactory;
     @Nullable private SurfaceBuilderFactory surfaceBuilderFactory;
 
     private AquiferLookahead aquiferSurfaceHeight;
@@ -63,8 +65,8 @@ public class BiomeBuilder
 
     public BiomeBuilder heightmap(LongFunction<Noise2D> heightNoiseFactory)
     {
-        this.heightNoiseFactory = heightNoiseFactory;
-        this.noiseFactory = seed -> BiomeNoiseSampler.fromHeightNoise(heightNoiseFactory.apply(seed));
+        this.heightNoiseFactory = seed -> heightNoiseFactory.apply(seed.seed());
+        this.noiseFactory = seed -> BiomeNoiseSampler.fromHeightNoise(heightNoiseFactory.apply(seed.seed()));
         return this;
     }
 
@@ -77,15 +79,15 @@ public class BiomeBuilder
     public BiomeBuilder carving(BiFunction<Long, Noise2D, BiomeNoiseSampler> carvingNoiseFactory)
     {
         Objects.requireNonNull(heightNoiseFactory, "Height noise must not be null");
-        final LongFunction<Noise2D> baseHeightNoiseFactory = heightNoiseFactory;
-        this.noiseFactory = seed -> carvingNoiseFactory.apply(seed, baseHeightNoiseFactory.apply(seed));
+        final Function<Seed, Noise2D> baseHeightNoiseFactory = heightNoiseFactory;
+        this.noiseFactory = seed -> carvingNoiseFactory.apply(seed.seed(), baseHeightNoiseFactory.apply(seed));
         this.aquiferSurfaceHeight = (sampler, x, z) -> TFCChunkGenerator.SEA_LEVEL_Y - 16; // Expect sea level carving to restrict aquifers
         return this;
     }
 
     public BiomeBuilder noise(LongFunction<BiomeNoiseSampler> noiseFactory)
     {
-        this.noiseFactory = noiseFactory;
+        this.noiseFactory = seed -> noiseFactory.apply(seed.seed());
         return this;
     }
 
@@ -157,7 +159,7 @@ public class BiomeBuilder
         assert heightNoiseFactory != null : "volcanoes must be called after setting a heightmap";
         assert surfaceBuilderFactory != null : "volcanoes must be called after setting a surface builder";
 
-        final LongFunction<Noise2D> baseHeightNoiseFactory = this.heightNoiseFactory;
+        final Function<Seed, Noise2D> baseHeightNoiseFactory = this.heightNoiseFactory;
         this.heightNoiseFactory = seed -> BiomeNoise.addVolcanoes(seed, baseHeightNoiseFactory.apply(seed), frequency, baseHeight, scaleHeight);
         this.noiseFactory = seed -> BiomeNoiseSampler.fromHeightNoise(heightNoiseFactory.apply(seed));
 

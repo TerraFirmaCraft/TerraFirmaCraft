@@ -133,7 +133,7 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
         return CropHelpers.useFertilizer(level, player, hand, pos.below())
-            ? ItemInteractionResult.SUCCESS
+            ? ItemInteractionResult.sidedSuccess(level.isClientSide)
             : super.useItemOn(stack, state, level, pos, player, hand, hitResult);
     }
 

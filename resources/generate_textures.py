@@ -321,7 +321,7 @@ def main():
         if wood != 'palm':
             create_boat_texture(wood)
         for metal, metal_data in METALS.items():
-            if 'utility' in metal_data.types:
+            if 'all' == metal_data.type:
                 create_hanging_sign(wood, metal)
 
     for rock, data in ROCKS.items():
@@ -338,9 +338,9 @@ def main():
         overlay_image(templates + 'mangrove_roots_top', path + 'block/mud/%s' % soil, path + 'block/mud/%s_roots_top' % soil)
 
     for metal, metal_data in METALS.items():
-        if 'utility' in metal_data.types:
+        if 'all' == metal_data.type:
             overlay_image(path + 'block/metal/smooth/%s' % metal, path + 'block/empty', path + 'block/metal/chain/%s' % metal, templates + 'chain_mask')
-        if 'utility' in metal_data.types:
+        if 'all' == metal_data.type:
             smooth_color = get_metal_colors('smooth/%s' % metal)
             create_hanging_sign_chains_item(metal, smooth_color)
 
@@ -354,6 +354,13 @@ def main():
         for x, y in ((7, 2), (8, 2), (9, 2), (7, 4), (8, 4), (9, 4)):
             img.putpixel((x, y), (0, 0, 0, 0))
         img.save(path + 'item/jar/%s_unsealed.png' % fruit)
+
+        img = Image.open(path + 'block/jar/%s.png' % fruit).convert('RGBA')
+        clr = img.getpixel((0, 0))
+        mask = Image.open(templates + 'jam.png')
+        mask = put_on_all_pixels(mask, clr)
+        mask.save(path + 'item/food/%s_jam.png' % fruit)
+
 
 
 if __name__ == '__main__':

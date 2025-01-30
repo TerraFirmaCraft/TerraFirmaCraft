@@ -16,6 +16,7 @@ import org.jetbrains.annotations.TestOnly;
 import org.jetbrains.annotations.VisibleForTesting;
 
 import net.dries007.tfc.world.FastConcurrentCache;
+import net.dries007.tfc.world.Seed;
 import net.dries007.tfc.world.chunkdata.ChunkDataGenerator;
 import net.dries007.tfc.world.chunkdata.RegionChunkDataGenerator;
 import net.dries007.tfc.world.layer.TFCLayers;
@@ -58,18 +59,18 @@ public final class RegionGenerator
     public final ThreadLocal<Area> biomeArea;
     public final ThreadLocal<Area> rockArea;
 
-    private final long seed;
+    private final Seed seed;
     private final FastConcurrentCache<Region> cellCache;
     private final FastConcurrentCache<RegionPartition> partitionCache;
 
     private final ChunkDataGenerator chunkDataGenerator;
 
-    public RegionGenerator(Settings settings, RandomSource random)
+    public RegionGenerator(Settings settings, Seed seed)
     {
         this.settings = settings;
-        this.seed = random.nextLong();
+        this.seed = seed;
 
-        this.cellNoise = new Cellular2D(random.nextLong()).spread(1f / Units.CELL_WIDTH_IN_GRID);
+        this.cellNoise = new Cellular2D(seed.next()).spread(1f / Units.CELL_WIDTH_IN_GRID);
 
         // Both of these caches are queried, and cached, on a cell-coordinate basis
         // Since cells are large (~12km), a small concurrent cache should be enough
@@ -78,40 +79,40 @@ public final class RegionGenerator
 
         float min = settings.continentalness() * 10f - 2.5f; // range [0, 1], default 0.5 -> 2.5 continentalness
         this.continentNoise = cellNoise.then(c -> 1 - c.f1() / (0.37f + c.f2()))
-            .lazyProduct(new OpenSimplex2D(random.nextLong())
+            .lazyProduct(new OpenSimplex2D(seed.next())
                 .spread(0.24f)
                 .scaled(min, 8.7f)
                 .octaves(4));
 
         this.temperatureNoise = baseNoise(false, settings.temperatureScale(), settings.temperatureConstant())
             .scaled(-20f, 30f)
-            .add(new OpenSimplex2D(random.nextInt())
+            .add(new OpenSimplex2D(seed.next())
                 .octaves(2)
                 .spread(0.15f)
                 .scaled(-3f, 3f));
 
         this.rainfallNoise = baseNoise(true, settings.rainfallScale(), settings.rainfallConstant())
             .scaled(0f, 500f)
-            .add(new OpenSimplex2D(random.nextInt())
+            .add(new OpenSimplex2D(seed.next())
                 .octaves(2)
                 .spread(0.15f)
                 .scaled(-80f, 40f)); // Bias slightly negative, as we bias near-ocean areas to be positive rainfall, so this encourages deserts inland
 
-        this.rainfallVarianceNoise = new OpenSimplex2D(random.nextInt())
+        this.rainfallVarianceNoise = new OpenSimplex2D(seed.next())
             .octaves(2)
             .spread(0.3f)
             .scaled(-.2f, 0.2f);
 
-        final AreaFactory biomeAreaFactory = TFCLayers.createUniformLayer(random, 2);
-        final AreaFactory rockAreaFactory = TFCLayers.createUniformLayer(random, 3);
+        final AreaFactory biomeAreaFactory = TFCLayers.createUniformLayer(seed, 2);
+        final AreaFactory rockAreaFactory = TFCLayers.createUniformLayer(seed, 3);
 
         biomeArea = ThreadLocal.withInitial(biomeAreaFactory);
         rockArea = ThreadLocal.withInitial(rockAreaFactory);
 
-        this.chunkDataGenerator = new RegionChunkDataGenerator(this, settings.rockLayerSettings(), random);
+        this.chunkDataGenerator = new RegionChunkDataGenerator(this, settings.rockLayerSettings(), seed);
     }
 
-    public long seed()
+    public Seed seed()
     {
         return seed;
     }
@@ -143,9 +144,9 @@ public final class RegionGenerator
     /**
      * @return The estimated surface rock type at the given grid coordinates. This should only be used during region point generation!
      */
-    public RockSettings getSurfaceRock(int gridX, int gridZ)
+    public RockSettings getSurfaceRock(Region.Point point)
     {
-        return chunkDataGenerator.generateSurfaceRock(Units.gridToBlock(gridX), Units.gridToBlock(gridZ));
+        return settings.rockLayerSettings().sampleAtLayer(point.rock, 0);
     }
 
     public RegionPartition.Point getOrCreatePartitionPoint(int gridX, int gridZ)
@@ -260,8 +261,9 @@ public final class RegionGenerator
         ADD_MOUNTAINS(AddMountains.INSTANCE),
         ANNOTATE_BIOME_ALTITUDE(AnnotateBiomeAltitude.INSTANCE),
         ANNOTATE_CLIMATE(AnnotateClimate.INSTANCE),
-        CHOOSE_BIOMES(ChooseBiomes.INSTANCE),
         CHOOSE_ROCKS(ChooseRocks.INSTANCE),
+        ANNOTATE_KARST_SURFACE(KarstSurfaceRocks.INSTANCE),
+        CHOOSE_BIOMES(ChooseBiomes.INSTANCE),
         ADD_RIVERS_AND_LAKES(AddRiversAndLakes.INSTANCE),
         ;
 
@@ -284,13 +286,13 @@ public final class RegionGenerator
 
         public final Region region;
 
-        Context(BiConsumer<Task, Region> viewer, Cellular2D.Cell regionCell, long seed)
+        Context(BiConsumer<Task, Region> viewer, Cellular2D.Cell regionCell, Seed seed)
         {
             this.viewer = viewer;
             this.regionCell = regionCell;
             this.region = new Region(regionCell);
 
-            final long regionSeed = seed ^ Float.floatToIntBits((float) regionCell.noise()) * 7189234123L;
+            final long regionSeed = seed.seed() ^ Float.floatToIntBits((float) regionCell.noise()) * 7189234123L;
             this.random = new XoroshiroRandomSource(regionSeed);
         }
 

@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.blockentities;
 
-import java.util.List;
 import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -54,6 +53,8 @@ public interface IFarmland
      * @param value the amount (clamped [0-1]) of the nutrient to set
      */
     void setNutrient(NutrientType type, float value);
+
+    void setNutrientWithoutSync(NutrientType type, float value);
 
     default void addNutrient(NutrientType type, float value)
     {

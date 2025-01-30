@@ -1,0 +1,12 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:forest",
+    "tfc:rare_bamboo",
+    "tfc:bamboo",
+    "tfc:rare_bamboo_golden",
+    "tfc:bamboo_golden",
+    "tfc:cave_vegetation"
+  ]
+}

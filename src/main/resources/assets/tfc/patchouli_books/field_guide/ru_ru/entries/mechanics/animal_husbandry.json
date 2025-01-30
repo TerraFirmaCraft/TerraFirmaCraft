@@ -59,6 +59,11 @@
       "text": "$(thing)Шерстные животные$() - это $(l:mechanics/animal_husbandry#mammals)Млекопитающие$(), которых можно $(thing)стричь$(), если они взрослые и достаточно привыкли к вам. Некоторые примеры - $(l:mechanics/animal_husbandry#sheep)Овцы$(), $(l:mechanics/animal_husbandry#alpaca)Альпаки$() и $(l:mechanics/animal_husbandry#musk_ox)Мускусные быки$()."
     },
     {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:welding/metal/shears/bronze",
+      "text": "Shears can be made by $(l:mechanics/anvils#welding)welding$() two $(thing)knife blades$() together. Whichever knife blade has the lowest forging bonus will transfer that bonus (if any) to the shears."
+    },
+    {
       "type": "patchouli:text",
       "anchor": "dairy_animals",
       "text": "$(thing)Молочные животные$() - это млекопитающие, которые производят $(thing)Молоко$(). Самок молочных животных можно доить, кликнув по ним ведром. Некоторые примеры - $(l:mechanics/animal_husbandry#goat)Козы$(), $(l:mechanics/animal_husbandry#cow)Коровы$() и $(l:mechanics/animal_husbandry#yak)Яки$()."
@@ -76,10 +81,14 @@
       "text": "$(thing)Яйца$() можно варить или жарить для еды. Самцы яйцекладущих животных могут оплодотворять самок, что приводит к тому, что следующее яйцо, отложенное в гнездовом ящике, будет оплодотворенным. Оплодотворенные яйца будут иметь подсказку с указанием времени до вылупления."
     },
     {
+      "type": "patchouli:text",
+      "text": "$(thing)Equines$() are $(l:mechanics/animal_husbandry#mammals)Mammals$() that can be ridden when tamed. They become rideable after reaching 15% familiarity. Horses pass on their $(thing)genetic traits$(), including their speed, jump height, health, size, and markings. The product of a horse and a donkey is a $(thing)mule$()."
+    },
+    {
       "type": "tfc:knapping_recipe",
       "anchor": "horses",
       "recipe": "tfc:knapping/saddle",
-      "text": "$(thing)Однокопытные$() - это $(l:mechanics/animal_husbandry#mammals)Млекопитающие$(), которых можно ездить, когда они приручены. Они становятся пригодными для верховой езды после достижения 15% привязанности."
+      "text": "Saddles may be knapped from leather."
     },
     {
       "type": "patchouli:text",

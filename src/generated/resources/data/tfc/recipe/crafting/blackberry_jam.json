@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "tfc:jar/blackberry_unsealed"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:blackberry_jam"
+  }
+}

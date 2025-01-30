@@ -565,6 +565,11 @@ public interface CraftingRecipes extends Recipes
                 .input(notRotten(Ingredient.of(item)))
                 .shapeless(TFCItems.UNSEALED_FRUIT_PRESERVES.get(food)));
 
+        TFCItems.JAM.forEach((food, item) ->
+            recipe()
+                .input(TFCItems.UNSEALED_FRUIT_PRESERVES.get(food))
+                .shapeless(item));
+
         replace("activator_rail")
             .input('S', Tags.Items.RODS_WOODEN)
             .input('I', ingredientOf(Metal.WROUGHT_IRON, Metal.ItemType.ROD))
@@ -1190,14 +1195,22 @@ public interface CraftingRecipes extends Recipes
             .shaped(TFCItems.FOOD.get(sandwich), 2);
 
         for (String pattern : List.of("JSS", "SJS", "SSJ"))
-            recipe("" + pattern.indexOf('J'))
-                .input('K', TFCTags.Items.TOOLS_KNIFE)
-                .input('B', notRotten(bread))
-                .input('S', notRotten(Ingredient.of(TFCTags.Items.USABLE_IN_JAM_SANDWICH)))
-                .input('J', notRotten(Ingredient.of(TFCTags.Items.PRESERVES)))
-                .pattern("KB ", pattern, " B ")
-                .addOutputModifier(meal)
-                .shaped(TFCItems.FOOD.get(jamSandwich), 2);
+        {
+            String variant = "_jar";
+            for (TagKey<Item> tag : List.of(TFCTags.Items.PRESERVES, TFCTags.Items.JAM))
+            {
+                recipe("" + pattern.indexOf('J') + variant)
+                    .input('K', TFCTags.Items.TOOLS_KNIFE)
+                    .input('B', notRotten(bread))
+                    .input('S', notRotten(Ingredient.of(TFCTags.Items.USABLE_IN_JAM_SANDWICH)))
+                    .input('J', notRotten(Ingredient.of(tag)))
+                    .pattern("KB ", pattern, " B ")
+                    .addOutputModifier(meal)
+                    .shaped(TFCItems.FOOD.get(jamSandwich), 2);
+                variant = "_jam";
+            }
+        }
+
 
         for (int n = 1; n <= 8; n++)
             recipe("" + n)

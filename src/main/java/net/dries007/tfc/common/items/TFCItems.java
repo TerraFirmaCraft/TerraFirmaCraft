@@ -137,6 +137,9 @@ public final class TFCItems
     public static final Map<Food, ItemId> UNSEALED_FRUIT_PRESERVES = Helpers.mapOf(Food.class, Food::isFruit, food ->
         register("jar/" + food.name() + "_unsealed", () -> new Item(new Properties().component(Lore.TYPE, Lore.UNSEALED).craftRemainder(TFCItems.EMPTY_JAR.asItem())))
     );
+    public static final Map<Food, ItemId> JAM = Helpers.mapOf(Food.class, Food::isFruit, food ->
+        register(food.name() + "_jam", () -> new Item(new Properties()))
+    );
     public static final Map<Nutrient, ItemId> SOUPS = Helpers.mapOf(Nutrient.class, nutrient ->
         register("food/" + nutrient.name() + "_soup", () -> new Item(new Properties()))
     );
@@ -236,7 +239,7 @@ public final class TFCItems
     public static final ItemId STRAW = register("straw");
     public static final ItemId TREATED_HIDE = register("treated_hide");
     public static final ItemId UNREFINED_PAPER = register("unrefined_paper");
-    public static final ItemId WOODEN_BUCKET = register("wooden_bucket", () -> new FluidContainerItem(new Properties(), TFCConfig.SERVER.woodenBucketCapacity, TFCTags.Fluids.USABLE_IN_WOODEN_BUCKET, true, false));
+    public static final ItemId WOODEN_BUCKET = register("wooden_bucket", () -> new FluidContainerItem(new Properties(), TFCConfig.SERVER.woodenBucketCapacity, TFCTags.Fluids.USABLE_IN_WOODEN_BUCKET, true, TFCConfig.SERVER.woodenBucketCanPlaceSources));
     public static final ItemId WOOL = register("wool");
     public static final ItemId WOOL_CLOTH = register("wool_cloth", () -> new GlassworkingItem(new Properties(), GlassOperation.ROLL));
     public static final ItemId WOOL_YARN = register("wool_yarn");
@@ -372,8 +375,8 @@ public final class TFCItems
         register("bucket/" + fluid.name(), () -> new BucketItem(fluid.fluid().get(), new Properties().craftRemainder(Items.BUCKET).stacksTo(1)))
     );
 
-    public static final ItemId RED_STEEL_BUCKET = register("metal/bucket/red_steel", () -> new FluidContainerItem(new Properties(), () -> FluidHelpers.BUCKET_VOLUME, TFCTags.Fluids.USABLE_IN_RED_STEEL_BUCKET, true, false));
-    public static final ItemId BLUE_STEEL_BUCKET = register("metal/bucket/blue_steel", () -> new FluidContainerItem(new Properties(), () -> FluidHelpers.BUCKET_VOLUME, TFCTags.Fluids.USABLE_IN_BLUE_STEEL_BUCKET, true, false));
+    public static final ItemId RED_STEEL_BUCKET = register("metal/bucket/red_steel", () -> new FluidContainerItem(new Properties(), TFCConfig.SERVER.metalBucketCapacity, TFCTags.Fluids.USABLE_IN_RED_STEEL_BUCKET, true, TFCConfig.SERVER.metalBucketCanPlaceSources));
+    public static final ItemId BLUE_STEEL_BUCKET = register("metal/bucket/blue_steel", () -> new FluidContainerItem(new Properties(), TFCConfig.SERVER.metalBucketCapacity, TFCTags.Fluids.USABLE_IN_BLUE_STEEL_BUCKET, true, TFCConfig.SERVER.metalBucketCanPlaceSources));
 
     public static final ItemId COD_BUCKET = register("bucket/cod", () -> new MobBucketItem(TFCEntities.COD.get(), TFCFluids.SALT_WATER.getSource(), SoundEvents.BUCKET_EMPTY_FISH, new Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
     public static final ItemId PUFFERFISH_BUCKET = register("bucket/pufferfish", () -> new MobBucketItem(TFCEntities.PUFFERFISH.get(), TFCFluids.SALT_WATER.getSource(), SoundEvents.BUCKET_EMPTY_FISH, new Properties().craftRemainder(Items.BUCKET).stacksTo(1)));

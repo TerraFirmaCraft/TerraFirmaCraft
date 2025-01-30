@@ -7,15 +7,16 @@
 package net.dries007.tfc.world.surface.builder;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Random;
 import java.util.function.Function;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.blocks.SandstoneBlockType;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.world.Seed;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 import net.dries007.tfc.world.surface.SurfaceBuilderContext;
@@ -33,20 +34,22 @@ public class BadlandsSurfaceBuilder implements SurfaceBuilder
     private static final int UNCOMMON_SIZE = 3;
     private static final int LAYER_SIZE = PRIMARY_SIZE + SECONDARY_SIZE + UNCOMMON_SIZE; // 16
 
-    private static void fill(Random random, BlockState[] sandLayers, BlockState[] sandstoneLayers, SandBlockType primary, SandBlockType secondary, SandBlockType uncommon)
+    private static void fill(RandomSource random, BlockState[] sandLayers, BlockState[] sandstoneLayers, SandBlockType primary, SandBlockType secondary, SandBlockType uncommon)
     {
         fill(random, sandLayers, primary, secondary, uncommon, BadlandsSurfaceBuilder::sand);
         fill(random, sandstoneLayers, primary, secondary, uncommon, BadlandsSurfaceBuilder::sandstone);
     }
 
-    private static void fill(Random random, BlockState[] layers, SandBlockType primary, SandBlockType secondary, SandBlockType uncommon, Function<SandBlockType, BlockState> block)
+    private static void fill(RandomSource random, BlockState[] layers, SandBlockType primary, SandBlockType secondary, SandBlockType uncommon, Function<SandBlockType, BlockState> block)
     {
         // 8 - 5 - 3 of primary, secondary, and uncommon across the 16 block sequence.
         // This should make it near impossible to get completely 'undesirable' combinations
         Arrays.fill(layers, 0, PRIMARY_SIZE, block.apply(primary));
         Arrays.fill(layers, PRIMARY_SIZE, PRIMARY_SIZE + SECONDARY_SIZE, block.apply(secondary));
         Arrays.fill(layers, PRIMARY_SIZE + SECONDARY_SIZE, LAYER_SIZE, block.apply(uncommon));
-        Collections.shuffle(Arrays.asList(layers), random);
+
+        // Random shuffle
+        Helpers.shuffleArray(layers, random);
     }
 
     private static BlockState sand(SandBlockType color)
@@ -68,11 +71,11 @@ public class BadlandsSurfaceBuilder implements SurfaceBuilder
     private final Noise2D sandHeightOffsetNoise;
     private final Noise2D sandStyleNoise;
 
-    public BadlandsSurfaceBuilder(boolean inverted, long seed)
+    public BadlandsSurfaceBuilder(boolean inverted, Seed seed)
     {
         this.inverted = inverted;
 
-        final Random random = new Random(seed);
+        final RandomSource random = seed.fork();
 
         sandLayers0 = new BlockState[LAYER_SIZE];
         sandLayers1 = new BlockState[LAYER_SIZE];

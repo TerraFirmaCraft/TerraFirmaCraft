@@ -41,7 +41,7 @@ public class GlassBottleItem extends FluidContainerItem
 
     public GlassBottleItem(Properties properties, Supplier<Integer> capacity, Supplier<Double> breakChance, TagKey<Fluid> whitelist)
     {
-        super(properties, capacity, whitelist, false, false);
+        super(properties, capacity, whitelist, false, () -> false);
         this.breakChance = breakChance;
     }
 

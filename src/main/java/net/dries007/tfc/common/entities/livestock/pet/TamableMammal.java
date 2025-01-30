@@ -319,7 +319,7 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
                 {
                     held.shrink(1);
                 }
-                return InteractionResult.SUCCESS;
+                return InteractionResult.sidedSuccess(level().isClientSide);
             }
         }
         if (held.isEmpty() && player.isShiftKeyDown() && getOwner() != null && isOwnedBy(player) && !isOnFire())
@@ -328,7 +328,7 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
             {
                 ClientHelpers.openPetScreen(this);
             }
-            return InteractionResult.SUCCESS;
+            return InteractionResult.sidedSuccess(level().isClientSide);
         }
         if (getFamiliarity() + 0.06f > 0.15f && getOwnerUUID() == null && isFood(held) && isHungry())
         {

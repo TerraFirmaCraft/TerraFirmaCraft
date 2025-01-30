@@ -40,7 +40,7 @@ public enum PlayerDrinkPacket implements CustomPacketPayload
             final InteractionResult result = Drinkable.attemptDrink(player.level(), player, true);
             if (result.shouldSwing())
             {
-                player.swing(InteractionHand.MAIN_HAND, true);
+                player.swing(InteractionHand.MAIN_HAND);
             }
         }
     }

@@ -293,10 +293,6 @@ public class TFCTags
 
     public static class Items
     {
-        // todo: figure out if we really want to support these, or replace with the tool action and say to hell with fire charges
-        public static final TagKey<Item> STARTS_FIRES_WITH_DURABILITY = tag("starts_fires_with_durability");
-        public static final TagKey<Item> STARTS_FIRES_WITH_ITEMS = tag("starts_fires_with_items");
-
         // ===== Data Generated ===== //
 
         // Foods
@@ -320,6 +316,8 @@ public class TFCTags
         public static final TagKey<Item> PRESERVES = tag("foods/preserves");
         /** Includes only sealed jars with fruit in them */
         public static final TagKey<Item> SEALED_PRESERVES = tag("foods/sealed_preserves");
+        /** Fruit extracted from an unsealed jar */
+        public static final TagKey<Item> JAM = tag("foods/jam");
         /* Includes preserves, sealed preserves, and also empty jars (with and without lid) */
         public static final TagKey<Item> JARS = tag("foods/jars");
         public static final TagKey<Item> SWEETENERS = tag("foods/sweeteners");

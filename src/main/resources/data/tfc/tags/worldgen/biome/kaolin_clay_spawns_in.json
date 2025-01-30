@@ -5,6 +5,19 @@
     "tfc:plateau",
     "tfc:highlands",
     "tfc:old_mountains",
-    "tfc:rolling_hills"
+    "tfc:rolling_hills",
+    "tfc:tower_karst_hills",
+    "tfc:tower_karst_highlands",
+    "tfc:extreme_doline_plateau",
+    "tfc:extreme_doline_mountains",
+    "tfc:doline_rolling_hills",
+    "tfc:doline_highlands",
+    "tfc:doline_plateau",
+    "tfc:cenote_rolling_hills",
+    "tfc:cenote_highlands",
+    "tfc:cenote_plateau",
+    "tfc:shilin_hills",
+    "tfc:shilin_highlands",
+    "tfc:shilin_plateau"
   ]
 }

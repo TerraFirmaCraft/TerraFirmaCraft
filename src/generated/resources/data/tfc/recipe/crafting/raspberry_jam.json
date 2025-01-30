@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "tfc:jar/raspberry_unsealed"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:raspberry_jam"
+  }
+}

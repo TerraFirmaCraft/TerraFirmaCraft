@@ -88,7 +88,7 @@
     },
     {
       "type": "patchouli:spotlight",
-      "item": "tfc:metal/pickaxe/wrought_iron[tfc:forging_bonus=\"perfect\"]",
+      "item": "tfc:metal/pickaxe/wrought_iron[tfc:forging_bonus={type:\"perfect\"}]",
       "title": "Ідеально ковані",
       "link_recipes": false,
       "text": "Є чотири бонуси кування:$(li)Погано кований$(li)Добре кований$(li)Майстерно кований$(li)Ідеально кований$(br2)Ці бонуси збільшують міцність інструменту, завдяки чому він довше працює, швидше видобуває, та/або завдає більше шкоди в бою."

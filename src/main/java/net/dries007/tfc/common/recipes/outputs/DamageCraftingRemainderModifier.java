@@ -7,8 +7,12 @@
 package net.dries007.tfc.common.recipes.outputs;
 
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.common.CommonHooks;
+import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.common.recipes.RecipeHelpers;
 import net.dries007.tfc.util.Helpers;
 
 public enum DamageCraftingRemainderModifier implements ItemStackModifier
@@ -22,7 +26,15 @@ public enum DamageCraftingRemainderModifier implements ItemStackModifier
         if (stack.isDamageableItem())
         {
             final ItemStack copy = stack.copy();
-            Helpers.damageItem(copy);
+            final @Nullable Player player = RecipeHelpers.getCraftingPlayer();
+            if (player != null)
+            {
+                Helpers.damageItem(copy, player.level());
+            }
+            else
+            {
+                Helpers.damageItem(copy);
+            }
             return copy;
         }
         else if (stack.has(DataComponents.UNBREAKABLE)) // unbreakable items are not damageable, but should still be able to be used in crafting

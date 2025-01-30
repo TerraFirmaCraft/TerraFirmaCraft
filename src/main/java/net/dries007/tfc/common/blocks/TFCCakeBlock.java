@@ -46,7 +46,7 @@ public class TFCCakeBlock extends CakeBlock
                 level.removeBlock(pos, false);
                 level.gameEvent(player, GameEvent.BLOCK_DESTROY, pos);
             }
-            return ItemInteractionResult.SUCCESS;
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
     }
 
@@ -66,7 +66,7 @@ public class TFCCakeBlock extends CakeBlock
         {
             if (eatCake(level, pos, state, player).consumesAction())
             {
-                return ItemInteractionResult.SUCCESS;
+                return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
             if (player.getItemInHand(hand).isEmpty())
             {

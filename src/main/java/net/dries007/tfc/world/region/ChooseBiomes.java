@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.world.region;
 
+import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.layer.framework.Area;
 
 import static net.dries007.tfc.world.layer.TFCLayers.*;
@@ -68,11 +69,13 @@ public enum ChooseBiomes implements RegionTask
             }
 
             // Adjust certain biome placements by climate. Low, freshwater biomes don't make much sense appearing in
-            // very low rainfall areas, so replace them with slightly higher biomes
+            // Replacements for very low rainfall areas
             final float minRainForLowFreshWaterBiomes = 90f + Math.floorMod(areaSeed ^ climateSeed, 40);
-            if (point.rainfall < minRainForLowFreshWaterBiomes)
+            final float rainfall = point.rainfall;
+            final float temperature = point.temperature;
+            if (rainfall < minRainForLowFreshWaterBiomes)
             {
-                if (point.rainfall <= 55)
+                if (rainfall <= 55)
                 {
                     if (point.biome == LOWLANDS || point.biome == LOW_CANYONS) point.biome = SALT_FLATS;
                     else if (point.biome == HILLS || point.biome == ROLLING_HILLS || point.biome == PLATEAU ) point.biome = DUNE_SEA;
@@ -83,12 +86,139 @@ public enum ChooseBiomes implements RegionTask
 
             // Prevent badlands from appearing in very high rainfall environments
             final float maxRainfallForBadlands = 420f + Math.floorMod(areaSeed ^ climateSeed, 40);
-            if (point.rainfall > maxRainfallForBadlands)
+            if (rainfall > maxRainfallForBadlands)
             {
                 if (point.biome == BADLANDS) point.biome = HIGHLANDS;
                 else if (point.biome == INVERTED_BADLANDS) point.biome = ROLLING_HILLS;
             }
+
+            // Karst Biomes
+            if (point.isSurfaceRockKarst)
+            {
+                // High rainfall karst biomes
+                if (rainfall > 375)
+                {
+                    // Check for hot, wet climates to place tower karsts
+                    if (rainfall > 425 && rainfall + 10 * temperature > 500)
+                    {
+                        point.biome = getTowerKarstBiome(point.biome);
+                    }
+                    //Tropical/Subtropical wet areas not filled in by towers are Shilin
+                    else if (temperature > 9)
+                    {
+                        point.biome = getShilinBiome(point.biome);
+                    }
+                    // Colder wet biomes are Burren
+                    else if (temperature < 0)
+                    {
+                        point.biome = getBurrenBiome(point.biome);
+                    }
+                    else
+                    {
+                        point.biome = getDolineBiome(point.biome);
+                    }
+                }
+                else if (rainfall > 250)
+                {
+                    if (temperature > 5)
+                    {
+                        point.biome = getCenoteBiome(point.biome);
+                    }
+                    else
+                    {
+                        point.biome = getDolineBiome(point.biome);
+                    }
+                }
+
+            }
         }
+    }
+
+    private int getTowerKarstBiome(int biome)
+    {
+        if (biome == SALT_MARSH)
+            return TOWER_KARST_BAY;
+        else if (biome == LOWLANDS)
+            return TOWER_KARST_LAKE;
+        else if (biome == PLAINS || biome == LOW_CANYONS)
+            return TOWER_KARST_PLAINS;
+        else if (biome == CANYONS)
+            return TOWER_KARST_CANYONS;
+        else if (biome == HILLS || biome == ROLLING_HILLS || biome == BADLANDS)
+            return TOWER_KARST_HILLS;
+        else if (biome == HIGHLANDS || biome == INVERTED_BADLANDS)
+            return TOWER_KARST_HIGHLANDS;
+        else if (biome == PLATEAU)
+            return EXTREME_DOLINE_PLATEAU;
+        else if (biome == OLD_MOUNTAINS || biome == MOUNTAINS || biome == OCEANIC_MOUNTAINS)
+            return EXTREME_DOLINE_MOUNTAINS;
+        else
+            return biome;
+    }
+
+    private int getShilinBiome(int biome)
+    {
+        if (biome == PLAINS)
+            return SHILIN_PLAINS;
+        if (biome == CANYONS)
+            return SHILIN_CANYONS;
+        if (biome == ROLLING_HILLS || biome == BADLANDS)
+            return SHILIN_HILLS;
+        if (biome == PLATEAU || biome == INVERTED_BADLANDS)
+            return SHILIN_PLATEAU;
+        if (biome == HIGHLANDS)
+            return SHILIN_HIGHLANDS;
+        return biome;
+    }
+
+    private int getBurrenBiome(int biome)
+    {
+        if (biome == PLAINS || biome == CANYONS)
+            return BURREN_PLAINS;
+        if (biome == BADLANDS || biome == HILLS || biome == ROLLING_HILLS)
+            return BURREN_BADLANDS;
+        if (biome == INVERTED_BADLANDS || biome == HIGHLANDS)
+            return BURREN_BADLANDS_TALL;
+        if (biome == PLATEAU)
+            return BURREN_PLATEAU;
+        else
+            return biome;
+    }
+
+    private int getDolineBiome(int biome)
+    {
+        if (biome == CANYONS)
+            return DOLINE_CANYONS;
+        else if (biome == PLAINS || biome == LOW_CANYONS)
+            return DOLINE_PLAINS;
+        else if (biome == HILLS)
+            return DOLINE_HILLS;
+        else if (biome == ROLLING_HILLS)
+            return DOLINE_ROLLING_HILLS;
+        else if (biome == HIGHLANDS)
+            return DOLINE_HIGHLANDS;
+        else if (biome == PLATEAU)
+            return DOLINE_PLATEAU;
+        else
+            return biome;
+    }
+
+    private int getCenoteBiome(int biome)
+    {
+        if (biome == CANYONS)
+            return CENOTE_CANYONS;
+        else if (biome == PLAINS || biome == LOW_CANYONS)
+            return CENOTE_PLAINS;
+        else if (biome == HILLS)
+            return CENOTE_HILLS;
+        else if (biome == ROLLING_HILLS)
+            return CENOTE_ROLLING_HILLS;
+        else if (biome == HIGHLANDS)
+            return CENOTE_HIGHLANDS;
+        else if (biome == PLATEAU)
+            return CENOTE_PLATEAU;
+        else
+            return biome;
     }
 
     private int randomSeededFrom(long rngSeed, int areaSeed, int[] choices)

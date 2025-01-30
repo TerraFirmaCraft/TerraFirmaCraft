@@ -27,9 +27,9 @@ import net.dries007.tfc.util.climate.ClimateRanges;
 
 public class BananaSaplingBlock extends FruitTreeSaplingBlock
 {
-    public BananaSaplingBlock(ExtendedProperties properties, Lifecycle[] stages, Supplier<? extends Block> block, Supplier<Integer> treeGrowthDays)
+    public BananaSaplingBlock(ExtendedProperties properties, Lifecycle[] stages, Supplier<? extends Block> block, Supplier<Integer> ticksToGrow)
     {
-        super(properties, block, treeGrowthDays, ClimateRanges.BANANA_PLANT, stages);
+        super(properties, block, ticksToGrow, ClimateRanges.BANANA_PLANT, stages);
     }
 
     @Override

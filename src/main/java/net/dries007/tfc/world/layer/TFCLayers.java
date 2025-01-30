@@ -11,6 +11,7 @@ import net.minecraft.util.RandomSource;
 import org.apache.commons.lang3.mutable.MutableInt;
 
 import net.dries007.tfc.util.IArtist;
+import net.dries007.tfc.world.Seed;
 import net.dries007.tfc.world.biome.BiomeExtension;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.chunkdata.ForestType;
@@ -64,6 +65,35 @@ public class TFCLayers
     public static final int SALT_FLATS = idFor(TFCBiomes.SALT_FLATS);
     public static final int DUNE_SEA = idFor(TFCBiomes.DUNE_SEA);
     public static final int GRASSY_DUNES = idFor(TFCBiomes.GRASSY_DUNES);
+    public static final int TOWER_KARST_PLAINS = idFor(TFCBiomes.TOWER_KARST_PLAINS);
+    public static final int TOWER_KARST_CANYONS = idFor(TFCBiomes.TOWER_KARST_CANYONS);
+    public static final int TOWER_KARST_HILLS = idFor(TFCBiomes.TOWER_KARST_HILLS);
+    public static final int TOWER_KARST_HIGHLANDS = idFor(TFCBiomes.TOWER_KARST_HIGHLANDS);
+    public static final int TOWER_KARST_LAKE = idFor(TFCBiomes.TOWER_KARST_LAKE);
+    public static final int TOWER_KARST_BAY = idFor(TFCBiomes.TOWER_KARST_BAY);
+    public static final int BURREN_PLATEAU = idFor(TFCBiomes.BURREN_PLATEAU);
+    public static final int BURREN_BADLANDS = idFor(TFCBiomes.BURREN_BADLANDS);
+    public static final int BURREN_BADLANDS_TALL = idFor(TFCBiomes.BURREN_BADLANDS_TALL);
+    public static final int BURREN_PLAINS = idFor(TFCBiomes.BURREN_PLAINS);
+    public static final int SHILIN_PLAINS = idFor(TFCBiomes.SHILIN_PLAINS);
+    public static final int SHILIN_CANYONS = idFor(TFCBiomes.SHILIN_CANYONS);
+    public static final int SHILIN_HILLS = idFor(TFCBiomes.SHILIN_HILLS);
+    public static final int SHILIN_HIGHLANDS = idFor(TFCBiomes.SHILIN_HIGHLANDS);
+    public static final int SHILIN_PLATEAU = idFor(TFCBiomes.SHILIN_PLATEAU);
+    public static final int DOLINE_PLAINS = idFor(TFCBiomes.DOLINE_PLAINS);
+    public static final int DOLINE_HILLS = idFor(TFCBiomes.DOLINE_HILLS);
+    public static final int DOLINE_ROLLING_HILLS = idFor(TFCBiomes.DOLINE_ROLLING_HILLS);
+    public static final int DOLINE_HIGHLANDS = idFor(TFCBiomes.DOLINE_HIGHLANDS);
+    public static final int DOLINE_PLATEAU = idFor(TFCBiomes.DOLINE_PLATEAU);
+    public static final int DOLINE_CANYONS = idFor(TFCBiomes.DOLINE_CANYONS);
+    public static final int CENOTE_PLAINS = idFor(TFCBiomes.CENOTE_PLAINS);
+    public static final int CENOTE_HILLS = idFor(TFCBiomes.CENOTE_HILLS);
+    public static final int CENOTE_ROLLING_HILLS = idFor(TFCBiomes.CENOTE_ROLLING_HILLS);
+    public static final int CENOTE_CANYONS = idFor(TFCBiomes.CENOTE_CANYONS);
+    public static final int CENOTE_HIGHLANDS = idFor(TFCBiomes.CENOTE_HIGHLANDS);
+    public static final int CENOTE_PLATEAU = idFor(TFCBiomes.CENOTE_PLATEAU);
+    public static final int EXTREME_DOLINE_PLATEAU = idFor(TFCBiomes.EXTREME_DOLINE_PLATEAU);
+    public static final int EXTREME_DOLINE_MOUNTAINS = idFor(TFCBiomes.EXTREME_DOLINE_MOUNTAINS);
 
     public static BiomeExtension getFromLayerId(int id)
     {
@@ -126,10 +156,9 @@ public class TFCLayers
         return layer;
     }
 
-    public static AreaFactory createRegionBiomeLayer(RegionGenerator generator, long seed)
+    public static AreaFactory createRegionBiomeLayer(RegionGenerator generator, Seed seed)
     {
-        final Random random = new Random(seed);
-        final TypedAreaFactory<Region.Point> regionLayer = new RegionLayer(generator).apply(random.nextLong());
+        final TypedAreaFactory<Region.Point> regionLayer = new RegionLayer(generator).apply(seed.next());
 
         AreaFactory mainLayer;
 
@@ -137,35 +166,35 @@ public class TFCLayers
 
         // Grid scale
 
-        mainLayer = RegionEdgeBiomeLayer.INSTANCE.apply(random.nextLong(), mainLayer);
-        mainLayer = ZoomLayer.NORMAL.apply(random.nextLong(), mainLayer);
+        mainLayer = RegionEdgeBiomeLayer.INSTANCE.apply(seed.next(), mainLayer);
+        mainLayer = ZoomLayer.NORMAL.apply(seed.next(), mainLayer);
 
-        mainLayer = ShoreLayer.INSTANCE.apply(random.nextLong(), mainLayer);
-        mainLayer = MoreShoresLayer.INSTANCE.apply(random.nextLong(), mainLayer);
-        mainLayer = ZoomLayer.NORMAL.apply(random.nextLong(), mainLayer);
-        mainLayer = ZoomLayer.NORMAL.apply(random.nextLong(), mainLayer);
+        mainLayer = ShoreLayer.INSTANCE.apply(seed.next(), mainLayer);
+        mainLayer = MoreShoresLayer.INSTANCE.apply(seed.next(), mainLayer);
+        mainLayer = ZoomLayer.NORMAL.apply(seed.next(), mainLayer);
+        mainLayer = ZoomLayer.NORMAL.apply(seed.next(), mainLayer);
 
         // Chunk scale
 
-        mainLayer = ZoomLayer.NORMAL.apply(random.nextLong(), mainLayer);
-        mainLayer = ZoomLayer.NORMAL.apply(random.nextLong(), mainLayer);
+        mainLayer = ZoomLayer.NORMAL.apply(seed.next(), mainLayer);
+        mainLayer = ZoomLayer.NORMAL.apply(seed.next(), mainLayer);
 
         // Quart scale
 
-        mainLayer = SmoothLayer.INSTANCE.apply(random.nextLong(), mainLayer);
+        mainLayer = SmoothLayer.INSTANCE.apply(seed.next(), mainLayer);
 
         return mainLayer;
     }
 
-    public static AreaFactory createUniformLayer(RandomSource random, int zoomLevels)
+    public static AreaFactory createUniformLayer(Seed seed, int zoomLevels)
     {
         AreaFactory layer;
 
-        layer = UniformLayer.INSTANCE.apply(random.nextLong());
+        layer = UniformLayer.INSTANCE.apply(seed.next());
         for (int i = 0; i < zoomLevels; i++)
         {
-            layer = ZoomLayer.NORMAL.apply(random.nextLong(), layer);
-            layer = SmoothLayer.INSTANCE.apply(random.nextLong(), layer);
+            layer = ZoomLayer.NORMAL.apply(seed.next(), layer);
+            layer = SmoothLayer.INSTANCE.apply(seed.next(), layer);
         }
 
         return layer;
@@ -173,7 +202,7 @@ public class TFCLayers
 
     public static boolean hasShore(int value)
     {
-        return value != LOWLANDS && value != SALT_MARSH && value != LOW_CANYONS && value != CANYONS && value != OCEANIC_MOUNTAINS && value != VOLCANIC_OCEANIC_MOUNTAINS;
+        return value != LOWLANDS && value != SALT_MARSH && value != LOW_CANYONS && value != CANYONS && value != OCEANIC_MOUNTAINS && value != VOLCANIC_OCEANIC_MOUNTAINS && value != TOWER_KARST_BAY;
     }
 
     public static int shoreFor(int value)
@@ -185,6 +214,10 @@ public class TFCLayers
         if (value == VOLCANIC_MOUNTAINS)
         {
             return VOLCANIC_OCEANIC_MOUNTAINS;
+        }
+        if (value == TOWER_KARST_LAKE)
+        {
+            return TOWER_KARST_BAY;
         }
         return SHORE;
     }

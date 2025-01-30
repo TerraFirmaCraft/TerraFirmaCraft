@@ -61,7 +61,7 @@ public class RockConvertableToAnvilBlock extends RotatedPillarBlock
             {
                 TFCAdvancements.ROCK_ANVIL.trigger(serverPlayer, block);
             }
-            return ItemInteractionResult.SUCCESS;
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }

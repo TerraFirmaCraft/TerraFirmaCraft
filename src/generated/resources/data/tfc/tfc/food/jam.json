@@ -1,0 +1,9 @@
+{
+  "decay_modifier": 5.0,
+  "fruit": 0.75,
+  "hunger": 4,
+  "ingredient": {
+    "tag": "tfc:foods/jam"
+  },
+  "saturation": 1.0
+}

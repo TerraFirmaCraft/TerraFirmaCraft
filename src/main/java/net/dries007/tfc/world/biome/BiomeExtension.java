@@ -9,7 +9,7 @@ package net.dries007.tfc.world.biome;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.function.LongFunction;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
@@ -19,6 +19,7 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.world.BiomeNoiseSampler;
+import net.dries007.tfc.world.Seed;
 import net.dries007.tfc.world.river.RiverBlendType;
 import net.dries007.tfc.world.surface.builder.SurfaceBuilder;
 import net.dries007.tfc.world.surface.builder.SurfaceBuilderFactory;
@@ -30,7 +31,7 @@ public final class BiomeExtension
 {
     private final ResourceKey<Biome> key;
 
-    @Nullable private final LongFunction<BiomeNoiseSampler> noiseFactory;
+    @Nullable private final Function<Seed, BiomeNoiseSampler> noiseFactory;
     private final AquiferLookahead aquiferSurfaceHeight;
     private final SurfaceBuilderFactory surfaceBuilderFactory;
 
@@ -49,7 +50,7 @@ public final class BiomeExtension
     @Nullable private Set<PlacedFeature> flattenedFeatureSet;
     @Nullable private Biome prevBiome;
 
-    BiomeExtension(ResourceKey<Biome> key, @Nullable LongFunction<BiomeNoiseSampler> noiseFactory, SurfaceBuilderFactory surfaceBuilderFactory, AquiferLookahead aquiferSurfaceHeight, BiomeBlendType biomeBlendType, RiverBlendType riverBlendType, boolean salty, boolean volcanic, int volcanoRarity, int volcanoBasaltHeight, boolean spawnable, boolean rivers, boolean shore, boolean sandyRiverShores)
+    BiomeExtension(ResourceKey<Biome> key, @Nullable Function<Seed, BiomeNoiseSampler> noiseFactory, SurfaceBuilderFactory surfaceBuilderFactory, AquiferLookahead aquiferSurfaceHeight, BiomeBlendType biomeBlendType, RiverBlendType riverBlendType, boolean salty, boolean volcanic, int volcanoRarity, int volcanoBasaltHeight, boolean spawnable, boolean rivers, boolean shore, boolean sandyRiverShores)
     {
         this.key = key;
         this.noiseFactory = noiseFactory;
@@ -128,12 +129,12 @@ public final class BiomeExtension
     }
 
     @Nullable
-    public BiomeNoiseSampler createNoiseSampler(long seed)
+    public BiomeNoiseSampler createNoiseSampler(Seed seed)
     {
         return noiseFactory != null ? noiseFactory.apply(seed) : null;
     }
 
-    public SurfaceBuilder createSurfaceBuilder(long seed)
+    public SurfaceBuilder createSurfaceBuilder(Seed seed)
     {
         return surfaceBuilderFactory.apply(seed);
     }

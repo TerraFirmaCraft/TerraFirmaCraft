@@ -59,6 +59,11 @@
       "text": "$(thing)产毛动物$()是$(l:mechanics/animal_husbandry#mammals)哺乳动物$()的一种。如果它们和你的亲密度足够高且已成年就可以$(thing)剪毛$()。$(br)$(l:mechanics/animal_husbandry#sheep)绵羊$()、$(l:mechanics/animal_husbandry#alpaca)羊驼$()和$(l:mechanics/animal_husbandry#musk_ox)麝牛$()都属于这一类动物。"
     },
     {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:welding/metal/shears/bronze",
+      "text": "Shears can be made by $(l:mechanics/anvils#welding)welding$() two $(thing)knife blades$() together. Whichever knife blade has the lowest forging bonus will transfer that bonus (if any) to the shears."
+    },
+    {
       "type": "patchouli:text",
       "anchor": "dairy_animals",
       "text": "$(thing)产奶动物$()也是哺乳动物的一种。只要成年且亲密度足够，就可以用木桶点击雌性产奶动物来挤奶。$(br)$(l:mechanics/animal_husbandry#goat)山羊$()、$(l:mechanics/animal_husbandry#cow)奶牛$()和$(l:mechanics/animal_husbandry#yak)牦牛$()都属于这一类动物。"
@@ -76,10 +81,14 @@
       "text": "$(thing)蛋$()可以煎来吃或煮来吃。雄性动物可以让雌性受精，使其产下的下一枚卵变为受精卵。受精卵会在其工具提示里显示它们还需要多久才能孵化。"
     },
     {
+      "type": "patchouli:text",
+      "text": "$(thing)Equines$() are $(l:mechanics/animal_husbandry#mammals)Mammals$() that can be ridden when tamed. They become rideable after reaching 15% familiarity. Horses pass on their $(thing)genetic traits$(), including their speed, jump height, health, size, and markings. The product of a horse and a donkey is a $(thing)mule$()."
+    },
+    {
       "type": "tfc:knapping_recipe",
       "anchor": "horses",
       "recipe": "tfc:knapping/saddle",
-      "text": "$(thing)骑乘动物$()是$(l:mechanics/animal_husbandry#mammals)哺乳动物$()的一种，可以在亲密度到达 15% 之后骑乘。"
+      "text": "Saddles may be knapped from leather."
     },
     {
       "type": "patchouli:text",

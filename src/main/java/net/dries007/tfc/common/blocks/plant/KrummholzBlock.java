@@ -80,7 +80,7 @@ public class KrummholzBlock extends ExtendedBlock
         {
             level.setBlockAndUpdate(pos, state.cycle(SNOWY));
             stack.shrink(1);
-            Helpers.playPlaceSound(level, pos, SoundType.SNOW);
+            Helpers.playPlaceSound(player, level, pos, SoundType.SNOW);
             return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;

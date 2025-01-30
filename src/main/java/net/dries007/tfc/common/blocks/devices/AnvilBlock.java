@@ -69,14 +69,14 @@ public class AnvilBlock extends DeviceBlock implements Tiered
                         // Give the item to player in the main hand
                         ItemStack result = inventory.extractItem(slot, 1, false);
                         player.setItemInHand(hand, result);
-                        return ItemInteractionResult.SUCCESS;
+                        return ItemInteractionResult.sidedSuccess(level.isClientSide);
                     }
                 }
             }
             else if (Helpers.isItem(playerStack, TFCTags.Items.TOOLS_HAMMER)) // Attempt welding with a hammer in hand
             {
-                final InteractionResult weldResult = anvil.weld(player);
-                if (weldResult == InteractionResult.SUCCESS)
+                final InteractionResult weld = anvil.weld(player);
+                if (weld.consumesAction())
                 {
                     // Welding occurred
                     if (level instanceof ServerLevel server)
@@ -87,14 +87,11 @@ public class AnvilBlock extends DeviceBlock implements Tiered
                         server.sendParticles(TFCParticles.SPARK.get(), x, y, z, 8, 0, 0, 0, 0.2f);
                     }
                     level.playSound(null, pos, SoundEvents.ANVIL_USE, SoundSource.PLAYERS, 0.6f, 1.0f);
-                    return ItemInteractionResult.SUCCESS;
                 }
-                else if (weldResult == InteractionResult.FAIL)
-                {
-                    // Welding was attempted, but failed for some reason - player was alerted and action was consumed.
-                    // Returning fail here causes the off hand to still attempt to be used?
-                    return ItemInteractionResult.SUCCESS;
-                }
+                // SUCCESS, FAIL -> consume action, PASS -> PASS
+                return weld == InteractionResult.PASS
+                    ? ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION
+                    : ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
             else
             {
@@ -107,7 +104,7 @@ public class AnvilBlock extends DeviceBlock implements Tiered
                     {
                         // At least one item was inserted (and so remainder < attempt)
                         player.setItemInHand(hand, resultStack);
-                        return ItemInteractionResult.SUCCESS;
+                        return ItemInteractionResult.sidedSuccess(level.isClientSide);
                     }
                 }
             }
@@ -117,10 +114,9 @@ public class AnvilBlock extends DeviceBlock implements Tiered
             // Not shifting, so attempt to open the anvil gui
             if (player instanceof ServerPlayer serverPlayer)
             {
-                MenuProvider provider = anvil.anvilProvider();
-                serverPlayer.openMenu(provider, pos);
+                serverPlayer.openMenu(anvil.anvilProvider(), pos);
             }
-            return ItemInteractionResult.SUCCESS;
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }

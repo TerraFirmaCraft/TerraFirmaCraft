@@ -23,7 +23,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/food/barley_bread_jam_sandwich_1",
+      "recipe": "tfc:crafting/food/barley_bread_jam_sandwich_1_jar",
       "text": "Jam is used for making sandwiches. Jam sandwiches can contain Dairy, Cooked Meats, and Jam. An $(thing)Empty Jar$() is left over."
     },
     {

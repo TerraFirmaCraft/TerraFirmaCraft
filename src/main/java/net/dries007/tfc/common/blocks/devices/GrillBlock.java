@@ -143,7 +143,7 @@ public class GrillBlock extends FirepitBlock implements IHighlightHandler
                         AbstractFirepitBlockEntity.convertTo(level, pos, state, grill, TFCBlocks.FIREPIT.get());
                     }
                 }
-                return ItemInteractionResult.SUCCESS;
+                return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
             else if (tryInsertLog(player, stack, grill, hitResult.getLocation().y - pos.getY() < 0.6))
             {
@@ -155,7 +155,7 @@ public class GrillBlock extends FirepitBlock implements IHighlightHandler
                 {
                     serverPlayer.openMenu(grill, pos);
                 }
-                return ItemInteractionResult.SUCCESS;
+                return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
         }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;

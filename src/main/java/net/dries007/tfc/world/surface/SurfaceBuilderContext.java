@@ -32,7 +32,6 @@ public class SurfaceBuilderContext
     private final ChunkData chunkData;
     private final RockData rockData;
     private final RandomSource random;
-    private final long seed;
     private final int seaLevel;
     private final int minY;
 
@@ -49,14 +48,13 @@ public class SurfaceBuilderContext
     private float groundwater;
     private boolean salty;
 
-    public SurfaceBuilderContext(LevelAccessor level, ChunkAccess chunk, ChunkData chunkData, RandomSource random, long seed, RockLayerSettings rockLayerSettings, int seaLevel, int minY)
+    public SurfaceBuilderContext(LevelAccessor level, ChunkAccess chunk, ChunkData chunkData, RandomSource random, RockLayerSettings rockLayerSettings, int seaLevel, int minY)
     {
         this.level = level;
         this.chunk = chunk;
         this.chunkData = chunkData;
         this.rockData = chunkData.getRockData();
         this.random = random;
-        this.seed = seed;
         this.seaLevel = seaLevel;
         this.minY = minY;
 
@@ -179,11 +177,6 @@ public class SurfaceBuilderContext
     public RandomSource random()
     {
         return random;
-    }
-
-    public long getSeed()
-    {
-        return seed;
     }
 
     public int getSeaLevel()

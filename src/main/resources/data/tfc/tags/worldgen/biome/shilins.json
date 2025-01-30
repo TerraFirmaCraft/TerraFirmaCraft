@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:shilin_plains",
+    "tfc:shilin_canyons",
+    "tfc:shilin_hills",
+    "tfc:shilin_highlands",
+    "tfc:shilin_plateau"
+  ]
+}

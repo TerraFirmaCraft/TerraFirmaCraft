@@ -7,7 +7,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:double_ingots"
+            "tag": "c:double_ingots"
           }
         ]
       }

@@ -20,8 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.dries007.tfc.client.BarSystem;
 import net.dries007.tfc.common.component.ItemStackHooks;
-import net.dries007.tfc.common.component.TFCComponents;
-import net.dries007.tfc.common.component.forge.ForgingBonus;
+import net.dries007.tfc.common.component.forge.ForgingBonusComponent;
 
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin
@@ -56,7 +55,7 @@ public abstract class ItemStackMixin
     )
     private int applyForgingBonusToPreventItemDamage(ServerLevel level, ItemStack stack, int damage, Operation<Integer> original)
     {
-        return ForgingBonus.applyLikeUnbreaking(stack, level.random, original.call(level, stack, damage));
+        return ForgingBonusComponent.applyLikeUnbreaking(stack, level.random, original.call(level, stack, damage));
     }
 
     @Inject(method = "isBarVisible", at = @At("HEAD"), cancellable = true)

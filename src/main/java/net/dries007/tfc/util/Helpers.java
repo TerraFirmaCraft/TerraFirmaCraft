@@ -28,9 +28,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterators;
 import com.machinezoo.noexception.throwing.ThrowingRunnable;
 import com.machinezoo.noexception.throwing.ThrowingSupplier;
-import com.mojang.datafixers.util.Pair;
 import com.mojang.logging.LogUtils;
-import com.mojang.serialization.Codec;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -39,8 +37,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtOps;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -67,6 +63,7 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -536,13 +533,25 @@ public final class Helpers
                 }
             });
         }
+    }
 
+    /**
+     * The number of huge/heavy items a subject is carrying. One = exhausted, More than one = overburdened.
+     */
+    public enum CarryCount
+    {
+        NONE, ONE, MORE_THAN_ONE;
+
+        public boolean isNonZero()
+        {
+            return this != NONE;
+        }
     }
 
     /**
      * @return 0 (well-burdened), 1 (exhausted), 2 (overburdened, add potion effect)
      */
-    public static int countOverburdened(Container container)
+    public static CarryCount getCarryCount(Container container)
     {
         int count = 0;
         for (int i = 0; i < container.getContainerSize(); i++)
@@ -550,18 +559,23 @@ public final class Helpers
             final ItemStack stack = container.getItem(i);
             if (!stack.isEmpty())
             {
-                IItemSize size = ItemSizeManager.get(stack);
+                final IItemSize size = ItemSizeManager.get(stack);
                 if (size.getWeight(stack) == Weight.VERY_HEAVY && size.getSize(stack) == Size.HUGE)
                 {
                     count++;
                     if (count == 2)
                     {
-                        return count;
+                        break;
                     }
                 }
             }
         }
-        return count;
+        return switch (count)
+        {
+            case 0 -> CarryCount.NONE;
+            case 1 -> CarryCount.ONE;
+            default -> CarryCount.MORE_THAN_ONE;
+        };
     }
 
     public static MobEffectInstance getOverburdened(boolean visible)
@@ -927,20 +941,29 @@ public final class Helpers
         }
     }
 
+    /**
+     * Plays the standard sound that is used when a block of a given state is placed.
+     * @param state The state corresponding to the block or sound type that was placed.
+     */
+    public static void playPlaceSound(@Nullable Player player, LevelAccessor level, BlockPos pos, BlockState state)
+    {
+        playPlaceSound(player, level, pos, state.getSoundType(level, pos, player));
+    }
+
+    /**
+     * Plays the standard sound that is used when a block of a given sound type is placed.
+     * @param player The player which is ignored on server, but plays for on client. This should either be invoked on server with {@code null}, or
+     *               invoked on both sides with the same {@code player}.
+     * @implNote The exact volume and pitch are copied from the sound in {@link BlockItem#place}.
+     */
+    public static void playPlaceSound(@Nullable Player player, LevelAccessor level, BlockPos pos, SoundType sound)
+    {
+        level.playSound(player, pos, sound.getPlaceSound(), SoundSource.BLOCKS, (sound.getVolume() + 1.0F) / 2.0F, sound.getPitch() * 0.8F);
+    }
+
     public static void playSound(Level level, BlockPos pos, SoundEvent sound)
     {
-        var rand = level.getRandom();
-        level.playSound(null, pos, sound, SoundSource.BLOCKS, 1.0F + rand.nextFloat(), rand.nextFloat() + 0.7F + 0.3F);
-    }
-
-    public static void playPlaceSound(LevelAccessor level, BlockPos pos, BlockState state)
-    {
-        playPlaceSound(level, pos, state.getSoundType(level, pos, null));
-    }
-
-    public static void playPlaceSound(LevelAccessor level, BlockPos pos, SoundType st)
-    {
-        level.playSound(null, pos, st.getPlaceSound(), SoundSource.BLOCKS, (st.getVolume() + 1.0F) / 2.0F, st.getPitch() * 0.8F);
+        level.playSound(null, pos, sound, SoundSource.BLOCKS, 1.0F + level.getRandom().nextFloat(), level.getRandom().nextFloat() + 0.7F + 0.3F);
     }
 
     public static boolean spawnItem(Level level, Vec3 pos, ItemStack stack)
@@ -1035,6 +1058,23 @@ public final class Helpers
             Collections.swap(list, i, r.nextInt(i + 1));
         }
         return list.subList(length - n, length);
+    }
+
+    /**
+     * Shuffles the contents of an array. Borrowed from {@link Collections#shuffle} but modified to work with both an array,
+     * and with {@link RandomSource}.
+     */
+    public static <T> void shuffleArray(T[] array, RandomSource r)
+    {
+        for (int i = array.length; i > 1; i--)
+            swap(array, i - 1, r.nextInt(i));
+    }
+
+    private static void swap(Object[] arr, int i, int j)
+    {
+        final Object tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
     }
 
     /**

@@ -39,14 +39,9 @@ public class FluidContainerItem extends Item
     protected final FluidContainerInfo containerInfo;
 
     private final boolean canPlaceLiquidsInWorld;
-    private final boolean canPlaceSourceBlocks;
+    private final Supplier<Boolean> canPlaceSourceBlocks;
 
-    public FluidContainerItem(Properties properties, IntValue capacity, TagKey<Fluid> whitelist, boolean canPlaceLiquidsInWorld, boolean canPlaceSourceBlocks)
-    {
-        this(properties, () -> ((Supplier<Integer>) capacity).get(), whitelist, canPlaceLiquidsInWorld, canPlaceSourceBlocks);
-    }
-
-    protected FluidContainerItem(Properties properties, Supplier<Integer> capacity, TagKey<Fluid> whitelist, boolean canPlaceLiquidsInWorld, boolean canPlaceSourceBlocks)
+    protected FluidContainerItem(Properties properties, Supplier<Integer> capacity, TagKey<Fluid> whitelist, boolean canPlaceLiquidsInWorld, Supplier<Boolean> canPlaceSourceBlocks)
     {
         super(properties.component(TFCComponents.FLUID, FluidComponent.EMPTY));
 
@@ -141,7 +136,7 @@ public class FluidContainerItem extends Item
 
     public boolean canPlaceSourceBlocks()
     {
-        return canPlaceSourceBlocks && TFCConfig.SERVER.enableBucketsPlacingSources.get();
+        return canPlaceSourceBlocks.get();
     }
 
     public boolean canPlaceLiquidsInWorld()

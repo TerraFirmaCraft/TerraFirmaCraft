@@ -5,7 +5,7 @@
     "special_condition": {
       "trigger": "tfc:chiseled",
       "conditions": {
-        "tag": "forge:smooth_stone"
+        "tag": "c:stones/smooth"
       }
     }
   },

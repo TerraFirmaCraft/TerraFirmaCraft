@@ -27,25 +27,23 @@ import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.calendar.ICalendar;
 
 public class TFCSaplingBlock extends SaplingBlock implements IForgeBlockExtension, EntityBlockExtension
 {
     private final ExtendedProperties properties;
-    private final Supplier<Integer> daysToGrow;
+    private final Supplier<Integer> ticksToGrow;
     private final boolean sand;
 
-    public TFCSaplingBlock(TreeGrower tree, ExtendedProperties properties, Supplier<Integer> days, boolean sand)
+    /**
+     * @param ticksToGrow The minimum number of player ticks that must elapse before this sapling will grow
+     * @param sand If {@code true}, this tree will grow on sand.
+     */
+    public TFCSaplingBlock(TreeGrower tree, ExtendedProperties properties, Supplier<Integer> ticksToGrow, boolean sand)
     {
         super(tree, properties.properties());
         this.properties = properties;
-        this.daysToGrow = days;
+        this.ticksToGrow = ticksToGrow;
         this.sand = sand;
-    }
-
-    public boolean isSand()
-    {
-        return sand;
     }
 
     @Override
@@ -65,7 +63,7 @@ public class TFCSaplingBlock extends SaplingBlock implements IForgeBlockExtensio
             }
             if (level.getBlockEntity(pos) instanceof TickCounterBlockEntity counter)
             {
-                if (counter.getTicksSinceUpdate() > ICalendar.TICKS_IN_DAY *  getDaysToGrow() * TFCConfig.SERVER.globalSaplingGrowthModifier.get())
+                if (counter.getTicksSinceUpdate() > getTicksToGrow())
                 {
                     this.advanceTree(level, pos, state.setValue(STAGE, 1), random);
                 }
@@ -88,9 +86,11 @@ public class TFCSaplingBlock extends SaplingBlock implements IForgeBlockExtensio
         return super.mayPlaceOn(state, level, pos) || Helpers.isBlock(state.getBlock(), TFCTags.Blocks.BUSH_PLANTABLE_ON);
     }
 
-    public int getDaysToGrow()
+    /**
+     * @return The minimum number of player ticks before this sapling will grow. Affected by per-sapling and global configuration values
+     */
+    public final long getTicksToGrow()
     {
-        return daysToGrow.get();
+        return (long) (ticksToGrow.get() * TFCConfig.SERVER.saplingGrowthModifier.get());
     }
-
 }

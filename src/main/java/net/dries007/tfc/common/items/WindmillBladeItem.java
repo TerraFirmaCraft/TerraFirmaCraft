@@ -63,7 +63,7 @@ public class WindmillBladeItem extends Item
             {
                 context.getItemInHand().shrink(1);
             }
-            return InteractionResult.SUCCESS;
+            return InteractionResult.sidedSuccess(level.isClientSide);
         }
         return InteractionResult.PASS;
     }

@@ -32,7 +32,7 @@ import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.climate.ClimateRange;
 import net.dries007.tfc.util.climate.ClimateRanges;
 
-public abstract class PickableCropBlock extends DefaultCropBlock
+public abstract class PickableCropBlock extends DefaultCropBlock implements IPickableCrop
 {
     public static PickableCropBlock create(ExtendedProperties properties, int stages, Crop crop, @Nullable Supplier<Supplier<? extends Item>> fruit, Supplier<Supplier<? extends Item>> matureFruit)
     {
@@ -57,12 +57,14 @@ public abstract class PickableCropBlock extends DefaultCropBlock
         this.matureFruit = matureFruit;
     }
 
+    @Override
     @Nullable
     public Item getFirstFruit()
     {
         return fruit == null ? null : fruit.get().get();
     }
 
+    @Override
     public Item getSecondFruit()
     {
         return matureFruit.get().get();
@@ -78,14 +80,16 @@ public abstract class PickableCropBlock extends DefaultCropBlock
         }
         if (level.getBlockEntity(pos) instanceof CropBlockEntity crop)
         {
+            final CropBlock cropBlock = (CropBlock) state.getBlock();
             final float yield = crop.getYield();
-            final int age = state.getValue(getAgeProperty());
+            final int age = state.getValue(cropBlock.getAgeProperty());
             final RandomSource random = level.getRandom();
+            final int maxAge = cropBlock.getMaxAge();
             if (age == maxAge - 1 && getFirstFruit() != null)
             {
                 crop.setGrowth(Mth.nextFloat(random, 0.4f, 0.5f));
                 crop.setYield(0f);
-                postGrowthTick(level, pos, state, crop);
+                cropBlock.postGrowthTick(level, pos, state, crop);
                 ItemHandlerHelper.giveItemToPlayer(player, yieldItemStack(getFirstFruit(), yield, random));
                 return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
@@ -93,16 +97,11 @@ public abstract class PickableCropBlock extends DefaultCropBlock
             {
                 crop.setGrowth(Mth.nextFloat(random, 0.5f, 0.6f));
                 crop.setYield(0f);
-                postGrowthTick(level, pos, state, crop);
+                cropBlock.postGrowthTick(level, pos, state, crop);
                 ItemHandlerHelper.giveItemToPlayer(player, yieldItemStack(getSecondFruit(), yield, random));
                 return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
         }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-    }
-
-    private ItemStack yieldItemStack(Item item, float yield, RandomSource random)
-    {
-        return new ItemStack(item, Mth.floor(Mth.lerp(yield, 1f, 5f) + random.nextInt(2)));
     }
 }

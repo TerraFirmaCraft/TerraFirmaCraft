@@ -7,6 +7,7 @@
     "tfc:salt_lick_patch",
     "tfc:dead_grass_patch",
     "tfc:humus_patch",
-    "tfc:rotten_flesh_patch"
+    "tfc:rotten_flesh_patch",
+    "tfc:bone_patch"
   ]
 }

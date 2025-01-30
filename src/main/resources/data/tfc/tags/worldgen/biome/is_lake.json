@@ -3,6 +3,7 @@
   "replace": false,
   "values": [
     "tfc:lake",
+    "tfc:tower_karst_lake",
     "tfc:mountain_lake",
     "tfc:volcanic_mountain_lake",
     "tfc:old_mountain_lake",

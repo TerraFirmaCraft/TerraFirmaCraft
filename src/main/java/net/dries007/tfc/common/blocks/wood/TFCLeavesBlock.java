@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.blocks.wood;
 
-import java.util.Collections;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -54,6 +53,11 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
 {
     public static final BooleanProperty PERSISTENT = BlockStateProperties.PERSISTENT;
     public static final FluidProperty FLUID = TFCBlockStateProperties.WATER;
+    public static final IntegerProperty DISTANCE = TFCBlockStateProperties.DISTANCE_10;
+
+    // This is the maximum (normal) value of the distance that we support. Setting to 10 will cause it to decay on random tick,
+    // as in vanilla, and that behavior can be enabled in the config.
+    public static final int MAX_DECAY_DISTANCE = 9;
 
 
     public static void doParticles(ServerLevel level, double x, double y, double z, int count)
@@ -89,8 +93,6 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
         }
     }
 
-    /* The maximum value of the decay property. */
-    private final int maxDecayDistance;
     private final ExtendedProperties properties;
     private final int autumnIndex;
     @Nullable private final Supplier<? extends Block> fallenLeaves;
@@ -100,14 +102,13 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
     {
         super(properties.properties());
 
-        this.maxDecayDistance = Collections.max(getDistanceProperty().getPossibleValues());
         this.properties = properties;
         this.fallenLeaves = fallenLeaves;
         this.fallenTwig = fallenTwig;
         this.autumnIndex = autumnIndex;
 
         // Distance is dependent on tree species
-        registerDefaultState(stateDefinition.any().setValue(getDistanceProperty(), 1).setValue(PERSISTENT, false));
+        registerDefaultState(stateDefinition.any().setValue(DISTANCE, 1).setValue(PERSISTENT, false));
     }
 
     @Override
@@ -123,12 +124,11 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
      * Note that this method should ideally consider only the specific face passed in.
      */
     @Override
-    @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
         FluidHelpers.tickFluid(level, currentPos, state);
         final int distance = getDistance(facingState) + 1;
-        if (distance != 1 || state.getValue(getDistanceProperty()) != distance)
+        if (distance != 1 || state.getValue(DISTANCE) != distance)
         {
             level.scheduleTick(currentPos, this, 1);
         }
@@ -136,22 +136,19 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public int getLightBlock(BlockState state, BlockGetter level, BlockPos pos)
+    protected int getLightBlock(BlockState state, BlockGetter level, BlockPos pos)
     {
         return 1;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return Shapes.empty();
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public float getShadeBrightness(BlockState state, BlockGetter level, BlockPos pos)
+    protected float getShadeBrightness(BlockState state, BlockGetter level, BlockPos pos)
     {
         return 0.2F;
     }
@@ -185,11 +182,10 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
+    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
     {
         super.randomTick(state, level, pos, rand); // super calls tick()
-        if (state.getValue(getDistanceProperty()) > maxDecayDistance && !state.getValue(PERSISTENT))
+        if (state.getValue(DISTANCE) > MAX_DECAY_DISTANCE && !state.getValue(PERSISTENT))
         {
             level.removeBlock(pos, false);
             if (rand.nextFloat() < 0.01f) createDestructionEffects(state, level, pos, rand, false);
@@ -202,12 +198,11 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
     {
-        final int oldDistance = state.getValue(getDistanceProperty());
+        final int oldDistance = state.getValue(DISTANCE);
         int distance = updateDistance(level, pos);
-        if (distance > maxDecayDistance)
+        if (distance > MAX_DECAY_DISTANCE)
         {
             if (!state.getValue(PERSISTENT))
             {
@@ -220,17 +215,17 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
                 else
                 {
                     // max + 1 means it must decay next random tick
-                    level.setBlockAndUpdate(pos, state.setValue(getDistanceProperty(), maxDecayDistance + 1));
+                    level.setBlockAndUpdate(pos, state.setValue(DISTANCE, MAX_DECAY_DISTANCE + 1));
                 }
             }
             else
             {
-                level.setBlock(pos, state.setValue(getDistanceProperty(), maxDecayDistance), 3);
+                level.setBlock(pos, state.setValue(DISTANCE, MAX_DECAY_DISTANCE), 3);
             }
         }
         else if (distance != oldDistance)
         {
-            level.setBlock(pos, state.setValue(getDistanceProperty(), distance), 3);
+            level.setBlock(pos, state.setValue(DISTANCE, distance), 3);
         }
     }
 
@@ -279,8 +274,7 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
+    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
     {
         onEntityInside(level, entity);
     }
@@ -301,7 +295,6 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public FluidState getFluidState(BlockState state)
     {
         return IFluidLoggable.super.getFluidState(state);
@@ -310,7 +303,7 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        builder.add(PERSISTENT, getDistanceProperty(), getFluidProperty());
+        builder.add(PERSISTENT, DISTANCE, getFluidProperty());
     }
 
     @Nullable
@@ -336,14 +329,9 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
         return autumnIndex;
     }
 
-    protected IntegerProperty getDistanceProperty()
-    {
-        return TFCBlockStateProperties.DISTANCE_9;
-    }
-
     private int updateDistance(LevelAccessor level, BlockPos pos)
     {
-        int distance = 1 + maxDecayDistance;
+        int distance = 1 + MAX_DECAY_DISTANCE;
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (Direction direction : Helpers.DIRECTIONS)
         {
@@ -366,7 +354,7 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
         else
         {
             // Check against this leaf block only, not any leaves
-            return neighbor.getBlock() == this ? neighbor.getValue(getDistanceProperty()) : maxDecayDistance;
+            return neighbor.getBlock() == this ? neighbor.getValue(DISTANCE) : MAX_DECAY_DISTANCE;
         }
     }
 }

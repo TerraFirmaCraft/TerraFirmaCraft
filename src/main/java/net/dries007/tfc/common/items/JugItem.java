@@ -35,7 +35,7 @@ public class JugItem extends FluidContainerItem
 {
     public JugItem(Item.Properties properties, Supplier<Integer> capacity, TagKey<Fluid> whitelist)
     {
-        super(properties, capacity, whitelist, false, false);
+        super(properties, capacity, whitelist, false, () -> false);
     }
 
     @Override

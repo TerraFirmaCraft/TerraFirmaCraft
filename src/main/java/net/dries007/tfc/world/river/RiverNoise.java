@@ -8,6 +8,7 @@ package net.dries007.tfc.world.river;
 
 import net.minecraft.util.Mth;
 
+import net.dries007.tfc.world.Seed;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.Noise3D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
@@ -17,12 +18,12 @@ import static net.dries007.tfc.world.TFCChunkGenerator.*;
 
 public final class RiverNoise
 {
-    public static RiverNoiseSampler wide(long seed)
+    public static RiverNoiseSampler wide(Seed seed)
     {
         return new RiverNoiseSampler() {
 
-            final Noise2D baseNoise = new OpenSimplex2D(seed).octaves(4).spread(0.05f).scaled(-2.5f, 1.5f);
-            final Noise2D distNoise = new OpenSimplex2D(seed + 71892341L).octaves(4).spread(0.05f).scaled(-0.15f, 0.15f);
+            final Noise2D baseNoise = new OpenSimplex2D(seed.next()).octaves(4).spread(0.05f).scaled(-2.5f, 1.5f);
+            final Noise2D distNoise = new OpenSimplex2D(seed.next()).octaves(4).spread(0.05f).scaled(-0.15f, 0.15f);
 
             double height;
 
@@ -43,13 +44,13 @@ public final class RiverNoise
         };
     }
 
-    public static RiverNoiseSampler canyon(long seed)
+    public static RiverNoiseSampler canyon(Seed seed)
     {
         return new RiverNoiseSampler() {
 
-            final Noise2D baseNoise = new OpenSimplex2D(seed).octaves(4).spread(0.05f).scaled(-7, 3);
-            final Noise2D distNoise = new OpenSimplex2D(seed + 971823749132L).octaves(4).spread(0.05f).scaled(-0.3f, 0.2f);
-            final Noise2D lowFreqCliffNoise = new OpenSimplex2D(seed + 7189234132L).spread(0.0007f).clamped(0, 1);
+            final Noise2D baseNoise = new OpenSimplex2D(seed.next()).octaves(4).spread(0.05f).scaled(-7, 3);
+            final Noise2D distNoise = new OpenSimplex2D(seed.next()).octaves(4).spread(0.05f).scaled(-0.3f, 0.2f);
+            final Noise2D lowFreqCliffNoise = new OpenSimplex2D(seed.next()).spread(0.0007f).clamped(0, 1);
 
             double height;
 
@@ -72,13 +73,13 @@ public final class RiverNoise
         };
     }
 
-    public static RiverNoiseSampler tallCanyon(long seed)
+    public static RiverNoiseSampler tallCanyon(Seed seed)
     {
         return new RiverNoiseSampler() {
 
-            final Noise2D baseNoise = new OpenSimplex2D(seed).octaves(4).spread(0.05f).scaled(-7, 3);
-            final Noise2D distNoise = new OpenSimplex2D(seed + 971823749132L).octaves(4).spread(0.05f).scaled(-0.3f, 0.2f);
-            final Noise3D cliffNoise = new OpenSimplex3D(seed).octaves(2).spread(0.1f).scaled(0, 3);
+            final Noise2D baseNoise = new OpenSimplex2D(seed.next()).octaves(4).spread(0.05f).scaled(-7, 3);
+            final Noise2D distNoise = new OpenSimplex2D(seed.next()).octaves(4).spread(0.05f).scaled(-0.3f, 0.2f);
+            final Noise3D cliffNoise = new OpenSimplex3D(seed.next()).octaves(2).spread(0.1f).scaled(0, 3);
 
             private double distFac; // 0 ~ center of river, 1 ~ distant from river
             private int x, z;
@@ -129,12 +130,12 @@ public final class RiverNoise
         };
     }
 
-    public static RiverNoiseSampler cave(long seed)
+    public static RiverNoiseSampler cave(Seed seed)
     {
         return new RiverNoiseSampler() {
 
-            final Noise2D carvingCenterNoise = new OpenSimplex2D(seed).octaves(2).spread(0.02f).scaled(SEA_LEVEL_Y - 3, SEA_LEVEL_Y + 3);
-            final Noise2D carvingHeightNoise = new OpenSimplex2D(seed + 1197823749123L).octaves(4).spread(0.15f).scaled(8, 14);
+            final Noise2D carvingCenterNoise = new OpenSimplex2D(seed.next()).octaves(2).spread(0.02f).scaled(SEA_LEVEL_Y - 3, SEA_LEVEL_Y + 3);
+            final Noise2D carvingHeightNoise = new OpenSimplex2D(seed.next()).octaves(4).spread(0.15f).scaled(8, 14);
 
             double weight, height, carvingHeight, carvingCenter;
 

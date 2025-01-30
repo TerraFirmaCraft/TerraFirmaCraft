@@ -59,6 +59,11 @@
       "text": "$(thing)Вовняні тварини$() - це $(l:mechanics/animal_husbandry#mammals)ссавці$(), яких можна $(thing)стригти$() якщо вони дорослі та достатньо приручені. Деякі приклади: $(l:mechanics/animal_husbandry#sheep)вівця$(), $(l:mechanics/animal_husbandry#alpaca)альпака$(), та $(l:mechanics/animal_husbandry#musk_ox)вівцебик$()."
     },
     {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:welding/metal/shears/bronze",
+      "text": "Shears can be made by $(l:mechanics/anvils#welding)welding$() two $(thing)knife blades$() together. Whichever knife blade has the lowest forging bonus will transfer that bonus (if any) to the shears."
+    },
+    {
       "type": "patchouli:text",
       "anchor": "dairy_animals",
       "text": "$(thing)Молочні тварини$()  - це ссавці, що дають $(thing)молоко$(). Самка дасть тобі його, як використаєш на тварині відро. Прикладом молочних тварин є: $(l:mechanics/animal_husbandry#goat)коза$(), $(l:mechanics/animal_husbandry#cow)корова$(), та $(l:mechanics/animal_husbandry#yak)самка яка$()."
@@ -76,10 +81,14 @@
       "text": "$(thing)Яйця$() можна варити або смажити для їжі. Самці яйцекладних тварин можуть запліднювати самок, що призводить до запліднення наступного яйця, відкладеного в гніздовий ящик. Запліднені яйця матимуть підказку про те, скільки часу вони будуть готові до вилуплення."
     },
     {
+      "type": "patchouli:text",
+      "text": "$(thing)Equines$() are $(l:mechanics/animal_husbandry#mammals)Mammals$() that can be ridden when tamed. They become rideable after reaching 15% familiarity. Horses pass on their $(thing)genetic traits$(), including their speed, jump height, health, size, and markings. The product of a horse and a donkey is a $(thing)mule$()."
+    },
+    {
       "type": "tfc:knapping_recipe",
       "anchor": "horses",
       "recipe": "tfc:knapping/saddle",
-      "text": "$(thing)Коні$() - це $(l:mechanics/animal_husbandry#mammals)ссавці$(), на яких можна їздити верхи, якщо приручити їх більш за 15%."
+      "text": "Saddles may be knapped from leather."
     },
     {
       "type": "patchouli:text",

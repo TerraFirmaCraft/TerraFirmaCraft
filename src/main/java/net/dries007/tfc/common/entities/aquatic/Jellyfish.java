@@ -96,17 +96,18 @@ public class Jellyfish extends AbstractSchoolingFish implements AquaticMob
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnData)
     {
         spawnData = super.finalizeSpawn(level, difficulty, spawnType, spawnData);
-        /* todo 1.21, finalize spawn with bucket tag?
-        if (tag != null && tag.contains("BucketVariantTag", Tag.TAG_INT))
-        {
-            setVariant(tag.getInt("BucketVariantTag"));
-        }
-        else
-        {
-            final int length = LOCATIONS.length;
-            setVariant(random.nextInt(length));
-        }*/
+        setVariant(level.getRandom().nextInt(LOCATIONS.length));
         return spawnData;
+    }
+
+    @Override
+    public void loadFromBucketTag(CompoundTag tag)
+    {
+        super.loadFromBucketTag(tag);
+        if (tag.contains("BucketVariantTag", 3))
+        {
+            this.setVariant(tag.getInt("BucketVariantTag"));
+        }
     }
 
     @Override

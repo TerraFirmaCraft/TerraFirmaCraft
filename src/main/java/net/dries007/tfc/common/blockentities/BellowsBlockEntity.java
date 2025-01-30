@@ -166,7 +166,7 @@ public class BellowsBlockEntity extends TFCBlockEntity
         doPush();
 
         // Return success in both cases because we want the player's arm to swing, because they 'tried'
-        return ItemInteractionResult.SUCCESS;
+        return ItemInteractionResult.sidedSuccess(level.isClientSide);
     }
 
     private void doPush()

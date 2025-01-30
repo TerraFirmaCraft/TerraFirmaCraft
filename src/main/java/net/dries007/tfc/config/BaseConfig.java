@@ -6,7 +6,9 @@
 
 package net.dries007.tfc.config;
 
+import java.util.Locale;
 import java.util.Objects;
+import com.google.common.base.CaseFormat;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,13 +20,29 @@ public abstract class BaseConfig
 {
     private @Nullable ModConfigSpec spec;
 
-    void updateSpec(ModConfigSpec spec)
+    public final void updateSpec(ModConfigSpec spec)
     {
         this.spec = spec;
     }
 
-    public ModConfigSpec spec()
+    public final ModConfigSpec spec()
     {
         return Objects.requireNonNull(spec);
+    }
+
+    /**
+     * @return A name for a config value specialized on {@code value}, for example "douglasFir[suffix]"
+     */
+    protected final String getConfigName(Enum<?> value, String suffix)
+    {
+        return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, value.name()) + suffix;
+    }
+
+    /**
+     * @return A user-friendly proper name for an enum, for example "douglas fir"
+     */
+    protected final String getUserFriendlyName(Enum<?> value)
+    {
+        return value.name().toLowerCase(Locale.ROOT).replace('_', ' ');
     }
 }

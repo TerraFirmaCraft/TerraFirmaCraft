@@ -7,10 +7,12 @@
 package net.dries007.tfc.common.component.heat;
 
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
@@ -88,7 +90,7 @@ public final class HeatComponent implements IHeatView
         this.parent = parent;
         this.heatCapacity = heatCapacity;
         this.lastTemperature = lastTemperature;
-        this.lastTick = lastTick;
+        this.lastTick = lastTick == FLAG_NOW ? Calendars.get().getTicks() : lastTick;
     }
 
     public void capture(ItemStack stack)
@@ -120,11 +122,19 @@ public final class HeatComponent implements IHeatView
     @Override
     public float getHeatCapacity()
     {
-        return heatCapacity != 0f && heatCapacity != FLAG_STATIC_TEMPERATURE
-            ? heatCapacity
-            : parent == null
-                ? Float.POSITIVE_INFINITY
-                : parent.heatCapacity();
+        if (heatCapacity == FLAG_STATIC_TEMPERATURE)
+        {
+            return Float.POSITIVE_INFINITY;
+        }
+        if (heatCapacity != 0f)
+        {
+            return heatCapacity;
+        }
+        if (parent != null)
+        {
+            return parent.heatCapacity();
+        }
+        return Float.POSITIVE_INFINITY;
     }
 
     @Override
@@ -137,6 +147,16 @@ public final class HeatComponent implements IHeatView
     public float getWeldingTemperature()
     {
         return parent == null ? 0f : parent.weldingTemperature();
+    }
+
+    @Override
+    public void addTooltipInfo(ItemStack stack, Consumer<Component> text)
+    {
+        // This is not visible in the superclass, so we do this check here.
+        if (heatCapacity != FLAG_STATIC_TEMPERATURE)
+        {
+            IHeatView.super.addTooltipInfo(stack, text);
+        }
     }
 
     /**

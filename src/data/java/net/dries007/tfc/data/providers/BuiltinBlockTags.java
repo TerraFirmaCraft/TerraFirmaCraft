@@ -125,7 +125,15 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .add(TFCBlocks.DEAD_CROPS)
             .add(TFCBlocks.WILD_CROPS);
         // todo: other crops?
-        // todo: add vines to climable tag?
+        tag(BlockTags.CLIMBABLE).add(
+            TFCBlocks.PLANTS.get(Plant.JUNGLE_VINES).get(),
+            TFCBlocks.PLANTS.get(Plant.HANGING_VINES).get(),
+            TFCBlocks.PLANTS.get(Plant.HANGING_VINES_PLANT).get(),
+            TFCBlocks.PLANTS.get(Plant.SPANISH_MOSS).get(),
+            TFCBlocks.PLANTS.get(Plant.SPANISH_MOSS_PLANT).get(),
+            TFCBlocks.PLANTS.get(Plant.LIANA).get(),
+            TFCBlocks.PLANTS.get(Plant.LIANA_PLANT).get()
+        );
         tag(BlockTags.FENCE_GATES).add(TFCBlocks.WOODS, Wood.BlockType.FENCE_GATE);
         tag(BlockTags.BASE_STONE_OVERWORLD)
             .addTags(STONES_RAW, STONES_HARDENED);

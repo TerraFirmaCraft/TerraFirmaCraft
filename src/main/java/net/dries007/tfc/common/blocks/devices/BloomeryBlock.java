@@ -40,7 +40,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
+import net.dries007.tfc.common.blockentities.BloomeryBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -266,9 +266,13 @@ public class BloomeryBlock extends DeviceBlock implements EntityBlockExtension
     }
 
     @Override
-    protected void beforeRemove(InventoryBlockEntity<?> entity)
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
     {
-        super.beforeRemove(entity);
+        if (!(Helpers.isBlock(state, newState.getBlock())) && level.getBlockEntity(pos) instanceof BloomeryBlockEntity bloomery)
+        {
+            bloomery.ejectInventory();
+        }
+        super.onRemove(state, level, pos, newState, isMoving);
     }
 
     @Override

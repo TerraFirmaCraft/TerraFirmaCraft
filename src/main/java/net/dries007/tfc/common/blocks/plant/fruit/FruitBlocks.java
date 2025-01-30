@@ -24,6 +24,7 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.ClimateRanges;
 
 import static net.dries007.tfc.common.blocks.plant.fruit.Lifecycle.*;
@@ -40,7 +41,17 @@ public final class FruitBlocks
 
     public static Block createBananaSapling()
     {
-        return new BananaSaplingBlock(ExtendedProperties.of(MapColor.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS).blockEntity(TFCBlockEntities.TICK_COUNTER).flammableLikeLeaves(), BANANA_STAGES, TFCBlocks.BANANA_PLANT, TFCConfig.SERVER.bananaSaplingGrowthDays);
+        return new BananaSaplingBlock(
+            ExtendedProperties.of(MapColor.PLANT)
+                .noCollission()
+                .randomTicks()
+                .strength(0)
+                .sound(SoundType.GRASS)
+                .blockEntity(TFCBlockEntities.TICK_COUNTER)
+                .flammableLikeLeaves(),
+            BANANA_STAGES,
+            TFCBlocks.BANANA_PLANT,
+            TFCConfig.SERVER.bananaSaplingGrowthTicks);
     }
 
     public static Block createPottedBananaSapling()
@@ -120,21 +131,32 @@ public final class FruitBlocks
         private final Food product;
         private final Lifecycle[] stages;
         private final String serializedName;
-        private final int treeGrowthDays;
+        private final int defaultTicksToGrow;
         private final int floweringLeavesColor;
 
-        Tree(Food product, int treeGrowthDays, Lifecycle[] stages, int floweringLeavesColor)
+        Tree(Food product, int daysToGrow, Lifecycle[] stages, int floweringLeavesColor)
         {
             this.product = product;
             this.stages = stages;
             this.serializedName = name().toLowerCase(Locale.ROOT);
-            this.treeGrowthDays = treeGrowthDays;
+            this.defaultTicksToGrow = daysToGrow * ICalendar.CALENDAR_TICKS_IN_DAY;
             this.floweringLeavesColor = floweringLeavesColor;
         }
 
         public Block createSapling()
         {
-            return new FruitTreeSaplingBlock(ExtendedProperties.of(MapColor.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS).blockEntity(TFCBlockEntities.TICK_COUNTER).flammableLikeLeaves(), TFCBlocks.FRUIT_TREE_GROWING_BRANCHES.get(this), this::daysToGrow, ClimateRanges.FRUIT_TREES.get(this), stages);
+            return new FruitTreeSaplingBlock(
+                ExtendedProperties.of(MapColor.PLANT)
+                    .noCollission()
+                    .randomTicks()
+                    .strength(0)
+                    .sound(SoundType.GRASS)
+                    .blockEntity(TFCBlockEntities.TICK_COUNTER)
+                    .flammableLikeLeaves(),
+                TFCBlocks.FRUIT_TREE_GROWING_BRANCHES.get(this),
+                TFCConfig.SERVER.fruitSaplingGrowthTicks.get(this),
+                ClimateRanges.FRUIT_TREES.get(this),
+                stages);
         }
 
         public Block createPottedSapling()
@@ -157,14 +179,9 @@ public final class FruitBlocks
             return new GrowingFruitTreeBranchBlock(ExtendedProperties.of(MapColor.WOOD).sound(SoundType.SCAFFOLDING).randomTicks().strength(1.0f).pushReaction(PushReaction.DESTROY).blockEntity(TFCBlockEntities.TICK_COUNTER).flammableLikeLogs().cloneEmpty(), TFCBlocks.FRUIT_TREE_BRANCHES.get(this), TFCBlocks.FRUIT_TREE_LEAVES.get(this), ClimateRanges.FRUIT_TREES.get(this));
         }
 
-        public int daysToGrow()
+        public int defaultTicksToGrow()
         {
-            return TFCConfig.SERVER.fruitSaplingGrowthDays.get(this).get();
-        }
-
-        public int defaultDaysToGrow()
-        {
-            return treeGrowthDays;
+            return defaultTicksToGrow;
         }
 
         @Override

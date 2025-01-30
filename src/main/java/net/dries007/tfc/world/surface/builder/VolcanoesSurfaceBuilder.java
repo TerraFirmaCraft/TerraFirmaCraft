@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Rock;
+import net.dries007.tfc.world.Seed;
 import net.dries007.tfc.world.biome.VolcanoNoise;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
@@ -28,11 +29,11 @@ public class VolcanoesSurfaceBuilder implements SurfaceBuilder
     private final Noise2D heightNoise;
     private final VolcanoNoise volcanoNoise;
 
-    public VolcanoesSurfaceBuilder(SurfaceBuilder parent, long seed)
+    public VolcanoesSurfaceBuilder(SurfaceBuilder parent, Seed seed)
     {
         this.parent = parent;
         this.volcanoNoise = new VolcanoNoise(seed);
-        this.heightNoise = new OpenSimplex2D(seed + 71829341L).octaves(2).spread(0.1f).scaled(-4, 4);
+        this.heightNoise = new OpenSimplex2D(seed.next()).octaves(2).spread(0.1f).scaled(-4, 4);
     }
 
     @Override
@@ -40,7 +41,7 @@ public class VolcanoesSurfaceBuilder implements SurfaceBuilder
     {
         if (context.biome().isVolcanic())
         {
-            final float easing = volcanoNoise.calculateEasing(context.pos().getX(), context.pos().getZ(), context.biome().getVolcanoRarity());
+            final float easing = volcanoNoise.calculateEasing(context.pos(), context.biome());
             if (easing > 0.6f && startY > context.biome().getVolcanoBasaltHeight() + heightNoise.noise(context.pos().getX(), context.pos().getZ()))
             {
                 buildVolcanicSurface(context, startY, endY, easing);

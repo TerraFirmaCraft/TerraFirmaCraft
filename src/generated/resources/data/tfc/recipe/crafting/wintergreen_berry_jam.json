@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "tfc:jar/wintergreen_berry_unsealed"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:wintergreen_berry_jam"
+  }
+}

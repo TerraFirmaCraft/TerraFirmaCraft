@@ -86,8 +86,11 @@ public class BarrelBlockItem extends TooltipBlockItem implements Rackable
             barrelState = BlockItemPlacement.updateBlockStateFromTag(pos, level, item, barrelState);
             level.setBlockAndUpdate(pos, barrelState);
             BlockItem.updateCustomBlockEntityTag(level, player, pos, item);
-            if (!player.isCreative()) item.shrink(1);
-            Helpers.playPlaceSound(level, pos, state);
+            if (!player.isCreative())
+            {
+                item.shrink(1);
+            }
+            Helpers.playPlaceSound(player, level, pos, state);
             return true;
         }
         return false;
@@ -105,7 +108,7 @@ public class BarrelBlockItem extends TooltipBlockItem implements Rackable
         final BlockHitResult hit = getPlayerPOVHitResult(level, player, ClipContext.Fluid.SOURCE_ONLY);
         if (FluidHelpers.transferBetweenWorldAndItem(stack, level, hit, player, hand, false, false, true))
         {
-            return InteractionResult.SUCCESS;
+            return InteractionResult.sidedSuccess(level.isClientSide);
         }
         return InteractionResult.PASS;
     }

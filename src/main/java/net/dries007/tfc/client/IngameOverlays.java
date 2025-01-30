@@ -231,10 +231,9 @@ public enum IngameOverlays
             if (player != null && Helpers.isItem(player.getItemInHand(InteractionHand.MAIN_HAND), TFCTags.Items.TOOLS_CHISEL))
             {
                 stack.pushPose();
-                if (Helpers.isItem(player.getItemInHand(InteractionHand.OFF_HAND), TFCTags.Items.TOOLS_HAMMER))
+                if (!Helpers.isItem(player.getItemInHand(InteractionHand.OFF_HAND), TFCTags.Items.TOOLS_HAMMER))
                 {
                     graphics.blit(TEXTURE, graphics.guiWidth() / 2 + 100, graphics.guiHeight() - 21, 60, 58, 20, 20);
-
                 }
                 else
                 {

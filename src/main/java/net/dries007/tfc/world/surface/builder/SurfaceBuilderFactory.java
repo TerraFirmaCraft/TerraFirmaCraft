@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.world.surface.builder;
 
+import net.dries007.tfc.world.Seed;
+
 /**
  * A surface builder template.
  *
@@ -13,12 +15,12 @@ package net.dries007.tfc.world.surface.builder;
  */
 public interface SurfaceBuilderFactory
 {
-    SurfaceBuilder apply(long seed);
+    SurfaceBuilder apply(Seed seed);
 
     interface Invariant extends SurfaceBuilder, SurfaceBuilderFactory
     {
         @Override
-        default SurfaceBuilder apply(long seed)
+        default SurfaceBuilder apply(Seed seed)
         {
             return this;
         }

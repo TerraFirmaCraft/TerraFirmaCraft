@@ -153,7 +153,7 @@ public final class PredatorBehaviors
             if (found != null)
             {
                 homeMemory.set(GlobalPos.of(level.dimension(), BlockPos.containing(found)));
-                walkMemory.set(new WalkTarget(found, 1.0f, 16)); // todo: check this russian, does this make sense?
+                walkMemory.set(new WalkTarget(found, 1.0f, 16));
                 return true;
             }
             return false;

@@ -23,13 +23,15 @@ public final class SurfaceStates
     public static final SurfaceState COBBLE = context -> context.getRock().cobble().defaultBlockState();
     public static final SurfaceState GRAVEL = context -> context.getRock().gravel().defaultBlockState();
 
+    public static final SurfaceState SAND = SoilSurfaceState.buildSand(false);
+    public static final SurfaceState SAND_WITH_STONE = SoilSurfaceState.buildSand(true);
+
     /**
      * Grass / Dirt / Gravel, or Sand / Sand / Sandstone
      */
     public static final SurfaceState GRASS = SoilSurfaceState.buildType(SoilBlockType.GRASS);
     public static final SurfaceState DIRT = SoilSurfaceState.buildType(SoilBlockType.DIRT);
     public static final SurfaceState MUD = SoilSurfaceState.buildType(SoilBlockType.MUD);
-    //TODO: Dry mud blocks
     public static final SurfaceState DRY_MUD = SoilSurfaceState.buildDryDirt(SoilBlockType.CRACKED_EARTH);
     public static final SurfaceState SALT_MUD = SoilSurfaceState.buildDryDirt(SoilBlockType.SALTED_EARTH);
 

@@ -31,7 +31,7 @@ import net.dries007.tfc.world.river.Flow;
  */
 public class TFCBlockStateProperties
 {
-    public static final IntegerProperty DISTANCE_9 = IntegerProperty.create("distance", 1, 9);
+    public static final IntegerProperty DISTANCE_10 = IntegerProperty.create("distance", 1, 10);
 
     public static final FluidProperty WATER = FluidProperty.create("fluid", Stream.of(Fluids.EMPTY, Fluids.WATER, TFCFluids.SALT_WATER));
     public static final FluidProperty ALL_WATER = FluidProperty.create("fluid", Stream.of(Fluids.EMPTY, Fluids.WATER, TFCFluids.SALT_WATER, TFCFluids.SPRING_WATER));

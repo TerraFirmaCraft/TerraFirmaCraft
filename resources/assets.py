@@ -107,6 +107,8 @@ def generate(rm: ResourceManager):
         def rock_lang(_lhs: str, _rhs: str):
             if _lhs in ('smooth', 'raw', 'hardened'):
                 return _lhs, _rhs
+            if _lhs == 'cobble':
+                _lhs = 'cobblestone'
             if _lhs == 'chiseled':
                 return _rhs, _lhs + ' bricks'
             return _rhs, _lhs
@@ -917,7 +919,7 @@ def generate(rm: ResourceManager):
                     word = OXIDIZED_METAL_NAMES[metal]
                 block = rm.blockstate(('metal', variant, metal))
                 block.with_block_model()
-                block.with_lang(lang('%s %s plated block', word, metal))
+                block.with_lang(lang('%s%s plated block', word + ' ' if word != '' else word, metal))
                 block.with_item_model()
                 block.with_block_loot('tfc:metal/%s/%s' % (variant, metal))
                 block.make_slab()
@@ -1405,8 +1407,9 @@ def generate(rm: ResourceManager):
         rm.block_model('jar/%s' % fruit, textures={'1': 'tfc:block/jar/%s' % fruit}, parent='tfc:block/jar')
         rm.block_model('jar/%s_unsealed' % fruit, textures={'1': 'tfc:block/jar/%s' % fruit, '2': 'tfc:block/jar_no_lid'}, parent='tfc:block/jar')
         fixed_name = fruit.replace('_chunks', '').replace('_slice', '')
-        rm.item_model('tfc:jar/%s' % fruit, 'tfc:item/jar/%s' % fruit).with_lang(lang('%s jam', fixed_name))
-        rm.item_model('tfc:jar/%s_unsealed' % fruit, 'tfc:item/jar/%s_unsealed' % fruit).with_lang(lang('%s jam', fixed_name))
+        rm.item_model('tfc:jar/%s' % fruit, 'tfc:item/jar/%s' % fruit).with_lang(lang('jar of %s jam', fixed_name))
+        rm.item_model('tfc:jar/%s_unsealed' % fruit, 'tfc:item/jar/%s_unsealed' % fruit).with_lang(lang('jar of %s jam', fixed_name))
+        rm.item_model('%s_jam' % fruit, 'tfc:item/food/%s_jam' % fruit).with_lang(lang('%s jam', fixed_name))
 
     # Berry Bushes
     lifecycle_to_model = {'healthy': '', 'dormant': 'dry_', 'fruiting': 'fruiting_', 'flowering': 'flowering_'}

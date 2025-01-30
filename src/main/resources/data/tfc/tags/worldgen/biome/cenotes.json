@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:cenote_plains",
+    "tfc:cenote_canyons",
+    "tfc:cenote_hills",
+    "tfc:cenote_highlands",
+    "tfc:cenote_plateau"
+  ]
+}

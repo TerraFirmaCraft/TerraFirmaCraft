@@ -215,7 +215,7 @@ public class TFCFrog extends Frog implements Temptable, BrainAnimalBehavior
                     playSound(SoundEvents.FROG_EAT);
                 }
             }
-            return InteractionResult.SUCCESS;
+            return InteractionResult.sidedSuccess(level().isClientSide);
         }
         return super.mobInteract(player, hand);
     }

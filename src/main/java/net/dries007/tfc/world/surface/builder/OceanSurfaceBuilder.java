@@ -19,6 +19,7 @@ import net.minecraft.world.level.levelgen.synth.NormalNoise;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.util.climate.OverworldClimateModel;
+import net.dries007.tfc.world.Seed;
 import net.dries007.tfc.world.surface.SurfaceBuilderContext;
 
 public class OceanSurfaceBuilder implements SurfaceBuilder
@@ -33,13 +34,13 @@ public class OceanSurfaceBuilder implements SurfaceBuilder
      * {@link net.minecraft.data.worldgen.NoiseData} for values
      * {@link SurfaceSystem}'s constructor for the specific noises used
      */
-    public OceanSurfaceBuilder(long seed)
+    public OceanSurfaceBuilder(Seed seed)
     {
-        final RandomSource generator = new XoroshiroRandomSource(seed);
+        final RandomSource random = seed.fork();
 
-        this.icebergPillarNoise = NormalNoise.create(generator.fork(), new NormalNoise.NoiseParameters(-6, 1.0D, 1.0D, 1.0D, 1.0D));
-        this.icebergPillarRoofNoise = NormalNoise.create(generator.fork(), new NormalNoise.NoiseParameters(-3, 1.0D));
-        this.icebergSurfaceNoise = NormalNoise.create(generator.fork(), new NormalNoise.NoiseParameters(-6, 1.0D, 1.0D, 1.0D));
+        this.icebergPillarNoise = NormalNoise.create(random, new NormalNoise.NoiseParameters(-6, 1.0D, 1.0D, 1.0D, 1.0D));
+        this.icebergPillarRoofNoise = NormalNoise.create(random, new NormalNoise.NoiseParameters(-3, 1.0D));
+        this.icebergSurfaceNoise = NormalNoise.create(random, new NormalNoise.NoiseParameters(-6, 1.0D, 1.0D, 1.0D));
     }
 
     @Override

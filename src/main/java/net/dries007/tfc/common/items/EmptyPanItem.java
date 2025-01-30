@@ -39,16 +39,22 @@ public class EmptyPanItem extends Item
             final ItemStack depositStack = new ItemStack(level.getBlockState(pos).getBlock());
             if (Deposit.get(depositStack) != null)
             {
-                if (level.isClientSide) return InteractionResult.SUCCESS;
+                if (!level.isClientSide)
+                {
+                    level.destroyBlock(pos, false, player);
+                    if (!player.isCreative())
+                    {
+                        stack.shrink(1);
+                    }
 
-                level.destroyBlock(pos, false, player);
-                if (!player.isCreative()) stack.shrink(1);
-                player.awardStat(Stats.ITEM_USED.get(this));
-
-                final ItemStack putStack = new ItemStack(TFCItems.FILLED_PAN.get());
-                putStack.set(TFCComponents.DEPOSIT, new ItemComponent(depositStack));
-                if (!player.getInventory().add(putStack)) player.drop(putStack, false);
-                return InteractionResult.CONSUME;
+                    final ItemStack putStack = new ItemStack(TFCItems.FILLED_PAN.get());
+                    putStack.set(TFCComponents.DEPOSIT, new ItemComponent(depositStack));
+                    if (!player.getInventory().add(putStack))
+                    {
+                        player.drop(putStack, false);
+                    }
+                }
+                return InteractionResult.sidedSuccess(level.isClientSide);
             }
         }
         return InteractionResult.PASS;

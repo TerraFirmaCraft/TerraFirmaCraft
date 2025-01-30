@@ -59,6 +59,11 @@
       "text": "$(thing)털$()이 있는 포유류는 성체이고 당신과 충분히 친밀하다면 $(thing)깎을$() 수 있습니다. 예시로는 $(l:mechanics/animal_husbandry#sheep)양$(), $(l:mechanics/animal_husbandry#alpaca)알파카$(), 그리고 $(l:mechanics/animal_husbandry#musk_ox)사향소$()가 있습니다."
     },
     {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:welding/metal/shears/bronze",
+      "text": "Shears can be made by $(l:mechanics/anvils#welding)welding$() two $(thing)knife blades$() together. Whichever knife blade has the lowest forging bonus will transfer that bonus (if any) to the shears."
+    },
+    {
       "type": "patchouli:text",
       "anchor": "dairy_animals",
       "text": "$(thing)우유$()를 짤 수 있는 포유류는 암컷에게 양동이로 우클릭을 하여 우유를 얻을 수 있습니다. 예시로는 $(l:mechanics/animal_husbandry#goat)염소$(), $(l:mechanics/animal_husbandry#cow)소$(), 그리고 $(l:mechanics/animal_husbandry#yak)야크$()가 있습니다."
@@ -76,10 +81,14 @@
       "text": "$(thing)알$()은 굽거나 삶아 먹을 수 있습니다. 수컷 난생동물은 암컷을 수정시킬 수 있으며, 수정된 암컷은 둥지 상자에 알을 낳습니다. 알에는 부화하기까지 얼마나 걸리는지에 대한 툴팁이 있습니다."
     },
     {
+      "type": "patchouli:text",
+      "text": "$(thing)Equines$() are $(l:mechanics/animal_husbandry#mammals)Mammals$() that can be ridden when tamed. They become rideable after reaching 15% familiarity. Horses pass on their $(thing)genetic traits$(), including their speed, jump height, health, size, and markings. The product of a horse and a donkey is a $(thing)mule$()."
+    },
+    {
       "type": "tfc:knapping_recipe",
       "anchor": "horses",
       "recipe": "tfc:knapping/saddle",
-      "text": "$(thing)말속$() 동물들은 타거나 길들일 수 있습니다. 그들을 타기 위해서는 15% 이상의 친밀도가 필요합니다."
+      "text": "Saddles may be knapped from leather."
     },
     {
       "type": "patchouli:text",

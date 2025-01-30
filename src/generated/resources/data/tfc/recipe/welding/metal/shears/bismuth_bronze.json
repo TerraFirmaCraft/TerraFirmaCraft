@@ -1,5 +1,6 @@
 {
   "type": "tfc:welding",
+  "bonus": "copy_worst",
   "first_input": {
     "item": "tfc:metal/knife_blade/bismuth_bronze"
   },

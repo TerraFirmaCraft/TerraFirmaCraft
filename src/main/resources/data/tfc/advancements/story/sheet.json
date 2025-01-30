@@ -7,7 +7,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:sheets"
+            "tag": "c:sheets"
           }
         ]
       }

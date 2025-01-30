@@ -96,7 +96,8 @@ public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland
         markForSync();
     }
 
-    private void setNutrientWithoutSync(NutrientType type, float value)
+    @Override
+    public void setNutrientWithoutSync(NutrientType type, float value)
     {
         value = Mth.clamp(value, 0, 1);
         switch (type)

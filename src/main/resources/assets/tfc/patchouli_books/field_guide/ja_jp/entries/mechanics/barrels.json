@@ -9,6 +9,11 @@
       "text": "$(thing)樽$() は、アイテムと液体の両方を保持できるデバイスです。 中央のスロットはアイテムを保持するために使用されます。 液体は左側のタンクに表示されており、満たされた $(thing)バケツ$() または $(thing)水入れ$() を左上のスロットに置くことで樽に追加できます。 空の液体輸送アイテムを同じスロットに置くことで、これを取り出すことができます。 バケツを持って樽に対し $(item)$(k:key.use)$() を使用しても機能します。"
     },
     {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wood/barrel/oak",
+      "text": "The barrel is made from seven $(thing)lumber$()."
+    },
+    {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/gui/barrel.png"

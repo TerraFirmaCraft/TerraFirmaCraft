@@ -353,6 +353,7 @@ public final class TFCCreativeTabs
         {
             accept(out, TFCItems.FRUIT_PRESERVES, food);
             accept(out, TFCItems.UNSEALED_FRUIT_PRESERVES, food);
+            accept(out, TFCItems.JAM, food);
         }
     }
 

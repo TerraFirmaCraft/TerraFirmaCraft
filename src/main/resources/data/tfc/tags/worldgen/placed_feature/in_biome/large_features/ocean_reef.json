@@ -3,6 +3,7 @@
   "replace": false,
   "values": [
     "#tfc:feature/icebergs",
-    "tfc:coral_reef"
+    "tfc:coral_reef",
+    "#tfc:feature/surface_flood_fill_lakes"
   ]
 }

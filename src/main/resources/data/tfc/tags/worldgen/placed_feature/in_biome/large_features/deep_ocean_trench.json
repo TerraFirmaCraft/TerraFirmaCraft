@@ -3,6 +3,7 @@
   "replace": false,
   "values": [
     "#tfc:feature/icebergs",
-    "tfc:lava_hot_spring"
+    "tfc:lava_hot_spring",
+    "#tfc:feature/surface_flood_fill_lakes"
   ]
 }

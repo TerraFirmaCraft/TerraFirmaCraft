@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Heightmap;
 
+import net.dries007.tfc.world.Seed;
 import net.dries007.tfc.world.biome.BiomeExtension;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.chunkdata.ChunkData;
@@ -26,7 +27,7 @@ import net.dries007.tfc.world.surface.builder.SurfaceBuilder;
 
 public final class SurfaceManager
 {
-    private static Map<BiomeExtension, SurfaceBuilder> collectSurfaceBuilders(long seed)
+    private static Map<BiomeExtension, SurfaceBuilder> collectSurfaceBuilders(Seed seed)
     {
         final ImmutableMap.Builder<BiomeExtension, SurfaceBuilder> builder = ImmutableMap.builder();
         for (BiomeExtension variant : TFCBiomes.REGISTRY)
@@ -36,12 +37,10 @@ public final class SurfaceManager
         return builder.build();
     }
 
-    private final long seed;
     private final Map<BiomeExtension, SurfaceBuilder> builders;
 
-    public SurfaceManager(long seed)
+    public SurfaceManager(Seed seed)
     {
-        this.seed = seed;
         this.builders = collectSurfaceBuilders(seed);
     }
 
@@ -57,7 +56,7 @@ public final class SurfaceManager
             slopeVisualization(chunk, slopeMap, blockX, blockZ);
         }
 
-        final SurfaceBuilderContext context = new SurfaceBuilderContext(world, chunk, chunkData, random, seed, rockLayerSettings, seaLevel, minY);
+        final SurfaceBuilderContext context = new SurfaceBuilderContext(world, chunk, chunkData, random, rockLayerSettings, seaLevel, minY);
         for (int x = 0; x < 16; ++x)
         {
             for (int z = 0; z < 16; ++z)

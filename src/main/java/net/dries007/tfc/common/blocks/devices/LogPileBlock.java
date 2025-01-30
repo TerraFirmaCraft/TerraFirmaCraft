@@ -88,7 +88,7 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
                     {
                         if (Helpers.insertOne(logPile, stack))
                         {
-                            Helpers.playPlaceSound(level, pos, state);
+                            Helpers.playPlaceSound(player, level, pos, state);
                             stack.shrink(1);
                         }
                     }

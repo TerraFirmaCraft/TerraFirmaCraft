@@ -16,6 +16,7 @@ import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.util.IArtist;
+import net.dries007.tfc.world.Seed;
 import net.dries007.tfc.world.layer.TFCLayers;
 import net.dries007.tfc.world.layer.framework.Area;
 import net.dries007.tfc.world.layer.framework.ConcurrentArea;
@@ -69,17 +70,17 @@ public final class RegionChunkDataGenerator implements ChunkDataGenerator
     private final Noise2D layerSkewXNoise;
     private final Noise2D layerSkewZNoise;
 
-    public RegionChunkDataGenerator(RegionGenerator regionGenerator, RockLayerSettings rockLayerSettings, RandomSource random)
+    public RegionChunkDataGenerator(RegionGenerator regionGenerator, RockLayerSettings rockLayerSettings, Seed seed)
     {
         this.regionGenerator = regionGenerator;
         this.rockLayerSettings = rockLayerSettings;
 
-        this.rockLayerArea = ThreadLocal.withInitial(TFCLayers.createOverworldRockLayer(regionGenerator, random.nextLong()));
-        this.layerHeightNoise = new OpenSimplex2D(random.nextInt()).octaves(3).scaled(43, 63).spread(0.014f);
-        this.layerSkewXNoise = new OpenSimplex2D(random.nextInt()).octaves(2).scaled(-1.8f, 1.8f).spread(0.01f);
-        this.layerSkewZNoise = new OpenSimplex2D(random.nextInt()).octaves(2).scaled(-1.8f, 1.8f).spread(0.01f);
+        this.rockLayerArea = ThreadLocal.withInitial(TFCLayers.createOverworldRockLayer(regionGenerator, seed.next()));
+        this.layerHeightNoise = new OpenSimplex2D(seed.next()).octaves(3).scaled(43, 63).spread(0.014f);
+        this.layerSkewXNoise = new OpenSimplex2D(seed.next()).octaves(2).scaled(-1.8f, 1.8f).spread(0.01f);
+        this.layerSkewZNoise = new OpenSimplex2D(seed.next()).octaves(2).scaled(-1.8f, 1.8f).spread(0.01f);
 
-        this.forestTypeLayer = new ConcurrentArea<>(TFCLayers.createOverworldForestLayer(random.nextLong(), IArtist.nope()), ForestType::valueOf);
+        this.forestTypeLayer = new ConcurrentArea<>(TFCLayers.createOverworldForestLayer(seed.next(), IArtist.nope()), ForestType::valueOf);
     }
 
     @Override

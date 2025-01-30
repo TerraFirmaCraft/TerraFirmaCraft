@@ -6,7 +6,10 @@
 
 package net.dries007.tfc.common.component.heat;
 
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
+
+import net.dries007.tfc.common.recipes.ingredients.HeatIngredient;
 
 
 public interface IHeat extends IHeatView
@@ -63,8 +66,10 @@ public interface IHeat extends IHeatView
     void setHeatCapacity(float value);
 
     /**
-     * Sets the stack to have a static, unchanging temperature, and prevents displaying tooltips for temperature.
+     * Sets the stack to have a static, unchanging temperature, and prevents displaying tooltips for temperature. We prevent tooltips as
+     * in the cases where TFC uses this feature, it is in order to properly display heat ingredients, which use additional tooltips.
      * @see #FLAG_STATIC_TEMPERATURE
+     * @see HeatIngredient#modifyStackForDisplay
      */
     default void setStaticTemperature(float value)
     {

@@ -9,6 +9,11 @@
       "text": "$(thing)통$()은 아이템과 액체를 보관할 수 있는 장치입니다. 중앙 슬롯에는 아이템을 넣을 수 있습니다. 액체는 왼쪽에 있는 칸에 보여지며, $(thing)양동이$()나 $(thing)주전자$()를 왼쪽 위 슬롯에 넣어 추가할 수 있습니다. 같은 슬롯에 빈 양동이나 주전자를 넣으면 액체를 제거할 수 있습니다. 아니면 양동이를 들고 통에 $(item)$(k:key.use)$()을 눌러도 됩니다."
     },
     {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wood/barrel/oak",
+      "text": "The barrel is made from seven $(thing)lumber$()."
+    },
+    {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/gui/barrel.png"

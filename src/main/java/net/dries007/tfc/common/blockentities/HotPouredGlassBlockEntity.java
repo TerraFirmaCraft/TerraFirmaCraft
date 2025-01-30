@@ -16,8 +16,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.util.ParticleUtils;
@@ -25,19 +26,16 @@ import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.HotPouredGlassBlock;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.TerraFirmaCraft.*;
-
-// todo: don't extend TickableInventory and just extend Tickable, with a saved item stack?
-public class HotPouredGlassBlockEntity extends TickableInventoryBlockEntity<ItemStackHandler>
+public class HotPouredGlassBlockEntity extends TickableBlockEntity
 {
     public static void tick(Level level, BlockPos pos, BlockState state, HotPouredGlassBlockEntity glass)
     {
@@ -64,7 +62,7 @@ public class HotPouredGlassBlockEntity extends TickableInventoryBlockEntity<Item
             }
             else
             {
-                level.setBlockAndUpdate(pos, glass.getInternalBlock());
+                level.setBlockAndUpdate(pos, glass.internalState);
                 Helpers.playSound(level, pos, SoundEvents.FIRE_EXTINGUISH);
                 final var random = level.getRandom();
                 Supplier<Vec3> supplier = () -> new Vec3(Mth.nextDouble(level.getRandom(), -0.005F, 0.005F), Mth.nextDouble(random, -0.005F, 0.005F), Mth.nextDouble(random, -0.005F, 0.005F));
@@ -135,7 +133,7 @@ public class HotPouredGlassBlockEntity extends TickableInventoryBlockEntity<Item
                     side.animationTicks = 40 + (cost * 10);
                     side.initialized = true;
                     side.capacity = 0;
-                    side.setGlassItem(center.getGlassItem().copy());
+                    side.internalState = center.internalState;
                     side.markForSync();
                 }
             });
@@ -160,6 +158,7 @@ public class HotPouredGlassBlockEntity extends TickableInventoryBlockEntity<Item
     private boolean isInitialTransition = true;
     private int animationTicks = 0;
     private boolean initialized = false;
+    private BlockState internalState = Blocks.AIR.defaultBlockState();
 
     public HotPouredGlassBlockEntity(BlockPos pos, BlockState state)
     {
@@ -168,7 +167,7 @@ public class HotPouredGlassBlockEntity extends TickableInventoryBlockEntity<Item
 
     public HotPouredGlassBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
-        super(type, pos, state, defaultInventory(1));
+        super(type, pos, state);
     }
 
     @Override
@@ -179,6 +178,7 @@ public class HotPouredGlassBlockEntity extends TickableInventoryBlockEntity<Item
         isInitialTransition = nbt.getBoolean("isInitialTransition");
         animationTicks = nbt.getInt("animationTicks");
         initialized = nbt.getBoolean("initialized");
+        internalState = NbtUtils.readBlockState(provider.lookupOrThrow(Registries.BLOCK), nbt.getCompound("internalState"));
     }
 
     @Override
@@ -189,17 +189,15 @@ public class HotPouredGlassBlockEntity extends TickableInventoryBlockEntity<Item
         nbt.putBoolean("isInitialTransition", isInitialTransition);
         nbt.putInt("animationTicks", animationTicks);
         nbt.putBoolean("initialized", initialized);
-    }
-
-    @Override
-    public boolean isItemValid(int slot, ItemStack stack)
-    {
-        return stack.getItem() instanceof BlockItem;
+        nbt.put("internalState", NbtUtils.writeBlockState(internalState));
     }
 
     public void setGlassItem(ItemStack stack)
     {
-        inventory.setStackInSlot(0, stack);
+        if (stack.getItem() instanceof BlockItem bi)
+        {
+            internalState = bi.getBlock().defaultBlockState();
+        }
     }
 
     public void flattenFirstBlock()
@@ -208,16 +206,6 @@ public class HotPouredGlassBlockEntity extends TickableInventoryBlockEntity<Item
         initialized = true;
         capacity = 15; // There's an off-by-one somewhere in the flood fill, this actually results in 16 total blocks
         markForSync();
-    }
-
-    private ItemStack getGlassItem()
-    {
-        return inventory.getStackInSlot(0);
-    }
-
-    private BlockState getInternalBlock()
-    {
-        return ((BlockItem) inventory.getStackInSlot(0).getItem()).getBlock().defaultBlockState();
     }
 
     public boolean isInitialTransition()

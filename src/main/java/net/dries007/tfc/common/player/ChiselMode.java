@@ -66,7 +66,7 @@ public abstract class ChiselMode
         @Override
         public BlockState modifyStateForPlacement(BlockState state, BlockState chiseled, Player player, BlockHitResult hit)
         {
-            return state;
+            return chiseled;
         }
 
         @Override

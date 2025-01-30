@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "tfc:jar/red_apple_unsealed"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:red_apple_jam"
+  }
+}

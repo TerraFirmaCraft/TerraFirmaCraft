@@ -73,7 +73,7 @@ public interface IMudBlock
                             1, 0.0, 0.0, 0.0, 1.0);
                     }
                 }
-                return ItemInteractionResult.SUCCESS;
+                return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
         }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
