@@ -100,6 +100,14 @@
     "tfc:plant/purple_water_lily_patch",
     "tfc:plant/water_taro_patch",
     "tfc:plant/yucca_patch",
+    "tfc:plant/bear_grass_patch",
+    "tfc:plant/edelweiss_patch",
+    "tfc:plant/elegant_sunburst_lichen_patch",
+    "tfc:plant/kinnikinnick_patch",
+    "tfc:plant/moss_campion_patch",
+    "tfc:plant/ramunda_patch",
+    "tfc:plant/shawiash_patch",
+    "tfc:plant/yellow_saxifrage_patch",
     "#tfc:feature/berry_bushes",
     "#tfc:feature/fruit_trees"
   ]

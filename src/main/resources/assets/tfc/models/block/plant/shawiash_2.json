@@ -1,0 +1,9 @@
+{
+  "parent": "tfc:block/tfc_azalea",
+  "textures": {
+    "cross": "tfc:block/plant/shawiash/cross_2",
+    "side": "tfc:block/plant/shawiash/side_2",
+    "top": "tfc:block/plant/shawiash/top_2",
+    "particle": "tfc:block/plant/shawiash/top_2"
+  }
+}

@@ -8,6 +8,10 @@
     "tfc:metal/hammer/steel",
     "tfc:metal/hammer/black_steel",
     "tfc:metal/hammer/blue_steel",
-    "tfc:metal/hammer/red_steel"
+    "tfc:metal/hammer/red_steel",
+    "tfc:stone/hammer/igneous_extrusive",
+    "tfc:stone/hammer/igneous_intrusive",
+    "tfc:stone/hammer/metamorphic",
+    "tfc:stone/hammer/sedimentary"
   ]
 }

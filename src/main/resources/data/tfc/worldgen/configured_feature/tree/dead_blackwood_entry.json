@@ -3,8 +3,8 @@
   "type": "tfc:forest_entry",
   "config": {
     "climate": {
-      "min_temperature": 8,
-      "max_temperature": 38,
+      "min_temperature": 10.4,
+      "max_temperature": 40,
       "min_groundwater": 35,
       "max_groundwater": 215,
       "min_rain_variance": -1,

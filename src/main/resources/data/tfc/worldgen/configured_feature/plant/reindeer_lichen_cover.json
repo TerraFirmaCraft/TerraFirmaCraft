@@ -4,7 +4,7 @@
   "config": {
     "block": "tfc:plant/reindeer_lichen",
     "height": 7,
-    "radius": 4,
+    "radius": 6,
     "integrity": 0.95
   }
 }

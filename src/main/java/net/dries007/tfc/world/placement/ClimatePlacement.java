@@ -131,6 +131,7 @@ public class ClimatePlacement extends PlacementModifier
 
     public boolean isValid(ChunkData data, BlockPos pos, RandomSource random)
     {
+        // TODO: Check that elevation-adjusted temp isn't restructured anywhere before pushing
         final float temperature = EnvironmentHelpers.adjustAvgTempForElev(pos.getY(), data.getAverageTemp(pos));
         final float groundwater = data.getGroundwater(pos);
         final float rainVar = rainVarianceAbsolute ? Math.abs(data.getRainVariance(pos)) : data.getRainVariance(pos);

@@ -604,12 +604,22 @@ PLANTS: dict[str, Plant] = {
     'purple_water_lily': Plant(False, 9.5, 40, 0, 500, 'floating_fresh'),
     'water_taro': Plant(False, 13.9, 40, 260, 500, 'emergent_fresh'),
     'yucca': Plant(False, -0.4, 22.9, 0, 75, 'dry'),
+
+    'bear_grass': Plant(False, -2.2, -13, 380, 500, 'tall_plant'),
+    'edelweiss': Plant(False, -9.4, 5, 200, 450, 'standard'),
+    'elegant_sunburst_lichen': Plant(False, -33, -11.5, 0, 225, 'creeping'),
+    'kinnikinnick': Plant(False, -18.4, -13, 210, 500, 'standard'),
+    'moss_campion': Plant(False, -30, -7.6, 0, 210, 'dry'),
+    'ramunda': Plant(False, -13, -0.4, 0, 190, 'standard'),
+    'shawiash': Plant(False, -16.6, -2.2, 250, 500, 'standard'),
+    'yellow_saxifrage': Plant(False, -16.6, -4, 160, 500, 'standard'),
 }
 
 FLOWERPOT_CROSS_PLANTS = {
     'allium': 'allium_0',
     'anthurium': 'anthurium_0',
     'athyrium_fern': 'single',
+    'bear_grass': 'item',
     'black_orchid': 'black_orchid_0',
     'blood_lily': 'blood_lily_0',
     'blue_orchid': 'blue_orchid_0',
@@ -620,6 +630,7 @@ FLOWERPOT_CROSS_PLANTS = {
     'dandelion': 'dandelion_0',
     'dead_bush': 'dead_bush0',
     'desert_flame': 'desert_flame_0',
+    'edelweiss': 'edelweiss_0',
     'field_horsetail': 'potted',
     'foxglove': 'item',
     'goldenrod': 'goldenrod_0',
@@ -640,6 +651,7 @@ FLOWERPOT_CROSS_PLANTS = {
     'poppy': 'poppy_0',
     'primrose': 'primrose',
     'pulsatilla': 'pulsatilla_0',
+    'ramunda': 'ramunda_0',
     'rose': 'classic',
     'sacred_datura': 'sacred_datura_0',
     'sagebrush': 'sagebrush_0',
@@ -659,11 +671,13 @@ FLOWERPOT_CROSS_PLANTS = {
     'tulip_pink': 'tulip_pink_0',
     'tulip_red': 'tulip_red_0',
     'tulip_white': 'tulip_white_0',
+    'yellow_saxifrage': 'yellow_saxifrage_0',
     'yucca': 'potted'
 }
 
 MISC_POTTED_PLANTS = ('barrel_cactus', 'morning_glory', 'moss', 'reindeer_lichen', 'rose', 'toquilla_palm', 'tree_fern', 'sea_palm', 'philodendron', 'golden_bamboo')
 
+# Single block, cross model, just say how many stages
 SIMPLE_STAGE_PLANTS: dict[str, int] = {
     'allium': 6,
     'anthurium': 2,
@@ -673,6 +687,7 @@ SIMPLE_STAGE_PLANTS: dict[str, int] = {
     'blue_orchid': 3,
     'butterfly_milkweed': 6,
     'desert_flame': 2,
+    'edelweiss': 3,
     'heliconia': 3,
     'houstonia': 3,
     'goldenrod': 5,
@@ -687,6 +702,7 @@ SIMPLE_STAGE_PLANTS: dict[str, int] = {
     'poppy': 5,
     'primrose': 3,
     'pulsatilla': 6,
+    'ramunda': 2,
     'sacred_datura': 6,  # different
     'saguaro_fruit': 2,
     'silver_spurflower': 3,
@@ -696,6 +712,7 @@ SIMPLE_STAGE_PLANTS: dict[str, int] = {
     'yucca': 4
 }
 
+# Any single-block plant, just generates blockstates and dynamic models
 # Blooming, Seeding, Dying, Dormant, Sprouting, Budding
 SINGLE_BLOCK_STAGE_PLANTS: dict[str, list[int, int, int, int, int, int]] = {
     'allium': [0, 1, 2, 3, 4, 5],
@@ -708,23 +725,28 @@ SINGLE_BLOCK_STAGE_PLANTS: dict[str, list[int, int, int, int, int, int]] = {
     'calendula': [0, 1, 2, 3, 4, 5],
     'dandelion': [0, 1, 2, 2, 3, 3],
     'desert_flame': [0, 0, 1, 1, 1, 0],
+    'edelweiss': [0, 1, 1, 1, 1, 2],
     'heather': [0, 0, 1, 1, 1, 0],
     'heliconia': [0, 0, 1, 1, 1, 2],
     'houstonia': [0, 0, 1, 1, 1, 2],
     'goldenrod': [0, 0, 1, 2, 3, 4],
     'grape_hyacinth': [0, 1, 2, 2, 2, 3],
-    'kangaroo_paw': [0, 1, 1, 1, 1, 1, 1],  # tinted
+    'kangaroo_paw': [0, 1, 1, 1, 1, 1],  # tinted
     'labrador_tea': [0, 1, 2, 3, 4, 5],
     'lily_of_the_valley': [0, 1, 2, 3, 4, 5],
+    'kinnikinnick': [0, 1, 2, 3, 4, 4],
     'meads_milkweed': [0, 1, 2, 3, 4, 5,],
+    'moss_campion': [0, 1, 1, 1, 2, 3],
     'nasturtium': [0, 1, 1, 2, 3, 4],
     'oxeye_daisy': [0, 1, 2, 3, 4, 5],
     'perovskia': [0, 1, 2, 3, 4, 5],
     'poppy': [0, 1, 1, 1, 2, 3],
     'primrose': [0, 1, 1, 2, 2, 2],
     'pulsatilla': [0, 1, 2, 3, 4, 5],
+    'ramunda': [0, 1, 1, 1, 1, 1],
     'sacred_datura': [0, 1, 2, 3, 4, 5],
     'saguaro_fruit': [0, 1, 1, 1, 1, 1],
+    'shawiash': [0, 1, 2, 3, 4, 4],
     'silver_spurflower': [0, 1, 1, 1, 1, 2],
     'strelitzia': [0, 1, 2, 3, 4, 5],
     'tropical_milkweed': [0, 1, 1, 1, 2, 3],
