@@ -109,7 +109,7 @@ public abstract class PlantBlock extends TFCBushBlock
 
     public static boolean isDryBlockPlantable(BlockState state)
     {
-        return Helpers.isBlock(state, BlockTags.SAND) || Helpers.isBlock(state, Tags.Blocks.SANDS) || Helpers.isBlock(state, TFCTags.Blocks.BUSH_PLANTABLE_ON);
+        return Helpers.isBlock(state, TFCTags.Blocks.DRY_PLANT_PLANTABLE_ON);
     }
 
     protected PlantBlock(ExtendedProperties properties)

@@ -46,7 +46,7 @@ public enum KoppenClimateClassification
     public static KoppenClimateClassification classify(float averageTemperature, float rainfall, float rainVar)
     {
         // True Koppen: When none of the year is above freezing, temp var when avg = -17C ~= 17C
-        if (averageTemperature < -17f)
+        if (averageTemperature < -17f + 0.006 * rainfall)
         {
             return EF;
         }
@@ -80,7 +80,7 @@ public enum KoppenClimateClassification
         // True Koppen: Lowest monthly temp > 18C, temp var when avg = 21C ~= 3C
         else if (averageTemperature > 21f)
         {
-            if (rainfall * (1 + rainVar) > 750f)
+            if (rainfall * (1 + rainVar) > 600f)
             {
                 return AM;
             }

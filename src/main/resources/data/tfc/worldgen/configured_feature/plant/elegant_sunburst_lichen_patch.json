@@ -1,0 +1,10 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:creeping_plant",
+  "config": {
+    "block": "tfc:plant/elegant_sunburst_lichen",
+    "height": 5,
+    "radius": 5,
+    "integrity": 0.4
+  }
+}

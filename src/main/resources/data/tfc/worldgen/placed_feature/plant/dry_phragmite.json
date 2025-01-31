@@ -14,7 +14,7 @@
         }
       }
     },
-	{
+    {
       "type": "minecraft:count",
       "count": 5
     },
@@ -26,7 +26,7 @@
       "min_temperature": -7.4,
       "max_temperature": 27.6,
       "min_groundwater": 100,
-      "max_groundwater": 370,
+      "max_groundwater": 240,
       "forest_types": [
         "dead_bamboo",
         "edge_bamboo",

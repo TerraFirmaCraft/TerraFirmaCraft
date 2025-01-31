@@ -15,6 +15,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.util.data.DataManager;
+import net.dries007.tfc.world.Codecs;
 import net.dries007.tfc.world.chunkdata.ForestType;
 import net.dries007.tfc.world.placement.ClimatePlacement;
 
@@ -44,6 +45,8 @@ public record Fauna(
     {
         float minTemperature = Float.NEGATIVE_INFINITY, maxTemperature = Float.POSITIVE_INFINITY;
         float minRainfall = Float.NEGATIVE_INFINITY, maxRainfall = Float.POSITIVE_INFINITY;
+        float minRainVariance = -1f, maxRainVariance = 1f;
+        boolean rainVarianceAbsolute = false;
         int minForest = 0, maxForest = 4;
         List<ForestType> forests = new ArrayList<>();
         boolean fuzzy = false;
@@ -62,12 +65,23 @@ public record Fauna(
             return this;
         }
 
-        public Builder minRainfall(float min) { return rainfall(min, Float.POSITIVE_INFINITY); }
-        public Builder maxRainfall(float max) { return rainfall(Float.NEGATIVE_INFINITY, max); }
-        public Builder rainfall(float min, float max)
+        public Builder minGroundwater(float min) { return groundwater(min, Float.POSITIVE_INFINITY); }
+        public Builder maxGroundwater(float max) { return groundwater(Float.NEGATIVE_INFINITY, max); }
+        public Builder groundwater(float min, float max)
         {
             minRainfall = min;
             maxRainfall = max;
+            return this;
+        }
+
+        public Builder minRainVariance(float min) { return rainVariance(min, 1f, false); }
+        public Builder maxRainVariance(float max) { return rainVariance(-1f, max, false); }
+        public Builder rainVariance(float min, float max, boolean isAbsolute)
+        {
+            minRainfall = min;
+            maxRainfall = max;
+            rainVarianceAbsolute = isAbsolute;
+
             return this;
         }
 
@@ -99,7 +113,7 @@ public record Fauna(
 
         public Fauna build()
         {
-            return new Fauna(chance, distanceBelowSeaLevel, new ClimatePlacement(minTemperature, maxTemperature, minRainfall, maxRainfall, minForest, maxForest, forests, fuzzy), solidGround, maxBrightness, months);
+            return new Fauna(chance, distanceBelowSeaLevel, new ClimatePlacement(minTemperature, maxTemperature, minRainfall, maxRainfall, minRainVariance, maxRainVariance, rainVarianceAbsolute, minForest, maxForest, forests, fuzzy), solidGround, maxBrightness, months);
         }
     }
 }

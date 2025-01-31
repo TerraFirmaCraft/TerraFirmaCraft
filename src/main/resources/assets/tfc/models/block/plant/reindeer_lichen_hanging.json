@@ -3,18 +3,9 @@
 	"textures": {
 		"particle": "tfc:block/plant/reindeer_lichen/reindeer_lichen_hanging",
 		"side": "tfc:block/plant/reindeer_lichen/reindeer_lichen_hanging",
-		"layer0": "tfc:block/plant/reindeer_lichen/reindeer_lichen_layer0",
 		"layer1": "tfc:block/plant/reindeer_lichen/reindeer_lichen_layer1"
 	},
 	"elements": [
-		{
-			"from": [-0.02, 15.95, -0.02],
-			"to": [16.02, 15.95, 16.02],
-			"faces": {
-				"up": {"uv": [0, 0, 16, 16], "texture": "#layer0"},
-				"down": {"uv": [0, 16, 16, 0], "texture": "#layer0"}
-			}
-		},
 		{
 			"from": [0, 15, 0],
 			"to": [16, 15, 16],

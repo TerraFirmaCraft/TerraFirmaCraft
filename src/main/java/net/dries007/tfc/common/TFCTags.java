@@ -177,6 +177,7 @@ public class TFCTags
         public static final TagKey<Block> WILD_CROP_GROWS_ON = tag("wild_crop_grows_on");
         public static final TagKey<Block> SPREADING_FRUIT_GROWS_ON = tag("spreading_fruit_grows_on");
         public static final TagKey<Block> BUSH_PLANTABLE_ON = tag("bush_plantable_on");
+        public static final TagKey<Block> DRY_PLANT_PLANTABLE_ON = tag("dry_plant_plantable_on");
         public static final TagKey<Block> GRASS_PLANTABLE_ON = tag("grass_plantable_on");
         public static final TagKey<Block> SEA_BUSH_PLANTABLE_ON = tag("sea_bush_plantable_on");
         public static final TagKey<Block> HALOPHYTE_PLANTABLE_ON = tag("halophyte_plantable_on");

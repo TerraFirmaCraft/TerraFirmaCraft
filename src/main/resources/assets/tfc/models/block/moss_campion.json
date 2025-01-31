@@ -1,0 +1,19 @@
+{
+	"parent": "block/block",
+	"textures": {
+		"particle": "tfc:block/plant/moss_campion/moss_campion_1"
+	},
+	"elements": [
+		{
+			"from": [4, 0, 4],
+			"to": [12, 4, 12],
+			"faces": {
+				"north": {"uv": [0, 12, 8, 16], "texture": "#texture"},
+				"east": {"uv": [8, 8, 16, 12], "texture": "#texture"},
+				"south": {"uv": [0, 8, 8, 12], "texture": "#texture"},
+				"west": {"uv": [8, 12, 16, 16], "texture": "#texture"},
+				"up": {"uv": [0, 0, 8, 8], "texture": "#texture"}
+			}
+		}
+	]
+}

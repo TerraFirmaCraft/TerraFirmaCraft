@@ -11,7 +11,12 @@
       "min_temperature": -12.4,
       "max_temperature": 27.6,
       "min_groundwater": 250,
-      "max_groundwater": 450
+      "max_groundwater": 500,
+      "min_rain_variance": -0.75,
+      "max_rain_variance": 0.75,
+      "rain_variance_absolute": false,
+      "min_forest": 1,
+      "max_forest": 4
     },
     {
       "type": "minecraft:in_square"

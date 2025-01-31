@@ -10,9 +10,13 @@
       "type": "tfc:climate",
       "min_temperature": 13.6,
       "max_temperature": 27.6,
-      "min_groundwater": 380,
+      "min_groundwater": 360,
       "max_groundwater": 500,
-      "min_forest": 2
+      "min_rain_variance": -0.4,
+      "max_rain_variance": 0.4,
+      "rain_variance_absolute": false,
+      "min_forest": 2,
+      "max_forest": 4
     },
     {
       "type": "minecraft:in_square"
