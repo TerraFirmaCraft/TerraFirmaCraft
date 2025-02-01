@@ -49,6 +49,7 @@ public record Fauna(
         boolean rainVarianceAbsolute = false;
         int minForest = 0, maxForest = 4;
         List<ForestType> forests = new ArrayList<>();
+        int minElevation = -64, maxElevation = 320;
         boolean fuzzy = false;
         int chance = 1;
         int distanceBelowSeaLevel = -1;
@@ -98,6 +99,14 @@ public record Fauna(
             forests.addAll(List.of(types));
             return this;
         }
+        public Builder minElevation(int min) { return elevation(min, 320); }
+        public Builder maxElevation(int max) { return elevation(-64, max); }
+        public Builder elevation(int min, int max)
+        {
+            minElevation = min;
+            maxElevation = max;
+            return this;
+        }
         public Builder months(List<Month> months)
         {
             this.months.addAll(months);
@@ -113,7 +122,7 @@ public record Fauna(
 
         public Fauna build()
         {
-            return new Fauna(chance, distanceBelowSeaLevel, new ClimatePlacement(minTemperature, maxTemperature, minRainfall, maxRainfall, minRainVariance, maxRainVariance, rainVarianceAbsolute, minForest, maxForest, forests, fuzzy), solidGround, maxBrightness, months);
+            return new Fauna(chance, distanceBelowSeaLevel, new ClimatePlacement(minTemperature, maxTemperature, minRainfall, maxRainfall, minRainVariance, maxRainVariance, rainVarianceAbsolute, minForest, maxForest, forests, minElevation, maxElevation, fuzzy), solidGround, maxBrightness, months);
         }
     }
 }

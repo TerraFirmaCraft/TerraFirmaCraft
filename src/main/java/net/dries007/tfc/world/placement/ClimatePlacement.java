@@ -36,6 +36,8 @@ public class ClimatePlacement extends PlacementModifier
         Codecs.NON_NEGATIVE_INT.optionalFieldOf("min_forest", 0).forGetter(c -> c.minForest),
         Codecs.NON_NEGATIVE_INT.optionalFieldOf("max_forest", 4).forGetter(c -> c.maxForest),
         ForestType.CODEC.listOf().optionalFieldOf("forest_types", Collections.emptyList()).forGetter(c -> c.types),
+        Codec.INT.optionalFieldOf("min_elevation", -64).forGetter(c -> c.minElevation),
+        Codec.INT.optionalFieldOf("max_elevation", 320).forGetter(c -> c.maxElevation),
         Codec.BOOL.optionalFieldOf("fuzzy", false).forGetter(c -> c.fuzzy)
     ).apply(instance, ClimatePlacement::new));
 
@@ -53,9 +55,11 @@ public class ClimatePlacement extends PlacementModifier
     private final float targetRainVariance;
     private final int minForest;
     private final int maxForest;
+    private final int minElevation;
+    private final int maxElevation;
     private final boolean fuzzy;
 
-    public ClimatePlacement(float minTemp, float maxTemp, float minGroundwater, float maxGroundwater, float minRainVariance, float maxRainVariance, boolean rainVarianceAbsolute, int minForest, int maxForest, List<ForestType> types, boolean fuzzy)
+    public ClimatePlacement(float minTemp, float maxTemp, float minGroundwater, float maxGroundwater, float minRainVariance, float maxRainVariance, boolean rainVarianceAbsolute, int minForest, int maxForest, List<ForestType> types, int minElevation, int maxElevation, boolean fuzzy)
     {
         this.minTemp = minTemp;
         this.maxTemp = maxTemp;
@@ -70,6 +74,8 @@ public class ClimatePlacement extends PlacementModifier
         this.rainVarianceAbsolute = rainVarianceAbsolute;
         this.minForest = minForest;
         this.maxForest = maxForest;
+        this.minElevation = minElevation;
+        this.maxElevation = maxElevation;
         this.fuzzy = fuzzy;
     }
 
@@ -118,6 +124,16 @@ public class ClimatePlacement extends PlacementModifier
         return maxForest;
     }
 
+    public int getMinElevation()
+    {
+        return minElevation;
+    }
+
+    public int getMaxElevation()
+    {
+        return maxElevation;
+    }
+
     public List<ForestType> getTypes()
     {
         return types;
@@ -136,9 +152,10 @@ public class ClimatePlacement extends PlacementModifier
         final float groundwater = data.getGroundwater(pos);
         final float rainVar = rainVarianceAbsolute ? Math.abs(data.getRainVariance(pos)) : data.getRainVariance(pos);
         final ForestType forestType = data.getForestType();
+        final int y = pos.getY();
 
         //Empty list of Forest Types defaults to generating everywhere
-        if (minTemp <= temperature && temperature <= maxTemp && minGroundwater <= groundwater && groundwater <= maxGroundwater &&
+        if (y > minElevation && y < maxElevation && minTemp <= temperature && temperature <= maxTemp && minGroundwater <= groundwater && groundwater <= maxGroundwater &&
             minRainVariance <= rainVar && maxRainVariance >= rainVar &&
             minForest <= forestType.getDensity() && forestType.getDensity() <= maxForest && (types.contains(forestType) || types.isEmpty()))
         {

@@ -23,7 +23,9 @@
       "max_rain_variance": 1,
       "rain_variance_absolute": false,
       "min_forest": 2,
-      "max_forest": 3
+      "max_forest": 3,
+      "min_elevation": -64,
+      "max_elevation": 320
     }
   ]
 }

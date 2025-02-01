@@ -10,18 +10,6 @@
       "type": "minecraft:in_square"
     },
     {
-      "type": "minecraft:height_range",
-      "height": {
-        "type": "uniform",
-        "min_inclusive": {
-          "absolute": 50
-        },
-        "max_inclusive": {
-          "absolute": 115
-        }
-      }
-    },
-    {
       "type": "minecraft:heightmap",
       "heightmap": "WORLD_SURFACE_WG"
     },
@@ -35,7 +23,9 @@
       "max_rain_variance": 1,
       "rain_variance_absolute": false,
       "min_forest": 0,
-      "max_forest": 4
+      "max_forest": 4,
+      "min_elevation": 50,
+      "max_elevation": 115
     }
   ]
 }

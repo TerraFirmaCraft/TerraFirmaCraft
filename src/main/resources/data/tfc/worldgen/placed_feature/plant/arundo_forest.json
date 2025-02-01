@@ -23,7 +23,9 @@
         "dead_bamboo",
         "edge_bamboo",
         "secondary_bamboo"
-      ]
+      ],
+      "min_elevation": -64,
+      "max_elevation": 320
     },
     {
       "type": "block_predicate_filter",

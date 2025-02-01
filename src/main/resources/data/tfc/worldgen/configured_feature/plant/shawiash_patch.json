@@ -2,8 +2,8 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "minecraft:random_patch",
   "config": {
-    "tries": 70,
-    "xz_spread": 10,
+    "tries": 60,
+    "xz_spread": 12,
     "y_spread": 3,
     "feature": "tfc:plant/shawiash"
   }

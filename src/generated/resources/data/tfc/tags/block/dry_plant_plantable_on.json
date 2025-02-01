@@ -3,6 +3,7 @@
     "#minecraft:sand",
     "#c:sands",
     "#c:gravels",
+    "#tfc:coarse_dirt",
     "#tfc:bush_plantable_on"
   ]
 }

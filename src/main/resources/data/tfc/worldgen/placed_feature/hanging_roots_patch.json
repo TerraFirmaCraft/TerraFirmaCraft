@@ -43,7 +43,9 @@
     {
       "type": "tfc:climate",
       "min_temperature": 0,
-      "min_groundwater": 300
+      "min_groundwater": 300,
+      "min_elevation": -64,
+      "max_elevation": 320
     },
     {
       "type": "tfc:biome"

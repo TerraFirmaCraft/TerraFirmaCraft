@@ -18,6 +18,8 @@
       "min_groundwater": 100,
       "max_groundwater": 350,
       "min_forest": 3,
+      "min_elevation": -64,
+      "max_elevation": 320,
       "fuzzy": true
     }
   ]
