@@ -6,7 +6,10 @@
 
 package net.dries007.tfc.world.region;
 
+import java.util.BitSet;
+import it.unimi.dsi.fastutil.ints.IntArrayFIFOQueue;
 import net.minecraft.util.Mth;
+import org.jetbrains.annotations.Nullable;
 
 public enum AnnotateDistanceToWestCoast implements RegionTask
 {
@@ -69,6 +72,47 @@ public enum AnnotateDistanceToWestCoast implements RegionTask
                                 point.distanceToWestCoast = (byte) (Mth.ceil(sum / (1f + end - start)) + 1);
                             }
                         }
+                    }
+                }
+            }
+        }
+
+        // For ocean tiles, we set values based on the value at the nearest coast
+        final BitSet explored = new BitSet(region.size());
+        final IntArrayFIFOQueue queue = new IntArrayFIFOQueue();
+
+        for (final var point : region.points())
+        {
+            if (point != null)
+            {
+                if (point.land())
+                {
+                    explored.set(point.index);
+                    queue.enqueue(point.index);
+                }
+            }
+        }
+
+        while (!queue.isEmpty())
+        {
+            final int last = queue.dequeueInt();
+            final Region.Point lastPoint = region.atIndex(last);
+            final int lastDistance = lastPoint.distanceToWestCoast;
+            final int nextDistance = lastDistance + (lastDistance > 40 ? -1 : 1);
+
+            for (int dx = -1; dx <= 1; dx++)
+            {
+                for (int dz = -1; dz <= 1; dz++)
+                {
+                    final @Nullable Region.Point point = region.atOffset(last, dx, dz);
+                    if (point != null && point.distanceToWestCoast == 0)
+                    {
+                        if (!explored.get(point.index))
+                        {
+                            point.distanceToWestCoast = (byte) nextDistance;
+                            queue.enqueue(point.index);
+                        }
+                        explored.set(point.index);
                     }
                 }
             }
