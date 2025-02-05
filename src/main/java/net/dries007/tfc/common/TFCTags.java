@@ -160,6 +160,8 @@ public class TFCTags
         public static final TagKey<Block> DIRT = tag("dirt");
         public static final TagKey<Block> GRASS = tag("grass");
         public static final TagKey<Block> COARSE_DIRT = tag("coarse_dirt");
+        public static final TagKey<Block> CRACKED_EARTH = tag("cracked_earth");
+        public static final TagKey<Block> SALTED_EARTH = tag("salted_earth");
         /** Used for non-wild crop growth. */
         public static final TagKey<Block> FARMLANDS = tag("farmlands");
         public static final TagKey<Block> PATHS = tag("paths");

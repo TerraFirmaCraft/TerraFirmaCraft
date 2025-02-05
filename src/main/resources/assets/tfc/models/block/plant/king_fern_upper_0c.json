@@ -1,5 +1,6 @@
 {
 	"credit": "Made with Blockbench",
+	"ambientocclusion": false,
 	"textures": {
 		"0": "tfc:block/plant/king_fern/frond_large_0a",
 		"1": "tfc:block/plant/king_fern/small_frond_0a",

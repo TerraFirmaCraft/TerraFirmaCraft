@@ -616,13 +616,16 @@ PLANTS: dict[str, Plant] = {
     'ramunda': Plant(False, -13, -0.4, 0, 190, 'standard'),
     'shawiash': Plant(False, -16.6, -2.2, 250, 500, 'standard'),
     'yellow_saxifrage': Plant(False, -16.6, -4, 160, 500, 'standard'),
+
+    'prickly_pear': Plant(False, -4, 21.2, 55, 155, 'dry'),
+    'prickly_pear_purple': Plant(False, 8.6, 14., 40, 140, 'dry'),
 }
 
 FLOWERPOT_CROSS_PLANTS = {
     'allium': 'allium_0',
     'anthurium': 'anthurium_0',
     'athyrium_fern': 'single',
-    'bear_grass': 'item',
+    'bear_grass': 'potted',
     'black_orchid': 'black_orchid_0',
     'blood_lily': 'blood_lily_0',
     'blue_orchid': 'blue_orchid_0',
@@ -653,6 +656,8 @@ FLOWERPOT_CROSS_PLANTS = {
     'perovskia': 'perovskia_0',
     'poppy': 'poppy_0',
     'primrose': 'primrose',
+    'prickly_pear': 'potted',
+    'prickly_pear_purple': 'potted',
     'pulsatilla': 'pulsatilla_0',
     'ramunda': 'ramunda_0',
     'rose': 'classic',
@@ -674,11 +679,11 @@ FLOWERPOT_CROSS_PLANTS = {
     'tulip_pink': 'tulip_pink_0',
     'tulip_red': 'tulip_red_0',
     'tulip_white': 'tulip_white_0',
-    'yellow_saxifrage': 'yellow_saxifrage_0',
+    'yellow_saxifrage': 'potted',
     'yucca': 'potted'
 }
 
-MISC_POTTED_PLANTS = ('barrel_cactus', 'morning_glory', 'moss', 'reindeer_lichen', 'rose', 'toquilla_palm', 'tree_fern', 'sea_palm', 'philodendron', 'golden_bamboo')
+MISC_POTTED_PLANTS = ('barrel_cactus', 'morning_glory', 'moss', 'reindeer_lichen', 'rose', 'toquilla_palm', 'tree_fern', 'sea_palm', 'philodendron', 'golden_bamboo', 'moss_campion', 'shawiash', 'kinnikinnick')
 
 # Single block, cross model, just say how many stages
 SIMPLE_STAGE_PLANTS: dict[str, int] = {

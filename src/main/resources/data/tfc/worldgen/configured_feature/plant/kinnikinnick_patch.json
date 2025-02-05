@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "minecraft:random_patch",
   "config": {
-    "tries": 60,
+    "tries": 40,
     "xz_spread": 15,
     "y_spread": 1,
     "feature": "tfc:plant/kinnikinnick"

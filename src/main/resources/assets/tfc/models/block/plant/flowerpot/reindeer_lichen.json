@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench",
 	"ambientocclusion": false,
 	"textures": {
-		"3": "tfc:block/plant/reindeer_lichen/reindeer_lichen_layer0",
-		"4": "tfc:block/plant/reindeer_lichen/reindeer_lichen_layer1",
+		"3": "tfc:block/plant/reindeer_lichen/reindeer_lichen_layer1",
+		"4": "tfc:block/plant/reindeer_lichen/reindeer_lichen_layer2",
 		"particle": "block/flower_pot",
 		"flowerpot": "block/flower_pot"
 	},

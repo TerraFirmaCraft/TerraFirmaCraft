@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "parent": "minecraft:block/flower_pot_cross",
   "textures": {
-    "plant": "tfc:block/plant/yellow_saxifrage/yellow_saxifrage_0",
+    "plant": "tfc:block/plant/yellow_saxifrage/potted",
     "dirt": "tfc:block/dirt/loam"
   }
 }

@@ -147,15 +147,14 @@ public class ClimatePlacement extends PlacementModifier
 
     public boolean isValid(ChunkData data, BlockPos pos, RandomSource random)
     {
-        // TODO: Check that elevation-adjusted temp isn't restructured anywhere before pushing
-        final float temperature = EnvironmentHelpers.adjustAvgTempForElev(pos.getY(), data.getAverageTemp(pos));
+        final int y = pos.getY();
+        final float temperature = EnvironmentHelpers.adjustAvgTempForElev(y, data.getAverageTemp(pos));
         final float groundwater = data.getGroundwater(pos);
         final float rainVar = rainVarianceAbsolute ? Math.abs(data.getRainVariance(pos)) : data.getRainVariance(pos);
         final ForestType forestType = data.getForestType();
-        final int y = pos.getY();
 
         //Empty list of Forest Types defaults to generating everywhere
-        if (y > minElevation && y < maxElevation && minTemp <= temperature && temperature <= maxTemp && minGroundwater <= groundwater && groundwater <= maxGroundwater &&
+        if (y >= minElevation && y <= maxElevation && minTemp <= temperature && temperature <= maxTemp && minGroundwater <= groundwater && groundwater <= maxGroundwater &&
             minRainVariance <= rainVar && maxRainVariance >= rainVar &&
             minForest <= forestType.getDensity() && forestType.getDensity() <= maxForest && (types.contains(forestType) || types.isEmpty()))
         {

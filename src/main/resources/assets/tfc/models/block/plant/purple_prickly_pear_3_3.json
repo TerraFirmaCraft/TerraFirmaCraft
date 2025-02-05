@@ -1,0 +1,8 @@
+{
+  "parent": "tfc:block/plant/prickly_pear_3",
+  "textures": {
+    "particle": "tfc:block/plant/prickly_pear_purple/flower_2",
+	"base": "tfc:block/plant/prickly_pear_purple/base",
+    "flower": "tfc:block/plant/prickly_pear_purple/flower_3"
+  }
+}

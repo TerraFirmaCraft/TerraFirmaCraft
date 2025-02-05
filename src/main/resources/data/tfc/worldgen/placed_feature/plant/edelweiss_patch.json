@@ -25,7 +25,7 @@
       "min_forest": 2,
       "max_forest": 3,
       "min_elevation": 95,
-      "max_elevation": 300
+      "max_elevation": 320
     }
   ]
 }
