@@ -617,8 +617,8 @@ PLANTS: dict[str, Plant] = {
     'shawiash': Plant(False, -16.6, -2.2, 250, 500, 'standard'),
     'yellow_saxifrage': Plant(False, -16.6, -4, 160, 500, 'standard'),
 
-    'prickly_pear': Plant(False, -4, 21.2, 55, 155, 'dry'),
-    'prickly_pear_purple': Plant(False, 8.6, 14., 40, 140, 'dry'),
+    'prickly_pear': Plant(False, -4, 21.2, 55, 155, 'cactus'),
+    'prickly_pear_purple': Plant(False, 8.6, 14., 40, 140, 'cactus'),
 }
 
 FLOWERPOT_CROSS_PLANTS = {

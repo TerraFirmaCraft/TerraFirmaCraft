@@ -8,6 +8,9 @@
       ]
     },
 	{
+	  "when": {
+        "part": "upper"
+      },
       "apply": [
         {
 		  "model": "tfc:block/plant/purple_prickly_pear_dynamic_0"

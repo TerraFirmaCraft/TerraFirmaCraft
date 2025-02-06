@@ -126,9 +126,8 @@ public enum Plant implements RegistryPlant
     PICKERELWEED(BlockType.TALL_WATER_FRESH, 0.6F, false, -0.9F, 0.32F, 0.43F, 0.52F, 0.77F, 0.91F),
     PISTIA(BlockType.FLOATING_FRESH, 0.8F),
     POPPY(BlockType.STANDARD, 1F, false, -0.25F, 0.23F, 0.33F, 0.58F, 0.79F, 0.92F),
-    // TODO: passable and/or single-block cactus plant type
-    PRICKLY_PEAR(BlockType.DRY, 0.3F, true, -0.13F, 0.16F, 0.32F, 0.5F, 0.75F, 0.92F),
-    PRICKLY_PEAR_PURPLE(BlockType.DRY, 0.3F, true, -0.13F, 0.16F, 0.32F, 0.5F, 0.75F, 0.92F),
+    PRICKLY_PEAR(BlockType.PASSABLE_CACTUS, 0.3F, true, -0.13F, 0.16F, 0.32F, 0.5F, 0.75F, 0.92F),
+    PRICKLY_PEAR_PURPLE(BlockType.PASSABLE_CACTUS, 0.3F, true, -0.13F, 0.16F, 0.32F, 0.5F, 0.75F, 0.92F),
     PRIMROSE(BlockType.STANDARD, 1F, false, -0.4F, 0.34F, 0.41F, 0.8F, 0.89F, 0.95F),
     PULSATILLA(BlockType.STANDARD, 1F, false, -0.31F, 0.168F, 0.25F, 0.73F, 0.84F, 0.93F),
     RAMUNDA(BlockType.STANDARD, 1.0F, false, -0.12F, 0.22f, 0.3f, 0.45f, 0.7f, 0.9f),
@@ -423,6 +422,7 @@ public enum Plant implements RegistryPlant
         FLOWERBED((plant, type) -> PlantBlock.createFlat(plant, fire(nonSolid(plant).offsetType(BlockBehaviour.OffsetType.XZ)))),
         CACTUS_FLOWER((plant, type) -> PlantBlock.createCactusFlower(plant, fire(nonSolid(plant)).sound(SoundType.CROP))),
         CACTUS((plant, type) -> TFCCactusBlock.create(plant, fire(solid().strength(0.25F).sound(SoundType.WOOL)).pathType(PathType.DAMAGE_OTHER))),
+        PASSABLE_CACTUS((plant, type) -> TFCPassableCactusBlock.create(plant, fire(nonSolid(plant).strength(0.25F).sound(SoundType.WOOL)).pathType(PathType.DAMAGE_OTHER))),
         DRY((plant, type) -> PlantBlock.createDry(plant, fire(nonSolid(plant).offsetType(BlockBehaviour.OffsetType.XZ)))),
         CREEPING((plant, type) -> CreepingPlantBlock.create(plant, fire(nonSolid(plant).hasPostProcess(TFCBlocks::always)))), // Post process ensures shape is updated after world gen
         CREEPING_STONE((plant, type) -> CreepingPlantBlock.createStone(plant, fire(nonSolid(plant).hasPostProcess(TFCBlocks::always)))),

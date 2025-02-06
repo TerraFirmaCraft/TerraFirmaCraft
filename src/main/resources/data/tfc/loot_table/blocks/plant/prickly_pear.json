@@ -26,6 +26,13 @@
                   }
                 }
               ]
+            },
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "tfc:plant/prickly_pear",
+              "properties": {
+                "part": "lower"
+              }
             }
           ]
         }

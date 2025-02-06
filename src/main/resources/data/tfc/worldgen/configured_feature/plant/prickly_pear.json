@@ -1,17 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:simple_block",
+  "type": "tfc:tall_plant",
   "config": {
-    "to_place": {
-      "type": "tfc:random_property",
-      "state": {
-        "Name": "tfc:plant/prickly_pear",
-        "Properties": {
-          "age": "1",
-          "stage": "1"
-        }
-      },
-      "property": "age"
-    }
+    "block": "tfc:plant/prickly_pear"
   }
 }
