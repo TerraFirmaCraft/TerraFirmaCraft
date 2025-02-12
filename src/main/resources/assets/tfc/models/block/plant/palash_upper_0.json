@@ -1,0 +1,9 @@
+{
+  "parent": "tfc:block/tfc_azalea_top",
+  "textures": {
+    "cross": "tfc:block/plant/azalea/upper_cross_0",
+    "side": "tfc:block/plant/azalea/top_0",
+    "top": "tfc:block/plant/azalea/top_0",
+    "particle": "tfc:block/plant/azalea/top_0"
+  }
+}

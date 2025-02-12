@@ -1,0 +1,9 @@
+{
+  "parent": "tfc:block/plant/tank_bromeliad",
+  "textures": {
+    "leaves": "tfc:block/plant/tank_bromeliad/leaves",
+    "flower": "tfc:block/plant/tank_bromeliad/flower_0",
+    "water": "block/water_still",
+    "particle": "tfc:block/plant/tank_bromeliad/leaves"
+  }
+}

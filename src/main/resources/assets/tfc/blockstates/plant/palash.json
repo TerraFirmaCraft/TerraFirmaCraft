@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "part=lower": {
+      "model": "tfc:block/plant/palash_lower_dynamic"
+    },
+    "part=upper": {
+      "model": "tfc:block/plant/palash_upper_dynamic"
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "loader": "tfc:plant",
+  "blooming": {
+    "parent": "tfc:block/plant/flame_vine_0"
+  },
+  "seeding": {
+    "parent": "tfc:block/plant/flame_vine_1"
+  },
+  "dying": {
+    "parent": "tfc:block/plant/flame_vine_1"
+  },
+  "dormant": {
+    "parent": "tfc:block/plant/flame_vine_1"
+  },
+  "sprouting": {
+    "parent": "tfc:block/plant/flame_vine_1"
+  },
+  "budding": {
+    "parent": "tfc:block/plant/flame_vine_1"
+  }
+}

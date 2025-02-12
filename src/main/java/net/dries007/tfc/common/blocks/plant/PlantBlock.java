@@ -68,6 +68,24 @@ public abstract class PlantBlock extends TFCBushBlock
         };
     }
 
+    public static PlantBlock createPerchedEpiphyte(RegistryPlant plant, ExtendedProperties properties)
+    {
+        return new PlantBlock(properties)
+        {
+            @Override
+            public RegistryPlant getPlant()
+            {
+                return plant;
+            }
+
+            @Override
+            public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
+            {
+                return isEpiphytePlantable(level.getBlockState(pos.below()));
+            }
+        };
+    }
+
     public static PlantBlock createCactusFlower(RegistryPlant plant, ExtendedProperties properties)
     {
         return new PlantBlock(properties)
@@ -110,6 +128,11 @@ public abstract class PlantBlock extends TFCBushBlock
     public static boolean isDryBlockPlantable(BlockState state)
     {
         return Helpers.isBlock(state, TFCTags.Blocks.DRY_PLANT_PLANTABLE_ON);
+    }
+
+    public static boolean isEpiphytePlantable(BlockState state)
+    {
+        return Helpers.isBlock(state, TFCTags.Blocks.EPIPHYTE_PLANTABLE_ON);
     }
 
     protected PlantBlock(ExtendedProperties properties)

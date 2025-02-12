@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/template_potted_azalea_bush",
+  "textures": {
+    "plant": "tfc:block/plant/palash/qantu",
+    "side": "tfc:block/plant/palash/qantu",
+    "top": "tfc:block/plant/palash/qantu"
+  }
+}

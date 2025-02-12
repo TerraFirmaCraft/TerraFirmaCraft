@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "tfc:block/plant/ramirezella_dynamic_east", "y": 90
+    },
+    "facing=south": {
+      "model": "tfc:block/plant/ramirezella_dynamic_south", "y": 180
+    },
+    "facing=west": {
+      "model": "tfc:block/plant/ramirezella_dynamic_west", "y": 270
+    },
+    "facing=north": {
+      "model": "tfc:block/plant/ramirezella_dynamic_north"
+    }
+  }
+}

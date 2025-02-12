@@ -1,0 +1,9 @@
+{
+  "parent": "tfc:block/tfc_azalea",
+  "textures": {
+    "cross": "tfc:block/plant/mountain_hullwort/cross_0",
+    "side": "tfc:block/plant/mountain_hullwort/side_0",
+    "top": "tfc:block/plant/mountain_hullwort/top_0",
+    "particle": "tfc:block/plant/mountain_hullwort/top_0"
+  }
+}
