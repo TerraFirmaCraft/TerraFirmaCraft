@@ -98,11 +98,11 @@ public interface IGlow
     {
         final Entity entity = getEntity();
         final Level level = entity.level();
-        if (!level.isLoaded(entity.blockPosition()))
+        final BlockPos light = getLightPos();
+        if (!level.isLoaded(light))
         {
             return;
         }
-        final BlockPos light = getLightPos();
         final BlockState state = level.getBlockState(light);
         if (Helpers.isBlock(state, TFCBlocks.LIGHT.get()))
         {
