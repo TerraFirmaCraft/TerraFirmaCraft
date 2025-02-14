@@ -4,18 +4,18 @@
     "parent": "tfc:block/plant/silken_pincushion_cactus_0_0"
   },
   "seeding": {
-    "parent": "tfc:block/plant/silken_pincushion_cactus_1_0"
+    "parent": "tfc:block/plant/silken_pincushion_cactus_0_1"
   },
   "dying": {
-    "parent": "tfc:block/plant/silken_pincushion_cactus_1_0"
+    "parent": "tfc:block/plant/silken_pincushion_cactus_0_1"
   },
   "dormant": {
-    "parent": "tfc:block/plant/silken_pincushion_cactus_1_0"
+    "parent": "tfc:block/plant/silken_pincushion_cactus_0_1"
   },
   "sprouting": {
-    "parent": "tfc:block/plant/silken_pincushion_cactus_1_0"
+    "parent": "tfc:block/plant/silken_pincushion_cactus_0_1"
   },
   "budding": {
-    "parent": "tfc:block/plant/silken_pincushion_cactus_1_0"
+    "parent": "tfc:block/plant/silken_pincushion_cactus_0_1"
   }
 }

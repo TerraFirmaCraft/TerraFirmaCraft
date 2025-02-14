@@ -1,8 +1,10 @@
 {
 	"credit": "Made with Blockbench",
+	"render_type": "minecraft:translucent",
 	"elements": [
 		{
 			"name": "water",
+			"tintindex": 1,
 			"from": [5, 3, 5],
 			"to": [11, 3, 11],
 			"rotation": {"angle": 0, "axis": "y", "origin": [7, 1, 7]},

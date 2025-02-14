@@ -619,6 +619,18 @@ PLANTS: dict[str, Plant] = {
 
     'prickly_pear': Plant(False, -4, 21.2, 55, 155, 'cactus'),
     'prickly_pear_purple': Plant(False, 8.6, 14., 40, 140, 'cactus'),
+
+    'azalea': Plant(False, -4, 15.8, 420, 500, 'tall_plant'),
+    'bird_nest_fern': Plant(False, 17.6, 40, 260, 500, 'perched_epiphyte'),
+    'fan_palm': Plant(False, 23., 40, 270, 420, 'tall_plant'),
+    'mountain_hullwort': Plant(False, 15.8, 40, 270, 500, 'tall_plant'),
+    'palash': Plant(False, 15.8, 24.8, 190, 500, 'tall_plant'),
+    'penwortel': Plant(False, 12.2, 24.8, 135, 380, 'standard'),
+    'qantu': Plant(False, 10.4, 23., 200, 350, 'standard'),
+    'ramirezella': Plant(False, 17.6, 40, 210, 430, 'epiphyte'),
+    'silken_pincushion_cactus': Plant(False, 17.6, 40, 0, 170, 'standard'),
+    'silver_bromeliad': Plant(False, 21.2, 28.4, 25, 110, 'perched_epiphyte'),
+    'tank_bromeliad': Plant(False, 17.6, 26.6, 320, 500, 'perched_epiphyte'),
 }
 
 FLOWERPOT_CROSS_PLANTS = {
@@ -806,7 +818,7 @@ GLASS_TYPES = ('silica', 'hematitic', 'olivine', 'volcanic')
 SHORE_DECORATORS = ('driftwood', 'clam', 'mollusk', 'mussel', 'seaweed', 'sticks_shore', 'guano')
 FOREST_DECORATORS = ('sticks_forest', 'pinecone', 'salt_lick', 'dead_grass', 'humus', 'rotten_flesh', 'bone')
 OCEAN_PLANT_TYPES = ('grass_water', 'floating', 'water', 'emergent', 'tall_water')
-MISC_PLANT_FEATURES = ('hanging_vines', 'hanging_vines_cave', 'spanish_moss', 'saguaro_patch', 'jungle_vines', 'liana', 'moss_cover', 'reindeer_lichen_cover', 'morning_glory_cover', 'philodendron_cover', 'tree_fern', 'arundo')
+MISC_PLANT_FEATURES = ('hanging_vines', 'hanging_vines_cave', 'spanish_moss', 'saguaro_patch', 'jungle_vines', 'liana', 'moss_cover', 'reindeer_lichen_cover', 'morning_glory_cover', 'philodendron_cover', 'tree_fern', 'arundo', 'flame_vine', 'cycad')
 UNDERGROUND_FEATURES = ('cave_column', 'cave_spike', 'large_cave_spike', 'water_spring', 'lava_spring', 'water_surface_spring', 'extra_water_surface_spring', 'glacial_spring', 'ice_sheet_spring', 'calcite', 'mega_calcite', 'icicle', 'underground_loose_rocks', 'underground_guano_patch')
 
 # todo: bush hydration / groundwater separation and proper ranges

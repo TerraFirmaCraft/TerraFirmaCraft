@@ -1,0 +1,31 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:plant/mountain_hullwort_patch",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 5
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "WORLD_SURFACE_WG"
+    },
+    {
+      "type": "tfc:climate",
+      "min_temperature": 15.8,
+      "max_temperature": 40,
+      "min_groundwater": 270,
+      "max_groundwater": 500,
+      "min_rain_variance": -0.55,
+      "max_rain_variance": 0.55,
+      "rain_variance_absolute": false,
+      "min_forest": 0,
+      "max_forest": 3,
+      "min_elevation": 85,
+      "max_elevation": 320
+    }
+  ]
+}

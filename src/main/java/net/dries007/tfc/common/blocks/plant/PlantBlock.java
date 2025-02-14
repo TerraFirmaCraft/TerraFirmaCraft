@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.blocks.plant;
 
+import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
@@ -20,7 +21,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.common.Tags;
 
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCTags;
@@ -104,7 +104,7 @@ public abstract class PlantBlock extends TFCBushBlock
         };
     }
 
-    public static PlantBlock createFlat(RegistryPlant plant, ExtendedProperties properties)
+    public static PlantBlock createFlowerbed(RegistryPlant plant, ExtendedProperties properties)
     {
 
         return new PlantBlock(properties)
@@ -121,6 +121,22 @@ public abstract class PlantBlock extends TFCBushBlock
             public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
             {
                 return SHAPE;
+            }
+
+            // These two methods allow placing extra per block
+            // TODO: Accompanying changes to loot tables
+            @Override
+            protected boolean canBeReplaced(BlockState state, BlockPlaceContext useContext) {
+                return !useContext.isSecondaryUseActive() && useContext.getItemInHand().is(this.asItem()) && state.getValue(AGE) < 3 || super.canBeReplaced(state, useContext);
+            }
+
+            @Nullable
+            public BlockState getStateForPlacement(BlockPlaceContext context) {
+                BlockState blockstate = context.getLevel().getBlockState(context.getClickedPos());
+                if (blockstate.is(this)) {
+                    return blockstate.setValue(AGE, Math.min(3, blockstate.getValue(AGE) + 1));
+                }
+                return super.getStateForPlacement(context);
             }
         };
     }
