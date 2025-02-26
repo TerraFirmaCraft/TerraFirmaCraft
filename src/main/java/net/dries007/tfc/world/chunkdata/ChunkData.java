@@ -161,7 +161,7 @@ public sealed class ChunkData
 
     public float getGroundwater(int x, int z)
     {
-        return getBaseGroundwater(x, z) + getRainfall(x, z);
+        return Math.min(getBaseGroundwater(x, z) + getRainfall(x, z), 500f);
     }
 
     public float getAverageTemp(BlockPos pos)
