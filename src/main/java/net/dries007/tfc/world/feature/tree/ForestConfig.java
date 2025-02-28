@@ -67,6 +67,11 @@ public record ForestConfig(HolderSet<ConfiguredFeature<?, ?>> entries) implement
             return (climate.getMaxTemp() - climate.getMinTemp()) / 2;
         }
 
+        public ClimatePlacement getClimatePlacement()
+        {
+            return climate;
+        }
+
         public float getAverageGroundwater()
         {
             return (climate.getMaxGroundwater() - climate.getMinGroundwater()) / 2;

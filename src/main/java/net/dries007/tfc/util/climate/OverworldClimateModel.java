@@ -109,7 +109,7 @@ public class OverworldClimateModel implements ClimateModel
     @Override
     public float getAverageTemperature(LevelReader level, BlockPos pos)
     {
-        return ChunkData.get(level, pos).getAverageTemp(pos);
+        return ChunkData.get(level, pos).getAverageSeaLevelTemp(pos);
     }
 
     @Override
@@ -125,7 +125,7 @@ public class OverworldClimateModel implements ClimateModel
         final float monthTemperature = calculateMonthlyTemperature(pos.getZ(), monthFactor);
         final float dailyTemperature = calculateDailyTemperature(calendarTicks);
 
-        return adjustTemperatureByElevation(pos.getY(), data.getAverageTemp(pos), monthTemperature, dailyTemperature);
+        return adjustTemperatureByElevation(pos.getY(), data.getAverageSeaLevelTemp(pos), monthTemperature, dailyTemperature);
     }
 
     @Override
