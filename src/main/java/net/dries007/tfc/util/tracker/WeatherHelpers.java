@@ -217,13 +217,14 @@ public final class WeatherHelpers
         final ChunkPos chunkPos = chunk.getPos();
         final BlockPos surfacePos = getRandomSurfacePos(level, chunkPos);
         final float rainfall = model.getRainfall(level, surfacePos);
+        final int daysInMonth = Calendars.SERVER.getCalendarDaysInMonth();
 
         if (timeSinceTick > 1_000)
         {
             // We have not ticked this chunk in a short while, so run catch-up ticks to see if we missed anything
             // First, we need to check for what we might've missed
-            final int daysInMonth = Calendars.SERVER.getCalendarDaysInMonth();
 
+            // Iterates for maximum of two days of weather
             long calendarTick = currentCalendarTick - Math.min(48_000, timeSinceTick);
             int netChangeInSnow = 0; // >0 indicates melting, <0 indicates freezing
 
@@ -253,7 +254,10 @@ public final class WeatherHelpers
             }
             else if (netChangeInSnow < 0)
             {
-                handleSnowMelting(level, chunkPos, -netChangeInSnow);
+                // If it has been more than two days since the chunk was ticked,
+                // apply a multiplier to the melt based on how long it has been
+                final int meltFactor = (int) (Math.max(timeSinceTick / 48_000, 1));
+                handleSnowMelting(level, chunkPos, -netChangeInSnow * meltFactor);
             }
         }
         else if (level.random.nextInt(TICKS_PER_SNOW_ACCUMULATION) == 0)
@@ -299,7 +303,7 @@ public final class WeatherHelpers
 
     /**
      * Snow melting, including ice and icicles, is done randomly per POI chunk section. It can do up to {@code amount} removals,
-     * which simulates snow melting at a consistent rate (snow/tick), rather than random ticks which would be poportional to
+     * which simulates snow melting at a consistent rate (snow/tick), rather than random ticks which would be proportional to
      * the amount of snow in the chunk.
      */
     private static void handleSnowMelting(ServerLevel level, ChunkPos chunkPos, int amount)

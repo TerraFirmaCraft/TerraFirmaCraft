@@ -20,7 +20,7 @@ import net.dries007.tfc.world.feature.TFCIcebergFeature;
 public class IcebergFeatureMixin
 {
     @WrapOperation(
-        method = "carve",
+        method = {"carve", "setIcebergBlock"},
         at = @At(value = "FIELD", target = "Lnet/minecraft/world/level/block/Blocks;WATER:Lnet/minecraft/world/level/block/Block;")
     )
     private Block replaceWaterWithTFCWaterInCarve(Operation<Block> original)
@@ -29,15 +29,6 @@ public class IcebergFeatureMixin
     }
 
     // TODO: Icebergs do not generate below the sea ice/water surface
-    @WrapOperation(
-        method = "setIcebergBlock",
-        at = @At(value = "FIELD", target = "Lnet/minecraft/world/level/block/Blocks;WATER:Lnet/minecraft/world/level/block/Block;")
-    )
-    private Block replaceWaterWithTFCWaterInSetIcebergBlock(Operation<Block> original)
-    {
-        return TFCIcebergFeature.is(this) ? TFCBlocks.SALT_WATER.get() : original.call();
-    }
-
     @WrapOperation(
         method = "setIcebergBlock",
         at = @At(value = "FIELD", target = "Lnet/minecraft/world/level/block/Blocks;ICE:Lnet/minecraft/world/level/block/Block;")

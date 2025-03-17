@@ -4,10 +4,10 @@
     "item": "tfc:silica_glass_batch"
   },
   "operations": [
-    "blow",
-    "stretch",
-    "roll",
-    "saw"
+    "tfc:blow",
+    "tfc:stretch",
+    "tfc:roll",
+    "tfc:saw"
   ],
   "result": {
     "count": 1,

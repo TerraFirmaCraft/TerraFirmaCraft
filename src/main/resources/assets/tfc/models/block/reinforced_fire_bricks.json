@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/cube_column",
+  "textures": {
+    "side": "tfc:block/reinforced_fire_bricks",
+    "end": "tfc:block/fire_bricks",
+    "particle": "tfc:block/reinforced_fire_bricks"
+  }
+}

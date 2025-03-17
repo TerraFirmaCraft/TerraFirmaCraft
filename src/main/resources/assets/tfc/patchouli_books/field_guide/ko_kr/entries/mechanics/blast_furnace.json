@@ -15,7 +15,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "용광로와 함께 $(thing)굴뚝$()을 건설해야 합니다. 굴뚝은 뜨겁고 강렬한 열기를 감당하기 위해서 $(l:mechanics/fire_clay#fire_bricks)내화벽돌$()로 만들어야 합니다. 그리고서는 굴뚝을 강화하기 위해 $(thing)연철판$()이 필요합니다. 원한다면 $(thing)강철$() 등의 더 강한 재료도 사용할 수 있습니다."
+      "text": "You will then need to construct the blast furnace, along with its $(thing)Chimney$(). The chimney must be composed out of $(l:mechanics/fire_clay#fire_bricks)Reinforced Fire Bricks$(), as they are strong enough to withstand the intense heat. These can be crafted from fire brick blocks, and either wrought iron or steel sheets."
     },
     {
       "type": "patchouli:multiblock",

@@ -7,6 +7,8 @@
 package net.dries007.tfc.common.items;
 
 import java.util.List;
+
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -17,9 +19,9 @@ import net.dries007.tfc.common.component.glass.IGlassworkingTool;
 
 public class GlassworkingItem extends Item implements IGlassworkingTool
 {
-    private final GlassOperation operation;
+    private final Holder<GlassOperation> operation;
 
-    public GlassworkingItem(Properties properties, GlassOperation operation)
+    public GlassworkingItem(Properties properties, Holder<GlassOperation> operation)
     {
         super(properties);
         this.operation = operation;
@@ -28,7 +30,7 @@ public class GlassworkingItem extends Item implements IGlassworkingTool
     @Override
     public GlassOperation getOperation()
     {
-        return operation;
+        return operation.value();
     }
 
     @Override

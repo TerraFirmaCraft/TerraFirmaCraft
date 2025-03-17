@@ -9,8 +9,6 @@ package net.dries007.tfc.common.component.glass;
 import java.util.List;
 import net.minecraft.network.chat.Component;
 
-import net.dries007.tfc.util.Helpers;
-
 /**
  * Marker interface for tools which are used in glassworking in the off-hand.
  */
@@ -23,6 +21,6 @@ public interface IGlassworkingTool
 
     default void addToolTooltip(List<Component> tooltip)
     {
-        tooltip.add(Component.translatable("tfc.tooltip.glass.tool_description", Helpers.translateEnum(getOperation())));
+        tooltip.add(Component.translatable("tfc.tooltip.glass.tool_description", Component.translatable(getOperation().getTranslationId())));
     }
 }

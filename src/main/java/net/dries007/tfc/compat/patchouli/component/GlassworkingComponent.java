@@ -34,7 +34,7 @@ public class GlassworkingComponent extends InputOutputComponent<GlassworkingReci
         int idx = 0;
         for (GlassOperation operation : recipe.operations())
         {
-            final Component text = Component.literal((idx + 1) + ". ").append(Helpers.translateEnum(operation)).withStyle(Style.EMPTY.withFont(Minecraft.UNIFORM_FONT));
+            final Component text = Component.literal((idx + 1) + ". ").append(Component.translatable(operation.getTranslationId())).withStyle(Style.EMPTY.withFont(Minecraft.UNIFORM_FONT));
             graphics.drawString(font, text, 14, 30 + (idx * 9), 0x404040, false);
             idx++;
         }

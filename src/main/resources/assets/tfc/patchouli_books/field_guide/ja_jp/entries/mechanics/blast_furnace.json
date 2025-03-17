@@ -15,7 +15,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "次に、高炉とその $(thing)煙突$() を建設する必要があります。 煙突は $(l:mechanics/fire_clay#fire_bricks)耐火レンガ$() で作る必要があります。これは、高炉の高温に耐えるのに十分な強度があるためです。 さらに補強するために、$(thing)錬鉄の金属板$() で裏打ちする必要があります。 必要に応じて、$(thing)鋼$() などのより強力な金属を金属板に使用することもできます。"
+      "text": "You will then need to construct the blast furnace, along with its $(thing)Chimney$(). The chimney must be composed out of $(l:mechanics/fire_clay#fire_bricks)Reinforced Fire Bricks$(), as they are strong enough to withstand the intense heat. These can be crafted from fire brick blocks, and either wrought iron or steel sheets."
     },
     {
       "type": "patchouli:multiblock",

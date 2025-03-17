@@ -52,14 +52,10 @@ public class BlastFurnaceBlock extends DeviceBlock implements IBellowsConsumer
             .match(new BlockPos(0, 0, -1), TFCTags.Blocks.BLAST_FURNACE_INSULATION)
             .match(new BlockPos(1, 0, 0), TFCTags.Blocks.BLAST_FURNACE_INSULATION)
             .match(new BlockPos(-1, 0, 0), TFCTags.Blocks.BLAST_FURNACE_INSULATION)
-            .match(new BlockPos(0, 0, -2), matchSheet(Direction.SOUTH))
-            .match(new BlockPos(0, 0, 2), matchSheet(Direction.NORTH))
-            .match(new BlockPos(2, 0, 0), matchSheet(Direction.WEST))
-            .match(new BlockPos(-2, 0, 0), matchSheet(Direction.EAST))
-            .match(new BlockPos(-1, 0, -1), matchSheet(Direction.SOUTH, Direction.EAST))
-            .match(new BlockPos(1, 0, -1), matchSheet(Direction.SOUTH, Direction.WEST))
-            .match(new BlockPos(-1, 0, 1), matchSheet(Direction.NORTH, Direction.EAST))
-            .match(new BlockPos(1, 0, 1), matchSheet(Direction.NORTH, Direction.WEST));
+            .match(new BlockPos(1, 0, 1), TFCTags.Blocks.BLAST_FURNACE_INSULATION)
+            .match(new BlockPos(1, 0, -1), TFCTags.Blocks.BLAST_FURNACE_INSULATION)
+            .match(new BlockPos(-1, 0, -1), TFCTags.Blocks.BLAST_FURNACE_INSULATION)
+            .match(new BlockPos(-1, 0, 1), TFCTags.Blocks.BLAST_FURNACE_INSULATION);
     }
 
     public static boolean isBlastFurnaceInsulationBlock(BlockState state)

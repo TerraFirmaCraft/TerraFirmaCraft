@@ -62,11 +62,11 @@ public enum ChooseBiomes implements RegionTask
                     {
                         point.biome = ICE_SHEET_OCEANIC_MOUNTAINS;
                     }
-                    else if (temp < maxIceSheetTemp + 6) //
+                    else if (temp < maxIceSheetTemp + 6)
                     {
                         point.biome = GLACIATED_OCEANIC_MOUNTAINS;
                     }
-                    else if (temp < maxIceSheetTemp + 10) //
+                    else if (temp < maxIceSheetTemp + 10)
                     {
                         point.biome = GLACIALLY_CARVED_OCEANIC_MOUNTAINS;
                     }

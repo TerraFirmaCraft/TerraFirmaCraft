@@ -540,6 +540,7 @@ public final class TFCCreativeTabs
         out.accept(TFCItems.DEAD_TORCH);
         out.accept(TFCBlocks.BARREL_RACK);
         out.accept(TFCBlocks.FIRE_BRICKS);
+        out.accept(TFCBlocks.REINFORCED_FIRE_BRICKS);
         out.accept(TFCBlocks.FIRE_CLAY_BLOCK);
 
         out.accept(TFCBlocks.AGGREGATE);

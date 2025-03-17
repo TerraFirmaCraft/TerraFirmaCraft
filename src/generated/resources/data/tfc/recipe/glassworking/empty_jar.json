@@ -4,10 +4,10 @@
     "tag": "tfc:glass_batches_tier_2"
   },
   "operations": [
-    "blow",
-    "pinch",
-    "roll",
-    "saw"
+    "tfc:blow",
+    "tfc:pinch",
+    "tfc:roll",
+    "tfc:saw"
   ],
   "result": {
     "count": 1,

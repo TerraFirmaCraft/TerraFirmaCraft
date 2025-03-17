@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import com.google.common.collect.ImmutableMap;
+import net.dries007.tfc.common.blocks.*;
 import net.minecraft.core.Holder;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.Registries;
@@ -34,10 +35,6 @@ import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blocks.DecorationBlockHolder;
-import net.dries007.tfc.common.blocks.GroundcoverBlockType;
-import net.dries007.tfc.common.blocks.SandstoneBlockType;
-import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Ore;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
@@ -882,7 +879,7 @@ public interface CraftingRecipes extends Recipes
             .input(Items.GLASS_PANE)
             .shapeless(TFCItems.BLANK_DISC);
         recipe()
-            .input('S', ingredientOf(Metal.WROUGHT_IRON, Metal.ItemType.SHEET))
+            .input('S', ingredientOf(Metal.WROUGHT_IRON, Metal.ItemType.DOUBLE_SHEET))
             .input('C', TFCBlocks.CRUCIBLE)
             .pattern("SSS", "SCS", "SSS")
             .shaped(TFCBlocks.BLAST_FURNACE);
@@ -919,7 +916,11 @@ public interface CraftingRecipes extends Recipes
             .input(TFCTags.Items.MUD)
             .input(Items.CLAY_BALL)
             .shapeless(TFCItems.DAUB, 2);
-        recipe().bricksWithMortar(TFCItems.FIRE_BRICK, TFCBlocks.FIRE_BRICKS, 2);
+        recipe().bricksWithMortar(TFCItems.FIRE_BRICK, TFCBlocks.FIRE_BRICKS, 4);
+        recipe()
+            .input(TFCBlocks.FIRE_BRICKS)
+            .input(ingredientOf(Metal.WROUGHT_IRON, Metal.ItemType.SHEET))
+            .shapeless(TFCBlocks.REINFORCED_FIRE_BRICKS);
         recipe()
             .input(TFCItems.POWDERS.get(Powder.KAOLINITE), 4)
             .input(TFCItems.ORE_POWDERS.get(Ore.GRAPHITE), 4)

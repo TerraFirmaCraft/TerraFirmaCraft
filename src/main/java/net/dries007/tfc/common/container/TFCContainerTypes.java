@@ -54,7 +54,6 @@ public final class TFCContainerTypes
     public static final Id<GrillContainer> GRILL = TFCContainerTypes.<GrillBlockEntity, GrillContainer>registerBlock("grill", TFCBlockEntities.GRILL, GrillContainer::create);
     public static final Id<PotContainer> POT = TFCContainerTypes.<PotBlockEntity, PotContainer>registerBlock("pot", TFCBlockEntities.POT, PotContainer::create);
     public static final Id<CharcoalForgeContainer> CHARCOAL_FORGE = TFCContainerTypes.<CharcoalForgeBlockEntity, CharcoalForgeContainer>registerBlock("charcoal_forge", TFCBlockEntities.CHARCOAL_FORGE, CharcoalForgeContainer::create);
-    public static final Id<LogPileContainer> LOG_PILE = TFCContainerTypes.<LogPileBlockEntity, LogPileContainer>registerBlock("log_pile", TFCBlockEntities.LOG_PILE, LogPileContainer::create);
     public static final Id<CrucibleContainer> CRUCIBLE = TFCContainerTypes.<CrucibleBlockEntity, CrucibleContainer>registerBlock("crucible", TFCBlockEntities.CRUCIBLE, CrucibleContainer::create);
     public static final Id<BarrelContainer> BARREL = TFCContainerTypes.<BarrelBlockEntity, BarrelContainer>registerBlock("barrel", TFCBlockEntities.BARREL, BarrelContainer::create);
     public static final Id<PowderkegContainer> POWDERKEG = TFCContainerTypes.<PowderkegBlockEntity, PowderkegContainer>registerBlock("powderkeg", TFCBlockEntities.POWDERKEG, PowderkegContainer::create);

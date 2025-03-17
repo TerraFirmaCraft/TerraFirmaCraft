@@ -1,8 +1,117 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "": {
-      "model": "tfc:block/burning_log_pile"
+    "axis=x,count=1": {
+      "model": "tfc:block/log_pile/log_pile_1_burning",
+      "y": 90
+    },
+    "axis=z,count=1": {
+      "model": "tfc:block/log_pile/log_pile_1_burning"
+    },
+    "axis=x,count=2": {
+      "model": "tfc:block/log_pile/log_pile_2_burning",
+      "y": 90
+    },
+    "axis=z,count=2": {
+      "model": "tfc:block/log_pile/log_pile_2_burning"
+    },
+    "axis=x,count=3": {
+      "model": "tfc:block/log_pile/log_pile_3_burning",
+      "y": 90
+    },
+    "axis=z,count=3": {
+      "model": "tfc:block/log_pile/log_pile_3_burning"
+    },
+    "axis=x,count=4": {
+      "model": "tfc:block/log_pile/log_pile_4_burning",
+      "y": 90
+    },
+    "axis=z,count=4": {
+      "model": "tfc:block/log_pile/log_pile_4_burning"
+    },
+    "axis=x,count=5": {
+      "model": "tfc:block/log_pile/log_pile_5_burning",
+      "y": 90
+    },
+    "axis=z,count=5": {
+      "model": "tfc:block/log_pile/log_pile_5_burning"
+    },
+    "axis=x,count=6": {
+      "model": "tfc:block/log_pile/log_pile_6_burning",
+      "y": 90
+    },
+    "axis=z,count=6": {
+      "model": "tfc:block/log_pile/log_pile_6_burning"
+    },
+    "axis=x,count=7": {
+      "model": "tfc:block/log_pile/log_pile_7_burning",
+      "y": 90
+    },
+    "axis=z,count=7": {
+      "model": "tfc:block/log_pile/log_pile_7_burning"
+    },
+    "axis=x,count=8": {
+      "model": "tfc:block/log_pile/log_pile_8_burning",
+      "y": 90
+    },
+    "axis=z,count=8": {
+      "model": "tfc:block/log_pile/log_pile_8_burning"
+    },
+    "axis=x,count=9": {
+      "model": "tfc:block/log_pile/log_pile_9_burning",
+      "y": 90
+    },
+    "axis=z,count=9": {
+      "model": "tfc:block/log_pile/log_pile_9_burning"
+    },
+    "axis=x,count=10": {
+      "model": "tfc:block/log_pile/log_pile_10_burning",
+      "y": 90
+    },
+    "axis=z,count=10": {
+      "model": "tfc:block/log_pile/log_pile_10_burning"
+    },
+    "axis=x,count=11": {
+      "model": "tfc:block/log_pile/log_pile_11_burning",
+      "y": 90
+    },
+    "axis=z,count=11": {
+      "model": "tfc:block/log_pile/log_pile_11_burning"
+    },
+    "axis=x,count=12": {
+      "model": "tfc:block/log_pile/log_pile_12_burning",
+      "y": 90
+    },
+    "axis=z,count=12": {
+      "model": "tfc:block/log_pile/log_pile_12_burning"
+    },
+    "axis=x,count=13": {
+      "model": "tfc:block/log_pile/log_pile_13_burning",
+      "y": 90
+    },
+    "axis=z,count=13": {
+      "model": "tfc:block/log_pile/log_pile_13_burning"
+    },
+    "axis=x,count=14": {
+      "model": "tfc:block/log_pile/log_pile_14_burning",
+      "y": 90
+    },
+    "axis=z,count=14": {
+      "model": "tfc:block/log_pile/log_pile_14_burning"
+    },
+    "axis=x,count=15": {
+      "model": "tfc:block/log_pile/log_pile_15_burning",
+      "y": 90
+    },
+    "axis=z,count=15": {
+      "model": "tfc:block/log_pile/log_pile_15_burning"
+    },
+    "axis=x,count=16": {
+      "model": "tfc:block/log_pile/log_pile_16_burning",
+      "y": 90
+    },
+    "axis=z,count=16": {
+      "model": "tfc:block/log_pile/log_pile_16_burning"
     }
   }
 }

@@ -21,26 +21,21 @@ public enum AddHotspots implements RegionTask
     public void apply(RegionGenerator.Context context)
     {
         final Region region = context.region;
-        final Seed seed = context.generator().seed();
         final double threshold = 0.65;
         final double expansionThreshold = 0.15;
-
-        final Noise2D hotspotAge = BiomeNoise.hotSpotAge(seed.seed()).spread(128);
-        final Noise2D hotspotIntensity = BiomeNoise.hotSpotIntensity(seed.seed()).spread(128);
-        final Cellular2D plateRegions = BiomeNoise.plateRegions(seed.seed()).spread(128);
 
         final IntArrayFIFOQueue queue = new IntArrayFIFOQueue();
 
         // If a location reaches a value of at least exceeding a threshold value, a hot spot is placed in the region
         for (final var point : region.points())
         {
-            final Cellular2D.Cell cell = plateRegions.cell(point.x, point.z);
+            final Cellular2D.Cell cell = context.generator().plateRegionNoise.cell(point.x, point.z);
             final double edgeDist = Math.abs(cell.f1() - cell.f2());
 
-            double val = hotspotIntensity.noise(shift(point.x), shift(point.z));
+            double val = context.generator().hotSpotIntensityNoise.noise(shift(point.x), shift(point.z));
             if (val > threshold && edgeDist > 0.05)
             {
-                final byte age = (byte) (int) hotspotAge.noise(shift(point.x), shift(point.z));
+                final byte age = (byte) (int) context.generator().hotSpotAgeNoise.noise(shift(point.x), shift(point.z));
                 point.hotSpotAge = age;
                 if (age != 4)
                     point.setLand();
@@ -52,48 +47,39 @@ public enum AddHotspots implements RegionTask
         while (!queue.isEmpty())
         {
             final int index = queue.dequeueInt();
-            final byte lastAge = region.atIndex(index).hotSpotAge;
-            final Noise2D intensityNoise = (lastAge == 1 ? BiomeNoise.activeHotSpots(seed.seed())
-                : lastAge == 2 ? BiomeNoise.dormantHotSpots(seed.seed())
-                : lastAge == 3 ? BiomeNoise.extinctHotSpots(seed.seed()) : BiomeNoise.ancientHotSpots(seed.seed())).spread(128);
+            final byte lastAge = region.atIndex(index).hotSpotAge;;
 
             for (int dx = -1; dx <= 1; dx++)
             {
                 for (int dz = -1; dz <= 1; dz++)
                 {
                     final Region.Point next = region.atOffset(index, dx, dz);
-                    if (next != null)
+                    if (next != null && next.hotSpotAge == 0)
                     {
-                        if (next.hotSpotAge == 0)
+                        if (context.generator().hotSpotIntensityNoise.noise(shift(next.x), shift(next.z)) > expansionThreshold)
                         {
-                            if (intensityNoise.noise(shift(next.x), shift(next.z)) > expansionThreshold)
-                            {
-                                queue.enqueue(next.index);
-                                next.hotSpotAge = lastAge;
-                                if (lastAge != 4)
-                                    next.setLand();
-                            }
-                            // This adds an extra layer outside where the hotspot exceeds the threshold as a buffer against oceans
-                            else if (!next.land() && intensityNoise.noise(shift(next.x) - dx, shift(next.z) - dz) > expansionThreshold)
-                            {
-                                // Do not set land on the outer layer
-                                next.hotSpotAge = lastAge;
-                                if (lastAge != 4)
-                                    next.setLand();
-                            }
+                            queue.enqueue(next.index);
+                            next.hotSpotAge = lastAge;
+                            if (lastAge != 4)
+                                next.setLand();
+                        }
+                        // This adds an extra layer outside where the hotspot exceeds the threshold as a buffer against oceans
+                        else if (!next.land() && context.generator().hotSpotIntensityNoise.noise(shift(next.x) - dx, shift(next.z) - dz) > expansionThreshold)
+                        {
+                            // Do not set land on the outer layer
+                            next.hotSpotAge = lastAge;
+                            if (lastAge != 4)
+                                next.setLand();
                         }
                     }
                 }
             }
         }
-
     }
 
-    // Shifts the location by 0.5 towards the origin.
     // Use this when sampling noise from regional coordinates to sample the center of the region point
     public double shift(int point)
     {
-        if (point == 0) return 0;
-        return point - (0.5 * Math.signum(point));
+        return point + 0.5;
     }
 }

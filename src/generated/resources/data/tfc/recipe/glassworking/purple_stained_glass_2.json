@@ -4,9 +4,9 @@
     "tag": "tfc:glass_batches"
   },
   "operations": [
-    "copper",
-    "iron",
-    "basin_pour"
+    "tfc:copper",
+    "tfc:iron",
+    "tfc:basin_pour"
   ],
   "result": {
     "count": 1,

@@ -21,6 +21,11 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexBuffer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Axis;
+import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.MoltenBlock;
+import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.devices.CharcoalForgeBlock;
+import net.dries007.tfc.common.blocks.devices.FirepitBlock;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.ParticleStatus;
@@ -58,6 +63,7 @@ import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.ClimateRenderCache;
 import net.dries007.tfc.common.blocks.IBlockRain;
 import net.dries007.tfc.util.Helpers;
@@ -65,6 +71,8 @@ import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateModel;
 import net.dries007.tfc.util.tracker.WeatherHelpers;
+
+import static net.dries007.tfc.common.blocks.devices.FirepitBlock.LIT;
 
 /**
  * Overrides {@link DimensionSpecialEffects.OverworldEffects} in order to provide additional features and modifications of the weather
@@ -75,8 +83,20 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
     public static final LevelRendererExtension INSTANCE = new LevelRendererExtension();
 
     // Most of this is copied from LevelRenderer
-    private static final ResourceLocation RAIN_LOCATION = ResourceLocation.withDefaultNamespace("textures/environment/rain.png");
-    private static final ResourceLocation SNOW_LOCATION = ResourceLocation.withDefaultNamespace("textures/environment/snow.png");
+
+    private static final ResourceLocation[] RAIN_LOCATIONS = new ResourceLocation[] {
+        Helpers.identifier("textures/environment/rain_0.png"),
+        Helpers.identifier("textures/environment/rain_1.png"),
+        Helpers.identifier("textures/environment/rain_2.png"),
+        Helpers.identifier("textures/environment/rain_3.png"),
+    };
+
+    private static final ResourceLocation[] SNOW_LOCATIONS = new ResourceLocation[] {
+        Helpers.identifier("textures/environment/snow_0.png"),
+        Helpers.identifier("textures/environment/snow_1.png"),
+        Helpers.identifier("textures/environment/snow_2.png"),
+        Helpers.identifier("textures/environment/snow_3.png"),
+    };
     private static final ResourceLocation MOON_LOCATION = ResourceLocation.withDefaultNamespace("textures/environment/moon_phases.png");
     private static final ResourceLocation SUN_LOCATION = ResourceLocation.withDefaultNamespace("textures/environment/sun.png");
 
@@ -164,6 +184,7 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
      * <ul>
      *     <li>We don't implement End-dimension rendering, as this is only used for the overworld</li>
      * </ul>
+     *
      * @return {@code true} to prevent vanilla sky rendering
      */
     @Override
@@ -331,6 +352,7 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
      *     <li>Uses a modified function to query for current precipitation including climate</li>
      *     <li>Renders a different amount of rain and snow based on the current intensity of the weather event</li>
      * </ul>
+     *
      * @return {@code true} to prevent vanilla rendering
      */
     @Override
@@ -345,6 +367,7 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
             final float camX = (float) sourceCameraX;
             final float camY = (float) sourceCameraY;
             final float camZ = (float) sourceCameraZ;
+
             final int blockX = Mth.floor(camX);
             final int blockY = Mth.floor(camY);
             final int blockZ = Mth.floor(camZ);
@@ -419,7 +442,11 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
                                 }
 
                                 stateFlag = 0;
-                                RenderSystem.setShaderTexture(0, RAIN_LOCATION);
+
+
+                                // select the texture based on the amount of rain
+                                RenderSystem.setShaderTexture(0, RAIN_LOCATIONS[Mth.clamp(Mth.floor(rainIntensity * 4.0f), 0,3)]);
+
                                 buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
                             }
 
@@ -439,8 +466,7 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
                             // far-away blocks. This affects us more as we have more distant rainfall (15 vs. 10 max in vanilla)
                             float f6 = (float) Math.sqrt(d2 * d2 + d3 * d3) / blockRadius;
                             final float alpha = Mth.clamp((1.0F - f6 * f6) * 0.5F + 0.5F, 0f, 1f)
-                                * rainLevel
-                                * Mth.clampedMap(rainIntensity, 0f, 0.4f, 0, 1);
+                                * rainLevel;
 
                             cursor.set(x, y, z);
 
@@ -474,7 +500,9 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
                                 }
 
                                 stateFlag = 1;
-                                RenderSystem.setShaderTexture(0, SNOW_LOCATION);
+
+                                RenderSystem.setShaderTexture(0, SNOW_LOCATIONS[Mth.clamp(Mth.floor(rainIntensity * 4.0f), 0,3)]);
+
                                 buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
                             }
 
@@ -534,6 +562,7 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
      *     <li>Uses a modified function to query for current precipitation including climate</li>
      *     <li>Makes rain sounds quieter and reduce particles in less intense rainfall</li>
      * </ul>
+     *
      * @return {@code true} to prevent vanilla rain ticking
      */
     @Override
@@ -541,6 +570,7 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
     {
         final Minecraft minecraft = Minecraft.getInstance();
         final float rainLevel = ClimateRenderCache.INSTANCE.getRainLevel(0f);
+        final boolean isSnowing = ClimateRenderCache.INSTANCE.getTemperature() < 0;
         if (rainLevel > 0.0F)
         {
             final RandomSource random = RandomSource.create(ticks * 312987231L);
@@ -555,58 +585,63 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
                 * Mth.clampedMap(rainIntensity, 0, 0.3f, 0, 1)
                 * (Minecraft.useFancyGraphics() ? 1f : 0.5f)
                 * (minecraft.options.particles().get() == ParticleStatus.DECREASED ? 0.7f : 1f);
-            final int particleAmount = (int) (100f * adjustedRainIntensity * adjustedRainIntensity);
+            final int particleAmount = isSnowing ? 0 : (int) (100f * adjustedRainIntensity * adjustedRainIntensity);
 
             // Modification from vanilla, since we are using a cursor, we track if we added any particles rather than checking
             // if the position is not null, so we can make sounds for them
             boolean addedAnyParticles = false;
 
-            for (int n = 0; n < particleAmount; n++)
+            if (!isSnowing) // If snowing no particles/sound
             {
-                final int dx = random.nextInt(21) - 10;
-                final int dz = random.nextInt(21) - 10;
-
-                cursor.setWithOffset(cameraPos, dx, 0, dz);
-                cursor.setY(level.getHeight(Heightmap.Types.MOTION_BLOCKING, cursor.getX(), cursor.getZ()));
-
-                if (cursor.getY() > level.getMinBuildHeight() && cursor.getY() <= cameraPos.getY() + 10 && cursor.getY() >= cameraPos.getY() - 10)
+                for (int n = 0; n < particleAmount; n++)
                 {
-                    cursor.move(Direction.DOWN);
-                    addedAnyParticles = true;
+                    final int dx = random.nextInt(21) - 10;
+                    final int dz = random.nextInt(21) - 10;
 
-                    // Don't check the biome, as all overworld biomes should support rain, and we checked that above
+                    cursor.setWithOffset(cameraPos, dx, 0, dz);
+                    cursor.setY(level.getHeight(Heightmap.Types.MOTION_BLOCKING, cursor.getX(), cursor.getZ()));
 
-                    // With minimal particle options, we still search for a position (as we use it to determine if we need to play rain sounds), but we
-                    // stop at the first one, before spawning any particles for it.
-                    if (minecraft.options.particles().get() == ParticleStatus.MINIMAL)
+                    if (cursor.getY() > level.getMinBuildHeight() && cursor.getY() <= cameraPos.getY() + 10 && cursor.getY() >= cameraPos.getY() - 10)
                     {
-                        break;
+                        cursor.move(Direction.DOWN);
+                        addedAnyParticles = true;
+
+                        // Don't check the biome, as all overworld biomes should support rain, and we checked that above
+
+                        // With minimal particle options, we still search for a position (as we use it to determine if we need to play rain sounds), but we
+                        // stop at the first one, before spawning any particles for it.
+                        if (minecraft.options.particles().get() == ParticleStatus.MINIMAL)
+                        {
+                            break;
+                        }
+
+                        final double offsetX = random.nextDouble();
+                        final double offsetZ = random.nextDouble();
+                        final BlockState state = level.getBlockState(cursor);
+                        final FluidState fluid = level.getFluidState(cursor);
+
+                        // Handle `IBlockRain`, which needs to pretend the block is a solid block.
+                        final VoxelShape shape = state.getBlock() instanceof IBlockRain
+                            ? Shapes.block()
+                            : state.getCollisionShape(level, cursor);
+                        final double offsetY = Math.max(
+                            shape.max(Direction.Axis.Y, offsetX, offsetZ),
+                            fluid.getHeight(level, cursor)
+                        );
+
+                        final ParticleOptions options = !fluid.is(FluidTags.LAVA)
+                            && !state.is(TFCTags.Blocks.SMOKES_IN_RAIN)
+                            && !CampfireBlock.isLitCampfire(state)
+                            && !(state.is(TFCBlocks.FIREPIT.get()) && state.getValue(FirepitBlock.LIT))
+                            && !(state.is(TFCBlocks.CHARCOAL_FORGE.get()) && state.getValue(CharcoalForgeBlock.HEAT) > 0)
+                            ? ParticleTypes.RAIN
+                            : ParticleTypes.SMOKE;
+                        level.addParticle(options, cursor.getX() + offsetX, cursor.getY() + offsetY, cursor.getZ() + offsetZ, 0.0, 0.0, 0.0);
                     }
-
-                    final double offsetX = random.nextDouble();
-                    final double offsetZ = random.nextDouble();
-                    final BlockState state = level.getBlockState(cursor);
-                    final FluidState fluid = level.getFluidState(cursor);
-
-                    // Handle `IBlockRain`, which needs to pretend the block is a solid block.
-                    final VoxelShape shape = state.getBlock() instanceof IBlockRain
-                        ? Shapes.block()
-                        : state.getCollisionShape(level, cursor);
-                    final double offsetY = Math.max(
-                        shape.max(Direction.Axis.Y, offsetX, offsetZ),
-                        fluid.getHeight(level, cursor)
-                    );
-
-                    final ParticleOptions options = !fluid.is(FluidTags.LAVA)
-                        && !state.is(Blocks.MAGMA_BLOCK)
-                        && !CampfireBlock.isLitCampfire(state)
-                        ? ParticleTypes.RAIN
-                        : ParticleTypes.SMOKE;
-                    level.addParticle(options, cursor.getX() + offsetX, cursor.getY() + offsetY, cursor.getZ() + offsetZ, 0.0, 0.0, 0.0);
                 }
             }
 
-            if (addedAnyParticles && random.nextInt(3) < rainSoundTime++)
+            if (!isSnowing && addedAnyParticles && random.nextInt(3) < rainSoundTime++)
             {
                 rainSoundTime = 0;
 

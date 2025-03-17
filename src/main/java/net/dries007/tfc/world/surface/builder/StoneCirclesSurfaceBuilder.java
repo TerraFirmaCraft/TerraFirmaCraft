@@ -16,20 +16,19 @@ public class StoneCirclesSurfaceBuilder implements SurfaceBuilder
 {
     public static final SurfaceBuilderFactory INSTANCE = StoneCirclesSurfaceBuilder::new;
 
-    private final Seed seed;
+    private final NormalSurfaceBuilder surfaceBuilder;
+    private final Noise2D edgeNoise;
 
     public StoneCirclesSurfaceBuilder(Seed seed)
     {
-        this.seed = seed;
+        this.surfaceBuilder = NormalSurfaceBuilder.ROCKY;
+        this.edgeNoise = BiomeNoise.stoneCircles(seed.seed());
     }
 
     @Override
     public void buildSurface(SurfaceBuilderContext context, int startY, int endY)
     {
-        final NormalSurfaceBuilder surfaceBuilder = NormalSurfaceBuilder.ROCKY;
-        final Noise2D edges = BiomeNoise.stoneCircles(seed.seed());
-
-        if (edges.noise(context.pos().getX(), context.pos().getZ()) * context.weight() <= 0.60)
+        if (edgeNoise.noise(context.pos().getX(), context.pos().getZ()) * context.weight() <= 0.60)
         {
             surfaceBuilder.buildSurface(context, startY, endY, SurfaceStates.SNOWY_SAND_AND_GRAVEL, SurfaceStates.SAND_AND_GRAVEL, SurfaceStates.GRAVEL);
         }

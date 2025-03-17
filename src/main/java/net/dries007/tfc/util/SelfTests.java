@@ -23,6 +23,7 @@ import java.util.stream.Stream;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.logging.LogUtils;
+import net.dries007.tfc.common.blocks.plant.*;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.BlockModelShaper;
@@ -66,10 +67,6 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.IngotPileBlock;
 import net.dries007.tfc.common.blocks.devices.ScrapingBlock;
 import net.dries007.tfc.common.blocks.devices.SheetPileBlock;
-import net.dries007.tfc.common.blocks.plant.BodyPlantBlock;
-import net.dries007.tfc.common.blocks.plant.BranchingCactusBlock;
-import net.dries007.tfc.common.blocks.plant.GrowingBranchingCactusBlock;
-import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.blocks.plant.fruit.GrowingFruitTreeBranchBlock;
 import net.dries007.tfc.common.blocks.rock.RockDisplayCategory;
 import net.dries007.tfc.common.component.food.Nutrient;
@@ -298,7 +295,7 @@ public final class SelfTests
             .toList();
         final List<BlockState> missingParticleErrors = TFCBlocks.BLOCKS.getEntries()
             .stream()
-            .flatMap(states(s -> !s.isAir() && !(s.getBlock() instanceof IngotPileBlock) && !(s.getBlock() instanceof SheetPileBlock) && !(s.getBlock() instanceof ScrapingBlock) && shaper.getParticleIcon(s) == missingParticle))
+            .flatMap(states(s -> !s.isAir() && !(s.getBlock() instanceof IngotPileBlock) && !(s.getBlock() instanceof SheetPileBlock) && !(s.getBlock() instanceof PlantBlock) && !(s.getBlock() instanceof ScrapingBlock) && shaper.getParticleIcon(s) == missingParticle))
             .toList();
 
         return logErrors("{} block states with missing models:", missingModelErrors, LOGGER)

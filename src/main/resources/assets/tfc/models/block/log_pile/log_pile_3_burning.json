@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/log_pile/log_pile_3",
+  "textures": {
+    "0": "tfc:block/molten_lit",
+    "1": "tfc:block/molten_lit",
+    "particle": "tfc:block/molten_lit"
+  }
+}

@@ -4,9 +4,9 @@
     "item": "tfc:silica_glass_batch"
   },
   "operations": [
-    "blow",
-    "pinch",
-    "saw"
+    "tfc:blow",
+    "tfc:pinch",
+    "tfc:saw"
   ],
   "result": {
     "count": 1,

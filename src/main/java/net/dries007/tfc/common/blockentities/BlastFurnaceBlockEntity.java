@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blockentities;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -348,7 +349,7 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
         nbt.put("catalystStacks", Helpers.writeItemStacksToNbt(provider, catalystStacks));
         nbt.put("fuelStacks", Helpers.writeItemStacksToNbt(provider, fuelStacks));
 
-        nbt.put("inputFluid", inputFluid.save(provider));
+        nbt.put("inputFluid", inputFluid.saveOptional(provider));
         nbt.put("outputFluidTank", outputFluidTank.writeToNBT(provider, new CompoundTag()));
 
         nbt.putFloat("temperature", temperature);

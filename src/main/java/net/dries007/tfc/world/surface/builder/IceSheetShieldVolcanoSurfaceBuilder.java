@@ -24,21 +24,21 @@ public class IceSheetShieldVolcanoSurfaceBuilder implements SurfaceBuilder
     public static final SurfaceBuilderFactory GLACIATED = seed -> new IceSheetShieldVolcanoSurfaceBuilder(seed, BiomeNoise.glaciatedShieldVolcano(seed.seed(), BiomeNoise.hotSpotIntensity(seed.seed())), BiomeNoise.iceSheetSurfaceHeight(seed.seed()).max(BiomeNoise.shieldVolcanoGlacierSurface(seed.seed(), BiomeNoise.hotSpotIntensity(seed.seed()))), false, true, SEA_LEVEL_Y + 30);
 
 
-    private final Seed seed;
     private final Noise2D iceSurfaceNoise;
     private final Noise2D baseNoise;
     private final boolean hasMoraines;
     private final boolean hasStonyPeaks;
     private final int minFreezingHeight;
+    private final SurfaceBuilder baseVolcanoSurfaceBuilder;
 
     IceSheetShieldVolcanoSurfaceBuilder(Seed seed, Noise2D baseNoise, Noise2D iceSurfaceNoise, boolean hasMoraines, boolean hasStonyPeaks, int minFreezingHeight)
     {
         this.baseNoise = baseNoise;
         this.iceSurfaceNoise = iceSurfaceNoise;
-        this.seed = seed;
         this.hasMoraines = hasMoraines;
         this.hasStonyPeaks = hasStonyPeaks;
         this.minFreezingHeight = minFreezingHeight;
+        this.baseVolcanoSurfaceBuilder = ShieldVolcanoSurfaceBuilder.DORMANT.apply(seed);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class IceSheetShieldVolcanoSurfaceBuilder implements SurfaceBuilder
 
         if (startY < minFreezingHeight || (hasStonyPeaks && startY > glacierSurfaceHeight + 2.5) || (startY < glacierBaseHeight - 1.5))
         {
-            ShieldVolcanoSurfaceBuilder.DORMANT.apply(seed).buildSurface(context, startY, endY);
+            this.baseVolcanoSurfaceBuilder.buildSurface(context, startY, endY);
         }
         else
         {

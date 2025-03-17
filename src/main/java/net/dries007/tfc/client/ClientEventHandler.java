@@ -214,7 +214,6 @@ import net.dries007.tfc.client.screen.FirepitScreen;
 import net.dries007.tfc.client.screen.GrillScreen;
 import net.dries007.tfc.client.screen.KnappingScreen;
 import net.dries007.tfc.client.screen.LargeVesselScreen;
-import net.dries007.tfc.client.screen.LogPileScreen;
 import net.dries007.tfc.client.screen.MoldLikeAlloyScreen;
 import net.dries007.tfc.client.screen.NestBoxScreen;
 import net.dries007.tfc.client.screen.NutritionScreen;
@@ -507,7 +506,6 @@ public final class ClientEventHandler
         event.register(TFCContainerTypes.POT.get(), PotScreen::new);
         event.register(TFCContainerTypes.POWDERKEG.get(), PowderkegScreen::new);
         event.register(TFCContainerTypes.CHARCOAL_FORGE.get(), CharcoalForgeScreen::new);
-        event.register(TFCContainerTypes.LOG_PILE.get(), LogPileScreen::new);
         event.register(TFCContainerTypes.NEST_BOX.get(), NestBoxScreen::new);
         event.register(TFCContainerTypes.CRUCIBLE.get(), CrucibleScreen::new);
         event.register(TFCContainerTypes.BARREL.get(), BarrelScreen::new);

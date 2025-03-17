@@ -1,14 +1,117 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "axis=x": {
-      "model": "tfc:block/log_pile",
-      "y": 90,
-      "x": 90
+    "axis=z,count=1": {
+      "model": "tfc:block/log_pile/log_pile_1"
     },
-    "axis=z": {
-      "model": "tfc:block/log_pile",
-      "x": 90
+    "axis=x,count=1": {
+      "model": "tfc:block/log_pile/log_pile_1",
+      "y": 90
+    },
+    "axis=z,count=2": {
+      "model": "tfc:block/log_pile/log_pile_2"
+    },
+    "axis=x,count=2": {
+      "model": "tfc:block/log_pile/log_pile_2",
+      "y": 90
+    },
+    "axis=z,count=3": {
+      "model": "tfc:block/log_pile/log_pile_3"
+    },
+    "axis=x,count=3": {
+      "model": "tfc:block/log_pile/log_pile_3",
+      "y": 90
+    },
+    "axis=z,count=4": {
+      "model": "tfc:block/log_pile/log_pile_4"
+    },
+    "axis=x,count=4": {
+      "model": "tfc:block/log_pile/log_pile_4",
+      "y": 90
+    },
+    "axis=z,count=5": {
+      "model": "tfc:block/log_pile/log_pile_5"
+    },
+    "axis=x,count=5": {
+      "model": "tfc:block/log_pile/log_pile_5",
+      "y": 90
+    },
+    "axis=z,count=6": {
+      "model": "tfc:block/log_pile/log_pile_6"
+    },
+    "axis=x,count=6": {
+      "model": "tfc:block/log_pile/log_pile_6",
+      "y": 90
+    },
+    "axis=z,count=7": {
+      "model": "tfc:block/log_pile/log_pile_7"
+    },
+    "axis=x,count=7": {
+      "model": "tfc:block/log_pile/log_pile_7",
+      "y": 90
+    },
+    "axis=z,count=8": {
+      "model": "tfc:block/log_pile/log_pile_8"
+    },
+    "axis=x,count=8": {
+      "model": "tfc:block/log_pile/log_pile_8",
+      "y": 90
+    },
+    "axis=z,count=9": {
+      "model": "tfc:block/log_pile/log_pile_9"
+    },
+    "axis=x,count=9": {
+      "model": "tfc:block/log_pile/log_pile_9",
+      "y": 90
+    },
+    "axis=z,count=10": {
+      "model": "tfc:block/log_pile/log_pile_10"
+    },
+    "axis=x,count=10": {
+      "model": "tfc:block/log_pile/log_pile_10",
+      "y": 90
+    },
+    "axis=z,count=11": {
+      "model": "tfc:block/log_pile/log_pile_11"
+    },
+    "axis=x,count=11": {
+      "model": "tfc:block/log_pile/log_pile_11",
+      "y": 90
+    },
+    "axis=z,count=12": {
+      "model": "tfc:block/log_pile/log_pile_12"
+    },
+    "axis=x,count=12": {
+      "model": "tfc:block/log_pile/log_pile_12",
+      "y": 90
+    },
+    "axis=z,count=13": {
+      "model": "tfc:block/log_pile/log_pile_13"
+    },
+    "axis=x,count=13": {
+      "model": "tfc:block/log_pile/log_pile_13",
+      "y": 90
+    },
+    "axis=z,count=14": {
+      "model": "tfc:block/log_pile/log_pile_14"
+    },
+    "axis=x,count=14": {
+      "model": "tfc:block/log_pile/log_pile_14",
+      "y": 90
+    },
+    "axis=z,count=15": {
+      "model": "tfc:block/log_pile/log_pile_15"
+    },
+    "axis=x,count=15": {
+      "model": "tfc:block/log_pile/log_pile_15",
+      "y": 90
+    },
+    "axis=z,count=16": {
+      "model": "tfc:block/log_pile/log_pile_16"
+    },
+    "axis=x,count=16": {
+      "model": "tfc:block/log_pile/log_pile_16",
+      "y": 90
     }
   }
 }

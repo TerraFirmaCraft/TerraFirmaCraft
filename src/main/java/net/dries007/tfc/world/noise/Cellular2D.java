@@ -16,18 +16,25 @@ public class Cellular2D implements Noise2D
 {
     private final double jitter;
     private final int seed;
+    private final int sample;
     private double frequency;
 
     public Cellular2D(long seed)
     {
-        this(seed, 0.43701595f);
+        this(seed, 0.43701595f, 1);
     }
 
-    public Cellular2D(long seed, float jitter)
+    public Cellular2D(long seed, int sample)
+    {
+        this(seed, 0.43701595f, sample);
+    }
+
+    public Cellular2D(long seed, float jitter, int sample)
     {
         this.seed = HashCommon.long2int(seed);
         this.frequency = 1;
         this.jitter = jitter;
+        this.sample = sample;
     }
 
     @Override
@@ -70,11 +77,11 @@ public class Cellular2D implements Noise2D
         int xPrimed = (xr - 1) * primeX;
         int yPrimedBase = (yr - 1) * primeY;
 
-        for (int xi = xr - 2; xi <= xr + 2; xi++)
+        for (int xi = xr - sample; xi <= xr + sample; xi++)
         {
             int yPrimed = yPrimedBase;
 
-            for (int yi = yr - 2; yi <= yr + 2; yi++)
+            for (int yi = yr - sample; yi <= yr + sample; yi++)
             {
                 int hash = FastNoiseLite.Hash(seed, xPrimed, yPrimed);
                 int idx = hash & (255 << 1);

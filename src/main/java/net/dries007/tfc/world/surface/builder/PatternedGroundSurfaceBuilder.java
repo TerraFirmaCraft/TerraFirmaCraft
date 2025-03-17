@@ -16,20 +16,19 @@ public class PatternedGroundSurfaceBuilder implements SurfaceBuilder
 {
     public static final SurfaceBuilderFactory INSTANCE = PatternedGroundSurfaceBuilder::new;
 
-    private final Seed seed;
+    private final NormalSurfaceBuilder surfaceBuilder;
+    private final Noise2D edgeNoise;
 
     public PatternedGroundSurfaceBuilder(Seed seed)
     {
-        this.seed = seed;
+        this.surfaceBuilder = NormalSurfaceBuilder.INSTANCE;
+        this.edgeNoise = BiomeNoise.patternedGround(seed.seed());
     }
 
     @Override
     public void buildSurface(SurfaceBuilderContext context, int startY, int endY)
     {
-        final NormalSurfaceBuilder surfaceBuilder = NormalSurfaceBuilder.INSTANCE;
-        final Noise2D edges = BiomeNoise.patternedGround(seed.seed());
-
-        if (edges.noise(context.pos().getX(), context.pos().getZ()) * context.weight() >= -0.60)
+        if (edgeNoise.noise(context.pos().getX(), context.pos().getZ()) * context.weight() >= -0.60)
         {
             surfaceBuilder.buildSurface(context, startY, endY);
         }

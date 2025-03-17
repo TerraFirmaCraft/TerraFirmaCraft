@@ -256,7 +256,7 @@ public final class BiomeNoise
 
         // Glacial mountain noise is based on cellular noise. Cells are either bowl-shaped cirques, or cone-shaped horns
         final double cellScale = 0.010;
-        final Cellular2D cells = new Cellular2D(seed).spread(cellScale);
+        final Cellular2D cells = new Cellular2D(seed, 2).spread(cellScale);
         final Noise2D warp = new OpenSimplex2D(seed).spread(0.02).add(shapeMap).scaled(-1, 2, -0.25, 0.2);
         final Noise2D roughPeaks = new OpenSimplex2D(seed).octaves(3).spread(0.08).scaled(0.6, 1.6);
 
@@ -304,7 +304,7 @@ public final class BiomeNoise
      */
     public static Noise2D patternedGround(long seed)
     {
-        Cellular2D cells = new Cellular2D(seed, 0.25f).spread(0.05);
+        Cellular2D cells = new Cellular2D(seed, 0.25f, 1).spread(0.05);
         return (x, z) -> {
             Cellular2D.Cell cell = cells.cell(x, z);
 
@@ -319,7 +319,7 @@ public final class BiomeNoise
     public static Noise2D invertedPatternedGround(long seed)
     {
         final Noise2D base = BiomeNoise.hills(seed, -4, 3);
-        Cellular2D cells = new Cellular2D(seed, 0.25f).spread(0.05);
+        Cellular2D cells = new Cellular2D(seed, 0.25f, 1).spread(0.05);
 
         return (x, z) -> {
             final double height = base.noise(x, z);
@@ -341,7 +341,7 @@ public final class BiomeNoise
      */
     public static Noise2D seaIceNoise(long seed)
     {
-        final Cellular2D cells = new Cellular2D(seed, 0.21f).spread(0.03);
+        final Cellular2D cells = new Cellular2D(seed, 0.21f, 1).spread(0.03);
         final Noise2D wiggle = new OpenSimplex2D(seed).scaled(-0.04, 0.04).spread(0.12);
         return (x, z) -> {
             Cellular2D.Cell cell = cells.cell(x, z);
@@ -356,7 +356,7 @@ public final class BiomeNoise
      */
     public static Noise2D stoneCircles(long seed)
     {
-        Cellular2D cells = new Cellular2D(seed, 0.26f).spread(0.09);
+        Cellular2D cells = new Cellular2D(seed, 0.26f, 1).spread(0.09);
         return (x, z) -> {
             Cellular2D.Cell cell = cells.cell(x, z);
 

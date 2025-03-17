@@ -4,9 +4,9 @@
     "tag": "tfc:glass_batches_tier_2"
   },
   "operations": [
-    "soda_ash",
-    "iron",
-    "basin_pour"
+    "tfc:soda_ash",
+    "tfc:iron",
+    "tfc:basin_pour"
   ],
   "result": {
     "count": 1,

@@ -62,7 +62,7 @@ public final class TuyaNoise implements CenterOrDistanceNoise
     public TuyaNoise(Seed seed)
     {
         this.seed = seed;
-        cellNoise = new Cellular2D(seed.seed(), 0.21f).spread(0.0033f);
+        cellNoise = new Cellular2D(seed.seed(), 0.21f, 1).spread(0.0033f);
         jitterNoise = new OpenSimplex2D(seed.seed() + 1234123L).octaves(2).scaled(-0.016f, 0.016f).spread(0.128f);
     }
 

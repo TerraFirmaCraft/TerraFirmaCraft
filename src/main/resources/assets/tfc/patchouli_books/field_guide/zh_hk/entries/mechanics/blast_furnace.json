@@ -15,7 +15,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "接下來就可以開始搭建高爐的$(thing)煙囱$()了。煙囱必須用足以承受鍊鋼高温的$(l:mechanics/fire_clay#fire_bricks)耐火磚塊$()搭建。耐火磚塊的外層還需要用$(thing)鍛鐵薄板$()圍繞一圈加固。如果材料富裕，也可以用更高級的金屬薄板（如$(thing)鋼$()）來代替鍛鐵薄板。"
+      "text": "You will then need to construct the blast furnace, along with its $(thing)Chimney$(). The chimney must be composed out of $(l:mechanics/fire_clay#fire_bricks)Reinforced Fire Bricks$(), as they are strong enough to withstand the intense heat. These can be crafted from fire brick blocks, and either wrought iron or steel sheets."
     },
     {
       "type": "patchouli:multiblock",

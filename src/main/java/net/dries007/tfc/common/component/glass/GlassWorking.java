@@ -12,7 +12,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.common.component.TFCComponents;
-import net.dries007.tfc.util.Helpers;
 
 public final class GlassWorking
 {
@@ -27,7 +26,7 @@ public final class GlassWorking
                 tooltips.add(Component.translatable("tfc.tooltip.glass.title").withStyle(ChatFormatting.AQUA));
                 for (GlassOperation operation : data.steps())
                 {
-                    tooltips.add(Component.literal("- ").append(Helpers.translateEnum(operation)));
+                    tooltips.add(Component.literal("- ").append(Component.translatable(operation.getTranslationId())));
                 }
             }
         }

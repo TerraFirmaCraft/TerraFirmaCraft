@@ -25,20 +25,20 @@ public class ShieldVolcanoSurfaceBuilder implements SurfaceBuilder
 
     private final boolean hasLavaFlows;
     private final boolean sandy;
-    private final Seed seed;
+    private final long seed;
+    private final Noise2D smoothNoise;
 
     ShieldVolcanoSurfaceBuilder(Seed seed, boolean hasLavaFlows, boolean sandy)
     {
         this.hasLavaFlows = hasLavaFlows;
         this.sandy = sandy;
-        this.seed = seed;
+        this.seed = seed.seed();
+        this.smoothNoise = new OpenSimplex2D(this.seed).octaves(2).spread(0.25);
     }
 
     @Override
     public void buildSurface(SurfaceBuilderContext context, int startY, int endY)
     {
-        final Noise2D noise = new OpenSimplex2D(seed.seed()).octaves(2).spread(0.25);
-
         final int x = context.pos().getX();
         final int z = context.pos().getZ();
         final SurfaceState top;
@@ -67,8 +67,8 @@ public class ShieldVolcanoSurfaceBuilder implements SurfaceBuilder
         }
         else
         {
-            final double noiseValue = noise.noise(x, z);
-            final Noise2D lavaFlows = BiomeNoise.lavaFlow(seed.seed());
+            final double noiseValue = this.smoothNoise.noise(x, z);
+            final Noise2D lavaFlows = BiomeNoise.lavaFlow(seed);
             final double flowValue = lavaFlows.noise(x, z);
 
             if (flowValue < 0.40)

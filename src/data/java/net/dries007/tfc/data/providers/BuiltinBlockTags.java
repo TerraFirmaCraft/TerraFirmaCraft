@@ -407,6 +407,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(STONES_LOOSE)
             .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.LOOSE)
             .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.MOSSY_LOOSE);
+        tag(SMOKES_IN_RAIN).add(TFCBlocks.MAGMA_BLOCKS).add(Blocks.MAGMA_BLOCK);
         tag(INSULATION)
             .addTags(Tags.Blocks.STONES, STONES_SMOOTH, BlockTags.STONE_BRICKS, Tags.Blocks.COBBLESTONES)
             .add(Blocks.BRICKS)
@@ -429,7 +430,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(CHARCOAL_FORGE_INSULATION).addTag(INSULATION);
         tag(CHARCOAL_FORGE_INVISIBLE).add(TFCBlocks.CRUCIBLE);
         tag(BLOOMERY_INSULATION).addTag(INSULATION);
-        tag(BLAST_FURNACE_INSULATION).add(TFCBlocks.FIRE_BRICKS);
+        tag(BLAST_FURNACE_INSULATION).add(TFCBlocks.REINFORCED_FIRE_BRICKS);
         tag(SCRAPING_SURFACE).addTag(BlockTags.LOGS);
         tag(GLASS_POURING_TABLE).add(TFCBlocks.METALS.get(Metal.BRASS).get(Metal.BlockType.BLOCK));
         tag(GLASS_BASIN_BLOCKS).add(TFCBlocks.METALS.get(Metal.BRASS).get(Metal.BlockType.BLOCK));

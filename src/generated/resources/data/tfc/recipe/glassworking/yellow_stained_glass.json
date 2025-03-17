@@ -4,8 +4,8 @@
     "tag": "tfc:glass_batches_tier_2"
   },
   "operations": [
-    "silver",
-    "basin_pour"
+    "tfc:silver",
+    "tfc:basin_pour"
   ],
   "result": {
     "count": 1,

@@ -148,9 +148,8 @@ public class OceanSurfaceBuilder implements SurfaceBuilder
             }
             else
             {
-                final double patternedNoise = this.patternedNoise.noise(x, z);
                 final double tempFactor = Mth.clampedMap(maxAnnualTemperature, iceStart, solidIceStart, 0.3, 0.04);
-                placeIce = patternedNoise > tempFactor;
+                placeIce = this.patternedNoise.noise(x, z) > tempFactor;
             }
 
             if (placeIce)

@@ -15,7 +15,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "You will then need to construct the blast furnace, along with its $(thing)Chimney$(). The chimney must be composed out of $(l:mechanics/fire_clay#fire_bricks)Fire Bricks$(), as they are strong enough to withstand the intense heat. It must then be lined with $(thing)Wrought Iron Sheets$(), for extra reinforcement. Stronger metals such as $(thing)Steel$() can also be used for the sheets, if desired."
+      "text": "You will then need to construct the blast furnace, along with its $(thing)Chimney$(). The chimney must be composed out of $(l:mechanics/fire_clay#fire_bricks)Reinforced Fire Bricks$(), as they are strong enough to withstand the intense heat. These can be crafted from fire brick blocks, and either wrought iron or steel sheets."
     },
     {
       "type": "patchouli:multiblock",

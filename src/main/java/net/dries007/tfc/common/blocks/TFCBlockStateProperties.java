@@ -46,6 +46,7 @@ public class TFCBlockStateProperties
     public static final IntegerProperty COUNT_1_3 = IntegerProperty.create("count", 1, 3);
     public static final IntegerProperty COUNT_1_4 = IntegerProperty.create("count", 1, 4);
     public static final IntegerProperty COUNT_1_5 = IntegerProperty.create("count", 1, 5);
+    public static final IntegerProperty COUNT_1_16 = IntegerProperty.create("count", 1, 16);
     public static final IntegerProperty COUNT_1_36 = IntegerProperty.create("count", 1, 36);
     public static final IntegerProperty COUNT_1_64 = IntegerProperty.create("count", 1, 64);
 

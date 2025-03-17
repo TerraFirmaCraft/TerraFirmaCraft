@@ -191,18 +191,20 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
 
         // Check that we have a hammer, either in the anvil or in the player inventory
         ItemStack hammer = inventory.getStackInSlot(SLOT_HAMMER);
+        if (!Helpers.isItem(hammer, TFCTags.Items.TOOLS_HAMMER))
+            hammer = ItemStack.EMPTY;
         InteractionHand hammerSlot = null;
         if (hammer.isEmpty())
         {
-            hammer = player.getMainHandItem();
+            hammer = Helpers.isItem(player.getMainHandItem(), TFCTags.Items.TOOLS_HAMMER) ? player.getMainHandItem() : ItemStack.EMPTY;
             hammerSlot = InteractionHand.MAIN_HAND;
         }
         if (hammer.isEmpty())
         {
-            hammer = player.getOffhandItem();
+            hammer = Helpers.isItem(player.getOffhandItem(), TFCTags.Items.TOOLS_HAMMER) ? player.getOffhandItem() : ItemStack.EMPTY;
             hammerSlot = InteractionHand.OFF_HAND;
         }
-        if (hammerSlot == null || hammer.isEmpty() || !Helpers.isItem(hammer, TFCTags.Items.TOOLS_HAMMER))
+        if (hammer.isEmpty())
         {
             player.displayClientMessage(Component.translatable("tfc.tooltip.hammer_required_to_work"), false);
             return;

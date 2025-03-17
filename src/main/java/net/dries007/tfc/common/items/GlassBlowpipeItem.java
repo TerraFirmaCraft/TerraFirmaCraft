@@ -73,12 +73,12 @@ public class GlassBlowpipeItem extends BlowpipeItem
 
             // test on a copy so that if it doesn't work we don't cause irreversible changes
             final ItemStack copy = item.copy();
-            GlassWorking.apply(copy, GlassOperation.BASIN_POUR);
+            GlassWorking.apply(copy, GlassOperation.BASIN_POUR.value());
 
             final @Nullable GlassworkingRecipe recipe = GlassworkingRecipe.get(level, copy);
             if (recipe != null)
             {
-                if (!GlassOperation.BASIN_POUR.hasRequiredTemperature(copy))
+                if (!GlassOperation.BASIN_POUR.value().hasRequiredTemperature(copy))
                 {
                     player.displayClientMessage(Component.translatable("tfc.tooltip.glass.not_hot_enough"), true);
                 }
@@ -105,12 +105,12 @@ public class GlassBlowpipeItem extends BlowpipeItem
 
             // test on a copy so that if it doesn't work we don't cause irreversible changes
             final ItemStack copy = item.copy();
-            GlassWorking.apply(copy, GlassOperation.TABLE_POUR);
+            GlassWorking.apply(copy, GlassOperation.TABLE_POUR.value());
 
             final @Nullable GlassworkingRecipe recipe = GlassworkingRecipe.get(level, copy);
             if (recipe != null)
             {
-                if (!GlassOperation.TABLE_POUR.hasRequiredTemperature(copy))
+                if (!GlassOperation.TABLE_POUR.value().hasRequiredTemperature(copy))
                 {
                     player.displayClientMessage(Component.translatable("tfc.tooltip.glass.not_hot_enough"), true);
                 }

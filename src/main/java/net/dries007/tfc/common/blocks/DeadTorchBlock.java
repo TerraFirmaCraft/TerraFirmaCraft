@@ -13,13 +13,22 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.TorchBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class DeadTorchBlock extends TorchBlock
+public class DeadTorchBlock extends TorchBlock implements IForgeBlockExtension
 {
-    public DeadTorchBlock(Properties properties, SimpleParticleType particle)
+    private final ExtendedProperties properties;
+
+    public DeadTorchBlock(ExtendedProperties properties, SimpleParticleType particle)
     {
-        super(particle, properties);
+        super(particle, properties.properties());
+        this.properties = properties;
     }
 
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource randomSource) { }
+
+    @Override
+    public ExtendedProperties getExtendedProperties()
+    {
+        return properties;
+    }
 }

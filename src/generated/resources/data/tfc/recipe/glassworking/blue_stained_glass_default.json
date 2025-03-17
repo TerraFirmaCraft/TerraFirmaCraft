@@ -4,7 +4,7 @@
     "item": "tfc:volcanic_glass_batch"
   },
   "operations": [
-    "basin_pour"
+    "tfc:basin_pour"
   ],
   "result": {
     "count": 1,

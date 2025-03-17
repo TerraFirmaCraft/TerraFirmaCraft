@@ -4,8 +4,8 @@
     "item": "tfc:silica_glass_batch"
   },
   "operations": [
-    "lapis_lazuli",
-    "basin_pour"
+    "tfc:lapis_lazuli",
+    "tfc:basin_pour"
   ],
   "result": {
     "count": 1,

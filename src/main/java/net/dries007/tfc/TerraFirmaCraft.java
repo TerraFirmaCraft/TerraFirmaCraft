@@ -7,6 +7,7 @@
 package net.dries007.tfc;
 
 import com.mojang.logging.LogUtils;
+import net.dries007.tfc.common.component.glass.GlassOperation;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.presets.WorldPreset;
@@ -173,6 +174,7 @@ public final class TerraFirmaCraft
         BarSystem.BARS.register(bus);
         TFCBiomes.EXTENSIONS.register(bus);
         ChiselMode.MODES.register(bus);
+        GlassOperation.OPERATIONS.register(bus);
 
         // Custom Registries (neoforge)
         TFCFluids.FLUID_TYPES.register(bus);
@@ -232,6 +234,7 @@ public final class TerraFirmaCraft
         event.register(BarSystem.REGISTRY);
         event.register(TFCBiomes.REGISTRY);
         event.register(ChiselMode.REGISTRY);
+        event.register(GlassOperation.REGISTRY);
     }
 
     public void loadComplete(FMLLoadCompleteEvent event)

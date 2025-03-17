@@ -33,6 +33,16 @@ public class BowlBlockEntityRenderer implements BlockEntityRenderer<BowlBlockEnt
         map.accept(() -> Items.GUNPOWDER, Helpers.identifier("block/powder/gunpowder"));
     });
 
+    /**
+     * Associates an item with a texture in bowl blocks.
+     * <p>
+     * This function is safe to call during parallel mod loading, though care must be taken to so only on the client.
+     */
+    public static synchronized void addPowderTexture(Item item, ResourceLocation texLoc)
+    {
+        TEXTURES.put(item, texLoc);
+    }
+
     @Override
     public void render(BowlBlockEntity bowl, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {

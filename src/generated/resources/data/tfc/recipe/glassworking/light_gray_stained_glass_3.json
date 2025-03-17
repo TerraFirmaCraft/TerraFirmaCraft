@@ -4,10 +4,10 @@
     "tag": "tfc:glass_batches"
   },
   "operations": [
-    "graphite",
-    "soda_ash",
-    "soda_ash",
-    "basin_pour"
+    "tfc:graphite",
+    "tfc:soda_ash",
+    "tfc:soda_ash",
+    "tfc:basin_pour"
   ],
   "result": {
     "count": 1,

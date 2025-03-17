@@ -9,6 +9,8 @@ package net.dries007.tfc.world.region;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
+
+import net.dries007.tfc.world.biome.BiomeNoise;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
@@ -56,6 +58,9 @@ public final class RegionGenerator
     public final Noise2D rainfallNoise;
     public final Noise2D rainfallVarianceNoise;
     public final Settings settings;
+    public final Noise2D hotSpotAgeNoise;
+    public final Noise2D hotSpotIntensityNoise;
+    public final Cellular2D plateRegionNoise;
 
     public final ThreadLocal<Area> biomeArea;
     public final ThreadLocal<Area> rockArea;
@@ -107,6 +112,10 @@ public final class RegionGenerator
             .octaves(2)
             .spread(0.1f)
             .scaled(0f, 20f);
+
+        this.hotSpotAgeNoise = BiomeNoise.hotSpotAge(seed.seed()).spread(128);
+        this.hotSpotIntensityNoise = BiomeNoise.hotSpotIntensity(seed.seed()).spread(128);
+        this.plateRegionNoise = BiomeNoise.plateRegions(seed.seed()).spread(128);
 
         final AreaFactory biomeAreaFactory = TFCLayers.createUniformLayer(seed, 2);
         final AreaFactory rockAreaFactory = TFCLayers.createUniformLayer(seed, 3);

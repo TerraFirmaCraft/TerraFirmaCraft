@@ -7,8 +7,6 @@
 package net.dries007.tfc.compat.jei.category;
 
 import java.awt.Color;
-import java.util.Map;
-import com.google.common.collect.ImmutableMap;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -18,6 +16,7 @@ import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -27,23 +26,12 @@ import net.dries007.tfc.common.blocks.PouredGlassBlock;
 import net.dries007.tfc.common.component.glass.GlassOperation;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.GlassworkingRecipe;
-import net.dries007.tfc.util.Helpers;
 
 /**
  * Only supports up to 6 operations... because JEI panels aren't resizable as far as I can tell.
  */
 public class GlassworkingRecipeCategory extends BaseRecipeCategory<GlassworkingRecipe>
 {
-    private final Map<GlassOperation, ItemStack> map = ImmutableMap.of(
-        GlassOperation.SAW, TFCItems.GEM_SAW.get().getDefaultInstance(),
-        GlassOperation.ROLL, TFCItems.WOOL_CLOTH.get().getDefaultInstance(),
-        GlassOperation.STRETCH, TFCItems.BLOWPIPE_WITH_GLASS.get().getDefaultInstance(),
-        GlassOperation.BLOW, TFCItems.BLOWPIPE_WITH_GLASS.get().getDefaultInstance(),
-        GlassOperation.TABLE_POUR, TFCItems.BLOWPIPE_WITH_GLASS.get().getDefaultInstance(),
-        GlassOperation.BASIN_POUR, TFCItems.BLOWPIPE_WITH_GLASS.get().getDefaultInstance(),
-        GlassOperation.FLATTEN, TFCItems.PADDLE.get().getDefaultInstance(),
-        GlassOperation.PINCH, TFCItems.JACKS.get().getDefaultInstance()
-    );
 
     public GlassworkingRecipeCategory(RecipeType<GlassworkingRecipe> type, IGuiHelper helper)
     {
@@ -71,23 +59,9 @@ public class GlassworkingRecipeCategory extends BaseRecipeCategory<GlassworkingR
         {
             var slot = builder.addSlot(RecipeIngredientRole.CATALYST, idx < 3 ? 6 : 90, 25 * ((idx % 3) + 1))
                 .setBackground(this.slot, -1, -1);
-            if (map.containsKey(operation))
+            for (Holder<Item> item : operation.getItems())
             {
-                slot.addItemStack(map.get(operation));
-                if (map.get(operation).getItem() == TFCItems.BLOWPIPE_WITH_GLASS.get())
-                {
-                    slot.addItemStack(TFCItems.CERAMIC_BLOWPIPE_WITH_GLASS.get().getDefaultInstance());
-                }
-            }
-            else if (operation != GlassOperation.TABLE_POUR && operation != GlassOperation.BASIN_POUR)
-            {
-                for (Map.Entry<Item, GlassOperation> entry : GlassOperation.POWDERS.get().entrySet())
-                {
-                    if (entry.getValue() == operation)
-                    {
-                        slot.addItemStack(entry.getKey().getDefaultInstance());
-                    }
-                }
+                slot.addItemStack(item.value().getDefaultInstance());
             }
 
             idx += 1;
@@ -104,7 +78,7 @@ public class GlassworkingRecipeCategory extends BaseRecipeCategory<GlassworkingR
         int idx = 0;
         for (GlassOperation operation : recipe.operations())
         {
-            final Component text = Component.literal((idx + 1) + ". ").append(Helpers.translateEnum(operation));
+            final Component text = Component.literal((idx + 1) + ". ").append(Component.translatable(operation.getTranslationId()));
             if (idx + 3 < recipe.operations().size())
             {
                 graphics.drawWordWrap(font, text, (idx < 3 ? 6 : 90) + 20, 25 * ((idx % 3) + 1) + 5, idx < 3 ? 55 : 75, Color.BLACK.getRGB());

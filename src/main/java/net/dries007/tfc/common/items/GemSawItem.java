@@ -26,7 +26,7 @@ public class GemSawItem extends ToolItem implements IGlassworkingTool
     @Override
     public GlassOperation getOperation()
     {
-        return GlassOperation.SAW;
+        return GlassOperation.SAW.value();
     }
 
     @Override

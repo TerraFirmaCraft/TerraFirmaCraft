@@ -31,13 +31,13 @@ public record GlassworkingRecipe(
 ) implements INoopInputRecipe, IRecipePredicate<ItemStack>
 {
     public static final MapCodec<GlassworkingRecipe> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
-        GlassOperation.CODEC.listOf().fieldOf("operations").forGetter(c -> c.operations),
+        GlassOperation.REGISTRY.byNameCodec().listOf().fieldOf("operations").forGetter(c -> c.operations),
         Ingredient.CODEC.fieldOf("batch").forGetter(c -> c.batchItem),
         ItemStack.CODEC.fieldOf("result").forGetter(c -> c.resultItem)
     ).apply(i, GlassworkingRecipe::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, GlassworkingRecipe> STREAM_CODEC = StreamCodec.composite(
-        GlassOperation.STREAM_CODEC.apply(ByteBufCodecs.list()), c -> c.operations,
+        ByteBufCodecs.registry(GlassOperation.KEY).apply(ByteBufCodecs.list()), c -> c.operations,
         Ingredient.CONTENTS_STREAM_CODEC, c -> c.batchItem,
         ItemStack.STREAM_CODEC, c -> c.resultItem,
         GlassworkingRecipe::new

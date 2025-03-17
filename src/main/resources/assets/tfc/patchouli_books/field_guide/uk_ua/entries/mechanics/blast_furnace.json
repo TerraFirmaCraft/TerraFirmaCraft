@@ -15,7 +15,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Потім тобі треба збудувати саму конструкцію - $(thing)димар$(). Димар будується з $(l:mechanics/fire_clay#fire_bricks)вогнетривкої глини$(), оскільки тільки вона може витримати високу температуру. Далі потрібно цей димар обшити $(thing)листами ковкого заліза$() для додаткового зміцнення всієї конструкції. За бажанням, або можливістю, конструкцію можна обшити навіть $(thing)сталевими листами$()."
+      "text": "You will then need to construct the blast furnace, along with its $(thing)Chimney$(). The chimney must be composed out of $(l:mechanics/fire_clay#fire_bricks)Reinforced Fire Bricks$(), as they are strong enough to withstand the intense heat. These can be crafted from fire brick blocks, and either wrought iron or steel sheets."
     },
     {
       "type": "patchouli:multiblock",

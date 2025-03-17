@@ -4,8 +4,8 @@
     "tag": "tfc:glass_batches_not_tier_1"
   },
   "operations": [
-    "amethyst",
-    "basin_pour"
+    "tfc:amethyst",
+    "tfc:basin_pour"
   ],
   "result": {
     "count": 1,

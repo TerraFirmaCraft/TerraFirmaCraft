@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "tfc:fire_bricks"
+    },
+    {
+      "tag": "c:sheets/wrought_iron"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:reinforced_fire_bricks"
+  }
+}

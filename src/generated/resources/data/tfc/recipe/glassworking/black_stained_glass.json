@@ -4,8 +4,8 @@
     "tag": "tfc:glass_batches"
   },
   "operations": [
-    "graphite",
-    "basin_pour"
+    "tfc:graphite",
+    "tfc:basin_pour"
   ],
   "result": {
     "count": 1,

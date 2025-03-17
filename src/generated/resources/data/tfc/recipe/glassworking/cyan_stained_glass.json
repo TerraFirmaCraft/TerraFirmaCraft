@@ -4,9 +4,9 @@
     "tag": "tfc:glass_batches_tier_3"
   },
   "operations": [
-    "copper",
-    "sapphire",
-    "basin_pour"
+    "tfc:copper",
+    "tfc:sapphire",
+    "tfc:basin_pour"
   ],
   "result": {
     "count": 1,

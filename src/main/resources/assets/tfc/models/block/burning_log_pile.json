@@ -1,7 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "tfc:block/devices/charcoal_forge/lit"
-  }
-}

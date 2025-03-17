@@ -492,9 +492,12 @@ def generate(rm: ResourceManager):
 
     rm.blockstate('charcoal_pile', variants=dict((('layers=%d' % i), {'model': 'tfc:block/charcoal_pile/charcoal_height%d' % (i * 2) if i != 8 else 'tfc:block/charcoal_pile/charcoal_block'}) for i in range(1, 1 + 8))).with_lang(lang('Charcoal Pile')).with_block_loot('minecraft:charcoal')
     rm.blockstate('charcoal_forge', variants=dict((('heat_level=%d' % i), {'model': 'tfc:block/charcoal_forge/heat_%d' % i}) for i in range(0, 7 + 1))).with_lang(lang('Forge')).with_block_loot('7 minecraft:charcoal')
-    rm.blockstate('log_pile', variants={'axis=x': {'model': 'tfc:block/log_pile', 'y': 90, 'x': 90}, 'axis=z': {'model': 'tfc:block/log_pile', 'x': 90}}) \
-        .with_block_model(textures={'side': 'tfc:block/log_pile_side', 'end': 'tfc:block/log_pile_front'}, parent='minecraft:block/cube_column_horizontal').with_lang(lang('Log Pile'))
-    rm.blockstate('burning_log_pile', model='tfc:block/burning_log_pile').with_block_model(parent='minecraft:block/cube_all', textures={'all': 'tfc:block/devices/charcoal_forge/lit'}).with_lang(lang('Burning Log Pile'))
+
+    rm.blockstate('log_pile', variants=dict(('axis=%s,count=%s' % (a, i), {'model': 'tfc:block/log_pile/log_pile_%s' % i, 'y': 90 if a == 'x' else None}) for i in range(1, 17) for a in ('x', 'z'))).with_lang(lang('Log Pile'))
+
+    for i in range(1, 17):
+        rm.block_model('log_pile/log_pile_%s_burning' % i, parent='tfc:block/log_pile/log_pile_%s' % i, textures={'0': 'tfc:block/molten_lit', '1': 'tfc:block/molten_lit', 'particle': 'tfc:block/molten_lit'})
+    rm.blockstate('burning_log_pile', variants=dict(('axis=%s,count=%s' % (a, i), {'model': 'tfc:block/log_pile/log_pile_%s_burning' % i, 'y': 90 if a == 'x' else None}) for i in range(1, 17) for a in ('x', 'z'))).with_lang(lang('Burning Log Pile'))
 
     for stage in range(0, 7 + 1):
         rm.block_model('charcoal_forge/heat_%d' % stage, parent='tfc:block/charcoal_forge/template_forge', textures={'top': 'tfc:block/devices/charcoal_forge/%d' % stage})
@@ -604,6 +607,11 @@ def generate(rm: ResourceManager):
     rm.item_model(block.res, parent='tfc:block/blast_furnace/unlit', no_textures=True)
     rm.block_model('blast_furnace/unlit', {'side': 'tfc:block/devices/blast_furnace/side', 'end': 'tfc:block/devices/blast_furnace/top', 'particle': 'tfc:block/devices/blast_furnace/side'}, 'block/cube_column')
     rm.block_model('blast_furnace/lit', {'side': 'tfc:block/devices/blast_furnace/side_lit', 'end': 'tfc:block/devices/blast_furnace/top_lit', 'particle': 'tfc:block/devices/blast_furnace/side_lit'}, 'block/cube_column')
+
+    block = rm.blockstate('reinforced_fire_bricks', 'tfc:block/reinforced_fire_bricks').with_lang(lang('reinforced fire bricks'))
+    block.with_block_loot('tfc:reinforced_fire_bricks')
+    rm.item_model(block.res, parent='tfc:block/reinforced_fire_bricks', no_textures=True)
+    rm.block_model('reinforced_fire_bricks', {'side': 'tfc:block/reinforced_fire_bricks', 'end': 'tfc:block/fire_bricks', 'particle': 'tfc:block/reinforced_fire_bricks'}, 'block/cube_column')
 
     rm.blockstate('placed_item', 'tfc:block/empty').with_lang(lang('placed items'))
     rm.blockstate('scraping', 'tfc:block/scraping').with_lang(lang('scraped item'))
@@ -2394,7 +2402,6 @@ def door_blockstate(base: str) -> JsonObject:
         'facing=west,half=upper,hinge=right,open=false': {'model': top_right, 'y': 180},
         'facing=west,half=upper,hinge=right,open=true': {'model': top_right_open, 'y': 90}
     }
-
 
 def when_silk_touch(item: str):
     return {'name': item, 'conditions': [loot_tables.silk_touch()]}

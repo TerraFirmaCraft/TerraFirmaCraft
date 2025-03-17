@@ -4,8 +4,8 @@
     "tag": "tfc:glass_batches"
   },
   "operations": [
-    "nickel",
-    "basin_pour"
+    "tfc:nickel",
+    "tfc:basin_pour"
   ],
   "result": {
     "count": 1,

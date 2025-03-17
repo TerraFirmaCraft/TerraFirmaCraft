@@ -4,11 +4,11 @@
     "tag": "tfc:glass_batches"
   },
   "operations": [
-    "blow",
-    "pinch",
-    "flatten",
-    "blow",
-    "saw"
+    "tfc:blow",
+    "tfc:pinch",
+    "tfc:flatten",
+    "tfc:blow",
+    "tfc:saw"
   ],
   "result": {
     "count": 1,

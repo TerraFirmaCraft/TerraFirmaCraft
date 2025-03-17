@@ -137,6 +137,7 @@ public class TFCTags
          */
         public static final TagKey<Block> LIT_BY_DROPPED_TORCH = tag("lit_by_dropped_torch");
 
+        public static final TagKey<Block> SMOKES_IN_RAIN = commonTag("smokes_in_rain");
 
         /** Both these are empty by default, but provided for potential compatibility */
         public static final TagKey<Block> MINEABLE_WITH_PROPICK = tag("mineable/propick");

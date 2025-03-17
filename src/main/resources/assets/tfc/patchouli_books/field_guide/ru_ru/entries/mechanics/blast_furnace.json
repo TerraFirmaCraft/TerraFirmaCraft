@@ -15,7 +15,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Затем вам нужно будет построить высокую печь вместе с ее $(thing)Дымоходом$(). Дымоход должен быть составлен из $(l:mechanics/fire_clay#fire_bricks)Огнеупорных кирпичей$(), так как они достаточно прочны, чтобы выдержать интенсивный жар. Затем его следует выложить $(thing)Коваными железными листами$() для дополнительного укрепления. Для листов также могут быть использованы более прочные металлы, такие как $(thing)Сталь$(), если это желательно."
+      "text": "You will then need to construct the blast furnace, along with its $(thing)Chimney$(). The chimney must be composed out of $(l:mechanics/fire_clay#fire_bricks)Reinforced Fire Bricks$(), as they are strong enough to withstand the intense heat. These can be crafted from fire brick blocks, and either wrought iron or steel sheets."
     },
     {
       "type": "patchouli:multiblock",
