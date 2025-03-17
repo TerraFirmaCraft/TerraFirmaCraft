@@ -18,8 +18,8 @@ public enum ChooseBiomes implements RegionTask
     private static final int[] OCEANIC_MOUNTAIN_ALTITUDE_BIOMES = {VOLCANIC_MOUNTAINS, VOLCANIC_OCEANIC_MOUNTAINS, VOLCANIC_OCEANIC_MOUNTAINS, OCEANIC_MOUNTAINS, OCEANIC_MOUNTAINS, ROLLING_HILLS};
     private static final int[][] ALTITUDE_BIOMES = {
         {PLAINS, PLAINS, HILLS, HILLS, ROLLING_HILLS, LOW_CANYONS, LOWLANDS, LOWLANDS}, // Low
-        {PLAINS, HILLS, ROLLING_HILLS, HIGHLANDS, INVERTED_BADLANDS, BADLANDS, PLATEAU, CANYONS, LOW_CANYONS}, // Mid
-        {HIGHLANDS, HIGHLANDS, HIGHLANDS, ROLLING_HILLS, BADLANDS, PLATEAU, PLATEAU, OLD_MOUNTAINS, OLD_MOUNTAINS}, // High
+        {PLAINS, HILLS, ROLLING_HILLS, HIGHLANDS, BUTTES, MESAS, BADLANDS, PLATEAU, CANYONS, LOW_CANYONS}, // Mid
+        {HIGHLANDS, HIGHLANDS, HIGHLANDS, HIGHLANDS, ROLLING_HILLS, ROLLING_HILLS, BADLANDS, STAIR_STEP_CANYONS, STAIR_STEP_CANYONS, PLATEAU, PLATEAU, MESAS, OLD_MOUNTAINS, OLD_MOUNTAINS, OLD_MOUNTAINS}, // High
     };
     private static final int[][] ICE_SHEET_ALTITUDE_BIOMES = {
         {ICE_SHEET, ICE_SHEET, ICE_SHEET, ICE_SHEET, ICE_SHEET, ICE_SHEET_TUYAS}, // Low
@@ -31,10 +31,19 @@ public enum ChooseBiomes implements RegionTask
         {PATTERNED_GROUND, KNOB_AND_KETTLE, DRUMLINS, DRUMLINS, DRUMLINS, DRUMLINS, TUYAS, TUYAS}, // Mid
         {DRUMLINS, DRUMLINS, DRUMLINS, BADLANDS, BADLANDS, PLATEAU, PLATEAU, PLATEAU, PLATEAU, ICE_SHEET_MOUNTAINS}, // High
     };
+    private static final int[][] DESERT_ALTITUDE_BIOMES = {
+        {BUTTES, GRASSY_DUNES, DUNE_SEA, DUNE_SEA, DUNE_SEA, SALT_FLATS, SALT_FLATS}, // Low
+        {DUNE_SEA, BUTTES, BUTTES, HOODOOS, MESAS, MESAS, STAIR_STEP_CANYONS, BADLANDS, PLATEAU, CANYONS, WHORLED_CANYONS}, // Mid
+        {HOODOOS, MESAS, STAIR_STEP_CANYONS, STAIR_STEP_CANYONS, ROCKY_PLATEAU, ROCKY_PLATEAU, OLD_MOUNTAINS, OLD_MOUNTAINS, OLD_MOUNTAINS, WHORLED_CANYONS}, // High
+    };
+    private static final int[][] SEMI_ARID_ALTITUDE_BIOMES = {
+        {PLAINS, HILLS, HILLS, GRASSY_DUNES, GRASSY_DUNES, GRASSY_DUNES, GRASSY_DUNES, LOW_CANYONS, LOWLANDS, LOWLANDS, MUD_FLATS}, // Low
+        {PLAINS, HILLS, ROLLING_HILLS, ROLLING_HILLS, HIGHLANDS, HIGHLANDS, INVERTED_BADLANDS, BADLANDS, BADLANDS, PLATEAU, CANYONS, LOW_CANYONS, WHORLED_CANYONS, BUTTES, MESAS, MESAS, HOODOOS}, // Mid
+        {HIGHLANDS, HIGHLANDS, MESAS, HOODOOS, ROLLING_HILLS, ROLLING_HILLS, BADLANDS, BADLANDS, PLATEAU, ROCKY_PLATEAU, STAIR_STEP_CANYONS, STAIR_STEP_CANYONS, OLD_MOUNTAINS, OLD_MOUNTAINS, WHORLED_CANYONS}, // High
+    };
     private static final int[] KNOB_AND_KETTLE_BIOMES = {KNOB_AND_KETTLE, PATTERNED_GROUND, INVERTED_PATTERNED_GROUND};
     private static final int[] ISLAND_BIOMES = {PLAINS, HILLS, ROLLING_HILLS, VOLCANIC_OCEANIC_MOUNTAINS, VOLCANIC_OCEANIC_MOUNTAINS};
     private static final int[] MID_DEPTH_OCEAN_BIOMES = {DEEP_OCEAN, OCEAN, OCEAN, OCEAN_REEF, OCEAN_REEF, OCEAN_REEF};
-    private static final int[] DRY_LOWLANDS_REPLACEMENT_BIOMES = {MUD_FLATS, MUD_FLATS, GRASSY_DUNES, GRASSY_DUNES};
 
     @Override
     public void apply(RegionGenerator.Context context)
@@ -98,7 +107,8 @@ public enum ChooseBiomes implements RegionTask
             }
             else if (point.land())
             {
-                final float maxIceSheetTemp = -17f + 0.006f * point.rainfall;
+                final float rain = point.rainfall;
+                final float maxIceSheetTemp = -17f + 0.006f * rain;
                 final float temp = point.temperature;
                 if (temp < maxIceSheetTemp)
                 {
@@ -121,6 +131,14 @@ public enum ChooseBiomes implements RegionTask
                 else if (temp < maxIceSheetTemp + 6)
                 {
                     point.biome = randomSeededFrom(rngSeed, areaSeed, PALEO_ICE_SHEET_ALTITUDE_BIOMES[point.discreteBiomeAltitude()]);
+                }
+                else if (rain < 60)
+                {
+                    point.biome = randomSeededFrom(rngSeed, areaSeed, DESERT_ALTITUDE_BIOMES[point.discreteBiomeAltitude()]);
+                }
+                else if (rain < 155)
+                {
+                    point.biome = randomSeededFrom(rngSeed, areaSeed, SEMI_ARID_ALTITUDE_BIOMES[point.discreteBiomeAltitude()]);
                 }
                 else
                 {
@@ -170,8 +188,6 @@ public enum ChooseBiomes implements RegionTask
                     if (point.biome == LOWLANDS || point.biome == LOW_CANYONS) point.biome = SALT_FLATS;
                     else if (point.biome == HILLS || point.biome == ROLLING_HILLS || point.biome == PLATEAU) point.biome = DUNE_SEA;
                 }
-                else if (point.biome == LOWLANDS || point.biome == LOW_CANYONS) point.biome = randomSeededFrom(rngSeed, areaSeed, DRY_LOWLANDS_REPLACEMENT_BIOMES);
-                else if (point.biome == HILLS || point.biome == ROLLING_HILLS) point.biome = GRASSY_DUNES;
             }
             if (rainfall < 145 && (point.biome == PATTERNED_GROUND || point.biome == INVERTED_PATTERNED_GROUND)) point.biome = STONE_CIRCLES;
 

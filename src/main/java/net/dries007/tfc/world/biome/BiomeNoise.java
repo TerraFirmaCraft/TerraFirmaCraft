@@ -560,7 +560,6 @@ public final class BiomeNoise
      * Multi-tiered sinkholes inspired by the Xiaozhai Tiankeng
      * Essentially applies two "cenotes" of different sizes on top of each other
      */
-
     public static Noise2D tiankeng(long seed, Noise2D baseTerrainNoise)
     {
         final Noise2D cliffScale = new OpenSimplex2D(seed + 78535267L)
@@ -708,6 +707,105 @@ public final class BiomeNoise
                 .scaled(-1, 2)
                 .clamped(0.4, 1))
             .scaled(SEA_LEVEL_Y + minHeight, SEA_LEVEL_Y + maxHeight);
+    }
+
+    /**
+     * Noise for stair-step canyons
+     */
+    public static Noise2D stairCanyons(long seed)
+    {
+        final int minHeight = SEA_LEVEL_Y + 4;
+        final int plateauHeight = SEA_LEVEL_Y + 22;
+
+        return stairStepCliffs(seed, canyonBaseNoise(seed, minHeight, plateauHeight, 0.05)).add(new OpenSimplex2D(seed).octaves(3).spread(0.08).scaled(-5, 5));
+    }
+
+    public static Noise2D mesas(long seed)
+    {
+        final int minHeight = SEA_LEVEL_Y + 4;
+        final int plateauHeight = SEA_LEVEL_Y + 22;
+
+        return stairStepCliffs(seed, canyonBaseNoise(seed, minHeight, plateauHeight, 0.12)).add(new OpenSimplex2D(seed).octaves(3).spread(0.08).scaled(-5, 5));
+    }
+
+    public static Noise2D buttes(long seed)
+    {
+        final int minHeight = SEA_LEVEL_Y + 4;
+        final int plateauHeight = SEA_LEVEL_Y + 22;
+
+        return stairStepCliffs(seed, canyonBaseNoise(seed, minHeight, plateauHeight, 0.18)).add(new OpenSimplex2D(seed).octaves(3).spread(0.08).scaled(-5, 5));
+    }
+
+    public static Noise2D hoodoos(long seed)
+    {
+        final int minHeight = SEA_LEVEL_Y + 4;
+        final int maxHeight = SEA_LEVEL_Y + 22;
+        final Noise2D maxBaseNoise = canyonBaseNoise(seed, minHeight, maxHeight, 0.03);
+        final Noise2D minBaseNoise = canyonBaseNoise(seed, minHeight, maxHeight, 0.20);
+        final Noise2D hoodooNoise = new OpenSimplex2D(seed + 1)
+            .octaves(3)
+            .spread(0.12f)
+            .abs()
+            .clampedScaled(0.20, 0.60, minHeight, maxHeight);
+        return stairStepCliffs(seed, maxBaseNoise.min(hoodooNoise).max(minBaseNoise), 5, 8, 7).add(new OpenSimplex2D(seed).octaves(3).spread(0.08).scaled(-3, 3));
+    }
+
+    public static Noise2D tableMountains(long seed)
+    {
+        final int minHeight = SEA_LEVEL_Y + 16;
+        final int plateauHeight = SEA_LEVEL_Y + 48;
+
+        return stairStepCliffs(seed, canyonBaseNoise(seed, minHeight, plateauHeight, 0.1), 20, 30, 10);
+    }
+
+    /**
+     * Base noise used by steep-canyon biomes (buttes, mesas, etc) to align valleys
+     *
+     * @param minHeight Minimum output height
+     * @param maxHeight Maximum output height
+     * @param valleyWidth Used to vary the widths of canyons without changing the frequency
+     */
+
+    public static Noise2D canyonBaseNoise(long seed, int minHeight, int maxHeight, double valleyWidth)
+    {
+        final double valleyEdge = valleyWidth + 0.28;
+        return new OpenSimplex2D(seed + 1)
+                .octaves(4)
+                .spread(0.03f)
+                .abs()
+                .clampedScaled(valleyWidth, valleyEdge, minHeight, maxHeight);
+    }
+
+    public static Noise2D stairStepCliffs(long seed, Noise2D input)
+    {
+        return stairStepCliffs(seed, input, 5, 12, 7);
+    }
+
+    /**
+     * Unified cliff bands
+     *
+     * @param input The base noise to add cliffs to. Should be scaled and adjusted to sea level
+     * @param minCliffStart The lowest height above sea level that the base of a cliff should appear
+     * @param maxCliffStart The highest height above sea level that the base of a cliff should appear
+     * @param cliffHeight Height of each tier of cliffs
+     */
+    public static Noise2D stairStepCliffs(long seed, Noise2D input, int minCliffStart, int maxCliffStart, int cliffHeight)
+    {
+        final Noise2D cliffStartHeightNoise = new OpenSimplex2D(seed + 3).octaves(2).spread(0.008f).scaled(SEA_LEVEL_Y + minCliffStart, SEA_LEVEL_Y + maxCliffStart);
+        final Noise2D cliffNoise = new OpenSimplex2D(seed + 7).spread(0.003f).scaled(-cliffHeight, 2 * cliffHeight).clamped(0, cliffHeight);
+        final Noise2D doubleCliffNoise = cliffNoise.add(cliffNoise);
+
+        final Noise2D secondCliffStartHeightNoise = cliffStartHeightNoise.add(doubleCliffNoise);
+        final Noise2D secondCliffNoise = new OpenSimplex2D(seed + 19).spread(0.003f).scaled(-cliffHeight, 2 * cliffHeight).clamped(0, cliffHeight);
+
+        final Noise2D thirdCliffStartHeightNoise = secondCliffStartHeightNoise.add(doubleCliffNoise);
+        final Noise2D thirdCliffNoise = new OpenSimplex2D(seed + 25).spread(0.003f).scaled(-cliffHeight, 2 * cliffHeight).clamped(0, cliffHeight);
+
+        final Noise2D slopeNoise = new OpenSimplex2D(seed + 33).spread(0.008).scaled(-2, 2);
+
+        return input.slopedCliffMap(cliffStartHeightNoise, cliffNoise, cliffNoise.scaled(0, 7, 3, 6).add(slopeNoise))
+            .slopedCliffMap(secondCliffStartHeightNoise, secondCliffNoise, cliffNoise.scaled(0, 7, 3, 6).add(slopeNoise))
+            .slopedCliffMap(thirdCliffStartHeightNoise, thirdCliffNoise, cliffNoise.scaled(0, 7, 3, 6).add(slopeNoise));
     }
 
     public static Noise2D mountains(long seed, int baseHeight, int scaleHeight)

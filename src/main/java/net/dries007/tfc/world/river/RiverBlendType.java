@@ -16,6 +16,7 @@ public enum RiverBlendType
     WIDE(RiverNoise::wide),
     CANYON(RiverNoise::canyon),
     TALL_CANYON(RiverNoise::tallCanyon),
+    TERRACES(RiverNoise::terraces),
     CAVE(RiverNoise::cave);
 
     public static final RiverBlendType[] ALL = values();
