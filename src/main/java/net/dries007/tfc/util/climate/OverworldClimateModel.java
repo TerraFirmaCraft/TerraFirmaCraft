@@ -279,7 +279,6 @@ public class OverworldClimateModel implements ClimateModel
         // Take the intensity equation, and solve for the time required time intensity
         long trueLeft = (long)((segmentLeft + left + halfLength) - (1 - requiredTimeIntensity) * halfLength);
         long trueRight = (long)((segmentLeft + left + halfLength) + (1 - requiredTimeIntensity) * halfLength);
-        long trueLength = trueRight - trueLeft;
         if (toTick < trueLeft || fromTick > trueRight)
         {
             return new Pair<>(0f, toTick - fromTick); // Not raining, since we don't have enough intensity to overcome the climate
@@ -325,7 +324,7 @@ public class OverworldClimateModel implements ClimateModel
                 final RandomSource segment = seededRandom(i, RAIN_LENGTH_SALT);
                 final int length = segment.nextIntBetweenInclusive(12_000, 24_000);
 
-                // Time average value of the intensity is 0.5f, since it is just linear in getRain
+                // Average value of the time intensity factor is 0.5
                 final float timeIntensity = 0.5f;
 
                 final float averageRainWhenRainingInSegment = 0.5f * (rainIntensity + timeIntensity);
