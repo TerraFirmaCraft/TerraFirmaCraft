@@ -20,12 +20,16 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
 import net.dries007.tfc.util.data.Fertilizer;
+import org.spongepowered.asm.mixin.Mutable;
 
 import static net.dries007.tfc.common.blockentities.FarmlandBlockEntity.NutrientType.*;
 
 public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland
 {
-    private float nitrogen, phosphorous, potassium;
+    // Rainfall is in MM
+    public static float MAX_ACCUMULATED_RAINFALL = 20.0f;
+
+    private float nitrogen, phosphorous, potassium, accumulatedRainfall;
 
     public FarmlandBlockEntity(BlockPos pos, BlockState state)
     {
@@ -36,13 +40,14 @@ public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland
     {
         super(type, pos, state);
 
-        nitrogen = phosphorous = potassium = 0;
+        nitrogen = phosphorous = potassium = accumulatedRainfall = 0;
     }
 
     @Override
     public void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
         loadNutrients(nbt);
+        loadAccumulatedRainfall(nbt);
         super.loadAdditional(nbt, provider);
     }
 
@@ -50,6 +55,7 @@ public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland
     public void saveAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
         saveNutrients(nbt);
+        saveAccumulatedRainfall(nbt);
         super.saveAdditional(nbt, provider);
     }
 
@@ -57,9 +63,11 @@ public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland
     {
         if (includeHydration)
         {
-            final int value = FarmlandBlock.getHydration(level, pos);
+            final int value = FarmlandBlock.getHydration(level, pos, getAccumulatedRainfall());
             final MutableComponent hydration = Component.translatable("tfc.tooltip.farmland.hydration", value);
+            final MutableComponent accumulatedRainfall = Component.translatable("tfc.tooltip.farmland.accumulated_rainfall", getAccumulatedRainfall());
             text.accept(hydration);
+            text.accept(accumulatedRainfall);
         }
 
         if (includeNutrients)
@@ -106,6 +114,17 @@ public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland
             case PHOSPHOROUS -> phosphorous = value;
             case POTASSIUM -> potassium = value;
         }
+    }
+
+    @Override
+    public float getAccumulatedRainfall() {
+        return accumulatedRainfall;
+    }
+
+    @Override
+    public void setAccumulatedRainfall(float accumulatedRainfall) {
+        this.accumulatedRainfall = Mth.clamp(accumulatedRainfall, 0, MAX_ACCUMULATED_RAINFALL);
+        markForSync();
     }
 
     public enum NutrientType

@@ -57,7 +57,7 @@ public class WaterloggedBerryBushBlock extends StationaryBerryBushBlock implemen
     }
 
     @Override
-    protected int getHydration(LevelAccessor level, BlockPos pos, BlockState state)
+    protected int getHydration(Level level, BlockPos pos, BlockState state, long fromTick, long toTick)
     {
         return state.getValue(FLUID).getFluid() != Fluids.EMPTY ? 100 : 0;
     }

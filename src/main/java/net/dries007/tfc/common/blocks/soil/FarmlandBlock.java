@@ -8,6 +8,9 @@ package net.dries007.tfc.common.blocks.soil;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+
+import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
+import net.dries007.tfc.common.blockentities.IFarmland;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -43,15 +46,20 @@ import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateModel;
 import net.dries007.tfc.util.climate.ClimateRange;
 import net.dries007.tfc.util.registry.RegistrySoilVariant;
-import net.dries007.tfc.world.chunkdata.ChunkData;
 
 public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock, IForgeBlockExtension, EntityBlockExtension
 {
     public static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 15, 16);
 
-    public static Component getHydrationTooltip(LevelAccessor level, BlockPos pos, ClimateRange validRange, boolean allowWiggle)
+    public static Component getHydrationTooltip(Level level, BlockPos pos, ClimateRange validRange, boolean allowWiggle)
     {
-        return getHydrationTooltip(level, pos, validRange, allowWiggle, getHydration(level, pos));
+        float accumulatedRainfall = 0;
+        if (level.getBlockEntity(pos) instanceof IFarmland farmland)
+        {
+            accumulatedRainfall = farmland.getAccumulatedRainfall();
+        }
+
+        return getHydrationTooltip(level, pos, validRange, allowWiggle, getHydration(level, pos, accumulatedRainfall));
     }
 
     public static Component getHydrationTooltip(LevelAccessor level, BlockPos pos, ClimateRange validRange, boolean allowWiggle, int hydration)
@@ -93,16 +101,15 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
     /**
      * @return A value in the range [0, 100]
      */
-    public static int getHydration(LevelAccessor level, BlockPos pos)
+    public static int getHydration(LevelAccessor level, BlockPos pos, float accumulatedRainfall)
     {
         if (Helpers.isFluid(level.getFluidState(pos.above()), TFCTags.Fluids.HYDRATING))
         {
             return 100; // special case for waterlogged crops
         }
-        final ChunkData data = ChunkData.get(level, pos);
-        final float rainfall = data.getRainfall(pos); // Rainfall forms a baseline, providing up to 60% hydration
+
         final int waterCost = findMinCostWater(level, pos); // Nearby water contributes an additional 0 - 80% hydration based on proximity
-        return Mth.clamp((int) (60 * rainfall / ClimateModel.MAX_RAINFALL) + 20 * (5 - waterCost), 0, 100);
+        return Mth.clamp((int) (60 * accumulatedRainfall / FarmlandBlockEntity.MAX_ACCUMULATED_RAINFALL) + 20 * (5 - waterCost), 0, 100);
     }
 
     public static void turnToDirt(BlockState state, Level level, BlockPos pos)
@@ -113,7 +120,7 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
     /**
      * @return A value in [1, 5]
      */
-    private static int findMinCostWater(LevelAccessor level, BlockPos pos)
+    public static int findMinCostWater(LevelAccessor level, BlockPos pos)
     {
         final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
 

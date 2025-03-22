@@ -75,7 +75,6 @@ public final class CropHelpers
         // Calculate invariants
         final ICalendar calendar = Calendars.get(level);
         final BlockPos sourcePos = pos.below();
-        final int hydration = FarmlandBlock.getHydration(level, sourcePos);
         final long firstCalendarTick = calendar.getCalendarTicks() + calendar.getFixedCalendarTicksFromTick(fromTick - calendar.getTicks());
         final long secondCalendarTick = calendar.getCalendarTicks() + calendar.getFixedCalendarTicksFromTick(toTick - calendar.getTicks());
         final float startTemperature = Climate.getTemperature(level, pos, calendar, firstCalendarTick);
@@ -84,6 +83,14 @@ public final class CropHelpers
 
         final ICropBlock cropBlock = (ICropBlock) state.getBlock();
         final ClimateRange range = cropBlock.getClimateRange();
+
+        float accumulatedRainfall = 0.0f;
+        if (level.getBlockEntity(sourcePos) instanceof IFarmland farmland)
+        {
+            farmland.updateAccumulatedRainfall(level, sourcePos, firstCalendarTick, secondCalendarTick);
+            accumulatedRainfall = farmland.getAccumulatedRainfall();
+        }
+        final int hydration = FarmlandBlock.getHydration(level, sourcePos, accumulatedRainfall);
         final boolean growing = checkClimate(range, hydration, startTemperature, endTemperature, false);
         final boolean healthy = growing || checkClimate(range, hydration, startTemperature, endTemperature, true);
 

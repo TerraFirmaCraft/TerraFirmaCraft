@@ -7,6 +7,11 @@
 package net.dries007.tfc.common.blockentities;
 
 import java.util.function.Consumer;
+
+import net.dries007.tfc.util.calendar.Calendars;
+import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.util.climate.ClimateModel;
+import net.dries007.tfc.util.tracker.WorldTracker;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -16,6 +21,7 @@ import net.minecraft.util.Mth;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.blockentities.FarmlandBlockEntity.NutrientType;
 import net.dries007.tfc.util.data.Fertilizer;
+import net.minecraft.world.level.Level;
 
 import static net.dries007.tfc.common.blockentities.FarmlandBlockEntity.NutrientType.*;
 
@@ -73,6 +79,14 @@ public interface IFarmland
         addNutrient(POTASSIUM, fertilizer.potassium() * multiplier);
     }
 
+    float getAccumulatedRainfall();
+
+    void setAccumulatedRainfall(float rainfall);
+
+    default void addAccumulatedRainfall(float rainfall)
+    {
+        setAccumulatedRainfall(getAccumulatedRainfall() + rainfall);
+    }
 
     /**
      * Consume up to {@code amount} of nutrient {@code type}.
@@ -101,6 +115,17 @@ public interface IFarmland
         return getNutrient(NITROGEN) == 1 && getNutrient(PHOSPHOROUS) == 1 && getNutrient(POTASSIUM) == 1;
     }
 
+    default void updateAccumulatedRainfall(Level level, BlockPos pos, long fromTick, long toTick)
+    {
+        final WorldTracker tracker = WorldTracker.get(level);
+        final ClimateModel model = tracker.getClimateModel();
+        final ICalendar calendar = Calendars.get(level);
+
+        final float accumulatedRainInMM = model.getDeltaRainInMM(fromTick, toTick, model.getRainfall(level, pos, fromTick, toTick, calendar.getCalendarDaysInMonth()), calendar.getCalendarTicksInYear());
+
+        addAccumulatedRainfall(accumulatedRainInMM);
+    }
+
     default void saveNutrients(CompoundTag nbt)
     {
         nbt.putFloat("n", getNutrient(NITROGEN));
@@ -113,6 +138,16 @@ public interface IFarmland
         setNutrient(NITROGEN, nbt.getFloat("n"));
         setNutrient(PHOSPHOROUS, nbt.getFloat("p"));
         setNutrient(POTASSIUM, nbt.getFloat("k"));
+    }
+
+    default void loadAccumulatedRainfall(CompoundTag nbt)
+    {
+        setAccumulatedRainfall(nbt.getFloat("rainfall"));
+    }
+
+    default void saveAccumulatedRainfall(CompoundTag nbt)
+    {
+        nbt.putFloat("rainfall", getAccumulatedRainfall());
     }
 
     /**
