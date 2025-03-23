@@ -200,7 +200,7 @@ public interface ClimateModel
         return -1;
     }
 
-    default float getDeltaRainInMM(long fromTick, long toTick, float rainfall, long calendarTicksInYear)
+    default float getDeltaRainInMillimeters(long fromTick, long toTick, float rainfall, long calendarTicksInYear)
     {
         return 0.0f;
     }

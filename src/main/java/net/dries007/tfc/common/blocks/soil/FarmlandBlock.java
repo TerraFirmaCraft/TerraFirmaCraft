@@ -11,6 +11,10 @@ import java.util.function.Supplier;
 
 import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
 import net.dries007.tfc.common.blockentities.IFarmland;
+import net.dries007.tfc.util.calendar.Calendars;
+import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.util.climate.ClimateModel;
+import net.dries007.tfc.util.tracker.WorldTracker;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -100,15 +104,42 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
     /**
      * @return A value in the range [0, 100]
      */
-    public static int getHydration(LevelAccessor level, BlockPos pos, float accumulatedRainfall)
+    public static int getHydration(Level level, BlockPos pos, float accumulatedRainfall)
     {
         if (Helpers.isFluid(level.getFluidState(pos.above()), TFCTags.Fluids.HYDRATING))
         {
             return 100; // special case for waterlogged crops
         }
 
+        final WorldTracker tracker = WorldTracker.get(level);
+        final ClimateModel model = tracker.getClimateModel();
+
         final int waterCost = findMinCostWater(level, pos); // Nearby water contributes an additional 0 - 80% hydration based on proximity
-        return Mth.clamp((int) (60 * accumulatedRainfall / FarmlandBlockEntity.MAX_ACCUMULATED_RAINFALL) + 20 * (5 - waterCost), 0, 100);
+        final int waterBoost = 20 * (5 - waterCost); // Nearby water contributes an additional 0 - 80% hydration based on proximity
+        final int rainfallBoost = (int) (30 * accumulatedRainfall / FarmlandBlockEntity.MAX_ACCUMULATED_RAINFALL); // Up to 30% bonus from rainfall
+        final int humidityBoost = (int) (30 * model.getRainfall(level, pos)); // Up to 30% bonus from humidity (average rainfall)
+        return Mth.clamp(rainfallBoost + waterBoost + humidityBoost, 0, 100);
+    }
+
+    /**
+     * @return A value in the range [0, 100]
+     */
+    public static int getHydration(Level level, BlockPos pos, float accumulatedRainfall, long fromTick, long toTick)
+    {
+        if (Helpers.isFluid(level.getFluidState(pos.above()), TFCTags.Fluids.HYDRATING))
+        {
+            return 100; // special case for waterlogged crops
+        }
+
+        final WorldTracker tracker = WorldTracker.get(level);
+        final ClimateModel model = tracker.getClimateModel();
+        final ICalendar calendar = Calendars.get(level);
+
+        final int waterCost = findMinCostWater(level, pos); // Nearby water contributes an additional 0 - 80% hydration based on proximity
+        final int waterBoost = 20 * (5 - waterCost); // Nearby water contributes an additional 0 - 80% hydration based on proximity
+        final int rainfallBoost = (int) (30 * accumulatedRainfall / FarmlandBlockEntity.MAX_ACCUMULATED_RAINFALL); // Up to 30% bonus from rainfall
+        final int humidityBoost = (int) (30 * model.getRainfall(level, pos, fromTick, toTick, calendar.getCalendarDaysInMonth())); // Up to 30% bonus from humidity (average rainfall)
+        return Mth.clamp(rainfallBoost + waterBoost + humidityBoost, 0, 100);
     }
 
     public static void turnToDirt(BlockState state, Level level, BlockPos pos)

@@ -89,7 +89,7 @@ public final class CropHelpers
         {
             accumulatedRainfall = farmland.getAccumulatedRainfall();
         }
-        final int hydration = FarmlandBlock.getHydration(level, sourcePos, accumulatedRainfall);
+        final int hydration = FarmlandBlock.getHydration(level, sourcePos, accumulatedRainfall, fromTick, toTick);
         final boolean growing = checkClimate(range, hydration, startTemperature, endTemperature, false);
         final boolean healthy = growing || checkClimate(range, hydration, startTemperature, endTemperature, true);
 

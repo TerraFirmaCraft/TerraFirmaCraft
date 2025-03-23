@@ -130,8 +130,8 @@ public interface IFarmland
             final ClimateModel model = tracker.getClimateModel();
             final ICalendar calendar = Calendars.get(level);
 
-            final float accumulatedRainInMM = model.getDeltaRainInMM(fromTick, toTick, model.getRainfall(level, pos, fromTick, toTick, calendar.getCalendarDaysInMonth()), calendar.getCalendarTicksInYear());
-            addAccumulatedRainfall(accumulatedRainInMM);
+            final float accumulatedRainInMillimeters = model.getDeltaRainInMillimeters(fromTick, toTick, model.getRainfall(level, pos, fromTick, toTick, calendar.getCalendarDaysInMonth()), calendar.getCalendarTicksInYear());
+            addAccumulatedRainfall(accumulatedRainInMillimeters);
             setLastRainTick(calendar.getTicks());
         }
     }

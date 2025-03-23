@@ -69,11 +69,7 @@ public class OverworldClimateModel implements ClimateModel
     //
     private static final float AVERAGE_RAINFALL_INTENSITY = (float) 18_000 / RAIN_SEGMENT_LENGTH;
 
-    // Boost the amount of rain by about five times; doing some cursory research
-    // average amount of rainfall per hour is roughly 5-10 mm/h, but right now we're getting about 1-2 mm/h without this boost
-    private static final float RAINFALL_MM_BOOST = 5.0f;
-
-    private static final float MM_RAIN_EVAPORATED_PER_TICK = 0.001f;
+    private static final float MILLIMETERS_RAIN_EVAPORATED_PER_TICK = 0.001f;
 
     /**
      * Obtain the climate model for the current dimension, assuming it is an {@link OverworldClimateModel}
@@ -228,7 +224,7 @@ public class OverworldClimateModel implements ClimateModel
 
         // We are raining, so calculate intensity, and distance to center
 
-        // We need a seperate random source for the intensity, since it needs to be consistent with the getDeltaRainInMM calculation
+        // We need a seperate random source for the intensity, since it needs to be consistent with the getDeltaRainInMillimeters calculation
         final RandomSource intensity = seededRandom(segmentId, RAIN_INTENSITY_SALT);
 
         final int halfLength = length / 2;
@@ -240,7 +236,7 @@ public class OverworldClimateModel implements ClimateModel
     }
 
     // Returns intensityTimeSum and ticksNotRainingSum
-    private Pair<Long, Long> getDeltaRainInMM(long fromTick, long toTick, float rainfall)
+    private Pair<Long, Long> getDeltaRainInMillimeters(long fromTick, long toTick, float rainfall)
     {
         final int segmentId = (int) Math.floorDiv(fromTick, RAIN_SEGMENT_LENGTH);
         final long segmentLeft = segmentId * RAIN_SEGMENT_LENGTH;
@@ -294,7 +290,7 @@ public class OverworldClimateModel implements ClimateModel
     }
 
     @Override
-    public float getDeltaRainInMM(long fromTick, long toTick, float rainfall, long calendarTicksInYear)
+    public float getDeltaRainInMillimeters(long fromTick, long toTick, float rainfall, long calendarTicksInYear)
     {
         final int segmentStart = (int) Math.floorDiv(fromTick, RAIN_SEGMENT_LENGTH);
         final int segmentEnd = (int) Math.floorDiv(toTick, RAIN_SEGMENT_LENGTH);
@@ -304,22 +300,22 @@ public class OverworldClimateModel implements ClimateModel
         // Apply all the full segments, and then apply the partial segment at the end
         for (int segmentId = segmentStart; segmentId < segmentEnd - 1; segmentId++)
         {
-            Pair<Long, Long> result = getDeltaRainInMM(segmentId * RAIN_SEGMENT_LENGTH, (segmentId + 1) * RAIN_SEGMENT_LENGTH, rainfall);
+            Pair<Long, Long> result = getDeltaRainInMillimeters(segmentId * RAIN_SEGMENT_LENGTH, (segmentId + 1) * RAIN_SEGMENT_LENGTH, rainfall);
             ticksRainingSum += result.getFirst();
             ticksNotRainingSum += result.getSecond();
         }
 
         final long finalPartialRainSegmentStart = Math.max(segmentEnd * RAIN_SEGMENT_LENGTH, fromTick);
-        Pair<Long, Long> result = getDeltaRainInMM(finalPartialRainSegmentStart, toTick, rainfall);
+        Pair<Long, Long> result = getDeltaRainInMillimeters(finalPartialRainSegmentStart, toTick, rainfall);
         ticksRainingSum += result.getFirst();
         ticksNotRainingSum += result.getSecond();
 
-        // This is the MM of rain accumulated per tick of the weather. See AVERAGE_RAINFALL_INTENSITY for more info.
-        final double MMRainPerRainTick = (MAX_RAINFALL / (AVERAGE_RAINFALL_INTENSITY * calendarTicksInYear)) * RAINFALL_MM_BOOST;
-        final float deltaHydration = (float)(MMRainPerRainTick * ticksRainingSum);
-        final float deltaDehydration = ticksNotRainingSum * MM_RAIN_EVAPORATED_PER_TICK;
+        // This is the millimeters of rain accumulated per tick of the weather. See AVERAGE_RAINFALL_INTENSITY for more info.
+        final double rainPerRainTickInMillimeters = (MAX_RAINFALL / (AVERAGE_RAINFALL_INTENSITY * calendarTicksInYear));
+        final float deltaHydration = (float)(rainPerRainTickInMillimeters * ticksRainingSum);
+        final float dehydrationFactor = Mth.clampedMap(rainfall, ClimateModel.MIN_RAINFALL, ClimateModel.MAX_RAINFALL, 2.f, 0.5f);
+        final float deltaDehydration = ticksNotRainingSum * MILLIMETERS_RAIN_EVAPORATED_PER_TICK * dehydrationFactor;
 
-        // Factor in the partial segment at the end
         return deltaHydration - deltaDehydration;
     }
 

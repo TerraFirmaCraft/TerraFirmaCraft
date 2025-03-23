@@ -34,7 +34,7 @@ import static net.dries007.tfc.common.blockentities.FarmlandBlockEntity.Nutrient
 public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland, ICalendarTickable
 {
     // Rainfall is in MM
-    public static float MAX_ACCUMULATED_RAINFALL = 200.0f;
+    public static float MAX_ACCUMULATED_RAINFALL = 100.0f;
     private static final long UPDATE_INTERVAL = 2 * ICalendar.CALENDAR_TICKS_IN_HOUR;
 
     private long lastUpdateTick; // The last tick this farmland was ticked via the block entity's tick() method. A delta of > 1 is used to detect time skips
