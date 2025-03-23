@@ -43,7 +43,6 @@ import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.crop.CropHelpers;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.Climate;
-import net.dries007.tfc.util.climate.ClimateModel;
 import net.dries007.tfc.util.climate.ClimateRange;
 import net.dries007.tfc.util.registry.RegistrySoilVariant;
 
@@ -208,11 +207,28 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
     }
 
     @Override
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
+    {
+        tick(state, level, pos, random);
+    }
+
+    @Override
     protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
     {
         if (!state.canSurvive(level, pos))
         {
             turnToDirt(state, level, pos);
+        }
+        else
+        {
+            // Only perform rainfall calculation on server.
+            if (!level.isClientSide())
+            {
+                if (level.getBlockEntity(pos) instanceof IFarmland farmland)
+                {
+                    farmland.rainTick();
+                }
+            }
         }
     }
 

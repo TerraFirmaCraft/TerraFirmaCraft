@@ -82,12 +82,18 @@ public interface IFarmland
 
     float getAccumulatedRainfall();
 
+    void rainTick();
+
     void setAccumulatedRainfall(float rainfall);
 
     default void addAccumulatedRainfall(float rainfall)
     {
         setAccumulatedRainfall(getAccumulatedRainfall() + rainfall);
     }
+
+    long getLastRainTick();
+
+    void setLastRainTick(long lastRainTick);
 
     /**
      * Consume up to {@code amount} of nutrient {@code type}.
@@ -118,7 +124,7 @@ public interface IFarmland
 
     default void updateAccumulatedRainfall(Level level, BlockPos pos, long fromTick, long toTick)
     {
-        if(level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, pos).equals(pos))
+        //if(level.getHeightmapPos(Heightmap.Types.WORLD_SURFACE, pos).equals(pos))
         {
             final WorldTracker tracker = WorldTracker.get(level);
             final ClimateModel model = tracker.getClimateModel();
@@ -126,6 +132,7 @@ public interface IFarmland
 
             final float accumulatedRainInMM = model.getDeltaRainInMM(fromTick, toTick, model.getRainfall(level, pos, fromTick, toTick, calendar.getCalendarDaysInMonth()), calendar.getCalendarTicksInYear());
             addAccumulatedRainfall(accumulatedRainInMM);
+            setLastRainTick(calendar.getTicks());
         }
     }
 

@@ -64,11 +64,14 @@ public class OverworldClimateModel implements ClimateModel
 
     // On average, the game will rain for 18 ticks out of a 66 tick segment, then repeat, given that the
     // climate's rainfall is at MAX_RAINFALL (since it will be considered raining if there any any raining
-    // intensity at all). This value is the percentage of the time that it will rain, and is used to scale
-    // the rainfall intensity to get a baseline precipitation value.
+    // intensity at all). This value is the percentage of the time that it will rain in a MAX_RAINFALL climate,
+    // and is used to scale the number of ticks that are considered raining to get a baseline precipitation value.
     //
-    // The 0.5f is derived from the average intensity of the rainfall during any rain segment.
-    private static final float AVERAGE_RAINFALL_INTENSITY = (float) 18_000 / RAIN_SEGMENT_LENGTH * 0.5f;
+    private static final float AVERAGE_RAINFALL_INTENSITY = (float) 18_000 / RAIN_SEGMENT_LENGTH;
+
+    // Boost the amount of rain by about five times; doing some cursory research
+    // average amount of rainfall per hour is roughly 5-10 mm/h, but right now we're getting about 1-2 mm/h without this boost
+    private static final float RAINFALL_MM_BOOST = 5.0f;
 
     private static final float MM_RAIN_EVAPORATED_PER_TICK = 0.001f;
 
@@ -225,7 +228,7 @@ public class OverworldClimateModel implements ClimateModel
 
         // We are raining, so calculate intensity, and distance to center
 
-        // We need a seperate random source for the intensity, since it needs to be consistent with the getAverageRain calculation
+        // We need a seperate random source for the intensity, since it needs to be consistent with the getDeltaRainInMM calculation
         final RandomSource intensity = seededRandom(segmentId, RAIN_INTENSITY_SALT);
 
         final int halfLength = length / 2;
@@ -237,7 +240,7 @@ public class OverworldClimateModel implements ClimateModel
     }
 
     // Returns intensityTimeSum and ticksNotRainingSum
-    private Pair<Float, Long> getDeltaRainInMMPartialSegment(long fromTick, long toTick, float rainfall)
+    private Pair<Long, Long> getDeltaRainInMM(long fromTick, long toTick, float rainfall)
     {
         final int segmentId = (int) Math.floorDiv(fromTick, RAIN_SEGMENT_LENGTH);
         final long segmentLeft = segmentId * RAIN_SEGMENT_LENGTH;
@@ -257,7 +260,7 @@ public class OverworldClimateModel implements ClimateModel
 
         if (toTick < segmentLeft + left || fromTick > segmentLeft + left + length)
         {
-            return new Pair<>(0f, toTick - fromTick); // Not raining, since we're not within the target segment
+            return new Pair<>(0L, toTick - fromTick); // Not raining, since we're not within the target segment
         }
 
         // We are raining, so calculate intensity, and distance to center
@@ -281,19 +284,13 @@ public class OverworldClimateModel implements ClimateModel
         long trueRight = (long)((segmentLeft + left + halfLength) + (1 - requiredTimeIntensity) * halfLength);
         if (toTick < trueLeft || fromTick > trueRight)
         {
-            return new Pair<>(0f, toTick - fromTick); // Not raining, since we don't have enough intensity to overcome the climate
+            return new Pair<>(0L, toTick - fromTick); // Not raining, since we don't have enough intensity to overcome the climate
         }
 
         long fromTickInRain = Math.max(fromTick, trueLeft);
         long toTickInRain = Math.min(toTick, trueRight);
 
-        // Take three samples, since if we have just two samples then if the left and right side are at the edge of the intensity we just get 0.
-        final float timeIntensityFrom = 1f - Math.abs((segmentLeft + left + halfLength) - fromTickInRain) / (float) halfLength;
-        final float timeIntensityMiddle = 1f - Math.abs((segmentLeft + left + halfLength) - (fromTickInRain + toTickInRain) / 2) / (float) halfLength;
-        final float timeIntensityTo = 1f - Math.abs((segmentLeft + left + halfLength) - toTickInRain) / (float) halfLength;
-        final float timeIntensity = (timeIntensityFrom + timeIntensityTo + timeIntensityMiddle) / 3f;
-
-        return new Pair<>((0.5f * (rainIntensity + timeIntensity) - rainfallFactor) * (toTickInRain - fromTickInRain), (toTick - fromTick) - (toTickInRain - fromTickInRain));
+        return new Pair<>(toTickInRain - fromTickInRain, (toTick - fromTick) - (toTickInRain - fromTickInRain));
     }
 
     @Override
@@ -301,47 +298,26 @@ public class OverworldClimateModel implements ClimateModel
     {
         final int segmentStart = (int) Math.floorDiv(fromTick, RAIN_SEGMENT_LENGTH);
         final int segmentEnd = (int) Math.floorDiv(toTick, RAIN_SEGMENT_LENGTH);
-        final int numSegments = segmentEnd - segmentStart + 1;
 
-        double intensityTimeSum = 0;
+        long ticksRainingSum = 0;
         long ticksNotRainingSum = 0;
-        if(numSegments == 1)
+        // Apply all the full segments, and then apply the partial segment at the end
+        for (int segmentId = segmentStart; segmentId < segmentEnd - 1; segmentId++)
         {
-            // If we are in the same segment, we need to apply the average rainfall for the partial segment
-            Pair<Float, Long> result = getDeltaRainInMMPartialSegment(fromTick, toTick, rainfall);
-            intensityTimeSum += result.getFirst();
-            ticksNotRainingSum += result.getSecond();
-        }
-        else
-        {
-            // Apply all the full segments, and then apply the partial segment at the end
-            for (int i = segmentStart; i < segmentEnd - 1; i++)
-            {
-                final RandomSource intensity = seededRandom(i, RAIN_INTENSITY_SALT);
-                final float rainIntensity = intensity.nextFloat();
-
-                // Calculate the current segment data to determine what percentage of the segment is raining
-                final RandomSource segment = seededRandom(i, RAIN_LENGTH_SALT);
-                final int length = segment.nextIntBetweenInclusive(12_000, 24_000);
-
-                // Average value of the time intensity factor is 0.5
-                final float timeIntensity = 0.5f;
-
-                final float averageRainWhenRainingInSegment = 0.5f * (rainIntensity + timeIntensity);
-                intensityTimeSum += averageRainWhenRainingInSegment * length;
-                ticksNotRainingSum += RAIN_SEGMENT_LENGTH - length;
-            }
-
-            final long finalPartialRainSegmentStart = fromTick + (numSegments - 1) * RAIN_SEGMENT_LENGTH;
-            Pair<Float, Long> result = getDeltaRainInMMPartialSegment(finalPartialRainSegmentStart, toTick, rainfall);
-            intensityTimeSum += result.getFirst();
+            Pair<Long, Long> result = getDeltaRainInMM(segmentId * RAIN_SEGMENT_LENGTH, (segmentId + 1) * RAIN_SEGMENT_LENGTH, rainfall);
+            ticksRainingSum += result.getFirst();
             ticksNotRainingSum += result.getSecond();
         }
 
-        // This is the MM of rain accumulated per intensity-time of the weather. See AVERAGE_RAINFALL_INTENSITY for more info.
-        final double MMRainPerIntensityTime = (MAX_RAINFALL / (AVERAGE_RAINFALL_INTENSITY * calendarTicksInYear));
-        final float deltaHydration = (float)(MMRainPerIntensityTime * intensityTimeSum);
-        final float deltaDehydration = (float)(MMRainPerIntensityTime * ticksNotRainingSum * MM_RAIN_EVAPORATED_PER_TICK);
+        final long finalPartialRainSegmentStart = Math.max(segmentEnd * RAIN_SEGMENT_LENGTH, fromTick);
+        Pair<Long, Long> result = getDeltaRainInMM(finalPartialRainSegmentStart, toTick, rainfall);
+        ticksRainingSum += result.getFirst();
+        ticksNotRainingSum += result.getSecond();
+
+        // This is the MM of rain accumulated per tick of the weather. See AVERAGE_RAINFALL_INTENSITY for more info.
+        final double MMRainPerRainTick = (MAX_RAINFALL / (AVERAGE_RAINFALL_INTENSITY * calendarTicksInYear)) * RAINFALL_MM_BOOST;
+        final float deltaHydration = (float)(MMRainPerRainTick * ticksRainingSum);
+        final float deltaDehydration = ticksNotRainingSum * MM_RAIN_EVAPORATED_PER_TICK;
 
         // Factor in the partial segment at the end
         return deltaHydration - deltaDehydration;

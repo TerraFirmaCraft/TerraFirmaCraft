@@ -8,6 +8,12 @@ package net.dries007.tfc.common.blockentities;
 
 import java.util.List;
 import java.util.function.Consumer;
+
+import net.dries007.tfc.common.blocks.crop.CropHelpers;
+import net.dries007.tfc.common.blocks.crop.ICropBlock;
+import net.dries007.tfc.util.calendar.Calendars;
+import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.util.calendar.ICalendarTickable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -15,6 +21,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -24,10 +31,14 @@ import org.spongepowered.asm.mixin.Mutable;
 
 import static net.dries007.tfc.common.blockentities.FarmlandBlockEntity.NutrientType.*;
 
-public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland
+public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland, ICalendarTickable
 {
     // Rainfall is in MM
-    public static float MAX_ACCUMULATED_RAINFALL = 20.0f;
+    public static float MAX_ACCUMULATED_RAINFALL = 200.0f;
+    private static final long UPDATE_INTERVAL = 2 * ICalendar.CALENDAR_TICKS_IN_HOUR;
+
+    private long lastUpdateTick; // The last tick this farmland was ticked via the block entity's tick() method. A delta of > 1 is used to detect time skips
+    private long lastRainTick; // The last tick the farmland block was ticked via rainTick()
 
     private float nitrogen, phosphorous, potassium, accumulatedRainfall;
 
@@ -39,8 +50,54 @@ public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland
     protected FarmlandBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
         super(type, pos, state);
-
+        lastUpdateTick = Integer.MIN_VALUE;
+        lastRainTick = Calendars.SERVER.getTicks();
         nitrogen = phosphorous = potassium = accumulatedRainfall = 0;
+    }
+
+    public static void serverTick(Level level, BlockPos pos, BlockState state, FarmlandBlockEntity farmland)
+    {
+        farmland.checkForCalendarUpdate();
+    }
+
+    public void rainTick()
+    {
+        assert level != null;
+        final long firstTick = this.getLastRainTick(), thisTick = Calendars.SERVER.getTicks();
+        long tick = firstTick + UPDATE_INTERVAL, lastTick = firstTick;
+        for (; tick < thisTick; tick += UPDATE_INTERVAL)
+        {
+            final ICalendar calendar = Calendars.get(level);
+            final long firstCalendarTick = calendar.getCalendarTicks() + calendar.getFixedCalendarTicksFromTick(lastTick - calendar.getTicks());
+            final long secondCalendarTick = calendar.getCalendarTicks() + calendar.getFixedCalendarTicksFromTick(tick - calendar.getTicks());
+            updateAccumulatedRainfall(level, worldPosition, firstCalendarTick, secondCalendarTick);
+            lastTick = tick;
+        }
+    }
+
+    @Override
+    public void onCalendarUpdate(long ticks)
+    {
+        assert level != null;
+        BlockEntity entity = level.getBlockEntity(worldPosition);
+        if (entity instanceof IFarmland)
+        {
+            rainTick();
+        }
+    }
+
+    @Override
+    @Deprecated
+    public long getLastCalendarUpdateTick()
+    {
+        return lastUpdateTick;
+    }
+
+    @Override
+    @Deprecated
+    public void setLastCalendarUpdateTick(long tick)
+    {
+        lastUpdateTick = tick;
     }
 
     @Override
@@ -48,6 +105,8 @@ public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland
     {
         loadNutrients(nbt);
         loadAccumulatedRainfall(nbt);
+        lastUpdateTick = nbt.getLong("tick");
+        lastRainTick = nbt.getLong("rainTick");
         super.loadAdditional(nbt, provider);
     }
 
@@ -56,6 +115,8 @@ public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland
     {
         saveNutrients(nbt);
         saveAccumulatedRainfall(nbt);
+        nbt.putLong("tick", lastUpdateTick);
+        nbt.putLong("rainTick", lastRainTick);
         super.saveAdditional(nbt, provider);
     }
 
@@ -124,6 +185,17 @@ public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland
     @Override
     public void setAccumulatedRainfall(float accumulatedRainfall) {
         this.accumulatedRainfall = Mth.clamp(accumulatedRainfall, 0, MAX_ACCUMULATED_RAINFALL);
+        markForSync();
+    }
+
+    public long getLastRainTick()
+    {
+        return lastRainTick;
+    }
+
+    public void setLastRainTick(long lastRainTick)
+    {
+        this.lastRainTick = lastRainTick;
         markForSync();
     }
 

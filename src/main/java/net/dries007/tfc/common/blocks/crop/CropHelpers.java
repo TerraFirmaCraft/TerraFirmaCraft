@@ -87,7 +87,6 @@ public final class CropHelpers
         float accumulatedRainfall = 0.0f;
         if (level.getBlockEntity(sourcePos) instanceof IFarmland farmland)
         {
-            farmland.updateAccumulatedRainfall(level, sourcePos, firstCalendarTick, secondCalendarTick);
             accumulatedRainfall = farmland.getAccumulatedRainfall();
         }
         final int hydration = FarmlandBlock.getHydration(level, sourcePos, accumulatedRainfall);
