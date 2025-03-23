@@ -286,10 +286,10 @@ public class OverworldClimateModel implements ClimateModel
         long fromTickInRain = Math.max(fromTick, trueLeft);
         long toTickInRain = Math.min(toTick, trueRight);
 
-        if (getTemperature(level, pos, fromTickInRain, toTickInRain, calendarDaysInMonth) < 0)
+        /*if (getTemperature(level, pos, fromTickInRain, toTickInRain, calendarDaysInMonth) < 0)
         {
             return new Pair<>(0L, toTick - fromTick); // Not raining, since we're below freezing
-        }
+        }*/
 
         return new Pair<>(toTickInRain - fromTickInRain, (toTick - fromTick) - (toTickInRain - fromTickInRain));
     }

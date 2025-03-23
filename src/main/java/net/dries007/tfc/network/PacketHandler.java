@@ -32,6 +32,7 @@ public final class PacketHandler
 
         // Server -> Client
         register.playToClient(ChunkWatchPacket.TYPE, ChunkWatchPacket.CODEC, onClient(ChunkWatchPacket::handle));
+        register.playToClient(ChunkRainfallPacket.TYPE, ChunkRainfallPacket.CODEC, onClient(ChunkRainfallPacket::handle));
         register.playToClient(CalendarUpdatePacket.TYPE, CalendarUpdatePacket.CODEC, onClient(CalendarUpdatePacket::handle));
         register.playToClient(PlayerInfoPacket.TYPE, PlayerInfoPacket.CODEC, onClient(PlayerInfoPacket::handle));
         register.playToClient(ProspectedPacket.TYPE, ProspectedPacket.CODEC, onClient(ProspectedPacket::handle));

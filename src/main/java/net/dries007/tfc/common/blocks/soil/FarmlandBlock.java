@@ -9,12 +9,12 @@ package net.dries007.tfc.common.blocks.soil;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
 import net.dries007.tfc.common.blockentities.IFarmland;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.ClimateModel;
 import net.dries007.tfc.util.tracker.WorldTracker;
+import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -59,7 +59,7 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
         float accumulatedRainfall = 0;
         if (level.getBlockEntity(pos) instanceof IFarmland farmland)
         {
-            accumulatedRainfall = farmland.getAccumulatedRainfall();
+            accumulatedRainfall = farmland.getAdditionalWater();
         }
 
         return getHydrationTooltip(level, pos, validRange, allowWiggle, getHydration(level, pos, accumulatedRainfall));
@@ -103,7 +103,7 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
 
     public static int getRainfallBoost(float accumulatedRainfall)
     {
-        return (int) (30 * accumulatedRainfall / FarmlandBlockEntity.MAX_ACCUMULATED_RAINFALL);
+        return (int) (30 * accumulatedRainfall / ChunkData.MAX_ACCUMULATED_RAINFALL);
     }
 
     /**
@@ -264,7 +264,7 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
             {
                 if (level.getBlockEntity(pos) instanceof IFarmland farmland)
                 {
-                    farmland.rainTick();
+                    farmland.waterTick();
                 }
             }
         }

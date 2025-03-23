@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
+import net.dries007.tfc.network.ChunkRainfallPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -31,6 +33,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCPoiTypes;
@@ -213,11 +216,24 @@ public final class WeatherHelpers
         final long currentTick = Calendars.SERVER.getTicks();
         final long currentCalendarTick = Calendars.SERVER.getCalendarTicks();
         final long timeSinceTick = currentTick - data.getLastRandomTick();
+        final long timeSinceLastRainTick = currentTick - data.getLastRainTick();
 
         final ChunkPos chunkPos = chunk.getPos();
         final BlockPos surfacePos = getRandomSurfacePos(level, chunkPos);
-        final float rainfall = model.getRainfall(level, surfacePos);
+        final float rainfall = model.getRainfall(level, surfacePos, data.getLastRandomTick(), currentTick, Calendars.SERVER.getCalendarDaysInMonth());
         final int daysInMonth = Calendars.SERVER.getCalendarDaysInMonth();
+
+        // Update rainfall accumulation for this chunk periodically
+        if(timeSinceLastRainTick > 1_000)
+        {
+            final long firstCalendarTick = Calendars.SERVER.getCalendarTicks() + Calendars.SERVER.getFixedCalendarTicksFromTick(data.getLastRainTick() - Calendars.SERVER.getTicks());
+            final long secondCalendarTick = Calendars.SERVER.getCalendarTicks();
+
+            final float rainfallForRainTick = model.getRainfall(level, surfacePos, firstCalendarTick, secondCalendarTick, daysInMonth);
+            data.addAccumulatedRainfall(model.getDeltaRainInMillimeters(level, surfacePos, firstCalendarTick, secondCalendarTick, rainfallForRainTick, Calendars.SERVER.getCalendarTicksInYear(), Calendars.SERVER.getCalendarDaysInMonth()));
+            data.setLastRainTick(chunk, currentTick);
+            PacketDistributor.sendToPlayersTrackingChunk(level, chunkPos, new ChunkRainfallPacket(chunkPos, data.getAccumulatedRainfall()));
+        }
 
         if (timeSinceTick > 1_000)
         {

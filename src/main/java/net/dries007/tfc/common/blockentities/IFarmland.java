@@ -22,7 +22,6 @@ import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.blockentities.FarmlandBlockEntity.NutrientType;
 import net.dries007.tfc.util.data.Fertilizer;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.levelgen.Heightmap;
 
 import static net.dries007.tfc.common.blockentities.FarmlandBlockEntity.NutrientType.*;
 
@@ -31,6 +30,8 @@ import static net.dries007.tfc.common.blockentities.FarmlandBlockEntity.Nutrient
  */
 public interface IFarmland
 {
+    float WATER_DISSIPATION_RATE = 0.001f;
+
     static void addNutrientParticles(ServerLevel level, BlockPos pos, Fertilizer fertilizer)
     {
         final float n = fertilizer.nitrogen(), p = fertilizer.phosphorus(), k = fertilizer.potassium();
@@ -80,20 +81,20 @@ public interface IFarmland
         addNutrient(POTASSIUM, fertilizer.potassium() * multiplier);
     }
 
-    float getAccumulatedRainfall();
+    float getAdditionalWater();
 
-    void rainTick();
+    void waterTick();
 
-    void setAccumulatedRainfall(float rainfall);
+    void setAdditionalWater(float rainfall);
 
-    default void addAccumulatedRainfall(float rainfall)
+    default void addAdditionalWater(float rainfall)
     {
-        setAccumulatedRainfall(getAccumulatedRainfall() + rainfall);
+        setAdditionalWater(getAdditionalWater() + rainfall);
     }
 
-    long getLastRainTick();
+    long getLastWaterTick();
 
-    void setLastRainTick(long lastRainTick);
+    void setLastWaterTick(long lastWaterTick);
 
     /**
      * Consume up to {@code amount} of nutrient {@code type}.
@@ -122,19 +123,10 @@ public interface IFarmland
         return getNutrient(NITROGEN) == 1 && getNutrient(PHOSPHOROUS) == 1 && getNutrient(POTASSIUM) == 1;
     }
 
-    default void updateAccumulatedRainfall(Level level, BlockPos pos, long fromTick, long toTick)
+    default void updateAdditionalWater(long fromTick, long toTick)
     {
-        //if(level.getHeightmapPos(Heightmap.Types.WORLD_SURFACE, pos).equals(pos))
-        {
-            final WorldTracker tracker = WorldTracker.get(level);
-            final ClimateModel model = tracker.getClimateModel();
-            final ICalendar calendar = Calendars.get(level);
-
-            int calendarDaysInMonth = calendar.getCalendarDaysInMonth();
-            final float accumulatedRainInMillimeters = model.getDeltaRainInMillimeters(level, pos, fromTick, toTick, model.getRainfall(level, pos, fromTick, toTick, calendarDaysInMonth), calendar.getCalendarTicksInYear(), calendarDaysInMonth);
-            addAccumulatedRainfall(accumulatedRainInMillimeters);
-            setLastRainTick(calendar.getTicks());
-        }
+        long deltaTicks = toTick - fromTick;
+        addAdditionalWater(deltaTicks * WATER_DISSIPATION_RATE);
     }
 
     default void saveNutrients(CompoundTag nbt)
@@ -151,14 +143,14 @@ public interface IFarmland
         setNutrient(POTASSIUM, nbt.getFloat("k"));
     }
 
-    default void loadAccumulatedRainfall(CompoundTag nbt)
+    default void loadAdditionalWater(CompoundTag nbt)
     {
-        setAccumulatedRainfall(nbt.getFloat("rainfall"));
+        setAdditionalWater(nbt.getFloat("water"));
     }
 
-    default void saveAccumulatedRainfall(CompoundTag nbt)
+    default void saveAdditionalWater(CompoundTag nbt)
     {
-        nbt.putFloat("rainfall", getAccumulatedRainfall());
+        nbt.putFloat("water", getAdditionalWater());
     }
 
     /**

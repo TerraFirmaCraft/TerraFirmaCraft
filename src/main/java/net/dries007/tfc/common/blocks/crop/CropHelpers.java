@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.blocks.crop;
 
+import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -84,12 +85,7 @@ public final class CropHelpers
         final ICropBlock cropBlock = (ICropBlock) state.getBlock();
         final ClimateRange range = cropBlock.getClimateRange();
 
-        float accumulatedRainfall = 0.0f;
-        if (level.getBlockEntity(sourcePos) instanceof IFarmland farmland)
-        {
-            accumulatedRainfall = farmland.getAccumulatedRainfall();
-        }
-        final int hydration = FarmlandBlock.getHydration(level, sourcePos, accumulatedRainfall, fromTick, toTick);
+        final int hydration = FarmlandBlock.getHydration(level, sourcePos, ChunkData.get(level, pos).getAccumulatedRainfall(), fromTick, toTick);
         final boolean growing = checkClimate(range, hydration, startTemperature, endTemperature, false);
         final boolean healthy = growing || checkClimate(range, hydration, startTemperature, endTemperature, true);
 
