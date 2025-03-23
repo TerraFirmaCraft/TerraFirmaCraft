@@ -123,7 +123,7 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
         final int waterBoost = 20 * (5 - waterCost); // Nearby water contributes an additional 0 - 80% hydration based on proximity
         final int rainfallBoost = getRainfallBoost(accumulatedRainfall); // Up to 30% bonus from rainfall
         // TODO :: Maybe this humidity factor should have a lower impact when temperature is lower?
-        final int humidityBoost = (int) (30 * Mth.clampedMap(model.getRainfall(level, pos), ClimateModel.MIN_RAINFALL, ClimateModel.MAX_RAINFALL, 0, 1)); // Up to 30% bonus from humidity (average rainfall)
+        final int humidityBoost = (int) (30 * Mth.clampedMap(model.getGroundwater(level, pos), ClimateModel.MIN_RAINFALL, ClimateModel.MAX_RAINFALL, 0, 1)); // Up to 30% bonus from groundwater
         return Mth.clamp(rainfallBoost + waterBoost + humidityBoost, 0, 100);
     }
 
@@ -145,7 +145,7 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
         final int waterBoost = 20 * (5 - waterCost); // Nearby water contributes an additional 0 - 80% hydration based on proximity
         final int rainfallBoost = getRainfallBoost(accumulatedRainfall); // Up to 30% bonus from rainfall
         // TODO :: Maybe this humidity factor should have a lower impact when temperature is lower?
-        final int humidityBoost = (int) (30 * Mth.clampedMap(model.getRainfall(level, pos, fromTick, toTick, calendar.getCalendarDaysInMonth()), ClimateModel.MIN_RAINFALL, ClimateModel.MAX_RAINFALL, 0, 1)); // Up to 30% bonus from humidity (average rainfall)
+        final int humidityBoost = (int) (30 * Mth.clampedMap(model.getGroundwater(level, pos, fromTick, toTick, calendar.getCalendarDaysInMonth()), ClimateModel.MIN_RAINFALL, ClimateModel.MAX_RAINFALL, 0, 1)); // Up to 30% bonus from groundwater
         return Mth.clamp(rainfallBoost + waterBoost + humidityBoost, 0, 100);
     }
 

@@ -203,7 +203,27 @@ public interface ClimateModel
         return getRainfall(level, pos, calendarTicks, daysInMonth);
     }
 
-     /**
+    /**
+     * @return The average groundwater, in {@code mm/year}, at the given {@code pos} over the time delta given by {@code fromTick} and {@code toTick}.
+     *
+     * This is done to properly consider the impact of any time-based variation of groundwater
+     */
+    default float getGroundwater(LevelReader level, BlockPos pos, long fromTick, long toTick, int daysInMonth)
+    {
+        final long deltaTicks = toTick - fromTick;
+
+        float groundWaterSum = 0;
+        for (int i = 0; i < NUM_SAMPLES_FOR_DELTAS; i++)
+        {
+            final long sampleTick = fromTick + (deltaTicks * i / (NUM_SAMPLES_FOR_DELTAS + 1));
+            groundWaterSum += getGroundwater(level, pos, sampleTick, daysInMonth);
+        }
+
+        return groundWaterSum / NUM_SAMPLES_FOR_DELTAS;
+    }
+
+
+    /**
      * Check if it is raining at the timestamp given by {@code calendarTicks} - not annual average
      * rainfall. This is used for purposes of simulation, because we want to be able to query the exact rainfall
      * patterns historically for an area.
