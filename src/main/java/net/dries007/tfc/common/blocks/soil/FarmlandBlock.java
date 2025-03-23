@@ -101,6 +101,11 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
         return tooltip;
     }
 
+    public static int getRainfallBoost(float accumulatedRainfall)
+    {
+        return (int) (30 * accumulatedRainfall / FarmlandBlockEntity.MAX_ACCUMULATED_RAINFALL);
+    }
+
     /**
      * @return A value in the range [0, 100]
      */
@@ -116,7 +121,8 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
 
         final int waterCost = findMinCostWater(level, pos); // Nearby water contributes an additional 0 - 80% hydration based on proximity
         final int waterBoost = 20 * (5 - waterCost); // Nearby water contributes an additional 0 - 80% hydration based on proximity
-        final int rainfallBoost = (int) (30 * accumulatedRainfall / FarmlandBlockEntity.MAX_ACCUMULATED_RAINFALL); // Up to 30% bonus from rainfall
+        final int rainfallBoost = getRainfallBoost(accumulatedRainfall); // Up to 30% bonus from rainfall
+        // TODO :: Maybe this humidity factor should have a lower impact when temperature is lower?
         final int humidityBoost = (int) (30 * Mth.clampedMap(model.getRainfall(level, pos), ClimateModel.MIN_RAINFALL, ClimateModel.MAX_RAINFALL, 0, 1)); // Up to 30% bonus from humidity (average rainfall)
         return Mth.clamp(rainfallBoost + waterBoost + humidityBoost, 0, 100);
     }
@@ -137,7 +143,8 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
 
         final int waterCost = findMinCostWater(level, pos); // Nearby water contributes an additional 0 - 80% hydration based on proximity
         final int waterBoost = 20 * (5 - waterCost); // Nearby water contributes an additional 0 - 80% hydration based on proximity
-        final int rainfallBoost = (int) (30 * accumulatedRainfall / FarmlandBlockEntity.MAX_ACCUMULATED_RAINFALL); // Up to 30% bonus from rainfall
+        final int rainfallBoost = getRainfallBoost(accumulatedRainfall); // Up to 30% bonus from rainfall
+        // TODO :: Maybe this humidity factor should have a lower impact when temperature is lower?
         final int humidityBoost = (int) (30 * Mth.clampedMap(model.getRainfall(level, pos, fromTick, toTick, calendar.getCalendarDaysInMonth()), ClimateModel.MIN_RAINFALL, ClimateModel.MAX_RAINFALL, 0, 1)); // Up to 30% bonus from humidity (average rainfall)
         return Mth.clamp(rainfallBoost + waterBoost + humidityBoost, 0, 100);
     }

@@ -69,7 +69,7 @@ public class OverworldClimateModel implements ClimateModel
     //
     private static final float AVERAGE_RAINFALL_INTENSITY = (float) 18_000 / RAIN_SEGMENT_LENGTH;
 
-    private static final float MILLIMETERS_RAIN_EVAPORATED_PER_TICK = 0.001f;
+    private static final float MILLIMETERS_RAIN_EVAPORATED_PER_TICK = 0.00025f;
 
     /**
      * Obtain the climate model for the current dimension, assuming it is an {@link OverworldClimateModel}
@@ -236,7 +236,7 @@ public class OverworldClimateModel implements ClimateModel
     }
 
     // Returns intensityTimeSum and ticksNotRainingSum
-    private Pair<Long, Long> getDeltaRainInMillimeters(long fromTick, long toTick, float rainfall)
+    private Pair<Long, Long> getDeltaRainInMillimeters(Level level, BlockPos pos, long fromTick, long toTick, float rainfall, int calendarDaysInMonth)
     {
         final int segmentId = (int) Math.floorDiv(fromTick, RAIN_SEGMENT_LENGTH);
         final long segmentLeft = segmentId * RAIN_SEGMENT_LENGTH;
@@ -286,11 +286,16 @@ public class OverworldClimateModel implements ClimateModel
         long fromTickInRain = Math.max(fromTick, trueLeft);
         long toTickInRain = Math.min(toTick, trueRight);
 
+        if (getTemperature(level, pos, fromTickInRain, toTickInRain, calendarDaysInMonth) < 0)
+        {
+            return new Pair<>(0L, toTick - fromTick); // Not raining, since we're below freezing
+        }
+
         return new Pair<>(toTickInRain - fromTickInRain, (toTick - fromTick) - (toTickInRain - fromTickInRain));
     }
 
     @Override
-    public float getDeltaRainInMillimeters(long fromTick, long toTick, float rainfall, long calendarTicksInYear)
+    public float getDeltaRainInMillimeters(Level level, BlockPos pos, long fromTick, long toTick, float rainfall, long calendarTicksInYear, int calendarDaysInMonth)
     {
         final int segmentStart = (int) Math.floorDiv(fromTick, RAIN_SEGMENT_LENGTH);
         final int segmentEnd = (int) Math.floorDiv(toTick, RAIN_SEGMENT_LENGTH);
@@ -300,13 +305,13 @@ public class OverworldClimateModel implements ClimateModel
         // Apply all the full segments, and then apply the partial segment at the end
         for (int segmentId = segmentStart; segmentId < segmentEnd - 1; segmentId++)
         {
-            Pair<Long, Long> result = getDeltaRainInMillimeters(segmentId * RAIN_SEGMENT_LENGTH, (segmentId + 1) * RAIN_SEGMENT_LENGTH, rainfall);
+            Pair<Long, Long> result = getDeltaRainInMillimeters(level, pos, segmentId * RAIN_SEGMENT_LENGTH, (segmentId + 1) * RAIN_SEGMENT_LENGTH, rainfall, calendarDaysInMonth);
             ticksRainingSum += result.getFirst();
             ticksNotRainingSum += result.getSecond();
         }
 
         final long finalPartialRainSegmentStart = Math.max(segmentEnd * RAIN_SEGMENT_LENGTH, fromTick);
-        Pair<Long, Long> result = getDeltaRainInMillimeters(finalPartialRainSegmentStart, toTick, rainfall);
+        Pair<Long, Long> result = getDeltaRainInMillimeters(level, pos, finalPartialRainSegmentStart, toTick, rainfall, calendarDaysInMonth);
         ticksRainingSum += result.getFirst();
         ticksNotRainingSum += result.getSecond();
 

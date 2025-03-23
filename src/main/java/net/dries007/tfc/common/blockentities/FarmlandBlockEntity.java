@@ -34,7 +34,7 @@ import static net.dries007.tfc.common.blockentities.FarmlandBlockEntity.Nutrient
 public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland, ICalendarTickable
 {
     // Rainfall is in MM
-    public static float MAX_ACCUMULATED_RAINFALL = 100.0f;
+    public static float MAX_ACCUMULATED_RAINFALL = 25.0f;
     private static final long UPDATE_INTERVAL = 2 * ICalendar.CALENDAR_TICKS_IN_HOUR;
 
     private long lastUpdateTick; // The last tick this farmland was ticked via the block entity's tick() method. A delta of > 1 is used to detect time skips
@@ -126,7 +126,8 @@ public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland, IC
         {
             final int value = FarmlandBlock.getHydration(level, pos, getAccumulatedRainfall());
             final MutableComponent hydration = Component.translatable("tfc.tooltip.farmland.hydration", value);
-            final MutableComponent accumulatedRainfall = Component.translatable("tfc.tooltip.farmland.accumulated_rainfall", getAccumulatedRainfall());
+            float accumulatedRainfallValue = getAccumulatedRainfall();
+            final MutableComponent accumulatedRainfall = Component.translatable("tfc.tooltip.farmland.accumulated_rainfall", accumulatedRainfallValue, FarmlandBlock.getRainfallBoost(accumulatedRainfallValue));
             text.accept(hydration);
             text.accept(accumulatedRainfall);
         }

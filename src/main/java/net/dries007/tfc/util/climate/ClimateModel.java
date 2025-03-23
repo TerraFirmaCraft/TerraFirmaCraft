@@ -46,7 +46,7 @@ public interface ClimateModel
     // N.B. These min-max values are only for rainfall values that are average annual, not time-variant or groundwater-inclusive
     float MIN_RAINFALL = 0f;
     float MAX_RAINFALL = 500f;
-    int NUM_SAMPLES_FOR_RAINFALL_DELTA = 4;
+    int NUM_SAMPLES_FOR_DELTAS = 4;
 
     /**
      * The type of this climate model. Must be registered through {@link ClimateModels#REGISTRY}
@@ -89,6 +89,26 @@ public interface ClimateModel
     }
 
     /**
+     * @return The average temperature, in {@code mm/year}, at the given {@code pos} over the time delta given by {@code fromTick} and {@code toTick}.
+     * This is typically in the range {@code [-40, 40]} but is not required to be.
+     *
+     * This is done to properly consider the impact of any time-based variation of temperature
+     */
+    default float getTemperature(LevelReader level, BlockPos pos, long fromTick, long toTick, int daysInMonth)
+    {
+        final long deltaTicks = toTick - fromTick;
+
+        float temperatureSum = 0;
+        for (int i = 0; i < NUM_SAMPLES_FOR_DELTAS; i++)
+        {
+            final long sampleTick = fromTick + (deltaTicks * i / (NUM_SAMPLES_FOR_DELTAS + 1));
+            temperatureSum += getTemperature(level, pos, sampleTick, daysInMonth);
+        }
+
+        return temperatureSum / NUM_SAMPLES_FOR_DELTAS;
+    }
+
+    /**
      * @return The average annual rainfall, in {@code mm/year} at the given {@code pos}. Should be time-invariant, and
      * <strong>must</strong> be in the range {@code [0, 500]}
      */
@@ -117,20 +137,20 @@ public interface ClimateModel
     /**
      * @return The average rainfall, in {@code mm/year}, at the given {@code pos} over the time delta given by {@code fromTick} and {@code toTick}.
      *
-     * This is done to properly consider the impact of any time-based variation of rainfall in any implementation.
+     * This is done to properly consider the impact of any time-based variation of rainfall
      */
     default float getRainfall(LevelReader level, BlockPos pos, long fromTick, long toTick, int daysInMonth)
     {
         final long deltaTicks = toTick - fromTick;
 
         float rainfallSum = 0;
-        for (int i = 0; i < NUM_SAMPLES_FOR_RAINFALL_DELTA; i++)
+        for (int i = 0; i < NUM_SAMPLES_FOR_DELTAS; i++)
         {
-            final long sampleTick = fromTick + (deltaTicks * i / (NUM_SAMPLES_FOR_RAINFALL_DELTA + 1));
+            final long sampleTick = fromTick + (deltaTicks * i / (NUM_SAMPLES_FOR_DELTAS + 1));
             rainfallSum += getRainfall(level, pos, sampleTick, daysInMonth);
         }
 
-        return rainfallSum / NUM_SAMPLES_FOR_RAINFALL_DELTA;
+        return rainfallSum / NUM_SAMPLES_FOR_DELTAS;
     }
 
     /**
@@ -200,7 +220,7 @@ public interface ClimateModel
         return -1;
     }
 
-    default float getDeltaRainInMillimeters(long fromTick, long toTick, float rainfall, long calendarTicksInYear)
+    default float getDeltaRainInMillimeters(Level level, BlockPos pos, long fromTick, long toTick, float rainfall, long calendarTicksInYear, int calendarDaysInMonth)
     {
         return 0.0f;
     }
