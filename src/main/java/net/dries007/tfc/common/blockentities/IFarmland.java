@@ -22,6 +22,7 @@ import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.blockentities.FarmlandBlockEntity.NutrientType;
 import net.dries007.tfc.util.data.Fertilizer;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.levelgen.Heightmap;
 
 import static net.dries007.tfc.common.blockentities.FarmlandBlockEntity.NutrientType.*;
 
@@ -117,13 +118,15 @@ public interface IFarmland
 
     default void updateAccumulatedRainfall(Level level, BlockPos pos, long fromTick, long toTick)
     {
-        final WorldTracker tracker = WorldTracker.get(level);
-        final ClimateModel model = tracker.getClimateModel();
-        final ICalendar calendar = Calendars.get(level);
+        if(level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, pos).equals(pos))
+        {
+            final WorldTracker tracker = WorldTracker.get(level);
+            final ClimateModel model = tracker.getClimateModel();
+            final ICalendar calendar = Calendars.get(level);
 
-        final float accumulatedRainInMM = model.getDeltaRainInMM(fromTick, toTick, model.getRainfall(level, pos, fromTick, toTick, calendar.getCalendarDaysInMonth()), calendar.getCalendarTicksInYear());
-
-        addAccumulatedRainfall(accumulatedRainInMM);
+            final float accumulatedRainInMM = model.getDeltaRainInMM(fromTick, toTick, model.getRainfall(level, pos, fromTick, toTick, calendar.getCalendarDaysInMonth()), calendar.getCalendarTicksInYear());
+            addAccumulatedRainfall(accumulatedRainInMM);
+        }
     }
 
     default void saveNutrients(CompoundTag nbt)
