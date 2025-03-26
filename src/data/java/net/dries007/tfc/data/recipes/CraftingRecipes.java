@@ -865,9 +865,9 @@ public interface CraftingRecipes extends Recipes
             .input(Tags.Items.GRAVELS, 4)
             .shapeless(TFCBlocks.AGGREGATE);
         recipe()
-            .input('S', Items.SCAFFOLDING)
+            .input('S', Items.STICK)
             .input('L', TFCTags.Items.LUMBER)
-            .pattern("L L", " S ", "L L")
+            .pattern("LLL", "S S", "S S")
             .shaped(TFCBlocks.BARREL_RACK);
         recipe()
             .input('L', TFCTags.Items.LUMBER)
@@ -1044,7 +1044,7 @@ public interface CraftingRecipes extends Recipes
             .input(Items.PAPER)
             .input(TFCItems.POWDERS.get(Powder.FLUX))
             .input(TFCItems.GLUE)
-            .input(TFCTags.Items.VOLCANIC_SAND)
+            .input(Tags.Items.SANDS)
             .input(TFCTags.Items.GEM_POWDERS)
             .shapeless(TFCItems.SANDPAPER);
         recipe()

@@ -224,7 +224,7 @@ public final class JEIIntegration implements IModPlugin
         registry.addRecipes(LOOM, recipes(TFCRecipeTypes.LOOM));
         registry.addRecipes(ALLOYING, recipes(TFCRecipeTypes.ALLOY));
         registry.addRecipes(SEALED_BARREL, recipes(TFCRecipeTypes.BARREL_SEALED));
-        registry.addRecipes(INSTANT_BARREL, recipes(TFCRecipeTypes.BARREL_INSTANT, recipe -> recipe.getInputItem().ingredient().getCustomIngredient() instanceof HeatIngredient));
+        registry.addRecipes(INSTANT_BARREL, recipes(TFCRecipeTypes.BARREL_INSTANT, recipe -> !(recipe.getInputItem().ingredient().getCustomIngredient() instanceof HeatIngredient)));
         registry.addRecipes(INSTANT_FLUID_BARREL, recipes(TFCRecipeTypes.BARREL_INSTANT_FLUID));
         registry.addRecipes(BLOOMERY, recipes(TFCRecipeTypes.BLOOMERY));
         registry.addRecipes(WELDING, recipes(TFCRecipeTypes.WELDING));

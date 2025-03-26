@@ -60,11 +60,11 @@ def generate(rm: ResourceManager):
 
     # Biomes
     biome(rm, 'badlands', 'mesa', lake_features=False)
-    biome(rm, 'inverted_badlands', 'mesa', lake_features=False)
     biome(rm, 'canyons', 'plains', boulders=True, lake_features=False, volcano_features=True, hot_spring_features=True)
     biome(rm, 'low_canyons', 'swamp', boulders=True, lake_features=False, hot_spring_features='empty')
     biome(rm, 'plains', 'plains')
     biome(rm, 'plateau', 'extreme_hills', boulders=True, hot_spring_features='empty')
+    biome(rm, 'plateau_wide', 'extreme_hills', boulders=True, hot_spring_features='empty')
     biome(rm, 'hills', 'plains')
     biome(rm, 'rolling_hills', 'plains', boulders=True)
     biome(rm, 'highlands', 'plains', boulders=True, hot_spring_features='empty')
@@ -692,7 +692,7 @@ def generate(rm: ResourceManager):
     rm.biome_tag('karsts', '#tfc:tower_karsts', '#tfc:dolines', '#tfc:cenotes', '#tfc:shilins', '#tfc:burrens')
     # Kaolin clay biomes, each row sorted by height, last row misc.
     (rm.biome_tag('kaolin_clay_spawns_in',
-                 'tfc:rolling_hills', 'tfc:highlands', 'tfc:plateau', 'tfc:old_mountains',
+                 'tfc:rolling_hills', 'tfc:highlands', 'tfc:plateau', 'tfc:plateau_wide', 'tfc:old_mountains',
                  'tfc:tower_karst_hills', 'tfc:tower_karst_highlands', 'tfc:extreme_doline_plateau', 'tfc:extreme_doline_mountains',
                  'tfc:doline_rolling_hills', 'tfc:doline_highlands', 'tfc:doline_plateau',
                  'tfc:cenote_rolling_hills', 'tfc:cenote_highlands', 'tfc:cenote_plateau',

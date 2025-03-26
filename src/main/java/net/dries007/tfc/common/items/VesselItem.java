@@ -192,6 +192,10 @@ public class VesselItem extends Item
                 {
                     TFCContainerProviders.MOLD_LIKE_ALLOY.openScreen(serverPlayer, hand);
                 }
+                else if (vessel.isEmpty())
+                {
+                    player.displayClientMessage(Component.translatable("tfc.tooltip.small_vessel.inventory_too_hot"), true);
+                }
                 else
                 {
                     player.displayClientMessage(Component.translatable("tfc.tooltip.small_vessel.alloy_solid"), true);
@@ -215,7 +219,7 @@ public class VesselItem extends Item
                     Helpers.addInventoryTooltipInfo(vessel.contents(), tooltip);
                 }
             }
-            else
+            else if (!vessel.isEmpty())
             {
                 tooltip.add(Component.translatable("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
                 tooltip.add(Tooltips.fluidUnitsAndCapacityOf(vessel.getFluidInTank(0).getHoverName(), vessel.getFluidInTank(0).getAmount(), containerInfo.fluidCapacity())

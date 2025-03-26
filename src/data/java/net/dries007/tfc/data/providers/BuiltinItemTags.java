@@ -423,6 +423,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             .addOnly(pivot(TFCBlocks.WOODS, Wood.BlockType.LOG), tannin::contains)
             .addOnly(pivot(TFCBlocks.WOODS, Wood.BlockType.WOOD), tannin::contains);
 
+        tag(ItemTags.LOGS_THAT_BURN).add(TFCItems.STICK_BUNDLE);
         tag(FIREPIT_KINDLING)
             .addTags(ItemTags.LEAVES, BOOKS)
             .add(TFCItems.STRAW, Items.PAPER);

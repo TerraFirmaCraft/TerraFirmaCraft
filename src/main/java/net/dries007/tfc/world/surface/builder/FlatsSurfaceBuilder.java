@@ -8,6 +8,7 @@ package net.dries007.tfc.world.surface.builder;
 
 import net.dries007.tfc.world.surface.SurfaceBuilderContext;
 import net.dries007.tfc.world.surface.SurfaceState;
+import net.dries007.tfc.world.surface.SurfaceStates;
 
 import static net.dries007.tfc.world.surface.SurfaceStates.*;
 
@@ -31,13 +32,13 @@ public class FlatsSurfaceBuilder implements SurfaceBuilder
     @Override
     public void buildSurface(SurfaceBuilderContext context, int startY, int endY)
     {
-        if (startY < 66)
+        if (startY < 66 && context.baseGroundwater() < 25)
         {
             NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY, top, mid, mid, water, water);
         }
         else
         {
-            NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY);
+            NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY, TOP_GRASS_TO_SAND, MID_DIRT_TO_SAND, UNDER_GRAVEL);
         }
     }
 }

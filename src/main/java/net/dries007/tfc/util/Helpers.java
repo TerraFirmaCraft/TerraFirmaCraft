@@ -1264,14 +1264,6 @@ public final class Helpers
         return (int) hash;
     }
 
-    // TODO: Maybe this is terrible I don't know
-    public static int oneDimensionalHash(long salt, int x)
-    {
-        long hash = salt ^ ((long) x * PRIME_X) ^ ((long) x * PRIME_Y);
-        hash *= 0x27d4eb2d;
-        return (int) hash;
-    }
-
     public static RandomSource fork(RandomSource random)
     {
         return new XoroshiroRandomSource(random.nextLong(), random.nextLong());

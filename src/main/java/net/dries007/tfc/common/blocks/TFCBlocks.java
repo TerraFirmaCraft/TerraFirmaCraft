@@ -243,7 +243,7 @@ public final class TFCBlocks
     );
 
     public static final Map<Rock, Id<Block>> MAGMA_BLOCKS = Helpers.mapOf(Rock.class, rock -> rock.category() == RockCategory.IGNEOUS_EXTRUSIVE || rock.category() == RockCategory.IGNEOUS_INTRUSIVE, rock ->
-        register("rock/magma/" + rock.name(), () -> new TFCMagmaBlock(Properties.of().mapColor(MapColor.NETHER).requiresCorrectToolForDrops().lightLevel(s -> 6).randomTicks().strength(0.5F).isValidSpawn((state, level, pos, type) -> type.fireImmune()).hasPostProcess(TFCBlocks::always)), b -> new BlockItem(b, rock.createItemProperties()))
+        register("rock/magma/" + rock.name(), () -> new TFCMagmaBlock(ExtendedProperties.of().pathType(PathType.LAVA).mapColor(MapColor.NETHER).requiresCorrectToolForDrops().lightLevel(s -> 6).randomTicks().strength(0.5F).isValidSpawn((state, level, pos, type) -> type.fireImmune()).hasPostProcess(TFCBlocks::always)), b -> new BlockItem(b, rock.createItemProperties()))
     );
 
     // Metals

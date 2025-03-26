@@ -46,7 +46,7 @@ public enum RegionEdgeBiomeLayer implements AdjacentTransformLayer
         }
 
 
-        if (center == PLATEAU || center == BADLANDS || center == INVERTED_BADLANDS)
+        if (center == PLATEAU || center == BADLANDS)
         {
             if (matcher.test(i -> i == LOW_CANYONS || i == LOWLANDS))
             {
@@ -67,7 +67,7 @@ public enum RegionEdgeBiomeLayer implements AdjacentTransformLayer
         // Inverses of above conditions
         else if (center == LOWLANDS || center == LOW_CANYONS)
         {
-            if (matcher.test(i -> i == PLATEAU || i == BADLANDS || i == INVERTED_BADLANDS))
+            if (matcher.test(i -> i == PLATEAU || i == BADLANDS))
             {
                 return HILLS;
             }
@@ -78,7 +78,7 @@ public enum RegionEdgeBiomeLayer implements AdjacentTransformLayer
         }
         else if (center == PLAINS || center == HILLS)
         {
-            if (matcher.test(i -> i == PLATEAU || i == BADLANDS || i == INVERTED_BADLANDS))
+            if (matcher.test(i -> i == PLATEAU || i == BADLANDS))
             {
                 return HILLS;
             }

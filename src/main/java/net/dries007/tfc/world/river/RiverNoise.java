@@ -18,9 +18,111 @@ import static net.dries007.tfc.world.TFCChunkGenerator.*;
 
 public final class RiverNoise
 {
+    // land near the edges of rivers, but not guaranteed away from edge
+    public static RiverNoiseSampler banked(Seed seed)
+    {
+        return new RiverNoiseSampler()
+        {
+            final Noise2D distNoise = new OpenSimplex2D(seed.next()).octaves(3).spread(0.05f).scaled(-0.2f, 0.2f);
+            final Noise2D bankCutNoise = new OpenSimplex2D(seed.next()).octaves(3).abs().spread(0.025).scaled(0, 1, SEA_LEVEL_Y - 4, SEA_LEVEL_Y + 30);
+
+            double height;
+
+            @Override
+            public double setColumnAndSampleHeight(RiverInfo info, int x, int z, double heightIn, double caveWeight, double thisWeight)
+            {
+                final double distFac = info.normDistSq() * 0.8f + distNoise.noise(x, z);
+                final double riverHeight = 57 + (distFac < 1.0 ? distFac * 6 : 6);
+
+                final double heightInWeight = Mth.clamp(distFac - 1, 0, 2);
+                final double riverWeight = 2 - heightInWeight;
+
+                return height = Math.min((heightIn * heightInWeight + riverHeight * riverWeight) / 2, bankCutNoise.noise(x, z));
+            }
+
+            @Override
+            public double noise(int y, double noiseIn)
+            {
+                return y > height ? 0 : noiseIn;
+            }
+        };
+    }
+
+    // high banks near the edges of rivers that decrease away from edge
+    public static RiverNoiseSampler tallBanked(Seed seed)
+    {
+        return new RiverNoiseSampler()
+        {
+            final Noise2D distNoise = new OpenSimplex2D(seed.next()).octaves(3).spread(0.05f).scaled(-0.2f, 0.2f);
+            final Noise2D surfaceNoise = new OpenSimplex2D(seed.next()).octaves(4).spread(0.07).scaled(-2, 2);
+
+            double height;
+
+            @Override
+            public double setColumnAndSampleHeight(RiverInfo info, int x, int z, double heightIn, double caveWeight, double thisWeight)
+            {
+                final double distFac = info.normDistSq() * 0.8f + distNoise.noise(x, z);
+                final double riverHeight = 57 + (distFac < 1.0 ? distFac * 9 : 9) + surfaceNoise.noise(x, z);
+
+                final double heightInWeight = Mth.clamp(distFac - 1, 0, 2);
+                final double riverWeight = 2 - heightInWeight;
+
+                return height = (heightIn * heightInWeight + riverHeight * riverWeight) / 2;
+            }
+
+            @Override
+            public double noise(int y, double noiseIn)
+            {
+                return y > height ? 0 : noiseIn;
+            }
+        };
+    }
+
+    // wide, flat shores with slopes far from shore
+    public static RiverNoiseSampler floodplain(Seed seed)
+    {
+        return new RiverNoiseSampler()
+        {
+            final Noise2D distNoise = new OpenSimplex2D(seed.next()).octaves(4).spread(0.05f).scaled(-0.2f, 0.2f);
+
+            double height;
+
+            @Override
+            public double setColumnAndSampleHeight(RiverInfo info, int x, int z, double heightIn, double caveWeight, double thisWeight)
+            {
+                final double distFac = info.normDistSq() * 0.8f + distNoise.noise(x, z);
+                final double riverHeight;
+                if (distFac < 1.0)
+                {
+                    riverHeight = 58.5 + distFac * 3;
+                }
+                else if (distFac < 2.0)
+                {
+                    riverHeight = 61.5;
+                }
+                else
+                {
+                    final double heightInWeight = Mth.clamp(2 * distFac - 4, 0, 1);
+                    final double riverWeight = 1 - heightInWeight;
+                    riverHeight = 61.5 * riverWeight + heightIn * heightInWeight;
+                }
+
+                return height = Math.min(riverHeight, heightIn);
+            }
+
+            @Override
+            public double noise(int y, double noiseIn)
+            {
+                return y > height ? 0 : noiseIn;
+            }
+        };
+    }
+
+    // ~45 degree slopes
     public static RiverNoiseSampler wide(Seed seed)
     {
-        return new RiverNoiseSampler() {
+        return new RiverNoiseSampler()
+        {
 
             final Noise2D baseNoise = new OpenSimplex2D(seed.next()).octaves(4).spread(0.05f).scaled(-2.5f, 1.5f);
             final Noise2D distNoise = new OpenSimplex2D(seed.next()).octaves(4).spread(0.05f).scaled(-0.15f, 0.15f);
@@ -46,7 +148,8 @@ public final class RiverNoise
 
     public static RiverNoiseSampler canyon(Seed seed)
     {
-        return new RiverNoiseSampler() {
+        return new RiverNoiseSampler()
+        {
 
             final Noise2D baseNoise = new OpenSimplex2D(seed.next()).octaves(4).spread(0.05f).scaled(-7, 3);
             final Noise2D distNoise = new OpenSimplex2D(seed.next()).octaves(4).spread(0.05f).scaled(-0.3f, 0.2f);
@@ -75,7 +178,8 @@ public final class RiverNoise
 
     public static RiverNoiseSampler tallCanyon(Seed seed)
     {
-        return new RiverNoiseSampler() {
+        return new RiverNoiseSampler()
+        {
 
             final Noise2D baseNoise = new OpenSimplex2D(seed.next()).octaves(4).spread(0.05f).scaled(-7, 3);
             final Noise2D distNoise = new OpenSimplex2D(seed.next()).octaves(4).spread(0.05f).scaled(-0.3f, 0.2f);
@@ -130,6 +234,35 @@ public final class RiverNoise
         };
     }
 
+    // Vertical cliff with 45 degree slopes above and below
+    public static RiverNoiseSampler talus(Seed seed)
+    {
+        return new RiverNoiseSampler()
+        {
+
+            final Noise2D baseNoise = new OpenSimplex2D(seed.next()).octaves(4).spread(0.05f).scaled(-2.5f, 1.5f);
+            final Noise2D cliffHeightNoise = new OpenSimplex2D(seed.next()).octaves(2).spread(0.1f).scaled(3f, 8f);
+            final Noise2D distNoise = new OpenSimplex2D(seed.next()).octaves(4).spread(0.05f).scaled(-0.15f, 0.15f);
+
+            double height;
+
+            @Override
+            public double setColumnAndSampleHeight(RiverInfo info, int x, int z, double heightIn, double caveWeight, double thisWeight)
+            {
+                final double distFac = Math.sqrt(info.normDistSq()) + distNoise.noise(x, z);
+                final double riverHeight = 55 + distFac * 12 + baseNoise.noise(x, z) + (distFac > 1.5 ? cliffHeightNoise.noise(x, z) : 0);
+
+                return height = Math.min(riverHeight, heightIn);
+            }
+
+            @Override
+            public double noise(int y, double noiseIn)
+            {
+                return y > height ? 0 : noiseIn;
+            }
+        };
+    }
+
     // Rows of vertical cliffs
     public static RiverNoiseSampler terraces(Seed seed)
     {
@@ -151,6 +284,7 @@ public final class RiverNoise
                 final double riverHeight = Mth.clampedMap(thisWeight, 0.9, 1, canyonRiverHeight, terraceRiverHeight);
                 return height = Math.min(riverHeight, heightIn);
             }
+
             @Override
             public double noise(int y, double noiseIn)
             {
@@ -161,7 +295,8 @@ public final class RiverNoise
 
     public static RiverNoiseSampler cave(Seed seed)
     {
-        return new RiverNoiseSampler() {
+        return new RiverNoiseSampler()
+        {
 
             final Noise2D carvingCenterNoise = new OpenSimplex2D(seed.next()).octaves(2).spread(0.02f).scaled(SEA_LEVEL_Y - 3, SEA_LEVEL_Y + 3);
             final Noise2D carvingHeightNoise = new OpenSimplex2D(seed.next()).octaves(4).spread(0.15f).scaled(8, 14);

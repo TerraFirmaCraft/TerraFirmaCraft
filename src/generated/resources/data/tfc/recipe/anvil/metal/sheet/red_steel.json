@@ -1,7 +1,7 @@
 {
   "type": "tfc:anvil",
   "ingredient": {
-    "tag": "c:ingots/red_steel"
+    "tag": "c:double_ingots/red_steel"
   },
   "result": {
     "count": 1,

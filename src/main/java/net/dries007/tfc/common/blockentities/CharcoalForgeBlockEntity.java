@@ -330,7 +330,7 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
     }
 
     /**
-     * Attempts to consume one piece of fuel. Returns if the fire pit consumed any fuel (and so, ended up lit)
+     * Attempts to consume one piece of fuel. Returns if the forge consumed any fuel (and so, ended up lit)
      */
     private boolean consumeFuel()
     {

@@ -6,17 +6,25 @@
 
 package net.dries007.tfc.client.particle;
 
+import net.dries007.tfc.client.ClimateRenderCache;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.world.phys.Vec2;
 
 public class SteamParticle extends TextureSheetParticle
 {
-    private SteamParticle(ClientLevel worldIn, double x, double y, double z, double motionX, double motionY, double motionZ)
+    private SteamParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
     {
-        super(worldIn, x, y, z, motionX, motionY, motionZ);
+        super(level, x, y, z);
         setAlpha(0.2F);
         setLifetime((int) (12.0F / (random.nextFloat() * 0.9F + 0.1F)));
+
+        final Vec2 wind = ClimateRenderCache.INSTANCE.getWind();
+        final float windStrength = wind.length();
+        xd = xSpeed + (random.nextFloat() - 0.5f) * 0.02f + (wind.x * windStrength * 0.05f);
+        yd = ySpeed + 0.1;
+        zd = zSpeed + (random.nextFloat() - 0.5f) * 0.02f + (wind.y * windStrength + 0.05f * 0.05f);
     }
 
     @Override

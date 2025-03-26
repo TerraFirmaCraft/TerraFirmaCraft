@@ -434,6 +434,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             chunkData.generateFull(filler.surfaceHeight(), filler.aquifer().surfaceHeights());
             chunkData.getRockData().useCache(chunkPos);
             filler.fillFromNoise();
+            chunkData.modifyBaseGroundwater(filler.surfaceHeight());
 
             aquiferCache.set(chunkPos.x, chunkPos.z, filler.aquifer());
 

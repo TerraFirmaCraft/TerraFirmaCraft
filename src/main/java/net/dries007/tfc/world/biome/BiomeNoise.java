@@ -761,8 +761,8 @@ public final class BiomeNoise
     /**
      * Base noise used by steep-canyon biomes (buttes, mesas, etc) to align valleys
      *
-     * @param minHeight Minimum output height
-     * @param maxHeight Maximum output height
+     * @param minHeight   Minimum output height
+     * @param maxHeight   Maximum output height
      * @param valleyWidth Used to vary the widths of canyons without changing the frequency
      */
 
@@ -770,10 +770,10 @@ public final class BiomeNoise
     {
         final double valleyEdge = valleyWidth + 0.28;
         return new OpenSimplex2D(seed + 1)
-                .octaves(4)
-                .spread(0.03f)
-                .abs()
-                .clampedScaled(valleyWidth, valleyEdge, minHeight, maxHeight);
+            .octaves(4)
+            .spread(0.03f)
+            .abs()
+            .clampedScaled(valleyWidth, valleyEdge, minHeight, maxHeight);
     }
 
     public static Noise2D stairStepCliffs(long seed, Noise2D input)
@@ -784,10 +784,10 @@ public final class BiomeNoise
     /**
      * Unified cliff bands
      *
-     * @param input The base noise to add cliffs to. Should be scaled and adjusted to sea level
+     * @param input         The base noise to add cliffs to. Should be scaled and adjusted to sea level
      * @param minCliffStart The lowest height above sea level that the base of a cliff should appear
      * @param maxCliffStart The highest height above sea level that the base of a cliff should appear
-     * @param cliffHeight Height of each tier of cliffs
+     * @param cliffHeight   Height of each tier of cliffs
      */
     public static Noise2D stairStepCliffs(long seed, Noise2D input, int minCliffStart, int maxCliffStart, int cliffHeight)
     {

@@ -4,22 +4,30 @@
 import itertools
 
 from mcresources import ResourceManager, ItemContext, utils, block_states, loot_tables, atlases, BlockContext
-from mcresources.type_definitions import ResourceIdentifier, JsonObject
+from mcresources.type_definitions import ResourceIdentifier, Json, JsonObject
 
 from constants import *
 
 TAG_SHEARS = 'c:tools/shear'
 TAG_SHARP = 'tfc:tools/sharp'
 
+# Replaces outdated mcresources loot_tables.match_tag
+def match_tag_1_21_plus(tag: str) -> Json:
+    tag = "#" + tag
+    return {
+        'condition': 'minecraft:match_tool',
+        'predicate': {'items': tag}
+    }
+
 STICKS_WHEN_NOT_SHEARED = loot_tables.alternatives({
     'name': 'minecraft:stick',
-    'conditions': [loot_tables.match_tag(TAG_SHARP), loot_tables.random_chance(0.2)],
+    'conditions': [match_tag_1_21_plus(TAG_SHARP), loot_tables.random_chance(0.2)],
     'functions': [loot_tables.set_count(1, 2)]
 }, {
     'name': 'minecraft:stick',
     'conditions': [loot_tables.random_chance(0.05)],
     'functions': [loot_tables.set_count(1, 2)]
-}, conditions=[loot_tables.inverted(loot_tables.any_of(loot_tables.match_tag(TAG_SHEARS), loot_tables.silk_touch()))])
+}, conditions=[loot_tables.inverted(loot_tables.any_of(match_tag_1_21_plus(TAG_SHEARS), loot_tables.silk_touch()))])
 
 
 def copy_block_entity(*components: str):
@@ -1280,7 +1288,7 @@ def generate(rm: ResourceManager):
     rm.block_model(('crop', 'stick'), {'crop': 'tfc:block/crop/stick_top'}, parent='block/crop')
 
     # Plants
-    shears_or_knife = loot_tables.any_of(loot_tables.match_tag(TAG_SHARP), loot_tables.match_tag(TAG_SHEARS))
+    shears_or_knife = loot_tables.any_of(match_tag_1_21_plus(TAG_SHARP), match_tag_1_21_plus(TAG_SHEARS))
     for plant, plant_data in PLANTS.items():
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))
         p = 'tfc:plant/%s' % plant
@@ -1288,37 +1296,37 @@ def generate(rm: ResourceManager):
         if plant_data.type == 'short_grass' or plant_data.type == 'beach_grass':
             rm.block_loot(p, ({
                 'name': p,
-                'conditions': [loot_tables.match_tag(TAG_SHEARS)],
+                'conditions': [match_tag_1_21_plus(TAG_SHEARS)],
             }, {
                 'name': 'tfc:straw',
-                'conditions': [loot_tables.match_tag(TAG_SHARP)]
+                'conditions': [match_tag_1_21_plus(TAG_SHARP)]
             }))
         elif plant_data.type == 'tall_grass':
             rm.block_loot(p, ({
                 'name': p,
-                'conditions': [loot_tables.match_tag(TAG_SHEARS), lower_only],
+                'conditions': [match_tag_1_21_plus(TAG_SHEARS)],
             }, {
                 'name': 'tfc:straw',
-                'conditions': [loot_tables.match_tag(TAG_SHARP)]
+                'conditions': [match_tag_1_21_plus(TAG_SHARP)]
             }))
         elif plant in SEAWEED:
             rm.block_loot(p, (
-                {'name': 'tfc:food/fresh_seaweed', 'conditions': [loot_tables.match_tag(TAG_SHARP), loot_tables.random_chance(0.3)]},
-                {'name': p, 'conditions': [loot_tables.match_tag(TAG_SHEARS)]}
+                {'name': 'tfc:food/fresh_seaweed', 'conditions': [match_tag_1_21_plus(TAG_SHARP), loot_tables.random_chance(0.3)]},
+                {'name': p, 'conditions': [match_tag_1_21_plus(TAG_SHEARS)]}
             ))
         elif plant_data.type in ('tall_plant', 'emergent', 'emergent_fresh', 'cactus'):
             if plant == 'cattail':
                 rm.block_loot(p, (
-                    {'name': 'tfc:food/cattail_root', 'conditions': [loot_tables.match_tag(TAG_SHARP), loot_tables.random_chance(0.3), lower_only]},
-                    {'name': p, 'conditions': [loot_tables.match_tag(TAG_SHEARS), lower_only]}
+                    {'name': 'tfc:food/cattail_root', 'conditions': [match_tag_1_21_plus(TAG_SHARP), loot_tables.random_chance(0.3), lower_only]},
+                    {'name': p, 'conditions': [match_tag_1_21_plus(TAG_SHEARS), lower_only]}
                 ))
             elif plant == 'water_taro':
                 rm.block_loot(p, (
-                    {'name': 'tfc:food/taro_root', 'conditions': [loot_tables.match_tag(TAG_SHARP), loot_tables.random_chance(0.3), lower_only]},
-                    {'name': p, 'conditions': [loot_tables.match_tag(TAG_SHEARS), lower_only]}
+                    {'name': 'tfc:food/taro_root', 'conditions': [match_tag_1_21_plus(TAG_SHARP), loot_tables.random_chance(0.3), lower_only]},
+                    {'name': p, 'conditions': [match_tag_1_21_plus(TAG_SHEARS), lower_only]}
                 ))
             else:
-                rm.block_loot(p, {'name': p, 'conditions': [shears_or_knife, lower_only]})
+                rm.block_loot(p, {'name': p, 'conditions': [shears_or_knife]})
         else:
             rm.block_loot(p, {'name': p, 'conditions': [shears_or_knife]})
     # todo this is a mess
@@ -1330,7 +1338,7 @@ def generate(rm: ResourceManager):
     for plant in ('tree_fern', 'arundo', 'winged_kelp', 'leafy_kelp', 'giant_kelp', 'hanging_vines', 'spanish_moss', 'liana', 'dry_phragmite'):
         rm.lang('block.tfc.plant.%s_plant' % plant, lang(plant))
     for plant in ('hanging_vines', 'jungle_vines', 'liana', 'spanish_moss'):
-        rm.block_loot('tfc:plant/%s' % plant, {'name': 'tfc:plant/%s' % plant, 'conditions': [loot_tables.match_tag(TAG_SHARP)]})
+        rm.block_loot('tfc:plant/%s' % plant, {'name': 'tfc:plant/%s' % plant, 'conditions': [match_tag_1_21_plus(TAG_SHARP)]})
     rm.block_loot('plant/golden_bamboo_sapling', 'tfc:plant/golden_bamboo')
 
     cactus = 'saguaro'
@@ -1435,14 +1443,14 @@ def generate(rm: ResourceManager):
 
         if data.type == 'stationary' or data.type == 'waterlogged':
             rm.item_model('plant/%s_bush' % berry, parent='tfc:block/plant/%s_bush_2' % berry, no_textures=True)
-            rm.block_loot('plant/%s_bush' % berry, {'name': 'tfc:plant/%s_bush' % berry, 'conditions': [loot_tables.match_tag(TAG_SHARP)]})
+            rm.block_loot('plant/%s_bush' % berry, {'name': 'tfc:plant/%s_bush' % berry, 'conditions': [match_tag_1_21_plus(TAG_SHARP)]})
             for lifecycle, stage in itertools.product(lifecycle_to_model.values(), range(0, 3)):
                 rm.block_model('plant/%s%s_bush_%d' % (lifecycle, berry, stage), parent='tfc:block/plant/stationary_bush_%d' % stage, textures={'bush': 'tfc:block/berry_bush/' + lifecycle + '%s_bush' % berry})
         else:
             rm.item_model('plant/%s_bush' % berry, 'tfc:block/berry_bush/%s_cane' % berry)
             rm.block_loot('plant/%s_bush' % berry, (
-                {'name': 'tfc:plant/%s_bush' % berry, 'conditions': [loot_tables.match_tag(TAG_SHARP), loot_tables.block_state_property('tfc:plant/%s_bush[stage=2]' % berry)]},
-                {'name': 'tfc:plant/%s_bush' % berry, 'conditions': [loot_tables.match_tag(TAG_SHARP), loot_tables.random_chance(0.5)]}
+                {'name': 'tfc:plant/%s_bush' % berry, 'conditions': [match_tag_1_21_plus(TAG_SHARP), loot_tables.block_state_property('tfc:plant/%s_bush[stage=2]' % berry)]},
+                {'name': 'tfc:plant/%s_bush' % berry, 'conditions': [match_tag_1_21_plus(TAG_SHARP), loot_tables.random_chance(0.5)]}
             ), 'minecraft:stick')
 
     rm.blockstate('plant/dead_berry_bush', variants={
@@ -1491,7 +1499,7 @@ def generate(rm: ResourceManager):
                                 loot_tables.block_state_property('tfc:plant/%s_branch[up=true,%s=true]' % (fruit, direction))
                                 for direction in ('west', 'east', 'north', 'south')
                             ]),
-                            loot_tables.match_tag('tfc:axes')
+                            match_tag_1_21_plus('tfc:axes')
                         )
                     }, {
                         'name': 'minecraft:stick',
@@ -1564,7 +1572,7 @@ def generate(rm: ResourceManager):
 
             stick_with_hammer = {
                 'name': 'minecraft:stick',
-                'conditions': [loot_tables.match_tag('tfc:hammers')],
+                'conditions': [match_tag_1_21_plus('tfc:hammers')],
                 'functions': [loot_tables.set_count(1, 4)]
             }
             if variant == 'wood' or variant == 'stripped_wood':
@@ -1636,7 +1644,7 @@ def generate(rm: ResourceManager):
                 ({'snowy': True, 'bottom': True}, {'model': 'minecraft:block/snow_height2'})
             ).with_lang(lang('%s krummholz', wood))
             block.with_block_loot(loot_tables.alternatives(
-                {'name': 'tfc:plant/%s_krummholz' % wood, 'conditions': [loot_tables.block_state_property('tfc:plant/%s_krummholz[tip=true]' % wood), loot_tables.match_tag('tfc:axes')]},
+                {'name': 'tfc:plant/%s_krummholz' % wood, 'conditions': [loot_tables.block_state_property('tfc:plant/%s_krummholz[tip=true]' % wood), match_tag_1_21_plus('tfc:axes')]},
                 {'name': 'tfc:wood/sapling/%s' % wood, 'conditions': [loot_tables.random_chance(0.02)]},
                 '1-3 minecraft:stick'
             ))
@@ -2409,10 +2417,12 @@ def when_silk_touch(item: str):
 
 def when_sheared(item: str):
     return {'name': item, 'conditions': [loot_tables.any_of(
-        loot_tables.match_tag(TAG_SHEARS),
+        match_tag_1_21_plus(TAG_SHEARS),
         loot_tables.silk_touch()
     )]}
 
 
 def override(model: str, name: str, value: float = 1.0):
     return {'predicate': {name: value}, 'model': model}
+
+

@@ -1,7 +1,7 @@
 {
   "type": "tfc:anvil",
   "ingredient": {
-    "tag": "c:ingots/tin"
+    "tag": "c:double_ingots/tin"
   },
   "result": {
     "count": 1,

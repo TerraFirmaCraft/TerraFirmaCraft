@@ -27,10 +27,10 @@ import static net.dries007.tfc.world.TFCChunkGenerator.*;
 
 public class BadlandsSurfaceBuilder implements SurfaceBuilder
 {
-    public static final SurfaceBuilderFactory NORMAL = seed -> new BadlandsSurfaceBuilder(false, false, 0, seed);
-    public static final SurfaceBuilderFactory MESAS = seed -> new BadlandsSurfaceBuilder(true, false, 3, seed);
-    public static final SurfaceBuilderFactory HOODOOS = seed -> new BadlandsSurfaceBuilder(true, false, 1.6, seed);
-    public static final SurfaceBuilderFactory WARPED = seed -> new BadlandsSurfaceBuilder(true, true, 0, seed);
+    public static final SurfaceBuilderFactory NORMAL = seed -> new BadlandsSurfaceBuilder(false, false, -1, seed);
+    public static final SurfaceBuilderFactory MESAS = seed -> new BadlandsSurfaceBuilder(true, false, -3, seed);
+    public static final SurfaceBuilderFactory HOODOOS = seed -> new BadlandsSurfaceBuilder(true, false, -7, seed);
+    public static final SurfaceBuilderFactory WARPED = seed -> new BadlandsSurfaceBuilder(true, true, -3, seed);
 
 
     private static final int PRIMARY_SIZE = 8;
@@ -84,7 +84,7 @@ public class BadlandsSurfaceBuilder implements SurfaceBuilder
 
     private final boolean inverted;
     private final boolean dippingStrata;
-    private final double maxSoilSlope;
+    private final int soilMinDepth;
     private final BlockState[] sandLayers0, sandLayers1, sandLayersKarst, sandLayersVolcanic;
     private final BlockState[] sandstoneLayers0, sandstoneLayers1, sandstoneLayersKarst, sandstoneLayersVolcanic;
     private final float[] layerThresholds;
@@ -103,11 +103,11 @@ public class BadlandsSurfaceBuilder implements SurfaceBuilder
         return karst ? sandstoneLayersKarst : volcanic ? sandstoneLayersVolcanic : defaultLayer;
     }
 
-    public BadlandsSurfaceBuilder(boolean inverted, boolean dippingStrata, double maxSoilSlope, Seed seed)
+    public BadlandsSurfaceBuilder(boolean inverted, boolean dippingStrata, int soilMinDepth, Seed seed)
     {
         this.inverted = inverted;
         this.dippingStrata = dippingStrata;
-        this.maxSoilSlope = maxSoilSlope;
+        this.soilMinDepth = soilMinDepth;
 
         final RandomSource random = seed.fork();
 
@@ -159,15 +159,8 @@ public class BadlandsSurfaceBuilder implements SurfaceBuilder
 
         if (inverted)
         {
-            final int shift = dippingStrata ? 2 : 5;
-            if (startY + shift < heightVariation + weightVariation + rainfallVariation)
-            {
-                NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY, SurfaceStates.TOP_GRASS_TO_SAND, SurfaceStates.MID_DIRT_TO_SAND, SurfaceStates.UNDER_GRAVEL);
-            }
-            else
-            {
-                buildSandStoneSurface(context, startY, endY, karst, volcanic);
-            }
+            final int shift = dippingStrata ? -10 : -16;
+            buildSandStoneSurface(context, startY, endY, karst, volcanic, (int) (shift + heightVariation + weightVariation + rainfallVariation));
         }
         else
         {
@@ -220,12 +213,13 @@ public class BadlandsSurfaceBuilder implements SurfaceBuilder
         }
     }
 
-    private void buildSandStoneSurface(SurfaceBuilderContext context, int startHeight, int minSurfaceHeight, boolean karst, boolean volcanic)
+    private void buildSandStoneSurface(SurfaceBuilderContext context, int startHeight, int minSurfaceHeight, boolean karst, boolean volcanic, int sandstoneBaseHeight)
     {
         final float style = (float) sandStyleNoise.noise(context.pos().getX(), context.pos().getZ());
         final int height = (int) sandHeightOffsetNoise.noise(context.pos().getX(), context.pos().getZ());
 
         int surfaceDepth = -1;
+        int sandstoneDepth = startHeight - sandstoneBaseHeight;
         for (int y = startHeight; y >= minSurfaceHeight; --y)
         {
             BlockState stateAt = context.getBlockState(y);
@@ -244,21 +238,31 @@ public class BadlandsSurfaceBuilder implements SurfaceBuilder
                     }
                     else
                     {
-                        if (context.getSlope() > maxSoilSlope)
+                        surfaceDepth = context.calculateAltitudeSlopeSurfaceDepth(y, soilMinDepth);
+                        if (surfaceDepth < 0)
                         {
-                            context.setBlockState(y, sampleLayer(getKarstOrVolcanicSandstoneLayer(sandstoneLayers0, karst, volcanic), getKarstOrVolcanicSandstoneLayer(sandstoneLayers1, karst, volcanic), y + height, style));
+                            if (sandstoneDepth > 0)
+                            {
+                                context.setBlockState(y, sampleLayer(getKarstOrVolcanicSandstoneLayer(sandstoneLayers0, karst, volcanic), getKarstOrVolcanicSandstoneLayer(sandstoneLayers1, karst, volcanic), y + height, style));
+                            }
+                            surfaceDepth = 0;
                         }
                         else
                         {
                             context.setBlockState(y, SurfaceStates.TOP_GRASS_TO_SAND);
+                            sandstoneDepth = sandstoneDepth - surfaceDepth;
                         }
-                        surfaceDepth = 15;
                     }
                 }
                 else if (surfaceDepth > 0)
                 {
-                    // Subsurface layers
                     surfaceDepth--;
+                    context.setBlockState(y, SurfaceStates.MID_DIRT_TO_SAND);
+                }
+                else if (sandstoneDepth > 0)
+                {
+                    // Subsurface layers
+                    sandstoneDepth--;
                     context.setBlockState(y, sampleLayer(getKarstOrVolcanicSandstoneLayer(sandstoneLayers0, karst, volcanic), getKarstOrVolcanicSandstoneLayer(sandstoneLayers1, karst, volcanic), y + height, style));
                 }
             }
