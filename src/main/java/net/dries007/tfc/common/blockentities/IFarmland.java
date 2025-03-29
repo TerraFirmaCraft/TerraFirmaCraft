@@ -8,10 +8,6 @@ package net.dries007.tfc.common.blockentities;
 
 import java.util.function.Consumer;
 
-import net.dries007.tfc.util.calendar.Calendars;
-import net.dries007.tfc.util.calendar.ICalendar;
-import net.dries007.tfc.util.climate.ClimateModel;
-import net.dries007.tfc.util.tracker.WorldTracker;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -21,7 +17,6 @@ import net.minecraft.util.Mth;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.blockentities.FarmlandBlockEntity.NutrientType;
 import net.dries007.tfc.util.data.Fertilizer;
-import net.minecraft.world.level.Level;
 
 import static net.dries007.tfc.common.blockentities.FarmlandBlockEntity.NutrientType.*;
 
@@ -87,9 +82,9 @@ public interface IFarmland
 
     void setAdditionalWater(float rainfall);
 
-    default void addAdditionalWater(float rainfall)
+    default void addAdditionalWater(float additionalWater)
     {
-        setAdditionalWater(getAdditionalWater() + rainfall);
+        setAdditionalWater(getAdditionalWater() + additionalWater);
     }
 
     long getLastWaterTick();
@@ -125,6 +120,7 @@ public interface IFarmland
 
     default void updateAdditionalWater(long fromTick, long toTick)
     {
+        // TODO :: We need some way to inject additional water (watering can?)
         long deltaTicks = toTick - fromTick;
         addAdditionalWater(deltaTicks * WATER_DISSIPATION_RATE);
     }

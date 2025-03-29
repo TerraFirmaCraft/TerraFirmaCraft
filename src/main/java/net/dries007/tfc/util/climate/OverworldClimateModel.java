@@ -275,7 +275,7 @@ public class OverworldClimateModel implements ClimateModel
             requiredTimeIntensity = 0;
         }
 
-        // Take the intensity equation, and solve for the time required time intensity
+        // Take the intensity equation, and solve for the required time intensity
         long trueLeft = (long)((segmentLeft + left + halfLength) - (1 - requiredTimeIntensity) * halfLength);
         long trueRight = (long)((segmentLeft + left + halfLength) + (1 - requiredTimeIntensity) * halfLength);
         if (toTick < trueLeft || fromTick > trueRight)
@@ -286,10 +286,10 @@ public class OverworldClimateModel implements ClimateModel
         long fromTickInRain = Math.max(fromTick, trueLeft);
         long toTickInRain = Math.min(toTick, trueRight);
 
-        /*if (getTemperature(level, pos, fromTickInRain, toTickInRain, calendarDaysInMonth) < 0)
+        if (getTemperature(level, pos, fromTickInRain, toTickInRain, calendarDaysInMonth) < 0)
         {
             return new Pair<>(0L, toTick - fromTick); // Not raining, since we're below freezing
-        }*/
+        }
 
         return new Pair<>(toTickInRain - fromTickInRain, (toTick - fromTick) - (toTickInRain - fromTickInRain));
     }
@@ -299,6 +299,13 @@ public class OverworldClimateModel implements ClimateModel
     {
         final int segmentStart = (int) Math.floorDiv(fromTick, RAIN_SEGMENT_LENGTH);
         final int segmentEnd = (int) Math.floorDiv(toTick, RAIN_SEGMENT_LENGTH);
+        final long totalTicks = toTick - fromTick;
+        final long calendarTicksInMonth = calendarTicksInYear / ICalendar.MONTHS_IN_YEAR;
+        if (totalTicks > calendarTicksInMonth)
+        {
+            // Clamp to one month, since the impact of rain beyond that is negligible
+            toTick = fromTick - calendarTicksInMonth;
+        }
 
         long ticksRainingSum = 0;
         long ticksNotRainingSum = 0;

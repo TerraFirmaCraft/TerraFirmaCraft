@@ -118,7 +118,7 @@ public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland, IC
             float accumulatedRainfallValue = ChunkData.get(level, pos).getAccumulatedRainfall();
             final int hydrationValue = FarmlandBlock.getHydration(level, pos, accumulatedRainfallValue);
             final MutableComponent hydration = Component.translatable("tfc.tooltip.farmland.hydration", hydrationValue);
-            final MutableComponent accumulatedRainfall = Component.translatable("tfc.tooltip.farmland.accumulated_rainfall", accumulatedRainfallValue, FarmlandBlock.getRainfallBoost(accumulatedRainfallValue));
+            final MutableComponent accumulatedRainfall = Component.translatable("tfc.tooltip.farmland.accumulated_rainfall", (int)accumulatedRainfallValue, FarmlandBlock.getRainfallBoost(accumulatedRainfallValue));
             text.accept(hydration);
             text.accept(accumulatedRainfall);
         }
