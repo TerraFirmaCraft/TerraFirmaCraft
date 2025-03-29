@@ -101,7 +101,7 @@ public interface ClimateModel
         float temperatureSum = 0;
         for (int i = 0; i < NUM_SAMPLES_FOR_DELTAS; i++)
         {
-            final long sampleTick = fromTick + (deltaTicks * i / (NUM_SAMPLES_FOR_DELTAS + 1));
+            final long sampleTick = fromTick + (deltaTicks * i / (NUM_SAMPLES_FOR_DELTAS - 1));
             temperatureSum += getTemperature(level, pos, sampleTick, daysInMonth);
         }
 
@@ -146,7 +146,7 @@ public interface ClimateModel
         float rainfallSum = 0;
         for (int i = 0; i < NUM_SAMPLES_FOR_DELTAS; i++)
         {
-            final long sampleTick = fromTick + (deltaTicks * i / (NUM_SAMPLES_FOR_DELTAS + 1));
+            final long sampleTick = fromTick + (deltaTicks * i / (NUM_SAMPLES_FOR_DELTAS - 1));
             rainfallSum += getRainfall(level, pos, sampleTick, daysInMonth);
         }
 
@@ -215,7 +215,7 @@ public interface ClimateModel
         float groundWaterSum = 0;
         for (int i = 0; i < NUM_SAMPLES_FOR_DELTAS; i++)
         {
-            final long sampleTick = fromTick + (deltaTicks * i / (NUM_SAMPLES_FOR_DELTAS + 1));
+            final long sampleTick = fromTick + (deltaTicks * i / (NUM_SAMPLES_FOR_DELTAS - 1));
             groundWaterSum += getGroundwater(level, pos, sampleTick, daysInMonth);
         }
 
