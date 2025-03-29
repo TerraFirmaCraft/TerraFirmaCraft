@@ -214,9 +214,10 @@ public enum Plant implements RegistryPlant
     ;
 
     private static final EnumSet<Plant> SPECIAL_POTTED_PLANTS = EnumSet.of(BARREL_CACTUS, FOXGLOVE, MORNING_GLORY, MOSS, OSTRICH_FERN, REINDEER_LICHEN, ROSE, SAPPHIRE_TOWER, TOQUILLA_PALM, TREE_FERN, PHILODENDRON, SHAWIASH, BEAR_GRASS, KINNIKINNICK);
-    private static final EnumSet<Plant> BLOCK_TINTED_PLANTS = EnumSet.of(PAMPAS_GRASS, BLUEGRASS, BROMEGRASS, FOUNTAIN_GRASS, ORCHARD_GRASS, RYEGRASS, SCUTCH_GRASS, TIMOTHY_GRASS, RADDIA_GRASS, ARROWHEAD, BUR_REED, CATTAIL, DUCKWEED, FIELD_HORSETAIL, GUTWEED, KANGAROO_PAW, KING_FERN, LADY_FERN, LICORICE_FERN, LOTUS, MORNING_GLORY, PHILODENDRON, MOSS, OSTRICH_FERN, PHRAGMITE, PICKERELWEED, PISTIA, SAGO, SEA_LAVENDER, SWITCHGRASS, SWORD_FERN, TALL_FESCUE_GRASS, TOQUILLA_PALM, WHITE_WATER_LILY, YELLOW_WATER_LILY, PURPLE_WATER_LILY, WATER_TARO, HANGING_VINES_PLANT, HANGING_VINES, SPANISH_MOSS_PLANT, SPANISH_MOSS, TREE_FERN_PLANT, TREE_FERN, IVY, JUNGLE_VINES, MAIDEN_PINK, CYCAD, RED_OAT_GRASS); // TODO
+    private static final EnumSet<Plant> BLOCK_TINTED_PLANTS = EnumSet.of(PAMPAS_GRASS, BLUEGRASS, BROMEGRASS, FOUNTAIN_GRASS, ORCHARD_GRASS, RYEGRASS, SCUTCH_GRASS, TIMOTHY_GRASS, RADDIA_GRASS, ARROWHEAD, BUR_REED, CATTAIL, DUCKWEED, FIELD_HORSETAIL, GUTWEED, KANGAROO_PAW, KING_FERN, LADY_FERN, LICORICE_FERN, LOTUS, MORNING_GLORY, PHILODENDRON, MOSS, OSTRICH_FERN, PHRAGMITE, PICKERELWEED, PISTIA, SAGO, SEA_LAVENDER, SWITCHGRASS, SWORD_FERN, TALL_FESCUE_GRASS, TOQUILLA_PALM, WHITE_WATER_LILY, YELLOW_WATER_LILY, PURPLE_WATER_LILY, WATER_TARO, HANGING_VINES_PLANT, HANGING_VINES, SPANISH_MOSS_PLANT, SPANISH_MOSS, TREE_FERN_PLANT, TREE_FERN, IVY, JUNGLE_VINES, MAIDEN_PINK, CYCAD, RED_OAT_GRASS, ARUNDO_PLANT, ARUNDO);
     private static final EnumSet<Plant> ITEM_TINTED_PLANTS = EnumSet.of(BLUEGRASS, BROMEGRASS, FOUNTAIN_GRASS, ORCHARD_GRASS, RYEGRASS, SCUTCH_GRASS, TIMOTHY_GRASS, RADDIA_GRASS, KING_FERN, MOSS, SAGO, SWITCHGRASS, TALL_FESCUE_GRASS, IVY, JUNGLE_VINES, HANGING_VINES, GUTWEED, RED_OAT_GRASS);
     private static final EnumSet<Plant> FLOWERPOT_TINTED_PLANTS = EnumSet.of(PHILODENDRON, MOSS, TREE_FERN);
+    private static final EnumSet<Plant> FOLIAGE_PLANTS = EnumSet.of(SWORD_FERN, OSTRICH_FERN, KING_FERN, TOQUILLA_PALM, LADY_FERN, LICORICE_FERN, BIRD_NEST_FERN);
 
     private final @Nullable IntegerProperty ageProperty;
     private final float speedFactor;
@@ -266,6 +267,7 @@ public enum Plant implements RegistryPlant
 
     private int getMaxAgeForType(BlockType type)
     {
+        // TODO: TWISTING AND WEEPING NEEDS TO BE HANDLED DIFFERENTLY
         if (type == BlockType.GRASS_WATER || type == BlockType.GRASS_WATER_FRESH || type == BlockType.BEACH_GRASS || type == BlockType.SHORT_GRASS
             || type == BlockType.TALL_GRASS || type == BlockType.FLOWERBED|| type == BlockType.CACTUSBED || type == BlockType.FLOATING_FRESH || type == BlockType.FLOATING
             || type == BlockType.KELP_TREE || type == BlockType.KELP_TREE_FLOWER || type == BlockType.TWISTING_TOP || type == BlockType.TWISTING_SOLID_TOP
@@ -353,7 +355,7 @@ public enum Plant implements RegistryPlant
 
     public boolean isFoliage()
     {
-        return BlockType.FOLIAGE_TYPES.contains(type);
+        return BlockType.FOLIAGE_TYPES.contains(type) || FOLIAGE_PLANTS.contains(this);
     }
 
     public boolean isSeasonal()
@@ -363,7 +365,7 @@ public enum Plant implements RegistryPlant
 
     public boolean isTallGrass()
     {
-        return type == BlockType.TALL_GRASS || type == BlockType.SHORT_GRASS;
+        return (type == BlockType.TALL_GRASS || type == BlockType.SHORT_GRASS) && !FOLIAGE_PLANTS.contains(this);
     }
 
     public boolean isBlockTinted()
@@ -481,7 +483,7 @@ public enum Plant implements RegistryPlant
         BAMBOO((plant, type) -> new TFCBambooStalkBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BAMBOO), plant.transform()));
 
         private static final EnumSet<BlockType> NO_ITEM_TYPES = EnumSet.of(WEEPING, TWISTING_SOLID, KELP, KELP_TREE, TWISTING, BRANCHING_CACTUS, BAMBOO_SAPLING);
-        private static final EnumSet<BlockType> FOLIAGE_TYPES = EnumSet.of(WEEPING, WEEPING_TOP, FLOATING_FRESH, FLOATING, WATER_FRESH, GRASS_WATER_FRESH, GRASS_WATER);
+        private static final EnumSet<BlockType> FOLIAGE_TYPES = EnumSet.of(WEEPING, WEEPING_TOP, FLOATING_FRESH, FLOATING, WATER_FRESH, GRASS_WATER_FRESH, GRASS_WATER, TWISTING, TWISTING_TOP, TWISTING_SOLID, TWISTING_SOLID_TOP);
 
         /**
          * Default properties to avoid rewriting them out every time

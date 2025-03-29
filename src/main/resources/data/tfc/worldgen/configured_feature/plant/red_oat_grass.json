@@ -3,13 +3,15 @@
   "type": "minecraft:simple_block",
   "config": {
     "to_place": {
-      "type": "minecraft:simple_state_provider",
+      "type": "tfc:random_property",
       "state": {
-        "Name": "tfc:groundcover/dead_grass",
+        "Name": "tfc:plant/red_oat_grass",
         "Properties": {
-          "fluid": "empty"
+          "age": "1",
+          "stage": "1"
         }
-      }
+      },
+      "property": "age"
     }
   }
 }

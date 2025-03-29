@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "feature": "tfc:dead_grass",
+  "feature": "tfc:plant/red_oat_grass",
   "placement": [
     {
       "type": "minecraft:heightmap",
@@ -9,7 +9,7 @@
     {
       "type": "block_predicate_filter",
       "predicate": {
-        "type": "tfc:replaceable"
+        "type": "tfc:air_or_empty_fluid"
       }
     },
     {
@@ -17,9 +17,10 @@
       "predicate": {
         "type": "would_survive",
         "state": {
-          "Name": "tfc:groundcover/dead_grass",
+          "Name": "tfc:plant/red_oat_grass",
           "Properties": {
-            "fluid": "empty"
+            "age": "1",
+            "stage": "1"
           }
         }
       }

@@ -7,22 +7,28 @@
       "rolls": 1,
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "tfc:plant/prickly_pear",
-          "conditions": [
+          "type": "minecraft:alternatives",
+          "children": [
             {
-              "condition": "minecraft:any_of",
-              "terms": [
-                {
-                  "condition": "minecraft:match_tool",
-                  "predicate": {
-                    "items": "#tfc:tools/sharp"
-                  }
-                },
+              "type": "minecraft:item",
+              "name": "tfc:plant/red_oat_grass",
+              "conditions": [
                 {
                   "condition": "minecraft:match_tool",
                   "predicate": {
                     "items": "#c:tools/shear"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "tfc:straw",
+              "conditions": [
+                {
+                  "condition": "minecraft:match_tool",
+                  "predicate": {
+                    "items": "#tfc:tools/sharp"
                   }
                 }
               ]

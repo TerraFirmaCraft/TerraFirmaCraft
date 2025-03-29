@@ -1,10 +1,10 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:random_patch",
+  "type": "tfc:dynamic_random_patch",
   "config": {
-    "tries": 4,
+    "tries": 84,
     "xz_spread": 15,
     "y_spread": 1,
-    "feature": "tfc:plant/manatee_grass"
+    "feature": "tfc:plant/red_oat_grass"
   }
 }
