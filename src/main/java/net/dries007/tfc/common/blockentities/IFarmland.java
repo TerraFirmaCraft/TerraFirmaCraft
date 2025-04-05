@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blockentities;
 
 import java.util.function.Consumer;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -52,7 +51,7 @@ public interface IFarmland
     /**
      * Implementations should clamp {@code value} on a range [0, 1]
      *
-     * @param type the nutrient type to be set
+     * @param type  the nutrient type to be set
      * @param value the amount (clamped [0-1]) of the nutrient to set
      */
     void setNutrient(NutrientType type, float value);
@@ -94,6 +93,7 @@ public interface IFarmland
     /**
      * Consume up to {@code amount} of nutrient {@code type}.
      * Resupplies other nutrient by 1/6 of the amount consumed.
+     *
      * @return The amount of nutrient {@code type} that was actually consumed.
      */
     default float consumeNutrientAndResupplyOthers(NutrientType type, float amount)

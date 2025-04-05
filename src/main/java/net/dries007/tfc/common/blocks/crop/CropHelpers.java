@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.blocks.crop;
 
-import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -31,6 +30,7 @@ import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateRange;
 import net.dries007.tfc.util.data.Fertilizer;
+import net.dries007.tfc.world.chunkdata.ChunkData;
 
 /**
  * Common growth logic for crop blocks

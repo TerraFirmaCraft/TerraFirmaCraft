@@ -155,7 +155,8 @@ public class OverworldClimateModel implements ClimateModel
     }
 
     @Override
-    public float getRainfall(LevelReader level, BlockPos pos, long calendarTicks, int daysInMonth) {
+    public float getRainfall(LevelReader level, BlockPos pos, long calendarTicks, int daysInMonth)
+    {
         final ChunkData data = ChunkData.get(level, pos);
         final float rainVariance = data.getRainVariance(pos);
         final float rainAverage = data.getRainfall(pos);
@@ -276,8 +277,8 @@ public class OverworldClimateModel implements ClimateModel
         }
 
         // Take the intensity equation, and solve for the required time intensity
-        long trueLeft = (long)((segmentLeft + left + halfLength) - (1 - requiredTimeIntensity) * halfLength);
-        long trueRight = (long)((segmentLeft + left + halfLength) + (1 - requiredTimeIntensity) * halfLength);
+        long trueLeft = (long) ((segmentLeft + left + halfLength) - (1 - requiredTimeIntensity) * halfLength);
+        long trueRight = (long) ((segmentLeft + left + halfLength) + (1 - requiredTimeIntensity) * halfLength);
         if (toTick < trueLeft || fromTick > trueRight)
         {
             return new Pair<>(0L, toTick - fromTick); // Not raining, since we don't have enough intensity to overcome the climate
@@ -324,7 +325,7 @@ public class OverworldClimateModel implements ClimateModel
 
         // This is the millimeters of rain accumulated per tick of the weather. See AVERAGE_RAINFALL_INTENSITY for more info.
         final double rainPerRainTickInMillimeters = (MAX_RAINFALL / (AVERAGE_RAINFALL_INTENSITY * calendarTicksInYear));
-        final float deltaHydration = (float)(rainPerRainTickInMillimeters * ticksRainingSum);
+        final float deltaHydration = (float) (rainPerRainTickInMillimeters * ticksRainingSum);
         final float dehydrationFactor = Mth.clampedMap(rainfall, ClimateModel.MIN_RAINFALL, ClimateModel.MAX_RAINFALL, 2.f, 0.5f);
         final float deltaDehydration = ticksNotRainingSum * MILLIMETERS_RAIN_EVAPORATED_PER_TICK * dehydrationFactor;
 

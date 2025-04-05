@@ -34,9 +34,11 @@ public record ChunkWatchPacket(
 {
     public static final CustomPacketPayload.Type<ChunkWatchPacket> TYPE = PacketHandler.type("chunk_watch");
     // Can't use composite here anymore, too many fields
-    public static final StreamCodec<ByteBuf, ChunkWatchPacket> CODEC = new StreamCodec<>() {
+    public static final StreamCodec<ByteBuf, ChunkWatchPacket> CODEC = new StreamCodec<>()
+    {
         @Override
-        public ChunkWatchPacket decode(ByteBuf byteBuf) {
+        public ChunkWatchPacket decode(ByteBuf byteBuf)
+        {
             ChunkPos chunkPos = StreamCodecs.CHUNK_POS.decode(byteBuf);
             LerpFloatLayer rainfall = LerpFloatLayer.STREAM_CODEC.decode(byteBuf);
             LerpFloatLayer rainVariance = LerpFloatLayer.STREAM_CODEC.decode(byteBuf);
@@ -48,7 +50,8 @@ public record ChunkWatchPacket(
         }
 
         @Override
-        public void encode(ByteBuf o, ChunkWatchPacket chunkWatchPacket) {
+        public void encode(ByteBuf o, ChunkWatchPacket chunkWatchPacket)
+        {
             StreamCodecs.CHUNK_POS.encode(o, chunkWatchPacket.pos);
             LerpFloatLayer.STREAM_CODEC.encode(o, chunkWatchPacket.rainfall);
             LerpFloatLayer.STREAM_CODEC.encode(o, chunkWatchPacket.rainVariance);

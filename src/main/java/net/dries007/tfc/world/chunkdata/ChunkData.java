@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.world.chunkdata;
 
-import net.dries007.tfc.common.TFCAttachments;
-import net.dries007.tfc.network.ChunkWatchPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -20,7 +18,11 @@ import net.minecraft.world.level.chunk.ImposterProtoChunk;
 import net.minecraft.world.level.chunk.LevelChunk;
 import org.jetbrains.annotations.Nullable;
 
-public sealed class ChunkData {
+import net.dries007.tfc.common.TFCAttachments;
+import net.dries007.tfc.network.ChunkWatchPacket;
+
+public sealed class ChunkData
+{
     public static final ChunkData EMPTY = new ChunkData.Immutable();
 
     private static final float UNKNOWN_RAINFALL = 250;
@@ -36,7 +38,8 @@ public sealed class ChunkData {
      *
      * @see #get(ChunkAccess)
      */
-    public static ChunkData get(LevelReader level, BlockPos pos) {
+    public static ChunkData get(LevelReader level, BlockPos pos)
+    {
         return get(level.getChunk(pos));
     }
 
@@ -46,7 +49,8 @@ public sealed class ChunkData {
      *
      * @see #get(ChunkAccess)
      */
-    public static ChunkData get(LevelReader level, ChunkPos pos) {
+    public static ChunkData get(LevelReader level, ChunkPos pos)
+    {
         return get(level.getChunk(pos.x, pos.z));
     }
 
@@ -66,7 +70,8 @@ public sealed class ChunkData {
      * @see #get(LevelReader, BlockPos)
      * @see #get(LevelReader, ChunkPos)
      */
-    public static ChunkData get(ChunkAccess chunk) {
+    public static ChunkData get(ChunkAccess chunk)
+    {
         return chunk instanceof ImposterProtoChunk impostor ? get(impostor.getWrapped())
             : chunk instanceof EmptyLevelChunk ? ChunkData.EMPTY
             : chunk.getData(TFCAttachments.CHUNK_DATA);
@@ -91,11 +96,13 @@ public sealed class ChunkData {
     private long lastRainTick;
     private float accumulatedRainfall;
 
-    public ChunkData(ChunkPos pos) {
+    public ChunkData(ChunkPos pos)
+    {
         this(null, pos);
     }
 
-    public ChunkData(@Nullable ChunkDataGenerator generator, ChunkPos pos) {
+    public ChunkData(@Nullable ChunkDataGenerator generator, ChunkPos pos)
+    {
         this.generator = generator;
         this.pos = pos;
         this.status = Status.EMPTY;
@@ -105,97 +112,119 @@ public sealed class ChunkData {
         this.lastRainTick = -1;
     }
 
-    public ChunkPos getPos() {
+    public ChunkPos getPos()
+    {
         return pos;
     }
 
     /**
      * Returns the {@link RockData} for this chunk data. This is only valid on logical server.
      */
-    public RockData getRockData() {
+    public RockData getRockData()
+    {
         return rockData;
     }
 
-    public int[] getAquiferSurfaceHeight() {
+    public int[] getAquiferSurfaceHeight()
+    {
         assert aquiferSurfaceHeight != null;
         return aquiferSurfaceHeight;
     }
 
-    public float getAccumulatedRainfall() {
+    public float getAccumulatedRainfall()
+    {
         return accumulatedRainfall;
     }
 
-    public void setAccumulatedRainfall(ChunkAccess chunk, float rainfall) {
+    public void setAccumulatedRainfall(ChunkAccess chunk, float rainfall)
+    {
         this.accumulatedRainfall = Mth.clamp(rainfall, 0, MAX_ACCUMULATED_RAINFALL);
         chunk.setUnsaved(true);
     }
 
-    public void addAccumulatedRainfall(ChunkAccess chunk, float rainfall) {
+    public void addAccumulatedRainfall(ChunkAccess chunk, float rainfall)
+    {
         setAccumulatedRainfall(chunk, getAccumulatedRainfall() + rainfall);
     }
 
-    public float getRainfall(BlockPos pos) {
+    public float getRainfall(BlockPos pos)
+    {
         return getRainfall(pos.getX(), pos.getZ());
     }
 
-    public float getRainfall(int x, int z) {
+    public float getRainfall(int x, int z)
+    {
         return rainfallLayer == null ? UNKNOWN_RAINFALL : rainfallLayer.getValue((x & 15) / 16f, (z & 15) / 16f);
     }
 
-    public float getRainVariance(BlockPos pos) {
+    public float getRainVariance(BlockPos pos)
+    {
         return getRainVariance(pos.getX(), pos.getZ());
     }
 
-    public float getRainVariance(int x, int z) {
+    public float getRainVariance(int x, int z)
+    {
         return rainVarianceLayer == null ? UNKNOWN_RAIN_VARIANCE : rainVarianceLayer.getValue((x & 15) / 16f, (z & 15) / 16f);
     }
 
-    public float getBaseGroundwater(BlockPos pos) {
+    public float getBaseGroundwater(BlockPos pos)
+    {
         return getBaseGroundwater(pos.getX(), pos.getZ());
     }
 
-    public float getBaseGroundwater(int x, int z) {
+    public float getBaseGroundwater(int x, int z)
+    {
         return baseGroundwaterLayer == null ? UNKNOWN_BASE_GROUNDWATER : baseGroundwaterLayer.getValue((x & 15) / 16f, (z & 15) / 16f);
     }
 
-    public float getGroundwater(BlockPos pos) {
+    public float getGroundwater(BlockPos pos)
+    {
         return getGroundwater(pos.getX(), pos.getZ());
     }
 
-    public float getGroundwater(int x, int z) {
+    public float getGroundwater(int x, int z)
+    {
         return getBaseGroundwater(x, z) + getRainfall(x, z);
     }
 
-    public float getAverageTemp(BlockPos pos) {
+    public float getAverageTemp(BlockPos pos)
+    {
         return getAverageTemp(pos.getX(), pos.getZ());
     }
 
-    public float getAverageTemp(int x, int z) {
+    public float getAverageTemp(int x, int z)
+    {
         return temperatureLayer == null ? UNKNOWN_TEMPERATURE : temperatureLayer.getValue((x & 15) / 16f, (z & 15) / 16f);
     }
 
-    public ForestType getForestType() {
+    public ForestType getForestType()
+    {
         return forestType;
     }
 
-    public Status status() {
+    public Status status()
+    {
         return status;
     }
 
-    public long getLastRandomTick() {
+    public long getLastRandomTick()
+    {
         return lastRandomTick;
     }
 
-    public long getLastRainTick() {
+    public long getLastRainTick()
+    {
         return lastRainTick;
     }
 
-    public void setLastRandomTick(ChunkAccess chunk, long lastRandomTick) {
+    public void setLastRandomTick(ChunkAccess chunk, long lastRandomTick)
+    {
         this.lastRandomTick = lastRandomTick;
         chunk.setUnsaved(true); // Flag the chunk, since we need to re-save the data
     }
 
-    public void setLastRainTick(ChunkAccess chunk, long lastRainTick) {
+    public void setLastRainTick(ChunkAccess chunk, long lastRainTick)
+    {
         this.lastRainTick = lastRainTick;
         chunk.setUnsaved(true); // Flag the chunk, since we need to re-save the data
     }
@@ -203,7 +232,8 @@ public sealed class ChunkData {
     /**
      * Generate the chunk data from empty to {@link Status#PARTIAL}. Populated lazily on first creation, and guaranteed to be done by structure stage.
      */
-    public void generatePartial(LerpFloatLayer rainfallLayer, LerpFloatLayer rainVarianceLayer, LerpFloatLayer baseGroundwaterLayer, LerpFloatLayer temperatureLayer, ForestType forestType) {
+    public void generatePartial(LerpFloatLayer rainfallLayer, LerpFloatLayer rainVarianceLayer, LerpFloatLayer baseGroundwaterLayer, LerpFloatLayer temperatureLayer, ForestType forestType)
+    {
         assert status == Status.EMPTY;
 
         this.rainfallLayer = rainfallLayer;
@@ -218,7 +248,8 @@ public sealed class ChunkData {
     /**
      * Generate the chunk data from {@link Status#PARTIAL} to {@link Status#FULL}. Generated during fill noise stage once this data is prepared.
      */
-    public void generateFull(int[] surfaceHeight, int[] aquiferSurfaceHeight) {
+    public void generateFull(int[] surfaceHeight, int[] aquiferSurfaceHeight)
+    {
         assert status == Status.PARTIAL;
 
         this.rockData.setSurfaceHeight(surfaceHeight);
@@ -229,7 +260,8 @@ public sealed class ChunkData {
     /**
      * Create an update packet to send to client with necessary information
      */
-    public ChunkWatchPacket getUpdatePacket() {
+    public ChunkWatchPacket getUpdatePacket()
+    {
         assert status == Status.FULL;
         assert rainfallLayer != null && temperatureLayer != null && rainVarianceLayer != null && baseGroundwaterLayer != null;
 
@@ -239,7 +271,8 @@ public sealed class ChunkData {
     /**
      * Called on client, sets to received data
      */
-    public void onUpdatePacket(LerpFloatLayer rainfallLayer, LerpFloatLayer rainVarianceLayer, LerpFloatLayer baseGroundwaterLayer, LerpFloatLayer temperatureLayer, ForestType forestType, float accumulatedRainfall) {
+    public void onUpdatePacket(LerpFloatLayer rainfallLayer, LerpFloatLayer rainVarianceLayer, LerpFloatLayer baseGroundwaterLayer, LerpFloatLayer temperatureLayer, ForestType forestType, float accumulatedRainfall)
+    {
         assert status == Status.EMPTY || status == Status.CLIENT;
 
         this.rainfallLayer = rainfallLayer;
@@ -251,16 +284,19 @@ public sealed class ChunkData {
         this.status = Status.CLIENT;
     }
 
-    public CompoundTag serializeNBT() {
+    public CompoundTag serializeNBT()
+    {
         final CompoundTag nbt = new CompoundTag();
         nbt.putByte("status", (byte) status.ordinal());
-        if (status == Status.FULL) {
+        if (status == Status.FULL)
+        {
             assert aquiferSurfaceHeight != null;
 
             nbt.putIntArray("surfaceHeight", rockData.getSurfaceHeight());
             nbt.putIntArray("aquiferSurfaceHeight", aquiferSurfaceHeight);
         }
-        if (status == Status.FULL || status == Status.PARTIAL) {
+        if (status == Status.FULL || status == Status.PARTIAL)
+        {
             assert rainfallLayer != null;
             assert rainVarianceLayer != null;
             assert baseGroundwaterLayer != null;
@@ -278,15 +314,18 @@ public sealed class ChunkData {
         return nbt;
     }
 
-    public void deserializeNBT(CompoundTag nbt) {
+    public void deserializeNBT(CompoundTag nbt)
+    {
         status = Status.valueOf(nbt.getByte("status"));
-        if (status == Status.FULL) {
+        if (status == Status.FULL)
+        {
             assert generator != null;
 
             rockData.setSurfaceHeight(nbt.getIntArray("surfaceHeight"));
             aquiferSurfaceHeight = nbt.getIntArray("aquiferSurfaceHeight");
         }
-        if (status == Status.FULL || status == Status.PARTIAL) {
+        if (status == Status.FULL || status == Status.PARTIAL)
+        {
             rainfallLayer = new LerpFloatLayer(nbt.getCompound("rainfall"));
             rainVarianceLayer = new LerpFloatLayer(nbt.getCompound("rainVariance"));
             baseGroundwaterLayer = new LerpFloatLayer(nbt.getCompound("baseGroundwater"));
@@ -299,11 +338,13 @@ public sealed class ChunkData {
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "ChunkData{pos=" + pos + ", status=" + status + ", hashCode=" + Integer.toHexString(hashCode()) + '}';
     }
 
-    public enum Status {
+    public enum Status
+    {
         EMPTY, // Default, un-generated chunk data
         CLIENT, // Client-side shallow copy
         PARTIAL, // Partially generated (before fill noise)
@@ -312,7 +353,8 @@ public sealed class ChunkData {
 
         private static final Status[] VALUES = values();
 
-        public static Status valueOf(int i) {
+        public static Status valueOf(int i)
+        {
             return i >= 0 && i < VALUES.length ? VALUES[i] : EMPTY;
         }
     }
@@ -321,42 +363,51 @@ public sealed class ChunkData {
      * Only used for the empty instance, this will enforce that it never leaks data
      * New empty instances can be constructed via constructor, EMPTY instance is specifically for an immutable empty copy, representing invalid chunk data
      */
-    private static final class Immutable extends ChunkData {
-        private Immutable() {
+    private static final class Immutable extends ChunkData
+    {
+        private Immutable()
+        {
             super(new ChunkPos(ChunkPos.INVALID_CHUNK_POS));
         }
 
         @Override
-        public void generatePartial(LerpFloatLayer rainfallLayer, LerpFloatLayer rainVarianceLayer, LerpFloatLayer baseGroundwaterLayer, LerpFloatLayer temperatureLayer, ForestType forestType) {
+        public void generatePartial(LerpFloatLayer rainfallLayer, LerpFloatLayer rainVarianceLayer, LerpFloatLayer baseGroundwaterLayer, LerpFloatLayer temperatureLayer, ForestType forestType)
+        {
             error();
         }
 
         @Override
-        public void generateFull(int[] surfaceHeight, int[] aquiferSurfaceHeight) {
+        public void generateFull(int[] surfaceHeight, int[] aquiferSurfaceHeight)
+        {
             error();
         }
 
         @Override
-        public void onUpdatePacket(LerpFloatLayer rainfallLayer, LerpFloatLayer rainVarianceLayer, LerpFloatLayer baseGroundwaterLayer, LerpFloatLayer temperatureLayer, ForestType forestType, float accumulatedRainfall) {
+        public void onUpdatePacket(LerpFloatLayer rainfallLayer, LerpFloatLayer rainVarianceLayer, LerpFloatLayer baseGroundwaterLayer, LerpFloatLayer temperatureLayer, ForestType forestType, float accumulatedRainfall)
+        {
             error();
         }
 
         @Override
-        public void deserializeNBT(CompoundTag nbt) {
+        public void deserializeNBT(CompoundTag nbt)
+        {
             error();
         }
 
         @Override
-        public Status status() {
+        public Status status()
+        {
             return Status.INVALID;
         }
 
         @Override
-        public String toString() {
+        public String toString()
+        {
             return "ImmutableChunkData";
         }
 
-        private void error() {
+        private void error()
+        {
             throw new UnsupportedOperationException("Tried to modify immutable chunk data");
         }
     }

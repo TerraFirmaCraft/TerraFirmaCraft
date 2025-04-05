@@ -8,10 +8,6 @@ package net.dries007.tfc.common.blocks.plant.fruit;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-
-import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.util.climate.ClimateModel;
-import net.dries007.tfc.util.tracker.WorldTracker;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -25,6 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.BerryBushBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -34,7 +31,9 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
+import net.dries007.tfc.util.climate.ClimateModel;
 import net.dries007.tfc.util.climate.ClimateRange;
+import net.dries007.tfc.util.tracker.WorldTracker;
 
 public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeOverlayBlock, IBushBlock
 {
@@ -196,6 +195,7 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
     /**
      * Performs growth and (optional) propagation of the bush.
      * Propagation should be naturally limited to not cause runaway generation.
+     *
      * @return The new state of the bush at {@code pos}. This will be set by the caller.
      */
     protected BlockState growAndPropagate(Level level, BlockPos pos, RandomSource random, BlockState state)

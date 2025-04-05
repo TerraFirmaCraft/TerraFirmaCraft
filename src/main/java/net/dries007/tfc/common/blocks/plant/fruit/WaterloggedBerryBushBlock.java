@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.blocks.plant.fruit;
 
-import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;

@@ -7,11 +7,6 @@
 package net.dries007.tfc.common.blockentities;
 
 import java.util.function.Consumer;
-
-import net.dries007.tfc.util.calendar.Calendars;
-import net.dries007.tfc.util.calendar.ICalendar;
-import net.dries007.tfc.util.calendar.ICalendarTickable;
-import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -24,7 +19,11 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
+import net.dries007.tfc.util.calendar.Calendars;
+import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.util.calendar.ICalendarTickable;
 import net.dries007.tfc.util.data.Fertilizer;
+import net.dries007.tfc.world.chunkdata.ChunkData;
 
 import static net.dries007.tfc.common.blockentities.FarmlandBlockEntity.NutrientType.*;
 
@@ -118,7 +117,7 @@ public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland, IC
             float accumulatedRainfallValue = ChunkData.get(level, pos).getAccumulatedRainfall();
             final int hydrationValue = FarmlandBlock.getHydration(level, pos, accumulatedRainfallValue);
             final MutableComponent hydration = Component.translatable("tfc.tooltip.farmland.hydration", hydrationValue);
-            final MutableComponent accumulatedRainfall = Component.translatable("tfc.tooltip.farmland.accumulated_rainfall", (int)accumulatedRainfallValue, FarmlandBlock.getRainfallBoost(accumulatedRainfallValue));
+            final MutableComponent accumulatedRainfall = Component.translatable("tfc.tooltip.farmland.accumulated_rainfall", (int) accumulatedRainfallValue, FarmlandBlock.getRainfallBoost(accumulatedRainfallValue));
             text.accept(hydration);
             text.accept(accumulatedRainfall);
         }
@@ -133,11 +132,11 @@ public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland, IC
     public float getNutrient(NutrientType type)
     {
         return switch (type)
-            {
-                case NITROGEN -> nitrogen;
-                case PHOSPHOROUS -> phosphorous;
-                case POTASSIUM -> potassium;
-            };
+        {
+            case NITROGEN -> nitrogen;
+            case PHOSPHOROUS -> phosphorous;
+            case POTASSIUM -> potassium;
+        };
     }
 
     @Override
@@ -170,12 +169,14 @@ public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland, IC
     }
 
     @Override
-    public float getAdditionalWater() {
+    public float getAdditionalWater()
+    {
         return additionalWater;
     }
 
     @Override
-    public void setAdditionalWater(float additionalWater) {
+    public void setAdditionalWater(float additionalWater)
+    {
         this.additionalWater = Mth.clamp(additionalWater, 0, MAX_ADDITIONAL_WATER);
         markForSync();
     }

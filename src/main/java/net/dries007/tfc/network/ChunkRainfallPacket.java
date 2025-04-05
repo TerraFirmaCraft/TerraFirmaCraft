@@ -7,14 +7,15 @@
 package net.dries007.tfc.network;
 
 import io.netty.buffer.ByteBuf;
-import net.dries007.tfc.client.ClientHelpers;
-import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.LevelChunk;
+
+import net.dries007.tfc.client.ClientHelpers;
+import net.dries007.tfc.world.chunkdata.ChunkData;
 
 /**
  * Sent from server -> client on chunk rain update, updates the client cache
