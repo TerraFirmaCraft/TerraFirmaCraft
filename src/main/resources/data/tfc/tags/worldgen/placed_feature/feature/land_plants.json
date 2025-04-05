@@ -114,6 +114,9 @@
     "tfc:plant/prickly_pear_purple_patch",
     "tfc:plant/azalea_patch",
     "tfc:plant/bird_nest_fern_patch",
+    "tfc:plant/buttercup_patch",
+    "tfc:plant/cornflower_patch",
+    "tfc:plant/dry_grass_patch",
     "tfc:plant/fan_palm_patch",
     "tfc:plant/mountain_hullwort_patch",
     "tfc:plant/palash_patch",
@@ -122,6 +125,7 @@
     "tfc:plant/ramirezella_patch",
     "tfc:plant/silken_pincushion_cactus_patch",
     "tfc:plant/silver_bromeliad_patch",
+    "tfc:plant/sunflower_patch",
     "tfc:plant/tank_bromeliad_patch",
     "#tfc:feature/berry_bushes",
     "#tfc:feature/fruit_trees"

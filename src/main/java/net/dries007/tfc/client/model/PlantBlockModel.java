@@ -41,9 +41,9 @@ import net.neoforged.neoforge.client.model.geometry.IUnbakedGeometry;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.RenderHelpers;
+import net.dries007.tfc.client.overworld.ClientSolarCalculatorBridge;
 import net.dries007.tfc.common.blocks.plant.PlantBlock;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.calendar.Calendar;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.registry.RegistryPlant;
@@ -121,7 +121,7 @@ public class PlantBlockModel implements IDynamicBakedModel, IUnbakedGeometry<Pla
             }
             start = (start + random.nextFloat(-randomScale, randomScale)) % 1;
             return getModelFromCalendar(start, start + plant.getBloomingEnd(), start + plant.getSeedingEnd(), start + plant.getDyingEnd(),
-                start + plant.getDormantEnd(), start + plant.getSproutingEnd(), plant.getStartHour(), plant.getEndHour(), randomScale > 0.25f);
+                start + plant.getDormantEnd(), start + plant.getSproutingEnd(), plant.getStartTime(), plant.getEndTime(), randomScale > 0.25f);
         }
     }
 
@@ -190,13 +190,17 @@ public class PlantBlockModel implements IDynamicBakedModel, IUnbakedGeometry<Pla
         }
     }
 
-    public BakedModel getModelByDayTime(float startTime, float endTime)
+    public BakedModel getModelByDayTime(int startTime, int endTime)
     {
-        final int dayTime = (int) Calendars.CLIENT.getCalendarFractionOfDay() * 24;
-        if ((endTime < dayTime && dayTime < startTime) || (startTime < endTime && (dayTime < startTime || endTime < dayTime)))
+        final Level level = ClientHelpers.getLevel();
+        if (level != null)
         {
-            assert buddingBakedModel != null;
-            return buddingBakedModel;
+            final long dayTime = ClientSolarCalculatorBridge.getDayTime(level);
+            if ((endTime < dayTime && dayTime < startTime) || (startTime < endTime && (dayTime < startTime || endTime < dayTime)))
+            {
+                assert buddingBakedModel != null;
+                return buddingBakedModel;
+            }
         }
         assert bloomingBakedModel != null;
         return bloomingBakedModel;

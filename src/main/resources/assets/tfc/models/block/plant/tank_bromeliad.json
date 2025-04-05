@@ -1,21 +1,22 @@
 {
 	"credit": "Made with Blockbench",
-	"render_type": "minecraft:translucent",
+	"ambientocclusion": false,
 	"elements": [
 		{
 			"name": "water",
-			"tintindex": 1,
 			"from": [5, 3, 5],
 			"to": [11, 3, 11],
+			"shade": false,
 			"rotation": {"angle": 0, "axis": "y", "origin": [7, 1, 7]},
 			"faces": {
-				"up": {"uv": [5, 5, 11, 11], "texture": "#water"}
+				"up": {"uv": [5, 5, 11, 11], "texture": "#water", "tintindex": 0}
 			}
 		},
 		{
 			"name": "leaf",
 			"from": [8, 0, 0],
 			"to": [8, 16, 16],
+			"shade": false,
 			"rotation": {"angle": 45, "axis": "z", "origin": [8, 0, 7]},
 			"faces": {
 				"east": {"uv": [0, 0, 16, 16], "texture": "#leaves"},
@@ -26,6 +27,7 @@
 			"name": "leaf",
 			"from": [8, 0, 0],
 			"to": [8, 16, 16],
+			"shade": false,
 			"rotation": {"angle": -45, "axis": "z", "origin": [8, 0, 7]},
 			"faces": {
 				"east": {"uv": [0, 0, 16, 16], "texture": "#leaves"},
@@ -36,6 +38,7 @@
 			"name": "leaf",
 			"from": [0, 0, 8],
 			"to": [16, 16, 8],
+			"shade": false,
 			"rotation": {"angle": -45, "axis": "x", "origin": [9, 0, 8]},
 			"faces": {
 				"north": {"uv": [0, 0, 16, 16], "texture": "#leaves"},
@@ -46,6 +49,7 @@
 			"name": "leaf",
 			"from": [0, 0, 8],
 			"to": [16, 16, 8],
+			"shade": false,
 			"rotation": {"angle": 45, "axis": "x", "origin": [9, 0, 8]},
 			"faces": {
 				"north": {"uv": [0, 0, 16, 16], "texture": "#leaves"},
@@ -56,6 +60,7 @@
 			"name": "vertical",
 			"from": [0, 0, 8],
 			"to": [16, 16, 8],
+			"shade": false,
 			"rotation": {"angle": 45, "axis": "y", "origin": [8, 0, 8]},
 			"faces": {
 				"north": {"uv": [0, 0, 16, 16], "texture": "#flower"},
@@ -66,6 +71,7 @@
 			"name": "vertical",
 			"from": [0, 0, 8],
 			"to": [16, 16, 8],
+			"shade": false,
 			"rotation": {"angle": -45, "axis": "y", "origin": [8, 0, 8]},
 			"faces": {
 				"north": {"uv": [0, 0, 16, 16], "texture": "#flower"},

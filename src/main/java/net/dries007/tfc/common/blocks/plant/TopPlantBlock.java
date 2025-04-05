@@ -37,12 +37,16 @@ public class TopPlantBlock extends GrowingPlantHeadBlock implements IForgeBlockE
     protected static final float AABB_OFFSET = 3.0F;
     private final Supplier<? extends Block> bodyBlock;
     private final ExtendedProperties properties;
+    private final int minHeight;
+    private final int maxHeight;
 
-    public TopPlantBlock(ExtendedProperties properties, Supplier<? extends Block> bodyBlock, Direction direction, VoxelShape shape)
+    public TopPlantBlock(ExtendedProperties properties, Supplier<? extends Block> bodyBlock, Direction direction, VoxelShape shape, int minHeight, int maxHeight)
     {
         super(properties.properties().dynamicShape().offsetType(OffsetType.XZ), direction, shape, false, 0);
         this.bodyBlock = bodyBlock;
         this.properties = properties;
+        this.minHeight = minHeight;
+        this.maxHeight = maxHeight;
     }
 
     @Override
@@ -70,7 +74,8 @@ public class TopPlantBlock extends GrowingPlantHeadBlock implements IForgeBlockE
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         BlockState state = super.getStateForPlacement(context);
-        return state == null ? null : state.setValue(AGE, Mth.nextInt(context.getLevel().getRandom(), 10, 18));
+        BlockState belowState = context.getLevel().getBlockState(context.getClickedPos().relative(growthDirection.getOpposite()));
+        return state == null ? null : belowState.getBlock() == this ? state.setValue(AGE, Math.min(belowState.getValue(AGE) + 1, 25)) : state.setValue(AGE, Mth.nextInt(context.getLevel().getRandom(), 26 - maxHeight, 26 - minHeight));
     }
 
     @Override

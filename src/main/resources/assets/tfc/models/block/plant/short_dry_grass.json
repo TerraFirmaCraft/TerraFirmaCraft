@@ -1,0 +1,6 @@
+{
+  "parent": "block/cross",
+  "textures": {
+    "cross": "tfc:block/plant/dry_grass/short_dry_grass"
+  }
+}

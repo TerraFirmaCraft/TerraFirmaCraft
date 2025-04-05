@@ -50,6 +50,7 @@ import net.minecraft.client.renderer.entity.SalmonRenderer;
 import net.minecraft.client.renderer.entity.TropicalFishRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -227,6 +228,7 @@ import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.TooltipBlock;
 import net.dries007.tfc.common.blocks.plant.KrummholzBlock;
+import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.blocks.soil.ConnectedGrassBlock;
@@ -775,6 +777,7 @@ public final class ClientEventHandler
         final BlockColor tallGrassColor = (state, level, pos, tintIndex) -> TFCColors.getTallGrassColor(pos, tintIndex);
         final BlockColor foliageColor = (state, level, pos, tintIndex) -> TFCColors.getFoliageColor(pos, tintIndex);
         final BlockColor grassBlockColor = (state, level, pos, tintIndex) -> state.getValue(ConnectedGrassBlock.SNOWY) || tintIndex != 1 ? -1 : grassColor.getColor(state, level, pos, tintIndex);
+        final BlockColor waterBlockColor = (state, level, pos, tintIndex) -> TFCColors.getWaterColor(pos);
 
         TFCBlocks.SOIL.get(SoilBlockType.GRASS).values().forEach(reg -> event.register(grassBlockColor, reg.get()));
         TFCBlocks.SOIL.get(SoilBlockType.CLAY_GRASS).values().forEach(reg -> event.register(grassBlockColor, reg.get()));
@@ -784,13 +787,15 @@ public final class ClientEventHandler
         TFCBlocks.PLANTS.forEach((plant, reg) -> {
             if (plant.isBlockTinted())
                 event.register(
-                    plant.isTallGrass() ?
-                        tallGrassColor :
-                        plant.isSeasonal() ?
-                            (state, level, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex, 145) :
-                            plant.isFoliage() ?
-                                foliageColor :
-                                grassColor, reg.get());
+                    plant.usesWaterTint() ?
+                        waterBlockColor :
+                        plant.isTallGrass() ?
+                            tallGrassColor :
+                            plant.isSeasonal() ?
+                                (state, level, pos, tintIndex) -> TFCColors.getSeasonalFoliageColor(pos, tintIndex, 145) :
+                                plant.isFoliage() ?
+                                    foliageColor :
+                                    grassColor, reg.get());
         });
         TFCBlocks.POTTED_PLANTS.forEach((plant, reg) -> {
             if (plant.isFlowerpotTinted())
@@ -821,7 +826,7 @@ public final class ClientEventHandler
 
         TFCBlocks.WILD_CROPS.forEach((crop, reg) -> event.register(grassColor, reg.get()));
 
-        event.register((state, level, pos, tintIndex) -> TFCColors.getWaterColor(pos), TFCBlocks.SALT_WATER.get(), TFCBlocks.SEA_ICE.get(), TFCBlocks.RIVER_WATER.get());
+        event.register(waterBlockColor, TFCBlocks.SALT_WATER.get(), TFCBlocks.SEA_ICE.get(), TFCBlocks.RIVER_WATER.get());
         event.register(blockColor(0x5FB5B8), TFCBlocks.SPRING_WATER.get());
     }
 

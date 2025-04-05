@@ -50,6 +50,46 @@ public abstract class PlantBlock extends TFCBushBlock
         };
     }
 
+    public static PlantBlock createShrub(RegistryPlant plant, ExtendedProperties properties)
+    {
+        return new PlantBlock(properties)
+        {
+            static final VoxelShape SHAPE = box(0, 0, 0, 16, 16, 16);
+
+            @Override
+            public RegistryPlant getPlant()
+            {
+                return plant;
+            }
+
+            @Override
+            public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+            {
+                return SHAPE;
+            }
+        };
+    }
+
+    public static PlantBlock createShortShrub(RegistryPlant plant, ExtendedProperties properties)
+    {
+        return new PlantBlock(properties)
+        {
+            static final VoxelShape SHAPE = box(0, 0, 0, 16, 16, 16);
+
+            @Override
+            public RegistryPlant getPlant()
+            {
+                return plant;
+            }
+
+            @Override
+            public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+            {
+                return SHAPE;
+            }
+        };
+    }
+
     public static PlantBlock createDry(RegistryPlant plant, ExtendedProperties properties)
     {
         return new PlantBlock(properties)

@@ -623,6 +623,9 @@ PLANTS: dict[str, Plant] = {
 
     'azalea': Plant(False, -4, 15.8, 420, 500, 'tall_plant'),
     'bird_nest_fern': Plant(False, 17.6, 40, 260, 500, 'perched_epiphyte'),
+    'buttercup': Plant(False, -9.4, 15.8, 200, 400, 'standard'),
+    'cornflower': Plant(False, -15.7, 2.5, 135, 310, 'standard'),
+    'dry_grass': Plant(False, -13, 40, 35, 95, 'dry'),
     'fan_palm': Plant(False, 23., 40, 270, 420, 'tall_plant'),
     'mountain_hullwort': Plant(False, 15.8, 40, 270, 500, 'tall_plant'),
     'palash': Plant(False, 15.8, 24.8, 190, 500, 'tall_plant'),
@@ -631,6 +634,7 @@ PLANTS: dict[str, Plant] = {
     'ramirezella': Plant(False, 17.6, 40, 210, 430, 'epiphyte'),
     'silken_pincushion_cactus': Plant(False, 17.6, 40, 0, 170, 'standard'),
     'silver_bromeliad': Plant(False, 21.2, 28.4, 25, 110, 'perched_epiphyte'),
+    'sunflower': Plant(False, 8.6, 17.6, 100, 205, 'standard'),
     'tank_bromeliad': Plant(False, 17.6, 26.6, 320, 500, 'perched_epiphyte'),
 }
 
@@ -744,6 +748,7 @@ SINGLE_BLOCK_STAGE_PLANTS: dict[str, list[int, int, int, int, int, int]] = {
     'blue_orchid': [0, 1, 2, 2, 2, 2],
     'butterfly_milkweed': [0, 1, 2, 3, 4, 5],
     'calendula': [0, 1, 2, 3, 4, 5],
+    'cornflower': [0, 1, 1, 1, 1, 2],
     'dandelion': [0, 1, 2, 2, 3, 3],
     'desert_flame': [0, 0, 1, 1, 1, 0],
     'edelweiss': [0, 1, 1, 1, 1, 2],

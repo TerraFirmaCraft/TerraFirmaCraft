@@ -50,7 +50,7 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
 
     protected TFCKelpTopBlock(ExtendedProperties properties, Supplier<? extends Block> bodyBlock, Direction direction, VoxelShape shape)
     {
-        super(properties, bodyBlock, direction, shape);
+        super(properties, bodyBlock, direction, shape, 18, 26);
         this.bodyBlock = bodyBlock;
     }
 

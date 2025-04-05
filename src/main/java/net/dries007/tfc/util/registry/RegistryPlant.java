@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.util.registry;
 
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,12 +25,12 @@ public interface RegistryPlant
     /**
      * What time of day this plant starts blooming. Set equal to end time to always bloom.
      */
-    int getStartHour();
+    int getStartTime();
 
     /**
      * What time of day this plant stops blooming. Set equal to start time to always bloom.
      */
-    int getEndHour();
+    int getEndTime();
 
     /**
      * The year fraction after the hottest/wettest day of the year to start displaying blooming model

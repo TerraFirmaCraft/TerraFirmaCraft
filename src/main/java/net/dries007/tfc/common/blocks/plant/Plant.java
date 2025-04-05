@@ -65,13 +65,13 @@ public enum Plant implements RegistryPlant
     STAR_GRASS(BlockType.GRASS_WATER, 0.8F),
     TIMOTHY_GRASS(BlockType.SHORT_GRASS, 0.9F),
     RADDIA_GRASS(BlockType.SHORT_GRASS, 0.9F),
-    RED_OAT_GRASS(BlockType.SHORT_GRASS, 0.9F),
+    RED_OAT_GRASS(BlockType.SHORT_GRASS, 0.9F, true, -0.1f, 0.33f, 0.45f, 0.55f, 0.75f, 0.85f),
 
     // Other Plants
     ALLIUM(BlockType.STANDARD, 1.0F, false, -0.15F, 0.2F, 0.3F, 0.4F, 0.64F, 0.92F),
     ANTHURIUM(BlockType.STANDARD, 1.0F),
     ARROWHEAD(BlockType.TALL_WATER_FRESH, 0.6F),
-    AZALEA(BlockType.TALL_SHRUB, 0.4f), // TODO: Blooming
+    AZALEA(BlockType.TALL_SHRUB, 0.4f, false, -0.25f, 0.2f, 0.35f, 0.5f, 0.75f, 0.9f),
     BADDERLOCKS(BlockType.TALL_WATER, 0.8F),
     BARREL_CACTUS(BlockType.CACTUS, 0F, false, -0.25F, 0.24F, 0.36F, 0.5F, 0.73F, 0.9F),
     BEAR_GRASS(BlockType.TALL_GRASS, 0.6F, false, 0.05F, 0.25F, 0.35F, 0.4F, 0.7F, 0.8F),
@@ -80,6 +80,7 @@ public enum Plant implements RegistryPlant
     BLUE_GINGER(BlockType.STANDARD, 1.0F),
     BLUE_ORCHID(BlockType.STANDARD, 1.0F),
     BUR_REED(BlockType.TALL_WATER_FRESH, 0.6F, false, 0F, 0.19F, 0.27F, 0.5F, 0.72F, 0.88F),
+    BUTTERCUP(BlockType.FLOWERBED, 1.0F, false, -0.2f, 0.35f, 0.45f, 0.55f, 0.65f, 0.9f),
     BUTTERFLY_MILKWEED(BlockType.STANDARD, 1.0F, false, -0.11F, 0.378F, 0.49F, 0.62F, 0.78F, 0.94F),
     BLACK_ORCHID(BlockType.STANDARD, 1.0F),
     CALENDULA(BlockType.STANDARD, 1F, false, -0.074F, 0.31F, 0.43F, 0.56F, 0.7F, 0.92F),
@@ -87,9 +88,11 @@ public enum Plant implements RegistryPlant
     COBBLESTONE_LICHEN(BlockType.CREEPING_STONE, 1f),
     COONTAIL(BlockType.GRASS_WATER_FRESH, 0.8F),
     CORDGRASS(BlockType.TALL_WATER, 0.6F, false, 0F, 0.27F, 0.39F, 0.5F, 0.666F, 0.92F),
+    CORNFLOWER(BlockType.STANDARD, 1F, false, -0.1F, 0.28F, 0.46F, 0.57F, 0.71F, 0.93F),
     DANDELION(BlockType.STANDARD, 1F, false, -0.15F, 0.28F, 0.46F, 0.57F, 0.71F, 0.93F),
     DEAD_BUSH(BlockType.DRY, 0.7F),
     DESERT_FLAME(BlockType.STANDARD, 1F, true, -0.5F, 0.33F, 0.420F, 0.5F, 0.833F, 0.92F),
+    DRY_GRASS(BlockType.DRY, 0.9F),
     DUCKWEED(BlockType.FLOATING_FRESH, 0.7F),
     EDELWEISS(BlockType.STANDARD, 1.0F, false, -0.09F, 0.2F, 0.35F, 0.5F, 0.75F, 0.9F),
     EEL_GRASS(BlockType.GRASS_WATER_FRESH, 0.8F),
@@ -103,11 +106,11 @@ public enum Plant implements RegistryPlant
     GUZMANIA(BlockType.EPIPHYTE, 1F),
     HELICONIA(BlockType.STANDARD, 1F),
     HEATHER(BlockType.STANDARD, 0.6F, false, -0.065F, 0.42F, 0.53F, 0.59F, 0.74F, 0.9F),
-    HIBISCUS(BlockType.TALL_GRASS, 0.6F, false, -0.12F, 0.41F, 0.52F, 0.61F, 0.74F, 0.89F),
+    HIBISCUS(BlockType.TALL_SHRUB, 0.4F, false, -0.12F, 0.41F, 0.52F, 0.61F, 0.74F, 0.89F),
     HOUSTONIA(BlockType.STANDARD, 1F, false, -0.25F, 0.29F, 0.41F, 0.62F, 0.76F, 0.92F),
     KANGAROO_PAW(BlockType.STANDARD, 1F, true, -0.25F, 0.32F, 0.44F, 0.55F, 0.68F, 0.88F),
     KING_FERN(BlockType.TALL_GRASS, 0.4F),
-    KINNIKINNICK(BlockType.SHRUB, 0.9F, false, -0.11F, 0.065F, 0.14F, 0.39F, 0.85F, 0.95F),
+    KINNIKINNICK(BlockType.SHORT_SHRUB, 0.9F, false, -0.11F, 0.065F, 0.14F, 0.39F, 0.85F, 0.95F),
     LABRADOR_TEA(BlockType.STANDARD, 1F, false, -0.15F, 0.2F, 0.3F, 0.4F, 0.74F, 0.9F),
     LADY_FERN(BlockType.STANDARD, 0.6F),
     LAMINARIA(BlockType.WATER, 0.9F),
@@ -115,20 +118,20 @@ public enum Plant implements RegistryPlant
     ARTISTS_CONK(BlockType.EPIPHYTE, 1F),
     LILY_OF_THE_VALLEY(BlockType.STANDARD, 1F, false, -0.167F, 0.18F, 0.29F, 0.5F, 0.72F, 0.9F),
     LILAC(BlockType.TALL_GRASS, 0.6F, false, -0.21F, 0.18F, 0.29F, 0.45F, 0.73F, 0.9F),
-    LOTUS(BlockType.FLOATING_FRESH, 0.7F, true, -0.12F, 0.25F, 0.35F, 0.5F, 0.75F, 0.92F, 1, 13),
+    LOTUS(BlockType.FLOATING_FRESH, 0.7F, true, -0.12F, 0.25F, 0.35F, 0.5F, 0.75F, 0.92F, 1000, 13000),
     MAIDEN_PINK(BlockType.FLOWERBED, 1f, false, -0.333F, 0.5F, 0.6F, 0.7F, 0.8F, 0.9F),
     MARIGOLD(BlockType.TALL_WATER_FRESH, 0.6F, false, 0.14F, 0.18F, 0.26F, 0.35F, 0.58F, 0.86F),
     MEADS_MILKWEED(BlockType.STANDARD, 1F, false, -0.17F, 0.18F, 0.29F, 0.5F, 0.72F, 0.93F),
     MILFOIL(BlockType.WATER_FRESH, 0.8F),
-    MORNING_GLORY(BlockType.CREEPING, 0.8F, false, -0.083F, 0.333F, 0.417F, 0.5F, 0.75F, 0.917F, 21, 5),
-    MOUNTAIN_HULLWORT(BlockType.TALL_SHRUB, 0.4f), // TODO: Blooms
+    MORNING_GLORY(BlockType.CREEPING, 0.8F, false, -0.083F, 0.333F, 0.417F, 0.5F, 0.75F, 0.917F, 21000, 5000),
+    MOUNTAIN_HULLWORT(BlockType.TALL_SHRUB, 0.4f),
     MOSS(BlockType.CREEPING, 1F),
     MOSS_CAMPION(BlockType.DRY, 0.9F, false, 0.05F, 0.15F, 0.25F, 0.45F, 0.85F, 0.92F),
     NASTURTIUM(BlockType.STANDARD, 1F, true),
     OSTRICH_FERN(BlockType.TALL_GRASS, 0.6F),
     OXEYE_DAISY(BlockType.STANDARD, 0.9F, false, 0.09F, 0.31F, 0.42F, 0.52F, 0.73F, 0.92F),
-    PALASH(BlockType.TALL_SHRUB, 0.4f, true), // TODO: Blooms
-    PENWORTEL(BlockType.SHRUB, 0.4f), // TODO: Blooms
+    PALASH(BlockType.TALL_SHRUB, 0.4f, true, 0.6f, 0.2f, 0.35f, 0.5f, 0.65f, 0.75f),
+    PENWORTEL(BlockType.SHRUB, 0.4f, true, 0.3f, 0.25f, 0.35f, 0.45f, 0.6f, 0.8f),
     PHILODENDRON(BlockType.CREEPING, 0.7F),
     PHRAGMITE(BlockType.TALL_WATER_FRESH, 0.6F, false, 0.06F, 0.23F, 0.34F, 0.43F, 0.66F, 0.88F),
     PICKERELWEED(BlockType.TALL_WATER_FRESH, 0.6F, false, -0.9F, 0.32F, 0.43F, 0.52F, 0.77F, 0.91F),
@@ -138,13 +141,13 @@ public enum Plant implements RegistryPlant
     PRICKLY_PEAR_PURPLE(BlockType.PASSABLE_CACTUS, 0.3F, true, -0.13F, 0.16F, 0.32F, 0.5F, 0.75F, 0.92F),
     PRIMROSE(BlockType.STANDARD, 1F, false, -0.4F, 0.34F, 0.41F, 0.8F, 0.89F, 0.95F),
     PULSATILLA(BlockType.STANDARD, 1F, false, -0.31F, 0.168F, 0.25F, 0.73F, 0.84F, 0.93F),
-    QANTU(BlockType.SHRUB, 0.4f), // TODO: Blooms
+    QANTU(BlockType.SHRUB, 0.4f, false, -0.33f, 0.25f, 0.35f, 0.5f, 0.65f, 0.9f),
     RAMIREZELLA(BlockType.EPIPHYTE, 1.0f),
     RAMUNDA(BlockType.STANDARD, 1.0F, false, -0.12F, 0.22f, 0.3f, 0.45f, 0.7f, 0.9f),
     RED_ALGAE(BlockType.FLOATING, 0.7F),
     REINDEER_LICHEN(BlockType.CREEPING, 1F),
     RED_SEALING_WAX_PALM(BlockType.TALL_GRASS, 0.4F),
-    SACRED_DATURA(BlockType.STANDARD, 1F, false, -0.2f, 0.4f, 0.5f, 0.6f, 0.8f, 0.95f, 12, 0),
+    SACRED_DATURA(BlockType.STANDARD, 1F, false, -0.2f, 0.4f, 0.5f, 0.6f, 0.8f, 0.95f, 12000, 0),
     SAGEBRUSH(BlockType.DRY, 0.5F, false, -0.09F, 0.48F, 0.54F, 0.6F, 0.72F, 0.91F),
     SAGO(BlockType.WATER_FRESH, 0.8F),
     SAGUARO_FRUIT(BlockType.CACTUS_FLOWER, 0.7F, true, -0.2F, 0.22F, 0.3F, 0.5F, 0.73F, 0.9F),
@@ -153,7 +156,7 @@ public enum Plant implements RegistryPlant
     SEA_LAVENDER(BlockType.TALL_WATER, 0.6F, false, 0.08F, 0.18F, 0.31F, 0.4F, 0.7F, 0.91F),
     SEA_PALM(BlockType.DRY, 0.6f),
     SHAWIASH(BlockType.SHRUB, 0.9F, false, -0.09F, 0.07F, 0.14F, 0.4F, 0.85F, 0.95F),
-    SILKEN_PINCUSHION_CACTUS(BlockType.CACTUSBED, 0f), // TODO: Custom type, Blooms
+    SILKEN_PINCUSHION_CACTUS(BlockType.CACTUSBED, 0f, true, -0.2f, 0.25f, 0.4f, 0.6f, 0.75f, 0.9f),
     SILVER_BROMELIAD(BlockType.PERCHED_EPIPHYTE, 0.9f),
     SILVER_SPURFLOWER(BlockType.STANDARD, 1F, false, 0.02F, 0.17F, 0.26F, 0.39F, 0.65F, 0.9F),
     SNAPDRAGON_PINK(BlockType.STANDARD, 1F, false, -0.08F, 0.28F, 0.4F, 0.5F, 0.72F, 0.89F),
@@ -161,10 +164,11 @@ public enum Plant implements RegistryPlant
     SNAPDRAGON_WHITE(BlockType.STANDARD, 1F, false, -0.04F, 0.28F, 0.4F, 0.5F, 0.72F, 0.89F),
     SNAPDRAGON_YELLOW(BlockType.STANDARD, 1F, false, -0.06F, 0.28F, 0.4F, 0.5F, 0.72F, 0.89F),
     STRELITZIA(BlockType.STANDARD, 1F, true, -0.333F, 0.417F, 0.5F, 0.61f, 0.75f, 0.9f),
+    SUNFLOWER(BlockType.TALL_GRASS, 0.6F, false, 0.12F, 0.12F, 0.21F, 0.34F, 0.63F, 0.88F),
     SWITCHGRASS(BlockType.TALL_GRASS, 0.8F, false, -0.14F, 0.38F, 0.49F, 0.58F, 0.77F, 0.93F),
     SWORD_FERN(BlockType.STANDARD, 0.6F),
     TALL_FESCUE_GRASS(BlockType.TALL_GRASS, 0.5F),
-    TANK_BROMELIAD(BlockType.PERCHED_EPIPHYTE, 0.9f), // TODO: Blooms
+    TANK_BROMELIAD(BlockType.PERCHED_EPIPHYTE, 0.9f),
     TOQUILLA_PALM(BlockType.TALL_GRASS, 0.6F),
     TRILLIUM(BlockType.STANDARD, 1F, false, -0.27F, 0.24F, 0.32F, 0.61F, 0.83F, 0.92F),
     TROPICAL_MILKWEED(BlockType.STANDARD, 1F),
@@ -198,7 +202,7 @@ public enum Plant implements RegistryPlant
     ARUNDO_PLANT(BlockType.TWISTING, 0.3F),
     ARUNDO(BlockType.TWISTING_TOP, 0.3F),
     DRY_PHRAGMITE_PLANT(BlockType.TWISTING, 0.3F),
-    DRY_PHRAGMITE(BlockType.TWISTING_TOP, 0.3F),
+    DRY_PHRAGMITE(BlockType.TWISTING_TOP_SHORT, 0.3F),
     WINGED_KELP_PLANT(BlockType.KELP, 0.7F),
     WINGED_KELP(BlockType.KELP_TOP, 1.0F),
     LEAFY_KELP_PLANT(BlockType.KELP, 0.7F),
@@ -214,10 +218,11 @@ public enum Plant implements RegistryPlant
     ;
 
     private static final EnumSet<Plant> SPECIAL_POTTED_PLANTS = EnumSet.of(BARREL_CACTUS, FOXGLOVE, MORNING_GLORY, MOSS, OSTRICH_FERN, REINDEER_LICHEN, ROSE, SAPPHIRE_TOWER, TOQUILLA_PALM, TREE_FERN, PHILODENDRON, SHAWIASH, BEAR_GRASS, KINNIKINNICK);
-    private static final EnumSet<Plant> BLOCK_TINTED_PLANTS = EnumSet.of(PAMPAS_GRASS, BLUEGRASS, BROMEGRASS, FOUNTAIN_GRASS, ORCHARD_GRASS, RYEGRASS, SCUTCH_GRASS, TIMOTHY_GRASS, RADDIA_GRASS, ARROWHEAD, BUR_REED, CATTAIL, DUCKWEED, FIELD_HORSETAIL, GUTWEED, KANGAROO_PAW, KING_FERN, LADY_FERN, LICORICE_FERN, LOTUS, MORNING_GLORY, PHILODENDRON, MOSS, OSTRICH_FERN, PHRAGMITE, PICKERELWEED, PISTIA, SAGO, SEA_LAVENDER, SWITCHGRASS, SWORD_FERN, TALL_FESCUE_GRASS, TOQUILLA_PALM, WHITE_WATER_LILY, YELLOW_WATER_LILY, PURPLE_WATER_LILY, WATER_TARO, HANGING_VINES_PLANT, HANGING_VINES, SPANISH_MOSS_PLANT, SPANISH_MOSS, TREE_FERN_PLANT, TREE_FERN, IVY, JUNGLE_VINES, MAIDEN_PINK, CYCAD, RED_OAT_GRASS, ARUNDO_PLANT, ARUNDO);
+    private static final EnumSet<Plant> BLOCK_TINTED_PLANTS = EnumSet.of(PAMPAS_GRASS, BLUEGRASS, BROMEGRASS, FOUNTAIN_GRASS, ORCHARD_GRASS, RYEGRASS, SCUTCH_GRASS, TIMOTHY_GRASS, RADDIA_GRASS, ARROWHEAD, BUR_REED, CATTAIL, DUCKWEED, FIELD_HORSETAIL, GUTWEED, KANGAROO_PAW, KING_FERN, LADY_FERN, LICORICE_FERN, LOTUS, MORNING_GLORY, PHILODENDRON, MOSS, OSTRICH_FERN, PHRAGMITE, PICKERELWEED, PISTIA, SAGO, SEA_LAVENDER, SWITCHGRASS, SWORD_FERN, TALL_FESCUE_GRASS, TOQUILLA_PALM, WHITE_WATER_LILY, YELLOW_WATER_LILY, PURPLE_WATER_LILY, WATER_TARO, HANGING_VINES_PLANT, HANGING_VINES, SPANISH_MOSS_PLANT, SPANISH_MOSS, TREE_FERN_PLANT, TREE_FERN, IVY, JUNGLE_VINES, MAIDEN_PINK, CYCAD, RED_OAT_GRASS, ARUNDO_PLANT, ARUNDO, TANK_BROMELIAD);
     private static final EnumSet<Plant> ITEM_TINTED_PLANTS = EnumSet.of(BLUEGRASS, BROMEGRASS, FOUNTAIN_GRASS, ORCHARD_GRASS, RYEGRASS, SCUTCH_GRASS, TIMOTHY_GRASS, RADDIA_GRASS, KING_FERN, MOSS, SAGO, SWITCHGRASS, TALL_FESCUE_GRASS, IVY, JUNGLE_VINES, HANGING_VINES, GUTWEED, RED_OAT_GRASS);
     private static final EnumSet<Plant> FLOWERPOT_TINTED_PLANTS = EnumSet.of(PHILODENDRON, MOSS, TREE_FERN);
-    private static final EnumSet<Plant> FOLIAGE_PLANTS = EnumSet.of(SWORD_FERN, OSTRICH_FERN, KING_FERN, TOQUILLA_PALM, LADY_FERN, LICORICE_FERN, BIRD_NEST_FERN);
+    private static final EnumSet<Plant> FOLIAGE_COLOR_PLANTS = EnumSet.of(SWORD_FERN, OSTRICH_FERN, KING_FERN, TOQUILLA_PALM, LADY_FERN, LICORICE_FERN, BIRD_NEST_FERN);
+    private static final EnumSet<Plant> WATER_COLOR_PLANTS = EnumSet.of(TANK_BROMELIAD);
 
     private final @Nullable IntegerProperty ageProperty;
     private final float speedFactor;
@@ -267,7 +272,6 @@ public enum Plant implements RegistryPlant
 
     private int getMaxAgeForType(BlockType type)
     {
-        // TODO: TWISTING AND WEEPING NEEDS TO BE HANDLED DIFFERENTLY
         if (type == BlockType.GRASS_WATER || type == BlockType.GRASS_WATER_FRESH || type == BlockType.BEACH_GRASS || type == BlockType.SHORT_GRASS
             || type == BlockType.TALL_GRASS || type == BlockType.FLOWERBED|| type == BlockType.CACTUSBED || type == BlockType.FLOATING_FRESH || type == BlockType.FLOATING
             || type == BlockType.KELP_TREE || type == BlockType.KELP_TREE_FLOWER || type == BlockType.TWISTING_TOP || type == BlockType.TWISTING_SOLID_TOP
@@ -298,12 +302,12 @@ public enum Plant implements RegistryPlant
         return isWetSeasonBlooming;
     }
 
-    public int getStartHour()
+    public int getStartTime()
     {
         return startHour;
     }
 
-    public int getEndHour()
+    public int getEndTime()
     {
         return endHour;
     }
@@ -355,7 +359,7 @@ public enum Plant implements RegistryPlant
 
     public boolean isFoliage()
     {
-        return BlockType.FOLIAGE_TYPES.contains(type) || FOLIAGE_PLANTS.contains(this);
+        return BlockType.FOLIAGE_TYPES.contains(type) || FOLIAGE_COLOR_PLANTS.contains(this);
     }
 
     public boolean isSeasonal()
@@ -365,7 +369,12 @@ public enum Plant implements RegistryPlant
 
     public boolean isTallGrass()
     {
-        return (type == BlockType.TALL_GRASS || type == BlockType.SHORT_GRASS) && !FOLIAGE_PLANTS.contains(this);
+        return (type == BlockType.TALL_GRASS || type == BlockType.SHORT_GRASS) && !FOLIAGE_COLOR_PLANTS.contains(this);
+    }
+
+    public boolean usesWaterTint()
+    {
+        return WATER_COLOR_PLANTS.contains(this);
     }
 
     public boolean isBlockTinted()
@@ -442,8 +451,9 @@ public enum Plant implements RegistryPlant
     enum BlockType
     {
         STANDARD((plant, type) -> PlantBlock.create(plant, fire(nonSolid(plant)).offsetType(BlockBehaviour.OffsetType.XZ))),
-        SHRUB((plant, type) -> PlantBlock.create(plant, fire(nonSolid(plant)))),
-        FLOWERBED((plant, type) -> PlantBlock.createFlowerbed(plant, fire(nonSolid(plant).offsetType(BlockBehaviour.OffsetType.XZ)))),
+        SHORT_SHRUB((plant, type) -> PlantBlock.createShortShrub(plant, fire(nonSolid(plant)))),
+        SHRUB((plant, type) -> PlantBlock.createShrub(plant, fire(nonSolid(plant)))),
+        FLOWERBED((plant, type) -> PlantBlock.createFlowerbed(plant, fire(nonSolid(plant)))),
         CACTUSBED((plant, type) -> TFCCactusBedBlock.createBarrel(plant, fire(solid().strength(0.25F).sound(SoundType.WOOL).offsetType(BlockBehaviour.OffsetType.XZ).dynamicShape()))),
         CACTUS_FLOWER((plant, type) -> PlantBlock.createCactusFlower(plant, fire(nonSolid(plant)).sound(SoundType.CROP))),
         CACTUS((plant, type) -> TFCCactusBlock.create(plant, fire(solid().strength(0.25F).sound(SoundType.WOOL)).pathType(PathType.DAMAGE_OTHER))),
@@ -456,14 +466,15 @@ public enum Plant implements RegistryPlant
         SHORT_GRASS((plant, type) -> ShortGrassBlock.create(plant, fire(nonSolid(plant)).offsetType(BlockBehaviour.OffsetType.XZ))),
         BEACH_GRASS((plant, type) -> ShortGrassBlock.createBeachGrass(plant, fire(nonSolid(plant)).offsetType(BlockBehaviour.OffsetType.XZ))),
         TALL_GRASS((plant, type) -> TFCTallGrassBlock.create(plant, fire(nonSolid(plant)).offsetType(BlockBehaviour.OffsetType.XZ))),
-        TALL_SHRUB((plant, type) -> TFCTallGrassBlock.create(plant, fire(nonSolid(plant)))),
+        TALL_SHRUB((plant, type) -> TFCTallShrubBlock.create(plant, fire(nonSolid(plant)))),
         VINE((plant, type) -> new TFCVineBlock(fire(nonSolid(plant)))),
         WEEPING((plant, type) -> new BodyPlantBlock(fire(nonSolidTallPlant(plant)), plant.transform(), BodyPlantBlock.BODY_SHAPE, Direction.DOWN)),
-        WEEPING_TOP((plant, type) -> new TopPlantBlock(fire(nonSolidTallPlant(plant)), plant.transform(), Direction.DOWN, BodyPlantBlock.WEEPING_SHAPE)),
+        WEEPING_TOP((plant, type) -> new TopPlantBlock(fire(nonSolidTallPlant(plant)), plant.transform(), Direction.DOWN, BodyPlantBlock.WEEPING_SHAPE, 20, 26)),
         TWISTING((plant, type) -> new BodyPlantBlock(fire(nonSolidTallPlant(plant)), plant.transform(), BodyPlantBlock.BODY_SHAPE, Direction.UP)),
-        TWISTING_TOP((plant, type) -> new TopPlantBlock(fire(nonSolidTallPlant(plant)), plant.transform(), Direction.UP, BodyPlantBlock.TWISTING_SHAPE)),
+        TWISTING_TOP((plant, type) -> new TopPlantBlock(fire(nonSolidTallPlant(plant)), plant.transform(), Direction.UP, BodyPlantBlock.TWISTING_SHAPE, 4, 8)),
+        TWISTING_TOP_SHORT((plant, type) -> new TopPlantBlock(fire(nonSolidTallPlant(plant)), plant.transform(), Direction.UP, BodyPlantBlock.TWISTING_SHAPE, 2, 4)),
         TWISTING_SOLID((plant, type) -> new BodyPlantBlock(fire(solidTallPlant()), plant.transform(), BodyPlantBlock.BODY_SHAPE, Direction.UP)),
-        TWISTING_SOLID_TOP((plant, type) -> new TopPlantBlock(fire(solidTallPlant()), plant.transform(), Direction.UP, BodyPlantBlock.TWISTING_SHAPE)),
+        TWISTING_SOLID_TOP((plant, type) -> new TopPlantBlock(fire(solidTallPlant()), plant.transform(), Direction.UP, BodyPlantBlock.TWISTING_SHAPE, 2, 5)),
         BRANCHING_CACTUS((plant, type) -> BranchingCactusBlock.createBody(fire(solid()).noLootTable().strength(0.25f).sound(SoundType.WOOL).pathType(PathType.DAMAGE_OTHER))),
         BRANCHING_CACTUS_TOP((plant, type) -> GrowingBranchingCactusBlock.createGrowing(fire(solid()).noLootTable().randomTicks().strength(0.25f).sound(SoundType.WOOL).pathType(PathType.DAMAGE_OTHER), plant.transform(), plant.secondTransform())),
         // Water
