@@ -8,16 +8,6 @@ package net.dries007.tfc.util.climate;
 
 import com.mojang.datafixers.util.Pair;
 import io.netty.buffer.ByteBuf;
-import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.calendar.Calendars;
-import net.dries007.tfc.util.calendar.ICalendar;
-import net.dries007.tfc.util.calendar.Month;
-import net.dries007.tfc.util.tracker.WeatherHelpers;
-import net.dries007.tfc.world.ChunkGeneratorExtension;
-import net.dries007.tfc.world.TFCChunkGenerator;
-import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -34,13 +24,25 @@ import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import net.minecraft.world.phys.Vec2;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.calendar.Calendars;
+import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.util.calendar.Month;
+import net.dries007.tfc.util.tracker.WeatherHelpers;
+import net.dries007.tfc.world.ChunkGeneratorExtension;
+import net.dries007.tfc.world.TFCChunkGenerator;
+import net.dries007.tfc.world.chunkdata.ChunkData;
+
 /**
  * The climate model for TerraFirmaCraft's overworld. Provides a number of mechanics including:
  * - seasonal, monthly, and daily temperature variance.
  * - altitude based temperature, including both above and below ground effects.
  * - time varying precipitation types.
  */
-public class OverworldClimateModel implements ClimateModel {
+public class OverworldClimateModel implements ClimateModel
+{
     public static final float LAVA_LEVEL_TEMPERATURE = 15f;
 
     public static final float SEA_LEVEL = TFCChunkGenerator.SEA_LEVEL_Y;
@@ -75,11 +77,14 @@ public class OverworldClimateModel implements ClimateModel {
      */
     @Nullable
     @Deprecated
-    public static OverworldClimateModel getIfPresent(Object maybeLevel) {
+    public static OverworldClimateModel getIfPresent(Object maybeLevel)
+    {
         final Level unsafeLevel = Helpers.getUnsafeLevel(maybeLevel);
-        if (unsafeLevel != null) {
+        if (unsafeLevel != null)
+        {
             final ClimateModel model = Climate.get(unsafeLevel);
-            if (model instanceof OverworldClimateModel overworldClimateModel) {
+            if (model instanceof OverworldClimateModel overworldClimateModel)
+            {
                 return overworldClimateModel;
             }
         }
@@ -89,35 +94,41 @@ public class OverworldClimateModel implements ClimateModel {
     protected final long climateSeed;
     protected final float temperatureScale;
 
-    public OverworldClimateModel(ServerLevel level, ChunkGeneratorExtension extension) {
+    public OverworldClimateModel(ServerLevel level, ChunkGeneratorExtension extension)
+    {
         this(
             LinearCongruentialGenerator.next(level.getSeed(), 719283741234L),
             extension.settings().temperatureScale()
         );
     }
 
-    protected OverworldClimateModel(long climateSeed, float temperatureScale) {
+    protected OverworldClimateModel(long climateSeed, float temperatureScale)
+    {
         this.climateSeed = climateSeed;
         this.temperatureScale = temperatureScale;
     }
 
     @Override
-    public ClimateModelType<?> type() {
+    public ClimateModelType<?> type()
+    {
         return ClimateModels.OVERWORLD.get();
     }
 
     @Override
-    public float hemisphereScale() {
+    public float hemisphereScale()
+    {
         return temperatureScale;
     }
 
     @Override
-    public float getAverageTemperature(LevelReader level, BlockPos pos) {
+    public float getAverageTemperature(LevelReader level, BlockPos pos)
+    {
         return ChunkData.get(level, pos).getAverageTemp(pos);
     }
 
     @Override
-    public float getTemperature(LevelReader level, BlockPos pos, long calendarTicks, int daysInMonth) {
+    public float getTemperature(LevelReader level, BlockPos pos, long calendarTicks, int daysInMonth)
+    {
         final ChunkData data = ChunkData.get(level, pos);
 
         // Month temperature
@@ -132,12 +143,14 @@ public class OverworldClimateModel implements ClimateModel {
     }
 
     @Override
-    public float getAverageRainfall(LevelReader level, BlockPos pos) {
+    public float getAverageRainfall(LevelReader level, BlockPos pos)
+    {
         return ChunkData.get(level, pos).getRainfall(pos);
     }
 
     @Override
-    public float getRainfallVariance(LevelReader level, BlockPos pos) {
+    public float getRainfallVariance(LevelReader level, BlockPos pos)
+    {
         return ChunkData.get(level, pos).getRainVariance(pos);
     }
 
@@ -153,18 +166,21 @@ public class OverworldClimateModel implements ClimateModel {
     }
 
     @Override
-    public float getBaseGroundwater(LevelReader level, BlockPos pos) {
+    public float getBaseGroundwater(LevelReader level, BlockPos pos)
+    {
         return ChunkData.get(level, pos).getBaseGroundwater(pos);
     }
 
     @Override
-    public float getAverageGroundwater(LevelReader level, BlockPos pos) {
+    public float getAverageGroundwater(LevelReader level, BlockPos pos)
+    {
         final ChunkData data = ChunkData.get(level, pos);
         return Math.clamp(data.getBaseGroundwater(pos) + data.getRainfall(pos), MIN_RAINFALL, MAX_RAINFALL);
     }
 
     @Override
-    public float getGroundwater(LevelReader level, BlockPos pos, long calendarTicks, int daysInMonth) {
+    public float getGroundwater(LevelReader level, BlockPos pos, long calendarTicks, int daysInMonth)
+    {
         final float baseGroundwater = getBaseGroundwater(level, pos);
         final float monthlyRainfall = getRainfall(level, pos, calendarTicks, daysInMonth);
 
@@ -175,7 +191,8 @@ public class OverworldClimateModel implements ClimateModel {
      * In vanilla, rain is simulated as {@code [12_000, 24_000]} ticks on, {@code [12_000, 180_000]} ticks off.
      */
     @Override
-    public float getRain(long calendarTicks) {
+    public float getRain(long calendarTicks)
+    {
         final long segmentId = Math.floorDiv(calendarTicks, RAIN_SEGMENT_LENGTH);
         final long segmentLeft = segmentId * RAIN_SEGMENT_LENGTH;
 
@@ -200,7 +217,8 @@ public class OverworldClimateModel implements ClimateModel {
         final int length = segment.nextIntBetweenInclusive(12_000, 24_000);
         final int left = (int) (segment.nextFloat() * (RAIN_SEGMENT_LENGTH - boundaryRight - nextLength));
 
-        if (calendarTicks < segmentLeft + left || calendarTicks > segmentLeft + left + length) {
+        if (calendarTicks < segmentLeft + left || calendarTicks > segmentLeft + left + length)
+        {
             return -1; // Not raining, since we're not within the target segment
         }
 
@@ -218,7 +236,8 @@ public class OverworldClimateModel implements ClimateModel {
     }
 
     // Returns intensityTimeSum and ticksNotRainingSum
-    private Pair<Long, Long> getDeltaRainInMillimeters(Level level, BlockPos pos, long fromTick, long toTick, float rainfall, int calendarDaysInMonth) {
+    private Pair<Long, Long> getDeltaRainInMillimeters(Level level, BlockPos pos, long fromTick, long toTick, float rainfall, int calendarDaysInMonth)
+    {
         final int segmentId = (int) Math.floorDiv(fromTick, RAIN_SEGMENT_LENGTH);
         final long segmentLeft = segmentId * RAIN_SEGMENT_LENGTH;
 
@@ -235,7 +254,8 @@ public class OverworldClimateModel implements ClimateModel {
         final int length = segment.nextIntBetweenInclusive(12_000, 24_000);
         final int left = (int) (segment.nextFloat() * (RAIN_SEGMENT_LENGTH - boundaryRight - nextLength));
 
-        if (toTick < segmentLeft + left || fromTick > segmentLeft + left + length) {
+        if (toTick < segmentLeft + left || fromTick > segmentLeft + left + length)
+        {
             return new Pair<>(0L, toTick - fromTick); // Not raining, since we're not within the target segment
         }
 
@@ -250,21 +270,24 @@ public class OverworldClimateModel implements ClimateModel {
         float rainfallFactor = Mth.clampedMap(rainfall, ClimateModel.MIN_RAINFALL, ClimateModel.MAX_RAINFALL, 1, 0);
         // Calculate the required time intensity needed for the rainfall to be positive
         float requiredTimeIntensity = (rainfallFactor - rainIntensity * 0.5f) * 2.f;
-        if (requiredTimeIntensity < 0) {
+        if (requiredTimeIntensity < 0)
+        {
             requiredTimeIntensity = 0;
         }
 
         // Take the intensity equation, and solve for the required time intensity
-        long trueLeft = (long) ((segmentLeft + left + halfLength) - (1 - requiredTimeIntensity) * halfLength);
-        long trueRight = (long) ((segmentLeft + left + halfLength) + (1 - requiredTimeIntensity) * halfLength);
-        if (toTick < trueLeft || fromTick > trueRight) {
+        long trueLeft = (long)((segmentLeft + left + halfLength) - (1 - requiredTimeIntensity) * halfLength);
+        long trueRight = (long)((segmentLeft + left + halfLength) + (1 - requiredTimeIntensity) * halfLength);
+        if (toTick < trueLeft || fromTick > trueRight)
+        {
             return new Pair<>(0L, toTick - fromTick); // Not raining, since we don't have enough intensity to overcome the climate
         }
 
         long fromTickInRain = Math.max(fromTick, trueLeft);
         long toTickInRain = Math.min(toTick, trueRight);
 
-        if (getTemperature(level, pos, fromTickInRain, toTickInRain, calendarDaysInMonth) < 0) {
+        if (getTemperature(level, pos, fromTickInRain, toTickInRain, calendarDaysInMonth) < 0)
+        {
             return new Pair<>(0L, toTick - fromTick); // Not raining, since we're below freezing
         }
 
@@ -272,12 +295,14 @@ public class OverworldClimateModel implements ClimateModel {
     }
 
     @Override
-    public float getDeltaRainInMillimeters(Level level, BlockPos pos, long fromTick, long toTick, float rainfall, long calendarTicksInYear, int calendarDaysInMonth) {
+    public float getDeltaRainInMillimeters(Level level, BlockPos pos, long fromTick, long toTick, float rainfall, long calendarTicksInYear, int calendarDaysInMonth)
+    {
         final int segmentStart = (int) Math.floorDiv(fromTick, RAIN_SEGMENT_LENGTH);
         final int segmentEnd = (int) Math.floorDiv(toTick, RAIN_SEGMENT_LENGTH);
         final long totalTicks = toTick - fromTick;
         final long calendarTicksInMonth = calendarTicksInYear / ICalendar.MONTHS_IN_YEAR;
-        if (totalTicks > calendarTicksInMonth) {
+        if (totalTicks > calendarTicksInMonth)
+        {
             // Clamp to one month, since the impact of rain beyond that is negligible
             toTick = fromTick - calendarTicksInMonth;
         }
@@ -285,7 +310,8 @@ public class OverworldClimateModel implements ClimateModel {
         long ticksRainingSum = 0;
         long ticksNotRainingSum = 0;
         // Apply all the full segments, and then apply the partial segment at the end
-        for (int segmentId = segmentStart; segmentId < segmentEnd - 1; segmentId++) {
+        for (int segmentId = segmentStart; segmentId < segmentEnd - 1; segmentId++)
+        {
             Pair<Long, Long> result = getDeltaRainInMillimeters(level, pos, segmentId * RAIN_SEGMENT_LENGTH, (segmentId + 1) * RAIN_SEGMENT_LENGTH, rainfall, calendarDaysInMonth);
             ticksRainingSum += result.getFirst();
             ticksNotRainingSum += result.getSecond();
@@ -298,7 +324,7 @@ public class OverworldClimateModel implements ClimateModel {
 
         // This is the millimeters of rain accumulated per tick of the weather. See AVERAGE_RAINFALL_INTENSITY for more info.
         final double rainPerRainTickInMillimeters = (MAX_RAINFALL / (AVERAGE_RAINFALL_INTENSITY * calendarTicksInYear));
-        final float deltaHydration = (float) (rainPerRainTickInMillimeters * ticksRainingSum);
+        final float deltaHydration = (float)(rainPerRainTickInMillimeters * ticksRainingSum);
         final float dehydrationFactor = Mth.clampedMap(rainfall, ClimateModel.MIN_RAINFALL, ClimateModel.MAX_RAINFALL, 2.f, 0.5f);
         final float deltaDehydration = ticksNotRainingSum * MILLIMETERS_RAIN_EVAPORATED_PER_TICK * dehydrationFactor;
 
@@ -306,7 +332,8 @@ public class OverworldClimateModel implements ClimateModel {
     }
 
     @Override
-    public boolean getThunder(long calendarTicks) {
+    public boolean getThunder(long calendarTicks)
+    {
         // Thunder is simulated using a similar segment system, and checking for overlap with rain. In vanilla, thunder is
         // [3600, 15600] ticks on, [12000, 180000] ticks off, or 9600 on / 96000 off. P(thunder | rain) = 0.1, and P(thunder) = 0.01875
         final long salt = 9871293851234123L;
@@ -323,16 +350,19 @@ public class OverworldClimateModel implements ClimateModel {
     }
 
     @Override
-    public boolean supportsRain() {
+    public boolean supportsRain()
+    {
         return true;
     }
 
     @Override
-    public float getFog(LevelReader level, BlockPos pos) {
+    public float getFog(LevelReader level, BlockPos pos)
+    {
         // seed as if we're 2 hours in the future, in order to start the cycle at 4am (2 hours before sunrise)
         final ICalendar calendar = Calendars.get(level);
         final RandomSource random = seededRandom(calendar.getTotalDays(), 129341623413L);
-        if (random.nextInt(FOGGY_DAY_RARITY) != 0) {
+        if (random.nextInt(FOGGY_DAY_RARITY) != 0)
+        {
             return 0;
         }
 
@@ -343,13 +373,16 @@ public class OverworldClimateModel implements ClimateModel {
         if (4 <= hourOfDay && hourOfDay < 6) // 4am to 6am => [0 -> 1]
         {
             scaledTime = Mth.map(hourOfDay, 4, 6, 0, 1);
-        } else if (6 <= hourOfDay && hourOfDay < 10) // 6am to 10am => 1
+        }
+        else if (6 <= hourOfDay && hourOfDay < 10) // 6am to 10am => 1
         {
             scaledTime = 1;
-        } else if (10 <= hourOfDay && hourOfDay < 12) // 10am to 12pm => [1 -> 0]
+        }
+        else if (10 <= hourOfDay && hourOfDay < 12) // 10am to 12pm => [1 -> 0]
         {
             scaledTime = Mth.map(hourOfDay, 10, 12, 1, 0);
-        } else // 12pm - 4am => 0
+        }
+        else // 12pm - 4am => 0
         {
             scaledTime = 0;
         }
@@ -362,10 +395,12 @@ public class OverworldClimateModel implements ClimateModel {
     }
 
     @Override
-    public Vec2 getWind(Level level, BlockPos pos, long calendarTicks, int daysInMonth) {
+    public Vec2 getWind(Level level, BlockPos pos, long calendarTicks, int daysInMonth)
+    {
         // No wind below sea level
         final int y = pos.getY();
-        if (y < SEA_LEVEL - 6) {
+        if (y < SEA_LEVEL - 6)
+        {
             return Vec2.ZERO;
         }
 
@@ -373,7 +408,8 @@ public class OverworldClimateModel implements ClimateModel {
         final boolean isRaining = WeatherHelpers.isPrecipitating(getRain(calendarTicks), getRainfall(level, pos, calendarTicks, daysInMonth));
         final Holder<Biome> biome = level.getBiome(pos);
 
-        if (biome.is(TFCTags.Biomes.HAS_PREDICTABLE_WINDS)) {
+        if (biome.is(TFCTags.Biomes.HAS_PREDICTABLE_WINDS))
+        {
             // Predictable winds occur in oceans, and other biomes which want to have a wind functionality that is more than cosmetic
             // This is really provided for i.e. aleki's ships mod.
             //
@@ -411,7 +447,8 @@ public class OverworldClimateModel implements ClimateModel {
     /**
      * Calculates the average monthly temperature for a location and given month.
      */
-    public float getAverageMonthlyTemperature(int z, int y, float averageTemperature, float monthFactor) {
+    public float getAverageMonthlyTemperature(int z, int y, float averageTemperature, float monthFactor)
+    {
         final float monthlyTemperature = calculateMonthlyTemperature(z, monthFactor);
         return adjustTemperatureByElevation(y, averageTemperature, monthlyTemperature, 0);
     }
@@ -425,17 +462,23 @@ public class OverworldClimateModel implements ClimateModel {
      *     <li>Towards the bottom of the world, temperature tends towards a constant as per the existence of "lava level"</li>
      * </ul>
      */
-    protected float adjustTemperatureByElevation(int y, float averageTemperature, float monthTemperature, float dailyTemperature) {
-        if (y > SEA_LEVEL) {
+    protected float adjustTemperatureByElevation(int y, float averageTemperature, float monthTemperature, float dailyTemperature)
+    {
+        if (y > SEA_LEVEL)
+        {
             // -1.6 C / 10 blocks above sea level
             final float averageElevationTemperature = Helpers.adjustAverageTemperatureByElevation(y, averageTemperature, SEA_LEVEL);
             return averageElevationTemperature + monthTemperature + dailyTemperature;
-        } else if (y > 0) {
+        }
+        else if (y > 0)
+        {
             // The influence of daily and monthly temperature is reduced as depth increases
             final float monthInfluence = Helpers.inverseLerp(y, 0, SEA_LEVEL);
             final float dailyInfluence = Mth.clamp(monthInfluence * 3f - 2f, 0, 1); // Range 0 - 1, decays faster than month influence
             return averageTemperature + Mth.lerp(monthInfluence, (float) 0, monthTemperature) + Mth.lerp(dailyInfluence, (float) 0, dailyTemperature);
-        } else {
+        }
+        else
+        {
             // At y = 0, there will be no influence from either month or daily temperature
             // Between this and the bottom of the world, linearly scale average temperature towards depth temperature
             final float depthInfluence = Helpers.inverseLerp(y, DEPTH_LEVEL, 0);
@@ -446,7 +489,8 @@ public class OverworldClimateModel implements ClimateModel {
     /**
      * Calculates the monthly temperature for a given latitude and month modifier
      */
-    protected float calculateMonthlyTemperature(int z, float monthTemperatureModifier) {
+    protected float calculateMonthlyTemperature(int z, float monthTemperatureModifier)
+    {
         return monthTemperatureModifier * (temperatureScale == 0 ? 0 : Helpers.triangle(-9f, 9f, 1f / (2f * temperatureScale), z));
     }
 
@@ -455,7 +499,8 @@ public class OverworldClimateModel implements ClimateModel {
      *
      * @return A value in the range {@code [-4.0, 4.0]}
      */
-    protected float calculateDailyTemperature(long calendarTime) {
+    protected float calculateDailyTemperature(long calendarTime)
+    {
         // Hottest part of the day at noon, coldest at midnight, range [-1, 1]
         final float fractionOfDay = ICalendar.getFractionOfDay(calendarTime);
         final float hourModifier = fractionOfDay < 0.5f
@@ -468,7 +513,8 @@ public class OverworldClimateModel implements ClimateModel {
         return ((random.nextFloat() - random.nextFloat()) + 0.3f * hourModifier) * 3f;
     }
 
-    protected RandomSource seededRandom(long day, long salt) {
+    protected RandomSource seededRandom(long day, long salt)
+    {
         return new XoroshiroRandomSource(LinearCongruentialGenerator.next(day, climateSeed), salt);
     }
 }

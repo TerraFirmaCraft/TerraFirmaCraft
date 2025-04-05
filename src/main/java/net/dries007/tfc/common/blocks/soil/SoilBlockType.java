@@ -6,25 +6,31 @@
 
 package net.dries007.tfc.common.blocks.soil;
 
+import java.util.function.BiFunction;
+import java.util.function.Supplier;
+
 import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.MudBlock;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.material.MapColor;
+
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.DryingBricksBlock;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.registry.RegistrySoilVariant;
-import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
-import net.minecraft.world.level.material.MapColor;
-
-import java.util.function.BiFunction;
-import java.util.function.Supplier;
 
 /**
  * @see RegistrySoilVariant
  */
-public enum SoilBlockType {
+public enum SoilBlockType
+{
     DIRT((self, variant) -> new DirtBlock(Block.Properties.of().mapColor(MapColor.DIRT).strength(1.4f).sound(SoundType.GRAVEL), self.transform(), variant)),
     GRASS((self, variant) -> new ConnectedGrassBlock(Block.Properties.of().mapColor(MapColor.GRASS).randomTicks().strength(1.8f).sound(SoundType.GRASS), self.transform(), variant)),
     GRASS_PATH((self, variant) -> new PathBlock(Block.Properties.of().mapColor(MapColor.DIRT).strength(1.5f).sound(SoundType.GRASS), self.transform(), variant)),
@@ -42,25 +48,30 @@ public enum SoilBlockType {
 
     public static final SoilBlockType[] VALUES = values();
 
-    public static SoilBlockType valueOf(int i) {
+    public static SoilBlockType valueOf(int i)
+    {
         return i >= 0 && i < VALUES.length ? VALUES[i] : DIRT;
     }
 
     private final BiFunction<SoilBlockType, RegistrySoilVariant, Block> factory;
 
-    SoilBlockType(BiFunction<SoilBlockType, RegistrySoilVariant, Block> factory) {
+    SoilBlockType(BiFunction<SoilBlockType, RegistrySoilVariant, Block> factory)
+    {
         this.factory = factory;
     }
 
-    public Block create(RegistrySoilVariant variant) {
+    public Block create(RegistrySoilVariant variant)
+    {
         return factory.apply(this, variant);
     }
 
     /**
      * Gets the transformed state between grass and dirt variants. Used to subvert shitty compiler illegal forward reference errors.
      */
-    private SoilBlockType transform() {
-        return switch (this) {
+    private SoilBlockType transform()
+    {
+        return switch (this)
+        {
             case DIRT -> GRASS;
             case GRASS, GRASS_PATH, FARMLAND, ROOTED_DIRT, MUD, MUD_BRICKS, DRYING_BRICKS, MUDDY_ROOTS -> DIRT;
             case CLAY -> CLAY_GRASS;
@@ -71,7 +82,8 @@ public enum SoilBlockType {
         };
     }
 
-    public enum Variant implements RegistrySoilVariant {
+    public enum Variant implements RegistrySoilVariant
+    {
         SILT,
         LOAM,
         SANDY_LOAM,
@@ -79,18 +91,22 @@ public enum SoilBlockType {
 
         private static final Variant[] VALUES = values();
 
-        public static Variant valueOf(int i) {
+        public static Variant valueOf(int i)
+        {
             return i >= 0 && i < VALUES.length ? VALUES[i] : SILT;
         }
 
         @Override
-        public Supplier<? extends Block> getBlock(SoilBlockType type) {
+        public Supplier<? extends Block> getBlock(SoilBlockType type)
+        {
             return TFCBlocks.SOIL.get(type).get(this);
         }
 
         @Override
-        public TFCItems.ItemId mudBrick() {
-            return switch (this) {
+        public TFCItems.ItemId mudBrick()
+        {
+            return switch (this)
+            {
                 case SILT -> TFCItems.SILT_MUD_BRICK;
                 case LOAM -> TFCItems.LOAM_MUD_BRICK;
                 case SANDY_LOAM -> TFCItems.SANDY_LOAM_MUD_BRICK;

@@ -20,8 +20,6 @@ import net.minecraft.world.level.chunk.ImposterProtoChunk;
 import net.minecraft.world.level.chunk.LevelChunk;
 import org.jetbrains.annotations.Nullable;
 
-import static net.dries007.tfc.world.TFCChunkGenerator.SEA_LEVEL_Y;
-
 public sealed class ChunkData {
     public static final ChunkData EMPTY = new ChunkData.Immutable();
 
@@ -226,19 +224,6 @@ public sealed class ChunkData {
         this.rockData.setSurfaceHeight(surfaceHeight);
         this.aquiferSurfaceHeight = aquiferSurfaceHeight;
         this.status = Status.FULL;
-    }
-
-    public void modifyBaseGroundwater(int[] surfaceHeight) {
-        assert this.baseGroundwaterLayer != null;
-        float groundwater00 = modifyBaseGroundwaterPoint(surfaceHeight[0], this.baseGroundwaterLayer.value00()); // Constant = x + 16z, x=0, z=0
-        float groundwater10 = modifyBaseGroundwaterPoint(surfaceHeight[15], this.baseGroundwaterLayer.value10()); // Constant = x + 16z, x=15, z=0
-        float groundwater01 = modifyBaseGroundwaterPoint(surfaceHeight[240], this.baseGroundwaterLayer.value01()); // Constant = x + 16z, x=0, z=15
-        float groundwater11 = modifyBaseGroundwaterPoint(surfaceHeight[255], this.baseGroundwaterLayer.value11()); // Constant = x + 16z, x=15, z=15
-        this.baseGroundwaterLayer = new LerpFloatLayer(groundwater00, groundwater01, groundwater10, groundwater11);
-    }
-
-    public float modifyBaseGroundwaterPoint(int height, float startingWater) {
-        return startingWater * Mth.clampedMap(height, SEA_LEVEL_Y + 10, SEA_LEVEL_Y + 25, 1, 0);
     }
 
     /**

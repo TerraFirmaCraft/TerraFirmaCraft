@@ -22,7 +22,8 @@ import net.minecraft.world.level.chunk.LevelChunk;
 public record ChunkRainfallPacket(
     ChunkPos pos,
     float accumulatedRainfall
-) implements CustomPacketPayload {
+) implements CustomPacketPayload
+{
     public static final CustomPacketPayload.Type<ChunkRainfallPacket> TYPE = PacketHandler.type("chunk_rainfall");
     public static final StreamCodec<ByteBuf, ChunkRainfallPacket> CODEC = StreamCodec.composite(
         StreamCodecs.CHUNK_POS, ChunkRainfallPacket::pos,
@@ -31,16 +32,20 @@ public record ChunkRainfallPacket(
     );
 
     @Override
-    public Type<? extends CustomPacketPayload> type() {
+    public Type<? extends CustomPacketPayload> type()
+    {
         return TYPE;
     }
 
-    void handle() {
+    void handle()
+    {
         final Level level = ClientHelpers.getLevel();
-        if (level != null) {
+        if (level != null)
+        {
             final LevelChunk chunk = level.getChunk(pos.x, pos.z);
             final ChunkData data = ChunkData.get(chunk);
-            if (data.status() != ChunkData.Status.INVALID) {
+            if (data.status() != ChunkData.Status.INVALID)
+            {
                 data.setAccumulatedRainfall(chunk, accumulatedRainfall);
             }
         }
