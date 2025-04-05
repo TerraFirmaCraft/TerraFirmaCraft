@@ -13,10 +13,15 @@ import net.dries007.tfc.world.Seed;
 public enum RiverBlendType
 {
     NONE(seed -> RiverNoiseSampler.NONE),
-    WIDE(RiverNoise::wide),
-    CANYON(RiverNoise::canyon),
-    TALL_CANYON(RiverNoise::tallCanyon),
-    CAVE(RiverNoise::cave);
+    BANKED(RiverNoise::banked), // Raised banks 1-2 blocks above water that may be higher than surrounding terrain in swampy biomes
+    TALL_BANKED(RiverNoise::tallBanked), // Sim to banked, but taller for use in mud flat/salt flat biomes
+    FLOODPLAIN(RiverNoise::floodplain), // Flat banks at water level with steep banks farther from river
+    WIDE(RiverNoise::wide), // Wide, smooth V-shaped valleys
+    CANYON(RiverNoise::canyon), // Tall, smooth V-shaped valleys
+    TALL_CANYON(RiverNoise::tallCanyon), // Slot canyons with undercut walls
+    TALUS(RiverNoise::talus), // Single line of cliffs with steep slopes above and below
+    TERRACES(RiverNoise::terraces), // Stair-step canyons, like the Grand Canyon
+    CAVE(RiverNoise::cave); // Underground river
 
     public static final RiverBlendType[] ALL = values();
     public static final int SIZE = ALL.length;

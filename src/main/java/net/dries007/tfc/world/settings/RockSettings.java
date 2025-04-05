@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.Codecs;
 
-public record RockSettings(Block raw, Block hardened, Block gravel, Block cobble, Block sand, Block sandstone, Optional<Block> spike, Optional<Block> loose, Optional<Block> mossyLoose, Optional<Boolean> karst)
+public record RockSettings(Block raw, Block hardened, Block gravel, Block cobble, Block sand, Block sandstone, Optional<Block> spike, Optional<Block> loose, Optional<Block> mossyLoose, Optional<Boolean> karst, Optional<Boolean> mafic)
 {
     public static final Codec<RockSettings> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codecs.BLOCK.fieldOf("raw").forGetter(c -> c.raw),
@@ -27,7 +27,8 @@ public record RockSettings(Block raw, Block hardened, Block gravel, Block cobble
         Codecs.BLOCK.optionalFieldOf("spike").forGetter(c -> c.spike),
         Codecs.BLOCK.optionalFieldOf("loose").forGetter(c -> c.loose),
         Codecs.BLOCK.optionalFieldOf("mossy_loose").forGetter(c -> c.mossyLoose),
-        Codec.BOOL.optionalFieldOf("karst").forGetter(c -> c.karst)
+        Codec.BOOL.optionalFieldOf("karst").forGetter(c -> c.karst),
+        Codec.BOOL.optionalFieldOf("mafic").forGetter(c -> c.mafic)
     ).apply(instance, RockSettings::new));
 
     public boolean isRawOrHardened(BlockState state)

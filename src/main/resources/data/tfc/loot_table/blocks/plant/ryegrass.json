@@ -16,7 +16,7 @@
                 {
                   "condition": "minecraft:match_tool",
                   "predicate": {
-                    "tag": "c:tools/shear"
+                    "items": "#c:tools/shear"
                   }
                 }
               ]
@@ -28,7 +28,7 @@
                 {
                   "condition": "minecraft:match_tool",
                   "predicate": {
-                    "tag": "tfc:tools/sharp"
+                    "items": "#tfc:tools/sharp"
                   }
                 }
               ]

@@ -240,8 +240,10 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
         final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
         cursor.set(pos);
         BlockState stateAt = Blocks.AIR.defaultBlockState();
-        while (stateAt.getBlock() instanceof ILeavesBlock || stateAt.canBeReplaced())
+        int i = 0;
+        while (i < 15 && (stateAt.getBlock() instanceof ILeavesBlock || stateAt.canBeReplaced()))
         {
+            i++;
             cursor.move(0, -1, 0);
 
             stateAt = level.getBlockState(cursor);

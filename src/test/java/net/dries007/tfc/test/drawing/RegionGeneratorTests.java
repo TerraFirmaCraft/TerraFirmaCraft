@@ -16,6 +16,8 @@ import java.util.Random;
 import java.util.Set;
 import java.util.function.DoubleFunction;
 import java.util.stream.Collectors;
+
+import net.dries007.tfc.world.biome.BiomeNoise;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.RandomSupport;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
@@ -251,10 +253,15 @@ public class RegionGeneratorTests implements TestSetup
         if (biome == OLD_MOUNTAINS || biome == EXTREME_DOLINE_MOUNTAINS) return new Color(240, 100, 100);
         if (biome == PLATEAU || biome == EXTREME_DOLINE_PLATEAU || biome == CENOTE_PLATEAU || biome == DOLINE_PLATEAU || biome == SHILIN_PLATEAU || biome == BURREN_PLATEAU) return new Color(190, 120, 120);
 
-        if (biome == BADLANDS || biome == BURREN_BADLANDS) return new Color(255, 150, 0);
-        if (biome == INVERTED_BADLANDS || biome == BURREN_BADLANDS_TALL) return new Color(240, 180, 0);
-        if (biome == DUNE_SEA || biome == GRASSY_DUNES) return new Color(190, 150, 0);
+        if (biome == BADLANDS || biome == BURREN_BADLANDS || biome == BURREN_BADLANDS_TALL) return new Color(205, 160, 50);
+        if (biome == STAIR_STEP_CANYONS) return new Color(250, 190, 0);
+        if (biome == HOODOOS) return new Color(230, 180, 0);
+        if (biome == MESAS) return new Color(210, 170, 0);
+        if (biome == BUTTES) return new Color(190, 160, 0);
+        if (biome == WHORLED_CANYONS) return new Color(250, 160, 0);
 
+        if (biome == ROCKY_PLATEAU) return new Color(180, 160, 110);
+        if (biome == DUNE_SEA || biome == GRASSY_DUNES) return new Color(250, 210, 140);
         if (biome == SALT_FLATS) return new Color(190, 190, 190);
         if (biome == MUD_FLATS) return new Color(190, 120, 100);
 
@@ -271,9 +278,10 @@ public class RegionGeneratorTests implements TestSetup
         if (biome == ANCIENT_SHIELD_VOLCANO || biome == SUNKEN_SHIELD_VOLCANO) return new Color(255, 155, 0);
 
         if (biome == ICE_SHEET || biome == SUBGLACIAL_LAKE) return new Color(255, 255, 255);
+        if (biome == ICE_SHEET_OCEANIC) return new Color(215, 215, 215);
         if (biome == ICE_SHEET_TUYAS) return new Color(235, 235, 235);
-        if (biome == ICE_SHEET_MOUNTAINS) return new Color(255, 195, 195);
-        if (biome == ICE_SHEET_OCEANIC_MOUNTAINS) return new Color(255, 195, 255);
+        if (biome == ICE_SHEET_MOUNTAINS || biome == ICE_SHEET_MOUNTAINS_EDGE) return new Color(255, 195, 195);
+        if (biome == ICE_SHEET_OCEANIC_MOUNTAINS || biome == ICE_SHEET_OCEANIC_MOUNTAINS_EDGE) return new Color(255, 195, 255);
         if (biome == ICE_SHEET_SHIELD_VOLCANO) return new Color(255, 215, 185);
 
         if (biome == ICE_SHEET_EDGE || biome == ICE_SHEET_SHORE) return new Color(165, 165, 165);
@@ -347,6 +355,7 @@ public class RegionGeneratorTests implements TestSetup
         if (biome == RIVER) return new Color(0, 200, 255);
 
         if (biome == ICE_SHEET || biome == SUBGLACIAL_LAKE) return new Color(255, 255, 255);
+        if (biome == ICE_SHEET_OCEANIC) return new Color(215, 215, 215);
         if (biome == ICE_SHEET_TUYAS) return new Color(235, 235, 235);
         if (biome == ICE_SHEET_MOUNTAINS) return new Color(255, 195, 195);
         if (biome == ICE_SHEET_OCEANIC_MOUNTAINS) return new Color(255, 195, 255);
@@ -404,14 +413,16 @@ public class RegionGeneratorTests implements TestSetup
 
         // Rolling Hills
         if (biome == CANYONS || biome == TOWER_KARST_CANYONS || biome == SHILIN_CANYONS || biome == DOLINE_CANYONS || biome == CENOTE_CANYONS || biome == TUYAS) return new Color(200, 150, 10);
+        if (biome == BUTTES || biome == MESAS) return new Color(210, 120, 10);
         if (biome == ROLLING_HILLS || biome == DOLINE_ROLLING_HILLS || biome == CENOTE_ROLLING_HILLS || biome == BURREN_ROCHE_MOUTONEE || biome == DRUMLINS) return new Color(240, 230, 10);
 
         // Highlands
-        if (biome == INVERTED_BADLANDS || biome == BURREN_BADLANDS_TALL) return new Color(200, 90, 0);
+        if (biome == BURREN_BADLANDS_TALL) return new Color(200, 90, 0);
+        if (biome == STAIR_STEP_CANYONS || biome == HOODOOS || biome == WHORLED_CANYONS) return new Color(230, 110, 0);
         if (biome == HIGHLANDS || biome == SHILIN_HIGHLANDS || biome == TOWER_KARST_HIGHLANDS || biome == DOLINE_HIGHLANDS || biome == CENOTE_HIGHLANDS) return new Color(250, 120, 0);
 
         // Plateau
-        if (biome == PLATEAU || biome == EXTREME_DOLINE_PLATEAU || biome == CENOTE_PLATEAU || biome == DOLINE_PLATEAU || biome == SHILIN_PLATEAU) return new Color(200, 60, 60);
+        if (biome == PLATEAU || biome == EXTREME_DOLINE_PLATEAU || biome == CENOTE_PLATEAU || biome == DOLINE_PLATEAU || biome == SHILIN_PLATEAU || biome == ROCKY_PLATEAU) return new Color(200, 60, 60);
 
         // Mountains
         if (biome == OCEANIC_MOUNTAINS || biome == VOLCANIC_OCEANIC_MOUNTAINS) return new Color(160, 30, 160);
@@ -424,6 +435,7 @@ public class RegionGeneratorTests implements TestSetup
 
         // Ice Sheets - Ice sheet influenced biomes are distributed among other biomes in this view
         if (biome == ICE_SHEET || biome == ICE_SHEET_TUYAS) return new Color(255, 255, 255);
+        if (biome == ICE_SHEET_OCEANIC) return new Color(245, 245, 245);
         if (biome == ICE_SHEET_MOUNTAINS || biome == ICE_SHEET_MOUNTAINS_EDGE || biome == ICE_SHEET_SHIELD_VOLCANO || biome == GLACIATED_SHIELD_VOLCANO
             || biome == GLACIATED_MOUNTAINS || biome == GLACIALLY_CARVED_MOUNTAINS) return new Color(250, 160, 250);
         if (biome == ICE_SHEET_OCEANIC_MOUNTAINS || biome == ICE_SHEET_OCEANIC_MOUNTAINS_EDGE

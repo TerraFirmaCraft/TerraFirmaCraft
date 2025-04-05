@@ -16,14 +16,7 @@
                 {
                   "condition": "minecraft:match_tool",
                   "predicate": {
-                    "tag": "c:tools/shear"
-                  }
-                },
-                {
-                  "condition": "minecraft:block_state_property",
-                  "block": "tfc:plant/switchgrass",
-                  "properties": {
-                    "part": "lower"
+                    "items": "#c:tools/shear"
                   }
                 }
               ]
@@ -35,7 +28,7 @@
                 {
                   "condition": "minecraft:match_tool",
                   "predicate": {
-                    "tag": "tfc:tools/sharp"
+                    "items": "#tfc:tools/sharp"
                   }
                 }
               ]

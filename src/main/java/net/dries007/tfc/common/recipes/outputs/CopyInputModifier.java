@@ -13,6 +13,12 @@ public enum CopyInputModifier implements ItemStackModifier
     INSTANCE;
 
     @Override
+    public boolean dependsOnInput()
+    {
+        return true;
+    }
+
+    @Override
     public ItemStack apply(ItemStack stack, ItemStack input, Context context)
     {
         return input.copy();

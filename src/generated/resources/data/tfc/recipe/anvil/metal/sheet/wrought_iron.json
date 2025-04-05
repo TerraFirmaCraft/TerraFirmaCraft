@@ -1,7 +1,7 @@
 {
   "type": "tfc:anvil",
   "ingredient": {
-    "tag": "c:ingots/wrought_iron"
+    "tag": "c:double_ingots/wrought_iron"
   },
   "result": {
     "count": 1,

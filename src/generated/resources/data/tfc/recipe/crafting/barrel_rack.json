@@ -6,13 +6,13 @@
       "tag": "tfc:lumber"
     },
     "S": {
-      "item": "minecraft:scaffolding"
+      "item": "minecraft:stick"
     }
   },
   "pattern": [
-    "L L",
-    " S ",
-    "L L"
+    "LLL",
+    "S S",
+    "S S"
   ],
   "result": {
     "count": 1,

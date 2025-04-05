@@ -2,10 +2,11 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "tfc:plateau",
-    "tfc:highlands",
-    "tfc:old_mountains",
     "tfc:rolling_hills",
+    "tfc:highlands",
+    "tfc:plateau",
+    "tfc:plateau_wide",
+    "tfc:old_mountains",
     "tfc:tower_karst_hills",
     "tfc:tower_karst_highlands",
     "tfc:extreme_doline_plateau",
@@ -18,6 +19,14 @@
     "tfc:cenote_plateau",
     "tfc:shilin_hills",
     "tfc:shilin_highlands",
-    "tfc:shilin_plateau"
+    "tfc:shilin_plateau",
+    "tfc:buttes",
+    "tfc:mesas",
+    "tfc:stair_step_canyons",
+    "tfc:dormant_shield_volcano",
+    "tfc:extinct_shield_volcano",
+    "tfc:ancient_shield_volcano",
+    "tfc:badlands",
+    "tfc:canyons"
   ]
 }

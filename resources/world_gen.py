@@ -60,11 +60,11 @@ def generate(rm: ResourceManager):
 
     # Biomes
     biome(rm, 'badlands', 'mesa', lake_features=False)
-    biome(rm, 'inverted_badlands', 'mesa', lake_features=False)
     biome(rm, 'canyons', 'plains', boulders=True, lake_features=False, volcano_features=True, hot_spring_features=True)
     biome(rm, 'low_canyons', 'swamp', boulders=True, lake_features=False, hot_spring_features='empty')
     biome(rm, 'plains', 'plains')
     biome(rm, 'plateau', 'extreme_hills', boulders=True, hot_spring_features='empty')
+    biome(rm, 'plateau_wide', 'extreme_hills', boulders=True, hot_spring_features='empty')
     biome(rm, 'hills', 'plains')
     biome(rm, 'rolling_hills', 'plains', boulders=True)
     biome(rm, 'highlands', 'plains', boulders=True, hot_spring_features='empty')
@@ -87,6 +87,12 @@ def generate(rm: ResourceManager):
     biome(rm, 'mud_flats', 'plains', barren=True)
     biome(rm, 'dune_sea', 'plains', barren=True)
     biome(rm, 'grassy_dunes', 'plains')
+    biome(rm, 'whorled_canyons', 'plains')
+    biome(rm, 'stair_step_canyons', 'mesa')
+    biome(rm, 'mesas', 'mesa')
+    biome(rm, 'buttes', 'mesa')
+    biome(rm, 'hoodoos', 'mesa')
+    biome(rm, 'rocky_plateau', 'extreme_hills', boulders=True, hot_spring_features='empty')
 
     biome(rm, 'tower_karst_plains', 'plains')
     biome(rm, 'burren_plains', 'plains')
@@ -684,7 +690,16 @@ def generate(rm: ResourceManager):
     rm.biome_tag('shilins', 'tfc:shilin_plains', 'tfc:shilin_canyons', 'tfc:shilin_hills', 'tfc:shilin_highlands', 'tfc:shilin_plateau')
     rm.biome_tag('burrens', 'tfc:burren_plains', 'tfc:burren_badlands', 'tfc:burren_badlands_tall', 'tfc:burren_plateau')
     rm.biome_tag('karsts', '#tfc:tower_karsts', '#tfc:dolines', '#tfc:cenotes', '#tfc:shilins', '#tfc:burrens')
-    rm.biome_tag('kaolin_clay_spawns_in', 'tfc:plateau', 'tfc:highlands', 'tfc:old_mountains', 'tfc:rolling_hills', 'tfc:tower_karst_hills', 'tfc:tower_karst_highlands', 'tfc:extreme_doline_plateau', 'tfc:extreme_doline_mountains', 'tfc:doline_rolling_hills', 'tfc:doline_highlands', 'tfc:doline_plateau', 'tfc:cenote_rolling_hills', 'tfc:cenote_highlands', 'tfc:cenote_plateau', 'tfc:shilin_hills', 'tfc:shilin_highlands', 'tfc:shilin_plateau')
+    # Kaolin clay biomes, each row sorted by height, last row misc.
+    (rm.biome_tag('kaolin_clay_spawns_in',
+                 'tfc:rolling_hills', 'tfc:highlands', 'tfc:plateau', 'tfc:plateau_wide', 'tfc:old_mountains',
+                 'tfc:tower_karst_hills', 'tfc:tower_karst_highlands', 'tfc:extreme_doline_plateau', 'tfc:extreme_doline_mountains',
+                 'tfc:doline_rolling_hills', 'tfc:doline_highlands', 'tfc:doline_plateau',
+                 'tfc:cenote_rolling_hills', 'tfc:cenote_highlands', 'tfc:cenote_plateau',
+                 'tfc:shilin_hills', 'tfc:shilin_highlands', 'tfc:shilin_plateau',
+                 'tfc:buttes', 'tfc:mesas', 'tfc:stair_step_canyons',
+                 'tfc:dormant_shield_volcano', 'tfc:extinct_shield_volcano', 'tfc:ancient_shield_volcano',
+                 'tfc:badlands', 'tfc:canyons'))
 
     configured_placed_feature(rm, ('vein', 'gravel'), 'tfc:disc_vein', {
         'rarity': 30,

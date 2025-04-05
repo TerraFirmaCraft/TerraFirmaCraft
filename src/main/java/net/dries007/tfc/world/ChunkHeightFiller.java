@@ -277,7 +277,7 @@ public class ChunkHeightFiller
                 }
                 else if (weight > 0)
                 {
-                    final double riverHeight = sampler.setColumnAndSampleHeight(info, blockX, blockZ, height, initialCaveWeight);
+                    final double riverHeight = sampler.setColumnAndSampleHeight(info, blockX, blockZ, height, initialCaveWeight, weight);
                     riverBlendHeight += weight * riverHeight;
                 }
             }

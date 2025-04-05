@@ -7,7 +7,6 @@
 package net.dries007.tfc.world.layer;
 
 import java.util.Random;
-import net.minecraft.util.RandomSource;
 import org.apache.commons.lang3.mutable.MutableInt;
 
 import net.dries007.tfc.util.IArtist;
@@ -42,8 +41,8 @@ public class TFCLayers
     public static final int ROLLING_HILLS = idFor(TFCBiomes.ROLLING_HILLS);
     public static final int HIGHLANDS = idFor(TFCBiomes.HIGHLANDS);
     public static final int BADLANDS = idFor(TFCBiomes.BADLANDS);
-    public static final int INVERTED_BADLANDS = idFor(TFCBiomes.INVERTED_BADLANDS);
     public static final int PLATEAU = idFor(TFCBiomes.PLATEAU);
+    public static final int PLATEAU_WIDE = idFor(TFCBiomes.PLATEAU_WIDE);
     public static final int OLD_MOUNTAINS = idFor(TFCBiomes.OLD_MOUNTAINS);
     public static final int MOUNTAINS = idFor(TFCBiomes.MOUNTAINS);
     public static final int VOLCANIC_MOUNTAINS = idFor(TFCBiomes.VOLCANIC_MOUNTAINS);
@@ -64,6 +63,12 @@ public class TFCLayers
     public static final int SALT_FLATS = idFor(TFCBiomes.SALT_FLATS);
     public static final int DUNE_SEA = idFor(TFCBiomes.DUNE_SEA);
     public static final int GRASSY_DUNES = idFor(TFCBiomes.GRASSY_DUNES);
+    public static final int WHORLED_CANYONS = idFor(TFCBiomes.WHORLED_CANYONS);
+    public static final int STAIR_STEP_CANYONS = idFor(TFCBiomes.STAIR_STEP_CANYONS);
+    public static final int MESAS = idFor(TFCBiomes.MESAS);
+    public static final int BUTTES = idFor(TFCBiomes.BUTTES);
+    public static final int HOODOOS = idFor(TFCBiomes.HOODOOS);
+    public static final int ROCKY_PLATEAU = idFor(TFCBiomes.ROCKY_PLATEAU);
     public static final int TOWER_KARST_PLAINS = idFor(TFCBiomes.TOWER_KARST_PLAINS);
     public static final int TOWER_KARST_CANYONS = idFor(TFCBiomes.TOWER_KARST_CANYONS);
     public static final int TOWER_KARST_HILLS = idFor(TFCBiomes.TOWER_KARST_HILLS);

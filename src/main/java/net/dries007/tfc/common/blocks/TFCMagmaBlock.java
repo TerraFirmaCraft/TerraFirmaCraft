@@ -14,11 +14,14 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.MagmaBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class TFCMagmaBlock extends MagmaBlock
+public class TFCMagmaBlock extends MagmaBlock implements IForgeBlockExtension
 {
-    public TFCMagmaBlock(Properties properties)
+    private final ExtendedProperties properties;
+
+    public TFCMagmaBlock(ExtendedProperties properties)
     {
-        super(properties);
+        super(properties.properties());
+        this.properties = properties;
     }
 
     @Override
@@ -35,5 +38,11 @@ public class TFCMagmaBlock extends MagmaBlock
     protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         TFCBubbleColumnBlock.updateColumnForFluid(level, pos);
+    }
+
+    @Override
+    public ExtendedProperties getExtendedProperties()
+    {
+        return properties;
     }
 }

@@ -2,7 +2,7 @@
   "type": "tfc:pot",
   "duration": 300,
   "fluid_ingredient": {
-    "amount": 100,
+    "amount": 300,
     "fluid": "minecraft:water"
   },
   "ingredients": [
@@ -87,5 +87,6 @@
       ]
     }
   ],
-  "temperature": 300.0
+  "temperature": 300.0,
+  "uses_all_fluid": false
 }
