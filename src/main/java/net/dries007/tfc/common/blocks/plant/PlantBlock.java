@@ -164,7 +164,6 @@ public abstract class PlantBlock extends TFCBushBlock
             }
 
             // These two methods allow placing extra per block
-            // TODO: Accompanying changes to loot tables
             @Override
             protected boolean canBeReplaced(BlockState state, BlockPlaceContext useContext) {
                 return !useContext.isSecondaryUseActive() && useContext.getItemInHand().is(this.asItem()) && state.getValue(AGE) < 3 || super.canBeReplaced(state, useContext);

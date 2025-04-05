@@ -647,12 +647,14 @@ FLOWERPOT_CROSS_PLANTS = {
     'blood_lily': 'blood_lily_0',
     'blue_orchid': 'blue_orchid_0',
     'blue_ginger': 'blue_ginger_0',
+    'buttercup': 'potted',
     'butterfly_milkweed': 'potted',
     'calendula': 'calendula_0',
     'canna': 'canna_0',
     'dandelion': 'dandelion_0',
     'dead_bush': 'dead_bush0',
     'desert_flame': 'desert_flame_0',
+    'dry_grass': 'short_dry_grass',
     'edelweiss': 'edelweiss_0',
     'field_horsetail': 'potted',
     'foxglove': 'item',
@@ -786,6 +788,7 @@ MODEL_PLANTS = ('arundo', 'arundo_plant', 'athyrium_fern', 'dry_phragmite', 'dry
 SEAGRASS = ('star_grass', 'manatee_grass', 'eel_grass', 'turtle_grass', 'coontail')
 
 SEAWEED = ('sago', 'gutweed', 'laminaria', 'milfoil')
+DROPS_MORE_FOR_AGE = ('buttercup', 'yellow_saxifrage', 'maiden_pink', 'silken_pincushion_cactus')
 
 VESSEL_TYPES = {
     'blue': 'a',

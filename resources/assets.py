@@ -1309,6 +1309,16 @@ def generate(rm: ResourceManager):
                 'name': 'tfc:straw',
                 'conditions': [match_tag_1_21_plus(TAG_SHARP)]
             }))
+        elif plant in DROPS_MORE_FOR_AGE:
+            rm.block_loot(p, (
+                {'name': p, 'conditions': [shears_or_knife], 'functions': [
+                {**loot_tables.set_count(2), 'conditions': [loot_tables.block_state_property(p + '[age=1]')]},
+                {**loot_tables.set_count(3), 'conditions': [loot_tables.block_state_property(p + '[age=2]')]},
+                {**loot_tables.set_count(4), 'conditions': [loot_tables.block_state_property(p + '[age=3]')]},
+                loot_tables.explosion_decay()
+            ]
+                }
+            ))
         elif plant in SEAWEED:
             rm.block_loot(p, (
                 {'name': 'tfc:food/fresh_seaweed', 'conditions': [match_tag_1_21_plus(TAG_SHARP), loot_tables.random_chance(0.3)]},
