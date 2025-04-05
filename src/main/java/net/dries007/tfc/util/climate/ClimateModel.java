@@ -6,15 +6,14 @@
 
 package net.dries007.tfc.util.climate;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.phys.Vec2;
-
 import net.dries007.tfc.client.ClimateRenderCache;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.events.SelectClimateModelEvent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.phys.Vec2;
 
 /**
  * <h1>Climate Models</h1>
@@ -41,8 +40,7 @@ import net.dries007.tfc.util.events.SelectClimateModelEvent;
  * via {@link ClimateRenderCache}. If doing frequent climate queries on client-side, at the player position, consider using this
  * instead. It is updated on client tick to reflect the current climate.
  */
-public interface ClimateModel
-{
+public interface ClimateModel {
     // N.B. These min-max values are only for rainfall values that are average annual, not time-variant or groundwater-inclusive
     float MIN_RAINFALL = 0f;
     float MAX_RAINFALL = 500f;
@@ -57,8 +55,7 @@ public interface ClimateModel
      * @return A scaling value for hemispheres. This represents, effectively, the distance between a polar and equatorial region, in blocks.
      * This is primarily used for day time scaling based effects.
      */
-    default float hemisphereScale()
-    {
+    default float hemisphereScale() {
         return 20_000;
     }
 
@@ -73,8 +70,7 @@ public interface ClimateModel
     /**
      * @return The current temperature at the given {@code pos}.
      */
-    default float getTemperature(LevelReader level, BlockPos pos)
-    {
+    default float getTemperature(LevelReader level, BlockPos pos) {
         final ICalendar calendar = Calendars.get(level);
         return getTemperature(level, pos, calendar.getCalendarTicks(), calendar.getCalendarDaysInMonth());
     }
@@ -83,24 +79,21 @@ public interface ClimateModel
      * @return The temperature at the given {@code pos} and timestamp given by {@code calendarTicks} and {@code daysInMonth}.
      * This is typically in the range {@code [-40, 40]} but is not required to be.
      */
-    default float getTemperature(LevelReader level, BlockPos pos, long calendarTicks, int daysInMonth)
-    {
+    default float getTemperature(LevelReader level, BlockPos pos, long calendarTicks, int daysInMonth) {
         return getAverageTemperature(level, pos);
     }
 
     /**
      * @return The average temperature, in {@code mm/year}, at the given {@code pos} over the time delta given by {@code fromTick} and {@code toTick}.
      * This is typically in the range {@code [-40, 40]} but is not required to be.
-     *
+     * <p>
      * This is done to properly consider the impact of any time-based variation of temperature
      */
-    default float getTemperature(LevelReader level, BlockPos pos, long fromTick, long toTick, int daysInMonth)
-    {
+    default float getTemperature(LevelReader level, BlockPos pos, long fromTick, long toTick, int daysInMonth) {
         final long deltaTicks = toTick - fromTick;
 
         float temperatureSum = 0;
-        for (int i = 0; i < NUM_SAMPLES_FOR_DELTAS; i++)
-        {
+        for (int i = 0; i < NUM_SAMPLES_FOR_DELTAS; i++) {
             final long sampleTick = fromTick + (deltaTicks * i / (NUM_SAMPLES_FOR_DELTAS - 1));
             temperatureSum += getTemperature(level, pos, sampleTick, daysInMonth);
         }
@@ -120,32 +113,28 @@ public interface ClimateModel
      *
      * @return The annual variance in the immediate rate of rainfall, in percentage of annual. Should be in the range {@code [-1, 1]}.
      */
-    default float getRainfallVariance(LevelReader level, BlockPos pos)
-    {
+    default float getRainfallVariance(LevelReader level, BlockPos pos) {
         return 0;
     }
 
     /**
      * @return The average rainfall, in {@code mm/year}, at the given {@code pos} at the current time.
      */
-    default float getRainfall(LevelReader level, BlockPos pos)
-    {
+    default float getRainfall(LevelReader level, BlockPos pos) {
         final ICalendar calendar = Calendars.get(level);
         return getRainfall(level, pos, calendar.getCalendarTicks(), calendar.getCalendarDaysInMonth());
     }
 
     /**
      * @return The average rainfall, in {@code mm/year}, at the given {@code pos} over the time delta given by {@code fromTick} and {@code toTick}.
-     *
+     * <p>
      * This is done to properly consider the impact of any time-based variation of rainfall
      */
-    default float getRainfall(LevelReader level, BlockPos pos, long fromTick, long toTick, int daysInMonth)
-    {
+    default float getRainfall(LevelReader level, BlockPos pos, long fromTick, long toTick, int daysInMonth) {
         final long deltaTicks = toTick - fromTick;
 
         float rainfallSum = 0;
-        for (int i = 0; i < NUM_SAMPLES_FOR_DELTAS; i++)
-        {
+        for (int i = 0; i < NUM_SAMPLES_FOR_DELTAS; i++) {
             final long sampleTick = fromTick + (deltaTicks * i / (NUM_SAMPLES_FOR_DELTAS - 1));
             rainfallSum += getRainfall(level, pos, sampleTick, daysInMonth);
         }
@@ -158,8 +147,7 @@ public interface ClimateModel
      * {@code daysInMonth}. Note that this is allowed to vary with seasonal effects, but still returns an average.
      * <strong>Must</strong> be within the range {@code [0, 500]}.
      */
-    default float getRainfall(LevelReader level, BlockPos pos, long calendarTicks, int daysInMonth)
-    {
+    default float getRainfall(LevelReader level, BlockPos pos, long calendarTicks, int daysInMonth) {
         return getAverageRainfall(level, pos);
     }
 
@@ -169,8 +157,7 @@ public interface ClimateModel
      *
      * @return The annual base groundwater in mm. Should be in the range [0, 500]
      */
-    default float getBaseGroundwater(LevelReader level, BlockPos pos)
-    {
+    default float getBaseGroundwater(LevelReader level, BlockPos pos) {
         return 0;
     }
 
@@ -179,8 +166,7 @@ public interface ClimateModel
      *
      * @return The annual groundwater in mm. Should be in the range [0, 500]
      */
-    default float getAverageGroundwater(LevelReader level, BlockPos pos)
-    {
+    default float getAverageGroundwater(LevelReader level, BlockPos pos) {
         return getAverageRainfall(level, pos);
     }
 
@@ -188,8 +174,7 @@ public interface ClimateModel
      * @return The groundwater - sum of base groundwater and the time-varying rainfall, at the provided {@code pos} and current time.
      * Should be in the range {@code [0, 100]}, in {@code mm/year}.
      */
-    default float getGroundwater(LevelReader level, BlockPos pos)
-    {
+    default float getGroundwater(LevelReader level, BlockPos pos) {
         final ICalendar calendar = Calendars.get(level);
         return getGroundwater(level, pos, calendar.getCalendarTicks(), calendar.getCalendarDaysInMonth());
     }
@@ -198,23 +183,20 @@ public interface ClimateModel
      * @return The groundwater - sum of base groundwater and the time-varying rainfall, at the provided {@code pos} and the timestamp
      * provided by {@code calendarTicks} and {@code daysInMonth}. Should be in the range {@code [0, 100]}, in {@code mm/year}.
      */
-    default float getGroundwater(LevelReader level, BlockPos pos, long calendarTicks, int daysInMonth)
-    {
+    default float getGroundwater(LevelReader level, BlockPos pos, long calendarTicks, int daysInMonth) {
         return getRainfall(level, pos, calendarTicks, daysInMonth);
     }
 
     /**
      * @return The average groundwater, in {@code mm/year}, at the given {@code pos} over the time delta given by {@code fromTick} and {@code toTick}.
-     *
+     * <p>
      * This is done to properly consider the impact of any time-based variation of groundwater
      */
-    default float getGroundwater(LevelReader level, BlockPos pos, long fromTick, long toTick, int daysInMonth)
-    {
+    default float getGroundwater(LevelReader level, BlockPos pos, long fromTick, long toTick, int daysInMonth) {
         final long deltaTicks = toTick - fromTick;
 
         float groundWaterSum = 0;
-        for (int i = 0; i < NUM_SAMPLES_FOR_DELTAS; i++)
-        {
+        for (int i = 0; i < NUM_SAMPLES_FOR_DELTAS; i++) {
             final long sampleTick = fromTick + (deltaTicks * i / (NUM_SAMPLES_FOR_DELTAS - 1));
             groundWaterSum += getGroundwater(level, pos, sampleTick, daysInMonth);
         }
@@ -235,13 +217,11 @@ public interface ClimateModel
      * it is not currently raining, and larger values represent a higher intensity of rain.
      * @see #supportsRain()
      */
-    default float getRain(long calendarTicks)
-    {
+    default float getRain(long calendarTicks) {
         return -1;
     }
 
-    default float getDeltaRainInMillimeters(Level level, BlockPos pos, long fromTick, long toTick, float rainfall, long calendarTicksInYear, int calendarDaysInMonth)
-    {
+    default float getDeltaRainInMillimeters(Level level, BlockPos pos, long fromTick, long toTick, float rainfall, long calendarTicksInYear, int calendarDaysInMonth) {
         return 0.0f;
     }
 
@@ -250,8 +230,7 @@ public interface ClimateModel
      * @see #getRain(long)
      * @see #supportsRain()
      */
-    default boolean getThunder(long calendarTicks)
-    {
+    default boolean getThunder(long calendarTicks) {
         return false;
     }
 
@@ -259,16 +238,14 @@ public interface ClimateModel
      * @return {@code true} if we support historical querying of rainfall values, and should be overriding the rain in that dimension.
      * Note that biome-based climate models do not support this, and so any mechanics relying on that do not function.
      */
-    default boolean supportsRain()
-    {
+    default boolean supportsRain() {
         return false;
     }
 
     /**
      * @return A unit vector representing the horizontal strength of the wind at the given {@code pos}.
      */
-    default Vec2 getWind(Level level, BlockPos pos)
-    {
+    default Vec2 getWind(Level level, BlockPos pos) {
         final ICalendar calendar = Calendars.get(level);
         return getWind(level, pos, calendar.getCalendarTicks(), calendar.getCalendarDaysInMonth());
     }
@@ -277,16 +254,14 @@ public interface ClimateModel
      * @return A unit vector representing the horizontal strength of the wind at the given {@code pos} and
      * timestamp given by {@code calendarTicks}
      */
-    default Vec2 getWind(Level level, BlockPos pos, long calendarTicks, int daysInMonth)
-    {
+    default Vec2 getWind(Level level, BlockPos pos, long calendarTicks, int daysInMonth) {
         return Vec2.ZERO;
     }
 
     /**
      * @return A value in the range [0, 1] scaling the sky fog as a % of the render distance
      */
-    default float getFog(LevelReader level, BlockPos pos)
-    {
+    default float getFog(LevelReader level, BlockPos pos) {
         return 0f;
     }
 }

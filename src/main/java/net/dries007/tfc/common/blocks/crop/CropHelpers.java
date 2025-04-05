@@ -6,18 +6,6 @@
 
 package net.dries007.tfc.common.blocks.crop;
 
-import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
-
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.blockentities.CropBlockEntity;
 import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
@@ -31,13 +19,23 @@ import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateRange;
 import net.dries007.tfc.util.data.Fertilizer;
+import net.dries007.tfc.world.chunkdata.ChunkData;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * Common growth logic for crop blocks
  * <a href="https://www.desmos.com/calculator/wew3pvmijq">Reference</a>
  */
-public final class CropHelpers
-{
+public final class CropHelpers {
     public static final long UPDATE_INTERVAL = 2 * ICalendar.TICKS_IN_DAY;
 
     public static final float GROWTH_FACTOR = 1f / (24 * ICalendar.TICKS_IN_DAY);
@@ -48,22 +46,18 @@ public final class CropHelpers
     public static final float YIELD_MIN = 0.2f;
     public static final float YIELD_LIMIT = 1f;
 
-    public static boolean lightValid(Level level, BlockPos pos)
-    {
+    public static boolean lightValid(Level level, BlockPos pos) {
         return level.getRawBrightness(pos, 0) >= 12;
     }
 
     /**
      * @return {@code true} if the crop survived.
      */
-    public static boolean growthTick(Level level, BlockPos pos, BlockState state, CropBlockEntity crop)
-    {
+    public static boolean growthTick(Level level, BlockPos pos, BlockState state, CropBlockEntity crop) {
         final long firstTick = crop.getLastGrowthTick(), thisTick = Calendars.SERVER.getTicks();
         long tick = firstTick + CropHelpers.UPDATE_INTERVAL, lastTick = firstTick;
-        for (; tick < thisTick; tick += CropHelpers.UPDATE_INTERVAL)
-        {
-            if (!CropHelpers.growthTickStep(level, pos, state, level.getRandom(), lastTick, tick, crop))
-            {
+        for (; tick < thisTick; tick += CropHelpers.UPDATE_INTERVAL) {
+            if (!CropHelpers.growthTickStep(level, pos, state, level.getRandom(), lastTick, tick, crop)) {
                 return false;
             }
             lastTick = tick;
@@ -71,8 +65,7 @@ public final class CropHelpers
         return lastTick >= thisTick || CropHelpers.growthTickStep(level, pos, state, level.getRandom(), lastTick, thisTick, crop);
     }
 
-    public static boolean growthTickStep(Level level, BlockPos pos, BlockState state, RandomSource random, long fromTick, long toTick, CropBlockEntity crop)
-    {
+    public static boolean growthTickStep(Level level, BlockPos pos, BlockState state, RandomSource random, long fromTick, long toTick, CropBlockEntity crop) {
         // Calculate invariants
         final ICalendar calendar = Calendars.get(level);
         final BlockPos sourcePos = pos.below();
@@ -94,8 +87,7 @@ public final class CropHelpers
 
         final FarmlandBlockEntity.NutrientType primaryNutrient = cropBlock.getPrimaryNutrient();
         float nutrientsAvailable = 0, nutrientsRequired = NUTRIENT_CONSUMPTION * tickDelta, nutrientsConsumed = 0;
-        if (level.getBlockEntity(sourcePos) instanceof IFarmland farmland)
-        {
+        if (level.getBlockEntity(sourcePos) instanceof IFarmland farmland) {
             nutrientsAvailable = farmland.getNutrient(primaryNutrient);
             nutrientsConsumed = farmland.consumeNutrientAndResupplyOthers(primaryNutrient, nutrientsRequired);
         }
@@ -114,16 +106,14 @@ public final class CropHelpers
         expiry *= localExpiryLimit / EXPIRY_LIMIT;
 
         final float growthLimit = cropBlock.getGrowthLimit(level, pos, state);
-        if (remainingGrowthDelta > 0 && growing && growth < growthLimit)
-        {
+        if (remainingGrowthDelta > 0 && growing && growth < growthLimit) {
             // Allocate to growth
             final float delta = Math.min(remainingGrowthDelta, growthLimit - growth);
 
             growth += delta;
             remainingGrowthDelta -= delta;
         }
-        if (remainingGrowthDelta > 0)
-        {
+        if (remainingGrowthDelta > 0) {
             // Allocate remaining growth to expiry
             final float delta = Math.min(remainingGrowthDelta, localExpiryLimit - expiry);
 
@@ -133,20 +123,16 @@ public final class CropHelpers
         // Calculate yield, which depends both on a flat rate per growth, and on the nutrient satisfaction, which is a measure of nutrient consumption over the growth time.
         final float growthDelta = growth - initialGrowth;
         final float nutrientSatisfaction;
-        if (growthDelta <= 0 || nutrientsRequired <= 0)
-        {
+        if (growthDelta <= 0 || nutrientsRequired <= 0) {
             nutrientSatisfaction = 1; // Either condition causes the below formula to result in NaN
-        }
-        else
-        {
+        } else {
             nutrientSatisfaction = Math.min(1, (totalGrowthDelta / growthDelta) * (nutrientsAvailable / nutrientsRequired));
         }
 
         actualYield += growthDelta * Helpers.lerp(nutrientSatisfaction, YIELD_MIN, YIELD_LIMIT);
 
         // Check if the crop should've expired.
-        if (expiry >= localExpiryLimit || !healthy)
-        {
+        if (expiry >= localExpiryLimit || !healthy) {
             // Lenient here - instead of assuming it expired at the start of the duration, we assume at the end. Including growth during this period.
             cropBlock.die(level, pos, state, growth >= 1);
             return false;
@@ -163,50 +149,41 @@ public final class CropHelpers
         return true;
     }
 
-    private static boolean checkClimate(ClimateRange range, int hydration, float firstTemperature, float secondTemperature, boolean allowWiggle)
-    {
+    private static boolean checkClimate(ClimateRange range, int hydration, float firstTemperature, float secondTemperature, boolean allowWiggle) {
         return range.checkBoth(hydration, firstTemperature, allowWiggle) && range.checkTemperature(secondTemperature, allowWiggle) == ClimateRange.Result.VALID;
     }
 
-    public static boolean useFertilizer(Level level, Player player, InteractionHand hand, BlockPos farmlandPos)
-    {
+    public static boolean useFertilizer(Level level, Player player, InteractionHand hand, BlockPos farmlandPos) {
         final ItemStack stack = player.getItemInHand(hand);
         final Fertilizer fertilizer = Fertilizer.get(stack);
-        if (fertilizer != null && level.getBlockEntity(farmlandPos) instanceof IFarmland farmland)
-        {
-            if (!level.isClientSide())
-            {
+        if (fertilizer != null && level.getBlockEntity(farmlandPos) instanceof IFarmland farmland) {
+            if (!level.isClientSide()) {
                 int repeat = -1;
-                if (player.isShiftKeyDown())
-                {
+                if (player.isShiftKeyDown()) {
                     repeat = minAmountRequiredToNextFillBar(farmland, fertilizer, FarmlandBlockEntity.NutrientType.NITROGEN, repeat);
                     repeat = minAmountRequiredToNextFillBar(farmland, fertilizer, FarmlandBlockEntity.NutrientType.POTASSIUM, repeat);
                     repeat = minAmountRequiredToNextFillBar(farmland, fertilizer, FarmlandBlockEntity.NutrientType.PHOSPHOROUS, repeat);
                     repeat = Math.min(repeat, stack.getCount());
                 }
-                if (repeat == -1)
-                {
+                if (repeat == -1) {
                     repeat = 1; // By default, we consume 1
                 }
                 if ((fertilizer.nitrogen() == 0 || farmland.getNutrient(FarmlandBlockEntity.NutrientType.NITROGEN) == 1)
                     && (fertilizer.potassium() == 0 || farmland.getNutrient(FarmlandBlockEntity.NutrientType.POTASSIUM) == 1)
-                    && (fertilizer.phosphorus() == 0 || farmland.getNutrient(FarmlandBlockEntity.NutrientType.PHOSPHOROUS) == 1))
-                {
+                    && (fertilizer.phosphorus() == 0 || farmland.getNutrient(FarmlandBlockEntity.NutrientType.PHOSPHOROUS) == 1)) {
                     // Don't consume any fertilizer, as it won't do anything.
                     return false;
                 }
 
                 farmland.addNutrients(fertilizer, repeat);
-                if (!player.isCreative())
-                {
+                if (!player.isCreative()) {
                     stack.shrink(repeat);
                 }
 
                 IFarmland.addNutrientParticles((ServerLevel) level, farmlandPos.above(), fertilizer);
                 Helpers.playSound(level, farmlandPos, TFCSounds.FERTILIZER_USE.get());
 
-                if (farmland.isMaxedOut() && player instanceof ServerPlayer serverPlayer)
-                {
+                if (farmland.isMaxedOut() && player instanceof ServerPlayer serverPlayer) {
                     TFCAdvancements.FULL_FERTILIZER.trigger(serverPlayer);
                 }
             }
@@ -218,13 +195,10 @@ public final class CropHelpers
     /**
      * We do this instead of looping because then we only call `addNutrients` once and reduce network load, since that will cause a sync.
      */
-    private static int minAmountRequiredToNextFillBar(IFarmland farmland, Fertilizer fertilizer, FarmlandBlockEntity.NutrientType type, int prevValue)
-    {
-        if (fertilizer.getNutrient(type) > 0 && farmland.getNutrient(type) < 1)
-        {
+    private static int minAmountRequiredToNextFillBar(IFarmland farmland, Fertilizer fertilizer, FarmlandBlockEntity.NutrientType type, int prevValue) {
+        if (fertilizer.getNutrient(type) > 0 && farmland.getNutrient(type) < 1) {
             final int requiredValue = Mth.ceil((1 - farmland.getNutrient(type)) / fertilizer.getNutrient(type));
-            if (prevValue == -1 || requiredValue < prevValue)
-            {
+            if (prevValue == -1 || requiredValue < prevValue) {
                 return requiredValue;
             }
         }
