@@ -135,14 +135,15 @@ public sealed class ChunkData
         return accumulatedRainfall;
     }
 
-    public void setAccumulatedRainfall(float rainfall)
+    public void setAccumulatedRainfall(ChunkAccess chunk, float rainfall)
     {
         this.accumulatedRainfall = Mth.clamp(rainfall, 0, MAX_ACCUMULATED_RAINFALL);
+        chunk.setUnsaved(true);
     }
 
-    public void addAccumulatedRainfall(float rainfall)
+    public void addAccumulatedRainfall(ChunkAccess chunk, float rainfall)
     {
-        setAccumulatedRainfall(getAccumulatedRainfall() + rainfall);
+        setAccumulatedRainfall(chunk, getAccumulatedRainfall() + rainfall);
     }
 
     public float getRainfall(BlockPos pos)
@@ -306,6 +307,8 @@ public sealed class ChunkData
             nbt.put("temperature", temperatureLayer.write());
             nbt.putByte("forestType", (byte) forestType.ordinal());
             nbt.putFloat("accumulatedRainfall", accumulatedRainfall);
+            nbt.putLong("lastRandomTick", lastRandomTick);
+            nbt.putLong("lastRainTick", lastRainTick);
         }
         return nbt;
     }
@@ -328,6 +331,8 @@ public sealed class ChunkData
             temperatureLayer = new LerpFloatLayer(nbt.getCompound("temperature"));
             forestType = ForestType.valueOf(nbt.getByte("forestType"));
             accumulatedRainfall = nbt.getFloat("accumulatedRainfall");
+            lastRandomTick = nbt.getLong("lastRandomTick");
+            lastRainTick = nbt.getLong("lastRainTick");
         }
     }
 

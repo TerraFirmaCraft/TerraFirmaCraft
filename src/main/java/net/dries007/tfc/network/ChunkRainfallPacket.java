@@ -46,7 +46,7 @@ public record ChunkRainfallPacket(
             final ChunkData data = ChunkData.get(chunk);
             if (data.status() != ChunkData.Status.INVALID)
             {
-                data.setAccumulatedRainfall(accumulatedRainfall);
+                data.setAccumulatedRainfall(chunk, accumulatedRainfall);
             }
         }
     }
