@@ -8,6 +8,13 @@ package net.dries007.tfc.common.blocks.soil;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+
+import net.dries007.tfc.common.blockentities.IFarmland;
+import net.dries007.tfc.util.calendar.Calendars;
+import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.util.climate.ClimateModel;
+import net.dries007.tfc.util.tracker.WorldTracker;
+import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -40,18 +47,22 @@ import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.crop.CropHelpers;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.Climate;
-import net.dries007.tfc.util.climate.ClimateModel;
 import net.dries007.tfc.util.climate.ClimateRange;
 import net.dries007.tfc.util.registry.RegistrySoilVariant;
-import net.dries007.tfc.world.chunkdata.ChunkData;
 
 public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock, IForgeBlockExtension, EntityBlockExtension
 {
     public static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 15, 16);
 
-    public static Component getHydrationTooltip(LevelAccessor level, BlockPos pos, ClimateRange validRange, boolean allowWiggle)
+    public static Component getHydrationTooltip(Level level, BlockPos pos, ClimateRange validRange, boolean allowWiggle)
     {
-        return getHydrationTooltip(level, pos, validRange, allowWiggle, getHydration(level, pos));
+        float accumulatedRainfall = 0;
+        if (level.getBlockEntity(pos) instanceof IFarmland farmland)
+        {
+            accumulatedRainfall = farmland.getAdditionalWater();
+        }
+
+        return getHydrationTooltip(level, pos, validRange, allowWiggle, getHydration(level, pos, accumulatedRainfall));
     }
 
     public static Component getHydrationTooltip(LevelAccessor level, BlockPos pos, ClimateRange validRange, boolean allowWiggle, int hydration)
@@ -90,19 +101,52 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
         return tooltip;
     }
 
+    public static int getRainfallBoost(float accumulatedRainfall)
+    {
+        return (int) (30 * accumulatedRainfall / ChunkData.MAX_ACCUMULATED_RAINFALL);
+    }
+
     /**
      * @return A value in the range [0, 100]
      */
-    public static int getHydration(LevelAccessor level, BlockPos pos)
+    public static int getHydration(Level level, BlockPos pos, float accumulatedRainfall)
     {
         if (Helpers.isFluid(level.getFluidState(pos.above()), TFCTags.Fluids.HYDRATING))
         {
             return 100; // special case for waterlogged crops
         }
-        final ChunkData data = ChunkData.get(level, pos);
-        final float rainfall = data.getRainfall(pos); // Rainfall forms a baseline, providing up to 60% hydration
+
+        final WorldTracker tracker = WorldTracker.get(level);
+        final ClimateModel model = tracker.getClimateModel();
+
         final int waterCost = findMinCostWater(level, pos); // Nearby water contributes an additional 0 - 80% hydration based on proximity
-        return Mth.clamp((int) (60 * rainfall / ClimateModel.MAX_RAINFALL) + 20 * (5 - waterCost), 0, 100);
+        final int waterBoost = 20 * (5 - waterCost); // Nearby water contributes an additional 0 - 80% hydration based on proximity
+        final int rainfallBoost = getRainfallBoost(accumulatedRainfall); // Up to 30% bonus from rainfall
+        // TODO :: Maybe this humidity factor should have a lower impact when temperature is lower?
+        final int humidityBoost = (int) (30 * Mth.clampedMap(model.getGroundwater(level, pos), ClimateModel.MIN_RAINFALL, ClimateModel.MAX_RAINFALL, 0, 1)); // Up to 30% bonus from groundwater
+        return Mth.clamp(rainfallBoost + waterBoost + humidityBoost, 0, 100);
+    }
+
+    /**
+     * @return A value in the range [0, 100]
+     */
+    public static int getHydration(Level level, BlockPos pos, float accumulatedRainfall, long fromTick, long toTick)
+    {
+        if (Helpers.isFluid(level.getFluidState(pos.above()), TFCTags.Fluids.HYDRATING))
+        {
+            return 100; // special case for waterlogged crops
+        }
+
+        final WorldTracker tracker = WorldTracker.get(level);
+        final ClimateModel model = tracker.getClimateModel();
+        final ICalendar calendar = Calendars.get(level);
+
+        final int waterCost = findMinCostWater(level, pos); // Nearby water contributes an additional 0 - 80% hydration based on proximity
+        final int waterBoost = 20 * (5 - waterCost); // Nearby water contributes an additional 0 - 80% hydration based on proximity
+        final int rainfallBoost = getRainfallBoost(accumulatedRainfall); // Up to 30% bonus from rainfall
+        // TODO :: Maybe this humidity factor should have a lower impact when temperature is lower?
+        final int humidityBoost = (int) (30 * Mth.clampedMap(model.getGroundwater(level, pos, fromTick, toTick, calendar.getCalendarDaysInMonth()), ClimateModel.MIN_RAINFALL, ClimateModel.MAX_RAINFALL, 0, 1)); // Up to 30% bonus from groundwater
+        return Mth.clamp(rainfallBoost + waterBoost + humidityBoost, 0, 100);
     }
 
     public static void turnToDirt(BlockState state, Level level, BlockPos pos)
@@ -113,7 +157,7 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
     /**
      * @return A value in [1, 5]
      */
-    private static int findMinCostWater(LevelAccessor level, BlockPos pos)
+    public static int findMinCostWater(LevelAccessor level, BlockPos pos)
     {
         final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
 
@@ -201,11 +245,28 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
     }
 
     @Override
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
+    {
+        tick(state, level, pos, random);
+    }
+
+    @Override
     protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
     {
         if (!state.canSurvive(level, pos))
         {
             turnToDirt(state, level, pos);
+        }
+        else
+        {
+            // Only perform rainfall calculation on server.
+            if (!level.isClientSide())
+            {
+                if (level.getBlockEntity(pos) instanceof IFarmland farmland)
+                {
+                    farmland.waterTick();
+                }
+            }
         }
     }
 

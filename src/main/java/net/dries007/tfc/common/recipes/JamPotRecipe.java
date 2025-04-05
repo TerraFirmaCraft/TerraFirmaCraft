@@ -78,6 +78,7 @@ public class JamPotRecipe extends PotRecipe
     @Override
     public PotOutput getOutput(PotBlockEntity.PotInventory inventory)
     {
+        inventory.clearFluid();
         return new JamOutput(jarredStack.copy(), jarredStackWithLid.copy(), texture);
     }
 

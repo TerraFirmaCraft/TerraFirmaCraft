@@ -2338,6 +2338,7 @@ def make_javelin(rm: ResourceManager, name_parts: str, texture: str) -> 'ItemCon
     })
 
     return rm.custom_item_model(name_parts, 'neoforge:separate_transforms', {
+        'textures': {'particle': texture},
         'gui_light': 'front',
         'overrides': [{'predicate': {'tfc:throwing': 1}, 'model': model + '_throwing'}],
         'base': {'parent': model + '_in_hand'},

@@ -228,7 +228,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             item_spotlight('tfc:ore/amethyst', 'Amethyst', text_contents='Amethyst is a decorative $(thing)Mineral$() which can be used to make $(l:mechanics/glassworking)Glass$(). It can be found in $(thing)Sedimentary$() and $(thing)Metamorphic$() rock beneath rivers above y=40.').link('tfc:ore/%s' % 'amethyst').anchor('amethyst'),
             block_spotlight('', 'Amethyst in Marble.', 'tfc:ore/%s/%s' % ('amethyst', 'marble')),
             item_spotlight('tfc:ore/opal', 'Opal', text_contents='Opal is a decorative $(thing)Mineral$(). It can be found in $(thing)Sedimentary) and $(thing)Igneous Extrusive$() rock beneath rivers above y=40.').link('tfc:ore/%s' % 'opal').anchor('opal'),
-            block_spotlight('', 'Opal in Basalt.', 'tfc:ore/%s/%s' % ('amethyst', 'basalt')),
+            block_spotlight('', 'Opal in Basalt.', 'tfc:ore/%s/%s' % ('opal', 'basalt')),
         )),
         entry('climate', 'Calendar and Climate', 'tfc:textures/gui/book/icons/thermometer.png', pages=(
             # Overview of both temperature and rainfall and where they spawn on X/Z

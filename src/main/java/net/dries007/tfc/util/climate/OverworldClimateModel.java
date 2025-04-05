@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.util.climate;
 
+import com.mojang.datafixers.util.Pair;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -56,6 +57,19 @@ public class OverworldClimateModel implements ClimateModel
         ByteBufCodecs.FLOAT, c -> c.temperatureScale,
         OverworldClimateModel::new
     );
+
+    private static final long RAIN_LENGTH_SALT = 8917234598231321L;
+    private static final long RAIN_INTENSITY_SALT = 9797234798136713L;
+    private static final long RAIN_SEGMENT_LENGTH = 66_000;
+
+    // On average, the game will rain for 18 ticks out of a 66 tick segment, then repeat, given that the
+    // climate's rainfall is at MAX_RAINFALL (since it will be considered raining if there any any raining
+    // intensity at all). This value is the percentage of the time that it will rain in a MAX_RAINFALL climate,
+    // and is used to scale the number of ticks that are considered raining to get a baseline precipitation value.
+    //
+    private static final float AVERAGE_RAINFALL_INTENSITY = (float) 18_000 / RAIN_SEGMENT_LENGTH;
+
+    private static final float MILLIMETERS_RAIN_EVAPORATED_PER_TICK = 0.00025f;
 
     /**
      * Obtain the climate model for the current dimension, assuming it is an {@link OverworldClimateModel}
@@ -180,10 +194,8 @@ public class OverworldClimateModel implements ClimateModel
     @Override
     public float getRain(long calendarTicks)
     {
-        final long salt = 8917234598231321L;
-        final long segmentLength = 66_000;
-        final long segmentId = Math.floorDiv(calendarTicks, segmentLength);
-        final long segmentLeft = segmentId * segmentLength;
+        final long segmentId = Math.floorDiv(calendarTicks, RAIN_SEGMENT_LENGTH);
+        final long segmentLeft = segmentId * RAIN_SEGMENT_LENGTH;
 
         // This works by breaking up the entire timeline into "segments", of exactly 66_000 in length. We generate exactly
         // one rainfall section into each segment, of a random length between 12_000 and 24_000. This mirrors vanilla behavior
@@ -194,17 +206,17 @@ public class OverworldClimateModel implements ClimateModel
         // and then we interpolate based on the rainfall at a given position to know if it is truly raining.
 
         // Infer the default position of the next segment rainfall, in order to apply boundary conditions
-        final RandomSource nextSegment = seededRandom(segmentId + 1, salt);
+        final RandomSource nextSegment = seededRandom(segmentId + 1, RAIN_LENGTH_SALT);
         final int nextLength = nextSegment.nextIntBetweenInclusive(12_000, 24_000);
-        final int nextLeft = (int) (nextSegment.nextFloat() * (segmentLength - 12_000 - nextLength)); // Need to use `nextFloat()` here for stability
+        final int nextLeft = (int) (nextSegment.nextFloat() * (RAIN_SEGMENT_LENGTH - 12_000 - nextLength)); // Need to use `nextFloat()` here for stability
 
         // The boundary we leave on the right, in order to prevent merging
         final int boundaryRight = Math.min(0, 12_000 - nextLeft);
 
         // Calculate the current segment
-        final RandomSource segment = seededRandom(segmentId, salt);
+        final RandomSource segment = seededRandom(segmentId, RAIN_LENGTH_SALT);
         final int length = segment.nextIntBetweenInclusive(12_000, 24_000);
-        final int left = (int) (segment.nextFloat() * (segmentLength - boundaryRight - nextLength));
+        final int left = (int) (segment.nextFloat() * (RAIN_SEGMENT_LENGTH - boundaryRight - nextLength));
 
         if (calendarTicks < segmentLeft + left || calendarTicks > segmentLeft + left + length)
         {
@@ -212,12 +224,112 @@ public class OverworldClimateModel implements ClimateModel
         }
 
         // We are raining, so calculate intensity, and distance to center
+
+        // We need a seperate random source for the intensity, since it needs to be consistent with the getDeltaRainInMillimeters calculation
+        final RandomSource intensity = seededRandom(segmentId, RAIN_INTENSITY_SALT);
+
         final int halfLength = length / 2;
-        final float rainIntensity = segment.nextFloat();
+        final float rainIntensity = intensity.nextFloat();
         final float timeIntensity = 1f - Math.abs((segmentLeft + left + halfLength) - calendarTicks) / (float) halfLength;
 
         // Average the two factors
         return 0.5f * (rainIntensity + timeIntensity);
+    }
+
+    // Returns intensityTimeSum and ticksNotRainingSum
+    private Pair<Long, Long> getDeltaRainInMillimeters(Level level, BlockPos pos, long fromTick, long toTick, float rainfall, int calendarDaysInMonth)
+    {
+        final int segmentId = (int) Math.floorDiv(fromTick, RAIN_SEGMENT_LENGTH);
+        final long segmentLeft = segmentId * RAIN_SEGMENT_LENGTH;
+
+        // Infer the default position of the next segment rainfall, in order to apply boundary conditions
+        final RandomSource nextSegment = seededRandom(segmentId + 1, RAIN_LENGTH_SALT);
+        final int nextLength = nextSegment.nextIntBetweenInclusive(12_000, 24_000);
+        final int nextLeft = (int) (nextSegment.nextFloat() * (RAIN_SEGMENT_LENGTH - 12_000 - nextLength)); // Need to use `nextFloat()` here for stability
+
+        // The boundary we leave on the right, in order to prevent merging
+        final int boundaryRight = Math.min(0, 12_000 - nextLeft);
+
+        // Calculate the current segment
+        final RandomSource segment = seededRandom(segmentId, RAIN_LENGTH_SALT);
+        final int length = segment.nextIntBetweenInclusive(12_000, 24_000);
+        final int left = (int) (segment.nextFloat() * (RAIN_SEGMENT_LENGTH - boundaryRight - nextLength));
+
+        if (toTick < segmentLeft + left || fromTick > segmentLeft + left + length)
+        {
+            return new Pair<>(0L, toTick - fromTick); // Not raining, since we're not within the target segment
+        }
+
+        // We are raining, so calculate intensity, and distance to center
+
+        // We need a seperate random source for the intensity, since it needs to be consistent with the getAverageRain calculation
+        final RandomSource intensity = seededRandom(segmentId, RAIN_INTENSITY_SALT);
+
+        final int halfLength = length / 2;
+        final float rainIntensity = intensity.nextFloat();
+
+        float rainfallFactor = Mth.clampedMap(rainfall, ClimateModel.MIN_RAINFALL, ClimateModel.MAX_RAINFALL, 1, 0);
+        // Calculate the required time intensity needed for the rainfall to be positive
+        float requiredTimeIntensity = (rainfallFactor - rainIntensity * 0.5f) * 2.f;
+        if (requiredTimeIntensity < 0)
+        {
+            requiredTimeIntensity = 0;
+        }
+
+        // Take the intensity equation, and solve for the required time intensity
+        long trueLeft = (long) ((segmentLeft + left + halfLength) - (1 - requiredTimeIntensity) * halfLength);
+        long trueRight = (long) ((segmentLeft + left + halfLength) + (1 - requiredTimeIntensity) * halfLength);
+        if (toTick < trueLeft || fromTick > trueRight)
+        {
+            return new Pair<>(0L, toTick - fromTick); // Not raining, since we don't have enough intensity to overcome the climate
+        }
+
+        long fromTickInRain = Math.max(fromTick, trueLeft);
+        long toTickInRain = Math.min(toTick, trueRight);
+
+        if (getTemperature(level, pos, fromTickInRain, toTickInRain, calendarDaysInMonth) < 0)
+        {
+            return new Pair<>(0L, toTick - fromTick); // Not raining, since we're below freezing
+        }
+
+        return new Pair<>(toTickInRain - fromTickInRain, (toTick - fromTick) - (toTickInRain - fromTickInRain));
+    }
+
+    @Override
+    public float getDeltaRainInMillimeters(Level level, BlockPos pos, long fromTick, long toTick, float rainfall, long calendarTicksInYear, int calendarDaysInMonth)
+    {
+        final int segmentStart = (int) Math.floorDiv(fromTick, RAIN_SEGMENT_LENGTH);
+        final int segmentEnd = (int) Math.floorDiv(toTick, RAIN_SEGMENT_LENGTH);
+        final long totalTicks = toTick - fromTick;
+        final long calendarTicksInMonth = calendarTicksInYear / ICalendar.MONTHS_IN_YEAR;
+        if (totalTicks > calendarTicksInMonth)
+        {
+            // Clamp to one month, since the impact of rain beyond that is negligible
+            toTick = fromTick - calendarTicksInMonth;
+        }
+
+        long ticksRainingSum = 0;
+        long ticksNotRainingSum = 0;
+        // Apply all the full segments, and then apply the partial segment at the end
+        for (int segmentId = segmentStart; segmentId < segmentEnd - 1; segmentId++)
+        {
+            Pair<Long, Long> result = getDeltaRainInMillimeters(level, pos, segmentId * RAIN_SEGMENT_LENGTH, (segmentId + 1) * RAIN_SEGMENT_LENGTH, rainfall, calendarDaysInMonth);
+            ticksRainingSum += result.getFirst();
+            ticksNotRainingSum += result.getSecond();
+        }
+
+        final long finalPartialRainSegmentStart = Math.max(segmentEnd * RAIN_SEGMENT_LENGTH, fromTick);
+        Pair<Long, Long> result = getDeltaRainInMillimeters(level, pos, finalPartialRainSegmentStart, toTick, rainfall, calendarDaysInMonth);
+        ticksRainingSum += result.getFirst();
+        ticksNotRainingSum += result.getSecond();
+
+        // This is the millimeters of rain accumulated per tick of the weather. See AVERAGE_RAINFALL_INTENSITY for more info.
+        final double rainPerRainTickInMillimeters = (MAX_RAINFALL / (AVERAGE_RAINFALL_INTENSITY * calendarTicksInYear));
+        final float deltaHydration = (float) (rainPerRainTickInMillimeters * ticksRainingSum);
+        final float dehydrationFactor = Mth.clampedMap(rainfall, ClimateModel.MIN_RAINFALL, ClimateModel.MAX_RAINFALL, 2.f, 0.5f);
+        final float deltaDehydration = ticksNotRainingSum * MILLIMETERS_RAIN_EVAPORATED_PER_TICK * dehydrationFactor;
+
+        return deltaHydration - deltaDehydration;
     }
 
     @Override

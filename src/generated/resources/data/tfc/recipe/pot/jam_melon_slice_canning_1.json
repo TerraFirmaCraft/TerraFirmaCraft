@@ -35,5 +35,6 @@
       ]
     }
   ],
-  "temperature": 300.0
+  "temperature": 300.0,
+  "uses_all_fluid": false
 }

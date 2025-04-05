@@ -31,6 +31,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCPoiTypes;
@@ -43,6 +44,7 @@ import net.dries007.tfc.common.blocks.ThinSpikeBlock;
 import net.dries007.tfc.common.blocks.plant.KrummholzBlock;
 import net.dries007.tfc.mixin.accessor.PoiSectionAccessor;
 import net.dries007.tfc.mixin.accessor.SectionStorageAccessor;
+import net.dries007.tfc.network.ChunkRainfallPacket;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.climate.ClimateModel;
@@ -94,14 +96,14 @@ public final class WeatherHelpers
 
         return isPrecipitating(rainIntensity, rainValue)
             ? model.getTemperature(level, pos) > 0f
-                ? Biome.Precipitation.RAIN
-                : Biome.Precipitation.SNOW
+            ? Biome.Precipitation.RAIN
+            : Biome.Precipitation.SNOW
             : Biome.Precipitation.NONE;
     }
 
     /**
      * @param rainIntensity The rainfall intensity, i.e. {@link ClimateModel#getRain}
-     * @param rainfall The time-variant average rainfall, i.e. {@link ClimateModel#getRainfall}
+     * @param rainfall      The time-variant average rainfall, i.e. {@link ClimateModel#getRainfall}
      * @return {@code true} if it is precipitating (rain or snow) with the provided values.
      */
     public static boolean isPrecipitating(float rainIntensity, float rainfall)
@@ -116,6 +118,7 @@ public final class WeatherHelpers
 
     /**
      * Called in replacement of {@link ServerLevel#advanceWeatherCycle()} for worlds that have a climate-based weather cycle
+     *
      * @return {@code true} if the weather cycle was handled for this dimension.
      */
     public static boolean advanceWeatherCycle(ServerLevel level)
@@ -213,11 +216,24 @@ public final class WeatherHelpers
         final long currentTick = Calendars.SERVER.getTicks();
         final long currentCalendarTick = Calendars.SERVER.getCalendarTicks();
         final long timeSinceTick = currentTick - data.getLastRandomTick();
+        final long timeSinceLastRainTick = currentTick - data.getLastRainTick();
 
         final ChunkPos chunkPos = chunk.getPos();
         final BlockPos surfacePos = getRandomSurfacePos(level, chunkPos);
-        final float rainfall = model.getRainfall(level, surfacePos);
+        final float rainfall = model.getRainfall(level, surfacePos, data.getLastRandomTick(), currentTick, Calendars.SERVER.getCalendarDaysInMonth());
         final int daysInMonth = Calendars.SERVER.getCalendarDaysInMonth();
+
+        // Update rainfall accumulation for this chunk periodically
+        if (timeSinceLastRainTick > 1_000)
+        {
+            final long firstCalendarTick = Calendars.SERVER.getCalendarTicks() + Calendars.SERVER.getFixedCalendarTicksFromTick(data.getLastRainTick() - Calendars.SERVER.getTicks());
+            final long secondCalendarTick = Calendars.SERVER.getCalendarTicks();
+
+            final float rainfallForRainTick = model.getRainfall(level, surfacePos, firstCalendarTick, secondCalendarTick, daysInMonth);
+            data.addAccumulatedRainfall(chunk, model.getDeltaRainInMillimeters(level, surfacePos, firstCalendarTick, secondCalendarTick, rainfallForRainTick, Calendars.SERVER.getCalendarTicksInYear(), Calendars.SERVER.getCalendarDaysInMonth()));
+            data.setLastRainTick(chunk, currentTick);
+            PacketDistributor.sendToPlayersTrackingChunk(level, chunkPos, new ChunkRainfallPacket(chunkPos, data.getAccumulatedRainfall()));
+        }
 
         if (timeSinceTick > 1_000)
         {

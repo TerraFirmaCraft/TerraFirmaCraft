@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 
+import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -34,7 +35,7 @@ public enum SoilBlockType
     GRASS_PATH((self, variant) -> new PathBlock(Block.Properties.of().mapColor(MapColor.DIRT).strength(1.5f).sound(SoundType.GRASS), self.transform(), variant)),
     CLAY((self, variant) -> new DirtBlock(Block.Properties.of().mapColor(MapColor.DIRT).strength(1.5f).sound(SoundType.GRAVEL), self.transform(), variant)),
     CLAY_GRASS((self, variant) -> new ConnectedGrassBlock(Block.Properties.of().mapColor(MapColor.GRASS).randomTicks().strength(1.8f).sound(SoundType.GRASS), self.transform(), variant)),
-    FARMLAND((self, variant) -> new FarmlandBlock(ExtendedProperties.of(MapColor.DIRT).strength(1.3f).sound(SoundType.GRAVEL).isViewBlocking(TFCBlocks::always).isSuffocating(TFCBlocks::always).blockEntity(TFCBlockEntities.FARMLAND), variant)),
+    FARMLAND((self, variant) -> new FarmlandBlock(ExtendedProperties.of(MapColor.DIRT).strength(1.3f).sound(SoundType.GRAVEL).randomTicks().isViewBlocking(TFCBlocks::always).isSuffocating(TFCBlocks::always).blockEntity(TFCBlockEntities.FARMLAND).serverTicks(FarmlandBlockEntity::serverTick), variant)),
     ROOTED_DIRT((self, variant) -> new TFCRootedDirtBlock(Block.Properties.of().mapColor(MapColor.DIRT).strength(2.0f).sound(SoundType.ROOTED_DIRT), self.transform(), variant)),
     COARSE_DIRT((self, variant) -> new Block(Block.Properties.of().mapColor(MapColor.DIRT).sound(SoundType.GRAVEL).strength(1.6f).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops())),
     MUD((self, variant) -> new MudBlock(BlockBehaviour.Properties.of().mapColor(MapColor.DIRT).sound(SoundType.MUD).strength(2f).speedFactor(0.8f).isRedstoneConductor(TFCBlocks::always).isViewBlocking(TFCBlocks::always).isSuffocating(TFCBlocks::always).instrument(NoteBlockInstrument.BASEDRUM))),

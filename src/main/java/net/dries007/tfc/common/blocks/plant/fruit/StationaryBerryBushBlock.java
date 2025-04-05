@@ -6,22 +6,22 @@
 
 package net.dries007.tfc.common.blocks.plant.fruit;
 
-import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.BerryBushBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -31,7 +31,9 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
+import net.dries007.tfc.util.climate.ClimateModel;
 import net.dries007.tfc.util.climate.ClimateRange;
+import net.dries007.tfc.util.tracker.WorldTracker;
 
 public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeOverlayBlock, IBushBlock
 {
@@ -95,7 +97,7 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
 
                 final BlockPos sourcePos = pos.below();
                 final ClimateRange range = climateRange.get();
-                final int hydration = getHydration(level, sourcePos, state);
+                final int hydration = getHydration(level, sourcePos, state, currentCalendarTick, nextCalendarTick);
 
                 int monthsSpentDying = 0;
                 do
@@ -151,9 +153,20 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
         }
     }
 
-    protected int getHydration(LevelAccessor level, BlockPos pos, BlockState state)
+    protected int getHydration(Level level, BlockPos pos, BlockState state, long fromTick, long toTick)
     {
-        return FarmlandBlock.getHydration(level, pos);
+        if (Helpers.isFluid(level.getFluidState(pos.above()), TFCTags.Fluids.HYDRATING))
+        {
+            return 100; // special case for waterlogged crops
+        }
+
+        final WorldTracker tracker = WorldTracker.get(level);
+        final ClimateModel model = tracker.getClimateModel();
+        final ICalendar calendar = Calendars.get(level);
+
+        final float rainfall = model.getRainfall(level, pos, fromTick, toTick, calendar.getCalendarDaysInMonth()); // Rainfall forms a baseline, providing up to 60% hydration
+        final int waterCost = FarmlandBlock.findMinCostWater(level, pos); // Nearby water contributes an additional 0 - 80% hydration based on proximity
+        return Mth.clamp((int) (60 * rainfall / ClimateModel.MAX_RAINFALL) + 20 * (5 - waterCost), 0, 100);
     }
 
     /**
@@ -182,6 +195,7 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
     /**
      * Performs growth and (optional) propagation of the bush.
      * Propagation should be naturally limited to not cause runaway generation.
+     *
      * @return The new state of the bush at {@code pos}. This will be set by the caller.
      */
     protected BlockState growAndPropagate(Level level, BlockPos pos, RandomSource random, BlockState state)

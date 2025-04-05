@@ -30,6 +30,7 @@ import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateRange;
 import net.dries007.tfc.util.data.Fertilizer;
+import net.dries007.tfc.world.chunkdata.ChunkData;
 
 /**
  * Common growth logic for crop blocks
@@ -75,7 +76,6 @@ public final class CropHelpers
         // Calculate invariants
         final ICalendar calendar = Calendars.get(level);
         final BlockPos sourcePos = pos.below();
-        final int hydration = FarmlandBlock.getHydration(level, sourcePos);
         final long firstCalendarTick = calendar.getCalendarTicks() + calendar.getFixedCalendarTicksFromTick(fromTick - calendar.getTicks());
         final long secondCalendarTick = calendar.getCalendarTicks() + calendar.getFixedCalendarTicksFromTick(toTick - calendar.getTicks());
         final float startTemperature = Climate.getTemperature(level, pos, calendar, firstCalendarTick);
@@ -84,6 +84,8 @@ public final class CropHelpers
 
         final ICropBlock cropBlock = (ICropBlock) state.getBlock();
         final ClimateRange range = cropBlock.getClimateRange();
+
+        final int hydration = FarmlandBlock.getHydration(level, sourcePos, ChunkData.get(level, pos).getAccumulatedRainfall(), fromTick, toTick);
         final boolean growing = checkClimate(range, hydration, startTemperature, endTemperature, false);
         final boolean healthy = growing || checkClimate(range, hydration, startTemperature, endTemperature, true);
 

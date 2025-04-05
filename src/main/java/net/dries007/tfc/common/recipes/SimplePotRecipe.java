@@ -8,6 +8,7 @@ package net.dries007.tfc.common.recipes;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -28,7 +29,8 @@ public class SimplePotRecipe extends PotRecipe
     public static final MapCodec<SimplePotRecipe> CODEC = RecordCodecBuilder.<SimplePotRecipe>mapCodec(i -> i.group(
         PotRecipe.CODEC.forGetter(c -> c),
         FluidStack.CODEC.optionalFieldOf("fluid_output", FluidStack.EMPTY).forGetter(c -> c.outputFluid),
-        ItemStackProvider.CODEC.listOf(0, 5).optionalFieldOf("item_output", List.of()).forGetter(c -> c.outputItems)
+        ItemStackProvider.CODEC.listOf(0, 5).optionalFieldOf("item_output", List.of()).forGetter(c -> c.outputItems),
+        Codec.BOOL.optionalFieldOf("uses_all_fluid", true).forGetter(c -> c.usesAllFluid)
     ).apply(i, SimplePotRecipe::new))
         .validate(recipe -> {
             final boolean anyProvidersDependOnInput = recipe.outputItems.stream().anyMatch(ItemStackProvider::dependsOnInput);
@@ -43,17 +45,20 @@ public class SimplePotRecipe extends PotRecipe
         PotRecipe.STREAM_CODEC, c -> c,
         FluidStack.OPTIONAL_STREAM_CODEC, c -> c.outputFluid,
         ItemStackProvider.STREAM_CODEC.apply(ByteBufCodecs.list(5)), c -> c.outputItems,
+        ByteBufCodecs.BOOL, c -> c.usesAllFluid,
         SimplePotRecipe::new
     );
 
     protected final FluidStack outputFluid;
     protected final List<ItemStackProvider> outputItems;
+    protected final boolean usesAllFluid;
 
-    public SimplePotRecipe(PotRecipe base, FluidStack outputFluid, List<ItemStackProvider> outputProviders)
+    public SimplePotRecipe(PotRecipe base, FluidStack outputFluid, List<ItemStackProvider> outputProviders, boolean usesAllFluid)
     {
         super(base);
         this.outputFluid = outputFluid;
         this.outputItems = outputProviders;
+        this.usesAllFluid = usesAllFluid;
     }
 
     public FluidStack getDisplayFluid()
@@ -76,7 +81,18 @@ public class SimplePotRecipe extends PotRecipe
             final ItemStack input = inventory.getStackInSlot(PotBlockEntity.SLOT_EXTRA_INPUT_START + i);
             outputs.add(outputItems.get(i).getSingleStack(input));
         }
-        return new SimpleOutput(outputFluid.copy(), outputs);
+        return new SimpleOutput(usesAllFluid ? outputFluid.copy() : favorNewFluidStack(inventory.getFluidHandler().getFluidInTank(0), outputFluid), outputs);
+    }
+
+    public FluidStack favorNewFluidStack(FluidStack input, FluidStack output)
+    {
+        input = input.copy();
+        if (input.getAmount() > fluidIngredient.amount() && output.isEmpty())
+        {
+            input.setAmount(input.getAmount() - fluidIngredient.amount());
+            return input;
+        }
+        return output.copy();
     }
 
     @Override
@@ -98,6 +114,7 @@ public class SimplePotRecipe extends PotRecipe
             {
                 inventory.setStackInSlot(PotBlockEntity.SLOT_EXTRA_INPUT_START + i, itemOutputs.get(i));
             }
+            inventory.clearFluid();
             inventory.fill(fluidOutput, IFluidHandler.FluidAction.EXECUTE);
         }
     }

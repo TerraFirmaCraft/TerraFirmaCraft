@@ -1,6 +1,9 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "loader": "neoforge:separate_transforms",
+  "textures": {
+    "particle": "tfc:item/metal/javelin/blue_steel"
+  },
   "gui_light": "front",
   "overrides": [
     {
