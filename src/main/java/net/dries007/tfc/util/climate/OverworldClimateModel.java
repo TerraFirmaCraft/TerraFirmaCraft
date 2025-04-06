@@ -163,7 +163,7 @@ public class OverworldClimateModel implements ClimateModel
         final float fractionOfYear = ICalendar.getFractionOfYear(calendarTicks, daysInMonth);
 
         // For positive values of variance, drought in winter, rain in summer, reverse for negative values
-        return rainVariance == 0 ? 0 : Helpers.triangle(rainVariance * rainAverage, rainAverage, 1f, fractionOfYear + 0.75f);
+        return rainVariance == 0 ? rainAverage : Helpers.triangle(rainVariance * rainAverage, rainAverage, 1f, fractionOfYear + 0.75f);
     }
 
     @Override

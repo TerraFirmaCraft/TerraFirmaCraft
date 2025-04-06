@@ -530,8 +530,8 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(WILD_CROP_GROWS_ON).addTag(BlockTags.DIRT);
         tag(SPREADING_FRUIT_GROWS_ON).addTags(BlockTags.DIRT, FARMLANDS, Tags.Blocks.GRAVELS);
         tag(BUSH_PLANTABLE_ON).addTags(BlockTags.DIRT, FARMLANDS);
-        tag(DRY_PLANT_PLANTABLE_ON).addTags(BlockTags.SAND, Tags.Blocks.SANDS, CRACKED_EARTH, Tags.Blocks.GRAVELS, COARSE_DIRT, BUSH_PLANTABLE_ON);
-        tag(EPIPHYTE_PLANTABLE_ON).addTags(BlockTags.LOGS, STONES_RAW, STONES_HARDENED);
+        tag(DRY_PLANT_PLANTABLE_ON).addTags(BlockTags.SAND, Tags.Blocks.SANDS, CRACKED_EARTH, Tags.Blocks.GRAVELS, COARSE_DIRT, BUSH_PLANTABLE_ON).add(TFCBlocks.SANDSTONE, SandstoneBlockType.RAW);
+        tag(EPIPHYTE_PLANTABLE_ON).addTags(BlockTags.LOGS, STONES_RAW, STONES_HARDENED).add(TFCBlocks.SANDSTONE, SandstoneBlockType.RAW);
         tag(GRASS_PLANTABLE_ON)
             .addTags(BlockTags.DIRT, FARMLANDS, CLAYS)
             .add(TFCBlocks.PEAT, TFCBlocks.PEAT_GRASS);
