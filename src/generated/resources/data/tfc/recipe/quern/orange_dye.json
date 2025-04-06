@@ -21,6 +21,15 @@
     },
     {
       "item": "tfc:plant/marigold"
+    },
+    {
+      "item": "tfc:plant/flame_vine"
+    },
+    {
+      "item": "tfc:plant/palash"
+    },
+    {
+      "item": "tfc:plant/qantu"
     }
   ],
   "result": {

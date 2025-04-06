@@ -21,6 +21,18 @@
     },
     {
       "item": "tfc:plant/yellow_water_lily"
+    },
+    {
+      "item": "tfc:plant/elegant_sunburst_lichen"
+    },
+    {
+      "item": "tfc:plant/yellow_saxifrage"
+    },
+    {
+      "item": "tfc:plant/buttercup"
+    },
+    {
+      "item": "tfc:plant/sunflower"
     }
   ],
   "result": {

@@ -330,7 +330,6 @@
   "tfc.tooltip.temperature_kelvin": "%s K",
   "tfc.tooltip.farmland.mature": "§aMature",
   "tfc.tooltip.farmland.hydration": "§1Hydration: §r%s%%",
-  "tfc.tooltip.farmland.accumulated_rainfall": "§1Rainfall: §r%smm (Contributes %s%% hydration)",
   "tfc.tooltip.farmland.hydration_too_low": " - §4Too low! §r(>%s%%)",
   "tfc.tooltip.farmland.hydration_too_high": " - §4Too high! §r(<%s%%)",
   "tfc.tooltip.farmland.temperature": "§4Temperature: §r%s°C",
