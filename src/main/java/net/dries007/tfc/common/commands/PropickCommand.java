@@ -80,6 +80,6 @@ public class PropickCommand
 
     private static Object2IntMap<BlockState> clickPropick(CommandSourceStack source)
     {
-        return PropickItem.scanAreaFor(source.getLevel(), new BlockPos(source.getPosition()), PropickItem.RADIUS, TFCTags.Blocks.PROSPECTABLE);
+        return PropickItem.scanAreaFor(source.getLevel(), new BlockPos(source.getPosition()), PropickItem.RADIUS, TFCTags.Blocks.PROSPECTABLE).counts;
     }
 }

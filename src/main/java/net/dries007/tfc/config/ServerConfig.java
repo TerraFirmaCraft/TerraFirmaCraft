@@ -180,6 +180,8 @@ public class ServerConfig
     public final ForgeConfigSpec.DoubleValue jugBreakChance;
     // Items - Wooden Bucket
     public final ForgeConfigSpec.IntValue woodenBucketCapacity;
+    // Items - Propick
+    public final ForgeConfigSpec.BooleanValue disablePropickFalseNegatives;
     // Mechanics - Heat
     public final ForgeConfigSpec.DoubleValue deviceHeatingModifier;
     public final ForgeConfigSpec.DoubleValue itemHeatingModifier;
@@ -519,6 +521,9 @@ public class ServerConfig
 
         innerBuilder.pop().push("woodenBucket");
         woodenBucketCapacity = builder.apply("woodenBucketCapacity").comment("Tank capacity of a wooden bucket (in mB).").defineInRange("woodenBucketCapacity", 1000, 0, Alloy.MAX_ALLOY);
+
+        innerBuilder.pop().push("propick");
+        disablePropickFalseNegatives = builder.apply("disablePropickFalseNegatives").comment(" Disables the chance for the Prospector's Pick to give false negatives.", " Set to true to disable this mechanic.").define("disablePropickFalseNegatives", false);
 
         innerBuilder.pop().pop().push("mechanics").push("heat");
 

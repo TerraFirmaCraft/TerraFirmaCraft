@@ -9,6 +9,9 @@ package net.dries007.tfc.common.items;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
+import net.dries007.tfc.config.TFCConfig;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.ChatFormatting;
@@ -47,19 +50,22 @@ public class PropickItem extends ToolItem
     private static final int COOLDOWN = 10;
 
     private static final Random RANDOM = new Random();
-
-    public static Object2IntMap<BlockState> scanAreaFor(Level level, BlockPos center, int radius, TagKey<Block> tag)
+    public static ProspectScanResult scanAreaFor(Level level, BlockPos center, int radius, TagKey<Block> tag)
     {
-        final Object2IntMap<BlockState> results = new Object2IntOpenHashMap<>();
+        final Object2IntMap<BlockState> counts = new Object2IntOpenHashMap<>();
+        final Object2IntMap<BlockState> dists = new Object2IntOpenHashMap<>();
+
         for (BlockPos cursor : BlockPos.betweenClosed(center.getX() - radius, center.getY() - radius, center.getZ() - radius, center.getX() + radius, center.getY() + radius, center.getZ() + radius))
         {
             final BlockState state = level.getBlockState(cursor);
             if (Helpers.isBlock(state, tag))
             {
-                results.mergeInt(state, 1, Integer::sum);
+                counts.mergeInt(state, 1, Integer::sum);
+                dists.mergeInt(state, (int) Math.round(cursor.distSqr(center)), Integer::min);
             }
         }
-        return results;
+
+        return new ProspectScanResult(counts, dists);
     }
 
     private final float falseNegativeChance;
@@ -69,7 +75,14 @@ public class PropickItem extends ToolItem
     {
         super(tier, attackDamage, attackSpeed, TFCTags.Blocks.MINEABLE_WITH_PROPICK, properties);
 
-        this.falseNegativeChance = 0.3f - Mth.clamp(tier.getLevel(), 0, 5) * (0.3f / 5f);
+        if (TFCConfig.SERVER.disablePropickFalseNegatives.get())
+        {
+            this.falseNegativeChance = 0.0f;
+        }
+        else
+        {
+            this.falseNegativeChance = 0.3f - Mth.clamp(tier.getLevel(), 0, 5) * (0.3f / 5f);
+        }
     }
 
     @Override
@@ -89,6 +102,7 @@ public class PropickItem extends ToolItem
             player.getCooldowns().addCooldown(this, COOLDOWN);
 
             ProspectResult result;
+            int dist = -1;
             BlockState found = state;
             RANDOM.setSeed(Helpers.hash(19827384739241223L, pos));
             if (Helpers.isBlock(state, TFCTags.Blocks.PROSPECTABLE))
@@ -103,8 +117,9 @@ public class PropickItem extends ToolItem
             }
             else
             {
-                final Object2IntMap<BlockState> states = scanAreaFor(level, pos, RADIUS, TFCTags.Blocks.PROSPECTABLE);
-                if (states.isEmpty())
+                final ProspectScanResult states = scanAreaFor(level, pos, RADIUS, TFCTags.Blocks.PROSPECTABLE); // final Object2IntMap<BlockState> states = scanAreaFor(level, pos, RADIUS, TFCTags.Blocks.PROSPECTABLE);
+
+                if (states.counts.isEmpty())
                 {
                     // Nothing
                     result = ProspectResult.NOTHING;
@@ -112,9 +127,11 @@ public class PropickItem extends ToolItem
                 else
                 {
                     // Found Traces
-                    final ArrayList<BlockState> stateKeys = new ArrayList<>(states.keySet());
+                    final ArrayList<BlockState> stateKeys = new ArrayList<>(states.counts.keySet());
                     found = stateKeys.get(RANDOM.nextInt(stateKeys.size()));
-                    final int amount = states.getOrDefault(found, 1);
+                    final int amount = states.counts.getOrDefault(found, 1);
+                    dist = states.dists.getOrDefault(found, 100);
+
 
                     if (amount < 10) result = ProspectResult.TRACES;
                     else if (amount < 20) result = ProspectResult.SMALL;
@@ -124,8 +141,8 @@ public class PropickItem extends ToolItem
                 }
             }
 
-            MinecraftForge.EVENT_BUS.post(new ProspectedEvent(player, result, found.getBlock()));
-            PacketHandler.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new ProspectedPacket(found.getBlock(), result));
+            MinecraftForge.EVENT_BUS.post(new ProspectedEvent(player, result, dist, found.getBlock()));
+            PacketHandler.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new ProspectedPacket(found.getBlock(), result, dist));
         }
         return InteractionResult.SUCCESS;
     }

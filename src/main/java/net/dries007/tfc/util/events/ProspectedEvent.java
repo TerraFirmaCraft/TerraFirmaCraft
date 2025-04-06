@@ -21,12 +21,14 @@ public final class ProspectedEvent extends Event
 {
     private final Player player;
     private final ProspectResult type;
+    private final int dist;
     private final Block block;
 
-    public ProspectedEvent(Player player, ProspectResult type, Block block)
+    public ProspectedEvent(Player player, ProspectResult type, int dist, Block block)
     {
         this.player = player;
         this.type = type;
+        this.dist = dist;
         this.block = block;
     }
 
@@ -45,6 +47,11 @@ public final class ProspectedEvent extends Event
     {
         return type;
     }
+
+    /**
+     * @return The distance from the prospect pos the block was found
+     */
+    public int getDist() { return dist; }
 
     /**
      * If {@link #getType()} is not {@link ProspectResult#NOTHING}, then this will contain the block which was found.
