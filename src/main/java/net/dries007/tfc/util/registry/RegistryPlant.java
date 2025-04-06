@@ -33,7 +33,8 @@ public interface RegistryPlant
     int getEndTime();
 
     /**
-     * The year fraction after the hottest/wettest day of the year to start displaying blooming model
+     * The year fraction after the hottest/wettest day of the year to start displaying blooming model.
+     * Should be in range -0.5 < x < 0.5
      */
     float getBloomOffset();
 

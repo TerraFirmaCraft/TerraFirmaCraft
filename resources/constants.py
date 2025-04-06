@@ -651,6 +651,7 @@ FLOWERPOT_CROSS_PLANTS = {
     'butterfly_milkweed': 'potted',
     'calendula': 'calendula_0',
     'canna': 'canna_0',
+    'cornflower': 'cornflower_0',
     'dandelion': 'dandelion_0',
     'dead_bush': 'dead_bush0',
     'desert_flame': 'desert_flame_0',

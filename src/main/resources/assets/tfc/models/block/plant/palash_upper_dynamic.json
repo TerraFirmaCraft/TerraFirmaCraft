@@ -13,9 +13,9 @@
     "parent": "tfc:block/plant/palash_upper_2"
   },
   "sprouting": {
-    "parent": "tfc:block/plant/palash_upper_1"
+    "parent": "tfc:block/plant/palash_upper_2"
   },
   "budding": {
-    "parent": "tfc:block/plant/palash_upper_1"
+    "parent": "tfc:block/plant/palash_upper_2"
   }
 }

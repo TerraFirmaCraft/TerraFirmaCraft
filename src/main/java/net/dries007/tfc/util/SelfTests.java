@@ -295,7 +295,7 @@ public final class SelfTests
             .toList();
         final List<BlockState> missingParticleErrors = TFCBlocks.BLOCKS.getEntries()
             .stream()
-            .flatMap(states(s -> !s.isAir() && !(s.getBlock() instanceof IngotPileBlock) && !(s.getBlock() instanceof SheetPileBlock) && !(s.getBlock() instanceof PlantBlock) && !(s.getBlock() instanceof ScrapingBlock) && shaper.getParticleIcon(s) == missingParticle))
+            .flatMap(states(s -> !s.isAir() && !(s.getBlock() instanceof IngotPileBlock) && !(s.getBlock() instanceof SheetPileBlock) && !(s.getBlock() instanceof PlantBlock) && !(s.getBlock() instanceof BodyPlantBlock) && !(s.getBlock() instanceof TopPlantBlock) && !(s.getBlock() instanceof ScrapingBlock) && shaper.getParticleIcon(s) == missingParticle))
             .toList();
 
         return logErrors("{} block states with missing models:", missingModelErrors, LOGGER)

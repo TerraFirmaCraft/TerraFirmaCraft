@@ -24,6 +24,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.registry.RegistryPlant;
 
 public class BodyPlantBlock extends GrowingPlantBodyBlock implements IForgeBlockExtension
 {
@@ -36,12 +37,14 @@ public class BodyPlantBlock extends GrowingPlantBodyBlock implements IForgeBlock
 
     private final Supplier<? extends Block> headBlock;
     private final ExtendedProperties properties;
+    private final Plant plant;
 
-    public BodyPlantBlock(ExtendedProperties properties, Supplier<? extends Block> headBlock, VoxelShape shape, Direction direction)
+    public BodyPlantBlock(ExtendedProperties properties, Supplier<? extends Block> headBlock, VoxelShape shape, Direction direction, Plant plant)
     {
         super(properties.properties().dynamicShape().offsetType(OffsetType.XZ), direction, shape, true);
         this.headBlock = headBlock;
         this.properties = properties;
+        this.plant = plant;
     }
 
     @Override // lifted from AbstractPlantBlock to add leaves to it
@@ -82,5 +85,10 @@ public class BodyPlantBlock extends GrowingPlantBodyBlock implements IForgeBlock
     protected MapCodec<? extends GrowingPlantBodyBlock> codec()
     {
         return fakeBlockCodec();
+    }
+
+    public RegistryPlant getPlant()
+    {
+        return plant;
     }
 }

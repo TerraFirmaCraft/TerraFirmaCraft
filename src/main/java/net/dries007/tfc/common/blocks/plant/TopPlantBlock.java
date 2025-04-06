@@ -31,6 +31,7 @@ import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.registry.RegistryPlant;
 
 public class TopPlantBlock extends GrowingPlantHeadBlock implements IForgeBlockExtension
 {
@@ -39,14 +40,16 @@ public class TopPlantBlock extends GrowingPlantHeadBlock implements IForgeBlockE
     private final ExtendedProperties properties;
     private final int minHeight;
     private final int maxHeight;
+    private final Plant plant;
 
-    public TopPlantBlock(ExtendedProperties properties, Supplier<? extends Block> bodyBlock, Direction direction, VoxelShape shape, int minHeight, int maxHeight)
+    public TopPlantBlock(ExtendedProperties properties, Supplier<? extends Block> bodyBlock, Direction direction, VoxelShape shape, int minHeight, int maxHeight, Plant plant)
     {
         super(properties.properties().dynamicShape().offsetType(OffsetType.XZ), direction, shape, false, 0);
         this.bodyBlock = bodyBlock;
         this.properties = properties;
         this.minHeight = minHeight;
         this.maxHeight = maxHeight;
+        this.plant = plant;
     }
 
     @Override
@@ -118,4 +121,8 @@ public class TopPlantBlock extends GrowingPlantHeadBlock implements IForgeBlockE
         return fakeBlockCodec();
     }
 
+    public RegistryPlant getPlant()
+    {
+        return plant;
+    }
 }
