@@ -210,6 +210,9 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .add2(TFCBlocks.ORES)
             .add3(TFCBlocks.GRADED_ORES)
             .add(TFCBlocks.SMALL_ORES)
+            .add(TFCBlocks.HALITE)
+            .add(TFCBlocks.LIGNITE)
+            .add(TFCBlocks.BITUMINOUS_COAL)
             .addOnly2(TFCBlocks.ROCK_BLOCKS, k -> k != Rock.BlockType.GRAVEL)
             .addAll2(TFCBlocks.ROCK_DECORATIONS)
             .add(TFCBlocks.ROCK_ANVILS)
@@ -270,7 +273,8 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
                 TFCBlocks.FIRE_CLAY_BLOCK,
                 TFCBlocks.CHARCOAL_PILE,
                 TFCBlocks.CHARCOAL_FORGE,
-                TFCBlocks.SMOOTH_MUD_BRICKS
+                TFCBlocks.SMOOTH_MUD_BRICKS,
+                TFCBlocks.HARDENED_CLAY
             );
         // Sword Efficient in vanilla is 'mines faster with sword', so we don't include anything extra in there,
         // since again, we typically want to refer to sharp tools instead
@@ -289,7 +293,6 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .add2(pivot(TFCBlocks.GRADED_ORES, Ore.GARNIERITE))
             .add(TFCBlocks.ORES, Ore.CINNABAR)
             .add(TFCBlocks.ORES, Ore.CRYOLITE)
-            .add(TFCBlocks.ORES, Ore.HALITE)
             .add(TFCBlocks.ORES, Ore.LAPIS_LAZULI)
             .add(TFCBlocks.ORES, Ore.OPAL);
         // Needs Stone Tool is ~ Copper, which is every TFC pickaxe, so we don't bother here
@@ -334,12 +337,17 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
                 tag(oreBlockTagOf(ore, Ore.Grade.NORMAL)).add(ores, Ore.Grade.NORMAL);
                 tag(oreBlockTagOf(ore, Ore.Grade.RICH)).add(ores, Ore.Grade.RICH);
             }
-            else
+            else if (ore.hasBlock())
             {
                 tag(Tags.Blocks.ORES).addTag(oreBlockTagOf(ore, null));
                 tag(oreBlockTagOf(ore, null)).add(TFCBlocks.ORES, ore);
             }
         }
+        tag(Tags.Blocks.ORES).add(
+            TFCBlocks.HALITE,
+            TFCBlocks.LIGNITE,
+            TFCBlocks.BITUMINOUS_COAL
+        );
 
         // Unless there's incentive, I don't know why we would add other workstations here - also why doesn't this just use the vanilla tag?
         tag(Tags.Blocks.PLAYER_WORKSTATIONS_CRAFTING_TABLES).addTag(WORKBENCHES);
@@ -378,8 +386,6 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .add2(TFCBlocks.ORE_DEPOSITS)
             .add(TFCBlocks.SOIL.get(SoilBlockType.MUD))
             .add(TFCBlocks.SOIL.get(SoilBlockType.COARSE_DIRT))
-            .add(TFCBlocks.SOIL.get(SoilBlockType.CRACKED_EARTH))
-            .add(TFCBlocks.SOIL.get(SoilBlockType.SALTED_EARTH))
             .add(
                 TFCBlocks.WHITE_KAOLIN_CLAY,
                 TFCBlocks.PINK_KAOLIN_CLAY,

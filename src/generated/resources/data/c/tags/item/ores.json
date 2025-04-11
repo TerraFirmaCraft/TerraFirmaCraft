@@ -36,13 +36,10 @@
     "#c:ores/copper/poor",
     "#c:ores/copper/normal",
     "#c:ores/copper/rich",
-    "#c:ores/bituminous_coal",
-    "#c:ores/lignite",
     "#c:ores/gypsum",
     "#c:ores/cinnabar",
     "#c:ores/cryolite",
     "#c:ores/borax",
-    "#c:ores/halite",
     "#c:ores/graphite",
     "#c:ores/saltpeter",
     "#c:ores/sulfur",
@@ -55,6 +52,9 @@
     "#c:ores/pyrite",
     "#c:ores/ruby",
     "#c:ores/sapphire",
-    "#c:ores/topaz"
+    "#c:ores/topaz",
+    "tfc:halite",
+    "tfc:lignite",
+    "tfc:bituminous_coal"
   ]
 }

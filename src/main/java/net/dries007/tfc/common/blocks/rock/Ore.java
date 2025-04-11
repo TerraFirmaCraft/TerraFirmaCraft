@@ -11,8 +11,6 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 
-import net.dries007.tfc.common.blocks.ExtendedBlock;
-import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.registry.RegistryRock;
 
@@ -36,13 +34,10 @@ public enum Ore
     TETRAHEDRITE(Type.GRADED),
 
     // Normal
-    BITUMINOUS_COAL(Type.NORMAL),
-    LIGNITE(Type.NORMAL),
     GYPSUM(Type.NORMAL),
     CINNABAR(Type.NORMAL),
     CRYOLITE(Type.NORMAL),
     BORAX(Type.NORMAL),
-    HALITE(Type.NORMAL),
 
     // Normal + Powder
     GRAPHITE(Type.NORMAL_WITH_POWDER),
@@ -59,7 +54,12 @@ public enum Ore
     PYRITE(Type.GEM),
     RUBY(Type.GEM),
     SAPPHIRE(Type.GEM),
-    TOPAZ(Type.GEM);
+    TOPAZ(Type.GEM),
+
+    // Item Only
+    BITUMINOUS_COAL(Type.ITEM_ONLY),
+    LIGNITE(Type.ITEM_ONLY),
+    HALITE(Type.ITEM_ONLY);
 
     private final Type type;
 
@@ -80,7 +80,12 @@ public enum Ore
 
     public boolean hasPowder()
     {
-        return type != Type.NORMAL;
+        return type != Type.NORMAL && type != Type.ITEM_ONLY;
+    }
+
+    public boolean hasBlock()
+    {
+        return type != Type.ITEM_ONLY;
     }
 
     public Metal metal()
@@ -103,10 +108,6 @@ public enum Ore
     {
         // Same hardness as raw rock
         final BlockBehaviour.Properties properties = Block.Properties.of().mapColor(MapColor.STONE).sound(SoundType.STONE).strength(rock.category().hardness(6.5f), 10).requiresCorrectToolForDrops();
-        if (this == LIGNITE || this == BITUMINOUS_COAL)
-        {
-            return new ExtendedBlock(ExtendedProperties.of(properties).flammable(5, 120));
-        }
         return new Block(properties);
     }
 
@@ -117,6 +118,6 @@ public enum Ore
 
     enum Type
     {
-        GRADED, NORMAL, NORMAL_WITH_POWDER, GEM
+        GRADED, NORMAL, NORMAL_WITH_POWDER, GEM, ITEM_ONLY
     }
 }

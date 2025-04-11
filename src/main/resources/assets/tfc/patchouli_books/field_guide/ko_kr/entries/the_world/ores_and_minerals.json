@@ -644,11 +644,11 @@
           ]
         ],
         "mapping": {
-          "X": "tfc:ore/lignite/dolomite"
+          "X": "tfc:lignite"
         }
       },
       "name": "",
-      "text": "백운암 속의 갈탄.",
+      "text": "§l갈탄",
       "enable_visualize": false
     },
     {
@@ -671,11 +671,11 @@
           ]
         ],
         "mapping": {
-          "X": "tfc:ore/bituminous_coal/chert"
+          "X": "tfc:bituminous_coal"
         }
       },
       "name": "",
-      "text": "각암 속의 역청탄.",
+      "text": "§l역청탄",
       "enable_visualize": false
     },
     {
@@ -996,11 +996,11 @@
           ]
         ],
         "mapping": {
-          "X": "tfc:ore/halite/chalk"
+          "X": "tfc:halite"
         }
       },
       "name": "",
-      "text": "백악 속의 암염.",
+      "text": "Halite.",
       "enable_visualize": false
     },
     {

@@ -240,6 +240,11 @@ public interface BarrelRecipes extends Recipes
             .output(TFCFluids.SALT_WATER.getSource(), 125)
             .instant();
         barrel()
+            .input(TFCBlocks.HARDENED_CLAY)
+            .input(Fluids.WATER, 100)
+            .output(ItemStackProvider.of(Items.CLAY_BALL, 4))
+            .instant();
+        barrel()
             .input(Ingredient.of(TFCItems.POWDERS.get(Powder.LIME), TFCItems.POWDERS.get(Powder.FLUX)))
             .input(Fluids.WATER, 500)
             .output(fluidOf(SimpleFluid.LIMEWATER), 500)

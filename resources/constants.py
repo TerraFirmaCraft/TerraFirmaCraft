@@ -47,6 +47,7 @@ class Vein(NamedTuple):
     project: bool | None  # Project to surface
     project_offset: bool | None  # Project offset
     near_lava: bool | None
+    simple_blocks: bool
 
     @staticmethod
     def new(
@@ -68,6 +69,7 @@ class Vein(NamedTuple):
         deep_indicator: tuple[int, int] = (1, 0),  # Pair of (rarity, count) for underground indicators
         project: str | bool = None,  # Projects to surface. Either True or 'offset'
         near_lava: bool | None = None,
+        simple_blocks: bool = False,
     ):
         assert 0 < density < 1
         assert isinstance(rocks, tuple), 'Forgot the trailing comma in a single element tuple: %s' % repr(rocks)
@@ -75,7 +77,7 @@ class Vein(NamedTuple):
         assert project is None or project is True or project == 'offset'
 
         underground_rarity, underground_count = deep_indicator
-        return Vein(ore, 'tfc:%s_vein' % vein_type, rarity, size, min_y, max_y, density, grade, rocks, biomes, height, radius, deposits, indicator, underground_rarity, underground_count, None if project is None else True, None if project != 'offset' else True, near_lava)
+        return Vein(ore, 'tfc:%s_vein' % vein_type, rarity, size, min_y, max_y, density, grade, rocks, biomes, height, radius, deposits, indicator, underground_rarity, underground_count, None if project is None else True, None if project != 'offset' else True, near_lava, simple_blocks)
 
     def config(self) -> dict[str, Any]:
         cfg = {
@@ -374,8 +376,8 @@ ORE_VEINS: dict[str, Vein] = {
     'graphite': Vein.new('graphite', 20, 20, -30, 60, 0.4, ('gneiss', 'marble', 'quartzite', 'schist')),
 
     # Coal, spawns roughly based on IRL grade (lignite -> bituminous -> anthracite), big flat discs
-    'lignite': Vein.new('lignite', 160, 40, -20, -8, 0.85, ('sedimentary',), vein_type='disc', height=2, project='offset'),
-    'bituminous_coal': Vein.new('bituminous_coal', 210, 50, -35, -12, 0.9, ('sedimentary',), vein_type='disc', height=3, project='offset'),
+    'lignite': Vein.new('lignite', 160, 40, -20, -8, 0.85, ('sedimentary',), vein_type='disc', height=2, project='offset', simple_blocks=True),
+    'bituminous_coal': Vein.new('bituminous_coal', 210, 50, -35, -12, 0.9, ('sedimentary',), vein_type='disc', height=3, project='offset', simple_blocks=True),
 
     # Sulfur spawns near lava level in any low-level rock, common, but small veins, or in tuff near the surface
     'sulfur': Vein.new('sulfur', 4, 18, -64, -45, 0.25, ('igneous_intrusive', 'metamorphic'), vein_type='disc', height=5, near_lava=True),
@@ -392,7 +394,7 @@ ORE_VEINS: dict[str, Vein] = {
     'sylvite': Vein.new('sylvite', 60, 35, 40, 100, 0.35, ('shale', 'claystone', 'chert'), vein_type='disc', height=5),
     'borax': Vein.new('borax', 40, 23, 40, 100, 0.2, ('claystone', 'limestone', 'shale'), vein_type='disc', height=3),
     'gypsum': Vein.new('gypsum', 70, 25, 40, 100, 0.3, ('sedimentary',), vein_type='disc', height=5),
-    'halite': Vein.new('halite', 110, 35, -45, -12, 0.85, ('sedimentary',), vein_type='disc', height=4, project='offset'),
+    'halite': Vein.new('halite', 110, 35, -45, -12, 0.85, ('sedimentary',), vein_type='disc', height=4, project='offset', simple_blocks=True),
 
     # Gems - these are all fairly specific but since we don't have a gameplay need for gems they can be a bit niche
     'lapis_lazuli': Vein.new('lapis_lazuli', 30, 30, -20, 80, 0.12, ('limestone', 'marble')),

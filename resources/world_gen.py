@@ -636,7 +636,16 @@ def generate(rm: ResourceManager):
     for vein_name, vein in ORE_VEINS.items():
         rocks = expand_rocks(vein.rocks)
         ore = ORES[vein.ore]  # standard ore
-        if ore.graded:  # graded ore vein
+        if vein.simple_blocks: # simple blocks, places the same block regardless of stone replaced
+            configured_placed_feature(rm, ('vein', vein_name), vein.vein_type, {
+                **vein.config(),
+                'random_name': vein_name,
+                'blocks': [{
+                    'replace': ['tfc:rock/raw/%s' % rock],
+                    'with': [{'block': 'tfc:%s' % vein.ore}]
+                } for rock in rocks],
+            })
+        elif ore.graded:  # graded ore vein
             configured_placed_feature(rm, ('vein', vein_name), vein.vein_type, {
                 **vein.config(),
                 'random_name': vein_name,

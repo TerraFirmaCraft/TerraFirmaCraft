@@ -18,7 +18,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/shale"
+            "block": "tfc:bituminous_coal"
           }
         ]
       },
@@ -28,7 +28,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/claystone"
+            "block": "tfc:bituminous_coal"
           }
         ]
       },
@@ -38,7 +38,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/limestone"
+            "block": "tfc:bituminous_coal"
           }
         ]
       },
@@ -48,7 +48,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/conglomerate"
+            "block": "tfc:bituminous_coal"
           }
         ]
       },
@@ -58,7 +58,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/dolomite"
+            "block": "tfc:bituminous_coal"
           }
         ]
       },
@@ -68,7 +68,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/chert"
+            "block": "tfc:bituminous_coal"
           }
         ]
       },
@@ -78,7 +78,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/chalk"
+            "block": "tfc:bituminous_coal"
           }
         ]
       },
@@ -88,7 +88,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/bituminous_coal/tuff"
+            "block": "tfc:bituminous_coal"
           }
         ]
       }

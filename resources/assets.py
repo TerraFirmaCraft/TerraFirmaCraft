@@ -638,10 +638,6 @@ def generate(rm: ResourceManager):
         block.with_block_model().with_item_model().with_block_loot('tfc:dirt/%s' % soil).with_lang(lang('%s Dirt', soil))
         block = rm.blockstate(('coarse_dirt', soil), variants={'': [{'model': 'tfc:block/coarse_dirt/%s' % soil}]}, use_default_model=False)
         block.with_block_model().with_item_model().with_block_loot('tfc:coarse_dirt/%s' % soil).with_lang(lang('Coarse %s', soil))
-        block = rm.blockstate(('cracked_earth', soil), variants={'': [{'model': 'tfc:block/cracked_earth/%s' % soil}]}, use_default_model=False)
-        block.with_block_model().with_item_model().with_block_loot('tfc:cracked_earth/%s' % soil).with_lang(lang('%s Cracked Mud', soil))
-        block = rm.blockstate(('salted_earth', soil), variants={'': [{'model': 'tfc:block/salted_earth/%s' % soil}]}, use_default_model=False)
-        block.with_block_model().with_item_model().with_lang(lang('%s Salted Earth' % soil)).with_block_loot('tfc:cracked_earth/%s' % soil, '1-2 tfc:powder/salt')
         for variant in ('mud', 'rooted_dirt', 'mud_bricks'):
             rm.blockstate((variant, soil)).with_block_model().with_item_model().with_block_loot('tfc:%s/%s' % (variant, soil)).with_lang(lang('%s %s', soil, variant))
 
@@ -763,6 +759,14 @@ def generate(rm: ResourceManager):
         clay_count += 1
     rm.blockstate_multipart('kaolin_clay_grass', *grass_multipart('tfc:block/kaolin_clay_grass')).with_block_loot('1-2 tfc:kaolin_clay').with_lang(lang('kaolin clay grass'))
     grass_models('kaolin_clay_grass', 'tfc:block/kaolin_clay_grass')
+
+    # Dry clay
+    rm.blockstate('hardened_clay', use_default_model=False).with_block_model().with_block_loot('tfc:hardened_clay').with_item_model().with_lang(lang('hardened clay'))
+
+    # Stone-less Minerals
+    rm.blockstate('halite', use_default_model=False).with_block_model().with_block_loot('1-3 tfc:powder/salt').with_item_model().with_lang(lang('halite'))
+    rm.blockstate('lignite', use_default_model=False).with_block_model().with_block_loot('tfc:ore/lignite').with_item_model().with_lang(lang('lignite'))
+    rm.blockstate('bituminous_coal', use_default_model=False).with_block_model().with_block_loot('tfc:ore/bituminous_coal').with_item_model().with_lang(lang('bituminous_coal'))
 
     # Snow Piles
     block = rm.blockstate('snow_pile', variants=dict((('layers=%d' % i), {'model': 'minecraft:block/snow_height%d' % (i * 2) if i != 8 else 'minecraft:block/snow_block'}) for i in range(1, 1 + 8)))

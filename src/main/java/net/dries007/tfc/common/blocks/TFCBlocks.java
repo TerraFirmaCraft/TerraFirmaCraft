@@ -60,7 +60,6 @@ import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
 import net.dries007.tfc.common.blockentities.DecayingBlockEntity;
 import net.dries007.tfc.common.blockentities.GlassBasinBlockEntity;
 import net.dries007.tfc.common.blockentities.HotPouredGlassBlockEntity;
-import net.dries007.tfc.common.blockentities.LogPileBlockEntity;
 import net.dries007.tfc.common.blockentities.NestBoxBlockEntity;
 import net.dries007.tfc.common.blockentities.PitKilnBlockEntity;
 import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
@@ -167,6 +166,14 @@ public final class TFCBlocks
     public static final Id<Block> WHITE_KAOLIN_CLAY = register("white_kaolin_clay", () -> new Block(Properties.of().mapColor(MapColor.TERRACOTTA_WHITE).strength(5.0F).sound(SoundType.GRAVEL)));
     public static final Id<Block> KAOLIN_CLAY_GRASS = register("kaolin_clay_grass", () -> new ConnectedGrassBlock(Properties.of().mapColor(MapColor.GRASS).randomTicks().strength(5.0F).sound(SoundType.GRAVEL), RED_KAOLIN_CLAY, null, null));
 
+    public static final Id<Block> HARDENED_CLAY = register("hardened_clay", () -> new Block(Properties.of().mapColor(MapColor.TERRACOTTA_ORANGE).strength(7.0F).sound(SoundType.PACKED_MUD).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops()));
+
+    // Solid Minerals
+    public static final Id<Block> HALITE = register("halite", () -> new Block(Properties.of().mapColor(MapColor.SNOW).strength(6.0F).sound(SoundType.STONE).requiresCorrectToolForDrops()));
+    public static final Id<Block> LIGNITE = register("lignite", () -> new ExtendedBlock(ExtendedProperties.of().mapColor(MapColor.TERRACOTTA_BLACK).strength(6.0F).sound(TFCSounds.CHARCOAL).requiresCorrectToolForDrops().flammable(5, 120)));
+    public static final Id<Block> BITUMINOUS_COAL = register("bituminous_coal", () -> new ExtendedBlock(ExtendedProperties.of().mapColor(MapColor.TERRACOTTA_BLACK).strength(6.0F).sound(TFCSounds.CHARCOAL).requiresCorrectToolForDrops().flammable(5, 120)));
+
+
     public static final Map<SandBlockType, Id<Block>> SAND = Helpers.mapOf(SandBlockType.class, type ->
         register(("sand/" + type.name()), type::create)
     );
@@ -202,10 +209,11 @@ public final class TFCBlocks
     // Ores
 
     public static final Map<Rock, Map<Ore, Id<Block>>> ORES = Helpers.mapOf(Rock.class, rock ->
-        Helpers.mapOf(Ore.class, ore -> !ore.isGraded(), ore ->
+        Helpers.mapOf(Ore.class, ore -> (!ore.isGraded() && ore.hasBlock()), ore ->
             register(("ore/" + ore.name() + "/" + rock.name()), () -> ore.create(rock))
         )
     );
+
     public static final Map<Rock, Map<Ore, Map<Ore.Grade, Id<Block>>>> GRADED_ORES = Helpers.mapOf(Rock.class, rock ->
         Helpers.mapOf(Ore.class, Ore::isGraded, ore ->
             Helpers.mapOf(Ore.Grade.class, grade ->
@@ -213,9 +221,11 @@ public final class TFCBlocks
             )
         )
     );
+
     public static final Map<Ore, Id<Block>> SMALL_ORES = Helpers.mapOf(Ore.class, Ore::isGraded, type ->
         register(("ore/small_" + type.name()), () -> GroundcoverBlock.looseOre(Properties.of().mapColor(MapColor.GRASS).strength(0.05F, 0.0F).sound(SoundType.NETHER_ORE).noCollission().pushReaction(PushReaction.DESTROY)))
     );
+
     public static final Map<Rock, Map<OreDeposit, Id<Block>>> ORE_DEPOSITS = Helpers.mapOf(Rock.class, rock ->
         Helpers.mapOf(OreDeposit.class, ore ->
             register("deposit/" + ore.name() + "/" + rock.name(), () -> new Block(Block.Properties.of().mapColor(MapColor.STONE).sound(SoundType.GRAVEL).strength(rock.category().hardness(2.0f)))) // Same hardness as gravel

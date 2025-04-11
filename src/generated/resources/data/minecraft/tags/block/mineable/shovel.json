@@ -36,14 +36,6 @@
     "tfc:mud/loam",
     "tfc:mud/sandy_loam",
     "tfc:mud/silty_loam",
-    "tfc:cracked_earth/silt",
-    "tfc:cracked_earth/loam",
-    "tfc:cracked_earth/sandy_loam",
-    "tfc:cracked_earth/silty_loam",
-    "tfc:salted_earth/silt",
-    "tfc:salted_earth/loam",
-    "tfc:salted_earth/sandy_loam",
-    "tfc:salted_earth/silty_loam",
     "tfc:mud_bricks/silt",
     "tfc:mud_bricks/loam",
     "tfc:mud_bricks/sandy_loam",
@@ -191,6 +183,7 @@
     "tfc:fire_clay_block",
     "tfc:charcoal_pile",
     "tfc:charcoal_forge",
-    "tfc:smooth_mud_bricks"
+    "tfc:smooth_mud_bricks",
+    "tfc:hardened_clay"
   ]
 }

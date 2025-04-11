@@ -18,7 +18,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/lignite/shale"
+            "block": "tfc:lignite"
           }
         ]
       },
@@ -28,7 +28,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/lignite/claystone"
+            "block": "tfc:lignite"
           }
         ]
       },
@@ -38,7 +38,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/lignite/limestone"
+            "block": "tfc:lignite"
           }
         ]
       },
@@ -48,7 +48,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/lignite/conglomerate"
+            "block": "tfc:lignite"
           }
         ]
       },
@@ -58,7 +58,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/lignite/dolomite"
+            "block": "tfc:lignite"
           }
         ]
       },
@@ -68,7 +68,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/lignite/chert"
+            "block": "tfc:lignite"
           }
         ]
       },
@@ -78,7 +78,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/lignite/chalk"
+            "block": "tfc:lignite"
           }
         ]
       },
@@ -88,7 +88,7 @@
         ],
         "with": [
           {
-            "block": "tfc:ore/lignite/tuff"
+            "block": "tfc:lignite"
           }
         ]
       }

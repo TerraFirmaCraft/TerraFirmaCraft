@@ -97,6 +97,7 @@ public final class TFCCreativeTabs
         out.accept(TFCBlocks.PINK_KAOLIN_CLAY);
         out.accept(TFCBlocks.RED_KAOLIN_CLAY);
         out.accept(TFCBlocks.KAOLIN_CLAY_GRASS);
+        out.accept(TFCBlocks.HARDENED_CLAY);
 
         TFCBlocks.GROUNDCOVER.forEach((type, reg) -> {
             if (type.getVanillaItem() == null)
@@ -269,6 +270,9 @@ public final class TFCCreativeTabs
     {
         out.accept(TFCItems.RAW_IRON_BLOOM);
         out.accept(TFCItems.REFINED_IRON_BLOOM);
+        out.accept(TFCBlocks.LIGNITE);
+        out.accept(TFCBlocks.BITUMINOUS_COAL);
+        out.accept(TFCBlocks.HALITE);
         for (Ore ore : Ore.values())
         {
             if (ore.isGraded())

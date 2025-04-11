@@ -51,8 +51,8 @@ public final class SurfaceStates
     public static final SurfaceState SNOW = context -> Blocks.SNOW_BLOCK.defaultBlockState();
 
     public static final SurfaceState COARSE_SANDY_LOAM_BASE = SoilSurfaceState.soil(SoilBlockType.COARSE_DIRT, SoilBlockType.Variant.SANDY_LOAM);
-    public static final SurfaceState DRY_MUD = SoilSurfaceState.buildDryDirt(SoilBlockType.CRACKED_EARTH);
-    public static final SurfaceState SALTED_EARTH = SoilSurfaceState.buildDryDirt(SoilBlockType.SALTED_EARTH);
+    public static final SurfaceState DRY_MUD = context -> TFCBlocks.HARDENED_CLAY.get().defaultBlockState();
+    public static final SurfaceState SALTED_EARTH = context -> TFCBlocks.HALITE.get().defaultBlockState();
 
     public static final SurfaceState RIVER_SAND = context -> context.getSeaLevelRock().sand().defaultBlockState();
     public static final SurfaceState SHORE_SAND = context -> context.getBottomRock().sand().defaultBlockState();

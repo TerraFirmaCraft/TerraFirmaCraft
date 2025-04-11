@@ -644,11 +644,11 @@
           ]
         ],
         "mapping": {
-          "X": "tfc:ore/lignite/dolomite"
+          "X": "tfc:lignite"
         }
       },
       "name": "",
-      "text": "白雲石中的褐煤。",
+      "text": "褐煤",
       "enable_visualize": false
     },
     {
@@ -671,11 +671,11 @@
           ]
         ],
         "mapping": {
-          "X": "tfc:ore/bituminous_coal/chert"
+          "X": "tfc:bituminous_coal"
         }
       },
       "name": "",
-      "text": "矽質岩中的煙煤。",
+      "text": "煙煤",
       "enable_visualize": false
     },
     {
@@ -996,11 +996,11 @@
           ]
         ],
         "mapping": {
-          "X": "tfc:ore/halite/chalk"
+          "X": "tfc:halite"
         }
       },
       "name": "",
-      "text": "白堊巖中的石鹽。",
+      "text": "Halite.",
       "enable_visualize": false
     },
     {

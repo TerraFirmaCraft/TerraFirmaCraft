@@ -1,12 +1,9 @@
 {
   "values": [
-    "tfc:ore/bituminous_coal",
-    "tfc:ore/lignite",
     "tfc:ore/gypsum",
     "tfc:ore/cinnabar",
     "tfc:ore/cryolite",
     "tfc:ore/borax",
-    "tfc:ore/halite",
     "tfc:ore/graphite",
     "tfc:ore/saltpeter",
     "tfc:ore/sulfur",
@@ -20,6 +17,9 @@
     "tfc:ore/ruby",
     "tfc:ore/sapphire",
     "tfc:ore/topaz",
+    "tfc:ore/bituminous_coal",
+    "tfc:ore/lignite",
+    "tfc:ore/halite",
     "tfc:ore/poor_native_copper",
     "tfc:ore/normal_native_copper",
     "tfc:ore/rich_native_copper",

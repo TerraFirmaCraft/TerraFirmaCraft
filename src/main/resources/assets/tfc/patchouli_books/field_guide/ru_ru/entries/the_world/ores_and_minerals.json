@@ -644,11 +644,11 @@
           ]
         ],
         "mapping": {
-          "X": "tfc:ore/lignite/dolomite"
+          "X": "tfc:lignite"
         }
       },
       "name": "",
-      "text": "Лигнит в доломите.",
+      "text": "Лигнит",
       "enable_visualize": false
     },
     {
@@ -671,11 +671,11 @@
           ]
         ],
         "mapping": {
-          "X": "tfc:ore/bituminous_coal/chert"
+          "X": "tfc:bituminous_coal"
         }
       },
       "name": "",
-      "text": "Битумный уголь в кремнистом сланце.",
+      "text": "Битумный уголь",
       "enable_visualize": false
     },
     {
@@ -996,11 +996,11 @@
           ]
         ],
         "mapping": {
-          "X": "tfc:ore/halite/chalk"
+          "X": "tfc:halite"
         }
       },
       "name": "",
-      "text": "Галит в меле.",
+      "text": "Halite.",
       "enable_visualize": false
     },
     {
