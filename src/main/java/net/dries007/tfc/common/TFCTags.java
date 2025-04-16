@@ -161,6 +161,8 @@ public class TFCTags
         public static final TagKey<Block> DIRT = tag("dirt");
         public static final TagKey<Block> GRASS = tag("grass");
         public static final TagKey<Block> COARSE_DIRT = tag("coarse_dirt");
+        public static final TagKey<Block> CRACKED_EARTH = tag("cracked_earth");
+        public static final TagKey<Block> SALTED_EARTH = tag("salted_earth");
         /** Used for non-wild crop growth. */
         public static final TagKey<Block> FARMLANDS = tag("farmlands");
         public static final TagKey<Block> PATHS = tag("paths");
@@ -178,6 +180,8 @@ public class TFCTags
         public static final TagKey<Block> WILD_CROP_GROWS_ON = tag("wild_crop_grows_on");
         public static final TagKey<Block> SPREADING_FRUIT_GROWS_ON = tag("spreading_fruit_grows_on");
         public static final TagKey<Block> BUSH_PLANTABLE_ON = tag("bush_plantable_on");
+        public static final TagKey<Block> DRY_PLANT_PLANTABLE_ON = tag("dry_plant_plantable_on");
+        public static final TagKey<Block> EPIPHYTE_PLANTABLE_ON = tag("epiphyte_plantable_on");
         public static final TagKey<Block> GRASS_PLANTABLE_ON = tag("grass_plantable_on");
         public static final TagKey<Block> SEA_BUSH_PLANTABLE_ON = tag("sea_bush_plantable_on");
         public static final TagKey<Block> HALOPHYTE_PLANTABLE_ON = tag("halophyte_plantable_on");

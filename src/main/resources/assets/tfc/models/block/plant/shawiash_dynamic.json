@@ -1,0 +1,22 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "loader": "tfc:plant",
+  "blooming": {
+    "parent": "tfc:block/plant/shawiash_0"
+  },
+  "seeding": {
+    "parent": "tfc:block/plant/shawiash_1"
+  },
+  "dying": {
+    "parent": "tfc:block/plant/shawiash_2"
+  },
+  "dormant": {
+    "parent": "tfc:block/plant/shawiash_3"
+  },
+  "sprouting": {
+    "parent": "tfc:block/plant/shawiash_4"
+  },
+  "budding": {
+    "parent": "tfc:block/plant/shawiash_4"
+  }
+}

@@ -4,7 +4,7 @@
         "particle": "block/flower_pot",
         "flowerpot": "block/flower_pot",
         "dirt": "tfc:block/dirt/loam",
-        "bamboo": "tfc:block/golden_bamboo/stalk",
+        "bamboo": "tfc:block/plant/golden_bamboo/stalk",
         "leaf": "block/bamboo_singleleaf"
     },
     "elements": [

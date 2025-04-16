@@ -27,6 +27,12 @@
     },
     {
       "item": "tfc:plant/lily_of_the_valley"
+    },
+    {
+      "item": "tfc:plant/edelweiss"
+    },
+    {
+      "item": "tfc:plant/beachgrass"
     }
   ],
   "result": {

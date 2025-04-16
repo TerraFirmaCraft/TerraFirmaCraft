@@ -1,0 +1,31 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:plant/penwortel_patch",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 5
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "WORLD_SURFACE_WG"
+    },
+    {
+      "type": "tfc:climate",
+      "min_temperature": 12.2,
+      "max_temperature": 24.8,
+      "min_groundwater": 135,
+      "max_groundwater": 380,
+      "min_rain_variance": -1,
+      "max_rain_variance": 0,
+      "rain_variance_absolute": false,
+      "min_forest": 0,
+      "max_forest": 2,
+      "min_elevation": -64,
+      "max_elevation": 320
+    }
+  ]
+}

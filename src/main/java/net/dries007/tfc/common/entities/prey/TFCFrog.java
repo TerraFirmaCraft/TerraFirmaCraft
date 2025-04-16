@@ -159,7 +159,7 @@ public class TFCFrog extends Frog implements Temptable, BrainAnimalBehavior
         spawnData = super.finalizeSpawn(level, difficulty, spawnType, spawnData);
         final BlockPos pos = blockPosition();
         final ChunkData data = ChunkData.get(level, pos);
-        final float temp = data.getAverageTemp(pos);
+        final float temp = data.getAverageSeaLevelTemp(pos);
 
         setVariant(BuiltInRegistries.FROG_VARIANT.getHolderOrThrow(temp < 0 ? FrogVariant.COLD : temp > 18 ? FrogVariant.WARM : FrogVariant.TEMPERATE));
         setIsMale(random.nextBoolean());

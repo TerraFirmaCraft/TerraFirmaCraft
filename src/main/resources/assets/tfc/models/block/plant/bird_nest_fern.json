@@ -1,0 +1,45 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "tfc:block/plant/bird_nest_fern/bird_nest_fern",
+		"particle": "tfc:block/plant/bird_nest_fern/bird_nest_fern"
+	},
+	"elements": [
+		{
+			"from": [0, 0, -9],
+			"to": [16, 0, 7],
+			"rotation": {"angle": 22.5, "axis": "x", "origin": [8, 0, 7]},
+			"faces": {
+				"up": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"down": {"uv": [16, 0, 0, 16], "rotation": 180, "texture": "#0"}
+			}
+		},
+		{
+			"from": [0, 0, 9],
+			"to": [16, 0, 25],
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [8, 0, 9]},
+			"faces": {
+				"up": {"uv": [0, 0, 16, 16], "rotation": 180, "texture": "#0"},
+				"down": {"uv": [16, 0, 0, 16], "texture": "#0"}
+			}
+		},
+		{
+			"from": [-9, 0, 0],
+			"to": [7, 0, 16],
+			"rotation": {"angle": -22.5, "axis": "z", "origin": [7, 0, 8]},
+			"faces": {
+				"up": {"uv": [0, 0, 16, 16], "rotation": 270, "texture": "#0"},
+				"down": {"uv": [16, 0, 0, 16], "rotation": 270, "texture": "#0"}
+			}
+		},
+		{
+			"from": [9, 0, 0],
+			"to": [25, 0, 16],
+			"rotation": {"angle": 22.5, "axis": "z", "origin": [9, 0, 8]},
+			"faces": {
+				"up": {"uv": [0, 0, 16, 16], "rotation": 90, "texture": "#0"},
+				"down": {"uv": [16, 0, 0, 16], "rotation": 90, "texture": "#0"}
+			}
+		}
+	]
+}

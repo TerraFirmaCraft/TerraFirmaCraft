@@ -1,0 +1,7 @@
+{
+  "parent": "block/cross",
+  "textures": {
+    "cross": "tfc:block/plant/mountain_hullwort/upper_cross_1",
+    "particle": "tfc:block/plant/mountain_hullwort/upper_cross_1"
+  }
+}

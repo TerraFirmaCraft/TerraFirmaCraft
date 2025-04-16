@@ -34,9 +34,9 @@ import net.dries007.tfc.util.Helpers;
 
 public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLoggable
 {
-    public static TFCKelpTopBlock create(Properties properties, Supplier<? extends Block> bodyBlock, Direction direction, VoxelShape shape, FluidProperty fluid)
+    public static TFCKelpTopBlock create(Properties properties, Supplier<? extends Block> bodyBlock, Direction direction, VoxelShape shape, FluidProperty fluid, Plant plant)
     {
-        return new TFCKelpTopBlock(ExtendedProperties.of(properties), bodyBlock, direction, shape)
+        return new TFCKelpTopBlock(ExtendedProperties.of(properties), bodyBlock, direction, shape, plant)
         {
             @Override
             public FluidProperty getFluidProperty()
@@ -48,9 +48,9 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
 
     private final Supplier<? extends Block> bodyBlock;
 
-    protected TFCKelpTopBlock(ExtendedProperties properties, Supplier<? extends Block> bodyBlock, Direction direction, VoxelShape shape)
+    protected TFCKelpTopBlock(ExtendedProperties properties, Supplier<? extends Block> bodyBlock, Direction direction, VoxelShape shape, Plant plant)
     {
-        super(properties, bodyBlock, direction, shape);
+        super(properties, bodyBlock, direction, shape, 18, 26, plant);
         this.bodyBlock = bodyBlock;
     }
 

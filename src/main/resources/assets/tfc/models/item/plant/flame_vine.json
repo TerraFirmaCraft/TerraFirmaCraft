@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tfc:block/plant/flame_vine/body_0"
+  }
+}

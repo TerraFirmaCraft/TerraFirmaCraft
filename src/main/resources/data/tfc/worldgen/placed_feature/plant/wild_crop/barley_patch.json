@@ -15,7 +15,9 @@
       "max_temperature": 26,
       "min_groundwater": 70,
       "max_groundwater": 310,
-      "max_forest": 2
+      "max_forest": 2,
+      "min_elevation": -64,
+      "max_elevation": 320
     }
   ]
 }

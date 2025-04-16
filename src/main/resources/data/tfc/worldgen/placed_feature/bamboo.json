@@ -17,6 +17,8 @@
         "edge_bamboo",
         "secondary_bamboo"
       ],
+      "min_elevation": -64,
+      "max_elevation": 320,
       "fuzzy": true
     },
     {

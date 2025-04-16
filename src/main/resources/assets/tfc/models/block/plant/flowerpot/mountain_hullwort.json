@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/template_potted_azalea_bush",
+  "textures": {
+    "plant": "tfc:block/plant/mountain_hullwort/potted_plant",
+    "side": "tfc:block/plant/mountain_hullwort/potted_side",
+    "top": "tfc:block/plant/mountain_hullwort/potted_top"
+  }
+}

@@ -31,9 +31,6 @@ import net.dries007.tfc.common.blocks.wood.ILeavesBlock;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.climate.ClimateModel;
-import net.dries007.tfc.util.climate.OverworldClimateModel;
-import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ForestType;
 
@@ -99,7 +96,9 @@ public class ForestFeature extends Feature<ForestConfig>
             ConfiguredFeature<?, ?> feature;
             final int oldChance = entry.oldGrowthChance();
             final int deadChance = entry.deadChance();
-            final float krumChance = mutablePos.getY() > 110 ? 1f : Mth.clampedMap(mutablePos.getY(), 90, 110, 0f, 1f);
+            final float blockTemp = EnvironmentHelpers.adjustAvgTempForElev(mutablePos.getY(), data.getAverageSeaLevelTemp(mutablePos));
+            final float treeMinTemp = entry.getClimatePlacement().getMinTemp();
+            final float krumChance = blockTemp > treeMinTemp + 5f ? 0f : Mth.clampedMap(blockTemp, treeMinTemp + 2.5f, treeMinTemp + 5f, 1f, 0f);
             if (entry.krummholz().isPresent() && random.nextFloat() < krumChance)
             {
                 feature = entry.krummholz().get().value();
@@ -330,10 +329,11 @@ public class ForestFeature extends Feature<ForestConfig>
     private ForestConfig.Entry getTree(ChunkData chunkData, RandomSource random, ForestConfig config, BlockPos pos, ForestType type)
     {
         final float groundwater = chunkData.getGroundwater(pos);
-        final float averageTemperature = EnvironmentHelpers.adjustAvgTempForElev(pos.getY(), chunkData.getAverageTemp(pos));
+        final float averageTemperature = EnvironmentHelpers.adjustAvgTempForElev(pos.getY(), chunkData.getAverageSeaLevelTemp(pos));
+        final float rainVariance = chunkData.getRainVariance(pos);
         final List<ForestConfig.Entry> entries = config.entries().stream().map(configuredFeature -> configuredFeature.value().config()).map(cfg -> (ForestConfig.Entry) cfg)
-            .filter(entry -> entry.isValid(averageTemperature, groundwater))
-            .sorted(Comparator.comparingDouble(entry -> entry.distanceFromMean(averageTemperature, groundwater)))
+            .filter(entry -> entry.isValid(averageTemperature, groundwater, rainVariance))
+            .sorted(Comparator.comparingDouble(entry -> entry.distanceFromMean(averageTemperature, groundwater, rainVariance)))
             .collect(Collectors.toList());
 
         if (entries.isEmpty()) return null;

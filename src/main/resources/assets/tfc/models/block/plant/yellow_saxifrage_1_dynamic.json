@@ -1,0 +1,21 @@
+{
+  "loader": "tfc:plant",
+  "blooming": {
+    "parent": "tfc:block/plant/yellow_saxifrage_0_1"
+  },
+  "seeding": {
+    "parent": "tfc:block/plant/yellow_saxifrage_1_1"
+  },
+  "dying": {
+    "parent": "tfc:block/plant/yellow_saxifrage_1_1"
+  },
+  "dormant": {
+    "parent": "tfc:block/plant/yellow_saxifrage_1_1"
+  },
+  "sprouting": {
+    "parent": "tfc:block/plant/yellow_saxifrage_1_1"
+  },
+  "budding": {
+    "parent": "tfc:block/plant/yellow_saxifrage_1_1"
+  }
+}

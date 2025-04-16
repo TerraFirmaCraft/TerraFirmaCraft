@@ -1,0 +1,31 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:plant/bear_grass_patch",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 5
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "WORLD_SURFACE_WG"
+    },
+    {
+      "type": "tfc:climate",
+      "min_temperature": -16.6,
+      "max_temperature": -0.4,
+      "min_groundwater": 340,
+      "max_groundwater": 500,
+      "min_rain_variance": -1,
+      "max_rain_variance": 1,
+      "rain_variance_absolute": false,
+      "min_forest": 0,
+      "max_forest": 2,
+      "min_elevation": 85,
+      "max_elevation": 320
+    }
+  ]
+}

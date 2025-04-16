@@ -123,7 +123,7 @@ public class OverworldClimateModel implements ClimateModel
     @Override
     public float getAverageTemperature(LevelReader level, BlockPos pos)
     {
-        return ChunkData.get(level, pos).getAverageTemp(pos);
+        return ChunkData.get(level, pos).getAverageSeaLevelTemp(pos);
     }
 
     @Override
@@ -139,7 +139,7 @@ public class OverworldClimateModel implements ClimateModel
         final float monthTemperature = calculateMonthlyTemperature(pos.getZ(), monthFactor);
         final float dailyTemperature = calculateDailyTemperature(calendarTicks);
 
-        return adjustTemperatureByElevation(pos.getY(), data.getAverageTemp(pos), monthTemperature, dailyTemperature);
+        return adjustTemperatureByElevation(pos.getY(), data.getAverageSeaLevelTemp(pos), monthTemperature, dailyTemperature);
     }
 
     @Override
@@ -163,7 +163,7 @@ public class OverworldClimateModel implements ClimateModel
         final float fractionOfYear = ICalendar.getFractionOfYear(calendarTicks, daysInMonth);
 
         // For positive values of variance, drought in winter, rain in summer, reverse for negative values
-        return rainVariance == 0 ? 0 : Helpers.triangle(rainVariance * rainAverage, rainAverage, 1f, fractionOfYear + 0.75f);
+        return rainVariance == 0 ? rainAverage : Helpers.triangle(rainVariance * rainAverage, rainAverage, 1f, fractionOfYear + 0.75f);
     }
 
     @Override

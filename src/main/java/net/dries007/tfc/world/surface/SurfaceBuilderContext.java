@@ -77,7 +77,7 @@ public class SurfaceBuilderContext
         this.originalBiome = originalBiome;
         this.biomeWeight = biomeWeight;
         this.slope = slope;
-        this.temperature = chunkData.getAverageTemp(x, z);
+        this.temperature = chunkData.getAverageSeaLevelTemp(x, z);
         this.baseGroundwater = chunkData.getBaseGroundwater(x, z);
         this.rainfall = chunkData.getRainfall(x, z);
         this.salty = salty;

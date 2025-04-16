@@ -64,13 +64,13 @@ public abstract class TFCCactusBlock extends TFCTallGrassBlock
         BlockState belowState = level.getBlockState(mutable);
         if (state.getValue(PART) == Part.LOWER)
         {
-            return Helpers.isBlock(belowState, BlockTags.SAND);
+            return Helpers.isBlock(belowState, TFCTags.Blocks.DRY_PLANT_PLANTABLE_ON);
         }
         else
         {
             if (state.getBlock() != this)
             {
-                return Helpers.isBlock(belowState, BlockTags.SAND);
+                return Helpers.isBlock(belowState, TFCTags.Blocks.DRY_PLANT_PLANTABLE_ON);
             }
             return belowState.getBlock() == this && belowState.getValue(PART) == Part.LOWER;
         }

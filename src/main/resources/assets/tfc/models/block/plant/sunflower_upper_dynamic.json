@@ -1,0 +1,21 @@
+{
+  "loader": "tfc:plant",
+  "blooming": {
+    "parent": "tfc:block/plant/sunflower_upper_0"
+  },
+  "seeding": {
+    "parent": "tfc:block/plant/sunflower_upper_1"
+  },
+  "dying": {
+    "parent": "tfc:block/empty"
+  },
+  "dormant": {
+    "parent": "tfc:block/empty"
+  },
+  "sprouting": {
+    "parent": "tfc:block/empty"
+  },
+  "budding": {
+    "parent": "tfc:block/plant/sunflower_upper_4"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "loader": "tfc:plant",
+  "blooming": {
+    "parent": "tfc:block/plant/mountain_hullwort_upper_0"
+  },
+  "seeding": {
+    "parent": "tfc:block/plant/mountain_hullwort_upper_1"
+  },
+  "dying": {
+    "parent": "tfc:block/plant/mountain_hullwort_upper_2"
+  },
+  "dormant": {
+    "parent": "tfc:block/plant/mountain_hullwort_upper_2"
+  },
+  "sprouting": {
+    "parent": "tfc:block/plant/mountain_hullwort_upper_1"
+  },
+  "budding": {
+    "parent": "tfc:block/plant/mountain_hullwort_upper_1"
+  }
+}

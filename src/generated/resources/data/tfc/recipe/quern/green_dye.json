@@ -6,6 +6,15 @@
     },
     {
       "item": "tfc:plant/reindeer_lichen"
+    },
+    {
+      "item": "tfc:plant/silken_pincushion_cactus"
+    },
+    {
+      "item": "tfc:plant/prickly_pear"
+    },
+    {
+      "item": "tfc:plant/prickly_pear_purple"
     }
   ],
   "result": {

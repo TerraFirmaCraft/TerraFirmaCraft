@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "part=lower": {
+      "model": "tfc:block/plant/sunflower_lower_dynamic"
+    },
+    "part=upper": {
+      "model": "tfc:block/plant/sunflower_upper_dynamic"
+    }
+  }
+}

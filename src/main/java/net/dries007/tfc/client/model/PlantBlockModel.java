@@ -41,9 +41,11 @@ import net.neoforged.neoforge.client.model.geometry.IUnbakedGeometry;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.RenderHelpers;
+import net.dries007.tfc.client.overworld.ClientSolarCalculatorBridge;
+import net.dries007.tfc.common.blocks.plant.BodyPlantBlock;
 import net.dries007.tfc.common.blocks.plant.PlantBlock;
+import net.dries007.tfc.common.blocks.plant.TopPlantBlock;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.calendar.Calendar;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.registry.RegistryPlant;
@@ -91,38 +93,47 @@ public class PlantBlockModel implements IDynamicBakedModel, IUnbakedGeometry<Pla
             return getModelFromCalendar();
         }
         final Block block = state.getBlock();
-        if (!(block instanceof PlantBlock))
+        final RegistryPlant plant;
+        if (block instanceof PlantBlock)
         {
-            return getModelFromCalendar();
+            plant = ((PlantBlock) block).getPlant();
+        }
+        else if (block instanceof BodyPlantBlock)
+        {
+            plant = ((BodyPlantBlock) block).getPlant();
+        }
+        else if (block instanceof TopPlantBlock)
+        {
+            plant = ((TopPlantBlock) block).getPlant();
         }
         else
         {
-            final RegistryPlant plant = ((PlantBlock) block).getPlant();
-            float start = plant.getBloomOffset();
-            final Random random = new Random();
-            final Level level = ClientHelpers.getLevel();
-            final BlockPos posXZ = new BlockPos(pos.getX(), 0, pos.getZ());
-            final float randomScale;
-
-            random.setSeed(Helpers.hash(836494186029734123L, posXZ));
-            assert level != null;
-            if (plant.isWetSeasonBlooming())
-            {
-                final float rainVariance = Climate.getRainfallVariance(level, pos);
-                randomScale = Mth.clampedMap(Math.abs(rainVariance), 0.0f, 0.3f, 0.5f, 0.03f);
-                start = start + rainVariance < 0f ? 0f : 0.5f;
-            }
-            else
-            {
-                randomScale = Mth.clampedMap(Climate.getAverageTemperature(level, pos), 16f, 26f, 0.03f, 0.5f);
-
-                //This line is all that should need to change to support hemispheral seasons
-                start = start + 0.5f;
-            }
-            start = (start + random.nextFloat(-randomScale, randomScale)) % 1;
-            return getModelFromCalendar(start, start + plant.getBloomingEnd(), start + plant.getSeedingEnd(), start + plant.getDyingEnd(),
-                start + plant.getDormantEnd(), start + plant.getSproutingEnd(), plant.getStartHour(), plant.getEndHour(), randomScale > 0.25f);
+            return getModelFromCalendar();
         }
+        float start = plant.getBloomOffset();
+        final Random random = new Random();
+        final Level level = ClientHelpers.getLevel();
+        final BlockPos posXZ = new BlockPos(pos.getX(), 0, pos.getZ());
+        final float randomScale;
+
+        random.setSeed(Helpers.hash(836494186029734123L, posXZ));
+        assert level != null;
+        if (plant.isWetSeasonBlooming())
+        {
+            final float rainVariance = Climate.getRainfallVariance(level, pos);
+            randomScale = Mth.clampedMap(Math.abs(rainVariance), 0.0f, 0.3f, 0.5f, 0.03f);
+            start = start + (rainVariance < 0f ? 1f : 1.5f);
+        }
+        else
+        {
+            randomScale = Mth.clampedMap(Climate.getAverageTemperature(level, pos), 16f, 26f, 0.03f, 0.5f);
+
+            //This line is all that should need to change to support hemispheral seasons
+            start = start + 1.5f;
+        }
+        start = (start + random.nextFloat(-randomScale, randomScale)) % 1;
+        return getModelFromCalendar(start, start + plant.getBloomingEnd(), start + plant.getSeedingEnd(), start + plant.getDyingEnd(),
+            start + plant.getDormantEnd(), start + plant.getSproutingEnd(), plant.getStartTime(), plant.getEndTime(), randomScale > 0.25f);
     }
 
     private BakedModel getModelFromCalendar()
@@ -190,13 +201,17 @@ public class PlantBlockModel implements IDynamicBakedModel, IUnbakedGeometry<Pla
         }
     }
 
-    public BakedModel getModelByDayTime(float startTime, float endTime)
+    public BakedModel getModelByDayTime(int startTime, int endTime)
     {
-        final int dayTime = (int) Calendars.CLIENT.getCalendarFractionOfDay() * 24;
-        if ((endTime < dayTime && dayTime < startTime) || (startTime < endTime && (dayTime < startTime || endTime < dayTime)))
+        final Level level = ClientHelpers.getLevel();
+        if (level != null)
         {
-            assert buddingBakedModel != null;
-            return buddingBakedModel;
+            final long dayTime = ClientSolarCalculatorBridge.getDayTime(level);
+            if ((endTime < dayTime && dayTime < startTime) || (startTime < endTime && (dayTime < startTime || endTime < dayTime)))
+            {
+                assert buddingBakedModel != null;
+                return buddingBakedModel;
+            }
         }
         assert bloomingBakedModel != null;
         return bloomingBakedModel;

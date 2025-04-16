@@ -92,7 +92,7 @@ public class TFCFox extends Fox
         spawnData = super.finalizeSpawn(level, difficulty, spawnType, spawnData);
         BlockPos pos = blockPosition();
         final ChunkData chunkData = ChunkData.get(level, pos);
-        setVariant(chunkData.getAverageTemp(blockPosition()) < 0 ? Type.SNOW : Type.RED);
+        setVariant(chunkData.getAverageSeaLevelTemp(blockPosition()) < 0 ? Type.SNOW : Type.RED);
         return spawnData;
     }
 

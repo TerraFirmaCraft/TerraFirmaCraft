@@ -94,6 +94,7 @@ import net.dries007.tfc.network.PlaceBlockSpecialPacket;
 import net.dries007.tfc.network.RequestClimateModelPacket;
 import net.dries007.tfc.network.StackFoodPacket;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
+import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.PhysicalDamageType;
 import net.dries007.tfc.util.calendar.Calendars;
@@ -152,8 +153,9 @@ public class ClientForgeEventHandler
                     Calendars.CLIENT.getTicks(),
                     Calendars.CLIENT.getCalendarTicks()
                 ));
-                tooltip.add("Temperature: Avg: %.3f Now: %.3f".formatted(
+                tooltip.add("Temperature: Sea Level Avg: %.3f Avg: %.3f Now: %.3f".formatted(
                     ClimateRenderCache.INSTANCE.getAverageTemperature(),
+                    EnvironmentHelpers.adjustAvgTempForElev(pos.getY(), ClimateRenderCache.INSTANCE.getAverageTemperature()),
                     ClimateRenderCache.INSTANCE.getTemperature()
                 ));
                 tooltip.add("Rain: Avg: %.3f Var: %.3f Now: %.3f".formatted(

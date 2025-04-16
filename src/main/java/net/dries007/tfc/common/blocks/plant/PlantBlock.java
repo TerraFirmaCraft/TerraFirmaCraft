@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.blocks.plant;
 
+import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
@@ -20,7 +21,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.common.Tags;
 
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCTags;
@@ -50,6 +50,46 @@ public abstract class PlantBlock extends TFCBushBlock
         };
     }
 
+    public static PlantBlock createShrub(RegistryPlant plant, ExtendedProperties properties)
+    {
+        return new PlantBlock(properties)
+        {
+            static final VoxelShape SHAPE = box(0, 0, 0, 16, 16, 16);
+
+            @Override
+            public RegistryPlant getPlant()
+            {
+                return plant;
+            }
+
+            @Override
+            public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+            {
+                return SHAPE;
+            }
+        };
+    }
+
+    public static PlantBlock createShortShrub(RegistryPlant plant, ExtendedProperties properties)
+    {
+        return new PlantBlock(properties)
+        {
+            static final VoxelShape SHAPE = box(0, 0, 0, 16, 16, 16);
+
+            @Override
+            public RegistryPlant getPlant()
+            {
+                return plant;
+            }
+
+            @Override
+            public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+            {
+                return SHAPE;
+            }
+        };
+    }
+
     public static PlantBlock createDry(RegistryPlant plant, ExtendedProperties properties)
     {
         return new PlantBlock(properties)
@@ -64,6 +104,24 @@ public abstract class PlantBlock extends TFCBushBlock
             public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
             {
                 return isDryBlockPlantable(level.getBlockState(pos.below()));
+            }
+        };
+    }
+
+    public static PlantBlock createPerchedEpiphyte(RegistryPlant plant, ExtendedProperties properties)
+    {
+        return new PlantBlock(properties)
+        {
+            @Override
+            public RegistryPlant getPlant()
+            {
+                return plant;
+            }
+
+            @Override
+            public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
+            {
+                return isEpiphytePlantable(level.getBlockState(pos.below()));
             }
         };
     }
@@ -86,7 +144,7 @@ public abstract class PlantBlock extends TFCBushBlock
         };
     }
 
-    public static PlantBlock createFlat(RegistryPlant plant, ExtendedProperties properties)
+    public static PlantBlock createFlowerbed(RegistryPlant plant, ExtendedProperties properties)
     {
 
         return new PlantBlock(properties)
@@ -104,12 +162,32 @@ public abstract class PlantBlock extends TFCBushBlock
             {
                 return SHAPE;
             }
+
+            // These two methods allow placing extra per block
+            @Override
+            protected boolean canBeReplaced(BlockState state, BlockPlaceContext useContext) {
+                return !useContext.isSecondaryUseActive() && useContext.getItemInHand().is(this.asItem()) && state.getValue(AGE) < 3 || super.canBeReplaced(state, useContext);
+            }
+
+            @Nullable
+            public BlockState getStateForPlacement(BlockPlaceContext context) {
+                BlockState blockstate = context.getLevel().getBlockState(context.getClickedPos());
+                if (blockstate.is(this)) {
+                    return blockstate.setValue(AGE, Math.min(3, blockstate.getValue(AGE) + 1));
+                }
+                return super.getStateForPlacement(context);
+            }
         };
     }
 
     public static boolean isDryBlockPlantable(BlockState state)
     {
-        return Helpers.isBlock(state, BlockTags.SAND) || Helpers.isBlock(state, Tags.Blocks.SANDS) || Helpers.isBlock(state, TFCTags.Blocks.BUSH_PLANTABLE_ON);
+        return Helpers.isBlock(state, TFCTags.Blocks.DRY_PLANT_PLANTABLE_ON);
+    }
+
+    public static boolean isEpiphytePlantable(BlockState state)
+    {
+        return Helpers.isBlock(state, TFCTags.Blocks.EPIPHYTE_PLANTABLE_ON);
     }
 
     protected PlantBlock(ExtendedProperties properties)

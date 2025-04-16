@@ -1,0 +1,33 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:plant/flame_vine",
+  "placement": [
+    {
+      "type": "tfc:carving_mask",
+      "step": "air",
+      "min_y": {
+        "absolute": 30
+      },
+      "max_y": {
+        "absolute": 100
+      }
+    },
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 333
+    },
+    {
+      "type": "tfc:climate",
+      "min_temperature": 14,
+      "max_temperature": 26.6,
+      "min_groundwater": 200,
+      "max_groundwater": 370,
+      "min_rain_variance": 0.3,
+      "max_rain_variance": 1.0,
+      "rain_variance_absolute": true,
+      "min_forest": 1,
+      "max_forest": 4,
+      "fuzzy": true
+    }
+  ]
+}

@@ -32,7 +32,7 @@ public class NoisyMultipleFeature extends Feature<SimpleRandomFeatureConfigurati
         final BlockPos pos = context.origin();
         final ChunkData data = ChunkData.get(context.level(), pos);
         // todo 1.21: rip this out maybe
-        final int rotation = (int) Math.ceil(data.getAverageTemp(pos) * 10 * context.config().features.size());
+        final int rotation = (int) Math.ceil(data.getAverageSeaLevelTemp(pos) * 10 * context.config().features.size());
 
         List<Holder<PlacedFeature>> features = context.config().features.stream().collect(Collectors.toList());
         Collections.rotate(features, rotation);

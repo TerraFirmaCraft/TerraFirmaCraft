@@ -221,6 +221,17 @@ public final class TFCColors
         return 0;
     }
 
+    /**
+     * Queries a color map based on temperature and groundwater parameters. Temperature is horizontal, left is high. Groundwater is vertical, up is high.
+     * Values
+     */
+    private static int getClimateColor(int[] colorCache, float temperature, float groundwater)
+    {
+        final int temperatureIndex = 255 - Mth.clamp((int) ((temperature + 20f) * 255f / 50f), 0, 255);
+        final int rainfallIndex = 255 - Mth.clamp((int) (groundwater * 255f / 500f), 0, 255);
+        return colorCache[temperatureIndex | (rainfallIndex << 8)];
+    }
+
     private static int getAverageClimateColor(int[] colorCache, BlockPos pos, float averageTemperature)
     {
         final Level level = ClientHelpers.getLevel();
@@ -230,17 +241,6 @@ public final class TFCColors
             return getClimateColor(colorCache, averageTemperature, groundwater);
         }
         return 0;
-    }
-
-
-    /**
-     * Queries a color map based on temperature and groundwater parameters. Temperature is horizontal, left is high. Groundwater is vertical, up is high.
-     */
-    private static int getClimateColor(int[] colorCache, float temperature, float groundwater)
-    {
-        final int temperatureIndex = 255 - Mth.clamp((int) ((temperature + 20f) * 255f / 50f), 0, 255);
-        final int rainfallIndex = 255 - Mth.clamp((int) (groundwater * 255f / 500f), 0, 255);
-        return colorCache[temperatureIndex | (rainfallIndex << 8)];
     }
 
     private static int getAutumnColor(int[] colorCache, float timeOfYear, float autumnStart, float autumnEnd, BlockPos pos, int autumnIndex)

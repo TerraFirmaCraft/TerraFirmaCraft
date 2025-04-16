@@ -1,0 +1,7 @@
+{
+  "parent": "block/cross",
+  "textures": {
+    "cross": "tfc:block/plant/shawiash/cross_3",
+    "particle": "tfc:block/plant/shawiash/cross_3"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "part=lower": {
+      "model": "tfc:block/plant/bear_grass_lower_dynamic"
+    },
+    "part=upper": {
+      "model": "tfc:block/plant/bear_grass_upper_dynamic"
+    }
+  }
+}

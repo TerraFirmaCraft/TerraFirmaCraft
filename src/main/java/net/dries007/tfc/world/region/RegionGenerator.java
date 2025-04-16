@@ -110,8 +110,8 @@ public final class RegionGenerator
 
         this.rainfallVarianceNoise = new OpenSimplex2D(seed.next())
             .octaves(2)
-            .spread(0.3f)
-            .scaled(-.2f, 0.2f);
+            .spread(0.1f)
+            .scaled(0f, 20f);
 
         this.hotSpotAgeNoise = BiomeNoise.hotSpotAge(seed.seed()).spread(128);
         this.hotSpotIntensityNoise = BiomeNoise.hotSpotIntensity(seed.seed()).spread(128);

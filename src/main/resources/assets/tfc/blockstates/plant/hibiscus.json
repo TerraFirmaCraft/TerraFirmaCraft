@@ -1,10 +1,10 @@
 {
   "variants": {
     "part=upper": {
-      "model": "tfc:block/empty"
+      "model": "tfc:block/plant/hibiscus_upper_dynamic"
     },
     "part=lower": {
-      "model": "tfc:block/plant/hibiscus_dynamic"
+      "model": "tfc:block/plant/hibiscus_lower_dynamic"
     }
   }
 }

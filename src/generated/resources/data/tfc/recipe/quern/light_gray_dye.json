@@ -1,8 +1,13 @@
 {
   "type": "tfc:quern",
-  "ingredient": {
-    "item": "tfc:plant/yucca"
-  },
+  "ingredient": [
+    {
+      "item": "tfc:plant/yucca"
+    },
+    {
+      "item": "tfc:plant/silver_bromeliad"
+    }
+  ],
   "result": {
     "count": 1,
     "id": "minecraft:light_gray_dye"

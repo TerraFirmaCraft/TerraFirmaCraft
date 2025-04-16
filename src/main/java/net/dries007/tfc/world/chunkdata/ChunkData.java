@@ -186,15 +186,15 @@ public sealed class ChunkData
 
     public float getGroundwater(int x, int z)
     {
-        return getBaseGroundwater(x, z) + getRainfall(x, z);
+        return Math.min(getBaseGroundwater(x, z) + getRainfall(x, z), 500f);
     }
 
-    public float getAverageTemp(BlockPos pos)
+    public float getAverageSeaLevelTemp(BlockPos pos)
     {
-        return getAverageTemp(pos.getX(), pos.getZ());
+        return getAverageSeaLevelTemp(pos.getX(), pos.getZ());
     }
 
-    public float getAverageTemp(int x, int z)
+    public float getAverageSeaLevelTemp(int x, int z)
     {
         return temperatureLayer == null ? UNKNOWN_TEMPERATURE : temperatureLayer.getValue((x & 15) / 16f, (z & 15) / 16f);
     }

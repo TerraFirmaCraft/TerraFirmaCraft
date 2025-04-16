@@ -11,7 +11,9 @@
     },
     {
       "type": "tfc:climate",
-      "max_temperature": -23
+      "max_temperature": -23,
+      "min_elevation": -64,
+      "max_elevation": 320
     }
   ]
 }

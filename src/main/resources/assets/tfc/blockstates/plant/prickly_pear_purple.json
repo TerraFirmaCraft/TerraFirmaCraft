@@ -1,0 +1,78 @@
+{
+  "multipart": [
+	{
+      "apply": [
+        {
+          "model": "tfc:block/plant/purple_prickly_pear_empty"
+        }
+      ]
+    },
+	{
+	  "when": {
+        "part": "upper"
+      },
+      "apply": [
+        {
+		  "model": "tfc:block/plant/purple_prickly_pear_dynamic_0"
+		},
+		{
+		  "model": "tfc:block/plant/purple_prickly_pear_dynamic_0",
+		  "y": 90
+		},
+		{
+		  "model": "tfc:block/plant/purple_prickly_pear_dynamic_0",
+		  "y": 180
+		},
+		{
+		  "model": "tfc:block/plant/purple_prickly_pear_dynamic_0",
+		  "y": 270
+		},
+		{
+		  "model": "tfc:block/plant/purple_prickly_pear_dynamic_1"
+		},
+		{
+		  "model": "tfc:block/plant/purple_prickly_pear_dynamic_1",
+		  "y": 90
+		},
+		{
+		  "model": "tfc:block/plant/purple_prickly_pear_dynamic_1",
+		  "y": 180
+		},
+		{
+		  "model": "tfc:block/plant/purple_prickly_pear_dynamic_1",
+		  "y": 270
+		},
+		{
+		  "model": "tfc:block/plant/purple_prickly_pear_dynamic_2"
+		},
+		{
+		  "model": "tfc:block/plant/purple_prickly_pear_dynamic_2",
+		  "y": 90
+		},
+		{
+		  "model": "tfc:block/plant/purple_prickly_pear_dynamic_2",
+		  "y": 180
+		},
+		{
+		  "model": "tfc:block/plant/purple_prickly_pear_dynamic_2",
+		  "y": 270
+		},
+		{
+		  "model": "tfc:block/plant/purple_prickly_pear_dynamic_3"
+		},
+		{
+		  "model": "tfc:block/plant/purple_prickly_pear_dynamic_3",
+		  "y": 90
+		},
+		{
+		  "model": "tfc:block/plant/purple_prickly_pear_dynamic_3",
+		  "y": 180
+		},
+		{
+		  "model": "tfc:block/plant/purple_prickly_pear_dynamic_3",
+		  "y": 270
+		}
+      ]
+    }
+  ]
+}

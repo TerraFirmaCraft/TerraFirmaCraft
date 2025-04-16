@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 import net.dries007.tfc.world.biome.BiomeNoise;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.RandomSupport;
-import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import org.junit.jupiter.api.Test;
 
 import net.dries007.tfc.data.providers.BuiltinWorldPreset;
@@ -162,7 +161,7 @@ public class RegionGeneratorTests implements TestSetup
                 : continentColor(point);
             case TEMPERATURE -> temperatureGradient(point, point.temperature, -25f, 35f);
             case RAINFALL, RAINFALL_AFTER_RIVERS -> temperatureGradient(point, point.rainfall, 0, 500);
-            case RAINFALL_VARIANCE -> temperatureGradient(point, point.rainfallVariance, -1, 1);
+            case RAINFALL_VARIANCE -> oceanOutlineTemperatureGradient(point, point.rainfallVariance, -1, 1);
             case KOPPEN, KOPPEN_AFTER_RIVERS -> point.land()
                 ? koppenClimateColor(KoppenClimateClassification.classify(point.temperature, point.rainfall, point.rainfallVariance))
                 : continentColor(point);
@@ -231,6 +230,11 @@ public class RegionGeneratorTests implements TestSetup
     private Color temperatureGradient(Region.Point point, float value, float min, float max)
     {
         return (point.land() ? temperature : blue).apply(Mth.clampedMap(value, min, max, 0f, 0.999f));
+    }
+
+    private Color oceanOutlineTemperatureGradient(Region.Point point, float value, float min, float max)
+    {
+        return (point.shore() ? green : temperature).apply(Mth.clampedMap(value, min, max, 0f, 0.999f));
     }
 
     // Default biome color scheme, Karst Biomes invisible

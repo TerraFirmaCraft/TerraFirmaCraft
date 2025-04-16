@@ -28,6 +28,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.registry.RegistryPlant;
@@ -86,7 +87,7 @@ public abstract class EpiphytePlantBlock extends PlantBlock
     protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         BlockState attachedState = level.getBlockState(pos.relative(state.getValue(FACING).getOpposite()));
-        return Helpers.isBlock(attachedState, BlockTags.LOGS);
+        return Helpers.isBlock(attachedState, TFCTags.Blocks.EPIPHYTE_PLANTABLE_ON);
     }
 
     @Override

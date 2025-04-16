@@ -1,0 +1,21 @@
+{
+  "loader": "tfc:plant",
+  "blooming": {
+    "parent": "tfc:block/plant/azalea_lower_0"
+  },
+  "seeding": {
+    "parent": "tfc:block/plant/azalea_lower_1"
+  },
+  "dying": {
+    "parent": "tfc:block/plant/azalea_lower_2"
+  },
+  "dormant": {
+    "parent": "tfc:block/plant/azalea_lower_3"
+  },
+  "sprouting": {
+    "parent": "tfc:block/plant/azalea_lower_1"
+  },
+  "budding": {
+    "parent": "tfc:block/plant/azalea_lower_1"
+  }
+}

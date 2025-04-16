@@ -1,0 +1,21 @@
+{
+  "loader": "tfc:plant",
+  "blooming": {
+    "parent": "tfc:block/plant/prickly_pear_3_0"
+  },
+  "seeding": {
+    "parent": "tfc:block/plant/prickly_pear_3_1"
+  },
+  "dying": {
+    "parent": "tfc:block/plant/prickly_pear_3_2"
+  },
+  "dormant": {
+    "parent": "tfc:block/plant/prickly_pear_3_2"
+  },
+  "sprouting": {
+    "parent": "tfc:block/plant/prickly_pear_3_2"
+  },
+  "budding": {
+    "parent": "tfc:block/plant/prickly_pear_3_3"
+  }
+}

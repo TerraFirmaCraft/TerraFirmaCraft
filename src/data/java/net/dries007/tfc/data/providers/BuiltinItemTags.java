@@ -211,7 +211,6 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             Items.PAPER,
             TFCItems.JUTE_FIBER,
             TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.HUMUS),
-            TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.DEAD_GRASS),
             TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.DRIFTWOOD),
             TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.PINECONE));
 

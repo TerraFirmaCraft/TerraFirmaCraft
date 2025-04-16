@@ -1313,6 +1313,16 @@ def generate(rm: ResourceManager):
                 'name': 'tfc:straw',
                 'conditions': [match_tag_1_21_plus(TAG_SHARP)]
             }))
+        elif plant in DROPS_MORE_FOR_AGE:
+            rm.block_loot(p, (
+                {'name': p, 'conditions': [shears_or_knife], 'functions': [
+                {**loot_tables.set_count(2), 'conditions': [loot_tables.block_state_property(p + '[age=1]')]},
+                {**loot_tables.set_count(3), 'conditions': [loot_tables.block_state_property(p + '[age=2]')]},
+                {**loot_tables.set_count(4), 'conditions': [loot_tables.block_state_property(p + '[age=3]')]},
+                loot_tables.explosion_decay()
+            ]
+                }
+            ))
         elif plant in SEAWEED:
             rm.block_loot(p, (
                 {'name': 'tfc:food/fresh_seaweed', 'conditions': [match_tag_1_21_plus(TAG_SHARP), loot_tables.random_chance(0.3)]},
@@ -1334,12 +1344,12 @@ def generate(rm: ResourceManager):
         else:
             rm.block_loot(p, {'name': p, 'conditions': [shears_or_knife]})
     # todo this is a mess
-    for plant in ('hanging_vines', 'jungle_vines', 'ivy', 'liana', 'tree_fern', 'arundo', 'spanish_moss', 'golden_bamboo_sapling'):
+    for plant in ('hanging_vines', 'jungle_vines', 'ivy', 'liana', 'tree_fern', 'arundo', 'spanish_moss', 'golden_bamboo_sapling', 'flame_vine', 'cycad'):
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))
     for plant in ('tree_fern', 'arundo', 'winged_kelp', 'leafy_kelp', 'giant_kelp_flower', 'dry_phragmite', 'golden_bamboo'):
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))
         rm.block_loot('tfc:plant/%s' % plant, 'tfc:plant/%s' % plant)
-    for plant in ('tree_fern', 'arundo', 'winged_kelp', 'leafy_kelp', 'giant_kelp', 'hanging_vines', 'spanish_moss', 'liana', 'dry_phragmite'):
+    for plant in ('tree_fern', 'arundo', 'winged_kelp', 'leafy_kelp', 'giant_kelp', 'hanging_vines', 'spanish_moss', 'liana', 'dry_phragmite', 'flame_vine', 'cycad'):
         rm.lang('block.tfc.plant.%s_plant' % plant, lang(plant))
     for plant in ('hanging_vines', 'jungle_vines', 'liana', 'spanish_moss'):
         rm.block_loot('tfc:plant/%s' % plant, {'name': 'tfc:plant/%s' % plant, 'conditions': [match_tag_1_21_plus(TAG_SHARP)]})

@@ -14,15 +14,18 @@
       "heightmap": "WORLD_SURFACE_WG"
     },
     {
-      "type": "minecraft:heightmap",
-      "heightmap": "WORLD_SURFACE_WG"
-    },
-    {
       "type": "tfc:climate",
-      "min_temperature": 13.4,
-      "max_temperature": 22.5,
-      "min_groundwater": 230,
-      "max_groundwater": 400
+      "min_temperature": 15.8,
+      "max_temperature": 24.8,
+      "min_groundwater": 130,
+      "max_groundwater": 375,
+      "min_rain_variance": -0.55,
+      "max_rain_variance": 1,
+      "rain_variance_absolute": false,
+      "min_forest": 1,
+      "max_forest": 2,
+      "min_elevation": -64,
+      "max_elevation": 320
     }
   ]
 }

@@ -1,0 +1,54 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "tfc:block/plant/silken_pincushion_cactus/cactus_0",
+		"particle": "tfc:block/plant/silken_pincushion_cactus/cactus_0"
+	},
+	"elements": [
+		{
+			"from": [13, 0, 2],
+			"to": [13, 8, 10],
+			"rotation": {"angle": 0, "axis": "y", "origin": [13, 0, 2]},
+			"faces": {
+				"east": {"uv": [0, 8, 8, 16], "texture": "#0"},
+				"west": {"uv": [8, 8, 0, 16], "texture": "#0"}
+			}
+		},
+		{
+			"from": [7, 0, 2],
+			"to": [7, 8, 10],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7, 0, 2]},
+			"faces": {
+				"east": {"uv": [8, 8, 0, 16], "texture": "#0"},
+				"west": {"uv": [0, 8, 8, 16], "texture": "#0"}
+			}
+		},
+		{
+			"from": [6, 0, 3],
+			"to": [14, 8, 3],
+			"rotation": {"angle": 0, "axis": "y", "origin": [14, 0, 3]},
+			"faces": {
+				"north": {"uv": [8, 8, 16, 16], "texture": "#0"},
+				"south": {"uv": [16, 8, 8, 16], "texture": "#0"}
+			}
+		},
+		{
+			"from": [6, 0, 9],
+			"to": [14, 8, 9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [14, 0, 9]},
+			"faces": {
+				"north": {"uv": [8, 8, 16, 16], "texture": "#0"},
+				"south": {"uv": [16, 8, 8, 16], "texture": "#0"}
+			}
+		},
+		{
+			"from": [7, 0, 3],
+			"to": [13, 6, 9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7, 0, 3]},
+			"faces": {
+				"up": {"uv": [1, 1, 7, 7], "texture": "#0"},
+				"down": {"uv": [9, 1, 15, 7], "texture": "#0"}
+			}
+		}
+	]
+}

@@ -1,5 +1,6 @@
 {
 	"credit": "Made with Blockbench",
+	"ambientocclusion": false,
 	"textures": {
 		"0": "tfc:block/plant/red_sealing_wax_palm/base0",
 		"1": "tfc:block/plant/red_sealing_wax_palm/base0a",

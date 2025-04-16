@@ -18,7 +18,12 @@
       "min_temperature": 16.6,
       "max_temperature": 47.6,
       "min_groundwater": 300,
-      "max_groundwater": 500
+      "max_groundwater": 500,
+      "min_rain_variance": -0.4,
+      "max_rain_variance": 0.4,
+      "rain_variance_absolute": false,
+      "min_forest": 1,
+      "max_forest": 3
     },
     {
       "type": "block_predicate_filter",

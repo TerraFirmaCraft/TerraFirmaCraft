@@ -25,7 +25,6 @@ public enum GroundcoverBlockType
 {
     BONE(GroundcoverBlock.MEDIUM, Items.BONE),
     CLAM(GroundcoverBlock.SMALL),
-    DEAD_GRASS(GroundcoverBlock.PIXEL_HIGH),
     DRIFTWOOD(GroundcoverBlock.FLAT),
     FEATHER(GroundcoverBlock.FLAT, Items.FEATHER),
     FLINT(GroundcoverBlock.SMALL, Items.FLINT),

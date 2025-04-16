@@ -1,0 +1,21 @@
+{
+  "loader": "tfc:plant",
+  "blooming": {
+    "parent": "tfc:block/plant/red_oat_grass_tuft"
+  },
+  "seeding": {
+    "parent": "tfc:block/plant/red_oat_grass_tuft"
+  },
+  "dying": {
+    "parent": "tfc:block/plant/red_oat_grass"
+  },
+  "dormant": {
+    "parent": "tfc:block/plant/red_oat_grass"
+  },
+  "sprouting": {
+    "parent": "tfc:block/plant/red_oat_grass"
+  },
+  "budding": {
+    "parent": "tfc:block/plant/red_oat_grass_tuft"
+  }
+}
