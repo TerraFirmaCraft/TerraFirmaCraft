@@ -106,6 +106,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(Tags.Items.STORAGE_BLOCKS_WHEAT).remove(Items.HAY_BLOCK);
         tag(Tags.Items.STRINGS).add(TFCItems.WOOL_YARN);
         tag(Tags.Items.SEEDS).add(TFCItems.CROP_SEEDS);
+        tag(Tags.Items.RODS_WOODEN).add(TFCBlocks.WOODS, Wood.BlockType.TWIG);
 
         // ===== TFC Tags ===== //
 

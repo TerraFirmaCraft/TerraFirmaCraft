@@ -30,7 +30,7 @@ public class BadlandsSurfaceBuilder implements SurfaceBuilder
     public static final SurfaceBuilderFactory NORMAL = seed -> new BadlandsSurfaceBuilder(false, false, -1, seed);
     public static final SurfaceBuilderFactory MESAS = seed -> new BadlandsSurfaceBuilder(true, false, -3, seed);
     public static final SurfaceBuilderFactory HOODOOS = seed -> new BadlandsSurfaceBuilder(true, false, -7, seed);
-    public static final SurfaceBuilderFactory WARPED = seed -> new BadlandsSurfaceBuilder(true, true, -3, seed);
+    public static final SurfaceBuilderFactory WARPED = seed -> new BadlandsSurfaceBuilder(true, true, -20, seed);
 
 
     private static final int PRIMARY_SIZE = 8;

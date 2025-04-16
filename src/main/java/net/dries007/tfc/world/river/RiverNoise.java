@@ -250,7 +250,11 @@ public final class RiverNoise
             public double setColumnAndSampleHeight(RiverInfo info, int x, int z, double heightIn, double caveWeight, double thisWeight)
             {
                 final double distFac = Math.sqrt(info.normDistSq()) + distNoise.noise(x, z);
-                final double riverHeight = 55 + distFac * 12 + baseNoise.noise(x, z) + (distFac > 1.5 ? cliffHeightNoise.noise(x, z) : 0);
+                final double talusRiverHeight = 55 + distFac * 12 + baseNoise.noise(x, z) + (distFac > 1.5 ? cliffHeightNoise.noise(x, z) : 0);
+                final double canyonRiverHeight = 55 + info.normDistSq() * 1.3 * 16;
+
+                // Use noise similar to tall canyon at edges of talus biomes to avoid artifacts with other river noise functions
+                final double riverHeight = Mth.clampedMap(thisWeight, 0.9, 1, canyonRiverHeight, talusRiverHeight);
 
                 return height = Math.min(riverHeight, heightIn);
             }
