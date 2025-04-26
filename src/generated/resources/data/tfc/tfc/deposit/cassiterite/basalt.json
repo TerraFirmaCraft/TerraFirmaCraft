@@ -2,7 +2,7 @@
   "ingredient": {
     "item": "tfc:deposit/cassiterite/basalt"
   },
-  "loot_table": "tfc:deposit/basalt_cassiterite",
+  "loot_table": "tfc:deposit/cassiterite_basalt",
   "model_stages": [
     "tfc:item/pan/cassiterite/basalt_full",
     "tfc:item/pan/cassiterite/basalt_half",

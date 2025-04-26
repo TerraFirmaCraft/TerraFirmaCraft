@@ -2,7 +2,7 @@
   "ingredient": {
     "item": "tfc:deposit/cassiterite/tuff"
   },
-  "loot_table": "tfc:deposit/tuff_cassiterite",
+  "loot_table": "tfc:deposit/cassiterite_tuff",
   "model_stages": [
     "tfc:item/pan/cassiterite/tuff_full",
     "tfc:item/pan/cassiterite/tuff_half",

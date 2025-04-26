@@ -2,7 +2,7 @@
   "ingredient": {
     "item": "tfc:deposit/native_copper/diorite"
   },
-  "loot_table": "tfc:deposit/diorite_native_copper",
+  "loot_table": "tfc:deposit/native_copper_diorite",
   "model_stages": [
     "tfc:item/pan/native_copper/diorite_full",
     "tfc:item/pan/native_copper/diorite_half",

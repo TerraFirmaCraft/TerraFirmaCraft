@@ -2,7 +2,7 @@
   "ingredient": {
     "item": "tfc:deposit/cassiterite/limestone"
   },
-  "loot_table": "tfc:deposit/limestone_cassiterite",
+  "loot_table": "tfc:deposit/cassiterite_limestone",
   "model_stages": [
     "tfc:item/pan/cassiterite/limestone_full",
     "tfc:item/pan/cassiterite/limestone_half",

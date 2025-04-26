@@ -2,7 +2,7 @@
   "ingredient": {
     "item": "tfc:deposit/native_gold/chert"
   },
-  "loot_table": "tfc:deposit/chert_native_gold",
+  "loot_table": "tfc:deposit/native_gold_chert",
   "model_stages": [
     "tfc:item/pan/native_gold/chert_full",
     "tfc:item/pan/native_gold/chert_half",

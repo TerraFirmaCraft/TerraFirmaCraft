@@ -2,7 +2,7 @@
   "ingredient": {
     "item": "tfc:deposit/native_copper/tuff"
   },
-  "loot_table": "tfc:deposit/tuff_native_copper",
+  "loot_table": "tfc:deposit/native_copper_tuff",
   "model_stages": [
     "tfc:item/pan/native_copper/tuff_full",
     "tfc:item/pan/native_copper/tuff_half",

@@ -2,7 +2,7 @@
   "ingredient": {
     "item": "tfc:deposit/native_copper/conglomerate"
   },
-  "loot_table": "tfc:deposit/conglomerate_native_copper",
+  "loot_table": "tfc:deposit/native_copper_conglomerate",
   "model_stages": [
     "tfc:item/pan/native_copper/conglomerate_full",
     "tfc:item/pan/native_copper/conglomerate_half",

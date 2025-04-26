@@ -2,7 +2,7 @@
   "ingredient": {
     "item": "tfc:deposit/native_copper/granite"
   },
-  "loot_table": "tfc:deposit/granite_native_copper",
+  "loot_table": "tfc:deposit/native_copper_granite",
   "model_stages": [
     "tfc:item/pan/native_copper/granite_full",
     "tfc:item/pan/native_copper/granite_half",

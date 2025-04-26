@@ -3,7 +3,7 @@
   "type": "tfc:geode",
   "config": {
     "outer": "tfc:rock/hardened/basalt",
-    "middle": "tfc:rock/raw/quartzite",
+    "middle": "tfc:rock/hardened/quartzite",
     "inner": [
       {
         "data": "tfc:ore/amethyst/quartzite",

@@ -2,7 +2,7 @@
   "ingredient": {
     "item": "tfc:deposit/cassiterite/chalk"
   },
-  "loot_table": "tfc:deposit/chalk_cassiterite",
+  "loot_table": "tfc:deposit/cassiterite_chalk",
   "model_stages": [
     "tfc:item/pan/cassiterite/chalk_full",
     "tfc:item/pan/cassiterite/chalk_half",

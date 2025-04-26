@@ -2,7 +2,7 @@
   "ingredient": {
     "item": "tfc:deposit/native_silver/diorite"
   },
-  "loot_table": "tfc:deposit/diorite_native_silver",
+  "loot_table": "tfc:deposit/native_silver_diorite",
   "model_stages": [
     "tfc:item/pan/native_silver/diorite_full",
     "tfc:item/pan/native_silver/diorite_half",

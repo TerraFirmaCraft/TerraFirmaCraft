@@ -2,7 +2,7 @@
   "ingredient": {
     "item": "tfc:deposit/native_gold/basalt"
   },
-  "loot_table": "tfc:deposit/basalt_native_gold",
+  "loot_table": "tfc:deposit/native_gold_basalt",
   "model_stages": [
     "tfc:item/pan/native_gold/basalt_full",
     "tfc:item/pan/native_gold/basalt_half",

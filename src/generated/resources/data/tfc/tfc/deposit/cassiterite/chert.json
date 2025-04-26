@@ -2,7 +2,7 @@
   "ingredient": {
     "item": "tfc:deposit/cassiterite/chert"
   },
-  "loot_table": "tfc:deposit/chert_cassiterite",
+  "loot_table": "tfc:deposit/cassiterite_chert",
   "model_stages": [
     "tfc:item/pan/cassiterite/chert_full",
     "tfc:item/pan/cassiterite/chert_half",

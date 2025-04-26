@@ -2,7 +2,7 @@
   "ingredient": {
     "item": "tfc:deposit/cassiterite/diorite"
   },
-  "loot_table": "tfc:deposit/diorite_cassiterite",
+  "loot_table": "tfc:deposit/cassiterite_diorite",
   "model_stages": [
     "tfc:item/pan/cassiterite/diorite_full",
     "tfc:item/pan/cassiterite/diorite_half",

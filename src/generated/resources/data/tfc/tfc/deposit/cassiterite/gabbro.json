@@ -2,7 +2,7 @@
   "ingredient": {
     "item": "tfc:deposit/cassiterite/gabbro"
   },
-  "loot_table": "tfc:deposit/gabbro_cassiterite",
+  "loot_table": "tfc:deposit/cassiterite_gabbro",
   "model_stages": [
     "tfc:item/pan/cassiterite/gabbro_full",
     "tfc:item/pan/cassiterite/gabbro_half",

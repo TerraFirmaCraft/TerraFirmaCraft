@@ -2,7 +2,7 @@
   "ingredient": {
     "item": "tfc:deposit/native_silver/chalk"
   },
-  "loot_table": "tfc:deposit/chalk_native_silver",
+  "loot_table": "tfc:deposit/native_silver_chalk",
   "model_stages": [
     "tfc:item/pan/native_silver/chalk_full",
     "tfc:item/pan/native_silver/chalk_half",

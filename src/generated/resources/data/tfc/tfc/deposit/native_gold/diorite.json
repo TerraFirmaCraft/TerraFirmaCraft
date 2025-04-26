@@ -2,7 +2,7 @@
   "ingredient": {
     "item": "tfc:deposit/native_gold/diorite"
   },
-  "loot_table": "tfc:deposit/diorite_native_gold",
+  "loot_table": "tfc:deposit/native_gold_diorite",
   "model_stages": [
     "tfc:item/pan/native_gold/diorite_full",
     "tfc:item/pan/native_gold/diorite_half",

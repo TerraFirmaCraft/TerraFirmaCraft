@@ -2,7 +2,7 @@
   "ingredient": {
     "item": "tfc:deposit/cassiterite/rhyolite"
   },
-  "loot_table": "tfc:deposit/rhyolite_cassiterite",
+  "loot_table": "tfc:deposit/cassiterite_rhyolite",
   "model_stages": [
     "tfc:item/pan/cassiterite/rhyolite_full",
     "tfc:item/pan/cassiterite/rhyolite_half",

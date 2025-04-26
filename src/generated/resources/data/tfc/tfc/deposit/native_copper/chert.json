@@ -2,7 +2,7 @@
   "ingredient": {
     "item": "tfc:deposit/native_copper/chert"
   },
-  "loot_table": "tfc:deposit/chert_native_copper",
+  "loot_table": "tfc:deposit/native_copper_chert",
   "model_stages": [
     "tfc:item/pan/native_copper/chert_full",
     "tfc:item/pan/native_copper/chert_half",

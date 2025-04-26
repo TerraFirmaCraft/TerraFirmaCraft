@@ -2,7 +2,7 @@
   "ingredient": {
     "item": "tfc:deposit/native_copper/dolomite"
   },
-  "loot_table": "tfc:deposit/dolomite_native_copper",
+  "loot_table": "tfc:deposit/native_copper_dolomite",
   "model_stages": [
     "tfc:item/pan/native_copper/dolomite_full",
     "tfc:item/pan/native_copper/dolomite_half",

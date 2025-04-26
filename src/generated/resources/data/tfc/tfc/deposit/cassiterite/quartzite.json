@@ -2,7 +2,7 @@
   "ingredient": {
     "item": "tfc:deposit/cassiterite/quartzite"
   },
-  "loot_table": "tfc:deposit/quartzite_cassiterite",
+  "loot_table": "tfc:deposit/cassiterite_quartzite",
   "model_stages": [
     "tfc:item/pan/cassiterite/quartzite_full",
     "tfc:item/pan/cassiterite/quartzite_half",

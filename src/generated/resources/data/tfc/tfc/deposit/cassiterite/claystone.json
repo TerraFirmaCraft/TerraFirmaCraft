@@ -2,7 +2,7 @@
   "ingredient": {
     "item": "tfc:deposit/cassiterite/claystone"
   },
-  "loot_table": "tfc:deposit/claystone_cassiterite",
+  "loot_table": "tfc:deposit/cassiterite_claystone",
   "model_stages": [
     "tfc:item/pan/cassiterite/claystone_full",
     "tfc:item/pan/cassiterite/claystone_half",

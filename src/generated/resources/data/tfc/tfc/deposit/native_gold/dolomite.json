@@ -2,7 +2,7 @@
   "ingredient": {
     "item": "tfc:deposit/native_gold/dolomite"
   },
-  "loot_table": "tfc:deposit/dolomite_native_gold",
+  "loot_table": "tfc:deposit/native_gold_dolomite",
   "model_stages": [
     "tfc:item/pan/native_gold/dolomite_full",
     "tfc:item/pan/native_gold/dolomite_half",

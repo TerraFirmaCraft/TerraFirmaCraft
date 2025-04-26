@@ -2,7 +2,7 @@
   "ingredient": {
     "item": "tfc:deposit/cassiterite/andesite"
   },
-  "loot_table": "tfc:deposit/andesite_cassiterite",
+  "loot_table": "tfc:deposit/cassiterite_andesite",
   "model_stages": [
     "tfc:item/pan/cassiterite/andesite_full",
     "tfc:item/pan/cassiterite/andesite_half",

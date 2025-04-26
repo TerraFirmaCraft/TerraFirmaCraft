@@ -2,7 +2,7 @@
   "ingredient": {
     "item": "tfc:deposit/native_silver/dacite"
   },
-  "loot_table": "tfc:deposit/dacite_native_silver",
+  "loot_table": "tfc:deposit/native_silver_dacite",
   "model_stages": [
     "tfc:item/pan/native_silver/dacite_full",
     "tfc:item/pan/native_silver/dacite_half",

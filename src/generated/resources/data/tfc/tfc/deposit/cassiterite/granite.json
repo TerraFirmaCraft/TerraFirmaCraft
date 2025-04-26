@@ -2,7 +2,7 @@
   "ingredient": {
     "item": "tfc:deposit/cassiterite/granite"
   },
-  "loot_table": "tfc:deposit/granite_cassiterite",
+  "loot_table": "tfc:deposit/cassiterite_granite",
   "model_stages": [
     "tfc:item/pan/cassiterite/granite_full",
     "tfc:item/pan/cassiterite/granite_half",

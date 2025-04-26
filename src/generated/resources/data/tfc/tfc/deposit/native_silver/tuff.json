@@ -2,7 +2,7 @@
   "ingredient": {
     "item": "tfc:deposit/native_silver/tuff"
   },
-  "loot_table": "tfc:deposit/tuff_native_silver",
+  "loot_table": "tfc:deposit/native_silver_tuff",
   "model_stages": [
     "tfc:item/pan/native_silver/tuff_full",
     "tfc:item/pan/native_silver/tuff_half",

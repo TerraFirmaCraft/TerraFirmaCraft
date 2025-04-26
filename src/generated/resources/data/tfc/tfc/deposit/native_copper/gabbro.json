@@ -2,7 +2,7 @@
   "ingredient": {
     "item": "tfc:deposit/native_copper/gabbro"
   },
-  "loot_table": "tfc:deposit/gabbro_native_copper",
+  "loot_table": "tfc:deposit/native_copper_gabbro",
   "model_stages": [
     "tfc:item/pan/native_copper/gabbro_full",
     "tfc:item/pan/native_copper/gabbro_half",

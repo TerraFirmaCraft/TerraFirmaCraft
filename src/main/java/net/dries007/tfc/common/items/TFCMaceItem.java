@@ -6,17 +6,24 @@
 
 package net.dries007.tfc.common.items;
 
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SwordItem;
-import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.MaceItem;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.ItemAbility;
 
-public class MaceItem extends SwordItem
+public class TFCMaceItem extends MaceItem
 {
-    public MaceItem(Tier tier, Properties properties)
+    public TFCMaceItem(Properties properties)
     {
-        super(tier, properties);
+        super(properties);
+    }
+
+    @Override
+    public float getAttackDamageBonus(Entity target, float damage, DamageSource damageSource)
+    {
+        return 0f;
     }
 
     @Override
@@ -24,4 +31,5 @@ public class MaceItem extends SwordItem
     {
         return super.canPerformAction(stack, toolAction) && toolAction != ItemAbilities.SWORD_SWEEP;
     }
+
 }

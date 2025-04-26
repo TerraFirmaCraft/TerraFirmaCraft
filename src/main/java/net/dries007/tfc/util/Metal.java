@@ -55,7 +55,7 @@ import net.dries007.tfc.common.blocks.devices.LampBlock;
 import net.dries007.tfc.common.items.ChiselItem;
 import net.dries007.tfc.common.items.JavelinItem;
 import net.dries007.tfc.common.items.LampBlockItem;
-import net.dries007.tfc.common.items.MaceItem;
+import net.dries007.tfc.common.items.TFCMaceItem;
 import net.dries007.tfc.common.items.PropickItem;
 import net.dries007.tfc.common.items.ScytheItem;
 import net.dries007.tfc.common.items.TFCFishingRodItem;
@@ -337,7 +337,7 @@ public enum Metal implements StringRepresentable, RegistryMetal
         JAVELIN_HEAD(PartType.ALL, true),
         SWORD(PartType.ALL, metal -> new SwordItem(metal.toolTier(), tool(metal, 1f, -2.4f))),
         SWORD_BLADE(PartType.ALL, true),
-        MACE(PartType.ALL, metal -> new MaceItem(metal.toolTier(), tool(metal, 1.3f, -3f))),
+        MACE(PartType.ALL, metal -> new TFCMaceItem(tool(metal, 1.3f, -3.4f).durability(metal.toolTier().getUses()))),
         MACE_HEAD(PartType.ALL, true),
         KNIFE(PartType.ALL, metal -> new ToolItem(metal.toolTier(), TFCTags.Blocks.MINEABLE_WITH_KNIFE, tool(metal, 0.6f, -2.0f))),
         KNIFE_BLADE(PartType.ALL, true),

@@ -2,7 +2,7 @@
   "ingredient": {
     "item": "tfc:deposit/cassiterite/phyllite"
   },
-  "loot_table": "tfc:deposit/phyllite_cassiterite",
+  "loot_table": "tfc:deposit/cassiterite_phyllite",
   "model_stages": [
     "tfc:item/pan/cassiterite/phyllite_full",
     "tfc:item/pan/cassiterite/phyllite_half",

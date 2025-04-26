@@ -982,6 +982,12 @@ public final class Helpers
         return level.addFreshEntity(new ItemEntity(level, pos.getX() + 0.5D, pos.getY() + yOffset, pos.getZ() + 0.5D, stack));
     }
 
+    public static boolean spawnItem(Level level, BlockPos pos, ItemStack stack, double yOffset, double xd, double yd, double zd)
+    {
+        return level.addFreshEntity(new ItemEntity(level, pos.getX() + 0.5D, pos.getY() + yOffset, pos.getZ() + 0.5D, stack, xd, yd, zd));
+    }
+
+
     public static boolean spawnItem(Level level, BlockPos pos, ItemStack stack)
     {
         return spawnItem(level, pos, stack, 0.5D);

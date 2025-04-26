@@ -82,7 +82,8 @@ public class SluiceBlockEntity extends TickableInventoryBlockEntity<ItemStackHan
                         .withOptionalParameter(LootContextParams.ORIGIN, new Vec3(pos.getX(), pos.getY(), pos.getZ()));
                     final LootTable table = serverLevel.getServer().reloadableRegistries().getLootTable(deposit.lootTable());
                     final List<ItemStack> items = table.getRandomItems(builder.create(LootContextParamSets.EMPTY));
-                    items.forEach(item -> Helpers.spawnItem(level, Vec3.atCenterOf(sluice.getWaterOutputPos()), item));
+                    final Direction dir = state.getValue(SluiceBlock.FACING);
+                    items.forEach(item -> Helpers.spawnItem(level, sluice.getWaterOutputPos(), item, 1.125, dir.getStepX() * 0.12 * level.random.nextFloat(), 0, dir.getStepZ() * 0.12 * level.random.nextFloat()));
                 }
                 stack.setCount(0);
                 itemUsed = true;

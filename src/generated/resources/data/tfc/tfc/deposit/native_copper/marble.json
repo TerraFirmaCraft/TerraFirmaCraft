@@ -2,7 +2,7 @@
   "ingredient": {
     "item": "tfc:deposit/native_copper/marble"
   },
-  "loot_table": "tfc:deposit/marble_native_copper",
+  "loot_table": "tfc:deposit/native_copper_marble",
   "model_stages": [
     "tfc:item/pan/native_copper/marble_full",
     "tfc:item/pan/native_copper/marble_half",

@@ -2,7 +2,7 @@
   "ingredient": {
     "item": "tfc:deposit/native_silver/schist"
   },
-  "loot_table": "tfc:deposit/schist_native_silver",
+  "loot_table": "tfc:deposit/native_silver_schist",
   "model_stages": [
     "tfc:item/pan/native_silver/schist_full",
     "tfc:item/pan/native_silver/schist_half",
