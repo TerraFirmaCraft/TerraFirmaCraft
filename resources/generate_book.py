@@ -146,7 +146,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
 
     book.category('the_world', 'The World', 'All about the natural world around you.', 'tfc:grass/loam', is_sorted=True, entries=(
         entry('geology', 'Geology', 'tfc:rock/raw/shale', pages=(
-            text('The world of TerraFirmaCraft is divided into large continents - landmasses many kilometers wide and seperated by oceans. In these, you may find mountain ranges, rivers, and many other environments.'),
+            text('The world of TerraFirmaCraft is divided into large continents - landmasses many kilometers wide and separated by oceans. In these, you may find mountain ranges, rivers, and many other environments.'),
             image('tfc:textures/gui/book/biomes/regions.png', text_contents='A typical TFC world viewed at a large scale.'),
             page_break(),
             text('The world is also divided up into different types of $(thing)Rock$(). Rock regions can be over a kilometer across, and there will usually be two or three different rock layers under your feet at all times. As different ores are found in different rock types, locating specific rock types can be very important for finding resources such as $(l:the_world/ores_and_minerals)Ores$(), which will often only appear in certain rock types.', title='Rock Layers').anchor('rocks'),
