@@ -126,7 +126,7 @@ public interface ClimateModel
     }
 
     /**
-     * @return The average rainfall, in {@code mm/year}, at the given {@code pos} at the current time.
+     * @return The instantaneous rainfall, in {@code mm/year}, at the given {@code pos} at the current time.
      */
     default float getRainfall(LevelReader level, BlockPos pos)
     {
@@ -135,7 +135,7 @@ public interface ClimateModel
     }
 
     /**
-     * @return The average rainfall, in {@code mm/year}, at the given {@code pos} over the time delta given by {@code fromTick} and {@code toTick}.
+     * @return The instantaneous rainfall, in {@code mm/year}, at the given {@code pos} over the time delta given by {@code fromTick} and {@code toTick}.
      *
      * This is done to properly consider the impact of any time-based variation of rainfall
      */

@@ -59,15 +59,31 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
         float accumulatedRainfall = 0;
         if (level.getBlockEntity(pos) instanceof IFarmland farmland)
         {
-            accumulatedRainfall = farmland.getAdditionalWater();
+            final ChunkData data = ChunkData.get(level, pos);
+            final int stormHydration = (int) data.getStormHydration();
+            final int totalRainHydration = FarmlandBlock.getRainHydration(level, pos, stormHydration);
+            final int hydrationValue = FarmlandBlock.getHydrationFromRainHydration(level, pos, totalRainHydration);
+            final int minRainfallHydration = (int) data.getMinRainfallHydration(pos);
+            final int minHydrationValue = FarmlandBlock.getHydrationFromRainHydration(level, pos, minRainfallHydration);
+            final int maxRainfallHydration = (int) data.getMaxRainfallHydration(pos);
+            final int maxHydrationValue = FarmlandBlock.getHydrationFromRainHydration(level, pos, maxRainfallHydration);
+            final MutableComponent tooltip = Component.translatable("tfc.tooltip.farmland.hydration", hydrationValue, minHydrationValue, maxHydrationValue);
+
+            tooltip.append(switch (validRange.checkHydration(hydrationValue, allowWiggle))
+            {
+                case VALID -> Component.translatable("tfc.tooltip.farmland.just_right");
+                case LOW -> Component.translatable("tfc.tooltip.farmland.hydration_too_low", validRange.getMinHydration(allowWiggle));
+                case HIGH -> Component.translatable("tfc.tooltip.farmland.hydration_too_high", validRange.getMaxHydration(allowWiggle));
+            });
+            return tooltip;
         }
 
-        return getHydrationTooltip(level, pos, validRange, allowWiggle, getHydration(level, pos, accumulatedRainfall));
+        return getHydrationTooltip(level, pos, validRange, allowWiggle, getHydrationFromStormHydration(level, pos, 0));
     }
 
     public static Component getHydrationTooltip(LevelAccessor level, BlockPos pos, ClimateRange validRange, boolean allowWiggle, int hydration)
     {
-        final MutableComponent tooltip = Component.translatable("tfc.tooltip.farmland.hydration", hydration);
+        final MutableComponent tooltip = Component.translatable("tfc.tooltip.farmland.hydration_simple", hydration);
 
         tooltip.append(switch (validRange.checkHydration(hydration, allowWiggle))
             {
@@ -101,52 +117,83 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
         return tooltip;
     }
 
-    public static int getRainfallBoost(float accumulatedRainfall)
-    {
-        return (int) (30 * accumulatedRainfall / ChunkData.MAX_ACCUMULATED_RAINFALL);
-    }
-
     /**
-     * @return A value in the range [0, 100]
+     * @return A value in the range [0, 60] representing total rain hydration (humidity + storm)
      */
-    public static int getHydration(Level level, BlockPos pos, float accumulatedRainfall)
+    public static int getRainHydration(Level level, BlockPos pos, int stormHydration)
     {
-        if (Helpers.isFluid(level.getFluidState(pos.above()), TFCTags.Fluids.HYDRATING))
-        {
-            return 100; // special case for waterlogged crops
-        }
-
         final WorldTracker tracker = WorldTracker.get(level);
         final ClimateModel model = tracker.getClimateModel();
 
-        final int waterCost = findMinCostWater(level, pos); // Nearby water contributes an additional 0 - 80% hydration based on proximity
-        final int waterBoost = 20 * (5 - waterCost); // Nearby water contributes an additional 0 - 80% hydration based on proximity
-        final int rainfallBoost = getRainfallBoost(accumulatedRainfall); // Up to 30% bonus from rainfall
-        // TODO :: Maybe this humidity factor should have a lower impact when temperature is lower?
-        final int humidityBoost = (int) (30 * Mth.clampedMap(model.getGroundwater(level, pos), ClimateModel.MIN_RAINFALL, ClimateModel.MAX_RAINFALL, 0, 1)); // Up to 30% bonus from groundwater
-        return Mth.clamp(rainfallBoost + waterBoost + humidityBoost, 0, 100);
+        final int humidityBoost = (int) (ChunkData.MAX_HUMIDITY_CONTRIBUTION * Mth.clampedMap(model.getRainfall(level, pos), ClimateModel.MIN_RAINFALL, ClimateModel.MAX_RAINFALL, 0, 1));
+        // Ensure that storms + humidity do not exceed ChunkData.MAX_RAINFALL_CONTRIBUTION
+        return (int) Mth.clamp(stormHydration + humidityBoost, 0, ChunkData.MAX_RAINFALL_CONTRIBUTION);
     }
 
     /**
      * @return A value in the range [0, 100]
      */
-    public static int getHydration(Level level, BlockPos pos, float accumulatedRainfall, long fromTick, long toTick)
+    public static int getHydrationFromStormHydration(Level level, BlockPos pos, int stormBoost)
     {
         if (Helpers.isFluid(level.getFluidState(pos.above()), TFCTags.Fluids.HYDRATING))
         {
             return 100; // special case for waterlogged crops
         }
+
+        final int rainBoost = getRainHydration(level, pos, stormBoost);
+        final int waterCost = findMinCostWater(level, pos); // Nearby water contributes an additional 0 - 80% hydration based on proximity
+        final int waterBoost = 20 * (5 - waterCost); // Nearby water contributes an additional 0 - 80% hydration based on proximity
+
+        return Mth.clamp(waterBoost + rainBoost, 0, 100);
+    }
+
+    /**
+     * @return A value in the range [0, 100]
+     * Mirrors getHydrationFromStormHydration
+     */
+    public static int getHydrationFromRainHydration(Level level, BlockPos pos, int rainBoost)
+    {
+        if (Helpers.isFluid(level.getFluidState(pos.above()), TFCTags.Fluids.HYDRATING))
+        {
+            return 100; // special case for waterlogged crops
+        }
+
+        final int waterCost = findMinCostWater(level, pos); // Nearby water contributes an additional 0 - 80% hydration based on proximity
+        final int waterBoost = 20 * (5 - waterCost); // Nearby water contributes an additional 0 - 80% hydration based on proximity
+
+        return Mth.clamp(waterBoost + rainBoost, 0, 100);
+    }
+
+    /**
+     * @return A value in the range [0, 60] representing total rain hydration (humidity + storm)
+     */
+    public static int getRainHydrationOverTime(Level level, BlockPos pos, int stormHydration, long fromTick, long toTick)
+    {
 
         final WorldTracker tracker = WorldTracker.get(level);
         final ClimateModel model = tracker.getClimateModel();
         final ICalendar calendar = Calendars.get(level);
 
+        final int humidityBoost = (int) (ChunkData.MAX_HUMIDITY_CONTRIBUTION * Mth.clampedMap(model.getRainfall(level, pos, fromTick, toTick, calendar.getCalendarDaysInMonth()), ClimateModel.MIN_RAINFALL, ClimateModel.MAX_RAINFALL, 0, 1));
+        // Ensure that storms + humidity do not exceed ChunkData.MAX_RAINFALL_CONTRIBUTION
+        return (int) Mth.clamp(stormHydration + humidityBoost, 0, ChunkData.MAX_RAINFALL_CONTRIBUTION);
+    }
+
+    /**
+     * @return A value in the range [0, 100]
+     */
+    public static int getHydrationFromStormHydrationOverTime(Level level, BlockPos pos, int stormBoost, long fromTick, long toTick)
+    {
+        if (Helpers.isFluid(level.getFluidState(pos.above()), TFCTags.Fluids.HYDRATING))
+        {
+            return 100; // special case for waterlogged crops
+        }
+
+        final int rainBoost = getRainHydrationOverTime(level, pos, stormBoost, fromTick, toTick);
         final int waterCost = findMinCostWater(level, pos); // Nearby water contributes an additional 0 - 80% hydration based on proximity
         final int waterBoost = 20 * (5 - waterCost); // Nearby water contributes an additional 0 - 80% hydration based on proximity
-        final int rainfallBoost = getRainfallBoost(accumulatedRainfall); // Up to 30% bonus from rainfall
-        // TODO :: Maybe this humidity factor should have a lower impact when temperature is lower?
-        final int humidityBoost = (int) (30 * Mth.clampedMap(model.getGroundwater(level, pos, fromTick, toTick, calendar.getCalendarDaysInMonth()), ClimateModel.MIN_RAINFALL, ClimateModel.MAX_RAINFALL, 0, 1)); // Up to 30% bonus from groundwater
-        return Mth.clamp(rainfallBoost + waterBoost + humidityBoost, 0, 100);
+
+        return Mth.clamp(waterBoost + rainBoost, 0, 100);
     }
 
     public static void turnToDirt(BlockState state, Level level, BlockPos pos)

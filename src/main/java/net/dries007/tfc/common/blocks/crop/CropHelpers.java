@@ -85,7 +85,8 @@ public final class CropHelpers
         final ICropBlock cropBlock = (ICropBlock) state.getBlock();
         final ClimateRange range = cropBlock.getClimateRange();
 
-        final int hydration = FarmlandBlock.getHydration(level, sourcePos, ChunkData.get(level, pos).getAccumulatedRainfall(), fromTick, toTick);
+        // This is based on an average hydration over the skipped period, and the current storm hydration
+        final int hydration = FarmlandBlock.getHydrationFromStormHydrationOverTime(level, sourcePos, (int) ChunkData.get(level, pos).getStormHydration(), fromTick, toTick);
         final boolean growing = checkClimate(range, hydration, startTemperature, endTemperature, false);
         final boolean healthy = growing || checkClimate(range, hydration, startTemperature, endTemperature, true);
 
