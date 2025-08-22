@@ -15,7 +15,7 @@
   },
   "display": {
     "icon": {
-      "item": "tfc:mud_brick/sandy_loam"
+      "item": "tfc:mud_brick/podzol"
     },
     "title": {
       "translate": "tfc.advancements.world.mud_bricks.title"
@@ -27,7 +27,7 @@
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": false,
-    "background": "tfc:textures/block/mud/silt.png"
+    "background": "tfc:textures/block/mud/fluvisol.png"
   },
   "requirements": [
     [

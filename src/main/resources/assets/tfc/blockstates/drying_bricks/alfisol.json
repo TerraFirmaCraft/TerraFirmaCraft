@@ -1,0 +1,29 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "count=1,dried=true": {
+      "model": "tfc:block/mud_bricks/dry_1_alfisol"
+    },
+    "count=1,dried=false": {
+      "model": "tfc:block/mud_bricks/wet_1_alfisol"
+    },
+    "count=2,dried=true": {
+      "model": "tfc:block/mud_bricks/dry_2_alfisol"
+    },
+    "count=2,dried=false": {
+      "model": "tfc:block/mud_bricks/wet_2_alfisol"
+    },
+    "count=3,dried=true": {
+      "model": "tfc:block/mud_bricks/dry_3_alfisol"
+    },
+    "count=3,dried=false": {
+      "model": "tfc:block/mud_bricks/wet_3_alfisol"
+    },
+    "count=4,dried=true": {
+      "model": "tfc:block/mud_bricks/dry_4_alfisol"
+    },
+    "count=4,dried=false": {
+      "model": "tfc:block/mud_bricks/wet_4_alfisol"
+    }
+  }
+}

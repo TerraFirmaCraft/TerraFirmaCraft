@@ -1,0 +1,12 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:mud_bricks/entisol"
+  ],
+  "item_output": {
+    "count": 1,
+    "id": "tfc:mud_bricks/entisol_slab"
+  },
+  "mode": "tfc:slab",
+  "result": "tfc:mud_bricks/entisol_slab"
+}

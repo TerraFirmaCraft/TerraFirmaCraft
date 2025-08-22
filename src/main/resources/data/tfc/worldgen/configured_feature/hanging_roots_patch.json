@@ -23,7 +23,7 @@
     "ground_state": {
       "type": "minecraft:simple_state_provider",
       "state": {
-        "Name": "tfc:rooted_dirt/silt"
+        "Name": "tfc:rooted_dirt/entisol"
       }
     }
   }

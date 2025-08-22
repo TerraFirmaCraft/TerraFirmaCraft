@@ -1,8 +1,12 @@
 {
   "values": [
-    "tfc:mud/silt",
-    "tfc:mud/loam",
-    "tfc:mud/sandy_loam",
-    "tfc:mud/silty_loam"
+    "tfc:mud/entisol",
+    "tfc:mud/aridisol",
+    "tfc:mud/oxisol",
+    "tfc:mud/fluvisol",
+    "tfc:mud/andisol",
+    "tfc:mud/podzol",
+    "tfc:mud/alfisol",
+    "tfc:mud/mollisol"
   ]
 }

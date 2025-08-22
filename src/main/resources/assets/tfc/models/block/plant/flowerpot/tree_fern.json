@@ -6,7 +6,7 @@
 		"6": "tfc:block/plant/tree_fern/tree_fern_0",
 		"particle": "block/flower_pot",
 		"flowerpot": "block/flower_pot",
-		"dirt": "tfc:block/dirt/loam",
+		"dirt": "tfc:block/dirt/entisol",
 		"plant": "tfc:block/empty"
 	},
 	"elements": [

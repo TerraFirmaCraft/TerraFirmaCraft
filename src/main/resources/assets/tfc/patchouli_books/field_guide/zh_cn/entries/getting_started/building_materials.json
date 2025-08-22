@@ -27,7 +27,7 @@
     {
       "type": "patchouli:crafting",
       "anchor": "mud_bricks",
-      "recipe": "tfc:crafting/drying_bricks/loam",
+      "recipe": "tfc:crafting/drying_bricks/entisol",
       "title": "壤泥砖",
       "text": "$(thing)壤泥$()会生成在地表、河流和湖底，或大量出现在低洼潮湿的生物群系中。将它们和一束$(thing)干草$()合成就能制成$()湿壤泥砖$()。"
     },
@@ -48,8 +48,8 @@
             ]
           ],
           "mapping": {
-            "X": "tfc:drying_bricks/loam[count=4,dried=false]",
-            "Y": "tfc:grass/loam"
+            "X": "tfc:drying_bricks/entisol[count=4,dried=false]",
+            "Y": "tfc:grass/entisol"
           }
         },
         {
@@ -65,15 +65,15 @@
             ]
           ],
           "mapping": {
-            "X": "tfc:drying_bricks/loam[count=4,dried=true]",
-            "Y": "tfc:grass/loam"
+            "X": "tfc:drying_bricks/entisol[count=4,dried=true]",
+            "Y": "tfc:grass/entisol"
           }
         }
       ]
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/mud_bricks/loam",
+      "recipe": "tfc:crafting/mud_bricks/entisol",
       "title": " ",
       "text": "这些干燥后的壤泥砖可以做成$(thing)壤泥砖块$()。它们也可以做成$(thing)楼梯$()、$(thing)台阶$()、或$(thing)墙$()。"
     },

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "": [
+      {"model": "tfc:block/grass_path/fluvisol"},
+      {"model": "tfc:block/grass_path/fluvisol", "y": 90},
+      {"model": "tfc:block/grass_path/fluvisol", "y": 180},
+      {"model": "tfc:block/grass_path/fluvisol", "y": 270}
+    ]
+  }
+}

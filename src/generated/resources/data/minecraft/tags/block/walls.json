@@ -1,9 +1,13 @@
 {
   "values": [
-    "tfc:mud_bricks/silt_slab",
-    "tfc:mud_bricks/loam_slab",
-    "tfc:mud_bricks/sandy_loam_slab",
-    "tfc:mud_bricks/silty_loam_slab",
+    "tfc:mud_bricks/entisol_slab",
+    "tfc:mud_bricks/aridisol_slab",
+    "tfc:mud_bricks/oxisol_slab",
+    "tfc:mud_bricks/fluvisol_slab",
+    "tfc:mud_bricks/andisol_slab",
+    "tfc:mud_bricks/podzol_slab",
+    "tfc:mud_bricks/alfisol_slab",
+    "tfc:mud_bricks/mollisol_slab",
     "tfc:raw_sandstone/brown_slab",
     "tfc:smooth_sandstone/brown_slab",
     "tfc:cut_sandstone/brown_slab",

@@ -6,7 +6,7 @@
 		"0": "tfc:block/wood/log/pine",
 		"1": "tfc:block/wood/leaves/pine",
 		"flowerpot": "block/flower_pot",
-		"dirt": "tfc:block/dirt/loam",
+		"dirt": "tfc:block/dirt/aridisol",
 		"particle": "tfc:block/wood/leaves/pine"
 	},
 	"elements": [

@@ -20,7 +20,7 @@
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": true,
-    "background": "tfc:textures/block/mud/silt.png"
+    "background": "tfc:textures/block/mud/fluvisol.png"
   },
   "requirements": [
     [

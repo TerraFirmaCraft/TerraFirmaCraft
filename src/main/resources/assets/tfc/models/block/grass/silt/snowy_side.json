@@ -1,7 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "parent": "tfc:block/grass_snowy_side",
-  "textures": {
-    "texture": "tfc:block/dirt/silt"
-  }
-}

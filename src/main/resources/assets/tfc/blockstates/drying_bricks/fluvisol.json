@@ -1,0 +1,29 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "count=1,dried=true": {
+      "model": "tfc:block/mud_bricks/dry_1_fluvisol"
+    },
+    "count=1,dried=false": {
+      "model": "tfc:block/mud_bricks/wet_1_fluvisol"
+    },
+    "count=2,dried=true": {
+      "model": "tfc:block/mud_bricks/dry_2_fluvisol"
+    },
+    "count=2,dried=false": {
+      "model": "tfc:block/mud_bricks/wet_2_fluvisol"
+    },
+    "count=3,dried=true": {
+      "model": "tfc:block/mud_bricks/dry_3_fluvisol"
+    },
+    "count=3,dried=false": {
+      "model": "tfc:block/mud_bricks/wet_3_fluvisol"
+    },
+    "count=4,dried=true": {
+      "model": "tfc:block/mud_bricks/dry_4_fluvisol"
+    },
+    "count=4,dried=false": {
+      "model": "tfc:block/mud_bricks/wet_4_fluvisol"
+    }
+  }
+}

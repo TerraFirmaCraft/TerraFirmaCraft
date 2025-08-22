@@ -6,7 +6,7 @@
 		"4": "tfc:block/plant/morning_glory/morning_glory_top_1",
 		"particle": "block/flower_pot",
 		"flowerpot": "block/flower_pot",
-		"dirt": "tfc:block/dirt/loam",
+		"dirt": "tfc:block/dirt/entisol",
 		"plant": "tfc:block/empty"
 	},
 	"elements": [

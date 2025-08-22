@@ -8,36 +8,68 @@
     "integrity": 0.8,
     "states": [
       {
-        "replace": "tfc:grass/silt",
-        "with": "tfc:rooted_dirt/silt"
+        "replace": "tfc:grass/entisol",
+        "with": "tfc:rooted_dirt/entisol"
       },
       {
-        "replace": "tfc:dirt/silt",
-        "with": "tfc:rooted_dirt/silt"
+        "replace": "tfc:dirt/entisol",
+        "with": "tfc:rooted_dirt/entisol"
       },
       {
-        "replace": "tfc:grass/loam",
-        "with": "tfc:rooted_dirt/loam"
+        "replace": "tfc:grass/aridisol",
+        "with": "tfc:rooted_dirt/aridisol"
       },
       {
-        "replace": "tfc:dirt/loam",
-        "with": "tfc:rooted_dirt/loam"
+        "replace": "tfc:dirt/aridisol",
+        "with": "tfc:rooted_dirt/aridisol"
       },
       {
-        "replace": "tfc:grass/sandy_loam",
-        "with": "tfc:rooted_dirt/sandy_loam"
+        "replace": "tfc:grass/oxisol",
+        "with": "tfc:rooted_dirt/oxisol"
       },
       {
-        "replace": "tfc:dirt/sandy_loam",
-        "with": "tfc:rooted_dirt/sandy_loam"
+        "replace": "tfc:dirt/oxisol",
+        "with": "tfc:rooted_dirt/oxisol"
       },
       {
-        "replace": "tfc:grass/silty_loam",
-        "with": "tfc:rooted_dirt/silty_loam"
+        "replace": "tfc:grass/fluvisol",
+        "with": "tfc:rooted_dirt/fluvisol"
       },
       {
-        "replace": "tfc:dirt/silty_loam",
-        "with": "tfc:rooted_dirt/silty_loam"
+        "replace": "tfc:dirt/fluvisol",
+        "with": "tfc:rooted_dirt/fluvisol"
+      },
+      {
+        "replace": "tfc:grass/andisol",
+        "with": "tfc:rooted_dirt/andisol"
+      },
+      {
+        "replace": "tfc:dirt/andisol",
+        "with": "tfc:rooted_dirt/andisol"
+      },
+      {
+        "replace": "tfc:grass/podzol",
+        "with": "tfc:rooted_dirt/podzol"
+      },
+      {
+        "replace": "tfc:dirt/podzol",
+        "with": "tfc:rooted_dirt/podzol"
+      },
+      {
+        "replace": "tfc:grass/alfisol",
+        "with": "tfc:rooted_dirt/alfisol"
+      },
+      {
+        "replace": "tfc:dirt/alfisol",
+        "with": "tfc:rooted_dirt/alfisol"
+      },
+      {
+        "replace": "tfc:grass/mollisol",
+        "with": "tfc:rooted_dirt/mollisol"
+      },
+      {
+        "replace": "tfc:dirt/mollisol",
+        "with": "tfc:rooted_dirt/mollisol"
       }
     ]
   }

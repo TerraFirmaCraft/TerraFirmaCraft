@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "tfc:block/mud/andisol_roots_top",
+    "side": "tfc:block/mud/andisol_roots_side"
+  }
+}

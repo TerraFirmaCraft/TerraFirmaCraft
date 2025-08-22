@@ -655,7 +655,7 @@ def generate(rm: ResourceManager):
     rm.item_model('minecraft:slime_block', parent='tfc:block/glue_block', no_textures=True)
     rm.block_model('glue_block', {'particle': 'tfc:block/glue_block', 'texture': 'tfc:block/glue_block'}, parent='minecraft:block/slime_block')
     rm.blockstate('minecraft:flower_pot', model='tfc:block/flower_pot')
-    rm.block_model('flower_pot', {'dirt': 'tfc:block/dirt/loam'}, parent='minecraft:block/flower_pot')
+    rm.block_model('flower_pot', {'dirt': 'tfc:block/dirt/entisol'}, parent='minecraft:block/flower_pot')
 
     # Dirt
     for soil in SOIL_BLOCK_VARIANTS:
@@ -2340,7 +2340,7 @@ def particle(rm: ResourceManager, name: str, textures: List[str]):
 
 def flower_pot_cross(rm: ResourceManager, simple_name: str, name: str, model: str, texture: str, loot: str):
     rm.blockstate(name, model='tfc:block/%s' % model).with_lang(lang('potted %s', simple_name)).with_block_loot(loot, 'minecraft:flower_pot')
-    rm.block_model(model, parent='minecraft:block/flower_pot_cross', textures={'plant': texture, 'dirt': 'tfc:block/dirt/loam'})
+    rm.block_model(model, parent='minecraft:block/flower_pot_cross', textures={'plant': texture, 'dirt': 'tfc:block/dirt/entisol'})
 
 
 def water_based_fluid(rm: ResourceManager, name: str):

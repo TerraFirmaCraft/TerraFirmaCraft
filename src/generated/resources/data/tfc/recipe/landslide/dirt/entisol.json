@@ -1,0 +1,11 @@
+{
+  "type": "tfc:landslide",
+  "ingredient": [
+    "tfc:dirt/entisol",
+    "tfc:grass/entisol",
+    "tfc:grass_path/entisol",
+    "tfc:farmland/entisol",
+    "tfc:rooted_dirt/entisol"
+  ],
+  "result": "tfc:dirt/entisol"
+}

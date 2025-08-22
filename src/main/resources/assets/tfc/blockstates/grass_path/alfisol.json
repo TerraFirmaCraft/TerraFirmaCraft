@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "": [
+      {"model": "tfc:block/grass_path/alfisol"},
+      {"model": "tfc:block/grass_path/alfisol", "y": 90},
+      {"model": "tfc:block/grass_path/alfisol", "y": 180},
+      {"model": "tfc:block/grass_path/alfisol", "y": 270}
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:mud_bricks/alfisol"
+  ],
+  "mode": "tfc:stair",
+  "result": "tfc:mud_bricks/alfisol_stairs"
+}

@@ -3,7 +3,7 @@
     "textures": {
         "particle": "block/flower_pot",
         "flowerpot": "block/flower_pot",
-        "dirt": "tfc:block/dirt/loam",
+        "dirt": "tfc:block/dirt/entisol",
         "bamboo": "tfc:block/plant/golden_bamboo/stalk",
         "leaf": "block/bamboo_singleleaf"
     },

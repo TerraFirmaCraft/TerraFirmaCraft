@@ -1,8 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "parent": "block/template_farmland",
-  "textures": {
-    "dirt": "tfc:block/dirt/silt",
-    "top": "tfc:block/farmland/silt"
-  }
-}

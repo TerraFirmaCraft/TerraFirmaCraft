@@ -51,7 +51,7 @@
     {
       "type": "patchouli:text",
       "anchor": "rainfall",
-      "text": "Rainfall is another climate value that can vary depending on where you are in the world. The annual rainfall is measured in millimeters (mm) and can be between 0mm - 500mm. Rainfall affects the types of flora that are found in an area, and also the types of soil, from sand and cacti, to loam, to silt and kapok trees.",
+      "text": "Rainfall is another climate value that can vary depending on where you are in the world. The annual rainfall is measured in millimeters (mm) and can be between 0mm - 500mm. Rainfall affects the types of flora that are found in an area, and also the types of soil, from sand and cacti, to entisols, to oxisols and kapok trees.",
       "title": "Rainfall"
     },
     {

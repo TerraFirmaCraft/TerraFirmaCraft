@@ -56,7 +56,7 @@ public final class SurfaceStates
     public static final SurfaceState BLUE_ICE = context -> Blocks.BLUE_ICE.defaultBlockState();
     public static final SurfaceState SNOW = context -> Blocks.SNOW_BLOCK.defaultBlockState();
 
-    public static final SurfaceState COARSE_SANDY_LOAM_BASE = SoilSurfaceState.soil(SoilBlockType.COARSE_DIRT, SoilBlockType.Variant.SANDY_LOAM);
+    public static final SurfaceState COARSE_ARIDISOL_BASE = SoilSurfaceState.soil(SoilBlockType.COARSE_DIRT, SoilBlockType.Variant.ARIDISOL);
     public static final SurfaceState DRY_MUD = context -> TFCBlocks.HARDENED_CLAY.get().defaultBlockState();
     public static final SurfaceState SALTED_EARTH = context -> TFCBlocks.HALITE.get().defaultBlockState();
 
@@ -76,7 +76,7 @@ public final class SurfaceStates
     public static final SurfaceState PINK_SAND = context -> TFCBlocks.SAND.get(SandBlockType.PINK).get().defaultBlockState();
     public static final SurfaceState PINK_SANDSTONE = context -> TFCBlocks.SANDSTONE.get(SandBlockType.PINK).get(SandstoneBlockType.RAW).get().defaultBlockState();
 
-    public static final SurfaceState SHORE_MUD = context -> TFCBlocks.SOIL.get(SoilBlockType.MUD).get(SoilBlockType.Variant.SANDY_LOAM).get().defaultBlockState();
+    public static final SurfaceState SHORE_MUD = context -> TFCBlocks.SOIL.get(SoilBlockType.MUD).get(SoilBlockType.Variant.ENTISOL).get().defaultBlockState();
 
     /**
      * Default surface builders, Climate sensitive

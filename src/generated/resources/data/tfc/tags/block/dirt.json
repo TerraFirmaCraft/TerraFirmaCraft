@@ -1,13 +1,21 @@
 {
   "values": [
     "minecraft:dirt",
-    "tfc:dirt/silt",
-    "tfc:dirt/loam",
-    "tfc:dirt/sandy_loam",
-    "tfc:dirt/silty_loam",
-    "tfc:rooted_dirt/silt",
-    "tfc:rooted_dirt/loam",
-    "tfc:rooted_dirt/sandy_loam",
-    "tfc:rooted_dirt/silty_loam"
+    "tfc:dirt/entisol",
+    "tfc:dirt/aridisol",
+    "tfc:dirt/oxisol",
+    "tfc:dirt/fluvisol",
+    "tfc:dirt/andisol",
+    "tfc:dirt/podzol",
+    "tfc:dirt/alfisol",
+    "tfc:dirt/mollisol",
+    "tfc:rooted_dirt/entisol",
+    "tfc:rooted_dirt/aridisol",
+    "tfc:rooted_dirt/oxisol",
+    "tfc:rooted_dirt/fluvisol",
+    "tfc:rooted_dirt/andisol",
+    "tfc:rooted_dirt/podzol",
+    "tfc:rooted_dirt/alfisol",
+    "tfc:rooted_dirt/mollisol"
   ]
 }

@@ -7,51 +7,99 @@
     "height": 7,
     "states": [
       {
-        "replace": "tfc:dirt/silt",
+        "replace": "tfc:dirt/entisol",
         "with": "tfc:peat"
       },
       {
-        "replace": "tfc:dirt/loam",
+        "replace": "tfc:dirt/aridisol",
         "with": "tfc:peat"
       },
       {
-        "replace": "tfc:dirt/sandy_loam",
+        "replace": "tfc:dirt/oxisol",
         "with": "tfc:peat"
       },
       {
-        "replace": "tfc:dirt/silty_loam",
+        "replace": "tfc:dirt/fluvisol",
         "with": "tfc:peat"
       },
       {
-        "replace": "tfc:grass/silt",
+        "replace": "tfc:dirt/andisol",
+        "with": "tfc:peat"
+      },
+      {
+        "replace": "tfc:dirt/podzol",
+        "with": "tfc:peat"
+      },
+      {
+        "replace": "tfc:dirt/alfisol",
+        "with": "tfc:peat"
+      },
+      {
+        "replace": "tfc:dirt/mollisol",
+        "with": "tfc:peat"
+      },
+      {
+        "replace": "tfc:grass/entisol",
         "with": "tfc:peat_grass"
       },
       {
-        "replace": "tfc:grass/loam",
+        "replace": "tfc:grass/aridisol",
         "with": "tfc:peat_grass"
       },
       {
-        "replace": "tfc:grass/sandy_loam",
+        "replace": "tfc:grass/oxisol",
         "with": "tfc:peat_grass"
       },
       {
-        "replace": "tfc:grass/silty_loam",
+        "replace": "tfc:grass/fluvisol",
         "with": "tfc:peat_grass"
       },
       {
-        "replace": "tfc:mud/silt",
+        "replace": "tfc:grass/andisol",
+        "with": "tfc:peat_grass"
+      },
+      {
+        "replace": "tfc:grass/podzol",
+        "with": "tfc:peat_grass"
+      },
+      {
+        "replace": "tfc:grass/alfisol",
+        "with": "tfc:peat_grass"
+      },
+      {
+        "replace": "tfc:grass/mollisol",
+        "with": "tfc:peat_grass"
+      },
+      {
+        "replace": "tfc:mud/entisol",
         "with": "tfc:peat"
       },
       {
-        "replace": "tfc:mud/loam",
+        "replace": "tfc:mud/aridisol",
         "with": "tfc:peat"
       },
       {
-        "replace": "tfc:mud/sandy_loam",
+        "replace": "tfc:mud/oxisol",
         "with": "tfc:peat"
       },
       {
-        "replace": "tfc:mud/silty_loam",
+        "replace": "tfc:mud/fluvisol",
+        "with": "tfc:peat"
+      },
+      {
+        "replace": "tfc:mud/andisol",
+        "with": "tfc:peat"
+      },
+      {
+        "replace": "tfc:mud/podzol",
+        "with": "tfc:peat"
+      },
+      {
+        "replace": "tfc:mud/alfisol",
+        "with": "tfc:peat"
+      },
+      {
+        "replace": "tfc:mud/mollisol",
         "with": "tfc:peat"
       }
     ]

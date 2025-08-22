@@ -417,10 +417,14 @@ public final class TFCCreativeTabs
         out.accept(Items.BOWL);
         out.accept(TFCItems.STRAW);
         out.accept(TFCItems.WROUGHT_IRON_GRILL);
-        out.accept(TFCItems.LOAM_MUD_BRICK);
-        out.accept(TFCItems.SANDY_LOAM_MUD_BRICK);
-        out.accept(TFCItems.SILTY_LOAM_MUD_BRICK);
-        out.accept(TFCItems.SILT_MUD_BRICK);
+        out.accept(TFCItems.ARIDISOL_MUD_BRICK);
+        out.accept(TFCItems.OXISOL_MUD_BRICK);
+        out.accept(TFCItems.FLUVISOL_MUD_BRICK);
+        out.accept(TFCItems.ENTISOL_MUD_BRICK);
+        out.accept(TFCItems.ANDISOL_MUD_BRICK);
+        out.accept(TFCItems.MOLLISOL_MUD_BRICK);
+        out.accept(TFCItems.ALFISOL_MUD_BRICK);
+        out.accept(TFCItems.PODZOL_MUD_BRICK);
 
         TFCItems.POWDERS.values().forEach(out::accept);
         TFCItems.ORE_POWDERS.values().forEach(out::accept);

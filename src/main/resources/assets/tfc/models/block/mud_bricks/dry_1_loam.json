@@ -1,7 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "parent": "tfc:block/mud_bricks/1",
-  "textures": {
-    "mud": "tfc:block/mud_bricks/loam"
-  }
-}

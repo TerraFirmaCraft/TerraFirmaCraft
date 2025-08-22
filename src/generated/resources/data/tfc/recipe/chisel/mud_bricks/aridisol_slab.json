@@ -1,0 +1,12 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:mud_bricks/aridisol"
+  ],
+  "item_output": {
+    "count": 1,
+    "id": "tfc:mud_bricks/aridisol_slab"
+  },
+  "mode": "tfc:slab",
+  "result": "tfc:mud_bricks/aridisol_slab"
+}

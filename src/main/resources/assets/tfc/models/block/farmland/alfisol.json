@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/template_farmland",
+  "textures": {
+    "dirt": "tfc:block/dirt/alfisol",
+    "top": "tfc:block/farmland/alfisol"
+  }
+}

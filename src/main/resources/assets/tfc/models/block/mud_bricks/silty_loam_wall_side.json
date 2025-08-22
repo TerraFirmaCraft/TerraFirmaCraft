@@ -1,7 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "parent": "block/template_wall_side",
-  "textures": {
-    "wall": "tfc:block/mud_bricks/silty_loam"
-  }
-}

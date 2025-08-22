@@ -1,9 +1,13 @@
 {
   "values": [
     "minecraft:mud_bricks",
-    "tfc:mud_bricks/silt",
-    "tfc:mud_bricks/loam",
-    "tfc:mud_bricks/sandy_loam",
-    "tfc:mud_bricks/silty_loam"
+    "tfc:mud_bricks/entisol",
+    "tfc:mud_bricks/aridisol",
+    "tfc:mud_bricks/oxisol",
+    "tfc:mud_bricks/fluvisol",
+    "tfc:mud_bricks/andisol",
+    "tfc:mud_bricks/podzol",
+    "tfc:mud_bricks/alfisol",
+    "tfc:mud_bricks/mollisol"
   ]
 }

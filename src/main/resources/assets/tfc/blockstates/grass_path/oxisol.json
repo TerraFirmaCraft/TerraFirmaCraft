@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "": [
+      {"model": "tfc:block/grass_path/oxisol"},
+      {"model": "tfc:block/grass_path/oxisol", "y": 90},
+      {"model": "tfc:block/grass_path/oxisol", "y": 180},
+      {"model": "tfc:block/grass_path/oxisol", "y": 270}
+    ]
+  }
+}

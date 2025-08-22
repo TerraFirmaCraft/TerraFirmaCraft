@@ -1,0 +1,11 @@
+{
+  "type": "tfc:landslide",
+  "ingredient": [
+    "tfc:dirt/alfisol",
+    "tfc:grass/alfisol",
+    "tfc:grass_path/alfisol",
+    "tfc:farmland/alfisol",
+    "tfc:rooted_dirt/alfisol"
+  ],
+  "result": "tfc:dirt/alfisol"
+}

@@ -47,7 +47,6 @@ import net.dries007.tfc.common.component.glass.GlassOperation;
 import net.dries007.tfc.common.component.glass.GlassOperations;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.entities.aquatic.Fish;
-import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidId;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.config.TFCConfig;
@@ -163,10 +162,14 @@ public final class TFCItems
 
     // Decorations
 
-    public static final ItemId LOAM_MUD_BRICK = register("mud_brick/loam");
-    public static final ItemId SILTY_LOAM_MUD_BRICK = register("mud_brick/silty_loam");
-    public static final ItemId SANDY_LOAM_MUD_BRICK = register("mud_brick/sandy_loam");
-    public static final ItemId SILT_MUD_BRICK = register("mud_brick/silt");
+    public static final ItemId ENTISOL_MUD_BRICK = register("mud_brick/entisol");
+    public static final ItemId ARIDISOL_MUD_BRICK = register("mud_brick/aridisol");
+    public static final ItemId OXISOL_MUD_BRICK = register("mud_brick/oxisol");
+    public static final ItemId FLUVISOL_MUD_BRICK = register("mud_brick/fluvisol");
+    public static final ItemId ANDISOL_MUD_BRICK = register("mud_brick/andisol");
+    public static final ItemId PODZOL_MUD_BRICK = register("mud_brick/podzol");
+    public static final ItemId ALFISOL_MUD_BRICK = register("mud_brick/alfisol");
+    public static final ItemId MOLLISOL_MUD_BRICK = register("mud_brick/mollisol");
 
     public static final ItemId ALABASTER_BRICK = register("alabaster_brick");
     public static final ItemId TORCH = register("torch", () -> new TorchItem(TFCBlocks.TORCH.get(), TFCBlocks.WALL_TORCH.get(), new Properties()));

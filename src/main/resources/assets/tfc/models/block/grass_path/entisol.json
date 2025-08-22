@@ -1,0 +1,8 @@
+{
+  "parent": "tfc:block/grass_path",
+  "textures": {
+    "dirt": "tfc:block/dirt/entisol",
+    "top": "tfc:block/grass_path/entisol_top",
+    "side": "tfc:block/grass_path/entisol_side"
+  }
+}

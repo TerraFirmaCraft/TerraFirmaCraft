@@ -3,6 +3,6 @@
   "parent": "minecraft:block/flower_pot_cross",
   "textures": {
     "plant": "tfc:block/plant/butterfly_milkweed/potted",
-    "dirt": "tfc:block/dirt/loam"
+    "dirt": "tfc:block/dirt/entisol"
   }
 }

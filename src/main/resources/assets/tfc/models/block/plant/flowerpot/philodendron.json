@@ -5,7 +5,7 @@
 		"5": "tfc:block/plant/philodendron/8x8",
 		"particle": "block/flower_pot",
 		"flowerpot": "block/flower_pot",
-		"dirt": "tfc:block/dirt/loam"
+		"dirt": "tfc:block/dirt/entisol"
 	},
 	"elements": [
 		{

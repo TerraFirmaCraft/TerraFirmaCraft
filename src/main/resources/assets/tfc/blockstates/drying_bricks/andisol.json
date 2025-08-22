@@ -1,0 +1,29 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "count=1,dried=true": {
+      "model": "tfc:block/mud_bricks/dry_1_andisol"
+    },
+    "count=1,dried=false": {
+      "model": "tfc:block/mud_bricks/wet_1_andisol"
+    },
+    "count=2,dried=true": {
+      "model": "tfc:block/mud_bricks/dry_2_andisol"
+    },
+    "count=2,dried=false": {
+      "model": "tfc:block/mud_bricks/wet_2_andisol"
+    },
+    "count=3,dried=true": {
+      "model": "tfc:block/mud_bricks/dry_3_andisol"
+    },
+    "count=3,dried=false": {
+      "model": "tfc:block/mud_bricks/wet_3_andisol"
+    },
+    "count=4,dried=true": {
+      "model": "tfc:block/mud_bricks/dry_4_andisol"
+    },
+    "count=4,dried=false": {
+      "model": "tfc:block/mud_bricks/wet_4_andisol"
+    }
+  }
+}

@@ -60,7 +60,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/barley[age=0]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -77,7 +77,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/barley[age=1]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -94,7 +94,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/barley[age=2]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -111,7 +111,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/barley[age=3]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -128,7 +128,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/barley[age=4]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -145,7 +145,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/barley[age=5]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -162,7 +162,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/barley[age=6]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -179,7 +179,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/barley[age=7]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         }
       ]
@@ -208,7 +208,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/oat[age=0]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -225,7 +225,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/oat[age=1]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -242,7 +242,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/oat[age=2]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -259,7 +259,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/oat[age=3]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -276,7 +276,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/oat[age=4]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -293,7 +293,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/oat[age=5]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -310,7 +310,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/oat[age=6]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -327,7 +327,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/oat[age=7]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         }
       ]
@@ -356,7 +356,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/rye[age=0]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -373,7 +373,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/rye[age=1]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -390,7 +390,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/rye[age=2]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -407,7 +407,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/rye[age=3]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -424,7 +424,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/rye[age=4]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -441,7 +441,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/rye[age=5]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -458,7 +458,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/rye[age=6]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -475,7 +475,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/rye[age=7]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         }
       ]
@@ -508,7 +508,7 @@
           "mapping": {
             "X": "minecraft:air",
             "Y": "tfc:crop/maize[age=0,part=bottom]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         },
         {
@@ -529,7 +529,7 @@
           "mapping": {
             "X": "minecraft:air",
             "Y": "tfc:crop/maize[age=1,part=bottom]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         },
         {
@@ -550,7 +550,7 @@
           "mapping": {
             "X": "minecraft:air",
             "Y": "tfc:crop/maize[age=2,part=bottom]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         },
         {
@@ -571,7 +571,7 @@
           "mapping": {
             "X": "tfc:crop/maize[age=3,part=top]",
             "Y": "tfc:crop/maize[age=3,part=bottom]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         },
         {
@@ -592,7 +592,7 @@
           "mapping": {
             "X": "tfc:crop/maize[age=4,part=top]",
             "Y": "tfc:crop/maize[age=4,part=bottom]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         },
         {
@@ -613,7 +613,7 @@
           "mapping": {
             "X": "tfc:crop/maize[age=5,part=top]",
             "Y": "tfc:crop/maize[age=5,part=bottom]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         }
       ]
@@ -642,7 +642,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/wheat[age=0]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -659,7 +659,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/wheat[age=1]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -676,7 +676,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/wheat[age=2]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -693,7 +693,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/wheat[age=3]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -710,7 +710,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/wheat[age=4]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -727,7 +727,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/wheat[age=5]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -744,7 +744,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/wheat[age=6]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -761,7 +761,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/wheat[age=7]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         }
       ]
@@ -790,7 +790,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/rice[age=0,fluid=water]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -807,7 +807,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/rice[age=1,fluid=water]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -824,7 +824,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/rice[age=2,fluid=water]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -841,7 +841,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/rice[age=3,fluid=water]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -858,7 +858,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/rice[age=4,fluid=water]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -875,7 +875,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/rice[age=5,fluid=water]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -892,7 +892,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/rice[age=6,fluid=water]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -909,7 +909,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/rice[age=7,fluid=water]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         }
       ]
@@ -938,7 +938,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/beet[age=0]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -955,7 +955,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/beet[age=1]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -972,7 +972,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/beet[age=2]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -989,7 +989,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/beet[age=3]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -1006,7 +1006,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/beet[age=4]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -1023,7 +1023,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/beet[age=5]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         }
       ]
@@ -1052,7 +1052,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/cabbage[age=0]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -1069,7 +1069,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/cabbage[age=1]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -1086,7 +1086,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/cabbage[age=2]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -1103,7 +1103,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/cabbage[age=3]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -1120,7 +1120,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/cabbage[age=4]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -1137,7 +1137,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/cabbage[age=5]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         }
       ]
@@ -1166,7 +1166,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/carrot[age=0]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -1183,7 +1183,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/carrot[age=1]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -1200,7 +1200,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/carrot[age=2]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -1217,7 +1217,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/carrot[age=3]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -1234,7 +1234,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/carrot[age=4]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         }
       ]
@@ -1263,7 +1263,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/garlic[age=0]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -1280,7 +1280,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/garlic[age=1]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -1297,7 +1297,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/garlic[age=2]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -1314,7 +1314,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/garlic[age=3]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -1331,7 +1331,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/garlic[age=4]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         }
       ]
@@ -1364,7 +1364,7 @@
           "mapping": {
             "X": "tfc:crop/green_bean[age=0,part=top,stick=true]",
             "Y": "tfc:crop/green_bean[age=0,part=bottom,stick=true]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         },
         {
@@ -1385,7 +1385,7 @@
           "mapping": {
             "X": "tfc:crop/green_bean[age=1,part=top,stick=true]",
             "Y": "tfc:crop/green_bean[age=1,part=bottom,stick=true]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         },
         {
@@ -1406,7 +1406,7 @@
           "mapping": {
             "X": "tfc:crop/green_bean[age=2,part=top,stick=true]",
             "Y": "tfc:crop/green_bean[age=2,part=bottom,stick=true]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         },
         {
@@ -1427,7 +1427,7 @@
           "mapping": {
             "X": "tfc:crop/green_bean[age=3,part=top,stick=true]",
             "Y": "tfc:crop/green_bean[age=3,part=bottom,stick=true]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         },
         {
@@ -1448,7 +1448,7 @@
           "mapping": {
             "X": "tfc:crop/green_bean[age=4,part=top,stick=true]",
             "Y": "tfc:crop/green_bean[age=4,part=bottom,stick=true]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         },
         {
@@ -1469,7 +1469,7 @@
           "mapping": {
             "X": "tfc:crop/green_bean[age=5,part=top,stick=true]",
             "Y": "tfc:crop/green_bean[age=5,part=bottom,stick=true]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         },
         {
@@ -1490,7 +1490,7 @@
           "mapping": {
             "X": "tfc:crop/green_bean[age=6,part=top,stick=true]",
             "Y": "tfc:crop/green_bean[age=6,part=bottom,stick=true]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         },
         {
@@ -1511,7 +1511,7 @@
           "mapping": {
             "X": "tfc:crop/green_bean[age=7,part=top,stick=true]",
             "Y": "tfc:crop/green_bean[age=7,part=bottom,stick=true]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         }
       ]
@@ -1540,7 +1540,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/potato[age=0]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -1557,7 +1557,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/potato[age=1]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -1574,7 +1574,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/potato[age=2]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -1591,7 +1591,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/potato[age=3]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -1608,7 +1608,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/potato[age=4]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -1625,7 +1625,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/potato[age=5]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -1642,7 +1642,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/potato[age=6]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         }
       ]
@@ -1671,8 +1671,8 @@
             ]
           ],
           "mapping": {
-            "G": "tfc:farmland/loam",
-            "0": "tfc:farmland/loam",
+            "G": "tfc:farmland/entisol",
+            "0": "tfc:farmland/entisol",
             "C": "tfc:crop/pumpkin[age=0]",
             "P": "minecraft:air"
           }
@@ -1691,8 +1691,8 @@
             ]
           ],
           "mapping": {
-            "G": "tfc:farmland/loam",
-            "0": "tfc:farmland/loam",
+            "G": "tfc:farmland/entisol",
+            "0": "tfc:farmland/entisol",
             "C": "tfc:crop/pumpkin[age=1]",
             "P": "minecraft:air"
           }
@@ -1711,8 +1711,8 @@
             ]
           ],
           "mapping": {
-            "G": "tfc:farmland/loam",
-            "0": "tfc:farmland/loam",
+            "G": "tfc:farmland/entisol",
+            "0": "tfc:farmland/entisol",
             "C": "tfc:crop/pumpkin[age=2]",
             "P": "minecraft:air"
           }
@@ -1731,8 +1731,8 @@
             ]
           ],
           "mapping": {
-            "G": "tfc:farmland/loam",
-            "0": "tfc:farmland/loam",
+            "G": "tfc:farmland/entisol",
+            "0": "tfc:farmland/entisol",
             "C": "tfc:crop/pumpkin[age=3]",
             "P": "minecraft:air"
           }
@@ -1751,8 +1751,8 @@
             ]
           ],
           "mapping": {
-            "G": "tfc:farmland/loam",
-            "0": "tfc:farmland/loam",
+            "G": "tfc:farmland/entisol",
+            "0": "tfc:farmland/entisol",
             "C": "tfc:crop/pumpkin[age=4]",
             "P": "minecraft:air"
           }
@@ -1771,8 +1771,8 @@
             ]
           ],
           "mapping": {
-            "G": "tfc:farmland/loam",
-            "0": "tfc:farmland/loam",
+            "G": "tfc:farmland/entisol",
+            "0": "tfc:farmland/entisol",
             "C": "tfc:crop/pumpkin[age=5]",
             "P": "minecraft:air"
           }
@@ -1791,8 +1791,8 @@
             ]
           ],
           "mapping": {
-            "G": "tfc:farmland/loam",
-            "0": "tfc:farmland/loam",
+            "G": "tfc:farmland/entisol",
+            "0": "tfc:farmland/entisol",
             "C": "tfc:crop/pumpkin[age=6]",
             "P": "minecraft:air"
           }
@@ -1811,8 +1811,8 @@
             ]
           ],
           "mapping": {
-            "G": "tfc:farmland/loam",
-            "0": "tfc:farmland/loam",
+            "G": "tfc:farmland/entisol",
+            "0": "tfc:farmland/entisol",
             "C": "tfc:crop/pumpkin[age=7]",
             "P": "tfc:pumpkin"
           }
@@ -1843,8 +1843,8 @@
             ]
           ],
           "mapping": {
-            "G": "tfc:farmland/loam",
-            "0": "tfc:farmland/loam",
+            "G": "tfc:farmland/entisol",
+            "0": "tfc:farmland/entisol",
             "C": "tfc:crop/melon[age=0]",
             "P": "minecraft:air"
           }
@@ -1863,8 +1863,8 @@
             ]
           ],
           "mapping": {
-            "G": "tfc:farmland/loam",
-            "0": "tfc:farmland/loam",
+            "G": "tfc:farmland/entisol",
+            "0": "tfc:farmland/entisol",
             "C": "tfc:crop/melon[age=1]",
             "P": "minecraft:air"
           }
@@ -1883,8 +1883,8 @@
             ]
           ],
           "mapping": {
-            "G": "tfc:farmland/loam",
-            "0": "tfc:farmland/loam",
+            "G": "tfc:farmland/entisol",
+            "0": "tfc:farmland/entisol",
             "C": "tfc:crop/melon[age=2]",
             "P": "minecraft:air"
           }
@@ -1903,8 +1903,8 @@
             ]
           ],
           "mapping": {
-            "G": "tfc:farmland/loam",
-            "0": "tfc:farmland/loam",
+            "G": "tfc:farmland/entisol",
+            "0": "tfc:farmland/entisol",
             "C": "tfc:crop/melon[age=3]",
             "P": "minecraft:air"
           }
@@ -1923,8 +1923,8 @@
             ]
           ],
           "mapping": {
-            "G": "tfc:farmland/loam",
-            "0": "tfc:farmland/loam",
+            "G": "tfc:farmland/entisol",
+            "0": "tfc:farmland/entisol",
             "C": "tfc:crop/melon[age=4]",
             "P": "minecraft:air"
           }
@@ -1943,8 +1943,8 @@
             ]
           ],
           "mapping": {
-            "G": "tfc:farmland/loam",
-            "0": "tfc:farmland/loam",
+            "G": "tfc:farmland/entisol",
+            "0": "tfc:farmland/entisol",
             "C": "tfc:crop/melon[age=5]",
             "P": "minecraft:air"
           }
@@ -1963,8 +1963,8 @@
             ]
           ],
           "mapping": {
-            "G": "tfc:farmland/loam",
-            "0": "tfc:farmland/loam",
+            "G": "tfc:farmland/entisol",
+            "0": "tfc:farmland/entisol",
             "C": "tfc:crop/melon[age=6]",
             "P": "minecraft:air"
           }
@@ -1983,8 +1983,8 @@
             ]
           ],
           "mapping": {
-            "G": "tfc:farmland/loam",
-            "0": "tfc:farmland/loam",
+            "G": "tfc:farmland/entisol",
+            "0": "tfc:farmland/entisol",
             "C": "tfc:crop/melon[age=7]",
             "P": "tfc:melon"
           }
@@ -2015,7 +2015,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/red_bell_pepper[age=0]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -2032,7 +2032,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/red_bell_pepper[age=1]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -2049,7 +2049,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/red_bell_pepper[age=2]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -2066,7 +2066,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/red_bell_pepper[age=3]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -2083,7 +2083,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/red_bell_pepper[age=4]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -2100,7 +2100,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/red_bell_pepper[age=5]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -2117,7 +2117,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/red_bell_pepper[age=6]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         }
       ]
@@ -2146,7 +2146,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/yellow_bell_pepper[age=0]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -2163,7 +2163,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/yellow_bell_pepper[age=1]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -2180,7 +2180,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/yellow_bell_pepper[age=2]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -2197,7 +2197,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/yellow_bell_pepper[age=3]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -2214,7 +2214,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/yellow_bell_pepper[age=4]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -2231,7 +2231,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/yellow_bell_pepper[age=5]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -2248,7 +2248,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/yellow_bell_pepper[age=6]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         }
       ]
@@ -2277,7 +2277,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/onion[age=0]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -2294,7 +2294,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/onion[age=1]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -2311,7 +2311,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/onion[age=2]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -2328,7 +2328,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/onion[age=3]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -2345,7 +2345,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/onion[age=4]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -2362,7 +2362,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/onion[age=5]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -2379,7 +2379,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/onion[age=6]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         }
       ]
@@ -2408,7 +2408,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/soybean[age=0]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -2425,7 +2425,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/soybean[age=1]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -2442,7 +2442,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/soybean[age=2]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -2459,7 +2459,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/soybean[age=3]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -2476,7 +2476,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/soybean[age=4]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -2493,7 +2493,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/soybean[age=5]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -2510,7 +2510,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/soybean[age=6]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         }
       ]
@@ -2539,7 +2539,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/squash[age=0]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -2556,7 +2556,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/squash[age=1]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -2573,7 +2573,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/squash[age=2]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -2590,7 +2590,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/squash[age=3]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -2607,7 +2607,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/squash[age=4]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -2624,7 +2624,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/squash[age=5]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -2641,7 +2641,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/squash[age=6]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         },
         {
@@ -2658,7 +2658,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/squash[age=7]",
-            "Y": "tfc:farmland/loam"
+            "Y": "tfc:farmland/entisol"
           }
         }
       ]
@@ -2691,7 +2691,7 @@
           "mapping": {
             "X": "minecraft:air",
             "Y": "tfc:crop/sugarcane[age=0,part=bottom]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         },
         {
@@ -2712,7 +2712,7 @@
           "mapping": {
             "X": "minecraft:air",
             "Y": "tfc:crop/sugarcane[age=1,part=bottom]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         },
         {
@@ -2733,7 +2733,7 @@
           "mapping": {
             "X": "minecraft:air",
             "Y": "tfc:crop/sugarcane[age=2,part=bottom]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         },
         {
@@ -2754,7 +2754,7 @@
           "mapping": {
             "X": "minecraft:air",
             "Y": "tfc:crop/sugarcane[age=3,part=bottom]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         },
         {
@@ -2775,7 +2775,7 @@
           "mapping": {
             "X": "tfc:crop/sugarcane[age=4,part=top]",
             "Y": "tfc:crop/sugarcane[age=4,part=bottom]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         },
         {
@@ -2796,7 +2796,7 @@
           "mapping": {
             "X": "tfc:crop/sugarcane[age=5,part=top]",
             "Y": "tfc:crop/sugarcane[age=5,part=bottom]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         },
         {
@@ -2817,7 +2817,7 @@
           "mapping": {
             "X": "tfc:crop/sugarcane[age=6,part=top]",
             "Y": "tfc:crop/sugarcane[age=6,part=bottom]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         },
         {
@@ -2838,7 +2838,7 @@
           "mapping": {
             "X": "tfc:crop/sugarcane[age=7,part=top]",
             "Y": "tfc:crop/sugarcane[age=7,part=bottom]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         }
       ]
@@ -2871,7 +2871,7 @@
           "mapping": {
             "X": "tfc:crop/tomato[age=0,part=top,stick=true]",
             "Y": "tfc:crop/tomato[age=0,part=bottom,stick=true]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         },
         {
@@ -2892,7 +2892,7 @@
           "mapping": {
             "X": "tfc:crop/tomato[age=1,part=top,stick=true]",
             "Y": "tfc:crop/tomato[age=1,part=bottom,stick=true]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         },
         {
@@ -2913,7 +2913,7 @@
           "mapping": {
             "X": "tfc:crop/tomato[age=2,part=top,stick=true]",
             "Y": "tfc:crop/tomato[age=2,part=bottom,stick=true]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         },
         {
@@ -2934,7 +2934,7 @@
           "mapping": {
             "X": "tfc:crop/tomato[age=3,part=top,stick=true]",
             "Y": "tfc:crop/tomato[age=3,part=bottom,stick=true]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         },
         {
@@ -2955,7 +2955,7 @@
           "mapping": {
             "X": "tfc:crop/tomato[age=4,part=top,stick=true]",
             "Y": "tfc:crop/tomato[age=4,part=bottom,stick=true]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         },
         {
@@ -2976,7 +2976,7 @@
           "mapping": {
             "X": "tfc:crop/tomato[age=5,part=top,stick=true]",
             "Y": "tfc:crop/tomato[age=5,part=bottom,stick=true]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         },
         {
@@ -2997,7 +2997,7 @@
           "mapping": {
             "X": "tfc:crop/tomato[age=6,part=top,stick=true]",
             "Y": "tfc:crop/tomato[age=6,part=bottom,stick=true]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         },
         {
@@ -3018,7 +3018,7 @@
           "mapping": {
             "X": "tfc:crop/tomato[age=7,part=top,stick=true]",
             "Y": "tfc:crop/tomato[age=7,part=bottom,stick=true]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         }
       ]
@@ -3051,7 +3051,7 @@
           "mapping": {
             "X": "minecraft:air",
             "Y": "tfc:crop/jute[age=0,part=bottom]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         },
         {
@@ -3072,7 +3072,7 @@
           "mapping": {
             "X": "minecraft:air",
             "Y": "tfc:crop/jute[age=1,part=bottom]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         },
         {
@@ -3093,7 +3093,7 @@
           "mapping": {
             "X": "minecraft:air",
             "Y": "tfc:crop/jute[age=2,part=bottom]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         },
         {
@@ -3114,7 +3114,7 @@
           "mapping": {
             "X": "tfc:crop/jute[age=3,part=top]",
             "Y": "tfc:crop/jute[age=3,part=bottom]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         },
         {
@@ -3135,7 +3135,7 @@
           "mapping": {
             "X": "tfc:crop/jute[age=4,part=top]",
             "Y": "tfc:crop/jute[age=4,part=bottom]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         },
         {
@@ -3156,7 +3156,7 @@
           "mapping": {
             "X": "tfc:crop/jute[age=5,part=top]",
             "Y": "tfc:crop/jute[age=5,part=bottom]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         }
       ]
@@ -3189,7 +3189,7 @@
           "mapping": {
             "X": "minecraft:air",
             "Y": "tfc:crop/papyrus[age=0,part=bottom]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         },
         {
@@ -3210,7 +3210,7 @@
           "mapping": {
             "X": "minecraft:air",
             "Y": "tfc:crop/papyrus[age=1,part=bottom]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         },
         {
@@ -3231,7 +3231,7 @@
           "mapping": {
             "X": "minecraft:air",
             "Y": "tfc:crop/papyrus[age=2,part=bottom]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         },
         {
@@ -3252,7 +3252,7 @@
           "mapping": {
             "X": "tfc:crop/papyrus[age=3,part=top]",
             "Y": "tfc:crop/papyrus[age=3,part=bottom]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         },
         {
@@ -3273,7 +3273,7 @@
           "mapping": {
             "X": "tfc:crop/papyrus[age=4,part=top]",
             "Y": "tfc:crop/papyrus[age=4,part=bottom]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         },
         {
@@ -3294,7 +3294,7 @@
           "mapping": {
             "X": "tfc:crop/papyrus[age=5,part=top]",
             "Y": "tfc:crop/papyrus[age=5,part=bottom]",
-            "Z": "tfc:farmland/loam"
+            "Z": "tfc:farmland/entisol"
           }
         }
       ]

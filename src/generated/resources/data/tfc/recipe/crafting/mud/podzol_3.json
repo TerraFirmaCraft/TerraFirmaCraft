@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "type": "tfc:fluid_content",
+      "fluid": {
+        "amount": 100,
+        "fluid": "minecraft:water"
+      }
+    },
+    {
+      "item": "tfc:dirt/podzol"
+    },
+    {
+      "item": "tfc:dirt/podzol"
+    },
+    {
+      "item": "tfc:dirt/podzol"
+    }
+  ],
+  "result": {
+    "count": 3,
+    "id": "tfc:mud/podzol"
+  }
+}

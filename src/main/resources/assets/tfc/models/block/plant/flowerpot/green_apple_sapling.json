@@ -3,6 +3,6 @@
   "parent": "minecraft:block/flower_pot_cross",
   "textures": {
     "plant": "tfc:block/fruit_tree/green_apple_sapling",
-    "dirt": "tfc:block/dirt/loam"
+    "dirt": "tfc:block/dirt/entisol"
   }
 }

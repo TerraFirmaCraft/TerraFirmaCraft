@@ -28,7 +28,7 @@
           ]
         ],
         "mapping": {
-          "G": "tfc:grass/sandy_loam",
+          "G": "tfc:grass/aridisol",
           "1": "tfc:rock/loose/granite[count=1]",
           "2": "tfc:rock/loose/granite[count=2]",
           "3": "tfc:rock/loose/granite[count=3]",

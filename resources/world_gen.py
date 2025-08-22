@@ -786,7 +786,7 @@ def generate(rm: ResourceManager):
         'surface': 'ceiling',
         'depth': uniform_int(1, 2),
         'replaceable': '#minecraft:base_stone_overworld',
-        'ground_state': simple_state_provider('tfc:rooted_dirt/silt')
+        'ground_state': simple_state_provider('tfc:rooted_dirt/entisol')
     })
     rm.placed_feature('hanging_roots_patch', 'tfc:hanging_roots_patch', decorate_count(10), decorate_square(), decorate_range(40, 72), decorate_scanner('up', 12), decorate_random_offset(0, -1), decorate_climate(min_water=300, min_temp=0), decorate_biome())
 

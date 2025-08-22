@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "": [
+      {"model": "tfc:block/grass_path/andisol"},
+      {"model": "tfc:block/grass_path/andisol", "y": 90},
+      {"model": "tfc:block/grass_path/andisol", "y": 180},
+      {"model": "tfc:block/grass_path/andisol", "y": 270}
+    ]
+  }
+}

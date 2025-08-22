@@ -85,7 +85,7 @@ def generate(rm: ResourceManager):
     story.advancement('the_future', icon('minecraft:clock'), 'See the Future', 'You\'ve been around a while. Are there computers? Are there cars? Oh, you still farm your own crops? Weird.', 'root', generic('tfc:present_day', None), hidden=True)
     story.advancement('perfectly_forged', icon('tfc:metal/hammer/red_steel'), 'Perfectly Forged', 'Gain the Perfectly Forged bonus on an item', 'metal_anvil', generic('tfc:perfectly_forged', None), frame='challenge')
 
-    world = AdvancementCategory(rm, 'world', 'tfc:textures/block/mud/silt.png')
+    world = AdvancementCategory(rm, 'world', 'tfc:textures/block/mud/fluvisol.png')
     world.advancement('root', icon('tfc:plant/morning_glory'), 'TerraFirmaCraft World', 'Exploring the world of TFC', None, root_trigger(), chat=False)
     world.advancement('seeds', icon('tfc:seeds/tomato'), 'Gatherer', 'Get seeds from a wild crop', 'root', inventory_changed('#tfc:seeds'))
     world.advancement('eat_rotten_food', icon('minecraft:rotten_flesh'), 'Desperation', 'Eat something rotten', 'seeds', generic('tfc:eat_rotten_food', None), hidden=True)
@@ -93,7 +93,7 @@ def generate(rm: ResourceManager):
     world.advancement('bread', icon('tfc:food/rye_bread'), 'Baker', 'Make a loaf of bread', 'seeds', inventory_changed('#tfc:sandwich_bread'))
     world.advancement('full_nutrition', icon('tfc:food/rye_bread_sandwich'), 'Doctors Hate Him', 'Get your nutrition to max', 'seeds', generic('tfc:full_nutrition', None), frame='challenge')
     world.advancement('wattle', icon('tfc:wattle'), 'Wattle and Daub', 'Craft some wattle', 'root', inventory_changed('tfc:wattle'))
-    world.advancement('mud_bricks', icon('tfc:mud_brick/sandy_loam'), 'Playing in the Mud', 'Dry out some mud to make bricks', 'root', inventory_changed('#tfc:mud_bricks'))
+    world.advancement('mud_bricks', icon('tfc:mud_brick/podzol'), 'Playing in the Mud', 'Dry out some mud to make bricks', 'root', inventory_changed('#tfc:mud_bricks'))
     world.advancement('lava_lamp', icon('tfc:metal/lamp/blue_steel'), 'Lava Lamp', 'Light a lamp that burns forever', 'root', generic('tfc:lava_lamp', None))
     world.advancement('pan', icon('tfc:pan/empty'), 'Gold Rush', 'Craft a pan for sifting', 'root', inventory_changed('tfc:pan/empty'))
     world.advancement('spindle', icon('tfc:spindle'), 'Spindly', 'Craft a spindle', 'loom', inventory_changed('tfc:spindle'))

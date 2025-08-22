@@ -27,7 +27,7 @@
     {
       "type": "patchouli:crafting",
       "anchor": "mud_bricks",
-      "recipe": "tfc:crafting/drying_bricks/loam",
+      "recipe": "tfc:crafting/drying_bricks/entisol",
       "title": "Mud Bricks",
       "text": "$(thing)Mud$() can be found on the ground, underneath rivers and lakes, or in patches in low elevation swampy environments. With a little bit of $(thing)Straw$(), it can be crafted into $()Wet Mud Bricks$()."
     },
@@ -48,8 +48,8 @@
             ]
           ],
           "mapping": {
-            "X": "tfc:drying_bricks/loam[count=4,dried=false]",
-            "Y": "tfc:grass/loam"
+            "X": "tfc:drying_bricks/entisol[count=4,dried=false]",
+            "Y": "tfc:grass/entisol"
           }
         },
         {
@@ -65,15 +65,15 @@
             ]
           ],
           "mapping": {
-            "X": "tfc:drying_bricks/loam[count=4,dried=true]",
-            "Y": "tfc:grass/loam"
+            "X": "tfc:drying_bricks/entisol[count=4,dried=true]",
+            "Y": "tfc:grass/entisol"
           }
         }
       ]
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/mud_bricks/loam",
+      "recipe": "tfc:crafting/mud_bricks/entisol",
       "title": " ",
       "text": "These dried mud bricks can then be crafted into $(thing)Mud Brick Blocks$(). They can also be made into $(thing)Stairs$(), $(thing)Slabs$(), or $(thing)Walls$(), if so desired."
     },

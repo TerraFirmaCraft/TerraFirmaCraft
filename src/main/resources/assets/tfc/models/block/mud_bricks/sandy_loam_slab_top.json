@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "parent": "block/slab_top",
-  "textures": {
-    "bottom": "tfc:block/mud_bricks/sandy_loam",
-    "top": "tfc:block/mud_bricks/sandy_loam",
-    "side": "tfc:block/mud_bricks/sandy_loam"
-  }
-}

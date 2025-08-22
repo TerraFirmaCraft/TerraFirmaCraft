@@ -1,7 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "tfc:block/mud/silty_loam"
-  }
-}

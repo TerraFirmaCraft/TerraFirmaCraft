@@ -29,7 +29,7 @@
           ]
         ],
         "mapping": {
-          "X": "tfc:grass/loam",
+          "X": "tfc:grass/entisol",
           "A": "tfc:ore/small_native_copper",
           "B": "tfc:ore/small_native_gold",
           "C": "tfc:ore/small_hematite",

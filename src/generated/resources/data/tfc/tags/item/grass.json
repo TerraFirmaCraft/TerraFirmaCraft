@@ -1,9 +1,13 @@
 {
   "values": [
     "minecraft:grass_block",
-    "tfc:grass/silt",
-    "tfc:grass/loam",
-    "tfc:grass/sandy_loam",
-    "tfc:grass/silty_loam"
+    "tfc:grass/entisol",
+    "tfc:grass/aridisol",
+    "tfc:grass/oxisol",
+    "tfc:grass/fluvisol",
+    "tfc:grass/andisol",
+    "tfc:grass/podzol",
+    "tfc:grass/alfisol",
+    "tfc:grass/mollisol"
   ]
 }

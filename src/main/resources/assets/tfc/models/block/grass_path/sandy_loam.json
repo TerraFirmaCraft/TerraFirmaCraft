@@ -1,8 +1,0 @@
-{
-  "parent": "tfc:block/grass_path",
-  "textures": {
-    "dirt": "tfc:block/dirt/sandy_loam",
-    "top": "tfc:block/grass_path/sandy_loam_top",
-    "side": "tfc:block/grass_path/sandy_loam_side"
-  }
-}

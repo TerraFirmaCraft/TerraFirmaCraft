@@ -24,8 +24,8 @@
           ]
         ],
         "mapping": {
-          "0": "tfc:clay_grass/sandy_loam",
-          "X": "tfc:clay_grass/sandy_loam",
+          "0": "tfc:clay_grass/aridisol",
+          "X": "tfc:clay_grass/aridisol",
           "C": "#tfc:clay_indicators"
         }
       },

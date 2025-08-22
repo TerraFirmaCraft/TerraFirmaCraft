@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "": [
+      {"model": "tfc:block/grass_path/podzol"},
+      {"model": "tfc:block/grass_path/podzol", "y": 90},
+      {"model": "tfc:block/grass_path/podzol", "y": 180},
+      {"model": "tfc:block/grass_path/podzol", "y": 270}
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "": [
+      {"model": "tfc:block/grass_path/entisol"},
+      {"model": "tfc:block/grass_path/entisol", "y": 90},
+      {"model": "tfc:block/grass_path/entisol", "y": 180},
+      {"model": "tfc:block/grass_path/entisol", "y": 270}
+    ]
+  }
+}

@@ -137,7 +137,7 @@
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": false,
-    "background": "tfc:textures/block/mud/silt.png"
+    "background": "tfc:textures/block/mud/fluvisol.png"
   },
   "requirements": [
     [

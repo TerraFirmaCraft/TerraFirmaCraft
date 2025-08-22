@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/slab_top",
+  "textures": {
+    "bottom": "tfc:block/mud_bricks/alfisol",
+    "top": "tfc:block/mud_bricks/alfisol",
+    "side": "tfc:block/mud_bricks/alfisol"
+  }
+}

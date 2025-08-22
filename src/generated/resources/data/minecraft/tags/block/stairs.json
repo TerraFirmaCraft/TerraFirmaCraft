@@ -1,9 +1,13 @@
 {
   "values": [
-    "tfc:mud_bricks/silt_stairs",
-    "tfc:mud_bricks/loam_stairs",
-    "tfc:mud_bricks/sandy_loam_stairs",
-    "tfc:mud_bricks/silty_loam_stairs",
+    "tfc:mud_bricks/entisol_stairs",
+    "tfc:mud_bricks/aridisol_stairs",
+    "tfc:mud_bricks/oxisol_stairs",
+    "tfc:mud_bricks/fluvisol_stairs",
+    "tfc:mud_bricks/andisol_stairs",
+    "tfc:mud_bricks/podzol_stairs",
+    "tfc:mud_bricks/alfisol_stairs",
+    "tfc:mud_bricks/mollisol_stairs",
     "tfc:raw_sandstone/brown_stairs",
     "tfc:smooth_sandstone/brown_stairs",
     "tfc:cut_sandstone/brown_stairs",

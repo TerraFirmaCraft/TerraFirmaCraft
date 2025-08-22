@@ -7,36 +7,68 @@
     "height": 3,
     "states": [
       {
-        "replace": "tfc:dirt/silt",
-        "with": "tfc:clay/silt"
+        "replace": "tfc:dirt/entisol",
+        "with": "tfc:clay/entisol"
       },
       {
-        "replace": "tfc:dirt/loam",
-        "with": "tfc:clay/loam"
+        "replace": "tfc:dirt/aridisol",
+        "with": "tfc:clay/aridisol"
       },
       {
-        "replace": "tfc:dirt/sandy_loam",
-        "with": "tfc:clay/sandy_loam"
+        "replace": "tfc:dirt/oxisol",
+        "with": "tfc:clay/oxisol"
       },
       {
-        "replace": "tfc:dirt/silty_loam",
-        "with": "tfc:clay/silty_loam"
+        "replace": "tfc:dirt/fluvisol",
+        "with": "tfc:clay/fluvisol"
       },
       {
-        "replace": "tfc:grass/silt",
-        "with": "tfc:clay_grass/silt"
+        "replace": "tfc:dirt/andisol",
+        "with": "tfc:clay/andisol"
       },
       {
-        "replace": "tfc:grass/loam",
-        "with": "tfc:clay_grass/loam"
+        "replace": "tfc:dirt/podzol",
+        "with": "tfc:clay/podzol"
       },
       {
-        "replace": "tfc:grass/sandy_loam",
-        "with": "tfc:clay_grass/sandy_loam"
+        "replace": "tfc:dirt/alfisol",
+        "with": "tfc:clay/alfisol"
       },
       {
-        "replace": "tfc:grass/silty_loam",
-        "with": "tfc:clay_grass/silty_loam"
+        "replace": "tfc:dirt/mollisol",
+        "with": "tfc:clay/mollisol"
+      },
+      {
+        "replace": "tfc:grass/entisol",
+        "with": "tfc:clay_grass/entisol"
+      },
+      {
+        "replace": "tfc:grass/aridisol",
+        "with": "tfc:clay_grass/aridisol"
+      },
+      {
+        "replace": "tfc:grass/oxisol",
+        "with": "tfc:clay_grass/oxisol"
+      },
+      {
+        "replace": "tfc:grass/fluvisol",
+        "with": "tfc:clay_grass/fluvisol"
+      },
+      {
+        "replace": "tfc:grass/andisol",
+        "with": "tfc:clay_grass/andisol"
+      },
+      {
+        "replace": "tfc:grass/podzol",
+        "with": "tfc:clay_grass/podzol"
+      },
+      {
+        "replace": "tfc:grass/alfisol",
+        "with": "tfc:clay_grass/alfisol"
+      },
+      {
+        "replace": "tfc:grass/mollisol",
+        "with": "tfc:clay_grass/mollisol"
       }
     ]
   }

@@ -1,9 +1,13 @@
 {
   "values": [
     "minecraft:farmland",
-    "tfc:farmland/silt",
-    "tfc:farmland/loam",
-    "tfc:farmland/sandy_loam",
-    "tfc:farmland/silty_loam"
+    "tfc:farmland/entisol",
+    "tfc:farmland/aridisol",
+    "tfc:farmland/oxisol",
+    "tfc:farmland/fluvisol",
+    "tfc:farmland/andisol",
+    "tfc:farmland/podzol",
+    "tfc:farmland/alfisol",
+    "tfc:farmland/mollisol"
   ]
 }

@@ -60,8 +60,8 @@
             ]
           ],
           "mapping": {
-            "X": "tfc:dirt/sandy_loam",
-            "0": "tfc:dirt/sandy_loam"
+            "X": "tfc:dirt/aridisol",
+            "0": "tfc:dirt/aridisol"
           }
         },
         {
@@ -89,8 +89,8 @@
             ]
           ],
           "mapping": {
-            "X": "tfc:dirt/sandy_loam",
-            "0": "tfc:dirt/sandy_loam",
+            "X": "tfc:dirt/aridisol",
+            "0": "tfc:dirt/aridisol",
             "Y": "tfc:log_pile"
           }
         },
@@ -119,8 +119,8 @@
             ]
           ],
           "mapping": {
-            "X": "tfc:dirt/sandy_loam",
-            "0": "tfc:dirt/sandy_loam",
+            "X": "tfc:dirt/aridisol",
+            "0": "tfc:dirt/aridisol",
             "Y": "tfc:burning_log_pile"
           }
         },
@@ -149,8 +149,8 @@
             ]
           ],
           "mapping": {
-            "X": "tfc:dirt/sandy_loam",
-            "0": "tfc:dirt/sandy_loam",
+            "X": "tfc:dirt/aridisol",
+            "0": "tfc:dirt/aridisol",
             "Y": "tfc:log_pile"
           }
         },
@@ -179,8 +179,8 @@
             ]
           ],
           "mapping": {
-            "X": "tfc:dirt/sandy_loam",
-            "0": "tfc:dirt/sandy_loam",
+            "X": "tfc:dirt/aridisol",
+            "0": "tfc:dirt/aridisol",
             "Y": "tfc:charcoal_pile[layers=7]"
           }
         }

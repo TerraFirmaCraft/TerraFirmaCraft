@@ -1,13 +1,21 @@
 {
   "values": [
     "#tfc:clays/kaolin",
-    "tfc:clay/silt",
-    "tfc:clay/loam",
-    "tfc:clay/sandy_loam",
-    "tfc:clay/silty_loam",
-    "tfc:clay_grass/silt",
-    "tfc:clay_grass/loam",
-    "tfc:clay_grass/sandy_loam",
-    "tfc:clay_grass/silty_loam"
+    "tfc:clay/entisol",
+    "tfc:clay/aridisol",
+    "tfc:clay/oxisol",
+    "tfc:clay/fluvisol",
+    "tfc:clay/andisol",
+    "tfc:clay/podzol",
+    "tfc:clay/alfisol",
+    "tfc:clay/mollisol",
+    "tfc:clay_grass/entisol",
+    "tfc:clay_grass/aridisol",
+    "tfc:clay_grass/oxisol",
+    "tfc:clay_grass/fluvisol",
+    "tfc:clay_grass/andisol",
+    "tfc:clay_grass/podzol",
+    "tfc:clay_grass/alfisol",
+    "tfc:clay_grass/mollisol"
   ]
 }

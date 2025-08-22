@@ -79,16 +79,20 @@ public enum SoilBlockType
 
     public enum Variant implements RegistrySoilVariant
     {
-        SILT,
-        LOAM,
-        SANDY_LOAM,
-        SILTY_LOAM;
+        ENTISOL,
+        ARIDISOL,
+        OXISOL,
+        FLUVISOL,
+        ANDISOL,
+        PODZOL,
+        ALFISOL,
+        MOLLISOL;
 
         private static final Variant[] VALUES = values();
 
         public static Variant valueOf(int i)
         {
-            return i >= 0 && i < VALUES.length ? VALUES[i] : SILT;
+            return i >= 0 && i < VALUES.length ? VALUES[i] : ENTISOL;
         }
 
         @Override
@@ -102,10 +106,14 @@ public enum SoilBlockType
         {
             return switch (this)
             {
-                case SILT -> TFCItems.SILT_MUD_BRICK;
-                case LOAM -> TFCItems.LOAM_MUD_BRICK;
-                case SANDY_LOAM -> TFCItems.SANDY_LOAM_MUD_BRICK;
-                case SILTY_LOAM -> TFCItems.SILTY_LOAM_MUD_BRICK;
+                case ENTISOL -> TFCItems.ENTISOL_MUD_BRICK;
+                case ARIDISOL -> TFCItems.ARIDISOL_MUD_BRICK;
+                case OXISOL -> TFCItems.OXISOL_MUD_BRICK;
+                case FLUVISOL -> TFCItems.FLUVISOL_MUD_BRICK;
+                case ANDISOL -> TFCItems.ANDISOL_MUD_BRICK;
+                case PODZOL -> TFCItems.PODZOL_MUD_BRICK;
+                case ALFISOL -> TFCItems.ALFISOL_MUD_BRICK;
+                case MOLLISOL -> TFCItems.MOLLISOL_MUD_BRICK;
             };
         }
     }
