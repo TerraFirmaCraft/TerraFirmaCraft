@@ -169,6 +169,7 @@ public class TFCTags
         public static final TagKey<Block> FARMLANDS = tag("farmlands");
         public static final TagKey<Block> PATHS = tag("paths");
         public static final TagKey<Block> MUD = tag("mud");
+        public static final TagKey<Block> DUFF = tag("duff");
         public static final TagKey<Block> MUD_BRICKS = tag("mud_bricks");
         /** Includes kaolin clay, both grass and clay block variants */
         public static final TagKey<Block> CLAYS = tag("clays");

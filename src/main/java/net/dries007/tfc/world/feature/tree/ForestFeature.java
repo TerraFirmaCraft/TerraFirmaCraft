@@ -74,6 +74,7 @@ public class ForestFeature extends Feature<ForestConfig>
             placeGroundcover(level, random, pos, config, data, mutablePos, forestType.sampleGroundcover(random), forestType);
             placeLeafPile(level, random, pos, config, data, mutablePos, forestType.sampleLeafPiles(random), forestType);
             placeFallenTree(level, random, pos, config, data, mutablePos, forestType);
+            placeSoilDisc(level, context.chunkGenerator(), random, pos, config, data, mutablePos, forestType);
         }
         return placedTrees || placedBushes;
     }
@@ -322,6 +323,21 @@ public class ForestFeature extends Feature<ForestConfig>
                     }
                 }
             }
+        }
+    }
+
+    private void placeSoilDisc(WorldGenLevel level, ChunkGenerator generator, RandomSource random, BlockPos chunkBlockPos, ForestConfig config, ChunkData data, BlockPos.MutableBlockPos mutablePos, ForestType type)
+    {
+        final int chunkX = chunkBlockPos.getX();
+        final int chunkZ = chunkBlockPos.getZ();
+
+        mutablePos.set(chunkX + random.nextInt(16), 0, chunkZ + random.nextInt(16));
+        mutablePos.setY(level.getHeight(Heightmap.Types.OCEAN_FLOOR, mutablePos.getX(), mutablePos.getZ()));
+
+        final ForestConfig.Entry entry = getTree(data, random, config, mutablePos, type);
+        if (entry != null && entry.soilDiscFeature().isPresent())
+        {
+            entry.soilDiscFeature().get().value().place(level, generator, random, mutablePos);
         }
     }
 

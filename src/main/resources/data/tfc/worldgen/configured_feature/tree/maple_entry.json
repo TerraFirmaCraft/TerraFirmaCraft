@@ -21,6 +21,7 @@
     ],
     "normal_tree": "tfc:tree/maple",
     "dead_tree": "tfc:tree/maple_dead",
+    "soil_disc": "tfc:alfisol_disc",
     "fallen_log": "tfc:wood/log/maple",
     "fallen_leaves": "tfc:wood/fallen_leaves/maple",
     "bush_log": {

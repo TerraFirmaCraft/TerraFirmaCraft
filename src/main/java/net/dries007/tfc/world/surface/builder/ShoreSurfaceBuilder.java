@@ -73,7 +73,6 @@ public class ShoreSurfaceBuilder implements SurfaceBuilder
                 }
                 else
                 {
-                    // Want to use
                     ShieldVolcanoSurfaceBuilder.SHORE.apply(seed).buildSurface(context, startY, endY);
                 }
             }
@@ -98,7 +97,7 @@ public class ShoreSurfaceBuilder implements SurfaceBuilder
         else if (hasSandyLand)
         {
             // If, in dry biomes, sand should be used instead of gravel on land
-            NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY, SurfaceStates.TOP_GRASS_TO_SHORE_SAND, SurfaceStates.MID_DIRT_TO_SHORE_SAND, SurfaceStates.UNDER_GRAVEL, SurfaceStates.GRAVEL, SurfaceStates.GRAVEL, surface, surface, subsurface, sandHeightAbsolute);
+            NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY, SurfaceStates.VOLCANIC_TOP_GRASS_TO_SHORE_SAND, SurfaceStates.VOLCANIC_MID_DIRT_TO_SHORE_SAND, SurfaceStates.UNDER_GRAVEL, SurfaceStates.GRAVEL, SurfaceStates.GRAVEL, surface, surface, subsurface, sandHeightAbsolute);
         }
         {
             // Normal land surface, with shore material at beach level in caves/below overhangs

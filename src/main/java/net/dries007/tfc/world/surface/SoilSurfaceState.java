@@ -219,7 +219,7 @@ public class SoilSurfaceState implements SurfaceState
     {
         return context -> {
             // First, check if near a "flooding" river, and place silt if so
-            if (context.baseGroundwater() > 25 && context.rainVariance() > 0.5)
+            if (context.baseGroundwater() > 25 && Math.abs(context.rainVariance()) > 0.5)
             {
                 return TFCBlocks.SOIL.get(blockType).get(SoilBlockType.Variant.FLUVISOL).get().defaultBlockState();
             }

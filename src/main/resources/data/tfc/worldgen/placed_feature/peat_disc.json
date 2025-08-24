@@ -16,9 +16,7 @@
     {
       "type": "tfc:climate",
       "min_temperature": 12,
-      "min_groundwater": 350,
-      "min_elevation": -64,
-      "max_elevation": 320
+      "min_groundwater": 350
     }
   ]
 }

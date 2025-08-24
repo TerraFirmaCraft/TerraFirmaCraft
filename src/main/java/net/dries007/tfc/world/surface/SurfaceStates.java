@@ -285,6 +285,8 @@ public final class SurfaceStates
 
     public static final SurfaceState TOP_GRASS_TO_SHORE_SAND = SoilSurfaceState.buildSurfaceType(SoilBlockType.GRASS, SurfaceStates.SHORE_SAND);
     public static final SurfaceState MID_DIRT_TO_SHORE_SAND = SoilSurfaceState.buildMidType(SoilBlockType.DIRT, SurfaceStates.SHORE_SAND);
+    public static final SurfaceState VOLCANIC_TOP_GRASS_TO_SHORE_SAND = SoilSurfaceState.buildVolcanicSurfaceType(SoilBlockType.GRASS, SurfaceStates.SHORE_SAND);
+    public static final SurfaceState VOLCANIC_MID_DIRT_TO_SHORE_SAND = SoilSurfaceState.buildVolcanicMidType(SoilBlockType.DIRT, SurfaceStates.SHORE_SAND);
 
     public static final SurfaceState WATER = context -> context.salty() ?
         TFCFluids.SALT_WATER.createSourceBlock() :

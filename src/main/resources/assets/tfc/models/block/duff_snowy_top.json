@@ -1,0 +1,28 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/block",
+  "textures": {
+    "overlay": "minecraft:block/snow",
+    "particle": "minecraft:block/snow"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        0
+      ],
+      "faces": {
+        "north": {
+          "texture": "#overlay",
+          "cullface": "north"
+        }
+      }
+    }
+  ]
+}

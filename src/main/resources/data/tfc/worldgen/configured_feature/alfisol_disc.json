@@ -1,0 +1,119 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:soil_disc",
+  "config": {
+    "min_radius": 15,
+    "max_radius": 22,
+    "height": 7,
+    "states": [
+      {
+        "replace": "tfc:dirt/entisol",
+        "with": "tfc:dirt/alfisol"
+      },
+      {
+        "replace": "tfc:duff/entisol",
+        "with": "tfc:duff/alfisol"
+      },
+      {
+        "replace": "tfc:mud/entisol",
+        "with": "tfc:mud/alfisol"
+      },
+      {
+        "replace": "tfc:clay/entisol",
+        "with": "tfc:clay/alfisol"
+      },
+      {
+        "replace": "tfc:clay_duff/entisol",
+        "with": "tfc:clay_duff/alfisol"
+      },
+      {
+        "replace": "tfc:rooted_dirt/entisol",
+        "with": "tfc:rooted_dirt/alfisol"
+      },
+      {
+        "replace": "tfc:coarse_dirt/entisol",
+        "with": "tfc:coarse_dirt/alfisol"
+      },
+      {
+        "replace": "tfc:dirt/aridisol",
+        "with": "tfc:dirt/alfisol"
+      },
+      {
+        "replace": "tfc:duff/aridisol",
+        "with": "tfc:duff/alfisol"
+      },
+      {
+        "replace": "tfc:mud/aridisol",
+        "with": "tfc:mud/alfisol"
+      },
+      {
+        "replace": "tfc:clay/aridisol",
+        "with": "tfc:clay/alfisol"
+      },
+      {
+        "replace": "tfc:clay_duff/aridisol",
+        "with": "tfc:clay_duff/alfisol"
+      },
+      {
+        "replace": "tfc:rooted_dirt/aridisol",
+        "with": "tfc:rooted_dirt/alfisol"
+      },
+      {
+        "replace": "tfc:coarse_dirt/aridisol",
+        "with": "tfc:coarse_dirt/alfisol"
+      },
+      {
+        "replace": "tfc:dirt/oxisol",
+        "with": "tfc:dirt/alfisol"
+      },
+      {
+        "replace": "tfc:duff/oxisol",
+        "with": "tfc:duff/alfisol"
+      },
+      {
+        "replace": "tfc:mud/oxisol",
+        "with": "tfc:mud/alfisol"
+      },
+      {
+        "replace": "tfc:clay/oxisol",
+        "with": "tfc:clay/alfisol"
+      },
+      {
+        "replace": "tfc:clay_duff/oxisol",
+        "with": "tfc:clay_duff/alfisol"
+      },
+      {
+        "replace": "tfc:rooted_dirt/oxisol",
+        "with": "tfc:rooted_dirt/alfisol"
+      },
+      {
+        "replace": "tfc:coarse_dirt/oxisol",
+        "with": "tfc:coarse_dirt/alfisol"
+      },
+      {
+        "replace": "tfc:grass/entisol",
+        "with": "tfc:duff/alfisol"
+      },
+      {
+        "replace": "tfc:grass/aridisol",
+        "with": "tfc:duff/alfisol"
+      },
+      {
+        "replace": "tfc:grass/oxisol",
+        "with": "tfc:duff/alfisol"
+      },
+      {
+        "replace": "tfc:clay_grass/entisol",
+        "with": "tfc:clay_duff/alfisol"
+      },
+      {
+        "replace": "tfc:clay_grass/aridisol",
+        "with": "tfc:clay_duff/alfisol"
+      },
+      {
+        "replace": "tfc:clay_grass/oxisol",
+        "with": "tfc:clay_duff/alfisol"
+      }
+    ]
+  }
+}

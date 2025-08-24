@@ -1,0 +1,119 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:soil_disc",
+  "config": {
+    "min_radius": 15,
+    "max_radius": 22,
+    "height": 7,
+    "states": [
+      {
+        "replace": "tfc:dirt/entisol",
+        "with": "tfc:dirt/mollisol"
+      },
+      {
+        "replace": "tfc:duff/entisol",
+        "with": "tfc:duff/mollisol"
+      },
+      {
+        "replace": "tfc:mud/entisol",
+        "with": "tfc:mud/mollisol"
+      },
+      {
+        "replace": "tfc:clay/entisol",
+        "with": "tfc:clay/mollisol"
+      },
+      {
+        "replace": "tfc:clay_duff/entisol",
+        "with": "tfc:clay_duff/mollisol"
+      },
+      {
+        "replace": "tfc:rooted_dirt/entisol",
+        "with": "tfc:rooted_dirt/mollisol"
+      },
+      {
+        "replace": "tfc:coarse_dirt/entisol",
+        "with": "tfc:coarse_dirt/mollisol"
+      },
+      {
+        "replace": "tfc:grass/entisol",
+        "with": "tfc:grass/mollisol"
+      },
+      {
+        "replace": "tfc:clay_grass/entisol",
+        "with": "tfc:clay_grass/mollisol"
+      },
+      {
+        "replace": "tfc:dirt/aridisol",
+        "with": "tfc:dirt/mollisol"
+      },
+      {
+        "replace": "tfc:duff/aridisol",
+        "with": "tfc:duff/mollisol"
+      },
+      {
+        "replace": "tfc:mud/aridisol",
+        "with": "tfc:mud/mollisol"
+      },
+      {
+        "replace": "tfc:clay/aridisol",
+        "with": "tfc:clay/mollisol"
+      },
+      {
+        "replace": "tfc:clay_duff/aridisol",
+        "with": "tfc:clay_duff/mollisol"
+      },
+      {
+        "replace": "tfc:rooted_dirt/aridisol",
+        "with": "tfc:rooted_dirt/mollisol"
+      },
+      {
+        "replace": "tfc:coarse_dirt/aridisol",
+        "with": "tfc:coarse_dirt/mollisol"
+      },
+      {
+        "replace": "tfc:grass/aridisol",
+        "with": "tfc:grass/mollisol"
+      },
+      {
+        "replace": "tfc:clay_grass/aridisol",
+        "with": "tfc:clay_grass/mollisol"
+      },
+      {
+        "replace": "tfc:dirt/oxisol",
+        "with": "tfc:dirt/mollisol"
+      },
+      {
+        "replace": "tfc:duff/oxisol",
+        "with": "tfc:duff/mollisol"
+      },
+      {
+        "replace": "tfc:mud/oxisol",
+        "with": "tfc:mud/mollisol"
+      },
+      {
+        "replace": "tfc:clay/oxisol",
+        "with": "tfc:clay/mollisol"
+      },
+      {
+        "replace": "tfc:clay_duff/oxisol",
+        "with": "tfc:clay_duff/mollisol"
+      },
+      {
+        "replace": "tfc:rooted_dirt/oxisol",
+        "with": "tfc:rooted_dirt/mollisol"
+      },
+      {
+        "replace": "tfc:coarse_dirt/oxisol",
+        "with": "tfc:coarse_dirt/mollisol"
+      },
+      {
+        "replace": "tfc:grass/oxisol",
+        "with": "tfc:grass/mollisol"
+      },
+      {
+        "replace": "tfc:clay_grass/oxisol",
+        "with": "tfc:clay_grass/mollisol"
+      }
+    ]
+  }
+}

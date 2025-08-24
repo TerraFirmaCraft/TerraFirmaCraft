@@ -21,6 +21,7 @@
     ],
     "normal_tree": "tfc:tree/birch",
     "dead_tree": "tfc:tree/birch_dead",
+    "soil_disc": "tfc:alfisol_disc",
     "old_growth_chance": 1,
     "fallen_log": "tfc:wood/log/birch",
     "fallen_leaves": "tfc:wood/fallen_leaves/birch",

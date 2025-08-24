@@ -1,0 +1,46 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/block",
+  "textures": {
+    "overlay": "tfc:block/grass_snowy_side",
+    "particle": "#texture"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        0
+      ],
+      "faces": {
+        "north": {
+          "texture": "#texture",
+          "cullface": "north"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        0
+      ],
+      "faces": {
+        "north": {
+          "texture": "#overlay",
+          "cullface": "north"
+        }
+      }
+    }
+  ]
+}

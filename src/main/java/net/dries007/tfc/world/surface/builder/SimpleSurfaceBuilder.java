@@ -6,10 +6,8 @@
 
 package net.dries007.tfc.world.surface.builder;
 
-import net.dries007.tfc.world.surface.SoilSurfaceState;
 import net.dries007.tfc.world.surface.SurfaceBuilderContext;
 import net.dries007.tfc.world.surface.SurfaceState;
-import net.dries007.tfc.world.surface.SurfaceStates;
 
 import static net.dries007.tfc.world.surface.SurfaceStates.*;
 
@@ -35,6 +33,13 @@ public class SimpleSurfaceBuilder implements SurfaceBuilder
     @Override
     public void buildSurface(SurfaceBuilderContext context, int startY, int endY)
     {
-        NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY, top, mid, mid, water, water);
+        if (rockySurfaceBuilder)
+        {
+            NormalSurfaceBuilder.ROCKY.buildSurface(context, startY, endY, top, mid, mid, water, water);
+        }
+        else
+        {
+            NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY, top, mid, mid, water, water);
+        }
     }
 }

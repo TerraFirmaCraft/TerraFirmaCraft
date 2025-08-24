@@ -22,6 +22,7 @@
     "normal_tree": "tfc:tree/spruce",
     "dead_tree": "tfc:tree/spruce_dead",
     "krummholz": "tfc:tree/spruce_krummholz",
+    "soil_disc": "tfc:podzol_disc",
     "fallen_log": "tfc:wood/log/spruce",
     "fallen_leaves": "tfc:wood/fallen_leaves/spruce",
     "bush_log": {

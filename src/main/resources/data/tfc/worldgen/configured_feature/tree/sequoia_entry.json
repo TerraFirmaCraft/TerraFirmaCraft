@@ -21,6 +21,7 @@
     ],
     "normal_tree": "tfc:tree/sequoia",
     "dead_tree": "tfc:tree/sequoia_dead",
+    "soil_disc": "tfc:podzol_disc",
     "old_growth_chance": 3,
     "fallen_log": "tfc:wood/log/sequoia",
     "fallen_leaves": "tfc:wood/fallen_leaves/sequoia",

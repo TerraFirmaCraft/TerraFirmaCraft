@@ -1,0 +1,20 @@
+{
+  "values": [
+    "tfc:duff/entisol",
+    "tfc:duff/aridisol",
+    "tfc:duff/oxisol",
+    "tfc:duff/fluvisol",
+    "tfc:duff/andisol",
+    "tfc:duff/podzol",
+    "tfc:duff/alfisol",
+    "tfc:duff/mollisol",
+    "tfc:clay_duff/entisol",
+    "tfc:clay_duff/aridisol",
+    "tfc:clay_duff/oxisol",
+    "tfc:clay_duff/fluvisol",
+    "tfc:clay_duff/andisol",
+    "tfc:clay_duff/podzol",
+    "tfc:clay_duff/alfisol",
+    "tfc:clay_duff/mollisol"
+  ]
+}

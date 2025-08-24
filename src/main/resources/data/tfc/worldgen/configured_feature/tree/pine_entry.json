@@ -25,6 +25,7 @@
     "normal_tree": "tfc:tree/pine",
     "dead_tree": "tfc:tree/pine_dead",
     "krummholz": "tfc:tree/pine_krummholz",
+    "soil_disc": "tfc:podzol_disc",
     "old_growth_chance": 1,
     "fallen_log": "tfc:wood/log/pine",
     "fallen_leaves": "tfc:wood/fallen_leaves/pine",

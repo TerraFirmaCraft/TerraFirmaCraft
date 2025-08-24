@@ -21,6 +21,7 @@
     ],
     "normal_tree": "tfc:tree/sycamore",
     "dead_tree": "tfc:tree/sycamore_dead",
+    "soil_disc": "tfc:alfisol_disc",
     "fallen_log": "tfc:wood/log/sycamore",
     "fallen_leaves": "tfc:wood/fallen_leaves/sycamore",
     "old_growth_tree": "tfc:tree/sycamore_large",

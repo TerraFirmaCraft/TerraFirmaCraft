@@ -16,6 +16,14 @@
     "tfc:clay_grass/andisol",
     "tfc:clay_grass/podzol",
     "tfc:clay_grass/alfisol",
-    "tfc:clay_grass/mollisol"
+    "tfc:clay_grass/mollisol",
+    "tfc:clay_duff/entisol",
+    "tfc:clay_duff/aridisol",
+    "tfc:clay_duff/oxisol",
+    "tfc:clay_duff/fluvisol",
+    "tfc:clay_duff/andisol",
+    "tfc:clay_duff/podzol",
+    "tfc:clay_duff/alfisol",
+    "tfc:clay_duff/mollisol"
   ]
 }

@@ -22,6 +22,7 @@
     "normal_tree": "tfc:tree/douglas_fir",
     "dead_tree": "tfc:tree/douglas_fir_dead",
     "krummholz": "tfc:tree/douglas_fir_krummholz",
+    "soil_disc": "tfc:podzol_disc",
     "fallen_log": "tfc:wood/log/douglas_fir",
     "fallen_leaves": "tfc:wood/fallen_leaves/douglas_fir",
     "bush_log": {

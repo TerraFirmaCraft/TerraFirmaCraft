@@ -405,6 +405,8 @@ public final class ClientEventHandler
         // Grass
         TFCBlocks.SOIL.get(SoilBlockType.GRASS).values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutoutMipped));
         TFCBlocks.SOIL.get(SoilBlockType.CLAY_GRASS).values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutoutMipped));
+        TFCBlocks.SOIL.get(SoilBlockType.DUFF).values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutoutMipped));
+        TFCBlocks.SOIL.get(SoilBlockType.CLAY_DUFF).values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutoutMipped));
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.PEAT_GRASS.get(), cutoutMipped);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.KAOLIN_CLAY_GRASS.get(), cutoutMipped);
 

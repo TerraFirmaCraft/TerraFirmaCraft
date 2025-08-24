@@ -22,6 +22,7 @@
     "normal_tree": "tfc:tree/white_cedar",
     "dead_tree": "tfc:tree/white_cedar_dead",
     "krummholz": "tfc:tree/white_cedar_krummholz",
+    "soil_disc": "tfc:podzol_disc",
     "fallen_log": "tfc:wood/log/white_cedar",
     "fallen_leaves": "tfc:wood/fallen_leaves/white_cedar",
     "bush_log": {

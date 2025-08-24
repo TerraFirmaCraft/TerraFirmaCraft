@@ -21,6 +21,7 @@ import net.minecraft.util.valueproviders.UniformInt;
 public enum ForestType implements StringRepresentable
 {
     GRASSLAND(ForestSubType.NONE, 0, zero(), zero(), zero(), zero(), 2, 0, 0),
+    CLEARING(ForestSubType.NONE, 0, zero(), zero(), zero(), zero(), 2, 0, 0),
     SHRUBLAND(ForestSubType.NONE, 0, zero(), value(10), range(0, 1), range(2, 7), 2, 1, 0),
     SPARSE(ForestSubType.NONE, 0, value(2), value(6), zero(), range(0, 2), 2, 0.08f, 0),
     SAVANNA_MONOCULTURE(ForestSubType.SAVANNA, 1, value(3), value(6), zero(), range(0, 2), 1, 0.55f, 0),

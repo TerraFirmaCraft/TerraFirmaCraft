@@ -655,6 +655,7 @@ def generate(rm: ResourceManager):
     rm.item_model('minecraft:slime_block', parent='tfc:block/glue_block', no_textures=True)
     rm.block_model('glue_block', {'particle': 'tfc:block/glue_block', 'texture': 'tfc:block/glue_block'}, parent='minecraft:block/slime_block')
     rm.blockstate('minecraft:flower_pot', model='tfc:block/flower_pot')
+    rm.blockstate('minecraft:flower_pot', model='tfc:block/flower_pot')
     rm.block_model('flower_pot', {'dirt': 'tfc:block/dirt/entisol'}, parent='minecraft:block/flower_pot')
 
     # Dirt
@@ -725,6 +726,12 @@ def generate(rm: ResourceManager):
     rm.block_model('grass_snowy_side', textures={'overlay': 'tfc:block/grass_snowy_side', 'particle': '#texture'}, parent='block/block', elements=[north_face, north_face_overlay])
     rm.block_model('grass_bottom', textures={'texture': '#texture', 'particle': '#texture'}, parent='block/block', elements=[north_face])
 
+    rm.block_model('duff_top', textures={'overlay': 'tfc:block/duff_top', 'particle': 'tfc:block/duff_top'}, parent='block/block', elements=[north_face_overlay])
+    rm.block_model('duff_snowy_top', textures={'overlay': 'minecraft:block/snow', 'particle': 'minecraft:block/snow'}, parent='block/block', elements=[north_face_overlay])
+    rm.block_model('duff_side', textures={'overlay': 'tfc:block/duff_side', 'particle': 'tfc:block/duff_side'}, parent='block/block', elements=[north_face, north_face_overlay])
+    rm.block_model('duff_snowy_side', textures={'overlay': 'tfc:block/grass_snowy_side', 'particle': '#texture'}, parent='block/block', elements=[north_face, north_face_overlay])
+    rm.block_model('duff_bottom', textures={'texture': '#texture', 'particle': '#texture'}, parent='block/block', elements=[north_face])
+
     # Grass (Peat, Normal + Clay) - Helper Functions
     def grass_multipart(model: str):
         return [
@@ -753,6 +760,10 @@ def generate(rm: ResourceManager):
         for _variant in ('top', 'snowy_top', 'side', 'snowy_side', 'bottom'):
             rm.block_model((_name, _variant), {'texture': _texture}, parent='tfc:block/grass_%s' % _variant)
 
+    def duff_models(_name: ResourceIdentifier, _texture: str):
+        for _variant in ('top', 'snowy_top', 'side', 'snowy_side', 'bottom'):
+            rm.block_model((_name, _variant), {'texture': _texture}, parent='tfc:block/duff_%s' % _variant)
+
     # Peat Grass
     rm.blockstate_multipart('peat_grass', *grass_multipart('tfc:block/peat_grass')).with_block_loot('tfc:peat').with_lang(lang('Peat Grass'))
     grass_models('peat_grass', 'tfc:block/peat')
@@ -767,6 +778,15 @@ def generate(rm: ResourceManager):
                 block.with_block_loot('1-3 minecraft:clay_ball')
             block.with_lang(lang('%s %s', soil, grass_var))
             grass_models((grass_var, soil), dirt)
+
+        for duff_var, dirt in (('duff', 'tfc:block/dirt/%s' % soil), ('clay_duff', 'tfc:block/clay/%s' % soil)):
+            block = rm.blockstate_multipart((duff_var, soil), *grass_multipart('tfc:block/%s/%s' % (duff_var, soil)))
+            if duff_var == 'duff':
+                block.with_block_loot('tfc:dirt/%s' % soil)
+            else:
+                block.with_block_loot('1-3 minecraft:clay_ball')
+            block.with_lang(lang('%s %s', soil, duff_var))
+            duff_models((duff_var, soil), dirt)
 
         # Farmland
         block = rm.blockstate(('farmland', soil))
