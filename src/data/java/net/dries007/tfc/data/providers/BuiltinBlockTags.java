@@ -598,6 +598,13 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             TFCBlocks.WHITE_KAOLIN_CLAY,
             TFCBlocks.PINK_KAOLIN_CLAY,
             TFCBlocks.RED_KAOLIN_CLAY);
+        tag(INCREASES_SOIL_HYDRATION).addTags(
+            CLAYS
+        ).add(Blocks.CLAY);
+        tag(DECREASES_SOIL_HYDRATION).addTags(
+            Tags.Blocks.GRAVELS,
+            Tags.Blocks.SANDS
+        );
 
         tag(TREE_GROWS_ON).addTag(BlockTags.DIRT);
         tag(WILD_CROP_GROWS_ON).addTag(BlockTags.DIRT);

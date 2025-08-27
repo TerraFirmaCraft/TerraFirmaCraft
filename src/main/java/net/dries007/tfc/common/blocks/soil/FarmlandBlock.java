@@ -10,6 +10,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import net.dries007.tfc.common.blockentities.IFarmland;
+import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.ClimateModel;
@@ -141,8 +142,7 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
         }
 
         final int rainBoost = getRainHydration(level, pos, stormBoost);
-        final int waterCost = findMinCostWater(level, pos); // Nearby water contributes an additional 0 - 80% hydration based on proximity
-        final int waterBoost = 20 * (5 - waterCost); // Nearby water contributes an additional 0 - 80% hydration based on proximity
+        final int waterBoost = isSourceBlockPresent(level, pos) ? 40 : 0;
 
         return Mth.clamp(waterBoost + rainBoost, 0, 100);
     }
@@ -158,10 +158,27 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
             return 100; // special case for waterlogged crops
         }
 
-        final int waterCost = findMinCostWater(level, pos); // Nearby water contributes an additional 0 - 80% hydration based on proximity
-        final int waterBoost = 20 * (5 - waterCost); // Nearby water contributes an additional 0 - 80% hydration based on proximity
+        final int waterBoost = isSourceBlockPresent(level, pos) ? 40 : 0;
+        final float soilMultiplier = getHydrationMultiplier(level, pos);
 
-        return Mth.clamp(waterBoost + rainBoost, 0, 100);
+        return Mth.clamp((int) ((waterBoost + rainBoost) * soilMultiplier), 0, 100);
+    }
+
+    /**
+     * @return A value in the range [0, 100]
+     */
+    public static int getHydrationFromStormHydrationOverTime(Level level, BlockPos pos, int stormBoost, long fromTick, long toTick)
+    {
+        if (Helpers.isFluid(level.getFluidState(pos.above()), TFCTags.Fluids.HYDRATING))
+        {
+            return 100; // special case for waterlogged crops
+        }
+
+        final int rainBoost = getRainHydrationOverTime(level, pos, stormBoost, fromTick, toTick);
+        final int waterBoost = isSourceBlockPresent(level, pos) ? 40 : 0;
+        final float soilMultiplier = getHydrationMultiplier(level, pos);
+
+        return Mth.clamp((int) ((waterBoost + rainBoost) * soilMultiplier), 0, 100);
     }
 
     /**
@@ -179,30 +196,39 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
         return (int) Mth.clamp(stormHydration + humidityBoost, 0, ChunkData.MAX_RAINFALL_CONTRIBUTION);
     }
 
-    /**
-     * @return A value in the range [0, 100]
-     */
-    public static int getHydrationFromStormHydrationOverTime(Level level, BlockPos pos, int stormBoost, long fromTick, long toTick)
-    {
-        if (Helpers.isFluid(level.getFluidState(pos.above()), TFCTags.Fluids.HYDRATING))
-        {
-            return 100; // special case for waterlogged crops
-        }
-
-        final int rainBoost = getRainHydrationOverTime(level, pos, stormBoost, fromTick, toTick);
-        final int waterCost = findMinCostWater(level, pos); // Nearby water contributes an additional 0 - 80% hydration based on proximity
-        final int waterBoost = 20 * (5 - waterCost); // Nearby water contributes an additional 0 - 80% hydration based on proximity
-
-        return Mth.clamp(waterBoost + rainBoost, 0, 100);
-    }
-
     public static void turnToDirt(BlockState state, Level level, BlockPos pos)
     {
         level.setBlockAndUpdate(pos, pushEntitiesUp(state, ((FarmlandBlock) state.getBlock()).getDirt(), level, pos));
     }
 
     /**
+     * @return Value in [0.5, 2]
+     */
+    public static float getHydrationMultiplier(Level level, BlockPos pos)
+    {
+        final BlockState block = level.getBlockState(pos.below());
+        if (block.is(TFCTags.Blocks.INCREASES_SOIL_HYDRATION))
+        {
+            return 2f;
+        }
+        if (block.is(TFCTags.Blocks.DECREASES_SOIL_HYDRATION))
+        {
+            return 0.5f;
+        }
+        return 1f;
+    }
+
+    /**
+     * @return True if there is a water block in range
+     */
+    public static boolean isSourceBlockPresent(Level level, BlockPos pos)
+    {
+        return findMinCostWater(level, pos) < 5;
+    }
+
+    /**
      * @return A value in [1, 5]
+     * TODO: Probably berry bushes should not use this system anymore.
      */
     public static int findMinCostWater(LevelAccessor level, BlockPos pos)
     {

@@ -120,7 +120,6 @@ public interface IFarmland
 
     default void updateAdditionalWater(long fromTick, long toTick)
     {
-        // TODO :: We need some way to inject additional water (watering can?)
         long deltaTicks = toTick - fromTick;
         addAdditionalWater(deltaTicks * WATER_DISSIPATION_RATE);
     }
