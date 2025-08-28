@@ -92,25 +92,32 @@ public interface IFarmland
 
     /**
      * Consume up to {@code amount} of nutrient {@code type}.
-     * Resupplies other nutrient by 1/6 of the amount consumed.
      *
      * @return The amount of nutrient {@code type} that was actually consumed.
      */
-    default float consumeNutrientAndResupplyOthers(NutrientType type, float amount)
+    default float consumeNutrients(float amount, NutrientType type)
     {
-        final float startValue = getNutrient(type);
+        if (amount <= 0)
+        {
+            return 0;
+        }
+        float startValue = getNutrient(type);
+
         final float consumed = Math.min(startValue, amount);
 
         setNutrient(type, startValue - consumed);
-        for (NutrientType other : NutrientType.VALUES)
-        {
-            if (other != type)
-            {
-                addNutrient(other, consumed * 1 / 6f);
-            }
-        }
 
         return consumed;
+    }
+
+    default void produceNutrients(float amount, NutrientType type, float percentOtherNutrientsConsumed, float growthDelta)
+    {
+        if (amount <= 0)
+        {
+            // Nutrient-producing crops will always add some amount of nutrients to the soil, but using fertilizer will boost this up to 3x
+            amount = -(0.3f + 0.7f * percentOtherNutrientsConsumed) * amount * growthDelta;
+            addNutrient(type, amount);
+        }
     }
 
     default boolean isMaxedOut()

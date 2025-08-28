@@ -39,7 +39,7 @@ public abstract class SpreadingCropBlock extends DefaultCropBlock implements Hor
     public static SpreadingCropBlock create(ExtendedProperties properties, int stages, Crop crop, Supplier<Supplier<? extends Block>> fruit)
     {
         final IntegerProperty property = TFCBlockStateProperties.getAgeProperty(stages - 1);
-        return new SpreadingCropBlock(properties, stages - 1, TFCBlocks.DEAD_CROPS.get(crop), TFCItems.CROP_SEEDS.get(crop), crop.getPrimaryNutrient(), ClimateRanges.CROPS.get(crop), fruit)
+        return new SpreadingCropBlock(properties, stages - 1, TFCBlocks.DEAD_CROPS.get(crop), TFCItems.CROP_SEEDS.get(crop), crop.getNitrogen(), crop.getPhosphorous(), crop.getPotassium(), ClimateRanges.CROPS.get(crop), fruit)
         {
             @Override
             public IntegerProperty getAgeProperty()
@@ -51,9 +51,9 @@ public abstract class SpreadingCropBlock extends DefaultCropBlock implements Hor
 
     private final Supplier<Supplier<? extends Block>> fruit;
 
-    protected SpreadingCropBlock(ExtendedProperties properties, int maxAge, Supplier<? extends Block> dead, Supplier<? extends Item> seeds, FarmlandBlockEntity.NutrientType primaryNutrient, Supplier<ClimateRange> climateRange, Supplier<Supplier<? extends Block>> fruit)
+    protected SpreadingCropBlock(ExtendedProperties properties, int maxAge, Supplier<? extends Block> dead, Supplier<? extends Item> seeds, float nitrogen, float phosphorous, float potassium, Supplier<ClimateRange> climateRange, Supplier<Supplier<? extends Block>> fruit)
     {
-        super(properties, maxAge, dead, seeds, primaryNutrient, climateRange);
+        super(properties, maxAge, dead, seeds, nitrogen, phosphorous, potassium, climateRange);
         registerDefaultState(getStateDefinition().any().setValue(NORTH, false).setValue(WEST, false).setValue(EAST, false).setValue(SOUTH, false).setValue(getAgeProperty(), 0));
         this.fruit = fruit;
     }

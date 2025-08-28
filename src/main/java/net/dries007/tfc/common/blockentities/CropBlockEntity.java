@@ -34,6 +34,7 @@ public class CropBlockEntity extends TFCBlockEntity implements ICalendarTickable
     }
 
     private float growth;
+    private float nAbsorbed, pAbsorbed, kAbsorbed;
     private float yield;
     private float expiry;
 
@@ -74,6 +75,21 @@ public class CropBlockEntity extends TFCBlockEntity implements ICalendarTickable
         return yield;
     }
 
+    public float getNAbsorbed()
+    {
+        return nAbsorbed;
+    }
+
+    public float getPAbsorbed()
+    {
+        return pAbsorbed;
+    }
+
+    public float getKAbsorbed()
+    {
+        return kAbsorbed;
+    }
+
     public float getExpiry()
     {
         return expiry;
@@ -88,6 +104,32 @@ public class CropBlockEntity extends TFCBlockEntity implements ICalendarTickable
     public void setYield(float yield)
     {
         this.yield = yield;
+        markForSync();
+    }
+
+    public void setNAbsorbed(float n)
+    {
+        this.nAbsorbed = n;
+        markForSync();
+    }
+
+    public void setPAbsorbed(float p)
+    {
+        this.pAbsorbed = p;
+        markForSync();
+    }
+
+    public void setKAbsorbed(float k)
+    {
+        this.kAbsorbed = k;
+        markForSync();
+    }
+
+    public void addNutrients(float n, float p, float k)
+    {
+        this.nAbsorbed += n;
+        this.pAbsorbed += p;
+        this.kAbsorbed += k;
         markForSync();
     }
 
@@ -128,6 +170,9 @@ public class CropBlockEntity extends TFCBlockEntity implements ICalendarTickable
         growth = nbt.getFloat("growth");
         yield = nbt.getFloat("yield");
         expiry = nbt.getFloat("expiry");
+        nAbsorbed = nbt.getFloat("n");
+        pAbsorbed = nbt.getFloat("p");
+        kAbsorbed = nbt.getFloat("k");
         lastUpdateTick = nbt.getLong("tick");
         lastGrowthTick = nbt.getLong("lastGrowthTick");
         super.loadAdditional(nbt, provider);
@@ -139,6 +184,9 @@ public class CropBlockEntity extends TFCBlockEntity implements ICalendarTickable
         nbt.putFloat("growth", growth);
         nbt.putFloat("yield", yield);
         nbt.putFloat("expiry", expiry);
+        nbt.putFloat("n", nAbsorbed);
+        nbt.putFloat("p", pAbsorbed);
+        nbt.putFloat("k", kAbsorbed);
         nbt.putLong("tick", lastUpdateTick);
         nbt.putLong("lastGrowthTick", lastGrowthTick);
         super.saveAdditional(nbt, provider);

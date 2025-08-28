@@ -37,7 +37,7 @@ public abstract class PickableCropBlock extends DefaultCropBlock implements IPic
     public static PickableCropBlock create(ExtendedProperties properties, int stages, Crop crop, @Nullable Supplier<Supplier<? extends Item>> fruit, Supplier<Supplier<? extends Item>> matureFruit)
     {
         final IntegerProperty property = TFCBlockStateProperties.getAgeProperty(stages - 1);
-        return new PickableCropBlock(properties, stages - 1, TFCBlocks.DEAD_CROPS.get(crop), TFCItems.CROP_SEEDS.get(crop), crop.getPrimaryNutrient(), ClimateRanges.CROPS.get(crop), fruit, matureFruit)
+        return new PickableCropBlock(properties, stages - 1, TFCBlocks.DEAD_CROPS.get(crop), TFCItems.CROP_SEEDS.get(crop), crop.getNitrogen(), crop.getPhosphorous(), crop.getPotassium(), ClimateRanges.CROPS.get(crop), fruit, matureFruit)
         {
             @Override
             public IntegerProperty getAgeProperty()
@@ -50,9 +50,9 @@ public abstract class PickableCropBlock extends DefaultCropBlock implements IPic
     private final @Nullable Supplier<Supplier<? extends Item>> fruit;
     private final Supplier<Supplier<? extends Item>> matureFruit;
 
-    protected PickableCropBlock(ExtendedProperties properties, int maxAge, Supplier<? extends Block> dead, Supplier<? extends Item> seeds, FarmlandBlockEntity.NutrientType primaryNutrient, Supplier<ClimateRange> climateRange, @Nullable Supplier<Supplier<? extends Item>> fruit, Supplier<Supplier<? extends Item>> matureFruit)
+    protected PickableCropBlock(ExtendedProperties properties, int maxAge, Supplier<? extends Block> dead, Supplier<? extends Item> seeds, float nitrogen, float phosphorous, float potassium, Supplier<ClimateRange> climateRange, @Nullable Supplier<Supplier<? extends Item>> fruit, Supplier<Supplier<? extends Item>> matureFruit)
     {
-        super(properties, maxAge, dead, seeds, primaryNutrient, climateRange);
+        super(properties, maxAge, dead, seeds, nitrogen, phosphorous, potassium, climateRange);
         this.fruit = fruit;
         this.matureFruit = matureFruit;
     }

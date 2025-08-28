@@ -39,7 +39,7 @@ public abstract class FloodedCropBlock extends DefaultCropBlock implements IFlui
     public static FloodedCropBlock create(ExtendedProperties properties, int stages, Crop crop)
     {
         final IntegerProperty property = TFCBlockStateProperties.getAgeProperty(stages - 1);
-        return new FloodedCropBlock(properties, stages - 1, TFCBlocks.DEAD_CROPS.get(crop), TFCItems.CROP_SEEDS.get(crop), crop.getPrimaryNutrient(), ClimateRanges.CROPS.get(crop))
+        return new FloodedCropBlock(properties, stages - 1, TFCBlocks.DEAD_CROPS.get(crop), TFCItems.CROP_SEEDS.get(crop), crop.getNitrogen(), crop.getPhosphorous(), crop.getPotassium(), ClimateRanges.CROPS.get(crop))
         {
             @Override
             public IntegerProperty getAgeProperty()
@@ -49,9 +49,9 @@ public abstract class FloodedCropBlock extends DefaultCropBlock implements IFlui
         };
     }
 
-    protected FloodedCropBlock(ExtendedProperties properties, int maxAge, Supplier<? extends Block> dead, Supplier<? extends Item> seeds, FarmlandBlockEntity.NutrientType primaryNutrient, Supplier<ClimateRange> climateRange)
+    protected FloodedCropBlock(ExtendedProperties properties, int maxAge, Supplier<? extends Block> dead, Supplier<? extends Item> seeds, float nitrogen, float phosphorous, float potassium, Supplier<ClimateRange> climateRange)
     {
-        super(properties, maxAge, dead, seeds, primaryNutrient, climateRange);
+        super(properties, maxAge, dead, seeds, nitrogen, phosphorous, potassium, climateRange);
     }
 
     @Override

@@ -36,7 +36,6 @@ public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland, IC
     private long lastUpdateTick; // The last tick this farmland was ticked via the block entity's tick() method. A delta of > 1 is used to detect time skips
     private long lastWaterTick; // The last tick the farmland block was ticked via waterTick()
 
-    // TODO :: Actually connect additionalWater to some gameplay system (e.g. watering the soil)
     private float nitrogen, phosphorous, potassium, additionalWater;
 
     public FarmlandBlockEntity(BlockPos pos, BlockState state)
@@ -92,6 +91,7 @@ public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland, IC
         lastUpdateTick = tick;
     }
 
+    // todo: Either saveAdditional or loadAdditional isn't working
     @Override
     public void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {

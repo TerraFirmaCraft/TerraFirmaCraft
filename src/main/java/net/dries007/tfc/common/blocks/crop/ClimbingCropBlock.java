@@ -43,7 +43,7 @@ public abstract class ClimbingCropBlock extends DoubleCropBlock implements IGhos
     public static ClimbingCropBlock create(ExtendedProperties properties, int singleStages, int doubleStages, Crop crop)
     {
         final IntegerProperty property = TFCBlockStateProperties.getAgeProperty(singleStages + doubleStages - 1);
-        return new ClimbingCropBlock(properties, singleStages - 1, singleStages + doubleStages - 1, TFCBlocks.DEAD_CROPS.get(crop), TFCItems.CROP_SEEDS.get(crop), crop.getPrimaryNutrient(), ClimateRanges.CROPS.get(crop))
+        return new ClimbingCropBlock(properties, singleStages - 1, singleStages + doubleStages - 1, TFCBlocks.DEAD_CROPS.get(crop), TFCItems.CROP_SEEDS.get(crop), crop.getNitrogen(), crop.getPhosphorous(), crop.getPotassium(), ClimateRanges.CROPS.get(crop))
         {
             @Override
             public IntegerProperty getAgeProperty()
@@ -53,9 +53,9 @@ public abstract class ClimbingCropBlock extends DoubleCropBlock implements IGhos
         };
     }
 
-    protected ClimbingCropBlock(ExtendedProperties properties, int maxSingleAge, int maxAge, Supplier<? extends Block> dead, Supplier<? extends Item> seeds, FarmlandBlockEntity.NutrientType primaryNutrient, Supplier<ClimateRange> climateRange)
+    protected ClimbingCropBlock(ExtendedProperties properties, int maxSingleAge, int maxAge, Supplier<? extends Block> dead, Supplier<? extends Item> seeds, float nitrogen, float phosphorous, float potassium, Supplier<ClimateRange> climateRange)
     {
-        super(properties, maxSingleAge, maxAge, dead, seeds, primaryNutrient, climateRange);
+        super(properties, maxSingleAge, maxAge, dead, seeds, nitrogen, phosphorous, potassium, climateRange);
         registerDefaultState(getStateDefinition().any().setValue(STICK, false).setValue(PART, Part.BOTTOM));
     }
 

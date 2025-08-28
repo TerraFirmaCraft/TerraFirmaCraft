@@ -38,14 +38,14 @@ import net.dries007.tfc.world.chunkdata.ChunkData;
  */
 public final class CropHelpers
 {
-    public static final long UPDATE_INTERVAL = 2 * ICalendar.TICKS_IN_DAY;
+    public static final long UPDATE_INTERVAL = 2 * ICalendar.CALENDAR_TICKS_IN_DAY;
 
-    public static final float GROWTH_FACTOR = 1f / (24 * ICalendar.TICKS_IN_DAY);
-    public static final float NUTRIENT_CONSUMPTION = 1f / (12 * ICalendar.TICKS_IN_DAY);
+    public static final float GROWTH_FACTOR = 1f / (24 * ICalendar.CALENDAR_TICKS_IN_DAY);
+    public static final float NUTRIENT_CONSUMPTION = 1f / (12 * ICalendar.CALENDAR_TICKS_IN_DAY);
     public static final float NUTRIENT_GROWTH_FACTOR = 0.5f;
     public static final float GROWTH_LIMIT = 1f;
     public static final float EXPIRY_LIMIT = 2f;
-    public static final float YIELD_MIN = 0.2f;
+    public static final float YIELD_MIN = 0.0f;  // Reduced to zero to account for nutrients being available by crop rotation
     public static final float YIELD_LIMIT = 1f;
 
     public static boolean lightValid(Level level, BlockPos pos)
@@ -93,12 +93,52 @@ public final class CropHelpers
         // Nutrients are consumed first, since they are independent of growth or health.
         // As long as the crop exists it consumes nutrients.
 
-        final FarmlandBlockEntity.NutrientType primaryNutrient = cropBlock.getPrimaryNutrient();
-        float nutrientsAvailable = 0, nutrientsRequired = NUTRIENT_CONSUMPTION * tickDelta, nutrientsConsumed = 0;
+        // Nutrients required for 100% yield multiplier
+        // Negative values are nutrients restored to soil
+        final float nForGrowth = cropBlock.getNForGrowth();
+        final float pForGrowth = cropBlock.getPForGrowth();
+        final float kForGrowth = cropBlock.getKForGrowth();
+
+        final float posNForGrowth = Math.max(0, nForGrowth);
+        final float posPForGrowth = Math.max(0, pForGrowth);
+        final float posKForGrowth = Math.max(0, kForGrowth);
+
+        final float nutrientsForGrowth = posNForGrowth + posPForGrowth + posKForGrowth;
+
+        // Required nutrients for this growth tick
+        final float nRequired = NUTRIENT_CONSUMPTION * tickDelta * nForGrowth;
+        final float pRequired = NUTRIENT_CONSUMPTION * tickDelta * pForGrowth;
+        final float kRequired = NUTRIENT_CONSUMPTION * tickDelta * kForGrowth;
+
+        final float nutrientsRequired = Math.max(0, nRequired) + Math.max(0, pRequired) + Math.max(0, kRequired);
+
+        // Consumed nutrients for this growth tick
+        float nutrientsConsumed = 0;
+        float nutrientsAvailable = 0;
+
+        // How many nutrients were absorbed relative to the crop's capacity
         if (level.getBlockEntity(sourcePos) instanceof IFarmland farmland)
         {
-            nutrientsAvailable = farmland.getNutrient(primaryNutrient);
-            nutrientsConsumed = farmland.consumeNutrientAndResupplyOthers(primaryNutrient, nutrientsRequired);
+            // Sum of all nutrients available for growth
+            nutrientsAvailable = (
+                Math.min(posNForGrowth, farmland.getNutrient(FarmlandBlockEntity.NutrientType.NITROGEN))
+                + Math.min(posPForGrowth, farmland.getNutrient(FarmlandBlockEntity.NutrientType.PHOSPHOROUS))
+                + Math.min(posKForGrowth, farmland.getNutrient(FarmlandBlockEntity.NutrientType.POTASSIUM))
+            );
+
+            // Won't consume a nutrient beyond the amount required by the crop
+            final float maxNToConsume = nForGrowth - crop.getNAbsorbed();
+            final float maxPToConsume = pForGrowth - crop.getPAbsorbed();
+            final float maxKToConsume = kForGrowth - crop.getKAbsorbed();
+
+            final float nConsumed = farmland.consumeNutrients(Math.min(nRequired, maxNToConsume), FarmlandBlockEntity.NutrientType.NITROGEN);
+            final float pConsumed = farmland.consumeNutrients(Math.min(pRequired, maxPToConsume), FarmlandBlockEntity.NutrientType.PHOSPHOROUS);
+            final float kConsumed = farmland.consumeNutrients(Math.min(kRequired, maxKToConsume), FarmlandBlockEntity.NutrientType.POTASSIUM);
+
+            // Adds new nutrients back to the crop
+            crop.addNutrients(nConsumed, pConsumed, kConsumed);
+
+            nutrientsConsumed += nConsumed + pConsumed + kConsumed;
         }
 
         final float growthModifier = TFCConfig.SERVER.cropGrowthModifier.get().floatValue(); // Higher = Slower growth
@@ -106,7 +146,7 @@ public final class CropHelpers
         final float localExpiryLimit = EXPIRY_LIMIT * expiryModifier * (1f / growthModifier);
 
         // Total growth is based on the ticks and the nutrients consumed. It is then allocated to actual growth or expiry based on other factors.
-        final float totalGrowthDelta = (1f / growthModifier) * Helpers.uniform(random, 0.9f, 1.1f) * tickDelta * CropHelpers.GROWTH_FACTOR + nutrientsConsumed * NUTRIENT_GROWTH_FACTOR;
+        final float totalGrowthDelta = (1f / growthModifier) * Helpers.uniform(random, 0.9f, 1.1f) * tickDelta * CropHelpers.GROWTH_FACTOR + nutrientsConsumed / nutrientsForGrowth * NUTRIENT_GROWTH_FACTOR;
         final float initialGrowth = crop.getGrowth();
         float remainingGrowthDelta = totalGrowthDelta;
         float growth = initialGrowth, expiry = crop.getExpiry(), actualYield = crop.getYield();
@@ -131,9 +171,20 @@ public final class CropHelpers
             expiry += delta;
         }
 
-        // Calculate yield, which depends both on a flat rate per growth, and on the nutrient satisfaction, which is a measure of nutrient consumption over the growth time.
+        // Add nutrients back to soil. Must happen after we determine the growth delta to prevent extra nutrients being added
         final float growthDelta = growth - initialGrowth;
+        if (level.getBlockEntity(sourcePos) instanceof IFarmland farmland)
+        {
+            final float percentOfNutrientsSatisfied = nutrientsRequired > 0 ? nutrientsConsumed / nutrientsRequired : 0f;
+
+            farmland.produceNutrients(nForGrowth, FarmlandBlockEntity.NutrientType.NITROGEN, percentOfNutrientsSatisfied, growthDelta);
+            farmland.produceNutrients(pForGrowth, FarmlandBlockEntity.NutrientType.PHOSPHOROUS, percentOfNutrientsSatisfied, growthDelta);
+            farmland.produceNutrients(kForGrowth, FarmlandBlockEntity.NutrientType.POTASSIUM, percentOfNutrientsSatisfied, growthDelta);
+        }
+
+        // Calculate yield, which depends on the nutrient satisfaction, which is a measure of nutrient consumption over the growth time.
         final float nutrientSatisfaction;
+
         if (growthDelta <= 0 || nutrientsRequired <= 0)
         {
             nutrientSatisfaction = 1; // Either condition causes the below formula to result in NaN

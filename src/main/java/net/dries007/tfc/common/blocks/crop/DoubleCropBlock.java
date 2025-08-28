@@ -34,7 +34,6 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.CropBlockEntity;
-import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -50,7 +49,7 @@ public abstract class DoubleCropBlock extends CropBlock
     public static DoubleCropBlock create(ExtendedProperties properties, int singleStages, int doubleStages, Crop crop)
     {
         final IntegerProperty property = TFCBlockStateProperties.getAgeProperty(singleStages + doubleStages - 1);
-        return new DoubleCropBlock(properties, singleStages - 1, singleStages + doubleStages - 1, TFCBlocks.DEAD_CROPS.get(crop), TFCItems.CROP_SEEDS.get(crop), crop.getPrimaryNutrient(), ClimateRanges.CROPS.get(crop))
+        return new DoubleCropBlock(properties, singleStages - 1, singleStages + doubleStages - 1, TFCBlocks.DEAD_CROPS.get(crop), TFCItems.CROP_SEEDS.get(crop), crop.getNitrogen(), crop.getPhosphorous(), crop.getPotassium(), ClimateRanges.CROPS.get(crop))
         {
             @Override
             public IntegerProperty getAgeProperty()
@@ -63,9 +62,9 @@ public abstract class DoubleCropBlock extends CropBlock
     protected final int maxSingleAge;
     protected final float maxSingleGrowth;
 
-    protected DoubleCropBlock(ExtendedProperties properties, int maxSingleAge, int maxAge, Supplier<? extends Block> dead, Supplier<? extends Item> seeds, FarmlandBlockEntity.NutrientType primaryNutrient, Supplier<ClimateRange> climateRange)
+    protected DoubleCropBlock(ExtendedProperties properties, int maxSingleAge, int maxAge, Supplier<? extends Block> dead, Supplier<? extends Item> seeds, float nitrogen, float phosporous, float potassium, Supplier<ClimateRange> climateRange)
     {
-        super(properties, maxAge, dead, seeds, primaryNutrient, climateRange);
+        super(properties, maxAge, dead, seeds, nitrogen, phosporous, potassium, climateRange);
 
         this.maxSingleAge = maxSingleAge;
         this.maxSingleGrowth = (float) maxSingleAge / maxAge;
