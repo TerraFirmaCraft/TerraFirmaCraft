@@ -1,7 +1,8 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "block/cube_all",
+  "parent": "minecraft:block/cube_column",
   "textures": {
-    "all": "tfc:block/clay/podzol"
+    "end": "tfc:block/clay/podzol_top",
+    "side": "tfc:block/clay/podzol"
   }
 }

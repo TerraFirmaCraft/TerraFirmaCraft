@@ -1,7 +1,8 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "block/cube_all",
+  "parent": "minecraft:block/cube_column",
   "textures": {
-    "all": "tfc:block/coarse_dirt/fluvisol"
+    "end": "tfc:block/coarse_dirt/fluvisol_top",
+    "side": "tfc:block/coarse_dirt/fluvisol"
   }
 }

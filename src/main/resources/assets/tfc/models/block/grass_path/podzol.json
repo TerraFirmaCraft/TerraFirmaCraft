@@ -1,8 +1,9 @@
 {
-  "parent": "tfc:block/grass_path",
+  "parent": "tfc:block/grass_path_column",
   "textures": {
     "dirt": "tfc:block/dirt/podzol",
     "top": "tfc:block/grass_path/podzol_top",
-    "side": "tfc:block/grass_path/podzol_side"
+    "side": "tfc:block/grass_path/podzol_side",
+	"bottom": "tfc:block/dirt/podzol_top"
   }
 }

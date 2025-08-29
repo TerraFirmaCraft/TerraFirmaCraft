@@ -660,14 +660,6 @@ def generate(rm: ResourceManager):
 
     # Dirt
     for soil in SOIL_BLOCK_VARIANTS:
-        # Regular Dirt
-        block = rm.blockstate(('dirt', soil), variants={'': [{'model': 'tfc:block/dirt/%s' % soil}]}, use_default_model=False)
-        block.with_block_model().with_item_model().with_block_loot('tfc:dirt/%s' % soil).with_lang(lang('%s Dirt', soil))
-        block = rm.blockstate(('coarse_dirt', soil), variants={'': [{'model': 'tfc:block/coarse_dirt/%s' % soil}]}, use_default_model=False)
-        block.with_block_model().with_item_model().with_block_loot('tfc:coarse_dirt/%s' % soil).with_lang(lang('Coarse %s', soil))
-        for variant in ('mud', 'rooted_dirt', 'mud_bricks'):
-            rm.blockstate((variant, soil)).with_block_model().with_item_model().with_block_loot('tfc:%s/%s' % (variant, soil)).with_lang(lang('%s %s', soil, variant))
-
         rm.item_model('mud_brick/%s' % soil).with_lang(lang('%s mud brick', soil))
         mud_bricks = rm.block(('mud_bricks', soil))
         mud_bricks.make_slab()
@@ -695,6 +687,26 @@ def generate(rm: ResourceManager):
         block.with_block_loot(*loot_pools)
         rm.item_model('tfc:drying_bricks/%s' % soil, 'tfc:item/mud_brick/%s_wet' % soil)
 
+        rm.blockstate(('muddy_roots', soil), variants={
+            'axis=x': {'model': 'tfc:block/muddy_roots/%s' % soil, 'x': 90, 'y': 90},
+            'axis=y': {'model': 'tfc:block/muddy_roots/%s' % soil},
+            'axis=z': {'model': 'tfc:block/muddy_roots/%s' % soil, 'x': 90}
+        }).with_block_model({'end': 'tfc:block/mud/%s_roots_top' % soil, 'side': 'tfc:block/mud/%s_roots_side' % soil}, 'minecraft:block/cube_column').with_item_model().with_lang(lang('%s muddy roots', soil)).with_block_loot('tfc:muddy_roots/%s' % soil)
+
+        block = rm.block(('grass_path', soil))
+        block.with_lang(lang('%s path', soil))
+        block.with_block_loot('tfc:dirt/%s' % soil)
+
+
+    for soil in PLAIN_CUBE_SOIL_BLOCK_VARIANTS:
+        # Regular Dirt
+        block = rm.blockstate(('dirt', soil), variants={'': [{'model': 'tfc:block/dirt/%s' % soil}]}, use_default_model=False)
+        block.with_block_model().with_item_model().with_block_loot('tfc:dirt/%s' % soil).with_lang(lang('%s Dirt', soil))
+        block = rm.blockstate(('coarse_dirt', soil), variants={'': [{'model': 'tfc:block/coarse_dirt/%s' % soil}]}, use_default_model=False)
+        block.with_block_model().with_item_model().with_block_loot('tfc:coarse_dirt/%s' % soil).with_lang(lang('Coarse %s', soil))
+        for variant in ('mud', 'rooted_dirt', 'mud_bricks'):
+            rm.blockstate((variant, soil)).with_block_model().with_item_model().with_block_loot('tfc:%s/%s' % (variant, soil)).with_lang(lang('%s %s', soil, variant))
+
         # Clay Dirt
         block = rm.blockstate(('clay', soil), use_default_model=False)
         block.with_block_model()
@@ -705,15 +717,24 @@ def generate(rm: ResourceManager):
         block.with_lang(lang('%s Clay Dirt', soil))
         block.with_item_model()
 
-        block = rm.block(('grass_path', soil))
-        block.with_lang(lang('%s path', soil))
-        block.with_block_loot('tfc:dirt/%s' % soil)
+    for soil in COLUMN_SOIL_BLOCK_VARIANTS:
+        # Regular Dirt
+        block = rm.blockstate(('dirt', soil), variants={'': [{'model': 'tfc:block/dirt/%s' % soil}]}, use_default_model=False)
+        block.with_block_model({'end': 'tfc:block/dirt/%s_top' % soil, 'side': 'tfc:block/dirt/%s' % soil}, 'minecraft:block/cube_column').with_item_model().with_block_loot('tfc:dirt/%s' % soil).with_lang(lang('%s Dirt', soil))
+        block = rm.blockstate(('coarse_dirt', soil), variants={'': [{'model': 'tfc:block/coarse_dirt/%s' % soil}]}, use_default_model=False)
+        block.with_block_model({'end': 'tfc:block/coarse_dirt/%s_top' % soil, 'side': 'tfc:block/coarse_dirt/%s' % soil}, 'minecraft:block/cube_column').with_item_model().with_block_loot('tfc:coarse_dirt/%s' % soil).with_lang(lang('Coarse %s', soil))
+        for variant in ('mud', 'rooted_dirt', 'mud_bricks'):
+            rm.blockstate((variant, soil)).with_block_model().with_item_model().with_block_loot('tfc:%s/%s' % (variant, soil)).with_lang(lang('%s %s', soil, variant))
 
-        rm.blockstate(('muddy_roots', soil), variants={
-            'axis=x': {'model': 'tfc:block/muddy_roots/%s' % soil, 'x': 90, 'y': 90},
-            'axis=y': {'model': 'tfc:block/muddy_roots/%s' % soil},
-            'axis=z': {'model': 'tfc:block/muddy_roots/%s' % soil, 'x': 90}
-        }).with_block_model({'end': 'tfc:block/mud/%s_roots_top' % soil, 'side': 'tfc:block/mud/%s_roots_side' % soil}, 'minecraft:block/cube_column').with_item_model().with_lang(lang('%s muddy roots', soil)).with_block_loot('tfc:muddy_roots/%s' % soil)
+        # Clay Dirt
+        block = rm.blockstate(('clay', soil), use_default_model=False)
+        block.with_block_model({'end': 'tfc:block/clay/%s_top' % soil, 'side': 'tfc:block/clay/%s' % soil}, 'minecraft:block/cube_column')
+        block.with_block_loot({
+            'name': 'minecraft:clay_ball',
+            'functions': [loot_tables.set_count(1, 3)]
+        })
+        block.with_lang(lang('%s Clay Dirt', soil))
+        block.with_item_model()
 
     # Grass
     north_face = {'from': [0, 0, 0], 'to': [16, 16, 0], 'faces': {'north': {'texture': '#texture', 'cullface': 'north'}}}
@@ -760,9 +781,17 @@ def generate(rm: ResourceManager):
         for _variant in ('top', 'snowy_top', 'side', 'snowy_side', 'bottom'):
             rm.block_model((_name, _variant), {'texture': _texture}, parent='tfc:block/grass_%s' % _variant)
 
-    def duff_models(_name: ResourceIdentifier, _texture: str):
+    def grass_models_fancy(_type: str, _soil: str, _texture: str):
         for _variant in ('top', 'snowy_top', 'side', 'snowy_side', 'bottom'):
-            rm.block_model((_name, _variant), {'texture': _texture}, parent='tfc:block/duff_%s' % _variant)
+            if _variant == 'bottom' and _soil in COLUMN_SOIL_BLOCK_VARIANTS:
+                _texture = _texture + '_top'
+            rm.block_model(((_type, soil), _variant), {'texture': _texture}, parent='tfc:block/grass_%s' % _variant)
+
+    def duff_models_fancy(_type: str, _soil: str, _texture: str):
+        for _variant in ('top', 'snowy_top', 'side', 'snowy_side', 'bottom'):
+            if _variant == 'bottom' and _soil in COLUMN_SOIL_BLOCK_VARIANTS:
+                _texture = _texture + '_top'
+            rm.block_model(((_type, soil), _variant), {'texture': _texture}, parent='tfc:block/duff_%s' % _variant)
 
     # Peat Grass
     rm.blockstate_multipart('peat_grass', *grass_multipart('tfc:block/peat_grass')).with_block_loot('tfc:peat').with_lang(lang('Peat Grass'))
@@ -777,7 +806,7 @@ def generate(rm: ResourceManager):
             else:
                 block.with_block_loot('1-3 minecraft:clay_ball')
             block.with_lang(lang('%s %s', soil, grass_var))
-            grass_models((grass_var, soil), dirt)
+            grass_models_fancy(grass_var, soil, dirt)
 
         for duff_var, dirt in (('duff', 'tfc:block/dirt/%s' % soil), ('clay_duff', 'tfc:block/clay/%s' % soil)):
             block = rm.blockstate_multipart((duff_var, soil), *grass_multipart('tfc:block/%s/%s' % (duff_var, soil)))
@@ -786,7 +815,7 @@ def generate(rm: ResourceManager):
             else:
                 block.with_block_loot('1-3 minecraft:clay_ball')
             block.with_lang(lang('%s %s', soil, duff_var))
-            duff_models((duff_var, soil), dirt)
+            duff_models_fancy(duff_var, soil, dirt)
 
         # Farmland
         block = rm.blockstate(('farmland', soil))

@@ -2,6 +2,6 @@
   "__comment__": "This file was automatically created by mcresources",
   "parent": "tfc:block/grass_bottom",
   "textures": {
-    "texture": "tfc:block/dirt/podzol"
+    "texture": "tfc:block/dirt/podzol_top"
   }
 }

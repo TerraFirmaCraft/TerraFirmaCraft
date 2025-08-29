@@ -2,6 +2,6 @@
   "__comment__": "This file was automatically created by mcresources",
   "parent": "tfc:block/duff_bottom",
   "textures": {
-    "texture": "tfc:block/clay/podzol"
+    "texture": "tfc:block/clay/podzol_top"
   }
 }
