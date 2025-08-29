@@ -81,6 +81,8 @@ public interface IFarmland
 
     void setAdditionalWater(float rainfall);
 
+    void setAdditionalWaterWithoutSync(float rainfall);
+
     default void addAdditionalWater(float additionalWater)
     {
         setAdditionalWater(getAdditionalWater() + additionalWater);
@@ -145,9 +147,16 @@ public interface IFarmland
         setNutrient(POTASSIUM, nbt.getFloat("k"));
     }
 
-    default void loadAdditionalWater(CompoundTag nbt)
+    default void loadNutrientsWithoutSync(CompoundTag nbt)
     {
-        setAdditionalWater(nbt.getFloat("water"));
+        setNutrientWithoutSync(NITROGEN, nbt.getFloat("n"));
+        setNutrientWithoutSync(PHOSPHOROUS, nbt.getFloat("p"));
+        setNutrientWithoutSync(POTASSIUM, nbt.getFloat("k"));
+    }
+
+    default void loadAdditionalWaterWithoutSync(CompoundTag nbt)
+    {
+        setAdditionalWaterWithoutSync(nbt.getFloat("water"));
     }
 
     default void saveAdditionalWater(CompoundTag nbt)

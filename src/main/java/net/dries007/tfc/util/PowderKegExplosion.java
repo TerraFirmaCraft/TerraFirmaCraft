@@ -12,11 +12,9 @@ import java.util.Random;
 import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.protocol.game.ClientboundExplodePacket;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
@@ -56,8 +54,9 @@ public class PowderKegExplosion extends Explosion
 
     /**
      * Does the second part of the explosion (sound, particles, drop spawn)
-     * This will only be called on the logical server, the particles and sounds are
-     * handled by the vanilla explosion code
+     * This will only be called on the logical server. The client side particles and sounds are
+     * handled by {@link sendExplosionPacketToClients}, which should be called
+     * immediately after this.
      *
      * (Forgive the Mojang copypasta)
      */
@@ -85,27 +84,6 @@ public class PowderKegExplosion extends Explosion
             {
                 if (!Helpers.isBlock(state, TFCTags.Blocks.POWDERKEG_CAN_BREAK))
                     continue;
-            }
-
-            if (spawnParticles)
-            {
-                final double x = (pos.getX() + this.level.random.nextFloat());
-                final double y = (pos.getY() + this.level.random.nextFloat());
-                final double z = (pos.getZ() + this.level.random.nextFloat());
-                double dx = x - this.x;
-                double dy = y - this.y;
-                double dz = z - this.z;
-                double distance = Mth.sqrt((float) (dx * dx + dy * dy + dz * dz));
-                dx = dx / distance;
-                dy = dy / distance;
-                dz = dz / distance;
-                double scaledPower = 0.5d / (distance / (double) this.size + 0.1d);
-                scaledPower = scaledPower * (double) (this.level.random.nextFloat() * this.level.random.nextFloat() + 0.3f);
-                dx = dx * scaledPower;
-                dy = dy * scaledPower;
-                dz = dz * scaledPower;
-                level.addParticle(ParticleTypes.EXPLOSION, (x + this.x) / 2.0d, (y + this.y) / 2.0d, (z + this.z) / 2.0d, dx, dy, dz);
-                level.addParticle(ParticleTypes.EXPLOSION, x, y, z, dx, dy, dz);
             }
 
             if (!state.isAir())
@@ -154,4 +132,36 @@ public class PowderKegExplosion extends Explosion
         allDrops.add(Pair.of(drop, dropPos));
     }
 
+    /**
+     * Notifies clients of the powderkeg explosion to play sounds and show particles.
+     * and particles. Should be called after {@link PowderKegExplosion#finalizeExplosion},
+     * since we don't use the vanilla explosion code that sends packets for us.
+     */
+    public void sendExplosionPacketToClients()
+    {
+        // Since we don't use the vanilla explosion logic in ServerLevel#explode,
+        // we must send explosion packets to clients ourselves
+        if (level instanceof ServerLevel serverLevel)
+        {
+            for (ServerPlayer serverplayer : serverLevel.players()) {
+                if (serverplayer.distanceToSqr(x, y, z) < 4096.0) {
+                    serverplayer.connection
+                        .send(
+                            new ClientboundExplodePacket(
+                                x,
+                                y,
+                                z,
+                                size,
+                                getToBlow(),
+                                getHitPlayers().get(serverplayer),
+                                getBlockInteraction(),
+                                getSmallExplosionParticles(),
+                                getLargeExplosionParticles(),
+                                getExplosionSound()
+                            )
+                        );
+                }
+            }
+        }
+    }
 }

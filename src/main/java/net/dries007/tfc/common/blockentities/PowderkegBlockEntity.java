@@ -11,8 +11,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.game.ClientboundExplodePacket;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -72,7 +70,23 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
         {
             count += inventory.getStackInSlot(i).getCount();
         }
-        return Math.min(MAX_STRENGTH, Mth.floor(TFCConfig.SERVER.powderKegStrengthModifier.get() * count / SLOTS));
+        return getStrength(count);
+    }
+
+    public static int getStrength(ItemListComponent inventory)
+    {
+        final List<ItemStack> contents = inventory.contents();
+        int count = 0;
+        for (ItemStack stack : contents)
+        {
+            count += stack.getCount();
+        }
+        return getStrength(count);
+    }
+
+    private static int getStrength(int itemCount)
+    {
+        return Math.min(MAX_STRENGTH, Mth.floor(TFCConfig.SERVER.powderKegStrengthModifier.get() * itemCount / SLOTS));
     }
 
     private static void explode(PowderkegBlockEntity powderkeg)
@@ -85,31 +99,7 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
         PowderKegExplosion explosion = new PowderKegExplosion(powderkeg.level, powderkeg.igniter, x, y, z, strength);
         explosion.explode();
         explosion.finalizeExplosion(true);
-
-        // Since we don't use the vanilla explosion logic in ServerLevel#explode,
-        // we must send explosion packets to clients ourselves
-        if (powderkeg.level instanceof ServerLevel serverLevel)
-        {
-            for (ServerPlayer serverplayer : serverLevel.players()) {
-                if (serverplayer.distanceToSqr(x, y, z) < 4096.0) {
-                    serverplayer.connection
-                        .send(
-                            new ClientboundExplodePacket(
-                                x,
-                                y,
-                                z,
-                                strength,
-                                explosion.getToBlow(),
-                                explosion.getHitPlayers().get(serverplayer),
-                                explosion.getBlockInteraction(),
-                                explosion.getSmallExplosionParticles(),
-                                explosion.getLargeExplosionParticles(),
-                                explosion.getExplosionSound()
-                            )
-                        );
-                }
-            }
-        }
+        explosion.sendExplosionPacketToClients();
     }
 
     private int fuse = -1;

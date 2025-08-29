@@ -95,8 +95,8 @@ public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland, IC
     @Override
     public void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
-        loadNutrients(nbt);
-        loadAdditionalWater(nbt);
+        loadNutrientsWithoutSync(nbt);
+        loadAdditionalWaterWithoutSync(nbt);
         lastUpdateTick = nbt.getLong("tick");
         lastWaterTick = nbt.getLong("waterTick");
         super.loadAdditional(nbt, provider);
@@ -183,8 +183,14 @@ public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland, IC
     @Override
     public void setAdditionalWater(float additionalWater)
     {
-        this.additionalWater = Mth.clamp(additionalWater, 0, MAX_ADDITIONAL_WATER);
+        setAdditionalWaterWithoutSync(additionalWater);
         markForSync();
+    }
+
+    @Override
+    public void setAdditionalWaterWithoutSync(float additionalWater)
+    {
+        this.additionalWater = Mth.clamp(additionalWater, 0, MAX_ADDITIONAL_WATER);
     }
 
     public long getLastWaterTick()

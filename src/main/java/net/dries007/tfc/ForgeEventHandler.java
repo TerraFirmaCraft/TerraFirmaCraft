@@ -1403,7 +1403,16 @@ public final class ForgeEventHandler
             ItemStack held = player.getItemInHand(event.getHand());
             if (Helpers.isItem(held, TFCTags.Items.MINECART_HOLDABLE))
             {
-                final ItemStack holdingItem = held.split(1);
+                ItemStack holdingItem;
+                if (player.isCreative())
+                {
+                    holdingItem = held.copy();
+                    holdingItem.setCount(1);
+                }
+                else
+                {
+                    holdingItem = held.split(1);
+                }
                 if (!player.level().isClientSide)
                 {
                     final HoldingMinecart minecart = new HoldingMinecart(player.level(), oldCart.getX(), oldCart.getY(), oldCart.getZ());
