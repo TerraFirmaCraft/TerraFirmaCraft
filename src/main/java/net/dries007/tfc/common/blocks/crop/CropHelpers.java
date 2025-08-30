@@ -192,9 +192,13 @@ public final class CropHelpers
         // Calculate yield, which depends on the nutrient satisfaction, which is a measure of nutrient consumption over the growth time.
         final float nutrientSatisfaction;
 
-        if (growthDelta <= 0 || nutrientsRequired <= 0)
+        if (growthDelta <= 0)
         {
             nutrientSatisfaction = 1; // Either condition causes the below formula to result in NaN
+        }
+        else if (nutrientsRequired <= 0)
+        {
+            nutrientSatisfaction = 0; // No yield bonuses for plants that don't absorb nutrients
         }
         else
         {
