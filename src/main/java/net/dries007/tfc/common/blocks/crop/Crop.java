@@ -30,36 +30,41 @@ import net.dries007.tfc.util.climate.ClimateRanges;
 
 public enum Crop implements StringRepresentable
 {
-    // Grains
-    BARLEY(0.75f, -0.15f, -0.15f, 8), // Default, 8
-    OAT(1f, -.25f, -.25f, 8), // Default, 8
-    RYE(1f, -.25f, -.25f, 8), // Default, 8
-    MAIZE(1f, -.25f, -.25f, 3, 3, false), // Double, 3 -> 3
-    WHEAT(1f, -.25f, -.25f, 8), // Default, 8
-    RICE(.40f, .30f, .3f, 8, true), // Default, Waterlogged, 8
 
     // Legumes
-    SOYBEAN(-.60f, .60f, .40f, 7), // Default, 7
-    GREEN_BEAN(-.60f, .50f, .40f, 4, 4, true), // Double, Stick, 4 -> 4
+    GREEN_BEAN(-0.8f, 0.5f, 0.4f, 4, 4, true), // Double, Stick, 4 -> 4
+    SOYBEAN(-.80f, .60f, .30f, 7), // Default, 7
+
+    // Grains
+    BARLEY(0.75f, -0.2f, -0.2f, 8), // Default, 8
+    OAT(1f, -.25f, -.35f, 8), // Default, 8
+    RYE(1f, -.35f, -.25f, 8), // Default, 8
+    MAIZE(0.9f, -.25f, -.25f, 3, 3, false), // Double, 3 -> 3
+    WHEAT(1f, -.3f, -.3f, 8), // Default, 8
+    RICE(.4f, .3f, .3f, 8, true), // Default, Waterlogged, 8
 
     // Vegetables
-    BEET(.40f, .40f, .40f, 6), // Default, 6
-    CABBAGE(.40f, .40f, .40f, 6), // Default, 6
-    CARROT(.40f, .40f, .40f, 5), // Default, 5
-    GARLIC(.40f, .40f, .40f, 5), // Default, 5
-    POTATO(.40f, .40f, .40f, 7), // Default, 7
-    ONION(.40f, .40f, .40f, 7), // Default, 7
-    SQUASH(.40f, .40f, .40f, 8), // Default , 8
-    TOMATO(.40f, .40f, .40f, 4, 4, true, null, () -> TFCItems.FOOD.get(Food.TOMATO)), // Double, Stick, 4 -> 4
-    PUMPKIN(.40f, .40f, .40f, 8, () -> TFCBlocks.PUMPKIN), // Spreading, 8
-    MELON(.40f, .40f, .40f, 8, () -> TFCBlocks.MELON), // Spreading, 8
-    RED_BELL_PEPPER(.40f, .40f, .40f, 7, () -> TFCItems.FOOD.get(Food.GREEN_BELL_PEPPER), () -> TFCItems.FOOD.get(Food.RED_BELL_PEPPER)), // Pickable, 7
-    YELLOW_BELL_PEPPER(.40f, .40f, .40f, 7, () -> TFCItems.FOOD.get(Food.GREEN_BELL_PEPPER), () -> TFCItems.FOOD.get(Food.YELLOW_BELL_PEPPER)), // Pickable, 7
+    BEET(0.4f, 0.3f, 0.5f, 6), // Default, 6
+    CABBAGE(0.5f, 0.2f, 0.4f, 6), // Default, 6
+    CARROT(0.5f, 0.3f, 0.4f, 5), // Default, 5
+    GARLIC(0.4f, 0.2f, 0.5f, 5), // Default, 5
+    POTATO(0.3f, 0.4f, 0.6f, 7), // Default, 7
+    ONION(0.4f, 0.2f, 0.6f, 7), // Default, 7
+    SQUASH(0.25f, 0.45f, 0.5f, 8), // Default , 8
+
+    // Pickable Vegetables
+    TOMATO(0.35f, 0.45f, 0.5f, 4, 4, true, null, () -> TFCItems.FOOD.get(Food.TOMATO)), // Double, Stick, 4 -> 4
+    RED_BELL_PEPPER(0.3f, 0.4f, 0.5f, 7, () -> TFCItems.FOOD.get(Food.GREEN_BELL_PEPPER), () -> TFCItems.FOOD.get(Food.RED_BELL_PEPPER)), // Pickable, 7
+    YELLOW_BELL_PEPPER(0.3f, 0.4f, 0.5f, 7, () -> TFCItems.FOOD.get(Food.GREEN_BELL_PEPPER), () -> TFCItems.FOOD.get(Food.YELLOW_BELL_PEPPER)), // Pickable,
+
+    // Spreading
+    PUMPKIN(0.4f, 0.3f, 0.6f, 8, () -> TFCBlocks.PUMPKIN), // Spreading, 8
+    MELON(0.3f, 0.4f, 0.65f, 8, () -> TFCBlocks.MELON), // Spreading, 8
 
     // Miscellaneous
-    JUTE(.80f, -.40f, .10f, 3, 3, false), // Double, 3 -> 3
-    SUGARCANE(.60f, .60f, .60f, 4, 4, false), // Double, 4 -> 4
-    PAPYRUS(.40f, .40f, .40f, 3, 3, false);
+    JUTE(0.6f, 0.4f, -0.4f, 3, 3, false), // Double, 3 -> 3
+    SUGARCANE(0.6f, -0.4f, 0.4f, 4, 4, false), // Double, 4 -> 4
+    PAPYRUS(0.5f, 0.5f, 0.5f, 3, 3, false);
 
     private static ExtendedProperties doubleCrop()
     {

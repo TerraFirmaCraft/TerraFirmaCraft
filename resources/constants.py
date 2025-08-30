@@ -134,13 +134,15 @@ class Fruit(NamedTuple):
 class Crop(NamedTuple):
     type: str
     stages: int
-    nutrient: str
     min_temp: float
     max_temp: float
     min_water: float
     max_water: float
-    min_hydration: int
-    max_hydration: int
+    min_hydration: float
+    max_hydration: float
+    nitrogen: float
+    phosphorous: float
+    potassium: float
     min_forest: Optional[str]
     max_forest: Optional[str]
 
@@ -478,31 +480,37 @@ WOODS: dict[str, Wood] = {
 }
 
 # DO NOT EDIT DIRECTLY - Imported directly from spreadsheet
-# https://docs.google.com/spreadsheets/d/1Ghw3dCmVO5Gv0MMGBydUxox_nwLYmmcZkGSbbf0QSAE/
+# https://docs.google.com/spreadsheets/d/1USmCWiRrj5205WyoRNNTUkoNrqm9AStRzwnD1v6633o
 CROPS: dict[str, Crop] = {
-    'barley': Crop('default', 8, 'nitrogen', -8, 26, 70, 310, 18, 75, None, 'edge'),
-    'oat': Crop('default', 8, 'phosphorus', 3, 40, 140, 400, 35, 100, None, 'edge'),
-    'rye': Crop('default', 8, 'phosphorus', -11, 30, 100, 350, 25, 85, None, 'edge'),
-    'maize': Crop('double', 6, 'phosphorus', 13, 40, 300, 500, 75, 100, None, 'edge'),
-    'wheat': Crop('default', 8, 'phosphorus', -4, 35, 100, 400, 25, 100, None, 'edge'),
-    'rice': Crop('default', 8, 'phosphorus', 15, 30, 100, 500, 25, 100, 'normal', None),
-    'beet': Crop('default', 6, 'potassium', -5, 20, 70, 300, 18, 85, None, None),
-    'cabbage': Crop('default', 6, 'nitrogen', -10, 27, 60, 280, 15, 65, None, None),
-    'carrot': Crop('default', 5, 'potassium', 3, 30, 100, 400, 25, 100, None, None),
-    'garlic': Crop('default', 5, 'nitrogen', -20, 18, 60, 310, 15, 75, None, None),
-    'green_bean': Crop('double_stick', 8, 'nitrogen', 2, 35, 150, 410, 38, 100, 'normal', None),
-    'potato': Crop('default', 7, 'potassium', -1, 37, 200, 410, 50, 100, None, None),
-    'onion': Crop('default', 7, 'nitrogen', 0, 30, 100, 390, 25, 90, None, None),
-    'soybean': Crop('default', 7, 'nitrogen', 8, 30, 160, 410, 40, 100, 'normal', None),
-    'squash': Crop('default', 8, 'potassium', 5, 33, 90, 390, 23, 95, 'normal', None),
-    'sugarcane': Crop('double', 8, 'potassium', 12, 38, 160, 500, 40, 100, None, None),
-    'tomato': Crop('double_stick', 8, 'potassium', 0, 36, 120, 390, 30, 95, 'normal', None),
-    'jute': Crop('double', 6, 'potassium', 5, 37, 100, 410, 25, 100, None, None),
-    'papyrus': Crop('double', 6, 'potassium', 19, 37, 310, 500, 70, 100, None, None),
-    'pumpkin': Crop('spreading', 8, 'phosphorus', 5, 22, 120, 390, 30, 70, None, None),
-    'melon': Crop('spreading', 8, 'phosphorus', 19, 35, 200, 500, 75, 100, 'normal', None),
-    'red_bell_pepper': Crop('pickable', 7, 'potassium', 16, 30, 190, 400, 25, 60, None, None),
-    'yellow_bell_pepper': Crop('pickable', 7, 'potassium', 16, 30, 190, 400, 25, 60, None, None),
+    # 'cassava': Crop('default', 6, 10.4, 40, 260, 500, 45, 100, -50, 40, 20, 'normal', None), TODO: Add new crops
+    'green_bean': Crop('double_stick', 8, -4, 19.4, 150, 410, 25, 90, -80, 50, 40, 'normal', None),
+    # 'lentil': Crop('default', 6, -7.6, 19.4, 75, 190, 15, 50, -80, 20, 20, None, None),
+    # 'peanut': Crop('default', 6, 12.2, 40, 130, 360, 20, 80, -90, 50, 50, None, None),
+    'soybean': Crop('default', 7, -9.4, 15.8, 160, 410, 25, 90, -80, 60, 30, 'normal', None),
+    'barley': Crop('default', 8, -9.4, 17.6, 70, 310, 10, 70, 75, -20, -20, None, 'edge'),
+    'oat': Crop('default', 8, -9.4, 15.8, 140, 400, 25, 85, 100, -35, -25, None, 'edge'),
+    'rye': Crop('default', 8, -9.4, 8.6, 100, 350, 15, 80, 100, -20, -40, None, 'edge'),
+    'maize': Crop('double', 6, -9.4, 23., 300, 500, 50, 100, 90, -25, -25, None, 'edge'),
+    'wheat': Crop('default', 8, -9.4, 15.8, 100, 400, 15, 85, 100, -30, -30, None, 'edge'),
+    'rice': Crop('default', 8, 8.6, 40, 200, 500, 35, 100, 40, 30, 30, 'edge', None),
+    'beet': Crop('default', 6, -13, 23., 70, 300, 10, 70, 40, 30, 50, None, None),
+    'cabbage': Crop('default', 6, -13, 23., 60, 280, 10, 65, 50, 20, 40, None, None),
+    'carrot': Crop('default', 5, -13, 23., 100, 400, 15, 85, 50, 30, 40, None, None),
+    'garlic': Crop('default', 5, -5.8, 15.8, 60, 310, 10, 70, 40, 20, 50, None, None),
+    'onion': Crop('default', 7, -7.6, 21.2, 100, 390, 15, 85, 40, 40, 40, None, None),
+    'potato': Crop('default', 8, -9.4, 15.8, 100, 390, 15, 85, 40, 20, 60, None, None),
+    'squash': Crop('default', 8, -9.4, 19.4, 90, 390, 15, 85, 25, 45, 50, 'normal', None),
+    'tomato': Crop('double_stick', 8, 1.4, 40, 120, 390, 20, 85, 35, 45, 50, 'normal', None),
+    'red_bell_pepper': Crop('pickable', 7, 12.2, 40, 190, 450, 30, 95, 30, 40, 50, None, None),
+    'yellow_bell_pepper': Crop('pickable', 7, 12.2, 40, 190, 450, 30, 95, 30, 40, 50, None, None),
+    'pumpkin': Crop('spreading', 8, -9.4, 23., 120, 390, 20, 85, 40, 30, 60, None, None),
+    'melon': Crop('spreading', 8, 5, 40, 200, 500, 35, 100, 30, 40, 65, None, None),
+    # 'canola': Crop('default', 6, -13, 19.4, 120, 320, 20, 75, -30, -60, -100, None, 'edge'),
+    # 'radish': Crop('default', 6, -11.2, 23., 190, 410, 30, 90, -50, -100, -60, None, None),
+    # 'alfalfa': Crop('default', 6, -9.4, 15.8, 240, 480, 40, 100, -80, -50, -60, None, 'edge'),
+    'jute': Crop('double', 6, 1.4, 19.4, 100, 410, 15, 90, 60, 40, -40, None, None),
+    'papyrus': Crop('double', 6, 12.2, 40, 310, 500, 50, 100, 60, -40, 40, None, None),
+    'sugarcane': Crop('double', 8, 17.6, 40, 160, 500, 25, 100, 50, 50, 50, None, None),
 }
 
 PLANTS: dict[str, Plant] = {

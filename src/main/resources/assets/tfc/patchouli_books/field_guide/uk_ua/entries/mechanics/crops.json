@@ -39,7 +39,7 @@
     {
       "type": "patchouli:text",
       "anchor": "barley",
-      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): -8 - 26 °C$(br)$(bold)$(l:mechanics/hydration)Вологість$(): 18 - 75 %$(br)$(bold)Поживна речовина$(): азот$(br2)Ячмінь є одноблоковою культурою. Насіння ячменю можна висаджувати на грядці та отримувати продукт $(thing)ячмінь$() та $(thing)насіння ячменю$().",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -9 - 17 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 10 - 70 %$(br)$(bold)$(b)N: 75 $(bold)$(6)P: +20 $(bold)$(d)K: +20$()$(br)Barley is a single block crop. Barley seeds can be planted on farmland and will produce $(thing)Barley$() and $(thing)Barley Seeds$() as a product.",
       "title": "Ячмінь"
     },
     {
@@ -187,7 +187,7 @@
     {
       "type": "patchouli:text",
       "anchor": "oat",
-      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): 3 - 40 °C$(br)$(bold)$(l:mechanics/hydration)Вологість$(): 35 - 100 %$(br)$(bold)Поживна речовина$(): калій$(br2)Овес є одноблоковою культурою. Насіння вівса можна висаджувати на грядці та отримувати продукт $(thing)овес$() та $(thing)насіння вівса$().",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -9 - 15 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 25 - 85 %$(br)$(bold)$(b)N: 100 $(bold)$(6)P: +35 $(bold)$(d)K: +25$()$(br)Oat is a single block crop. Oat seeds can be planted on farmland and will produce $(thing)Oat$() and $(thing)Oat Seeds$() as a product.",
       "title": "Овес"
     },
     {
@@ -335,7 +335,7 @@
     {
       "type": "patchouli:text",
       "anchor": "rye",
-      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): -11 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Вологість$(): 25 - 85 %$(br)$(bold)Поживні речовини$(): калій$(br2)Жито є одноблоковою культурою. Насіння жита можна висаджувати на грядці та отримувати продукт $(thing)жито$() та $(thing)насіння жита$().",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -9 - 8 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 15 - 80 %$(br)$(bold)$(b)N: 100 $(bold)$(6)P: +20 $(bold)$(d)K: +40$()$(br)Rye is a single block crop. Rye seeds can be planted on farmland and will produce $(thing)Rye$() and $(thing)Rye Seeds$() as a product.",
       "title": "Жито"
     },
     {
@@ -483,7 +483,7 @@
     {
       "type": "patchouli:text",
       "anchor": "maize",
-      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): 13 - 40 °C$(br)$(bold)$(l:mechanics/hydration)Вологість$(): 75 - 100 %$(br)$(bold)Поживні речовини$(): калій$(br2)Кукурудза є двоблоковою культурою. Насіння кукурудзи можна висаджувати на грядці, воно виросте на два блоки заввишки та дасть продукт $(thing)кукурудза$() та $(thing)насіння кукурудзи$().",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -9 - 23 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 50 - 100 %$(br)$(bold)$(b)N: 90 $(bold)$(6)P: +25 $(bold)$(d)K: +25$()$(br)Maize is a two block tall crop. Maize seeds can be planted on farmland, will grow two blocks tall, and will produce $(thing)Maize$() and $(thing)Maize Seeds$() as a product.",
       "title": "Кукурудза"
     },
     {
@@ -621,7 +621,7 @@
     {
       "type": "patchouli:text",
       "anchor": "wheat",
-      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): -4 - 35 °C$(br)$(bold)$(l:mechanics/hydration)Вологість$(): 25 - 100 %$(br)$(bold)Поживні речовини$(): калій$(br2)Пшениця є одноблоковою культурою. Насіння пшениці можна висаджувати на грядці та отримувати продукт $(thing)пшениця$() та $(thing)насіння пшениці$().",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -9 - 15 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 15 - 85 %$(br)$(bold)$(b)N: 100 $(bold)$(6)P: +30 $(bold)$(d)K: +30$()$(br)Wheat is a single block crop. Wheat seeds can be planted on farmland and will produce $(thing)Wheat$() and $(thing)Wheat Seeds$() as a product.",
       "title": "Пшениця"
     },
     {
@@ -769,7 +769,7 @@
     {
       "type": "patchouli:text",
       "anchor": "rice",
-      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): 15 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Вологість$(): 25 - 100 %$(br)$(bold)Поживні речовини$(): калій$(br2)Рис потрібно вирощувати у воді. Грядка повинна знаходитись у прісній воді на глибині в один блок. Рис дасть продукт $(thing)рис$() та $(thing)насіння рису$().",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 8 - 40 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 35 - 100 %$(br)$(bold)$(b)N: 40 $(bold)$(6)P: 30 $(bold)$(d)K: 30$()$(br)Rice is a single block crop. Rice must be grown underwater - it must be planted on farmland, in freshwater that is a single block deep. It will produce $(thing)Rice$() and $(thing)Rice Seeds$() as a product.",
       "title": "Рис"
     },
     {
@@ -917,7 +917,7 @@
     {
       "type": "patchouli:text",
       "anchor": "beet",
-      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): -5 - 20 °C$(br)$(bold)$(l:mechanics/hydration)Вологість$(): 18 - 85 %$(br)$(bold)Поживні речовини$(): калій$(br2)Буряк є одноблочною рослиною. Насіння буряків можна висаджувати на грядках, воно дасть продукт $(thing)буряк$() та $(thing)насіння буряка$().",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -13 - 23 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 10 - 70 %$(br)$(bold)$(b)N: 40 $(bold)$(6)P: 30 $(bold)$(d)K: 50$()$(br)Beets are a a single block crop. Beet seeds can be planted on farmland and will produce $(thing)Beet$() and $(thing)Beet Seeds$() as a product.",
       "title": "Буряк"
     },
     {
@@ -1031,7 +1031,7 @@
     {
       "type": "patchouli:text",
       "anchor": "cabbage",
-      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): -10 - 27 °C$(br)$(bold)$(l:mechanics/hydration)Вологість$(): 15 - 65 %$(br)$(bold)Поживні речовини$(): азот$(br2)Капуста є одноблочною рослиною. Насіння капусти можна висаджувати на грядках, воно дасть продукт $(thing)капуста$() та $(thing)насіння капусти$().",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -13 - 23 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 10 - 65 %$(br)$(bold)$(b)N: 50 $(bold)$(6)P: 20 $(bold)$(d)K: 40$()$(br)Cabbage is a single block crop. Cabbage seeds can be planted on farmland and will produce $(thing)Cabbage$() and $(thing)Cabbage Seeds$() as a product.",
       "title": "Капуста"
     },
     {
@@ -1145,7 +1145,7 @@
     {
       "type": "patchouli:text",
       "anchor": "carrot",
-      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): 3 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Вологість$(): 25 - 100 %$(br)$(bold)Поживні речовини$(): калій$(br2)Морква є одноблочною рослиною. Насіння моркви можна висаджувати на грядках, воно дасть продукт $(thing)морква$() та $(thing)насіння моркви$().",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -13 - 23 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 15 - 85 %$(br)$(bold)$(b)N: 50 $(bold)$(6)P: 30 $(bold)$(d)K: 40$()$(br)Carrot is a single block crop. Carrot seeds can be planted on farmland and will produce $(thing)Carrot$() and $(thing)Carrot Seeds$() as a product.",
       "title": "Морква"
     },
     {
@@ -1242,7 +1242,7 @@
     {
       "type": "patchouli:text",
       "anchor": "garlic",
-      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): -20 - 18 °C$(br)$(bold)$(l:mechanics/hydration)Вологість$(): 15 - 75 %$(br)$(bold)Поживні речовини$(): азот$(br2)Часник є одноблочною рослиною. Насіння часнику можна висаджувати на грядках, воно дасть продукт $(thing)часник$() та $(thing)насіння часнику$().",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -5 - 15 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 10 - 70 %$(br)$(bold)$(b)N: 40 $(bold)$(6)P: 20 $(bold)$(d)K: 50$()$(br)Garlic is a single block crop. Garlic seeds can be planted on farmland and will produce $(thing)Garlic$() and $(thing)Garlic Seeds$() as a product.",
       "title": "Часник"
     },
     {
@@ -1339,7 +1339,7 @@
     {
       "type": "patchouli:text",
       "anchor": "green_bean",
-      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): 2 - 35 °C$(br)$(bold)$(l:mechanics/hydration)Вологість$(): 38 - 100 %$(br)$(bold)Поживні речовини$(): азот$(br2)Горох — це культура, що піднімається заввишки у два блока. Насіння гороху можна висаджувати на грядках, воно виросте на два блоки заввишки, якщо є палиця, і дасть продукт $(thing)горох$() та $(thing)насіння гороху$().",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -4 - 19 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 25 - 90 %$(br)$(bold)$(b)N: +80 $(bold)$(6)P: 50 $(bold)$(d)K: 40$()$(br)Green Beans is a climbing two block tall crop. Green Bean seeds can be planted on farmland, will grow two blocks tall if a stick is present, and will produce $(thing)Green Beans$() and $(thing)Green Bean Seeds$() as a product.",
       "title": "Горох"
     },
     {
@@ -1519,7 +1519,7 @@
     {
       "type": "patchouli:text",
       "anchor": "potato",
-      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): -1 - 37 °C$(br)$(bold)$(l:mechanics/hydration)Вологість$(): 50 - 100 %$(br)$(bold)Поживні речовини$(): калій$(br2)Картопля є одноблочною рослиною. Насіння картоплі можна висаджувати на грядках, воно дасть продукт $(thing)картопля$() та $(thing)насіння картоплі$().",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -9 - 15 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 15 - 85 %$(br)$(bold)$(b)N: 40 $(bold)$(6)P: 20 $(bold)$(d)K: 60$()$(br)Potatoes are a single block crop. Potato seeds can be planted on farmland and will produce $(thing)Potatoes$() and $(thing)Potato Seeds$() as a product.",
       "title": "Картопля"
     },
     {
@@ -1650,7 +1650,7 @@
     {
       "type": "patchouli:text",
       "anchor": "pumpkin",
-      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): 0 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Вологість$(): 30 - 80 %$(br)$(bold)Поживні речовини$(): фосфор$(br2)Гарбуз є повзучою культурою. Насіння гарбуза можна висаджувати на грядці і отримати до двох блоків $(thing)гарбуза$() на землі поруч із грядкою. Якщо гарбузові блоки зібрати, а рослина знову дозріє, вона зможе виростити більше гарбузів. З гарбуза можна виготовити $(l:mechanics/lighting#jack_o_lanterns)світильник Джека$().",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -9 - 23 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 20 - 85 %$(br)$(bold)$(b)N: 40 $(bold)$(6)P: 30 $(bold)$(d)K: 60$()$(br)Pumpkins are a spreading crop. Pumpkin seeds can be planted on farmland and will place up to two $(thing)Pumpkin Blocks$() on the ground next to it while it is mature. If the pumpkin blocks are harvested, and the plant matures again, it can grow more pumpkins. Pumpkins can be made into $(l:mechanics/lighting#jack_o_lanterns)Jack 'o Lanterns$().",
       "title": "Гарбуз"
     },
     {
@@ -1822,7 +1822,7 @@
     {
       "type": "patchouli:text",
       "anchor": "melon",
-      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): 5 - 37 °C$(br)$(bold)$(l:mechanics/hydration)Вологість$(): 75 - 100 %$(br)$(bold)Поживні речовини$(): фосфор$(br2)Кавун є повзучою культурою. Насіння кавуна можна висаджувати на грядці і отримати до двох блоків $(thing)кавуна$() на землі поруч із грядкою. Якщо кавунові блоки зібрати, а рослина знову дозріє, вона зможе виростити більше кавунів.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 40 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 35 - 100 %$(br)$(bold)$(b)N: 30 $(bold)$(6)P: 40 $(bold)$(d)K: 65$()$(br)Melons are a spreading crop. Melon seeds can be planted on farmland and will place up to two $(thing)Melon Blocks$() on the ground next to it while it is mature. If the melon blocks are harvested, and the plant matures again, it can grow more melon.",
       "title": "Кавун"
     },
     {
@@ -1994,7 +1994,7 @@
     {
       "type": "patchouli:text",
       "anchor": "red_bell_pepper",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 16 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 25 - 60 %$(br)$(bold)Nutrient$(): Potassium$(br2)Red Bell Peppers are a pickable crop. When they are near mature, they can be harvested with $(item)$(k:key.use)$() to obtain Green Bell Peppers. Harvesting with $(item)$(k:key.use)$() allows the plant to grow more peppers in the future rather than destroying the plant.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 12 - 40 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 30 - 95 %$(br)$(bold)$(b)N: 30 $(bold)$(6)P: 40 $(bold)$(d)K: 50$()$(br)Red Bell Peppers are a pickable crop. When they are near mature, they can be harvested with $(item)$(k:key.use)$() to obtain Green Bell Peppers. Harvesting with $(item)$(k:key.use)$() allows the plant to grow more peppers in the future rather than destroying the plant.",
       "title": "Red Bell Peppers"
     },
     {
@@ -2125,7 +2125,7 @@
     {
       "type": "patchouli:text",
       "anchor": "yellow_bell_pepper",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 16 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 25 - 60 %$(br)$(bold)Nutrient$(): Potassium$(br2)Yellow Bell Peppers are a pickable crop. When they are near mature, they can be harvested with $(item)$(k:key.use)$() to obtain Green Bell Peppers. Harvesting with $(item)$(k:key.use)$() allows the plant to grow more peppers in the future rather than destroying the plant.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 12 - 40 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 30 - 95 %$(br)$(bold)$(b)N: 30 $(bold)$(6)P: 40 $(bold)$(d)K: 50$()$(br)Yellow Bell Peppers are a pickable crop. When they are near mature, they can be harvested with $(item)$(k:key.use)$() to obtain Green Bell Peppers. Harvesting with $(item)$(k:key.use)$() allows the plant to grow more peppers in the future rather than destroying the plant.",
       "title": "Yellow Bell Peppers"
     },
     {
@@ -2256,7 +2256,7 @@
     {
       "type": "patchouli:text",
       "anchor": "onion",
-      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): 0 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Вологість$(): 25 - 90 %$(br)$(bold)Поживні речовини$(): азот$(br2)Цибуля є одноблочною рослиною. Насіння цибулі можна висаджувати на грядках, воно дасть продукт $(thing)цибуля$() та $(thing)насіння цибулі$().",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -7 - 21 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 15 - 85 %$(br)$(bold)$(b)N: 40 $(bold)$(6)P: 40 $(bold)$(d)K: 40$()$(br)Onions are a single block crop. Onion seeds can be planted on farmland and will produce $(thing)Onions$() and $(thing)Onion Seeds$() as a product.",
       "title": "Цибуля"
     },
     {
@@ -2387,7 +2387,7 @@
     {
       "type": "patchouli:text",
       "anchor": "soybean",
-      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): 8 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Вологість$(): 40 - 100 %$(br)$(bold)Поживні речовини$(): азот$(br2)Соєві боби є одноблочною рослиною. Насіння соєвих бобів можна висаджувати на грядках, воно дасть продукт $(thing)соєві боби$() та $(thing)насіння соєвих бобів$().",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -9 - 15 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 25 - 90 %$(br)$(bold)$(b)N: +80 $(bold)$(6)P: 60 $(bold)$(d)K: 30$()$(br)Soybean is a single block crop. Soybean seeds can be planted on farmland and will produce $(thing)Soybean$() and $(thing)Soybean Seeds$() as a product.",
       "title": "Соєві боби"
     },
     {
@@ -2518,7 +2518,7 @@
     {
       "type": "patchouli:text",
       "anchor": "squash",
-      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): 5 - 33 °C$(br)$(bold)$(l:mechanics/hydration)Вологість$(): 23 - 95 %$(br)$(bold)Поживні речовини$(): калій$(br2)Кабачок є одноблочною рослиною. Насіння кабачка можна висаджувати на грядках, воно дасть продукт $(thing)кабачок$() та $(thing)насіння кабачка$().",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -9 - 19 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 15 - 85 %$(br)$(bold)$(b)N: 25 $(bold)$(6)P: 45 $(bold)$(d)K: 50$()$(br)Squash is a single block crop. Squash seeds can be planted on farmland and will produce $(thing)Squash$() and $(thing)Squash Seeds$() as a product.",
       "title": "Кабачок"
     },
     {
@@ -2666,7 +2666,7 @@
     {
       "type": "patchouli:text",
       "anchor": "sugarcane",
-      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): 12 - 38 °C$(br)$(bold)$(l:mechanics/hydration)Вологість$(): 40 - 100 %$(br)$(bold)Поживні речовини$(): калій$(br2)Цукрова тростина — це культура заввишки два блоки. Насіння цукрової тростини можна висаджувати на грядці, воно виросте на два блоки заввишки та дасть продукт $(thing)цукрова тростина$() та $(thing)насіння цукрової тростини$(). З цукрової тростини можна виготовити $(thing)цукор$().",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 17 - 40 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 25 - 100 %$(br)$(bold)$(b)N: 50 $(bold)$(6)P: 50 $(bold)$(d)K: 50$()$(br)Sugarcane is a two block tall crop. Sugarcane seeds can be planted on farmland, will grow two blocks tall, and will produce $(thing)Sugarcane$() and $(thing)Sugarcane Seeds$() as a product. Sugarcane can be used to make $(thing)Sugar$().",
       "title": "Цукрова тростина"
     },
     {
@@ -2846,7 +2846,7 @@
     {
       "type": "patchouli:text",
       "anchor": "tomatoes",
-      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): 0 - 36 °C$(br)$(bold)$(l:mechanics/hydration)Вологість$(): 30 - 95 %$(br)$(bold)Поживні речовини$(): калій$(br2)Помідори - це культура, що росте заввишки у два блоки. Насіння помідора можна висаджувати на грядці, воно виросте на два блоки заввишки, якщо є палиця, і дасть продукт $(thing)помідор$() та $(thing)насіння помідора$().",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 1 - 40 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 20 - 85 %$(br)$(bold)$(b)N: 35 $(bold)$(6)P: 45 $(bold)$(d)K: 50$()$(br)Tomatoes are a climbing two block tall crop. Tomato seeds can be planted on farmland, will grow two blocks tall if a stick is present, and will produce $(thing)Tomatoes$() and $(thing)Tomato Seeds$() as a product.",
       "title": "Помідори"
     },
     {
@@ -3026,7 +3026,7 @@
     {
       "type": "patchouli:text",
       "anchor": "jute",
-      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): 5 - 37 °C$(br)$(bold)$(l:mechanics/hydration)Вологість$(): 25 - 100 %$(br)$(bold)Поживні речовини$(): калій$(br2)Джут росте у два блоки заввишки. Насіння джуту можна висаджувати на грядці, воно виросте на два блоки заввишки та дасть продукт $(thing)джут$() та $(thing)насіння джуту$().",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 1 - 19 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 15 - 90 %$(br)$(bold)$(b)N: 60 $(bold)$(6)P: 40 $(bold)$(d)K: +40$()$(br)Jute is a two block tall crop. Jute seeds can be planted on farmland, will grow two blocks tall, and will produce $(thing)Jute$() and $(thing)Jute Seeds$() as a product.",
       "title": "Джут"
     },
     {
@@ -3164,7 +3164,7 @@
     {
       "type": "patchouli:text",
       "anchor": "papyrus",
-      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): 19 - 37 °C$(br)$(bold)$(l:mechanics/hydration)Вологість$(): 70 - 100 %$(br)$(bold)Поживні речовини$(): калій$(br2)Папірус росте у два блоки заввишки. Насіння папірусу можна висаджувати на грядці, воно виросте на два блоки заввишки та дасть продукт $(l:mechanics/papermaking)папірус$() та $(thing)насіння папірусу$().",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 12 - 40 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 50 - 100 %$(br)$(bold)$(b)N: 60 $(bold)$(6)P: +40 $(bold)$(d)K: 40$()$(br)Papyrus is a two block tall crop. Papyrus seeds can be planted on farmland, will grow two blocks tall, and will produce $(l:mechanics/papermaking)Papyrus$() and $(thing)Papyrus Seeds$() as a product.",
       "title": "Папірус"
     },
     {

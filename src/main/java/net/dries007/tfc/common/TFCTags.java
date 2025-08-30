@@ -176,6 +176,12 @@ public class TFCTags
         public static final TagKey<Block> KAOLIN_CLAYS = tag("clays/kaolin");
         public static final TagKey<Block> INCREASES_SOIL_HYDRATION = tag("increases_soil_hydration");
         public static final TagKey<Block> DECREASES_SOIL_HYDRATION = tag("decreases_soil_hydration");
+        /** Farmland blocks by nutrient bonus */
+        public static final TagKey<Block> VERY_RICH_FARMLAND = tag("very_rich_farmland");
+        public static final TagKey<Block> RICH_FARMLAND = tag("rich_farmland");
+        public static final TagKey<Block> NORMAL_FARMLAND = tag("normal_farmland");
+        public static final TagKey<Block> POOR_FARMLAND = tag("poor_farmland");
+        public static final TagKey<Block> VERY_POOR_FARMLAND = tag("very_poor_farmland");
 
         /**
          * These are all used for various types of plants, as the block that they grow on. They can also be used during world generation,

@@ -1,5 +1,7 @@
 {
   "values": [
+    "tfc:seeds/green_bean",
+    "tfc:seeds/soybean",
     "tfc:seeds/barley",
     "tfc:seeds/oat",
     "tfc:seeds/rye",
@@ -10,18 +12,16 @@
     "tfc:seeds/cabbage",
     "tfc:seeds/carrot",
     "tfc:seeds/garlic",
-    "tfc:seeds/green_bean",
     "tfc:seeds/potato",
     "tfc:seeds/onion",
-    "tfc:seeds/soybean",
     "tfc:seeds/squash",
-    "tfc:seeds/sugarcane",
     "tfc:seeds/tomato",
-    "tfc:seeds/jute",
-    "tfc:seeds/papyrus",
+    "tfc:seeds/red_bell_pepper",
+    "tfc:seeds/yellow_bell_pepper",
     "tfc:seeds/pumpkin",
     "tfc:seeds/melon",
-    "tfc:seeds/red_bell_pepper",
-    "tfc:seeds/yellow_bell_pepper"
+    "tfc:seeds/jute",
+    "tfc:seeds/sugarcane",
+    "tfc:seeds/papyrus"
   ]
 }

@@ -579,6 +579,19 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(FARMLANDS)
             .add(Blocks.FARMLAND)
             .add(TFCBlocks.SOIL.get(SoilBlockType.FARMLAND));
+        tag(VERY_RICH_FARMLAND)
+            .add(TFCBlocks.SOIL.get(SoilBlockType.FARMLAND).get(SoilBlockType.Variant.MOLLISOL));
+        tag(RICH_FARMLAND)
+            .add(TFCBlocks.SOIL.get(SoilBlockType.FARMLAND).get(SoilBlockType.Variant.ANDISOL))
+            .add(TFCBlocks.SOIL.get(SoilBlockType.FARMLAND).get(SoilBlockType.Variant.FLUVISOL))
+            .add(TFCBlocks.SOIL.get(SoilBlockType.FARMLAND).get(SoilBlockType.Variant.ALFISOL));
+        tag(NORMAL_FARMLAND)
+            .add(TFCBlocks.SOIL.get(SoilBlockType.FARMLAND).get(SoilBlockType.Variant.MOLLISOL));
+        tag(POOR_FARMLAND)
+            .add(TFCBlocks.SOIL.get(SoilBlockType.FARMLAND).get(SoilBlockType.Variant.PODZOL))
+            .add(TFCBlocks.SOIL.get(SoilBlockType.FARMLAND).get(SoilBlockType.Variant.ARIDISOL));
+        tag(VERY_POOR_FARMLAND)
+            .add(TFCBlocks.SOIL.get(SoilBlockType.FARMLAND).get(SoilBlockType.Variant.OXISOL));
         tag(PATHS)
             .add(Blocks.DIRT_PATH)
             .add(TFCBlocks.SOIL.get(SoilBlockType.GRASS_PATH));

@@ -1469,7 +1469,21 @@ def make_crop_table(start_index: int, end_index: int) -> List[str | Dict[str, An
 
 def detail_crop(crop: str) -> str:
     data = CROPS[crop]
-    return '$(bold)$(l:the_world/climate#temperature)Temperature$(): %d - %d °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): %d - %d %%$(br)$(bold)Nutrient$(): %s$(br2)' % (data.min_temp, data.max_temp, data.min_hydration, data.max_hydration, data.nutrient.title())
+    string= '$(bold)$(l:the_world/climate#temperature)Temperature$(): %d - %d °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): %d - %d %%$(br)' % (data.min_temp, data.max_temp, data.min_hydration, data.max_hydration)
+    if data.nitrogen < 0:
+        n = '$(bold)$(b)N: +%s ' % -data.nitrogen
+    else:
+        n = '$(bold)$(b)N: %s ' % data.nitrogen
+    if data.phosphorous < 0:
+        p = '$(bold)$(6)P: +%s ' % -data.phosphorous
+    else:
+        p = '$(bold)$(6)P: %s ' % data.phosphorous
+    if data.potassium <0:
+        k = '$(bold)$(d)K: +%s$()$(br)' % -data.potassium
+    else:
+        k = '$(bold)$(d)K: %s$()$(br)' % data.potassium
+
+    return string + n + p + k
 
 
 def fruit_tree_text(fruit: str, title: str, text_contents: str) -> Page:

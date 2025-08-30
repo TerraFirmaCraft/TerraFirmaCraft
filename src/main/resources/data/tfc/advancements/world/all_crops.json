@@ -2,6 +2,30 @@
   "__comment__": "This file was automatically created by mcresources",
   "parent": "tfc:world/seeds",
   "criteria": {
+    "green_bean": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:seeds/green_bean"
+            ]
+          }
+        ]
+      }
+    },
+    "soybean": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:seeds/soybean"
+            ]
+          }
+        ]
+      }
+    },
     "barley": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
@@ -122,13 +146,13 @@
         ]
       }
     },
-    "green_bean": {
+    "onion": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "tfc:seeds/green_bean"
+              "tfc:seeds/onion"
             ]
           }
         ]
@@ -146,30 +170,6 @@
         ]
       }
     },
-    "onion": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "tfc:seeds/onion"
-            ]
-          }
-        ]
-      }
-    },
-    "soybean": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "tfc:seeds/soybean"
-            ]
-          }
-        ]
-      }
-    },
     "squash": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
@@ -177,18 +177,6 @@
           {
             "items": [
               "tfc:seeds/squash"
-            ]
-          }
-        ]
-      }
-    },
-    "sugarcane": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "tfc:seeds/sugarcane"
             ]
           }
         ]
@@ -206,25 +194,25 @@
         ]
       }
     },
-    "jute": {
+    "red_bell_pepper": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "tfc:seeds/jute"
+              "tfc:seeds/red_bell_pepper"
             ]
           }
         ]
       }
     },
-    "papyrus": {
+    "yellow_bell_pepper": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "tfc:seeds/papyrus"
+              "tfc:seeds/yellow_bell_pepper"
             ]
           }
         ]
@@ -254,25 +242,37 @@
         ]
       }
     },
-    "red_bell_pepper": {
+    "jute": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "tfc:seeds/red_bell_pepper"
+              "tfc:seeds/jute"
             ]
           }
         ]
       }
     },
-    "yellow_bell_pepper": {
+    "papyrus": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "tfc:seeds/yellow_bell_pepper"
+              "tfc:seeds/papyrus"
+            ]
+          }
+        ]
+      }
+    },
+    "sugarcane": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:seeds/sugarcane"
             ]
           }
         ]
@@ -296,6 +296,12 @@
     "background": "tfc:textures/block/mud/fluvisol.png"
   },
   "requirements": [
+    [
+      "green_bean"
+    ],
+    [
+      "soybean"
+    ],
     [
       "barley"
     ],
@@ -327,31 +333,22 @@
       "garlic"
     ],
     [
-      "green_bean"
+      "onion"
     ],
     [
       "potato"
     ],
     [
-      "onion"
-    ],
-    [
-      "soybean"
-    ],
-    [
       "squash"
-    ],
-    [
-      "sugarcane"
     ],
     [
       "tomato"
     ],
     [
-      "jute"
+      "red_bell_pepper"
     ],
     [
-      "papyrus"
+      "yellow_bell_pepper"
     ],
     [
       "pumpkin"
@@ -360,10 +357,13 @@
       "melon"
     ],
     [
-      "red_bell_pepper"
+      "jute"
     ],
     [
-      "yellow_bell_pepper"
+      "papyrus"
+    ],
+    [
+      "sugarcane"
     ]
   ]
 }

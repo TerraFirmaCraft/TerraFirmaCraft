@@ -18,6 +18,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.CropBlockEntity;
 import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
 import net.dries007.tfc.common.blockentities.IFarmland;
@@ -176,10 +177,11 @@ public final class CropHelpers
         if (level.getBlockEntity(sourcePos) instanceof IFarmland farmland)
         {
             final float percentOfNutrientsSatisfied = nutrientsRequired > 0 ? nutrientsConsumed / nutrientsRequired : 0f;
+            final float bonus = getSoilModifier(level.getBlockState(sourcePos));
 
-            farmland.produceNutrients(nForGrowth, FarmlandBlockEntity.NutrientType.NITROGEN, percentOfNutrientsSatisfied, growthDelta);
-            farmland.produceNutrients(pForGrowth, FarmlandBlockEntity.NutrientType.PHOSPHOROUS, percentOfNutrientsSatisfied, growthDelta);
-            farmland.produceNutrients(kForGrowth, FarmlandBlockEntity.NutrientType.POTASSIUM, percentOfNutrientsSatisfied, growthDelta);
+            farmland.produceNutrients(nForGrowth * bonus, FarmlandBlockEntity.NutrientType.NITROGEN, percentOfNutrientsSatisfied, growthDelta);
+            farmland.produceNutrients(pForGrowth * bonus, FarmlandBlockEntity.NutrientType.PHOSPHOROUS, percentOfNutrientsSatisfied, growthDelta);
+            farmland.produceNutrients(kForGrowth * bonus, FarmlandBlockEntity.NutrientType.POTASSIUM, percentOfNutrientsSatisfied, growthDelta);
         }
 
         // Calculate yield, which depends on the nutrient satisfaction, which is a measure of nutrient consumption over the growth time.
@@ -228,12 +230,13 @@ public final class CropHelpers
         {
             if (!level.isClientSide())
             {
+                final float bonus = getSoilModifier(level.getBlockState(farmlandPos));
                 int repeat = -1;
                 if (player.isShiftKeyDown())
                 {
-                    repeat = minAmountRequiredToNextFillBar(farmland, fertilizer, FarmlandBlockEntity.NutrientType.NITROGEN, repeat);
-                    repeat = minAmountRequiredToNextFillBar(farmland, fertilizer, FarmlandBlockEntity.NutrientType.POTASSIUM, repeat);
-                    repeat = minAmountRequiredToNextFillBar(farmland, fertilizer, FarmlandBlockEntity.NutrientType.PHOSPHOROUS, repeat);
+                    repeat = minAmountRequiredToNextFillBar(farmland, fertilizer, FarmlandBlockEntity.NutrientType.NITROGEN, repeat, bonus);
+                    repeat = minAmountRequiredToNextFillBar(farmland, fertilizer, FarmlandBlockEntity.NutrientType.POTASSIUM, repeat, bonus);
+                    repeat = minAmountRequiredToNextFillBar(farmland, fertilizer, FarmlandBlockEntity.NutrientType.PHOSPHOROUS, repeat, bonus);
                     repeat = Math.min(repeat, stack.getCount());
                 }
                 if (repeat == -1)
@@ -248,7 +251,7 @@ public final class CropHelpers
                     return false;
                 }
 
-                farmland.addNutrients(fertilizer, repeat);
+                farmland.addNutrients(fertilizer, repeat * bonus);
                 if (!player.isCreative())
                 {
                     stack.shrink(repeat);
@@ -268,13 +271,43 @@ public final class CropHelpers
     }
 
     /**
-     * We do this instead of looping because then we only call `addNutrients` once and reduce network load, since that will cause a sync.
+     * Get fertilizer bonus based on soil type
      */
+    public static float getSoilModifier(BlockState state)
+    {
+        if(state.is(TFCTags.Blocks.VERY_RICH_FARMLAND))
+        {
+            return 1.2f;
+        }
+        if(state.is(TFCTags.Blocks.RICH_FARMLAND))
+        {
+            return 1.1f;
+        }
+        if(state.is(TFCTags.Blocks.POOR_FARMLAND))
+        {
+            return 0.9f;
+        }
+        if(state.is(TFCTags.Blocks.VERY_POOR_FARMLAND))
+        {
+            return 0.8f;
+        }
+        return 1.0f;
+    }
+
     private static int minAmountRequiredToNextFillBar(IFarmland farmland, Fertilizer fertilizer, FarmlandBlockEntity.NutrientType type, int prevValue)
     {
-        if (fertilizer.getNutrient(type) > 0 && farmland.getNutrient(type) < 1)
+        return minAmountRequiredToNextFillBar(farmland, fertilizer, type, prevValue, 1f);
+    }
+
+    /**
+     * We do this instead of looping because then we only call `addNutrients` once and reduce network load, since that will cause a sync.
+     */
+    private static int minAmountRequiredToNextFillBar(IFarmland farmland, Fertilizer fertilizer, FarmlandBlockEntity.NutrientType type, int prevValue, float bonus)
+    {
+        final float amount = fertilizer.getNutrient(type) * bonus;
+        if (amount > 0 && farmland.getNutrient(type) < 1)
         {
-            final int requiredValue = Mth.ceil((1 - farmland.getNutrient(type)) / fertilizer.getNutrient(type));
+            final int requiredValue = Mth.ceil((1 - farmland.getNutrient(type)) / amount);
             if (prevValue == -1 || requiredValue < prevValue)
             {
                 return requiredValue;
