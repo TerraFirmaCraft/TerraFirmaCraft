@@ -46,7 +46,7 @@ public final class CropHelpers
     public static final float NUTRIENT_GROWTH_FACTOR = 0.5f;
     public static final float GROWTH_LIMIT = 1f;
     public static final float EXPIRY_LIMIT = 2f;
-    public static final float YIELD_MIN = 0.0f;  // Reduced to zero to account for nutrients being available by crop rotation
+    public static final float YIELD_MIN = 0.2f;
     public static final float YIELD_LIMIT = 1f;
 
     public static boolean lightValid(Level level, BlockPos pos)
