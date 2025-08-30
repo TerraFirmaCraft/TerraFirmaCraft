@@ -407,6 +407,7 @@ public final class TFCCreativeTabs
         out.accept(TFCItems.JUTE);
         out.accept(TFCItems.JUTE_FIBER);
         out.accept(TFCItems.OLIVE_PASTE);
+        out.accept(TFCItems.CANOLA_PASTE);
         out.accept(TFCItems.JUTE_NET);
         out.accept(TFCItems.HANDSTONE);
         out.accept(TFCItems.MORTAR);

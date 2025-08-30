@@ -231,6 +231,7 @@ public final class TFCItems
     public static final ItemId HANDSTONE = register("handstone", () -> new Item(new Properties().durability(250)));
     public static final ItemId MORTAR = register("mortar");
     public static final ItemId OLIVE_PASTE = register("olive_paste");
+    public static final ItemId CANOLA_PASTE = register("canola_paste");
     public static final ItemId PAPYRUS = register("papyrus");
     public static final ItemId PAPYRUS_STRIP = register("papyrus_strip");
     public static final ItemId PURE_NITROGEN = register("pure_nitrogen");

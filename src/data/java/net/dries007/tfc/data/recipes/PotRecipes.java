@@ -56,6 +56,10 @@ public interface PotRecipes extends Recipes
             fluidOf(SimpleFluid.OLIVE_OIL_WATER),
             hours(2), 300f, true);
         pot(
+            TFCItems.CANOLA_PASTE, 5,
+            fluidOf(SimpleFluid.CANOLA_OIL_WATER),
+            hours(2), 300f, true);
+        pot(
             TFCItems.BLUBBER, 5,
             fluidOf(SimpleFluid.TALLOW),
             hours(2), 600f, true);

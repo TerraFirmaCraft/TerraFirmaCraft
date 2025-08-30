@@ -29,17 +29,26 @@
     },
     {
       "type": "patchouli:text",
-      "text": "All crops need to be planted on farmland in order to grow. Some crops have additional requirements such as being waterlogged or requiring a stick to grow on.$(br2)Crops do not need $(thing)nutrients$() to grow, but they certainly help. There are three nutrients: $(b)Nitrogen$(), $(6)Phosphorous$(), and $(d)Potassium$(). Each crop has a favorite nutrient.",
+      "text": "All crops need to be planted on $(l:mechanics/farmland)farmland $()in order to grow. Some crops have additional requirements such as being waterlogged or requiring a stick to grow on.$(br2)Crops do not need $(thing)nutrients$() to grow, but they certainly help. There are three nutrients: $(b)Nitrogen$(), $(6)Phosphorous$(), and $(d)Potassium$(). Each crop may consume, or replenish, and combination of these three nutrients.",
       "title": "Growing Crops"
     },
     {
       "type": "patchouli:text",
-      "text": "Consuming its favorite nutrient causes a crop to grow faster, and improves the yield of the crop at harvest time. That means that crops that consumed more nutrients drop more food when broken! Consuming a nutrient also has the effect of replenishing the other nutrients around it a small amount.$(br2)The next several pages list all the crops present in TFC"
+      "text": "Consuming nutrients causes a crop to grow faster, and improves the yield of the crop at harvest time. That means that crops that consumed more nutrients drop more food when broken! Consuming nutrients also increases the rate at which the crop replenishes other nutrients."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "While each individual crop may have its own balance of fertilizer needs, most crops fit into four general categories: cereals, legumes, vegetables, and cover crops.$(br2)$(bold)Cereals$() consume large amounts of $(b)Nitrogen$(), but replenish $(6)Phosphorous$() and $(d)Potassium$(). They produce food rich in Grain",
+      "title": "Crop Categories"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Legumes$() produce large amounts of $(b)Nitrogen$(), and consume $(b)Nitrogen$() and $(d)Potassium$(). They produce foods rich in Vegetable and Protein.$(br2)$(bold)Vegetables$() consume all three nutrients to produce foods rich in Vegetable.$(br2)$(bold)Cover$() crops produce all three nutrients, but their produce has only limited uses."
     },
     {
       "type": "patchouli:text",
       "anchor": "barley",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -9 - 17 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 10 - 70 %$(br)$(bold)$(b)N: 75 $(bold)$(6)P: +20 $(bold)$(d)K: +20$()$(br)Barley is a single block crop. Barley seeds can be planted on farmland and will produce $(thing)Barley$() and $(thing)Barley Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -9 - 17 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 10 - 70 %$(br)$(bold)Category$(): Cereal$(br)$(br)$(bold)$(b)N: 75 $(bold)$(6)P: +20 $(bold)$(d)K: +20$()$(br)Barley is a single block crop. Barley seeds can be planted on farmland and will produce $(thing)Barley$() and $(thing)Barley Seeds$() as a product.",
       "title": "大麦"
     },
     {
@@ -187,7 +196,7 @@
     {
       "type": "patchouli:text",
       "anchor": "oat",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -9 - 15 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 25 - 85 %$(br)$(bold)$(b)N: 100 $(bold)$(6)P: +35 $(bold)$(d)K: +25$()$(br)Oat is a single block crop. Oat seeds can be planted on farmland and will produce $(thing)Oat$() and $(thing)Oat Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -9 - 15 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 25 - 85 %$(br)$(bold)Category$(): Cereal$(br)$(br)$(bold)$(b)N: 100 $(bold)$(6)P: +35 $(bold)$(d)K: +25$()$(br)Oat is a single block crop. Oat seeds can be planted on farmland and will produce $(thing)Oat$() and $(thing)Oat Seeds$() as a product.",
       "title": "燕麦"
     },
     {
@@ -335,7 +344,7 @@
     {
       "type": "patchouli:text",
       "anchor": "rye",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -9 - 8 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 15 - 80 %$(br)$(bold)$(b)N: 100 $(bold)$(6)P: +20 $(bold)$(d)K: +40$()$(br)Rye is a single block crop. Rye seeds can be planted on farmland and will produce $(thing)Rye$() and $(thing)Rye Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -9 - 8 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 15 - 80 %$(br)$(bold)Category$(): Cereal$(br)$(br)$(bold)$(b)N: 100 $(bold)$(6)P: +20 $(bold)$(d)K: +40$()$(br)Rye is a single block crop. Rye seeds can be planted on farmland and will produce $(thing)Rye$() and $(thing)Rye Seeds$() as a product.",
       "title": "黑麦"
     },
     {
@@ -483,7 +492,7 @@
     {
       "type": "patchouli:text",
       "anchor": "maize",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -9 - 23 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 50 - 100 %$(br)$(bold)$(b)N: 90 $(bold)$(6)P: +25 $(bold)$(d)K: +25$()$(br)Maize is a two block tall crop. Maize seeds can be planted on farmland, will grow two blocks tall, and will produce $(thing)Maize$() and $(thing)Maize Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -9 - 23 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 50 - 100 %$(br)$(bold)Category$(): Cereal$(br)$(br)$(bold)$(b)N: 90 $(bold)$(6)P: +25 $(bold)$(d)K: +25$()$(br)Maize is a two block tall crop. Maize seeds can be planted on farmland, will grow two blocks tall, and will produce $(thing)Maize$() and $(thing)Maize Seeds$() as a product.",
       "title": "玉米"
     },
     {
@@ -508,7 +517,7 @@
           "mapping": {
             "X": "minecraft:air",
             "Y": "tfc:crop/maize[age=0,part=bottom]",
-            "Z": "tfc:farmland/entisol"
+            "Z": "tfc:farmland/aridisol"
           }
         },
         {
@@ -529,7 +538,7 @@
           "mapping": {
             "X": "minecraft:air",
             "Y": "tfc:crop/maize[age=1,part=bottom]",
-            "Z": "tfc:farmland/entisol"
+            "Z": "tfc:farmland/aridisol"
           }
         },
         {
@@ -550,7 +559,7 @@
           "mapping": {
             "X": "minecraft:air",
             "Y": "tfc:crop/maize[age=2,part=bottom]",
-            "Z": "tfc:farmland/entisol"
+            "Z": "tfc:farmland/aridisol"
           }
         },
         {
@@ -571,7 +580,7 @@
           "mapping": {
             "X": "tfc:crop/maize[age=3,part=top]",
             "Y": "tfc:crop/maize[age=3,part=bottom]",
-            "Z": "tfc:farmland/entisol"
+            "Z": "tfc:farmland/aridisol"
           }
         },
         {
@@ -592,7 +601,7 @@
           "mapping": {
             "X": "tfc:crop/maize[age=4,part=top]",
             "Y": "tfc:crop/maize[age=4,part=bottom]",
-            "Z": "tfc:farmland/entisol"
+            "Z": "tfc:farmland/aridisol"
           }
         },
         {
@@ -613,7 +622,7 @@
           "mapping": {
             "X": "tfc:crop/maize[age=5,part=top]",
             "Y": "tfc:crop/maize[age=5,part=bottom]",
-            "Z": "tfc:farmland/entisol"
+            "Z": "tfc:farmland/aridisol"
           }
         }
       ]
@@ -621,7 +630,7 @@
     {
       "type": "patchouli:text",
       "anchor": "wheat",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -9 - 15 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 15 - 85 %$(br)$(bold)$(b)N: 100 $(bold)$(6)P: +30 $(bold)$(d)K: +30$()$(br)Wheat is a single block crop. Wheat seeds can be planted on farmland and will produce $(thing)Wheat$() and $(thing)Wheat Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -9 - 15 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 15 - 85 %$(br)$(bold)Category$(): Cereal$(br)$(br)$(bold)$(b)N: 100 $(bold)$(6)P: +30 $(bold)$(d)K: +30$()$(br)Wheat is a single block crop. Wheat seeds can be planted on farmland and will produce $(thing)Wheat$() and $(thing)Wheat Seeds$() as a product.",
       "title": "小麦"
     },
     {
@@ -642,7 +651,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/wheat[age=0]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/mollisol"
           }
         },
         {
@@ -659,7 +668,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/wheat[age=1]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/mollisol"
           }
         },
         {
@@ -676,7 +685,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/wheat[age=2]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/mollisol"
           }
         },
         {
@@ -693,7 +702,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/wheat[age=3]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/mollisol"
           }
         },
         {
@@ -710,7 +719,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/wheat[age=4]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/mollisol"
           }
         },
         {
@@ -727,7 +736,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/wheat[age=5]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/mollisol"
           }
         },
         {
@@ -744,7 +753,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/wheat[age=6]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/mollisol"
           }
         },
         {
@@ -761,7 +770,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/wheat[age=7]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/mollisol"
           }
         }
       ]
@@ -769,7 +778,7 @@
     {
       "type": "patchouli:text",
       "anchor": "rice",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 8 - 40 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 35 - 100 %$(br)$(bold)$(b)N: 40 $(bold)$(6)P: 30 $(bold)$(d)K: 30$()$(br)Rice is a single block crop. Rice must be grown underwater - it must be planted on farmland, in freshwater that is a single block deep. It will produce $(thing)Rice$() and $(thing)Rice Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 8 - 40 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 35 - 100 %$(br)$(bold)Category$(): Cereal$(br)$(br)$(bold)$(b)N: 40 $(bold)$(6)P: 30 $(bold)$(d)K: 30$()$(br)Rice is a single block crop. Rice must be grown underwater - it must be planted on farmland, in freshwater that is a single block deep. It will produce $(thing)Rice$() and $(thing)Rice Seeds$() as a product. Unlike most cereal grains, rice requires an even balance of nutrients.",
       "title": "水稻"
     },
     {
@@ -790,7 +799,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/rice[age=0,fluid=water]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/fluvisol"
           }
         },
         {
@@ -807,7 +816,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/rice[age=1,fluid=water]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/fluvisol"
           }
         },
         {
@@ -824,7 +833,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/rice[age=2,fluid=water]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/fluvisol"
           }
         },
         {
@@ -841,7 +850,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/rice[age=3,fluid=water]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/fluvisol"
           }
         },
         {
@@ -858,7 +867,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/rice[age=4,fluid=water]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/fluvisol"
           }
         },
         {
@@ -875,7 +884,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/rice[age=5,fluid=water]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/fluvisol"
           }
         },
         {
@@ -892,7 +901,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/rice[age=6,fluid=water]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/fluvisol"
           }
         },
         {
@@ -909,16 +918,16 @@
           ],
           "mapping": {
             "X": "tfc:crop/rice[age=7,fluid=water]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/fluvisol"
           }
         }
       ]
     },
     {
       "type": "patchouli:text",
-      "anchor": "beet",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -13 - 23 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 10 - 70 %$(br)$(bold)$(b)N: 40 $(bold)$(6)P: 30 $(bold)$(d)K: 50$()$(br)Beets are a a single block crop. Beet seeds can be planted on farmland and will produce $(thing)Beet$() and $(thing)Beet Seeds$() as a product.",
-      "title": "甜菜"
+      "anchor": "cassava",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 10 - 40 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 45 - 100 %$(br)$(bold)Category$(): Legume$(br)$(br)$(bold)$(b)N: +50 $(bold)$(6)P: 40 $(bold)$(d)K: 20$()$(br)Cassava is a single block crop. Soybean seeds can be planted on farmland and will produce $(thing)Cassava$() and $(thing)Cassava Seeds$() as a product.",
+      "title": "Cassava"
     },
     {
       "type": "tfc:multimultiblock",
@@ -937,8 +946,8 @@
             ]
           ],
           "mapping": {
-            "X": "tfc:crop/beet[age=0]",
-            "Y": "tfc:farmland/entisol"
+            "X": "tfc:crop/cassava[age=0]",
+            "Y": "tfc:farmland/oxisol"
           }
         },
         {
@@ -954,8 +963,8 @@
             ]
           ],
           "mapping": {
-            "X": "tfc:crop/beet[age=1]",
-            "Y": "tfc:farmland/entisol"
+            "X": "tfc:crop/cassava[age=1]",
+            "Y": "tfc:farmland/oxisol"
           }
         },
         {
@@ -971,8 +980,8 @@
             ]
           ],
           "mapping": {
-            "X": "tfc:crop/beet[age=2]",
-            "Y": "tfc:farmland/entisol"
+            "X": "tfc:crop/cassava[age=2]",
+            "Y": "tfc:farmland/oxisol"
           }
         },
         {
@@ -988,8 +997,8 @@
             ]
           ],
           "mapping": {
-            "X": "tfc:crop/beet[age=3]",
-            "Y": "tfc:farmland/entisol"
+            "X": "tfc:crop/cassava[age=3]",
+            "Y": "tfc:farmland/oxisol"
           }
         },
         {
@@ -1005,8 +1014,8 @@
             ]
           ],
           "mapping": {
-            "X": "tfc:crop/beet[age=4]",
-            "Y": "tfc:farmland/entisol"
+            "X": "tfc:crop/cassava[age=4]",
+            "Y": "tfc:farmland/oxisol"
           }
         },
         {
@@ -1022,316 +1031,8 @@
             ]
           ],
           "mapping": {
-            "X": "tfc:crop/beet[age=5]",
-            "Y": "tfc:farmland/entisol"
-          }
-        }
-      ]
-    },
-    {
-      "type": "patchouli:text",
-      "anchor": "cabbage",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -13 - 23 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 10 - 65 %$(br)$(bold)$(b)N: 50 $(bold)$(6)P: 20 $(bold)$(d)K: 40$()$(br)Cabbage is a single block crop. Cabbage seeds can be planted on farmland and will produce $(thing)Cabbage$() and $(thing)Cabbage Seeds$() as a product.",
-      "title": "卷心菜"
-    },
-    {
-      "type": "tfc:multimultiblock",
-      "text": "",
-      "multiblocks": [
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "Y"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:crop/cabbage[age=0]",
-            "Y": "tfc:farmland/entisol"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "Y"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:crop/cabbage[age=1]",
-            "Y": "tfc:farmland/entisol"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "Y"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:crop/cabbage[age=2]",
-            "Y": "tfc:farmland/entisol"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "Y"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:crop/cabbage[age=3]",
-            "Y": "tfc:farmland/entisol"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "Y"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:crop/cabbage[age=4]",
-            "Y": "tfc:farmland/entisol"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "Y"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:crop/cabbage[age=5]",
-            "Y": "tfc:farmland/entisol"
-          }
-        }
-      ]
-    },
-    {
-      "type": "patchouli:text",
-      "anchor": "carrot",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -13 - 23 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 15 - 85 %$(br)$(bold)$(b)N: 50 $(bold)$(6)P: 30 $(bold)$(d)K: 40$()$(br)Carrot is a single block crop. Carrot seeds can be planted on farmland and will produce $(thing)Carrot$() and $(thing)Carrot Seeds$() as a product.",
-      "title": "胡萝卜"
-    },
-    {
-      "type": "tfc:multimultiblock",
-      "text": "",
-      "multiblocks": [
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "Y"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:crop/carrot[age=0]",
-            "Y": "tfc:farmland/entisol"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "Y"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:crop/carrot[age=1]",
-            "Y": "tfc:farmland/entisol"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "Y"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:crop/carrot[age=2]",
-            "Y": "tfc:farmland/entisol"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "Y"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:crop/carrot[age=3]",
-            "Y": "tfc:farmland/entisol"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "Y"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:crop/carrot[age=4]",
-            "Y": "tfc:farmland/entisol"
-          }
-        }
-      ]
-    },
-    {
-      "type": "patchouli:text",
-      "anchor": "garlic",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -5 - 15 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 10 - 70 %$(br)$(bold)$(b)N: 40 $(bold)$(6)P: 20 $(bold)$(d)K: 50$()$(br)Garlic is a single block crop. Garlic seeds can be planted on farmland and will produce $(thing)Garlic$() and $(thing)Garlic Seeds$() as a product.",
-      "title": "大蒜"
-    },
-    {
-      "type": "tfc:multimultiblock",
-      "text": "",
-      "multiblocks": [
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "Y"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:crop/garlic[age=0]",
-            "Y": "tfc:farmland/entisol"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "Y"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:crop/garlic[age=1]",
-            "Y": "tfc:farmland/entisol"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "Y"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:crop/garlic[age=2]",
-            "Y": "tfc:farmland/entisol"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "Y"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:crop/garlic[age=3]",
-            "Y": "tfc:farmland/entisol"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "Y"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:crop/garlic[age=4]",
-            "Y": "tfc:farmland/entisol"
+            "X": "tfc:crop/cassava[age=5]",
+            "Y": "tfc:farmland/oxisol"
           }
         }
       ]
@@ -1339,7 +1040,7 @@
     {
       "type": "patchouli:text",
       "anchor": "green_bean",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -4 - 19 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 25 - 90 %$(br)$(bold)$(b)N: +80 $(bold)$(6)P: 50 $(bold)$(d)K: 40$()$(br)Green Beans is a climbing two block tall crop. Green Bean seeds can be planted on farmland, will grow two blocks tall if a stick is present, and will produce $(thing)Green Beans$() and $(thing)Green Bean Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -4 - 19 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 25 - 90 %$(br)$(bold)Category$(): Legume$(br)$(br)$(bold)$(b)N: +80 $(bold)$(6)P: 50 $(bold)$(d)K: 40$()$(br)Green Beans is a climbing two block tall crop. Green Bean seeds can be planted on farmland, will grow two blocks tall if a stick is present, and will produce $(thing)Green Beans$() and $(thing)Green Bean Seeds$() as a product.",
       "title": "青豆"
     },
     {
@@ -1518,8 +1219,789 @@
     },
     {
       "type": "patchouli:text",
+      "anchor": "lentil",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -7 - 19 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 15 - 50 %$(br)$(bold)Category$(): Legume$(br)$(br)$(bold)$(b)N: +80 $(bold)$(6)P: 20 $(bold)$(d)K: 20$()$(br)Lentils are a single block crop. Lentil seeds can be planted on farmland and will produce $(thing)Lentils$() and $(thing)Lentil Seeds$() as a product.",
+      "title": "Lentils"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/lentil[age=0]",
+            "Y": "tfc:farmland/andisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/lentil[age=1]",
+            "Y": "tfc:farmland/andisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/lentil[age=2]",
+            "Y": "tfc:farmland/andisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/lentil[age=3]",
+            "Y": "tfc:farmland/andisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/lentil[age=4]",
+            "Y": "tfc:farmland/andisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/lentil[age=5]",
+            "Y": "tfc:farmland/andisol"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "peanut",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 12 - 40 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 20 - 80 %$(br)$(bold)Category$(): Legume$(br)$(br)$(bold)$(b)N: +90 $(bold)$(6)P: 50 $(bold)$(d)K: 50$()$(br)Peanuts are a single block crop. Peanut seeds can be planted on farmland and will produce $(thing)Peanuts$() and $(thing)Peanut Seeds$() as a product.",
+      "title": "Peanuts"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/lentil[age=0]",
+            "Y": "tfc:farmland/oxisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/lentil[age=1]",
+            "Y": "tfc:farmland/oxisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/lentil[age=2]",
+            "Y": "tfc:farmland/oxisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/lentil[age=3]",
+            "Y": "tfc:farmland/oxisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/lentil[age=4]",
+            "Y": "tfc:farmland/oxisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/lentil[age=5]",
+            "Y": "tfc:farmland/oxisol"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "soybean",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -9 - 15 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 25 - 90 %$(br)$(bold)Category$(): Legume$(br)$(br)$(bold)$(b)N: +80 $(bold)$(6)P: 60 $(bold)$(d)K: 30$()$(br)Soybean is a single block crop. Soybean seeds can be planted on farmland and will produce $(thing)Soybean$() and $(thing)Soybean Seeds$() as a product.",
+      "title": "大豆"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/soybean[age=0]",
+            "Y": "tfc:farmland/entisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/soybean[age=1]",
+            "Y": "tfc:farmland/entisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/soybean[age=2]",
+            "Y": "tfc:farmland/entisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/soybean[age=3]",
+            "Y": "tfc:farmland/entisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/soybean[age=4]",
+            "Y": "tfc:farmland/entisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/soybean[age=5]",
+            "Y": "tfc:farmland/entisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/soybean[age=6]",
+            "Y": "tfc:farmland/entisol"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "beet",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -13 - 23 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 10 - 70 %$(br)$(bold)Category$(): Vegetable$(br)$(br)$(bold)$(b)N: 40 $(bold)$(6)P: 30 $(bold)$(d)K: 50$()$(br)Beets are a a single block crop. Beet seeds can be planted on farmland and will produce $(thing)Beet$() and $(thing)Beet Seeds$() as a product.",
+      "title": "甜菜"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/beet[age=0]",
+            "Y": "tfc:farmland/alfisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/beet[age=1]",
+            "Y": "tfc:farmland/alfisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/beet[age=2]",
+            "Y": "tfc:farmland/alfisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/beet[age=3]",
+            "Y": "tfc:farmland/alfisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/beet[age=4]",
+            "Y": "tfc:farmland/alfisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/beet[age=5]",
+            "Y": "tfc:farmland/alfisol"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "cabbage",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -13 - 23 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 10 - 65 %$(br)$(bold)Category$(): Vegetable$(br)$(br)$(bold)$(b)N: 50 $(bold)$(6)P: 20 $(bold)$(d)K: 40$()$(br)Cabbage is a single block crop. Cabbage seeds can be planted on farmland and will produce $(thing)Cabbage$() and $(thing)Cabbage Seeds$() as a product.",
+      "title": "卷心菜"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/cabbage[age=0]",
+            "Y": "tfc:farmland/entisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/cabbage[age=1]",
+            "Y": "tfc:farmland/entisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/cabbage[age=2]",
+            "Y": "tfc:farmland/entisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/cabbage[age=3]",
+            "Y": "tfc:farmland/entisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/cabbage[age=4]",
+            "Y": "tfc:farmland/entisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/cabbage[age=5]",
+            "Y": "tfc:farmland/entisol"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "carrot",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -13 - 23 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 15 - 85 %$(br)$(bold)Category$(): Vegetable$(br)$(br)$(bold)$(b)N: 50 $(bold)$(6)P: 30 $(bold)$(d)K: 40$()$(br)Carrot is a single block crop. Carrot seeds can be planted on farmland and will produce $(thing)Carrot$() and $(thing)Carrot Seeds$() as a product.",
+      "title": "胡萝卜"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/carrot[age=0]",
+            "Y": "tfc:farmland/alfisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/carrot[age=1]",
+            "Y": "tfc:farmland/alfisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/carrot[age=2]",
+            "Y": "tfc:farmland/alfisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/carrot[age=3]",
+            "Y": "tfc:farmland/alfisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/carrot[age=4]",
+            "Y": "tfc:farmland/alfisol"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "garlic",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -5 - 15 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 10 - 70 %$(br)$(bold)Category$(): Vegetable$(br)$(br)$(bold)$(b)N: 40 $(bold)$(6)P: 20 $(bold)$(d)K: 50$()$(br)Garlic is a single block crop. Garlic seeds can be planted on farmland and will produce $(thing)Garlic$() and $(thing)Garlic Seeds$() as a product.",
+      "title": "大蒜"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/garlic[age=0]",
+            "Y": "tfc:farmland/podzol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/garlic[age=1]",
+            "Y": "tfc:farmland/podzol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/garlic[age=2]",
+            "Y": "tfc:farmland/podzol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/garlic[age=3]",
+            "Y": "tfc:farmland/podzol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/garlic[age=4]",
+            "Y": "tfc:farmland/podzol"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
       "anchor": "potato",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -9 - 15 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 15 - 85 %$(br)$(bold)$(b)N: 40 $(bold)$(6)P: 20 $(bold)$(d)K: 60$()$(br)Potatoes are a single block crop. Potato seeds can be planted on farmland and will produce $(thing)Potatoes$() and $(thing)Potato Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -9 - 15 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 35 - 90 %$(br)$(bold)Category$(): Vegetable$(br)$(br)$(bold)$(b)N: 40 $(bold)$(6)P: 20 $(bold)$(d)K: 60$()$(br)Potatoes are a single block crop. Potato seeds can be planted on farmland and will produce $(thing)Potatoes$() and $(thing)Potato Seeds$() as a product.",
       "title": "马铃薯"
     },
     {
@@ -1540,7 +2022,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/potato[age=0]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/andisol"
           }
         },
         {
@@ -1557,7 +2039,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/potato[age=1]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/andisol"
           }
         },
         {
@@ -1574,7 +2056,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/potato[age=2]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/andisol"
           }
         },
         {
@@ -1591,7 +2073,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/potato[age=3]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/andisol"
           }
         },
         {
@@ -1608,7 +2090,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/potato[age=4]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/andisol"
           }
         },
         {
@@ -1625,7 +2107,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/potato[age=5]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/andisol"
           }
         },
         {
@@ -1642,7 +2124,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/potato[age=6]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/andisol"
           }
         }
       ]
@@ -1650,7 +2132,7 @@
     {
       "type": "patchouli:text",
       "anchor": "pumpkin",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -9 - 23 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 20 - 85 %$(br)$(bold)$(b)N: 40 $(bold)$(6)P: 30 $(bold)$(d)K: 60$()$(br)Pumpkins are a spreading crop. Pumpkin seeds can be planted on farmland and will place up to two $(thing)Pumpkin Blocks$() on the ground next to it while it is mature. If the pumpkin blocks are harvested, and the plant matures again, it can grow more pumpkins. Pumpkins can be made into $(l:mechanics/lighting#jack_o_lanterns)Jack 'o Lanterns$().",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -9 - 23 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 20 - 85 %$(br)$(bold)Category$(): Spreading Vegetable$(br)$(br)$(bold)$(b)N: 40 $(bold)$(6)P: 30 $(bold)$(d)K: 60$()$(br)Pumpkins are a spreading crop. Pumpkin seeds can be planted on farmland and will place up to two $(thing)Pumpkin Blocks$() on the ground next to it while it is mature. If the pumpkin blocks are harvested, and the plant matures again, it can grow more pumpkins. Pumpkins can be made into $(l:mechanics/lighting#jack_o_lanterns)Jack 'o Lanterns$().",
       "title": "南瓜"
     },
     {
@@ -1822,7 +2304,7 @@
     {
       "type": "patchouli:text",
       "anchor": "melon",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 40 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 35 - 100 %$(br)$(bold)$(b)N: 30 $(bold)$(6)P: 40 $(bold)$(d)K: 65$()$(br)Melons are a spreading crop. Melon seeds can be planted on farmland and will place up to two $(thing)Melon Blocks$() on the ground next to it while it is mature. If the melon blocks are harvested, and the plant matures again, it can grow more melon.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 40 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 35 - 100 %$(br)$(bold)Category$(): Spreading Vegetable$(br)$(br)$(bold)$(b)N: 30 $(bold)$(6)P: 40 $(bold)$(d)K: 65$()$(br)Melons are a spreading crop. Melon seeds can be planted on farmland and will place up to two $(thing)Melon Blocks$() on the ground next to it while it is mature. If the melon blocks are harvested, and the plant matures again, it can grow more melon.",
       "title": "西瓜"
     },
     {
@@ -1993,8 +2475,188 @@
     },
     {
       "type": "patchouli:text",
+      "anchor": "tomatoes",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 1 - 40 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 20 - 85 %$(br)$(bold)Category$(): Vegetable$(br)$(br)$(bold)$(b)N: 40 $(bold)$(6)P: 50 $(bold)$(d)K: 60$()$(br)Tomatoes are a climbing two block tall crop. Tomato seeds can be planted on farmland, will grow two blocks tall if a stick is present, and will produce $(thing)Tomatoes$() and $(thing)Tomato Seeds$() as a product.",
+      "title": "西红柿"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "需要插木棍才能使作物充分生长。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/tomato[age=0,part=top,stick=true]",
+            "Y": "tfc:crop/tomato[age=0,part=bottom,stick=true]",
+            "Z": "tfc:farmland/oxisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/tomato[age=1,part=top,stick=true]",
+            "Y": "tfc:crop/tomato[age=1,part=bottom,stick=true]",
+            "Z": "tfc:farmland/oxisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/tomato[age=2,part=top,stick=true]",
+            "Y": "tfc:crop/tomato[age=2,part=bottom,stick=true]",
+            "Z": "tfc:farmland/oxisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/tomato[age=3,part=top,stick=true]",
+            "Y": "tfc:crop/tomato[age=3,part=bottom,stick=true]",
+            "Z": "tfc:farmland/oxisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/tomato[age=4,part=top,stick=true]",
+            "Y": "tfc:crop/tomato[age=4,part=bottom,stick=true]",
+            "Z": "tfc:farmland/oxisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/tomato[age=5,part=top,stick=true]",
+            "Y": "tfc:crop/tomato[age=5,part=bottom,stick=true]",
+            "Z": "tfc:farmland/oxisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/tomato[age=6,part=top,stick=true]",
+            "Y": "tfc:crop/tomato[age=6,part=bottom,stick=true]",
+            "Z": "tfc:farmland/oxisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/tomato[age=7,part=top,stick=true]",
+            "Y": "tfc:crop/tomato[age=7,part=bottom,stick=true]",
+            "Z": "tfc:farmland/oxisol"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
       "anchor": "red_bell_pepper",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 12 - 40 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 30 - 95 %$(br)$(bold)$(b)N: 30 $(bold)$(6)P: 40 $(bold)$(d)K: 50$()$(br)Red Bell Peppers are a pickable crop. When they are near mature, they can be harvested with $(item)$(k:key.use)$() to obtain Green Bell Peppers. Harvesting with $(item)$(k:key.use)$() allows the plant to grow more peppers in the future rather than destroying the plant.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 12 - 40 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 30 - 95 %$(br)$(bold)Category$(): Pickable Vegetable$(br)$(br)$(bold)$(b)N: 30 $(bold)$(6)P: 40 $(bold)$(d)K: 50$()$(br)Red Bell Peppers are a pickable crop. When they are near mature, they can be harvested with $(item)$(k:key.use)$() to obtain Green Bell Peppers. Harvesting with $(item)$(k:key.use)$() allows the plant to grow more peppers in the future rather than destroying the plant.",
       "title": "Red Bell Peppers"
     },
     {
@@ -2015,7 +2677,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/red_bell_pepper[age=0]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/oxisol"
           }
         },
         {
@@ -2032,7 +2694,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/red_bell_pepper[age=1]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/oxisol"
           }
         },
         {
@@ -2049,7 +2711,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/red_bell_pepper[age=2]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/oxisol"
           }
         },
         {
@@ -2066,7 +2728,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/red_bell_pepper[age=3]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/oxisol"
           }
         },
         {
@@ -2083,7 +2745,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/red_bell_pepper[age=4]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/oxisol"
           }
         },
         {
@@ -2100,7 +2762,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/red_bell_pepper[age=5]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/oxisol"
           }
         },
         {
@@ -2117,7 +2779,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/red_bell_pepper[age=6]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/oxisol"
           }
         }
       ]
@@ -2125,7 +2787,7 @@
     {
       "type": "patchouli:text",
       "anchor": "yellow_bell_pepper",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 12 - 40 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 30 - 95 %$(br)$(bold)$(b)N: 30 $(bold)$(6)P: 40 $(bold)$(d)K: 50$()$(br)Yellow Bell Peppers are a pickable crop. When they are near mature, they can be harvested with $(item)$(k:key.use)$() to obtain Green Bell Peppers. Harvesting with $(item)$(k:key.use)$() allows the plant to grow more peppers in the future rather than destroying the plant.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 12 - 40 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 30 - 95 %$(br)$(bold)Category$(): Pickable Vegetable$(br)$(br)$(bold)$(b)N: 30 $(bold)$(6)P: 40 $(bold)$(d)K: 50$()$(br)Yellow Bell Peppers are a pickable crop. When they are near mature, they can be harvested with $(item)$(k:key.use)$() to obtain Green Bell Peppers. Harvesting with $(item)$(k:key.use)$() allows the plant to grow more peppers in the future rather than destroying the plant.",
       "title": "Yellow Bell Peppers"
     },
     {
@@ -2146,7 +2808,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/yellow_bell_pepper[age=0]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/oxisol"
           }
         },
         {
@@ -2163,7 +2825,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/yellow_bell_pepper[age=1]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/oxisol"
           }
         },
         {
@@ -2180,7 +2842,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/yellow_bell_pepper[age=2]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/oxisol"
           }
         },
         {
@@ -2197,7 +2859,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/yellow_bell_pepper[age=3]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/oxisol"
           }
         },
         {
@@ -2214,7 +2876,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/yellow_bell_pepper[age=4]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/oxisol"
           }
         },
         {
@@ -2231,7 +2893,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/yellow_bell_pepper[age=5]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/oxisol"
           }
         },
         {
@@ -2248,7 +2910,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/yellow_bell_pepper[age=6]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/oxisol"
           }
         }
       ]
@@ -2256,7 +2918,7 @@
     {
       "type": "patchouli:text",
       "anchor": "onion",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -7 - 21 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 15 - 85 %$(br)$(bold)$(b)N: 40 $(bold)$(6)P: 40 $(bold)$(d)K: 40$()$(br)Onions are a single block crop. Onion seeds can be planted on farmland and will produce $(thing)Onions$() and $(thing)Onion Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -7 - 21 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 15 - 85 %$(br)$(bold)Category$(): Vegetable$(br)$(br)$(bold)$(b)N: 40 $(bold)$(6)P: 40 $(bold)$(d)K: 40$()$(br)Onions are a single block crop. Onion seeds can be planted on farmland and will produce $(thing)Onions$() and $(thing)Onion Seeds$() as a product.",
       "title": "洋葱"
     },
     {
@@ -2277,7 +2939,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/onion[age=0]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/alfisol"
           }
         },
         {
@@ -2294,7 +2956,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/onion[age=1]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/alfisol"
           }
         },
         {
@@ -2311,7 +2973,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/onion[age=2]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/alfisol"
           }
         },
         {
@@ -2328,7 +2990,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/onion[age=3]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/alfisol"
           }
         },
         {
@@ -2345,7 +3007,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/onion[age=4]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/alfisol"
           }
         },
         {
@@ -2362,7 +3024,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/onion[age=5]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/alfisol"
           }
         },
         {
@@ -2379,138 +3041,7 @@
           ],
           "mapping": {
             "X": "tfc:crop/onion[age=6]",
-            "Y": "tfc:farmland/entisol"
-          }
-        }
-      ]
-    },
-    {
-      "type": "patchouli:text",
-      "anchor": "soybean",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -9 - 15 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 25 - 90 %$(br)$(bold)$(b)N: +80 $(bold)$(6)P: 60 $(bold)$(d)K: 30$()$(br)Soybean is a single block crop. Soybean seeds can be planted on farmland and will produce $(thing)Soybean$() and $(thing)Soybean Seeds$() as a product.",
-      "title": "大豆"
-    },
-    {
-      "type": "tfc:multimultiblock",
-      "text": "",
-      "multiblocks": [
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "Y"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:crop/soybean[age=0]",
-            "Y": "tfc:farmland/entisol"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "Y"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:crop/soybean[age=1]",
-            "Y": "tfc:farmland/entisol"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "Y"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:crop/soybean[age=2]",
-            "Y": "tfc:farmland/entisol"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "Y"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:crop/soybean[age=3]",
-            "Y": "tfc:farmland/entisol"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "Y"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:crop/soybean[age=4]",
-            "Y": "tfc:farmland/entisol"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "Y"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:crop/soybean[age=5]",
-            "Y": "tfc:farmland/entisol"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "Y"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:crop/soybean[age=6]",
-            "Y": "tfc:farmland/entisol"
+            "Y": "tfc:farmland/alfisol"
           }
         }
       ]
@@ -2518,7 +3049,7 @@
     {
       "type": "patchouli:text",
       "anchor": "squash",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -9 - 19 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 15 - 85 %$(br)$(bold)$(b)N: 25 $(bold)$(6)P: 45 $(bold)$(d)K: 50$()$(br)Squash is a single block crop. Squash seeds can be planted on farmland and will produce $(thing)Squash$() and $(thing)Squash Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -9 - 19 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 15 - 85 %$(br)$(bold)Category$(): Vegetable$(br)$(br)$(bold)$(b)N: 25 $(bold)$(6)P: 45 $(bold)$(d)K: 50$()$(br)Squash is a single block crop. Squash seeds can be planted on farmland and will produce $(thing)Squash$() and $(thing)Squash Seeds$() as a product.",
       "title": "西葫芦"
     },
     {
@@ -2665,8 +3196,350 @@
     },
     {
       "type": "patchouli:text",
+      "anchor": "alfalfa",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -9 - 15 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 40 - 100 %$(br)$(bold)Category$(): Cover$(br)$(br)$(bold)$(b)N: +80 $(bold)$(6)P: +50 $(bold)$(d)K: +60$()$(br)Alfalfa is a single block crop adapted to cold temperatures. Alfalfa seeds can be planted on farmland and will produce $(thing)Alfalfa$() and $(thing)Alfalfa Seeds$() as a product, while enriching the soil. Alfalfa can be used as a source of straw, or compost.",
+      "title": "Alfalfa"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/lentil[age=0]",
+            "Y": "tfc:farmland/mollisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/lentil[age=1]",
+            "Y": "tfc:farmland/mollisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/lentil[age=2]",
+            "Y": "tfc:farmland/mollisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/lentil[age=3]",
+            "Y": "tfc:farmland/mollisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/lentil[age=4]",
+            "Y": "tfc:farmland/mollisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/lentil[age=5]",
+            "Y": "tfc:farmland/mollisol"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "canola",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -13 - 19 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 20 - 75 %$(br)$(bold)Category$(): Cover$(br)$(br)$(bold)$(b)N: +30 $(bold)$(6)P: +60 $(bold)$(d)K: +100$()$(br)Canola is a single block crop adapted to cold temperatures. Canola seeds can be planted on farmland and will produce $(thing)Canola$() and $(thing)Canola Seeds$() as a product, while enriching the soil. Canola can be used as a source of straw, or compost, and the seeds can be used for oil.",
+      "title": "Canola"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/lentil[age=0]",
+            "Y": "tfc:farmland/mollisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/lentil[age=1]",
+            "Y": "tfc:farmland/mollisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/lentil[age=2]",
+            "Y": "tfc:farmland/mollisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/lentil[age=3]",
+            "Y": "tfc:farmland/mollisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/lentil[age=4]",
+            "Y": "tfc:farmland/mollisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/lentil[age=5]",
+            "Y": "tfc:farmland/mollisol"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "radish",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -11 - 23 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 30 - 90 %$(br)$(bold)Category$(): Cover$(br)$(br)$(bold)$(b)N: +50 $(bold)$(6)P: +100 $(bold)$(d)K: +60$()$(br)Radishes are a single block crop adapted to cold temperatures. Radish seeds can be planted on farmland and will produce $(thing)Radishes$() and $(thing)Radish Seeds$() as a product, while enriching the soil. Radishes are not a very nutritious vegetable, but can be fed to many animals.",
+      "title": "Radish"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/lentil[age=0]",
+            "Y": "tfc:farmland/mollisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/lentil[age=1]",
+            "Y": "tfc:farmland/mollisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/lentil[age=2]",
+            "Y": "tfc:farmland/mollisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/lentil[age=3]",
+            "Y": "tfc:farmland/mollisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/lentil[age=4]",
+            "Y": "tfc:farmland/mollisol"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/lentil[age=5]",
+            "Y": "tfc:farmland/mollisol"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
       "anchor": "sugarcane",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 17 - 40 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 25 - 100 %$(br)$(bold)$(b)N: 50 $(bold)$(6)P: 50 $(bold)$(d)K: 50$()$(br)Sugarcane is a two block tall crop. Sugarcane seeds can be planted on farmland, will grow two blocks tall, and will produce $(thing)Sugarcane$() and $(thing)Sugarcane Seeds$() as a product. Sugarcane can be used to make $(thing)Sugar$().",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 17 - 40 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 25 - 100 %$(br)$(bold)Category$(): Misc$(br)$(br)$(bold)$(b)N: 50 $(bold)$(6)P: 50 $(bold)$(d)K: 50$()$(br)Sugarcane is a two block tall crop. Sugarcane seeds can be planted on farmland, will grow two blocks tall, and will produce $(thing)Sugarcane$() and $(thing)Sugarcane Seeds$() as a product. Sugarcane can be used to make $(thing)Sugar$().",
       "title": "甘蔗"
     },
     {
@@ -2691,7 +3564,7 @@
           "mapping": {
             "X": "minecraft:air",
             "Y": "tfc:crop/sugarcane[age=0,part=bottom]",
-            "Z": "tfc:farmland/entisol"
+            "Z": "tfc:farmland/andisol"
           }
         },
         {
@@ -2712,7 +3585,7 @@
           "mapping": {
             "X": "minecraft:air",
             "Y": "tfc:crop/sugarcane[age=1,part=bottom]",
-            "Z": "tfc:farmland/entisol"
+            "Z": "tfc:farmland/andisol"
           }
         },
         {
@@ -2733,7 +3606,7 @@
           "mapping": {
             "X": "minecraft:air",
             "Y": "tfc:crop/sugarcane[age=2,part=bottom]",
-            "Z": "tfc:farmland/entisol"
+            "Z": "tfc:farmland/andisol"
           }
         },
         {
@@ -2754,7 +3627,7 @@
           "mapping": {
             "X": "minecraft:air",
             "Y": "tfc:crop/sugarcane[age=3,part=bottom]",
-            "Z": "tfc:farmland/entisol"
+            "Z": "tfc:farmland/andisol"
           }
         },
         {
@@ -2775,7 +3648,7 @@
           "mapping": {
             "X": "tfc:crop/sugarcane[age=4,part=top]",
             "Y": "tfc:crop/sugarcane[age=4,part=bottom]",
-            "Z": "tfc:farmland/entisol"
+            "Z": "tfc:farmland/andisol"
           }
         },
         {
@@ -2796,7 +3669,7 @@
           "mapping": {
             "X": "tfc:crop/sugarcane[age=5,part=top]",
             "Y": "tfc:crop/sugarcane[age=5,part=bottom]",
-            "Z": "tfc:farmland/entisol"
+            "Z": "tfc:farmland/andisol"
           }
         },
         {
@@ -2817,7 +3690,7 @@
           "mapping": {
             "X": "tfc:crop/sugarcane[age=6,part=top]",
             "Y": "tfc:crop/sugarcane[age=6,part=bottom]",
-            "Z": "tfc:farmland/entisol"
+            "Z": "tfc:farmland/andisol"
           }
         },
         {
@@ -2838,187 +3711,7 @@
           "mapping": {
             "X": "tfc:crop/sugarcane[age=7,part=top]",
             "Y": "tfc:crop/sugarcane[age=7,part=bottom]",
-            "Z": "tfc:farmland/entisol"
-          }
-        }
-      ]
-    },
-    {
-      "type": "patchouli:text",
-      "anchor": "tomatoes",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 1 - 40 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 20 - 85 %$(br)$(bold)$(b)N: 40 $(bold)$(6)P: 50 $(bold)$(d)K: 60$()$(br)Tomatoes are a climbing two block tall crop. Tomato seeds can be planted on farmland, will grow two blocks tall if a stick is present, and will produce $(thing)Tomatoes$() and $(thing)Tomato Seeds$() as a product.",
-      "title": "西红柿"
-    },
-    {
-      "type": "tfc:multimultiblock",
-      "text": "需要插木棍才能使作物充分生长。",
-      "multiblocks": [
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "Y"
-            ],
-            [
-              "Z"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:crop/tomato[age=0,part=top,stick=true]",
-            "Y": "tfc:crop/tomato[age=0,part=bottom,stick=true]",
-            "Z": "tfc:farmland/entisol"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "Y"
-            ],
-            [
-              "Z"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:crop/tomato[age=1,part=top,stick=true]",
-            "Y": "tfc:crop/tomato[age=1,part=bottom,stick=true]",
-            "Z": "tfc:farmland/entisol"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "Y"
-            ],
-            [
-              "Z"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:crop/tomato[age=2,part=top,stick=true]",
-            "Y": "tfc:crop/tomato[age=2,part=bottom,stick=true]",
-            "Z": "tfc:farmland/entisol"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "Y"
-            ],
-            [
-              "Z"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:crop/tomato[age=3,part=top,stick=true]",
-            "Y": "tfc:crop/tomato[age=3,part=bottom,stick=true]",
-            "Z": "tfc:farmland/entisol"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "Y"
-            ],
-            [
-              "Z"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:crop/tomato[age=4,part=top,stick=true]",
-            "Y": "tfc:crop/tomato[age=4,part=bottom,stick=true]",
-            "Z": "tfc:farmland/entisol"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "Y"
-            ],
-            [
-              "Z"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:crop/tomato[age=5,part=top,stick=true]",
-            "Y": "tfc:crop/tomato[age=5,part=bottom,stick=true]",
-            "Z": "tfc:farmland/entisol"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "Y"
-            ],
-            [
-              "Z"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:crop/tomato[age=6,part=top,stick=true]",
-            "Y": "tfc:crop/tomato[age=6,part=bottom,stick=true]",
-            "Z": "tfc:farmland/entisol"
-          }
-        },
-        {
-          "pattern": [
-            [
-              "X"
-            ],
-            [
-              "Y"
-            ],
-            [
-              "Z"
-            ],
-            [
-              "0"
-            ]
-          ],
-          "mapping": {
-            "X": "tfc:crop/tomato[age=7,part=top,stick=true]",
-            "Y": "tfc:crop/tomato[age=7,part=bottom,stick=true]",
-            "Z": "tfc:farmland/entisol"
+            "Z": "tfc:farmland/andisol"
           }
         }
       ]
@@ -3026,7 +3719,7 @@
     {
       "type": "patchouli:text",
       "anchor": "jute",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 1 - 19 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 15 - 90 %$(br)$(bold)$(b)N: 60 $(bold)$(6)P: 40 $(bold)$(d)K: +40$()$(br)Jute is a two block tall crop. Jute seeds can be planted on farmland, will grow two blocks tall, and will produce $(thing)Jute$() and $(thing)Jute Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 1 - 19 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 15 - 90 %$(br)$(bold)Category$(): Misc$(br)$(br)$(bold)$(b)N: 60 $(bold)$(6)P: 40 $(bold)$(d)K: +40$()$(br)Jute is a two block tall crop. Jute seeds can be planted on farmland, will grow two blocks tall, and will produce $(thing)Jute$() and $(thing)Jute Seeds$() as a product.",
       "title": "黄麻"
     },
     {
@@ -3164,7 +3857,7 @@
     {
       "type": "patchouli:text",
       "anchor": "papyrus",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 12 - 40 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 50 - 100 %$(br)$(bold)$(b)N: 60 $(bold)$(6)P: +40 $(bold)$(d)K: 40$()$(br)Papyrus is a two block tall crop. Papyrus seeds can be planted on farmland, will grow two blocks tall, and will produce $(l:mechanics/papermaking)Papyrus$() and $(thing)Papyrus Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 12 - 40 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 50 - 100 %$(br)$(bold)Category$(): Misc$(br)$(br)$(bold)$(b)N: 60 $(bold)$(6)P: +40 $(bold)$(d)K: 40$()$(br)Papyrus is a two block tall crop. Papyrus seeds can be planted on farmland, will grow two blocks tall, and will produce $(l:mechanics/papermaking)Papyrus$() and $(thing)Papyrus Seeds$() as a product.",
       "title": "Papyrus"
     },
     {
@@ -3189,7 +3882,7 @@
           "mapping": {
             "X": "minecraft:air",
             "Y": "tfc:crop/papyrus[age=0,part=bottom]",
-            "Z": "tfc:farmland/entisol"
+            "Z": "tfc:farmland/fluvisol"
           }
         },
         {
@@ -3210,7 +3903,7 @@
           "mapping": {
             "X": "minecraft:air",
             "Y": "tfc:crop/papyrus[age=1,part=bottom]",
-            "Z": "tfc:farmland/entisol"
+            "Z": "tfc:farmland/fluvisol"
           }
         },
         {
@@ -3231,7 +3924,7 @@
           "mapping": {
             "X": "minecraft:air",
             "Y": "tfc:crop/papyrus[age=2,part=bottom]",
-            "Z": "tfc:farmland/entisol"
+            "Z": "tfc:farmland/fluvisol"
           }
         },
         {
@@ -3252,7 +3945,7 @@
           "mapping": {
             "X": "tfc:crop/papyrus[age=3,part=top]",
             "Y": "tfc:crop/papyrus[age=3,part=bottom]",
-            "Z": "tfc:farmland/entisol"
+            "Z": "tfc:farmland/fluvisol"
           }
         },
         {
@@ -3273,7 +3966,7 @@
           "mapping": {
             "X": "tfc:crop/papyrus[age=4,part=top]",
             "Y": "tfc:crop/papyrus[age=4,part=bottom]",
-            "Z": "tfc:farmland/entisol"
+            "Z": "tfc:farmland/fluvisol"
           }
         },
         {
@@ -3294,7 +3987,7 @@
           "mapping": {
             "X": "tfc:crop/papyrus[age=5,part=top]",
             "Y": "tfc:crop/papyrus[age=5,part=bottom]",
-            "Z": "tfc:farmland/entisol"
+            "Z": "tfc:farmland/fluvisol"
           }
         }
       ]
@@ -3302,47 +3995,59 @@
   ],
   "read_by_default": true,
   "extra_recipe_mappings": {
-    "tfc:seeds/barley": 6,
-    "tfc:food/barley": 6,
-    "tfc:seeds/oat": 8,
-    "tfc:food/oat": 8,
-    "tfc:seeds/rye": 10,
-    "tfc:food/rye": 10,
-    "tfc:seeds/maize": 12,
-    "tfc:food/maize": 12,
-    "tfc:seeds/wheat": 14,
-    "tfc:food/wheat": 14,
-    "tfc:seeds/rice": 16,
-    "tfc:food/rice": 16,
-    "tfc:seeds/beet": 18,
-    "tfc:food/beet": 18,
-    "tfc:seeds/cabbage": 20,
-    "tfc:food/cabbage": 20,
-    "tfc:seeds/carrot": 22,
-    "tfc:food/carrot": 22,
-    "tfc:seeds/garlic": 24,
-    "tfc:food/garlic": 24,
-    "tfc:seeds/green_bean": 26,
-    "tfc:food/green_bean": 26,
-    "tfc:seeds/potato": 28,
-    "tfc:food/potato": 28,
-    "tfc:seeds/pumpkin": 30,
-    "tfc:seeds/melon": 32,
-    "tfc:seeds/red_bell_pepper": 34,
-    "tfc:seeds/yellow_bell_pepper": 36,
-    "tfc:seeds/onion": 38,
-    "tfc:food/onion": 38,
-    "tfc:seeds/soybean": 40,
-    "tfc:food/soybean": 40,
-    "tfc:seeds/squash": 42,
-    "tfc:food/squash": 42,
-    "tfc:seeds/sugarcane": 44,
-    "tfc:food/sugarcane": 44,
-    "tfc:seeds/tomato": 46,
-    "tfc:food/tomato": 46,
-    "tfc:seeds/jute": 48,
-    "tfc:jute": 48,
-    "tfc:seeds/papyrus": 50,
-    "tfc:papyrus": 50
+    "tfc:seeds/barley": 8,
+    "tfc:food/barley": 8,
+    "tfc:seeds/oat": 10,
+    "tfc:food/oat": 10,
+    "tfc:seeds/rye": 12,
+    "tfc:food/rye": 12,
+    "tfc:seeds/maize": 14,
+    "tfc:food/maize": 14,
+    "tfc:seeds/wheat": 16,
+    "tfc:food/wheat": 16,
+    "tfc:seeds/rice": 18,
+    "tfc:food/rice": 18,
+    "tfc:seeds/cassava": 20,
+    "tfc:food/cassava": 20,
+    "tfc:seeds/green_bean": 22,
+    "tfc:food/green_bean": 22,
+    "tfc:seeds/lentil": 24,
+    "tfc:food/lentil": 24,
+    "tfc:seeds/peanut": 26,
+    "tfc:food/peanut": 26,
+    "tfc:seeds/soybean": 28,
+    "tfc:food/soybean": 28,
+    "tfc:seeds/beet": 30,
+    "tfc:food/beet": 30,
+    "tfc:seeds/cabbage": 32,
+    "tfc:food/cabbage": 32,
+    "tfc:seeds/carrot": 34,
+    "tfc:food/carrot": 34,
+    "tfc:seeds/garlic": 36,
+    "tfc:food/garlic": 36,
+    "tfc:seeds/potato": 38,
+    "tfc:food/potato": 38,
+    "tfc:seeds/pumpkin": 40,
+    "tfc:seeds/melon": 42,
+    "tfc:seeds/tomato": 44,
+    "tfc:food/tomato": 44,
+    "tfc:seeds/red_bell_pepper": 46,
+    "tfc:seeds/yellow_bell_pepper": 48,
+    "tfc:seeds/onion": 50,
+    "tfc:food/onion": 50,
+    "tfc:seeds/squash": 52,
+    "tfc:food/squash": 52,
+    "tfc:seeds/alfalfa": 54,
+    "tfc:alfalfa": 54,
+    "tfc:seeds/canola": 56,
+    "tfc:canola": 56,
+    "tfc:seeds/radish": 58,
+    "tfc:radish": 58,
+    "tfc:seeds/sugarcane": 60,
+    "tfc:food/sugarcane": 60,
+    "tfc:seeds/jute": 62,
+    "tfc:jute": 62,
+    "tfc:seeds/papyrus": 64,
+    "tfc:papyrus": 64
   }
 }

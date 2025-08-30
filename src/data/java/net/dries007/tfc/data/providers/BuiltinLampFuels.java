@@ -34,6 +34,7 @@ public class BuiltinLampFuels extends DataManagerProvider<LampFuel> implements A
     {
         add("tallow", fluidOf(SimpleFluid.TALLOW), BlockIngredient.of(TFCTags.Blocks.LAMPS), 1800);
         add("olive_oil", fluidOf(SimpleFluid.OLIVE_OIL), BlockIngredient.of(TFCTags.Blocks.LAMPS), 8000);
+        add("canola_oil", fluidOf(SimpleFluid.CANOLA_OIL), BlockIngredient.of(TFCTags.Blocks.LAMPS), 6400);
         add("lava", Fluids.LAVA, BlockIngredient.of(Stream.of(
             TFCBlocks.METALS.get(Metal.BLUE_STEEL).get(Metal.BlockType.LAMP).get(),
             TFCBlocks.METALS.get(Metal.RED_STEEL).get(Metal.BlockType.LAMP).get()

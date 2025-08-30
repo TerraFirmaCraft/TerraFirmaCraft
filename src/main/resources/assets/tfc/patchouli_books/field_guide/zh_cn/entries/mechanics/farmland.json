@@ -1,0 +1,188 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Soil Fertility",
+  "category": "tfc:mechanics",
+  "icon": "tfc:farmland/mollisol",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "There are eight varieties of soil occurring in different locations throughout the world. These soils range from very fertile, providing a 20% boost to all $(l:mechanics/fertilizers)fertilizers$() applied to it, and to all nutrients recharged by $(l:mechanics/crops)crops$(), to very poor, providing 20% less than typical soil.",
+      "title": "Soil Fertility"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Soil quality only impacts the effectiveness of fertilizers; unfertilized crops grow at the same rate regardless of what soil they are planted in. While nutrients can be consumed by crops, soil quality is not degraded by subsequent plantings.$(br)$(br)The following pages outline each soil type."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "anchor": "entisol",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:dirt/entisol"
+        }
+      },
+      "name": "Entisol",
+      "text": "Entisol is the most common soil type, found throughout the world. It is a normal quality soil, receiving no bonus nutrients.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "anchor": "andisol",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:dirt/andisol"
+        }
+      },
+      "name": "Andisol",
+      "text": "Andisol is found in volcanic regions. It is a high quality soil, receiving 10% bonus nutrients.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "anchor": "fluvisol",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:dirt/fluvisol"
+        }
+      },
+      "name": "Fluvisol",
+      "text": "Fluvisol is found along rivers in regions with wet and dry seasons. It is a high quality soil, receiving 10% bonus nutrients.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "anchor": "alfisol",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:dirt/alfisol"
+        }
+      },
+      "name": "Alfisol",
+      "text": "Alfisol is found in temperate broadleaf forests. It is a high quality soil, receiving 10% bonus nutrients.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "anchor": "mollisol",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:dirt/mollisol"
+        }
+      },
+      "name": "Mollisol",
+      "text": "Mollisol is found in cold grasslands. It is a very high quality soil, receiving 20% bonus nutrients.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "anchor": "podzol",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:dirt/podzol"
+        }
+      },
+      "name": "Podzol",
+      "text": "Podzol is found in conifer forests. It is a poor quality soil, receiving 10% less nutrients.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "anchor": "aridisol",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:dirt/aridisol"
+        }
+      },
+      "name": "Aridisol",
+      "text": "Aridisol is found in dry regions. It is a poor quality soil, receiving 10% less nutrients.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "anchor": "oxisol",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:dirt/oxisol"
+        }
+      },
+      "name": "Oxisol",
+      "text": "Oxisol is found in wet tropical regions. It is a very poor quality soil, receiving 20% less nutrients.",
+      "enable_visualize": false
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:dirt/entisol": 2,
+    "tfc:dirt/andisol": 3,
+    "tfc:dirt/fluvisol": 4,
+    "tfc:dirt/alfisol": 5,
+    "tfc:dirt/mollisol": 6,
+    "tfc:dirt/podzol": 7,
+    "tfc:dirt/aridisol": 8,
+    "tfc:dirt/oxisol": 9
+  }
+}

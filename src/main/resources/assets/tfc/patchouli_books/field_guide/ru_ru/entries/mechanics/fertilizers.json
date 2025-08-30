@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Удобрения используются для добавления питательных веществ к $(l:mechanics/crops)культурам$(). $(item)$(k:key.use)$() с удобрением в руке на некотором $(thing)пашне$() или $(thing)культуре$(), чтобы добавить питательные вещества. Должны появиться частицы, указывающие на то, что удобрение было добавлено.",
+      "text": "Fertilizers are used to add nutrients to $(l:mechanics/crops)crops$(). $(item)$(k:key.use)$() with a fertilizer in your hand on some $(thing)Farmland$() or a $(thing)Crop$() to add the nutrients. Particles should appear, indicating the fertilizer was added.$(br)The effectiveness of fertilizers are influenced by the type of $(l:mechanics/farmland)Farmland$() they are used on.",
       "title": "Удобрение"
     },
     {
@@ -20,6 +20,12 @@
       "item": "minecraft:bone_meal",
       "link_recipes": false,
       "text": "Костная мука состоит из измельченных костей. $(br)$(li)$(6)Фосфор: 10$()"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:food/shellfish",
+      "link_recipes": false,
+      "text": "Shellfish can be obtained by killing some aquatic invertebrates. $(br)$(li)$(6)Phosphorous: 15$()"
     },
     {
       "type": "patchouli:spotlight",

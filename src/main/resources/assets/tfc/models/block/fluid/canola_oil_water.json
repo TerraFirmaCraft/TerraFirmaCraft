@@ -1,0 +1,6 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "textures": {
+    "particle": "minecraft:block/water_still"
+  }
+}

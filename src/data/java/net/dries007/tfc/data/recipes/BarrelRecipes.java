@@ -248,15 +248,22 @@ public interface BarrelRecipes extends Recipes
             .input(Fluids.WATER, 500)
             .output(fluidOf(SimpleFluid.LIMEWATER), 500)
             .instant();
-        barrel()
+        barrel("process_olives")
             .input(fluidOf(SimpleFluid.OLIVE_OIL_WATER), 250)
             .input(TFCItems.JUTE_NET)
             .output(fluidOf(SimpleFluid.OLIVE_OIL), 50)
             .output(TFCItems.DIRTY_JUTE_NET)
             .instant();
+        barrel("process_canola")
+            .input(fluidOf(SimpleFluid.CANOLA_OIL_WATER), 250)
+            .input(TFCItems.JUTE_NET)
+            .output(fluidOf(SimpleFluid.CANOLA_OIL), 50)
+            .output(TFCItems.DIRTY_JUTE_NET)
+            .instant();
         cooling(Fluids.WATER, -5f);
         cooling(TFCFluids.SALT_WATER.getSource(), -5f);
         cooling(fluidOf(SimpleFluid.OLIVE_OIL), -40f);
+        cooling(fluidOf(SimpleFluid.CANOLA_OIL), -40f);
         barrel("clean_bowl")
             .input(ingredientOf(
                 Ingredient.of(TFCTags.Items.SOUPS),

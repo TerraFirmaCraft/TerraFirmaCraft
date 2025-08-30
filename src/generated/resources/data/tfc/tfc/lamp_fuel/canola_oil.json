@@ -1,0 +1,7 @@
+{
+  "burn_rate": 6400,
+  "fluid": {
+    "fluid": "tfc:canola_oil"
+  },
+  "lamps": "#tfc:lamps"
+}

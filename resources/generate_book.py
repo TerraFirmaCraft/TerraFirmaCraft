@@ -1205,14 +1205,26 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             image('tfc:textures/gui/book/tutorial/fishing.png', text_contents='The fishing bar replaces the experience bar when active.'),
         )),
         entry('fertilizers', 'Fertilizers', 'tfc:powder/sylvite', pages=(
-            text('Fertilizers are used to add nutrients to $(l:mechanics/crops)crops$(). $(item)$(k:key.use)$() with a fertilizer in your hand on some $(thing)Farmland$() or a $(thing)Crop$() to add the nutrients. Particles should appear, indicating the fertilizer was added.', title='Fertilization'),
+            text('Fertilizers are used to add nutrients to $(l:mechanics/crops)crops$(). $(item)$(k:key.use)$() with a fertilizer in your hand on some $(thing)Farmland$() or a $(thing)Crop$() to add the nutrients. Particles should appear, indicating the fertilizer was added.$(br)The effectiveness of fertilizers are influenced by the type of $(l:mechanics/farmland)Farmland$() they are used on.', title='Fertilization'),
             fertilizer('tfc:compost', 'Compost is the product of the $(l:mechanics/composter)Composter$().', 0.2, 0, 0.2),
             fertilizer('minecraft:bone_meal', 'Bonemeal is made of crushed bones.', p=0.1),
+            fertilizer('tfc:food/shellfish', 'Shellfish can be obtained by killing some aquatic invertebrates.', p=0.15),
             fertilizer('tfc:powder/saltpeter', 'Saltpeter is made from its ore.', n=0.1, k=0.4),
-            fertilizer('tfc:groundcover/guano', 'Guano is found deep underground and on gravelly shores.', 0.8, 0.5, 0.1),
+            fertilizer('tfc:groundcover/guano', 'Guano is found deep underground and on gravelly shores.', 0.4, 0.5, 0.1),
             fertilizer('tfc:powder/wood_ash', 'Wood ash is produced by breaking firepits. Throwing a torch item into water also has a chance to produce ash.', p=0.1, k=0.2),
-            fertilizer('tfc:powder/sylvite', 'Sylvite is made from its ore.', k=0.5),
-            empty_last_page()
+            fertilizer('tfc:powder/sylvite', 'Sylvite is made from its ore.', k=0.5)
+        )),
+        entry('farmland', 'Soil Fertility', 'tfc:farmland/mollisol', pages=(
+            text('There are eight varieties of soil occurring in different locations throughout the world. These soils range from very fertile, providing a 20% boost to all $(l:mechanics/fertilizers)fertilizers$() applied to it, and to all nutrients recharged by $(l:mechanics/crops)crops$(), to very poor, providing 20% less than typical soil.', title='Soil Fertility'),
+            text('Soil quality only impacts the effectiveness of fertilizers; unfertilized crops grow at the same rate regardless of what soil they are planted in. While nutrients can be consumed by crops, soil quality is not degraded by subsequent plantings.$(br)$(br)The following pages outline each soil type.'),
+            block_spotlight('Entisol', text_content='Entisol is the most common soil type, found throughout the world. It is a normal quality soil, receiving no bonus nutrients.', block='tfc:dirt/entisol').link('tfc:dirt/entisol').anchor('entisol'),
+            block_spotlight('Andisol', text_content='Andisol is found in volcanic regions. It is a high quality soil, receiving 10% bonus nutrients.', block='tfc:dirt/andisol').link('tfc:dirt/andisol').anchor('andisol'),
+            block_spotlight('Fluvisol', text_content='Fluvisol is found along rivers in regions with wet and dry seasons. It is a high quality soil, receiving 10% bonus nutrients.', block='tfc:dirt/fluvisol').link('tfc:dirt/fluvisol').anchor('fluvisol'),
+            block_spotlight('Alfisol', text_content='Alfisol is found in temperate broadleaf forests. It is a high quality soil, receiving 10% bonus nutrients.', block='tfc:dirt/alfisol').link('tfc:dirt/alfisol').anchor('alfisol'),
+            block_spotlight('Mollisol', text_content='Mollisol is found in cold grasslands. It is a very high quality soil, receiving 20% bonus nutrients.', block='tfc:dirt/mollisol').link('tfc:dirt/mollisol').anchor('mollisol'),
+            block_spotlight('Podzol', text_content='Podzol is found in conifer forests. It is a poor quality soil, receiving 10% less nutrients.', block='tfc:dirt/podzol').link('tfc:dirt/podzol').anchor('podzol'),
+            block_spotlight('Aridisol', text_content='Aridisol is found in dry regions. It is a poor quality soil, receiving 10% less nutrients.', block='tfc:dirt/aridisol').link('tfc:dirt/aridisol').anchor('aridisol'),
+            block_spotlight('Oxisol', text_content='Oxisol is found in wet tropical regions. It is a very poor quality soil, receiving 20% less nutrients.', block='tfc:dirt/oxisol').link('tfc:dirt/oxisol').anchor('oxisol')
         )),
         entry('composter', 'Composter', 'tfc:textures/gui/book/icons/composter.png', pages=(
             text('The composter is an essential tool for making fertilizer. It needs both $(2)Green$() and $(4)Brown$() items to work. Different items contribute more to the amount of compost produced than others. To add an item to it, $(item)$(k:key.use)$(). The items that can be added are described on later pages.'),
@@ -1317,9 +1329,13 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('In addition to finding wild crops, seeds can also be produced from existing crops. When a fully mature crop dies - either by weather, or leaving it to rot - it will go to seed, dropping more seeds that can be used to grow even more crops next season.'),
             rock_knapping_typical('hoe_head', 'To get started, a $(thing)Stone Hoe$() can be $(thing)knapped$() as seen above.'),
             crafting('tfc:crafting/stone/hoe/sedimentary', text_contents='Once the hoe head is knapped, it can be crafted into a Hoe.$(br2)Hoes function as in Vanilla, by right clicking dirt blocks to turn them into $(thing)Farmland$(). They can also be used to convert $(thing)Rooted Dirt$() into $(thing)Dirt$().'),
-            text('All crops need to be planted on farmland in order to grow. Some crops have additional requirements such as being waterlogged or requiring a stick to grow on.$(br2)Crops do not need $(thing)nutrients$() to grow, but they certainly help. There are three nutrients: $(b)Nitrogen$(), $(6)Phosphorous$(), and $(d)Potassium$(). Each crop has a favorite nutrient.', title='Growing Crops'),
-            text('Consuming its favorite nutrient causes a crop to grow faster, and improves the yield of the crop at harvest time. That means that crops that consumed more nutrients drop more food when broken! Consuming a nutrient also has the effect of replenishing the other nutrients around it a small amount.$(br2)The next several pages list all the crops present in TFC'),
+            text('All crops need to be planted on $(l:mechanics/farmland)farmland $()in order to grow. Some crops have additional requirements such as being waterlogged or requiring a stick to grow on.$(br2)Crops do not need $(thing)nutrients$() to grow, but they certainly help. There are three nutrients: $(b)Nitrogen$(), $(6)Phosphorous$(), and $(d)Potassium$(). Each crop may consume, or replenish, and combination of these three nutrients.', title='Growing Crops'),
+            text('Consuming nutrients causes a crop to grow faster, and improves the yield of the crop at harvest time. That means that crops that consumed more nutrients drop more food when broken! Consuming nutrients also increases the rate at which the crop replenishes other nutrients.'),
             # Listing of all crops, their growth conditions, and how to grow them
+            text('While each individual crop may have its own balance of fertilizer needs, most crops fit into four general categories: cereals, legumes, vegetables, and cover crops.$(br2)$(bold)Cereals$() consume large amounts of $(b)Nitrogen$(), but replenish $(6)Phosphorous$() and $(d)Potassium$(). They produce food rich in Grain', title='Crop Categories'),
+            text('$(bold)Legumes$() produce large amounts of $(b)Nitrogen$(), and consume $(b)Nitrogen$() and $(d)Potassium$(). They produce foods rich in Vegetable and Protein.$(br2)$(bold)Vegetables$() consume all three nutrients to produce foods rich in Vegetable.$(br2)$(bold)Cover$() crops produce all three nutrients, but their produce has only limited uses.'),
+
+            # Cereals
             text(f'{detail_crop("barley")}Barley is a single block crop. Barley seeds can be planted on farmland and will produce $(thing)Barley$() and $(thing)Barley Seeds$() as a product.', title='Barley').link('tfc:seeds/barley').link('tfc:food/barley').anchor('barley'),
             multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/entisol', 'tfc:crop/barley[age=%d]' % i) for i in range(8)]),
             text(f'{detail_crop("oat")}Oat is a single block crop. Oat seeds can be planted on farmland and will produce $(thing)Oat$() and $(thing)Oat Seeds$() as a product.', title='Oat').link('tfc:seeds/oat').link('tfc:food/oat').anchor('oat'),
@@ -1330,56 +1346,76 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             multimultiblock('', *[multiblock('', '', False, (('X',), ('Y',), ('Z',), ('0',)), {
                 'X': 'tfc:crop/maize[age=%d,part=top]' % i if i >= 3 else 'minecraft:air',
                 'Y': 'tfc:crop/maize[age=%d,part=bottom]' % i,
-                'Z': 'tfc:farmland/entisol',
+                'Z': 'tfc:farmland/aridisol',
             }) for i in range(6)]),
             text(f'{detail_crop("wheat")}Wheat is a single block crop. Wheat seeds can be planted on farmland and will produce $(thing)Wheat$() and $(thing)Wheat Seeds$() as a product.', title='Wheat').link('tfc:seeds/wheat').link('tfc:food/wheat').anchor('wheat'),
-            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/entisol', 'tfc:crop/wheat[age=%d]' % i) for i in range(8)]),
-            text(f'{detail_crop("rice")}Rice is a single block crop. Rice must be grown underwater - it must be planted on farmland, in freshwater that is a single block deep. It will produce $(thing)Rice$() and $(thing)Rice Seeds$() as a product.', title='Rice').link('tfc:seeds/rice').link('tfc:food/rice').anchor('rice'),
+            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/mollisol', 'tfc:crop/wheat[age=%d]' % i) for i in range(8)]),
+            text(f'{detail_crop("rice")}Rice is a single block crop. Rice must be grown underwater - it must be planted on farmland, in freshwater that is a single block deep. It will produce $(thing)Rice$() and $(thing)Rice Seeds$() as a product. Unlike most cereal grains, rice requires an even balance of nutrients.', title='Rice').link('tfc:seeds/rice').link('tfc:food/rice').anchor('rice'),
             multimultiblock(
                 'Note: in order to grow, the rice block must be $(thing)Waterlogged$().',
-                *[two_tall_block_spotlight('', '', 'tfc:farmland/entisol', 'tfc:crop/rice[age=%d,fluid=water]' % i) for i in range(8)],
+                *[two_tall_block_spotlight('', '', 'tfc:farmland/fluvisol', 'tfc:crop/rice[age=%d,fluid=water]' % i) for i in range(8)],
             ),
-            text(f'{detail_crop("beet")}Beets are a a single block crop. Beet seeds can be planted on farmland and will produce $(thing)Beet$() and $(thing)Beet Seeds$() as a product.', title='Beet').link('tfc:seeds/beet').link('tfc:food/beet').anchor('beet'),
-            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/entisol', 'tfc:crop/beet[age=%d]' % i) for i in range(6)]),
-            text(f'{detail_crop("cabbage")}Cabbage is a single block crop. Cabbage seeds can be planted on farmland and will produce $(thing)Cabbage$() and $(thing)Cabbage Seeds$() as a product.', title='Cabbage').link('tfc:seeds/cabbage').link('tfc:food/cabbage').anchor('cabbage'),
-            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/entisol', 'tfc:crop/cabbage[age=%d]' % i) for i in range(6)]),
-            text(f'{detail_crop("carrot")}Carrot is a single block crop. Carrot seeds can be planted on farmland and will produce $(thing)Carrot$() and $(thing)Carrot Seeds$() as a product.', title='Carrot').link('tfc:seeds/carrot').link('tfc:food/carrot').anchor('carrot'),
-            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/entisol', 'tfc:crop/carrot[age=%d]' % i) for i in range(5)]),
-            text(f'{detail_crop("garlic")}Garlic is a single block crop. Garlic seeds can be planted on farmland and will produce $(thing)Garlic$() and $(thing)Garlic Seeds$() as a product.', title='Garlic').link('tfc:seeds/garlic').link('tfc:food/garlic').anchor('garlic'),
-            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/entisol', 'tfc:crop/garlic[age=%d]' % i) for i in range(5)]),
+
+            # Legumes
+            text(f'{detail_crop("cassava")}Cassava is a single block crop. Soybean seeds can be planted on farmland and will produce $(thing)Cassava$() and $(thing)Cassava Seeds$() as a product.', title='Cassava').link('tfc:seeds/cassava').link('tfc:food/cassava').anchor('cassava'),
+            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/oxisol', 'tfc:crop/cassava[age=%d]' % i) for i in range(6)]),
             text(f'{detail_crop("green_bean")}Green Beans is a climbing two block tall crop. Green Bean seeds can be planted on farmland, will grow two blocks tall if a stick is present, and will produce $(thing)Green Beans$() and $(thing)Green Bean Seeds$() as a product.', title='Green Beans').link('tfc:seeds/green_bean').link('tfc:food/green_bean').anchor('green_bean'),
             multimultiblock('The stick is required in order for the crop to fully grow.', *[multiblock('', '', False, (('X',), ('Y',), ('Z',), ('0',)), {
                 'X': 'tfc:crop/green_bean[age=%d,part=top,stick=true]' % i,
                 'Y': 'tfc:crop/green_bean[age=%d,part=bottom,stick=true]' % i,
                 'Z': 'tfc:farmland/entisol',
             }) for i in range(8)]),
+            text(f'{detail_crop("lentil")}Lentils are a single block crop. Lentil seeds can be planted on farmland and will produce $(thing)Lentils$() and $(thing)Lentil Seeds$() as a product.', title='Lentils').link('tfc:seeds/lentil').link('tfc:food/lentil').anchor('lentil'),
+            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/andisol', 'tfc:crop/lentil[age=%d]' % i) for i in range(6)]),
+            text(f'{detail_crop("peanut")}Peanuts are a single block crop. Peanut seeds can be planted on farmland and will produce $(thing)Peanuts$() and $(thing)Peanut Seeds$() as a product.', title='Peanuts').link('tfc:seeds/peanut').link('tfc:food/peanut').anchor('peanut'),
+            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/oxisol', 'tfc:crop/lentil[age=%d]' % i) for i in range(6)]),
+            text(f'{detail_crop("soybean")}Soybean is a single block crop. Soybean seeds can be planted on farmland and will produce $(thing)Soybean$() and $(thing)Soybean Seeds$() as a product.', title='Soybean').link('tfc:seeds/soybean').link('tfc:food/soybean').anchor('soybean'),
+            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/entisol', 'tfc:crop/soybean[age=%d]' % i) for i in range(7)]),
+
+            # Vegetables
+            text(f'{detail_crop("beet")}Beets are a a single block crop. Beet seeds can be planted on farmland and will produce $(thing)Beet$() and $(thing)Beet Seeds$() as a product.', title='Beet').link('tfc:seeds/beet').link('tfc:food/beet').anchor('beet'),
+            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/alfisol', 'tfc:crop/beet[age=%d]' % i) for i in range(6)]),
+            text(f'{detail_crop("cabbage")}Cabbage is a single block crop. Cabbage seeds can be planted on farmland and will produce $(thing)Cabbage$() and $(thing)Cabbage Seeds$() as a product.', title='Cabbage').link('tfc:seeds/cabbage').link('tfc:food/cabbage').anchor('cabbage'),
+            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/entisol', 'tfc:crop/cabbage[age=%d]' % i) for i in range(6)]),
+            text(f'{detail_crop("carrot")}Carrot is a single block crop. Carrot seeds can be planted on farmland and will produce $(thing)Carrot$() and $(thing)Carrot Seeds$() as a product.', title='Carrot').link('tfc:seeds/carrot').link('tfc:food/carrot').anchor('carrot'),
+            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/alfisol', 'tfc:crop/carrot[age=%d]' % i) for i in range(5)]),
+            text(f'{detail_crop("garlic")}Garlic is a single block crop. Garlic seeds can be planted on farmland and will produce $(thing)Garlic$() and $(thing)Garlic Seeds$() as a product.', title='Garlic').link('tfc:seeds/garlic').link('tfc:food/garlic').anchor('garlic'),
+            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/podzol', 'tfc:crop/garlic[age=%d]' % i) for i in range(5)]),
             text(f'{detail_crop("potato")}Potatoes are a single block crop. Potato seeds can be planted on farmland and will produce $(thing)Potatoes$() and $(thing)Potato Seeds$() as a product.', title='Potatoes').link('tfc:seeds/potato').link('tfc:food/potato').anchor('potato'),
-            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/entisol', 'tfc:crop/potato[age=%d]' % i) for i in range(7)]),
+            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/andisol', 'tfc:crop/potato[age=%d]' % i) for i in range(7)]),
             text(f'{detail_crop("pumpkin")}Pumpkins are a spreading crop. Pumpkin seeds can be planted on farmland and will place up to two $(thing)Pumpkin Blocks$() on the ground next to it while it is mature. If the pumpkin blocks are harvested, and the plant matures again, it can grow more pumpkins. Pumpkins can be made into $(l:mechanics/lighting#jack_o_lanterns)Jack \'o Lanterns$().', title='Pumpkins').link('tfc:seeds/pumpkin').anchor('pumpkin'),
             multimultiblock('', *[multiblock('', '', False, pattern=(('   ', ' CP', '   '), ('GGG', 'G0G', 'GGG')), mapping={'G': 'tfc:farmland/entisol', '0': 'tfc:farmland/entisol', 'C': 'tfc:crop/pumpkin[age=%d]' % i, 'P': 'minecraft:air' if i != 7 else 'tfc:pumpkin'}) for i in range(8)]),
             text(f'{detail_crop("melon")}Melons are a spreading crop. Melon seeds can be planted on farmland and will place up to two $(thing)Melon Blocks$() on the ground next to it while it is mature. If the melon blocks are harvested, and the plant matures again, it can grow more melon.', title='Melons').link('tfc:seeds/melon').anchor('melon'),
             multimultiblock('', *[multiblock('', '', False, pattern=(('   ', ' CP', '   '), ('GGG', 'G0G', 'GGG')), mapping={'G': 'tfc:farmland/entisol', '0': 'tfc:farmland/entisol', 'C': 'tfc:crop/melon[age=%d]' % i, 'P': 'minecraft:air' if i != 7 else 'tfc:melon'}) for i in range(8)]),
-            text(f'{detail_crop("red_bell_pepper")}Red Bell Peppers are a pickable crop. When they are near mature, they can be harvested with $(item)$(k:key.use)$() to obtain Green Bell Peppers. Harvesting with $(item)$(k:key.use)$() allows the plant to grow more peppers in the future rather than destroying the plant.', title='Red Bell Peppers').link('tfc:seeds/red_bell_pepper').anchor('red_bell_pepper'),
-            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/entisol', 'tfc:crop/red_bell_pepper[age=%d]' % i) for i in range(7)]),
-            text(f'{detail_crop("yellow_bell_pepper")}Yellow Bell Peppers are a pickable crop. When they are near mature, they can be harvested with $(item)$(k:key.use)$() to obtain Green Bell Peppers. Harvesting with $(item)$(k:key.use)$() allows the plant to grow more peppers in the future rather than destroying the plant.', title='Yellow Bell Peppers').link('tfc:seeds/yellow_bell_pepper').anchor('yellow_bell_pepper'),
-            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/entisol', 'tfc:crop/yellow_bell_pepper[age=%d]' % i) for i in range(7)]),
-            text(f'{detail_crop("onion")}Onions are a single block crop. Onion seeds can be planted on farmland and will produce $(thing)Onions$() and $(thing)Onion Seeds$() as a product.', title='Onions').link('tfc:seeds/onion').link('tfc:food/onion').anchor('onion'),
-            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/entisol', 'tfc:crop/onion[age=%d]' % i) for i in range(7)]),
-            text(f'{detail_crop("soybean")}Soybean is a single block crop. Soybean seeds can be planted on farmland and will produce $(thing)Soybean$() and $(thing)Soybean Seeds$() as a product.', title='Soybean').link('tfc:seeds/soybean').link('tfc:food/soybean').anchor('soybean'),
-            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/entisol', 'tfc:crop/soybean[age=%d]' % i) for i in range(7)]),
-            text(f'{detail_crop("squash")}Squash is a single block crop. Squash seeds can be planted on farmland and will produce $(thing)Squash$() and $(thing)Squash Seeds$() as a product.', title='Squash').link('tfc:seeds/squash').link('tfc:food/squash').anchor('squash'),
-            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/entisol', 'tfc:crop/squash[age=%d]' % i) for i in range(8)]),
-            text(f'{detail_crop("sugarcane")}Sugarcane is a two block tall crop. Sugarcane seeds can be planted on farmland, will grow two blocks tall, and will produce $(thing)Sugarcane$() and $(thing)Sugarcane Seeds$() as a product. Sugarcane can be used to make $(thing)Sugar$().', title='Sugarcane').link('tfc:seeds/sugarcane').link('tfc:food/sugarcane').anchor('sugarcane'),
-            multimultiblock('', *[multiblock('', '', False, (('X',), ('Y',), ('Z',), ('0',)), {
-                'X': 'tfc:crop/sugarcane[age=%d,part=top]' % i if i >= 4 else 'minecraft:air',
-                'Y': 'tfc:crop/sugarcane[age=%d,part=bottom]' % i,
-                'Z': 'tfc:farmland/entisol',
-            }) for i in range(8)]),
             text(f'{detail_crop("tomato")}Tomatoes are a climbing two block tall crop. Tomato seeds can be planted on farmland, will grow two blocks tall if a stick is present, and will produce $(thing)Tomatoes$() and $(thing)Tomato Seeds$() as a product.', title='Tomatoes').link('tfc:seeds/tomato').link('tfc:food/tomato').anchor('tomatoes'),
             multimultiblock('The stick is required in order for the crop to fully grow.', *[multiblock('', '', False, (('X',), ('Y',), ('Z',), ('0',)), {
                 'X': 'tfc:crop/tomato[age=%d,part=top,stick=true]' % i,
                 'Y': 'tfc:crop/tomato[age=%d,part=bottom,stick=true]' % i,
-                'Z': 'tfc:farmland/entisol',
+                'Z': 'tfc:farmland/oxisol',
+            }) for i in range(8)]),
+            text(f'{detail_crop("red_bell_pepper")}Red Bell Peppers are a pickable crop. When they are near mature, they can be harvested with $(item)$(k:key.use)$() to obtain Green Bell Peppers. Harvesting with $(item)$(k:key.use)$() allows the plant to grow more peppers in the future rather than destroying the plant.', title='Red Bell Peppers').link('tfc:seeds/red_bell_pepper').anchor('red_bell_pepper'),
+            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/oxisol', 'tfc:crop/red_bell_pepper[age=%d]' % i) for i in range(7)]),
+            text(f'{detail_crop("yellow_bell_pepper")}Yellow Bell Peppers are a pickable crop. When they are near mature, they can be harvested with $(item)$(k:key.use)$() to obtain Green Bell Peppers. Harvesting with $(item)$(k:key.use)$() allows the plant to grow more peppers in the future rather than destroying the plant.', title='Yellow Bell Peppers').link('tfc:seeds/yellow_bell_pepper').anchor('yellow_bell_pepper'),
+            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/oxisol', 'tfc:crop/yellow_bell_pepper[age=%d]' % i) for i in range(7)]),
+            text(f'{detail_crop("onion")}Onions are a single block crop. Onion seeds can be planted on farmland and will produce $(thing)Onions$() and $(thing)Onion Seeds$() as a product.', title='Onions').link('tfc:seeds/onion').link('tfc:food/onion').anchor('onion'),
+            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/alfisol', 'tfc:crop/onion[age=%d]' % i) for i in range(7)]),
+            text(f'{detail_crop("squash")}Squash is a single block crop. Squash seeds can be planted on farmland and will produce $(thing)Squash$() and $(thing)Squash Seeds$() as a product.', title='Squash').link('tfc:seeds/squash').link('tfc:food/squash').anchor('squash'),
+            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/entisol', 'tfc:crop/squash[age=%d]' % i) for i in range(8)]),
+
+            # Cover
+            text(f'{detail_crop("alfalfa")}Alfalfa is a single block crop adapted to cold temperatures. Alfalfa seeds can be planted on farmland and will produce $(thing)Alfalfa$() and $(thing)Alfalfa Seeds$() as a product, while enriching the soil. Alfalfa can be used as a source of straw, or compost.', title='Alfalfa').link('tfc:seeds/alfalfa').link('tfc:alfalfa').anchor('alfalfa'),
+            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/mollisol', 'tfc:crop/lentil[age=%d]' % i) for i in range(6)]),
+            text(f'{detail_crop("canola")}Canola is a single block crop adapted to cold temperatures. Canola seeds can be planted on farmland and will produce $(thing)Canola$() and $(thing)Canola Seeds$() as a product, while enriching the soil. Canola can be used as a source of straw, or compost, and the seeds can be used for oil.', title='Canola').link('tfc:seeds/canola').link('tfc:canola').anchor('canola'),
+            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/mollisol', 'tfc:crop/lentil[age=%d]' % i) for i in range(6)]),
+            text(f'{detail_crop("radish")}Radishes are a single block crop adapted to cold temperatures. Radish seeds can be planted on farmland and will produce $(thing)Radishes$() and $(thing)Radish Seeds$() as a product, while enriching the soil. Radishes are not a very nutritious vegetable, but can be fed to many animals.', title='Radish').link('tfc:seeds/radish').link('tfc:radish').anchor('radish'),
+            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/mollisol', 'tfc:crop/lentil[age=%d]' % i) for i in range(6)]),
+
+            # Misc
+            text(f'{detail_crop("sugarcane")}Sugarcane is a two block tall crop. Sugarcane seeds can be planted on farmland, will grow two blocks tall, and will produce $(thing)Sugarcane$() and $(thing)Sugarcane Seeds$() as a product. Sugarcane can be used to make $(thing)Sugar$().', title='Sugarcane').link('tfc:seeds/sugarcane').link('tfc:food/sugarcane').anchor('sugarcane'),
+            multimultiblock('', *[multiblock('', '', False, (('X',), ('Y',), ('Z',), ('0',)), {
+                'X': 'tfc:crop/sugarcane[age=%d,part=top]' % i if i >= 4 else 'minecraft:air',
+                'Y': 'tfc:crop/sugarcane[age=%d,part=bottom]' % i,
+                'Z': 'tfc:farmland/andisol',
             }) for i in range(8)]),
             text(f'{detail_crop("jute")}Jute is a two block tall crop. Jute seeds can be planted on farmland, will grow two blocks tall, and will produce $(thing)Jute$() and $(thing)Jute Seeds$() as a product.', title='Jute').link('tfc:seeds/jute').link('tfc:jute').anchor('jute'),
             multimultiblock('', *[multiblock('', '', False, (('X',), ('Y',), ('Z',), ('0',)), {
@@ -1391,7 +1427,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             multimultiblock('', *[multiblock('', '', False, (('X',), ('Y',), ('Z',), ('0',)), {
                 'X': 'tfc:crop/papyrus[age=%d,part=top]' % i if i >= 3 else 'minecraft:air',
                 'Y': 'tfc:crop/papyrus[age=%d,part=bottom]' % i,
-                'Z': 'tfc:farmland/entisol',
+                'Z': 'tfc:farmland/fluvisol',
             }) for i in range(6)]),
         )),
         entry('mechanical_power', 'Mechanical Power', 'tfc:wood/water_wheel/oak', pages=(
@@ -1469,7 +1505,7 @@ def make_crop_table(start_index: int, end_index: int) -> List[str | Dict[str, An
 
 def detail_crop(crop: str) -> str:
     data = CROPS[crop]
-    string= '$(bold)$(l:the_world/climate#temperature)Temperature$(): %d - %d °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): %d - %d %%$(br)' % (data.min_temp, data.max_temp, data.min_hydration, data.max_hydration)
+    string= '$(bold)$(l:the_world/climate#temperature)Temperature$(): %d - %d °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): %d - %d %%$(br)$(bold)Category$(): %s$(br)$(br)' % (data.min_temp, data.max_temp, data.min_hydration, data.max_hydration, data.category.title())
     if data.nitrogen < 0:
         n = '$(bold)$(b)N: +%s ' % -data.nitrogen
     else:

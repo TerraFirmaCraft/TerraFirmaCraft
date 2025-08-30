@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "肥料は、$(l:mechanics/crops)作物$() に栄養素を与えるために使用されます。 $(item)$(k:key.use)$() を手に肥料を持って押すと、$(thing)農地$() または $(thing)作物$() に栄養を追加します。 パーティクルが表示され、肥料が追加されたことを示します。",
+      "text": "Fertilizers are used to add nutrients to $(l:mechanics/crops)crops$(). $(item)$(k:key.use)$() with a fertilizer in your hand on some $(thing)Farmland$() or a $(thing)Crop$() to add the nutrients. Particles should appear, indicating the fertilizer was added.$(br)The effectiveness of fertilizers are influenced by the type of $(l:mechanics/farmland)Farmland$() they are used on.",
       "title": "Fertilization"
     },
     {
@@ -20,6 +20,12 @@
       "item": "minecraft:bone_meal",
       "link_recipes": false,
       "text": "骨粉は骨を砕いて作られます。以下の栄養素が含まれています。 $(br)$(li)$(6)リン: 10$()"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:food/shellfish",
+      "link_recipes": false,
+      "text": "Shellfish can be obtained by killing some aquatic invertebrates. $(br)$(li)$(6)Phosphorous: 15$()"
     },
     {
       "type": "patchouli:spotlight",
