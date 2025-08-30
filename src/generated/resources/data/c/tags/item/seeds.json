@@ -1,6 +1,9 @@
 {
   "values": [
+    "tfc:seeds/cassava",
     "tfc:seeds/green_bean",
+    "tfc:seeds/lentil",
+    "tfc:seeds/peanut",
     "tfc:seeds/soybean",
     "tfc:seeds/barley",
     "tfc:seeds/oat",
@@ -20,6 +23,9 @@
     "tfc:seeds/yellow_bell_pepper",
     "tfc:seeds/pumpkin",
     "tfc:seeds/melon",
+    "tfc:seeds/alfalfa",
+    "tfc:seeds/canola",
+    "tfc:seeds/radish",
     "tfc:seeds/jute",
     "tfc:seeds/sugarcane",
     "tfc:seeds/papyrus"

@@ -1,4 +1,5 @@
 {
+  "dairy": 0.3,
   "decay_modifier": 2.5,
   "fruit": 1.5,
   "grain": 1.0,
@@ -6,6 +7,7 @@
   "ingredient": {
     "item": "minecraft:pumpkin_pie"
   },
+  "protein": 1.0,
   "saturation": 2.0,
   "water": 5.0
 }

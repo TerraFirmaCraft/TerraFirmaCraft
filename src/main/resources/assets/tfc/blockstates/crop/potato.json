@@ -21,9 +21,6 @@
     },
     "age=6": {
       "model": "tfc:block/crop/potato_age_6"
-    },
-    "age=7": {
-      "model": "tfc:block/crop/potato_age_7"
     }
   }
 }

@@ -104,7 +104,7 @@ public final class CropHelpers
         final float posPForGrowth = Math.max(0, pForGrowth);
         final float posKForGrowth = Math.max(0, kForGrowth);
 
-        final float nutrientsForGrowth = posNForGrowth + posPForGrowth + posKForGrowth;
+        float nutrientsForGrowth = posNForGrowth + posPForGrowth + posKForGrowth;
 
         // Required nutrients for this growth tick
         final float nRequired = NUTRIENT_CONSUMPTION * tickDelta * nForGrowth;
@@ -118,7 +118,7 @@ public final class CropHelpers
         float nutrientsAvailable = 0;
 
         // How many nutrients were absorbed relative to the crop's capacity
-        if (level.getBlockEntity(sourcePos) instanceof IFarmland farmland)
+        if (level.getBlockEntity(sourcePos) instanceof IFarmland farmland && nutrientsForGrowth > 0)
         {
             // Sum of all nutrients available for growth
             nutrientsAvailable = (
@@ -140,6 +140,11 @@ public final class CropHelpers
             crop.addNutrients(nConsumed, pConsumed, kConsumed);
 
             nutrientsConsumed += nConsumed + pConsumed + kConsumed;
+        }
+        else
+        {
+            // Avoids division by zero
+            nutrientsForGrowth = 1f;
         }
 
         final float growthModifier = TFCConfig.SERVER.cropGrowthModifier.get().floatValue(); // Higher = Slower growth

@@ -1,6 +1,9 @@
 {
   "values": [
+    "tfc:wild_crop/cassava",
     "tfc:wild_crop/green_bean",
+    "tfc:wild_crop/lentil",
+    "tfc:wild_crop/peanut",
     "tfc:wild_crop/soybean",
     "tfc:wild_crop/barley",
     "tfc:wild_crop/oat",
@@ -20,6 +23,9 @@
     "tfc:wild_crop/yellow_bell_pepper",
     "tfc:wild_crop/pumpkin",
     "tfc:wild_crop/melon",
+    "tfc:wild_crop/alfalfa",
+    "tfc:wild_crop/canola",
+    "tfc:wild_crop/radish",
     "tfc:wild_crop/jute",
     "tfc:wild_crop/sugarcane",
     "tfc:wild_crop/papyrus"

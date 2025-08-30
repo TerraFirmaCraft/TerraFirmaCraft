@@ -1,0 +1,10 @@
+{
+  "decay_modifier": 1.0,
+  "hunger": 4,
+  "ingredient": {
+    "item": "tfc:food/peanut"
+  },
+  "protein": 0.5,
+  "saturation": 2.0,
+  "vegetables": 0.5
+}

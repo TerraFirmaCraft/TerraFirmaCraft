@@ -222,6 +222,8 @@ public final class TFCItems
     public static final ItemId GOAT_HORN = register("goat_horn");
     public static final ItemId GLOW_ARROW = register("glow_arrow", () -> new GlowArrowItem(new Properties()));
     public static final ItemId GLUE = register("glue");
+    public static final ItemId ALFALFA = register("alfalfa");
+    public static final ItemId CANOLA = register("canola");
     public static final ItemId JUTE = register("jute");
     public static final ItemId JUTE_FIBER = register("jute_fiber");
     public static final ItemId JUTE_NET = register("jute_net");

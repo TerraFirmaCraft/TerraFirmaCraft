@@ -402,6 +402,8 @@ public final class TFCCreativeTabs
         out.accept(TFCItems.KAOLIN_CLAY);
         out.accept(TFCItems.GLUE);
         out.accept(TFCItems.GOAT_HORN);
+        out.accept(TFCItems.ALFALFA);
+        out.accept(TFCItems.CANOLA);
         out.accept(TFCItems.JUTE);
         out.accept(TFCItems.JUTE_FIBER);
         out.accept(TFCItems.OLIVE_PASTE);

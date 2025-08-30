@@ -359,6 +359,10 @@ public interface CraftingRecipes extends Recipes
                 .input(blocks.apply(SoilBlockType.MUD))
                 .input(TFCBlocks.TREE_ROOTS)
                 .shapeless(blocks.apply(SoilBlockType.MUDDY_ROOTS));
+            recipe()
+                .input(blocks.apply(SoilBlockType.DIRT))
+                .input(Tags.Items.GRAVELS)
+                .shapeless(blocks.apply(SoilBlockType.COARSE_DIRT), 2);
 
             for (int n = 1; n <= 8; n++)
                 recipe("" + n)
@@ -1172,6 +1176,12 @@ public interface CraftingRecipes extends Recipes
             Ingredient.of(TFCTags.Items.FLUXSTONE),
             TFCItems.POWDERS.get(Powder.FLUX), 2
         );
+        recipe("from_alfalfa")
+            .input(TFCItems.ALFALFA)
+            .shapeless(TFCItems.STRAW, 2);
+        recipe("from_canola")
+            .input(TFCItems.CANOLA)
+            .shapeless(TFCItems.STRAW);
     }
 
     /**

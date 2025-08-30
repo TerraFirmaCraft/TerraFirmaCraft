@@ -2,6 +2,18 @@
   "__comment__": "This file was automatically created by mcresources",
   "parent": "tfc:world/seeds",
   "criteria": {
+    "cassava": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:seeds/cassava"
+            ]
+          }
+        ]
+      }
+    },
     "green_bean": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
@@ -9,6 +21,30 @@
           {
             "items": [
               "tfc:seeds/green_bean"
+            ]
+          }
+        ]
+      }
+    },
+    "lentil": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:seeds/lentil"
+            ]
+          }
+        ]
+      }
+    },
+    "peanut": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:seeds/peanut"
             ]
           }
         ]
@@ -242,6 +278,42 @@
         ]
       }
     },
+    "canola": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:seeds/canola"
+            ]
+          }
+        ]
+      }
+    },
+    "radish": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:seeds/radish"
+            ]
+          }
+        ]
+      }
+    },
+    "alfalfa": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:seeds/alfalfa"
+            ]
+          }
+        ]
+      }
+    },
     "jute": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
@@ -297,7 +369,16 @@
   },
   "requirements": [
     [
+      "cassava"
+    ],
+    [
       "green_bean"
+    ],
+    [
+      "lentil"
+    ],
+    [
+      "peanut"
     ],
     [
       "soybean"
@@ -355,6 +436,15 @@
     ],
     [
       "melon"
+    ],
+    [
+      "canola"
+    ],
+    [
+      "radish"
+    ],
+    [
+      "alfalfa"
     ],
     [
       "jute"

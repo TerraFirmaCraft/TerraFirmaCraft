@@ -1,10 +1,10 @@
 {
   "decay_modifier": 2.5,
-  "fruit": 0.75,
+  "fruit": 1.0,
   "hunger": 4,
   "ingredient": {
     "item": "tfc:food/melon_slice"
   },
-  "saturation": 0.2,
-  "water": 5.0
+  "saturation": 0.4,
+  "water": 10.0
 }

@@ -482,10 +482,10 @@ WOODS: dict[str, Wood] = {
 # DO NOT EDIT DIRECTLY - Imported directly from spreadsheet
 # https://docs.google.com/spreadsheets/d/1USmCWiRrj5205WyoRNNTUkoNrqm9AStRzwnD1v6633o
 CROPS: dict[str, Crop] = {
-    # 'cassava': Crop('default', 6, 10.4, 40, 260, 500, 45, 100, -50, 40, 20, 'normal', None), TODO: Add new crops
+    'cassava': Crop('default', 6, 10.4, 40, 260, 500, 45, 100, -50, 40, 20, 'normal', None),
     'green_bean': Crop('double_stick', 8, -4, 19.4, 150, 410, 25, 90, -80, 50, 40, 'normal', None),
-    # 'lentil': Crop('default', 6, -7.6, 19.4, 75, 190, 15, 50, -80, 20, 20, None, None),
-    # 'peanut': Crop('default', 6, 12.2, 40, 130, 360, 20, 80, -90, 50, 50, None, None),
+    'lentil': Crop('default', 6, -7.6, 19.4, 75, 190, 15, 50, -80, 20, 20, None, None),
+    'peanut': Crop('default', 6, 12.2, 40, 130, 360, 20, 80, -90, 50, 50, None, None),
     'soybean': Crop('default', 7, -9.4, 15.8, 160, 410, 25, 90, -80, 60, 30, 'normal', None),
     'barley': Crop('default', 8, -9.4, 17.6, 70, 310, 10, 70, 75, -20, -20, None, 'edge'),
     'oat': Crop('default', 8, -9.4, 15.8, 140, 400, 25, 85, 100, -35, -25, None, 'edge'),
@@ -498,16 +498,16 @@ CROPS: dict[str, Crop] = {
     'carrot': Crop('default', 5, -13, 23., 100, 400, 15, 85, 50, 30, 40, None, None),
     'garlic': Crop('default', 5, -5.8, 15.8, 60, 310, 10, 70, 40, 20, 50, None, None),
     'onion': Crop('default', 7, -7.6, 21.2, 100, 390, 15, 85, 40, 40, 40, None, None),
-    'potato': Crop('default', 8, -9.4, 15.8, 100, 390, 15, 85, 40, 20, 60, None, None),
+    'potato': Crop('default', 7, -9.4, 15.8, 100, 390, 15, 85, 40, 20, 60, None, None),
     'squash': Crop('default', 8, -9.4, 19.4, 90, 390, 15, 85, 25, 45, 50, 'normal', None),
-    'tomato': Crop('double_stick', 8, 1.4, 40, 120, 390, 20, 85, 35, 45, 50, 'normal', None),
+    'tomato': Crop('double_stick', 8, 1.4, 40, 120, 390, 20, 85, 40, 50, 60, 'normal', None),
     'red_bell_pepper': Crop('pickable', 7, 12.2, 40, 190, 450, 30, 95, 30, 40, 50, None, None),
     'yellow_bell_pepper': Crop('pickable', 7, 12.2, 40, 190, 450, 30, 95, 30, 40, 50, None, None),
     'pumpkin': Crop('spreading', 8, -9.4, 23., 120, 390, 20, 85, 40, 30, 60, None, None),
     'melon': Crop('spreading', 8, 5, 40, 200, 500, 35, 100, 30, 40, 65, None, None),
-    # 'canola': Crop('default', 6, -13, 19.4, 120, 320, 20, 75, -30, -60, -100, None, 'edge'),
-    # 'radish': Crop('default', 6, -11.2, 23., 190, 410, 30, 90, -50, -100, -60, None, None),
-    # 'alfalfa': Crop('default', 6, -9.4, 15.8, 240, 480, 40, 100, -80, -50, -60, None, 'edge'),
+    'canola': Crop('default', 6, -13, 19.4, 120, 320, 20, 75, -30, -60, -100, None, 'edge'),
+    'radish': Crop('default', 6, -11.2, 23., 190, 410, 30, 90, -50, -100, -60, None, None),
+    'alfalfa': Crop('default', 6, -9.4, 15.8, 240, 480, 40, 100, -80, -50, -60, None, 'edge'),
     'jute': Crop('double', 6, 1.4, 19.4, 100, 410, 15, 90, 60, 40, -40, None, None),
     'papyrus': Crop('double', 6, 12.2, 40, 310, 500, 50, 100, 60, -40, 40, None, None),
     'sugarcane': Crop('double', 8, 17.6, 40, 160, 500, 25, 100, 50, 50, 50, None, None),
@@ -839,7 +839,7 @@ VESSEL_TYPES = {
 }
 
 SIMPLE_BLOCKS = ('peat', 'aggregate', 'fire_bricks', 'fire_clay_block', 'smooth_mud_bricks')
-SIMPLE_ITEMS = ('alabaster_brick', 'bone_needle', 'blank_disc', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'cactus_wood', 'compost', 'daub', 'dirty_jute_net', 'dried_cactus_wood', 'empty_jar', 'empty_jar_with_lid', 'fire_clay', 'goat_horn', 'gem_saw', 'glow_arrow', 'glue', 'hematitic_glass_batch', 'jacks', 'jar_lid', 'jute', 'jute_fiber', 'jute_net', 'kaolin_clay', 'lamp_glass', 'lens', 'mortar', 'olive_paste', 'olivine_glass_batch', 'paddle', 'papyrus', 'papyrus_strip', 'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'sandpaper', 'silica_glass_batch', 'silk_cloth', 'soaked_papyrus_strip', 'soot', 'spindle', 'stick_bunch', 'stick_bundle', 'straw', 'treated_hide', 'unrefined_paper', 'volcanic_glass_batch', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
+SIMPLE_ITEMS = ('alabaster_brick', 'bone_needle', 'blank_disc', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'cactus_wood', 'compost', 'daub', 'dirty_jute_net', 'dried_cactus_wood', 'empty_jar', 'empty_jar_with_lid', 'fire_clay', 'goat_horn', 'gem_saw', 'glow_arrow', 'glue', 'hematitic_glass_batch', 'jacks', 'jar_lid', 'canola', 'alfalfa', 'jute', 'jute_fiber', 'jute_net', 'kaolin_clay', 'lamp_glass', 'lens', 'mortar', 'olive_paste', 'olivine_glass_batch', 'paddle', 'papyrus', 'papyrus_strip', 'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'sandpaper', 'silica_glass_batch', 'silk_cloth', 'soaked_papyrus_strip', 'soot', 'spindle', 'stick_bunch', 'stick_bundle', 'straw', 'treated_hide', 'unrefined_paper', 'volcanic_glass_batch', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
 
 GENERIC_POWDERS = {
     'charcoal': 'black',
@@ -897,7 +897,7 @@ SIMPLE_FRESHWATER_FISH = ('bluegill', 'crappie', 'lake_trout', 'largemouth_bass'
 
 GRAINS = ('barley', 'maize', 'oat', 'rice', 'rye', 'wheat')
 GRAIN_SUFFIXES = ('', '_grain', '_flour', '_dough', '_bread', '_bread_sandwich', '_bread_jam_sandwich')
-MISC_FOODS = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_pepper', 'onion', 'potato', 'baked_potato', 'red_bell_pepper', 'soybean', 'squash', 'tomato', 'yellow_bell_pepper', 'cheese', 'cooked_egg', 'boiled_egg', 'fresh_seaweed', 'dried_seaweed', 'dried_kelp', 'cattail_root', 'taro_root', 'sugarcane', 'cooked_rice', 'pumpkin_chunks', 'melon_slice')
+MISC_FOODS = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_pepper', 'onion', 'potato', 'baked_potato', 'red_bell_pepper', 'soybean', 'squash', 'tomato', 'yellow_bell_pepper', 'cheese', 'cooked_egg', 'boiled_egg', 'fresh_seaweed', 'dried_seaweed', 'dried_kelp', 'cattail_root', 'taro_root', 'sugarcane', 'cooked_rice', 'pumpkin_chunks', 'melon_slice', 'cassava', 'lentil', 'peanut', 'radish')
 MEATS = ('beef', 'pork', 'chicken', 'quail', 'mutton', 'bear', 'horse_meat', 'pheasant', 'turkey', 'peafowl', 'grouse', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'tropical_fish', 'turtle', 'calamari', 'shellfish', *SIMPLE_FRESHWATER_FISH, 'frog_legs', 'fox')
 NUTRIENTS = ('grain', 'fruit', 'vegetables', 'protein', 'dairy')
 
@@ -1749,6 +1749,7 @@ DEFAULT_LANG = {
     'tfc.enum.rockdisplaycategory.metamorphic': 'Metamorphic',
     'tfc.enum.foresttype.sparse': 'sparse',
     'tfc.enum.foresttype.grassland': 'Grassland',
+    'tfc.enum.foresttype.clearing': 'Clearing',
     'tfc.enum.foresttype.shrubland': 'Shrubland',
     'tfc.enum.foresttype.primary_monoculture': 'Primary Monoculture',
     'tfc.enum.foresttype.primary_diverse': 'Primary',

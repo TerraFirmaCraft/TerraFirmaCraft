@@ -2,7 +2,7 @@
   "ingredient": {
     "item": "tfc:groundcover/guano"
   },
-  "nitrogen": 0.8,
+  "nitrogen": 0.4,
   "phosphorus": 0.5,
   "potassium": 0.1
 }

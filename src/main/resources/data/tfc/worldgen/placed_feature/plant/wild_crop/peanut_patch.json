@@ -1,0 +1,22 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:plant/wild_crop/peanut_patch",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 90
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "tfc:climate",
+      "min_temperature": 12.2,
+      "max_temperature": 40,
+      "min_groundwater": 130,
+      "max_groundwater": 360,
+      "min_elevation": -64,
+      "max_elevation": 320
+    }
+  ]
+}

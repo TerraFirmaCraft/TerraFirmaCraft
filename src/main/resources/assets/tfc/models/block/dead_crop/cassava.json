@@ -2,6 +2,6 @@
   "__comment__": "This file was automatically created by mcresources",
   "parent": "block/crop",
   "textures": {
-    "crop": "tfc:block/crop/potato_7"
+    "crop": "tfc:block/crop/cassava_dead"
   }
 }

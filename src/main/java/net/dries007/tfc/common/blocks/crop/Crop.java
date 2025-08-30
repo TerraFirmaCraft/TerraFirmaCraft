@@ -32,7 +32,10 @@ public enum Crop implements StringRepresentable
 {
 
     // Legumes
+    CASSAVA(-0.5f, 0.4f, 0.2f, 6), // Default, 6
     GREEN_BEAN(-0.8f, 0.5f, 0.4f, 4, 4, true), // Double, Stick, 4 -> 4
+    LENTIL(-0.8f, 0.2f, 0.2f, 6), // Default, 6
+    PEANUT(-0.9f, 0.5f, 0.5f, 6), // Default, 6
     SOYBEAN(-.80f, .60f, .30f, 7), // Default, 7
 
     // Grains
@@ -60,6 +63,11 @@ public enum Crop implements StringRepresentable
     // Spreading
     PUMPKIN(0.4f, 0.3f, 0.6f, 8, () -> TFCBlocks.PUMPKIN), // Spreading, 8
     MELON(0.3f, 0.4f, 0.65f, 8, () -> TFCBlocks.MELON), // Spreading, 8
+
+    // Cover Crops
+    ALFALFA(-0.8f, -0.5f, -0.6f, 6), // Default, 6
+    CANOLA(-0.3f, -0.6f, -1f, 6), // Default, 6
+    RADISH(-0.5f, -1f, -0.6f, 6), // Default, 6
 
     // Miscellaneous
     JUTE(0.6f, 0.4f, -0.4f, 3, 3, false), // Double, 3 -> 3

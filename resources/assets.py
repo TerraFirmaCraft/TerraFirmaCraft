@@ -1180,7 +1180,7 @@ def generate(rm: ResourceManager):
 
     # Crops
     for crop, crop_data in CROPS.items():
-        name = 'tfc:' + crop if crop == 'jute' or crop == 'papyrus' else 'tfc:food/%s' % crop
+        name = 'tfc:' + crop if crop == 'jute' or crop == 'papyrus' or crop == 'alfalfa' or crop == 'canola' else 'tfc:food/%s' % crop
         if crop_data.type in ('default', 'spreading', 'pickable'):
             if crop_data.type == 'spreading':
                 rm.block_model(('crop', crop + '_side'), parent='tfc:block/crop/spreading_crop_side', textures={'crop': 'tfc:block/crop/%s_side' % crop})

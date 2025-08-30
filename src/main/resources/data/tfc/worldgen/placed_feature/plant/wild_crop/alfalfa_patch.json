@@ -1,0 +1,23 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:plant/wild_crop/alfalfa_patch",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 90
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "tfc:climate",
+      "min_temperature": -9.4,
+      "max_temperature": 15.8,
+      "min_groundwater": 240,
+      "max_groundwater": 480,
+      "max_forest": 2,
+      "min_elevation": -64,
+      "max_elevation": 320
+    }
+  ]
+}

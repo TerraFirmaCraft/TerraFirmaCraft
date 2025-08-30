@@ -96,6 +96,10 @@ public enum Food implements StringRepresentable
     SQUASH,
     TOMATO,
     YELLOW_BELL_PEPPER,
+    CASSAVA,
+    LENTIL,
+    PEANUT,
+    RADISH,
     // Non-Vegetables
     CHEESE,
     COOKED_EGG,

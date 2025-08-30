@@ -4,6 +4,6 @@
   "ingredient": {
     "item": "tfc:food/cabbage"
   },
-  "saturation": 0.5,
-  "vegetables": 1.0
+  "saturation": 1.0,
+  "vegetables": 2.0
 }

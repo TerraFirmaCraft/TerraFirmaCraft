@@ -1,9 +1,10 @@
 {
   "decay_modifier": 0.666,
+  "grain": 0.5,
   "hunger": 4,
   "ingredient": {
     "item": "tfc:food/potato"
   },
   "saturation": 0.5,
-  "vegetables": 1.0
+  "vegetables": 0.5
 }

@@ -14,6 +14,10 @@
     "tfc:food/sugarcane",
     "tfc:food/squash",
     "tfc:food/tomato",
-    "tfc:food/yellow_bell_pepper"
+    "tfc:food/yellow_bell_pepper",
+    "tfc:food/cassava",
+    "tfc:food/lentil",
+    "tfc:food/peanut",
+    "tfc:food/radish"
   ]
 }

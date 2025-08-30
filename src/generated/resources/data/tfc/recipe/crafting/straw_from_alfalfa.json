@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "tfc:alfalfa"
+    }
+  ],
+  "result": {
+    "count": 2,
+    "id": "tfc:straw"
+  }
+}

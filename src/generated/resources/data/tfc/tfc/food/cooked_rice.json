@@ -1,6 +1,6 @@
 {
   "decay_modifier": 1.0,
-  "grain": 1.0,
+  "grain": 1.5,
   "hunger": 4,
   "ingredient": {
     "item": "tfc:food/cooked_rice"
