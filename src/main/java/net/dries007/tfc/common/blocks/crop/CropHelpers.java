@@ -123,8 +123,8 @@ public final class CropHelpers
             // Sum of all nutrients available for growth
             nutrientsAvailable = (
                 Math.min(posNForGrowth, farmland.getNutrient(FarmlandBlockEntity.NutrientType.NITROGEN))
-                + Math.min(posPForGrowth, farmland.getNutrient(FarmlandBlockEntity.NutrientType.PHOSPHOROUS))
-                + Math.min(posKForGrowth, farmland.getNutrient(FarmlandBlockEntity.NutrientType.POTASSIUM))
+                    + Math.min(posPForGrowth, farmland.getNutrient(FarmlandBlockEntity.NutrientType.PHOSPHOROUS))
+                    + Math.min(posKForGrowth, farmland.getNutrient(FarmlandBlockEntity.NutrientType.POTASSIUM))
             );
 
             // Won't consume a nutrient beyond the amount required by the crop
@@ -284,19 +284,19 @@ public final class CropHelpers
      */
     public static float getSoilModifier(BlockState state)
     {
-        if(state.is(TFCTags.Blocks.VERY_RICH_FARMLAND))
+        if (Helpers.isBlock(state, TFCTags.Blocks.VERY_RICH_FARMLAND))
         {
             return 1.2f;
         }
-        if(state.is(TFCTags.Blocks.RICH_FARMLAND))
+        if (Helpers.isBlock(state, TFCTags.Blocks.RICH_FARMLAND))
         {
             return 1.1f;
         }
-        if(state.is(TFCTags.Blocks.POOR_FARMLAND))
+        if (Helpers.isBlock(state, TFCTags.Blocks.POOR_FARMLAND))
         {
             return 0.9f;
         }
-        if(state.is(TFCTags.Blocks.VERY_POOR_FARMLAND))
+        if (Helpers.isBlock(state, TFCTags.Blocks.VERY_POOR_FARMLAND))
         {
             return 0.8f;
         }

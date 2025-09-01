@@ -13,7 +13,9 @@ import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import com.google.common.collect.ImmutableMap;
+
 import net.dries007.tfc.common.blocks.*;
+
 import net.minecraft.core.Holder;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.Registries;
@@ -1374,43 +1376,119 @@ public interface CraftingRecipes extends Recipes
             input('X', input).pattern("XX", "XX").shaped(output, count);
         }
 
-        Builder damageInputs() { remainder.add(DamageCraftingRemainderModifier.INSTANCE); return this; }
+        Builder damageInputs()
+        {
+            remainder.add(DamageCraftingRemainderModifier.INSTANCE);
+            return this;
+        }
 
-        Builder copyOldestFood() { outputs.add(CopyOldestFoodModifier.INSTANCE); return this; }
-        Builder copyFood() { outputs.add(CopyFoodModifier.INSTANCE); return this; }
-        Builder copyForging() { needsAdvInput = true; return addOutputModifier(CopyForgingBonusModifier.INSTANCE); }
-        Builder copyInput() { needsAdvInput = true; return addOutputModifier(CopyInputModifier.INSTANCE); }
-        Builder addGlass() { needsAdvInput = true; return addOutputModifier(AddGlassModifier.INSTANCE); }
-        Builder addPowder() { return addOutputModifier(AddPowderModifier.INSTANCE); }
-        Builder addBait() { return addOutputModifier(AddBaitToRodModifier.INSTANCE); }
-        Builder extraProduct(ItemLike item) { return extraProduct(item, 1); }
-        Builder extraProduct(ItemLike item, int count) { return addOutputModifier(new ExtraProductModifier(new ItemStack(item, count))); }
-        Builder addTrait(Holder<FoodTrait> trait) { return addOutputModifier(AddTraitModifier.of(trait)); }
+        Builder copyOldestFood()
+        {
+            outputs.add(CopyOldestFoodModifier.INSTANCE);
+            return this;
+        }
 
-        Builder addOutputModifier(ItemStackModifier modifier) { outputs.add(modifier); return this; }
+        Builder copyFood()
+        {
+            outputs.add(CopyFoodModifier.INSTANCE);
+            return this;
+        }
 
-        Builder input(ItemLike item) { return input(item, 1); }
-        Builder input(ItemLike item, int count) { return input(Ingredient.of(item), count); }
-        Builder input(TagKey<Item> item) { return input(item, 1); }
-        Builder input(TagKey<Item> item, int count) { return input(Ingredient.of(item), count); }
-        Builder input(Ingredient item) { return input(item, 1); }
-        Builder input(Ingredient item, int count) { for (int n = 0; n < count; n++) ingredients.add(item); return this; }
+        Builder copyForging()
+        {
+            needsAdvInput = true;
+            return addOutputModifier(CopyForgingBonusModifier.INSTANCE);
+        }
 
-        Builder inputIsPrimary(ItemLike item) { return inputIsPrimary(Ingredient.of(item)); }
-        Builder inputIsPrimary(TagKey<Item> item) { return inputIsPrimary(Ingredient.of(item)); }
-        Builder inputIsPrimary(Ingredient item) { primaryInput = item; hasAdvInputShapeless = true; return input(item); }
+        Builder copyInput()
+        {
+            needsAdvInput = true;
+            return addOutputModifier(CopyInputModifier.INSTANCE);
+        }
 
-        Builder input(char key, TagKey<Item> input) { return input(key, Ingredient.of(input)); }
-        Builder input(char key, ItemLike input) { return input(key, Ingredient.of(input)); }
-        Builder input(char key, Ingredient input) { keys.put(key, input); return this; }
+        Builder addGlass()
+        {
+            needsAdvInput = true;
+            return addOutputModifier(AddGlassModifier.INSTANCE);
+        }
 
-        Builder source(int row, int col) { inputRow = row; inputCol = col; hasAdvInputShaped = true; return this; }
+        Builder addPowder() {return addOutputModifier(AddPowderModifier.INSTANCE);}
 
-        Builder pattern(String... pattern) { this.pattern.addAll(List.of(pattern)); return this; }
+        Builder addBait() {return addOutputModifier(AddBaitToRodModifier.INSTANCE);}
 
-        void shapeless(String name) { this.name = name; shapeless(ItemStack.EMPTY); }
-        void shapeless(ItemLike output) { shapeless(output, 1); }
-        void shapeless(ItemLike output, int count) { shapeless(new ItemStack(output, count)); }
+        Builder extraProduct(ItemLike item) {return extraProduct(item, 1);}
+
+        Builder extraProduct(ItemLike item, int count) {return addOutputModifier(new ExtraProductModifier(new ItemStack(item, count)));}
+
+        Builder addTrait(Holder<FoodTrait> trait) {return addOutputModifier(AddTraitModifier.of(trait));}
+
+        Builder addOutputModifier(ItemStackModifier modifier)
+        {
+            outputs.add(modifier);
+            return this;
+        }
+
+        Builder input(ItemLike item) {return input(item, 1);}
+
+        Builder input(ItemLike item, int count) {return input(Ingredient.of(item), count);}
+
+        Builder input(TagKey<Item> item) {return input(item, 1);}
+
+        Builder input(TagKey<Item> item, int count) {return input(Ingredient.of(item), count);}
+
+        Builder input(Ingredient item) {return input(item, 1);}
+
+        Builder input(Ingredient item, int count)
+        {
+            for (int n = 0; n < count; n++) ingredients.add(item);
+            return this;
+        }
+
+        Builder inputIsPrimary(ItemLike item) {return inputIsPrimary(Ingredient.of(item));}
+
+        Builder inputIsPrimary(TagKey<Item> item) {return inputIsPrimary(Ingredient.of(item));}
+
+        Builder inputIsPrimary(Ingredient item)
+        {
+            primaryInput = item;
+            hasAdvInputShapeless = true;
+            return input(item);
+        }
+
+        Builder input(char key, TagKey<Item> input) {return input(key, Ingredient.of(input));}
+
+        Builder input(char key, ItemLike input) {return input(key, Ingredient.of(input));}
+
+        Builder input(char key, Ingredient input)
+        {
+            keys.put(key, input);
+            return this;
+        }
+
+        Builder source(int row, int col)
+        {
+            inputRow = row;
+            inputCol = col;
+            hasAdvInputShaped = true;
+            return this;
+        }
+
+        Builder pattern(String... pattern)
+        {
+            this.pattern.addAll(List.of(pattern));
+            return this;
+        }
+
+        void shapeless(String name)
+        {
+            this.name = name;
+            shapeless(ItemStack.EMPTY);
+        }
+
+        void shapeless(ItemLike output) {shapeless(output, 1);}
+
+        void shapeless(ItemLike output, int count) {shapeless(new ItemStack(output, count));}
+
         void shapeless(ItemStack output)
         {
             assert pattern.isEmpty() && keys.build().isEmpty() : "Mixing shaped and shapeless recipes";
@@ -1422,9 +1500,16 @@ public interface CraftingRecipes extends Recipes
                 : new ShapelessRecipe("", CraftingBookCategory.MISC, output, ingredients));
         }
 
-        void shaped(String name) { this.name = name; shaped(ItemStack.EMPTY); }
-        void shaped(ItemLike output) { shaped(output, 1); }
-        void shaped(ItemLike output, int count) { shaped(new ItemStack(output, count)); }
+        void shaped(String name)
+        {
+            this.name = name;
+            shaped(ItemStack.EMPTY);
+        }
+
+        void shaped(ItemLike output) {shaped(output, 1);}
+
+        void shaped(ItemLike output, int count) {shaped(new ItemStack(output, count));}
+
         void shaped(ItemStack output)
         {
             assert ingredients.isEmpty() : "Mixing shaped and shapeless recipes";
@@ -1439,7 +1524,7 @@ public interface CraftingRecipes extends Recipes
 
         private Optional<ItemStackProvider> remainder()
         {
-            return remainder.isEmpty() ? Optional.empty() :  Optional.of(ItemStackProvider.of(ItemStack.EMPTY, remainder));
+            return remainder.isEmpty() ? Optional.empty() : Optional.of(ItemStackProvider.of(ItemStack.EMPTY, remainder));
         }
 
         private boolean isAdvanced()

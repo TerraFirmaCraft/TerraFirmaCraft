@@ -24,6 +24,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.neoforged.neoforge.common.util.TriState;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.util.Helpers;
 
 public class TFCBambooStalkBlock extends BambooStalkBlock
 {
@@ -49,7 +50,7 @@ public class TFCBambooStalkBlock extends BambooStalkBlock
             final TriState soilDecision = state.canSustainPlant(context.getLevel(), context.getClickedPos().below(), Direction.UP, this.defaultBlockState());
             if (soilDecision.isDefault())
             {
-                if (!state.is(BlockTags.BAMBOO_PLANTABLE_ON))
+                if (!Helpers.isBlock(state, BlockTags.BAMBOO_PLANTABLE_ON))
                 {
                     return null;
                 }
@@ -59,11 +60,11 @@ public class TFCBambooStalkBlock extends BambooStalkBlock
                 return null;
             }
 
-            if (state.is(TFCTags.Blocks.BAMBOO_SAPLING))
+            if (Helpers.isBlock(state, TFCTags.Blocks.BAMBOO_SAPLING))
             {
                 return this.defaultBlockState().setValue(AGE, 0);
             }
-            else if (state.is(TFCTags.Blocks.BAMBOO))
+            else if (Helpers.isBlock(state, TFCTags.Blocks.BAMBOO))
             {
                 int i = state.getValue(AGE) > 0 ? 1 : 0;
                 return this.defaultBlockState().setValue(AGE, i);
@@ -71,7 +72,7 @@ public class TFCBambooStalkBlock extends BambooStalkBlock
             else
             {
                 final BlockState aboveState = context.getLevel().getBlockState(context.getClickedPos().above());
-                return aboveState.is(TFCTags.Blocks.BAMBOO) ? this.defaultBlockState().setValue(AGE, aboveState.getValue(AGE)) : sapling.get().defaultBlockState();
+                return Helpers.isBlock(aboveState, TFCTags.Blocks.BAMBOO) ? this.defaultBlockState().setValue(AGE, aboveState.getValue(AGE)) : sapling.get().defaultBlockState();
             }
         }
     }
@@ -83,7 +84,7 @@ public class TFCBambooStalkBlock extends BambooStalkBlock
         {
             level.scheduleTick(pos, this, 1);
         }
-        if (direction == Direction.UP && neighborState.is(TFCTags.Blocks.BAMBOO) && neighborState.getValue(AGE) > state.getValue(AGE))
+        if (direction == Direction.UP && Helpers.isBlock(neighborState, TFCTags.Blocks.BAMBOO) && neighborState.getValue(AGE) > state.getValue(AGE))
         {
             level.setBlock(pos, state.cycle(AGE), 2);
         }
@@ -100,9 +101,9 @@ public class TFCBambooStalkBlock extends BambooStalkBlock
         BambooLeaves leafState = BambooLeaves.NONE;
         if (age >= 1)
         {
-            if (belowState.is(TFCTags.Blocks.BAMBOO) && belowState.getValue(LEAVES) != BambooLeaves.NONE)
+            if (Helpers.isBlock(belowState2, TFCTags.Blocks.BAMBOO) && belowState.getValue(LEAVES) != BambooLeaves.NONE)
             {
-                if (belowState.is(TFCTags.Blocks.BAMBOO) && belowState.getValue(LEAVES) != BambooLeaves.NONE)
+                if (Helpers.isBlock(belowState, TFCTags.Blocks.BAMBOO) && belowState.getValue(LEAVES) != BambooLeaves.NONE)
                 {
                     leafState = BambooLeaves.LARGE;
                     if (belowState2.is(TFCTags.Blocks.BAMBOO))

@@ -55,7 +55,7 @@ public class BlastFurnaceBlock extends DeviceBlock implements IBellowsConsumer
 
     public static boolean isBlastFurnaceInsulationBlock(BlockState state)
     {
-        return state.is(TFCTags.Blocks.BLAST_FURNACE_INSULATION);
+        return Helpers.isBlock(state, TFCTags.Blocks.BLAST_FURNACE_INSULATION);
     }
 
     /**

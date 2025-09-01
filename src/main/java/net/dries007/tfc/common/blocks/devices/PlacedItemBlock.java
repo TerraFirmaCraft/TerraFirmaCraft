@@ -163,7 +163,7 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
             .ifPresent(entity -> entity.ejectInventoryIfNeeded(newState));
 
         // Default super() behavior
-        if (state.hasBlockEntity() && (!state.is(newState.getBlock()) || !newState.hasBlockEntity()))
+        if (state.hasBlockEntity() && (!Helpers.isBlock(state, newState.getBlock()) || !newState.hasBlockEntity()))
         {
             level.removeBlockEntity(pos);
         }

@@ -150,7 +150,7 @@ public sealed class ChunkData
     }
 
     // Minimum hydration a block can experience due to rain
-    public float getMinRainfallHydration (BlockPos pos)
+    public float getMinRainfallHydration(BlockPos pos)
     {
         final int x = pos.getX();
         final int y = pos.getY();
@@ -161,7 +161,7 @@ public sealed class ChunkData
     }
 
     // Maximum hydration a block can experience due to rain
-    public float getMaxRainfallHydration (BlockPos pos)
+    public float getMaxRainfallHydration(BlockPos pos)
     {
         final int x = pos.getX();
         final int y = pos.getY();

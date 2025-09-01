@@ -16,6 +16,7 @@ import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.ClimateModel;
 import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.world.chunkdata.ChunkData;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -87,11 +88,11 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
         final MutableComponent tooltip = Component.translatable("tfc.tooltip.farmland.hydration_simple", hydration);
 
         tooltip.append(switch (validRange.checkHydration(hydration, allowWiggle))
-            {
-                case VALID -> Component.translatable("tfc.tooltip.farmland.just_right");
-                case LOW -> Component.translatable("tfc.tooltip.farmland.hydration_too_low", validRange.getMinHydration(allowWiggle));
-                case HIGH -> Component.translatable("tfc.tooltip.farmland.hydration_too_high", validRange.getMaxHydration(allowWiggle));
-            });
+        {
+            case VALID -> Component.translatable("tfc.tooltip.farmland.just_right");
+            case LOW -> Component.translatable("tfc.tooltip.farmland.hydration_too_low", validRange.getMinHydration(allowWiggle));
+            case HIGH -> Component.translatable("tfc.tooltip.farmland.hydration_too_high", validRange.getMaxHydration(allowWiggle));
+        });
         return tooltip;
     }
 
@@ -110,11 +111,11 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
         final MutableComponent tooltip = Component.translatable(translationKey, String.format("%.1f", temperature));
 
         tooltip.append(switch (validRange.checkTemperature(temperature, allowWiggle))
-            {
-                case VALID -> Component.translatable("tfc.tooltip.farmland.just_right");
-                case LOW -> Component.translatable("tfc.tooltip.farmland.temperature_too_low", validRange.getMinTemperature(allowWiggle));
-                case HIGH -> Component.translatable("tfc.tooltip.farmland.temperature_too_high", validRange.getMaxTemperature(allowWiggle));
-            });
+        {
+            case VALID -> Component.translatable("tfc.tooltip.farmland.just_right");
+            case LOW -> Component.translatable("tfc.tooltip.farmland.temperature_too_low", validRange.getMinTemperature(allowWiggle));
+            case HIGH -> Component.translatable("tfc.tooltip.farmland.temperature_too_high", validRange.getMaxTemperature(allowWiggle));
+        });
         return tooltip;
     }
 

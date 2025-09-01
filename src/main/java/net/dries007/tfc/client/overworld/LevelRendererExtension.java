@@ -630,10 +630,10 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
                         );
 
                         final ParticleOptions options = !fluid.is(FluidTags.LAVA)
-                            && !state.is(TFCTags.Blocks.SMOKES_IN_RAIN)
+                            && !Helpers.isBlock(state, TFCTags.Blocks.SMOKES_IN_RAIN)
                             && !CampfireBlock.isLitCampfire(state)
-                            && !(state.is(TFCBlocks.FIREPIT.get()) && state.getValue(FirepitBlock.LIT))
-                            && !(state.is(TFCBlocks.CHARCOAL_FORGE.get()) && state.getValue(CharcoalForgeBlock.HEAT) > 0)
+                            && !(Helpers.isBlock(state, TFCBlocks.FIREPIT.get()) && state.getValue(FirepitBlock.LIT))
+                            && !(Helpers.isBlock(state, TFCBlocks.CHARCOAL_FORGE.get()) && state.getValue(CharcoalForgeBlock.HEAT) > 0)
                             ? ParticleTypes.RAIN
                             : ParticleTypes.SMOKE;
                         level.addParticle(options, cursor.getX() + offsetX, cursor.getY() + offsetY, cursor.getZ() + offsetZ, 0.0, 0.0, 0.0);

@@ -57,7 +57,7 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock, 
             while (true)
             {
                 BlockState foundState = level.getBlockState(mutable);
-                if (!foundState.is(TFCBlocks.BANANA_PLANT.get())) break;
+                if (!Helpers.isBlock(foundState, TFCBlocks.BANANA_PLANT.get())) break;
                 level.setBlockAndUpdate(mutable, deadState.setValue(STAGE, foundState.getValue(STAGE)));
                 mutable.move(Direction.DOWN);
             }

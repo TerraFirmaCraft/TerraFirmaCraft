@@ -89,9 +89,9 @@ public abstract class TFCCactusBedBlock extends PlantBlock
 
     @Nullable
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        BlockState blockstate = context.getLevel().getBlockState(context.getClickedPos());
-        if (blockstate.is(this)) {
-            return blockstate.setValue(AGE, Math.min(3, blockstate.getValue(AGE) + 1));
+        BlockState state = context.getLevel().getBlockState(context.getClickedPos());
+        if (Helpers.isBlock(state, this)) {
+            return state.setValue(AGE, Math.min(3, state.getValue(AGE) + 1));
         }
         return super.getStateForPlacement(context);
     }

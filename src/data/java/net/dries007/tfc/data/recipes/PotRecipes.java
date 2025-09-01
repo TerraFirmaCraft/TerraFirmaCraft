@@ -109,7 +109,7 @@ public interface PotRecipes extends Recipes
         for (int n = 2; n <= 4; n++)
             add("jam_" + name + "_" + n, new JamPotRecipe(new PotRecipe(
                 Helpers.immutableAdd(Collections.nCopies(n,
-                    AndIngredient.of(Ingredient.of(TFCItems.FOOD.get(fruit)), NotRottenIngredient.INSTANCE)),
+                        AndIngredient.of(Ingredient.of(TFCItems.FOOD.get(fruit)), NotRottenIngredient.INSTANCE)),
                     Ingredient.of(TFCTags.Items.SWEETENERS)),
                 SizedFluidIngredient.of(Fluids.WATER, 100),
                 500, 300f

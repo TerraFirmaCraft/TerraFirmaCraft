@@ -952,7 +952,7 @@
   "Bonemeal is made of crushed bones. $(br)$(li)$(6)Phosphorous: 10$()": "Кісткове борошно виготовляється з подрібнених кісток. $(br)$(li)$(6)Фосфор: 10$()",
   "Shellfish can be obtained by killing some aquatic invertebrates. $(br)$(li)$(6)Phosphorous: 15$()": "Shellfish can be obtained by killing some aquatic invertebrates. $(br)$(li)$(6)Phosphorous: 15$()",
   "Saltpeter is made from its ore. $(br)$(li)$(b)Nitrogen: 10$()$(li)$(d)Potassium: 40$()": "Селітра виготовляється з відповідної руди. $(br)$(li)$(b)Азот: 10$()$(li)$(d)Калій: 40$()",
-  "Guano is found underground in lush biomes and on rocky coastlines. $(br)$(li)$(b)Nitrogen: 80$()$(li)$(6)Phosphorous: 50$()$(li)$(d)Potassium: 10$()": "Guano is found underground in lush biomes and on rocky coastlines. $(br)$(li)$(b)Nitrogen: 80$()$(li)$(6)Phosphorous: 50$()$(li)$(d)Potassium: 10$()",
+  "Guano is found underground in lush biomes and on rocky coastlines. $(br)$(li)$(b)Nitrogen: 40$()$(li)$(6)Phosphorous: 50$()$(li)$(d)Potassium: 10$()": "Guano is found underground in lush biomes and on rocky coastlines. $(br)$(li)$(b)Nitrogen: 40$()$(li)$(6)Phosphorous: 50$()$(li)$(d)Potassium: 10$()",
   "Wood ash is produced by breaking firepits. Throwing a torch item into water also has a chance to produce ash. $(br)$(li)$(6)Phosphorous: 10$()$(li)$(d)Potassium: 20$()": "Деревний попіл отримують шляхом розбивання вогнища. Факел, кинутий у воду, також має ймовірність утворення попелу. $(br)$(li)$(6)Фосфор: 10$()$(li)$(d)Калій: 30$()",
   "Sylvite is made from its ore. $(br)$(li)$(d)Potassium: 50$()": "Сильвін можна знайти під землею. $(br)$(li)$(d)Калій: 50$()",
   "Soil Fertility": "Soil Fertility",

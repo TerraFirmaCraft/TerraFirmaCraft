@@ -651,7 +651,7 @@ public final class ForgeEventHandler
 
         if (state.isAir())
             return;
-        if (state.is(BlockTags.FIRE))
+        if (Helpers.isBlock(state, BlockTags.FIRE))
         {
             level.removeBlock(pos, false);
             Helpers.playSound(level, pos, SoundEvents.FIRE_EXTINGUISH);

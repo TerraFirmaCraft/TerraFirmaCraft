@@ -72,7 +72,7 @@ public class BurningLogPileBlockEntity extends TickCounterBlockEntity
 
         BlockPos.MutableBlockPos currentPos = worldPosition.mutable().move(Direction.DOWN);
         BlockState currentState = level.getBlockState(currentPos);
-        while (currentState.is(TFCBlocks.BURNING_LOG_PILE.get()))
+        while (Helpers.isBlock(currentState, TFCBlocks.BURNING_LOG_PILE.get()))
         {
             height += 1;
             int logs = level.getBlockEntity(currentPos, TFCBlockEntities.BURNING_LOG_PILE.get()).map(BurningLogPileBlockEntity::getLogs).orElse(0);
@@ -86,7 +86,7 @@ public class BurningLogPileBlockEntity extends TickCounterBlockEntity
 
         // If the block below is charcoal stack that first
         BlockState belowState = level.getBlockState(currentPos.below());
-        if (belowState.is(TFCBlocks.CHARCOAL_PILE.get()))
+        if (Helpers.isBlock(belowState, TFCBlocks.CHARCOAL_PILE.get()))
         {
             int currentAmount = belowState.getValue(CharcoalPileBlock.LAYERS);
             int amount = Mth.clamp(charcoal, 0, 8 - currentAmount);

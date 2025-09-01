@@ -45,7 +45,7 @@ public class BuiltinClimateRanges extends DataManagerProvider<ClimateRange>
         add(FRUIT_TREES, CHERRY, b -> b.minHydration(60).temperature(10, 42));
         add(FRUIT_TREES, GREEN_APPLE, b -> b.minHydration(42).temperature(-2, 32));
         add(FRUIT_TREES, LEMON, b -> b.minHydration(33).temperature(-6, 32));
-        add(FRUIT_TREES, OLIVE, b -> b.minHydration(56).temperature( 3, 37));
+        add(FRUIT_TREES, OLIVE, b -> b.minHydration(56).temperature(3, 37));
         add(FRUIT_TREES, ORANGE, b -> b.minHydration(60).temperature(2, 37));
         add(FRUIT_TREES, PEACH, b -> b.minHydration(60).temperature(8, 43));
         add(FRUIT_TREES, PLUM, b -> b.minHydration(27).temperature(-3, 34));
@@ -86,6 +86,6 @@ public class BuiltinClimateRanges extends DataManagerProvider<ClimateRange>
 
     private <T> void add(Map<T, DataManager.Reference<ClimateRange>> map, T value, UnaryOperator<ClimateRange.Builder> builder)
     {
-        add(map.get(value),  builder.apply(new ClimateRange.Builder()).build());
+        add(map.get(value), builder.apply(new ClimateRange.Builder()).build());
     }
 }

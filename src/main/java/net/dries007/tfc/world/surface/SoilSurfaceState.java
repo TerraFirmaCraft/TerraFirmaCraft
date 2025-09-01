@@ -11,17 +11,12 @@ import java.util.function.Supplier;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.registry.RegistrySoilVariant;
-import net.dries007.tfc.world.Seed;
-import net.dries007.tfc.world.biome.BiomeNoise;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 
@@ -53,7 +48,7 @@ public class SoilSurfaceState implements SurfaceState
         );
         return new SoilSurfaceState(regions);
     }
-    
+
     public static SurfaceState buildSurfaceType(SoilBlockType type, SurfaceState dry)
     {
         final ImmutableList<SurfaceState> regions = ImmutableList.of(
@@ -66,15 +61,15 @@ public class SoilSurfaceState implements SurfaceState
             transition(SurfaceStates.COARSE_ARIDISOL_BASE, soil(type, SoilBlockType.Variant.ARIDISOL)),
             soil(type, SoilBlockType.Variant.ARIDISOL),
             soil(type, SoilBlockType.Variant.ARIDISOL),
-            blobTransition(soil(type, SoilBlockType.Variant.ARIDISOL), transitioning_soil(type)),
-            transitioning_soil(type),
-            transitioning_soil(type),
-            transitioning_soil(type),
-            transitioning_soil(type),
-            transitioning_soil(type),
-            transitioning_soil(type),
-            transitioning_soil(type),
-            transitioning_soil(type)
+            blobTransition(soil(type, SoilBlockType.Variant.ARIDISOL), transitioningSoil(type)),
+            transitioningSoil(type),
+            transitioningSoil(type),
+            transitioningSoil(type),
+            transitioningSoil(type),
+            transitioningSoil(type),
+            transitioningSoil(type),
+            transitioningSoil(type),
+            transitioningSoil(type)
         );
         return type == SoilBlockType.GRASS ? new SoilSurfaceState.NeedsPostProcessing(regions) : new SoilSurfaceState(regions);
     }
@@ -116,15 +111,15 @@ public class SoilSurfaceState implements SurfaceState
             transition(SurfaceStates.COARSE_ARIDISOL_BASE, soil(type, SoilBlockType.Variant.ARIDISOL)),
             soil(type, SoilBlockType.Variant.ARIDISOL),
             soil(type, SoilBlockType.Variant.ARIDISOL),
-            blobTransition(soil(type, SoilBlockType.Variant.ARIDISOL), transitioning_soil(type)),
-            transitioning_soil(type),
-            transitioning_soil(type),
-            transitioning_soil(type),
-            transitioning_soil(type),
-            transitioning_soil(type),
-            transitioning_soil(type),
-            transitioning_soil(type),
-            transitioning_soil(type)
+            blobTransition(soil(type, SoilBlockType.Variant.ARIDISOL), transitioningSoil(type)),
+            transitioningSoil(type),
+            transitioningSoil(type),
+            transitioningSoil(type),
+            transitioningSoil(type),
+            transitioningSoil(type),
+            transitioningSoil(type),
+            transitioningSoil(type),
+            transitioningSoil(type)
         );
         return type == SoilBlockType.GRASS ? new SoilSurfaceState.NeedsPostProcessing(regions) : new SoilSurfaceState(regions);
     }
@@ -191,15 +186,15 @@ public class SoilSurfaceState implements SurfaceState
             soil(type, SoilBlockType.Variant.ARIDISOL),
             soil(type, SoilBlockType.Variant.ARIDISOL),
             soil(type, SoilBlockType.Variant.ARIDISOL),
-            blobTransition(soil(type, SoilBlockType.Variant.ARIDISOL), transitioning_soil(type)),
-            transitioning_soil(type),
-            transitioning_soil(type),
-            transitioning_soil(type),
-            transitioning_soil(type),
-            transitioning_soil(type),
-            transitioning_soil(type),
-            transitioning_soil(type),
-            transitioning_soil(type)
+            blobTransition(soil(type, SoilBlockType.Variant.ARIDISOL), transitioningSoil(type)),
+            transitioningSoil(type),
+            transitioningSoil(type),
+            transitioningSoil(type),
+            transitioningSoil(type),
+            transitioningSoil(type),
+            transitioningSoil(type),
+            transitioningSoil(type),
+            transitioningSoil(type)
         );
         return new SoilSurfaceState(regions);
     }
@@ -210,12 +205,12 @@ public class SoilSurfaceState implements SurfaceState
         return context -> block.get().defaultBlockState();
     }
 
-    public static SurfaceState transitioning_soil(SoilBlockType type)
+    public static SurfaceState transitioningSoil(SoilBlockType type)
     {
-        return transitioning_soil(type, SoilBlockType.Variant.ENTISOL, SoilBlockType.Variant.OXISOL, 16f, 16.7f);
+        return transitioningSoil(type, SoilBlockType.Variant.ENTISOL, SoilBlockType.Variant.OXISOL, 16f, 16.7f);
     }
-    
-    public static SurfaceState transitioning_soil(SoilBlockType blockType, SoilBlockType.Variant coldSoilType, SoilBlockType.Variant hotSoilType, float transitionStartTemp, float transitionEndTemp)
+
+    public static SurfaceState transitioningSoil(SoilBlockType blockType, SoilBlockType.Variant coldSoilType, SoilBlockType.Variant hotSoilType, float transitionStartTemp, float transitionEndTemp)
     {
         return context -> {
             // First, check if near a "flooding" river, and place silt if so

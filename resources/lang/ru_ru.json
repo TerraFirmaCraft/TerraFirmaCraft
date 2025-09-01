@@ -952,7 +952,7 @@
   "Bonemeal is made of crushed bones. $(br)$(li)$(6)Phosphorous: 10$()": "Костная мука состоит из измельченных костей. $(br)$(li)$(6)Фосфор: 10$()",
   "Shellfish can be obtained by killing some aquatic invertebrates. $(br)$(li)$(6)Phosphorous: 15$()": "Shellfish can be obtained by killing some aquatic invertebrates. $(br)$(li)$(6)Phosphorous: 15$()",
   "Saltpeter is made from its ore. $(br)$(li)$(b)Nitrogen: 10$()$(li)$(d)Potassium: 40$()": "Селитра получается из её руды. $(br)$(li)$(b)Азот: 10$()$(li)$(d)Калий: 40$()",
-  "Guano is found underground in lush biomes and on rocky coastlines. $(br)$(li)$(b)Nitrogen: 80$()$(li)$(6)Phosphorous: 50$()$(li)$(d)Potassium: 10$()": "Guano is found underground in lush biomes and on rocky coastlines. $(br)$(li)$(b)Nitrogen: 40$()$(li)$(6)Phosphorous: 50$()$(li)$(d)Potassium: 10$()",
+  "Guano is found underground in lush biomes and on rocky coastlines. $(br)$(li)$(b)Nitrogen: 40$()$(li)$(6)Phosphorous: 50$()$(li)$(d)Potassium: 10$()": "Guano is found underground in lush biomes and on rocky coastlines. $(br)$(li)$(b)Nitrogen: 40$()$(li)$(6)Phosphorous: 50$()$(li)$(d)Potassium: 10$()",
   "Wood ash is produced by breaking firepits. Throwing a torch item into water also has a chance to produce ash. $(br)$(li)$(6)Phosphorous: 10$()$(li)$(d)Potassium: 20$()": "Древесная зола производится путем разрушения костров. Бросание предмета факела в воду также имеет шанс произвести золу. $(br)$(li)$(6)Фосфор: 10$()$(li)$(d)Калий: 30$()",
   "Sylvite is made from its ore. $(br)$(li)$(d)Potassium: 50$()": "Сильвит изготавливается из его руды. $(br)$(li)$(d)Калий: 50$()",
   "Soil Fertility": "Soil Fertility",
