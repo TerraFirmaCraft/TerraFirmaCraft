@@ -2,8 +2,8 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:soil_disc",
   "config": {
-    "min_radius": 15,
-    "max_radius": 22,
+    "min_radius": 7,
+    "max_radius": 14,
     "height": 7,
     "states": [
       {

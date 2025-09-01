@@ -11,8 +11,7 @@
     },
     {
       "type": "tfc:climate",
-      "max_temperature": 20,
-      "min_forest": 3
+      "max_temperature": 20
     }
   ]
 }

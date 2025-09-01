@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "feature": "tfc:podzol_disc",
+  "feature": "tfc:duff_disc",
   "placement": [
     {
       "type": "minecraft:in_square"
@@ -8,10 +8,6 @@
     {
       "type": "minecraft:heightmap",
       "heightmap": "WORLD_SURFACE_WG"
-    },
-    {
-      "type": "tfc:climate",
-      "max_temperature": 20
     }
   ]
 }

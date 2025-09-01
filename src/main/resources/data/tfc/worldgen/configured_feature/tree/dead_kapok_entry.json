@@ -21,6 +21,7 @@
     ],
     "normal_tree": "tfc:tree/kapok",
     "dead_tree": "tfc:tree/kapok_dead",
+    "soil_disc": "tfc:duff_disc",
     "fallen_log": "tfc:wood/log/kapok",
     "fallen_leaves": "tfc:wood/fallen_leaves/kapok",
     "bush_log": {

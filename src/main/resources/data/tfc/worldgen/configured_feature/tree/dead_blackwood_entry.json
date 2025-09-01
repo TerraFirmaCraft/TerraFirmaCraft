@@ -21,6 +21,7 @@
     ],
     "normal_tree": "tfc:tree/blackwood",
     "dead_tree": "tfc:tree/blackwood_dead",
+    "soil_disc": "tfc:duff_disc",
     "fallen_log": "tfc:wood/log/blackwood",
     "fallen_leaves": "tfc:wood/fallen_leaves/blackwood",
     "bush_log": {

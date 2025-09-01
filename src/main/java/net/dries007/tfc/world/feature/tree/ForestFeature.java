@@ -74,7 +74,6 @@ public class ForestFeature extends Feature<ForestConfig>
             placeGroundcover(level, random, pos, config, data, mutablePos, forestType.sampleGroundcover(random), forestType);
             placeLeafPile(level, random, pos, config, data, mutablePos, forestType.sampleLeafPiles(random), forestType);
             placeFallenTree(level, random, pos, config, data, mutablePos, forestType);
-            placeSoilDisc(level, context.chunkGenerator(), random, pos, config, data, mutablePos, forestType);
         }
         return placedTrees || placedBushes;
     }
@@ -124,6 +123,8 @@ public class ForestFeature extends Feature<ForestConfig>
                     feature = entry.getFeature();
                 }
             }
+            if (typeConfig.getDensity() >= 3)
+                placeSoilDisc(level, generator, random, mutablePos, entry);
             return feature.place(level, generator, random, mutablePos);
         }
         return false;
@@ -326,19 +327,13 @@ public class ForestFeature extends Feature<ForestConfig>
         }
     }
 
-    private void placeSoilDisc(WorldGenLevel level, ChunkGenerator generator, RandomSource random, BlockPos chunkBlockPos, ForestConfig config, ChunkData data, BlockPos.MutableBlockPos mutablePos, ForestType type)
+    private void placeSoilDisc(WorldGenLevel level, ChunkGenerator generator, RandomSource random, BlockPos.MutableBlockPos mutablePos, ForestConfig.Entry entry)
     {
-        final int chunkX = chunkBlockPos.getX();
-        final int chunkZ = chunkBlockPos.getZ();
-
-        mutablePos.set(chunkX + random.nextInt(16), 0, chunkZ + random.nextInt(16));
+        // Staggers centers of soil discs relative to trees
+        mutablePos.move(random.nextInt(4) - 2, 0, random.nextInt(4) - 2);
         mutablePos.setY(level.getHeight(Heightmap.Types.OCEAN_FLOOR, mutablePos.getX(), mutablePos.getZ()));
 
-        final ForestConfig.Entry entry = getTree(data, random, config, mutablePos, type);
-        if (entry != null && entry.soilDiscFeature().isPresent())
-        {
-            entry.soilDiscFeature().get().value().place(level, generator, random, mutablePos);
-        }
+        entry.soilDiscFeature().get().value().place(level, generator, random, mutablePos);
     }
 
     @Nullable

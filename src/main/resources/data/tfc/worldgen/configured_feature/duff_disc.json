@@ -1,0 +1,43 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:soil_disc",
+  "config": {
+    "min_radius": 7,
+    "max_radius": 14,
+    "height": 7,
+    "states": [
+      {
+        "replace": "tfc:grass/entisol",
+        "with": "tfc:duff/entisol"
+      },
+      {
+        "replace": "tfc:grass/aridisol",
+        "with": "tfc:duff/aridisol"
+      },
+      {
+        "replace": "tfc:grass/oxisol",
+        "with": "tfc:duff/oxisol"
+      },
+      {
+        "replace": "tfc:grass/alfisol",
+        "with": "tfc:duff/alfisol"
+      },
+      {
+        "replace": "tfc:clay_grass/entisol",
+        "with": "tfc:clay_duff/entisol"
+      },
+      {
+        "replace": "tfc:clay_grass/aridisol",
+        "with": "tfc:clay_duff/aridisol"
+      },
+      {
+        "replace": "tfc:clay_grass/oxisol",
+        "with": "tfc:clay_duff/oxisol"
+      },
+      {
+        "replace": "tfc:clay_grass/alfisol",
+        "with": "tfc:clay_duff/alfisol"
+      }
+    ]
+  }
+}

@@ -572,7 +572,8 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(DIRT)
             .add(Blocks.DIRT)
             .add(TFCBlocks.SOIL.get(SoilBlockType.DIRT))
-            .add(TFCBlocks.SOIL.get(SoilBlockType.ROOTED_DIRT));
+            .add(TFCBlocks.SOIL.get(SoilBlockType.ROOTED_DIRT))
+            .add(TFCBlocks.SOIL.get(SoilBlockType.DUFF));
         tag(GRASS)
             .add(Blocks.GRASS_BLOCK)
             .add(TFCBlocks.SOIL.get(SoilBlockType.GRASS));

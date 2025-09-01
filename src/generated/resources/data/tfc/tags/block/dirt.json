@@ -16,6 +16,14 @@
     "tfc:rooted_dirt/andisol",
     "tfc:rooted_dirt/podzol",
     "tfc:rooted_dirt/alfisol",
-    "tfc:rooted_dirt/mollisol"
+    "tfc:rooted_dirt/mollisol",
+    "tfc:duff/entisol",
+    "tfc:duff/aridisol",
+    "tfc:duff/oxisol",
+    "tfc:duff/fluvisol",
+    "tfc:duff/andisol",
+    "tfc:duff/podzol",
+    "tfc:duff/alfisol",
+    "tfc:duff/mollisol"
   ]
 }
