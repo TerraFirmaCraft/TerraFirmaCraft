@@ -6,11 +6,14 @@
 
 package net.dries007.tfc.client.screen;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.OptionInstance;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.OptionsList;
+import net.minecraft.client.gui.layouts.FrameLayout;
+import net.minecraft.client.gui.layouts.GridLayout;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.worldselection.CreateWorldScreen;
 import net.minecraft.client.gui.screens.worldselection.WorldCreationContext;
@@ -48,7 +51,6 @@ public class CreateTFCWorldScreen extends Screen
     private final CreateWorldScreen parent;
     private final WorldCreationContext context;
 
-    private OptionsList options;
     private OptionInstance<Boolean> flatBedrock, finiteContinents;
     private OptionInstance<Integer> spawnDistance, spawnCenterX, spawnCenterZ, temperatureScale, rainfallScale;
     private OptionInstance<Double> temperatureConstant, rainfallConstant, continentalness, grassDensity;
@@ -71,9 +73,8 @@ public class CreateTFCWorldScreen extends Screen
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
         renderBackground(graphics, mouseX, mouseY, partialTick);
-        options.render(graphics, mouseX, mouseY, partialTick);
-        graphics.drawCenteredString(font, title, width / 2, 8, 16777215);
         super.render(graphics, mouseX, mouseY, partialTick);
+        graphics.drawCenteredString(font, title, width / 2, 4, 16777215);
     }
 
     @Override
@@ -84,39 +85,51 @@ public class CreateTFCWorldScreen extends Screen
         final ChunkGenerator generator = context.selectedDimensions().overworld();
         final Settings settings = ((ChunkGeneratorExtension) generator).settings();
 
-        // todo 1.21, what needs to change here
-        //options = new OptionsList(minecraft, width, height, 32, height - 32, 25);
+        final GridLayout grid = new GridLayout();
+        grid.defaultCellSetting().padding(4, 4, 4, 0);
+        final GridLayout.RowHelper builder = grid.createRowHelper(2);
 
-        options.addSmall(
-            flatBedrock = OptionInstance.createBoolean("tfc.create_world.flat_bedrock", settings.flatBedrock(), value -> {}),
-            spawnDistance = kmOption("tfc.create_world.spawn_distance", 100, 20_000, settings.spawnDistance())
-        );
-        options.addSmall(
-            spawnCenterX = kmOption("tfc.create_world.spawn_center_x", -20_000, 20_000, settings.spawnCenterX()),
-            spawnCenterZ = kmOption("tfc.create_world.spawn_center_z", -20_000, 20_000, settings.spawnCenterZ())
-        );
-        options.addSmall(
-            temperatureScale = kmOption("tfc.create_world.temperature_scale", 0, 40_000, settings.temperatureScale()),
-            rainfallScale = kmOption("tfc.create_world.rainfall_scale", 0, 40_000, settings.rainfallScale())
-        );
-        options.addSmall(
-            temperatureConstant = constOption("tfc.create_world.temperature_constant", settings.temperatureConstant()),
-            rainfallConstant = constOption("tfc.create_world.rainfall_constant", settings.rainfallConstant())
-        );
-        options.addSmall(
-            continentalness = pctOption("tfc.create_world.continentalness", settings.continentalness()),
-            grassDensity = pctOption("tfc.create_world.grass_density", settings.continentalness())
-        );
+        flatBedrock = OptionInstance.createBoolean("tfc.create_world.flat_bedrock", settings.flatBedrock(), value -> {});
+        spawnDistance = kmOption("tfc.create_world.spawn_distance", 100, 20_000, settings.spawnDistance());
+        spawnCenterX = kmOption("tfc.create_world.spawn_center_x", -20_000, 20_000, settings.spawnCenterX());
+        spawnCenterZ = kmOption("tfc.create_world.spawn_center_z", -20_000, 20_000, settings.spawnCenterZ());
+        temperatureScale = kmOption("tfc.create_world.temperature_scale", 0, 40_000, settings.temperatureScale());
+        rainfallScale = kmOption("tfc.create_world.rainfall_scale", 0, 40_000, settings.rainfallScale());
+        temperatureConstant = constOption("tfc.create_world.temperature_constant", settings.temperatureConstant());
+        rainfallConstant = constOption("tfc.create_world.rainfall_constant", settings.rainfallConstant());
+        continentalness = pctOption("tfc.create_world.continentalness", settings.continentalness());
+        grassDensity = pctOption("tfc.create_world.grass_density", settings.continentalness());
+        finiteContinents = OptionInstance.createBoolean("tfc.create_world.finite_continents", settings.finiteContinents(), value -> {});
+        builder.addChild(smallButton(flatBedrock));
+        builder.addChild(smallButton(spawnDistance));
+        builder.addChild(smallButton(spawnCenterX));
+        builder.addChild(smallButton(spawnCenterZ));
+        builder.addChild(smallButton(temperatureScale));
+        builder.addChild(smallButton(rainfallScale));
+        builder.addChild(smallButton(temperatureConstant));
+        builder.addChild(smallButton(rainfallConstant));
+        builder.addChild(smallButton(continentalness));
+        builder.addChild(smallButton(grassDensity));
+        builder.addChild(smallButton(finiteContinents));
 
-        addWidget(options);
-
-        addRenderableWidget(Button.builder(CommonComponents.GUI_DONE, button -> {
+        builder.addChild(Button.builder(CommonComponents.GUI_DONE, button -> {
             applySettings();
             minecraft.setScreen(parent);
-        }).bounds(width / 2 - 155, height - 28, 150, 20).build());
-        addRenderableWidget(Button.builder(CommonComponents.GUI_CANCEL, button -> {
+        }).width(400).build(), 2);
+        builder.addChild(Button.builder(CommonComponents.GUI_CANCEL, button -> {
             minecraft.setScreen(parent);
-        }).bounds(width / 2 + 5, height - 28, 150, 20).build());
+        }).width(400).build(), 2);
+
+        grid.arrangeElements();
+        FrameLayout.alignInRectangle(grid, 0, 0, width, height, 0.5f, 0.25f);
+        grid.visitWidgets(this::addRenderableWidget);
+    }
+
+    private AbstractWidget smallButton(OptionInstance<?> option)
+    {
+        final AbstractWidget widget = option.createButton(Minecraft.getInstance().options);
+        widget.setWidth(200);
+        return widget;
     }
 
     private void applySettings()

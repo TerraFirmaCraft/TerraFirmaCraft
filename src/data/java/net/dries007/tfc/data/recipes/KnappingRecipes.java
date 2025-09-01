@@ -122,7 +122,7 @@ public interface KnappingRecipes extends Recipes
         // Un-crafting, only for non-suffixed recipes
         if (suffix.isEmpty()) new CraftingRecipes.Builder((name, r) -> add(nameOf(output) + "_to_clay", r))
             .input(output)
-            .shapeless(Items.CLAY, 5 / count);
+            .shapeless(Items.CLAY_BALL, 5 / count);
     }
 
     private void fireClayKnapping(ItemLike output, int count, String... pattern)

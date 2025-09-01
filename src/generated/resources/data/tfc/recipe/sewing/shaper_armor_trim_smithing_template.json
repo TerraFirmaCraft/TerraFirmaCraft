@@ -5,16 +5,16 @@
     "id": "minecraft:shaper_armor_trim_smithing_template"
   },
   "squares": [
-    "        ",
-    "        ",
-    "        ",
-    "        "
+    "      # ",
+    "   ###  ",
+    "   #    ",
+    "  #     "
   ],
   "stitches": [
-    "         ",
-    "         ",
-    "         ",
-    "         ",
-    "         "
+    "      #  ",
+    "   #   # ",
+    "    #    ",
+    "  #      ",
+    "   #     "
   ]
 }

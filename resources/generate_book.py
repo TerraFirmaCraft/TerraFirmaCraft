@@ -230,6 +230,8 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             block_spotlight('', 'Amethyst in Marble.', 'tfc:ore/%s/%s' % ('amethyst', 'marble')),
             item_spotlight('tfc:ore/opal', 'Opal', text_contents='Opal is a decorative $(thing)Mineral$(). It can be found in $(thing)Sedimentary) and $(thing)Igneous Extrusive$() rock beneath rivers above y=40.').link('tfc:ore/%s' % 'opal').anchor('opal'),
             block_spotlight('', 'Opal in Basalt.', 'tfc:ore/%s/%s' % ('opal', 'basalt')),
+            item_spotlight('tfc:ore/ruby', 'Ruby', text_contents='Ruby is a decorative $(thing)Mineral$(). It can be found in $(thing)Schist$() and $(thing)Gneiss$() rock below y=-10.').link('tfc:ore/%s' % 'ruby').anchor('ruby'),
+            block_spotlight('', 'Ruby in Schist.', 'tfc:ore/%s/%s' % ('ruby', 'schist')),
         )),
         entry('climate', 'Calendar and Climate', 'tfc:textures/gui/book/icons/thermometer.png', pages=(
             # Overview of both temperature and rainfall and where they spawn on X/Z
@@ -918,7 +920,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             empty_last_page()
         )),
         entry('armor_trims', 'Armor Trims', 'minecraft:rib_armor_trim_smithing_template', pages=(
-            text('Armor trims are produced with a $(thing)Trim Material$() and a $(l:mechanics/sewing_table)Smithing Template$(). In TFC, all gems, along with Sterling Silver, Gold, Rose Gold, and Bismuth, can be used as trim materials. Armor trims are purely cosmetic.'),
+            text('Armor trims are produced with a $(thing)Trim Material$() and a $(l:mechanics/sewing_table)Smithing Template$(). In TFC, all gems, along with Silver, Sterling Silver, Gold, Rose Gold, and Bismuth, can be used as trim materials. Armor trims are purely cosmetic.'),
             crafting('minecraft:smithing_table', text_contents='The smithing table can be used to apply armor trims to TFC armor.'),
         )),
         entry('advanced_building_materials', 'Advanced Materials', 'tfc:brick/rhyolite', pages=(
@@ -1215,7 +1217,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             fertilizer('minecraft:bone_meal', 'Bonemeal is made of crushed bones.', p=0.1),
             fertilizer('tfc:food/shellfish', 'Shellfish can be obtained by killing some aquatic invertebrates.', p=0.15),
             fertilizer('tfc:powder/saltpeter', 'Saltpeter is made from its ore.', n=0.1, k=0.4),
-            fertilizer('tfc:groundcover/guano', 'Guano is found deep underground and on gravelly shores.', 0.4, 0.5, 0.1),
+            fertilizer('tfc:groundcover/guano', 'Guano is found underground in lush biomes and on rocky coastlines.', 0.4, 0.5, 0.1),
             fertilizer('tfc:powder/wood_ash', 'Wood ash is produced by breaking firepits. Throwing a torch item into water also has a chance to produce ash.', p=0.1, k=0.2),
             fertilizer('tfc:powder/sylvite', 'Sylvite is made from its ore.', k=0.5)
         )),

@@ -37,7 +37,7 @@
       "type": "patchouli:spotlight",
       "item": "tfc:groundcover/guano",
       "link_recipes": false,
-      "text": "鸟粪石存在于地下深处和砾石海岸。$(br)$(li)$(b)$(bold)氮$()：80$()$(li)$(6)$(bold)磷$()：50$()$(li)$(d)$(bold)钾$()：10$()"
+      "text": "Guano is found underground in lush biomes and on rocky coastlines. $(br)$(li)$(b)Nitrogen: 80$()$(li)$(6)Phosphorous: 50$()$(li)$(d)Potassium: 10$()"
     },
     {
       "type": "patchouli:spotlight",

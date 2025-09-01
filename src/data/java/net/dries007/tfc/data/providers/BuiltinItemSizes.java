@@ -45,7 +45,7 @@ public class BuiltinItemSizes extends DataManagerProvider<ItemSizeDefinition> im
         add("doors", ItemTags.DOORS, Size.VERY_LARGE, Weight.HEAVY);
         add("trapdoors", ItemTags.TRAPDOORS, Size.LARGE, Weight.HEAVY);
         add("signs", ItemTags.SIGNS, Size.VERY_SMALL, Weight.MEDIUM);
-        add("hanging_signs", ItemTags.HANGING_SIGNS, Size.VERY_SMALL, Weight.HEAVY);
+        add("hanging_signs", ItemTags.HANGING_SIGNS, Size.VERY_SMALL, Weight.MEDIUM);
         add("boats", ItemTags.BOATS, Size.VERY_LARGE, Weight.HEAVY);
         add("rails", ItemTags.RAILS, Size.LARGE, Weight.VERY_LIGHT);
 

@@ -37,7 +37,7 @@
       "type": "patchouli:spotlight",
       "item": "tfc:groundcover/guano",
       "link_recipes": false,
-      "text": "糞化石は地下深や砂利の多い海岸で見つかります。以下の栄養素が含まれています。 $(br)$(li)$(b)窒素: 80$()$(li)$(6)リン: 50$()$(li)$(d)カリウム: 10$()"
+      "text": "Guano is found underground in lush biomes and on rocky coastlines. $(br)$(li)$(b)Nitrogen: 80$()$(li)$(6)Phosphorous: 50$()$(li)$(d)Potassium: 10$()"
     },
     {
       "type": "patchouli:spotlight",

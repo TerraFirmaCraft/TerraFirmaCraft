@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.component.block;
 
-import java.util.List;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
@@ -17,9 +16,6 @@ import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.component.fluid.FluidComponent;
 import net.dries007.tfc.common.component.fluid.FluidContainer;
 import net.dries007.tfc.common.component.fluid.FluidContainerInfo;
-import net.dries007.tfc.common.component.item.ItemComponent;
-import net.dries007.tfc.common.component.item.ItemContainer;
-import net.dries007.tfc.common.component.item.ItemContainerInfo;
 
 /**
  * A simple merged fluid  handler for barrels, that respects the barrels {@link BarrelComponent#hasActiveRecipe()} - no modifications are

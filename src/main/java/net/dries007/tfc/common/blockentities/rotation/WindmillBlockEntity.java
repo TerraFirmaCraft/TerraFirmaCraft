@@ -9,27 +9,26 @@ package net.dries007.tfc.common.blockentities.rotation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.Direction.Axis;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.items.ItemStackHandler;
-
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.TickableInventoryBlockEntity;
+import net.dries007.tfc.common.blocks.rotation.AxleBlock;
 import net.dries007.tfc.common.blocks.rotation.WindmillBlock;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.rotation.NetworkAction;
 import net.dries007.tfc.util.rotation.Node;
 import net.dries007.tfc.util.rotation.Rotation;
 import net.dries007.tfc.util.rotation.SourceNode;
-
-import static net.dries007.tfc.TerraFirmaCraft.*;
-
 
 public class WindmillBlockEntity extends TickableInventoryBlockEntity<ItemStackHandler> implements RotatingBlockEntity
 {
@@ -138,8 +137,8 @@ public class WindmillBlockEntity extends TickableInventoryBlockEntity<ItemStackH
         }
         if (count == 0)
         {
-            BlockState axleState = ((WindmillBlock) getBlockState().getBlock()).getAxle().defaultBlockState();
-            axleState = Helpers.copyProperties(axleState, getBlockState());
+            final AxleBlock axle = ((WindmillBlock) getBlockState().getBlock()).getAxle();
+            BlockState axleState = axle.defaultBlockState().setValue(AxleBlock.AXIS, getBlockState().getValue(WindmillBlock.AXIS));
             level.setBlockAndUpdate(worldPosition, axleState);
         }
         else

@@ -174,16 +174,16 @@ public interface SewingRecipes extends Recipes
             "   ##   "
         ), Items.SENTRY_ARMOR_TRIM_SMITHING_TEMPLATE);
         sewingRecipe(List.of(
-            "         ",
-            "         ",
-            "         ",
-            "         ",
-            "         "
+            "      #  ",
+            "   #   # ",
+            "    #    ",
+            "  #      ",
+            "   #     "
         ), List.of(
-            "        ",
-            "        ",
-            "        ",
-            "        "
+            "      # ",
+            "   ###  ",
+            "   #    ",
+            "  #     "
         ), Items.SHAPER_ARMOR_TRIM_SMITHING_TEMPLATE);
         sewingRecipe(List.of(
             "  #      ",
@@ -281,6 +281,30 @@ public interface SewingRecipes extends Recipes
             "   ##   ",
             "   ##   "
         ), Items.WILD_ARMOR_TRIM_SMITHING_TEMPLATE);
+        sewingRecipe(List.of(
+            "  #      ",
+            "    ##   ",
+            "     #   ",
+            "   #  #  ",
+            "         "
+        ), List.of(
+            "  ####  ",
+            "  # ##  ",
+            "  #     ",
+            "  ####  "
+        ), Items.FLOW_ARMOR_TRIM_SMITHING_TEMPLATE);
+        sewingRecipe(List.of(
+            "         ",
+            "   #   # ",
+            "    #    ",
+            "  #      ",
+            "      #  "
+        ), List.of(
+            " # #    ",
+            " # #  # ",
+            " #    # ",
+            " #### # "
+        ), Items.BOLT_ARMOR_TRIM_SMITHING_TEMPLATE);
     }
 
     private void sewingRecipe(List<String> stitches, List<String> squares, ItemLike output)

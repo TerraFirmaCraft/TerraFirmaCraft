@@ -130,43 +130,4 @@ public class BarrelBlockItem extends TooltipBlockItem implements Rackable
         return ((SealableDeviceBlock) getBlock()).getStateForPlacement(level, pos);
     }
 
-    private static class BarrelItemStackInventory implements DelegateFluidHandler, IFluidHandlerItem, ISlotCallback, FluidTankCallback, BarrelInventoryCallback
-    {
-        private final ItemStack stack;
-        private final BarrelBlockEntity.BarrelInventory inventory;
-        private boolean hasActiveRecipe;
-
-        BarrelItemStackInventory(ItemStack stack)
-        {
-            this.stack = stack;
-            this.inventory = new BarrelBlockEntity.BarrelInventory(this);
-            this.hasActiveRecipe = false;
-        }
-
-        @Override
-        public boolean canModify()
-        {
-            return true; // todo 1.21, sealed barrel block entity components
-            //return stack.getTag() == null || !hasActiveRecipe; // As long as not sealed, or sealed but with no active recipe.
-        }
-
-        @Override
-        public void fluidTankChanged()
-        {
-
-        }
-
-        @Override
-        public IFluidHandler getFluidHandler()
-        {
-            return inventory;
-        }
-
-        @NotNull
-        @Override
-        public ItemStack getContainer()
-        {
-            return stack.copy();
-        }
-    }
 }

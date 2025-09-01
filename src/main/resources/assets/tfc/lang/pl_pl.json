@@ -595,6 +595,8 @@
   "tfc.create_world.continentalness.tooltip": "Proporcje lądów do ocenów w świecie",
   "tfc.create_world.grass_density": "Gęstość trawy",
   "tfc.create_world.grass_density.tooltip": "Mnożnik który określa ilość krótkiej i długiej trawy na każdy chunk.",
+  "tfc.create_world.finite_continents": "Finite Continents",
+  "tfc.create_world.finite_continents.tooltip": "Should there be a finite amount of continents in the world?",
   "entity.tfc.bluegill": "Bass niebieski",
   "entity.tfc.crappie": "Bass",
   "entity.tfc.lake_trout": "Bass jeziorny",

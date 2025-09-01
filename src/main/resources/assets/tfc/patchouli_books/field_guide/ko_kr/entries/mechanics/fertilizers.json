@@ -37,7 +37,7 @@
       "type": "patchouli:spotlight",
       "item": "tfc:groundcover/guano",
       "link_recipes": false,
-      "text": "구아노는 땅 속 깊이 또는 자갈 해변에서 찾을 수 있습니다. $(br)$(li)$(b)질소: 80$()$(li)$(6)인: 50$()$(li)$(d)칼륨: 10$()"
+      "text": "Guano is found underground in lush biomes and on rocky coastlines. $(br)$(li)$(b)Nitrogen: 80$()$(li)$(6)Phosphorous: 50$()$(li)$(d)Potassium: 10$()"
     },
     {
       "type": "patchouli:spotlight",

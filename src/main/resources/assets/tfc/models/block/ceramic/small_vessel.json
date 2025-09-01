@@ -1,10 +1,11 @@
 {
+	"format_version": "1.21.6",
 	"credit": "Made with Blockbench",
 	"textures": {
 		"top": "tfc:block/ceramic/large_vessel/top",
+		"particle": "tfc:block/ceramic/large_vessel/side",
 		"side": "tfc:block/ceramic/large_vessel/side",
-		"bottom": "tfc:block/ceramic/large_vessel/bottom",
-		"particle": "#side"
+		"bottom": "tfc:block/ceramic/large_vessel/bottom"
 	},
 	"elements": [
 		{

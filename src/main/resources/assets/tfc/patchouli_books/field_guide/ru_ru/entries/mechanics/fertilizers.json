@@ -37,7 +37,7 @@
       "type": "patchouli:spotlight",
       "item": "tfc:groundcover/guano",
       "link_recipes": false,
-      "text": "Гуано находят глубоко под землей и на галечных берегах. $(br)$(li)$(b)Азот: 80$()$(li)$(6)Фосфор: 50$()$(li)$(d)Калий: 10$()"
+      "text": "Guano is found underground in lush biomes and on rocky coastlines. $(br)$(li)$(b)Nitrogen: 80$()$(li)$(6)Phosphorous: 50$()$(li)$(d)Potassium: 10$()"
     },
     {
       "type": "patchouli:spotlight",

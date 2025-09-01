@@ -99,6 +99,14 @@ public final class FluidAlloy
         this.content = content;
     }
 
+    public void copyFrom(FluidAlloy alloy)
+    {
+        amount = alloy.amount;
+        content = alloy.content;
+        cachedContent = alloy.cachedContent;
+        cachedResult = alloy.cachedResult;
+    }
+
     /**
      * @return A copy of this fluid alloy with all the same content
      */

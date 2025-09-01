@@ -30,7 +30,7 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
@@ -149,6 +149,15 @@ public class PowderkegBlock extends SealableDeviceBlock
     public boolean canDropFromExplosion(BlockState state, BlockGetter level, BlockPos pos, Explosion explosion)
     {
         return false;
+    }
+
+    @Override
+    protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving)
+    {
+        if (level.hasNeighborSignal(pos) && !state.getValue(LIT) && state.getValue(SEALED))
+        {
+            level.getBlockEntity(pos, TFCBlockEntities.POWDERKEG.get()).ifPresent(keg -> keg.setLit(true, null));
+        }
     }
 
     @Override

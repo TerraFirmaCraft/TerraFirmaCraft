@@ -413,6 +413,7 @@ ORE_VEINS: dict[str, Vein] = {
 
     'amethyst': Vein.new('amethyst', 25, 8, 40, 60, 0.2, ('sedimentary', 'metamorphic'), vein_type='disc', biomes='#tfc:is_river', height=4),
     'opal': Vein.new('opal', 25, 8, 40, 60, 0.2, ('sedimentary', 'igneous_extrusive'), vein_type='disc', biomes='#tfc:is_river', height=4),
+    'ruby': Vein.new('ruby', 12, 22, -70, -10, 0.2, ('schist', 'gneiss')),
 }
 
 ALL_MINERALS = ('bituminous_coal', 'lignite', 'graphite', 'cinnabar', 'cryolite', 'saltpeter', 'sulfur', 'sylvite', 'borax', 'gypsum', 'lapis_lazuli', 'halite', 'diamond', 'emerald', 'sulfur', 'amethyst', 'opal')
@@ -913,7 +914,7 @@ ARMOR_SECTIONS = ('chestplate', 'leggings', 'boots', 'helmet')
 TFC_ARMOR_SECTIONS = ('helmet', 'chestplate', 'greaves', 'boots')
 # TODO: Ensure all new biomes added here
 TFC_BIOMES = ('badlands', 'inverted_badlands', 'canyons', 'low_canyons', 'plains', 'plateau', 'hills', 'rolling_hills', 'lake', 'lowlands', 'salt_marsh', 'mountains', 'volcanic_mountains', 'old_mountains', 'oceanic_mountains', 'volcanic_oceanic_mountains', 'ocean', 'ocean_reef', 'deep_ocean', 'deep_ocean_trench', 'river', 'shore', 'tidal_shore', 'mountain_river', 'volcanic_mountain_river', 'old_mountain_river', 'oceanic_mountain_river', 'volcanic_oceanic_mountain_river', 'mountain_lake', 'volcanic_mountain_lake', 'old_mountain_lake', 'oceanic_mountain_lake', 'volcanic_oceanic_mountain_lake', 'plateau_lake')
-VANILLA_TRIMS = ('coast', 'sentry', 'dune', 'wild', 'ward', 'eye', 'vex', 'tide', 'snout', 'rib', 'spire', 'wayfinder', 'shaper', 'silence', 'raiser', 'host')
+VANILLA_TRIMS = ('coast', 'sentry', 'dune', 'wild', 'ward', 'eye', 'vex', 'tide', 'snout', 'rib', 'spire', 'wayfinder', 'shaper', 'silence', 'raiser', 'host', 'flow', 'bolt')
 
 BUTTERFLIES = ('golden_birdwing', 'papilio_rumanzovia', 'papilio_palinurus', 'moth_diaphora', 'peacock', 'sericinus', 'papilio_blumei', 'adonis_blue', 'silverwashhed_frittilary', 'moth_saturnia', 'moth_argema', 'moth_attacus', 'moth_luna', 'moth_trosia')
 
@@ -1510,6 +1511,8 @@ DEFAULT_LANG = {
     'tfc.create_world.continentalness.tooltip': 'The proportion of the world that is made up of land rather than water',
     'tfc.create_world.grass_density': 'Grass Density',
     'tfc.create_world.grass_density.tooltip': 'Multiplier that applies to the amount of short and tall grass placed within a chunk.',
+    'tfc.create_world.finite_continents': 'Finite Continents',
+    'tfc.create_world.finite_continents.tooltip': 'Should there be a finite amount of continents in the world?',
 
     # Entities
     **dict(('entity.tfc.%s' % fish, lang(fish)) for fish in SIMPLE_FRESHWATER_FISH),

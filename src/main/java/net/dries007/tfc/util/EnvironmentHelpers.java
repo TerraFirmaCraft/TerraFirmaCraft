@@ -65,7 +65,8 @@ public final class EnvironmentHelpers
 
     public static boolean canPlaceBushOn(WorldGenLevel level, BlockPos pos)
     {
-        return isWorldgenReplaceable(level, pos) && Helpers.isBlock(level.getBlockState(pos.below()), TFCTags.Blocks.BUSH_PLANTABLE_ON);
+        final BlockState stateAt = level.getBlockState(pos);
+        return stateAt.getFluidState().isEmpty() && isWorldgenReplaceable(stateAt) && Helpers.isBlock(level.getBlockState(pos.below()), TFCTags.Blocks.BUSH_PLANTABLE_ON);
     }
 
     public static boolean isOnSturdyFace(WorldGenLevel level, BlockPos pos)

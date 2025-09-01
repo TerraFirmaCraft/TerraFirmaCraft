@@ -4,7 +4,7 @@
   "placement": [
     {
       "type": "minecraft:rarity_filter",
-      "chance": 15
+      "chance": 4
     },
     {
       "type": "minecraft:in_square"
@@ -17,13 +17,6 @@
       "max_groundwater": 500,
       "min_elevation": -64,
       "max_elevation": 320
-    },
-    {
-      "type": "tfc:on_top",
-      "predicate": {
-        "type": "minecraft:matching_block_tag",
-        "tag": "tfc:creeping_stone_plantable_on"
-      }
     },
     {
       "type": "tfc:biome"

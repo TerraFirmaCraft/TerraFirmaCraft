@@ -16,6 +16,8 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.material.Fluids;
 
+import net.dries007.tfc.common.blocks.GroundcoverBlockType;
+import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.util.Helpers;
 
 public class CaveVegetationFeature extends Feature<CaveVegetationConfig>
@@ -53,6 +55,12 @@ public class CaveVegetationFeature extends Feature<CaveVegetationConfig>
                     if (generateState != null)
                     {
                         setBlock(level, mutablePos, generateState);
+                    }
+                    if (random.nextFloat() < 0.06f && mutablePos.getY() < 40) // While we are near the floor, add extra guano
+                    {
+                        mutablePos.move(0, 1, 0);
+                        if (TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.GUANO).get().defaultBlockState().canSurvive(level, mutablePos))
+                            setBlock(level, mutablePos, TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.GUANO).get().defaultBlockState());
                     }
                 }
             }

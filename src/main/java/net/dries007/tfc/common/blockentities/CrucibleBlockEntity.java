@@ -292,7 +292,9 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
     {
         final CrucibleComponent crucible = components.getOrDefault(TFCComponents.CRUCIBLE, CrucibleComponent.EMPTY);
         final HeatComponent heat = components.getOrDefault(TFCComponents.HEAT, HeatComponent.EMPTY);
-        // todo: apply components
+        temperature = heat.getTemperature();
+        Helpers.copyFrom(crucible.itemContent(), inventory);
+        inventory.alloy.copyFrom(crucible.fluidContent());
 
         super.applyImplicitComponents(components);
     }

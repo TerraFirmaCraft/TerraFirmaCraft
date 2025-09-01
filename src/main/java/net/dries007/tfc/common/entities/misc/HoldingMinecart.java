@@ -289,19 +289,24 @@ public class HoldingMinecart extends AbstractMinecart
         {
             return false;
         }
-        final int str = getPowderkegStrength();
-        if (str != 0)
+
+        final int strength = getPowderkegStrength();
+        if (strength != -1)
         {
-            toRun.accept(str);
+            toRun.accept(strength);
             return true;
         }
         return false;
     }
 
+    /**
+     * @return The explosion strength of the sealed powderkeg contained,
+     * or -1 if no sealed powderkeg is present.
+     */
     public int getPowderkegStrength()
     {
         final ItemStack stack = getHoldItem();
-        if (stack.getItem() instanceof BlockItem bi && bi.getBlock() instanceof PowderkegBlock)
+        if (stack.getItem() instanceof BlockItem bi && bi.getBlock() instanceof PowderkegBlock keg && keg.isStackSealed(stack))
         {
             final ItemListComponent contents = stack.get(TFCComponents.CONTENTS);
             if (contents != null)
@@ -309,6 +314,6 @@ public class HoldingMinecart extends AbstractMinecart
                 return PowderkegBlockEntity.getStrength(contents);
             }
         }
-        return 0;
+        return -1;
     }
 }

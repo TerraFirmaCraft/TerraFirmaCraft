@@ -159,7 +159,7 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize, Toolt
         }
     }
 
-    protected boolean isStackSealed(ItemStack stack)
+    public boolean isStackSealed(ItemStack stack)
     {
         return stack.has(TFCComponents.CONTENTS);
     }

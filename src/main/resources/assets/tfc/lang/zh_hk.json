@@ -602,6 +602,8 @@
   "tfc.create_world.continentalness.tooltip": "The proportion of the world that is made up of land rather than water",
   "tfc.create_world.grass_density": "Grass Density",
   "tfc.create_world.grass_density.tooltip": "Multiplier that applies to the amount of short and tall grass placed within a chunk.",
+  "tfc.create_world.finite_continents": "Finite Continents",
+  "tfc.create_world.finite_continents.tooltip": "Should there be a finite amount of continents in the world?",
   "entity.tfc.bluegill": "藍鰓魚",
   "entity.tfc.crappie": "Crappie",
   "entity.tfc.lake_trout": "Lake Trout",

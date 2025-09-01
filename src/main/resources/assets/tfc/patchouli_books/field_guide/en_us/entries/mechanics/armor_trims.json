@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Armor trims are produced with a $(thing)Trim Material$() and a $(l:mechanics/sewing_table)Smithing Template$(). In TFC, all gems, along with Sterling Silver, Gold, Rose Gold, and Bismuth, can be used as trim materials. Armor trims are purely cosmetic."
+      "text": "Armor trims are produced with a $(thing)Trim Material$() and a $(l:mechanics/sewing_table)Smithing Template$(). In TFC, all gems, along with Silver, Sterling Silver, Gold, Rose Gold, and Bismuth, can be used as trim materials. Armor trims are purely cosmetic."
     },
     {
       "type": "patchouli:crafting",

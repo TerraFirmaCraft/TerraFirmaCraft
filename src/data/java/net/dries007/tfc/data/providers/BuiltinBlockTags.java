@@ -688,7 +688,24 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(HALOPHYTE).add(
             TFCBlocks.PLANTS.get(Plant.SEA_LAVENDER),
             TFCBlocks.PLANTS.get(Plant.CORDGRASS));
-        tag(SINGLE_BLOCK_REPLACEABLE); // todo
+        tag(SINGLE_BLOCK_REPLACEABLE)
+            .addTag(BlockTags.SMALL_FLOWERS)
+            .add(
+                TFCBlocks.PLANTS.get(Plant.BEACHGRASS),
+                TFCBlocks.PLANTS.get(Plant.BLUEGRASS),
+                TFCBlocks.PLANTS.get(Plant.BROMEGRASS),
+                TFCBlocks.PLANTS.get(Plant.FOUNTAIN_GRASS),
+                TFCBlocks.PLANTS.get(Plant.MANATEE_GRASS),
+                TFCBlocks.PLANTS.get(Plant.ORCHARD_GRASS),
+                TFCBlocks.PLANTS.get(Plant.RYEGRASS),
+                TFCBlocks.PLANTS.get(Plant.SCUTCH_GRASS),
+                TFCBlocks.PLANTS.get(Plant.STAR_GRASS),
+                TFCBlocks.PLANTS.get(Plant.TIMOTHY_GRASS),
+                TFCBlocks.PLANTS.get(Plant.RADDIA_GRASS),
+                TFCBlocks.PLANTS.get(Plant.RED_OAT_GRASS),
+                TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.HUMUS)
+            )
+            .addTag(FALLEN_LEAVES);
         tag(POWDER_SNOW_REPLACEABLE).add(
             Blocks.SNOW_BLOCK,
             Blocks.PACKED_ICE,

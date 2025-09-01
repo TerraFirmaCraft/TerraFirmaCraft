@@ -278,6 +278,13 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             .addAll(TFCItems.GRADED_ORES);
         tag(SMALL_ORE_PIECES)
             .add(TFCBlocks.SMALL_ORES);
+        tag(ItemTags.TRIM_MATERIALS)
+            .add(TFCItems.GEMS)
+            .add(TFCItems.METAL_ITEMS.get(Metal.SILVER).get(Metal.ItemType.INGOT))
+            .add(TFCItems.METAL_ITEMS.get(Metal.STERLING_SILVER).get(Metal.ItemType.INGOT))
+            .add(TFCItems.METAL_ITEMS.get(Metal.GOLD).get(Metal.ItemType.INGOT))
+            .add(TFCItems.METAL_ITEMS.get(Metal.ROSE_GOLD).get(Metal.ItemType.INGOT))
+            .add(TFCItems.METAL_ITEMS.get(Metal.BISMUTH).get(Metal.ItemType.INGOT));
         tag(WATER_WHEELS).add(TFCBlocks.WOODS, Wood.BlockType.WATER_WHEEL);
         tag(WINDMILL_BLADES)
             .addTag(COLORED_WINDMILL_BLADES)
@@ -330,6 +337,12 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             .add(TFCBlocks.ROCK_BLOCKS.get(Rock.MARBLE).get(Rock.BlockType.MOSSY_LOOSE))
             .add(TFCBlocks.PLANTS.get(Plant.MUSSELS).get())
             .add(TFCBlocks.PLANTS.get(Plant.BARNACLES).get());
+
+        // Vanilla Armor Tags
+        tag(ItemTags.HEAD_ARMOR).add(TFCItems.METAL_ITEMS, Metal.ItemType.HELMET);
+        tag(ItemTags.CHEST_ARMOR).add(TFCItems.METAL_ITEMS, Metal.ItemType.CHESTPLATE);
+        tag(ItemTags.LEG_ARMOR).add(TFCItems.METAL_ITEMS, Metal.ItemType.GREAVES);
+        tag(ItemTags.FOOT_ARMOR).add(TFCItems.METAL_ITEMS, Metal.ItemType.BOOTS);
 
         // Vanilla Tool Tags
         tag(ItemTags.SWORDS).add(TFCItems.METAL_ITEMS, Metal.ItemType.SWORD);

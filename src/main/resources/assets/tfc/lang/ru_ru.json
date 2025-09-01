@@ -600,6 +600,8 @@
   "tfc.create_world.continentalness.tooltip": "Определяет соотношение количества суши к количеству воды в мире",
   "tfc.create_world.grass_density": "Плотность травы",
   "tfc.create_world.grass_density.tooltip": "Множитель, который применяется к количеству низкой и высокой травы, размещаемой в чанке.",
+  "tfc.create_world.finite_continents": "Finite Continents",
+  "tfc.create_world.finite_continents.tooltip": "Should there be a finite amount of continents in the world?",
   "entity.tfc.bluegill": "Синежаберник",
   "entity.tfc.crappie": "Краппи",
   "entity.tfc.lake_trout": "Озёрная форель",

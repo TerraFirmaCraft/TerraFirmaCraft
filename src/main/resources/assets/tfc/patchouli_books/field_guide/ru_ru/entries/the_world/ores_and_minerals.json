@@ -1137,6 +1137,33 @@
       "name": "",
       "text": "Опал в базальте.",
       "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "ruby",
+      "item": "tfc:ore/ruby",
+      "title": "Ruby",
+      "link_recipes": false,
+      "text": "Ruby is a decorative $(thing)Mineral$(). It can be found in $(thing)Schist$() and $(thing)Gneiss$() rock below y=-10."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/ruby/schist"
+        }
+      },
+      "name": "",
+      "text": "Ruby in Schist.",
+      "enable_visualize": false
     }
   ],
   "read_by_default": true,
@@ -1210,6 +1237,7 @@
     "tfc:ore/diamond": 52,
     "tfc:ore/lapis_lazuli": 54,
     "tfc:ore/amethyst": 56,
-    "tfc:ore/opal": 58
+    "tfc:ore/opal": 58,
+    "tfc:ore/ruby": 60
   }
 }
