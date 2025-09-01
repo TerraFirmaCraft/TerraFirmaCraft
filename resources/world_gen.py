@@ -604,7 +604,7 @@ def generate(rm: ResourceManager):
     forest_config(rm, 220, 500, -16, -4, -1, 1, False, 'spruce', True, krum=True, podzol=True)
     forest_config(rm, 330, 500, -4, 17.6, -0.15, 1, False, 'sycamore', True, alfisol=True)
     forest_config(rm, 100, 285, -14.2, 3.2, -0.45, 0.65, False, 'white_cedar', True, krum=True, podzol=True)
-    forest_config(rm, 330, 500, 8.6, 26.6, -0.55, 1, False, 'willow', True, alfisol=True)
+    forest_config(rm, 330, 500, 8.6, 26.6, -0.55, 1, False, 'willow', True)
     # flat: acacia, ash, chestnut, maple, sequoia, spruce, willow
 
     for wood in ('aspen', 'douglas_fir', 'pine', 'spruce', 'white_cedar'):
@@ -1037,7 +1037,7 @@ def generate(rm: ResourceManager):
 
         rm.configured_feature(patch_feature, 'minecraft:random_patch', {'tries': 6, 'xz_spread': 5, 'y_spread': 1, 'feature': singular_feature.join()})
         rm.configured_feature(singular_feature, *feature)
-        rm.placed_feature(patch_feature, patch_feature, decorate_chance(90), decorate_square(), decorate_climate_120(crop_data.min_temp, crop_data.max_temp, crop_data.min_water, crop_data.max_water, min_forest=crop_data.min_forest, max_forest=crop_data.max_forest))
+        rm.placed_feature(patch_feature, patch_feature, decorate_chance(90), decorate_square(), decorate_climate_120(crop_data.min_temp_wg, crop_data.max_temp_wg, crop_data.min_water, crop_data.max_water, min_forest=crop_data.min_forest, max_forest=crop_data.max_forest))
         rm.placed_feature(singular_feature, singular_feature, decorate_heightmap(heightmap), replaceable, decorate_would_survive(name))
 
     for berry, info in BERRIES.items():
@@ -1391,7 +1391,7 @@ def forest_config(rm: ResourceManager, min_water: float, max_water: float, min_t
         'normal_tree': 'tfc:tree/%s' % tree,
         'dead_tree': 'tfc:tree/%s_dead' % tree,
         'krummholz': None if not krum else 'tfc:tree/%s_krummholz' % tree,
-        'soil_disc': 'tfc:alfisol_disc' if alfisol else 'tfc:podzol_disc' if podzol else 'tfc:duff_disc',
+        'soil_disc': 'tfc:alfisol_disc' if alfisol else 'tfc:podzol_disc' if podzol else None if floating else 'tfc:duff_disc',
         'old_growth_chance': old_growth_chance,
         'spoiler_old_growth_chance': spoiler_chance,
         'floating': floating,

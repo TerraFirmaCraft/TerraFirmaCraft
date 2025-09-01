@@ -135,10 +135,12 @@ class Crop(NamedTuple):
     type: str
     category: str
     stages: int
-    min_temp: float
-    max_temp: float
+    min_temp_wg: float
+    max_temp_wg: float
     min_water: float
     max_water: float
+    min_temp_growth: float
+    max_temp_growth: float
     min_hydration: float
     max_hydration: float
     nitrogen: float
@@ -483,35 +485,35 @@ WOODS: dict[str, Wood] = {
 # DO NOT EDIT DIRECTLY - Imported directly from spreadsheet
 # https://docs.google.com/spreadsheets/d/1USmCWiRrj5205WyoRNNTUkoNrqm9AStRzwnD1v6633o
 CROPS: dict[str, Crop] = {
-    'cassava': Crop('default', 'legume', 6, 10.4, 40, 260, 500, 45, 100, -50, 40, 20, 'normal', None),
-    'green_bean': Crop('double_stick', 'legume', 8, -4, 19.4, 150, 410, 25, 90, -80, 50, 40, 'normal', None),
-    'lentil': Crop('default', 'legume', 6, -7.6, 19.4, 75, 190, 15, 50, -80, 20, 20, None, None),
-    'peanut': Crop('default', 'legume', 6, 12.2, 40, 130, 360, 20, 80, -90, 50, 50, None, None),
-    'soybean': Crop('default', 'legume', 7, -9.4, 15.8, 160, 410, 25, 90, -80, 60, 30, 'normal', None),
-    'barley': Crop('default', 'cereal', 8, -9.4, 17.6, 70, 310, 10, 70, 75, -20, -20, None, 'edge'),
-    'oat': Crop('default', 'cereal', 8, -9.4, 15.8, 140, 400, 25, 85, 100, -35, -25, None, 'edge'),
-    'rye': Crop('default', 'cereal', 8, -9.4, 8.6, 100, 350, 15, 80, 100, -20, -40, None, 'edge'),
-    'maize': Crop('double', 'cereal', 6, -9.4, 23., 300, 500, 50, 100, 90, -25, -25, None, 'edge'),
-    'wheat': Crop('default', 'cereal', 8, -9.4, 15.8, 100, 400, 15, 85, 100, -30, -30, None, 'edge'),
-    'rice': Crop('default', 'cereal', 8, 8.6, 40, 200, 500, 35, 100, 40, 30, 30, 'edge', None),
-    'beet': Crop('default', 'vegetable', 6, -13, 23., 70, 300, 10, 70, 40, 30, 50, None, None),
-    'cabbage': Crop('default', 'vegetable', 6, -13, 23., 60, 280, 10, 65, 50, 20, 40, None, None),
-    'carrot': Crop('default', 'vegetable', 5, -13, 23., 100, 400, 15, 85, 50, 30, 40, None, None),
-    'garlic': Crop('default', 'vegetable', 5, -5.8, 15.8, 60, 310, 10, 70, 40, 20, 50, None, None),
-    'onion': Crop('default', 'vegetable', 7, -7.6, 21.2, 100, 390, 15, 85, 40, 40, 40, None, None),
-    'potato': Crop('default', 'vegetable', 7, -9.4, 15.8, 200, 420, 35, 90, 40, 20, 60, None, None),
-    'squash': Crop('default', 'vegetable', 8, -9.4, 19.4, 90, 390, 15, 85, 25, 45, 50, 'normal', None),
-    'tomato': Crop('double_stick', 'vegetable', 8, 1.4, 40, 120, 390, 20, 85, 40, 50, 60, 'normal', None),
-    'red_bell_pepper': Crop('pickable', 'pickable vegetable', 7, 12.2, 40, 190, 450, 30, 95, 30, 40, 50, None, None),
-    'yellow_bell_pepper': Crop('pickable', 'pickable vegetable', 7, 12.2, 40, 190, 450, 30, 95, 30, 40, 50, None, None),
-    'pumpkin': Crop('spreading', 'spreading vegetable', 8, -9.4, 23., 120, 390, 20, 85, 40, 30, 60, None, None),
-    'melon': Crop('spreading', 'spreading vegetable', 8, 5, 40, 200, 500, 35, 100, 30, 40, 65, None, None),
-    'canola': Crop('default', 'cover', 6, -13, 19.4, 120, 320, 20, 75, -30, -60, -100, None, 'edge'),
-    'radish': Crop('default', 'cover', 6, -11.2, 23., 190, 410, 30, 90, -50, -100, -60, None, None),
-    'alfalfa': Crop('default', 'cover', 6, -9.4, 15.8, 240, 480, 40, 100, -80, -50, -60, None, 'edge'),
-    'jute': Crop('double', 'misc', 6, 1.4, 19.4, 100, 410, 15, 90, 60, 40, -40, None, None),
-    'papyrus': Crop('double', 'misc', 6, 12.2, 40, 310, 500, 50, 100, 60, -40, 40, None, None),
-    'sugarcane': Crop('double', 'misc', 8, 17.6, 40, 160, 500, 25, 100, 50, 50, 50, None, None),
+    'cassava': Crop('default', 'legume', 6, 10.4, 40, 260, 500, 10, 47, 45, 100, -50, 40, 20, 'normal', None),
+    'green_bean': Crop('double_stick', 'legume', 8, -4, 19.4, 150, 410, -4, 30, 25, 90, -80, 50, 40, 'normal', None),
+    'lentil': Crop('default', 'legume', 6, -7.6, 19.4, 75, 190, -7, 30, 15, 50, -80, 20, 20, None, None),
+    'peanut': Crop('default', 'legume', 6, 12.2, 40, 130, 360, 12, 47, 20, 80, -90, 50, 50, None, None),
+    'soybean': Crop('default', 'legume', 7, -9.4, 15.8, 160, 410, -9, 27, 25, 90, -80, 60, 30, 'normal', None),
+    'barley': Crop('default', 'cereal', 8, -9.4, 17.6, 70, 310, -9, 29, 10, 70, 75, -20, -20, None, 'edge'),
+    'oat': Crop('default', 'cereal', 8, -9.4, 15.8, 140, 400, -9, 27, 25, 85, 100, -35, -25, None, 'edge'),
+    'rye': Crop('default', 'cereal', 8, -9.4, 8.6, 100, 350, -9, 23, 15, 80, 100, -20, -40, None, 'edge'),
+    'maize': Crop('double', 'cereal', 6, -9.4, 23., 300, 500, -9, 32, 50, 100, 90, -25, -25, None, 'edge'),
+    'wheat': Crop('default', 'cereal', 8, -9.4, 15.8, 100, 400, -9, 27, 15, 85, 100, -30, -30, None, 'edge'),
+    'rice': Crop('default', 'cereal', 8, 8.6, 40, 200, 500, 8, 47, 35, 100, 40, 30, 30, 'edge', None),
+    'beet': Crop('default', 'vegetable', 6, -13, 23., 70, 300, -13, 32, 10, 70, 40, 30, 50, None, None),
+    'cabbage': Crop('default', 'vegetable', 6, -13, 23., 60, 280, -13, 32, 10, 65, 50, 20, 40, None, None),
+    'carrot': Crop('default', 'vegetable', 5, -13, 23., 100, 400, -13, 32, 15, 85, 50, 30, 40, None, None),
+    'garlic': Crop('default', 'vegetable', 5, -5.8, 15.8, 60, 310, -5, 27, 10, 70, 40, 20, 50, None, None),
+    'onion': Crop('default', 'vegetable', 7, -7.6, 21.2, 100, 390, -7, 31, 15, 85, 40, 40, 40, None, None),
+    'potato': Crop('default', 'vegetable', 7, -9.4, 15.8, 200, 420, -9, 27, 35, 90, 40, 20, 60, None, None),
+    'squash': Crop('default', 'vegetable', 8, -9.4, 19.4, 90, 390, -9, 30, 15, 85, 25, 45, 50, 'normal', None),
+    'tomato': Crop('double_stick', 'vegetable', 8, 1.4, 40, 120, 390, 1, 47, 20, 85, 40, 50, 60, 'normal', None),
+    'red_bell_pepper': Crop('pickable', 'pickable vegetable', 7, 12.2, 40, 190, 450, 12, 47, 30, 95, 30, 40, 50, None, None),
+    'yellow_bell_pepper': Crop('pickable', 'pickable vegetable', 7, 12.2, 40, 190, 450, 12, 47, 30, 95, 30, 40, 50, None, None),
+    'pumpkin': Crop('spreading', 'spreading vegetable', 8, -9.4, 23., 120, 390, -9, 32, 20, 85, 40, 30, 60, None, None),
+    'melon': Crop('spreading', 'spreading vegetable', 8, 5, 40, 200, 500, 5, 47, 35, 100, 30, 40, 65, None, None),
+    'canola': Crop('default', 'cover', 6, -13, 19.4, 120, 320, -35, 17, 20, 75, -30, -60, -100, None, 'edge'),
+    'radish': Crop('default', 'cover', 6, -11.2, 23., 190, 410, -33, 21, 30, 90, -50, -100, -60, None, None),
+    'alfalfa': Crop('default', 'cover', 6, -9.4, 15.8, 240, 480, -30, 14, 40, 100, -80, -50, -60, None, 'edge'),
+    'jute': Crop('double', 'misc', 6, 1.4, 19.4, 100, 410, 1, 30, 15, 90, 60, 40, -40, None, None),
+    'papyrus': Crop('double', 'misc', 6, 12.2, 40, 310, 500, 12, 47, 50, 100, 60, -40, 40, None, None),
+    'sugarcane': Crop('double', 'misc', 8, 17.6, 40, 160, 500, 17, 47, 25, 100, 50, 50, 50, None, None),
 }
 
 PLANTS: dict[str, Plant] = {

@@ -569,6 +569,37 @@
         },
         {
           "text": "120 - 390"
+        }
+      ],
+      "text": "",
+      "title": "Требования к диким культурам",
+      "legend": [],
+      "columns": 2,
+      "first_column_width": 80,
+      "column_width": 70,
+      "row_height": 10,
+      "left_buffer": 2,
+      "top_buffer": 12,
+      "draw_background": false
+    },
+    {
+      "type": "patchouli:empty",
+      "draw_filler": false
+    },
+    {
+      "type": "tfc:table",
+      "strings": [
+        {
+          "text": "Crop",
+          "bold": true
+        },
+        {
+          "text": "Temperature (°C)",
+          "bold": true
+        },
+        {
+          "text": "Rainfall (mm)",
+          "bold": true
         },
         {
           "text": "Melon"

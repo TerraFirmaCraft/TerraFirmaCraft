@@ -301,12 +301,17 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('Wild crops will spawn in climates near where the crop itself can be cultivated, so if looking for a specific crop, look in the climate where the crop can be cultivated. However, unlike $(l:mechanics/crops)Crops$() that the player has planted, wild crops do not require $(l:mechanics/hydration)Hydration$(). Instead, they are found in areas depending on the average $()Temperature$() and $()Rainfall$().', title='Finding Wild Crops'),
             text('The next pages show a table of the environments where wild crops can be found.'),
             table(
-                make_crop_table(0, 11),
+                make_wild_crop_table(0, 11),
                 '', 'Wild Crop Requirements', {}, [],
                 2, 80, 70, 10, 2, 12, False
             ),
             table(
-                make_crop_table(12, len(CROPS.keys())),
+                make_wild_crop_table(12, 21),
+                '', 'Wild Crop Requirements', {}, [],
+                2, 80, 70, 10, 2, 12, False
+            ),
+            table(
+                make_wild_crop_table(22, len(CROPS.keys())),
                 '', 'Wild Crop Requirements', {}, [],
                 2, 80, 70, 10, 2, 12, False
             ),
@@ -1488,7 +1493,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
     book.build()
 
 
-def make_crop_table(start_index: int, end_index: int) -> List[str | Dict[str, Any]]:
+def make_wild_crop_table(start_index: int, end_index: int) -> List[str | Dict[str, Any]]:
     crop_table = [
         {'text': contents, 'bold': True}
         for contents in ('Crop', 'Temperature (°C)', 'Rainfall (mm)')
@@ -1497,7 +1502,7 @@ def make_crop_table(start_index: int, end_index: int) -> List[str | Dict[str, An
         if start_index <= idx <= end_index:
             crop_table += [
                 {'text': lang(crop)},
-                '%3s - %s' % (data.min_temp, data.max_temp),
+                '%3s - %s' % (data.min_temp_wg, data.max_temp_wg),
                 '%3s - %s' % (data.min_water, data.max_water)
             ]
     return crop_table
@@ -1505,7 +1510,7 @@ def make_crop_table(start_index: int, end_index: int) -> List[str | Dict[str, An
 
 def detail_crop(crop: str) -> str:
     data = CROPS[crop]
-    string= '$(bold)$(l:the_world/climate#temperature)Temperature$(): %d - %d °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): %d - %d %%$(br)$(bold)Category$(): %s$(br)$(br)' % (data.min_temp, data.max_temp, data.min_hydration, data.max_hydration, data.category.title())
+    string= '$(bold)$(l:the_world/climate#temperature)Temperature$(): %d - %d °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): %d - %d %%$(br)$(bold)Category$(): %s$(br)$(br)' % (data.min_temp_growth, data.max_temp_growth, data.min_hydration, data.max_hydration, data.category.title())
     if data.nitrogen < 0:
         n = '$(bold)$(b)N: +%s ' % -data.nitrogen
     else:
