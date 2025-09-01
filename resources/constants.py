@@ -892,7 +892,7 @@ FRUITS: dict[str, Fruit] = {
     'plum': Fruit(15, 31, 250, 400),
     'red_apple': Fruit(1, 25, 100, 280)
 }
-JAR_FRUITS = tuple([*BERRIES.keys(), *FRUITS.keys(), 'pumpkin_chunks', 'melon_slice'])
+JAR_FRUITS = tuple([*BERRIES.keys(), *FRUITS.keys(), 'pumpkin_chunks', 'melon_slice', 'peanut'])
 
 SIMPLE_FRESHWATER_FISH = ('bluegill', 'crappie', 'lake_trout', 'largemouth_bass', 'rainbow_trout', 'salmon', 'smallmouth_bass',)
 

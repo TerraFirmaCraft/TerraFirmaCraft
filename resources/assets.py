@@ -1533,12 +1533,15 @@ def generate(rm: ResourceManager):
 
     rm.block_model('jar/empty', textures={'2': 'tfc:block/jar_no_lid'}, parent='tfc:block/jar')
     for fruit in JAR_FRUITS:
-        rm.block_model('jar/%s' % fruit, textures={'1': 'tfc:block/jar/%s' % fruit}, parent='tfc:block/jar')
-        rm.block_model('jar/%s_unsealed' % fruit, textures={'1': 'tfc:block/jar/%s' % fruit, '2': 'tfc:block/jar_no_lid'}, parent='tfc:block/jar')
-        fixed_name = fruit.replace('_chunks', '').replace('_slice', '')
-        rm.item_model('tfc:jar/%s' % fruit, 'tfc:item/jar/%s' % fruit).with_lang(lang('jar of %s jam', fixed_name))
-        rm.item_model('tfc:jar/%s_unsealed' % fruit, 'tfc:item/jar/%s_unsealed' % fruit).with_lang(lang('jar of %s jam', fixed_name))
-        rm.item_model('%s_jam' % fruit, 'tfc:item/food/%s_jam' % fruit).with_lang(lang('%s jam', fixed_name))
+            rm.block_model('jar/%s' % fruit, textures={'1': 'tfc:block/jar/%s' % fruit}, parent='tfc:block/jar')
+            rm.block_model('jar/%s_unsealed' % fruit, textures={'1': 'tfc:block/jar/%s' % fruit, '2': 'tfc:block/jar_no_lid'}, parent='tfc:block/jar')
+            fixed_name = fruit.replace('_chunks', '').replace('_slice', '')
+            substance_name = 'jam'
+            if fruit == 'peanut':
+                substance_name = 'butter'
+            rm.item_model('tfc:jar/%s' % fruit, 'tfc:item/jar/%s' % fruit).with_lang(lang('jar of %s %s', fixed_name, substance_name))
+            rm.item_model('tfc:jar/%s_unsealed' % fruit, 'tfc:item/jar/%s_unsealed' % fruit).with_lang(lang('jar of %s %s', fixed_name, substance_name))
+            rm.item_model('%s_jam' % fruit, 'tfc:item/food/%s_jam' % fruit).with_lang(lang('%s %s', fixed_name, substance_name))
 
     # Berry Bushes
     lifecycle_to_model = {'healthy': '', 'dormant': 'dry_', 'fruiting': 'fruiting_', 'flowering': 'flowering_'}

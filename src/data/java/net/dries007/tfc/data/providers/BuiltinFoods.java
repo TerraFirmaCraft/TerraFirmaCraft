@@ -117,7 +117,7 @@ public class BuiltinFoods extends DataManagerProvider<FoodDefinition> implements
         add(Food.SOYBEAN, ofFood(2, 0, 2.5f).vegetables(0.5f).protein(1f));
         add(Food.CASSAVA, ofFood(2, 0, 2.5f).vegetables(1.0f).protein(0.5f));
         add(Food.LENTIL, ofFood(2, 0, 2.5f).vegetables(0.75f).protein(0.75f));
-        add(Food.PEANUT, ofFood(2, 0, 1.0f).vegetables(0.5f).protein(0.5f));
+        add(Food.PEANUT, ofFood(0.5f, 0, 1.0f).protein(1.5f));
         add(Food.SQUASH, ofFood(1, 0, 1.67f).vegetables(2.0f));
         add(Food.SUGARCANE, of(0.5f));
         add(Food.TOMATO, ofFood(0.5f, 5, 3.5f).vegetables(1f).fruit(1f));
@@ -198,9 +198,14 @@ public class BuiltinFoods extends DataManagerProvider<FoodDefinition> implements
         add(Food.COOKED_GRAN_FELINE, ofFood(2, 0, 2.25f).protein(2.5f));
         add(Food.COOKED_CAMELIDAE, ofFood(2, 0, 2.25f).protein(2.5f));
 
-        add(TFCTags.Items.SEALED_PRESERVES, ofFood(0, 0, 0, 5f), false);
+        add(TFCTags.Items.SEALED_PRESERVES, ofFood(0, 0, 0, 0.1f), false);
+
         add(TFCTags.Items.PRESERVES, ofFood(0, 0, 0, 5f).fruit(0.75f), false);
+        add(TFCItems.UNSEALED_FRUIT_PRESERVES.get(Food.PEANUT).get(), ofFood(0, 0, 5f).protein(1.5f), false);
+
         add(TFCTags.Items.JAM, ofFood(1, 0, 5).fruit(0.75f), true);
+        add(TFCItems.JAM.get(Food.PEANUT), ofFood(1, 0, 5f).protein(1.5f));
+
         add(TFCTags.Items.SALADS, of(4.5f), true);
         add(TFCTags.Items.SOUPS, of(4.5f), true);
 

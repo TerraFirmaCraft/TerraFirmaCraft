@@ -130,13 +130,13 @@ public final class TFCItems
     public static final Map<Food, ItemId> FOOD = Helpers.mapOf(Food.class, food ->
         register("food/" + food.name(), () -> new Item(new Properties()))
     );
-    public static final Map<Food, ItemId> FRUIT_PRESERVES = Helpers.mapOf(Food.class, Food::isFruit, food ->
+    public static final Map<Food, ItemId> FRUIT_PRESERVES = Helpers.mapOf(Food.class, Food::hasJam, food ->
         register("jar/" + food.name(), () -> new Item(new Properties().component(Lore.TYPE, Lore.SEALED)))
     );
-    public static final Map<Food, ItemId> UNSEALED_FRUIT_PRESERVES = Helpers.mapOf(Food.class, Food::isFruit, food ->
+    public static final Map<Food, ItemId> UNSEALED_FRUIT_PRESERVES = Helpers.mapOf(Food.class, Food::hasJam, food ->
         register("jar/" + food.name() + "_unsealed", () -> new Item(new Properties().component(Lore.TYPE, Lore.UNSEALED).craftRemainder(TFCItems.EMPTY_JAR.asItem())))
     );
-    public static final Map<Food, ItemId> JAM = Helpers.mapOf(Food.class, Food::isFruit, food ->
+    public static final Map<Food, ItemId> JAM = Helpers.mapOf(Food.class, Food::hasJam, food ->
         register(food.name() + "_jam", () -> new Item(new Properties()))
     );
     public static final Map<Nutrient, ItemId> SOUPS = Helpers.mapOf(Nutrient.class, nutrient ->

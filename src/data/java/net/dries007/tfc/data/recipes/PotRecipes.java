@@ -72,7 +72,7 @@ public interface PotRecipes extends Recipes
         soup(5);
         for (Food food : Food.values())
         {
-            if (food.isFruit())
+            if (food.hasJam())
             {
                 jam(food);
             }

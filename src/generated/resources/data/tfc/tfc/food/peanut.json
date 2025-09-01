@@ -4,7 +4,6 @@
   "ingredient": {
     "item": "tfc:food/peanut"
   },
-  "protein": 0.5,
-  "saturation": 2.0,
-  "vegetables": 0.5
+  "protein": 1.5,
+  "saturation": 0.5
 }

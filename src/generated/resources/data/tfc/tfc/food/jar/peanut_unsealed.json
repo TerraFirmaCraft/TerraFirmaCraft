@@ -1,0 +1,9 @@
+{
+  "decay_modifier": 5.0,
+  "edible": false,
+  "hunger": 4,
+  "ingredient": {
+    "item": "tfc:jar/peanut_unsealed"
+  },
+  "protein": 1.5
+}
